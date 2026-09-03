@@ -1,0 +1,10 @@
+{
+  "name": "@still-shift/cli",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@still-shift/animation-engine": "workspace:*",
+    "@still-shift/scene-contract": "workspace:*"
+  }
+}

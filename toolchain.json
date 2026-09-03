@@ -1,0 +1,10 @@
+{
+  "node": "22.23.1",
+  "pnpm": "10.29.3",
+  "python": "3.12.11",
+  "uv": "0.7.12",
+  "playwright": "1.62.1",
+  "chromiumRevision": "1234",
+  "chromiumVersion": "151.0.7922.34",
+  "ffmpeg": "8.0.1"
+}

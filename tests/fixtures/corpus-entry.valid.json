@@ -1,0 +1,20 @@
+{
+  "id": "fixture-portrait-001",
+  "source": {
+    "path": "./corpus/private-example.png",
+    "tracked": false,
+    "sha256": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+  },
+  "categories": ["portrait_person", "difficult_edges"],
+  "dimensions": {
+    "width": 1920,
+    "height": 1080
+  },
+  "rights": {
+    "status": "private_internal",
+    "usageNotes": "Schema fixture only; no real image is included.",
+    "attribution": null
+  },
+  "expectedShotDurationMs": 5000,
+  "notes": "Metadata-only fixture used to exercise the manifest contract."
+}

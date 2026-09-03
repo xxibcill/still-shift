@@ -1,0 +1,132 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://still-shift.local/schemas/corpus-manifest-0.1.json",
+  "title": "Still Shift Phase 0 corpus manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "$schema",
+    "schemaVersion",
+    "corpusId",
+    "status",
+    "frozenAt",
+    "targetSize",
+    "sourcePolicy",
+    "evaluationGatesDocument",
+    "outstandingRequirements",
+    "entries"
+  ],
+  "properties": {
+    "$schema": { "type": "string", "minLength": 1 },
+    "schemaVersion": { "const": "0.1" },
+    "corpusId": { "type": "string", "pattern": "^[a-z0-9][a-z0-9_-]*$" },
+    "status": { "enum": ["incomplete", "frozen"] },
+    "frozenAt": { "type": ["string", "null"], "format": "date-time" },
+    "targetSize": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["minimum", "maximum"],
+      "properties": {
+        "minimum": { "const": 30 },
+        "maximum": { "const": 50 }
+      }
+    },
+    "sourcePolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "realExplainerWorkflowImagesRequired",
+        "privateImagesMayRemainUntracked"
+      ],
+      "properties": {
+        "realExplainerWorkflowImagesRequired": { "const": true },
+        "privateImagesMayRemainUntracked": { "const": true }
+      }
+    },
+    "evaluationGatesDocument": { "type": "string", "minLength": 1 },
+    "outstandingRequirements": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "entries": {
+      "type": "array",
+      "maxItems": 50,
+      "items": { "$ref": "#/$defs/entry" }
+    }
+  },
+  "$defs": {
+    "entry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "source",
+        "categories",
+        "dimensions",
+        "rights",
+        "expectedShotDurationMs",
+        "notes"
+      ],
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9_-]*$" },
+        "source": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["path", "tracked", "sha256"],
+          "properties": {
+            "path": { "type": "string", "minLength": 1 },
+            "tracked": { "type": "boolean" },
+            "sha256": {
+              "type": ["string", "null"],
+              "pattern": "^sha256:[a-f0-9]{64}$"
+            }
+          }
+        },
+        "categories": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "portrait_person",
+              "landscape_environment",
+              "architecture_interior",
+              "product_object",
+              "illustration_anime",
+              "text_heavy_diagram",
+              "difficult_edges"
+            ]
+          }
+        },
+        "dimensions": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["width", "height"],
+          "properties": {
+            "width": { "type": "integer", "minimum": 1 },
+            "height": { "type": "integer", "minimum": 1 }
+          }
+        },
+        "rights": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["status", "usageNotes", "attribution"],
+          "properties": {
+            "status": {
+              "enum": ["owned", "licensed", "private_internal", "unknown"]
+            },
+            "usageNotes": { "type": "string", "minLength": 1 },
+            "attribution": { "type": ["string", "null"] }
+          }
+        },
+        "expectedShotDurationMs": {
+          "type": "integer",
+          "minimum": 3000,
+          "maximum": 8000,
+          "multipleOf": 100
+        },
+        "notes": { "type": "string" }
+      }
+    }
+  }
+}

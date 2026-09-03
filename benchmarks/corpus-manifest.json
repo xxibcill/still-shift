@@ -1,0 +1,22 @@
+{
+  "$schema": "./corpus-manifest.schema.json",
+  "schemaVersion": "0.1",
+  "corpusId": "still-shift-phase-0",
+  "status": "incomplete",
+  "frozenAt": null,
+  "targetSize": {
+    "minimum": 30,
+    "maximum": 50
+  },
+  "sourcePolicy": {
+    "realExplainerWorkflowImagesRequired": true,
+    "privateImagesMayRemainUntracked": true
+  },
+  "evaluationGatesDocument": "../Phase_0_Implementation_Plan.md#22-required-exit-gates",
+  "outstandingRequirements": [
+    "Supply and review 30–50 images from real explainer projects.",
+    "Cover every required image category, including difficult edges.",
+    "Record dimensions, rights, expected shot duration, and source checksum for every entry."
+  ],
+  "entries": []
+}
