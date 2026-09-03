@@ -81,7 +81,7 @@ The versions are numbered by cumulative capability, not independent branches. Im
 ### Completion evidence
 
 - [x] Clean installation succeeds from repository instructions. See [v0.1 verification evidence](./docs/v0.1-verification.md).
-- [x] All implemented foundation checks pass with `pnpm check:all`.
+- [!] Software checks pass with `pnpm check`; the release-level `pnpm check:all` includes `corpus:check` and remains blocked until the corpus is frozen.
 - [x] Fake animation request completes through the CLI.
 - [!] `corpus-manifest.json` is structurally valid but cannot be reviewed and frozen until the required real images are supplied.
 - [x] The engine and scene schema report version `0.1`.

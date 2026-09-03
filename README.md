@@ -42,11 +42,21 @@ fails visibly.
 
 ## Verify
 
-Run every v0.1 foundation check and the no-op benchmark:
+Run the software-only foundation checks while the corpus is being assembled:
+
+```bash
+pnpm check
+pnpm benchmark
+```
+
+Run the complete v0.1 release-readiness gate with:
 
 ```bash
 pnpm check:all
 ```
+
+`check:all` includes `corpus:check` and intentionally remains non-zero until the real
+explainer corpus is reviewed and frozen.
 
 Individual commands are also available:
 
