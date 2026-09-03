@@ -10,4 +10,12 @@ describe("release checks", () => {
 
     expect(packageJson.scripts["check:all"]).toContain("pnpm corpus:check");
   });
+
+  it("checks that the generated corpus schema is current", async () => {
+    const packageJson = JSON.parse(await readFile("package.json", "utf8")) as {
+      scripts: Record<string, string>;
+    };
+
+    expect(packageJson.scripts.check).toContain("pnpm schema:check");
+  });
 });

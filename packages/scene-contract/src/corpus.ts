@@ -21,34 +21,48 @@ export const CorpusCategorySchema = z.enum([
 
 export const REQUIRED_CORPUS_CATEGORIES = CorpusCategorySchema.options;
 
-export const CorpusEntrySchema = z.object({
-  id: z.string().regex(/^[a-z0-9][a-z0-9_-]*$/),
-  source: z.object({
-    path: z.string().trim().min(1),
-    tracked: z.boolean(),
-    sha256: z
-      .string()
-      .regex(/^sha256:[a-f0-9]{64}$/)
-      .nullable(),
-  }),
-  categories: z
-    .array(CorpusCategorySchema)
-    .min(1)
-    .refine((categories) => new Set(categories).size === categories.length, {
-      message: "categories must be unique",
-    }),
-  dimensions: z.object({
-    width: z.number().int().positive(),
-    height: z.number().int().positive(),
-  }),
-  rights: z.object({
-    status: z.enum(["owned", "licensed", "private_internal", "unknown"]),
-    usageNotes: z.string().trim().min(1),
-    attribution: z.string().trim().min(1).nullable(),
-  }),
-  expectedShotDurationMs: z.number().int().min(3000).max(8000).multipleOf(100),
-  notes: z.string(),
-});
+export const CorpusEntrySchema = z
+  .object({
+    id: z.string().regex(/^[a-z0-9][a-z0-9_-]*$/),
+    source: z
+      .object({
+        path: z.string().trim().min(1),
+        tracked: z.boolean(),
+        sha256: z
+          .string()
+          .regex(/^sha256:[a-f0-9]{64}$/)
+          .nullable(),
+      })
+      .strict(),
+    categories: z
+      .array(CorpusCategorySchema)
+      .min(1)
+      .refine((categories) => new Set(categories).size === categories.length, {
+        message: "categories must be unique",
+      })
+      .meta({ uniqueItems: true }),
+    dimensions: z
+      .object({
+        width: z.number().int().positive(),
+        height: z.number().int().positive(),
+      })
+      .strict(),
+    rights: z
+      .object({
+        status: z.enum(["owned", "licensed", "private_internal", "unknown"]),
+        usageNotes: z.string().trim().min(1),
+        attribution: z.string().trim().min(1).nullable(),
+      })
+      .strict(),
+    expectedShotDurationMs: z
+      .number()
+      .int()
+      .min(3000)
+      .max(8000)
+      .multipleOf(100),
+    notes: z.string(),
+  })
+  .strict();
 
 export const CorpusManifestSchema = z
   .object({
@@ -57,18 +71,23 @@ export const CorpusManifestSchema = z
     corpusId: z.string().regex(/^[a-z0-9][a-z0-9_-]*$/),
     status: z.enum(["incomplete", "frozen"]),
     frozenAt: z.string().datetime().nullable(),
-    targetSize: z.object({
-      minimum: z.literal(CORPUS_MINIMUM_SIZE),
-      maximum: z.literal(CORPUS_MAXIMUM_SIZE),
-    }),
-    sourcePolicy: z.object({
-      realExplainerWorkflowImagesRequired: z.literal(true),
-      privateImagesMayRemainUntracked: z.literal(true),
-    }),
+    targetSize: z
+      .object({
+        minimum: z.literal(CORPUS_MINIMUM_SIZE),
+        maximum: z.literal(CORPUS_MAXIMUM_SIZE),
+      })
+      .strict(),
+    sourcePolicy: z
+      .object({
+        realExplainerWorkflowImagesRequired: z.literal(true),
+        privateImagesMayRemainUntracked: z.literal(true),
+      })
+      .strict(),
     evaluationGatesDocument: z.string().trim().min(1),
     outstandingRequirements: z.array(z.string().trim().min(1)),
     entries: z.array(CorpusEntrySchema).max(CORPUS_MAXIMUM_SIZE),
   })
+  .strict()
   .superRefine((manifest, context) => {
     const ids = manifest.entries.map((entry) => entry.id);
     if (new Set(ids).size !== ids.length) {

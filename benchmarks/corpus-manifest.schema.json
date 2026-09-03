@@ -3,7 +3,145 @@
   "$id": "https://still-shift.local/schemas/corpus-manifest-0.1.json",
   "title": "Still Shift Phase 0 corpus manifest",
   "type": "object",
-  "additionalProperties": false,
+  "properties": {
+    "$schema": { "type": "string", "minLength": 1 },
+    "schemaVersion": { "type": "string", "const": "0.1" },
+    "corpusId": { "type": "string", "pattern": "^[a-z0-9][a-z0-9_-]*$" },
+    "status": { "type": "string", "enum": ["incomplete", "frozen"] },
+    "frozenAt": {
+      "anyOf": [
+        {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
+        },
+        { "type": "null" }
+      ]
+    },
+    "targetSize": {
+      "type": "object",
+      "properties": {
+        "minimum": { "type": "number", "const": 30 },
+        "maximum": { "type": "number", "const": 50 }
+      },
+      "required": ["minimum", "maximum"],
+      "additionalProperties": false
+    },
+    "sourcePolicy": {
+      "type": "object",
+      "properties": {
+        "realExplainerWorkflowImagesRequired": {
+          "type": "boolean",
+          "const": true
+        },
+        "privateImagesMayRemainUntracked": { "type": "boolean", "const": true }
+      },
+      "required": [
+        "realExplainerWorkflowImagesRequired",
+        "privateImagesMayRemainUntracked"
+      ],
+      "additionalProperties": false
+    },
+    "evaluationGatesDocument": { "type": "string", "minLength": 1 },
+    "outstandingRequirements": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "entries": {
+      "maxItems": 50,
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9_-]*$" },
+          "source": {
+            "type": "object",
+            "properties": {
+              "path": { "type": "string", "minLength": 1 },
+              "tracked": { "type": "boolean" },
+              "sha256": {
+                "anyOf": [
+                  { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+                  { "type": "null" }
+                ]
+              }
+            },
+            "required": ["path", "tracked", "sha256"],
+            "additionalProperties": false
+          },
+          "categories": {
+            "uniqueItems": true,
+            "minItems": 1,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "portrait_person",
+                "landscape_environment",
+                "architecture_interior",
+                "product_object",
+                "illustration_anime",
+                "text_heavy_diagram",
+                "difficult_edges"
+              ]
+            }
+          },
+          "dimensions": {
+            "type": "object",
+            "properties": {
+              "width": {
+                "type": "integer",
+                "exclusiveMinimum": 0,
+                "maximum": 9007199254740991
+              },
+              "height": {
+                "type": "integer",
+                "exclusiveMinimum": 0,
+                "maximum": 9007199254740991
+              }
+            },
+            "required": ["width", "height"],
+            "additionalProperties": false
+          },
+          "rights": {
+            "type": "object",
+            "properties": {
+              "status": {
+                "type": "string",
+                "enum": ["owned", "licensed", "private_internal", "unknown"]
+              },
+              "usageNotes": { "type": "string", "minLength": 1 },
+              "attribution": {
+                "anyOf": [
+                  { "type": "string", "minLength": 1 },
+                  { "type": "null" }
+                ]
+              }
+            },
+            "required": ["status", "usageNotes", "attribution"],
+            "additionalProperties": false
+          },
+          "expectedShotDurationMs": {
+            "type": "integer",
+            "minimum": 3000,
+            "maximum": 8000,
+            "multipleOf": 100
+          },
+          "notes": { "type": "string" }
+        },
+        "required": [
+          "id",
+          "source",
+          "categories",
+          "dimensions",
+          "rights",
+          "expectedShotDurationMs",
+          "notes"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
   "required": [
     "$schema",
     "schemaVersion",
@@ -16,117 +154,5 @@
     "outstandingRequirements",
     "entries"
   ],
-  "properties": {
-    "$schema": { "type": "string", "minLength": 1 },
-    "schemaVersion": { "const": "0.1" },
-    "corpusId": { "type": "string", "pattern": "^[a-z0-9][a-z0-9_-]*$" },
-    "status": { "enum": ["incomplete", "frozen"] },
-    "frozenAt": { "type": ["string", "null"], "format": "date-time" },
-    "targetSize": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": ["minimum", "maximum"],
-      "properties": {
-        "minimum": { "const": 30 },
-        "maximum": { "const": 50 }
-      }
-    },
-    "sourcePolicy": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": [
-        "realExplainerWorkflowImagesRequired",
-        "privateImagesMayRemainUntracked"
-      ],
-      "properties": {
-        "realExplainerWorkflowImagesRequired": { "const": true },
-        "privateImagesMayRemainUntracked": { "const": true }
-      }
-    },
-    "evaluationGatesDocument": { "type": "string", "minLength": 1 },
-    "outstandingRequirements": {
-      "type": "array",
-      "items": { "type": "string", "minLength": 1 }
-    },
-    "entries": {
-      "type": "array",
-      "maxItems": 50,
-      "items": { "$ref": "#/$defs/entry" }
-    }
-  },
-  "$defs": {
-    "entry": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": [
-        "id",
-        "source",
-        "categories",
-        "dimensions",
-        "rights",
-        "expectedShotDurationMs",
-        "notes"
-      ],
-      "properties": {
-        "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9_-]*$" },
-        "source": {
-          "type": "object",
-          "additionalProperties": false,
-          "required": ["path", "tracked", "sha256"],
-          "properties": {
-            "path": { "type": "string", "minLength": 1 },
-            "tracked": { "type": "boolean" },
-            "sha256": {
-              "type": ["string", "null"],
-              "pattern": "^sha256:[a-f0-9]{64}$"
-            }
-          }
-        },
-        "categories": {
-          "type": "array",
-          "minItems": 1,
-          "uniqueItems": true,
-          "items": {
-            "enum": [
-              "portrait_person",
-              "landscape_environment",
-              "architecture_interior",
-              "product_object",
-              "illustration_anime",
-              "text_heavy_diagram",
-              "difficult_edges"
-            ]
-          }
-        },
-        "dimensions": {
-          "type": "object",
-          "additionalProperties": false,
-          "required": ["width", "height"],
-          "properties": {
-            "width": { "type": "integer", "minimum": 1 },
-            "height": { "type": "integer", "minimum": 1 }
-          }
-        },
-        "rights": {
-          "type": "object",
-          "additionalProperties": false,
-          "required": ["status", "usageNotes", "attribution"],
-          "properties": {
-            "status": {
-              "enum": ["owned", "licensed", "private_internal", "unknown"]
-            },
-            "usageNotes": { "type": "string", "minLength": 1 },
-            "attribution": { "type": ["string", "null"] }
-          }
-        },
-        "expectedShotDurationMs": {
-          "type": "integer",
-          "minimum": 3000,
-          "maximum": 8000,
-          "multipleOf": 100
-        },
-        "notes": { "type": "string" }
-      }
-    }
-  }
+  "additionalProperties": false
 }

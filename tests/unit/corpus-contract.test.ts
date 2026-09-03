@@ -88,6 +88,17 @@ describe("corpus manifest", () => {
     );
   });
 
+  it("rejects fields outside the canonical corpus contract", async () => {
+    const value = await readJson("benchmarks/corpus-manifest.json");
+
+    expect(
+      CorpusManifestSchema.safeParse({
+        ...(value as object),
+        unexpectedField: true,
+      }).success,
+    ).toBe(false);
+  });
+
   it("rejects a false frozen-corpus claim", async () => {
     const value = await readJson("benchmarks/corpus-manifest.json");
     const manifest = CorpusManifestSchema.parse({
