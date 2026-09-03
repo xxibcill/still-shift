@@ -4,9 +4,11 @@ import { dirname } from "node:path";
 
 import {
   AnimationEngineError,
+  ANIMATION_API_VERSION,
   AnimationRequestSchema,
   AnimationResultSchema,
   ENGINE_VERSION,
+  SCENE_SCHEMA_VERSION,
   SceneManifestSchema,
   type AnimationRequest,
   type AnimationResult,
@@ -33,7 +35,7 @@ const buildScene = (
   sourceHash: string,
 ): SceneManifest =>
   SceneManifestSchema.parse({
-    schemaVersion: "0.1",
+    schemaVersion: SCENE_SCHEMA_VERSION,
     sourceHash,
     pipelineVersion: PIPELINE_VERSION,
     rendererVersion: RENDERER_VERSION,
@@ -134,7 +136,7 @@ export class NoopAnimationEngine implements AnimationEngine {
     );
 
     return AnimationResultSchema.parse({
-      apiVersion: "0.1",
+      apiVersion: ANIMATION_API_VERSION,
       status: "rendered",
       outputPath: request.outputPath,
       sceneManifestPath,

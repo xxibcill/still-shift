@@ -3,6 +3,10 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 
 import { NoopAnimationEngine } from "@still-shift/animation-engine";
+import {
+  V0_1_REQUEST_CONSTRAINTS,
+  V0_1_REQUEST_DEFAULTS,
+} from "@still-shift/scene-contract";
 import { afterAll, beforeAll, bench, describe } from "vitest";
 
 let outputDirectory: string;
@@ -20,13 +24,13 @@ describe("v0.1 no-op engine", () => {
     await new NoopAnimationEngine().animate({
       inputPath: "tests/fixtures/source-placeholder.txt",
       outputPath: join(outputDirectory, "benchmark.noop.json"),
-      durationMs: 5000,
-      fps: 30,
-      width: 1920,
-      height: 1080,
-      preset: "auto",
-      intensity: "standard",
-      seed: 1842,
+      durationMs: V0_1_REQUEST_DEFAULTS.durationMs,
+      fps: V0_1_REQUEST_CONSTRAINTS.fps,
+      width: V0_1_REQUEST_CONSTRAINTS.width,
+      height: V0_1_REQUEST_CONSTRAINTS.height,
+      preset: V0_1_REQUEST_DEFAULTS.preset,
+      intensity: V0_1_REQUEST_DEFAULTS.intensity,
+      seed: V0_1_REQUEST_DEFAULTS.seed,
     });
   });
 });

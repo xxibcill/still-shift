@@ -4,6 +4,21 @@ export const ANIMATION_API_VERSION = "0.1" as const;
 export const ENGINE_VERSION = "0.1" as const;
 export const SCENE_SCHEMA_VERSION = "0.1" as const;
 
+export const V0_1_REQUEST_CONSTRAINTS = {
+  durationMs: { minimum: 3000, maximum: 8000 },
+  fps: 30,
+  width: 1920,
+  height: 1080,
+  seed: { minimum: 0, maximum: 0xffffffff },
+} as const;
+
+export const V0_1_REQUEST_DEFAULTS = {
+  durationMs: 5000,
+  preset: "auto",
+  intensity: "standard",
+  seed: 1842,
+} as const;
+
 export const AnimationPresetSchema = z.enum([
   "auto",
   "slow_push",
@@ -27,13 +42,21 @@ export const AnimationRequestSchema = z
   .object({
     inputPath: z.string().trim().min(1),
     outputPath: z.string().trim().min(1),
-    durationMs: z.number().int().min(3000).max(8000),
-    fps: z.literal(30),
-    width: z.literal(1920),
-    height: z.literal(1080),
+    durationMs: z
+      .number()
+      .int()
+      .min(V0_1_REQUEST_CONSTRAINTS.durationMs.minimum)
+      .max(V0_1_REQUEST_CONSTRAINTS.durationMs.maximum),
+    fps: z.literal(V0_1_REQUEST_CONSTRAINTS.fps),
+    width: z.literal(V0_1_REQUEST_CONSTRAINTS.width),
+    height: z.literal(V0_1_REQUEST_CONSTRAINTS.height),
     preset: AnimationPresetSchema,
     intensity: AnimationIntensitySchema,
-    seed: z.number().int().min(0).max(0xffffffff),
+    seed: z
+      .number()
+      .int()
+      .min(V0_1_REQUEST_CONSTRAINTS.seed.minimum)
+      .max(V0_1_REQUEST_CONSTRAINTS.seed.maximum),
   })
   .superRefine((request, context) => {
     if (!wholeFrameDuration(request.durationMs, request.fps)) {
@@ -137,7 +160,10 @@ export const AnimationResultSchema = z
     }),
   })
   .superRefine((result, context) => {
-    if (result.frameCount !== (result.durationMs * 30) / 1000) {
+    if (
+      result.frameCount !==
+      (result.durationMs * V0_1_REQUEST_CONSTRAINTS.fps) / 1000
+    ) {
       context.addIssue({
         code: "custom",
         message: "frameCount must match durationMs at the v0.1 fixed 30 fps",
@@ -181,7 +207,7 @@ export const SceneManifestSchema = z.object({
   timeline: z
     .object({
       durationMs: z.number().int().positive(),
-      fps: z.literal(30),
+      fps: z.literal(V0_1_REQUEST_CONSTRAINTS.fps),
       frameCount: z.number().int().positive(),
     })
     .superRefine((timeline, context) => {
@@ -201,8 +227,8 @@ export const SceneManifestSchema = z.object({
       }
     }),
   canvas: z.object({
-    width: z.literal(1920),
-    height: z.literal(1080),
+    width: z.literal(V0_1_REQUEST_CONSTRAINTS.width),
+    height: z.literal(V0_1_REQUEST_CONSTRAINTS.height),
   }),
   depth: z
     .object({
@@ -215,7 +241,11 @@ export const SceneManifestSchema = z.object({
   motion: z.object({
     preset: ResolvedAnimationPresetSchema,
     intensity: AnimationIntensitySchema,
-    seed: z.number().int().min(0).max(0xffffffff),
+    seed: z
+      .number()
+      .int()
+      .min(V0_1_REQUEST_CONSTRAINTS.seed.minimum)
+      .max(V0_1_REQUEST_CONSTRAINTS.seed.maximum),
     safeCrop: z.number().finite().min(0).max(1),
   }),
   quality: z.object({

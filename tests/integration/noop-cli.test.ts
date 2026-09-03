@@ -7,6 +7,8 @@ import { promisify } from "node:util";
 import {
   AnimationResultSchema,
   SceneManifestSchema,
+  V0_1_REQUEST_CONSTRAINTS,
+  V0_1_REQUEST_DEFAULTS,
 } from "@still-shift/scene-contract";
 import { afterEach, describe, expect, it } from "vitest";
 
@@ -19,7 +21,21 @@ afterEach(async () => {
   );
 });
 
-const runNoopCli = async (outputPath: string) => {
+const explicitAnimationOptions = [
+  "--duration",
+  "5",
+  "--preset",
+  "auto",
+  "--intensity",
+  "standard",
+  "--seed",
+  "1842",
+];
+
+const runNoopCli = async (
+  outputPath: string,
+  animationOptions = explicitAnimationOptions,
+) => {
   const { stdout, stderr } = await execFileAsync(
     join(process.cwd(), "node_modules/.bin/tsx"),
     [
@@ -29,14 +45,7 @@ const runNoopCli = async (outputPath: string) => {
       "tests/fixtures/source-placeholder.txt",
       "--output",
       outputPath,
-      "--duration",
-      "5",
-      "--preset",
-      "auto",
-      "--intensity",
-      "standard",
-      "--seed",
-      "1842",
+      ...animationOptions,
     ],
   );
 
@@ -85,6 +94,32 @@ describe("no-op CLI", () => {
     ).rejects.toMatchObject({
       code: 1,
       stderr: expect.stringContaining('"code":"INPUT_UNREADABLE"'),
+    });
+  });
+
+  it("uses the shared v0.1 request defaults", async () => {
+    const directory = await mkdtemp(join(tmpdir(), "still-shift-test-"));
+    temporaryDirectories.push(directory);
+
+    const result = await runNoopCli(join(directory, "default.noop.json"), []);
+    const scene = SceneManifestSchema.parse(
+      JSON.parse(await readFile(result.sceneManifestPath, "utf8")),
+    );
+
+    expect(scene.timeline).toEqual({
+      durationMs: V0_1_REQUEST_DEFAULTS.durationMs,
+      fps: V0_1_REQUEST_CONSTRAINTS.fps,
+      frameCount:
+        (V0_1_REQUEST_DEFAULTS.durationMs * V0_1_REQUEST_CONSTRAINTS.fps) /
+        1000,
+    });
+    expect(scene.canvas).toEqual({
+      width: V0_1_REQUEST_CONSTRAINTS.width,
+      height: V0_1_REQUEST_CONSTRAINTS.height,
+    });
+    expect(scene.motion).toMatchObject({
+      intensity: V0_1_REQUEST_DEFAULTS.intensity,
+      seed: V0_1_REQUEST_DEFAULTS.seed,
     });
   });
 });

@@ -4,8 +4,12 @@ import { pathToFileURL } from "node:url";
 import { NoopAnimationEngine } from "@still-shift/animation-engine";
 import {
   AnimationEngineError,
+  AnimationIntensitySchema,
+  AnimationPresetSchema,
   AnimationRequestSchema,
   ENGINE_VERSION,
+  V0_1_REQUEST_CONSTRAINTS,
+  V0_1_REQUEST_DEFAULTS,
   type AnimationFailure,
 } from "@still-shift/scene-contract";
 
@@ -27,10 +31,10 @@ Usage:
 v0.1 writes a deterministic no-op JSON artifact, not a video.
 
 Options:
-  --duration <seconds>   3-8 seconds (default: 5)
-  --preset <name>       auto, slow_push, horizontal_drift, cinematic_float
-  --intensity <name>    subtle, standard, strong (default: standard)
-  --seed <integer>      unsigned 32-bit seed (default: 1842)
+  --duration <seconds>   ${V0_1_REQUEST_CONSTRAINTS.durationMs.minimum / 1000}-${V0_1_REQUEST_CONSTRAINTS.durationMs.maximum / 1000} seconds (default: ${V0_1_REQUEST_DEFAULTS.durationMs / 1000})
+  --preset <name>       ${AnimationPresetSchema.options.join(", ")} (default: ${V0_1_REQUEST_DEFAULTS.preset})
+  --intensity <name>    ${AnimationIntensitySchema.options.join(", ")} (default: ${V0_1_REQUEST_DEFAULTS.intensity})
+  --seed <integer>      unsigned 32-bit seed (default: ${V0_1_REQUEST_DEFAULTS.seed})
   --help                 show this help
   --version              show the engine version
 `;
@@ -81,20 +85,23 @@ const parseFiniteNumber = (value: string, name: string): number => {
 
 const createRequest = (values: Map<string, string>) => {
   const durationSeconds = parseFiniteNumber(
-    values.get("duration") ?? "5",
+    values.get("duration") ?? String(V0_1_REQUEST_DEFAULTS.durationMs / 1000),
     "duration",
   );
-  const seed = parseFiniteNumber(values.get("seed") ?? "1842", "seed");
+  const seed = parseFiniteNumber(
+    values.get("seed") ?? String(V0_1_REQUEST_DEFAULTS.seed),
+    "seed",
+  );
 
   const parsedRequest = AnimationRequestSchema.safeParse({
     inputPath: requireArgument(values, "input"),
     outputPath: requireArgument(values, "output"),
     durationMs: durationSeconds * 1000,
-    fps: 30,
-    width: 1920,
-    height: 1080,
-    preset: values.get("preset") ?? "auto",
-    intensity: values.get("intensity") ?? "standard",
+    fps: V0_1_REQUEST_CONSTRAINTS.fps,
+    width: V0_1_REQUEST_CONSTRAINTS.width,
+    height: V0_1_REQUEST_CONSTRAINTS.height,
+    preset: values.get("preset") ?? V0_1_REQUEST_DEFAULTS.preset,
+    intensity: values.get("intensity") ?? V0_1_REQUEST_DEFAULTS.intensity,
     seed,
   });
 

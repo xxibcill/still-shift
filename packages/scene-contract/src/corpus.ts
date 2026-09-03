@@ -5,6 +5,8 @@ import { resolve } from "node:path";
 import { imageSize } from "image-size";
 import { z } from "zod";
 
+import { V0_1_REQUEST_CONSTRAINTS } from "./contracts.ts";
+
 export const CORPUS_SCHEMA_VERSION = "0.1" as const;
 export const CORPUS_MINIMUM_SIZE = 30;
 export const CORPUS_MAXIMUM_SIZE = 50;
@@ -57,8 +59,8 @@ export const CorpusEntrySchema = z
     expectedShotDurationMs: z
       .number()
       .int()
-      .min(3000)
-      .max(8000)
+      .min(V0_1_REQUEST_CONSTRAINTS.durationMs.minimum)
+      .max(V0_1_REQUEST_CONSTRAINTS.durationMs.maximum)
       .multipleOf(100),
     notes: z.string(),
   })
