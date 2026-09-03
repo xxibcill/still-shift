@@ -1,3 +1,8 @@
+import { createHash } from "node:crypto";
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
+
+import { imageSize } from "image-size";
 import { z } from "zod";
 
 export const CORPUS_SCHEMA_VERSION = "0.1" as const;
@@ -79,10 +84,50 @@ export type CorpusManifest = z.infer<typeof CorpusManifestSchema>;
 export type CorpusEntry = z.infer<typeof CorpusEntrySchema>;
 export type CorpusCategory = z.infer<typeof CorpusCategorySchema>;
 
+type CorpusFreezeValidationOptions = {
+  sourceRoot?: string;
+};
+
+const sha256 = (source: Uint8Array): string =>
+  `sha256:${createHash("sha256").update(source).digest("hex")}`;
+
+const findSourceBlockers = (
+  entry: CorpusEntry,
+  sourceRoot: string,
+): string[] => {
+  let source: Buffer;
+  try {
+    source = readFileSync(resolve(sourceRoot, entry.source.path));
+  } catch {
+    return [`corpus source is unreadable: ${entry.id}`];
+  }
+
+  const blockers: string[] = [];
+  if (entry.source.sha256 !== null && sha256(source) !== entry.source.sha256) {
+    blockers.push(`corpus source checksum does not match: ${entry.id}`);
+  }
+
+  try {
+    const dimensions = imageSize(source);
+    if (
+      dimensions.width !== entry.dimensions.width ||
+      dimensions.height !== entry.dimensions.height
+    ) {
+      blockers.push(`corpus source dimensions do not match: ${entry.id}`);
+    }
+  } catch {
+    blockers.push(`corpus source dimensions are unreadable: ${entry.id}`);
+  }
+
+  return blockers;
+};
+
 export const findCorpusFreezeBlockers = (
   manifest: CorpusManifest,
+  options: CorpusFreezeValidationOptions = {},
 ): string[] => {
   const blockers: string[] = [];
+  const sourceRoot = options.sourceRoot ?? ".";
 
   if (manifest.status !== "frozen" || manifest.frozenAt === null) {
     blockers.push(
@@ -112,6 +157,23 @@ export const findCorpusFreezeBlockers = (
   if (manifest.entries.some((entry) => entry.source.sha256 === null)) {
     blockers.push("every corpus entry must have a source checksum");
   }
+
+  const sourcePaths = manifest.entries.map((entry) => entry.source.path);
+  if (new Set(sourcePaths).size !== sourcePaths.length) {
+    blockers.push("every corpus entry must reference a unique source path");
+  }
+  const sourceChecksums = manifest.entries.flatMap((entry) =>
+    entry.source.sha256 === null ? [] : [entry.source.sha256],
+  );
+  if (new Set(sourceChecksums).size !== sourceChecksums.length) {
+    blockers.push("every corpus entry must have a unique source checksum");
+  }
+
+  blockers.push(
+    ...manifest.entries.flatMap((entry) =>
+      findSourceBlockers(entry, sourceRoot),
+    ),
+  );
 
   return blockers;
 };

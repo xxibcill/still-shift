@@ -5,6 +5,7 @@
   "type": "module",
   "exports": "./src/index.ts",
   "dependencies": {
+    "image-size": "2.0.2",
     "zod": "4.1.5"
   }
 }

@@ -1,4 +1,5 @@
 import { readFile } from "node:fs/promises";
+import { dirname, resolve } from "node:path";
 
 import {
   CorpusManifestSchema,
@@ -9,7 +10,9 @@ const manifestPath = "benchmarks/corpus-manifest.json";
 const manifest = CorpusManifestSchema.parse(
   JSON.parse(await readFile(manifestPath, "utf8")),
 );
-const blockers = findCorpusFreezeBlockers(manifest);
+const blockers = findCorpusFreezeBlockers(manifest, {
+  sourceRoot: dirname(resolve(manifestPath)),
+});
 
 if (blockers.length > 0) {
   process.stderr.write(
