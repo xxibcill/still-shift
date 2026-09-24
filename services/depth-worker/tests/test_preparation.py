@@ -79,6 +79,26 @@ class DepthPreparationTests(unittest.TestCase):
                     if name == "alpha.png":
                         self.assertEqual(normalized.getpixel((0, 0)), (255, 255, 255))
 
+    def test_png_transparency_key_is_composited_on_white(self) -> None:
+        for mode, transparent_color, visible_color, expected_visible in (
+            ("RGB", (10, 20, 30), (40, 50, 60), (40, 50, 60)),
+            ("L", 10, 120, (120, 120, 120)),
+        ):
+            with self.subTest(mode=mode):
+                image = Image.new(mode, (4, 3), transparent_color)
+                image.putpixel((1, 1), visible_color)
+                source = self.save_image(
+                    image,
+                    f"transparent-{mode}.png",
+                    transparency=transparent_color,
+                )
+
+                result = self.service().prepare(source)
+
+                with Image.open(result["assets"]["normalizedSource"]) as normalized:
+                    self.assertEqual(normalized.getpixel((0, 0)), (255, 255, 255))
+                    self.assertEqual(normalized.getpixel((1, 1)), expected_visible)
+
     def test_supported_formats_become_normalized_png(self) -> None:
         image = Image.new("RGB", (8, 6), (30, 70, 110))
         for name, expected_format in (

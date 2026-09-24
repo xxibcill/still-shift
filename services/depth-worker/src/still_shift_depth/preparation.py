@@ -171,7 +171,9 @@ def _normalize_image(source_path: Path) -> tuple[Image.Image, dict[str, Any], li
 
     warnings_list: list[str] = []
     alpha: Image.Image | None = None
-    if image.mode in {"RGBA", "LA"} or (image.mode == "P" and "transparency" in image.info):
+    if image.mode in {"RGBA", "LA"} or (
+        image.mode in {"RGB", "L", "P"} and "transparency" in image.info
+    ):
         rgba = image.convert("RGBA")
         alpha = rgba.getchannel("A")
         image = rgba.convert("RGB")
