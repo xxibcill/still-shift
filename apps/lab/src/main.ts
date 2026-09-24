@@ -300,14 +300,14 @@ const addGalleryCard = ({
 const buildGallery = async (): Promise<void> => {
   galleryButton.disabled = true;
   status.classList.remove("error");
-  gallery.replaceChildren();
-  posters.clear();
-  const posterCanvas = document.createElement("canvas");
-  posterCanvas.width = canvas.width;
-  posterCanvas.height = canvas.height;
   try {
     const intensity = intensitySelect.value as PreviewIntensity;
     const seed = selectedSeed();
+    gallery.replaceChildren();
+    posters.clear();
+    const posterCanvas = document.createElement("canvas");
+    posterCanvas.width = canvas.width;
+    posterCanvas.height = canvas.height;
     for (const [index, entry] of corpusEntries.entries()) {
       byId<HTMLElement>("gallery-note").textContent =
         "Building gallery " +

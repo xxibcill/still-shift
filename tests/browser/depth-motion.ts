@@ -287,6 +287,14 @@ try {
     },
     { preset: "cinematic_float", intensity: "strong", seed: 19 },
   );
+
+  await racePage.locator("#seed").fill("-1");
+  await racePage.locator("#build-gallery").click();
+  assert.equal(await racePage.locator(".gallery-item").count(), 6);
+  assert.match(
+    (await racePage.locator("#status").textContent()) ?? "",
+    /Motion seed must be an unsigned 32-bit integer/,
+  );
   await racePage.close();
 
   process.stdout.write(
