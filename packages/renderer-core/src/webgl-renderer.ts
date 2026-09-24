@@ -115,7 +115,7 @@ export const createWebGLPreview = (
       uCover: { value: [cover.x, cover.y] },
       uOverscan: { value: scene.motion.overscan },
       uScale: { value: 1 },
-      uDepthStrength: { value: scene.motion.depthStrength },
+      uDepthStrength: { value: 0 },
     },
   });
   const previewScene = new Scene();
@@ -127,6 +127,7 @@ export const createWebGLPreview = (
     renderFrame(frameIndex) {
       const frame = evaluateFrame(scene, frameIndex);
       material.uniforms.uScale!.value = frame.scale;
+      material.uniforms.uDepthStrength!.value = frame.depthStrength;
       renderer.render(previewScene, camera);
     },
     dispose() {

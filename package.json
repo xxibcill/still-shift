@@ -26,6 +26,7 @@
     "schema:generate": "tsx scripts/generate-corpus-schema.ts",
     "still-shift": "tsx tools/still-shift-cli/src/cli.ts",
     "test": "pnpm test:unit && pnpm test:integration && pnpm test:depth",
+    "test:browser:depth": "tsx tests/browser/depth-motion.ts",
     "test:depth": "uv run --no-sync python -m unittest discover -s services/depth-worker/tests -p 'test_*.py'",
     "test:integration": "vitest run tests/integration",
     "test:unit": "vitest run tests/unit",

@@ -29,11 +29,13 @@ describe("v0.3 slow_push", () => {
       timeSeconds: 0,
       progress: 0,
       scale: 1,
+      depthStrength: 0,
     });
     expect(evaluateFrame(first, 149)).toMatchObject({
       timeSeconds: 149 / 30,
       progress: 1,
       scale: 1.025,
+      depthStrength: 0.025,
     });
     expect(evaluateFrame(first, 75)).toEqual(evaluateFrame(second, 75));
   });

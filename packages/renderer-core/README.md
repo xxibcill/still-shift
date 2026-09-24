@@ -10,6 +10,8 @@ The subtle preset defaults to 2.5% push and 2.5% depth strength with 10% oversca
 Hard limits cap push and depth strength at 3.5% each. Cover fit handles differing
 source and canvas aspect ratios. Input and timeline validation rejects mismatched
 depth assets, non-finite parameters, and durations that do not map to whole frames.
+Both push and depth displacement progress from zero at frame 0 to their resolved
+strength at the final frame, so different depths move by different amounts.
 
 This is a preview renderer. It does not create MP4 output or perform v0.5 risk
 analysis and fallback.

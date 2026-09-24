@@ -197,6 +197,6 @@ export const evaluateFrame = (
     progress: eased,
     scale: 1 + cameraTravel,
     cameraTravel,
-    depthStrength: scene.motion.depthStrength,
+    depthStrength: scene.motion.depthStrength * eased,
   };
 };
