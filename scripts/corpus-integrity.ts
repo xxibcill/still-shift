@@ -5,6 +5,7 @@ import { resolve } from "node:path";
 import {
   findCorpusFreezeBlockers,
   type CorpusEntry,
+  type CorpusFreezeBlocker,
   type CorpusManifest,
 } from "@still-shift/scene-contract";
 import { imageSize } from "image-size";
@@ -19,17 +20,27 @@ const sha256 = (source: Uint8Array): string =>
 const findSourceBlockers = (
   entry: CorpusEntry,
   sourceRoot: string,
-): string[] => {
+): CorpusFreezeBlocker[] => {
   let source: Buffer;
   try {
     source = readFileSync(resolve(sourceRoot, entry.source.path));
   } catch {
-    return [`corpus source is unreadable: ${entry.id}`];
+    return [
+      {
+        code: "SOURCE_UNREADABLE",
+        message: `corpus source is unreadable: ${entry.id}`,
+        entryId: entry.id,
+      },
+    ];
   }
 
-  const blockers: string[] = [];
+  const blockers: CorpusFreezeBlocker[] = [];
   if (entry.source.sha256 !== null && sha256(source) !== entry.source.sha256) {
-    blockers.push(`corpus source checksum does not match: ${entry.id}`);
+    blockers.push({
+      code: "SOURCE_CHECKSUM_MISMATCH",
+      message: `corpus source checksum does not match: ${entry.id}`,
+      entryId: entry.id,
+    });
   }
 
   try {
@@ -38,10 +49,18 @@ const findSourceBlockers = (
       dimensions.width !== entry.dimensions.width ||
       dimensions.height !== entry.dimensions.height
     ) {
-      blockers.push(`corpus source dimensions do not match: ${entry.id}`);
+      blockers.push({
+        code: "SOURCE_DIMENSIONS_MISMATCH",
+        message: `corpus source dimensions do not match: ${entry.id}`,
+        entryId: entry.id,
+      });
     }
   } catch {
-    blockers.push(`corpus source dimensions are unreadable: ${entry.id}`);
+    blockers.push({
+      code: "SOURCE_DIMENSIONS_UNREADABLE",
+      message: `corpus source dimensions are unreadable: ${entry.id}`,
+      entryId: entry.id,
+    });
   }
 
   return blockers;
@@ -50,7 +69,7 @@ const findSourceBlockers = (
 export const findCorpusIntegrityBlockers = (
   manifest: CorpusManifest,
   options: CorpusIntegrityOptions = {},
-): string[] => {
+): CorpusFreezeBlocker[] => {
   const sourceRoot = options.sourceRoot ?? ".";
 
   return [

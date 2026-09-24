@@ -15,7 +15,7 @@ const blockers = findCorpusIntegrityBlockers(manifest, {
 
 if (blockers.length > 0) {
   process.stderr.write(
-    `${manifestPath} is not ready to freeze:\n${blockers.map((blocker) => `- ${blocker}`).join("\n")}\n`,
+    `${manifestPath} is not ready to freeze:\n${blockers.map((blocker) => `- ${blocker.message}`).join("\n")}\n`,
   );
   process.exitCode = 1;
 } else {

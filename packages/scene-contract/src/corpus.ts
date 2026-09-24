@@ -100,23 +100,49 @@ export type CorpusManifest = z.infer<typeof CorpusManifestSchema>;
 export type CorpusEntry = z.infer<typeof CorpusEntrySchema>;
 export type CorpusCategory = z.infer<typeof CorpusCategorySchema>;
 
+export type CorpusFreezeBlockerCode =
+  | "MANIFEST_NOT_FROZEN"
+  | "CORPUS_TOO_SMALL"
+  | "OUTSTANDING_REQUIREMENTS"
+  | "CATEGORY_NOT_REPRESENTED"
+  | "RIGHTS_NOT_REVIEWED"
+  | "SOURCE_CHECKSUM_MISSING"
+  | "SOURCE_PATH_DUPLICATE"
+  | "SOURCE_CHECKSUM_DUPLICATE"
+  | "SOURCE_UNREADABLE"
+  | "SOURCE_CHECKSUM_MISMATCH"
+  | "SOURCE_DIMENSIONS_MISMATCH"
+  | "SOURCE_DIMENSIONS_UNREADABLE";
+
+export type CorpusFreezeBlocker = {
+  code: CorpusFreezeBlockerCode;
+  message: string;
+  entryId?: string;
+  category?: CorpusCategory;
+};
+
 export const findCorpusFreezeBlockers = (
   manifest: CorpusManifest,
-): string[] => {
-  const blockers: string[] = [];
+): CorpusFreezeBlocker[] => {
+  const blockers: CorpusFreezeBlocker[] = [];
 
   if (manifest.status !== "frozen" || manifest.frozenAt === null) {
-    blockers.push(
-      "manifest status and frozenAt must record a completed freeze",
-    );
+    blockers.push({
+      code: "MANIFEST_NOT_FROZEN",
+      message: "manifest status and frozenAt must record a completed freeze",
+    });
   }
   if (manifest.entries.length < CORPUS_MINIMUM_SIZE) {
-    blockers.push(
-      `corpus requires at least ${CORPUS_MINIMUM_SIZE} real images`,
-    );
+    blockers.push({
+      code: "CORPUS_TOO_SMALL",
+      message: `corpus requires at least ${CORPUS_MINIMUM_SIZE} real images`,
+    });
   }
   if (manifest.outstandingRequirements.length > 0) {
-    blockers.push("outstanding corpus requirements must be resolved");
+    blockers.push({
+      code: "OUTSTANDING_REQUIREMENTS",
+      message: "outstanding corpus requirements must be resolved",
+    });
   }
 
   const coveredCategories = new Set(
@@ -124,25 +150,45 @@ export const findCorpusFreezeBlockers = (
   );
   for (const category of REQUIRED_CORPUS_CATEGORIES) {
     if (!coveredCategories.has(category)) {
-      blockers.push(`corpus category is not represented: ${category}`);
+      blockers.push({
+        code: "CATEGORY_NOT_REPRESENTED",
+        message: `corpus category is not represented: ${category}`,
+        category,
+      });
     }
   }
-  if (manifest.entries.some((entry) => entry.rights.status === "unknown")) {
-    blockers.push("every corpus entry must have reviewed rights");
-  }
-  if (manifest.entries.some((entry) => entry.source.sha256 === null)) {
-    blockers.push("every corpus entry must have a source checksum");
+  for (const entry of manifest.entries) {
+    if (entry.rights.status === "unknown") {
+      blockers.push({
+        code: "RIGHTS_NOT_REVIEWED",
+        message: `corpus entry must have reviewed rights: ${entry.id}`,
+        entryId: entry.id,
+      });
+    }
+    if (entry.source.sha256 === null) {
+      blockers.push({
+        code: "SOURCE_CHECKSUM_MISSING",
+        message: `corpus entry must have a source checksum: ${entry.id}`,
+        entryId: entry.id,
+      });
+    }
   }
 
   const sourcePaths = manifest.entries.map((entry) => entry.source.path);
   if (new Set(sourcePaths).size !== sourcePaths.length) {
-    blockers.push("every corpus entry must reference a unique source path");
+    blockers.push({
+      code: "SOURCE_PATH_DUPLICATE",
+      message: "every corpus entry must reference a unique source path",
+    });
   }
   const sourceChecksums = manifest.entries.flatMap((entry) =>
     entry.source.sha256 === null ? [] : [entry.source.sha256],
   );
   if (new Set(sourceChecksums).size !== sourceChecksums.length) {
-    blockers.push("every corpus entry must have a unique source checksum");
+    blockers.push({
+      code: "SOURCE_CHECKSUM_DUPLICATE",
+      message: "every corpus entry must have a unique source checksum",
+    });
   }
 
   return blockers;

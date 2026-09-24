@@ -14,6 +14,10 @@ import { findCorpusIntegrityBlockers } from "../../scripts/corpus-integrity.ts";
 const readJson = async (path: string): Promise<unknown> =>
   JSON.parse(await readFile(path, "utf8"));
 
+const blockerMessages = (
+  blockers: ReturnType<typeof findCorpusIntegrityBlockers>,
+): string[] => blockers.map((blocker) => blocker.message);
+
 const temporaryDirectories: string[] = [];
 const onePixelPng = Buffer.from(
   "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAusB9Wl2nH0AAAAASUVORK5CYII=",
@@ -84,7 +88,7 @@ describe("corpus manifest", () => {
 
     expect(manifest.status).toBe("incomplete");
     expect(manifest.entries).toHaveLength(0);
-    expect(findCorpusIntegrityBlockers(manifest)).toContain(
+    expect(blockerMessages(findCorpusIntegrityBlockers(manifest))).toContain(
       "corpus requires at least 30 real images",
     );
   });
@@ -115,7 +119,11 @@ describe("corpus manifest", () => {
     const manifest = createFrozenManifest();
 
     expect(
-      findCorpusIntegrityBlockers(manifest, { sourceRoot: "/does-not-exist" }),
+      blockerMessages(
+        findCorpusIntegrityBlockers(manifest, {
+          sourceRoot: "/does-not-exist",
+        }),
+      ),
     ).toContain("corpus source is unreadable: missing-0");
   });
 
@@ -134,11 +142,17 @@ describe("corpus manifest", () => {
 
     const blockers = findCorpusIntegrityBlockers(manifest, { sourceRoot });
 
-    expect(blockers).toContain(
-      "corpus source checksum does not match: missing-0",
-    );
-    expect(blockers).toContain(
-      "corpus source dimensions do not match: missing-0",
+    expect(blockers).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          code: "SOURCE_CHECKSUM_MISMATCH",
+          entryId: "missing-0",
+        }),
+        expect.objectContaining({
+          code: "SOURCE_DIMENSIONS_MISMATCH",
+          entryId: "missing-0",
+        }),
+      ]),
     );
   });
 
@@ -159,7 +173,7 @@ describe("corpus manifest", () => {
 
     const sourceBlockers = findCorpusIntegrityBlockers(manifest, {
       sourceRoot,
-    }).filter((blocker) => blocker.endsWith(": missing-0"));
+    }).filter((blocker) => blocker.entryId === "missing-0");
 
     expect(sourceBlockers).toEqual([]);
   });
