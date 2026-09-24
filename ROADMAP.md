@@ -94,7 +94,7 @@ Stop if the corpus does not resemble the images produced by the real explainer w
 
 **Target:** Days 2–3  
 **Depends on:** v0.1  
-**Release outcome:** The engine prepares and caches validated depth assets without rendering animation yet.
+**Release outcome:** The depth worker prepares and caches validated depth assets without rendering animation yet. The animation-engine integration follows in v0.8.
 
 ### Tasks
 
