@@ -129,6 +129,27 @@ class DepthPreparationTests(unittest.TestCase):
         }
         self.assertEqual(len(cache_keys), 3)
 
+    def test_depth_parameters_validate_and_change_cache_identity(self) -> None:
+        source = self.save_image(Image.new("RGB", (12, 9), "green"), "source.png")
+        baseline = self.service().prepare(source)
+        changed = preparation.DepthPreparationService(
+            adapter=FakeDepthAdapter(),
+            cache_dir=self.root / "cache",
+            parameters=preparation.DepthParameters(lower_percentile=5.0),
+        ).prepare(source)
+        self.assertEqual(changed["cacheStatus"], "miss")
+        self.assertNotEqual(changed["cacheKey"], baseline["cacheKey"])
+
+        for options in (
+            {"lower_percentile": float("nan")},
+            {"lower_percentile": 99.0, "upper_percentile": 98.0},
+            {"bilateral_diameter": 4},
+            {"bilateral_sigma_color": 0.0},
+        ):
+            with self.subTest(options=options):
+                with self.assertRaises(ValueError):
+                    preparation.DepthParameters(**options)
+
     def test_bad_inputs_have_stable_failure_codes(self) -> None:
         invalid_bytes = self.root / "corrupt.png"
         invalid_bytes.write_bytes(b"not an image")

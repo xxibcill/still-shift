@@ -6,15 +6,18 @@ import fcntl
 import hashlib
 import importlib.metadata
 import json
+import math
 import os
 import platform
 import resource
 import tempfile
 import time
 import warnings
+from collections.abc import Iterator
 from contextlib import contextmanager
+from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Iterator
+from typing import Any
 
 import cv2
 import numpy as np
@@ -36,13 +39,41 @@ DEPTH_POSTPROCESSING_VERSION = "percentile-bilateral-0.2.0"
 MAX_IMAGE_EDGE = 2048
 MAX_IMAGE_PIXELS = 80_000_000
 SUPPORTED_FORMATS = {"JPEG", "PNG", "WEBP"}
-DEFAULT_DEPTH_PARAMETERS: dict[str, float | int] = {
-    "lowerPercentile": 2.0,
-    "upperPercentile": 98.0,
-    "bilateralDiameter": 5,
-    "bilateralSigmaColor": 0.08,
-    "bilateralSigmaSpace": 3.0,
-}
+
+
+@dataclass(frozen=True)
+class DepthParameters:
+    lower_percentile: float = 2.0
+    upper_percentile: float = 98.0
+    bilateral_diameter: int = 5
+    bilateral_sigma_color: float = 0.08
+    bilateral_sigma_space: float = 3.0
+
+    def __post_init__(self) -> None:
+        if not (
+            math.isfinite(self.lower_percentile)
+            and math.isfinite(self.upper_percentile)
+            and 0 <= self.lower_percentile < self.upper_percentile <= 100
+        ):
+            raise ValueError("Depth percentiles must satisfy 0 <= lower < upper <= 100")
+        if self.bilateral_diameter <= 0 or self.bilateral_diameter % 2 == 0:
+            raise ValueError("Bilateral filter diameter must be a positive odd integer")
+        for name in ("bilateral_sigma_color", "bilateral_sigma_space"):
+            value = getattr(self, name)
+            if not math.isfinite(value) or value <= 0:
+                raise ValueError(f"{name} must be a positive finite number")
+
+    def as_dict(self) -> dict[str, float | int]:
+        return {
+            "lowerPercentile": self.lower_percentile,
+            "upperPercentile": self.upper_percentile,
+            "bilateralDiameter": self.bilateral_diameter,
+            "bilateralSigmaColor": self.bilateral_sigma_color,
+            "bilateralSigmaSpace": self.bilateral_sigma_space,
+        }
+
+
+DEFAULT_DEPTH_PARAMETERS = DepthParameters()
 
 
 class PreparationError(Exception):
@@ -197,7 +228,7 @@ def _normalized_source_hash(image: Image.Image) -> str:
 def _cache_key(
     source_hash: str,
     identity: ModelIdentity,
-    parameters: dict[str, Any],
+    parameters: DepthParameters,
     device: str,
     runtime: dict[str, str],
 ) -> tuple[str, dict[str, Any]]:
@@ -212,7 +243,7 @@ def _cache_key(
             "weightsSha256": identity.weights_sha256,
             "license": identity.license,
         },
-        "parameters": parameters,
+        "parameters": parameters.as_dict(),
         "device": device,
         "runtime": runtime,
     }
@@ -240,10 +271,10 @@ def _validate_depth(depth: np.ndarray, width: int, height: int) -> np.ndarray:
 
 def _make_preview(
     depth: np.ndarray,
-    parameters: dict[str, Any],
+    parameters: DepthParameters,
 ) -> tuple[np.ndarray, dict[str, float]]:
-    lower = float(np.percentile(depth, float(parameters["lowerPercentile"])))
-    upper = float(np.percentile(depth, float(parameters["upperPercentile"])))
+    lower = float(np.percentile(depth, parameters.lower_percentile))
+    upper = float(np.percentile(depth, parameters.upper_percentile))
     spread = upper - lower
     if not np.isfinite(spread) or spread <= 1e-6:
         raise PreparationError(
@@ -258,9 +289,9 @@ def _make_preview(
     cv2.setNumThreads(1)
     smoothed = cv2.bilateralFilter(
         normalized,
-        d=int(parameters["bilateralDiameter"]),
-        sigmaColor=float(parameters["bilateralSigmaColor"]),
-        sigmaSpace=float(parameters["bilateralSigmaSpace"]),
+        d=parameters.bilateral_diameter,
+        sigmaColor=parameters.bilateral_sigma_color,
+        sigmaSpace=parameters.bilateral_sigma_space,
     )
     preview = np.rint(np.clip(smoothed, 0.0, 1.0) * 255.0).astype(np.uint8)
     return preview, {"lower": lower, "upper": upper}
@@ -339,27 +370,12 @@ class DepthPreparationService:
         adapter: DepthEstimator | None = None,
         cache_dir: Path | str | None = None,
         device: str = "auto",
-        parameters: dict[str, Any] | None = None,
+        parameters: DepthParameters | None = None,
     ) -> None:
         self.adapter = adapter or DepthAnythingV2SmallAdapter()
         self.cache_dir = Path(cache_dir).expanduser() if cache_dir else _default_cache_dir()
         self.requested_device = device
-        self.parameters = {**DEFAULT_DEPTH_PARAMETERS, **(parameters or {})}
-        if (
-            not 0
-            <= float(self.parameters["lowerPercentile"])
-            < float(self.parameters["upperPercentile"])
-            <= 100
-        ):
-            raise ValueError("Depth percentiles must satisfy 0 <= lower < upper <= 100")
-        if int(self.parameters["bilateralDiameter"]) <= 0:
-            raise ValueError("Bilateral filter diameter must be positive")
-        if int(self.parameters["bilateralDiameter"]) % 2 == 0:
-            raise ValueError("Bilateral filter diameter must be odd")
-        for name in ("bilateralSigmaColor", "bilateralSigmaSpace"):
-            value = float(self.parameters[name])
-            if not np.isfinite(value) or value <= 0:
-                raise ValueError(f"{name} must be a positive finite number")
+        self.parameters = parameters or DEFAULT_DEPTH_PARAMETERS
 
     def prepare(self, source_path: Path | str) -> dict[str, Any]:
         started = time.perf_counter()
@@ -508,15 +524,15 @@ class DepthPreparationService:
                     },
                     "runtime": runtime,
                     "parameters": {
-                        **self.parameters,
+                        **self.parameters.as_dict(),
                         "device": selected_device,
                         "rawDepthDType": "float32-little-endian",
                         "normalization": "percentile-linear-near-is-high",
                         "smoothing": "opencv-bilateral-filter",
                     },
                     "depthNormalization": {
-                        "lowerPercentile": float(self.parameters["lowerPercentile"]),
-                        "upperPercentile": float(self.parameters["upperPercentile"]),
+                        "lowerPercentile": self.parameters.lower_percentile,
+                        "upperPercentile": self.parameters.upper_percentile,
                         "lowerValue": percentiles["lower"],
                         "upperValue": percentiles["upper"],
                         "previewRange": [0, 255],

@@ -13,6 +13,7 @@ from PIL import Image, ImageDraw, ImageFont
 
 from . import __version__
 from .preparation import (
+    DepthParameters,
     DepthPreparationService,
     PreparationError,
     create_adapter,
@@ -41,13 +42,13 @@ def _service(arguments: argparse.Namespace) -> DepthPreparationService:
         adapter=create_adapter(arguments.adapter),
         cache_dir=arguments.cache_dir,
         device=arguments.device,
-        parameters={
-            "lowerPercentile": arguments.lower_percentile,
-            "upperPercentile": arguments.upper_percentile,
-            "bilateralDiameter": arguments.bilateral_diameter,
-            "bilateralSigmaColor": arguments.bilateral_sigma_color,
-            "bilateralSigmaSpace": arguments.bilateral_sigma_space,
-        },
+        parameters=DepthParameters(
+            lower_percentile=arguments.lower_percentile,
+            upper_percentile=arguments.upper_percentile,
+            bilateral_diameter=arguments.bilateral_diameter,
+            bilateral_sigma_color=arguments.bilateral_sigma_color,
+            bilateral_sigma_space=arguments.bilateral_sigma_space,
+        ),
     )
 
 
@@ -100,7 +101,8 @@ def _make_contact_sheet(items: list[dict[str, Any]], corpus_status: str) -> Imag
         )
         draw.multiline_text(
             (margin + 24, margin + title_height + 28),
-            "No corpus images are listed yet.\nAdd and freeze the real explainer corpus, then rerun depth:contact-sheet.",
+            "No corpus images are listed yet.\n"
+            "Add and freeze the real explainer corpus, then rerun depth:contact-sheet.",
             fill="#f3f4f6",
             font=font,
             spacing=10,
