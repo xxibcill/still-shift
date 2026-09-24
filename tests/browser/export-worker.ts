@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { createHash } from "node:crypto";
 import { mkdtemp, readFile, readdir, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
@@ -71,6 +72,12 @@ try {
     assert.ok(first.peakSampledProcessTreeRssBytes > first.peakParentRssBytes);
   }
   assert.equal((await readFile(firstPath)).length, first.outputBytes);
+  assert.equal(
+    first.outputChecksum,
+    `sha256:${createHash("sha256")
+      .update(await readFile(firstPath))
+      .digest("hex")}`,
+  );
 
   const second = await exportScene({
     scene,

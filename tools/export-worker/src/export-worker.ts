@@ -5,7 +5,7 @@ import type { IncomingMessage, ServerResponse } from "node:http";
 import { availableParallelism, cpus } from "node:os";
 import { basename, dirname, extname, resolve } from "node:path";
 import { performance } from "node:perf_hooks";
-import { randomUUID } from "node:crypto";
+import { createHash, randomUUID } from "node:crypto";
 import { promisify } from "node:util";
 
 import { chromium, type Browser } from "playwright";
@@ -41,6 +41,7 @@ export type ExportMetrics = {
   validationWallMs: number;
   totalWallMs: number;
   outputBytes: number;
+  outputChecksum: string;
   peakParentRssBytes: number;
   peakSampledProcessTreeRssBytes: number | null;
   cpuModel: string;
@@ -117,6 +118,12 @@ const ffmpegCpuTimeMs = (output: string): number => {
   );
   if (!benchmark) throw new Error("FFmpeg did not report CPU time");
   return (Number(benchmark[1]) + Number(benchmark[2])) * 1000;
+};
+
+const fileChecksum = async (path: string): Promise<string> => {
+  const hash = createHash("sha256");
+  for await (const chunk of createReadStream(path)) hash.update(chunk);
+  return `sha256:${hash.digest("hex")}`;
 };
 
 export const processTreeRssBytes = (
@@ -434,6 +441,7 @@ export const exportScene = async (
     await verifyOutput(temporaryPath, scene);
     const validationWallMs = performance.now() - validationStart;
     const outputBytes = (await stat(temporaryPath)).size;
+    const outputChecksum = await fileChecksum(temporaryPath);
     const metrics: ExportMetrics = {
       version: EXPORT_WORKER_VERSION,
       frameCount: scene.timeline.frameCount,
@@ -449,6 +457,7 @@ export const exportScene = async (
       validationWallMs,
       totalWallMs: performance.now() - start,
       outputBytes,
+      outputChecksum,
       peakParentRssBytes,
       peakSampledProcessTreeRssBytes,
       cpuModel: cpus()[0]?.model ?? "unknown",
