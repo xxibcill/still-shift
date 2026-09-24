@@ -41,4 +41,6 @@ pnpm still-shift batch \
 
 The batch keeps going after an individual item fails. Exit code 0 means all items rendered or produced valid 2D fallbacks; 1 means at least one item failed; 2 means invalid command options. For a partial failure, fix the source or manifest and rerun the same command. Completed items are reused only when their request, source, scene, and MP4 hashes match the checkpoint. A changed request or damaged artifact is reported as an item failure to avoid silently overwriting earlier work. To intentionally rerender one ID, move its MP4, scene manifest, and checkpoint out of the output directory before retrying. Concurrent batch commands targeting one output directory are rejected.
 
+The v0.10 WebGL path uses a 95%-quality in-memory JPEG frame pipe for export. `STILL_SHIFT_FRAME_TRANSPORT=png_pipe` selects the lossless PNG reference path. The transport is recorded in the scene manifest and result metrics and included in batch checkpoint identity. `batch-runs.jsonl` preserves each run summary so a fast retry does not replace the full-render wall-time measurement.
+
 `pnpm test:browser:batch` verifies mixed success/failure, bounded execution, retry identity, and artifact tamper detection.

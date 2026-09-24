@@ -1,6 +1,6 @@
 # Still Shift — Phase 0 Roadmap
 
-**Status:** v0.3–v0.9 implemented; frozen-corpus and human review pending; v0.10 in progress
+**Status:** v0.3–v0.10 implementation complete; frozen-corpus approval and human decision gates pending
 
 **Updated:** 2026-09-24  
 **Target:** 10 working days  
@@ -30,18 +30,18 @@ When work begins, update the roadmap date, mark exactly one version as in progre
 
 ## Progress
 
-| Version | Deliverable                              |    Target | Status | Completion evidence                                                                                       |
-| ------- | ---------------------------------------- | --------: | ------ | --------------------------------------------------------------------------------------------------------- |
-| v0.1    | Foundation, contracts, and frozen corpus |     Day 1 | `[!]`  | [Foundation checks pass; real corpus freeze remains blocked](./docs/v0.1-verification.md)                 |
-| v0.2    | Reusable depth preparation               |  Days 2–3 | `[!]`  | [Depth worker merged; frozen-corpus review pending](./docs/v0.2-depth-preparation.md)                     |
-| v0.3    | First animated preview                   |     Day 3 | `[!]`  | [Preview implemented; corpus-wide review pending](./docs/v0.3-first-preview.md)                           |
-| v0.4    | Preset library and lab UI                |  Days 4–5 | `[!]`  | [Three presets implemented; frozen-corpus review pending](./docs/v0.4-preset-library.md)                  |
-| v0.5    | Safety analysis and 2D fallback          |     Day 6 | `[!]`  | [Safety implemented; frozen-corpus review pending](./docs/v0.5-safety-fallback.md)                        |
-| v0.6    | Deterministic MP4 export                 |     Day 7 | `[!]`  | [1080p export passes; representative throughput gate pending](./docs/v0.6-mp4-export.md)                  |
-| v0.7    | Preview/export parity and golden tests   |     Day 7 | `[!]`  | [Five golden scenes pass; frozen-corpus review pending](./docs/v0.7-preview-export-parity.md)             |
-| v0.8    | Single-image CLI integration             |     Day 8 | `[!]`  | [Real CLI and workflow candidate verified; frozen-corpus review pending](./docs/v0.8-single-image-cli.md) |
-| v0.9    | Unattended batch execution               |     Day 8 | `[!]`  | [50-item technical batch passes; frozen-corpus gate pending](./docs/v0.9-unattended-batch.md)             |
-| v0.10   | Evaluation release and Phase 1 decision  | Days 9–10 | `[~]`  | Gallery, assembled explainer, and gate report                                                             |
+| Version | Deliverable                              |    Target | Status | Completion evidence                                                                                                    |
+| ------- | ---------------------------------------- | --------: | ------ | ---------------------------------------------------------------------------------------------------------------------- |
+| v0.1    | Foundation, contracts, and frozen corpus |     Day 1 | `[!]`  | [Foundation checks pass; real corpus freeze remains blocked](./docs/v0.1-verification.md)                              |
+| v0.2    | Reusable depth preparation               |  Days 2–3 | `[!]`  | [Depth worker merged; frozen-corpus review pending](./docs/v0.2-depth-preparation.md)                                  |
+| v0.3    | First animated preview                   |     Day 3 | `[!]`  | [Preview implemented; corpus-wide review pending](./docs/v0.3-first-preview.md)                                        |
+| v0.4    | Preset library and lab UI                |  Days 4–5 | `[!]`  | [Three presets implemented; frozen-corpus review pending](./docs/v0.4-preset-library.md)                               |
+| v0.5    | Safety analysis and 2D fallback          |     Day 6 | `[!]`  | [Safety implemented; frozen-corpus review pending](./docs/v0.5-safety-fallback.md)                                     |
+| v0.6    | Deterministic MP4 export                 |     Day 7 | `[!]`  | [1080p export passes; representative throughput gate pending](./docs/v0.6-mp4-export.md)                               |
+| v0.7    | Preview/export parity and golden tests   |     Day 7 | `[!]`  | [Five golden scenes pass; frozen-corpus review pending](./docs/v0.7-preview-export-parity.md)                          |
+| v0.8    | Single-image CLI integration             |     Day 8 | `[!]`  | [Real CLI and workflow candidate verified; frozen-corpus review pending](./docs/v0.8-single-image-cli.md)              |
+| v0.9    | Unattended batch execution               |     Day 8 | `[!]`  | [50-item technical batch passes; frozen-corpus gate pending](./docs/v0.9-unattended-batch.md)                          |
+| v0.10   | Evaluation release and Phase 1 decision  | Days 9–10 | `[!]`  | [Candidate gallery, 7.97-minute assembly, and gate report; human decision pending](./docs/v0.10-evaluation-release.md) |
 
 ## Critical path
 
@@ -328,40 +328,40 @@ If headless Chromium cannot approach the throughput target on the intended hardw
 
 ### Tasks
 
-- [ ] Render every corpus image through all three presets at standard intensity.
-- [ ] Generate the static evaluation gallery.
-- [ ] Show input, depth, clip, parameters, warnings, and performance metrics together.
-- [ ] Rate edge artifacts, subject deformation, borders, depth order, motion fit, and editorial usability.
-- [ ] Assemble one real 5–10 minute explainer from Phase 0 clips.
-- [ ] Record human editing time and manual-repair count.
-- [ ] Calculate preparation, rendering, and estimated infrastructure cost per finished minute.
-- [ ] Compare against static images, Ken Burns animation, and the selected generative-video baseline.
-- [ ] Evaluate motion repetition in the assembled video, not just individual clips.
-- [ ] Write the final gate report.
-- [ ] Record the go, conditional-go, or no-go decision.
+- [!] Render the 43-image private candidate through all three presets at standard intensity (129/129 valid); frozen-corpus rerun awaits approval.
+- [x] Generate the static evaluation gallery.
+- [x] Show input, depth, clip, parameters, warnings, and performance metrics together.
+- [!] Collect human ratings for edge artifacts, subject deformation, borders, depth order, motion fit, and editorial usability.
+- [x] Assemble a 478.125-second narrated explainer from 28 Phase 0 sources.
+- [!] Record human editing time and manual-repair count after review.
+- [x] Calculate archived preparation time, render time, and an explicitly hypothetical infrastructure-cost scenario per finished minute; selected worker pricing remains pending.
+- [!] Render static and Ken Burns baselines; an illustrative public generative-video price is documented, but the selected workflow and visual baseline remain pending.
+- [!] Evaluate motion repetition in the assembled video during human review.
+- [x] Write the candidate gate report with measured and pending gates.
+- [!] Record the go, conditional-go, or no-go decision after frozen-corpus review.
 
 ### Completion evidence
 
-- [ ] Benchmark results are reproducible from documented commands.
-- [ ] The assembled explainer is available for review.
-- [ ] Every exit gate has a measured result and evidence link.
-- [ ] The next-phase decision and rationale are written down.
-- [ ] The v0.10 release records exact engine, model, renderer, browser, and FFmpeg versions.
-- [ ] The v0.9 batch path reproduces the published benchmark from documented commands.
+- [x] Benchmark results are reproducible from documented commands.
+- [x] The private assembled explainer is available for review.
+- [!] Human and selected-cost exit gates remain unmeasured.
+- [!] The next-phase decision and rationale await human review.
+- [x] The v0.10 report records exact engine, model, renderer, browser, and FFmpeg versions.
+- [x] The v0.9 batch path reproduces the published candidate benchmark from documented commands.
 
 ## Final exit gates
 
-| Gate                     | Required result                                                 | Actual | Evidence |
-| ------------------------ | --------------------------------------------------------------- | ------ | -------- |
-| Automatic usability      | ≥80% accepted without manual repair                             | —      | —        |
-| Severe artifacts         | <5% with obvious severe defects                                 | —      | —        |
-| Batch completion         | ≥98% rendered or valid fallback                                 | —      | —        |
-| Determinism              | Exact timing, framing, parameters, and frame count              | —      | —        |
-| Duration accuracy        | Within one frame                                                | —      | —        |
-| Preview/export agreement | No material crop, direction, or timing difference               | —      | —        |
-| Export throughput        | Target ≥1× real time at 1080p/30                                | —      | —        |
-| Cost reduction           | ≥70% below selected generative-video baseline                   | —      | —        |
-| Editorial result         | 5–10 minute explainer does not feel like a repetitive slideshow | —      | —        |
+| Gate                     | Required result                                                 | Actual                                                | Evidence                                                       |
+| ------------------------ | --------------------------------------------------------------- | ----------------------------------------------------- | -------------------------------------------------------------- |
+| Automatic usability      | ≥80% accepted without manual repair                             | Human ratings pending                                 | [v0.10 candidate evidence](./docs/v0.10-evaluation-release.md) |
+| Severe artifacts         | <5% with obvious severe defects                                 | Human ratings pending                                 | [v0.10 candidate evidence](./docs/v0.10-evaluation-release.md) |
+| Batch completion         | ≥98% rendered or valid fallback                                 | 129/129 candidate clips (100%)                        | [v0.10 candidate evidence](./docs/v0.10-evaluation-release.md) |
+| Determinism              | Exact timing, framing, parameters, and frame count              | 129/129 hash-verified retries                         | [v0.10 candidate evidence](./docs/v0.10-evaluation-release.md) |
+| Duration accuracy        | Within one frame                                                | 129 exact-frame exports                               | [v0.10 candidate evidence](./docs/v0.10-evaluation-release.md) |
+| Preview/export agreement | No material crop, direction, or timing difference               | Five golden scenes pass; candidate review pending     | [v0.7 parity evidence](./docs/v0.7-preview-export-parity.md)   |
+| Export throughput        | Target ≥1× real time at 1080p/30                                | 1.24× aggregate on candidate worker                   | [v0.10 candidate evidence](./docs/v0.10-evaluation-release.md) |
+| Cost reduction           | ≥70% below selected generative-video baseline                   | $0.071/min hypothetical worker scenario; gate pending | [v0.10 candidate evidence](./docs/v0.10-evaluation-release.md) |
+| Editorial result         | 5–10 minute explainer does not feel like a repetitive slideshow | 7.97-minute assembly ready; human review pending      | [v0.10 candidate evidence](./docs/v0.10-evaluation-release.md) |
 
 ## Decision outcomes
 

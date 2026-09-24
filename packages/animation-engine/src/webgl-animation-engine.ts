@@ -31,7 +31,15 @@ import type { AnimationEngine } from "./animation-engine.ts";
 
 const execFileAsync = promisify(execFile);
 const projectRoot = resolve(import.meta.dirname, "../../..");
-const PIPELINE_VERSION = "animation-pipeline-0.8.0";
+const PIPELINE_VERSION = "animation-pipeline-0.10.0";
+export const resolveFrameTransport = (): "png_pipe" | "jpeg_pipe" => {
+  const value = process.env.STILL_SHIFT_FRAME_TRANSPORT ?? "jpeg_pipe";
+  if (value !== "png_pipe" && value !== "jpeg_pipe")
+    throw new AnimationEngineError("SCENE_INVALID", "Unknown frame transport", {
+      value,
+    });
+  return value;
+};
 
 type Dimensions = { width: number; height: number };
 type WorkerMetrics = {
@@ -301,6 +309,7 @@ export class WebGLAnimationEngine implements AnimationEngine {
   ): Promise<AnimationResult> {
     const started = performance.now();
     const request = parseAnimationRequest(unvalidatedRequest);
+    const frameTransport = resolveFrameTransport();
     if (!request.outputPath.toLowerCase().endsWith(".mp4"))
       throw new AnimationEngineError(
         "SCENE_INVALID",
@@ -394,7 +403,7 @@ export class WebGLAnimationEngine implements AnimationEngine {
         warnings,
       },
       renderScene: scene,
-      execution: { adapter: "webgl", producesVideo: true },
+      execution: { adapter: "webgl", producesVideo: true, frameTransport },
     });
     const serializedScene = `${JSON.stringify(manifest, null, 2)}\n`;
     const sceneHash = sha256(serializedScene);
@@ -406,6 +415,7 @@ export class WebGLAnimationEngine implements AnimationEngine {
         depthPath:
           scene.motion.mode === "fallback_2d" ? null : prepared.depthPath,
         outputPath,
+        transport: frameTransport,
       });
     } catch (cause) {
       throw new AnimationEngineError(
@@ -434,6 +444,7 @@ export class WebGLAnimationEngine implements AnimationEngine {
         warnings,
         metrics: {
           adapter: "webgl",
+          frameTransport,
           cacheStatus: prepared.cacheStatus,
           inputWidth: prepared.dimensions.input.width,
           inputHeight: prepared.dimensions.input.height,

@@ -3,7 +3,10 @@ import { readFile, mkdir, open, rename, rm, writeFile } from "node:fs/promises";
 import { dirname, join, resolve } from "node:path";
 import { performance } from "node:perf_hooks";
 
-import { WebGLAnimationEngine } from "@still-shift/animation-engine";
+import {
+  resolveFrameTransport,
+  WebGLAnimationEngine,
+} from "@still-shift/animation-engine";
 import {
   AnimationEngineError,
   AnimationResultSchema,
@@ -220,8 +223,13 @@ const runItem = async (
   let requestHash: string | null = null;
   try {
     const request = requestForItem(item, manifestPath, outputDir);
+    const frameTransport = resolveFrameTransport();
     requestHash = sha256(
-      JSON.stringify({ engineVersion: ENGINE_VERSION, request }),
+      JSON.stringify({
+        engineVersion: ENGINE_VERSION,
+        ...(frameTransport === "png_pipe" ? {} : { frameTransport }),
+        request,
+      }),
     );
     const checkpointPath = join(
       outputDir,
@@ -373,6 +381,7 @@ export const runBatch = async (options: {
       outputDir,
       resultsPath: join(outputDir, "batch-results.jsonl"),
       itemCount: completed.length,
+      concurrency: options.concurrency,
       successful,
       failed,
       reused: completed.filter((record) => record.reused).length,
@@ -389,6 +398,26 @@ export const runBatch = async (options: {
     };
     await atomicJsonl(summary.resultsPath, completed);
     await atomicJson(join(outputDir, "batch-summary.json"), summary);
+    const historyPath = join(outputDir, "batch-runs.jsonl");
+    let earlier = "";
+    try {
+      earlier = await readFile(historyPath, "utf8");
+    } catch (error) {
+      if ((error as NodeJS.ErrnoException).code !== "ENOENT") throw error;
+    }
+    const historyTemporary = `${historyPath}.${randomUUID()}.tmp`;
+    try {
+      await writeFile(
+        historyTemporary,
+        `${earlier}${JSON.stringify(summary)}\n`,
+        {
+          flag: "wx",
+        },
+      );
+      await rename(historyTemporary, historyPath);
+    } finally {
+      await rm(historyTemporary, { force: true });
+    }
     return { summary, exitCode: failed ? 1 : 0 };
   } finally {
     await lock.close();

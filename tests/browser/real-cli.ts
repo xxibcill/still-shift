@@ -89,7 +89,11 @@ try {
   const scene = SceneManifestSchema.parse(
     JSON.parse(await readFile(first.sceneManifestPath, "utf8")),
   );
-  assert.deepEqual(scene.execution, { adapter: "webgl", producesVideo: true });
+  assert.deepEqual(scene.execution, {
+    adapter: "webgl",
+    producesVideo: true,
+    frameTransport: "jpeg_pipe",
+  });
   assert.ok(scene.renderScene);
 
   const fallback = await runCli(join(directory, "fallback.mp4"), {
