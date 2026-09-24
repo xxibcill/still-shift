@@ -3,6 +3,7 @@ import {
   applySafetyToScene,
   createWebGLPreview,
   evaluateFrame,
+  PRESET_VERSIONS,
   resolvePreviewScene,
   type PreviewIntensity,
   type PreviewPreset,
@@ -60,11 +61,18 @@ let activeImages: {
 } | null = null;
 const safetyAssessments = new WeakMap<HTMLImageElement, SafetyAssessment>();
 
-const presets: PreviewPreset[] = [
-  "slow_push",
-  "horizontal_drift",
-  "cinematic_float",
-];
+const presetLabels: Record<PreviewPreset, string> = {
+  slow_push: "Slow push",
+  horizontal_drift: "Horizontal drift",
+  cinematic_float: "Cinematic float",
+};
+const presets = Object.keys(PRESET_VERSIONS) as PreviewPreset[];
+for (const preset of presets) {
+  const option = document.createElement("option");
+  option.value = preset;
+  option.textContent = presetLabels[preset];
+  presetSelect.append(option);
+}
 
 const stop = (): void => {
   if (timer !== null) window.clearInterval(timer);
@@ -278,12 +286,23 @@ const prepareSelected = async (): Promise<void> => {
   }
 };
 
-const addGalleryCard = (
-  entry: CorpusEntry,
-  preset: PreviewPreset,
-  poster: string | null,
-  error?: unknown,
-): void => {
+type GalleryCard = {
+  entry: CorpusEntry;
+  preset: PreviewPreset;
+  intensity: PreviewIntensity;
+  seed: number;
+  poster: string | null;
+  error?: unknown;
+};
+
+const addGalleryCard = ({
+  entry,
+  preset,
+  intensity,
+  seed,
+  poster,
+  error,
+}: GalleryCard): void => {
   const card = document.createElement("button");
   card.type = "button";
   card.className = "gallery-item";
@@ -294,6 +313,8 @@ const addGalleryCard = (
     card.append(image);
     card.addEventListener("click", () => {
       presetSelect.value = preset;
+      intensitySelect.value = intensity;
+      seedInput.value = String(seed);
       select.value = entry.id;
       void prepareSelected();
       window.scrollTo({ top: 0, behavior: "smooth" });
@@ -306,7 +327,8 @@ const addGalleryCard = (
     card.append(failure);
   }
   const label = document.createElement("strong");
-  label.textContent = entry.id + " · " + preset;
+  label.textContent =
+    entry.id + " · " + preset + " · " + intensity + " · seed " + seed;
   card.append(label);
   gallery.append(card);
 };
@@ -314,14 +336,14 @@ const addGalleryCard = (
 const buildGallery = async (): Promise<void> => {
   galleryButton.disabled = true;
   status.classList.remove("error");
-  gallery.replaceChildren();
-  posters.clear();
-  const posterCanvas = document.createElement("canvas");
-  posterCanvas.width = canvas.width;
-  posterCanvas.height = canvas.height;
   try {
     const intensity = intensitySelect.value as PreviewIntensity;
     const seed = selectedSeed();
+    gallery.replaceChildren();
+    posters.clear();
+    const posterCanvas = document.createElement("canvas");
+    posterCanvas.width = canvas.width;
+    posterCanvas.height = canvas.height;
     for (const [index, entry] of corpusEntries.entries()) {
       byId<HTMLElement>("gallery-note").textContent =
         "Building gallery " +
@@ -362,14 +384,28 @@ const buildGallery = async (): Promise<void> => {
               posterRenderer.dispose();
             }
             posters.set(entry.id + ":" + preset, poster);
-            addGalleryCard(entry, preset, poster);
+            addGalleryCard({ entry, preset, intensity, seed, poster });
           } catch (error) {
-            addGalleryCard(entry, preset, null, error);
+            addGalleryCard({
+              entry,
+              preset,
+              intensity,
+              seed,
+              poster: null,
+              error,
+            });
           }
         }
       } catch (error) {
         for (const preset of presets)
-          addGalleryCard(entry, preset, null, error);
+          addGalleryCard({
+            entry,
+            preset,
+            intensity,
+            seed,
+            poster: null,
+            error,
+          });
       }
     }
     byId<HTMLElement>("gallery-note").textContent =
