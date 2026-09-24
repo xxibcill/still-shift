@@ -259,6 +259,11 @@ const costReduction =
   videoBaselineUsdPerMinute === 0
     ? null
     : 1 - computeCostPerMinute / videoBaselineUsdPerMinute;
+const selectedCostBaseline = Boolean(
+  computePriceSource?.trim() &&
+    videoBaselineName?.trim() &&
+    videoBaselineSource?.trim(),
+);
 const maximumWorkerUsdPerHourForCostGate =
   videoBaselineUsdPerMinute === null ||
   estimatedAssemblyWorkerMs === null ||
@@ -337,11 +342,13 @@ const gates = [
           : "Assembly or video baseline missing"
         : `${percent(costReduction)} reduction`,
     status:
-      costReduction !== null && !computePriceSource
-        ? costReduction >= 0.7
-          ? "Scenario pass"
-          : "Scenario fail"
-        : gate(costReduction !== null, (costReduction ?? 0) >= 0.7),
+      costReduction === null
+        ? "Pending"
+        : !selectedCostBaseline
+          ? costReduction >= 0.7
+            ? "Scenario pass"
+            : "Scenario fail"
+          : gate(true, costReduction >= 0.7),
   },
   {
     name: "Editorial result",
