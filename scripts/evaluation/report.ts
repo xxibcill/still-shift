@@ -8,6 +8,7 @@ import {
   SceneManifestSchema,
   type AnimationResult,
 } from "@still-shift/scene-contract";
+import { RATING_FIELDS, RatingsExportSchema } from "./ratings.ts";
 
 const option = (name: string): string | undefined => {
   const index = process.argv.indexOf(name);
@@ -35,12 +36,9 @@ const readOptional = async (
 const corpusPath = required("--corpus");
 const resultsPath = required("--results");
 const outputPath = required("--output");
-const ratings = (await readOptional(option("--ratings"))) as {
-  corpusId?: string;
-  corpusSha256?: string;
-  reviewer?: string;
-  clips?: Record<string, Record<string, number | null>>;
-} | null;
+const ratingsInput = await readOptional(option("--ratings"));
+const ratings =
+  ratingsInput === null ? null : RatingsExportSchema.parse(ratingsInput);
 const assembly = (await readOptional(option("--assembly"))) as {
   outputPath?: string;
   durationSeconds?: number;
@@ -162,15 +160,7 @@ for (const result of results) {
     preparationBySource.set(result.checksums.source, elapsed);
 }
 
-const requiredRatings = [
-  "edgeArtifacts",
-  "subjectDeformation",
-  "exposedBorders",
-  "depthOrder",
-  "motionFit",
-  "editorialUsability",
-  "manualRepair",
-];
+const requiredRatings = RATING_FIELDS.map((field) => field.key);
 const rated = records.filter((record) =>
   requiredRatings.every(
     (field) => typeof ratings?.clips?.[record.id]?.[field] === "number",
@@ -179,20 +169,22 @@ const rated = records.filter((record) =>
 const allRated =
   rated.length === expectedCount && Boolean(ratings?.reviewer?.trim());
 const accepted = rated.filter((record) => {
-  const score = ratings!.clips![record.id]!;
+  const score = ratings!.clips[record.id]!;
   return score.editorialUsability === 2 && score.manualRepair === 0;
 }).length;
 const severe = rated.filter((record) => {
-  const score = ratings!.clips![record.id]!;
-  return [
-    "edgeArtifacts",
-    "subjectDeformation",
-    "exposedBorders",
-    "depthOrder",
-  ].some((field) => score[field] === 2);
+  const score = ratings!.clips[record.id]!;
+  return (
+    [
+      "edgeArtifacts",
+      "subjectDeformation",
+      "exposedBorders",
+      "depthOrder",
+    ] as const
+  ).some((field) => score[field] === 2);
 }).length;
 const repaired = rated.filter(
-  (record) => ratings!.clips![record.id]!.manualRepair === 1,
+  (record) => ratings!.clips[record.id]!.manualRepair === 1,
 ).length;
 const renderedMinutes =
   results.reduce((sum, result) => sum + result.durationMs, 0) / 60_000;
