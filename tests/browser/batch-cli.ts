@@ -1,6 +1,13 @@
 import assert from "node:assert/strict";
 import { execFile } from "node:child_process";
-import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
+import {
+  mkdir,
+  mkdtemp,
+  readFile,
+  rm,
+  utimes,
+  writeFile,
+} from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 import { promisify } from "node:util";
@@ -40,8 +47,12 @@ const runBatch = async () => {
     );
     return { exitCode: 0, summary: JSON.parse(stdout) };
   } catch (error) {
-    const failure = error as { code: number; stdout: string };
-    return { exitCode: failure.code, summary: JSON.parse(failure.stdout) };
+    const failure = error as { code: number; stdout: string; stderr: string };
+    return {
+      exitCode: failure.code,
+      summary: JSON.parse(failure.stdout || "null"),
+      error: failure.stderr ? JSON.parse(failure.stderr) : null,
+    };
   }
 };
 
@@ -79,6 +90,14 @@ try {
       .map((item) => JSON.stringify(item))
       .join("\n") + "\n",
   );
+  await mkdir(outputDir);
+  const lockPath = join(outputDir, ".batch.lock");
+  await mkdir(lockPath);
+  const locked = await runBatch();
+  assert.equal(locked.exitCode, 1);
+  assert.equal(locked.error.error.code, "RENDER_FAILED");
+  const staleTime = new Date(Date.now() - 60_000);
+  await utimes(lockPath, staleTime, staleTime);
   const first = await runBatch();
   assert.equal(first.exitCode, 1);
   assert.equal(first.summary.itemCount, 3);

@@ -1,7 +1,9 @@
 import { createHash, randomUUID } from "node:crypto";
-import { readFile, mkdir, open, rename, rm, writeFile } from "node:fs/promises";
+import { readFile, mkdir, rename, rm, writeFile } from "node:fs/promises";
 import { dirname, join, resolve } from "node:path";
 import { performance } from "node:perf_hooks";
+
+import lockfile from "proper-lockfile";
 
 import { WebGLAnimationEngine } from "@still-shift/animation-engine";
 import {
@@ -322,12 +324,15 @@ export const runBatch = async (options: {
       "Batch manifest has no items",
     );
   await mkdir(join(outputDir, ".batch-checkpoints"), { recursive: true });
-  const lockPath = join(outputDir, ".batch.lock");
-  let lock;
+  let releaseLock: () => Promise<void>;
   try {
-    lock = await open(lockPath, "wx");
+    releaseLock = await lockfile.lock(outputDir, {
+      lockfilePath: join(outputDir, ".batch.lock"),
+      stale: 10_000,
+      update: 3_000,
+    });
   } catch (error) {
-    if ((error as NodeJS.ErrnoException).code !== "EEXIST") throw error;
+    if ((error as NodeJS.ErrnoException).code !== "ELOCKED") throw error;
     throw new AnimationEngineError(
       "RENDER_FAILED",
       "Batch output directory is already in use",
@@ -384,7 +389,6 @@ export const runBatch = async (options: {
     await atomicJson(join(outputDir, "batch-summary.json"), summary);
     return { summary, exitCode: failed ? 1 : 0 };
   } finally {
-    await lock.close();
-    await rm(lockPath, { force: true });
+    await releaseLock();
   }
 };
