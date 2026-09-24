@@ -2,7 +2,7 @@ import { execFile } from "node:child_process";
 import { createHash } from "node:crypto";
 import { readFile } from "node:fs/promises";
 import type { ServerResponse } from "node:http";
-import { dirname, resolve } from "node:path";
+import { dirname, extname, resolve } from "node:path";
 import { promisify } from "node:util";
 
 import type { Plugin } from "vite";
@@ -110,12 +110,25 @@ export const labApi = (): Plugin => {
               return sendJson(response, 409, {
                 error: "Source checksum differs from the corpus manifest",
               });
-            const result = await prepareDepth(sourcePath);
-            if (result.status !== "prepared")
-              return sendJson(response, 422, {
-                error: result.error.message,
-                code: result.error.code,
+            const sendDepthFailure = (message: string, workerCode: string) =>
+              sendJson(response, 422, {
+                error: message,
+                code: "DEPTH_PREPARATION_FAILED",
+                workerCode,
+                sourceUrl: `/api/asset?id=${encodeURIComponent(entry.id)}&role=source`,
+                durationMs: entry.expectedShotDurationMs,
               });
+            let result: Awaited<ReturnType<typeof prepareDepth>>;
+            try {
+              result = await prepareDepth(sourcePath);
+            } catch (error) {
+              return sendDepthFailure(
+                error instanceof Error ? error.message : String(error),
+                "PROCESS_FAILED",
+              );
+            }
+            if (result.status !== "prepared")
+              return sendDepthFailure(result.error.message, result.error.code);
             prepared.set(entry.id, result);
             sendJson(
               response,
@@ -134,6 +147,30 @@ export const labApi = (): Plugin => {
           }
           if (url.pathname === "/api/asset") {
             const result = prepared.get(entry.id);
+            if (url.searchParams.get("role") === "source" && !result) {
+              const sourcePath = resolve(
+                dirname(corpusPath),
+                entry.source.path,
+              );
+              const source = await readFile(sourcePath);
+              const checksum = `sha256:${createHash("sha256").update(source).digest("hex")}`;
+              if (checksum !== entry.source.sha256)
+                return sendJson(response, 409, {
+                  error: "Source checksum differs from the corpus manifest",
+                });
+              const contentType =
+                {
+                  ".png": "image/png",
+                  ".jpg": "image/jpeg",
+                  ".jpeg": "image/jpeg",
+                  ".webp": "image/webp",
+                }[extname(sourcePath).toLowerCase()] ??
+                "application/octet-stream";
+              response.setHeader("Content-Type", contentType);
+              response.setHeader("Cache-Control", "no-store");
+              response.end(source);
+              return;
+            }
             if (!result)
               return sendJson(response, 404, {
                 error: "Prepare this entry first",

@@ -3,6 +3,7 @@ import {
   applySafetyToScene,
   createWebGLPreview,
   evaluateFrame,
+  fallback2DScene,
   PRESET_VERSIONS,
   resolvePreviewScene,
   type PreviewIntensity,
@@ -16,9 +17,9 @@ import type { z } from "zod";
 import {
   ApiErrorSchema,
   CorpusResponseSchema,
+  DepthPreparationFailureSchema,
   PreparedEntrySchema,
   type CorpusEntry,
-  type PreparedEntry,
   type PreviewPair,
 } from "../lab-contract.ts";
 import "./style.css";
@@ -57,7 +58,7 @@ let activeImages: {
   name: string;
   pair: PreviewPair;
   source: HTMLImageElement;
-  depth: HTMLImageElement;
+  depth: HTMLImageElement | null;
 } | null = null;
 const safetyAssessments = new WeakMap<HTMLImageElement, SafetyAssessment>();
 
@@ -158,7 +159,7 @@ const selectedSeed = (): number => {
 
 const resolveLabScene = (
   source: HTMLImageElement,
-  depth: HTMLImageElement,
+  depth: HTMLImageElement | null,
   durationMs: number,
   preset: PreviewPreset = presetSelect.value as PreviewPreset,
   intensity: PreviewIntensity = intensitySelect.value as PreviewIntensity,
@@ -167,8 +168,8 @@ const resolveLabScene = (
   const scene = resolvePreviewScene({
     sourceWidth: source.naturalWidth,
     sourceHeight: source.naturalHeight,
-    depthWidth: depth.naturalWidth,
-    depthHeight: depth.naturalHeight,
+    depthWidth: depth?.naturalWidth ?? source.naturalWidth,
+    depthHeight: depth?.naturalHeight ?? source.naturalHeight,
     durationMs,
     fps: 30,
     canvasWidth: 1920,
@@ -177,14 +178,21 @@ const resolveLabScene = (
     intensity,
     seed,
   });
-  return applySafetyToScene(scene, analyzePair(source, depth));
+  return depth
+    ? applySafetyToScene(scene, analyzePair(source, depth))
+    : fallback2DScene(scene, "DEPTH_PREPARATION_FAILED");
 };
 
 const loadScene = async (pair: PreviewPair) => {
-  const [source, depth] = await Promise.all([
-    loadImage(pair.sourceUrl),
-    loadImage(pair.depthUrl),
-  ]);
+  const source = await loadImage(pair.sourceUrl);
+  const loadedDepth = pair.depthUrl
+    ? await loadImage(pair.depthUrl).catch(() => null)
+    : null;
+  const depth =
+    loadedDepth?.naturalWidth === source.naturalWidth &&
+    loadedDepth.naturalHeight === source.naturalHeight
+      ? loadedDepth
+      : null;
   return {
     source,
     depth,
@@ -196,7 +204,7 @@ const activateScene = (
   name: string,
   pair: PreviewPair,
   source: HTMLImageElement,
-  depth: HTMLImageElement,
+  depth: HTMLImageElement | null,
   nextScene: PreviewScene,
   frameIndex = 0,
 ): void => {
@@ -208,7 +216,9 @@ const activateScene = (
   byId<HTMLElement>("scene-name").textContent = name;
   byId<HTMLElement>("empty-preview").hidden = true;
   sourceImage.src = pair.sourceUrl;
-  depthImage.src = pair.depthUrl;
+  depthImage.hidden = depth === null;
+  if (depth && pair.depthUrl) depthImage.src = pair.depthUrl;
+  else depthImage.removeAttribute("src");
   frameSlider.max = String(nextScene.timeline.frameCount - 1);
   frameSlider.disabled = false;
   playButton.disabled = false;
@@ -257,10 +267,28 @@ const fetchJson = async <T extends z.ZodType>(
   return schema.parse(value);
 };
 
-const prepareEntry = async (id: string): Promise<PreparedEntry> =>
-  fetchJson(`/api/prepare?id=${encodeURIComponent(id)}`, PreparedEntrySchema, {
+const prepareEntry = async (
+  id: string,
+): Promise<PreviewPair & { id: string }> => {
+  const response = await fetch(`/api/prepare?id=${encodeURIComponent(id)}`, {
     method: "POST",
   });
+  const value: unknown = await response.json();
+  if (response.ok) return PreparedEntrySchema.parse(value);
+  const failure = DepthPreparationFailureSchema.safeParse(value);
+  if (response.status === 422 && failure.success) {
+    return {
+      id,
+      sourceUrl: failure.data.sourceUrl,
+      depthUrl: null,
+      durationMs: failure.data.durationMs,
+    };
+  }
+  const error = ApiErrorSchema.safeParse(value);
+  throw new Error(
+    error.success ? error.data.error : `Request failed: ${response.status}`,
+  );
+};
 
 const showError = (error: unknown): void => {
   stop();
@@ -354,10 +382,7 @@ const buildGallery = async (): Promise<void> => {
         entry.id;
       try {
         const prepared = await prepareEntry(entry.id);
-        const [source, depth] = await Promise.all([
-          loadImage(prepared.sourceUrl),
-          loadImage(prepared.depthUrl),
-        ]);
+        const { source, depth } = await loadScene(prepared);
         for (const preset of presets) {
           try {
             const resolvedScene = resolveLabScene(
@@ -440,16 +465,16 @@ galleryButton.addEventListener("click", () => {
 byId<HTMLButtonElement>("load-local").addEventListener("click", () => {
   const source = sourceInput.files?.[0];
   const depth = depthInput.files?.[0];
-  if (!source || !depth)
-    return showError(new Error("Choose both a source image and depth PNG"));
+  if (!source) return showError(new Error("Choose a source image"));
   localUrls.forEach((url) => URL.revokeObjectURL(url));
-  localUrls = [URL.createObjectURL(source), URL.createObjectURL(depth)];
+  localUrls = [URL.createObjectURL(source)];
+  if (depth) localUrls.push(URL.createObjectURL(depth));
   const requestId = ++previewRequestId;
   prepareButton.disabled = !select.value;
   status.classList.remove("error");
   const pair: PreviewPair = {
     sourceUrl: localUrls[0]!,
-    depthUrl: localUrls[1]!,
+    depthUrl: localUrls[1] ?? null,
     durationMs: 5000,
   };
   void inspectPair(source.name, pair, requestId).catch((error: unknown) => {

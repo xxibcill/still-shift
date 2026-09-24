@@ -143,6 +143,38 @@ try {
     "Flat depth must still produce a valid moving 2D preview",
   );
 
+  await page.locator("#local-depth").setInputFiles([]);
+  await page.locator("#load-local").click();
+  await page.waitForFunction(() =>
+    document.querySelector("#status")?.textContent?.includes("ready"),
+  );
+  const sourceOnlyParameters = JSON.parse(
+    (await page.locator("#parameters").textContent()) ?? "{}",
+  );
+  assert.equal(sourceOnlyParameters.motion.mode, "fallback_2d");
+  assert.equal(
+    sourceOnlyParameters.quality.fallbackReason,
+    "DEPTH_PREPARATION_FAILED",
+  );
+  assert.equal(await page.locator("#depth-image").isHidden(), true);
+
+  await page.locator("#local-depth").setInputFiles({
+    name: "invalid-depth.png",
+    mimeType: "image/png",
+    buffer: Buffer.from("not a PNG"),
+  });
+  await page.locator("#load-local").click();
+  await page.waitForFunction(() =>
+    document.querySelector("#status")?.textContent?.includes("ready"),
+  );
+  const invalidDepthParameters = JSON.parse(
+    (await page.locator("#parameters").textContent()) ?? "{}",
+  );
+  assert.equal(
+    invalidDepthParameters.quality.fallbackReason,
+    "DEPTH_PREPARATION_FAILED",
+  );
+
   const rendererModuleUrl =
     "/@fs" +
     new URL("../../packages/renderer-core/src/index.ts", import.meta.url)
@@ -327,6 +359,52 @@ try {
     /Motion seed must be an unsigned 32-bit integer/,
   );
   await racePage.close();
+
+  const failedPreparationPage = await browser.newPage();
+  await failedPreparationPage.route("**/api/corpus", (route) =>
+    route.fulfill({
+      contentType: "application/json",
+      body: JSON.stringify({
+        status: "frozen",
+        entries: [
+          {
+            id: "failed-depth",
+            categories: ["portrait_person"],
+            expectedShotDurationMs: 5000,
+          },
+        ],
+      }),
+    }),
+  );
+  await failedPreparationPage.route("**/api/prepare?*", (route) =>
+    route.fulfill({
+      status: 422,
+      contentType: "application/json",
+      body: JSON.stringify({
+        error: "Depth model unavailable",
+        code: "DEPTH_PREPARATION_FAILED",
+        sourceUrl,
+        durationMs: 5000,
+      }),
+    }),
+  );
+  await failedPreparationPage.goto("http://127.0.0.1:4176/");
+  await failedPreparationPage
+    .locator("#corpus-entry")
+    .selectOption("failed-depth");
+  await failedPreparationPage.locator("#prepare").click();
+  await failedPreparationPage.waitForFunction(() =>
+    document.querySelector("#status")?.textContent?.includes("ready"),
+  );
+  const failedPreparationParameters = JSON.parse(
+    (await failedPreparationPage.locator("#parameters").textContent()) ?? "{}",
+  );
+  assert.equal(failedPreparationParameters.motion.mode, "fallback_2d");
+  assert.equal(
+    failedPreparationParameters.quality.fallbackReason,
+    "DEPTH_PREPARATION_FAILED",
+  );
+  await failedPreparationPage.close();
 
   process.stdout.write(
     `Depth motion verified: far ${farTravel}px, near ${nearTravel}px; latest selection preserved\n`,
