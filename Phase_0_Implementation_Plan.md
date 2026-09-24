@@ -293,6 +293,10 @@ Done when:
 
 **Target:** Days 2–3
 
+This milestone exposes the Python depth worker through preparation and contact-sheet
+commands for development and corpus review. The final `AnimationEngine.animate`
+integration remains part of Milestone 5, after rendering and export exist.
+
 Tasks:
 
 1. Implement input validation, EXIF orientation, sRGB conversion, resize policy, and normalized/preprocessed SHA-256 hashing for cache identity.
