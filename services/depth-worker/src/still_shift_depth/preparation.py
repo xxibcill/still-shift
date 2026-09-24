@@ -408,6 +408,7 @@ class DepthPreparationService:
                     {"requestedDevice": self.requested_device, "reason": str(cause)},
                 ) from cause
             runtime["torch"] = importlib.metadata.version("torch")
+            runtime["torchvision"] = importlib.metadata.version("torchvision")
             runtime["transformers"] = importlib.metadata.version("transformers")
 
         cache_key, key_payload = _cache_key(
