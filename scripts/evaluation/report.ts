@@ -8,6 +8,7 @@ import {
   SceneManifestSchema,
   type AnimationResult,
 } from "@still-shift/scene-contract";
+import { validateEvaluationRecords } from "./evidence.ts";
 import { RATING_FIELDS, RatingsExportSchema } from "./ratings.ts";
 
 const option = (name: string): string | undefined => {
@@ -83,10 +84,17 @@ const records = (await readFile(resultsPath, "utf8"))
         reused: boolean;
         result?: unknown;
       },
-  );
+  )
+  .map((record) => ({
+    ...record,
+    result: record.result
+      ? AnimationResultSchema.parse(record.result)
+      : undefined,
+  }));
+validateEvaluationRecords(corpus, records);
 const results: AnimationResult[] = records
   .filter((record) => record.result)
-  .map((record) => AnimationResultSchema.parse(record.result));
+  .map((record) => record.result!);
 const summary = JSON.parse(
   await readFile(join(dirname(resultsPath), "batch-summary.json"), "utf8"),
 ) as {
@@ -96,6 +104,11 @@ const summary = JSON.parse(
   reused: number;
   concurrency?: number;
 };
+if (
+  summary.itemCount !== records.length ||
+  summary.successful !== results.length
+)
+  throw new Error("Batch summary does not match its result records");
 let runHistory: (typeof summary)[] = [];
 try {
   runHistory = (
