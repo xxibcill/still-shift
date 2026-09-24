@@ -17,7 +17,8 @@ export type PreviewWarning = {
     | "DEPTH_PREPARATION_FAILED"
     | "LATERAL_MOTION_REDUCED"
     | "INTENSITY_DOWNGRADED"
-    | "FALLBACK_2D_USED";
+    | "FALLBACK_2D_USED"
+    | "PREVIEW_EXPORT_VARIANCE";
   message: string;
 };
 

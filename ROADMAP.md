@@ -1,6 +1,6 @@
 # Still Shift — Phase 0 Roadmap
 
-**Status:** v0.3–v0.6 implemented; frozen-corpus and human review pending; v0.7 in progress
+**Status:** v0.3–v0.7 implemented; frozen-corpus and human review pending; v0.8 in progress
 
 **Updated:** 2026-09-24  
 **Target:** 10 working days  
@@ -30,18 +30,18 @@ When work begins, update the roadmap date, mark exactly one version as in progre
 
 ## Progress
 
-| Version | Deliverable                              |    Target | Status | Completion evidence                                                                       |
-| ------- | ---------------------------------------- | --------: | ------ | ----------------------------------------------------------------------------------------- |
-| v0.1    | Foundation, contracts, and frozen corpus |     Day 1 | `[!]`  | [Foundation checks pass; real corpus freeze remains blocked](./docs/v0.1-verification.md) |
-| v0.2    | Reusable depth preparation               |  Days 2–3 | `[!]`  | [Depth worker merged; frozen-corpus review pending](./docs/v0.2-depth-preparation.md)     |
-| v0.3    | First animated preview                   |     Day 3 | `[!]`  | [Preview implemented; corpus-wide review pending](./docs/v0.3-first-preview.md)           |
-| v0.4    | Preset library and lab UI                |  Days 4–5 | `[!]`  | [Three presets implemented; frozen-corpus review pending](./docs/v0.4-preset-library.md)  |
-| v0.5    | Safety analysis and 2D fallback          |     Day 6 | `[!]`  | [Safety implemented; frozen-corpus review pending](./docs/v0.5-safety-fallback.md)        |
-| v0.6    | Deterministic MP4 export                 |     Day 7 | `[!]`  | [1080p export passes; representative throughput gate pending](./docs/v0.6-mp4-export.md)  |
-| v0.7    | Preview/export parity and golden tests   |     Day 7 | `[~]`  | Golden scenes agree across both render paths                                              |
-| v0.8    | Single-image CLI integration             |     Day 8 | `[ ]`  | Existing workflow renders one clip through the CLI                                        |
-| v0.9    | Unattended batch execution               |     Day 8 | `[ ]`  | 50-image batch completes with a result manifest                                           |
-| v0.10   | Evaluation release and Phase 1 decision  | Days 9–10 | `[ ]`  | Gallery, assembled explainer, and gate report                                             |
+| Version | Deliverable                              |    Target | Status | Completion evidence                                                                           |
+| ------- | ---------------------------------------- | --------: | ------ | --------------------------------------------------------------------------------------------- |
+| v0.1    | Foundation, contracts, and frozen corpus |     Day 1 | `[!]`  | [Foundation checks pass; real corpus freeze remains blocked](./docs/v0.1-verification.md)     |
+| v0.2    | Reusable depth preparation               |  Days 2–3 | `[!]`  | [Depth worker merged; frozen-corpus review pending](./docs/v0.2-depth-preparation.md)         |
+| v0.3    | First animated preview                   |     Day 3 | `[!]`  | [Preview implemented; corpus-wide review pending](./docs/v0.3-first-preview.md)               |
+| v0.4    | Preset library and lab UI                |  Days 4–5 | `[!]`  | [Three presets implemented; frozen-corpus review pending](./docs/v0.4-preset-library.md)      |
+| v0.5    | Safety analysis and 2D fallback          |     Day 6 | `[!]`  | [Safety implemented; frozen-corpus review pending](./docs/v0.5-safety-fallback.md)            |
+| v0.6    | Deterministic MP4 export                 |     Day 7 | `[!]`  | [1080p export passes; representative throughput gate pending](./docs/v0.6-mp4-export.md)      |
+| v0.7    | Preview/export parity and golden tests   |     Day 7 | `[!]`  | [Five golden scenes pass; frozen-corpus review pending](./docs/v0.7-preview-export-parity.md) |
+| v0.8    | Single-image CLI integration             |     Day 8 | `[~]`  | Existing workflow renders one clip through the CLI                                            |
+| v0.9    | Unattended batch execution               |     Day 8 | `[ ]`  | 50-image batch completes with a result manifest                                               |
+| v0.10   | Evaluation release and Phase 1 decision  | Days 9–10 | `[ ]`  | Gallery, assembled explainer, and gate report                                                 |
 
 ## Critical path
 
@@ -255,21 +255,21 @@ If headless Chromium cannot approach the throughput target on the intended hardw
 
 ### Tasks
 
-- [ ] Select five permissively licensed golden scenes.
-- [ ] Cover portrait, environment, architecture, illustration, and difficult edges.
-- [ ] Capture first, middle, and final frames from preview and export.
-- [ ] Compare crop, camera direction, timing, geometry, and color.
-- [ ] Establish perceptual-difference thresholds without requiring cross-GPU pixel identity.
-- [ ] Add golden-scene checks to the test command.
-- [ ] Emit `PREVIEW_EXPORT_VARIANCE` when differences exceed tolerance.
-- [ ] Record browser, GPU, renderer, and shader versions with every golden run.
+- [x] Select five original, CC0 golden scenes.
+- [x] Cover portrait, environment, architecture, illustration, and difficult edges.
+- [x] Capture first, middle, and final frames from preview and export.
+- [x] Compare crop, camera direction, timing, geometry, and color.
+- [x] Establish perceptual-difference thresholds without requiring cross-GPU pixel identity.
+- [x] Add golden-scene checks to the test command.
+- [x] Emit `PREVIEW_EXPORT_VARIANCE` when differences exceed tolerance.
+- [x] Record browser, GPU, renderer, and shader versions with every golden run.
 
 ### Completion evidence
 
-- [ ] No material crop, direction, or timing mismatch remains.
-- [ ] Golden tests detect deliberate camera and shader regressions.
-- [ ] Repeated export checks remain deterministic.
-- [ ] v0.6 throughput measurements remain available.
+- [!] No material mismatch was measured on five golden scenes; frozen-corpus comparison remains pending.
+- [x] Golden tests detect deliberate camera and shader regressions.
+- [x] Repeated export checks remain deterministic.
+- [x] v0.6 throughput measurements remain available.
 
 ## v0.8 — Single-image CLI integration
 
