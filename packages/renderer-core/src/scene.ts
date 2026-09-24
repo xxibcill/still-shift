@@ -1,3 +1,5 @@
+import type { AnimationWarning } from "@still-shift/scene-contract";
+
 import type { SafetySignals } from "./safety.ts";
 
 export const RENDERER_VERSION = "preview-render-0.5.0" as const;
@@ -10,18 +12,7 @@ export const PRESET_VERSIONS = {
 
 export type PreviewPreset = keyof typeof PRESET_VERSIONS;
 export type PreviewIntensity = "subtle" | "standard" | "strong";
-export type PreviewWarning = {
-  code:
-    | "MOTION_CLAMPED"
-    | "DEPTH_RANGE_FLAT"
-    | "DEPTH_RANGE_EXTREME"
-    | "DEPTH_EDGE_RISK_HIGH"
-    | "DEPTH_PREPARATION_FAILED"
-    | "LATERAL_MOTION_REDUCED"
-    | "INTENSITY_DOWNGRADED"
-    | "FALLBACK_2D_USED";
-  message: string;
-};
+export type PreviewWarning = AnimationWarning;
 
 export type PreviewQuality = {
   analysisVersion: string;
