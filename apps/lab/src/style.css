@@ -108,6 +108,7 @@ h1 {
   font-weight: 700;
 }
 .sidebar select,
+.sidebar input[type="number"],
 .sidebar input[type="file"] {
   width: 100%;
   padding: 11px 12px;

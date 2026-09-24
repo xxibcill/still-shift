@@ -9,13 +9,13 @@
     <main class="app-shell">
       <header class="masthead">
         <div>
-          <p class="eyebrow">Still Shift / v0.3</p>
+          <p class="eyebrow">Still Shift / v0.4</p>
           <h1>Motion review</h1>
           <p class="lede">
-            Inspect the first depth-based push, one frame at a time.
+            Compare three depth-based motions, one frame at a time.
           </p>
         </div>
-        <span class="version">slow_push · subtle</span>
+        <span class="version">3 presets · 3 intensities</span>
       </header>
 
       <section class="workspace" aria-label="Preview workspace">
@@ -40,6 +40,24 @@
           >
             Build corpus gallery
           </button>
+          <div class="divider"><span>motion settings</span></div>
+          <label for="preset">Preset</label>
+          <select id="preset"></select>
+          <label for="intensity">Intensity</label>
+          <select id="intensity">
+            <option value="subtle">Subtle</option>
+            <option value="standard">Standard</option>
+            <option value="strong">Strong</option>
+          </select>
+          <label for="seed">Motion seed</label>
+          <input
+            id="seed"
+            type="number"
+            min="0"
+            max="4294967295"
+            step="1"
+            value="1842"
+          />
           <div class="divider"><span>or inspect a prepared pair</span></div>
           <label for="local-source">Normalized source PNG</label>
           <input
@@ -136,8 +154,7 @@
           <h2 id="gallery-title">Corpus gallery</h2>
         </div>
         <p id="gallery-note" class="muted">
-          The gallery will use the frozen corpus when its real images are
-          supplied.
+          The gallery compares all three presets for each corpus image.
         </p>
         <div id="gallery" class="gallery"></div>
       </section>

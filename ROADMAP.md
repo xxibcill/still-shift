@@ -1,6 +1,6 @@
 # Still Shift — Phase 0 Roadmap
 
-**Status:** v0.3 implementation in progress; real explainer corpus still unresolved
+**Status:** v0.3 review in progress; v0.4 implemented but awaiting the frozen corpus
 
 **Updated:** 2026-09-24  
 **Target:** 10 working days  
@@ -35,7 +35,7 @@ When work begins, update the roadmap date, mark exactly one version as in progre
 | v0.1    | Foundation, contracts, and frozen corpus |     Day 1 | `[!]`  | [Foundation checks pass; real corpus freeze remains blocked](./docs/v0.1-verification.md) |
 | v0.2    | Reusable depth preparation               |  Days 2–3 | `[!]`  | [Depth worker merged; frozen-corpus review pending](./docs/v0.2-depth-preparation.md)     |
 | v0.3    | First animated preview                   |     Day 3 | `[~]`  | [Preview implemented; corpus-wide review pending](./docs/v0.3-first-preview.md)           |
-| v0.4    | Preset library and lab UI                |  Days 4–5 | `[ ]`  | Three deterministic presets preview correctly                                             |
+| v0.4    | Preset library and lab UI                |  Days 4–5 | `[!]`  | [Three presets implemented; frozen-corpus review pending](./docs/v0.4-preset-library.md)  |
 | v0.5    | Safety analysis and 2D fallback          |     Day 6 | `[ ]`  | Unsafe scenes clamp or fall back cleanly                                                  |
 | v0.6    | Deterministic MP4 export                 |     Day 7 | `[ ]`  | Validated 1080p MP4 with exact frame count                                                |
 | v0.7    | Preview/export parity and golden tests   |     Day 7 | `[ ]`  | Golden scenes agree across both render paths                                              |
@@ -166,22 +166,22 @@ Review the entire corpus before adding more presets.
 
 ### Tasks
 
-- [ ] Implement versioned `horizontal_drift` preset.
-- [ ] Implement versioned `cinematic_float` preset.
-- [ ] Implement `standard` and `strong` intensity levels.
-- [ ] Seed every noise-driven value.
-- [ ] Clamp camera travel, roll, depth strength, and crop per preset.
-- [ ] Add depth-gradient damping near strong discontinuities.
-- [ ] Add preset and intensity controls to the browser lab.
-- [ ] Display renderer version and evaluated camera parameters.
-- [ ] Preview every frozen-corpus image through all three presets.
+- [x] Implement versioned `horizontal_drift` preset.
+- [x] Implement versioned `cinematic_float` preset.
+- [x] Implement `standard` and `strong` intensity levels.
+- [x] Seed every noise-driven value.
+- [x] Clamp camera travel, roll, depth strength, and crop per preset.
+- [x] Add depth-gradient damping near strong discontinuities.
+- [x] Add preset and intensity controls to the browser lab.
+- [x] Display renderer version and evaluated camera parameters.
+- [!] Preview every frozen-corpus image through all three presets. The 43-image candidate gallery passed, but corpus approval is pending.
 
 ### Completion evidence
 
-- [ ] All preset functions return identical transforms for identical scene time and seed.
-- [ ] Frame zero and the final frame match documented camera states.
-- [ ] Corpus comparison gallery includes all three presets.
-- [ ] v0.3 `slow_push` output remains compatible.
+- [x] All preset functions return identical transforms for identical scene time and seed.
+- [x] Frame zero and the final frame match documented camera states.
+- [!] Corpus comparison gallery includes all three presets for the candidate set; frozen-corpus review remains pending.
+- [x] v0.3 `slow_push` output remains compatible.
 
 ### v0.4 checkpoint — Motion-variety review
 

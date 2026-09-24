@@ -99,6 +99,92 @@ try {
     "Near marker must move farther than the far marker",
   );
 
+  await page.locator("#preset").selectOption("horizontal_drift");
+  const driftLast = await measureMarkers(page);
+  await page.evaluate(() => {
+    const slider = document.querySelector<HTMLInputElement>("#frame");
+    if (!slider) throw new Error("Frame slider is missing");
+    slider.value = "0";
+    slider.dispatchEvent(new Event("input", { bubbles: true }));
+  });
+  const driftFirst = await measureMarkers(page);
+  const averageDrift =
+    (driftLast.red + driftLast.green - driftFirst.red - driftFirst.green) / 2;
+  assert.ok(averageDrift > 4, "Horizontal drift must move the image laterally");
+
+  const rendererModuleUrl =
+    "/@fs" +
+    new URL("../../packages/renderer-core/src/index.ts", import.meta.url)
+      .pathname;
+  const edgeDampingChangedBytes = await page.evaluate(async (moduleUrl) => {
+    const { createWebGLPreview, resolvePreviewScene } = await import(moduleUrl);
+    const source = new Image();
+    source.src =
+      "data:image/svg+xml," +
+      encodeURIComponent(
+        '<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900"><defs><pattern id="stripes" width="4" height="4" patternUnits="userSpaceOnUse"><rect width="2" height="4" fill="black"/></pattern></defs><rect width="1600" height="900" fill="white"/><rect width="1600" height="900" fill="url(#stripes)"/></svg>',
+      );
+    const depth = new Image();
+    depth.src =
+      "data:image/svg+xml," +
+      encodeURIComponent(
+        '<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900"><rect width="1600" height="900" fill="black"/><rect x="405" width="1195" height="900" fill="white"/></svg>',
+      );
+    await Promise.all([source.decode(), depth.decode()]);
+
+    const rows: Uint8Array[] = [];
+    for (const preset of ["slow_push", "horizontal_drift"] as const) {
+      const edgeCanvas = document.createElement("canvas");
+      edgeCanvas.width = 1920;
+      edgeCanvas.height = 1080;
+      const edgeScene = resolvePreviewScene({
+        sourceWidth: 1600,
+        sourceHeight: 900,
+        depthWidth: 1600,
+        depthHeight: 900,
+        canvasWidth: 1920,
+        canvasHeight: 1080,
+        durationMs: 5000,
+        fps: 30,
+        preset,
+        intensity: "subtle",
+        requestedTravel: 0,
+        requestedDepthStrength: 0.03,
+        requestedLateralTravel: 0,
+      });
+      const edgePreview = createWebGLPreview(
+        edgeCanvas,
+        edgeScene,
+        source,
+        depth,
+      );
+      edgePreview.renderFrame(edgeScene.timeline.frameCount - 1);
+      const gl = edgeCanvas.getContext("webgl2");
+      if (!gl) throw new Error("WebGL2 is unavailable");
+      const pixels = new Uint8Array(edgeCanvas.width * 4);
+      gl.readPixels(
+        0,
+        edgeCanvas.height / 2,
+        edgeCanvas.width,
+        1,
+        gl.RGBA,
+        gl.UNSIGNED_BYTE,
+        pixels,
+      );
+      rows.push(pixels);
+      edgePreview.dispose();
+    }
+    let changedBytes = 0;
+    for (let index = 0; index < rows[0]!.length; index += 1) {
+      if (rows[0]![index] !== rows[1]![index]) changedBytes += 1;
+    }
+    return changedBytes;
+  }, rendererModuleUrl);
+  assert.ok(
+    edgeDampingChangedBytes > 10,
+    "A sharp edge between mesh vertices must trigger depth damping",
+  );
+
   const racePage = await browser.newPage();
   const sourceUrl = `data:image/svg+xml;base64,${Buffer.from(sourceSvg).toString("base64")}`;
   const depthUrl = `data:image/svg+xml;base64,${Buffer.from(depthSvg).toString("base64")}`;
@@ -170,6 +256,45 @@ try {
   firstGate.release();
   await racePage.waitForLoadState("networkidle");
   assert.equal(await racePage.locator("#scene-name").textContent(), "second");
+
+  await racePage.locator("#intensity").selectOption("strong");
+  await racePage.locator("#seed").fill("19");
+  await racePage.locator("#build-gallery").click();
+  await racePage.waitForFunction(() =>
+    document
+      .querySelector("#gallery-note")
+      ?.textContent?.includes("6/6 midpoint"),
+  );
+  await racePage.locator("#intensity").selectOption("subtle");
+  await racePage.locator("#seed").fill("20");
+  await racePage
+    .locator(".gallery-item")
+    .filter({ hasText: "first · cinematic_float · strong · seed 19" })
+    .click();
+  await racePage.waitForFunction(() =>
+    document.querySelector("#status")?.textContent?.includes("first ready"),
+  );
+  assert.equal(await racePage.locator("#intensity").inputValue(), "strong");
+  assert.equal(await racePage.locator("#seed").inputValue(), "19");
+  const selectedScene = JSON.parse(
+    (await racePage.locator("#parameters").textContent()) ?? "{}",
+  ) as { motion: { preset: string; intensity: string; seed: number } };
+  assert.deepEqual(
+    {
+      preset: selectedScene.motion.preset,
+      intensity: selectedScene.motion.intensity,
+      seed: selectedScene.motion.seed,
+    },
+    { preset: "cinematic_float", intensity: "strong", seed: 19 },
+  );
+
+  await racePage.locator("#seed").fill("-1");
+  await racePage.locator("#build-gallery").click();
+  assert.equal(await racePage.locator(".gallery-item").count(), 6);
+  assert.match(
+    (await racePage.locator("#status").textContent()) ?? "",
+    /Motion seed must be an unsigned 32-bit integer/,
+  );
   await racePage.close();
 
   process.stdout.write(
