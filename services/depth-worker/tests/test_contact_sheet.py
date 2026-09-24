@@ -84,6 +84,16 @@ class ContactSheetTests(unittest.TestCase):
         self.assertTrue(self.output.is_file())
         self.assertEqual(summary["items"][0]["status"], "prepared")
 
+    def test_source_checksum_mismatch_is_reported_before_preparation(self) -> None:
+        self.write_manifest(checksum=f"sha256:{'0' * 64}")
+
+        summary = self.run_contact_sheet()
+
+        self.assertEqual(summary["preparedCount"], 0)
+        self.assertEqual(summary["failedCount"], 1)
+        self.assertEqual(summary["items"][0]["error"]["code"], "SOURCE_CHECKSUM_MISMATCH")
+        self.assertFalse((self.root / "cache").exists())
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import re
 import tempfile
 from pathlib import Path
 from typing import Any
@@ -12,6 +13,7 @@ from typing import Any
 from PIL import Image, ImageDraw, ImageFont
 
 from . import __version__
+from .models import sha256_file
 from .preparation import (
     DepthParameters,
     DepthPreparationService,
@@ -208,11 +210,44 @@ def _contact_sheet(arguments: argparse.Namespace) -> dict[str, Any]:
             item["error"] = {"code": "CORPUS_ENTRY_INVALID", "message": "Source path is missing."}
             items.append(item)
             continue
+        source_checksum = source_record.get("sha256")
+        if source_checksum is None and manifest.get("status") == "frozen":
+            item["error"] = {
+                "code": "CORPUS_ENTRY_INVALID",
+                "message": "Frozen corpus source checksum is missing.",
+            }
+            items.append(item)
+            continue
+        if source_checksum is not None and (
+            not isinstance(source_checksum, str)
+            or re.fullmatch(r"sha256:[a-f0-9]{64}", source_checksum) is None
+        ):
+            item["error"] = {
+                "code": "CORPUS_ENTRY_INVALID",
+                "message": "Source checksum must be a SHA-256 digest.",
+            }
+            items.append(item)
+            continue
 
         source_path = Path(source_relative).expanduser()
         if not source_path.is_absolute():
             source_path = manifest_path.parent / source_path
         try:
+            if source_checksum is not None:
+                try:
+                    actual_checksum = f"sha256:{sha256_file(source_path)}"
+                except OSError as cause:
+                    raise PreparationError(
+                        "INPUT_UNREADABLE",
+                        "Corpus source image could not be read for checksum validation.",
+                        {"inputPath": str(source_path)},
+                    ) from cause
+                if actual_checksum != source_checksum:
+                    raise PreparationError(
+                        "SOURCE_CHECKSUM_MISMATCH",
+                        "Corpus source image does not match its manifest checksum.",
+                        {"inputPath": str(source_path)},
+                    )
             prepared = service.prepare(source_path)
             item["status"] = "prepared"
             item["sourcePreview"] = prepared["assets"]["normalizedSource"]
