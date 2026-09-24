@@ -141,16 +141,25 @@ describe("v0.5 safety analysis and 2D fallback", () => {
     expect(dense.quality?.fallbackReason).toBe("DEPTH_EDGE_RISK_HIGH");
   });
 
-  it("falls back on an extreme depth range without saturated endpoints", () => {
-    const assessment = analyzeDepthSafety(
+  it("rejects near-endpoint plateaus but keeps a full-range gradient", () => {
+    const extreme = analyzeDepthSafety(
+      pixels(
+        (x) => (x < 16 ? 4 : 251),
+        (x) => (x < 16 ? 4 : 251),
+      ),
+    );
+    expect(extreme.signals.depthSaturationFraction).toBe(0);
+    expect(extreme.signals.depthRange).toBeGreaterThan(0.85);
+    expect(extreme.extremeDepth).toBe(true);
+    expect(applySafetyToScene(scene(), extreme).quality?.fallbackReason).toBe(
+      "DEPTH_RANGE_EXTREME",
+    );
+
+    const gradient = analyzeDepthSafety(
       pixels((x) => 8 + Math.round((x * 239) / 31)),
     );
-    expect(assessment.signals.depthSaturationFraction).toBe(0);
-    expect(assessment.signals.depthRange).toBeGreaterThan(0.85);
-    expect(assessment.extremeDepth).toBe(true);
-    expect(
-      applySafetyToScene(scene(), assessment).quality?.fallbackReason,
-    ).toBe("DEPTH_RANGE_EXTREME");
+    expect(gradient.signals.depthRange).toBeGreaterThan(0.85);
+    expect(gradient.extremeDepth).toBe(false);
   });
 
   it("provides a 2D scene when depth preparation fails", () => {

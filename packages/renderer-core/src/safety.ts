@@ -9,6 +9,7 @@ export const SAFETY_ANALYSIS_VERSION = "risk-0.5.0" as const;
 export type SafetySignals = {
   depthRange: number;
   depthSaturationFraction: number;
+  nearExtremeFraction: number;
   discontinuityDensity: number;
   centralDiscontinuityDensity: number;
   rgbDepthEdgeDisagreement: number;
@@ -93,6 +94,7 @@ export const analyzeDepthSafety = (pixels: SafetyPixels): SafetyAssessment => {
   const totalPixels = width * height;
   const histogram = new Uint32Array(256);
   let saturatedPixels = 0;
+  let nearExtremePixels = 0;
   let pairCount = 0;
   let centralPairCount = 0;
   let depthEdgeCount = 0;
@@ -104,6 +106,7 @@ export const analyzeDepthSafety = (pixels: SafetyPixels): SafetyAssessment => {
     const value = depth[index * 4]!;
     histogram[value] = histogram[value]! + 1;
     if (value <= 3 || value >= 252) saturatedPixels += 1;
+    if (value <= 8 || value >= 247) nearExtremePixels += 1;
   }
 
   const recordPair = (
@@ -147,6 +150,7 @@ export const analyzeDepthSafety = (pixels: SafetyPixels): SafetyAssessment => {
     percentile(histogram, totalPixels, 0.95) -
     percentile(histogram, totalPixels, 0.05);
   const depthSaturationFraction = saturatedPixels / totalPixels;
+  const nearExtremeFraction = nearExtremePixels / totalPixels;
   const discontinuityDensity = depthEdgeCount / pairCount;
   const centralDiscontinuityDensity =
     centralDepthEdgeCount / Math.max(1, centralPairCount);
@@ -162,10 +166,13 @@ export const analyzeDepthSafety = (pixels: SafetyPixels): SafetyAssessment => {
     version: SAFETY_ANALYSIS_VERSION,
     riskScore,
     flatDepth: depthRange < 0.06,
-    extremeDepth: depthSaturationFraction > 0.85 || depthRange > 0.85,
+    extremeDepth:
+      depthSaturationFraction > 0.85 ||
+      (depthRange > 0.85 && nearExtremeFraction > 0.85),
     signals: {
       depthRange,
       depthSaturationFraction,
+      nearExtremeFraction,
       discontinuityDensity,
       centralDiscontinuityDensity,
       rgbDepthEdgeDisagreement,
@@ -221,6 +228,7 @@ export const fallback2DScene = (
     signals: {
       depthRange: 0,
       depthSaturationFraction: 0,
+      nearExtremeFraction: 0,
       discontinuityDensity: 0,
       centralDiscontinuityDensity: 0,
       rgbDepthEdgeDisagreement: 0,
