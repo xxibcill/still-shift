@@ -25,6 +25,20 @@ class ModelIdentity:
     weights_sha256: str
     license: str
 
+    def cache_metadata(self) -> dict[str, str]:
+        return {
+            "adapter": self.adapter,
+            "id": self.model_id,
+            "revision": self.revision,
+            "weightsSha256": self.weights_sha256,
+            "license": self.license,
+        }
+
+    def manifest_provenance(self) -> dict[str, str]:
+        metadata = self.cache_metadata()
+        metadata["weightsChecksum"] = f"sha256:{metadata.pop('weightsSha256')}"
+        return metadata
+
 
 class DepthEstimator(Protocol):
     @property
