@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { execFile } from "node:child_process";
 import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
+import { createServer } from "node:net";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 import { promisify } from "node:util";
@@ -65,6 +66,15 @@ const runCli = async (
   });
   return AnimationResultSchema.parse(JSON.parse(stdout));
 };
+
+const occupiedPort = createServer();
+const ownsPort = await new Promise<boolean>((accept, reject) => {
+  occupiedPort.once("error", (error: NodeJS.ErrnoException) => {
+    if (error.code === "EADDRINUSE") accept(false);
+    else reject(error);
+  });
+  occupiedPort.listen(5173, "127.0.0.1", () => accept(true));
+});
 
 try {
   await execFileAsync("ffmpeg", [
@@ -159,5 +169,10 @@ try {
     "Single-image CLI verified: 90-frame MP4, cache hit, stable hashes, 2D fallback, and errors\n",
   );
 } finally {
+  if (ownsPort) {
+    await new Promise<void>((accept, reject) => {
+      occupiedPort.close((error) => (error ? reject(error) : accept()));
+    });
+  }
   await rm(directory, { recursive: true, force: true });
 }
