@@ -98,8 +98,66 @@ try {
     Number.isFinite(nearTravel) && nearTravel - farTravel > 2,
     "Near marker must move farther than the far marker",
   );
+
+  const racePage = await browser.newPage();
+  const sourceUrl = `data:image/svg+xml;base64,${Buffer.from(sourceSvg).toString("base64")}`;
+  const depthUrl = `data:image/svg+xml;base64,${Buffer.from(depthSvg).toString("base64")}`;
+  const requestGate = () => {
+    let markRequested!: () => void;
+    let release!: () => void;
+    return {
+      requested: new Promise<void>((resolve) => {
+        markRequested = resolve;
+      }),
+      blocked: new Promise<void>((resolve) => {
+        release = resolve;
+      }),
+      markRequested: () => markRequested(),
+      release: () => release(),
+    };
+  };
+  const firstGate = requestGate();
+  const secondGate = requestGate();
+  await racePage.route("**/api/corpus", (route) =>
+    route.fulfill({
+      contentType: "application/json",
+      body: JSON.stringify({
+        status: "frozen",
+        entries: [
+          { id: "first", categories: [], expectedShotDurationMs: 5000 },
+          { id: "second", categories: [], expectedShotDurationMs: 5000 },
+        ],
+      }),
+    }),
+  );
+  await racePage.route("**/api/prepare?*", async (route) => {
+    const id = new URL(route.request().url()).searchParams.get("id");
+    const gate = id === "first" ? firstGate : secondGate;
+    gate.markRequested();
+    await gate.blocked;
+    await route.fulfill({
+      contentType: "application/json",
+      body: JSON.stringify({ id, sourceUrl, depthUrl, durationMs: 5000 }),
+    });
+  });
+  await racePage.goto("http://127.0.0.1:4176/");
+  await racePage.locator("#corpus-entry").selectOption("first");
+  await racePage.locator("#prepare").click();
+  await firstGate.requested;
+  await racePage.locator("#corpus-entry").selectOption("second");
+  await racePage.locator("#prepare").click();
+  await secondGate.requested;
+  secondGate.release();
+  await racePage.waitForFunction(
+    () => document.querySelector("#scene-name")?.textContent === "second",
+  );
+  firstGate.release();
+  await racePage.waitForLoadState("networkidle");
+  assert.equal(await racePage.locator("#scene-name").textContent(), "second");
+  await racePage.close();
+
   process.stdout.write(
-    `Depth motion verified: far ${farTravel}px, near ${nearTravel}px\n`,
+    `Depth motion verified: far ${farTravel}px, near ${nearTravel}px; latest selection preserved\n`,
   );
 } finally {
   await browser?.close();

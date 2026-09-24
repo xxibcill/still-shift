@@ -48,6 +48,7 @@ let renderer: WebGLPreview | null = null;
 let timer: number | null = null;
 let currentFrame = 0;
 let localUrls: string[] = [];
+let previewRequestId = 0;
 
 const stop = (): void => {
   if (timer !== null) window.clearInterval(timer);
@@ -126,7 +127,9 @@ const inspectPair = async (
   sourceUrl: string,
   depthUrl: string,
   durationMs: number,
+  requestId: number,
 ): Promise<void> => {
+  if (requestId !== previewRequestId) return;
   stop();
   status.textContent = `Loading ${name}…`;
   const {
@@ -134,6 +137,7 @@ const inspectPair = async (
     depth,
     resolvedScene: nextScene,
   } = await loadScene(sourceUrl, depthUrl, durationMs);
+  if (requestId !== previewRequestId) return;
   renderer?.dispose();
   renderer = createWebGLPreview(canvas, nextScene, source, depth);
   scene = nextScene;
@@ -168,22 +172,26 @@ const showError = (error: unknown): void => {
 };
 
 const prepareSelected = async (): Promise<void> => {
-  if (!select.value) return;
+  const id = select.value;
+  if (!id) return;
+  const requestId = ++previewRequestId;
   status.classList.remove("error");
   prepareButton.disabled = true;
-  status.textContent = `Preparing ${select.value}…`;
+  status.textContent = `Preparing ${id}…`;
   try {
-    const prepared = await prepareEntry(select.value);
+    const prepared = await prepareEntry(id);
+    if (requestId !== previewRequestId) return;
     await inspectPair(
       prepared.id,
       prepared.sourceUrl,
       prepared.depthUrl,
       prepared.durationMs,
+      requestId,
     );
   } catch (error) {
-    showError(error);
+    if (requestId === previewRequestId) showError(error);
   } finally {
-    prepareButton.disabled = !select.value;
+    if (requestId === previewRequestId) prepareButton.disabled = !select.value;
   }
 };
 
@@ -251,7 +259,11 @@ const buildGallery = async (): Promise<void> => {
 };
 
 select.addEventListener("change", () => {
+  previewRequestId += 1;
   prepareButton.disabled = !select.value;
+  status.textContent = select.value
+    ? `${select.value} selected. Prepare to inspect its preview.`
+    : "Choose a corpus image to prepare.";
 });
 prepareButton.addEventListener("click", () => {
   void prepareSelected();
@@ -266,10 +278,18 @@ byId<HTMLButtonElement>("load-local").addEventListener("click", () => {
     return showError(new Error("Choose both a source image and depth PNG"));
   localUrls.forEach((url) => URL.revokeObjectURL(url));
   localUrls = [URL.createObjectURL(source), URL.createObjectURL(depth)];
+  const requestId = ++previewRequestId;
+  prepareButton.disabled = !select.value;
   status.classList.remove("error");
-  void inspectPair(source.name, localUrls[0]!, localUrls[1]!, 5000).catch(
-    showError,
-  );
+  void inspectPair(
+    source.name,
+    localUrls[0]!,
+    localUrls[1]!,
+    5000,
+    requestId,
+  ).catch((error: unknown) => {
+    if (requestId === previewRequestId) showError(error);
+  });
 });
 frameSlider.addEventListener("input", () => {
   stop();
