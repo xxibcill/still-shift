@@ -151,9 +151,14 @@ export const analyzeDepthSafety = (pixels: SafetyPixels): SafetyAssessment => {
     percentile(histogram, totalPixels, 0.05);
   const depthSaturationFraction = saturatedPixels / totalPixels;
   const nearExtremeFraction = nearExtremePixels / totalPixels;
-  const discontinuityDensity = depthEdgeCount / pairCount;
-  const centralDiscontinuityDensity =
-    centralDepthEdgeCount / Math.max(1, centralPairCount);
+  // A single contour occupies a smaller fraction of pixel pairs as resolution grows.
+  const edgeLengthScale = Math.max(1, Math.max(width, height) / 32);
+  const discontinuityDensity = clamp01(
+    (depthEdgeCount / pairCount) * edgeLengthScale,
+  );
+  const centralDiscontinuityDensity = clamp01(
+    (centralDepthEdgeCount / Math.max(1, centralPairCount)) * edgeLengthScale,
+  );
   const rgbDepthEdgeDisagreement =
     mismatchedEdgeCount / Math.max(1, edgePairCount);
   const riskScore = clamp01(

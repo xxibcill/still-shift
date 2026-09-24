@@ -341,14 +341,22 @@ try {
   assert.equal(await racePage.locator("#seed").inputValue(), "19");
   const selectedScene = JSON.parse(
     (await racePage.locator("#parameters").textContent()) ?? "{}",
-  ) as { motion: { preset: string; intensity: string; seed: number } };
+  ) as {
+    motion: { preset: string; intensity: string; seed: number };
+    warnings: { code: string }[];
+  };
   assert.deepEqual(
     {
       preset: selectedScene.motion.preset,
       intensity: selectedScene.motion.intensity,
       seed: selectedScene.motion.seed,
     },
-    { preset: "cinematic_float", intensity: "strong", seed: 19 },
+    { preset: "cinematic_float", intensity: "standard", seed: 19 },
+  );
+  assert.ok(
+    selectedScene.warnings.some(
+      (warning) => warning.code === "INTENSITY_DOWNGRADED",
+    ),
   );
 
   await racePage.locator("#seed").fill("-1");

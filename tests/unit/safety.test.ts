@@ -92,6 +92,30 @@ describe("v0.5 safety analysis and 2D fallback", () => {
     ).toBeLessThan(scene().motion.depthStrength);
   });
 
+  it("keeps central boundary risk stable at the lab analysis size", () => {
+    const small = analyzeDepthSafety(
+      pixels(
+        (x) => (x < 16 ? 64 : 192),
+        () => 128,
+        32,
+        32,
+      ),
+    );
+    const large = analyzeDepthSafety(
+      pixels(
+        (x) => (x < 128 ? 64 : 192),
+        () => 128,
+        256,
+        256,
+      ),
+    );
+    expect(large.riskScore).toBeCloseTo(small.riskScore, 2);
+    expect(large.riskScore).toBeGreaterThanOrEqual(0.4);
+    expect(
+      applySafetyToScene(scene(), large).motion.lateralTravel,
+    ).toBeLessThan(scene().motion.lateralTravel);
+  });
+
   it("downgrades a risky strong request and repairs an insufficient crop envelope", () => {
     const assessment = analyzeDepthSafety(pixels((x) => (x < 16 ? 64 : 192)));
     const original = scene("strong");
