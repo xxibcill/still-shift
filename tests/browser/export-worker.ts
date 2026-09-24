@@ -7,7 +7,10 @@ import {
   fallback2DScene,
   resolvePreviewScene,
 } from "../../packages/renderer-core/src/index.ts";
-import { exportScene } from "../../tools/export-worker/src/export-worker.ts";
+import {
+  exportScene,
+  processTreeRssBytes,
+} from "../../tools/export-worker/src/export-worker.ts";
 
 const sourceSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256">
   <rect width="256" height="256" fill="#161616"/>
@@ -21,6 +24,14 @@ const depthSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="256" height="25
 
 const directory = await mkdtemp(join(tmpdir(), "still-shift-export-test-"));
 try {
+  assert.equal(
+    processTreeRssBytes(
+      "100 1 4000 node\n101 100 2000 chromium\n102 101 3000 helper\n103 100 500 ffmpeg\n104 100 100 ps\n200 1 9999 unrelated\n",
+      100,
+      4_000_000,
+    ),
+    4_000_000 + 5_500 * 1024,
+  );
   const sourcePath = join(directory, "source.svg");
   const depthPath = join(directory, "depth.svg");
   await writeFile(sourcePath, sourceSvg);
@@ -48,6 +59,17 @@ try {
   assert.equal(first.frameCount, 90);
   assert.equal(first.durationMs, 3000);
   assert.ok(first.outputBytes > 0);
+  assert.ok(first.frameUploadAverageMs > 0);
+  assert.ok(first.frameUploadP95Ms > 0);
+  assert.ok(first.ffmpegCpuMs > 0);
+  assert.ok(first.encodePathWallMs > 0);
+  assert.ok(first.validationWallMs > 0);
+  assert.ok(first.peakParentRssBytes > 0);
+  assert.ok(first.cpuModel.length > 0);
+  assert.ok(first.cpuLogicalCores > 0);
+  if (first.peakSampledProcessTreeRssBytes !== null) {
+    assert.ok(first.peakSampledProcessTreeRssBytes > first.peakParentRssBytes);
+  }
   assert.equal((await readFile(firstPath)).length, first.outputBytes);
 
   const second = await exportScene({

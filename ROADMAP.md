@@ -232,7 +232,7 @@ Review the entire corpus before adding more presets.
 - [x] Encode H.264 MP4 with explicit frame rate, pixel format, color metadata, and fast start.
 - [x] Write to a temporary path and publish atomically.
 - [x] Validate dimensions, FPS, frame count, duration, and decodability with `ffprobe`.
-- [x] Record frame-render time, encode-path wall time, output size, parent memory, and GPU information.
+- [x] Record frame-render, upload, encode-path, validation, and FFmpeg CPU time; output size; sampled worker-process-tree memory; and CPU/GPU information.
 
 ### Completion evidence
 

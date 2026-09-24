@@ -2,6 +2,7 @@ import { spawn, execFile } from "node:child_process";
 import { createReadStream } from "node:fs";
 import { link, mkdir, rm, stat } from "node:fs/promises";
 import type { IncomingMessage, ServerResponse } from "node:http";
+import { availableParallelism, cpus } from "node:os";
 import { basename, dirname, extname, resolve } from "node:path";
 import { performance } from "node:perf_hooks";
 import { randomUUID } from "node:crypto";
@@ -33,10 +34,17 @@ export type ExportMetrics = {
   durationMs: number;
   frameRenderAverageMs: number;
   frameRenderP95Ms: number;
+  frameUploadAverageMs: number;
+  frameUploadP95Ms: number;
+  ffmpegCpuMs: number;
   encodePathWallMs: number;
+  validationWallMs: number;
   totalWallMs: number;
   outputBytes: number;
-  peakCpuMemoryBytes: number;
+  peakParentRssBytes: number;
+  peakSampledProcessTreeRssBytes: number | null;
+  cpuModel: string;
+  cpuLogicalCores: number;
   browserVersion: string;
   browserExecutable: string;
   gpuRenderer: string;
@@ -53,7 +61,9 @@ const ffmpegArguments = (
 ) => [
   "-hide_banner",
   "-loglevel",
-  "error",
+  "info",
+  "-nostats",
+  "-benchmark",
   "-f",
   transport === "raw_rgba" ? "rawvideo" : "image2pipe",
   ...(transport === "raw_rgba"
@@ -96,6 +106,55 @@ const ffmpegArguments = (
   "-y",
   temporaryPath,
 ];
+
+const ffmpegCpuTimeMs = (output: string): number => {
+  const benchmark = output.match(
+    /bench:\s+utime=([\d.]+)s stime=([\d.]+)s rtime=[\d.]+s/,
+  );
+  if (!benchmark) throw new Error("FFmpeg did not report CPU time");
+  return (Number(benchmark[1]) + Number(benchmark[2])) * 1000;
+};
+
+export const processTreeRssBytes = (
+  processList: string,
+  rootPid: number,
+  rootRssBytes: number,
+): number => {
+  const children = new Map<number, { pid: number; rssBytes: number }[]>();
+  for (const line of processList.split("\n")) {
+    const match = line.match(/^\s*(\d+)\s+(\d+)\s+(\d+)\s+(.+)$/);
+    if (!match || basename(match[4]!) === "ps") continue;
+    const pid = Number(match[1]);
+    const parentPid = Number(match[2]);
+    const rssBytes = Number(match[3]) * 1024;
+    const siblings = children.get(parentPid) ?? [];
+    siblings.push({ pid, rssBytes });
+    children.set(parentPid, siblings);
+  }
+  let total = rootRssBytes;
+  const visited = new Set([rootPid]);
+  const pending = [rootPid];
+  while (pending.length > 0) {
+    for (const child of children.get(pending.pop()!) ?? []) {
+      if (visited.has(child.pid)) continue;
+      visited.add(child.pid);
+      total += child.rssBytes;
+      pending.push(child.pid);
+    }
+  }
+  return total;
+};
+
+const sampleProcessTreeRssBytes = async (
+  rootRssBytes: number,
+): Promise<number> => {
+  const { stdout } = await execFileAsync(
+    "ps",
+    ["-A", "-o", "pid=,ppid=,rss=,comm="],
+    { maxBuffer: 4 * 1024 * 1024 },
+  );
+  return processTreeRssBytes(stdout, process.pid, rootRssBytes);
+};
 
 const readBodyToEncoder = async (
   request: IncomingMessage,
@@ -315,13 +374,30 @@ export const exportScene = async (
   let server: ViteDevServer | undefined;
   let browser: Browser | undefined;
   let encodePathStart = 0;
-  let peakCpuMemoryBytes = process.memoryUsage().rss;
-  const memoryMonitor = setInterval(() => {
-    peakCpuMemoryBytes = Math.max(
-      peakCpuMemoryBytes,
-      process.memoryUsage().rss,
-    );
-  }, 100);
+  let peakParentRssBytes = process.memoryUsage().rss;
+  let peakSampledProcessTreeRssBytes: number | null = null;
+  let memorySample: Promise<void> | null = null;
+  const sampleMemory = (): Promise<void> => {
+    if (memorySample) return memorySample;
+    memorySample = (async () => {
+      const parentRssBytes = process.memoryUsage().rss;
+      peakParentRssBytes = Math.max(peakParentRssBytes, parentRssBytes);
+      try {
+        const treeRssBytes = await sampleProcessTreeRssBytes(parentRssBytes);
+        peakSampledProcessTreeRssBytes = Math.max(
+          peakSampledProcessTreeRssBytes ?? 0,
+          treeRssBytes,
+        );
+      } catch {
+        // Export remains usable when OS process accounting is unavailable.
+      }
+    })().finally(() => {
+      memorySample = null;
+    });
+    return memorySample;
+  };
+  const memoryMonitor = setInterval(() => void sampleMemory(), 500);
+  void sampleMemory();
   try {
     server = await createServer({
       root: projectRoot,
@@ -349,7 +425,10 @@ export const exportScene = async (
       throw new Error("Not all frames reached the encoder");
     encoder.stdin?.end();
     await encoderClosed;
+    await sampleMemory();
+    const validationStart = performance.now();
     await verifyOutput(temporaryPath, scene);
+    const validationWallMs = performance.now() - validationStart;
     const outputBytes = (await stat(temporaryPath)).size;
     const metrics: ExportMetrics = {
       version: EXPORT_WORKER_VERSION,
@@ -359,10 +438,17 @@ export const exportScene = async (
       durationMs: scene.timeline.durationMs,
       frameRenderAverageMs: browserResult.frameRenderAverageMs,
       frameRenderP95Ms: browserResult.frameRenderP95Ms,
+      frameUploadAverageMs: browserResult.frameUploadAverageMs,
+      frameUploadP95Ms: browserResult.frameUploadP95Ms,
+      ffmpegCpuMs: ffmpegCpuTimeMs(encoderError),
       encodePathWallMs: performance.now() - encodePathStart,
+      validationWallMs,
       totalWallMs: performance.now() - start,
       outputBytes,
-      peakCpuMemoryBytes,
+      peakParentRssBytes,
+      peakSampledProcessTreeRssBytes,
+      cpuModel: cpus()[0]?.model ?? "unknown",
+      cpuLogicalCores: availableParallelism(),
       browserVersion: browser.version(),
       browserExecutable: chromium.executablePath(),
       gpuRenderer: browserResult.gpuRenderer,
@@ -380,6 +466,7 @@ export const exportScene = async (
     throw error;
   } finally {
     clearInterval(memoryMonitor);
+    await memorySample;
     await browser?.close();
     await server?.close();
     await rm(temporaryPath, { force: true });
