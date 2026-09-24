@@ -1,6 +1,12 @@
+import { readFile } from "node:fs/promises";
+import { gunzipSync } from "node:zlib";
+
 import { describe, expect, it } from "vitest";
 
-import { compareFrameSamples } from "../../packages/renderer-core/src/parity.ts";
+import {
+  compareFrameMotion,
+  compareFrameSamples,
+} from "../../packages/renderer-core/src/parity.ts";
 
 const gradient = () => {
   const pixels = new Uint8Array(8 * 4 * 3);
@@ -46,5 +52,57 @@ describe("preview/export parity samples", () => {
     expect(() =>
       compareFrameSamples(new Uint8Array(5), new Uint8Array(5), 8, 4),
     ).toThrow("matching RGB grids");
+  });
+});
+
+describe("preview/export motion samples", () => {
+  it("accepts matching motion despite a static codec shift", () => {
+    const first = gradient();
+    const last = first.map((value) => Math.min(255, value + 20));
+    const shiftedFirst = first.map((value) => Math.min(255, value + 2));
+    const shiftedLast = last.map((value) => Math.min(255, value + 2));
+    expect(
+      compareFrameMotion(first, last, shiftedFirst, shiftedLast).warning,
+    ).toBeNull();
+  });
+
+  it("reports frozen and reversed motion", () => {
+    const first = gradient();
+    const last = first.map((value) => Math.min(255, value + 20));
+    expect(compareFrameMotion(first, last, first, first).warning?.code).toBe(
+      "PREVIEW_EXPORT_VARIANCE",
+    );
+    expect(compareFrameMotion(first, last, last, first).warning?.code).toBe(
+      "PREVIEW_EXPORT_VARIANCE",
+    );
+  });
+
+  it("detects the frozen portrait export missed by frame tolerance", async () => {
+    const baseline = JSON.parse(
+      await readFile(
+        new URL("../visual/golden-baseline.json", import.meta.url),
+        "utf8",
+      ),
+    ) as { samples: Record<string, string> };
+    const first = gunzipSync(
+      Buffer.from(baseline.samples["portrait:0"]!, "base64"),
+    );
+    const last = gunzipSync(
+      Buffer.from(baseline.samples["portrait:149"]!, "base64"),
+    );
+    expect(compareFrameSamples(first, last, 64, 36).warning).toBeNull();
+    expect(compareFrameMotion(first, last, first, first).warning?.code).toBe(
+      "PREVIEW_EXPORT_VARIANCE",
+    );
+  });
+
+  it("rejects invalid or motionless references", () => {
+    const first = gradient();
+    expect(() => compareFrameMotion(first, first, first, first)).toThrow(
+      "contain motion",
+    );
+    expect(() =>
+      compareFrameMotion(first, first.subarray(1), first, first),
+    ).toThrow("matching nonempty");
   });
 });

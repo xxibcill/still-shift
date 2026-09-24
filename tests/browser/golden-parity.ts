@@ -8,7 +8,10 @@ import { gunzipSync, gzipSync } from "node:zlib";
 import { chromium } from "playwright";
 import { createServer } from "vite";
 
-import { compareFrameSamples } from "../../packages/renderer-core/src/parity.ts";
+import {
+  compareFrameMotion,
+  compareFrameSamples,
+} from "../../packages/renderer-core/src/parity.ts";
 import type { PreviewScene } from "../../packages/renderer-core/src/scene.ts";
 import { SHADER_VERSION } from "../../packages/renderer-core/src/webgl-renderer.ts";
 import { exportScene } from "../../tools/export-worker/src/export-worker.ts";
@@ -202,13 +205,18 @@ try {
     assert.equal(jpegMetrics.frameCount, metrics.frameCount);
     browserVersion = metrics.browserVersion;
     ffmpegVersion = metrics.ffmpegVersion;
+    const transports = [
+      ["png_pipe", outputPath],
+      ["jpeg_pipe", jpegOutputPath],
+    ] as const;
+    const previewFrames = new Map<number, Uint8Array>();
+    const exportFrames = new Map<string, Uint8Array>();
     for (const frameIndex of frameIndices) {
       const preview = await ffmpegRgb(previewPaths.get(frameIndex)!);
-      for (const [transport, renderedPath] of [
-        ["png_pipe", outputPath],
-        ["jpeg_pipe", jpegOutputPath],
-      ] as const) {
+      previewFrames.set(frameIndex, preview);
+      for (const [transport, renderedPath] of transports) {
         const exported = await ffmpegRgb(renderedPath, frameIndex);
+        exportFrames.set(`${transport}:${frameIndex}`, exported);
         const comparison = compareFrameSamples(
           preview,
           exported,
@@ -243,6 +251,43 @@ try {
         if (regression.warning)
           throw new Error(
             `${regression.warning.code} golden baseline ${key}: ${JSON.stringify(regression)}`,
+          );
+      }
+    }
+    for (const [first, last] of [
+      [frameIndices[0]!, frameIndices[1]!],
+      [frameIndices[1]!, frameIndices[2]!],
+    ] as const) {
+      const previewFirst = previewFrames.get(first)!;
+      const previewLast = previewFrames.get(last)!;
+      if (saved) {
+        const baselineFirst = gunzipSync(
+          Buffer.from(saved.samples[`${golden.id}:${first}`]!, "base64"),
+        );
+        const baselineLast = gunzipSync(
+          Buffer.from(saved.samples[`${golden.id}:${last}`]!, "base64"),
+        );
+        const motion = compareFrameMotion(
+          baselineFirst,
+          baselineLast,
+          previewFirst,
+          previewLast,
+        );
+        if (motion.warning)
+          throw new Error(
+            `${motion.warning.code} golden baseline ${golden.id} frames ${first}-${last}: ${JSON.stringify(motion)}`,
+          );
+      }
+      for (const [transport] of transports) {
+        const motion = compareFrameMotion(
+          previewFirst,
+          previewLast,
+          exportFrames.get(`${transport}:${first}`)!,
+          exportFrames.get(`${transport}:${last}`)!,
+        );
+        if (motion.warning)
+          throw new Error(
+            `${motion.warning.code} ${golden.id} ${transport} frames ${first}-${last}: ${JSON.stringify(motion)}`,
           );
       }
     }
