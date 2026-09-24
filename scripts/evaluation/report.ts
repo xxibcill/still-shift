@@ -9,7 +9,10 @@ import {
   type AnimationResult,
 } from "@still-shift/scene-contract";
 import { findCorpusIntegrityBlockers } from "../corpus-integrity.ts";
-import { validateEvaluationRecords } from "./evidence.ts";
+import {
+  compareIndependentRenders,
+  validateEvaluationRecords,
+} from "./evidence.ts";
 import { RATING_FIELDS, RatingsExportSchema } from "./ratings.ts";
 
 const option = (name: string): string | undefined => {
@@ -38,6 +41,7 @@ const readOptional = async (
 const corpusPath = required("--corpus");
 const resultsPath = required("--results");
 const outputPath = required("--output");
+const determinismResultsPath = option("--determinism-results");
 const ratingsInput = await readOptional(option("--ratings"));
 const ratings =
   ratingsInput === null ? null : RatingsExportSchema.parse(ratingsInput);
@@ -103,6 +107,19 @@ validateEvaluationRecords(corpus, records);
 const results: AnimationResult[] = records
   .filter((record) => record.result)
   .map((record) => record.result!);
+const repeatRecords = determinismResultsPath
+  ? (await readFile(resolve(determinismResultsPath), "utf8"))
+      .trim()
+      .split("\n")
+      .map((line) => JSON.parse(line) as (typeof records)[number])
+      .map((record) => ({
+        ...record,
+        result: record.result
+          ? AnimationResultSchema.parse(record.result)
+          : undefined,
+      }))
+  : null;
+if (repeatRecords) validateEvaluationRecords(corpus, repeatRecords);
 const summary = JSON.parse(
   await readFile(join(dirname(resultsPath), "batch-summary.json"), "utf8"),
 ) as {
@@ -139,6 +156,9 @@ const expectedCount = corpus.entries.length * 3;
 const batchMeasured =
   records.length === expectedCount && summary.itemCount === expectedCount;
 const allSuccessful = batchMeasured && summary.successful === expectedCount;
+const independentRendersMatch = repeatRecords
+  ? await compareIndependentRenders(records, repeatRecords)
+  : false;
 const validRate = summary.successful / summary.itemCount;
 const workerRates = results.map(
   (result) => result.durationMs / result.metrics.totalWallMs,
@@ -304,11 +324,10 @@ const gates = [
   },
   {
     name: "Determinism",
-    result: `${summary.reused}/${summary.itemCount} verified retry checkpoints`,
-    status: gate(
-      summary.reused === summary.itemCount,
-      summary.reused === summary.itemCount,
-    ),
+    result: repeatRecords
+      ? `${independentRendersMatch ? "Matching" : "Different"} independent renders; ${summary.reused}/${summary.itemCount} verified retry checkpoints`
+      : `${summary.reused}/${summary.itemCount} verified retry checkpoints; independent rerender pending`,
+    status: gate(Boolean(repeatRecords), independentRendersMatch),
   },
   {
     name: "Duration accuracy",
