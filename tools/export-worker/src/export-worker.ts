@@ -33,7 +33,7 @@ export type ExportMetrics = {
   durationMs: number;
   frameRenderAverageMs: number;
   frameRenderP95Ms: number;
-  encodeMs: number;
+  encodePathWallMs: number;
   totalWallMs: number;
   outputBytes: number;
   peakCpuMemoryBytes: number;
@@ -314,7 +314,7 @@ export const exportScene = async (
       : null;
   let server: ViteDevServer | undefined;
   let browser: Browser | undefined;
-  let encodeStart = 0;
+  let encodePathStart = 0;
   let peakCpuMemoryBytes = process.memoryUsage().rss;
   const memoryMonitor = setInterval(() => {
     peakCpuMemoryBytes = Math.max(
@@ -338,7 +338,7 @@ export const exportScene = async (
     });
     await page.goto(new URL("tools/export-worker/index.html", baseUrl).href);
     await page.waitForFunction(() => Boolean(window.runStillShiftExport));
-    encodeStart = performance.now();
+    encodePathStart = performance.now();
     const browserResult = await page.evaluate(
       ({ scene, hasDepth, transport }) =>
         window.runStillShiftExport!(scene, hasDepth, transport),
@@ -359,7 +359,7 @@ export const exportScene = async (
       durationMs: scene.timeline.durationMs,
       frameRenderAverageMs: browserResult.frameRenderAverageMs,
       frameRenderP95Ms: browserResult.frameRenderP95Ms,
-      encodeMs: performance.now() - encodeStart,
+      encodePathWallMs: performance.now() - encodePathStart,
       totalWallMs: performance.now() - start,
       outputBytes,
       peakCpuMemoryBytes,
