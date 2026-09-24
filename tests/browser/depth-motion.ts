@@ -256,6 +256,37 @@ try {
   firstGate.release();
   await racePage.waitForLoadState("networkidle");
   assert.equal(await racePage.locator("#scene-name").textContent(), "second");
+
+  await racePage.locator("#intensity").selectOption("strong");
+  await racePage.locator("#seed").fill("19");
+  await racePage.locator("#build-gallery").click();
+  await racePage.waitForFunction(() =>
+    document
+      .querySelector("#gallery-note")
+      ?.textContent?.includes("6/6 midpoint"),
+  );
+  await racePage.locator("#intensity").selectOption("subtle");
+  await racePage.locator("#seed").fill("20");
+  await racePage
+    .locator(".gallery-item")
+    .filter({ hasText: "first · cinematic_float · strong · seed 19" })
+    .click();
+  await racePage.waitForFunction(() =>
+    document.querySelector("#status")?.textContent?.includes("first ready"),
+  );
+  assert.equal(await racePage.locator("#intensity").inputValue(), "strong");
+  assert.equal(await racePage.locator("#seed").inputValue(), "19");
+  const selectedScene = JSON.parse(
+    (await racePage.locator("#parameters").textContent()) ?? "{}",
+  ) as { motion: { preset: string; intensity: string; seed: number } };
+  assert.deepEqual(
+    {
+      preset: selectedScene.motion.preset,
+      intensity: selectedScene.motion.intensity,
+      seed: selectedScene.motion.seed,
+    },
+    { preset: "cinematic_float", intensity: "strong", seed: 19 },
+  );
   await racePage.close();
 
   process.stdout.write(

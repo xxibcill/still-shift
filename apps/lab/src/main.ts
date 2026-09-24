@@ -250,12 +250,23 @@ const prepareSelected = async (): Promise<void> => {
   }
 };
 
-const addGalleryCard = (
-  entry: CorpusEntry,
-  preset: PreviewPreset,
-  poster: string | null,
-  error?: unknown,
-): void => {
+type GalleryCard = {
+  entry: CorpusEntry;
+  preset: PreviewPreset;
+  intensity: PreviewIntensity;
+  seed: number;
+  poster: string | null;
+  error?: unknown;
+};
+
+const addGalleryCard = ({
+  entry,
+  preset,
+  intensity,
+  seed,
+  poster,
+  error,
+}: GalleryCard): void => {
   const card = document.createElement("button");
   card.type = "button";
   card.className = "gallery-item";
@@ -266,6 +277,8 @@ const addGalleryCard = (
     card.append(image);
     card.addEventListener("click", () => {
       presetSelect.value = preset;
+      intensitySelect.value = intensity;
+      seedInput.value = String(seed);
       select.value = entry.id;
       void prepareSelected();
       window.scrollTo({ top: 0, behavior: "smooth" });
@@ -278,7 +291,8 @@ const addGalleryCard = (
     card.append(failure);
   }
   const label = document.createElement("strong");
-  label.textContent = entry.id + " · " + preset;
+  label.textContent =
+    entry.id + " · " + preset + " · " + intensity + " · seed " + seed;
   card.append(label);
   gallery.append(card);
 };
@@ -334,14 +348,28 @@ const buildGallery = async (): Promise<void> => {
               posterRenderer.dispose();
             }
             posters.set(entry.id + ":" + preset, poster);
-            addGalleryCard(entry, preset, poster);
+            addGalleryCard({ entry, preset, intensity, seed, poster });
           } catch (error) {
-            addGalleryCard(entry, preset, null, error);
+            addGalleryCard({
+              entry,
+              preset,
+              intensity,
+              seed,
+              poster: null,
+              error,
+            });
           }
         }
       } catch (error) {
         for (const preset of presets)
-          addGalleryCard(entry, preset, null, error);
+          addGalleryCard({
+            entry,
+            preset,
+            intensity,
+            seed,
+            poster: null,
+            error,
+          });
       }
     }
     byId<HTMLElement>("gallery-note").textContent =
