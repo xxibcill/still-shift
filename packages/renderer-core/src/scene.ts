@@ -1,3 +1,5 @@
+import type { SafetySignals } from "./safety.ts";
+
 export const RENDERER_VERSION = "preview-render-0.5.0" as const;
 export const SLOW_PUSH_VERSION = "slow_push@0.3.0" as const;
 export const PRESET_VERSIONS = {
@@ -26,7 +28,7 @@ export type PreviewQuality = {
   riskScore: number;
   fallback: boolean;
   fallbackReason: PreviewWarning["code"] | null;
-  signals: Record<string, number>;
+  signals: SafetySignals;
 };
 
 export const PREVIEW_LIMITS = {
