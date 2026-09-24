@@ -1,4 +1,4 @@
-export const RENDERER_VERSION = "preview-render-0.4.0" as const;
+export const RENDERER_VERSION = "preview-render-0.5.0" as const;
 export const SLOW_PUSH_VERSION = "slow_push@0.3.0" as const;
 export const PRESET_VERSIONS = {
   slow_push: SLOW_PUSH_VERSION,
@@ -8,6 +8,26 @@ export const PRESET_VERSIONS = {
 
 export type PreviewPreset = keyof typeof PRESET_VERSIONS;
 export type PreviewIntensity = "subtle" | "standard" | "strong";
+export type PreviewWarning = {
+  code:
+    | "MOTION_CLAMPED"
+    | "DEPTH_RANGE_FLAT"
+    | "DEPTH_RANGE_EXTREME"
+    | "DEPTH_EDGE_RISK_HIGH"
+    | "DEPTH_PREPARATION_FAILED"
+    | "LATERAL_MOTION_REDUCED"
+    | "INTENSITY_DOWNGRADED"
+    | "FALLBACK_2D_USED";
+  message: string;
+};
+
+export type PreviewQuality = {
+  analysisVersion: string;
+  riskScore: number;
+  fallback: boolean;
+  fallbackReason: PreviewWarning["code"] | null;
+  signals: Record<string, number>;
+};
 
 export const PREVIEW_LIMITS = {
   fps: 30,
@@ -143,6 +163,7 @@ export type PreviewScene = {
   source: { width: number; height: number };
   canvas: { width: number; height: number };
   motion: {
+    mode: "depth" | "fallback_2d";
     preset: PreviewPreset;
     intensity: PreviewIntensity;
     seed: number;
@@ -153,7 +174,8 @@ export type PreviewScene = {
     overscan: number;
     maximumCrop: number;
   };
-  warnings: string[];
+  quality: PreviewQuality | null;
+  warnings: PreviewWarning[];
 };
 
 export type EvaluatedFrame = {
@@ -182,14 +204,18 @@ const resolveLimit = (
   requested: number | undefined,
   fallback: number,
   maximum: number,
-  warnings: string[],
+  warnings: PreviewWarning[],
 ): number => {
   const value = requested ?? fallback;
   if (!Number.isFinite(value) || value < 0) {
     throw new Error(name + " must be finite and nonnegative");
   }
   const resolved = clamp(value, 0, maximum);
-  if (resolved !== value) warnings.push(name + " clamped to " + maximum);
+  if (resolved !== value)
+    warnings.push({
+      code: "MOTION_CLAMPED",
+      message: name + " clamped to " + maximum,
+    });
   return resolved;
 };
 
@@ -238,7 +264,7 @@ const validateInput = (input: PreviewInput): void => {
 
 export const resolvePreviewScene = (input: PreviewInput): PreviewScene => {
   validateInput(input);
-  const warnings: string[] = [];
+  const warnings: PreviewWarning[] = [];
   const defaults = PRESET_DEFAULTS[input.preset][input.intensity];
   const limits = PRESET_LIMITS[input.preset];
   const travel = resolveLimit(
@@ -277,7 +303,10 @@ export const resolvePreviewScene = (input: PreviewInput): PreviewScene => {
     warnings,
   );
   if (overscan < PREVIEW_LIMITS.minimumOverscan) {
-    warnings.push("overscan raised to " + PREVIEW_LIMITS.minimumOverscan);
+    warnings.push({
+      code: "MOTION_CLAMPED",
+      message: "overscan raised to " + PREVIEW_LIMITS.minimumOverscan,
+    });
   }
   let safeOverscan = Math.max(overscan, PREVIEW_LIMITS.minimumOverscan);
   const maximumCrop =
@@ -291,7 +320,10 @@ export const resolvePreviewScene = (input: PreviewInput): PreviewScene => {
   }
   if (maximumCrop > safeOverscan) {
     safeOverscan = maximumCrop;
-    warnings.push("overscan raised to fit resolved motion");
+    warnings.push({
+      code: "MOTION_CLAMPED",
+      message: "overscan raised to fit resolved motion",
+    });
   }
   return {
     rendererVersion: RENDERER_VERSION,
@@ -304,6 +336,7 @@ export const resolvePreviewScene = (input: PreviewInput): PreviewScene => {
     source: { width: input.sourceWidth, height: input.sourceHeight },
     canvas: { width: input.canvasWidth, height: input.canvasHeight },
     motion: {
+      mode: "depth",
       preset: input.preset,
       intensity: input.intensity,
       seed: input.seed ?? 1842,
@@ -314,6 +347,7 @@ export const resolvePreviewScene = (input: PreviewInput): PreviewScene => {
       overscan: safeOverscan,
       maximumCrop,
     },
+    quality: null,
     warnings,
   };
 };
@@ -358,11 +392,11 @@ export const evaluateFrame = (
       ? 0
       : frameIndex / (scene.timeline.frameCount - 1);
   const eased = progress * progress * (3 - 2 * progress);
-  const { preset, lateralTravel, rollDegrees, seed } = scene.motion;
+  const { mode, preset, lateralTravel, rollDegrees, seed } = scene.motion;
   let translationX = 0;
   let translationY = 0;
   let evaluatedRoll = 0;
-  if (preset === "horizontal_drift") {
+  if (mode === "fallback_2d" || preset === "horizontal_drift") {
     translationX = lateralTravel * (2 * eased - 1);
   } else if (preset === "cinematic_float") {
     const phase = seededPhase(seed);
@@ -380,7 +414,8 @@ export const evaluateFrame = (
     progress: eased,
     scale: 1 + cameraTravel,
     cameraTravel,
-    depthStrength: scene.motion.depthStrength * eased,
+    depthStrength:
+      mode === "fallback_2d" ? 0 : scene.motion.depthStrength * eased,
     translationX,
     translationY,
     rollDegrees: evaluatedRoll,

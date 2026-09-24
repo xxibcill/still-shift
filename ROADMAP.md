@@ -1,6 +1,6 @@
 # Still Shift — Phase 0 Roadmap
 
-**Status:** v0.3 review in progress; v0.4 implemented but awaiting the frozen corpus
+**Status:** v0.3–v0.5 implemented; frozen-corpus and human review pending; v0.6 in progress
 
 **Updated:** 2026-09-24  
 **Target:** 10 working days  
@@ -34,10 +34,10 @@ When work begins, update the roadmap date, mark exactly one version as in progre
 | ------- | ---------------------------------------- | --------: | ------ | ----------------------------------------------------------------------------------------- |
 | v0.1    | Foundation, contracts, and frozen corpus |     Day 1 | `[!]`  | [Foundation checks pass; real corpus freeze remains blocked](./docs/v0.1-verification.md) |
 | v0.2    | Reusable depth preparation               |  Days 2–3 | `[!]`  | [Depth worker merged; frozen-corpus review pending](./docs/v0.2-depth-preparation.md)     |
-| v0.3    | First animated preview                   |     Day 3 | `[~]`  | [Preview implemented; corpus-wide review pending](./docs/v0.3-first-preview.md)           |
+| v0.3    | First animated preview                   |     Day 3 | `[!]`  | [Preview implemented; corpus-wide review pending](./docs/v0.3-first-preview.md)           |
 | v0.4    | Preset library and lab UI                |  Days 4–5 | `[!]`  | [Three presets implemented; frozen-corpus review pending](./docs/v0.4-preset-library.md)  |
-| v0.5    | Safety analysis and 2D fallback          |     Day 6 | `[ ]`  | Unsafe scenes clamp or fall back cleanly                                                  |
-| v0.6    | Deterministic MP4 export                 |     Day 7 | `[ ]`  | Validated 1080p MP4 with exact frame count                                                |
+| v0.5    | Safety analysis and 2D fallback          |     Day 6 | `[!]`  | [Safety implemented; frozen-corpus review pending](./docs/v0.5-safety-fallback.md)        |
+| v0.6    | Deterministic MP4 export                 |     Day 7 | `[~]`  | Validated 1080p MP4 with exact frame count                                                |
 | v0.7    | Preview/export parity and golden tests   |     Day 7 | `[ ]`  | Golden scenes agree across both render paths                                              |
 | v0.8    | Single-image CLI integration             |     Day 8 | `[ ]`  | Existing workflow renders one clip through the CLI                                        |
 | v0.9    | Unattended batch execution               |     Day 8 | `[ ]`  | 50-image batch completes with a result manifest                                           |
@@ -197,24 +197,24 @@ Review the entire corpus before adding more presets.
 
 ### Tasks
 
-- [ ] Measure depth-discontinuity density.
-- [ ] Detect large discontinuities near central/important image regions.
-- [ ] Measure disagreement between RGB edges and depth edges.
-- [ ] Detect flat or extreme depth ranges.
-- [ ] Verify requested movement against available overscan.
-- [ ] Combine signals into a versioned risk score.
-- [ ] Reduce lateral movement and depth strength according to risk.
-- [ ] Implement deterministic 2D pan/zoom fallback.
-- [ ] Emit stable warnings for every clamp and fallback.
-- [ ] Avoid describing the heuristic risk score as calibrated model confidence.
+- [x] Measure depth-discontinuity density.
+- [x] Detect large discontinuities near central/important image regions.
+- [x] Measure disagreement between RGB edges and depth edges.
+- [x] Detect flat or extreme depth ranges.
+- [x] Verify requested movement against available overscan.
+- [x] Combine signals into a versioned risk score.
+- [x] Reduce lateral movement and depth strength according to risk.
+- [x] Implement deterministic 2D pan/zoom fallback.
+- [x] Emit stable warnings for every clamp and fallback.
+- [x] Avoid describing the heuristic risk score as calibrated model confidence.
 
 ### Completion evidence
 
-- [ ] Synthetic risky scenes trigger the expected clamps.
-- [ ] Flat depth maps produce valid 2D footage.
-- [ ] Safe requests remain unchanged.
-- [ ] Every fallback includes a stable reason code.
-- [ ] v0.4 preset behavior remains deterministic.
+- [x] Synthetic risky scenes trigger the expected clamps.
+- [x] Flat depth maps produce valid moving 2D previews; MP4 footage is covered by v0.6.
+- [x] Safe requests remain unchanged.
+- [x] Every fallback includes a stable reason code.
+- [x] v0.4 preset behavior remains deterministic.
 
 ## v0.6 — Deterministic MP4 export
 

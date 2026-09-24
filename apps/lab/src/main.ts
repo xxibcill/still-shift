@@ -1,10 +1,13 @@
 import {
+  analyzeDepthSafety,
+  applySafetyToScene,
   createWebGLPreview,
   evaluateFrame,
   resolvePreviewScene,
   type PreviewIntensity,
   type PreviewPreset,
   type PreviewScene,
+  type SafetyAssessment,
   type WebGLPreview,
 } from "../../../packages/renderer-core/src/index.ts";
 import type { z } from "zod";
@@ -55,6 +58,7 @@ let activeImages: {
   source: HTMLImageElement;
   depth: HTMLImageElement;
 } | null = null;
+const safetyAssessments = new WeakMap<HTMLImageElement, SafetyAssessment>();
 
 const presets: PreviewPreset[] = [
   "slow_push",
@@ -91,6 +95,7 @@ const showFrame = (frameIndex: number): void => {
       canvas: scene.canvas,
       timeline: scene.timeline,
       motion: scene.motion,
+      quality: scene.quality,
       evaluatedFrame: frame,
       warnings: scene.warnings,
     },
@@ -104,6 +109,35 @@ const loadImage = async (url: string): Promise<HTMLImageElement> => {
   image.src = url;
   await image.decode();
   return image;
+};
+
+const analyzePair = (
+  source: HTMLImageElement,
+  depth: HTMLImageElement,
+): SafetyAssessment => {
+  const cached = safetyAssessments.get(depth);
+  if (cached) return cached;
+  const scale = Math.min(256 / source.naturalWidth, 256 / source.naturalHeight);
+  const width = Math.max(2, Math.round(source.naturalWidth * scale));
+  const height = Math.max(2, Math.round(source.naturalHeight * scale));
+  const analysisCanvas = document.createElement("canvas");
+  analysisCanvas.width = width;
+  analysisCanvas.height = height;
+  const context = analysisCanvas.getContext("2d", { willReadFrequently: true });
+  if (!context) throw new Error("2D canvas is required for safety analysis");
+  context.drawImage(source, 0, 0, width, height);
+  const sourcePixels = context.getImageData(0, 0, width, height).data;
+  context.clearRect(0, 0, width, height);
+  context.drawImage(depth, 0, 0, width, height);
+  const depthPixels = context.getImageData(0, 0, width, height).data;
+  const assessment = analyzeDepthSafety({
+    width,
+    height,
+    source: sourcePixels,
+    depth: depthPixels,
+  });
+  safetyAssessments.set(depth, assessment);
+  return assessment;
 };
 
 const selectedSeed = (): number => {
@@ -121,8 +155,8 @@ const resolveLabScene = (
   preset: PreviewPreset = presetSelect.value as PreviewPreset,
   intensity: PreviewIntensity = intensitySelect.value as PreviewIntensity,
   seed: number = selectedSeed(),
-): PreviewScene =>
-  resolvePreviewScene({
+): PreviewScene => {
+  const scene = resolvePreviewScene({
     sourceWidth: source.naturalWidth,
     sourceHeight: source.naturalHeight,
     depthWidth: depth.naturalWidth,
@@ -135,6 +169,8 @@ const resolveLabScene = (
     intensity,
     seed,
   });
+  return applySafetyToScene(scene, analyzePair(source, depth));
+};
 
 const loadScene = async (pair: PreviewPair) => {
   const [source, depth] = await Promise.all([
@@ -170,7 +206,7 @@ const activateScene = (
   playButton.disabled = false;
   showFrame(Math.min(frameIndex, nextScene.timeline.frameCount - 1));
   status.classList.remove("error");
-  status.textContent = `${name} ready · ${nextScene.motion.preset} / ${nextScene.motion.intensity} · ${nextScene.timeline.frameCount} frames · ${nextScene.warnings.length} clamps`;
+  status.textContent = `${name} ready · ${nextScene.motion.preset} / ${nextScene.motion.intensity} · ${nextScene.motion.mode} · ${nextScene.timeline.frameCount} frames · ${nextScene.warnings.length} warnings`;
 };
 
 const inspectPair = async (

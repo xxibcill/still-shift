@@ -75,7 +75,9 @@ export const AnimationRequestSchema = z
 export const AnimationWarningCodeSchema = z.enum([
   "MOTION_CLAMPED",
   "DEPTH_RANGE_FLAT",
+  "DEPTH_RANGE_EXTREME",
   "DEPTH_EDGE_RISK_HIGH",
+  "DEPTH_PREPARATION_FAILED",
   "LATERAL_MOTION_REDUCED",
   "FALLBACK_2D_USED",
   "PREVIEW_EXPORT_VARIANCE",

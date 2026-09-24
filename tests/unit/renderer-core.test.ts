@@ -200,7 +200,7 @@ describe("v0.4 preset library", () => {
       PRESET_LIMITS.cinematic_float.lateralTravel,
     );
     expect(scene.motion.rollDegrees).toBe(PREVIEW_LIMITS.maximumRollDegrees);
-    expect(scene.warnings).toEqual([
+    expect(scene.warnings.map((warning) => warning.message)).toEqual([
       "lateral travel clamped to 0.035",
       "roll clamped to 0.3",
     ]);
@@ -212,7 +212,10 @@ describe("v0.4 preset library", () => {
       requestedLateralTravel: 0.02,
     });
     expect(push.motion.lateralTravel).toBe(0);
-    expect(push.warnings).toContain("lateral travel clamped to 0");
+    expect(push.warnings).toContainEqual({
+      code: "MOTION_CLAMPED",
+      message: "lateral travel clamped to 0",
+    });
 
     const floating = resolvePreviewScene({
       ...input,
@@ -221,8 +224,9 @@ describe("v0.4 preset library", () => {
       overscan: 0.1,
     });
     expect(floating.motion.overscan).toBeCloseTo(floating.motion.maximumCrop);
-    expect(floating.warnings).toContain(
-      "overscan raised to fit resolved motion",
-    );
+    expect(floating.warnings).toContainEqual({
+      code: "MOTION_CLAMPED",
+      message: "overscan raised to fit resolved motion",
+    });
   });
 });

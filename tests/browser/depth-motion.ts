@@ -12,6 +12,9 @@ const depthSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="256" height="25
   <rect width="128" height="256" fill="rgb(32,32,32)"/>
   <rect x="128" width="128" height="256" fill="rgb(224,224,224)"/>
 </svg>`;
+const flatDepthSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256">
+  <rect width="256" height="256" fill="rgb(128,128,128)"/>
+</svg>`;
 
 const measureMarkers = async (
   page: Page,
@@ -111,6 +114,34 @@ try {
   const averageDrift =
     (driftLast.red + driftLast.green - driftFirst.red - driftFirst.green) / 2;
   assert.ok(averageDrift > 4, "Horizontal drift must move the image laterally");
+
+  await page.locator("#local-depth").setInputFiles({
+    name: "flat-depth.svg",
+    mimeType: "image/svg+xml",
+    buffer: Buffer.from(flatDepthSvg),
+  });
+  await page.locator("#load-local").click();
+  await page.waitForFunction(() =>
+    document.querySelector("#status")?.textContent?.includes("ready"),
+  );
+  const fallbackParameters = JSON.parse(
+    (await page.locator("#parameters").textContent()) ?? "{}",
+  );
+  assert.equal(fallbackParameters.motion.mode, "fallback_2d");
+  assert.equal(fallbackParameters.quality.fallbackReason, "DEPTH_RANGE_FLAT");
+  const fallbackFirst = await measureMarkers(page);
+  await page.evaluate(() => {
+    const slider = document.querySelector<HTMLInputElement>("#frame");
+    if (!slider) throw new Error("Frame slider is missing");
+    slider.value = slider.max;
+    slider.dispatchEvent(new Event("input", { bubbles: true }));
+  });
+  const fallbackLast = await measureMarkers(page);
+  assert.ok(
+    Number.isFinite(fallbackLast.green - fallbackFirst.green) &&
+      fallbackLast.green - fallbackFirst.green > 2,
+    "Flat depth must still produce a valid moving 2D preview",
+  );
 
   const racePage = await browser.newPage();
   const sourceUrl = `data:image/svg+xml;base64,${Buffer.from(sourceSvg).toString("base64")}`;
