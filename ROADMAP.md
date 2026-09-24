@@ -113,7 +113,7 @@ Stop if the corpus does not resemble the images produced by the real explainer w
 ### Completion evidence
 
 - [ ] Every valid corpus input produces depth or a stable documented failure.
-- [ ] Cache reuse and invalidation tests pass.
+- [x] Cache reuse and invalidation tests pass with `pnpm test:depth`.
 - [ ] Depth contact sheet is reviewed before renderer work is accepted.
 - [x] Model and weight licenses/checksums are recorded.
 - [ ] The v0.1 fake path remains green.

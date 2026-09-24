@@ -66,6 +66,7 @@ pnpm lint
 pnpm build
 pnpm test:unit
 pnpm test:integration
+pnpm test:depth
 pnpm benchmark
 pnpm toolchain:check
 pnpm depth:prepare -- --input path/to/image.png --adapter fake
