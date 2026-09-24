@@ -44,31 +44,24 @@ type Checkpoint = {
 const sha256 = (bytes: string | Uint8Array): string =>
   `sha256:${createHash("sha256").update(bytes).digest("hex")}`;
 
-const atomicJson = async (path: string, value: unknown): Promise<void> => {
+const atomicWrite = async (path: string, contents: string): Promise<void> => {
   const temporary = `${path}.${randomUUID()}.tmp`;
   try {
-    await writeFile(temporary, `${JSON.stringify(value, null, 2)}\n`, {
-      flag: "wx",
-    });
+    await writeFile(temporary, contents, { flag: "wx" });
     await rename(temporary, path);
   } finally {
     await rm(temporary, { force: true });
   }
 };
 
-const atomicJsonl = async (path: string, records: BatchRecord[]) => {
-  const temporary = `${path}.${randomUUID()}.tmp`;
-  try {
-    await writeFile(
-      temporary,
-      `${records.map((record) => JSON.stringify(record)).join("\n")}\n`,
-      { flag: "wx" },
-    );
-    await rename(temporary, path);
-  } finally {
-    await rm(temporary, { force: true });
-  }
-};
+const atomicJson = (path: string, value: unknown): Promise<void> =>
+  atomicWrite(path, `${JSON.stringify(value, null, 2)}\n`);
+
+const atomicJsonl = (path: string, records: BatchRecord[]): Promise<void> =>
+  atomicWrite(
+    path,
+    `${records.map((record) => JSON.stringify(record)).join("\n")}\n`,
+  );
 
 const fileHash = async (path: string): Promise<string> =>
   sha256(await readFile(path));
