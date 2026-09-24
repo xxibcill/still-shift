@@ -1,6 +1,6 @@
 # Still Shift — Phase 0 Roadmap
 
-**Status:** v0.3–v0.7 implemented; frozen-corpus and human review pending; v0.8 in progress
+**Status:** v0.3–v0.8 implemented; frozen-corpus and human review pending; v0.9 in progress
 
 **Updated:** 2026-09-24  
 **Target:** 10 working days  
@@ -30,18 +30,18 @@ When work begins, update the roadmap date, mark exactly one version as in progre
 
 ## Progress
 
-| Version | Deliverable                              |    Target | Status | Completion evidence                                                                           |
-| ------- | ---------------------------------------- | --------: | ------ | --------------------------------------------------------------------------------------------- |
-| v0.1    | Foundation, contracts, and frozen corpus |     Day 1 | `[!]`  | [Foundation checks pass; real corpus freeze remains blocked](./docs/v0.1-verification.md)     |
-| v0.2    | Reusable depth preparation               |  Days 2–3 | `[!]`  | [Depth worker merged; frozen-corpus review pending](./docs/v0.2-depth-preparation.md)         |
-| v0.3    | First animated preview                   |     Day 3 | `[!]`  | [Preview implemented; corpus-wide review pending](./docs/v0.3-first-preview.md)               |
-| v0.4    | Preset library and lab UI                |  Days 4–5 | `[!]`  | [Three presets implemented; frozen-corpus review pending](./docs/v0.4-preset-library.md)      |
-| v0.5    | Safety analysis and 2D fallback          |     Day 6 | `[!]`  | [Safety implemented; frozen-corpus review pending](./docs/v0.5-safety-fallback.md)            |
-| v0.6    | Deterministic MP4 export                 |     Day 7 | `[!]`  | [1080p export passes; representative throughput gate pending](./docs/v0.6-mp4-export.md)      |
-| v0.7    | Preview/export parity and golden tests   |     Day 7 | `[!]`  | [Five golden scenes pass; frozen-corpus review pending](./docs/v0.7-preview-export-parity.md) |
-| v0.8    | Single-image CLI integration             |     Day 8 | `[~]`  | Existing workflow renders one clip through the CLI                                            |
-| v0.9    | Unattended batch execution               |     Day 8 | `[ ]`  | 50-image batch completes with a result manifest                                               |
-| v0.10   | Evaluation release and Phase 1 decision  | Days 9–10 | `[ ]`  | Gallery, assembled explainer, and gate report                                                 |
+| Version | Deliverable                              |    Target | Status | Completion evidence                                                                                       |
+| ------- | ---------------------------------------- | --------: | ------ | --------------------------------------------------------------------------------------------------------- |
+| v0.1    | Foundation, contracts, and frozen corpus |     Day 1 | `[!]`  | [Foundation checks pass; real corpus freeze remains blocked](./docs/v0.1-verification.md)                 |
+| v0.2    | Reusable depth preparation               |  Days 2–3 | `[!]`  | [Depth worker merged; frozen-corpus review pending](./docs/v0.2-depth-preparation.md)                     |
+| v0.3    | First animated preview                   |     Day 3 | `[!]`  | [Preview implemented; corpus-wide review pending](./docs/v0.3-first-preview.md)                           |
+| v0.4    | Preset library and lab UI                |  Days 4–5 | `[!]`  | [Three presets implemented; frozen-corpus review pending](./docs/v0.4-preset-library.md)                  |
+| v0.5    | Safety analysis and 2D fallback          |     Day 6 | `[!]`  | [Safety implemented; frozen-corpus review pending](./docs/v0.5-safety-fallback.md)                        |
+| v0.6    | Deterministic MP4 export                 |     Day 7 | `[!]`  | [1080p export passes; representative throughput gate pending](./docs/v0.6-mp4-export.md)                  |
+| v0.7    | Preview/export parity and golden tests   |     Day 7 | `[!]`  | [Five golden scenes pass; frozen-corpus review pending](./docs/v0.7-preview-export-parity.md)             |
+| v0.8    | Single-image CLI integration             |     Day 8 | `[!]`  | [Real CLI and workflow candidate verified; frozen-corpus review pending](./docs/v0.8-single-image-cli.md) |
+| v0.9    | Unattended batch execution               |     Day 8 | `[~]`  | 50-image batch completes with a result manifest                                                           |
+| v0.10   | Evaluation release and Phase 1 decision  | Days 9–10 | `[ ]`  | Gallery, assembled explainer, and gate report                                                             |
 
 ## Critical path
 
@@ -279,20 +279,20 @@ If headless Chromium cannot approach the throughput target on the intended hardw
 
 ### Tasks
 
-- [ ] Implement the single-image `animate` command.
-- [ ] Accept input path, output path, duration, preset, intensity, FPS, and seed.
-- [ ] Return output path, scene manifest path, status, warnings, hashes, and metrics.
-- [ ] Document exit codes and machine-readable errors.
-- [ ] Add a real invocation from the existing explainer workflow or an integration fixture that matches it.
-- [ ] Reuse cached preparation artifacts across repeated single-image renders.
-- [ ] Document command examples and the input/output contract.
+- [x] Implement the single-image `animate` command.
+- [x] Accept input path, output path, duration, preset, intensity, FPS, and seed.
+- [x] Return output path, scene manifest path, status, warnings, hashes, and metrics.
+- [x] Document exit codes and machine-readable errors.
+- [x] Add a real invocation from an existing explainer source and an integration fixture that matches it.
+- [x] Reuse cached preparation artifacts across repeated single-image renders.
+- [x] Document command examples and the input/output contract.
 
 ### Completion evidence
 
-- [ ] One real workflow image renders from a single documented command.
-- [ ] Invalid input produces a stable error without a partial output.
-- [ ] A repeated request reuses depth and preserves scene decisions.
-- [ ] v0.7 golden tests remain green.
+- [x] One real workflow image renders from a single documented command.
+- [x] Invalid input produces a stable error without a partial output.
+- [x] A repeated request reuses depth and preserves scene decisions.
+- [x] v0.7 golden tests remain green.
 
 ## v0.9 — Unattended batch execution
 

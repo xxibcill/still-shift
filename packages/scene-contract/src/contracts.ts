@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 export const ANIMATION_API_VERSION = "0.1" as const;
-export const ENGINE_VERSION = "0.1" as const;
+export const ENGINE_VERSION = "0.8" as const;
 export const SCENE_SCHEMA_VERSION = "0.1" as const;
 
 export const V0_1_REQUEST_CONSTRAINTS = {
@@ -99,6 +99,7 @@ export const AnimationWarningSchema = z.object({
 export const AnimationErrorCodeSchema = z.enum([
   "INPUT_UNREADABLE",
   "INPUT_FORMAT_UNSUPPORTED",
+  "INPUT_DECODE_FAILED",
   "INPUT_DIMENSIONS_INVALID",
   "DEPTH_INFERENCE_FAILED",
   "SCENE_INVALID",
@@ -120,7 +121,7 @@ const Sha256Schema = z.string().regex(/^sha256:[a-f0-9]{64}$/);
 const NonNegativeFiniteNumberSchema = z.number().finite().nonnegative();
 
 export const AnimationMetricsSchema = z.object({
-  adapter: z.literal("noop"),
+  adapter: z.enum(["noop", "webgl"]),
   cacheStatus: z.enum(["not_applicable", "hit", "miss"]),
   inputWidth: z.number().int().positive().nullable(),
   inputHeight: z.number().int().positive().nullable(),
@@ -208,6 +209,8 @@ export const AnimationResultSchema = z
 export const SceneManifestSchema = z.object({
   schemaVersion: z.literal(SCENE_SCHEMA_VERSION),
   sourceHash: Sha256Schema,
+  normalizedSourceHash: Sha256Schema.optional(),
+  sourceAssetPath: z.string().min(1).optional(),
   pipelineVersion: z.string().trim().min(1),
   rendererVersion: z.string().trim().min(1),
   timeline: z
@@ -262,10 +265,11 @@ export const SceneManifestSchema = z.object({
     fallback: z.boolean(),
     warnings: z.array(AnimationWarningSchema),
   }),
-  execution: z.object({
-    adapter: z.literal("noop"),
-    producesVideo: z.literal(false),
-  }),
+  renderScene: z.record(z.string(), z.unknown()).optional(),
+  execution: z.discriminatedUnion("adapter", [
+    z.object({ adapter: z.literal("noop"), producesVideo: z.literal(false) }),
+    z.object({ adapter: z.literal("webgl"), producesVideo: z.literal(true) }),
+  ]),
 });
 
 export type AnimationRequest = z.infer<typeof AnimationRequestSchema>;

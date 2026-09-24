@@ -24,6 +24,11 @@ uv run still-shift-depth prepare \
   --cache-dir /tmp/still-shift-depth-cache
 ```
 
+If depth inference fails on an otherwise valid source, the animation engine invokes
+`uv run still-shift-depth normalize --input path/to/image.png`. This command reuses
+the same EXIF/color/dimension normalization without loading a depth model and caches
+the PNG for deterministic 2D fallback.
+
 The cache key covers the normalized source SHA-256, preprocessing and pipeline
 versions, adapter/model identity, model-weight SHA-256, inference device, percentiles,
 and smoothing parameters. Entries publish atomically under

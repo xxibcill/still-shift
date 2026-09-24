@@ -358,6 +358,54 @@ def _cache_lock(lock_path: Path) -> Iterator[None]:
         os.close(descriptor)
 
 
+def normalize_source_only(
+    source_path: Path | str, cache_dir: Path | str | None = None
+) -> dict[str, Any]:
+    """Publish a normalized source without invoking a depth model for 2D fallback."""
+    source_path = Path(source_path).expanduser()
+    if not source_path.is_file():
+        raise PreparationError(
+            "INPUT_UNREADABLE",
+            "Input image path does not identify a readable file.",
+            {"inputPath": str(source_path)},
+        )
+    image, dimensions, warnings_list = _normalize_image(source_path)
+    source_hash = _normalized_source_hash(image)
+    root = Path(cache_dir).expanduser() if cache_dir else _default_cache_dir()
+    directory = root / "normalized" / source_hash
+    output = directory / "source.png"
+    with _cache_lock(directory / ".lock"):
+        cache_status = "miss"
+        if output.is_file():
+            try:
+                with Image.open(output) as cached:
+                    cached.load()
+                    if cached.mode == "RGB" and _normalized_source_hash(cached) == source_hash:
+                        cache_status = "hit"
+            except (OSError, ValueError, UnidentifiedImageError):
+                pass
+        if cache_status == "miss":
+            with tempfile.NamedTemporaryFile(
+                dir=directory, suffix=".png", delete=False
+            ) as temporary:
+                temporary_path = Path(temporary.name)
+            try:
+                image.save(temporary_path, format="PNG", optimize=False, compress_level=9)
+                os.replace(temporary_path, output)
+            finally:
+                temporary_path.unlink(missing_ok=True)
+    return {
+        "status": "normalized",
+        "preprocessingVersion": PREPROCESSING_VERSION,
+        "sourceHash": f"sha256:{source_hash}",
+        "sourcePath": str(output),
+        "dimensions": dimensions,
+        "checksum": f"sha256:{sha256_file(output)}",
+        "cacheStatus": cache_status,
+        "normalizationWarnings": warnings_list,
+    }
+
+
 class DepthPreparationService:
     """Prepare image and depth assets with content-addressed, validated caching."""
 

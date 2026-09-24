@@ -63,6 +63,20 @@ class DepthPreparationTests(unittest.TestCase):
             self.assertEqual(normalized.getpixel((2, 1)), (0, 255, 0))
             self.assertNotIn("exif", normalized.info)
 
+    def test_normalization_without_depth_is_cached_and_repairs_corruption(self) -> None:
+        source = self.save_image(Image.new("RGB", (16, 8), "red"), "fallback.png")
+        cache_dir = self.root / "fallback-cache"
+        first = preparation.normalize_source_only(source, cache_dir)
+        second = preparation.normalize_source_only(source, cache_dir)
+        self.assertEqual(first["cacheStatus"], "miss")
+        self.assertEqual(second["cacheStatus"], "hit")
+        self.assertEqual(first["checksum"], second["checksum"])
+        Path(first["sourcePath"]).write_bytes(b"corrupt")
+        repaired = preparation.normalize_source_only(source, cache_dir)
+        self.assertEqual(repaired["cacheStatus"], "miss")
+        with Image.open(repaired["sourcePath"]) as normalized:
+            self.assertEqual(normalized.size, (16, 8))
+
     def test_alpha_grayscale_and_extreme_aspect_ratios(self) -> None:
         cases = [
             (Image.new("RGBA", (4, 3), (10, 20, 30, 0)), "alpha.png", (4, 3)),

@@ -15,6 +15,7 @@ from .preparation import (
     PreparationError,
     create_adapter,
     default_cache_directory,
+    normalize_source_only,
 )
 
 
@@ -74,6 +75,12 @@ def build_parser() -> argparse.ArgumentParser:
     prepare_parser.add_argument("--input", type=Path, required=True)
     _add_preparation_options(prepare_parser)
 
+    normalize_parser = commands.add_parser(
+        "normalize", help="Normalize one image without running depth inference."
+    )
+    normalize_parser.add_argument("--input", type=Path, required=True)
+    normalize_parser.add_argument("--cache-dir", type=Path, default=default_cache_directory())
+
     contact_parser = commands.add_parser(
         "contact-sheet",
         help="Prepare each corpus entry and write a source/depth review sheet plus metrics JSON.",
@@ -94,6 +101,8 @@ def main() -> int:
     try:
         if arguments.command == "prepare":
             result = _service(arguments).prepare(arguments.input)
+        elif arguments.command == "normalize":
+            result = normalize_source_only(arguments.input, arguments.cache_dir)
         else:
             result = build_contact_sheet(
                 arguments.manifest,
