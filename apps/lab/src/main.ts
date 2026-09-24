@@ -1,6 +1,7 @@
 import {
   createWebGLPreview,
   evaluateFrame,
+  PRESET_VERSIONS,
   resolvePreviewScene,
   type PreviewIntensity,
   type PreviewPreset,
@@ -56,11 +57,18 @@ let activeImages: {
   depth: HTMLImageElement;
 } | null = null;
 
-const presets: PreviewPreset[] = [
-  "slow_push",
-  "horizontal_drift",
-  "cinematic_float",
-];
+const presetLabels: Record<PreviewPreset, string> = {
+  slow_push: "Slow push",
+  horizontal_drift: "Horizontal drift",
+  cinematic_float: "Cinematic float",
+};
+const presets = Object.keys(PRESET_VERSIONS) as PreviewPreset[];
+for (const preset of presets) {
+  const option = document.createElement("option");
+  option.value = preset;
+  option.textContent = presetLabels[preset];
+  presetSelect.append(option);
+}
 
 const stop = (): void => {
   if (timer !== null) window.clearInterval(timer);
