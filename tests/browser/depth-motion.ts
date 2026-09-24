@@ -99,6 +99,19 @@ try {
     "Near marker must move farther than the far marker",
   );
 
+  await page.locator("#preset").selectOption("horizontal_drift");
+  const driftLast = await measureMarkers(page);
+  await page.evaluate(() => {
+    const slider = document.querySelector<HTMLInputElement>("#frame");
+    if (!slider) throw new Error("Frame slider is missing");
+    slider.value = "0";
+    slider.dispatchEvent(new Event("input", { bubbles: true }));
+  });
+  const driftFirst = await measureMarkers(page);
+  const averageDrift =
+    (driftLast.red + driftLast.green - driftFirst.red - driftFirst.green) / 2;
+  assert.ok(averageDrift > 4, "Horizontal drift must move the image laterally");
+
   const racePage = await browser.newPage();
   const sourceUrl = `data:image/svg+xml;base64,${Buffer.from(sourceSvg).toString("base64")}`;
   const depthUrl = `data:image/svg+xml;base64,${Buffer.from(depthSvg).toString("base64")}`;

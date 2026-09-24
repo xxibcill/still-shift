@@ -1,6 +1,7 @@
 import {
   coverFit,
   evaluateFrame,
+  PRESET_LIMITS,
   PREVIEW_LIMITS,
   resolvePreviewScene,
 } from "../../packages/renderer-core/src/scene.ts";
@@ -82,6 +83,146 @@ describe("v0.3 slow_push", () => {
     );
     expect(() => evaluateFrame(resolvePreviewScene(input), 150)).toThrow(
       "frameIndex",
+    );
+  });
+});
+
+describe("v0.4 preset library", () => {
+  it("documents deterministic endpoints for every preset and intensity", () => {
+    for (const preset of [
+      "slow_push",
+      "horizontal_drift",
+      "cinematic_float",
+    ] as const) {
+      for (const intensity of ["subtle", "standard", "strong"] as const) {
+        const scene = resolvePreviewScene({
+          ...input,
+          preset,
+          intensity,
+          seed: 1842,
+        });
+        const first = evaluateFrame(scene, 0);
+        const last = evaluateFrame(scene, scene.timeline.frameCount - 1);
+        expect(first.scale).toBe(1);
+        expect(first.depthStrength).toBe(0);
+        expect(last.scale).toBeCloseTo(1 + scene.motion.travel);
+        expect(last.depthStrength).toBeCloseTo(scene.motion.depthStrength);
+        expect(first.translationY).toBeCloseTo(0);
+        expect(last.translationY).toBeCloseTo(0);
+        expect(first.rollDegrees).toBeCloseTo(0);
+        expect(last.rollDegrees).toBeCloseTo(0);
+        if (preset === "horizontal_drift") {
+          expect(first.translationX).toBeCloseTo(-scene.motion.lateralTravel);
+          expect(last.translationX).toBeCloseTo(scene.motion.lateralTravel);
+        } else if (preset === "cinematic_float") {
+          expect(first.translationX).toBeCloseTo(
+            -scene.motion.lateralTravel * 0.2,
+          );
+          expect(last.translationX).toBeCloseTo(
+            scene.motion.lateralTravel * 0.2,
+          );
+        } else {
+          expect(first.translationX).toBe(0);
+          expect(last.translationX).toBe(0);
+        }
+        expect(scene.motion.maximumCrop).toBeLessThanOrEqual(
+          scene.motion.overscan,
+        );
+      }
+    }
+  });
+
+  it("uses the seed only for repeatable cinematic variation", () => {
+    const first = resolvePreviewScene({
+      ...input,
+      preset: "cinematic_float",
+      intensity: "standard",
+      seed: 19,
+    });
+    const same = resolvePreviewScene({
+      ...input,
+      preset: "cinematic_float",
+      intensity: "standard",
+      seed: 19,
+    });
+    const other = resolvePreviewScene({
+      ...input,
+      preset: "cinematic_float",
+      intensity: "standard",
+      seed: 20,
+    });
+    expect(evaluateFrame(first, 67)).toEqual(evaluateFrame(same, 67));
+    expect(evaluateFrame(first, 67).translationY).not.toBe(
+      evaluateFrame(other, 67).translationY,
+    );
+  });
+
+  it("keeps every evaluated frame inside hard camera limits", () => {
+    for (const preset of [
+      "slow_push",
+      "horizontal_drift",
+      "cinematic_float",
+    ] as const) {
+      const scene = resolvePreviewScene({
+        ...input,
+        preset,
+        intensity: "strong",
+        seed: 4294967295,
+      });
+      for (let index = 0; index < scene.timeline.frameCount; index += 1) {
+        const frame = evaluateFrame(scene, index);
+        expect(Math.abs(frame.translationX)).toBeLessThanOrEqual(
+          PREVIEW_LIMITS.maximumLateralTravel,
+        );
+        expect(Math.abs(frame.translationY)).toBeLessThanOrEqual(
+          PREVIEW_LIMITS.maximumLateralTravel,
+        );
+        expect(Math.abs(frame.rollDegrees)).toBeLessThanOrEqual(
+          PREVIEW_LIMITS.maximumRollDegrees,
+        );
+        expect(frame.depthStrength).toBeLessThanOrEqual(
+          PREVIEW_LIMITS.maximumDepthStrength,
+        );
+      }
+    }
+  });
+
+  it("reports clamps for oversized lateral and roll requests", () => {
+    const scene = resolvePreviewScene({
+      ...input,
+      preset: "cinematic_float",
+      intensity: "standard",
+      requestedLateralTravel: 1,
+      requestedRollDegrees: 1,
+      overscan: 0.14,
+    });
+    expect(scene.motion.lateralTravel).toBe(
+      PRESET_LIMITS.cinematic_float.lateralTravel,
+    );
+    expect(scene.motion.rollDegrees).toBe(PREVIEW_LIMITS.maximumRollDegrees);
+    expect(scene.warnings).toEqual([
+      "lateral travel clamped to 0.035",
+      "roll clamped to 0.3",
+    ]);
+  });
+
+  it("respects preset-specific axes and raises overscan for a curved float", () => {
+    const push = resolvePreviewScene({
+      ...input,
+      requestedLateralTravel: 0.02,
+    });
+    expect(push.motion.lateralTravel).toBe(0);
+    expect(push.warnings).toContain("lateral travel clamped to 0");
+
+    const floating = resolvePreviewScene({
+      ...input,
+      preset: "cinematic_float",
+      intensity: "strong",
+      overscan: 0.1,
+    });
+    expect(floating.motion.overscan).toBeCloseTo(floating.motion.maximumCrop);
+    expect(floating.warnings).toContain(
+      "overscan raised to fit resolved motion",
     );
   });
 });

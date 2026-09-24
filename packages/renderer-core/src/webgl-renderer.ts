@@ -23,14 +23,34 @@ const vertexShader = `
 varying vec2 vUv;
 uniform sampler2D uDepth;
 uniform vec2 uCover;
+uniform vec2 uDepthTexel;
+uniform vec2 uOffset;
 uniform float uOverscan;
 uniform float uScale;
 uniform float uDepthStrength;
+uniform float uRoll;
+uniform float uEdgeDamping;
+float safeDepth(vec2 coordinates) {
+  float value = texture2D(uDepth, coordinates).r;
+  return (value >= 0.0 && value <= 1.0) ? value : 0.5;
+}
 void main() {
-  float depth = texture2D(uDepth, uv).r;
-  if (!(depth >= 0.0 && depth <= 1.0)) depth = 0.5;
-  float parallax = 1.0 / (1.0 - depth * uDepthStrength);
+  float depth = safeDepth(uv);
+  float gradient = max(
+    max(abs(depth - safeDepth(uv + vec2(uDepthTexel.x, 0.0))),
+        abs(depth - safeDepth(uv - vec2(uDepthTexel.x, 0.0)))),
+    max(abs(depth - safeDepth(uv + vec2(0.0, uDepthTexel.y))),
+        abs(depth - safeDepth(uv - vec2(0.0, uDepthTexel.y))))
+  );
+  float damping = 1.0 - uEdgeDamping * 0.8 * smoothstep(0.06, 0.25, gradient);
+  float parallax = 1.0 / (1.0 - depth * uDepthStrength * damping);
   vec2 displaced = position.xy * uCover * (1.0 + uOverscan) * uScale * parallax;
+  float cosine = cos(uRoll);
+  float sine = sin(uRoll);
+  displaced = vec2(
+    displaced.x * cosine - displaced.y * sine,
+    displaced.x * sine + displaced.y * cosine
+  ) + uOffset;
   gl_Position = projectionMatrix * modelViewMatrix * vec4(displaced, depth * uDepthStrength, 1.0);
   vUv = uv;
 }`;
@@ -113,9 +133,13 @@ export const createWebGLPreview = (
       uSource: { value: sourceTexture },
       uDepth: { value: depthTexture },
       uCover: { value: [cover.x, cover.y] },
+      uDepthTexel: { value: [1 / scene.source.width, 1 / scene.source.height] },
+      uOffset: { value: [0, 0] },
       uOverscan: { value: scene.motion.overscan },
       uScale: { value: 1 },
       uDepthStrength: { value: 0 },
+      uRoll: { value: 0 },
+      uEdgeDamping: { value: scene.motion.preset === "slow_push" ? 0 : 1 },
     },
   });
   const previewScene = new Scene();
@@ -128,6 +152,11 @@ export const createWebGLPreview = (
       const frame = evaluateFrame(scene, frameIndex);
       material.uniforms.uScale!.value = frame.scale;
       material.uniforms.uDepthStrength!.value = frame.depthStrength;
+      material.uniforms.uOffset!.value = [
+        frame.translationX,
+        frame.translationY,
+      ];
+      material.uniforms.uRoll!.value = (frame.rollDegrees * Math.PI) / 180;
       renderer.render(previewScene, camera);
     },
     dispose() {

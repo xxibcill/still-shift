@@ -2,6 +2,8 @@ import {
   createWebGLPreview,
   evaluateFrame,
   resolvePreviewScene,
+  type PreviewIntensity,
+  type PreviewPreset,
   type PreviewScene,
   type WebGLPreview,
 } from "../../../packages/renderer-core/src/index.ts";
@@ -29,6 +31,9 @@ const playButton = byId<HTMLButtonElement>("play");
 const select = byId<HTMLSelectElement>("corpus-entry");
 const prepareButton = byId<HTMLButtonElement>("prepare");
 const galleryButton = byId<HTMLButtonElement>("build-gallery");
+const presetSelect = byId<HTMLSelectElement>("preset");
+const intensitySelect = byId<HTMLSelectElement>("intensity");
+const seedInput = byId<HTMLInputElement>("seed");
 const sourceInput = byId<HTMLInputElement>("local-source");
 const depthInput = byId<HTMLInputElement>("local-depth");
 const status = byId<HTMLElement>("status");
@@ -44,6 +49,18 @@ let timer: number | null = null;
 let currentFrame = 0;
 let localUrls: string[] = [];
 let previewRequestId = 0;
+let activeImages: {
+  name: string;
+  pair: PreviewPair;
+  source: HTMLImageElement;
+  depth: HTMLImageElement;
+} | null = null;
+
+const presets: PreviewPreset[] = [
+  "slow_push",
+  "horizontal_drift",
+  "cinematic_float",
+];
 
 const stop = (): void => {
   if (timer !== null) window.clearInterval(timer);
@@ -89,30 +106,71 @@ const loadImage = async (url: string): Promise<HTMLImageElement> => {
   return image;
 };
 
-const loadScene = async (
-  pair: PreviewPair,
-): Promise<{
-  source: HTMLImageElement;
-  depth: HTMLImageElement;
-  resolvedScene: PreviewScene;
-}> => {
-  const [source, depth] = await Promise.all([
-    loadImage(pair.sourceUrl),
-    loadImage(pair.depthUrl),
-  ]);
-  const nextScene = resolvePreviewScene({
+const selectedSeed = (): number => {
+  const seed = Number(seedInput.value);
+  if (!Number.isInteger(seed) || seed < 0 || seed > 0xffffffff) {
+    throw new Error("Motion seed must be an unsigned 32-bit integer");
+  }
+  return seed;
+};
+
+const resolveLabScene = (
+  source: HTMLImageElement,
+  depth: HTMLImageElement,
+  durationMs: number,
+  preset: PreviewPreset = presetSelect.value as PreviewPreset,
+  intensity: PreviewIntensity = intensitySelect.value as PreviewIntensity,
+  seed: number = selectedSeed(),
+): PreviewScene =>
+  resolvePreviewScene({
     sourceWidth: source.naturalWidth,
     sourceHeight: source.naturalHeight,
     depthWidth: depth.naturalWidth,
     depthHeight: depth.naturalHeight,
-    durationMs: pair.durationMs,
+    durationMs,
     fps: 30,
     canvasWidth: 1920,
     canvasHeight: 1080,
-    preset: "slow_push",
-    intensity: "subtle",
+    preset,
+    intensity,
+    seed,
   });
-  return { source, depth, resolvedScene: nextScene };
+
+const loadScene = async (pair: PreviewPair) => {
+  const [source, depth] = await Promise.all([
+    loadImage(pair.sourceUrl),
+    loadImage(pair.depthUrl),
+  ]);
+  return {
+    source,
+    depth,
+    resolvedScene: resolveLabScene(source, depth, pair.durationMs),
+  };
+};
+
+const activateScene = (
+  name: string,
+  pair: PreviewPair,
+  source: HTMLImageElement,
+  depth: HTMLImageElement,
+  nextScene: PreviewScene,
+  frameIndex = 0,
+): void => {
+  stop();
+  renderer?.dispose();
+  renderer = createWebGLPreview(canvas, nextScene, source, depth);
+  scene = nextScene;
+  activeImages = { name, pair, source, depth };
+  byId<HTMLElement>("scene-name").textContent = name;
+  byId<HTMLElement>("empty-preview").hidden = true;
+  sourceImage.src = pair.sourceUrl;
+  depthImage.src = pair.depthUrl;
+  frameSlider.max = String(nextScene.timeline.frameCount - 1);
+  frameSlider.disabled = false;
+  playButton.disabled = false;
+  showFrame(Math.min(frameIndex, nextScene.timeline.frameCount - 1));
+  status.classList.remove("error");
+  status.textContent = `${name} ready · ${nextScene.motion.preset} / ${nextScene.motion.intensity} · ${nextScene.timeline.frameCount} frames · ${nextScene.warnings.length} clamps`;
 };
 
 const inspectPair = async (
@@ -123,20 +181,20 @@ const inspectPair = async (
   if (requestId !== previewRequestId) return;
   stop();
   status.textContent = `Loading ${name}…`;
-  const { source, depth, resolvedScene: nextScene } = await loadScene(pair);
+  const { source, depth, resolvedScene } = await loadScene(pair);
   if (requestId !== previewRequestId) return;
-  renderer?.dispose();
-  renderer = createWebGLPreview(canvas, nextScene, source, depth);
-  scene = nextScene;
-  byId<HTMLElement>("scene-name").textContent = name;
-  byId<HTMLElement>("empty-preview").hidden = true;
-  sourceImage.src = pair.sourceUrl;
-  depthImage.src = pair.depthUrl;
-  frameSlider.max = String(nextScene.timeline.frameCount - 1);
-  frameSlider.disabled = false;
-  playButton.disabled = false;
-  showFrame(0);
-  status.textContent = `${name} ready · ${nextScene.timeline.frameCount} frames · ${nextScene.warnings.length} clamps`;
+  activateScene(name, pair, source, depth, resolvedScene);
+};
+
+const refreshScene = (): void => {
+  if (!activeImages) return;
+  try {
+    const { name, pair, source, depth } = activeImages;
+    const nextScene = resolveLabScene(source, depth, pair.durationMs);
+    activateScene(name, pair, source, depth, nextScene, currentFrame);
+  } catch (error) {
+    showError(error);
+  }
 };
 
 const fetchJson = async <T extends z.ZodType>(
@@ -184,6 +242,39 @@ const prepareSelected = async (): Promise<void> => {
   }
 };
 
+const addGalleryCard = (
+  entry: CorpusEntry,
+  preset: PreviewPreset,
+  poster: string | null,
+  error?: unknown,
+): void => {
+  const card = document.createElement("button");
+  card.type = "button";
+  card.className = "gallery-item";
+  if (poster) {
+    const image = document.createElement("img");
+    image.src = poster;
+    image.alt = "Midpoint preview for " + entry.id + " with " + preset;
+    card.append(image);
+    card.addEventListener("click", () => {
+      presetSelect.value = preset;
+      select.value = entry.id;
+      void prepareSelected();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+  } else {
+    card.disabled = true;
+    const failure = document.createElement("span");
+    failure.textContent =
+      error instanceof Error ? error.message : String(error);
+    card.append(failure);
+  }
+  const label = document.createElement("strong");
+  label.textContent = entry.id + " · " + preset;
+  card.append(label);
+  gallery.append(card);
+};
+
 const buildGallery = async (): Promise<void> => {
   galleryButton.disabled = true;
   status.classList.remove("error");
@@ -192,56 +283,74 @@ const buildGallery = async (): Promise<void> => {
   const posterCanvas = document.createElement("canvas");
   posterCanvas.width = canvas.width;
   posterCanvas.height = canvas.height;
-  for (const [index, entry] of corpusEntries.entries()) {
-    byId<HTMLElement>("gallery-note").textContent =
-      `Building gallery ${index + 1}/${corpusEntries.length}: ${entry.id}`;
-    const card = document.createElement("button");
-    card.type = "button";
-    card.className = "gallery-item";
-    try {
-      const prepared = await prepareEntry(entry.id);
-      const { source, depth, resolvedScene } = await loadScene(prepared);
-      const posterRenderer = createWebGLPreview(
-        posterCanvas,
-        resolvedScene,
-        source,
-        depth,
-      );
-      let poster: string;
+  try {
+    const intensity = intensitySelect.value as PreviewIntensity;
+    const seed = selectedSeed();
+    for (const [index, entry] of corpusEntries.entries()) {
+      byId<HTMLElement>("gallery-note").textContent =
+        "Building gallery " +
+        (index + 1) +
+        "/" +
+        corpusEntries.length +
+        ": " +
+        entry.id;
       try {
-        posterRenderer.renderFrame(
-          Math.floor(resolvedScene.timeline.frameCount / 2),
-        );
-        poster = posterCanvas.toDataURL("image/png");
-      } finally {
-        posterRenderer.dispose();
+        const prepared = await prepareEntry(entry.id);
+        const [source, depth] = await Promise.all([
+          loadImage(prepared.sourceUrl),
+          loadImage(prepared.depthUrl),
+        ]);
+        for (const preset of presets) {
+          try {
+            const resolvedScene = resolveLabScene(
+              source,
+              depth,
+              prepared.durationMs,
+              preset,
+              intensity,
+              seed,
+            );
+            const posterRenderer = createWebGLPreview(
+              posterCanvas,
+              resolvedScene,
+              source,
+              depth,
+            );
+            let poster: string;
+            try {
+              posterRenderer.renderFrame(
+                Math.floor(resolvedScene.timeline.frameCount / 2),
+              );
+              poster = posterCanvas.toDataURL("image/png");
+            } finally {
+              posterRenderer.dispose();
+            }
+            posters.set(entry.id + ":" + preset, poster);
+            addGalleryCard(entry, preset, poster);
+          } catch (error) {
+            addGalleryCard(entry, preset, null, error);
+          }
+        }
+      } catch (error) {
+        for (const preset of presets)
+          addGalleryCard(entry, preset, null, error);
       }
-      posters.set(entry.id, poster);
-      const image = document.createElement("img");
-      image.src = poster;
-      image.alt = `Midpoint preview for ${entry.id}`;
-      card.append(image);
-      card.addEventListener("click", () => {
-        select.value = entry.id;
-        void prepareSelected();
-        window.scrollTo({ top: 0, behavior: "smooth" });
-      });
-    } catch (error) {
-      card.disabled = true;
-      const failure = document.createElement("span");
-      failure.textContent =
-        error instanceof Error ? error.message : String(error);
-      card.append(failure);
     }
-    const label = document.createElement("strong");
-    label.textContent = entry.id;
-    card.append(label);
-    gallery.append(card);
+    byId<HTMLElement>("gallery-note").textContent =
+      posters.size +
+      "/" +
+      corpusEntries.length * presets.length +
+      " midpoint previews generated. Select a tile to inspect motion.";
+  } catch (error) {
+    showError(error);
+  } finally {
+    galleryButton.disabled = false;
   }
-  byId<HTMLElement>("gallery-note").textContent =
-    `${posters.size}/${corpusEntries.length} midpoint previews generated. Select a tile to inspect motion.`;
-  galleryButton.disabled = false;
 };
+
+presetSelect.addEventListener("change", refreshScene);
+intensitySelect.addEventListener("change", refreshScene);
+seedInput.addEventListener("change", refreshScene);
 
 select.addEventListener("change", () => {
   previewRequestId += 1;
