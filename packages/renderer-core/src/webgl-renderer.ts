@@ -1,14 +1,17 @@
 import {
   ClampToEdgeWrapping,
+  DataTexture,
   LinearFilter,
   Mesh,
   NoColorSpace,
   OrthographicCamera,
   PlaneGeometry,
+  RGBAFormat,
   Scene,
   ShaderMaterial,
   SRGBColorSpace,
   Texture,
+  UnsignedByteType,
   WebGLRenderer,
 } from "three";
 
@@ -80,6 +83,21 @@ const createTexture = (
   return texture;
 };
 
+const createNeutralDepthTexture = (): Texture => {
+  const texture = new DataTexture(
+    new Uint8Array([128, 128, 128, 255]),
+    1,
+    1,
+    RGBAFormat,
+    UnsignedByteType,
+  );
+  texture.colorSpace = NoColorSpace;
+  texture.minFilter = LinearFilter;
+  texture.magFilter = LinearFilter;
+  texture.needsUpdate = true;
+  return texture;
+};
+
 export type WebGLPreview = {
   renderFrame(frameIndex: number): void;
   dispose(): void;
@@ -89,8 +107,11 @@ export const createWebGLPreview = (
   canvas: HTMLCanvasElement,
   scene: PreviewScene,
   source: HTMLImageElement,
-  depth: HTMLImageElement,
+  depth: HTMLImageElement | null,
 ): WebGLPreview => {
+  if (!depth && scene.motion.mode !== "fallback_2d") {
+    throw new Error("Depth image is required for depth motion");
+  }
   const context = canvas.getContext("webgl2", {
     alpha: false,
     antialias: true,
@@ -111,7 +132,9 @@ export const createWebGLPreview = (
   renderer.setClearColor(0x141414, 1);
 
   const sourceTexture = createTexture(source, SRGBColorSpace);
-  const depthTexture = createTexture(depth, NoColorSpace);
+  const depthTexture = depth
+    ? createTexture(depth, NoColorSpace)
+    : createNeutralDepthTexture();
   const cover = coverFit(
     scene.source.width,
     scene.source.height,

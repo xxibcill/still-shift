@@ -12,6 +12,9 @@ const depthSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="256" height="25
   <rect width="128" height="256" fill="rgb(32,32,32)"/>
   <rect x="128" width="128" height="256" fill="rgb(224,224,224)"/>
 </svg>`;
+const flatDepthSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256">
+  <rect width="256" height="256" fill="rgb(128,128,128)"/>
+</svg>`;
 
 const measureMarkers = async (
   page: Page,
@@ -111,6 +114,66 @@ try {
   const averageDrift =
     (driftLast.red + driftLast.green - driftFirst.red - driftFirst.green) / 2;
   assert.ok(averageDrift > 4, "Horizontal drift must move the image laterally");
+
+  await page.locator("#local-depth").setInputFiles({
+    name: "flat-depth.svg",
+    mimeType: "image/svg+xml",
+    buffer: Buffer.from(flatDepthSvg),
+  });
+  await page.locator("#load-local").click();
+  await page.waitForFunction(() =>
+    document.querySelector("#status")?.textContent?.includes("ready"),
+  );
+  const fallbackParameters = JSON.parse(
+    (await page.locator("#parameters").textContent()) ?? "{}",
+  );
+  assert.equal(fallbackParameters.motion.mode, "fallback_2d");
+  assert.equal(fallbackParameters.quality.fallbackReason, "DEPTH_RANGE_FLAT");
+  const fallbackFirst = await measureMarkers(page);
+  await page.evaluate(() => {
+    const slider = document.querySelector<HTMLInputElement>("#frame");
+    if (!slider) throw new Error("Frame slider is missing");
+    slider.value = slider.max;
+    slider.dispatchEvent(new Event("input", { bubbles: true }));
+  });
+  const fallbackLast = await measureMarkers(page);
+  assert.ok(
+    Number.isFinite(fallbackLast.green - fallbackFirst.green) &&
+      fallbackLast.green - fallbackFirst.green > 2,
+    "Flat depth must still produce a valid moving 2D preview",
+  );
+
+  await page.locator("#local-depth").setInputFiles([]);
+  await page.locator("#load-local").click();
+  await page.waitForFunction(() =>
+    document.querySelector("#status")?.textContent?.includes("ready"),
+  );
+  const sourceOnlyParameters = JSON.parse(
+    (await page.locator("#parameters").textContent()) ?? "{}",
+  );
+  assert.equal(sourceOnlyParameters.motion.mode, "fallback_2d");
+  assert.equal(
+    sourceOnlyParameters.quality.fallbackReason,
+    "DEPTH_PREPARATION_FAILED",
+  );
+  assert.equal(await page.locator("#depth-image").isHidden(), true);
+
+  await page.locator("#local-depth").setInputFiles({
+    name: "invalid-depth.png",
+    mimeType: "image/png",
+    buffer: Buffer.from("not a PNG"),
+  });
+  await page.locator("#load-local").click();
+  await page.waitForFunction(() =>
+    document.querySelector("#status")?.textContent?.includes("ready"),
+  );
+  const invalidDepthParameters = JSON.parse(
+    (await page.locator("#parameters").textContent()) ?? "{}",
+  );
+  assert.equal(
+    invalidDepthParameters.quality.fallbackReason,
+    "DEPTH_PREPARATION_FAILED",
+  );
 
   const rendererModuleUrl =
     "/@fs" +
@@ -278,14 +341,22 @@ try {
   assert.equal(await racePage.locator("#seed").inputValue(), "19");
   const selectedScene = JSON.parse(
     (await racePage.locator("#parameters").textContent()) ?? "{}",
-  ) as { motion: { preset: string; intensity: string; seed: number } };
+  ) as {
+    motion: { preset: string; intensity: string; seed: number };
+    warnings: { code: string }[];
+  };
   assert.deepEqual(
     {
       preset: selectedScene.motion.preset,
       intensity: selectedScene.motion.intensity,
       seed: selectedScene.motion.seed,
     },
-    { preset: "cinematic_float", intensity: "strong", seed: 19 },
+    { preset: "cinematic_float", intensity: "standard", seed: 19 },
+  );
+  assert.ok(
+    selectedScene.warnings.some(
+      (warning) => warning.code === "INTENSITY_DOWNGRADED",
+    ),
   );
 
   await racePage.locator("#seed").fill("-1");
@@ -296,6 +367,52 @@ try {
     /Motion seed must be an unsigned 32-bit integer/,
   );
   await racePage.close();
+
+  const failedPreparationPage = await browser.newPage();
+  await failedPreparationPage.route("**/api/corpus", (route) =>
+    route.fulfill({
+      contentType: "application/json",
+      body: JSON.stringify({
+        status: "frozen",
+        entries: [
+          {
+            id: "failed-depth",
+            categories: ["portrait_person"],
+            expectedShotDurationMs: 5000,
+          },
+        ],
+      }),
+    }),
+  );
+  await failedPreparationPage.route("**/api/prepare?*", (route) =>
+    route.fulfill({
+      status: 422,
+      contentType: "application/json",
+      body: JSON.stringify({
+        error: "Depth model unavailable",
+        code: "DEPTH_PREPARATION_FAILED",
+        sourceUrl,
+        durationMs: 5000,
+      }),
+    }),
+  );
+  await failedPreparationPage.goto("http://127.0.0.1:4176/");
+  await failedPreparationPage
+    .locator("#corpus-entry")
+    .selectOption("failed-depth");
+  await failedPreparationPage.locator("#prepare").click();
+  await failedPreparationPage.waitForFunction(() =>
+    document.querySelector("#status")?.textContent?.includes("ready"),
+  );
+  const failedPreparationParameters = JSON.parse(
+    (await failedPreparationPage.locator("#parameters").textContent()) ?? "{}",
+  );
+  assert.equal(failedPreparationParameters.motion.mode, "fallback_2d");
+  assert.equal(
+    failedPreparationParameters.quality.fallbackReason,
+    "DEPTH_PREPARATION_FAILED",
+  );
+  await failedPreparationPage.close();
 
   process.stdout.write(
     `Depth motion verified: far ${farTravel}px, near ${nearTravel}px; latest selection preserved\n`,
