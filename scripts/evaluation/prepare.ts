@@ -8,6 +8,7 @@ import {
   findCorpusFreezeBlockers,
 } from "@still-shift/scene-contract";
 import { imageSize } from "image-size";
+import { EVALUATION_PRESETS, evaluationClipId } from "./presets.ts";
 
 const arg = (name: string): string => {
   const index = process.argv.indexOf(name);
@@ -40,7 +41,6 @@ if (corpus.status === "frozen") {
     throw new Error(`Frozen corpus has ${blockers.length} integrity blockers`);
 }
 
-const presets = ["slow_push", "horizontal_drift", "cinematic_float"] as const;
 const items: Array<Record<string, unknown>> = [];
 for (const entry of corpus.entries) {
   const path = resolve(dirname(corpusPath), entry.source.path);
@@ -54,9 +54,9 @@ for (const entry of corpus.entries) {
     dimensions.height !== entry.dimensions.height
   )
     throw new Error(`Source dimensions mismatch: ${entry.id}`);
-  for (const preset of presets)
+  for (const preset of EVALUATION_PRESETS)
     items.push({
-      id: `${entry.id}-${preset.replaceAll("_", "-")}`,
+      id: evaluationClipId(entry.id, preset),
       inputPath: path,
       durationMs: entry.expectedShotDurationMs,
       preset,
@@ -79,7 +79,7 @@ const metadata = {
   engineVersion: ENGINE_VERSION,
   entryCount: corpus.entries.length,
   requestCount: items.length,
-  presets,
+  presets: EVALUATION_PRESETS,
   intensity: "standard",
 };
 await writeFile(

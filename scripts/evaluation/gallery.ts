@@ -9,9 +9,9 @@ import {
   CorpusManifestSchema,
   SceneManifestSchema,
 } from "@still-shift/scene-contract";
+import { EVALUATION_PRESETS, evaluationClipId } from "./presets.ts";
 
 const execFileAsync = promisify(execFile);
-const presets = ["slow_push", "horizontal_drift", "cinematic_float"] as const;
 const arg = (name: string): string => {
   const index = process.argv.indexOf(name);
   const value = process.argv[index + 1];
@@ -91,8 +91,8 @@ for (const entry of corpus.entries) {
   await thumbnail(sourcePath, sourceThumbnail);
   const variants: string[] = [];
   let depthThumbnail: string | null = null;
-  for (const preset of presets) {
-    const id = `${entry.id}-${preset.replaceAll("_", "-")}`;
+  for (const preset of EVALUATION_PRESETS) {
+    const id = evaluationClipId(entry.id, preset);
     const record = byId.get(id);
     if (!record?.result) {
       variants.push(

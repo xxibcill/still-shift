@@ -8,9 +8,9 @@ import {
   AnimationResultSchema,
   CorpusManifestSchema,
 } from "@still-shift/scene-contract";
+import { EVALUATION_PRESETS, evaluationClipId } from "./presets.ts";
 
 const execFileAsync = promisify(execFile);
-const presets = ["slow_push", "horizontal_drift", "cinematic_float"] as const;
 const option = (name: string): string | undefined => {
   const index = process.argv.indexOf(name);
   return index < 0 ? undefined : process.argv[index + 1];
@@ -89,8 +89,8 @@ for (const [index, state] of states.entries()) {
   const entry = entryByHash.get(state.source_sha256);
   if (!entry)
     throw new Error(`Timeline source not present in corpus: ${state.state_id}`);
-  const clipIds = presets.map(
-    (preset) => `${entry.id}-${preset.replaceAll("_", "-")}`,
+  const clipIds = EVALUATION_PRESETS.map((preset) =>
+    evaluationClipId(entry.id, preset),
   );
   const clips = clipIds.map((id) => {
     const path = clipById.get(id);
