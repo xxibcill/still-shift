@@ -96,6 +96,10 @@ describe("v0.5 safety analysis and 2D fallback", () => {
     };
     const resolved = applySafetyToScene(underscanned, assessment);
     expect(resolved.motion.intensity).toBe("standard");
+    expect(resolved.motion.travel).toBeLessThan(original.motion.travel);
+    expect(resolved.motion.maximumCrop).toBeLessThan(
+      original.motion.maximumCrop,
+    );
     expect(resolved.motion.overscan).toBeGreaterThanOrEqual(
       resolved.motion.maximumCrop,
     );

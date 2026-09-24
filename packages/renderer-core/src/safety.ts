@@ -1,4 +1,8 @@
-import type { PreviewScene, PreviewWarning } from "./scene.ts";
+import {
+  maximumCropFor,
+  type PreviewScene,
+  type PreviewWarning,
+} from "./scene.ts";
 
 export const SAFETY_ANALYSIS_VERSION = "risk-0.5.0" as const;
 
@@ -202,7 +206,13 @@ export const fallback2DScene = (
 ): PreviewScene => {
   const travel = Math.min(scene.motion.travel, 0.02);
   const lateralTravel = 0.008;
-  const maximumCrop = (travel + lateralTravel) / (1 + travel);
+  const maximumCrop = maximumCropFor({
+    preset: scene.motion.preset,
+    travel,
+    depthStrength: 0,
+    lateralTravel,
+    rollDegrees: 0,
+  });
   const risk = assessment ?? {
     version: SAFETY_ANALYSIS_VERSION,
     riskScore: 1,
@@ -227,6 +237,7 @@ export const fallback2DScene = (
       lateralTravel,
       rollDegrees: 0,
       maximumCrop,
+      overscan: Math.max(scene.motion.overscan, maximumCrop),
     },
     quality: qualityFor(scene, risk, true, reason),
     warnings: [
@@ -259,7 +270,17 @@ export const applySafetyToScene = (
     return { ...scene, quality: qualityFor(scene, assessment, false, null) };
   const factor =
     assessment.riskScore >= 0.65 ? 0.4 : assessment.riskScore >= 0.4 ? 0.7 : 1;
+  const travel = scene.motion.travel * factor;
+  const depthStrength = scene.motion.depthStrength * factor;
   const lateralTravel = scene.motion.lateralTravel * factor;
+  const rollDegrees = scene.motion.rollDegrees * factor;
+  const maximumCrop = maximumCropFor({
+    preset: scene.motion.preset,
+    travel,
+    depthStrength,
+    lateralTravel,
+    rollDegrees,
+  });
   const warnings: PreviewWarning[] = [...scene.warnings];
   if (assessment.riskScore >= 0.4) {
     warnings.push(
@@ -269,11 +290,12 @@ export const applySafetyToScene = (
       },
       {
         code: "MOTION_CLAMPED",
-        message: "Depth strength and roll reduced by safety analysis",
+        message:
+          "Camera travel, depth strength, and roll reduced by safety analysis",
       },
     );
   }
-  if (overscanShortfall > 0) {
+  if (maximumCrop > scene.motion.overscan) {
     warnings.push({
       code: "MOTION_CLAMPED",
       message: "Overscan raised to fit resolved motion",
@@ -300,11 +322,13 @@ export const applySafetyToScene = (
     ...scene,
     motion: {
       ...scene.motion,
-      depthStrength: scene.motion.depthStrength * factor,
+      travel,
+      depthStrength,
       lateralTravel,
-      rollDegrees: scene.motion.rollDegrees * factor,
+      rollDegrees,
       intensity,
-      overscan: Math.max(scene.motion.overscan, scene.motion.maximumCrop),
+      maximumCrop,
+      overscan: Math.max(scene.motion.overscan, maximumCrop),
     },
     quality: qualityFor(scene, assessment, false, null),
     warnings,

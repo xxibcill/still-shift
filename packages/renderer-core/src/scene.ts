@@ -50,6 +50,15 @@ type MotionParameters = {
   rollDegrees: number;
 };
 
+export const maximumCropFor = (
+  motion: MotionParameters & { preset: PreviewPreset },
+): number =>
+  (motion.travel +
+    motion.depthStrength +
+    motion.lateralTravel * (motion.preset === "cinematic_float" ? 1.3 : 1) +
+    (motion.rollDegrees * Math.PI) / 180) /
+  (1 + motion.travel);
+
 export const PRESET_LIMITS: Record<PreviewPreset, MotionParameters> = {
   slow_push: {
     travel: 0.035,
@@ -309,12 +318,13 @@ export const resolvePreviewScene = (input: PreviewInput): PreviewScene => {
     });
   }
   let safeOverscan = Math.max(overscan, PREVIEW_LIMITS.minimumOverscan);
-  const maximumCrop =
-    (travel +
-      depthStrength +
-      lateralTravel * (input.preset === "cinematic_float" ? 1.3 : 1) +
-      (rollDegrees * Math.PI) / 180) /
-    (1 + travel);
+  const maximumCrop = maximumCropFor({
+    preset: input.preset,
+    travel,
+    depthStrength,
+    lateralTravel,
+    rollDegrees,
+  });
   if (maximumCrop > PREVIEW_LIMITS.maximumCrop) {
     throw new Error("Resolved camera motion exceeds the safe crop envelope");
   }
