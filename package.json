@@ -16,6 +16,8 @@
     "check": "pnpm toolchain:check && pnpm schema:check && pnpm format:check && pnpm lint && pnpm build && pnpm test",
     "check:all": "pnpm check && pnpm benchmark && pnpm corpus:check",
     "corpus:check": "tsx scripts/check-corpus.ts",
+    "depth:prepare": "uv run still-shift-depth prepare",
+    "depth:contact-sheet": "uv run still-shift-depth contact-sheet",
     "format": "prettier --write \"{apps,benchmarks,docs,packages,scripts,services,tests,tools}/**/*.{json,md,mts,ts}\" \"*.{json,mts,yaml,yml}\" README.md && uv run ruff format services/depth-worker",
     "format:check": "prettier --check \"{apps,benchmarks,docs,packages,scripts,services,tests,tools}/**/*.{json,md,mts,ts}\" \"*.{json,mts,yaml,yml}\" README.md && uv run ruff format --check services/depth-worker",
     "lint": "eslint . && uv run ruff check services/depth-worker",

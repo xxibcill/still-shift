@@ -1,9 +1,22 @@
 [project]
 name = "still-shift-depth-worker"
-version = "0.1.0"
-description = "Python toolchain scaffold for the future Still Shift depth worker"
+version = "0.2.0"
+description = "Reusable Still Shift depth preparation and cache worker"
 requires-python = "==3.12.11"
-dependencies = []
+dependencies = [
+  "numpy==2.5.3",
+  "opencv-python-headless==5.0.0.93",
+  "pillow==12.3.0",
+  "torch==2.14.0",
+  "transformers==5.17.0",
+]
+
+[project.scripts]
+still-shift-depth = "still_shift_depth.cli:main"
+
+[build-system]
+requires = ["hatchling==1.32.4"]
+build-backend = "hatchling.build"
 
 [dependency-groups]
 dev = [
@@ -11,7 +24,10 @@ dev = [
 ]
 
 [tool.uv]
-package = false
+package = true
+
+[tool.hatch.build.targets.wheel]
+packages = ["services/depth-worker/src/still_shift_depth"]
 
 [tool.ruff]
 target-version = "py312"

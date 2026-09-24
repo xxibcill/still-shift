@@ -1,12 +1,12 @@
 # Still Shift
 
-Still Shift is a local, deterministic still-image animation engine spike. This
-repository currently implements Phase 0 version **v0.1** only: contracts, toolchain,
-corpus metadata structure, and a fake end-to-end engine/CLI path.
+Still Shift is a local, deterministic still-image animation engine spike. The v0.1
+foundation and fake animation path are merged. The v0.2 depth worker prepares and caches
+normalized images and validated depth assets; animation rendering is still future work.
 
-The v0.1 CLI writes an explicitly labeled `.noop.json` artifact. It does **not**
-produce video, infer depth, or implement motion rendering. Those capabilities belong
-to later roadmap versions.
+The v0.1 animation CLI still writes an explicitly labeled `.noop.json` artifact and
+does **not** produce video or motion. The separate v0.2 depth CLI can estimate depth;
+it does not yet connect depth assets to a renderer.
 
 ## Pinned toolchain
 
@@ -68,6 +68,8 @@ pnpm test:unit
 pnpm test:integration
 pnpm benchmark
 pnpm toolchain:check
+pnpm depth:prepare -- --input path/to/image.png --adapter fake
+pnpm depth:contact-sheet -- --manifest benchmarks/corpus-manifest.json
 ```
 
 ## Exercise the v0.1 CLI
@@ -85,6 +87,21 @@ pnpm still-shift animate \
 The command prints an `AnimationResult` JSON record. It also writes the no-op artifact
 and a sibling `.scene.json` manifest. Repeated requests with the same source bytes and
 animation parameters produce identical source, scene, and output checksums.
+
+## Prepare depth with v0.2
+
+The depth worker can be run separately from the no-op animation CLI:
+
+```bash
+pnpm depth:prepare -- --input path/to/image.png
+```
+
+The first run downloads the pinned Depth Anything V2 Small weights. Use
+`--adapter fake` to prepare deterministic fixture depth without downloading model
+weights. Both modes write a normalized source image, raw float depth, a renderer-ready
+depth texture, a provenance manifest, and cache metrics. See
+[`services/depth-worker/README.md`](./services/depth-worker/README.md) for options and
+the corpus contact-sheet command.
 
 ## Frozen corpus requirement
 
