@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 export const ANIMATION_API_VERSION = "0.1" as const;
-export const ENGINE_VERSION = "0.8" as const;
+export const ENGINE_VERSION = "0.9" as const;
 export const SCENE_SCHEMA_VERSION = "0.1" as const;
 
 export const V0_1_REQUEST_CONSTRAINTS = {

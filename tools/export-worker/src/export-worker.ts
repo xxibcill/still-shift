@@ -326,6 +326,7 @@ export const exportScene = async (
     server = await createServer({
       root: projectRoot,
       configFile: false,
+      logLevel: "error",
       plugins: [assetPlugin(request, encoder, expectedBytes, frameState)],
       server: { host: "127.0.0.1", port: 0, fs: { allow: [projectRoot] } },
     });

@@ -1,6 +1,6 @@
 # Still Shift — Phase 0 Roadmap
 
-**Status:** v0.3–v0.8 implemented; frozen-corpus and human review pending; v0.9 in progress
+**Status:** v0.3–v0.9 implemented; frozen-corpus and human review pending; v0.10 in progress
 
 **Updated:** 2026-09-24  
 **Target:** 10 working days  
@@ -40,8 +40,8 @@ When work begins, update the roadmap date, mark exactly one version as in progre
 | v0.6    | Deterministic MP4 export                 |     Day 7 | `[!]`  | [1080p export passes; representative throughput gate pending](./docs/v0.6-mp4-export.md)                  |
 | v0.7    | Preview/export parity and golden tests   |     Day 7 | `[!]`  | [Five golden scenes pass; frozen-corpus review pending](./docs/v0.7-preview-export-parity.md)             |
 | v0.8    | Single-image CLI integration             |     Day 8 | `[!]`  | [Real CLI and workflow candidate verified; frozen-corpus review pending](./docs/v0.8-single-image-cli.md) |
-| v0.9    | Unattended batch execution               |     Day 8 | `[~]`  | 50-image batch completes with a result manifest                                                           |
-| v0.10   | Evaluation release and Phase 1 decision  | Days 9–10 | `[ ]`  | Gallery, assembled explainer, and gate report                                                             |
+| v0.9    | Unattended batch execution               |     Day 8 | `[!]`  | [50-item technical batch passes; frozen-corpus gate pending](./docs/v0.9-unattended-batch.md)             |
+| v0.10   | Evaluation release and Phase 1 decision  | Days 9–10 | `[~]`  | Gallery, assembled explainer, and gate report                                                             |
 
 ## Critical path
 
@@ -302,23 +302,23 @@ If headless Chromium cannot approach the throughput target on the intended hardw
 
 ### Tasks
 
-- [ ] Implement newline-delimited JSON batch input.
-- [ ] Implement bounded concurrency.
-- [ ] Continue after individual item failures.
-- [ ] Reuse preparation artifacts across repeated renders.
-- [ ] Write one result record per input.
-- [ ] Include output path, status, warnings, hashes, timings, and selected preset.
-- [ ] Produce a final batch summary.
-- [ ] Make retries idempotent for already completed items.
-- [ ] Document batch exit behavior and partial-failure recovery.
+- [x] Implement newline-delimited JSON batch input.
+- [x] Implement bounded concurrency.
+- [x] Continue after individual item failures.
+- [x] Reuse preparation artifacts across repeated renders.
+- [x] Write one result record per input.
+- [x] Include output path, status, warnings, hashes, timings, and selected preset.
+- [x] Produce a final batch summary.
+- [x] Make retries idempotent for already completed items.
+- [x] Document batch exit behavior and partial-failure recovery.
 
 ### Completion evidence
 
-- [ ] A 50-image batch finishes unattended.
-- [ ] At least 98% of inputs render or produce a valid 2D fallback.
-- [ ] Retrying the same manifest preserves timing and scene decisions.
-- [ ] Per-item failures do not prevent unrelated outputs.
-- [ ] v0.8 single-image usage remains compatible.
+- [!] A 50-item technical batch finishes unattended with 43 unique candidate images and seven repeats; the frozen representative 50-image gate remains pending.
+- [x] All 50 technical batch items rendered valid MP4s (100%, above the 98% threshold); frozen-corpus measurement remains pending.
+- [x] Retrying the same manifest preserves timing and scene decisions; all 50 outputs were reused.
+- [x] Per-item failures do not prevent unrelated outputs.
+- [x] v0.8 single-image usage remains compatible.
 
 ## v0.10 — Evaluation release and Phase 1 decision
 
