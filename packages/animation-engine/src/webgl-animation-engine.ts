@@ -368,16 +368,15 @@ export class WebGLAnimationEngine implements AnimationEngine {
     const warnings: AnimationWarning[] = scene.warnings;
     const manifest = SceneManifestSchema.parse({
       schemaVersion: SCENE_SCHEMA_VERSION,
-      sourceHash,
+      sourceHash: normalizedSourceHash,
       normalizedSourceHash,
-      sourceAssetPath: prepared.sourcePath,
       pipelineVersion: PIPELINE_VERSION,
       rendererVersion: scene.rendererVersion,
       timeline: scene.timeline,
       canvas: scene.canvas,
-      depth: prepared.depthPath
+      depth: depthHash
         ? {
-            asset: prepared.depthPath,
+            asset: depthHash,
             strength: scene.motion.depthStrength,
             near: 0,
             far: 1,
@@ -429,6 +428,10 @@ export class WebGLAnimationEngine implements AnimationEngine {
               : "rendered",
         outputPath,
         sceneManifestPath,
+        assetPaths: {
+          normalizedSource: prepared.sourcePath,
+          depth: prepared.depthPath,
+        },
         frameCount: scene.timeline.frameCount,
         durationMs: scene.timeline.durationMs,
         selectedPreset: scene.motion.preset,

@@ -27,7 +27,12 @@ const environment = {
 
 const runCli = async (
   outputPath: string,
-  options: { adapter?: string; inputPath?: string; cwd?: string } = {},
+  options: {
+    adapter?: string;
+    inputPath?: string;
+    cwd?: string;
+    cacheDir?: string;
+  } = {},
 ) => {
   const args = [
     cliScriptPath,
@@ -51,6 +56,7 @@ const runCli = async (
     cwd: options.cwd ?? resolve("."),
     env: {
       ...environment,
+      ...(options.cacheDir ? { STILL_SHIFT_CACHE_DIR: options.cacheDir } : {}),
       ...(options.adapter
         ? { STILL_SHIFT_DEPTH_ADAPTER: options.adapter }
         : {}),
@@ -92,6 +98,19 @@ try {
   );
   assert.deepEqual(scene.execution, { adapter: "webgl", producesVideo: true });
   assert.ok(scene.renderScene);
+
+  const alternateCache = await runCli(join(directory, "alternate-cache.mp4"), {
+    cacheDir: join(directory, "other-cache"),
+  });
+  const alternateScene = SceneManifestSchema.parse(
+    JSON.parse(await readFile(alternateCache.sceneManifestPath, "utf8")),
+  );
+  assert.deepEqual(alternateScene, scene);
+  assert.equal(alternateCache.checksums.scene, first.checksums.scene);
+  assert.notEqual(
+    alternateCache.assetPaths?.normalizedSource,
+    first.assetPaths?.normalizedSource,
+  );
 
   const externalCaller = await runCli(join(directory, "external.mp4"), {
     inputPath: "explainer-shot.png",

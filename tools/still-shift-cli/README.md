@@ -13,7 +13,7 @@ pnpm still-shift animate \
   --seed 1842
 ```
 
-The command writes a 1920×1080 H.264 MP4 and `still.mp4.scene.json`. It prints one JSON `AnimationResult` with the output path, scene path, rendered/fallback status, selected preset, stable warnings, source/depth/scene/output SHA-256 checksums, cache status, timings, and tool versions. The output and manifest paths must not already exist. The scene manifest includes the full resolved scene and normalized source/depth asset paths for local reproduction.
+The command writes a 1920×1080 H.264 MP4 and `still.mp4.scene.json`. It prints one JSON `AnimationResult` with the output path, scene path, rendered/fallback status, selected preset, stable warnings, source/depth/scene/output SHA-256 checksums, cache status, timings, and tool versions. The output and manifest paths must not already exist. The result's `checksums.source` hashes the original input file. The scene manifest identifies the normalized source and depth by checksum so its bytes and scene checksum do not depend on the local cache directory. The result's `assetPaths` gives the current normalized source and depth paths for local reproduction.
 
 `--preset auto` chooses among the three presets using the normalized source checksum and seed. Durations are 3–8 seconds in whole 30-FPS frames. The default depth model is Depth Anything V2 Small; preparation is cached. Valid images whose depth preparation or safety analysis fails produce a deterministic 2D MP4 with a reason code. Invalid inputs and export failures are errors. The CLI does not overwrite outputs.
 

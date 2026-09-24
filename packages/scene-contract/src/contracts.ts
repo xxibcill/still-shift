@@ -154,6 +154,12 @@ export const AnimationResultSchema = z
     status: z.enum(["rendered", "rendered_with_warnings", "fallback_2d"]),
     outputPath: z.string().trim().min(1),
     sceneManifestPath: z.string().trim().min(1),
+    assetPaths: z
+      .object({
+        normalizedSource: z.string().trim().min(1),
+        depth: z.string().trim().min(1).nullable(),
+      })
+      .optional(),
     frameCount: z.number().int().positive(),
     durationMs: z.number().int().positive(),
     selectedPreset: ResolvedAnimationPresetSchema,
