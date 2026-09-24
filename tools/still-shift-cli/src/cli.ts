@@ -116,22 +116,38 @@ const createRequest = (values: Map<string, string>) => {
   return parsedRequest.data;
 };
 
+export const toCliFailure = (
+  error: unknown,
+): { exitCode: number; failure: AnimationFailure } => {
+  if (error instanceof AnimationEngineError) {
+    return {
+      exitCode: error.code === "SCENE_INVALID" ? 2 : 1,
+      failure: error.toFailure(),
+    };
+  }
+
+  return {
+    exitCode: 1,
+    failure: {
+      status: "failed",
+      error: {
+        code: "RENDER_FAILED",
+        message: "Unexpected animation command failure",
+        context: {
+          operation: "animate",
+          recovery:
+            "Retry the same request; if it fails again, report the command and stderr output.",
+        },
+      },
+    },
+  };
+};
+
 const writeFailure = (error: unknown, io: CliIo): number => {
-  const failure: AnimationFailure =
-    error instanceof AnimationEngineError
-      ? error.toFailure()
-      : {
-          status: "failed",
-          error: {
-            code: "RENDER_FAILED",
-            message: "Unexpected animation command failure",
-          },
-        };
+  const { exitCode, failure } = toCliFailure(error);
 
   io.stderr(`${JSON.stringify(failure)}\n`);
-  return error instanceof AnimationEngineError && error.code === "SCENE_INVALID"
-    ? 2
-    : 1;
+  return exitCode;
 };
 
 export const runCli = async (
