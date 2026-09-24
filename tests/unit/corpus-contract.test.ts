@@ -52,6 +52,12 @@ const createFrozenManifest = () =>
       realExplainerWorkflowImagesRequired: true,
       privateImagesMayRemainUntracked: true,
     },
+    review: {
+      status: "approved",
+      reviewedAt: "2026-09-04T00:00:00.000Z",
+      reviewer: "corpus-reviewer",
+      evidenceRef: "review://integrity-test",
+    },
     evaluationGatesDocument: "./ROADMAP.md",
     outstandingRequirements: [],
     entries: Array.from({ length: 30 }, (_, index) => ({
@@ -60,6 +66,11 @@ const createFrozenManifest = () =>
         path: `missing-${index}.png`,
         tracked: false,
         sha256: `sha256:${index.toString(16).padStart(64, "0")}`,
+        provenance: {
+          kind: "real_explainer_project",
+          projectRef: `project-${index}`,
+          evidenceRef: `evidence://project-${index}`,
+        },
       },
       categories: [requiredCategories[index % requiredCategories.length]],
       dimensions: { width: 1920, height: 1080 },
@@ -87,6 +98,7 @@ describe("corpus manifest", () => {
     const manifest = CorpusManifestSchema.parse(value);
 
     expect(manifest.status).toBe("incomplete");
+    expect(manifest.review.status).toBe("pending");
     expect(manifest.entries).toHaveLength(0);
     expect(blockerMessages(findCorpusIntegrityBlockers(manifest))).toContain(
       "corpus requires at least 30 real images",
@@ -113,6 +125,20 @@ describe("corpus manifest", () => {
     });
 
     expect(findCorpusIntegrityBlockers(manifest)).not.toHaveLength(0);
+  });
+
+  it("requires explicit human review before the corpus can freeze", () => {
+    const manifest = createFrozenManifest();
+    manifest.review = {
+      status: "pending",
+      reviewedAt: null,
+      reviewer: null,
+      evidenceRef: null,
+    };
+
+    expect(findCorpusIntegrityBlockers(manifest)).toContainEqual(
+      expect.objectContaining({ code: "CORPUS_REVIEW_NOT_APPROVED" }),
+    );
   });
 
   it("rejects a frozen manifest whose declared source files do not exist", () => {

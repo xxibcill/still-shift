@@ -100,9 +100,10 @@ After the real images and reviewed metadata are supplied, run:
 pnpm corpus:check
 ```
 
-That command remains non-zero until the target count, category coverage, rights,
-checksums, outstanding requirements, and explicit freeze metadata are complete. Do not
-begin renderer tuning against a substitute demo corpus.
+That command remains non-zero until the target count, category coverage, project
+provenance, rights, checksums, outstanding requirements, explicit review sign-off, and
+freeze metadata are complete. Do not begin renderer tuning against a substitute demo
+corpus.
 
 See [`ROADMAP.md`](./ROADMAP.md) and
 [`Phase_0_Implementation_Plan.md`](./Phase_0_Implementation_Plan.md) for the exact scope

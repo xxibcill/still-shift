@@ -3,7 +3,12 @@
   "source": {
     "path": "./corpus/private-example.png",
     "tracked": false,
-    "sha256": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    "sha256": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "provenance": {
+      "kind": "real_explainer_project",
+      "projectRef": "fixture-project",
+      "evidenceRef": "fixture://project-source-record"
+    }
   },
   "categories": ["portrait_person", "difficult_edges"],
   "dimensions": {

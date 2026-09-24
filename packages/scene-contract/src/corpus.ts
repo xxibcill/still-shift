@@ -29,6 +29,13 @@ export const CorpusEntrySchema = z
           .string()
           .regex(/^sha256:[a-f0-9]{64}$/)
           .nullable(),
+        provenance: z
+          .object({
+            kind: z.literal("real_explainer_project"),
+            projectRef: z.string().trim().min(1),
+            evidenceRef: z.string().trim().min(1),
+          })
+          .strict(),
       })
       .strict(),
     categories: z
@@ -80,6 +87,14 @@ export const CorpusManifestSchema = z
         privateImagesMayRemainUntracked: z.literal(true),
       })
       .strict(),
+    review: z
+      .object({
+        status: z.enum(["pending", "approved"]),
+        reviewedAt: z.string().datetime().nullable(),
+        reviewer: z.string().trim().min(1).nullable(),
+        evidenceRef: z.string().trim().min(1).nullable(),
+      })
+      .strict(),
     evaluationGatesDocument: z.string().trim().min(1),
     outstandingRequirements: z.array(z.string().trim().min(1)),
     entries: z.array(CorpusEntrySchema).max(CORPUS_MAXIMUM_SIZE),
@@ -102,6 +117,7 @@ export type CorpusCategory = z.infer<typeof CorpusCategorySchema>;
 
 export type CorpusFreezeBlockerCode =
   | "MANIFEST_NOT_FROZEN"
+  | "CORPUS_REVIEW_NOT_APPROVED"
   | "CORPUS_TOO_SMALL"
   | "OUTSTANDING_REQUIREMENTS"
   | "CATEGORY_NOT_REPRESENTED"
@@ -130,6 +146,17 @@ export const findCorpusFreezeBlockers = (
     blockers.push({
       code: "MANIFEST_NOT_FROZEN",
       message: "manifest status and frozenAt must record a completed freeze",
+    });
+  }
+  if (
+    manifest.review.status !== "approved" ||
+    manifest.review.reviewedAt === null ||
+    manifest.review.reviewer === null ||
+    manifest.review.evidenceRef === null
+  ) {
+    blockers.push({
+      code: "CORPUS_REVIEW_NOT_APPROVED",
+      message: "corpus review must record an approved human sign-off",
     });
   }
   if (manifest.entries.length < CORPUS_MINIMUM_SIZE) {

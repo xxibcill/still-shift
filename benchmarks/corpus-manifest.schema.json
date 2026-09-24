@@ -42,6 +42,30 @@
       ],
       "additionalProperties": false
     },
+    "review": {
+      "type": "object",
+      "properties": {
+        "status": { "type": "string", "enum": ["pending", "approved"] },
+        "reviewedAt": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time",
+              "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
+            },
+            { "type": "null" }
+          ]
+        },
+        "reviewer": {
+          "anyOf": [{ "type": "string", "minLength": 1 }, { "type": "null" }]
+        },
+        "evidenceRef": {
+          "anyOf": [{ "type": "string", "minLength": 1 }, { "type": "null" }]
+        }
+      },
+      "required": ["status", "reviewedAt", "reviewer", "evidenceRef"],
+      "additionalProperties": false
+    },
     "evaluationGatesDocument": { "type": "string", "minLength": 1 },
     "outstandingRequirements": {
       "type": "array",
@@ -64,9 +88,22 @@
                   { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
                   { "type": "null" }
                 ]
+              },
+              "provenance": {
+                "type": "object",
+                "properties": {
+                  "kind": {
+                    "type": "string",
+                    "const": "real_explainer_project"
+                  },
+                  "projectRef": { "type": "string", "minLength": 1 },
+                  "evidenceRef": { "type": "string", "minLength": 1 }
+                },
+                "required": ["kind", "projectRef", "evidenceRef"],
+                "additionalProperties": false
               }
             },
-            "required": ["path", "tracked", "sha256"],
+            "required": ["path", "tracked", "sha256", "provenance"],
             "additionalProperties": false
           },
           "categories": {
@@ -150,6 +187,7 @@
     "frozenAt",
     "targetSize",
     "sourcePolicy",
+    "review",
     "evaluationGatesDocument",
     "outstandingRequirements",
     "entries"
