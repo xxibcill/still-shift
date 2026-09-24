@@ -389,9 +389,15 @@ class DepthPreparationService:
 
         image, dimensions, normalization_warnings = _normalize_image(source_path)
         source_hash = _normalized_source_hash(image)
-        is_fake = self.adapter.identity.adapter == "fake"
-        if is_fake:
+        runtime = {
+            "numpy": importlib.metadata.version("numpy"),
+            "opencv": cv2.__version__,
+            "pillow": importlib.metadata.version("pillow"),
+            "platform": platform.platform(),
+        }
+        if self.adapter.identity.adapter == "fake":
             selected_device = "cpu"
+            runtime["adapter"] = __version__
         else:
             try:
                 selected_device = choose_device(self.requested_device)
@@ -401,16 +407,6 @@ class DepthPreparationService:
                     "Unable to initialize the requested inference device.",
                     {"requestedDevice": self.requested_device, "reason": str(cause)},
                 ) from cause
-
-        runtime = {
-            "numpy": importlib.metadata.version("numpy"),
-            "opencv": cv2.__version__,
-            "pillow": importlib.metadata.version("pillow"),
-            "platform": platform.platform(),
-        }
-        if is_fake:
-            runtime["adapter"] = __version__
-        else:
             runtime["torch"] = importlib.metadata.version("torch")
             runtime["transformers"] = importlib.metadata.version("transformers")
 
