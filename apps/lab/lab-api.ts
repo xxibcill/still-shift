@@ -25,11 +25,44 @@ type CorpusEntry = {
 };
 
 type Prepared = {
-  status: string;
+  status: "prepared";
   assets: { normalizedSource: string; previewDepth: string };
   dimensions: { normalized: { width: number; height: number } };
   model: { id?: string };
   cacheStatus: string;
+};
+
+type PreparationFailure = {
+  status: "failed";
+  error: { code: string; message: string };
+};
+
+const prepareDepth = async (
+  sourcePath: string,
+): Promise<Prepared | PreparationFailure> => {
+  let stdout: string;
+  try {
+    ({ stdout } = await run(
+      "uv",
+      [
+        "run",
+        "still-shift-depth",
+        "prepare",
+        "--input",
+        sourcePath,
+        "--adapter",
+        depthAdapter,
+      ],
+      { cwd: root, maxBuffer: 1024 * 1024 * 8 },
+    ));
+  } catch (error) {
+    const output = (error as { stdout?: unknown }).stdout;
+    if (typeof output !== "string") throw error;
+    const result = JSON.parse(output) as Prepared | PreparationFailure;
+    if (result.status !== "failed") throw error;
+    return result;
+  }
+  return JSON.parse(stdout) as Prepared | PreparationFailure;
 };
 
 const sendJson = (
@@ -89,24 +122,12 @@ export const labApi = (): Plugin => {
               return sendJson(response, 409, {
                 error: "Source checksum differs from the corpus manifest",
               });
-            const { stdout } = await run(
-              "uv",
-              [
-                "run",
-                "still-shift-depth",
-                "prepare",
-                "--input",
-                sourcePath,
-                "--adapter",
-                depthAdapter,
-              ],
-              { cwd: root, maxBuffer: 1024 * 1024 * 8 },
-            );
-            const result = JSON.parse(stdout) as Prepared & {
-              error?: { message: string };
-            };
+            const result = await prepareDepth(sourcePath);
             if (result.status !== "prepared")
-              return sendJson(response, 422, result);
+              return sendJson(response, 422, {
+                error: result.error.message,
+                code: result.error.code,
+              });
             prepared.set(entry.id, result);
             sendJson(response, 200, {
               id: entry.id,
