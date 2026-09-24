@@ -28,9 +28,9 @@ const scene = (intensity: "subtle" | "standard" | "strong" = "standard") =>
 const pixels = (
   depthAt: (x: number, y: number) => number,
   sourceAt: (x: number, y: number) => number = () => 128,
+  width = 32,
+  height = 16,
 ) => {
-  const width = 32;
-  const height = 16;
   const source = new Uint8ClampedArray(width * height * 4);
   const depth = new Uint8ClampedArray(width * height * 4);
   for (let y = 0; y < height; y += 1) {
@@ -78,13 +78,18 @@ describe("v0.5 safety analysis and 2D fallback", () => {
   it("measures RGB boundaries without matching depth edges", () => {
     const assessment = analyzeDepthSafety(
       pixels(
-        (x) => 64 + x * 4,
-        (x) => (x < 16 ? 32 : 224),
+        (x) => 64 + Math.round(x / 2),
+        (x) => (x < 128 ? 32 : 224),
+        256,
+        256,
       ),
     );
     expect(assessment.signals.discontinuityDensity).toBe(0);
     expect(assessment.signals.rgbDepthEdgeDisagreement).toBe(1);
-    expect(assessment.riskScore).toBeGreaterThan(0);
+    expect(assessment.riskScore).toBeGreaterThanOrEqual(0.4);
+    expect(
+      applySafetyToScene(scene(), assessment).motion.depthStrength,
+    ).toBeLessThan(scene().motion.depthStrength);
   });
 
   it("downgrades a risky strong request and repairs an insufficient crop envelope", () => {

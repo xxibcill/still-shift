@@ -157,9 +157,9 @@ export const analyzeDepthSafety = (pixels: SafetyPixels): SafetyAssessment => {
   const rgbDepthEdgeDisagreement =
     mismatchedEdgeCount / Math.max(1, edgePairCount);
   const riskScore = clamp01(
-    0.3 * clamp01(discontinuityDensity / 0.08) +
-      0.2 * clamp01(centralDiscontinuityDensity / 0.12) +
-      0.3 * clamp01(rgbDepthEdgeDisagreement / 0.5) +
+    0.25 * clamp01(discontinuityDensity / 0.08) +
+      0.15 * clamp01(centralDiscontinuityDensity / 0.12) +
+      0.4 * clamp01(rgbDepthEdgeDisagreement / 0.5) +
       0.2 * clamp01(depthSaturationFraction / 0.45),
   );
   return {
