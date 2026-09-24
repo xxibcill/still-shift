@@ -1,6 +1,6 @@
 import { createHash, randomUUID } from "node:crypto";
 import { readFile, mkdir, rename, rm, writeFile } from "node:fs/promises";
-import { dirname, join, resolve } from "node:path";
+import { basename, dirname, join, resolve } from "node:path";
 import { performance } from "node:perf_hooks";
 
 import lockfile from "proper-lockfile";
@@ -43,6 +43,11 @@ type Checkpoint = {
   result: AnimationResult;
 };
 
+type PendingItem = {
+  requestHash: string;
+  sourceHash: string;
+};
+
 const sha256 = (bytes: string | Uint8Array): string =>
   `sha256:${createHash("sha256").update(bytes).digest("hex")}`;
 
@@ -67,6 +72,69 @@ const atomicJsonl = (path: string, records: BatchRecord[]): Promise<void> =>
 
 const fileHash = async (path: string): Promise<string> =>
   sha256(await readFile(path));
+
+const sourceHash = async (inputPath: string): Promise<string> => {
+  try {
+    return await fileHash(inputPath);
+  } catch {
+    throw new AnimationEngineError(
+      "INPUT_UNREADABLE",
+      "Unable to read animation input",
+      { inputPath },
+    );
+  }
+};
+
+const pendingItem = async (path: string): Promise<PendingItem | null> => {
+  let value: unknown;
+  try {
+    value = JSON.parse(await readFile(path, "utf8"));
+  } catch (error) {
+    if ((error as NodeJS.ErrnoException).code === "ENOENT") return null;
+    throw new AnimationEngineError(
+      "RENDER_FAILED",
+      "Batch journal is unreadable",
+      {
+        path,
+      },
+    );
+  }
+  if (
+    typeof value !== "object" ||
+    value === null ||
+    !("requestHash" in value) ||
+    typeof value.requestHash !== "string" ||
+    !("sourceHash" in value) ||
+    typeof value.sourceHash !== "string"
+  )
+    throw new AnimationEngineError(
+      "RENDER_FAILED",
+      "Batch journal is invalid",
+      {
+        path,
+      },
+    );
+  return value as PendingItem;
+};
+
+const quarantinePendingArtifacts = async (
+  outputPath: string,
+  outputDir: string,
+  id: string,
+): Promise<void> => {
+  const quarantineDir = join(outputDir, ".batch-orphans", id, randomUUID());
+  await mkdir(quarantineDir, { recursive: true });
+  let moved = false;
+  for (const path of [outputPath, `${outputPath}.scene.json`]) {
+    try {
+      await rename(path, join(quarantineDir, basename(path)));
+      moved = true;
+    } catch (error) {
+      if ((error as NodeJS.ErrnoException).code !== "ENOENT") throw error;
+    }
+  }
+  if (!moved) await rm(quarantineDir, { recursive: true });
+};
 
 const parseItem = (line: string, lineNumber: number): BatchItem => {
   let value: unknown;
@@ -223,12 +291,18 @@ const runItem = async (
       ".batch-checkpoints",
       `${item.id}.json`,
     );
+    const pendingPath = join(
+      outputDir,
+      ".batch-checkpoints",
+      `${item.id}.pending.json`,
+    );
     const previous = await checkpointResult(
       checkpointPath,
       requestHash,
       request,
     );
-    if (previous)
+    if (previous) {
+      await rm(pendingPath, { force: true });
       return {
         line,
         id: item.id,
@@ -238,11 +312,31 @@ const runItem = async (
         status: previous.status,
         result: previous,
       };
+    }
+    const currentSourceHash = await sourceHash(request.inputPath);
+    const pending = await pendingItem(pendingPath);
+    if (pending) {
+      if (
+        pending.requestHash !== requestHash ||
+        pending.sourceHash !== currentSourceHash
+      )
+        throw new AnimationEngineError(
+          "SCENE_INVALID",
+          "Batch item changed during an interrupted render",
+          { id: item.id },
+        );
+      await quarantinePendingArtifacts(request.outputPath, outputDir, item.id);
+    }
+    await atomicJson(pendingPath, {
+      requestHash,
+      sourceHash: currentSourceHash,
+    } satisfies PendingItem);
     const result = await new WebGLAnimationEngine().animate(request);
     await atomicJson(checkpointPath, {
       requestHash,
       result,
     } satisfies Checkpoint);
+    await rm(pendingPath, { force: true });
     return {
       line,
       id: item.id,

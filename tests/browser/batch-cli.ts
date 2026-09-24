@@ -4,6 +4,7 @@ import {
   mkdir,
   mkdtemp,
   readFile,
+  readdir,
   rm,
   utimes,
   writeFile,
@@ -132,6 +133,61 @@ try {
   assert.deepEqual(repeated[2].result, records[2].result);
   assert.equal(repeated[0].reused, true);
   assert.equal(repeated[2].reused, true);
+  await rm(join(outputDir, ".batch-checkpoints", "first.json"));
+  await writeFile(
+    join(outputDir, ".batch-checkpoints", "first.pending.json"),
+    JSON.stringify({
+      requestHash: records[0].requestHash,
+      sourceHash: firstResult.checksums.source,
+    }),
+  );
+  const recovered = await runBatch();
+  assert.equal(recovered.exitCode, 1);
+  assert.equal(recovered.summary.successful, 2);
+  assert.equal(recovered.summary.reused, 1);
+  const recoveredRecords = (
+    await readFile(join(outputDir, "batch-results.jsonl"), "utf8")
+  )
+    .trim()
+    .split("\n")
+    .map((line) => JSON.parse(line));
+  assert.equal(recoveredRecords[0].reused, false);
+  assert.equal(recoveredRecords[2].reused, true);
+  const orphanRoot = join(outputDir, ".batch-orphans", "first");
+  const [orphanId] = await readdir(orphanRoot);
+  assert.ok(orphanId);
+  assert.deepEqual((await readdir(join(orphanRoot, orphanId))).sort(), [
+    "first.mp4",
+    "first.mp4.scene.json",
+  ]);
+  const checkpointPath = join(outputDir, ".batch-checkpoints", "first.json");
+  const pendingPath = join(
+    outputDir,
+    ".batch-checkpoints",
+    "first.pending.json",
+  );
+  const checkpoint = await readFile(checkpointPath);
+  const preservedVideo = await readFile(firstResult.outputPath);
+  await rm(checkpointPath);
+  await writeFile(
+    pendingPath,
+    JSON.stringify({
+      requestHash: records[0].requestHash,
+      sourceHash: `sha256:${"0".repeat(64)}`,
+    }),
+  );
+  const changed = await runBatch();
+  assert.equal(changed.exitCode, 1);
+  const changedRecords = (
+    await readFile(join(outputDir, "batch-results.jsonl"), "utf8")
+  )
+    .trim()
+    .split("\n")
+    .map((line) => JSON.parse(line));
+  assert.equal(changedRecords[0].error.code, "SCENE_INVALID");
+  assert.deepEqual(await readFile(firstResult.outputPath), preservedVideo);
+  await writeFile(checkpointPath, checkpoint);
+  await rm(pendingPath);
   await writeFile(firstResult.outputPath, "tampered output");
   const damaged = await runBatch();
   assert.equal(damaged.exitCode, 1);
@@ -144,7 +200,7 @@ try {
   assert.equal(damagedRecords[0].error.code, "OUTPUT_VALIDATION_FAILED");
   assert.equal(damagedRecords[2].reused, true);
   process.stdout.write(
-    "Batch CLI verified: bounded workers, failure isolation, deterministic retries, and artifact validation\n",
+    "Batch CLI verified: bounded workers, failure isolation, crash recovery, deterministic retries, and artifact validation\n",
   );
 } finally {
   await rm(directory, { recursive: true, force: true });
