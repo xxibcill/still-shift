@@ -1,10 +1,15 @@
+import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
+import { mkdtemp, rm, writeFile } from "node:fs/promises";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
 
 import { CorpusManifestSchema } from "@still-shift/scene-contract";
 import { describe, expect, it } from "vitest";
 
 import {
   validateEvaluationRecords,
+  verifyAssemblyClip,
   type EvaluationRecord,
 } from "../../scripts/evaluation/evidence.ts";
 import {
@@ -56,5 +61,36 @@ describe("evaluation result identity", () => {
     expect(() => validateEvaluationRecords(corpus, other)).toThrow(
       "duplicate evaluation ID",
     );
+  });
+});
+
+describe("assembly clip evidence", () => {
+  it("requires the timeline source and matching output bytes", async () => {
+    const directory = await mkdtemp(join(tmpdir(), "still-shift-assembly-"));
+    try {
+      const outputPath = join(directory, "clip.mp4");
+      await writeFile(outputPath, "test video bytes");
+      const result = {
+        outputPath,
+        selectedPreset: "slow_push" as const,
+        checksums: {
+          source: sourceHash,
+          scene: `sha256:${"b".repeat(64)}`,
+          output: `sha256:${createHash("sha256").update("test video bytes").digest("hex")}`,
+        },
+      };
+      expect(await verifyAssemblyClip(result, sourceHash, "slow_push")).toBe(
+        outputPath,
+      );
+      await expect(
+        verifyAssemblyClip(result, `sha256:${"d".repeat(64)}`, "slow_push"),
+      ).rejects.toThrow("timeline source");
+      await writeFile(outputPath, "changed bytes");
+      await expect(
+        verifyAssemblyClip(result, sourceHash, "slow_push"),
+      ).rejects.toThrow("checksum mismatch");
+    } finally {
+      await rm(directory, { recursive: true, force: true });
+    }
   });
 });

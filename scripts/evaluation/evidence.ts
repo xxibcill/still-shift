@@ -1,3 +1,6 @@
+import { createHash } from "node:crypto";
+import { createReadStream } from "node:fs";
+
 import type {
   AnimationResult,
   CorpusManifest,
@@ -57,4 +60,25 @@ export const validateEvaluationRecords = (
     )
       throw new Error(`Result does not match the corpus item: ${record.id}`);
   }
+};
+
+export const verifyAssemblyClip = async (
+  result: Pick<AnimationResult, "checksums" | "outputPath" | "selectedPreset">,
+  sourceHash: string,
+  preset: AnimationResult["selectedPreset"],
+): Promise<string> => {
+  if (
+    result.checksums.source !== sourceHash ||
+    result.selectedPreset !== preset
+  )
+    throw new Error(
+      `Assembly clip does not match its timeline source: ${preset}`,
+    );
+
+  const hash = createHash("sha256");
+  for await (const chunk of createReadStream(result.outputPath))
+    hash.update(chunk);
+  if (`sha256:${hash.digest("hex")}` !== result.checksums.output)
+    throw new Error(`Assembly clip checksum mismatch: ${result.outputPath}`);
+  return result.outputPath;
 };
