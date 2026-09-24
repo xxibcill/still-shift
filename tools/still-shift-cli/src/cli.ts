@@ -6,8 +6,8 @@ import {
   AnimationEngineError,
   AnimationIntensitySchema,
   AnimationPresetSchema,
-  AnimationRequestSchema,
   ENGINE_VERSION,
+  parseAnimationRequest,
   V0_1_REQUEST_CONSTRAINTS,
   V0_1_REQUEST_DEFAULTS,
   type AnimationFailure,
@@ -93,7 +93,7 @@ const createRequest = (values: Map<string, string>) => {
     "seed",
   );
 
-  const parsedRequest = AnimationRequestSchema.safeParse({
+  return parseAnimationRequest({
     inputPath: requireArgument(values, "input"),
     outputPath: requireArgument(values, "output"),
     durationMs: durationSeconds * 1000,
@@ -104,16 +104,6 @@ const createRequest = (values: Map<string, string>) => {
     intensity: values.get("intensity") ?? V0_1_REQUEST_DEFAULTS.intensity,
     seed,
   });
-
-  if (!parsedRequest.success) {
-    throw new AnimationEngineError(
-      "SCENE_INVALID",
-      "Animation request failed contract validation",
-      { issueCount: parsedRequest.error.issues.length },
-      { cause: parsedRequest.error },
-    );
-  }
-  return parsedRequest.data;
 };
 
 export const toCliFailure = (

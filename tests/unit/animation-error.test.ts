@@ -1,4 +1,7 @@
-import { AnimationEngineError } from "@still-shift/scene-contract";
+import {
+  AnimationEngineError,
+  parseAnimationRequest,
+} from "@still-shift/scene-contract";
 import { describe, expect, it } from "vitest";
 
 describe("AnimationEngineError", () => {
@@ -18,5 +21,14 @@ describe("AnimationEngineError", () => {
       },
     });
     expect(failure.error).not.toHaveProperty("stack");
+  });
+
+  it("wraps request validation failures consistently", () => {
+    expect(() => parseAnimationRequest({ durationMs: 1 })).toThrowError(
+      expect.objectContaining({
+        code: "SCENE_INVALID",
+        context: { issueCount: expect.any(Number) },
+      }),
+    );
   });
 });

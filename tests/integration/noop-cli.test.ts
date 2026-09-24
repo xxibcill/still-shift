@@ -6,6 +6,7 @@ import { promisify } from "node:util";
 
 import {
   AnimationResultSchema,
+  calculateFrameCount,
   SceneManifestSchema,
   V0_1_REQUEST_CONSTRAINTS,
   V0_1_REQUEST_DEFAULTS,
@@ -109,9 +110,10 @@ describe("no-op CLI", () => {
     expect(scene.timeline).toEqual({
       durationMs: V0_1_REQUEST_DEFAULTS.durationMs,
       fps: V0_1_REQUEST_CONSTRAINTS.fps,
-      frameCount:
-        (V0_1_REQUEST_DEFAULTS.durationMs * V0_1_REQUEST_CONSTRAINTS.fps) /
-        1000,
+      frameCount: calculateFrameCount(
+        V0_1_REQUEST_DEFAULTS.durationMs,
+        V0_1_REQUEST_CONSTRAINTS.fps,
+      ),
     });
     expect(scene.canvas).toEqual({
       width: V0_1_REQUEST_CONSTRAINTS.width,
@@ -139,9 +141,9 @@ describe("no-op CLI", () => {
     await expect(readFile(scenePath, "utf8")).rejects.toMatchObject({
       code: "ENOENT",
     });
-    expect((await readdir(directory)).some((path) => path.endsWith(".tmp"))).toBe(
-      false,
-    );
+    expect(
+      (await readdir(directory)).some((path) => path.endsWith(".tmp")),
+    ).toBe(false);
 
     await rm(outputPath);
     await writeFile(scenePath, "existing scene", "utf8");

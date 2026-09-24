@@ -1,4 +1,9 @@
-import type { AnimationErrorCode, AnimationFailure } from "./contracts.ts";
+import {
+  AnimationRequestSchema,
+  type AnimationErrorCode,
+  type AnimationFailure,
+  type AnimationRequest,
+} from "./contracts.ts";
 
 type AnimationErrorContext = AnimationFailure["error"]["context"];
 
@@ -29,3 +34,19 @@ export class AnimationEngineError extends Error {
     };
   }
 }
+
+export const parseAnimationRequest = (
+  unvalidatedRequest: unknown,
+): AnimationRequest => {
+  const parsedRequest = AnimationRequestSchema.safeParse(unvalidatedRequest);
+  if (!parsedRequest.success) {
+    throw new AnimationEngineError(
+      "SCENE_INVALID",
+      "Animation request failed contract validation",
+      { issueCount: parsedRequest.error.issues.length },
+      { cause: parsedRequest.error },
+    );
+  }
+
+  return parsedRequest.data;
+};

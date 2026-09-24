@@ -35,8 +35,11 @@ export const AnimationIntensitySchema = z.enum([
   "strong",
 ]);
 
+export const calculateFrameCount = (durationMs: number, fps: number): number =>
+  (durationMs * fps) / 1000;
+
 const wholeFrameDuration = (durationMs: number, fps: number): boolean =>
-  Number.isInteger((durationMs * fps) / 1000);
+  Number.isInteger(calculateFrameCount(durationMs, fps));
 
 export const AnimationRequestSchema = z
   .object({
@@ -162,7 +165,7 @@ export const AnimationResultSchema = z
   .superRefine((result, context) => {
     if (
       result.frameCount !==
-      (result.durationMs * V0_1_REQUEST_CONSTRAINTS.fps) / 1000
+      calculateFrameCount(result.durationMs, V0_1_REQUEST_CONSTRAINTS.fps)
     ) {
       context.addIssue({
         code: "custom",
@@ -218,7 +221,10 @@ export const SceneManifestSchema = z.object({
           path: ["durationMs"],
         });
       }
-      if (timeline.frameCount !== (timeline.durationMs * timeline.fps) / 1000) {
+      if (
+        timeline.frameCount !==
+        calculateFrameCount(timeline.durationMs, timeline.fps)
+      ) {
         context.addIssue({
           code: "custom",
           message: "frameCount must match durationMs and fps",

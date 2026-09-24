@@ -5,9 +5,10 @@ import { dirname } from "node:path";
 import {
   AnimationEngineError,
   ANIMATION_API_VERSION,
-  AnimationRequestSchema,
   AnimationResultSchema,
+  calculateFrameCount,
   ENGINE_VERSION,
+  parseAnimationRequest,
   SCENE_SCHEMA_VERSION,
   SceneManifestSchema,
   type AnimationRequest,
@@ -42,7 +43,7 @@ const buildScene = (
     timeline: {
       durationMs: request.durationMs,
       fps: request.fps,
-      frameCount: (request.durationMs * request.fps) / 1000,
+      frameCount: calculateFrameCount(request.durationMs, request.fps),
     },
     canvas: {
       width: request.width,
@@ -128,17 +129,7 @@ export class NoopAnimationEngine implements AnimationEngine {
   async animate(
     unvalidatedRequest: AnimationRequest,
   ): Promise<AnimationResult> {
-    const parsedRequest = AnimationRequestSchema.safeParse(unvalidatedRequest);
-    if (!parsedRequest.success) {
-      throw new AnimationEngineError(
-        "SCENE_INVALID",
-        "Animation request failed contract validation",
-        { issueCount: parsedRequest.error.issues.length },
-        { cause: parsedRequest.error },
-      );
-    }
-
-    const request = parsedRequest.data;
+    const request = parseAnimationRequest(unvalidatedRequest);
     const source = await readSource(request.inputPath);
     const sourceHash = checksum(source);
     const scene = buildScene(request, sourceHash);
