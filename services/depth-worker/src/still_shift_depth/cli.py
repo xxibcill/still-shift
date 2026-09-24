@@ -15,6 +15,7 @@ from PIL import Image, ImageDraw, ImageFont
 from . import __version__
 from .models import sha256_file
 from .preparation import (
+    DEFAULT_DEPTH_PARAMETERS,
     DepthParameters,
     DepthPreparationService,
     PreparationError,
@@ -32,11 +33,25 @@ def _add_preparation_options(parser: argparse.ArgumentParser) -> None:
     )
     parser.add_argument("--device", choices=("auto", "cpu", "cuda", "mps"), default="auto")
     parser.add_argument("--cache-dir", type=Path, default=default_cache_directory())
-    parser.add_argument("--lower-percentile", type=float, default=2.0)
-    parser.add_argument("--upper-percentile", type=float, default=98.0)
-    parser.add_argument("--bilateral-diameter", type=int, default=5)
-    parser.add_argument("--bilateral-sigma-color", type=float, default=0.08)
-    parser.add_argument("--bilateral-sigma-space", type=float, default=3.0)
+    parser.add_argument(
+        "--lower-percentile", type=float, default=DEFAULT_DEPTH_PARAMETERS.lower_percentile
+    )
+    parser.add_argument(
+        "--upper-percentile", type=float, default=DEFAULT_DEPTH_PARAMETERS.upper_percentile
+    )
+    parser.add_argument(
+        "--bilateral-diameter", type=int, default=DEFAULT_DEPTH_PARAMETERS.bilateral_diameter
+    )
+    parser.add_argument(
+        "--bilateral-sigma-color",
+        type=float,
+        default=DEFAULT_DEPTH_PARAMETERS.bilateral_sigma_color,
+    )
+    parser.add_argument(
+        "--bilateral-sigma-space",
+        type=float,
+        default=DEFAULT_DEPTH_PARAMETERS.bilateral_sigma_space,
+    )
 
 
 def _service(arguments: argparse.Namespace) -> DepthPreparationService:
