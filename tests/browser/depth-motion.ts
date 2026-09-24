@@ -124,8 +124,16 @@ try {
       body: JSON.stringify({
         status: "frozen",
         entries: [
-          { id: "first", categories: [], expectedShotDurationMs: 5000 },
-          { id: "second", categories: [], expectedShotDurationMs: 5000 },
+          {
+            id: "first",
+            categories: ["portrait_person"],
+            expectedShotDurationMs: 5000,
+          },
+          {
+            id: "second",
+            categories: ["portrait_person"],
+            expectedShotDurationMs: 5000,
+          },
         ],
       }),
     }),
@@ -137,7 +145,15 @@ try {
     await gate.blocked;
     await route.fulfill({
       contentType: "application/json",
-      body: JSON.stringify({ id, sourceUrl, depthUrl, durationMs: 5000 }),
+      body: JSON.stringify({
+        id,
+        sourceUrl,
+        depthUrl,
+        durationMs: 5000,
+        dimensions: { width: 256, height: 256 },
+        cacheStatus: "hit",
+        model: { id: "test-model" },
+      }),
     });
   });
   await racePage.goto("http://127.0.0.1:4176/");

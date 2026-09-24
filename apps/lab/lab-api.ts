@@ -7,6 +7,14 @@ import { promisify } from "node:util";
 
 import type { Plugin } from "vite";
 
+import { CorpusManifestSchema } from "../../packages/scene-contract/src/corpus.ts";
+import {
+  CorpusResponseSchema,
+  PreparedEntrySchema,
+  WorkerResultSchema,
+  type PreparedWorkerResult,
+} from "./lab-contract.ts";
+
 const run = promisify(execFile);
 const root = resolve(import.meta.dirname, "../..");
 const corpusPath = process.env.STILL_SHIFT_LAB_CORPUS
@@ -17,29 +25,7 @@ const depthAdapter =
     ? "fake"
     : "depth-anything-v2-small";
 
-type CorpusEntry = {
-  id: string;
-  source: { path: string; sha256: string };
-  categories: string[];
-  expectedShotDurationMs: number;
-};
-
-type Prepared = {
-  status: "prepared";
-  assets: { normalizedSource: string; previewDepth: string };
-  dimensions: { normalized: { width: number; height: number } };
-  model: { id?: string };
-  cacheStatus: string;
-};
-
-type PreparationFailure = {
-  status: "failed";
-  error: { code: string; message: string };
-};
-
-const prepareDepth = async (
-  sourcePath: string,
-): Promise<Prepared | PreparationFailure> => {
+const prepareDepth = async (sourcePath: string) => {
   let stdout: string;
   try {
     ({ stdout } = await run(
@@ -58,11 +44,15 @@ const prepareDepth = async (
   } catch (error) {
     const output = (error as { stdout?: unknown }).stdout;
     if (typeof output !== "string") throw error;
-    const result = JSON.parse(output) as Prepared | PreparationFailure;
-    if (result.status !== "failed") throw error;
-    return result;
+    try {
+      const result = WorkerResultSchema.parse(JSON.parse(output));
+      if (result.status === "failed") return result;
+    } catch {
+      // Keep the subprocess failure when stdout is not a valid worker result.
+    }
+    throw error;
   }
-  return JSON.parse(stdout) as Prepared | PreparationFailure;
+  return WorkerResultSchema.parse(JSON.parse(stdout));
 };
 
 const sendJson = (
@@ -76,17 +66,11 @@ const sendJson = (
   response.end(JSON.stringify(value));
 };
 
-const readCorpus = async (): Promise<{
-  status: string;
-  entries: CorpusEntry[];
-}> =>
-  JSON.parse(await readFile(corpusPath, "utf8")) as {
-    status: string;
-    entries: CorpusEntry[];
-  };
+const readCorpus = async () =>
+  CorpusManifestSchema.parse(JSON.parse(await readFile(corpusPath, "utf8")));
 
 export const labApi = (): Plugin => {
-  const prepared = new Map<string, Prepared>();
+  const prepared = new Map<string, PreparedWorkerResult>();
   return {
     name: "still-shift-lab-api",
     configureServer(server) {
@@ -96,16 +80,20 @@ export const labApi = (): Plugin => {
         try {
           const corpus = await readCorpus();
           if (url.pathname === "/api/corpus") {
-            sendJson(response, 200, {
-              status: corpus.status,
-              entries: corpus.entries.map(
-                ({ id, categories, expectedShotDurationMs }) => ({
-                  id,
-                  categories,
-                  expectedShotDurationMs,
-                }),
-              ),
-            });
+            sendJson(
+              response,
+              200,
+              CorpusResponseSchema.parse({
+                status: corpus.status,
+                entries: corpus.entries.map(
+                  ({ id, categories, expectedShotDurationMs }) => ({
+                    id,
+                    categories,
+                    expectedShotDurationMs,
+                  }),
+                ),
+              }),
+            );
             return;
           }
           const id = url.searchParams.get("id");
@@ -129,15 +117,19 @@ export const labApi = (): Plugin => {
                 code: result.error.code,
               });
             prepared.set(entry.id, result);
-            sendJson(response, 200, {
-              id: entry.id,
-              sourceUrl: `/api/asset?id=${encodeURIComponent(entry.id)}&role=source`,
-              depthUrl: `/api/asset?id=${encodeURIComponent(entry.id)}&role=depth`,
-              dimensions: result.dimensions.normalized,
-              model: result.model,
-              cacheStatus: result.cacheStatus,
-              durationMs: entry.expectedShotDurationMs,
-            });
+            sendJson(
+              response,
+              200,
+              PreparedEntrySchema.parse({
+                id: entry.id,
+                sourceUrl: `/api/asset?id=${encodeURIComponent(entry.id)}&role=source`,
+                depthUrl: `/api/asset?id=${encodeURIComponent(entry.id)}&role=depth`,
+                dimensions: result.dimensions.normalized,
+                model: result.model,
+                cacheStatus: result.cacheStatus,
+                durationMs: entry.expectedShotDurationMs,
+              }),
+            );
             return;
           }
           if (url.pathname === "/api/asset") {

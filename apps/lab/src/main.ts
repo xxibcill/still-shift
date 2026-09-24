@@ -5,22 +5,17 @@ import {
   type PreviewScene,
   type WebGLPreview,
 } from "../../../packages/renderer-core/src/index.ts";
-import "./style.css";
+import type { z } from "zod";
 
-type CorpusEntry = {
-  id: string;
-  categories: string[];
-  expectedShotDurationMs: number;
-};
-type PreparedEntry = {
-  id: string;
-  sourceUrl: string;
-  depthUrl: string;
-  dimensions: { width: number; height: number };
-  durationMs: number;
-  cacheStatus: string;
-  model: unknown;
-};
+import {
+  ApiErrorSchema,
+  CorpusResponseSchema,
+  PreparedEntrySchema,
+  type CorpusEntry,
+  type PreparedEntry,
+  type PreviewPair,
+} from "../lab-contract.ts";
+import "./style.css";
 
 const byId = <T extends HTMLElement>(id: string): T => {
   const element = document.getElementById(id);
@@ -95,24 +90,22 @@ const loadImage = async (url: string): Promise<HTMLImageElement> => {
 };
 
 const loadScene = async (
-  sourceUrl: string,
-  depthUrl: string,
-  durationMs: number,
+  pair: PreviewPair,
 ): Promise<{
   source: HTMLImageElement;
   depth: HTMLImageElement;
   resolvedScene: PreviewScene;
 }> => {
   const [source, depth] = await Promise.all([
-    loadImage(sourceUrl),
-    loadImage(depthUrl),
+    loadImage(pair.sourceUrl),
+    loadImage(pair.depthUrl),
   ]);
   const nextScene = resolvePreviewScene({
     sourceWidth: source.naturalWidth,
     sourceHeight: source.naturalHeight,
     depthWidth: depth.naturalWidth,
     depthHeight: depth.naturalHeight,
-    durationMs,
+    durationMs: pair.durationMs,
     fps: 30,
     canvasWidth: 1920,
     canvasHeight: 1080,
@@ -124,27 +117,21 @@ const loadScene = async (
 
 const inspectPair = async (
   name: string,
-  sourceUrl: string,
-  depthUrl: string,
-  durationMs: number,
+  pair: PreviewPair,
   requestId: number,
 ): Promise<void> => {
   if (requestId !== previewRequestId) return;
   stop();
   status.textContent = `Loading ${name}…`;
-  const {
-    source,
-    depth,
-    resolvedScene: nextScene,
-  } = await loadScene(sourceUrl, depthUrl, durationMs);
+  const { source, depth, resolvedScene: nextScene } = await loadScene(pair);
   if (requestId !== previewRequestId) return;
   renderer?.dispose();
   renderer = createWebGLPreview(canvas, nextScene, source, depth);
   scene = nextScene;
   byId<HTMLElement>("scene-name").textContent = name;
   byId<HTMLElement>("empty-preview").hidden = true;
-  sourceImage.src = sourceUrl;
-  depthImage.src = depthUrl;
+  sourceImage.src = pair.sourceUrl;
+  depthImage.src = pair.depthUrl;
   frameSlider.max = String(nextScene.timeline.frameCount - 1);
   frameSlider.disabled = false;
   playButton.disabled = false;
@@ -152,16 +139,24 @@ const inspectPair = async (
   status.textContent = `${name} ready · ${nextScene.timeline.frameCount} frames · ${nextScene.warnings.length} clamps`;
 };
 
-const fetchJson = async <T>(url: string, init?: RequestInit): Promise<T> => {
+const fetchJson = async <T extends z.ZodType>(
+  url: string,
+  schema: T,
+  init?: RequestInit,
+): Promise<z.infer<T>> => {
   const response = await fetch(url, init);
-  const value = (await response.json()) as T & { error?: string };
-  if (!response.ok)
-    throw new Error(value.error ?? `Request failed: ${response.status}`);
-  return value;
+  const value: unknown = await response.json();
+  if (!response.ok) {
+    const error = ApiErrorSchema.safeParse(value);
+    throw new Error(
+      error.success ? error.data.error : `Request failed: ${response.status}`,
+    );
+  }
+  return schema.parse(value);
 };
 
 const prepareEntry = async (id: string): Promise<PreparedEntry> =>
-  fetchJson<PreparedEntry>(`/api/prepare?id=${encodeURIComponent(id)}`, {
+  fetchJson(`/api/prepare?id=${encodeURIComponent(id)}`, PreparedEntrySchema, {
     method: "POST",
   });
 
@@ -181,13 +176,7 @@ const prepareSelected = async (): Promise<void> => {
   try {
     const prepared = await prepareEntry(id);
     if (requestId !== previewRequestId) return;
-    await inspectPair(
-      prepared.id,
-      prepared.sourceUrl,
-      prepared.depthUrl,
-      prepared.durationMs,
-      requestId,
-    );
+    await inspectPair(prepared.id, prepared, requestId);
   } catch (error) {
     if (requestId === previewRequestId) showError(error);
   } finally {
@@ -211,11 +200,7 @@ const buildGallery = async (): Promise<void> => {
     card.className = "gallery-item";
     try {
       const prepared = await prepareEntry(entry.id);
-      const { source, depth, resolvedScene } = await loadScene(
-        prepared.sourceUrl,
-        prepared.depthUrl,
-        prepared.durationMs,
-      );
+      const { source, depth, resolvedScene } = await loadScene(prepared);
       const posterRenderer = createWebGLPreview(
         posterCanvas,
         resolvedScene,
@@ -281,13 +266,12 @@ byId<HTMLButtonElement>("load-local").addEventListener("click", () => {
   const requestId = ++previewRequestId;
   prepareButton.disabled = !select.value;
   status.classList.remove("error");
-  void inspectPair(
-    source.name,
-    localUrls[0]!,
-    localUrls[1]!,
-    5000,
-    requestId,
-  ).catch((error: unknown) => {
+  const pair: PreviewPair = {
+    sourceUrl: localUrls[0]!,
+    depthUrl: localUrls[1]!,
+    durationMs: 5000,
+  };
+  void inspectPair(source.name, pair, requestId).catch((error: unknown) => {
     if (requestId === previewRequestId) showError(error);
   });
 });
@@ -306,7 +290,7 @@ playButton.addEventListener("click", () => {
   }, 1000 / scene.timeline.fps);
 });
 
-void fetchJson<{ status: string; entries: CorpusEntry[] }>("/api/corpus")
+void fetchJson("/api/corpus", CorpusResponseSchema)
   .then((corpus) => {
     corpusEntries.push(...corpus.entries);
     byId<HTMLElement>("corpus-status").textContent = corpus.entries.length
