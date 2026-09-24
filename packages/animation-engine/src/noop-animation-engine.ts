@@ -1,5 +1,5 @@
-import { createHash } from "node:crypto";
-import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { createHash, randomUUID } from "node:crypto";
+import { link, mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import { dirname } from "node:path";
 
 import {
@@ -85,12 +85,31 @@ const publishNoopArtifacts = async (
   output: string,
   scene: string,
 ): Promise<void> => {
+  const temporaryOutputPath = `${outputPath}.${randomUUID()}.tmp`;
+  const temporaryScenePath = `${sceneManifestPath}.${randomUUID()}.tmp`;
+  let scenePublished = false;
+
   try {
     await mkdir(dirname(outputPath), { recursive: true });
     await mkdir(dirname(sceneManifestPath), { recursive: true });
-    await writeFile(outputPath, output, "utf8");
-    await writeFile(sceneManifestPath, scene, "utf8");
+    await writeFile(temporaryOutputPath, output, {
+      encoding: "utf8",
+      flag: "wx",
+    });
+    await writeFile(temporaryScenePath, scene, {
+      encoding: "utf8",
+      flag: "wx",
+    });
+
+    await link(temporaryScenePath, sceneManifestPath);
+    scenePublished = true;
+    await link(temporaryOutputPath, outputPath);
   } catch (cause) {
+    await Promise.allSettled([
+      rm(temporaryOutputPath, { force: true }),
+      rm(temporaryScenePath, { force: true }),
+      ...(scenePublished ? [rm(sceneManifestPath, { force: true })] : []),
+    ]);
     throw new AnimationEngineError(
       "RENDER_FAILED",
       `Unable to publish no-op animation artifact: ${outputPath}`,
@@ -98,6 +117,11 @@ const publishNoopArtifacts = async (
       { cause },
     );
   }
+
+  await Promise.allSettled([
+    rm(temporaryOutputPath, { force: true }),
+    rm(temporaryScenePath, { force: true }),
+  ]);
 };
 
 export class NoopAnimationEngine implements AnimationEngine {

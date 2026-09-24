@@ -1,5 +1,5 @@
 import { execFile } from "node:child_process";
-import { mkdtemp, readFile, rm } from "node:fs/promises";
+import { mkdtemp, readFile, readdir, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { promisify } from "node:util";
@@ -120,6 +120,40 @@ describe("no-op CLI", () => {
     expect(scene.motion).toMatchObject({
       intensity: V0_1_REQUEST_DEFAULTS.intensity,
       seed: V0_1_REQUEST_DEFAULTS.seed,
+    });
+  });
+
+  it("publishes artifacts without overwriting or leaving a partial pair", async () => {
+    const directory = await mkdtemp(join(tmpdir(), "still-shift-test-"));
+    temporaryDirectories.push(directory);
+    const outputPath = join(directory, "existing.noop.json");
+    const scenePath = `${outputPath}.scene.json`;
+    await writeFile(outputPath, "existing output", "utf8");
+
+    await expect(runNoopCli(outputPath)).rejects.toMatchObject({
+      code: 1,
+      stderr: expect.stringContaining('"code":"RENDER_FAILED"'),
+    });
+
+    expect(await readFile(outputPath, "utf8")).toBe("existing output");
+    await expect(readFile(scenePath, "utf8")).rejects.toMatchObject({
+      code: "ENOENT",
+    });
+    expect((await readdir(directory)).some((path) => path.endsWith(".tmp"))).toBe(
+      false,
+    );
+
+    await rm(outputPath);
+    await writeFile(scenePath, "existing scene", "utf8");
+
+    await expect(runNoopCli(outputPath)).rejects.toMatchObject({
+      code: 1,
+      stderr: expect.stringContaining('"code":"RENDER_FAILED"'),
+    });
+
+    expect(await readFile(scenePath, "utf8")).toBe("existing scene");
+    await expect(readFile(outputPath, "utf8")).rejects.toMatchObject({
+      code: "ENOENT",
     });
   });
 });
