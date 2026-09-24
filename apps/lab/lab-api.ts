@@ -127,8 +127,14 @@ export const labApi = (): Plugin => {
                 "PROCESS_FAILED",
               );
             }
-            if (result.status !== "prepared")
+            if (result.status !== "prepared") {
+              if (result.error.code.startsWith("INPUT_"))
+                return sendJson(response, 422, {
+                  error: result.error.message,
+                  code: result.error.code,
+                });
               return sendDepthFailure(result.error.message, result.error.code);
+            }
             prepared.set(entry.id, result);
             sendJson(
               response,
