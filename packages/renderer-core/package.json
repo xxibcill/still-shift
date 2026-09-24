@@ -1,0 +1,13 @@
+{
+  "name": "@still-shift/renderer-core",
+  "version": "0.3.0",
+  "private": true,
+  "type": "module",
+  "exports": "./src/index.ts",
+  "dependencies": {
+    "three": "0.186.0"
+  },
+  "devDependencies": {
+    "@types/three": "0.186.0"
+  }
+}

@@ -5,6 +5,7 @@ export default tseslint.config(
   {
     ignores: [
       "node_modules/**",
+      "apps/**/dist/**",
       ".venv/**",
       "benchmarks/gallery/**",
       "benchmarks/results/**",
