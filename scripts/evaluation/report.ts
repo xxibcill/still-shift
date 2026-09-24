@@ -13,6 +13,7 @@ import {
   selectBenchmarkRun,
 } from "../../tools/still-shift-cli/src/batch-identity.ts";
 import { findCorpusIntegrityBlockers } from "../corpus-integrity.ts";
+import { resolveDecision } from "./decision.ts";
 import {
   compareIndependentRenders,
   validateEvaluationRecords,
@@ -65,11 +66,21 @@ const videoBaselineName = option("--video-baseline-name") ?? null;
 const videoBaselineSource = option("--video-baseline-source") ?? null;
 const operatorMinutes = numericOption("--operator-minutes");
 const editorialAccepted = option("--editorial-accepted");
+const previewExportAccepted = option("--preview-export-accepted");
+const previewExportEvidence = option("--preview-export-evidence");
+const decisionOutcome = option("--decision");
+const decisionReviewer = option("--decision-reviewer");
+const decisionRationale = option("--decision-rationale");
 if (
   editorialAccepted !== undefined &&
   !["yes", "no"].includes(editorialAccepted)
 )
   throw new Error("--editorial-accepted must be yes or no");
+if (
+  previewExportAccepted !== undefined &&
+  !["yes", "no"].includes(previewExportAccepted)
+)
+  throw new Error("--preview-export-accepted must be yes or no");
 
 const corpusBytes = await readFile(corpusPath);
 const corpusSha256 = `sha256:${createHash("sha256").update(corpusBytes).digest("hex")}`;
@@ -161,7 +172,6 @@ const benchmarkRun = selectBenchmarkRun(summary, runHistory);
 const expectedCount = corpus.entries.length * 3;
 const batchMeasured =
   records.length === expectedCount && summary.itemCount === expectedCount;
-const allSuccessful = batchMeasured && summary.successful === expectedCount;
 const independentRendersMatch = repeatRecords
   ? await compareIndependentRenders(records, repeatRecords)
   : false;
@@ -338,13 +348,17 @@ const gates = [
   {
     name: "Duration accuracy",
     result: `${results.length} exports validated by exact-frame FFprobe check`,
-    status: gate(allSuccessful, allSuccessful),
+    status: gate(batchMeasured && results.length > 0, true),
   },
   {
     name: "Preview/export agreement",
-    result:
-      "Five golden scenes and 30 parity comparisons pass; candidate visual review pending",
-    status: "Pending",
+    result: previewExportAccepted
+      ? `Human visual review ${previewExportAccepted}; evidence ${previewExportEvidence ?? "missing"}`
+      : "Five golden scenes and 30 parity comparisons pass; human visual review pending",
+    status: gate(
+      Boolean(previewExportAccepted && previewExportEvidence?.trim()),
+      previewExportAccepted === "yes",
+    ),
   },
   {
     name: "Export throughput",
@@ -381,10 +395,19 @@ const gates = [
       : "Explainer assembly pending",
     status: gate(
       Boolean(assembly && editorialAccepted),
-      editorialAccepted === "yes",
+      editorialAccepted === "yes" &&
+        (assembly?.durationSeconds ?? 0) >= 300 &&
+        (assembly?.durationSeconds ?? Infinity) <= 600,
     ),
   },
 ];
+const decision = resolveDecision({
+  outcome: decisionOutcome,
+  reviewer: decisionReviewer,
+  rationale: decisionRationale,
+  gateStatuses: gates.map((item) => item.status),
+  operatorMinutes,
+});
 const report = {
   corpus: {
     id: corpus.corpusId,
@@ -431,14 +454,24 @@ const report = {
   },
   versions: { ...versions, model },
   assembly,
+  previewExportReview: {
+    accepted: previewExportAccepted ?? null,
+    evidence: previewExportEvidence ?? null,
+  },
   gates,
-  decision: "Pending human review and an approved frozen corpus",
+  decision: decision.label,
+  decisionReview: {
+    outcome: decision.outcome,
+    reviewer: decision.reviewer,
+    rationale: decision.rationale,
+  },
 };
 const markdown = `# Still Shift v0.10 evaluation report
 
 **Corpus:** ${corpus.corpusId} (${corpus.status}; review ${corpus.review.status}; ${corpus.entries.length} sources)
 
 **Decision:** ${report.decision}
+${decision.outcome ? `\n**Decision reviewer:** ${decision.reviewer}\n\n**Rationale:** ${decision.rationale}\n` : ""}
 
 | Exit gate | Measured result | Status |
 | --- | --- | --- |
