@@ -306,6 +306,7 @@ export class WebGLAnimationEngine implements AnimationEngine {
         "SCENE_INVALID",
         "Animation output path must end in .mp4",
       );
+    const inputPath = resolve(request.inputPath);
     const outputPath = resolve(request.outputPath);
     const sceneManifestPath = `${outputPath}.scene.json`;
     if ((await fileExists(outputPath)) || (await fileExists(sceneManifestPath)))
@@ -316,7 +317,7 @@ export class WebGLAnimationEngine implements AnimationEngine {
       );
     let originalSource: Uint8Array;
     try {
-      originalSource = await readFile(request.inputPath);
+      originalSource = await readFile(inputPath);
     } catch (cause) {
       throw new AnimationEngineError(
         "INPUT_UNREADABLE",
@@ -326,7 +327,7 @@ export class WebGLAnimationEngine implements AnimationEngine {
       );
     }
     const sourceHash = sha256(originalSource);
-    const prepared = await prepareAssets(request.inputPath);
+    const prepared = await prepareAssets(inputPath);
     const normalizedSourceHash = sha256(await readFile(prepared.sourcePath));
     const depthHash = prepared.depthPath
       ? sha256(await readFile(prepared.depthPath))

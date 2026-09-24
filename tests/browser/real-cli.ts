@@ -18,6 +18,7 @@ const fixture = JSON.parse(
 const directory = await mkdtemp(join(tmpdir(), "still-shift-cli-test-"));
 const sourcePath = join(directory, "explainer-shot.png");
 const cliPath = resolve("node_modules/.bin/tsx");
+const cliScriptPath = resolve("tools/still-shift-cli/src/cli.ts");
 const environment = {
   ...process.env,
   STILL_SHIFT_DEPTH_ADAPTER: "fake",
@@ -26,10 +27,10 @@ const environment = {
 
 const runCli = async (
   outputPath: string,
-  options: { adapter?: string; inputPath?: string } = {},
+  options: { adapter?: string; inputPath?: string; cwd?: string } = {},
 ) => {
   const args = [
-    "tools/still-shift-cli/src/cli.ts",
+    cliScriptPath,
     "animate",
     "--input",
     options.inputPath ?? sourcePath,
@@ -47,7 +48,7 @@ const runCli = async (
     String(fixture.seed),
   ];
   const { stdout } = await execFileAsync(cliPath, args, {
-    cwd: resolve("."),
+    cwd: options.cwd ?? resolve("."),
     env: {
       ...environment,
       ...(options.adapter
@@ -91,6 +92,13 @@ try {
   );
   assert.deepEqual(scene.execution, { adapter: "webgl", producesVideo: true });
   assert.ok(scene.renderScene);
+
+  const externalCaller = await runCli(join(directory, "external.mp4"), {
+    inputPath: "explainer-shot.png",
+    cwd: directory,
+  });
+  assert.equal(externalCaller.checksums.source, first.checksums.source);
+  assert.equal(externalCaller.metrics.cacheStatus, "hit");
 
   const fallback = await runCli(join(directory, "fallback.mp4"), {
     adapter: "invalid",
