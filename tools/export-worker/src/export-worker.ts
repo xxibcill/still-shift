@@ -89,6 +89,8 @@ const ffmpegArguments = (
   "bt709",
   "-colorspace",
   "bt709",
+  "-bsf:v",
+  "h264_metadata=colour_primaries=1:transfer_characteristics=1:matrix_coefficients=1",
   "-movflags",
   "+faststart",
   "-y",
@@ -211,7 +213,7 @@ const verifyOutput = async (
     "-select_streams",
     "v:0",
     "-show_entries",
-    "stream=width,height,r_frame_rate,nb_frames,pix_fmt,duration",
+    "stream=width,height,r_frame_rate,nb_frames,pix_fmt,duration,color_range,color_space,color_transfer,color_primaries",
     "-show_entries",
     "format=duration",
     "-of",
@@ -226,6 +228,10 @@ const verifyOutput = async (
       nb_frames?: string;
       pix_fmt?: string;
       duration?: string;
+      color_range?: string;
+      color_space?: string;
+      color_transfer?: string;
+      color_primaries?: string;
     }[];
     format?: { duration?: string };
   };
@@ -237,6 +243,10 @@ const verifyOutput = async (
     stream.r_frame_rate !== `${scene.timeline.fps}/1` ||
     Number(stream.nb_frames) !== scene.timeline.frameCount ||
     stream.pix_fmt !== "yuv420p" ||
+    stream.color_range !== "tv" ||
+    stream.color_space !== "bt709" ||
+    stream.color_transfer !== "bt709" ||
+    stream.color_primaries !== "bt709" ||
     !Number.isFinite(duration) ||
     Math.abs(duration * 1000 - scene.timeline.durationMs) >
       1000 / scene.timeline.fps
