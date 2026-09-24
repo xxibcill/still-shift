@@ -151,7 +151,7 @@ export const analyzeDepthSafety = (pixels: SafetyPixels): SafetyAssessment => {
     version: SAFETY_ANALYSIS_VERSION,
     riskScore,
     flatDepth: depthRange < 0.06,
-    extremeDepth: depthSaturationFraction > 0.85,
+    extremeDepth: depthSaturationFraction > 0.85 || depthRange > 0.85,
     signals: {
       depthRange,
       depthSaturationFraction,

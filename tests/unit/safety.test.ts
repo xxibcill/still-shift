@@ -125,6 +125,18 @@ describe("v0.5 safety analysis and 2D fallback", () => {
     expect(dense.quality?.fallbackReason).toBe("DEPTH_EDGE_RISK_HIGH");
   });
 
+  it("falls back on an extreme depth range without saturated endpoints", () => {
+    const assessment = analyzeDepthSafety(
+      pixels((x) => 8 + Math.round((x * 239) / 31)),
+    );
+    expect(assessment.signals.depthSaturationFraction).toBe(0);
+    expect(assessment.signals.depthRange).toBeGreaterThan(0.85);
+    expect(assessment.extremeDepth).toBe(true);
+    expect(
+      applySafetyToScene(scene(), assessment).quality?.fallbackReason,
+    ).toBe("DEPTH_RANGE_EXTREME");
+  });
+
   it("provides a 2D scene when depth preparation fails", () => {
     const resolved = fallback2DScene(scene(), "DEPTH_PREPARATION_FAILED");
     expect(resolved.motion.mode).toBe("fallback_2d");
