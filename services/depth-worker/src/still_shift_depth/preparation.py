@@ -441,6 +441,8 @@ class DepthPreparationService:
                     cache_status="hit",
                     request_ms=(time.perf_counter() - started) * 1000.0,
                     cache_invalidated=False,
+                    request_dimensions=dimensions,
+                    request_warnings=normalization_warnings,
                 )
 
             cache_invalidated = entry_dir.exists()
@@ -576,6 +578,8 @@ class DepthPreparationService:
             cache_status="miss",
             request_ms=(time.perf_counter() - started) * 1000.0,
             cache_invalidated=cache_invalidated,
+            request_dimensions=dimensions,
+            request_warnings=normalization_warnings,
         )
 
     @staticmethod
@@ -585,6 +589,8 @@ class DepthPreparationService:
         cache_status: str,
         request_ms: float,
         cache_invalidated: bool,
+        request_dimensions: dict[str, Any],
+        request_warnings: list[str],
     ) -> dict[str, Any]:
         return {
             "status": "prepared",
@@ -599,14 +605,14 @@ class DepthPreparationService:
                 for name, relative_path in manifest["assets"].items()
             },
             "model": manifest["model"],
-            "dimensions": manifest["dimensions"],
+            "dimensions": request_dimensions,
             "checksums": manifest["checksums"],
             "metrics": {
                 **manifest["metrics"],
                 "cacheStatus": cache_status,
                 "requestMs": request_ms,
             },
-            "normalizationWarnings": manifest["normalizationWarnings"],
+            "normalizationWarnings": request_warnings,
         }
 
 

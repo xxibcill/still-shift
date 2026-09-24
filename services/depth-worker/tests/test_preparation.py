@@ -109,6 +109,28 @@ class DepthPreparationTests(unittest.TestCase):
         self.assertTrue(rebuilt["cacheInvalidated"])
         self.assertEqual(rebuilt["checksums"], first["checksums"])
 
+    def test_cache_hit_reports_metadata_for_current_source(self) -> None:
+        image = Image.new("RGB", (2, 3), "red")
+        exif = Image.Exif()
+        exif[274] = 6
+        first_source = self.save_image(
+            image, "oriented.png", exif=exif, icc_profile=b"invalid ICC profile"
+        )
+        service = self.service()
+        first = service.prepare(first_source)
+        self.assertEqual(first["normalizationWarnings"], ["INVALID_ICC_PROFILE_TREATED_AS_SRGB"])
+
+        second_source = self.root / "already-oriented.png"
+        with Image.open(first["assets"]["normalizedSource"]) as normalized:
+            normalized.save(second_source)
+        second = service.prepare(second_source)
+
+        self.assertEqual(second["cacheStatus"], "hit")
+        self.assertEqual(second["cacheKey"], first["cacheKey"])
+        self.assertEqual(second["dimensions"]["input"], {"width": 3, "height": 2, "format": "PNG"})
+        self.assertEqual(second["dimensions"]["orientation"], 1)
+        self.assertEqual(second["normalizationWarnings"], [])
+
     def test_preprocessing_and_model_revision_change_cache_key(self) -> None:
         source = self.save_image(Image.new("RGB", (12, 9), "green"), "source.png")
         baseline = self.service().prepare(source)
