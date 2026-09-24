@@ -156,6 +156,28 @@ describe("v0.5 safety analysis and 2D fallback", () => {
     expect(last.scale).toBeGreaterThan(first.scale);
   });
 
+  it("reports and repairs a crop shortfall on the fallback path", () => {
+    const original = scene();
+    const underscanned = {
+      ...original,
+      motion: { ...original.motion, overscan: 0.01 },
+    };
+    const resolved = applySafetyToScene(
+      underscanned,
+      analyzeDepthSafety(pixels(() => 128)),
+    );
+    expect(resolved.motion.mode).toBe("fallback_2d");
+    expect(resolved.motion.overscan).toBeGreaterThanOrEqual(
+      resolved.motion.maximumCrop,
+    );
+    expect(resolved.quality?.signals.overscanShortfall).toBeCloseTo(
+      resolved.motion.maximumCrop - 0.01,
+    );
+    expect(resolved.warnings.map((warning) => warning.code)).toContain(
+      "MOTION_CLAMPED",
+    );
+  });
+
   it("falls back on extreme saturation and dense depth edges", () => {
     const extreme = applySafetyToScene(
       scene(),

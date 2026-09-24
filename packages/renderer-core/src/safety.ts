@@ -191,6 +191,7 @@ const qualityFor = (
   assessment: SafetyAssessment,
   fallback: boolean,
   fallbackReason: PreviewWarning["code"] | null,
+  requiredCrop = scene.motion.maximumCrop,
 ): NonNullable<PreviewScene["quality"]> => ({
   analysisVersion: assessment.version,
   riskScore: assessment.riskScore,
@@ -198,10 +199,7 @@ const qualityFor = (
   fallbackReason,
   signals: {
     ...assessment.signals,
-    overscanShortfall: Math.max(
-      0,
-      scene.motion.maximumCrop - scene.motion.overscan,
-    ),
+    overscanShortfall: Math.max(0, requiredCrop - scene.motion.overscan),
   },
 });
 
@@ -225,6 +223,7 @@ export const fallback2DScene = (
     lateralTravel,
     rollDegrees: 0,
   });
+  const overscanShortfall = Math.max(0, maximumCrop - scene.motion.overscan);
   const risk = assessment ?? {
     version: SAFETY_ANALYSIS_VERSION,
     riskScore: 1,
@@ -252,9 +251,17 @@ export const fallback2DScene = (
       maximumCrop,
       overscan: Math.max(scene.motion.overscan, maximumCrop),
     },
-    quality: qualityFor(scene, risk, true, reason),
+    quality: qualityFor(scene, risk, true, reason, maximumCrop),
     warnings: [
       ...scene.warnings,
+      ...(overscanShortfall > 0
+        ? [
+            {
+              code: "MOTION_CLAMPED" as const,
+              message: "Overscan raised to fit 2D fallback motion",
+            },
+          ]
+        : []),
       { code: reason, message: "Depth motion is unsafe or unavailable" },
       {
         code: "FALLBACK_2D_USED",
