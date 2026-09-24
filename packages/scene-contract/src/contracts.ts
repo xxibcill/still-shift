@@ -120,6 +120,14 @@ export const AnimationFailureSchema = z.object({
 const Sha256Schema = z.string().regex(/^sha256:[a-f0-9]{64}$/);
 const NonNegativeFiniteNumberSchema = z.number().finite().nonnegative();
 
+export const DepthModelSchema = z.object({
+  adapter: z.string().trim().min(1),
+  id: z.string().trim().min(1),
+  revision: z.string().trim().min(1),
+  weightsChecksum: Sha256Schema,
+  license: z.string().trim().min(1),
+});
+
 export const AnimationMetricsSchema = z.object({
   adapter: z.enum(["noop", "webgl"]),
   cacheStatus: z.enum(["not_applicable", "hit", "miss"]),
@@ -142,6 +150,7 @@ export const AnimationMetricsSchema = z.object({
   versions: z.object({
     engine: z.literal(ENGINE_VERSION),
     pipeline: z.string().trim().min(1),
+    model: DepthModelSchema.nullable().optional(),
     renderer: z.string().trim().min(1),
     browser: z.string().trim().min(1).nullable(),
     ffmpeg: z.string().trim().min(1).nullable(),
@@ -218,6 +227,7 @@ export const SceneManifestSchema = z.object({
   normalizedSourceHash: Sha256Schema.optional(),
   sourceAssetPath: z.string().min(1).optional(),
   pipelineVersion: z.string().trim().min(1),
+  model: DepthModelSchema.nullable().optional(),
   rendererVersion: z.string().trim().min(1),
   timeline: z
     .object({
@@ -285,6 +295,7 @@ export type AnimationWarningCode = z.infer<typeof AnimationWarningCodeSchema>;
 export type AnimationErrorCode = z.infer<typeof AnimationErrorCodeSchema>;
 export type AnimationFailure = z.infer<typeof AnimationFailureSchema>;
 export type AnimationMetrics = z.infer<typeof AnimationMetricsSchema>;
+export type DepthModel = z.infer<typeof DepthModelSchema>;
 export type AnimationPreset = z.infer<typeof AnimationPresetSchema>;
 export type ResolvedAnimationPreset = z.infer<
   typeof ResolvedAnimationPresetSchema

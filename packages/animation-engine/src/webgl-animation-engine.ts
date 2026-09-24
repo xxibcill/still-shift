@@ -17,6 +17,7 @@ import {
   AnimationEngineError,
   ANIMATION_API_VERSION,
   AnimationResultSchema,
+  DepthModelSchema,
   ENGINE_VERSION,
   parseAnimationRequest,
   SCENE_SCHEMA_VERSION,
@@ -24,6 +25,7 @@ import {
   type AnimationRequest,
   type AnimationResult,
   type AnimationWarning,
+  type DepthModel,
 } from "../../scene-contract/src/index.ts";
 import { exportScene } from "../../../tools/export-worker/src/export-worker.ts";
 
@@ -47,6 +49,7 @@ type PreparedDepth = {
   assets: { normalizedSource: string; previewDepth: string };
   dimensions: { input: Dimensions; normalized: Dimensions };
   cacheStatus: "hit" | "miss";
+  model: DepthModel;
   metrics: WorkerMetrics;
 };
 type NormalizedSource = {
@@ -119,6 +122,7 @@ const isPrepared = (value: unknown): value is PreparedDepth => {
     isDimensions(result.dimensions?.input) &&
     isDimensions(result.dimensions?.normalized) &&
     (result.cacheStatus === "hit" || result.cacheStatus === "miss") &&
+    DepthModelSchema.safeParse(result.model).success &&
     typeof result.metrics === "object" &&
     result.metrics !== null
   );
@@ -176,6 +180,7 @@ const prepareAssets = async (
   depthPath: string | null;
   dimensions: { input: Dimensions; normalized: Dimensions };
   cacheStatus: "hit" | "miss";
+  model: DepthModel | null;
   workerMetrics: WorkerMetrics;
 }> => {
   const adapter =
@@ -190,6 +195,7 @@ const prepareAssets = async (
       depthPath: prepared.assets.previewDepth,
       dimensions: prepared.dimensions,
       cacheStatus: prepared.cacheStatus,
+      model: prepared.model,
       workerMetrics: prepared.metrics,
     };
   }
@@ -206,6 +212,7 @@ const prepareAssets = async (
     depthPath: null,
     dimensions: normalized.dimensions,
     cacheStatus: normalized.cacheStatus,
+    model: null,
     workerMetrics: {},
   };
 };
@@ -371,6 +378,7 @@ export class WebGLAnimationEngine implements AnimationEngine {
       sourceHash: normalizedSourceHash,
       normalizedSourceHash,
       pipelineVersion: PIPELINE_VERSION,
+      model: prepared.model,
       rendererVersion: scene.rendererVersion,
       timeline: scene.timeline,
       canvas: scene.canvas,
@@ -467,6 +475,7 @@ export class WebGLAnimationEngine implements AnimationEngine {
           versions: {
             engine: ENGINE_VERSION,
             pipeline: PIPELINE_VERSION,
+            model: prepared.model,
             renderer: scene.rendererVersion,
             browser: exported.browserVersion,
             ffmpeg: exported.ffmpegVersion,

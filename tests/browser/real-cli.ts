@@ -98,6 +98,9 @@ try {
   );
   assert.deepEqual(scene.execution, { adapter: "webgl", producesVideo: true });
   assert.ok(scene.renderScene);
+  assert.equal(scene.model?.adapter, "fake");
+  assert.deepEqual(scene.model, first.metrics.versions.model);
+  assert.match(scene.model.weightsChecksum, /^sha256:[a-f0-9]{64}$/);
 
   const alternateCache = await runCli(join(directory, "alternate-cache.mp4"), {
     cacheDir: join(directory, "other-cache"),
@@ -129,6 +132,7 @@ try {
     ),
   );
   assert.equal(fallback.checksums.depth, undefined);
+  assert.equal(fallback.metrics.versions.model, null);
 
   const missingOutput = join(directory, "missing.mp4");
   await assert.rejects(
