@@ -16,6 +16,9 @@ importers:
       eslint:
         specifier: 9.39.5
         version: 9.39.5
+      image-size:
+        specifier: 2.0.2
+        version: 2.0.2
       playwright:
         specifier: 1.62.1
         version: 1.62.1
@@ -46,9 +49,6 @@ importers:
 
   packages/scene-contract:
     dependencies:
-      image-size:
-        specifier: 2.0.2
-        version: 2.0.2
       zod:
         specifier: 4.1.5
         version: 4.1.5

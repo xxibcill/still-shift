@@ -31,6 +31,7 @@
     "@eslint/js": "9.39.5",
     "@types/node": "22.20.1",
     "eslint": "9.39.5",
+    "image-size": "2.0.2",
     "playwright": "1.62.1",
     "prettier": "3.6.2",
     "tsx": "4.20.5",

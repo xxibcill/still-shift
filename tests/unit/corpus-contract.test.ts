@@ -6,9 +6,10 @@ import { join } from "node:path";
 import {
   CorpusEntrySchema,
   CorpusManifestSchema,
-  findCorpusFreezeBlockers,
 } from "@still-shift/scene-contract";
 import { afterEach, describe, expect, it } from "vitest";
+
+import { findCorpusIntegrityBlockers } from "../../scripts/corpus-integrity.ts";
 
 const readJson = async (path: string): Promise<unknown> =>
   JSON.parse(await readFile(path, "utf8"));
@@ -83,7 +84,7 @@ describe("corpus manifest", () => {
 
     expect(manifest.status).toBe("incomplete");
     expect(manifest.entries).toHaveLength(0);
-    expect(findCorpusFreezeBlockers(manifest)).toContain(
+    expect(findCorpusIntegrityBlockers(manifest)).toContain(
       "corpus requires at least 30 real images",
     );
   });
@@ -107,14 +108,14 @@ describe("corpus manifest", () => {
       frozenAt: "2026-09-04T00:00:00.000Z",
     });
 
-    expect(findCorpusFreezeBlockers(manifest)).not.toHaveLength(0);
+    expect(findCorpusIntegrityBlockers(manifest)).not.toHaveLength(0);
   });
 
   it("rejects a frozen manifest whose declared source files do not exist", () => {
     const manifest = createFrozenManifest();
 
     expect(
-      findCorpusFreezeBlockers(manifest, { sourceRoot: "/does-not-exist" }),
+      findCorpusIntegrityBlockers(manifest, { sourceRoot: "/does-not-exist" }),
     ).toContain("corpus source is unreadable: missing-0");
   });
 
@@ -131,7 +132,7 @@ describe("corpus manifest", () => {
       },
     };
 
-    const blockers = findCorpusFreezeBlockers(manifest, { sourceRoot });
+    const blockers = findCorpusIntegrityBlockers(manifest, { sourceRoot });
 
     expect(blockers).toContain(
       "corpus source checksum does not match: missing-0",
@@ -156,7 +157,7 @@ describe("corpus manifest", () => {
       dimensions: { width: 1, height: 1 },
     };
 
-    const sourceBlockers = findCorpusFreezeBlockers(manifest, {
+    const sourceBlockers = findCorpusIntegrityBlockers(manifest, {
       sourceRoot,
     }).filter((blocker) => blocker.endsWith(": missing-0"));
 

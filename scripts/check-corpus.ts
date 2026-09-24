@@ -1,16 +1,15 @@
 import { readFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 
-import {
-  CorpusManifestSchema,
-  findCorpusFreezeBlockers,
-} from "@still-shift/scene-contract";
+import { CorpusManifestSchema } from "@still-shift/scene-contract";
+
+import { findCorpusIntegrityBlockers } from "./corpus-integrity.ts";
 
 const manifestPath = "benchmarks/corpus-manifest.json";
 const manifest = CorpusManifestSchema.parse(
   JSON.parse(await readFile(manifestPath, "utf8")),
 );
-const blockers = findCorpusFreezeBlockers(manifest, {
+const blockers = findCorpusIntegrityBlockers(manifest, {
   sourceRoot: dirname(resolve(manifestPath)),
 });
 

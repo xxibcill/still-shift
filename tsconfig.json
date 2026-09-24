@@ -25,7 +25,7 @@
   "include": [
     "benchmarks/**/*.ts",
     "packages/**/*.ts",
-    "scripts/**/*.mts",
+    "scripts/**/*.ts",
     "tests/**/*.ts",
     "tools/**/*.ts"
   ]
