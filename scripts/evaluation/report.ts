@@ -136,10 +136,9 @@ const benchmarkRun =
       run.reused === 0,
   ) ?? summary;
 const expectedCount = corpus.entries.length * 3;
-const complete =
-  records.length === expectedCount &&
-  summary.itemCount === expectedCount &&
-  summary.successful === expectedCount;
+const batchMeasured =
+  records.length === expectedCount && summary.itemCount === expectedCount;
+const allSuccessful = batchMeasured && summary.successful === expectedCount;
 const validRate = summary.successful / summary.itemCount;
 const workerRates = results.map(
   (result) => result.durationMs / result.metrics.totalWallMs,
@@ -301,7 +300,7 @@ const gates = [
   {
     name: "Batch completion",
     result: `${summary.successful}/${summary.itemCount} (${percent(validRate)})`,
-    status: gate(complete, validRate >= 0.98),
+    status: gate(batchMeasured, validRate >= 0.98),
   },
   {
     name: "Determinism",
@@ -314,7 +313,7 @@ const gates = [
   {
     name: "Duration accuracy",
     result: `${results.length} exports validated by exact-frame FFprobe check`,
-    status: gate(complete, complete),
+    status: gate(allSuccessful, allSuccessful),
   },
   {
     name: "Preview/export agreement",
