@@ -1,0 +1,20 @@
+node_modules/
+.pnpm-store/
+.venv/
+.pytest_cache/
+.ruff_cache/
+coverage/
+dist/
+.DS_Store
+
+# Generated benchmark and animation artifacts.
+benchmarks/results/*
+!benchmarks/results/.gitkeep
+benchmarks/gallery/*
+!benchmarks/gallery/.gitkeep
+*.noop.json
+*.scene.json
+
+# Corpus media is local by default. Metadata remains tracked.
+benchmarks/corpus/*
+!benchmarks/corpus/README.md

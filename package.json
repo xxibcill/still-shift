@@ -1,0 +1,43 @@
+{
+  "name": "still-shift",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Deterministic still-image animation engine spike",
+  "type": "module",
+  "packageManager": "pnpm@10.29.3",
+  "engines": {
+    "node": "22.23.1",
+    "pnpm": "10.29.3"
+  },
+  "scripts": {
+    "benchmark": "vitest bench --run benchmarks/noop.bench.ts",
+    "browser:install": "playwright install chromium",
+    "build": "tsc --noEmit",
+    "check": "pnpm toolchain:check && pnpm schema:check && pnpm format:check && pnpm lint && pnpm build && pnpm test",
+    "check:all": "pnpm check && pnpm benchmark && pnpm corpus:check",
+    "corpus:check": "tsx scripts/check-corpus.ts",
+    "format": "prettier --write \"{apps,benchmarks,docs,packages,scripts,services,tests,tools}/**/*.{json,md,mts,ts}\" \"*.{json,mts,yaml,yml}\" README.md && uv run ruff format services/depth-worker",
+    "format:check": "prettier --check \"{apps,benchmarks,docs,packages,scripts,services,tests,tools}/**/*.{json,md,mts,ts}\" \"*.{json,mts,yaml,yml}\" README.md && uv run ruff format --check services/depth-worker",
+    "lint": "eslint . && uv run ruff check services/depth-worker",
+    "schema:check": "tsx scripts/generate-corpus-schema.ts --check",
+    "schema:generate": "tsx scripts/generate-corpus-schema.ts",
+    "still-shift": "tsx tools/still-shift-cli/src/cli.ts",
+    "test": "pnpm test:unit && pnpm test:integration",
+    "test:integration": "vitest run tests/integration",
+    "test:unit": "vitest run tests/unit",
+    "toolchain:check": "node scripts/check-toolchain.mjs"
+  },
+  "devDependencies": {
+    "@eslint/js": "9.39.5",
+    "@types/node": "22.20.1",
+    "eslint": "9.39.5",
+    "image-size": "2.0.2",
+    "playwright": "1.62.1",
+    "prettier": "3.6.2",
+    "tsx": "4.20.5",
+    "typescript": "5.9.2",
+    "typescript-eslint": "8.69.0",
+    "vitest": "3.2.4",
+    "zod": "4.1.5"
+  }
+}
