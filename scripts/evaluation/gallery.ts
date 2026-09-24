@@ -9,6 +9,7 @@ import {
   CorpusManifestSchema,
   SceneManifestSchema,
 } from "@still-shift/scene-contract";
+import type { PreviewScene } from "../../packages/renderer-core/src/scene.ts";
 import { EVALUATION_PRESETS, evaluationClipId } from "./presets.ts";
 import { RATING_FIELDS } from "./ratings.ts";
 
@@ -37,6 +38,11 @@ const relativeUrl = (from: string, to: string): string =>
     .split("/")
     .map((segment) => encodeURIComponent(segment))
     .join("/");
+const diagnostic = (
+  label: string,
+  value: number | string | undefined,
+): string =>
+  `<div><dt>${escapeHtml(label)}</dt><dd>${escapeHtml(typeof value === "number" ? value.toFixed(3) : (value ?? "Unavailable"))}</dd></div>`;
 
 const corpusPath = resolve(arg("--corpus"));
 const resultsPath = resolve(arg("--results"));
@@ -113,6 +119,21 @@ for (const entry of corpus.entries) {
     }
     clipCount += 1;
     const metrics = result.metrics;
+    const resolved = scene.renderScene as PreviewScene | undefined;
+    const resolvedMotion = resolved?.motion;
+    const riskSignals = resolved?.quality?.signals ?? {};
+    const sceneDiagnostics = [
+      diagnostic("Intensity", scene.motion.intensity),
+      diagnostic("Travel", resolvedMotion?.travel),
+      diagnostic("Depth strength", resolvedMotion?.depthStrength),
+      diagnostic("Lateral travel", resolvedMotion?.lateralTravel),
+      diagnostic("Roll degrees", resolvedMotion?.rollDegrees),
+      diagnostic("Overscan", resolvedMotion?.overscan),
+      diagnostic("Safe crop", scene.motion.safeCrop),
+      ...Object.entries(riskSignals).map(([signal, value]) =>
+        diagnostic(signal.replace(/([A-Z])/g, " $1"), value),
+      ),
+    ];
     const warnings =
       result.warnings.map((warning) => warning.code).join(", ") || "None";
     variants.push(`<section class="variant">
@@ -128,6 +149,7 @@ for (const entry of corpus.entries) {
         <div><dt>Cache</dt><dd>${escapeHtml(metrics.cacheStatus)}</dd></div>
         <div><dt>Warnings</dt><dd>${escapeHtml(warnings)}</dd></div>
       </dl>
+      <details><summary>Resolved parameters and risk signals</summary><dl>${sceneDiagnostics.join("")}</dl></details>
       <div class="ratings" data-clip="${escapeHtml(id)}"></div>
     </section>`);
   }
