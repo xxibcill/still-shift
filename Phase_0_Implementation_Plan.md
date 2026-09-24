@@ -30,17 +30,17 @@ The implementation should remain local and single-machine. Cloud infrastructure,
 
 Phase 0 passes only when all of the following are true on a frozen evaluation corpus:
 
-| Gate | Required result |
-|---|---|
-| Automatic usability | At least 80% of clips accepted without manual repair |
-| Severe artifacts | Fewer than 5% contain obvious tearing, holes, exposed borders, or subject deformation |
-| Batch completion | At least 98% complete or return a valid 2D fallback without operator intervention |
-| Determinism | Repeated renders have identical timing, framing, preset parameters, and frame count |
-| Duration accuracy | Output duration differs by no more than one frame |
-| Preview/export agreement | No material difference in crop, camera direction, or motion timing |
-| Throughput | Measured fast enough to support the existing workflow; target at least 1× real-time export at 1080p/30 on the selected worker |
-| Cost | At least 70% lower estimated footage cost than the chosen generative-video baseline |
-| Editorial result | One 5–10 minute explainer assembled from Phase 0 clips does not feel like a repetitive slideshow during internal review |
+| Gate                     | Required result                                                                                                               |
+| ------------------------ | ----------------------------------------------------------------------------------------------------------------------------- |
+| Automatic usability      | At least 80% of clips accepted without manual repair                                                                          |
+| Severe artifacts         | Fewer than 5% contain obvious tearing, holes, exposed borders, or subject deformation                                         |
+| Batch completion         | At least 98% complete or return a valid 2D fallback without operator intervention                                             |
+| Determinism              | Repeated renders have identical timing, framing, preset parameters, and frame count                                           |
+| Duration accuracy        | Output duration differs by no more than one frame                                                                             |
+| Preview/export agreement | No material difference in crop, camera direction, or motion timing                                                            |
+| Throughput               | Measured fast enough to support the existing workflow; target at least 1× real-time export at 1080p/30 on the selected worker |
+| Cost                     | At least 70% lower estimated footage cost than the chosen generative-video baseline                                           |
+| Editorial result         | One 5–10 minute explainer assembled from Phase 0 clips does not feel like a repetitive slideshow during internal review       |
 
 The 80% acceptance gate applies to the intended explainer-image distribution, not arbitrary photographs.
 
@@ -167,11 +167,11 @@ Interface invariants:
 
 ### 6.2 Adapters at justified seams
 
-| Seam | Phase 0 adapters | Reason it is a real seam |
-|---|---|---|
-| Depth estimation | Depth Anything V2 Small; deterministic fake | Production inference and fast repeatable tests both need the same contract |
-| Rendering | interactive browser preview; pinned headless export | Preview and final export execute in different environments but consume the same scene |
-| Command entry | single-image CLI; batch-manifest CLI | Both are real callers of `AnimationEngine` |
+| Seam             | Phase 0 adapters                                    | Reason it is a real seam                                                              |
+| ---------------- | --------------------------------------------------- | ------------------------------------------------------------------------------------- |
+| Depth estimation | Depth Anything V2 Small; deterministic fake         | Production inference and fast repeatable tests both need the same contract            |
+| Rendering        | interactive browser preview; pinned headless export | Preview and final export execute in different environments but consume the same scene |
+| Command entry    | single-image CLI; batch-manifest CLI                | Both are real callers of `AnimationEngine`                                            |
 
 Everything else remains internal until a second real implementation exists. In particular, do not introduce storage, queue, database, or cloud-provider interfaces during Phase 0.
 
@@ -281,7 +281,7 @@ Tasks:
    - illustration/anime;
    - text-heavy/diagram;
    - difficult edges such as hair, foliage, glass, or smoke.
-6. Record source rights, dimensions, category, and expected shot duration in `corpus-manifest.json`.
+6. Record source rights, dimensions, category, expected shot duration, and the exact source-file SHA-256 checksum in `corpus-manifest.json`.
 7. Keep private or licensed source images out of Git when required.
 
 Done when:
@@ -295,7 +295,7 @@ Done when:
 
 Tasks:
 
-1. Implement input validation, EXIF orientation, sRGB conversion, resize policy, and SHA-256 hashing.
+1. Implement input validation, EXIF orientation, sRGB conversion, resize policy, and normalized/preprocessed SHA-256 hashing for cache identity.
 2. Implement the Depth Anything V2 Small adapter.
 3. Cache depth outputs by source hash, preprocessing version, model ID, model checksum, and parameters.
 4. Store raw float depth and normalized preview texture.
@@ -560,15 +560,15 @@ Phase 0 should report measured resource usage. Translating measurements into clo
 
 ## 12. Main risks and containment
 
-| Risk | Phase 0 response |
-|---|---|
-| Depth errors create halos and stretching | Conservative presets, edge damping, risk-based clamping, 2D fallback |
-| Repeated presets make long videos boring | Three meaningfully distinct presets, deterministic variation, full-video evaluation |
-| Headless Chromium lacks GPU acceleration | Record renderer/device information and benchmark honestly; do not promise target throughput before measurement |
-| Browser and export framing diverge | Shared scene contract, renderer package, fixed clock, golden-scene comparison |
-| Model or dependency licensing blocks commercialization | Pin exact models and dependencies; use Depth Anything V2 Small; do not copy AGPL renderer code |
-| Phase 0 expands into a platform | Enforce exclusions and reject work unrelated to the exit gates |
-| Quality requires masks/inpainting | Treat this as a measured Phase 1 decision, not hidden Phase 0 work |
+| Risk                                                   | Phase 0 response                                                                                               |
+| ------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------- |
+| Depth errors create halos and stretching               | Conservative presets, edge damping, risk-based clamping, 2D fallback                                           |
+| Repeated presets make long videos boring               | Three meaningfully distinct presets, deterministic variation, full-video evaluation                            |
+| Headless Chromium lacks GPU acceleration               | Record renderer/device information and benchmark honestly; do not promise target throughput before measurement |
+| Browser and export framing diverge                     | Shared scene contract, renderer package, fixed clock, golden-scene comparison                                  |
+| Model or dependency licensing blocks commercialization | Pin exact models and dependencies; use Depth Anything V2 Small; do not copy AGPL renderer code                 |
+| Phase 0 expands into a platform                        | Enforce exclusions and reject work unrelated to the exit gates                                                 |
+| Quality requires masks/inpainting                      | Treat this as a measured Phase 1 decision, not hidden Phase 0 work                                             |
 
 ## 13. Go/no-go outcomes
 
