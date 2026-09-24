@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Still Shift · Preview lab</title>
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="masthead">
+        <div>
+          <p class="eyebrow">Still Shift / v0.3</p>
+          <h1>Motion review</h1>
+          <p class="lede">
+            Inspect the first depth-based push, one frame at a time.
+          </p>
+        </div>
+        <span class="version">slow_push · subtle</span>
+      </header>
+
+      <section class="workspace" aria-label="Preview workspace">
+        <aside class="sidebar">
+          <div class="section-heading">
+            <span>01</span>
+            <h2>Source</h2>
+          </div>
+          <p id="corpus-status" class="muted">Loading corpus…</p>
+          <label for="corpus-entry">Corpus image</label>
+          <select id="corpus-entry">
+            <option value="">Choose an image</option>
+          </select>
+          <button id="prepare" type="button" disabled>
+            Prepare and preview
+          </button>
+          <button
+            id="build-gallery"
+            class="quiet-button"
+            type="button"
+            disabled
+          >
+            Build corpus gallery
+          </button>
+          <div class="divider"><span>or inspect a prepared pair</span></div>
+          <label for="local-source">Normalized source PNG</label>
+          <input
+            id="local-source"
+            type="file"
+            accept="image/png,image/jpeg,image/webp"
+          />
+          <label for="local-depth">Depth texture PNG</label>
+          <input id="local-depth" type="file" accept="image/png" />
+          <button id="load-local" class="quiet-button" type="button">
+            Load local pair
+          </button>
+          <p class="hint">
+            Local files stay in this browser. Use the paired files from
+            <code>depth:prepare</code>.
+          </p>
+        </aside>
+
+        <div class="main-column">
+          <div class="preview-heading">
+            <div class="section-heading">
+              <span>02</span>
+              <h2>Preview</h2>
+            </div>
+            <p id="scene-name" class="scene-name">No scene loaded</p>
+          </div>
+          <div class="preview-stage">
+            <canvas
+              id="preview"
+              width="960"
+              height="540"
+              aria-label="Animated depth preview"
+            ></canvas>
+            <div id="empty-preview" class="empty-preview">
+              Choose a corpus image or load a source and depth pair.
+            </div>
+          </div>
+          <div class="transport">
+            <button
+              id="play"
+              class="transport-button"
+              type="button"
+              disabled
+              aria-label="Play preview"
+            >
+              Play
+            </button>
+            <label class="sr-only" for="frame">Preview frame</label>
+            <input
+              id="frame"
+              type="range"
+              min="0"
+              max="149"
+              value="0"
+              disabled
+            />
+            <output id="timecode" for="frame">00:00 / 05:00</output>
+          </div>
+          <p id="status" class="status" role="status" aria-live="polite">
+            Ready to inspect.
+          </p>
+
+          <div class="inspection">
+            <section>
+              <div class="section-heading">
+                <span>03</span>
+                <h2>Inputs</h2>
+              </div>
+              <div class="input-images">
+                <figure>
+                  <img id="source-image" alt="Source image" />
+                  <figcaption>Normalized source</figcaption>
+                </figure>
+                <figure>
+                  <img id="depth-image" alt="Depth texture" />
+                  <figcaption>Prepared depth</figcaption>
+                </figure>
+              </div>
+            </section>
+            <section>
+              <div class="section-heading">
+                <span>04</span>
+                <h2>Resolved scene</h2>
+              </div>
+              <pre id="parameters">No scene loaded.</pre>
+            </section>
+          </div>
+        </div>
+      </section>
+
+      <section class="gallery-section" aria-labelledby="gallery-title">
+        <div class="section-heading">
+          <span>05</span>
+          <h2 id="gallery-title">Corpus gallery</h2>
+        </div>
+        <p id="gallery-note" class="muted">
+          The gallery will use the frozen corpus when its real images are
+          supplied.
+        </p>
+        <div id="gallery" class="gallery"></div>
+      </section>
+    </main>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

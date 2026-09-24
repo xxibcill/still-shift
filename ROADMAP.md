@@ -1,6 +1,7 @@
 # Still Shift — Phase 0 Roadmap
 
-**Status:** v0.2 implementation in progress; real explainer corpus still unresolved  
+**Status:** v0.3 implementation in progress; real explainer corpus still unresolved
+
 **Updated:** 2026-09-24  
 **Target:** 10 working days  
 **Detailed plan:** [Phase_0_Implementation_Plan.md](./Phase_0_Implementation_Plan.md)  
@@ -29,18 +30,18 @@ When work begins, update the roadmap date, mark exactly one version as in progre
 
 ## Progress
 
-| Version | Deliverable                              |    Target | Status | Completion evidence                                                                        |
-| ------- | ---------------------------------------- | --------: | ------ | ------------------------------------------------------------------------------------------ |
-| v0.1    | Foundation, contracts, and frozen corpus |     Day 1 | `[!]`  | [Foundation checks pass; real corpus freeze remains blocked](./docs/v0.1-verification.md)  |
-| v0.2    | Reusable depth preparation               |  Days 2–3 | `[~]`  | [Depth worker implemented; frozen-corpus review pending](./docs/v0.2-depth-preparation.md) |
-| v0.3    | First animated preview                   |     Day 3 | `[ ]`  | `slow_push` works on the complete corpus                                                   |
-| v0.4    | Preset library and lab UI                |  Days 4–5 | `[ ]`  | Three deterministic presets preview correctly                                              |
-| v0.5    | Safety analysis and 2D fallback          |     Day 6 | `[ ]`  | Unsafe scenes clamp or fall back cleanly                                                   |
-| v0.6    | Deterministic MP4 export                 |     Day 7 | `[ ]`  | Validated 1080p MP4 with exact frame count                                                 |
-| v0.7    | Preview/export parity and golden tests   |     Day 7 | `[ ]`  | Golden scenes agree across both render paths                                               |
-| v0.8    | Single-image CLI integration             |     Day 8 | `[ ]`  | Existing workflow renders one clip through the CLI                                         |
-| v0.9    | Unattended batch execution               |     Day 8 | `[ ]`  | 50-image batch completes with a result manifest                                            |
-| v0.10   | Evaluation release and Phase 1 decision  | Days 9–10 | `[ ]`  | Gallery, assembled explainer, and gate report                                              |
+| Version | Deliverable                              |    Target | Status | Completion evidence                                                                       |
+| ------- | ---------------------------------------- | --------: | ------ | ----------------------------------------------------------------------------------------- |
+| v0.1    | Foundation, contracts, and frozen corpus |     Day 1 | `[!]`  | [Foundation checks pass; real corpus freeze remains blocked](./docs/v0.1-verification.md) |
+| v0.2    | Reusable depth preparation               |  Days 2–3 | `[!]`  | [Depth worker merged; frozen-corpus review pending](./docs/v0.2-depth-preparation.md)     |
+| v0.3    | First animated preview                   |     Day 3 | `[~]`  | [Preview implemented; corpus-wide review pending](./docs/v0.3-first-preview.md)           |
+| v0.4    | Preset library and lab UI                |  Days 4–5 | `[ ]`  | Three deterministic presets preview correctly                                             |
+| v0.5    | Safety analysis and 2D fallback          |     Day 6 | `[ ]`  | Unsafe scenes clamp or fall back cleanly                                                  |
+| v0.6    | Deterministic MP4 export                 |     Day 7 | `[ ]`  | Validated 1080p MP4 with exact frame count                                                |
+| v0.7    | Preview/export parity and golden tests   |     Day 7 | `[ ]`  | Golden scenes agree across both render paths                                              |
+| v0.8    | Single-image CLI integration             |     Day 8 | `[ ]`  | Existing workflow renders one clip through the CLI                                        |
+| v0.9    | Unattended batch execution               |     Day 8 | `[ ]`  | 50-image batch completes with a result manifest                                           |
+| v0.10   | Evaluation release and Phase 1 decision  | Days 9–10 | `[ ]`  | Gallery, assembled explainer, and gate report                                             |
 
 ## Critical path
 
@@ -116,7 +117,7 @@ Stop if the corpus does not resemble the images produced by the real explainer w
 - [x] Cache reuse and invalidation tests pass with `pnpm test:depth`.
 - [ ] Depth contact sheet is reviewed before renderer work is accepted.
 - [x] Model and weight licenses/checksums are recorded.
-- [ ] The v0.1 fake path remains green.
+- [x] The v0.1 fake path remains green.
 - [x] Scene preparation reports version `0.2`.
 
 ### v0.2 checkpoint
@@ -131,23 +132,23 @@ If depth is consistently unusable for the target image style, compare one altern
 
 ### Tasks
 
-- [ ] Implement the subdivided image plane and depth displacement shader.
-- [ ] Evaluate animation from `frameIndex / fps`, never wall-clock time.
-- [ ] Implement cover-fit composition and default overscan.
-- [ ] Implement versioned `slow_push` preset.
-- [ ] Support the `subtle` intensity level.
-- [ ] Clamp camera travel, depth strength, and crop to conservative hard limits.
-- [ ] Build the minimum browser lab around the shared renderer.
-- [ ] Display source image, depth texture, and resolved scene parameters.
-- [ ] Preview every frozen-corpus image with `slow_push`.
+- [x] Implement the subdivided image plane and depth displacement shader.
+- [x] Evaluate animation from `frameIndex / fps`, never wall-clock time.
+- [x] Implement cover-fit composition and default overscan.
+- [x] Implement versioned `slow_push` preset.
+- [x] Support the `subtle` intensity level.
+- [x] Clamp camera travel, depth strength, and crop to conservative hard limits.
+- [x] Build the minimum browser lab around the shared renderer.
+- [x] Display source image, depth texture, and resolved scene parameters.
+- [!] Preview every frozen-corpus image with `slow_push`; the manifest is empty.
 
 ### Completion evidence
 
-- [ ] `slow_push` unit tests are deterministic.
-- [ ] Camera transforms never exceed defined safety limits.
-- [ ] No invalid depth sample creates NaN or infinite geometry.
-- [ ] A corpus-wide `slow_push` preview gallery is available for review.
-- [ ] v0.2 preparation and cache tests remain green.
+- [x] `slow_push` unit tests are deterministic.
+- [x] Camera transforms never exceed defined safety limits.
+- [x] No invalid depth sample creates NaN or infinite geometry.
+- [!] A corpus-wide `slow_push` preview gallery is available for review; gallery generation exists, but no real corpus entries are available.
+- [x] v0.2 preparation and cache tests remain green.
 
 ### v0.3 checkpoint — Core-effect review
 

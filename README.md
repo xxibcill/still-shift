@@ -2,11 +2,12 @@
 
 Still Shift is a local, deterministic still-image animation engine spike. The v0.1
 foundation and fake animation path are merged. The v0.2 depth worker prepares and caches
-normalized images and validated depth assets; animation rendering is still future work.
+normalized images and validated depth assets. v0.3 adds a browser preview of one
+conservative depth-based `slow_push` animation.
 
 The v0.1 animation CLI still writes an explicitly labeled `.noop.json` artifact and
-does **not** produce video or motion. The separate v0.2 depth CLI can estimate depth;
-it does not yet connect depth assets to a renderer.
+does **not** produce video or motion. The v0.3 renderer is available through the
+browser lab; MP4 export and animation-engine integration remain later milestones.
 
 ## Pinned toolchain
 
@@ -71,6 +72,7 @@ pnpm benchmark
 pnpm toolchain:check
 pnpm depth:prepare -- --input path/to/image.png --adapter fake
 pnpm depth:contact-sheet -- --manifest benchmarks/corpus-manifest.json
+pnpm lab
 ```
 
 ## Exercise the v0.1 CLI
@@ -103,6 +105,14 @@ weights. Both modes write a normalized source image, raw float depth, a renderer
 depth texture, a provenance manifest, and cache metrics. See
 [`services/depth-worker/README.md`](./services/depth-worker/README.md) for options and
 the corpus contact-sheet command.
+
+## Preview with v0.3
+
+Run `pnpm lab` and open `http://127.0.0.1:4173/`. Select a real corpus entry when
+available, or load the `source.png` and `depth.png` files from one `depth:prepare`
+result. The lab shows the source, depth texture, resolved parameters, frame scrubber,
+and animated preview. It can build a corpus preview gallery once the required real
+images are supplied. See [`apps/lab/README.md`](./apps/lab/README.md).
 
 ## Frozen corpus requirement
 

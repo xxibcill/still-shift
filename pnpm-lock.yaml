@@ -34,6 +34,9 @@ importers:
       typescript-eslint:
         specifier: 8.69.0
         version: 8.69.0(eslint@9.39.5)(typescript@5.9.2)
+      vite:
+        specifier: 7.3.6
+        version: 7.3.6(@types/node@22.20.1)(tsx@4.20.5)
       vitest:
         specifier: 3.2.4
         version: 3.2.4(@types/node@22.20.1)(tsx@4.20.5)
@@ -46,6 +49,8 @@ importers:
       "@still-shift/scene-contract":
         specifier: workspace:*
         version: link:../scene-contract
+
+  packages/renderer-core: {}
 
   packages/scene-contract:
     dependencies:
