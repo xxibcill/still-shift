@@ -93,14 +93,15 @@ const loadImage = async (url: string): Promise<HTMLImageElement> => {
   return image;
 };
 
-const inspectPair = async (
-  name: string,
+const loadScene = async (
   sourceUrl: string,
   depthUrl: string,
   durationMs: number,
-): Promise<void> => {
-  stop();
-  status.textContent = `Loading ${name}…`;
+): Promise<{
+  source: HTMLImageElement;
+  depth: HTMLImageElement;
+  resolvedScene: PreviewScene;
+}> => {
   const [source, depth] = await Promise.all([
     loadImage(sourceUrl),
     loadImage(depthUrl),
@@ -117,6 +118,22 @@ const inspectPair = async (
     preset: "slow_push",
     intensity: "subtle",
   });
+  return { source, depth, resolvedScene: nextScene };
+};
+
+const inspectPair = async (
+  name: string,
+  sourceUrl: string,
+  depthUrl: string,
+  durationMs: number,
+): Promise<void> => {
+  stop();
+  status.textContent = `Loading ${name}…`;
+  const {
+    source,
+    depth,
+    resolvedScene: nextScene,
+  } = await loadScene(sourceUrl, depthUrl, durationMs);
   renderer?.dispose();
   renderer = createWebGLPreview(canvas, nextScene, source, depth);
   scene = nextScene;
@@ -175,22 +192,37 @@ const buildGallery = async (): Promise<void> => {
   status.classList.remove("error");
   gallery.replaceChildren();
   posters.clear();
+  const posterCanvas = document.createElement("canvas");
+  posterCanvas.width = canvas.width;
+  posterCanvas.height = canvas.height;
   for (const [index, entry] of corpusEntries.entries()) {
-    status.textContent = `Building gallery ${index + 1}/${corpusEntries.length}: ${entry.id}`;
+    byId<HTMLElement>("gallery-note").textContent =
+      `Building gallery ${index + 1}/${corpusEntries.length}: ${entry.id}`;
     const card = document.createElement("button");
     card.type = "button";
     card.className = "gallery-item";
     try {
       const prepared = await prepareEntry(entry.id);
-      await inspectPair(
-        entry.id,
+      const { source, depth, resolvedScene } = await loadScene(
         prepared.sourceUrl,
         prepared.depthUrl,
         prepared.durationMs,
       );
-      if (!scene) throw new Error("Scene did not load");
-      showFrame(Math.floor(scene.timeline.frameCount / 2));
-      const poster = canvas.toDataURL("image/png");
+      const posterRenderer = createWebGLPreview(
+        posterCanvas,
+        resolvedScene,
+        source,
+        depth,
+      );
+      let poster: string;
+      try {
+        posterRenderer.renderFrame(
+          Math.floor(resolvedScene.timeline.frameCount / 2),
+        );
+        poster = posterCanvas.toDataURL("image/png");
+      } finally {
+        posterRenderer.dispose();
+      }
       posters.set(entry.id, poster);
       const image = document.createElement("img");
       image.src = poster;
@@ -216,7 +248,6 @@ const buildGallery = async (): Promise<void> => {
   byId<HTMLElement>("gallery-note").textContent =
     `${posters.size}/${corpusEntries.length} midpoint previews generated. Select a tile to inspect motion.`;
   galleryButton.disabled = false;
-  status.textContent = "Gallery ready for review.";
 };
 
 select.addEventListener("change", () => {
