@@ -388,6 +388,8 @@ export const exportScene = async (
   let peakParentRssBytes = process.memoryUsage().rss;
   let peakSampledProcessTreeRssBytes: number | null = null;
   let memorySample: Promise<void> | null = null;
+  let published = false;
+  let failed = false;
   const sampleMemory = (): Promise<void> => {
     if (memorySample) return memorySample;
     memorySample = (async () => {
@@ -469,16 +471,35 @@ export const exportScene = async (
       ffmpegCodec: codecArguments(encoderName).join(" "),
       frameTransport: transport,
     };
+    clearInterval(memoryMonitor);
+    await memorySample;
+    await browser.close();
+    browser = undefined;
+    await server.close();
+    server = undefined;
     await link(temporaryPath, outputPath);
+    published = true;
     return metrics;
   } catch (error) {
+    failed = true;
     encoder.kill("SIGKILL");
     throw error;
   } finally {
     clearInterval(memoryMonitor);
-    await memorySample;
-    await browser?.close();
-    await server?.close();
-    await rm(temporaryPath, { force: true });
+    const cleanup = await Promise.allSettled([
+      published ? null : memorySample,
+      published ? null : browser?.close(),
+      published ? null : server?.close(),
+      rm(temporaryPath, { force: true }),
+    ]);
+    const cleanupErrors = cleanup.flatMap((result) =>
+      result.status === "rejected" ? [result.reason] : [],
+    );
+    if (cleanupErrors.length > 0) {
+      if (!published && !failed) throw cleanupErrors[0];
+      for (const error of cleanupErrors) {
+        process.stderr.write(`Export cleanup failed: ${String(error)}\n`);
+      }
+    }
   }
 };
