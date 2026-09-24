@@ -3,7 +3,6 @@ import {
   evaluateFrame,
   PREVIEW_LIMITS,
   resolvePreviewScene,
-  safeDepthSample,
 } from "../../packages/renderer-core/src/scene.ts";
 import { describe, expect, it } from "vitest";
 
@@ -72,11 +71,7 @@ describe("v0.3 slow_push", () => {
     });
   });
 
-  it("sanitizes invalid depth and rejects bad timelines or dimensions", () => {
-    expect(safeDepthSample(Number.NaN)).toBe(0.5);
-    expect(safeDepthSample(Number.POSITIVE_INFINITY)).toBe(0.5);
-    expect(safeDepthSample(-1)).toBe(0);
-    expect(safeDepthSample(2)).toBe(1);
+  it("rejects bad timelines or dimensions", () => {
     expect(() => resolvePreviewScene({ ...input, depthWidth: 100 })).toThrow(
       "Depth dimensions",
     );

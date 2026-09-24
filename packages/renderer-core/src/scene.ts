@@ -174,9 +174,6 @@ export const coverFit = (
     : { x: 1, y: canvasAspect / sourceAspect };
 };
 
-export const safeDepthSample = (sample: number): number =>
-  Number.isFinite(sample) ? clamp(sample, 0, 1) : 0.5;
-
 export const evaluateFrame = (
   scene: PreviewScene,
   frameIndex: number,
