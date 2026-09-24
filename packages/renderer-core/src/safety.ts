@@ -93,7 +93,8 @@ export const analyzeDepthSafety = (pixels: SafetyPixels): SafetyAssessment => {
   let centralPairCount = 0;
   let depthEdgeCount = 0;
   let centralDepthEdgeCount = 0;
-  let unsupportedDepthEdgeCount = 0;
+  let edgePairCount = 0;
+  let mismatchedEdgeCount = 0;
 
   for (let index = 0; index < totalPixels; index += 1) {
     const value = depth[index * 4]!;
@@ -109,6 +110,11 @@ export const analyzeDepthSafety = (pixels: SafetyPixels): SafetyAssessment => {
   ): void => {
     const depthDifference =
       Math.abs(depth[first * 4]! - depth[second * 4]!) / 255;
+    const sourceDifference = Math.abs(
+      luminance(source, first) - luminance(source, second),
+    );
+    const depthEdge = depthDifference > 0.16;
+    const sourceEdge = sourceDifference >= 0.06;
     const central =
       x >= width * 0.25 &&
       x < width * 0.75 &&
@@ -116,12 +122,13 @@ export const analyzeDepthSafety = (pixels: SafetyPixels): SafetyAssessment => {
       y < height * 0.75;
     pairCount += 1;
     if (central) centralPairCount += 1;
-    if (depthDifference <= 0.16) return;
+    if (depthEdge || sourceEdge) {
+      edgePairCount += 1;
+      if (depthEdge !== sourceEdge) mismatchedEdgeCount += 1;
+    }
+    if (!depthEdge) return;
     depthEdgeCount += 1;
     if (central) centralDepthEdgeCount += 1;
-    if (Math.abs(luminance(source, first) - luminance(source, second)) < 0.06) {
-      unsupportedDepthEdgeCount += 1;
-    }
   };
 
   for (let y = 0; y < height; y += 1) {
@@ -140,7 +147,7 @@ export const analyzeDepthSafety = (pixels: SafetyPixels): SafetyAssessment => {
   const centralDiscontinuityDensity =
     centralDepthEdgeCount / Math.max(1, centralPairCount);
   const rgbDepthEdgeDisagreement =
-    unsupportedDepthEdgeCount / Math.max(1, depthEdgeCount);
+    mismatchedEdgeCount / Math.max(1, edgePairCount);
   const riskScore = clamp01(
     0.3 * clamp01(discontinuityDensity / 0.08) +
       0.2 * clamp01(centralDiscontinuityDensity / 0.12) +

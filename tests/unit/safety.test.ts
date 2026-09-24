@@ -75,6 +75,18 @@ describe("v0.5 safety analysis and 2D fallback", () => {
     );
   });
 
+  it("measures RGB boundaries without matching depth edges", () => {
+    const assessment = analyzeDepthSafety(
+      pixels(
+        (x) => 64 + x * 4,
+        (x) => (x < 16 ? 32 : 224),
+      ),
+    );
+    expect(assessment.signals.discontinuityDensity).toBe(0);
+    expect(assessment.signals.rgbDepthEdgeDisagreement).toBe(1);
+    expect(assessment.riskScore).toBeGreaterThan(0);
+  });
+
   it("downgrades a risky strong request and repairs an insufficient crop envelope", () => {
     const assessment = analyzeDepthSafety(pixels((x) => (x < 16 ? 64 : 192)));
     const original = scene("strong");
