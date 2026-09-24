@@ -162,7 +162,11 @@ def _make_contact_sheet(items: list[dict[str, Any]], corpus_status: str) -> Imag
 
 
 def _contact_sheet(arguments: argparse.Namespace) -> dict[str, Any]:
+    workspace_root = arguments.workspace_root.expanduser().resolve()
     manifest_path = arguments.manifest.expanduser()
+    if not manifest_path.is_absolute():
+        manifest_path = workspace_root / manifest_path
+    manifest_path = manifest_path.resolve()
     try:
         manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
     except (OSError, json.JSONDecodeError) as cause:
@@ -183,7 +187,6 @@ def _contact_sheet(arguments: argparse.Namespace) -> dict[str, Any]:
         )
 
     service = _service(arguments)
-    workspace_root = arguments.workspace_root.expanduser().resolve()
     items: list[dict[str, Any]] = []
     for entry in entries:
         if not isinstance(entry, dict):
@@ -208,7 +211,7 @@ def _contact_sheet(arguments: argparse.Namespace) -> dict[str, Any]:
 
         source_path = Path(source_relative).expanduser()
         if not source_path.is_absolute():
-            source_path = workspace_root / source_path
+            source_path = manifest_path.parent / source_path
         try:
             prepared = service.prepare(source_path)
             item["status"] = "prepared"
