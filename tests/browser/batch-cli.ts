@@ -84,6 +84,7 @@ try {
   assert.equal(first.summary.itemCount, 3);
   assert.equal(first.summary.successful, 2);
   assert.equal(first.summary.failed, 1);
+  assert.match(first.summary.manifestSha256, /^sha256:[a-f0-9]{64}$/);
   const records = (
     await readFile(join(outputDir, "batch-results.jsonl"), "utf8")
   )
@@ -103,6 +104,11 @@ try {
   const retry = await runBatch();
   assert.equal(retry.exitCode, 1);
   assert.equal(retry.summary.reused, 2);
+  assert.equal(retry.summary.manifestSha256, first.summary.manifestSha256);
+  assert.equal(
+    retry.summary.artifactSetSha256,
+    first.summary.artifactSetSha256,
+  );
   const repeated = (
     await readFile(join(outputDir, "batch-results.jsonl"), "utf8")
   )

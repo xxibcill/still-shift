@@ -8,6 +8,10 @@ import {
   SceneManifestSchema,
   type AnimationResult,
 } from "@still-shift/scene-contract";
+import {
+  hashBatchArtifacts,
+  selectBenchmarkRun,
+} from "../../tools/still-shift-cli/src/batch-identity.ts";
 import { findCorpusIntegrityBlockers } from "../corpus-integrity.ts";
 import {
   compareIndependentRenders,
@@ -93,6 +97,7 @@ const records = (await readFile(resultsPath, "utf8"))
       JSON.parse(line) as {
         id: string;
         status: string;
+        requestHash: string | null;
         reused: boolean;
         result?: unknown;
       },
@@ -128,12 +133,19 @@ const summary = JSON.parse(
   successful: number;
   reused: number;
   concurrency?: number;
+  manifestSha256?: string;
+  artifactSetSha256?: string;
 };
 if (
   summary.itemCount !== records.length ||
   summary.successful !== results.length
 )
   throw new Error("Batch summary does not match its result records");
+if (
+  summary.artifactSetSha256 &&
+  summary.artifactSetSha256 !== hashBatchArtifacts(records)
+)
+  throw new Error("Batch summary artifact identity does not match its results");
 let runHistory: (typeof summary)[] = [];
 try {
   runHistory = (
@@ -145,13 +157,7 @@ try {
 } catch (error) {
   if ((error as NodeJS.ErrnoException).code !== "ENOENT") throw error;
 }
-const benchmarkRun =
-  runHistory.find(
-    (run) =>
-      run.itemCount === summary.itemCount &&
-      run.successful === run.itemCount &&
-      run.reused === 0,
-  ) ?? summary;
+const benchmarkRun = selectBenchmarkRun(summary, runHistory);
 const expectedCount = corpus.entries.length * 3;
 const batchMeasured =
   records.length === expectedCount && summary.itemCount === expectedCount;
@@ -229,7 +235,7 @@ const repaired = rated.filter(
 const renderedMinutes =
   results.reduce((sum, result) => sum + result.durationMs, 0) / 60_000;
 const aggregateRealtimeRate =
-  benchmarkRun.totalWallMs === 0
+  !benchmarkRun || benchmarkRun.totalWallMs === 0
     ? null
     : (renderedMinutes * 60_000) / benchmarkRun.totalWallMs;
 const selectedClipIds = new Set(
@@ -254,7 +260,7 @@ const selectedRenderWallMs =
     ? selectedResults.reduce(
         (sum, result) => sum + result.metrics.totalWallMs,
         0,
-      ) / (benchmarkRun.concurrency ?? 2)
+      ) / (summary.concurrency ?? 2)
     : null;
 const estimatedAssemblyWorkerMs =
   selectedRenderWallMs === null || selectedPreparationMs === null
@@ -393,7 +399,7 @@ const report = {
     rendered: results.length,
     validRate,
     reused: summary.reused,
-    batchWallMs: benchmarkRun.totalWallMs,
+    batchWallMs: benchmarkRun?.totalWallMs ?? null,
     retryWallMs: summary.totalWallMs,
     renderedMinutes,
     measuredColdPreparationMs: [...preparationBySource.values()].reduce(
@@ -440,7 +446,7 @@ ${gates.map((item) => `| ${item.name} | ${item.result} | ${item.status} |`).join
 
 ## Evidence and costs
 
-- ${results.length}/${expectedCount} preset clips have valid animation results; full render wall time ${(benchmarkRun.totalWallMs / 1000).toFixed(1)} seconds.
+- ${results.length}/${expectedCount} preset clips have valid animation results; full render wall time ${benchmarkRun ? `${(benchmarkRun.totalWallMs / 1000).toFixed(1)} seconds` : "unavailable for this exact manifest and artifact set"}.
 - ${summary.reused}/${summary.itemCount} results were reused on the last retry.
 - ${rated.length}/${expectedCount} clips have complete human ratings; ${repaired} rated clips required manual repair.
 - Archived cold preparation time across ${preparationBySource.size} unique sources: ${([...preparationBySource.values()].reduce((sum, value) => sum + value, 0) / 1000).toFixed(1)} seconds. The benchmark render used cached depth.

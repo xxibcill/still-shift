@@ -18,6 +18,7 @@ import {
   type AnimationRequest,
   type AnimationResult,
 } from "@still-shift/scene-contract";
+import { hashBatchArtifacts } from "./batch-identity.ts";
 
 type BatchItem = {
   id: string;
@@ -378,6 +379,8 @@ export const runBatch = async (options: {
     const failed = completed.length - successful;
     const summary = {
       manifestPath,
+      manifestSha256: sha256(contents),
+      artifactSetSha256: hashBatchArtifacts(completed),
       outputDir,
       resultsPath: join(outputDir, "batch-results.jsonl"),
       itemCount: completed.length,
