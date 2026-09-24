@@ -53,6 +53,28 @@ export type ExportMetrics = {
   frameTransport: "raw_rgba" | "png_pipe" | "jpeg_pipe";
 };
 
+const codecArguments = (encoder: "libx264" | "h264_videotoolbox") => [
+  "-c:v",
+  encoder,
+  ...(encoder === "libx264"
+    ? ["-preset", "veryfast", "-crf", "18"]
+    : ["-b:v", "8M", "-realtime", "true"]),
+  "-pix_fmt",
+  "yuv420p",
+  "-color_range",
+  "tv",
+  "-color_primaries",
+  "bt709",
+  "-color_trc",
+  "bt709",
+  "-colorspace",
+  "bt709",
+  "-bsf:v",
+  "h264_metadata=colour_primaries=1:transfer_characteristics=1:matrix_coefficients=1",
+  "-movflags",
+  "+faststart",
+];
+
 const ffmpegArguments = (
   scene: PreviewScene,
   temporaryPath: string,
@@ -84,25 +106,7 @@ const ffmpegArguments = (
       ? ["-vf", "scale=in_range=pc:out_range=tv,format=yuv420p"]
       : []),
   "-an",
-  "-c:v",
-  encoder,
-  ...(encoder === "libx264"
-    ? ["-preset", "veryfast", "-crf", "18"]
-    : ["-b:v", "8M", "-realtime", "true"]),
-  "-pix_fmt",
-  "yuv420p",
-  "-color_range",
-  "tv",
-  "-color_primaries",
-  "bt709",
-  "-color_trc",
-  "bt709",
-  "-colorspace",
-  "bt709",
-  "-bsf:v",
-  "h264_metadata=colour_primaries=1:transfer_characteristics=1:matrix_coefficients=1",
-  "-movflags",
-  "+faststart",
+  ...codecArguments(encoder),
   "-y",
   temporaryPath,
 ];
@@ -453,10 +457,7 @@ export const exportScene = async (
       browserExecutable: chromium.executablePath(),
       gpuRenderer: browserResult.gpuRenderer,
       ffmpegVersion,
-      ffmpegCodec:
-        encoderName === "libx264"
-          ? "libx264 veryfast crf18 yuv420p bt709 faststart"
-          : "h264_videotoolbox 8M realtime yuv420p bt709 faststart",
+      ffmpegCodec: codecArguments(encoderName).join(" "),
       frameTransport: transport,
     };
     await link(temporaryPath, outputPath);
