@@ -8,6 +8,7 @@ import {
   SceneManifestSchema,
   type AnimationResult,
 } from "@still-shift/scene-contract";
+import { findCorpusIntegrityBlockers } from "../corpus-integrity.ts";
 import { validateEvaluationRecords } from "./evidence.ts";
 import { RATING_FIELDS, RatingsExportSchema } from "./ratings.ts";
 
@@ -67,6 +68,13 @@ const corpusSha256 = `sha256:${createHash("sha256").update(corpusBytes).digest("
 const corpus = CorpusManifestSchema.parse(
   JSON.parse(corpusBytes.toString("utf8")),
 );
+const freezeBlockers = findCorpusIntegrityBlockers(corpus, {
+  sourceRoot: dirname(corpusPath),
+});
+if (corpus.status === "frozen" && freezeBlockers.length)
+  throw new Error(
+    `Frozen corpus has integrity blockers: ${freezeBlockers.map((blocker) => blocker.code).join(", ")}`,
+  );
 if (
   ratings &&
   (ratings.corpusId !== corpus.corpusId ||
@@ -259,8 +267,7 @@ const maximumWorkerUsdPerHourForCostGate =
     ? null
     : (0.3 * videoBaselineUsdPerMinute * finishedMinutes * 3_600_000) /
       estimatedAssemblyWorkerMs;
-const frozen =
-  corpus.status === "frozen" && corpus.review.status === "approved";
+const frozen = freezeBlockers.length === 0;
 const gate = (measured: boolean, pass: boolean): string =>
   !measured
     ? "Pending"
@@ -353,6 +360,7 @@ const report = {
     sha256: corpusSha256,
     status: corpus.status,
     review: corpus.review.status,
+    freezeBlockers: freezeBlockers.map((blocker) => blocker.code),
     entryCount: corpus.entries.length,
     expectedClipCount: expectedCount,
   },
