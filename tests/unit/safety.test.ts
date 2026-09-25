@@ -28,9 +28,9 @@ const scene = (intensity: "subtle" | "standard" | "strong" = "standard") =>
 const pixels = (
   depthAt: (x: number, y: number) => number,
   sourceAt: (x: number, y: number) => number = () => 128,
+  width = 32,
+  height = 16,
 ) => {
-  const width = 32;
-  const height = 16;
   const source = new Uint8ClampedArray(width * height * 4);
   const depth = new Uint8ClampedArray(width * height * 4);
   for (let y = 0; y < height; y += 1) {
@@ -75,6 +75,47 @@ describe("v0.5 safety analysis and 2D fallback", () => {
     );
   });
 
+  it("measures RGB boundaries without matching depth edges", () => {
+    const assessment = analyzeDepthSafety(
+      pixels(
+        (x) => 64 + Math.round(x / 2),
+        (x) => (x < 128 ? 32 : 224),
+        256,
+        256,
+      ),
+    );
+    expect(assessment.signals.discontinuityDensity).toBe(0);
+    expect(assessment.signals.rgbDepthEdgeDisagreement).toBe(1);
+    expect(assessment.riskScore).toBeGreaterThanOrEqual(0.4);
+    expect(
+      applySafetyToScene(scene(), assessment).motion.depthStrength,
+    ).toBeLessThan(scene().motion.depthStrength);
+  });
+
+  it("keeps central boundary risk stable at the lab analysis size", () => {
+    const small = analyzeDepthSafety(
+      pixels(
+        (x) => (x < 16 ? 64 : 192),
+        () => 128,
+        32,
+        32,
+      ),
+    );
+    const large = analyzeDepthSafety(
+      pixels(
+        (x) => (x < 128 ? 64 : 192),
+        () => 128,
+        256,
+        256,
+      ),
+    );
+    expect(large.riskScore).toBeCloseTo(small.riskScore, 2);
+    expect(large.riskScore).toBeGreaterThanOrEqual(0.4);
+    expect(
+      applySafetyToScene(scene(), large).motion.lateralTravel,
+    ).toBeLessThan(scene().motion.lateralTravel);
+  });
+
   it("downgrades a risky strong request and repairs an insufficient crop envelope", () => {
     const assessment = analyzeDepthSafety(pixels((x) => (x < 16 ? 64 : 192)));
     const original = scene("strong");
@@ -84,6 +125,10 @@ describe("v0.5 safety analysis and 2D fallback", () => {
     };
     const resolved = applySafetyToScene(underscanned, assessment);
     expect(resolved.motion.intensity).toBe("standard");
+    expect(resolved.motion.travel).toBeLessThan(original.motion.travel);
+    expect(resolved.motion.maximumCrop).toBeLessThan(
+      original.motion.maximumCrop,
+    );
     expect(resolved.motion.overscan).toBeGreaterThanOrEqual(
       resolved.motion.maximumCrop,
     );
@@ -111,6 +156,28 @@ describe("v0.5 safety analysis and 2D fallback", () => {
     expect(last.scale).toBeGreaterThan(first.scale);
   });
 
+  it("reports and repairs a crop shortfall on the fallback path", () => {
+    const original = scene();
+    const underscanned = {
+      ...original,
+      motion: { ...original.motion, overscan: 0.01 },
+    };
+    const resolved = applySafetyToScene(
+      underscanned,
+      analyzeDepthSafety(pixels(() => 128)),
+    );
+    expect(resolved.motion.mode).toBe("fallback_2d");
+    expect(resolved.motion.overscan).toBeGreaterThanOrEqual(
+      resolved.motion.maximumCrop,
+    );
+    expect(resolved.quality?.signals.overscanShortfall).toBeCloseTo(
+      resolved.motion.maximumCrop - 0.01,
+    );
+    expect(resolved.warnings.map((warning) => warning.code)).toContain(
+      "MOTION_CLAMPED",
+    );
+  });
+
   it("falls back on extreme saturation and dense depth edges", () => {
     const extreme = applySafetyToScene(
       scene(),
@@ -123,6 +190,27 @@ describe("v0.5 safety analysis and 2D fallback", () => {
       analyzeDepthSafety(pixels((x) => (x % 2 ? 64 : 192))),
     );
     expect(dense.quality?.fallbackReason).toBe("DEPTH_EDGE_RISK_HIGH");
+  });
+
+  it("rejects near-endpoint plateaus but keeps a full-range gradient", () => {
+    const extreme = analyzeDepthSafety(
+      pixels(
+        (x) => (x < 16 ? 4 : 251),
+        (x) => (x < 16 ? 4 : 251),
+      ),
+    );
+    expect(extreme.signals.depthSaturationFraction).toBe(0);
+    expect(extreme.signals.depthRange).toBeGreaterThan(0.85);
+    expect(extreme.extremeDepth).toBe(true);
+    expect(applySafetyToScene(scene(), extreme).quality?.fallbackReason).toBe(
+      "DEPTH_RANGE_EXTREME",
+    );
+
+    const gradient = analyzeDepthSafety(
+      pixels((x) => 8 + Math.round((x * 239) / 31)),
+    );
+    expect(gradient.signals.depthRange).toBeGreaterThan(0.85);
+    expect(gradient.extremeDepth).toBe(false);
   });
 
   it("provides a 2D scene when depth preparation fails", () => {

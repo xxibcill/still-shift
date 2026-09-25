@@ -232,7 +232,7 @@ Review the entire corpus before adding more presets.
 - [x] Encode H.264 MP4 with explicit frame rate, pixel format, color metadata, and fast start.
 - [x] Write to a temporary path and publish atomically.
 - [x] Validate dimensions, FPS, frame count, duration, and decodability with `ffprobe`.
-- [x] Record frame-render time, encode-path wall time, output size, parent memory, and GPU information.
+- [x] Record frame-render, upload, encode-path, validation, and FFmpeg CPU time; output size; sampled worker-process-tree memory; and CPU/GPU information.
 
 ### Completion evidence
 
@@ -267,7 +267,7 @@ If headless Chromium cannot approach the throughput target on the intended hardw
 ### Completion evidence
 
 - [!] No material mismatch was measured on five golden scenes; frozen-corpus comparison remains pending.
-- [x] Golden tests detect deliberate camera and shader regressions.
+- [x] Golden tests detect renderer changes and reversed or frozen frame motion.
 - [x] Repeated export checks remain deterministic.
 - [x] v0.6 throughput measurements remain available.
 

@@ -78,10 +78,12 @@ export const AnimationWarningCodeSchema = z.enum([
   "DEPTH_RANGE_EXTREME",
   "DEPTH_EDGE_RISK_HIGH",
   "DEPTH_PREPARATION_FAILED",
+  "DEPTH_SAFETY_ANALYSIS_FAILED",
   "LATERAL_MOTION_REDUCED",
   "INTENSITY_DOWNGRADED",
   "FALLBACK_2D_USED",
   "PREVIEW_EXPORT_VARIANCE",
+  "SOURCE_NORMALIZATION_WARNING",
 ]);
 
 const DiagnosticContextValueSchema = z.union([
@@ -120,6 +122,14 @@ export const AnimationFailureSchema = z.object({
 const Sha256Schema = z.string().regex(/^sha256:[a-f0-9]{64}$/);
 const NonNegativeFiniteNumberSchema = z.number().finite().nonnegative();
 
+export const DepthModelSchema = z.object({
+  adapter: z.string().trim().min(1),
+  id: z.string().trim().min(1),
+  revision: z.string().trim().min(1),
+  weightsChecksum: Sha256Schema,
+  license: z.string().trim().min(1),
+});
+
 export const AnimationMetricsSchema = z.object({
   adapter: z.enum(["noop", "webgl"]),
   cacheStatus: z.enum(["not_applicable", "hit", "miss"]),
@@ -142,6 +152,7 @@ export const AnimationMetricsSchema = z.object({
   versions: z.object({
     engine: z.literal(ENGINE_VERSION),
     pipeline: z.string().trim().min(1),
+    model: DepthModelSchema.nullable().optional(),
     renderer: z.string().trim().min(1),
     browser: z.string().trim().min(1).nullable(),
     ffmpeg: z.string().trim().min(1).nullable(),
@@ -154,6 +165,12 @@ export const AnimationResultSchema = z
     status: z.enum(["rendered", "rendered_with_warnings", "fallback_2d"]),
     outputPath: z.string().trim().min(1),
     sceneManifestPath: z.string().trim().min(1),
+    assetPaths: z
+      .object({
+        normalizedSource: z.string().trim().min(1),
+        depth: z.string().trim().min(1).nullable(),
+      })
+      .optional(),
     frameCount: z.number().int().positive(),
     durationMs: z.number().int().positive(),
     selectedPreset: ResolvedAnimationPresetSchema,
@@ -206,51 +223,48 @@ export const AnimationResultSchema = z
     }
   });
 
-export const SceneManifestSchema = z.object({
-  schemaVersion: z.literal(SCENE_SCHEMA_VERSION),
-  sourceHash: Sha256Schema,
-  normalizedSourceHash: Sha256Schema.optional(),
-  sourceAssetPath: z.string().min(1).optional(),
-  pipelineVersion: z.string().trim().min(1),
+const SceneTimelineSchema = z
+  .object({
+    durationMs: z.number().int().positive(),
+    fps: z.literal(V0_1_REQUEST_CONSTRAINTS.fps),
+    frameCount: z.number().int().positive(),
+  })
+  .superRefine((timeline, context) => {
+    if (!wholeFrameDuration(timeline.durationMs, timeline.fps)) {
+      context.addIssue({
+        code: "custom",
+        message: "timeline duration must resolve to a whole frame count",
+        path: ["durationMs"],
+      });
+    }
+    if (
+      timeline.frameCount !==
+      calculateFrameCount(timeline.durationMs, timeline.fps)
+    ) {
+      context.addIssue({
+        code: "custom",
+        message: "frameCount must match durationMs and fps",
+        path: ["frameCount"],
+      });
+    }
+  });
+
+const SceneCanvasSchema = z.object({
+  width: z.literal(V0_1_REQUEST_CONSTRAINTS.width),
+  height: z.literal(V0_1_REQUEST_CONSTRAINTS.height),
+});
+
+export const RenderSceneSchema = z.object({
   rendererVersion: z.string().trim().min(1),
-  timeline: z
-    .object({
-      durationMs: z.number().int().positive(),
-      fps: z.literal(V0_1_REQUEST_CONSTRAINTS.fps),
-      frameCount: z.number().int().positive(),
-    })
-    .superRefine((timeline, context) => {
-      if (!wholeFrameDuration(timeline.durationMs, timeline.fps)) {
-        context.addIssue({
-          code: "custom",
-          message: "timeline duration must resolve to a whole frame count",
-          path: ["durationMs"],
-        });
-      }
-      if (
-        timeline.frameCount !==
-        calculateFrameCount(timeline.durationMs, timeline.fps)
-      ) {
-        context.addIssue({
-          code: "custom",
-          message: "frameCount must match durationMs and fps",
-          path: ["frameCount"],
-        });
-      }
-    }),
-  canvas: z.object({
-    width: z.literal(V0_1_REQUEST_CONSTRAINTS.width),
-    height: z.literal(V0_1_REQUEST_CONSTRAINTS.height),
+  presetVersion: z.string().trim().min(1),
+  timeline: SceneTimelineSchema,
+  source: z.object({
+    width: z.number().int().positive(),
+    height: z.number().int().positive(),
   }),
-  depth: z
-    .object({
-      asset: z.string().trim().min(1),
-      strength: z.number().finite().nonnegative(),
-      near: z.number().finite(),
-      far: z.number().finite(),
-    })
-    .nullable(),
+  canvas: SceneCanvasSchema,
   motion: z.object({
+    mode: z.enum(["depth", "fallback_2d"]),
     preset: ResolvedAnimationPresetSchema,
     intensity: AnimationIntensitySchema,
     seed: z
@@ -258,19 +272,124 @@ export const SceneManifestSchema = z.object({
       .int()
       .min(V0_1_REQUEST_CONSTRAINTS.seed.minimum)
       .max(V0_1_REQUEST_CONSTRAINTS.seed.maximum),
-    safeCrop: z.number().finite().min(0).max(1),
+    travel: z.number().finite().nonnegative(),
+    depthStrength: z.number().finite().nonnegative(),
+    lateralTravel: z.number().finite().nonnegative(),
+    rollDegrees: z.number().finite(),
+    overscan: z.number().finite().min(0).max(1),
+    maximumCrop: z.number().finite().min(0).max(1),
   }),
-  quality: z.object({
-    riskScore: z.number().finite().min(0).max(1),
-    fallback: z.boolean(),
-    warnings: z.array(AnimationWarningSchema),
-  }),
-  renderScene: z.record(z.string(), z.unknown()).optional(),
-  execution: z.discriminatedUnion("adapter", [
-    z.object({ adapter: z.literal("noop"), producesVideo: z.literal(false) }),
-    z.object({ adapter: z.literal("webgl"), producesVideo: z.literal(true) }),
-  ]),
+  quality: z
+    .object({
+      analysisVersion: z.string().trim().min(1),
+      riskScore: z.number().finite().min(0).max(1),
+      fallback: z.boolean(),
+      fallbackReason: AnimationWarningCodeSchema.nullable(),
+      signals: z.record(z.string(), z.number().finite()),
+    })
+    .nullable(),
+  warnings: z.array(AnimationWarningSchema),
 });
+
+export const SceneManifestSchema = z
+  .object({
+    schemaVersion: z.literal(SCENE_SCHEMA_VERSION),
+    sourceHash: Sha256Schema,
+    normalizedSourceHash: Sha256Schema.optional(),
+    sourceAssetPath: z.string().min(1).optional(),
+    pipelineVersion: z.string().trim().min(1),
+    model: DepthModelSchema.nullable().optional(),
+    rendererVersion: z.string().trim().min(1),
+    timeline: SceneTimelineSchema,
+    canvas: SceneCanvasSchema,
+    depth: z
+      .object({
+        asset: z.string().trim().min(1),
+        strength: z.number().finite().nonnegative(),
+        near: z.number().finite(),
+        far: z.number().finite(),
+      })
+      .nullable(),
+    motion: z.object({
+      preset: ResolvedAnimationPresetSchema,
+      intensity: AnimationIntensitySchema,
+      seed: z
+        .number()
+        .int()
+        .min(V0_1_REQUEST_CONSTRAINTS.seed.minimum)
+        .max(V0_1_REQUEST_CONSTRAINTS.seed.maximum),
+      safeCrop: z.number().finite().min(0).max(1),
+    }),
+    quality: z.object({
+      riskScore: z.number().finite().min(0).max(1),
+      fallback: z.boolean(),
+      warnings: z.array(AnimationWarningSchema),
+    }),
+    renderScene: RenderSceneSchema.optional(),
+    execution: z.discriminatedUnion("adapter", [
+      z.object({ adapter: z.literal("noop"), producesVideo: z.literal(false) }),
+      z.object({ adapter: z.literal("webgl"), producesVideo: z.literal(true) }),
+    ]),
+  })
+  .superRefine((manifest, context) => {
+    const scene = manifest.renderScene;
+    if (manifest.execution.adapter === "webgl" && !scene) {
+      context.addIssue({
+        code: "custom",
+        message: "WebGL manifests require a resolved renderer scene",
+        path: ["renderScene"],
+      });
+      return;
+    }
+    if (!scene) return;
+
+    const mismatches = [
+      ["rendererVersion", scene.rendererVersion !== manifest.rendererVersion],
+      [
+        "timeline",
+        JSON.stringify(scene.timeline) !== JSON.stringify(manifest.timeline),
+      ],
+      [
+        "canvas",
+        JSON.stringify(scene.canvas) !== JSON.stringify(manifest.canvas),
+      ],
+      ["motion.preset", scene.motion.preset !== manifest.motion.preset],
+      [
+        "motion.intensity",
+        scene.motion.intensity !== manifest.motion.intensity,
+      ],
+      ["motion.seed", scene.motion.seed !== manifest.motion.seed],
+      [
+        "motion.maximumCrop",
+        scene.motion.maximumCrop !== manifest.motion.safeCrop,
+      ],
+      [
+        "quality",
+        scene.quality?.riskScore !== manifest.quality.riskScore ||
+          scene.quality.fallback !== manifest.quality.fallback,
+      ],
+      [
+        "warnings",
+        JSON.stringify(scene.warnings) !==
+          JSON.stringify(manifest.quality.warnings),
+      ],
+      [
+        "depth.strength",
+        manifest.depth !== null &&
+          scene.motion.depthStrength !== manifest.depth.strength,
+      ],
+      ["depth", scene.motion.mode === "depth" && manifest.depth === null],
+    ] as const;
+    for (const [field, mismatch] of mismatches) {
+      if (mismatch) {
+        context.addIssue({
+          code: "custom",
+          message: `Renderer scene ${field} does not match the manifest`,
+          path: ["renderScene", ...field.split(".")],
+        });
+      }
+    }
+  });
 
 export type AnimationRequest = z.infer<typeof AnimationRequestSchema>;
 export type AnimationResult = z.infer<typeof AnimationResultSchema>;
@@ -279,6 +398,7 @@ export type AnimationWarningCode = z.infer<typeof AnimationWarningCodeSchema>;
 export type AnimationErrorCode = z.infer<typeof AnimationErrorCodeSchema>;
 export type AnimationFailure = z.infer<typeof AnimationFailureSchema>;
 export type AnimationMetrics = z.infer<typeof AnimationMetricsSchema>;
+export type DepthModel = z.infer<typeof DepthModelSchema>;
 export type AnimationPreset = z.infer<typeof AnimationPresetSchema>;
 export type ResolvedAnimationPreset = z.infer<
   typeof ResolvedAnimationPresetSchema

@@ -55,6 +55,9 @@ importers:
 
   packages/renderer-core:
     dependencies:
+      "@still-shift/scene-contract":
+        specifier: workspace:*
+        version: link:../scene-contract
       three:
         specifier: 0.186.0
         version: 0.186.0
