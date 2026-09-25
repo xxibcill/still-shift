@@ -47,6 +47,32 @@ describe("batch interruption recovery", () => {
     }
   });
 
+  it("recovers a stale lock when its PID belongs to another process", async () => {
+    const directory = await mkdtemp(join(tmpdir(), "still-shift-reused-pid-"));
+    try {
+      const lockPath = join(directory, ".batch.lock");
+      await writeFile(
+        lockPath,
+        JSON.stringify({
+          pid: process.pid,
+          token: "dead-owner",
+          processStartedAt: "earlier process start",
+        }),
+      );
+      const release = await acquireBatchLock(lockPath, directory);
+      try {
+        expect(JSON.parse(await readFile(lockPath, "utf8"))).toMatchObject({
+          pid: process.pid,
+          processStartedAt: expect.any(String),
+        });
+      } finally {
+        await release();
+      }
+    } finally {
+      await rm(directory, { recursive: true, force: true });
+    }
+  });
+
   it("allows only one process to recover a stale lock", async () => {
     const directory = await mkdtemp(join(tmpdir(), "still-shift-lock-race-"));
     const lockPath = join(directory, ".batch.lock");

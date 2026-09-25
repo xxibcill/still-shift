@@ -1,4 +1,4 @@
-import { spawn } from "node:child_process";
+import { execFile, spawn } from "node:child_process";
 import { randomUUID } from "node:crypto";
 import {
   open,
@@ -10,10 +10,18 @@ import {
   type FileHandle,
 } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
+import { promisify } from "node:util";
 
 import { AnimationEngineError } from "@still-shift/scene-contract";
 
-type LockOwner = { pid: number; token: string };
+type LockOwner = { pid: number; token: string; processStartedAt: string };
+const execFileAsync = promisify(execFile);
+const helper = fileURLToPath(
+  new URL("./batch-lock-helper.py", import.meta.url),
+);
+const python = fileURLToPath(
+  new URL("../../../.venv/bin/python", import.meta.url),
+);
 type ProgressMarker = {
   requestHash: string;
   sourceHash: string;
@@ -43,12 +51,6 @@ const removeStaleLock = async (
   outputDir: string,
 ): Promise<void> =>
   new Promise((resolve, reject) => {
-    const helper = fileURLToPath(
-      new URL("./batch-lock-helper.py", import.meta.url),
-    );
-    const python = fileURLToPath(
-      new URL("../../../.venv/bin/python", import.meta.url),
-    );
     const child = spawn(python, [helper, lockPath], {
       stdio: ["ignore", "ignore", "pipe"],
     });
@@ -107,8 +109,11 @@ export const acquireBatchLock = async (
 
     const token = randomUUID();
     try {
+      const processStartedAt = (
+        await execFileAsync(python, [helper, "--identity", String(process.pid)])
+      ).stdout.trim();
       await lock.writeFile(
-        `${JSON.stringify({ pid: process.pid, token } satisfies LockOwner)}\n`,
+        `${JSON.stringify({ pid: process.pid, token, processStartedAt } satisfies LockOwner)}\n`,
       );
     } catch (error) {
       await lock.close();

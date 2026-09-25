@@ -4,6 +4,7 @@ import errno
 import fcntl
 import json
 import os
+import subprocess
 import sys
 import time
 
@@ -18,6 +19,18 @@ def process_is_running(pid: int) -> bool:
         return True
     except OSError as error:
         return error.errno != errno.ESRCH
+
+
+def process_start_identity(pid: int) -> str | None:
+    result = subprocess.run(
+        ["ps", "-o", "lstart=", "-p", str(pid)],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    if result.returncode != 0:
+        return None
+    return " ".join(result.stdout.split()) or None
 
 
 def read_lock(path: str) -> bytes | None:
@@ -44,7 +57,10 @@ def remove_stale_lock(path: str) -> None:
         and isinstance(owner.get("token"), str)
     )
     if valid_owner and process_is_running(owner["pid"]):
-        raise LockConflict
+        expected_start = owner.get("processStartedAt")
+        actual_start = process_start_identity(owner["pid"])
+        if expected_start is None or actual_start is None or expected_start == actual_start:
+            raise LockConflict
     if not valid_owner:
         try:
             modified_at = os.stat(path).st_mtime_ns
@@ -74,4 +90,10 @@ def main(lock_path: str) -> int:
 
 
 if __name__ == "__main__":
-    sys.exit(main(sys.argv[1]))
+    if sys.argv[1] == "--identity":
+        identity = process_start_identity(int(sys.argv[2]))
+        if identity is None:
+            sys.exit(1)
+        print(identity)
+    else:
+        sys.exit(main(sys.argv[1]))
