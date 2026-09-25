@@ -1,3 +1,7 @@
+import type { AnimationWarning } from "@still-shift/scene-contract";
+
+import type { SafetySignals } from "./safety.ts";
+
 export const RENDERER_VERSION = "preview-render-0.5.0" as const;
 export const SLOW_PUSH_VERSION = "slow_push@0.3.0" as const;
 export const PRESET_VERSIONS = {
@@ -8,29 +12,14 @@ export const PRESET_VERSIONS = {
 
 export type PreviewPreset = keyof typeof PRESET_VERSIONS;
 export type PreviewIntensity = "subtle" | "standard" | "strong";
-export type PreviewWarning = {
-  code:
-    | "MOTION_CLAMPED"
-    | "DEPTH_RANGE_FLAT"
-    | "DEPTH_RANGE_EXTREME"
-    | "DEPTH_EDGE_RISK_HIGH"
-    | "DEPTH_PREPARATION_FAILED"
-    | "DEPTH_SAFETY_ANALYSIS_FAILED"
-    | "LATERAL_MOTION_REDUCED"
-    | "INTENSITY_DOWNGRADED"
-    | "FALLBACK_2D_USED"
-    | "PREVIEW_EXPORT_VARIANCE"
-    | "SOURCE_NORMALIZATION_WARNING";
-  message: string;
-  context?: Record<string, string | number | boolean>;
-};
+export type PreviewWarning = AnimationWarning;
 
 export type PreviewQuality = {
   analysisVersion: string;
   riskScore: number;
   fallback: boolean;
   fallbackReason: PreviewWarning["code"] | null;
-  signals: Record<string, number>;
+  signals: SafetySignals;
 };
 
 export const PREVIEW_LIMITS = {
@@ -53,6 +42,15 @@ type MotionParameters = {
   lateralTravel: number;
   rollDegrees: number;
 };
+
+export const maximumCropFor = (
+  motion: MotionParameters & { preset: PreviewPreset },
+): number =>
+  (motion.travel +
+    motion.depthStrength +
+    motion.lateralTravel * (motion.preset === "cinematic_float" ? 1.3 : 1) +
+    (motion.rollDegrees * Math.PI) / 180) /
+  (1 + motion.travel);
 
 export const PRESET_LIMITS: Record<PreviewPreset, MotionParameters> = {
   slow_push: {
@@ -313,12 +311,13 @@ export const resolvePreviewScene = (input: PreviewInput): PreviewScene => {
     });
   }
   let safeOverscan = Math.max(overscan, PREVIEW_LIMITS.minimumOverscan);
-  const maximumCrop =
-    (travel +
-      depthStrength +
-      lateralTravel * (input.preset === "cinematic_float" ? 1.3 : 1) +
-      (rollDegrees * Math.PI) / 180) /
-    (1 + travel);
+  const maximumCrop = maximumCropFor({
+    preset: input.preset,
+    travel,
+    depthStrength,
+    lateralTravel,
+    rollDegrees,
+  });
   if (maximumCrop > PREVIEW_LIMITS.maximumCrop) {
     throw new Error("Resolved camera motion exceeds the safe crop envelope");
   }

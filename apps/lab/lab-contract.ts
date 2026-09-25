@@ -35,10 +35,18 @@ export const PreparedEntrySchema = z.object({
 });
 
 export type PreparedEntry = z.infer<typeof PreparedEntrySchema>;
-export type PreviewPair = Pick<
-  PreparedEntry,
-  "sourceUrl" | "depthUrl" | "durationMs"
->;
+export type PreviewPair = {
+  sourceUrl: string;
+  depthUrl: string | null;
+  durationMs: number;
+};
+
+export const DepthPreparationFailureSchema = z.object({
+  error: z.string().min(1),
+  code: z.literal("DEPTH_PREPARATION_FAILED"),
+  sourceUrl: z.string().min(1),
+  durationMs: z.number().int().positive(),
+});
 
 export const WorkerResultSchema = z.discriminatedUnion("status", [
   z.object({

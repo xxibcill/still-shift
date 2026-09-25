@@ -10,6 +10,52 @@ export type FrameVariance = {
   warning: PreviewWarning | null;
 };
 
+export type MotionVariance = {
+  version: typeof GOLDEN_PARITY_VERSION;
+  alignment: number;
+  warning: PreviewWarning | null;
+};
+
+export const compareFrameMotion = (
+  referenceFirst: Uint8Array,
+  referenceLast: Uint8Array,
+  actualFirst: Uint8Array,
+  actualLast: Uint8Array,
+): MotionVariance => {
+  if (
+    referenceFirst.length === 0 ||
+    referenceFirst.length % 3 !== 0 ||
+    referenceFirst.length !== referenceLast.length ||
+    referenceFirst.length !== actualFirst.length ||
+    referenceFirst.length !== actualLast.length
+  ) {
+    throw new Error("Motion samples must be matching nonempty RGB frames");
+  }
+  let referenceEnergy = 0;
+  let alignedMotion = 0;
+  for (let index = 0; index < referenceFirst.length; index += 1) {
+    const referenceDelta = referenceLast[index]! - referenceFirst[index]!;
+    const actualDelta = actualLast[index]! - actualFirst[index]!;
+    referenceEnergy += referenceDelta * referenceDelta;
+    alignedMotion += referenceDelta * actualDelta;
+  }
+  if (referenceEnergy === 0)
+    throw new Error("Reference frames must contain motion");
+  const alignment = alignedMotion / referenceEnergy;
+  return {
+    version: GOLDEN_PARITY_VERSION,
+    alignment,
+    warning:
+      alignment < 0.5 || alignment > 1.5
+        ? {
+            code: "PREVIEW_EXPORT_VARIANCE",
+            message:
+              "Frame motion differs from the reference direction or timing",
+          }
+        : null,
+  };
+};
+
 export const compareFrameSamples = (
   preview: Uint8Array,
   exported: Uint8Array,

@@ -1,6 +1,6 @@
 import { execFile, spawn } from "node:child_process";
-import { createHash, randomUUID } from "node:crypto";
-import { link, readFile, rm, stat, writeFile } from "node:fs/promises";
+import { createHash } from "node:crypto";
+import { readFile, rm, stat } from "node:fs/promises";
 import { isAbsolute, resolve } from "node:path";
 import { performance } from "node:perf_hooks";
 import { promisify } from "node:util";
@@ -450,6 +450,7 @@ export class WebGLAnimationEngine implements AnimationEngine {
         depthPath:
           scene.motion.mode === "fallback_2d" ? null : prepared.depthPath,
         outputPath,
+        sceneManifestContents: serializedScene,
       });
     } catch (cause) {
       throw new AnimationEngineError(
@@ -459,9 +460,16 @@ export class WebGLAnimationEngine implements AnimationEngine {
         { cause },
       );
     }
-    const temporaryScenePath = `${sceneManifestPath}.${randomUUID()}.tmp`;
     try {
-      const outputHash = sha256(await readFile(outputPath));
+      if (
+        exported.sceneManifestPath !== sceneManifestPath ||
+        exported.sceneChecksum !== sceneHash ||
+        exported.sourceChecksum !== normalizedSourceHash ||
+        exported.depthChecksum !==
+          (scene.motion.mode === "fallback_2d" ? null : (depthHash ?? null))
+      ) {
+        throw new Error("Export assets changed after scene resolution");
+      }
       const result = AnimationResultSchema.parse({
         apiVersion: ANIMATION_API_VERSION,
         status:
@@ -498,10 +506,11 @@ export class WebGLAnimationEngine implements AnimationEngine {
           sceneBuildMs,
           frameRenderAverageMs: exported.frameRenderAverageMs,
           frameRenderP95Ms: exported.frameRenderP95Ms,
-          encodeMs: exported.encodeMs,
+          encodeMs: exported.encodePathWallMs,
           totalWallMs: performance.now() - started,
           peakCpuMemoryBytes: Math.max(
-            exported.peakCpuMemoryBytes,
+            exported.peakSampledProcessTreeRssBytes ??
+              exported.peakParentRssBytes,
             prepared.workerMetrics.peakCpuMemoryBytes ?? 0,
           ),
           peakGpuMemoryBytes: prepared.workerMetrics.peakGpuMemoryBytes ?? null,
@@ -521,22 +530,21 @@ export class WebGLAnimationEngine implements AnimationEngine {
           source: sourceHash,
           ...(depthHash ? { depth: depthHash } : {}),
           scene: sceneHash,
-          output: outputHash,
+          output: exported.outputChecksum,
         },
       });
-      await writeFile(temporaryScenePath, serializedScene, { flag: "wx" });
-      await link(temporaryScenePath, sceneManifestPath);
       return result;
     } catch (cause) {
-      await rm(outputPath, { force: true });
+      await Promise.allSettled([
+        rm(outputPath, { force: true }),
+        rm(sceneManifestPath, { force: true }),
+      ]);
       throw new AnimationEngineError(
         "RENDER_FAILED",
-        "Unable to publish animation result and scene manifest",
+        "Unable to validate animation result and scene manifest",
         { outputPath },
         { cause },
       );
-    } finally {
-      await rm(temporaryScenePath, { force: true });
     }
   }
 }
