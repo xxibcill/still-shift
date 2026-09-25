@@ -77,7 +77,7 @@ pnpm lab
 ## Animate one image
 
 ```bash
-pnpm still-shift animate \
+pnpm --silent still-shift animate \
   --input ./path/to/still.png \
   --output ./outputs/still.mp4 \
   --duration 5 \
@@ -94,7 +94,7 @@ for fallback behavior, hashes, and exit codes.
 ## Exercise the v0.1 no-op adapter
 
 ```bash
-pnpm still-shift animate \
+pnpm --silent still-shift animate \
   --input tests/fixtures/source-placeholder.txt \
   --output /tmp/still-shift-example.noop.json \
   --duration 5 \

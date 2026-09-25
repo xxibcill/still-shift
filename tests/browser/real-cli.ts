@@ -33,10 +33,10 @@ const runCli = async (
     inputPath?: string;
     cwd?: string;
     cacheDir?: string;
+    viaPnpm?: boolean;
   } = {},
 ) => {
   const args = [
-    cliScriptPath,
     "animate",
     "--input",
     options.inputPath ?? sourcePath,
@@ -53,7 +53,11 @@ const runCli = async (
     "--seed",
     String(fixture.seed),
   ];
-  const { stdout } = await execFileAsync(cliPath, args, {
+  const command = options.viaPnpm ? "pnpm" : cliPath;
+  const commandArgs = options.viaPnpm
+    ? ["--silent", "still-shift", ...args]
+    : [cliScriptPath, ...args];
+  const { stdout } = await execFileAsync(command, commandArgs, {
     cwd: options.cwd ?? resolve("."),
     env: {
       ...environment,
@@ -92,7 +96,9 @@ try {
     "-y",
     sourcePath,
   ]);
-  const first = await runCli(join(directory, "first.mp4"));
+  const first = await runCli(join(directory, "first.mp4"), {
+    viaPnpm: true,
+  });
   const second = await runCli(join(directory, "second.mp4"));
   assert.ok(
     first.status === "rendered" || first.status === "rendered_with_warnings",

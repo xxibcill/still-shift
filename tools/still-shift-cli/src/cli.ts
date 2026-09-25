@@ -29,7 +29,7 @@ const DEFAULT_IO: CliIo = {
 const HELP = `Still Shift v${ENGINE_VERSION}
 
 Usage:
-  pnpm still-shift animate --input <path> --output <path> [options]
+  pnpm --silent still-shift animate --input <path> --output <path> [options]
 
 The default adapter writes a validated 1080p H.264 MP4 and scene manifest.
 
