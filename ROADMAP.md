@@ -19,6 +19,11 @@ implemented as six treatments based on layers, paths, and authored state changes
 The [42-second review reel and verification](./docs/history-offstage-motion-implementation.md)
 are ready; creative acceptance remains pending.
 
+**Next creative direction:** The owner requested cinematic templates with parallax.
+The [eight-template plan](./docs/cinematic-template-plan.md) and
+[source prompt pack](./prompt-packs/cinematic-illustrated-still-animation-prompt-pack.md)
+are recorded. Camera/depth support and new source generation are planned work.
+
 ## Phase 0 outcome
 
 Prove that Still Shift can turn a representative batch of explainer-video stills into varied, deterministic 3–8 second MP4 footage with minimal manual repair and substantially lower cost than generative video.
@@ -55,6 +60,7 @@ When work begins, update the roadmap date, mark exactly one version as in progre
 | v0.9    | Unattended batch execution               |     Day 8 | `[!]`  | [50-item technical batch passes; frozen-corpus gate pending](./docs/v0.9-unattended-batch.md)                          |
 | v0.10   | Evaluation release and Phase 1 decision  | Days 9–10 | `[!]`  | [Candidate gallery, 7.97-minute assembly, and gate report; human decision pending](./docs/v0.10-evaluation-release.md) |
 | v0.11   | Illustrated editorial preset trial       | Extension | `[!]`  | [Six presets implemented and verified; creative review pending](./docs/history-offstage-motion-implementation.md)      |
+| v0.12   | Cinematic illustrated template study     | Extension | `[ ]`  | [Eight templates planned, including layered parallax; implementation pending](./docs/cinematic-template-plan.md)       |
 
 ## Critical path
 
@@ -71,7 +77,8 @@ v0.1 Foundation
                   → v0.10 Evaluation release
 ```
 
-v0.11 is a later illustrated-style experiment, not a completed release gate.
+v0.11 and v0.12 are illustrated-style experiments with separate creative reviews.
+Their outputs do not complete the Phase 0 release gates.
 
 The versions are numbered by cumulative capability, not independent branches. Implementation work for v0.5 and v0.6 may overlap, but neither version is complete until the previous version remains green.
 
@@ -385,6 +392,25 @@ technical checks but was judged too basic by the owner. See the
 - [!] Select and review a new representative corpus before Phase 0 acceptance.
 - [!] Validate any selected History Offstage image treatment and 24 fps editorial
   conform under that episode's own production rules.
+
+## v0.12 — Cinematic illustrated template study
+
+**Status:** Plan recorded; implementation not started.
+
+**Release outcome:** Eight full-frame illustrated shot templates built around
+camera staging, layered parallax, occlusion, and attention. See the
+[build plan](./docs/cinematic-template-plan.md) and
+[source prompt pack](./prompt-packs/cinematic-illustrated-still-animation-prompt-pack.md).
+
+- [x] Define eight treatments, four reusable scene kits, source prompts, movement
+      bounds, fallbacks, and creative/technical acceptance criteria.
+- [ ] Add versioned camera/depth-plane support, subject anchors, and painted-area checks.
+- [ ] Prove Threshold Push, Lateral Track, and Foreground Reveal first.
+- [ ] Add Rising Vista, Detail to World, and Curved Approach.
+- [ ] Evaluate Focus Handoff and Dolly-Zoom Tension with their specific quality checks.
+- [ ] Verify multiple compatible scenes per template, preview/export parity, and
+      exact 24/30 fps timing; record generation, preparation, and rendering costs.
+- [ ] Present one 56-second reel with optional individual replay for creative review.
 
 ## Final exit gates
 
