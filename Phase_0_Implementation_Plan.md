@@ -400,6 +400,8 @@ Tasks:
    - decodable first and last frames.
 8. Record frame-render time, encode time, output size, CPU/GPU information, and peak memory.
 
+**2026-09-24 export transport checkpoint:** The raw RGBA pipe remains available and produces an exact-frame MP4, but a five-second 1080p synthetic scene took 29.8 seconds on the local Chromium SwiftShader path. An in-memory PNG frame pipe produced a byte-identical MP4 in 4.1 seconds with no PNG files written. It is the default Phase 0 transport. On one photographic candidate, the PNG pipe took 9.4 seconds; an optional 95%-quality JPEG pipe took 5.0 seconds with 0.993 mean SSIM against the PNG-pipe MP4. The JPEG adapter remains an evaluation option until v0.7 parity and v0.10 editorial review. These results change the transport choice, not the exact-frame, H.264, or validation requirements. The throughput gate is measured on real images and must not be inferred from the synthetic case.
+
 Tests:
 
 - A five-second, 30 FPS request produces exactly 150 frames.

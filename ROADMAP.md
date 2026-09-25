@@ -1,6 +1,6 @@
 # Still Shift — Phase 0 Roadmap
 
-**Status:** v0.3–v0.5 implemented; frozen-corpus and human review pending; v0.6 in progress
+**Status:** v0.3–v0.6 implemented; frozen-corpus and human review pending; v0.7 in progress
 
 **Updated:** 2026-09-24  
 **Target:** 10 working days  
@@ -37,8 +37,8 @@ When work begins, update the roadmap date, mark exactly one version as in progre
 | v0.3    | First animated preview                   |     Day 3 | `[!]`  | [Preview implemented; corpus-wide review pending](./docs/v0.3-first-preview.md)           |
 | v0.4    | Preset library and lab UI                |  Days 4–5 | `[!]`  | [Three presets implemented; frozen-corpus review pending](./docs/v0.4-preset-library.md)  |
 | v0.5    | Safety analysis and 2D fallback          |     Day 6 | `[!]`  | [Safety implemented; frozen-corpus review pending](./docs/v0.5-safety-fallback.md)        |
-| v0.6    | Deterministic MP4 export                 |     Day 7 | `[~]`  | Validated 1080p MP4 with exact frame count                                                |
-| v0.7    | Preview/export parity and golden tests   |     Day 7 | `[ ]`  | Golden scenes agree across both render paths                                              |
+| v0.6    | Deterministic MP4 export                 |     Day 7 | `[!]`  | [1080p export passes; representative throughput gate pending](./docs/v0.6-mp4-export.md)  |
+| v0.7    | Preview/export parity and golden tests   |     Day 7 | `[~]`  | Golden scenes agree across both render paths                                              |
 | v0.8    | Single-image CLI integration             |     Day 8 | `[ ]`  | Existing workflow renders one clip through the CLI                                        |
 | v0.9    | Unattended batch execution               |     Day 8 | `[ ]`  | 50-image batch completes with a result manifest                                           |
 | v0.10   | Evaluation release and Phase 1 decision  | Days 9–10 | `[ ]`  | Gallery, assembled explainer, and gate report                                             |
@@ -224,24 +224,24 @@ Review the entire corpus before adding more presets.
 
 ### Tasks
 
-- [ ] Pin the headless Chromium build.
-- [ ] Load the shared scene contract and renderer package in the export worker.
-- [ ] Render frames using fixed frame indices.
-- [ ] Pipe raw frames to FFmpeg without normal-path intermediate PNG files.
-- [ ] Pin and document the FFmpeg codec configuration.
-- [ ] Encode H.264 MP4 with explicit frame rate, pixel format, color metadata, and fast start.
-- [ ] Write to a temporary path and publish atomically.
-- [ ] Validate dimensions, FPS, frame count, duration, and decodability with `ffprobe`.
-- [ ] Record frame-render time, encode time, output size, memory, and GPU information.
+- [x] Pin the headless Chromium build.
+- [x] Load the shared scene contract and renderer package in the export worker.
+- [x] Render frames using fixed frame indices.
+- [x] Stream frames to FFmpeg without intermediate files; keep raw RGBA as a reference and use the faster in-memory PNG pipe by default, per the detailed-plan checkpoint.
+- [x] Pin and document the FFmpeg codec configuration.
+- [x] Encode H.264 MP4 with explicit frame rate, pixel format, color metadata, and fast start.
+- [x] Write to a temporary path and publish atomically.
+- [x] Validate dimensions, FPS, frame count, duration, and decodability with `ffprobe`.
+- [x] Record frame-render, upload, encode-path, validation, and FFmpeg CPU time; output size; sampled worker-process-tree memory; and CPU/GPU information.
 
 ### Completion evidence
 
-- [ ] Five seconds at 30 FPS produces exactly 150 frames.
-- [ ] Duration is accurate within one frame.
-- [ ] Failed exports never publish partial final files.
-- [ ] A frozen scene exports repeatedly with matching timing and composition.
-- [ ] Actual 1080p throughput is recorded.
-- [ ] v0.5 fallback scenes export through the same output path.
+- [x] Five seconds at 30 FPS produces exactly 150 frames.
+- [x] Duration is accurate within one frame.
+- [x] Failed exports never publish partial final files.
+- [!] A candidate scene exports repeatedly with matching timing and composition; the frozen-corpus repeat remains pending.
+- [x] Actual 1080p throughput is recorded for a synthetic and one photographic candidate.
+- [x] v0.5 fallback scenes export through the same output path.
 
 ### v0.6 checkpoint — Export-path decision
 
