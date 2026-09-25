@@ -1,3 +1,4 @@
+import { spawn } from "node:child_process";
 import { randomUUID } from "node:crypto";
 import {
   open,
@@ -8,6 +9,7 @@ import {
   writeFile,
   type FileHandle,
 } from "node:fs/promises";
+import { fileURLToPath } from "node:url";
 
 import { AnimationEngineError } from "@still-shift/scene-contract";
 
@@ -29,21 +31,50 @@ const exists = async (path: string): Promise<boolean> => {
   }
 };
 
-const processIsRunning = (pid: number): boolean => {
-  try {
-    process.kill(pid, 0);
-    return true;
-  } catch (error) {
-    return (error as NodeJS.ErrnoException).code !== "ESRCH";
-  }
-};
-
 const lockConflict = (outputDir: string) =>
   new AnimationEngineError(
     "RENDER_FAILED",
     "Batch output directory is already in use",
     { outputDir },
   );
+
+const removeStaleLock = async (
+  lockPath: string,
+  outputDir: string,
+): Promise<void> =>
+  new Promise((resolve, reject) => {
+    const helper = fileURLToPath(
+      new URL("./batch-lock-helper.py", import.meta.url),
+    );
+    const python = fileURLToPath(
+      new URL("../../../.venv/bin/python", import.meta.url),
+    );
+    const child = spawn(python, [helper, lockPath], {
+      stdio: ["ignore", "ignore", "pipe"],
+    });
+    let stderr = "";
+    child.stderr.on("data", (chunk: Buffer) => {
+      stderr = `${stderr}${chunk.toString()}`.slice(-2048);
+    });
+    child.once("error", reject);
+    child.once("close", (code, signal) => {
+      if (code === 0) resolve();
+      else if (code === 2) reject(lockConflict(outputDir));
+      else
+        reject(
+          new AnimationEngineError(
+            "RENDER_FAILED",
+            "Batch lock recovery failed",
+            {
+              outputDir,
+              code: code ?? "unknown",
+              signal: signal ?? "none",
+              stderr,
+            },
+          ),
+        );
+    });
+  });
 
 const releaseOwnedLock = async (
   lockPath: string,
@@ -70,46 +101,7 @@ export const acquireBatchLock = async (
       lock = await open(lockPath, "wx");
     } catch (error) {
       if ((error as NodeJS.ErrnoException).code !== "EEXIST") throw error;
-      let previous: string;
-      try {
-        previous = await readFile(lockPath, "utf8");
-      } catch (readError) {
-        if ((readError as NodeJS.ErrnoException).code === "ENOENT") continue;
-        throw readError;
-      }
-      let owner: LockOwner | null = null;
-      try {
-        owner = JSON.parse(previous) as LockOwner;
-      } catch {
-        // A writer may still be creating the lock file.
-      }
-      const validOwner =
-        owner &&
-        Number.isInteger(owner.pid) &&
-        owner.pid > 0 &&
-        typeof owner.token === "string";
-      if (owner && validOwner && processIsRunning(owner.pid))
-        throw lockConflict(outputDir);
-      if (!validOwner) {
-        let modifiedAt: number;
-        try {
-          modifiedAt = (await stat(lockPath)).mtimeMs;
-        } catch (statError) {
-          if ((statError as NodeJS.ErrnoException).code === "ENOENT") continue;
-          throw statError;
-        }
-        const ageMs = Date.now() - modifiedAt;
-        if (ageMs < 30_000) throw lockConflict(outputDir);
-      }
-      let current: string;
-      try {
-        current = await readFile(lockPath, "utf8");
-      } catch (readError) {
-        if ((readError as NodeJS.ErrnoException).code === "ENOENT") continue;
-        throw readError;
-      }
-      if (current !== previous) continue;
-      await rm(lockPath, { force: true });
+      await removeStaleLock(lockPath, outputDir);
       continue;
     }
 
