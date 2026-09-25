@@ -397,7 +397,7 @@ export class WebGLAnimationEngine implements AnimationEngine {
           ),
         );
       } catch {
-        scene = fallback2DScene(initialScene, "DEPTH_PREPARATION_FAILED");
+        scene = fallback2DScene(initialScene, "DEPTH_SAFETY_ANALYSIS_FAILED");
       }
     }
     scene = {

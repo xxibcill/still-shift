@@ -1,6 +1,14 @@
 import assert from "node:assert/strict";
 import { execFile } from "node:child_process";
-import { mkdtemp, readFile, realpath, rm, writeFile } from "node:fs/promises";
+import {
+  chmod,
+  mkdir,
+  mkdtemp,
+  readFile,
+  realpath,
+  rm,
+  writeFile,
+} from "node:fs/promises";
 import { createServer } from "node:net";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
@@ -19,6 +27,7 @@ const fixture = JSON.parse(
 const directory = await mkdtemp(join(tmpdir(), "still-shift-cli-test-"));
 const sourcePath = join(directory, "explainer-shot.png");
 const invalidProfilePath = join(directory, "invalid-profile.png");
+const ffmpegWrapperDirectory = join(directory, "ffmpeg-wrapper");
 const cliPath = resolve("node_modules/.bin/tsx");
 const cliScriptPath = resolve("tools/still-shift-cli/src/cli.ts");
 const environment = {
@@ -35,6 +44,7 @@ const runCli = async (
     cwd?: string;
     cacheDir?: string;
     viaPnpm?: boolean;
+    failSafetyAnalysis?: boolean;
   } = {},
 ) => {
   const args = [
@@ -66,11 +76,26 @@ const runCli = async (
       ...(options.adapter
         ? { STILL_SHIFT_DEPTH_ADAPTER: options.adapter }
         : {}),
+      ...(options.failSafetyAnalysis
+        ? {
+            PATH: `${ffmpegWrapperDirectory}:${process.env.PATH ?? ""}`,
+            STILL_SHIFT_TEST_FFMPEG_REAL: realFfmpegPath,
+          }
+        : {}),
     },
     maxBuffer: 4 * 1024 * 1024,
   });
   return AnimationResultSchema.parse(JSON.parse(stdout));
 };
+
+const realFfmpegPath = (await execFileAsync("which", ["ffmpeg"])).stdout.trim();
+await mkdir(ffmpegWrapperDirectory);
+const ffmpegWrapperPath = join(ffmpegWrapperDirectory, "ffmpeg");
+await writeFile(
+  ffmpegWrapperPath,
+  '#!/bin/sh\nfor arg in "$@"; do\n  if [ "$arg" = "pipe:1" ]; then exit 77; fi\ndone\nexec "$STILL_SHIFT_TEST_FFMPEG_REAL" "$@"\n',
+);
+await chmod(ffmpegWrapperPath, 0o755);
 
 const occupiedPort = createServer();
 const ownsPort = await new Promise<boolean>((accept, reject) => {
@@ -203,6 +228,32 @@ try {
     fallback.warnings.some(
       (warning) => warning.code === "SOURCE_NORMALIZATION_WARNING",
     ),
+  );
+
+  const analysisFallback = await runCli(
+    join(directory, "analysis-fallback.mp4"),
+    {
+      failSafetyAnalysis: true,
+    },
+  );
+  assert.equal(analysisFallback.status, "fallback_2d");
+  assert.equal(analysisFallback.metrics.versions.model?.adapter, "fake");
+  assert.ok(
+    analysisFallback.warnings.some(
+      (warning) => warning.code === "DEPTH_SAFETY_ANALYSIS_FAILED",
+    ),
+  );
+  assert.ok(
+    !analysisFallback.warnings.some(
+      (warning) => warning.code === "DEPTH_PREPARATION_FAILED",
+    ),
+  );
+  const analysisScene = SceneManifestSchema.parse(
+    JSON.parse(await readFile(analysisFallback.sceneManifestPath, "utf8")),
+  );
+  assert.equal(
+    analysisScene.renderScene?.quality?.fallbackReason,
+    "DEPTH_SAFETY_ANALYSIS_FAILED",
   );
 
   const missingOutput = join(directory, "missing.mp4");
