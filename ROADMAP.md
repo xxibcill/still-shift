@@ -267,7 +267,7 @@ If headless Chromium cannot approach the throughput target on the intended hardw
 ### Completion evidence
 
 - [!] No material mismatch was measured on five golden scenes; frozen-corpus comparison remains pending.
-- [x] Golden tests detect deliberate camera and shader regressions.
+- [x] Golden tests detect renderer changes and reversed or frozen frame motion.
 - [x] Repeated export checks remain deterministic.
 - [x] v0.6 throughput measurements remain available.
 

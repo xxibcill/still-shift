@@ -22,7 +22,7 @@ import {
   type PreviewScene,
 } from "./scene.ts";
 
-export const SHADER_VERSION = "depth-plane-0.4.0" as const;
+export const SHADER_VERSION = "depth-plane-0.5.0" as const;
 
 const vertexShader = `
 varying vec2 vUv;

@@ -164,6 +164,11 @@ try {
       };
     void _evaluatedFrame;
     rendererVersion = scene.rendererVersion;
+    assert.equal(
+      scene.motion.mode,
+      "depth",
+      `${golden.id} must use depth mode: ${JSON.stringify(scene.quality)}`,
+    );
     modes[golden.id] = scene.motion.mode;
     const frameIndices = [
       0,
