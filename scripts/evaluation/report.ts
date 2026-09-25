@@ -15,6 +15,7 @@ import {
 import { findCorpusIntegrityBlockers } from "../corpus-integrity.ts";
 import {
   AssemblyEvidenceSchema,
+  fileSha256,
   verifyAssemblyEvidence,
 } from "./assembly-evidence.ts";
 import { resolveDecision } from "./decision.ts";
@@ -138,12 +139,15 @@ const records = (await readFile(resultsPath, "utf8"))
 validateEvaluationRecords(corpus, records);
 for (const record of records) {
   if (!record.result) continue;
+  const normalizedSourcePath = record.result.assetPaths?.normalizedSource;
+  if (!normalizedSourcePath)
+    throw new Error(`Evaluation result has no normalized source: ${record.id}`);
   const scene = SceneManifestSchema.parse(
     JSON.parse(await readFile(record.result.sceneManifestPath, "utf8")),
   );
   validateEvaluationScene(
     scene,
-    record.result.checksums.source,
+    await fileSha256(normalizedSourcePath),
     record.result.selectedPreset,
   );
 }

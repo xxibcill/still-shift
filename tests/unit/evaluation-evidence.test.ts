@@ -31,6 +31,8 @@ const entry = JSON.parse(
 );
 const corpus = CorpusManifestSchema.parse({ ...manifest, entries: [entry] });
 const sourceHash = entry.source.sha256 as string;
+const normalizedSource = "normalized source bytes";
+const normalizedSourceHash = `sha256:${createHash("sha256").update(normalizedSource).digest("hex")}`;
 const execFileAsync = promisify(execFile);
 
 const renderColor = async (
@@ -135,21 +137,24 @@ describe("evaluation result identity", () => {
 describe("evaluation scene identity", () => {
   it("requires standard intensity for the requested source and preset", () => {
     const scene = {
-      sourceHash,
+      sourceHash: normalizedSourceHash,
       motion: { preset: "slow_push", intensity: "standard" },
     };
     expect(() =>
-      validateEvaluationScene(scene, sourceHash, "slow_push"),
+      validateEvaluationScene(scene, normalizedSourceHash, "slow_push"),
     ).not.toThrow();
+    expect(() =>
+      validateEvaluationScene(scene, sourceHash, "slow_push"),
+    ).toThrow("standard-intensity");
     expect(() =>
       validateEvaluationScene(
         { ...scene, motion: { ...scene.motion, intensity: "strong" } },
-        sourceHash,
+        normalizedSourceHash,
         "slow_push",
       ),
     ).toThrow("standard-intensity");
     expect(() =>
-      validateEvaluationScene(scene, sourceHash, "lateral_drift"),
+      validateEvaluationScene(scene, normalizedSourceHash, "lateral_drift"),
     ).toThrow("standard-intensity");
   });
 });
@@ -191,6 +196,10 @@ describe("independent render comparison", () => {
     try {
       const firstScenePath = join(directory, "first.scene.json");
       const secondScenePath = join(directory, "second.scene.json");
+      const firstNormalizedPath = join(directory, "first-source.png");
+      const secondNormalizedPath = join(directory, "second-source.png");
+      await writeFile(firstNormalizedPath, normalizedSource);
+      await writeFile(secondNormalizedPath, normalizedSource);
       const timeline = { durationMs: 5000, fps: 30, frameCount: 150 };
       const canvas = { width: 1920, height: 1080 };
       const renderScene = {
@@ -222,7 +231,7 @@ describe("independent render comparison", () => {
       };
       const scene = {
         schemaVersion: "0.1",
-        sourceHash,
+        sourceHash: normalizedSourceHash,
         pipelineVersion: "test-pipeline",
         rendererVersion: renderScene.rendererVersion,
         timeline,
@@ -262,6 +271,7 @@ describe("independent render comparison", () => {
           frameCount: 150,
           outputPath: firstOutputPath,
           sceneManifestPath: firstScenePath,
+          assetPaths: { normalizedSource: firstNormalizedPath, depth: null },
           selectedPreset: "slow_push" as const,
           status: "rendered" as const,
         },
@@ -277,6 +287,7 @@ describe("independent render comparison", () => {
           },
           outputPath: secondOutputPath,
           sceneManifestPath: secondScenePath,
+          assetPaths: { normalizedSource: secondNormalizedPath, depth: null },
         },
       };
       expect(await compareIndependentRenders([first], [second])).toBe(true);

@@ -165,11 +165,11 @@ export const validateEvaluationRecords = (
 
 export const validateEvaluationScene = (
   scene: { sourceHash: string; motion: { preset: string; intensity: string } },
-  sourceHash: string,
+  normalizedSourceHash: string,
   preset: string,
 ): void => {
   if (
-    scene.sourceHash !== sourceHash ||
+    scene.sourceHash !== normalizedSourceHash ||
     scene.motion.preset !== preset ||
     scene.motion.intensity !== "standard"
   )
@@ -206,6 +206,7 @@ type RenderComparisonRecord = {
     | Pick<
         AnimationResult,
         | "checksums"
+        | "assetPaths"
         | "durationMs"
         | "frameCount"
         | "outputPath"
@@ -228,7 +229,12 @@ export const compareIndependentRenders = async (
     const first = record.result;
     const other = repeatById.get(record.id);
     const second = other?.result;
-    if (!first || !second || other?.reused) return false;
+    if (
+      !first?.assetPaths?.normalizedSource ||
+      !second?.assetPaths?.normalizedSource ||
+      other?.reused
+    )
+      return false;
     if (
       first.outputPath === second.outputPath ||
       first.checksums.source !== second.checksums.source ||
@@ -248,8 +254,6 @@ export const compareIndependentRenders = async (
     if (
       !firstScene.renderScene ||
       !secondScene.renderScene ||
-      firstScene.sourceHash !== first.checksums.source ||
-      secondScene.sourceHash !== second.checksums.source ||
       !isDeepStrictEqual(firstScene.renderScene, secondScene.renderScene) ||
       !isDeepStrictEqual(firstScene.timeline, secondScene.timeline) ||
       !isDeepStrictEqual(firstScene.motion, secondScene.motion) ||
@@ -258,13 +262,19 @@ export const compareIndependentRenders = async (
       return false;
 
     try {
-      const [firstHash, secondHash] = await Promise.all([
-        fileSha256(first.outputPath),
-        fileSha256(second.outputPath),
-      ]);
+      const [firstHash, secondHash, firstNormalizedHash, secondNormalizedHash] =
+        await Promise.all([
+          fileSha256(first.outputPath),
+          fileSha256(second.outputPath),
+          fileSha256(first.assetPaths.normalizedSource),
+          fileSha256(second.assetPaths.normalizedSource),
+        ]);
       if (
         firstHash !== first.checksums.output ||
-        secondHash !== second.checksums.output
+        secondHash !== second.checksums.output ||
+        firstNormalizedHash !== firstScene.sourceHash ||
+        secondNormalizedHash !== secondScene.sourceHash ||
+        firstNormalizedHash !== secondNormalizedHash
       )
         return false;
       const [firstVideo, secondVideo] = await Promise.all([
