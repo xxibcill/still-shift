@@ -2,6 +2,7 @@ import { execFile, spawn } from "node:child_process";
 import { randomUUID } from "node:crypto";
 import {
   open,
+  readdir,
   readFile,
   rename,
   rm,
@@ -9,6 +10,7 @@ import {
   writeFile,
   type FileHandle,
 } from "node:fs/promises";
+import { basename, dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { promisify } from "node:util";
 
@@ -36,6 +38,26 @@ const exists = async (path: string): Promise<boolean> => {
   } catch (error) {
     if ((error as NodeJS.ErrnoException).code === "ENOENT") return false;
     throw error;
+  }
+};
+
+const exportTemporaryId =
+  /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
+const removeInterruptedExportTemps = async (
+  outputPath: string,
+): Promise<void> => {
+  const directory = dirname(outputPath);
+  const prefix = `.${basename(outputPath)}.`;
+  for (const entry of await readdir(directory, { withFileTypes: true })) {
+    if (!entry.isFile() || !entry.name.startsWith(prefix)) continue;
+    const suffix = [".tmp.mp4", ".scene.tmp.json"].find((candidate) =>
+      entry.name.endsWith(candidate),
+    );
+    if (!suffix) continue;
+    const id = entry.name.slice(prefix.length, -suffix.length);
+    if (exportTemporaryId.test(id))
+      await rm(join(directory, entry.name), { force: true });
   }
 };
 
@@ -154,6 +176,7 @@ export const prepareBatchItem = async (
       );
     await rm(progress.outputPath, { force: true });
     await rm(progress.sceneManifestPath, { force: true });
+    await removeInterruptedExportTemps(progress.outputPath);
     await rm(markerPath, { force: true });
   } else if (
     (await exists(progress.outputPath)) ||

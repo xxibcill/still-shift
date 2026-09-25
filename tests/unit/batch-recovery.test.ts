@@ -207,4 +207,38 @@ describe("batch interruption recovery", () => {
       await rm(directory, { recursive: true, force: true });
     }
   });
+
+  it("removes only temporary exports from the interrupted item", async () => {
+    const directory = await mkdtemp(join(tmpdir(), "still-shift-orphan-"));
+    try {
+      const outputPath = join(directory, "clip.mp4");
+      const markerPath = join(directory, "clip.in-progress.json");
+      const progress = {
+        requestHash: "request",
+        sourceHash: "source",
+        outputPath,
+        sceneManifestPath: `${outputPath}.scene.json`,
+      };
+      const uuid = "12345678-1234-1234-1234-123456789abc";
+      const orphanVideo = join(directory, `.clip.mp4.${uuid}.tmp.mp4`);
+      const orphanScene = join(directory, `.clip.mp4.${uuid}.scene.tmp.json`);
+      const otherVideo = join(directory, `.other.mp4.${uuid}.tmp.mp4`);
+      await writeFile(markerPath, JSON.stringify(progress));
+      await writeFile(orphanVideo, "partial video");
+      await writeFile(orphanScene, "partial scene");
+      await writeFile(otherVideo, "other item");
+
+      await prepareBatchItem(markerPath, progress);
+
+      await expect(readFile(orphanVideo)).rejects.toMatchObject({
+        code: "ENOENT",
+      });
+      await expect(readFile(orphanScene)).rejects.toMatchObject({
+        code: "ENOENT",
+      });
+      expect(await readFile(otherVideo, "utf8")).toBe("other item");
+    } finally {
+      await rm(directory, { recursive: true, force: true });
+    }
+  });
 });
