@@ -12,6 +12,7 @@ import { chromium, type Browser } from "playwright";
 import { createServer, type Plugin, type ViteDevServer } from "vite";
 
 import type { PreviewScene } from "../../../packages/renderer-core/src/scene.ts";
+import { assertNever, type FrameTransport } from "./transport.ts";
 
 const execFileAsync = promisify(execFile);
 const projectRoot = resolve(import.meta.dirname, "../../..");
@@ -23,7 +24,7 @@ export type ExportRequest = {
   depthPath: string | null;
   outputPath: string;
   encoder?: "libx264" | "h264_videotoolbox";
-  transport?: "raw_rgba" | "png_pipe" | "jpeg_pipe";
+  transport?: FrameTransport;
 };
 
 export type ExportMetrics = {
@@ -51,7 +52,7 @@ export type ExportMetrics = {
   gpuRenderer: string;
   ffmpegVersion: string;
   ffmpegCodec: string;
-  frameTransport: "raw_rgba" | "png_pipe" | "jpeg_pipe";
+  frameTransport: FrameTransport;
 };
 
 const codecArguments = (encoder: "libx264" | "h264_videotoolbox") => [
@@ -76,41 +77,63 @@ const codecArguments = (encoder: "libx264" | "h264_videotoolbox") => [
   "+faststart",
 ];
 
+const frameTransportArguments = (
+  scene: PreviewScene,
+  transport: FrameTransport,
+): { input: string[]; filter: string[] } => {
+  switch (transport) {
+    case "raw_rgba":
+      return {
+        input: [
+          "-f",
+          "rawvideo",
+          "-pixel_format",
+          "rgba",
+          "-video_size",
+          `${scene.canvas.width}x${scene.canvas.height}`,
+        ],
+        filter: ["-vf", "vflip"],
+      };
+    case "png_pipe":
+      return {
+        input: ["-f", "image2pipe", "-vcodec", "png"],
+        filter: [],
+      };
+    case "jpeg_pipe":
+      return {
+        input: ["-f", "image2pipe", "-vcodec", "mjpeg"],
+        filter: ["-vf", "scale=in_range=pc:out_range=tv,format=yuv420p"],
+      };
+    default:
+      return assertNever(transport);
+  }
+};
+
 const ffmpegArguments = (
   scene: PreviewScene,
   temporaryPath: string,
   encoder: "libx264" | "h264_videotoolbox",
-  transport: "raw_rgba" | "png_pipe" | "jpeg_pipe",
-) => [
-  "-hide_banner",
-  "-loglevel",
-  "info",
-  "-nostats",
-  "-benchmark",
-  "-f",
-  transport === "raw_rgba" ? "rawvideo" : "image2pipe",
-  ...(transport === "raw_rgba"
-    ? [
-        "-pixel_format",
-        "rgba",
-        "-video_size",
-        `${scene.canvas.width}x${scene.canvas.height}`,
-      ]
-    : ["-vcodec", transport === "png_pipe" ? "png" : "mjpeg"]),
-  "-framerate",
-  String(scene.timeline.fps),
-  "-i",
-  "pipe:0",
-  ...(transport === "raw_rgba"
-    ? ["-vf", "vflip"]
-    : transport === "jpeg_pipe"
-      ? ["-vf", "scale=in_range=pc:out_range=tv,format=yuv420p"]
-      : []),
-  "-an",
-  ...codecArguments(encoder),
-  "-y",
-  temporaryPath,
-];
+  transport: FrameTransport,
+) => {
+  const transportArguments = frameTransportArguments(scene, transport);
+  return [
+    "-hide_banner",
+    "-loglevel",
+    "info",
+    "-nostats",
+    "-benchmark",
+    ...transportArguments.input,
+    "-framerate",
+    String(scene.timeline.fps),
+    "-i",
+    "pipe:0",
+    ...transportArguments.filter,
+    "-an",
+    ...codecArguments(encoder),
+    "-y",
+    temporaryPath,
+  ];
+};
 
 const ffmpegCpuTimeMs = (output: string): number => {
   const benchmark = output.match(
