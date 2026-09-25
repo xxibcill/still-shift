@@ -33,6 +33,20 @@ const runManifest = async (line: string) => {
 };
 
 describe("batch exit status", () => {
+  it("rejects an invalid global frame transport before item processing", async () => {
+    const previous = process.env.STILL_SHIFT_FRAME_TRANSPORT;
+    process.env.STILL_SHIFT_FRAME_TRANSPORT = "invalid";
+    try {
+      await expect(
+        runManifest(JSON.stringify({ id: "shot", inputPath: "image.png" })),
+      ).rejects.toMatchObject({ code: "SCENE_INVALID" });
+    } finally {
+      if (previous === undefined)
+        delete process.env.STILL_SHIFT_FRAME_TRANSPORT;
+      else process.env.STILL_SHIFT_FRAME_TRANSPORT = previous;
+    }
+  });
+
   it("exits successfully after recording an item failure", async () => {
     const { outcome, records } = await runManifest(
       JSON.stringify({ id: "missing", inputPath: "missing.png" }),

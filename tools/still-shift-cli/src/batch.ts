@@ -330,6 +330,7 @@ export const runBatch = async (options: {
   outputDir: string;
   concurrency: number;
 }): Promise<{ summary: Record<string, unknown>; exitCode: number }> => {
+  resolveFrameTransport();
   if (
     !Number.isInteger(options.concurrency) ||
     options.concurrency < 1 ||
