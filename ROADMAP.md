@@ -315,7 +315,7 @@ If headless Chromium cannot approach the throughput target on the intended hardw
 ### Completion evidence
 
 - [!] A 50-item technical batch finishes unattended with 43 unique candidate images and seven repeats; the frozen representative 50-image gate remains pending.
-- [x] All 50 technical batch items rendered valid MP4s (100%, above the 98% threshold); frozen-corpus measurement remains pending.
+- [!] All 50 technical batch items rendered valid MP4s (100%); the 98% success gate on the frozen representative corpus remains unmeasured.
 - [x] Retrying the same manifest preserves timing and scene decisions; all 50 outputs were reused.
 - [x] Per-item failures do not prevent unrelated outputs.
 - [x] v0.8 single-image usage remains compatible.
