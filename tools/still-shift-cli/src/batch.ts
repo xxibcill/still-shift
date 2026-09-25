@@ -341,7 +341,7 @@ export const runBatch = async (options: {
   const jobs: Array<{ position: number; lineNumber: number; item: BatchItem }> =
     [];
   const records: Array<BatchRecord | undefined> = [];
-  const ids = new Set<string>();
+  const outputIds = new Set<string>();
   let invalidConfiguration = false;
   for (const [index, line] of lines.entries()) {
     if (!line.trim()) continue;
@@ -351,16 +351,17 @@ export const runBatch = async (options: {
     try {
       const item = parseItem(line, lineNumber);
       requestForItem(item, manifestPath, outputDir);
-      if (ids.has(item.id))
+      const outputId = item.id.toLowerCase();
+      if (outputIds.has(outputId))
         throw new AnimationEngineError(
           "SCENE_INVALID",
-          "Duplicate batch item id",
+          "Duplicate batch item id (case-insensitive)",
           {
             id: item.id,
             line: lineNumber,
           },
         );
-      ids.add(item.id);
+      outputIds.add(outputId);
       jobs.push({ position, lineNumber, item });
     } catch (error) {
       invalidConfiguration = true;

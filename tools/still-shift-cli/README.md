@@ -27,7 +27,7 @@ Exit code 0 means a complete result, including a valid 2D fallback. Exit code 2 
 
 ## Unattended batch
 
-Create a UTF-8 JSONL file with one object per line. IDs must be unique and use letters, digits, underscores, or hyphens (1–80 characters). Paths are resolved relative to the JSONL file. Blank lines are ignored.
+Create a UTF-8 JSONL file with one object per line. IDs must be unique regardless of letter case and use letters, digits, underscores, or hyphens (1–80 characters). Paths are resolved relative to the JSONL file. Blank lines are ignored.
 
 ```jsonl
 {"id":"shot-001","inputPath":"./stills/first.png","durationMs":5000,"preset":"auto","intensity":"standard","seed":1842}

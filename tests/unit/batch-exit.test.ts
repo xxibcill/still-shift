@@ -18,7 +18,14 @@ const runManifest = async (line: string) => {
     )
       .trim()
       .split("\n")
-      .map((record) => JSON.parse(record) as { status: string });
+      .map(
+        (record) =>
+          JSON.parse(record) as {
+            id: string;
+            status: string;
+            error?: { code: string };
+          },
+      );
     return { outcome, records };
   } finally {
     await rm(directory, { recursive: true, force: true });
@@ -50,5 +57,22 @@ describe("batch exit status", () => {
       expect(records).toHaveLength(1);
       expect(records[0]?.status).toBe("failed");
     }
+  });
+
+  it("rejects IDs that collide on case-insensitive filesystems", async () => {
+    const { outcome, records } = await runManifest(
+      [
+        { id: "A", inputPath: "missing.png" },
+        { id: "a", inputPath: "missing.png" },
+      ]
+        .map((item) => JSON.stringify(item))
+        .join("\n"),
+    );
+    expect(outcome.exitCode).toBe(2);
+    expect(records).toHaveLength(2);
+    expect(records[1]).toMatchObject({
+      id: "line-2",
+      error: { code: "SCENE_INVALID" },
+    });
   });
 });
