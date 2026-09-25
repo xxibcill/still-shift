@@ -10,9 +10,9 @@
 
 ## 1. Purpose and assumptions
 
-Prepare full-frame illustrated environments for eight camera templates. The camera discovers a subject or changes the viewer's relationship to a place. Keep the art's palette and drawn character consistent with History Offstage, using original schematic settings rather than selected episode sources.
+Prepare full-frame illustrated environments for nine camera templates. The camera discovers a subject or changes the viewer's relationship to a place. Keep the art's palette and drawn character consistent with History Offstage, using original schematic settings rather than selected episode sources.
 
-The current study has no supplied narration or episode shot IDs. CI-01 through CI-08 trace directly to the named proposals in the build plan. They are visual demonstrations, not dated historical reconstructions. Anonymous figures are static authored poses; no new anatomy or action is synthesized during animation.
+The current study has no supplied narration or episode shot IDs. CI-01 through CI-09 trace directly to the named proposals in the build plan. They are visual demonstrations, not dated historical reconstructions. Anonymous figures are static authored poses; no new anatomy or action is synthesized during animation.
 
 ## 2. Production defaults
 
@@ -49,8 +49,9 @@ No generated text, dates, numbers, arrows, borders, labeled diagrams, logos, fan
 | CI-06 | Transfer attention between subjects      | 7 s      | LAYERED   | D: room      | Soft alpha fringes and unreadable linework | All-sharp 2D reframing between subjects            |
 | CI-07 | Approach around foreground framing       | 7 s      | LAYERED   | B: courtyard | Camera implies unseen object geometry      | 2D curved crop with bounded scale                  |
 | CI-08 | Change spatial pressure around a subject | 7 s      | LAYERED   | D: room      | Subject drift or implausible plane scaling | Identified CI-01-style push; not a dolly-zoom pass |
+| CI-09 | Establish depth around a stable subject  | 7 s      | LAYERED   | B: courtyard | Hidden background and subject-anchor drift | Identified 2D crop; not a layered-parallax pass    |
 
-All eight need creative source review and AI preparation/QA. None is automatically ready for publication or a frozen benchmark. No LOCAL deformation is required. Large orbit, walking, changing expressions, and revealing the back of a figure are UNSUITABLE for these source packages.
+All nine need creative source review and AI preparation/QA. None is automatically ready for publication or a frozen benchmark. No LOCAL deformation is required. Large orbit, walking, changing expressions, and revealing the back of a figure are UNSUITABLE for these source packages.
 
 ## 4. Prompt cards
 
@@ -198,6 +199,24 @@ Show a quiet anonymous adult standing still near the center of a modest room, fu
 
 **Checks:** Measured subject bounds stay fixed while background landmarks change size; the frame never resembles stretched flat artwork; coverage remains valid. **Fallback:** Clearly identified bounded push, and keep the dolly-zoom template marked failed/experimental.
 
+### CI-09 — Layered Parallax
+
+**Intent:** A stationary subject feels situated in a scene with clear near and far depth. **Kit B.** **Risk:** Medium. Trace: the owner's explicit request to add parallax; CI-09 in the build plan. This is the first camera prototype to build.
+
+#### Master still-image prompt
+
+```text
+Create a 16:9 keyframe in an original visual system called Layered Chronicle Animation. Use expressive hand-drawn 2D forms arranged in shallow layered depth, strong readable silhouettes, varied charcoal contour lines, controlled halftone shadows, subtle screen-print grain, selective construction marks, and a slight two-color registration offset. The composition should feel like premium graphic animation: energetic, clearly illustrated, intentionally art-directed, and readable within five seconds. Use a controlled palette of warm bone, near-black charcoal, muted field green, grain ochre, and restrained dark red unless a clearly identified crisis variant is requested. Build three separable depth bands suitable for parallax. Leave intentional negative space for manually added typography. Do not generate final writing.
+
+Compose a quiet courtyard with three unmistakably separated distances. A substantial dark masonry edge frames the left foreground; a stationary anonymous adult stands fully visible at the middle-right with grounded feet and a compact contact shadow; a low-contrast wall, simple passage, and distant roofline form the background. Leave clear open floor between foreground framing and the figure. Keep the figure's silhouette away from the masonry, and show the whole body and both resting hands in a calm authored pose. Preserve the courtyard master when supplied. Use diffuse daylight, coherent scale, strong charcoal contours, and fixed print texture. Paint generous room beyond the intended view on every side, with continuous architecture and ground. Keep the figure within the central safe region. No walking, diagram layout, labels, arrows, thin railings, glass, intricate foliage, floating cloth, particles, decorative fog, photographic blur, or ornate historical claims. Feelings: present, grounded, observant. Render a single sharp still.
+```
+
+**Preparation:** Reuse kit B where its plate coverage permits this composition. Isolate the near masonry, complete figure/contact-shadow group, and a continuous courtyard background; keep extra middle architecture on its own plane only when useful. Paint every area hidden by the figure and masonry. Reassemble and inspect the original view before moving the camera.
+
+**Animation:** Establish 0–0.7 s; one shallow diagonal, subject-anchored camera sweep through 5.5 s; hold to 7 s. Near displacement 2–4% W, subject drift ≤0.5% W, far displacement 0.3–1% W; vertical travel ≤1% H. Keep focal scale constant and subject scale change ≤1%. Relative near/far direction follows the shared projection around the anchor. No random float, return loop, local deformation, or atmosphere overlay.
+
+**Checks:** Three distinct depth responses are visible at normal speed and 320×180; foreground displacement is at least twice background displacement at standard strength; feet/shadow remain attached; no hidden-area holes or matte edges appear. **Fallback:** Restrained 2D crop of the intact master, explicitly labelled as a fallback rather than a layered-parallax success.
+
 ## 5. Preparation and naming
 
 Proposed future output layout:
@@ -223,11 +242,12 @@ benchmarks/fixtures/cinematic-illustrated/
   ci-06-focus-handoff.json
   ci-07-curved-approach.json
   ci-08-dolly-zoom-tension.json
+  ci-09-layered-parallax.json
 ```
 
 This is a planned layout, not an existing contract or asset inventory. Each kit needs only its actual component files. Scene v2 serialization will be finalized during the shared camera implementation.
 
-Generate four masters first, then derive referenced components. Reuse each master for its paired template before requesting an alternate master. Every derivative must preserve the camera, palette, linework, object geometry, and original coordinate registration. State the precise object removal/isolation request in the execution prompt and record the exact prompt used.
+Generate four masters first, then derive referenced components. Reuse each master for its assigned templates before requesting an alternate master. Every derivative must preserve the camera, palette, linework, object geometry, and original coordinate registration. State the precise object removal/isolation request in the execution prompt and record the exact prompt used.
 
 For each kit record: actual dimensions, source hashes, transparent-alpha checks, layer registration, continuous painted bounds, protected subject area, generation/repair attempts, billed cost if available, active preparation time, and template reuse count. Unknown measurements remain explicit.
 
@@ -237,6 +257,6 @@ For each kit record: actual dimensions, source hashes, transparent-alpha checks,
 - Reassemble derived layers at rest and compare them with the master; repair duplicate silhouettes, matte edges, contact shadows, or missing room/terrain.
 - Inspect every planned camera endpoint and extremum before exporting. A clean source at frame zero does not prove later coverage.
 - The prompt cards specify complete plates for every lateral/vertical reveal and a 2D fallback for every layered treatment.
-- All eight have a distinct focal purpose, shot ID, source prompt, movement bounds, preparation steps, and failure criteria. No card asks a still generator to create temporal action.
-- After technical QA, deliver one 56-second reel with clean images and optional individual replays. CI-06 and CI-08 retain explicit experimental status until their visual risks pass.
+- All nine have a distinct focal purpose, shot ID, source prompt, movement bounds, preparation steps, and failure criteria. No card asks a still generator to create temporal action.
+- After technical QA, deliver one 63-second reel with clean images and optional individual replays. CI-06 and CI-08 retain explicit experimental status until their visual risks pass.
 - These assets remain separate from the retired 43-image set and any future frozen Phase 0 corpus.
