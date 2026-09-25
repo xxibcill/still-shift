@@ -101,6 +101,10 @@ try {
   assert.equal(firstResult.frameCount, 90);
   assert.equal(secondResult.frameCount, 90);
   assert.notEqual(firstResult.selectedPreset, secondResult.selectedPreset);
+  await writeFile(
+    join(outputDir, ".batch.lock"),
+    JSON.stringify({ pid: 2147483647, token: "interrupted-run" }),
+  );
   const retry = await runBatch();
   assert.equal(retry.exitCode, 1);
   assert.equal(retry.summary.reused, 2);
@@ -119,6 +123,27 @@ try {
   assert.deepEqual(repeated[2].result, records[2].result);
   assert.equal(repeated[0].reused, true);
   assert.equal(repeated[2].reused, true);
+  await rm(join(outputDir, ".batch-checkpoints", "second.json"));
+  await writeFile(
+    join(outputDir, ".batch-checkpoints", "second.in-progress.json"),
+    JSON.stringify({
+      requestHash: repeated[2].requestHash,
+      sourceHash: secondResult.checksums.source,
+      outputPath: secondResult.outputPath,
+      sceneManifestPath: secondResult.sceneManifestPath,
+    }),
+  );
+  const resumed = await runBatch();
+  assert.equal(resumed.exitCode, 1);
+  assert.equal(resumed.summary.reused, 1);
+  const resumedRecords = (
+    await readFile(join(outputDir, "batch-results.jsonl"), "utf8")
+  )
+    .trim()
+    .split("\n")
+    .map((line) => JSON.parse(line));
+  assert.equal(resumedRecords[2].status, secondResult.status);
+  assert.equal(resumedRecords[2].reused, false);
   await writeFile(firstResult.outputPath, "tampered output");
   const damaged = await runBatch();
   assert.equal(damaged.exitCode, 1);

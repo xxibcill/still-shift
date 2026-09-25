@@ -1,5 +1,5 @@
 import { createHash, randomUUID } from "node:crypto";
-import { readFile, mkdir, open, rename, rm, writeFile } from "node:fs/promises";
+import { readFile, mkdir, rename, rm, writeFile } from "node:fs/promises";
 import { dirname, join, resolve } from "node:path";
 import { performance } from "node:perf_hooks";
 
@@ -19,6 +19,7 @@ import {
   type AnimationResult,
 } from "@still-shift/scene-contract";
 import { hashBatchArtifacts } from "./batch-identity.ts";
+import { acquireBatchLock, prepareBatchItem } from "./batch-recovery.ts";
 
 type BatchItem = {
   id: string;
@@ -237,12 +238,18 @@ const runItem = async (
       ".batch-checkpoints",
       `${item.id}.json`,
     );
+    const progressPath = join(
+      outputDir,
+      ".batch-checkpoints",
+      `${item.id}.in-progress.json`,
+    );
     const previous = await checkpointResult(
       checkpointPath,
       requestHash,
       request,
     );
-    if (previous)
+    if (previous) {
+      await rm(progressPath, { force: true });
       return {
         line,
         id: item.id,
@@ -252,11 +259,31 @@ const runItem = async (
         status: previous.status,
         result: previous,
       };
+    }
+    let sourceHash: string;
+    try {
+      sourceHash = await fileHash(request.inputPath);
+    } catch {
+      throw new AnimationEngineError(
+        "INPUT_UNREADABLE",
+        "Unable to read animation input",
+        {
+          inputPath: request.inputPath,
+        },
+      );
+    }
+    await prepareBatchItem(progressPath, {
+      requestHash,
+      sourceHash,
+      outputPath: request.outputPath,
+      sceneManifestPath: `${request.outputPath}.scene.json`,
+    });
     const result = await new WebGLAnimationEngine().animate(request);
     await atomicJson(checkpointPath, {
       requestHash,
       result,
     } satisfies Checkpoint);
+    await rm(progressPath, { force: true });
     return {
       line,
       id: item.id,
@@ -339,19 +366,7 @@ export const runBatch = async (options: {
     );
   await mkdir(join(outputDir, ".batch-checkpoints"), { recursive: true });
   const lockPath = join(outputDir, ".batch.lock");
-  let lock;
-  try {
-    lock = await open(lockPath, "wx");
-  } catch (error) {
-    if ((error as NodeJS.ErrnoException).code !== "EEXIST") throw error;
-    throw new AnimationEngineError(
-      "RENDER_FAILED",
-      "Batch output directory is already in use",
-      {
-        outputDir,
-      },
-    );
-  }
+  const releaseLock = await acquireBatchLock(lockPath, outputDir);
   const started = performance.now();
   try {
     let cursor = 0;
@@ -423,7 +438,6 @@ export const runBatch = async (options: {
     }
     return { summary, exitCode: failed ? 1 : 0 };
   } finally {
-    await lock.close();
-    await rm(lockPath, { force: true });
+    await releaseLock();
   }
 };
