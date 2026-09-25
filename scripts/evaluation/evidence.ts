@@ -65,6 +65,21 @@ export const validateEvaluationRecords = (
   }
 };
 
+export const validateEvaluationScene = (
+  scene: { sourceHash: string; motion: { preset: string; intensity: string } },
+  sourceHash: string,
+  preset: string,
+): void => {
+  if (
+    scene.sourceHash !== sourceHash ||
+    scene.motion.preset !== preset ||
+    scene.motion.intensity !== "standard"
+  )
+    throw new Error(
+      "Evaluation scene does not match the standard-intensity request",
+    );
+};
+
 export const verifyAssemblyClip = async (
   result: Pick<AnimationResult, "checksums" | "outputPath" | "selectedPreset">,
   sourceHash: string,

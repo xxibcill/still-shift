@@ -10,6 +10,7 @@ import { describe, expect, it } from "vitest";
 import {
   compareIndependentRenders,
   validateEvaluationRecords,
+  validateEvaluationScene,
   verifyAssemblyClip,
   type EvaluationRecord,
 } from "../../scripts/evaluation/evidence.ts";
@@ -62,6 +63,28 @@ describe("evaluation result identity", () => {
     expect(() => validateEvaluationRecords(corpus, other)).toThrow(
       "duplicate evaluation ID",
     );
+  });
+});
+
+describe("evaluation scene identity", () => {
+  it("requires standard intensity for the requested source and preset", () => {
+    const scene = {
+      sourceHash,
+      motion: { preset: "slow_push", intensity: "standard" },
+    };
+    expect(() =>
+      validateEvaluationScene(scene, sourceHash, "slow_push"),
+    ).not.toThrow();
+    expect(() =>
+      validateEvaluationScene(
+        { ...scene, motion: { ...scene.motion, intensity: "strong" } },
+        sourceHash,
+        "slow_push",
+      ),
+    ).toThrow("standard-intensity");
+    expect(() =>
+      validateEvaluationScene(scene, sourceHash, "lateral_drift"),
+    ).toThrow("standard-intensity");
   });
 });
 

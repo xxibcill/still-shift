@@ -17,6 +17,7 @@ import { resolveDecision } from "./decision.ts";
 import {
   compareIndependentRenders,
   validateEvaluationRecords,
+  validateEvaluationScene,
 } from "./evidence.ts";
 import { RATING_FIELDS, RatingsExportSchema } from "./ratings.ts";
 
@@ -120,6 +121,17 @@ const records = (await readFile(resultsPath, "utf8"))
       : undefined,
   }));
 validateEvaluationRecords(corpus, records);
+for (const record of records) {
+  if (!record.result) continue;
+  const scene = SceneManifestSchema.parse(
+    JSON.parse(await readFile(record.result.sceneManifestPath, "utf8")),
+  );
+  validateEvaluationScene(
+    scene,
+    record.result.checksums.source,
+    record.result.selectedPreset,
+  );
+}
 const results: AnimationResult[] = records
   .filter((record) => record.result)
   .map((record) => record.result!);
