@@ -9,6 +9,7 @@ export const hashBatchRequest = (
   request: AnimationRequest,
   frameTransport: "png_pipe" | "jpeg_pipe",
   depthAdapter: string,
+  requestedDepthDevice = "auto",
 ): string =>
   `sha256:${createHash("sha256")
     .update(
@@ -16,6 +17,7 @@ export const hashBatchRequest = (
         engineVersion: ENGINE_VERSION,
         ...(frameTransport === "png_pipe" ? {} : { frameTransport }),
         depthAdapter,
+        ...(requestedDepthDevice === "auto" ? {} : { requestedDepthDevice }),
         request,
       }),
     )

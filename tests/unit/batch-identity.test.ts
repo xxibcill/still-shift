@@ -38,6 +38,12 @@ describe("batch evidence identity", () => {
     expect(hashBatchRequest(request, "png_pipe", "fake")).toBe(
       hashBatchRequest(request, "png_pipe", "fake"),
     );
+    expect(hashBatchRequest(request, "png_pipe", "fake")).toBe(
+      hashBatchRequest(request, "png_pipe", "fake", "auto"),
+    );
+    expect(hashBatchRequest(request, "png_pipe", "fake", "cpu")).not.toBe(
+      hashBatchRequest(request, "png_pipe", "fake", "mps"),
+    );
   });
 
   it("keeps retry identity but changes when source or output changes", () => {

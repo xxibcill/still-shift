@@ -247,6 +247,7 @@ const runItem = async (
       request,
       frameTransport,
       resolveDepthAdapter(),
+      process.env.STILL_SHIFT_DEPTH_DEVICE ?? "auto",
     );
     const checkpointPath = join(
       outputDir,
