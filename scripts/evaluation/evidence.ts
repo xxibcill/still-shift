@@ -1,15 +1,91 @@
 import { createHash } from "node:crypto";
+import { execFile, spawn } from "node:child_process";
 import { createReadStream } from "node:fs";
 import { readFile } from "node:fs/promises";
-import { isDeepStrictEqual } from "node:util";
+import { isDeepStrictEqual, promisify } from "node:util";
 
 import {
   SceneManifestSchema,
   type AnimationResult,
   type CorpusManifest,
 } from "@still-shift/scene-contract";
+import { compareFrameSamples } from "../../packages/renderer-core/src/parity.ts";
 
+import { fileSha256 } from "./assembly-evidence.ts";
 import { EVALUATION_PRESETS, evaluationClipId } from "./presets.ts";
+
+const sampleWidth = 64;
+const sampleHeight = 36;
+const execFileAsync = promisify(execFile);
+
+const probeVideo = async (path: string) => {
+  const probe = JSON.parse(
+    (
+      await execFileAsync("ffprobe", [
+        "-v",
+        "error",
+        "-count_frames",
+        "-select_streams",
+        "v:0",
+        "-show_entries",
+        "stream=nb_read_frames,r_frame_rate",
+        "-show_entries",
+        "format=duration",
+        "-of",
+        "json",
+        path,
+      ])
+    ).stdout,
+  ) as {
+    streams: Array<{ nb_read_frames?: string; r_frame_rate?: string }>;
+    format: { duration?: string };
+  };
+  return {
+    frameCount: Number(probe.streams[0]?.nb_read_frames),
+    frameRate: probe.streams[0]?.r_frame_rate,
+    durationMs: Number(probe.format.duration) * 1000,
+  };
+};
+
+const frameSample = async (path: string, frameIndex: number) => {
+  const process = spawn(
+    "ffmpeg",
+    [
+      "-v",
+      "error",
+      "-i",
+      path,
+      "-vf",
+      `select=eq(n\\,${frameIndex}),scale=${sampleWidth}:${sampleHeight}:flags=bicubic`,
+      "-fps_mode",
+      "vfr",
+      "-frames:v",
+      "1",
+      "-f",
+      "rawvideo",
+      "-pix_fmt",
+      "rgb24",
+      "pipe:1",
+    ],
+    { stdio: ["ignore", "pipe", "pipe"] },
+  );
+  const output: Buffer[] = [];
+  const errors: Buffer[] = [];
+  process.stdout.on("data", (chunk: Buffer) => output.push(chunk));
+  process.stderr.on("data", (chunk: Buffer) => errors.push(chunk));
+  await new Promise<void>((resolve, reject) => {
+    process.on("error", reject);
+    process.on("close", (code) =>
+      code === 0
+        ? resolve()
+        : reject(new Error(Buffer.concat(errors).toString())),
+    );
+  });
+  const pixels = Buffer.concat(output);
+  if (pixels.length !== sampleWidth * sampleHeight * 3)
+    throw new Error(`Unable to decode frame ${frameIndex} from ${path}`);
+  return pixels;
+};
 
 export type EvaluationRecord = {
   id: string;
@@ -158,6 +234,55 @@ export const compareIndependentRenders = async (
       !isDeepStrictEqual(firstScene.quality, secondScene.quality)
     )
       return false;
+
+    try {
+      const [firstHash, secondHash] = await Promise.all([
+        fileSha256(first.outputPath),
+        fileSha256(second.outputPath),
+      ]);
+      if (
+        firstHash !== first.checksums.output ||
+        secondHash !== second.checksums.output
+      )
+        return false;
+      const [firstVideo, secondVideo] = await Promise.all([
+        probeVideo(first.outputPath),
+        probeVideo(second.outputPath),
+      ]);
+      if (
+        [firstVideo, secondVideo].some(
+          (video) =>
+            video.frameCount !== first.frameCount ||
+            video.frameRate !== `${firstScene.timeline.fps}/1` ||
+            Math.abs(video.durationMs - first.durationMs) >
+              1000 / firstScene.timeline.fps,
+        )
+      )
+        return false;
+      if (firstHash === secondHash) continue;
+
+      for (const frameIndex of [
+        0,
+        Math.floor(first.frameCount / 2),
+        first.frameCount - 1,
+      ]) {
+        const [firstFrame, secondFrame] = await Promise.all([
+          frameSample(first.outputPath, frameIndex),
+          frameSample(second.outputPath, frameIndex),
+        ]);
+        if (
+          compareFrameSamples(
+            firstFrame,
+            secondFrame,
+            sampleWidth,
+            sampleHeight,
+          ).warning
+        )
+          return false;
+      }
+    } catch {
+      return false;
+    }
   }
   return true;
 };

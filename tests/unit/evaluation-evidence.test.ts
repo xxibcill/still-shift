@@ -1,12 +1,15 @@
+import { execFile } from "node:child_process";
 import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
 import { mkdtemp, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
+import { promisify } from "node:util";
 
 import { CorpusManifestSchema } from "@still-shift/scene-contract";
 import { describe, expect, it } from "vitest";
 
+import { fileSha256 } from "../../scripts/evaluation/assembly-evidence.ts";
 import {
   compareIndependentRenders,
   validateEvaluationRecords,
@@ -27,6 +30,27 @@ const entry = JSON.parse(
 );
 const corpus = CorpusManifestSchema.parse({ ...manifest, entries: [entry] });
 const sourceHash = entry.source.sha256 as string;
+const execFileAsync = promisify(execFile);
+
+const renderColor = async (path: string, color: string) => {
+  await execFileAsync("ffmpeg", [
+    "-hide_banner",
+    "-loglevel",
+    "error",
+    "-f",
+    "lavfi",
+    "-i",
+    `color=c=${color}:s=64x36:r=30`,
+    "-frames:v",
+    "150",
+    "-c:v",
+    "libx264",
+    "-pix_fmt",
+    "yuv420p",
+    "-y",
+    path,
+  ]);
+};
 
 const records = (): EvaluationRecord[] =>
   EVALUATION_PRESETS.map((preset) => ({
@@ -179,6 +203,10 @@ describe("independent render comparison", () => {
       };
       await writeFile(firstScenePath, JSON.stringify(scene));
       await writeFile(secondScenePath, JSON.stringify(scene));
+      const firstOutputPath = join(directory, "first.mp4");
+      const secondOutputPath = join(directory, "second.mp4");
+      await renderColor(firstOutputPath, "black");
+      await renderColor(secondOutputPath, "black");
       const first = {
         id: "fixture-portrait-001-slow-push",
         reused: true,
@@ -186,11 +214,11 @@ describe("independent render comparison", () => {
           checksums: {
             source: sourceHash,
             scene: `sha256:${"b".repeat(64)}`,
-            output: `sha256:${"c".repeat(64)}`,
+            output: await fileSha256(firstOutputPath),
           },
           durationMs: 5000,
           frameCount: 150,
-          outputPath: join(directory, "first.mp4"),
+          outputPath: firstOutputPath,
           sceneManifestPath: firstScenePath,
           selectedPreset: "slow_push" as const,
           status: "rendered" as const,
@@ -201,7 +229,11 @@ describe("independent render comparison", () => {
         reused: false,
         result: {
           ...first.result,
-          outputPath: join(directory, "second.mp4"),
+          checksums: {
+            ...first.result.checksums,
+            output: await fileSha256(secondOutputPath),
+          },
+          outputPath: secondOutputPath,
           sceneManifestPath: secondScenePath,
         },
       };
@@ -220,6 +252,25 @@ describe("independent render comparison", () => {
       expect(
         await compareIndependentRenders([first], [{ ...second, reused: true }]),
       ).toBe(false);
+      await writeFile(secondScenePath, JSON.stringify(scene));
+      await renderColor(secondOutputPath, "white");
+      const changedVideo = {
+        ...second,
+        result: {
+          ...second.result,
+          checksums: {
+            ...second.result.checksums,
+            output: await fileSha256(secondOutputPath),
+          },
+        },
+      };
+      expect(await compareIndependentRenders([first], [changedVideo])).toBe(
+        false,
+      );
+      await rm(secondOutputPath);
+      expect(await compareIndependentRenders([first], [changedVideo])).toBe(
+        false,
+      );
     } finally {
       await rm(directory, { recursive: true, force: true });
     }
