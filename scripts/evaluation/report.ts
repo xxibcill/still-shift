@@ -243,13 +243,18 @@ const scene = results[0]
       JSON.parse(await readFile(results[0].sceneManifestPath, "utf8")),
     )
   : null;
+const depthPath = results[0]?.assetPaths?.depth;
+if (
+  scene?.depth &&
+  (!depthPath ||
+    scene.depth.asset !== results[0]?.checksums.depth ||
+    (await fileSha256(depthPath)) !== scene.depth.asset)
+)
+  throw new Error("Evaluation depth asset does not match its scene checksum");
 const model = scene?.depth
   ? (
       JSON.parse(
-        await readFile(
-          join(dirname(scene.depth.asset), "manifest.json"),
-          "utf8",
-        ),
+        await readFile(join(dirname(depthPath!), "manifest.json"), "utf8"),
       ) as { model?: unknown }
     ).model
   : null;
@@ -260,11 +265,15 @@ for (const result of results) {
     JSON.parse(await readFile(result.sceneManifestPath, "utf8")),
   );
   if (!itemScene.depth) continue;
+  const itemDepthPath = result.assetPaths?.depth;
+  if (
+    !itemDepthPath ||
+    itemScene.depth.asset !== result.checksums.depth ||
+    (await fileSha256(itemDepthPath)) !== itemScene.depth.asset
+  )
+    throw new Error("Evaluation depth asset does not match its scene checksum");
   const preparation = JSON.parse(
-    await readFile(
-      join(dirname(itemScene.depth.asset), "manifest.json"),
-      "utf8",
-    ),
+    await readFile(join(dirname(itemDepthPath), "manifest.json"), "utf8"),
   ) as { metrics?: { totalPreparationMs?: number } };
   const elapsed = preparation.metrics?.totalPreparationMs;
   if (typeof elapsed === "number" && Number.isFinite(elapsed))
