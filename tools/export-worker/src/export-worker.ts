@@ -1,6 +1,6 @@
 import { spawn, execFile } from "node:child_process";
 import { createReadStream } from "node:fs";
-import { link, mkdir, rm, stat } from "node:fs/promises";
+import { link, mkdir, rm, stat, writeFile } from "node:fs/promises";
 import type { IncomingMessage, ServerResponse } from "node:http";
 import { availableParallelism, cpus } from "node:os";
 import { basename, dirname, extname, resolve } from "node:path";
@@ -29,6 +29,10 @@ export type ExportRequest = {
 
 export type ExportMetrics = {
   version: typeof EXPORT_WORKER_VERSION;
+  sceneManifestPath: string;
+  sceneChecksum: string;
+  sourceChecksum: string;
+  depthChecksum: string | null;
   frameCount: number;
   width: number;
   height: number;
@@ -53,6 +57,13 @@ export type ExportMetrics = {
   ffmpegVersion: string;
   ffmpegCodec: string;
   frameTransport: FrameTransport;
+};
+
+export type ExportSceneManifest = {
+  schemaVersion: "0.6";
+  sourceChecksum: string;
+  depthChecksum: string | null;
+  scene: PreviewScene;
 };
 
 const codecArguments = (encoder: "libx264" | "h264_videotoolbox") => [
@@ -148,6 +159,9 @@ const fileChecksum = async (path: string): Promise<string> => {
   for await (const chunk of createReadStream(path)) hash.update(chunk);
   return `sha256:${hash.digest("hex")}`;
 };
+
+const contentChecksum = (content: string): string =>
+  `sha256:${createHash("sha256").update(content).digest("hex")}`;
 
 export const processTreeRssBytes = (
   processList: string,
@@ -364,16 +378,27 @@ export const exportScene = async (
   if (scene.motion.mode === "depth" && !request.depthPath)
     throw new Error("Depth motion requires a depth image");
   const outputPath = resolve(request.outputPath);
+  const sceneManifestPath = `${outputPath}.scene.json`;
+  const exportId = randomUUID();
   const temporaryPath = resolve(
     dirname(outputPath),
-    `.${basename(outputPath)}.${randomUUID()}.tmp.mp4`,
+    `.${basename(outputPath)}.${exportId}.tmp.mp4`,
+  );
+  const temporaryScenePath = resolve(
+    dirname(outputPath),
+    `.${basename(outputPath)}.${exportId}.scene.tmp.json`,
   );
   await mkdir(dirname(outputPath), { recursive: true });
-  try {
-    await stat(outputPath);
-    throw new Error("Output already exists");
-  } catch (error) {
-    if ((error as NodeJS.ErrnoException).code !== "ENOENT") throw error;
+  for (const [path, label] of [
+    [outputPath, "Output"],
+    [sceneManifestPath, "Scene manifest"],
+  ] as const) {
+    try {
+      await stat(path);
+      throw new Error(`${label} already exists`);
+    } catch (error) {
+      if ((error as NodeJS.ErrnoException).code !== "ENOENT") throw error;
+    }
   }
   const ffmpegVersion = (
     await execFileAsync("ffmpeg", ["-version"])
@@ -412,7 +437,7 @@ export const exportScene = async (
   let peakSampledProcessTreeRssBytes: number | null = null;
   let memorySample: Promise<void> | null = null;
   let published = false;
-  let failed = false;
+  let scenePublished = false;
   const sampleMemory = (): Promise<void> => {
     if (memorySample) return memorySample;
     memorySample = (async () => {
@@ -467,8 +492,25 @@ export const exportScene = async (
     const validationWallMs = performance.now() - validationStart;
     const outputBytes = (await stat(temporaryPath)).size;
     const outputChecksum = await fileChecksum(temporaryPath);
+    const sourceChecksum = await fileChecksum(request.sourcePath);
+    const depthChecksum = request.depthPath
+      ? await fileChecksum(request.depthPath)
+      : null;
+    const sceneManifest: ExportSceneManifest = {
+      schemaVersion: "0.6",
+      sourceChecksum,
+      depthChecksum,
+      scene,
+    };
+    const serializedScene = `${JSON.stringify(sceneManifest, null, 2)}\n`;
+    const sceneChecksum = contentChecksum(serializedScene);
+    await writeFile(temporaryScenePath, serializedScene, { flag: "wx" });
     const metrics: ExportMetrics = {
       version: EXPORT_WORKER_VERSION,
+      sceneManifestPath,
+      sceneChecksum,
+      sourceChecksum,
+      depthChecksum,
       frameCount: scene.timeline.frameCount,
       width: scene.canvas.width,
       height: scene.canvas.height,
@@ -500,11 +542,12 @@ export const exportScene = async (
     browser = undefined;
     await server.close();
     server = undefined;
+    await link(temporaryScenePath, sceneManifestPath);
+    scenePublished = true;
     await link(temporaryPath, outputPath);
     published = true;
     return metrics;
   } catch (error) {
-    failed = true;
     encoder.kill("SIGKILL");
     throw error;
   } finally {
@@ -514,12 +557,15 @@ export const exportScene = async (
       published ? null : browser?.close(),
       published ? null : server?.close(),
       rm(temporaryPath, { force: true }),
+      rm(temporaryScenePath, { force: true }),
+      scenePublished && !published
+        ? rm(sceneManifestPath, { force: true })
+        : null,
     ]);
     const cleanupErrors = cleanup.flatMap((result) =>
       result.status === "rejected" ? [result.reason] : [],
     );
     if (cleanupErrors.length > 0) {
-      if (!published && !failed) throw cleanupErrors[0];
       for (const error of cleanupErrors) {
         process.stderr.write(`Export cleanup failed: ${String(error)}\n`);
       }

@@ -59,6 +59,30 @@ try {
   });
   assert.equal(first.frameCount, 90);
   assert.equal(first.durationMs, 3000);
+  assert.equal(first.sceneManifestPath, `${firstPath}.scene.json`);
+  assert.equal(
+    first.sourceChecksum,
+    `sha256:${createHash("sha256")
+      .update(await readFile(sourcePath))
+      .digest("hex")}`,
+  );
+  assert.equal(
+    first.depthChecksum,
+    `sha256:${createHash("sha256")
+      .update(await readFile(depthPath))
+      .digest("hex")}`,
+  );
+  const firstScene = await readFile(first.sceneManifestPath, "utf8");
+  assert.deepEqual(JSON.parse(firstScene), {
+    schemaVersion: "0.6",
+    sourceChecksum: first.sourceChecksum,
+    depthChecksum: first.depthChecksum,
+    scene,
+  });
+  assert.equal(
+    first.sceneChecksum,
+    `sha256:${createHash("sha256").update(firstScene).digest("hex")}`,
+  );
   assert.ok(first.outputBytes > 0);
   assert.ok(first.frameUploadAverageMs > 0);
   assert.ok(first.frameUploadP95Ms > 0);
@@ -91,6 +115,7 @@ try {
     await readFile(join(directory, "second.mp4")),
     await readFile(firstPath),
   );
+  assert.equal(await readFile(second.sceneManifestPath, "utf8"), firstScene);
 
   const raw = await exportScene({
     scene,
@@ -124,6 +149,7 @@ try {
   });
   assert.equal(fallbackMetrics.frameCount, 90);
   assert.ok(fallbackMetrics.outputBytes > 0);
+  assert.equal(fallbackMetrics.depthChecksum, null);
 
   const missingOutput = join(directory, "missing.mp4");
   await assert.rejects(
@@ -135,6 +161,9 @@ try {
     }),
   );
   await assert.rejects(readFile(missingOutput), { code: "ENOENT" });
+  await assert.rejects(readFile(`${missingOutput}.scene.json`), {
+    code: "ENOENT",
+  });
   const existingPath = join(directory, "existing.mp4");
   await writeFile(existingPath, "existing output");
   await assert.rejects(
@@ -142,9 +171,28 @@ try {
     /Output already exists/,
   );
   assert.equal(await readFile(existingPath, "utf8"), "existing output");
+  await assert.rejects(readFile(`${existingPath}.scene.json`), {
+    code: "ENOENT",
+  });
+  const existingManifestOutput = join(directory, "existing-manifest.mp4");
+  const existingManifestPath = `${existingManifestOutput}.scene.json`;
+  await writeFile(existingManifestPath, "existing manifest");
+  await assert.rejects(
+    exportScene({
+      scene,
+      sourcePath,
+      depthPath,
+      outputPath: existingManifestOutput,
+    }),
+    /Scene manifest already exists/,
+  );
   assert.equal(
-    (await readdir(directory)).filter((path) => path.includes(".tmp.mp4"))
-      .length,
+    await readFile(existingManifestPath, "utf8"),
+    "existing manifest",
+  );
+  await assert.rejects(readFile(existingManifestOutput), { code: "ENOENT" });
+  assert.equal(
+    (await readdir(directory)).filter((path) => path.includes(".tmp.")).length,
     0,
   );
   process.stdout.write(
