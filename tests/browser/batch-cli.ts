@@ -189,6 +189,21 @@ try {
   const repairedItem = await runBatch(repairManifestPath, repairOutputDir);
   assert.equal(repairedItem.summary.successful, 1);
   assert.equal(repairedItem.summary.failed, 0);
+  const repairedRecord = JSON.parse(
+    (
+      await readFile(join(repairOutputDir, "batch-results.jsonl"), "utf8")
+    ).trim(),
+  ) as { result: { assetPaths: { depth: string | null } } };
+  assert.ok(repairedRecord.result.assetPaths.depth);
+  await rm(repairedRecord.result.assetPaths.depth);
+  const missingCacheAsset = await runBatch(repairManifestPath, repairOutputDir);
+  assert.equal(missingCacheAsset.summary.successful, 0);
+  const missingCacheRecord = JSON.parse(
+    (
+      await readFile(join(repairOutputDir, "batch-results.jsonl"), "utf8")
+    ).trim(),
+  ) as { error: { code: string } };
+  assert.equal(missingCacheRecord.error.code, "OUTPUT_VALIDATION_FAILED");
   process.stdout.write(
     "Batch CLI verified: bounded workers, failure isolation, deterministic retries, artifact validation, and repaired-item recovery\n",
   );

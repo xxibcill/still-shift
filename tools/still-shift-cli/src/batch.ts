@@ -13,6 +13,7 @@ import {
   AnimationResultSchema,
   ENGINE_VERSION,
   parseAnimationRequest,
+  SceneManifestSchema,
   V0_1_REQUEST_CONSTRAINTS,
   V0_1_REQUEST_DEFAULTS,
   type AnimationFailure,
@@ -171,18 +172,33 @@ const checkpointResult = async (
     );
   }
   let hashesMatch = false;
+  let assetsMatch = false;
   try {
     hashesMatch =
       result.checksums.source === (await fileHash(request.inputPath)) &&
       result.checksums.scene === (await fileHash(result.sceneManifestPath)) &&
       result.checksums.output === (await fileHash(result.outputPath));
+    if (hashesMatch) {
+      const scene = SceneManifestSchema.parse(
+        JSON.parse(await readFile(result.sceneManifestPath, "utf8")),
+      );
+      assetsMatch = result.assetPaths
+        ? scene.sourceHash ===
+            (await fileHash(result.assetPaths.normalizedSource)) &&
+          (result.assetPaths.depth === null
+            ? result.checksums.depth === undefined
+            : result.checksums.depth ===
+              (await fileHash(result.assetPaths.depth)))
+        : true;
+    }
   } catch {
     hashesMatch = false;
   }
   if (
     result.outputPath !== request.outputPath ||
     result.sceneManifestPath !== `${request.outputPath}.scene.json` ||
-    !hashesMatch
+    !hashesMatch ||
+    !assetsMatch
   )
     throw new AnimationEngineError(
       "OUTPUT_VALIDATION_FAILED",
