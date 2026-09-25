@@ -17,13 +17,12 @@ import {
   AnimationEngineError,
   AnimationResultSchema,
   ENGINE_VERSION,
-  parseAnimationRequest,
-  V0_1_REQUEST_CONSTRAINTS,
-  V0_1_REQUEST_DEFAULTS,
   type AnimationFailure,
   type AnimationRequest,
   type AnimationResult,
 } from "@still-shift/scene-contract";
+
+import { buildAnimationRequest } from "./animation-request.ts";
 
 type BatchItem = {
   id: string;
@@ -195,16 +194,13 @@ const requestForItem = (
   manifestPath: string,
   outputDir: string,
 ): AnimationRequest =>
-  parseAnimationRequest({
+  buildAnimationRequest({
     inputPath: resolve(dirname(manifestPath), item.inputPath),
     outputPath: join(outputDir, `${item.id}.mp4`),
-    durationMs: item.durationMs ?? V0_1_REQUEST_DEFAULTS.durationMs,
-    fps: V0_1_REQUEST_CONSTRAINTS.fps,
-    width: V0_1_REQUEST_CONSTRAINTS.width,
-    height: V0_1_REQUEST_CONSTRAINTS.height,
-    preset: item.preset ?? V0_1_REQUEST_DEFAULTS.preset,
-    intensity: item.intensity ?? V0_1_REQUEST_DEFAULTS.intensity,
-    seed: item.seed ?? V0_1_REQUEST_DEFAULTS.seed,
+    durationMs: item.durationMs,
+    preset: item.preset,
+    intensity: item.intensity,
+    seed: item.seed,
   });
 
 const checkpointResult = async (

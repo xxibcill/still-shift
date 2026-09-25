@@ -10,12 +10,12 @@ import {
   AnimationIntensitySchema,
   AnimationPresetSchema,
   ENGINE_VERSION,
-  parseAnimationRequest,
   V0_1_REQUEST_CONSTRAINTS,
   V0_1_REQUEST_DEFAULTS,
   type AnimationFailure,
 } from "@still-shift/scene-contract";
 
+import { buildAnimationRequest } from "./animation-request.ts";
 import { runBatch } from "./batch.ts";
 
 type CliIo = {
@@ -126,15 +126,13 @@ const createRequest = (values: Map<string, string>) => {
     "fps",
   );
 
-  return parseAnimationRequest({
+  return buildAnimationRequest({
     inputPath: requireArgument(values, "input"),
     outputPath: requireArgument(values, "output"),
     durationMs: durationSeconds * 1000,
     fps,
-    width: V0_1_REQUEST_CONSTRAINTS.width,
-    height: V0_1_REQUEST_CONSTRAINTS.height,
-    preset: values.get("preset") ?? V0_1_REQUEST_DEFAULTS.preset,
-    intensity: values.get("intensity") ?? V0_1_REQUEST_DEFAULTS.intensity,
+    preset: values.get("preset"),
+    intensity: values.get("intensity"),
     seed,
   });
 };
