@@ -27,7 +27,12 @@ template family including parallax. The [next build plan](./docs/cinematic-templ
 proposes a shared camera, authored depth planes, painted-area checks, and nine
 full-frame shot treatments. The first [Layered Parallax milestone](./docs/cinematic-parallax-implementation.md)
 now implements a shared plane camera, coverage validation, and two original
-compositions. The other eight recipes remain planned. Focus softening and dolly-zoom
+compositions. A researched [Threshold Push milestone](./docs/threshold-push-implementation.md)
+now adds forward travel and a grounded room assembly. The researched
+[Lateral Track milestone](./docs/lateral-track-implementation.md) reuses that assembly
+for sustained sideways travel and visible subject drift. The researched
+[Foreground Reveal milestone](./docs/foreground-reveal-implementation.md) adds
+asset-aware occlusion checks and a held revealed composition. Five recipes remain planned. Focus softening and dolly-zoom
 are explicitly marked experiments; they do not revise the channel baseline or
 the existing Phase 0 acceptance gates.
 

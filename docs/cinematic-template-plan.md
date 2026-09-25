@@ -2,9 +2,11 @@
 
 **Date:** 2026-09-25
 
-**Status:** First milestone implemented: shared plane camera and CI-09 Layered Parallax, with two verified compositions. [Implementation and review clip](./cinematic-parallax-implementation.md). The other eight templates remain planned.
+**Current direction — 2026-09-26:** One **Cinematic Parallax** family, with anchored sweep, push-in, lateral track, foreground reveal, Rising Vista, Curved Approach, Detail to World and Focus Handoff as implemented variations. The owner found the recent variants too similar and the workflow too slow. The nine-shot list below is an idea backlog, not nine separate engine features or mandatory milestones. The [new path guide](./parallax-path-variations.md) records the actual stronger movement bounds and short previews for Rising Vista and Curved Approach; these supersede their initial targets below.
 
-**Owner direction:** Commit the current work and plan additional templates that feel more cinematic, including parallax.
+**Iteration policy:** Reuse the existing camera, prepared art and checks. Make one short preview by adjusting variation, scene, strength and duration. Inspect the visible difference and run targeted checks. Generate more art, add comparison compositions, do new research or broaden regression testing only when a concrete new capability or risk requires it. The earlier two-composition and 63-second-reel requirements are superseded for new iterations; existing evidence remains historical.
+
+**Quick path:** `pnpm cinematic:preview --scene <prepared.json> --duration 4 --strength dramatic --output <new.mp4>`. In the lab, choose the Cinematic Parallax group, a staged variation, strength and duration. Direction, depth, framing and occlusion remain authored in scene files so placement changes retain their asset coverage checks. The command preserves the source scene and writes a separate input and one review page.
 
 **Starting point:** `8dd9934` — six prepared illustrated presets, original assets, shared preview/export, and CLI support. Creative acceptance of that reel and the Phase 0 gates remain separate.
 
@@ -54,14 +56,18 @@ Expose `layered_parallax` by name in the Cinematic collection. Require foregroun
 
 CI-06 and CI-08 are later experiments in the build order. If focus softening destroys print texture, test an all-sharp attention handoff using authored light/value emphasis and report the result under a separate name. If the dolly-zoom cannot meet its bounds, keep it experimental and use the proven Threshold Push as an explicitly identified substitute. Never present a renamed fallback as a successful new template.
 
+**2026-09-26 CI-02 revision:** [Lateral Track research](./lateral-track-research.md) replaces the early courtyard proposal with the grounded Kit A room. The subject drifts through the frame, all planes retain constant scale, and camera speed stays constant through the middle 76% of the move. The primary travels 492/183/64 px near/subject/far from 0.125 to 6.542 seconds. The table above retains the initial mild planning bounds; the [implementation](./lateral-track-implementation.md) records the current limits.
+
+**2026-09-26 CI-03 revision:** [Foreground Reveal research](./foreground-reveal-research.md) led to a true occlusion event with a held destination. Reuse Kit A's right post at a larger uniform scale, trace a semantic vessel region, and validate real foreground alpha at every frame and strength. Initial concealment is approximately 17.5–18.6%; Dramatic settles at 3.208 s and holds through 7 s. [Implementation details](./foreground-reveal-implementation.md) supersede the early 4% travel draft.
+
 ## 3. Shot and asset design
 
 Use the companion [source prompt pack](../prompt-packs/cinematic-illustrated-still-animation-prompt-pack.md). Each kit starts from a complete environment master so its individual assets share perspective, light, scale, and linework.
 
 | Scene kit             | Composition                                                                                | Primary proofs      | Assets to prepare                                                                                      |
 | --------------------- | ------------------------------------------------------------------------------------------ | ------------------- | ------------------------------------------------------------------------------------------------------ |
-| **A — The threshold** | Near door framing, a middle-distance storage vessel, a wall and open passage behind it.    | CI-01, CI-03        | Master, left/right foreground cutouts, vessel with contact shadow, continuous clean room plate.        |
-| **B — The courtyard** | Near masonry at an edge, a stationary anonymous figure, receding walls and passage.        | CI-02, CI-07, CI-09 | Master, solid foreground cutout, figure with grounded shadow, middle architecture, complete far plate. |
+| **A — The threshold** | Near door framing, a middle-distance storage vessel, a wall and open passage behind it.    | CI-01, CI-02, CI-03 | Master, left/right foreground cutouts, vessel with contact shadow, continuous clean room plate.        |
+| **B — The courtyard** | Near masonry at an edge, a stationary anonymous figure, receding walls and passage.        | CI-07, CI-09        | Master, solid foreground cutout, figure with grounded shadow, middle architecture, complete far plate. |
 | **C — The hillside**  | Broad near ridge, a middle field and path, distant low building and skyline.               | CI-04, CI-05        | Wide master, near ridge, middle terrain, continuous distant plate; no thin foreground foliage.         |
 | **D — The room**      | A large near bowl, a quiet figure across the room, a shallow architectural opening behind. | CI-06, CI-08        | All-sharp master, foreground bowl, figure and contact shadow, middle room, continuous rear plate.      |
 
@@ -136,7 +142,7 @@ No shot needs moving fog, particles, light leaks, or vignettes to qualify. Sound
 5. **Integration and QA:** real CLI exports, same lab preview, deterministic retries, source/asset hashes, fallback provenance, measured preparation and rendering costs.
 6. **One review:** a 63-second silent reel, nine clean full-frame shots, optional individual replay and external template labels. Add a small first/middle/last reference strip outside the video. Keep extra technical variations in the QA report.
 
-The dedicated Layered Parallax prototype and its original kit B art are now implemented. Threshold Push, Lateral Track, and Foreground Reveal are the next template work; see the [milestone report](./cinematic-parallax-implementation.md) for the exact supported scope.
+Layered Parallax, Threshold Push, Lateral Track, Foreground Reveal, Rising Vista, Curved Approach, Detail to World and Focus Handoff are implemented. Rising Vista uses two new layers derived from existing landscape study art; Curved Approach reuses kit A. [Detail to World](./detail-to-world-implementation.md) reuses kit A for a researched 1.277→1.00 subject pullback; it replaces the initial landscape concept and 1.20 target in the backlog. [Focus Handoff](./focus-handoff-implementation.md) reuses kit B for a masonry-to-figure sharpness transfer with a 4 px maximum. Dolly-Zoom Tension remains to evaluate. The [Threshold Push research](./threshold-push-research.md) revised CI-01's original mild targets to a Dramatic approach: near growth around 33%, subject 11%, far 3.4%, with motion from 0.125 to 6.42 seconds. The grounded room/floor card and portrait near posts support that stronger move; the original table above records the initial planning bounds.
 
 ## 7. Acceptance and measurement
 

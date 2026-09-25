@@ -4,7 +4,7 @@
 
 **Prepared:** 2026-09-25
 
-**Status:** CI-09 has been executed as an original courtyard master plus three prepared layers. See [actual prompts and source files](../assets/cinematic-illustrated/kit-b-courtyard/README.md) and the [implementation report](../docs/cinematic-parallax-implementation.md). The remaining cards are future generation briefs.
+**Status:** CI-09, CI-01, CI-02, and CI-03 have been executed. See the [courtyard kit](../assets/cinematic-illustrated/kit-b-courtyard/README.md), [threshold kit and exact prompts](../assets/cinematic-illustrated/kit-a-threshold/README.md), and [Threshold Push implementation](../docs/threshold-push-implementation.md). CI-02 and CI-03 reuse Kit A without new generation; five cards remain future briefs.
 
 **Source:** Owner request for more cinematic templates, including parallax; [build plan](../docs/cinematic-template-plan.md); History Offstage's Layered Chronicle visual bible.
 
@@ -16,18 +16,18 @@ The current study has no supplied narration or episode shot IDs. CI-01 through C
 
 ## 2. Production defaults
 
-| Field            | Planned value                                                                                                       |
-| ---------------- | ------------------------------------------------------------------------------------------------------------------- |
-| Delivery         | 16:9, 1920×1080, 24 fps, seven seconds per shot                                                                     |
-| Source target    | 2400×1350 or larger when supported; inspect actual returned dimensions                                              |
-| Generator        | Codex built-in image generation; use only controls exposed at execution                                             |
-| Reference policy | Original master from this pack, then reference-led derivatives from that master                                     |
-| Reproducibility  | Record exact prompts, references, hashes, outputs, attempts, and provider settings; no reproducible seed is assumed |
-| Renderer         | Prepared-scene v2 camera/plane extension available for CI-09; remaining eight camera recipes planned                |
-| Safe framing     | Important subjects stay inside the inner 80% of the delivery frame throughout the move                              |
-| Hidden pixels    | Continuous prepared plates behind every moving occluder                                                             |
-| Texture          | Fixed to its illustrated surface; inspect charcoal lines and halftones after H.264 compression                      |
-| On-screen copy   | None inside the proof shots; names, explanations, and controls remain in the review page                            |
+| Field            | Planned value                                                                                                            |
+| ---------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| Delivery         | 16:9, 1920×1080, 24 fps, seven seconds per shot                                                                          |
+| Source target    | 2400×1350 or larger when supported; inspect actual returned dimensions                                                   |
+| Generator        | Codex built-in image generation; use only controls exposed at execution                                                  |
+| Reference policy | Original master from this pack, then reference-led derivatives from that master                                          |
+| Reproducibility  | Record exact prompts, references, hashes, outputs, attempts, and provider settings; no reproducible seed is assumed      |
+| Renderer         | Prepared-scene v2 camera/plane extension available for CI-09 and CI-01 through CI-03; five camera recipes remain planned |
+| Safe framing     | Important subjects stay inside the inner 80% of the delivery frame throughout the move                                   |
+| Hidden pixels    | Continuous prepared plates behind every moving occluder                                                                  |
+| Texture          | Fixed to its illustrated surface; inspect charcoal lines and halftones after H.264 compression                           |
+| On-screen copy   | None inside the proof shots; names, explanations, and controls remain in the review page                                 |
 
 The source target provides overscan only when the actual crop and scale preserve it. Validate the full camera path against the actual painted pixels. Do not enlarge a crop beyond the source and describe the missing pixels as overscan.
 
@@ -42,7 +42,7 @@ No generated text, dates, numbers, arrows, borders, labeled diagrams, logos, fan
 | ID    | Role                                     | Duration | Treatment | Scene kit    | Main preparation risk                      | Safe fallback                                      |
 | ----- | ---------------------------------------- | -------- | --------- | ------------ | ------------------------------------------ | -------------------------------------------------- |
 | CI-01 | Enter an intimate space                  | 7 s      | LAYERED   | A: threshold | Exposed plate around doorway edges         | 2D push on complete master                         |
-| CI-02 | Observe a place while passing            | 7 s      | LAYERED   | B: courtyard | Figure/shadow registration                 | 2D lateral crop within complete master             |
+| CI-02 | Observe a place while passing            | 7 s      | LAYERED   | A: threshold | Room overscan and post occlusion           | 2D lateral crop within complete master             |
 | CI-03 | Discover an obscured subject             | 7 s      | LAYERED   | A: threshold | Incomplete concealed subject or wall       | 2D reframing on a wider complete master            |
 | CI-04 | Open the view to a landscape             | 7 s      | LAYERED   | C: hillside  | Missing terrain behind the near ridge      | 2D upward crop within complete master              |
 | CI-05 | Reveal the subject's setting             | 7 s      | LAYERED   | C: hillside  | Insufficient final wide framing            | 2D pullback to the available master bounds         |
@@ -64,50 +64,38 @@ All nine need creative source review and AI preparation/QA. None is automaticall
 ```text
 Create a 16:9 keyframe in an original visual system called Layered Chronicle Animation. Use expressive hand-drawn 2D forms arranged in shallow layered depth, strong readable silhouettes, varied charcoal contour lines, controlled halftone shadows, subtle screen-print grain, selective construction marks, and a slight two-color registration offset. The composition should feel like premium graphic animation: energetic, clearly illustrated, intentionally art-directed, and readable within five seconds. Use a controlled palette of warm bone, near-black charcoal, muted field green, grain ochre, and restrained dark red unless a clearly identified crisis variant is requested. Build three separable depth bands suitable for parallax. Leave intentional negative space for manually added typography. Do not generate final writing.
 
-Show a quiet, modest storage room from just outside its doorway. Two broad dark doorframe edges occupy the outermost left and right of the composition. A substantial ochre ceramic storage vessel stands in the middle distance, slightly right of center, with its full base and grounded contact shadow visible. A continuous softly detailed wall and a simple open passage sit farther behind it. Use a calm level viewpoint, restrained side daylight, a strong light/dark focal hierarchy, and a readable solid floor. Keep the vessel clear of both doorway silhouettes and at least ten percent inside the intended delivery view. Paint the whole room and floor to the outer source edges with generous framing room. Compose an immersive place; no captions, arrows, cards, decorative border, people, glass, thin lattices, particles, or photographic blur. Feelings: quiet, expectant, intimate. The source image is sharp and still.
+Show a quiet storage chamber from just outside its doorway. Two broad near dark stone posts occupy the outer left and right, extending beyond the top and bottom without a visible lintel. An ochre ceramic vessel stands around 64 percent across, with its complete rim, base and compact shadow visible. A tall rectangular rear doorway lies clearly to the left of the vessel, opening into a quieter distant chamber. Keep the vessel, shadow, continuous floor and immediate walls coherent as one middle room. Use sparse irregular floor texture, a level viewpoint, restrained side light, warm bone plaster and field-green shadows. Keep the vessel clear of both near posts and safely inside the delivery view. No captions, arrows, cards, borders, people, glass, ornate objects, particles or photographic blur. Paint a complete still scene with generous margins.
 ```
 
-**Preparation:** Generate kit A once. Derive left/right foreground RGBA, the complete vessel with contact shadow, and the room/floor without either foreground edge or vessel. Fill all formerly concealed room pixels. Reassemble at the original coordinates before introducing motion.
+**Preparation:** Generate kit A once, then prepare four derivatives. Make left/right near posts as separate tall portrait RGBA assets with high source density. Keep the vessel, contact shadow, floor and immediate walls together in a wide middle-room RGBA plate; remove the near posts and fill the concealed walls/floor, and make only the inside of the rear opening transparent. Make a complete opaque distant chamber to reveal through that opening. Preserve source aspect ratios and inspect the registered composite. The executed prompts, actual dimensions and provenance are in the [threshold kit](../assets/cinematic-illustrated/kit-a-threshold/README.md).
 
-**Animation:** Establish 0–0.7 s; camera approaches through 5.5 s; hold through 7 s. Subject growth 3–5%, near framing ≤8%, far wall 0–2%, all from one camera. No local deformation or overlays.
+**Animation:** The [research revision](../docs/threshold-push-research.md) carries forward the owner's preference for stronger motion. Dramatic begins around 0.125 s and settles at 6.42 s. Fixed-focal forward travel 0.4 with depths 1.6/4/12 gives near growth 33.33%, middle room/vessel 11.11%, and distant chamber 3.45%. Standard and Restrained use smaller forward travel. The vessel's authored anchor holds while its room assembly grows. No local deformation or overlays.
 
-**Checks:** Doorframe motion reads faster than the rear wall; vessel geometry stays rigid and grounded; no unpainted strips appear. Protect vessel rim/base throughout. **Fallback:** 2D push on the intact master, reported as a fallback.
+**Checks:** Both doorposts expand faster than the room and distant plate. The vessel and floor share one transform. Protect the vessel rim/base; keep cut edges outside the view; validate coverage and source density after magnification every frame. Minimum density is 2/3 source pixel per output pixel. This is a flat room assembly with fixed internal perspective. **Fallback plan:** 2D push on the intact master, explicitly labelled; the current implementation rejects unsafe input rather than applying this fallback automatically.
 
 ### CI-02 — Lateral Track
 
-**Intent:** A quiet observing passage across a courtyard. **Kit B.** **Risk:** Medium. Trace: CI-02 in the build plan; authored foreground/middle/background staging.
+**Intent:** Observe the storage chamber while passing sideways. **Kit A reuse.** **Risk:** Medium. The [research](../docs/lateral-track-research.md) revised the original courtyard proposal to keep the vessel, shadow, and floor grounded together.
 
-#### Master still-image prompt
+**Source preparation:** Reuse the four original Kit A derivatives from CI-01 unchanged. Map the middle room wider than delivery and keep its four outer edges outside the frame throughout travel. Keep the rear opening transparent and place the continuous far chamber behind it. Stage the two near posts with enough genuine silhouette and overscan for the intended direction. No new image generation was required.
 
-```text
-Create a 16:9 keyframe in an original visual system called Layered Chronicle Animation. Use expressive hand-drawn 2D forms arranged in shallow layered depth, strong readable silhouettes, varied charcoal contour lines, controlled halftone shadows, subtle screen-print grain, selective construction marks, and a slight two-color registration offset. The composition should feel like premium graphic animation: energetic, clearly illustrated, intentionally art-directed, and readable within five seconds. Use a controlled palette of warm bone, near-black charcoal, muted field green, grain ochre, and restrained dark red unless a clearly identified crisis variant is requested. Build three separable depth bands suitable for parallax. Leave intentional negative space for manually added typography. Do not generate final writing.
+**Animation:** Fixed-direction lateral camera, fixed scale, no subject lock. Dramatic travels 492/183/64 px near/subject/far. Begin at 0.125 s and finish at 6.542 s, with smooth velocity ramps around a constant-speed middle occupying 76% of the move. The vessel and its floor shift together across the composition. Standard uses 60% and Restrained 40% of Dramatic travel. The alternate changes room scale/placement, post staging, depth spacing and direction.
 
-Compose a quiet enclosed courtyard at a level, slightly oblique viewpoint. A broad near masonry edge occupies the far-left margin without covering the central subject. One anonymous adult stands still in the middle distance, full figure visible, in simple unadorned clothing, turned in three-quarter profile toward a plain open passage on the right. Keep both hands resting and readable; no gesture or walking pose. The figure's silhouette is clearly separated from a low-contrast wall, with feet and a compact contact shadow grounded on a continuous courtyard floor. Distant walls and the passage provide a third shallow plane. Soft overcast daylight, subdued values, generous scene continuation on both sides. No labels, diagram layout, identifiable monument, specific historical insignia, railings, intricate foliage, loose flying cloth, particles, or photographic effects. Feelings: observant, restrained, solitary.
-```
+**Checks:** Same-direction inverse-depth motion; subject remains readable; floor, vessel and contact shadow share one transform; room cut edges remain hidden; the rear opening exposes only prepared distant artwork. Inspect foreground occlusion separately from protected screen bounds. **Fallback:** Reject an invalid prepared scene and revise its staging before rendering. A small 2D crop would require a separately named treatment.
 
-**Preparation:** Generate kit B once. Separate near masonry, full figure with contact shadow, middle architecture, and far wall/floor. The clean plate must include the region under and behind the figure and the full swept area behind the masonry.
-
-**Animation:** Establish 0–0.5 s; traverse toward the passage through 5.8 s; settle. Near travel 3–4% W, middle 1–2% W, far ≤0.5% W. Preserve the figure as the compositional anchor using a shared target. Figure remains in one authored pose.
-
-**Checks:** All layers respond coherently to camera direction; feet and shadow stay registered; side clearance is real. **Fallback:** Small 2D horizontal crop on the complete master.
+See [implementation and review](../docs/lateral-track-implementation.md) for geometry, limits and measured results.
 
 ### CI-03 — Foreground Reveal
 
-**Intent:** The view clears an obstruction and resolves onto a subject. **Kit A.** **Risk:** Medium. Trace: CI-03 in the build plan; shallow occlusion reveal.
+**Intent:** Clear an obstruction and settle on the revealed vessel. **Kit A reuse.** **Risk:** Medium. [Research](../docs/foreground-reveal-research.md) established actual alpha concealment as the defining event.
 
-#### Master still-image prompt
+**Source preparation:** Reuse the complete room/vessel/floor card, far chamber, and right post unchanged. Uniformly enlarge the near post to height 2100 px (2250 for the alternate), preserving aspect ratio and at least 2/3 source pixel per output pixel. Its outer right, top and bottom edges remain outside the frame. Trace a semantic vessel outline separately from the protected framing rectangle. Initial staging hides about 17.5–18.6% of that outline.
 
-```text
-Create a 16:9 keyframe in an original visual system called Layered Chronicle Animation. Use expressive hand-drawn 2D forms arranged in shallow layered depth, strong readable silhouettes, varied charcoal contour lines, controlled halftone shadows, subtle screen-print grain, selective construction marks, and a slight two-color registration offset. The composition should feel like premium graphic animation: energetic, clearly illustrated, intentionally art-directed, and readable within five seconds. Use a controlled palette of warm bone, near-black charcoal, muted field green, grain ochre, and restrained dark red unless a clearly identified crisis variant is requested. Build three separable depth bands suitable for parallax. Leave intentional negative space for manually added typography. Do not generate final writing.
+**Animation:** Hold the room anchor and move the foreground right through one shared horizontal camera. Dramatic moves the near post about 330 px, clears the target around 1 s, settles at 3.208 s, then holds through 7 s. Standard and Restrained use 80% and 60% of that travel and longer moves; all must fully clear the target. No local vessel deformation, fade reveal, or overlay.
 
-Design a view into a modest storage room with a broad dark near doorpost on the left, a complete ochre storage vessel in the middle distance, and a light continuous rear wall and plain open passage. The doorpost may overlap only a small outer portion of the vessel, about one fifth of its width; keep the vessel's central body and identifying rim readable. Its full base is visible and grounded. Provide a roomy view around the vessel, clear floor perspective, restrained side daylight, and intentional asymmetry. The rear wall and floor continue through the entire composition. If a threshold-room reference is supplied, preserve that room, vessel design, light, scale, and linework. No diagram devices, text, frames, people, transparent objects, decorative fog, or dramatic light. Feelings: curious, contained, then clear. Render a single still composition with all visible shapes sharp.
-```
+**Checks:** Inspect actual decoded foreground alpha over the semantic vessel region at every frame. Initial coverage must be 10–35%; settled coverage must be at most 1%, with no reocclusion. Include every closer layer, real source crops, sampling resolution, and cut-edge coverage. Preserve vessel/shadow/floor registration. **Fallback:** Reject invalid staging and repair its source/placement before rendering; do not silently substitute another camera recipe.
 
-**Preparation:** Prefer reuse of kit A through a new valid layout/crop. Generate this alternate composition only if that kit cannot achieve the specified partial occlusion. The vessel layer must be complete even where its initial composite is hidden; the foreground post is separate. Keep a clean wall/floor beneath both.
-
-**Animation:** Hold 0–0.8 s; foreground moves out of the sightline during a ≤4% W camera reveal ending at 3.2 s; hold the revealed subject to 7 s. No opacity fade substitutes for the occlusion event.
-
-**Checks:** Subject occlusion visibly decreases; its complete edge was prepared, not stretched; final frame remains composed after the reveal. **Fallback:** A 2D crop change using an intact wider master. Report that it does not demonstrate independent foreground parallax.
+No new generation was necessary. If a later compatible scene needs more wall width than its source provides, use the conditional wide-wall brief in the research document. See [implementation and review](../docs/foreground-reveal-implementation.md) for final metrics and limits.
 
 ### CI-04 — Rising Vista
 

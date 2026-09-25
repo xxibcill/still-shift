@@ -2,7 +2,9 @@
 
 **Date:** 2026-09-25
 
-**Status:** CI-09 Layered Parallax now includes a researched Dramatic setting in response to the owner's slow-motion feedback. Technical checks pass; creative acceptance remains pending. The other eight cinematic templates remain planned.
+**Status:** CI-09 Layered Parallax includes a researched Dramatic setting in response to the owner's slow-motion feedback. Technical checks pass; creative acceptance remains pending. This report records the first cinematic milestone.
+
+**Later milestone:** [Threshold Push](./threshold-push-implementation.md) has since been implemented. Seven templates remain; the measurements below record the parallax milestone.
 
 ## Review
 
@@ -81,6 +83,6 @@ The courtyard floor and distant buildings still share one flat plate. The body a
 
 ## Remaining work
 
-Threshold Push, Lateral Track, and Foreground Reveal follow this first prototype, then the other planned templates. Arbitrary single-image segmentation, general mask editing, local character animation, and automatic background reconstruction are outside this milestone.
+Threshold Push has since been implemented. Lateral Track and Foreground Reveal are next, then the other planned templates. Arbitrary single-image segmentation, general mask editing, local character animation, and automatic background reconstruction are outside this milestone.
 
 The measured exports are slightly slower than real time with the lossless PNG transport. Generation, preparation, and QA are additional work. The generation window was recorded, but isolated active preparation time and billed provider cost were unavailable; no end-to-end cost saving is claimed. The retired 43-image corpus stays retired, and Phase 0 acceptance remains open.
