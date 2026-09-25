@@ -266,11 +266,14 @@ const selectedPreparationMs = [...selectedSourceHashes].every((hash) =>
     )
   : null;
 const selectedRenderWallMs =
-  selectedResults.length === selectedClipIds.size && selectedClipIds.size > 0
+  selectedResults.length === selectedClipIds.size &&
+  selectedClipIds.size > 0 &&
+  benchmarkRun?.concurrency &&
+  benchmarkRun.concurrency > 0
     ? selectedResults.reduce(
         (sum, result) => sum + result.metrics.totalWallMs,
         0,
-      ) / (summary.concurrency ?? 2)
+      ) / benchmarkRun.concurrency
     : null;
 const estimatedAssemblyWorkerMs =
   selectedRenderWallMs === null || selectedPreparationMs === null
