@@ -31,6 +31,8 @@ const explicitAnimationOptions = [
   "standard",
   "--seed",
   "1842",
+  "--adapter",
+  "noop",
 ];
 
 const runNoopCli = async (
@@ -47,6 +49,7 @@ const runNoopCli = async (
       "--output",
       outputPath,
       ...animationOptions,
+      ...(animationOptions.length === 0 ? ["--adapter", "noop"] : []),
     ],
   );
 
@@ -91,6 +94,8 @@ describe("no-op CLI", () => {
         join(directory, "missing.png"),
         "--output",
         join(directory, "output.noop.json"),
+        "--adapter",
+        "noop",
       ]),
     ).rejects.toMatchObject({
       code: 1,

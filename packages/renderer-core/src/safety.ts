@@ -211,6 +211,7 @@ export const fallback2DScene = (
     | "DEPTH_RANGE_EXTREME"
     | "DEPTH_EDGE_RISK_HIGH"
     | "DEPTH_PREPARATION_FAILED"
+    | "DEPTH_SAFETY_ANALYSIS_FAILED"
   >,
   assessment?: SafetyAssessment,
 ): PreviewScene => {

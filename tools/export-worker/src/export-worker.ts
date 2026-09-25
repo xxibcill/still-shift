@@ -23,6 +23,7 @@ export type ExportRequest = {
   sourcePath: string;
   depthPath: string | null;
   outputPath: string;
+  sceneManifestContents?: string;
   encoder?: "libx264" | "h264_videotoolbox";
   transport?: FrameTransport;
 };
@@ -463,6 +464,7 @@ export const exportScene = async (
     server = await createServer({
       root: projectRoot,
       configFile: false,
+      logLevel: "silent",
       plugins: [assetPlugin(request, encoder, expectedBytes, frameState)],
       server: { host: "127.0.0.1", port: 0, fs: { allow: [projectRoot] } },
     });
@@ -502,7 +504,9 @@ export const exportScene = async (
       depthChecksum,
       scene,
     };
-    const serializedScene = `${JSON.stringify(sceneManifest, null, 2)}\n`;
+    const serializedScene =
+      request.sceneManifestContents ??
+      `${JSON.stringify(sceneManifest, null, 2)}\n`;
     const sceneChecksum = contentChecksum(serializedScene);
     await writeFile(temporaryScenePath, serializedScene, { flag: "wx" });
     const metrics: ExportMetrics = {

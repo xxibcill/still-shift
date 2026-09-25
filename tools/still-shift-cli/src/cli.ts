@@ -1,7 +1,10 @@
 #!/usr/bin/env node
 import { pathToFileURL } from "node:url";
 
-import { NoopAnimationEngine } from "@still-shift/animation-engine";
+import {
+  NoopAnimationEngine,
+  WebGLAnimationEngine,
+} from "@still-shift/animation-engine";
 import {
   AnimationEngineError,
   AnimationIntensitySchema,
@@ -26,15 +29,17 @@ const DEFAULT_IO: CliIo = {
 const HELP = `Still Shift v${ENGINE_VERSION}
 
 Usage:
-  pnpm still-shift animate --input <path> --output <path> [options]
+  pnpm --silent still-shift animate --input <path> --output <path> [options]
 
-v0.1 writes a deterministic no-op JSON artifact, not a video.
+The default adapter writes a validated 1080p H.264 MP4 and scene manifest.
 
 Options:
   --duration <seconds>   ${V0_1_REQUEST_CONSTRAINTS.durationMs.minimum / 1000}-${V0_1_REQUEST_CONSTRAINTS.durationMs.maximum / 1000} seconds (default: ${V0_1_REQUEST_DEFAULTS.durationMs / 1000})
+  --fps <integer>        fixed at ${V0_1_REQUEST_CONSTRAINTS.fps} FPS
   --preset <name>       ${AnimationPresetSchema.options.join(", ")} (default: ${V0_1_REQUEST_DEFAULTS.preset})
   --intensity <name>    ${AnimationIntensitySchema.options.join(", ")} (default: ${V0_1_REQUEST_DEFAULTS.intensity})
   --seed <integer>      unsigned 32-bit seed (default: ${V0_1_REQUEST_DEFAULTS.seed})
+  --adapter <name>      webgl (default) or noop (compatibility fixture)
   --help                 show this help
   --version              show the engine version
 `;
@@ -43,6 +48,16 @@ const parseNamedArguments = (
   argumentsToParse: string[],
 ): Map<string, string> => {
   const values = new Map<string, string>();
+  const allowed = new Set([
+    "input",
+    "output",
+    "duration",
+    "fps",
+    "preset",
+    "intensity",
+    "seed",
+    "adapter",
+  ]);
 
   for (let index = 0; index < argumentsToParse.length; index += 2) {
     const key = argumentsToParse[index];
@@ -53,7 +68,14 @@ const parseNamedArguments = (
         `Invalid CLI option near: ${key ?? "end of command"}`,
       );
     }
-    values.set(key.slice(2), value);
+    const name = key.slice(2);
+    if (!allowed.has(name) || values.has(name)) {
+      throw new AnimationEngineError(
+        "SCENE_INVALID",
+        `Unknown or duplicate CLI option: --${name}`,
+      );
+    }
+    values.set(name, value);
   }
 
   return values;
@@ -92,12 +114,16 @@ const createRequest = (values: Map<string, string>) => {
     values.get("seed") ?? String(V0_1_REQUEST_DEFAULTS.seed),
     "seed",
   );
+  const fps = parseFiniteNumber(
+    values.get("fps") ?? String(V0_1_REQUEST_CONSTRAINTS.fps),
+    "fps",
+  );
 
   return parseAnimationRequest({
     inputPath: requireArgument(values, "input"),
     outputPath: requireArgument(values, "output"),
     durationMs: durationSeconds * 1000,
-    fps: V0_1_REQUEST_CONSTRAINTS.fps,
+    fps,
     width: V0_1_REQUEST_CONSTRAINTS.width,
     height: V0_1_REQUEST_CONSTRAINTS.height,
     preset: values.get("preset") ?? V0_1_REQUEST_DEFAULTS.preset,
@@ -163,8 +189,20 @@ export const runCli = async (
   }
 
   try {
-    const request = createRequest(parseNamedArguments(args.slice(1)));
-    const result = await new NoopAnimationEngine().animate(request);
+    const values = parseNamedArguments(args.slice(1));
+    const adapter = values.get("adapter") ?? "webgl";
+    if (adapter !== "webgl" && adapter !== "noop") {
+      throw new AnimationEngineError(
+        "SCENE_INVALID",
+        `Unknown animation adapter: ${adapter}`,
+      );
+    }
+    const request = createRequest(values);
+    const engine =
+      adapter === "noop"
+        ? new NoopAnimationEngine()
+        : new WebGLAnimationEngine();
+    const result = await engine.animate(request);
     io.stdout(`${JSON.stringify(result)}\n`);
     return 0;
   } catch (error) {
