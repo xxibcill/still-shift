@@ -23,6 +23,12 @@ const manifestPath = join(directory, "batch.jsonl");
 const outputDir = join(directory, "outputs");
 const cliPath = resolve("node_modules/.bin/tsx");
 
+const readBatchRecords = async (resultsDir: string) =>
+  (await readFile(join(resultsDir, "batch-results.jsonl"), "utf8"))
+    .trim()
+    .split("\n")
+    .map((line) => JSON.parse(line));
+
 const runBatch = async (
   batchManifestPath = manifestPath,
   batchOutputDir = outputDir,
@@ -108,12 +114,7 @@ try {
   assert.equal(first.summary.itemCount, 3);
   assert.equal(first.summary.successful, 2);
   assert.equal(first.summary.failed, 1);
-  const records = (
-    await readFile(join(outputDir, "batch-results.jsonl"), "utf8")
-  )
-    .trim()
-    .split("\n")
-    .map((line) => JSON.parse(line));
+  const records = await readBatchRecords(outputDir);
   assert.deepEqual(
     records.map((record) => record.id),
     ["first", "missing", "second"],
@@ -127,12 +128,7 @@ try {
   const retry = await runBatch();
   assert.equal(retry.exitCode, 1);
   assert.equal(retry.summary.reused, 2);
-  const repeated = (
-    await readFile(join(outputDir, "batch-results.jsonl"), "utf8")
-  )
-    .trim()
-    .split("\n")
-    .map((line) => JSON.parse(line));
+  const repeated = await readBatchRecords(outputDir);
   assert.deepEqual(repeated[0].result, records[0].result);
   assert.deepEqual(repeated[2].result, records[2].result);
   assert.equal(repeated[0].reused, true);
@@ -149,12 +145,7 @@ try {
   assert.equal(recovered.exitCode, 1);
   assert.equal(recovered.summary.successful, 2);
   assert.equal(recovered.summary.reused, 1);
-  const recoveredRecords = (
-    await readFile(join(outputDir, "batch-results.jsonl"), "utf8")
-  )
-    .trim()
-    .split("\n")
-    .map((line) => JSON.parse(line));
+  const recoveredRecords = await readBatchRecords(outputDir);
   assert.equal(recoveredRecords[0].reused, false);
   assert.equal(recoveredRecords[2].reused, true);
   const orphanRoot = join(outputDir, ".batch-orphans", "first");
@@ -182,12 +173,7 @@ try {
   );
   const changed = await runBatch();
   assert.equal(changed.exitCode, 1);
-  const changedRecords = (
-    await readFile(join(outputDir, "batch-results.jsonl"), "utf8")
-  )
-    .trim()
-    .split("\n")
-    .map((line) => JSON.parse(line));
+  const changedRecords = await readBatchRecords(outputDir);
   assert.equal(changedRecords[0].error.code, "SCENE_INVALID");
   assert.deepEqual(await readFile(firstResult.outputPath), preservedVideo);
   await writeFile(checkpointPath, checkpoint);
@@ -195,12 +181,7 @@ try {
   await writeFile(firstResult.outputPath, "tampered output");
   const damaged = await runBatch();
   assert.equal(damaged.exitCode, 1);
-  const damagedRecords = (
-    await readFile(join(outputDir, "batch-results.jsonl"), "utf8")
-  )
-    .trim()
-    .split("\n")
-    .map((line) => JSON.parse(line));
+  const damagedRecords = await readBatchRecords(outputDir);
   assert.equal(damagedRecords[0].error.code, "OUTPUT_VALIDATION_FAILED");
   assert.equal(damagedRecords[2].reused, true);
 
