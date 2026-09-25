@@ -18,8 +18,10 @@ export type PreviewWarning = {
     | "LATERAL_MOTION_REDUCED"
     | "INTENSITY_DOWNGRADED"
     | "FALLBACK_2D_USED"
-    | "PREVIEW_EXPORT_VARIANCE";
+    | "PREVIEW_EXPORT_VARIANCE"
+    | "SOURCE_NORMALIZATION_WARNING";
   message: string;
+  context?: Record<string, string | number | boolean>;
 };
 
 export type PreviewQuality = {

@@ -82,6 +82,7 @@ export const AnimationWarningCodeSchema = z.enum([
   "INTENSITY_DOWNGRADED",
   "FALLBACK_2D_USED",
   "PREVIEW_EXPORT_VARIANCE",
+  "SOURCE_NORMALIZATION_WARNING",
 ]);
 
 const DiagnosticContextValueSchema = z.union([

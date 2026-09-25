@@ -12,6 +12,7 @@ import {
   resolvePreviewScene,
   type PreviewPreset,
   type PreviewScene,
+  type PreviewWarning,
 } from "../../renderer-core/src/index.ts";
 import {
   AnimationEngineError,
@@ -51,12 +52,14 @@ type PreparedDepth = {
   cacheStatus: "hit" | "miss";
   model: DepthModel;
   metrics: WorkerMetrics;
+  normalizationWarnings: string[];
 };
 type NormalizedSource = {
   status: "normalized";
   sourcePath: string;
   dimensions: { input: Dimensions; normalized: Dimensions };
   cacheStatus: "hit" | "miss";
+  normalizationWarnings: string[];
 };
 type WorkerFailure = {
   status: "failed";
@@ -113,6 +116,10 @@ const isDimensions = (value: unknown): value is Dimensions =>
   (value as Dimensions).width > 0 &&
   (value as Dimensions).height > 0;
 
+const isWarningList = (value: unknown): value is string[] =>
+  Array.isArray(value) &&
+  value.every((warning) => typeof warning === "string" && warning.length > 0);
+
 const isPrepared = (value: unknown): value is PreparedDepth => {
   const result = value as Partial<PreparedDepth> | null;
   return (
@@ -124,7 +131,8 @@ const isPrepared = (value: unknown): value is PreparedDepth => {
     (result.cacheStatus === "hit" || result.cacheStatus === "miss") &&
     DepthModelSchema.safeParse(result.model).success &&
     typeof result.metrics === "object" &&
-    result.metrics !== null
+    result.metrics !== null &&
+    isWarningList(result.normalizationWarnings)
   );
 };
 
@@ -135,7 +143,8 @@ const isNormalized = (value: unknown): value is NormalizedSource => {
     typeof result.sourcePath === "string" &&
     isDimensions(result.dimensions?.input) &&
     isDimensions(result.dimensions?.normalized) &&
-    (result.cacheStatus === "hit" || result.cacheStatus === "miss")
+    (result.cacheStatus === "hit" || result.cacheStatus === "miss") &&
+    isWarningList(result.normalizationWarnings)
   );
 };
 
@@ -182,6 +191,7 @@ const prepareAssets = async (
   cacheStatus: "hit" | "miss";
   model: DepthModel | null;
   workerMetrics: WorkerMetrics;
+  normalizationWarnings: string[];
 }> => {
   const adapter =
     process.env.STILL_SHIFT_DEPTH_ADAPTER ?? "depth-anything-v2-small";
@@ -197,6 +207,7 @@ const prepareAssets = async (
       cacheStatus: prepared.cacheStatus,
       model: prepared.model,
       workerMetrics: prepared.metrics,
+      normalizationWarnings: prepared.normalizationWarnings,
     };
   }
   if (isFailure(prepared) && invalidInputCode(prepared.error.code)) {
@@ -214,8 +225,18 @@ const prepareAssets = async (
     cacheStatus: normalized.cacheStatus,
     model: null,
     workerMetrics: {},
+    normalizationWarnings: normalized.normalizationWarnings,
   };
 };
+
+const normalizationWarning = (workerCode: string): PreviewWarning => ({
+  code: "SOURCE_NORMALIZATION_WARNING",
+  message:
+    workerCode === "INVALID_ICC_PROFILE_TREATED_AS_SRGB"
+      ? "Invalid embedded color profile was treated as sRGB"
+      : "Source normalization reported a warning",
+  context: { workerCode },
+});
 
 const decodeRgba = async (
   path: string,
@@ -371,6 +392,13 @@ export class WebGLAnimationEngine implements AnimationEngine {
         scene = fallback2DScene(initialScene, "DEPTH_PREPARATION_FAILED");
       }
     }
+    scene = {
+      ...scene,
+      warnings: [
+        ...scene.warnings,
+        ...prepared.normalizationWarnings.map(normalizationWarning),
+      ],
+    };
     const sceneBuildMs = performance.now() - sceneStarted;
     const warnings: AnimationWarning[] = scene.warnings;
     const manifest = SceneManifestSchema.parse({

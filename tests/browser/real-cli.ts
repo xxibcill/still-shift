@@ -18,6 +18,7 @@ const fixture = JSON.parse(
 ) as Omit<AnimationRequest, "inputPath" | "outputPath">;
 const directory = await mkdtemp(join(tmpdir(), "still-shift-cli-test-"));
 const sourcePath = join(directory, "explainer-shot.png");
+const invalidProfilePath = join(directory, "invalid-profile.png");
 const cliPath = resolve("node_modules/.bin/tsx");
 const cliScriptPath = resolve("tools/still-shift-cli/src/cli.ts");
 const environment = {
@@ -131,6 +132,39 @@ try {
     first.assetPaths?.normalizedSource,
   );
 
+  await execFileAsync("uv", [
+    "run",
+    "--no-sync",
+    "python",
+    "-c",
+    "from PIL import Image; import sys; image = Image.open(sys.argv[1]); image.save(sys.argv[2], icc_profile=b'invalid ICC profile')",
+    sourcePath,
+    invalidProfilePath,
+  ]);
+  const normalizedWithWarning = await runCli(
+    join(directory, "invalid-profile.mp4"),
+    { inputPath: invalidProfilePath },
+  );
+  assert.equal(normalizedWithWarning.status, "rendered_with_warnings");
+  assert.ok(
+    normalizedWithWarning.warnings.some(
+      (warning) =>
+        warning.code === "SOURCE_NORMALIZATION_WARNING" &&
+        warning.context?.workerCode === "INVALID_ICC_PROFILE_TREATED_AS_SRGB",
+    ),
+  );
+  const warningScene = SceneManifestSchema.parse(
+    JSON.parse(await readFile(normalizedWithWarning.sceneManifestPath, "utf8")),
+  );
+  assert.deepEqual(
+    warningScene.quality.warnings,
+    normalizedWithWarning.warnings,
+  );
+  assert.deepEqual(
+    warningScene.renderScene?.warnings,
+    normalizedWithWarning.warnings,
+  );
+
   const externalCaller = await runCli(join(directory, "external.mp4"), {
     inputPath: "explainer-shot.png",
     cwd: directory,
@@ -140,6 +174,7 @@ try {
 
   const fallback = await runCli(join(directory, "fallback.mp4"), {
     adapter: "invalid",
+    inputPath: invalidProfilePath,
   });
   assert.equal(fallback.status, "fallback_2d");
   assert.ok(
@@ -149,6 +184,11 @@ try {
   );
   assert.equal(fallback.checksums.depth, undefined);
   assert.equal(fallback.metrics.versions.model, null);
+  assert.ok(
+    fallback.warnings.some(
+      (warning) => warning.code === "SOURCE_NORMALIZATION_WARNING",
+    ),
+  );
 
   const missingOutput = join(directory, "missing.mp4");
   await assert.rejects(
