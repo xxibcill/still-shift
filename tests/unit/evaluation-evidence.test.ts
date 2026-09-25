@@ -15,6 +15,7 @@ import {
   validateEvaluationRecords,
   validateEvaluationScene,
   verifyAssemblyClip,
+  verifyCurrentEvaluationExport,
   type EvaluationRecord,
 } from "../../scripts/evaluation/evidence.ts";
 import {
@@ -32,7 +33,11 @@ const corpus = CorpusManifestSchema.parse({ ...manifest, entries: [entry] });
 const sourceHash = entry.source.sha256 as string;
 const execFileAsync = promisify(execFile);
 
-const renderColor = async (path: string, color: string) => {
+const renderColor = async (
+  path: string,
+  color: string,
+  { frames = 150, fps = 30 }: { frames?: number; fps?: number } = {},
+) => {
   await execFileAsync("ffmpeg", [
     "-hide_banner",
     "-loglevel",
@@ -40,9 +45,9 @@ const renderColor = async (path: string, color: string) => {
     "-f",
     "lavfi",
     "-i",
-    `color=c=${color}:s=64x36:r=30`,
+    `color=c=${color}:s=64x36:r=${fps}`,
     "-frames:v",
-    "150",
+    String(frames),
     "-c:v",
     "libx264",
     "-pix_fmt",
@@ -51,6 +56,43 @@ const renderColor = async (path: string, color: string) => {
     path,
   ]);
 };
+
+describe("current evaluation export", () => {
+  it("verifies current bytes, frame count, frame rate, and duration", async () => {
+    const directory = await mkdtemp(join(tmpdir(), "still-shift-export-"));
+    try {
+      const outputPath = join(directory, "clip.mp4");
+      await renderColor(outputPath, "black");
+      const result = {
+        outputPath,
+        checksums: { output: await fileSha256(outputPath) },
+        durationMs: 5000,
+        frameCount: 150,
+      };
+      expect(await verifyCurrentEvaluationExport(result)).toBe(true);
+
+      await renderColor(outputPath, "white");
+      expect(await verifyCurrentEvaluationExport(result)).toBe(false);
+
+      await renderColor(outputPath, "black", { frames: 149 });
+      result.checksums.output = await fileSha256(outputPath);
+      expect(await verifyCurrentEvaluationExport(result)).toBe(false);
+
+      await renderColor(outputPath, "black", { fps: 24 });
+      result.checksums.output = await fileSha256(outputPath);
+      expect(await verifyCurrentEvaluationExport(result)).toBe(false);
+
+      await renderColor(outputPath, "black", { frames: 180 });
+      result.checksums.output = await fileSha256(outputPath);
+      expect(await verifyCurrentEvaluationExport(result)).toBe(false);
+
+      await rm(outputPath);
+      expect(await verifyCurrentEvaluationExport(result)).toBe(false);
+    } finally {
+      await rm(directory, { recursive: true, force: true });
+    }
+  });
+});
 
 const records = (): EvaluationRecord[] =>
   EVALUATION_PRESETS.map((preset) => ({

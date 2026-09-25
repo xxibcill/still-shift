@@ -22,6 +22,7 @@ import {
   compareIndependentRenders,
   validateEvaluationRecords,
   validateEvaluationScene,
+  verifyCurrentEvaluationExport,
 } from "./evidence.ts";
 import {
   assertRatingsIdentity,
@@ -131,6 +132,12 @@ for (const record of records) {
 const results: AnimationResult[] = records
   .filter((record) => record.result)
   .map((record) => record.result!);
+const invalidExportIds: string[] = [];
+for (const record of records) {
+  if (record.result && !(await verifyCurrentEvaluationExport(record.result)))
+    invalidExportIds.push(record.id);
+}
+const verifiedExportCount = results.length - invalidExportIds.length;
 const repeatRecords = determinismResultsPath
   ? (await readFile(resolve(determinismResultsPath), "utf8"))
       .trim()
@@ -201,7 +208,7 @@ const batchMeasured =
 const independentRendersMatch = repeatRecords
   ? await compareIndependentRenders(records, repeatRecords)
   : false;
-const validRate = summary.successful / summary.itemCount;
+const validRate = verifiedExportCount / summary.itemCount;
 const workerRates = results.map(
   (result) => result.durationMs / result.metrics.totalWallMs,
 );
@@ -350,7 +357,7 @@ const gates = [
   },
   {
     name: "Batch completion",
-    result: `${summary.successful}/${summary.itemCount} (${percent(validRate)})`,
+    result: `${verifiedExportCount}/${summary.itemCount} current exports verified (${percent(validRate)})`,
     status: gate(batchMeasured, validRate >= 0.98),
   },
   {
@@ -362,8 +369,11 @@ const gates = [
   },
   {
     name: "Duration accuracy",
-    result: `${results.length} exports validated by exact-frame FFprobe check`,
-    status: gate(batchMeasured && results.length > 0, true),
+    result: `${verifiedExportCount}/${results.length} current exports pass checksum and exact-frame FFprobe checks`,
+    status: gate(
+      batchMeasured && results.length > 0,
+      invalidExportIds.length === 0,
+    ),
   },
   {
     name: "Preview/export agreement",
@@ -435,6 +445,8 @@ const report = {
   },
   results: {
     rendered: results.length,
+    verifiedExports: verifiedExportCount,
+    invalidExportIds,
     validRate,
     reused: summary.reused,
     batchWallMs: benchmarkRun?.totalWallMs ?? null,
@@ -494,7 +506,7 @@ ${gates.map((item) => `| ${item.name} | ${item.result} | ${item.status} |`).join
 
 ## Evidence and costs
 
-- ${results.length}/${expectedCount} preset clips have valid animation results; full render wall time ${benchmarkRun ? `${(benchmarkRun.totalWallMs / 1000).toFixed(1)} seconds` : "unavailable for this exact manifest and artifact set"}.
+- ${verifiedExportCount}/${expectedCount} preset clips have current MP4s that pass checksum and exact-frame FFprobe checks${invalidExportIds.length ? `; invalid export IDs: ${invalidExportIds.join(", ")}` : ""}; full render wall time ${benchmarkRun ? `${(benchmarkRun.totalWallMs / 1000).toFixed(1)} seconds` : "unavailable for this exact manifest and artifact set"}.
 - ${summary.reused}/${summary.itemCount} results were reused on the last retry.
 - ${rated}/${rendered} rendered clips have complete human ratings; ${failed} clips failed before review and count as unusable; ${repaired} rated clips required manual repair.
 - Archived cold preparation time across ${preparationBySource.size} unique sources: ${([...preparationBySource.values()].reduce((sum, value) => sum + value, 0) / 1000).toFixed(1)} seconds. The benchmark render used cached depth.

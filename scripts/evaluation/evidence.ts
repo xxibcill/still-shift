@@ -6,6 +6,7 @@ import { isDeepStrictEqual, promisify } from "node:util";
 
 import {
   SceneManifestSchema,
+  V0_1_REQUEST_CONSTRAINTS,
   type AnimationResult,
   type CorpusManifest,
 } from "@still-shift/scene-contract";
@@ -45,6 +46,27 @@ const probeVideo = async (path: string) => {
     frameRate: probe.streams[0]?.r_frame_rate,
     durationMs: Number(probe.format.duration) * 1000,
   };
+};
+
+export const verifyCurrentEvaluationExport = async (
+  result: Pick<AnimationResult, "durationMs" | "frameCount" | "outputPath"> & {
+    checksums: Pick<AnimationResult["checksums"], "output">;
+  },
+): Promise<boolean> => {
+  try {
+    if ((await fileSha256(result.outputPath)) !== result.checksums.output)
+      return false;
+    const video = await probeVideo(result.outputPath);
+    const fps = V0_1_REQUEST_CONSTRAINTS.fps;
+    return (
+      video.frameCount === result.frameCount &&
+      video.frameRate === `${fps}/1` &&
+      Number.isFinite(video.durationMs) &&
+      Math.abs(video.durationMs - result.durationMs) <= 1000 / fps
+    );
+  } catch {
+    return false;
+  }
 };
 
 const frameSample = async (path: string, frameIndex: number) => {
