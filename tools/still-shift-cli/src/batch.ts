@@ -171,13 +171,10 @@ const parseItem = (line: string, lineNumber: number): BatchItem => {
       },
     );
   const item = value as Partial<BatchItem>;
-  if (
-    typeof item.id !== "string" ||
-    !/^[a-zA-Z0-9][a-zA-Z0-9_-]{0,79}$/.test(item.id)
-  )
+  if (typeof item.id !== "string" || !/^[a-zA-Z0-9_-]{1,80}$/.test(item.id))
     throw new AnimationEngineError(
       "SCENE_INVALID",
-      "Batch item id must use 1–80 safe characters",
+      "Batch item id must use 1–80 letters, digits, underscores, or hyphens",
       {
         line: lineNumber,
       },

@@ -227,6 +227,28 @@ try {
   assert.equal(collisionRecords[1].error.code, "SCENE_INVALID");
   assert.equal(collisionRecords[1].error.message, "Duplicate batch item id");
 
+  const safeIdManifestPath = join(directory, "safe-ids.jsonl");
+  const safeIdOutputDir = join(directory, "safe-id-outputs");
+  await writeFile(
+    safeIdManifestPath,
+    [
+      { id: "_intro", inputPath: "missing.png" },
+      { id: "-outro", inputPath: "missing.png" },
+    ]
+      .map((item) => JSON.stringify(item))
+      .join("\n") + "\n",
+  );
+  const safeIds = await runBatch(safeIdManifestPath, safeIdOutputDir);
+  assert.equal(safeIds.exitCode, 1);
+  const safeIdRecords = await readBatchRecords(safeIdOutputDir);
+  assert.deepEqual(
+    safeIdRecords.map((record) => [record.id, record.error.code]),
+    [
+      ["_intro", "INPUT_UNREADABLE"],
+      ["-outro", "INPUT_UNREADABLE"],
+    ],
+  );
+
   process.stdout.write(
     "Batch CLI verified: bounded workers, failure isolation, crash recovery, deterministic retries, and artifact validation\n",
   );
