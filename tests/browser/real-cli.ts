@@ -141,7 +141,7 @@ try {
   assert.deepEqual(scene.execution, {
     adapter: "webgl",
     producesVideo: true,
-    frameTransport: "jpeg_pipe",
+    frameTransport: "png_pipe",
   });
   assert.ok(scene.renderScene);
   assert.equal(scene.model?.adapter, "fake");

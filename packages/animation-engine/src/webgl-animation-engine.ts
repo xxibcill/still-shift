@@ -36,7 +36,7 @@ const execFileAsync = promisify(execFile);
 const projectRoot = resolve(import.meta.dirname, "../../..");
 const PIPELINE_VERSION = "animation-pipeline-0.10.0";
 export const resolveFrameTransport = (): "png_pipe" | "jpeg_pipe" => {
-  const value = process.env.STILL_SHIFT_FRAME_TRANSPORT ?? "jpeg_pipe";
+  const value = process.env.STILL_SHIFT_FRAME_TRANSPORT ?? "png_pipe";
   if (value !== "png_pipe" && value !== "jpeg_pipe")
     throw new AnimationEngineError("SCENE_INVALID", "Unknown frame transport", {
       value,
