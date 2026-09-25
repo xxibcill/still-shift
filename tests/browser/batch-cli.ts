@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { execFile } from "node:child_process";
 import {
+  copyFile,
   mkdir,
   mkdtemp,
   readFile,
@@ -22,7 +23,10 @@ const manifestPath = join(directory, "batch.jsonl");
 const outputDir = join(directory, "outputs");
 const cliPath = resolve("node_modules/.bin/tsx");
 
-const runBatch = async () => {
+const runBatch = async (
+  batchManifestPath = manifestPath,
+  batchOutputDir = outputDir,
+) => {
   try {
     const { stdout } = await execFileAsync(
       cliPath,
@@ -30,9 +34,9 @@ const runBatch = async () => {
         "tools/still-shift-cli/src/cli.ts",
         "batch",
         "--manifest",
-        manifestPath,
+        batchManifestPath,
         "--output-dir",
-        outputDir,
+        batchOutputDir,
         "--concurrency",
         "2",
       ],
@@ -199,6 +203,30 @@ try {
     .map((line) => JSON.parse(line));
   assert.equal(damagedRecords[0].error.code, "OUTPUT_VALIDATION_FAILED");
   assert.equal(damagedRecords[2].reused, true);
+
+  const recoverySourcePath = join(directory, "recover.png");
+  const recoveryManifestPath = join(directory, "recover.jsonl");
+  const recoveryOutputDir = join(directory, "recover-outputs");
+  await writeFile(recoverySourcePath, "not a PNG");
+  await writeFile(
+    recoveryManifestPath,
+    `${JSON.stringify({ id: "recover", inputPath: "recover.png" })}\n`,
+  );
+  const failedSource = await runBatch(recoveryManifestPath, recoveryOutputDir);
+  assert.equal(failedSource.exitCode, 1);
+  assert.equal(failedSource.summary.failed, 1);
+  const recoveryPendingPath = join(
+    recoveryOutputDir,
+    ".batch-checkpoints",
+    "recover.pending.json",
+  );
+  await readFile(recoveryPendingPath);
+  await copyFile(sourcePath, recoverySourcePath);
+  const fixedSource = await runBatch(recoveryManifestPath, recoveryOutputDir);
+  assert.equal(fixedSource.exitCode, 0);
+  assert.equal(fixedSource.summary.successful, 1);
+  assert.equal(fixedSource.summary.reused, 0);
+  await assert.rejects(() => readFile(recoveryPendingPath), { code: "ENOENT" });
   process.stdout.write(
     "Batch CLI verified: bounded workers, failure isolation, crash recovery, deterministic retries, and artifact validation\n",
   );

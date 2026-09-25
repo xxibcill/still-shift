@@ -1,5 +1,12 @@
 import { createHash, randomUUID } from "node:crypto";
-import { readFile, mkdir, rename, rm, writeFile } from "node:fs/promises";
+import {
+  lstat,
+  readFile,
+  mkdir,
+  rename,
+  rm,
+  writeFile,
+} from "node:fs/promises";
 import { basename, dirname, join, resolve } from "node:path";
 import { performance } from "node:perf_hooks";
 
@@ -115,6 +122,16 @@ const pendingItem = async (path: string): Promise<PendingItem | null> => {
       },
     );
   return value as PendingItem;
+};
+
+const pathExists = async (path: string): Promise<boolean> => {
+  try {
+    await lstat(path);
+    return true;
+  } catch (error) {
+    if ((error as NodeJS.ErrnoException).code === "ENOENT") return false;
+    throw error;
+  }
 };
 
 const quarantinePendingArtifacts = async (
@@ -316,16 +333,25 @@ const runItem = async (
     const currentSourceHash = await sourceHash(request.inputPath);
     const pending = await pendingItem(pendingPath);
     if (pending) {
+      const hasPublishedArtifacts =
+        (await pathExists(request.outputPath)) ||
+        (await pathExists(`${request.outputPath}.scene.json`));
       if (
-        pending.requestHash !== requestHash ||
-        pending.sourceHash !== currentSourceHash
+        hasPublishedArtifacts &&
+        (pending.requestHash !== requestHash ||
+          pending.sourceHash !== currentSourceHash)
       )
         throw new AnimationEngineError(
           "SCENE_INVALID",
           "Batch item changed during an interrupted render",
           { id: item.id },
         );
-      await quarantinePendingArtifacts(request.outputPath, outputDir, item.id);
+      if (hasPublishedArtifacts)
+        await quarantinePendingArtifacts(
+          request.outputPath,
+          outputDir,
+          item.id,
+        );
     }
     await atomicJson(pendingPath, {
       requestHash,
