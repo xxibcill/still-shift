@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { createHash } from "node:crypto";
 import { mkdtemp, readFile, readdir, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
@@ -7,7 +8,10 @@ import {
   fallback2DScene,
   resolvePreviewScene,
 } from "../../packages/renderer-core/src/index.ts";
-import { exportScene } from "../../tools/export-worker/src/export-worker.ts";
+import {
+  exportScene,
+  processTreeRssBytes,
+} from "../../tools/export-worker/src/export-worker.ts";
 
 const sourceSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256">
   <rect width="256" height="256" fill="#161616"/>
@@ -21,11 +25,19 @@ const depthSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="256" height="25
 
 const directory = await mkdtemp(join(tmpdir(), "still-shift-export-test-"));
 try {
+  assert.equal(
+    processTreeRssBytes(
+      "100 1 4000 node\n101 100 2000 chromium\n102 101 3000 helper\n103 100 500 ffmpeg\n104 100 100 ps\n200 1 9999 unrelated\n",
+      100,
+      4_000_000,
+    ),
+    4_000_000 + 5_500 * 1024,
+  );
   const sourcePath = join(directory, "source.svg");
   const depthPath = join(directory, "depth.svg");
   await writeFile(sourcePath, sourceSvg);
   await writeFile(depthPath, depthSvg);
-  const scene = resolvePreviewScene({
+  const sceneInput = {
     sourceWidth: 256,
     sourceHeight: 256,
     depthWidth: 256,
@@ -37,7 +49,8 @@ try {
     preset: "horizontal_drift",
     intensity: "standard",
     seed: 1842,
-  });
+  } as const;
+  const scene = resolvePreviewScene(sceneInput);
   const firstPath = join(directory, "first.mp4");
   const first = await exportScene({
     scene,
@@ -47,8 +60,66 @@ try {
   });
   assert.equal(first.frameCount, 90);
   assert.equal(first.durationMs, 3000);
+  assert.equal(first.sceneManifestPath, `${firstPath}.scene.json`);
+  assert.equal(
+    first.sourceChecksum,
+    `sha256:${createHash("sha256")
+      .update(await readFile(sourcePath))
+      .digest("hex")}`,
+  );
+  assert.equal(
+    first.depthChecksum,
+    `sha256:${createHash("sha256")
+      .update(await readFile(depthPath))
+      .digest("hex")}`,
+  );
+  const firstScene = await readFile(first.sceneManifestPath, "utf8");
+  assert.deepEqual(JSON.parse(firstScene), {
+    schemaVersion: "0.6",
+    sourceChecksum: first.sourceChecksum,
+    depthChecksum: first.depthChecksum,
+    scene,
+  });
+  assert.equal(
+    first.sceneChecksum,
+    `sha256:${createHash("sha256").update(firstScene).digest("hex")}`,
+  );
   assert.ok(first.outputBytes > 0);
+  assert.ok(first.frameUploadAverageMs > 0);
+  assert.ok(first.frameUploadP95Ms > 0);
+  assert.ok(first.ffmpegCpuMs > 0);
+  assert.ok(first.encodePathWallMs > 0);
+  assert.ok(first.validationWallMs > 0);
+  assert.ok(first.peakParentRssBytes > 0);
+  assert.ok(first.cpuModel.length > 0);
+  assert.ok(first.cpuLogicalCores > 0);
+  if (first.peakSampledProcessTreeRssBytes !== null) {
+    assert.ok(first.peakSampledProcessTreeRssBytes > first.peakParentRssBytes);
+  }
   assert.equal((await readFile(firstPath)).length, first.outputBytes);
+  assert.equal(
+    first.outputChecksum,
+    `sha256:${createHash("sha256")
+      .update(await readFile(firstPath))
+      .digest("hex")}`,
+  );
+
+  const fiveSecondScene = resolvePreviewScene({
+    ...sceneInput,
+    durationMs: 5000,
+    canvasWidth: 1920,
+    canvasHeight: 1080,
+  });
+  const fiveSecond = await exportScene({
+    scene: fiveSecondScene,
+    sourcePath,
+    depthPath,
+    outputPath: join(directory, "five-seconds.mp4"),
+  });
+  assert.equal(fiveSecond.frameCount, 150);
+  assert.equal(fiveSecond.durationMs, 5000);
+  assert.equal(fiveSecond.width, 1920);
+  assert.equal(fiveSecond.height, 1080);
 
   const second = await exportScene({
     scene,
@@ -62,6 +133,7 @@ try {
     await readFile(join(directory, "second.mp4")),
     await readFile(firstPath),
   );
+  assert.equal(await readFile(second.sceneManifestPath, "utf8"), firstScene);
 
   const raw = await exportScene({
     scene,
@@ -95,6 +167,7 @@ try {
   });
   assert.equal(fallbackMetrics.frameCount, 90);
   assert.ok(fallbackMetrics.outputBytes > 0);
+  assert.equal(fallbackMetrics.depthChecksum, null);
 
   const missingOutput = join(directory, "missing.mp4");
   await assert.rejects(
@@ -106,6 +179,9 @@ try {
     }),
   );
   await assert.rejects(readFile(missingOutput), { code: "ENOENT" });
+  await assert.rejects(readFile(`${missingOutput}.scene.json`), {
+    code: "ENOENT",
+  });
   const existingPath = join(directory, "existing.mp4");
   await writeFile(existingPath, "existing output");
   await assert.rejects(
@@ -113,13 +189,32 @@ try {
     /Output already exists/,
   );
   assert.equal(await readFile(existingPath, "utf8"), "existing output");
+  await assert.rejects(readFile(`${existingPath}.scene.json`), {
+    code: "ENOENT",
+  });
+  const existingManifestOutput = join(directory, "existing-manifest.mp4");
+  const existingManifestPath = `${existingManifestOutput}.scene.json`;
+  await writeFile(existingManifestPath, "existing manifest");
+  await assert.rejects(
+    exportScene({
+      scene,
+      sourcePath,
+      depthPath,
+      outputPath: existingManifestOutput,
+    }),
+    /Scene manifest already exists/,
+  );
   assert.equal(
-    (await readdir(directory)).filter((path) => path.includes(".tmp.mp4"))
-      .length,
+    await readFile(existingManifestPath, "utf8"),
+    "existing manifest",
+  );
+  await assert.rejects(readFile(existingManifestOutput), { code: "ENOENT" });
+  assert.equal(
+    (await readdir(directory)).filter((path) => path.includes(".tmp.")).length,
     0,
   );
   process.stdout.write(
-    `Export verified: 90 exact frames, three frame transports, 2D fallback, and failed-output cleanup\n`,
+    `Export verified: 150 frames at 1080p, 90-frame transport checks, 2D fallback, and failed-output cleanup\n`,
   );
 } finally {
   await rm(directory, { recursive: true, force: true });

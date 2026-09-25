@@ -1,16 +1,18 @@
 import { spawn, execFile } from "node:child_process";
 import { createReadStream } from "node:fs";
-import { link, mkdir, rm, stat } from "node:fs/promises";
+import { link, mkdir, rm, stat, writeFile } from "node:fs/promises";
 import type { IncomingMessage, ServerResponse } from "node:http";
+import { availableParallelism, cpus } from "node:os";
 import { basename, dirname, extname, resolve } from "node:path";
 import { performance } from "node:perf_hooks";
-import { randomUUID } from "node:crypto";
+import { createHash, randomUUID } from "node:crypto";
 import { promisify } from "node:util";
 
 import { chromium, type Browser } from "playwright";
 import { createServer, type Plugin, type ViteDevServer } from "vite";
 
 import type { PreviewScene } from "../../../packages/renderer-core/src/scene.ts";
+import { assertNever, type FrameTransport } from "./transport.ts";
 
 const execFileAsync = promisify(execFile);
 const projectRoot = resolve(import.meta.dirname, "../../..");
@@ -22,58 +24,49 @@ export type ExportRequest = {
   depthPath: string | null;
   outputPath: string;
   encoder?: "libx264" | "h264_videotoolbox";
-  transport?: "raw_rgba" | "png_pipe" | "jpeg_pipe";
+  transport?: FrameTransport;
 };
 
 export type ExportMetrics = {
   version: typeof EXPORT_WORKER_VERSION;
+  sceneManifestPath: string;
+  sceneChecksum: string;
+  sourceChecksum: string;
+  depthChecksum: string | null;
   frameCount: number;
   width: number;
   height: number;
   durationMs: number;
   frameRenderAverageMs: number;
   frameRenderP95Ms: number;
-  encodeMs: number;
+  frameUploadAverageMs: number;
+  frameUploadP95Ms: number;
+  ffmpegCpuMs: number;
+  encodePathWallMs: number;
+  validationWallMs: number;
   totalWallMs: number;
   outputBytes: number;
-  peakCpuMemoryBytes: number;
+  outputChecksum: string;
+  peakParentRssBytes: number;
+  peakSampledProcessTreeRssBytes: number | null;
+  cpuModel: string;
+  cpuLogicalCores: number;
   browserVersion: string;
   browserExecutable: string;
   gpuRenderer: string;
   ffmpegVersion: string;
   ffmpegCodec: string;
-  frameTransport: "raw_rgba" | "png_pipe" | "jpeg_pipe";
+  frameTransport: FrameTransport;
 };
 
-const ffmpegArguments = (
-  scene: PreviewScene,
-  temporaryPath: string,
-  encoder: "libx264" | "h264_videotoolbox",
-  transport: "raw_rgba" | "png_pipe" | "jpeg_pipe",
-) => [
-  "-hide_banner",
-  "-loglevel",
-  "error",
-  "-f",
-  transport === "raw_rgba" ? "rawvideo" : "image2pipe",
-  ...(transport === "raw_rgba"
-    ? [
-        "-pixel_format",
-        "rgba",
-        "-video_size",
-        `${scene.canvas.width}x${scene.canvas.height}`,
-      ]
-    : ["-vcodec", transport === "png_pipe" ? "png" : "mjpeg"]),
-  "-framerate",
-  String(scene.timeline.fps),
-  "-i",
-  "pipe:0",
-  ...(transport === "raw_rgba"
-    ? ["-vf", "vflip"]
-    : transport === "jpeg_pipe"
-      ? ["-vf", "scale=in_range=pc:out_range=tv,format=yuv420p"]
-      : []),
-  "-an",
+export type ExportSceneManifest = {
+  schemaVersion: "0.6";
+  sourceChecksum: string;
+  depthChecksum: string | null;
+  scene: PreviewScene;
+};
+
+const codecArguments = (encoder: "libx264" | "h264_videotoolbox") => [
   "-c:v",
   encoder,
   ...(encoder === "libx264"
@@ -93,9 +86,123 @@ const ffmpegArguments = (
   "h264_metadata=colour_primaries=1:transfer_characteristics=1:matrix_coefficients=1",
   "-movflags",
   "+faststart",
-  "-y",
-  temporaryPath,
 ];
+
+const frameTransportArguments = (
+  scene: PreviewScene,
+  transport: FrameTransport,
+): { input: string[]; filter: string[] } => {
+  switch (transport) {
+    case "raw_rgba":
+      return {
+        input: [
+          "-f",
+          "rawvideo",
+          "-pixel_format",
+          "rgba",
+          "-video_size",
+          `${scene.canvas.width}x${scene.canvas.height}`,
+        ],
+        filter: ["-vf", "vflip"],
+      };
+    case "png_pipe":
+      return {
+        input: ["-f", "image2pipe", "-vcodec", "png"],
+        filter: [],
+      };
+    case "jpeg_pipe":
+      return {
+        input: ["-f", "image2pipe", "-vcodec", "mjpeg"],
+        filter: ["-vf", "scale=in_range=pc:out_range=tv,format=yuv420p"],
+      };
+    default:
+      return assertNever(transport);
+  }
+};
+
+const ffmpegArguments = (
+  scene: PreviewScene,
+  temporaryPath: string,
+  encoder: "libx264" | "h264_videotoolbox",
+  transport: FrameTransport,
+) => {
+  const transportArguments = frameTransportArguments(scene, transport);
+  return [
+    "-hide_banner",
+    "-loglevel",
+    "info",
+    "-nostats",
+    "-benchmark",
+    ...transportArguments.input,
+    "-framerate",
+    String(scene.timeline.fps),
+    "-i",
+    "pipe:0",
+    ...transportArguments.filter,
+    "-an",
+    ...codecArguments(encoder),
+    "-y",
+    temporaryPath,
+  ];
+};
+
+const ffmpegCpuTimeMs = (output: string): number => {
+  const benchmark = output.match(
+    /bench:\s+utime=([\d.]+)s stime=([\d.]+)s rtime=[\d.]+s/,
+  );
+  if (!benchmark) throw new Error("FFmpeg did not report CPU time");
+  return (Number(benchmark[1]) + Number(benchmark[2])) * 1000;
+};
+
+const fileChecksum = async (path: string): Promise<string> => {
+  const hash = createHash("sha256");
+  for await (const chunk of createReadStream(path)) hash.update(chunk);
+  return `sha256:${hash.digest("hex")}`;
+};
+
+const contentChecksum = (content: string): string =>
+  `sha256:${createHash("sha256").update(content).digest("hex")}`;
+
+export const processTreeRssBytes = (
+  processList: string,
+  rootPid: number,
+  rootRssBytes: number,
+): number => {
+  const children = new Map<number, { pid: number; rssBytes: number }[]>();
+  for (const line of processList.split("\n")) {
+    const match = line.match(/^\s*(\d+)\s+(\d+)\s+(\d+)\s+(.+)$/);
+    if (!match || basename(match[4]!) === "ps") continue;
+    const pid = Number(match[1]);
+    const parentPid = Number(match[2]);
+    const rssBytes = Number(match[3]) * 1024;
+    const siblings = children.get(parentPid) ?? [];
+    siblings.push({ pid, rssBytes });
+    children.set(parentPid, siblings);
+  }
+  let total = rootRssBytes;
+  const visited = new Set([rootPid]);
+  const pending = [rootPid];
+  while (pending.length > 0) {
+    for (const child of children.get(pending.pop()!) ?? []) {
+      if (visited.has(child.pid)) continue;
+      visited.add(child.pid);
+      total += child.rssBytes;
+      pending.push(child.pid);
+    }
+  }
+  return total;
+};
+
+const sampleProcessTreeRssBytes = async (
+  rootRssBytes: number,
+): Promise<number> => {
+  const { stdout } = await execFileAsync(
+    "ps",
+    ["-A", "-o", "pid=,ppid=,rss=,comm="],
+    { maxBuffer: 4 * 1024 * 1024 },
+  );
+  return processTreeRssBytes(stdout, process.pid, rootRssBytes);
+};
 
 const readBodyToEncoder = async (
   request: IncomingMessage,
@@ -271,16 +378,27 @@ export const exportScene = async (
   if (scene.motion.mode === "depth" && !request.depthPath)
     throw new Error("Depth motion requires a depth image");
   const outputPath = resolve(request.outputPath);
+  const sceneManifestPath = `${outputPath}.scene.json`;
+  const exportId = randomUUID();
   const temporaryPath = resolve(
     dirname(outputPath),
-    `.${basename(outputPath)}.${randomUUID()}.tmp.mp4`,
+    `.${basename(outputPath)}.${exportId}.tmp.mp4`,
+  );
+  const temporaryScenePath = resolve(
+    dirname(outputPath),
+    `.${basename(outputPath)}.${exportId}.scene.tmp.json`,
   );
   await mkdir(dirname(outputPath), { recursive: true });
-  try {
-    await stat(outputPath);
-    throw new Error("Output already exists");
-  } catch (error) {
-    if ((error as NodeJS.ErrnoException).code !== "ENOENT") throw error;
+  for (const [path, label] of [
+    [outputPath, "Output"],
+    [sceneManifestPath, "Scene manifest"],
+  ] as const) {
+    try {
+      await stat(path);
+      throw new Error(`${label} already exists`);
+    } catch (error) {
+      if ((error as NodeJS.ErrnoException).code !== "ENOENT") throw error;
+    }
   }
   const ffmpegVersion = (
     await execFileAsync("ffmpeg", ["-version"])
@@ -314,14 +432,33 @@ export const exportScene = async (
       : null;
   let server: ViteDevServer | undefined;
   let browser: Browser | undefined;
-  let encodeStart = 0;
-  let peakCpuMemoryBytes = process.memoryUsage().rss;
-  const memoryMonitor = setInterval(() => {
-    peakCpuMemoryBytes = Math.max(
-      peakCpuMemoryBytes,
-      process.memoryUsage().rss,
-    );
-  }, 100);
+  let encodePathStart = 0;
+  let peakParentRssBytes = process.memoryUsage().rss;
+  let peakSampledProcessTreeRssBytes: number | null = null;
+  let memorySample: Promise<void> | null = null;
+  let published = false;
+  let scenePublished = false;
+  const sampleMemory = (): Promise<void> => {
+    if (memorySample) return memorySample;
+    memorySample = (async () => {
+      const parentRssBytes = process.memoryUsage().rss;
+      peakParentRssBytes = Math.max(peakParentRssBytes, parentRssBytes);
+      try {
+        const treeRssBytes = await sampleProcessTreeRssBytes(parentRssBytes);
+        peakSampledProcessTreeRssBytes = Math.max(
+          peakSampledProcessTreeRssBytes ?? 0,
+          treeRssBytes,
+        );
+      } catch {
+        // Export remains usable when OS process accounting is unavailable.
+      }
+    })().finally(() => {
+      memorySample = null;
+    });
+    return memorySample;
+  };
+  const memoryMonitor = setInterval(() => void sampleMemory(), 500);
+  void sampleMemory();
   try {
     server = await createServer({
       root: projectRoot,
@@ -338,7 +475,7 @@ export const exportScene = async (
     });
     await page.goto(new URL("tools/export-worker/index.html", baseUrl).href);
     await page.waitForFunction(() => Boolean(window.runStillShiftExport));
-    encodeStart = performance.now();
+    encodePathStart = performance.now();
     const browserResult = await page.evaluate(
       ({ scene, hasDepth, transport }) =>
         window.runStillShiftExport!(scene, hasDepth, transport),
@@ -349,39 +486,89 @@ export const exportScene = async (
       throw new Error("Not all frames reached the encoder");
     encoder.stdin?.end();
     await encoderClosed;
+    await sampleMemory();
+    const validationStart = performance.now();
     await verifyOutput(temporaryPath, scene);
+    const validationWallMs = performance.now() - validationStart;
     const outputBytes = (await stat(temporaryPath)).size;
+    const outputChecksum = await fileChecksum(temporaryPath);
+    const sourceChecksum = await fileChecksum(request.sourcePath);
+    const depthChecksum = request.depthPath
+      ? await fileChecksum(request.depthPath)
+      : null;
+    const sceneManifest: ExportSceneManifest = {
+      schemaVersion: "0.6",
+      sourceChecksum,
+      depthChecksum,
+      scene,
+    };
+    const serializedScene = `${JSON.stringify(sceneManifest, null, 2)}\n`;
+    const sceneChecksum = contentChecksum(serializedScene);
+    await writeFile(temporaryScenePath, serializedScene, { flag: "wx" });
     const metrics: ExportMetrics = {
       version: EXPORT_WORKER_VERSION,
+      sceneManifestPath,
+      sceneChecksum,
+      sourceChecksum,
+      depthChecksum,
       frameCount: scene.timeline.frameCount,
       width: scene.canvas.width,
       height: scene.canvas.height,
       durationMs: scene.timeline.durationMs,
       frameRenderAverageMs: browserResult.frameRenderAverageMs,
       frameRenderP95Ms: browserResult.frameRenderP95Ms,
-      encodeMs: performance.now() - encodeStart,
+      frameUploadAverageMs: browserResult.frameUploadAverageMs,
+      frameUploadP95Ms: browserResult.frameUploadP95Ms,
+      ffmpegCpuMs: ffmpegCpuTimeMs(encoderError),
+      encodePathWallMs: performance.now() - encodePathStart,
+      validationWallMs,
       totalWallMs: performance.now() - start,
       outputBytes,
-      peakCpuMemoryBytes,
+      outputChecksum,
+      peakParentRssBytes,
+      peakSampledProcessTreeRssBytes,
+      cpuModel: cpus()[0]?.model ?? "unknown",
+      cpuLogicalCores: availableParallelism(),
       browserVersion: browser.version(),
       browserExecutable: chromium.executablePath(),
       gpuRenderer: browserResult.gpuRenderer,
       ffmpegVersion,
-      ffmpegCodec:
-        encoderName === "libx264"
-          ? "libx264 veryfast crf18 yuv420p bt709 faststart"
-          : "h264_videotoolbox 8M realtime yuv420p bt709 faststart",
+      ffmpegCodec: codecArguments(encoderName).join(" "),
       frameTransport: transport,
     };
+    clearInterval(memoryMonitor);
+    await memorySample;
+    await browser.close();
+    browser = undefined;
+    await server.close();
+    server = undefined;
+    await link(temporaryScenePath, sceneManifestPath);
+    scenePublished = true;
     await link(temporaryPath, outputPath);
+    published = true;
     return metrics;
   } catch (error) {
     encoder.kill("SIGKILL");
     throw error;
   } finally {
     clearInterval(memoryMonitor);
-    await browser?.close();
-    await server?.close();
-    await rm(temporaryPath, { force: true });
+    const cleanup = await Promise.allSettled([
+      published ? null : memorySample,
+      published ? null : browser?.close(),
+      published ? null : server?.close(),
+      rm(temporaryPath, { force: true }),
+      rm(temporaryScenePath, { force: true }),
+      scenePublished && !published
+        ? rm(sceneManifestPath, { force: true })
+        : null,
+    ]);
+    const cleanupErrors = cleanup.flatMap((result) =>
+      result.status === "rejected" ? [result.reason] : [],
+    );
+    if (cleanupErrors.length > 0) {
+      for (const error of cleanupErrors) {
+        process.stderr.write(`Export cleanup failed: ${String(error)}\n`);
+      }
+    }
   }
 };
