@@ -37,7 +37,7 @@ try {
   const depthPath = join(directory, "depth.svg");
   await writeFile(sourcePath, sourceSvg);
   await writeFile(depthPath, depthSvg);
-  const scene = resolvePreviewScene({
+  const sceneInput = {
     sourceWidth: 256,
     sourceHeight: 256,
     depthWidth: 256,
@@ -49,7 +49,8 @@ try {
     preset: "horizontal_drift",
     intensity: "standard",
     seed: 1842,
-  });
+  } as const;
+  const scene = resolvePreviewScene(sceneInput);
   const firstPath = join(directory, "first.mp4");
   const first = await exportScene({
     scene,
@@ -102,6 +103,23 @@ try {
       .update(await readFile(firstPath))
       .digest("hex")}`,
   );
+
+  const fiveSecondScene = resolvePreviewScene({
+    ...sceneInput,
+    durationMs: 5000,
+    canvasWidth: 1920,
+    canvasHeight: 1080,
+  });
+  const fiveSecond = await exportScene({
+    scene: fiveSecondScene,
+    sourcePath,
+    depthPath,
+    outputPath: join(directory, "five-seconds.mp4"),
+  });
+  assert.equal(fiveSecond.frameCount, 150);
+  assert.equal(fiveSecond.durationMs, 5000);
+  assert.equal(fiveSecond.width, 1920);
+  assert.equal(fiveSecond.height, 1080);
 
   const second = await exportScene({
     scene,
@@ -196,7 +214,7 @@ try {
     0,
   );
   process.stdout.write(
-    `Export verified: 90 exact frames, three frame transports, 2D fallback, and failed-output cleanup\n`,
+    `Export verified: 150 frames at 1080p, 90-frame transport checks, 2D fallback, and failed-output cleanup\n`,
   );
 } finally {
   await rm(directory, { recursive: true, force: true });
