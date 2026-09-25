@@ -3,6 +3,12 @@ import type {
   PreparedNode,
   PreparedPath,
 } from "../../scene-contract/src/prepared.ts";
+import type { CinematicScene } from "../../scene-contract/src/cinematic.ts";
+import {
+  compileCinematicScene,
+  projectCinematicNode,
+  type CinematicRenderScene,
+} from "./cinematic-scene.ts";
 
 export const ILLUSTRATED_RENDERER_VERSION = "illustrated-canvas-0.12.0";
 type Key = { time: number; value: number; step?: boolean };
@@ -18,13 +24,14 @@ type Property =
   | "state"
   | "pulse";
 type Tracks = Partial<Record<Property, Key[]>>;
-export type IllustratedScene = PreparedScene & {
+export type LegacyIllustratedScene = PreparedScene & {
   rendererVersion: typeof ILLUSTRATED_RENDERER_VERSION;
   canvas: { width: number; height: number };
   timeline: { fps: number; durationMs: number; frameCount: number };
   tracks: Record<string, Tracks>;
   followers: Record<string, { path: string; keys: Key[] }>;
 };
+export type IllustratedScene = LegacyIllustratedScene | CinematicRenderScene;
 export const sampleTrack = (keys: Key[], time: number): number => {
   if (time <= keys[0]!.time) return keys[0]!.value;
   for (let i = 1; i < keys.length; i++) {
@@ -65,8 +72,21 @@ export const pointOnPath = (
   return path.points.at(-1)!;
 };
 
-export function compilePreparedScene(input: PreparedScene): IllustratedScene {
-  const scene: IllustratedScene = {
+export function compilePreparedScene(
+  input: PreparedScene,
+): LegacyIllustratedScene;
+export function compilePreparedScene(
+  input: CinematicScene,
+): CinematicRenderScene;
+export function compilePreparedScene(
+  input: PreparedScene | CinematicScene,
+): IllustratedScene;
+export function compilePreparedScene(
+  input: PreparedScene | CinematicScene,
+): IllustratedScene {
+  if (input.schemaVersion === "illustrated-scene-2")
+    return compileCinematicScene(input);
+  const scene: LegacyIllustratedScene = {
     ...input,
     rendererVersion: ILLUSTRATED_RENDERER_VERSION,
     canvas: { width: input.width, height: input.height },
@@ -276,6 +296,18 @@ export function evaluatePreparedNode(
     state: 0,
     pulse: 0,
   };
+  if (scene.schemaVersion === "illustrated-scene-2") {
+    if (node.type !== "image")
+      throw new Error("Cinematic plane must be an image");
+    const projected = projectCinematicNode(scene, node, frame);
+    return {
+      ...state,
+      x: projected.left + (projected.scale - 1) * node.width * node.origin[0],
+      y: projected.top + (projected.scale - 1) * node.height * node.origin[1],
+      scaleX: projected.scale,
+      scaleY: projected.scale,
+    };
+  }
   const tracks = Object.hasOwn(scene.tracks, node.id)
     ? scene.tracks[node.id]!
     : {};

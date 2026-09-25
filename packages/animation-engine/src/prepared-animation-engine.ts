@@ -4,8 +4,9 @@ import { dirname, resolve } from "node:path";
 import { imageSize } from "image-size";
 import {
   AnimationEngineError,
-  PreparedSceneSchema,
+  PreparedSceneInputSchema,
   PreparedAnimationResultSchema,
+  CinematicAnimationResultSchema,
 } from "@still-shift/scene-contract";
 import { compilePreparedScene } from "../../renderer-core/src/prepared-scene.ts";
 import { exportScene } from "../../../tools/export-worker/src/export-worker.ts";
@@ -32,9 +33,18 @@ export async function loadPreparedScene(scenePath: string) {
       "Prepared scene must be valid JSON",
     );
   }
-  const parsed = PreparedSceneSchema.safeParse(value);
+  const parsed = PreparedSceneInputSchema.safeParse(value);
   if (!parsed.success)
     throw new AnimationEngineError("SCENE_INVALID", parsed.error.message);
+  let scene: ReturnType<typeof compilePreparedScene>;
+  try {
+    scene = compilePreparedScene(parsed.data);
+  } catch (error) {
+    throw new AnimationEngineError(
+      "SCENE_INVALID",
+      error instanceof Error ? error.message : String(error),
+    );
+  }
   const assetPaths: Record<string, string> = {};
   for (const asset of parsed.data.assets) {
     const path = resolve(dirname(absolute), asset.path);
@@ -69,7 +79,7 @@ export async function loadPreparedScene(scenePath: string) {
     assetPaths[asset.id] = path;
   }
   return {
-    scene: compilePreparedScene(parsed.data),
+    scene,
     assetPaths,
     sourceChecksum: hash(bytes),
   };
@@ -92,8 +102,11 @@ export class PreparedAnimationEngine {
         if ((error as NodeJS.ErrnoException).code !== "ENOENT") throw error;
       }
     }
+    const cinematic = prepared.scene.schemaVersion === "illustrated-scene-2";
     const manifest = {
-      schemaVersion: "illustrated-render-1",
+      schemaVersion: cinematic
+        ? "illustrated-render-2"
+        : "illustrated-render-1",
       sourcePath: resolve(request.scenePath),
       sourceChecksum: prepared.sourceChecksum,
       scene: prepared.scene,
@@ -109,8 +122,13 @@ export class PreparedAnimationEngine {
       transport: "png_pipe",
     });
     await writeFile(sceneManifestPath, manifestBytes, { flag: "wx" });
-    const result = PreparedAnimationResultSchema.parse({
-      schemaVersion: "illustrated-result-1",
+    const resultSchema = cinematic
+      ? CinematicAnimationResultSchema
+      : PreparedAnimationResultSchema;
+    const result = resultSchema.parse({
+      schemaVersion: cinematic
+        ? "illustrated-result-2"
+        : "illustrated-result-1",
       status: "rendered",
       preset: prepared.scene.recipe.preset,
       fps: prepared.scene.fps,
@@ -124,6 +142,9 @@ export class PreparedAnimationEngine {
         output: hash(await readFile(outputPath)),
       },
       metrics,
+      ...(prepared.scene.schemaVersion === "illustrated-scene-2"
+        ? { cameraValidation: prepared.scene.cameraValidation }
+        : {}),
     });
     await writeFile(resultPath, JSON.stringify(result, null, 2) + "\n", {
       flag: "wx",

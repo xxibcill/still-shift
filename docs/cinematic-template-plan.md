@@ -2,7 +2,7 @@
 
 **Date:** 2026-09-25
 
-**Status:** Planning complete; proposed templates are not implemented.
+**Status:** First milestone implemented: shared plane camera and CI-09 Layered Parallax, with two verified compositions. [Implementation and review clip](./cinematic-parallax-implementation.md). The other eight templates remain planned.
 
 **Owner direction:** Commit the current work and plan additional templates that feel more cinematic, including parallax.
 
@@ -28,6 +28,8 @@ Keep the History Offstage visual foundation: expressive charcoal contours, warm 
 
 The [Layered Chronicle bible](</Users/jjae/Documents/obsidian/ai-business/history-offstage/02 Operations/Layered Chronicle Animation Style Bible.md>) supplies the linework, palette, three depth bands, fixed texture, and usual 2–4% parallax travel. Its current production grammar favors short purposeful moves and excludes shallow depth of field. The owner's new request establishes a cinematic exploration within Still Shift. Longer camera moves and the optional focus-softening test below are recorded as study variations; they do not silently revise the channel bible or approve an episode treatment.
 
+**2026-09-25 motion revision:** The owner found CI-09 too slow and requested heavier parallax plus research. The [research report](./parallax-motion-research.md) informed an implemented Dramatic strength: fivefold horizontal travel, earlier acceleration, longer deceleration, and a shorter opening/ending hold. The original numeric CI-09 bounds below describe Standard. Dramatic allows near travel 10–20% W, far travel up to 5% W, and vertical travel up to 2% H, subject to painted coverage, attached cut edges, and the same subject/scale/resolution checks. The delivered primary moves 300/50 px near/far. These are study authoring limits, not universal parallax rules.
+
 ## 2. Nine templates
 
 The bounds below are **initial design limits**, measured in the final 1920×1080 frame. They must shrink if the asset's valid painted area or protected subject needs it. Camera direction is authored for the scene's opening; random left/right alternation is not a design rule.
@@ -48,7 +50,7 @@ CI-01 and CI-05 reverse direction for different editorial purposes: entry versus
 
 ### Dedicated parallax controls
 
-Expose `layered_parallax` by name in the Cinematic collection. Require foreground, subject/middle, and background roles with distinct plane depths. Author a common camera direction and a subject anchor; provide restrained and standard strengths bounded by the painted plate. Foreground travel must visibly exceed background travel. With subject anchoring, near and far planes may move in opposite screen directions; their projection still comes from the same camera. Keep subject scale change ≤1%, no roll, and no automatic return loop. A single flattened pan is a labelled 2D fallback.
+Expose `layered_parallax` by name in the Cinematic collection. Require foreground, subject/middle, and background roles with distinct plane depths. Author a common camera direction and a subject anchor; provide restrained, standard, and dramatic strengths bounded by the painted plate. Foreground travel must visibly exceed background travel. With subject anchoring, near and far planes may move in opposite screen directions; their projection still comes from the same camera. Keep subject scale change ≤1%, no roll, and no automatic return loop. A single flattened pan is a labelled 2D fallback.
 
 CI-06 and CI-08 are later experiments in the build order. If focus softening destroys print texture, test an all-sharp attention handoff using authored light/value emphasis and report the result under a separate name. If the dolly-zoom cannot meet its bounds, keep it experimental and use the proven Threshold Push as an explicitly identified substitute. Never present a renamed fallback as a successful new template.
 
@@ -76,7 +78,7 @@ These kits are compositions, not sprite grids. Retain expressive irregular shape
 
 ## 4. Reusable camera and parallax support
 
-### What exists
+### Baseline before this milestone
 
 `illustrated-scene-1` already supplies alpha layers, groups, atlas crops, anchors, typed recipes, absolute-time tracks, and 24/30 fps export. Its current recipes animate layer properties directly. It has no shared camera, explicit layer depth, focus track, camera travel bounds, or painted-area validation.
 
@@ -134,7 +136,7 @@ No shot needs moving fog, particles, light leaks, or vignettes to qualify. Sound
 5. **Integration and QA:** real CLI exports, same lab preview, deterministic retries, source/asset hashes, fallback provenance, measured preparation and rendering costs.
 6. **One review:** a 63-second silent reel, nine clean full-frame shots, optional individual replay and external template labels. Add a small first/middle/last reference strip outside the video. Keep extra technical variations in the QA report.
 
-The dedicated Layered Parallax prototype is the next implementation step after camera support. This planning task does not generate or render the new source art.
+The dedicated Layered Parallax prototype and its original kit B art are now implemented. Threshold Push, Lateral Track, and Foreground Reveal are the next template work; see the [milestone report](./cinematic-parallax-implementation.md) for the exact supported scope.
 
 ## 7. Acceptance and measurement
 

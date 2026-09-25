@@ -22,7 +22,8 @@ are ready; creative acceptance remains pending.
 **Next creative direction:** The owner requested cinematic templates with parallax.
 The [nine-template plan](./docs/cinematic-template-plan.md) and
 [source prompt pack](./prompt-packs/cinematic-illustrated-still-animation-prompt-pack.md)
-are recorded. Camera/depth support and new source generation are planned work.
+are recorded. The [first cinematic milestone](./docs/cinematic-parallax-implementation.md)
+implements Layered Parallax, shared camera/depth support, and an original courtyard kit.
 
 ## Phase 0 outcome
 
@@ -47,20 +48,20 @@ When work begins, update the roadmap date, mark exactly one version as in progre
 
 ## Progress
 
-| Version | Deliverable                              |    Target | Status | Completion evidence                                                                                                    |
-| ------- | ---------------------------------------- | --------: | ------ | ---------------------------------------------------------------------------------------------------------------------- |
-| v0.1    | Foundation, contracts, and frozen corpus |     Day 1 | `[!]`  | [Foundation checks pass; real corpus freeze remains blocked](./docs/v0.1-verification.md)                              |
-| v0.2    | Reusable depth preparation               |  Days 2–3 | `[!]`  | [Depth worker merged; frozen-corpus review pending](./docs/v0.2-depth-preparation.md)                                  |
-| v0.3    | First animated preview                   |     Day 3 | `[!]`  | [Preview implemented; corpus-wide review pending](./docs/v0.3-first-preview.md)                                        |
-| v0.4    | Preset library and lab UI                |  Days 4–5 | `[!]`  | [Three presets implemented; frozen-corpus review pending](./docs/v0.4-preset-library.md)                               |
-| v0.5    | Safety analysis and 2D fallback          |     Day 6 | `[!]`  | [Safety implemented; frozen-corpus review pending](./docs/v0.5-safety-fallback.md)                                     |
-| v0.6    | Deterministic MP4 export                 |     Day 7 | `[!]`  | [1080p export passes; representative throughput gate pending](./docs/v0.6-mp4-export.md)                               |
-| v0.7    | Preview/export parity and golden tests   |     Day 7 | `[!]`  | [Five golden scenes pass; frozen-corpus review pending](./docs/v0.7-preview-export-parity.md)                          |
-| v0.8    | Single-image CLI integration             |     Day 8 | `[!]`  | [Real CLI and workflow candidate verified; frozen-corpus review pending](./docs/v0.8-single-image-cli.md)              |
-| v0.9    | Unattended batch execution               |     Day 8 | `[!]`  | [50-item technical batch passes; frozen-corpus gate pending](./docs/v0.9-unattended-batch.md)                          |
-| v0.10   | Evaluation release and Phase 1 decision  | Days 9–10 | `[!]`  | [Candidate gallery, 7.97-minute assembly, and gate report; human decision pending](./docs/v0.10-evaluation-release.md) |
-| v0.11   | Illustrated editorial preset trial       | Extension | `[!]`  | [Six presets implemented and verified; creative review pending](./docs/history-offstage-motion-implementation.md)      |
-| v0.12   | Cinematic illustrated template study     | Extension | `[ ]`  | [Nine templates planned, including layered parallax; implementation pending](./docs/cinematic-template-plan.md)        |
+| Version | Deliverable                              |    Target | Status | Completion evidence                                                                                                       |
+| ------- | ---------------------------------------- | --------: | ------ | ------------------------------------------------------------------------------------------------------------------------- |
+| v0.1    | Foundation, contracts, and frozen corpus |     Day 1 | `[!]`  | [Foundation checks pass; real corpus freeze remains blocked](./docs/v0.1-verification.md)                                 |
+| v0.2    | Reusable depth preparation               |  Days 2–3 | `[!]`  | [Depth worker merged; frozen-corpus review pending](./docs/v0.2-depth-preparation.md)                                     |
+| v0.3    | First animated preview                   |     Day 3 | `[!]`  | [Preview implemented; corpus-wide review pending](./docs/v0.3-first-preview.md)                                           |
+| v0.4    | Preset library and lab UI                |  Days 4–5 | `[!]`  | [Three presets implemented; frozen-corpus review pending](./docs/v0.4-preset-library.md)                                  |
+| v0.5    | Safety analysis and 2D fallback          |     Day 6 | `[!]`  | [Safety implemented; frozen-corpus review pending](./docs/v0.5-safety-fallback.md)                                        |
+| v0.6    | Deterministic MP4 export                 |     Day 7 | `[!]`  | [1080p export passes; representative throughput gate pending](./docs/v0.6-mp4-export.md)                                  |
+| v0.7    | Preview/export parity and golden tests   |     Day 7 | `[!]`  | [Five golden scenes pass; frozen-corpus review pending](./docs/v0.7-preview-export-parity.md)                             |
+| v0.8    | Single-image CLI integration             |     Day 8 | `[!]`  | [Real CLI and workflow candidate verified; frozen-corpus review pending](./docs/v0.8-single-image-cli.md)                 |
+| v0.9    | Unattended batch execution               |     Day 8 | `[!]`  | [50-item technical batch passes; frozen-corpus gate pending](./docs/v0.9-unattended-batch.md)                             |
+| v0.10   | Evaluation release and Phase 1 decision  | Days 9–10 | `[!]`  | [Candidate gallery, 7.97-minute assembly, and gate report; human decision pending](./docs/v0.10-evaluation-release.md)    |
+| v0.11   | Illustrated editorial preset trial       | Extension | `[!]`  | [Six presets implemented and verified; creative review pending](./docs/history-offstage-motion-implementation.md)         |
+| v0.12   | Cinematic illustrated template study     | Extension | `[~]`  | [Layered Parallax and camera foundation implemented; eight templates remain](./docs/cinematic-parallax-implementation.md) |
 
 ## Critical path
 
@@ -395,7 +396,7 @@ technical checks but was judged too basic by the owner. See the
 
 ## v0.12 — Cinematic illustrated template study
 
-**Status:** Plan recorded; implementation not started.
+**Status:** In progress; Layered Parallax and camera foundation implemented and technically verified. Creative review and the other eight templates remain.
 
 **Release outcome:** Nine full-frame illustrated shot templates built around
 camera staging, layered parallax, occlusion, and attention. See the
@@ -404,9 +405,13 @@ camera staging, layered parallax, occlusion, and attention. See the
 
 - [x] Define nine treatments, four reusable scene kits, source prompts, movement
       bounds, fallbacks, and creative/technical acceptance criteria.
-- [ ] Add versioned camera/depth-plane support, subject anchors, and painted-area checks.
-- [ ] Prove the dedicated **Layered Parallax** template first, then Threshold Push,
-      Lateral Track, and Foreground Reveal.
+- [x] Add versioned camera/depth-plane support, subject anchors, and painted-area checks.
+- [x] Implement **Layered Parallax** with two compositions, exact CLI export,
+      preview parity, 24/30 fps, and Dramatic/Standard/Restrained controls.
+- [x] Research stronger parallax and respond to the owner's slow-motion feedback
+      with a wider sweep, revised timing, and foreground cut-edge checks.
+- [ ] Obtain creative acceptance of the revised Layered Parallax prototype.
+- [ ] Prove Threshold Push, Lateral Track, and Foreground Reveal.
 - [ ] Add Rising Vista, Detail to World, and Curved Approach.
 - [ ] Evaluate Focus Handoff and Dolly-Zoom Tension with their specific quality checks.
 - [ ] Verify multiple compatible scenes per template, preview/export parity, and

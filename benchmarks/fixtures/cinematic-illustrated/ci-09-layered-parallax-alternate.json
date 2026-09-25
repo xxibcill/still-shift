@@ -1,0 +1,104 @@
+{
+  "title": "Layered Parallax · Across the courtyard",
+  "durationMs": 7000,
+  "fps": 24,
+  "width": 1920,
+  "height": 1080,
+  "background": "#E8DFC9",
+  "assets": [
+    {
+      "id": "background",
+      "path": "../../../assets/cinematic-illustrated/kit-b-courtyard/background.png",
+      "sha256": "sha256:b8b54ef7689d0f6f79ca055dae40147aa276b2ef07cd890df7e958a562b57b8c",
+      "width": 1672,
+      "height": 941
+    },
+    {
+      "id": "subject",
+      "path": "../../../assets/cinematic-illustrated/kit-b-courtyard/subject.png",
+      "sha256": "sha256:7b60ba9c79ab98058a6112da676bddead4b9f3c9191db83e1d15719b00f2b205",
+      "width": 1672,
+      "height": 941
+    },
+    {
+      "id": "foreground",
+      "path": "../../../assets/cinematic-illustrated/kit-b-courtyard/foreground.png",
+      "sha256": "sha256:8d5f54ef1ecad8a9ff90c4a3c9b19a9123d60f8477ecde98fd97c774a6b97f07",
+      "width": 1672,
+      "height": 941
+    }
+  ],
+  "nodes": [
+    {
+      "id": "background",
+      "x": -80,
+      "y": -45,
+      "width": 2080,
+      "height": 1170.622009569378,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "image",
+      "states": [{ "asset": "background", "crop": [0, 0, 1672, 941] }],
+      "fit": "stretch"
+    },
+    {
+      "id": "subject",
+      "x": 1000,
+      "y": 284.6650717703349,
+      "width": 398.0861244019139,
+      "height": 684.2105263157895,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "image",
+      "states": [{ "asset": "subject", "crop": [1045, 265, 320, 550] }],
+      "fit": "stretch"
+    },
+    {
+      "id": "foreground",
+      "x": -340,
+      "y": -45,
+      "width": 901.9138755980862,
+      "height": 1170.622009569378,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "image",
+      "states": [{ "asset": "foreground", "crop": [0, 0, 725, 941] }],
+      "fit": "stretch"
+    }
+  ],
+  "provenance": "../../../assets/cinematic-illustrated/kit-b-courtyard/provenance.json",
+  "schemaVersion": "illustrated-scene-2",
+  "layers": [
+    {
+      "node": "background",
+      "depth": 10,
+      "paintedBounds": [0, 0, 2080, 1170.622009569378]
+    },
+    {
+      "node": "subject",
+      "depth": 3,
+      "protectedRegion": [
+        [32.344497607655505, 29.856459330143544],
+        [212.72727272727275, 29.856459330143544],
+        [212.72727272727275, 659.3301435406698],
+        [32.344497607655505, 659.3301435406698]
+      ]
+    },
+    {
+      "node": "foreground",
+      "depth": 0.85,
+      "edgeAttachments": ["left", "top", "bottom"]
+    }
+  ],
+  "camera": { "travel": [-60, 6], "anchor": [0.3, 0.5] },
+  "recipe": {
+    "preset": "layered_parallax",
+    "foreground": "foreground",
+    "subject": "subject",
+    "background": "background",
+    "intensity": "dramatic"
+  }
+}

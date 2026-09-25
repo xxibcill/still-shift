@@ -8,9 +8,9 @@ export const illustratedApi = (): Plugin => ({
   configureServer(server) {
     server.middlewares.use(async (request, response, next) => {
       const url = new URL(request.url ?? "/", "http://localhost");
-      if (!url.pathname.startsWith("/illustrated/")) return next();
+      if (!/^\/(illustrated|cinematic)\//.test(url.pathname)) return next();
       const match =
-        /^\/illustrated\/(scenes|assets)\/([a-z0-9-]+\.(json|png))$/.exec(
+        /^\/(illustrated|cinematic)\/(scenes|assets)\/([a-z0-9-]+\.(json|png))$/.exec(
           url.pathname,
         );
       if (!match) {
@@ -19,14 +19,18 @@ export const illustratedApi = (): Plugin => ({
         return;
       }
       const directory =
-        match[1] === "scenes"
-          ? "benchmarks/fixtures/history-offstage-v2"
-          : "assets/history-offstage-v2";
+        match[1] === "cinematic"
+          ? match[2] === "scenes"
+            ? "benchmarks/fixtures/cinematic-illustrated"
+            : "assets/cinematic-illustrated/kit-b-courtyard"
+          : match[2] === "scenes"
+            ? "benchmarks/fixtures/history-offstage-v2"
+            : "assets/history-offstage-v2";
       try {
-        const bytes = await readFile(resolve(root, directory, match[2]!));
+        const bytes = await readFile(resolve(root, directory, match[3]!));
         response.setHeader(
           "Content-Type",
-          match[3] === "json" ? "application/json" : "image/png",
+          match[4] === "json" ? "application/json" : "image/png",
         );
         response.end(bytes);
       } catch {

@@ -1,4 +1,4 @@
-import { PreparedSceneSchema } from "../../../packages/scene-contract/src/prepared.ts";
+import { PreparedSceneInputSchema } from "../../../packages/scene-contract/src/cinematic.ts";
 import {
   compilePreparedScene,
   type IllustratedScene,
@@ -13,6 +13,7 @@ const el = <T extends HTMLElement>(id: string) =>
 const select = el<HTMLSelectElement>("scene"),
   slider = el<HTMLInputElement>("scrub"),
   play = el<HTMLButtonElement>("play");
+const strength = el<HTMLSelectElement>("strength");
 const canvas = el<HTMLCanvasElement>("illustrated-preview");
 let preview: ReturnType<typeof createIllustratedPreview> | undefined;
 let scene: IllustratedScene | undefined;
@@ -66,35 +67,66 @@ slider.oninput = () => {
   stop();
   show(Number(slider.value));
 };
-type Entry = { id: string; title: string; description: string };
-const entries = await fetch("/illustrated/scenes/catalog.json").then(
-  (response) => {
-    if (!response.ok) throw new Error("Scene catalog unavailable");
-    return response.json() as Promise<Entry[]>;
-  },
-);
-for (const entry of entries) {
-  const option = document.createElement("option");
-  option.value = entry.id;
-  option.textContent = entry.title;
-  select.append(option);
+type Entry = {
+  id: string;
+  title: string;
+  description: string;
+  collection: string;
+  value: string;
+};
+const entries: Entry[] = [];
+for (const collection of ["illustrated", "cinematic"]) {
+  const response = await fetch(`/${collection}/scenes/catalog.json`);
+  if (!response.ok) throw new Error("Scene catalog unavailable");
+  const catalog = (await response.json()) as Omit<
+    Entry,
+    "collection" | "value"
+  >[];
+  const group = document.createElement("optgroup");
+  group.label =
+    collection === "cinematic" ? "Cinematic" : "Illustrated explanation";
+  for (const entry of catalog) {
+    const value =
+      collection === "illustrated" ? entry.id : `${collection}:${entry.id}`;
+    entries.push({ ...entry, collection, value });
+    const option = document.createElement("option");
+    option.value = value;
+    option.textContent = entry.title;
+    group.append(option);
+  }
+  select.append(group);
 }
+if (new URLSearchParams(location.search).get("collection") === "cinematic")
+  select.value = entries.find(
+    (entry) => entry.collection === "cinematic",
+  )!.value;
 const load = async () => {
   const current = ++generation;
   stop();
   play.disabled = true;
+  slider.disabled = true;
   el<HTMLButtonElement>("restart").disabled = true;
   el("error").textContent = "";
+  el("status").textContent = "Loading scene…";
   try {
-    const entry = entries.find((item) => item.id === select.value)!;
-    const response = await fetch(`/illustrated/scenes/${entry.id}.json`);
-    if (!response.ok) throw new Error("Scene unavailable");
-    const next = compilePreparedScene(
-      PreparedSceneSchema.parse(await response.json()),
+    const entry = entries.find((item) => item.value === select.value)!;
+    const response = await fetch(
+      `/${entry.collection}/scenes/${entry.id}.json`,
     );
+    if (!response.ok) throw new Error("Scene unavailable");
+    const input = PreparedSceneInputSchema.parse(await response.json());
+    strength.disabled = input.schemaVersion !== "illustrated-scene-2";
+    if (input.schemaVersion === "illustrated-scene-2")
+      input.recipe.intensity =
+        strength.value === "dramatic"
+          ? "dramatic"
+          : strength.value === "restrained"
+            ? "restrained"
+            : "standard";
+    const next = compilePreparedScene(input);
     const images = await loadIllustratedImages(next, (id) => {
       const asset = next.assets.find((item) => item.id === id)!;
-      return `/illustrated/assets/${asset.path.split("/").at(-1)}`;
+      return `/${entry.collection}/assets/${asset.path.split("/").at(-1)}`;
     });
     if (current !== generation) return;
     preview?.dispose();
@@ -106,11 +138,15 @@ const load = async () => {
     el("status").textContent =
       `${entry.title} ready · ${next.fps} fps · ${next.durationMs / 1000} seconds`;
     play.disabled = false;
+    slider.disabled = false;
     el<HTMLButtonElement>("restart").disabled = false;
   } catch (error) {
+    if (current !== generation) return;
+    el("status").textContent = "Scene unavailable";
     el("error").textContent =
       error instanceof Error ? error.message : String(error);
   }
 };
 select.onchange = () => void load();
+strength.onchange = () => void load();
 await load();

@@ -25,7 +25,9 @@ Phase 0 exit gates remain open.
 **2026-09-25 cinematic planning request:** The owner requested a further cinematic
 template family including parallax. The [next build plan](./docs/cinematic-template-plan.md)
 proposes a shared camera, authored depth planes, painted-area checks, and nine
-full-frame shot treatments. This is planning only. Focus softening and dolly-zoom
+full-frame shot treatments. The first [Layered Parallax milestone](./docs/cinematic-parallax-implementation.md)
+now implements a shared plane camera, coverage validation, and two original
+compositions. The other eight recipes remain planned. Focus softening and dolly-zoom
 are explicitly marked experiments; they do not revise the channel baseline or
 the existing Phase 0 acceptance gates.
 

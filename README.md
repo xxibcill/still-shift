@@ -11,6 +11,12 @@ candidate approaches, relationship to existing tools, and measures of success.
 
 ## Current implementation
 
+The latest [cinematic milestone](./docs/cinematic-parallax-implementation.md)
+adds a Layered Parallax template with original prepared artwork, a shared plane
+camera, subject anchoring, and frame-by-frame coverage checks. Run `pnpm lab`
+and choose the Cinematic collection, or use `pnpm cinematic:render --output-dir`
+with a new output directory to reproduce the two demonstration compositions.
+
 Still Shift is a local, deterministic still-image animation engine spike. The v0.1
 foundation and fake animation path are merged. The v0.2 depth worker prepares and caches
 normalized images and validated depth assets. v0.3 adds a browser preview of one

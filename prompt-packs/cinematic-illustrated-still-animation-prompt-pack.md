@@ -4,7 +4,7 @@
 
 **Prepared:** 2026-09-25
 
-**Status:** Ready for a future generation pass. No images or clips have been generated from this pack.
+**Status:** CI-09 has been executed as an original courtyard master plus three prepared layers. See [actual prompts and source files](../assets/cinematic-illustrated/kit-b-courtyard/README.md) and the [implementation report](../docs/cinematic-parallax-implementation.md). The remaining cards are future generation briefs.
 
 **Source:** Owner request for more cinematic templates, including parallax; [build plan](../docs/cinematic-template-plan.md); History Offstage's Layered Chronicle visual bible.
 
@@ -23,7 +23,7 @@ The current study has no supplied narration or episode shot IDs. CI-01 through C
 | Generator        | Codex built-in image generation; use only controls exposed at execution                                             |
 | Reference policy | Original master from this pack, then reference-led derivatives from that master                                     |
 | Reproducibility  | Record exact prompts, references, hashes, outputs, attempts, and provider settings; no reproducible seed is assumed |
-| Renderer         | Proposed prepared-scene v2 camera/plane extension; currently unimplemented                                          |
+| Renderer         | Prepared-scene v2 camera/plane extension available for CI-09; remaining eight camera recipes planned                |
 | Safe framing     | Important subjects stay inside the inner 80% of the delivery frame throughout the move                              |
 | Hidden pixels    | Continuous prepared plates behind every moving occluder                                                             |
 | Texture          | Fixed to its illustrated surface; inspect charcoal lines and halftones after H.264 compression                      |
@@ -213,7 +213,9 @@ Compose a quiet courtyard with three unmistakably separated distances. A substan
 
 **Preparation:** Reuse kit B where its plate coverage permits this composition. Isolate the near masonry, complete figure/contact-shadow group, and a continuous courtyard background; keep extra middle architecture on its own plane only when useful. Paint every area hidden by the figure and masonry. Reassemble and inspect the original view before moving the camera.
 
-**Animation:** Establish 0–0.7 s; one shallow diagonal, subject-anchored camera sweep through 5.5 s; hold to 7 s. Near displacement 2–4% W, subject drift ≤0.5% W, far displacement 0.3–1% W; vertical travel ≤1% H. Keep focal scale constant and subject scale change ≤1%. Relative near/far direction follows the shared projection around the anchor. No random float, return loop, local deformation, or atmosphere overlay.
+**Standard animation:** Establish 0–0.7 s; one shallow diagonal, subject-anchored camera sweep through 5.5 s; hold to 7 s. Near displacement 2–4% W, subject drift ≤0.5% W, far displacement 0.3–1% W; vertical travel ≤1% H. Keep focal scale constant and subject scale change ≤1%. Relative near/far direction follows the shared projection around the anchor. No random float, return loop, local deformation, or atmosphere overlay.
+
+**Dramatic revision:** Following the owner's feedback and [primary-source research](../docs/parallax-motion-research.md), the existing courtyard kit also supports a larger lateral sweep. The delivered primary moves its near layer 300 px and far layer 50 px, with movement beginning around 0.13 s and ending around 6.42 s. Authoring limits for this strength are near travel 10–20% W, far ≤5% W, and vertical ≤2% H; asset coverage can impose tighter limits. Keep cropped foreground edges outside the picture using `edgeAttachments`. The current kit's floor shares the far plate; future stronger dolly/orbit source packages should provide a separate ground receiver or depth mesh to address ground sliding.
 
 **Checks:** Three distinct depth responses are visible at normal speed and 320×180; foreground displacement is at least twice background displacement at standard strength; feet/shadow remain attached; no hidden-area holes or matte edges appear. **Fallback:** Restrained 2D crop of the intact master, explicitly labelled as a fallback rather than a layered-parallax success.
 

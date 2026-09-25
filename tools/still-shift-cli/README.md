@@ -51,6 +51,13 @@ format. See the [six preset guide](../../docs/history-offstage-motion-implementa
 for the lab, reusable examples, and review reel. `pnpm illustrated:render
 --output-dir <new-directory>` renders the six prepared fixtures through this CLI.
 
+The prepared-scene command also accepts `illustrated-scene-2` for the cinematic
+`layered_parallax` recipe. It supports `dramatic`, `standard`, and `restrained` intensity in
+the scene JSON and returns `illustrated-result-2` with camera-validation metrics.
+Every frame must satisfy declared background coverage and subject framing;
+unsafe or insufficiently separated planes fail explicitly. See the
+[cinematic guide](../../docs/cinematic-parallax-implementation.md) for examples.
+
 ## Unattended batch
 
 Create a UTF-8 JSONL file with one object per line. IDs must be unique and use letters, digits, underscores, or hyphens (1–80 characters). Paths are resolved relative to the JSONL file. Blank lines are ignored.

@@ -162,6 +162,8 @@ export const ILLUSTRATED_PRESETS: IllustratedPreset[] = [
   "crisis_fracture",
 ];
 
+export const PreparedImageSchema = PreparedNodeSchema.options[0];
+
 const preparedShape = z
   .object({
     schemaVersion: z.literal("illustrated-scene-1"),
@@ -181,6 +183,10 @@ export type PreparedScene = z.infer<typeof preparedShape>;
 export type PreparedNode = PreparedScene["nodes"][number];
 export type PreparedImage = Extract<PreparedNode, { type: "image" }>;
 export type PreparedPath = Extract<PreparedNode, { type: "path" }>;
+export const PreparedSceneFieldsSchema = preparedShape.omit({
+  schemaVersion: true,
+  recipe: true,
+});
 
 export const PreparedSceneSchema = preparedShape.superRefine((scene, ctx) => {
   const fail = (message: string) => ctx.addIssue({ code: "custom", message });

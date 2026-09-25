@@ -210,5 +210,42 @@ export async function loadIllustratedImages(
       return [asset.id, image] as const;
     }),
   );
-  return new Map(entries);
+  const images = new Map(entries);
+  if (scene.schemaVersion === "illustrated-scene-2") {
+    const node = scene.nodes.find(
+      (item) => item.id === scene.recipe.background,
+    )!;
+    const bounds = scene.layers.find(
+      (item) => item.node === node.id,
+    )!.paintedBounds!;
+    const source = node.states[0]!;
+    const image = images.get(source.asset)!;
+    const [sx, sy, sw, sh] = source.crop ?? [
+      0,
+      0,
+      image.naturalWidth,
+      image.naturalHeight,
+    ];
+    const left = Math.floor(sx + (bounds[0] / node.width) * sw);
+    const top = Math.floor(sy + (bounds[1] / node.height) * sh);
+    const right = Math.ceil(sx + ((bounds[0] + bounds[2]) / node.width) * sw);
+    const bottom = Math.ceil(sy + ((bounds[1] + bounds[3]) / node.height) * sh);
+    const probe = document.createElement("canvas");
+    probe.width = image.naturalWidth;
+    probe.height = image.naturalHeight;
+    const context = probe.getContext("2d", { willReadFrequently: true })!;
+    context.drawImage(image, 0, 0);
+    const pixels = context.getImageData(
+      left,
+      top,
+      right - left,
+      bottom - top,
+    ).data;
+    for (let i = 3; i < pixels.length; i += 4)
+      if (pixels[i]! < 254)
+        throw new Error(
+          "Declared painted background coverage contains transparent pixels",
+        );
+  }
+  return images;
 }
