@@ -14,6 +14,7 @@ const select = el<HTMLSelectElement>("scene"),
   slider = el<HTMLInputElement>("scrub"),
   play = el<HTMLButtonElement>("play");
 const strength = el<HTMLSelectElement>("strength");
+const duration = el<HTMLSelectElement>("duration");
 const canvas = el<HTMLCanvasElement>("illustrated-preview");
 let preview: ReturnType<typeof createIllustratedPreview> | undefined;
 let scene: IllustratedScene | undefined;
@@ -84,7 +85,9 @@ for (const collection of ["illustrated", "cinematic"]) {
   >[];
   const group = document.createElement("optgroup");
   group.label =
-    collection === "cinematic" ? "Cinematic" : "Illustrated explanation";
+    collection === "cinematic"
+      ? "Cinematic Parallax · variations"
+      : "Illustrated explanation";
   for (const entry of catalog) {
     const value =
       collection === "illustrated" ? entry.id : `${collection}:${entry.id}`;
@@ -100,6 +103,17 @@ if (new URLSearchParams(location.search).get("collection") === "cinematic")
   select.value = entries.find(
     (entry) => entry.collection === "cinematic",
   )!.value;
+const requestedScene = new URLSearchParams(location.search).get("scene");
+const requestedEntry = entries.find((entry) => entry.id === requestedScene);
+if (requestedEntry) select.value = requestedEntry.value;
+const requestedDuration = new URLSearchParams(location.search).get("duration");
+if (
+  requestedDuration &&
+  Array.from(duration.options).some(
+    (option) => option.value === requestedDuration,
+  )
+)
+  duration.value = requestedDuration;
 const load = async () => {
   const current = ++generation;
   stop();
@@ -116,13 +130,16 @@ const load = async () => {
     if (!response.ok) throw new Error("Scene unavailable");
     const input = PreparedSceneInputSchema.parse(await response.json());
     strength.disabled = input.schemaVersion !== "illustrated-scene-2";
-    if (input.schemaVersion === "illustrated-scene-2")
+    duration.disabled = input.schemaVersion !== "illustrated-scene-2";
+    if (input.schemaVersion === "illustrated-scene-2") {
+      input.durationMs = Number(duration.value);
       input.recipe.intensity =
         strength.value === "dramatic"
           ? "dramatic"
           : strength.value === "restrained"
             ? "restrained"
             : "standard";
+    }
     const next = compilePreparedScene(input);
     const images = await loadIllustratedImages(next, (id) => {
       const asset = next.assets.find((item) => item.id === id)!;
@@ -149,4 +166,5 @@ const load = async () => {
 };
 select.onchange = () => void load();
 strength.onchange = () => void load();
+duration.onchange = () => void load();
 await load();

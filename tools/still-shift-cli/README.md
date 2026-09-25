@@ -58,6 +58,22 @@ Every frame must satisfy declared background coverage and subject framing;
 unsafe or insufficiently separated planes fail explicitly. See the
 [cinematic guide](../../docs/cinematic-parallax-implementation.md) for examples.
 
+The same command accepts the `threshold_push` recipe with `camera.push`, two
+foreground sides, a subject assembly, and a distant plate. It checks source
+resolution after magnification on every frame. Run `pnpm threshold:render
+--output-dir <new-directory>` for its two compositions and Standard comparison;
+see the [Threshold Push guide](../../docs/threshold-push-implementation.md).
+
+The `lateral_track` recipe uses nonzero X travel, zero Y/Z travel, fixed scale,
+and visible subject drift. Run `pnpm lateral:render --output-dir <new-directory>`
+for two grounded room compositions and a Standard comparison. See the
+[Lateral Track guide](../../docs/lateral-track-implementation.md).
+
+The `foreground_reveal` recipe adds an authored vessel polygon and validates actual
+foreground alpha before rendering. It clears the subject and holds the ending.
+Run `pnpm reveal:render --output-dir <new-directory>`; see the
+[Foreground Reveal guide](../../docs/foreground-reveal-implementation.md).
+
 ## Unattended batch
 
 Create a UTF-8 JSONL file with one object per line. IDs must be unique and use letters, digits, underscores, or hyphens (1–80 characters). Paths are resolved relative to the JSONL file. Blank lines are ignored.

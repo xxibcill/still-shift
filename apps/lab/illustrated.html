@@ -130,13 +130,21 @@
         <a href="/">Image preview lab</a>
       </header>
       <div class="controls">
-        <label for="scene">Scene / compatible preset</label
+        <label for="scene">Variation / scene</label
         ><select id="scene" aria-label="Prepared scene"></select
         ><label for="strength">Motion</label
         ><select id="strength" disabled>
           <option value="dramatic">Dramatic</option>
           <option value="standard">Standard</option>
           <option value="restrained">Restrained</option></select
+        ><label for="duration">Duration</label
+        ><select id="duration" disabled>
+          <option value="3000">3 seconds · brisk</option>
+          <option value="4000">4 seconds</option>
+          <option value="5000">5 seconds</option>
+          <option value="6000">6 seconds</option>
+          <option value="7000" selected>7 seconds</option>
+          <option value="8000">8 seconds · gradual</option></select
         ><button id="play" disabled>Play</button
         ><button id="restart" disabled>Restart</button>
       </div>

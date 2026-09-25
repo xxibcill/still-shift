@@ -22,7 +22,13 @@ export const illustratedApi = (): Plugin => ({
         match[1] === "cinematic"
           ? match[2] === "scenes"
             ? "benchmarks/fixtures/cinematic-illustrated"
-            : "assets/cinematic-illustrated/kit-b-courtyard"
+            : match[3]!.startsWith("threshold-")
+              ? "assets/cinematic-illustrated/kit-a-threshold"
+              : match[3]!.startsWith("vista-")
+                ? "assets/cinematic-illustrated/kit-c-vista"
+                : match[3] === "landscape.png"
+                  ? "assets/history-offstage-v2"
+                  : "assets/cinematic-illustrated/kit-b-courtyard"
           : match[2] === "scenes"
             ? "benchmarks/fixtures/history-offstage-v2"
             : "assets/history-offstage-v2";

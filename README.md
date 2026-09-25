@@ -11,11 +11,25 @@ candidate approaches, relationship to existing tools, and measures of success.
 
 ## Current implementation
 
-The latest [cinematic milestone](./docs/cinematic-parallax-implementation.md)
-adds a Layered Parallax template with original prepared artwork, a shared plane
-camera, subject anchoring, and frame-by-frame coverage checks. Run `pnpm lab`
-and choose the Cinematic collection, or use `pnpm cinematic:render --output-dir`
-with a new output directory to reproduce the two demonstration compositions.
+**Cinematic Parallax** is one layered-camera family with anchored sweep, push-in,
+lateral track, foreground reveal, Rising Vista, Curved Approach, Detail to World and Focus Handoff variations. Use the lab's variation/scene,
+strength and duration controls to explore it. New variations start with one short
+preview using the existing renderer:
+
+```sh
+pnpm cinematic:preview --scene benchmarks/fixtures/cinematic-illustrated/ci-02-lateral-track.json --duration 4 --strength dramatic --output benchmarks/results/quick-track.mp4
+```
+
+This writes one video, its input/verification metadata and a review page. See the
+[updated iteration plan](./docs/cinematic-template-plan.md). The earlier multi-clip
+render commands remain available when a comparison is needed.
+
+[Rising Vista and Curved Approach](./docs/parallax-path-variations.md) add a vertical
+rise and a bowed forward path, with one four-second preview each.
+[Detail to World](./docs/detail-to-world-implementation.md) adds a researched axial
+pullback from the vessel to its wider chamber.
+[Focus Handoff](./docs/focus-handoff-implementation.md) transfers sharpness from
+foreground masonry to the courtyard figure.
 
 Still Shift is a local, deterministic still-image animation engine spike. The v0.1
 foundation and fake animation path are merged. The v0.2 depth worker prepares and caches
