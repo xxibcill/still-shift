@@ -60,9 +60,10 @@ export const ClipRatingsSchema = z
   .strict();
 
 export const RatingsExportSchema = z.object({
-  schemaVersion: z.literal("0.1"),
+  schemaVersion: z.literal("0.2"),
   corpusId: z.string().min(1),
   corpusSha256: z.string().regex(/^sha256:[a-f0-9]{64}$/),
+  artifactSetSha256: z.string().regex(/^sha256:[a-f0-9]{64}$/),
   corpusStatus: z.enum(["incomplete", "frozen"]),
   reviewer: z.string(),
   exportedAt: z.string().datetime(),
@@ -70,6 +71,18 @@ export const RatingsExportSchema = z.object({
 });
 
 type RatingsExport = z.infer<typeof RatingsExportSchema>;
+
+export const assertRatingsIdentity = (
+  ratings: RatingsExport | null,
+  corpus: { id: string; sha256: string },
+  artifactSetSha256: string,
+): void => {
+  if (!ratings) return;
+  if (ratings.corpusId !== corpus.id || ratings.corpusSha256 !== corpus.sha256)
+    throw new Error("Ratings were exported for a different corpus revision");
+  if (ratings.artifactSetSha256 !== artifactSetSha256)
+    throw new Error("Ratings were exported for a different clip revision");
+};
 
 export const summarizeEvaluationRatings = (
   records: ReadonlyArray<{ id: string; result?: unknown }>,

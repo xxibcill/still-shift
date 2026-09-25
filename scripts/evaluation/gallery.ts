@@ -9,6 +9,7 @@ import {
   CorpusManifestSchema,
   SceneManifestSchema,
 } from "@still-shift/scene-contract";
+import { hashBatchArtifacts } from "../../tools/still-shift-cli/src/batch-identity.ts";
 import { EVALUATION_PRESETS, evaluationClipId } from "./presets.ts";
 import { RATING_FIELDS } from "./ratings.ts";
 
@@ -61,8 +62,21 @@ const records = (await readFile(resultsPath, "utf8"))
   .split("\n")
   .map(
     (line) =>
-      JSON.parse(line) as { id: string; result?: unknown; error?: unknown },
-  );
+      JSON.parse(line) as {
+        id: string;
+        requestHash: string | null;
+        status: string;
+        result?: unknown;
+        error?: unknown;
+      },
+  )
+  .map((record) => ({
+    ...record,
+    result: record.result
+      ? AnimationResultSchema.parse(record.result)
+      : undefined,
+  }));
+const artifactSetSha256 = hashBatchArtifacts(records);
 const byId = new Map(records.map((record) => [record.id, record]));
 await mkdir(thumbnails, { recursive: true });
 
@@ -106,7 +120,7 @@ for (const entry of corpus.entries) {
       );
       continue;
     }
-    const result = AnimationResultSchema.parse(record.result);
+    const result = record.result;
     const posterPath = join(thumbnails, `${id}-poster.jpg`);
     await thumbnail(result.outputPath, posterPath, result.durationMs / 2000);
     const scene = SceneManifestSchema.parse(
@@ -178,13 +192,13 @@ const html = `<!doctype html>
 </style></head><body><main><h1>Still Shift evaluation</h1><p>${escapeHtml(corpus.corpusId)} · ${corpus.entries.length} sources · ${clipCount} clips · corpus status: ${escapeHtml(corpus.status)}</p>${corpus.status !== "frozen" ? `<p class="notice">Candidate review only. This corpus is not frozen and ratings do not establish a Phase 0 pass.</p>` : ""}<div class="toolbar"><label>Reviewer <input id="reviewer" placeholder="Name or initials"></label><button id="export">Download ratings JSON</button><span id="saved"></span></div>${rows.join("\n")}</main>
 <script>
 const fields=${JSON.stringify(RATING_FIELDS)};
-const storeKey='still-shift-ratings:${corpusSha256}';
+const storeKey='still-shift-ratings:${corpusSha256}:${artifactSetSha256}';
 let ratings=JSON.parse(localStorage.getItem(storeKey)||'{}');
 document.querySelector('#reviewer').value=ratings.reviewer||'';
 document.querySelector('#reviewer').addEventListener('input',e=>{ratings.reviewer=e.target.value;save()});
 function save(){localStorage.setItem(storeKey,JSON.stringify(ratings));document.querySelector('#saved').textContent='Saved locally'}
 for(const container of document.querySelectorAll('.ratings')){const id=container.dataset.clip;ratings.clips ||= {};for(const {key,label,choices} of fields){const node=document.createElement('label');node.textContent=label;const select=document.createElement('select');for(const [value,text] of choices){const option=document.createElement('option');option.value=value;option.textContent=text;select.append(option)}select.value=String(ratings.clips[id]?.[key]??'');select.addEventListener('change',()=>{ratings.clips[id] ||= {};ratings.clips[id][key]=select.value===''?null:Number(select.value);save()});node.append(select);container.append(node)}}
-document.querySelector('#export').addEventListener('click',()=>{const value={schemaVersion:'0.1',corpusId:${JSON.stringify(corpus.corpusId)},corpusSha256:${JSON.stringify(corpusSha256)},corpusStatus:${JSON.stringify(corpus.status)},reviewer:ratings.reviewer||'',exportedAt:new Date().toISOString(),clips:ratings.clips||{}};const blob=new Blob([JSON.stringify(value,null,2)+'\\n'],{type:'application/json'});const link=document.createElement('a');link.href=URL.createObjectURL(blob);link.download='still-shift-ratings.json';link.click();setTimeout(()=>URL.revokeObjectURL(link.href),1000)});
+document.querySelector('#export').addEventListener('click',()=>{const value={schemaVersion:'0.2',corpusId:${JSON.stringify(corpus.corpusId)},corpusSha256:${JSON.stringify(corpusSha256)},artifactSetSha256:${JSON.stringify(artifactSetSha256)},corpusStatus:${JSON.stringify(corpus.status)},reviewer:ratings.reviewer||'',exportedAt:new Date().toISOString(),clips:ratings.clips||{}};const blob=new Blob([JSON.stringify(value,null,2)+'\\n'],{type:'application/json'});const link=document.createElement('a');link.href=URL.createObjectURL(blob);link.download='still-shift-ratings.json';link.click();setTimeout(()=>URL.revokeObjectURL(link.href),1000)});
 </script></body></html>`;
 await writeFile(outputPath, html);
 process.stdout.write(

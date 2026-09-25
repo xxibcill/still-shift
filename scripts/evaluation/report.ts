@@ -23,7 +23,11 @@ import {
   validateEvaluationRecords,
   validateEvaluationScene,
 } from "./evidence.ts";
-import { RatingsExportSchema, summarizeEvaluationRatings } from "./ratings.ts";
+import {
+  assertRatingsIdentity,
+  RatingsExportSchema,
+  summarizeEvaluationRatings,
+} from "./ratings.ts";
 
 const option = (name: string): string | undefined => {
   const index = process.argv.indexOf(name);
@@ -93,12 +97,6 @@ if (corpus.status === "frozen" && freezeBlockers.length)
   throw new Error(
     `Frozen corpus has integrity blockers: ${freezeBlockers.map((blocker) => blocker.code).join(", ")}`,
   );
-if (
-  ratings &&
-  (ratings.corpusId !== corpus.corpusId ||
-    ratings.corpusSha256 !== corpusSha256)
-)
-  throw new Error("Ratings were exported for a different corpus revision");
 const records = (await readFile(resultsPath, "utf8"))
   .trim()
   .split("\n")
@@ -162,11 +160,17 @@ if (
   summary.successful !== results.length
 )
   throw new Error("Batch summary does not match its result records");
+const artifactSetSha256 = hashBatchArtifacts(records);
 if (
   summary.artifactSetSha256 &&
-  summary.artifactSetSha256 !== hashBatchArtifacts(records)
+  summary.artifactSetSha256 !== artifactSetSha256
 )
   throw new Error("Batch summary artifact identity does not match its results");
+assertRatingsIdentity(
+  ratings,
+  { id: corpus.corpusId, sha256: corpusSha256 },
+  artifactSetSha256,
+);
 const assembly =
   assemblyInput === null ? null : AssemblyEvidenceSchema.parse(assemblyInput);
 if (assembly)
