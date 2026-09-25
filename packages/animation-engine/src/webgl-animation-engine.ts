@@ -35,7 +35,7 @@ import type { AnimationEngine } from "./animation-engine.ts";
 const execFileAsync = promisify(execFile);
 const projectRoot = resolve(import.meta.dirname, "../../..");
 const PIPELINE_VERSION = "animation-pipeline-0.10.0";
-export const resolveFrameTransport = (): "png_pipe" | "jpeg_pipe" => {
+const resolveFrameTransport = (): "png_pipe" | "jpeg_pipe" => {
   const value = process.env.STILL_SHIFT_FRAME_TRANSPORT ?? "png_pipe";
   if (value !== "png_pipe" && value !== "jpeg_pipe")
     throw new AnimationEngineError("SCENE_INVALID", "Unknown frame transport", {
@@ -43,7 +43,7 @@ export const resolveFrameTransport = (): "png_pipe" | "jpeg_pipe" => {
     });
   return value;
 };
-export const resolveDepthAdapter = (): string =>
+const resolveDepthAdapter = (): string =>
   process.env.STILL_SHIFT_DEPTH_ADAPTER ?? "depth-anything-v2-small";
 
 type Dimensions = { width: number; height: number };
@@ -203,6 +203,8 @@ const normalizeOrFail = async (
 
 const prepareAssets = async (
   inputPath: string,
+  adapter: string,
+  requestedDepthDevice: string,
 ): Promise<{
   sourcePath: string;
   depthPath: string | null;
@@ -212,10 +214,9 @@ const prepareAssets = async (
   workerMetrics: WorkerMetrics;
   normalizationWarnings: string[];
 }> => {
-  const adapter = resolveDepthAdapter();
   const args = ["prepare", "--input", inputPath, "--adapter", adapter];
-  if (process.env.STILL_SHIFT_DEPTH_DEVICE)
-    args.push("--device", process.env.STILL_SHIFT_DEPTH_DEVICE);
+  if (requestedDepthDevice !== "auto")
+    args.push("--device", requestedDepthDevice);
   const prepared = await workerJson(args);
   if (isPrepared(prepared)) {
     return {
@@ -342,12 +343,33 @@ const fileExists = async (path: string): Promise<boolean> => {
 };
 
 export class WebGLAnimationEngine implements AnimationEngine {
+  private readonly frameTransport = resolveFrameTransport();
+  private readonly depthAdapter = resolveDepthAdapter();
+  private readonly requestedDepthDevice =
+    process.env.STILL_SHIFT_DEPTH_DEVICE ?? "auto";
+
+  requestIdentity(request: AnimationRequest): string {
+    return sha256(
+      JSON.stringify({
+        engineVersion: ENGINE_VERSION,
+        ...(this.frameTransport === "png_pipe"
+          ? {}
+          : { frameTransport: this.frameTransport }),
+        depthAdapter: this.depthAdapter,
+        ...(this.requestedDepthDevice === "auto"
+          ? {}
+          : { requestedDepthDevice: this.requestedDepthDevice }),
+        request,
+      }),
+    );
+  }
+
   async animate(
     unvalidatedRequest: AnimationRequest,
   ): Promise<AnimationResult> {
     const started = performance.now();
     const request = parseAnimationRequest(unvalidatedRequest);
-    const frameTransport = resolveFrameTransport();
+    const frameTransport = this.frameTransport;
     if (!request.outputPath.toLowerCase().endsWith(".mp4"))
       throw new AnimationEngineError(
         "SCENE_INVALID",
@@ -374,7 +396,11 @@ export class WebGLAnimationEngine implements AnimationEngine {
       );
     }
     const sourceHash = sha256(originalSource);
-    const prepared = await prepareAssets(inputPath);
+    const prepared = await prepareAssets(
+      inputPath,
+      this.depthAdapter,
+      this.requestedDepthDevice,
+    );
     const normalizedSourceHash = sha256(await readFile(prepared.sourcePath));
     const depthHash = prepared.depthPath
       ? sha256(await readFile(prepared.depthPath))

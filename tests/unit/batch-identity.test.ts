@@ -1,10 +1,12 @@
-import { describe, expect, it } from "vitest";
+import { WebGLAnimationEngine } from "@still-shift/animation-engine";
+import { afterEach, describe, expect, it, vi } from "vitest";
 
 import {
   hashBatchArtifacts,
-  hashBatchRequest,
   selectBenchmarkRun,
 } from "../../tools/still-shift-cli/src/batch-identity.ts";
+
+afterEach(() => vi.unstubAllEnvs());
 
 const record = {
   id: "source-slow-push",
@@ -32,18 +34,28 @@ describe("batch evidence identity", () => {
       intensity: "standard",
       seed: 1842,
     } as const;
-    expect(hashBatchRequest(request, "png_pipe", "fake")).not.toBe(
-      hashBatchRequest(request, "png_pipe", "depth-anything-v2-small"),
+    vi.stubEnv("STILL_SHIFT_FRAME_TRANSPORT", "png_pipe");
+    vi.stubEnv("STILL_SHIFT_DEPTH_ADAPTER", "fake");
+    vi.stubEnv("STILL_SHIFT_DEPTH_DEVICE", "auto");
+    const identity = () => new WebGLAnimationEngine().requestIdentity(request);
+    const baseline = identity();
+    expect(baseline).toBe(
+      "sha256:eb23085dd22b033ebb0b5f5c0d226fcfe6c4f38e268dea94efc745106cc01077",
     );
-    expect(hashBatchRequest(request, "png_pipe", "fake")).toBe(
-      hashBatchRequest(request, "png_pipe", "fake"),
-    );
-    expect(hashBatchRequest(request, "png_pipe", "fake")).toBe(
-      hashBatchRequest(request, "png_pipe", "fake", "auto"),
-    );
-    expect(hashBatchRequest(request, "png_pipe", "fake", "cpu")).not.toBe(
-      hashBatchRequest(request, "png_pipe", "fake", "mps"),
-    );
+    expect(identity()).toBe(baseline);
+
+    vi.stubEnv("STILL_SHIFT_DEPTH_ADAPTER", "depth-anything-v2-small");
+    expect(identity()).not.toBe(baseline);
+    vi.stubEnv("STILL_SHIFT_DEPTH_ADAPTER", "fake");
+
+    vi.stubEnv("STILL_SHIFT_DEPTH_DEVICE", "cpu");
+    expect(identity()).not.toBe(baseline);
+    vi.stubEnv("STILL_SHIFT_DEPTH_DEVICE", "mps");
+    expect(identity()).not.toBe(baseline);
+    vi.stubEnv("STILL_SHIFT_DEPTH_DEVICE", "auto");
+
+    vi.stubEnv("STILL_SHIFT_FRAME_TRANSPORT", "jpeg_pipe");
+    expect(identity()).not.toBe(baseline);
   });
 
   it("keeps retry identity but changes when source or output changes", () => {

@@ -4,9 +4,8 @@ import { dirname, join, resolve } from "node:path";
 import { performance } from "node:perf_hooks";
 
 import {
-  resolveDepthAdapter,
-  resolveFrameTransport,
   WebGLAnimationEngine,
+  type AnimationEngine,
 } from "@still-shift/animation-engine";
 import {
   AnimationEngineError,
@@ -20,7 +19,7 @@ import {
   type AnimationRequest,
   type AnimationResult,
 } from "@still-shift/scene-contract";
-import { hashBatchArtifacts, hashBatchRequest } from "./batch-identity.ts";
+import { hashBatchArtifacts } from "./batch-identity.ts";
 import { acquireBatchLock, prepareBatchItem } from "./batch-recovery.ts";
 
 type BatchItem = {
@@ -238,17 +237,12 @@ const runItem = async (
   line: number,
   manifestPath: string,
   outputDir: string,
+  engine: AnimationEngine,
 ): Promise<BatchRecord> => {
   let requestHash: string | null = null;
   try {
     const request = requestForItem(item, manifestPath, outputDir);
-    const frameTransport = resolveFrameTransport();
-    requestHash = hashBatchRequest(
-      request,
-      frameTransport,
-      resolveDepthAdapter(),
-      process.env.STILL_SHIFT_DEPTH_DEVICE ?? "auto",
-    );
+    requestHash = engine.requestIdentity(request);
     const checkpointPath = join(
       outputDir,
       ".batch-checkpoints",
@@ -296,7 +290,7 @@ const runItem = async (
     });
     let result: AnimationResult;
     try {
-      result = await new WebGLAnimationEngine().animate(request);
+      result = await engine.animate(request);
     } catch (error) {
       // The item was handled as a failure, so its marker no longer represents
       // an interrupted render. The paths were reserved by prepareBatchItem.
@@ -331,7 +325,7 @@ export const runBatch = async (options: {
   outputDir: string;
   concurrency: number;
 }): Promise<{ summary: Record<string, unknown>; exitCode: number }> => {
-  resolveFrameTransport();
+  const engine: AnimationEngine = new WebGLAnimationEngine();
   if (
     !Number.isInteger(options.concurrency) ||
     options.concurrency < 1 ||
@@ -411,6 +405,7 @@ export const runBatch = async (options: {
           lineNumber,
           manifestPath,
           outputDir,
+          engine,
         );
       }
     };
