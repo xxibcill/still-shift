@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 export const ANIMATION_API_VERSION = "0.1" as const;
-export const ENGINE_VERSION = "0.8" as const;
+export const ENGINE_VERSION = "0.10" as const;
 export const SCENE_SCHEMA_VERSION = "0.1" as const;
 
 export const V0_1_REQUEST_CONSTRAINTS = {
@@ -132,6 +132,7 @@ export const DepthModelSchema = z.object({
 
 export const AnimationMetricsSchema = z.object({
   adapter: z.enum(["noop", "webgl"]),
+  frameTransport: z.enum(["png_pipe", "jpeg_pipe"]).optional(),
   cacheStatus: z.enum(["not_applicable", "hit", "miss"]),
   inputWidth: z.number().int().positive().nullable(),
   inputHeight: z.number().int().positive().nullable(),
@@ -139,6 +140,7 @@ export const AnimationMetricsSchema = z.object({
   normalizedHeight: z.number().int().positive().nullable(),
   depthInferenceMs: NonNegativeFiniteNumberSchema,
   depthPostProcessMs: NonNegativeFiniteNumberSchema,
+  archivedPreparationMs: NonNegativeFiniteNumberSchema.nullable().optional(),
   sceneBuildMs: NonNegativeFiniteNumberSchema,
   frameRenderAverageMs: NonNegativeFiniteNumberSchema,
   frameRenderP95Ms: NonNegativeFiniteNumberSchema,
@@ -328,7 +330,11 @@ export const SceneManifestSchema = z
     renderScene: RenderSceneSchema.optional(),
     execution: z.discriminatedUnion("adapter", [
       z.object({ adapter: z.literal("noop"), producesVideo: z.literal(false) }),
-      z.object({ adapter: z.literal("webgl"), producesVideo: z.literal(true) }),
+      z.object({
+        adapter: z.literal("webgl"),
+        producesVideo: z.literal(true),
+        frameTransport: z.enum(["png_pipe", "jpeg_pipe"]).optional(),
+      }),
     ]),
   })
   .superRefine((manifest, context) => {

@@ -126,6 +126,16 @@ const publishNoopArtifacts = async (
 };
 
 export class NoopAnimationEngine implements AnimationEngine {
+  requestIdentity(request: AnimationRequest): string {
+    return checksum(
+      JSON.stringify({
+        engineVersion: ENGINE_VERSION,
+        adapter: "noop",
+        request,
+      }),
+    );
+  }
+
   async animate(
     unvalidatedRequest: AnimationRequest,
   ): Promise<AnimationResult> {

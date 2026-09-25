@@ -131,6 +131,11 @@ try {
   );
   assert.equal(first.metrics.cacheStatus, "miss");
   assert.equal(second.metrics.cacheStatus, "hit");
+  assert.ok((first.metrics.archivedPreparationMs ?? 0) > 0);
+  assert.equal(
+    second.metrics.archivedPreparationMs,
+    first.metrics.archivedPreparationMs,
+  );
   assert.equal(first.frameCount, 90);
   assert.equal(second.frameCount, 90);
   assert.equal(first.selectedPreset, second.selectedPreset);
@@ -138,7 +143,11 @@ try {
   const scene = SceneManifestSchema.parse(
     JSON.parse(await readFile(first.sceneManifestPath, "utf8")),
   );
-  assert.deepEqual(scene.execution, { adapter: "webgl", producesVideo: true });
+  assert.deepEqual(scene.execution, {
+    adapter: "webgl",
+    producesVideo: true,
+    frameTransport: "png_pipe",
+  });
   assert.ok(scene.renderScene);
   assert.equal(scene.model?.adapter, "fake");
   assert.deepEqual(scene.model, first.metrics.versions.model);
@@ -218,6 +227,7 @@ try {
   );
   assert.equal(fallback.checksums.depth, undefined);
   assert.equal(fallback.metrics.versions.model, null);
+  assert.equal(fallback.metrics.archivedPreparationMs, null);
   assert.ok(fallback.assetPaths);
   assert.ok(
     (await realpath(fallback.assetPaths.normalizedSource)).startsWith(

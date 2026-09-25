@@ -24,3 +24,27 @@ Set `STILL_SHIFT_CACHE_DIR` to choose another preparation cache. Relative paths 
 Exit code 0 means a complete result, including a valid 2D fallback. Exit code 2 means invalid command options or request constraints. Exit code 1 means an input, preparation, render, encode, or publication failure; stderr contains one JSON `AnimationFailure`. `--adapter noop` keeps the v0.1 fake path available for compatibility checks. For local fixtures, `STILL_SHIFT_DEPTH_ADAPTER=fake` selects the deterministic fake depth worker.
 
 `pnpm test:browser:cli` exercises an explainer-shaped fixture, cache reuse, repeated checksums, depth-failure fallback, invalid input, and existing-output protection.
+
+## Unattended batch
+
+Create a UTF-8 JSONL file with one object per line. IDs must be unique regardless of letter case and use letters, digits, underscores, or hyphens (1–80 characters). Paths are resolved relative to the JSONL file. Blank lines are ignored.
+
+```jsonl
+{"id":"shot-001","inputPath":"./stills/first.png","durationMs":5000,"preset":"auto","intensity":"standard","seed":1842}
+{"id":"shot-002","inputPath":"./stills/second.png","durationMs":3000}
+```
+
+```bash
+pnpm still-shift batch \
+  --manifest ./shots.jsonl \
+  --output-dir ./outputs \
+  --concurrency 2
+```
+
+`durationMs`, `preset`, `intensity`, and `seed` default to the single-image CLI values. Concurrency is bounded to 1–2 renders; it defaults to 1. Each item writes `<id>.mp4`, `<id>.mp4.scene.json`, and a private `.batch-checkpoints/<id>.json` checkpoint. After all items finish, the command atomically writes `batch-results.jsonl` in input order and `batch-summary.json`. Each result record includes line number, ID, input path, request hash, reuse flag, status, and either the full `AnimationResult` (paths, warnings, checksums, timings, selected preset) or an `AnimationFailure`. The summary contains counts, reuse count, success rate, elapsed time, and paths.
+
+The batch keeps going after an individual item fails. Exit code 0 means every manifest item has a result record, including any per-item failures; check `batch-summary.json` and `batch-results.jsonl` for their status. Exit code 2 means invalid batch configuration, and 1 means batch execution stopped before the results were complete. For a partial failure, fix the source or manifest and rerun the same command. Completed items are reused only when their request, source, scene, MP4, normalized source, and depth hashes match the checkpoint. A changed request or damaged artifact is reported as an item failure to avoid silently overwriting earlier work. An interrupted run leaves an owner lock and per-item progress markers; the next run reclaims a lock whose process has exited and rerenders an uncheckpointed item only when its request and source still match the marker. Outputs without a matching progress marker remain protected. To intentionally rerender one ID, move its MP4, scene manifest, and checkpoint out of the output directory before retrying. Concurrent batch commands targeting one output directory are rejected.
+
+The WebGL path uses the lossless in-memory PNG frame pipe by default. `STILL_SHIFT_FRAME_TRANSPORT=jpeg_pipe` selects the faster 95%-quality JPEG evaluation path. The transport is recorded in the scene manifest and result metrics; transport, depth adapter, and requested depth device are included in batch checkpoint identity. `batch-runs.jsonl` preserves each run summary so a fast retry does not replace the full-render wall-time measurement.
+
+`pnpm test:browser:batch` verifies mixed success/failure, bounded execution, retry identity, and artifact tamper detection.

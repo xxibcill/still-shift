@@ -34,12 +34,23 @@ import type { AnimationEngine } from "./animation-engine.ts";
 
 const execFileAsync = promisify(execFile);
 const projectRoot = resolve(import.meta.dirname, "../../..");
-const PIPELINE_VERSION = "animation-pipeline-0.8.0";
+const PIPELINE_VERSION = "animation-pipeline-0.10.0";
+const resolveFrameTransport = (): "png_pipe" | "jpeg_pipe" => {
+  const value = process.env.STILL_SHIFT_FRAME_TRANSPORT ?? "png_pipe";
+  if (value !== "png_pipe" && value !== "jpeg_pipe")
+    throw new AnimationEngineError("SCENE_INVALID", "Unknown frame transport", {
+      value,
+    });
+  return value;
+};
+const resolveDepthAdapter = (): string =>
+  process.env.STILL_SHIFT_DEPTH_ADAPTER ?? "depth-anything-v2-small";
 
 type Dimensions = { width: number; height: number };
 type WorkerMetrics = {
   inferenceMs?: number;
   postProcessMs?: number;
+  totalPreparationMs?: number;
   peakCpuMemoryBytes?: number | null;
   peakGpuMemoryBytes?: number | null;
   selectedDevice?: string;
@@ -192,6 +203,8 @@ const normalizeOrFail = async (
 
 const prepareAssets = async (
   inputPath: string,
+  adapter: string,
+  requestedDepthDevice: string,
 ): Promise<{
   sourcePath: string;
   depthPath: string | null;
@@ -201,11 +214,9 @@ const prepareAssets = async (
   workerMetrics: WorkerMetrics;
   normalizationWarnings: string[];
 }> => {
-  const adapter =
-    process.env.STILL_SHIFT_DEPTH_ADAPTER ?? "depth-anything-v2-small";
   const args = ["prepare", "--input", inputPath, "--adapter", adapter];
-  if (process.env.STILL_SHIFT_DEPTH_DEVICE)
-    args.push("--device", process.env.STILL_SHIFT_DEPTH_DEVICE);
+  if (requestedDepthDevice !== "auto")
+    args.push("--device", requestedDepthDevice);
   const prepared = await workerJson(args);
   if (isPrepared(prepared)) {
     return {
@@ -332,11 +343,33 @@ const fileExists = async (path: string): Promise<boolean> => {
 };
 
 export class WebGLAnimationEngine implements AnimationEngine {
+  private readonly frameTransport = resolveFrameTransport();
+  private readonly depthAdapter = resolveDepthAdapter();
+  private readonly requestedDepthDevice =
+    process.env.STILL_SHIFT_DEPTH_DEVICE ?? "auto";
+
+  requestIdentity(request: AnimationRequest): string {
+    return sha256(
+      JSON.stringify({
+        engineVersion: ENGINE_VERSION,
+        ...(this.frameTransport === "png_pipe"
+          ? {}
+          : { frameTransport: this.frameTransport }),
+        depthAdapter: this.depthAdapter,
+        ...(this.requestedDepthDevice === "auto"
+          ? {}
+          : { requestedDepthDevice: this.requestedDepthDevice }),
+        request,
+      }),
+    );
+  }
+
   async animate(
     unvalidatedRequest: AnimationRequest,
   ): Promise<AnimationResult> {
     const started = performance.now();
     const request = parseAnimationRequest(unvalidatedRequest);
+    const frameTransport = this.frameTransport;
     if (!request.outputPath.toLowerCase().endsWith(".mp4"))
       throw new AnimationEngineError(
         "SCENE_INVALID",
@@ -363,7 +396,11 @@ export class WebGLAnimationEngine implements AnimationEngine {
       );
     }
     const sourceHash = sha256(originalSource);
-    const prepared = await prepareAssets(inputPath);
+    const prepared = await prepareAssets(
+      inputPath,
+      this.depthAdapter,
+      this.requestedDepthDevice,
+    );
     const normalizedSourceHash = sha256(await readFile(prepared.sourcePath));
     const depthHash = prepared.depthPath
       ? sha256(await readFile(prepared.depthPath))
@@ -438,7 +475,7 @@ export class WebGLAnimationEngine implements AnimationEngine {
         warnings,
       },
       renderScene: scene,
-      execution: { adapter: "webgl", producesVideo: true },
+      execution: { adapter: "webgl", producesVideo: true, frameTransport },
     });
     const serializedScene = `${JSON.stringify(manifest, null, 2)}\n`;
     const sceneHash = sha256(serializedScene);
@@ -450,6 +487,7 @@ export class WebGLAnimationEngine implements AnimationEngine {
         depthPath:
           scene.motion.mode === "fallback_2d" ? null : prepared.depthPath,
         outputPath,
+        transport: frameTransport,
         sceneManifestContents: serializedScene,
       });
     } catch (cause) {
@@ -490,6 +528,7 @@ export class WebGLAnimationEngine implements AnimationEngine {
         warnings,
         metrics: {
           adapter: "webgl",
+          frameTransport,
           cacheStatus: prepared.cacheStatus,
           inputWidth: prepared.dimensions.input.width,
           inputHeight: prepared.dimensions.input.height,
@@ -503,6 +542,9 @@ export class WebGLAnimationEngine implements AnimationEngine {
             prepared.cacheStatus === "hit"
               ? 0
               : (prepared.workerMetrics.postProcessMs ?? 0),
+          archivedPreparationMs: prepared.depthPath
+            ? (prepared.workerMetrics.totalPreparationMs ?? null)
+            : null,
           sceneBuildMs,
           frameRenderAverageMs: exported.frameRenderAverageMs,
           frameRenderP95Ms: exported.frameRenderP95Ms,
