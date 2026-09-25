@@ -14,7 +14,10 @@ const manifestPath = join(directory, "batch.jsonl");
 const outputDir = join(directory, "outputs");
 const cliPath = resolve("node_modules/.bin/tsx");
 
-const runBatch = async () => {
+const runBatch = async (
+  batchManifestPath = manifestPath,
+  batchOutputDir = outputDir,
+) => {
   try {
     const { stdout } = await execFileAsync(
       cliPath,
@@ -22,9 +25,9 @@ const runBatch = async () => {
         "tools/still-shift-cli/src/cli.ts",
         "batch",
         "--manifest",
-        manifestPath,
+        batchManifestPath,
         "--output-dir",
-        outputDir,
+        batchOutputDir,
         "--concurrency",
         "2",
       ],
@@ -155,8 +158,23 @@ try {
     .map((line) => JSON.parse(line));
   assert.equal(damagedRecords[0].error.code, "OUTPUT_VALIDATION_FAILED");
   assert.equal(damagedRecords[2].reused, true);
+
+  const repairSourcePath = join(directory, "repair.png");
+  const repairManifestPath = join(directory, "repair.jsonl");
+  const repairOutputDir = join(directory, "repair-outputs");
+  await writeFile(repairSourcePath, "invalid image bytes");
+  await writeFile(
+    repairManifestPath,
+    `${JSON.stringify({ id: "repair", inputPath: "repair.png", durationMs: 3000 })}\n`,
+  );
+  const failedItem = await runBatch(repairManifestPath, repairOutputDir);
+  assert.equal(failedItem.summary.failed, 1);
+  await writeFile(repairSourcePath, await readFile(sourcePath));
+  const repairedItem = await runBatch(repairManifestPath, repairOutputDir);
+  assert.equal(repairedItem.summary.successful, 1);
+  assert.equal(repairedItem.summary.failed, 0);
   process.stdout.write(
-    "Batch CLI verified: bounded workers, failure isolation, deterministic retries, and artifact validation\n",
+    "Batch CLI verified: bounded workers, failure isolation, deterministic retries, artifact validation, and repaired-item recovery\n",
   );
 } finally {
   await rm(directory, { recursive: true, force: true });

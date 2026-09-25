@@ -278,7 +278,19 @@ const runItem = async (
       outputPath: request.outputPath,
       sceneManifestPath: `${request.outputPath}.scene.json`,
     });
-    const result = await new WebGLAnimationEngine().animate(request);
+    let result: AnimationResult;
+    try {
+      result = await new WebGLAnimationEngine().animate(request);
+    } catch (error) {
+      // The item was handled as a failure, so its marker no longer represents
+      // an interrupted render. The paths were reserved by prepareBatchItem.
+      await Promise.all([
+        rm(request.outputPath, { force: true }),
+        rm(`${request.outputPath}.scene.json`, { force: true }),
+        rm(progressPath, { force: true }),
+      ]);
+      throw error;
+    }
     await atomicJson(checkpointPath, {
       requestHash,
       result,
