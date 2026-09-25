@@ -50,6 +50,7 @@ type Dimensions = { width: number; height: number };
 type WorkerMetrics = {
   inferenceMs?: number;
   postProcessMs?: number;
+  totalPreparationMs?: number;
   peakCpuMemoryBytes?: number | null;
   peakGpuMemoryBytes?: number | null;
   selectedDevice?: string;
@@ -515,6 +516,9 @@ export class WebGLAnimationEngine implements AnimationEngine {
             prepared.cacheStatus === "hit"
               ? 0
               : (prepared.workerMetrics.postProcessMs ?? 0),
+          archivedPreparationMs: prepared.depthPath
+            ? (prepared.workerMetrics.totalPreparationMs ?? null)
+            : null,
           sceneBuildMs,
           frameRenderAverageMs: exported.frameRenderAverageMs,
           frameRenderP95Ms: exported.frameRenderP95Ms,

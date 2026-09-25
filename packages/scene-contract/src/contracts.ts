@@ -140,6 +140,7 @@ export const AnimationMetricsSchema = z.object({
   normalizedHeight: z.number().int().positive().nullable(),
   depthInferenceMs: NonNegativeFiniteNumberSchema,
   depthPostProcessMs: NonNegativeFiniteNumberSchema,
+  archivedPreparationMs: NonNegativeFiniteNumberSchema.nullable().optional(),
   sceneBuildMs: NonNegativeFiniteNumberSchema,
   frameRenderAverageMs: NonNegativeFiniteNumberSchema,
   frameRenderP95Ms: NonNegativeFiniteNumberSchema,

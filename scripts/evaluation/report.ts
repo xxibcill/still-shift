@@ -238,44 +238,11 @@ const medianRate = workerRates.length
   ? [...workerRates].sort((a, b) => a - b)[Math.floor(workerRates.length / 2)]!
   : null;
 const versions = results[0]?.metrics.versions ?? null;
-const scene = results[0]
-  ? SceneManifestSchema.parse(
-      JSON.parse(await readFile(results[0].sceneManifestPath, "utf8")),
-    )
-  : null;
-const depthPath = results[0]?.assetPaths?.depth;
-if (
-  scene?.depth &&
-  (!depthPath ||
-    scene.depth.asset !== results[0]?.checksums.depth ||
-    (await fileSha256(depthPath)) !== scene.depth.asset)
-)
-  throw new Error("Evaluation depth asset does not match its scene checksum");
-const model = scene?.depth
-  ? (
-      JSON.parse(
-        await readFile(join(dirname(depthPath!), "manifest.json"), "utf8"),
-      ) as { model?: unknown }
-    ).model
-  : null;
+const model = versions?.model ?? null;
 const preparationBySource = new Map<string, number>();
 for (const result of results) {
   if (preparationBySource.has(result.checksums.source)) continue;
-  const itemScene = SceneManifestSchema.parse(
-    JSON.parse(await readFile(result.sceneManifestPath, "utf8")),
-  );
-  if (!itemScene.depth) continue;
-  const itemDepthPath = result.assetPaths?.depth;
-  if (
-    !itemDepthPath ||
-    itemScene.depth.asset !== result.checksums.depth ||
-    (await fileSha256(itemDepthPath)) !== itemScene.depth.asset
-  )
-    throw new Error("Evaluation depth asset does not match its scene checksum");
-  const preparation = JSON.parse(
-    await readFile(join(dirname(itemDepthPath), "manifest.json"), "utf8"),
-  ) as { metrics?: { totalPreparationMs?: number } };
-  const elapsed = preparation.metrics?.totalPreparationMs;
+  const elapsed = result.metrics.archivedPreparationMs;
   if (typeof elapsed === "number" && Number.isFinite(elapsed))
     preparationBySource.set(result.checksums.source, elapsed);
 }
