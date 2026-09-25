@@ -417,7 +417,8 @@ export const runBatch = async (options: {
     records.push(undefined);
     try {
       const item = parseItem(line, lineNumber);
-      if (ids.has(item.id))
+      const idKey = item.id.toLowerCase();
+      if (ids.has(idKey))
         throw new AnimationEngineError(
           "SCENE_INVALID",
           "Duplicate batch item id",
@@ -426,7 +427,7 @@ export const runBatch = async (options: {
             line: lineNumber,
           },
         );
-      ids.add(item.id);
+      ids.add(idKey);
       jobs.push({ position, lineNumber, item });
     } catch (error) {
       records[position] = failureRecord(

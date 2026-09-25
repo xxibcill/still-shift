@@ -208,6 +208,25 @@ try {
   assert.equal(fixedSource.summary.successful, 1);
   assert.equal(fixedSource.summary.reused, 0);
   await assert.rejects(() => readFile(recoveryPendingPath), { code: "ENOENT" });
+
+  const collisionManifestPath = join(directory, "case-collision.jsonl");
+  const collisionOutputDir = join(directory, "case-collision-outputs");
+  await writeFile(
+    collisionManifestPath,
+    [
+      { id: "Shot", inputPath: "missing.png" },
+      { id: "shot", inputPath: "missing.png" },
+    ]
+      .map((item) => JSON.stringify(item))
+      .join("\n") + "\n",
+  );
+  const collision = await runBatch(collisionManifestPath, collisionOutputDir);
+  assert.equal(collision.exitCode, 1);
+  const collisionRecords = await readBatchRecords(collisionOutputDir);
+  assert.equal(collisionRecords[0].error.code, "INPUT_UNREADABLE");
+  assert.equal(collisionRecords[1].error.code, "SCENE_INVALID");
+  assert.equal(collisionRecords[1].error.message, "Duplicate batch item id");
+
   process.stdout.write(
     "Batch CLI verified: bounded workers, failure isolation, crash recovery, deterministic retries, and artifact validation\n",
   );
