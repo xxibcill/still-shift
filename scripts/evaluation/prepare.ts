@@ -9,6 +9,8 @@ import {
 } from "@still-shift/scene-contract";
 import { imageSize } from "image-size";
 
+import { parseEvaluationPresets } from "./presets.ts";
+
 const arg = (name: string): string => {
   const index = process.argv.indexOf(name);
   const value = process.argv[index + 1];
@@ -20,6 +22,9 @@ const arg = (name: string): string => {
 const corpusPath = resolve(arg("--corpus"));
 const outputPath = resolve(arg("--output"));
 const allowCandidate = process.argv.includes("--allow-candidate");
+const presets = parseEvaluationPresets(
+  process.argv.includes("--presets") ? arg("--presets") : undefined,
+);
 const corpusBytes = await readFile(corpusPath);
 const corpus = CorpusManifestSchema.parse(
   JSON.parse(corpusBytes.toString("utf8")),
@@ -40,7 +45,6 @@ if (corpus.status === "frozen") {
     throw new Error(`Frozen corpus has ${blockers.length} integrity blockers`);
 }
 
-const presets = ["slow_push", "horizontal_drift", "cinematic_float"] as const;
 const items: Array<Record<string, unknown>> = [];
 for (const entry of corpus.entries) {
   const path = resolve(dirname(corpusPath), entry.source.path);

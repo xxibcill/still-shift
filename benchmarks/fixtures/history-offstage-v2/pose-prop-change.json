@@ -1,0 +1,285 @@
+{
+  "schemaVersion": "illustrated-scene-1",
+  "title": "Pose and prop change",
+  "durationMs": 7000,
+  "fps": 24,
+  "width": 1920,
+  "height": 1080,
+  "background": "#E8DFC9",
+  "assets": [
+    {
+      "id": "landscape",
+      "path": "../../../assets/history-offstage-v2/landscape.png",
+      "sha256": "sha256:959ed784b0ac48f0b6f68bc337099020f11476fc35c39c8a583cc2806b6b79b3",
+      "width": 1672,
+      "height": 941
+    },
+    {
+      "id": "objects",
+      "path": "../../../assets/history-offstage-v2/objects-v1.png",
+      "sha256": "sha256:274cdaed676284c7225a2a83645288ff2fe7771bc75b4bbda6df92fbd9afc741",
+      "width": 1536,
+      "height": 1024
+    },
+    {
+      "id": "bowl-states",
+      "path": "../../../assets/history-offstage-v2/bowl-states.png",
+      "sha256": "sha256:047a9a3e5183af81567faafea31403d86bae91abb71be3f8f3245b89fe62d02d",
+      "width": 1774,
+      "height": 887
+    }
+  ],
+  "nodes": [
+    {
+      "id": "kicker",
+      "x": 112,
+      "y": 72,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "type": "text",
+      "text": "STILL SHIFT   /   MOTION STUDY 05",
+      "fontSize": 25,
+      "color": "#59664D",
+      "weight": "bold",
+      "font": "sans-serif",
+      "align": "left"
+    },
+    {
+      "id": "title",
+      "x": 110,
+      "y": 119,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "type": "text",
+      "text": "From the store to the table.",
+      "fontSize": 76,
+      "color": "#211F1B",
+      "weight": "normal",
+      "font": "serif",
+      "align": "left"
+    },
+    {
+      "id": "subtitle",
+      "x": 114,
+      "y": 217,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "type": "text",
+      "text": "One allocation changes what is ready to use.",
+      "fontSize": 31,
+      "color": "#59664D",
+      "weight": "normal",
+      "font": "sans-serif",
+      "align": "left"
+    },
+    {
+      "id": "footer-rule",
+      "x": 112,
+      "y": 971,
+      "width": 1696,
+      "height": 2,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "type": "rect",
+      "fill": "#211F1B",
+      "lineWidth": 0,
+      "radius": 0
+    },
+    {
+      "id": "footer",
+      "x": 112,
+      "y": 994,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "type": "text",
+      "text": "LAYERED CHRONICLE   ·   ORIGINAL ILLUSTRATION / SCHEMATIC DEMONSTRATION",
+      "fontSize": 22,
+      "color": "#59664D",
+      "weight": "normal",
+      "font": "sans-serif",
+      "align": "left"
+    },
+    {
+      "id": "surface",
+      "x": 112,
+      "y": 883,
+      "width": 1696,
+      "height": 4,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "type": "rect",
+      "fill": "#59664D",
+      "lineWidth": 0,
+      "radius": 0
+    },
+    {
+      "id": "store",
+      "x": 192,
+      "y": 443,
+      "width": 487,
+      "height": 428,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "type": "image",
+      "states": [
+        {
+          "asset": "objects",
+          "crop": [
+            36,
+            66,
+            466,
+            386
+          ]
+        }
+      ],
+      "fit": "contain"
+    },
+    {
+      "id": "bowl",
+      "x": 1080,
+      "y": 505,
+      "width": 626,
+      "height": 370,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "type": "image",
+      "states": [
+        {
+          "asset": "bowl-states",
+          "crop": [
+            62,
+            237,
+            794,
+            470
+          ]
+        },
+        {
+          "asset": "bowl-states",
+          "crop": [
+            915,
+            237,
+            794,
+            470
+          ]
+        }
+      ],
+      "fit": "contain"
+    },
+    {
+      "id": "portion",
+      "x": 685,
+      "y": 607,
+      "width": 88,
+      "height": 79,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "type": "image",
+      "states": [
+        {
+          "asset": "objects",
+          "crop": [
+            60,
+            575,
+            416,
+            366
+          ]
+        }
+      ],
+      "fit": "contain"
+    },
+    {
+      "id": "store-name",
+      "x": 420,
+      "y": 910,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "type": "text",
+      "text": "SHARED STORE",
+      "fontSize": 27,
+      "color": "#59664D",
+      "weight": "normal",
+      "font": "sans-serif",
+      "align": "center"
+    },
+    {
+      "id": "bowl-name",
+      "x": 1390,
+      "y": 910,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "type": "text",
+      "text": "READY FOR USE",
+      "fontSize": 27,
+      "color": "#59664D",
+      "weight": "normal",
+      "font": "sans-serif",
+      "align": "center"
+    }
+  ],
+  "recipe": {
+    "preset": "pose_prop_change",
+    "actor": "bowl",
+    "prop": "portion",
+    "target": [
+      1310,
+      565
+    ]
+  },
+  "provenance": "Original Codex-generated illustration assets. See assets/history-offstage-v2/provenance.json. Engineering and creative proof only; no selected episode assets."
+}

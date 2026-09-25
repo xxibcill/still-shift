@@ -1,0 +1,591 @@
+{
+  "schemaVersion": "illustrated-scene-1",
+  "title": "Access pressure",
+  "durationMs": 7000,
+  "fps": 24,
+  "width": 1920,
+  "height": 1080,
+  "background": "#E8DFC9",
+  "assets": [
+    {
+      "id": "landscape",
+      "path": "../../../assets/history-offstage-v2/landscape.png",
+      "sha256": "sha256:959ed784b0ac48f0b6f68bc337099020f11476fc35c39c8a583cc2806b6b79b3",
+      "width": 1672,
+      "height": 941
+    },
+    {
+      "id": "objects",
+      "path": "../../../assets/history-offstage-v2/objects-v1.png",
+      "sha256": "sha256:274cdaed676284c7225a2a83645288ff2fe7771bc75b4bbda6df92fbd9afc741",
+      "width": 1536,
+      "height": 1024
+    },
+    {
+      "id": "bowl-states",
+      "path": "../../../assets/history-offstage-v2/bowl-states.png",
+      "sha256": "sha256:047a9a3e5183af81567faafea31403d86bae91abb71be3f8f3245b89fe62d02d",
+      "width": 1774,
+      "height": 887
+    }
+  ],
+  "nodes": [
+    {
+      "id": "kicker",
+      "x": 112,
+      "y": 72,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "type": "text",
+      "text": "STILL SHIFT   /   MOTION STUDY 03",
+      "fontSize": 25,
+      "color": "#59664D",
+      "weight": "bold",
+      "font": "sans-serif",
+      "align": "left"
+    },
+    {
+      "id": "title",
+      "x": 110,
+      "y": 119,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "type": "text",
+      "text": "Available is not accessible.",
+      "fontSize": 76,
+      "color": "#211F1B",
+      "weight": "normal",
+      "font": "serif",
+      "align": "left"
+    },
+    {
+      "id": "subtitle",
+      "x": 114,
+      "y": 217,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "type": "text",
+      "text": "A resource remains in sight while the connection becomes restricted.",
+      "fontSize": 31,
+      "color": "#59664D",
+      "weight": "normal",
+      "font": "sans-serif",
+      "align": "left"
+    },
+    {
+      "id": "footer-rule",
+      "x": 112,
+      "y": 971,
+      "width": 1696,
+      "height": 2,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "type": "rect",
+      "fill": "#211F1B",
+      "lineWidth": 0,
+      "radius": 0
+    },
+    {
+      "id": "footer",
+      "x": 112,
+      "y": 994,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "type": "text",
+      "text": "LAYERED CHRONICLE   ·   ORIGINAL ILLUSTRATION / SCHEMATIC DEMONSTRATION",
+      "fontSize": 22,
+      "color": "#59664D",
+      "weight": "normal",
+      "font": "sans-serif",
+      "align": "left"
+    },
+    {
+      "id": "route",
+      "x": 0,
+      "y": 0,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "type": "path",
+      "points": [
+        [
+          565,
+          664
+        ],
+        [
+          584.0646882233796,
+          657.0233109085648
+        ],
+        [
+          603.0122974537037,
+          650.3427372685187
+        ],
+        [
+          621.84814453125,
+          643.95751953125
+        ],
+        [
+          640.5775462962962,
+          637.866898148148
+        ],
+        [
+          659.2058195891203,
+          632.070113570602
+        ],
+        [
+          677.73828125,
+          626.56640625
+        ],
+        [
+          696.1802481192129,
+          621.3550166377314
+        ],
+        [
+          714.5370370370371,
+          616.4351851851852
+        ],
+        [
+          732.81396484375,
+          611.80615234375
+        ],
+        [
+          751.0163483796296,
+          607.4671585648148
+        ],
+        [
+          769.1495044849537,
+          603.4174442997686
+        ],
+        [
+          787.21875,
+          599.65625
+        ],
+        [
+          805.2294017650464,
+          596.1828161168982
+        ],
+        [
+          823.1867766203703,
+          592.9963831018518
+        ],
+        [
+          841.09619140625,
+          590.09619140625
+        ],
+        [
+          858.962962962963,
+          587.4814814814814
+        ],
+        [
+          876.7924081307868,
+          585.1514937789351
+        ],
+        [
+          894.58984375,
+          583.10546875
+        ],
+        [
+          912.3605866608799,
+          581.342646846065
+        ],
+        [
+          930.1099537037035,
+          579.8622685185185
+        ],
+        [
+          947.84326171875,
+          578.66357421875
+        ],
+        [
+          965.5658275462963,
+          577.7458043981483
+        ],
+        [
+          983.2829680266203,
+          577.1081995081017
+        ],
+        [
+          1001,
+          576.75
+        ],
+        [
+          1018.7222403067129,
+          576.6704463252315
+        ],
+        [
+          1036.455005787037,
+          576.8687789351852
+        ],
+        [
+          1054.20361328125,
+          577.34423828125
+        ],
+        [
+          1071.9733796296298,
+          578.0960648148149
+        ],
+        [
+          1089.7696216724535,
+          579.1234989872685
+        ],
+        [
+          1107.59765625,
+          580.42578125
+        ],
+        [
+          1125.4628002025465,
+          582.0021520543983
+        ],
+        [
+          1143.3703703703704,
+          583.8518518518518
+        ],
+        [
+          1161.32568359375,
+          585.97412109375
+        ],
+        [
+          1179.334056712963,
+          588.3682002314815
+        ],
+        [
+          1197.400806568287,
+          591.0333297164352
+        ],
+        [
+          1215.53125,
+          593.96875
+        ],
+        [
+          1233.7307038483796,
+          597.1737015335648
+        ],
+        [
+          1252.004484953704,
+          600.6474247685185
+        ],
+        [
+          1270.35791015625,
+          604.38916015625
+        ],
+        [
+          1288.7962962962963,
+          608.3981481481482
+        ],
+        [
+          1307.3249602141204,
+          612.673629195602
+        ],
+        [
+          1325.94921875,
+          617.21484375
+        ],
+        [
+          1344.674388744213,
+          622.0210322627315
+        ],
+        [
+          1363.505787037037,
+          627.0914351851852
+        ],
+        [
+          1382.44873046875,
+          632.42529296875
+        ],
+        [
+          1401.50853587963,
+          638.0218460648149
+        ],
+        [
+          1420.6905201099537,
+          643.8803349247685
+        ],
+        [
+          1440,
+          650
+        ]
+      ],
+      "stroke": "#59664D",
+      "lineWidth": 16,
+      "gapAt": 0.64,
+      "gapSize": 0.13
+    },
+    {
+      "id": "source",
+      "x": 157,
+      "y": 435,
+      "width": 417,
+      "height": 377,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "type": "image",
+      "states": [
+        {
+          "asset": "objects",
+          "crop": [
+            36,
+            66,
+            466,
+            386
+          ]
+        }
+      ],
+      "fit": "contain"
+    },
+    {
+      "id": "destination",
+      "x": 1370,
+      "y": 358,
+      "width": 315,
+      "height": 470,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "type": "image",
+      "states": [
+        {
+          "asset": "objects",
+          "crop": [
+            565,
+            516,
+            408,
+            478
+          ]
+        }
+      ],
+      "fit": "contain"
+    },
+    {
+      "id": "source-label",
+      "x": 364,
+      "y": 864,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "type": "text",
+      "text": "AVAILABLE",
+      "fontSize": 31,
+      "color": "#211F1B",
+      "weight": "bold",
+      "font": "sans-serif",
+      "align": "center"
+    },
+    {
+      "id": "destination-label",
+      "x": 1540,
+      "y": 864,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "type": "text",
+      "text": "OUT OF REACH",
+      "fontSize": 31,
+      "color": "#211F1B",
+      "weight": "bold",
+      "font": "sans-serif",
+      "align": "center"
+    },
+    {
+      "id": "restriction",
+      "x": 0,
+      "y": 0,
+      "width": 1920,
+      "height": 1080,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "type": "group",
+      "clip": false
+    },
+    {
+      "id": "slash-one",
+      "parent": "restriction",
+      "x": 0,
+      "y": 0,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "type": "path",
+      "points": [
+        [
+          1100,
+          496
+        ],
+        [
+          1080,
+          537
+        ],
+        [
+          1120,
+          575
+        ],
+        [
+          1085,
+          616
+        ],
+        [
+          1117,
+          657
+        ]
+      ],
+      "stroke": "#8B3F36",
+      "lineWidth": 12,
+      "gapAt": 0.6,
+      "gapSize": 0.1
+    },
+    {
+      "id": "slash-two",
+      "parent": "restriction",
+      "x": 0,
+      "y": 0,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "type": "path",
+      "points": [
+        [
+          1140,
+          496
+        ],
+        [
+          1120,
+          537
+        ],
+        [
+          1160,
+          575
+        ],
+        [
+          1125,
+          616
+        ],
+        [
+          1157,
+          657
+        ]
+      ],
+      "stroke": "#8B3F36",
+      "lineWidth": 12,
+      "gapAt": 0.6,
+      "gapSize": 0.1
+    },
+    {
+      "id": "restriction-label",
+      "parent": "restriction",
+      "x": 1110,
+      "y": 725,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "type": "text",
+      "text": "ACCESS NARROWS",
+      "fontSize": 27,
+      "color": "#8B3F36",
+      "weight": "bold",
+      "font": "sans-serif",
+      "align": "center"
+    },
+    {
+      "id": "traveller",
+      "x": 0,
+      "y": 0,
+      "width": 74,
+      "height": 66,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "type": "image",
+      "states": [
+        {
+          "asset": "objects",
+          "crop": [
+            60,
+            575,
+            416,
+            366
+          ]
+        }
+      ],
+      "fit": "contain"
+    }
+  ],
+  "recipe": {
+    "preset": "access_pressure",
+    "route": "route",
+    "token": "traveller",
+    "barrier": "restriction",
+    "stopAt": 0.49
+  },
+  "provenance": "Original Codex-generated illustration assets. See assets/history-offstage-v2/provenance.json. Engineering and creative proof only; no selected episode assets."
+}

@@ -3,6 +3,7 @@ import {
   applySafetyToScene,
   createWebGLPreview,
   evaluateFrame,
+  isFlatPreset,
   resolvePreviewScene,
   type PreviewIntensity,
   type PreviewPreset,
@@ -60,11 +61,21 @@ let activeImages: {
 } | null = null;
 const safetyAssessments = new WeakMap<HTMLImageElement, SafetyAssessment>();
 
-const presets: PreviewPreset[] = [
+const depthPresets: PreviewPreset[] = [
   "slow_push",
   "horizontal_drift",
   "cinematic_float",
 ];
+const editorialPresets: PreviewPreset[] = [
+  "locked_hold",
+  "story_settle",
+  "panel_reveal",
+  "comparison_step",
+];
+const galleryPresets = (): PreviewPreset[] =>
+  isFlatPreset(presetSelect.value as PreviewPreset)
+    ? editorialPresets
+    : depthPresets;
 
 const stop = (): void => {
   if (timer !== null) window.clearInterval(timer);
@@ -169,6 +180,7 @@ const resolveLabScene = (
     intensity,
     seed,
   });
+  if (scene.motion.mode === "flat_2d") return scene;
   return applySafetyToScene(scene, analyzePair(source, depth));
 };
 
@@ -201,6 +213,8 @@ const activateScene = (
   byId<HTMLElement>("empty-preview").hidden = true;
   sourceImage.src = pair.sourceUrl;
   depthImage.src = pair.depthUrl;
+  byId<HTMLElement>("depth-caption").textContent =
+    nextScene.motion.mode === "flat_2d" ? "Depth unused" : "Prepared depth";
   frameSlider.max = String(nextScene.timeline.frameCount - 1);
   frameSlider.disabled = false;
   playButton.disabled = false;
@@ -290,7 +304,7 @@ const addGalleryCard = (
   if (poster) {
     const image = document.createElement("img");
     image.src = poster;
-    image.alt = "Midpoint preview for " + entry.id + " with " + preset;
+    image.alt = "Preview frame for " + entry.id + " with " + preset;
     card.append(image);
     card.addEventListener("click", () => {
       presetSelect.value = preset;
@@ -311,6 +325,15 @@ const addGalleryCard = (
   gallery.append(card);
 };
 
+const galleryFrameIndex = (scene: PreviewScene): number => {
+  const { preset } = scene.motion;
+  if (preset === "panel_reveal") return 8;
+  if (preset === "comparison_step")
+    return Math.floor(scene.timeline.frameCount * 0.32) + 8;
+  if (preset === "story_settle") return 10;
+  return Math.floor(scene.timeline.frameCount / 2);
+};
+
 const buildGallery = async (): Promise<void> => {
   galleryButton.disabled = true;
   status.classList.remove("error");
@@ -322,6 +345,7 @@ const buildGallery = async (): Promise<void> => {
   try {
     const intensity = intensitySelect.value as PreviewIntensity;
     const seed = selectedSeed();
+    const presets = galleryPresets();
     for (const [index, entry] of corpusEntries.entries()) {
       byId<HTMLElement>("gallery-note").textContent =
         "Building gallery " +
@@ -354,9 +378,7 @@ const buildGallery = async (): Promise<void> => {
             );
             let poster: string;
             try {
-              posterRenderer.renderFrame(
-                Math.floor(resolvedScene.timeline.frameCount / 2),
-              );
+              posterRenderer.renderFrame(galleryFrameIndex(resolvedScene));
               poster = posterCanvas.toDataURL("image/png");
             } finally {
               posterRenderer.dispose();
@@ -376,7 +398,7 @@ const buildGallery = async (): Promise<void> => {
       posters.size +
       "/" +
       corpusEntries.length * presets.length +
-      " midpoint previews generated. Select a tile to inspect motion.";
+      " preview frames generated. Select a tile to inspect motion.";
   } catch (error) {
     showError(error);
   } finally {
@@ -402,24 +424,43 @@ galleryButton.addEventListener("click", () => {
   void buildGallery();
 });
 byId<HTMLButtonElement>("load-local").addEventListener("click", () => {
+  void loadLocal().catch(showError);
+});
+
+const neutralDepthUrl = (source: HTMLImageElement): string => {
+  const depthCanvas = document.createElement("canvas");
+  depthCanvas.width = source.naturalWidth;
+  depthCanvas.height = source.naturalHeight;
+  const context = depthCanvas.getContext("2d");
+  if (!context) throw new Error("2D canvas is required for a flat preview");
+  context.fillStyle = "#808080";
+  context.fillRect(0, 0, depthCanvas.width, depthCanvas.height);
+  return depthCanvas.toDataURL("image/png");
+};
+
+const loadLocal = async (): Promise<void> => {
   const source = sourceInput.files?.[0];
   const depth = depthInput.files?.[0];
-  if (!source || !depth)
-    return showError(new Error("Choose both a source image and depth PNG"));
+  if (!source) throw new Error("Choose a source image");
+  if (!depth && !isFlatPreset(presetSelect.value as PreviewPreset)) {
+    throw new Error("Choose a depth PNG for a depth preset");
+  }
   localUrls.forEach((url) => URL.revokeObjectURL(url));
-  localUrls = [URL.createObjectURL(source), URL.createObjectURL(depth)];
+  localUrls = [URL.createObjectURL(source)];
+  if (depth) localUrls.push(URL.createObjectURL(depth));
   const requestId = ++previewRequestId;
   prepareButton.disabled = !select.value;
   status.classList.remove("error");
+  const depthUrl = depth
+    ? localUrls[1]!
+    : neutralDepthUrl(await loadImage(localUrls[0]!));
   const pair: PreviewPair = {
     sourceUrl: localUrls[0]!,
-    depthUrl: localUrls[1]!,
+    depthUrl,
     durationMs: 5000,
   };
-  void inspectPair(source.name, pair, requestId).catch((error: unknown) => {
-    if (requestId === previewRequestId) showError(error);
-  });
-});
+  await inspectPair(source.name, pair, requestId);
+};
 frameSlider.addEventListener("input", () => {
   stop();
   showFrame(Number(frameSlider.value));

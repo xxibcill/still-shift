@@ -17,9 +17,39 @@ The command writes a 1920×1080 H.264 MP4 and `still.mp4.scene.json`. It prints 
 
 `--preset auto` chooses among the three presets using the normalized source checksum and seed. Durations are 3–8 seconds in whole 30-FPS frames. The default depth model is Depth Anything V2 Small; preparation is cached. Valid images whose depth preparation or safety analysis fails produce a deterministic 2D MP4 with a reason code. Invalid inputs and export failures are errors. The CLI does not overwrite outputs.
 
+Four explicit editorial presets—`locked_hold`, `story_settle`,
+`panel_reveal`, and `comparison_step`—normalize the source and render in flat
+2D without running depth inference. They return a normal rendered result, with
+`depth: null` in the scene manifest. Choose a reveal only for a composition
+authored for its reading order; see the
+[illustrated-motion trial](../../docs/history-offstage-presets.md).
+
 Exit code 0 means a complete result, including a valid 2D fallback. Exit code 2 means invalid command options or request constraints. Exit code 1 means an input, preparation, render, encode, or publication failure; stderr contains one JSON `AnimationFailure`. `--adapter noop` keeps the v0.1 fake path available for compatibility checks. For local fixtures, `STILL_SHIFT_DEPTH_ADAPTER=fake` selects the deterministic fake depth worker.
 
-`pnpm test:browser:cli` exercises an explainer-shaped fixture, cache reuse, repeated checksums, depth-failure fallback, invalid input, and existing-output protection.
+`pnpm test:browser:cli` exercises an explainer-shaped fixture, cache reuse, repeated checksums, intentional flat 2D, depth-failure fallback, invalid input, and existing-output protection.
+
+## Prepared illustrated scenes
+
+The six richer History Offstage presets use a scene JSON containing supplied image
+layers, paths, text, and authored states:
+
+```bash
+pnpm still-shift animate-scene \
+  --scene benchmarks/fixtures/history-offstage-v2/resource-flow.json \
+  --output /tmp/resource-flow-new.mp4
+```
+
+The scene supplies its preset, duration, and explicit 24 or 30 fps frame rate.
+Clips must span 3–8 seconds in whole frames. Assets are resolved relative to the
+JSON and checked against their SHA-256 hashes and dimensions. Missing roles,
+invalid paths/crops, and missing alternate states produce errors before export.
+
+This command writes the MP4, `.mp4.scene.json`, and `.mp4.result.json`; stdout
+contains an `illustrated-result-1` result. Output files must not already exist.
+Prepared input is separate from `animate --input` and the existing image batch
+format. See the [six preset guide](../../docs/history-offstage-motion-implementation.md)
+for the lab, reusable examples, and review reel. `pnpm illustrated:render
+--output-dir <new-directory>` renders the six prepared fixtures through this CLI.
 
 ## Unattended batch
 

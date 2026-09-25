@@ -1,5 +1,16 @@
 # Still Shift
 
+## Product direction
+
+Still Shift aims to lower the cost of faceless YouTube videos by automatically mixing
+animated still images, moving text and graphics, and selected AI video clips. Still
+images may use several animation methods; depth-based parallax is only one of them.
+The current Phase 0 work tests a narrower still-image animation component. See
+[product positioning](./docs/product-positioning.md) for the owner-stated goal,
+candidate approaches, relationship to existing tools, and measures of success.
+
+## Current implementation
+
 Still Shift is a local, deterministic still-image animation engine spike. The v0.1
 foundation and fake animation path are merged. The v0.2 depth worker prepares and caches
 normalized images and validated depth assets. v0.3 adds a browser preview of one

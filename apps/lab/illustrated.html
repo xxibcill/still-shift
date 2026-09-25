@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Still Shift · Illustrated motion</title>
+    <style>
+      :root {
+        font-family: system-ui, sans-serif;
+        color: #eee8d9;
+        background: #211f1b;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+      }
+      main {
+        max-width: 1400px;
+        margin: auto;
+        padding: 36px 32px;
+      }
+      header {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        gap: 24px;
+      }
+      h1 {
+        font-family: Georgia, serif;
+        font-size: 42px;
+        font-weight: normal;
+        margin: 8px 0;
+      }
+      a {
+        color: #bdcbaa;
+      }
+      .eyebrow {
+        font-size: 12px;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: #beab87;
+      }
+      .controls {
+        display: flex;
+        gap: 14px;
+        align-items: center;
+        flex-wrap: wrap;
+        margin: 24px 0;
+      }
+      button,
+      select,
+      input {
+        font: inherit;
+      }
+      button,
+      select {
+        padding: 10px 16px;
+        border: 1px solid #6d6b5b;
+        color: #eee8d9;
+        background: #33352b;
+        border-radius: 4px;
+      }
+      button {
+        cursor: pointer;
+      }
+      label {
+        font-size: 14px;
+        color: #ccc4b0;
+      }
+      canvas {
+        display: block;
+        width: 100%;
+        height: auto;
+        background: #e8dfc9;
+        border: 1px solid #514c3c;
+      }
+      #scrub {
+        flex: 1;
+        min-width: 160px;
+        accent-color: #c79b55;
+      }
+      #description {
+        color: #c7c1b1;
+        line-height: 1.5;
+        min-height: 24px;
+      }
+      #status {
+        font-size: 14px;
+        color: #afc5a1;
+      }
+      output {
+        font-variant-numeric: tabular-nums;
+      }
+      #error {
+        color: #f2ad93;
+      }
+      details {
+        margin-top: 30px;
+        color: #c7c1b1;
+        line-height: 1.6;
+      }
+      code {
+        font-size: 13px;
+      }
+      @media (max-width: 700px) {
+        main {
+          padding: 20px 12px;
+        }
+        header {
+          display: block;
+        }
+        h1 {
+          font-size: 32px;
+        }
+        .controls {
+          gap: 8px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <header>
+        <div>
+          <p class="eyebrow">Still Shift / illustrated motion</p>
+          <h1>Motion that explains a change.</h1>
+        </div>
+        <a href="/">Image preview lab</a>
+      </header>
+      <div class="controls">
+        <label for="scene">Scene / compatible preset</label
+        ><select id="scene" aria-label="Prepared scene"></select
+        ><button id="play" disabled>Play</button
+        ><button id="restart" disabled>Restart</button>
+      </div>
+      <p id="description"></p>
+      <canvas
+        id="illustrated-preview"
+        width="1920"
+        height="1080"
+        aria-label="Illustrated animation preview"
+      ></canvas>
+      <div class="controls">
+        <label for="scrub">Frame</label
+        ><input id="scrub" type="range" min="0" max="167" value="0" /><output
+          id="time"
+          >0 / 168</output
+        >
+      </div>
+      <p id="status" role="status">Loading scenes…</p>
+      <p id="error" role="alert"></p>
+      <details>
+        <summary>Render a prepared scene</summary>
+        <p>
+          Scene packages contain reusable illustration layers, paths and
+          authored states. The preset uses the ingredients its scene provides.
+        </p>
+        <code
+          >pnpm still-shift animate-scene --scene path/to/prepared.json --output
+          path/to/clip.mp4</code
+        >
+      </details>
+    </main>
+    <script type="module" src="/src/illustrated.ts"></script>
+  </body>
+</html>

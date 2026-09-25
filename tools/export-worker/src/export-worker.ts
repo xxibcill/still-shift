@@ -11,15 +11,19 @@ import { chromium, type Browser } from "playwright";
 import { createServer, type Plugin, type ViteDevServer } from "vite";
 
 import type { PreviewScene } from "../../../packages/renderer-core/src/scene.ts";
+import type { IllustratedScene } from "../../../packages/renderer-core/src/prepared-scene.ts";
+
+export type ExportableScene = PreviewScene | IllustratedScene;
 
 const execFileAsync = promisify(execFile);
 const projectRoot = resolve(import.meta.dirname, "../../..");
 const EXPORT_WORKER_VERSION = "chromium-ffmpeg-0.6.0";
 
 export type ExportRequest = {
-  scene: PreviewScene;
+  scene: ExportableScene;
   sourcePath: string;
   depthPath: string | null;
+  assetPaths?: Record<string, string>;
   outputPath: string;
   encoder?: "libx264" | "h264_videotoolbox";
   transport?: "raw_rgba" | "png_pipe" | "jpeg_pipe";
@@ -46,7 +50,7 @@ export type ExportMetrics = {
 };
 
 const ffmpegArguments = (
-  scene: PreviewScene,
+  scene: ExportableScene,
   temporaryPath: string,
   encoder: "libx264" | "h264_videotoolbox",
   transport: "raw_rgba" | "png_pipe" | "jpeg_pipe",
@@ -156,6 +160,22 @@ const assetPlugin = (
     server.middlewares.use((incoming, response, next) => {
       const pathname = new URL(incoming.url ?? "/", "http://localhost")
         .pathname;
+      if (pathname.startsWith("/_export/assets/")) {
+        const id = pathname.slice("/_export/assets/".length);
+        const assetPath = Object.hasOwn(request.assetPaths ?? {}, id)
+          ? request.assetPaths?.[id]
+          : undefined;
+        if (!assetPath) {
+          response.statusCode = 404;
+          response.end("Unknown scene asset");
+          return;
+        }
+        void sendAsset(assetPath, response).catch((error: unknown) => {
+          response.statusCode = 500;
+          response.end(String(error));
+        });
+        return;
+      }
       if (pathname === "/_export/source") {
         void sendAsset(request.sourcePath, response).catch((error: unknown) => {
           response.statusCode = 500;
@@ -205,7 +225,7 @@ const assetPlugin = (
 
 const verifyOutput = async (
   path: string,
-  scene: PreviewScene,
+  scene: ExportableScene,
 ): Promise<void> => {
   const { stdout } = await execFileAsync("ffprobe", [
     "-v",
@@ -268,7 +288,7 @@ export const exportScene = async (
     (scene.timeline.durationMs * scene.timeline.fps) / 1000
   )
     throw new Error("Scene frame count and duration disagree");
-  if (scene.motion.mode === "depth" && !request.depthPath)
+  if ("motion" in scene && scene.motion.mode === "depth" && !request.depthPath)
     throw new Error("Depth motion requires a depth image");
   const outputPath = resolve(request.outputPath);
   const temporaryPath = resolve(

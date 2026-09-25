@@ -6,6 +6,22 @@
 **Primary consumer:** The existing explainer-video production workflow  
 **Related architecture:** `Still_Image_Animation_Architecture.md`
 
+**2026-09-25 illustrated-style extension:** Four optional flat 2D presets were
+added for a History Offstage style trial. They do not change the original three
+depth-preset baseline or the required exit gates. The prior 43-image candidate
+is retired; see [the preset trial](./docs/history-offstage-presets.md) and
+[corpus review](./docs/corpus-review-2026-09-25.md).
+
+**2026-09-25 creative review correction:** The owner found that first trial too
+basic. The owner approved the [replacement motion plan](./docs/history-offstage-motion-plan.md).
+Six presets using supplied layers, paths, and authored states are now implemented
+as a bounded extension to this experiment; see the
+[implementation and 42-second review reel](./docs/history-offstage-motion-implementation.md).
+The extension explicitly accepts prepared alpha assets and rectangular clips,
+with 24/30 fps scene metadata. Automatic segmentation, arbitrary mask authoring,
+and background inpainting remain excluded. Creative review and the original
+Phase 0 exit gates remain open.
+
 ## 1. Phase 0 decision
 
 Build the smallest production-shaped vertical slice that can answer one question:

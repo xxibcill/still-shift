@@ -143,6 +143,71 @@ try {
     "Flat depth must still produce a valid moving 2D preview",
   );
 
+  await page.locator("#preset").selectOption("panel_reveal");
+  await page.locator("#local-depth").setInputFiles([]);
+  await page.locator("#load-local").click();
+  await page.waitForFunction(() =>
+    document
+      .querySelector<HTMLImageElement>("#depth-image")
+      ?.src.startsWith("data:image/png"),
+  );
+  const flatParameters = JSON.parse(
+    (await page.locator("#parameters").textContent()) ?? "{}",
+  );
+  assert.equal(flatParameters.motion.mode, "flat_2d");
+  const revealFirst = await measureMarkers(page);
+  assert.ok(
+    Number.isNaN(revealFirst.red) && Number.isNaN(revealFirst.green),
+    "The panel reveal must begin with the source concealed",
+  );
+  await page.evaluate(() => {
+    const slider = document.querySelector<HTMLInputElement>("#frame")!;
+    slider.value = "20";
+    slider.dispatchEvent(new Event("input", { bubbles: true }));
+  });
+  const revealHeld = await measureMarkers(page);
+  assert.ok(
+    Number.isFinite(revealHeld.red) && Number.isFinite(revealHeld.green),
+    "The panel reveal must show the whole source after its opening beat",
+  );
+
+  await page.locator("#preset").selectOption("comparison_step");
+  await page.evaluate(() => {
+    const slider = document.querySelector<HTMLInputElement>("#frame")!;
+    slider.value = "0";
+    slider.dispatchEvent(new Event("input", { bubbles: true }));
+  });
+  const comparisonFirst = await measureMarkers(page);
+  assert.ok(
+    Number.isFinite(comparisonFirst.red) && Number.isNaN(comparisonFirst.green),
+    "The comparison must hold the left panel while concealing the right",
+  );
+  await page.evaluate(() => {
+    const slider = document.querySelector<HTMLInputElement>("#frame")!;
+    slider.value = "70";
+    slider.dispatchEvent(new Event("input", { bubbles: true }));
+  });
+  const comparisonHeld = await measureMarkers(page);
+  assert.ok(
+    Number.isFinite(comparisonHeld.red) &&
+      Number.isFinite(comparisonHeld.green),
+    "The comparison must reveal the right panel and hold both",
+  );
+
+  await page.locator("#preset").selectOption("locked_hold");
+  const holdLast = await measureMarkers(page);
+  await page.evaluate(() => {
+    const slider = document.querySelector<HTMLInputElement>("#frame")!;
+    slider.value = "0";
+    slider.dispatchEvent(new Event("input", { bubbles: true }));
+  });
+  const holdFirst = await measureMarkers(page);
+  assert.deepEqual(
+    holdFirst,
+    holdLast,
+    "A locked hold must not move the image",
+  );
+
   const racePage = await browser.newPage();
   const sourceUrl = `data:image/svg+xml;base64,${Buffer.from(sourceSvg).toString("base64")}`;
   const depthUrl = `data:image/svg+xml;base64,${Buffer.from(depthSvg).toString("base64")}`;

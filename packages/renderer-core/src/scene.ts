@@ -4,9 +4,21 @@ export const PRESET_VERSIONS = {
   slow_push: SLOW_PUSH_VERSION,
   horizontal_drift: "horizontal_drift@0.4.0",
   cinematic_float: "cinematic_float@0.4.0",
+  locked_hold: "locked_hold@0.11.0",
+  story_settle: "story_settle@0.11.0",
+  panel_reveal: "panel_reveal@0.11.0",
+  comparison_step: "comparison_step@0.11.0",
 } as const;
 
 export type PreviewPreset = keyof typeof PRESET_VERSIONS;
+const FLAT_PRESETS = new Set<PreviewPreset>([
+  "locked_hold",
+  "story_settle",
+  "panel_reveal",
+  "comparison_step",
+]);
+export const isFlatPreset = (preset: PreviewPreset): boolean =>
+  FLAT_PRESETS.has(preset);
 export type PreviewIntensity = "subtle" | "standard" | "strong";
 export type PreviewWarning = {
   code:
@@ -69,6 +81,30 @@ export const PRESET_LIMITS: Record<PreviewPreset, MotionParameters> = {
     depthStrength: 0.03,
     lateralTravel: 0.035,
     rollDegrees: 0.3,
+  },
+  locked_hold: {
+    travel: 0,
+    depthStrength: 0,
+    lateralTravel: 0,
+    rollDegrees: 0,
+  },
+  story_settle: {
+    travel: 0.02,
+    depthStrength: 0,
+    lateralTravel: 0,
+    rollDegrees: 0,
+  },
+  panel_reveal: {
+    travel: 0,
+    depthStrength: 0,
+    lateralTravel: 0,
+    rollDegrees: 0,
+  },
+  comparison_step: {
+    travel: 0,
+    depthStrength: 0,
+    lateralTravel: 0,
+    rollDegrees: 0,
   },
 };
 
@@ -136,6 +172,41 @@ const PRESET_DEFAULTS: Record<
       rollDegrees: 0.3,
     },
   },
+  locked_hold: {
+    subtle: { travel: 0, depthStrength: 0, lateralTravel: 0, rollDegrees: 0 },
+    standard: { travel: 0, depthStrength: 0, lateralTravel: 0, rollDegrees: 0 },
+    strong: { travel: 0, depthStrength: 0, lateralTravel: 0, rollDegrees: 0 },
+  },
+  story_settle: {
+    subtle: {
+      travel: 0.008,
+      depthStrength: 0,
+      lateralTravel: 0,
+      rollDegrees: 0,
+    },
+    standard: {
+      travel: 0.014,
+      depthStrength: 0,
+      lateralTravel: 0,
+      rollDegrees: 0,
+    },
+    strong: {
+      travel: 0.02,
+      depthStrength: 0,
+      lateralTravel: 0,
+      rollDegrees: 0,
+    },
+  },
+  panel_reveal: {
+    subtle: { travel: 0, depthStrength: 0, lateralTravel: 0, rollDegrees: 0 },
+    standard: { travel: 0, depthStrength: 0, lateralTravel: 0, rollDegrees: 0 },
+    strong: { travel: 0, depthStrength: 0, lateralTravel: 0, rollDegrees: 0 },
+  },
+  comparison_step: {
+    subtle: { travel: 0, depthStrength: 0, lateralTravel: 0, rollDegrees: 0 },
+    standard: { travel: 0, depthStrength: 0, lateralTravel: 0, rollDegrees: 0 },
+    strong: { travel: 0, depthStrength: 0, lateralTravel: 0, rollDegrees: 0 },
+  },
 };
 
 export type PreviewInput = {
@@ -164,7 +235,7 @@ export type PreviewScene = {
   source: { width: number; height: number };
   canvas: { width: number; height: number };
   motion: {
-    mode: "depth" | "fallback_2d";
+    mode: "depth" | "flat_2d" | "fallback_2d";
     preset: PreviewPreset;
     intensity: PreviewIntensity;
     seed: number;
@@ -189,6 +260,7 @@ export type EvaluatedFrame = {
   translationX: number;
   translationY: number;
   rollDegrees: number;
+  revealProgress: number;
 };
 
 const requirePositive = (name: string, value: number): void => {
@@ -296,26 +368,30 @@ export const resolvePreviewScene = (input: PreviewInput): PreviewScene => {
     limits.rollDegrees,
     warnings,
   );
+  const minimumOverscan = isFlatPreset(input.preset)
+    ? 0
+    : PREVIEW_LIMITS.minimumOverscan;
   const overscan = resolveLimit(
     "overscan",
     input.overscan,
-    input.preset === "cinematic_float" ? 0.12 : PREVIEW_LIMITS.minimumOverscan,
-    PREVIEW_LIMITS.maximumCrop,
+    input.preset === "cinematic_float" ? 0.12 : minimumOverscan,
+    isFlatPreset(input.preset) ? 0 : PREVIEW_LIMITS.maximumCrop,
     warnings,
   );
-  if (overscan < PREVIEW_LIMITS.minimumOverscan) {
+  if (overscan < minimumOverscan) {
     warnings.push({
       code: "MOTION_CLAMPED",
-      message: "overscan raised to " + PREVIEW_LIMITS.minimumOverscan,
+      message: "overscan raised to " + minimumOverscan,
     });
   }
-  let safeOverscan = Math.max(overscan, PREVIEW_LIMITS.minimumOverscan);
-  const maximumCrop =
-    (travel +
-      depthStrength +
-      lateralTravel * (input.preset === "cinematic_float" ? 1.3 : 1) +
-      (rollDegrees * Math.PI) / 180) /
-    (1 + travel);
+  let safeOverscan = Math.max(overscan, minimumOverscan);
+  const maximumCrop = isFlatPreset(input.preset)
+    ? lateralTravel + (rollDegrees * Math.PI) / 180
+    : (travel +
+        depthStrength +
+        lateralTravel * (input.preset === "cinematic_float" ? 1.3 : 1) +
+        (rollDegrees * Math.PI) / 180) /
+      (1 + travel);
   if (maximumCrop > PREVIEW_LIMITS.maximumCrop) {
     throw new Error("Resolved camera motion exceeds the safe crop envelope");
   }
@@ -337,7 +413,7 @@ export const resolvePreviewScene = (input: PreviewInput): PreviewScene => {
     source: { width: input.sourceWidth, height: input.sourceHeight },
     canvas: { width: input.canvasWidth, height: input.canvasHeight },
     motion: {
-      mode: "depth",
+      mode: isFlatPreset(input.preset) ? "flat_2d" : "depth",
       preset: input.preset,
       intensity: input.intensity,
       seed: input.seed ?? 1842,
@@ -377,6 +453,18 @@ const seededPhase = (seed: number): number => {
   return ((value >>> 0) / 0x100000000) * 2 * Math.PI;
 };
 
+const ease = (progress: number): number =>
+  progress * progress * (3 - 2 * progress);
+
+const revealDurationFrames = (intensity: PreviewIntensity): number =>
+  intensity === "subtle" ? 20 : intensity === "standard" ? 16 : 12;
+
+const revealAt = (
+  frameIndex: number,
+  startFrame: number,
+  durationFrames: number,
+): number => clamp((frameIndex - startFrame) / durationFrames, 0, 1);
+
 export const evaluateFrame = (
   scene: PreviewScene,
   frameIndex: number,
@@ -392,12 +480,36 @@ export const evaluateFrame = (
     scene.timeline.frameCount === 1
       ? 0
       : frameIndex / (scene.timeline.frameCount - 1);
-  const eased = progress * progress * (3 - 2 * progress);
-  const { mode, preset, lateralTravel, rollDegrees, seed } = scene.motion;
+  const eased = ease(progress);
+  const { mode, preset, intensity, lateralTravel, rollDegrees, seed } =
+    scene.motion;
   let translationX = 0;
   let translationY = 0;
   let evaluatedRoll = 0;
-  if (mode === "fallback_2d" || preset === "horizontal_drift") {
+  let revealProgress = 1;
+  let cameraTravel = scene.motion.travel * eased;
+  if (mode === "flat_2d") {
+    if (preset === "story_settle") {
+      const settleFrames = Math.min(scene.timeline.frameCount - 1, 21);
+      cameraTravel =
+        scene.motion.travel * ease(revealAt(frameIndex, 0, settleFrames));
+    } else {
+      cameraTravel = 0;
+    }
+    if (preset === "panel_reveal") {
+      revealProgress = ease(
+        revealAt(frameIndex, 0, revealDurationFrames(intensity)),
+      );
+    } else if (preset === "comparison_step") {
+      revealProgress = ease(
+        revealAt(
+          frameIndex,
+          Math.floor(scene.timeline.frameCount * 0.32),
+          revealDurationFrames(intensity),
+        ),
+      );
+    }
+  } else if (mode === "fallback_2d" || preset === "horizontal_drift") {
     translationX = lateralTravel * (2 * eased - 1);
   } else if (preset === "cinematic_float") {
     const phase = seededPhase(seed);
@@ -408,7 +520,6 @@ export const evaluateFrame = (
     translationY = lateralTravel * 0.9 * envelope * Math.cos(wave);
     evaluatedRoll = rollDegrees * envelope * Math.sin(wave);
   }
-  const cameraTravel = scene.motion.travel * eased;
   return {
     frameIndex,
     timeSeconds: frameIndex / scene.timeline.fps,
@@ -420,5 +531,6 @@ export const evaluateFrame = (
     translationX,
     translationY,
     rollDegrees: evaluatedRoll,
+    revealProgress,
   };
 };

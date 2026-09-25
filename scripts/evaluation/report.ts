@@ -9,6 +9,8 @@ import {
   type AnimationResult,
 } from "@still-shift/scene-contract";
 
+import { parseEvaluationPresets } from "./presets.ts";
+
 const option = (name: string): string | undefined => {
   const index = process.argv.indexOf(name);
   return index < 0 ? undefined : process.argv[index + 1];
@@ -92,12 +94,65 @@ const results: AnimationResult[] = records
 const summary = JSON.parse(
   await readFile(join(dirname(resultsPath), "batch-summary.json"), "utf8"),
 ) as {
+  manifestPath: string;
   totalWallMs: number;
   itemCount: number;
   successful: number;
   reused: number;
   concurrency?: number;
 };
+if (!summary.manifestPath) {
+  throw new Error("Batch summary has no prepared request manifest path");
+}
+const preparedRequests = (await readFile(summary.manifestPath, "utf8"))
+  .split(/\r?\n/)
+  .filter((line) => line.trim())
+  .map(
+    (line) =>
+      JSON.parse(line) as {
+        id: string;
+        inputPath: string;
+        durationMs: number;
+        preset: string;
+      },
+  );
+const preparedPresets = parseEvaluationPresets(
+  [...new Set(preparedRequests.map((request) => request.preset))].join(","),
+);
+const expectedRequests = new Map<
+  string,
+  { inputPath: string; durationMs: number; preset: string }
+>(
+  corpus.entries.flatMap((entry) =>
+    preparedPresets.map(
+      (preset) =>
+        [
+          `${entry.id}-${preset.replaceAll("_", "-")}`,
+          {
+            inputPath: resolve(dirname(corpusPath), entry.source.path),
+            durationMs: entry.expectedShotDurationMs,
+            preset,
+          },
+        ] as const,
+    ),
+  ),
+);
+if (
+  preparedRequests.length !== expectedRequests.size ||
+  preparedRequests.some((request) => {
+    const expected = expectedRequests.get(request.id);
+    return (
+      !expected ||
+      request.inputPath !== expected.inputPath ||
+      request.durationMs !== expected.durationMs ||
+      request.preset !== expected.preset
+    );
+  }) ||
+  new Set(preparedRequests.map((request) => request.id)).size !==
+    preparedRequests.length
+) {
+  throw new Error("Prepared requests do not match this corpus and preset set");
+}
 let runHistory: (typeof summary)[] = [];
 try {
   runHistory = (
@@ -116,9 +171,12 @@ const benchmarkRun =
       run.successful === run.itemCount &&
       run.reused === 0,
   ) ?? summary;
-const expectedCount = corpus.entries.length * 3;
+const expectedCount = preparedRequests.length;
+const expectedIds = new Set(preparedRequests.map((request) => request.id));
 const complete =
   records.length === expectedCount &&
+  new Set(records.map((record) => record.id)).size === expectedCount &&
+  records.every((record) => expectedIds.has(record.id)) &&
   summary.itemCount === expectedCount &&
   summary.successful === expectedCount;
 const validRate = summary.successful / summary.itemCount;
@@ -349,6 +407,7 @@ const report = {
     status: corpus.status,
     review: corpus.review.status,
     entryCount: corpus.entries.length,
+    presets: preparedPresets,
     expectedClipCount: expectedCount,
   },
   results: {

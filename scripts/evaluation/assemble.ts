@@ -9,8 +9,9 @@ import {
   CorpusManifestSchema,
 } from "@still-shift/scene-contract";
 
+import { parseEvaluationPresets } from "./presets.ts";
+
 const execFileAsync = promisify(execFile);
-const presets = ["slow_push", "horizontal_drift", "cinematic_float"] as const;
 const option = (name: string): string | undefined => {
   const index = process.argv.indexOf(name);
   return index < 0 ? undefined : process.argv[index + 1];
@@ -28,6 +29,9 @@ const corpusPath = required("--corpus");
 const resultsPath = required("--results");
 const narrationPath = required("--narration");
 const outputPath = required("--output");
+if (process.argv.includes("--presets") && option("--presets") === undefined)
+  throw new Error("Missing --presets");
+const presets = parseEvaluationPresets(option("--presets"));
 const limitStates = option("--limit-states")
   ? Number(option("--limit-states"))
   : null;

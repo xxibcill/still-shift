@@ -1,11 +1,23 @@
 # Still Shift — Phase 0 Roadmap
 
-**Status:** v0.3–v0.10 implementation complete; frozen-corpus approval and human decision gates pending
+**Status:** v0.3–v0.10 implementation complete; six richer illustrated presets implemented; creative review, frozen-corpus approval, and human decision gates pending
 
-**Updated:** 2026-09-24  
+**Updated:** 2026-09-25
+
 **Target:** 10 working days  
 **Detailed plan:** [Phase_0_Implementation_Plan.md](./Phase_0_Implementation_Plan.md)  
 **Architecture:** [Still_Image_Animation_Architecture.md](./Still_Image_Animation_Architecture.md)
+
+**Corpus review:** The owner has retired all 43 prior candidate images (28 History
+Offstage illustrations and 15 commercial photographs). The active selection and
+official corpus are empty and unfrozen. See the
+[selection review](./docs/corpus-review-2026-09-25.md).
+
+**Illustrated-motion trial:** The owner found the first four treatments too basic.
+The [History Offstage motion plan](./docs/history-offstage-motion-plan.md) is now
+implemented as six treatments based on layers, paths, and authored state changes.
+The [42-second review reel and verification](./docs/history-offstage-motion-implementation.md)
+are ready; creative acceptance remains pending.
 
 ## Phase 0 outcome
 
@@ -42,6 +54,7 @@ When work begins, update the roadmap date, mark exactly one version as in progre
 | v0.8    | Single-image CLI integration             |     Day 8 | `[!]`  | [Real CLI and workflow candidate verified; frozen-corpus review pending](./docs/v0.8-single-image-cli.md)              |
 | v0.9    | Unattended batch execution               |     Day 8 | `[!]`  | [50-item technical batch passes; frozen-corpus gate pending](./docs/v0.9-unattended-batch.md)                          |
 | v0.10   | Evaluation release and Phase 1 decision  | Days 9–10 | `[!]`  | [Candidate gallery, 7.97-minute assembly, and gate report; human decision pending](./docs/v0.10-evaluation-release.md) |
+| v0.11   | Illustrated editorial preset trial       | Extension | `[!]`  | [Six presets implemented and verified; creative review pending](./docs/history-offstage-motion-implementation.md)      |
 
 ## Critical path
 
@@ -57,6 +70,8 @@ v0.1 Foundation
                 → v0.9 Batch execution
                   → v0.10 Evaluation release
 ```
+
+v0.11 is a later illustrated-style experiment, not a completed release gate.
 
 The versions are numbered by cumulative capability, not independent branches. Implementation work for v0.5 and v0.6 may overlap, but neither version is complete until the previous version remains green.
 
@@ -174,13 +189,13 @@ Review the entire corpus before adding more presets.
 - [x] Add depth-gradient damping near strong discontinuities.
 - [x] Add preset and intensity controls to the browser lab.
 - [x] Display renderer version and evaluated camera parameters.
-- [!] Preview every frozen-corpus image through all three presets. The 43-image candidate gallery passed, but corpus approval is pending.
+- [!] Preview every frozen-corpus image through all three presets. The retired 43-image candidate gallery passed technically; a new corpus is pending.
 
 ### Completion evidence
 
 - [x] All preset functions return identical transforms for identical scene time and seed.
 - [x] Frame zero and the final frame match documented camera states.
-- [!] Corpus comparison gallery includes all three presets for the candidate set; frozen-corpus review remains pending.
+- [!] Corpus comparison gallery includes all three presets for the retired candidate set; a new frozen-corpus review remains pending.
 - [x] v0.3 `slow_push` output remains compatible.
 
 ### v0.4 checkpoint — Motion-variety review
@@ -328,7 +343,7 @@ If headless Chromium cannot approach the throughput target on the intended hardw
 
 ### Tasks
 
-- [!] Render the 43-image private candidate through all three presets at standard intensity (129/129 valid); frozen-corpus rerun awaits approval.
+- [!] Render the 43-image private candidate through all three presets at standard intensity (129/129 valid on the retired candidate); new corpus selection and rerun are pending.
 - [x] Generate the static evaluation gallery.
 - [x] Show input, depth, clip, parameters, warnings, and performance metrics together.
 - [!] Collect human ratings for edge artifacts, subject deformation, borders, depth order, motion fit, and editorial usability.
@@ -349,6 +364,28 @@ If headless Chromium cannot approach the throughput target on the intended hardw
 - [x] The v0.10 report records exact engine, model, renderer, browser, and FFmpeg versions.
 - [x] The v0.9 batch path reproduces the published candidate benchmark from documented commands.
 
+## v0.11 — Illustrated editorial preset trial
+
+**Release outcome:** Richer deterministic illustrated motion must explain a
+change inside the composition. The first four-treatment implementation passed
+technical checks but was judged too basic by the owner. See the
+[replacement plan](./docs/history-offstage-motion-plan.md).
+
+- [x] Add locked hold, short settle, panel reveal, and paired comparison presets.
+- [x] Normalize flat-preset inputs without depth inference; preserve the three
+      depth presets and existing `auto` selection.
+- [x] Render four synthetic, original fixtures as exact 90-frame MP4s with no
+      warnings or fallbacks. See the [local trial](./docs/history-offstage-presets.md).
+- [x] Analyze the channel style, current hybrid plan, storyboards, and representative
+      source artwork before planning the replacement presets.
+- [x] Implement and validate all six treatments, reusable prepared-scene support,
+      the CLI and preview lab, and a six-clip 24 fps review reel. See the
+      [implementation evidence](./docs/history-offstage-motion-implementation.md).
+- [!] Obtain creative acceptance of the new six-clip reel.
+- [!] Select and review a new representative corpus before Phase 0 acceptance.
+- [!] Validate any selected History Offstage image treatment and 24 fps editorial
+  conform under that episode's own production rules.
+
 ## Final exit gates
 
 | Gate                     | Required result                                                 | Actual                                                | Evidence                                                       |
@@ -358,10 +395,13 @@ If headless Chromium cannot approach the throughput target on the intended hardw
 | Batch completion         | ≥98% rendered or valid fallback                                 | 129/129 candidate clips (100%)                        | [v0.10 candidate evidence](./docs/v0.10-evaluation-release.md) |
 | Determinism              | Exact timing, framing, parameters, and frame count              | 129/129 hash-verified retries                         | [v0.10 candidate evidence](./docs/v0.10-evaluation-release.md) |
 | Duration accuracy        | Within one frame                                                | 129 exact-frame exports                               | [v0.10 candidate evidence](./docs/v0.10-evaluation-release.md) |
-| Preview/export agreement | No material crop, direction, or timing difference               | Five golden scenes pass; candidate review pending     | [v0.7 parity evidence](./docs/v0.7-preview-export-parity.md)   |
+| Preview/export agreement | No material crop, direction, or timing difference               | Five golden scenes pass; new corpus review pending    | [v0.7 parity evidence](./docs/v0.7-preview-export-parity.md)   |
 | Export throughput        | Target ≥1× real time at 1080p/30                                | 1.24× aggregate on candidate worker                   | [v0.10 candidate evidence](./docs/v0.10-evaluation-release.md) |
 | Cost reduction           | ≥70% below selected generative-video baseline                   | $0.071/min hypothetical worker scenario; gate pending | [v0.10 candidate evidence](./docs/v0.10-evaluation-release.md) |
 | Editorial result         | 5–10 minute explainer does not feel like a repetitive slideshow | 7.97-minute assembly ready; human review pending      | [v0.10 candidate evidence](./docs/v0.10-evaluation-release.md) |
+
+The 129 retired-candidate renders and the History Offstage assembly remain
+historical engineering evidence. They do not establish Phase 0 acceptance.
 
 ## Decision outcomes
 

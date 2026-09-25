@@ -230,3 +230,76 @@ describe("v0.4 preset library", () => {
     });
   });
 });
+
+describe("editorial 2D presets", () => {
+  const flatScene = (
+    preset: "locked_hold" | "story_settle" | "panel_reveal" | "comparison_step",
+  ) =>
+    resolvePreviewScene({
+      ...input,
+      preset,
+      intensity: "standard",
+      seed: 1842,
+    });
+
+  it("keeps illustrated sources flat and uncropped", () => {
+    for (const preset of [
+      "locked_hold",
+      "story_settle",
+      "panel_reveal",
+      "comparison_step",
+    ] as const) {
+      const scene = flatScene(preset);
+      expect(scene.motion.mode).toBe("flat_2d");
+      expect(scene.motion.depthStrength).toBe(0);
+      expect(scene.motion.overscan).toBe(0);
+      expect(scene.motion.maximumCrop).toBe(0);
+      expect(evaluateFrame(scene, 0).depthStrength).toBe(0);
+      expect(evaluateFrame(scene, 149).depthStrength).toBe(0);
+    }
+    const requestedCrop = resolvePreviewScene({
+      ...input,
+      preset: "locked_hold",
+      overscan: 0.14,
+    });
+    expect(requestedCrop.motion.overscan).toBe(0);
+    expect(requestedCrop.warnings).toContainEqual({
+      code: "MOTION_CLAMPED",
+      message: "overscan clamped to 0",
+    });
+  });
+
+  it("holds a locked frame and stops the settle motion after its opening beat", () => {
+    const hold = flatScene("locked_hold");
+    const start = evaluateFrame(hold, 0);
+    const end = evaluateFrame(hold, 149);
+    expect(start.scale).toBe(1);
+    expect(end.scale).toBe(1);
+    expect(start.translationX).toBe(0);
+    expect(end.translationX).toBe(0);
+    expect(start.revealProgress).toBe(1);
+    expect(end.revealProgress).toBe(1);
+
+    const settle = flatScene("story_settle");
+    expect(evaluateFrame(settle, 0).scale).toBe(1);
+    expect(evaluateFrame(settle, 21).scale).toBeCloseTo(1.014);
+    expect(evaluateFrame(settle, 100).scale).toBeCloseTo(1.014);
+  });
+
+  it("finishes short reveals and leaves most of the clip still", () => {
+    const panel = flatScene("panel_reveal");
+    expect(evaluateFrame(panel, 0).revealProgress).toBe(0);
+    expect(evaluateFrame(panel, 8).revealProgress).toBeGreaterThan(0);
+    expect(evaluateFrame(panel, 16).revealProgress).toBe(1);
+    expect(evaluateFrame(panel, 149).revealProgress).toBe(1);
+
+    const comparison = flatScene("comparison_step");
+    expect(evaluateFrame(comparison, 47).revealProgress).toBe(0);
+    expect(evaluateFrame(comparison, 56).revealProgress).toBeGreaterThan(0);
+    expect(evaluateFrame(comparison, 64).revealProgress).toBe(1);
+    expect(evaluateFrame(comparison, 149).revealProgress).toBe(1);
+    expect(evaluateFrame(comparison, 56)).toEqual(
+      evaluateFrame(flatScene("comparison_step"), 56),
+    );
+  });
+});

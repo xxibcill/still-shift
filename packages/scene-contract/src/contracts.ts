@@ -24,6 +24,10 @@ export const AnimationPresetSchema = z.enum([
   "slow_push",
   "horizontal_drift",
   "cinematic_float",
+  "locked_hold",
+  "story_settle",
+  "panel_reveal",
+  "comparison_step",
 ]);
 
 export const ResolvedAnimationPresetSchema = AnimationPresetSchema.exclude([
