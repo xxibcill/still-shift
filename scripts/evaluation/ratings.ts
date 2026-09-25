@@ -13,50 +13,84 @@ const usabilityChoices = [
   ["2", "Usable"],
 ] as const;
 
+type RatingField = {
+  key: string;
+  label: string;
+  choices: ReadonlyArray<readonly [string, string]>;
+  kind: "artifact" | "usability" | "repair";
+};
+
 export const RATING_FIELDS = [
-  { key: "edgeArtifacts", label: "Edge artifacts", choices: severityChoices },
+  {
+    key: "edgeArtifacts",
+    label: "Edge artifacts",
+    choices: severityChoices,
+    kind: "artifact",
+  },
   {
     key: "subjectDeformation",
     label: "Subject deformation",
     choices: severityChoices,
+    kind: "artifact",
   },
-  { key: "exposedBorders", label: "Exposed borders", choices: severityChoices },
-  { key: "depthOrder", label: "Depth order", choices: severityChoices },
-  { key: "motionFit", label: "Motion fit", choices: usabilityChoices },
+  {
+    key: "exposedBorders",
+    label: "Exposed borders",
+    choices: severityChoices,
+    kind: "artifact",
+  },
+  {
+    key: "depthOrder",
+    label: "Depth order",
+    choices: severityChoices,
+    kind: "artifact",
+  },
+  {
+    key: "motionFit",
+    label: "Motion fit",
+    choices: usabilityChoices,
+    kind: "usability",
+  },
   {
     key: "editorialUsability",
     label: "Editorial usability",
     choices: usabilityChoices,
+    kind: "usability",
   },
   {
     key: "manualRepair",
     label: "Manual repair needed",
+    kind: "repair",
     choices: [
       ["", "Unrated"],
       ["0", "No"],
       ["1", "Yes"],
     ],
   },
-] as const;
+] as const satisfies ReadonlyArray<RatingField>;
 
-const ScoreSchema = z.union([
-  z.literal(0),
-  z.literal(1),
-  z.literal(2),
-  z.null(),
-]);
-const RepairSchema = z.union([z.literal(0), z.literal(1), z.null()]);
+type RatingKey = (typeof RATING_FIELDS)[number]["key"];
+
+const ratingValueSchema = (field: RatingField) =>
+  z.custom<number | null>((value) => {
+    if (value === null) return true;
+    return (
+      typeof value === "number" &&
+      field.choices.some(
+        ([choice]) => choice !== "" && Number(choice) === value,
+      )
+    );
+  });
 
 export const ClipRatingsSchema = z
-  .object({
-    edgeArtifacts: ScoreSchema.optional(),
-    subjectDeformation: ScoreSchema.optional(),
-    exposedBorders: ScoreSchema.optional(),
-    depthOrder: ScoreSchema.optional(),
-    motionFit: ScoreSchema.optional(),
-    editorialUsability: ScoreSchema.optional(),
-    manualRepair: RepairSchema.optional(),
-  })
+  .object(
+    Object.fromEntries(
+      RATING_FIELDS.map((field) => [
+        field.key,
+        ratingValueSchema(field).optional(),
+      ]),
+    ) as unknown as Record<RatingKey, z.ZodOptional<z.ZodType<number | null>>>,
+  )
   .strict();
 
 export const RatingsExportSchema = z.object({
@@ -106,12 +140,9 @@ export const summarizeEvaluationRatings = (
       (score) => score.editorialUsability === 2 && score.manualRepair === 0,
     ).length,
     severe: scores.filter((score) =>
-      [
-        score.edgeArtifacts,
-        score.subjectDeformation,
-        score.exposedBorders,
-        score.depthOrder,
-      ].some((value) => value === 2),
+      RATING_FIELDS.some(
+        (field) => field.kind === "artifact" && score[field.key] === 2,
+      ),
     ).length,
     repaired: scores.filter((score) => score.manualRepair === 1).length,
   };

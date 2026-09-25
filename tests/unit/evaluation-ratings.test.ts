@@ -2,6 +2,8 @@ import { describe, expect, it } from "vitest";
 
 import {
   assertRatingsIdentity,
+  ClipRatingsSchema,
+  RATING_FIELDS,
   RatingsExportSchema,
   summarizeEvaluationRatings,
 } from "../../scripts/evaluation/ratings.ts";
@@ -43,6 +45,32 @@ describe("evaluation rating import", () => {
     ).toBe(false);
   });
 
+  it("validates every choice shown in the gallery", () => {
+    for (const field of RATING_FIELDS) {
+      expect(ClipRatingsSchema.safeParse({ [field.key]: null }).success).toBe(
+        true,
+      );
+      for (const [choice] of field.choices) {
+        if (choice === "") continue;
+        expect(
+          ClipRatingsSchema.safeParse({ [field.key]: Number(choice) }).success,
+        ).toBe(true);
+      }
+      const highestChoice = Math.max(
+        ...field.choices
+          .filter(([choice]) => choice !== "")
+          .map(([choice]) => Number(choice)),
+      );
+      expect(
+        ClipRatingsSchema.safeParse({ [field.key]: highestChoice + 1 }).success,
+      ).toBe(false);
+      expect(
+        ClipRatingsSchema.safeParse({ [field.key]: String(highestChoice) })
+          .success,
+      ).toBe(false);
+    }
+  });
+
   it("requires an artifact-set identity in every export", () => {
     const unbound: Record<string, unknown> = { ...ratingExport };
     delete unbound.artifactSetSha256;
@@ -62,6 +90,42 @@ describe("evaluation rating import", () => {
 });
 
 describe("ratings with permitted batch failures", () => {
+  it("counts each severe artifact category", () => {
+    const baseline = {
+      edgeArtifacts: 0,
+      subjectDeformation: 0,
+      exposedBorders: 0,
+      depthOrder: 0,
+      motionFit: 2,
+      editorialUsability: 2,
+      manualRepair: 0,
+    };
+    const severeFields = [
+      "edgeArtifacts",
+      "subjectDeformation",
+      "exposedBorders",
+      "depthOrder",
+    ] as const;
+    for (const field of severeFields) {
+      const ratings = RatingsExportSchema.parse({
+        ...ratingExport,
+        clips: { sample: { ...baseline, [field]: 2 } },
+      });
+      expect(
+        summarizeEvaluationRatings([{ id: "sample", result: {} }], ratings)
+          .severe,
+      ).toBe(1);
+    }
+    const ratings = RatingsExportSchema.parse({
+      ...ratingExport,
+      clips: { sample: baseline },
+    });
+    expect(
+      summarizeEvaluationRatings([{ id: "sample", result: {} }], ratings)
+        .severe,
+    ).toBe(0);
+  });
+
   it("measures rendered clips while counting a failed clip as unusable", () => {
     const ratings = RatingsExportSchema.parse({
       ...ratingExport,
