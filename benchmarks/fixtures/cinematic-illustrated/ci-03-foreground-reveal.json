@@ -1,0 +1,135 @@
+{
+  "title": "Foreground Reveal · Behind the stone wall",
+  "durationMs": 7000,
+  "fps": 24,
+  "width": 1920,
+  "height": 1080,
+  "background": "#D4BE91",
+  "assets": [
+    {
+      "id": "far",
+      "path": "../../../assets/cinematic-illustrated/kit-a-threshold/threshold-far.png",
+      "sha256": "sha256:6ce16545ad2c8555bb22766936a3d804230b8359d12296d34595829cdd8e551f",
+      "width": 1672,
+      "height": 941
+    },
+    {
+      "id": "room",
+      "path": "../../../assets/cinematic-illustrated/kit-a-threshold/threshold-room.png",
+      "sha256": "sha256:09984c95028dc11bd5066766124890e89363cb3d904298c65dc6a8baf6b009a1",
+      "width": 1672,
+      "height": 941
+    },
+    {
+      "id": "left",
+      "path": "../../../assets/cinematic-illustrated/kit-a-threshold/threshold-left.png",
+      "sha256": "sha256:d456deced5fbdd6cb4abd9cc1340fefc12442f48abc6ce1f1ad06900eb6ff0cb",
+      "width": 948,
+      "height": 1659
+    },
+    {
+      "id": "right",
+      "path": "../../../assets/cinematic-illustrated/kit-a-threshold/threshold-right.png",
+      "sha256": "sha256:8a01663d9edb7b804131702a063f2fd3b1814e67b26483307d999400a509a37a",
+      "width": 948,
+      "height": 1660
+    }
+  ],
+  "nodes": [
+    {
+      "id": "far",
+      "x": -70,
+      "y": -85,
+      "width": 2230,
+      "height": 1255.0418660287082,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "image",
+      "states": [{ "asset": "far" }],
+      "fit": "stretch"
+    },
+    {
+      "id": "room",
+      "x": -32,
+      "y": -18.2966507177033,
+      "width": 1984,
+      "height": 1116.5933014354066,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "image",
+      "states": [{ "asset": "room" }],
+      "fit": "stretch"
+    },
+    {
+      "id": "right",
+      "x": 780,
+      "y": -480,
+      "width": 1199.2771084337348,
+      "height": 2100,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "image",
+      "states": [{ "asset": "right" }],
+      "fit": "stretch"
+    }
+  ],
+  "provenance": "../../../assets/cinematic-illustrated/kit-a-threshold/provenance.json",
+  "schemaVersion": "illustrated-scene-2",
+  "layers": [
+    {
+      "node": "far",
+      "depth": 12,
+      "paintedBounds": [0, 0, 2230, 1255.0418660287082]
+    },
+    {
+      "node": "room",
+      "depth": 4,
+      "protectedRegion": [
+        [955.2153110047847, 379.7129186602871],
+        [1447.6555023923445, 379.7129186602871],
+        [1447.6555023923445, 925.5502392344497],
+        [955.2153110047847, 925.5502392344497]
+      ],
+      "edgeAttachments": ["left", "right", "top", "bottom"]
+    },
+    {
+      "node": "right",
+      "depth": 1.1,
+      "edgeAttachments": ["right", "top", "bottom"]
+    }
+  ],
+  "camera": {
+    "travel": [-100, 0],
+    "anchor": [0.6070574162679426, 0.5844845908607864]
+  },
+  "recipe": {
+    "preset": "foreground_reveal",
+    "foreground": "right",
+    "revealRegion": [
+      [1057.2631578947369, 415.311004784689],
+      [1186.6028708133972, 399.88516746411483],
+      [1346.7942583732058, 412.93779904306217],
+      [1338.488038277512, 443.7894736842105],
+      [1393.0717703349283, 493.6267942583732],
+      [1423.9234449760766, 564.8229665071771],
+      [1420.3636363636363, 677.5502392344497],
+      [1382.3923444976076, 799.7703349282297],
+      [1323.0622009569377, 887.578947368421],
+      [1234.066985645933, 899.444976076555],
+      [1110.6602870813397, 888.7655502392345],
+      [1065.5693779904307, 824.688995215311],
+      [1019.2918660287081, 728.5741626794259],
+      [987.2535885167464, 641.9521531100478],
+      [977.7607655502392, 567.1961722488038],
+      [997.9330143540669, 513.7990430622009],
+      [1047.7703349282297, 462.77511961722485],
+      [1063.1961722488038, 442.60287081339715]
+    ],
+    "subject": "room",
+    "background": "far",
+    "intensity": "dramatic"
+  }
+}

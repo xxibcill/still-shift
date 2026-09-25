@@ -5,6 +5,12 @@ import { imageSize } from "image-size";
 import { format } from "prettier";
 import { CinematicSceneSchema } from "../packages/scene-contract/src/cinematic.ts";
 import { compileCinematicScene } from "../packages/renderer-core/src/cinematic-scene.ts";
+import { createThresholdScenes } from "./create-threshold-demos.ts";
+import { createRevealScenes } from "./create-reveal-demos.ts";
+import { createLateralScenes } from "./create-lateral-demos.ts";
+import { createParallaxPathScenes } from "./create-parallax-path-demos.ts";
+import { createDetailScene } from "./create-detail-demos.ts";
+import { createFocusScene } from "./create-focus-demos.ts";
 
 const directory = resolve("benchmarks/fixtures/cinematic-illustrated");
 await mkdir(directory, { recursive: true });
@@ -113,16 +119,28 @@ for (const { id, scene } of scenes) {
   );
   console.log(`${id}: ${JSON.stringify(compiled.cameraValidation)}`);
 }
+const thresholdEntries = await createThresholdScenes(directory);
+const lateralEntries = await createLateralScenes(directory);
+const revealEntries = await createRevealScenes(directory);
+const pathEntries = await createParallaxPathScenes(directory);
+const detailEntry = await createDetailScene(directory);
+const focusEntry = await createFocusScene(directory);
 await writeFile(
   resolve(directory, "catalog.json"),
   await format(
-    JSON.stringify(
-      scenes.map(({ id, scene, description }) => ({
+    JSON.stringify([
+      ...scenes.map(({ id, scene, description }) => ({
         id,
         title: scene.title,
         description,
       })),
-    ),
+      ...thresholdEntries,
+      ...lateralEntries,
+      ...revealEntries,
+      ...pathEntries,
+      detailEntry,
+      focusEntry,
+    ]),
     { parser: "json" },
   ),
 );

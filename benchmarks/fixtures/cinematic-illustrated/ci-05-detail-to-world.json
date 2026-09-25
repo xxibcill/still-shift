@@ -1,0 +1,134 @@
+{
+  "title": "Detail to World · The vessel and its chamber",
+  "durationMs": 4000,
+  "fps": 24,
+  "width": 1920,
+  "height": 1080,
+  "background": "#D4BE91",
+  "assets": [
+    {
+      "id": "far",
+      "path": "../../../assets/cinematic-illustrated/kit-a-threshold/threshold-far.png",
+      "sha256": "sha256:6ce16545ad2c8555bb22766936a3d804230b8359d12296d34595829cdd8e551f",
+      "width": 1672,
+      "height": 941
+    },
+    {
+      "id": "room",
+      "path": "../../../assets/cinematic-illustrated/kit-a-threshold/threshold-room.png",
+      "sha256": "sha256:09984c95028dc11bd5066766124890e89363cb3d904298c65dc6a8baf6b009a1",
+      "width": 1672,
+      "height": 941
+    },
+    {
+      "id": "left",
+      "path": "../../../assets/cinematic-illustrated/kit-a-threshold/threshold-left.png",
+      "sha256": "sha256:d456deced5fbdd6cb4abd9cc1340fefc12442f48abc6ce1f1ad06900eb6ff0cb",
+      "width": 948,
+      "height": 1659
+    },
+    {
+      "id": "right",
+      "path": "../../../assets/cinematic-illustrated/kit-a-threshold/threshold-right.png",
+      "sha256": "sha256:8a01663d9edb7b804131702a063f2fd3b1814e67b26483307d999400a509a37a",
+      "width": 948,
+      "height": 1660
+    }
+  ],
+  "nodes": [
+    {
+      "id": "far",
+      "x": -80,
+      "y": -45.311004784688976,
+      "width": 2080,
+      "height": 1170.622009569378,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "image",
+      "states": [{ "asset": "far" }],
+      "fit": "stretch"
+    },
+    {
+      "id": "room",
+      "x": -15,
+      "y": -8.729066985646,
+      "width": 1950.0000000000005,
+      "height": 1097.458133971292,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "image",
+      "states": [{ "asset": "room" }],
+      "fit": "stretch"
+    },
+    {
+      "id": "left",
+      "x": -300,
+      "y": -30,
+      "width": 651.4285714245,
+      "height": 1140,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "image",
+      "states": [{ "asset": "left" }],
+      "fit": "stretch"
+    },
+    {
+      "id": "right",
+      "x": 1600,
+      "y": -30,
+      "width": 651.0361445789999,
+      "height": 1140,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "image",
+      "states": [{ "asset": "right" }],
+      "fit": "stretch"
+    }
+  ],
+  "provenance": "../../../assets/cinematic-illustrated/kit-a-threshold/provenance.json",
+  "schemaVersion": "illustrated-scene-2",
+  "layers": [
+    {
+      "node": "far",
+      "depth": 12,
+      "paintedBounds": [0, 0, 2080, 1170.622009569378]
+    },
+    {
+      "node": "room",
+      "depth": 3,
+      "protectedRegion": [
+        [938.8456937799043, 379.0370813397129],
+        [1411.1842105263158, 379.0370813397129],
+        [1411.1842105263158, 898.0263157894738],
+        [938.8456937799043, 898.0263157894738]
+      ],
+      "edgeAttachments": ["left", "right", "top", "bottom"]
+    },
+    {
+      "node": "left",
+      "depth": 1.6,
+      "edgeAttachments": ["left", "top", "bottom"]
+    },
+    {
+      "node": "right",
+      "depth": 1.6,
+      "edgeAttachments": ["right", "top", "bottom"]
+    }
+  ],
+  "camera": {
+    "travel": [0, 0],
+    "pullback": 0.65,
+    "anchor": [0.6070574162679426, 0.5844845908607864]
+  },
+  "recipe": {
+    "preset": "detail_to_world",
+    "foreground": "left",
+    "subject": "room",
+    "background": "far",
+    "intensity": "dramatic"
+  }
+}

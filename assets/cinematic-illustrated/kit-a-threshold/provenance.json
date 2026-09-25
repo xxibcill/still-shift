@@ -1,0 +1,71 @@
+{
+  "schemaVersion": "cinematic-asset-provenance-1",
+  "date": "2026-09-25",
+  "mode": "Codex built-in image_gen.imagegen",
+  "generationCalls": 5,
+  "outputsRetained": 5,
+  "promptFile": "prompts.md",
+  "workflowStartedAt": "2026-09-25T16:28:17.787Z",
+  "generationCompletedAt": "2026-09-25T16:33:11.303Z",
+  "activePreparationMs": null,
+  "providerCost": null,
+  "measurementNote": "Generation window includes concurrent implementation; isolated preparation time and provider billing are unavailable.",
+  "sourcePolicy": "Original study art only. No History Offstage episode or retired corpus image used.",
+  "reuse": ["ci-01-threshold-push", "ci-01-threshold-push-alternate"],
+  "assets": [
+    {
+      "file": "threshold-master.png",
+      "originalOutput": "/Users/jjae/.codex/generated_images/01a0d814-3028-73f2-a581-e7000ab6637a/exec-a98e7fd4-7956-4e3f-966b-06b7178faae8.png",
+      "width": 1672,
+      "height": 941,
+      "mode": "RGB",
+      "sha256": "sha256:3fe402b0e7eeab7826f4f55a3d4c3d78f55613d91115d3e6211c056fc39a636a",
+      "referenceAssets": []
+    },
+    {
+      "file": "threshold-room.png",
+      "originalOutput": "/Users/jjae/.codex/generated_images/01a0d814-3028-73f2-a581-e7000ab6637a/exec-0af5519e-41f7-4f3b-9c2f-280d74f1be1a.png",
+      "width": 1672,
+      "height": 941,
+      "mode": "RGBA",
+      "sha256": "sha256:09984c95028dc11bd5066766124890e89363cb3d904298c65dc6a8baf6b009a1",
+      "referenceAssets": ["threshold-master.png"],
+      "alphaExtrema": [0, 255],
+      "nonzeroAlphaBounds": [0, 0, 1672, 941],
+      "visibleRedPixels": 808
+    },
+    {
+      "file": "threshold-far.png",
+      "originalOutput": "/Users/jjae/.codex/generated_images/01a0d814-3028-73f2-a581-e7000ab6637a/exec-58c5e192-de8b-4d51-99e9-bba39eefbf66.png",
+      "width": 1672,
+      "height": 941,
+      "mode": "RGB",
+      "sha256": "sha256:6ce16545ad2c8555bb22766936a3d804230b8359d12296d34595829cdd8e551f",
+      "referenceAssets": ["threshold-master.png"]
+    },
+    {
+      "file": "threshold-left.png",
+      "originalOutput": "/Users/jjae/.codex/generated_images/01a0d814-3028-73f2-a581-e7000ab6637a/exec-7ac3c2b6-5b61-4b47-a6d7-3d8d6d6e00d0.png",
+      "width": 948,
+      "height": 1659,
+      "mode": "RGBA",
+      "sha256": "sha256:d456deced5fbdd6cb4abd9cc1340fefc12442f48abc6ce1f1ad06900eb6ff0cb",
+      "referenceAssets": ["threshold-master.png"],
+      "alphaExtrema": [0, 255],
+      "nonzeroAlphaBounds": [0, 0, 902, 1659],
+      "visibleRedPixels": 131
+    },
+    {
+      "file": "threshold-right.png",
+      "originalOutput": "/Users/jjae/.codex/generated_images/01a0d814-3028-73f2-a581-e7000ab6637a/exec-a6db3b41-c072-44ae-8f22-d99e023d99b5.png",
+      "width": 948,
+      "height": 1660,
+      "mode": "RGBA",
+      "sha256": "sha256:8a01663d9edb7b804131702a063f2fd3b1814e67b26483307d999400a509a37a",
+      "referenceAssets": ["threshold-master.png"],
+      "alphaExtrema": [0, 255],
+      "nonzeroAlphaBounds": [0, 0, 948, 1660],
+      "visibleRedPixels": 83
+    }
+  ]
+}

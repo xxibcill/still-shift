@@ -17,17 +17,40 @@ import {
 } from "../../packages/scene-contract/src/cinematic.ts";
 import { compareFrameSamples } from "../../packages/renderer-core/src/parity.ts";
 import type * as Renderer from "../../packages/renderer-core/src/illustrated-renderer.ts";
+import type * as Cinematic from "../../packages/renderer-core/src/cinematic-scene.ts";
 
 const run = promisify(execFile);
 const temporary = await mkdtemp(join(tmpdir(), "still-shift-cinematic-"));
 const arg = process.argv.indexOf("--renders");
 const output = arg >= 0 ? resolve(process.argv[arg + 1]!) : temporary;
+const presetArg = process.argv.indexOf("--preset");
+const preset =
+  presetArg >= 0 ? process.argv[presetArg + 1] : "layered_parallax";
+assert.ok(
+  preset === "layered_parallax" ||
+    preset === "threshold_push" ||
+    preset === "lateral_track" ||
+    preset === "foreground_reveal",
+  "Unknown cinematic preset",
+);
 const server = await createServer({
   configFile: resolve("apps/lab/vite.config.ts"),
   server: { port: 0, strictPort: false },
 });
 let browser: Awaited<ReturnType<typeof chromium.launch>> | undefined;
 const samples: unknown[] = [];
+const revealChecks: {
+  id: string;
+  strength: string;
+  clearFrame: number;
+  settleFrame: number;
+  initialOcclusion: number;
+  finalOcclusion: number;
+  worstAfterClear: number;
+  checkedFrames: number;
+  sampleSpacingPx: number;
+  targetSamples: number;
+}[] = [];
 const rgb = async (path: string, frame?: number) => {
   const filters = [
     ...(frame === undefined ? [] : [`select=eq(n\\,${frame})`]),
@@ -95,12 +118,23 @@ try {
     samples.push({ id, frame, score });
     return base64;
   };
-  const entries = JSON.parse(
+  const catalog = JSON.parse(
     await readFile(
       "benchmarks/fixtures/cinematic-illustrated/catalog.json",
       "utf8",
     ),
   ) as { id: string; title: string }[];
+  const entries = catalog.filter((entry) =>
+    entry.id.startsWith(
+      {
+        layered_parallax: "ci-09-",
+        threshold_push: "ci-01-",
+        lateral_track: "ci-02-",
+        foreground_reveal: "ci-03-",
+      }[preset],
+    ),
+  );
+  assert.equal(entries.length, 2);
   for (const entry of entries) {
     await page.locator("#scene").selectOption(`cinematic:${entry.id}`);
     await page.waitForFunction(
@@ -136,10 +170,56 @@ try {
     );
     assert.equal(result.frameCount, 168);
     assert.equal(result.cameraValidation.checkedFrames, 168);
+    if (preset === "foreground_reveal") {
+      const prepared = await loadPreparedScene(scenePath);
+      const checks = await page.evaluate(
+        async ({ scene, rendererUrl, cameraUrl }) => {
+          const renderer = (await import(rendererUrl)) as typeof Renderer;
+          const camera = (await import(cameraUrl)) as typeof Cinematic;
+          if (scene.schemaVersion !== "illustrated-scene-2")
+            throw new Error("Expected cinematic scene");
+          const checks = [];
+          for (const strength of [
+            "dramatic",
+            "standard",
+            "restrained",
+          ] as const) {
+            const compiled = camera.compileCinematicScene({
+              ...scene,
+              recipe: { ...scene.recipe, intensity: strength },
+            });
+            const images = await renderer.loadIllustratedImages(
+              compiled,
+              (id) =>
+                `/cinematic/assets/${compiled.assets
+                  .find((asset) => asset.id === id)!
+                  .path.split("/")
+                  .at(-1)}`,
+            );
+            const metrics = images.revealValidation!;
+            const { coverage, ...summary } = metrics;
+            if (coverage.length !== 168)
+              throw new Error("Expected every-frame alpha inspection");
+            checks.push({ strength, ...summary });
+          }
+          return checks;
+        },
+        {
+          scene: prepared.scene,
+          rendererUrl: `/@fs${resolve("packages/renderer-core/src/illustrated-renderer.ts")}`,
+          cameraUrl: `/@fs${resolve("packages/renderer-core/src/cinematic-scene.ts")}`,
+        },
+      );
+      revealChecks.push(...checks.map((check) => ({ id: entry.id, ...check })));
+    }
     const frames: string[] = [];
-    for (const frame of [
-      0, 2, 3, 4, 12, 24, 53, 84, 131, 153, 154, 155, 167, 0,
-    ])
+    const reviewFrames =
+      preset === "foreground_reveal"
+        ? [0, 6, 7, 8, 12, 24, 40, 53, 76, 77, 78, 120, 167, 0]
+        : preset === "lateral_track"
+          ? [0, 2, 3, 4, 12, 22, 53, 84, 138, 156, 157, 158, 167, 0]
+          : [0, 2, 3, 4, 12, 24, 53, 84, 131, 153, 154, 155, 167, 0];
+    for (const frame of reviewFrames)
       frames.push(await comparePreviewFrame(entry.id, frame, video));
     assert.notEqual(
       frames[0],
@@ -156,6 +236,18 @@ try {
       frames.at(-2),
       "Parallax must visibly change the scene",
     );
+    if (preset === "foreground_reveal") {
+      assert.equal(
+        frames[9],
+        frames.at(-2),
+        "The revealed composition must hold exactly after settling",
+      );
+      const clear = revealChecks.find(
+        (check) => check.id === entry.id && check.strength === "dramatic",
+      )!.clearFrame;
+      for (const frame of [clear - 1, clear, clear + 1])
+        await comparePreviewFrame(entry.id, frame, video);
+    }
     await page.locator("#play").click();
     await page.waitForFunction(
       () =>
@@ -215,7 +307,7 @@ try {
     "All three lab strengths must produce distinct camera movement",
   );
   const primary = resolve(
-    "benchmarks/fixtures/cinematic-illustrated/ci-09-layered-parallax.json",
+    `benchmarks/fixtures/cinematic-illustrated/${entries[0]!.id}.json`,
   );
   const source = CinematicSceneSchema.parse(
     JSON.parse(await readFile(primary, "utf8")),
@@ -250,12 +342,15 @@ try {
   const alphaError = await page.evaluate(
     async ({ scene, url }) => {
       const renderer = (await import(url)) as typeof Renderer;
+      if (scene.schemaVersion !== "illustrated-scene-2")
+        throw new Error("Expected a cinematic scene");
       try {
-        await renderer.loadIllustratedImages(
-          scene,
-          (id) =>
-            `/cinematic/assets/${id === "background" ? "subject" : id}.png`,
-        );
+        await renderer.loadIllustratedImages(scene, (id) => {
+          const replacement =
+            id === scene.recipe.background ? scene.recipe.subject : id;
+          const asset = scene.assets.find((asset) => asset.id === replacement)!;
+          return `/cinematic/assets/${asset.path.split("/").at(-1)}`;
+        });
         return null;
       } catch (error) {
         return (error as Error).message;
@@ -268,11 +363,12 @@ try {
   );
   assert.match(alphaError!, /coverage contains transparent/);
   const unsafe = structuredClone(source);
-  unsafe.nodes[0]!.x = 0;
+  unsafe.nodes.find((node) => node.id === unsafe.recipe.background)!.x = 1;
   await writeFile(scenePath, JSON.stringify(unsafe));
   await assert.rejects(loadPreparedScene(scenePath), /coverage/);
   assert.deepEqual(errors, []);
   const report = {
+    preset,
     comparisons: samples.length,
     compositions: entries.length,
     additional30fpsFrames: 210,
@@ -282,6 +378,7 @@ try {
     checkedStrengths: ["restrained", "standard", "dramatic"],
     transparentPlateRejected: true,
     uncoveredFrameRejected: true,
+    ...(preset === "foreground_reveal" ? { revealChecks } : {}),
     samples,
   };
   if (output !== temporary)

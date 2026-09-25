@@ -10,7 +10,12 @@ import {
   type IllustratedScene,
 } from "./prepared-scene.ts";
 
-type Images = Map<string, HTMLImageElement>;
+import { inspectForegroundReveal } from "./reveal-validation.ts";
+import { sampleCinematicBlur } from "./cinematic-scene.ts";
+
+type Images = Map<string, HTMLImageElement> & {
+  revealValidation?: ReturnType<typeof inspectForegroundReveal>;
+};
 type State = ReturnType<typeof evaluatePreparedNode>;
 
 const drawImage = (
@@ -18,6 +23,7 @@ const drawImage = (
   node: PreparedImage,
   state: State,
   images: Images,
+  clip = true,
 ) => {
   const variant = node.states[Math.round(state.state)];
   if (!variant) throw new Error(`Missing state ${state.state} on ${node.id}`);
@@ -40,9 +46,11 @@ const drawImage = (
     height = sh * ratio;
   }
   ctx.save();
-  ctx.beginPath();
-  ctx.rect(0, 0, node.width, node.height);
-  ctx.clip();
+  if (clip) {
+    ctx.beginPath();
+    ctx.rect(0, 0, node.width, node.height);
+    ctx.clip();
+  }
   ctx.drawImage(
     image,
     sx,
@@ -107,10 +115,11 @@ const drawShape = (
   node: PreparedNode,
   state: State,
   images: Images,
+  clipImages = true,
 ) => {
   switch (node.type) {
     case "image":
-      drawImage(ctx, node, state, images);
+      drawImage(ctx, node, state, images, clipImages);
       break;
     case "path":
       drawPath(ctx, node, state);
@@ -150,6 +159,11 @@ export function createIllustratedPreview(
 ) {
   const ctx = canvas.getContext("2d", { alpha: false });
   if (!ctx) throw new Error("Canvas 2D is unavailable");
+  const focus =
+    scene.schemaVersion === "illustrated-scene-2" &&
+    scene.recipe.preset === "focus_handoff";
+  if (focus && !("filter" in ctx))
+    throw new Error("Focus handoff requires Canvas 2D filter support");
   canvas.width = scene.width;
   canvas.height = scene.height;
   const children = new Map<string | undefined, PreparedNode[]>();
@@ -169,7 +183,11 @@ export function createIllustratedPreview(
     ctx.rotate((state.rotation * Math.PI) / 180);
     ctx.scale(state.scaleX, state.scaleY);
     ctx.translate(-ox, -oy);
-    drawShape(ctx, node, state, images);
+    if (focus && scene.schemaVersion === "illustrated-scene-2") {
+      const blur = sampleCinematicBlur(scene, node.id, frame);
+      ctx.filter = blur > 0 ? `blur(${blur}px)` : "none";
+    }
+    drawShape(ctx, node, state, images, !focus);
     for (const child of children.get(node.id) ?? []) paint(child, frame);
     ctx.restore();
   };
@@ -210,7 +228,7 @@ export async function loadIllustratedImages(
       return [asset.id, image] as const;
     }),
   );
-  const images = new Map(entries);
+  const images: Images = new Map(entries);
   if (scene.schemaVersion === "illustrated-scene-2") {
     const node = scene.nodes.find(
       (item) => item.id === scene.recipe.background,
@@ -246,6 +264,22 @@ export async function loadIllustratedImages(
         throw new Error(
           "Declared painted background coverage contains transparent pixels",
         );
+  }
+  if (
+    scene.schemaVersion === "illustrated-scene-2" &&
+    scene.recipe.preset === "foreground_reveal"
+  ) {
+    const alphaImages = new Map(
+      entries.map(([id, image]) => {
+        const probe = document.createElement("canvas");
+        probe.width = image.naturalWidth;
+        probe.height = image.naturalHeight;
+        const ctx = probe.getContext("2d", { willReadFrequently: true })!;
+        ctx.drawImage(image, 0, 0);
+        return [id, ctx.getImageData(0, 0, probe.width, probe.height)] as const;
+      }),
+    );
+    images.revealValidation = inspectForegroundReveal(scene, alphaImages);
   }
   return images;
 }
