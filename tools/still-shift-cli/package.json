@@ -5,6 +5,7 @@
   "type": "module",
   "dependencies": {
     "@still-shift/animation-engine": "workspace:*",
-    "@still-shift/scene-contract": "workspace:*"
+    "@still-shift/scene-contract": "workspace:*",
+    "proper-lockfile": "4.1.2"
   }
 }

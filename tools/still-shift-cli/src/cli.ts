@@ -10,11 +10,13 @@ import {
   AnimationIntensitySchema,
   AnimationPresetSchema,
   ENGINE_VERSION,
-  parseAnimationRequest,
   V0_1_REQUEST_CONSTRAINTS,
   V0_1_REQUEST_DEFAULTS,
   type AnimationFailure,
 } from "@still-shift/scene-contract";
+
+import { buildAnimationRequest } from "./animation-request.ts";
+import { runBatch } from "./batch.ts";
 
 type CliIo = {
   stdout: (text: string) => void;
@@ -30,6 +32,7 @@ const HELP = `Still Shift v${ENGINE_VERSION}
 
 Usage:
   pnpm --silent still-shift animate --input <path> --output <path> [options]
+  pnpm --silent still-shift batch --manifest <jsonl> --output-dir <path> [--concurrency 1|2]
 
 The default adapter writes a validated 1080p H.264 MP4 and scene manifest.
 
@@ -42,13 +45,14 @@ Options:
   --adapter <name>      webgl (default) or noop (compatibility fixture)
   --help                 show this help
   --version              show the engine version
+
+Batch exits 0 when every item succeeds, 1 for partial failure, and 2 for invalid options.
+Completed items with matching request and artifact hashes are reused on retry.
 `;
 
 const parseNamedArguments = (
   argumentsToParse: string[],
-): Map<string, string> => {
-  const values = new Map<string, string>();
-  const allowed = new Set([
+  names: string[] = [
     "input",
     "output",
     "duration",
@@ -57,7 +61,10 @@ const parseNamedArguments = (
     "intensity",
     "seed",
     "adapter",
-  ]);
+  ],
+): Map<string, string> => {
+  const values = new Map<string, string>();
+  const allowed = new Set(names);
 
   for (let index = 0; index < argumentsToParse.length; index += 2) {
     const key = argumentsToParse[index];
@@ -119,15 +126,13 @@ const createRequest = (values: Map<string, string>) => {
     "fps",
   );
 
-  return parseAnimationRequest({
+  return buildAnimationRequest({
     inputPath: requireArgument(values, "input"),
     outputPath: requireArgument(values, "output"),
     durationMs: durationSeconds * 1000,
     fps,
-    width: V0_1_REQUEST_CONSTRAINTS.width,
-    height: V0_1_REQUEST_CONSTRAINTS.height,
-    preset: values.get("preset") ?? V0_1_REQUEST_DEFAULTS.preset,
-    intensity: values.get("intensity") ?? V0_1_REQUEST_DEFAULTS.intensity,
+    preset: values.get("preset"),
+    intensity: values.get("intensity"),
     seed,
   });
 };
@@ -177,6 +182,27 @@ export const runCli = async (
   if (args.includes("--version")) {
     io.stdout(`${ENGINE_VERSION}\n`);
     return 0;
+  }
+  if (args[0] === "batch") {
+    try {
+      const values = parseNamedArguments(args.slice(1), [
+        "manifest",
+        "output-dir",
+        "concurrency",
+      ]);
+      const { summary, exitCode } = await runBatch({
+        manifestPath: requireArgument(values, "manifest"),
+        outputDir: requireArgument(values, "output-dir"),
+        concurrency: parseFiniteNumber(
+          values.get("concurrency") ?? "1",
+          "concurrency",
+        ),
+      });
+      io.stdout(`${JSON.stringify(summary)}\n`);
+      return exitCode;
+    } catch (error) {
+      return writeFailure(error, io);
+    }
   }
   if (args[0] !== "animate") {
     return writeFailure(

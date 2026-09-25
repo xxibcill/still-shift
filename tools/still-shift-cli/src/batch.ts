@@ -1,0 +1,508 @@
+import { createHash, randomUUID } from "node:crypto";
+import {
+  lstat,
+  readFile,
+  mkdir,
+  rename,
+  rm,
+  writeFile,
+} from "node:fs/promises";
+import { basename, dirname, join, resolve } from "node:path";
+import { performance } from "node:perf_hooks";
+
+import lockfile from "proper-lockfile";
+
+import { WebGLAnimationEngine } from "@still-shift/animation-engine";
+import {
+  AnimationEngineError,
+  AnimationResultSchema,
+  ENGINE_VERSION,
+  type AnimationFailure,
+  type AnimationRequest,
+  type AnimationResult,
+} from "@still-shift/scene-contract";
+
+import { buildAnimationRequest } from "./animation-request.ts";
+
+type BatchItem = {
+  id: string;
+  inputPath: string;
+  durationMs?: number;
+  preset?: string;
+  intensity?: string;
+  seed?: number;
+};
+
+type BatchRecord = {
+  line: number;
+  id: string;
+  inputPath: string | null;
+  requestHash: string | null;
+  reused: boolean;
+} & (
+  | { status: AnimationResult["status"]; result: AnimationResult }
+  | AnimationFailure
+);
+
+type Checkpoint = {
+  requestHash: string;
+  result: AnimationResult;
+};
+
+type PendingItem = {
+  requestHash: string;
+  sourceHash: string;
+};
+
+const sha256 = (bytes: string | Uint8Array): string =>
+  `sha256:${createHash("sha256").update(bytes).digest("hex")}`;
+
+const atomicWrite = async (path: string, contents: string): Promise<void> => {
+  const temporary = `${path}.${randomUUID()}.tmp`;
+  try {
+    await writeFile(temporary, contents, { flag: "wx" });
+    await rename(temporary, path);
+  } finally {
+    await rm(temporary, { force: true });
+  }
+};
+
+const atomicJson = (path: string, value: unknown): Promise<void> =>
+  atomicWrite(path, `${JSON.stringify(value, null, 2)}\n`);
+
+const atomicJsonl = (path: string, records: BatchRecord[]): Promise<void> =>
+  atomicWrite(
+    path,
+    `${records.map((record) => JSON.stringify(record)).join("\n")}\n`,
+  );
+
+const fileHash = async (path: string): Promise<string> =>
+  sha256(await readFile(path));
+
+const sourceHash = async (inputPath: string): Promise<string> => {
+  try {
+    return await fileHash(inputPath);
+  } catch {
+    throw new AnimationEngineError(
+      "INPUT_UNREADABLE",
+      "Unable to read animation input",
+      { inputPath },
+    );
+  }
+};
+
+const pendingItem = async (path: string): Promise<PendingItem | null> => {
+  let value: unknown;
+  try {
+    value = JSON.parse(await readFile(path, "utf8"));
+  } catch (error) {
+    if ((error as NodeJS.ErrnoException).code === "ENOENT") return null;
+    throw new AnimationEngineError(
+      "RENDER_FAILED",
+      "Batch journal is unreadable",
+      {
+        path,
+      },
+    );
+  }
+  if (
+    typeof value !== "object" ||
+    value === null ||
+    !("requestHash" in value) ||
+    typeof value.requestHash !== "string" ||
+    !("sourceHash" in value) ||
+    typeof value.sourceHash !== "string"
+  )
+    throw new AnimationEngineError(
+      "RENDER_FAILED",
+      "Batch journal is invalid",
+      {
+        path,
+      },
+    );
+  return value as PendingItem;
+};
+
+const pathExists = async (path: string): Promise<boolean> => {
+  try {
+    await lstat(path);
+    return true;
+  } catch (error) {
+    if ((error as NodeJS.ErrnoException).code === "ENOENT") return false;
+    throw error;
+  }
+};
+
+const quarantinePendingArtifacts = async (
+  outputPath: string,
+  outputDir: string,
+  id: string,
+): Promise<void> => {
+  const quarantineDir = join(outputDir, ".batch-orphans", id, randomUUID());
+  await mkdir(quarantineDir, { recursive: true });
+  let moved = false;
+  for (const path of [outputPath, `${outputPath}.scene.json`]) {
+    try {
+      await rename(path, join(quarantineDir, basename(path)));
+      moved = true;
+    } catch (error) {
+      if ((error as NodeJS.ErrnoException).code !== "ENOENT") throw error;
+    }
+  }
+  if (!moved) await rm(quarantineDir, { recursive: true });
+};
+
+const parseItem = (line: string, lineNumber: number): BatchItem => {
+  let value: unknown;
+  try {
+    value = JSON.parse(line);
+  } catch {
+    throw new AnimationEngineError("SCENE_INVALID", "Invalid JSONL item", {
+      line: lineNumber,
+    });
+  }
+  if (typeof value !== "object" || value === null || Array.isArray(value))
+    throw new AnimationEngineError(
+      "SCENE_INVALID",
+      "Batch item must be an object",
+      {
+        line: lineNumber,
+      },
+    );
+  const item = value as Partial<BatchItem>;
+  if (typeof item.id !== "string" || !/^[a-zA-Z0-9_-]{1,80}$/.test(item.id))
+    throw new AnimationEngineError(
+      "SCENE_INVALID",
+      "Batch item id must use 1–80 letters, digits, underscores, or hyphens",
+      {
+        line: lineNumber,
+      },
+    );
+  if (typeof item.inputPath !== "string" || !item.inputPath.trim())
+    throw new AnimationEngineError(
+      "SCENE_INVALID",
+      "Batch item inputPath is required",
+      {
+        line: lineNumber,
+      },
+    );
+  return item as BatchItem;
+};
+
+const requestForItem = (
+  item: BatchItem,
+  manifestPath: string,
+  outputDir: string,
+): AnimationRequest =>
+  buildAnimationRequest({
+    inputPath: resolve(dirname(manifestPath), item.inputPath),
+    outputPath: join(outputDir, `${item.id}.mp4`),
+    durationMs: item.durationMs,
+    preset: item.preset,
+    intensity: item.intensity,
+    seed: item.seed,
+  });
+
+const checkpointResult = async (
+  path: string,
+  requestHash: string,
+  request: AnimationRequest,
+): Promise<AnimationResult | null> => {
+  let checkpoint: Checkpoint;
+  try {
+    checkpoint = JSON.parse(await readFile(path, "utf8")) as Checkpoint;
+  } catch (error) {
+    if ((error as NodeJS.ErrnoException).code === "ENOENT") return null;
+    throw new AnimationEngineError(
+      "RENDER_FAILED",
+      "Batch checkpoint is unreadable",
+      { path },
+    );
+  }
+  if (checkpoint.requestHash !== requestHash)
+    throw new AnimationEngineError(
+      "SCENE_INVALID",
+      "Batch item changed since its checkpoint",
+      {
+        id: request.outputPath,
+      },
+    );
+  let result: AnimationResult;
+  try {
+    result = AnimationResultSchema.parse(checkpoint.result);
+  } catch {
+    throw new AnimationEngineError(
+      "RENDER_FAILED",
+      "Batch checkpoint result is invalid",
+      { path },
+    );
+  }
+  let hashesMatch = false;
+  try {
+    hashesMatch =
+      result.checksums.source === (await fileHash(request.inputPath)) &&
+      result.checksums.scene === (await fileHash(result.sceneManifestPath)) &&
+      result.checksums.output === (await fileHash(result.outputPath));
+  } catch {
+    hashesMatch = false;
+  }
+  if (
+    result.outputPath !== request.outputPath ||
+    result.sceneManifestPath !== `${request.outputPath}.scene.json` ||
+    !hashesMatch
+  )
+    throw new AnimationEngineError(
+      "OUTPUT_VALIDATION_FAILED",
+      "Batch checkpoint artifacts changed",
+      {
+        path,
+      },
+    );
+  return result;
+};
+
+const failureRecord = (
+  line: number,
+  id: string,
+  inputPath: string | null,
+  requestHash: string | null,
+  error: unknown,
+): BatchRecord => ({
+  line,
+  id,
+  inputPath,
+  requestHash,
+  reused: false,
+  ...(error instanceof AnimationEngineError
+    ? error.toFailure()
+    : {
+        status: "failed" as const,
+        error: {
+          code: "RENDER_FAILED" as const,
+          message: "Unexpected batch item failure",
+        },
+      }),
+});
+
+const runItem = async (
+  item: BatchItem,
+  line: number,
+  manifestPath: string,
+  outputDir: string,
+): Promise<BatchRecord> => {
+  let requestHash: string | null = null;
+  try {
+    const request = requestForItem(item, manifestPath, outputDir);
+    requestHash = sha256(
+      JSON.stringify({ engineVersion: ENGINE_VERSION, request }),
+    );
+    const checkpointPath = join(
+      outputDir,
+      ".batch-checkpoints",
+      `${item.id}.json`,
+    );
+    const pendingPath = join(
+      outputDir,
+      ".batch-checkpoints",
+      `${item.id}.pending.json`,
+    );
+    const previous = await checkpointResult(
+      checkpointPath,
+      requestHash,
+      request,
+    );
+    if (previous) {
+      await rm(pendingPath, { force: true });
+      return {
+        line,
+        id: item.id,
+        inputPath: request.inputPath,
+        requestHash,
+        reused: true,
+        status: previous.status,
+        result: previous,
+      };
+    }
+    const currentSourceHash = await sourceHash(request.inputPath);
+    const pending = await pendingItem(pendingPath);
+    if (pending) {
+      const hasPublishedArtifacts =
+        (await pathExists(request.outputPath)) ||
+        (await pathExists(`${request.outputPath}.scene.json`));
+      if (
+        hasPublishedArtifacts &&
+        (pending.requestHash !== requestHash ||
+          pending.sourceHash !== currentSourceHash)
+      )
+        throw new AnimationEngineError(
+          "SCENE_INVALID",
+          "Batch item changed during an interrupted render",
+          { id: item.id },
+        );
+      if (hasPublishedArtifacts)
+        await quarantinePendingArtifacts(
+          request.outputPath,
+          outputDir,
+          item.id,
+        );
+    }
+    await atomicJson(pendingPath, {
+      requestHash,
+      sourceHash: currentSourceHash,
+    } satisfies PendingItem);
+    const result = await new WebGLAnimationEngine().animate(request);
+    await atomicJson(checkpointPath, {
+      requestHash,
+      result,
+    } satisfies Checkpoint);
+    await rm(pendingPath, { force: true });
+    return {
+      line,
+      id: item.id,
+      inputPath: request.inputPath,
+      requestHash,
+      reused: false,
+      status: result.status,
+      result,
+    };
+  } catch (error) {
+    return failureRecord(line, item.id, item.inputPath, requestHash, error);
+  }
+};
+
+export const runBatch = async (options: {
+  manifestPath: string;
+  outputDir: string;
+  concurrency: number;
+}): Promise<{ summary: Record<string, unknown>; exitCode: number }> => {
+  if (
+    !Number.isInteger(options.concurrency) ||
+    options.concurrency < 1 ||
+    options.concurrency > 2
+  )
+    throw new AnimationEngineError(
+      "SCENE_INVALID",
+      "Batch concurrency must be 1 or 2",
+    );
+  const manifestPath = resolve(options.manifestPath);
+  const outputDir = resolve(options.outputDir);
+  let contents: string;
+  try {
+    contents = await readFile(manifestPath, "utf8");
+  } catch {
+    throw new AnimationEngineError(
+      "INPUT_UNREADABLE",
+      "Batch manifest is unreadable",
+      {
+        manifestPath,
+      },
+    );
+  }
+  const lines = contents.split(/\r?\n/);
+  const jobs: Array<{ position: number; lineNumber: number; item: BatchItem }> =
+    [];
+  const records: Array<BatchRecord | undefined> = [];
+  const ids = new Set<string>();
+  for (const [index, line] of lines.entries()) {
+    if (!line.trim()) continue;
+    const lineNumber = index + 1;
+    const position = records.length;
+    records.push(undefined);
+    try {
+      const item = parseItem(line, lineNumber);
+      const idKey = item.id.toLowerCase();
+      if (ids.has(idKey))
+        throw new AnimationEngineError(
+          "SCENE_INVALID",
+          "Duplicate batch item id",
+          {
+            id: item.id,
+            line: lineNumber,
+          },
+        );
+      ids.add(idKey);
+      jobs.push({ position, lineNumber, item });
+    } catch (error) {
+      records[position] = failureRecord(
+        lineNumber,
+        `line-${lineNumber}`,
+        null,
+        null,
+        error,
+      );
+    }
+  }
+  if (records.length === 0)
+    throw new AnimationEngineError(
+      "SCENE_INVALID",
+      "Batch manifest has no items",
+    );
+  await mkdir(join(outputDir, ".batch-checkpoints"), { recursive: true });
+  let releaseLock: () => Promise<void>;
+  try {
+    releaseLock = await lockfile.lock(outputDir, {
+      lockfilePath: join(outputDir, ".batch.lock"),
+      stale: 10_000,
+      update: 3_000,
+    });
+  } catch (error) {
+    if ((error as NodeJS.ErrnoException).code !== "ELOCKED") throw error;
+    throw new AnimationEngineError(
+      "RENDER_FAILED",
+      "Batch output directory is already in use",
+      {
+        outputDir,
+      },
+    );
+  }
+  const started = performance.now();
+  try {
+    let cursor = 0;
+    const worker = async () => {
+      while (cursor < jobs.length) {
+        const { position, lineNumber, item } = jobs[cursor++]!;
+        records[position] = await runItem(
+          item,
+          lineNumber,
+          manifestPath,
+          outputDir,
+        );
+      }
+    };
+    await Promise.all(
+      Array.from(
+        { length: Math.min(options.concurrency, jobs.length) },
+        worker,
+      ),
+    );
+    const completed = records as BatchRecord[];
+    const successful = completed.filter(
+      (record) => record.status !== "failed",
+    ).length;
+    const failed = completed.length - successful;
+    const summary = {
+      manifestPath,
+      outputDir,
+      resultsPath: join(outputDir, "batch-results.jsonl"),
+      itemCount: completed.length,
+      successful,
+      failed,
+      reused: completed.filter((record) => record.reused).length,
+      rendered: completed.filter((record) => record.status === "rendered")
+        .length,
+      renderedWithWarnings: completed.filter(
+        (record) => record.status === "rendered_with_warnings",
+      ).length,
+      fallback2d: completed.filter((record) => record.status === "fallback_2d")
+        .length,
+      successRate: successful / completed.length,
+      totalWallMs: performance.now() - started,
+      engineVersion: ENGINE_VERSION,
+    };
+    await atomicJsonl(summary.resultsPath, completed);
+    await atomicJson(join(outputDir, "batch-summary.json"), summary);
+    return { summary, exitCode: failed ? 1 : 0 };
+  } finally {
+    await releaseLock();
+  }
+};
