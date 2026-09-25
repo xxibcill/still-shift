@@ -18,6 +18,7 @@ import {
   fileSha256,
   verifyAssemblyEvidence,
 } from "./assembly-evidence.ts";
+import { selectedRenderWallMs as measureSelectedRenderWallMs } from "./cost.ts";
 import { resolveDecision } from "./decision.ts";
 import {
   compareIndependentRenders,
@@ -285,10 +286,7 @@ const selectedRenderWallMs =
   selectedClipIds.size > 0 &&
   benchmarkRun?.concurrency &&
   benchmarkRun.concurrency > 0
-    ? selectedResults.reduce(
-        (sum, result) => sum + result.metrics.totalWallMs,
-        0,
-      ) / benchmarkRun.concurrency
+    ? measureSelectedRenderWallMs(selectedResults, benchmarkRun.concurrency)
     : null;
 const estimatedAssemblyWorkerMs =
   selectedRenderWallMs === null || selectedPreparationMs === null
@@ -570,7 +568,7 @@ ${gates.map((item) => `| ${item.name} | ${item.result} | ${item.status} | ${form
 - ${verifiedExportCount}/${expectedCount} preset clips have current MP4s that pass checksum and exact-frame FFprobe checks${invalidExportIds.length ? `; invalid export IDs: ${invalidExportIds.join(", ")}` : ""}; full render wall time ${benchmarkRun ? `${(benchmarkRun.totalWallMs / 1000).toFixed(1)} seconds` : "unavailable for this exact manifest and artifact set"}.
 - ${summary.reused}/${summary.itemCount} results were reused on the last retry.
 - ${rated}/${rendered} rendered clips have complete human ratings; ${failed} clips failed before review and count as unusable; ${repaired} rated clips required manual repair.
-- Archived cold preparation time across ${preparationBySource.size} unique sources: ${([...preparationBySource.values()].reduce((sum, value) => sum + value, 0) / 1000).toFixed(1)} seconds. The benchmark render used cached depth.
+- Archived cold preparation time across ${preparationBySource.size} unique sources: ${([...preparationBySource.values()].reduce((sum, value) => sum + value, 0) / 1000).toFixed(1)} seconds. Preparation time is excluded from the render component and counted once in the assembly worker estimate.
 - Assembled-video cost estimate uses ${selectedResults.length} selected clips, ${selectedSourceHashes.size} prepared sources, ${selectedRenderWallMs === null ? "unknown" : `${(selectedRenderWallMs / 1000).toFixed(1)} seconds`} of concurrency-adjusted rendering, and ${selectedPreparationMs === null ? "unknown" : `${(selectedPreparationMs / 1000).toFixed(1)} seconds`} of archived preparation time.
 - Operator editing time: ${operatorMinutes === null ? "not recorded" : `${operatorMinutes} minutes`}.
 - Compute estimate: ${computeCost === null ? "pending hourly worker price or assembly measurement" : `$${computeCost.toFixed(3)} total; $${computeCostPerMinute!.toFixed(3)} per finished assembled minute${computePriceSource ? ` ([worker price source](${computePriceSource}))` : " (hypothetical worker price)"}`}.
