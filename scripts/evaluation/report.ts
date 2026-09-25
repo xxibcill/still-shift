@@ -29,6 +29,13 @@ import {
   RatingsExportSchema,
   summarizeEvaluationRatings,
 } from "./ratings.ts";
+import {
+  evaluationGuidePath,
+  formatGateEvidence,
+  parityGuidePath,
+  resolveSuppliedEvidence,
+  type GateEvidence,
+} from "./report-evidence.ts";
 
 const option = (name: string): string | undefined => {
   const index = process.argv.indexOf(name);
@@ -75,6 +82,17 @@ const previewExportEvidence = option("--preview-export-evidence");
 const decisionOutcome = option("--decision");
 const decisionReviewer = option("--decision-reviewer");
 const decisionRationale = option("--decision-rationale");
+const ratingsPath = option("--ratings");
+const assemblyPath = option("--assembly");
+const previewExportEvidenceTarget = await resolveSuppliedEvidence(
+  previewExportEvidence,
+);
+const computePriceEvidenceTarget = await resolveSuppliedEvidence(
+  computePriceSource ?? undefined,
+);
+const videoBaselineEvidenceTarget = await resolveSuppliedEvidence(
+  videoBaselineSource ?? undefined,
+);
 if (
   editorialAccepted !== undefined &&
   !["yes", "no"].includes(editorialAccepted)
@@ -315,9 +333,9 @@ const costReduction =
     ? null
     : 1 - computeCostPerMinute / videoBaselineUsdPerMinute;
 const selectedCostBaseline = Boolean(
-  computePriceSource?.trim() &&
+  computePriceEvidenceTarget &&
     videoBaselineName?.trim() &&
-    videoBaselineSource?.trim(),
+    videoBaselineEvidenceTarget,
 );
 const maximumWorkerUsdPerHourForCostGate =
   videoBaselineUsdPerMinute === null ||
@@ -338,13 +356,41 @@ const gate = (measured: boolean, pass: boolean): string =>
       : pass
         ? "Pass"
         : "Fail";
-const gates = [
+type Gate = {
+  name: string;
+  result: string;
+  status: string;
+  evidence: GateEvidence[];
+};
+const guideEvidence: GateEvidence = {
+  label: "evaluation procedure",
+  target: evaluationGuidePath,
+};
+const resultsEvidence: GateEvidence = {
+  label: "result records",
+  target: resultsPath,
+};
+const summaryEvidence: GateEvidence = {
+  label: "batch summary",
+  target: join(dirname(resultsPath), "batch-summary.json"),
+};
+const benchmarkEvidence: GateEvidence = runHistory.length
+  ? {
+      label: "batch run history",
+      target: join(dirname(resultsPath), "batch-runs.jsonl"),
+    }
+  : summaryEvidence;
+const ratingsEvidence: GateEvidence[] = ratingsPath
+  ? [{ label: "ratings export", target: resolve(ratingsPath) }]
+  : [guideEvidence];
+const gates: Gate[] = [
   {
     name: "Automatic usability",
     result: allRenderedRated
       ? `${accepted}/${expectedCount} (${percent(accepted / expectedCount)}); ${failed} failed clips counted as unusable`
       : `${rated}/${rendered} rendered clips rated${ratings && !ratings.reviewer?.trim() ? "; reviewer missing" : ""}`,
     status: gate(allRenderedRated, accepted / expectedCount >= 0.8),
+    evidence: ratingsEvidence,
   },
   {
     name: "Severe artifacts",
@@ -354,11 +400,13 @@ const gates = [
         : "No rendered clips to inspect"
       : "Human review pending",
     status: gate(allRenderedRated, rendered > 0 && severe / rendered < 0.05),
+    evidence: ratingsEvidence,
   },
   {
     name: "Batch completion",
     result: `${verifiedExportCount}/${summary.itemCount} current exports verified (${percent(validRate)})`,
     status: gate(batchMeasured, validRate >= 0.98),
+    evidence: [resultsEvidence, summaryEvidence],
   },
   {
     name: "Determinism",
@@ -366,6 +414,15 @@ const gates = [
       ? `${independentRendersMatch ? "Matching" : "Different"} independent renders; ${summary.reused}/${summary.itemCount} verified retry checkpoints`
       : `${summary.reused}/${summary.itemCount} verified retry checkpoints; independent rerender pending`,
     status: gate(Boolean(repeatRecords), independentRendersMatch),
+    evidence: determinismResultsPath
+      ? [
+          resultsEvidence,
+          {
+            label: "independent results",
+            target: resolve(determinismResultsPath),
+          },
+        ]
+      : [resultsEvidence, guideEvidence],
   },
   {
     name: "Duration accuracy",
@@ -374,16 +431,23 @@ const gates = [
       batchMeasured && results.length > 0,
       invalidExportIds.length === 0,
     ),
+    evidence: [
+      resultsEvidence,
+      { label: "verification counts", target: `${outputPath}.json` },
+    ],
   },
   {
     name: "Preview/export agreement",
     result: previewExportAccepted
-      ? `Human visual review ${previewExportAccepted}; evidence ${previewExportEvidence ?? "missing"}`
+      ? `Human visual review ${previewExportAccepted}; evidence ${previewExportEvidenceTarget ? "supplied" : "missing"}`
       : "Five golden scenes and 30 parity comparisons pass; human visual review pending",
     status: gate(
-      Boolean(previewExportAccepted && previewExportEvidence?.trim()),
+      Boolean(previewExportAccepted && previewExportEvidenceTarget),
       previewExportAccepted === "yes",
     ),
+    evidence: previewExportEvidenceTarget
+      ? [{ label: "visual review", target: previewExportEvidenceTarget }]
+      : [{ label: "parity procedure", target: parityGuidePath }],
   },
   {
     name: "Export throughput",
@@ -395,6 +459,7 @@ const gates = [
       aggregateRealtimeRate !== null,
       (aggregateRealtimeRate ?? 0) >= 1,
     ),
+    evidence: [resultsEvidence, benchmarkEvidence],
   },
   {
     name: "Cost reduction",
@@ -412,6 +477,19 @@ const gates = [
             ? "Scenario pass"
             : "Scenario fail"
           : gate(true, costReduction >= 0.7),
+    evidence: [
+      resultsEvidence,
+      benchmarkEvidence,
+      ...(assemblyPath
+        ? [{ label: "assembly evidence", target: resolve(assemblyPath) }]
+        : [guideEvidence]),
+      ...(computePriceEvidenceTarget
+        ? [{ label: "worker price source", target: computePriceEvidenceTarget }]
+        : []),
+      ...(videoBaselineEvidenceTarget
+        ? [{ label: "video price source", target: videoBaselineEvidenceTarget }]
+        : []),
+    ],
   },
   {
     name: "Editorial result",
@@ -424,6 +502,9 @@ const gates = [
         (assembly?.durationSeconds ?? 0) >= 300 &&
         (assembly?.durationSeconds ?? Infinity) <= 600,
     ),
+    evidence: assemblyPath
+      ? [{ label: "assembly evidence", target: resolve(assemblyPath) }]
+      : [guideEvidence],
   },
 ];
 const decision = resolveDecision({
@@ -500,9 +581,9 @@ const markdown = `# Still Shift v0.10 evaluation report
 **Decision:** ${report.decision}
 ${decision.outcome ? `\n**Decision reviewer:** ${decision.reviewer}\n\n**Rationale:** ${decision.rationale}\n` : ""}
 
-| Exit gate | Measured result | Status |
-| --- | --- | --- |
-${gates.map((item) => `| ${item.name} | ${item.result} | ${item.status} |`).join("\n")}
+| Exit gate | Measured result | Status | Evidence |
+| --- | --- | --- | --- |
+${gates.map((item) => `| ${item.name} | ${item.result} | ${item.status} | ${formatGateEvidence(outputPath, item.evidence)} |`).join("\n")}
 
 ## Evidence and costs
 
