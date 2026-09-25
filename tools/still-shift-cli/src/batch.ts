@@ -331,6 +331,7 @@ export const runBatch = async (options: {
     [];
   const records: Array<BatchRecord | undefined> = [];
   const ids = new Set<string>();
+  let invalidConfiguration = false;
   for (const [index, line] of lines.entries()) {
     if (!line.trim()) continue;
     const lineNumber = index + 1;
@@ -338,6 +339,7 @@ export const runBatch = async (options: {
     records.push(undefined);
     try {
       const item = parseItem(line, lineNumber);
+      requestForItem(item, manifestPath, outputDir);
       if (ids.has(item.id))
         throw new AnimationEngineError(
           "SCENE_INVALID",
@@ -350,6 +352,7 @@ export const runBatch = async (options: {
       ids.add(item.id);
       jobs.push({ position, lineNumber, item });
     } catch (error) {
+      invalidConfiguration = true;
       records[position] = failureRecord(
         lineNumber,
         `line-${lineNumber}`,
@@ -436,7 +439,7 @@ export const runBatch = async (options: {
     } finally {
       await rm(historyTemporary, { force: true });
     }
-    return { summary, exitCode: failed ? 1 : 0 };
+    return { summary, exitCode: invalidConfiguration ? 2 : 0 };
   } finally {
     await releaseLock();
   }

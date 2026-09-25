@@ -46,7 +46,7 @@ Options:
   --help                 show this help
   --version              show the engine version
 
-Batch exits 0 when every item succeeds, 1 for partial failure, and 2 for invalid options.
+Batch exits 0 after processing every item, including recorded item failures, and 2 for invalid configuration.
 Completed items with matching request and artifact hashes are reused on retry.
 `;
 

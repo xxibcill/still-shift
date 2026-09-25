@@ -80,7 +80,7 @@ try {
       .join("\n") + "\n",
   );
   const first = await runBatch();
-  assert.equal(first.exitCode, 1);
+  assert.equal(first.exitCode, 0);
   assert.equal(first.summary.itemCount, 3);
   assert.equal(first.summary.successful, 2);
   assert.equal(first.summary.failed, 1);
@@ -106,7 +106,7 @@ try {
     JSON.stringify({ pid: 2147483647, token: "interrupted-run" }),
   );
   const retry = await runBatch();
-  assert.equal(retry.exitCode, 1);
+  assert.equal(retry.exitCode, 0);
   assert.equal(retry.summary.reused, 2);
   assert.equal(retry.summary.manifestSha256, first.summary.manifestSha256);
   assert.equal(
@@ -134,7 +134,7 @@ try {
     }),
   );
   const resumed = await runBatch();
-  assert.equal(resumed.exitCode, 1);
+  assert.equal(resumed.exitCode, 0);
   assert.equal(resumed.summary.reused, 1);
   const resumedRecords = (
     await readFile(join(outputDir, "batch-results.jsonl"), "utf8")
@@ -146,7 +146,7 @@ try {
   assert.equal(resumedRecords[2].reused, false);
   await writeFile(firstResult.outputPath, "tampered output");
   const damaged = await runBatch();
-  assert.equal(damaged.exitCode, 1);
+  assert.equal(damaged.exitCode, 0);
   const damagedRecords = (
     await readFile(join(outputDir, "batch-results.jsonl"), "utf8")
   )
