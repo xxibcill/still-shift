@@ -19,7 +19,7 @@ import {
   validateEvaluationRecords,
   validateEvaluationScene,
 } from "./evidence.ts";
-import { RATING_FIELDS, RatingsExportSchema } from "./ratings.ts";
+import { RatingsExportSchema, summarizeEvaluationRatings } from "./ratings.ts";
 
 const option = (name: string): string | undefined => {
   const index = process.argv.indexOf(name);
@@ -228,32 +228,16 @@ for (const result of results) {
     preparationBySource.set(result.checksums.source, elapsed);
 }
 
-const requiredRatings = RATING_FIELDS.map((field) => field.key);
-const rated = records.filter((record) =>
-  requiredRatings.every(
-    (field) => typeof ratings?.clips?.[record.id]?.[field] === "number",
-  ),
-);
-const allRated =
-  rated.length === expectedCount && Boolean(ratings?.reviewer?.trim());
-const accepted = rated.filter((record) => {
-  const score = ratings!.clips[record.id]!;
-  return score.editorialUsability === 2 && score.manualRepair === 0;
-}).length;
-const severe = rated.filter((record) => {
-  const score = ratings!.clips[record.id]!;
-  return (
-    [
-      "edgeArtifacts",
-      "subjectDeformation",
-      "exposedBorders",
-      "depthOrder",
-    ] as const
-  ).some((field) => score[field] === 2);
-}).length;
-const repaired = rated.filter(
-  (record) => ratings!.clips[record.id]!.manualRepair === 1,
-).length;
+const ratingSummary = summarizeEvaluationRatings(records, ratings);
+const {
+  rated,
+  rendered,
+  failed,
+  allRenderedRated,
+  accepted,
+  severe,
+  repaired,
+} = ratingSummary;
 const renderedMinutes =
   results.reduce((sum, result) => sum + result.durationMs, 0) / 60_000;
 const aggregateRealtimeRate =
@@ -336,17 +320,19 @@ const gate = (measured: boolean, pass: boolean): string =>
 const gates = [
   {
     name: "Automatic usability",
-    result: allRated
-      ? `${accepted}/${rated.length} (${percent(accepted / rated.length)})`
-      : `${rated.length}/${expectedCount} clips rated${ratings && !ratings.reviewer?.trim() ? "; reviewer missing" : ""}`,
-    status: gate(allRated, accepted / rated.length >= 0.8),
+    result: allRenderedRated
+      ? `${accepted}/${expectedCount} (${percent(accepted / expectedCount)}); ${failed} failed clips counted as unusable`
+      : `${rated}/${rendered} rendered clips rated${ratings && !ratings.reviewer?.trim() ? "; reviewer missing" : ""}`,
+    status: gate(allRenderedRated, accepted / expectedCount >= 0.8),
   },
   {
     name: "Severe artifacts",
-    result: allRated
-      ? `${severe}/${rated.length} (${percent(severe / rated.length)})`
+    result: allRenderedRated
+      ? rendered > 0
+        ? `${severe}/${rendered} rendered clips (${percent(severe / rendered)}); ${failed} failed clips unassessable`
+        : "No rendered clips to inspect"
       : "Human review pending",
-    status: gate(allRated, severe / rated.length < 0.05),
+    status: gate(allRenderedRated, rendered > 0 && severe / rendered < 0.05),
   },
   {
     name: "Batch completion",
@@ -452,7 +438,7 @@ const report = {
     finishedMinutes,
     medianWorkerRealtimeRate: medianRate,
     aggregateRealtimeRate,
-    rated: rated.length,
+    rated,
     accepted,
     severe,
     manualRepairs: repaired,
@@ -496,7 +482,7 @@ ${gates.map((item) => `| ${item.name} | ${item.result} | ${item.status} |`).join
 
 - ${results.length}/${expectedCount} preset clips have valid animation results; full render wall time ${benchmarkRun ? `${(benchmarkRun.totalWallMs / 1000).toFixed(1)} seconds` : "unavailable for this exact manifest and artifact set"}.
 - ${summary.reused}/${summary.itemCount} results were reused on the last retry.
-- ${rated.length}/${expectedCount} clips have complete human ratings; ${repaired} rated clips required manual repair.
+- ${rated}/${rendered} rendered clips have complete human ratings; ${failed} clips failed before review and count as unusable; ${repaired} rated clips required manual repair.
 - Archived cold preparation time across ${preparationBySource.size} unique sources: ${([...preparationBySource.values()].reduce((sum, value) => sum + value, 0) / 1000).toFixed(1)} seconds. The benchmark render used cached depth.
 - Assembled-video cost estimate uses ${selectedResults.length} selected clips, ${selectedSourceHashes.size} prepared sources, ${selectedRenderWallMs === null ? "unknown" : `${(selectedRenderWallMs / 1000).toFixed(1)} seconds`} of concurrency-adjusted rendering, and ${selectedPreparationMs === null ? "unknown" : `${(selectedPreparationMs / 1000).toFixed(1)} seconds`} of archived preparation time.
 - Operator editing time: ${operatorMinutes === null ? "not recorded" : `${operatorMinutes} minutes`}.

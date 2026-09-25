@@ -1,6 +1,9 @@
 import { describe, expect, it } from "vitest";
 
-import { RatingsExportSchema } from "../../scripts/evaluation/ratings.ts";
+import {
+  RatingsExportSchema,
+  summarizeEvaluationRatings,
+} from "../../scripts/evaluation/ratings.ts";
 
 const ratingExport = {
   schemaVersion: "0.1",
@@ -36,5 +39,50 @@ describe("evaluation rating import", () => {
         clips: { "sample-slow-push": { manualRepair: 2 } },
       }).success,
     ).toBe(false);
+  });
+});
+
+describe("ratings with permitted batch failures", () => {
+  it("measures rendered clips while counting a failed clip as unusable", () => {
+    const ratings = RatingsExportSchema.parse({
+      ...ratingExport,
+      clips: {
+        first: {
+          edgeArtifacts: 0,
+          subjectDeformation: 0,
+          exposedBorders: 0,
+          depthOrder: 0,
+          motionFit: 2,
+          editorialUsability: 2,
+          manualRepair: 0,
+        },
+        second: {
+          edgeArtifacts: 2,
+          subjectDeformation: 0,
+          exposedBorders: 0,
+          depthOrder: 0,
+          motionFit: 1,
+          editorialUsability: 1,
+          manualRepair: 1,
+        },
+      },
+    });
+    const summary = summarizeEvaluationRatings(
+      [
+        { id: "first", result: {} },
+        { id: "second", result: {} },
+        { id: "failed" },
+      ],
+      ratings,
+    );
+    expect(summary).toMatchObject({
+      rated: 2,
+      rendered: 2,
+      failed: 1,
+      allRenderedRated: true,
+      accepted: 1,
+      severe: 1,
+      repaired: 1,
+    });
   });
 });

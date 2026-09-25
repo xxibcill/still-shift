@@ -68,3 +68,38 @@ export const RatingsExportSchema = z.object({
   exportedAt: z.string().datetime(),
   clips: z.record(z.string(), ClipRatingsSchema),
 });
+
+type RatingsExport = z.infer<typeof RatingsExportSchema>;
+
+export const summarizeEvaluationRatings = (
+  records: ReadonlyArray<{ id: string; result?: unknown }>,
+  ratings: RatingsExport | null,
+) => {
+  const rendered = records.filter((record) => record.result !== undefined);
+  const requiredFields = RATING_FIELDS.map((field) => field.key);
+  const rated = rendered.filter((record) =>
+    requiredFields.every(
+      (field) => typeof ratings?.clips[record.id]?.[field] === "number",
+    ),
+  );
+  const scores = rated.map((record) => ratings!.clips[record.id]!);
+  return {
+    rated: rated.length,
+    rendered: rendered.length,
+    failed: records.length - rendered.length,
+    allRenderedRated:
+      rated.length === rendered.length && Boolean(ratings?.reviewer.trim()),
+    accepted: scores.filter(
+      (score) => score.editorialUsability === 2 && score.manualRepair === 0,
+    ).length,
+    severe: scores.filter((score) =>
+      [
+        score.edgeArtifacts,
+        score.subjectDeformation,
+        score.exposedBorders,
+        score.depthOrder,
+      ].some((value) => value === 2),
+    ).length,
+    repaired: scores.filter((score) => score.manualRepair === 1).length,
+  };
+};
