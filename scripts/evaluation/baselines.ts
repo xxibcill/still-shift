@@ -36,7 +36,7 @@ for (const entry of entries) {
     ],
     [
       "ken-burns",
-      "scale=1920:1080:force_original_aspect_ratio=increase,zoompan=z='min(zoom+0.00035,1.08)':x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':d=1:s=1920x1080:fps=30,format=yuv420p",
+      "scale=1920:1080:force_original_aspect_ratio=increase,zoompan=z='min(max(zoom,pzoom)+0.00035,1.08)':x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':d=1:s=1920x1080:fps=30,format=yuv420p",
     ],
   ] as const) {
     const output = join(outputDir, `${entry.id}-${mode}.mp4`);
