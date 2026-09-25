@@ -102,22 +102,56 @@ describe("independent render comparison", () => {
     try {
       const firstScenePath = join(directory, "first.scene.json");
       const secondScenePath = join(directory, "second.scene.json");
+      const timeline = { durationMs: 5000, fps: 30, frameCount: 150 };
+      const canvas = { width: 1920, height: 1080 };
+      const renderScene = {
+        rendererVersion: "test-renderer",
+        presetVersion: "slow_push@0.3.0",
+        timeline,
+        source: { width: 640, height: 360 },
+        canvas,
+        motion: {
+          mode: "depth",
+          preset: "slow_push",
+          intensity: "standard",
+          seed: 1842,
+          travel: 0.01,
+          depthStrength: 0.02,
+          lateralTravel: 0,
+          rollDegrees: 0,
+          overscan: 0.1,
+          maximumCrop: 0.02,
+        },
+        quality: {
+          analysisVersion: "test-risk",
+          riskScore: 0.1,
+          fallback: false,
+          fallbackReason: null,
+          signals: { overscanShortfall: 0 },
+        },
+        warnings: [],
+      };
       const scene = {
         schemaVersion: "0.1",
         sourceHash,
         pipelineVersion: "test-pipeline",
-        rendererVersion: "test-renderer",
-        timeline: { durationMs: 5000, fps: 30, frameCount: 150 },
-        canvas: { width: 1920, height: 1080 },
-        depth: null,
+        rendererVersion: renderScene.rendererVersion,
+        timeline,
+        canvas,
+        depth: {
+          asset: `sha256:${"d".repeat(64)}`,
+          strength: renderScene.motion.depthStrength,
+          near: 0,
+          far: 1,
+        },
         motion: {
           preset: "slow_push",
           intensity: "standard",
           seed: 1842,
-          safeCrop: 0,
+          safeCrop: renderScene.motion.maximumCrop,
         },
-        quality: { riskScore: 0, fallback: false, warnings: [] },
-        renderScene: { motion: { travel: 0.01 } },
+        quality: { riskScore: 0.1, fallback: false, warnings: [] },
+        renderScene,
         execution: { adapter: "webgl", producesVideo: true },
       };
       await writeFile(firstScenePath, JSON.stringify(scene));
@@ -151,7 +185,13 @@ describe("independent render comparison", () => {
       expect(await compareIndependentRenders([first], [second])).toBe(true);
       await writeFile(
         secondScenePath,
-        JSON.stringify({ ...scene, renderScene: { motion: { travel: 0.02 } } }),
+        JSON.stringify({
+          ...scene,
+          renderScene: {
+            ...renderScene,
+            motion: { ...renderScene.motion, travel: 0.02 },
+          },
+        }),
       );
       expect(await compareIndependentRenders([first], [second])).toBe(false);
       expect(

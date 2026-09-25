@@ -1,10 +1,15 @@
-import type { PreviewScene, PreviewWarning } from "./scene.ts";
+import {
+  maximumCropFor,
+  type PreviewScene,
+  type PreviewWarning,
+} from "./scene.ts";
 
 export const SAFETY_ANALYSIS_VERSION = "risk-0.5.0" as const;
 
 export type SafetySignals = {
   depthRange: number;
   depthSaturationFraction: number;
+  nearExtremeFraction: number;
   discontinuityDensity: number;
   centralDiscontinuityDensity: number;
   rgbDepthEdgeDisagreement: number;
@@ -89,16 +94,19 @@ export const analyzeDepthSafety = (pixels: SafetyPixels): SafetyAssessment => {
   const totalPixels = width * height;
   const histogram = new Uint32Array(256);
   let saturatedPixels = 0;
+  let nearExtremePixels = 0;
   let pairCount = 0;
   let centralPairCount = 0;
   let depthEdgeCount = 0;
   let centralDepthEdgeCount = 0;
-  let unsupportedDepthEdgeCount = 0;
+  let edgePairCount = 0;
+  let mismatchedEdgeCount = 0;
 
   for (let index = 0; index < totalPixels; index += 1) {
     const value = depth[index * 4]!;
     histogram[value] = histogram[value]! + 1;
     if (value <= 3 || value >= 252) saturatedPixels += 1;
+    if (value <= 8 || value >= 247) nearExtremePixels += 1;
   }
 
   const recordPair = (
@@ -109,6 +117,11 @@ export const analyzeDepthSafety = (pixels: SafetyPixels): SafetyAssessment => {
   ): void => {
     const depthDifference =
       Math.abs(depth[first * 4]! - depth[second * 4]!) / 255;
+    const sourceDifference = Math.abs(
+      luminance(source, first) - luminance(source, second),
+    );
+    const depthEdge = depthDifference > 0.16;
+    const sourceEdge = sourceDifference >= 0.06;
     const central =
       x >= width * 0.25 &&
       x < width * 0.75 &&
@@ -116,12 +129,13 @@ export const analyzeDepthSafety = (pixels: SafetyPixels): SafetyAssessment => {
       y < height * 0.75;
     pairCount += 1;
     if (central) centralPairCount += 1;
-    if (depthDifference <= 0.16) return;
+    if (depthEdge || sourceEdge) {
+      edgePairCount += 1;
+      if (depthEdge !== sourceEdge) mismatchedEdgeCount += 1;
+    }
+    if (!depthEdge) return;
     depthEdgeCount += 1;
     if (central) centralDepthEdgeCount += 1;
-    if (Math.abs(luminance(source, first) - luminance(source, second)) < 0.06) {
-      unsupportedDepthEdgeCount += 1;
-    }
   };
 
   for (let y = 0; y < height; y += 1) {
@@ -136,25 +150,34 @@ export const analyzeDepthSafety = (pixels: SafetyPixels): SafetyAssessment => {
     percentile(histogram, totalPixels, 0.95) -
     percentile(histogram, totalPixels, 0.05);
   const depthSaturationFraction = saturatedPixels / totalPixels;
-  const discontinuityDensity = depthEdgeCount / pairCount;
-  const centralDiscontinuityDensity =
-    centralDepthEdgeCount / Math.max(1, centralPairCount);
+  const nearExtremeFraction = nearExtremePixels / totalPixels;
+  // A single contour occupies a smaller fraction of pixel pairs as resolution grows.
+  const edgeLengthScale = Math.max(1, Math.max(width, height) / 32);
+  const discontinuityDensity = clamp01(
+    (depthEdgeCount / pairCount) * edgeLengthScale,
+  );
+  const centralDiscontinuityDensity = clamp01(
+    (centralDepthEdgeCount / Math.max(1, centralPairCount)) * edgeLengthScale,
+  );
   const rgbDepthEdgeDisagreement =
-    unsupportedDepthEdgeCount / Math.max(1, depthEdgeCount);
+    mismatchedEdgeCount / Math.max(1, edgePairCount);
   const riskScore = clamp01(
-    0.3 * clamp01(discontinuityDensity / 0.08) +
-      0.2 * clamp01(centralDiscontinuityDensity / 0.12) +
-      0.3 * clamp01(rgbDepthEdgeDisagreement / 0.5) +
+    0.25 * clamp01(discontinuityDensity / 0.08) +
+      0.15 * clamp01(centralDiscontinuityDensity / 0.12) +
+      0.4 * clamp01(rgbDepthEdgeDisagreement / 0.5) +
       0.2 * clamp01(depthSaturationFraction / 0.45),
   );
   return {
     version: SAFETY_ANALYSIS_VERSION,
     riskScore,
     flatDepth: depthRange < 0.06,
-    extremeDepth: depthSaturationFraction > 0.85,
+    extremeDepth:
+      depthSaturationFraction > 0.85 ||
+      (depthRange > 0.85 && nearExtremeFraction > 0.85),
     signals: {
       depthRange,
       depthSaturationFraction,
+      nearExtremeFraction,
       discontinuityDensity,
       centralDiscontinuityDensity,
       rgbDepthEdgeDisagreement,
@@ -168,6 +191,7 @@ const qualityFor = (
   assessment: SafetyAssessment,
   fallback: boolean,
   fallbackReason: PreviewWarning["code"] | null,
+  requiredCrop = scene.motion.maximumCrop,
 ): NonNullable<PreviewScene["quality"]> => ({
   analysisVersion: assessment.version,
   riskScore: assessment.riskScore,
@@ -175,10 +199,7 @@ const qualityFor = (
   fallbackReason,
   signals: {
     ...assessment.signals,
-    overscanShortfall: Math.max(
-      0,
-      scene.motion.maximumCrop - scene.motion.overscan,
-    ),
+    overscanShortfall: Math.max(0, requiredCrop - scene.motion.overscan),
   },
 });
 
@@ -190,12 +211,20 @@ export const fallback2DScene = (
     | "DEPTH_RANGE_EXTREME"
     | "DEPTH_EDGE_RISK_HIGH"
     | "DEPTH_PREPARATION_FAILED"
+    | "DEPTH_SAFETY_ANALYSIS_FAILED"
   >,
   assessment?: SafetyAssessment,
 ): PreviewScene => {
   const travel = Math.min(scene.motion.travel, 0.02);
   const lateralTravel = 0.008;
-  const maximumCrop = (travel + lateralTravel) / (1 + travel);
+  const maximumCrop = maximumCropFor({
+    preset: scene.motion.preset,
+    travel,
+    depthStrength: 0,
+    lateralTravel,
+    rollDegrees: 0,
+  });
+  const overscanShortfall = Math.max(0, maximumCrop - scene.motion.overscan);
   const risk = assessment ?? {
     version: SAFETY_ANALYSIS_VERSION,
     riskScore: 1,
@@ -204,6 +233,7 @@ export const fallback2DScene = (
     signals: {
       depthRange: 0,
       depthSaturationFraction: 0,
+      nearExtremeFraction: 0,
       discontinuityDensity: 0,
       centralDiscontinuityDensity: 0,
       rgbDepthEdgeDisagreement: 0,
@@ -220,10 +250,19 @@ export const fallback2DScene = (
       lateralTravel,
       rollDegrees: 0,
       maximumCrop,
+      overscan: Math.max(scene.motion.overscan, maximumCrop),
     },
-    quality: qualityFor(scene, risk, true, reason),
+    quality: qualityFor(scene, risk, true, reason, maximumCrop),
     warnings: [
       ...scene.warnings,
+      ...(overscanShortfall > 0
+        ? [
+            {
+              code: "MOTION_CLAMPED" as const,
+              message: "Overscan raised to fit 2D fallback motion",
+            },
+          ]
+        : []),
       { code: reason, message: "Depth motion is unsafe or unavailable" },
       {
         code: "FALLBACK_2D_USED",
@@ -252,7 +291,17 @@ export const applySafetyToScene = (
     return { ...scene, quality: qualityFor(scene, assessment, false, null) };
   const factor =
     assessment.riskScore >= 0.65 ? 0.4 : assessment.riskScore >= 0.4 ? 0.7 : 1;
+  const travel = scene.motion.travel * factor;
+  const depthStrength = scene.motion.depthStrength * factor;
   const lateralTravel = scene.motion.lateralTravel * factor;
+  const rollDegrees = scene.motion.rollDegrees * factor;
+  const maximumCrop = maximumCropFor({
+    preset: scene.motion.preset,
+    travel,
+    depthStrength,
+    lateralTravel,
+    rollDegrees,
+  });
   const warnings: PreviewWarning[] = [...scene.warnings];
   if (assessment.riskScore >= 0.4) {
     warnings.push(
@@ -262,11 +311,12 @@ export const applySafetyToScene = (
       },
       {
         code: "MOTION_CLAMPED",
-        message: "Depth strength and roll reduced by safety analysis",
+        message:
+          "Camera travel, depth strength, and roll reduced by safety analysis",
       },
     );
   }
-  if (overscanShortfall > 0) {
+  if (maximumCrop > scene.motion.overscan) {
     warnings.push({
       code: "MOTION_CLAMPED",
       message: "Overscan raised to fit resolved motion",
@@ -293,11 +343,13 @@ export const applySafetyToScene = (
     ...scene,
     motion: {
       ...scene.motion,
-      depthStrength: scene.motion.depthStrength * factor,
+      travel,
+      depthStrength,
       lateralTravel,
-      rollDegrees: scene.motion.rollDegrees * factor,
+      rollDegrees,
       intensity,
-      overscan: Math.max(scene.motion.overscan, scene.motion.maximumCrop),
+      maximumCrop,
+      overscan: Math.max(scene.motion.overscan, maximumCrop),
     },
     quality: qualityFor(scene, assessment, false, null),
     warnings,

@@ -42,11 +42,7 @@
           </button>
           <div class="divider"><span>motion settings</span></div>
           <label for="preset">Preset</label>
-          <select id="preset">
-            <option value="slow_push">Slow push</option>
-            <option value="horizontal_drift">Horizontal drift</option>
-            <option value="cinematic_float">Cinematic float</option>
-          </select>
+          <select id="preset"></select>
           <label for="intensity">Intensity</label>
           <select id="intensity">
             <option value="subtle">Subtle</option>
@@ -62,7 +58,7 @@
             step="1"
             value="1842"
           />
-          <div class="divider"><span>or inspect a prepared pair</span></div>
+          <div class="divider"><span>or inspect local files</span></div>
           <label for="local-source">Normalized source PNG</label>
           <input
             id="local-source"
@@ -72,11 +68,12 @@
           <label for="local-depth">Depth texture PNG</label>
           <input id="local-depth" type="file" accept="image/png" />
           <button id="load-local" class="quiet-button" type="button">
-            Load local pair
+            Load local preview
           </button>
           <p class="hint">
-            Local files stay in this browser. Use the paired files from
-            <code>depth:prepare</code>.
+            Local files stay in this browser. Add a depth PNG from
+            <code>depth:prepare</code> for depth motion; source-only previews
+            use 2D fallback.
           </p>
         </aside>
 
@@ -96,7 +93,7 @@
               aria-label="Animated depth preview"
             ></canvas>
             <div id="empty-preview" class="empty-preview">
-              Choose a corpus image or load a source and depth pair.
+              Choose a corpus image or load local source files.
             </div>
           </div>
           <div class="transport">

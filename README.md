@@ -1,13 +1,12 @@
 # Still Shift
 
-Still Shift is a local, deterministic still-image animation engine spike. The v0.1
-foundation and fake animation path are merged. The v0.2 depth worker prepares and caches
-normalized images and validated depth assets. v0.3 adds a browser preview of one
-conservative depth-based `slow_push` animation.
+Still Shift is a local, deterministic still-image animation engine spike. The default
+single-image CLI prepares cached depth, checks motion safety, and exports a validated
+1920×1080 H.264 MP4. A browser lab previews the same scene. Batch execution and
+frozen-corpus review remain in progress.
 
-The v0.1 animation CLI still writes an explicitly labeled `.noop.json` artifact and
-does **not** produce video or motion. The v0.3 renderer is available through the
-browser lab; MP4 export and animation-engine integration remain later milestones.
+The v0.1 fake animation path remains available with `--adapter noop` for compatibility
+checks; it writes an explicitly labeled `.noop.json` artifact.
 
 ## Pinned toolchain
 
@@ -75,16 +74,34 @@ pnpm depth:contact-sheet -- --manifest benchmarks/corpus-manifest.json
 pnpm lab
 ```
 
-## Exercise the v0.1 CLI
+## Animate one image
 
 ```bash
-pnpm still-shift animate \
+pnpm --silent still-shift animate \
+  --input ./path/to/still.png \
+  --output ./outputs/still.mp4 \
+  --duration 5 \
+  --fps 30 \
+  --preset auto \
+  --intensity standard \
+  --seed 1842
+```
+
+The command prints one machine-readable `AnimationResult` and writes the MP4 plus a
+sibling `.scene.json` manifest. See the [CLI contract](./tools/still-shift-cli/README.md)
+for fallback behavior, hashes, and exit codes.
+
+## Exercise the v0.1 no-op adapter
+
+```bash
+pnpm --silent still-shift animate \
   --input tests/fixtures/source-placeholder.txt \
   --output /tmp/still-shift-example.noop.json \
   --duration 5 \
   --preset auto \
   --intensity standard \
-  --seed 1842
+  --seed 1842 \
+  --adapter noop
 ```
 
 The command prints an `AnimationResult` JSON record. It also writes the no-op artifact
@@ -93,7 +110,7 @@ animation parameters produce identical source, scene, and output checksums.
 
 ## Prepare depth with v0.2
 
-The depth worker can be run separately from the no-op animation CLI:
+The depth worker can also be run separately from the animation CLI:
 
 ```bash
 pnpm depth:prepare -- --input path/to/image.png

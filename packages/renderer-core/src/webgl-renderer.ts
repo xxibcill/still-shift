@@ -22,13 +22,13 @@ import {
   type PreviewScene,
 } from "./scene.ts";
 
-export const SHADER_VERSION = "depth-plane-0.4.0" as const;
+export const SHADER_VERSION = "depth-plane-0.5.0" as const;
 
 const vertexShader = `
 varying vec2 vUv;
 uniform sampler2D uDepth;
 uniform vec2 uCover;
-uniform vec2 uDepthTexel;
+uniform vec2 uDepthSampleStep;
 uniform vec2 uOffset;
 uniform float uOverscan;
 uniform float uScale;
@@ -42,10 +42,10 @@ float safeDepth(vec2 coordinates) {
 void main() {
   float depth = safeDepth(uv);
   float gradient = max(
-    max(abs(depth - safeDepth(uv + vec2(uDepthTexel.x, 0.0))),
-        abs(depth - safeDepth(uv - vec2(uDepthTexel.x, 0.0)))),
-    max(abs(depth - safeDepth(uv + vec2(0.0, uDepthTexel.y))),
-        abs(depth - safeDepth(uv - vec2(0.0, uDepthTexel.y))))
+    max(abs(depth - safeDepth(uv + vec2(uDepthSampleStep.x, 0.0))),
+        abs(depth - safeDepth(uv - vec2(uDepthSampleStep.x, 0.0)))),
+    max(abs(depth - safeDepth(uv + vec2(0.0, uDepthSampleStep.y))),
+        abs(depth - safeDepth(uv - vec2(0.0, uDepthSampleStep.y))))
   );
   float damping = 1.0 - uEdgeDamping * 0.8 * smoothstep(0.06, 0.25, gradient);
   float parallax = 1.0 / (1.0 - depth * uDepthStrength * damping);
@@ -158,10 +158,11 @@ export const createWebGLPreview = (
       uSource: { value: sourceTexture },
       uDepth: { value: depthTexture },
       uCover: { value: [cover.x, cover.y] },
-      uDepthTexel: {
-        value: depth
-          ? [1 / scene.source.width, 1 / scene.source.height]
-          : [1, 1],
+      uDepthSampleStep: {
+        value: [
+          Math.max(1 / scene.source.width, 1 / PREVIEW_LIMITS.gridColumns),
+          Math.max(1 / scene.source.height, 1 / PREVIEW_LIMITS.gridRows),
+        ],
       },
       uOffset: { value: [0, 0] },
       uOverscan: { value: scene.motion.overscan },

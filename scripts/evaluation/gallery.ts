@@ -9,7 +9,6 @@ import {
   CorpusManifestSchema,
   SceneManifestSchema,
 } from "@still-shift/scene-contract";
-import type { PreviewScene } from "../../packages/renderer-core/src/scene.ts";
 import { EVALUATION_PRESETS, evaluationClipId } from "./presets.ts";
 import { RATING_FIELDS } from "./ratings.ts";
 
@@ -113,13 +112,13 @@ for (const entry of corpus.entries) {
     const scene = SceneManifestSchema.parse(
       JSON.parse(await readFile(result.sceneManifestPath, "utf8")),
     );
-    if (!depthThumbnail && scene.depth?.asset) {
+    if (!depthThumbnail && result.assetPaths?.depth) {
       depthThumbnail = join(thumbnails, `${entry.id}-depth.jpg`);
-      await thumbnail(scene.depth.asset, depthThumbnail);
+      await thumbnail(result.assetPaths.depth, depthThumbnail);
     }
     clipCount += 1;
     const metrics = result.metrics;
-    const resolved = scene.renderScene as PreviewScene | undefined;
+    const resolved = scene.renderScene;
     const resolvedMotion = resolved?.motion;
     const riskSignals = resolved?.quality?.signals ?? {};
     const sceneDiagnostics = [
