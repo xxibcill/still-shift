@@ -17,6 +17,7 @@ const cliPath = resolve("node_modules/.bin/tsx");
 const runBatch = async (
   batchManifestPath = manifestPath,
   batchOutputDir = outputDir,
+  depthAdapter = "fake",
 ) => {
   try {
     const { stdout } = await execFileAsync(
@@ -35,7 +36,7 @@ const runBatch = async (
         cwd: resolve("."),
         env: {
           ...process.env,
-          STILL_SHIFT_DEPTH_ADAPTER: "fake",
+          STILL_SHIFT_DEPTH_ADAPTER: depthAdapter,
           STILL_SHIFT_CACHE_DIR: join(directory, "cache"),
         },
         maxBuffer: 4 * 1024 * 1024,
@@ -158,6 +159,21 @@ try {
     .map((line) => JSON.parse(line));
   assert.equal(damagedRecords[0].error.code, "OUTPUT_VALIDATION_FAILED");
   assert.equal(damagedRecords[2].reused, true);
+
+  const changedAdapter = await runBatch(
+    manifestPath,
+    outputDir,
+    "depth-anything-v2-small",
+  );
+  assert.equal(changedAdapter.summary.reused, 0);
+  const changedAdapterRecords = (
+    await readFile(join(outputDir, "batch-results.jsonl"), "utf8")
+  )
+    .trim()
+    .split("\n")
+    .map((line) => JSON.parse(line));
+  assert.equal(changedAdapterRecords[0].error.code, "SCENE_INVALID");
+  assert.equal(changedAdapterRecords[2].error.code, "SCENE_INVALID");
 
   const repairSourcePath = join(directory, "repair.png");
   const repairManifestPath = join(directory, "repair.jsonl");

@@ -43,6 +43,8 @@ export const resolveFrameTransport = (): "png_pipe" | "jpeg_pipe" => {
     });
   return value;
 };
+export const resolveDepthAdapter = (): string =>
+  process.env.STILL_SHIFT_DEPTH_ADAPTER ?? "depth-anything-v2-small";
 
 type Dimensions = { width: number; height: number };
 type WorkerMetrics = {
@@ -209,8 +211,7 @@ const prepareAssets = async (
   workerMetrics: WorkerMetrics;
   normalizationWarnings: string[];
 }> => {
-  const adapter =
-    process.env.STILL_SHIFT_DEPTH_ADAPTER ?? "depth-anything-v2-small";
+  const adapter = resolveDepthAdapter();
   const args = ["prepare", "--input", inputPath, "--adapter", adapter];
   if (process.env.STILL_SHIFT_DEPTH_DEVICE)
     args.push("--device", process.env.STILL_SHIFT_DEPTH_DEVICE);

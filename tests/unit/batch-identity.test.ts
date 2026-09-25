@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 
 import {
   hashBatchArtifacts,
+  hashBatchRequest,
   selectBenchmarkRun,
 } from "../../tools/still-shift-cli/src/batch-identity.ts";
 
@@ -19,6 +20,26 @@ const record = {
 };
 
 describe("batch evidence identity", () => {
+  it("changes checkpoint identity with the depth adapter", () => {
+    const request = {
+      inputPath: "/tmp/source.png",
+      outputPath: "/tmp/output.mp4",
+      durationMs: 5000,
+      fps: 30,
+      width: 1920,
+      height: 1080,
+      preset: "slow_push",
+      intensity: "standard",
+      seed: 1842,
+    } as const;
+    expect(hashBatchRequest(request, "png_pipe", "fake")).not.toBe(
+      hashBatchRequest(request, "png_pipe", "depth-anything-v2-small"),
+    );
+    expect(hashBatchRequest(request, "png_pipe", "fake")).toBe(
+      hashBatchRequest(request, "png_pipe", "fake"),
+    );
+  });
+
   it("keeps retry identity but changes when source or output changes", () => {
     const identity = hashBatchArtifacts([record]);
     expect(identity).toBe(hashBatchArtifacts([{ ...record }]));

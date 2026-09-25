@@ -1,5 +1,26 @@
 import { createHash } from "node:crypto";
 
+import {
+  ENGINE_VERSION,
+  type AnimationRequest,
+} from "@still-shift/scene-contract";
+
+export const hashBatchRequest = (
+  request: AnimationRequest,
+  frameTransport: "png_pipe" | "jpeg_pipe",
+  depthAdapter: string,
+): string =>
+  `sha256:${createHash("sha256")
+    .update(
+      JSON.stringify({
+        engineVersion: ENGINE_VERSION,
+        ...(frameTransport === "png_pipe" ? {} : { frameTransport }),
+        depthAdapter,
+        request,
+      }),
+    )
+    .digest("hex")}`;
+
 type ArtifactIdentityRecord = {
   id: string;
   requestHash: string | null;

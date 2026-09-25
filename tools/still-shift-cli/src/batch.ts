@@ -4,6 +4,7 @@ import { dirname, join, resolve } from "node:path";
 import { performance } from "node:perf_hooks";
 
 import {
+  resolveDepthAdapter,
   resolveFrameTransport,
   WebGLAnimationEngine,
 } from "@still-shift/animation-engine";
@@ -18,7 +19,7 @@ import {
   type AnimationRequest,
   type AnimationResult,
 } from "@still-shift/scene-contract";
-import { hashBatchArtifacts } from "./batch-identity.ts";
+import { hashBatchArtifacts, hashBatchRequest } from "./batch-identity.ts";
 import { acquireBatchLock, prepareBatchItem } from "./batch-recovery.ts";
 
 type BatchItem = {
@@ -226,12 +227,10 @@ const runItem = async (
   try {
     const request = requestForItem(item, manifestPath, outputDir);
     const frameTransport = resolveFrameTransport();
-    requestHash = sha256(
-      JSON.stringify({
-        engineVersion: ENGINE_VERSION,
-        ...(frameTransport === "png_pipe" ? {} : { frameTransport }),
-        request,
-      }),
+    requestHash = hashBatchRequest(
+      request,
+      frameTransport,
+      resolveDepthAdapter(),
     );
     const checkpointPath = join(
       outputDir,
