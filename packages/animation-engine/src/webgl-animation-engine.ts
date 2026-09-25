@@ -1,7 +1,7 @@
 import { execFile, spawn } from "node:child_process";
 import { createHash, randomUUID } from "node:crypto";
 import { link, readFile, rm, stat, writeFile } from "node:fs/promises";
-import { resolve } from "node:path";
+import { isAbsolute, resolve } from "node:path";
 import { performance } from "node:perf_hooks";
 import { promisify } from "node:util";
 
@@ -70,6 +70,13 @@ const sha256 = (bytes: string | Uint8Array): string =>
   `sha256:${createHash("sha256").update(bytes).digest("hex")}`;
 
 const workerJson = async (args: string[]): Promise<unknown> => {
+  const configuredCache = process.env.STILL_SHIFT_CACHE_DIR;
+  const workerEnvironment =
+    configuredCache &&
+    !isAbsolute(configuredCache) &&
+    !configuredCache.startsWith("~")
+      ? { ...process.env, STILL_SHIFT_CACHE_DIR: resolve(configuredCache) }
+      : process.env;
   let stdout: string;
   try {
     ({ stdout } = await execFileAsync(
@@ -77,6 +84,7 @@ const workerJson = async (args: string[]): Promise<unknown> => {
       ["run", "still-shift-depth", ...args],
       {
         cwd: projectRoot,
+        env: workerEnvironment,
         maxBuffer: 8 * 1024 * 1024,
       },
     ));

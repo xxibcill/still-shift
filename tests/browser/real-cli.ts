@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { execFile } from "node:child_process";
-import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
+import { mkdtemp, readFile, realpath, rm, writeFile } from "node:fs/promises";
 import { createServer } from "node:net";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
@@ -168,13 +168,22 @@ try {
   const externalCaller = await runCli(join(directory, "external.mp4"), {
     inputPath: "explainer-shot.png",
     cwd: directory,
+    cacheDir: "relative-cache",
   });
   assert.equal(externalCaller.checksums.source, first.checksums.source);
-  assert.equal(externalCaller.metrics.cacheStatus, "hit");
+  assert.equal(externalCaller.metrics.cacheStatus, "miss");
+  assert.ok(externalCaller.assetPaths);
+  assert.ok(
+    (await realpath(externalCaller.assetPaths.normalizedSource)).startsWith(
+      await realpath(join(directory, "relative-cache", "depth")),
+    ),
+  );
 
   const fallback = await runCli(join(directory, "fallback.mp4"), {
     adapter: "invalid",
     inputPath: invalidProfilePath,
+    cwd: directory,
+    cacheDir: "relative-fallback-cache",
   });
   assert.equal(fallback.status, "fallback_2d");
   assert.ok(
@@ -184,6 +193,12 @@ try {
   );
   assert.equal(fallback.checksums.depth, undefined);
   assert.equal(fallback.metrics.versions.model, null);
+  assert.ok(fallback.assetPaths);
+  assert.ok(
+    (await realpath(fallback.assetPaths.normalizedSource)).startsWith(
+      await realpath(join(directory, "relative-fallback-cache", "depth")),
+    ),
+  );
   assert.ok(
     fallback.warnings.some(
       (warning) => warning.code === "SOURCE_NORMALIZATION_WARNING",
