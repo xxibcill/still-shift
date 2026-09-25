@@ -13,6 +13,10 @@ import {
   selectBenchmarkRun,
 } from "../../tools/still-shift-cli/src/batch-identity.ts";
 import { findCorpusIntegrityBlockers } from "../corpus-integrity.ts";
+import {
+  AssemblyEvidenceSchema,
+  verifyAssemblyEvidence,
+} from "./assembly-evidence.ts";
 import { resolveDecision } from "./decision.ts";
 import {
   compareIndependentRenders,
@@ -51,13 +55,7 @@ const determinismResultsPath = option("--determinism-results");
 const ratingsInput = await readOptional(option("--ratings"));
 const ratings =
   ratingsInput === null ? null : RatingsExportSchema.parse(ratingsInput);
-const assembly = (await readOptional(option("--assembly"))) as {
-  outputPath?: string;
-  durationSeconds?: number;
-  videoFrameCount?: number;
-  sourceStateCount?: number;
-  clipSelections?: Array<{ stateId: string; clipIds: string[] }>;
-} | null;
+const assemblyInput = await readOptional(option("--assembly"));
 const computeUsdPerHour = numericOption("--compute-usd-per-hour");
 const computePriceSource = option("--compute-price-source") ?? null;
 const videoBaselineUsdPerMinute = numericOption(
@@ -169,6 +167,18 @@ if (
   summary.artifactSetSha256 !== hashBatchArtifacts(records)
 )
   throw new Error("Batch summary artifact identity does not match its results");
+const assembly =
+  assemblyInput === null ? null : AssemblyEvidenceSchema.parse(assemblyInput);
+if (assembly)
+  await verifyAssemblyEvidence(
+    assembly,
+    { id: corpus.corpusId, sha256: corpusSha256, status: corpus.status },
+    new Map(
+      records.flatMap((record) =>
+        record.result ? [[record.id, record.result.checksums.output]] : [],
+      ),
+    ),
+  );
 let runHistory: (typeof summary)[] = [];
 try {
   runHistory = (

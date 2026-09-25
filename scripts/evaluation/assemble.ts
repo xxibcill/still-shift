@@ -1,5 +1,5 @@
 import { execFile } from "node:child_process";
-import { randomUUID } from "node:crypto";
+import { createHash, randomUUID } from "node:crypto";
 import { mkdir, readFile, rename, rm, writeFile } from "node:fs/promises";
 import { dirname, join, resolve } from "node:path";
 import { promisify } from "node:util";
@@ -8,6 +8,7 @@ import {
   AnimationResultSchema,
   CorpusManifestSchema,
 } from "@still-shift/scene-contract";
+import { fileSha256 } from "./assembly-evidence.ts";
 import { verifyAssemblyClip } from "./evidence.ts";
 import { EVALUATION_PRESETS, evaluationClipId } from "./presets.ts";
 
@@ -64,8 +65,9 @@ for (const state of states) {
 }
 if (!limitStates && expectedFrame !== timeline.total_frames)
   throw new Error("Timeline total_frames does not match its states");
+const corpusBytes = await readFile(corpusPath);
 const corpus = CorpusManifestSchema.parse(
-  JSON.parse(await readFile(corpusPath, "utf8")),
+  JSON.parse(corpusBytes.toString("utf8")),
 );
 const entryByHash = new Map(
   corpus.entries.map((entry) => [entry.source.sha256, entry]),
@@ -233,16 +235,28 @@ try {
       `Assembled video failed frame validation: ${videoFrameCount}/${expectedFrame}`,
     );
   await rename(temporaryOutput, outputPath);
+  const selectedClipIds = new Set(
+    clipSelections.flatMap((selection) => selection.clipIds),
+  );
   const metadata = {
+    schemaVersion: "0.1",
     outputPath,
+    outputSha256: await fileSha256(outputPath),
     timelinePath,
     narrationPath,
     corpusId: corpus.corpusId,
+    corpusSha256: `sha256:${createHash("sha256").update(corpusBytes).digest("hex")}`,
     corpusStatus: corpus.status,
     sourceStateCount: states.length,
     videoFrameCount,
     durationSeconds: Number(probe.format.duration),
     clipSelections,
+    clipOutputChecksums: Object.fromEntries(
+      [...selectedClipIds].map((id) => [
+        id,
+        clipById.get(id)!.checksums.output,
+      ]),
+    ),
   };
   await writeFile(
     `${outputPath}.assembly.json`,
