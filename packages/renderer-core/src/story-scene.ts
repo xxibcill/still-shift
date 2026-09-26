@@ -191,7 +191,18 @@ export function compileStoryScene(source: StoryScene): StoryRenderScene {
     event(id, window, "entrance", policy.role);
   };
   const reveal = (id: string, window: StoryWindow) => {
-    if (input.recipe.entrances?.some((e) => e.node === id && e.verb === "draw"))
+    if (
+      input.recipe.entrances?.some(
+        (entrance) =>
+          entrance.node === id &&
+          entrancePolicy(
+            input,
+            node(id),
+            entrance.verb ??
+              (input.motionGrammar === "v2" ? undefined : "fade"),
+          ).verb === "draw",
+      )
+    )
       return;
     tracks.initial(id, "reveal", 0);
     tracks.add(id, "reveal", window, 1);

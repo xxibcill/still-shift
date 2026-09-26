@@ -57,3 +57,27 @@ it("uses authored bindings and text hierarchy when choosing implicit v2 entrance
   expect(role("caveat")).toBe("action");
   expect(role("editorial-title-label")).toBe("response");
 });
+
+it("uses an inferred draw entrance instead of a recipe path reveal", () => {
+  const input = JSON.parse(
+    readFileSync(
+      "benchmarks/fixtures/story-motion/relationship-build.json",
+      "utf8",
+    ),
+  );
+  input.motionGrammar = "v2";
+  input.recipe.moves = [];
+  input.recipe.entrances = [
+    { node: "land-link", window: input.recipe.branches[0].window },
+  ];
+
+  const scene = compileStoryScene(StorySceneSchema.parse(input));
+  const link = scene.nodes.find((node) => node.id === "land-link")!;
+  expect(evaluatePreparedNode(scene, link, 12).reveal).toBe(0);
+  expect(evaluatePreparedNode(scene, link, 34).reveal).toBe(1);
+  expect(
+    scene.motionEvents.filter(
+      (event) => event.node === "land-link" && event.kind === "entrance",
+    ),
+  ).toHaveLength(1);
+});
