@@ -71,6 +71,10 @@ try {
   for (const demo of COMPONENT_DEMOS) {
     await page.goto(origin + "commerce-components.html?demo=" + demo.id);
     await ready();
+    assert.equal(
+      await page.locator(".workspace-heading .support").innerText(),
+      "Experimental example",
+    );
     const still = await seek(120);
     await seek(10);
     assert.equal(await seek(120), still, demo.id + " backwards seek");
