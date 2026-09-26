@@ -263,6 +263,10 @@ try {
     }
     const energy = await measureMotionEnergy(video);
     requireContinuousEnergy(energy, "Unequal Margins prototype");
+    assert.ok(
+      energy.peakFrame >= 48 && energy.peakFrame <= 104,
+      `Prototype peak frame ${energy.peakFrame} should land in the shared-strain beat (48–104)`,
+    );
     await writeFile(
       join(directory, "browser-checks.json"),
       JSON.stringify(
@@ -271,6 +275,7 @@ try {
           backwardSeeks: 4,
           parity,
           energyGates: energy.gates,
+          peakFrame: energy.peakFrame,
           frames: report.captures.map((c) => c.frame),
         },
         null,

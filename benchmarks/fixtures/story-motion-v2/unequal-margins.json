@@ -78,7 +78,7 @@
     {
       "id": "house-body",
       "path": "../../../assets/story-motion/art/house-body.svg",
-      "sha256": "sha256:92f4db09d5b4e9d005d60ceabce0df90c4aae000e0d7e914056a15b5a084799f",
+      "sha256": "sha256:cd4a3240451d66236369e5571b74ba8650d1739ec4168aa4400801cda248fec5",
       "width": 600,
       "height": 440
     },
@@ -92,7 +92,7 @@
     {
       "id": "store-body",
       "path": "../../../assets/story-motion/art/store-body.svg",
-      "sha256": "sha256:eeba00a2c5b1d5c09e9935e224113a623215a81838cd841befe7b398bbc238c4",
+      "sha256": "sha256:ea5e8d33e253278a880dc1d2c3e57bc059ff5fa14953ad4bba99982ab0bd9ef0",
       "width": 600,
       "height": 520
     },
@@ -106,7 +106,7 @@
     {
       "id": "land-body",
       "path": "../../../assets/story-motion/art/land-body.svg",
-      "sha256": "sha256:3401e6afef978bd5cf11a6c264f6659dbda4b1661e3207f9ea10c143b3ba28b3",
+      "sha256": "sha256:51e2c6dfcba0c9b188ca7c210b93068ead78a50da1a71cfcc7f060f61fabb696",
       "width": 640,
       "height": 260
     },
@@ -526,11 +526,11 @@
       {
         "node": "house-b",
         "keys": [
-          { "frame": 88, "scaleY": 1, "rotation": 0 },
+          { "frame": 77, "scaleY": 1, "rotation": 0 },
           {
-            "frame": 100,
-            "scaleY": 0.975,
-            "rotation": -1.4,
+            "frame": 85,
+            "scaleY": 0.92,
+            "rotation": -2.5,
             "easing": "in-quad"
           },
           {
@@ -558,13 +558,13 @@
       {
         "node": "house-a-art",
         "window": {
-          "start": 120,
-          "end": 150,
+          "start": 80,
+          "end": 88,
           "cue": "focus-less-room",
           "easing": "out-cubic",
           "role": "response"
         },
-        "opacity": 0.78
+        "opacity": 0.7
       }
     ],
     "entrances": [
@@ -592,7 +592,7 @@
         "node": "house-a",
         "window": {
           "start": 4,
-          "end": 28,
+          "end": 42,
           "cue": "household-a",
           "easing": "out-cubic"
         },
@@ -601,8 +601,8 @@
       {
         "node": "house-b",
         "window": {
-          "start": 12,
-          "end": 36,
+          "start": 28,
+          "end": 76,
           "cue": "household-b",
           "easing": "out-cubic"
         },

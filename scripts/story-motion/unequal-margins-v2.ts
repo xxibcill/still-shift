@@ -66,8 +66,8 @@ export function unequalMarginsV2(): MotionDesign {
   design.recipe.entrances = [
     { node: "reference", verb: "wipe", window: cue(0, 18, "the-same-season") },
     { node: "question", verb: "wipe", window: cue(8, 30, "different-room") },
-    { node: "house-a", verb: "set-down", window: cue(4, 28, "household-a") },
-    { node: "house-b", verb: "set-down", window: cue(12, 36, "household-b") },
+    { node: "house-a", verb: "set-down", window: cue(4, 42, "household-a") },
+    { node: "house-b", verb: "set-down", window: cue(28, 76, "household-b") },
     ...["margin-a", "margin-b"].map((node) => ({
       node,
       verb: "draw" as const,
@@ -99,8 +99,8 @@ export function unequalMarginsV2(): MotionDesign {
       node: "house-b",
       role: "response",
       keys: [
-        { frame: 88, scaleY: 1, rotation: 0 },
-        { frame: 100, scaleY: 0.975, rotation: -1.4, easing: "in-quad" },
+        { frame: 77, scaleY: 1, rotation: 0 },
+        { frame: 85, scaleY: 0.92, rotation: -2.5, easing: "in-quad" },
         { frame: 116, scaleY: 0.985, rotation: -0.8, easing: "out-back-soft" },
       ],
     },
@@ -119,8 +119,8 @@ export function unequalMarginsV2(): MotionDesign {
   design.recipe.emphasis = [
     {
       node: "house-a-art",
-      window: { ...cue(120, 150, "focus-less-room"), role: "response" },
-      opacity: 0.78,
+      window: { ...cue(80, 88, "focus-less-room"), role: "response" },
+      opacity: 0.7,
     },
   ];
   design.flows = [

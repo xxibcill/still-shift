@@ -136,7 +136,7 @@ function separateBase(source: string) {
   const open = source.indexOf("<g stroke-linecap");
   const bodyStart = source.indexOf(">", open) + 1;
   return {
-    body: source.replace(match[0], ""),
+    body: source.replace(`  ${match[0]}\n`, ""),
     shadow: source.slice(0, bodyStart) + match[0] + "</g></svg>\n",
   };
 }

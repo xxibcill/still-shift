@@ -25,11 +25,11 @@ The existing story browser suite passed 98 preview/export comparisons, 14 backwa
 
 ## Prototype checkpoint (P2)
 
-- [Paired v012 / v013 review gallery](../benchmarks/results/story-motion-v013-proto/comparison.html)
-- [Prototype MP4](../benchmarks/results/story-motion-v013-proto/unequal-margins.mp4)
-- [Nine-frame contact sheet](../benchmarks/results/story-motion-v013-proto/after-nine-frames.jpg) and [390 px style frame](../benchmarks/results/story-motion-v013-proto/phone-frame-390.png)
-- [390 px gallery capture](../benchmarks/results/story-motion-v013-proto/comparison-phone-390.png)
-- [Pixel measurements](../benchmarks/results/story-motion-v013-proto/unequal-margins.motion-energy.json), [compiled diagnostics](../benchmarks/results/story-motion-v013-proto/quality-report.json), [browser parity](../benchmarks/results/story-motion-v013-proto/browser-checks.json) and [gallery checks](../benchmarks/results/story-motion-v013-proto/gallery-checks.json)
+- [Paired v012 / v013 review gallery](../benchmarks/results/story-motion-v013-proto-reviewed-c/comparison.html)
+- [Prototype MP4](../benchmarks/results/story-motion-v013-proto-reviewed-c/unequal-margins.mp4)
+- [Nine-frame contact sheet](../benchmarks/results/story-motion-v013-proto-reviewed-c/after-nine-frames.jpg) and [390 px style frame](../benchmarks/results/story-motion-v013-proto-reviewed-c/phone-frame-390.png)
+- [390 px gallery capture](../benchmarks/results/story-motion-v013-proto-reviewed-c/comparison-phone-390.png)
+- [Pixel measurements](../benchmarks/results/story-motion-v013-proto-reviewed-c/unequal-margins.motion-energy.json), [compiled diagnostics](../benchmarks/results/story-motion-v013-proto-reviewed-c/quality-report.json), [browser parity](../benchmarks/results/story-motion-v013-proto-reviewed-c/browser-checks.json) and [gallery checks](../benchmarks/results/story-motion-v013-proto-reviewed-c/gallery-checks.json)
 
 The review media lives in the local ignored render directory. Committed source and fixtures reproduce it. No existing render directory was overwritten; interrupted calibration/regression attempts have separate versioned directories.
 
@@ -37,20 +37,20 @@ The review media lives in the local ignored render directory. Committed source a
 | ----------------------------------- | -------------------------: | ----------------: |
 | G1, longest frozen run              |               **0 frames** |               ≤ 6 |
 | G2, moving comparisons              |         **100%** (191/191) |             ≥ 97% |
-| G3, gap between semantic event ends |              **40 frames** |              ≤ 48 |
-| G4, peak/median changed pixels      |                 **3.897×** |            ≥ 2.5× |
+| G3, gap between semantic event ends |              **44 frames** |              ≤ 48 |
+| G4, peak/median changed pixels      |                 **3.489×** |            ≥ 2.5× |
 | G5, essential-text velocity         |            **15.915 px/s** |              ≤ 20 |
 | G6, declared cover planes           | **Pass at all 192 frames** | Complete viewport |
 
-The calibrated v012 comparison had **29.84%** moving comparisons and a **79-frame** frozen run. These measurements use the new full-resolution metric, rather than claiming to reproduce the plan’s 27% downsampled baseline. The prototype render took **3.9 seconds**, compared with the recorded v012 range of about 4–5 seconds. This is one local render, not a performance benchmark.
+The calibrated v012 comparison had **29.84%** moving comparisons and a **79-frame** frozen run under the full-resolution metric. The separate downsampled P0 calibration reproduces its 27% baseline share under the reconciled method (§0). The prototype render took **3.8 seconds**, compared with the recorded v012 range of about 4–5 seconds. This is one local render, not a performance benchmark.
 
 The proposed camera (`960 → 1010 → 1290`) produced 170.29 px/s essential-text velocity, 6.23 px/frame pan and 0.00113 zoom/frame. The prototype reduces its keys to `(960,540,1.00)`, `(976,542,1.02)`, `(998,546,1.04)` at frames 0/110/191. Its maxima are 0.432 px/frame pan and 0.000366 zoom/frame. Titles, subheading and qualification remain screen-locked. The ground overscans horizontally; it is a lower scenery strip, not a full-screen cover plane. Paper is the declared full-screen cover.
 
-The original beat sheet also leaves 52 frames between the pressure draw’s end (52) and the strain’s end (104). Completing the smaller margin response at frame 92 reduces this gap to 40 without adding decoration or changing the main strain window (48–104). Household B responds at 88–116; the strain current and micro-press continue through the end. Type sizes and all wording are preserved. The default seven-scene catalog and both narrated passages remain unchanged; the prototype has its own fixture directory.
+The smaller margin response still finishes at frame 92 without changing the main strain window (48–104). The PR review revision staggers the house set-downs through frames 42 and 76, then compresses household B during frames 77–85 while household A's art recedes during frames 80–88. The strongest encoded change now falls at **frame 81 (135,650 pixels)** inside the strain beat; the largest earlier entrance change is 118,813 pixels at frame 34. The longest semantic gap is 44 frames (120→164). The strain current and micro-press continue through the end. Type sizes and all wording are preserved. The default seven-scene catalog and both narrated passages remain unchanged; the prototype has its own fixture directory.
 
-**Creative concern:** peak energy occurs at **frame 14**, during the second house’s entrance. Although G4 passes, the strain response does not yet provide the shot’s strongest measured moment as the beat sheet intends. This remains an explicit review issue, not a claimed creative success. The 390 px sample retains clear household/label separation, but qualifications remain small at phone size. The owner’s rejection of larger type has been respected.
+**Creative concern:** the measured peak now lands in the strain response, but the fading of household A contributes more changed pixels than the margin line itself. The owner still needs to judge whether the unequal margin is the strongest perceived idea. The 390 px sample retains household/label separation, but qualifications remain small at phone size. The owner’s rejection of larger type has been respected.
 
-**Verification:** 188 unit tests, full lint, TypeScript build, pinned-toolchain verification, corpus schema validation and whole-project formatting checks pass. The existing browser suite passed 98 parity comparisons, 14 backward seeks, timing controls, phone layout, a 646-frame export and 30 fps CLI. The prototype adds nine preview/export parity checks, four backward seeks, encoded G1/G2/G4 assertions, complete-reveal text equality and exact strip recomposition. Paired gallery playback reaches the end, frame-90 scrubbing aligns both videos at 3.75 seconds, reduced-motion mode starts paused and the 390 px layout has no horizontal overflow.
+**Verification:** 191 unit tests, full lint, TypeScript build, pinned-toolchain verification, corpus schema validation and whole-project formatting checks pass. The existing browser suite passed 98 parity comparisons, 14 backward seeks, timing controls, phone layout, a 646-frame export and 30 fps CLI. The prototype adds nine preview/export parity checks, four backward seeks, encoded G1/G2/G4 assertions, a peak-frame assertion for the shared-strain beat, complete-reveal text equality and exact strip recomposition. Paired gallery playback reaches the end, frame-90 scrubbing aligns both videos at 3.75 seconds, reduced-motion mode starts paused and the 390 px layout has no horizontal overflow.
 
 **Scope of visual review:** a full-resolution late frame, nine-frame contact sheet, 390 px style frame and phone gallery capture were inspected. Automated normal-speed playback passed. This is sampled visual inspection plus technical playback evidence; it is not owner acceptance or a human continuous watch. There is no audio in this study. No narration or passage files were changed.
 
@@ -64,4 +64,4 @@ node --import tsx tests/browser/story-continuous.ts --prototype <new-directory>
 node --import tsx scripts/story-motion/check-prototype-gallery.ts --directory <new-directory>
 ```
 
-The plan’s **“P2 Prototype, then STOP”** instruction applies here. Do not roll out the six remaining studies, modify narrated passages or claim final creative acceptance until the owner reviews this candidate and resolves the peak-emphasis concern. P3–P5 remain pending, including passage cue maps/handoff tests and the lab activity strip.
+The plan’s **“P2 Prototype, then STOP”** instruction applies here. Do not roll out the six remaining studies, modify narrated passages or claim final creative acceptance until the owner reviews this candidate's emphasis. P3–P5 remain pending, including passage cue maps/handoff tests and the lab activity strip.

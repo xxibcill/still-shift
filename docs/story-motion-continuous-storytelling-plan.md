@@ -341,22 +341,22 @@ New nodes:
 
 Camera: keys `0:(960,540,1.00)`, `110:(1010,560,1.04)`, `191:(1290,600,1.10)`. This settles toward the less-room house.
 
-| Frames           | Layer             | Event                                                                                                                                                        | Meaning                                           |
-| ---------------- | ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------- |
-| 0–18             | action            | `reference` wipe                                                                                                                                             | Establish "the same season"                       |
-| 8–30             | action            | `question` wipe (words)                                                                                                                                      | The question                                      |
-| 4–28 / 12–36     | action + response | `house-a` / `house-b` set-down (with shadow)                                                                                                                 | Two comparable households                         |
-| 22–46            | action            | `margin-a`, `margin-b` draw, same length                                                                                                                     | Both start with the same visible margin           |
-| 30–52            | action            | `pressure-a` / `pressure-b` draw (they currently exist from frame 0)                                                                                         | Pressure exists on both                           |
-| 40–191           | current           | `strain` flow on `strain-path`: 6 dashes in crisis colour, speed 5 → 2 px/f after 110                                                                        | The same season's strain passes over both houses  |
-| 48–104           | action (**peak**) | Existing `strain` window (pressures move in). Moves: `margin-a` scaleX 1→0.82; `margin-b` scaleX 1→0.36, `in-out-quint`                                      | The margins shrink by different amounts           |
-| 88–100 → 100–116 | response          | `house-b` multi-key move: scaleY 1→0.975, rotation 0→−1.4° (`in-quad`), then settle to scaleY 0.985, rotation −0.8° (`out-back-soft`). Origin at the bottom. | The house with less room visibly takes the strain |
-| 86–106 / 98–120  | response          | `room` / `strained` attach (from down)                                                                                                                       | Name the difference                               |
-| 120–150          | response          | `house-a` emphasis opacity →0.78 (the label stays opaque)                                                                                                    | Focus shifts to the strained household            |
-| 140–164          | action            | `qualifier` wipe                                                                                                                                             | Qualitative comparison, not a measurement         |
-| 150–191          | carrier + current | Camera settles toward `house-b`; the strain current keeps passing; `pressure-b` repeats a 2 px micro-press every 24 frames (a multi-key move)                | The strain persists                               |
+| Frames          | Layer             | Event                                                                                                                                                       | Meaning                                            |
+| --------------- | ----------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------- |
+| 0–18            | action            | `reference` wipe                                                                                                                                            | Establish "the same season"                        |
+| 8–30            | action            | `question` wipe (words)                                                                                                                                     | The question                                       |
+| 4–42 / 28–76    | action + response | `house-a` / `house-b` set-down (with shadow), staggered so the second arrival does not dominate the shot                                                    | Two comparable households                          |
+| 22–46           | action            | `margin-a`, `margin-b` draw, same length                                                                                                                    | Both start with the same visible margin            |
+| 30–52           | action            | `pressure-a` / `pressure-b` draw (they currently exist from frame 0)                                                                                        | Pressure exists on both                            |
+| 40–191          | current           | `strain` flow on `strain-path`: 6 dashes in crisis colour, speed 5 → 2 px/f after 110                                                                       | The same season's strain passes over both houses   |
+| 48–104          | action (**peak**) | Existing `strain` window (pressures move in). Moves: `margin-a` scaleX 1→0.82; `margin-b` scaleX 1→0.36, `in-out-quint`                                     | The margins shrink by different amounts            |
+| 77–85 → 85–116  | response          | `house-b` multi-key move: scaleY 1→0.92, rotation 0→−2.5° (`in-quad`), then settle to scaleY 0.985, rotation −0.8° (`out-back-soft`). Origin at the bottom. | The house with less room visibly takes the strain  |
+| 86–106 / 98–120 | response          | `room` / `strained` attach (from down)                                                                                                                      | Name the difference                                |
+| 80–88           | response          | `house-a` art emphasis opacity →0.70 (the label stays opaque)                                                                                               | Focus shifts during the strained household's press |
+| 140–164         | action            | `qualifier` wipe                                                                                                                                            | Qualitative comparison, not a measurement          |
+| 150–191         | carrier + current | Camera settles toward `house-b`; the strain current keeps passing; `pressure-b` repeats a 2 px micro-press every 24 frames (a multi-key move)               | The strain persists                                |
 
-Semantic gaps: 164→191 = 27 frames. Pass.
+Semantic gaps: the longest is 120→164 = 44 frames; the final gap is 164→191 = 27 frames. Pass. The P2 review revision places the strongest measured motion at frame 81, inside the 48–104 strain beat, through the combined household response and margin shrink.
 
 ### 5.2 Access Constraint: "grain available, access narrows"
 
