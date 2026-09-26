@@ -10,6 +10,7 @@ import { CommerceSceneSchema } from "../../packages/scene-contract/src/commerce.
 import { PreparedAnimationEngine } from "../../packages/animation-engine/src/prepared-animation-engine.ts";
 
 const root = resolve(import.meta.dirname, "../..");
+const MAX_COMMERCE_PAYLOAD_BYTES = 64_000_000;
 const payloadSchema = z
   .object({
     scene: CommerceSceneSchema,
@@ -28,7 +29,8 @@ async function readPayload(request: IncomingMessage) {
   let size = 0;
   for await (const chunk of request) {
     size += chunk.length;
-    if (size > 32_000_000) throw new Error("Upload exceeds 32 MB");
+    if (size > MAX_COMMERCE_PAYLOAD_BYTES)
+      throw new Error("Upload exceeds 64 MB");
     chunks.push(Buffer.from(chunk));
   }
   return payloadSchema.parse(
