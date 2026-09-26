@@ -1,5 +1,7 @@
 # Motion principles audit
 
+> **Superseded (2026-09-26):** The stillness and frozen-hold guidance below is superseded by the [owner’s continuous storytelling decision](story-motion-continuous-storytelling-plan.md). Holds now preserve meaning while camera, currents and responses keep the picture moving. Other design and semantic invariants remain binding.
+
 Date: 2026-09-26. Basis: the user's supplied seven motion-graphics principles.
 
 This is the **v008 baseline audit**. The subsequent [quality implementation and seven-principle recheck](motion-quality-implementation.md) resolves the measured readability/hold findings, adds a narrated resource passage and advisory authoring checks, and records the remaining audiovisual acceptance limits.

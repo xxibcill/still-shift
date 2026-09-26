@@ -44,12 +44,18 @@ Cinematic iteration is deferred while v0.13 is active; Phase 0 acceptance remain
 The [implementation research](./docs/s01e01-story-motion-research.md) now covers
 all seven, including source precedents, asset preparation and exact-frame timing requirements.
 
-**Current creative priority:** The [motion quality pass](./docs/motion-quality-implementation.md)
+**Previous quality pass:** The [motion quality pass](./docs/motion-quality-implementation.md)
 adds a corrected text hierarchy after user feedback, longer Relationship/Motif endings,
 advisory lab/render diagnostics, a refreshed ST-013/014 proof and a new
 1507-frame ST-006–008 candidate. All seven studies and both proofs have sampled
 visual and technical evidence. Continuous audiovisual review, full episode
 integration and creative acceptance remain pending within active v0.13.
+
+**Current creative priority:** [Continuous storytelling](./docs/story-motion-continuous-implementation.md)
+supersedes frozen-hold guidance. The optional engine and Unequal Margins prototype
+are implemented; G1–G6 pass, with the strongest measured change now in the strain
+response. Its visual emphasis is flagged for the required P2 owner review. Other
+studies, narrated passages and the lab activity strip await that checkpoint.
 
 **Planned commerce adoption:** The [e-commerce motion adoption plan](./docs/ecommerce-motion-adoption-plan.md)
 defines proposed v0.14: import the 40-format reference catalog, prove H03 with timed
@@ -492,6 +498,9 @@ shots. Still Shift supplies motion scenes; Remotion retains episode assembly.
 - [x] Refine relationship strokes, attachment points and easing; provide a [synchronized before/after comparison](./docs/story-motion-line-timing-refinement.md).
 - [x] Give narrative lines a distinct [split-nib brush treatment](./docs/story-motion-brush-lines.md), with stable texture, expressive pressure and bounded access clearance.
 - [x] Implement the [motion quality pass](./docs/motion-quality-implementation.md): differentiated typography, revised closing holds, before/after review and advisory authoring checks.
+- [x] Add the opt-in continuous camera, choreography, text reveal, currents and analyzer; all 1,344 v012 decoded frames remain identical.
+- [~] Deliver the [Unequal Margins P2 prototype](./docs/story-motion-continuous-implementation.md); numeric gates pass, owner review and peak-emphasis decision pending.
+- [ ] Roll out continuous motion to the other six recipes and both narrated passages after P2 review; add the lab activity strip and final continuous-motion verification.
 - [~] Render the refreshed 646-frame comparison/access and new 1507-frame resource passage; independent frame review and technical checks passed, continuous audiovisual acceptance remains open.
 - [~] **M0:** Shared contract and fixture kit complete; episode-specific preparation pending.
 - [~] **M1:** Implement Unequal Margins and Access Constraint; inspect one short

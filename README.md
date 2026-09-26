@@ -20,6 +20,11 @@ for prepared inputs, CLI export, verification and remaining S01E01 integration.
 All seven now share an original illustrated art kit, pinned channel fonts and
 distinct compositions; see the [visual gallery and narrated proof](./docs/story-motion-visual-implementation.md).
 
+**Continuous storytelling** now has an opt-in camera/choreography engine and an
+Unequal Margins prototype. The [P2 review and measurements](./docs/story-motion-continuous-implementation.md)
+include a paired gallery, energy plots and phone captures. The remaining library
+and passage roll-out awaits the plan’s required owner review.
+
 **Cinematic Parallax** is one layered-camera family with anchored sweep, push-in,
 lateral track, foreground reveal, Rising Vista, Curved Approach, Detail to World and Focus Handoff variations. Use the lab's variation/scene,
 strength and duration controls to explore it. New variations start with one short

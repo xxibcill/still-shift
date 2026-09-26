@@ -17,6 +17,7 @@ into the drawing.
 | `category-a`, `category-b` | Registered symbolic grain categories, sharing basket outline, center and baseline; no species or quantities |
 | `ground`                   | Shared grounding and contact context                                                                        |
 | `paper`                    | Fixed sparse texture; no per-frame randomness                                                               |
+| `paper-cover`              | V2 paper texture on an opaque bone base; covers the viewport without changing its visible grain             |
 
 These are HS-0 explanatory symbols, not recovered evidence or copies of selected
 episode art. No external image generation or paid media call was used. The house
@@ -27,8 +28,16 @@ the responsibility of the authored scene.
 The canonical palette lives in `art.ts`; type roles, node helpers and ground
 placement live in [design.ts](../../scripts/story-motion/design.ts). Connector
 ports are explicit local coordinates in [scenes.ts](../../scripts/story-motion/scenes.ts),
-with endpoint transforms and optional curve bends evaluated by the shared renderer. Relationship strokes use a split-nib brush profile with broad pressure, translucent pigment edges and dry streaks. The access glyph shares the renderer's geometry. Texture stays fixed in path coordinates, and the whole mark stays inside the declared route width. No random per-frame texture or traveling tokens are added. The two narrated
+with endpoint transforms and optional curve bends evaluated by the shared renderer. Relationship strokes use a split-nib brush profile with broad pressure, translucent pigment edges and dry streaks. The access glyph shares the renderer's geometry. Texture stays fixed in path coordinates, and the whole mark stays inside the declared route width. Texture never changes with the frame. The opt-in v2 grammar adds sparse symbolic currents where a relationship is stated. The two narrated
 household poses are copied unchanged across the ST-013/014 cut.
+
+## Continuous-motion layers
+
+`house-shadow` and `store-shadow` contain the original contact-shadow paths; `house-body` and `store-body` contain the remaining artwork. `land-shadow` is the existing 0.24-opacity base wash, not a newly invented cast shadow; `land-body` contains its dots and linework. Each pair keeps the source viewBox and recomposes the original illustration. The flattened `house`, `store` and `land` assets remain byte-identical for legacy scenes. All six layers are original decompositions of the same code-authored art. Their hashes and dimensions are included in v2 fixtures by `story:prepare`.
+
+`paper-cover` adds the canonical bone color beneath the original `paper` grain so the v2 camera cover plane is fully opaque. It is generated from the same code-authored texture; the legacy `paper` asset remains byte-identical. Both produce identical pixels when composited over the scene's bone background.
+
+Clipped strips reuse the same full source image behind adjacent clip rectangles. No new historical detail is introduced.
 
 ## Fonts
 

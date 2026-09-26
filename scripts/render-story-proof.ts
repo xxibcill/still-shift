@@ -1,3 +1,7 @@
+import {
+  measureMotionEnergy,
+  requireContinuousEnergy,
+} from "./story-motion/motion-energy.ts";
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 import { execFile } from "node:child_process";
@@ -23,6 +27,7 @@ const { values } = parseArgs({
     narration: { type: "string" },
     "narration-sha256": { type: "string" },
     passage: { type: "string", default: "comparison" },
+    "require-continuous-motion": { type: "boolean", default: false },
   },
   strict: true,
 });
@@ -41,7 +46,7 @@ assert.equal(
   values["narration-sha256"],
   "Narration bytes must match the episode authority",
 );
-await mkdir(output, { recursive: true });
+await mkdir(output);
 const load = async (id: string) => {
   const scene = StorySceneSchema.parse(
     JSON.parse(
@@ -268,3 +273,34 @@ await writeFile(
   `<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>S01E01 · ${title}</title><style>body{margin:0;background:#e8dfc9;color:#211f1b;font:18px/1.6 Georgia,serif}main{max-width:1280px;margin:auto;padding:40px 20px}video{width:100%}a{color:#8b3f36}</style><main><h1>${title}</h1><p>S01E01 · ${resources ? "ST-006–008" : "ST-013–014"} · ${frameCount} frames · ${(frameCount / 24).toFixed(3)} seconds · existing narration</p><video controls playsinline preload="metadata" src="${filename}"></video><p>Local graphic candidate. The selected episode images and assembled timeline remain preserved.</p><p><a href="proof-motion.jpg">Motion and boundary frames</a> · <a href="handoff.json">Timing and source record</a> · <a href="quality-report.json">Motion quality measurements</a></p></main></html>`,
 );
 console.log(`Narrated ${frameCount}-frame proof: ${video}`);
+
+const energyReports = [];
+for (const clip of [...clips, { outputPath: video }]) {
+  const energy = await measureMotionEnergy(clip.outputPath);
+  await writeFile(
+    `${clip.outputPath}.motion-energy.json`,
+    JSON.stringify(energy, null, 2) + "\n",
+    { flag: "wx" },
+  );
+  energyReports.push({ file: clip.outputPath, ...energy });
+}
+await writeFile(
+  join(output, "motion-energy.json"),
+  JSON.stringify(energyReports, null, 2) + "\n",
+  { flag: "wx" },
+);
+if (values["require-continuous-motion"]) {
+  for (const report of energyReports)
+    requireContinuousEnergy(report, report.file);
+  for (const scene of scenes) {
+    const quality = analyzeStoryQuality(compileStoryScene(scene), {
+      preset: "continuous",
+    });
+    if (
+      quality.diagnostics.some((d) =>
+        ["semantic-gap", "text-velocity"].includes(d.code),
+      )
+    )
+      throw new Error(`${scene.title} fails compiled continuous gates`);
+  }
+}

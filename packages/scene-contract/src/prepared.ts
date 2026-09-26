@@ -60,6 +60,8 @@ export const PreparedNodeSchema = z.discriminatedUnion("type", [
       lineWidth: number.positive().max(100),
       lineStyle: z.enum(["uniform", "ink", "brush"]).optional(),
       endArrow: z.boolean().optional(),
+      pinchAt: number.min(0.1).max(0.9).optional(),
+      pinchWidth: number.min(0.02).max(0.3).optional(),
       gapAt: number.min(0.1).max(0.9).default(0.6),
       gapSize: number.min(0.02).max(0.25).default(0.1),
     })
@@ -69,6 +71,7 @@ export const PreparedNodeSchema = z.discriminatedUnion("type", [
       ...base,
       type: z.literal("text"),
       text: z.string().min(1),
+      revealMode: z.enum(["wipe", "words"]).optional(),
       states: z.array(z.string().min(1)).min(1).max(12).optional(),
       fontSize: number.min(16).max(180),
       color,

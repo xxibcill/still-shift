@@ -1,8 +1,20 @@
 import type { PreparedPath } from "../../scene-contract/src/prepared.ts";
+import { storyBump } from "./story-flows.ts";
 import { pathLength, pointOnPath } from "./prepared-scene.ts";
 
 type Point = [number, number];
-type BrushPath = Pick<PreparedPath, "id" | "points" | "lineWidth">;
+type BrushPath = Pick<
+  PreparedPath,
+  "id" | "points" | "lineWidth" | "pinchAt" | "pinchWidth"
+>;
+export const brushPinchMultiplier = (
+  progress: number,
+  amount: number,
+  at = 0.5,
+  width = 0.15,
+) =>
+  1 -
+  Math.max(0, Math.min(1, amount)) * 0.65 * storyBump((progress - at) / width);
 export type BrushStroke = { wash: Point[]; body: Point[]; cuts: Point[][] };
 
 const STEPS = 256;
@@ -13,6 +25,7 @@ export function brushStroke(
   path: BrushPath,
   start: number,
   end: number,
+  pinch = 0,
 ): BrushStroke {
   start = clamp(start);
   end = clamp(end);
@@ -40,14 +53,21 @@ export function brushStroke(
       belly;
     // A short loaded-nib tip; the completed body is independent of reveal time.
     const tip = end < 1 ? Math.min(1, 0.15 + (end - t) * 32) : 1;
+    const multiplier = brushPinchMultiplier(
+      t,
+      pinch,
+      path.pinchAt,
+      path.pinchWidth,
+    );
     return {
       p,
       normal: [-dy / length, dx / length] as Point,
-      middle: middle * path.lineWidth * tip,
+      middle: middle * path.lineWidth * tip * multiplier,
       radius:
         Math.min(0.48 - Math.abs(middle), pressure + tooth) *
         path.lineWidth *
-        tip,
+        tip *
+        multiplier,
     };
   };
   const samples = (from: number, to: number) => {

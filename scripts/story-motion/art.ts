@@ -119,6 +119,10 @@ const paper = svg(
   1080,
   `<defs><pattern id="paper" width="73" height="61" patternUnits="userSpaceOnUse"><path d="M8 12h2m30 29h3m-25 8h1m40-32h2m-4 35h1" stroke="${ink}" stroke-width="1" opacity=".1"/><circle cx="27" cy="21" r=".7" fill="${ink}" opacity=".12"/></pattern></defs><path d="M0 0H1920V1080H0Z" fill="url(#paper)"/>`,
 );
+const paperCover = paper.replace(
+  '<path d="M0 0H1920V1080H0Z" fill="url(#paper)"/>',
+  `<path d="M0 0H1920V1080H0Z" fill="${bone}"/><path d="M0 0H1920V1080H0Z" fill="url(#paper)"/>`,
+);
 
 const pressure = svg(
   350,
@@ -129,6 +133,30 @@ const pressure = svg(
   <path d="M88 30l-8-16m29 40-7-19m138 19 8-19m11-5 8-16" stroke="${ink}" stroke-width="3" opacity=".5"/>
 `,
 );
+// Preserve the original flattened sources for v1 hashes and decoded-frame parity.
+function separateBase(source: string) {
+  const match = source.match(/<path[^>]+opacity="\.(?:13|15|24)"\/>/);
+  if (!match) throw new Error("Missing artwork base layer");
+  const open = source.indexOf("<g stroke-linecap");
+  const bodyStart = source.indexOf(">", open) + 1;
+  return {
+    body: source.replace(`  ${match[0]}\n`, ""),
+    shadow: source.slice(0, bodyStart) + match[0] + "</g></svg>\n",
+  };
+}
+const separatedHouse = separateBase(house),
+  separatedStore = separateBase(store),
+  separatedLand = separateBase(land);
+export const motionArtwork = {
+  "paper-cover": paperCover,
+  "house-body": separatedHouse.body,
+  "house-shadow": separatedHouse.shadow,
+  "store-body": separatedStore.body,
+  "store-shadow": separatedStore.shadow,
+  "land-body": separatedLand.body,
+  "land-shadow": separatedLand.shadow,
+};
+
 export const artwork = {
   house,
   store,
@@ -144,6 +172,6 @@ export const artwork = {
 export async function writeArtwork() {
   const directory = resolve("assets/story-motion/art");
   await mkdir(directory, { recursive: true });
-  for (const [name, value] of Object.entries(artwork))
+  for (const [name, value] of Object.entries({ ...artwork, ...motionArtwork }))
     await writeFile(resolve(directory, `${name}.svg`), value);
 }

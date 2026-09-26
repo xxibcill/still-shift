@@ -5,6 +5,7 @@ export default tseslint.config(
   {
     ignores: [
       "node_modules/**",
+      ".pnpm-store/**",
       "apps/**/dist/**",
       ".venv/**",
       "benchmarks/gallery/**",
@@ -19,8 +20,8 @@ export default tseslint.config(
       "@typescript-eslint/consistent-type-imports": "error",
       "@typescript-eslint/no-unused-vars": [
         "error",
-        { "argsIgnorePattern": "^_" }
-      ]
-    }
-  }
+        { argsIgnorePattern: "^_" },
+      ],
+    },
+  },
 );

@@ -18,6 +18,9 @@ export type MotionDesign = {
   nodes: Node[];
   recipe: z.input<typeof StoryRecipeSchema>;
   connectors?: StoryScene["connectors"];
+  motionGrammar?: StoryScene["motionGrammar"];
+  camera?: StoryScene["camera"];
+  flows?: StoryScene["flows"];
 };
 export const typeScale = {
   label: 56,
@@ -81,16 +84,47 @@ export const path = (id: string, points: number[][], extra: Extra = {}): Node =>
     lineWidth: 5,
     ...extra,
   }) as Node;
-export const art = (
+export function art(
   id: string,
   asset: string,
   x: number,
   y: number,
   width: number,
   height: number,
-  extra: Extra = {},
-): Node =>
-  ({
+  extra: Extra & { shadow: true },
+): Node[];
+export function art(
+  id: string,
+  asset: string,
+  x: number,
+  y: number,
+  width: number,
+  height: number,
+  extra?: Extra,
+): Node;
+export function art(
+  id: string,
+  asset: string,
+  x: number,
+  y: number,
+  width: number,
+  height: number,
+  extra: Extra & { shadow?: boolean } = {},
+): Node | Node[] {
+  const { shadow, ...attributes } = extra;
+  if (shadow)
+    return [
+      group(id, x, y, width, height, { ...attributes, origin: [0.5, 1] }),
+      art(`${id}-shadow`, `${asset}-shadow`, 0, 0, width, height, {
+        parent: id,
+        origin: [0.5, 1],
+      }),
+      art(`${id}-art`, `${asset}-body`, 0, 0, width, height, {
+        parent: id,
+        origin: [0.5, 1],
+      }),
+    ];
+  return {
     id,
     type: "image",
     x,
@@ -98,8 +132,35 @@ export const art = (
     width,
     height,
     states: [{ asset }],
-    ...extra,
-  }) as Node;
+    ...attributes,
+  } as Node;
+}
+
+export function strips(
+  id: string,
+  asset: string,
+  x: number,
+  y: number,
+  width: number,
+  height: number,
+  count = 3,
+): Node[] {
+  if (!Number.isInteger(count) || count < 1 || count > 12)
+    throw new Error("Strip count must be 1–12");
+  const stripWidth = width / count;
+  return [
+    group(id, x, y, width, height),
+    ...Array.from({ length: count }, (_, i) => [
+      group(`${id}-strip-${i}`, stripWidth * i, 0, stripWidth, height, {
+        parent: id,
+        clip: true,
+      }),
+      art(`${id}-part-${i}`, asset, -stripWidth * i, 0, width, height, {
+        parent: `${id}-strip-${i}`,
+      }),
+    ]).flat(),
+  ];
+}
 export const bind = (
   path: string,
   from: string,
@@ -114,15 +175,44 @@ export const bind = (
   ...(bend ? { bend } : {}),
 });
 export const paper = () => art("paper", "paper", 0, 0, 1920, 1080);
-export const ground = (y = 780) =>
-  art("ground", "ground", 0, y, 1920, 1080 - y, { fit: "stretch" });
-export const household = (
+export const ground = (y = 780, overscan = false) =>
+  art(
+    "ground",
+    "ground",
+    overscan ? -160 : 0,
+    y,
+    overscan ? 2240 : 1920,
+    1080 - y,
+    { fit: "stretch" },
+  );
+export function household(
   id: string,
   x: number,
   y: number,
   width: number,
-  extra: Extra = {},
-) => art(id, "house", x, y, width, (width * 440) / 600, extra);
+  extra: Extra & { shadow: true },
+): Node[];
+export function household(
+  id: string,
+  x: number,
+  y: number,
+  width: number,
+  extra?: Extra,
+): Node;
+export function household(
+  id: string,
+  x: number,
+  y: number,
+  width: number,
+  extra: Extra & { shadow?: boolean } = {},
+): Node | Node[] {
+  return extra.shadow
+    ? art(id, "house", x, y, width, (width * 440) / 600, {
+        ...extra,
+        shadow: true,
+      })
+    : art(id, "house", x, y, width, (width * 440) / 600, extra);
+}
 export const subject = (
   id: string,
   asset: string,
