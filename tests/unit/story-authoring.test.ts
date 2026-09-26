@@ -101,6 +101,20 @@ describe("shared passage authoring", () => {
       });
     expect(result.frameCount).toBe(192);
   });
+  it("locates a distant bound event at its narration cue and affected node", () => {
+    const input = plan();
+    input.beats[0]!.bindings["shared-strain"]!.offset = 12;
+    const diagnostic = compileStoryPassage(input, templates()).diagnostics.find(
+      (item) => item.code === "cue-distance",
+    );
+    expect(diagnostic).toMatchObject({
+      code: "cue-distance",
+      beat: "one",
+      event: "shared-strain",
+      node: "pressure-a",
+      frame: 48,
+    });
+  });
   it("does not put failed edits in undo history and round-trips valid edits", () => {
     const editor = createPassageEditor(plan(), templates());
     const initial = structuredClone(editor.passage.plan);

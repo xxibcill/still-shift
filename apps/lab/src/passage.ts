@@ -15,7 +15,10 @@ import {
   parsePassageTemplate,
   type PassageTemplate,
 } from "../../../packages/renderer-core/src/story-template.ts";
-import { passageDiagnostics } from "../../../packages/renderer-core/src/passage-diagnostics.ts";
+import {
+  passageDiagnostics,
+  type PassageDiagnostic,
+} from "../../../packages/renderer-core/src/passage-diagnostics.ts";
 import { compileStoryScene } from "../../../packages/renderer-core/src/story-scene.ts";
 import { evaluatePreparedNode } from "../../../packages/renderer-core/src/prepared-scene.ts";
 import {
@@ -46,12 +49,29 @@ let previews: ReadyBeat[] = [],
   generation = 0;
 const audio = new Audio();
 let audioUrl: string | undefined;
-const errors = (error: unknown) => {
-  el("errors").textContent = passageDiagnostics(error)
-    .map((d) =>
-      [d.beat, d.node, d.event, d.message].filter(Boolean).join(" · "),
-    )
-    .join("\n");
+type FailedEdit = { beat: string; draft: PassagePlan | undefined };
+const errors = (error: unknown, failedEdit?: FailedEdit) => {
+  const host = el("errors");
+  host.replaceChildren();
+  for (const diagnostic of passageDiagnostics(error)) {
+    const label = [
+      diagnostic.beat,
+      diagnostic.node,
+      diagnostic.event,
+      diagnostic.message,
+    ]
+      .filter(Boolean)
+      .join(" · ");
+    if (failedEdit && diagnosticBeat(diagnostic, failedEdit.beat))
+      button(host, label, () =>
+        jumpToDiagnostic(diagnostic, failedEdit),
+      ).className = "note";
+    else {
+      const line = document.createElement("div");
+      line.textContent = label;
+      host.append(line);
+    }
+  }
 };
 const stop = () => {
   playing = false;
@@ -149,13 +169,15 @@ function installPreviews(ready: ReadyBeat[]) {
 let edits = Promise.resolve();
 function apply(change: (draft: PassagePlan) => void) {
   const owner = editor;
+  const editBeat = owner?.passage.beats[Number(beatSelect.value)]?.id;
   const task = async () => {
     if (editor !== owner) return;
     if (!editor) return;
     stop();
     const ticket = ++generation;
+    let draft: PassagePlan | undefined;
     try {
-      const draft = structuredClone(editor.passage.plan);
+      draft = structuredClone(editor.passage.plan);
       change(draft);
       const candidate = compileStoryPassage(draft, templates);
       const ready = await preparePreviews(candidate);
@@ -166,7 +188,8 @@ function apply(change: (draft: PassagePlan) => void) {
       editor.edit(change);
       installPreviews(ready);
     } catch (error) {
-      if (ticket === generation) errors(error);
+      if (ticket === generation)
+        errors(error, editBeat ? { beat: editBeat, draft } : undefined);
     }
   };
   edits = edits.then(task, task);
@@ -224,6 +247,60 @@ function show(next: number) {
       "active",
       frame >= Number(mark.dataset.start) && frame <= Number(mark.dataset.end),
     );
+}
+function diagnosticBeat(diagnostic: PassageDiagnostic, fallbackBeat?: string) {
+  if (!editor || !previews.length) return undefined;
+  const beats = editor.passage.beats;
+  const pathIndex = /^beats\.(\d+)(?:\.|$)/.exec(diagnostic.path ?? "");
+  return (
+    beats.find((beat) => beat.id === diagnostic.beat) ??
+    (pathIndex ? beats[Number(pathIndex[1])] : undefined) ??
+    beats.find((beat) => beat.id === fallbackBeat)
+  );
+}
+function attemptedCueFrame(
+  diagnostic: PassageDiagnostic,
+  beatIndex: number,
+  draft?: PassagePlan,
+) {
+  const path = /^beats\.(\d+)\.cues(?:\.(\d+))?/.exec(diagnostic.path ?? "");
+  if (!path || Number(path[1]) !== beatIndex || !draft || !editor)
+    return undefined;
+  const candidate = draft.beats[beatIndex];
+  const current = editor.passage.plan.beats[beatIndex];
+  const cueIndex = path[2]
+    ? Number(path[2])
+    : candidate?.cues.findIndex(
+        (cue, index) => cue.frame !== current?.cues[index]?.frame,
+      );
+  return cueIndex === undefined || cueIndex < 0
+    ? undefined
+    : candidate?.cues[cueIndex]?.frame;
+}
+function jumpToDiagnostic(
+  diagnostic: PassageDiagnostic,
+  failedEdit?: FailedEdit,
+) {
+  const beat = diagnosticBeat(diagnostic, failedEdit?.beat);
+  if (!beat || !editor) return;
+  const beatIndex = editor.passage.beats.indexOf(beat);
+  const event = beat.events.find((event) => event.id === diagnostic.event);
+  const localFrame =
+    diagnostic.frame ??
+    attemptedCueFrame(diagnostic, beatIndex, failedEdit?.draft) ??
+    event?.start ??
+    0;
+  const boundedFrame = Number.isFinite(localFrame)
+    ? Math.max(0, Math.min(Math.trunc(localFrame), beat.end - beat.start - 1))
+    : 0;
+  const node = [diagnostic.node, ...(event?.nodes ?? [])].find(
+    (id) => id && beat.scene.nodes.some((candidate) => candidate.id === id),
+  );
+  stop();
+  beatSelect.value = String(beatIndex);
+  renderInspector();
+  if (node) nodeSelect.value = node;
+  show(beat.start + boundedFrame);
 }
 function drawOverlays(scene: ReadyBeat["scene"], localFrame: number) {
   const ctx = overlay.getContext("2d")!;
@@ -324,17 +401,7 @@ function renderControls() {
     button(
       host,
       `${diagnostic.beat} · ${diagnostic.code}: ${diagnostic.message}`,
-      () => {
-        const beat = passage.beats.find((b) => b.id === diagnostic.beat)!;
-        stop();
-        show(
-          beat.start + ("frame" in diagnostic ? (diagnostic.frame ?? 0) : 0),
-        );
-        if ("node" in diagnostic && diagnostic.node) {
-          nodeSelect.value = diagnostic.node;
-          show(frame);
-        }
-      },
+      () => jumpToDiagnostic(diagnostic),
     ).className = "note";
 }
 function renderInspector() {

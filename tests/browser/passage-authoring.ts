@@ -242,6 +242,27 @@ try {
       .start,
     111,
   );
+  await page.getByText("Linked events", { exact: true }).click();
+  const offset = page.getByRole("spinbutton", {
+    name: "shared-strain offset",
+    exact: true,
+  });
+  await offset.fill("12");
+  await offset.press("Tab");
+  const cueDistance = page
+    .locator("#diagnostics")
+    .getByRole("button", { name: /cue-distance/ });
+  await cueDistance.click();
+  assert.equal((await snapshot()).frame, 54);
+  assert.equal(await page.locator("#node").inputValue(), "pressure-a");
+  await offset.fill("0");
+  await offset.press("Tab");
+  await page.waitForFunction(
+    () =>
+      !document
+        .querySelector("#diagnostics")!
+        .textContent!.includes("cue-distance"),
+  );
   await cue.fill("180");
   await cue.press("Tab");
   await page.waitForFunction(() =>
@@ -249,6 +270,19 @@ try {
       .querySelector("#errors")!
       .textContent!.includes("outside locked beat"),
   );
+  assert.equal((await snapshot()).plan.beats[0]!.cues[0]!.frame, 54);
+  await page.locator("#errors button").click();
+  assert.equal((await snapshot()).frame, 180);
+  assert.equal(await page.locator("#node").inputValue(), "pressure-a");
+  await cue.fill("192");
+  await cue.press("Tab");
+  await page.waitForFunction(() =>
+    document
+      .querySelector("#errors")!
+      .textContent!.includes("Cue outside beat"),
+  );
+  await page.locator("#errors button").click();
+  assert.equal((await snapshot()).frame, 191);
   assert.equal((await snapshot()).plan.beats[0]!.cues[0]!.frame, 54);
   await page
     .getByRole("textbox", { name: "title", exact: true })
@@ -309,9 +343,11 @@ try {
         .value === "Edited in the Lab",
   );
   assert.deepEqual((await snapshot()).plan, savedState.plan);
+  await page.evaluate(() => window.passageLab!.seek(42));
   await page.locator("#open-workspace").setInputFiles(savedPlanFile);
   await page.waitForFunction(
     () =>
+      (window.passageLab!.snapshot() as { frame: number }).frame === 0 &&
       document.querySelector<HTMLInputElement>('input[aria-label="title"]')!
         .value === "Edited in the Lab",
   );

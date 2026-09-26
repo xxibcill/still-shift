@@ -174,23 +174,51 @@ export function compileStoryPassage(
           return { ...window };
         }),
       }));
+      const rendered = compileStoryScene(scene);
+      const events = indexStoryEvents(scene).map((event) => ({
+        ...event,
+        nodes: [
+          ...new Set([
+            ...event.nodes,
+            ...rendered.motionEvents
+              .filter((motion) => motion.window.cue === event.id)
+              .map((motion) => motion.node),
+          ]),
+        ],
+      }));
+      const nodeIds = new Set(scene.nodes.map((node) => node.id));
       const cueWarnings = cues.flatMap((cue) => {
-        const distance = Math.min(
-          ...cue.windows.map((window) => Math.abs(window.start - cue.frame)),
+        const nearest = cue.windows.reduce<
+          (typeof cue.windows)[number] | undefined
+        >(
+          (best, window) =>
+            !best ||
+            Math.abs(window.start - cue.frame) <
+              Math.abs(best.start - cue.frame)
+              ? window
+              : best,
+          undefined,
         );
+        if (!nearest) return [];
+        const distance = Math.abs(nearest.start - cue.frame);
         return distance > 6
           ? [
               {
-                cue: cue.id,
+                event: nearest.cue,
+                node: events
+                  .find((event) => event.id === nearest.cue)
+                  ?.nodes.find((id) => nodeIds.has(id)),
+                frame: cue.frame,
                 message:
-                  "Nearest bound event starts " +
+                  "Cue " +
+                  cue.id +
+                  ": nearest bound event starts " +
                   distance +
                   " frames from the narration cue. Review the intended anticipation or delay.",
               },
             ]
           : [];
       });
-      const rendered = compileStoryScene(scene);
       const quality = analyzeStoryQuality(rendered);
       const result = {
         ...beat,
@@ -201,17 +229,7 @@ export function compileStoryPassage(
         cues,
         cueWarnings,
         quality,
-        events: indexStoryEvents(scene).map((event) => ({
-          ...event,
-          nodes: [
-            ...new Set([
-              ...event.nodes,
-              ...rendered.motionEvents
-                .filter((motion) => motion.window.cue === event.id)
-                .map((motion) => motion.node),
-            ]),
-          ],
-        })),
+        events,
       };
       localStart += beat.frameCount;
       return result;
@@ -229,14 +247,16 @@ export function compileStoryPassage(
         code: "cue-distance",
         severity: "warning" as const,
         beat: beat.id,
-        event: note.cue,
+        event: note.event,
+        ...(note.node ? { node: note.node } : {}),
+        frame: note.frame,
         message: note.message,
       })),
       ...beat.quality.diagnostics.map((note) => ({
         code: note.code,
         severity: "warning" as const,
         beat: beat.id,
-        node: note.nodes[0],
+        ...(note.nodes[0] ? { node: note.nodes[0] } : {}),
         frame: note.frames[0],
         message: note.message,
       })),
