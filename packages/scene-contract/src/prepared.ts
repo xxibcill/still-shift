@@ -188,10 +188,10 @@ export const PreparedSceneFieldsSchema = preparedShape.omit({
   recipe: true,
 });
 
-export const PreparedSceneSchema = preparedShape.superRefine((scene, ctx) => {
-  const fail = (message: string) => ctx.addIssue({ code: "custom", message });
-  if (!Number.isInteger((scene.durationMs * scene.fps) / 1000))
-    fail("Duration must resolve to whole frames");
+export function validatePreparedGraph(
+  scene: Pick<PreparedScene, "nodes" | "assets">,
+  fail: (message: string) => void,
+) {
   const nodes = new Map(scene.nodes.map((node) => [node.id, node]));
   const assets = new Map(scene.assets.map((item) => [item.id, item]));
   if (nodes.size !== scene.nodes.length || assets.size !== scene.assets.length)
@@ -234,6 +234,14 @@ export const PreparedSceneSchema = preparedShape.superRefine((scene, ctx) => {
     )
       fail(`Path ${node.id} has zero length`);
   }
+  return { nodes, assets };
+}
+
+export const PreparedSceneSchema = preparedShape.superRefine((scene, ctx) => {
+  const fail = (message: string) => ctx.addIssue({ code: "custom", message });
+  if (!Number.isInteger((scene.durationMs * scene.fps) / 1000))
+    fail("Duration must resolve to whole frames");
+  const { nodes } = validatePreparedGraph(scene, fail);
   const bindings = new Set<string>();
   const requireNode = (key: string, type?: PreparedNode["type"]) => {
     if (bindings.has(key))

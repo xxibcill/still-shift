@@ -1,0 +1,545 @@
+{
+  "title": "Motif Resolve",
+  "fps": 24,
+  "width": 1920,
+  "height": 1080,
+  "background": "#EFE6D4",
+  "assets": [
+    {
+      "id": "objects",
+      "path": "../../../assets/history-offstage-v2/objects-v1.png",
+      "sha256": "sha256:274cdaed676284c7225a2a83645288ff2fe7771bc75b4bbda6df92fbd9afc741",
+      "width": 1536,
+      "height": 1024
+    }
+  ],
+  "nodes": [
+    {
+      "id": "series",
+      "x": 100,
+      "y": 55,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "text",
+      "text": "HISTORY OFFSTAGE  /  STORY MOTION",
+      "fontSize": 23,
+      "color": "#52684F",
+      "weight": "bold",
+      "font": "sans-serif",
+      "align": "left"
+    },
+    {
+      "id": "title",
+      "x": 100,
+      "y": 102,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "text",
+      "text": "Familiar parts. A clearer answer.",
+      "fontSize": 62,
+      "color": "#282C29",
+      "weight": "normal",
+      "font": "serif",
+      "align": "left"
+    },
+    {
+      "id": "subtitle",
+      "x": 103,
+      "y": 185,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "text",
+      "text": "Resources, access and claims return as one relationship.",
+      "fontSize": 28,
+      "color": "#52684F",
+      "weight": "normal",
+      "font": "sans-serif",
+      "align": "left"
+    },
+    {
+      "id": "footer",
+      "x": 100,
+      "y": 1010,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "text",
+      "text": "REUSABLE MOTION STUDY  ·  SCHEMATIC ARTWORK  ·  NOT A FINAL EPISODE SHOT",
+      "fontSize": 21,
+      "color": "#52684F",
+      "weight": "normal",
+      "font": "sans-serif",
+      "align": "left"
+    },
+    {
+      "id": "qualifier",
+      "x": 960,
+      "y": 300,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "text",
+      "text": "CONCEPTUAL RELATIONSHIPS  ·  NO MEASURED QUANTITIES",
+      "fontSize": 27,
+      "color": "#52684F",
+      "weight": "normal",
+      "font": "sans-serif",
+      "align": "center"
+    },
+    {
+      "id": "resource-link",
+      "x": 0,
+      "y": 0,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "path",
+      "points": [
+        [0, 0],
+        [1, 1]
+      ],
+      "stroke": "#52684F",
+      "lineWidth": 5,
+      "gapAt": 0.6,
+      "gapSize": 0.1
+    },
+    {
+      "id": "access-link",
+      "x": 0,
+      "y": 0,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "path",
+      "points": [
+        [0, 0],
+        [1, 1]
+      ],
+      "stroke": "#52684F",
+      "lineWidth": 5,
+      "gapAt": 0.6,
+      "gapSize": 0.1
+    },
+    {
+      "id": "outgoing",
+      "x": 0,
+      "y": 0,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "path",
+      "points": [
+        [0, 0],
+        [1, 1]
+      ],
+      "stroke": "#984D3D",
+      "lineWidth": 13,
+      "gapAt": 0.6,
+      "gapSize": 0.1
+    },
+    {
+      "id": "household",
+      "x": 255,
+      "y": 560,
+      "width": 240,
+      "height": 220,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "group",
+      "clip": false
+    },
+    {
+      "id": "household-wall",
+      "parent": "household",
+      "x": 30,
+      "y": 80,
+      "width": 180,
+      "height": 140,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "rect",
+      "fill": "#D3C4A5",
+      "stroke": "#282C29",
+      "lineWidth": 5,
+      "radius": 0
+    },
+    {
+      "id": "household-roof",
+      "parent": "household",
+      "x": 0,
+      "y": 0,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "path",
+      "points": [
+        [8, 90],
+        [120, 5],
+        [232, 90]
+      ],
+      "stroke": "#282C29",
+      "lineWidth": 10,
+      "gapAt": 0.6,
+      "gapSize": 0.1
+    },
+    {
+      "id": "household-door",
+      "parent": "household",
+      "x": 97,
+      "y": 140,
+      "width": 47,
+      "height": 80,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "rect",
+      "fill": "#52684F",
+      "lineWidth": 0,
+      "radius": 0
+    },
+    {
+      "id": "household-ground",
+      "parent": "household",
+      "x": 0,
+      "y": 0,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "path",
+      "points": [
+        [0, 220],
+        [240, 220]
+      ],
+      "stroke": "#282C29",
+      "lineWidth": 5,
+      "gapAt": 0.6,
+      "gapSize": 0.1
+    },
+    {
+      "id": "resources",
+      "x": 740,
+      "y": 340,
+      "width": 260,
+      "height": 250,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "group",
+      "clip": false
+    },
+    {
+      "id": "resources-art",
+      "parent": "resources",
+      "x": 20,
+      "y": 0,
+      "width": 220,
+      "height": 190,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "image",
+      "states": [
+        {
+          "asset": "objects",
+          "crop": [36, 66, 466, 386]
+        }
+      ],
+      "fit": "contain"
+    },
+    {
+      "id": "resources-label",
+      "parent": "resources",
+      "x": 130,
+      "y": 211,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "text",
+      "text": "RESOURCES",
+      "fontSize": 28,
+      "color": "#282C29",
+      "weight": "bold",
+      "font": "sans-serif",
+      "align": "center"
+    },
+    {
+      "id": "access",
+      "x": 1200,
+      "y": 355,
+      "width": 260,
+      "height": 250,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "group",
+      "clip": false
+    },
+    {
+      "id": "access-art",
+      "parent": "access",
+      "x": 20,
+      "y": 0,
+      "width": 220,
+      "height": 190,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "image",
+      "states": [
+        {
+          "asset": "objects",
+          "crop": [580, 31, 386, 455]
+        }
+      ],
+      "fit": "contain"
+    },
+    {
+      "id": "access-label",
+      "parent": "access",
+      "x": 130,
+      "y": 211,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "text",
+      "text": "ACCESS",
+      "fontSize": 28,
+      "color": "#282C29",
+      "weight": "bold",
+      "font": "sans-serif",
+      "align": "center"
+    },
+    {
+      "id": "claims",
+      "x": 1400,
+      "y": 720,
+      "width": 260,
+      "height": 250,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "group",
+      "clip": false
+    },
+    {
+      "id": "claims-art",
+      "parent": "claims",
+      "x": 20,
+      "y": 0,
+      "width": 220,
+      "height": 190,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "image",
+      "states": [
+        {
+          "asset": "objects",
+          "crop": [1078, 512, 404, 480]
+        }
+      ],
+      "fit": "contain"
+    },
+    {
+      "id": "claims-label",
+      "parent": "claims",
+      "x": 130,
+      "y": 211,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "text",
+      "text": "RENT / SERVICE",
+      "fontSize": 28,
+      "color": "#282C29",
+      "weight": "bold",
+      "font": "sans-serif",
+      "align": "center"
+    },
+    {
+      "id": "next",
+      "x": 300,
+      "y": 925,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "text",
+      "text": "NEXT: LAND AND ITS CLAIMS",
+      "fontSize": 28,
+      "color": "#984D3D",
+      "weight": "normal",
+      "font": "sans-serif",
+      "align": "left"
+    }
+  ],
+  "provenance": "Reusable engineering/creative fixtures using original history-offstage-v2 artwork and procedural diagrams. Not selected episode derivatives or Phase 0 corpus evidence.",
+  "schemaVersion": "story-scene-1",
+  "frameCount": 192,
+  "recipe": {
+    "preset": "motif_resolve",
+    "motifs": ["household", "resources", "access", "claims"],
+    "moves": [
+      {
+        "node": "household",
+        "window": {
+          "start": 30,
+          "end": 80,
+          "cue": "group-factors"
+        },
+        "to": {
+          "x": 340,
+          "y": 570
+        }
+      },
+      {
+        "node": "resources",
+        "window": {
+          "start": 30,
+          "end": 80,
+          "cue": "group-factors"
+        },
+        "to": {
+          "x": 940,
+          "y": 380
+        }
+      },
+      {
+        "node": "access",
+        "window": {
+          "start": 50,
+          "end": 100,
+          "cue": "group-factors"
+        },
+        "to": {
+          "x": 1380,
+          "y": 380
+        }
+      },
+      {
+        "node": "claims",
+        "window": {
+          "start": 60,
+          "end": 110,
+          "cue": "group-factors"
+        },
+        "to": {
+          "x": 1250,
+          "y": 710
+        }
+      }
+    ],
+    "emphasis": [
+      {
+        "node": "resources",
+        "window": {
+          "start": 124,
+          "end": 150,
+          "cue": "outgoing-relation"
+        },
+        "opacity": 0.45
+      },
+      {
+        "node": "access",
+        "window": {
+          "start": 124,
+          "end": 150,
+          "cue": "outgoing-relation"
+        },
+        "opacity": 0.45
+      },
+      {
+        "node": "resource-link",
+        "window": {
+          "start": 124,
+          "end": 150,
+          "cue": "outgoing-relation"
+        },
+        "opacity": 0.3
+      },
+      {
+        "node": "access-link",
+        "window": {
+          "start": 124,
+          "end": 150,
+          "cue": "outgoing-relation"
+        },
+        "opacity": 0.3
+      }
+    ],
+    "outgoing": "outgoing",
+    "qualifier": "qualifier",
+    "resolve": {
+      "start": 124,
+      "end": 154,
+      "cue": "outgoing-relation"
+    }
+  },
+  "connectors": [
+    {
+      "path": "resource-link",
+      "from": {
+        "node": "household",
+        "point": [240, 70]
+      },
+      "to": {
+        "node": "resources",
+        "point": [0, 125]
+      }
+    },
+    {
+      "path": "access-link",
+      "from": {
+        "node": "household",
+        "point": [240, 110]
+      },
+      "to": {
+        "node": "access",
+        "point": [0, 125]
+      }
+    },
+    {
+      "path": "outgoing",
+      "from": {
+        "node": "household",
+        "point": [240, 170]
+      },
+      "to": {
+        "node": "claims",
+        "point": [0, 125]
+      }
+    }
+  ]
+}

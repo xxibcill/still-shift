@@ -1,0 +1,337 @@
+{
+  "title": "Relationship Build",
+  "fps": 24,
+  "width": 1920,
+  "height": 1080,
+  "background": "#EFE6D4",
+  "assets": [
+    {
+      "id": "objects",
+      "path": "../../../assets/history-offstage-v2/objects-v1.png",
+      "sha256": "sha256:274cdaed676284c7225a2a83645288ff2fe7771bc75b4bbda6df92fbd9afc741",
+      "width": 1536,
+      "height": 1024
+    }
+  ],
+  "nodes": [
+    {
+      "id": "series",
+      "x": 100,
+      "y": 55,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "text",
+      "text": "HISTORY OFFSTAGE  /  STORY MOTION",
+      "fontSize": 23,
+      "color": "#52684F",
+      "weight": "bold",
+      "font": "sans-serif",
+      "align": "left"
+    },
+    {
+      "id": "title",
+      "x": 100,
+      "y": 102,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "text",
+      "text": "A store is part of a system.",
+      "fontSize": 62,
+      "color": "#282C29",
+      "weight": "normal",
+      "font": "serif",
+      "align": "left"
+    },
+    {
+      "id": "subtitle",
+      "x": 103,
+      "y": 185,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "text",
+      "text": "Relationships appear in useful groups, without token traffic.",
+      "fontSize": 28,
+      "color": "#52684F",
+      "weight": "normal",
+      "font": "sans-serif",
+      "align": "left"
+    },
+    {
+      "id": "footer",
+      "x": 100,
+      "y": 1010,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "text",
+      "text": "REUSABLE MOTION STUDY  ·  SCHEMATIC ARTWORK  ·  NOT A FINAL EPISODE SHOT",
+      "fontSize": 21,
+      "color": "#52684F",
+      "weight": "normal",
+      "font": "sans-serif",
+      "align": "left"
+    },
+    {
+      "id": "relation-a",
+      "x": 0,
+      "y": 0,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "path",
+      "points": [
+        [520, 540],
+        [1150, 440]
+      ],
+      "stroke": "#52684F",
+      "lineWidth": 9,
+      "gapAt": 0.6,
+      "gapSize": 0.1
+    },
+    {
+      "id": "relation-b",
+      "x": 0,
+      "y": 0,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "path",
+      "points": [
+        [520, 680],
+        [1250, 740]
+      ],
+      "stroke": "#52684F",
+      "lineWidth": 9,
+      "gapAt": 0.6,
+      "gapSize": 0.1
+    },
+    {
+      "id": "store",
+      "x": 190,
+      "y": 420,
+      "width": 390,
+      "height": 330,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "image",
+      "states": [
+        {
+          "asset": "objects",
+          "crop": [36, 66, 466, 386]
+        }
+      ],
+      "fit": "contain"
+    },
+    {
+      "id": "resources",
+      "x": 1260,
+      "y": 295,
+      "width": 260,
+      "height": 250,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "group",
+      "clip": false
+    },
+    {
+      "id": "resources-art",
+      "parent": "resources",
+      "x": 20,
+      "y": 0,
+      "width": 220,
+      "height": 190,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "image",
+      "states": [
+        {
+          "asset": "objects",
+          "crop": [580, 31, 386, 455]
+        }
+      ],
+      "fit": "contain"
+    },
+    {
+      "id": "resources-label",
+      "parent": "resources",
+      "x": 130,
+      "y": 211,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "text",
+      "text": "RESOURCES",
+      "fontSize": 28,
+      "color": "#282C29",
+      "weight": "bold",
+      "font": "sans-serif",
+      "align": "center"
+    },
+    {
+      "id": "claims",
+      "x": 1390,
+      "y": 670,
+      "width": 260,
+      "height": 250,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "group",
+      "clip": false
+    },
+    {
+      "id": "claims-art",
+      "parent": "claims",
+      "x": 20,
+      "y": 0,
+      "width": 220,
+      "height": 190,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "image",
+      "states": [
+        {
+          "asset": "objects",
+          "crop": [1078, 512, 404, 480]
+        }
+      ],
+      "fit": "contain"
+    },
+    {
+      "id": "claims-label",
+      "parent": "claims",
+      "x": 130,
+      "y": 211,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "text",
+      "text": "CLAIMS",
+      "fontSize": 28,
+      "color": "#282C29",
+      "weight": "bold",
+      "font": "sans-serif",
+      "align": "center"
+    }
+  ],
+  "provenance": "Reusable engineering/creative fixtures using original history-offstage-v2 artwork and procedural diagrams. Not selected episode derivatives or Phase 0 corpus evidence.",
+  "schemaVersion": "story-scene-1",
+  "frameCount": 192,
+  "recipe": {
+    "preset": "relationship_build",
+    "anchor": "store",
+    "branches": [
+      {
+        "path": "relation-a",
+        "destination": "resources",
+        "window": {
+          "start": 24,
+          "end": 55,
+          "cue": "resources"
+        }
+      },
+      {
+        "path": "relation-b",
+        "destination": "claims",
+        "window": {
+          "start": 65,
+          "end": 97,
+          "cue": "claims"
+        }
+      }
+    ],
+    "moves": [
+      {
+        "node": "resources",
+        "window": {
+          "start": 108,
+          "end": 144,
+          "cue": "regroup"
+        },
+        "to": {
+          "x": 1120,
+          "y": 305
+        }
+      },
+      {
+        "node": "claims",
+        "window": {
+          "start": 108,
+          "end": 144,
+          "cue": "regroup"
+        },
+        "to": {
+          "x": 1120,
+          "y": 650
+        }
+      }
+    ],
+    "emphasis": [
+      {
+        "node": "resources",
+        "window": {
+          "start": 65,
+          "end": 97,
+          "cue": "claims"
+        },
+        "opacity": 0.65
+      },
+      {
+        "node": "resources",
+        "window": {
+          "start": 144,
+          "end": 166,
+          "cue": "system"
+        },
+        "opacity": 1
+      }
+    ]
+  },
+  "connectors": [
+    {
+      "path": "relation-a",
+      "from": {
+        "node": "store",
+        "point": [390, 120]
+      },
+      "to": {
+        "node": "resources",
+        "point": [0, 125]
+      }
+    },
+    {
+      "path": "relation-b",
+      "from": {
+        "node": "store",
+        "point": [390, 260]
+      },
+      "to": {
+        "node": "claims",
+        "point": [0, 125]
+      }
+    }
+  ]
+}

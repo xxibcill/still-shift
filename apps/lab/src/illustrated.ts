@@ -1,4 +1,5 @@
 import { PreparedSceneInputSchema } from "../../../packages/scene-contract/src/cinematic.ts";
+import { createStoryControls } from "./story-controls.ts";
 import {
   compilePreparedScene,
   type IllustratedScene,
@@ -76,7 +77,7 @@ type Entry = {
   value: string;
 };
 const entries: Entry[] = [];
-for (const collection of ["illustrated", "cinematic"]) {
+for (const collection of ["illustrated", "cinematic", "story"]) {
   const response = await fetch(`/${collection}/scenes/catalog.json`);
   if (!response.ok) throw new Error("Scene catalog unavailable");
   const catalog = (await response.json()) as Omit<
@@ -85,9 +86,11 @@ for (const collection of ["illustrated", "cinematic"]) {
   >[];
   const group = document.createElement("optgroup");
   group.label =
-    collection === "cinematic"
-      ? "Cinematic Parallax · variations"
-      : "Illustrated explanation";
+    collection === "story"
+      ? "Story Motion · narrative recipes"
+      : collection === "cinematic"
+        ? "Cinematic Parallax · variations"
+        : "Illustrated explanation";
   for (const entry of catalog) {
     const value =
       collection === "illustrated" ? entry.id : `${collection}:${entry.id}`;
@@ -99,10 +102,13 @@ for (const collection of ["illustrated", "cinematic"]) {
   }
   select.append(group);
 }
-if (new URLSearchParams(location.search).get("collection") === "cinematic")
-  select.value = entries.find(
-    (entry) => entry.collection === "cinematic",
-  )!.value;
+const requestedCollection = new URLSearchParams(location.search).get(
+  "collection",
+);
+const firstInCollection = entries.find(
+  (entry) => entry.collection === requestedCollection,
+);
+if (firstInCollection) select.value = firstInCollection.value;
 const requestedScene = new URLSearchParams(location.search).get("scene");
 const requestedEntry = entries.find((entry) => entry.id === requestedScene);
 if (requestedEntry) select.value = requestedEntry.value;
@@ -122,6 +128,7 @@ const load = async () => {
   el<HTMLButtonElement>("restart").disabled = true;
   el("error").textContent = "";
   el("status").textContent = "Loading scene…";
+  el("story-controls").hidden = true;
   try {
     const entry = entries.find((item) => item.value === select.value)!;
     const response = await fetch(
@@ -149,6 +156,24 @@ const load = async () => {
     preview?.dispose();
     scene = next;
     preview = createIllustratedPreview(canvas, next, images);
+    if (input.schemaVersion === "story-scene-1") {
+      el("story-controls").hidden = false;
+      createStoryControls(
+        input,
+        (updated) => {
+          const compiled = compilePreparedScene(updated);
+          stop();
+          preview?.dispose();
+          scene = compiled;
+          preview = createIllustratedPreview(canvas, compiled, images);
+          show(Number(slider.value));
+        },
+        (frame) => {
+          stop();
+          show(frame);
+        },
+      );
+    }
     slider.max = String(next.timeline.frameCount - 1);
     show(0);
     el("description").textContent = entry.description;

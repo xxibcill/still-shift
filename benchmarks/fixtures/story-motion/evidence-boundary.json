@@ -1,0 +1,487 @@
+{
+  "title": "Evidence Boundary",
+  "fps": 24,
+  "width": 1920,
+  "height": 1080,
+  "background": "#EFE6D4",
+  "assets": [
+    {
+      "id": "objects",
+      "path": "../../../assets/history-offstage-v2/objects-v1.png",
+      "sha256": "sha256:274cdaed676284c7225a2a83645288ff2fe7771bc75b4bbda6df92fbd9afc741",
+      "width": 1536,
+      "height": 1024
+    }
+  ],
+  "nodes": [
+    {
+      "id": "series",
+      "x": 100,
+      "y": 55,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "text",
+      "text": "HISTORY OFFSTAGE  /  STORY MOTION",
+      "fontSize": 23,
+      "color": "#52684F",
+      "weight": "bold",
+      "font": "sans-serif",
+      "align": "left"
+    },
+    {
+      "id": "title",
+      "x": 100,
+      "y": 102,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "text",
+      "text": "What the evidence can tell us.",
+      "fontSize": 62,
+      "color": "#282C29",
+      "weight": "normal",
+      "font": "serif",
+      "align": "left"
+    },
+    {
+      "id": "subtitle",
+      "x": 103,
+      "y": 185,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "text",
+      "text": "Categories can be supported while exact details remain unknown.",
+      "fontSize": 28,
+      "color": "#52684F",
+      "weight": "normal",
+      "font": "sans-serif",
+      "align": "left"
+    },
+    {
+      "id": "footer",
+      "x": 100,
+      "y": 1010,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "text",
+      "text": "REUSABLE MOTION STUDY  ·  SCHEMATIC ARTWORK  ·  NOT A FINAL EPISODE SHOT",
+      "fontSize": 21,
+      "color": "#52684F",
+      "weight": "normal",
+      "font": "sans-serif",
+      "align": "left"
+    },
+    {
+      "id": "boundary",
+      "x": 145,
+      "y": 370,
+      "width": 1050,
+      "height": 520,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "rect",
+      "fill": "#E4D8BF",
+      "stroke": "#AD7934",
+      "lineWidth": 4,
+      "radius": 0
+    },
+    {
+      "id": "qualifier",
+      "x": 170,
+      "y": 310,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "text",
+      "text": "ILLUSTRATIVE CATEGORIES  ·  NOT AN ITEMIZED INVENTORY",
+      "fontSize": 27,
+      "color": "#52684F",
+      "weight": "normal",
+      "font": "sans-serif",
+      "align": "left"
+    },
+    {
+      "id": "supported-a",
+      "x": 260,
+      "y": 485,
+      "width": 260,
+      "height": 250,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "group",
+      "clip": false
+    },
+    {
+      "id": "supported-a-art",
+      "parent": "supported-a",
+      "x": 20,
+      "y": 0,
+      "width": 220,
+      "height": 190,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "image",
+      "states": [
+        {
+          "asset": "objects",
+          "crop": [580, 31, 386, 455]
+        }
+      ],
+      "fit": "contain"
+    },
+    {
+      "id": "supported-a-label",
+      "parent": "supported-a",
+      "x": 130,
+      "y": 211,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "text",
+      "text": "CATEGORY A",
+      "fontSize": 28,
+      "color": "#282C29",
+      "weight": "bold",
+      "font": "sans-serif",
+      "align": "center"
+    },
+    {
+      "id": "supported-b",
+      "x": 740,
+      "y": 485,
+      "width": 260,
+      "height": 250,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "group",
+      "clip": false
+    },
+    {
+      "id": "supported-b-art",
+      "parent": "supported-b",
+      "x": 20,
+      "y": 0,
+      "width": 220,
+      "height": 190,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "image",
+      "states": [
+        {
+          "asset": "objects",
+          "crop": [1034, 130, 474, 286]
+        }
+      ],
+      "fit": "contain"
+    },
+    {
+      "id": "supported-b-label",
+      "parent": "supported-b",
+      "x": 130,
+      "y": 211,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "text",
+      "text": "CATEGORY B",
+      "fontSize": 28,
+      "color": "#282C29",
+      "weight": "bold",
+      "font": "sans-serif",
+      "align": "center"
+    },
+    {
+      "id": "unknown",
+      "x": 800,
+      "y": 430,
+      "width": 350,
+      "height": 370,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "group",
+      "clip": false
+    },
+    {
+      "id": "question",
+      "parent": "unknown",
+      "x": 145,
+      "y": 40,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "text",
+      "text": "?",
+      "fontSize": 125,
+      "color": "#984D3D",
+      "weight": "normal",
+      "font": "serif",
+      "align": "center"
+    },
+    {
+      "id": "unknown-label",
+      "parent": "unknown",
+      "x": 145,
+      "y": 200,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "text",
+      "text": "EXACT DETAILS",
+      "fontSize": 29,
+      "color": "#282C29",
+      "weight": "normal",
+      "font": "sans-serif",
+      "align": "center"
+    },
+    {
+      "id": "unknown-value",
+      "parent": "unknown",
+      "x": 145,
+      "y": 245,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "text",
+      "text": "UNKNOWN",
+      "fontSize": 35,
+      "color": "#984D3D",
+      "weight": "bold",
+      "font": "sans-serif",
+      "align": "center"
+    },
+    {
+      "id": "composite",
+      "x": 1380,
+      "y": 475,
+      "width": 300,
+      "height": 350,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "group",
+      "clip": false
+    },
+    {
+      "id": "composite-house",
+      "parent": "composite",
+      "x": 30,
+      "y": 0,
+      "width": 240,
+      "height": 220,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "group",
+      "clip": false
+    },
+    {
+      "id": "composite-house-wall",
+      "parent": "composite-house",
+      "x": 30,
+      "y": 80,
+      "width": 180,
+      "height": 140,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "rect",
+      "fill": "#D3C4A5",
+      "stroke": "#282C29",
+      "lineWidth": 5,
+      "radius": 0
+    },
+    {
+      "id": "composite-house-roof",
+      "parent": "composite-house",
+      "x": 0,
+      "y": 0,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "path",
+      "points": [
+        [8, 90],
+        [120, 5],
+        [232, 90]
+      ],
+      "stroke": "#282C29",
+      "lineWidth": 10,
+      "gapAt": 0.6,
+      "gapSize": 0.1
+    },
+    {
+      "id": "composite-house-door",
+      "parent": "composite-house",
+      "x": 97,
+      "y": 140,
+      "width": 47,
+      "height": 80,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "rect",
+      "fill": "#52684F",
+      "lineWidth": 0,
+      "radius": 0
+    },
+    {
+      "id": "composite-house-ground",
+      "parent": "composite-house",
+      "x": 0,
+      "y": 0,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "path",
+      "points": [
+        [0, 220],
+        [240, 220]
+      ],
+      "stroke": "#282C29",
+      "lineWidth": 5,
+      "gapAt": 0.6,
+      "gapSize": 0.1
+    },
+    {
+      "id": "composite-label",
+      "parent": "composite",
+      "x": 150,
+      "y": 255,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "text",
+      "text": "COMPOSITE",
+      "fontSize": 31,
+      "color": "#282C29",
+      "weight": "normal",
+      "font": "sans-serif",
+      "align": "center"
+    },
+    {
+      "id": "composite-note",
+      "parent": "composite",
+      "x": 150,
+      "y": 303,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "text",
+      "text": "Not a recovered pantry",
+      "fontSize": 25,
+      "color": "#984D3D",
+      "weight": "normal",
+      "font": "sans-serif",
+      "align": "center"
+    }
+  ],
+  "provenance": "Reusable engineering/creative fixtures using original history-offstage-v2 artwork and procedural diagrams. Not selected episode derivatives or Phase 0 corpus evidence.",
+  "schemaVersion": "story-scene-1",
+  "frameCount": 192,
+  "recipe": {
+    "preset": "evidence_boundary",
+    "supported": [
+      {
+        "node": "supported-a",
+        "window": {
+          "start": 20,
+          "end": 45,
+          "cue": "category-a"
+        }
+      },
+      {
+        "node": "supported-b",
+        "window": {
+          "start": 45,
+          "end": 70,
+          "cue": "category-b"
+        }
+      }
+    ],
+    "unknown": {
+      "node": "unknown",
+      "window": {
+        "start": 92,
+        "end": 122,
+        "cue": "unknown"
+      }
+    },
+    "composite": {
+      "node": "composite",
+      "window": {
+        "start": 138,
+        "end": 163,
+        "cue": "inference-limit"
+      }
+    },
+    "boundary": "boundary",
+    "qualifier": "qualifier",
+    "moves": [
+      {
+        "node": "supported-a",
+        "window": {
+          "start": 76,
+          "end": 108,
+          "cue": "make-room"
+        },
+        "to": {
+          "x": 205,
+          "y": 490,
+          "scale": 0.85
+        }
+      },
+      {
+        "node": "supported-b",
+        "window": {
+          "start": 76,
+          "end": 108,
+          "cue": "make-room"
+        },
+        "to": {
+          "x": 470,
+          "y": 490,
+          "scale": 0.85
+        }
+      }
+    ],
+    "emphasis": []
+  },
+  "connectors": []
+}

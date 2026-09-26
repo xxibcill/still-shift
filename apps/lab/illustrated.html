@@ -54,6 +54,9 @@
       input {
         font: inherit;
       }
+      select {
+        max-width: 100%;
+      }
       button,
       select {
         padding: 10px 16px;
@@ -103,6 +106,32 @@
       }
       code {
         font-size: 13px;
+      }
+      #story-events {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        padding-top: 18px;
+      }
+      #story-events label {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        max-width: 100%;
+        gap: 8px;
+        border: 1px solid #514c3c;
+        padding: 8px;
+      }
+      #story-events input {
+        width: 78px;
+        padding: 7px;
+      }
+      #story-events p {
+        width: 100%;
+        overflow-wrap: anywhere;
+      }
+      [hidden] {
+        display: none !important;
       }
       @media (max-width: 700px) {
         main {
@@ -164,6 +193,14 @@
       </div>
       <p id="status" role="status">Loading scenes…</p>
       <p id="error" role="alert"></p>
+      <details id="story-controls" hidden>
+        <summary>Narration timing</summary>
+        <p>
+          Adjust cue frames while keeping the clip length fixed. Each change
+          must preserve event order and reading time.
+        </p>
+        <div id="story-events"></div>
+      </details>
       <details>
         <summary>Render a prepared scene</summary>
         <p>

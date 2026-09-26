@@ -391,9 +391,16 @@ export const exportScene = async (
 ): Promise<ExportMetrics> => {
   const start = performance.now();
   const { scene } = request;
+  const story =
+    "schemaVersion" in scene && scene.schemaVersion === "story-scene-1";
   if (
-    scene.timeline.frameCount !==
-    (scene.timeline.durationMs * scene.timeline.fps) / 1000
+    story
+      ? !Number.isInteger(scene.timeline.frameCount) ||
+        scene.timeline.frameCount !== scene.frameCount ||
+        scene.timeline.durationMs !==
+          (scene.timeline.frameCount * 1000) / scene.timeline.fps
+      : scene.timeline.frameCount !==
+        (scene.timeline.durationMs * scene.timeline.fps) / 1000
   )
     throw new Error("Scene frame count and duration disagree");
   if ("motion" in scene && scene.motion.mode === "depth" && !request.depthPath)

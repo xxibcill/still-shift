@@ -12,6 +12,7 @@ import {
 
 import { inspectForegroundReveal } from "./reveal-validation.ts";
 import { sampleCinematicBlur } from "./cinematic-scene.ts";
+import { evaluateStoryPath } from "./story-geometry.ts";
 
 type Images = Map<string, HTMLImageElement> & {
   revealValidation?: ReturnType<typeof inspectForegroundReveal>;
@@ -187,7 +188,11 @@ export function createIllustratedPreview(
       const blur = sampleCinematicBlur(scene, node.id, frame);
       ctx.filter = blur > 0 ? `blur(${blur}px)` : "none";
     }
-    drawShape(ctx, node, state, images, !focus);
+    const drawable =
+      scene.schemaVersion === "story-scene-1" && node.type === "path"
+        ? evaluateStoryPath(scene, node, frame)
+        : node;
+    drawShape(ctx, drawable, state, images, !focus);
     for (const child of children.get(node.id) ?? []) paint(child, frame);
     ctx.restore();
   };

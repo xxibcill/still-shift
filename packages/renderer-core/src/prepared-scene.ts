@@ -4,6 +4,8 @@ import type {
   PreparedPath,
 } from "../../scene-contract/src/prepared.ts";
 import type { CinematicScene } from "../../scene-contract/src/cinematic.ts";
+import type { StoryScene } from "../../scene-contract/src/story.ts";
+import { compileStoryScene, type StoryRenderScene } from "./story-scene.ts";
 import {
   compileCinematicScene,
   projectCinematicNode,
@@ -11,8 +13,8 @@ import {
 } from "./cinematic-scene.ts";
 
 export const ILLUSTRATED_RENDERER_VERSION = "illustrated-canvas-0.12.0";
-type Key = { time: number; value: number; step?: boolean };
-type Property =
+export type Key = { time: number; value: number; step?: boolean };
+export type Property =
   | "x"
   | "y"
   | "scaleX"
@@ -23,7 +25,7 @@ type Property =
   | "gap"
   | "state"
   | "pulse";
-type Tracks = Partial<Record<Property, Key[]>>;
+export type Tracks = Partial<Record<Property, Key[]>>;
 export type LegacyIllustratedScene = PreparedScene & {
   rendererVersion: typeof ILLUSTRATED_RENDERER_VERSION;
   canvas: { width: number; height: number };
@@ -31,7 +33,10 @@ export type LegacyIllustratedScene = PreparedScene & {
   tracks: Record<string, Tracks>;
   followers: Record<string, { path: string; keys: Key[] }>;
 };
-export type IllustratedScene = LegacyIllustratedScene | CinematicRenderScene;
+export type IllustratedScene =
+  | LegacyIllustratedScene
+  | CinematicRenderScene
+  | StoryRenderScene;
 export const sampleTrack = (keys: Key[], time: number): number => {
   if (time <= keys[0]!.time) return keys[0]!.value;
   for (let i = 1; i < keys.length; i++) {
@@ -78,12 +83,14 @@ export function compilePreparedScene(
 export function compilePreparedScene(
   input: CinematicScene,
 ): CinematicRenderScene;
+export function compilePreparedScene(input: StoryScene): StoryRenderScene;
 export function compilePreparedScene(
-  input: PreparedScene | CinematicScene,
+  input: PreparedScene | CinematicScene | StoryScene,
 ): IllustratedScene;
 export function compilePreparedScene(
-  input: PreparedScene | CinematicScene,
+  input: PreparedScene | CinematicScene | StoryScene,
 ): IllustratedScene {
+  if (input.schemaVersion === "story-scene-1") return compileStoryScene(input);
   if (input.schemaVersion === "illustrated-scene-2")
     return compileCinematicScene(input);
   const scene: LegacyIllustratedScene = {
@@ -283,7 +290,10 @@ export function evaluatePreparedNode(
     frame >= scene.timeline.frameCount
   )
     throw new Error("Frame index outside illustrated timeline");
-  const time = (frame * 1000) / scene.fps;
+  const time =
+    scene.schemaVersion === "story-scene-1"
+      ? frame
+      : (frame * 1000) / scene.fps;
   const state = {
     x: node.x,
     y: node.y,

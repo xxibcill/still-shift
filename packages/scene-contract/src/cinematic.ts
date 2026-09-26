@@ -1,3 +1,4 @@
+import { StorySceneSchema } from "./story.ts";
 import { z } from "zod";
 import {
   PreparedImageSchema,
@@ -298,6 +299,7 @@ export const CinematicSceneSchema = cinematicShape.superRefine((scene, ctx) => {
 export const PreparedSceneInputSchema = z.union([
   PreparedSceneSchema,
   CinematicSceneSchema,
+  StorySceneSchema,
 ]);
 
 export const CinematicAnimationResultSchema = z
