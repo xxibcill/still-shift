@@ -7,10 +7,20 @@ import type { IncomingMessage } from "node:http";
 import type { Plugin } from "vite";
 import { z } from "zod";
 import { CommerceSceneSchema } from "../../packages/scene-contract/src/commerce.ts";
+import { ComponentDemoKindSchema } from "../../packages/scene-contract/src/commerce-components.ts";
 import { PreparedAnimationEngine } from "../../packages/animation-engine/src/prepared-animation-engine.ts";
 
 const root = resolve(import.meta.dirname, "../..");
 const MAX_COMMERCE_PAYLOAD_BYTES = 64_000_000;
+const componentFixtures = new Set([
+  ...ComponentDemoKindSchema.options.flatMap((kind) => [
+    `${kind}.json`,
+    `${kind}.demo.json`,
+  ]),
+  "catalog.json",
+  "shadow-preparation.json",
+  "assets/product-shadow.png",
+]);
 const payloadSchema = z
   .object({
     scene: CommerceSceneSchema,
@@ -146,15 +156,18 @@ export const commerceApi = (): Plugin => {
           /^\/commerce\/scenes\/((?:(?:h03|h01|h04|a01)-beauty-feed|(?:h03|h01|h04|a01)-(?:landscape|portrait|square|thai|feed))(?:\.brief)?\.json)$/.exec(
             url.pathname,
           );
+        const componentName = url.pathname.startsWith("/commerce/components/")
+          ? url.pathname.slice("/commerce/components/".length)
+          : undefined;
         const component =
-          /^\/commerce\/components\/((?:product|background|shadow|panel|text|path|float|translate|fade|studio|introduction|callout)(?:\.demo)?\.json|catalog\.json|shadow-preparation\.json|assets\/product-shadow\.png)$/.exec(
-            url.pathname,
-          );
+          componentName && componentFixtures.has(componentName)
+            ? componentName
+            : undefined;
         const file = component
           ? resolve(
               root,
               "benchmarks/fixtures/ecommerce-motion/atoms",
-              component[1]!,
+              component,
             )
           : asset
             ? resolve(

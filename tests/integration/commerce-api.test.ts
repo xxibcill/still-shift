@@ -35,6 +35,7 @@ describe("commerce export upload", () => {
         configFile: false,
         cacheDir,
         plugins: [commerceApi()],
+        optimizeDeps: { noDiscovery: true },
         server: { port: 0, strictPort: false },
       });
       await server.listen();
@@ -58,4 +59,31 @@ describe("commerce export upload", () => {
       await rm(cacheDir, { recursive: true, force: true });
     }
   }, 30_000);
+});
+
+describe("commerce component fixtures", () => {
+  it("serves effect and spatial demos without opening unknown paths", async () => {
+    const cacheDir = await mkdtemp(join(tmpdir(), "commerce-fixtures-vite-"));
+    let server: Awaited<ReturnType<typeof createServer>> | undefined;
+    try {
+      server = await createServer({
+        configFile: false,
+        cacheDir,
+        plugins: [commerceApi()],
+        optimizeDeps: { noDiscovery: true },
+        server: { port: 0, strictPort: false },
+      });
+      await server.listen();
+      const base = server.resolvedUrls!.local[0]! + "commerce/components/";
+      for (const name of ["anchor.json", "motion-blur.demo.json"]) {
+        const response = await fetch(base + name);
+        expect(response.status).toBe(200);
+        expect(response.headers.get("content-type")).toBe("application/json");
+      }
+      expect((await fetch(base + "unregistered.json")).status).toBe(404);
+    } finally {
+      await server?.close();
+      await rm(cacheDir, { recursive: true, force: true });
+    }
+  });
 });
