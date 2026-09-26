@@ -14,23 +14,28 @@ import {
 import { easeMotion } from "../../packages/renderer-core/src/motion-easing.ts";
 import { MotionEasingSchema } from "../../packages/scene-contract/src/motion-easing.ts";
 
-const input = () => ({
-  ...JSON.parse(
+const input = () => {
+  const fixture = JSON.parse(
     readFileSync(
       "benchmarks/fixtures/story-motion/relationship-build.json",
       "utf8",
     ),
-  ),
-  camera: {
-    keys: [
-      { frame: 0, x: 960, y: 540, zoom: 1 },
-      { frame: 80, x: 1000, y: 550, zoom: 1.03 },
-      { frame: 191, x: 1100, y: 560, zoom: 1.07 },
-    ],
-    depth: { paper: 0, store: 0.6 },
-    cover: ["paper"],
-  },
-});
+  );
+  return {
+    ...fixture,
+    motionGrammar: "v2",
+    recipe: { ...fixture.recipe, moves: [] },
+    camera: {
+      keys: [
+        { frame: 0, x: 960, y: 540, zoom: 1 },
+        { frame: 80, x: 1000, y: 550, zoom: 1.03 },
+        { frame: 191, x: 1100, y: 560, zoom: 1.07 },
+      ],
+      depth: { paper: 0, store: 0.6 },
+      cover: ["paper"],
+    },
+  };
+};
 
 describe("story camera", () => {
   it("preserves easing endpoints and bounds response overshoot", () => {
@@ -145,6 +150,7 @@ describe("story camera", () => {
     );
     const scene = StorySceneSchema.parse({
       ...raw,
+      motionGrammar: "v2",
       camera: {
         keys: [
           { frame: 0, x: 960, y: 540, zoom: 1 },

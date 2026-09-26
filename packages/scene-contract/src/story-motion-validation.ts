@@ -6,6 +6,8 @@ export function validateContinuousStory(
   nodes: Map<string, PreparedNode>,
   fail: (message: string) => void,
 ) {
+  if (!scene.motionGrammar && (scene.camera || scene.flows?.length))
+    fail("Continuous camera and flows require motionGrammar v2");
   const within = (frame: number) => {
     if (frame >= scene.frameCount)
       fail("Event frame must be inside the rendered timeline");

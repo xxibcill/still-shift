@@ -27,6 +27,7 @@ describe("continuous quality policy", () => {
   });
   it("detects text screen velocity and camera pan while ignoring text entrances", () => {
     const input = raw();
+    input.motionGrammar = "v2";
     input.camera = {
       easeIn: false,
       easeOut: false,
