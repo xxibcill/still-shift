@@ -14,6 +14,7 @@ import {
   indexStoryEvents,
   convertStoryFrame,
 } from "../../packages/renderer-core/src/story-event-index.ts";
+import { instantiateStoryTemplate } from "../../packages/renderer-core/src/story-template.ts";
 import { compileStoryScene } from "../../packages/renderer-core/src/story-scene.ts";
 import { evaluatePreparedNode } from "../../packages/renderer-core/src/prepared-scene.ts";
 import {
@@ -280,6 +281,42 @@ describe("shared passage authoring", () => {
         new Map([["template.json", swap]]),
       ).beats[0]!.events.find((e) => e.id === "@swap"),
     ).toMatchObject({ start: 48, end: 48, endExclusive: false });
+  });
+  it("accepts a zero-duration timing slot for a cut and rejects a window value", () => {
+    const swap = StorySceneSchema.parse(
+      JSON.parse(
+        readFileSync(
+          "benchmarks/fixtures/story-motion/category-swap.json",
+          "utf8",
+        ),
+      ),
+    );
+    const source = StoryTemplateSchema.parse({
+      schemaVersion: "story-template-1",
+      id: "swap",
+      scene: swap,
+      slots: { cut: { kind: "timing", event: "@swap", required: true } },
+    });
+    const cut = instantiateStoryTemplate(source, {
+      cut: { start: 48, end: 48 },
+    });
+    if (cut.recipe.preset !== "category_swap") throw new Error("Wrong fixture");
+    expect(cut.recipe.swapFrame).toBe(48);
+    expect(() =>
+      instantiateStoryTemplate(source, { cut: { start: 48, end: 49 } }),
+    ).toThrow(/zero duration/);
+    const window = template();
+    window.slots.strain = {
+      kind: "timing",
+      event: "shared-strain",
+      required: true,
+    };
+    expect(() =>
+      instantiateStoryTemplate(window, {
+        title: "Title",
+        strain: { start: 48, end: 48 },
+      }),
+    ).toThrow(/positive duration/);
   });
   it("retimes a cue and dependent label atomically without changing a template", () => {
     const input = plan(),

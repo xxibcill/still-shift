@@ -282,6 +282,6 @@ export const SlotRelationshipSchema = z
   })
   .strict();
 export const SlotTimingSchema = timing.refine(
-  (v) => v.end > v.start,
-  "Event end must follow start",
+  (v) => v.end >= v.start,
+  "Event end must not precede start",
 );
