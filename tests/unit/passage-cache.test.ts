@@ -1,4 +1,4 @@
-import { mkdtemp, readFile, writeFile, rm } from "node:fs/promises";
+import { mkdtemp, readFile, writeFile, rm, mkdir } from "node:fs/promises";
 import { readFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
@@ -10,6 +10,7 @@ import {
   passageBeatKey,
 } from "../../packages/animation-engine/src/passage-cache.ts";
 import { acquirePassageJob } from "../../packages/animation-engine/src/passage-job.ts";
+import { acquireBatchLock } from "../../tools/still-shift-cli/src/batch-recovery.ts";
 
 describe("passage render recovery", () => {
   it("recovers a render-job lock left by an abruptly terminated process", async () => {
@@ -78,6 +79,80 @@ describe("passage render recovery", () => {
       expect((await run("three.mp4")).reused).toBe(false);
       expect(renders).toBe(2);
     } finally {
+      await rm(root, { recursive: true, force: true });
+    }
+  });
+  it("waits for a concurrent cache fill and reuses its verified beat", async () => {
+    const root = await mkdtemp(join(tmpdir(), "passage-cache-concurrent-"));
+    let renderStarted!: () => void;
+    let finishRender!: () => void;
+    const started = new Promise<void>((resolve) => {
+      renderStarted = resolve;
+    });
+    const finished = new Promise<void>((resolve) => {
+      finishRender = resolve;
+    });
+    let renders = 0;
+    const run = (output: string) =>
+      cachedPassageBeat({
+        cacheDirectory: join(root, "cache"),
+        key: "shared",
+        output: join(root, output),
+        render: async (path) => {
+          renders++;
+          renderStarted();
+          await finished;
+          await writeFile(path, "verified-video");
+        },
+        verify: async (path) => {
+          if ((await readFile(path, "utf8")) !== "verified-video")
+            throw new Error("Invalid video");
+        },
+      });
+    try {
+      const first = run("first.mp4");
+      await started;
+      const second = run("second.mp4");
+      void second.catch(() => undefined);
+      await new Promise((resolve) => setTimeout(resolve, 200));
+      finishRender();
+      const firstResult = await first;
+      const secondResult = await second;
+      expect(firstResult.reused).toBe(false);
+      expect(secondResult.reused).toBe(true);
+      expect(renders).toBe(1);
+      expect(await readFile(join(root, "second.mp4"), "utf8")).toBe(
+        "verified-video",
+      );
+    } finally {
+      finishRender();
+      await rm(root, { recursive: true, force: true });
+    }
+  });
+  it("can cancel while waiting for a live cache lock", async () => {
+    const root = await mkdtemp(join(tmpdir(), "passage-cache-wait-"));
+    const directory = join(root, "cache", "shared");
+    const controller = new AbortController();
+    await mkdir(join(root, "cache"));
+    const release = await acquireBatchLock(directory + ".lock", directory);
+    let renders = 0;
+    try {
+      const pending = cachedPassageBeat({
+        cacheDirectory: join(root, "cache"),
+        key: "shared",
+        output: join(root, "waiting.mp4"),
+        signal: controller.signal,
+        render: async () => {
+          renders++;
+        },
+        verify: async () => undefined,
+      });
+      setTimeout(() => controller.abort(), 100);
+      await expect(pending).rejects.toMatchObject({ name: "AbortError" });
+      expect(renders).toBe(0);
+    } finally {
+      controller.abort();
+      await release();
       await rm(root, { recursive: true, force: true });
     }
   });

@@ -1,5 +1,6 @@
 import { acquireBatchLock } from "../../../tools/still-shift-cli/src/batch-recovery.ts";
 import { execFile } from "node:child_process";
+import { setTimeout as delay } from "node:timers/promises";
 import { promisify } from "node:util";
 import { chromium } from "playwright";
 import { createHash, randomUUID } from "node:crypto";
@@ -16,7 +17,11 @@ import {
 import { constants } from "node:fs";
 import { join, resolve, dirname } from "node:path";
 import type { StoryScene } from "../../scene-contract/src/story.ts";
+import { AnimationEngineError } from "../../scene-contract/src/errors.ts";
 import { compileStoryScene } from "../../renderer-core/src/story-scene.ts";
+
+const CACHE_LOCK_WAIT_MS = 30 * 60_000;
+const CACHE_LOCK_RETRY_MS = 500;
 
 export const passageHash = (bytes: Uint8Array | string) =>
   createHash("sha256").update(bytes).digest("hex");
@@ -93,6 +98,37 @@ type CacheEntry = {
   sha256: string;
   complete: true;
 };
+
+async function acquireCacheLock(directory: string, signal?: AbortSignal) {
+  const deadline = performance.now() + CACHE_LOCK_WAIT_MS;
+  for (;;) {
+    signal?.throwIfAborted();
+    try {
+      return await acquireBatchLock(directory + ".lock", directory);
+    } catch (error) {
+      if (
+        !(error instanceof AnimationEngineError) ||
+        error.code !== "RENDER_FAILED" ||
+        error.message !== "Batch output directory is already in use"
+      )
+        throw error;
+      const remaining = deadline - performance.now();
+      if (remaining <= 0)
+        throw new AnimationEngineError(
+          "RENDER_FAILED",
+          "Timed out waiting for passage cache entry",
+          { cacheDirectory: directory },
+          { cause: error },
+        );
+      await delay(
+        Math.min(CACHE_LOCK_RETRY_MS, remaining),
+        undefined,
+        signal ? { signal } : undefined,
+      );
+    }
+  }
+}
+
 export async function cachedPassageBeat(options: {
   cacheDirectory: string;
   key: string;
@@ -104,59 +140,71 @@ export async function cachedPassageBeat(options: {
   options.signal?.throwIfAborted();
   await mkdir(options.cacheDirectory, { recursive: true });
   const directory = join(options.cacheDirectory, options.key);
-  let reused = false,
-    entry: CacheEntry | undefined;
-  try {
-    const candidate = JSON.parse(
-      await readFile(join(directory, "entry.json"), "utf8"),
-    ) as CacheEntry;
-    if (
-      candidate.version !== "passage-cache-1" ||
-      !candidate.complete ||
-      candidate.key !== options.key ||
-      candidate.sha256 !==
-        passageHash(await readFile(join(directory, "beat.mp4")))
-    )
-      throw new Error("Cache identity mismatch");
-    await options.verify(join(directory, "beat.mp4"));
-    entry = candidate;
-    reused = true;
-  } catch (error) {
-    options.signal?.throwIfAborted();
-    if (
-      error &&
-      typeof error === "object" &&
-      "code" in error &&
-      ["EACCES", "EPERM"].includes(String(error.code))
-    )
-      throw error;
-  }
-  if (!entry) {
-    const lock = directory + ".lock";
-    const release = await acquireBatchLock(lock, directory);
-    const attempt = directory + ".attempt-" + randomUUID();
+  const loadVerifiedEntry = async (): Promise<CacheEntry | undefined> => {
     try {
-      await mkdir(attempt);
-      await options.render(join(attempt, "beat.mp4"));
+      const candidate = JSON.parse(
+        await readFile(join(directory, "entry.json"), "utf8"),
+      ) as CacheEntry;
+      if (
+        candidate.version !== "passage-cache-1" ||
+        !candidate.complete ||
+        candidate.key !== options.key ||
+        candidate.sha256 !==
+          passageHash(await readFile(join(directory, "beat.mp4")))
+      )
+        throw new Error("Cache identity mismatch");
+      await options.verify(join(directory, "beat.mp4"));
+      return candidate;
+    } catch (error) {
       options.signal?.throwIfAborted();
-      await options.verify(join(attempt, "beat.mp4"));
-      entry = {
-        version: "passage-cache-1",
-        key: options.key,
-        sha256: passageHash(await readFile(join(attempt, "beat.mp4"))),
-        complete: true,
-      };
-      await writeFile(join(attempt, "entry.json"), stableJson(entry) + "\n", {
-        flag: "wx",
-      });
-      try {
-        await rename(directory, directory + ".invalid-" + randomUUID());
-      } catch (error) {
-        if ((error as NodeJS.ErrnoException).code !== "ENOENT") throw error;
+      if (
+        error &&
+        typeof error === "object" &&
+        "code" in error &&
+        ["EACCES", "EPERM"].includes(String(error.code))
+      )
+        throw error;
+      return undefined;
+    }
+  };
+  let entry = await loadVerifiedEntry();
+  let reused = Boolean(entry);
+  if (!entry) {
+    const release = await acquireCacheLock(directory, options.signal);
+    try {
+      entry = await loadVerifiedEntry();
+      if (entry) reused = true;
+      else {
+        const attempt = directory + ".attempt-" + randomUUID();
+        try {
+          await mkdir(attempt);
+          await options.render(join(attempt, "beat.mp4"));
+          options.signal?.throwIfAborted();
+          await options.verify(join(attempt, "beat.mp4"));
+          entry = {
+            version: "passage-cache-1",
+            key: options.key,
+            sha256: passageHash(await readFile(join(attempt, "beat.mp4"))),
+            complete: true,
+          };
+          await writeFile(
+            join(attempt, "entry.json"),
+            stableJson(entry) + "\n",
+            {
+              flag: "wx",
+            },
+          );
+          try {
+            await rename(directory, directory + ".invalid-" + randomUUID());
+          } catch (error) {
+            if ((error as NodeJS.ErrnoException).code !== "ENOENT") throw error;
+          }
+          await rename(attempt, directory);
+        } finally {
+          await rm(attempt, { recursive: true, force: true });
+        }
       }
-      await rename(attempt, directory);
     } finally {
-      await rm(attempt, { recursive: true, force: true });
       await release();
     }
   }
