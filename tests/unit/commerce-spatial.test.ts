@@ -247,7 +247,17 @@ describe("spatial validation and temporal composition", () => {
       }),
     ).toThrow(/root/);
     expect(() =>
-      CommerceSceneSchema.parse({ ...base(), metadata: original.metadata }),
+      CommerceSceneSchema.parse({
+        ...base(),
+        metadata: {
+          ...original.metadata,
+          registration: {
+            status: "production",
+            id: "test-registration",
+            version: "1.0",
+          },
+        },
+      }),
     ).toThrow(/Experimental/);
   });
   it("shifts effect phases and scopes, preserving exact half-open visibility", () => {
