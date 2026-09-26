@@ -20,6 +20,7 @@ import {
   CommerceSelectionSchema,
 } from "./commerce-catalog.ts";
 import { MotionEasingSchema } from "./motion-easing.ts";
+import { commerceCapabilities } from "./commerce-library.ts";
 
 const finite = z.number().finite();
 const frame = finite.int().nonnegative();
@@ -223,6 +224,21 @@ export const CommerceSceneSchema = shape.superRefine((scene, ctx) => {
     (scene.metadata.selection.kind === "recipe")
   )
     fail("Commerce selection kind does not match the preset");
+  const registration = scene.metadata.registration;
+  if (
+    registration.status === "production" &&
+    !commerceCapabilities.productionFormats.some(
+      (format) =>
+        format.id === registration.id &&
+        format.version === registration.version &&
+        format.selection.kind === scene.metadata.selection.kind &&
+        format.selection.id === scene.metadata.selection.id &&
+        format.profile === scene.metadata.profile,
+    )
+  )
+    fail(
+      "Production commerce format is not registered; this scene is Experimental",
+    );
   for (const node of scene.nodes) {
     if (node.type === "text" && (!node.fontAsset || !node.textBox))
       fail("Commerce text requires a pinned font and measured text box");

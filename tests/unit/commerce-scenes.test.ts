@@ -63,6 +63,24 @@ describe("commerce preparation and exact-frame scenes", () => {
     }
   });
 
+  it("rejects an unregistered Production claim in a direct scene", () => {
+    const scene = buildCommerceScene(brief(), assets);
+    expect(scene.metadata.registration).toEqual({ status: "experimental" });
+    expect(() =>
+      CommerceSceneSchema.parse({
+        ...scene,
+        metadata: {
+          ...scene.metadata,
+          registration: {
+            status: "production",
+            id: "unregistered",
+            version: "1.0",
+          },
+        },
+      }),
+    ).toThrow(/not registered/);
+  });
+
   it("rejects missing factual sources, missing cutouts and unsupported choices", () => {
     const input = brief();
     expect(() =>
