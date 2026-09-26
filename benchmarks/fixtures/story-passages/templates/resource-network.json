@@ -1,0 +1,733 @@
+{
+  "title": "Resources beyond grain",
+  "fps": 24,
+  "width": 1920,
+  "height": 1080,
+  "background": "#E8DFC9",
+  "assets": [
+    {
+      "id": "house",
+      "path": "../../../../assets/story-motion/art/house.svg",
+      "sha256": "sha256:a8fa4eff374ba974770317dd483ca7b2e5b8d1f0bd7a9224ada091db42542a60",
+      "width": 600,
+      "height": 440
+    },
+    {
+      "id": "store",
+      "path": "../../../../assets/story-motion/art/store.svg",
+      "sha256": "sha256:8ba708bf4866da92ada1eed3dc788db98a961e7cf84fcafe8615fe734f13042c",
+      "width": 600,
+      "height": 520
+    },
+    {
+      "id": "land",
+      "path": "../../../../assets/story-motion/art/land.svg",
+      "sha256": "sha256:c5c5d753a8ddd1f93da52c1171d204b260a0a2e01aa6d8c034065294345237fc",
+      "width": 640,
+      "height": 260
+    },
+    {
+      "id": "access",
+      "path": "../../../../assets/story-motion/art/access.svg",
+      "sha256": "sha256:e9c7985f055ac7e07a49dbbfeadba7796175c856d5e32ab3e72f81e36b91dd1d",
+      "width": 520,
+      "height": 240
+    },
+    {
+      "id": "pressure",
+      "path": "../../../../assets/story-motion/art/pressure.svg",
+      "sha256": "sha256:9ad0b18f2455c3fb9abe39f88a78c30dfa8ecfaf338a4d6235abfa14378958d7",
+      "width": 350,
+      "height": 110
+    },
+    {
+      "id": "access-crisis",
+      "path": "../../../../assets/story-motion/art/access-crisis.svg",
+      "sha256": "sha256:bcfd00a8edd0787983aaa028b6a084f7a7b9d55dfa319b232922f0c5767f20ec",
+      "width": 520,
+      "height": 240
+    },
+    {
+      "id": "category-a",
+      "path": "../../../../assets/story-motion/art/category-a.svg",
+      "sha256": "sha256:b5453d5780bb242d3022d460bb3f08191c1c93a0fba5c6448e2ba0c56c134d78",
+      "width": 600,
+      "height": 420
+    },
+    {
+      "id": "category-b",
+      "path": "../../../../assets/story-motion/art/category-b.svg",
+      "sha256": "sha256:4887350b4a8f18324724a9727a30768be9fd9273cbffe535fd3df2341e9f0352",
+      "width": 600,
+      "height": 420
+    },
+    {
+      "id": "ground",
+      "path": "../../../../assets/story-motion/art/ground.svg",
+      "sha256": "sha256:05a94509840b715518e055bc586a084c7d5c742d07486391c72cb7fa5ec86238",
+      "width": 1920,
+      "height": 300
+    },
+    {
+      "id": "paper",
+      "path": "../../../../assets/story-motion/art/paper.svg",
+      "sha256": "sha256:f5a47b015f900631504b76ad6ebe587c43914b0ef0e45db460bb187c69f37b30",
+      "width": 1920,
+      "height": 1080
+    }
+  ],
+  "fonts": [
+    {
+      "id": "display",
+      "path": "../../../../assets/story-motion/fonts/source-serif-4-semibold.otf",
+      "sha256": "sha256:25e034392847d9965c92f98971b3646436b7ab919ece9118b0c0e5ec94c02efc",
+      "weight": "600"
+    },
+    {
+      "id": "label",
+      "path": "../../../../assets/story-motion/fonts/plex-sans-medium.ttf",
+      "sha256": "sha256:331c8639d7598b2cde62a911a71db195e30cb655cd6bdf2e324a7e984955f907",
+      "weight": "500"
+    },
+    {
+      "id": "label-strong",
+      "path": "../../../../assets/story-motion/fonts/plex-sans-semibold.ttf",
+      "sha256": "sha256:a20caf8286023a6a7a85e40b1d2a4ae9fc3e3b1f9eda8f4c542dd4986af67bb1",
+      "weight": "600"
+    },
+    {
+      "id": "source",
+      "path": "../../../../assets/story-motion/fonts/plex-mono-medium.ttf",
+      "sha256": "sha256:98fbd727aae340b236955879dabed4d991aac9e8e90b3b2a67ce4a59221cc97c",
+      "weight": "500"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "paper",
+      "x": 0,
+      "y": 0,
+      "width": 1920,
+      "height": 1080,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "image",
+      "states": [
+        {
+          "asset": "paper"
+        }
+      ],
+      "fit": "contain"
+    },
+    {
+      "id": "ground",
+      "x": 0,
+      "y": 810,
+      "width": 1920,
+      "height": 270,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "image",
+      "states": [
+        {
+          "asset": "ground"
+        }
+      ],
+      "fit": "stretch"
+    },
+    {
+      "id": "title",
+      "x": 112,
+      "y": 88,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "text",
+      "text": "More than grain.",
+      "fontSize": 112,
+      "color": "#211F1B",
+      "weight": "normal",
+      "font": "sans-serif",
+      "fontAsset": "display",
+      "align": "left"
+    },
+    {
+      "id": "context",
+      "x": 116,
+      "y": 228,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "text",
+      "text": "Illustrative household resources",
+      "fontSize": 64,
+      "color": "#211F1B",
+      "weight": "normal",
+      "font": "sans-serif",
+      "fontAsset": "label",
+      "align": "left"
+    },
+    {
+      "id": "storage-link",
+      "x": 0,
+      "y": 0,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "path",
+      "points": [
+        [0, 0],
+        [1, 1]
+      ],
+      "stroke": "#59664D",
+      "lineWidth": 14,
+      "lineStyle": "brush",
+      "gapAt": 0.6,
+      "gapSize": 0.1
+    },
+    {
+      "id": "markets-link",
+      "x": 0,
+      "y": 0,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "path",
+      "points": [
+        [0, 0],
+        [1, 1]
+      ],
+      "stroke": "#59664D",
+      "lineWidth": 14,
+      "lineStyle": "brush",
+      "gapAt": 0.6,
+      "gapSize": 0.1
+    },
+    {
+      "id": "labor-link",
+      "x": 0,
+      "y": 0,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "path",
+      "points": [
+        [0, 0],
+        [1, 1]
+      ],
+      "stroke": "#59664D",
+      "lineWidth": 14,
+      "lineStyle": "brush",
+      "gapAt": 0.6,
+      "gapSize": 0.1
+    },
+    {
+      "id": "local-link",
+      "x": 0,
+      "y": 0,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "path",
+      "points": [
+        [0, 0],
+        [1, 1]
+      ],
+      "stroke": "#59664D",
+      "lineWidth": 14,
+      "lineStyle": "brush",
+      "gapAt": 0.6,
+      "gapSize": 0.1
+    },
+    {
+      "id": "loss-link",
+      "x": 0,
+      "y": 0,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "path",
+      "points": [
+        [0, 0],
+        [1, 1]
+      ],
+      "stroke": "#8B3F36",
+      "lineWidth": 14,
+      "lineStyle": "brush",
+      "gapAt": 0.6,
+      "gapSize": 0.1
+    },
+    {
+      "id": "cereal-link",
+      "x": 0,
+      "y": 0,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "path",
+      "points": [
+        [0, 0],
+        [1, 1]
+      ],
+      "stroke": "#59664D",
+      "lineWidth": 10,
+      "lineStyle": "brush",
+      "gapAt": 0.6,
+      "gapSize": 0.1
+    },
+    {
+      "id": "grain",
+      "x": 130,
+      "y": 330,
+      "width": 480,
+      "height": 520,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "group",
+      "clip": false
+    },
+    {
+      "id": "grain-art",
+      "parent": "grain",
+      "x": 0,
+      "y": 0,
+      "width": 480,
+      "height": 416,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "image",
+      "states": [
+        {
+          "asset": "store"
+        }
+      ],
+      "fit": "contain"
+    },
+    {
+      "id": "cereal",
+      "x": 130,
+      "y": 760,
+      "width": 480,
+      "height": 100,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "group",
+      "clip": false
+    },
+    {
+      "id": "cereal-label",
+      "parent": "cereal",
+      "x": 240,
+      "y": 0,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "text",
+      "text": "Cereal foods",
+      "fontSize": 56,
+      "color": "#211F1B",
+      "weight": "normal",
+      "font": "sans-serif",
+      "fontAsset": "label",
+      "align": "center"
+    },
+    {
+      "id": "storage",
+      "x": 860,
+      "y": 350,
+      "width": 940,
+      "height": 100,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "group",
+      "clip": false
+    },
+    {
+      "id": "storage-label",
+      "parent": "storage",
+      "x": 0,
+      "y": 0,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "text",
+      "text": "Resources / storage",
+      "fontSize": 56,
+      "color": "#211F1B",
+      "weight": "normal",
+      "font": "sans-serif",
+      "fontAsset": "label",
+      "align": "left"
+    },
+    {
+      "id": "markets",
+      "x": 860,
+      "y": 465,
+      "width": 940,
+      "height": 100,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "group",
+      "clip": false
+    },
+    {
+      "id": "markets-label",
+      "parent": "markets",
+      "x": 0,
+      "y": 0,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "text",
+      "text": "Prices / markets / credit",
+      "fontSize": 56,
+      "color": "#211F1B",
+      "weight": "normal",
+      "font": "sans-serif",
+      "fontAsset": "label",
+      "align": "left"
+    },
+    {
+      "id": "labor",
+      "x": 860,
+      "y": 580,
+      "width": 940,
+      "height": 100,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "group",
+      "clip": false
+    },
+    {
+      "id": "labor-label",
+      "parent": "labor",
+      "x": 0,
+      "y": 0,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "text",
+      "text": "Labor / livestock",
+      "fontSize": 56,
+      "color": "#211F1B",
+      "weight": "normal",
+      "font": "sans-serif",
+      "fontAsset": "label",
+      "align": "left"
+    },
+    {
+      "id": "local",
+      "x": 860,
+      "y": 695,
+      "width": 940,
+      "height": 100,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "group",
+      "clip": false
+    },
+    {
+      "id": "local-label",
+      "parent": "local",
+      "x": 0,
+      "y": 0,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "text",
+      "text": "Local conditions",
+      "fontSize": 56,
+      "color": "#211F1B",
+      "weight": "normal",
+      "font": "sans-serif",
+      "fontAsset": "label",
+      "align": "left"
+    },
+    {
+      "id": "loss",
+      "x": 860,
+      "y": 840,
+      "width": 940,
+      "height": 100,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "group",
+      "clip": false
+    },
+    {
+      "id": "loss-label",
+      "parent": "loss",
+      "x": 0,
+      "y": 0,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "text",
+      "text": "Loss / spoilage varies",
+      "fontSize": 56,
+      "color": "#8B3F36",
+      "weight": "normal",
+      "font": "sans-serif",
+      "fontAsset": "label",
+      "align": "left"
+    },
+    {
+      "id": "qualifier",
+      "x": 112,
+      "y": 968,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "text",
+      "text": "Symbolic relationships, not an inventory",
+      "fontSize": 52,
+      "color": "#211F1B",
+      "weight": "normal",
+      "font": "sans-serif",
+      "fontAsset": "label",
+      "align": "left"
+    }
+  ],
+  "provenance": "Original code-authored symbolic editorial illustrations for reusable motion studies. Layered Chronicle palette and typography. No selected S01E01 image is modified; these are explanatory fixtures, not authentic evidence or a finished episode.",
+  "schemaVersion": "story-scene-1",
+  "frameCount": 648,
+  "review": {
+    "essentialText": [
+      "cereal-label",
+      "storage-label",
+      "markets-label",
+      "labor-label",
+      "local-label",
+      "loss-label",
+      "qualifier"
+    ]
+  },
+  "recipe": {
+    "preset": "relationship_build",
+    "anchor": "grain",
+    "branches": [
+      {
+        "path": "cereal-link",
+        "destination": "cereal",
+        "window": {
+          "start": 74,
+          "end": 92,
+          "cue": "poorer-rural-households",
+          "easing": "out-cubic"
+        },
+        "arrival": {
+          "start": 80,
+          "end": 98,
+          "cue": "cereal-foods",
+          "easing": "out-cubic"
+        }
+      },
+      {
+        "path": "storage-link",
+        "destination": "storage",
+        "window": {
+          "start": 383,
+          "end": 401,
+          "cue": "storage",
+          "easing": "out-cubic"
+        },
+        "arrival": {
+          "start": 389,
+          "end": 407,
+          "cue": "storage-arrives",
+          "easing": "out-cubic"
+        }
+      },
+      {
+        "path": "markets-link",
+        "destination": "markets",
+        "window": {
+          "start": 413,
+          "end": 431,
+          "cue": "markets",
+          "easing": "out-cubic"
+        },
+        "arrival": {
+          "start": 419,
+          "end": 437,
+          "cue": "markets-arrives",
+          "easing": "out-cubic"
+        }
+      },
+      {
+        "path": "labor-link",
+        "destination": "labor",
+        "window": {
+          "start": 461,
+          "end": 479,
+          "cue": "labor",
+          "easing": "out-cubic"
+        },
+        "arrival": {
+          "start": 467,
+          "end": 485,
+          "cue": "labor-arrives",
+          "easing": "out-cubic"
+        }
+      },
+      {
+        "path": "local-link",
+        "destination": "local",
+        "window": {
+          "start": 493,
+          "end": 511,
+          "cue": "local",
+          "easing": "out-cubic"
+        },
+        "arrival": {
+          "start": 499,
+          "end": 517,
+          "cue": "local-arrives",
+          "easing": "out-cubic"
+        }
+      },
+      {
+        "path": "loss-link",
+        "destination": "loss",
+        "window": {
+          "start": 563,
+          "end": 581,
+          "cue": "loss",
+          "easing": "out-cubic"
+        },
+        "arrival": {
+          "start": 569,
+          "end": 587,
+          "cue": "loss-arrives",
+          "easing": "out-cubic"
+        }
+      }
+    ],
+    "moves": [],
+    "emphasis": [
+      {
+        "node": "grain-art",
+        "window": {
+          "start": 261,
+          "end": 285,
+          "cue": "more-than-grain",
+          "easing": "out-cubic"
+        },
+        "opacity": 0.7
+      }
+    ]
+  },
+  "connectors": [
+    {
+      "path": "cereal-link",
+      "from": {
+        "node": "grain",
+        "point": [240, 416]
+      },
+      "to": {
+        "node": "cereal",
+        "point": [240, 0]
+      }
+    },
+    {
+      "path": "storage-link",
+      "from": {
+        "node": "grain",
+        "point": [450, 80]
+      },
+      "to": {
+        "node": "storage",
+        "point": [0, 44]
+      },
+      "bend": -16
+    },
+    {
+      "path": "markets-link",
+      "from": {
+        "node": "grain",
+        "point": [450, 150]
+      },
+      "to": {
+        "node": "markets",
+        "point": [0, 44]
+      },
+      "bend": -16
+    },
+    {
+      "path": "labor-link",
+      "from": {
+        "node": "grain",
+        "point": [450, 220]
+      },
+      "to": {
+        "node": "labor",
+        "point": [0, 44]
+      },
+      "bend": -16
+    },
+    {
+      "path": "local-link",
+      "from": {
+        "node": "grain",
+        "point": [450, 290]
+      },
+      "to": {
+        "node": "local",
+        "point": [0, 44]
+      },
+      "bend": -16
+    },
+    {
+      "path": "loss-link",
+      "from": {
+        "node": "grain",
+        "point": [450, 360]
+      },
+      "to": {
+        "node": "loss",
+        "point": [0, 44]
+      },
+      "bend": -16
+    }
+  ]
+}

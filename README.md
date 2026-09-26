@@ -11,6 +11,13 @@ candidate approaches, relationship to existing tools, and measures of success.
 
 ## Current implementation
 
+**Beat plans** now prepare and render both narrated Story Motion passages from
+JSON. Each beat records its communication purpose, focal subjects, evidence
+qualification, narration cues and intended intensity. The review page provides
+cue seeking, a passage timeline and downloadable editorial feedback. See the
+[authoring workflow](./docs/story-beat-planning.md) and run `pnpm story:passage`
+with a plan, fresh output directory and narration, silent or preparation mode.
+
 **Story Motion** now provides seven reusable narrative recipes: Unequal Margins,
 Access Constraint, Relationship Build, Evidence Boundary, Dated System Break,
 Category Swap and Motif Resolve. Open `/illustrated.html?collection=story` in the

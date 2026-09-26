@@ -1,0 +1,96 @@
+{
+  "schemaVersion": "story-passage-1",
+  "styleProfile": "layered-chronicle-1",
+  "fps": 24,
+  "narration": {
+    "reference": "S01E01 narration-mix-v003.wav; cue source: docs/s01e01-resource-passage-beats.md and existing comparison/access proof",
+    "sha256": "0a972a37e7d485f6fe33c89194844cd9b2a46cffe77f478d6c8299724376b151"
+  },
+  "id": "s01e01-comparison-access",
+  "title": "Same season. Unequal access.",
+  "sourceStartFrame": 4748,
+  "beats": [
+    {
+      "id": "unequal-margins",
+      "template": "templates/unequal-margins.json",
+      "purpose": "compare",
+      "takeaway": "The same pressure leaves unequal margins.",
+      "focus": ["house-a", "house-b", "pressure-b"],
+      "intensity": "develop",
+      "frameCount": 334,
+      "evidence": {
+        "kind": "symbolic",
+        "node": "qualifier",
+        "qualification": "A qualitative comparison"
+      },
+      "cues": [
+        {
+          "id": "strain",
+          "phrase": "Price rises, lost work and other strain",
+          "frame": 114,
+          "events": ["shared-strain", "more-room"]
+        },
+        {
+          "id": "less-room",
+          "phrase": "Less room to absorb strain",
+          "frame": 243,
+          "events": ["less-room"]
+        }
+      ],
+      "timing": {
+        "shared-strain": {
+          "start": 114,
+          "end": 242
+        },
+        "more-room": {
+          "start": 114,
+          "end": 136
+        },
+        "less-room": {
+          "start": 243,
+          "end": 263
+        }
+      }
+    },
+    {
+      "id": "unequal-access",
+      "template": "templates/unequal-access.json",
+      "purpose": "explain-access",
+      "takeaway": "Available grain does not mean equal access.",
+      "focus": ["store", "house-b", "route-b"],
+      "intensity": "peak",
+      "frameCount": 312,
+      "evidence": {
+        "kind": "symbolic",
+        "node": "qualifier",
+        "qualification": "Symbolic links; no measured quantities."
+      },
+      "cues": [
+        {
+          "id": "available",
+          "phrase": "Markets and storage",
+          "frame": 0,
+          "events": ["markets-and-storage"]
+        },
+        {
+          "id": "access",
+          "phrase": "Access can differ",
+          "frame": 52,
+          "events": ["not-equal-access"]
+        }
+      ]
+    }
+  ],
+  "delivery": [
+    {
+      "id": "st013",
+      "start": 0,
+      "end": 334
+    },
+    {
+      "id": "st014",
+      "start": 334,
+      "end": 646
+    }
+  ]
+}

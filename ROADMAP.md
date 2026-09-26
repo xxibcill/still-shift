@@ -502,6 +502,7 @@ shots. Still Shift supplies motion scenes; Remotion retains episode assembly.
 - [~] Deliver the [Unequal Margins P2 prototype](./docs/story-motion-continuous-implementation.md); numeric gates pass, owner review and peak-emphasis decision pending.
 - [ ] Roll out continuous motion to the other six recipes and both narrated passages after P2 review; add the lab activity strip and final continuous-motion verification.
 - [~] Render the refreshed 646-frame comparison/access and new 1507-frame resource passage; independent frame review and technical checks passed, continuous audiovisual acceptance remains open.
+- [x] Add [purpose-led beat plans](./docs/story-beat-planning.md), reusable prepared templates, validated narration and delivery timing, and a passage review page for both proofs. Existing motion is preserved as the regression baseline; new passage choreography remains separate.
 - [~] **M0:** Shared contract and fixture kit complete; episode-specific preparation pending.
 - [~] **M1:** Implement Unequal Margins and Access Constraint; inspect one short
   illustrated preview, then the 26.917-second ST-013/014 narrated proof.
