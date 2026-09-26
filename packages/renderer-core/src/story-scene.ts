@@ -14,6 +14,22 @@ import type {
 } from "../../scene-contract/src/story.ts";
 import type { Key, Property, Tracks } from "./prepared-scene.ts";
 
+type StoryMotionEventKind =
+  | "camera"
+  | "emphasis"
+  | "entrance"
+  | "exit"
+  | "flow"
+  | "flow-speed"
+  | "fracture"
+  | "move"
+  | "narrow"
+  | "pinch"
+  | "reset"
+  | "reveal"
+  | "strain"
+  | "swap";
+
 export type StoryRenderScene = StoryScene & {
   rendererVersion: "story-canvas-0.13.3" | "story-canvas-0.14.0";
   durationMs: number;
@@ -26,7 +42,7 @@ export type StoryRenderScene = StoryScene & {
     node: string;
     window: StoryWindow;
     role: StoryRole;
-    kind: string;
+    kind: StoryMotionEventKind;
   }[];
 };
 type Event = {
@@ -155,7 +171,7 @@ export function compileStoryScene(source: StoryScene): StoryRenderScene {
   const event = (
     node: string,
     window: StoryWindow,
-    kind: string,
+    kind: StoryMotionEventKind,
     role: StoryRole = "action",
   ) => events.push({ node, window, kind, role: window.role ?? role });
   const tracks = createTracks(input.nodes);
