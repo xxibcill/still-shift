@@ -29,6 +29,7 @@ import {
   type BundleFile,
 } from "./commerce-download.ts";
 import { postCommerceExport } from "./commerce-export.ts";
+import { createCommercePreviewController } from "./commerce-preview-controller.ts";
 
 const element = <T extends HTMLElement>(id: string) =>
   document.getElementById(id) as T;
@@ -43,14 +44,7 @@ let baselineRenderer: ReturnType<typeof createIllustratedPreview> | undefined;
 let active:
   | { scene: CommerceScene; options: ComponentDemo; files: BundleFile[] }
   | undefined;
-let frame = 0,
-  animation = 0,
-  playing = false,
-  dirty = true,
-  exporting = false,
-  generation = 0;
 let urls: string[] = [];
-let previewHasPlayed = false;
 const blob = (bytes: Uint8Array, type: string) =>
   new Blob([new Uint8Array(bytes).buffer], { type });
 const bytes = async (path: string) => {
@@ -63,29 +57,25 @@ const say = (text: string, error = false) => {
   element("status").textContent = text;
   element("status").classList.toggle("error", error);
 };
-const controls = () => {
-  for (const id of ["play", "restart", "scrub", "download", "export"])
-    (element(id) as HTMLButtonElement).disabled = dirty || !active || exporting;
-};
-function pause() {
-  playing = false;
-  cancelAnimationFrame(animation);
-  element("play").textContent = "Play";
-}
-function show(index: number) {
-  if (!active || !renderer) return;
-  frame = Math.max(0, Math.min(index, active.scene.frameCount - 1));
-  renderer.renderFrame(frame);
-  if (field("compare").checked) baselineRenderer?.renderFrame(frame);
-  field("scrub").value = String(frame);
-  element("timecode").textContent =
-    `${(frame / active.scene.fps).toFixed(2)} / ${(active.scene.frameCount / active.scene.fps).toFixed(2)} s`;
-}
+const preview = createCommercePreviewController({
+  controls: {
+    play: element<HTMLButtonElement>("play"),
+    restart: element<HTMLButtonElement>("restart"),
+    scrub: field("scrub"),
+    download: element<HTMLButtonElement>("download"),
+    export: element<HTMLButtonElement>("export"),
+    timecode: element("timecode"),
+  },
+  scene: () => active?.scene,
+  renderFrame: (frame) => {
+    renderer?.renderFrame(frame);
+    if (field("compare").checked) baselineRenderer?.renderFrame(frame);
+  },
+  disableWhileExporting: true,
+  restartOnFirstPlay: true,
+});
 function invalidate() {
-  generation++;
-  dirty = true;
-  pause();
-  controls();
+  preview.invalidate();
   say("Settings changed. Update the preview before exporting.");
 }
 function fill(options: ComponentDemo) {
@@ -277,7 +267,7 @@ const source = fetch("/commerce/scenes/a01-beauty-feed.json").then(
 );
 async function update() {
   invalidate();
-  const run = generation;
+  const run = preview.generation;
   active = undefined;
   const pendingUrls: string[] = [];
   try {
@@ -318,7 +308,7 @@ async function update() {
       compiled,
       (id) => urlsById.get(id)!,
     );
-    if (run !== generation) {
+    if (!preview.isCurrent(run)) {
       pendingUrls.forEach((url) => URL.revokeObjectURL(url));
       return;
     }
@@ -341,9 +331,6 @@ async function update() {
     urls.forEach((url) => URL.revokeObjectURL(url));
     urls = pendingUrls;
     active = { scene, options, files };
-    dirty = false;
-    previewHasPlayed = false;
-    field("scrub").max = String(scene.frameCount - 1);
     const sampleFrame = ["motion-blur", "directional-blur", "echo"].includes(
       kind,
     )
@@ -353,13 +340,15 @@ async function update() {
         : kind === "focus-blur"
           ? Math.round(scene.fps * 0.8)
           : Math.round((scene.frameCount - 1) / (options.cycles * 4));
-    show(options.treatment ? sampleFrame : Math.floor(scene.frameCount / 2));
+    preview.activate(
+      options.treatment ? sampleFrame : Math.floor(scene.frameCount / 2),
+    );
     say(
       `${scene.title} ready · ${scene.width} × ${scene.height} · ${scene.frameCount} frames`,
     );
   } catch (error) {
     pendingUrls.forEach((url) => URL.revokeObjectURL(url));
-    if (run === generation) {
+    if (preview.isCurrent(run)) {
       renderer?.dispose();
       renderer = undefined;
       baselineRenderer?.dispose();
@@ -367,7 +356,7 @@ async function update() {
       say(error instanceof Error ? error.message : String(error), true);
     }
   }
-  controls();
+  preview.syncControls();
 }
 function syncComparison() {
   const compare = field("compare").checked;
@@ -377,7 +366,7 @@ function syncComparison() {
 }
 field("compare").addEventListener("change", () => {
   syncComparison();
-  show(frame);
+  preview.show(preview.frame);
 });
 
 for (const demo of COMPONENT_DEMOS) {
@@ -404,36 +393,8 @@ form.addEventListener("submit", (event) => {
   event.preventDefault();
   void update();
 });
-field("scrub").addEventListener("input", () => {
-  previewHasPlayed = true;
-  pause();
-  show(Number(field("scrub").value));
-});
-element("restart").addEventListener("click", () => {
-  pause();
-  show(0);
-});
-element("play").addEventListener("click", () => {
-  if (!active || dirty) return;
-  if (playing) {
-    pause();
-    return;
-  }
-  if (!previewHasPlayed || frame >= active.scene.frameCount - 1) show(0);
-  previewHasPlayed = true;
-  playing = true;
-  element("play").textContent = "Pause";
-  const start = performance.now() - (frame * 1000) / active.scene.fps;
-  const tick = (now: number) => {
-    if (!playing || !active) return;
-    show(Math.floor(((now - start) * active.scene.fps) / 1000));
-    if (frame === active.scene.frameCount - 1) pause();
-    else animation = requestAnimationFrame(tick);
-  };
-  animation = requestAnimationFrame(tick);
-});
 element("download").addEventListener("click", () => {
-  if (!active || dirty) return;
+  if (!active || preview.dirty) return;
   download(
     createSourceZip([
       ...active.files,
@@ -457,10 +418,9 @@ element("download").addEventListener("click", () => {
   );
 });
 element("export").addEventListener("click", async () => {
-  if (!active || dirty || exporting) return;
+  if (!active || preview.dirty || preview.exporting) return;
   const snapshot = active;
-  exporting = true;
-  controls();
+  preview.setExporting(true);
   say("Rendering the prepared scene…");
   try {
     const response = await postCommerceExport(snapshot.scene, snapshot.files);
@@ -470,12 +430,12 @@ element("export").addEventListener("click", async () => {
       snapshot.options.kind + ".mp4",
       "video/mp4",
     );
-    if (active === snapshot && !dirty) say(`${snapshot.scene.title} exported.`);
+    if (active === snapshot && !preview.dirty)
+      say(`${snapshot.scene.title} exported.`);
   } catch (error) {
     if (active === snapshot) say(String(error), true);
   } finally {
-    exporting = false;
-    controls();
+    preview.setExporting(false);
   }
 });
 function filterCatalog() {

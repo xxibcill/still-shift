@@ -22,6 +22,7 @@ import {
   type BundleFile,
 } from "./commerce-download.ts";
 import { postCommerceExport } from "./commerce-export.ts";
+import { createCommercePreviewController } from "./commerce-preview-controller.ts";
 
 const element = <T extends HTMLElement>(id: string) =>
   document.getElementById(id) as T;
@@ -46,13 +47,7 @@ let renderer: ReturnType<typeof createIllustratedPreview> | undefined;
 let active:
   | { scene: CommerceScene; brief: CommerceBrief; files: BundleFile[] }
   | undefined;
-let urls: string[] = [],
-  generation = 0,
-  playing = false,
-  animation = 0,
-  exporting = false;
-let frame = 0,
-  dirty = true;
+let urls: string[] = [];
 const allEntries = [
   ...commerceCatalog.formats.map((item) => ({
     kind: "format" as const,
@@ -78,36 +73,22 @@ const say = (message: string, error = false) => {
   status.textContent = message;
   status.classList.toggle("error", error);
 };
-function controls() {
-  const disabled = dirty || !active || !capability(selection).implementation;
-  for (const id of ["play", "restart", "export", "download"])
-    element<HTMLButtonElement>(id).disabled =
-      disabled || (id === "export" && exporting);
-  element<HTMLButtonElement>("update").disabled =
-    !capability(selection).implementation;
-  scrub.disabled = disabled;
-}
-function pause() {
-  playing = false;
-  cancelAnimationFrame(animation);
-  element("play").textContent = "Play";
-}
-function show(index: number) {
-  if (!renderer || !active) return;
-  frame = Math.max(0, Math.min(index, active.scene.frameCount - 1));
-  renderer.renderFrame(frame);
-  scrub.value = String(frame);
-  element("timecode").textContent =
-    (frame / active.scene.fps).toFixed(2) +
-    " / " +
-    (active.scene.frameCount / active.scene.fps).toFixed(2) +
-    " s";
-}
+const preview = createCommercePreviewController({
+  controls: {
+    play: element<HTMLButtonElement>("play"),
+    restart: element<HTMLButtonElement>("restart"),
+    scrub,
+    download: element<HTMLButtonElement>("download"),
+    export: element<HTMLButtonElement>("export"),
+    timecode: element("timecode"),
+    update: element<HTMLButtonElement>("update"),
+  },
+  scene: () => active?.scene,
+  renderFrame: (frame) => renderer?.renderFrame(frame),
+  canUpdate: () => Boolean(capability(selection).implementation),
+});
 function invalidate() {
-  dirty = true;
-  generation++;
-  pause();
-  controls();
+  preview.invalidate();
   say("Brief changed. Update the preview before exporting.");
 }
 const checksum = async (bytes: Uint8Array) =>
@@ -183,11 +164,8 @@ function readBrief(): CommerceBrief {
 }
 
 async function updatePreview() {
-  pause();
-  const run = ++generation;
-  dirty = true;
+  const run = preview.invalidate();
   active = undefined;
-  controls();
   if (!capability(selection).implementation) return;
   const nextUrls: string[] = [];
   try {
@@ -247,7 +225,7 @@ async function updatePreview() {
           ? backdropUrl!
           : imageUrl,
     );
-    if (run !== generation) {
+    if (!preview.isCurrent(run)) {
       nextUrls.forEach((url) => URL.revokeObjectURL(url));
       return;
     }
@@ -264,11 +242,9 @@ async function updatePreview() {
         ...(brief.floating && backdropFile ? [backdropFile] : []),
       ],
     };
-    scrub.max = String(scene.frameCount - 1);
-    dirty = false;
     canvas.hidden = false;
     element("empty-preview").hidden = true;
-    show(
+    preview.activate(
       brief.artDirection === "editorial"
         ? scene.frameCount - 1
         : brief.artDirection === "floating"
@@ -287,12 +263,12 @@ async function updatePreview() {
     );
   } catch (error) {
     nextUrls.forEach((url) => URL.revokeObjectURL(url));
-    if (run === generation) {
+    if (preview.isCurrent(run)) {
       active = undefined;
       say(error instanceof Error ? error.message : String(error), true);
     }
   } finally {
-    if (run === generation) controls();
+    if (preview.isCurrent(run)) preview.syncControls();
   }
 }
 
@@ -527,7 +503,7 @@ async function selectEntry(next: CommerceSelection) {
     canvas.hidden = true;
     element("empty-preview").hidden = false;
     say("Reference only. Review the assets and storyboard in Format notes.");
-    controls();
+    preview.syncControls();
     return;
   }
   await updatePreview();
@@ -583,7 +559,7 @@ async function loadFixture(
   preserved: Record<string, string> = {},
 ) {
   invalidate();
-  const request = generation;
+  const request = preview.generation;
   const briefResponse = await fetch("/commerce/scenes/" + name + ".brief.json");
   if (!briefResponse.ok) throw new Error("Could not load the selected example");
   const brief = CommerceBriefSchema.parse(await briefResponse.json());
@@ -593,7 +569,7 @@ async function loadFixture(
   const backdropBytes = backdropName
     ? await fetchBytes("/commerce/assets/" + backdropName)
     : undefined;
-  if (request !== generation) return;
+  if (!preview.isCurrent(request)) return;
   backdropFile =
     backdropBytes && backdropName
       ? { name: "assets/" + backdropName, bytes: backdropBytes }
@@ -692,38 +668,8 @@ input("backdrop-file").addEventListener("change", async () => {
     "Palm background loaded. Check its source and the product clearance before updating.",
   );
 });
-scrub.addEventListener("input", () => {
-  pause();
-  show(Number(scrub.value));
-});
-element("restart").addEventListener("click", () => {
-  pause();
-  show(0);
-});
-element("play").addEventListener("click", () => {
-  if (playing) {
-    pause();
-    return;
-  }
-  if (!active) return;
-  if (frame >= active.scene.frameCount - 1) show(0);
-  const startFrame = frame,
-    start = performance.now();
-  playing = true;
-  element("play").textContent = "Pause";
-  const tick = () => {
-    if (!active || !playing) return;
-    show(
-      startFrame +
-        Math.floor(((performance.now() - start) * active.scene.fps) / 1000),
-    );
-    if (frame >= active.scene.frameCount - 1) pause();
-    else animation = requestAnimationFrame(tick);
-  };
-  animation = requestAnimationFrame(tick);
-});
 element("download").addEventListener("click", async () => {
-  if (!active || dirty) return;
+  if (!active || preview.dirty) return;
   const snapshot = active,
     encode = (data: unknown) =>
       new TextEncoder().encode(JSON.stringify(data, null, 2) + "\n");
@@ -753,10 +699,9 @@ element("download").addEventListener("click", async () => {
   }
 });
 element("export").addEventListener("click", async () => {
-  if (!active || dirty || exporting) return;
+  if (!active || preview.dirty || preview.exporting) return;
   const snapshot = active;
-  exporting = true;
-  controls();
+  preview.setExporting(true);
   say("Rendering your MP4…");
   try {
     const response = await postCommerceExport(snapshot.scene, snapshot.files);
@@ -773,8 +718,7 @@ element("export").addEventListener("click", async () => {
   } catch (error) {
     say(error instanceof Error ? error.message : String(error), true);
   } finally {
-    exporting = false;
-    controls();
+    preview.setExporting(false);
   }
 });
 for (const group of [...new Set(allEntries.map((entry) => entry.group))]) {
