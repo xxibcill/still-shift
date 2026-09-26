@@ -31,8 +31,21 @@ const thinMargin = 28;
 // The band rests on the roof ridge (svg y 49 scaled) before the press.
 const bandWidth = 40;
 const bandY = houseY + (49 * houseWidth) / 600 - bandWidth / 2;
+const pressureBands = [
+  { node: "pressure-a", x: 110, condition: "room" },
+  { node: "pressure-b", x: 940, condition: "strained" },
+] as const;
 // A keeps about half its margin; B's runs out and its house takes the rest.
 const press = { start: 50, end: 104, depth: 77 };
+const pressureTarget = ({
+  node,
+  x,
+  condition,
+}: (typeof pressureBands)[number]) => ({
+  node,
+  to: [x, bandY + press.depth] as [number, number],
+  condition,
+});
 const tilt = -4.5;
 // Full-bleed with overscan so the camera never exposes the ground's edges.
 const ground = { x: -200, width: 2320 };
@@ -176,33 +189,21 @@ export function unequalMarginsV3(): MotionDesign {
       ),
       ...household("house-a", houses.a, houseY, houseWidth, { shadow: true }),
       ...household("house-b", houses.b, houseY, houseWidth, { shadow: true }),
-      path(
-        "pressure-a",
-        [
-          [0, 0],
-          [870, 0],
-        ],
-        {
-          x: 110,
-          y: bandY,
-          lineWidth: bandWidth,
-          lineStyle: "brush",
-          stroke: palette.crisis,
-        },
-      ),
-      path(
-        "pressure-b",
-        [
-          [0, 0],
-          [870, 0],
-        ],
-        {
-          x: 940,
-          y: bandY,
-          lineWidth: bandWidth,
-          lineStyle: "brush",
-          stroke: palette.crisis,
-        },
+      ...pressureBands.map(({ node, x }) =>
+        path(
+          node,
+          [
+            [0, 0],
+            [870, 0],
+          ],
+          {
+            x,
+            y: bandY,
+            lineWidth: bandWidth,
+            lineStyle: "brush",
+            stroke: palette.crisis,
+          },
+        ),
       ),
       text("reference", "The same season.", 112, 96, 112),
       text(
@@ -249,16 +250,8 @@ export function unequalMarginsV3(): MotionDesign {
       households: ["house-a", "house-b"],
       reference: "reference",
       pressures: [
-        {
-          node: "pressure-a",
-          to: [110, bandY + press.depth],
-          condition: "room",
-        },
-        {
-          node: "pressure-b",
-          to: [940, bandY + press.depth],
-          condition: "strained",
-        },
+        pressureTarget(pressureBands[0]),
+        pressureTarget(pressureBands[1]),
       ],
       labels: ["room", "strained"],
       strain: cue(press.start, press.end, "shared-strain", "in-out-quint"),
@@ -342,14 +335,8 @@ export function unequalMarginsV3(): MotionDesign {
         ...beats
           .slice(1)
           .flatMap(([from, to]) =>
-            (["pressure-a", "pressure-b"] as const).map((node, i) =>
-              sampled(
-                node,
-                from,
-                to,
-                (d) => ({ y: bandY + d, x: i ? 940 : 110 }),
-                "current",
-              ),
+            pressureBands.map(({ node, x }) =>
+              sampled(node, from, to, (d) => ({ y: bandY + d, x }), "current"),
             ),
           ),
       ],
