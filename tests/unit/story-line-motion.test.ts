@@ -27,7 +27,9 @@ const input = () =>
 
 describe("story stroke and timing", () => {
   it("keeps easing bounded, monotonic and exact while preserving legacy smoothstep", () => {
-    for (const easing of MotionEasingSchema.options) {
+    for (const easing of MotionEasingSchema.options.filter(
+      (easing) => easing !== "out-back-soft",
+    )) {
       const values = Array.from({ length: 101 }, (_, i) =>
         easeMotion(i / 100, easing),
       );

@@ -1,10 +1,20 @@
+import { analyzeContinuousStory } from "./story-continuous-quality.ts";
 import { evaluatePreparedNode, type Property } from "./prepared-scene.ts";
 import type { StoryRenderScene } from "./story-scene.ts";
 import type { PreparedNode } from "../../scene-contract/src/prepared.ts";
 
 type FocusGroup = { id: string; nodes: string[] };
-type Code = "short-final-hold" | "small-essential-text" | "competing-focus";
+type Code =
+  | "short-final-hold"
+  | "small-essential-text"
+  | "competing-focus"
+  | "frozen-run"
+  | "semantic-gap"
+  | "text-velocity"
+  | "camera-too-fast"
+  | "label-in-motion-envelope";
 export type StoryQualityPolicy = {
+  preset?: "continuous";
   displayWidth?: number;
   minimumTextPx?: number;
   preferredHoldSeconds?: number;
@@ -218,7 +228,7 @@ export function analyzeStoryQuality(
     previous = current;
   }
   const finalHoldSeconds = (scene.frameCount - lastChangedFrame) / scene.fps;
-  if (finalHoldSeconds < preferredHoldSeconds)
+  if (policy.preset !== "continuous" && finalHoldSeconds < preferredHoldSeconds)
     diagnostics.push({
       code: "short-final-hold",
       nodes: [],
@@ -235,6 +245,11 @@ export function analyzeStoryQuality(
         measured: size,
         message: `${id} displays at ${size.toFixed(1)} px at ${displayWidth} px video width. Aim for ${minimumTextPx} px or review the layout.`,
       });
+  const continuous =
+    policy.preset === "continuous"
+      ? analyzeContinuousStory(scene, essentialText)
+      : undefined;
+  if (continuous) diagnostics.push(...continuous.diagnostics);
   for (const diagnostic of diagnostics) {
     const exception = policy.exceptions?.find(
       (e) =>
@@ -247,6 +262,7 @@ export function analyzeStoryQuality(
   }
   return {
     version: "story-quality-1" as const,
+    ...(continuous ? { continuous } : {}),
     displayWidth,
     minimumTextPx,
     preferredHoldSeconds,

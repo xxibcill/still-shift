@@ -31,7 +31,8 @@ export type Property =
   | "reveal"
   | "gap"
   | "state"
-  | "pulse";
+  | "pulse"
+  | "pinch";
 export type Tracks = Partial<Record<Property, Key[]>>;
 export type LegacyIllustratedScene = PreparedScene & {
   rendererVersion: typeof ILLUSTRATED_RENDERER_VERSION;
@@ -314,6 +315,7 @@ export function evaluatePreparedNode(
     gap: 0,
     state: 0,
     pulse: 0,
+    pinch: 0,
   };
   if (scene.schemaVersion === "illustrated-scene-2") {
     if (node.type !== "image")

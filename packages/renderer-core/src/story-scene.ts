@@ -1,3 +1,12 @@
+import { compileStoryFlows, type CompiledStoryFlow } from "./story-flows.ts";
+import {
+  compileEntrance,
+  compileExit,
+  compileMove,
+  defaultEntrance,
+} from "./story-choreography.ts";
+import type { StoryRole } from "../../scene-contract/src/story-motion.ts";
+import { validateStoryCameraCoverage } from "./story-camera.ts";
 import type { PreparedNode } from "../../scene-contract/src/prepared.ts";
 import type {
   StoryScene,
@@ -6,12 +15,19 @@ import type {
 import type { Key, Property, Tracks } from "./prepared-scene.ts";
 
 export type StoryRenderScene = StoryScene & {
-  rendererVersion: "story-canvas-0.13.3";
+  rendererVersion: "story-canvas-0.13.3" | "story-canvas-0.14.0";
   durationMs: number;
   canvas: { width: number; height: number };
   timeline: { fps: number; durationMs: number; frameCount: number };
   tracks: Record<string, Tracks>;
   followers: Record<string, never>;
+  compiledFlows: CompiledStoryFlow[];
+  motionEvents: {
+    node: string;
+    window: StoryWindow;
+    role: StoryRole;
+    kind: string;
+  }[];
 };
 type Event = {
   start: number;
@@ -24,7 +40,12 @@ type Event = {
 const baseValue = (node: PreparedNode, property: Property) => {
   if (property === "scaleX" || property === "scaleY" || property === "reveal")
     return 1;
-  if (property === "state" || property === "gap" || property === "pulse")
+  if (
+    property === "state" ||
+    property === "gap" ||
+    property === "pulse" ||
+    property === "pinch"
+  )
     return 0;
   return node[property];
 };
@@ -62,7 +83,14 @@ function createTracks(nodes: PreparedNode[]) {
       });
     },
     step(id: string, property: Property, at: number, value: number) {
-      get(id, property).events.push({ start: at, end: at, value, step: true });
+      if (at === 0) get(id, property).initial = value;
+      else
+        get(id, property).events.push({
+          start: at,
+          end: at,
+          value,
+          step: true,
+        });
     },
     finish(): Record<string, Tracks> {
       return Object.fromEntries(
@@ -102,21 +130,43 @@ function createTracks(nodes: PreparedNode[]) {
   };
 }
 
-export function compileStoryScene(input: StoryScene): StoryRenderScene {
+export type StoryTracks = ReturnType<typeof createTracks>;
+
+export function compileStoryScene(source: StoryScene): StoryRenderScene {
+  const input = { ...source, nodes: source.nodes.map((n) => ({ ...n })) };
+  const events: StoryRenderScene["motionEvents"] = [];
+  const event = (
+    node: string,
+    window: StoryWindow,
+    kind: string,
+    role: StoryRole = "action",
+  ) => events.push({ node, window, kind, role: window.role ?? role });
   const tracks = createTracks(input.nodes);
   const node = (id: string) => input.nodes.find((node) => node.id === id)!;
   const enter = (id: string, window: StoryWindow) => {
-    tracks.initial(id, "opacity", 0);
-    tracks.add(id, "opacity", window, node(id).opacity);
+    if (input.recipe.entrances?.some((e) => e.node === id)) return;
+    const verb =
+      input.motionGrammar === "v2" ? defaultEntrance(node(id)) : "fade";
+    compileEntrance(tracks, input.nodes, { node: id, window, verb });
+    event(
+      id,
+      window,
+      "entrance",
+      node(id).type === "text" ? "response" : "action",
+    );
   };
   const reveal = (id: string, window: StoryWindow) => {
+    if (input.recipe.entrances?.some((e) => e.node === id && e.verb === "draw"))
+      return;
     tracks.initial(id, "reveal", 0);
     tracks.add(id, "reveal", window, 1);
+    event(id, window, "reveal");
   };
   const recipe = input.recipe;
   switch (recipe.preset) {
     case "unequal_margins":
       for (const pressure of recipe.pressures) {
+        event(pressure.node, recipe.strain, "strain");
         tracks.add(pressure.node, "x", recipe.strain, pressure.to[0]);
         tracks.add(pressure.node, "y", recipe.strain, pressure.to[1]);
       }
@@ -150,9 +200,19 @@ export function compileStoryScene(input: StoryScene): StoryRenderScene {
           tracks.initial(id, property as "x" | "y", start[index]!);
           tracks.add(id, property as "x" | "y", recipe.narrow, end[index]!);
         }
-        enter(id, recipe.reveal);
+        enter(id, recipe.sidesEnter ?? recipe.reveal);
+        event(id, recipe.narrow, "narrow");
       });
       for (const id of recipe.connections) reveal(id, recipe.reveal);
+      if (recipe.pinch) {
+        tracks.add(
+          recipe.pinch.path,
+          "pinch",
+          recipe.pinch.window,
+          recipe.pinch.amount,
+        );
+        event(recipe.pinch.path, recipe.pinch.window, "pinch");
+      }
       break;
     }
     case "relationship_build":
@@ -168,13 +228,18 @@ export function compileStoryScene(input: StoryScene): StoryRenderScene {
         recipe.composite,
       ])
         enter(event.node, event.window);
-      for (const exit of recipe.exits ?? [])
-        tracks.add(exit.node, "opacity", exit.window, 0);
       break;
     case "dated_system_break":
-      for (const event of recipe.breaks)
-        tracks.add(event.path, "gap", event.window, 1);
+      for (const fracture of recipe.breaks) {
+        tracks.add(fracture.path, "gap", fracture.window, 1);
+        event(fracture.path, fracture.window, "fracture");
+      }
       if (recipe.reset) {
+        event(
+          recipe.reset.group,
+          { start: recipe.reset.atFrame, end: recipe.reset.atFrame },
+          "reset",
+        );
         tracks.initial(recipe.reset.group, "opacity", 0);
         tracks.step(recipe.system, "opacity", recipe.reset.atFrame, 0);
         tracks.step(
@@ -186,6 +251,11 @@ export function compileStoryScene(input: StoryScene): StoryRenderScene {
       }
       break;
     case "category_swap":
+      event(
+        recipe.subject,
+        { start: recipe.swapFrame, end: recipe.swapFrame },
+        "swap",
+      );
       tracks.initial(recipe.subject, "state", recipe.fromState);
       tracks.step(recipe.subject, "state", recipe.swapFrame, recipe.toState);
       for (const id of recipe.stateLabels ?? []) {
@@ -197,28 +267,92 @@ export function compileStoryScene(input: StoryScene): StoryRenderScene {
       reveal(recipe.outgoing, recipe.resolve);
       break;
   }
-  if ("moves" in recipe) {
-    for (const move of recipe.moves) {
-      tracks.add(move.node, "x", move.window, move.to.x);
-      tracks.add(move.node, "y", move.window, move.to.y);
-      if (move.to.rotation !== undefined)
-        tracks.add(move.node, "rotation", move.window, move.to.rotation);
-      if (move.to.scale !== undefined) {
-        tracks.add(move.node, "scaleX", move.window, move.to.scale);
-        tracks.add(move.node, "scaleY", move.window, move.to.scale);
-      }
+  for (const entrance of [...(recipe.entrances ?? [])].sort(
+    (a, b) => a.window.start - b.window.start,
+  )) {
+    const subsequent = events.some(
+      (e) => e.node === entrance.node && e.kind === "entrance",
+    );
+    compileEntrance(
+      tracks,
+      input.nodes,
+      {
+        ...entrance,
+        verb:
+          entrance.verb ??
+          (input.motionGrammar === "v2"
+            ? defaultEntrance(node(entrance.node))
+            : "fade"),
+      },
+      subsequent,
+    );
+    event(
+      entrance.node,
+      entrance.window,
+      "entrance",
+      node(entrance.node).type === "text" &&
+        !/title|question|reference|qualifier/.test(entrance.node)
+        ? "response"
+        : "action",
+    );
+  }
+  for (const exit of recipe.exits ?? []) {
+    compileExit(tracks, input.nodes, exit);
+    event(exit.node, exit.window, "exit");
+  }
+  for (const move of recipe.moves) {
+    compileMove(tracks, move);
+    const window = move.window ?? {
+      start: move.keys![0]!.frame,
+      end: move.keys!.at(-1)!.frame,
+    };
+    event(
+      move.node,
+      window,
+      "move",
+      move.role ?? (window.easing === "out-back-soft" ? "response" : "action"),
+    );
+  }
+  for (const emphasis of recipe.emphasis) {
+    tracks.add(emphasis.node, "opacity", emphasis.window, emphasis.opacity);
+    event(emphasis.node, emphasis.window, "emphasis", "response");
+  }
+  if (input.camera)
+    event(
+      "camera",
+      { start: 0, end: input.frameCount - 1 },
+      "camera",
+      "carrier",
+    );
+  for (const flow of input.flows ?? []) {
+    event(flow.path, flow.window, "flow", "current");
+    for (let i = 1; i < flow.speed.length; i++) {
+      const before = flow.speed[i - 1]!,
+        after = flow.speed[i]!;
+      if (before.pxPerFrame !== after.pxPerFrame)
+        event(
+          flow.path,
+          { start: before.frame, end: after.frame },
+          "flow-speed",
+          flow.window.role ?? "response",
+        );
     }
-    for (const event of recipe.emphasis)
-      tracks.add(event.node, "opacity", event.window, event.opacity);
   }
   const durationMs = (input.frameCount * 1000) / input.fps;
-  return {
+  const scene: StoryRenderScene = {
     ...input,
-    rendererVersion: "story-canvas-0.13.3",
+    rendererVersion:
+      input.motionGrammar === "v2"
+        ? "story-canvas-0.14.0"
+        : "story-canvas-0.13.3",
     durationMs,
     canvas: { width: input.width, height: input.height },
     timeline: { fps: input.fps, frameCount: input.frameCount, durationMs },
     tracks: tracks.finish(),
     followers: {},
+    motionEvents: events,
+    compiledFlows: compileStoryFlows(input.flows ?? [], input.frameCount),
   };
+  validateStoryCameraCoverage(scene);
+  return scene;
 }

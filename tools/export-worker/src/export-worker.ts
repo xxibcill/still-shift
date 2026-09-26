@@ -444,6 +444,9 @@ export const exportScene = async (
       stdio: ["pipe", "ignore", "pipe"],
     },
   );
+  // Write callbacks report pipe failures; consume the corresponding stream event
+  // so cleanup preserves the original browser/encoder error instead of crashing.
+  encoder.stdin?.on("error", () => undefined);
   let encoderError = "";
   encoder.stderr?.on("data", (chunk: Buffer) => {
     encoderError += chunk.toString();

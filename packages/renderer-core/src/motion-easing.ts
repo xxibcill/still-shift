@@ -14,6 +14,16 @@ export function easeMotion(
       return 1 - (1 - t) ** 3;
     case "out-quint":
       return 1 - (1 - t) ** 5;
+    case "in-out-sine":
+      return (1 - Math.cos(Math.PI * t)) / 2;
+    case "out-expo":
+      return t === 0 || t === 1 ? t : 1 - 2 ** (-10 * t);
+    case "out-back-soft":
+      return t === 0 || t === 1
+        ? t
+        : 1 + 1.6 * (t - 1) ** 3 + 0.6 * (t - 1) ** 2;
+    case "in-quad":
+      return t * t;
     case "in-cubic":
       return t ** 3;
     case "in-out-quint":

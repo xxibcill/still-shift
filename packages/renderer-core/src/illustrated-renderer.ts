@@ -12,6 +12,9 @@ import {
 
 import { inspectForegroundReveal } from "./reveal-validation.ts";
 import { sampleCinematicBlur } from "./cinematic-scene.ts";
+import { drawStoryFlow } from "./story-flows.ts";
+import { drawStoryText } from "./story-text.ts";
+import { storyCameraTransform } from "./story-camera.ts";
 import { evaluateStoryPath } from "./story-geometry.ts";
 import { loadPreparedFonts, type LoadedFont } from "./prepared-fonts.ts";
 import { inkStrokeOutline } from "./ink-path.ts";
@@ -20,6 +23,7 @@ import { brushStroke } from "./brush-path.ts";
 type Images = Map<string, HTMLImageElement> & {
   revealValidation?: ReturnType<typeof inspectForegroundReveal>;
   fonts?: Map<string, LoadedFont>;
+  rasters?: Map<string, HTMLCanvasElement>;
 };
 type State = ReturnType<typeof evaluatePreparedNode>;
 
@@ -57,7 +61,7 @@ const drawImage = (
     ctx.clip();
   }
   ctx.drawImage(
-    image,
+    images.rasters?.get(variant.asset) ?? image,
     sx,
     sy,
     sw,
@@ -85,10 +89,11 @@ const strokeInterval = (
   node: PreparedPath,
   start: number,
   end: number,
+  pinch = 0,
 ) => {
   if (end <= start) return;
   if (node.lineStyle === "brush") {
-    const mark = brushStroke(node, start, end);
+    const mark = brushStroke(node, start, end, pinch);
     ctx.save();
     ctx.fillStyle = node.stroke;
     const opacity = ctx.globalAlpha;
@@ -143,11 +148,17 @@ const drawPath = (
     ctx.shadowOffsetY = -3 * state.pulse;
   }
   const gap = (node.gapSize * state.gap) / 2;
-  if (gap === 0) strokeInterval(ctx, node, 0, state.reveal);
+  if (gap === 0) strokeInterval(ctx, node, 0, state.reveal, state.pinch);
   else {
-    strokeInterval(ctx, node, 0, Math.min(state.reveal, node.gapAt - gap));
+    strokeInterval(
+      ctx,
+      node,
+      0,
+      Math.min(state.reveal, node.gapAt - gap),
+      state.pinch,
+    );
     if (state.reveal > node.gapAt + gap)
-      strokeInterval(ctx, node, node.gapAt + gap, state.reveal);
+      strokeInterval(ctx, node, node.gapAt + gap, state.reveal, state.pinch);
   }
   if (node.endArrow && state.reveal === 1) {
     const tip = pointOnPath(node, 1);
@@ -219,10 +230,15 @@ const drawShape = (
         : node.text;
       if (text === undefined)
         throw new Error(`Missing text state on ${node.id}`);
-      ctx.fillText(text, 0, 0);
+      drawStoryText(ctx, node, text, state.reveal);
       break;
     }
     case "rect":
+      if (state.reveal < 1) {
+        ctx.beginPath();
+        ctx.rect(0, 0, node.width * state.reveal, node.height);
+        ctx.clip();
+      }
       ctx.fillStyle = node.fill;
       ctx.beginPath();
       ctx.roundRect(0, 0, node.width, node.height, node.radius);
@@ -265,9 +281,23 @@ export function createIllustratedPreview(
   }
   const paint = (node: PreparedNode, frame: number) => {
     const state = evaluatePreparedNode(scene, node, frame);
-    if (state.opacity <= 0) return;
+    const flows =
+      scene.schemaVersion === "story-scene-1"
+        ? (scene.compiledFlows?.filter((flow) => flow.path === node.id) ?? [])
+        : [];
+    if (state.opacity <= 0 && !flows.length) return;
     ctx.save();
+    const parentOpacity = ctx.globalAlpha;
     ctx.globalAlpha *= state.opacity;
+    if (
+      scene.schemaVersion === "story-scene-1" &&
+      scene.camera &&
+      !node.parent
+    ) {
+      const camera = storyCameraTransform(scene, node.id, frame);
+      ctx.translate(camera.x, camera.y);
+      ctx.scale(camera.scale, camera.scale);
+    }
     const ox = node.width * node.origin[0];
     const oy = node.height * node.origin[1];
     ctx.translate(state.x + ox, state.y + oy);
@@ -283,6 +313,19 @@ export function createIllustratedPreview(
         ? evaluateStoryPath(scene, node, frame)
         : node;
     drawShape(ctx, drawable, state, images, !focus);
+    if (drawable.type === "path") {
+      ctx.globalAlpha = parentOpacity;
+      for (const flow of flows)
+        drawStoryFlow(
+          ctx,
+          flow,
+          drawable,
+          state,
+          frame,
+          scene.timeline.frameCount,
+        );
+      ctx.globalAlpha = parentOpacity * state.opacity;
+    }
     for (const child of children.get(node.id) ?? []) paint(child, frame);
     ctx.restore();
   };
@@ -325,6 +368,19 @@ export async function loadIllustratedImages(
   );
   const images: Images = new Map(entries);
   images.fonts = await loadPreparedFonts(scene, assetUrl);
+  if (scene.schemaVersion === "story-scene-1" && scene.motionGrammar === "v2") {
+    // SVG rasterization can depend on the active clip. Cache the complete image
+    // once so adjacent assembly strips share exactly the same deposited pixels.
+    images.rasters = new Map(
+      entries.map(([id, image]) => {
+        const raster = document.createElement("canvas");
+        raster.width = image.naturalWidth;
+        raster.height = image.naturalHeight;
+        raster.getContext("2d")!.drawImage(image, 0, 0);
+        return [id, raster];
+      }),
+    );
+  }
   if (scene.schemaVersion === "illustrated-scene-2") {
     const node = scene.nodes.find(
       (item) => item.id === scene.recipe.background,

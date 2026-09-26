@@ -1,4 +1,5 @@
 import type { PreparedNode } from "./prepared.ts";
+import { validateContinuousStory } from "./story-motion-validation.ts";
 import type { StoryScene, StoryWindow } from "./story.ts";
 
 export function validateStoryBindings(
@@ -281,7 +282,11 @@ export function validateStoryBindings(
         fail("Resolve moves must refer to declared motifs");
       if (
         recipe.resolve.start <
-        Math.max(...recipe.moves.map((move) => move.window.end))
+        Math.max(
+          ...recipe.moves.map(
+            (move) => move.window?.end ?? move.keys?.at(-1)?.frame ?? 0,
+          ),
+        )
       )
         fail("Resolve follows the motif regrouping");
       window(recipe.resolve);
@@ -292,17 +297,25 @@ export function validateStoryBindings(
   if ("moves" in recipe) {
     for (const move of recipe.moves) {
       node(move.node);
-      window(move.window);
-      if (persistent.some((id) => ancestors(id).has(move.node)))
+      if (move.window) window(move.window);
+      for (const key of move.keys ?? []) within(key.frame);
+      if (
+        !scene.motionGrammar &&
+        persistent.some((id) => ancestors(id).has(move.node))
+      )
         fail("Persistent anchors/context cannot move");
     }
     for (const event of recipe.emphasis) {
       node(event.node);
       window(event.window);
-      if (persistent.some((id) => ancestors(id).has(event.node)))
+      if (
+        !scene.motionGrammar &&
+        persistent.some((id) => ancestors(id).has(event.node))
+      )
         fail("Persistent context cannot change emphasis");
     }
   }
+  validateContinuousStory(scene, nodes, fail);
   const connected = new Set<string>();
   for (const binding of scene.connectors) {
     const path = node(binding.path, "path");
@@ -326,6 +339,13 @@ export function validateStoryBindings(
       )
         fail("Connector anchor exceeds object bounds");
     }
+    for (const entry of [...(recipe.entrances ?? []), ...(recipe.exits ?? [])])
+      if (
+        entry.node === binding.path &&
+        entry.verb &&
+        !["draw", "retract", "fade"].includes(entry.verb)
+      )
+        fail("Bound connector geometry cannot also have transform events");
     if (recipe.preset === "access_constraint")
       fail("Access constraint uses fixed local routes, not bound connectors");
     if (
