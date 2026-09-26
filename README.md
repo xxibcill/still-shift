@@ -1,9 +1,49 @@
 # Still Shift
 
-Still Shift is a local, deterministic still-image animation engine spike. The default
-single-image CLI prepares cached depth, checks motion safety, and exports a validated
-1920×1080 H.264 MP4. A browser lab previews the same scene. Batch execution and
-frozen-corpus review remain in progress.
+## Product direction
+
+Still Shift aims to lower the cost of faceless YouTube videos by automatically mixing
+animated still images, moving text and graphics, and selected AI video clips. Still
+images may use several animation methods; depth-based parallax is only one of them.
+The current Phase 0 work tests a narrower still-image animation component. See
+[product positioning](./docs/product-positioning.md) for the owner-stated goal,
+candidate approaches, relationship to existing tools, and measures of success.
+
+## Current implementation
+
+**Story Motion** now provides seven reusable narrative recipes: Unequal Margins,
+Access Constraint, Relationship Build, Evidence Boundary, Dated System Break,
+Category Swap and Motif Resolve. Open `/illustrated.html?collection=story` in the
+lab for playback, scrubbing and narration-cue timing. See the
+[implementation guide and rendered gallery](./docs/story-motion-implementation.md)
+for prepared inputs, CLI export, verification and remaining S01E01 integration.
+All seven now share an original illustrated art kit, pinned channel fonts and
+distinct compositions; see the [visual gallery and narrated proof](./docs/story-motion-visual-implementation.md).
+
+**Cinematic Parallax** is one layered-camera family with anchored sweep, push-in,
+lateral track, foreground reveal, Rising Vista, Curved Approach, Detail to World and Focus Handoff variations. Use the lab's variation/scene,
+strength and duration controls to explore it. New variations start with one short
+preview using the existing renderer:
+
+```sh
+pnpm cinematic:preview --scene benchmarks/fixtures/cinematic-illustrated/ci-02-lateral-track.json --duration 4 --strength dramatic --output benchmarks/results/quick-track.mp4
+```
+
+This writes one video, its input/verification metadata and a review page. See the
+[updated iteration plan](./docs/cinematic-template-plan.md). The earlier multi-clip
+render commands remain available when a comparison is needed.
+
+[Rising Vista and Curved Approach](./docs/parallax-path-variations.md) add a vertical
+rise and a bowed forward path, with one four-second preview each.
+[Detail to World](./docs/detail-to-world-implementation.md) adds a researched axial
+pullback from the vessel to its wider chamber.
+[Focus Handoff](./docs/focus-handoff-implementation.md) transfers sharpness from
+foreground masonry to the courtyard figure.
+
+Still Shift is a local, deterministic still-image animation engine spike. The v0.1
+foundation and fake animation path are merged. The v0.2 depth worker prepares and caches
+normalized images and validated depth assets. v0.3 adds a browser preview of one
+conservative depth-based `slow_push` animation.
 
 The v0.1 fake animation path remains available with `--adapter noop` for compatibility
 checks; it writes an explicitly labeled `.noop.json` artifact.

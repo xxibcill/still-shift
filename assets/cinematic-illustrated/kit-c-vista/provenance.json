@@ -1,0 +1,36 @@
+{
+  "schemaVersion": "cinematic-asset-provenance-1",
+  "date": "2026-09-26",
+  "mode": "Codex built-in image_gen.imagegen",
+  "generationCalls": 2,
+  "outputsRetained": 2,
+  "promptFile": "prompts.md",
+  "providerCost": null,
+  "activePreparationMs": null,
+  "measurementNote": "Generation overlapped implementation; isolated preparation time and provider billing unavailable.",
+  "sourcePolicy": "Derived from existing generated landscape study art. No retired corpus image used. PNG outputs copied unchanged.",
+  "referenceSha256": "sha256:959ed784b0ac48f0b6f68bc337099020f11476fc35c39c8a583cc2806b6b79b3",
+  "reuse": ["ci-04-rising-vista"],
+  "assets": [
+    {
+      "file": "vista-terrain.png",
+      "originalOutput": "/Users/jjae/.codex/generated_images/01a0d814-3028-73f2-a581-e7000ab6637a/exec-35ea5567-ffc1-45c2-a390-0bf05c00d6d4.png",
+      "width": 1672,
+      "height": 941,
+      "mode": "RGBA",
+      "sha256": "sha256:b6d799559890ccc2ad24405eb07a859aa8a3ffe1d6836ac15b4d68f70c06a944",
+      "alphaExtrema": [0, 255],
+      "referenceAssets": ["../../history-offstage-v2/landscape.png"]
+    },
+    {
+      "file": "vista-ridge.png",
+      "originalOutput": "/Users/jjae/.codex/generated_images/01a0d814-3028-73f2-a581-e7000ab6637a/exec-5d3769be-ff17-4615-a11b-bd2515ecca9e.png",
+      "width": 1672,
+      "height": 941,
+      "mode": "RGBA",
+      "sha256": "sha256:5aefcf2fdce78df1823a0d68672758e8be991051691e0b8d997f2d9a615a31ad",
+      "alphaExtrema": [0, 255],
+      "referenceAssets": ["../../history-offstage-v2/landscape.png"]
+    }
+  ]
+}

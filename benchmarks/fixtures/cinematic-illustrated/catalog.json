@@ -1,0 +1,62 @@
+[
+  {
+    "id": "ci-09-layered-parallax",
+    "title": "Layered Parallax · The courtyard",
+    "description": "A broad, weighted camera sweep clears the near doorway while the figure stays anchored in the courtyard."
+  },
+  {
+    "id": "ci-09-layered-parallax-alternate",
+    "title": "Layered Parallax · Across the courtyard",
+    "description": "A second composition changes the subject position, plane spacing and camera direction."
+  },
+  {
+    "id": "ci-01-threshold-push",
+    "title": "Threshold Push · The storage chamber",
+    "description": "Move through the near stone doorway toward the vessel. The room approaches as a grounded whole; the distant chamber grows more slowly."
+  },
+  {
+    "id": "ci-01-threshold-push-alternate",
+    "title": "Threshold Push · A narrower entrance",
+    "description": "A narrower opening, unequal near depths and a tighter room composition create a second approach."
+  },
+  {
+    "id": "ci-02-lateral-track",
+    "title": "Lateral Track · Passing the storage chamber",
+    "description": "Travel sideways past the near stonework. The vessel and its floor drift together while the distant opening moves more slowly."
+  },
+  {
+    "id": "ci-02-lateral-track-alternate",
+    "title": "Lateral Track · Across the narrower chamber",
+    "description": "A tighter room, reversed travel and unequal foreground depths create a second sustained traverse."
+  },
+  {
+    "id": "ci-03-foreground-reveal",
+    "title": "Foreground Reveal · Behind the stone wall",
+    "description": "The near stone wall initially conceals part of the vessel, then clears it. The camera settles and holds the revealed room."
+  },
+  {
+    "id": "ci-03-foreground-reveal-alternate",
+    "title": "Foreground Reveal · The tighter opening",
+    "description": "A larger near wall, closer room framing and different depth spacing create a second reveal."
+  },
+  {
+    "id": "ci-04-rising-vista",
+    "title": "Rising Vista · Across the fields",
+    "description": "Rise above a near grassy bank. The foreground drops quickly while the fields and distant horizon move more slowly."
+  },
+  {
+    "id": "ci-07-curved-approach",
+    "title": "Curved Approach · Around the doorway",
+    "description": "Follow a bowed camera path into the doorway while keeping the vessel anchored. Near stone edges shift and grow around it."
+  },
+  {
+    "id": "ci-05-detail-to-world",
+    "title": "Detail to World · The vessel and its chamber",
+    "description": "Retreat from the vessel into the wider chamber. Near doorway posts enter the edges as the room and distant space recede at different rates."
+  },
+  {
+    "id": "ci-06-focus-handoff",
+    "title": "Focus Handoff · From stone to figure",
+    "description": "Focus leaves the near masonry and settles on the courtyard figure. A slight lateral drift supports the transfer."
+  }
+]

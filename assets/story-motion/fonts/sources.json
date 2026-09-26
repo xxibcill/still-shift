@@ -1,0 +1,38 @@
+[
+  {
+    "file": "source-serif-4-semibold.otf",
+    "url": "https://raw.githubusercontent.com/adobe-fonts/source-serif/release/OTF/SourceSerif4-Semibold.otf",
+    "sha256": "25e034392847d9965c92f98971b3646436b7ab919ece9118b0c0e5ec94c02efc",
+    "bytes": 252852
+  },
+  {
+    "file": "plex-sans-medium.ttf",
+    "url": "https://raw.githubusercontent.com/IBM/plex/master/packages/plex-sans/fonts/complete/ttf/IBMPlexSans-Medium.ttf",
+    "sha256": "331c8639d7598b2cde62a911a71db195e30cb655cd6bdf2e324a7e984955f907",
+    "bytes": 202460
+  },
+  {
+    "file": "plex-sans-semibold.ttf",
+    "url": "https://raw.githubusercontent.com/IBM/plex/master/packages/plex-sans/fonts/complete/ttf/IBMPlexSans-SemiBold.ttf",
+    "sha256": "a20caf8286023a6a7a85e40b1d2a4ae9fc3e3b1f9eda8f4c542dd4986af67bb1",
+    "bytes": 202632
+  },
+  {
+    "file": "plex-mono-medium.ttf",
+    "url": "https://raw.githubusercontent.com/IBM/plex/master/packages/plex-mono/fonts/complete/ttf/IBMPlexMono-Medium.ttf",
+    "sha256": "98fbd727aae340b236955879dabed4d991aac9e8e90b3b2a67ce4a59221cc97c",
+    "bytes": 174008
+  },
+  {
+    "file": "source-serif-LICENSE.md",
+    "url": "https://raw.githubusercontent.com/adobe-fonts/source-serif/release/LICENSE.md",
+    "sha256": "c21d7293d87b6d7ab1d0229a2f55b77f33a7613a6a4e66f6693d68d7d8d09464",
+    "bytes": 4491
+  },
+  {
+    "file": "plex-LICENSE.txt",
+    "url": "https://raw.githubusercontent.com/IBM/plex/master/LICENSE.txt",
+    "sha256": "7e6b2818edbd8f6a01ae80641cc8f16a51080d08fb4e532be3a0b6f74adb07da",
+    "bytes": 4456
+  }
+]

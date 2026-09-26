@@ -1,0 +1,848 @@
+{
+  "preset": "evidence_boundary",
+  "frameCount": 192,
+  "fps": 24,
+  "recipe": {
+    "preset": "evidence_boundary",
+    "supported": [
+      {
+        "node": "supported-a",
+        "window": {
+          "start": 12,
+          "end": 28,
+          "cue": "resources",
+          "easing": "out-cubic"
+        }
+      },
+      {
+        "node": "supported-b",
+        "window": {
+          "start": 30,
+          "end": 46,
+          "cue": "holdings",
+          "easing": "out-cubic"
+        }
+      }
+    ],
+    "unknown": {
+      "node": "unknown",
+      "window": {
+        "start": 60,
+        "end": 78,
+        "cue": "evidence-limit",
+        "easing": "out-cubic"
+      }
+    },
+    "composite": {
+      "node": "composite",
+      "window": {
+        "start": 114,
+        "end": 136,
+        "cue": "composite-is-separate",
+        "easing": "out-cubic"
+      }
+    },
+    "boundary": "boundary",
+    "qualifier": "qualifier",
+    "exits": [
+      {
+        "node": "supported-stage",
+        "window": {
+          "start": 50,
+          "end": 58,
+          "cue": "supported-recedes",
+          "easing": "out-cubic"
+        }
+      },
+      {
+        "node": "unknown",
+        "window": {
+          "start": 104,
+          "end": 112,
+          "cue": "limits-recede",
+          "easing": "out-cubic"
+        }
+      }
+    ],
+    "moves": [
+      {
+        "node": "supported-a",
+        "window": {
+          "start": 12,
+          "end": 28,
+          "cue": "resources-settle",
+          "easing": "out-quint"
+        },
+        "to": {
+          "x": 210,
+          "y": 532
+        }
+      },
+      {
+        "node": "supported-b",
+        "window": {
+          "start": 30,
+          "end": 46,
+          "cue": "holdings-settle",
+          "easing": "out-quint"
+        },
+        "to": {
+          "x": 1070,
+          "y": 552
+        }
+      },
+      {
+        "node": "unknown",
+        "window": {
+          "start": 60,
+          "end": 78,
+          "cue": "limit-settles",
+          "easing": "out-quint"
+        },
+        "to": {
+          "x": 0,
+          "y": 0
+        }
+      },
+      {
+        "node": "composite",
+        "window": {
+          "start": 114,
+          "end": 136,
+          "cue": "composite-settles",
+          "easing": "out-quint"
+        },
+        "to": {
+          "x": 0,
+          "y": 0
+        }
+      }
+    ],
+    "emphasis": []
+  },
+  "entry": {
+    "paper": {
+      "parent": null,
+      "pose": {
+        "x": 0,
+        "y": 0,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "title": {
+      "parent": null,
+      "pose": {
+        "x": 112,
+        "y": 96,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "intro": {
+      "parent": null,
+      "pose": {
+        "x": 116,
+        "y": 239,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "boundary": {
+      "parent": null,
+      "pose": {
+        "x": 0,
+        "y": 0,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "supported-stage": {
+      "parent": null,
+      "pose": {
+        "x": 0,
+        "y": 0,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "supported-heading": {
+      "parent": "supported-stage",
+      "pose": {
+        "x": 112,
+        "y": 391,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "supported-a": {
+      "parent": "supported-stage",
+      "pose": {
+        "x": 210,
+        "y": 550,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 0,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "supported-a-art": {
+      "parent": "supported-a",
+      "pose": {
+        "x": 0,
+        "y": 0,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "supported-a-label": {
+      "parent": "supported-a",
+      "pose": {
+        "x": 220,
+        "y": 270,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "supported-b": {
+      "parent": "supported-stage",
+      "pose": {
+        "x": 1070,
+        "y": 570,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 0,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "supported-b-art": {
+      "parent": "supported-b",
+      "pose": {
+        "x": 0,
+        "y": 0,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "supported-b-label": {
+      "parent": "supported-b",
+      "pose": {
+        "x": 250,
+        "y": 223,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "unknown": {
+      "parent": null,
+      "pose": {
+        "x": 0,
+        "y": 18,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 0,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "unknown-heading": {
+      "parent": "unknown",
+      "pose": {
+        "x": 112,
+        "y": 391,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "unknown-state": {
+      "parent": "unknown",
+      "pose": {
+        "x": 112,
+        "y": 534,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "unknown-mark": {
+      "parent": "unknown",
+      "pose": {
+        "x": 0,
+        "y": 0,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "unknown-note-a": {
+      "parent": "unknown",
+      "pose": {
+        "x": 112,
+        "y": 754,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "unknown-note-b": {
+      "parent": "unknown",
+      "pose": {
+        "x": 670,
+        "y": 754,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "composite": {
+      "parent": null,
+      "pose": {
+        "x": 0,
+        "y": 18,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 0,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "composite-title": {
+      "parent": "composite",
+      "pose": {
+        "x": 112,
+        "y": 391,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "composite-house": {
+      "parent": "composite",
+      "pose": {
+        "x": 1100,
+        "y": 485,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "composite-note": {
+      "parent": "composite",
+      "pose": {
+        "x": 112,
+        "y": 586,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "composite-note-end": {
+      "parent": "composite",
+      "pose": {
+        "x": 112,
+        "y": 692,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "qualifier": {
+      "parent": null,
+      "pose": {
+        "x": 112,
+        "y": 954,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    }
+  },
+  "exit": {
+    "paper": {
+      "parent": null,
+      "pose": {
+        "x": 0,
+        "y": 0,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "title": {
+      "parent": null,
+      "pose": {
+        "x": 112,
+        "y": 96,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "intro": {
+      "parent": null,
+      "pose": {
+        "x": 116,
+        "y": 239,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "boundary": {
+      "parent": null,
+      "pose": {
+        "x": 0,
+        "y": 0,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "supported-stage": {
+      "parent": null,
+      "pose": {
+        "x": 0,
+        "y": 0,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 0,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "supported-heading": {
+      "parent": "supported-stage",
+      "pose": {
+        "x": 112,
+        "y": 391,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "supported-a": {
+      "parent": "supported-stage",
+      "pose": {
+        "x": 210,
+        "y": 532,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "supported-a-art": {
+      "parent": "supported-a",
+      "pose": {
+        "x": 0,
+        "y": 0,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "supported-a-label": {
+      "parent": "supported-a",
+      "pose": {
+        "x": 220,
+        "y": 270,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "supported-b": {
+      "parent": "supported-stage",
+      "pose": {
+        "x": 1070,
+        "y": 552,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "supported-b-art": {
+      "parent": "supported-b",
+      "pose": {
+        "x": 0,
+        "y": 0,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "supported-b-label": {
+      "parent": "supported-b",
+      "pose": {
+        "x": 250,
+        "y": 223,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "unknown": {
+      "parent": null,
+      "pose": {
+        "x": 0,
+        "y": 0,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 0,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "unknown-heading": {
+      "parent": "unknown",
+      "pose": {
+        "x": 112,
+        "y": 391,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "unknown-state": {
+      "parent": "unknown",
+      "pose": {
+        "x": 112,
+        "y": 534,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "unknown-mark": {
+      "parent": "unknown",
+      "pose": {
+        "x": 0,
+        "y": 0,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "unknown-note-a": {
+      "parent": "unknown",
+      "pose": {
+        "x": 112,
+        "y": 754,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "unknown-note-b": {
+      "parent": "unknown",
+      "pose": {
+        "x": 670,
+        "y": 754,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "composite": {
+      "parent": null,
+      "pose": {
+        "x": 0,
+        "y": 0,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "composite-title": {
+      "parent": "composite",
+      "pose": {
+        "x": 112,
+        "y": 391,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "composite-house": {
+      "parent": "composite",
+      "pose": {
+        "x": 1100,
+        "y": 485,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "composite-note": {
+      "parent": "composite",
+      "pose": {
+        "x": 112,
+        "y": 586,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "composite-note-end": {
+      "parent": "composite",
+      "pose": {
+        "x": 112,
+        "y": 692,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "qualifier": {
+      "parent": null,
+      "pose": {
+        "x": 112,
+        "y": 954,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    }
+  },
+  "sourceChecksum": "sha256:eae9b13fe0105a6f87d3f1f8a7ec42931d1b1eb83060e33d9beb61a87965583f"
+}

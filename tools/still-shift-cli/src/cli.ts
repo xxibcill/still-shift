@@ -4,6 +4,7 @@ import { pathToFileURL } from "node:url";
 import {
   NoopAnimationEngine,
   WebGLAnimationEngine,
+  PreparedAnimationEngine,
 } from "@still-shift/animation-engine";
 import {
   AnimationEngineError,
@@ -32,6 +33,7 @@ const HELP = `Still Shift v${ENGINE_VERSION}
 
 Usage:
   pnpm --silent still-shift animate --input <path> --output <path> [options]
+  pnpm still-shift animate-scene --scene <prepared.json> --output <path>
   pnpm --silent still-shift batch --manifest <jsonl> --output-dir <path> [--concurrency 1|2]
 
 The default adapter writes a validated 1080p H.264 MP4 and scene manifest.
@@ -202,6 +204,19 @@ export const runCli = async (
       });
       io.stdout(`${JSON.stringify(summary)}\n`);
       return exitCode;
+    } catch (error) {
+      return writeFailure(error, io);
+    }
+  }
+  if (args[0] === "animate-scene") {
+    try {
+      const values = parseNamedArguments(args.slice(1), ["scene", "output"]);
+      const result = await new PreparedAnimationEngine().animate({
+        scenePath: requireArgument(values, "scene"),
+        outputPath: requireArgument(values, "output"),
+      });
+      io.stdout(`${JSON.stringify(result)}\n`);
+      return 0;
     } catch (error) {
       return writeFailure(error, io);
     }

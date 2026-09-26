@@ -39,6 +39,8 @@ import {
   type GateEvidence,
 } from "./report-evidence.ts";
 
+import { parseEvaluationPresets } from "./presets.ts";
+
 const option = (name: string): string | undefined => {
   const index = process.argv.indexOf(name);
   return index < 0 ? undefined : process.argv[index + 1];
@@ -177,6 +179,7 @@ if (repeatRecords) validateEvaluationRecords(corpus, repeatRecords);
 const summary = JSON.parse(
   await readFile(join(dirname(resultsPath), "batch-summary.json"), "utf8"),
 ) as {
+  manifestPath: string;
   totalWallMs: number;
   itemCount: number;
   successful: number;
@@ -185,6 +188,58 @@ const summary = JSON.parse(
   manifestSha256?: string;
   artifactSetSha256?: string;
 };
+if (!summary.manifestPath) {
+  throw new Error("Batch summary has no prepared request manifest path");
+}
+const preparedRequests = (await readFile(summary.manifestPath, "utf8"))
+  .split(/\r?\n/)
+  .filter((line) => line.trim())
+  .map(
+    (line) =>
+      JSON.parse(line) as {
+        id: string;
+        inputPath: string;
+        durationMs: number;
+        preset: string;
+      },
+  );
+const preparedPresets = parseEvaluationPresets(
+  [...new Set(preparedRequests.map((request) => request.preset))].join(","),
+);
+const expectedRequests = new Map<
+  string,
+  { inputPath: string; durationMs: number; preset: string }
+>(
+  corpus.entries.flatMap((entry) =>
+    preparedPresets.map(
+      (preset) =>
+        [
+          `${entry.id}-${preset.replaceAll("_", "-")}`,
+          {
+            inputPath: resolve(dirname(corpusPath), entry.source.path),
+            durationMs: entry.expectedShotDurationMs,
+            preset,
+          },
+        ] as const,
+    ),
+  ),
+);
+if (
+  preparedRequests.length !== expectedRequests.size ||
+  preparedRequests.some((request) => {
+    const expected = expectedRequests.get(request.id);
+    return (
+      !expected ||
+      request.inputPath !== expected.inputPath ||
+      request.durationMs !== expected.durationMs ||
+      request.preset !== expected.preset
+    );
+  }) ||
+  new Set(preparedRequests.map((request) => request.id)).size !==
+    preparedRequests.length
+) {
+  throw new Error("Prepared requests do not match this corpus and preset set");
+}
 if (
   summary.itemCount !== records.length ||
   summary.successful !== results.length
@@ -225,9 +280,13 @@ try {
   if ((error as NodeJS.ErrnoException).code !== "ENOENT") throw error;
 }
 const benchmarkRun = selectBenchmarkRun(summary, runHistory);
-const expectedCount = corpus.entries.length * 3;
+const expectedCount = preparedRequests.length;
+const expectedIds = new Set(preparedRequests.map((request) => request.id));
 const batchMeasured =
-  records.length === expectedCount && summary.itemCount === expectedCount;
+  records.length === expectedCount &&
+  new Set(records.map((record) => record.id)).size === expectedCount &&
+  records.every((record) => expectedIds.has(record.id)) &&
+  summary.itemCount === expectedCount;
 const independentRendersMatch = repeatRecords
   ? await compareIndependentRenders(records, repeatRecords)
   : false;
@@ -500,6 +559,7 @@ const report = {
     review: corpus.review.status,
     freezeBlockers: freezeBlockers.map((blocker) => blocker.code),
     entryCount: corpus.entries.length,
+    presets: preparedPresets,
     expectedClipCount: expectedCount,
   },
   results: {

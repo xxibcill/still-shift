@@ -1,0 +1,523 @@
+{
+  "title": "Relationship Build",
+  "fps": 24,
+  "width": 1920,
+  "height": 1080,
+  "background": "#E8DFC9",
+  "assets": [
+    {
+      "id": "house",
+      "path": "../../../assets/story-motion/art/house.svg",
+      "sha256": "sha256:a8fa4eff374ba974770317dd483ca7b2e5b8d1f0bd7a9224ada091db42542a60",
+      "width": 600,
+      "height": 440
+    },
+    {
+      "id": "store",
+      "path": "../../../assets/story-motion/art/store.svg",
+      "sha256": "sha256:8ba708bf4866da92ada1eed3dc788db98a961e7cf84fcafe8615fe734f13042c",
+      "width": 600,
+      "height": 520
+    },
+    {
+      "id": "land",
+      "path": "../../../assets/story-motion/art/land.svg",
+      "sha256": "sha256:c5c5d753a8ddd1f93da52c1171d204b260a0a2e01aa6d8c034065294345237fc",
+      "width": 640,
+      "height": 260
+    },
+    {
+      "id": "access",
+      "path": "../../../assets/story-motion/art/access.svg",
+      "sha256": "sha256:e9c7985f055ac7e07a49dbbfeadba7796175c856d5e32ab3e72f81e36b91dd1d",
+      "width": 520,
+      "height": 240
+    },
+    {
+      "id": "pressure",
+      "path": "../../../assets/story-motion/art/pressure.svg",
+      "sha256": "sha256:9ad0b18f2455c3fb9abe39f88a78c30dfa8ecfaf338a4d6235abfa14378958d7",
+      "width": 350,
+      "height": 110
+    },
+    {
+      "id": "access-crisis",
+      "path": "../../../assets/story-motion/art/access-crisis.svg",
+      "sha256": "sha256:bcfd00a8edd0787983aaa028b6a084f7a7b9d55dfa319b232922f0c5767f20ec",
+      "width": 520,
+      "height": 240
+    },
+    {
+      "id": "category-a",
+      "path": "../../../assets/story-motion/art/category-a.svg",
+      "sha256": "sha256:b5453d5780bb242d3022d460bb3f08191c1c93a0fba5c6448e2ba0c56c134d78",
+      "width": 600,
+      "height": 420
+    },
+    {
+      "id": "category-b",
+      "path": "../../../assets/story-motion/art/category-b.svg",
+      "sha256": "sha256:4887350b4a8f18324724a9727a30768be9fd9273cbffe535fd3df2341e9f0352",
+      "width": 600,
+      "height": 420
+    },
+    {
+      "id": "ground",
+      "path": "../../../assets/story-motion/art/ground.svg",
+      "sha256": "sha256:05a94509840b715518e055bc586a084c7d5c742d07486391c72cb7fa5ec86238",
+      "width": 1920,
+      "height": 300
+    },
+    {
+      "id": "paper",
+      "path": "../../../assets/story-motion/art/paper.svg",
+      "sha256": "sha256:f5a47b015f900631504b76ad6ebe587c43914b0ef0e45db460bb187c69f37b30",
+      "width": 1920,
+      "height": 1080
+    }
+  ],
+  "fonts": [
+    {
+      "id": "display",
+      "path": "../../../assets/story-motion/fonts/source-serif-4-semibold.otf",
+      "sha256": "sha256:25e034392847d9965c92f98971b3646436b7ab919ece9118b0c0e5ec94c02efc",
+      "weight": "600"
+    },
+    {
+      "id": "label",
+      "path": "../../../assets/story-motion/fonts/plex-sans-medium.ttf",
+      "sha256": "sha256:331c8639d7598b2cde62a911a71db195e30cb655cd6bdf2e324a7e984955f907",
+      "weight": "500"
+    },
+    {
+      "id": "label-strong",
+      "path": "../../../assets/story-motion/fonts/plex-sans-semibold.ttf",
+      "sha256": "sha256:a20caf8286023a6a7a85e40b1d2a4ae9fc3e3b1f9eda8f4c542dd4986af67bb1",
+      "weight": "600"
+    },
+    {
+      "id": "source",
+      "path": "../../../assets/story-motion/fonts/plex-mono-medium.ttf",
+      "sha256": "sha256:98fbd727aae340b236955879dabed4d991aac9e8e90b3b2a67ce4a59221cc97c",
+      "weight": "500"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "paper",
+      "x": 0,
+      "y": 0,
+      "width": 1920,
+      "height": 1080,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "image",
+      "states": [{ "asset": "paper" }],
+      "fit": "contain"
+    },
+    {
+      "id": "ground",
+      "x": 0,
+      "y": 790,
+      "width": 1920,
+      "height": 290,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "image",
+      "states": [{ "asset": "ground" }],
+      "fit": "stretch"
+    },
+    {
+      "id": "title",
+      "x": 112,
+      "y": 88,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "text",
+      "text": "Food was only part of it.",
+      "fontSize": 94,
+      "color": "#211F1B",
+      "weight": "normal",
+      "font": "sans-serif",
+      "fontAsset": "display",
+      "align": "left"
+    },
+    {
+      "id": "land-link",
+      "x": 0,
+      "y": 0,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "path",
+      "points": [
+        [0, 0],
+        [1, 1]
+      ],
+      "stroke": "#59664D",
+      "lineWidth": 32,
+      "lineStyle": "brush",
+      "gapAt": 0.6,
+      "gapSize": 0.1
+    },
+    {
+      "id": "access-link",
+      "x": 0,
+      "y": 0,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "path",
+      "points": [
+        [0, 0],
+        [1, 1]
+      ],
+      "stroke": "#59664D",
+      "lineWidth": 32,
+      "lineStyle": "brush",
+      "gapAt": 0.6,
+      "gapSize": 0.1
+    },
+    {
+      "id": "claims-link",
+      "x": 0,
+      "y": 0,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "path",
+      "points": [
+        [0, 0],
+        [1, 1]
+      ],
+      "stroke": "#8B3F36",
+      "lineWidth": 32,
+      "lineStyle": "brush",
+      "gapAt": 0.6,
+      "gapSize": 0.1
+    },
+    {
+      "id": "store",
+      "x": 130,
+      "y": 342,
+      "width": 620,
+      "height": 537,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "image",
+      "states": [{ "asset": "store" }],
+      "fit": "contain"
+    },
+    {
+      "id": "store-label",
+      "x": 450,
+      "y": 905,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "text",
+      "text": "Grain",
+      "fontSize": 56,
+      "color": "#211F1B",
+      "weight": "normal",
+      "font": "sans-serif",
+      "fontAsset": "label",
+      "align": "center"
+    },
+    {
+      "id": "resources",
+      "x": 1070,
+      "y": 307,
+      "width": 520,
+      "height": 299,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "group",
+      "clip": false
+    },
+    {
+      "id": "resources-art",
+      "parent": "resources",
+      "x": 0,
+      "y": 0,
+      "width": 520,
+      "height": 211,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "image",
+      "states": [{ "asset": "land" }],
+      "fit": "contain"
+    },
+    {
+      "id": "resources-label",
+      "parent": "resources",
+      "x": 260,
+      "y": 231,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "text",
+      "text": "Land",
+      "fontSize": 56,
+      "color": "#211F1B",
+      "weight": "normal",
+      "font": "sans-serif",
+      "fontAsset": "label-strong",
+      "align": "center"
+    },
+    {
+      "id": "access",
+      "x": 1190,
+      "y": 622,
+      "width": 380,
+      "height": 263,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "group",
+      "clip": false
+    },
+    {
+      "id": "access-art",
+      "parent": "access",
+      "x": 0,
+      "y": 0,
+      "width": 380,
+      "height": 175,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "image",
+      "states": [{ "asset": "access" }],
+      "fit": "contain"
+    },
+    {
+      "id": "access-label",
+      "parent": "access",
+      "x": 190,
+      "y": 195,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "text",
+      "text": "Access",
+      "fontSize": 56,
+      "color": "#211F1B",
+      "weight": "normal",
+      "font": "sans-serif",
+      "fontAsset": "label-strong",
+      "align": "center"
+    },
+    {
+      "id": "claims",
+      "x": 1450,
+      "y": 881,
+      "width": 360,
+      "height": 140,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "group",
+      "clip": false
+    },
+    {
+      "id": "claims-mark",
+      "parent": "claims",
+      "x": 0,
+      "y": 0,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "path",
+      "points": [
+        [0, 0],
+        [0, 75],
+        [38, 75]
+      ],
+      "stroke": "#8B3F36",
+      "lineWidth": 7,
+      "gapAt": 0.6,
+      "gapSize": 0.1
+    },
+    {
+      "id": "claims-label",
+      "parent": "claims",
+      "x": 52,
+      "y": 5,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "text",
+      "text": "Claims",
+      "fontSize": 56,
+      "color": "#8B3F36",
+      "weight": "normal",
+      "font": "sans-serif",
+      "fontAsset": "label",
+      "align": "left"
+    }
+  ],
+  "provenance": "Original code-authored symbolic editorial illustrations for reusable motion studies. Layered Chronicle palette and typography. No selected S01E01 image is modified; these are explanatory fixtures, not authentic evidence or a finished episode.",
+  "schemaVersion": "story-scene-1",
+  "frameCount": 192,
+  "review": {
+    "essentialText": [
+      "store-label",
+      "resources-label",
+      "access-label",
+      "claims-label"
+    ]
+  },
+  "recipe": {
+    "preset": "relationship_build",
+    "anchor": "store",
+    "branches": [
+      {
+        "path": "land-link",
+        "destination": "resources",
+        "window": {
+          "start": 12,
+          "end": 34,
+          "cue": "land",
+          "easing": "out-cubic"
+        },
+        "arrival": {
+          "start": 24,
+          "end": 42,
+          "cue": "land-arrives",
+          "easing": "out-quint"
+        }
+      },
+      {
+        "path": "access-link",
+        "destination": "access",
+        "window": {
+          "start": 50,
+          "end": 76,
+          "cue": "access",
+          "easing": "out-cubic"
+        },
+        "arrival": {
+          "start": 64,
+          "end": 84,
+          "cue": "access-arrives",
+          "easing": "out-quint"
+        }
+      },
+      {
+        "path": "claims-link",
+        "destination": "claims",
+        "window": {
+          "start": 95,
+          "end": 117,
+          "cue": "claims",
+          "easing": "out-cubic"
+        },
+        "arrival": {
+          "start": 107,
+          "end": 126,
+          "cue": "claims-arrive",
+          "easing": "out-quint"
+        }
+      }
+    ],
+    "moves": [
+      {
+        "node": "resources",
+        "window": {
+          "start": 24,
+          "end": 42,
+          "cue": "land-settles",
+          "easing": "out-quint"
+        },
+        "to": { "x": 1070, "y": 285 }
+      },
+      {
+        "node": "access",
+        "window": {
+          "start": 64,
+          "end": 84,
+          "cue": "access-settles",
+          "easing": "out-quint"
+        },
+        "to": { "x": 1190, "y": 600 }
+      },
+      {
+        "node": "claims",
+        "window": {
+          "start": 107,
+          "end": 126,
+          "cue": "claims-settle",
+          "easing": "out-quint"
+        },
+        "to": { "x": 1450, "y": 863 }
+      }
+    ],
+    "emphasis": [
+      {
+        "node": "resources-art",
+        "window": {
+          "start": 65,
+          "end": 97,
+          "cue": "access-focus",
+          "easing": "out-cubic"
+        },
+        "opacity": 0.65
+      },
+      {
+        "node": "resources-art",
+        "window": {
+          "start": 116,
+          "end": 138,
+          "cue": "whole-system",
+          "easing": "out-cubic"
+        },
+        "opacity": 1
+      }
+    ]
+  },
+  "connectors": [
+    {
+      "path": "land-link",
+      "from": { "node": "store", "point": [550, 170] },
+      "to": { "node": "resources", "point": [40, 160] },
+      "bend": -36
+    },
+    {
+      "path": "access-link",
+      "from": { "node": "store", "point": [552, 330] },
+      "to": { "node": "access", "point": [12, 88] },
+      "bend": 28
+    },
+    {
+      "path": "claims-link",
+      "from": { "node": "store", "point": [320, 500] },
+      "to": { "node": "claims", "point": [0, 40] },
+      "bend": 25
+    }
+  ]
+}

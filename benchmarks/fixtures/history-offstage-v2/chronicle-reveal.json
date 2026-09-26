@@ -1,0 +1,275 @@
+{
+  "schemaVersion": "illustrated-scene-1",
+  "title": "Layered reveal",
+  "durationMs": 7000,
+  "fps": 24,
+  "width": 1920,
+  "height": 1080,
+  "background": "#E8DFC9",
+  "assets": [
+    {
+      "id": "landscape",
+      "path": "../../../assets/history-offstage-v2/landscape.png",
+      "sha256": "sha256:959ed784b0ac48f0b6f68bc337099020f11476fc35c39c8a583cc2806b6b79b3",
+      "width": 1672,
+      "height": 941
+    },
+    {
+      "id": "objects",
+      "path": "../../../assets/history-offstage-v2/objects-v1.png",
+      "sha256": "sha256:274cdaed676284c7225a2a83645288ff2fe7771bc75b4bbda6df92fbd9afc741",
+      "width": 1536,
+      "height": 1024
+    },
+    {
+      "id": "bowl-states",
+      "path": "../../../assets/history-offstage-v2/bowl-states.png",
+      "sha256": "sha256:047a9a3e5183af81567faafea31403d86bae91abb71be3f8f3245b89fe62d02d",
+      "width": 1774,
+      "height": 887
+    }
+  ],
+  "nodes": [
+    {
+      "id": "kicker",
+      "x": 112,
+      "y": 72,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "text",
+      "text": "STILL SHIFT   /   MOTION STUDY 01",
+      "fontSize": 25,
+      "color": "#59664D",
+      "weight": "bold",
+      "font": "sans-serif",
+      "align": "left"
+    },
+    {
+      "id": "title",
+      "x": 110,
+      "y": 119,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "text",
+      "text": "Beyond the store",
+      "fontSize": 76,
+      "color": "#211F1B",
+      "weight": "normal",
+      "font": "serif",
+      "align": "left"
+    },
+    {
+      "id": "subtitle",
+      "x": 114,
+      "y": 217,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "text",
+      "text": "A foreground layer gives way to the relationship behind it.",
+      "fontSize": 31,
+      "color": "#59664D",
+      "weight": "normal",
+      "font": "sans-serif",
+      "align": "left"
+    },
+    {
+      "id": "footer-rule",
+      "x": 112,
+      "y": 971,
+      "width": 1696,
+      "height": 2,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "rect",
+      "fill": "#211F1B",
+      "lineWidth": 0,
+      "radius": 0
+    },
+    {
+      "id": "footer",
+      "x": 112,
+      "y": 994,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "text",
+      "text": "LAYERED CHRONICLE   ·   ORIGINAL ILLUSTRATION / SCHEMATIC DEMONSTRATION",
+      "fontSize": 22,
+      "color": "#59664D",
+      "weight": "normal",
+      "font": "sans-serif",
+      "align": "left"
+    },
+    {
+      "id": "land",
+      "x": 112,
+      "y": 287,
+      "width": 1696,
+      "height": 650,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "image",
+      "states": [
+        {
+          "asset": "landscape"
+        }
+      ],
+      "fit": "cover"
+    },
+    {
+      "id": "threshold",
+      "x": 702,
+      "y": 403,
+      "width": 399,
+      "height": 486,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "image",
+      "states": [
+        {
+          "asset": "objects",
+          "crop": [565, 516, 408, 478]
+        }
+      ],
+      "fit": "contain"
+    },
+    {
+      "id": "connection",
+      "x": 0,
+      "y": 0,
+      "width": 1920,
+      "height": 1080,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "group",
+      "clip": false
+    },
+    {
+      "id": "connection-path",
+      "parent": "connection",
+      "x": 0,
+      "y": 0,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "path",
+      "points": [
+        [858, 815],
+        [872.878273292824, 821.0847529658564],
+        [887.2761863425927, 826.4801070601853],
+        [901.21337890625, 831.210205078125],
+        [914.7094907407406, 835.2991898148147],
+        [927.7841616030095, 838.7712040653936],
+        [940.45703125, 841.650390625],
+        [952.7477394386574, 843.9608922887732],
+        [964.6759259259261, 845.7268518518521],
+        [976.26123046875, 846.972412109375],
+        [987.523292824074, 847.7217158564814],
+        [998.4817527488427, 847.9989058883103],
+        [1009.15625, 847.828125],
+        [1019.5664243344909, 847.2335159866899],
+        [1029.7319155092591, 846.2392216435186],
+        [1039.67236328125, 844.869384765625],
+        [1049.4074074074074, 843.1481481481482],
+        [1058.9566876446759, 841.0996545862267],
+        [1068.33984375, 838.748046875],
+        [1077.5765154803244, 836.1174678096066],
+        [1086.6863425925924, 833.2320601851851],
+        [1095.68896484375, 830.115966796875],
+        [1104.6040219907409, 826.7933304398149],
+        [1113.4511537905091, 823.2882939091435],
+        [1122.25, 819.625],
+        [1131.0202003761574, 815.8275915075233],
+        [1139.7813946759259, 811.9202112268517],
+        [1148.55322265625, 807.927001953125],
+        [1157.3553240740744, 803.8721064814815],
+        [1166.2073386863424, 799.7796676070601],
+        [1175.12890625, 795.673828125],
+        [1184.1396665219909, 791.57873083044],
+        [1193.2592592592591, 787.5185185185185],
+        [1202.50732421875, 783.517333984375],
+        [1211.9035011574074, 779.599320023148],
+        [1221.4674298321759, 775.7886194299768],
+        [1231.21875, 772.109375],
+        [1241.1771014178241, 768.5857295283565],
+        [1251.3621238425926, 765.2418258101852],
+        [1261.79345703125, 762.101806640625],
+        [1272.4907407407409, 759.1898148148148],
+        [1283.4736147280091, 756.5299931278935],
+        [1294.76171875, 754.146484375],
+        [1306.3746925636574, 752.0634313512732],
+        [1318.3321759259259, 750.3049768518518],
+        [1330.65380859375, 748.895263671875],
+        [1343.3592303240741, 747.8584346064816],
+        [1356.4680808738426, 747.2186324508102],
+        [1370, 747]
+      ],
+      "stroke": "#B47A2A",
+      "lineWidth": 16,
+      "gapAt": 0.6,
+      "gapSize": 0.1
+    },
+    {
+      "id": "destination",
+      "parent": "connection",
+      "x": 1330,
+      "y": 620,
+      "width": 225,
+      "height": 276,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "image",
+      "states": [
+        {
+          "asset": "objects",
+          "crop": [580, 31, 386, 455]
+        }
+      ],
+      "fit": "contain"
+    },
+    {
+      "id": "foreground",
+      "x": 248,
+      "y": 541,
+      "width": 670,
+      "height": 400,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "image",
+      "states": [
+        {
+          "asset": "objects",
+          "crop": [36, 66, 466, 386]
+        }
+      ],
+      "fit": "contain"
+    }
+  ],
+  "recipe": {
+    "preset": "chronicle_reveal",
+    "foreground": "foreground",
+    "middle": "threshold",
+    "reveal": "connection",
+    "travel": -76
+  },
+  "provenance": "Original Codex-generated illustration assets. See assets/history-offstage-v2/provenance.json. Engineering and creative proof only; no selected episode assets."
+}

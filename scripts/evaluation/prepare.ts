@@ -8,7 +8,7 @@ import {
   findCorpusFreezeBlockers,
 } from "@still-shift/scene-contract";
 import { imageSize } from "image-size";
-import { EVALUATION_PRESETS, evaluationClipId } from "./presets.ts";
+import { evaluationClipId, parseEvaluationPresets } from "./presets.ts";
 
 const arg = (name: string): string => {
   const index = process.argv.indexOf(name);
@@ -21,6 +21,9 @@ const arg = (name: string): string => {
 const corpusPath = resolve(arg("--corpus"));
 const outputPath = resolve(arg("--output"));
 const allowCandidate = process.argv.includes("--allow-candidate");
+const presets = parseEvaluationPresets(
+  process.argv.includes("--presets") ? arg("--presets") : undefined,
+);
 const corpusBytes = await readFile(corpusPath);
 const corpus = CorpusManifestSchema.parse(
   JSON.parse(corpusBytes.toString("utf8")),
@@ -54,7 +57,7 @@ for (const entry of corpus.entries) {
     dimensions.height !== entry.dimensions.height
   )
     throw new Error(`Source dimensions mismatch: ${entry.id}`);
-  for (const preset of EVALUATION_PRESETS)
+  for (const preset of presets)
     items.push({
       id: evaluationClipId(entry.id, preset),
       inputPath: path,
@@ -79,7 +82,7 @@ const metadata = {
   engineVersion: ENGINE_VERSION,
   entryCount: corpus.entries.length,
   requestCount: items.length,
-  presets: EVALUATION_PRESETS,
+  presets,
   intensity: "standard",
 };
 await writeFile(

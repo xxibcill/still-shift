@@ -1,0 +1,105 @@
+{
+  "title": "Rising Vista · Across the fields",
+  "durationMs": 4000,
+  "fps": 24,
+  "width": 1920,
+  "height": 1080,
+  "background": "#E8DFC9",
+  "assets": [
+    {
+      "id": "far",
+      "path": "../../../assets/history-offstage-v2/landscape.png",
+      "sha256": "sha256:959ed784b0ac48f0b6f68bc337099020f11476fc35c39c8a583cc2806b6b79b3",
+      "width": 1672,
+      "height": 941
+    },
+    {
+      "id": "terrain",
+      "path": "../../../assets/cinematic-illustrated/kit-c-vista/vista-terrain.png",
+      "sha256": "sha256:b6d799559890ccc2ad24405eb07a859aa8a3ffe1d6836ac15b4d68f70c06a944",
+      "width": 1672,
+      "height": 941
+    },
+    {
+      "id": "ridge",
+      "path": "../../../assets/cinematic-illustrated/kit-c-vista/vista-ridge.png",
+      "sha256": "sha256:5aefcf2fdce78df1823a0d68672758e8be991051691e0b8d997f2d9a615a31ad",
+      "width": 1672,
+      "height": 941
+    }
+  ],
+  "nodes": [
+    {
+      "id": "far",
+      "x": -155,
+      "y": -100,
+      "width": 2230,
+      "height": 1255.041866028708,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "image",
+      "states": [{ "asset": "far" }],
+      "fit": "stretch"
+    },
+    {
+      "id": "terrain",
+      "x": -155,
+      "y": -100,
+      "width": 2230,
+      "height": 1255.041866028708,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "image",
+      "states": [{ "asset": "terrain" }],
+      "fit": "stretch"
+    },
+    {
+      "id": "ridge",
+      "x": -285,
+      "y": -250,
+      "width": 2487.5664187035068,
+      "height": 1400,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "image",
+      "states": [{ "asset": "ridge" }],
+      "fit": "stretch"
+    }
+  ],
+  "provenance": "../../../assets/cinematic-illustrated/kit-c-vista/provenance.json",
+  "schemaVersion": "illustrated-scene-2",
+  "layers": [
+    {
+      "node": "far",
+      "depth": 12,
+      "paintedBounds": [0, 0, 2230, 1255.041866028708]
+    },
+    {
+      "node": "terrain",
+      "depth": 4,
+      "protectedRegion": [
+        [1200.358851674641, 560.1674641148325],
+        [1733.8516746411483, 560.1674641148325],
+        [1733.8516746411483, 840.2511961722488],
+        [1200.358851674641, 840.2511961722488]
+      ],
+      "edgeAttachments": ["left", "right", "bottom"]
+    },
+    {
+      "node": "ridge",
+      "depth": 1,
+      "edgeAttachments": ["left", "right", "bottom"]
+    }
+  ],
+  "camera": { "travel": [0, -40], "anchor": [0.5, 0.5] },
+  "recipe": {
+    "preset": "rising_vista",
+    "foreground": "ridge",
+    "subject": "terrain",
+    "background": "far",
+    "intensity": "dramatic"
+  }
+}

@@ -9,6 +9,7 @@ import {
   analyzeDepthSafety,
   applySafetyToScene,
   fallback2DScene,
+  isFlatPreset,
   resolvePreviewScene,
   type PreviewPreset,
   type PreviewScene,
@@ -34,8 +35,8 @@ import type { AnimationEngine } from "./animation-engine.ts";
 
 const execFileAsync = promisify(execFile);
 const projectRoot = resolve(import.meta.dirname, "../../..");
-const PIPELINE_VERSION = "animation-pipeline-0.10.0";
-const resolveFrameTransport = (): "png_pipe" | "jpeg_pipe" => {
+const PIPELINE_VERSION = "animation-pipeline-0.11.0";
+export const resolveFrameTransport = (): "png_pipe" | "jpeg_pipe" => {
   const value = process.env.STILL_SHIFT_FRAME_TRANSPORT ?? "png_pipe";
   if (value !== "png_pipe" && value !== "jpeg_pipe")
     throw new AnimationEngineError("SCENE_INVALID", "Unknown frame transport", {
@@ -196,7 +197,7 @@ const normalizeOrFail = async (
   }
   throw new AnimationEngineError(
     "DEPTH_INFERENCE_FAILED",
-    "Unable to normalize source for 2D fallback",
+    "Unable to normalize source image",
     { inputPath },
   );
 };
@@ -248,6 +249,20 @@ const prepareAssets = async (
   };
 };
 
+const normalizeFlatAssets = async (
+  inputPath: string,
+): Promise<Awaited<ReturnType<typeof prepareAssets>>> => {
+  const normalized = await normalizeOrFail(inputPath);
+  return {
+    sourcePath: normalized.sourcePath,
+    depthPath: null,
+    dimensions: normalized.dimensions,
+    cacheStatus: normalized.cacheStatus,
+    model: null,
+    workerMetrics: {},
+    normalizationWarnings: normalized.normalizationWarnings,
+  };
+};
 const normalizationWarning = (workerCode: string): PreviewWarning => ({
   code: "SOURCE_NORMALIZATION_WARNING",
   message:
@@ -396,11 +411,15 @@ export class WebGLAnimationEngine implements AnimationEngine {
       );
     }
     const sourceHash = sha256(originalSource);
-    const prepared = await prepareAssets(
-      inputPath,
-      this.depthAdapter,
-      this.requestedDepthDevice,
-    );
+    const intentionalFlat =
+      request.preset !== "auto" && isFlatPreset(request.preset);
+    const prepared = intentionalFlat
+      ? await normalizeFlatAssets(inputPath)
+      : await prepareAssets(
+          inputPath,
+          this.depthAdapter,
+          this.requestedDepthDevice,
+        );
     const normalizedSourceHash = sha256(await readFile(prepared.sourcePath));
     const depthHash = prepared.depthPath
       ? sha256(await readFile(prepared.depthPath))
@@ -421,7 +440,9 @@ export class WebGLAnimationEngine implements AnimationEngine {
       seed: request.seed,
     });
     let scene: PreviewScene;
-    if (!prepared.depthPath) {
+    if (initialScene.motion.mode === "flat_2d") {
+      scene = initialScene;
+    } else if (!prepared.depthPath) {
       scene = fallback2DScene(initialScene, "DEPTH_PREPARATION_FAILED");
     } else {
       try {
@@ -470,7 +491,8 @@ export class WebGLAnimationEngine implements AnimationEngine {
         safeCrop: scene.motion.maximumCrop,
       },
       quality: {
-        riskScore: scene.quality?.riskScore ?? 1,
+        riskScore:
+          scene.motion.mode === "flat_2d" ? 0 : (scene.quality?.riskScore ?? 1),
         fallback: scene.motion.mode === "fallback_2d",
         warnings,
       },
@@ -484,8 +506,7 @@ export class WebGLAnimationEngine implements AnimationEngine {
       exported = await exportScene({
         scene,
         sourcePath: prepared.sourcePath,
-        depthPath:
-          scene.motion.mode === "fallback_2d" ? null : prepared.depthPath,
+        depthPath: scene.motion.mode === "depth" ? prepared.depthPath : null,
         outputPath,
         transport: frameTransport,
         sceneManifestContents: serializedScene,
@@ -558,7 +579,7 @@ export class WebGLAnimationEngine implements AnimationEngine {
           peakGpuMemoryBytes: prepared.workerMetrics.peakGpuMemoryBytes ?? null,
           outputBytes: exported.outputBytes,
           selectedDevice: prepared.workerMetrics.selectedDevice ?? "2d",
-          hardwareDescription: `${prepared.workerMetrics.hardwareDescription ?? "2D fallback"}; export ${exported.gpuRenderer}`,
+          hardwareDescription: `${prepared.workerMetrics.hardwareDescription ?? (scene.motion.mode === "flat_2d" ? "Intentional flat 2D" : "2D fallback")}; export ${exported.gpuRenderer}`,
           versions: {
             engine: ENGINE_VERSION,
             pipeline: PIPELINE_VERSION,

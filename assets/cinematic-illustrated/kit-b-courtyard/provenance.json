@@ -1,0 +1,62 @@
+{
+  "schemaVersion": "cinematic-asset-provenance-1",
+  "date": "2026-09-25",
+  "mode": "Codex built-in image_gen.imagegen",
+  "generationCalls": 4,
+  "outputsRetained": 4,
+  "promptFile": "prompts.md",
+  "workflowStartedAt": "2026-09-25T15:21:49.263Z",
+  "generationCompletedAt": "2026-09-25T15:28:01.010Z",
+  "assetWorkflowElapsedMs": 371747,
+  "assetWorkflowMeasurementNote": "Elapsed window includes code work between generation stages; derivatives generated concurrently. It is not isolated active asset-preparation labor.",
+  "activePreparationMs": null,
+  "providerCost": null,
+  "providerCostNote": "Tool did not provide billing; unknown, not zero.",
+  "sourcePolicy": "Original study art only. No selected History Offstage episode source was used. The 43 retired corpus images remain retired.",
+  "reuse": ["ci-09-layered-parallax", "ci-09-layered-parallax-alternate"],
+  "repairs": [
+    "No raster repaint after the four generated outputs. Registered source rectangles omit unused transparent areas when drawing the subject and foreground."
+  ],
+  "assets": [
+    {
+      "file": "master.png",
+      "sha256": "sha256:c42660e75738cc00f7dc9bb7ba14f66cba312c415b2816ddb458dd8d35cecbf2",
+      "mode": "RGB",
+      "original": "exec-ef5fed4a-4530-4eaa-90ba-e9953835a53a.png",
+      "width": 1672,
+      "height": 941,
+      "referenceAssets": [],
+      "originalOutput": "/Users/jjae/.codex/generated_images/01a0d814-3028-73f2-a581-e7000ab6637a/exec-ef5fed4a-4530-4eaa-90ba-e9953835a53a.png"
+    },
+    {
+      "file": "background.png",
+      "sha256": "sha256:b8b54ef7689d0f6f79ca055dae40147aa276b2ef07cd890df7e958a562b57b8c",
+      "mode": "RGB",
+      "original": "exec-17f6415c-aad6-4f08-b41e-086f1b26fb2d.png",
+      "width": 1672,
+      "height": 941,
+      "referenceAssets": ["master.png"],
+      "originalOutput": "/Users/jjae/.codex/generated_images/01a0d814-3028-73f2-a581-e7000ab6637a/exec-17f6415c-aad6-4f08-b41e-086f1b26fb2d.png"
+    },
+    {
+      "file": "subject.png",
+      "sha256": "sha256:7b60ba9c79ab98058a6112da676bddead4b9f3c9191db83e1d15719b00f2b205",
+      "mode": "RGBA",
+      "original": "exec-fb219cf9-c09d-41b5-a9ea-8fa2433df4c8.png",
+      "width": 1672,
+      "height": 941,
+      "referenceAssets": ["master.png"],
+      "originalOutput": "/Users/jjae/.codex/generated_images/01a0d814-3028-73f2-a581-e7000ab6637a/exec-fb219cf9-c09d-41b5-a9ea-8fa2433df4c8.png"
+    },
+    {
+      "file": "foreground.png",
+      "sha256": "sha256:8d5f54ef1ecad8a9ff90c4a3c9b19a9123d60f8477ecde98fd97c774a6b97f07",
+      "mode": "RGBA",
+      "original": "exec-a5f30cc7-806a-4c2d-9a60-cd61523f978e.png",
+      "width": 1672,
+      "height": 941,
+      "referenceAssets": ["master.png"],
+      "originalOutput": "/Users/jjae/.codex/generated_images/01a0d814-3028-73f2-a581-e7000ab6637a/exec-a5f30cc7-806a-4c2d-9a60-cd61523f978e.png"
+    }
+  ]
+}

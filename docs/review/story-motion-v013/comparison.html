@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+  <meta charset="utf-8" /><meta
+    name="viewport"
+    content="width=device-width,initial-scale=1"
+  /><title>Evidence Boundary · before and after</title
+  ><style>
+    body {
+      margin: 0;
+      background: #e8dfc9;
+      color: #211f1b;
+      font:
+        17px/1.5 Georgia,
+        serif;
+    }
+    main {
+      max-width: 1200px;
+      margin: auto;
+      padding: 32px;
+    }
+    a {
+      color: #8b3f36;
+    }
+    section {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+    video {
+      width: 100%;
+      aspect-ratio: 16/9;
+    }
+    .phones {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .phones img {
+      width: 350px;
+      max-width: 100%;
+    }
+    @media (max-width: 720px) {
+      section {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+  <main>
+    <p><a href="index.html">All seven studies</a></p>
+    <h1>Evidence Boundary · before and after</h1>
+    <section>
+      <div>
+        <h2>v012 · simultaneous columns</h2>
+        <video
+          controls
+          muted
+          playsinline
+          src="prior/evidence-boundary.mp4"
+        ></video
+        ><img
+          width="350"
+          height="197"
+          src="prior/evidence-phone.png"
+          alt="Earlier layout at 350 px"
+        />
+      </div>
+      <div>
+        <h2>v013 · held stages</h2>
+        <video controls muted playsinline src="evidence-boundary.mp4"></video>
+        <div class="phones">
+          <img
+            src="evidence-phone-supported.png"
+            alt="Supported categories at 350 px"
+          /><img
+            src="evidence-phone-unknown.png"
+            alt="Unknown details at 350 px"
+          /><img
+            src="evidence-phone-composite.png"
+            alt="Composite household at 350 px"
+          />
+        </div>
+      </div>
+    </section>
+    <p>
+      The final render measures 14.22 px minimum essential text at 350 px and
+      holds the settled composite for 2.33 seconds. These samples do not
+      establish continuous audiovisual acceptance.
+    </p>
+  </main>
+</html>

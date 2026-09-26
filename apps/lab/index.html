@@ -9,13 +9,16 @@
     <main class="app-shell">
       <header class="masthead">
         <div>
-          <p class="eyebrow">Still Shift / v0.4</p>
+          <p class="eyebrow">Still Shift / Phase 0</p>
           <h1>Motion review</h1>
           <p class="lede">
-            Compare three depth-based motions, one frame at a time.
+            Compare depth motion and illustration-safe editorial motion, one
+            frame at a time.
           </p>
         </div>
-        <span class="version">3 presets · 3 intensities</span>
+        <a class="version" href="/illustrated.html"
+          >Open illustrated motion lab →</a
+        >
       </header>
 
       <section class="workspace" aria-label="Preview workspace">
@@ -42,7 +45,21 @@
           </button>
           <div class="divider"><span>motion settings</span></div>
           <label for="preset">Preset</label>
-          <select id="preset"></select>
+          <select id="preset">
+            <optgroup label="Depth motion">
+              <option value="slow_push">Slow push</option>
+              <option value="horizontal_drift">Horizontal drift</option>
+              <option value="cinematic_float">Cinematic float</option>
+            </optgroup>
+            <optgroup label="Editorial 2D">
+              <option value="story_settle">Story settle</option>
+              <option value="panel_reveal">Panel reveal</option>
+              <option value="comparison_step">Comparison step</option>
+            </optgroup>
+            <optgroup label="Timing utility">
+              <option value="locked_hold">Static hold · no animation</option>
+            </optgroup>
+          </select>
           <label for="intensity">Intensity</label>
           <select id="intensity">
             <option value="subtle">Subtle</option>
@@ -65,7 +82,9 @@
             type="file"
             accept="image/png,image/jpeg,image/webp"
           />
-          <label for="local-depth">Depth texture PNG</label>
+          <label for="local-depth"
+            >Depth texture PNG (depth presets only)</label
+          >
           <input id="local-depth" type="file" accept="image/png" />
           <button id="load-local" class="quiet-button" type="button">
             Load local preview
@@ -90,7 +109,7 @@
               id="preview"
               width="960"
               height="540"
-              aria-label="Animated depth preview"
+              aria-label="Animated still preview"
             ></canvas>
             <div id="empty-preview" class="empty-preview">
               Choose a corpus image or load local source files.
@@ -134,7 +153,7 @@
                 </figure>
                 <figure>
                   <img id="depth-image" alt="Depth texture" />
-                  <figcaption>Prepared depth</figcaption>
+                  <figcaption id="depth-caption">Prepared depth</figcaption>
                 </figure>
               </div>
             </section>
@@ -155,7 +174,7 @@
           <h2 id="gallery-title">Corpus gallery</h2>
         </div>
         <p id="gallery-note" class="muted">
-          The gallery compares all three presets for each corpus image.
+          The gallery compares the selected preset family for each corpus image.
         </p>
         <div id="gallery" class="gallery"></div>
       </section>

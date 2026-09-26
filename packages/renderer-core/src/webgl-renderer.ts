@@ -62,9 +62,24 @@ void main() {
 
 const fragmentShader = `
 uniform sampler2D uSource;
+uniform float uRevealMode;
+uniform float uRevealProgress;
 varying vec2 vUv;
 void main() {
-  gl_FragColor = texture2D(uSource, vUv);
+  vec4 source = texture2D(uSource, vUv);
+  gl_FragColor = source;
+  if (uRevealMode > 0.5 && uRevealProgress < 1.0) {
+    vec3 backdrop = texture2D(uSource, vec2(0.01, 0.99)).rgb;
+    float boundary = uRevealMode < 1.5
+      ? uRevealProgress
+      : 0.5 + 0.5 * uRevealProgress;
+    float visibility = 1.0 - smoothstep(
+      boundary - 0.0008,
+      boundary + 0.0008,
+      vUv.x
+    );
+    gl_FragColor = vec4(mix(backdrop, source.rgb, visibility), 1.0);
+  }
   #include <tonemapping_fragment>
   #include <colorspace_fragment>
 }`;
@@ -111,7 +126,7 @@ export const createWebGLPreview = (
   source: HTMLImageElement,
   depth: HTMLImageElement | null,
 ): WebGLPreview => {
-  if (!depth && scene.motion.mode !== "fallback_2d") {
+  if (!depth && scene.motion.mode === "depth") {
     throw new Error("Depth image is required for depth motion");
   }
   const context = canvas.getContext("webgl2", {
@@ -134,9 +149,10 @@ export const createWebGLPreview = (
   renderer.setClearColor(0x141414, 1);
 
   const sourceTexture = createTexture(source, SRGBColorSpace);
-  const depthTexture = depth
-    ? createTexture(depth, NoColorSpace)
-    : createNeutralDepthTexture();
+  const depthTexture =
+    depth && scene.motion.mode === "depth"
+      ? createTexture(depth, NoColorSpace)
+      : createNeutralDepthTexture();
   const cover = coverFit(
     scene.source.width,
     scene.source.height,
@@ -156,6 +172,15 @@ export const createWebGLPreview = (
     depthWrite: false,
     uniforms: {
       uSource: { value: sourceTexture },
+      uRevealMode: {
+        value:
+          scene.motion.preset === "panel_reveal"
+            ? 1
+            : scene.motion.preset === "comparison_step"
+              ? 2
+              : 0,
+      },
+      uRevealProgress: { value: 1 },
       uDepth: { value: depthTexture },
       uCover: { value: [cover.x, cover.y] },
       uDepthSampleStep: {
@@ -187,6 +212,7 @@ export const createWebGLPreview = (
         frame.translationY,
       ];
       material.uniforms.uRoll!.value = (frame.rollDegrees * Math.PI) / 180;
+      material.uniforms.uRevealProgress!.value = frame.revealProgress;
       renderer.render(previewScene, camera);
     },
     dispose() {

@@ -1,11 +1,61 @@
 # Still Shift — Phase 0 Roadmap
 
-**Status:** v0.3–v0.10 implementation complete; frozen-corpus approval and human decision gates pending
+**Status:** v0.3–v0.10 implementation complete; six richer illustrated presets implemented; creative review, frozen-corpus approval, and human decision gates pending
 
-**Updated:** 2026-09-24  
+**Updated:** 2026-09-26
+
 **Target:** 10 working days  
 **Detailed plan:** [Phase_0_Implementation_Plan.md](./Phase_0_Implementation_Plan.md)  
 **Architecture:** [Still_Image_Animation_Architecture.md](./Still_Image_Animation_Architecture.md)
+
+**Corpus review:** The owner has retired all 43 prior candidate images (28 History
+Offstage illustrations and 15 commercial photographs). The active selection and
+official corpus are empty and unfrozen. See the
+[selection review](./docs/corpus-review-2026-09-25.md).
+
+**Illustrated-motion trial:** The owner found the first four treatments too basic.
+The [History Offstage motion plan](./docs/history-offstage-motion-plan.md) is now
+implemented as six treatments based on layers, paths, and authored state changes.
+The [42-second review reel and verification](./docs/history-offstage-motion-implementation.md)
+are ready; creative acceptance remains pending.
+
+**Next creative direction:** The owner requested cinematic templates with parallax.
+The [nine-template plan](./docs/cinematic-template-plan.md) and
+[source prompt pack](./prompt-packs/cinematic-illustrated-still-animation-prompt-pack.md)
+are recorded. The [first cinematic milestone](./docs/cinematic-parallax-implementation.md)
+implements Layered Parallax, shared camera/depth support, and an original courtyard kit.
+The [second milestone](./docs/threshold-push-implementation.md) adds the researched
+Threshold Push recipe and an original storage-room kit with a grounded vessel.
+The [third milestone](./docs/lateral-track-implementation.md) adds sustained lateral
+travel and visible subject drift using that same grounded room kit.
+The [fourth milestone](./docs/foreground-reveal-implementation.md) adds Foreground
+Reveal with measured alpha concealment, complete clearance, and a held destination.
+
+**S01E01 story motion:** The
+[seven-treatment roadmap](./docs/s01e01-story-motion-roadmap.md) turns the
+[28-still design study](./prompt-packs/s01e01-motion-design.md) into v0.13.
+Start with Unequal Margins and Access Constraint, prove their visible change in
+one short preview, then assemble the 26.917-second ST-013/014 narrated sequence.
+Relationship Build, Evidence Boundary, Dated System Break, Category Swap and
+Motif Resolve now share the implemented event compiler and renderer. All seven
+recipes have rendered fixtures, lab timing controls and CLI export; narrated
+S01E01 integration remains in progress. See the [implementation evidence](./docs/story-motion-implementation.md).
+Cinematic iteration is deferred while v0.13 is active; Phase 0 acceptance remains separate.
+The [implementation research](./docs/s01e01-story-motion-research.md) now covers
+all seven, including source precedents, asset preparation and exact-frame timing requirements.
+
+**Current creative priority:** The [motion quality pass](./docs/motion-quality-implementation.md)
+adds a corrected text hierarchy after user feedback, longer Relationship/Motif endings,
+advisory lab/render diagnostics, a refreshed ST-013/014 proof and a new
+1507-frame ST-006–008 candidate. All seven studies and both proofs have sampled
+visual and technical evidence. Continuous audiovisual review, full episode
+integration and creative acceptance remain pending within active v0.13.
+
+**Planned commerce adoption:** The [e-commerce motion adoption plan](./docs/ecommerce-motion-adoption-plan.md)
+defines proposed v0.14: import the 40-format reference catalog, prove H03 with timed
+typography, add H01/H04 and their A01 sequence, then support portrait/square layouts
+and a brief-to-export workflow. It reuses v0.13's frame events. Implementation has
+not started; v0.13 remains active.
 
 ## Phase 0 outcome
 
@@ -25,6 +75,7 @@ Phase 0 ends with evidence, not infrastructure:
 - `[~]` In progress
 - `[x]` Completed
 - `[!]` Blocked
+- `[–]` Deferred; existing implementation retained
 
 When work begins, update the roadmap date, mark exactly one version as in progress, and link its completion evidence. Each version is cumulative and should remain runnable after the next version begins.
 
@@ -42,6 +93,10 @@ When work begins, update the roadmap date, mark exactly one version as in progre
 | v0.8    | Single-image CLI integration             |     Day 8 | `[!]`  | [Real CLI and workflow candidate verified; frozen-corpus review pending](./docs/v0.8-single-image-cli.md)              |
 | v0.9    | Unattended batch execution               |     Day 8 | `[!]`  | [50-item technical batch passes; frozen-corpus gate pending](./docs/v0.9-unattended-batch.md)                          |
 | v0.10   | Evaluation release and Phase 1 decision  | Days 9–10 | `[!]`  | [Candidate gallery, 7.97-minute assembly, and gate report; human decision pending](./docs/v0.10-evaluation-release.md) |
+| v0.11   | Illustrated editorial preset trial       | Extension | `[!]`  | [Six presets implemented and verified; creative review pending](./docs/history-offstage-motion-implementation.md)      |
+| v0.12   | Cinematic illustrated template study     | Extension | `[–]`  | [Cinematic Parallax family: eight variations; quick preview workflow](./docs/cinematic-template-plan.md)               |
+| v0.13   | S01E01 reusable story-motion treatments  | Extension | `[~]`  | [Seven-treatment roadmap; short proof first, then episode integration](./docs/s01e01-story-motion-roadmap.md)          |
+| v0.14   | E-commerce catalog and prepared ads      | Extension | `[ ]`  | [Adoption plan; H03 proof, H01/H04 sequence, output layouts and workflow](./docs/ecommerce-motion-adoption-plan.md)    |
 
 ## Critical path
 
@@ -57,6 +112,10 @@ v0.1 Foundation
                 → v0.9 Batch execution
                   → v0.10 Evaluation release
 ```
+
+v0.11–v0.13 are illustrated-style extensions with separate creative reviews.
+Their outputs do not complete the Phase 0 release gates.
+The planned v0.14 commerce collection also has its own implementation evidence.
 
 The versions are numbered by cumulative capability, not independent branches. Implementation work for v0.5 and v0.6 may overlap, but neither version is complete until the previous version remains green.
 
@@ -174,13 +233,13 @@ Review the entire corpus before adding more presets.
 - [x] Add depth-gradient damping near strong discontinuities.
 - [x] Add preset and intensity controls to the browser lab.
 - [x] Display renderer version and evaluated camera parameters.
-- [!] Preview every frozen-corpus image through all three presets. The 43-image candidate gallery passed, but corpus approval is pending.
+- [!] Preview every frozen-corpus image through all three presets. The retired 43-image candidate gallery passed technically; a new corpus is pending.
 
 ### Completion evidence
 
 - [x] All preset functions return identical transforms for identical scene time and seed.
 - [x] Frame zero and the final frame match documented camera states.
-- [!] Corpus comparison gallery includes all three presets for the candidate set; frozen-corpus review remains pending.
+- [!] Corpus comparison gallery includes all three presets for the retired candidate set; a new frozen-corpus review remains pending.
 - [x] v0.3 `slow_push` output remains compatible.
 
 ### v0.4 checkpoint — Motion-variety review
@@ -328,7 +387,7 @@ If headless Chromium cannot approach the throughput target on the intended hardw
 
 ### Tasks
 
-- [!] Render the 43-image private candidate through all three presets at standard intensity (129/129 valid); frozen-corpus rerun awaits approval.
+- [!] Render the 43-image private candidate through all three presets at standard intensity (129/129 valid on the retired candidate); new corpus selection and rerun are pending.
 - [x] Generate the static evaluation gallery.
 - [x] Show input, depth, clip, parameters, warnings, and performance metrics together.
 - [!] Collect human ratings for edge artifacts, subject deformation, borders, depth order, motion fit, and editorial usability.
@@ -349,6 +408,127 @@ If headless Chromium cannot approach the throughput target on the intended hardw
 - [x] The v0.10 report records exact engine, model, renderer, browser, and FFmpeg versions.
 - [x] The v0.9 batch path reproduces the published candidate benchmark from documented commands.
 
+## v0.11 — Illustrated editorial preset trial
+
+**Release outcome:** Richer deterministic illustrated motion must explain a
+change inside the composition. The first four-treatment implementation passed
+technical checks but was judged too basic by the owner. See the
+[replacement plan](./docs/history-offstage-motion-plan.md).
+
+- [x] Add locked hold, short settle, panel reveal, and paired comparison presets.
+- [x] Normalize flat-preset inputs without depth inference; preserve the three
+      depth presets and existing `auto` selection.
+- [x] Render four synthetic, original fixtures as exact 90-frame MP4s with no
+      warnings or fallbacks. See the [local trial](./docs/history-offstage-presets.md).
+- [x] Analyze the channel style, current hybrid plan, storyboards, and representative
+      source artwork before planning the replacement presets.
+- [x] Implement and validate all six treatments, reusable prepared-scene support,
+      the CLI and preview lab, and a six-clip 24 fps review reel. See the
+      [implementation evidence](./docs/history-offstage-motion-implementation.md).
+- [!] Obtain creative acceptance of the new six-clip reel.
+- [!] Select and review a new representative corpus before Phase 0 acceptance.
+- [!] Validate any selected History Offstage image treatment and 24 fps editorial
+  conform under that episode's own production rules.
+
+## v0.12 — Cinematic illustrated template study
+
+**Status:** Cinematic Parallax is one family with eight implemented variations, including [Focus Handoff](./docs/focus-handoff-implementation.md), [Detail to World](./docs/detail-to-world-implementation.md) and [Rising Vista and Curved Approach](./docs/parallax-path-variations.md). The owner requested faster iteration after finding the last three too similar. Future work starts with one short preview and targeted verification; the list below records the earlier study rather than requiring a separate feature/research cycle per variation. See the [current iteration policy](./docs/cinematic-template-plan.md).
+
+**Release outcome:** One configurable Cinematic Parallax family, with additional
+shot ideas evaluated through short previews. See the
+[build plan](./docs/cinematic-template-plan.md) and
+[source prompt pack](./prompt-packs/cinematic-illustrated-still-animation-prompt-pack.md).
+
+- [x] Define nine treatments, four reusable scene kits, source prompts, movement
+      bounds, fallbacks, and creative/technical acceptance criteria.
+- [x] Add versioned camera/depth-plane support, subject anchors, and painted-area checks.
+- [x] Implement **Layered Parallax** with two compositions, exact CLI export,
+      preview parity, 24/30 fps, and Dramatic/Standard/Restrained controls.
+- [x] Research stronger parallax and respond to the owner's slow-motion feedback
+      with a wider sweep, revised timing, and foreground cut-edge checks.
+- [ ] Obtain creative acceptance of the revised Layered Parallax prototype.
+- [x] Research and implement Threshold Push with forward projection, grounded
+      room artwork, dynamic sampling checks, two compositions, and preview parity.
+- [ ] Obtain creative acceptance of Threshold Push.
+- [x] Research and implement Lateral Track with sustained sideways travel, grounded
+      room coverage, two compositions, and preview/export verification.
+- [ ] Obtain creative acceptance of Lateral Track.
+- [x] Research and implement Foreground Reveal with real-alpha concealment checks,
+      complete clearance at every strength, early settling, two compositions and parity.
+- [ ] Obtain creative acceptance of Foreground Reveal.
+- [x] Add Rising Vista and Curved Approach to the shared parallax system, with
+      four-second previews, all-strength coverage checks and preview/export parity.
+- [ ] Obtain creative acceptance of Rising Vista and Curved Approach.
+- [x] Research and implement Detail to World with fixed-focal pullback, source
+      density and detail visibility checks, one short preview and export parity.
+- [ ] Obtain creative acceptance of Detail to World.
+- [x] Research and implement Focus Handoff with layer-local blur, preserved alpha
+      edges, pixel sharpness checks, one short preview and export parity.
+- [ ] Obtain creative acceptance of Focus Handoff.
+- [ ] Evaluate Dolly-Zoom Tension with its specific quality checks.
+- [x] Add one-clip iteration command and lab duration controls for the shared family.
+- [ ] Review visible differences in short previews before expanding production scope.
+
+## v0.13 — S01E01 reusable story motion
+
+**Status:** Seven recipes implemented and rendered; episode integration in progress.
+[Implementation and verification](./docs/story-motion-implementation.md) records the working engine,
+lab, CLI and preview gallery. The detailed
+[roadmap](./docs/s01e01-story-motion-roadmap.md) defines dependencies, proof
+sequences, semantic checks and integration evidence.
+
+**Release outcome:** Seven reusable treatments animate changing relationships
+in prepared illustrations, with narration-timed events and continuity between
+shots. Still Shift supplies motion scenes; Remotion retains episode assembly.
+
+- [x] Study all 28 selected S01E01 stills and record the
+      [motion design and source/timing ledger](./prompt-packs/s01e01-motion-design.md).
+- [x] Define seven treatments, ordered milestones and scene-specific acceptance criteria.
+- [x] Research implementation precedents for every treatment and record the
+      [shared timing/geometry decisions and motion-specific preparation](./docs/s01e01-story-motion-research.md).
+- [x] Implement all seven recipes, exact-frame timing, validated events, attached connectors, lab cue controls and reusable rendered fixtures.
+- [x] Analyze the seven fixtures against the channel style bible and record the [visual redesign plan](./docs/story-motion-visual-redesign.md).
+- [x] Apply the shared art kit, pinned typography and distinct compositions to all seven; deliver the [reviewed gallery and local narrated ST-013/014 proof](./docs/story-motion-visual-implementation.md).
+- [x] Refine relationship strokes, attachment points and easing; provide a [synchronized before/after comparison](./docs/story-motion-line-timing-refinement.md).
+- [x] Give narrative lines a distinct [split-nib brush treatment](./docs/story-motion-brush-lines.md), with stable texture, expressive pressure and bounded access clearance.
+- [x] Implement the [motion quality pass](./docs/motion-quality-implementation.md): differentiated typography, revised closing holds, before/after review and advisory authoring checks.
+- [~] Render the refreshed 646-frame comparison/access and new 1507-frame resource passage; independent frame review and technical checks passed, continuous audiovisual acceptance remains open.
+- [~] **M0:** Shared contract and fixture kit complete; episode-specific preparation pending.
+- [~] **M1:** Implement Unequal Margins and Access Constraint; inspect one short
+  illustrated preview, then the 26.917-second ST-013/014 narrated proof.
+- [~] **M2:** Implement Relationship Build and the ST-006–008 resource sequence.
+- [~] **M3:** Implement Evidence Boundary and the ST-017/018 evidence-limit sequence.
+- [~] **M4:** Implement Dated System Break and the ST-021/022 crisis/context reset.
+- [~] **M5:** Implement Category Swap and Motif Resolve; verify substitution
+  and the concluding sequence using the established visual motifs.
+- [~] **M6:** Complete lab/CLI examples, targeted compatibility checks, shot
+  handoff and S01E01 integration/QA under its current production authority.
+- [ ] Record independent editorial findings and the final episode creative decision.
+
+Use one short preview and targeted checks before expanding each new behavior.
+Milestones are AI-owned work, not repeated Creator review gates. Prepared episode
+proofs do not reinstate retired corpus entries or establish Phase 0 acceptance.
+
+## v0.14 — E-commerce motion library adoption
+
+**Status:** Planned; implementation has not started. The
+[adoption plan](./docs/ecommerce-motion-adoption-plan.md) records the source catalog,
+shared machinery, exact delivery order and completion criteria.
+
+**Release outcome:** Supply a product brief and prepared imagery, preview a supported
+format and export a deterministic ad with its scene and provenance. All 40 formats
+enter the reference catalog; the first executable release covers H03, H01, H04 and
+the ten-second A01 recipe.
+
+- [x] Inspect all five source files and map the pack to the current renderer.
+- [x] Define the adoption plan using the implemented v0.13 frame-event path.
+- [ ] **M0:** Import and validate the catalog; define the first H03 brief and asset manifest.
+- [ ] **M1:** Render the eight-second H03 proof with font loading, text layout and exact timing.
+- [ ] **M2:** Add H01/H04 and the ten-second A01 sequence with registered product groups and callouts.
+- [ ] **M3:** Verify landscape, portrait and square layouts through preview and export.
+- [ ] **M4:** Add the Commerce lab collection and brief preparation workflow; exercise a second product.
+- [ ] **M5:** Record executable coverage, preparation/repair effort and the next shared technique.
+
 ## Final exit gates
 
 | Gate                     | Required result                                                 | Actual                                                | Evidence                                                       |
@@ -358,10 +538,13 @@ If headless Chromium cannot approach the throughput target on the intended hardw
 | Batch completion         | ≥98% rendered or valid fallback                                 | 129/129 candidate clips (100%)                        | [v0.10 candidate evidence](./docs/v0.10-evaluation-release.md) |
 | Determinism              | Exact timing, framing, parameters, and frame count              | 129/129 hash-verified retries                         | [v0.10 candidate evidence](./docs/v0.10-evaluation-release.md) |
 | Duration accuracy        | Within one frame                                                | 129 exact-frame exports                               | [v0.10 candidate evidence](./docs/v0.10-evaluation-release.md) |
-| Preview/export agreement | No material crop, direction, or timing difference               | Five golden scenes pass; candidate review pending     | [v0.7 parity evidence](./docs/v0.7-preview-export-parity.md)   |
+| Preview/export agreement | No material crop, direction, or timing difference               | Five golden scenes pass; new corpus review pending    | [v0.7 parity evidence](./docs/v0.7-preview-export-parity.md)   |
 | Export throughput        | Target ≥1× real time at 1080p/30                                | 1.24× aggregate on candidate worker                   | [v0.10 candidate evidence](./docs/v0.10-evaluation-release.md) |
 | Cost reduction           | ≥70% below selected generative-video baseline                   | $0.071/min hypothetical worker scenario; gate pending | [v0.10 candidate evidence](./docs/v0.10-evaluation-release.md) |
 | Editorial result         | 5–10 minute explainer does not feel like a repetitive slideshow | 7.97-minute assembly ready; human review pending      | [v0.10 candidate evidence](./docs/v0.10-evaluation-release.md) |
+
+The 129 retired-candidate renders and the History Offstage assembly remain
+historical engineering evidence. They do not establish Phase 0 acceptance.
 
 ## Decision outcomes
 

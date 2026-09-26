@@ -41,6 +41,7 @@ const runCli = async (
   options: {
     adapter?: string;
     inputPath?: string;
+    preset?: string;
     cwd?: string;
     cacheDir?: string;
     viaPnpm?: boolean;
@@ -58,7 +59,7 @@ const runCli = async (
     "--fps",
     String(fixture.fps),
     "--preset",
-    fixture.preset,
+    options.preset ?? fixture.preset,
     "--intensity",
     fixture.intensity,
     "--seed",
@@ -213,6 +214,27 @@ try {
     ),
   );
 
+  const flat = await runCli(join(directory, "flat.mp4"), {
+    adapter: "invalid",
+    preset: "locked_hold",
+  });
+  const flatScene = SceneManifestSchema.parse(
+    JSON.parse(await readFile(flat.sceneManifestPath, "utf8")),
+  );
+  assert.equal(flat.status, "rendered");
+  assert.equal(flat.selectedPreset, "locked_hold");
+  assert.deepEqual(flat.warnings, []);
+  assert.equal(flat.checksums.depth, undefined);
+  assert.equal(flat.metrics.depthInferenceMs, 0);
+  assert.equal(flat.metrics.depthPostProcessMs, 0);
+  assert.equal(flatScene.depth, null);
+  assert.equal(flatScene.quality.fallback, false);
+  assert.equal(flatScene.quality.riskScore, 0);
+  assert.equal(
+    (flatScene.renderScene as { motion?: { mode?: string } }).motion?.mode,
+    "flat_2d",
+  );
+
   const fallback = await runCli(join(directory, "fallback.mp4"), {
     adapter: "invalid",
     inputPath: invalidProfilePath,
@@ -288,7 +310,7 @@ try {
   );
   assert.equal(await readFile(existingPath, "utf8"), "existing output");
   process.stdout.write(
-    "Single-image CLI verified: 90-frame MP4, cache hit, stable hashes, 2D fallback, and errors\n",
+    "Single-image CLI verified: 90-frame MP4, cache hit, stable hashes, intentional flat 2D, safety fallback, and errors\n",
   );
 } finally {
   if (ownsPort) {

@@ -12,16 +12,20 @@ import { chromium, type Browser } from "playwright";
 import { createServer, type Plugin, type ViteDevServer } from "vite";
 
 import type { PreviewScene } from "../../../packages/renderer-core/src/scene.ts";
+import type { IllustratedScene } from "../../../packages/renderer-core/src/prepared-scene.ts";
 import { assertNever, type FrameTransport } from "./transport.ts";
+
+export type ExportableScene = PreviewScene | IllustratedScene;
 
 const execFileAsync = promisify(execFile);
 const projectRoot = resolve(import.meta.dirname, "../../..");
 const EXPORT_WORKER_VERSION = "chromium-ffmpeg-0.6.0";
 
 export type ExportRequest = {
-  scene: PreviewScene;
+  scene: ExportableScene;
   sourcePath: string;
   depthPath: string | null;
+  assetPaths?: Record<string, string>;
   outputPath: string;
   sceneManifestContents?: string;
   encoder?: "libx264" | "h264_videotoolbox";
@@ -64,7 +68,7 @@ export type ExportSceneManifest = {
   schemaVersion: "0.6";
   sourceChecksum: string;
   depthChecksum: string | null;
-  scene: PreviewScene;
+  scene: ExportableScene;
 };
 
 const codecArguments = (encoder: "libx264" | "h264_videotoolbox") => [
@@ -90,7 +94,7 @@ const codecArguments = (encoder: "libx264" | "h264_videotoolbox") => [
 ];
 
 const frameTransportArguments = (
-  scene: PreviewScene,
+  scene: ExportableScene,
   transport: FrameTransport,
 ): { input: string[]; filter: string[] } => {
   switch (transport) {
@@ -122,7 +126,7 @@ const frameTransportArguments = (
 };
 
 const ffmpegArguments = (
-  scene: PreviewScene,
+  scene: ExportableScene,
   temporaryPath: string,
   encoder: "libx264" | "h264_videotoolbox",
   transport: FrameTransport,
@@ -242,12 +246,16 @@ const sendAsset = async (
   response.statusCode = 200;
   response.setHeader(
     "Content-Type",
-    extname(path).toLowerCase() === ".svg"
-      ? "image/svg+xml"
-      : extname(path).toLowerCase() === ".jpg" ||
-          extname(path).toLowerCase() === ".jpeg"
-        ? "image/jpeg"
-        : "image/png",
+    extname(path).toLowerCase() === ".otf"
+      ? "font/otf"
+      : extname(path).toLowerCase() === ".ttf"
+        ? "font/ttf"
+        : extname(path).toLowerCase() === ".svg"
+          ? "image/svg+xml"
+          : extname(path).toLowerCase() === ".jpg" ||
+              extname(path).toLowerCase() === ".jpeg"
+            ? "image/jpeg"
+            : "image/png",
   );
   response.setHeader("Content-Length", file.size);
   createReadStream(path).pipe(response);
@@ -264,6 +272,22 @@ const assetPlugin = (
     server.middlewares.use((incoming, response, next) => {
       const pathname = new URL(incoming.url ?? "/", "http://localhost")
         .pathname;
+      if (pathname.startsWith("/_export/assets/")) {
+        const id = pathname.slice("/_export/assets/".length);
+        const assetPath = Object.hasOwn(request.assetPaths ?? {}, id)
+          ? request.assetPaths?.[id]
+          : undefined;
+        if (!assetPath) {
+          response.statusCode = 404;
+          response.end("Unknown scene asset");
+          return;
+        }
+        void sendAsset(assetPath, response).catch((error: unknown) => {
+          response.statusCode = 500;
+          response.end(String(error));
+        });
+        return;
+      }
       if (pathname === "/_export/source") {
         void sendAsset(request.sourcePath, response).catch((error: unknown) => {
           response.statusCode = 500;
@@ -313,7 +337,7 @@ const assetPlugin = (
 
 const verifyOutput = async (
   path: string,
-  scene: PreviewScene,
+  scene: ExportableScene,
 ): Promise<void> => {
   const { stdout } = await execFileAsync("ffprobe", [
     "-v",
@@ -371,12 +395,19 @@ export const exportScene = async (
 ): Promise<ExportMetrics> => {
   const start = performance.now();
   const { scene } = request;
+  const story =
+    "schemaVersion" in scene && scene.schemaVersion === "story-scene-1";
   if (
-    scene.timeline.frameCount !==
-    (scene.timeline.durationMs * scene.timeline.fps) / 1000
+    story
+      ? !Number.isInteger(scene.timeline.frameCount) ||
+        scene.timeline.frameCount !== scene.frameCount ||
+        scene.timeline.durationMs !==
+          (scene.timeline.frameCount * 1000) / scene.timeline.fps
+      : scene.timeline.frameCount !==
+        (scene.timeline.durationMs * scene.timeline.fps) / 1000
   )
     throw new Error("Scene frame count and duration disagree");
-  if (scene.motion.mode === "depth" && !request.depthPath)
+  if ("motion" in scene && scene.motion.mode === "depth" && !request.depthPath)
     throw new Error("Depth motion requires a depth image");
   const outputPath = resolve(request.outputPath);
   const sceneManifestPath = `${outputPath}.scene.json`;

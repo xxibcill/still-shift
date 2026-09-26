@@ -276,6 +276,7 @@ export const applySafetyToScene = (
   scene: PreviewScene,
   assessment: SafetyAssessment,
 ): PreviewScene => {
+  if (scene.motion.mode === "flat_2d") return scene;
   if (assessment.flatDepth)
     return fallback2DScene(scene, "DEPTH_RANGE_FLAT", assessment);
   if (assessment.extremeDepth)

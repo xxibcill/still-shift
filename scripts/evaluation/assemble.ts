@@ -10,7 +10,7 @@ import {
 } from "@still-shift/scene-contract";
 import { fileSha256 } from "./assembly-evidence.ts";
 import { verifyAssemblyClip } from "./evidence.ts";
-import { EVALUATION_PRESETS, evaluationClipId } from "./presets.ts";
+import { evaluationClipId, parseEvaluationPresets } from "./presets.ts";
 
 const execFileAsync = promisify(execFile);
 const option = (name: string): string | undefined => {
@@ -30,6 +30,9 @@ const corpusPath = required("--corpus");
 const resultsPath = required("--results");
 const narrationPath = required("--narration");
 const outputPath = required("--output");
+if (process.argv.includes("--presets") && option("--presets") === undefined)
+  throw new Error("Missing --presets");
+const presets = parseEvaluationPresets(option("--presets"));
 const limitStates = option("--limit-states")
   ? Number(option("--limit-states"))
   : null;
@@ -91,9 +94,7 @@ for (const [index, state] of states.entries()) {
   const entry = entryByHash.get(state.source_sha256);
   if (!entry)
     throw new Error(`Timeline source not present in corpus: ${state.state_id}`);
-  const clipIds = EVALUATION_PRESETS.map((preset) =>
-    evaluationClipId(entry.id, preset),
-  );
+  const clipIds = presets.map((preset) => evaluationClipId(entry.id, preset));
   const clips = await Promise.all(
     clipIds.map((id, presetIndex) => {
       const result = clipById.get(id);
@@ -101,7 +102,7 @@ for (const [index, state] of states.entries()) {
       return verifyAssemblyClip(
         result,
         state.source_sha256,
-        EVALUATION_PRESETS[presetIndex]!,
+        presets[presetIndex]!,
       );
     }),
   );

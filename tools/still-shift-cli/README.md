@@ -21,9 +21,69 @@ Source-normalization warnings use the stable `SOURCE_NORMALIZATION_WARNING` code
 
 Set `STILL_SHIFT_CACHE_DIR` to choose another preparation cache. Relative paths are resolved from the CLI caller's working directory, including when the depth worker runs from the repository root.
 
+Four explicit editorial presets—`locked_hold`, `story_settle`,
+`panel_reveal`, and `comparison_step`—normalize the source and render in flat
+2D without running depth inference. They return a normal rendered result, with
+`depth: null` in the scene manifest. Choose a reveal only for a composition
+authored for its reading order; see the
+[illustrated-motion trial](../../docs/history-offstage-presets.md).
+
 Exit code 0 means a complete result, including a valid 2D fallback. Exit code 2 means invalid command options or request constraints. Exit code 1 means an input, preparation, render, encode, or publication failure; stderr contains one JSON `AnimationFailure`. `--adapter noop` keeps the v0.1 fake path available for compatibility checks. For local fixtures, `STILL_SHIFT_DEPTH_ADAPTER=fake` selects the deterministic fake depth worker.
 
-`pnpm test:browser:cli` exercises an explainer-shaped fixture, cache reuse, repeated checksums, depth-failure fallback, invalid input, and existing-output protection.
+`pnpm test:browser:cli` exercises an explainer-shaped fixture, cache reuse, repeated checksums, intentional flat 2D, depth-failure fallback, invalid input, and existing-output protection.
+
+## Prepared illustrated scenes
+
+Story recipes use `story-scene-1` with integer `frameCount`, explicit cue frames
+and the same `animate-scene` command. They return `story-result-1` and support
+fractional derived milliseconds, including 646 frames at 24 fps. See the
+[seven-recipe guide](../../docs/story-motion-implementation.md) and
+[fixtures](../../benchmarks/fixtures/story-motion/catalog.json). Legacy v1/v2
+contracts retain their duration limits.
+
+The six richer History Offstage presets use a scene JSON containing supplied image
+layers, paths, text, and authored states:
+
+```bash
+pnpm still-shift animate-scene \
+  --scene benchmarks/fixtures/history-offstage-v2/resource-flow.json \
+  --output /tmp/resource-flow-new.mp4
+```
+
+The scene supplies its preset, duration, and explicit 24 or 30 fps frame rate.
+Clips must span 3–8 seconds in whole frames. Assets are resolved relative to the
+JSON and checked against their SHA-256 hashes and dimensions. Missing roles,
+invalid paths/crops, and missing alternate states produce errors before export.
+
+This command writes the MP4, `.mp4.scene.json`, and `.mp4.result.json`; stdout
+contains an `illustrated-result-1` result. Output files must not already exist.
+Prepared input is separate from `animate --input` and the existing image batch
+format. See the [six preset guide](../../docs/history-offstage-motion-implementation.md)
+for the lab, reusable examples, and review reel. `pnpm illustrated:render
+--output-dir <new-directory>` renders the six prepared fixtures through this CLI.
+
+The prepared-scene command also accepts `illustrated-scene-2` for the cinematic
+`layered_parallax` recipe. It supports `dramatic`, `standard`, and `restrained` intensity in
+the scene JSON and returns `illustrated-result-2` with camera-validation metrics.
+Every frame must satisfy declared background coverage and subject framing;
+unsafe or insufficiently separated planes fail explicitly. See the
+[cinematic guide](../../docs/cinematic-parallax-implementation.md) for examples.
+
+The same command accepts the `threshold_push` recipe with `camera.push`, two
+foreground sides, a subject assembly, and a distant plate. It checks source
+resolution after magnification on every frame. Run `pnpm threshold:render
+--output-dir <new-directory>` for its two compositions and Standard comparison;
+see the [Threshold Push guide](../../docs/threshold-push-implementation.md).
+
+The `lateral_track` recipe uses nonzero X travel, zero Y/Z travel, fixed scale,
+and visible subject drift. Run `pnpm lateral:render --output-dir <new-directory>`
+for two grounded room compositions and a Standard comparison. See the
+[Lateral Track guide](../../docs/lateral-track-implementation.md).
+
+The `foreground_reveal` recipe adds an authored vessel polygon and validates actual
+foreground alpha before rendering. It clears the subject and holds the ending.
+Run `pnpm reveal:render --output-dir <new-directory>`; see the
+[Foreground Reveal guide](../../docs/foreground-reveal-implementation.md).
 
 ## Unattended batch
 

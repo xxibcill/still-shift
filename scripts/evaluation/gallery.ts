@@ -10,7 +10,7 @@ import {
   SceneManifestSchema,
 } from "@still-shift/scene-contract";
 import { hashBatchArtifacts } from "../../tools/still-shift-cli/src/batch-identity.ts";
-import { EVALUATION_PRESETS, evaluationClipId } from "./presets.ts";
+import { evaluationClipId, parseEvaluationPresets } from "./presets.ts";
 import { RATING_FIELDS } from "./ratings.ts";
 
 const execFileAsync = promisify(execFile);
@@ -47,6 +47,9 @@ const diagnostic = (
 const corpusPath = resolve(arg("--corpus"));
 const resultsPath = resolve(arg("--results"));
 const outputPath = resolve(arg("--output"));
+const presets = parseEvaluationPresets(
+  process.argv.includes("--presets") ? arg("--presets") : undefined,
+);
 const baselinesDir = process.argv.includes("--baselines-dir")
   ? resolve(arg("--baselines-dir"))
   : null;
@@ -111,7 +114,7 @@ for (const entry of corpus.entries) {
   await thumbnail(sourcePath, sourceThumbnail);
   const variants: string[] = [];
   let depthThumbnail: string | null = null;
-  for (const preset of EVALUATION_PRESETS) {
+  for (const preset of presets) {
     const id = evaluationClipId(entry.id, preset);
     const record = byId.get(id);
     if (!record?.result) {
@@ -130,6 +133,7 @@ for (const entry of corpus.entries) {
       depthThumbnail = join(thumbnails, `${entry.id}-depth.jpg`);
       await thumbnail(result.assetPaths.depth, depthThumbnail);
     }
+    const intentionalFlat = scene.depth === null && !scene.quality.fallback;
     clipCount += 1;
     const metrics = result.metrics;
     const resolved = scene.renderScene;
@@ -153,8 +157,8 @@ for (const entry of corpus.entries) {
       <h4>${escapeHtml(preset)} <span class="status">${escapeHtml(result.status)}</span></h4>
       <video controls muted playsinline preload="metadata" poster="${escapeHtml(relativeUrl(outputDir, posterPath))}" src="${escapeHtml(relativeUrl(outputDir, result.outputPath))}"></video>
       <dl>
-        <div><dt>Risk</dt><dd>${scene.quality.riskScore.toFixed(3)}</dd></div>
-        <div><dt>Mode</dt><dd>${escapeHtml(scene.quality.fallback ? "2D fallback" : "depth")}</dd></div>
+        <div><dt>Risk</dt><dd>${intentionalFlat ? "Not analyzed" : scene.quality.riskScore.toFixed(3)}</dd></div>
+        <div><dt>Mode</dt><dd>${escapeHtml(intentionalFlat ? "Editorial 2D" : scene.quality.fallback ? "2D fallback" : "Depth")}</dd></div>
         <div><dt>Seed</dt><dd>${scene.motion.seed}</dd></div>
         <div><dt>Frames</dt><dd>${result.frameCount}</dd></div>
         <div><dt>Render</dt><dd>${metrics.totalWallMs.toFixed(0)} ms</dd></div>
@@ -188,7 +192,7 @@ for (const entry of corpus.entries) {
 const html = `<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Still Shift evaluation · ${escapeHtml(corpus.corpusId)}</title>
 <style>
-:root{font-family:system-ui,sans-serif;color:#e8e9ec;background:#11151c}*{box-sizing:border-box}body{margin:0}main{max-width:1600px;margin:auto;padding:28px}h1{margin:0 0 8px}p{line-height:1.45;color:#aeb9c9}.notice{padding:12px 16px;border:1px solid #866d2b;background:#302716;color:#f2d88e;border-radius:8px}.toolbar{display:flex;gap:12px;align-items:center;margin:20px 0;flex-wrap:wrap}button,input,select{font:inherit}button{background:#73b9c9;border:0;border-radius:7px;padding:10px 14px;cursor:pointer}input,select{background:#202935;color:#f4f6f8;border:1px solid #536273;border-radius:5px;padding:6px}label{font-size:13px;color:#c7d1dc}.entry{border-top:1px solid #3c4652;padding:22px 0}.entry header{display:flex;gap:20px;align-items:baseline;flex-wrap:wrap}.entry h3{margin:0}.entry header p{margin:0}.references{display:flex;gap:12px;margin:12px 0}.references figure{margin:0;width:180px}.references img,.no-depth{display:block;width:100%;height:105px;object-fit:contain;background:#070a0f;border-radius:5px}.no-depth{padding:30px 8px;color:#8793a1;text-align:center}figcaption{font-size:12px;color:#aeb9c9;margin-top:4px}.variants{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}.variant{background:#1c2430;border:1px solid #344153;border-radius:10px;padding:14px;min-width:0}.variant h4{margin:0 0 10px;display:flex;justify-content:space-between;gap:8px}.status{font-size:12px;color:#98b3c4;font-weight:normal}.variant video{width:100%;aspect-ratio:16/9;background:#05080c;border-radius:4px}.variant dl{display:grid;grid-template-columns:1fr 1fr;gap:5px 12px;font-size:12px;margin:12px 0}.variant dl div{display:flex;justify-content:space-between;gap:7px}.variant dt{color:#9caabd}.variant dd{margin:0;text-align:right;overflow-wrap:anywhere}.ratings{display:grid;grid-template-columns:1fr 1fr;gap:7px}.ratings label{display:flex;flex-direction:column;gap:3px}.failed{color:#ff8d8d}@media(max-width:950px){.variants{grid-template-columns:1fr}.references figure{width:45%}}
+:root{font-family:system-ui,sans-serif;color:#e8e9ec;background:#11151c}*{box-sizing:border-box}body{margin:0}main{max-width:1600px;margin:auto;padding:28px}h1{margin:0 0 8px}p{line-height:1.45;color:#aeb9c9}.notice{padding:12px 16px;border:1px solid #866d2b;background:#302716;color:#f2d88e;border-radius:8px}.toolbar{display:flex;gap:12px;align-items:center;margin:20px 0;flex-wrap:wrap}button,input,select{font:inherit}button{background:#73b9c9;border:0;border-radius:7px;padding:10px 14px;cursor:pointer}input,select{background:#202935;color:#f4f6f8;border:1px solid #536273;border-radius:5px;padding:6px}label{font-size:13px;color:#c7d1dc}.entry{border-top:1px solid #3c4652;padding:22px 0}.entry header{display:flex;gap:20px;align-items:baseline;flex-wrap:wrap}.entry h3{margin:0}.entry header p{margin:0}.references{display:flex;gap:12px;margin:12px 0}.references figure{margin:0;width:180px}.references img,.no-depth{display:block;width:100%;height:105px;object-fit:contain;background:#070a0f;border-radius:5px}.no-depth{padding:30px 8px;color:#8793a1;text-align:center}figcaption{font-size:12px;color:#aeb9c9;margin-top:4px}.variants{display:grid;grid-template-columns:repeat(${Math.min(presets.length, 3)},minmax(0,1fr));gap:16px}.variant{background:#1c2430;border:1px solid #344153;border-radius:10px;padding:14px;min-width:0}.variant h4{margin:0 0 10px;display:flex;justify-content:space-between;gap:8px}.status{font-size:12px;color:#98b3c4;font-weight:normal}.variant video{width:100%;aspect-ratio:16/9;background:#05080c;border-radius:4px}.variant dl{display:grid;grid-template-columns:1fr 1fr;gap:5px 12px;font-size:12px;margin:12px 0}.variant dl div{display:flex;justify-content:space-between;gap:7px}.variant dt{color:#9caabd}.variant dd{margin:0;text-align:right;overflow-wrap:anywhere}.ratings{display:grid;grid-template-columns:1fr 1fr;gap:7px}.ratings label{display:flex;flex-direction:column;gap:3px}.failed{color:#ff8d8d}@media(max-width:950px){.variants{grid-template-columns:1fr}.references figure{width:45%}}
 </style></head><body><main><h1>Still Shift evaluation</h1><p>${escapeHtml(corpus.corpusId)} · ${corpus.entries.length} sources · ${clipCount} clips · corpus status: ${escapeHtml(corpus.status)}</p>${corpus.status !== "frozen" ? `<p class="notice">Candidate review only. This corpus is not frozen and ratings do not establish a Phase 0 pass.</p>` : ""}<div class="toolbar"><label>Reviewer <input id="reviewer" placeholder="Name or initials"></label><button id="export">Download ratings JSON</button><span id="saved"></span></div>${rows.join("\n")}</main>
 <script>
 const fields=${JSON.stringify(RATING_FIELDS)};

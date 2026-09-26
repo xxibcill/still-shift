@@ -1,0 +1,133 @@
+{
+  "title": "Lateral Track · Passing the storage chamber",
+  "durationMs": 7000,
+  "fps": 24,
+  "width": 1920,
+  "height": 1080,
+  "background": "#D4BE91",
+  "assets": [
+    {
+      "id": "far",
+      "path": "../../../assets/cinematic-illustrated/kit-a-threshold/threshold-far.png",
+      "sha256": "sha256:6ce16545ad2c8555bb22766936a3d804230b8359d12296d34595829cdd8e551f",
+      "width": 1672,
+      "height": 941
+    },
+    {
+      "id": "room",
+      "path": "../../../assets/cinematic-illustrated/kit-a-threshold/threshold-room.png",
+      "sha256": "sha256:09984c95028dc11bd5066766124890e89363cb3d904298c65dc6a8baf6b009a1",
+      "width": 1672,
+      "height": 941
+    },
+    {
+      "id": "left",
+      "path": "../../../assets/cinematic-illustrated/kit-a-threshold/threshold-left.png",
+      "sha256": "sha256:d456deced5fbdd6cb4abd9cc1340fefc12442f48abc6ce1f1ad06900eb6ff0cb",
+      "width": 948,
+      "height": 1659
+    },
+    {
+      "id": "right",
+      "path": "../../../assets/cinematic-illustrated/kit-a-threshold/threshold-right.png",
+      "sha256": "sha256:8a01663d9edb7b804131702a063f2fd3b1814e67b26483307d999400a509a37a",
+      "width": 948,
+      "height": 1660
+    }
+  ],
+  "nodes": [
+    {
+      "id": "far",
+      "x": -155,
+      "y": -85,
+      "width": 2230,
+      "height": 1255.041866028708,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "image",
+      "states": [{ "asset": "far" }],
+      "fit": "stretch"
+    },
+    {
+      "id": "room",
+      "x": -60,
+      "y": -85,
+      "width": 2230,
+      "height": 1255.041866028708,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "image",
+      "states": [{ "asset": "room" }],
+      "fit": "stretch"
+    },
+    {
+      "id": "left",
+      "x": -40,
+      "y": -60,
+      "width": 685.71428571,
+      "height": 1200,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "image",
+      "states": [{ "asset": "left" }],
+      "fit": "stretch"
+    },
+    {
+      "id": "right",
+      "x": 1650,
+      "y": -60,
+      "width": 685.30120482,
+      "height": 1200,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "image",
+      "states": [{ "asset": "right" }],
+      "fit": "stretch"
+    }
+  ],
+  "provenance": "../../../assets/cinematic-illustrated/kit-a-threshold/provenance.json",
+  "schemaVersion": "illustrated-scene-2",
+  "layers": [
+    {
+      "node": "far",
+      "depth": 10,
+      "paintedBounds": [0, 0, 2230, 1255.041866028708]
+    },
+    {
+      "node": "room",
+      "depth": 3.5,
+      "protectedRegion": [
+        [1073.6543062200956, 426.7942583732057],
+        [1627.153110047847, 426.7942583732057],
+        [1627.153110047847, 1040.311004784689],
+        [1073.6543062200956, 1040.311004784689]
+      ],
+      "edgeAttachments": ["left", "right", "top", "bottom"]
+    },
+    {
+      "node": "left",
+      "depth": 1.3,
+      "edgeAttachments": ["left", "top", "bottom"]
+    },
+    {
+      "node": "right",
+      "depth": 1.6,
+      "edgeAttachments": ["right", "top", "bottom"]
+    }
+  ],
+  "camera": {
+    "travel": [128, 0],
+    "anchor": [0.6070574162679426, 0.5844845908607864]
+  },
+  "recipe": {
+    "preset": "lateral_track",
+    "foreground": "left",
+    "subject": "room",
+    "background": "far",
+    "intensity": "dramatic"
+  }
+}

@@ -1,0 +1,135 @@
+{
+  "title": "Foreground Reveal · The tighter opening",
+  "durationMs": 7000,
+  "fps": 24,
+  "width": 1920,
+  "height": 1080,
+  "background": "#D4BE91",
+  "assets": [
+    {
+      "id": "far",
+      "path": "../../../assets/cinematic-illustrated/kit-a-threshold/threshold-far.png",
+      "sha256": "sha256:6ce16545ad2c8555bb22766936a3d804230b8359d12296d34595829cdd8e551f",
+      "width": 1672,
+      "height": 941
+    },
+    {
+      "id": "room",
+      "path": "../../../assets/cinematic-illustrated/kit-a-threshold/threshold-room.png",
+      "sha256": "sha256:09984c95028dc11bd5066766124890e89363cb3d904298c65dc6a8baf6b009a1",
+      "width": 1672,
+      "height": 941
+    },
+    {
+      "id": "left",
+      "path": "../../../assets/cinematic-illustrated/kit-a-threshold/threshold-left.png",
+      "sha256": "sha256:d456deced5fbdd6cb4abd9cc1340fefc12442f48abc6ce1f1ad06900eb6ff0cb",
+      "width": 948,
+      "height": 1659
+    },
+    {
+      "id": "right",
+      "path": "../../../assets/cinematic-illustrated/kit-a-threshold/threshold-right.png",
+      "sha256": "sha256:8a01663d9edb7b804131702a063f2fd3b1814e67b26483307d999400a509a37a",
+      "width": 948,
+      "height": 1660
+    }
+  ],
+  "nodes": [
+    {
+      "id": "far",
+      "x": -70,
+      "y": -85,
+      "width": 2230,
+      "height": 1255.0418660287082,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "image",
+      "states": [{ "asset": "far" }],
+      "fit": "stretch"
+    },
+    {
+      "id": "room",
+      "x": -155,
+      "y": -60,
+      "width": 2080,
+      "height": 1170.622009569378,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "image",
+      "states": [{ "asset": "room" }],
+      "fit": "stretch"
+    },
+    {
+      "id": "right",
+      "x": 680,
+      "y": -650,
+      "width": 1284.9397590361446,
+      "height": 2250,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "image",
+      "states": [{ "asset": "right" }],
+      "fit": "stretch"
+    }
+  ],
+  "provenance": "../../../assets/cinematic-illustrated/kit-a-threshold/provenance.json",
+  "schemaVersion": "illustrated-scene-2",
+  "layers": [
+    {
+      "node": "far",
+      "depth": 14,
+      "paintedBounds": [0, 0, 2230, 1255.0418660287082]
+    },
+    {
+      "node": "room",
+      "depth": 4.5,
+      "protectedRegion": [
+        [1001.4354066985646, 398.0861244019139],
+        [1517.7033492822968, 398.0861244019139],
+        [1517.7033492822968, 970.3349282296651],
+        [1001.4354066985646, 970.3349282296651]
+      ],
+      "edgeAttachments": ["left", "right", "top", "bottom"]
+    },
+    {
+      "node": "right",
+      "depth": 1.25,
+      "edgeAttachments": ["right", "top", "bottom"]
+    }
+  ],
+  "camera": {
+    "travel": [-110, 0],
+    "anchor": [0.6070574162679426, 0.5844845908607864]
+  },
+  "recipe": {
+    "preset": "foreground_reveal",
+    "foreground": "right",
+    "revealRegion": [
+      [1108.421052631579, 435.40669856459334],
+      [1244.019138755981, 419.2344497607656],
+      [1411.9617224880383, 432.91866028708137],
+      [1403.2535885167465, 465.2631578947369],
+      [1460.4784688995217, 517.5119617224881],
+      [1492.8229665071772, 592.1531100478469],
+      [1489.0909090909092, 710.3349282296651],
+      [1449.2822966507179, 838.4688995215312],
+      [1387.0813397129186, 930.5263157894738],
+      [1293.7799043062203, 942.9665071770336],
+      [1164.4019138755982, 931.7703349282297],
+      [1117.129186602871, 864.5933014354067],
+      [1068.6124401913876, 763.8277511961722],
+      [1035.0239234449762, 673.0143540669857],
+      [1025.0717703349283, 594.6411483253589],
+      [1046.22009569378, 538.6602870813398],
+      [1098.468899521531, 485.16746411483257],
+      [1114.641148325359, 464.01913875598086]
+    ],
+    "subject": "room",
+    "background": "far",
+    "intensity": "dramatic"
+  }
+}

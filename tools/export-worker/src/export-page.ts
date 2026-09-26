@@ -1,5 +1,9 @@
-import { createWebGLPreview } from "../../../packages/renderer-core/src/index.ts";
-import type { PreviewScene } from "../../../packages/renderer-core/src/scene.ts";
+import {
+  createWebGLPreview,
+  createIllustratedPreview,
+  loadIllustratedImages,
+} from "../../../packages/renderer-core/src/index.ts";
+import type { ExportableScene } from "./export-worker.ts";
 import { assertNever, type FrameTransport } from "./transport.ts";
 
 export type BrowserExportResult = {
@@ -13,7 +17,7 @@ export type BrowserExportResult = {
 declare global {
   interface Window {
     runStillShiftExport?: (
-      scene: PreviewScene,
+      scene: ExportableScene,
       hasDepth: boolean,
       transport: FrameTransport,
     ) => Promise<BrowserExportResult>;
@@ -54,21 +58,33 @@ const captureBlob = (
 
 const captureFrame = (
   canvas: HTMLCanvasElement,
-  gl: WebGL2RenderingContext,
+  gl: WebGL2RenderingContext | null,
   transport: FrameTransport,
 ): Promise<ArrayBuffer | Blob> => {
   switch (transport) {
     case "raw_rgba": {
       const pixels = new Uint8Array(canvas.width * canvas.height * 4);
-      gl.readPixels(
-        0,
-        0,
-        canvas.width,
-        canvas.height,
-        gl.RGBA,
-        gl.UNSIGNED_BYTE,
-        pixels,
-      );
+      if (gl)
+        gl.readPixels(
+          0,
+          0,
+          canvas.width,
+          canvas.height,
+          gl.RGBA,
+          gl.UNSIGNED_BYTE,
+          pixels,
+        );
+      else {
+        const rgba = canvas
+          .getContext("2d")!
+          .getImageData(0, 0, canvas.width, canvas.height).data;
+        const rowBytes = canvas.width * 4;
+        for (let y = 0; y < canvas.height; y++)
+          pixels.set(
+            rgba.subarray(y * rowBytes, (y + 1) * rowBytes),
+            (canvas.height - 1 - y) * rowBytes,
+          );
+      }
       return Promise.resolve(pixels.buffer as ArrayBuffer);
     }
     case "png_pipe":
@@ -81,14 +97,18 @@ const captureFrame = (
 };
 
 window.runStillShiftExport = async (scene, hasDepth, transport) => {
-  const source = await loadImage("/_export/source");
-  const depth = hasDepth ? await loadImage("/_export/depth") : null;
+  const illustrated = "recipe" in scene;
+  const source = illustrated ? null : await loadImage("/_export/source");
+  const depth =
+    !illustrated && hasDepth ? await loadImage("/_export/depth") : null;
   if (
-    source.naturalWidth !== scene.source.width ||
-    source.naturalHeight !== scene.source.height ||
-    (depth &&
-      (depth.naturalWidth !== scene.source.width ||
-        depth.naturalHeight !== scene.source.height))
+    !illustrated &&
+    source &&
+    (source.naturalWidth !== scene.source.width ||
+      source.naturalHeight !== scene.source.height ||
+      (depth &&
+        (depth.naturalWidth !== scene.source.width ||
+          depth.naturalHeight !== scene.source.height)))
   ) {
     throw new Error("Export assets differ from resolved scene dimensions");
   }
@@ -96,13 +116,23 @@ window.runStillShiftExport = async (scene, hasDepth, transport) => {
   canvas.width = scene.canvas.width;
   canvas.height = scene.canvas.height;
   document.body.append(canvas);
-  const preview = createWebGLPreview(canvas, scene, source, depth);
-  const gl = canvas.getContext("webgl2");
-  if (!gl) throw new Error("WebGL2 is unavailable in export browser");
-  const gpuInfo = gl.getExtension("WEBGL_debug_renderer_info");
-  const gpuRenderer = gpuInfo
-    ? String(gl.getParameter(gpuInfo.UNMASKED_RENDERER_WEBGL))
-    : String(gl.getParameter(gl.RENDERER));
+  const preview = illustrated
+    ? createIllustratedPreview(
+        canvas,
+        scene,
+        await loadIllustratedImages(scene, (id) => `/_export/assets/${id}`),
+      )
+    : createWebGLPreview(canvas, scene, source!, depth);
+  const gl = illustrated ? null : canvas.getContext("webgl2");
+  if (!illustrated && !gl)
+    throw new Error("WebGL2 is unavailable in export browser");
+  const gpuInfo = gl?.getExtension("WEBGL_debug_renderer_info");
+  const gpuRenderer =
+    gl && gpuInfo
+      ? String(gl.getParameter(gpuInfo.UNMASKED_RENDERER_WEBGL))
+      : gl
+        ? String(gl.getParameter(gl.RENDERER))
+        : "Canvas2D illustrated compositor";
   const timings: number[] = [];
   const uploadTimings: number[] = [];
   try {

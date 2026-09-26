@@ -1,0 +1,32 @@
+[
+  {
+    "id": "chronicle-reveal",
+    "title": "Layered reveal",
+    "description": "The foreground shifts; a route to the threshold becomes visible."
+  },
+  {
+    "id": "resource-flow",
+    "title": "Resource flow",
+    "description": "Branches form in sequence; tokens arrive at two different uses."
+  },
+  {
+    "id": "access-pressure",
+    "title": "Access pressure",
+    "description": "The route exists, but a restriction stops the token short."
+  },
+  {
+    "id": "comparison-build",
+    "title": "Comparison builds",
+    "description": "Aligned panels share a condition; only their reserve margins change."
+  },
+  {
+    "id": "pose-prop-change",
+    "title": "Pose and prop change",
+    "description": "The prop advances, makes contact, then the bowl switches to its authored filled state."
+  },
+  {
+    "id": "crisis-fracture",
+    "title": "Crisis fracture",
+    "description": "Named connections break in order while the context remains stable."
+  }
+]

@@ -3,8 +3,8 @@ import {
   applySafetyToScene,
   createWebGLPreview,
   evaluateFrame,
+  isFlatPreset,
   fallback2DScene,
-  PRESET_VERSIONS,
   resolvePreviewScene,
   type PreviewIntensity,
   type PreviewPreset,
@@ -62,18 +62,21 @@ let activeImages: {
 } | null = null;
 const safetyAssessments = new WeakMap<HTMLImageElement, SafetyAssessment>();
 
-const presetLabels: Record<PreviewPreset, string> = {
-  slow_push: "Slow push",
-  horizontal_drift: "Horizontal drift",
-  cinematic_float: "Cinematic float",
-};
-const presets = Object.keys(PRESET_VERSIONS) as PreviewPreset[];
-for (const preset of presets) {
-  const option = document.createElement("option");
-  option.value = preset;
-  option.textContent = presetLabels[preset];
-  presetSelect.append(option);
-}
+const depthPresets: PreviewPreset[] = [
+  "slow_push",
+  "horizontal_drift",
+  "cinematic_float",
+];
+const editorialPresets: PreviewPreset[] = [
+  "locked_hold",
+  "story_settle",
+  "panel_reveal",
+  "comparison_step",
+];
+const galleryPresets = (): PreviewPreset[] =>
+  isFlatPreset(presetSelect.value as PreviewPreset)
+    ? editorialPresets
+    : depthPresets;
 
 const stop = (): void => {
   if (timer !== null) window.clearInterval(timer);
@@ -178,6 +181,7 @@ const resolveLabScene = (
     intensity,
     seed,
   });
+  if (scene.motion.mode === "flat_2d") return scene;
   return depth
     ? applySafetyToScene(scene, analyzePair(source, depth))
     : fallback2DScene(scene, "DEPTH_PREPARATION_FAILED");
@@ -219,6 +223,8 @@ const activateScene = (
   depthImage.hidden = depth === null;
   if (depth && pair.depthUrl) depthImage.src = pair.depthUrl;
   else depthImage.removeAttribute("src");
+  byId<HTMLElement>("depth-caption").textContent =
+    nextScene.motion.mode === "flat_2d" ? "Depth unused" : "Prepared depth";
   frameSlider.max = String(nextScene.timeline.frameCount - 1);
   frameSlider.disabled = false;
   playButton.disabled = false;
@@ -337,7 +343,7 @@ const addGalleryCard = ({
   if (poster) {
     const image = document.createElement("img");
     image.src = poster;
-    image.alt = "Midpoint preview for " + entry.id + " with " + preset;
+    image.alt = "Preview frame for " + entry.id + " with " + preset;
     card.append(image);
     card.addEventListener("click", () => {
       presetSelect.value = preset;
@@ -361,12 +367,22 @@ const addGalleryCard = ({
   gallery.append(card);
 };
 
+const galleryFrameIndex = (scene: PreviewScene): number => {
+  const { preset } = scene.motion;
+  if (preset === "panel_reveal") return 8;
+  if (preset === "comparison_step")
+    return Math.floor(scene.timeline.frameCount * 0.32) + 8;
+  if (preset === "story_settle") return 10;
+  return Math.floor(scene.timeline.frameCount / 2);
+};
+
 const buildGallery = async (): Promise<void> => {
   galleryButton.disabled = true;
   status.classList.remove("error");
   try {
     const intensity = intensitySelect.value as PreviewIntensity;
     const seed = selectedSeed();
+    const presets = galleryPresets();
     gallery.replaceChildren();
     posters.clear();
     const posterCanvas = document.createElement("canvas");
@@ -401,9 +417,7 @@ const buildGallery = async (): Promise<void> => {
             );
             let poster: string;
             try {
-              posterRenderer.renderFrame(
-                Math.floor(resolvedScene.timeline.frameCount / 2),
-              );
+              posterRenderer.renderFrame(galleryFrameIndex(resolvedScene));
               poster = posterCanvas.toDataURL("image/png");
             } finally {
               posterRenderer.dispose();
@@ -437,7 +451,7 @@ const buildGallery = async (): Promise<void> => {
       posters.size +
       "/" +
       corpusEntries.length * presets.length +
-      " midpoint previews generated. Select a tile to inspect motion.";
+      " preview frames generated. Select a tile to inspect motion.";
   } catch (error) {
     showError(error);
   } finally {
@@ -463,6 +477,10 @@ galleryButton.addEventListener("click", () => {
   void buildGallery();
 });
 byId<HTMLButtonElement>("load-local").addEventListener("click", () => {
+  void loadLocal().catch(showError);
+});
+
+const loadLocal = async (): Promise<void> => {
   const source = sourceInput.files?.[0];
   const depth = depthInput.files?.[0];
   if (!source) return showError(new Error("Choose a source image"));
@@ -477,10 +495,8 @@ byId<HTMLButtonElement>("load-local").addEventListener("click", () => {
     depthUrl: localUrls[1] ?? null,
     durationMs: 5000,
   };
-  void inspectPair(source.name, pair, requestId).catch((error: unknown) => {
-    if (requestId === previewRequestId) showError(error);
-  });
-});
+  await inspectPair(source.name, pair, requestId);
+};
 frameSlider.addEventListener("input", () => {
   stop();
   showFrame(Number(frameSlider.value));

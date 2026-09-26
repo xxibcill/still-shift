@@ -1,0 +1,56 @@
+{
+  "schemaVersion": "illustrated-asset-provenance-1",
+  "date": "2026-09-25",
+  "mode": "Codex built-in image_gen.imagegen",
+  "generationCalls": 3,
+  "promptFile": "prompts.md",
+  "selectedEpisodeImagesUsedAsGenerationInputs": false,
+  "corpusStatus": "Original proof assets; not a frozen evaluation corpus. Prior 43 remain retired.",
+  "preparationWallMs": null,
+  "preparationMeasurementNote": "Asset generation and staging elapsed time were not instrumented separately. Do not infer end-to-end production speed from render timings.",
+  "providerCost": null,
+  "providerCostNote": "Tool did not supply billed cost. Unknown, not zero.",
+  "repairs": [
+    "Bowl states authored in a separate reference edit.",
+    "Sprite crop registration and label/layout placement adjusted in scene code."
+  ],
+  "assets": [
+    {
+      "file": "landscape.png",
+      "sha256": "sha256:959ed784b0ac48f0b6f68bc337099020f11476fc35c39c8a583cc2806b6b79b3",
+      "width": 1672,
+      "height": 941,
+      "originalOutput": "/Users/jjae/.codex/generated_images/01a0d814-3028-73f2-a581-e7000ab6637a/exec-2943fd3f-25bc-4219-a2c9-9f6a7e201212.png",
+      "referenceAssets": [],
+      "usedBy": ["chronicle_reveal", "comparison_build"],
+      "transformation": "Copied byte-for-byte; atlas crops are compositor source rectangles only."
+    },
+    {
+      "file": "objects-v1.png",
+      "sha256": "sha256:274cdaed676284c7225a2a83645288ff2fe7771bc75b4bbda6df92fbd9afc741",
+      "width": 1536,
+      "height": 1024,
+      "originalOutput": "/Users/jjae/.codex/generated_images/01a0d814-3028-73f2-a581-e7000ab6637a/exec-4a03df64-a7a8-4c44-9e89-5cd885f97b6f.png",
+      "referenceAssets": [],
+      "usedBy": [
+        "pose_prop_change",
+        "crisis_fracture",
+        "resource_flow",
+        "chronicle_reveal",
+        "comparison_build",
+        "access_pressure"
+      ],
+      "transformation": "Copied byte-for-byte; atlas crops are compositor source rectangles only."
+    },
+    {
+      "file": "bowl-states.png",
+      "sha256": "sha256:047a9a3e5183af81567faafea31403d86bae91abb71be3f8f3245b89fe62d02d",
+      "width": 1774,
+      "height": 887,
+      "originalOutput": "/Users/jjae/.codex/generated_images/01a0d814-3028-73f2-a581-e7000ab6637a/exec-56da5574-06c8-4053-9492-03b40285c185.png",
+      "referenceAssets": ["objects-v1.png"],
+      "usedBy": ["pose_prop_change"],
+      "transformation": "Copied byte-for-byte; atlas crops are compositor source rectangles only."
+    }
+  ]
+}

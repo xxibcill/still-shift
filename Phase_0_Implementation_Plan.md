@@ -6,6 +6,48 @@
 **Primary consumer:** The existing explainer-video production workflow  
 **Related architecture:** `Still_Image_Animation_Architecture.md`
 
+**2026-09-25 illustrated-style extension:** Four optional flat 2D presets were
+added for a History Offstage style trial. They do not change the original three
+depth-preset baseline or the required exit gates. The prior 43-image candidate
+is retired; see [the preset trial](./docs/history-offstage-presets.md) and
+[corpus review](./docs/corpus-review-2026-09-25.md).
+
+**2026-09-25 creative review correction:** The owner found that first trial too
+basic. The owner approved the [replacement motion plan](./docs/history-offstage-motion-plan.md).
+Six presets using supplied layers, paths, and authored states are now implemented
+as a bounded extension to this experiment; see the
+[implementation and 42-second review reel](./docs/history-offstage-motion-implementation.md).
+The extension explicitly accepts prepared alpha assets and rectangular clips,
+with 24/30 fps scene metadata. Automatic segmentation, arbitrary mask authoring,
+and background inpainting remain excluded. Creative review and the original
+Phase 0 exit gates remain open.
+
+**2026-09-25 cinematic planning request:** The owner requested a further cinematic
+template family including parallax. The [next build plan](./docs/cinematic-template-plan.md)
+proposes a shared camera, authored depth planes, painted-area checks, and nine
+full-frame shot treatments. The first [Layered Parallax milestone](./docs/cinematic-parallax-implementation.md)
+now implements a shared plane camera, coverage validation, and two original
+compositions. A researched [Threshold Push milestone](./docs/threshold-push-implementation.md)
+now adds forward travel and a grounded room assembly. The researched
+[Lateral Track milestone](./docs/lateral-track-implementation.md) reuses that assembly
+for sustained sideways travel and visible subject drift. The researched
+[Foreground Reveal milestone](./docs/foreground-reveal-implementation.md) adds
+asset-aware occlusion checks and a held revealed composition. Five recipes remain planned. Focus softening and dolly-zoom
+are explicitly marked experiments; they do not revise the channel baseline or
+the existing Phase 0 acceptance gates.
+
+**2026-09-26 S01E01 story-motion roadmap:** A planned v0.13 extension adds seven
+reusable narrative treatments on the existing prepared illustrated renderer:
+Unequal Margins, Access Constraint, Relationship Build, Evidence Boundary,
+Dated System Break, Category Swap and Motif Resolve. The
+[milestone roadmap](./docs/s01e01-story-motion-roadmap.md) starts with one short
+illustrated preview, then the 26.917-second ST-013/014 narrated proof. It adds
+explicit event timing and continuity only as required by those scenes. Remotion
+retains episode/audio assembly; exact episode integration and QA follow the
+episode's current authority. These longer narrated proofs are a separate study,
+not a change to the baseline 3–8-second depth benchmark, its retired corpus or
+its exit gates. Implementation is planned, not started.
+
 ## 1. Phase 0 decision
 
 Build the smallest production-shaped vertical slice that can answer one question:
