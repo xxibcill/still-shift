@@ -23,7 +23,7 @@ const { values } = parseArgs({
   },
 });
 const directions = { "buffer-press": unequalMarginsV3 } as const;
-if (values.direction && !(values.direction in directions))
+if (values.direction && !Object.hasOwn(directions, values.direction))
   throw new Error(`Unknown direction ${values.direction}`);
 const direction =
   values.direction && directions[values.direction as keyof typeof directions];
