@@ -161,6 +161,23 @@ const shape = PreparedSceneFieldsSchema.omit({ durationMs: true })
     frameCount: frame.positive().max(108000),
     episodeStartFrame: frame.optional(),
     motionGrammar: z.literal("v2").optional(),
+    authoringVersion: z.literal("1").optional(),
+    safeInset: finite.min(0).max(400).optional(),
+    initialState: z
+      .record(
+        id,
+        z
+          .object({
+            x: finite.optional(),
+            y: finite.optional(),
+            rotation: finite.optional(),
+            scaleX: finite.positive().max(4).optional(),
+            scaleY: finite.positive().max(4).optional(),
+            opacity: finite.min(0).max(1).optional(),
+          })
+          .strict(),
+      )
+      .optional(),
     camera: StoryCameraSchema.optional(),
     flows: z.array(StoryFlowSchema).max(40).optional(),
     review: z
@@ -195,6 +212,18 @@ export const StorySceneSchema = shape.superRefine((scene, ctx) => {
   const fail = (message: string) => ctx.addIssue({ code: "custom", message });
   const { nodes } = validatePreparedGraph(scene, fail);
   validateStoryBindings(scene, nodes, fail);
+  if (
+    (scene.initialState ||
+      scene.safeInset !== undefined ||
+      scene.nodes.some(
+        (n) => n.type === "text" && (n.textRole || n.textLayout),
+      )) &&
+    scene.authoringVersion !== "1"
+  )
+    fail("Authoring fields require authoringVersion 1");
+  for (const node of Object.keys(scene.initialState ?? {}))
+    if (!nodes.has(node))
+      fail("Initial state references a missing node: " + node);
   for (const textId of scene.review?.essentialText ?? [])
     if (nodes.get(textId)?.type !== "text")
       fail(`Essential text role must bind a text node: ${textId}`);

@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Still Shift · Passage authoring</title>
+    <link rel="stylesheet" href="/src/passage.css" />
+  </head>
+  <body>
+    <main>
+      <header>
+        <div>
+          <p class="eyebrow">Still Shift / Authoring lab</p>
+          <h1>Passage workbench</h1>
+          <p>Shape timing. Inspect state. Keep every frame accounted for.</p>
+        </div>
+        <a href="/illustrated.html?collection=story">Scene library ↗</a>
+      </header>
+      <form id="load-form" class="load-bar">
+        <label
+          >Passage plan<input
+            id="plan-path"
+            value="benchmarks/fixtures/story-authoring/linked-comparison.json"
+            spellcheck="false" /></label
+        ><button>Load passage</button
+        ><label class="import-path"
+          >Import base directory<input
+            id="import-base-directory"
+            placeholder="benchmarks/fixtures/story-passages"
+            spellcheck="false" /></label
+        ><label class="file-button"
+          >Open plan or workspace<input
+            id="open-workspace"
+            type="file"
+            accept=".json"
+        /></label>
+      </form>
+      <p id="status" role="status">Loading passage…</p>
+      <div id="errors" role="alert"></div>
+      <div class="workspace">
+        <section class="stage" aria-label="Passage preview">
+          <div class="canvas-wrap">
+            <canvas id="preview" width="1920" height="1080"></canvas
+            ><canvas
+              id="overlay"
+              width="1920"
+              height="1080"
+              aria-hidden="true"
+            ></canvas>
+          </div>
+          <div class="transport">
+            <button id="play" type="button">Play</button
+            ><button id="restart" type="button">Restart</button
+            ><output id="frame-label">Frame 0</output>
+          </div>
+          <input
+            id="scrub"
+            type="range"
+            min="0"
+            value="0"
+            max="1"
+            aria-label="Passage frame"
+          />
+          <div class="toolbar">
+            <button id="undo" disabled>Undo</button
+            ><button id="redo" disabled>Redo</button
+            ><button id="save-plan">Save plan</button
+            ><button id="save-workspace">Save workspace</button>
+          </div>
+          <details>
+            <summary>Preview aids</summary>
+            <div class="aids">
+              <label
+                ><input id="show-bounds" type="checkbox" /> Bounds &amp;
+                origins</label
+              ><label><input id="show-safe" type="checkbox" /> Safe area</label
+              ><label
+                ><input id="show-diagnostics" type="checkbox" /> Diagnostic
+                targets</label
+              ><label
+                >Narration file<input
+                  id="narration"
+                  type="file"
+                  accept="audio/*"
+              /></label>
+            </div>
+            <p class="hint">
+              Narration starts at the plan’s source frame. A supplied file must
+              match its recorded checksum.
+            </p>
+          </details>
+          <section aria-label="Passage tracks">
+            <h2>Timeline</h2>
+            <div id="timeline"></div>
+          </section>
+        </section>
+        <aside aria-label="Authoring controls">
+          <div class="section-heading">
+            <h2>Beat inspector</h2>
+            <select id="beat" aria-label="Beat"></select>
+          </div>
+          <p id="takeaway"></p>
+          <details open>
+            <summary>Narration cues</summary>
+            <div id="cues"></div>
+          </details>
+          <details>
+            <summary>Linked events</summary>
+            <div id="bindings"></div>
+          </details>
+          <details open>
+            <summary>Template parameters</summary>
+            <div id="parameters"></div>
+          </details>
+          <details>
+            <summary>Style profile</summary>
+            <div id="style"></div>
+          </details>
+          <details>
+            <summary>Beat handoff</summary>
+            <div id="handoff"></div>
+          </details>
+          <details>
+            <summary>Node state</summary>
+            <select id="node" aria-label="Node"></select>
+            <pre id="node-state"></pre>
+          </details>
+          <section aria-label="Diagnostics">
+            <h2>Diagnostics</h2>
+            <p class="hint">
+              Correctness errors block edits. Readability and motion notes are
+              advisory.
+            </p>
+            <div id="diagnostics"></div>
+          </section>
+        </aside>
+      </div>
+    </main>
+    <script type="module" src="/src/passage.ts"></script>
+  </body>
+</html>

@@ -1,0 +1,190 @@
+{
+  "schemaVersion": "story-passage-1",
+  "styleProfile": "layered-chronicle-1",
+  "fps": 24,
+  "narration": {
+    "reference": "S01E01 narration-mix-v003.wav; cue source: docs/s01e01-resource-passage-beats.md and existing comparison/access proof",
+    "sha256": "0a972a37e7d485f6fe33c89194844cd9b2a46cffe77f478d6c8299724376b151"
+  },
+  "id": "s01e01-resources",
+  "title": "Grain, relationships and unequal buffers",
+  "sourceStartFrame": 1940,
+  "beats": [
+    {
+      "id": "more-than-grain",
+      "template": "templates/resource-network.json",
+      "purpose": "explain-relationships",
+      "takeaway": "A household depends on more than grain.",
+      "focus": ["grain", "storage", "markets", "labor", "local", "loss"],
+      "intensity": "develop",
+      "frameCount": 648,
+      "evidence": {
+        "kind": "symbolic",
+        "node": "qualifier",
+        "qualification": "Symbolic relationships, not an inventory"
+      },
+      "cues": [
+        {
+          "id": "cereal",
+          "phrase": "Cereal foods for poorer rural households",
+          "frame": 74,
+          "events": ["poorer-rural-households", "cereal-foods"]
+        },
+        {
+          "id": "wider-resources",
+          "phrase": "More than grain",
+          "frame": 261,
+          "events": ["more-than-grain"]
+        },
+        {
+          "id": "resources",
+          "phrase": "Resources and storage",
+          "frame": 383,
+          "events": ["storage", "storage-arrives"]
+        },
+        {
+          "id": "prices",
+          "phrase": "Prices, markets and credit",
+          "frame": 413,
+          "events": ["markets", "markets-arrives"]
+        },
+        {
+          "id": "labor",
+          "phrase": "Labor and livestock",
+          "frame": 461,
+          "events": ["labor", "labor-arrives"]
+        },
+        {
+          "id": "conditions",
+          "phrase": "Local conditions",
+          "frame": 493,
+          "events": ["local", "local-arrives"]
+        },
+        {
+          "id": "loss",
+          "phrase": "Loss and spoilage vary",
+          "frame": 563,
+          "events": ["loss", "loss-arrives"]
+        }
+      ]
+    },
+    {
+      "id": "particular-household",
+      "template": "templates/household-year.json",
+      "purpose": "explain-relationships",
+      "takeaway": "Resources belong to a particular household and year.",
+      "focus": ["grain", "home", "year"],
+      "intensity": "quiet",
+      "frameCount": 303,
+      "evidence": {
+        "kind": "symbolic",
+        "node": "qualifier",
+        "qualification": "Illustrative household"
+      },
+      "cues": [
+        {
+          "id": "household",
+          "phrase": "A particular household",
+          "frame": 125,
+          "events": ["a-household", "household-arrives"]
+        },
+        {
+          "id": "year",
+          "phrase": "A particular year",
+          "frame": 204,
+          "events": ["particular-year", "year-arrives"]
+        }
+      ]
+    },
+    {
+      "id": "uneven-bridge",
+      "template": "templates/storage-bridge.json",
+      "purpose": "explain-relationships",
+      "takeaway": "Stored food can bridge scarcity, with uneven limits.",
+      "focus": ["grain", "home", "bridge-note", "limit"],
+      "intensity": "develop",
+      "frameCount": 279,
+      "evidence": {
+        "kind": "symbolic",
+        "node": "qualifier",
+        "qualification": "Severity varies by household and year"
+      },
+      "cues": [
+        {
+          "id": "bridge",
+          "phrase": "Stored food could bridge scarcity",
+          "frame": 31,
+          "events": ["could-bridge", "can-bridge"]
+        },
+        {
+          "id": "limits",
+          "phrase": "The buffer is uneven and finite",
+          "frame": 94,
+          "events": ["uneven", "finite"]
+        }
+      ]
+    },
+    {
+      "id": "unequal-buffers",
+      "template": "templates/unequal-margins.json",
+      "purpose": "compare",
+      "takeaway": "The same season leaves different households different margins.",
+      "focus": ["house-a", "house-b", "pressure-b"],
+      "intensity": "peak",
+      "frameCount": 277,
+      "evidence": {
+        "kind": "symbolic",
+        "node": "qualifier",
+        "qualification": "No shared deadline; no measured amounts"
+      },
+      "cues": [
+        {
+          "id": "strain",
+          "phrase": "One household may last longer",
+          "frame": 0,
+          "events": ["shared-strain"]
+        },
+        {
+          "id": "consequence",
+          "phrase": "Unequal room to absorb strain",
+          "frame": 80,
+          "events": ["less-room"]
+        }
+      ],
+      "copy": {
+        "qualifier": "No shared deadline; no measured amounts"
+      },
+      "timing": {
+        "shared-strain": {
+          "start": 0,
+          "end": 72
+        },
+        "more-room": {
+          "start": 48,
+          "end": 72
+        },
+        "less-room": {
+          "start": 80,
+          "end": 104
+        }
+      }
+    }
+  ],
+  "delivery": [
+    {
+      "id": "st006",
+      "start": 0,
+      "end": 408
+    },
+    {
+      "id": "st007",
+      "start": 408,
+      "end": 768
+    },
+    {
+      "id": "st008",
+      "start": 768,
+      "end": 1507
+    }
+  ]
+}

@@ -1,0 +1,445 @@
+{
+  "verifiedOn": "2026-09-26",
+  "baselineCommit": "adc374e",
+  "implementation": "Commits 2907a6f, 84db091 and 6a5e7be on codex/story-beat-planning; baseline commit predates E1\u2013E6.",
+  "scope": "Render engine and authoring tools; existing artwork used only as engineering fixtures.",
+  "toolchain": {
+    "node": "22.23.1",
+    "pnpm": "10.29.3",
+    "python": "3.12.11",
+    "uv": "0.7.12",
+    "playwright": "1.62.1",
+    "chromiumRevision": "1234",
+    "chromiumVersion": "151.0.7922.34",
+    "ffmpeg": "8.0.1"
+  },
+  "checks": [
+    {
+      "command": "pnpm exec vitest run tests/unit tests/integration",
+      "status": "passed",
+      "files": 47,
+      "tests": 235
+    },
+    {
+      "command": "pnpm build",
+      "status": "passed"
+    },
+    {
+      "command": "pnpm exec eslint .",
+      "status": "passed"
+    },
+    {
+      "command": "pnpm schema:check",
+      "status": "passed"
+    },
+    {
+      "command": "pnpm test:browser:story",
+      "status": "passed",
+      "parityComparisons": 98,
+      "backwardSeeks": 14,
+      "proofFrames": 646,
+      "additionalChecks": ["timing controls", "phone layout", "30 fps CLI"]
+    },
+    {
+      "command": "pnpm test:browser:story:continuous",
+      "status": "passed",
+      "stripMaxDifference": 0,
+      "fullRevealIdentical": true,
+      "backwardIdentical": true
+    },
+    {
+      "command": "pnpm test:browser:passage:authoring",
+      "status": "passed",
+      "additionalChecks": [
+        "decoded cached/fresh equality",
+        "range export",
+        "cancellation and resume",
+        "narrated assembly",
+        "CLI/browser compiler equality",
+        "cue and parameter edits",
+        "invalid edit recovery",
+        "undo/redo",
+        "plan and workspace round trips",
+        "backward seek",
+        "playback",
+        "overlays",
+        "390 px layout"
+      ]
+    },
+    {
+      "command": "pnpm test:browser:export",
+      "status": "passed",
+      "checks": [
+        "150 frames at 1080p",
+        "90-frame transport equality",
+        "2D fallback",
+        "failed-output cleanup"
+      ]
+    },
+    {
+      "command": "pnpm exec prettier --check <project globs>",
+      "status": "passed",
+      "note": "All project files matched Prettier; Python half of pnpm format:check was rerun separately with uv cache access."
+    },
+    {
+      "command": "uv run ruff check services/depth-worker",
+      "status": "passed"
+    },
+    {
+      "command": "uv run ruff format --check services/depth-worker",
+      "status": "passed",
+      "files": 7
+    }
+  ],
+  "fixtures": {
+    "comparison-template.json": "2b6410f25d77f426e275bea7f751e76babb454c8db17380bf6bf3845fd6c1151",
+    "linked-comparison.json": "3687715aceb398ed81d98a8ce98df38c7e6f8eabeae5a672d6ed5a08a0fa5202",
+    "linked-network.json": "3740b233fd1e2878bae299c6c2608fd9839ba094eea341fa4b9c6c78050e0859",
+    "network-template.json": "c2ea64be317f1a7be0ae2d3b47aa1c64fe7807ea76318f9ec8cc1654e5c83baa"
+  },
+  "authoring": {
+    "status": "passed",
+    "scores": [
+      {
+        "frame": 0,
+        "version": "golden-parity-0.7.0",
+        "meanAbsoluteError": 0.008498497135479706,
+        "edgeAbsoluteError": 0.0035222988523392652,
+        "channelMeanError": 0.008900689905591867,
+        "warning": null
+      },
+      {
+        "frame": 54,
+        "version": "golden-parity-0.7.0",
+        "meanAbsoluteError": 0.00850480109739369,
+        "edgeAbsoluteError": 0.0034972245569461556,
+        "channelMeanError": 0.008912037037037038,
+        "warning": null
+      },
+      {
+        "frame": 110,
+        "version": "golden-parity-0.7.0",
+        "meanAbsoluteError": 0.008496479867667231,
+        "edgeAbsoluteError": 0.003599312759618103,
+        "channelMeanError": 0.008959694989106754,
+        "warning": null
+      },
+      {
+        "frame": 191,
+        "version": "golden-parity-0.7.0",
+        "meanAbsoluteError": 0.008506818365206165,
+        "edgeAbsoluteError": 0.0036248987753253583,
+        "channelMeanError": 0.008971042120551925,
+        "warning": null
+      },
+      {
+        "frame": 192,
+        "version": "golden-parity-0.7.0",
+        "meanAbsoluteError": 0.008525478092471556,
+        "edgeAbsoluteError": 0.0034660096177833045,
+        "channelMeanError": 0.008968016218833212,
+        "warning": null
+      },
+      {
+        "frame": 300,
+        "version": "golden-parity-0.7.0",
+        "meanAbsoluteError": 0.008556997902041475,
+        "edgeAbsoluteError": 0.0035417442242767793,
+        "channelMeanError": 0.00907770515613653,
+        "warning": null
+      },
+      {
+        "frame": 383,
+        "version": "golden-parity-0.7.0",
+        "meanAbsoluteError": 0.008560275962236746,
+        "edgeAbsoluteError": 0.003586775611921548,
+        "channelMeanError": 0.00906181917211329,
+        "warning": null
+      },
+      {
+        "frame": 384,
+        "version": "golden-parity-0.7.0",
+        "meanAbsoluteError": 0.00853581659001049,
+        "edgeAbsoluteError": 0.0034455408052175003,
+        "channelMeanError": 0.009005839990317115,
+        "warning": null
+      },
+      {
+        "frame": 575,
+        "version": "golden-parity-0.7.0",
+        "meanAbsoluteError": 0.00854312918583071,
+        "edgeAbsoluteError": 0.0035417442242767793,
+        "channelMeanError": 0.009073922778988138,
+        "warning": null
+      }
+    ],
+    "cache": [
+      {
+        "beat": "compare",
+        "key": "00173add9f2ceb0a60274f5e53479a5eafd9d7ce05d27ba49731936895ff2d46",
+        "reused": true,
+        "sha256": "a2c94bb00fe42624c4bb0950bee2d16301a226b3db2db368b8045d7156484ce6"
+      },
+      {
+        "beat": "continue",
+        "key": "54f021a1ee88c62b89b60829e807a7fa1aca3ddfc826460fa002998b6bf445e3",
+        "reused": true,
+        "sha256": "a99273e72f20deae411af6df9a9e46f5c47222f8c0051d2ab3eb15d2bb4cd26f"
+      },
+      {
+        "beat": "reset",
+        "key": "5fd7929cf103eee2aedcdca98e35bd6561ab9578e84215f7eb3e02b8c30fd86c",
+        "reused": true,
+        "sha256": "2789b54f5f85de5be2dfc470e54434200970f30c15ff36115b06babd48555dca"
+      }
+    ],
+    "isolatedEdit": [
+      {
+        "beat": "compare",
+        "key": "f013f8a7311b196862dfef8b519cb5ff609d4643698579623f9076dcc968da98",
+        "reused": false,
+        "sha256": "a2798ffb889237f2df1181fa4039b4a088be95f0eba55d6bd5b5ec54e95b4eb3"
+      },
+      {
+        "beat": "continue",
+        "key": "54f021a1ee88c62b89b60829e807a7fa1aca3ddfc826460fa002998b6bf445e3",
+        "reused": true,
+        "sha256": "a99273e72f20deae411af6df9a9e46f5c47222f8c0051d2ab3eb15d2bb4cd26f"
+      },
+      {
+        "beat": "reset",
+        "key": "5fd7929cf103eee2aedcdca98e35bd6561ab9578e84215f7eb3e02b8c30fd86c",
+        "reused": true,
+        "sha256": "2789b54f5f85de5be2dfc470e54434200970f30c15ff36115b06babd48555dca"
+      }
+    ],
+    "range": {
+      "start": 180,
+      "end": 204,
+      "frames": 24
+    },
+    "browser": "cue editing, invalid recovery, slots, undo/redo, workspace round trip, playback, overlays, 390px layout",
+    "narratedFrames": 576
+  },
+  "renders": {
+    "baseline": {
+      "fps": 24,
+      "frameCount": 576,
+      "frameRange": {
+        "start": 0,
+        "end": 576
+      },
+      "cache": [
+        {
+          "beat": "compare",
+          "key": "00173add9f2ceb0a60274f5e53479a5eafd9d7ce05d27ba49731936895ff2d46",
+          "reused": false,
+          "sha256": "a2c94bb00fe42624c4bb0950bee2d16301a226b3db2db368b8045d7156484ce6"
+        },
+        {
+          "beat": "continue",
+          "key": "54f021a1ee88c62b89b60829e807a7fa1aca3ddfc826460fa002998b6bf445e3",
+          "reused": false,
+          "sha256": "a99273e72f20deae411af6df9a9e46f5c47222f8c0051d2ab3eb15d2bb4cd26f"
+        },
+        {
+          "beat": "reset",
+          "key": "5fd7929cf103eee2aedcdca98e35bd6561ab9578e84215f7eb3e02b8c30fd86c",
+          "reused": false,
+          "sha256": "2789b54f5f85de5be2dfc470e54434200970f30c15ff36115b06babd48555dca"
+        }
+      ],
+      "videoSha256": "9e68b417ececc0d8f98ede1af8ebd46a46de65866f10d60573c9c64f6f245283",
+      "metrics": {
+        "preparationMs": 30.34829099999996,
+        "renderingMs": 12253.848875,
+        "beatsMs": 10734.464415999999,
+        "assemblyMs": 1519.3868340000008,
+        "humanPreparationMinutes": null,
+        "manualRepairs": null
+      }
+    },
+    "cached": {
+      "fps": 24,
+      "frameCount": 576,
+      "frameRange": {
+        "start": 0,
+        "end": 576
+      },
+      "cache": [
+        {
+          "beat": "compare",
+          "key": "00173add9f2ceb0a60274f5e53479a5eafd9d7ce05d27ba49731936895ff2d46",
+          "reused": true,
+          "sha256": "a2c94bb00fe42624c4bb0950bee2d16301a226b3db2db368b8045d7156484ce6"
+        },
+        {
+          "beat": "continue",
+          "key": "54f021a1ee88c62b89b60829e807a7fa1aca3ddfc826460fa002998b6bf445e3",
+          "reused": true,
+          "sha256": "a99273e72f20deae411af6df9a9e46f5c47222f8c0051d2ab3eb15d2bb4cd26f"
+        },
+        {
+          "beat": "reset",
+          "key": "5fd7929cf103eee2aedcdca98e35bd6561ab9578e84215f7eb3e02b8c30fd86c",
+          "reused": true,
+          "sha256": "2789b54f5f85de5be2dfc470e54434200970f30c15ff36115b06babd48555dca"
+        }
+      ],
+      "videoSha256": "9e68b417ececc0d8f98ede1af8ebd46a46de65866f10d60573c9c64f6f245283",
+      "metrics": {
+        "preparationMs": 30.34829099999996,
+        "renderingMs": 2120.9292909999986,
+        "beatsMs": 656.189124999999,
+        "assemblyMs": 1464.7407500000008,
+        "humanPreparationMinutes": null,
+        "manualRepairs": null
+      }
+    },
+    "changed": {
+      "fps": 24,
+      "frameCount": 576,
+      "frameRange": {
+        "start": 0,
+        "end": 576
+      },
+      "cache": [
+        {
+          "beat": "compare",
+          "key": "f013f8a7311b196862dfef8b519cb5ff609d4643698579623f9076dcc968da98",
+          "reused": false,
+          "sha256": "a2798ffb889237f2df1181fa4039b4a088be95f0eba55d6bd5b5ec54e95b4eb3"
+        },
+        {
+          "beat": "continue",
+          "key": "54f021a1ee88c62b89b60829e807a7fa1aca3ddfc826460fa002998b6bf445e3",
+          "reused": true,
+          "sha256": "a99273e72f20deae411af6df9a9e46f5c47222f8c0051d2ab3eb15d2bb4cd26f"
+        },
+        {
+          "beat": "reset",
+          "key": "5fd7929cf103eee2aedcdca98e35bd6561ab9578e84215f7eb3e02b8c30fd86c",
+          "reused": true,
+          "sha256": "2789b54f5f85de5be2dfc470e54434200970f30c15ff36115b06babd48555dca"
+        }
+      ],
+      "videoSha256": "46533920e92dc07d14e6d2b74c9d6b6cdc8c06276face33ca4c97ab796b8aed3",
+      "metrics": {
+        "preparationMs": 14.984207999998034,
+        "renderingMs": 5480.974749999998,
+        "beatsMs": 3975.712374999999,
+        "assemblyMs": 1505.262749999998,
+        "humanPreparationMinutes": null,
+        "manualRepairs": null
+      }
+    },
+    "range": {
+      "fps": 24,
+      "frameCount": 24,
+      "frameRange": {
+        "start": 180,
+        "end": 204
+      },
+      "cache": [
+        {
+          "beat": "compare",
+          "key": "00173add9f2ceb0a60274f5e53479a5eafd9d7ce05d27ba49731936895ff2d46",
+          "reused": true,
+          "sha256": "a2c94bb00fe42624c4bb0950bee2d16301a226b3db2db368b8045d7156484ce6"
+        },
+        {
+          "beat": "continue",
+          "key": "54f021a1ee88c62b89b60829e807a7fa1aca3ddfc826460fa002998b6bf445e3",
+          "reused": true,
+          "sha256": "a99273e72f20deae411af6df9a9e46f5c47222f8c0051d2ab3eb15d2bb4cd26f"
+        }
+      ],
+      "videoSha256": "edb1c4a498ff558efb25aa04f9aaca3e468ec29182cfd3443ab99f8059fdd09d",
+      "metrics": {
+        "preparationMs": 30.34829099999996,
+        "renderingMs": 789.4910420000015,
+        "beatsMs": 441.6970420000034,
+        "assemblyMs": 347.79454199999964,
+        "humanPreparationMinutes": null,
+        "manualRepairs": null
+      }
+    },
+    "cancelled": {
+      "fps": 24,
+      "frameCount": 576,
+      "frameRange": {
+        "start": 0,
+        "end": 576
+      },
+      "cache": [
+        {
+          "beat": "compare",
+          "key": "00173add9f2ceb0a60274f5e53479a5eafd9d7ce05d27ba49731936895ff2d46",
+          "reused": true,
+          "sha256": "a2c94bb00fe42624c4bb0950bee2d16301a226b3db2db368b8045d7156484ce6"
+        },
+        {
+          "beat": "continue",
+          "key": "54f021a1ee88c62b89b60829e807a7fa1aca3ddfc826460fa002998b6bf445e3",
+          "reused": true,
+          "sha256": "a99273e72f20deae411af6df9a9e46f5c47222f8c0051d2ab3eb15d2bb4cd26f"
+        },
+        {
+          "beat": "reset",
+          "key": "5fd7929cf103eee2aedcdca98e35bd6561ab9578e84215f7eb3e02b8c30fd86c",
+          "reused": true,
+          "sha256": "2789b54f5f85de5be2dfc470e54434200970f30c15ff36115b06babd48555dca"
+        }
+      ],
+      "videoSha256": "9e68b417ececc0d8f98ede1af8ebd46a46de65866f10d60573c9c64f6f245283",
+      "metrics": {
+        "preparationMs": 30.34829099999996,
+        "renderingMs": 2128.203458,
+        "beatsMs": 665.1413750000029,
+        "assemblyMs": 1463.0624579999967,
+        "humanPreparationMinutes": null,
+        "manualRepairs": null
+      }
+    },
+    "narrated": {
+      "fps": 24,
+      "frameCount": 576,
+      "frameRange": {
+        "start": 0,
+        "end": 576
+      },
+      "cache": [
+        {
+          "beat": "compare",
+          "key": "00173add9f2ceb0a60274f5e53479a5eafd9d7ce05d27ba49731936895ff2d46",
+          "reused": true,
+          "sha256": "a2c94bb00fe42624c4bb0950bee2d16301a226b3db2db368b8045d7156484ce6"
+        },
+        {
+          "beat": "continue",
+          "key": "54f021a1ee88c62b89b60829e807a7fa1aca3ddfc826460fa002998b6bf445e3",
+          "reused": true,
+          "sha256": "a99273e72f20deae411af6df9a9e46f5c47222f8c0051d2ab3eb15d2bb4cd26f"
+        },
+        {
+          "beat": "reset",
+          "key": "5fd7929cf103eee2aedcdca98e35bd6561ab9578e84215f7eb3e02b8c30fd86c",
+          "reused": true,
+          "sha256": "2789b54f5f85de5be2dfc470e54434200970f30c15ff36115b06babd48555dca"
+        }
+      ],
+      "videoSha256": "a43e8d25f9af6285a0a220f526561207037aa1c1fbe67f5ee8faf57c24de7f37",
+      "metrics": {
+        "preparationMs": 10.23162500000035,
+        "renderingMs": 2179.118749999998,
+        "beatsMs": 664.5870419999992,
+        "assemblyMs": 1514.5321670000012,
+        "humanPreparationMinutes": null,
+        "manualRepairs": null
+      }
+    }
+  },
+  "measurementLimits": "Single local runs with pinned tools. Does not establish production throughput, cost savings, creative acceptance or factual accuracy.",
+  "localArtifacts": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-authoring-LkHk2L",
+  "artifactNote": "Temporary local artifacts are not portable or guaranteed to persist. Rerun the recorded commands to reproduce the verification."
+}

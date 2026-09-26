@@ -71,6 +71,18 @@ export const PreparedNodeSchema = z.discriminatedUnion("type", [
       ...base,
       type: z.literal("text"),
       text: z.string().min(1),
+      textRole: z
+        .enum(["heading", "label", "qualification", "body"])
+        .optional(),
+      textLayout: z
+        .object({
+          width: number.positive(),
+          height: number.positive(),
+          lineHeight: number.min(1).max(3),
+          overflow: z.enum(["error", "clip"]),
+        })
+        .strict()
+        .optional(),
       revealMode: z.enum(["wipe", "words"]).optional(),
       states: z.array(z.string().min(1)).min(1).max(12).optional(),
       fontSize: number.min(16).max(180),

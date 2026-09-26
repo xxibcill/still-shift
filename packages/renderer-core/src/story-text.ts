@@ -1,5 +1,6 @@
 import type { PreparedNode } from "../../scene-contract/src/prepared.ts";
 import { easeMotion } from "./motion-easing.ts";
+import { measureStoryText } from "./story-text-layout.ts";
 
 type TextNode = Extract<PreparedNode, { type: "text" }>;
 const clamp = (n: number) => Math.max(0, Math.min(1, n));
@@ -35,6 +36,38 @@ export function drawStoryText(
   text: string,
   reveal: number,
 ) {
+  if (node.textLayout) {
+    const layout = measureStoryText(
+      node,
+      text,
+      (value) => ctx.measureText(value).width,
+    );
+    ctx.save();
+    const left =
+      node.align === "center"
+        ? -node.textLayout.width / 2
+        : node.align === "right"
+          ? -node.textLayout.width
+          : 0;
+    ctx.beginPath();
+    ctx.rect(left, 0, node.textLayout.width, node.textLayout.height);
+    ctx.clip();
+    const single = { ...node };
+    delete single.textLayout;
+    layout.lines.forEach((line, index) => {
+      ctx.save();
+      ctx.translate(0, index * layout.lineHeight);
+      drawStoryText(
+        ctx,
+        single,
+        line,
+        clamp(reveal * layout.lines.length - index),
+      );
+      ctx.restore();
+    });
+    ctx.restore();
+    return;
+  }
   if (reveal <= 0) return;
   if (reveal >= 1) {
     ctx.fillText(text, 0, 0);

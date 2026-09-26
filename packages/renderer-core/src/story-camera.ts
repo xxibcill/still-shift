@@ -90,6 +90,38 @@ export function sampleStoryCamera(scene: StoryScene, frame: number) {
   return { x, y, zoom: sampleCurve(prepared.zoom, frame, camera) };
 }
 
+/** Actual endpoint velocity after monotonicity limiting and endpoint easing. */
+export function storyCameraBoundaryVelocity(
+  scene: StoryScene,
+  edge: "start" | "end",
+) {
+  const camera = scene.camera;
+  if (!camera) return { x: 0, y: 0, zoom: 0 };
+  const prepared = cameraCurves(camera);
+  const eased =
+    edge === "start" ? camera.easeIn !== false : camera.easeOut !== false;
+  const velocity = Object.fromEntries(
+    (["x", "y", "zoom"] as const).map((axis) => [
+      axis,
+      eased
+        ? 0
+        : edge === "start"
+          ? prepared[axis].tangents[0]!
+          : prepared[axis].tangents.at(-1)!,
+    ]),
+  ) as { x: number; y: number; zoom: number };
+  const frame = edge === "start" ? 0 : scene.frameCount - 1;
+  for (const jolt of camera.jolts ?? []) {
+    if (frame < jolt.frame || frame >= jolt.frame + jolt.decayFrames) continue;
+    const slope =
+      (-3 * (1 - (frame - jolt.frame) / jolt.decayFrames) ** 2) /
+      jolt.decayFrames;
+    velocity.x += jolt.dx * slope;
+    velocity.y += jolt.dy * slope;
+  }
+  return velocity;
+}
+
 export function storyCameraTransform(
   scene: StoryScene,
   root: string,
