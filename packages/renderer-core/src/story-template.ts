@@ -27,6 +27,66 @@ export function parsePassageTemplate(input: unknown): PassageTemplate {
 export const templateScene = (input: PassageTemplate) =>
   input.schemaVersion === "story-template-1" ? input.scene : input;
 
+function resolveTemplateSlot(
+  scene: StoryScene,
+  id: string,
+  slot: StoryTemplate["slots"][string],
+  events: Set<string>,
+): (value: unknown) => void {
+  const invalidTarget = (): never =>
+    passageError(
+      "invalid-slot",
+      "Template slot has an incompatible target: " + id,
+      { path: "slots." + id },
+    );
+
+  switch (slot.kind) {
+    case "text": {
+      const node = scene.nodes.find((node) => node.id === slot.node);
+      if (node?.type !== "text" || node.states) return invalidTarget();
+      return (value) => {
+        node.text = z.string().trim().min(1).parse(value);
+      };
+    }
+    case "subject": {
+      const node = scene.nodes.find((node) => node.id === slot.node);
+      if (!node) return invalidTarget();
+      return (value) => {
+        Object.assign(node, SlotPoseSchema.parse(value));
+      };
+    }
+    case "asset": {
+      const asset = scene.assets.find((asset) => asset.id === slot.asset);
+      if (!asset) return invalidTarget();
+      return (value) => {
+        const replacement =
+          PreparedSceneFieldsSchema.shape.assets.element.parse(value);
+        Object.assign(asset, replacement, { id: slot.asset });
+      };
+    }
+    case "relationship": {
+      const connector = scene.connectors.find(
+        (connector) => connector.path === slot.path,
+      );
+      if (!connector) return invalidTarget();
+      return (value) => {
+        Object.assign(connector, SlotRelationshipSchema.parse(value));
+      };
+    }
+    case "timing": {
+      if (!events.has(slot.event)) return invalidTarget();
+      return (value) => {
+        retimeStoryEvents(
+          scene,
+          [],
+          {},
+          { [slot.event]: SlotTimingSchema.parse(value) },
+        );
+      };
+    }
+  }
+}
+
 export function instantiateStoryTemplate(
   input: PassageTemplate,
   parameters: Record<string, unknown>,
@@ -40,27 +100,11 @@ export function instantiateStoryTemplate(
   )
     return scene;
   scene.authoringVersion = "1";
+  const slotApplications = new Map<string, (value: unknown) => void>();
   if (input.schemaVersion === "story-template-1") {
-    const events = indexStoryEvents(scene);
+    const events = new Set(indexStoryEvents(scene).map((event) => event.id));
     for (const [id, slot] of Object.entries(input.slots)) {
-      const valid =
-        slot.kind === "text"
-          ? scene.nodes.some(
-              (n) => n.id === slot.node && n.type === "text" && !n.states,
-            )
-          : slot.kind === "subject"
-            ? scene.nodes.some((n) => n.id === slot.node)
-            : slot.kind === "asset"
-              ? scene.assets.some((a) => a.id === slot.asset)
-              : slot.kind === "relationship"
-                ? scene.connectors.some((c) => c.path === slot.path)
-                : events.some((e) => e.id === slot.event);
-      if (!valid)
-        passageError(
-          "invalid-slot",
-          "Template slot has an incompatible target: " + id,
-          { path: "slots." + id },
-        );
+      slotApplications.set(id, resolveTemplateSlot(scene, id, slot, events));
       if (slot.required && !(id in parameters))
         passageError("missing-parameter", "Missing template parameter: " + id, {
           path: "parameters." + id,
@@ -124,67 +168,12 @@ export function instantiateStoryTemplate(
     }
   }
   for (const [id, value] of Object.entries(parameters)) {
-    const slot =
-      input.schemaVersion === "story-template-1" ? input.slots[id] : undefined;
-    if (!slot)
+    const apply = slotApplications.get(id);
+    if (!apply)
       passageError("unknown-parameter", "Unknown template parameter: " + id, {
         path: "parameters." + id,
       });
-    switch (slot.kind) {
-      case "text": {
-        const node = scene.nodes.find((n) => n.id === slot.node);
-        if (node?.type !== "text" || node.states)
-          passageError(
-            "invalid-parameter",
-            "Text slot must reference a non-stateful text node",
-            { node: slot.node },
-          );
-        node.text = z.string().trim().min(1).parse(value);
-        break;
-      }
-      case "subject": {
-        const node = scene.nodes.find((n) => n.id === slot.node);
-        if (!node)
-          passageError(
-            "missing-node",
-            "Subject slot references a missing node",
-            { node: slot.node },
-          );
-        Object.assign(node, SlotPoseSchema.parse(value));
-        break;
-      }
-      case "asset": {
-        const replacement =
-          PreparedSceneFieldsSchema.shape.assets.element.parse(value);
-        const asset = scene.assets.find((a) => a.id === slot.asset);
-        if (!asset)
-          passageError(
-            "missing-asset",
-            "Asset slot references a missing asset: " + slot.asset,
-          );
-        Object.assign(asset, replacement, { id: slot.asset });
-        break;
-      }
-      case "relationship": {
-        const connector = scene.connectors.find((c) => c.path === slot.path);
-        if (!connector)
-          passageError(
-            "missing-connector",
-            "Relationship slot references a missing connector",
-            { node: slot.path },
-          );
-        Object.assign(connector, SlotRelationshipSchema.parse(value));
-        break;
-      }
-      case "timing":
-        retimeStoryEvents(
-          scene,
-          [],
-          {},
-          { [slot.event]: SlotTimingSchema.parse(value) },
-        );
-        break;
-    }
+    apply(value);
   }
   for (const node of scene.nodes) {
     if (node.type !== "text") continue;
