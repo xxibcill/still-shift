@@ -67,7 +67,11 @@ export async function passageRuntimeIdentity() {
     "tools/export-worker/src",
   ])
     await visit(directory);
-  files.push("toolchain.json", "pnpm-lock.yaml");
+  files.push(
+    "packages/animation-engine/src/prepared-animation-engine.ts",
+    "toolchain.json",
+    "pnpm-lock.yaml",
+  );
   const hash = createHash("sha256");
   for (const file of files.sort()) {
     hash.update(file);
