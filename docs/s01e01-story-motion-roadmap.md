@@ -15,6 +15,18 @@ Start with **Unequal Margins → Access Constraint**, using ST-013/014 as the fi
 
 This extension now has seven executable recipes, shared frame timing, prepared fixtures, lab cue controls and verified CLI exports. See the [implementation record and seven-preview gallery](story-motion-implementation.md). The existing cinematic work remains independently tracked under v0.12; completing every camera variation is not a dependency. Episode-derived proofs do not reinstate retired images into the Phase 0 benchmark corpus or satisfy its release gates.
 
+## Visual art direction — implemented
+
+The owner finds the motion useful and requested more aesthetic graphics on 2026-09-26. The [visual critique and redesign plan](story-motion-visual-redesign.md) identifies mixed illustration styles, repeated slide layouts, undersized text and inconsistent symbol meanings. The implemented pass applies the existing Layered Chronicle identity to all seven treatments. See the [visual implementation and QA record](story-motion-visual-implementation.md).
+
+- [x] Inspect the current frames, compare them with the channel style bible and document a scene-by-scene visual plan.
+- [x] V1: board all seven compositions and finish representative style frames.
+- [x] V2–V3: prepare a coherent reusable art kit, pinned typography and shared visual components; prove one short preview.
+- [x] V4–V5: apply the system to all seven, render a new gallery and inspect phone frames, semantic continuity and automated playback. Frame/sample judgment and playback automation are recorded separately.
+- [~] V6: the 646-frame ST-013/014 local narrated candidate is rendered with the revised kit. Remaining episode passages and protected-timeline integration are pending.
+
+This is an art and composition pass within v0.13. All seven revised compositions are rendered and inspected. Final creative acceptance and full episode integration remain pending.
+
 ## Seven implemented treatments
 
 Names and IDs below are implemented recipe values in the new `story-scene-1` prepared input, exported through `animate-scene`. Share existing drawing and event machinery; do not create seven renderers or duplicate older recipes merely to rename them. Retain existing recipe IDs and their output behavior.
@@ -43,12 +55,12 @@ Existing `chronicle_reveal` and suitable Cinematic Parallax variations support p
 | M5        | Category Swap + Motif Resolve                                    | Substitution proof and a coherent closing sequence                                                   | M2–M4                       | `[~]`  |
 | M6        | Lab/CLI completion, episode handoff and full-sequence QA         | Seven reusable treatments; S01E01 integration package and reviewed candidate under episode authority | M1–M5                       | `[~]`  |
 
-At the user’s request, the engine portions of all seven recipes were implemented together on 2026-09-26. M0–M6 remain episode-delivery slices, not calendar promises; their narrated-sequence exit criteria are still pending. After M1, record actual preparation and iteration effort before estimating the remaining work. Do not delay the first preview for a general timeline editor, batch authoring UI or large asset-generation campaign.
+At the user’s request, the engine portions and then the visual redesign of all seven recipes were implemented together on 2026-09-26. M0–M6 remain episode-delivery slices, not calendar promises. M1 now has a local narrated graphic candidate; selected-source episode integration and the other complete narrated sequences remain pending. After M1, record actual preparation and iteration effort before estimating the remaining work. Do not delay the first preview for a general timeline editor, batch authoring UI or large asset-generation campaign.
 
 ## M0 — prepare only what the first proof needs
 
-- [ ] Recheck the current S01E01 production record and the source/timing ledger before touching episode derivatives. Separate already approved treatments from the specific proposed changes.
-- [ ] Prepare two household silhouettes, a store, fixed common ground and editable restriction/relationship elements. Preserve source lineage, hashes and originals. Use existing reusable artwork for engine fixtures where suitable.
+- [x] Recheck the current S01E01 production record and the source/timing ledger before touching episode derivatives. Separate already approved treatments from the specific proposed changes.
+- [x] Prepare two household silhouettes, a store, fixed common ground and editable restriction/relationship elements. Preserve source lineage, hashes and originals. Use existing reusable artwork for engine fixtures where suitable.
 - [x] Add the smallest additive event contract required by M1: explicit event frame windows, anticipation/change/hold intervals, semantic roles, stable object IDs, anchors and entry/exit state.
 - [x] Make integer `frameCount` authoritative for the new story input. Preserve legacy v1/v2 behavior; current integer milliseconds and the eight-second cap cannot represent the exact 646-frame narrated proof. Audit engine/result/export adapters and remove floating-point duration round trips from the new route's frame validation.
 - [x] Evaluate every state from absolute frame index. Keep clip-local frames separate from the episode timeline offset. Retain existing default schedules when no new events are supplied.
@@ -64,10 +76,10 @@ At the user’s request, the engine portions of all seven recipes were implement
 
 - [x] Implement `unequal_margins`: common season/baseline, matched household scale, a named strain, and qualitatively different responses. No fabricated stock ratios.
 - [x] Implement `access_constraint`: source remains available, both connections remain, one corridor visibly narrows. Keep the path open and omit food-unit traffic.
-- [ ] Reuse the household anchors when moving from comparison into access. Define the outgoing/incoming scene state so the edit does not reset the explanation.
+- [x] Reuse the household anchors when moving from comparison into access. Define the outgoing/incoming scene state so the edit does not reset the explanation.
 - [x] Make **one 4–8-second illustrated preview** of the clearest event. Inspect it for meaning, movement and composition before extending it.
-- [ ] Assemble the full 26.917-second narrated proof using the detailed beat plan. Where a new source reset/crop/mask treatment is needed, stage that exact change against current episode authority before applying it.
-- [ ] Inspect motion intervals, the ST-013/014 boundary, a phone-size view and the final consequence. Use targeted tests for the new event semantics and preview/export frames around transitions.
+- [x] Assemble the full 26.917-second local narrated graphic candidate using the existing corrected narration timing. Where a new source reset/crop/mask treatment is needed, stage that exact change against current episode authority before applying it.
+- [x] Inspect motion intervals, the ST-013/014 boundary, a phone-size view and the final consequence. Use targeted tests for the new event semantics and preview/export frames around transitions.
 
 **Exit:** the viewer can follow “same season → unequal margins → available grain does not ensure equal access.” The main event is visible without depending on a changing sidebar. No duplicated baked paths, detached cutouts or quantitative implications remain. Record the actual temporal inspection method and unresolved compromises.
 
@@ -157,12 +169,12 @@ v0.13 is the active version. v0.12 cinematic iteration is deferred with its exis
 
 For each milestone, record its status, scene/input version, source hashes, preview or sequence location, actual temporal inspection method, targeted checks, defects/repairs and measured effort in a short implementation note linked here. Do not label any preset shipped until a rendered event exists.
 
-| Completion evidence                      | Current state                                                           |
-| ---------------------------------------- | ----------------------------------------------------------------------- |
-| 28-source design study and timing ledger | Available; design evidence only                                         |
-| Seven-treatment implementation research  | Complete; [sources and decisions](s01e01-story-motion-research.md)      |
-| Symbolic access-motion sketch            | Available; concept explanation only                                     |
-| M0–M6 implementation/previews            | Seven recipes and fixture previews delivered; episode sequences pending |
-| Independent integrated editorial review  | Pending narrated episode assembly                                       |
-| Finished S01E01 candidate                | Pending integration and episode QA                                      |
-| Phase 0 corpus and release decision      | Unchanged; outside this milestone                                       |
+| Completion evidence                      | Current state                                                                                     |
+| ---------------------------------------- | ------------------------------------------------------------------------------------------------- |
+| 28-source design study and timing ledger | Available; design evidence only                                                                   |
+| Seven-treatment implementation research  | Complete; [sources and decisions](s01e01-story-motion-research.md)                                |
+| Symbolic access-motion sketch            | Available; concept explanation only                                                               |
+| M0–M6 implementation/previews            | Seven redesigned previews and local narrated ST-013/014 candidate delivered; full episode pending |
+| Independent integrated editorial review  | Pending narrated episode assembly                                                                 |
+| Finished S01E01 candidate                | Pending integration and episode QA                                                                |
+| Phase 0 corpus and release decision      | Unchanged; outside this milestone                                                                 |

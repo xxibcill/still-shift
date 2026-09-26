@@ -44,6 +44,11 @@ Cinematic iteration is deferred while v0.13 is active; Phase 0 acceptance remain
 The [implementation research](./docs/s01e01-story-motion-research.md) now covers
 all seven, including source precedents, asset preparation and exact-frame timing requirements.
 
+**Current creative priority:** Improve the seven story graphics using the channel's
+existing Layered Chronicle identity. The [visual critique and redesign plan](./docs/story-motion-visual-redesign.md)
+covers coherent artwork, distinct compositions, readable typography and stable
+symbol meanings. Analysis is complete; the visual pass is planned within v0.13.
+
 **Planned commerce adoption:** The [e-commerce motion adoption plan](./docs/ecommerce-motion-adoption-plan.md)
 defines proposed v0.14: import the 40-format reference catalog, prove H03 with timed
 typography, add H01/H04 and their A01 sequence, then support portrait/square layouts
@@ -480,6 +485,10 @@ shots. Still Shift supplies motion scenes; Remotion retains episode assembly.
 - [x] Research implementation precedents for every treatment and record the
       [shared timing/geometry decisions and motion-specific preparation](./docs/s01e01-story-motion-research.md).
 - [x] Implement all seven recipes, exact-frame timing, validated events, attached connectors, lab cue controls and reusable rendered fixtures.
+- [x] Analyze the seven fixtures against the channel style bible and record the [visual redesign plan](./docs/story-motion-visual-redesign.md).
+- [x] Apply the shared art kit, pinned typography and distinct compositions to all seven; deliver the [reviewed gallery and local narrated ST-013/014 proof](./docs/story-motion-visual-implementation.md).
+- [x] Refine relationship strokes, attachment points and easing; provide a [synchronized before/after comparison](./docs/story-motion-line-timing-refinement.md).
+- [x] Give narrative lines a distinct [split-nib brush treatment](./docs/story-motion-brush-lines.md), with stable texture, expressive pressure and bounded access clearance.
 - [~] **M0:** Shared contract and fixture kit complete; episode-specific preparation pending.
 - [~] **M1:** Implement Unequal Margins and Access Constraint; inspect one short
   illustrated preview, then the 26.917-second ST-013/014 narrated proof.

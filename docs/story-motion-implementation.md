@@ -4,7 +4,7 @@
 
 ## Try the results
 
-The [seven-preview gallery](../benchmarks/results/story-motion-v002/index.html) contains eight-second 1080p/24 fps MP4s, sampled motion sheets and entry/exit handoffs. These are schematic motion fixtures using the existing original illustration kit and procedural household diagrams. They are not selected episode derivatives or approved final historical scenes.
+The [seven-preview gallery](../benchmarks/results/story-motion-v008/index.html) contains eight-second 1080p/24 fps MP4s, sampled motion sheets and entry/exit handoffs. All seven use the shared original vector kit, pinned Source Serif 4/IBM Plex fonts and distinct compositions. The latest [brush-line pass](story-motion-brush-lines.md) adds expressive pigment edges and split-nib texture to narrative connections. These are symbolic graphics, not authentic evidence or a completed episode.
 
 Run `pnpm lab`, open `/illustrated.html?collection=story`, and choose a recipe from **Story Motion**. Playback, exact-frame scrubbing and **Narration timing** use the same compiler as export. The timing controls validate edits before updating the preview; **Download scene** saves the prepared JSON. Downloaded files retain relative asset paths, so place them in the fixture directory or update those paths before export.
 
@@ -37,7 +37,7 @@ No animation dependency was added. Existing illustrated v1 and cinematic v2 inpu
 
 The [story schema](../packages/scene-contract/src/story.ts) adds `schemaVersion: "story-scene-1"`. Supply `frameCount`, `fps`, assets, nodes and one recipe. The node/asset vocabulary is shared with prepared illustrations. `episodeStartFrame` is optional metadata; it never shifts clip-local evaluation.
 
-Frames are zero-indexed. Windows have integer `start` and `end` keys, with `end > start`. At `start`, the previous value still holds; at `end`, the destination is reached and held. Both keys must be rendered frames (`0..frameCount-1`). A `cue` string labels the window for narration authoring; it does not perform speech alignment. Changing fps preserves frame numbers and therefore changes elapsed seconds. Conform event frames explicitly when changing delivery rate.
+Frames are zero-indexed. Windows have integer `start` and `end` keys, with `end > start`. At `start`, the previous value still holds; at `end`, the destination is reached and held. Both keys must be rendered frames (`0..frameCount-1`). A `cue` string labels the window for narration authoring; it does not perform speech alignment. Optional `easing` selects `linear`, `smoothstep`, `out-cubic`, `out-quint`, `in-cubic` or `in-out-quint`. Omission preserves the original smoothstep. The lab exposes the same easing choices beside each event window. Changing fps preserves frame numbers and therefore changes elapsed seconds. Conform event frames explicitly when changing delivery rate.
 
 ```json
 {
@@ -51,11 +51,19 @@ This timing fragment represents exactly 26,916.666… ms. The compiler derives d
 
 `moves` on relationship/evidence/resolve recipes specify a node, window and absolute parent-local target `x`/`y`, optionally uniform `scale` and `rotation`. `emphasis` provides readable opacity targets. Multiple events accumulate into one track; overlapping writes to the same property are rejected. All evaluation is a function of the requested frame, so seeking never needs prior playback or callbacks.
 
-For independently moving endpoints, declare `connectors: [{path, from: {node, point}, to: {node, point}}]`. Anchor points are in the referenced object's local coordinates; the renderer evaluates every ancestor transform. Bound paths are straight lines in root coordinates, with no separate transform or parent. This bounded implementation deliberately excludes automatic layout and arbitrary curved-path deformation. Access Constraint uses its own fixed straight local route and cannot use these bindings.
+For independently moving endpoints, declare `connectors: [{path, from: {node, point}, to: {node, point}}]`. Anchor points are in the referenced object's local coordinates; the renderer evaluates every ancestor transform. Bound paths use root coordinates, with no separate transform or parent. Optional `bend` authors a gentle quadratic bow in pixels; it is capped at 22% of the current endpoint distance. Both ends remain attached through object movement. This is authored routing, not automatic layout. Access Constraint retains its own fixed straight local route and cannot use these bindings.
 
-Category states use the existing image-state array. Register crops, baseline and visual center during preparation; matching canvas dimensions alone cannot prove registration. The recipe uses a discrete switch, with no intermediate raster morph.
+Paths can opt into `lineStyle: "ink"` for a smooth tapered stroke, or `lineStyle: "brush"` for expressive pressure, translucent edges and dry split-nib streaks. Both stay inside their declared `lineWidth`; brush texture is fixed in path coordinates and seeded by node ID, with no frame-random noise. `endArrow` is reserved in the supplied scenes for the explicit land-to-claims direction; restricted access routes reject it. Brush arrows use the same stroke treatment. Relationship branches may provide a separate `arrival` window; comparison recipes may supply two `labelWindows`. This separates drawing, arrival and consequence timing without callback chains.
+
+Category states use the existing image-state array. Optional `stateLabels` identify text nodes with authored `states`; their captions switch on the same exact frame as the image. Register crops, baseline and visual center during preparation; matching canvas dimensions alone cannot prove registration. The recipe uses a discrete switch, with no intermediate raster morph.
+
+Restriction sides accept rectangles or clipped illustration groups with positive bounds. Group clipping keeps the entire artwork inside the envelope used by clearance validation.
+
+An optional `fonts` manifest provides `{id, path, sha256, weight}` entries. Text nodes select one with `fontAsset`; the loader verifies bytes and awaits decoding before drawing in preview or export. IDs must be unique across fonts and images. Missing files, changed hashes and undecodable faces fail preparation. Omitted fonts preserve legacy behavior.
 
 Dated System Break can omit `reset` when the episode assembly owns the next shot. When present, `reset` names a distinct group/context and a later frame; the previous system disappears on the same frame that the later group appears. There is no recovery tween.
+
+The [line and timing refinement](story-motion-line-timing-refinement.md) records motion choreography. The subsequent [brush-line refinement](story-motion-brush-lines.md) records the latest graphic treatment and comparison.
 
 ## Implementation and verification
 
@@ -65,7 +73,7 @@ Dated System Break can omit `reset` when the episode assembly owns the next shot
 - [Lab controls](../apps/lab/src/story-controls.ts): cue edits, exact-frame jumps and prepared JSON download.
 - [Unit checks](../tests/unit/story-scenes.test.ts) and [browser/export checks](../tests/browser/story.ts).
 
-Verification on 2026-09-26:
+Initial engine verification on 2026-09-26 (before the subsequent art pass; see the [updated 153-test and 70-comparison evidence](story-motion-visual-implementation.md)):
 
 - TypeScript build and ESLint on changed code passed.
 - 148 unit/integration tests passed, including nine new story tests. The initial sandbox run failed on denied process/IPC operations in existing tests; the unrestricted local rerun passed.
@@ -81,4 +89,4 @@ Visual inspection used sixteen sampled temporal frames per clip, plus exact even
 
 The recipes are executable. The complete S01E01 sequences are not yet assembled. Prepare the protected-shot derivatives through the episode workflow, conform internal cues to the corrected narration, preserve registered motifs across shot boundaries, and inspect narrated playback. Keep the locked 11,297-frame episode, its existing opening/hero assets and historical qualifications.
 
-The 646-frame export above proves the new timing path using a test fixture; it is not the completed narrated ST-013/014 proof. The gallery's handoff files describe fixture entry/exit poses and source checksums. Actual episode handoffs must additionally verify world-space/crop continuity, selected-source lineage and context at each edit.
+The original 646-frame timing test has now been supplemented by the [narrated ST-013/014 graphic candidate](../benchmarks/results/story-motion-s01e01-proof-v007/index.html). It uses the existing narration and unchanged household poses across the cut. It remains a local candidate outside the selected episode timeline. The gallery handoffs describe fixture poses and checksums; the proof handoff adds master-frame boundaries and narration identity. Remaining episode handoffs must verify selected-source lineage and context at each edit.
