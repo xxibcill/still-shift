@@ -92,6 +92,14 @@ export async function passageRuntimeIdentity() {
   hash.update(process.arch);
   return hash.digest("hex");
 }
+
+/** Assembly changes invalidate a render job without discarding valid beat clips. */
+export async function passageJobRuntimeIdentity(beatRuntime: string) {
+  const assemblySource = await readFile(
+    resolve(import.meta.dirname, "story-passage-render.ts"),
+  );
+  return passageHash(beatRuntime + ":" + passageHash(assemblySource));
+}
 type CacheEntry = {
   version: "passage-cache-1";
   key: string;

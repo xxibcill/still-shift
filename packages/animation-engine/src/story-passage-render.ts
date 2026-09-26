@@ -2,6 +2,7 @@ import { randomUUID } from "node:crypto";
 import {
   cachedPassageBeat,
   passageBeatKey,
+  passageJobRuntimeIdentity,
   passageRuntimeIdentity,
 } from "./passage-cache.ts";
 import { acquirePassageJob } from "./passage-job.ts";
@@ -375,6 +376,7 @@ export async function renderStoryPassage(
       );
   }
   const runtime = await passageRuntimeIdentity();
+  const jobRuntime = await passageJobRuntimeIdentity(runtime);
   const job = await acquirePassageJob(
     output,
     {
@@ -382,7 +384,7 @@ export async function renderStoryPassage(
       scenes: passage.beats.map((b) => passageBeatKey(b.scene, runtime)),
       narration: narration ? passage.plan.narration?.sha256 : null,
       range,
-      runtime,
+      runtime: jobRuntime,
     },
     options.resume ?? false,
   );
