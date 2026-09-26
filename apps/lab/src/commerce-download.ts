@@ -1,4 +1,15 @@
 export type BundleFile = { name: string; bytes: Uint8Array };
+
+export function download(bytes: Uint8Array, name: string, mime: string) {
+  const blob = new Blob([new Uint8Array(bytes).buffer], { type: mime });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = name;
+  link.click();
+  setTimeout(() => URL.revokeObjectURL(url), 10000);
+}
+
 const crc32 = (bytes: Uint8Array) => {
   let crc = 0xffffffff;
   for (const byte of bytes) {

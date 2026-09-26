@@ -16,7 +16,12 @@ import {
   createIllustratedPreview,
   loadIllustratedImages,
 } from "../../../packages/renderer-core/src/illustrated-renderer.ts";
-import { createSourceZip, type BundleFile } from "./commerce-download.ts";
+import {
+  createSourceZip,
+  download,
+  type BundleFile,
+} from "./commerce-download.ts";
+import { postCommerceExport } from "./commerce-export.ts";
 
 const element = <T extends HTMLElement>(id: string) =>
   document.getElementById(id) as T;
@@ -605,21 +610,6 @@ async function loadFixture(
   await updatePreview();
 }
 
-function download(bytes: Uint8Array, name: string, mime: string) {
-  const url = URL.createObjectURL(blob(bytes, mime));
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = name;
-  a.click();
-  setTimeout(() => URL.revokeObjectURL(url), 10000);
-}
-function base64(bytes: Uint8Array) {
-  let result = "";
-  for (let start = 0; start < bytes.length; start += 8192)
-    result += String.fromCharCode(...bytes.subarray(start, start + 8192));
-  return btoa(result);
-}
-
 form.addEventListener("submit", (event) => {
   event.preventDefault();
   void updatePreview();
@@ -769,21 +759,7 @@ element("export").addEventListener("click", async () => {
   controls();
   say("Rendering your MP4…");
   try {
-    const files = [...snapshot.scene.assets, ...snapshot.scene.fonts].map(
-      (asset) => {
-        const file = snapshot.files.find((file) => file.name === asset.path);
-        if (!file) throw new Error("Missing export asset: " + asset.path);
-        return { id: asset.id, base64: base64(file.bytes) };
-      },
-    );
-    const response = await fetch("/commerce/export", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "X-Still-Shift": "commerce",
-      },
-      body: JSON.stringify({ scene: snapshot.scene, files }),
-    });
+    const response = await postCommerceExport(snapshot.scene, snapshot.files);
     if (!response.ok) throw new Error(await response.text());
     download(
       new Uint8Array(await response.arrayBuffer()),

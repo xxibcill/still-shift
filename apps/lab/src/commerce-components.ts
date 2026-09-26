@@ -23,7 +23,12 @@ import {
   createIllustratedPreview,
   loadIllustratedImages,
 } from "../../../packages/renderer-core/src/illustrated-renderer.ts";
-import { createSourceZip, type BundleFile } from "./commerce-download.ts";
+import {
+  createSourceZip,
+  download,
+  type BundleFile,
+} from "./commerce-download.ts";
+import { postCommerceExport } from "./commerce-export.ts";
 
 const element = <T extends HTMLElement>(id: string) =>
   document.getElementById(id) as T;
@@ -364,20 +369,6 @@ async function update() {
   }
   controls();
 }
-function download(data: Uint8Array, name: string, mime: string) {
-  const url = URL.createObjectURL(blob(data, mime));
-  const link = document.createElement("a");
-  link.href = url;
-  link.download = name;
-  link.click();
-  setTimeout(() => URL.revokeObjectURL(url), 10000);
-}
-function base64(data: Uint8Array) {
-  let text = "";
-  for (let offset = 0; offset < data.length; offset += 8192)
-    text += String.fromCharCode(...data.subarray(offset, offset + 8192));
-  return btoa(text);
-}
 function syncComparison() {
   const compare = field("compare").checked;
   element("baseline-figure").hidden = !compare;
@@ -472,24 +463,7 @@ element("export").addEventListener("click", async () => {
   controls();
   say("Rendering the prepared scene…");
   try {
-    const response = await fetch("/commerce/export", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "x-still-shift": "commerce",
-      },
-      body: JSON.stringify({
-        scene: snapshot.scene,
-        files: [...snapshot.scene.assets, ...snapshot.scene.fonts].map(
-          (asset) => ({
-            id: asset.id,
-            base64: base64(
-              snapshot.files.find((file) => file.name === asset.path)!.bytes,
-            ),
-          }),
-        ),
-      }),
-    });
+    const response = await postCommerceExport(snapshot.scene, snapshot.files);
     if (!response.ok) throw new Error((await response.json()).error);
     download(
       new Uint8Array(await response.arrayBuffer()),
