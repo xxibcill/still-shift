@@ -34,18 +34,20 @@ These earlier decisions are **still binding**:
 
 ### Baseline (v012, measured 2026-09-26)
 
-Method: consecutive decoded frames were compared in greyscale at 480×270. A frame counts as "moving" if any pixels changed by more than 6 levels.
+Reconciled method: consecutive decoded frames are compared in greyscale at 480×270. A pixel counts as changed if its level differs by more than 6; a frame counts as moving if **at least 7 pixels** changed. Frame 0 has no predecessor and is excluded from the moving-share denominator. The original any-pixel rule did not reproduce the table from the available MP4s; this seven-pixel floor rejects isolated encode/scale noise in static frames.
 
-| Clip                     | Frames with any motion |      Longest frozen run |     Peak change |
-| ------------------------ | ---------------------: | ----------------------: | --------------: |
-| Unequal Margins          |                    27% |                   3.4 s | 0.67% of pixels |
-| Access Constraint        |                    34% |                   3.4 s |           0.80% |
-| Relationship Build       |                    42% |                   3.0 s |            3.2% |
-| Evidence Boundary        |                    33% |                   3.7 s |            2.7% |
-| Dated System Break       |                    17% |                   2.4 s |        cut only |
-| Category Swap            |      **2%** (4 frames) |                   4.4 s |       swap only |
-| Motif Resolve            |                    47% |                   2.3 s |            4.6% |
-| Resource passage, 62.8 s |                **15%** | **7.1 s** (three times) |               — |
+| Clip                     |     Moving frames | Longest frozen run |     Peak change |
+| ------------------------ | ----------------: | -----------------: | --------------: |
+| Unequal Margins          |               27% |              3.4 s | 0.67% of pixels |
+| Access Constraint        |               34% |              3.4 s |           0.80% |
+| Relationship Build       |               42% |              3.0 s |            3.2% |
+| Evidence Boundary        |               33% |              3.7 s |            2.7% |
+| Dated System Break       |               17% |              3.0 s |        cut only |
+| Category Swap            | **2%** (4 frames) |              4.4 s |       swap only |
+| Motif Resolve            |               47% |              2.3 s |            4.6% |
+| Resource passage, 62.8 s |           **18%** |          **6.6 s** |               — |
+
+The seven 192-frame studies are the P0 calibration corpus in `benchmarks/results/story-motion-v012/`; their moving shares and numeric peak-change entries reproduce from those MP4s. The original Dated System Break frozen-run entry was 2.4 s. Replaying its v012 MP4 gives 71 consecutive frozen comparisons, or 2.96 s; the table now reports that reproducible result. The separate resource-passage row uses `benchmarks/results/story-motion-s01e01-resources-v003/s01e01-resource-passage.mp4` (SHA-256 `7d26c980f6381128b66d07e6fc20af464fbd18aca6a8efcabca28ee47d79415c`), which measures 18.13% and 158 frozen comparisons (6.58 s). Its earlier 15% / 7.1 s entry did not reproduce from that artifact. Passage calibration and rollout are deferred to P4.
 
 ### Root causes in code
 
@@ -550,7 +552,7 @@ Work on a new branch `codex/story-continuous-motion`, branched from `codex/motio
 
 | Phase                             | Deliverable                                                                                                                                                                                                                                                                                                                                                            | Exit criteria                                                                                                                                                                                                                     |
 | --------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **P0 Decision and baseline**      | Update `.impeccable.md` principle 5 and the aesthetic direction with the owner decision (§0), without deleting the other principles. Add a "Superseded" note on the audit's stillness guidance. Implement `motion-energy.ts` (§4.9b) with calibration. Commit a baseline report `benchmarks/results/story-motion-v012/motion-energy.json` and a synthetic pan fixture. | Calibration passes. The baseline reproduces the v012 table in §0 within ±2 points.                                                                                                                                                |
+| **P0 Decision and baseline**      | Update `.impeccable.md` principle 5 and the aesthetic direction with the owner decision (§0), without deleting the other principles. Add a "Superseded" note on the audit's stillness guidance. Implement `motion-energy.ts` (§4.9b) with calibration. Commit a baseline report `benchmarks/results/story-motion-v012/motion-energy.json` and a synthetic pan fixture. | Calibration passes. The seven study MP4s in `story-motion-v012/` reproduce their §0 moving shares within ±2 percentage points under the stated 480×270 rule; the separate resource-passage render is outside this gate.           |
 | **P1 Engine**                     | §4.1–4.8 and the analyzer part of §4.9a, with unit tests                                                                                                                                                                                                                                                                                                               | **All v012 fixtures render pixel-identical** (run the existing story preview/export parity suite and compare against v012 MP4s decoded frame by frame). New unit tests pass. `pnpm build` and `pnpm lint` pass.                   |
 | **P2 Prototype, then STOP**       | Unequal Margins v2 (§5.1) only. Render into `benchmarks/results/story-motion-v013-proto/` with a gallery page showing v012 and v013 side by side, both energy sparklines, 9-frame contact sheets and a 390 px phone capture.                                                                                                                                           | Gates G1–G6 pass. **Stop and ask the owner for review before continuing.** Report the measured numbers and anything that felt wrong.                                                                                              |
 | **P3 Library roll-out**           | §5.2–5.7, rendered into `story-motion-v013/`, with an index, comparison page and per-clip energy JSON                                                                                                                                                                                                                                                                  | G1–G6 pass for all seven. Existing story browser suite (98+ comparisons, backward seeks, timing editing, phone layout, 646-frame export, 30 fps CLI) passes. The exact-cut frames 71/72 and 119/120 are inspected and documented. |
