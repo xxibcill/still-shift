@@ -8,7 +8,7 @@ import {
   PreparedAnimationResultSchema,
   CinematicAnimationResultSchema,
   StoryAnimationResultSchema,
-} from "@still-shift/scene-contract";
+} from "../../scene-contract/src/index.ts";
 import { compilePreparedScene } from "../../renderer-core/src/prepared-scene.ts";
 import { exportScene } from "../../../tools/export-worker/src/export-worker.ts";
 
@@ -46,57 +46,10 @@ export async function loadPreparedScene(scenePath: string) {
       error instanceof Error ? error.message : String(error),
     );
   }
-  const assetPaths: Record<string, string> = {};
-  for (const asset of parsed.data.assets) {
-    const path = resolve(dirname(absolute), asset.path);
-    let image: Buffer;
-    try {
-      image = await readFile(path);
-    } catch {
-      throw new AnimationEngineError(
-        "INPUT_UNREADABLE",
-        `Cannot read asset ${asset.id}: ${path}`,
-      );
-    }
-    if (hash(image) !== asset.sha256)
-      throw new AnimationEngineError(
-        "SCENE_INVALID",
-        `Asset checksum differs: ${asset.id}`,
-      );
-    let dimensions: ReturnType<typeof imageSize>;
-    try {
-      dimensions = imageSize(image);
-    } catch {
-      throw new AnimationEngineError(
-        "SCENE_INVALID",
-        `Cannot decode asset ${asset.id}`,
-      );
-    }
-    if (dimensions.width !== asset.width || dimensions.height !== asset.height)
-      throw new AnimationEngineError(
-        "SCENE_INVALID",
-        `Asset dimensions differ: ${asset.id}`,
-      );
-    assetPaths[asset.id] = path;
-  }
-  for (const font of parsed.data.fonts ?? []) {
-    const path = resolve(dirname(absolute), font.path);
-    let bytes: Buffer;
-    try {
-      bytes = await readFile(path);
-    } catch {
-      throw new AnimationEngineError(
-        "INPUT_UNREADABLE",
-        `Cannot read font ${font.id}: ${path}`,
-      );
-    }
-    if (hash(bytes) !== font.sha256)
-      throw new AnimationEngineError(
-        "SCENE_INVALID",
-        `Font checksum differs: ${font.id}`,
-      );
-    assetPaths[font.id] = path;
-  }
+  const assetPaths = await validatePreparedAssets(
+    parsed.data,
+    dirname(absolute),
+  );
   return {
     scene,
     assetPaths,
@@ -105,7 +58,11 @@ export async function loadPreparedScene(scenePath: string) {
 }
 
 export class PreparedAnimationEngine {
-  async animate(request: { scenePath: string; outputPath: string }) {
+  async animate(request: {
+    scenePath: string;
+    outputPath: string;
+    signal?: AbortSignal | undefined;
+  }) {
     const prepared = await loadPreparedScene(request.scenePath);
     const outputPath = resolve(request.outputPath);
     const sceneManifestPath = `${outputPath}.scene.json`;
@@ -137,6 +94,7 @@ export class PreparedAnimationEngine {
     const manifestBytes = JSON.stringify(manifest, null, 2) + "\n";
     const metrics = await exportScene({
       scene: prepared.scene,
+      signal: request.signal,
       sourcePath: resolve(request.scenePath),
       depthPath: null,
       assetPaths: prepared.assetPaths,
@@ -177,4 +135,71 @@ export class PreparedAnimationEngine {
     });
     return result;
   }
+}
+
+export async function validatePreparedAssets(
+  input: {
+    assets: {
+      id: string;
+      path: string;
+      sha256: string;
+      width: number;
+      height: number;
+    }[];
+    fonts?: { id: string; path: string; sha256: string }[] | undefined;
+  },
+  baseDirectory: string,
+) {
+  const assetPaths: Record<string, string> = {};
+  for (const asset of input.assets) {
+    const path = resolve(baseDirectory, asset.path);
+    let image: Buffer;
+    try {
+      image = await readFile(path);
+    } catch {
+      throw new AnimationEngineError(
+        "INPUT_UNREADABLE",
+        `Cannot read asset ${asset.id}: ${path}`,
+      );
+    }
+    if (hash(image) !== asset.sha256)
+      throw new AnimationEngineError(
+        "SCENE_INVALID",
+        `Asset checksum differs: ${asset.id}`,
+      );
+    let dimensions: ReturnType<typeof imageSize>;
+    try {
+      dimensions = imageSize(image);
+    } catch {
+      throw new AnimationEngineError(
+        "SCENE_INVALID",
+        `Cannot decode asset ${asset.id}`,
+      );
+    }
+    if (dimensions.width !== asset.width || dimensions.height !== asset.height)
+      throw new AnimationEngineError(
+        "SCENE_INVALID",
+        `Asset dimensions differ: ${asset.id}`,
+      );
+    assetPaths[asset.id] = path;
+  }
+  for (const font of input.fonts ?? []) {
+    const path = resolve(baseDirectory, font.path);
+    let bytes: Buffer;
+    try {
+      bytes = await readFile(path);
+    } catch {
+      throw new AnimationEngineError(
+        "INPUT_UNREADABLE",
+        `Cannot read font ${font.id}: ${path}`,
+      );
+    }
+    if (hash(bytes) !== font.sha256)
+      throw new AnimationEngineError(
+        "SCENE_INVALID",
+        `Font checksum differs: ${font.id}`,
+      );
+    assetPaths[font.id] = path;
+  }
+  return assetPaths;
 }

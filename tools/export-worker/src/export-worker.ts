@@ -23,6 +23,7 @@ const EXPORT_WORKER_VERSION = "chromium-ffmpeg-0.6.0";
 
 export type ExportRequest = {
   scene: ExportableScene;
+  signal?: AbortSignal | undefined;
   sourcePath: string;
   depthPath: string | null;
   assetPaths?: Record<string, string>;
@@ -393,6 +394,7 @@ const verifyOutput = async (
 export const exportScene = async (
   request: ExportRequest,
 ): Promise<ExportMetrics> => {
+  request.signal?.throwIfAborted();
   const start = performance.now();
   const { scene } = request;
   const story =
@@ -467,6 +469,11 @@ export const exportScene = async (
       : null;
   let server: ViteDevServer | undefined;
   let browser: Browser | undefined;
+  const abort = () => {
+    encoder.kill("SIGKILL");
+    void browser?.close().catch(() => undefined);
+  };
+  request.signal?.addEventListener("abort", abort, { once: true });
   let encodePathStart = 0;
   let peakParentRssBytes = process.memoryUsage().rss;
   let peakSampledProcessTreeRssBytes: number | null = null;
@@ -505,7 +512,9 @@ export const exportScene = async (
     await server.listen();
     const baseUrl = server.resolvedUrls?.local[0];
     if (!baseUrl) throw new Error("Export browser server has no local URL");
+    request.signal?.throwIfAborted();
     browser = await chromium.launch({ headless: true });
+    request.signal?.throwIfAborted();
     const page = await browser.newPage({
       viewport: { width: 1920, height: 1080 },
     });
@@ -580,6 +589,7 @@ export const exportScene = async (
     browser = undefined;
     await server.close();
     server = undefined;
+    request.signal?.throwIfAborted();
     await link(temporaryScenePath, sceneManifestPath);
     scenePublished = true;
     await link(temporaryPath, outputPath);
@@ -589,6 +599,7 @@ export const exportScene = async (
     encoder.kill("SIGKILL");
     throw error;
   } finally {
+    request.signal?.removeEventListener("abort", abort);
     clearInterval(memoryMonitor);
     const cleanup = await Promise.allSettled([
       published ? null : memorySample,
