@@ -179,7 +179,7 @@ export function compileEntrance(
     case "stamp":
       for (const axis of ["scaleX", "scaleY"] as const) {
         start(node.id, axis, 1.06);
-        tracks.add(node.id, axis, { ...window, easing: "out-back-soft" }, 1);
+        tracks.add(node.id, axis, { ...window, easing: "out-quint" }, 1);
       }
       fade(0.3);
       break;

@@ -150,3 +150,17 @@ it("starts a repeated stamp at its own window instead of changing earlier scale"
   expect(pose(scene, "qualifier", 100).scaleX).toBe(1.06);
   expect(pose(scene, "qualifier", 120).scaleX).toBe(1);
 });
+
+it("settles an Action stamp without crossing its target scale", () => {
+  const scene = compile({
+    entrances: [
+      { node: "qualifier", verb: "stamp", window: { start: 40, end: 60 } },
+    ],
+  });
+
+  for (let frame = 40; frame <= 60; frame++) {
+    const { scaleX, scaleY } = pose(scene, "qualifier", frame);
+    expect(scaleX).toBeGreaterThanOrEqual(1);
+    expect(scaleY).toBeGreaterThanOrEqual(1);
+  }
+});
