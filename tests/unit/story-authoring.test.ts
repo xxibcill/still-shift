@@ -176,6 +176,38 @@ describe("shared passage authoring", () => {
       diagnostics: [{ code: "incompatible-camera-velocity" }],
     });
   });
+  it("keeps authored initial properties outside a partial subject carry", () => {
+    const input = plan();
+    input.beats.push(structuredClone(input.beats[0]!));
+    input.beats[1]!.id = "two";
+    input.beats[1]!.handoff = {
+      mode: "continue",
+      camera: "reset",
+      subjects: [
+        {
+          id: "household",
+          from: "house-a",
+          to: "house-a",
+          mode: "carry",
+          properties: ["x"],
+        },
+      ],
+    };
+    const source = template();
+    source.scene.initialState = { "house-a": { opacity: 0.5 } };
+    const second = compileStoryPassage(
+      input,
+      new Map([["template.json", source]]),
+    ).beats[1]!.scene;
+    expect(second.initialState?.["house-a"]).toMatchObject({ opacity: 0.5 });
+    expect(
+      evaluatePreparedNode(
+        compileStoryScene(second),
+        second.nodes.find((node) => node.id === "house-a")!,
+        0,
+      ).opacity,
+    ).toBe(0.5);
+  });
   it("indexes and retimes choreography, text and camera keys", () => {
     const source = template();
     source.scene.motionGrammar = "v2";

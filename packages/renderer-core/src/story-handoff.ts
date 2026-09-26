@@ -74,9 +74,10 @@ export function applyStoryHandoff(
         previous!.frameCount - 1,
       );
       scene.initialState ??= {};
-      scene.initialState[target!.id] = Object.fromEntries(
-        mapping.properties.map((p) => [p, state[p]]),
-      );
+      scene.initialState[target!.id] = {
+        ...scene.initialState[target!.id],
+        ...Object.fromEntries(mapping.properties.map((p) => [p, state[p]])),
+      };
     }
     if (
       mapping.mode === "enter" &&
