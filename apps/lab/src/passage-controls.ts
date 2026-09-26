@@ -19,6 +19,15 @@ type PassageControlActions = {
   jumpToDiagnostic(diagnostic: PassageDiagnostic): void;
 };
 
+const handoffProperties = [
+  "x",
+  "y",
+  "scaleX",
+  "scaleY",
+  "rotation",
+  "opacity",
+] as const;
+
 export function createPassageControls({
   apply,
   editBeat,
@@ -443,8 +452,20 @@ export function createPassageControls({
         }),
     );
     for (const [i, mapping] of beat.handoff.subjects.entries()) {
+      const group = document.createElement("div");
+      group.className = "event";
+      el("handoff").append(group);
+      const title = document.createElement("div");
+      title.className = "event-title";
+      title.textContent = mapping.id + " subject";
+      group.append(title);
+      field(group, mapping.id + " identity", mapping.id, (value) =>
+        editBeat((b) => {
+          b.handoff.subjects[i]!.id = value.trim();
+        }),
+      );
       select(
-        el("handoff"),
+        group,
         mapping.id + " mode",
         ["carry", "reset", "enter", "exit"],
         mapping.mode,
@@ -456,7 +477,7 @@ export function createPassageControls({
       const previous = passage.beats[index - 1];
       if (previous)
         select(
-          el("handoff"),
+          group,
           mapping.id + " from",
           previous.scene.nodes.filter((n) => !n.parent).map((n) => n.id),
           mapping.from ?? "",
@@ -466,7 +487,7 @@ export function createPassageControls({
             }),
         );
       select(
-        el("handoff"),
+        group,
         mapping.id + " to",
         compiled.scene.nodes.filter((n) => !n.parent).map((n) => n.id),
         mapping.to ?? "",
@@ -475,23 +496,66 @@ export function createPassageControls({
             b.handoff.subjects[i]!.to = value;
           }),
       );
-      button(el("handoff"), "Remove " + mapping.id, () =>
+      const properties = document.createElement("div");
+      properties.setAttribute("role", "group");
+      properties.setAttribute("aria-label", mapping.id + " carried properties");
+      group.append(properties);
+      const propertiesTitle = document.createElement("div");
+      propertiesTitle.className = "event-title";
+      propertiesTitle.textContent = "Properties used in carry mode";
+      properties.append(propertiesTitle);
+      for (const property of handoffProperties) {
+        const row = document.createElement("label");
+        row.className = "field";
+        row.append(document.createTextNode(property));
+        const input = document.createElement("input");
+        input.type = "checkbox";
+        input.checked = mapping.properties.includes(property);
+        input.disabled = input.checked && mapping.properties.length === 1;
+        input.setAttribute("aria-label", mapping.id + " carry " + property);
+        input.onchange = () => {
+          const checked = input.checked;
+          editBeat((b) => {
+            const subject = b.handoff.subjects[i]!;
+            subject.properties = checked
+              ? [...new Set([...subject.properties, property])]
+              : subject.properties.filter((item) => item !== property);
+          });
+        };
+        row.append(input);
+        properties.append(row);
+      }
+      button(group, "Remove " + mapping.id, () =>
         editBeat((b) => {
           b.handoff.subjects.splice(i, 1);
         }),
       );
     }
+    const availableTarget = compiled.scene.nodes.find(
+      (n) =>
+        !n.parent &&
+        !beat.handoff.subjects.some((subject) => subject.to === n.id),
+    );
     button(el("handoff"), "Add subject mapping", () =>
       editBeat((b) => {
-        const target = compiled.scene.nodes.find((n) => !n.parent)!;
+        const claimed = new Set(
+          b.handoff.subjects.map((subject) => subject.to),
+        );
+        const target = compiled.scene.nodes.find(
+          (node) => !node.parent && !claimed.has(node.id),
+        );
+        if (!target) return;
+        const ids = new Set(b.handoff.subjects.map((subject) => subject.id));
+        let suffix = 1;
+        while (ids.has("subject-" + suffix)) suffix++;
         b.handoff.subjects.push({
-          id: "subject-" + (b.handoff.subjects.length + 1),
+          id: "subject-" + suffix,
           mode: "reset",
           to: target.id,
-          properties: ["x", "y", "scaleX", "scaleY", "rotation", "opacity"],
+          properties: [...handoffProperties],
         });
       }),
-    );
+    ).disabled = !availableTarget;
   }
   function renderTimeline(passage: PassageEditor["passage"]) {
     const host = el("timeline");
