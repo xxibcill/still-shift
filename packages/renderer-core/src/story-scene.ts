@@ -3,7 +3,7 @@ import {
   compileEntrance,
   compileExit,
   compileMove,
-  defaultEntrance,
+  entrancePolicy,
 } from "./story-choreography.ts";
 import type { StoryRole } from "../../scene-contract/src/story-motion.ts";
 import { validateStoryCameraCoverage } from "./story-camera.ts";
@@ -145,15 +145,17 @@ export function compileStoryScene(source: StoryScene): StoryRenderScene {
   const node = (id: string) => input.nodes.find((node) => node.id === id)!;
   const enter = (id: string, window: StoryWindow) => {
     if (input.recipe.entrances?.some((e) => e.node === id)) return;
-    const verb =
-      input.motionGrammar === "v2" ? defaultEntrance(node(id)) : "fade";
-    compileEntrance(tracks, input.nodes, { node: id, window, verb });
-    event(
-      id,
-      window,
-      "entrance",
-      node(id).type === "text" ? "response" : "action",
+    const policy = entrancePolicy(
+      input,
+      node(id),
+      input.motionGrammar === "v2" ? undefined : "fade",
     );
+    compileEntrance(tracks, input.nodes, {
+      node: id,
+      window,
+      verb: policy.verb,
+    });
+    event(id, window, "entrance", policy.role);
   };
   const reveal = (id: string, window: StoryWindow) => {
     if (input.recipe.entrances?.some((e) => e.node === id && e.verb === "draw"))
@@ -273,28 +275,18 @@ export function compileStoryScene(source: StoryScene): StoryRenderScene {
     const subsequent = events.some(
       (e) => e.node === entrance.node && e.kind === "entrance",
     );
+    const policy = entrancePolicy(
+      input,
+      node(entrance.node),
+      entrance.verb ?? (input.motionGrammar === "v2" ? undefined : "fade"),
+    );
     compileEntrance(
       tracks,
       input.nodes,
-      {
-        ...entrance,
-        verb:
-          entrance.verb ??
-          (input.motionGrammar === "v2"
-            ? defaultEntrance(node(entrance.node))
-            : "fade"),
-      },
+      { ...entrance, verb: policy.verb },
       subsequent,
     );
-    event(
-      entrance.node,
-      entrance.window,
-      "entrance",
-      node(entrance.node).type === "text" &&
-        !/title|question|reference|qualifier/.test(entrance.node)
-        ? "response"
-        : "action",
-    );
+    event(entrance.node, entrance.window, "entrance", policy.role);
   }
   for (const exit of recipe.exits ?? []) {
     compileExit(tracks, input.nodes, exit);

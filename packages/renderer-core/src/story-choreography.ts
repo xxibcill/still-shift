@@ -1,22 +1,54 @@
 import type { PreparedNode } from "../../scene-contract/src/prepared.ts";
-import type { StoryWindow, StoryMove } from "../../scene-contract/src/story.ts";
+import type {
+  StoryScene,
+  StoryWindow,
+  StoryMove,
+} from "../../scene-contract/src/story.ts";
 import type {
   StoryEntrance,
   StoryExit,
+  StoryRole,
 } from "../../scene-contract/src/story-motion.ts";
 import type { Property } from "./prepared-scene.ts";
 import type { StoryTracks } from "./story-scene.ts";
 
-export function defaultEntrance(
+export function entrancePolicy(
+  scene: StoryScene,
   node: PreparedNode,
-): NonNullable<StoryEntrance["verb"]> {
-  if (node.type === "image" || node.type === "group") return "set-down";
-  if (node.type === "text")
-    return /title|heading|reference|question|qualifier/.test(node.id)
-      ? "wipe"
-      : "attach";
-  if (node.type === "path") return "draw";
-  return "stamp";
+  explicitVerb?: StoryEntrance["verb"],
+): { verb: NonNullable<StoryEntrance["verb"]>; role: StoryRole } {
+  if (node.type === "text") {
+    const recipe = scene.recipe;
+    const isLabel =
+      recipe.preset === "unequal_margins" && recipe.labels.includes(node.id);
+    // Root text follows the authored 52/56/64 px qualifier/label/subheading scale.
+    // Recipe bindings take precedence when a label uses a larger display size.
+    const isHeading =
+      !isLabel &&
+      ((recipe.preset === "unequal_margins" && recipe.reference === node.id) ||
+        node.fontAsset === "display" ||
+        (!node.parent && node.fontSize >= 64));
+    const isQualifier =
+      !isLabel &&
+      (("qualifier" in recipe && recipe.qualifier === node.id) ||
+        (!node.parent && node.fontSize <= 52));
+    const verb = explicitVerb ?? (isHeading || isQualifier ? "wipe" : "attach");
+    const isAction = !isLabel && (isHeading || isQualifier || verb === "wipe");
+    return {
+      verb,
+      role: isAction ? "action" : "response",
+    };
+  }
+  return {
+    verb:
+      explicitVerb ??
+      (node.type === "image" || node.type === "group"
+        ? "set-down"
+        : node.type === "path"
+          ? "draw"
+          : "stamp"),
+    role: "action",
+  };
 }
 const partWindow = (
   window: StoryWindow,
