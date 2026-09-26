@@ -14,7 +14,10 @@ import { inspectForegroundReveal } from "./reveal-validation.ts";
 import { sampleCinematicBlur } from "./cinematic-scene.ts";
 import { drawStoryFlow } from "./story-flows.ts";
 import { drawStoryText } from "./story-text.ts";
-import { storyCameraTransform } from "./story-camera.ts";
+import {
+  storyCameraTransform,
+  validateStoryCameraAlphaCoverage,
+} from "./story-camera.ts";
 import { evaluateStoryPath } from "./story-geometry.ts";
 import { loadPreparedFonts, type LoadedFont } from "./prepared-fonts.ts";
 import { inkStrokeOutline } from "./ink-path.ts";
@@ -367,6 +370,17 @@ export async function loadIllustratedImages(
     }),
   );
   const images: Images = new Map(entries);
+  if (scene.schemaVersion === "story-scene-1" && scene.camera?.cover?.length) {
+    validateStoryCameraAlphaCoverage(scene, (id) => {
+      const image = images.get(id)!;
+      const probe = document.createElement("canvas");
+      probe.width = image.naturalWidth;
+      probe.height = image.naturalHeight;
+      const context = probe.getContext("2d", { willReadFrequently: true })!;
+      context.drawImage(image, 0, 0);
+      return context.getImageData(0, 0, probe.width, probe.height);
+    });
+  }
   images.fonts = await loadPreparedFonts(scene, assetUrl);
   if (scene.schemaVersion === "story-scene-1" && scene.motionGrammar === "v2") {
     // SVG rasterization can depend on the active clip. Cache the complete image

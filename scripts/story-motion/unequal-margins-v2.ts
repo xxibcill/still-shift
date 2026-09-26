@@ -11,6 +11,8 @@ export function unequalMarginsV2(): MotionDesign {
     throw new Error("Wrong comparison recipe");
   design.motionGrammar = "v2";
   design.nodes = design.nodes.flatMap((node) => {
+    if (node.type === "image" && node.id === "paper")
+      return [{ ...node, states: [{ asset: "paper-cover" }] }];
     if (node.id === "ground") return [ground(720, true)];
     if (node.id === "house-a" || node.id === "house-b")
       return household(node.id, node.x!, node.y!, node.width!, {

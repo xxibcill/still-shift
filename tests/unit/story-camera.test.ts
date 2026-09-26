@@ -5,6 +5,7 @@ import { compileStoryScene } from "../../packages/renderer-core/src/story-scene.
 import {
   sampleStoryCamera,
   projectStoryPoint,
+  validateStoryCameraAlphaCoverage,
 } from "../../packages/renderer-core/src/story-camera.ts";
 import {
   evaluateStoryPath,
@@ -104,6 +105,35 @@ describe("story camera", () => {
     raw.camera.depth.paper = 1;
     expect(() => compileStoryScene(StorySceneSchema.parse(raw))).toThrow(
       /Camera exposes uncovered edge on paper at frame \d+/,
+    );
+  });
+  it("rejects a cover image letterboxed by contain fit", () => {
+    const raw = input();
+    raw.nodes.find((node: { id: string }) => node.id === "paper").states = [
+      { asset: "house" },
+    ];
+    expect(() => compileStoryScene(StorySceneSchema.parse(raw))).toThrow(
+      "Camera exposes uncovered edge on paper at frame 0",
+    );
+  });
+  it("uses the crop aspect ratio when checking contain coverage", () => {
+    const raw = input();
+    raw.nodes.find((node: { id: string }) => node.id === "paper").states = [
+      { asset: "house", crop: [0, 50, 600, 337.5] },
+    ];
+    expect(() => compileStoryScene(StorySceneSchema.parse(raw))).not.toThrow();
+  });
+  it("rejects transparent source pixels inside the projected viewport", () => {
+    const scene = compileStoryScene(StorySceneSchema.parse(input()));
+    const data = new Uint8ClampedArray(1920 * 1080 * 4);
+    for (let i = 3; i < data.length; i += 4) data[i] = 255;
+    const readPixels = () => ({ width: 1920, height: 1080, data });
+    expect(() =>
+      validateStoryCameraAlphaCoverage(scene, readPixels),
+    ).not.toThrow();
+    data[(540 * 1920 + 960) * 4 + 3] = 0;
+    expect(() => validateStoryCameraAlphaCoverage(scene, readPixels)).toThrow(
+      "Camera exposes uncovered edge on paper at frame 0: transparent image pixels",
     );
   });
   it("decays a jolt and keeps screen-locked content fixed", () => {

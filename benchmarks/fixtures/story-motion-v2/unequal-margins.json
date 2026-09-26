@@ -76,6 +76,13 @@
       "height": 1080
     },
     {
+      "id": "paper-cover",
+      "path": "../../../assets/story-motion/art/paper-cover.svg",
+      "sha256": "sha256:c4e232f634fe0fca808498e1643e609681b1a66178da68bfa484a939e2d179d3",
+      "width": 1920,
+      "height": 1080
+    },
+    {
       "id": "house-body",
       "path": "../../../assets/story-motion/art/house-body.svg",
       "sha256": "sha256:cd4a3240451d66236369e5571b74ba8650d1739ec4168aa4400801cda248fec5",
@@ -155,7 +162,7 @@
       "rotation": 0,
       "origin": [0.5, 0.5],
       "type": "image",
-      "states": [{ "asset": "paper" }],
+      "states": [{ "asset": "paper-cover" }],
       "fit": "contain"
     },
     {
