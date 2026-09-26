@@ -41,7 +41,7 @@ Both houses share one ground slab: same size, same baseline, same roof line, whi
 | 90–108 / 98–116 | response          | "More room" and "Less room" attach beside each margin                                                  | Name what was shown                           |
 | 116–140         | current/response  | Strain pulse (10 px): A's margin absorbs it, B's house takes it                                        | The strain persists                           |
 | 140–164         | action            | Qualifier word reveal                                                                                  | Qualitative, not measured                     |
-| 164–188         | current/response  | Second pulse                                                                                           | Still pressing                                |
+| 167–191         | current/response  | Second pulse                                                                                           | Still pressing                                |
 | 0–191           | carrier           | Camera leans in and down with the weight: `(960,540,1)` → `(976,564,1.032)` at 104 → `(986,570,1.045)` | Weight bears down                             |
 
 Type roles, sizes and wording are unchanged: title 112, subheading 64 (now word reveal), labels 56, qualifier 52 (now word reveal). Palette, illustration family and the non-boiling brush are unchanged. No flows are used, so R9 is untouched. Titles and qualifier are screen-locked.
@@ -50,13 +50,13 @@ Type roles, sizes and wording are unchanged: title 112, subheading 64 (now word 
 
 Encoded MP4 (full-resolution method) and compiled-scene analyzer. Rendered with `--require-continuous-motion`.
 
-| Gate                        | Target | v013 prototype |                Buffer press |
-| --------------------------- | -----: | -------------: | --------------------------: |
-| G1 comparisons below motion |    ≤ 3 |              0 | 2 (frames 190–191 ease-out) |
-| G3 semantic gap             |   ≤ 36 |             44 |                      **28** |
-| G4 peak / median            |   ≥ 3× |         2.984× |   **3.13×** (peak frame 76) |
-| G5 essential-text velocity  |   ≤ 12 |      18.5 px/s |                **7.6 px/s** |
-| Pan / zoom per frame        |     R7 | 0.62 / 0.00023 |              0.48 / 0.00047 |
+| Gate                        | Target | v013 prototype |              Buffer press |
+| --------------------------- | -----: | -------------: | ------------------------: |
+| G1 comparisons below motion |    ≤ 3 |              0 |                     **0** |
+| G3 semantic gap             |   ≤ 36 |             44 |                    **28** |
+| G4 peak / median            |   ≥ 3× |         2.984× | **3.14×** (peak frame 76) |
+| G5 essential-text velocity  |   ≤ 12 |      18.5 px/s |              **7.6 px/s** |
+| Pan / zoom per frame        |     R7 | 0.62 / 0.00023 |            0.48 / 0.00047 |
 
 Every tighter target is met, not just the hard limits. The peak is not tuned: frame 76 is where B's margin runs out, and nothing is faded to raise it. The MP4 is byte-identical under the pinned Node 22.23.1 and under Node 24.
 

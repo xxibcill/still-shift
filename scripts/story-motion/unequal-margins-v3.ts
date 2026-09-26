@@ -53,7 +53,7 @@ const ground = { x: -200, width: 2320 };
 // taken by B's house. The qualifier lands between them.
 const pulses = [
   { at: 128, depth: 10 },
-  { at: 176, depth: 10 },
+  { at: 179, depth: 10 },
 ];
 const pulseHalf = 12;
 
