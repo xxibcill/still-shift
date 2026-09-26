@@ -1,9 +1,10 @@
 import { z } from "zod";
 import {
-  checkCueBounds,
+  checkPassageBeatContent,
+  checkPassageCueIds,
+  checkPassageIds,
   checkDeliveryCoverage,
   checkPassageLength,
-  requireUniqueIds,
 } from "./passage-validation.ts";
 
 const id = z.string().regex(/^[a-z][a-z0-9-]*$/);
@@ -83,29 +84,16 @@ export const StoryPassagePlanSchema = z
   .superRefine((plan, context) => {
     const fail = (message: string) =>
       context.addIssue({ code: "custom", message });
-    requireUniqueIds(
-      plan.beats.map((beat) => beat.id),
-      "beat ID",
-      fail,
-    );
-    requireUniqueIds(
-      plan.delivery.map((shot) => shot.id),
-      "delivery ID",
-      fail,
-    );
+    checkPassageIds(plan, fail);
     const total = plan.beats.reduce((sum, beat) => sum + beat.frameCount, 0);
     checkPassageLength(total, fail);
     for (const beat of plan.beats) {
-      requireUniqueIds(
-        beat.cues.map((cue) => cue.id),
-        "cue ID in " + beat.id,
-        fail,
-      );
-      if (beat.evidence.kind === "supported" && !beat.evidence.reference)
-        fail("Supported evidence requires a source reference in " + beat.id);
-      checkCueBounds(beat, (cue) =>
-        fail("Cue outside beat " + beat.id + ": " + cue.id),
-      );
+      checkPassageCueIds(beat, fail);
+      checkPassageBeatContent(beat, (issue) => {
+        if (issue.kind === "missing-supported-reference")
+          fail("Supported evidence requires a source reference in " + beat.id);
+        else fail("Cue outside beat " + beat.id + ": " + issue.cueId);
+      });
       for (const [cue, timing] of Object.entries(beat.timing))
         if (timing.end >= beat.frameCount)
           fail("Event outside beat " + beat.id + ": " + cue);

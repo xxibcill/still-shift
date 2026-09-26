@@ -3,7 +3,9 @@ import { StoryPassagePlanSchema } from "./story-passage.ts";
 import { StorySceneSchema } from "./story.ts";
 import { MotionEasingSchema } from "./motion-easing.ts";
 import {
-  checkCueBounds,
+  checkPassageBeatContent,
+  checkPassageCueIds,
+  checkPassageIds,
   checkDeliveryCoverage,
   checkPassageLength,
   requireUniqueIds,
@@ -181,24 +183,11 @@ export const StoryAuthoringPlanSchema = z
   .superRefine((plan, ctx) => {
     const fail = (message: string, path: (string | number)[] = []) =>
       ctx.addIssue({ code: "custom", message, path });
-    requireUniqueIds(
-      plan.beats.map((b) => b.id),
-      "beat ID",
-      fail,
-    );
-    requireUniqueIds(
-      plan.delivery.map((b) => b.id),
-      "delivery ID",
-      fail,
-    );
+    checkPassageIds(plan, fail);
     let total = 0;
     plan.beats.forEach((beat, index) => {
       total += beat.frameCount;
-      requireUniqueIds(
-        beat.cues.map((c) => c.id),
-        "cue ID in " + beat.id,
-        fail,
-      );
+      checkPassageCueIds(beat, fail);
       requireUniqueIds(
         beat.handoff.subjects.map((s) => s.id),
         "subject identity in " + beat.id,
@@ -210,15 +199,15 @@ export const StoryAuthoringPlanSchema = z
           index,
           "evidence",
         ]);
-      if (beat.evidence?.kind === "supported" && !beat.evidence.reference)
-        fail("Supported evidence requires a source reference", [
-          "beats",
-          index,
-          "evidence",
-        ]);
-      checkCueBounds(beat, () =>
-        fail("Cue outside beat " + beat.id, ["beats", index, "cues"]),
-      );
+      checkPassageBeatContent(beat, (issue) => {
+        if (issue.kind === "missing-supported-reference")
+          fail("Supported evidence requires a source reference", [
+            "beats",
+            index,
+            "evidence",
+          ]);
+        else fail("Cue outside beat " + beat.id, ["beats", index, "cues"]);
+      });
       for (const [event, window] of Object.entries(beat.timing)) {
         if (window.end > beat.frameCount)
           fail("Event outside beat " + beat.id, [
