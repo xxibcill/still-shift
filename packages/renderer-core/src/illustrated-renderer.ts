@@ -1,3 +1,4 @@
+import { measureTextLayout, type TextLayout } from "./text-layout.ts";
 import type {
   PreparedImage,
   PreparedNode,
@@ -20,6 +21,7 @@ import { brushStroke } from "./brush-path.ts";
 type Images = Map<string, HTMLImageElement> & {
   revealValidation?: ReturnType<typeof inspectForegroundReveal>;
   fonts?: Map<string, LoadedFont>;
+  textLayouts?: Map<string, Map<string, TextLayout>>;
 };
 type State = ReturnType<typeof evaluatePreparedNode>;
 
@@ -219,7 +221,21 @@ const drawShape = (
         : node.text;
       if (text === undefined)
         throw new Error(`Missing text state on ${node.id}`);
-      ctx.fillText(text, 0, 0);
+      if (node.textBox) {
+        const layout = images.textLayouts?.get(node.id)?.get(text);
+        if (!layout)
+          throw new Error("Text layout was not prepared: " + node.id);
+        ctx.textBaseline = "alphabetic";
+        const x =
+          node.align === "center"
+            ? node.width / 2
+            : node.align === "right"
+              ? node.width
+              : 0;
+        layout.lines.forEach((line, index) =>
+          ctx.fillText(line, x, layout.baseline + index * layout.lineHeight),
+        );
+      } else ctx.fillText(text, 0, 0);
       break;
     }
     case "rect":
@@ -257,6 +273,26 @@ export function createIllustratedPreview(
     throw new Error("Focus handoff requires Canvas 2D filter support");
   canvas.width = scene.width;
   canvas.height = scene.height;
+  images.textLayouts = new Map();
+  for (const node of scene.nodes) {
+    if (node.type !== "text" || !node.textBox) continue;
+    const font = node.fontAsset ? images.fonts?.get(node.fontAsset) : undefined;
+    if (!font)
+      throw new Error("Text layout requires a prepared font: " + node.id);
+    ctx.font = font.weight + " " + node.fontSize + 'px "' + font.family + '"';
+    ctx.textBaseline = "alphabetic";
+    ctx.textAlign = "left";
+    images.textLayouts.set(
+      node.id,
+      new Map(
+        (node.states ?? [node.text]).map((text) => [
+          text,
+          measureTextLayout(ctx, { ...node, text }),
+        ]),
+      ),
+    );
+  }
+
   const children = new Map<string | undefined, PreparedNode[]>();
   for (const node of scene.nodes) {
     const siblings = children.get(node.parent) ?? [];

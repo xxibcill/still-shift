@@ -1,0 +1,13 @@
+{
+  "version": "1.0",
+  "imported": "2026-09-26",
+  "checkedBySource": "2026-09-24",
+  "sourceFolder": "/Users/jjae/Downloads/Ecommerce_Motion_Library_Pack",
+  "files": {
+    "Ecommerce_Motion_Formats.csv": "sha256:8149c1623b1a178cdeb162d9da896ef2fbb2027975276541b02454991bcc7126",
+    "Ecommerce_Motion_Library.html": "sha256:f629edc95ffba74c94cb348f823d2c7587a273daf27947ac4f75e8f7db571b44",
+    "Ecommerce_Motion_Library.xlsx": "sha256:e9fcea5b90228a88ffe4d6d0ad77bf910607cb91781492deafe2b2bb58e3d1ff",
+    "Ecommerce_Motion_Library_README.md": "sha256:96baa8020842657d85680599d4dbb6086296568b723707a34fc07f5517ce0b5f",
+    "library_data.json": "sha256:64d1aa5ff20759ae49d86b0e8baadf1875ff4ce87c6a7ae5ef23da82e72ffdec"
+  }
+}

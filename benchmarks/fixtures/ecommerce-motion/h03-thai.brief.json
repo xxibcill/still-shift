@@ -1,0 +1,27 @@
+{
+  "schemaVersion": "commerce-brief-1",
+  "catalogVersion": "1.0",
+  "selection": {
+    "kind": "format",
+    "id": "H03"
+  },
+  "title": "H03 / Thai / second illustrated fixture",
+  "locale": "th",
+  "product": {
+    "id": "sample-two",
+    "name": "STUDIO SAMPLE 02",
+    "imagePath": "../../../assets/ecommerce-motion/sample-two.png",
+    "preparation": "cutout",
+    "provenance": "Original procedural illustration; fictional studio sample, not a real product.",
+    "protectedRegion": [0.365, 0.37, 0.28, 0.26]
+  },
+  "copy": {
+    "headlines": ["เรียบง่าย\nในทุกวัน"],
+    "cta": "ค้นพบคอลเลกชัน",
+    "source": "Synthetic fixture copy; no product claims.",
+    "callouts": []
+  },
+  "profile": "portrait",
+  "fps": 24,
+  "frameCount": 192
+}

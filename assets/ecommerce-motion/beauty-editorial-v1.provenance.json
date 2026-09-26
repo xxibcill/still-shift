@@ -1,0 +1,10 @@
+{
+  "generator": "Built-in image_gen tool",
+  "generatedAt": "2026-09-26",
+  "kind": "fictional product concept",
+  "prompt": "beauty-editorial-v1.prompt.txt",
+  "asset": "beauty-editorial-v1.png",
+  "sha256": "sha256:6710fbb6b5e8ba156689633a1d48b605de7379dea1fa2805f01efc8b958251f6",
+  "sourceOutput": "/Users/jjae/.codex/generated_images/01a0dbbc-10cf-73e1-975c-209391327072/exec-b9282846-90ed-4ca7-a9da-651bd36f60e9.png",
+  "usage": "H03 full-frame editorial photo example, 1080x1350 output, editable overlays."
+}

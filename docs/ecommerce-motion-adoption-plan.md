@@ -1,7 +1,7 @@
 # E-commerce motion library adoption plan
 
 **Updated:** 2026-09-26
-**Milestone:** proposed v0.14 · **Status:** planned
+**Milestone:** v0.14 · **Status:** implemented with technical fixtures; real-product proof pending
 **Source:** `Ecommerce_Motion_Library_Pack`, catalog v1.0, checked date 2026-09-24
 **Related work:** [product direction](product-positioning.md), [Story Motion implementation](story-motion-implementation.md), [project roadmap](../ROADMAP.md)
 
@@ -13,7 +13,7 @@ Import all 40 formats as reference content. The first executable release covers 
 
 Begin with one eight-second H03 preview at 1920×1080 / 30 fps. Expand to H01/H04 and the ten-second A01 sequence, then add portrait and square layouts and the operator workflow. An eight-second proof is a convenient first deliverable; it is not a new duration limit.
 
-This document records the requested plan. Implementation has not started. v0.13 remains the active milestone; shared code changes should start from its current implementation and be coordinated with ongoing episode integration. No runtime changes or source-pack imports are part of this planning change.
+The user authorized implementation in a new worktree from the current branch. M0–M4 are implemented there; [implementation evidence](ecommerce-motion-implementation.md) records coverage, verification and M5 follow-up. Real-product creative proof remains outstanding because no product photograph or approved campaign copy was supplied.
 
 ## Source assessment
 
@@ -33,7 +33,7 @@ The implementation has advanced since the initial folder assessment. The eight-s
 | [Story contract](../packages/scene-contract/src/story.ts)                                                                                         | Follow its authoritative frame count and event-window convention. Commerce has its own recipe roles and validation.                                                                                                          |
 | [Story compiler](../packages/renderer-core/src/story-scene.ts)                                                                                    | Extract the internal track collector when commerce becomes its second consumer. Preserve sorting, initial values, holds, discrete changes and conflict rejection.                                                            |
 | [Prepared evaluator](../packages/renderer-core/src/prepared-scene.ts)                                                                             | Add commerce dispatch and evaluate any frame without depending on playback history. Preserve the legacy millisecond tracks and newer frame tracks explicitly.                                                                |
-| [Canvas renderer](../packages/renderer-core/src/illustrated-renderer.ts)                                                                          | Reuse image/group/path drawing. Extend text layout and required clipping behavior. Existing text uses a single `fillText` call and generic font choices.                                                                     |
+| [Canvas renderer](../packages/renderer-core/src/illustrated-renderer.ts)                                                                          | Reuse image/group/path drawing. Extend text layout and required clipping behavior. Reuse the pinned-font loader added by Story Motion; extend single-line drawing with measured multiline text.                              |
 | [Prepared engine](../packages/animation-engine/src/prepared-animation-engine.ts) and [export worker](../tools/export-worker/src/export-worker.ts) | Extend the scene/result union, versioned manifest and frame-authoritative export handling. Reuse asset integrity checks and encoded-frame validation. Audit the worker's fixed browser viewport when adding portrait output. |
 | [Illustrated lab](../apps/lab/src/illustrated.ts) and [asset routing](../apps/lab/illustrated-api.ts)                                             | Add a Commerce collection and bounded asset routes. Use a small collection registry where the existing collection conditionals need extending.                                                                               |
 
@@ -139,7 +139,7 @@ No platform-specific placement rules are asserted by this plan. Safe insets are 
 
 ## Planned file ownership
 
-Proposed new files are named here to keep implementation work reviewable; they are not created by this planning task.
+These are the implementation ownership boundaries established by the plan and used by the v0.14 worktree.
 
 | Area                                  | Intended files                                                                                                                                                                 |
 | ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
@@ -151,4 +151,4 @@ Proposed new files are named here to keep implementation work reviewable; they a
 | Workflow                              | Commerce lab controls/catalog, bounded asset routes and a preparation command in the existing CLI                                                                              |
 | Evidence                              | `docs/ecommerce-motion-implementation.md`, focused unit/browser tests and a small output gallery                                                                               |
 
-The first implementation action is M0: import the source catalog and establish the H03 brief/asset contract. Extract shared renderer machinery only when M1 has a concrete second caller for it.
+M0 imported the source and established the brief. M1 extracted shared tracks when commerce became the second consumer. See the implementation note for the completed fixture workflow and remaining real-product proof.

@@ -40,20 +40,21 @@ Relationship Build, Evidence Boundary, Dated System Break, Category Swap and
 Motif Resolve now share the implemented event compiler and renderer. All seven
 recipes have rendered fixtures, lab timing controls and CLI export; narrated
 S01E01 integration remains in progress. See the [implementation evidence](./docs/story-motion-implementation.md).
-Cinematic iteration is deferred while v0.13 is active; Phase 0 acceptance remains separate.
+Cinematic iteration remains deferred; Phase 0 acceptance remains separate.
 The [implementation research](./docs/s01e01-story-motion-research.md) now covers
 all seven, including source precedents, asset preparation and exact-frame timing requirements.
 
-**Current creative priority:** Improve the seven story graphics using the channel's
+**Story creative direction:** Improve the seven story graphics using the channel's
 existing Layered Chronicle identity. The [visual critique and redesign plan](./docs/story-motion-visual-redesign.md)
 covers coherent artwork, distinct compositions, readable typography and stable
-symbol meanings. Analysis is complete; the visual pass is planned within v0.13.
+symbol meanings. The visual pass and line refinements are recorded below; episode integration remains separate.
 
-**Planned commerce adoption:** The [e-commerce motion adoption plan](./docs/ecommerce-motion-adoption-plan.md)
-defines proposed v0.14: import the 40-format reference catalog, prove H03 with timed
-typography, add H01/H04 and their A01 sequence, then support portrait/square layouts
-and a brief-to-export workflow. It reuses v0.13's frame events. Implementation has
-not started; v0.13 remains active.
+**Commerce adoption:** The user requested v0.14 implementation in an isolated
+worktree. The [Commerce implementation](./docs/ecommerce-motion-implementation.md)
+imports the full reference catalog and implements H03, H01, H04 and A01, with three
+output shapes, English/Thai typography, editable briefs and MP4/source downloads.
+Technical fixtures are verified; real-product creative proof remains pending.
+This branch tracks v0.14 as active; v0.13 episode integration is retained and deferred here.
 
 ## Phase 0 outcome
 
@@ -93,8 +94,8 @@ When work begins, update the roadmap date, mark exactly one version as in progre
 | v0.10   | Evaluation release and Phase 1 decision  | Days 9–10 | `[!]`  | [Candidate gallery, 7.97-minute assembly, and gate report; human decision pending](./docs/v0.10-evaluation-release.md) |
 | v0.11   | Illustrated editorial preset trial       | Extension | `[!]`  | [Six presets implemented and verified; creative review pending](./docs/history-offstage-motion-implementation.md)      |
 | v0.12   | Cinematic illustrated template study     | Extension | `[–]`  | [Cinematic Parallax family: eight variations; quick preview workflow](./docs/cinematic-template-plan.md)               |
-| v0.13   | S01E01 reusable story-motion treatments  | Extension | `[~]`  | [Seven-treatment roadmap; short proof first, then episode integration](./docs/s01e01-story-motion-roadmap.md)          |
-| v0.14   | E-commerce catalog and prepared ads      | Extension | `[ ]`  | [Adoption plan; H03 proof, H01/H04 sequence, output layouts and workflow](./docs/ecommerce-motion-adoption-plan.md)    |
+| v0.13   | S01E01 reusable story-motion treatments  | Extension | `[–]`  | [Seven-treatment roadmap; short proof first, then episode integration](./docs/s01e01-story-motion-roadmap.md)          |
+| v0.14   | E-commerce catalog and prepared ads      | Extension | `[~]`  | [Fixture implementation verified; real-product proof pending](./docs/ecommerce-motion-implementation.md)               |
 
 ## Critical path
 
@@ -469,7 +470,7 @@ shot ideas evaluated through short previews. See the
 
 ## v0.13 — S01E01 reusable story motion
 
-**Status:** Seven recipes implemented and rendered; episode integration in progress.
+**Status:** Seven recipes implemented and rendered; episode integration is deferred in this Commerce worktree and continues separately.
 [Implementation and verification](./docs/story-motion-implementation.md) records the working engine,
 lab, CLI and preview gallery. The detailed
 [roadmap](./docs/s01e01-story-motion-roadmap.md) defines dependencies, proof
@@ -507,9 +508,8 @@ proofs do not reinstate retired corpus entries or establish Phase 0 acceptance.
 
 ## v0.14 — E-commerce motion library adoption
 
-**Status:** Planned; implementation has not started. The
-[adoption plan](./docs/ecommerce-motion-adoption-plan.md) records the source catalog,
-shared machinery, exact delivery order and completion criteria.
+**Status:** Implemented and verified with original technical fixtures in the Commerce worktree; real-product proof pending. See the
+[implementation evidence](./docs/ecommerce-motion-implementation.md) and [adoption plan](./docs/ecommerce-motion-adoption-plan.md).
 
 **Release outcome:** Supply a product brief and prepared imagery, preview a supported
 format and export a deterministic ad with its scene and provenance. All 40 formats
@@ -518,12 +518,14 @@ the ten-second A01 recipe.
 
 - [x] Inspect all five source files and map the pack to the current renderer.
 - [x] Define the adoption plan using the implemented v0.13 frame-event path.
-- [ ] **M0:** Import and validate the catalog; define the first H03 brief and asset manifest.
-- [ ] **M1:** Render the eight-second H03 proof with font loading, text layout and exact timing.
-- [ ] **M2:** Add H01/H04 and the ten-second A01 sequence with registered product groups and callouts.
-- [ ] **M3:** Verify landscape, portrait and square layouts through preview and export.
-- [ ] **M4:** Add the Commerce lab collection and brief preparation workflow; exercise a second product.
-- [ ] **M5:** Record executable coverage, preparation/repair effort and the next shared technique.
+- [x] **M0:** Import and validate the catalog; define the first H03 brief and asset manifest.
+- [x] **M1:** Render the eight-second H03 proof with font loading, text layout and exact timing.
+- [x] **M2:** Add H01/H04 and the ten-second A01 sequence with registered product groups and callouts.
+- [x] **M3:** Verify landscape, portrait, square and 4:5 layouts through preview and export; add the [built-in image-model editorial example](./docs/ecommerce-4x5-example.md).
+- [x] **M4:** Add the Commerce lab and brief preparation workflow; exercise a second fictional product and source-bundle reproduction.
+- [x] **M5:** Record executable coverage, preparation/repair effort and the next shared technique.
+
+- [ ] Verify a real authorized product image and approved copy, and measure actual preparation/repair effort.
 
 ## Final exit gates
 

@@ -1,0 +1,38 @@
+{
+  "schemaVersion": "commerce-brief-1",
+  "catalogVersion": "1.0",
+  "selection": {
+    "kind": "format",
+    "id": "H04"
+  },
+  "title": "H04 / feed / illustrated fixture",
+  "locale": "en",
+  "product": {
+    "id": "sample-one",
+    "name": "STUDIO SAMPLE 01",
+    "imagePath": "../../../assets/ecommerce-motion/sample-one.png",
+    "preparation": "cutout",
+    "provenance": "Original procedural illustration; fictional studio sample, not a real product.",
+    "protectedRegion": [0.365, 0.37, 0.28, 0.26]
+  },
+  "copy": {
+    "headlines": ["A small\ndaily ritual."],
+    "cta": "Explore the collection",
+    "source": "Synthetic fixture copy; no product claims.",
+    "callouts": [
+      {
+        "text": "Illustrated cap",
+        "target": [0.5, 0.17],
+        "source": "Visible cap in original fixture."
+      },
+      {
+        "text": "Sample container",
+        "target": [0.32, 0.77],
+        "source": "Visible original fixture outline."
+      }
+    ]
+  },
+  "profile": "feed",
+  "fps": 30,
+  "frameCount": 240
+}

@@ -1,0 +1,347 @@
+{
+  "title": "H04 / Studio beauty / 4:5",
+  "fps": 30,
+  "background": "#EBE0CD",
+  "assets": [
+    {
+      "id": "product-image",
+      "path": "../../../assets/ecommerce-motion/beauty-cutout-v1.png",
+      "sha256": "sha256:ce8922b80e19b753996c1157b2e2fb07abf4652cf502d0ad44fe319bc15ecf67",
+      "width": 1122,
+      "height": 1402
+    }
+  ],
+  "fonts": [
+    {
+      "id": "commerce-font",
+      "path": "../../../assets/ecommerce-motion/fonts/noto-sans-thai.ttf",
+      "sha256": "sha256:5a1c559bb539583c8a1fd99d1c5b9491e5e14478c9cd2bd0970d5c3096cc9ef8",
+      "weight": "400"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "accent",
+      "x": 70,
+      "y": 70,
+      "width": 58,
+      "height": 7,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "rect",
+      "fill": "#584832",
+      "lineWidth": 0,
+      "radius": 0
+    },
+    {
+      "id": "product-name",
+      "x": 70,
+      "y": 101,
+      "width": 940,
+      "height": 64,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "text",
+      "text": "SAMPLE 01 / STUDIO COLLECTION",
+      "fontSize": 26,
+      "color": "#5D5A48",
+      "weight": "normal",
+      "font": "sans-serif",
+      "fontAsset": "commerce-font",
+      "textBox": {
+        "locale": "en",
+        "maxLines": 1,
+        "lineHeight": 1.28
+      },
+      "align": "left"
+    },
+    {
+      "id": "product",
+      "x": 310,
+      "y": 385.17379679144386,
+      "width": 780,
+      "height": 974.6524064171123,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "group",
+      "clip": false
+    },
+    {
+      "id": "product-art",
+      "parent": "product",
+      "x": 0,
+      "y": 0,
+      "width": 780,
+      "height": 974.6524064171123,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "image",
+      "states": [
+        {
+          "asset": "product-image"
+        }
+      ],
+      "fit": "contain"
+    },
+    {
+      "id": "headline-0",
+      "x": 70,
+      "y": 170,
+      "width": 940,
+      "height": 250,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "text",
+      "text": "A small\ndaily ritual.",
+      "fontSize": 72,
+      "color": "#283E30",
+      "weight": "normal",
+      "font": "sans-serif",
+      "fontAsset": "commerce-font",
+      "textBox": {
+        "locale": "en",
+        "maxLines": 3,
+        "lineHeight": 1.28
+      },
+      "align": "left"
+    },
+    {
+      "id": "callout-path-0",
+      "x": 0,
+      "y": 0,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "path",
+      "points": [
+        [378, 554],
+        [395, 554],
+        [395, 502.1320855614973],
+        [637.5999999999999, 502.1320855614973]
+      ],
+      "stroke": "#584832",
+      "lineWidth": 3,
+      "gapAt": 0.6,
+      "gapSize": 0.1
+    },
+    {
+      "id": "callout-label-0",
+      "x": 70,
+      "y": 530,
+      "width": 290,
+      "height": 150,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "text",
+      "text": "Brushed cap",
+      "fontSize": 32,
+      "color": "#283E30",
+      "weight": "normal",
+      "font": "sans-serif",
+      "fontAsset": "commerce-font",
+      "textBox": {
+        "locale": "en",
+        "maxLines": 3,
+        "lineHeight": 1.28
+      },
+      "align": "left"
+    },
+    {
+      "id": "callout-path-1",
+      "x": 0,
+      "y": 0,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "path",
+      "points": [
+        [378, 814],
+        [395, 814],
+        [395, 930.9791443850268],
+        [544, 930.9791443850268]
+      ],
+      "stroke": "#584832",
+      "lineWidth": 3,
+      "gapAt": 0.6,
+      "gapSize": 0.1
+    },
+    {
+      "id": "callout-label-1",
+      "x": 70,
+      "y": 790,
+      "width": 290,
+      "height": 150,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "text",
+      "text": "Tinted glass",
+      "fontSize": 32,
+      "color": "#283E30",
+      "weight": "normal",
+      "font": "sans-serif",
+      "fontAsset": "commerce-font",
+      "textBox": {
+        "locale": "en",
+        "maxLines": 3,
+        "lineHeight": 1.28
+      },
+      "align": "left"
+    },
+    {
+      "id": "cta",
+      "x": 70,
+      "y": 1170,
+      "width": 400,
+      "height": 100,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "text",
+      "text": "Explore the collection",
+      "fontSize": 30,
+      "color": "#584832",
+      "weight": "normal",
+      "font": "sans-serif",
+      "fontAsset": "commerce-font",
+      "textBox": {
+        "locale": "en",
+        "maxLines": 2,
+        "lineHeight": 1.28
+      },
+      "align": "left"
+    }
+  ],
+  "provenance": "AI-generated product-and-hand cutout made with the built-in image model; fictional SAMPLE 01.",
+  "schemaVersion": "commerce-scene-1",
+  "width": 1080,
+  "height": 1350,
+  "frameCount": 240,
+  "recipe": {
+    "preset": "H04"
+  },
+  "events": [
+    {
+      "node": "headline-0",
+      "property": "opacity",
+      "start": 0,
+      "end": 20,
+      "from": 0,
+      "to": 1,
+      "easing": "out-cubic"
+    },
+    {
+      "node": "headline-0",
+      "property": "y",
+      "start": 0,
+      "end": 20,
+      "from": 196,
+      "to": 170,
+      "easing": "out-cubic"
+    },
+    {
+      "node": "callout-path-0",
+      "property": "reveal",
+      "start": 53,
+      "end": 68,
+      "from": 0,
+      "to": 1,
+      "easing": "out-cubic"
+    },
+    {
+      "node": "callout-label-0",
+      "property": "opacity",
+      "start": 56,
+      "end": 71,
+      "from": 0,
+      "to": 1,
+      "easing": "out-cubic"
+    },
+    {
+      "node": "callout-path-0",
+      "property": "opacity",
+      "start": 168,
+      "end": 192,
+      "to": 0,
+      "easing": "out-cubic"
+    },
+    {
+      "node": "callout-label-0",
+      "property": "opacity",
+      "start": 168,
+      "end": 192,
+      "to": 0,
+      "easing": "out-cubic"
+    },
+    {
+      "node": "callout-path-1",
+      "property": "reveal",
+      "start": 111,
+      "end": 126,
+      "from": 0,
+      "to": 1,
+      "easing": "out-cubic"
+    },
+    {
+      "node": "callout-label-1",
+      "property": "opacity",
+      "start": 114,
+      "end": 129,
+      "from": 0,
+      "to": 1,
+      "easing": "out-cubic"
+    },
+    {
+      "node": "callout-path-1",
+      "property": "opacity",
+      "start": 168,
+      "end": 192,
+      "to": 0,
+      "easing": "out-cubic"
+    },
+    {
+      "node": "callout-label-1",
+      "property": "opacity",
+      "start": 168,
+      "end": 192,
+      "to": 0,
+      "easing": "out-cubic"
+    },
+    {
+      "node": "cta",
+      "property": "opacity",
+      "start": 168,
+      "end": 192,
+      "from": 0,
+      "to": 1,
+      "easing": "out-cubic"
+    }
+  ],
+  "metadata": {
+    "catalogVersion": "1.0",
+    "selection": {
+      "kind": "format",
+      "id": "H04"
+    },
+    "profile": "feed",
+    "productId": "beauty-cutout-v1",
+    "productSource": "AI-generated product-and-hand cutout made with the built-in image model; fictional SAMPLE 01.",
+    "copySource": "Original demonstration copy; fictional product concept with no efficacy claims.",
+    "claimSources": [
+      "Visible brushed finish on the generated SAMPLE 01 cap.",
+      "Visible tint of the generated SAMPLE 01 bottle; no efficacy claim."
+    ],
+    "locale": "en",
+    "protectedRegion": [559.6, 706.8090909090909, 195, 155.94438502673796]
+  }
+}

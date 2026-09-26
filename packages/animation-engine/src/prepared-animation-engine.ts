@@ -8,6 +8,7 @@ import {
   PreparedAnimationResultSchema,
   CinematicAnimationResultSchema,
   StoryAnimationResultSchema,
+  CommerceAnimationResultSchema,
 } from "@still-shift/scene-contract";
 import { compilePreparedScene } from "../../renderer-core/src/prepared-scene.ts";
 import { exportScene } from "../../../tools/export-worker/src/export-worker.ts";
@@ -123,12 +124,15 @@ export class PreparedAnimationEngine {
     }
     const cinematic = prepared.scene.schemaVersion === "illustrated-scene-2";
     const story = prepared.scene.schemaVersion === "story-scene-1";
+    const commerce = prepared.scene.schemaVersion === "commerce-scene-1";
     const manifest = {
-      schemaVersion: story
-        ? "story-render-1"
-        : cinematic
-          ? "illustrated-render-2"
-          : "illustrated-render-1",
+      schemaVersion: commerce
+        ? "commerce-render-1"
+        : story
+          ? "story-render-1"
+          : cinematic
+            ? "illustrated-render-2"
+            : "illustrated-render-1",
       sourcePath: resolve(request.scenePath),
       sourceChecksum: prepared.sourceChecksum,
       scene: prepared.scene,
@@ -144,17 +148,21 @@ export class PreparedAnimationEngine {
       sceneManifestContents: manifestBytes,
       transport: "png_pipe",
     });
-    const resultSchema = story
-      ? StoryAnimationResultSchema
-      : cinematic
-        ? CinematicAnimationResultSchema
-        : PreparedAnimationResultSchema;
-    const result = resultSchema.parse({
-      schemaVersion: story
-        ? "story-result-1"
+    const resultSchema = commerce
+      ? CommerceAnimationResultSchema
+      : story
+        ? StoryAnimationResultSchema
         : cinematic
-          ? "illustrated-result-2"
-          : "illustrated-result-1",
+          ? CinematicAnimationResultSchema
+          : PreparedAnimationResultSchema;
+    const result = resultSchema.parse({
+      schemaVersion: commerce
+        ? "commerce-result-1"
+        : story
+          ? "story-result-1"
+          : cinematic
+            ? "illustrated-result-2"
+            : "illustrated-result-1",
       status: "rendered",
       preset: prepared.scene.recipe.preset,
       fps: prepared.scene.fps,

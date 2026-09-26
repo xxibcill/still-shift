@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="1000" viewBox="0 0 800 1000">
+ <defs><linearGradient id="b" x1="0" x2="1"><stop stop-color="#B9703E"/><stop offset=".65" stop-color="#B9703E"/><stop offset="1" stop-color="#213D34"/></linearGradient>
+ <linearGradient id="skin"><stop stop-color="#D5A47E"/><stop offset="1" stop-color="#B97855"/></linearGradient></defs>
+ <path d="M720 1000L405 1000C349 897 270 827 278 722C282 666 332 634 384 640L519 701C545 592 580 531 624 559C674 591 685 756 703 824Z" fill="url(#skin)"/>
+ <rect x="264" y="248" width="280" height="563" rx="72" fill="url(#b)" stroke="#203D32" stroke-width="4"/>
+ <path d="M294 298C294 280 312 271 322 271V740C312 776 292 745 294 725Z" fill="#FFFFFF" opacity=".11"/>
+ <rect x="292" y="120" width="224" height="176" rx="26" fill="#5D4331"/>
+ <path d="M319 133V275M351 133V275M383 133V275M415 133V275M447 133V275M479 133V275" stroke="#000" opacity=".12" stroke-width="4"/>
+ <rect x="295" y="375" width="218" height="253" rx="4" fill="#EFE9DD"/>
+ <text x="404" y="443" text-anchor="middle" font-family="Arial,sans-serif" font-size="25" letter-spacing="5" fill="#29473A">SAMPLE</text>
+ <text x="404" y="532" text-anchor="middle" font-family="Arial,sans-serif" font-size="70" fill="#29473A">02</text>
+ <path d="M346 564H460" stroke="#29473A" stroke-width="2"/>
+ <text x="404" y="600" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" letter-spacing="3" fill="#29473A">STUDIO EDITION</text>
+ <path d="M530 677C477 640 364 640 323 659C284 677 293 720 329 730L496 758C446 736 340 730 316 751C294 772 309 807 342 819L533 866C568 878 613 858 640 830" fill="url(#skin)" stroke="#AF7856" stroke-width="3"/>
+ <path d="M588 747C575 675 548 645 519 603C493 567 499 517 531 513C560 509 574 554 602 576C647 610 661 682 657 740" fill="#D7A681" stroke="#AF7856" stroke-width="3"/>
+ <path d="M526 533C519 537 522 558 539 574L557 555C542 535 533 530 526 533Z" fill="#E6BC9C"/>
+ </svg>

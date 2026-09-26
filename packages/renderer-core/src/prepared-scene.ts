@@ -1,3 +1,8 @@
+import type { CommerceScene } from "../../scene-contract/src/commerce.ts";
+import {
+  compileCommerceScene,
+  type CommerceRenderScene,
+} from "./commerce-scene.ts";
 import type {
   PreparedScene,
   PreparedNode,
@@ -43,7 +48,8 @@ export type LegacyIllustratedScene = PreparedScene & {
 export type IllustratedScene =
   | LegacyIllustratedScene
   | CinematicRenderScene
-  | StoryRenderScene;
+  | StoryRenderScene
+  | CommerceRenderScene;
 export const sampleTrack = (keys: Key[], time: number): number => {
   if (time <= keys[0]!.time) return keys[0]!.value;
   for (let i = 1; i < keys.length; i++) {
@@ -93,12 +99,15 @@ export function compilePreparedScene(
   input: CinematicScene,
 ): CinematicRenderScene;
 export function compilePreparedScene(input: StoryScene): StoryRenderScene;
+export function compilePreparedScene(input: CommerceScene): CommerceRenderScene;
 export function compilePreparedScene(
-  input: PreparedScene | CinematicScene | StoryScene,
+  input: PreparedScene | CinematicScene | StoryScene | CommerceScene,
 ): IllustratedScene;
 export function compilePreparedScene(
-  input: PreparedScene | CinematicScene | StoryScene,
+  input: PreparedScene | CinematicScene | StoryScene | CommerceScene,
 ): IllustratedScene {
+  if (input.schemaVersion === "commerce-scene-1")
+    return compileCommerceScene(input);
   if (input.schemaVersion === "story-scene-1") return compileStoryScene(input);
   if (input.schemaVersion === "illustrated-scene-2")
     return compileCinematicScene(input);
@@ -300,7 +309,8 @@ export function evaluatePreparedNode(
   )
     throw new Error("Frame index outside illustrated timeline");
   const time =
-    scene.schemaVersion === "story-scene-1"
+    scene.schemaVersion === "story-scene-1" ||
+    scene.schemaVersion === "commerce-scene-1"
       ? frame
       : (frame * 1000) / scene.fps;
   const state = {

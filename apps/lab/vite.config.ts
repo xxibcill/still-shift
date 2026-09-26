@@ -1,3 +1,4 @@
+import { commerceApi } from "./commerce-api.ts";
 import { resolve } from "node:path";
 
 import { defineConfig } from "vite";
@@ -9,7 +10,7 @@ const root = resolve(import.meta.dirname, "../..");
 
 export default defineConfig({
   root: resolve(import.meta.dirname),
-  plugins: [illustratedApi(), labApi()],
+  plugins: [commerceApi(), illustratedApi(), labApi()],
   server: {
     host: "127.0.0.1",
     port: 4173,
