@@ -53,9 +53,9 @@ integration and creative acceptance remain pending within active v0.13.
 
 **Current creative priority:** [Continuous storytelling](./docs/story-motion-continuous-implementation.md)
 supersedes frozen-hold guidance. The optional engine and Unequal Margins prototype
-are implemented; G1–G6 pass, with an entrance-dominated energy peak explicitly
-flagged for the required P2 owner review. Other studies, narrated passages and
-the lab activity strip await that checkpoint.
+are implemented; G1–G6 pass, with the strongest measured change now in the strain
+response. Its visual emphasis is flagged for the required P2 owner review. Other
+studies, narrated passages and the lab activity strip await that checkpoint.
 
 **Planned commerce adoption:** The [e-commerce motion adoption plan](./docs/ecommerce-motion-adoption-plan.md)
 defines proposed v0.14: import the 40-format reference catalog, prove H03 with timed

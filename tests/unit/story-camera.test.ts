@@ -2,6 +2,7 @@ import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import { StorySceneSchema } from "../../packages/scene-contract/src/story.ts";
 import { compileStoryScene } from "../../packages/renderer-core/src/story-scene.ts";
+import { analyzeStoryQuality } from "../../packages/renderer-core/src/story-quality.ts";
 import {
   sampleStoryCamera,
   projectStoryPoint,
@@ -163,5 +164,27 @@ describe("story camera", () => {
     expect(sampleStoryCamera(scene, 60).x).toBeCloseTo(968);
     expect(sampleStoryCamera(scene, 76).x).toBeCloseTo(960);
     expect(projectStoryPoint(scene, "paper", [0, 0], 60)).toEqual([0, 0]);
+  });
+
+  it("keeps the prototype's sustained pan readable at 24 fps", () => {
+    const raw = JSON.parse(
+      readFileSync(
+        "benchmarks/fixtures/story-motion-v2/unequal-margins.json",
+        "utf8",
+      ),
+    );
+    const scene = compileStoryScene(StorySceneSchema.parse(raw));
+    const pans = Array.from({ length: scene.frameCount - 1 }, (_, index) => {
+      const before = sampleStoryCamera(scene, index);
+      const after = sampleStoryCamera(scene, index + 1);
+      return Math.hypot(after.x - before.x, after.y - before.y) * after.zoom;
+    });
+    expect(pans.slice(5, -5).every((pan) => pan >= 0.4 && pan <= 2.5)).toBe(
+      true,
+    );
+    expect(pans.filter((pan) => pan < 0.4)).toHaveLength(10);
+    const quality = analyzeStoryQuality(scene, { preset: "continuous" });
+    expect(quality.continuous!.maxTextVelocity).toBeLessThanOrEqual(20);
+    expect(quality.continuous!.maxZoomPerFrame).toBeLessThanOrEqual(0.0009);
   });
 });

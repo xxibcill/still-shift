@@ -58,9 +58,10 @@ export function unequalMarginsV2(): MotionDesign {
   );
   design.camera = {
     keys: [
-      { frame: 0, x: 960, y: 540, zoom: 1 },
-      { frame: 110, x: 976, y: 542, zoom: 1.02 },
-      { frame: 191, x: 998, y: 546, zoom: 1.04 },
+      { frame: 0, x: 930, y: 540, zoom: 1 },
+      { frame: 15, x: 936.283, y: 540.471, zoom: 1.002356 },
+      { frame: 176, x: 1003.717, y: 545.529, zoom: 1.027644 },
+      { frame: 191, x: 1010, y: 546, zoom: 1.03 },
     ],
     depth: { paper: 0, reference: 0, question: 0, qualifier: 0, ground: 0.7 },
     cover: ["paper"],

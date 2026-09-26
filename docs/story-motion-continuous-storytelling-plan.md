@@ -87,7 +87,7 @@ Every shot is authored as four simultaneous layers. The layer names are used thr
   - Labels attached to subjects move with them, but essential text may not exceed **20 px/s** of on-screen velocity at 1080p outside its own entrance or exit window.
   - Text never passes through another element's motion envelope.
 - **R6. Restraint in character.** Overshoot is at most 2% (`out-back-soft`) and is used only for Response settles. There is no bounce chain, elastic or shake, except the single decaying jolt on the fracture in Dated System Break.
-- **R7. Avoid 24 fps judder.** Camera pans on the depth-1 plane stay between **0.4 and 2.5 px/frame**. Zoom rate stays at or below **0.0009 per frame**. Never pan the high-contrast house outlines at 3–8 px/frame.
+- **R7. Avoid 24 fps judder.** Camera pans on the depth-1 plane stay between **0.4 and 2.5 px/frame** during sustained travel. The first and last eased transitions may fall below 0.4 px/frame as velocity enters and leaves zero; G1/G2 still apply to those frames. Zoom rate stays at or below **0.0009 per frame**. Never pan the high-contrast house outlines at 3–8 px/frame.
 - **R8. Exact cuts stay exact.** Category swap (frame 72) and context reset (frame 120) remain single-frame discontinuities on the subject. The camera does not jump at those frames unless the beat sheet says so.
 - **R9. Sparse additions.** Currents use at most 6 tokens per path, with a radius or half-length of 7 px or less. Do not add new text, except the few words named in a beat sheet.
 - **R10. Pure functions of the frame.** All motion is computed from the frame number. There is no state accumulated while playing, so backward seeks stay pixel-identical.
@@ -339,7 +339,7 @@ New nodes:
 - `margin-a` and `margin-b`: brush paths under each house, `lineWidth` 34, `field` colour at opacity 0.55. Set the path `width` so that origin `[0.5, 0.5]` scales about the house centre.
 - `strain-path`: an invisible horizontal path at y≈360 spanning −100 to 2020, used as the carrier for the strain current.
 
-Camera: keys `0:(960,540,1.00)`, `110:(1010,560,1.04)`, `191:(1290,600,1.10)`. This settles toward the less-room house.
+Camera: keys `0:(930,540,1.00)`, `15:(936.283,540.471,1.002356)`, `176:(1003.717,545.529,1.027644)`, `191:(1010,546,1.03)`. The long middle segment tracks toward the less-room house at a readable 24 fps pan rate, with eased entry and exit.
 
 | Frames          | Layer             | Event                                                                                                                                                       | Meaning                                            |
 | --------------- | ----------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------- |
