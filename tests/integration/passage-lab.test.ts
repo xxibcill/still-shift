@@ -90,4 +90,103 @@ describe("passage Lab file actions", () => {
     },
     30_000,
   );
+
+  test("relative-plan import uses its explicit base directory", async () => {
+    const page = await browser.newPage();
+    try {
+      await page.goto(base + "passage.html");
+      await page.waitForFunction(() =>
+        document.querySelector("#status")?.textContent?.includes("576 frames"),
+      );
+      const file = resolve("benchmarks/fixtures/story-passages/resources.json");
+      await page.locator("#open-workspace").setInputFiles(file);
+      await page.waitForFunction(() =>
+        document
+          .querySelector("#errors")
+          ?.textContent?.includes("Import base directory"),
+      );
+      assert.equal(
+        await page.evaluate(
+          () =>
+            (window.passageLab!.snapshot() as { plan: { id: string } }).plan.id,
+        ),
+        "linked-comparison",
+      );
+      await page
+        .locator("#import-base-directory")
+        .fill("benchmarks/fixtures/story-passages");
+      await page.locator("#open-workspace").setInputFiles(file);
+      await page.waitForFunction(
+        () =>
+          (window.passageLab!.snapshot() as { plan: { id: string } }).plan
+            .id === "s01e01-resources",
+      );
+      assert.equal(await page.locator("#errors").textContent(), "");
+      await page.setViewportSize({ width: 390, height: 844 });
+      assert.equal(
+        await page.evaluate(
+          () => document.documentElement.scrollWidth > window.innerWidth,
+        ),
+        false,
+      );
+    } finally {
+      await page.close();
+    }
+  }, 30_000);
+
+  test("relative asset parameters also require an import base directory", async () => {
+    const page = await browser.newPage();
+    try {
+      await page.goto(base + "passage.html");
+      await page.waitForFunction(() =>
+        document.querySelector("#status")?.textContent?.includes("576 frames"),
+      );
+      const plan = JSON.parse(
+        await readFile(
+          resolve("benchmarks/fixtures/story-authoring/linked-comparison.json"),
+          "utf8",
+        ),
+      );
+      for (const beat of plan.beats)
+        beat.template = resolve(
+          "benchmarks/fixtures/story-authoring/comparison-template.json",
+        );
+      plan.beats[0].parameters.artwork = { path: "relative-art.svg" };
+      await page.locator("#open-workspace").setInputFiles({
+        name: "asset-parameter.json",
+        mimeType: "application/json",
+        buffer: Buffer.from(JSON.stringify(plan)),
+      });
+      await page.waitForFunction(() =>
+        document
+          .querySelector("#errors")
+          ?.textContent?.includes("Import base directory"),
+      );
+    } finally {
+      await page.close();
+    }
+  }, 30_000);
+
+  test("saved plans with absolute references import without a base directory", async () => {
+    const page = await browser.newPage({ acceptDownloads: true });
+    try {
+      await page.goto(base + "passage.html");
+      await page.waitForFunction(() =>
+        document.querySelector("#status")?.textContent?.includes("576 frames"),
+      );
+      const downloadStarted = page.waitForEvent("download");
+      await page.locator("#save-plan").click();
+      const download = await downloadStarted;
+      await page.evaluate(() => window.passageLab!.seek(42));
+      await page
+        .locator("#open-workspace")
+        .setInputFiles(await download.path()!);
+      await page.waitForFunction(
+        () => (window.passageLab!.snapshot() as { frame: number }).frame === 0,
+      );
+      assert.equal(await page.locator("#errors").textContent(), "");
+    } finally {
+      await page.close();
+    }
+  }, 30_000);
 });

@@ -922,19 +922,43 @@ el<HTMLFormElement>("load-form").onsubmit = (event) => {
   event.preventDefault();
   void loadPath();
 };
-el<HTMLInputElement>("open-workspace").onchange = async (event) => {
+const openWorkspace = el<HTMLInputElement>("open-workspace");
+const absolutePath = (path: string) => /^(?:\/|\\\\|[A-Za-z]:[\\/])/.test(path);
+openWorkspace.onchange = async () => {
   try {
-    const file = (event.target as HTMLInputElement).files?.[0];
+    const file = openWorkspace.files?.[0];
     if (!file) return;
     const input = JSON.parse(await file.text());
     if (input.schemaVersion === "story-workspace-1") await loadPacket(input);
     else {
+      const plan = parsePassagePlan(input);
+      const directory = el<HTMLInputElement>(
+        "import-base-directory",
+      ).value.trim();
+      if (
+        !directory &&
+        (plan.beats.some((beat) => !absolutePath(beat.template)) ||
+          (plan.schemaVersion === "story-passage-2" &&
+            plan.beats.some((beat) =>
+              Object.values(beat.parameters).some(
+                (value) =>
+                  value !== null &&
+                  typeof value === "object" &&
+                  "path" in value &&
+                  typeof value.path === "string" &&
+                  !absolutePath(value.path),
+              ),
+            )))
+      )
+        throw new Error(
+          "Enter an Import base directory in the workspace to resolve this plan's relative template or asset paths.",
+        );
       const response = await fetch("/passage-api/prepare", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          plan: parsePassagePlan(input),
-          basePath: el<HTMLInputElement>("plan-path").value,
+          plan,
+          basePath: directory ? `${directory}/${file.name}` : file.name,
         }),
       });
       const prepared = await response.json();
@@ -948,6 +972,8 @@ el<HTMLInputElement>("open-workspace").onchange = async (event) => {
     }
   } catch (error) {
     errors(error);
+  } finally {
+    openWorkspace.value = "";
   }
 };
 el("save-plan").onclick = async () => {

@@ -95,6 +95,10 @@ summary:focus-visible {
 .load-bar > label:first-child {
   flex: 1;
 }
+.load-bar .import-path {
+  flex: 1;
+  min-width: 240px;
+}
 .load-bar label {
   font-size: 12px;
   display: grid;

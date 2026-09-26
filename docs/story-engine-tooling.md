@@ -23,6 +23,8 @@ The workbench provides:
 
 `Save plan` downloads the source plan for CLI preparation. Template references and supplied asset parameters are resolved to absolute paths. `Save workspace` additionally embeds the loaded template definitions for a local editing round trip. Assets and fonts are referenced, not embedded: these downloads use the current checkout's filesystem paths. Repository fixtures retain portable relative references. The local Lab serves only files inside its workspace; loading a file does not write it back to disk.
 
+When importing a plan with relative template or asset parameter paths, enter the workspace-relative directory containing that plan in **Import base directory** before choosing the JSON file. Downloaded plans with absolute references and workspace files do not need an import base directory.
+
 Legacy `story-passage-1` plans still load. Use **Enable linked authoring** to explicitly create a `story-passage-2` draft with the historical content policy. Existing inputs are never silently migrated or rewritten.
 
 ## Shared interfaces
