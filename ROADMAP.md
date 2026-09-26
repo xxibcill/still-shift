@@ -4,6 +4,13 @@
 
 **Updated:** 2026-09-26
 
+**Current engineering work:** The [E1–E6 engine/tooling implementation](./docs/story-engine-tooling-plan.md)
+is complete on `codex/story-beat-planning`: shared compilation, linked retiming,
+reusable templates/styles, explicit continuity, the passage workbench and
+incremental rendering. See the [usage guide and verification](./docs/story-engine-tooling.md).
+This work uses scenes as technical fixtures; passage art direction and episode
+production retain their separate scope and review status below.
+
 **Target:** 10 working days  
 **Detailed plan:** [Phase_0_Implementation_Plan.md](./Phase_0_Implementation_Plan.md)  
 **Architecture:** [Still_Image_Animation_Architecture.md](./Still_Image_Animation_Architecture.md)
@@ -51,7 +58,7 @@ advisory lab/render diagnostics, a refreshed ST-013/014 proof and a new
 visual and technical evidence. Continuous audiovisual review, full episode
 integration and creative acceptance remain pending within active v0.13.
 
-**Current creative priority:** [Continuous storytelling](./docs/story-motion-continuous-implementation.md)
+**Separate creative workstream:** [Continuous storytelling](./docs/story-motion-continuous-implementation.md)
 supersedes frozen-hold guidance. The optional engine and Unequal Margins prototype
 are implemented; G1–G6 pass, with the strongest measured change now in the strain
 response. Its visual emphasis is flagged for the required P2 owner review. Other
@@ -503,6 +510,7 @@ shots. Still Shift supplies motion scenes; Remotion retains episode assembly.
 - [ ] Roll out continuous motion to the other six recipes and both narrated passages after P2 review; add the lab activity strip and final continuous-motion verification.
 - [~] Render the refreshed 646-frame comparison/access and new 1507-frame resource passage; independent frame review and technical checks passed, continuous audiovisual acceptance remains open.
 - [x] Add [purpose-led beat plans](./docs/story-beat-planning.md), reusable prepared templates, validated narration and delivery timing, and a passage review page for both proofs. Existing motion is preserved as the regression baseline; new passage choreography remains separate.
+- [x] Implement the [E1–E6 engine and tooling plan](./docs/story-engine-tooling-plan.md): shared compilation and retiming, template/style contracts, explicit continuity, passage editing and verified incremental rendering. Supported limits and verification are recorded separately from the episode milestones below.
 - [~] **M0:** Shared contract and fixture kit complete; episode-specific preparation pending.
 - [~] **M1:** Implement Unequal Margins and Access Constraint; inspect one short
   illustrated preview, then the 26.917-second ST-013/014 narrated proof.

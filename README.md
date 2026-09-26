@@ -9,6 +9,15 @@ The current Phase 0 work tests a narrower still-image animation component. See
 [product positioning](./docs/product-positioning.md) for the owner-stated goal,
 candidate approaches, relationship to existing tools, and measures of success.
 
+## Story engine and authoring tools
+
+The [passage workbench and engine guide](./docs/story-engine-tooling.md) covers
+shared compilation, cue-based retiming, reusable templates/styles, explicit
+continuity, Lab editing and incremental rendering. Run `pnpm lab` and open
+`/passage.html` to edit a technical fixture. The [E1–E6 tracker](./docs/story-engine-tooling-plan.md)
+records the completed implementation, verification and supported limits.
+Existing scenes serve as regression fixtures; episode production is tracked separately.
+
 ## Current implementation
 
 **Beat plans** now prepare and render both narrated Story Motion passages from

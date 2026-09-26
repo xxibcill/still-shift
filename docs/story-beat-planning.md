@@ -87,8 +87,10 @@ On 2026-09-26, Node 22.23.1 completed 213 unit tests and five integration tests.
 
 Both exports verified the existing narration checksum, retained audio and passed full decoding. Times are single local runs including scene export, passage assembly, delivery slices and media checks; they are not a production throughput or cost benchmark. These generated reviews are ignored local artifacts. The committed plans and templates reproduce them. Visual inspection covered the review interface and sampled frames, not a continuous audiovisual or audience comprehension assessment.
 
-## Next implementation steps
+## Engine and tooling extension
 
-Use this planning and review path for the next visual pass on the resource passage. Extend continuous choreography and subject handoffs from the existing prototype, stage essential phone-size qualifications, and compare a complete narrated sequence. Keep the original timing and evidence invariants. Then use another script passage to measure authoring effort and determine which additional template is actually needed.
+The [E1–E6 engine and authoring plan](./story-engine-tooling-plan.md) is implemented. The owner clarified on 2026-09-26 that this task improves Still Shift as a render engine and upgrades its authoring tools. Existing passages remain regression fixtures.
 
-The representative corpus, full episode integration and cost gates remain open in the main roadmap.
+The [new usage guide](./story-engine-tooling.md) covers the opt-in `story-passage-2` contract, shared event indexing and linked retiming, reusable templates/styles, explicit continuity, Lab editing and incremental rendering. The legacy workflow documented above remains supported. The new workbench can explicitly migrate a draft without rewriting its source plan.
+
+The representative corpus, full episode integration and cost gates remain separately tracked in the main roadmap. Technical engine verification does not complete those gates.
