@@ -45,8 +45,8 @@ export const StoryStyleSchema = z
       )
       .optional(),
     lineWidth: z.number().positive().optional(),
-    safeInset: z.number().min(0).max(400).default(0),
-    lineHeight: z.number().min(1).max(3).default(1.2),
+    safeInset: z.number().min(0).max(400).optional(),
+    lineHeight: z.number().min(1).max(3).optional(),
     easing: MotionEasingSchema.optional(),
   })
   .strict();

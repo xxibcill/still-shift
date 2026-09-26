@@ -602,11 +602,13 @@ function renderInspector() {
   field(
     el("style"),
     "Safe inset",
-    style.safeInset,
+    style.safeInset ?? "",
     (value) => {
       void apply((p) => {
-        if (p.schemaVersion === "story-passage-2")
-          p.styleProfile.safeInset = Number(value);
+        if (p.schemaVersion === "story-passage-2") {
+          if (value) p.styleProfile.safeInset = Number(value);
+          else delete p.styleProfile.safeInset;
+        }
       });
     },
     "number",
@@ -614,11 +616,13 @@ function renderInspector() {
   const lineHeight = field(
     el("style"),
     "Text line height",
-    style.lineHeight,
+    style.lineHeight ?? "",
     (value) => {
       void apply((p) => {
-        if (p.schemaVersion === "story-passage-2")
-          p.styleProfile.lineHeight = Number(value);
+        if (p.schemaVersion === "story-passage-2") {
+          if (value) p.styleProfile.lineHeight = Number(value);
+          else delete p.styleProfile.lineHeight;
+        }
       });
     },
     "number",

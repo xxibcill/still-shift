@@ -377,6 +377,33 @@ describe("shared passage authoring", () => {
       diagnostics: [{ code: "missing-parameter" }],
     });
   });
+  it("preserves authored safe inset and line height until the style explicitly overrides them", () => {
+    const input = plan();
+    const source = template();
+    source.scene.safeInset = 64;
+    const heading = source.scene.nodes.find((node) => node.id === "reference");
+    if (heading?.type !== "text") throw new Error("Missing heading");
+    heading.textLayout = {
+      width: 600,
+      height: 220,
+      lineHeight: 1.7,
+      overflow: "error",
+    };
+    const sources = new Map([["template.json", source]]);
+    const inherited = compileStoryPassage(input, sources).beats[0]!.scene;
+    expect(inherited.safeInset).toBe(64);
+    expect(
+      inherited.nodes.find((node) => node.id === "reference"),
+    ).toMatchObject({ textLayout: { lineHeight: 1.7 } });
+
+    input.styleProfile.safeInset = 24;
+    input.styleProfile.lineHeight = 2;
+    const overridden = compileStoryPassage(input, sources).beats[0]!.scene;
+    expect(overridden.safeInset).toBe(24);
+    expect(
+      overridden.nodes.find((node) => node.id === "reference"),
+    ).toMatchObject({ textLayout: { lineHeight: 2 } });
+  });
   it("preserves historical evidence requirements while allowing general plans", () => {
     const input = plan();
     expect(compileStoryPassage(input, templates()).frameCount).toBe(192);

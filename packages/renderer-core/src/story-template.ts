@@ -89,7 +89,7 @@ export function instantiateStoryTemplate(
   }
   if (style) {
     if (style.background) scene.background = style.background;
-    scene.safeInset = style.safeInset;
+    if (style.safeInset !== undefined) scene.safeInset = style.safeInset;
     for (const node of scene.nodes) {
       for (const key of ["color", "fill", "stroke"] as const) {
         if (key in node) {
@@ -103,7 +103,8 @@ export function instantiateStoryTemplate(
         node.lineWidth = style.lineWidth;
       if (node.type === "text") {
         if (node.textRole) Object.assign(node, style.text?.[node.textRole]);
-        if (node.textLayout) node.textLayout.lineHeight = style.lineHeight;
+        if (node.textLayout && style.lineHeight !== undefined)
+          node.textLayout.lineHeight = style.lineHeight;
       }
     }
     if (style.easing) {
