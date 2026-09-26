@@ -14,6 +14,7 @@ import { inspectForegroundReveal } from "./reveal-validation.ts";
 import { sampleCinematicBlur } from "./cinematic-scene.ts";
 import { drawStoryFlow } from "./story-flows.ts";
 import { drawStoryText } from "./story-text.ts";
+import { sha256Hex } from "./browser-checksum.ts";
 import { validateStoryTextLayout } from "./story-text-layout.ts";
 import {
   storyCameraTransform,
@@ -370,11 +371,7 @@ export async function loadIllustratedImages(
         const response = await fetch(assetUrl(asset.id));
         if (!response.ok) throw new Error("Asset unavailable: " + asset.id);
         const bytes = await response.arrayBuffer();
-        const digest = [
-          ...new Uint8Array(await crypto.subtle.digest("SHA-256", bytes)),
-        ]
-          .map((n) => n.toString(16).padStart(2, "0"))
-          .join("");
+        const digest = await sha256Hex(bytes);
         if ("sha256:" + digest !== asset.sha256)
           throw new Error("Asset checksum differs: " + asset.id);
         localUrl = URL.createObjectURL(

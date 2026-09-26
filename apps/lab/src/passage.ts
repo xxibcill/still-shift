@@ -26,6 +26,7 @@ import {
   loadIllustratedImages,
 } from "../../../packages/renderer-core/src/illustrated-renderer.ts";
 import { storyCameraTransform } from "../../../packages/renderer-core/src/story-camera.ts";
+import { sha256Hex } from "../../../packages/renderer-core/src/browser-checksum.ts";
 
 const el = <T extends HTMLElement>(id: string) =>
   document.getElementById(id) as T;
@@ -1041,13 +1042,7 @@ el<HTMLInputElement>("narration").onchange = async (event) => {
       throw new Error(
         "This plan has no narration identity. Add one before previewing narration.",
       );
-    const digest = [
-      ...new Uint8Array(
-        await crypto.subtle.digest("SHA-256", await file.arrayBuffer()),
-      ),
-    ]
-      .map((n) => n.toString(16).padStart(2, "0"))
-      .join("");
+    const digest = await sha256Hex(await file.arrayBuffer());
     if (digest !== identity.sha256)
       throw new Error("Narration checksum differs from the plan");
     const url = URL.createObjectURL(file);

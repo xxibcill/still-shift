@@ -1,4 +1,5 @@
 import type { PreparedScene } from "../../scene-contract/src/prepared.ts";
+import { sha256Hex } from "./browser-checksum.ts";
 
 export type LoadedFont = { family: string; weight: string };
 
@@ -11,10 +12,7 @@ export async function loadPreparedFonts(
       const response = await fetch(assetUrl(font.id));
       if (!response.ok) throw new Error(`Font unavailable: ${font.id}`);
       const bytes = await response.arrayBuffer();
-      const digest = await crypto.subtle.digest("SHA-256", bytes);
-      const checksum = [...new Uint8Array(digest)]
-        .map((n) => n.toString(16).padStart(2, "0"))
-        .join("");
+      const checksum = await sha256Hex(bytes);
       if (`sha256:${checksum}` !== font.sha256)
         throw new Error(`Font checksum differs: ${font.id}`);
       const family = `StillShift-${checksum}`;
