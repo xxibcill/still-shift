@@ -1,5 +1,5 @@
 import { execFile } from "node:child_process";
-import { randomUUID } from "node:crypto";
+import { createHash, randomUUID } from "node:crypto";
 import { mkdir, readFile, rename, rm, writeFile } from "node:fs/promises";
 import { dirname, join, resolve } from "node:path";
 import { promisify } from "node:util";
@@ -8,8 +8,9 @@ import {
   AnimationResultSchema,
   CorpusManifestSchema,
 } from "@still-shift/scene-contract";
-
-import { parseEvaluationPresets } from "./presets.ts";
+import { fileSha256 } from "./assembly-evidence.ts";
+import { verifyAssemblyClip } from "./evidence.ts";
+import { evaluationClipId, parseEvaluationPresets } from "./presets.ts";
 
 const execFileAsync = promisify(execFile);
 const option = (name: string): string | undefined => {
@@ -67,8 +68,9 @@ for (const state of states) {
 }
 if (!limitStates && expectedFrame !== timeline.total_frames)
   throw new Error("Timeline total_frames does not match its states");
+const corpusBytes = await readFile(corpusPath);
 const corpus = CorpusManifestSchema.parse(
-  JSON.parse(await readFile(corpusPath, "utf8")),
+  JSON.parse(corpusBytes.toString("utf8")),
 );
 const entryByHash = new Map(
   corpus.entries.map((entry) => [entry.source.sha256, entry]),
@@ -80,11 +82,10 @@ const records = (await readFile(resultsPath, "utf8"))
 const clipById = new Map(
   records
     .filter((record) => record.result)
-    .map((record) => [
-      record.id,
-      AnimationResultSchema.parse(record.result).outputPath,
-    ]),
+    .map((record) => [record.id, AnimationResultSchema.parse(record.result)]),
 );
+if (clipById.size !== records.filter((record) => record.result).length)
+  throw new Error("Duplicate result IDs in assembly input");
 const segmentsDir = `${outputPath}.segments`;
 await mkdir(segmentsDir, { recursive: true });
 const segmentPaths: string[] = [];
@@ -93,14 +94,18 @@ for (const [index, state] of states.entries()) {
   const entry = entryByHash.get(state.source_sha256);
   if (!entry)
     throw new Error(`Timeline source not present in corpus: ${state.state_id}`);
-  const clipIds = presets.map(
-    (preset) => `${entry.id}-${preset.replaceAll("_", "-")}`,
+  const clipIds = presets.map((preset) => evaluationClipId(entry.id, preset));
+  const clips = await Promise.all(
+    clipIds.map((id, presetIndex) => {
+      const result = clipById.get(id);
+      if (!result) throw new Error(`Missing rendered preset: ${id}`);
+      return verifyAssemblyClip(
+        result,
+        state.source_sha256,
+        presets[presetIndex]!,
+      );
+    }),
   );
-  const clips = clipIds.map((id) => {
-    const path = clipById.get(id);
-    if (!path) throw new Error(`Missing rendered preset: ${id}`);
-    return path;
-  });
   const segmentPath = join(
     segmentsDir,
     `${String(index + 1).padStart(3, "0")}-${state.state_id}.mp4`,
@@ -231,16 +236,28 @@ try {
       `Assembled video failed frame validation: ${videoFrameCount}/${expectedFrame}`,
     );
   await rename(temporaryOutput, outputPath);
+  const selectedClipIds = new Set(
+    clipSelections.flatMap((selection) => selection.clipIds),
+  );
   const metadata = {
+    schemaVersion: "0.1",
     outputPath,
+    outputSha256: await fileSha256(outputPath),
     timelinePath,
     narrationPath,
     corpusId: corpus.corpusId,
+    corpusSha256: `sha256:${createHash("sha256").update(corpusBytes).digest("hex")}`,
     corpusStatus: corpus.status,
     sourceStateCount: states.length,
     videoFrameCount,
     durationSeconds: Number(probe.format.duration),
     clipSelections,
+    clipOutputChecksums: Object.fromEntries(
+      [...selectedClipIds].map((id) => [
+        id,
+        clipById.get(id)!.checksums.output,
+      ]),
+    ),
   };
   await writeFile(
     `${outputPath}.assembly.json`,

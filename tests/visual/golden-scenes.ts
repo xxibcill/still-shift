@@ -106,12 +106,10 @@ export const GOLDEN_SCENES: GoldenScene[] = [
     source: svg(`<rect width="256" height="144" fill="#d5e2e6"/>
       <rect y="102" width="256" height="42" fill="#627884"/>
       <circle cx="126" cy="72" r="32" fill="#d48765"/>
-      <path d="M123 102 L67 18 M126 102 L95 10 M128 102 L128 5 M130 102 L162 10 M133 102 L190 18" stroke="#263f4b" stroke-width="3"/>
-      <path d="M0 20 L256 90 M0 40 L256 110" stroke="#96aeb7" stroke-width="2"/>`),
+      <path d="M123 102 L67 18 M126 102 L95 10 M128 102 L128 5 M130 102 L162 10 M133 102 L190 18" stroke="#263f4b" stroke-width="3"/>`),
     depth: svg(`<rect width="256" height="144" fill="rgb(51,51,51)"/>
       <rect y="102" width="256" height="42" fill="rgb(105,105,105)"/>
       <circle cx="126" cy="72" r="32" fill="rgb(180,180,180)"/>
-      <path d="M123 102 L67 18 M126 102 L95 10 M128 102 L128 5 M130 102 L162 10 M133 102 L190 18" stroke="rgb(230,230,230)" stroke-width="3"/>
-      <path d="M0 20 L256 90 M0 40 L256 110" stroke="rgb(82,82,82)" stroke-width="2"/>`),
+      <path d="M123 102 L67 18 M126 102 L95 10 M128 102 L128 5 M130 102 L162 10 M133 102 L190 18" stroke="rgb(230,230,230)" stroke-width="3"/>`),
   },
 ];

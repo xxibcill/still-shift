@@ -4,6 +4,7 @@ import {
   createWebGLPreview,
   evaluateFrame,
   isFlatPreset,
+  fallback2DScene,
   resolvePreviewScene,
   type PreviewIntensity,
   type PreviewPreset,
@@ -16,9 +17,9 @@ import type { z } from "zod";
 import {
   ApiErrorSchema,
   CorpusResponseSchema,
+  DepthPreparationFailureSchema,
   PreparedEntrySchema,
   type CorpusEntry,
-  type PreparedEntry,
   type PreviewPair,
 } from "../lab-contract.ts";
 import "./style.css";
@@ -57,7 +58,7 @@ let activeImages: {
   name: string;
   pair: PreviewPair;
   source: HTMLImageElement;
-  depth: HTMLImageElement;
+  depth: HTMLImageElement | null;
 } | null = null;
 const safetyAssessments = new WeakMap<HTMLImageElement, SafetyAssessment>();
 
@@ -161,7 +162,7 @@ const selectedSeed = (): number => {
 
 const resolveLabScene = (
   source: HTMLImageElement,
-  depth: HTMLImageElement,
+  depth: HTMLImageElement | null,
   durationMs: number,
   preset: PreviewPreset = presetSelect.value as PreviewPreset,
   intensity: PreviewIntensity = intensitySelect.value as PreviewIntensity,
@@ -170,8 +171,8 @@ const resolveLabScene = (
   const scene = resolvePreviewScene({
     sourceWidth: source.naturalWidth,
     sourceHeight: source.naturalHeight,
-    depthWidth: depth.naturalWidth,
-    depthHeight: depth.naturalHeight,
+    depthWidth: depth?.naturalWidth ?? source.naturalWidth,
+    depthHeight: depth?.naturalHeight ?? source.naturalHeight,
     durationMs,
     fps: 30,
     canvasWidth: 1920,
@@ -181,14 +182,21 @@ const resolveLabScene = (
     seed,
   });
   if (scene.motion.mode === "flat_2d") return scene;
-  return applySafetyToScene(scene, analyzePair(source, depth));
+  return depth
+    ? applySafetyToScene(scene, analyzePair(source, depth))
+    : fallback2DScene(scene, "DEPTH_PREPARATION_FAILED");
 };
 
 const loadScene = async (pair: PreviewPair) => {
-  const [source, depth] = await Promise.all([
-    loadImage(pair.sourceUrl),
-    loadImage(pair.depthUrl),
-  ]);
+  const source = await loadImage(pair.sourceUrl);
+  const loadedDepth = pair.depthUrl
+    ? await loadImage(pair.depthUrl).catch(() => null)
+    : null;
+  const depth =
+    loadedDepth?.naturalWidth === source.naturalWidth &&
+    loadedDepth.naturalHeight === source.naturalHeight
+      ? loadedDepth
+      : null;
   return {
     source,
     depth,
@@ -200,7 +208,7 @@ const activateScene = (
   name: string,
   pair: PreviewPair,
   source: HTMLImageElement,
-  depth: HTMLImageElement,
+  depth: HTMLImageElement | null,
   nextScene: PreviewScene,
   frameIndex = 0,
 ): void => {
@@ -212,7 +220,9 @@ const activateScene = (
   byId<HTMLElement>("scene-name").textContent = name;
   byId<HTMLElement>("empty-preview").hidden = true;
   sourceImage.src = pair.sourceUrl;
-  depthImage.src = pair.depthUrl;
+  depthImage.hidden = depth === null;
+  if (depth && pair.depthUrl) depthImage.src = pair.depthUrl;
+  else depthImage.removeAttribute("src");
   byId<HTMLElement>("depth-caption").textContent =
     nextScene.motion.mode === "flat_2d" ? "Depth unused" : "Prepared depth";
   frameSlider.max = String(nextScene.timeline.frameCount - 1);
@@ -263,10 +273,28 @@ const fetchJson = async <T extends z.ZodType>(
   return schema.parse(value);
 };
 
-const prepareEntry = async (id: string): Promise<PreparedEntry> =>
-  fetchJson(`/api/prepare?id=${encodeURIComponent(id)}`, PreparedEntrySchema, {
+const prepareEntry = async (
+  id: string,
+): Promise<PreviewPair & { id: string }> => {
+  const response = await fetch(`/api/prepare?id=${encodeURIComponent(id)}`, {
     method: "POST",
   });
+  const value: unknown = await response.json();
+  if (response.ok) return PreparedEntrySchema.parse(value);
+  const failure = DepthPreparationFailureSchema.safeParse(value);
+  if (response.status === 422 && failure.success) {
+    return {
+      id,
+      sourceUrl: failure.data.sourceUrl,
+      depthUrl: null,
+      durationMs: failure.data.durationMs,
+    };
+  }
+  const error = ApiErrorSchema.safeParse(value);
+  throw new Error(
+    error.success ? error.data.error : `Request failed: ${response.status}`,
+  );
+};
 
 const showError = (error: unknown): void => {
   stop();
@@ -292,12 +320,23 @@ const prepareSelected = async (): Promise<void> => {
   }
 };
 
-const addGalleryCard = (
-  entry: CorpusEntry,
-  preset: PreviewPreset,
-  poster: string | null,
-  error?: unknown,
-): void => {
+type GalleryCard = {
+  entry: CorpusEntry;
+  preset: PreviewPreset;
+  intensity: PreviewIntensity;
+  seed: number;
+  poster: string | null;
+  error?: unknown;
+};
+
+const addGalleryCard = ({
+  entry,
+  preset,
+  intensity,
+  seed,
+  poster,
+  error,
+}: GalleryCard): void => {
   const card = document.createElement("button");
   card.type = "button";
   card.className = "gallery-item";
@@ -308,6 +347,8 @@ const addGalleryCard = (
     card.append(image);
     card.addEventListener("click", () => {
       presetSelect.value = preset;
+      intensitySelect.value = intensity;
+      seedInput.value = String(seed);
       select.value = entry.id;
       void prepareSelected();
       window.scrollTo({ top: 0, behavior: "smooth" });
@@ -320,7 +361,8 @@ const addGalleryCard = (
     card.append(failure);
   }
   const label = document.createElement("strong");
-  label.textContent = entry.id + " · " + preset;
+  label.textContent =
+    entry.id + " · " + preset + " · " + intensity + " · seed " + seed;
   card.append(label);
   gallery.append(card);
 };
@@ -337,15 +379,15 @@ const galleryFrameIndex = (scene: PreviewScene): number => {
 const buildGallery = async (): Promise<void> => {
   galleryButton.disabled = true;
   status.classList.remove("error");
-  gallery.replaceChildren();
-  posters.clear();
-  const posterCanvas = document.createElement("canvas");
-  posterCanvas.width = canvas.width;
-  posterCanvas.height = canvas.height;
   try {
     const intensity = intensitySelect.value as PreviewIntensity;
     const seed = selectedSeed();
     const presets = galleryPresets();
+    gallery.replaceChildren();
+    posters.clear();
+    const posterCanvas = document.createElement("canvas");
+    posterCanvas.width = canvas.width;
+    posterCanvas.height = canvas.height;
     for (const [index, entry] of corpusEntries.entries()) {
       byId<HTMLElement>("gallery-note").textContent =
         "Building gallery " +
@@ -356,10 +398,7 @@ const buildGallery = async (): Promise<void> => {
         entry.id;
       try {
         const prepared = await prepareEntry(entry.id);
-        const [source, depth] = await Promise.all([
-          loadImage(prepared.sourceUrl),
-          loadImage(prepared.depthUrl),
-        ]);
+        const { source, depth } = await loadScene(prepared);
         for (const preset of presets) {
           try {
             const resolvedScene = resolveLabScene(
@@ -384,14 +423,28 @@ const buildGallery = async (): Promise<void> => {
               posterRenderer.dispose();
             }
             posters.set(entry.id + ":" + preset, poster);
-            addGalleryCard(entry, preset, poster);
+            addGalleryCard({ entry, preset, intensity, seed, poster });
           } catch (error) {
-            addGalleryCard(entry, preset, null, error);
+            addGalleryCard({
+              entry,
+              preset,
+              intensity,
+              seed,
+              poster: null,
+              error,
+            });
           }
         }
       } catch (error) {
         for (const preset of presets)
-          addGalleryCard(entry, preset, null, error);
+          addGalleryCard({
+            entry,
+            preset,
+            intensity,
+            seed,
+            poster: null,
+            error,
+          });
       }
     }
     byId<HTMLElement>("gallery-note").textContent =
@@ -427,36 +480,19 @@ byId<HTMLButtonElement>("load-local").addEventListener("click", () => {
   void loadLocal().catch(showError);
 });
 
-const neutralDepthUrl = (source: HTMLImageElement): string => {
-  const depthCanvas = document.createElement("canvas");
-  depthCanvas.width = source.naturalWidth;
-  depthCanvas.height = source.naturalHeight;
-  const context = depthCanvas.getContext("2d");
-  if (!context) throw new Error("2D canvas is required for a flat preview");
-  context.fillStyle = "#808080";
-  context.fillRect(0, 0, depthCanvas.width, depthCanvas.height);
-  return depthCanvas.toDataURL("image/png");
-};
-
 const loadLocal = async (): Promise<void> => {
   const source = sourceInput.files?.[0];
   const depth = depthInput.files?.[0];
-  if (!source) throw new Error("Choose a source image");
-  if (!depth && !isFlatPreset(presetSelect.value as PreviewPreset)) {
-    throw new Error("Choose a depth PNG for a depth preset");
-  }
+  if (!source) return showError(new Error("Choose a source image"));
   localUrls.forEach((url) => URL.revokeObjectURL(url));
   localUrls = [URL.createObjectURL(source)];
   if (depth) localUrls.push(URL.createObjectURL(depth));
   const requestId = ++previewRequestId;
   prepareButton.disabled = !select.value;
   status.classList.remove("error");
-  const depthUrl = depth
-    ? localUrls[1]!
-    : neutralDepthUrl(await loadImage(localUrls[0]!));
   const pair: PreviewPair = {
     sourceUrl: localUrls[0]!,
-    depthUrl,
+    depthUrl: localUrls[1] ?? null,
     durationMs: 5000,
   };
   await inspectPair(source.name, pair, requestId);

@@ -75,7 +75,7 @@
             step="1"
             value="1842"
           />
-          <div class="divider"><span>or inspect a prepared pair</span></div>
+          <div class="divider"><span>or inspect local files</span></div>
           <label for="local-source">Normalized source PNG</label>
           <input
             id="local-source"
@@ -87,12 +87,12 @@
           >
           <input id="local-depth" type="file" accept="image/png" />
           <button id="load-local" class="quiet-button" type="button">
-            Load local pair
+            Load local preview
           </button>
           <p class="hint">
-            Local files stay in this browser. Editorial 2D presets need only a
-            source image. Depth presets use paired files from
-            <code>depth:prepare</code>.
+            Local files stay in this browser. Add a depth PNG from
+            <code>depth:prepare</code> for depth motion; source-only previews
+            use 2D fallback.
           </p>
         </aside>
 
@@ -112,7 +112,7 @@
               aria-label="Animated still preview"
             ></canvas>
             <div id="empty-preview" class="empty-preview">
-              Choose a corpus image or load a local source.
+              Choose a corpus image or load local source files.
             </div>
           </div>
           <div class="transport">

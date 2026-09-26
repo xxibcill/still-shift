@@ -9,11 +9,9 @@ import {
   CorpusManifestSchema,
   SceneManifestSchema,
 } from "@still-shift/scene-contract";
-
-import {
-  DEFAULT_EVALUATION_PRESETS,
-  parseEvaluationPresets,
-} from "./presets.ts";
+import { hashBatchArtifacts } from "../../tools/still-shift-cli/src/batch-identity.ts";
+import { evaluationClipId, parseEvaluationPresets } from "./presets.ts";
+import { RATING_FIELDS } from "./ratings.ts";
 
 const execFileAsync = promisify(execFile);
 const arg = (name: string): string => {
@@ -40,6 +38,11 @@ const relativeUrl = (from: string, to: string): string =>
     .split("/")
     .map((segment) => encodeURIComponent(segment))
     .join("/");
+const diagnostic = (
+  label: string,
+  value: number | string | undefined,
+): string =>
+  `<div><dt>${escapeHtml(label)}</dt><dd>${escapeHtml(typeof value === "number" ? value.toFixed(3) : (value ?? "Unavailable"))}</dd></div>`;
 
 const corpusPath = resolve(arg("--corpus"));
 const resultsPath = resolve(arg("--results"));
@@ -54,7 +57,6 @@ const outputDir = dirname(outputPath);
 const thumbnails = join(outputDir, "thumbnails");
 const corpusBytes = await readFile(corpusPath);
 const corpusSha256 = `sha256:${createHash("sha256").update(corpusBytes).digest("hex")}`;
-const ratingsStoreKey = `still-shift-ratings:${corpusSha256}${presets.join(",") === DEFAULT_EVALUATION_PRESETS.join(",") ? "" : `:${presets.join(",")}`}`;
 const corpus = CorpusManifestSchema.parse(
   JSON.parse(corpusBytes.toString("utf8")),
 );
@@ -63,8 +65,21 @@ const records = (await readFile(resultsPath, "utf8"))
   .split("\n")
   .map(
     (line) =>
-      JSON.parse(line) as { id: string; result?: unknown; error?: unknown },
-  );
+      JSON.parse(line) as {
+        id: string;
+        requestHash: string | null;
+        status: string;
+        result?: unknown;
+        error?: unknown;
+      },
+  )
+  .map((record) => ({
+    ...record,
+    result: record.result
+      ? AnimationResultSchema.parse(record.result)
+      : undefined,
+  }));
+const artifactSetSha256 = hashBatchArtifacts(records);
 const byId = new Map(records.map((record) => [record.id, record]));
 await mkdir(thumbnails, { recursive: true });
 
@@ -100,7 +115,7 @@ for (const entry of corpus.entries) {
   const variants: string[] = [];
   let depthThumbnail: string | null = null;
   for (const preset of presets) {
-    const id = `${entry.id}-${preset.replaceAll("_", "-")}`;
+    const id = evaluationClipId(entry.id, preset);
     const record = byId.get(id);
     if (!record?.result) {
       variants.push(
@@ -108,19 +123,34 @@ for (const entry of corpus.entries) {
       );
       continue;
     }
-    const result = AnimationResultSchema.parse(record.result);
+    const result = record.result;
     const posterPath = join(thumbnails, `${id}-poster.jpg`);
     await thumbnail(result.outputPath, posterPath, result.durationMs / 2000);
     const scene = SceneManifestSchema.parse(
       JSON.parse(await readFile(result.sceneManifestPath, "utf8")),
     );
-    if (!depthThumbnail && scene.depth?.asset) {
+    if (!depthThumbnail && result.assetPaths?.depth) {
       depthThumbnail = join(thumbnails, `${entry.id}-depth.jpg`);
-      await thumbnail(scene.depth.asset, depthThumbnail);
+      await thumbnail(result.assetPaths.depth, depthThumbnail);
     }
     const intentionalFlat = scene.depth === null && !scene.quality.fallback;
     clipCount += 1;
     const metrics = result.metrics;
+    const resolved = scene.renderScene;
+    const resolvedMotion = resolved?.motion;
+    const riskSignals = resolved?.quality?.signals ?? {};
+    const sceneDiagnostics = [
+      diagnostic("Intensity", scene.motion.intensity),
+      diagnostic("Travel", resolvedMotion?.travel),
+      diagnostic("Depth strength", resolvedMotion?.depthStrength),
+      diagnostic("Lateral travel", resolvedMotion?.lateralTravel),
+      diagnostic("Roll degrees", resolvedMotion?.rollDegrees),
+      diagnostic("Overscan", resolvedMotion?.overscan),
+      diagnostic("Safe crop", scene.motion.safeCrop),
+      ...Object.entries(riskSignals).map(([signal, value]) =>
+        diagnostic(signal.replace(/([A-Z])/g, " $1"), value),
+      ),
+    ];
     const warnings =
       result.warnings.map((warning) => warning.code).join(", ") || "None";
     variants.push(`<section class="variant">
@@ -136,6 +166,7 @@ for (const entry of corpus.entries) {
         <div><dt>Cache</dt><dd>${escapeHtml(metrics.cacheStatus)}</dd></div>
         <div><dt>Warnings</dt><dd>${escapeHtml(warnings)}</dd></div>
       </dl>
+      <details><summary>Resolved parameters and risk signals</summary><dl>${sceneDiagnostics.join("")}</dl></details>
       <div class="ratings" data-clip="${escapeHtml(id)}"></div>
     </section>`);
   }
@@ -164,14 +195,14 @@ const html = `<!doctype html>
 :root{font-family:system-ui,sans-serif;color:#e8e9ec;background:#11151c}*{box-sizing:border-box}body{margin:0}main{max-width:1600px;margin:auto;padding:28px}h1{margin:0 0 8px}p{line-height:1.45;color:#aeb9c9}.notice{padding:12px 16px;border:1px solid #866d2b;background:#302716;color:#f2d88e;border-radius:8px}.toolbar{display:flex;gap:12px;align-items:center;margin:20px 0;flex-wrap:wrap}button,input,select{font:inherit}button{background:#73b9c9;border:0;border-radius:7px;padding:10px 14px;cursor:pointer}input,select{background:#202935;color:#f4f6f8;border:1px solid #536273;border-radius:5px;padding:6px}label{font-size:13px;color:#c7d1dc}.entry{border-top:1px solid #3c4652;padding:22px 0}.entry header{display:flex;gap:20px;align-items:baseline;flex-wrap:wrap}.entry h3{margin:0}.entry header p{margin:0}.references{display:flex;gap:12px;margin:12px 0}.references figure{margin:0;width:180px}.references img,.no-depth{display:block;width:100%;height:105px;object-fit:contain;background:#070a0f;border-radius:5px}.no-depth{padding:30px 8px;color:#8793a1;text-align:center}figcaption{font-size:12px;color:#aeb9c9;margin-top:4px}.variants{display:grid;grid-template-columns:repeat(${Math.min(presets.length, 3)},minmax(0,1fr));gap:16px}.variant{background:#1c2430;border:1px solid #344153;border-radius:10px;padding:14px;min-width:0}.variant h4{margin:0 0 10px;display:flex;justify-content:space-between;gap:8px}.status{font-size:12px;color:#98b3c4;font-weight:normal}.variant video{width:100%;aspect-ratio:16/9;background:#05080c;border-radius:4px}.variant dl{display:grid;grid-template-columns:1fr 1fr;gap:5px 12px;font-size:12px;margin:12px 0}.variant dl div{display:flex;justify-content:space-between;gap:7px}.variant dt{color:#9caabd}.variant dd{margin:0;text-align:right;overflow-wrap:anywhere}.ratings{display:grid;grid-template-columns:1fr 1fr;gap:7px}.ratings label{display:flex;flex-direction:column;gap:3px}.failed{color:#ff8d8d}@media(max-width:950px){.variants{grid-template-columns:1fr}.references figure{width:45%}}
 </style></head><body><main><h1>Still Shift evaluation</h1><p>${escapeHtml(corpus.corpusId)} · ${corpus.entries.length} sources · ${clipCount} clips · corpus status: ${escapeHtml(corpus.status)}</p>${corpus.status !== "frozen" ? `<p class="notice">Candidate review only. This corpus is not frozen and ratings do not establish a Phase 0 pass.</p>` : ""}<div class="toolbar"><label>Reviewer <input id="reviewer" placeholder="Name or initials"></label><button id="export">Download ratings JSON</button><span id="saved"></span></div>${rows.join("\n")}</main>
 <script>
-const fields=[['edgeArtifacts','Edge artifacts'],['subjectDeformation','Subject deformation'],['exposedBorders','Exposed borders'],['depthOrder','Depth order'],['motionFit','Motion fit'],['editorialUsability','Editorial usability'],['manualRepair','Manual repair needed']];
-const storeKey=${JSON.stringify(ratingsStoreKey)};
+const fields=${JSON.stringify(RATING_FIELDS)};
+const storeKey='still-shift-ratings:${corpusSha256}:${artifactSetSha256}';
 let ratings=JSON.parse(localStorage.getItem(storeKey)||'{}');
 document.querySelector('#reviewer').value=ratings.reviewer||'';
 document.querySelector('#reviewer').addEventListener('input',e=>{ratings.reviewer=e.target.value;save()});
 function save(){localStorage.setItem(storeKey,JSON.stringify(ratings));document.querySelector('#saved').textContent='Saved locally'}
-for(const container of document.querySelectorAll('.ratings')){const id=container.dataset.clip;ratings.clips ||= {};for(const [field,label] of fields){const node=document.createElement('label');node.textContent=label;const select=document.createElement('select');const choices=field==='manualRepair'?[['','Unrated'],['0','No'],['1','Yes']]:field==='motionFit'||field==='editorialUsability'?[['','Unrated'],['0','Poor'],['1','Needs work'],['2','Usable']]:[['','Unrated'],['0','None'],['1','Minor'],['2','Severe']];for(const [value,text] of choices){const option=document.createElement('option');option.value=value;option.textContent=text;select.append(option)}select.value=String(ratings.clips[id]?.[field]??'');select.addEventListener('change',()=>{ratings.clips[id] ||= {};ratings.clips[id][field]=select.value===''?null:Number(select.value);save()});node.append(select);container.append(node)}}
-document.querySelector('#export').addEventListener('click',()=>{const value={schemaVersion:'0.1',corpusId:${JSON.stringify(corpus.corpusId)},corpusSha256:${JSON.stringify(corpusSha256)},corpusStatus:${JSON.stringify(corpus.status)},reviewer:ratings.reviewer||'',exportedAt:new Date().toISOString(),clips:ratings.clips||{}};const blob=new Blob([JSON.stringify(value,null,2)+'\\n'],{type:'application/json'});const link=document.createElement('a');link.href=URL.createObjectURL(blob);link.download='still-shift-ratings.json';link.click();setTimeout(()=>URL.revokeObjectURL(link.href),1000)});
+for(const container of document.querySelectorAll('.ratings')){const id=container.dataset.clip;ratings.clips ||= {};for(const {key,label,choices} of fields){const node=document.createElement('label');node.textContent=label;const select=document.createElement('select');for(const [value,text] of choices){const option=document.createElement('option');option.value=value;option.textContent=text;select.append(option)}select.value=String(ratings.clips[id]?.[key]??'');select.addEventListener('change',()=>{ratings.clips[id] ||= {};ratings.clips[id][key]=select.value===''?null:Number(select.value);save()});node.append(select);container.append(node)}}
+document.querySelector('#export').addEventListener('click',()=>{const value={schemaVersion:'0.2',corpusId:${JSON.stringify(corpus.corpusId)},corpusSha256:${JSON.stringify(corpusSha256)},artifactSetSha256:${JSON.stringify(artifactSetSha256)},corpusStatus:${JSON.stringify(corpus.status)},reviewer:ratings.reviewer||'',exportedAt:new Date().toISOString(),clips:ratings.clips||{}};const blob=new Blob([JSON.stringify(value,null,2)+'\\n'],{type:'application/json'});const link=document.createElement('a');link.href=URL.createObjectURL(blob);link.download='still-shift-ratings.json';link.click();setTimeout(()=>URL.revokeObjectURL(link.href),1000)});
 </script></body></html>`;
 await writeFile(outputPath, html);
 process.stdout.write(

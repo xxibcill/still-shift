@@ -8,8 +8,7 @@ import {
   findCorpusFreezeBlockers,
 } from "@still-shift/scene-contract";
 import { imageSize } from "image-size";
-
-import { parseEvaluationPresets } from "./presets.ts";
+import { evaluationClipId, parseEvaluationPresets } from "./presets.ts";
 
 const arg = (name: string): string => {
   const index = process.argv.indexOf(name);
@@ -60,7 +59,7 @@ for (const entry of corpus.entries) {
     throw new Error(`Source dimensions mismatch: ${entry.id}`);
   for (const preset of presets)
     items.push({
-      id: `${entry.id}-${preset.replaceAll("_", "-")}`,
+      id: evaluationClipId(entry.id, preset),
       inputPath: path,
       durationMs: entry.expectedShotDurationMs,
       preset,

@@ -1,7 +1,7 @@
 import { execFile, spawn } from "node:child_process";
-import { createHash, randomUUID } from "node:crypto";
-import { link, readFile, rm, stat, writeFile } from "node:fs/promises";
-import { resolve } from "node:path";
+import { createHash } from "node:crypto";
+import { readFile, rm, stat } from "node:fs/promises";
+import { isAbsolute, resolve } from "node:path";
 import { performance } from "node:perf_hooks";
 import { promisify } from "node:util";
 
@@ -13,11 +13,13 @@ import {
   resolvePreviewScene,
   type PreviewPreset,
   type PreviewScene,
+  type PreviewWarning,
 } from "../../renderer-core/src/index.ts";
 import {
   AnimationEngineError,
   ANIMATION_API_VERSION,
   AnimationResultSchema,
+  DepthModelSchema,
   ENGINE_VERSION,
   parseAnimationRequest,
   SCENE_SCHEMA_VERSION,
@@ -25,6 +27,7 @@ import {
   type AnimationRequest,
   type AnimationResult,
   type AnimationWarning,
+  type DepthModel,
 } from "../../scene-contract/src/index.ts";
 import { exportScene } from "../../../tools/export-worker/src/export-worker.ts";
 
@@ -34,18 +37,21 @@ const execFileAsync = promisify(execFile);
 const projectRoot = resolve(import.meta.dirname, "../../..");
 const PIPELINE_VERSION = "animation-pipeline-0.11.0";
 export const resolveFrameTransport = (): "png_pipe" | "jpeg_pipe" => {
-  const value = process.env.STILL_SHIFT_FRAME_TRANSPORT ?? "jpeg_pipe";
+  const value = process.env.STILL_SHIFT_FRAME_TRANSPORT ?? "png_pipe";
   if (value !== "png_pipe" && value !== "jpeg_pipe")
     throw new AnimationEngineError("SCENE_INVALID", "Unknown frame transport", {
       value,
     });
   return value;
 };
+const resolveDepthAdapter = (): string =>
+  process.env.STILL_SHIFT_DEPTH_ADAPTER ?? "depth-anything-v2-small";
 
 type Dimensions = { width: number; height: number };
 type WorkerMetrics = {
   inferenceMs?: number;
   postProcessMs?: number;
+  totalPreparationMs?: number;
   peakCpuMemoryBytes?: number | null;
   peakGpuMemoryBytes?: number | null;
   selectedDevice?: string;
@@ -56,13 +62,16 @@ type PreparedDepth = {
   assets: { normalizedSource: string; previewDepth: string };
   dimensions: { input: Dimensions; normalized: Dimensions };
   cacheStatus: "hit" | "miss";
+  model: DepthModel;
   metrics: WorkerMetrics;
+  normalizationWarnings: string[];
 };
 type NormalizedSource = {
   status: "normalized";
   sourcePath: string;
   dimensions: { input: Dimensions; normalized: Dimensions };
   cacheStatus: "hit" | "miss";
+  normalizationWarnings: string[];
 };
 type WorkerFailure = {
   status: "failed";
@@ -73,6 +82,13 @@ const sha256 = (bytes: string | Uint8Array): string =>
   `sha256:${createHash("sha256").update(bytes).digest("hex")}`;
 
 const workerJson = async (args: string[]): Promise<unknown> => {
+  const configuredCache = process.env.STILL_SHIFT_CACHE_DIR;
+  const workerEnvironment =
+    configuredCache &&
+    !isAbsolute(configuredCache) &&
+    !configuredCache.startsWith("~")
+      ? { ...process.env, STILL_SHIFT_CACHE_DIR: resolve(configuredCache) }
+      : process.env;
   let stdout: string;
   try {
     ({ stdout } = await execFileAsync(
@@ -80,6 +96,7 @@ const workerJson = async (args: string[]): Promise<unknown> => {
       ["run", "still-shift-depth", ...args],
       {
         cwd: projectRoot,
+        env: workerEnvironment,
         maxBuffer: 8 * 1024 * 1024,
       },
     ));
@@ -119,6 +136,10 @@ const isDimensions = (value: unknown): value is Dimensions =>
   (value as Dimensions).width > 0 &&
   (value as Dimensions).height > 0;
 
+const isWarningList = (value: unknown): value is string[] =>
+  Array.isArray(value) &&
+  value.every((warning) => typeof warning === "string" && warning.length > 0);
+
 const isPrepared = (value: unknown): value is PreparedDepth => {
   const result = value as Partial<PreparedDepth> | null;
   return (
@@ -128,8 +149,10 @@ const isPrepared = (value: unknown): value is PreparedDepth => {
     isDimensions(result.dimensions?.input) &&
     isDimensions(result.dimensions?.normalized) &&
     (result.cacheStatus === "hit" || result.cacheStatus === "miss") &&
+    DepthModelSchema.safeParse(result.model).success &&
     typeof result.metrics === "object" &&
-    result.metrics !== null
+    result.metrics !== null &&
+    isWarningList(result.normalizationWarnings)
   );
 };
 
@@ -140,7 +163,8 @@ const isNormalized = (value: unknown): value is NormalizedSource => {
     typeof result.sourcePath === "string" &&
     isDimensions(result.dimensions?.input) &&
     isDimensions(result.dimensions?.normalized) &&
-    (result.cacheStatus === "hit" || result.cacheStatus === "miss")
+    (result.cacheStatus === "hit" || result.cacheStatus === "miss") &&
+    isWarningList(result.normalizationWarnings)
   );
 };
 
@@ -180,18 +204,20 @@ const normalizeOrFail = async (
 
 const prepareAssets = async (
   inputPath: string,
+  adapter: string,
+  requestedDepthDevice: string,
 ): Promise<{
   sourcePath: string;
   depthPath: string | null;
   dimensions: { input: Dimensions; normalized: Dimensions };
   cacheStatus: "hit" | "miss";
+  model: DepthModel | null;
   workerMetrics: WorkerMetrics;
+  normalizationWarnings: string[];
 }> => {
-  const adapter =
-    process.env.STILL_SHIFT_DEPTH_ADAPTER ?? "depth-anything-v2-small";
   const args = ["prepare", "--input", inputPath, "--adapter", adapter];
-  if (process.env.STILL_SHIFT_DEPTH_DEVICE)
-    args.push("--device", process.env.STILL_SHIFT_DEPTH_DEVICE);
+  if (requestedDepthDevice !== "auto")
+    args.push("--device", requestedDepthDevice);
   const prepared = await workerJson(args);
   if (isPrepared(prepared)) {
     return {
@@ -199,7 +225,9 @@ const prepareAssets = async (
       depthPath: prepared.assets.previewDepth,
       dimensions: prepared.dimensions,
       cacheStatus: prepared.cacheStatus,
+      model: prepared.model,
       workerMetrics: prepared.metrics,
+      normalizationWarnings: prepared.normalizationWarnings,
     };
   }
   if (isFailure(prepared) && invalidInputCode(prepared.error.code)) {
@@ -215,7 +243,9 @@ const prepareAssets = async (
     depthPath: null,
     dimensions: normalized.dimensions,
     cacheStatus: normalized.cacheStatus,
+    model: null,
     workerMetrics: {},
+    normalizationWarnings: normalized.normalizationWarnings,
   };
 };
 
@@ -228,9 +258,19 @@ const normalizeFlatAssets = async (
     depthPath: null,
     dimensions: normalized.dimensions,
     cacheStatus: normalized.cacheStatus,
+    model: null,
     workerMetrics: {},
+    normalizationWarnings: normalized.normalizationWarnings,
   };
 };
+const normalizationWarning = (workerCode: string): PreviewWarning => ({
+  code: "SOURCE_NORMALIZATION_WARNING",
+  message:
+    workerCode === "INVALID_ICC_PROFILE_TREATED_AS_SRGB"
+      ? "Invalid embedded color profile was treated as sRGB"
+      : "Source normalization reported a warning",
+  context: { workerCode },
+});
 
 const decodeRgba = async (
   path: string,
@@ -318,17 +358,39 @@ const fileExists = async (path: string): Promise<boolean> => {
 };
 
 export class WebGLAnimationEngine implements AnimationEngine {
+  private readonly frameTransport = resolveFrameTransport();
+  private readonly depthAdapter = resolveDepthAdapter();
+  private readonly requestedDepthDevice =
+    process.env.STILL_SHIFT_DEPTH_DEVICE ?? "auto";
+
+  requestIdentity(request: AnimationRequest): string {
+    return sha256(
+      JSON.stringify({
+        engineVersion: ENGINE_VERSION,
+        ...(this.frameTransport === "png_pipe"
+          ? {}
+          : { frameTransport: this.frameTransport }),
+        depthAdapter: this.depthAdapter,
+        ...(this.requestedDepthDevice === "auto"
+          ? {}
+          : { requestedDepthDevice: this.requestedDepthDevice }),
+        request,
+      }),
+    );
+  }
+
   async animate(
     unvalidatedRequest: AnimationRequest,
   ): Promise<AnimationResult> {
     const started = performance.now();
     const request = parseAnimationRequest(unvalidatedRequest);
-    const frameTransport = resolveFrameTransport();
+    const frameTransport = this.frameTransport;
     if (!request.outputPath.toLowerCase().endsWith(".mp4"))
       throw new AnimationEngineError(
         "SCENE_INVALID",
         "Animation output path must end in .mp4",
       );
+    const inputPath = resolve(request.inputPath);
     const outputPath = resolve(request.outputPath);
     const sceneManifestPath = `${outputPath}.scene.json`;
     if ((await fileExists(outputPath)) || (await fileExists(sceneManifestPath)))
@@ -339,7 +401,7 @@ export class WebGLAnimationEngine implements AnimationEngine {
       );
     let originalSource: Uint8Array;
     try {
-      originalSource = await readFile(request.inputPath);
+      originalSource = await readFile(inputPath);
     } catch (cause) {
       throw new AnimationEngineError(
         "INPUT_UNREADABLE",
@@ -352,8 +414,12 @@ export class WebGLAnimationEngine implements AnimationEngine {
     const intentionalFlat =
       request.preset !== "auto" && isFlatPreset(request.preset);
     const prepared = intentionalFlat
-      ? await normalizeFlatAssets(request.inputPath)
-      : await prepareAssets(request.inputPath);
+      ? await normalizeFlatAssets(inputPath)
+      : await prepareAssets(
+          inputPath,
+          this.depthAdapter,
+          this.requestedDepthDevice,
+        );
     const normalizedSourceHash = sha256(await readFile(prepared.sourcePath));
     const depthHash = prepared.depthPath
       ? sha256(await readFile(prepared.depthPath))
@@ -389,23 +455,30 @@ export class WebGLAnimationEngine implements AnimationEngine {
           ),
         );
       } catch {
-        scene = fallback2DScene(initialScene, "DEPTH_PREPARATION_FAILED");
+        scene = fallback2DScene(initialScene, "DEPTH_SAFETY_ANALYSIS_FAILED");
       }
     }
+    scene = {
+      ...scene,
+      warnings: [
+        ...scene.warnings,
+        ...prepared.normalizationWarnings.map(normalizationWarning),
+      ],
+    };
     const sceneBuildMs = performance.now() - sceneStarted;
     const warnings: AnimationWarning[] = scene.warnings;
     const manifest = SceneManifestSchema.parse({
       schemaVersion: SCENE_SCHEMA_VERSION,
-      sourceHash,
+      sourceHash: normalizedSourceHash,
       normalizedSourceHash,
-      sourceAssetPath: prepared.sourcePath,
       pipelineVersion: PIPELINE_VERSION,
+      model: prepared.model,
       rendererVersion: scene.rendererVersion,
       timeline: scene.timeline,
       canvas: scene.canvas,
-      depth: prepared.depthPath
+      depth: depthHash
         ? {
-            asset: prepared.depthPath,
+            asset: depthHash,
             strength: scene.motion.depthStrength,
             near: 0,
             far: 1,
@@ -436,6 +509,7 @@ export class WebGLAnimationEngine implements AnimationEngine {
         depthPath: scene.motion.mode === "depth" ? prepared.depthPath : null,
         outputPath,
         transport: frameTransport,
+        sceneManifestContents: serializedScene,
       });
     } catch (cause) {
       throw new AnimationEngineError(
@@ -445,9 +519,16 @@ export class WebGLAnimationEngine implements AnimationEngine {
         { cause },
       );
     }
-    const temporaryScenePath = `${sceneManifestPath}.${randomUUID()}.tmp`;
     try {
-      const outputHash = sha256(await readFile(outputPath));
+      if (
+        exported.sceneManifestPath !== sceneManifestPath ||
+        exported.sceneChecksum !== sceneHash ||
+        exported.sourceChecksum !== normalizedSourceHash ||
+        exported.depthChecksum !==
+          (scene.motion.mode === "fallback_2d" ? null : (depthHash ?? null))
+      ) {
+        throw new Error("Export assets changed after scene resolution");
+      }
       const result = AnimationResultSchema.parse({
         apiVersion: ANIMATION_API_VERSION,
         status:
@@ -458,6 +539,10 @@ export class WebGLAnimationEngine implements AnimationEngine {
               : "rendered",
         outputPath,
         sceneManifestPath,
+        assetPaths: {
+          normalizedSource: prepared.sourcePath,
+          depth: prepared.depthPath,
+        },
         frameCount: scene.timeline.frameCount,
         durationMs: scene.timeline.durationMs,
         selectedPreset: scene.motion.preset,
@@ -478,13 +563,17 @@ export class WebGLAnimationEngine implements AnimationEngine {
             prepared.cacheStatus === "hit"
               ? 0
               : (prepared.workerMetrics.postProcessMs ?? 0),
+          archivedPreparationMs: prepared.depthPath
+            ? (prepared.workerMetrics.totalPreparationMs ?? null)
+            : null,
           sceneBuildMs,
           frameRenderAverageMs: exported.frameRenderAverageMs,
           frameRenderP95Ms: exported.frameRenderP95Ms,
-          encodeMs: exported.encodeMs,
+          encodeMs: exported.encodePathWallMs,
           totalWallMs: performance.now() - started,
           peakCpuMemoryBytes: Math.max(
-            exported.peakCpuMemoryBytes,
+            exported.peakSampledProcessTreeRssBytes ??
+              exported.peakParentRssBytes,
             prepared.workerMetrics.peakCpuMemoryBytes ?? 0,
           ),
           peakGpuMemoryBytes: prepared.workerMetrics.peakGpuMemoryBytes ?? null,
@@ -494,6 +583,7 @@ export class WebGLAnimationEngine implements AnimationEngine {
           versions: {
             engine: ENGINE_VERSION,
             pipeline: PIPELINE_VERSION,
+            model: prepared.model,
             renderer: scene.rendererVersion,
             browser: exported.browserVersion,
             ffmpeg: exported.ffmpegVersion,
@@ -503,22 +593,21 @@ export class WebGLAnimationEngine implements AnimationEngine {
           source: sourceHash,
           ...(depthHash ? { depth: depthHash } : {}),
           scene: sceneHash,
-          output: outputHash,
+          output: exported.outputChecksum,
         },
       });
-      await writeFile(temporaryScenePath, serializedScene, { flag: "wx" });
-      await link(temporaryScenePath, sceneManifestPath);
       return result;
     } catch (cause) {
-      await rm(outputPath, { force: true });
+      await Promise.allSettled([
+        rm(outputPath, { force: true }),
+        rm(sceneManifestPath, { force: true }),
+      ]);
       throw new AnimationEngineError(
         "RENDER_FAILED",
-        "Unable to publish animation result and scene manifest",
+        "Unable to validate animation result and scene manifest",
         { outputPath },
         { cause },
       );
-    } finally {
-      await rm(temporaryScenePath, { force: true });
     }
   }
 }

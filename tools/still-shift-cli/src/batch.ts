@@ -1,23 +1,26 @@
 import { createHash, randomUUID } from "node:crypto";
-import { readFile, mkdir, open, rename, rm, writeFile } from "node:fs/promises";
+import { readFile, mkdir, rename, rm, writeFile } from "node:fs/promises";
 import { dirname, join, resolve } from "node:path";
 import { performance } from "node:perf_hooks";
 
 import {
-  resolveFrameTransport,
   WebGLAnimationEngine,
+  type AnimationEngine,
 } from "@still-shift/animation-engine";
 import {
   AnimationEngineError,
   AnimationResultSchema,
   ENGINE_VERSION,
   parseAnimationRequest,
+  SceneManifestSchema,
   V0_1_REQUEST_CONSTRAINTS,
   V0_1_REQUEST_DEFAULTS,
   type AnimationFailure,
   type AnimationRequest,
   type AnimationResult,
 } from "@still-shift/scene-contract";
+import { hashBatchArtifacts } from "./batch-identity.ts";
+import { acquireBatchLock, prepareBatchItem } from "./batch-recovery.ts";
 
 type BatchItem = {
   id: string;
@@ -168,18 +171,33 @@ const checkpointResult = async (
     );
   }
   let hashesMatch = false;
+  let assetsMatch = false;
   try {
     hashesMatch =
       result.checksums.source === (await fileHash(request.inputPath)) &&
       result.checksums.scene === (await fileHash(result.sceneManifestPath)) &&
       result.checksums.output === (await fileHash(result.outputPath));
+    if (hashesMatch) {
+      const scene = SceneManifestSchema.parse(
+        JSON.parse(await readFile(result.sceneManifestPath, "utf8")),
+      );
+      assetsMatch = result.assetPaths
+        ? scene.sourceHash ===
+            (await fileHash(result.assetPaths.normalizedSource)) &&
+          (result.assetPaths.depth === null
+            ? result.checksums.depth === undefined
+            : result.checksums.depth ===
+              (await fileHash(result.assetPaths.depth)))
+        : true;
+    }
   } catch {
     hashesMatch = false;
   }
   if (
     result.outputPath !== request.outputPath ||
     result.sceneManifestPath !== `${request.outputPath}.scene.json` ||
-    !hashesMatch
+    !hashesMatch ||
+    !assetsMatch
   )
     throw new AnimationEngineError(
       "OUTPUT_VALIDATION_FAILED",
@@ -219,29 +237,29 @@ const runItem = async (
   line: number,
   manifestPath: string,
   outputDir: string,
+  engine: AnimationEngine,
 ): Promise<BatchRecord> => {
   let requestHash: string | null = null;
   try {
     const request = requestForItem(item, manifestPath, outputDir);
-    const frameTransport = resolveFrameTransport();
-    requestHash = sha256(
-      JSON.stringify({
-        engineVersion: ENGINE_VERSION,
-        ...(frameTransport === "png_pipe" ? {} : { frameTransport }),
-        request,
-      }),
-    );
+    requestHash = engine.requestIdentity(request);
     const checkpointPath = join(
       outputDir,
       ".batch-checkpoints",
       `${item.id}.json`,
+    );
+    const progressPath = join(
+      outputDir,
+      ".batch-checkpoints",
+      `${item.id}.in-progress.json`,
     );
     const previous = await checkpointResult(
       checkpointPath,
       requestHash,
       request,
     );
-    if (previous)
+    if (previous) {
+      await rm(progressPath, { force: true });
       return {
         line,
         id: item.id,
@@ -251,11 +269,43 @@ const runItem = async (
         status: previous.status,
         result: previous,
       };
-    const result = await new WebGLAnimationEngine().animate(request);
+    }
+    let sourceHash: string;
+    try {
+      sourceHash = await fileHash(request.inputPath);
+    } catch {
+      throw new AnimationEngineError(
+        "INPUT_UNREADABLE",
+        "Unable to read animation input",
+        {
+          inputPath: request.inputPath,
+        },
+      );
+    }
+    await prepareBatchItem(progressPath, {
+      requestHash,
+      sourceHash,
+      outputPath: request.outputPath,
+      sceneManifestPath: `${request.outputPath}.scene.json`,
+    });
+    let result: AnimationResult;
+    try {
+      result = await engine.animate(request);
+    } catch (error) {
+      // The item was handled as a failure, so its marker no longer represents
+      // an interrupted render. The paths were reserved by prepareBatchItem.
+      await Promise.all([
+        rm(request.outputPath, { force: true }),
+        rm(`${request.outputPath}.scene.json`, { force: true }),
+        rm(progressPath, { force: true }),
+      ]);
+      throw error;
+    }
     await atomicJson(checkpointPath, {
       requestHash,
       result,
     } satisfies Checkpoint);
+    await rm(progressPath, { force: true });
     return {
       line,
       id: item.id,
@@ -275,6 +325,7 @@ export const runBatch = async (options: {
   outputDir: string;
   concurrency: number;
 }): Promise<{ summary: Record<string, unknown>; exitCode: number }> => {
+  const engine: AnimationEngine = new WebGLAnimationEngine();
   if (
     !Number.isInteger(options.concurrency) ||
     options.concurrency < 1 ||
@@ -302,7 +353,8 @@ export const runBatch = async (options: {
   const jobs: Array<{ position: number; lineNumber: number; item: BatchItem }> =
     [];
   const records: Array<BatchRecord | undefined> = [];
-  const ids = new Set<string>();
+  const outputIds = new Set<string>();
+  let invalidConfiguration = false;
   for (const [index, line] of lines.entries()) {
     if (!line.trim()) continue;
     const lineNumber = index + 1;
@@ -310,18 +362,21 @@ export const runBatch = async (options: {
     records.push(undefined);
     try {
       const item = parseItem(line, lineNumber);
-      if (ids.has(item.id))
+      requestForItem(item, manifestPath, outputDir);
+      const outputId = item.id.toLowerCase();
+      if (outputIds.has(outputId))
         throw new AnimationEngineError(
           "SCENE_INVALID",
-          "Duplicate batch item id",
+          "Duplicate batch item id (case-insensitive)",
           {
             id: item.id,
             line: lineNumber,
           },
         );
-      ids.add(item.id);
+      outputIds.add(outputId);
       jobs.push({ position, lineNumber, item });
     } catch (error) {
+      invalidConfiguration = true;
       records[position] = failureRecord(
         lineNumber,
         `line-${lineNumber}`,
@@ -338,19 +393,7 @@ export const runBatch = async (options: {
     );
   await mkdir(join(outputDir, ".batch-checkpoints"), { recursive: true });
   const lockPath = join(outputDir, ".batch.lock");
-  let lock;
-  try {
-    lock = await open(lockPath, "wx");
-  } catch (error) {
-    if ((error as NodeJS.ErrnoException).code !== "EEXIST") throw error;
-    throw new AnimationEngineError(
-      "RENDER_FAILED",
-      "Batch output directory is already in use",
-      {
-        outputDir,
-      },
-    );
-  }
+  const releaseLock = await acquireBatchLock(lockPath, outputDir);
   const started = performance.now();
   try {
     let cursor = 0;
@@ -362,6 +405,7 @@ export const runBatch = async (options: {
           lineNumber,
           manifestPath,
           outputDir,
+          engine,
         );
       }
     };
@@ -378,6 +422,8 @@ export const runBatch = async (options: {
     const failed = completed.length - successful;
     const summary = {
       manifestPath,
+      manifestSha256: sha256(contents),
+      artifactSetSha256: hashBatchArtifacts(completed),
       outputDir,
       resultsPath: join(outputDir, "batch-results.jsonl"),
       itemCount: completed.length,
@@ -418,9 +464,8 @@ export const runBatch = async (options: {
     } finally {
       await rm(historyTemporary, { force: true });
     }
-    return { summary, exitCode: failed ? 1 : 0 };
+    return { summary, exitCode: invalidConfiguration ? 2 : 0 };
   } finally {
-    await lock.close();
-    await rm(lockPath, { force: true });
+    await releaseLock();
   }
 };

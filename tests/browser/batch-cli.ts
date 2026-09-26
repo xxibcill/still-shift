@@ -14,7 +14,11 @@ const manifestPath = join(directory, "batch.jsonl");
 const outputDir = join(directory, "outputs");
 const cliPath = resolve("node_modules/.bin/tsx");
 
-const runBatch = async () => {
+const runBatch = async (
+  batchManifestPath = manifestPath,
+  batchOutputDir = outputDir,
+  depthAdapter = "fake",
+) => {
   try {
     const { stdout } = await execFileAsync(
       cliPath,
@@ -22,9 +26,9 @@ const runBatch = async () => {
         "tools/still-shift-cli/src/cli.ts",
         "batch",
         "--manifest",
-        manifestPath,
+        batchManifestPath,
         "--output-dir",
-        outputDir,
+        batchOutputDir,
         "--concurrency",
         "2",
       ],
@@ -32,7 +36,7 @@ const runBatch = async () => {
         cwd: resolve("."),
         env: {
           ...process.env,
-          STILL_SHIFT_DEPTH_ADAPTER: "fake",
+          STILL_SHIFT_DEPTH_ADAPTER: depthAdapter,
           STILL_SHIFT_CACHE_DIR: join(directory, "cache"),
         },
         maxBuffer: 4 * 1024 * 1024,
@@ -80,10 +84,11 @@ try {
       .join("\n") + "\n",
   );
   const first = await runBatch();
-  assert.equal(first.exitCode, 1);
+  assert.equal(first.exitCode, 0);
   assert.equal(first.summary.itemCount, 3);
   assert.equal(first.summary.successful, 2);
   assert.equal(first.summary.failed, 1);
+  assert.match(first.summary.manifestSha256, /^sha256:[a-f0-9]{64}$/);
   const records = (
     await readFile(join(outputDir, "batch-results.jsonl"), "utf8")
   )
@@ -100,9 +105,18 @@ try {
   assert.equal(firstResult.frameCount, 90);
   assert.equal(secondResult.frameCount, 90);
   assert.notEqual(firstResult.selectedPreset, secondResult.selectedPreset);
+  await writeFile(
+    join(outputDir, ".batch.lock"),
+    JSON.stringify({ pid: 2147483647, token: "interrupted-run" }),
+  );
   const retry = await runBatch();
-  assert.equal(retry.exitCode, 1);
+  assert.equal(retry.exitCode, 0);
   assert.equal(retry.summary.reused, 2);
+  assert.equal(retry.summary.manifestSha256, first.summary.manifestSha256);
+  assert.equal(
+    retry.summary.artifactSetSha256,
+    first.summary.artifactSetSha256,
+  );
   const repeated = (
     await readFile(join(outputDir, "batch-results.jsonl"), "utf8")
   )
@@ -113,9 +127,30 @@ try {
   assert.deepEqual(repeated[2].result, records[2].result);
   assert.equal(repeated[0].reused, true);
   assert.equal(repeated[2].reused, true);
+  await rm(join(outputDir, ".batch-checkpoints", "second.json"));
+  await writeFile(
+    join(outputDir, ".batch-checkpoints", "second.in-progress.json"),
+    JSON.stringify({
+      requestHash: repeated[2].requestHash,
+      sourceHash: secondResult.checksums.source,
+      outputPath: secondResult.outputPath,
+      sceneManifestPath: secondResult.sceneManifestPath,
+    }),
+  );
+  const resumed = await runBatch();
+  assert.equal(resumed.exitCode, 0);
+  assert.equal(resumed.summary.reused, 1);
+  const resumedRecords = (
+    await readFile(join(outputDir, "batch-results.jsonl"), "utf8")
+  )
+    .trim()
+    .split("\n")
+    .map((line) => JSON.parse(line));
+  assert.equal(resumedRecords[2].status, secondResult.status);
+  assert.equal(resumedRecords[2].reused, false);
   await writeFile(firstResult.outputPath, "tampered output");
   const damaged = await runBatch();
-  assert.equal(damaged.exitCode, 1);
+  assert.equal(damaged.exitCode, 0);
   const damagedRecords = (
     await readFile(join(outputDir, "batch-results.jsonl"), "utf8")
   )
@@ -124,8 +159,53 @@ try {
     .map((line) => JSON.parse(line));
   assert.equal(damagedRecords[0].error.code, "OUTPUT_VALIDATION_FAILED");
   assert.equal(damagedRecords[2].reused, true);
+
+  const changedAdapter = await runBatch(
+    manifestPath,
+    outputDir,
+    "depth-anything-v2-small",
+  );
+  assert.equal(changedAdapter.summary.reused, 0);
+  const changedAdapterRecords = (
+    await readFile(join(outputDir, "batch-results.jsonl"), "utf8")
+  )
+    .trim()
+    .split("\n")
+    .map((line) => JSON.parse(line));
+  assert.equal(changedAdapterRecords[0].error.code, "SCENE_INVALID");
+  assert.equal(changedAdapterRecords[2].error.code, "SCENE_INVALID");
+
+  const repairSourcePath = join(directory, "repair.png");
+  const repairManifestPath = join(directory, "repair.jsonl");
+  const repairOutputDir = join(directory, "repair-outputs");
+  await writeFile(repairSourcePath, "invalid image bytes");
+  await writeFile(
+    repairManifestPath,
+    `${JSON.stringify({ id: "repair", inputPath: "repair.png", durationMs: 3000 })}\n`,
+  );
+  const failedItem = await runBatch(repairManifestPath, repairOutputDir);
+  assert.equal(failedItem.summary.failed, 1);
+  await writeFile(repairSourcePath, await readFile(sourcePath));
+  const repairedItem = await runBatch(repairManifestPath, repairOutputDir);
+  assert.equal(repairedItem.summary.successful, 1);
+  assert.equal(repairedItem.summary.failed, 0);
+  const repairedRecord = JSON.parse(
+    (
+      await readFile(join(repairOutputDir, "batch-results.jsonl"), "utf8")
+    ).trim(),
+  ) as { result: { assetPaths: { depth: string | null } } };
+  assert.ok(repairedRecord.result.assetPaths.depth);
+  await rm(repairedRecord.result.assetPaths.depth);
+  const missingCacheAsset = await runBatch(repairManifestPath, repairOutputDir);
+  assert.equal(missingCacheAsset.summary.successful, 0);
+  const missingCacheRecord = JSON.parse(
+    (
+      await readFile(join(repairOutputDir, "batch-results.jsonl"), "utf8")
+    ).trim(),
+  ) as { error: { code: string } };
+  assert.equal(missingCacheRecord.error.code, "OUTPUT_VALIDATION_FAILED");
   process.stdout.write(
-    "Batch CLI verified: bounded workers, failure isolation, deterministic retries, and artifact validation\n",
+    "Batch CLI verified: bounded workers, failure isolation, deterministic retries, artifact validation, and repaired-item recovery\n",
   );
 } finally {
   await rm(directory, { recursive: true, force: true });

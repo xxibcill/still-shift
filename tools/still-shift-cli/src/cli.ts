@@ -32,9 +32,9 @@ const DEFAULT_IO: CliIo = {
 const HELP = `Still Shift v${ENGINE_VERSION}
 
 Usage:
-  pnpm still-shift animate --input <path> --output <path> [options]
+  pnpm --silent still-shift animate --input <path> --output <path> [options]
   pnpm still-shift animate-scene --scene <prepared.json> --output <path>
-  pnpm still-shift batch --manifest <jsonl> --output-dir <path> [--concurrency 1|2]
+  pnpm --silent still-shift batch --manifest <jsonl> --output-dir <path> [--concurrency 1|2]
 
 The default adapter writes a validated 1080p H.264 MP4 and scene manifest.
 
@@ -48,7 +48,7 @@ Options:
   --help                 show this help
   --version              show the engine version
 
-Batch exits 0 when every item succeeds, 1 for partial failure, and 2 for invalid options.
+Batch exits 0 after processing every item, including recorded item failures, and 2 for invalid configuration.
 Completed items with matching request and artifact hashes are reused on retry.
 `;
 

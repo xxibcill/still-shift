@@ -119,9 +119,9 @@ export class PreparedAnimationEngine {
       depthPath: null,
       assetPaths: prepared.assetPaths,
       outputPath,
+      sceneManifestContents: manifestBytes,
       transport: "png_pipe",
     });
-    await writeFile(sceneManifestPath, manifestBytes, { flag: "wx" });
     const resultSchema = cinematic
       ? CinematicAnimationResultSchema
       : PreparedAnimationResultSchema;

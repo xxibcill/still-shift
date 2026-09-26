@@ -147,9 +147,7 @@ try {
   await page.locator("#local-depth").setInputFiles([]);
   await page.locator("#load-local").click();
   await page.waitForFunction(() =>
-    document
-      .querySelector<HTMLImageElement>("#depth-image")
-      ?.src.startsWith("data:image/png"),
+    document.querySelector("#status")?.textContent?.includes("ready"),
   );
   const flatParameters = JSON.parse(
     (await page.locator("#parameters").textContent()) ?? "{}",
@@ -206,6 +204,111 @@ try {
     holdFirst,
     holdLast,
     "A locked hold must not move the image",
+  );
+  await page.locator("#preset").selectOption("slow_push");
+  await page.locator("#local-depth").setInputFiles([]);
+  await page.locator("#load-local").click();
+  await page.waitForFunction(() =>
+    document.querySelector("#status")?.textContent?.includes("ready"),
+  );
+  const sourceOnlyParameters = JSON.parse(
+    (await page.locator("#parameters").textContent()) ?? "{}",
+  );
+  assert.equal(sourceOnlyParameters.motion.mode, "fallback_2d");
+  assert.equal(
+    sourceOnlyParameters.quality.fallbackReason,
+    "DEPTH_PREPARATION_FAILED",
+  );
+  assert.equal(await page.locator("#depth-image").isHidden(), true);
+
+  await page.locator("#local-depth").setInputFiles({
+    name: "invalid-depth.png",
+    mimeType: "image/png",
+    buffer: Buffer.from("not a PNG"),
+  });
+  await page.locator("#load-local").click();
+  await page.waitForFunction(() =>
+    document.querySelector("#status")?.textContent?.includes("ready"),
+  );
+  const invalidDepthParameters = JSON.parse(
+    (await page.locator("#parameters").textContent()) ?? "{}",
+  );
+  assert.equal(
+    invalidDepthParameters.quality.fallbackReason,
+    "DEPTH_PREPARATION_FAILED",
+  );
+
+  const rendererModuleUrl =
+    "/@fs" +
+    new URL("../../packages/renderer-core/src/index.ts", import.meta.url)
+      .pathname;
+  const edgeDampingChangedBytes = await page.evaluate(async (moduleUrl) => {
+    const { createWebGLPreview, resolvePreviewScene } = await import(moduleUrl);
+    const source = new Image();
+    source.src =
+      "data:image/svg+xml," +
+      encodeURIComponent(
+        '<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900"><defs><pattern id="stripes" width="4" height="4" patternUnits="userSpaceOnUse"><rect width="2" height="4" fill="black"/></pattern></defs><rect width="1600" height="900" fill="white"/><rect width="1600" height="900" fill="url(#stripes)"/></svg>',
+      );
+    const depth = new Image();
+    depth.src =
+      "data:image/svg+xml," +
+      encodeURIComponent(
+        '<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900"><rect width="1600" height="900" fill="black"/><rect x="405" width="1195" height="900" fill="white"/></svg>',
+      );
+    await Promise.all([source.decode(), depth.decode()]);
+
+    const rows: Uint8Array[] = [];
+    for (const preset of ["slow_push", "horizontal_drift"] as const) {
+      const edgeCanvas = document.createElement("canvas");
+      edgeCanvas.width = 1920;
+      edgeCanvas.height = 1080;
+      const edgeScene = resolvePreviewScene({
+        sourceWidth: 1600,
+        sourceHeight: 900,
+        depthWidth: 1600,
+        depthHeight: 900,
+        canvasWidth: 1920,
+        canvasHeight: 1080,
+        durationMs: 5000,
+        fps: 30,
+        preset,
+        intensity: "subtle",
+        requestedTravel: 0,
+        requestedDepthStrength: 0.03,
+        requestedLateralTravel: 0,
+      });
+      const edgePreview = createWebGLPreview(
+        edgeCanvas,
+        edgeScene,
+        source,
+        depth,
+      );
+      edgePreview.renderFrame(edgeScene.timeline.frameCount - 1);
+      const gl = edgeCanvas.getContext("webgl2");
+      if (!gl) throw new Error("WebGL2 is unavailable");
+      const pixels = new Uint8Array(edgeCanvas.width * 4);
+      gl.readPixels(
+        0,
+        edgeCanvas.height / 2,
+        edgeCanvas.width,
+        1,
+        gl.RGBA,
+        gl.UNSIGNED_BYTE,
+        pixels,
+      );
+      rows.push(pixels);
+      edgePreview.dispose();
+    }
+    let changedBytes = 0;
+    for (let index = 0; index < rows[0]!.length; index += 1) {
+      if (rows[0]![index] !== rows[1]![index]) changedBytes += 1;
+    }
+    return changedBytes;
+  }, rendererModuleUrl);
+  assert.ok(
+    edgeDampingChangedBytes > 10,
+    "A sharp edge between mesh vertices must trigger depth damping",
   );
 
   const racePage = await browser.newPage();
@@ -279,7 +382,100 @@ try {
   firstGate.release();
   await racePage.waitForLoadState("networkidle");
   assert.equal(await racePage.locator("#scene-name").textContent(), "second");
+
+  await racePage.locator("#intensity").selectOption("strong");
+  await racePage.locator("#seed").fill("19");
+  await racePage.locator("#build-gallery").click();
+  await racePage.waitForFunction(() =>
+    document
+      .querySelector("#gallery-note")
+      ?.textContent?.includes("6/6 preview frames generated"),
+  );
+  await racePage.locator("#intensity").selectOption("subtle");
+  await racePage.locator("#seed").fill("20");
+  await racePage
+    .locator(".gallery-item")
+    .filter({ hasText: "first · cinematic_float · strong · seed 19" })
+    .click();
+  await racePage.waitForFunction(() =>
+    document.querySelector("#status")?.textContent?.includes("first ready"),
+  );
+  assert.equal(await racePage.locator("#intensity").inputValue(), "strong");
+  assert.equal(await racePage.locator("#seed").inputValue(), "19");
+  const selectedScene = JSON.parse(
+    (await racePage.locator("#parameters").textContent()) ?? "{}",
+  ) as {
+    motion: { preset: string; intensity: string; seed: number };
+    warnings: { code: string }[];
+  };
+  assert.deepEqual(
+    {
+      preset: selectedScene.motion.preset,
+      intensity: selectedScene.motion.intensity,
+      seed: selectedScene.motion.seed,
+    },
+    { preset: "cinematic_float", intensity: "standard", seed: 19 },
+  );
+  assert.ok(
+    selectedScene.warnings.some(
+      (warning) => warning.code === "INTENSITY_DOWNGRADED",
+    ),
+  );
+
+  await racePage.locator("#seed").fill("-1");
+  await racePage.locator("#build-gallery").click();
+  assert.equal(await racePage.locator(".gallery-item").count(), 6);
+  assert.match(
+    (await racePage.locator("#status").textContent()) ?? "",
+    /Motion seed must be an unsigned 32-bit integer/,
+  );
   await racePage.close();
+
+  const failedPreparationPage = await browser.newPage();
+  await failedPreparationPage.route("**/api/corpus", (route) =>
+    route.fulfill({
+      contentType: "application/json",
+      body: JSON.stringify({
+        status: "frozen",
+        entries: [
+          {
+            id: "failed-depth",
+            categories: ["portrait_person"],
+            expectedShotDurationMs: 5000,
+          },
+        ],
+      }),
+    }),
+  );
+  await failedPreparationPage.route("**/api/prepare?*", (route) =>
+    route.fulfill({
+      status: 422,
+      contentType: "application/json",
+      body: JSON.stringify({
+        error: "Depth model unavailable",
+        code: "DEPTH_PREPARATION_FAILED",
+        sourceUrl,
+        durationMs: 5000,
+      }),
+    }),
+  );
+  await failedPreparationPage.goto("http://127.0.0.1:4176/");
+  await failedPreparationPage
+    .locator("#corpus-entry")
+    .selectOption("failed-depth");
+  await failedPreparationPage.locator("#prepare").click();
+  await failedPreparationPage.waitForFunction(() =>
+    document.querySelector("#status")?.textContent?.includes("ready"),
+  );
+  const failedPreparationParameters = JSON.parse(
+    (await failedPreparationPage.locator("#parameters").textContent()) ?? "{}",
+  );
+  assert.equal(failedPreparationParameters.motion.mode, "fallback_2d");
+  assert.equal(
+    failedPreparationParameters.quality.fallbackReason,
+    "DEPTH_PREPARATION_FAILED",
+  );
+  await failedPreparationPage.close();
 
   process.stdout.write(
     `Depth motion verified: far ${farTravel}px, near ${nearTravel}px; latest selection preserved\n`,
