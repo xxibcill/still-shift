@@ -176,6 +176,10 @@ const shape = PreparedSceneFieldsSchema.omit({ durationMs: true })
     schemaVersion: z.literal("story-scene-1"),
     frameCount: frame.positive().max(108000),
     episodeStartFrame: frame.optional(),
+    review: z
+      .object({ essentialText: z.array(id).max(100) })
+      .strict()
+      .optional(),
     recipe: StoryRecipeSchema,
     connectors: z
       .array(
@@ -198,6 +202,9 @@ export const StorySceneSchema = shape.superRefine((scene, ctx) => {
   const fail = (message: string) => ctx.addIssue({ code: "custom", message });
   const { nodes } = validatePreparedGraph(scene, fail);
   validateStoryBindings(scene, nodes, fail);
+  for (const textId of scene.review?.essentialText ?? [])
+    if (nodes.get(textId)?.type !== "text")
+      fail(`Essential text role must bind a text node: ${textId}`);
 });
 
 export const StoryAnimationResultSchema = z

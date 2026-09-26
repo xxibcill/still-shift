@@ -138,3 +138,27 @@ it("rejects invalid review options instead of emitting misleading measurements",
     analyzeStoryQuality(scene, { essentialText: ["missing"] }),
   ).toThrow(/missing/);
 });
+
+it("warns only for explicitly marked essential text", () => {
+  const input = fixture("evidence-boundary");
+  input.review = { essentialText: ["qualifier"] };
+  const report = analyzeStoryQuality(compileStoryScene(input));
+  expect(
+    report.diagnostics
+      .filter((diagnostic) => diagnostic.code === "small-essential-text")
+      .map((diagnostic) => diagnostic.nodes[0]),
+  ).toEqual(["qualifier"]);
+
+  delete input.review;
+  expect(
+    analyzeStoryQuality(compileStoryScene(input)).diagnostics.filter(
+      (diagnostic) => diagnostic.code === "small-essential-text",
+    ),
+  ).toEqual([]);
+  expect(() =>
+    StorySceneSchema.parse({
+      ...input,
+      review: { essentialText: ["missing"] },
+    }),
+  ).toThrow(/Essential text role/);
+});

@@ -310,6 +310,7 @@
   "provenance": "Original code-authored symbolic editorial illustrations for reusable motion studies. Layered Chronicle palette and typography. No selected S01E01 image is modified; these are explanatory fixtures, not authentic evidence or a finished episode.",
   "schemaVersion": "story-scene-1",
   "frameCount": 192,
+  "review": { "essentialText": ["room", "strained", "qualifier"] },
   "recipe": {
     "preset": "unequal_margins",
     "households": ["house-a", "house-b"],

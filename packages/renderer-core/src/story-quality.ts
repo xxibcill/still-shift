@@ -122,8 +122,7 @@ export function analyzeStoryQuality(
     if (!Number.isFinite(value) || value <= 0)
       throw new Error(`Invalid ${name}`);
   const essentialText =
-    policy.essentialText ??
-    scene.nodes.filter((n) => n.type === "text").map((n) => n.id);
+    policy.essentialText ?? scene.review?.essentialText ?? [];
   const nodes = new Map(scene.nodes.map((n) => [n.id, n]));
   for (const id of essentialText)
     if (nodes.get(id)?.type !== "text")

@@ -50,6 +50,7 @@ for (const design of designs) {
     assets,
     fonts,
     nodes: design.nodes,
+    review: { essentialText: design.essentialText },
     recipe: design.recipe,
     connectors: design.connectors ?? [],
     provenance:

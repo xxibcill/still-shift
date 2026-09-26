@@ -54,6 +54,7 @@ export function resourcePassage(
     nodes: unknown[],
     recipe: unknown,
     connectors: unknown[],
+    essentialText: string[],
   ) =>
     StorySceneSchema.parse({
       ...base,
@@ -63,6 +64,7 @@ export function resourcePassage(
       nodes,
       recipe,
       connectors,
+      review: { essentialText },
     });
   const dependencies = [
     { id: "storage", label: "Resources / storage", y: 350, onset: 2323 },
@@ -150,6 +152,11 @@ export function resourcePassage(
         bind(`${d.id}-link`, "grain", [450, 80 + i * 70], d.id, [0, 44], -16),
       ),
     ],
+    [
+      "cereal-label",
+      ...dependencies.map((dependency) => `${dependency.id}-label`),
+      "qualifier",
+    ],
   );
 
   const second = scene(
@@ -201,6 +208,7 @@ export function resourcePassage(
       bind("home-link", "grain", [450, 190], "home", [55, 240], -24),
       bind("year-link", "home", [580, 300], "year", [700, 35], 36),
     ],
+    ["grain-label", "home-label", "year-label", "qualifier"],
   );
 
   const third = scene(
@@ -263,6 +271,7 @@ export function resourcePassage(
       bind("bridge", "grain", [450, 190], "home", [55, 240], -24),
       bind("limit-link", "grain", [450, 375], "limit", [0, 42], 20),
     ],
+    ["grain-label", "home-label", "bridge-label", "limit-label", "qualifier"],
   );
 
   const fourth = StorySceneSchema.parse({

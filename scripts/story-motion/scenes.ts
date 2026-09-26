@@ -22,6 +22,7 @@ export const designs: MotionDesign[] = [
     title: "Unequal Margins",
     description:
       "The same season reaches two households. Their room to absorb strain differs.",
+    essentialText: ["room", "strained", "qualifier"],
     nodes: [
       paper(),
       ground(720),
@@ -92,6 +93,7 @@ export const designs: MotionDesign[] = [
     title: "Access Constraint",
     description:
       "Available grain stays in view while one open connection becomes more constrained.",
+    essentialText: ["aperture-label", "source-label", "open-label"],
     nodes: [
       paper(),
       ground(795),
@@ -163,6 +165,12 @@ export const designs: MotionDesign[] = [
     title: "Relationship Build",
     description:
       "Land, access and claims develop around a stable store, one relationship at a time.",
+    essentialText: [
+      "store-label",
+      "resources-label",
+      "access-label",
+      "claims-label",
+    ],
     nodes: [
       paper(),
       ground(790),
@@ -255,6 +263,15 @@ export const designs: MotionDesign[] = [
     title: "Evidence Boundary",
     description:
       "Supported categories, unknown details and a composite household occupy distinct explanatory spaces.",
+    essentialText: [
+      "supported-a-label",
+      "supported-b-label",
+      "unknown-note-a",
+      "unknown-note-b",
+      "composite-note",
+      "composite-note-end",
+      "qualifier",
+    ],
     nodes: [
       paper(),
       text("title", "Evidence has edges.", 112, 96, 112),
@@ -371,6 +388,7 @@ export const designs: MotionDesign[] = [
     title: "Dated System Break",
     description:
       "A dated crisis fractures, then cuts to a separate local context whose conditions remain unknown.",
+    essentialText: ["crisis-context", "later-note", "later-qualifier"],
     nodes: [
       group("crisis", 0, 0, 1920, 1080),
       rect("crisis-field", 0, 0, 1920, 1080, c.crisis, { parent: "crisis" }),
@@ -483,6 +501,7 @@ export const designs: MotionDesign[] = [
     title: "Category Swap",
     description:
       "Two registered grain-category illustrations exchange on one frame; their relationship and qualifier remain fixed.",
+    essentialText: ["category-label", "relation-label", "qualifier"],
     nodes: [
       paper(),
       ground(770),
@@ -525,6 +544,13 @@ export const designs: MotionDesign[] = [
     title: "Motif Resolve",
     description:
       "Familiar motifs settle around the household; land leads into rent and service, with quiet space for the ending.",
+    essentialText: [
+      "resources-label",
+      "access-label",
+      "land-label",
+      "claims-label",
+      "qualifier",
+    ],
     nodes: [
       paper(),
       ground(770),

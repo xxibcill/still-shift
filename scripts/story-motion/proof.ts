@@ -44,6 +44,7 @@ export function comparisonAccessProof(
     title: "S01E01 ST-014 · access candidate",
     frameCount: 312,
     episodeStartFrame: 5082,
+    review: { essentialText: ["room", "strained", "qualifier"] },
     nodes: [
       ...first.nodes.filter((node) => retained.has(node.id)),
       text("title", "Available grain.", 112, 94, 82),

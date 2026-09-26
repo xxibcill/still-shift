@@ -13,6 +13,7 @@ export type MotionDesign = {
   id: string;
   title: string;
   description: string;
+  essentialText: string[];
   nodes: Node[];
   recipe: z.input<typeof StoryRecipeSchema>;
   connectors?: StoryScene["connectors"];
