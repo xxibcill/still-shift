@@ -262,122 +262,151 @@ export const designs: MotionDesign[] = [
     id: "evidence-boundary",
     title: "Evidence Boundary",
     description:
-      "Supported categories, unknown details and a composite household occupy distinct explanatory spaces.",
+      "Supported categories, unknown details and a composite household appear in separate readable stages.",
     essentialText: [
+      "intro",
+      "supported-heading",
       "supported-a-label",
       "supported-b-label",
+      "unknown-heading",
+      "unknown-state",
       "unknown-note-a",
       "unknown-note-b",
+      "composite-title",
       "composite-note",
       "composite-note-end",
       "qualifier",
+    ],
+    focalGroups: [
+      { id: "supported", nodes: ["supported-stage"] },
+      { id: "unknown", nodes: ["unknown"] },
+      { id: "composite", nodes: ["composite"] },
     ],
     nodes: [
       paper(),
       text("title", "Evidence has edges.", 112, 96, 112),
       text(
         "intro",
-        "A record can support a category, not every detail.",
+        "A record supports categories, not every detail.",
         116,
-        245,
-        typeScale.subheading,
+        239,
+        78,
       ),
       path(
         "boundary",
         [
-          [855, 375],
-          [855, 885],
+          [112, 355],
+          [1808, 355],
         ],
         { stroke: c.ink, lineWidth: 2 },
       ),
-      path(
-        "inference-divider",
-        [
-          [1320, 375],
-          [1320, 885],
-        ],
-        { stroke: c.ink, lineWidth: 2 },
-      ),
-      text("supported-heading", "Supported", 112, 369, typeScale.section, {
+      group("supported-stage", 0, 0, 1920, 1080),
+      text("supported-heading", "Supported categories", 112, 391, 94, {
+        parent: "supported-stage",
         fontAsset: "display",
       }),
-      ...subject("supported-a", "category-a", "Resources", 114, 534, 330, 231),
-      ...subject("supported-b", "land", "Holdings", 472, 631, 330, 134),
-      group("unknown", 910, 383, 370, 510),
-      text("unknown-heading", "Exact details", 0, 0, typeScale.label, {
+      ...subject(
+        "supported-a",
+        "category-a",
+        "Resources",
+        210,
+        550,
+        440,
+        250,
+        80,
+        "supported-stage",
+      ),
+      ...subject(
+        "supported-b",
+        "land",
+        "Holdings",
+        1070,
+        570,
+        500,
+        203,
+        80,
+        "supported-stage",
+      ),
+      group("unknown", 0, 18, 1920, 1080),
+      text("unknown-heading", "Exact details", 112, 391, 94, {
         parent: "unknown",
+        fontAsset: "display",
       }),
-      text("unknown-state", "Unknown", 0, 121, typeScale.section, {
+      text("unknown-state", "Unknown", 112, 534, 132, {
         parent: "unknown",
         fontAsset: "display",
       }),
       path(
         "unknown-mark",
         [
-          [0, 225],
-          [260, 225],
+          [112, 691],
+          [960, 691],
         ],
         { parent: "unknown", stroke: c.ink, lineWidth: 3 },
       ),
-      text("unknown-note-a", "Items", 0, 289, typeScale.label, {
+      text("unknown-note-a", "Items", 112, 754, 80, {
         parent: "unknown",
       }),
-      text("unknown-note-b", "Amounts", 0, 369, typeScale.label, {
+      text("unknown-note-b", "Amounts", 670, 754, 80, {
         parent: "unknown",
       }),
-      group("composite", 1370, 387, 438, 580),
-      text("composite-title", "Composite", 0, 0, typeScale.section, {
+      group("composite", 0, 18, 1920, 1080),
+      text("composite-title", "Composite household", 112, 391, 94, {
         parent: "composite",
         fontAsset: "display",
       }),
-      household("composite-house", 20, 130, 370, { parent: "composite" }),
-      text("composite-note", "Not a recovered", 0, 420, typeScale.label, {
+      household("composite-house", 1100, 485, 600, { parent: "composite" }),
+      text("composite-note", "Not a recovered", 112, 586, 88, {
         parent: "composite",
       }),
-      text("composite-note-end", "pantry", 0, 484, typeScale.label, {
+      text("composite-note-end", "pantry", 112, 692, 88, {
         parent: "composite",
       }),
       text(
         "qualifier",
-        "Illustrative categories; not an itemized inventory.",
+        "Illustrative categories. No itemized inventory.",
         112,
-        966,
-        typeScale.qualifier,
+        954,
+        80,
       ),
     ],
     recipe: {
       preset: "evidence_boundary",
       supported: [
         { node: "supported-a", window: cue(12, 28, "resources") },
-        { node: "supported-b", window: cue(28, 46, "holdings") },
+        { node: "supported-b", window: cue(30, 46, "holdings") },
       ],
-      unknown: { node: "unknown", window: cue(52, 70, "evidence-limit") },
+      unknown: { node: "unknown", window: cue(60, 78, "evidence-limit") },
       composite: {
         node: "composite",
-        window: cue(78, 108, "composite-is-separate"),
+        window: cue(114, 136, "composite-is-separate"),
       },
       boundary: "boundary",
       qualifier: "qualifier",
+      exits: [
+        { node: "supported-stage", window: cue(50, 58, "supported-recedes") },
+        { node: "unknown", window: cue(104, 112, "limits-recede") },
+      ],
       moves: [
         {
           node: "supported-a",
           window: cue(12, 28, "resources-settle", "out-quint"),
-          to: { x: 114, y: 516 },
+          to: { x: 210, y: 532 },
         },
         {
           node: "supported-b",
-          window: cue(28, 46, "holdings-settle", "out-quint"),
-          to: { x: 472, y: 613 },
+          window: cue(30, 46, "holdings-settle", "out-quint"),
+          to: { x: 1070, y: 552 },
         },
         {
           node: "unknown",
-          window: cue(52, 70, "limit-settles", "out-quint"),
-          to: { x: 910, y: 369 },
+          window: cue(60, 78, "limit-settles", "out-quint"),
+          to: { x: 0, y: 0 },
         },
         {
           node: "composite",
-          window: cue(78, 108, "composite-settles", "out-quint"),
-          to: { x: 1370, y: 369 },
+          window: cue(114, 136, "composite-settles", "out-quint"),
+          to: { x: 0, y: 0 },
         },
       ],
       emphasis: [],

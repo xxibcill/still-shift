@@ -140,7 +140,7 @@ it("rejects invalid review options instead of emitting misleading measurements",
 });
 
 it("warns only for explicitly marked essential text", () => {
-  const input = fixture("evidence-boundary");
+  const input = fixture("unequal-margins");
   input.review = { essentialText: ["qualifier"] };
   const report = analyzeStoryQuality(compileStoryScene(input));
   expect(
@@ -161,4 +161,13 @@ it("warns only for explicitly marked essential text", () => {
       review: { essentialText: ["missing"] },
     }),
   ).toThrow(/Essential text role/);
+});
+
+it("keeps the staged evidence scene readable at phone width", () => {
+  const report = analyzeStoryQuality(
+    compileStoryScene(fixture("evidence-boundary")),
+  );
+  expect(report.minimumTextPxObserved).toBeGreaterThanOrEqual(14);
+  expect(report.finalHoldSeconds).toBeGreaterThanOrEqual(2);
+  expect(report.diagnostics).toEqual([]);
 });

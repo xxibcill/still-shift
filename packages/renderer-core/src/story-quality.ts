@@ -127,7 +127,8 @@ export function analyzeStoryQuality(
   for (const id of essentialText)
     if (nodes.get(id)?.type !== "text")
       throw new Error(`Essential text missing: ${id}`);
-  const groups = policy.focalGroups ?? primaryGroups(scene);
+  const groups =
+    policy.focalGroups ?? scene.review?.focalGroups ?? primaryGroups(scene);
   const membership = new Map<string, string[]>();
   const ancestorsByNode = new Map<string, Set<string>>();
   for (const group of groups)

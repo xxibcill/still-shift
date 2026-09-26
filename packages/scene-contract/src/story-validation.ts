@@ -176,6 +176,25 @@ export function validateStoryBindings(
         recipe.composite.window.start < recipe.unknown.window.end
       )
         fail("Evidence must establish support before unknowns and comparison");
+      for (const exit of recipe.exits ?? []) {
+        node(exit.node);
+        window(exit.window);
+        const earlier = [...recipe.supported, recipe.unknown].filter((event) =>
+          ancestors(event.node).has(exit.node),
+        );
+        if (
+          earlier.length === 0 ||
+          exit.window.start <
+            Math.max(...earlier.map((event) => event.window.end))
+        )
+          fail("Evidence exits must follow their established roles");
+        if (
+          [recipe.boundary, recipe.qualifier].some((id) =>
+            ancestors(id).has(exit.node),
+          )
+        )
+          fail("Evidence exit cannot hide the boundary or qualifier");
+      }
       persistent.push(recipe.qualifier, recipe.boundary);
       break;
     }

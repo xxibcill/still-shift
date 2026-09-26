@@ -168,6 +168,8 @@ export function compileStoryScene(input: StoryScene): StoryRenderScene {
         recipe.composite,
       ])
         enter(event.node, event.window);
+      for (const exit of recipe.exits ?? [])
+        tracks.add(exit.node, "opacity", exit.window, 0);
       break;
     case "dated_system_break":
       for (const event of recipe.breaks)

@@ -1,6 +1,6 @@
 # Motion quality implementation
 
-Date: 2026-09-26. The user rejected v011 as harder to read because of overall crowding and hierarchy. The current v012 correction restores distinct text roles and illustration-led spacing. The earlier clean numerical report did not establish readability. Creative acceptance, small-player readability, continuous audiovisual acceptance and external episode integration remain open.
+Date: 2026-09-26. The user rejected v011 as harder to read because of overall crowding and hierarchy. The v012 correction restored distinct text roles and illustration-led spacing. The current v013 Evidence Boundary study presents supported categories, unknown details and a composite household in separate held stages. Creative acceptance, continuous audiovisual acceptance and external episode integration remain open.
 
 ## Review artifacts
 
@@ -17,7 +17,7 @@ Generated media lives in ignored `benchmarks/results`; source fixtures, scene au
 
 The rejected pass promoted almost every label and qualification to 80 px, flattening the hierarchy and crowding the illustration space. The corrected shared scale uses **56 px labels, 52 px qualifications, 64 px subheadings and 72 px section headings**. Main titles retain their established sizes. Labels have more separation from their illustrations. Evidence Boundary restores the larger side-by-side resource illustrations, separated columns, and a contained two-line composite qualification.
 
-The corrected Evidence Boundary was inspected in the actual browser at a **701 px video width**, as well as in full-resolution frames. At 350 px, its 52 px qualifications measure 9.48 px and remain below the 14 px advisory target. Those warnings are retained rather than suppressed; this correction does **not** claim complete small-player readability. That requires more viewing space or a separately simplified composition, not indiscriminate text enlargement.
+Evidence Boundary now uses a separate stage for each claim. Its primary copy is larger without crowding the images, while the boundary and qualifier stay visible throughout. Three rendered stages were inspected at **350 px video width**. The analyzer measures its smallest visible essential type at **14.22 px**, above the 14 px advisory target, and reports no competing focus. This establishes a readable sample at that width; it does not replace continuous viewing or creative acceptance.
 
 Relationship Build no longer performs a small late positional regroup. Its emphasis restores sooner. Motif Resolve settles its supports and completes the outgoing arrow earlier. Resource and access spacing was recomposed after independent review found a collision.
 
@@ -26,7 +26,7 @@ Relationship Build no longer performs a small late positional regroup. Its empha
 | Unequal Margins    |              3.00 s |             3.00 s |
 | Access Constraint  |              3.25 s |             3.25 s |
 | Relationship Build |              1.08 s |         **2.25 s** |
-| Evidence Boundary  |              3.50 s |             3.50 s |
+| Evidence Boundary  |              3.50 s |         **2.33 s** |
 | Dated System Break |              3.00 s |             3.00 s |
 | Category Swap      |              5.00 s |             5.00 s |
 | Motif Resolve      |              1.58 s |         **2.33 s** |
@@ -41,7 +41,7 @@ The new resource passage uses four compositions: dependencies beyond grain, a pa
 
 Each story fixture marks its essential text IDs in optional scene review metadata. The lab and render scripts read those roles from the compiled scene, and a downloaded scene retains them. A scene without marked roles receives no small-essential-text warnings; callers may also supply an explicit policy. Policy can select focal groups, width/size/hold targets, and explained exceptions for particular diagnostic intervals. Defaults are 350 px, 14 px essential type and a 2-second hold. Relationship/evidence recipes infer separate focal groups; the other recipes default to one coherent authored idea. Authors can supply more specific groups. This is a review aid, not a collision detector, optical text-bound measurement, visibility/occlusion solver or an accessibility certification.
 
-The lab displays warnings beside timing controls and can seek to their frames. A category cut at frame 191 produces a 0.04-second warning while the scene remains valid and downloadable. Reports do not alter the scene contract, rendering, export result JSON or exit codes. Text-size warnings remain visible for the corrected hierarchy at the narrow default width. The lab explicitly says the measurements do not assess hierarchy or crowding. A clean report is not a design acceptance criterion.
+The lab displays warnings beside timing controls and can seek to their frames. A category cut at frame 191 produces a 0.04-second warning while the scene remains valid and downloadable. Reports do not alter the scene contract, rendering, export result JSON or exit codes. Evidence Boundary now provides explicit focal groups for its three stages. Other studies retain their own text-size warnings at the narrow default width. The lab explicitly says the measurements do not assess hierarchy or crowding. A clean report is not a design acceptance criterion.
 
 ## Verification and limits
 
@@ -56,7 +56,7 @@ Iteration record: the library used v009–v011, followed by v012 after the user 
 
 **Correction checks:** 20 story/diagnostic/proof unit tests passed after the typography changes. TypeScript, changed-file ESLint and formatting checks passed. The render exporter retained 646/1507 decoded frames and the resource delivery slices.
 
-**Outstanding:** creative acceptance, small-player readability, continuous normal-speed visual review, listening to the combined narration/picture, full-episode rhythm, caption-region integration, protected selected-image treatment and the final episode creative decision. Successful automated playback or decoded audio does not close these items.
+**Outstanding:** creative acceptance, continuous normal-speed visual review, listening to the combined narration/picture, full-episode rhythm, caption-region integration, protected selected-image treatment and the final episode creative decision. Phone-size inspection covers the three Evidence Boundary stages only; the other studies and narrated passages still need equivalent viewing. Successful automated playback or decoded audio does not close these items.
 
 ## Recheck against the supplied principles
 
@@ -64,7 +64,7 @@ Iteration record: the library used v009–v011, followed by v012 after the user 
 | ------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
 | Timing and spacing              | Bounded easing retained; unnecessary late regroup removed.                                                                                |
 | Rhythm and contrast             | Longer final holds; two narration-sized proofs with deliberate quiet conclusions. Whole-episode assessment remains open.                  |
-| Visual hierarchy                | v011 enlargement rejected by the user; v012 restores distinct text roles, larger evidence illustrations and breathing room.               |
+| Visual hierarchy                | v011 enlargement rejected by the user; v012 restores distinct text roles. The v013 Evidence Boundary stages add phone-size reading space. |
 | Anticipation and follow-through | Line → destination → settle retained; no decorative bounce added.                                                                         |
 | Choreography and continuity     | Shared identities, exact cuts and household match continuity preserved; 98 parity samples passed.                                         |
 | Consistent personality          | Existing illustration family, palette, pinned fonts and fixed brush treatment retained.                                                   |

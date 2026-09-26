@@ -14,6 +14,7 @@ export type MotionDesign = {
   title: string;
   description: string;
   essentialText: string[];
+  focalGroups?: { id: string; nodes: string[] }[];
   nodes: Node[];
   recipe: z.input<typeof StoryRecipeSchema>;
   connectors?: StoryScene["connectors"];
@@ -130,10 +131,12 @@ export const subject = (
   y: number,
   width: number,
   height: number,
+  labelSize: number = typeScale.label,
+  parent?: string,
 ): Node[] => [
-  group(id, x, y, width, height + 88),
+  group(id, x, y, width, height + 88, parent ? { parent } : {}),
   art(`${id}-art`, asset, 0, 0, width, height, { parent: id }),
-  text(`${id}-label`, label, width / 2, height + 20, typeScale.label, {
+  text(`${id}-label`, label, width / 2, height + 20, labelSize, {
     parent: id,
     align: "center",
     fontAsset: "label-strong",

@@ -113,6 +113,7 @@ export const StoryRecipeSchema = z.discriminatedUnion("preset", [
       composite: entrance,
       boundary: id,
       qualifier: id,
+      exits: z.array(entrance).max(8).optional(),
       ...choreography,
     })
     .strict(),
@@ -177,7 +178,13 @@ const shape = PreparedSceneFieldsSchema.omit({ durationMs: true })
     frameCount: frame.positive().max(108000),
     episodeStartFrame: frame.optional(),
     review: z
-      .object({ essentialText: z.array(id).max(100) })
+      .object({
+        essentialText: z.array(id).max(100),
+        focalGroups: z
+          .array(z.object({ id, nodes: z.array(id).min(1).max(40) }).strict())
+          .max(30)
+          .optional(),
+      })
       .strict()
       .optional(),
     recipe: StoryRecipeSchema,
@@ -205,6 +212,10 @@ export const StorySceneSchema = shape.superRefine((scene, ctx) => {
   for (const textId of scene.review?.essentialText ?? [])
     if (nodes.get(textId)?.type !== "text")
       fail(`Essential text role must bind a text node: ${textId}`);
+  for (const group of scene.review?.focalGroups ?? [])
+    for (const nodeId of group.nodes)
+      if (!nodes.has(nodeId))
+        fail(`Focus group ${group.id} references a missing node: ${nodeId}`);
 });
 
 export const StoryAnimationResultSchema = z
