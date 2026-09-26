@@ -1,0 +1,363 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>History, in motion · Still Shift</title>
+    <style>
+      @font-face {
+        font-family: Chronicle;
+        src: url("../../../assets/story-motion/fonts/source-serif-4-semibold.otf");
+      }
+      @font-face {
+        font-family: Plex;
+        src: url("../../../assets/story-motion/fonts/plex-sans-medium.ttf");
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: #e8dfc9;
+        color: #211f1b;
+        font:
+          17px/1.6 Plex,
+          sans-serif;
+      }
+      main {
+        max-width: 1580px;
+        margin: auto;
+        padding: 64px 40px;
+      }
+      header {
+        padding-bottom: 64px;
+        max-width: 1080px;
+      }
+      .eyebrow {
+        font-size: 13px;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: #59664d;
+      }
+      h1,
+      h2 {
+        font-family: Chronicle, serif;
+        font-weight: 600;
+        line-height: 1.1;
+      }
+      h1 {
+        font-size: clamp(44px, 6vw, 96px);
+        letter-spacing: -0.035em;
+        margin: 24px 0;
+      }
+      h2 {
+        font-size: 36px;
+        margin: 16px 0;
+      }
+      header p {
+        max-width: 760px;
+      }
+      a {
+        color: #8b3f36;
+        text-underline-offset: 5px;
+      }
+      .motion {
+        display: grid;
+        grid-template-columns: minmax(220px, 1fr) minmax(0, 2.8fr);
+        gap: 48px;
+        padding: 48px 0;
+        border-top: 1px solid #59664d77;
+      }
+      .number {
+        color: #59664d;
+        font-size: 14px;
+      }
+      .description {
+        max-width: 320px;
+      }
+      .links {
+        font-size: 14px;
+        margin-top: 28px;
+      }
+      video {
+        width: 100%;
+        aspect-ratio: 16/9;
+        display: block;
+        background: #211f1b;
+      }
+      footer {
+        padding-top: 40px;
+        border-top: 1px solid #59664d77;
+        font-size: 14px;
+      }
+      .board {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 24px;
+        margin-bottom: 48px;
+      }
+      .board img {
+        width: 100%;
+        display: block;
+      }
+      .board figcaption {
+        font-size: 16px;
+        margin: 8px 0 20px;
+      }
+      figure {
+        margin: 0;
+      }
+      @media (max-width: 760px) {
+        main {
+          padding: 32px 20px;
+        }
+        .motion {
+          grid-template-columns: 1fr;
+          gap: 16px;
+        }
+        .description {
+          max-width: unset;
+        }
+        h2 {
+          font-size: 30px;
+        }
+        .board {
+          grid-template-columns: 1fr;
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        * {
+          scroll-behavior: auto;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <header>
+        <div class="eyebrow">Still Shift / History Offstage</div>
+        <h1>History, in motion.</h1>
+        <p>
+          Seven illustrated explanations. One shared drawing language, clear
+          typography and motion that gives each relationship a purpose.
+        </p>
+        <p class="links">
+          1080p · 24 fps · eight seconds each · silent motion studies<br /><a
+            href="contact-sheet.html"
+            >View the style frames</a
+          >
+        </p>
+      </header>
+      <article class="motion">
+        <div>
+          <span class="number">01 / STORY MOTION</span>
+          <h2>Unequal Margins</h2>
+          <p class="description">
+            The same season reaches two households. Their room to absorb strain
+            differs.
+          </p>
+          <p class="links">
+            <a href="unequal-margins-motion.jpg">Motion intervals</a><br /><a
+              href="unequal-margins.handoff.json"
+              >Frame handoff</a
+            >
+          </p>
+        </div>
+        <video
+          aria-label="Unequal Margins preview"
+          controls
+          muted
+          playsinline
+          preload="metadata"
+          poster="unequal-margins.png"
+          src="unequal-margins.mp4"
+        ></video>
+      </article>
+      <article class="motion">
+        <div>
+          <span class="number">02 / STORY MOTION</span>
+          <h2>Access Constraint</h2>
+          <p class="description">
+            Available grain stays in view while one open connection becomes more
+            constrained.
+          </p>
+          <p class="links">
+            <a href="access-constraint-motion.jpg">Motion intervals</a><br /><a
+              href="access-constraint.handoff.json"
+              >Frame handoff</a
+            >
+          </p>
+        </div>
+        <video
+          aria-label="Access Constraint preview"
+          controls
+          muted
+          playsinline
+          preload="metadata"
+          poster="access-constraint.png"
+          src="access-constraint.mp4"
+        ></video>
+      </article>
+      <article class="motion">
+        <div>
+          <span class="number">03 / STORY MOTION</span>
+          <h2>Relationship Build</h2>
+          <p class="description">
+            Land, access and claims develop around a stable store, one
+            relationship at a time.
+          </p>
+          <p class="links">
+            <a href="relationship-build-motion.jpg">Motion intervals</a><br /><a
+              href="relationship-build.handoff.json"
+              >Frame handoff</a
+            >
+          </p>
+        </div>
+        <video
+          aria-label="Relationship Build preview"
+          controls
+          muted
+          playsinline
+          preload="metadata"
+          poster="relationship-build.png"
+          src="relationship-build.mp4"
+        ></video>
+      </article>
+      <article class="motion">
+        <div>
+          <span class="number">04 / STORY MOTION</span>
+          <h2>Evidence Boundary</h2>
+          <p class="description">
+            Supported categories, unknown details and a composite household
+            appear in separate readable stages.
+          </p>
+          <p class="links">
+            <a href="evidence-boundary-motion.jpg">Motion intervals</a><br /><a
+              href="evidence-boundary.handoff.json"
+              >Frame handoff</a
+            >
+          </p>
+        </div>
+        <video
+          aria-label="Evidence Boundary preview"
+          controls
+          muted
+          playsinline
+          preload="metadata"
+          poster="evidence-boundary.png"
+          src="evidence-boundary.mp4"
+        ></video>
+      </article>
+      <article class="motion">
+        <div>
+          <span class="number">05 / STORY MOTION</span>
+          <h2>Dated System Break</h2>
+          <p class="description">
+            A dated crisis fractures, then cuts to a separate local context
+            whose conditions remain unknown.
+          </p>
+          <p class="links">
+            <a href="dated-system-break-motion.jpg">Motion intervals</a><br /><a
+              href="dated-system-break.handoff.json"
+              >Frame handoff</a
+            >
+          </p>
+        </div>
+        <video
+          aria-label="Dated System Break preview"
+          controls
+          muted
+          playsinline
+          preload="metadata"
+          poster="dated-system-break.png"
+          src="dated-system-break.mp4"
+        ></video>
+      </article>
+      <article class="motion">
+        <div>
+          <span class="number">06 / STORY MOTION</span>
+          <h2>Category Swap</h2>
+          <p class="description">
+            Two registered grain-category illustrations exchange on one frame;
+            their relationship and qualifier remain fixed.
+          </p>
+          <p class="links">
+            <a href="category-swap-motion.jpg">Motion intervals</a><br /><a
+              href="category-swap.handoff.json"
+              >Frame handoff</a
+            >
+          </p>
+        </div>
+        <video
+          aria-label="Category Swap preview"
+          controls
+          muted
+          playsinline
+          preload="metadata"
+          poster="category-swap.png"
+          src="category-swap.mp4"
+        ></video>
+      </article>
+      <article class="motion">
+        <div>
+          <span class="number">07 / STORY MOTION</span>
+          <h2>Motif Resolve</h2>
+          <p class="description">
+            Familiar motifs settle around the household; land leads into rent
+            and service, with quiet space for the ending.
+          </p>
+          <p class="links">
+            <a href="motif-resolve-motion.jpg">Motion intervals</a><br /><a
+              href="motif-resolve.handoff.json"
+              >Frame handoff</a
+            >
+          </p>
+        </div>
+        <video
+          aria-label="Motif Resolve preview"
+          controls
+          muted
+          playsinline
+          preload="metadata"
+          poster="motif-resolve.png"
+          src="motif-resolve.mp4"
+        ></video>
+      </article>
+      <section class="motion">
+        <div>
+          <h2>Review the changes</h2>
+          <p>
+            Compare the earlier Evidence Boundary with its staged revision, then
+            watch two narrated episode candidates.
+          </p>
+        </div>
+        <div>
+          <p>
+            <a href="comparison.html">Evidence Boundary before and after</a>
+          </p>
+          <p>
+            <a href="proofs/s01e01-comparison-access.mp4"
+              >Comparison and access proof · 646 frames</a
+            >
+            · <a href="proofs/comparison-access-motion.jpg">contact sheet</a>
+          </p>
+          <p>
+            <a href="proofs/s01e01-resource-passage.mp4"
+              >Resource passage proof · 1507 frames</a
+            >
+            · <a href="proofs/resources-motion.jpg">contact sheet</a>
+          </p>
+          <p>
+            <a href="quality-report.json">Quality measurements</a> ·
+            <a href="README.md">Review notes and provenance</a>
+          </p>
+        </div>
+      </section>
+      <footer>
+        Original symbolic illustrations · Layered Chronicle palette and
+        typography. These studies are reusable prepared motion graphics, not
+        authentic historical evidence or a completed S01E01 episode.
+      </footer>
+    </main>
+  </body>
+</html>

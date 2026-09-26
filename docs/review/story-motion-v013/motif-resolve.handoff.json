@@ -1,0 +1,731 @@
+{
+  "preset": "motif_resolve",
+  "frameCount": 192,
+  "fps": 24,
+  "recipe": {
+    "preset": "motif_resolve",
+    "motifs": ["household", "resources", "access", "land", "claims"],
+    "moves": [
+      {
+        "node": "household",
+        "window": {
+          "start": 18,
+          "end": 54,
+          "cue": "household-settles",
+          "easing": "out-quint"
+        },
+        "to": {
+          "x": 150,
+          "y": 440
+        }
+      },
+      {
+        "node": "resources",
+        "window": {
+          "start": 28,
+          "end": 64,
+          "cue": "resources-settle",
+          "easing": "out-quint"
+        },
+        "to": {
+          "x": 765,
+          "y": 330
+        }
+      },
+      {
+        "node": "access",
+        "window": {
+          "start": 40,
+          "end": 76,
+          "cue": "access-settles",
+          "easing": "out-quint"
+        },
+        "to": {
+          "x": 795,
+          "y": 690
+        }
+      },
+      {
+        "node": "land",
+        "window": {
+          "start": 54,
+          "end": 90,
+          "cue": "land-settles",
+          "easing": "out-quint"
+        },
+        "to": {
+          "x": 1290,
+          "y": 480
+        }
+      },
+      {
+        "node": "claims",
+        "window": {
+          "start": 64,
+          "end": 100,
+          "cue": "claims-settle",
+          "easing": "out-quint"
+        },
+        "to": {
+          "x": 1320,
+          "y": 904
+        }
+      }
+    ],
+    "emphasis": [
+      {
+        "node": "resources-art",
+        "window": {
+          "start": 108,
+          "end": 128,
+          "cue": "land-focus",
+          "easing": "out-cubic"
+        },
+        "opacity": 0.65
+      },
+      {
+        "node": "access-art",
+        "window": {
+          "start": 108,
+          "end": 128,
+          "cue": "land-focus",
+          "easing": "out-cubic"
+        },
+        "opacity": 0.65
+      },
+      {
+        "node": "resource-link",
+        "window": {
+          "start": 108,
+          "end": 128,
+          "cue": "land-focus",
+          "easing": "out-cubic"
+        },
+        "opacity": 0.5
+      },
+      {
+        "node": "access-link",
+        "window": {
+          "start": 108,
+          "end": 128,
+          "cue": "land-focus",
+          "easing": "out-cubic"
+        },
+        "opacity": 0.5
+      }
+    ],
+    "outgoing": "outgoing",
+    "qualifier": "qualifier",
+    "resolve": {
+      "start": 112,
+      "end": 136,
+      "cue": "land-to-claims",
+      "easing": "out-cubic"
+    }
+  },
+  "entry": {
+    "paper": {
+      "parent": null,
+      "pose": {
+        "x": 0,
+        "y": 0,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "ground": {
+      "parent": null,
+      "pose": {
+        "x": 0,
+        "y": 770,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "title": {
+      "parent": null,
+      "pose": {
+        "x": 112,
+        "y": 83,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "subtitle": {
+      "parent": null,
+      "pose": {
+        "x": 116,
+        "y": 224,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "resource-link": {
+      "parent": null,
+      "pose": {
+        "x": 0,
+        "y": 0,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "access-link": {
+      "parent": null,
+      "pose": {
+        "x": 0,
+        "y": 0,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "outgoing": {
+      "parent": null,
+      "pose": {
+        "x": 0,
+        "y": 0,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 0,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "household": {
+      "parent": null,
+      "pose": {
+        "x": 100,
+        "y": 390,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "resources": {
+      "parent": null,
+      "pose": {
+        "x": 690,
+        "y": 320,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "resources-art": {
+      "parent": "resources",
+      "pose": {
+        "x": 0,
+        "y": 0,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "resources-label": {
+      "parent": "resources",
+      "pose": {
+        "x": 150,
+        "y": 280,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "access": {
+      "parent": null,
+      "pose": {
+        "x": 890,
+        "y": 695,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "access-art": {
+      "parent": "access",
+      "pose": {
+        "x": 0,
+        "y": 0,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "access-label": {
+      "parent": "access",
+      "pose": {
+        "x": 180,
+        "y": 186,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "land": {
+      "parent": null,
+      "pose": {
+        "x": 1180,
+        "y": 380,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "land-art": {
+      "parent": "land",
+      "pose": {
+        "x": 0,
+        "y": 0,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "land-label": {
+      "parent": "land",
+      "pose": {
+        "x": 250,
+        "y": 223,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "claims": {
+      "parent": null,
+      "pose": {
+        "x": 1330,
+        "y": 920,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "claims-label": {
+      "parent": "claims",
+      "pose": {
+        "x": 0,
+        "y": 0,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "qualifier": {
+      "parent": null,
+      "pose": {
+        "x": 112,
+        "y": 968,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    }
+  },
+  "exit": {
+    "paper": {
+      "parent": null,
+      "pose": {
+        "x": 0,
+        "y": 0,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "ground": {
+      "parent": null,
+      "pose": {
+        "x": 0,
+        "y": 770,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "title": {
+      "parent": null,
+      "pose": {
+        "x": 112,
+        "y": 83,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "subtitle": {
+      "parent": null,
+      "pose": {
+        "x": 116,
+        "y": 224,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "resource-link": {
+      "parent": null,
+      "pose": {
+        "x": 0,
+        "y": 0,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 0.5,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "access-link": {
+      "parent": null,
+      "pose": {
+        "x": 0,
+        "y": 0,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 0.5,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "outgoing": {
+      "parent": null,
+      "pose": {
+        "x": 0,
+        "y": 0,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "household": {
+      "parent": null,
+      "pose": {
+        "x": 150,
+        "y": 440,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "resources": {
+      "parent": null,
+      "pose": {
+        "x": 765,
+        "y": 330,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "resources-art": {
+      "parent": "resources",
+      "pose": {
+        "x": 0,
+        "y": 0,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 0.65,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "resources-label": {
+      "parent": "resources",
+      "pose": {
+        "x": 150,
+        "y": 280,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "access": {
+      "parent": null,
+      "pose": {
+        "x": 795,
+        "y": 690,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "access-art": {
+      "parent": "access",
+      "pose": {
+        "x": 0,
+        "y": 0,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 0.65,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "access-label": {
+      "parent": "access",
+      "pose": {
+        "x": 180,
+        "y": 186,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "land": {
+      "parent": null,
+      "pose": {
+        "x": 1290,
+        "y": 480,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "land-art": {
+      "parent": "land",
+      "pose": {
+        "x": 0,
+        "y": 0,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "land-label": {
+      "parent": "land",
+      "pose": {
+        "x": 250,
+        "y": 223,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "claims": {
+      "parent": null,
+      "pose": {
+        "x": 1320,
+        "y": 904,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "claims-label": {
+      "parent": "claims",
+      "pose": {
+        "x": 0,
+        "y": 0,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "qualifier": {
+      "parent": null,
+      "pose": {
+        "x": 112,
+        "y": 968,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    }
+  },
+  "sourceChecksum": "sha256:2a27cede3c406e21ea6e2bb25f8c0b70efc1d632d88630efee9a62fa17776783"
+}

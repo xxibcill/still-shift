@@ -57,6 +57,7 @@
     "story:render": "node --import tsx scripts/render-story-demos.ts",
     "story:proof": "node --import tsx scripts/render-story-proof.ts",
     "story:compare": "node --import tsx scripts/compare-story-demos.ts",
+    "story:review": "node --import tsx scripts/publish-story-review.ts",
     "test:browser:story": "node --import tsx tests/browser/story.ts"
   },
   "devDependencies": {

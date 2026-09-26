@@ -4,18 +4,18 @@ Date: 2026-09-26. The user rejected v011 as harder to read because of overall cr
 
 ## Review artifacts
 
-- [Before/after comparison: Evidence, Relationship and Motif](../benchmarks/results/story-motion-v012/comparison.html)
-- [All seven revised motion studies](../benchmarks/results/story-motion-v012/index.html)
-- [Refreshed 646-frame ST-013/014 proof](../benchmarks/results/story-motion-s01e01-proof-v010/index.html)
-- [New 1507-frame ST-006–008 proof](../benchmarks/results/story-motion-s01e01-resources-v003/index.html) and [beat sheet](s01e01-resource-passage-beats.md)
-- [Prior v011 independent frame review (superseded for readability)](../benchmarks/results/story-motion-v011/independent-review.md)
-- [Library quality measurements](../benchmarks/results/story-motion-v012/quality-report.json)
+- [Review bundle and provenance](review/story-motion-v013/README.md)
+- [Evidence Boundary before/after comparison](review/story-motion-v013/comparison.html)
+- [All seven silent motion studies](review/story-motion-v013/index.html)
+- [646-frame ST-013/014 narrated proof](review/story-motion-v013/proofs/s01e01-comparison-access.mp4)
+- [1507-frame ST-006–008 narrated proof](review/story-motion-v013/proofs/s01e01-resource-passage.mp4) and [beat sheet](s01e01-resource-passage-beats.md)
+- [Library quality measurements](review/story-motion-v013/quality-report.json)
 
-Generated media lives in ignored `benchmarks/results`; source fixtures, scene authorship, report generation and tests are versioned. Rerender into a new directory to reproduce the deliverables.
+The linked media and measurements are tracked in `docs/review/story-motion-v013`, so they open in a fresh checkout. The render workspace remains ignored under `benchmarks/results`. [The publishing script](../scripts/publish-story-review.ts) documents the local render inputs and omits machine-specific narration paths from published provenance.
 
 ## Changes and evidence
 
-The rejected pass promoted almost every label and qualification to 80 px, flattening the hierarchy and crowding the illustration space. The corrected shared scale uses **56 px labels, 52 px qualifications, 64 px subheadings and 72 px section headings**. Main titles retain their established sizes. Labels have more separation from their illustrations. Evidence Boundary restores the larger side-by-side resource illustrations, separated columns, and a contained two-line composite qualification.
+The rejected pass promoted almost every label and qualification to 80 px, flattening the hierarchy and crowding the illustration space. The v012 shared scale uses **56 px labels, 52 px qualifications, 64 px subheadings and 72 px section headings**. Main titles retain their established sizes. Labels have more separation from their illustrations. The v013 Evidence Boundary study increases its essential type and uses the full canvas for each stage.
 
 Evidence Boundary now uses a separate stage for each claim. Its primary copy is larger without crowding the images, while the boundary and qualifier stay visible throughout. Three rendered stages were inspected at **350 px video width**. The analyzer measures its smallest visible essential type at **14.22 px**, above the 14 px advisory target, and reports no competing focus. This establishes a readable sample at that width; it does not replace continuous viewing or creative acceptance.
 
@@ -46,15 +46,15 @@ The lab displays warnings beside timing controls and can seek to their frames. A
 ## Verification and limits
 
 - The initial pass ran 31 targeted unit checks across story semantics, prepared scenes/fonts, choreography, proof continuity and the new diagnostics. Diagnostics cover 24/30 fps, simultaneous branches, child focal groups under moving parents, exceptions, hidden/collapsed content and transformed type.
-- The corrected v012 story browser suite passed 98 preview/export comparisons, 14 backward seeks, timing editing, advisory seeking, phone layout, a 646-frame export and 30 fps CLI output. Category/context exact-cut frames were inspected independently.
+- The v013 story browser suite passed 98 preview/export comparisons, 14 backward seeks, timing editing, advisory seeking, phone layout, a 646-frame export and 30 fps CLI output. Category/context exact-cut frames were inspected independently.
 - TypeScript build, ESLint on changed code and Prettier on changed files passed.
 - Both narrated proofs decode completely with audio. The resource delivery slices have exactly 408/360/739 decoded frames. Current typography outputs are comparison/access v010 and resources v003; earlier independent frame reviews apply to their preceding versions, not to creative acceptance of this correction. Narration bytes match the current recorded SHA-256; cues were checked against corrected captions and word alignment.
 - Before the typography correction, decoded sample peaks were −1.5 dBFS for both candidates; mean sample levels were −16.3 dB (comparison/access) and −16.5 dB (resources). These are file measurements, not a listening or intelligibility judgment.
 - Visual review combined full-resolution frames, motion contact sheets, exact boundary samples, actual 350 px image tiles and browser inspection. The prior independent reviewer confirmed repaired collisions and script-to-graphic consistency, but did not catch the crowding subsequently identified by the user. Current frames were reinspected after correction; no independent creative acceptance is claimed. No new historical-source verification was performed.
 
-Iteration record: the library used v009–v011, followed by v012 after the user rejected the typography. The resource passage used v001/v002 for the connector repair, then v003 for this hierarchy correction. Renders of the seven library clips took approximately 4–5 seconds per clip, excluding gallery/media assembly. No paid generation occurred. Active human-equivalent labor time was not measured and is not inferred from render duration.
+Iteration record: the library used v009–v011, followed by v012 after the user rejected the typography and v013 for staged Evidence Boundary readability. The resource passage used v001/v002 for the connector repair, then v003 for this hierarchy correction. Renders of the seven library clips took approximately 4–5 seconds per clip, excluding gallery/media assembly. No paid generation occurred. Active human-equivalent labor time was not measured and is not inferred from render duration.
 
-**Correction checks:** 20 story/diagnostic/proof unit tests passed after the typography changes. TypeScript, changed-file ESLint and formatting checks passed. The render exporter retained 646/1507 decoded frames and the resource delivery slices.
+**Correction checks:** 16 focused story and diagnostic unit tests passed after the v013 changes. TypeScript, changed-file ESLint and formatting checks passed. The published proof videos retain 646/1507 decoded frames and their recorded checksums.
 
 **Outstanding:** creative acceptance, continuous normal-speed visual review, listening to the combined narration/picture, full-episode rhythm, caption-region integration, protected selected-image treatment and the final episode creative decision. Phone-size inspection covers the three Evidence Boundary stages only; the other studies and narrated passages still need equivalent viewing. Successful automated playback or decoded audio does not close these items.
 
