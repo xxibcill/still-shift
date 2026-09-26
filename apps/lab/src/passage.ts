@@ -1,7 +1,4 @@
-import { MotionEasingSchema } from "../../../packages/scene-contract/src/motion-easing.ts";
-import { evaluateStoryPath } from "../../../packages/renderer-core/src/story-geometry.ts";
 import {
-  StoryAuthoringPlanSchema,
   parsePassagePlan,
   type PassagePlan,
 } from "../../../packages/scene-contract/src/story-authoring.ts";
@@ -9,7 +6,6 @@ import { createPassageEditor } from "../../../packages/renderer-core/src/passage
 import {
   compileStoryPassage,
   locatePassageFrame,
-  type CompiledStoryPassage,
 } from "../../../packages/renderer-core/src/story-passage.ts";
 import {
   parsePassageTemplate,
@@ -19,14 +15,14 @@ import {
   passageDiagnostics,
   type PassageDiagnostic,
 } from "../../../packages/renderer-core/src/passage-diagnostics.ts";
-import { compileStoryScene } from "../../../packages/renderer-core/src/story-scene.ts";
 import { evaluatePreparedNode } from "../../../packages/renderer-core/src/prepared-scene.ts";
-import {
-  createIllustratedPreview,
-  loadIllustratedImages,
-} from "../../../packages/renderer-core/src/illustrated-renderer.ts";
-import { storyCameraTransform } from "../../../packages/renderer-core/src/story-camera.ts";
 import { sha256Hex } from "../../../packages/renderer-core/src/browser-checksum.ts";
+import { createPassageControls } from "./passage-controls.ts";
+import {
+  preparePreviews,
+  drawOverlays,
+  type ReadyBeat,
+} from "./passage-preview.ts";
 
 const el = <T extends HTMLElement>(id: string) =>
   document.getElementById(id) as T;
@@ -37,11 +33,6 @@ const beatSelect = el<HTMLSelectElement>("beat"),
   nodeSelect = el<HTMLSelectElement>("node");
 let editor: ReturnType<typeof createPassageEditor> | undefined;
 let templates = new Map<string, PassageTemplate>();
-type ReadyBeat = {
-  scene: ReturnType<typeof compileStoryScene>;
-  preview: ReturnType<typeof createIllustratedPreview>;
-  canvas: HTMLCanvasElement;
-};
 let previews: ReadyBeat[] = [],
   frame = 0,
   animation = 0,
@@ -81,53 +72,6 @@ const stop = () => {
   audio.pause();
   el("play").textContent = "Play";
 };
-const assetUrl = (path: string) =>
-  "/passage-api/asset?path=" + encodeURIComponent(path);
-const option = (value: string, label = value) => {
-  const node = document.createElement("option");
-  node.value = value;
-  node.textContent = label;
-  return node;
-};
-function field(
-  host: HTMLElement,
-  label: string,
-  value: string | number,
-  change: (value: string) => void,
-  type = "text",
-) {
-  const row = document.createElement("label");
-  row.className = "field";
-  row.append(document.createTextNode(label));
-  const input = document.createElement("input");
-  input.type = type;
-  input.value = String(value);
-  input.setAttribute("aria-label", label);
-  if (type === "number") input.step = "1";
-  input.onchange = () => change(input.value);
-  row.append(input);
-  host.append(row);
-  return input;
-}
-function select(
-  host: HTMLElement,
-  label: string,
-  values: string[],
-  value: string,
-  change: (value: string) => void,
-) {
-  const row = document.createElement("label");
-  row.className = "field";
-  row.append(document.createTextNode(label));
-  const input = document.createElement("select");
-  input.setAttribute("aria-label", label);
-  input.append(...values.map((v) => option(v)));
-  input.value = value;
-  input.onchange = () => change(input.value);
-  row.append(input);
-  host.append(row);
-  return input;
-}
 function button(host: HTMLElement, title: string, action: () => void) {
   const node = document.createElement("button");
   node.type = "button";
@@ -135,27 +79,6 @@ function button(host: HTMLElement, title: string, action: () => void) {
   node.onclick = action;
   host.append(node);
   return node;
-}
-async function preparePreviews(passage: CompiledStoryPassage) {
-  const prepared: ReadyBeat[] = [];
-  for (const beat of passage.beats) {
-    const scene = compileStoryScene(beat.scene);
-    const images = await loadIllustratedImages(scene, (id) =>
-      assetUrl(
-        [...scene.assets, ...(scene.fonts ?? [])].find((a) => a.id === id)!
-          .path,
-      ),
-    );
-    const target = document.createElement("canvas");
-    target.width = 1920;
-    target.height = 1080;
-    prepared.push({
-      scene,
-      preview: createIllustratedPreview(target, scene, images),
-      canvas: target,
-    });
-  }
-  return prepared;
 }
 function installPreviews(ready: ReadyBeat[]) {
   previews.forEach((p) => p.preview.dispose());
@@ -212,6 +135,15 @@ const editBeat = (
     change(plan.beats[index]!);
   });
 };
+const controls = createPassageControls({
+  apply,
+  editBeat,
+  seek: (next) => {
+    stop();
+    show(next);
+  },
+  jumpToDiagnostic,
+});
 function show(next: number) {
   if (!editor || !previews.length) return;
   frame = next;
@@ -243,7 +175,14 @@ function show(next: number) {
         2,
       )
     : "Choose a node";
-  drawOverlays(ready.scene, at.frame);
+  drawOverlays(overlay, ready.scene, at.frame, {
+    showSafe: el<HTMLInputElement>("show-safe").checked,
+    showBounds: el<HTMLInputElement>("show-bounds").checked,
+    showDiagnostics: el<HTMLInputElement>("show-diagnostics").checked,
+    selectedNode: nodeSelect.value,
+    selectedBeat: editor.passage.beats[Number(beatSelect.value)]!.id,
+    diagnostics: editor.passage.diagnostics,
+  });
   for (const mark of document.querySelectorAll<HTMLElement>(".track-mark"))
     mark.classList.toggle(
       "active",
@@ -304,558 +243,11 @@ function jumpToDiagnostic(
   if (node) nodeSelect.value = node;
   show(beat.start + boundedFrame);
 }
-function drawOverlays(scene: ReadyBeat["scene"], localFrame: number) {
-  const ctx = overlay.getContext("2d")!;
-  ctx.clearRect(0, 0, 1920, 1080);
-  if (el<HTMLInputElement>("show-safe").checked) {
-    const inset = scene.safeInset ?? 0;
-    ctx.strokeStyle = "#d4b777";
-    ctx.lineWidth = 3;
-    ctx.setLineDash([12, 8]);
-    ctx.strokeRect(inset, inset, 1920 - inset * 2, 1080 - inset * 2);
-    ctx.setLineDash([]);
-  }
-  const bounds = el<HTMLInputElement>("show-bounds").checked,
-    diagnostics = el<HTMLInputElement>("show-diagnostics").checked;
-  if (!bounds && !diagnostics) return;
-  const beat = editor!.passage.beats[Number(beatSelect.value)]!;
-  const targets = new Set(
-    editor!.passage.diagnostics
-      .filter((d) => d.beat === beat.id && "node" in d)
-      .map((d) => ("node" in d ? d.node : undefined)),
-  );
-  const paint = (parent?: string) => {
-    for (const node of scene.nodes.filter((n) => n.parent === parent)) {
-      const state = evaluatePreparedNode(scene, node, localFrame);
-      ctx.save();
-      if (!parent) {
-        const camera = storyCameraTransform(scene, node.id, localFrame);
-        ctx.translate(camera.x, camera.y);
-        ctx.scale(camera.scale, camera.scale);
-      }
-      const ox = node.width * node.origin[0],
-        oy = node.height * node.origin[1];
-      ctx.translate(state.x + ox, state.y + oy);
-      ctx.rotate((state.rotation * Math.PI) / 180);
-      ctx.scale(state.scaleX, state.scaleY);
-      ctx.translate(-ox, -oy);
-      ctx.strokeStyle =
-        diagnostics && targets.has(node.id)
-          ? "#ec9878"
-          : node.id === nodeSelect.value
-            ? "#f8c35e"
-            : "#7cacb8";
-      ctx.lineWidth = 2;
-      if (bounds || targets.has(node.id)) {
-        if (node.type === "path") {
-          const path = evaluateStoryPath(scene, node, localFrame);
-          ctx.beginPath();
-          path.points.forEach(([x, y], i) => {
-            if (i) ctx.lineTo(x, y);
-            else ctx.moveTo(x, y);
-          });
-          ctx.stroke();
-          for (const point of [path.points[0]!, path.points.at(-1)!]) {
-            ctx.beginPath();
-            ctx.arc(point[0], point[1], 5, 0, Math.PI * 2);
-            ctx.stroke();
-          }
-        } else if (node.type === "text" && node.textLayout) {
-          const left =
-            node.align === "center"
-              ? -node.textLayout.width / 2
-              : node.align === "right"
-                ? -node.textLayout.width
-                : 0;
-          ctx.strokeRect(
-            left,
-            0,
-            node.textLayout.width,
-            node.textLayout.height,
-          );
-        } else ctx.strokeRect(0, 0, node.width, node.height);
-        ctx.beginPath();
-        ctx.arc(ox, oy, 5, 0, Math.PI * 2);
-        ctx.stroke();
-      }
-      paint(node.id);
-      ctx.restore();
-    }
-  };
-  paint();
-}
 function renderControls() {
-  const passage = editor!.passage,
-    selected = beatSelect.value;
-  beatSelect.replaceChildren(
-    ...passage.beats.map((b, i) => option(String(i), b.id)),
-  );
-  beatSelect.value = selected || "0";
-  el<HTMLButtonElement>("undo").disabled = !editor!.canUndo;
-  el<HTMLButtonElement>("redo").disabled = !editor!.canRedo;
-  renderInspector();
-  renderTimeline();
-  const host = el("diagnostics");
-  host.replaceChildren();
-  if (!passage.diagnostics.length)
-    host.textContent = "No compiler diagnostics.";
-  for (const diagnostic of passage.diagnostics)
-    button(
-      host,
-      `${diagnostic.beat} · ${diagnostic.code}: ${diagnostic.message}`,
-      () => jumpToDiagnostic(diagnostic),
-    ).className = "note";
+  controls.renderControls(editor!, templates);
 }
 function renderInspector() {
-  const passage = editor!.passage,
-    index = Number(beatSelect.value) || 0,
-    beat = passage.plan.beats[index]!,
-    compiled = passage.beats[index]!;
-  el("takeaway").textContent = beat.takeaway;
-  const node = nodeSelect.value;
-  nodeSelect.replaceChildren(...compiled.scene.nodes.map((n) => option(n.id)));
-  if ([...nodeSelect.options].some((o) => o.value === node))
-    nodeSelect.value = node;
-  for (const id of ["cues", "bindings", "parameters", "style", "handoff"])
-    el(id).replaceChildren();
-  if (
-    passage.plan.schemaVersion !== "story-passage-2" ||
-    !("bindings" in beat)
-  ) {
-    button(el("cues"), "Enable linked authoring", () => {
-      void apply((plan) => {
-        const next = StoryAuthoringPlanSchema.parse({
-          ...plan,
-          schemaVersion: "story-passage-2",
-          contentPolicy: "historical",
-          styleProfile: {
-            schemaVersion: "story-style-1",
-            id: "layered-chronicle-1",
-          },
-        });
-        Object.assign(plan, next);
-      });
-    });
-    return;
-  }
-  for (const cue of beat.cues)
-    field(
-      el("cues"),
-      cue.id + " frame",
-      cue.frame,
-      (value) =>
-        editBeat((b) => {
-          b.cues.find((c) => c.id === cue.id)!.frame = Number(value);
-        }),
-      "number",
-    );
-  for (const event of compiled.events) {
-    const group = document.createElement("div");
-    group.className = "event";
-    el("bindings").append(group);
-    const title = document.createElement("div");
-    title.className = "event-title";
-    title.textContent = `${event.id} · ${event.start}–${event.end}`;
-    group.append(title);
-    const binding = beat.bindings[event.id];
-    if (!binding) {
-      if (beat.cues.length)
-        button(group, "Link " + event.id + " to cue", () =>
-          editBeat((b) => {
-            delete b.timing[event.id];
-            b.bindings[event.id] = {
-              anchor: { type: "cue", id: b.cues[0]!.id },
-              offset: event.start - b.cues[0]!.frame,
-              duration: event.end - event.start,
-            };
-          }),
-        );
-      continue;
-    }
-    const choices = [
-      ...beat.cues.map((c) => "cue:" + c.id),
-      ...compiled.events
-        .filter((e) => e.id !== event.id)
-        .flatMap((e) => ["start:" + e.id, "end:" + e.id]),
-    ];
-    const current =
-      binding.anchor.type === "cue"
-        ? "cue:" + binding.anchor.id
-        : binding.anchor.edge + ":" + binding.anchor.id;
-    select(group, event.id + " anchor", choices, current, (value) =>
-      editBeat((b) => {
-        const split = value.indexOf(":"),
-          kind = value.slice(0, split),
-          id = value.slice(split + 1);
-        b.bindings[event.id]!.anchor =
-          kind === "cue"
-            ? { type: "cue", id }
-            : { type: "event", id, edge: kind as "start" | "end" };
-      }),
-    );
-    for (const key of ["offset", "duration"] as const)
-      field(
-        group,
-        event.id + " " + key,
-        binding[key],
-        (value) =>
-          editBeat((b) => {
-            b.bindings[event.id]![key] = Number(value);
-          }),
-        "number",
-      );
-    button(group, "Unlink " + event.id, () =>
-      editBeat((b) => {
-        delete b.bindings[event.id];
-        if (event.end > event.start)
-          b.timing[event.id] = { start: event.start, end: event.end };
-      }),
-    );
-  }
-  const template = templates.get(beat.template)!;
-  if (template.schemaVersion === "story-template-1")
-    for (const [id, slot] of Object.entries(template.slots)) {
-      const value = beat.parameters[id];
-      const put = (next: unknown) =>
-        editBeat((b) => {
-          b.parameters[id] = next;
-        });
-      if (slot.kind === "text")
-        field(
-          el("parameters"),
-          id,
-          typeof value === "string" ? value : "",
-          put,
-        );
-      if (slot.kind === "subject" || slot.kind === "timing") {
-        const keys =
-          slot.kind === "subject"
-            ? ["x", "y", "width", "height"]
-            : ["start", "end"];
-        const original =
-          slot.kind === "subject"
-            ? template.scene.nodes.find((n) => n.id === slot.node)
-            : compiled.events.find((e) => e.id === slot.event);
-        const record = {
-          ...original,
-          ...(value && typeof value === "object" ? value : {}),
-        } as Record<string, unknown>;
-        for (const key of keys)
-          field(
-            el("parameters"),
-            id + " " + key,
-            Number(record[key] ?? 0),
-            (v) =>
-              put({
-                ...Object.fromEntries(keys.map((k) => [k, record[k]])),
-                [key]: Number(v),
-              }),
-            "number",
-          );
-      }
-      if (slot.kind === "asset")
-        select(
-          el("parameters"),
-          id,
-          template.scene.assets.map((a) => a.id),
-          value && typeof value === "object" && "id" in value
-            ? String(value.id)
-            : slot.asset,
-          (v) => put(template.scene.assets.find((a) => a.id === v)!),
-        );
-      if (slot.kind === "relationship") {
-        const connector = template.scene.connectors.find(
-          (c) => c.path === slot.path,
-        )!;
-        const current = value as typeof connector | undefined;
-        for (const end of ["from", "to"] as const)
-          select(
-            el("parameters"),
-            id + " " + end,
-            template.scene.nodes.map((n) => n.id),
-            current?.[end].node ?? connector[end].node,
-            (v) =>
-              put({
-                ...(current ?? connector),
-                [end]: { ...(current?.[end] ?? connector[end]), node: v },
-              }),
-          );
-      }
-    }
-  const style = passage.plan.styleProfile;
-  field(el("style"), "Profile name", style.id, (value) => {
-    void apply((p) => {
-      if (p.schemaVersion === "story-passage-2") p.styleProfile.id = value;
-    });
-  });
-  field(
-    el("style"),
-    "Background",
-    style.background ?? compiled.scene.background,
-    (value) => {
-      void apply((p) => {
-        if (p.schemaVersion === "story-passage-2")
-          p.styleProfile.background = value;
-      });
-    },
-    "color",
-  );
-  field(
-    el("style"),
-    "Safe inset",
-    style.safeInset ?? "",
-    (value) => {
-      void apply((p) => {
-        if (p.schemaVersion === "story-passage-2") {
-          if (value) p.styleProfile.safeInset = Number(value);
-          else delete p.styleProfile.safeInset;
-        }
-      });
-    },
-    "number",
-  );
-  const lineHeight = field(
-    el("style"),
-    "Text line height",
-    style.lineHeight ?? "",
-    (value) => {
-      void apply((p) => {
-        if (p.schemaVersion === "story-passage-2") {
-          if (value) p.styleProfile.lineHeight = Number(value);
-          else delete p.styleProfile.lineHeight;
-        }
-      });
-    },
-    "number",
-  );
-  lineHeight.step = "0.1";
-  field(
-    el("style"),
-    "Path stroke width",
-    style.lineWidth ?? "",
-    (value) => {
-      void apply((p) => {
-        if (p.schemaVersion === "story-passage-2") {
-          if (value) p.styleProfile.lineWidth = Number(value);
-          else delete p.styleProfile.lineWidth;
-        }
-      });
-    },
-    "number",
-  );
-  for (const role of ["heading", "label", "qualification", "body"] as const) {
-    const representative = compiled.scene.nodes.find(
-      (n) => n.type === "text" && n.textRole === role,
-    );
-    if (representative?.type !== "text") continue;
-    field(
-      el("style"),
-      role + " size",
-      style.text?.[role]?.fontSize ?? representative.fontSize,
-      (value) => {
-        void apply((p) => {
-          if (p.schemaVersion === "story-passage-2") {
-            p.styleProfile.text ??= {};
-            p.styleProfile.text[role] = {
-              ...p.styleProfile.text[role],
-              fontSize: Number(value),
-            };
-          }
-        });
-      },
-      "number",
-    );
-    field(
-      el("style"),
-      role + " color",
-      style.text?.[role]?.color ?? representative.color,
-      (value) => {
-        void apply((p) => {
-          if (p.schemaVersion === "story-passage-2") {
-            p.styleProfile.text ??= {};
-            p.styleProfile.text[role] = {
-              ...p.styleProfile.text[role],
-              color: value,
-            };
-          }
-        });
-      },
-      "color",
-    );
-    if (compiled.scene.fonts?.length)
-      select(
-        el("style"),
-        role + " font",
-        compiled.scene.fonts.map((f) => f.id),
-        style.text?.[role]?.fontAsset ?? representative.fontAsset ?? "",
-        (value) => {
-          void apply((p) => {
-            if (p.schemaVersion === "story-passage-2") {
-              p.styleProfile.text ??= {};
-              p.styleProfile.text[role] = {
-                ...p.styleProfile.text[role],
-                fontAsset: value,
-              };
-            }
-          });
-        },
-      );
-  }
-  select(
-    el("style"),
-    "Default easing",
-    ["template default", ...MotionEasingSchema.options],
-    style.easing ?? "template default",
-    (value) => {
-      void apply((p) => {
-        if (p.schemaVersion === "story-passage-2") {
-          if (value === "template default") delete p.styleProfile.easing;
-          else p.styleProfile.easing = MotionEasingSchema.parse(value);
-        }
-      });
-    },
-  );
-  select(
-    el("handoff"),
-    "Join mode",
-    ["cut", "continue", "reset"],
-    beat.handoff.mode,
-    (value) =>
-      editBeat((b) => {
-        b.handoff.mode = value as typeof b.handoff.mode;
-      }),
-  );
-  select(
-    el("handoff"),
-    "Camera handoff",
-    ["reset", "carry"],
-    beat.handoff.camera,
-    (value) =>
-      editBeat((b) => {
-        b.handoff.camera = value as typeof b.handoff.camera;
-      }),
-  );
-  for (const [i, mapping] of beat.handoff.subjects.entries()) {
-    select(
-      el("handoff"),
-      mapping.id + " mode",
-      ["carry", "reset", "enter", "exit"],
-      mapping.mode,
-      (value) =>
-        editBeat((b) => {
-          b.handoff.subjects[i]!.mode = value as typeof mapping.mode;
-        }),
-    );
-    const previous = passage.beats[index - 1];
-    if (previous)
-      select(
-        el("handoff"),
-        mapping.id + " from",
-        previous.scene.nodes.filter((n) => !n.parent).map((n) => n.id),
-        mapping.from ?? "",
-        (value) =>
-          editBeat((b) => {
-            b.handoff.subjects[i]!.from = value;
-          }),
-      );
-    select(
-      el("handoff"),
-      mapping.id + " to",
-      compiled.scene.nodes.filter((n) => !n.parent).map((n) => n.id),
-      mapping.to ?? "",
-      (value) =>
-        editBeat((b) => {
-          b.handoff.subjects[i]!.to = value;
-        }),
-    );
-    button(el("handoff"), "Remove " + mapping.id, () =>
-      editBeat((b) => {
-        b.handoff.subjects.splice(i, 1);
-      }),
-    );
-  }
-  button(el("handoff"), "Add subject mapping", () =>
-    editBeat((b) => {
-      const target = compiled.scene.nodes.find((n) => !n.parent)!;
-      b.handoff.subjects.push({
-        id: "subject-" + (b.handoff.subjects.length + 1),
-        mode: "reset",
-        to: target.id,
-        properties: ["x", "y", "scaleX", "scaleY", "rotation", "opacity"],
-      });
-    }),
-  );
-}
-function renderTimeline() {
-  const passage = editor!.passage,
-    host = el("timeline");
-  host.replaceChildren();
-  const track = (
-    label: string,
-    items: { start: number; end: number; title: string; kind?: string }[],
-  ) => {
-    const row = document.createElement("div");
-    row.className = "track";
-    const name = document.createElement("span");
-    name.textContent = label;
-    name.title = label;
-    row.append(name);
-    const body = document.createElement("div");
-    body.className = "track-body";
-    row.append(body);
-    host.append(row);
-    for (const item of items) {
-      const mark = button(body, item.title, () => {
-        stop();
-        show(item.start);
-      });
-      mark.className = "track-mark " + (item.kind ?? "");
-      mark.title = `${item.title}: ${item.start}–${item.end}`;
-      mark.dataset.start = String(item.start);
-      mark.dataset.end = String(item.end);
-      mark.style.left = `${(item.start / passage.frameCount) * 100}%`;
-      mark.style.width = `${(Math.max(1, item.end - item.start) / passage.frameCount) * 100}%`;
-    }
-  };
-  track(
-    "Beats",
-    passage.beats.map((b) => ({ start: b.start, end: b.end - 1, title: b.id })),
-  );
-  track(
-    "Narration cues",
-    passage.beats.flatMap((b) =>
-      b.cues.map((c) => ({
-        start: c.localFrame,
-        end: c.localFrame,
-        title: c.id,
-        kind: "cue",
-      })),
-    ),
-  );
-  for (const kind of [
-    "recipe",
-    "choreography",
-    "text-reveal",
-    "camera",
-    "flow",
-    "cut",
-  ]) {
-    const events = passage.beats.flatMap((b) =>
-      b.events
-        .filter((e) => e.kind === kind)
-        .map((e) => ({
-          start: b.start + e.start,
-          end: b.start + e.end,
-          title: e.id,
-          kind,
-        })),
-    );
-    for (const id of new Set(events.map((event) => event.title)))
-      track(
-        id,
-        events.filter((event) => event.title === id),
-      );
-  }
+  controls.renderInspector(editor!, templates);
 }
 async function loadPacket(
   packet: {
