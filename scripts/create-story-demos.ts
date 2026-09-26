@@ -1,5 +1,6 @@
 import { parseArgs } from "node:util";
 import { unequalMarginsV2 } from "./story-motion/unequal-margins-v2.ts";
+import { unequalMarginsV3 } from "./story-motion/unequal-margins-v3.ts";
 import { createHash } from "node:crypto";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { resolve } from "node:path";
@@ -15,19 +16,35 @@ import {
 import { designs } from "./story-motion/scenes.ts";
 
 const { values } = parseArgs({
-  options: { prototype: { type: "boolean", default: false } },
+  options: {
+    prototype: { type: "boolean", default: false },
+    // Motion-direction studies each get their own fixture set; v2 stays the reviewed baseline.
+    direction: { type: "string" },
+  },
 });
-const selectedDesigns = values.prototype ? [unequalMarginsV2()] : designs;
+const directions = { "buffer-press": unequalMarginsV3 } as const;
+if (values.direction && !(values.direction in directions))
+  throw new Error(`Unknown direction ${values.direction}`);
+const direction =
+  values.direction && directions[values.direction as keyof typeof directions];
+const continuous = values.prototype || !!direction;
+const selectedDesigns = direction
+  ? [direction()]
+  : values.prototype
+    ? [unequalMarginsV2()]
+    : designs;
 const directory = resolve(
-  values.prototype
-    ? "benchmarks/fixtures/story-motion-v2"
-    : "benchmarks/fixtures/story-motion",
+  direction
+    ? `benchmarks/fixtures/story-motion-${values.direction}`
+    : values.prototype
+      ? "benchmarks/fixtures/story-motion-v2"
+      : "benchmarks/fixtures/story-motion",
 );
 const checksum = (bytes: Uint8Array | string) =>
   `sha256:${createHash("sha256").update(bytes).digest("hex")}`;
 await writeArtwork();
 const assets = Object.entries(
-  values.prototype ? { ...artwork, ...motionArtwork } : artwork,
+  continuous ? { ...artwork, ...motionArtwork } : artwork,
 )
   .map(([id, source]) => ({
     id,
