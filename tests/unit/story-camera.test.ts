@@ -61,6 +61,29 @@ describe("story camera", () => {
         sampleStoryCamera(scene, f - 1).x,
       );
   });
+  it("keeps authored endpoint tangents inside monotone camera bounds", () => {
+    const raw = input();
+    const scene = StorySceneSchema.parse({
+      ...raw,
+      camera: {
+        ...raw.camera,
+        keys: [
+          { frame: 0, x: 960, y: 540, zoom: 1 },
+          { frame: 191, x: 960, y: 540, zoom: 1.01 },
+        ],
+        easeIn: false,
+        easeOut: false,
+        startTangent: { x: 0, y: 0, zoom: -1 },
+        endTangent: { x: 0, y: 0, zoom: -1 },
+      },
+    });
+    const zooms = Array.from(
+      { length: 192 },
+      (_, frame) => sampleStoryCamera(scene, frame).zoom,
+    );
+    expect(Math.min(...zooms)).toBeGreaterThanOrEqual(1);
+    expect(Math.max(...zooms)).toBeLessThanOrEqual(1.01);
+  });
   it("projects depth zero identically and connectors through each root", () => {
     const scene = compileStoryScene(StorySceneSchema.parse(input()));
     expect(projectStoryPoint(scene, "paper", [28, 40], 100)).toEqual([28, 40]);

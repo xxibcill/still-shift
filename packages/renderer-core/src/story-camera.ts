@@ -25,6 +25,10 @@ function cameraCurves(camera: Camera) {
         if (left * right <= 0) return 0;
         return (left + right) / 2;
       });
+      // Authored handoff velocities must obey the same monotonicity limits.
+      if (camera.startTangent) tangents[0] = camera.startTangent[axis];
+      if (camera.endTangent)
+        tangents[tangents.length - 1] = camera.endTangent[axis];
       // Fritsch–Carlson limits each interval without reversing its monotone direction.
       slopes.forEach((slope, i) => {
         if (slope === 0) {
@@ -32,6 +36,8 @@ function cameraCurves(camera: Camera) {
           tangents[i + 1] = 0;
           return;
         }
+        if (tangents[i]! / slope < 0) tangents[i] = 0;
+        if (tangents[i + 1]! / slope < 0) tangents[i + 1] = 0;
         const a = tangents[i]! / slope,
           b = tangents[i + 1]! / slope;
         const radius = Math.hypot(a, b);
@@ -40,9 +46,6 @@ function cameraCurves(camera: Camera) {
           tangents[i + 1] = (3 * b * slope) / radius;
         }
       });
-      if (camera.startTangent) tangents[0] = camera.startTangent[axis];
-      if (camera.endTangent)
-        tangents[tangents.length - 1] = camera.endTangent[axis];
       return [axis, { frames, values, tangents }];
     }),
   ) as Record<Axis, Curve>;
