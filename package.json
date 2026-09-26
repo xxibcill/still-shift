@@ -37,7 +37,7 @@
     "schema:check": "tsx scripts/generate-corpus-schema.ts --check",
     "schema:generate": "tsx scripts/generate-corpus-schema.ts",
     "still-shift": "tsx tools/still-shift-cli/src/cli.ts",
-    "test": "pnpm test:unit && pnpm test:integration && pnpm test:depth && pnpm test:browser:depth && pnpm test:browser:export && pnpm test:golden && pnpm test:browser:cli && pnpm test:browser:batch && pnpm test:browser:illustrated && pnpm test:browser:cinematic && pnpm test:browser:threshold && pnpm test:browser:lateral && pnpm test:browser:reveal && pnpm test:browser:story && pnpm test:browser:commerce",
+    "test": "pnpm test:unit && pnpm test:integration && pnpm test:depth && pnpm test:browser:depth && pnpm test:browser:export && pnpm test:golden && pnpm test:browser:cli && pnpm test:browser:batch && pnpm test:browser:illustrated && pnpm test:browser:cinematic && pnpm test:browser:threshold && pnpm test:browser:lateral && pnpm test:browser:reveal && pnpm test:browser:story && pnpm test:browser:commerce && pnpm test:browser:commerce-components && pnpm test:browser:commerce-effects && pnpm test:browser:commerce-spatial",
     "test:browser:illustrated": "node --import tsx tests/browser/illustrated.ts",
     "test:browser:batch": "tsx tests/browser/batch-cli.ts",
     "test:browser:depth": "tsx tests/browser/depth-motion.ts",
@@ -59,7 +59,11 @@
     "story:compare": "node --import tsx scripts/compare-story-demos.ts",
     "test:browser:story": "node --import tsx tests/browser/story.ts",
     "commerce:prepare": "node --import tsx scripts/create-commerce-demos.ts",
-    "test:browser:commerce": "node --import tsx tests/browser/commerce.ts"
+    "test:browser:commerce": "node --import tsx tests/browser/commerce.ts",
+    "commerce:components:prepare": "node --import tsx scripts/create-commerce-components.ts",
+    "test:browser:commerce-components": "node --import tsx tests/browser/commerce-components.ts",
+    "test:browser:commerce-effects": "node --import tsx tests/browser/commerce-effects.ts",
+    "test:browser:commerce-spatial": "node --import tsx tests/browser/commerce-spatial.ts"
   },
   "devDependencies": {
     "@eslint/js": "9.39.5",

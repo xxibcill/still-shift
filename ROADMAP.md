@@ -56,6 +56,8 @@ output shapes, English/Thai typography, editable briefs and MP4/source downloads
 Technical fixtures are verified; real-product creative proof remains pending.
 This branch tracks v0.14 as active; v0.13 episode integration is retained and deferred here.
 
+**Commerce component foundation:** The [atomic component plan](./docs/ecommerce-atomic-components-plan.md) defines the next seven implementation tasks and supersedes ad-hoc selection of the next effect. AC-01–07 are complete; the [implementation evidence](./docs/ecommerce-atomic-components-implementation.md) records 12 examples, composed exports and regression coverage. The accepted palm-up Production format remains the regression baseline.
+
 ## Phase 0 outcome
 
 Prove that Still Shift can turn a representative batch of explainer-video stills into varied, deterministic 3–8 second MP4 footage with minimal manual repair and substantially lower cost than generative video.

@@ -1,3 +1,4 @@
+import { applyCommerceEffectMotion } from "./commerce-effect-motion.ts";
 import type { CommerceScene } from "../../scene-contract/src/commerce.ts";
 import {
   compileCommerceScene,
@@ -308,6 +309,22 @@ export function evaluatePreparedNode(
     frame >= scene.timeline.frameCount
   )
     throw new Error("Frame index outside illustrated timeline");
+  return evaluatePreparedNodeAtTime(scene, node, frame);
+}
+
+/** Continuous commerce sampling for exposure; public render/seek remains integer-frame. */
+export function evaluatePreparedNodeAtTime(
+  scene: IllustratedScene,
+  node: PreparedNode,
+  frame: number,
+): Record<Property, number> {
+  if (
+    !Number.isFinite(frame) ||
+    frame < 0 ||
+    frame > scene.timeline.frameCount - 1 ||
+    (scene.schemaVersion !== "commerce-scene-1" && !Number.isInteger(frame))
+  )
+    throw new Error("Sample time outside illustrated timeline");
   const time =
     scene.schemaVersion === "story-scene-1" ||
     scene.schemaVersion === "commerce-scene-1"
@@ -353,5 +370,21 @@ export function evaluatePreparedNode(
     state.x = x + path.x - node.width / 2;
     state.y = y + path.y - node.height / 2;
   }
+  if (scene.schemaVersion === "commerce-scene-1") {
+    const visibility = scene.visibility?.find((v) => v.target === node.id);
+    if (visibility && (frame < visibility.start || frame >= visibility.end))
+      state.opacity = 0;
+  }
+  if (scene.schemaVersion === "commerce-scene-1" && scene.effects?.length)
+    return applyCommerceEffectMotion(
+      state,
+      node.id,
+      scene.effects,
+      frame,
+      (id) => {
+        const source = scene.nodes.find((item) => item.id === id)!;
+        return evaluatePreparedNodeAtTime(scene, source, frame).y;
+      },
+    );
   return state;
 }

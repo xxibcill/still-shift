@@ -1,3 +1,11 @@
+import { buildPath } from "./commerce-path.ts";
+import { buildTextBlock } from "./commerce-text.ts";
+import {
+  buildTranslateMotion,
+  buildFadeMotion,
+  buildPathDrawMotion,
+} from "./commerce-motion.ts";
+import { commerceFormatRegistration } from "../../scene-contract/src/commerce-library.ts";
 import {
   PreparedNodeSchema,
   type PreparedNode,
@@ -15,10 +23,12 @@ import { requireCommerceCapability } from "../../scene-contract/src/commerce-lib
 import { createFrameTracks } from "./frame-tracks.ts";
 import type { Tracks } from "./prepared-scene.ts";
 
+import { buildCommerceFloating } from "./commerce-floating.ts";
+
 type Box = { x: number; y: number; width: number; height: number };
 type Point = [number, number];
 export type CommerceRenderScene = CommerceScene & {
-  rendererVersion: "commerce-canvas-0.14.0";
+  rendererVersion: "commerce-canvas-0.16.0";
   durationMs: number;
   canvas: { width: number; height: number };
   timeline: { fps: number; durationMs: number; frameCount: number };
@@ -161,29 +171,6 @@ function resolveTiming(brief: CommerceBrief, calloutCount: number) {
   return timing;
 }
 
-function crossesRegion(
-  a: Point,
-  b: Point,
-  r: [number, number, number, number],
-) {
-  const [x, y, w, h] = r;
-  if (a[0] === b[0])
-    return (
-      a[0] > x &&
-      a[0] < x + w &&
-      Math.max(a[1], b[1]) > y &&
-      Math.min(a[1], b[1]) < y + h
-    );
-  if (a[1] === b[1])
-    return (
-      a[1] > y &&
-      a[1] < y + h &&
-      Math.max(a[0], b[0]) > x &&
-      Math.min(a[0], b[0]) < x + w
-    );
-  return false;
-}
-
 function calloutPoints(
   box: Box,
   image: Box,
@@ -220,6 +207,8 @@ export function buildCommerceScene(
   const brief = CommerceBriefSchema.parse(value);
   const capability = requireCommerceCapability(brief.selection);
   const preset = capability.implementation!;
+  if (brief.artDirection === "floating")
+    return buildCommerceFloating(brief, assets);
   const usesCallouts = preset === "H04" || preset === "A01";
   if (
     (preset !== "H03" || brief.artDirection === "studio") &&
@@ -263,16 +252,27 @@ export function buildCommerceScene(
     end: number,
     to: number,
     from?: number,
-  ) =>
-    events.push({
-      node,
-      property,
-      start,
-      end,
-      to,
-      easing: "out-cubic",
-      ...(from === undefined ? {} : { from }),
-    });
+  ) => {
+    const window = { target: node, start, end };
+    const endpoint = { to, ...(from === undefined ? {} : { from }) };
+    if (property === "opacity")
+      events.push(...buildFadeMotion(brief, { ...window, ...endpoint }));
+    else if (property === "x" || property === "y")
+      events.push(
+        ...buildTranslateMotion(brief, { ...window, [property]: endpoint }),
+      );
+    else if (property === "reveal")
+      events.push(...buildPathDrawMotion(brief, { ...window, ...endpoint }));
+    else
+      events.push({
+        node,
+        property,
+        start,
+        end,
+        ...endpoint,
+        easing: "out-cubic",
+      });
+  };
   const text = (
     id: string,
     content: string,
@@ -281,20 +281,18 @@ export function buildCommerceScene(
     color: string,
     maxLines = 3,
   ) =>
-    add({
-      type: "text",
-      id,
-      text: content,
-      ...box,
-      fontSize: size,
-      color,
-      fontAsset: assets.font.id,
-      textBox: {
+    nodes.push(
+      ...buildTextBlock({
+        id,
+        text: content,
+        box,
+        font: assets.font,
         locale: brief.locale,
+        fontSize: size,
+        color,
         maxLines,
-        lineHeight: brief.locale === "th" ? 1.5 : 1.28,
-      },
-    });
+      }).nodes!,
+    );
   const enter = (id: string, start: number, end: number) =>
     event(id, "opacity", start, end, 1, 0);
   const exit = (id: string, start: number, end: number) =>
@@ -375,23 +373,20 @@ export function buildCommerceScene(
         index,
         brief.profile === "portrait",
       );
-      if (
-        points
-          .slice(1)
-          .some((point, i) => crossesRegion(points[i]!, point, protectedRegion))
-      )
-        throw new Error(
-          "Callout " +
-            (index + 1) +
-            " crosses the protected product label; choose another target",
-        );
-      add({
-        type: "path",
-        id: pathId,
-        points,
-        stroke: brief.theme.accent,
-        lineWidth: 3,
-      });
+      nodes.push(
+        ...buildPath({
+          id: pathId,
+          points,
+          stroke: brief.theme.accent,
+          lineWidth: 3,
+          protectedRegion: {
+            x: protectedRegion[0],
+            y: protectedRegion[1],
+            width: protectedRegion[2],
+            height: protectedRegion[3],
+          },
+        }).nodes!,
+      );
       text(labelId, callout.text, box, layout.calloutSize, brief.theme.ink);
       const start = Math.round(
         timing.bodyStart + (index * (timing.closeStart - timing.bodyStart)) / 2,
@@ -430,6 +425,11 @@ export function buildCommerceScene(
     recipe: { preset },
     provenance: brief.product.provenance,
     metadata: {
+      registration: commerceFormatRegistration(
+        brief.selection,
+        brief.artDirection,
+        brief.profile,
+      ),
       catalogVersion: brief.catalogVersion,
       selection: brief.selection,
       profile: brief.profile,
@@ -461,7 +461,7 @@ export function compileCommerceScene(
   const durationMs = (input.frameCount * 1000) / input.fps;
   return {
     ...input,
-    rendererVersion: "commerce-canvas-0.14.0",
+    rendererVersion: "commerce-canvas-0.16.0",
     durationMs,
     canvas: { width: input.width, height: input.height },
     timeline: { fps: input.fps, frameCount: input.frameCount, durationMs },

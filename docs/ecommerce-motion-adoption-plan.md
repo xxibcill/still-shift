@@ -96,6 +96,8 @@ For Thai, animate complete phrases or words; do not split combining marks into s
 
 ## Technique adoption order
 
+**Superseded for future work:** the user requested an atomic component foundation on 2026-09-26. Follow the [component implementation queue](ecommerce-atomic-components-plan.md) before expanding catalog techniques. The table below preserves the original adoption assessment.
+
 The pack assigns one primary technique to each format. The table identifies reusable mechanics; it does not promise that implementing a technique automatically implements every associated format.
 
 | Technique                  | Catalog formats                   | Adoption decision                                                                                                                                                                                  |

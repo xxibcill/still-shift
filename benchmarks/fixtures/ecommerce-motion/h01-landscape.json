@@ -181,6 +181,9 @@
     }
   ],
   "metadata": {
+    "registration": {
+      "status": "experimental"
+    },
     "catalogVersion": "1.0",
     "selection": {
       "kind": "format",

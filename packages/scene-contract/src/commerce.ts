@@ -1,3 +1,12 @@
+import {
+  CommerceGeometrySchema,
+  CommerceAttachmentSchema,
+  CommerceMatteSchema,
+  CommerceVisibilitySchema,
+  CommerceTextFitSchema,
+  validateCommerceSpatial,
+} from "./commerce-spatial.ts";
+import { CommerceEffectSchema } from "./commerce-effects.ts";
 import { z } from "zod";
 import {
   PreparedSceneFieldsSchema,
@@ -49,8 +58,8 @@ export const CommerceBriefSchema = z
       .strict(),
     copy: z
       .object({
-        headlines: z.array(text.max(300)).min(1).max(3),
-        cta: text.max(120),
+        headlines: z.array(text.max(300)).max(3),
+        cta: z.string().trim().max(120),
         source: text,
         callouts: z
           .array(
@@ -68,8 +77,21 @@ export const CommerceBriefSchema = z
       .strict(),
     profile: CommerceProfileSchema,
     artDirection: z
-      .enum(["standard", "editorial", "studio"])
+      .enum(["standard", "editorial", "studio", "floating"])
       .default("standard"),
+    floating: z
+      .object({
+        imagePath: text,
+        provenance: text,
+        placement: z.tuple([
+          finite.min(-1).max(1),
+          finite.min(-1).max(1),
+          finite.positive().max(2),
+        ]),
+        palmTop: finite.min(0.5).max(1),
+      })
+      .strict()
+      .optional(),
     fps: z.union([z.literal(24), z.literal(30)]),
     frameCount: frame.positive().max(108000),
     safeInset: finite.min(0.03).max(0.1).default(0.055),
@@ -94,6 +116,14 @@ export const CommerceBriefSchema = z
   })
   .strict()
   .superRefine((brief, ctx) => {
+    if (
+      brief.artDirection !== "floating" &&
+      (!brief.copy.headlines.length || !brief.copy.cta)
+    )
+      ctx.addIssue({
+        code: "custom",
+        message: "This composition needs a headline and CTA",
+      });
     if (brief.frameCount < brief.fps * 6)
       ctx.addIssue({
         code: "custom",
@@ -134,9 +164,27 @@ const shape = PreparedSceneFieldsSchema.omit({
     fonts: z.array(PreparedFontSchema).min(1).max(12),
     frameCount: frame.positive().max(108000),
     recipe: z.object({ preset: CommercePresetSchema }).strict(),
-    events: z.array(CommerceEventSchema).min(1).max(100),
+    events: z.array(CommerceEventSchema).max(100),
+    effects: z.array(CommerceEffectSchema).max(24).optional(),
+    geometry: z.array(CommerceGeometrySchema).max(32).optional(),
+    attachments: z.array(CommerceAttachmentSchema).max(32).optional(),
+    mattes: z.array(CommerceMatteSchema).max(16).optional(),
+    visibility: z.array(CommerceVisibilitySchema).max(100).optional(),
+    textFits: z.array(CommerceTextFitSchema).max(32).optional(),
     metadata: z
       .object({
+        registration: z
+          .discriminatedUnion("status", [
+            z.object({ status: z.literal("experimental") }).strict(),
+            z
+              .object({
+                status: z.literal("production"),
+                id: text,
+                version: text,
+              })
+              .strict(),
+          ])
+          .default({ status: "experimental" }),
         catalogVersion: z.literal("1.0"),
         selection: CommerceSelectionSchema,
         profile: CommerceProfileSchema,
@@ -159,10 +207,12 @@ export type CommerceScene = z.infer<typeof shape>;
 export type PreparedCommerceAssets = {
   product: CommerceScene["assets"][number];
   font: z.infer<typeof PreparedFontSchema>;
+  backdrop?: CommerceScene["assets"][number];
 };
 export const CommerceSceneSchema = shape.superRefine((scene, ctx) => {
   const fail = (message: string) => ctx.addIssue({ code: "custom", message });
   const { nodes } = validatePreparedGraph(scene, fail);
+  validateCommerceSpatial(scene, fail);
   const profile = COMMERCE_PROFILES[scene.metadata.profile];
   if (scene.width !== profile.width || scene.height !== profile.height)
     fail("Commerce output dimensions must match the layout profile");
@@ -179,6 +229,65 @@ export const CommerceSceneSchema = shape.superRefine((scene, ctx) => {
     if (node.type === "text" && (node.width <= 0 || node.height <= 0))
       fail("Commerce text boxes need positive dimensions");
   }
+  const effectKeys = new Map<string, { start: number; end: number }[]>();
+  for (const effect of scene.effects ?? []) {
+    const key = effect.type + ("target" in effect ? ":" + effect.target : "");
+    const scope = effect.active ?? { start: 0, end: scene.frameCount };
+    if (scope.end <= scope.start || scope.end > scene.frameCount)
+      fail("Effect scope must fit timeline");
+    if (effect.type === "motion-blur" && effect.active)
+      fail("Motion blur must cover the complete scene");
+    const previous = effectKeys.get(key) ?? [];
+    if (previous.some((p) => scope.start < p.end && scope.end > p.start))
+      fail("Duplicate effect " + key);
+    effectKeys.set(key, [...previous, scope]);
+    if ("target" in effect) {
+      const node = scene.nodes.find((node) => node.id === effect.target);
+      if (!node || node.parent)
+        fail("Effects require a root target: " + effect.target);
+      if (effect.type === "displacement") {
+        const descendants = new Set([effect.target]);
+        for (let pass = 0; pass < scene.nodes.length; pass++)
+          for (const child of scene.nodes)
+            if (child.parent && descendants.has(child.parent))
+              descendants.add(child.id);
+        if (
+          scene.nodes.some(
+            (child) =>
+              descendants.has(child.id) &&
+              (child.type === "image" || child.type === "text"),
+          )
+        )
+          fail("Displacement supports background graphics only");
+      }
+    }
+    if (
+      "start" in effect &&
+      (effect.end <= effect.start || effect.end >= scene.frameCount)
+    )
+      fail("Effect window must finish inside the timeline");
+    if (effect.type === "height-shadow") {
+      if (
+        !nodes.has(effect.source) ||
+        scene.nodes.find((node) => node.id === effect.source)?.parent ||
+        effect.source === effect.target ||
+        scene.effects?.some(
+          (other) =>
+            other.type === "height-shadow" && other.target === effect.source,
+        )
+      )
+        fail("Shadow needs an independent source node");
+    }
+    if (effect.type === "light-sweep") {
+      const [x, y, w, h] = effect.region;
+      if (x + w > 1 || y + h > 1) fail("Material region must fit the target");
+    }
+  }
+  if (
+    scene.effects?.length &&
+    scene.metadata.registration.status === "production"
+  )
+    fail("Commerce effects are Experimental");
   for (const event of scene.events) {
     if (!nodes.has(event.node)) fail("Missing event node " + event.node);
     if (event.end <= event.start || event.end >= scene.frameCount)

@@ -5,42 +5,37 @@
     "kind": "recipe",
     "id": "A01"
   },
-  "title": "A01 / Studio beauty / 4:5",
+  "title": "A01 / Floating above an open palm / 4:5",
   "locale": "en",
   "product": {
-    "id": "beauty-cutout-v1",
-    "name": "SAMPLE 01 / STUDIO COLLECTION",
-    "imagePath": "../../../assets/ecommerce-motion/beauty-cutout-v1.png",
+    "id": "beauty-floating-product-v1",
+    "name": "SAMPLE 01",
+    "imagePath": "../../../assets/ecommerce-motion/beauty-floating-product-v1.png",
     "preparation": "cutout",
-    "provenance": "AI-generated product-and-hand cutout made with the built-in image model; fictional SAMPLE 01.",
-    "protectedRegion": [0.32, 0.33, 0.25, 0.16]
+    "provenance": "AI-generated fictional SAMPLE 01 demonstration bottle. Cap, body and label are one intact source PNG. Real products use an approved intact cutout without generative alteration.",
+    "protectedRegion": [0.37, 0.43, 0.255, 0.165]
   },
   "copy": {
-    "headlines": ["A small\ndaily ritual."],
-    "cta": "Explore the collection",
-    "source": "Original demonstration copy; fictional product concept with no efficacy claims.",
-    "callouts": [
-      {
-        "text": "Brushed cap",
-        "target": [0.42, 0.12],
-        "source": "Visible brushed finish on the generated SAMPLE 01 cap."
-      },
-      {
-        "text": "Tinted glass",
-        "target": [0.3, 0.56],
-        "source": "Visible tint of the generated SAMPLE 01 bottle; no efficacy claim."
-      }
-    ]
+    "headlines": [],
+    "cta": "",
+    "source": "No overlay copy.",
+    "callouts": []
   },
   "profile": "feed",
   "fps": 30,
   "frameCount": 300,
-  "artDirection": "studio",
+  "artDirection": "floating",
   "safeInset": 0.065,
   "theme": {
     "background": "#EBE0CD",
-    "ink": "#283E30",
-    "accent": "#584832",
+    "ink": "#FCF3E2",
+    "accent": "#283E30",
     "muted": "#5D5A48"
+  },
+  "floating": {
+    "imagePath": "../../../assets/ecommerce-motion/beauty-floating-palm-v1.png",
+    "provenance": "AI-generated palm-up hand and empty background, produced independently from the product. No product is present in this source.",
+    "placement": [0.275, 0.12, 0.55],
+    "palmTop": 0.71
   }
 }

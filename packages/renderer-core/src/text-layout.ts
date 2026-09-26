@@ -4,6 +4,7 @@ export type TextLayout = {
   lines: string[];
   lineHeight: number;
   baseline: number;
+  descent: number;
 };
 
 export function measureTextLayout(
@@ -57,5 +58,5 @@ export function measureTextLayout(
         node.id +
         "; shorten the copy or choose a larger layout",
     );
-  return { lines, lineHeight, baseline: ascent };
+  return { lines, lineHeight, baseline: ascent, descent };
 }

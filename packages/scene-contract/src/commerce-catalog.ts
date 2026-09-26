@@ -122,6 +122,22 @@ const capability = z
 export const CommerceCapabilitiesSchema = z
   .object({
     catalogVersion: z.literal("1.0"),
+    defaultStage: z.literal("experimental"),
+    productionFormats: z.array(
+      z
+        .object({
+          id: text,
+          version: text,
+          name: text,
+          selection: CommerceSelectionSchema,
+          artDirection: z.literal("floating"),
+          profile: z.literal("feed"),
+          fixture: text,
+          requirements: z.array(text).min(1),
+          invariants: z.array(text).min(1),
+        })
+        .strict(),
+    ),
     formats: z.array(capability),
     recipes: z.array(capability),
   })
@@ -151,6 +167,35 @@ export function validateCommerceCapabilities(
     }
     for (const id of expected)
       if (!seen.has(id)) errors.push("Missing capability " + id);
+  }
+  const registrations = new Set<string>();
+  const scopes = new Set<string>();
+  for (const registration of capabilities.productionFormats) {
+    const scope = [
+      registration.selection.kind,
+      registration.selection.id,
+      registration.artDirection,
+      registration.profile,
+    ].join(":");
+    const rows =
+      registration.selection.kind === "format"
+        ? capabilities.formats
+        : capabilities.recipes;
+    const implementation = rows.find(
+      (row) => row.id === registration.selection.id,
+    );
+    if (registrations.has(registration.id) || scopes.has(scope))
+      errors.push("Duplicate production registration " + registration.id);
+    if (
+      !implementation?.implementation ||
+      !implementation.profiles.includes(registration.profile)
+    )
+      errors.push(
+        "Production registration requires implemented profile support: " +
+          registration.id,
+      );
+    registrations.add(registration.id);
+    scopes.add(scope);
   }
   return errors;
 }

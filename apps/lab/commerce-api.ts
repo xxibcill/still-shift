@@ -137,24 +137,38 @@ export const commerceApi = (): Plugin => {
           return;
         }
         const asset =
-          /^\/commerce\/assets\/(sample-one\.png|sample-two\.png|beauty-editorial-v1\.png|beauty-cutout-v1\.png|noto-sans-thai\.ttf|OFL\.txt)$/.exec(
+          /^\/commerce\/assets\/(sample-one\.png|sample-two\.png|beauty-editorial-v1\.png|beauty-cutout-v1\.png|beauty-floating-palm-v1\.png|beauty-floating-product-v1\.png|noto-sans-thai\.ttf|OFL\.txt)$/.exec(
             url.pathname,
           );
         const fixture =
           /^\/commerce\/scenes\/((?:(?:h03|h01|h04|a01)-beauty-feed|(?:h03|h01|h04|a01)-(?:landscape|portrait|square|thai|feed))(?:\.brief)?\.json)$/.exec(
             url.pathname,
           );
-        const file = asset
+        const component =
+          /^\/commerce\/components\/((?:product|background|shadow|panel|text|path|float|translate|fade|studio|introduction|callout)(?:\.demo)?\.json|catalog\.json|shadow-preparation\.json|assets\/product-shadow\.png)$/.exec(
+            url.pathname,
+          );
+        const file = component
           ? resolve(
               root,
-              "assets/ecommerce-motion",
-              ["noto-sans-thai.ttf", "OFL.txt"].includes(asset[1]!)
-                ? "fonts/" + asset[1]
-                : asset[1]!,
+              "benchmarks/fixtures/ecommerce-motion/atoms",
+              component[1]!,
             )
-          : fixture
-            ? resolve(root, "benchmarks/fixtures/ecommerce-motion", fixture[1]!)
-            : undefined;
+          : asset
+            ? resolve(
+                root,
+                "assets/ecommerce-motion",
+                ["noto-sans-thai.ttf", "OFL.txt"].includes(asset[1]!)
+                  ? "fonts/" + asset[1]
+                  : asset[1]!,
+              )
+            : fixture
+              ? resolve(
+                  root,
+                  "benchmarks/fixtures/ecommerce-motion",
+                  fixture[1]!,
+                )
+              : undefined;
         if (!file) {
           response.statusCode = 404;
           response.end("Commerce asset not found");

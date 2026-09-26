@@ -2,10 +2,20 @@
 
 **Updated:** 2026-09-26
 
-**Milestone:** v0.14 · Commerce fixtures and workbench implemented; real-product proof pending.
+**Milestone:** v0.14 · Palm-up Product Float v1.0 registered as Production by the user; all other treatments are Experimental.
 
 **Branch:** codex/ecommerce-motion-library, based on codex/v0.10-evaluation-release.
 **Plan:** [Adoption plan](ecommerce-motion-adoption-plan.md).
+
+**Component foundation:** [AC-01–07 implemented and verified](ecommerce-atomic-components-implementation.md); [standing queue](ecommerce-atomic-components-plan.md).
+
+## Format registration
+
+The user designated **Palm-up Product Float v1.0** as the sole Production format on 2026-09-26. Its stable ID is `palm-up-product-float`; its exact scope is A01 + `floating` + `feed` (1080×1350 / 4:5). Its contract preserves one intact approved product cutout, a stationary palm-up background and camera, a no-contact gap and a gentle vertical hover without copy or additional actions.
+
+The [capability registry](../catalogs/ecommerce-motion/capabilities.json) records this registration and defaults every other treatment to Experimental. Other A01 compositions are Experimental too. Experimental catalog entries with no renderer also retain the Reference only indicator; classification does not imply implementation.
+
+The workbench shows the Production format first, provides Production and Experimental filters, and loads its dedicated example when selected. The selection badge reflects the actual composition and profile. Prepared scenes, source bundles and the fixture catalog carry the registration status and, for Production, its stable ID and version.
 
 ## Available now
 
@@ -20,13 +30,15 @@ The Commerce workbench imports 40 formats, 12 techniques, eight recipes and 16 r
 
 All four support landscape 1920×1080, portrait 1080×1920, square 1080×1080 and 4:5 portrait 1080×1350, at 24 or 30 fps. Coverage is **3/40 formats and 1/8 recipes**, across sixteen selection/profile combinations. The other 37 formats and seven recipes are reference only. P08 does not acquire 3D turntable support from a 2D orbit demo.
 
+A01 also supports a `floating` composition: one intact product cutout hovers above a separate, stationary palm-up photograph. It uses no overlay copy and never decomposes the product. See the [basic float and product-consistency contract](ecommerce-4x5-example.md#a01-basic-palm-up-float).
+
 The two bundled hand-and-container illustrations and the generated editorial product photograph are fictional technical fixtures. The [4:5 examples](ecommerce-4x5-example.md) demonstrate the built-in image model with editable ad copy across H03, H01, H04 and A01; format selection loads the matching photograph or cutout. They establish rendering behavior and reuse with different inputs. They do not establish real-product quality or sales results.
 
 ## Workbench
 
 Run **pnpm lab** in this checkout and open [Commerce](http://127.0.0.1:4173/commerce.html).
 
-1. Choose a ready format. Search, category and availability filters expose the full reference catalog.
+1. Choose Production for Palm-up Product Float, or browse Experimental treatments. Reference-only entries remain unavailable for rendering.
 2. Upload a PNG, JPEG or WebP under 20 MB. Add a headline, CTA and sources.
 3. Set the output shape, duration and frame rate. Declare whether the image is a photo or prepared transparent cutout.
 4. Set the protected label region as fractions of the image: x, y, width, height. H04/A01 also need two callout targets and sources.
@@ -107,3 +119,7 @@ The fixture kit and layouts were authored once. One shared safe-inset correction
 Final local run: **13 clips / 110 seconds of footage**, **59.44 seconds total render wall time**, median **4.42 seconds per clip** (range 3.62–5.42 s), or **1.85× real time** in aggregate. One H03 CLI preparation took **0.48 seconds including Node startup**, with an existing PNG; this excludes image authoring and cutout preparation. Measured on Apple M5 Pro, Node 22.23.1, Chromium 151 and FFmpeg 8.0.1. These are local fixture observations, not production cost estimates. See [metrics JSON](../benchmarks/results/ecommerce-motion/commerce-metrics.json).
 
 The next candidate remains **T02 Pop / Overshoot**, followed by **T11 Card Stack**. First use a real product to measure preparation effort, label fidelity and operator feedback. Add H05/A02 when offer fields and the full sequence are available. Multi-image variants, actual 3D, segmentation and audio remain future work.
+
+## Reusable Product Float component
+
+The palm-up format now composes the reusable [Product Float](product-float.md) component with a stationary background. The component owns the intact product image, aspect-preserving placement and vertical loop. The format owns the canvas, hand clearance, source attribution and Production registration. Extraction preserves the existing production scene's product nodes and motion events exactly.

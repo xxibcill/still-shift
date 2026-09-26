@@ -35,7 +35,25 @@ export async function prepareCommerceFile(
     const dimensions = imageSize(image);
     if (!dimensions.width || !dimensions.height)
       throw new Error("Product image has invalid dimensions");
+    const backdropPath = brief.floating
+      ? resolve(dirname(absoluteBrief), brief.floating.imagePath)
+      : undefined;
+    const backdropBytes = backdropPath
+      ? await readFile(backdropPath)
+      : undefined;
+    const backdropSize = backdropBytes ? imageSize(backdropBytes) : undefined;
     const scene = buildCommerceScene(brief, {
+      ...(backdropBytes && backdropSize && backdropPath
+        ? {
+            backdrop: {
+              id: "backdrop-image",
+              path: relative(dirname(absoluteOutput), backdropPath),
+              sha256: sha256(backdropBytes),
+              width: backdropSize.width,
+              height: backdropSize.height,
+            },
+          }
+        : {}),
       product: {
         id: "product-image",
         path: relative(dirname(absoluteOutput), productPath),

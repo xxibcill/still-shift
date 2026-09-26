@@ -30,3 +30,28 @@ export function requireCommerceCapability(selection: CommerceSelection) {
     );
   return capability;
 }
+
+export function productionCommerceFormat(selection: CommerceSelection) {
+  return commerceCapabilities.productionFormats.find(
+    (entry) =>
+      entry.selection.kind === selection.kind &&
+      entry.selection.id === selection.id,
+  );
+}
+
+export function commerceFormatRegistration(
+  selection: CommerceSelection,
+  artDirection: string,
+  profile: string,
+) {
+  const format = commerceCapabilities.productionFormats.find(
+    (entry) =>
+      entry.selection.kind === selection.kind &&
+      entry.selection.id === selection.id &&
+      entry.artDirection === artDirection &&
+      entry.profile === profile,
+  );
+  return format
+    ? { status: "production" as const, id: format.id, version: format.version }
+    : { status: commerceCapabilities.defaultStage };
+}

@@ -1,0 +1,145 @@
+.component-description {
+  margin: -10px 0 25px;
+  max-width: 620px;
+  color: #64705d;
+  line-height: 1.7;
+}
+.component-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(230px, 290px);
+  gap: 30px;
+  align-items: start;
+}
+.component-view {
+  min-width: 0;
+}
+.component-layout .preview-stage {
+  background: #e3e2d8;
+  padding: 0;
+  max-height: none;
+}
+.component-layout .preview-stage canvas {
+  max-height: 640px;
+  width: 100%;
+  object-fit: contain;
+  box-shadow: none;
+}
+#component-form {
+  border-left: 1px solid #c9d0bf;
+  padding-left: 25px;
+}
+#component-form h3 {
+  font-size: 17px;
+  margin: 0 0 20px;
+}
+#component-form fieldset {
+  margin: 0 0 24px;
+  padding-top: 12px;
+}
+#component-form .form-grid {
+  gap: 12px;
+}
+#component-form input[type="color"] {
+  height: 42px;
+  padding: 6px;
+}
+#component-catalog {
+  max-height: calc(100vh - 280px);
+}
+#component-catalog .format {
+  grid-template-columns: 1fr;
+}
+#component-catalog .format small {
+  grid-column: 1;
+}
+#component-form .actions {
+  padding-top: 12px;
+}
+#component-form .actions button {
+  width: 100%;
+}
+@media (max-width: 1200px) {
+  .component-layout {
+    grid-template-columns: 1fr;
+  }
+  #component-form {
+    border-left: 0;
+    padding-left: 0;
+  }
+}
+@media (max-width: 850px) {
+  #component-catalog {
+    max-height: 190px;
+  }
+  .component-layout .preview-stage canvas {
+    max-height: 580px;
+  }
+}
+@media (max-width: 420px) {
+  .masthead nav a:first-child {
+    display: inline;
+  }
+  .masthead {
+    align-items: start;
+  }
+  .masthead nav {
+    flex-direction: column;
+    gap: 6px;
+  }
+}
+
+.comparison {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 16px;
+}
+.comparison.comparing {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.comparison figure {
+  margin: 0;
+  min-width: 0;
+}
+.comparison figure[hidden],
+[hidden] {
+  display: none !important;
+}
+.comparison figcaption {
+  font-size: 13px;
+  color: #52634b;
+  margin-bottom: 9px;
+}
+.compare-control,
+.check-label {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin-bottom: 18px;
+  font-size: 13px;
+}
+.compare-control input,
+.check-label input {
+  width: 17px;
+  height: 17px;
+  margin: 0;
+}
+@media (max-width: 600px) {
+  .comparison.comparing {
+    gap: 8px;
+  }
+}
+
+.compare-control,
+.check-label {
+  flex-direction: row;
+  justify-content: flex-start;
+}
+.catalog-filter {
+  margin: 18px 0;
+  font-size: 13px;
+}
+
+.compare-control input,
+.check-label input {
+  accent-color: #31563f;
+}

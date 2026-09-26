@@ -1,0 +1,13 @@
+{
+  "generator": "Built-in image_gen tool",
+  "dimensions": [
+    1122,
+    1402
+  ],
+  "sha256": "0c832682d129412b2fcd1b726e92275dc0dcbe12f1231d23c18efb3318b49e9c",
+  "prompt": "beauty-floating-product-v1.prompt.txt",
+  "references": [
+    "beauty-editorial-v1.png"
+  ],
+  "usage": "Fictional demo asset. Real product cutouts must be supplied unchanged."
+}

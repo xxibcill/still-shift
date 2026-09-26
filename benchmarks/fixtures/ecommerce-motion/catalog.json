@@ -1,86 +1,151 @@
 [
   {
     "id": "h03-landscape",
-    "title": "H03 / landscape / illustrated fixture"
+    "title": "H03 / landscape / illustrated fixture",
+    "registration": {
+      "status": "experimental"
+    }
   },
   {
     "id": "h01-landscape",
-    "title": "H01 / landscape / illustrated fixture"
+    "title": "H01 / landscape / illustrated fixture",
+    "registration": {
+      "status": "experimental"
+    }
   },
   {
     "id": "h04-landscape",
-    "title": "H04 / landscape / illustrated fixture"
+    "title": "H04 / landscape / illustrated fixture",
+    "registration": {
+      "status": "experimental"
+    }
   },
   {
     "id": "a01-landscape",
-    "title": "A01 / landscape / illustrated fixture"
+    "title": "A01 / landscape / illustrated fixture",
+    "registration": {
+      "status": "experimental"
+    }
   },
   {
     "id": "h03-portrait",
-    "title": "H03 / portrait / illustrated fixture"
+    "title": "H03 / portrait / illustrated fixture",
+    "registration": {
+      "status": "experimental"
+    }
   },
   {
     "id": "h01-portrait",
-    "title": "H01 / portrait / illustrated fixture"
+    "title": "H01 / portrait / illustrated fixture",
+    "registration": {
+      "status": "experimental"
+    }
   },
   {
     "id": "h04-portrait",
-    "title": "H04 / portrait / illustrated fixture"
+    "title": "H04 / portrait / illustrated fixture",
+    "registration": {
+      "status": "experimental"
+    }
   },
   {
     "id": "a01-portrait",
-    "title": "A01 / portrait / illustrated fixture"
+    "title": "A01 / portrait / illustrated fixture",
+    "registration": {
+      "status": "experimental"
+    }
   },
   {
     "id": "h03-square",
-    "title": "H03 / square / illustrated fixture"
+    "title": "H03 / square / illustrated fixture",
+    "registration": {
+      "status": "experimental"
+    }
   },
   {
     "id": "h01-square",
-    "title": "H01 / square / illustrated fixture"
+    "title": "H01 / square / illustrated fixture",
+    "registration": {
+      "status": "experimental"
+    }
   },
   {
     "id": "h04-square",
-    "title": "H04 / square / illustrated fixture"
+    "title": "H04 / square / illustrated fixture",
+    "registration": {
+      "status": "experimental"
+    }
   },
   {
     "id": "a01-square",
-    "title": "A01 / square / illustrated fixture"
+    "title": "A01 / square / illustrated fixture",
+    "registration": {
+      "status": "experimental"
+    }
   },
   {
     "id": "h03-feed",
-    "title": "H03 / feed / illustrated fixture"
+    "title": "H03 / feed / illustrated fixture",
+    "registration": {
+      "status": "experimental"
+    }
   },
   {
     "id": "h01-feed",
-    "title": "H01 / feed / illustrated fixture"
+    "title": "H01 / feed / illustrated fixture",
+    "registration": {
+      "status": "experimental"
+    }
   },
   {
     "id": "h04-feed",
-    "title": "H04 / feed / illustrated fixture"
+    "title": "H04 / feed / illustrated fixture",
+    "registration": {
+      "status": "experimental"
+    }
   },
   {
     "id": "a01-feed",
-    "title": "A01 / feed / illustrated fixture"
+    "title": "A01 / feed / illustrated fixture",
+    "registration": {
+      "status": "experimental"
+    }
   },
   {
     "id": "h03-thai",
-    "title": "H03 / Thai / second illustrated fixture"
+    "title": "H03 / Thai / second illustrated fixture",
+    "registration": {
+      "status": "experimental"
+    }
   },
   {
     "id": "h03-beauty-feed",
-    "title": "H03 / Editorial beauty / 4:5"
+    "title": "H03 / Editorial beauty / 4:5",
+    "registration": {
+      "status": "experimental"
+    }
   },
   {
     "id": "h01-beauty-feed",
-    "title": "H01 / Studio beauty / 4:5"
+    "title": "H01 / Studio beauty / 4:5",
+    "registration": {
+      "status": "experimental"
+    }
   },
   {
     "id": "h04-beauty-feed",
-    "title": "H04 / Studio beauty / 4:5"
+    "title": "H04 / Studio beauty / 4:5",
+    "registration": {
+      "status": "experimental"
+    }
   },
   {
     "id": "a01-beauty-feed",
-    "title": "A01 / Studio beauty / 4:5"
+    "title": "A01 / Floating above an open palm / 4:5",
+    "registration": {
+      "status": "production",
+      "id": "palm-up-product-float",
+      "version": "1.0"
+    }
   }
 ]

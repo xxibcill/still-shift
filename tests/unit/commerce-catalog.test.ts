@@ -8,6 +8,7 @@ import {
   commerceCatalog,
   commerceCapabilities,
   requireCommerceCapability,
+  commerceFormatRegistration,
 } from "../../packages/scene-contract/src/commerce-library.ts";
 
 describe("commerce catalog import", () => {
@@ -52,5 +53,60 @@ describe("commerce catalog import", () => {
     expect(
       requireCommerceCapability({ kind: "recipe", id: "A01" }).implementation,
     ).toBe("A01");
+  });
+});
+
+describe("commerce format release registration", () => {
+  it("registers only the approved palm-up 4:5 composition as production", () => {
+    expect(commerceCapabilities.productionFormats).toHaveLength(1);
+    expect(
+      commerceFormatRegistration(
+        { kind: "recipe", id: "A01" },
+        "floating",
+        "feed",
+      ),
+    ).toEqual({
+      status: "production",
+      id: "palm-up-product-float",
+      version: "1.0",
+    });
+    for (const direction of ["standard", "studio", "editorial"])
+      expect(
+        commerceFormatRegistration(
+          { kind: "recipe", id: "A01" },
+          direction,
+          "feed",
+        ),
+      ).toEqual({ status: "experimental" });
+    expect(
+      commerceFormatRegistration(
+        { kind: "recipe", id: "A01" },
+        "floating",
+        "portrait",
+      ),
+    ).toEqual({ status: "experimental" });
+    for (const format of commerceCatalog.formats)
+      expect(
+        commerceFormatRegistration(
+          { kind: "format", id: format.id },
+          "floating",
+          "feed",
+        ),
+      ).toEqual({ status: "experimental" });
+  });
+  it("rejects duplicate production scopes and unimplemented registrations", () => {
+    const duplicate = structuredClone(commerceCapabilities);
+    duplicate.productionFormats.push({
+      ...duplicate.productionFormats[0]!,
+      id: "duplicate",
+    });
+    expect(
+      validateCommerceCapabilities(commerceCatalog, duplicate).join(" "),
+    ).toMatch(/Duplicate production/);
+    const unsupported = structuredClone(commerceCapabilities);
+    unsupported.productionFormats[0]!.selection = { kind: "format", id: "P08" };
+    expect(
+      validateCommerceCapabilities(commerceCatalog, unsupported).join(" "),
+    ).toMatch(/requires implemented/);
   });
 });

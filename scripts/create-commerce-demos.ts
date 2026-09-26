@@ -27,7 +27,15 @@ try {
 } finally {
   await browser.close();
 }
-const entries: { id: string; title: string }[] = [];
+const entries: {
+  id: string;
+  title: string;
+  registration?: {
+    status: "production" | "experimental";
+    id?: string;
+    version?: string;
+  };
+}[] = [];
 for (const profile of ["landscape", "portrait", "square", "feed"]) {
   for (const preset of ["H03", "H01", "H04", "A01"]) {
     const id = preset.toLowerCase() + "-" + profile;
@@ -110,6 +118,13 @@ for (const preset of ["H03", "H01", "H04", "A01"]) {
   await prepareCommerceFile(briefPath, output);
   const brief = JSON.parse(await readFile(briefPath, "utf8"));
   entries.push({ id, title: brief.title });
+}
+
+for (const entry of entries) {
+  const scene = JSON.parse(
+    await readFile(resolve(root, entry.id + ".json"), "utf8"),
+  );
+  entry.registration = scene.metadata.registration;
 }
 
 await writeFile(

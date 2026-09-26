@@ -222,3 +222,86 @@ describe("commerce preparation and exact-frame scenes", () => {
     ).toThrow(/4:5 photo/);
   });
 });
+
+describe("A01 basic floating product", () => {
+  const input = () => ({
+    ...brief(),
+    selection: { kind: "recipe", id: "A01" },
+    profile: "feed",
+    artDirection: "floating",
+    frameCount: 300,
+    copy: { headlines: [], cta: "", source: "No copy", callouts: [] },
+    floating: {
+      imagePath: "palm.png",
+      provenance: "Separate palm",
+      placement: [0.275, 0.12, 0.55],
+      palmTop: 0.71,
+    },
+  });
+  const layers = {
+    ...assets,
+    backdrop: { ...assets.product, id: "palm-image", path: "palm.png" },
+  };
+  it("preserves the whole product asset and keeps it separated from a fixed hand for the entire loop", () => {
+    for (const fps of [24, 30]) {
+      const prepared = buildCommerceScene(
+        { ...input(), fps, frameCount: fps * 10 },
+        layers,
+      );
+      const scene = compilePreparedScene(prepared);
+      const product = prepared.nodes.find((node) => node.id === "product")!;
+      const hand = prepared.nodes.find(
+        (node) => node.id === "palm-background",
+      )!;
+      const original = evaluatePreparedNode(scene, product, 0);
+      const fixedHand = evaluatePreparedNode(scene, hand, 0);
+      expect(prepared.assets[0]).toEqual(assets.product);
+      expect(
+        prepared.nodes.filter((node) => node.type === "text"),
+      ).toHaveLength(0);
+      expect(
+        prepared.nodes.filter((node) => node.parent === "product"),
+      ).toHaveLength(1);
+      for (let frame = 0; frame < prepared.frameCount; frame++) {
+        const state = evaluatePreparedNode(scene, product, frame);
+        expect(state.x).toBe(original.x);
+        expect(state.y).toBeGreaterThanOrEqual(original.y - 18);
+        expect(state.y).toBeLessThanOrEqual(original.y);
+        expect(state.y + product.height + 40).toBeLessThanOrEqual(0.71 * 1350);
+        expect([
+          state.scaleX,
+          state.scaleY,
+          state.opacity,
+          state.rotation,
+        ]).toEqual([1, 1, 1, 0]);
+        expect(evaluatePreparedNode(scene, hand, frame)).toEqual(fixedHand);
+      }
+      expect(
+        evaluatePreparedNode(scene, product, prepared.frameCount - 1),
+      ).toEqual(original);
+    }
+  });
+  it("rejects contact, missing backgrounds and product decomposition inputs", () => {
+    expect(() => buildCommerceScene(input(), assets)).toThrow(
+      /palm-up background/,
+    );
+    expect(() =>
+      buildCommerceScene(
+        {
+          ...input(),
+          floating: { ...input().floating, placement: [0.275, 0.5, 0.55] },
+        },
+        layers,
+      ),
+    ).toThrow(/40 pixels/);
+    expect(() =>
+      buildCommerceScene(
+        { ...input(), product: { ...input().product, preparation: "photo" } },
+        layers,
+      ),
+    ).toThrow(/intact product cutout/);
+    expect(() =>
+      buildCommerceScene({ ...input(), copy: brief().copy }, layers),
+    ).toThrow(/no copy/);
+  });
+});

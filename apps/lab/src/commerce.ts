@@ -6,6 +6,8 @@ import {
 import {
   commerceCatalog,
   commerceCapabilities,
+  commerceFormatRegistration,
+  productionCommerceFormat,
 } from "../../../packages/scene-contract/src/commerce-library.ts";
 import type { CommerceSelection } from "../../../packages/scene-contract/src/commerce-catalog.ts";
 import { buildCommerceScene } from "../../../packages/renderer-core/src/commerce-scene.ts";
@@ -34,6 +36,7 @@ let selection: CommerceSelection = { kind: "format", id: "H03" };
 let draft: CommerceBrief,
   imageBytes: Uint8Array,
   imageName = "sample-one.png";
+let backdropFile: BundleFile | undefined;
 let renderer: ReturnType<typeof createIllustratedPreview> | undefined;
 let active:
   | { scene: CommerceScene; brief: CommerceBrief; files: BundleFile[] }
@@ -122,13 +125,15 @@ const numbers = (text: string) =>
   text.split(",").map((part) => Number(part.trim()));
 
 function readBrief(): CommerceBrief {
-  const callouts = ["H04", "A01"].includes(selection.id)
-    ? [0, 1].map((i) => ({
-        text: value("callout-" + i),
-        target: numbers(value("target-" + i)),
-        source: value("source-" + i),
-      }))
-    : [];
+  const callouts =
+    value("art-direction") !== "floating" &&
+    ["H04", "A01"].includes(selection.id)
+      ? [0, 1].map((i) => ({
+          text: value("callout-" + i),
+          target: numbers(value("target-" + i)),
+          source: value("source-" + i),
+        }))
+      : [];
   const fps = Number(value("fps")),
     duration = Number(value("duration"));
   if (!Number.isFinite(duration) || !Number.isInteger(duration * fps))
@@ -146,14 +151,26 @@ function readBrief(): CommerceBrief {
       preparation: value("preparation"),
       protectedRegion: numbers(value("protected-region")),
     },
-    copy: {
-      headlines: [value("headline")],
-      cta: value("cta"),
-      source: value("copy-source"),
-      callouts,
-    },
+    copy:
+      value("art-direction") === "floating"
+        ? { headlines: [], cta: "", source: "No overlay copy.", callouts: [] }
+        : {
+            headlines: [value("headline")],
+            cta: value("cta"),
+            source: value("copy-source"),
+            callouts,
+          },
     profile: value("profile"),
     artDirection: value("art-direction"),
+    floating:
+      value("art-direction") === "floating"
+        ? {
+            imagePath: backdropFile?.name ?? "missing-palm.png",
+            provenance: value("backdrop-source"),
+            placement: numbers(value("product-placement")),
+            palmTop: Number(value("palm-top")),
+          }
+        : undefined,
     fps,
     frameCount: duration * fps,
     safeInset: Number(value("safe-inset")) / 100,
@@ -170,6 +187,7 @@ async function updatePreview() {
   const nextUrls: string[] = [];
   try {
     const brief = readBrief();
+    renderNotes();
     say("Preparing image, text and timing…");
     const imageUrl = URL.createObjectURL(
       blob(imageBytes, "application/octet-stream"),
@@ -178,7 +196,28 @@ async function updatePreview() {
     const image = new Image();
     image.src = imageUrl;
     await image.decode();
+    const backdropUrl =
+      brief.floating && backdropFile
+        ? URL.createObjectURL(
+            blob(backdropFile.bytes, "application/octet-stream"),
+          )
+        : undefined;
+    let backdropAsset;
+    if (backdropUrl && backdropFile) {
+      nextUrls.push(backdropUrl);
+      const backdrop = new Image();
+      backdrop.src = backdropUrl;
+      await backdrop.decode();
+      backdropAsset = {
+        id: "backdrop-image",
+        path: backdropFile.name,
+        sha256: await checksum(backdropFile.bytes),
+        width: backdrop.naturalWidth,
+        height: backdrop.naturalHeight,
+      };
+    }
     const scene = buildCommerceScene(brief, {
+      ...(backdropAsset ? { backdrop: backdropAsset } : {}),
       product: {
         id: "product-image",
         path: "assets/" + imageName,
@@ -197,7 +236,11 @@ async function updatePreview() {
     nextUrls.push(fontUrl);
     const compiled = compilePreparedScene(scene);
     const images = await loadIllustratedImages(compiled, (id) =>
-      id === "commerce-font" ? fontUrl : imageUrl,
+      id === "commerce-font"
+        ? fontUrl
+        : id === "backdrop-image"
+          ? backdropUrl!
+          : imageUrl,
     );
     if (run !== generation) {
       nextUrls.forEach((url) => URL.revokeObjectURL(url));
@@ -213,6 +256,7 @@ async function updatePreview() {
       files: [
         { name: "assets/" + imageName, bytes: imageBytes },
         { name: "assets/noto-sans-thai.ttf", bytes: fontBytes },
+        ...(brief.floating && backdropFile ? [backdropFile] : []),
       ],
     };
     scrub.max = String(scene.frameCount - 1);
@@ -222,7 +266,9 @@ async function updatePreview() {
     show(
       brief.artDirection === "editorial"
         ? scene.frameCount - 1
-        : Math.floor(scene.frameCount * 0.5),
+        : brief.artDirection === "floating"
+          ? 0
+          : Math.floor(scene.frameCount * 0.5),
     );
     say(
       selection.id +
@@ -252,21 +298,30 @@ function renderCatalog() {
   const entries = allEntries
     .filter((entry) => {
       const implemented = Boolean(capability(entry).implementation);
+      const production = productionCommerceFormat(entry);
       return (
         (!group || entry.group === group) &&
         (!query ||
-          [entry.name, entry.id, entry.search]
+          [entry.name, production?.name ?? "", entry.id, entry.search]
             .join(" ")
             .toLowerCase()
             .includes(query)) &&
         (!availability ||
-          (availability === "ready" ? implemented : !implemented))
+          (availability === "production"
+            ? Boolean(production)
+            : availability === "experimental"
+              ? !production
+              : availability === "ready"
+                ? implemented
+                : !implemented))
       );
     })
     .sort(
       (a, b) =>
+        Number(Boolean(productionCommerceFormat(b))) -
+          Number(Boolean(productionCommerceFormat(a))) ||
         Number(Boolean(capability(b).implementation)) -
-        Number(Boolean(capability(a).implementation)),
+          Number(Boolean(capability(a).implementation)),
     );
   const list = element("catalog");
   list.replaceChildren();
@@ -278,7 +333,7 @@ function renderCatalog() {
     button.setAttribute("aria-pressed", String(selection.id === entry.id));
     for (const [className, content] of [
       ["id", entry.id],
-      ["name", entry.name],
+      ["name", productionCommerceFormat(entry)?.name ?? entry.name],
     ] as const) {
       const span = document.createElement("span");
       span.className = className;
@@ -286,9 +341,11 @@ function renderCatalog() {
       button.append(span);
     }
     const hint = document.createElement("small");
-    hint.textContent = capability(entry).implementation
-      ? "Ready to render"
-      : "Reference only";
+    hint.textContent = productionCommerceFormat(entry)
+      ? "Production · 4:5 palm-up float"
+      : capability(entry).implementation
+        ? "Experimental"
+        : "Experimental · Reference only";
     button.append(hint);
     button.addEventListener("click", () => {
       void selectEntry({ kind: entry.kind, id: entry.id }).catch((error) =>
@@ -315,32 +372,74 @@ function renderNotes() {
   );
   element("selection-id").textContent =
     selection.id + (format ? " / " + format.motion : " / Recipe");
-  element("selection-title").textContent = format?.name ?? recipe!.name;
+  const registered = commerceFormatRegistration(
+    selection,
+    value("art-direction"),
+    value("profile"),
+  );
+  const production =
+    registered.status === "production"
+      ? productionCommerceFormat(selection)
+      : undefined;
+  element("selection-title").textContent =
+    production?.name ?? format?.name ?? recipe!.name;
   const ready = Boolean(capability(selection).implementation);
-  element("support").textContent = ready ? "Ready to render" : "Reference only";
-  element("callouts").hidden = !["H04", "A01"].includes(selection.id);
+  element("support").textContent = production
+    ? "Production · v" + production.version
+    : ready
+      ? "Experimental"
+      : "Experimental · Reference only";
+  element("support").dataset.stage = registered.status;
+  const floating = value("art-direction") === "floating";
+  element("callouts").hidden =
+    floating || !["H04", "A01"].includes(selection.id);
+  element("floating-fields").hidden = !floating;
+  for (const id of ["headline", "cta", "copy-source"]) {
+    const field = input(id);
+    field.closest("label")!.hidden = floating;
+    field.required = !floating;
+  }
+  element("callout-legend").textContent = "Product callouts";
+  element("callout-label-0").textContent = "First callout";
+  element("callout-label-1").textContent = "Second callout";
+  element("callout-help").textContent =
+    "Targets are fractions of the original image: x, y from 0 to 1.";
   const container = element("format-notes");
   container.replaceChildren();
   const table = document.createElement("dl");
-  const notes = format
+  const notes = production
     ? [
-        ["Assets", format.asset],
+        ["Format", production.id + " / v" + production.version],
+        [
+          "Assets",
+          "One approved intact product cutout and a separate palm-up background.",
+        ],
         [
           "Motion",
-          commerceCatalog.techniques.find((t) => t.id === format.motion)!.name,
+          "Stationary hand and camera; gentle vertical product hover.",
         ],
-        ["Hook", format.hook],
-        ["Body", format.body],
-        ["Close", format.close],
-        ["Care", format.care],
+        ["Contract", production.invariants.join(" ")],
       ]
-    : [
-        ["Formats", recipe!.formats],
-        ["Assets", recipe!.assets],
-        ["Hook", recipe!.hook],
-        ["Body", recipe!.body],
-        ["Close", recipe!.close],
-      ];
+    : format
+      ? [
+          ["Assets", format.asset],
+          [
+            "Motion",
+            commerceCatalog.techniques.find((t) => t.id === format.motion)!
+              .name,
+          ],
+          ["Hook", format.hook],
+          ["Body", format.body],
+          ["Close", format.close],
+          ["Care", format.care],
+        ]
+      : [
+          ["Formats", recipe!.formats],
+          ["Assets", recipe!.assets],
+          ["Hook", recipe!.hook],
+          ["Body", recipe!.body],
+          ["Close", recipe!.close],
+        ];
   for (const [key, content] of notes) {
     const term = document.createElement("dt"),
       detail = document.createElement("dd");
@@ -363,6 +462,11 @@ function renderNotes() {
 }
 
 async function selectEntry(next: CommerceSelection) {
+  const production = productionCommerceFormat(next);
+  if (production && exampleFamily !== "beauty") {
+    await loadFixture(production.fixture);
+    return;
+  }
   if (exampleFamily === "beauty" && capability(next).implementation) {
     const fields = [
       "headline",
@@ -373,10 +477,18 @@ async function selectEntry(next: CommerceSelection) {
       "fps",
       "duration",
     ];
-    if (["H04", "A01"].includes(selection.id))
+    if (
+      ["H04", "A01"].includes(selection.id) &&
+      value("art-direction") !== "floating" &&
+      next.id !== "A01"
+    )
       for (const index of [0, 1])
         fields.push("callout-" + index, "source-" + index, "target-" + index);
-    const preserved = Object.fromEntries(fields.map((id) => [id, value(id)]));
+    const preserved = Object.fromEntries(
+      fields
+        .map((id) => [id, value(id)])
+        .filter(([, content]) => content !== ""),
+    );
     if (next.id === "A01" && Number(preserved.duration) < 10)
       preserved.duration = "10";
     await loadFixture(next.id.toLowerCase() + "-beauty-feed", preserved);
@@ -417,6 +529,10 @@ function fillForm(brief: CommerceBrief) {
     "copy-source": brief.copy.source,
     "protected-region": brief.product.protectedRegion.join(", "),
     "safe-inset": brief.safeInset * 100,
+    "backdrop-source": brief.floating?.provenance ?? "",
+    "product-placement":
+      brief.floating?.placement.join(", ") ?? "0.3, 0.2, 0.4",
+    "palm-top": brief.floating?.palmTop ?? 0.74,
   }))
     set(id, content);
   const callouts = brief.copy.callouts.length
@@ -452,7 +568,16 @@ async function loadFixture(
   const brief = CommerceBriefSchema.parse(await briefResponse.json());
   const filename = brief.product.imagePath.split("/").at(-1)!;
   const bytes = await fetchBytes("/commerce/assets/" + filename);
+  const backdropName = brief.floating?.imagePath.split("/").at(-1);
+  const backdropBytes = backdropName
+    ? await fetchBytes("/commerce/assets/" + backdropName)
+    : undefined;
   if (request !== generation) return;
+  backdropFile =
+    backdropBytes && backdropName
+      ? { name: "assets/" + backdropName, bytes: backdropBytes }
+      : undefined;
+  input("backdrop-file").value = "";
   imageName = filename;
   imageBytes = bytes;
   exampleFamily = name.includes("-beauty-") ? "beauty" : undefined;
@@ -483,7 +608,10 @@ form.addEventListener("submit", (event) => {
   event.preventDefault();
   void updatePreview();
 });
-form.addEventListener("input", invalidate);
+form.addEventListener("input", () => {
+  invalidate();
+  renderNotes();
+});
 for (const id of ["search", "category", "availability"])
   element(id).addEventListener("input", renderCatalog);
 element("load-beauty").addEventListener("click", () => {
@@ -511,9 +639,15 @@ input("product-file").addEventListener("change", async () => {
     ];
   imageBytes = new Uint8Array(await file.arrayBuffer());
   exampleFamily = undefined;
+  const floating = value("art-direction") === "floating";
+  if (!floating) {
+    backdropFile = undefined;
+    draft.floating = undefined;
+    set("backdrop-source", "");
+  }
   draft.product.id = file.name;
   set("product-name", file.name.replace(/\.[^.]+$/, ""));
-  set("preparation", "photo");
+  set("preparation", floating ? "cutout" : "photo");
   set("product-source", "");
   set("copy-source", "");
   set("headline", "");
@@ -526,7 +660,30 @@ input("product-file").addEventListener("change", async () => {
   document.querySelector<HTMLDetailsElement>(".asset-details")!.open = true;
   invalidate();
   say(
-    "Image loaded. Add your copy and sources, and check the protected label region.",
+    floating
+      ? "Product loaded. Add its source and check its size and clearance above the hand."
+      : "Image loaded. Add your copy and sources, and check the protected label region.",
+  );
+});
+input("backdrop-file").addEventListener("change", async () => {
+  const file = input("backdrop-file").files?.[0];
+  if (!file) return;
+  if (
+    !["image/png", "image/webp"].includes(file.type) ||
+    file.size > 20_000_000
+  ) {
+    say("Choose a PNG or WebP under 20 MB.", true);
+    return;
+  }
+  backdropFile = {
+    name:
+      "assets/palm-background." + (file.type === "image/png" ? "png" : "webp"),
+    bytes: new Uint8Array(await file.arrayBuffer()),
+  };
+  set("backdrop-source", "");
+  invalidate();
+  say(
+    "Palm background loaded. Check its source and the product clearance before updating.",
   );
 });
 scrub.addEventListener("input", () => {
@@ -596,16 +753,13 @@ element("export").addEventListener("click", async () => {
   controls();
   say("Rendering your MP4…");
   try {
-    const files = [
-      {
-        id: snapshot.scene.assets[0]!.id,
-        base64: base64(snapshot.files[0]!.bytes),
+    const files = [...snapshot.scene.assets, ...snapshot.scene.fonts].map(
+      (asset) => {
+        const file = snapshot.files.find((file) => file.name === asset.path);
+        if (!file) throw new Error("Missing export asset: " + asset.path);
+        return { id: asset.id, base64: base64(file.bytes) };
       },
-      {
-        id: snapshot.scene.fonts[0]!.id,
-        base64: base64(snapshot.files[1]!.bytes),
-      },
-    ];
+    );
     const response = await fetch("/commerce/export", {
       method: "POST",
       headers: {

@@ -110,6 +110,12 @@ try {
     const scene = CommerceSceneSchema.parse(JSON.parse(source.toString()));
     await page.goto(origin + "commerce.html?fixture=" + entry.id);
     await ready(page, scene.recipe.preset);
+    assert.match(
+      await page.locator("#support").innerText(),
+      scene.metadata.registration.status === "production"
+        ? /^Production/
+        : /^Experimental/,
+    );
     const video = join(output, entry.id + ".mp4");
     for (const suffix of ["", ".scene.json", ".result.json"])
       await rm(video + suffix, { force: true });
@@ -168,10 +174,9 @@ try {
       );
       scores.push({ frame, ...score });
     }
-    assert.notEqual(
-      captures.get(0),
-      captures.get(scene.frameCount - 1),
-      "The scene must visibly animate",
+    assert.ok(
+      new Set(captures.values()).size > 1,
+      "The sampled frames must visibly animate, including loops with matching endpoints",
     );
     if (
       [
@@ -285,7 +290,7 @@ try {
     assert.equal(await page.locator("#cta").inputValue(), "Explore SAMPLE 01");
     assert.equal(
       await page.locator("#art-direction").inputValue(),
-      preset === "H03" ? "editorial" : "studio",
+      preset === "H03" ? "editorial" : preset === "A01" ? "floating" : "studio",
     );
     assert.equal(
       await page.locator("#preparation").inputValue(),
@@ -299,9 +304,35 @@ try {
       await page.fill("#callout-0", "Brushed finish");
     }
     if (preset === "A01") {
+      assert.equal(await page.locator("#floating-fields").isVisible(), true);
+      assert.equal(await page.locator("#callouts").isVisible(), false);
+      assert.match(
+        await page.locator("#backdrop-source").inputValue(),
+        /palm-up hand/,
+      );
+      const floatingDownload = page.waitForEvent("download");
+      await page.locator("#download").click();
+      const floatingZip = join(temporary, "floating-source.zip");
+      await (await floatingDownload).saveAs(floatingZip);
+      const floatingBundle = join(temporary, "floating-bundle");
+      await run("unzip", ["-q", floatingZip, "-d", floatingBundle]);
+      const floatingScene = CommerceSceneSchema.parse(
+        JSON.parse(await readFile(join(floatingBundle, "scene.json"), "utf8")),
+      );
+      assert.equal(floatingScene.assets.length, 2);
+      for (const asset of floatingScene.assets) {
+        const bytes = await readFile(join(floatingBundle, asset.path));
+        assert.equal(
+          "sha256:" + createHash("sha256").update(bytes).digest("hex"),
+          asset.sha256,
+        );
+      }
+      const floatingBrief = JSON.parse(
+        await readFile(join(floatingBundle, "brief.json"), "utf8"),
+      );
       assert.equal(
-        await page.locator("#callout-0").inputValue(),
-        "Brushed finish",
+        floatingBrief.floating.imagePath,
+        floatingScene.assets[1]!.path,
       );
       const image = join(temporary, "selected-a01.png");
       await writeFile(image, Buffer.from(await seek(page, 180), "base64"));
@@ -317,7 +348,44 @@ try {
       );
     }
   }
+  // Replacing the intact product keeps the independent palm background.
+  await page.goto(origin + "commerce.html?fixture=a01-beauty-feed");
+  await ready(page, "A01");
+  const palmSource = await page.locator("#backdrop-source").inputValue();
+  assert.equal(await page.locator("#headline").isVisible(), false);
+  assert.equal(await page.locator("#cta").isVisible(), false);
+  await page.setInputFiles(
+    "#product-file",
+    "assets/ecommerce-motion/beauty-floating-product-v1.png",
+  );
+  await page.waitForFunction(() =>
+    document
+      .querySelector("#status")
+      ?.textContent?.startsWith("Product loaded."),
+  );
+  assert.equal(await page.locator("#backdrop-source").inputValue(), palmSource);
+  assert.equal(await page.locator("#preparation").inputValue(), "cutout");
+  await page.fill(
+    "#product-source",
+    "Unchanged uploaded fixture product cutout.",
+  );
+  await page.locator("#update").click();
+  await ready(page, "A01");
+  assert.equal(await page.locator("#export").isDisabled(), false);
   assert.equal(await page.locator(".format").count(), 48);
+  assert.equal(await page.locator("#support").innerText(), "Production · v1.0");
+  assert.equal(
+    await page.locator("#selection-title").innerText(),
+    "Palm-up Product Float",
+  );
+  await page.selectOption("#availability", "production");
+  assert.equal(await page.locator(".format").count(), 1);
+  assert.match(
+    await page.locator(".format").innerText(),
+    /Palm-up Product Float/,
+  );
+  await page.selectOption("#availability", "experimental");
+  assert.equal(await page.locator(".format").count(), 47);
   await page.selectOption("#availability", "ready");
   assert.equal(await page.locator(".format").count(), 4);
   await page.selectOption("#availability", "");
@@ -329,6 +397,7 @@ try {
 
   await page.goto(origin + "commerce.html?fixture=a01-portrait");
   await ready(page, "A01");
+  assert.equal(await page.locator("#support").innerText(), "Experimental");
   await page.locator("#restart").click();
   await page.locator("#play").click();
   await page.waitForFunction(
