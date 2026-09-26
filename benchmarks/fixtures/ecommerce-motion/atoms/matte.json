@@ -91,7 +91,7 @@
   "width": 1080,
   "height": 1350,
   "frameCount": 240,
-  "recipe": { "preset": "H03" },
+  "recipe": { "preset": "matte" },
   "events": [
     {
       "node": "alpha-mask",
@@ -125,7 +125,7 @@
   "metadata": {
     "registration": { "status": "experimental" },
     "catalogVersion": "1.0",
-    "selection": { "kind": "format", "id": "H03" },
+    "selection": { "kind": "component-demo", "id": "matte" },
     "profile": "feed",
     "productId": "sample-01",
     "productSource": "Existing fictional intact SAMPLE 01 PNG",

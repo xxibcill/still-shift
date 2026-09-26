@@ -235,13 +235,13 @@ export function buildCommerceComponentDemo(
     height: 1350,
     background: options.background,
     ...fields,
-    recipe: { preset: "H03" },
+    recipe: { preset: kind },
     provenance:
       "Fictional SAMPLE 01 engineering demonstration; supplied intact image reused without alteration.",
     metadata: {
       registration: { status: "experimental" },
       catalogVersion: "1.0",
-      selection: { kind: "format", id: "H03" },
+      selection: { kind: "component-demo", id: kind },
       profile: "feed",
       productId: "sample-01",
       productSource: "Existing fictional intact SAMPLE 01 PNG",

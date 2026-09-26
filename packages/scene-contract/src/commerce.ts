@@ -7,6 +7,7 @@ import {
   validateCommerceSpatial,
 } from "./commerce-spatial.ts";
 import { CommerceEffectSchema } from "./commerce-effects.ts";
+import { ComponentDemoKindSchema } from "./commerce-components.ts";
 import { z } from "zod";
 import {
   PreparedSceneFieldsSchema,
@@ -153,6 +154,16 @@ export const CommerceEventSchema = z
   })
   .strict();
 export type CommerceEvent = z.infer<typeof CommerceEventSchema>;
+const CommerceScenePresetSchema = z.union([
+  CommercePresetSchema,
+  ComponentDemoKindSchema,
+]);
+const CommerceSceneSelectionSchema = z.union([
+  CommerceSelectionSchema,
+  z
+    .object({ kind: z.literal("component-demo"), id: ComponentDemoKindSchema })
+    .strict(),
+]);
 const shape = PreparedSceneFieldsSchema.omit({
   durationMs: true,
   width: true,
@@ -164,7 +175,7 @@ const shape = PreparedSceneFieldsSchema.omit({
     height: finite.int().positive(),
     fonts: z.array(PreparedFontSchema).min(1).max(12),
     frameCount: frame.positive().max(108000),
-    recipe: z.object({ preset: CommercePresetSchema }).strict(),
+    recipe: z.object({ preset: CommerceScenePresetSchema }).strict(),
     events: z.array(CommerceEventSchema).max(100),
     effects: z.array(CommerceEffectSchema).max(24).optional(),
     geometry: z.array(CommerceGeometrySchema).max(32).optional(),
@@ -187,7 +198,7 @@ const shape = PreparedSceneFieldsSchema.omit({
           ])
           .default({ status: "experimental" }),
         catalogVersion: z.literal("1.0"),
-        selection: CommerceSelectionSchema,
+        selection: CommerceSceneSelectionSchema,
         profile: CommerceProfileSchema,
         productId: text,
         productSource: text,
@@ -217,13 +228,20 @@ export const CommerceSceneSchema = shape.superRefine((scene, ctx) => {
   const profile = COMMERCE_PROFILES[scene.metadata.profile];
   if (scene.width !== profile.width || scene.height !== profile.height)
     fail("Commerce output dimensions must match the layout profile");
-  if (scene.metadata.selection.id !== scene.recipe.preset)
-    fail("Commerce recipe must match the selected catalog entry");
-  if (
-    (scene.recipe.preset === "A01") !==
-    (scene.metadata.selection.kind === "recipe")
-  )
-    fail("Commerce selection kind does not match the preset");
+  if (scene.metadata.selection.kind === "component-demo") {
+    if (scene.recipe.preset !== scene.metadata.selection.id)
+      fail("Commerce demo preset must match the selected component");
+    if (scene.metadata.registration.status !== "experimental")
+      fail("Complete commerce component examples are Experimental");
+  } else {
+    if (scene.metadata.selection.id !== scene.recipe.preset)
+      fail("Commerce recipe must match the selected catalog entry");
+    if (
+      (scene.recipe.preset === "A01") !==
+      (scene.metadata.selection.kind === "recipe")
+    )
+      fail("Commerce selection kind does not match the preset");
+  }
   const registration = scene.metadata.registration;
   if (
     registration.status === "production" &&
@@ -328,7 +346,7 @@ export const CommerceAnimationResultSchema = z
   .object({
     ...PreparedAnimationResultSchema.shape,
     schemaVersion: z.literal("commerce-result-1"),
-    preset: CommercePresetSchema,
+    preset: CommerceScenePresetSchema,
     durationMs: finite.positive(),
     metrics: PreparedAnimationResultSchema.shape.metrics.extend({
       durationMs: finite.positive(),

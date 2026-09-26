@@ -223,6 +223,12 @@ export function buildCommerceEffectDemo(
   return CommerceSceneSchema.parse({
     ...scene,
     title: EFFECT_DEMOS.find((demo) => demo.id === kind)!.name,
+    recipe: { preset: kind },
     effects: settings.enabled && amount > 0 ? effects : [],
+    metadata: {
+      ...scene.metadata,
+      selection: { kind: "component-demo", id: kind },
+      registration: { status: "experimental" },
+    },
   });
 }

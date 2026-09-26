@@ -348,9 +348,11 @@ export function buildCommerceSpatialDemo(
     ...scene,
     ...merged,
     title: COMPONENT_DEMOS.find((d) => d.id === kind)!.name,
+    recipe: { preset: kind },
     metadata: {
       ...scene.metadata,
       registration: { status: "experimental" },
+      selection: { kind: "component-demo", id: kind },
       copySource: options.text,
     },
   });
