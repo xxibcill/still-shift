@@ -585,12 +585,18 @@
   "camera": {
     "keys": [
       { "frame": 0, "x": 960, "y": 540, "zoom": 1 },
-      { "frame": 50, "x": 964, "y": 546, "zoom": 1.01 },
-      { "frame": 104, "x": 976, "y": 564, "zoom": 1.032 },
-      { "frame": 191, "x": 986, "y": 570, "zoom": 1.045 }
+      { "frame": 4, "x": 960.82, "y": 540.2, "zoom": 1.0001069518716577 },
+      { "frame": 8, "x": 962.46, "y": 540.6, "zoom": 1.0003208556149732 },
+      { "frame": 183, "x": 1034.21, "y": 558.1, "zoom": 1.0096791443850268 },
+      { "frame": 187, "x": 1035.85, "y": 558.5, "zoom": 1.0098930481283424 },
+      { "frame": 191, "x": 1036.67, "y": 558.7, "zoom": 1.01 }
     ],
     "depth": { "paper": 0, "reference": 0, "question": 0, "qualifier": 0 },
-    "cover": ["paper"]
+    "cover": ["paper"],
+    "easeIn": false,
+    "easeOut": false,
+    "startTangent": { "x": 0, "y": 0, "zoom": 0 },
+    "endTangent": { "x": 0, "y": 0, "zoom": 0 }
   },
   "review": { "essentialText": ["room", "strained", "qualifier"] },
   "recipe": {

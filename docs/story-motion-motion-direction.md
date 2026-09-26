@@ -29,20 +29,20 @@ The v013 Unequal Margins prototype passes G1–G6, but with labels covered and s
 
 Both houses share one ground slab: same size, same baseline, same roof line, which also satisfies the recipe's equal-households validation. The only difference is the soft margin cut into the ground beneath each house: deep under A, a sliver under B. A single crisis-coloured strain band sweeps across both roofs and presses them down **in lockstep**. House, margin and band poses are sampled from one shared `travel(frame)` curve, so contact stays exact.
 
-| Frames          | Layer             | Event                                                                                                  | Meaning                                       |
-| --------------- | ----------------- | ------------------------------------------------------------------------------------------------------ | --------------------------------------------- |
-| 0–20            | action            | Shared ground wipes in; surface draws, open only where a margin is cut                                 | Same ground under both households             |
-| 4–30            | action            | A's four margin layers draw bottom-up; B's single thin layer draws                                     | Different room, established before any strain |
-| 14–38           | action            | Both houses set down together                                                                          | Comparable households                         |
-| 28–48           | action            | One strain band sweeps left to right across both roofs (two halves, continuous velocity at the seam)   | The same season reaches both                  |
-| 50–104          | action (**peak**) | The band presses 77 px (`in-out-quint`); both houses descend in lockstep                               | Same strain, same moment                      |
-| 50–76           | response          | B's margin is crushed flat and runs out at frame 76, the encoded energy peak                           | B has no room left                            |
-| 76–104          | response          | B's house takes the rest: scaleY → 0.84, tilt → −4.5°. A's margin compresses to 55% and holds          | The strain lands on the household itself      |
-| 90–108 / 98–116 | response          | "More room" and "Less room" attach beside each margin                                                  | Name what was shown                           |
-| 116–140         | current/response  | Strain pulse (10 px): A's margin absorbs it, B's house takes it                                        | The strain persists                           |
-| 140–164         | action            | Qualifier word reveal                                                                                  | Qualitative, not measured                     |
-| 167–191         | current/response  | Second pulse                                                                                           | Still pressing                                |
-| 0–191           | carrier           | Camera leans in and down with the weight: `(960,540,1)` → `(976,564,1.032)` at 104 → `(986,570,1.045)` | Weight bears down                             |
+| Frames          | Layer             | Event                                                                                                | Meaning                                       |
+| --------------- | ----------------- | ---------------------------------------------------------------------------------------------------- | --------------------------------------------- |
+| 0–20            | action            | Shared ground wipes in; surface draws, open only where a margin is cut                               | Same ground under both households             |
+| 4–30            | action            | A's four margin layers draw bottom-up; B's single thin layer draws                                   | Different room, established before any strain |
+| 14–38           | action            | Both houses set down together                                                                        | Comparable households                         |
+| 28–48           | action            | One strain band sweeps left to right across both roofs (two halves, continuous velocity at the seam) | The same season reaches both                  |
+| 50–104          | action (**peak**) | The band presses 77 px (`in-out-quint`); both houses descend in lockstep                             | Same strain, same moment                      |
+| 50–76           | response          | B's margin is crushed flat and runs out at frame 76                                                  | B has no room left                            |
+| 76–104          | response          | B's house takes the rest: scaleY → 0.84, tilt → −4.5°. A's margin compresses to 55% and holds        | The strain lands on the household itself      |
+| 90–108 / 98–116 | response          | "More room" and "Less room" attach beside each margin                                                | Name what was shown                           |
+| 116–140         | current/response  | Strain pulse (10 px): A's margin absorbs it, B's house takes it                                      | The strain persists                           |
+| 140–164         | action            | Qualifier word reveal                                                                                | Qualitative, not measured                     |
+| 167–191         | current/response  | Second pulse                                                                                         | Still pressing                                |
+| 0–191           | carrier           | Camera leans right and down: `(960,540,1)` → `(1036.67,558.7,1.01)`, with short endpoint ramps       | Weight bears down                             |
 
 Type roles, sizes and wording are unchanged: title 112, subheading 64 (now word reveal), labels 56, qualifier 52 (now word reveal). Palette, illustration family and the non-boiling brush are unchanged. No flows are used, so R9 is untouched. Titles and qualifier are screen-locked.
 
@@ -54,11 +54,13 @@ Encoded MP4 (full-resolution method) and compiled-scene analyzer. Rendered with 
 | --------------------------- | -----: | -------------: | ------------------------: |
 | G1 comparisons below motion |    ≤ 3 |              0 |                     **0** |
 | G3 semantic gap             |   ≤ 36 |             44 |                    **28** |
-| G4 peak / median            |   ≥ 3× |         2.984× | **3.14×** (peak frame 76) |
-| G5 essential-text velocity  |   ≤ 12 |      18.5 px/s |              **7.6 px/s** |
-| Pan / zoom per frame        |     R7 | 0.62 / 0.00023 |            0.48 / 0.00047 |
+| G4 peak / median            |   ≥ 3× |         2.984× | **3.12×** (peak frame 77) |
+| G5 essential-text velocity  |   ≤ 12 |      18.5 px/s |             **11.6 px/s** |
+| Pan / zoom per frame        |     R7 | 0.62 / 0.00023 |           0.46 / 0.000058 |
 
-Every tighter target is met, not just the hard limits. The peak is not tuned: frame 76 is where B's margin runs out, and nothing is faded to raise it. The MP4 is byte-identical under the pinned Node 22.23.1 and under Node 24.
+Every tighter target is met, not just the hard limits. The peak remains in the shared-strain beat, immediately after B's margin runs out at frame 76; nothing is faded to raise it. These measurements use the pinned Node 22.23.1.
+
+The camera's sustained depth-1 pan stays between 0.422 and 0.460 px/frame. Only the first and last five frame comparisons fall below R7's 0.4 px/frame minimum. A regression test checks every sustained comparison, the zoom limit and the essential-text velocity target.
 
 **What needs the owner's eye**
 

@@ -343,13 +343,27 @@ export function unequalMarginsV3(): MotionDesign {
       emphasis: [],
     },
     camera: {
-      keys: [
-        { frame: 0, x: 960, y: 540, zoom: 1 },
-        // Lean in and down with the weight, keeping both households framed.
-        { frame: press.start, x: 964, y: 546, zoom: 1.01 },
-        { frame: press.end, x: 976, y: 564, zoom: 1.032 },
-        { frame: lastFrame, x: 986, y: 570, zoom: 1.045 },
-      ],
+      // Short endpoint ramps settle into a steady diagonal pan. Explicit zero
+      // tangents ease the endpoints without slowing the sustained travel.
+      easeIn: false,
+      easeOut: false,
+      startTangent: { x: 0, y: 0, zoom: 0 },
+      endTangent: { x: 0, y: 0, zoom: 0 },
+      keys: (
+        [
+          [0, 0],
+          [4, 2],
+          [8, 6],
+          [lastFrame - 8, lastFrame - 10],
+          [lastFrame - 4, lastFrame - 6],
+          [lastFrame, lastFrame - 4],
+        ] as const
+      ).map(([frame, travelFrames]) => ({
+        frame,
+        x: 960 + 0.41 * travelFrames,
+        y: 540 + 0.1 * travelFrames,
+        zoom: 1 + (0.01 * travelFrames) / (lastFrame - 4),
+      })),
       depth: { paper: 0, reference: 0, question: 0, qualifier: 0 },
       cover: ["paper"],
     },
