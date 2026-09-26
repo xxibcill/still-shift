@@ -26,7 +26,7 @@ This taxonomy is our engineering recommendation. The primary sources below suppo
 
 **Finding:** The HTML Canvas standard specifies shadow generation by copying source alpha, offsetting it, applying Gaussian blur, and applying shadow color/alpha. Shadow offset and blur do not follow the current transformation matrix; blur values do not map directly to coordinate-space units. [WHATWG HTML: Canvas shadows](https://html.spec.whatwg.org/multipage/canvas.html#shadows).
 
-**Our recommendation:** A soft ellipse can provide a controlled depth cue on a simple surface. It cannot infer the hand's curved receiving surface, light direction, or occlusion. Do not call it a physically accurate cast shadow. Keep shadow position in composition space; do not attach it to the floating product group. Prove a static shadow in an Experimental neutral-surface fixture first. A shadow on the palm needs visual review and potentially a supplied mask or authored shadow asset. Adding it must not silently change Production v1.0.
+**Our recommendation:** A soft ellipse can provide a controlled depth cue on a simple surface. It cannot infer the hand's curved receiving surface, light direction, or occlusion. Do not call it a physically accurate cast shadow. Keep shadow position in composition space; do not attach it to the floating product group. Prove a static shadow in an Experimental neutral-surface fixture first. A shadow on the palm needs visual review and potentially a supplied mask or authored shadow asset. Adding it must not silently change the palm-up baseline.
 
 ### 4. Cache expensive repeated drawing only when useful
 
@@ -74,4 +74,4 @@ Uniform scaling and 2D rotation already belong to renderer transforms; expose th
 5. Add reusable measured Text and then Anchor/Connector when supplied copy demonstrates the need. Compose these into callouts; do not present a callout as an indivisible atom.
 6. Build small Experimental compositions from the same pieces to prove reuse. Apply Production status only to an explicitly approved complete format.
 
-For every increment, the useful exit evidence is one standalone example, one second composition proving reuse, deterministic seeks, input/bounds validation, preview/export parity, and no visual regression in Production v1.0. Test only the new behavior and affected integration; avoid blanket performance or framework work without a measured need.
+For every increment, the useful exit evidence is one standalone example, one second composition proving reuse, deterministic seeks, input/bounds validation, preview/export parity, and no visual regression in the palm-up baseline. Test only the new behavior and affected integration; avoid blanket performance or framework work without a measured need.

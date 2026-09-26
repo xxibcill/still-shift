@@ -16,7 +16,7 @@ Build a small reusable vocabulary for e-commerce motion, with a standing impleme
 
 The first release proves three capabilities: show a product clearly, direct attention without changing its identity, and connect supplied information to visible product details. It reuses the existing renderer and preparation/export pipeline. A useful library is demonstrated by recombining a few components into several compositions.
 
-The current Production format remains **Palm-up Product Float v1.0**, scoped to A01 + floating + feed. Its current image, motion, no-contact gap and absence of copy remain the regression baseline. New compositions and shadow experiments are Experimental. A component passing technical checks does not promote a composition to Production.
+**Palm-up Product Float v1.0** is Experimental, scoped to A01 + floating + feed. Its current image, motion, no-contact gap and absence of copy remain the regression baseline. The atomic components are available for use; every complete commerce composition remains Experimental.
 
 This plan replaces the older adoption plan's suggested expansion order. The imported pack remains reference material; its instructions and working format names do not authorize additional work.
 
@@ -114,7 +114,7 @@ Execute tasks in this order once the user requests implementation. Complete the 
 | **AC-04** | Translate and Fade behaviors extracted from existing formats                       | AC-01–02         | Delayed entrance, hold and fade-out work; motion units are explicit; x-translation + float can coexist; overlapping y writes fail; sequential y handoff is continuous; no hidden opacity behavior                                         | Complete |
 | **AC-05** | Reusable Text Block; H03 and CTA consumers adopt it                                | AC-01, AC-04     | Exact supplied copy retained; measured English/Thai text and font dependency handling; overflow produces a useful error; typography can remain static or use Fade/Translate; existing fixture output preserved                            | Complete |
 | **AC-06** | Path + Path Draw; existing H04 callout built from Path and Text Block              | AC-04–05         | Supplied path, label and protected-region checks remain; no inferred benefit; settled product target remains aligned; collision rejected; callout to moving product is explicitly deferred                                                | Complete |
-| **AC-07** | Finish composition examples, regression checks and documentation                   | AC-02–06         | Isolated component demonstrations plus three composed proofs; current Production regression unchanged; preview/export parity, source-bundle round trip and backward seek pass; queue updated with evidence                                | Complete |
+| **AC-07** | Finish composition examples, regression checks and documentation                   | AC-02–06         | Isolated component demonstrations plus three composed proofs; palm-up visual regression unchanged; preview/export parity, source-bundle round trip and backward seek pass; queue updated with evidence                                | Complete |
 
 ### Files and ownership
 
@@ -122,7 +122,7 @@ Execute tasks in this order once the user requests implementation. Complete the 
 - Integration: `commerce-floating.ts` and `commerce-scene.ts` remain format composers. They own layout, provenance, input requirements and registration.
 - Shadow preparation: `packages/animation-engine/src/commerce-preparation.ts` and a focused texture preparation helper. A browser preview adapter may call the same deterministic preparation logic or load the prepared texture; both must produce the same pixels and asset record.
 - Contracts: reuse `prepared.ts` and `commerce.ts`. Static demonstration scenes may need commerce `events` to allow an empty list; make that a narrow, tested change if the fixture harness requires it. Existing font requirements remain until independently justified.
-- Lab: extend the existing commerce workbench with a small Experimental component demonstration section. Show the selected component, only its controls, a neutral background and scrub/play. Keep production format selection recognizable. This is a test and authoring aid, not a new general editor.
+- Lab: extend the existing commerce workbench with a component demonstration section. Show the selected component, only its controls, a neutral background and scrub/play. Keep format selection recognizable. This is a test and authoring aid, not a new general editor.
 - Fixtures: add component examples under `benchmarks/fixtures/ecommerce-motion/atoms/`; place rendered evidence under the existing ignored results directory.
 - Tests: component behavior and contract tests under `tests/unit/`; targeted additions to `tests/browser/commerce.ts` for new assets and rendering risks. Use existing export and bundle machinery.
 
@@ -132,7 +132,7 @@ Final filenames may follow repository conventions found during implementation. M
 
 Each component needs an isolated demonstration plus reuse in a composition. Reuse supplied synthetic assets for engineering tests. Test different source proportions and transparent padding; no new image-generation campaign is needed for this release.
 
-1. **Existing palm-up float:** unchanged visual regression reference, preserving Production v1.0.
+1. **Existing palm-up float:** unchanged visual regression reference; its current status is Experimental.
 2. **Studio float:** intact product + optional static shadow + plain background. Proves independent product and shadow placement; Experimental.
 3. **Product introduction:** intact product + Translate + Text Block/Fade + reading hold, using the existing H01/H03 treatments as references; Experimental.
 4. **Visible-detail callout:** settled product + Path Draw + Text Block, using a factual description of a visible feature; Experimental.
@@ -165,5 +165,5 @@ Catalog connection: Translate supports the mechanics of T01, Text Block with mot
 - Research preceded implementation. The user then requested sequential execution of AC-01–07, which is now complete.
 - AC-01–07 were executed in the listed order. For future authorized work, update status and evidence as work completes and choose the next ready task without asking the user to prioritize again.
 - Continue useful tasks when one item lacks an external input. Use the existing synthetic fixtures for technical verification and record real-SKU visual validation separately.
-- Ask only when a missing asset or decision materially blocks the requested work, or when a requested change would alter the accepted Production format. Do not add an approval checkpoint for each component.
+- Ask only when a missing asset or decision materially blocks the requested work, or when a requested change would alter the accepted palm-up visual baseline. Do not add an approval checkpoint for each component.
 - Stop at the release-1 definition of done. Future enhancements remain in the subsequent queue until their implementation is requested.

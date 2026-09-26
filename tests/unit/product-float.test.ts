@@ -114,7 +114,7 @@ describe("Product Float component", () => {
     expect(evaluatePreparedNode(compiled, scene.nodes[2]!, 75).y).toBe(130);
   });
 
-  it("preserves the existing production scene's nodes and animation exactly", () => {
+  it("preserves the palm-up baseline scene's nodes and animation exactly", () => {
     const original = CommerceSceneSchema.parse(fixture);
     const clip = buildProductFloat({
       ...options,

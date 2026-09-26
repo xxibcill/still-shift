@@ -2,7 +2,7 @@
 
 **Updated:** 2026-09-26
 
-**Milestone:** v0.14 · Palm-up Product Float v1.0 registered as Production by the user; all other treatments are Experimental.
+**Current status:** Atomic components are available for use. All complete e-commerce motion formats, including Palm-up Product Float v1.0, are Experimental.
 
 **Branch:** codex/ecommerce-motion-library, based on codex/v0.10-evaluation-release.
 **Plan:** [Adoption plan](ecommerce-motion-adoption-plan.md).
@@ -11,11 +11,11 @@
 
 ## Format registration
 
-The user designated **Palm-up Product Float v1.0** as the sole Production format on 2026-09-26. Its stable ID is `palm-up-product-float`; its exact scope is A01 + `floating` + `feed` (1080×1350 / 4:5). Its contract preserves one intact approved product cutout, a stationary palm-up background and camera, a no-contact gap and a gentle vertical hover without copy or additional actions.
+**Palm-up Product Float v1.0 is now Experimental**, scoped to A01 + `floating` + `feed` (1080×1350 / 4:5). The user previously designated it Production, then revised the status while accepting the atomic components for use. Its composition preserves one intact approved product cutout, a stationary palm-up background and camera, a no-contact gap and a gentle vertical hover without copy or additional actions.
 
-The [capability registry](../catalogs/ecommerce-motion/capabilities.json) records this registration and defaults every other treatment to Experimental. Other A01 compositions are Experimental too. Experimental catalog entries with no renderer also retain the Reference only indicator; classification does not imply implementation.
+The [capability registry](../catalogs/ecommerce-motion/capabilities.json) has no Production registrations and defaults every treatment to Experimental. Entries with no renderer also retain the Reference only indicator; classification does not imply implementation.
 
-The workbench shows the Production format first, provides Production and Experimental filters, and loads its dedicated example when selected. The selection badge reflects the actual composition and profile. Prepared scenes, source bundles and the fixture catalog carry the registration status and, for Production, its stable ID and version.
+The workbench provides Experimental and renderability filters and loads the palm-up example when A01 is selected. The selection badge, prepared scenes, source bundles and fixture catalog carry Experimental status.
 
 ## Available now
 
@@ -38,7 +38,7 @@ The two bundled hand-and-container illustrations and the generated editorial pro
 
 Run **pnpm lab** in this checkout and open [Commerce](http://127.0.0.1:4173/commerce.html).
 
-1. Choose Production for Palm-up Product Float, or browse Experimental treatments. Reference-only entries remain unavailable for rendering.
+1. Choose an Experimental treatment or filter to renderable entries. Reference-only entries remain unavailable for rendering.
 2. Upload a PNG, JPEG or WebP under 20 MB. Add a headline, CTA and sources.
 3. Set the output shape, duration and frame rate. Declare whether the image is a photo or prepared transparent cutout.
 4. Set the protected label region as fractions of the image: x, y, width, height. H04/A01 also need two callout targets and sources.
@@ -122,4 +122,4 @@ The next candidate remains **T02 Pop / Overshoot**, followed by **T11 Card Stack
 
 ## Reusable Product Float component
 
-The palm-up format now composes the reusable [Product Float](product-float.md) component with a stationary background. The component owns the intact product image, aspect-preserving placement and vertical loop. The format owns the canvas, hand clearance, source attribution and Production registration. Extraction preserves the existing production scene's product nodes and motion events exactly.
+The palm-up format now composes the reusable [Product Float](product-float.md) component with a stationary background. The component owns the intact product image, aspect-preserving placement and vertical loop. The format owns the canvas, hand clearance and source attribution. Extraction preserves the established scene's product nodes and motion events exactly.

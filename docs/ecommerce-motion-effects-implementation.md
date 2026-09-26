@@ -38,7 +38,7 @@ FX-01 through FX-05 from the research plan are implemented, together with the re
 - Directional blur normalizes premultiplied RGBA samples before compositing. Full-canvas buffers allow effects outside the original node bounds; final output-canvas clipping remains intentional.
 - Root image effects compose in declaration order. Temporal exposure wraps the resulting scene. Background light/particles render behind roots and grain renders last.
 - Source ZIPs contain scene effect parameters, authored material region, seeds, original product bytes, fonts/license and prepared shadow data. The compiled renderer version is `commerce-canvas-0.15.0`.
-- Validation rejects effects on registered Production scenes. Palm-up Product Float v1.0 retains its existing assets, nodes and events.
+- Validation rejects effects on explicitly registered Production scenes. The current catalog has none; Palm-up Product Float v1.0 is Experimental and retains its existing assets, nodes and events.
 
 ## Verification
 

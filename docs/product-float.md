@@ -46,9 +46,9 @@ The containing scene supplies its canvas, background, metadata and other require
 
 ## First composition: palm-up product float
 
-`commerce-floating.ts` combines the component with a stationary palm background, enforces 4:5 framing and at least 40 pixels of clearance, and retains the existing Production v1.0 registration. It uses an 18-pixel float with two cycles across the selected duration. For the ten-second example, each cycle is five seconds.
+`commerce-floating.ts` combines the component with a stationary palm background, enforces 4:5 framing and at least 40 pixels of clearance. The complete format is Experimental. It uses an 18-pixel float with two cycles across the selected duration. For the ten-second example, each cycle is five seconds.
 
-The component itself carries no Production designation. New compositions continue to follow the catalog's Experimental default.
+The component is available for use in other compositions. Components carry no format-level Production designation; all complete commerce compositions follow the catalog's Experimental default.
 
 ## Verification
 

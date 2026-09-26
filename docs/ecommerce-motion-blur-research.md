@@ -4,7 +4,7 @@ Date: 2026-09-26. This records the research basis. The user subsequently authori
 
 ## Decision
 
-Use motion blur as an optional rendering effect for fast Translate. It has little visible value for the present gentle Float. A shadow responding to height is a more promising next experiment for Float. Preserve the Production palm-up format unchanged; demonstrate effects in Experimental fixtures first.
+Use motion blur as an optional rendering effect for fast Translate. It has little visible value for the present gentle Float. A shadow responding to height is a more promising next experiment for Float. Preserve the palm-up visual baseline; demonstrate effects in Experimental fixtures first.
 
 ## What established tools do
 

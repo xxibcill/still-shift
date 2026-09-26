@@ -33,7 +33,7 @@ These findings are based on the local source files above, not inferred from exte
 | 6 | General alpha matte | Allow product/graphics to pass behind an authored foreground or restrict treatment to a supplied material mask | New compositing capability; greater renderer and export burden |
 | 7 | Detail viewport | Show a closer view of actual label/cap pixels | Recipe using existing crop/clip plus anchors and layout |
 
-Orders 2–5 can be chosen by the first concrete demo, but should share the foundation from order 1. All new demos remain Experimental. The Production palm-up float keeps its existing constraints.
+Orders 2–5 can be chosen by the first concrete demo, but should share the foundation from order 1. All complete demos remain Experimental. The palm-up float keeps its existing constraints as a visual baseline.
 
 ### 1. Visible bounds, landmarks, and coordinate resolution
 

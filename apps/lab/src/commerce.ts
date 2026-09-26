@@ -333,7 +333,11 @@ function renderCatalog() {
     button.setAttribute("aria-pressed", String(selection.id === entry.id));
     for (const [className, content] of [
       ["id", entry.id],
-      ["name", productionCommerceFormat(entry)?.name ?? entry.name],
+      [
+        "name",
+        productionCommerceFormat(entry)?.name ??
+          (entry.id === "A01" ? "Palm-up Product Float / A01" : entry.name),
+      ],
     ] as const) {
       const span = document.createElement("span");
       span.className = className;
@@ -381,8 +385,14 @@ function renderNotes() {
     registered.status === "production"
       ? productionCommerceFormat(selection)
       : undefined;
-  element("selection-title").textContent =
-    production?.name ?? format?.name ?? recipe!.name;
+  const palmFloat =
+    selection.kind === "recipe" &&
+    selection.id === "A01" &&
+    value("art-direction") === "floating" &&
+    value("profile") === "feed";
+  element("selection-title").textContent = palmFloat
+    ? "Palm-up Product Float"
+    : (production?.name ?? format?.name ?? recipe!.name);
   const ready = Boolean(capability(selection).implementation);
   element("support").textContent = production
     ? "Production · v" + production.version
@@ -407,9 +417,9 @@ function renderNotes() {
   const container = element("format-notes");
   container.replaceChildren();
   const table = document.createElement("dl");
-  const notes = production
+  const notes = palmFloat
     ? [
-        ["Format", production.id + " / v" + production.version],
+        ["Format", "Palm-up Product Float · Experimental"],
         [
           "Assets",
           "One approved intact product cutout and a separate palm-up background.",
@@ -418,7 +428,10 @@ function renderNotes() {
           "Motion",
           "Stationary hand and camera; gentle vertical product hover.",
         ],
-        ["Contract", production.invariants.join(" ")],
+        [
+          "Constraints",
+          "Keep the supplied product intact, the palm and camera stationary, and a clear gap between hand and product. Use only a gentle vertical hover.",
+        ],
       ]
     : format
       ? [
@@ -462,9 +475,12 @@ function renderNotes() {
 }
 
 async function selectEntry(next: CommerceSelection) {
-  const production = productionCommerceFormat(next);
-  if (production && exampleFamily !== "beauty") {
-    await loadFixture(production.fixture);
+  if (
+    next.kind === "recipe" &&
+    next.id === "A01" &&
+    exampleFamily !== "beauty"
+  ) {
+    await loadFixture("a01-beauty-feed");
     return;
   }
   if (exampleFamily === "beauty" && capability(next).implementation) {

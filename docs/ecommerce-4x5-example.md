@@ -44,7 +44,7 @@ The format-switching regression test starts on H03, edits copy, selects H01 → 
 
 ## A01: basic palm-up float
 
-**Production · v1.0**, registered by the user on 2026-09-26 as `palm-up-product-float`. This applies only to the floating 4:5 composition; all other treatments are Experimental.
+**Experimental · v1.0.** The user previously registered this floating 4:5 composition as Production, then revised its status. It remains a simple visual baseline; all e-commerce motion formats are Experimental. Its underlying atomic components are available for use.
 
 The current direction is deliberately simple: an open palm faces upward without touching the complete product floating above it. The hand and camera are stationary. The product moves vertically through an 18-pixel range, twice over ten seconds, returning to its initial position for looping. There is no headline, CTA, zoom, rotation, opening action, or product decomposition.
 

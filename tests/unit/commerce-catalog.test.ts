@@ -57,19 +57,15 @@ describe("commerce catalog import", () => {
 });
 
 describe("commerce format release registration", () => {
-  it("registers only the approved palm-up 4:5 composition as production", () => {
-    expect(commerceCapabilities.productionFormats).toHaveLength(1);
+  it("keeps every e-commerce motion format experimental", () => {
+    expect(commerceCapabilities.productionFormats).toEqual([]);
     expect(
       commerceFormatRegistration(
         { kind: "recipe", id: "A01" },
         "floating",
         "feed",
       ),
-    ).toEqual({
-      status: "production",
-      id: "palm-up-product-float",
-      version: "1.0",
-    });
+    ).toEqual({ status: "experimental" });
     for (const direction of ["standard", "studio", "editorial"])
       expect(
         commerceFormatRegistration(
@@ -95,16 +91,30 @@ describe("commerce format release registration", () => {
       ).toEqual({ status: "experimental" });
   });
   it("rejects duplicate production scopes and unimplemented registrations", () => {
+    const candidate = {
+      id: "palm-up-product-float",
+      version: "1.0",
+      name: "Palm-up Product Float",
+      selection: { kind: "recipe" as const, id: "A01" },
+      artDirection: "floating" as const,
+      profile: "feed" as const,
+      fixture: "a01-beauty-feed",
+      requirements: ["intact product cutout"],
+      invariants: ["product stays intact"],
+    };
     const duplicate = structuredClone(commerceCapabilities);
-    duplicate.productionFormats.push({
-      ...duplicate.productionFormats[0]!,
+    duplicate.productionFormats.push(candidate, {
+      ...candidate,
       id: "duplicate",
     });
     expect(
       validateCommerceCapabilities(commerceCatalog, duplicate).join(" "),
     ).toMatch(/Duplicate production/);
     const unsupported = structuredClone(commerceCapabilities);
-    unsupported.productionFormats[0]!.selection = { kind: "format", id: "P08" };
+    unsupported.productionFormats.push({
+      ...candidate,
+      selection: { kind: "format", id: "P08" },
+    });
     expect(
       validateCommerceCapabilities(commerceCatalog, unsupported).join(" "),
     ).toMatch(/requires implemented/);

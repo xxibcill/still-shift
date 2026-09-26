@@ -403,28 +403,5 @@
     }
   ],
   "defaultStage": "experimental",
-  "productionFormats": [
-    {
-      "id": "palm-up-product-float",
-      "version": "1.0",
-      "name": "Palm-up Product Float",
-      "selection": {
-        "kind": "recipe",
-        "id": "A01"
-      },
-      "artDirection": "floating",
-      "profile": "feed",
-      "fixture": "a01-beauty-feed",
-      "requirements": [
-        "intact_approved_product_cutout",
-        "separate_palm_up_background",
-        "product_and_background_sources"
-      ],
-      "invariants": [
-        "Product remains one unchanged image; cap, body and label are never decomposed.",
-        "Palm and camera remain stationary; the product never touches the hand.",
-        "Only a gentle vertical hover; no copy, rotation, zoom or additional actions."
-      ]
-    }
-  ]
+  "productionFormats": []
 }

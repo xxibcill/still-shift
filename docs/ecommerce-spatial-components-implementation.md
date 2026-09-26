@@ -4,7 +4,7 @@ Implemented 2026-09-26 on `codex/ecommerce-motion-library` in the commerce workt
 
 ## Delivered
 
-All seven tasks in the [next-components plan](ecommerce-next-atomic-components-plan.md) are implemented. Eight new examples bring the gallery to **35 examples**. Every addition remains Experimental; the existing Palm-up Product Float v1.0 Production format retains its source assets, nodes and motion.
+All seven tasks in the [next-components plan](ecommerce-next-atomic-components-plan.md) are implemented. Eight new examples bring the gallery to **35 examples**. The atomic components are available for use. Their gallery examples and every complete commerce format are Experimental; the palm-up float retains its source assets, nodes and motion as a visual baseline.
 
 | Task  | Delivered API / contract                                                                                                                      | Gallery demo      |
 | ----- | --------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
@@ -20,7 +20,7 @@ Open the gallery at `http://127.0.0.1:4175/commerce-components.html?demo=attachm
 
 ## Geometry and attachments
 
-`packages/scene-contract/src/commerce-spatial.ts` defines optional `geometry`, `attachments`, `mattes`, `visibility`, and `textFits` fields on Commerce Scene. Missing fields leave old scenes unchanged. New spatial fields are rejected on Production scenes.
+`packages/scene-contract/src/commerce-spatial.ts` defines optional `geometry`, `attachments`, `mattes`, `visibility`, and `textFits` fields on Commerce Scene. Missing fields leave old scenes unchanged. New spatial fields are rejected on explicitly registered Production scenes; the current catalog has none.
 
 Geometry references exactly one image state and the matching asset hash. Bounds, landmarks and protected rectangles use original image pixels, including transparent padding. Landmarks are authored data; no semantic detection or generative reconstruction occurs. Geometry is stored in the source scene alongside its asset dependency.
 
@@ -85,4 +85,4 @@ pnpm exec tsc --noEmit
 
 ## Practical limits
 
-The first anchor/region data are authored for fictional SAMPLE 01. A real SKU needs matching reviewed landmarks and source resolution. Soft mattes may conceal the product deliberately; these demonstrations are not promoted to Production. Text/route checks establish technical validity, not approval of copy or creative direction. The gallery exposes each component's main controls; it is not a general graph or timeline editor.
+The first anchor/region data are authored for fictional SAMPLE 01. A real SKU needs matching reviewed landmarks and source resolution. Soft mattes may conceal the product deliberately; all complete demonstrations remain Experimental. Text/route checks establish technical validity, not approval of copy or creative direction. The gallery exposes each component's main controls; it is not a general graph or timeline editor.

@@ -143,9 +143,7 @@
     "id": "a01-beauty-feed",
     "title": "A01 / Floating above an open palm / 4:5",
     "registration": {
-      "status": "production",
-      "id": "palm-up-product-float",
-      "version": "1.0"
+      "status": "experimental"
     }
   }
 ]

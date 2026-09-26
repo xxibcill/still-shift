@@ -2,7 +2,7 @@
 
 Implemented on 2026-09-26 in `codex/ecommerce-motion-library`.
 
-All seven tasks in the [component plan](ecommerce-atomic-components-plan.md) are implemented. The new gallery and compositions are Experimental. Palm-up Product Float v1.0 retains its existing Production registration and exact prepared output.
+All seven tasks in the [component plan](ecommerce-atomic-components-plan.md) are implemented. The atomic components are available for use. Gallery examples and complete commerce compositions, including Palm-up Product Float v1.0, are Experimental. The palm-up motion and layout remain a regression baseline.
 
 ## Try it
 
@@ -14,7 +14,7 @@ The gallery contains 12 examples:
 - Motion: Float, Translate, Fade.
 - Compositions: Studio Float, Product Introduction, Visible-detail Callout.
 
-The existing [Production palm-up format](http://127.0.0.1:4175/commerce.html?fixture=a01-beauty-feed) remains available from the gallery header.
+The existing [experimental palm-up example](http://127.0.0.1:4175/commerce.html?fixture=a01-beauty-feed) remains available from the gallery header.
 
 ## Completion evidence
 
@@ -97,7 +97,7 @@ The source ZIP contains `scene.json`, `demo.json`, exact image/font bytes, font 
 
 ## Verification
 
-- 49 focused unit tests passed, including exact full-scene equality for all 21 existing commerce fixtures and original Product Float compatibility.
+- 49 focused unit tests passed at implementation time, including exact full-scene equality for all 21 existing commerce fixtures and original Product Float compatibility. The later status change updates fixture registration metadata without changing motion or layout.
 - All 12 component previews loaded and reproduced sampled frames after backward seeks.
 - Studio Float, Product Introduction and Visible-detail Callout exported with 15 preview/MP4 parity samples passing.
 - An edited shadow at 24 fps retained correct asset hashes and generator settings in its source ZIP. Rendering that bundle and exporting through the browser both matched the preview.
@@ -105,7 +105,7 @@ The source ZIP contains `scene.json`, `demo.json`, exact image/font bytes, font 
 - The existing four beauty-format exports passed all 24 parity samples, source-bundle, upload/export and responsive checks.
 - TypeScript, targeted ESLint and whitespace checks passed. Desktop/mobile gallery screenshots and the three composed posters were visually inspected.
 
-Rendered evidence is under `benchmarks/results/ecommerce-motion/atoms/`, including `verification.json`, posters, gallery screenshots and videos. Existing production evidence remains under `benchmarks/results/ecommerce-motion/`.
+Rendered evidence is under `benchmarks/results/ecommerce-motion/atoms/`, including `verification.json`, posters, gallery screenshots and videos. Existing palm-up comparison evidence remains under `benchmarks/results/ecommerce-motion/`.
 
 ## Remaining scope
 

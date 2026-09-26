@@ -9,7 +9,7 @@ Build **Product Anchor** next: an authored point on the intact product that can 
 
 This recommendation follows the current repository gaps and the user's requirements. The sources establish technical mechanisms, not evidence of conversion uplift or an objectively optimal backlog.
 
-The earlier [AC-01–07 plan](ecommerce-atomic-components-plan.md) and [effects implementation](ecommerce-motion-effects-implementation.md) are complete. This proposal extends their vocabulary. All proposed demonstrations are Experimental. Palm-up Product Float v1.0 remains the Production baseline with its current image, clear air gap and simple motion.
+The earlier [AC-01–07 plan](ecommerce-atomic-components-plan.md) and [effects implementation](ecommerce-motion-effects-implementation.md) are complete. This proposal extends their vocabulary. Atomic components are available for use; all complete demonstrations are Experimental. Palm-up Product Float v1.0 remains a visual baseline with its current image, clear air gap and simple motion.
 
 ## What already exists
 
@@ -55,7 +55,7 @@ Dependencies: AC-08 → AC-09/10/11; AC-12 reuses existing Text Block; AC-13 reu
 
 Use source-image coordinates as the authoritative space, associated with the source hash. Convert through crop/fit into node space, then through the complete parent transform chain into canvas space. Distinguish an attachment landmark (e.g. cap center) from the pivot used to rotate an object.
 
-Visible bounds should be authored initially, with optional alpha-derived suggestions during preparation. A low-opacity shadow or stray pixel can inflate alpha bounds; they are not semantic segmentation. Preserve the original image and its padding. The existing Production clearance calculation must not silently change when new metadata becomes available.
+Visible bounds should be authored initially, with optional alpha-derived suggestions during preparation. A low-opacity shadow or stray pixel can inflate alpha bounds; they are not semantic segmentation. Preserve the original image and its padding. The existing palm-up clearance calculation must not silently change when new metadata becomes available.
 
 ### Integration decisions to resolve during implementation
 
@@ -72,9 +72,9 @@ Visible bounds should be authored initially, with optional alpha-derived suggest
 1. **Feature annotation:** complete product floats; one line stays attached to an authored cap landmark; supplied feature text remains still. Tests whether motion maintains an informational relationship.
 2. **Product detail:** complete hero plus a crop from the same source; gentle scale directs attention to a real visible detail.
 3. **Offer card:** supplied title/price/CTA use measured text and panels with entrance, reading hold and close. These are compositions of text, layout and timing, not separate price/CTA render atoms.
-4. **Matte proof:** an authored foreground shape occludes a background graphic, then an Experimental product composition demonstrates the same primitive. Do not alter the Production palm scene.
+4. **Matte proof:** an authored foreground shape occludes a background graphic, then an Experimental product composition demonstrates the same primitive. Do not alter the palm-up baseline scene.
 
-Use technical checks at module boundaries, random seeks and fractional sampling for relations, source-bundle round trips, and representative preview/export frame comparisons. Retain the Production regression. Visual inspection must assess label readability, useful detail resolution, pointer attachment and clearance; deterministic pixels alone do not establish creative quality.
+Use technical checks at module boundaries, random seeks and fractional sampling for relations, source-bundle round trips, and representative preview/export frame comparisons. Retain the palm-up visual regression. Visual inspection must assess label readability, useful detail resolution, pointer attachment and clearance; deterministic pixels alone do not establish creative quality.
 
 ## Deferred
 

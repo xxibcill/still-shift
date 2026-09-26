@@ -80,7 +80,7 @@ Use the same evaluated height/progress as the product. Keep the shadow's receive
 
 Use the existing fictional bottle, 1080×1350 canvas, identical composition and duration. Show synchronized baseline/treatment previews with the same scrub frame, each effect independently switchable. Compare at full size and phone size. Render both moving and settled frames, plus an MP4 for timing judgment. A poster alone cannot establish motion quality.
 
-Implement and evaluate FX-01 through FX-03 before stacking their outputs. FX-04 and FX-05 remain conditional on a visual brief and mask availability. Keep the accepted palm-up Production format as its current baseline; these comparisons belong to Experimental.
+Implement and evaluate FX-01 through FX-03 before stacking their outputs. FX-04 and FX-05 remain conditional on a visual brief and mask availability. Keep the palm-up composition as a visual baseline; these comparisons belong to Experimental.
 
 ## Architectural implications
 

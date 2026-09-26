@@ -373,19 +373,13 @@ try {
   await ready(page, "A01");
   assert.equal(await page.locator("#export").isDisabled(), false);
   assert.equal(await page.locator(".format").count(), 48);
-  assert.equal(await page.locator("#support").innerText(), "Production · v1.0");
+  assert.equal(await page.locator("#support").innerText(), "Experimental");
   assert.equal(
     await page.locator("#selection-title").innerText(),
     "Palm-up Product Float",
   );
-  await page.selectOption("#availability", "production");
-  assert.equal(await page.locator(".format").count(), 1);
-  assert.match(
-    await page.locator(".format").innerText(),
-    /Palm-up Product Float/,
-  );
   await page.selectOption("#availability", "experimental");
-  assert.equal(await page.locator(".format").count(), 47);
+  assert.equal(await page.locator(".format").count(), 48);
   await page.selectOption("#availability", "ready");
   assert.equal(await page.locator(".format").count(), 4);
   await page.selectOption("#availability", "");
