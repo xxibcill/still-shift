@@ -73,4 +73,29 @@ describe("continuous quality policy", () => {
         .longestSemanticGap,
     ).toBe(191);
   });
+
+  it("does not count flow speed changes after the flow has stopped", () => {
+    const input = raw();
+    input.motionGrammar = "v2";
+    input.flows = [
+      {
+        id: "late-speed",
+        path: "pressure-a",
+        direction: 1,
+        count: 1,
+        shape: "dot",
+        size: 2,
+        color: "#8B3F36",
+        window: { start: 0, end: 20 },
+        speed: [
+          { frame: 100, pxPerFrame: 1 },
+          { frame: 150, pxPerFrame: 2 },
+        ],
+      },
+    ];
+    const scene = compileStoryScene(StorySceneSchema.parse(input));
+    expect(
+      scene.motionEvents.some((event) => event.kind === "flow-speed"),
+    ).toBe(false);
+  });
 });

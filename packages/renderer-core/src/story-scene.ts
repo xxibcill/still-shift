@@ -365,10 +365,12 @@ export function compileStoryScene(source: StoryScene): StoryRenderScene {
     for (let i = 1; i < flow.speed.length; i++) {
       const before = flow.speed[i - 1]!,
         after = flow.speed[i]!;
-      if (before.pxPerFrame !== after.pxPerFrame)
+      const start = Math.max(before.frame, flow.window.start);
+      const end = Math.min(after.frame, flow.window.end - 1);
+      if (before.pxPerFrame !== after.pxPerFrame && end > start)
         event(
           flow.path,
-          { start: before.frame, end: after.frame },
+          { start, end },
           "flow-speed",
           flow.window.role ?? "response",
         );
