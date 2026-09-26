@@ -31,6 +31,18 @@ export function applyStoryHandoff(
   for (const mapping of handoff.subjects) {
     const source = previous?.nodes.find((n) => n.id === mapping.from);
     const target = scene.nodes.find((n) => n.id === mapping.to);
+    if (mapping.from && !source)
+      passageError(
+        "missing-handoff-subject",
+        "Missing outgoing subject for " + mapping.id,
+        { node: mapping.from },
+      );
+    if (mapping.to && !target)
+      passageError(
+        "missing-handoff-subject",
+        "Missing incoming subject for " + mapping.id,
+        { node: mapping.to },
+      );
     if (mapping.mode === "carry" || mapping.mode === "exit") {
       if (!source || !before)
         passageError(

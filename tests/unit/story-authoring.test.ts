@@ -208,6 +208,43 @@ describe("shared passage authoring", () => {
       ).opacity,
     ).toBe(0.5);
   });
+  it("rejects dangling references on reset and exit mappings", () => {
+    const input = plan();
+    input.beats.push(structuredClone(input.beats[0]!));
+    input.beats[1]!.id = "two";
+    input.beats[1]!.handoff = {
+      mode: "reset",
+      camera: "reset",
+      subjects: [
+        {
+          id: "household",
+          from: "does-not-exist",
+          to: "house-a",
+          mode: "reset",
+          properties: ["x"],
+        },
+      ],
+    };
+    expect(inspectStoryPassage(input, templates())).toMatchObject({
+      ok: false,
+      diagnostics: [
+        { code: "missing-handoff-subject", node: "does-not-exist" },
+      ],
+    });
+    input.beats[1]!.handoff.subjects[0] = {
+      id: "household",
+      from: "house-a",
+      to: "does-not-exist",
+      mode: "exit",
+      properties: ["x"],
+    };
+    expect(inspectStoryPassage(input, templates())).toMatchObject({
+      ok: false,
+      diagnostics: [
+        { code: "missing-handoff-subject", node: "does-not-exist" },
+      ],
+    });
+  });
   it("indexes and retimes choreography, text and camera keys", () => {
     const source = template();
     source.scene.motionGrammar = "v2";
