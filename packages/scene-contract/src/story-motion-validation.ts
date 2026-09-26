@@ -79,11 +79,11 @@ export function validateContinuousStory(
   if (scene.recipe.preset === "access_constraint") {
     const { pinch, sidesEnter } = scene.recipe;
     if (pinch) {
-      if (
-        nodes.get(pinch.path)?.type !== "path" ||
-        pinch.path !== scene.recipe.route
-      )
+      const path = nodes.get(pinch.path);
+      if (path?.type !== "path" || pinch.path !== scene.recipe.route)
         fail("Pinch must bind the restricted route");
+      if (path?.type === "path" && path.lineStyle !== "brush")
+        fail("Pinch requires a brush path");
       within(pinch.window.start);
       within(pinch.window.end);
     }
