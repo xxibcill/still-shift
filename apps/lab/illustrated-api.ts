@@ -11,7 +11,7 @@ export const illustratedApi = (): Plugin => ({
       if (!/^\/(illustrated|cinematic|story)\//.test(url.pathname))
         return next();
       const match =
-        /^\/(illustrated|cinematic|story)\/(scenes|assets)\/([a-z0-9-]+\.(json|png))$/.exec(
+        /^\/(illustrated|cinematic|story)\/(scenes|assets)\/([a-z0-9-]+\.(json|png|svg|otf|ttf))$/.exec(
           url.pathname,
         );
       if (!match) {
@@ -23,7 +23,11 @@ export const illustratedApi = (): Plugin => ({
         match[1] === "story"
           ? match[2] === "scenes"
             ? "benchmarks/fixtures/story-motion"
-            : "assets/history-offstage-v2"
+            : /\.(otf|ttf)$/.test(match[3]!)
+              ? "assets/story-motion/fonts"
+              : match[3]!.endsWith(".svg")
+                ? "assets/story-motion/art"
+                : "assets/history-offstage-v2"
           : match[1] === "cinematic"
             ? match[2] === "scenes"
               ? "benchmarks/fixtures/cinematic-illustrated"
@@ -41,7 +45,15 @@ export const illustratedApi = (): Plugin => ({
         const bytes = await readFile(resolve(root, directory, match[3]!));
         response.setHeader(
           "Content-Type",
-          match[4] === "json" ? "application/json" : "image/png",
+          (
+            {
+              json: "application/json",
+              png: "image/png",
+              svg: "image/svg+xml",
+              otf: "font/otf",
+              ttf: "font/ttf",
+            } as Record<string, string>
+          )[match[4]!]!,
         );
         response.end(bytes);
       } catch {

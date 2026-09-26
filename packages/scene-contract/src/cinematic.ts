@@ -5,6 +5,7 @@ import {
   PreparedSceneFieldsSchema,
   PreparedSceneSchema,
   PreparedAnimationResultSchema,
+  validatePreparedGraph,
 } from "./prepared.ts";
 
 const finite = z.number().finite();
@@ -112,6 +113,7 @@ const cinematicShape = PreparedSceneFieldsSchema.extend({
 export type CinematicScene = z.infer<typeof cinematicShape>;
 export const CinematicSceneSchema = cinematicShape.superRefine((scene, ctx) => {
   const fail = (message: string) => ctx.addIssue({ code: "custom", message });
+  validatePreparedGraph(scene, fail);
   if (!Number.isInteger((scene.durationMs * scene.fps) / 1000))
     fail("Duration must resolve to whole frames");
   const nodes = new Map(scene.nodes.map((node) => [node.id, node]));

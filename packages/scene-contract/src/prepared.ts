@@ -19,6 +19,14 @@ const asset = z
     height: number.int().positive(),
   })
   .strict();
+export const PreparedFontSchema = z
+  .object({
+    id,
+    path: z.string().min(1),
+    sha256: z.string().regex(/^sha256:[a-f0-9]{64}$/),
+    weight: z.enum(["400", "500", "600", "700"]),
+  })
+  .strict();
 const base = {
   id,
   parent: id.optional(),
@@ -50,6 +58,8 @@ export const PreparedNodeSchema = z.discriminatedUnion("type", [
       points: z.array(point).min(2).max(128),
       stroke: color,
       lineWidth: number.positive().max(100),
+      lineStyle: z.enum(["uniform", "ink", "brush"]).optional(),
+      endArrow: z.boolean().optional(),
       gapAt: number.min(0.1).max(0.9).default(0.6),
       gapSize: number.min(0.02).max(0.25).default(0.1),
     })
@@ -59,10 +69,12 @@ export const PreparedNodeSchema = z.discriminatedUnion("type", [
       ...base,
       type: z.literal("text"),
       text: z.string().min(1),
+      states: z.array(z.string().min(1)).min(1).max(12).optional(),
       fontSize: number.min(16).max(180),
       color,
       weight: z.enum(["normal", "bold"]).default("normal"),
       font: z.enum(["serif", "sans-serif"]).default("sans-serif"),
+      fontAsset: id.optional(),
       align: z.enum(["left", "center", "right"]).default("left"),
     })
     .strict(),
@@ -174,6 +186,7 @@ const preparedShape = z
     height: z.literal(1080).default(1080),
     background: color.default("#E8DFC9"),
     assets: z.array(asset).min(1),
+    fonts: z.array(PreparedFontSchema).max(12).optional(),
     nodes: z.array(PreparedNodeSchema).min(1).max(200),
     recipe: IllustratedRecipeSchema,
     provenance: z.string().min(1).optional(),
@@ -189,14 +202,22 @@ export const PreparedSceneFieldsSchema = preparedShape.omit({
 });
 
 export function validatePreparedGraph(
-  scene: Pick<PreparedScene, "nodes" | "assets">,
+  scene: Pick<PreparedScene, "nodes" | "assets" | "fonts">,
   fail: (message: string) => void,
 ) {
   const nodes = new Map(scene.nodes.map((node) => [node.id, node]));
   const assets = new Map(scene.assets.map((item) => [item.id, item]));
+  const fonts = new Map(scene.fonts?.map((item) => [item.id, item]));
+  if (
+    fonts.size !== (scene.fonts?.length ?? 0) ||
+    [...fonts.keys()].some((id) => assets.has(id))
+  )
+    fail("Font IDs must be unique and distinct from image assets");
   if (nodes.size !== scene.nodes.length || assets.size !== scene.assets.length)
     fail("Asset and node IDs must be unique");
   for (const node of scene.nodes) {
+    if (node.type === "text" && node.fontAsset && !fonts.has(node.fontAsset))
+      fail(`Missing font asset ${node.fontAsset}`);
     const parents = new Set([node.id]);
     let parent = node.parent;
     while (parent) {

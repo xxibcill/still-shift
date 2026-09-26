@@ -13,9 +13,13 @@ import {
 import { inspectForegroundReveal } from "./reveal-validation.ts";
 import { sampleCinematicBlur } from "./cinematic-scene.ts";
 import { evaluateStoryPath } from "./story-geometry.ts";
+import { loadPreparedFonts, type LoadedFont } from "./prepared-fonts.ts";
+import { inkStrokeOutline } from "./ink-path.ts";
+import { brushStroke } from "./brush-path.ts";
 
 type Images = Map<string, HTMLImageElement> & {
   revealValidation?: ReturnType<typeof inspectForegroundReveal>;
+  fonts?: Map<string, LoadedFont>;
 };
 type State = ReturnType<typeof evaluatePreparedNode>;
 
@@ -66,6 +70,16 @@ const drawImage = (
   ctx.restore();
 };
 
+const traceOutline = (
+  ctx: CanvasRenderingContext2D,
+  points: [number, number][],
+) => {
+  if (!points.length) return;
+  ctx.moveTo(...points[0]!);
+  for (const point of points.slice(1)) ctx.lineTo(...point);
+  ctx.closePath();
+};
+
 const strokeInterval = (
   ctx: CanvasRenderingContext2D,
   node: PreparedPath,
@@ -73,6 +87,32 @@ const strokeInterval = (
   end: number,
 ) => {
   if (end <= start) return;
+  if (node.lineStyle === "brush") {
+    const mark = brushStroke(node, start, end);
+    ctx.save();
+    ctx.fillStyle = node.stroke;
+    const opacity = ctx.globalAlpha;
+    ctx.globalAlpha = opacity * 0.18;
+    ctx.beginPath();
+    traceOutline(ctx, mark.wash);
+    ctx.fill();
+    ctx.globalAlpha = opacity;
+    ctx.beginPath();
+    traceOutline(ctx, mark.body);
+    for (const cut of mark.cuts) traceOutline(ctx, cut);
+    ctx.fill("evenodd");
+    ctx.restore();
+    return;
+  }
+  if (node.lineStyle === "ink") {
+    const outline = inkStrokeOutline(node, start, end);
+    if (outline.length === 0) return;
+    ctx.beginPath();
+    traceOutline(ctx, outline);
+    ctx.fillStyle = node.stroke;
+    ctx.fill();
+    return;
+  }
   const total = pathLength(node.points);
   const first = pointOnPath(node, start);
   ctx.beginPath();
@@ -109,6 +149,43 @@ const drawPath = (
     if (state.reveal > node.gapAt + gap)
       strokeInterval(ctx, node, node.gapAt + gap, state.reveal);
   }
+  if (node.endArrow && state.reveal === 1) {
+    const tip = pointOnPath(node, 1);
+    const before = pointOnPath(node, 0.97);
+    const angle = Math.atan2(tip[1] - before[1], tip[0] - before[0]);
+    const length = node.lineWidth * 2.2;
+    const wing = node.lineWidth * 0.95;
+    const bx = tip[0] - Math.cos(angle) * length;
+    const by = tip[1] - Math.sin(angle) * length;
+    if (node.lineStyle === "brush") {
+      for (const side of [-1, 1]) {
+        strokeInterval(
+          ctx,
+          {
+            ...node,
+            id: `${node.id}-wing-${side}`,
+            lineWidth: node.lineWidth * 0.55,
+            points: [
+              [
+                bx - Math.sin(angle) * wing * side,
+                by + Math.cos(angle) * wing * side,
+              ],
+              tip,
+            ],
+          },
+          0,
+          1,
+        );
+      }
+      return;
+    }
+    ctx.beginPath();
+    ctx.moveTo(bx - Math.sin(angle) * wing, by + Math.cos(angle) * wing);
+    ctx.lineTo(...tip);
+    ctx.lineTo(bx + Math.sin(angle) * wing, by - Math.cos(angle) * wing);
+    ctx.lineWidth = node.lineWidth * 0.45;
+    ctx.stroke();
+  }
 };
 
 const drawShape = (
@@ -125,13 +202,26 @@ const drawShape = (
     case "path":
       drawPath(ctx, node, state);
       break;
-    case "text":
+    case "text": {
+      const font = node.fontAsset
+        ? images.fonts?.get(node.fontAsset)
+        : undefined;
+      if (node.fontAsset && !font)
+        throw new Error(`Font not prepared: ${node.fontAsset}`);
       ctx.fillStyle = node.color;
-      ctx.font = `${node.weight} ${node.fontSize}px ${node.font}`;
+      ctx.font = font
+        ? `${font.weight} ${node.fontSize}px "${font.family}"`
+        : `${node.weight} ${node.fontSize}px ${node.font}`;
       ctx.textAlign = node.align;
       ctx.textBaseline = "top";
-      ctx.fillText(node.text, 0, 0);
+      const text = node.states
+        ? node.states[Math.round(state.state)]
+        : node.text;
+      if (text === undefined)
+        throw new Error(`Missing text state on ${node.id}`);
+      ctx.fillText(text, 0, 0);
       break;
+    }
     case "rect":
       ctx.fillStyle = node.fill;
       ctx.beginPath();
@@ -234,6 +324,7 @@ export async function loadIllustratedImages(
     }),
   );
   const images: Images = new Map(entries);
+  images.fonts = await loadPreparedFonts(scene, assetUrl);
   if (scene.schemaVersion === "illustrated-scene-2") {
     const node = scene.nodes.find(
       (item) => item.id === scene.recipe.background,

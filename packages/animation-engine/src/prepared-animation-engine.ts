@@ -79,6 +79,24 @@ export async function loadPreparedScene(scenePath: string) {
       );
     assetPaths[asset.id] = path;
   }
+  for (const font of parsed.data.fonts ?? []) {
+    const path = resolve(dirname(absolute), font.path);
+    let bytes: Buffer;
+    try {
+      bytes = await readFile(path);
+    } catch {
+      throw new AnimationEngineError(
+        "INPUT_UNREADABLE",
+        `Cannot read font ${font.id}: ${path}`,
+      );
+    }
+    if (hash(bytes) !== font.sha256)
+      throw new AnimationEngineError(
+        "SCENE_INVALID",
+        `Font checksum differs: ${font.id}`,
+      );
+    assetPaths[font.id] = path;
+  }
   return {
     scene,
     assetPaths,

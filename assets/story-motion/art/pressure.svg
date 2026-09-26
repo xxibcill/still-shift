@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="350" height="110" viewBox="0 0 350 110"><defs><pattern id="hatch" width="18" height="18" patternUnits="userSpaceOnUse" patternTransform="rotate(24)"><path d="M0 0V18" stroke="#211F1B" stroke-width="2" opacity=".2"/></pattern><pattern id="dots" width="16" height="16" patternUnits="userSpaceOnUse"><circle cx="4" cy="4" r="1.3" fill="#211F1B" opacity=".2"/></pattern></defs><g stroke-linecap="round" stroke-linejoin="round">
+  <path d="M8 8H342V27Q246 24 218 99H132Q110 24 8 27Z" fill="#8B3F36" opacity=".14"/>
+  <path d="M8 27Q110 24 132 99H218Q246 24 342 27" fill="none" stroke="#8B3F36" stroke-width="7"/>
+  <path d="M88 30l-8-16m29 40-7-19m138 19 8-19m11-5 8-16" stroke="#211F1B" stroke-width="3" opacity=".5"/>
+</g></svg>

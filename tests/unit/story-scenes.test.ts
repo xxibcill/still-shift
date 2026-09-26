@@ -67,7 +67,9 @@ describe("story motion", () => {
       expect(evaluatePreparedNode(scene, find(recipe.route), f).gap).toBe(0);
       const a = evaluatePreparedNode(scene, find(recipe.sides[0]), f);
       const b = evaluatePreparedNode(scene, find(recipe.sides[1]), f);
-      const clear = b.y - a.y - find(recipe.sides[0]).height;
+      const clear =
+        Math.hypot(b.x - a.x, b.y - a.y) -
+        (find(recipe.sides[0]).height + find(recipe.sides[1]).height) / 2;
       expect(clear).toBeGreaterThanOrEqual(recipe.constrainedWidth - 0.001);
     }
     const closed = structuredClone(scene);
@@ -113,7 +115,7 @@ describe("story motion", () => {
     const crisis = fixture("dated_system_break");
     if (crisis.recipe.preset !== "dated_system_break")
       throw new Error("Wrong fixture");
-    crisis.recipe.contextReadyFrame = 50;
+    crisis.recipe.contextReadyFrame = crisis.recipe.breaks[0]!.window.start + 1;
     expect(StorySceneSchema.safeParse(crisis).success).toBe(false);
     const swap = fixture("category_swap");
     if (swap.recipe.preset !== "category_swap")
@@ -143,7 +145,7 @@ describe("story motion", () => {
         const node = scene.nodes.find((node) => node.id === binding.path)!;
         if (node.type !== "path") throw new Error("Expected path");
         const path = evaluateStoryPath(scene, node, f);
-        expect(path.points[1]).toEqual(
+        expect(path.points.at(-1)).toEqual(
           storyAnchorPosition(scene, binding.to.node, binding.to.point, f),
         );
         expect(path.points.every((point) => point.every(Number.isFinite))).toBe(
@@ -152,8 +154,9 @@ describe("story motion", () => {
       }
     }
     const from = storyAnchorPosition(scene, "store", [390, 120], 120);
-    expect(from).toEqual([580, 540]);
-    expect(storyAnchorPosition(scene, "resources", [0, 125], 120)).not.toEqual(
+    const store = scene.nodes.find((node) => node.id === "store")!;
+    expect(from).toEqual([store.x + 390, store.y + 120]);
+    expect(storyAnchorPosition(scene, "resources", [0, 125], 166)).not.toEqual(
       storyAnchorPosition(scene, "resources", [0, 125], 0),
     );
   });
@@ -162,12 +165,12 @@ describe("story motion", () => {
     if (input.recipe.preset !== "relationship_build")
       throw new Error("Wrong fixture");
     const scene = compilePreparedScene(input);
-    const resource = scene.nodes.find((node) => node.id === "resources")!;
+    const resource = scene.nodes.find((node) => node.id === "resources-art")!;
     expect(evaluatePreparedNode(scene, resource, 55).opacity).toBe(1);
     expect(evaluatePreparedNode(scene, resource, 97).opacity).toBe(0.65);
     expect(evaluatePreparedNode(scene, resource, 166).opacity).toBe(1);
     input.recipe.emphasis.push({
-      node: "resources",
+      node: "resources-art",
       window: { start: 80, end: 110 },
       opacity: 0.5,
     });
@@ -181,9 +184,10 @@ describe("story motion", () => {
     input.nodes.find((node) => node.id === qualifier)!.opacity = 0;
     expect(StorySceneSchema.safeParse(input).success).toBe(false);
     input.nodes.find((node) => node.id === qualifier)!.opacity = 1;
+    const originalEnd = input.recipe.unknown.window.end;
     input.recipe.unknown.window.end = input.frameCount;
     expect(StorySceneSchema.safeParse(input).success).toBe(false);
-    input.recipe.unknown.window.end = 122;
+    input.recipe.unknown.window.end = originalEnd;
     input.recipe.composite.node = input.recipe.unknown.node;
     expect(StorySceneSchema.safeParse(input).success).toBe(false);
   });

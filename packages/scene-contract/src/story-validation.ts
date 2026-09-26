@@ -78,16 +78,35 @@ export function validateStoryBindings(
       }
       persistent.push(...recipe.households, recipe.reference);
       window(recipe.strain);
+      for (const labelWindow of recipe.labelWindows ?? []) {
+        window(labelWindow);
+        if (labelWindow.start < recipe.strain.start)
+          fail("Consequence labels must follow the start of strain");
+      }
       break;
     }
     case "access_constraint": {
       separate([recipe.source, ...recipe.connections, ...recipe.sides]);
       recipe.connections.forEach((id) => node(id, "path"));
       const route = node(recipe.route, "path");
-      const sides = recipe.sides.map((id) => node(id, "rect"));
+      const sides = recipe.sides.map((id) => node(id));
+      for (const side of sides) {
+        if (
+          side &&
+          side.type !== "rect" &&
+          !(side.type === "group" && side.clip)
+        )
+          fail(
+            "Restriction sides require rectangles or clipped illustration groups",
+          );
+        if (side && (side.width <= 0 || side.height <= 0))
+          fail("Restriction sides need positive bounds");
+      }
       if (!recipe.connections.includes(recipe.route))
         fail("Restricted route must be one of the connections");
       if (route?.type === "path") {
+        if (route.endArrow)
+          fail("A restricted route must remain an unmarked open connection");
         if (route.points.length !== 2 || route.rotation !== 0)
           fail("Restriction requires a straight unrotated local route");
         if (recipe.constrainedWidth <= route.lineWidth + 2 * recipe.clearance)
@@ -120,6 +139,11 @@ export function validateStoryBindings(
       recipe.branches.forEach((branch) => {
         node(branch.path, "path");
         window(branch.window);
+        if (branch.arrival) {
+          window(branch.arrival);
+          if (branch.arrival.start < branch.window.start)
+            fail("A destination arrival must follow its connection reveal");
+        }
         visible(branch.path);
         visible(branch.destination);
       });
@@ -195,9 +219,25 @@ export function validateStoryBindings(
       break;
     }
     case "category_swap": {
-      separate([recipe.subject, recipe.qualifier, ...recipe.stableAnchors]);
+      separate([
+        recipe.subject,
+        recipe.qualifier,
+        ...recipe.stableAnchors,
+        ...(recipe.stateLabels ?? []),
+      ]);
       node(recipe.qualifier, "text");
       const subject = node(recipe.subject, "image");
+      for (const id of recipe.stateLabels ?? []) {
+        const label = node(id, "text");
+        if (
+          label?.type === "text" &&
+          (!label.states ||
+            recipe.fromState >= label.states.length ||
+            recipe.toState >= label.states.length)
+        )
+          fail("Category caption references a missing authored state");
+        persistent.push(id);
+      }
       if (
         subject?.type === "image" &&
         (recipe.fromState >= subject.states.length ||

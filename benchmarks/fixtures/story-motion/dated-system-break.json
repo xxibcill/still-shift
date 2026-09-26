@@ -3,85 +3,106 @@
   "fps": 24,
   "width": 1920,
   "height": 1080,
-  "background": "#EFE6D4",
+  "background": "#E8DFC9",
   "assets": [
     {
-      "id": "objects",
-      "path": "../../../assets/history-offstage-v2/objects-v1.png",
-      "sha256": "sha256:274cdaed676284c7225a2a83645288ff2fe7771bc75b4bbda6df92fbd9afc741",
-      "width": 1536,
-      "height": 1024
+      "id": "house",
+      "path": "../../../assets/story-motion/art/house.svg",
+      "sha256": "sha256:a8fa4eff374ba974770317dd483ca7b2e5b8d1f0bd7a9224ada091db42542a60",
+      "width": 600,
+      "height": 440
+    },
+    {
+      "id": "store",
+      "path": "../../../assets/story-motion/art/store.svg",
+      "sha256": "sha256:8ba708bf4866da92ada1eed3dc788db98a961e7cf84fcafe8615fe734f13042c",
+      "width": 600,
+      "height": 520
+    },
+    {
+      "id": "land",
+      "path": "../../../assets/story-motion/art/land.svg",
+      "sha256": "sha256:c5c5d753a8ddd1f93da52c1171d204b260a0a2e01aa6d8c034065294345237fc",
+      "width": 640,
+      "height": 260
+    },
+    {
+      "id": "access",
+      "path": "../../../assets/story-motion/art/access.svg",
+      "sha256": "sha256:e9c7985f055ac7e07a49dbbfeadba7796175c856d5e32ab3e72f81e36b91dd1d",
+      "width": 520,
+      "height": 240
+    },
+    {
+      "id": "pressure",
+      "path": "../../../assets/story-motion/art/pressure.svg",
+      "sha256": "sha256:9ad0b18f2455c3fb9abe39f88a78c30dfa8ecfaf338a4d6235abfa14378958d7",
+      "width": 350,
+      "height": 110
+    },
+    {
+      "id": "access-crisis",
+      "path": "../../../assets/story-motion/art/access-crisis.svg",
+      "sha256": "sha256:bcfd00a8edd0787983aaa028b6a084f7a7b9d55dfa319b232922f0c5767f20ec",
+      "width": 520,
+      "height": 240
+    },
+    {
+      "id": "category-a",
+      "path": "../../../assets/story-motion/art/category-a.svg",
+      "sha256": "sha256:b5453d5780bb242d3022d460bb3f08191c1c93a0fba5c6448e2ba0c56c134d78",
+      "width": 600,
+      "height": 420
+    },
+    {
+      "id": "category-b",
+      "path": "../../../assets/story-motion/art/category-b.svg",
+      "sha256": "sha256:4887350b4a8f18324724a9727a30768be9fd9273cbffe535fd3df2341e9f0352",
+      "width": 600,
+      "height": 420
+    },
+    {
+      "id": "ground",
+      "path": "../../../assets/story-motion/art/ground.svg",
+      "sha256": "sha256:05a94509840b715518e055bc586a084c7d5c742d07486391c72cb7fa5ec86238",
+      "width": 1920,
+      "height": 300
+    },
+    {
+      "id": "paper",
+      "path": "../../../assets/story-motion/art/paper.svg",
+      "sha256": "sha256:f5a47b015f900631504b76ad6ebe587c43914b0ef0e45db460bb187c69f37b30",
+      "width": 1920,
+      "height": 1080
+    }
+  ],
+  "fonts": [
+    {
+      "id": "display",
+      "path": "../../../assets/story-motion/fonts/source-serif-4-semibold.otf",
+      "sha256": "sha256:25e034392847d9965c92f98971b3646436b7ab919ece9118b0c0e5ec94c02efc",
+      "weight": "600"
+    },
+    {
+      "id": "label",
+      "path": "../../../assets/story-motion/fonts/plex-sans-medium.ttf",
+      "sha256": "sha256:331c8639d7598b2cde62a911a71db195e30cb655cd6bdf2e324a7e984955f907",
+      "weight": "500"
+    },
+    {
+      "id": "label-strong",
+      "path": "../../../assets/story-motion/fonts/plex-sans-semibold.ttf",
+      "sha256": "sha256:a20caf8286023a6a7a85e40b1d2a4ae9fc3e3b1f9eda8f4c542dd4986af67bb1",
+      "weight": "600"
+    },
+    {
+      "id": "source",
+      "path": "../../../assets/story-motion/fonts/plex-mono-medium.ttf",
+      "sha256": "sha256:98fbd727aae340b236955879dabed4d991aac9e8e90b3b2a67ce4a59221cc97c",
+      "weight": "500"
     }
   ],
   "nodes": [
-    {
-      "id": "series",
-      "x": 100,
-      "y": 55,
-      "width": 0,
-      "height": 0,
-      "opacity": 1,
-      "rotation": 0,
-      "origin": [0.5, 0.5],
-      "type": "text",
-      "text": "HISTORY OFFSTAGE  /  STORY MOTION",
-      "fontSize": 23,
-      "color": "#52684F",
-      "weight": "bold",
-      "font": "sans-serif",
-      "align": "left"
-    },
-    {
-      "id": "title",
-      "x": 100,
-      "y": 102,
-      "width": 0,
-      "height": 0,
-      "opacity": 1,
-      "rotation": 0,
-      "origin": [0.5, 0.5],
-      "type": "text",
-      "text": "A crisis belongs to its context.",
-      "fontSize": 62,
-      "color": "#282C29",
-      "weight": "normal",
-      "font": "serif",
-      "align": "left"
-    },
-    {
-      "id": "subtitle",
-      "x": 103,
-      "y": 185,
-      "width": 0,
-      "height": 0,
-      "opacity": 1,
-      "rotation": 0,
-      "origin": [0.5, 0.5],
-      "type": "text",
-      "text": "The later local scene begins separately.",
-      "fontSize": 28,
-      "color": "#52684F",
-      "weight": "normal",
-      "font": "sans-serif",
-      "align": "left"
-    },
-    {
-      "id": "footer",
-      "x": 100,
-      "y": 1010,
-      "width": 0,
-      "height": 0,
-      "opacity": 1,
-      "rotation": 0,
-      "origin": [0.5, 0.5],
-      "type": "text",
-      "text": "REUSABLE MOTION STUDY  ·  SCHEMATIC ARTWORK  ·  NOT A FINAL EPISODE SHOT",
-      "fontSize": 21,
-      "color": "#52684F",
-      "weight": "normal",
-      "font": "sans-serif",
-      "align": "left"
-    },
     {
       "id": "crisis",
       "x": 0,
@@ -95,22 +116,71 @@
       "clip": false
     },
     {
+      "id": "crisis-field",
+      "parent": "crisis",
+      "x": 0,
+      "y": 0,
+      "width": 1920,
+      "height": 1080,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "rect",
+      "fill": "#4B5F70",
+      "lineWidth": 0,
+      "radius": 0
+    },
+    {
       "id": "crisis-date",
       "parent": "crisis",
-      "x": 960,
-      "y": 305,
+      "x": 112,
+      "y": 82,
       "width": 0,
       "height": 0,
       "opacity": 1,
       "rotation": 0,
       "origin": [0.5, 0.5],
       "type": "text",
-      "text": "GREAT FAMINE  ·  1315–17  ·  COMPARISON",
-      "fontSize": 36,
-      "color": "#984D3D",
+      "text": "1315–17",
+      "fontSize": 132,
+      "color": "#E8DFC9",
       "weight": "normal",
       "font": "sans-serif",
-      "align": "center"
+      "fontAsset": "display",
+      "align": "left"
+    },
+    {
+      "id": "crisis-context",
+      "parent": "crisis",
+      "x": 116,
+      "y": 246,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "text",
+      "text": "Great Famine · comparison",
+      "fontSize": 48,
+      "color": "#E8DFC9",
+      "weight": "normal",
+      "font": "sans-serif",
+      "fontAsset": "label",
+      "align": "left"
+    },
+    {
+      "id": "crisis-store",
+      "parent": "crisis",
+      "x": 120,
+      "y": 372,
+      "width": 650,
+      "height": 563,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "image",
+      "states": [{ "asset": "store" }],
+      "fit": "contain"
     },
     {
       "id": "break-a",
@@ -124,13 +194,14 @@
       "origin": [0.5, 0.5],
       "type": "path",
       "points": [
-        [590, 590],
-        [1310, 470]
+        [712, 578],
+        [1260, 454]
       ],
-      "stroke": "#52684F",
-      "lineWidth": 9,
-      "gapAt": 0.5,
-      "gapSize": 0.16
+      "stroke": "#E8DFC9",
+      "lineWidth": 28,
+      "lineStyle": "brush",
+      "gapAt": 0.6,
+      "gapSize": 0.18
     },
     {
       "id": "break-b",
@@ -144,131 +215,79 @@
       "origin": [0.5, 0.5],
       "type": "path",
       "points": [
-        [590, 700],
-        [1310, 800]
+        [720, 774],
+        [1220, 815]
       ],
-      "stroke": "#52684F",
-      "lineWidth": 9,
+      "stroke": "#E8DFC9",
+      "lineWidth": 28,
+      "lineStyle": "brush",
       "gapAt": 0.6,
-      "gapSize": 0.16
+      "gapSize": 0.18
     },
     {
-      "id": "crisis-store",
+      "id": "crisis-resources",
       "parent": "crisis",
-      "x": 200,
-      "y": 450,
-      "width": 390,
-      "height": 330,
+      "x": 1240,
+      "y": 304,
+      "width": 450,
+      "height": 315,
       "opacity": 1,
       "rotation": 0,
       "origin": [0.5, 0.5],
       "type": "image",
-      "states": [
-        {
-          "asset": "objects",
-          "crop": [36, 66, 466, 386]
-        }
-      ],
+      "states": [{ "asset": "category-a" }],
       "fit": "contain"
     },
     {
-      "id": "factor-a",
+      "id": "crisis-resources-label",
       "parent": "crisis",
-      "x": 1310,
-      "y": 360,
-      "width": 260,
-      "height": 250,
-      "opacity": 1,
-      "rotation": 0,
-      "origin": [0.5, 0.5],
-      "type": "group",
-      "clip": false
-    },
-    {
-      "id": "factor-a-art",
-      "parent": "factor-a",
-      "x": 20,
-      "y": 0,
-      "width": 220,
-      "height": 190,
-      "opacity": 1,
-      "rotation": 0,
-      "origin": [0.5, 0.5],
-      "type": "image",
-      "states": [
-        {
-          "asset": "objects",
-          "crop": [580, 31, 386, 455]
-        }
-      ],
-      "fit": "contain"
-    },
-    {
-      "id": "factor-a-label",
-      "parent": "factor-a",
-      "x": 130,
-      "y": 211,
+      "x": 1465,
+      "y": 640,
       "width": 0,
       "height": 0,
       "opacity": 1,
       "rotation": 0,
       "origin": [0.5, 0.5],
       "type": "text",
-      "text": "RESOURCES",
-      "fontSize": 28,
-      "color": "#282C29",
-      "weight": "bold",
+      "text": "Resources",
+      "fontSize": 48,
+      "color": "#E8DFC9",
+      "weight": "normal",
       "font": "sans-serif",
+      "fontAsset": "label",
       "align": "center"
     },
     {
-      "id": "factor-b",
+      "id": "crisis-access",
       "parent": "crisis",
-      "x": 1310,
-      "y": 680,
-      "width": 260,
-      "height": 250,
-      "opacity": 1,
-      "rotation": 0,
-      "origin": [0.5, 0.5],
-      "type": "group",
-      "clip": false
-    },
-    {
-      "id": "factor-b-art",
-      "parent": "factor-b",
-      "x": 20,
-      "y": 0,
-      "width": 220,
-      "height": 190,
+      "x": 1220,
+      "y": 705,
+      "width": 470,
+      "height": 217,
       "opacity": 1,
       "rotation": 0,
       "origin": [0.5, 0.5],
       "type": "image",
-      "states": [
-        {
-          "asset": "objects",
-          "crop": [1034, 130, 474, 286]
-        }
-      ],
+      "states": [{ "asset": "access-crisis" }],
       "fit": "contain"
     },
     {
-      "id": "factor-b-label",
-      "parent": "factor-b",
-      "x": 130,
-      "y": 211,
+      "id": "crisis-access-label",
+      "parent": "crisis",
+      "x": 1455,
+      "y": 946,
       "width": 0,
       "height": 0,
       "opacity": 1,
       "rotation": 0,
       "origin": [0.5, 0.5],
       "type": "text",
-      "text": "ACCESS",
-      "fontSize": 28,
-      "color": "#282C29",
-      "weight": "bold",
+      "text": "Access",
+      "fontSize": 48,
+      "color": "#E8DFC9",
+      "weight": "normal",
       "font": "sans-serif",
+      "fontAsset": "label",
       "align": "center"
     },
     {
@@ -284,146 +303,158 @@
       "clip": false
     },
     {
-      "id": "later-date",
+      "id": "later-field",
       "parent": "later",
-      "x": 960,
-      "y": 305,
-      "width": 0,
-      "height": 0,
-      "opacity": 1,
-      "rotation": 0,
-      "origin": [0.5, 0.5],
-      "type": "text",
-      "text": "WALSHAM  ·  1327–29",
-      "fontSize": 43,
-      "color": "#52684F",
-      "weight": "normal",
-      "font": "sans-serif",
-      "align": "center"
-    },
-    {
-      "id": "later-house",
-      "parent": "later",
-      "x": 550,
-      "y": 530,
-      "width": 240,
-      "height": 220,
-      "opacity": 1,
-      "rotation": 0,
-      "origin": [0.5, 0.5],
-      "type": "group",
-      "clip": false
-    },
-    {
-      "id": "later-house-wall",
-      "parent": "later-house",
-      "x": 30,
-      "y": 80,
-      "width": 180,
-      "height": 140,
-      "opacity": 1,
-      "rotation": 0,
-      "origin": [0.5, 0.5],
-      "type": "rect",
-      "fill": "#D3C4A5",
-      "stroke": "#282C29",
-      "lineWidth": 5,
-      "radius": 0
-    },
-    {
-      "id": "later-house-roof",
-      "parent": "later-house",
       "x": 0,
       "y": 0,
-      "width": 0,
-      "height": 0,
-      "opacity": 1,
-      "rotation": 0,
-      "origin": [0.5, 0.5],
-      "type": "path",
-      "points": [
-        [8, 90],
-        [120, 5],
-        [232, 90]
-      ],
-      "stroke": "#282C29",
-      "lineWidth": 10,
-      "gapAt": 0.6,
-      "gapSize": 0.1
-    },
-    {
-      "id": "later-house-door",
-      "parent": "later-house",
-      "x": 97,
-      "y": 140,
-      "width": 47,
-      "height": 80,
+      "width": 1920,
+      "height": 1080,
       "opacity": 1,
       "rotation": 0,
       "origin": [0.5, 0.5],
       "type": "rect",
-      "fill": "#52684F",
+      "fill": "#E8DFC9",
       "lineWidth": 0,
       "radius": 0
     },
     {
-      "id": "later-house-ground",
-      "parent": "later-house",
+      "id": "later-ground",
+      "parent": "later",
       "x": 0,
-      "y": 0,
+      "y": 780,
+      "width": 1920,
+      "height": 300,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "image",
+      "states": [{ "asset": "ground" }],
+      "fit": "contain"
+    },
+    {
+      "id": "later-date",
+      "parent": "later",
+      "x": 112,
+      "y": 106,
       "width": 0,
       "height": 0,
       "opacity": 1,
       "rotation": 0,
       "origin": [0.5, 0.5],
-      "type": "path",
-      "points": [
-        [0, 220],
-        [240, 220]
-      ],
-      "stroke": "#282C29",
-      "lineWidth": 5,
-      "gapAt": 0.6,
-      "gapSize": 0.1
+      "type": "text",
+      "text": "Walsham · 1327–29",
+      "fontSize": 82,
+      "color": "#211F1B",
+      "weight": "normal",
+      "font": "sans-serif",
+      "fontAsset": "display",
+      "align": "left"
+    },
+    {
+      "id": "later-context",
+      "parent": "later",
+      "x": 116,
+      "y": 234,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "text",
+      "text": "A different place in time.",
+      "fontSize": 48,
+      "color": "#211F1B",
+      "weight": "normal",
+      "font": "sans-serif",
+      "fontAsset": "label",
+      "align": "left"
+    },
+    {
+      "id": "later-house",
+      "parent": "later",
+      "x": 1050,
+      "y": 382,
+      "width": 720,
+      "height": 528,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "image",
+      "states": [{ "asset": "house" }],
+      "fit": "contain"
+    },
+    {
+      "id": "later-note",
+      "parent": "later",
+      "x": 112,
+      "y": 497,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "text",
+      "text": "Local conditions",
+      "fontSize": 48,
+      "color": "#211F1B",
+      "weight": "normal",
+      "font": "sans-serif",
+      "fontAsset": "label",
+      "align": "left"
     },
     {
       "id": "later-unknown",
       "parent": "later",
-      "x": 1200,
-      "y": 565,
+      "x": 112,
+      "y": 570,
       "width": 0,
       "height": 0,
       "opacity": 1,
       "rotation": 0,
       "origin": [0.5, 0.5],
       "type": "text",
-      "text": "LOCAL CONDITIONS",
-      "fontSize": 32,
-      "color": "#282C29",
+      "text": "Unknown.",
+      "fontSize": 112,
+      "color": "#211F1B",
       "weight": "normal",
       "font": "sans-serif",
-      "align": "center"
+      "fontAsset": "display",
+      "align": "left"
     },
     {
-      "id": "later-state",
+      "id": "later-qualifier",
       "parent": "later",
-      "x": 1200,
-      "y": 625,
+      "x": 112,
+      "y": 966,
       "width": 0,
       "height": 0,
       "opacity": 1,
       "rotation": 0,
       "origin": [0.5, 0.5],
       "type": "text",
-      "text": "UNKNOWN",
-      "fontSize": 55,
-      "color": "#984D3D",
+      "text": "The earlier crisis does not establish this local situation.",
+      "fontSize": 42,
+      "color": "#211F1B",
       "weight": "normal",
-      "font": "serif",
-      "align": "center"
+      "font": "sans-serif",
+      "fontAsset": "label",
+      "align": "left"
+    },
+    {
+      "id": "paper",
+      "x": 0,
+      "y": 0,
+      "width": 1920,
+      "height": 1080,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "image",
+      "states": [{ "asset": "paper" }],
+      "fit": "contain"
     }
   ],
-  "provenance": "Reusable engineering/creative fixtures using original history-offstage-v2 artwork and procedural diagrams. Not selected episode derivatives or Phase 0 corpus evidence.",
+  "provenance": "Original code-authored symbolic editorial illustrations for reusable motion studies. Layered Chronicle palette and typography. No selected S01E01 image is modified; these are explanatory fixtures, not authentic evidence or a finished episode.",
   "schemaVersion": "story-scene-1",
   "frameCount": 192,
   "recipe": {
@@ -431,27 +462,29 @@
     "contextId": "famine-comparison",
     "system": "crisis",
     "context": "crisis-date",
-    "contextReadyFrame": 36,
+    "contextReadyFrame": 72,
     "breaks": [
       {
         "path": "break-a",
         "window": {
-          "start": 40,
-          "end": 56,
-          "cue": "first-stress"
+          "start": 72,
+          "end": 84,
+          "cue": "resource-stress",
+          "easing": "in-cubic"
         }
       },
       {
         "path": "break-b",
         "window": {
-          "start": 76,
-          "end": 92,
-          "cue": "second-stress"
+          "start": 90,
+          "end": 104,
+          "cue": "access-stress",
+          "easing": "in-cubic"
         }
       }
     ],
     "reset": {
-      "atFrame": 144,
+      "atFrame": 120,
       "group": "later",
       "context": "later-date",
       "contextId": "walsham-later"

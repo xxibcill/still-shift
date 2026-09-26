@@ -27,6 +27,7 @@ const server = await createServer({
 });
 let browser: Awaited<ReturnType<typeof chromium.launch>> | undefined;
 const samples: unknown[] = [];
+let backwardSeeks = 0;
 const rgb = async (path: string, frame?: number) => {
   const filter = [
     ...(frame === undefined ? [] : [`select=eq(n\\,${frame})`]),
@@ -94,7 +95,9 @@ try {
     );
     assert.equal(result.frameCount, 192);
     const captures = new Map<number, string>();
-    for (const frame of [0, 48, 71, 72, 120, 143, 144, 166, 191, 0]) {
+    for (const frame of [
+      0, 18, 30, 48, 71, 72, 90, 104, 119, 120, 143, 144, 166, 191, 90, 0,
+    ]) {
       const base64 = await page.evaluate((index) => {
         const slider = document.querySelector<HTMLInputElement>("#scrub")!;
         slider.value = String(index);
@@ -110,6 +113,7 @@ try {
           captures.get(frame),
           "Backward seek must be pixel-identical",
         );
+        backwardSeeks++;
         continue;
       }
       captures.set(frame, base64);
@@ -133,7 +137,51 @@ try {
       captures.get(191),
       "Every recipe must change the visible scene",
     );
+    await page.getByRole("button", { name: "Restart", exact: true }).click();
+    await page.getByRole("button", { name: "Play", exact: true }).click();
+    await page.waitForFunction(
+      () =>
+        Number((document.querySelector("#scrub") as HTMLInputElement).value) >
+        24,
+    );
+    await page.getByRole("button", { name: "Pause", exact: true }).click();
   }
+  const fontFailures = await page.evaluate(
+    async (fontModule) => {
+      const { loadPreparedFonts } = await import(fontModule);
+      const input = await (
+        await fetch("/story/scenes/access-constraint.json")
+      ).json();
+      const font = input.fonts[0];
+      const failures: string[] = [];
+      for (const [sha256, file] of [
+        [font.sha256, "missing.otf"],
+        [`sha256:${"0".repeat(64)}`, "source-serif-4-semibold.otf"],
+      ]) {
+        try {
+          await loadPreparedFonts(
+            { fonts: [{ ...font, sha256 }] },
+            () => `/story/assets/${file}`,
+          );
+          failures.push("unexpected success");
+        } catch (error) {
+          failures.push(String(error));
+        }
+      }
+      return {
+        loaded: [...document.fonts].filter(
+          (face) =>
+            face.family.startsWith("StillShift-") && face.status === "loaded",
+        ).length,
+        missing: failures[0]!,
+        corrupt: failures[1]!,
+      };
+    },
+    `/@fs${resolve("packages/renderer-core/src/prepared-fonts.ts")}`,
+  );
+  assert.equal(fontFailures.loaded, 4, "Scene changes must reuse loaded faces");
+  assert.match(fontFailures.missing, /Font unavailable/);
+  assert.match(fontFailures.corrupt, /Font checksum differs/);
   // Exercise the authoring controls on a discrete event, including rejected edits.
   await page.selectOption("#scene", "story:category-swap");
   await page.waitForFunction(() =>
@@ -150,6 +198,20 @@ try {
     /inside the rendered timeline/,
   );
   await timing.fill("100");
+  await page.getByRole("button", { name: "Apply timing", exact: true }).click();
+  assert.match(
+    await page.locator("#story-events [role=status]").innerText(),
+    /Timing applied/,
+  );
+  await page.selectOption("#scene", "story:relationship-build");
+  await page.waitForFunction(() =>
+    document
+      .querySelector("#status")
+      ?.textContent?.startsWith("Relationship Build ready"),
+  );
+  const easing = page.locator("#story-events select").first();
+  assert.equal(await easing.inputValue(), "out-cubic");
+  await easing.selectOption("out-quint");
   await page.getByRole("button", { name: "Apply timing", exact: true }).click();
   assert.match(
     await page.locator("#story-events [role=status]").innerText(),
@@ -172,7 +234,7 @@ try {
       ),
     ),
   );
-  for (const asset of input.assets)
+  for (const asset of [...input.assets, ...(input.fonts ?? [])])
     asset.path = resolve("benchmarks/fixtures/story-motion", asset.path);
   const exactPath = join(temporary, "exact-646.json");
   await writeFile(
@@ -203,9 +265,11 @@ try {
   assert.deepEqual(errors, []);
   const report = {
     comparisons: samples.length,
-    backwardSeeks: entries.length,
+    backwardSeeks,
     exactFrameExport: 646,
     cli30fpsFrames: 192,
+    fontFailures,
+    playbackStarted: entries.length,
     samples,
   };
   if (renders !== temporary)
@@ -214,7 +278,7 @@ try {
       JSON.stringify(report, null, 2) + "\n",
     );
   console.log(
-    `Story QA passed: ${samples.length} parity comparisons, seven backward seeks, timing controls, phone layout, 646-frame export, 30fps CLI.`,
+    `Story QA passed: ${samples.length} parity comparisons, ${backwardSeeks} backward seeks, timing controls, phone layout, 646-frame export, 30fps CLI.`,
   );
 } finally {
   await browser?.close();

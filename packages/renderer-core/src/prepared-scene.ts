@@ -5,6 +5,8 @@ import type {
 } from "../../scene-contract/src/prepared.ts";
 import type { CinematicScene } from "../../scene-contract/src/cinematic.ts";
 import type { StoryScene } from "../../scene-contract/src/story.ts";
+import type { MotionEasing } from "../../scene-contract/src/motion-easing.ts";
+import { easeMotion } from "./motion-easing.ts";
 import { compileStoryScene, type StoryRenderScene } from "./story-scene.ts";
 import {
   compileCinematicScene,
@@ -13,7 +15,12 @@ import {
 } from "./cinematic-scene.ts";
 
 export const ILLUSTRATED_RENDERER_VERSION = "illustrated-canvas-0.12.0";
-export type Key = { time: number; value: number; step?: boolean };
+export type Key = {
+  time: number;
+  value: number;
+  step?: boolean;
+  easing?: MotionEasing;
+};
 export type Property =
   | "x"
   | "y"
@@ -45,7 +52,9 @@ export const sampleTrack = (keys: Key[], time: number): number => {
     if (time < end.time) {
       if (end.step) return start.value;
       const p = (time - start.time) / (end.time - start.time);
-      return start.value + (end.value - start.value) * p * p * (3 - 2 * p);
+      return (
+        start.value + (end.value - start.value) * easeMotion(p, end.easing)
+      );
     }
   }
   return keys.at(-1)!.value;
@@ -59,7 +68,7 @@ export const pathLength = (points: number[][]): number =>
       0,
     );
 export const pointOnPath = (
-  path: PreparedPath,
+  path: Pick<PreparedPath, "points">,
   progress: number,
 ): [number, number] => {
   let distance = pathLength(path.points) * Math.max(0, Math.min(1, progress));

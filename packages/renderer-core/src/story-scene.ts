@@ -6,14 +6,20 @@ import type {
 import type { Key, Property, Tracks } from "./prepared-scene.ts";
 
 export type StoryRenderScene = StoryScene & {
-  rendererVersion: "story-canvas-0.13.0";
+  rendererVersion: "story-canvas-0.13.3";
   durationMs: number;
   canvas: { width: number; height: number };
   timeline: { fps: number; durationMs: number; frameCount: number };
   tracks: Record<string, Tracks>;
   followers: Record<string, never>;
 };
-type Event = { start: number; end: number; value: number; step?: boolean };
+type Event = {
+  start: number;
+  end: number;
+  value: number;
+  step?: boolean;
+  easing?: StoryWindow["easing"];
+};
 
 const baseValue = (node: PreparedNode, property: Property) => {
   if (property === "scaleX" || property === "scaleY" || property === "reveal")
@@ -52,6 +58,7 @@ function createTracks(nodes: PreparedNode[]) {
         start: window.start,
         end: window.end,
         value,
+        ...(window.easing ? { easing: window.easing } : {}),
       });
     },
     step(id: string, property: Property, at: number, value: number) {
@@ -82,6 +89,7 @@ function createTracks(nodes: PreparedNode[]) {
                   time: event.end,
                   value: event.value,
                   ...(event.step ? { step: true } : {}),
+                  ...(event.easing ? { easing: event.easing } : {}),
                 });
                 previousEnd = event.end;
               }
@@ -112,7 +120,9 @@ export function compileStoryScene(input: StoryScene): StoryRenderScene {
         tracks.add(pressure.node, "x", recipe.strain, pressure.to[0]);
         tracks.add(pressure.node, "y", recipe.strain, pressure.to[1]);
       }
-      for (const label of recipe.labels) enter(label, recipe.strain);
+      recipe.labels.forEach((label, i) =>
+        enter(label, recipe.labelWindows?.[i] ?? recipe.strain),
+      );
       break;
     case "access_constraint": {
       const route = node(recipe.route);
@@ -148,7 +158,7 @@ export function compileStoryScene(input: StoryScene): StoryRenderScene {
     case "relationship_build":
       for (const branch of recipe.branches) {
         reveal(branch.path, branch.window);
-        enter(branch.destination, branch.window);
+        enter(branch.destination, branch.arrival ?? branch.window);
       }
       break;
     case "evidence_boundary":
@@ -176,6 +186,10 @@ export function compileStoryScene(input: StoryScene): StoryRenderScene {
     case "category_swap":
       tracks.initial(recipe.subject, "state", recipe.fromState);
       tracks.step(recipe.subject, "state", recipe.swapFrame, recipe.toState);
+      for (const id of recipe.stateLabels ?? []) {
+        tracks.initial(id, "state", recipe.fromState);
+        tracks.step(id, "state", recipe.swapFrame, recipe.toState);
+      }
       break;
     case "motif_resolve":
       reveal(recipe.outgoing, recipe.resolve);
@@ -198,7 +212,7 @@ export function compileStoryScene(input: StoryScene): StoryRenderScene {
   const durationMs = (input.frameCount * 1000) / input.fps;
   return {
     ...input,
-    rendererVersion: "story-canvas-0.13.0",
+    rendererVersion: "story-canvas-0.13.3",
     durationMs,
     canvas: { width: input.width, height: input.height },
     timeline: { fps: input.fps, frameCount: input.frameCount, durationMs },

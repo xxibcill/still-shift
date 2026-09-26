@@ -5,6 +5,7 @@ import {
   validatePreparedGraph,
 } from "./prepared.ts";
 import { validateStoryBindings } from "./story-validation.ts";
+import { MotionEasingSchema } from "./motion-easing.ts";
 
 const finite = z.number().finite();
 const frame = finite.int().nonnegative();
@@ -15,6 +16,7 @@ const window = z
     start: frame,
     end: frame,
     cue: z.string().min(1).optional(),
+    easing: MotionEasingSchema.optional(),
   })
   .strict()
   .refine((value) => value.end > value.start, "Event end must follow start");
@@ -65,6 +67,7 @@ export const StoryRecipeSchema = z.discriminatedUnion("preset", [
       ]),
       labels: z.tuple([id, id]),
       strain: window,
+      labelWindows: z.tuple([window, window]).optional(),
     })
     .strict(),
   z
@@ -87,7 +90,16 @@ export const StoryRecipeSchema = z.discriminatedUnion("preset", [
       preset: z.literal("relationship_build"),
       anchor: id,
       branches: z
-        .array(z.object({ path: id, destination: id, window }).strict())
+        .array(
+          z
+            .object({
+              path: id,
+              destination: id,
+              window,
+              arrival: window.optional(),
+            })
+            .strict(),
+        )
         .min(2)
         .max(8),
       ...choreography,
@@ -135,6 +147,7 @@ export const StoryRecipeSchema = z.discriminatedUnion("preset", [
       swapFrame: frame.positive(),
       qualifier: id,
       stableAnchors: z.array(id).min(1).max(12),
+      stateLabels: z.array(id).max(8).optional(),
     })
     .strict(),
   z
@@ -165,7 +178,16 @@ const shape = PreparedSceneFieldsSchema.omit({ durationMs: true })
     episodeStartFrame: frame.optional(),
     recipe: StoryRecipeSchema,
     connectors: z
-      .array(z.object({ path: id, from: anchor, to: anchor }).strict())
+      .array(
+        z
+          .object({
+            path: id,
+            from: anchor,
+            to: anchor,
+            bend: finite.min(-120).max(120).optional(),
+          })
+          .strict(),
+      )
       .max(40)
       .default([]),
   })

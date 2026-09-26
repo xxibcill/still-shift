@@ -2,6 +2,7 @@ import {
   StorySceneSchema,
   type StoryScene,
 } from "../../../packages/scene-contract/src/story.ts";
+import { MotionEasingSchema } from "../../../packages/scene-contract/src/motion-easing.ts";
 
 export function createStoryControls(
   input: StoryScene,
@@ -53,6 +54,25 @@ export function createStoryControls(
       )
         add(`${label} · ${key}`, record, key);
       else if (typeof child === "object") visit(child, `${name} ${key}`);
+    }
+    if (typeof record.start === "number" && typeof record.end === "number") {
+      const row = document.createElement("label");
+      row.textContent = `${label} · easing`;
+      const select = document.createElement("select");
+      select.setAttribute("aria-label", `${label} · easing`);
+      for (const easing of MotionEasingSchema.options) {
+        const option = document.createElement("option");
+        option.value = easing;
+        option.textContent = easing.replaceAll("-", " ");
+        select.append(option);
+      }
+      select.value =
+        typeof record.easing === "string" ? record.easing : "smoothstep";
+      row.append(select);
+      host.append(row);
+      fields.push(() => {
+        record.easing = select.value;
+      });
     }
   };
   visit(draft.recipe, "");

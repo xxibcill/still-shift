@@ -149,7 +149,9 @@ const load = async () => {
     }
     const next = compilePreparedScene(input);
     const images = await loadIllustratedImages(next, (id) => {
-      const asset = next.assets.find((item) => item.id === id)!;
+      const asset = [...next.assets, ...(next.fonts ?? [])].find(
+        (item) => item.id === id,
+      )!;
       return `/${entry.collection}/assets/${asset.path.split("/").at(-1)}`;
     });
     if (current !== generation) return;

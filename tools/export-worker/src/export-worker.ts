@@ -246,12 +246,16 @@ const sendAsset = async (
   response.statusCode = 200;
   response.setHeader(
     "Content-Type",
-    extname(path).toLowerCase() === ".svg"
-      ? "image/svg+xml"
-      : extname(path).toLowerCase() === ".jpg" ||
-          extname(path).toLowerCase() === ".jpeg"
-        ? "image/jpeg"
-        : "image/png",
+    extname(path).toLowerCase() === ".otf"
+      ? "font/otf"
+      : extname(path).toLowerCase() === ".ttf"
+        ? "font/ttf"
+        : extname(path).toLowerCase() === ".svg"
+          ? "image/svg+xml"
+          : extname(path).toLowerCase() === ".jpg" ||
+              extname(path).toLowerCase() === ".jpeg"
+            ? "image/jpeg"
+            : "image/png",
   );
   response.setHeader("Content-Length", file.size);
   createReadStream(path).pipe(response);

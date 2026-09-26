@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="420" viewBox="0 0 600 420"><defs><pattern id="hatch" width="18" height="18" patternUnits="userSpaceOnUse" patternTransform="rotate(24)"><path d="M0 0V18" stroke="#211F1B" stroke-width="2" opacity=".2"/></pattern><pattern id="dots" width="16" height="16" patternUnits="userSpaceOnUse"><circle cx="4" cy="4" r="1.3" fill="#211F1B" opacity=".2"/></pattern></defs><g stroke-linecap="round" stroke-linejoin="round">
+  <path d="M74 340Q290 293 535 339L500 381 137 388Z" fill="#59664D" opacity=".14"/>
+  <path d="M101 170Q299 246 500 171L474 326Q299 393 126 327Z" fill="#B47A2A" stroke="#211F1B" stroke-width="7"/>
+  <ellipse cx="300" cy="171" rx="198" ry="64" fill="#E8DFC9" stroke="#211F1B" stroke-width="6"/>
+  <path d="M121 163Q216 98 300 83Q390 107 480 163Q300 246 121 163Z" fill="#B47A2A" opacity=".85"/>
+  <path d="M121 163Q216 98 300 83Q390 107 480 163Q300 246 121 163Z" fill="url(#dots)"/>
+  <path d="M120 290Q302 356 482 290M127 325Q302 387 474 327" fill="none" stroke="#211F1B" stroke-width="5"/>
+  <path d="M169 231L179 344M249 245L253 359M340 245L336 359M427 230L416 345" stroke="#211F1B" stroke-width="3" opacity=".6"/>
+</g></svg>
