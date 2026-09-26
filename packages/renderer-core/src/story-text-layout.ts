@@ -58,27 +58,27 @@ export function validateStoryTextLayout(
         { node: node.id },
       );
     context.font = `${font.weight} ${node.fontSize}px "${font.family}"`;
-    for (const text of node.states ?? [node.text]) {
-      const bounds = measureStoryText(
-        node,
-        text,
-        (value) => context.measureText(value).width,
+    for (const text of node.states ?? [node.text])
+      measureStoryText(node, text, (value) => context.measureText(value).width);
+    const { width, height } = node.textLayout;
+    const left =
+      node.align === "center"
+        ? -width / 2
+        : node.align === "right"
+          ? -width
+          : 0;
+    const inset = scene.safeInset ?? 0;
+    if (
+      !node.parent &&
+      (node.x + left < inset ||
+        node.x + left + width > scene.width - inset ||
+        node.y < inset ||
+        node.y + height > scene.height - inset)
+    )
+      passageError(
+        "text-outside-safe-area",
+        "Text layout is outside the output safe area",
+        { node: node.id },
       );
-      const inset = scene.safeInset ?? 0;
-      if (
-        !node.parent &&
-        (node.x + bounds.left < inset ||
-          node.x + bounds.left + Math.min(bounds.width, node.textLayout.width) >
-            scene.width - inset ||
-          node.y < inset ||
-          node.y + Math.min(bounds.height, node.textLayout.height) >
-            scene.height - inset)
-      )
-        passageError(
-          "text-outside-safe-area",
-          "Text layout is outside the output safe area",
-          { node: node.id },
-        );
-    }
   }
 }

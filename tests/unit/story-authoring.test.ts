@@ -1,5 +1,5 @@
 import { readFileSync } from "node:fs";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { StorySceneSchema } from "../../packages/scene-contract/src/story.ts";
 import {
   StoryAuthoringPlanSchema,
@@ -20,6 +20,7 @@ import { evaluatePreparedNode } from "../../packages/renderer-core/src/prepared-
 import {
   wrapStoryText,
   measureStoryText,
+  validateStoryTextLayout,
 } from "../../packages/renderer-core/src/story-text-layout.ts";
 import { createPassageEditor } from "../../packages/renderer-core/src/passage-editor.ts";
 import {
@@ -518,5 +519,37 @@ describe("shared passage authoring", () => {
     expect(
       measureStoryText(text, "Too much text", (s) => s.length * 10).overflow,
     ).toBe(true);
+  });
+  it("checks the authored layout box against the safe area even when its text is short", () => {
+    const source = scene();
+    source.authoringVersion = "1";
+    source.safeInset = 80;
+    const heading = source.nodes.find((node) => node.id === "reference");
+    if (heading?.type !== "text") throw new Error("Missing heading");
+    heading.textLayout = {
+      width: 1700,
+      height: 150,
+      lineHeight: 1.2,
+      overflow: "error",
+    };
+    vi.stubGlobal("document", {
+      createElement: () => ({
+        getContext: () => ({
+          measureText: (value: string) => ({ width: value.length * 10 }),
+        }),
+      }),
+    });
+    try {
+      const fonts = new Map([["display", { family: "Test", weight: "600" }]]);
+      expect(() =>
+        validateStoryTextLayout(compileStoryScene(source), fonts),
+      ).not.toThrow();
+      heading.textLayout.width = 1750;
+      expect(() =>
+        validateStoryTextLayout(compileStoryScene(source), fonts),
+      ).toThrow(/safe area/);
+    } finally {
+      vi.unstubAllGlobals();
+    }
   });
 });
