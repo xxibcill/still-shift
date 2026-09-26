@@ -10,6 +10,7 @@ import {
 } from "../../renderer-core/src/story-template.ts";
 import { validatePreparedAssets } from "./prepared-animation-engine.ts";
 import { compileStoryPassage } from "../../renderer-core/src/story-passage.ts";
+import { validatePassageText } from "./passage-text-validation.ts";
 
 export const passageChecksum = (bytes: Uint8Array) =>
   createHash("sha256").update(bytes).digest("hex");
@@ -73,6 +74,7 @@ export async function prepareStoryPassageInput(
       await allowPath?.(asset.path);
     await validatePreparedAssets(beat.scene, dirname(path));
   }
+  await validatePassageText(compiled);
   return {
     ...compiled,
     templates,
