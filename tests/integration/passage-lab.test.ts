@@ -189,4 +189,68 @@ describe("passage Lab file actions", () => {
       await page.close();
     }
   }, 30_000);
+
+  test("an older path response cannot replace a newer load", async () => {
+    const page = await browser.newPage();
+    let releaseOlder: (() => void) | undefined;
+    try {
+      await page.goto(base + "passage.html");
+      await page.waitForFunction(() =>
+        document.querySelector("#status")?.textContent?.includes("576 frames"),
+      );
+      const heldResponse = new Promise<void>((resolve) => {
+        releaseOlder = resolve;
+      });
+      let olderRequested!: () => void;
+      const olderStarted = new Promise<void>((resolve) => {
+        olderRequested = resolve;
+      });
+      let held = false;
+      await page.route("**/passage-api/load?*", async (route) => {
+        const path = new URL(route.request().url()).searchParams.get("path");
+        if (
+          !held &&
+          path === "benchmarks/fixtures/story-authoring/linked-comparison.json"
+        ) {
+          held = true;
+          olderRequested();
+          await heldResponse;
+        }
+        await route.continue();
+      });
+      const pathInput = page.locator("#plan-path");
+      await pathInput.fill(
+        "benchmarks/fixtures/story-authoring/linked-comparison.json",
+      );
+      await page.locator("#load-form button").click();
+      await olderStarted;
+      await pathInput.fill(
+        "benchmarks/fixtures/story-authoring/linked-network.json",
+      );
+      await page.locator("#load-form button").click();
+      await page.waitForFunction(
+        () =>
+          (window.passageLab!.snapshot() as { plan: { id: string } }).plan
+            .id === "linked-network",
+      );
+      const staleResponse = page.waitForResponse(
+        (response) =>
+          new URL(response.url()).searchParams.get("path") ===
+          "benchmarks/fixtures/story-authoring/linked-comparison.json",
+      );
+      releaseOlder?.();
+      await staleResponse;
+      await page.waitForLoadState("networkidle");
+      assert.equal(
+        await page.evaluate(
+          () =>
+            (window.passageLab!.snapshot() as { plan: { id: string } }).plan.id,
+        ),
+        "linked-network",
+      );
+    } finally {
+      releaseOlder?.();
+      await page.close();
+    }
+  }, 30_000);
 });

@@ -48,6 +48,7 @@ let previews: ReadyBeat[] = [],
   playing = false,
   started = 0,
   generation = 0;
+let loadRequest = 0;
 const audio = new Audio();
 let audioUrl: string | undefined;
 type FailedEdit = { beat: string; draft: PassagePlan | undefined };
@@ -856,10 +857,14 @@ function renderTimeline() {
       );
   }
 }
-async function loadPacket(packet: {
-  plan: unknown;
-  templates: Record<string, unknown>;
-}) {
+async function loadPacket(
+  packet: {
+    plan: unknown;
+    templates: Record<string, unknown>;
+  },
+  request: number,
+) {
+  if (request !== loadRequest) return;
   stop();
   const ticket = ++generation;
   const nextTemplates = new Map(
@@ -873,7 +878,7 @@ async function loadPacket(packet: {
     nextTemplates,
   );
   const ready = await preparePreviews(nextEditor.passage);
-  if (ticket !== generation) {
+  if (ticket !== generation || request !== loadRequest) {
     ready.forEach((p) => p.preview.dispose());
     return;
   }
@@ -887,20 +892,23 @@ async function loadPacket(packet: {
   installPreviews(ready);
 }
 async function loadPath() {
+  const request = ++loadRequest;
   try {
     const response = await fetch(
       "/passage-api/load?path=" +
         encodeURIComponent(el<HTMLInputElement>("plan-path").value),
     );
     const packet = await response.json();
+    if (request !== loadRequest) return;
     if (!response.ok)
       throw new Error(
         packet.diagnostics
           .map((d: { message: string }) => d.message)
           .join("\n"),
       );
-    await loadPacket(packet);
+    await loadPacket(packet, request);
   } catch (error) {
+    if (request !== loadRequest) return;
     errors(error);
     el("status").textContent =
       "Passage could not load; the previous preview is retained.";
@@ -925,11 +933,15 @@ el<HTMLFormElement>("load-form").onsubmit = (event) => {
 const openWorkspace = el<HTMLInputElement>("open-workspace");
 const absolutePath = (path: string) => /^(?:\/|\\\\|[A-Za-z]:[\\/])/.test(path);
 openWorkspace.onchange = async () => {
+  const file = openWorkspace.files?.[0];
+  if (!file) return;
+  openWorkspace.value = "";
+  const request = ++loadRequest;
   try {
-    const file = openWorkspace.files?.[0];
-    if (!file) return;
     const input = JSON.parse(await file.text());
-    if (input.schemaVersion === "story-workspace-1") await loadPacket(input);
+    if (request !== loadRequest) return;
+    if (input.schemaVersion === "story-workspace-1")
+      await loadPacket(input, request);
     else {
       const plan = parsePassagePlan(input);
       const directory = el<HTMLInputElement>(
@@ -962,18 +974,17 @@ openWorkspace.onchange = async () => {
         }),
       });
       const prepared = await response.json();
+      if (request !== loadRequest) return;
       if (!response.ok)
         throw new Error(
           prepared.diagnostics
             .map((d: { message: string }) => d.message)
             .join("\n"),
         );
-      await loadPacket(prepared);
+      await loadPacket(prepared, request);
     }
   } catch (error) {
-    errors(error);
-  } finally {
-    openWorkspace.value = "";
+    if (request === loadRequest) errors(error);
   }
 };
 el("save-plan").onclick = async () => {
