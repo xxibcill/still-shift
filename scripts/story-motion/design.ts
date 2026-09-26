@@ -17,6 +17,12 @@ export type MotionDesign = {
   recipe: z.input<typeof StoryRecipeSchema>;
   connectors?: StoryScene["connectors"];
 };
+export const typeScale = {
+  label: 56,
+  qualifier: 52,
+  subheading: 64,
+  section: 72,
+} as const;
 export const cue = (
   start: number,
   end: number,
@@ -41,7 +47,7 @@ export const text = (
   value: string,
   x: number,
   y: number,
-  size = 48,
+  size: number = typeScale.label,
   extra: Extra = {},
 ): Node =>
   ({
@@ -52,7 +58,7 @@ export const text = (
     y,
     fontSize: size,
     color: palette.ink,
-    fontAsset: size >= 62 ? "display" : "label",
+    fontAsset: size >= 94 ? "display" : "label",
     ...extra,
   }) as Node;
 export const rect = (
@@ -124,9 +130,9 @@ export const subject = (
   width: number,
   height: number,
 ): Node[] => [
-  group(id, x, y, width, height + 80),
+  group(id, x, y, width, height + 88),
   art(`${id}-art`, asset, 0, 0, width, height, { parent: id }),
-  text(`${id}-label`, label, width / 2, height + 12, 48, {
+  text(`${id}-label`, label, width / 2, height + 20, typeScale.label, {
     parent: id,
     align: "center",
     fontAsset: "label-strong",

@@ -231,11 +231,11 @@
       "origin": [0.5, 0.5],
       "type": "text",
       "text": "Grain",
-      "fontSize": 62,
+      "fontSize": 56,
       "color": "#211F1B",
       "weight": "normal",
       "font": "sans-serif",
-      "fontAsset": "display",
+      "fontAsset": "label",
       "align": "center"
     },
     {
@@ -243,7 +243,7 @@
       "x": 1070,
       "y": 307,
       "width": 520,
-      "height": 291,
+      "height": 299,
       "opacity": 1,
       "rotation": 0,
       "origin": [0.5, 0.5],
@@ -268,7 +268,7 @@
       "id": "resources-label",
       "parent": "resources",
       "x": 260,
-      "y": 223,
+      "y": 231,
       "width": 0,
       "height": 0,
       "opacity": 1,
@@ -276,7 +276,7 @@
       "origin": [0.5, 0.5],
       "type": "text",
       "text": "Land",
-      "fontSize": 48,
+      "fontSize": 56,
       "color": "#211F1B",
       "weight": "normal",
       "font": "sans-serif",
@@ -288,7 +288,7 @@
       "x": 1190,
       "y": 622,
       "width": 380,
-      "height": 255,
+      "height": 263,
       "opacity": 1,
       "rotation": 0,
       "origin": [0.5, 0.5],
@@ -313,7 +313,7 @@
       "id": "access-label",
       "parent": "access",
       "x": 190,
-      "y": 187,
+      "y": 195,
       "width": 0,
       "height": 0,
       "opacity": 1,
@@ -321,7 +321,7 @@
       "origin": [0.5, 0.5],
       "type": "text",
       "text": "Access",
-      "fontSize": 48,
+      "fontSize": 56,
       "color": "#211F1B",
       "weight": "normal",
       "font": "sans-serif",
@@ -373,11 +373,11 @@
       "origin": [0.5, 0.5],
       "type": "text",
       "text": "Claims",
-      "fontSize": 62,
+      "fontSize": 56,
       "color": "#8B3F36",
       "weight": "normal",
       "font": "sans-serif",
-      "fontAsset": "display",
+      "fontAsset": "label",
       "align": "left"
     }
   ],
@@ -467,26 +467,6 @@
           "easing": "out-quint"
         },
         "to": { "x": 1450, "y": 863 }
-      },
-      {
-        "node": "resources",
-        "window": {
-          "start": 132,
-          "end": 162,
-          "cue": "bring-together",
-          "easing": "out-quint"
-        },
-        "to": { "x": 1030, "y": 285 }
-      },
-      {
-        "node": "access",
-        "window": {
-          "start": 138,
-          "end": 166,
-          "cue": "bring-together",
-          "easing": "out-quint"
-        },
-        "to": { "x": 1140, "y": 600 }
       }
     ],
     "emphasis": [
@@ -503,8 +483,8 @@
       {
         "node": "resources-art",
         "window": {
-          "start": 144,
-          "end": 166,
+          "start": 116,
+          "end": 138,
           "cue": "whole-system",
           "easing": "out-cubic"
         },

@@ -158,11 +158,11 @@
       "origin": [0.5, 0.5],
       "type": "text",
       "text": "and its connections.",
-      "fontSize": 82,
+      "fontSize": 64,
       "color": "#211F1B",
       "weight": "normal",
       "font": "sans-serif",
-      "fontAsset": "display",
+      "fontAsset": "label",
       "align": "left"
     },
     {
@@ -243,8 +243,8 @@
       "id": "resources",
       "x": 690,
       "y": 320,
-      "width": 350,
-      "height": 383,
+      "width": 300,
+      "height": 348,
       "opacity": 1,
       "rotation": 0,
       "origin": [0.5, 0.5],
@@ -256,8 +256,8 @@
       "parent": "resources",
       "x": 0,
       "y": 0,
-      "width": 350,
-      "height": 303,
+      "width": 300,
+      "height": 260,
       "opacity": 1,
       "rotation": 0,
       "origin": [0.5, 0.5],
@@ -268,8 +268,8 @@
     {
       "id": "resources-label",
       "parent": "resources",
-      "x": 175,
-      "y": 315,
+      "x": 150,
+      "y": 280,
       "width": 0,
       "height": 0,
       "opacity": 1,
@@ -277,7 +277,7 @@
       "origin": [0.5, 0.5],
       "type": "text",
       "text": "Resources",
-      "fontSize": 48,
+      "fontSize": 56,
       "color": "#211F1B",
       "weight": "normal",
       "font": "sans-serif",
@@ -289,7 +289,7 @@
       "x": 890,
       "y": 695,
       "width": 360,
-      "height": 246,
+      "height": 254,
       "opacity": 1,
       "rotation": 0,
       "origin": [0.5, 0.5],
@@ -314,7 +314,7 @@
       "id": "access-label",
       "parent": "access",
       "x": 180,
-      "y": 178,
+      "y": 186,
       "width": 0,
       "height": 0,
       "opacity": 1,
@@ -322,7 +322,7 @@
       "origin": [0.5, 0.5],
       "type": "text",
       "text": "Access",
-      "fontSize": 48,
+      "fontSize": 56,
       "color": "#211F1B",
       "weight": "normal",
       "font": "sans-serif",
@@ -334,7 +334,7 @@
       "x": 1180,
       "y": 380,
       "width": 500,
-      "height": 283,
+      "height": 291,
       "opacity": 1,
       "rotation": 0,
       "origin": [0.5, 0.5],
@@ -359,7 +359,7 @@
       "id": "land-label",
       "parent": "land",
       "x": 250,
-      "y": 215,
+      "y": 223,
       "width": 0,
       "height": 0,
       "opacity": 1,
@@ -367,7 +367,7 @@
       "origin": [0.5, 0.5],
       "type": "text",
       "text": "Land",
-      "fontSize": 48,
+      "fontSize": 56,
       "color": "#211F1B",
       "weight": "normal",
       "font": "sans-serif",
@@ -398,17 +398,17 @@
       "origin": [0.5, 0.5],
       "type": "text",
       "text": "Rent / service",
-      "fontSize": 62,
+      "fontSize": 56,
       "color": "#8B3F36",
       "weight": "normal",
       "font": "sans-serif",
-      "fontAsset": "display",
+      "fontAsset": "label",
       "align": "left"
     },
     {
       "id": "qualifier",
       "x": 112,
-      "y": 966,
+      "y": 968,
       "width": 0,
       "height": 0,
       "opacity": 1,
@@ -416,7 +416,7 @@
       "origin": [0.5, 0.5],
       "type": "text",
       "text": "Conceptual relationships",
-      "fontSize": 42,
+      "fontSize": 52,
       "color": "#211F1B",
       "weight": "normal",
       "font": "sans-serif",
@@ -434,8 +434,8 @@
       {
         "node": "household",
         "window": {
-          "start": 30,
-          "end": 84,
+          "start": 18,
+          "end": 54,
           "cue": "household-settles",
           "easing": "out-quint"
         },
@@ -444,28 +444,28 @@
       {
         "node": "resources",
         "window": {
-          "start": 38,
-          "end": 88,
+          "start": 28,
+          "end": 64,
           "cue": "resources-settle",
           "easing": "out-quint"
         },
-        "to": { "x": 765, "y": 365 }
+        "to": { "x": 765, "y": 330 }
       },
       {
         "node": "access",
         "window": {
-          "start": 50,
-          "end": 102,
+          "start": 40,
+          "end": 76,
           "cue": "access-settles",
           "easing": "out-quint"
         },
-        "to": { "x": 795, "y": 775 }
+        "to": { "x": 795, "y": 690 }
       },
       {
         "node": "land",
         "window": {
-          "start": 58,
-          "end": 106,
+          "start": 54,
+          "end": 90,
           "cue": "land-settles",
           "easing": "out-quint"
         },
@@ -474,8 +474,8 @@
       {
         "node": "claims",
         "window": {
-          "start": 68,
-          "end": 116,
+          "start": 64,
+          "end": 100,
           "cue": "claims-settle",
           "easing": "out-quint"
         },
@@ -486,8 +486,8 @@
       {
         "node": "resources-art",
         "window": {
-          "start": 124,
-          "end": 150,
+          "start": 108,
+          "end": 128,
           "cue": "land-focus",
           "easing": "out-cubic"
         },
@@ -496,8 +496,8 @@
       {
         "node": "access-art",
         "window": {
-          "start": 124,
-          "end": 150,
+          "start": 108,
+          "end": 128,
           "cue": "land-focus",
           "easing": "out-cubic"
         },
@@ -506,8 +506,8 @@
       {
         "node": "resource-link",
         "window": {
-          "start": 124,
-          "end": 150,
+          "start": 108,
+          "end": 128,
           "cue": "land-focus",
           "easing": "out-cubic"
         },
@@ -516,8 +516,8 @@
       {
         "node": "access-link",
         "window": {
-          "start": 124,
-          "end": 150,
+          "start": 108,
+          "end": 128,
           "cue": "land-focus",
           "easing": "out-cubic"
         },
@@ -527,8 +527,8 @@
     "outgoing": "outgoing",
     "qualifier": "qualifier",
     "resolve": {
-      "start": 124,
-      "end": 154,
+      "start": 112,
+      "end": 136,
       "cue": "land-to-claims",
       "easing": "out-cubic"
     }

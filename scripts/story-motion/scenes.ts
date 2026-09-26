@@ -1,5 +1,6 @@
 import { palette as c } from "./art.ts";
 import {
+  typeScale,
   art,
   bind,
   cue,
@@ -25,7 +26,13 @@ export const designs: MotionDesign[] = [
       paper(),
       ground(720),
       text("reference", "The same season.", 112, 96, 112),
-      text("question", "Different room to absorb strain.", 116, 246, 62),
+      text(
+        "question",
+        "Different room to absorb strain.",
+        116,
+        246,
+        typeScale.subheading,
+      ),
       path(
         "common-ground",
         [
@@ -54,12 +61,18 @@ export const designs: MotionDesign[] = [
         ],
         { x: 1744, y: 490, stroke: c.red, lineWidth: 24, lineStyle: "brush" },
       ),
-      text("room", "More room", 505, 872, 62, { align: "center" }),
-      text("strained", "Less room", 1395, 872, 62, {
+      text("room", "More room", 505, 854, typeScale.label, { align: "center" }),
+      text("strained", "Less room", 1395, 854, typeScale.label, {
         align: "center",
         color: c.red,
       }),
-      text("qualifier", "A qualitative comparison", 112, 966, 42),
+      text(
+        "qualifier",
+        "A qualitative comparison",
+        112,
+        968,
+        typeScale.qualifier,
+      ),
     ],
     recipe: {
       preset: "unequal_margins",
@@ -83,9 +96,14 @@ export const designs: MotionDesign[] = [
       paper(),
       ground(795),
       text("title", "Grain can be available.", 112, 92, 94),
-      text("consequence", "Access can still narrow.", 116, 219, 62, {
-        color: c.red,
-      }),
+      text(
+        "consequence",
+        "Access can still narrow.",
+        116,
+        219,
+        typeScale.subheading,
+        { color: c.red },
+      ),
       art("store", "store", 90, 350, 640, 555),
       path(
         "route-a",
@@ -116,15 +134,15 @@ export const designs: MotionDesign[] = [
       }),
       household("house-a", 1380, 278, 390),
       household("house-b", 1380, 621, 390),
-      text("aperture-label", "Access narrows", 1050, 748, 48, {
+      text("aperture-label", "Access narrows", 1020, 704, typeScale.label, {
         align: "center",
         color: c.red,
         fontAsset: "label-strong",
       }),
-      text("source-label", "Grain remains available", 410, 936, 48, {
+      text("source-label", "Grain available", 410, 948, typeScale.label, {
         align: "center",
       }),
-      text("open-label", "The connection stays open", 1120, 966, 42),
+      text("open-label", "Route stays open", 1080, 948, typeScale.label),
     ],
     recipe: {
       preset: "access_constraint",
@@ -153,7 +171,9 @@ export const designs: MotionDesign[] = [
       relation("access-link"),
       relation("claims-link", { stroke: c.red }),
       art("store", "store", 130, 342, 620, 537),
-      text("store-label", "Grain", 450, 905, 62, { align: "center" }),
+      text("store-label", "Grain", 450, 905, typeScale.label, {
+        align: "center",
+      }),
       ...subject("resources", "land", "Land", 1070, 307, 520, 211),
       ...subject("access", "access", "Access", 1190, 622, 380, 175),
       group("claims", 1450, 881, 360, 140),
@@ -166,7 +186,7 @@ export const designs: MotionDesign[] = [
         ],
         { parent: "claims", stroke: c.red, lineWidth: 7 },
       ),
-      text("claims-label", "Claims", 52, 5, 62, {
+      text("claims-label", "Claims", 52, 5, typeScale.label, {
         parent: "claims",
         color: c.red,
       }),
@@ -215,16 +235,6 @@ export const designs: MotionDesign[] = [
           window: cue(107, 126, "claims-settle", "out-quint"),
           to: { x: 1450, y: 863 },
         },
-        {
-          node: "resources",
-          window: cue(132, 162, "bring-together", "out-quint"),
-          to: { x: 1030, y: 285 },
-        },
-        {
-          node: "access",
-          window: cue(138, 166, "bring-together", "out-quint"),
-          to: { x: 1140, y: 600 },
-        },
       ],
       emphasis: [
         {
@@ -234,7 +244,7 @@ export const designs: MotionDesign[] = [
         },
         {
           node: "resources-art",
-          window: cue(144, 166, "whole-system"),
+          window: cue(116, 138, "whole-system"),
           opacity: 1,
         },
       ],
@@ -253,7 +263,7 @@ export const designs: MotionDesign[] = [
         "A record can support a category, not every detail.",
         116,
         245,
-        48,
+        typeScale.subheading,
       ),
       path(
         "boundary",
@@ -271,12 +281,19 @@ export const designs: MotionDesign[] = [
         ],
         { stroke: c.ink, lineWidth: 2 },
       ),
-      text("supported-heading", "Supported", 112, 369, 62),
+      text("supported-heading", "Supported", 112, 369, typeScale.section, {
+        fontAsset: "display",
+      }),
       ...subject("supported-a", "category-a", "Resources", 114, 534, 330, 231),
       ...subject("supported-b", "land", "Holdings", 472, 631, 330, 134),
       group("unknown", 910, 383, 370, 510),
-      text("unknown-heading", "Exact details", 0, 0, 48, { parent: "unknown" }),
-      text("unknown-state", "Unknown", 0, 121, 62, { parent: "unknown" }),
+      text("unknown-heading", "Exact details", 0, 0, typeScale.label, {
+        parent: "unknown",
+      }),
+      text("unknown-state", "Unknown", 0, 121, typeScale.section, {
+        parent: "unknown",
+        fontAsset: "display",
+      }),
       path(
         "unknown-mark",
         [
@@ -285,12 +302,22 @@ export const designs: MotionDesign[] = [
         ],
         { parent: "unknown", stroke: c.ink, lineWidth: 3 },
       ),
-      text("unknown-note-a", "Items", 0, 289, 42, { parent: "unknown" }),
-      text("unknown-note-b", "Amounts", 0, 345, 42, { parent: "unknown" }),
-      group("composite", 1370, 387, 438, 520),
-      text("composite-title", "Composite", 0, 0, 62, { parent: "composite" }),
-      household("composite-house", 0, 168, 405, { parent: "composite" }),
-      text("composite-note", "Not a recovered pantry", 0, 467, 42, {
+      text("unknown-note-a", "Items", 0, 289, typeScale.label, {
+        parent: "unknown",
+      }),
+      text("unknown-note-b", "Amounts", 0, 369, typeScale.label, {
+        parent: "unknown",
+      }),
+      group("composite", 1370, 387, 438, 580),
+      text("composite-title", "Composite", 0, 0, typeScale.section, {
+        parent: "composite",
+        fontAsset: "display",
+      }),
+      household("composite-house", 20, 130, 370, { parent: "composite" }),
+      text("composite-note", "Not a recovered", 0, 420, typeScale.label, {
+        parent: "composite",
+      }),
+      text("composite-note-end", "pantry", 0, 484, typeScale.label, {
         parent: "composite",
       }),
       text(
@@ -298,7 +325,7 @@ export const designs: MotionDesign[] = [
         "Illustrative categories; not an itemized inventory.",
         112,
         966,
-        42,
+        typeScale.qualifier,
       ),
     ],
     recipe: {
@@ -351,10 +378,14 @@ export const designs: MotionDesign[] = [
         parent: "crisis",
         color: c.bone,
       }),
-      text("crisis-context", "Great Famine · comparison", 116, 246, 48, {
-        parent: "crisis",
-        color: c.bone,
-      }),
+      text(
+        "crisis-context",
+        "Great Famine · comparison",
+        116,
+        246,
+        typeScale.subheading,
+        { parent: "crisis", color: c.bone },
+      ),
       art("crisis-store", "store", 120, 372, 650, 563, { parent: "crisis" }),
       path(
         "break-a",
@@ -387,7 +418,7 @@ export const designs: MotionDesign[] = [
       art("crisis-resources", "category-a", 1240, 304, 450, 315, {
         parent: "crisis",
       }),
-      text("crisis-resources-label", "Resources", 1465, 640, 48, {
+      text("crisis-resources-label", "Resources", 1465, 630, typeScale.label, {
         parent: "crisis",
         color: c.bone,
         align: "center",
@@ -395,7 +426,7 @@ export const designs: MotionDesign[] = [
       art("crisis-access", "access-crisis", 1220, 705, 470, 217, {
         parent: "crisis",
       }),
-      text("crisis-access-label", "Access", 1455, 946, 48, {
+      text("crisis-access-label", "Access", 1455, 942, typeScale.label, {
         parent: "crisis",
         color: c.bone,
         align: "center",
@@ -403,21 +434,28 @@ export const designs: MotionDesign[] = [
       group("later", 0, 0, 1920, 1080),
       rect("later-field", 0, 0, 1920, 1080, c.bone, { parent: "later" }),
       art("later-ground", "ground", 0, 780, 1920, 300, { parent: "later" }),
-      text("later-date", "Walsham · 1327–29", 112, 106, 82, {
+      text("later-date", "Walsham · 1327–29", 112, 90, 104, {
         parent: "later",
       }),
-      text("later-context", "A different place in time.", 116, 234, 48, {
-        parent: "later",
-      }),
+      text(
+        "later-context",
+        "A different place in time.",
+        116,
+        238,
+        typeScale.subheading,
+        { parent: "later" },
+      ),
       household("later-house", 1050, 382, 720, { parent: "later" }),
-      text("later-note", "Local conditions", 112, 497, 48, { parent: "later" }),
-      text("later-unknown", "Unknown.", 112, 570, 112, { parent: "later" }),
+      text("later-note", "Local conditions", 112, 497, typeScale.label, {
+        parent: "later",
+      }),
+      text("later-unknown", "Unknown.", 112, 606, 112, { parent: "later" }),
       text(
         "later-qualifier",
-        "The earlier crisis does not establish this local situation.",
+        "Earlier crisis ≠ known local conditions.",
         112,
-        966,
-        42,
+        968,
+        typeScale.qualifier,
         { parent: "later" },
       ),
       paper(),
@@ -449,23 +487,23 @@ export const designs: MotionDesign[] = [
       paper(),
       ground(770),
       text("title", "The category changes.", 112, 94, 94),
-      text("comparison", "Hinderclay · comparison", 116, 227, 48),
+      text("comparison", "Hinderclay · comparison", 116, 227, typeScale.label),
       art("category", "category-a", 150, 300, 850, 595, {
         states: [{ asset: "category-a" }, { asset: "category-b" }],
       }),
-      text("category-label", "One grain category", 575, 870, 62, {
+      text("category-label", "One grain category", 575, 870, typeScale.label, {
         align: "center",
         states: ["One grain category", "Another grain category"],
       }),
       relation("relation"),
       household("household", 1270, 470, 510),
-      text("relation-label", "The relationship persists", 1190, 895, 48),
+      text("relation-label", "Still connected", 1260, 882, typeScale.label),
       text(
         "qualifier",
-        "Schematic categories · no species or amount implied",
+        "Symbolic: no species or amount implied",
         112,
-        966,
-        42,
+        968,
+        typeScale.qualifier,
       ),
     ],
     connectors: [
@@ -491,7 +529,7 @@ export const designs: MotionDesign[] = [
       paper(),
       ground(770),
       text("title", "A household,", 112, 83, 112),
-      text("subtitle", "and its connections.", 116, 224, 82),
+      text("subtitle", "and its connections.", 116, 224, typeScale.subheading),
       relation("resource-link"),
       relation("access-link"),
       path(
@@ -503,15 +541,21 @@ export const designs: MotionDesign[] = [
         { stroke: c.red, lineWidth: 28, lineStyle: "brush", endArrow: true },
       ),
       household("household", 100, 390, 560),
-      ...subject("resources", "store", "Resources", 690, 320, 350, 303),
+      ...subject("resources", "store", "Resources", 690, 320, 300, 260),
       ...subject("access", "access", "Access", 890, 695, 360, 166),
       ...subject("land", "land", "Land", 1180, 380, 500, 203),
       group("claims", 1330, 920, 470, 80),
-      text("claims-label", "Rent / service", 0, 0, 62, {
+      text("claims-label", "Rent / service", 0, 0, typeScale.label, {
         parent: "claims",
         color: c.red,
       }),
-      text("qualifier", "Conceptual relationships", 112, 966, 42),
+      text(
+        "qualifier",
+        "Conceptual relationships",
+        112,
+        968,
+        typeScale.qualifier,
+      ),
     ],
     connectors: [
       bind(
@@ -533,53 +577,53 @@ export const designs: MotionDesign[] = [
       moves: [
         {
           node: "household",
-          window: cue(30, 84, "household-settles", "out-quint"),
+          window: cue(18, 54, "household-settles", "out-quint"),
           to: { x: 150, y: 440 },
         },
         {
           node: "resources",
-          window: cue(38, 88, "resources-settle", "out-quint"),
-          to: { x: 765, y: 365 },
+          window: cue(28, 64, "resources-settle", "out-quint"),
+          to: { x: 765, y: 330 },
         },
         {
           node: "access",
-          window: cue(50, 102, "access-settles", "out-quint"),
-          to: { x: 795, y: 775 },
+          window: cue(40, 76, "access-settles", "out-quint"),
+          to: { x: 795, y: 690 },
         },
         {
           node: "land",
-          window: cue(58, 106, "land-settles", "out-quint"),
+          window: cue(54, 90, "land-settles", "out-quint"),
           to: { x: 1290, y: 480 },
         },
         {
           node: "claims",
-          window: cue(68, 116, "claims-settle", "out-quint"),
+          window: cue(64, 100, "claims-settle", "out-quint"),
           to: { x: 1320, y: 904 },
         },
       ],
       emphasis: [
         {
           node: "resources-art",
-          window: cue(124, 150, "land-focus"),
+          window: cue(108, 128, "land-focus"),
           opacity: 0.65,
         },
         {
           node: "access-art",
-          window: cue(124, 150, "land-focus"),
+          window: cue(108, 128, "land-focus"),
           opacity: 0.65,
         },
         {
           node: "resource-link",
-          window: cue(124, 150, "land-focus"),
+          window: cue(108, 128, "land-focus"),
           opacity: 0.5,
         },
         {
           node: "access-link",
-          window: cue(124, 150, "land-focus"),
+          window: cue(108, 128, "land-focus"),
           opacity: 0.5,
         },
       ],
-      resolve: cue(124, 154, "land-to-claims"),
+      resolve: cue(112, 136, "land-to-claims"),
     },
   },
 ];

@@ -203,6 +203,22 @@ try {
     await page.locator("#story-events [role=status]").innerText(),
     /Timing applied/,
   );
+  await timing.fill("191");
+  await page.getByRole("button", { name: "Apply timing", exact: true }).click();
+  assert.match(
+    await page.locator("#story-quality").innerText(),
+    /Final composition holds 0.04 s/,
+  );
+  assert.equal(
+    await page
+      .getByRole("button", { name: "Download scene", exact: true })
+      .isEnabled(),
+    true,
+  );
+  await page
+    .getByRole("button", { name: "View frame 191", exact: true })
+    .click();
+  assert.equal(await page.locator("#scrub").inputValue(), "191");
   await page.selectOption("#scene", "story:relationship-build");
   await page.waitForFunction(() =>
     document

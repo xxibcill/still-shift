@@ -27,6 +27,21 @@ The owner finds the motion useful and requested more aesthetic graphics on 2026-
 
 This is an art and composition pass within v0.13. All seven revised compositions are rendered and inspected. Final creative acceptance and full episode integration remain pending.
 
+## Motion quality pass — local implementation delivered
+
+The [implementation report](motion-quality-implementation.md) records the local
+ending and authoring-feedback work from the [plan](motion-quality-improvement-plan.md).
+The user rejected v011 crowding. v012 restores a differentiated type scale and
+illustration space; small-player readability remains open. Relationship Build
+and Motif Resolve retain 2.25 and 2.33 second holds. The seven-scene gallery
+includes three before/after comparisons.
+
+The refreshed ST-013/014 proof and new four-composition ST-006–008 candidate
+preserve their 646/1507-frame timing. Prior independent frame reviews and current
+technical checks are recorded; they do not replace user creative acceptance.
+Continuous audiovisual review and external episode integration
+remain open; M1–M6 are not treated as completed episode milestones.
+
 ## Seven implemented treatments
 
 Names and IDs below are implemented recipe values in the new `story-scene-1` prepared input, exported through `animate-scene`. Share existing drawing and event machinery; do not create seven renderers or duplicate older recipes merely to rename them. Retain existing recipe IDs and their output behavior.
@@ -90,11 +105,11 @@ At the user’s request, the engine portions and then the visual redesign of all
 **Target:** ST-006–008, frames **1940–3446**, **62.792 seconds**, assembled from narration-sized beats.
 
 - [x] Implement `relationship_build` using optional token-free branches and grouped event timings. Preserve the original token-based `resource_flow` behavior.
-- [ ] Maintain the store as the anchor while dependencies appear and change emphasis. Keep at most three independently moving focal elements and avoid revealing the complete system at once.
-- [ ] Keep static connected nodes for the initial reveal; use a common parent for rigid movement. Add limited anchor-derived connector geometry where regrouping moves endpoints independently, so paths remain attached throughout movement.
-- [ ] Connect the store illustration to the household-margin comparison already proved in M1.
-- [ ] Use a separate qualitative loss condition; keep the grain level fixed. Do not animate a measured draining bin, price scale or universal hunger countdown.
-- [ ] Start with one short resource preview; then inspect the complete narrated passage for distinct internal compositions and useful pacing.
+- [x] Maintain the store as the anchor while dependencies appear and change emphasis. Keep at most three independently moving focal elements and avoid revealing the complete system at once.
+- [x] Keep static connected nodes for the initial reveal; use grouped subjects and anchor-derived connectors. Existing short studies exercise endpoint motion; the narrated passage keeps the store fixed.
+- [x] Connect the store illustration to the household-margin comparison already proved in M1.
+- [x] Use a separate qualitative loss condition; keep the grain level fixed. Do not animate a measured draining bin, price scale or universal hunger countdown.
+- [~] Short relationship studies and the complete 1507-frame narrated candidate are rendered. Four distinct compositions, boundary frames and phone-size labels passed sampled review; continuous audiovisual pacing remains open. See the [beat sheet](s01e01-resource-passage-beats.md).
 
 **Exit:** the sequence develops from grain to other dependencies to unequal household vulnerability. It is not a single radial board stretched over a minute. Validate relationship roles/timing and check any existing flow behavior touched by shared changes.
 

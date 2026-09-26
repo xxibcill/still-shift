@@ -8,6 +8,7 @@ import {
 } from "../packages/animation-engine/src/prepared-animation-engine.ts";
 import { storyGallery, storyContactSheet } from "./story-motion/gallery.ts";
 import { evaluatePreparedNode } from "../packages/renderer-core/src/prepared-scene.ts";
+import { analyzeStoryQuality } from "../packages/renderer-core/src/story-quality.ts";
 
 const { values } = parseArgs({
   options: { "output-dir": { type: "string" } },
@@ -22,6 +23,7 @@ const entries = JSON.parse(
   await readFile("benchmarks/fixtures/story-motion/catalog.json", "utf8"),
 ) as { id: string; title: string; description: string }[];
 const results = [];
+const quality = [];
 for (const entry of entries) {
   const scenePath = resolve(
     `benchmarks/fixtures/story-motion/${entry.id}.json`,
@@ -33,6 +35,12 @@ for (const entry of entries) {
   });
   results.push(result);
   const { scene } = await loadPreparedScene(scenePath);
+  if (scene.schemaVersion === "story-scene-1")
+    quality.push({
+      id: entry.id,
+      sourceChecksum: result.checksums.source,
+      ...analyzeStoryQuality(scene),
+    });
   const poses = (frame: number) =>
     Object.fromEntries(
       scene.nodes.map((node) => [
@@ -97,6 +105,10 @@ await run("ffmpeg", [
   join(output, "dated-system-reset.png"),
 ]);
 await writeFile(join(output, "index.html"), storyGallery(output, entries));
+await writeFile(
+  join(output, "quality-report.json"),
+  JSON.stringify(quality, null, 2) + "\n",
+);
 await writeFile(
   join(output, "contact-sheet.html"),
   storyContactSheet(output, entries),
