@@ -1,0 +1,79 @@
+{
+  "schemaVersion": "story-passage-2",
+  "id": "linked-network",
+  "title": "Linked network \u00b7 engine fixture",
+  "styleProfile": {
+    "schemaVersion": "story-style-1",
+    "id": "network-test"
+  },
+  "fps": 24,
+  "sourceStartFrame": 0,
+  "beats": [
+    {
+      "id": "network",
+      "template": "network-template.json",
+      "purpose": "explain-relationships",
+      "takeaway": "One cue controls a connector, subject response and label",
+      "focus": ["store", "resources"],
+      "intensity": "develop",
+      "frameCount": 192,
+      "parameters": {
+        "title": "Linked event dependencies"
+      },
+      "cues": [
+        {
+          "id": "land",
+          "phrase": "A linked subject",
+          "frame": 12,
+          "events": ["land", "land-arrives", "land-settles", "land-label"]
+        }
+      ],
+      "bindings": {
+        "land": {
+          "anchor": {
+            "type": "cue",
+            "id": "land"
+          },
+          "offset": 0,
+          "duration": 22
+        },
+        "land-arrives": {
+          "anchor": {
+            "type": "event",
+            "id": "land",
+            "edge": "end"
+          },
+          "offset": -10,
+          "duration": 18
+        },
+        "land-settles": {
+          "anchor": {
+            "type": "event",
+            "id": "land-arrives",
+            "edge": "start"
+          },
+          "offset": 0,
+          "duration": 18
+        },
+        "land-label": {
+          "anchor": {
+            "type": "event",
+            "id": "land-arrives",
+            "edge": "start"
+          },
+          "offset": 0,
+          "duration": 18
+        },
+        "resources-visibility": {
+          "anchor": {
+            "type": "event",
+            "id": "land-arrives",
+            "edge": "start"
+          },
+          "offset": 0,
+          "duration": 18
+        }
+      }
+    }
+  ]
+}

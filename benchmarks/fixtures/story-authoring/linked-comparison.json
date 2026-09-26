@@ -1,0 +1,149 @@
+{
+  "schemaVersion": "story-passage-2",
+  "id": "linked-comparison",
+  "title": "Linked comparison \u00b7 engine fixture",
+  "styleProfile": {
+    "schemaVersion": "story-style-1",
+    "id": "neutral-test"
+  },
+  "contentPolicy": "general",
+  "fps": 24,
+  "sourceStartFrame": 0,
+  "beats": [
+    {
+      "id": "compare",
+      "template": "comparison-template.json",
+      "purpose": "compare",
+      "takeaway": "Linked timing and reusable text",
+      "focus": ["house-a", "house-b"],
+      "intensity": "develop",
+      "frameCount": 192,
+      "parameters": {
+        "title": "A reusable comparison"
+      },
+      "cues": [
+        {
+          "id": "strain",
+          "phrase": "The shared event",
+          "frame": 48,
+          "events": ["shared-strain"]
+        }
+      ],
+      "bindings": {
+        "shared-strain": {
+          "anchor": {
+            "type": "cue",
+            "id": "strain"
+          },
+          "offset": 0,
+          "duration": 56
+        },
+        "less-room": {
+          "anchor": {
+            "type": "event",
+            "id": "shared-strain",
+            "edge": "end"
+          },
+          "offset": 1,
+          "duration": 16
+        }
+      }
+    },
+    {
+      "id": "continue",
+      "template": "comparison-template.json",
+      "purpose": "compare",
+      "takeaway": "Carry a declared subject into the next beat",
+      "focus": ["house-a", "house-b"],
+      "intensity": "develop",
+      "frameCount": 192,
+      "parameters": {
+        "title": "An explicit handoff"
+      },
+      "cues": [
+        {
+          "id": "strain",
+          "phrase": "The shared event",
+          "frame": 48,
+          "events": ["shared-strain"]
+        }
+      ],
+      "bindings": {
+        "shared-strain": {
+          "anchor": {
+            "type": "cue",
+            "id": "strain"
+          },
+          "offset": 0,
+          "duration": 56
+        },
+        "less-room": {
+          "anchor": {
+            "type": "event",
+            "id": "shared-strain",
+            "edge": "end"
+          },
+          "offset": 1,
+          "duration": 16
+        }
+      },
+      "handoff": {
+        "mode": "continue",
+        "camera": "reset",
+        "subjects": [
+          {
+            "id": "household",
+            "from": "house-a",
+            "to": "house-a",
+            "mode": "carry",
+            "properties": ["x", "y", "scaleX", "scaleY", "rotation", "opacity"]
+          }
+        ]
+      }
+    },
+    {
+      "id": "reset",
+      "template": "comparison-template.json",
+      "purpose": "compare",
+      "takeaway": "Reset the context without changing duration",
+      "focus": ["house-a", "house-b"],
+      "intensity": "develop",
+      "frameCount": 192,
+      "parameters": {
+        "title": "An intentional reset"
+      },
+      "cues": [
+        {
+          "id": "strain",
+          "phrase": "The shared event",
+          "frame": 48,
+          "events": ["shared-strain"]
+        }
+      ],
+      "bindings": {
+        "shared-strain": {
+          "anchor": {
+            "type": "cue",
+            "id": "strain"
+          },
+          "offset": 0,
+          "duration": 56
+        },
+        "less-room": {
+          "anchor": {
+            "type": "event",
+            "id": "shared-strain",
+            "edge": "end"
+          },
+          "offset": 1,
+          "duration": 16
+        }
+      },
+      "handoff": {
+        "mode": "reset",
+        "camera": "reset",
+        "subjects": []
+      }
+    }
+  ]
+}

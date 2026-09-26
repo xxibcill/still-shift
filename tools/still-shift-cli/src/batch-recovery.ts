@@ -14,7 +14,7 @@ import { basename, dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { promisify } from "node:util";
 
-import { AnimationEngineError } from "@still-shift/scene-contract";
+import { AnimationEngineError } from "../../../packages/scene-contract/src/index.ts";
 
 type LockOwner = { pid: number; token: string; processStartedAt: string };
 const execFileAsync = promisify(execFile);
