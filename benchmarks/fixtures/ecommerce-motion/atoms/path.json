@@ -1,0 +1,73 @@
+{
+  "title": "Path + Draw",
+  "fps": 30,
+  "background": "#F2EDE3",
+  "assets": [
+    {
+      "id": "product-image",
+      "path": "../../../../assets/ecommerce-motion/beauty-floating-product-v1.png",
+      "sha256": "sha256:0c832682d129412b2fcd1b726e92275dc0dcbe12f1231d23c18efb3318b49e9c",
+      "width": 1122,
+      "height": 1402
+    }
+  ],
+  "fonts": [
+    {
+      "id": "commerce-font",
+      "path": "../../../../assets/ecommerce-motion/fonts/noto-sans-thai.ttf",
+      "sha256": "sha256:5a1c559bb539583c8a1fd99d1c5b9491e5e14478c9cd2bd0970d5c3096cc9ef8",
+      "weight": "400"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "connector",
+      "x": 0,
+      "y": 0,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "path",
+      "points": [
+        [220, 780],
+        [540, 780],
+        [820, 490]
+      ],
+      "stroke": "#758466",
+      "lineWidth": 3,
+      "gapAt": 0.6,
+      "gapSize": 0.1
+    }
+  ],
+  "provenance": "Fictional SAMPLE 01 engineering demonstration; supplied intact image reused without alteration.",
+  "schemaVersion": "commerce-scene-1",
+  "width": 1080,
+  "height": 1350,
+  "frameCount": 240,
+  "recipe": { "preset": "path" },
+  "events": [
+    {
+      "node": "connector",
+      "property": "reveal",
+      "start": 30,
+      "end": 60,
+      "from": 0,
+      "to": 1,
+      "easing": "out-cubic"
+    }
+  ],
+  "metadata": {
+    "registration": { "status": "experimental" },
+    "catalogVersion": "1.0",
+    "selection": { "kind": "component-demo", "id": "path" },
+    "profile": "feed",
+    "productId": "sample-01",
+    "productSource": "Existing fictional intact SAMPLE 01 PNG",
+    "copySource": "Meet SAMPLE 01.",
+    "claimSources": [],
+    "locale": "en",
+    "protectedRegion": [462, 542.3850267379679, 153, 123.70588235294119]
+  }
+}

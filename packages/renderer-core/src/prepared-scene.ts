@@ -1,3 +1,9 @@
+import { applyCommerceEffectMotion } from "./commerce-effect-motion.ts";
+import type { CommerceScene } from "../../scene-contract/src/commerce.ts";
+import {
+  compileCommerceScene,
+  type CommerceRenderScene,
+} from "./commerce-scene.ts";
 import type {
   PreparedScene,
   PreparedNode,
@@ -44,7 +50,8 @@ export type LegacyIllustratedScene = PreparedScene & {
 export type IllustratedScene =
   | LegacyIllustratedScene
   | CinematicRenderScene
-  | StoryRenderScene;
+  | StoryRenderScene
+  | CommerceRenderScene;
 export const sampleTrack = (keys: Key[], time: number): number => {
   if (time <= keys[0]!.time) return keys[0]!.value;
   for (let i = 1; i < keys.length; i++) {
@@ -94,12 +101,15 @@ export function compilePreparedScene(
   input: CinematicScene,
 ): CinematicRenderScene;
 export function compilePreparedScene(input: StoryScene): StoryRenderScene;
+export function compilePreparedScene(input: CommerceScene): CommerceRenderScene;
 export function compilePreparedScene(
-  input: PreparedScene | CinematicScene | StoryScene,
+  input: PreparedScene | CinematicScene | StoryScene | CommerceScene,
 ): IllustratedScene;
 export function compilePreparedScene(
-  input: PreparedScene | CinematicScene | StoryScene,
+  input: PreparedScene | CinematicScene | StoryScene | CommerceScene,
 ): IllustratedScene {
+  if (input.schemaVersion === "commerce-scene-1")
+    return compileCommerceScene(input);
   if (input.schemaVersion === "story-scene-1") return compileStoryScene(input);
   if (input.schemaVersion === "illustrated-scene-2")
     return compileCinematicScene(input);
@@ -300,8 +310,25 @@ export function evaluatePreparedNode(
     frame >= scene.timeline.frameCount
   )
     throw new Error("Frame index outside illustrated timeline");
+  return evaluatePreparedNodeAtTime(scene, node, frame);
+}
+
+/** Continuous commerce sampling for exposure; public render/seek remains integer-frame. */
+export function evaluatePreparedNodeAtTime(
+  scene: IllustratedScene,
+  node: PreparedNode,
+  frame: number,
+): Record<Property, number> {
+  if (
+    !Number.isFinite(frame) ||
+    frame < 0 ||
+    frame > scene.timeline.frameCount - 1 ||
+    (scene.schemaVersion !== "commerce-scene-1" && !Number.isInteger(frame))
+  )
+    throw new Error("Sample time outside illustrated timeline");
   const time =
-    scene.schemaVersion === "story-scene-1"
+    scene.schemaVersion === "story-scene-1" ||
+    scene.schemaVersion === "commerce-scene-1"
       ? frame
       : (frame * 1000) / scene.fps;
   const state = {
@@ -345,5 +372,21 @@ export function evaluatePreparedNode(
     state.x = x + path.x - node.width / 2;
     state.y = y + path.y - node.height / 2;
   }
+  if (scene.schemaVersion === "commerce-scene-1") {
+    const visibility = scene.visibility?.find((v) => v.target === node.id);
+    if (visibility && (frame < visibility.start || frame >= visibility.end))
+      state.opacity = 0;
+  }
+  if (scene.schemaVersion === "commerce-scene-1" && scene.effects?.length)
+    return applyCommerceEffectMotion(
+      state,
+      node.id,
+      scene.effects,
+      frame,
+      (id) => {
+        const source = scene.nodes.find((item) => item.id === id)!;
+        return evaluatePreparedNodeAtTime(scene, source, frame).y;
+      },
+    );
   return state;
 }

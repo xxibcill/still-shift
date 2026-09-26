@@ -1,0 +1,227 @@
+[
+  {
+    "id": "product",
+    "name": "Product Layer",
+    "group": "Visual",
+    "description": "The approved image, intact and still."
+  },
+  {
+    "id": "background",
+    "name": "Background",
+    "group": "Visual",
+    "description": "A quiet field behind the product."
+  },
+  {
+    "id": "shadow",
+    "name": "Product Shadow",
+    "group": "Visual",
+    "description": "A separate soft ellipse on a flat surface."
+  },
+  {
+    "id": "panel",
+    "name": "Panel",
+    "group": "Visual",
+    "description": "A simple surface for supplied information."
+  },
+  {
+    "id": "text",
+    "name": "Text Block",
+    "group": "Visual",
+    "description": "Supplied words, measured with a pinned font."
+  },
+  {
+    "id": "path",
+    "name": "Path + Draw",
+    "group": "Visual + motion",
+    "description": "A connector drawn between explicit points."
+  },
+  {
+    "id": "float",
+    "name": "Float",
+    "group": "Motion",
+    "description": "Only the product’s vertical position changes."
+  },
+  {
+    "id": "translate",
+    "name": "Translate",
+    "group": "Motion",
+    "description": "One rigid entrance, then a quiet hold."
+  },
+  {
+    "id": "fade",
+    "name": "Fade",
+    "group": "Motion",
+    "description": "A gradual appearance and disappearance."
+  },
+  {
+    "id": "studio",
+    "name": "Studio Float",
+    "group": "Composition",
+    "description": "Product + float + a stationary soft shadow."
+  },
+  {
+    "id": "introduction",
+    "name": "Product Introduction",
+    "group": "Composition",
+    "description": "Product entrance, supplied message, reading hold."
+  },
+  {
+    "id": "callout",
+    "name": "Visible-detail Callout",
+    "group": "Composition",
+    "description": "A settled product and a label attached to its cap."
+  },
+  {
+    "id": "motion-blur",
+    "name": "Motion Blur",
+    "group": "Exposure",
+    "description": "A fast entrance sampled across the shutter exposure, followed by a sharp hold.",
+    "amountLabel": "Exposure multiplier"
+  },
+  {
+    "id": "directional-blur",
+    "name": "Directional Blur",
+    "group": "Image effect",
+    "description": "An authored horizontal smear. Compare this graphic treatment with true exposure blur.",
+    "amountLabel": "Smear length"
+  },
+  {
+    "id": "overshoot",
+    "name": "Overshoot + Settle",
+    "group": "Motion",
+    "description": "A rigid entrance continues briefly beyond its destination, then settles.",
+    "amountLabel": "Overshoot distance"
+  },
+  {
+    "id": "drift",
+    "name": "Drift + Rock",
+    "group": "Motion",
+    "description": "A small sideways arc and in-plane tilt accompany the vertical float.",
+    "amountLabel": "Drift and tilt"
+  },
+  {
+    "id": "height-shadow",
+    "name": "Responsive Shadow",
+    "group": "Relationship",
+    "description": "The studio shadow grows wider and lighter as the intact product rises.",
+    "amountLabel": "Shadow response"
+  },
+  {
+    "id": "focus-blur",
+    "name": "Focus Handoff",
+    "group": "Image effect",
+    "description": "Focus moves from the rear studio panels to a sharp product, then holds.",
+    "amountLabel": "Focus separation"
+  },
+  {
+    "id": "parallax",
+    "name": "Layered Parallax",
+    "group": "Relationship",
+    "description": "Separate studio planes move at different rates. The bottle retains its original view.",
+    "amountLabel": "Depth travel"
+  },
+  {
+    "id": "light-sweep",
+    "name": "Material Highlight",
+    "group": "Lighting",
+    "description": "A soft sweep is confined to an authored cap region and the product’s alpha.",
+    "amountLabel": "Highlight intensity"
+  },
+  {
+    "id": "glow",
+    "name": "Highlight Bloom",
+    "group": "Lighting",
+    "description": "A restrained bloom spreads from bright product pixels above a threshold.",
+    "amountLabel": "Bloom intensity"
+  },
+  {
+    "id": "echo",
+    "name": "Echo Trail",
+    "group": "Image effect",
+    "description": "Fading copies trace the entrance and disappear once the product settles.",
+    "amountLabel": "Trail opacity"
+  },
+  {
+    "id": "grain",
+    "name": "Film Grain",
+    "group": "Texture",
+    "description": "Seeded monochrome texture adds a light photographic finish.",
+    "amountLabel": "Grain strength"
+  },
+  {
+    "id": "particles",
+    "name": "Atmosphere",
+    "group": "Texture",
+    "description": "Sparse, seeded particles drift behind the product without changing its image.",
+    "amountLabel": "Particle opacity"
+  },
+  {
+    "id": "background-light",
+    "name": "Moving Studio Light",
+    "group": "Lighting",
+    "description": "A broad pool of light moves across the background behind the product.",
+    "amountLabel": "Light intensity"
+  },
+  {
+    "id": "displacement",
+    "name": "Background Distortion",
+    "group": "Image effect",
+    "description": "A gentle wave bends the studio graphics while the product stays rigid.",
+    "amountLabel": "Wave amplitude"
+  },
+  {
+    "id": "effects-studio",
+    "name": "Composed Studio",
+    "group": "Composition",
+    "description": "Float, responsive shadow, subtle drift and background light share one clock.",
+    "amountLabel": "Treatment strength"
+  },
+  {
+    "id": "anchor",
+    "name": "Product Anchor",
+    "group": "Geometry",
+    "description": "An authored point stays on the intact product as it moves."
+  },
+  {
+    "id": "scale",
+    "name": "Uniform Scale",
+    "group": "Motion",
+    "description": "A gentle push-in around a fixed pivot, preserving product proportions."
+  },
+  {
+    "id": "rotate",
+    "name": "Rotate",
+    "group": "Motion",
+    "description": "A small two-dimensional tilt around the product’s base."
+  },
+  {
+    "id": "attachment",
+    "name": "Following Callout",
+    "group": "Composition",
+    "description": "The label stays still while its connector follows the cap."
+  },
+  {
+    "id": "detail",
+    "name": "Detail Window",
+    "group": "Composition",
+    "description": "A closer look at the same source pixels, alongside the complete product."
+  },
+  {
+    "id": "layout",
+    "name": "Measured Layout",
+    "group": "Layout",
+    "description": "Supplied copy fits a bounded type size; the panel follows its measured height."
+  },
+  {
+    "id": "matte",
+    "name": "Alpha Matte",
+    "group": "Compositing",
+    "description": "An independently moving soft mask controls the product’s visibility."
+  },
+  {
+    "id": "sequence",
+    "name": "Sequence",
+    "group": "Timing",
+    "description": "Introduction, feature hold and closing message share one explicit timeline."
+  }
+]

@@ -1,0 +1,46 @@
+{
+  "schemaVersion": "commerce-brief-1",
+  "catalogVersion": "1.0",
+  "selection": {
+    "kind": "format",
+    "id": "H04"
+  },
+  "title": "H04 / Studio beauty / 4:5",
+  "locale": "en",
+  "product": {
+    "id": "beauty-cutout-v1",
+    "name": "SAMPLE 01 / STUDIO COLLECTION",
+    "imagePath": "../../../assets/ecommerce-motion/beauty-cutout-v1.png",
+    "preparation": "cutout",
+    "provenance": "AI-generated product-and-hand cutout made with the built-in image model; fictional SAMPLE 01.",
+    "protectedRegion": [0.32, 0.33, 0.25, 0.16]
+  },
+  "copy": {
+    "headlines": ["A small\ndaily ritual."],
+    "cta": "Explore the collection",
+    "source": "Original demonstration copy; fictional product concept with no efficacy claims.",
+    "callouts": [
+      {
+        "text": "Brushed cap",
+        "target": [0.42, 0.12],
+        "source": "Visible brushed finish on the generated SAMPLE 01 cap."
+      },
+      {
+        "text": "Tinted glass",
+        "target": [0.3, 0.56],
+        "source": "Visible tint of the generated SAMPLE 01 bottle; no efficacy claim."
+      }
+    ]
+  },
+  "profile": "feed",
+  "fps": 30,
+  "frameCount": 240,
+  "artDirection": "studio",
+  "safeInset": 0.065,
+  "theme": {
+    "background": "#EBE0CD",
+    "ink": "#283E30",
+    "accent": "#584832",
+    "muted": "#5D5A48"
+  }
+}

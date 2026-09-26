@@ -1,0 +1,41 @@
+{
+  "schemaVersion": "commerce-brief-1",
+  "catalogVersion": "1.0",
+  "selection": {
+    "kind": "recipe",
+    "id": "A01"
+  },
+  "title": "A01 / Floating above an open palm / 4:5",
+  "locale": "en",
+  "product": {
+    "id": "beauty-floating-product-v1",
+    "name": "SAMPLE 01",
+    "imagePath": "../../../assets/ecommerce-motion/beauty-floating-product-v1.png",
+    "preparation": "cutout",
+    "provenance": "AI-generated fictional SAMPLE 01 demonstration bottle. Cap, body and label are one intact source PNG. Real products use an approved intact cutout without generative alteration.",
+    "protectedRegion": [0.37, 0.43, 0.255, 0.165]
+  },
+  "copy": {
+    "headlines": [],
+    "cta": "",
+    "source": "No overlay copy.",
+    "callouts": []
+  },
+  "profile": "feed",
+  "fps": 30,
+  "frameCount": 300,
+  "artDirection": "floating",
+  "safeInset": 0.065,
+  "theme": {
+    "background": "#EBE0CD",
+    "ink": "#FCF3E2",
+    "accent": "#283E30",
+    "muted": "#5D5A48"
+  },
+  "floating": {
+    "imagePath": "../../../assets/ecommerce-motion/beauty-floating-palm-v1.png",
+    "provenance": "AI-generated palm-up hand and empty background, produced independently from the product. No product is present in this source.",
+    "placement": [0.275, 0.12, 0.55],
+    "palmTop": 0.71
+  }
+}

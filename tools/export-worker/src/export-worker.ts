@@ -397,10 +397,12 @@ export const exportScene = async (
   request.signal?.throwIfAborted();
   const start = performance.now();
   const { scene } = request;
-  const story =
-    "schemaVersion" in scene && scene.schemaVersion === "story-scene-1";
+  const frameAuthoritative =
+    "schemaVersion" in scene &&
+    (scene.schemaVersion === "story-scene-1" ||
+      scene.schemaVersion === "commerce-scene-1");
   if (
-    story
+    frameAuthoritative
       ? !Number.isInteger(scene.timeline.frameCount) ||
         scene.timeline.frameCount !== scene.frameCount ||
         scene.timeline.durationMs !==
@@ -516,7 +518,7 @@ export const exportScene = async (
     browser = await chromium.launch({ headless: true });
     request.signal?.throwIfAborted();
     const page = await browser.newPage({
-      viewport: { width: 1920, height: 1080 },
+      viewport: { width: scene.canvas.width, height: scene.canvas.height },
     });
     await page.goto(new URL("tools/export-worker/index.html", baseUrl).href);
     await page.waitForFunction(() => Boolean(window.runStillShiftExport));

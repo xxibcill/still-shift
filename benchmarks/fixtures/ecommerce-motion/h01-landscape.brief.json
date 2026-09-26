@@ -1,0 +1,27 @@
+{
+  "schemaVersion": "commerce-brief-1",
+  "catalogVersion": "1.0",
+  "selection": {
+    "kind": "format",
+    "id": "H01"
+  },
+  "title": "H01 / landscape / illustrated fixture",
+  "locale": "en",
+  "product": {
+    "id": "sample-one",
+    "name": "STUDIO SAMPLE 01",
+    "imagePath": "../../../assets/ecommerce-motion/sample-one.png",
+    "preparation": "cutout",
+    "provenance": "Original procedural illustration; fictional studio sample, not a real product.",
+    "protectedRegion": [0.365, 0.37, 0.28, 0.26]
+  },
+  "copy": {
+    "headlines": ["A small\ndaily ritual."],
+    "cta": "Explore the collection",
+    "source": "Synthetic fixture copy; no product claims.",
+    "callouts": []
+  },
+  "profile": "landscape",
+  "fps": 30,
+  "frameCount": 240
+}

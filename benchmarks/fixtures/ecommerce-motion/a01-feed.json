@@ -1,0 +1,359 @@
+{
+  "title": "A01 / feed / illustrated fixture",
+  "fps": 30,
+  "background": "#F2EDE4",
+  "assets": [
+    {
+      "id": "product-image",
+      "path": "../../../assets/ecommerce-motion/sample-one.png",
+      "sha256": "sha256:646b7ea5833b0df00b583de8567dbbd4a32a8ece396404c9974f7e8206e55b77",
+      "width": 800,
+      "height": 1000
+    }
+  ],
+  "fonts": [
+    {
+      "id": "commerce-font",
+      "path": "../../../assets/ecommerce-motion/fonts/noto-sans-thai.ttf",
+      "sha256": "sha256:5a1c559bb539583c8a1fd99d1c5b9491e5e14478c9cd2bd0970d5c3096cc9ef8",
+      "weight": "600"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "accent",
+      "x": 59,
+      "y": 59,
+      "width": 58,
+      "height": 7,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "rect",
+      "fill": "#C75B39",
+      "lineWidth": 0,
+      "radius": 0
+    },
+    {
+      "id": "product-name",
+      "x": 59,
+      "y": 90,
+      "width": 962,
+      "height": 64,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "text",
+      "text": "STUDIO SAMPLE 01",
+      "fontSize": 26,
+      "color": "#656D62",
+      "weight": "normal",
+      "font": "sans-serif",
+      "fontAsset": "commerce-font",
+      "textBox": {
+        "locale": "en",
+        "maxLines": 1,
+        "lineHeight": 1.28
+      },
+      "align": "left"
+    },
+    {
+      "id": "product",
+      "x": 435,
+      "y": 430.625,
+      "width": 535,
+      "height": 668.75,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "group",
+      "clip": false
+    },
+    {
+      "id": "product-art",
+      "parent": "product",
+      "x": 0,
+      "y": 0,
+      "width": 535,
+      "height": 668.75,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "image",
+      "states": [
+        {
+          "asset": "product-image"
+        }
+      ],
+      "fit": "contain"
+    },
+    {
+      "id": "headline-0",
+      "x": 59,
+      "y": 169,
+      "width": 962,
+      "height": 220,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "text",
+      "text": "A small\ndaily ritual.",
+      "fontSize": 66,
+      "color": "#243E35",
+      "weight": "normal",
+      "font": "sans-serif",
+      "fontAsset": "commerce-font",
+      "textBox": {
+        "locale": "en",
+        "maxLines": 3,
+        "lineHeight": 1.28
+      },
+      "align": "left"
+    },
+    {
+      "id": "callout-path-0",
+      "x": 0,
+      "y": 0,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "path",
+      "points": [
+        [387, 574],
+        [405, 574],
+        [405, 544.3125],
+        [702.5, 544.3125]
+      ],
+      "stroke": "#C75B39",
+      "lineWidth": 3,
+      "gapAt": 0.6,
+      "gapSize": 0.1
+    },
+    {
+      "id": "callout-label-0",
+      "x": 59,
+      "y": 550,
+      "width": 310,
+      "height": 160,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "text",
+      "text": "Illustrated cap",
+      "fontSize": 32,
+      "color": "#243E35",
+      "weight": "normal",
+      "font": "sans-serif",
+      "fontAsset": "commerce-font",
+      "textBox": {
+        "locale": "en",
+        "maxLines": 3,
+        "lineHeight": 1.28
+      },
+      "align": "left"
+    },
+    {
+      "id": "callout-path-1",
+      "x": 0,
+      "y": 0,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "path",
+      "points": [
+        [387, 844],
+        [405, 844],
+        [405, 945.5625],
+        [606.2, 945.5625]
+      ],
+      "stroke": "#C75B39",
+      "lineWidth": 3,
+      "gapAt": 0.6,
+      "gapSize": 0.1
+    },
+    {
+      "id": "callout-label-1",
+      "x": 59,
+      "y": 820,
+      "width": 310,
+      "height": 160,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "text",
+      "text": "Sample container",
+      "fontSize": 32,
+      "color": "#243E35",
+      "weight": "normal",
+      "font": "sans-serif",
+      "fontAsset": "commerce-font",
+      "textBox": {
+        "locale": "en",
+        "maxLines": 3,
+        "lineHeight": 1.28
+      },
+      "align": "left"
+    },
+    {
+      "id": "cta",
+      "x": 59,
+      "y": 1181,
+      "width": 962,
+      "height": 100,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "text",
+      "text": "Explore the collection",
+      "fontSize": 42,
+      "color": "#C75B39",
+      "weight": "normal",
+      "font": "sans-serif",
+      "fontAsset": "commerce-font",
+      "textBox": {
+        "locale": "en",
+        "maxLines": 2,
+        "lineHeight": 1.28
+      },
+      "align": "left"
+    }
+  ],
+  "provenance": "Original procedural illustration; fictional studio sample, not a real product.",
+  "schemaVersion": "commerce-scene-1",
+  "width": 1080,
+  "height": 1350,
+  "frameCount": 300,
+  "recipe": {
+    "preset": "A01"
+  },
+  "events": [
+    {
+      "node": "product",
+      "property": "x",
+      "start": 0,
+      "end": 51,
+      "from": 1110,
+      "to": 435,
+      "easing": "out-cubic"
+    },
+    {
+      "node": "headline-0",
+      "property": "opacity",
+      "start": 0,
+      "end": 20,
+      "from": 0,
+      "to": 1,
+      "easing": "out-cubic"
+    },
+    {
+      "node": "headline-0",
+      "property": "y",
+      "start": 0,
+      "end": 20,
+      "from": 195,
+      "to": 169,
+      "easing": "out-cubic"
+    },
+    {
+      "node": "callout-path-0",
+      "property": "reveal",
+      "start": 66,
+      "end": 81,
+      "from": 0,
+      "to": 1,
+      "easing": "out-cubic"
+    },
+    {
+      "node": "callout-label-0",
+      "property": "opacity",
+      "start": 69,
+      "end": 84,
+      "from": 0,
+      "to": 1,
+      "easing": "out-cubic"
+    },
+    {
+      "node": "callout-path-0",
+      "property": "opacity",
+      "start": 210,
+      "end": 240,
+      "to": 0,
+      "easing": "out-cubic"
+    },
+    {
+      "node": "callout-label-0",
+      "property": "opacity",
+      "start": 210,
+      "end": 240,
+      "to": 0,
+      "easing": "out-cubic"
+    },
+    {
+      "node": "callout-path-1",
+      "property": "reveal",
+      "start": 138,
+      "end": 153,
+      "from": 0,
+      "to": 1,
+      "easing": "out-cubic"
+    },
+    {
+      "node": "callout-label-1",
+      "property": "opacity",
+      "start": 141,
+      "end": 156,
+      "from": 0,
+      "to": 1,
+      "easing": "out-cubic"
+    },
+    {
+      "node": "callout-path-1",
+      "property": "opacity",
+      "start": 210,
+      "end": 240,
+      "to": 0,
+      "easing": "out-cubic"
+    },
+    {
+      "node": "callout-label-1",
+      "property": "opacity",
+      "start": 210,
+      "end": 240,
+      "to": 0,
+      "easing": "out-cubic"
+    },
+    {
+      "node": "cta",
+      "property": "opacity",
+      "start": 210,
+      "end": 240,
+      "from": 0,
+      "to": 1,
+      "easing": "out-cubic"
+    }
+  ],
+  "metadata": {
+    "registration": {
+      "status": "experimental"
+    },
+    "catalogVersion": "1.0",
+    "selection": {
+      "kind": "recipe",
+      "id": "A01"
+    },
+    "profile": "feed",
+    "productId": "sample-one",
+    "productSource": "Original procedural illustration; fictional studio sample, not a real product.",
+    "copySource": "Synthetic fixture copy; no product claims.",
+    "claimSources": [
+      "Visible cap in original fixture.",
+      "Visible original fixture outline."
+    ],
+    "locale": "en",
+    "protectedRegion": [630.275, 678.0625, 149.8, 173.875]
+  }
+}

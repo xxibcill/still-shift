@@ -1,10 +1,18 @@
+import { prepareCommerceTextFits } from "./commerce-layout.ts";
+import { nodeMatrix, imagePlacement } from "./node-transform.ts";
+import {
+  evaluateAttachedPath,
+  validateAttachedPaths,
+} from "./commerce-geometry.ts";
+import { createCommerceEffectsRenderer } from "./commerce-effects-renderer.ts";
+import { measureTextLayout, type TextLayout } from "./text-layout.ts";
 import type {
   PreparedImage,
   PreparedNode,
   PreparedPath,
 } from "../../scene-contract/src/prepared.ts";
 import {
-  evaluatePreparedNode,
+  evaluatePreparedNodeAtTime,
   pathLength,
   pointOnPath,
   type IllustratedScene,
@@ -28,9 +36,10 @@ import { brushStroke } from "./brush-path.ts";
 type Images = Map<string, HTMLImageElement> & {
   revealValidation?: ReturnType<typeof inspectForegroundReveal>;
   fonts?: Map<string, LoadedFont>;
+  textLayouts?: Map<string, Map<string, TextLayout>>;
   rasters?: Map<string, HTMLCanvasElement>;
 };
-type State = ReturnType<typeof evaluatePreparedNode>;
+type State = ReturnType<typeof evaluatePreparedNodeAtTime>;
 
 const drawImage = (
   ctx: CanvasRenderingContext2D,
@@ -49,16 +58,7 @@ const drawImage = (
     image.naturalWidth,
     image.naturalHeight,
   ];
-  let width = node.width;
-  let height = node.height;
-  if (node.fit !== "stretch") {
-    const ratio =
-      node.fit === "cover"
-        ? Math.max(width / sw, height / sh)
-        : Math.min(width / sw, height / sh);
-    width = sw * ratio;
-    height = sh * ratio;
-  }
+  const { width, height } = imagePlacement(node, [sx, sy, sw, sh]);
   ctx.save();
   if (clip) {
     ctx.beginPath();
@@ -235,7 +235,21 @@ const drawShape = (
         : node.text;
       if (text === undefined)
         throw new Error(`Missing text state on ${node.id}`);
-      drawStoryText(ctx, node, text, state.reveal);
+      if (node.textBox) {
+        const layout = images.textLayouts?.get(node.id)?.get(text);
+        if (!layout)
+          throw new Error("Text layout was not prepared: " + node.id);
+        ctx.textBaseline = "alphabetic";
+        const x =
+          node.align === "center"
+            ? node.width / 2
+            : node.align === "right"
+              ? node.width
+              : 0;
+        layout.lines.forEach((line, index) =>
+          ctx.fillText(line, x, layout.baseline + index * layout.lineHeight),
+        );
+      } else drawStoryText(ctx, node, text, state.reveal);
       break;
     }
     case "rect":
@@ -280,14 +294,49 @@ export function createIllustratedPreview(
     throw new Error("Focus handoff requires Canvas 2D filter support");
   canvas.width = scene.width;
   canvas.height = scene.height;
+  if (scene.schemaVersion === "commerce-scene-1")
+    scene = prepareCommerceTextFits(scene, ctx, images.fonts ?? new Map());
+  images = Object.assign(new Map(images), {
+    ...(images.fonts ? { fonts: images.fonts } : {}),
+    ...(images.rasters ? { rasters: images.rasters } : {}),
+    ...(images.revealValidation
+      ? { revealValidation: images.revealValidation }
+      : {}),
+    textLayouts: new Map(),
+  });
+  images.textLayouts = new Map();
+  for (const node of scene.nodes) {
+    if (node.type !== "text" || !node.textBox) continue;
+    const font = node.fontAsset ? images.fonts?.get(node.fontAsset) : undefined;
+    if (!font)
+      throw new Error("Text layout requires a prepared font: " + node.id);
+    ctx.font = font.weight + " " + node.fontSize + 'px "' + font.family + '"';
+    ctx.textBaseline = "alphabetic";
+    ctx.textAlign = "left";
+    images.textLayouts.set(
+      node.id,
+      new Map(
+        (node.states ?? [node.text]).map((text) => [
+          text,
+          measureTextLayout(ctx, { ...node, text }),
+        ]),
+      ),
+    );
+  }
+
+  if (scene.schemaVersion === "commerce-scene-1") validateAttachedPaths(scene);
   const children = new Map<string | undefined, PreparedNode[]>();
   for (const node of scene.nodes) {
     const siblings = children.get(node.parent) ?? [];
     siblings.push(node);
     children.set(node.parent, siblings);
   }
-  const paint = (node: PreparedNode, frame: number) => {
-    const state = evaluatePreparedNode(scene, node, frame);
+  const paint = (
+    ctx: CanvasRenderingContext2D,
+    node: PreparedNode,
+    frame: number,
+  ) => {
+    const state = evaluatePreparedNodeAtTime(scene, node, frame);
     const flows =
       scene.schemaVersion === "story-scene-1"
         ? (scene.compiledFlows?.filter((flow) => flow.path === node.id) ?? [])
@@ -305,12 +354,7 @@ export function createIllustratedPreview(
       ctx.translate(camera.x, camera.y);
       ctx.scale(camera.scale, camera.scale);
     }
-    const ox = node.width * node.origin[0];
-    const oy = node.height * node.origin[1];
-    ctx.translate(state.x + ox, state.y + oy);
-    ctx.rotate((state.rotation * Math.PI) / 180);
-    ctx.scale(state.scaleX, state.scaleY);
-    ctx.translate(-ox, -oy);
+    ctx.transform(...nodeMatrix(node, state));
     if (focus && scene.schemaVersion === "illustrated-scene-2") {
       const blur = sampleCinematicBlur(scene, node.id, frame);
       ctx.filter = blur > 0 ? `blur(${blur}px)` : "none";
@@ -318,7 +362,9 @@ export function createIllustratedPreview(
     const drawable =
       scene.schemaVersion === "story-scene-1" && node.type === "path"
         ? evaluateStoryPath(scene, node, frame)
-        : node;
+        : scene.schemaVersion === "commerce-scene-1" && node.type === "path"
+          ? evaluateAttachedPath(scene, node, frame)
+          : node;
     drawShape(ctx, drawable, state, images, !focus);
     if (drawable.type === "path") {
       ctx.globalAlpha = parentOpacity;
@@ -333,9 +379,14 @@ export function createIllustratedPreview(
         );
       ctx.globalAlpha = parentOpacity * state.opacity;
     }
-    for (const child of children.get(node.id) ?? []) paint(child, frame);
+    for (const child of children.get(node.id) ?? []) paint(ctx, child, frame);
     ctx.restore();
   };
+  const effectsRenderer =
+    scene.schemaVersion === "commerce-scene-1" &&
+    (scene.effects?.length || scene.mattes?.length)
+      ? createCommerceEffectsRenderer(scene, paint)
+      : undefined;
   return {
     renderFrame(frame: number) {
       if (
@@ -344,13 +395,18 @@ export function createIllustratedPreview(
         frame >= scene.timeline.frameCount
       )
         throw new Error("Frame index outside illustrated timeline");
+      if (effectsRenderer) {
+        effectsRenderer.render(ctx, frame);
+        return;
+      }
       ctx.setTransform(1, 0, 0, 1, 0, 0);
       ctx.globalAlpha = 1;
       ctx.fillStyle = scene.background;
       ctx.fillRect(0, 0, canvas.width, canvas.height);
-      for (const node of children.get(undefined) ?? []) paint(node, frame);
+      for (const node of children.get(undefined) ?? []) paint(ctx, node, frame);
     },
     dispose() {
+      effectsRenderer?.dispose();
       ctx.clearRect(0, 0, canvas.width, canvas.height);
     },
   };

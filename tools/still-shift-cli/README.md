@@ -85,6 +85,28 @@ foreground alpha before rendering. It clears the subject and holds the ending.
 Run `pnpm reveal:render --output-dir <new-directory>`; see the
 [Foreground Reveal guide](../../docs/foreground-reveal-implementation.md).
 
+## Commerce briefs
+
+Use **prepare-commerce --brief <brief.json> --output <scene.json>** to resolve a
+commerce brief, hash its image and bundled font, and create commerce-scene-1.
+Pass the scene to **animate-scene**. The command returns commerce-result-1
+with exact frame count, dimensions, checksums and render metrics.
+
+```bash
+pnpm still-shift prepare-commerce --brief benchmarks/fixtures/ecommerce-motion/a01-landscape.brief.json --output /tmp/commerce-scene.json
+pnpm still-shift animate-scene --scene /tmp/commerce-scene.json --output /tmp/commerce-ad.mp4
+```
+
+Selections H03/H01/H04/A01 support 24/30 fps in landscape, portrait and square.
+The brief controls integer frame count; the legacy 3–8 second restriction does
+not apply. Image paths are relative to the brief; prepared dependencies are
+relative to the scene. Existing files are never overwritten. Missing sources,
+required cutouts, unsupported selections and invalid callout geometry are errors.
+Text fitting is checked with the loaded font during preview/export.
+
+The browser source ZIP contains a prepared scene.json, brief and exact dependencies:
+unzip and render its scene directly. See the [Commerce guide](../../docs/ecommerce-motion-implementation.md).
+
 ## Unattended batch
 
 Create a UTF-8 JSONL file with one object per line. IDs must be unique regardless of letter case and use letters, digits, underscores, or hyphens (1–80 characters). Paths are resolved relative to the JSONL file. Blank lines are ignored.

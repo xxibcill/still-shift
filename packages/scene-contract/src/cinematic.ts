@@ -1,3 +1,4 @@
+import { CommerceSceneSchema } from "./commerce.ts";
 import { StorySceneSchema } from "./story.ts";
 import { z } from "zod";
 import {
@@ -302,6 +303,7 @@ export const PreparedSceneInputSchema = z.union([
   PreparedSceneSchema,
   CinematicSceneSchema,
   StorySceneSchema,
+  CommerceSceneSchema,
 ]);
 
 export const CinematicAnimationResultSchema = z

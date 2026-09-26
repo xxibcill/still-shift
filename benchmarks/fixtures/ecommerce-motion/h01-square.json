@@ -1,0 +1,200 @@
+{
+  "title": "H01 / square / illustrated fixture",
+  "fps": 30,
+  "background": "#F2EDE4",
+  "assets": [
+    {
+      "id": "product-image",
+      "path": "../../../assets/ecommerce-motion/sample-one.png",
+      "sha256": "sha256:646b7ea5833b0df00b583de8567dbbd4a32a8ece396404c9974f7e8206e55b77",
+      "width": 800,
+      "height": 1000
+    }
+  ],
+  "fonts": [
+    {
+      "id": "commerce-font",
+      "path": "../../../assets/ecommerce-motion/fonts/noto-sans-thai.ttf",
+      "sha256": "sha256:5a1c559bb539583c8a1fd99d1c5b9491e5e14478c9cd2bd0970d5c3096cc9ef8",
+      "weight": "600"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "accent",
+      "x": 59,
+      "y": 59,
+      "width": 58,
+      "height": 7,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "rect",
+      "fill": "#C75B39",
+      "lineWidth": 0,
+      "radius": 0
+    },
+    {
+      "id": "product-name",
+      "x": 59,
+      "y": 90,
+      "width": 962,
+      "height": 64,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "text",
+      "text": "STUDIO SAMPLE 01",
+      "fontSize": 26,
+      "color": "#656D62",
+      "weight": "normal",
+      "font": "sans-serif",
+      "fontAsset": "commerce-font",
+      "textBox": {
+        "locale": "en",
+        "maxLines": 1,
+        "lineHeight": 1.28
+      },
+      "align": "left"
+    },
+    {
+      "id": "product",
+      "x": 481,
+      "y": 360,
+      "width": 448.00000000000006,
+      "height": 560,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "group",
+      "clip": false
+    },
+    {
+      "id": "product-art",
+      "parent": "product",
+      "x": 0,
+      "y": 0,
+      "width": 448.00000000000006,
+      "height": 560,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "image",
+      "states": [
+        {
+          "asset": "product-image"
+        }
+      ],
+      "fit": "contain"
+    },
+    {
+      "id": "headline-0",
+      "x": 59,
+      "y": 169,
+      "width": 962,
+      "height": 200,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "text",
+      "text": "A small\ndaily ritual.",
+      "fontSize": 58,
+      "color": "#243E35",
+      "weight": "normal",
+      "font": "sans-serif",
+      "fontAsset": "commerce-font",
+      "textBox": {
+        "locale": "en",
+        "maxLines": 3,
+        "lineHeight": 1.28
+      },
+      "align": "left"
+    },
+    {
+      "id": "cta",
+      "x": 59,
+      "y": 891,
+      "width": 962,
+      "height": 130,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "text",
+      "text": "Explore the collection",
+      "fontSize": 34,
+      "color": "#C75B39",
+      "weight": "normal",
+      "font": "sans-serif",
+      "fontAsset": "commerce-font",
+      "textBox": {
+        "locale": "en",
+        "maxLines": 2,
+        "lineHeight": 1.28
+      },
+      "align": "left"
+    }
+  ],
+  "provenance": "Original procedural illustration; fictional studio sample, not a real product.",
+  "schemaVersion": "commerce-scene-1",
+  "width": 1080,
+  "height": 1080,
+  "frameCount": 240,
+  "recipe": {
+    "preset": "H01"
+  },
+  "events": [
+    {
+      "node": "product",
+      "property": "x",
+      "start": 0,
+      "end": 41,
+      "from": 1110,
+      "to": 481,
+      "easing": "out-cubic"
+    },
+    {
+      "node": "headline-0",
+      "property": "opacity",
+      "start": 0,
+      "end": 20,
+      "from": 0,
+      "to": 1,
+      "easing": "out-cubic"
+    },
+    {
+      "node": "headline-0",
+      "property": "y",
+      "start": 0,
+      "end": 20,
+      "from": 195,
+      "to": 169,
+      "easing": "out-cubic"
+    },
+    {
+      "node": "cta",
+      "property": "opacity",
+      "start": 150,
+      "end": 180,
+      "from": 0,
+      "to": 1,
+      "easing": "out-cubic"
+    }
+  ],
+  "metadata": {
+    "registration": {
+      "status": "experimental"
+    },
+    "catalogVersion": "1.0",
+    "selection": {
+      "kind": "format",
+      "id": "H01"
+    },
+    "profile": "square",
+    "productId": "sample-one",
+    "productSource": "Original procedural illustration; fictional studio sample, not a real product.",
+    "copySource": "Synthetic fixture copy; no product claims.",
+    "claimSources": [],
+    "locale": "en",
+    "protectedRegion": [644.52, 567.2, 125.44000000000003, 145.6]
+  }
+}

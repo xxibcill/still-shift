@@ -19,3 +19,7 @@ benchmarks/gallery/*
 # Corpus media is local by default. Metadata remains tracked.
 benchmarks/corpus/*
 !benchmarks/corpus/README.md
+
+# Dependency symlinks used by managed worktrees.
+/node_modules
+/.venv

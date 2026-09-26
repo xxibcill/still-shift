@@ -1,0 +1,28 @@
+{
+  "spatial": {
+    "scale": 1.08,
+    "rotation": 3,
+    "anchor": [0.5, 0.12],
+    "invert": false,
+    "profile": "feed"
+  },
+  "schemaVersion": "commerce-component-demo-1",
+  "kind": "anchor",
+  "fps": 30,
+  "frameCount": 240,
+  "background": "#F2EDE3",
+  "product": { "x": 240, "y": 220, "width": 600 },
+  "shadow": {
+    "x": 540,
+    "y": 996,
+    "width": 250,
+    "height": 62,
+    "opacity": 0.18,
+    "softness": 0.9,
+    "color": "#32271F"
+  },
+  "travel": 18,
+  "cycles": 2,
+  "text": "Meet SAMPLE 01.",
+  "locale": "en"
+}

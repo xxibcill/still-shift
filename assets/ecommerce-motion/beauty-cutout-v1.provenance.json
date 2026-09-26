@@ -1,0 +1,10 @@
+{
+  "generator": "Built-in image_gen tool, referenced image edit",
+  "input": "beauty-editorial-v1.png",
+  "output": "beauty-cutout-v1.png",
+  "prompt": "beauty-cutout-v1.prompt.txt",
+  "sha256": "sha256:ce8922b80e19b753996c1157b2e2fb07abf4652cf502d0ad44fe319bc15ecf67",
+  "generatedAt": "2026-09-26",
+  "kind": "AI-derived cutout of fictional SAMPLE 01; visually matched concept, not guaranteed pixel-identical extraction",
+  "sourceOutput": "/Users/jjae/.codex/generated_images/01a0dbbc-10cf-73e1-975c-209391327072/exec-8bb954e5-5887-4a0f-a744-85fc054f9dd7.png"
+}

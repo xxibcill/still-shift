@@ -1,0 +1,21 @@
+{
+  "schemaVersion": "commerce-component-demo-1",
+  "kind": "background",
+  "fps": 30,
+  "frameCount": 240,
+  "background": "#F2EDE3",
+  "product": { "x": 240, "y": 220, "width": 600 },
+  "shadow": {
+    "x": 540,
+    "y": 996,
+    "width": 250,
+    "height": 62,
+    "opacity": 0.18,
+    "softness": 0.9,
+    "color": "#32271F"
+  },
+  "travel": 18,
+  "cycles": 2,
+  "text": "Meet SAMPLE 01.",
+  "locale": "en"
+}

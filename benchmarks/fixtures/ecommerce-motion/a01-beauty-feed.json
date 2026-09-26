@@ -1,0 +1,139 @@
+{
+  "title": "A01 / Floating above an open palm / 4:5",
+  "fps": 30,
+  "background": "#EBE0CD",
+  "assets": [
+    {
+      "id": "product-image",
+      "path": "../../../assets/ecommerce-motion/beauty-floating-product-v1.png",
+      "sha256": "sha256:0c832682d129412b2fcd1b726e92275dc0dcbe12f1231d23c18efb3318b49e9c",
+      "width": 1122,
+      "height": 1402
+    },
+    {
+      "id": "backdrop-image",
+      "path": "../../../assets/ecommerce-motion/beauty-floating-palm-v1.png",
+      "sha256": "sha256:000acabe523f5d006dd59ceee792792bca05033f1655aa385d26df93ccffb11f",
+      "width": 1122,
+      "height": 1402
+    }
+  ],
+  "fonts": [
+    {
+      "id": "commerce-font",
+      "path": "../../../assets/ecommerce-motion/fonts/noto-sans-thai.ttf",
+      "sha256": "sha256:5a1c559bb539583c8a1fd99d1c5b9491e5e14478c9cd2bd0970d5c3096cc9ef8",
+      "weight": "400"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "palm-background",
+      "x": 0,
+      "y": 0,
+      "width": 1080,
+      "height": 1350,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "image",
+      "states": [
+        {
+          "asset": "backdrop-image"
+        }
+      ],
+      "fit": "cover"
+    },
+    {
+      "id": "product",
+      "x": 297,
+      "y": 162,
+      "width": 594,
+      "height": 742.2352941176471,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "group",
+      "clip": false
+    },
+    {
+      "id": "product-art",
+      "parent": "product",
+      "x": 0,
+      "y": 0,
+      "width": 594,
+      "height": 742.2352941176471,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "image",
+      "states": [
+        {
+          "asset": "product-image"
+        }
+      ],
+      "fit": "contain"
+    }
+  ],
+  "provenance": "AI-generated fictional SAMPLE 01 demonstration bottle. Cap, body and label are one intact source PNG. Real products use an approved intact cutout without generative alteration.",
+  "schemaVersion": "commerce-scene-1",
+  "width": 1080,
+  "height": 1350,
+  "frameCount": 300,
+  "recipe": {
+    "preset": "A01"
+  },
+  "events": [
+    {
+      "node": "product",
+      "property": "y",
+      "start": 0,
+      "end": 75,
+      "to": 144,
+      "easing": "smoothstep"
+    },
+    {
+      "node": "product",
+      "property": "y",
+      "start": 75,
+      "end": 150,
+      "to": 162,
+      "easing": "smoothstep"
+    },
+    {
+      "node": "product",
+      "property": "y",
+      "start": 150,
+      "end": 224,
+      "to": 144,
+      "easing": "smoothstep"
+    },
+    {
+      "node": "product",
+      "property": "y",
+      "start": 224,
+      "end": 299,
+      "to": 162,
+      "easing": "smoothstep"
+    }
+  ],
+  "metadata": {
+    "registration": {
+      "status": "experimental"
+    },
+    "catalogVersion": "1.0",
+    "selection": {
+      "kind": "recipe",
+      "id": "A01"
+    },
+    "profile": "feed",
+    "productId": "beauty-floating-product-v1",
+    "productSource": "AI-generated fictional SAMPLE 01 demonstration bottle. Cap, body and label are one intact source PNG. Real products use an approved intact cutout without generative alteration.",
+    "copySource": "No overlay copy.",
+    "claimSources": [
+      "AI-generated palm-up hand and empty background, produced independently from the product. No product is present in this source."
+    ],
+    "locale": "en",
+    "protectedRegion": [516.78, 481.16117647058826, 151.47, 122.46882352941178]
+  }
+}

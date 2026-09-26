@@ -90,6 +90,14 @@ export const PreparedNodeSchema = z.discriminatedUnion("type", [
       weight: z.enum(["normal", "bold"]).default("normal"),
       font: z.enum(["serif", "sans-serif"]).default("sans-serif"),
       fontAsset: id.optional(),
+      textBox: z
+        .object({
+          locale: z.enum(["en", "th"]),
+          maxLines: number.int().min(1).max(8),
+          lineHeight: number.min(1).max(2),
+        })
+        .strict()
+        .optional(),
       align: z.enum(["left", "center", "right"]).default("left"),
     })
     .strict(),

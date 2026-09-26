@@ -1,0 +1,407 @@
+{
+  "catalogVersion": "1.0",
+  "formats": [
+    {
+      "id": "H01",
+      "implementation": "H01",
+      "requirements": ["product_cutout", "approved_copy"],
+      "profiles": ["landscape", "portrait", "square", "feed"],
+      "durationSeconds": [6, 8]
+    },
+    {
+      "id": "H02",
+      "implementation": null,
+      "requirements": [
+        "product_cutout",
+        "painted_background",
+        "depth_planes",
+        "approved_copy"
+      ],
+      "profiles": [],
+      "durationSeconds": [6, 10]
+    },
+    {
+      "id": "H03",
+      "implementation": "H03",
+      "requirements": ["product_image", "approved_copy"],
+      "profiles": ["landscape", "portrait", "square", "feed"],
+      "durationSeconds": [6, 10]
+    },
+    {
+      "id": "H04",
+      "implementation": "H04",
+      "requirements": [
+        "product_cutout",
+        "callout_targets",
+        "claim_sources",
+        "approved_copy"
+      ],
+      "profiles": ["landscape", "portrait", "square", "feed"],
+      "durationSeconds": [8, 12]
+    },
+    {
+      "id": "H05",
+      "implementation": null,
+      "requirements": ["product_image", "verified_offer"],
+      "profiles": [],
+      "durationSeconds": [6, 8]
+    },
+    {
+      "id": "H06",
+      "implementation": null,
+      "requirements": ["product_cutout", "stickers", "approved_copy"],
+      "profiles": [],
+      "durationSeconds": [6, 10]
+    },
+    {
+      "id": "H07",
+      "implementation": null,
+      "requirements": ["registered_variant_images", "sku_metadata"],
+      "profiles": [],
+      "durationSeconds": [8, 12]
+    },
+    {
+      "id": "H08",
+      "implementation": null,
+      "requirements": [
+        "high_resolution_image",
+        "detail_regions",
+        "approved_copy"
+      ],
+      "profiles": [],
+      "durationSeconds": [6, 10]
+    },
+    {
+      "id": "P01",
+      "implementation": null,
+      "requirements": ["product_cutout", "shadow"],
+      "profiles": [],
+      "durationSeconds": [6, 8]
+    },
+    {
+      "id": "P02",
+      "implementation": null,
+      "requirements": ["product_image", "approved_copy"],
+      "profiles": [],
+      "durationSeconds": [6, 8]
+    },
+    {
+      "id": "P03",
+      "implementation": null,
+      "requirements": ["product_image", "reveal_shape"],
+      "profiles": [],
+      "durationSeconds": [6, 10]
+    },
+    {
+      "id": "P04",
+      "implementation": null,
+      "requirements": ["product_image", "surface_mask"],
+      "profiles": [],
+      "durationSeconds": [6, 8]
+    },
+    {
+      "id": "P05",
+      "implementation": null,
+      "requirements": [
+        "high_resolution_image",
+        "detail_regions",
+        "verified_specs"
+      ],
+      "profiles": [],
+      "durationSeconds": [8, 12]
+    },
+    {
+      "id": "P06",
+      "implementation": null,
+      "requirements": [
+        "product_cutout",
+        "pedestal",
+        "painted_background",
+        "depth_planes"
+      ],
+      "profiles": [],
+      "durationSeconds": [6, 10]
+    },
+    {
+      "id": "P07",
+      "implementation": null,
+      "requirements": ["verified_component_images"],
+      "profiles": [],
+      "durationSeconds": [10, 15]
+    },
+    {
+      "id": "P08",
+      "implementation": null,
+      "requirements": ["verified_3d_model_or_multiview"],
+      "profiles": [],
+      "durationSeconds": [8, 12]
+    },
+    {
+      "id": "B01",
+      "implementation": null,
+      "requirements": ["product_image", "claim_sources"],
+      "profiles": [],
+      "durationSeconds": [10, 12]
+    },
+    {
+      "id": "B02",
+      "implementation": null,
+      "requirements": ["product_image", "approved_copy"],
+      "profiles": [],
+      "durationSeconds": [10, 15]
+    },
+    {
+      "id": "B03",
+      "implementation": null,
+      "requirements": ["product_image", "verified_specs"],
+      "profiles": [],
+      "durationSeconds": [8, 12]
+    },
+    {
+      "id": "B04",
+      "implementation": null,
+      "requirements": ["product_image", "approved_ingredient_graphics"],
+      "profiles": [],
+      "durationSeconds": [8, 12]
+    },
+    {
+      "id": "B05",
+      "implementation": null,
+      "requirements": ["verified_step_images"],
+      "profiles": [],
+      "durationSeconds": [12, 15]
+    },
+    {
+      "id": "B06",
+      "implementation": null,
+      "requirements": ["comparison_images", "comparable_evidence"],
+      "profiles": [],
+      "durationSeconds": [10, 15]
+    },
+    {
+      "id": "O01",
+      "implementation": null,
+      "requirements": ["product_image", "verified_offer"],
+      "profiles": [],
+      "durationSeconds": [6, 8]
+    },
+    {
+      "id": "O02",
+      "implementation": null,
+      "requirements": ["product_image", "verified_price_history"],
+      "profiles": [],
+      "durationSeconds": [6, 8]
+    },
+    {
+      "id": "O03",
+      "implementation": null,
+      "requirements": ["all_bundle_images", "bundle_contents"],
+      "profiles": [],
+      "durationSeconds": [8, 12]
+    },
+    {
+      "id": "O04",
+      "implementation": null,
+      "requirements": ["product_image", "gift_image", "gift_conditions"],
+      "profiles": [],
+      "durationSeconds": [8, 10]
+    },
+    {
+      "id": "O05",
+      "implementation": null,
+      "requirements": ["product_image", "verified_coupon"],
+      "profiles": [],
+      "durationSeconds": [6, 10]
+    },
+    {
+      "id": "O06",
+      "implementation": null,
+      "requirements": ["product_image", "dated_campaign", "timezone"],
+      "profiles": [],
+      "durationSeconds": [6, 10]
+    },
+    {
+      "id": "S01",
+      "implementation": null,
+      "requirements": ["product_image", "authorized_review"],
+      "profiles": [],
+      "durationSeconds": [8, 12]
+    },
+    {
+      "id": "S02",
+      "implementation": null,
+      "requirements": ["product_image", "authorized_reviews"],
+      "profiles": [],
+      "durationSeconds": [10, 12]
+    },
+    {
+      "id": "S03",
+      "implementation": null,
+      "requirements": ["product_image", "verified_answers"],
+      "profiles": [],
+      "durationSeconds": [10, 15]
+    },
+    {
+      "id": "S04",
+      "implementation": null,
+      "requirements": [
+        "product_image",
+        "verified_statistic",
+        "population_and_period"
+      ],
+      "profiles": [],
+      "durationSeconds": [8, 12]
+    },
+    {
+      "id": "S05",
+      "implementation": null,
+      "requirements": ["genuine_before_after_images", "comparable_conditions"],
+      "profiles": [],
+      "durationSeconds": [8, 12]
+    },
+    {
+      "id": "S06",
+      "implementation": null,
+      "requirements": ["product_image", "actual_policy"],
+      "profiles": [],
+      "durationSeconds": [6, 10]
+    },
+    {
+      "id": "C01",
+      "implementation": null,
+      "requirements": ["sku_images", "sku_metadata"],
+      "profiles": [],
+      "durationSeconds": [10, 15]
+    },
+    {
+      "id": "C02",
+      "implementation": null,
+      "requirements": ["registered_variant_images", "sku_metadata"],
+      "profiles": [],
+      "durationSeconds": [8, 12]
+    },
+    {
+      "id": "C03",
+      "implementation": null,
+      "requirements": ["all_product_cutouts", "included_contents"],
+      "profiles": [],
+      "durationSeconds": [8, 12]
+    },
+    {
+      "id": "C04",
+      "implementation": null,
+      "requirements": ["product_images", "lifestyle_images"],
+      "profiles": [],
+      "durationSeconds": [10, 15]
+    },
+    {
+      "id": "C05",
+      "implementation": null,
+      "requirements": ["sku_images", "sku_metadata"],
+      "profiles": [],
+      "durationSeconds": [8, 12]
+    },
+    {
+      "id": "C06",
+      "implementation": null,
+      "requirements": ["registered_product_images", "sku_metadata"],
+      "profiles": [],
+      "durationSeconds": [8, 12]
+    }
+  ],
+  "recipes": [
+    {
+      "id": "A01",
+      "implementation": "A01",
+      "requirements": [
+        "approved_copy",
+        "callout_targets",
+        "claim_sources",
+        "product_cutout"
+      ],
+      "profiles": ["landscape", "portrait", "square", "feed"],
+      "durationSeconds": [10, 10]
+    },
+    {
+      "id": "A02",
+      "implementation": null,
+      "requirements": ["product_image", "verified_offer"],
+      "profiles": [],
+      "durationSeconds": [8, 8]
+    },
+    {
+      "id": "A03",
+      "implementation": null,
+      "requirements": [
+        "depth_planes",
+        "painted_background",
+        "pedestal",
+        "product_cutout",
+        "product_image",
+        "surface_mask"
+      ],
+      "profiles": [],
+      "durationSeconds": [8, 8]
+    },
+    {
+      "id": "A04",
+      "implementation": null,
+      "requirements": [
+        "detail_regions",
+        "high_resolution_image",
+        "product_image",
+        "verified_specs"
+      ],
+      "profiles": [],
+      "durationSeconds": [12, 12]
+    },
+    {
+      "id": "A05",
+      "implementation": null,
+      "requirements": [
+        "all_bundle_images",
+        "bundle_contents",
+        "product_image",
+        "verified_coupon"
+      ],
+      "profiles": [],
+      "durationSeconds": [10, 10]
+    },
+    {
+      "id": "A06",
+      "implementation": null,
+      "requirements": [
+        "authorized_review",
+        "product_image",
+        "verified_answers"
+      ],
+      "profiles": [],
+      "durationSeconds": [12, 12]
+    },
+    {
+      "id": "A07",
+      "implementation": null,
+      "requirements": [
+        "registered_variant_images",
+        "sku_images",
+        "sku_metadata"
+      ],
+      "profiles": [],
+      "durationSeconds": [10, 10]
+    },
+    {
+      "id": "A08",
+      "implementation": null,
+      "requirements": [
+        "lifestyle_images",
+        "product_images",
+        "registered_product_images",
+        "sku_metadata"
+      ],
+      "profiles": [],
+      "durationSeconds": [12, 12]
+    }
+  ],
+  "defaultStage": "experimental",
+  "productionFormats": []
+}

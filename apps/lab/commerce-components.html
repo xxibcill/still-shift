@@ -1,0 +1,337 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Still Shift · Components</title>
+    <link rel="stylesheet" href="/src/commerce.css" />
+    <link rel="stylesheet" href="/src/commerce-components.css" />
+  </head>
+  <body>
+    <header class="masthead">
+      <a class="brand" href="/commerce.html"
+        >Still Shift <span>/ Components</span></a
+      >
+      <nav aria-label="Commerce">
+        <a href="/commerce.html?fixture=a01-beauty-feed">Palm-up float study</a
+        ><a href="/commerce.html">All formats</a>
+      </nav>
+    </header>
+    <main>
+      <aside class="library" aria-label="Component library">
+        <p class="section-label">The building blocks</p>
+        <h1>One thing at a time.</h1>
+        <p class="note">
+          Atomic components are ready to use. Explore their controls and
+          effects, then compare them in experimental compositions.
+        </p>
+        <label class="catalog-filter"
+          >Browse<select id="catalog-filter">
+            <option value="all">All building blocks</option>
+            <option value="components">Components</option>
+            <option value="effects">Effects</option>
+          </select></label
+        >
+        <div id="component-catalog" class="catalog"></div>
+      </aside>
+      <section class="workspace" aria-label="Component preview and controls">
+        <div class="workspace-heading">
+          <div>
+            <p class="section-label" id="component-kind">Composition</p>
+            <h2 id="component-title">Studio Float</h2>
+          </div>
+          <span class="support">Experimental example</span>
+        </div>
+        <p id="component-description" class="component-description"></p>
+        <div class="component-layout">
+          <div class="component-view">
+            <label class="compare-control" id="compare-control" hidden
+              ><input type="checkbox" id="compare" /> Compare with
+              baseline</label
+            >
+            <div class="comparison" id="comparison">
+              <figure id="baseline-figure" hidden>
+                <figcaption>Baseline</figcaption>
+                <div class="preview-stage">
+                  <canvas
+                    id="baseline-preview"
+                    width="1080"
+                    height="1350"
+                    aria-label="Baseline preview at the same frame"
+                  ></canvas>
+                </div>
+              </figure>
+              <figure>
+                <figcaption id="treatment-caption" hidden>
+                  With effect
+                </figcaption>
+                <div class="preview-stage">
+                  <canvas
+                    id="commerce-preview"
+                    width="1080"
+                    height="1350"
+                    aria-label="Component motion preview"
+                  ></canvas>
+                </div>
+              </figure>
+            </div>
+            <div class="transport">
+              <button id="play" type="button" disabled>Play</button
+              ><button id="restart" type="button" disabled>Restart</button
+              ><input
+                id="scrub"
+                type="range"
+                min="0"
+                max="239"
+                value="0"
+                aria-label="Preview frame"
+                disabled
+              /><output id="timecode">0.00 / 8.00 s</output>
+            </div>
+            <p id="status" role="status" aria-live="polite">
+              Preparing the components…
+            </p>
+            <p class="note">
+              Fictional SAMPLE 01. The complete product image stays intact.
+            </p>
+          </div>
+          <form id="component-form">
+            <h3>Adjust the component</h3>
+            <fieldset id="effect-controls" hidden>
+              <legend>Effect treatment</legend>
+              <label class="check-label"
+                ><input id="effect-enabled" type="checkbox" checked /> Enable
+                effect</label
+              >
+              <div class="form-grid">
+                <label
+                  ><span id="effect-amount-label">Strength</span
+                  ><input
+                    id="effect-amount"
+                    type="number"
+                    min="0"
+                    max="2"
+                    step="0.1"
+                    value="1"
+                /></label>
+                <label id="shutter-control"
+                  >Shutter angle (°)<input
+                    id="effect-shutter"
+                    type="number"
+                    min="0"
+                    max="360"
+                    step="15"
+                    value="180"
+                /></label>
+                <label id="samples-control"
+                  >Samples<input
+                    id="effect-samples"
+                    type="number"
+                    min="2"
+                    max="32"
+                    step="1"
+                    value="16"
+                /></label>
+                <label id="seed-control"
+                  >Seed<input
+                    id="effect-seed"
+                    type="number"
+                    min="0"
+                    max="2147483647"
+                    step="1"
+                    value="37"
+                /></label>
+              </div>
+              <p class="note" id="sampling-note" hidden>
+                More samples smooth the blur but slow live preview. MP4 exports
+                include every frame.
+              </p>
+              <p class="note">
+                Strength: 0 is off, 1 is the reference, 2 is stronger. Compare
+                at the same frame before combining effects.
+              </p>
+            </fieldset>
+            <fieldset id="spatial-controls" hidden>
+              <legend>Component settings</legend>
+              <div class="form-grid">
+                <label id="scale-control"
+                  >End scale<input
+                    id="spatial-scale"
+                    type="number"
+                    min="0.8"
+                    max="1.2"
+                    step="0.01"
+                    value="1.08"
+                /></label>
+                <label id="rotation-control"
+                  >End tilt (degrees)<input
+                    id="spatial-rotation"
+                    type="number"
+                    min="-8"
+                    max="8"
+                    step="0.5"
+                    value="3"
+                /></label>
+                <label id="anchor-x-control"
+                  >Anchor X (0–1)<input
+                    id="anchor-x"
+                    type="number"
+                    min="0"
+                    max="1"
+                    step="0.01"
+                    value="0.5"
+                /></label>
+                <label id="anchor-y-control"
+                  >Anchor Y (0–1)<input
+                    id="anchor-y"
+                    type="number"
+                    min="0"
+                    max="1"
+                    step="0.01"
+                    value="0.12"
+                /></label>
+                <label id="matte-invert-control"
+                  ><input id="matte-invert" type="checkbox" /> Invert
+                  mask</label
+                >
+                <label id="layout-profile-control"
+                  >Output format<select id="layout-profile">
+                    <option value="feed">4:5 feed</option>
+                    <option value="square">1:1 square</option>
+                    <option value="portrait">9:16 portrait</option>
+                  </select></label
+                >
+              </div>
+              <p class="note" id="spatial-note"></p>
+            </fieldset>
+            <fieldset id="product-controls">
+              <legend>Product placement</legend>
+              <div class="form-grid">
+                <label
+                  >Left (px)<input
+                    id="product-x"
+                    type="number"
+                    step="1" /></label
+                ><label
+                  >Top (px)<input
+                    id="product-y"
+                    type="number"
+                    step="1" /></label
+                ><label
+                  >Width (px)<input
+                    id="product-width"
+                    type="number"
+                    min="1"
+                    max="1080"
+                /></label>
+              </div>
+            </fieldset>
+            <fieldset id="shadow-controls">
+              <legend>Shadow</legend>
+              <div class="form-grid">
+                <label>Center X<input id="shadow-x" type="number" /></label
+                ><label>Center Y<input id="shadow-y" type="number" /></label
+                ><label
+                  >Width<input
+                    id="shadow-width"
+                    type="number"
+                    min="1"
+                    max="1080" /></label
+                ><label
+                  >Height<input
+                    id="shadow-height"
+                    type="number"
+                    min="1"
+                    max="600" /></label
+                ><label
+                  >Opacity<input
+                    id="shadow-opacity"
+                    type="number"
+                    min="0"
+                    max="1"
+                    step="0.01" /></label
+                ><label
+                  >Softness<input
+                    id="shadow-softness"
+                    type="number"
+                    min="0.05"
+                    max="1"
+                    step="0.05" /></label
+                ><label>Color<input id="shadow-color" type="color" /></label>
+              </div>
+              <p class="note" id="shadow-description">
+                A flat, stationary depth cue. Placed independently of the
+                product.
+              </p>
+            </fieldset>
+            <fieldset id="text-controls">
+              <legend>Supplied copy</legend>
+              <div class="form-grid">
+                <label class="wide"
+                  >Text<textarea
+                    id="demo-text"
+                    rows="3"
+                    maxlength="500"
+                  ></textarea></label
+                ><label
+                  >Language<select id="locale">
+                    <option value="en">English</option>
+                    <option value="th">Thai</option>
+                  </select></label
+                >
+              </div>
+            </fieldset>
+            <fieldset id="float-controls">
+              <legend>Float</legend>
+              <div class="form-grid">
+                <label
+                  >Travel (px)<input
+                    id="travel"
+                    type="number"
+                    min="0"
+                    max="100" /></label
+                ><label
+                  >Cycles<input
+                    id="cycles"
+                    type="number"
+                    min="1"
+                    max="8"
+                    step="1"
+                /></label>
+              </div>
+            </fieldset>
+            <fieldset>
+              <legend>Scene</legend>
+              <div class="form-grid">
+                <label>Background<input id="background" type="color" /></label
+                ><label
+                  >Frame rate<select id="fps">
+                    <option value="30">30 fps</option>
+                    <option value="24">24 fps</option>
+                  </select></label
+                ><label
+                  >Duration (s)<input
+                    id="duration"
+                    type="number"
+                    min="4"
+                    max="60"
+                    step="1"
+                /></label>
+              </div>
+            </fieldset>
+            <button class="primary" id="update" type="submit">
+              Update preview
+            </button>
+            <div class="actions">
+              <button id="export" type="button" disabled>Export MP4</button
+              ><button id="download" type="button" disabled>
+                Save source bundle
+              </button>
+            </div>
+          </form>
+        </div>
+      </section>
+    </main>
+    <script type="module" src="/src/commerce-components.ts"></script>
+  </body>
+</html>

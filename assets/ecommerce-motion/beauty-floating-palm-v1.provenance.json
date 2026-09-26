@@ -1,0 +1,11 @@
+{
+  "generator": "Built-in image_gen tool",
+  "dimensions": [
+    1122,
+    1402
+  ],
+  "sha256": "000acabe523f5d006dd59ceee792792bca05033f1655aa385d26df93ccffb11f",
+  "prompt": "beauty-floating-palm-v1.prompt.txt",
+  "references": [],
+  "usage": "Product-free palm background."
+}
