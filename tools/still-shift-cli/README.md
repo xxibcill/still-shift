@@ -34,6 +34,13 @@ Exit code 0 means a complete result, including a valid 2D fallback. Exit code 2 
 
 ## Prepared illustrated scenes
 
+Story recipes use `story-scene-1` with integer `frameCount`, explicit cue frames
+and the same `animate-scene` command. They return `story-result-1` and support
+fractional derived milliseconds, including 646 frames at 24 fps. See the
+[seven-recipe guide](../../docs/story-motion-implementation.md) and
+[fixtures](../../benchmarks/fixtures/story-motion/catalog.json). Legacy v1/v2
+contracts retain their duration limits.
+
 The six richer History Offstage presets use a scene JSON containing supplied image
 layers, paths, text, and authored states:
 

@@ -36,6 +36,18 @@ asset-aware occlusion checks and a held revealed composition. Five recipes remai
 are explicitly marked experiments; they do not revise the channel baseline or
 the existing Phase 0 acceptance gates.
 
+**2026-09-26 S01E01 story-motion roadmap:** A planned v0.13 extension adds seven
+reusable narrative treatments on the existing prepared illustrated renderer:
+Unequal Margins, Access Constraint, Relationship Build, Evidence Boundary,
+Dated System Break, Category Swap and Motif Resolve. The
+[milestone roadmap](./docs/s01e01-story-motion-roadmap.md) starts with one short
+illustrated preview, then the 26.917-second ST-013/014 narrated proof. It adds
+explicit event timing and continuity only as required by those scenes. Remotion
+retains episode/audio assembly; exact episode integration and QA follow the
+episode's current authority. These longer narrated proofs are a separate study,
+not a change to the baseline 3–8-second depth benchmark, its retired corpus or
+its exit gates. Implementation is planned, not started.
+
 ## 1. Phase 0 decision
 
 Build the smallest production-shaped vertical slice that can answer one question:

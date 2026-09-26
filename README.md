@@ -11,6 +11,13 @@ candidate approaches, relationship to existing tools, and measures of success.
 
 ## Current implementation
 
+**Story Motion** now provides seven reusable narrative recipes: Unequal Margins,
+Access Constraint, Relationship Build, Evidence Boundary, Dated System Break,
+Category Swap and Motif Resolve. Open `/illustrated.html?collection=story` in the
+lab for playback, scrubbing and narration-cue timing. See the
+[implementation guide and rendered gallery](./docs/story-motion-implementation.md)
+for prepared inputs, CLI export, verification and remaining S01E01 integration.
+
 **Cinematic Parallax** is one layered-camera family with anchored sweep, push-in,
 lateral track, foreground reveal, Rising Vista, Curved Approach, Detail to World and Focus Handoff variations. Use the lab's variation/scene,
 strength and duration controls to explore it. New variations start with one short

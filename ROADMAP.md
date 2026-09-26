@@ -31,6 +31,25 @@ travel and visible subject drift using that same grounded room kit.
 The [fourth milestone](./docs/foreground-reveal-implementation.md) adds Foreground
 Reveal with measured alpha concealment, complete clearance, and a held destination.
 
+**S01E01 story motion:** The
+[seven-treatment roadmap](./docs/s01e01-story-motion-roadmap.md) turns the
+[28-still design study](./prompt-packs/s01e01-motion-design.md) into v0.13.
+Start with Unequal Margins and Access Constraint, prove their visible change in
+one short preview, then assemble the 26.917-second ST-013/014 narrated sequence.
+Relationship Build, Evidence Boundary, Dated System Break, Category Swap and
+Motif Resolve now share the implemented event compiler and renderer. All seven
+recipes have rendered fixtures, lab timing controls and CLI export; narrated
+S01E01 integration remains in progress. See the [implementation evidence](./docs/story-motion-implementation.md).
+Cinematic iteration is deferred while v0.13 is active; Phase 0 acceptance remains separate.
+The [implementation research](./docs/s01e01-story-motion-research.md) now covers
+all seven, including source precedents, asset preparation and exact-frame timing requirements.
+
+**Planned commerce adoption:** The [e-commerce motion adoption plan](./docs/ecommerce-motion-adoption-plan.md)
+defines proposed v0.14: import the 40-format reference catalog, prove H03 with timed
+typography, add H01/H04 and their A01 sequence, then support portrait/square layouts
+and a brief-to-export workflow. It reuses v0.13's frame events. Implementation has
+not started; v0.13 remains active.
+
 ## Phase 0 outcome
 
 Prove that Still Shift can turn a representative batch of explainer-video stills into varied, deterministic 3–8 second MP4 footage with minimal manual repair and substantially lower cost than generative video.
@@ -49,6 +68,7 @@ Phase 0 ends with evidence, not infrastructure:
 - `[~]` In progress
 - `[x]` Completed
 - `[!]` Blocked
+- `[–]` Deferred; existing implementation retained
 
 When work begins, update the roadmap date, mark exactly one version as in progress, and link its completion evidence. Each version is cumulative and should remain runnable after the next version begins.
 
@@ -67,7 +87,9 @@ When work begins, update the roadmap date, mark exactly one version as in progre
 | v0.9    | Unattended batch execution               |     Day 8 | `[!]`  | [50-item technical batch passes; frozen-corpus gate pending](./docs/v0.9-unattended-batch.md)                          |
 | v0.10   | Evaluation release and Phase 1 decision  | Days 9–10 | `[!]`  | [Candidate gallery, 7.97-minute assembly, and gate report; human decision pending](./docs/v0.10-evaluation-release.md) |
 | v0.11   | Illustrated editorial preset trial       | Extension | `[!]`  | [Six presets implemented and verified; creative review pending](./docs/history-offstage-motion-implementation.md)      |
-| v0.12   | Cinematic illustrated template study     | Extension | `[~]`  | [Cinematic Parallax family: eight variations; quick preview workflow](./docs/cinematic-template-plan.md)               |
+| v0.12   | Cinematic illustrated template study     | Extension | `[–]`  | [Cinematic Parallax family: eight variations; quick preview workflow](./docs/cinematic-template-plan.md)               |
+| v0.13   | S01E01 reusable story-motion treatments  | Extension | `[~]`  | [Seven-treatment roadmap; short proof first, then episode integration](./docs/s01e01-story-motion-roadmap.md)          |
+| v0.14   | E-commerce catalog and prepared ads      | Extension | `[ ]`  | [Adoption plan; H03 proof, H01/H04 sequence, output layouts and workflow](./docs/ecommerce-motion-adoption-plan.md)    |
 
 ## Critical path
 
@@ -84,8 +106,9 @@ v0.1 Foundation
                   → v0.10 Evaluation release
 ```
 
-v0.11 and v0.12 are illustrated-style experiments with separate creative reviews.
+v0.11–v0.13 are illustrated-style extensions with separate creative reviews.
 Their outputs do not complete the Phase 0 release gates.
+The planned v0.14 commerce collection also has its own implementation evidence.
 
 The versions are numbered by cumulative capability, not independent branches. Implementation work for v0.5 and v0.6 may overlap, but neither version is complete until the previous version remains green.
 
@@ -438,6 +461,60 @@ shot ideas evaluated through short previews. See the
 - [ ] Evaluate Dolly-Zoom Tension with its specific quality checks.
 - [x] Add one-clip iteration command and lab duration controls for the shared family.
 - [ ] Review visible differences in short previews before expanding production scope.
+
+## v0.13 — S01E01 reusable story motion
+
+**Status:** Seven recipes implemented and rendered; episode integration in progress.
+[Implementation and verification](./docs/story-motion-implementation.md) records the working engine,
+lab, CLI and preview gallery. The detailed
+[roadmap](./docs/s01e01-story-motion-roadmap.md) defines dependencies, proof
+sequences, semantic checks and integration evidence.
+
+**Release outcome:** Seven reusable treatments animate changing relationships
+in prepared illustrations, with narration-timed events and continuity between
+shots. Still Shift supplies motion scenes; Remotion retains episode assembly.
+
+- [x] Study all 28 selected S01E01 stills and record the
+      [motion design and source/timing ledger](./prompt-packs/s01e01-motion-design.md).
+- [x] Define seven treatments, ordered milestones and scene-specific acceptance criteria.
+- [x] Research implementation precedents for every treatment and record the
+      [shared timing/geometry decisions and motion-specific preparation](./docs/s01e01-story-motion-research.md).
+- [x] Implement all seven recipes, exact-frame timing, validated events, attached connectors, lab cue controls and reusable rendered fixtures.
+- [~] **M0:** Shared contract and fixture kit complete; episode-specific preparation pending.
+- [~] **M1:** Implement Unequal Margins and Access Constraint; inspect one short
+  illustrated preview, then the 26.917-second ST-013/014 narrated proof.
+- [~] **M2:** Implement Relationship Build and the ST-006–008 resource sequence.
+- [~] **M3:** Implement Evidence Boundary and the ST-017/018 evidence-limit sequence.
+- [~] **M4:** Implement Dated System Break and the ST-021/022 crisis/context reset.
+- [~] **M5:** Implement Category Swap and Motif Resolve; verify substitution
+  and the concluding sequence using the established visual motifs.
+- [~] **M6:** Complete lab/CLI examples, targeted compatibility checks, shot
+  handoff and S01E01 integration/QA under its current production authority.
+- [ ] Record independent editorial findings and the final episode creative decision.
+
+Use one short preview and targeted checks before expanding each new behavior.
+Milestones are AI-owned work, not repeated Creator review gates. Prepared episode
+proofs do not reinstate retired corpus entries or establish Phase 0 acceptance.
+
+## v0.14 — E-commerce motion library adoption
+
+**Status:** Planned; implementation has not started. The
+[adoption plan](./docs/ecommerce-motion-adoption-plan.md) records the source catalog,
+shared machinery, exact delivery order and completion criteria.
+
+**Release outcome:** Supply a product brief and prepared imagery, preview a supported
+format and export a deterministic ad with its scene and provenance. All 40 formats
+enter the reference catalog; the first executable release covers H03, H01, H04 and
+the ten-second A01 recipe.
+
+- [x] Inspect all five source files and map the pack to the current renderer.
+- [x] Define the adoption plan using the implemented v0.13 frame-event path.
+- [ ] **M0:** Import and validate the catalog; define the first H03 brief and asset manifest.
+- [ ] **M1:** Render the eight-second H03 proof with font loading, text layout and exact timing.
+- [ ] **M2:** Add H01/H04 and the ten-second A01 sequence with registered product groups and callouts.
+- [ ] **M3:** Verify landscape, portrait and square layouts through preview and export.
+- [ ] **M4:** Add the Commerce lab collection and brief preparation workflow; exercise a second product.
+- [ ] **M5:** Record executable coverage, preparation/repair effort and the next shared technique.
 
 ## Final exit gates
 
