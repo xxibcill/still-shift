@@ -87,3 +87,29 @@ describe("split-nib brush paths", () => {
     ).toEqual([]);
   });
 });
+
+it("pinches only the width profile without changing texture sampling", async () => {
+  const { brushPinchMultiplier } = await import(
+    "../../packages/renderer-core/src/brush-path.ts"
+  );
+  const path = {
+    id: "fixed-seed",
+    points: [
+      [0, 0],
+      [800, 0],
+    ] as [number, number][],
+    lineWidth: 32,
+    pinchAt: 0.5,
+    pinchWidth: 0.15,
+  };
+  expect(brushStroke(path, 0, 1, 0)).toEqual(brushStroke(path, 0, 1));
+  for (let i = 0; i <= 100; i++)
+    expect(brushPinchMultiplier(i / 100, 1)).toBeGreaterThanOrEqual(0.35);
+  const before = brushStroke(path, 0, 1),
+    after = brushStroke(path, 0, 1, 1);
+  expect(before.body[10]).toEqual(after.body[10]);
+  expect(after.body[128]![0]).toBe(before.body[128]![0]);
+  expect(Math.abs(after.body[128]![1])).toBeLessThan(
+    Math.abs(before.body[128]![1]),
+  );
+});

@@ -1,0 +1,513 @@
+{
+  "preset": "access_constraint",
+  "frameCount": 192,
+  "fps": 24,
+  "recipe": {
+    "preset": "access_constraint",
+    "source": "store",
+    "connections": ["route-a", "route-b"],
+    "route": "route-a",
+    "sides": ["side-a", "side-b"],
+    "position": 0.5,
+    "openWidth": 190,
+    "constrainedWidth": 56,
+    "clearance": 12,
+    "reveal": {
+      "start": 12,
+      "end": 40,
+      "cue": "available-connections",
+      "easing": "out-cubic"
+    },
+    "narrow": {
+      "start": 64,
+      "end": 114,
+      "cue": "unequal-access",
+      "easing": "in-out-quint"
+    }
+  },
+  "entry": {
+    "paper": {
+      "parent": null,
+      "pose": {
+        "x": 0,
+        "y": 0,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "ground": {
+      "parent": null,
+      "pose": {
+        "x": 0,
+        "y": 795,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "title": {
+      "parent": null,
+      "pose": {
+        "x": 112,
+        "y": 92,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "consequence": {
+      "parent": null,
+      "pose": {
+        "x": 116,
+        "y": 219,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "store": {
+      "parent": null,
+      "pose": {
+        "x": 90,
+        "y": 350,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "route-a": {
+      "parent": null,
+      "pose": {
+        "x": 0,
+        "y": 0,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 0,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "route-b": {
+      "parent": null,
+      "pose": {
+        "x": 0,
+        "y": 0,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 0,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "side-a": {
+      "parent": null,
+      "pose": {
+        "x": 878.4255128559589,
+        "y": 345.23765486510456,
+        "rotation": -7.624192504451834,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 0,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "side-a-art": {
+      "parent": "side-a",
+      "pose": {
+        "x": 0,
+        "y": 0,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "side-b": {
+      "parent": null,
+      "pose": {
+        "x": 915.5744871440411,
+        "y": 622.7623451348954,
+        "rotation": -7.624192504451834,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 0,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "side-b-art": {
+      "parent": "side-b",
+      "pose": {
+        "x": 0,
+        "y": 0,
+        "rotation": 180,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "house-a": {
+      "parent": null,
+      "pose": {
+        "x": 1380,
+        "y": 278,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "house-b": {
+      "parent": null,
+      "pose": {
+        "x": 1380,
+        "y": 621,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "aperture-label": {
+      "parent": null,
+      "pose": {
+        "x": 1020,
+        "y": 704,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "source-label": {
+      "parent": null,
+      "pose": {
+        "x": 410,
+        "y": 948,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "open-label": {
+      "parent": null,
+      "pose": {
+        "x": 1080,
+        "y": 948,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    }
+  },
+  "exit": {
+    "paper": {
+      "parent": null,
+      "pose": {
+        "x": 0,
+        "y": 0,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "ground": {
+      "parent": null,
+      "pose": {
+        "x": 0,
+        "y": 795,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "title": {
+      "parent": null,
+      "pose": {
+        "x": 112,
+        "y": 92,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "consequence": {
+      "parent": null,
+      "pose": {
+        "x": 116,
+        "y": 219,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "store": {
+      "parent": null,
+      "pose": {
+        "x": 90,
+        "y": 350,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "route-a": {
+      "parent": null,
+      "pose": {
+        "x": 0,
+        "y": 0,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "route-b": {
+      "parent": null,
+      "pose": {
+        "x": 0,
+        "y": 0,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "side-a": {
+      "parent": null,
+      "pose": {
+        "x": 887.3147317034643,
+        "y": 411.64534860823306,
+        "rotation": -7.624192504451834,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "side-a-art": {
+      "parent": "side-a",
+      "pose": {
+        "x": 0,
+        "y": 0,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "side-b": {
+      "parent": null,
+      "pose": {
+        "x": 906.6852682965357,
+        "y": 556.3546513917669,
+        "rotation": -7.624192504451834,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "side-b-art": {
+      "parent": "side-b",
+      "pose": {
+        "x": 0,
+        "y": 0,
+        "rotation": 180,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "house-a": {
+      "parent": null,
+      "pose": {
+        "x": 1380,
+        "y": 278,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "house-b": {
+      "parent": null,
+      "pose": {
+        "x": 1380,
+        "y": 621,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "aperture-label": {
+      "parent": null,
+      "pose": {
+        "x": 1020,
+        "y": 704,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "source-label": {
+      "parent": null,
+      "pose": {
+        "x": 410,
+        "y": 948,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "open-label": {
+      "parent": null,
+      "pose": {
+        "x": 1080,
+        "y": 948,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    }
+  },
+  "sourceChecksum": "sha256:b8395174417218ab6c50c2e490e02498d92800e91bf0dd8cf8f9295235a6d9fe"
+}

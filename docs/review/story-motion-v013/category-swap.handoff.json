@@ -1,0 +1,320 @@
+{
+  "preset": "category_swap",
+  "frameCount": 192,
+  "fps": 24,
+  "recipe": {
+    "preset": "category_swap",
+    "subject": "category",
+    "fromState": 0,
+    "toState": 1,
+    "swapFrame": 72,
+    "qualifier": "qualifier",
+    "stableAnchors": ["relation", "household", "comparison"],
+    "stateLabels": ["category-label"]
+  },
+  "entry": {
+    "paper": {
+      "parent": null,
+      "pose": {
+        "x": 0,
+        "y": 0,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "ground": {
+      "parent": null,
+      "pose": {
+        "x": 0,
+        "y": 770,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "title": {
+      "parent": null,
+      "pose": {
+        "x": 112,
+        "y": 94,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "comparison": {
+      "parent": null,
+      "pose": {
+        "x": 116,
+        "y": 227,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "category": {
+      "parent": null,
+      "pose": {
+        "x": 150,
+        "y": 300,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "category-label": {
+      "parent": null,
+      "pose": {
+        "x": 575,
+        "y": 870,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "relation": {
+      "parent": null,
+      "pose": {
+        "x": 0,
+        "y": 0,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "household": {
+      "parent": null,
+      "pose": {
+        "x": 1270,
+        "y": 470,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "relation-label": {
+      "parent": null,
+      "pose": {
+        "x": 1260,
+        "y": 882,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "qualifier": {
+      "parent": null,
+      "pose": {
+        "x": 112,
+        "y": 968,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    }
+  },
+  "exit": {
+    "paper": {
+      "parent": null,
+      "pose": {
+        "x": 0,
+        "y": 0,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "ground": {
+      "parent": null,
+      "pose": {
+        "x": 0,
+        "y": 770,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "title": {
+      "parent": null,
+      "pose": {
+        "x": 112,
+        "y": 94,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "comparison": {
+      "parent": null,
+      "pose": {
+        "x": 116,
+        "y": 227,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "category": {
+      "parent": null,
+      "pose": {
+        "x": 150,
+        "y": 300,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 1,
+        "pulse": 0
+      }
+    },
+    "category-label": {
+      "parent": null,
+      "pose": {
+        "x": 575,
+        "y": 870,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 1,
+        "pulse": 0
+      }
+    },
+    "relation": {
+      "parent": null,
+      "pose": {
+        "x": 0,
+        "y": 0,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "household": {
+      "parent": null,
+      "pose": {
+        "x": 1270,
+        "y": 470,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "relation-label": {
+      "parent": null,
+      "pose": {
+        "x": 1260,
+        "y": 882,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "qualifier": {
+      "parent": null,
+      "pose": {
+        "x": 112,
+        "y": 968,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    }
+  },
+  "sourceChecksum": "sha256:371dc88d48277b911bf0875ae86cf37785b07269d6151d186a6a80069bf4a0ea"
+}

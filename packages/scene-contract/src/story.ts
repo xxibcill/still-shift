@@ -5,48 +5,24 @@ import {
   validatePreparedGraph,
 } from "./prepared.ts";
 import { validateStoryBindings } from "./story-validation.ts";
-import { MotionEasingSchema } from "./motion-easing.ts";
+import {
+  StoryWindowSchema as window,
+  StoryMoveSchema as move,
+  StoryEntranceSchema as entrance,
+  storyChoreography as choreography,
+  StoryCameraSchema,
+  StoryFlowSchema,
+} from "./story-motion.ts";
 
 const finite = z.number().finite();
 const frame = finite.int().nonnegative();
 const id = z.string().regex(/^[a-zA-Z][\w-]*$/);
 const point = z.tuple([finite, finite]);
-const window = z
-  .object({
-    start: frame,
-    end: frame,
-    cue: z.string().min(1).optional(),
-    easing: MotionEasingSchema.optional(),
-  })
-  .strict()
-  .refine((value) => value.end > value.start, "Event end must follow start");
-const move = z
-  .object({
-    node: id,
-    window,
-    to: z
-      .object({
-        x: finite,
-        y: finite,
-        scale: finite.positive().max(4).optional(),
-        rotation: finite.optional(),
-      })
-      .strict(),
-  })
-  .strict();
-const emphasis = z
-  .object({ node: id, window, opacity: finite.min(0.2).max(1) })
-  .strict();
-const entrance = z.object({ node: id, window }).strict();
-const choreography = {
-  moves: z.array(move).max(40).default([]),
-  emphasis: z.array(emphasis).max(40).default([]),
-};
-
 export const StoryRecipeSchema = z.discriminatedUnion("preset", [
   z
     .object({
       preset: z.literal("unequal_margins"),
+      ...choreography,
       households: z.tuple([id, id]),
       reference: id,
       pressures: z.tuple([
@@ -73,6 +49,12 @@ export const StoryRecipeSchema = z.discriminatedUnion("preset", [
   z
     .object({
       preset: z.literal("access_constraint"),
+      ...choreography,
+      sidesEnter: window.optional(),
+      pinch: z
+        .object({ path: id, window, amount: finite.min(0).max(1) })
+        .strict()
+        .optional(),
       source: id,
       connections: z.tuple([id, id]),
       route: id,
@@ -119,6 +101,7 @@ export const StoryRecipeSchema = z.discriminatedUnion("preset", [
   z
     .object({
       preset: z.literal("dated_system_break"),
+      ...choreography,
       contextId: id,
       system: id,
       context: id,
@@ -141,6 +124,7 @@ export const StoryRecipeSchema = z.discriminatedUnion("preset", [
   z
     .object({
       preset: z.literal("category_swap"),
+      ...choreography,
       subject: id,
       fromState: frame,
       toState: frame,
@@ -153,9 +137,9 @@ export const StoryRecipeSchema = z.discriminatedUnion("preset", [
   z
     .object({
       preset: z.literal("motif_resolve"),
+      ...choreography,
       motifs: z.array(id).min(2).max(12),
       moves: z.array(move).min(1).max(40),
-      emphasis: choreography.emphasis,
       outgoing: id,
       qualifier: id,
       resolve: window,
@@ -176,6 +160,19 @@ const shape = PreparedSceneFieldsSchema.omit({ durationMs: true })
     schemaVersion: z.literal("story-scene-1"),
     frameCount: frame.positive().max(108000),
     episodeStartFrame: frame.optional(),
+    motionGrammar: z.literal("v2").optional(),
+    camera: StoryCameraSchema.optional(),
+    flows: z.array(StoryFlowSchema).max(40).optional(),
+    review: z
+      .object({
+        essentialText: z.array(id).max(100),
+        focalGroups: z
+          .array(z.object({ id, nodes: z.array(id).min(1).max(40) }).strict())
+          .max(30)
+          .optional(),
+      })
+      .strict()
+      .optional(),
     recipe: StoryRecipeSchema,
     connectors: z
       .array(
@@ -198,6 +195,13 @@ export const StorySceneSchema = shape.superRefine((scene, ctx) => {
   const fail = (message: string) => ctx.addIssue({ code: "custom", message });
   const { nodes } = validatePreparedGraph(scene, fail);
   validateStoryBindings(scene, nodes, fail);
+  for (const textId of scene.review?.essentialText ?? [])
+    if (nodes.get(textId)?.type !== "text")
+      fail(`Essential text role must bind a text node: ${textId}`);
+  for (const group of scene.review?.focalGroups ?? [])
+    for (const nodeId of group.nodes)
+      if (!nodes.has(nodeId))
+        fail(`Focus group ${group.id} references a missing node: ${nodeId}`);
 });
 
 export const StoryAnimationResultSchema = z

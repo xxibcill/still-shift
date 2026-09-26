@@ -34,7 +34,7 @@ export function storyComparison(
 ) {
   const before = relative(output, resolve(previous));
   const selected = entries.filter((entry) =>
-    ["relationship-build", "access-constraint", "motif-resolve"].includes(
+    ["evidence-boundary", "relationship-build", "motif-resolve"].includes(
       entry.id,
     ),
   );
@@ -59,13 +59,10 @@ export function storyComparison(
       "<title>History, in motion · Still Shift</title>",
       "<title>Before / after · Still Shift</title>",
     )
-    .replace(
-      "<h1>History, in motion.</h1>",
-      "<h1>Connections, with character.</h1>",
-    )
+    .replace("<h1>History, in motion.</h1>", "<h1>Space to see the story.</h1>")
     .replace(
       "Seven illustrated explanations. One shared drawing language, clear typography and motion that gives each relationship a purpose.",
-      "The connections now have the character of a drawn brush mark: broad pressure changes, broken pigment and fine split-nib streaks. Compare the artwork in motion, or pause both versions on the same frame.",
+      "Compare the previous and corrected layouts. Headings lead, labels support the illustrations, and qualifications have their own space. Motion timing is preserved.",
     )
     .replace(
       '<a href="contact-sheet.html">View the style frames</a>',

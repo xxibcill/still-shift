@@ -3,6 +3,8 @@ import {
   type StoryScene,
 } from "../../../packages/scene-contract/src/story.ts";
 import { MotionEasingSchema } from "../../../packages/scene-contract/src/motion-easing.ts";
+import { compileStoryScene } from "../../../packages/renderer-core/src/story-scene.ts";
+import { analyzeStoryQuality } from "../../../packages/renderer-core/src/story-quality.ts";
 
 export function createStoryControls(
   input: StoryScene,
@@ -12,6 +14,34 @@ export function createStoryControls(
   const host = document.getElementById("story-events")!;
   host.replaceChildren();
   const draft = structuredClone(input);
+  const quality = document.createElement("section");
+  quality.id = "story-quality";
+  quality.setAttribute("aria-label", "Motion quality");
+  const showQuality = (scene: StoryScene) => {
+    const report = analyzeStoryQuality(compileStoryScene(scene));
+    quality.replaceChildren();
+    const heading = document.createElement("h3");
+    heading.textContent = "Motion quality";
+    const summary = document.createElement("p");
+    summary.textContent = `Final hold: ${report.finalHoldSeconds.toFixed(2)} s · Text-size estimate at 350 px video width. Check hierarchy and crowding visually; these suggestions do not block export.`;
+    quality.append(heading, summary);
+    if (report.diagnostics.length === 0) {
+      const note = document.createElement("p");
+      note.textContent =
+        "No timing, text-size or competing-focus warnings. Review the composition and narration in playback.";
+      quality.append(note);
+    }
+    for (const diagnostic of report.diagnostics) {
+      const row = document.createElement("p");
+      row.textContent = `${diagnostic.message} `;
+      const jump = document.createElement("button");
+      jump.type = "button";
+      jump.textContent = `View frame ${diagnostic.frames[0]}`;
+      jump.onclick = () => seek(diagnostic.frames[0]);
+      row.append(jump);
+      quality.append(row);
+    }
+  };
   const fields: (() => void)[] = [];
   const add = (label: string, object: Record<string, unknown>, key: string) => {
     const row = document.createElement("label");
@@ -84,7 +114,9 @@ export function createStoryControls(
   button.onclick = () => {
     try {
       fields.forEach((read) => read());
-      apply(StorySceneSchema.parse(draft));
+      const parsed = StorySceneSchema.parse(draft);
+      apply(parsed);
+      showQuality(parsed);
       message.textContent =
         "Timing applied to this preview. Download the scene to keep it.";
     } catch (error) {
@@ -100,6 +132,7 @@ export function createStoryControls(
       fields.forEach((read) => read());
       const parsed = StorySceneSchema.parse(draft);
       apply(parsed);
+      showQuality(parsed);
       const url = URL.createObjectURL(
         new Blob([JSON.stringify(parsed, null, 2) + "\n"], {
           type: "application/json",
@@ -117,5 +150,6 @@ export function createStoryControls(
         error instanceof Error ? error.message : String(error);
     }
   };
-  host.append(button, download, message);
+  host.append(button, download, message, quality);
+  showQuality(input);
 }

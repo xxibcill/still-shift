@@ -1,17 +1,34 @@
+import { parseArgs } from "node:util";
+import { unequalMarginsV2 } from "./story-motion/unequal-margins-v2.ts";
 import { createHash } from "node:crypto";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { resolve } from "node:path";
 import { imageSize } from "image-size";
 import { format } from "prettier";
 import { StorySceneSchema } from "../packages/scene-contract/src/story.ts";
-import { artwork, palette, writeArtwork } from "./story-motion/art.ts";
+import {
+  artwork,
+  motionArtwork,
+  palette,
+  writeArtwork,
+} from "./story-motion/art.ts";
 import { designs } from "./story-motion/scenes.ts";
 
-const directory = resolve("benchmarks/fixtures/story-motion");
+const { values } = parseArgs({
+  options: { prototype: { type: "boolean", default: false } },
+});
+const selectedDesigns = values.prototype ? [unequalMarginsV2()] : designs;
+const directory = resolve(
+  values.prototype
+    ? "benchmarks/fixtures/story-motion-v2"
+    : "benchmarks/fixtures/story-motion",
+);
 const checksum = (bytes: Uint8Array | string) =>
   `sha256:${createHash("sha256").update(bytes).digest("hex")}`;
 await writeArtwork();
-const assets = Object.entries(artwork)
+const assets = Object.entries(
+  values.prototype ? { ...artwork, ...motionArtwork } : artwork,
+)
   .map(([id, source]) => ({
     id,
     path: `../../../assets/story-motion/art/${id}.svg`,
@@ -40,7 +57,7 @@ const fonts = await Promise.all(
   })),
 );
 await mkdir(directory, { recursive: true });
-for (const design of designs) {
+for (const design of selectedDesigns) {
   const scene = StorySceneSchema.parse({
     schemaVersion: "story-scene-1",
     title: design.title,
@@ -50,6 +67,13 @@ for (const design of designs) {
     assets,
     fonts,
     nodes: design.nodes,
+    ...(design.motionGrammar ? { motionGrammar: design.motionGrammar } : {}),
+    ...(design.camera ? { camera: design.camera } : {}),
+    ...(design.flows ? { flows: design.flows } : {}),
+    review: {
+      essentialText: design.essentialText,
+      ...(design.focalGroups ? { focalGroups: design.focalGroups } : {}),
+    },
     recipe: design.recipe,
     connectors: design.connectors ?? [],
     provenance:
@@ -64,11 +88,15 @@ await writeFile(
   resolve(directory, "catalog.json"),
   await format(
     JSON.stringify(
-      designs.map(({ id, title, description }) => ({ id, title, description })),
+      selectedDesigns.map(({ id, title, description }) => ({
+        id,
+        title,
+        description,
+      })),
     ),
     { parser: "json" },
   ),
 );
 console.log(
-  "Prepared seven editorial story motions with shared vector artwork and pinned fonts.",
+  `Prepared ${selectedDesigns.length} story motions with shared artwork and pinned fonts in ${directory}.`,
 );

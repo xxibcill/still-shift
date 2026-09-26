@@ -18,7 +18,12 @@ type Event = {
 const baseValue = (node: PreparedNode, property: Property) => {
   if (property === "scaleX" || property === "scaleY" || property === "reveal")
     return 1;
-  if (property === "state" || property === "gap" || property === "pulse")
+  if (
+    property === "state" ||
+    property === "gap" ||
+    property === "pulse" ||
+    property === "pinch"
+  )
     return 0;
   return node[property];
 };

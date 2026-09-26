@@ -1,0 +1,673 @@
+{
+  "preset": "dated_system_break",
+  "frameCount": 192,
+  "fps": 24,
+  "recipe": {
+    "preset": "dated_system_break",
+    "contextId": "famine-comparison",
+    "system": "crisis",
+    "context": "crisis-date",
+    "contextReadyFrame": 72,
+    "breaks": [
+      {
+        "path": "break-a",
+        "window": {
+          "start": 72,
+          "end": 84,
+          "cue": "resource-stress",
+          "easing": "in-cubic"
+        }
+      },
+      {
+        "path": "break-b",
+        "window": {
+          "start": 90,
+          "end": 104,
+          "cue": "access-stress",
+          "easing": "in-cubic"
+        }
+      }
+    ],
+    "reset": {
+      "atFrame": 120,
+      "group": "later",
+      "context": "later-date",
+      "contextId": "walsham-later"
+    }
+  },
+  "entry": {
+    "crisis": {
+      "parent": null,
+      "pose": {
+        "x": 0,
+        "y": 0,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "crisis-field": {
+      "parent": "crisis",
+      "pose": {
+        "x": 0,
+        "y": 0,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "crisis-date": {
+      "parent": "crisis",
+      "pose": {
+        "x": 112,
+        "y": 82,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "crisis-context": {
+      "parent": "crisis",
+      "pose": {
+        "x": 116,
+        "y": 246,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "crisis-store": {
+      "parent": "crisis",
+      "pose": {
+        "x": 120,
+        "y": 372,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "break-a": {
+      "parent": "crisis",
+      "pose": {
+        "x": 0,
+        "y": 0,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "break-b": {
+      "parent": "crisis",
+      "pose": {
+        "x": 0,
+        "y": 0,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "crisis-resources": {
+      "parent": "crisis",
+      "pose": {
+        "x": 1240,
+        "y": 304,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "crisis-resources-label": {
+      "parent": "crisis",
+      "pose": {
+        "x": 1465,
+        "y": 630,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "crisis-access": {
+      "parent": "crisis",
+      "pose": {
+        "x": 1220,
+        "y": 705,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "crisis-access-label": {
+      "parent": "crisis",
+      "pose": {
+        "x": 1455,
+        "y": 942,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "later": {
+      "parent": null,
+      "pose": {
+        "x": 0,
+        "y": 0,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 0,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "later-field": {
+      "parent": "later",
+      "pose": {
+        "x": 0,
+        "y": 0,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "later-ground": {
+      "parent": "later",
+      "pose": {
+        "x": 0,
+        "y": 780,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "later-date": {
+      "parent": "later",
+      "pose": {
+        "x": 112,
+        "y": 90,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "later-context": {
+      "parent": "later",
+      "pose": {
+        "x": 116,
+        "y": 238,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "later-house": {
+      "parent": "later",
+      "pose": {
+        "x": 1050,
+        "y": 382,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "later-note": {
+      "parent": "later",
+      "pose": {
+        "x": 112,
+        "y": 497,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "later-unknown": {
+      "parent": "later",
+      "pose": {
+        "x": 112,
+        "y": 606,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "later-qualifier": {
+      "parent": "later",
+      "pose": {
+        "x": 112,
+        "y": 968,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "paper": {
+      "parent": null,
+      "pose": {
+        "x": 0,
+        "y": 0,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    }
+  },
+  "exit": {
+    "crisis": {
+      "parent": null,
+      "pose": {
+        "x": 0,
+        "y": 0,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 0,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "crisis-field": {
+      "parent": "crisis",
+      "pose": {
+        "x": 0,
+        "y": 0,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "crisis-date": {
+      "parent": "crisis",
+      "pose": {
+        "x": 112,
+        "y": 82,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "crisis-context": {
+      "parent": "crisis",
+      "pose": {
+        "x": 116,
+        "y": 246,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "crisis-store": {
+      "parent": "crisis",
+      "pose": {
+        "x": 120,
+        "y": 372,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "break-a": {
+      "parent": "crisis",
+      "pose": {
+        "x": 0,
+        "y": 0,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 1,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "break-b": {
+      "parent": "crisis",
+      "pose": {
+        "x": 0,
+        "y": 0,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 1,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "crisis-resources": {
+      "parent": "crisis",
+      "pose": {
+        "x": 1240,
+        "y": 304,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "crisis-resources-label": {
+      "parent": "crisis",
+      "pose": {
+        "x": 1465,
+        "y": 630,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "crisis-access": {
+      "parent": "crisis",
+      "pose": {
+        "x": 1220,
+        "y": 705,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "crisis-access-label": {
+      "parent": "crisis",
+      "pose": {
+        "x": 1455,
+        "y": 942,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "later": {
+      "parent": null,
+      "pose": {
+        "x": 0,
+        "y": 0,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "later-field": {
+      "parent": "later",
+      "pose": {
+        "x": 0,
+        "y": 0,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "later-ground": {
+      "parent": "later",
+      "pose": {
+        "x": 0,
+        "y": 780,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "later-date": {
+      "parent": "later",
+      "pose": {
+        "x": 112,
+        "y": 90,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "later-context": {
+      "parent": "later",
+      "pose": {
+        "x": 116,
+        "y": 238,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "later-house": {
+      "parent": "later",
+      "pose": {
+        "x": 1050,
+        "y": 382,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "later-note": {
+      "parent": "later",
+      "pose": {
+        "x": 112,
+        "y": 497,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "later-unknown": {
+      "parent": "later",
+      "pose": {
+        "x": 112,
+        "y": 606,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "later-qualifier": {
+      "parent": "later",
+      "pose": {
+        "x": 112,
+        "y": 968,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "paper": {
+      "parent": null,
+      "pose": {
+        "x": 0,
+        "y": 0,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    }
+  },
+  "sourceChecksum": "sha256:545e8b85506b42960416f4df795fbe6ac617eb077bb7be216637793d33a64b5b"
+}

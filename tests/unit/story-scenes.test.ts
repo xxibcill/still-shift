@@ -176,6 +176,29 @@ describe("story motion", () => {
     });
     expect(() => compilePreparedScene(input)).toThrow(/Conflicting/);
   });
+  it("gives each evidence role a readable stage without hiding the qualification", () => {
+    const input = fixture("evidence_boundary");
+    if (input.recipe.preset !== "evidence_boundary")
+      throw new Error("Wrong fixture");
+    const scene = compilePreparedScene(input);
+    const opacity = (id: string, frame: number) =>
+      evaluatePreparedNode(
+        scene,
+        scene.nodes.find((node) => node.id === id)!,
+        frame,
+      ).opacity;
+    expect(opacity("supported-stage", 46)).toBe(1);
+    expect(opacity("supported-stage", 58)).toBe(0);
+    expect(opacity("unknown", 78)).toBe(1);
+    expect(opacity("unknown", 112)).toBe(0);
+    expect(opacity("composite", 114)).toBe(0);
+    expect(opacity("composite", 136)).toBe(1);
+    for (const frame of [0, 46, 78, 112, 136, 191])
+      expect(opacity("qualifier", frame)).toBe(1);
+
+    input.recipe.exits![0]!.window.start = 20;
+    expect(StorySceneSchema.safeParse(input).success).toBe(false);
+  });
   it("rejects hidden qualifiers, out-of-range events and dependent evidence roles", () => {
     const input = fixture("evidence_boundary");
     if (input.recipe.preset !== "evidence_boundary")

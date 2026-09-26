@@ -1,4 +1,5 @@
 import type { PreparedPath } from "../../scene-contract/src/prepared.ts";
+import { projectStoryPoint } from "./story-camera.ts";
 import { evaluatePreparedNode } from "./prepared-scene.ts";
 import type { StoryRenderScene } from "./story-scene.ts";
 
@@ -21,7 +22,7 @@ export function storyAnchorPosition(
   ];
   return node.parent
     ? storyAnchorPosition(scene, node.parent, result, frame)
-    : result;
+    : projectStoryPoint(scene, node.id, result, frame);
 }
 
 export function evaluateStoryPath(

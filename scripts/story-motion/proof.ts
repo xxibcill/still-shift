@@ -2,7 +2,7 @@ import {
   StorySceneSchema,
   type StoryScene,
 } from "../../packages/scene-contract/src/story.ts";
-import { art, cue, group, path, text } from "./design.ts";
+import { typeScale, art, cue, group, path, text } from "./design.ts";
 import { palette } from "./art.ts";
 
 export function comparisonAccessProof(
@@ -44,14 +44,14 @@ export function comparisonAccessProof(
     title: "S01E01 ST-014 · access candidate",
     frameCount: 312,
     episodeStartFrame: 5082,
+    review: { essentialText: ["room", "strained", "qualifier"] },
     nodes: [
       ...first.nodes.filter((node) => retained.has(node.id)),
       text("title", "Available grain.", 112, 94, 82),
-      text("subtitle", "Access can differ.", 116, 207, 62, {
+      text("subtitle", "Access can differ.", 116, 207, typeScale.subheading, {
         color: palette.red,
       }),
       art("store", "store", 804, 120, 310, 269),
-      text("source-label", "Available", 960, 85, 42, { align: "center" }),
       path(
         "route-a",
         [
@@ -81,10 +81,10 @@ export function comparisonAccessProof(
       }),
       text(
         "qualifier",
-        "Illustrative relationship · no measured quantities",
+        "Symbolic links; no measured quantities.",
         112,
-        966,
-        42,
+        968,
+        typeScale.qualifier,
       ),
     ],
     recipe: {

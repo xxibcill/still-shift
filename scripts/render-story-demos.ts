@@ -1,3 +1,7 @@
+import {
+  measureMotionEnergy,
+  requireContinuousEnergy,
+} from "./story-motion/motion-energy.ts";
 import { execFile } from "node:child_process";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { resolve, join } from "node:path";
@@ -8,24 +12,34 @@ import {
 } from "../packages/animation-engine/src/prepared-animation-engine.ts";
 import { storyGallery, storyContactSheet } from "./story-motion/gallery.ts";
 import { evaluatePreparedNode } from "../packages/renderer-core/src/prepared-scene.ts";
+import { analyzeStoryQuality } from "../packages/renderer-core/src/story-quality.ts";
 
 const { values } = parseArgs({
-  options: { "output-dir": { type: "string" } },
+  options: {
+    "output-dir": { type: "string" },
+    "fixtures-dir": {
+      type: "string",
+      default: "benchmarks/fixtures/story-motion",
+    },
+    "require-continuous-motion": { type: "boolean", default: false },
+  },
   strict: true,
 });
 if (!values["output-dir"])
   throw new Error("Pass --output-dir <new review directory>");
 const output = resolve(values["output-dir"]);
-await mkdir(output, { recursive: true });
+await mkdir(output);
+const fixtureDirectory = resolve(values["fixtures-dir"]);
 const run = promisify(execFile);
 const entries = JSON.parse(
-  await readFile("benchmarks/fixtures/story-motion/catalog.json", "utf8"),
+  await readFile(join(fixtureDirectory, "catalog.json"), "utf8"),
 ) as { id: string; title: string; description: string }[];
 const results = [];
+const quality = [];
+const energies = [];
+const failures: string[] = [];
 for (const entry of entries) {
-  const scenePath = resolve(
-    `benchmarks/fixtures/story-motion/${entry.id}.json`,
-  );
+  const scenePath = join(fixtureDirectory, `${entry.id}.json`);
   const video = join(output, `${entry.id}.mp4`);
   const result = await new PreparedAnimationEngine().animate({
     scenePath,
@@ -33,6 +47,40 @@ for (const entry of entries) {
   });
   results.push(result);
   const { scene } = await loadPreparedScene(scenePath);
+  if (scene.schemaVersion === "story-scene-1") {
+    const report = analyzeStoryQuality(
+      scene,
+      values["require-continuous-motion"] || scene.motionGrammar
+        ? { preset: "continuous" }
+        : {},
+    );
+    quality.push({
+      id: entry.id,
+      sourceChecksum: result.checksums.source,
+      ...report,
+    });
+    if (
+      values["require-continuous-motion"] &&
+      report.diagnostics.some((d) =>
+        ["semantic-gap", "text-velocity"].includes(d.code),
+      )
+    )
+      failures.push(`${entry.id}: compiled continuous gates fail`);
+  }
+  const energy = await measureMotionEnergy(video);
+  energies.push({ id: entry.id, ...energy });
+  await writeFile(
+    join(output, `${entry.id}.motion-energy.json`),
+    JSON.stringify(energy, null, 2) + "\n",
+    { flag: "wx" },
+  );
+  if (values["require-continuous-motion"]) {
+    try {
+      requireContinuousEnergy(energy, entry.id);
+    } catch (error) {
+      failures.push(String(error));
+    }
+  }
   const poses = (frame: number) =>
     Object.fromEntries(
       scene.nodes.map((node) => [
@@ -85,18 +133,23 @@ for (const entry of entries) {
     `${entry.title}: ${result.frameCount} frames; ${(result.metrics.totalWallMs / 1000).toFixed(1)}s render`,
   );
 }
-await run("ffmpeg", [
-  "-v",
-  "error",
-  "-i",
-  join(output, "dated-system-break.mp4"),
-  "-vf",
-  "select=eq(n\\,166)",
-  "-frames:v",
-  "1",
-  join(output, "dated-system-reset.png"),
-]);
+if (entries.some((entry) => entry.id === "dated-system-break"))
+  await run("ffmpeg", [
+    "-v",
+    "error",
+    "-i",
+    join(output, "dated-system-break.mp4"),
+    "-vf",
+    "select=eq(n\\,166)",
+    "-frames:v",
+    "1",
+    join(output, "dated-system-reset.png"),
+  ]);
 await writeFile(join(output, "index.html"), storyGallery(output, entries));
+await writeFile(
+  join(output, "quality-report.json"),
+  JSON.stringify(quality, null, 2) + "\n",
+);
 await writeFile(
   join(output, "contact-sheet.html"),
   storyContactSheet(output, entries),
@@ -113,4 +166,10 @@ await writeFile(
     2,
   ) + "\n",
 );
+await writeFile(
+  join(output, "motion-energy.json"),
+  JSON.stringify(energies, null, 2) + "\n",
+  { flag: "wx" },
+);
+if (failures.length) throw new Error(failures.join("\n"));
 console.log(`Story motion gallery: ${output}/index.html`);

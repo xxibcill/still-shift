@@ -63,7 +63,8 @@
     "commerce:components:prepare": "node --import tsx scripts/create-commerce-components.ts",
     "test:browser:commerce-components": "node --import tsx tests/browser/commerce-components.ts",
     "test:browser:commerce-effects": "node --import tsx tests/browser/commerce-effects.ts",
-    "test:browser:commerce-spatial": "node --import tsx tests/browser/commerce-spatial.ts"
+    "test:browser:commerce-spatial": "node --import tsx tests/browser/commerce-spatial.ts",
+    "story:review": "node --import tsx scripts/publish-story-review.ts"
   },
   "devDependencies": {
     "@eslint/js": "9.39.5",

@@ -1,11 +1,10 @@
-import { readFile, writeFile } from "node:fs/promises";
+import { readFile } from "node:fs/promises";
 import { resolve } from "node:path";
-import { format } from "prettier";
 import {
   CinematicSceneSchema,
   type CinematicScene,
 } from "../packages/scene-contract/src/cinematic.ts";
-import { compileCinematicScene } from "../packages/renderer-core/src/cinematic-scene.ts";
+import { publishCinematicScenes } from "./publish-cinematic-scenes.ts";
 
 export async function createLateralScenes(directory: string) {
   const threshold = CinematicSceneSchema.parse(
@@ -105,17 +104,5 @@ export async function createLateralScenes(directory: string) {
         "A tighter room, reversed travel and unequal foreground depths create a second sustained traverse.",
     },
   ];
-  for (const { id, scene } of entries) {
-    const compiled = compileCinematicScene(scene);
-    await writeFile(
-      resolve(directory, `${id}.json`),
-      await format(JSON.stringify(scene), { parser: "json" }),
-    );
-    console.log(`${id}: ${JSON.stringify(compiled.cameraValidation)}`);
-  }
-  return entries.map(({ id, scene, description }) => ({
-    id,
-    title: scene.title,
-    description,
-  }));
+  return publishCinematicScenes(directory, entries);
 }

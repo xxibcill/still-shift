@@ -29,43 +29,66 @@ function motionProfile(intensity: CinematicScene["recipe"]["intensity"]) {
   };
 }
 
-function cameraProfile(scene: CinematicScene) {
-  const profile = motionProfile(scene.recipe.intensity);
-  if (scene.recipe.preset === "focus_handoff")
-    return {
-      ...profile,
-      horizontalStrength:
-        scene.recipe.intensity === "dramatic"
-          ? 4
-          : scene.recipe.intensity === "standard"
-            ? 3
-            : 2,
-      start: 0.04,
-      end: 0.65,
-    };
-  if (scene.recipe.preset === "detail_to_world")
-    return { ...profile, start: 0.06, end: 0.82 };
-  if (["rising_vista", "curved_approach"].includes(scene.recipe.preset)) {
+type Intensity = CinematicScene["recipe"]["intensity"];
+type CameraProfile = ReturnType<typeof motionProfile>;
+type PresetBehavior = {
+  profile: (intensity: Intensity, base: CameraProfile) => CameraProfile;
+  tracking?: boolean;
+  trackTiming?: boolean;
+  curvedPath?: boolean;
+  focusBlur?: boolean;
+  axial?: boolean;
+  pullback?: boolean;
+  anchoredParallax?: boolean;
+  risingVista?: boolean;
+  lateralTrack?: boolean;
+  foregroundReveal?: boolean;
+};
+const unchanged = (_: Intensity, base: CameraProfile) => base;
+const vistaProfile =
+  (vertical: number): PresetBehavior["profile"] =>
+  (intensity, base) => {
     const strength =
-      scene.recipe.intensity === "dramatic"
-        ? 1
-        : scene.recipe.intensity === "standard"
-          ? 0.75
-          : 0.5;
+      intensity === "dramatic" ? 1 : intensity === "standard" ? 0.75 : 0.5;
     return {
-      ...profile,
+      ...base,
       horizontalStrength: 3 * strength,
-      verticalStrength:
-        (scene.recipe.preset === "rising_vista" ? 5 : 3) * strength,
+      verticalStrength: vertical * strength,
       start: 0.04,
       end: 0.92,
       maximumVerticalTravel: 0.25,
     };
-  }
-  if (scene.recipe.preset === "foreground_reveal") {
-    const intensity = scene.recipe.intensity;
-    return {
-      ...profile,
+  };
+
+const PRESET_BEHAVIORS: Record<
+  CinematicScene["recipe"]["preset"],
+  PresetBehavior
+> = {
+  layered_parallax: { profile: unchanged, anchoredParallax: true },
+  threshold_push: { profile: unchanged, axial: true },
+  detail_to_world: {
+    profile: (_, base) => ({ ...base, start: 0.06, end: 0.82 }),
+    pullback: true,
+  },
+  focus_handoff: {
+    profile: (intensity, base) => ({
+      ...base,
+      horizontalStrength:
+        intensity === "dramatic" ? 4 : intensity === "standard" ? 3 : 2,
+      start: 0.04,
+      end: 0.65,
+    }),
+    focusBlur: true,
+  },
+  rising_vista: {
+    profile: vistaProfile(5),
+    tracking: true,
+    risingVista: true,
+  },
+  curved_approach: { profile: vistaProfile(3), curvedPath: true },
+  foreground_reveal: {
+    profile: (intensity, base) => ({
+      ...base,
       horizontalStrength:
         intensity === "dramatic" ? 5 : intensity === "standard" ? 4 : 3,
       start:
@@ -80,20 +103,28 @@ function cameraProfile(scene: CinematicScene) {
           : intensity === "standard"
             ? 0.52
             : 0.58,
-    };
-  }
-  if (scene.recipe.preset !== "lateral_track") return profile;
-  return {
-    ...profile,
-    horizontalStrength:
-      scene.recipe.intensity === "dramatic"
-        ? 5
-        : scene.recipe.intensity === "standard"
-          ? 3
-          : 2,
-    start: 0.02,
-    end: 0.94,
-  };
+    }),
+    foregroundReveal: true,
+  },
+  lateral_track: {
+    profile: (intensity, base) => ({
+      ...base,
+      horizontalStrength:
+        intensity === "dramatic" ? 5 : intensity === "standard" ? 3 : 2,
+      start: 0.02,
+      end: 0.94,
+    }),
+    tracking: true,
+    trackTiming: true,
+    lateralTrack: true,
+  },
+};
+
+function cameraProfile(scene: CinematicScene) {
+  return PRESET_BEHAVIORS[scene.recipe.preset].profile(
+    scene.recipe.intensity,
+    motionProfile(scene.recipe.intensity),
+  );
 }
 
 function trackProgress(progress: number) {
@@ -137,7 +168,7 @@ export function sampleCinematicBlur(
     frame >= scene.timeline.frameCount
   )
     throw new Error("Frame index outside cinematic timeline");
-  if (scene.recipe.preset !== "focus_handoff") return 0;
+  if (!PRESET_BEHAVIORS[scene.recipe.preset].focusBlur) return 0;
   const focus = scene.camera.focus!;
   const depth = (id: string) =>
     scene.layers.find((layer) => layer.node === id)!.depth;
@@ -180,13 +211,13 @@ function sampleCamera(scene: CompiledCamera, frame: number): CameraKey {
       const p = (frame - a.frame) / (b.frame - a.frame);
       // The dramatic curve peaks earlier and takes longer to decelerate.
       // Its velocity is 12p(1-p)^2: no overshoot and zero speed at both ends.
-      const eased =
-        scene.recipe.preset === "lateral_track"
-          ? trackProgress(p)
-          : scene.recipe.intensity === "dramatic"
-            ? p * p * (6 - 8 * p + 3 * p * p)
-            : p * p * (3 - 2 * p);
-      if (scene.recipe.preset === "curved_approach" && i === 2) {
+      const behavior = PRESET_BEHAVIORS[scene.recipe.preset];
+      const eased = behavior.trackTiming
+        ? trackProgress(p)
+        : scene.recipe.intensity === "dramatic"
+          ? p * p * (6 - 8 * p + 3 * p * p)
+          : p * p * (3 - 2 * p);
+      if (behavior.curvedPath && i === 2) {
         const profile = cameraProfile(scene);
         const control = scene.camera.curve!;
         const bend = (end: number, control: number) =>
@@ -238,9 +269,7 @@ export function projectCinematicNode(
   const anchorY = subject.y + subject.height * scene.camera.anchor[1];
   const anchor = project(anchorX, anchorY, subjectDepth);
   const projected = project(node.x, node.y, layer.depth);
-  const tracking =
-    scene.recipe.preset === "lateral_track" ||
-    scene.recipe.preset === "rising_vista";
+  const tracking = PRESET_BEHAVIORS[scene.recipe.preset].tracking;
   return {
     left: tracking ? projected.x : projected.x + anchorX - anchor.x,
     top: tracking ? projected.y : projected.y + anchorY - anchor.y,
@@ -291,10 +320,9 @@ function inspectSubjectVisibility(scene: CompiledCamera, frame: number) {
   for (const near of scene.layers.filter((near) => near.depth < layer.depth)) {
     const node = scene.nodes.find((node) => node.id === near.node)!;
     const p = projectCinematicNode(scene, node, frame);
-    const padding =
-      scene.recipe.preset === "focus_handoff"
-        ? 3 * sampleCinematicBlur(scene, node.id, frame)
-        : 0;
+    const padding = PRESET_BEHAVIORS[scene.recipe.preset].focusBlur
+      ? 3 * sampleCinematicBlur(scene, node.id, frame)
+      : 0;
     // Conservatively reject even transparent card overlap with the detail.
     if (
       p.left - padding < Math.max(...xs) &&
@@ -341,10 +369,11 @@ function inspectDetailScale(scene: CompiledCamera) {
 
 function inspectCamera(scene: CompiledCamera) {
   const profile = cameraProfile(scene);
-  const axial = scene.recipe.preset === "threshold_push";
-  const pullback = scene.recipe.preset === "detail_to_world";
-  const focus = scene.recipe.preset === "focus_handoff";
-  const anchoredParallax = scene.recipe.preset === "layered_parallax";
+  const behavior = PRESET_BEHAVIORS[scene.recipe.preset];
+  const axial = behavior.axial;
+  const pullback = behavior.pullback;
+  const focus = behavior.focusBlur;
+  const anchoredParallax = behavior.anchoredParallax;
   let minimumCoverageMargin = Infinity,
     subjectTravelPx = 0,
     subjectScaleChange = 0,
@@ -411,14 +440,14 @@ function inspectCamera(scene: CompiledCamera) {
       if (
         !axial &&
         !pullback &&
-        scene.recipe.preset !== "curved_approach" &&
+        !behavior.curvedPath &&
         Math.abs(p.top - node.y) > scene.height * profile.maximumVerticalTravel
       )
         throw new Error(
           `Camera exceeds the vertical parallax envelope at frame ${frame}`,
         );
       if (
-        scene.recipe.preset === "curved_approach" &&
+        behavior.curvedPath &&
         (Math.abs(p.left - node.x) > scene.width * 0.3 ||
           Math.abs(p.top - node.y) > scene.height * 0.25 ||
           p.scale > 1.5)
@@ -500,7 +529,7 @@ function inspectCamera(scene: CompiledCamera) {
   };
   const foregroundVerticalTravelPx = verticalTravel(scene.recipe.foreground),
     backgroundVerticalTravelPx = verticalTravel(scene.recipe.background);
-  if (scene.recipe.preset === "rising_vista") {
+  if (behavior.risingVista) {
     if (
       foregroundVerticalTravelPx < scene.height * 0.06 ||
       foregroundVerticalTravelPx < subjectTravelPx * 2 ||
@@ -515,7 +544,7 @@ function inspectCamera(scene: CompiledCamera) {
       throw new Error("Camera exceeds the rising vista envelope");
   }
   if (
-    scene.recipe.preset === "curved_approach" &&
+    behavior.curvedPath &&
     (subjectScaleChange < 0.005 ||
       subjectScaleChange > 0.12 ||
       subjectAnchorTravelPx > 0.01)
@@ -539,14 +568,14 @@ function inspectCamera(scene: CompiledCamera) {
       subjectScaleChange > 0.01)
   )
     throw new Error("Camera exceeds the parallax movement envelope");
-  if (scene.recipe.preset === "lateral_track")
+  if (behavior.lateralTrack)
     inspectLateralTrack(scene, {
       foreground: foregroundTravelPx,
       subject: subjectTravelPx,
       background: backgroundTravelPx,
     });
   if (
-    scene.recipe.preset === "foreground_reveal" &&
+    behavior.foregroundReveal &&
     (foregroundTravelPx > scene.width * 0.3 ||
       backgroundTravelPx > scene.width * 0.06 ||
       subjectAnchorTravelPx > 0.01 ||
@@ -613,6 +642,7 @@ export function compileCinematicScene(
   input: CinematicScene,
 ): CinematicRenderScene {
   const frameCount = (input.fps * input.durationMs) / 1000;
+  const behavior = PRESET_BEHAVIORS[input.recipe.preset];
   const profile = cameraProfile(input);
   const x = input.camera.travel[0] * profile.horizontalStrength;
   const y = input.camera.travel[1] * profile.verticalStrength;
@@ -623,19 +653,17 @@ export function compileCinematicScene(
         ? 0.65
         : 0.4;
   const z =
-    input.recipe.preset === "threshold_push" ||
-    input.recipe.preset === "curved_approach"
+    behavior.axial || behavior.curvedPath
       ? input.camera.push! * pushStrength
       : 0;
-  const startZ =
-    input.recipe.preset === "detail_to_world"
-      ? input.camera.pullback! *
-        (input.recipe.intensity === "dramatic"
-          ? 1
-          : input.recipe.intensity === "standard"
-            ? 0.75
-            : 0.5)
-      : 0;
+  const startZ = behavior.pullback
+    ? input.camera.pullback! *
+      (input.recipe.intensity === "dramatic"
+        ? 1
+        : input.recipe.intensity === "standard"
+          ? 0.75
+          : 0.5)
+    : 0;
   if (input.layers.some((layer) => layer.depth - Math.max(startZ, z) < 0.1))
     throw new Error("Camera crosses a depth plane");
   const key = (frame: number, x: number, y: number, z = 0): CameraKey => ({

@@ -1,0 +1,239 @@
+[
+  {
+    "id": "unequal-margins",
+    "sourceChecksum": "sha256:db7088238d36471d419dbd7a7090ed3e5e4d7b41675f18ecdc74ea34088e50fa",
+    "version": "story-quality-1",
+    "displayWidth": 350,
+    "minimumTextPx": 14,
+    "preferredHoldSeconds": 2,
+    "lastChangedFrame": 120,
+    "finalHoldSeconds": 3,
+    "minimumTextPxObserved": 9.479166666666666,
+    "diagnostics": [
+      {
+        "code": "small-essential-text",
+        "nodes": ["qualifier"],
+        "frames": [0, 0],
+        "measured": 9.479166666666666,
+        "message": "qualifier displays at 9.5 px at 350 px video width. Aim for 14 px or review the layout."
+      },
+      {
+        "code": "small-essential-text",
+        "nodes": ["room"],
+        "frames": [87, 87],
+        "measured": 10.208333333333334,
+        "message": "room displays at 10.2 px at 350 px video width. Aim for 14 px or review the layout."
+      },
+      {
+        "code": "small-essential-text",
+        "nodes": ["strained"],
+        "frames": [99, 99],
+        "measured": 10.208333333333334,
+        "message": "strained displays at 10.2 px at 350 px video width. Aim for 14 px or review the layout."
+      }
+    ]
+  },
+  {
+    "id": "access-constraint",
+    "sourceChecksum": "sha256:b8395174417218ab6c50c2e490e02498d92800e91bf0dd8cf8f9295235a6d9fe",
+    "version": "story-quality-1",
+    "displayWidth": 350,
+    "minimumTextPx": 14,
+    "preferredHoldSeconds": 2,
+    "lastChangedFrame": 114,
+    "finalHoldSeconds": 3.25,
+    "minimumTextPxObserved": 10.208333333333334,
+    "diagnostics": [
+      {
+        "code": "small-essential-text",
+        "nodes": ["aperture-label"],
+        "frames": [0, 0],
+        "measured": 10.208333333333334,
+        "message": "aperture-label displays at 10.2 px at 350 px video width. Aim for 14 px or review the layout."
+      },
+      {
+        "code": "small-essential-text",
+        "nodes": ["source-label"],
+        "frames": [0, 0],
+        "measured": 10.208333333333334,
+        "message": "source-label displays at 10.2 px at 350 px video width. Aim for 14 px or review the layout."
+      },
+      {
+        "code": "small-essential-text",
+        "nodes": ["open-label"],
+        "frames": [0, 0],
+        "measured": 10.208333333333334,
+        "message": "open-label displays at 10.2 px at 350 px video width. Aim for 14 px or review the layout."
+      }
+    ]
+  },
+  {
+    "id": "relationship-build",
+    "sourceChecksum": "sha256:117db79b561e50719f58a211c3c6edc8f96ba894187cd24784240fe843e94b56",
+    "version": "story-quality-1",
+    "displayWidth": 350,
+    "minimumTextPx": 14,
+    "preferredHoldSeconds": 2,
+    "lastChangedFrame": 138,
+    "finalHoldSeconds": 2.25,
+    "minimumTextPxObserved": 10.208333333333334,
+    "diagnostics": [
+      {
+        "code": "small-essential-text",
+        "nodes": ["store-label"],
+        "frames": [0, 0],
+        "measured": 10.208333333333334,
+        "message": "store-label displays at 10.2 px at 350 px video width. Aim for 14 px or review the layout."
+      },
+      {
+        "code": "small-essential-text",
+        "nodes": ["resources-label"],
+        "frames": [25, 25],
+        "measured": 10.208333333333334,
+        "message": "resources-label displays at 10.2 px at 350 px video width. Aim for 14 px or review the layout."
+      },
+      {
+        "code": "small-essential-text",
+        "nodes": ["access-label"],
+        "frames": [65, 65],
+        "measured": 10.208333333333334,
+        "message": "access-label displays at 10.2 px at 350 px video width. Aim for 14 px or review the layout."
+      },
+      {
+        "code": "small-essential-text",
+        "nodes": ["claims-label"],
+        "frames": [108, 108],
+        "measured": 10.208333333333334,
+        "message": "claims-label displays at 10.2 px at 350 px video width. Aim for 14 px or review the layout."
+      }
+    ]
+  },
+  {
+    "id": "evidence-boundary",
+    "sourceChecksum": "sha256:eae9b13fe0105a6f87d3f1f8a7ec42931d1b1eb83060e33d9beb61a87965583f",
+    "version": "story-quality-1",
+    "displayWidth": 350,
+    "minimumTextPx": 14,
+    "preferredHoldSeconds": 2,
+    "lastChangedFrame": 136,
+    "finalHoldSeconds": 2.3333333333333335,
+    "minimumTextPxObserved": 14.21875,
+    "diagnostics": []
+  },
+  {
+    "id": "dated-system-break",
+    "sourceChecksum": "sha256:545e8b85506b42960416f4df795fbe6ac617eb077bb7be216637793d33a64b5b",
+    "version": "story-quality-1",
+    "displayWidth": 350,
+    "minimumTextPx": 14,
+    "preferredHoldSeconds": 2,
+    "lastChangedFrame": 120,
+    "finalHoldSeconds": 3,
+    "minimumTextPxObserved": 9.479166666666666,
+    "diagnostics": [
+      {
+        "code": "small-essential-text",
+        "nodes": ["crisis-context"],
+        "frames": [0, 0],
+        "measured": 11.666666666666666,
+        "message": "crisis-context displays at 11.7 px at 350 px video width. Aim for 14 px or review the layout."
+      },
+      {
+        "code": "small-essential-text",
+        "nodes": ["later-note"],
+        "frames": [120, 120],
+        "measured": 10.208333333333334,
+        "message": "later-note displays at 10.2 px at 350 px video width. Aim for 14 px or review the layout."
+      },
+      {
+        "code": "small-essential-text",
+        "nodes": ["later-qualifier"],
+        "frames": [120, 120],
+        "measured": 9.479166666666666,
+        "message": "later-qualifier displays at 9.5 px at 350 px video width. Aim for 14 px or review the layout."
+      }
+    ]
+  },
+  {
+    "id": "category-swap",
+    "sourceChecksum": "sha256:371dc88d48277b911bf0875ae86cf37785b07269d6151d186a6a80069bf4a0ea",
+    "version": "story-quality-1",
+    "displayWidth": 350,
+    "minimumTextPx": 14,
+    "preferredHoldSeconds": 2,
+    "lastChangedFrame": 72,
+    "finalHoldSeconds": 5,
+    "minimumTextPxObserved": 9.479166666666666,
+    "diagnostics": [
+      {
+        "code": "small-essential-text",
+        "nodes": ["category-label"],
+        "frames": [0, 0],
+        "measured": 10.208333333333334,
+        "message": "category-label displays at 10.2 px at 350 px video width. Aim for 14 px or review the layout."
+      },
+      {
+        "code": "small-essential-text",
+        "nodes": ["relation-label"],
+        "frames": [0, 0],
+        "measured": 10.208333333333334,
+        "message": "relation-label displays at 10.2 px at 350 px video width. Aim for 14 px or review the layout."
+      },
+      {
+        "code": "small-essential-text",
+        "nodes": ["qualifier"],
+        "frames": [0, 0],
+        "measured": 9.479166666666666,
+        "message": "qualifier displays at 9.5 px at 350 px video width. Aim for 14 px or review the layout."
+      }
+    ]
+  },
+  {
+    "id": "motif-resolve",
+    "sourceChecksum": "sha256:2a27cede3c406e21ea6e2bb25f8c0b70efc1d632d88630efee9a62fa17776783",
+    "version": "story-quality-1",
+    "displayWidth": 350,
+    "minimumTextPx": 14,
+    "preferredHoldSeconds": 2,
+    "lastChangedFrame": 136,
+    "finalHoldSeconds": 2.3333333333333335,
+    "minimumTextPxObserved": 9.479166666666666,
+    "diagnostics": [
+      {
+        "code": "small-essential-text",
+        "nodes": ["resources-label"],
+        "frames": [0, 0],
+        "measured": 10.208333333333334,
+        "message": "resources-label displays at 10.2 px at 350 px video width. Aim for 14 px or review the layout."
+      },
+      {
+        "code": "small-essential-text",
+        "nodes": ["access-label"],
+        "frames": [0, 0],
+        "measured": 10.208333333333334,
+        "message": "access-label displays at 10.2 px at 350 px video width. Aim for 14 px or review the layout."
+      },
+      {
+        "code": "small-essential-text",
+        "nodes": ["land-label"],
+        "frames": [0, 0],
+        "measured": 10.208333333333334,
+        "message": "land-label displays at 10.2 px at 350 px video width. Aim for 14 px or review the layout."
+      },
+      {
+        "code": "small-essential-text",
+        "nodes": ["claims-label"],
+        "frames": [0, 0],
+        "measured": 10.208333333333334,
+        "message": "claims-label displays at 10.2 px at 350 px video width. Aim for 14 px or review the layout."
+      },
+      {
+        "code": "small-essential-text",
+        "nodes": ["qualifier"],
+        "frames": [0, 0],
+        "measured": 9.479166666666666,
+        "message": "qualifier displays at 9.5 px at 350 px video width. Aim for 14 px or review the layout."
+      }
+    ]
+  }
+]

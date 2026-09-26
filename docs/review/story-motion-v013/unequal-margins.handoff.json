@@ -1,0 +1,408 @@
+{
+  "preset": "unequal_margins",
+  "frameCount": 192,
+  "fps": 24,
+  "recipe": {
+    "preset": "unequal_margins",
+    "households": ["house-a", "house-b"],
+    "reference": "reference",
+    "pressures": [
+      {
+        "node": "pressure-a",
+        "to": [155, 490],
+        "condition": "room"
+      },
+      {
+        "node": "pressure-b",
+        "to": [1630, 490],
+        "condition": "strained"
+      }
+    ],
+    "labels": ["room", "strained"],
+    "strain": {
+      "start": 48,
+      "end": 104,
+      "cue": "shared-strain",
+      "easing": "in-out-quint"
+    },
+    "labelWindows": [
+      {
+        "start": 86,
+        "end": 106,
+        "cue": "more-room",
+        "easing": "out-cubic"
+      },
+      {
+        "start": 98,
+        "end": 120,
+        "cue": "less-room",
+        "easing": "out-cubic"
+      }
+    ]
+  },
+  "entry": {
+    "paper": {
+      "parent": null,
+      "pose": {
+        "x": 0,
+        "y": 0,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "ground": {
+      "parent": null,
+      "pose": {
+        "x": 0,
+        "y": 720,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "reference": {
+      "parent": null,
+      "pose": {
+        "x": 112,
+        "y": 96,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "question": {
+      "parent": null,
+      "pose": {
+        "x": 116,
+        "y": 246,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "common-ground": {
+      "parent": null,
+      "pose": {
+        "x": 0,
+        "y": 0,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "house-a": {
+      "parent": null,
+      "pose": {
+        "x": 220,
+        "y": 402,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "house-b": {
+      "parent": null,
+      "pose": {
+        "x": 1110,
+        "y": 402,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "pressure-a": {
+      "parent": null,
+      "pose": {
+        "x": 118,
+        "y": 490,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "pressure-b": {
+      "parent": null,
+      "pose": {
+        "x": 1744,
+        "y": 490,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "room": {
+      "parent": null,
+      "pose": {
+        "x": 505,
+        "y": 854,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 0,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "strained": {
+      "parent": null,
+      "pose": {
+        "x": 1395,
+        "y": 854,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 0,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "qualifier": {
+      "parent": null,
+      "pose": {
+        "x": 112,
+        "y": 968,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    }
+  },
+  "exit": {
+    "paper": {
+      "parent": null,
+      "pose": {
+        "x": 0,
+        "y": 0,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "ground": {
+      "parent": null,
+      "pose": {
+        "x": 0,
+        "y": 720,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "reference": {
+      "parent": null,
+      "pose": {
+        "x": 112,
+        "y": 96,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "question": {
+      "parent": null,
+      "pose": {
+        "x": 116,
+        "y": 246,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "common-ground": {
+      "parent": null,
+      "pose": {
+        "x": 0,
+        "y": 0,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "house-a": {
+      "parent": null,
+      "pose": {
+        "x": 220,
+        "y": 402,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "house-b": {
+      "parent": null,
+      "pose": {
+        "x": 1110,
+        "y": 402,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "pressure-a": {
+      "parent": null,
+      "pose": {
+        "x": 155,
+        "y": 490,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "pressure-b": {
+      "parent": null,
+      "pose": {
+        "x": 1630,
+        "y": 490,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "room": {
+      "parent": null,
+      "pose": {
+        "x": 505,
+        "y": 854,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "strained": {
+      "parent": null,
+      "pose": {
+        "x": 1395,
+        "y": 854,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    },
+    "qualifier": {
+      "parent": null,
+      "pose": {
+        "x": 112,
+        "y": 968,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "reveal": 1,
+        "gap": 0,
+        "state": 0,
+        "pulse": 0
+      }
+    }
+  },
+  "sourceChecksum": "sha256:db7088238d36471d419dbd7a7090ed3e5e4d7b41675f18ecdc74ea34088e50fa"
+}

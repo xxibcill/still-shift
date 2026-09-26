@@ -1,0 +1,15 @@
+{
+  "status": "local narrated graphic candidate; not installed into the protected episode timeline",
+  "episode": "S01E01",
+  "startFrame": 1940,
+  "endFrameExclusive": 3447,
+  "frameCount": 1507,
+  "fps": 24,
+  "narration": {
+    "sha256": "0a972a37e7d485f6fe33c89194844cd9b2a46cffe77f478d6c8299724376b151",
+    "startSeconds": 80.83333333333333,
+    "endSeconds": 143.625
+  },
+  "videoSha256": "7d26c980f6381128b66d07e6fc20af464fbd18aca6a8efcabca28ee47d79415c",
+  "limitations": "Original symbolic kit candidate. Selected images and episode production records are unchanged. Internal cues follow the current corrected captions and word alignment; sampled-frame and technical checks do not establish continuous audiovisual acceptance or full-episode conformance."
+}
