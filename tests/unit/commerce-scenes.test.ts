@@ -51,6 +51,40 @@ const brief = () => ({
 });
 
 describe("commerce preparation and exact-frame scenes", () => {
+  it("accepts a valid five-second H03 or H01 outside catalog suggestions", () => {
+    for (const id of ["H03", "H01"]) {
+      const input = {
+        ...brief(),
+        selection: { kind: "format", id },
+        frameCount: 150,
+      };
+      expect(CommerceBriefSchema.safeParse(input).success).toBe(true);
+      const scene = buildCommerceScene(input, assets);
+      expect(scene.frameCount).toBe(150);
+      expect(CommerceSceneSchema.safeParse(scene).success).toBe(true);
+      expect(compilePreparedScene(scene).timeline.durationMs).toBe(5000);
+    }
+  });
+
+  it("accepts durations beyond the catalog range within the technical frame cap", () => {
+    expect(
+      CommerceBriefSchema.safeParse({ ...brief(), frameCount: 61 * 30 })
+        .success,
+    ).toBe(true);
+    expect(
+      CommerceBriefSchema.safeParse({ ...brief(), frameCount: 108001 }).success,
+    ).toBe(false);
+  });
+
+  it("rejects timing too short to preserve entrance and reading holds", () => {
+    expect(
+      CommerceBriefSchema.safeParse({ ...brief(), frameCount: 60 }).success,
+    ).toBe(true);
+    expect(() =>
+      buildCommerceScene({ ...brief(), frameCount: 60 }, assets),
+    ).toThrow(/Timing must preserve/);
+  });
+
   it("prepares every supported layout and preserves the asset aspect ratio", () => {
     for (const profile of ["landscape", "portrait", "square", "feed"]) {
       const scene = buildCommerceScene({ ...brief(), profile }, assets);

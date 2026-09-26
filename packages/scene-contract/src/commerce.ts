@@ -126,12 +126,6 @@ export const CommerceBriefSchema = z
         code: "custom",
         message: "This composition needs a headline and CTA",
       });
-    if (brief.frameCount < brief.fps * 6)
-      ctx.addIssue({
-        code: "custom",
-        message:
-          "Commerce scenes need at least six seconds for entrance and reading holds",
-      });
   });
 export type CommerceBrief = z.infer<typeof CommerceBriefSchema>;
 export const CommerceEventSchema = z
