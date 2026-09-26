@@ -950,14 +950,19 @@ el<HTMLInputElement>("open-workspace").onchange = async (event) => {
     errors(error);
   }
 };
-el("save-plan").onclick = () => {
-  if (editor) download(editor.passage.plan.id + ".json", editor.passage.plan);
+el("save-plan").onclick = async () => {
+  const owner = editor;
+  await edits;
+  if (owner && editor === owner)
+    download(owner.passage.plan.id + ".json", owner.passage.plan);
 };
-el("save-workspace").onclick = () => {
-  if (editor)
-    download(editor.passage.plan.id + ".workspace.json", {
+el("save-workspace").onclick = async () => {
+  const owner = editor;
+  await edits;
+  if (owner && editor === owner)
+    download(owner.passage.plan.id + ".workspace.json", {
       schemaVersion: "story-workspace-1",
-      plan: editor.passage.plan,
+      plan: owner.passage.plan,
       templates: Object.fromEntries(templates),
     });
 };
