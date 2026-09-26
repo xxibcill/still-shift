@@ -1,4 +1,10 @@
 import { z } from "zod";
+import {
+  checkCueBounds,
+  checkDeliveryCoverage,
+  checkPassageLength,
+  requireUniqueIds,
+} from "./passage-validation.ts";
 
 const id = z.string().regex(/^[a-z][a-z0-9-]*$/);
 const text = z.string().trim().min(1);
@@ -77,41 +83,34 @@ export const StoryPassagePlanSchema = z
   .superRefine((plan, context) => {
     const fail = (message: string) =>
       context.addIssue({ code: "custom", message });
-    const unique = (values: string[], label: string) => {
-      if (new Set(values).size !== values.length) fail("Duplicate " + label);
-    };
-    unique(
+    requireUniqueIds(
       plan.beats.map((beat) => beat.id),
       "beat ID",
+      fail,
     );
-    unique(
+    requireUniqueIds(
       plan.delivery.map((shot) => shot.id),
       "delivery ID",
+      fail,
     );
     const total = plan.beats.reduce((sum, beat) => sum + beat.frameCount, 0);
-    if (total > 108000) fail("A passage cannot exceed 108000 frames");
+    checkPassageLength(total, fail);
     for (const beat of plan.beats) {
-      unique(
+      requireUniqueIds(
         beat.cues.map((cue) => cue.id),
         "cue ID in " + beat.id,
+        fail,
       );
       if (beat.evidence.kind === "supported" && !beat.evidence.reference)
         fail("Supported evidence requires a source reference in " + beat.id);
-      for (const cue of beat.cues)
-        if (cue.frame >= beat.frameCount)
-          fail("Cue outside beat " + beat.id + ": " + cue.id);
+      checkCueBounds(beat, (cue) =>
+        fail("Cue outside beat " + beat.id + ": " + cue.id),
+      );
       for (const [cue, timing] of Object.entries(beat.timing))
         if (timing.end >= beat.frameCount)
           fail("Event outside beat " + beat.id + ": " + cue);
     }
-    let end = 0;
-    for (const shot of plan.delivery) {
-      if (shot.start !== end || shot.end <= shot.start)
-        fail("Delivery slices must cover the passage contiguously");
-      end = shot.end;
-    }
-    if (plan.delivery.length && end !== total)
-      fail("Delivery slices must cover the entire passage");
+    checkDeliveryCoverage(plan.delivery, total, fail);
   });
 
 export type StoryPassagePlan = z.infer<typeof StoryPassagePlanSchema>;

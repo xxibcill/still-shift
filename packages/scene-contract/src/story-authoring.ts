@@ -2,6 +2,12 @@ import { z } from "zod";
 import { StoryPassagePlanSchema } from "./story-passage.ts";
 import { StorySceneSchema } from "./story.ts";
 import { MotionEasingSchema } from "./motion-easing.ts";
+import {
+  checkCueBounds,
+  checkDeliveryCoverage,
+  checkPassageLength,
+  requireUniqueIds,
+} from "./passage-validation.ts";
 
 const name = z.string().trim().min(1);
 const frame = z.number().int().nonnegative();
@@ -175,27 +181,28 @@ export const StoryAuthoringPlanSchema = z
   .superRefine((plan, ctx) => {
     const fail = (message: string, path: (string | number)[] = []) =>
       ctx.addIssue({ code: "custom", message, path });
-    const unique = (ids: string[], label: string) => {
-      if (new Set(ids).size !== ids.length) fail("Duplicate " + label);
-    };
-    unique(
+    requireUniqueIds(
       plan.beats.map((b) => b.id),
       "beat ID",
+      fail,
     );
-    unique(
+    requireUniqueIds(
       plan.delivery.map((b) => b.id),
       "delivery ID",
+      fail,
     );
     let total = 0;
     plan.beats.forEach((beat, index) => {
       total += beat.frameCount;
-      unique(
+      requireUniqueIds(
         beat.cues.map((c) => c.id),
         "cue ID in " + beat.id,
+        fail,
       );
-      unique(
+      requireUniqueIds(
         beat.handoff.subjects.map((s) => s.id),
         "subject identity in " + beat.id,
+        fail,
       );
       if (plan.contentPolicy === "historical" && !beat.evidence)
         fail("Historical policy requires evidence", [
@@ -209,9 +216,9 @@ export const StoryAuthoringPlanSchema = z
           index,
           "evidence",
         ]);
-      for (const cue of beat.cues)
-        if (cue.frame >= beat.frameCount)
-          fail("Cue outside beat " + beat.id, ["beats", index, "cues"]);
+      checkCueBounds(beat, () =>
+        fail("Cue outside beat " + beat.id, ["beats", index, "cues"]),
+      );
       for (const [event, window] of Object.entries(beat.timing)) {
         if (window.end > beat.frameCount)
           fail("Event outside beat " + beat.id, [
@@ -229,15 +236,8 @@ export const StoryAuthoringPlanSchema = z
           ]);
       }
     });
-    if (total > 108000) fail("A passage cannot exceed 108000 frames");
-    let end = 0;
-    for (const slice of plan.delivery) {
-      if (slice.start !== end || slice.end <= slice.start)
-        fail("Delivery slices must cover the passage contiguously");
-      end = slice.end;
-    }
-    if (plan.delivery.length && end !== total)
-      fail("Delivery slices must cover the entire passage");
+    checkPassageLength(total, fail);
+    checkDeliveryCoverage(plan.delivery, total, fail);
   });
 
 export type StoryAuthoringPlan = z.infer<typeof StoryAuthoringPlanSchema>;
