@@ -31,12 +31,18 @@ function editableEvents(scene: StoryScene) {
       return;
     }
     const record = value as RecordValue;
+    const labelWindow = /^recipe\/labelWindows\/(\d+)$/.exec(path);
+    const labelNode =
+      labelWindow && scene.recipe.preset === "unequal_margins"
+        ? scene.recipe.labels[Number(labelWindow[1])]
+        : undefined;
     const nodes = [
       record.node,
       record.path,
       owner?.node,
       owner?.path,
       owner?.destination,
+      labelNode,
     ].filter((v): v is string => typeof v === "string");
     const textNode = nodes.some((id) =>
       scene.nodes.some((n) => n.id === id && n.type === "text"),

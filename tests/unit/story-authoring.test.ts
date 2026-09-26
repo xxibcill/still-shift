@@ -315,6 +315,17 @@ describe("shared passage authoring", () => {
       192,
     );
   });
+  it("indexes label windows as text reveals on their affected nodes", () => {
+    const events = indexStoryEvents(scene());
+    expect(events.find((event) => event.id === "more-room")).toMatchObject({
+      kind: "text-reveal",
+      nodes: ["room"],
+    });
+    expect(events.find((event) => event.id === "less-room")).toMatchObject({
+      kind: "text-reveal",
+      nodes: ["strained"],
+    });
+  });
   it("reports cycles, missing cues and duplicate timing ownership with locations", () => {
     const input = plan();
     input.beats[0]!.bindings["shared-strain"]!.anchor = {
