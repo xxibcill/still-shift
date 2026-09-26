@@ -31,7 +31,10 @@ type StoryMotionEventKind =
   | "swap";
 
 export type StoryRenderScene = StoryScene & {
-  rendererVersion: "story-canvas-0.13.3" | "story-canvas-0.14.0";
+  rendererVersion:
+    | "story-canvas-0.13.3"
+    | "story-canvas-0.14.0"
+    | "story-canvas-0.15.0";
   durationMs: number;
   canvas: { width: number; height: number };
   timeline: { fps: number; durationMs: number; frameCount: number };
@@ -391,6 +394,22 @@ export function compileStoryScene(source: StoryScene): StoryRenderScene {
     motionEvents: events,
     compiledFlows: compileStoryFlows(input.flows ?? [], input.frameCount),
   };
+  if (input.authoringVersion === "1") {
+    scene.rendererVersion = "story-canvas-0.15.0";
+    for (const [id, values] of Object.entries(input.initialState ?? {})) {
+      const nodeTracks = (scene.tracks[id] ??= {});
+      for (const [name, value] of Object.entries(values)) {
+        if (value === undefined) continue;
+        const property = name as Property;
+        const keys = nodeTracks[property];
+        if (keys?.length) {
+          const baseline = keys[0]!.value;
+          for (let i = 0; i < keys.length && keys[i]!.value === baseline; i++)
+            keys[i] = { ...keys[i]!, value };
+        } else nodeTracks[property] = [{ time: 0, value }];
+      }
+    }
+  }
   validateStoryCameraCoverage(scene);
   return scene;
 }

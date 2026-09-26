@@ -14,6 +14,7 @@ import { inspectForegroundReveal } from "./reveal-validation.ts";
 import { sampleCinematicBlur } from "./cinematic-scene.ts";
 import { drawStoryFlow } from "./story-flows.ts";
 import { drawStoryText } from "./story-text.ts";
+import { validateStoryTextLayout } from "./story-text-layout.ts";
 import {
   storyCameraTransform,
   validateStoryCameraAlphaCoverage,
@@ -269,6 +270,8 @@ export function createIllustratedPreview(
 ) {
   const ctx = canvas.getContext("2d", { alpha: false });
   if (!ctx) throw new Error("Canvas 2D is unavailable");
+  if (scene.schemaVersion === "story-scene-1" && scene.authoringVersion === "1")
+    validateStoryTextLayout(scene, images.fonts ?? new Map());
   const focus =
     scene.schemaVersion === "illustrated-scene-2" &&
     scene.recipe.preset === "focus_handoff";
@@ -359,8 +362,35 @@ export async function loadIllustratedImages(
   const entries = await Promise.all(
     scene.assets.map(async (asset) => {
       const image = new Image();
-      image.src = assetUrl(asset.id);
-      await image.decode();
+      let localUrl: string | undefined;
+      if (
+        scene.schemaVersion === "story-scene-1" &&
+        scene.authoringVersion === "1"
+      ) {
+        const response = await fetch(assetUrl(asset.id));
+        if (!response.ok) throw new Error("Asset unavailable: " + asset.id);
+        const bytes = await response.arrayBuffer();
+        const digest = [
+          ...new Uint8Array(await crypto.subtle.digest("SHA-256", bytes)),
+        ]
+          .map((n) => n.toString(16).padStart(2, "0"))
+          .join("");
+        if ("sha256:" + digest !== asset.sha256)
+          throw new Error("Asset checksum differs: " + asset.id);
+        localUrl = URL.createObjectURL(
+          new Blob([bytes], {
+            type:
+              response.headers.get("Content-Type") ??
+              "application/octet-stream",
+          }),
+        );
+      }
+      image.src = localUrl ?? assetUrl(asset.id);
+      try {
+        await image.decode();
+      } finally {
+        if (localUrl) URL.revokeObjectURL(localUrl);
+      }
       if (
         image.naturalWidth !== asset.width ||
         image.naturalHeight !== asset.height

@@ -1,8 +1,19 @@
 import {
-  StoryPassagePlanSchema,
-  type StoryBeat,
-  type StoryPurpose,
-} from "../../scene-contract/src/story-passage.ts";
+  parsePassagePlan,
+  type PassageBeat,
+} from "../../scene-contract/src/story-authoring.ts";
+import {
+  instantiateStoryTemplate,
+  type PassageTemplate,
+} from "./story-template.ts";
+import { indexStoryEvents, retimeStoryEvents } from "./story-event-index.ts";
+import { applyStoryHandoff } from "./story-handoff.ts";
+import {
+  PassageError,
+  passageDiagnostics,
+  passageError,
+} from "./passage-diagnostics.ts";
+import { type StoryPurpose } from "../../scene-contract/src/story-passage.ts";
 import {
   StorySceneSchema,
   type StoryScene,
@@ -40,7 +51,7 @@ function eventWindows(value: unknown, windows = new Map<string, CueWindow>()) {
   return windows;
 }
 
-function applyBeat(beat: StoryBeat, template: StoryScene, start: number) {
+function applyBeat(beat: PassageBeat, template: StoryScene, start: number) {
   const scene = structuredClone(template);
   const supported: readonly string[] = PURPOSE_RECIPES[beat.purpose];
   if (!supported.includes(scene.recipe.preset))
@@ -67,20 +78,25 @@ function applyBeat(beat: StoryBeat, template: StoryScene, start: number) {
   for (const id of beat.focus)
     if (!nodes.has(id))
       throw new Error(beat.id + ": unknown focal subject " + id);
-  const qualifier = nodes.get(beat.evidence.node);
-  if (
-    qualifier?.type !== "text" ||
-    qualifier.text !== beat.evidence.qualification ||
-    qualifier.states?.some((text) => text !== beat.evidence.qualification)
-  )
-    throw new Error(
-      beat.id + ": visible evidence qualification must match the plan",
-    );
-  scene.review ??= { essentialText: [] };
-  if (!scene.review.essentialText.includes(beat.evidence.node))
-    scene.review.essentialText.push(beat.evidence.node);
+  if (beat.evidence) {
+    const evidence = beat.evidence;
+    const qualifier = nodes.get(beat.evidence.node);
+    if (
+      qualifier?.type !== "text" ||
+      qualifier.text !== beat.evidence.qualification ||
+      qualifier.states?.some((text) => text !== evidence.qualification)
+    )
+      throw new Error(
+        beat.id + ": visible evidence qualification must match the plan",
+      );
+    scene.review ??= { essentialText: [] };
+    if (!scene.review.essentialText.includes(beat.evidence.node))
+      scene.review.essentialText.push(beat.evidence.node);
+  }
   const windows = eventWindows(scene.recipe);
-  for (const [id, timing] of Object.entries(beat.timing)) {
+  for (const [id, timing] of Object.entries(
+    "bindings" in beat ? {} : beat.timing,
+  )) {
     const event = windows.get(id);
     if (!event) throw new Error(beat.id + ": unknown timing event " + id);
     Object.assign(event, timing);
@@ -97,75 +113,163 @@ function applyBeat(beat: StoryBeat, template: StoryScene, start: number) {
       start: scene.recipe.reset.atFrame,
       end: scene.recipe.reset.atFrame,
     });
+  if ("bindings" in beat) {
+    retimeStoryEvents(scene, beat.cues, beat.bindings, beat.timing);
+    windows.clear();
+    for (const event of indexStoryEvents(scene))
+      windows.set(event.id, {
+        cue: event.id,
+        start: event.start,
+        end: event.end,
+      });
+  }
   return { scene: StorySceneSchema.parse(scene), windows };
 }
 
 export function compileStoryPassage(
   input: unknown,
-  templates: ReadonlyMap<string, StoryScene>,
+  templates: ReadonlyMap<string, PassageTemplate>,
 ) {
-  const plan = StoryPassagePlanSchema.parse(input);
+  const plan = parsePassagePlan(input);
+  let previous: StoryScene | undefined;
   let localStart = 0;
   const beats = plan.beats.map((beat) => {
-    const template = templates.get(beat.template);
-    if (!template)
-      throw new Error(beat.id + ": missing template " + beat.template);
-    if (template.fps !== plan.fps)
-      throw new Error(
-        beat.id + ": template fps must match the passage; retime explicitly",
+    try {
+      const source = templates.get(beat.template);
+      if (!source)
+        passageError(
+          "missing-template",
+          beat.id + ": missing template " + beat.template,
+        );
+      const template = instantiateStoryTemplate(
+        source,
+        "parameters" in beat ? beat.parameters : {},
+        plan.schemaVersion === "story-passage-2"
+          ? plan.styleProfile
+          : undefined,
       );
-    const { scene, windows } = applyBeat(
-      beat,
-      template,
-      plan.sourceStartFrame + localStart,
-    );
-    const cues = beat.cues.map((cue) => ({
-      ...cue,
-      localFrame: localStart + cue.frame,
-      masterFrame: plan.sourceStartFrame + localStart + cue.frame,
-      windows: cue.events.map((id) => {
-        const window = windows.get(id);
-        if (!window)
-          throw new Error(beat.id + ": unknown narration event " + id);
-        return { ...window };
-      }),
-    }));
-    const cueWarnings = cues.flatMap((cue) => {
-      const distance = Math.min(
-        ...cue.windows.map((window) => Math.abs(window.start - cue.frame)),
+      if (!template)
+        throw new Error(beat.id + ": missing template " + beat.template);
+      if (template.fps !== plan.fps)
+        throw new Error(
+          beat.id + ": template fps must match the passage; retime explicitly",
+        );
+      const { scene, windows } = applyBeat(
+        beat,
+        template,
+        plan.sourceStartFrame + localStart,
       );
-      return distance > 6
-        ? [
-            {
-              cue: cue.id,
-              message:
-                "Nearest bound event starts " +
-                distance +
-                " frames from the narration cue. Review the intended anticipation or delay.",
-            },
-          ]
-        : [];
-    });
-    const quality = analyzeStoryQuality(compileStoryScene(scene));
-    const result = {
-      ...beat,
-      start: localStart,
-      end: localStart + beat.frameCount,
-      preset: scene.recipe.preset,
-      scene,
-      cues,
-      cueWarnings,
-      quality,
-    };
-    localStart += beat.frameCount;
-    return result;
+      if ("handoff" in beat) applyStoryHandoff(scene, previous, beat.handoff);
+      const validated = StorySceneSchema.parse(scene);
+      Object.assign(scene, validated);
+      previous = scene;
+      const cues = beat.cues.map((cue) => ({
+        ...cue,
+        localFrame: localStart + cue.frame,
+        masterFrame: plan.sourceStartFrame + localStart + cue.frame,
+        windows: cue.events.map((id) => {
+          const window = windows.get(id);
+          if (!window)
+            throw new Error(beat.id + ": unknown narration event " + id);
+          return { ...window };
+        }),
+      }));
+      const cueWarnings = cues.flatMap((cue) => {
+        const distance = Math.min(
+          ...cue.windows.map((window) => Math.abs(window.start - cue.frame)),
+        );
+        return distance > 6
+          ? [
+              {
+                cue: cue.id,
+                message:
+                  "Nearest bound event starts " +
+                  distance +
+                  " frames from the narration cue. Review the intended anticipation or delay.",
+              },
+            ]
+          : [];
+      });
+      const rendered = compileStoryScene(scene);
+      const quality = analyzeStoryQuality(rendered);
+      const result = {
+        ...beat,
+        start: localStart,
+        end: localStart + beat.frameCount,
+        preset: scene.recipe.preset,
+        scene,
+        cues,
+        cueWarnings,
+        quality,
+        events: indexStoryEvents(scene).map((event) => ({
+          ...event,
+          nodes: [
+            ...new Set([
+              ...event.nodes,
+              ...rendered.motionEvents
+                .filter((motion) => motion.window.cue === event.id)
+                .map((motion) => motion.node),
+            ]),
+          ],
+        })),
+      };
+      localStart += beat.frameCount;
+      return result;
+    } catch (error) {
+      throw new PassageError(passageDiagnostics(error, beat.id));
+    }
   });
   return {
     plan,
     beats,
     frameCount: localStart,
     endFrameExclusive: plan.sourceStartFrame + localStart,
+    diagnostics: beats.flatMap((beat) => [
+      ...beat.cueWarnings.map((note) => ({
+        code: "cue-distance",
+        severity: "warning" as const,
+        beat: beat.id,
+        event: note.cue,
+        message: note.message,
+      })),
+      ...beat.quality.diagnostics.map((note) => ({
+        code: note.code,
+        severity: "warning" as const,
+        beat: beat.id,
+        node: note.nodes[0],
+        frame: note.frames[0],
+        message: note.message,
+      })),
+    ]),
   };
 }
 
 export type CompiledStoryPassage = ReturnType<typeof compileStoryPassage>;
+
+export function inspectStoryPassage(
+  input: unknown,
+  templates: ReadonlyMap<string, PassageTemplate>,
+) {
+  try {
+    const passage = compileStoryPassage(input, templates);
+    return { ok: true as const, passage, diagnostics: passage.diagnostics };
+  } catch (error) {
+    return { ok: false as const, diagnostics: passageDiagnostics(error) };
+  }
+}
+
+export function locatePassageFrame(
+  passage: CompiledStoryPassage,
+  frame: number,
+) {
+  if (!Number.isInteger(frame) || frame < 0 || frame >= passage.frameCount)
+    throw new Error("Frame outside passage");
+  const beat = passage.beats.find(
+    (beat) => frame >= beat.start && frame < beat.end,
+  )!;
+  return {
+    beat,
+    frame: frame - beat.start,
+    sourceFrame: passage.plan.sourceStartFrame + frame,
+  };
+}

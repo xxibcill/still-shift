@@ -23,15 +23,18 @@ export function entrancePolicy(
       recipe.preset === "unequal_margins" && recipe.labels.includes(node.id);
     // Root text follows the authored 52/56/64 px qualifier/label/subheading scale.
     // Recipe bindings take precedence when a label uses a larger display size.
-    const isHeading =
-      !isLabel &&
-      ((recipe.preset === "unequal_margins" && recipe.reference === node.id) ||
-        node.fontAsset === "display" ||
-        (!node.parent && node.fontSize >= 64));
-    const isQualifier =
-      !isLabel &&
-      (("qualifier" in recipe && recipe.qualifier === node.id) ||
-        (!node.parent && node.fontSize <= 52));
+    const isHeading = node.textRole
+      ? node.textRole === "heading"
+      : !isLabel &&
+        ((recipe.preset === "unequal_margins" &&
+          recipe.reference === node.id) ||
+          node.fontAsset === "display" ||
+          (!node.parent && node.fontSize >= 64));
+    const isQualifier = node.textRole
+      ? node.textRole === "qualification"
+      : !isLabel &&
+        (("qualifier" in recipe && recipe.qualifier === node.id) ||
+          (!node.parent && node.fontSize <= 52));
     const verb = explicitVerb ?? (isHeading || isQualifier ? "wipe" : "attach");
     const isAction = !isLabel && (isHeading || isQualifier || verb === "wipe");
     return {
