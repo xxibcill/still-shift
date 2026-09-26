@@ -28,9 +28,13 @@ const houses = { a: 170, b: 1330 };
 const columnX = (x: number) => x + 208 - columnWidth / 2;
 const deepMargin = floor - baseline;
 const thinMargin = 28;
+const roofRidge = {
+  x: (406 * houseWidth) / 600,
+  y: (49 * houseWidth) / 600,
+};
 // The band rests on the roof ridge (svg y 49 scaled) before the press.
 const bandWidth = 40;
-const bandY = houseY + (49 * houseWidth) / 600 - bandWidth / 2;
+const bandY = houseY + roofRidge.y - bandWidth / 2;
 const pressureBands = [
   { node: "pressure-a", x: 110, condition: "room" },
   { node: "pressure-b", x: 940, condition: "strained" },
@@ -47,6 +51,23 @@ const pressureTarget = ({
   condition,
 });
 const tilt = -4.5;
+
+function strainedHousePose(depth: number) {
+  const compression = Math.max(0, depth - thinMargin);
+  const rotation = tilt * Math.min(1, compression / (press.depth - thinMargin));
+  const angle = (rotation * Math.PI) / 180;
+  const ridgeHeight = houseHeight - roofRidge.y;
+  const ridgeOffset = roofRidge.x - houseWidth / 2;
+  return {
+    y: houseY + Math.min(depth, thinMargin),
+    // Solve ridge contact after rotation around the planted bottom center.
+    scaleY:
+      (ridgeHeight - compression + ridgeOffset * Math.sin(angle)) /
+      (ridgeHeight * Math.cos(angle)),
+    rotation,
+  };
+}
+
 // Full-bleed with overscan so the camera never exposes the ground's edges.
 const ground = { x: -200, width: 2320 };
 // After the peak the strain persists: each pulse is absorbed by A's margin and
@@ -75,7 +96,7 @@ function travel(frame: number) {
   return depth;
 }
 const round = (v: number) => Math.round(v * 1000) / 1000;
-/** Sample a pose function every two frames so lockstep motion stays exact. */
+/** Sample every frame so roof contact follows the eased pressure curve. */
 function sampled(
   node: string,
   from: number,
@@ -84,7 +105,7 @@ function sampled(
   role: "response" | "current" | "action" = "response",
 ) {
   const keys = [];
-  for (let frame = from; frame <= to; frame += 2) {
+  for (let frame = from; frame <= to; frame++) {
     const values = Object.fromEntries(
       Object.entries(pose(travel(frame))).map(([k, v]) => [k, round(v)]),
     );
@@ -129,7 +150,6 @@ export function unequalMarginsV3(): MotionDesign {
     [press.start, press.end],
     ...pulses.map(({ at }) => [at - pulseHalf, at + pulseHalf]),
   ] as const;
-  const bOut = (depth: number) => Math.max(0, depth - thinMargin);
   // B's thin margin runs out partway through the press: its own beat.
   let bottomOut = press.start;
   while (travel(bottomOut) < thinMargin) bottomOut += 2;
@@ -326,11 +346,7 @@ export function unequalMarginsV3(): MotionDesign {
           sampled("margin-a", from, to, (d) => ({
             scaleY: (deepMargin - d) / deepMargin,
           })),
-          sampled("house-b", from, to, (d) => ({
-            y: houseY + Math.min(d, thinMargin),
-            scaleY: (houseHeight - bOut(d)) / houseHeight,
-            rotation: tilt * Math.min(1, bOut(d) / (press.depth - thinMargin)),
-          })),
+          sampled("house-b", from, to, strainedHousePose),
         ]),
         ...beats
           .slice(1)

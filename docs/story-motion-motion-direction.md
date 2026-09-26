@@ -27,7 +27,7 @@ The v013 Unequal Margins prototype passes G1–G6, but with labels covered and s
 
 **Story move:** one season presses two identical households equally. A stands on a deep margin that compresses and holds. B's thin margin runs out, so the house itself takes the rest.
 
-Both houses share one ground slab: same size, same baseline, same roof line, which also satisfies the recipe's equal-households validation. The only difference is the soft margin cut into the ground beneath each house: deep under A, a sliver under B. A single crisis-coloured strain band sweeps across both roofs and presses them down **in lockstep**. House, margin and band poses are sampled from one shared `travel(frame)` curve, so contact stays exact.
+Both houses share one ground slab: same size, same baseline, same roof line, which also satisfies the recipe's equal-households validation. The only difference is the soft margin cut into the ground beneath each house: deep under A, a sliver under B. A single crisis-coloured strain band sweeps across both roofs and presses them down **in lockstep**. House, margin and band poses are sampled from one shared `travel(frame)` curve, with B’s scale solved against the transformed roof ridge and its base held at the exhausted margin. Poses are sampled on every frame; the maximum roof-to-band discrepancy is below 0.14 px after rounding.
 
 | Frames          | Layer             | Event                                                                                                | Meaning                                       |
 | --------------- | ----------------- | ---------------------------------------------------------------------------------------------------- | --------------------------------------------- |
@@ -37,7 +37,7 @@ Both houses share one ground slab: same size, same baseline, same roof line, whi
 | 28–48           | action            | One strain band sweeps left to right across both roofs (two halves, continuous velocity at the seam) | The same season reaches both                  |
 | 50–104          | action (**peak**) | The band presses 77 px (`in-out-quint`); both houses descend in lockstep                             | Same strain, same moment                      |
 | 50–76           | response          | B's margin is crushed flat and runs out at frame 76                                                  | B has no room left                            |
-| 76–104          | response          | B's house takes the rest: scaleY → 0.84, tilt → −4.5°. A's margin compresses to 55% and holds        | The strain lands on the household itself      |
+| 76–104          | response          | B's house takes the rest: scaleY → 0.80, tilt → −4.5°. A's margin compresses to 55% and holds        | The strain lands on the household itself      |
 | 90–108 / 98–116 | response          | "More room" and "Less room" attach beside each margin                                                | Name what was shown                           |
 | 116–140         | current/response  | Strain pulse (10 px): A's margin absorbs it, B's house takes it                                      | The strain persists                           |
 | 140–164         | action            | Qualifier word reveal                                                                                | Qualitative, not measured                     |
@@ -54,18 +54,20 @@ Encoded MP4 (full-resolution method) and compiled-scene analyzer. Rendered with 
 | --------------------------- | -----: | -------------: | ------------------------: |
 | G1 comparisons below motion |    ≤ 3 |              0 |                     **0** |
 | G3 semantic gap             |   ≤ 36 |             44 |                    **28** |
-| G4 peak / median            |   ≥ 3× |         2.984× | **3.12×** (peak frame 77) |
+| G4 peak / median            |   ≥ 3× |         2.984× | **3.14×** (peak frame 77) |
 | G5 essential-text velocity  |   ≤ 12 |      18.5 px/s |             **11.6 px/s** |
 | Pan / zoom per frame        |     R7 | 0.62 / 0.00023 |           0.46 / 0.000058 |
 
 Every tighter target is met, not just the hard limits. The peak remains in the shared-strain beat, immediately after B's margin runs out at frame 76; nothing is faded to raise it. These measurements use the pinned Node 22.23.1.
 
-The camera's sustained depth-1 pan stays between 0.422 and 0.460 px/frame. Only the first and last five frame comparisons fall below R7's 0.4 px/frame minimum. A regression test checks every sustained comparison, the zoom limit and the essential-text velocity target.
+The camera's sustained depth-1 pan stays between 0.422 and 0.460 px/frame. Only the first and last five frame comparisons fall below R7's 0.4 px/frame minimum. Regression tests check every sustained comparison, the zoom limit and the essential-text velocity target, plus roof contact on every frame of the press and both pulses. B stays uncompressed until frame 76 and its base remains planted after the margin runs out.
+
+**Verification (2026-09-27):** all 207 unit tests, TypeScript build, targeted ESLint and formatting checks pass. The existing continuous-story browser harness, pointed at this fixture, passes 13 preview/export comparisons (including frames 76, 104, 128 and 179) and four backward seeks. The complete render passes the continuous-motion gates and has an identical MP4 SHA-256 under Node 22.23.1 and Node 24.16.0. Sampled visual inspection does not replace owner review at normal speed.
 
 **What needs the owner's eye**
 
 - Does A reading as "sinking into its margin" come across as absorbing, not as subsidence?
-- Is B's squash and tilt the right strength (0.84 / −4.5°) under the R6 restraint rule?
+- Is B's squash and tilt the right strength (0.80 / −4.5°) under the R6 restraint rule?
 - Should the camera lean harder at the peak?
 - At 390 px, labels and qualifier remain secondary and small. The comparison still reads from the motion alone.
 
