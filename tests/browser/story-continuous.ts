@@ -1,3 +1,10 @@
+import { execFile } from "node:child_process";
+import { promisify } from "node:util";
+import { compareFrameSamples } from "../../packages/renderer-core/src/parity.ts";
+import {
+  measureMotionEnergy,
+  requireContinuousEnergy,
+} from "../../scripts/story-motion/motion-energy.ts";
 import assert from "node:assert/strict";
 import { readFile, mkdir, writeFile } from "node:fs/promises";
 import { resolve, join } from "node:path";
@@ -209,12 +216,61 @@ try {
         join(directory, "browser", `frame-${capture.frame}.png`),
         Buffer.from(capture.png, "base64"),
       );
+    const run = promisify(execFile);
+    const rgb = async (path: string, frame?: number) => {
+      const filter = [
+        ...(frame === undefined ? [] : [`select=eq(n\\,${frame})`]),
+        "scale=96:54:flags=bicubic",
+      ].join(",");
+      const { stdout } = await run(
+        "ffmpeg",
+        [
+          "-v",
+          "error",
+          "-i",
+          path,
+          "-vf",
+          filter,
+          "-fps_mode",
+          "vfr",
+          "-frames:v",
+          "1",
+          "-f",
+          "rawvideo",
+          "-pix_fmt",
+          "rgb24",
+          "pipe:1",
+        ],
+        { encoding: "buffer" },
+      );
+      return new Uint8Array(stdout);
+    };
+    const video = join(directory, "unequal-margins.mp4");
+    const parity = [];
+    for (const capture of report.captures) {
+      const score = compareFrameSamples(
+        await rgb(join(directory, "browser", `frame-${capture.frame}.png`)),
+        await rgb(video, capture.frame),
+        96,
+        54,
+      );
+      assert.equal(
+        score.warning,
+        null,
+        `Prototype frame ${capture.frame} preview/export parity`,
+      );
+      parity.push({ frame: capture.frame, ...score });
+    }
+    const energy = await measureMotionEnergy(video);
+    requireContinuousEnergy(energy, "Unequal Margins prototype");
     await writeFile(
       join(directory, "browser-checks.json"),
       JSON.stringify(
         {
           ...result,
           backwardSeeks: 4,
+          parity,
+          energyGates: energy.gates,
           frames: report.captures.map((c) => c.frame),
         },
         null,

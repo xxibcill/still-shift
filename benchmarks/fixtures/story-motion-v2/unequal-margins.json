@@ -1,0 +1,681 @@
+{
+  "title": "Unequal Margins",
+  "fps": 24,
+  "width": 1920,
+  "height": 1080,
+  "background": "#E8DFC9",
+  "assets": [
+    {
+      "id": "house",
+      "path": "../../../assets/story-motion/art/house.svg",
+      "sha256": "sha256:a8fa4eff374ba974770317dd483ca7b2e5b8d1f0bd7a9224ada091db42542a60",
+      "width": 600,
+      "height": 440
+    },
+    {
+      "id": "store",
+      "path": "../../../assets/story-motion/art/store.svg",
+      "sha256": "sha256:8ba708bf4866da92ada1eed3dc788db98a961e7cf84fcafe8615fe734f13042c",
+      "width": 600,
+      "height": 520
+    },
+    {
+      "id": "land",
+      "path": "../../../assets/story-motion/art/land.svg",
+      "sha256": "sha256:c5c5d753a8ddd1f93da52c1171d204b260a0a2e01aa6d8c034065294345237fc",
+      "width": 640,
+      "height": 260
+    },
+    {
+      "id": "access",
+      "path": "../../../assets/story-motion/art/access.svg",
+      "sha256": "sha256:e9c7985f055ac7e07a49dbbfeadba7796175c856d5e32ab3e72f81e36b91dd1d",
+      "width": 520,
+      "height": 240
+    },
+    {
+      "id": "pressure",
+      "path": "../../../assets/story-motion/art/pressure.svg",
+      "sha256": "sha256:9ad0b18f2455c3fb9abe39f88a78c30dfa8ecfaf338a4d6235abfa14378958d7",
+      "width": 350,
+      "height": 110
+    },
+    {
+      "id": "access-crisis",
+      "path": "../../../assets/story-motion/art/access-crisis.svg",
+      "sha256": "sha256:bcfd00a8edd0787983aaa028b6a084f7a7b9d55dfa319b232922f0c5767f20ec",
+      "width": 520,
+      "height": 240
+    },
+    {
+      "id": "category-a",
+      "path": "../../../assets/story-motion/art/category-a.svg",
+      "sha256": "sha256:b5453d5780bb242d3022d460bb3f08191c1c93a0fba5c6448e2ba0c56c134d78",
+      "width": 600,
+      "height": 420
+    },
+    {
+      "id": "category-b",
+      "path": "../../../assets/story-motion/art/category-b.svg",
+      "sha256": "sha256:4887350b4a8f18324724a9727a30768be9fd9273cbffe535fd3df2341e9f0352",
+      "width": 600,
+      "height": 420
+    },
+    {
+      "id": "ground",
+      "path": "../../../assets/story-motion/art/ground.svg",
+      "sha256": "sha256:05a94509840b715518e055bc586a084c7d5c742d07486391c72cb7fa5ec86238",
+      "width": 1920,
+      "height": 300
+    },
+    {
+      "id": "paper",
+      "path": "../../../assets/story-motion/art/paper.svg",
+      "sha256": "sha256:f5a47b015f900631504b76ad6ebe587c43914b0ef0e45db460bb187c69f37b30",
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "id": "house-body",
+      "path": "../../../assets/story-motion/art/house-body.svg",
+      "sha256": "sha256:92f4db09d5b4e9d005d60ceabce0df90c4aae000e0d7e914056a15b5a084799f",
+      "width": 600,
+      "height": 440
+    },
+    {
+      "id": "house-shadow",
+      "path": "../../../assets/story-motion/art/house-shadow.svg",
+      "sha256": "sha256:4f775915beb116a469c26af03b5a65f52f53708d5cb92a37f9567cb5f65d69e8",
+      "width": 600,
+      "height": 440
+    },
+    {
+      "id": "store-body",
+      "path": "../../../assets/story-motion/art/store-body.svg",
+      "sha256": "sha256:eeba00a2c5b1d5c09e9935e224113a623215a81838cd841befe7b398bbc238c4",
+      "width": 600,
+      "height": 520
+    },
+    {
+      "id": "store-shadow",
+      "path": "../../../assets/story-motion/art/store-shadow.svg",
+      "sha256": "sha256:8ed9f7aa5f46df5961a9a8bbac8a6909273dc691be426abd4f93877cd5de1587",
+      "width": 600,
+      "height": 520
+    },
+    {
+      "id": "land-body",
+      "path": "../../../assets/story-motion/art/land-body.svg",
+      "sha256": "sha256:3401e6afef978bd5cf11a6c264f6659dbda4b1661e3207f9ea10c143b3ba28b3",
+      "width": 640,
+      "height": 260
+    },
+    {
+      "id": "land-shadow",
+      "path": "../../../assets/story-motion/art/land-shadow.svg",
+      "sha256": "sha256:bd999c2f8bc52333fe26233d52ac95dd7d5066fcabaeee77cbf5a6c27aac18a0",
+      "width": 640,
+      "height": 260
+    }
+  ],
+  "fonts": [
+    {
+      "id": "display",
+      "path": "../../../assets/story-motion/fonts/source-serif-4-semibold.otf",
+      "sha256": "sha256:25e034392847d9965c92f98971b3646436b7ab919ece9118b0c0e5ec94c02efc",
+      "weight": "600"
+    },
+    {
+      "id": "label",
+      "path": "../../../assets/story-motion/fonts/plex-sans-medium.ttf",
+      "sha256": "sha256:331c8639d7598b2cde62a911a71db195e30cb655cd6bdf2e324a7e984955f907",
+      "weight": "500"
+    },
+    {
+      "id": "label-strong",
+      "path": "../../../assets/story-motion/fonts/plex-sans-semibold.ttf",
+      "sha256": "sha256:a20caf8286023a6a7a85e40b1d2a4ae9fc3e3b1f9eda8f4c542dd4986af67bb1",
+      "weight": "600"
+    },
+    {
+      "id": "source",
+      "path": "../../../assets/story-motion/fonts/plex-mono-medium.ttf",
+      "sha256": "sha256:98fbd727aae340b236955879dabed4d991aac9e8e90b3b2a67ce4a59221cc97c",
+      "weight": "500"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "paper",
+      "x": 0,
+      "y": 0,
+      "width": 1920,
+      "height": 1080,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "image",
+      "states": [{ "asset": "paper" }],
+      "fit": "contain"
+    },
+    {
+      "id": "ground",
+      "x": -160,
+      "y": 720,
+      "width": 2240,
+      "height": 360,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "image",
+      "states": [{ "asset": "ground" }],
+      "fit": "stretch"
+    },
+    {
+      "id": "reference",
+      "x": 112,
+      "y": 96,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "text",
+      "text": "The same season.",
+      "fontSize": 112,
+      "color": "#211F1B",
+      "weight": "normal",
+      "font": "sans-serif",
+      "fontAsset": "display",
+      "align": "left"
+    },
+    {
+      "id": "question",
+      "x": 116,
+      "y": 246,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "text",
+      "text": "Different room to absorb strain.",
+      "revealMode": "words",
+      "fontSize": 64,
+      "color": "#211F1B",
+      "weight": "normal",
+      "font": "sans-serif",
+      "fontAsset": "label",
+      "align": "left"
+    },
+    {
+      "id": "common-ground",
+      "x": 0,
+      "y": 0,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "path",
+      "points": [
+        [140, 830],
+        [1780, 830]
+      ],
+      "stroke": "#59664D",
+      "lineWidth": 3,
+      "gapAt": 0.6,
+      "gapSize": 0.1
+    },
+    {
+      "id": "margin-a",
+      "x": 220,
+      "y": 830,
+      "width": 570,
+      "height": 1,
+      "opacity": 0.55,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "path",
+      "points": [
+        [0, 0],
+        [570, 0]
+      ],
+      "stroke": "#59664D",
+      "lineWidth": 34,
+      "lineStyle": "brush",
+      "gapAt": 0.6,
+      "gapSize": 0.1
+    },
+    {
+      "id": "margin-b",
+      "x": 1110,
+      "y": 830,
+      "width": 570,
+      "height": 1,
+      "opacity": 0.55,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "path",
+      "points": [
+        [0, 0],
+        [570, 0]
+      ],
+      "stroke": "#59664D",
+      "lineWidth": 34,
+      "lineStyle": "brush",
+      "gapAt": 0.6,
+      "gapSize": 0.1
+    },
+    {
+      "id": "house-a",
+      "x": 220,
+      "y": 402,
+      "width": 570,
+      "height": 418,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 1],
+      "type": "group",
+      "clip": false
+    },
+    {
+      "id": "house-a-shadow",
+      "parent": "house-a",
+      "x": 0,
+      "y": 0,
+      "width": 570,
+      "height": 418,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 1],
+      "type": "image",
+      "states": [{ "asset": "house-shadow" }],
+      "fit": "contain"
+    },
+    {
+      "id": "house-a-art",
+      "parent": "house-a",
+      "x": 0,
+      "y": 0,
+      "width": 570,
+      "height": 418,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 1],
+      "type": "image",
+      "states": [{ "asset": "house-body" }],
+      "fit": "contain"
+    },
+    {
+      "id": "house-b",
+      "x": 1110,
+      "y": 402,
+      "width": 570,
+      "height": 418,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 1],
+      "type": "group",
+      "clip": false
+    },
+    {
+      "id": "house-b-shadow",
+      "parent": "house-b",
+      "x": 0,
+      "y": 0,
+      "width": 570,
+      "height": 418,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 1],
+      "type": "image",
+      "states": [{ "asset": "house-shadow" }],
+      "fit": "contain"
+    },
+    {
+      "id": "house-b-art",
+      "parent": "house-b",
+      "x": 0,
+      "y": 0,
+      "width": 570,
+      "height": 418,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 1],
+      "type": "image",
+      "states": [{ "asset": "house-body" }],
+      "fit": "contain"
+    },
+    {
+      "id": "pressure-a",
+      "x": 118,
+      "y": 490,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "path",
+      "points": [
+        [0, 0],
+        [0, 280],
+        [58, 280]
+      ],
+      "stroke": "#B47A2A",
+      "lineWidth": 24,
+      "lineStyle": "brush",
+      "gapAt": 0.6,
+      "gapSize": 0.1
+    },
+    {
+      "id": "pressure-b",
+      "x": 1744,
+      "y": 490,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "path",
+      "points": [
+        [58, 0],
+        [58, 280],
+        [0, 280]
+      ],
+      "stroke": "#8B3F36",
+      "lineWidth": 24,
+      "lineStyle": "brush",
+      "gapAt": 0.6,
+      "gapSize": 0.1
+    },
+    {
+      "id": "room",
+      "x": 505,
+      "y": 854,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "text",
+      "text": "More room",
+      "fontSize": 56,
+      "color": "#211F1B",
+      "weight": "normal",
+      "font": "sans-serif",
+      "fontAsset": "label",
+      "align": "center"
+    },
+    {
+      "id": "strained",
+      "x": 1395,
+      "y": 854,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "text",
+      "text": "Less room",
+      "fontSize": 56,
+      "color": "#8B3F36",
+      "weight": "normal",
+      "font": "sans-serif",
+      "fontAsset": "label",
+      "align": "center"
+    },
+    {
+      "id": "qualifier",
+      "x": 112,
+      "y": 968,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "text",
+      "text": "A qualitative comparison",
+      "fontSize": 52,
+      "color": "#211F1B",
+      "weight": "normal",
+      "font": "sans-serif",
+      "fontAsset": "label",
+      "align": "left"
+    },
+    {
+      "id": "strain-path",
+      "x": 0,
+      "y": 0,
+      "width": 0,
+      "height": 0,
+      "opacity": 0,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "path",
+      "points": [
+        [-100, 360],
+        [2020, 360]
+      ],
+      "stroke": "#4B5F70",
+      "lineWidth": 1,
+      "gapAt": 0.6,
+      "gapSize": 0.1
+    }
+  ],
+  "provenance": "Original code-authored symbolic editorial illustrations for reusable motion studies. Layered Chronicle palette and typography. No selected S01E01 image is modified; these are explanatory fixtures, not authentic evidence or a finished episode.",
+  "schemaVersion": "story-scene-1",
+  "frameCount": 192,
+  "motionGrammar": "v2",
+  "camera": {
+    "keys": [
+      { "frame": 0, "x": 960, "y": 540, "zoom": 1 },
+      { "frame": 110, "x": 976, "y": 542, "zoom": 1.02 },
+      { "frame": 191, "x": 998, "y": 546, "zoom": 1.04 }
+    ],
+    "depth": {
+      "paper": 0,
+      "reference": 0,
+      "question": 0,
+      "qualifier": 0,
+      "ground": 0.7
+    },
+    "cover": ["paper"]
+  },
+  "flows": [
+    {
+      "id": "strain",
+      "path": "strain-path",
+      "direction": 1,
+      "count": 6,
+      "shape": "dash",
+      "size": 7,
+      "color": "#4B5F70",
+      "window": { "start": 40, "end": 192, "role": "current" },
+      "speed": [
+        { "frame": 40, "pxPerFrame": 5 },
+        { "frame": 110, "pxPerFrame": 5 },
+        { "frame": 124, "pxPerFrame": 2, "easing": "in-out-sine" }
+      ]
+    }
+  ],
+  "review": { "essentialText": ["room", "strained", "qualifier"] },
+  "recipe": {
+    "preset": "unequal_margins",
+    "moves": [
+      {
+        "node": "margin-a",
+        "window": {
+          "start": 48,
+          "end": 92,
+          "cue": "more-room-retained",
+          "easing": "in-out-quint"
+        },
+        "to": { "scaleX": 0.82 }
+      },
+      {
+        "node": "margin-b",
+        "window": {
+          "start": 48,
+          "end": 104,
+          "cue": "less-room-remains",
+          "easing": "in-out-quint"
+        },
+        "to": { "scaleX": 0.36 }
+      },
+      {
+        "node": "house-b",
+        "keys": [
+          { "frame": 88, "scaleY": 1, "rotation": 0 },
+          {
+            "frame": 100,
+            "scaleY": 0.975,
+            "rotation": -1.4,
+            "easing": "in-quad"
+          },
+          {
+            "frame": 116,
+            "scaleY": 0.985,
+            "rotation": -0.8,
+            "easing": "out-back-soft"
+          }
+        ],
+        "role": "response"
+      },
+      {
+        "node": "pressure-b",
+        "keys": [
+          { "frame": 150, "x": 1630 },
+          { "frame": 162, "x": 1628, "easing": "in-out-sine" },
+          { "frame": 174, "x": 1630, "easing": "in-out-sine" },
+          { "frame": 186, "x": 1628, "easing": "in-out-sine" },
+          { "frame": 191, "x": 1628.5, "easing": "linear" }
+        ],
+        "role": "current"
+      }
+    ],
+    "emphasis": [
+      {
+        "node": "house-a-art",
+        "window": {
+          "start": 120,
+          "end": 150,
+          "cue": "focus-less-room",
+          "easing": "out-cubic",
+          "role": "response"
+        },
+        "opacity": 0.78
+      }
+    ],
+    "entrances": [
+      {
+        "node": "reference",
+        "window": {
+          "start": 0,
+          "end": 18,
+          "cue": "the-same-season",
+          "easing": "out-cubic"
+        },
+        "verb": "wipe"
+      },
+      {
+        "node": "question",
+        "window": {
+          "start": 8,
+          "end": 30,
+          "cue": "different-room",
+          "easing": "out-cubic"
+        },
+        "verb": "wipe"
+      },
+      {
+        "node": "house-a",
+        "window": {
+          "start": 4,
+          "end": 28,
+          "cue": "household-a",
+          "easing": "out-cubic"
+        },
+        "verb": "set-down"
+      },
+      {
+        "node": "house-b",
+        "window": {
+          "start": 12,
+          "end": 36,
+          "cue": "household-b",
+          "easing": "out-cubic"
+        },
+        "verb": "set-down"
+      },
+      {
+        "node": "margin-a",
+        "window": {
+          "start": 22,
+          "end": 46,
+          "cue": "same-visible-margin",
+          "easing": "out-cubic"
+        },
+        "verb": "draw"
+      },
+      {
+        "node": "margin-b",
+        "window": {
+          "start": 22,
+          "end": 46,
+          "cue": "same-visible-margin",
+          "easing": "out-cubic"
+        },
+        "verb": "draw"
+      },
+      {
+        "node": "pressure-a",
+        "window": {
+          "start": 30,
+          "end": 52,
+          "cue": "shared-pressure",
+          "easing": "out-cubic"
+        },
+        "verb": "draw"
+      },
+      {
+        "node": "pressure-b",
+        "window": {
+          "start": 30,
+          "end": 52,
+          "cue": "shared-pressure",
+          "easing": "out-cubic"
+        },
+        "verb": "draw"
+      },
+      {
+        "node": "qualifier",
+        "window": {
+          "start": 140,
+          "end": 164,
+          "cue": "qualitative-comparison",
+          "easing": "out-cubic"
+        },
+        "verb": "wipe"
+      }
+    ],
+    "households": ["house-a", "house-b"],
+    "reference": "reference",
+    "pressures": [
+      { "node": "pressure-a", "to": [155, 490], "condition": "room" },
+      { "node": "pressure-b", "to": [1630, 490], "condition": "strained" }
+    ],
+    "labels": ["room", "strained"],
+    "strain": {
+      "start": 48,
+      "end": 104,
+      "cue": "shared-strain",
+      "easing": "in-out-quint"
+    },
+    "labelWindows": [
+      { "start": 86, "end": 106, "cue": "more-room", "easing": "out-cubic" },
+      { "start": 98, "end": 120, "cue": "less-room", "easing": "out-cubic" }
+    ]
+  },
+  "connectors": []
+}

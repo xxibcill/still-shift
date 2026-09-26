@@ -18,6 +18,9 @@ export type MotionDesign = {
   nodes: Node[];
   recipe: z.input<typeof StoryRecipeSchema>;
   connectors?: StoryScene["connectors"];
+  motionGrammar?: StoryScene["motionGrammar"];
+  camera?: StoryScene["camera"];
+  flows?: StoryScene["flows"];
 };
 export const typeScale = {
   label: 56,
