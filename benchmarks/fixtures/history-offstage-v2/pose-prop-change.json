@@ -38,10 +38,7 @@
       "height": 0,
       "opacity": 1,
       "rotation": 0,
-      "origin": [
-        0.5,
-        0.5
-      ],
+      "origin": [0.5, 0.5],
       "type": "text",
       "text": "STILL SHIFT   /   MOTION STUDY 05",
       "fontSize": 25,
@@ -58,10 +55,7 @@
       "height": 0,
       "opacity": 1,
       "rotation": 0,
-      "origin": [
-        0.5,
-        0.5
-      ],
+      "origin": [0.5, 0.5],
       "type": "text",
       "text": "From the store to the table.",
       "fontSize": 76,
@@ -78,10 +72,7 @@
       "height": 0,
       "opacity": 1,
       "rotation": 0,
-      "origin": [
-        0.5,
-        0.5
-      ],
+      "origin": [0.5, 0.5],
       "type": "text",
       "text": "One allocation changes what is ready to use.",
       "fontSize": 31,
@@ -98,10 +89,7 @@
       "height": 2,
       "opacity": 1,
       "rotation": 0,
-      "origin": [
-        0.5,
-        0.5
-      ],
+      "origin": [0.5, 0.5],
       "type": "rect",
       "fill": "#211F1B",
       "lineWidth": 0,
@@ -115,10 +103,7 @@
       "height": 0,
       "opacity": 1,
       "rotation": 0,
-      "origin": [
-        0.5,
-        0.5
-      ],
+      "origin": [0.5, 0.5],
       "type": "text",
       "text": "LAYERED CHRONICLE   ·   ORIGINAL ILLUSTRATION / SCHEMATIC DEMONSTRATION",
       "fontSize": 22,
@@ -135,10 +120,7 @@
       "height": 4,
       "opacity": 1,
       "rotation": 0,
-      "origin": [
-        0.5,
-        0.5
-      ],
+      "origin": [0.5, 0.5],
       "type": "rect",
       "fill": "#59664D",
       "lineWidth": 0,
@@ -152,20 +134,12 @@
       "height": 428,
       "opacity": 1,
       "rotation": 0,
-      "origin": [
-        0.5,
-        0.5
-      ],
+      "origin": [0.5, 0.5],
       "type": "image",
       "states": [
         {
           "asset": "objects",
-          "crop": [
-            36,
-            66,
-            466,
-            386
-          ]
+          "crop": [36, 66, 466, 386]
         }
       ],
       "fit": "contain"
@@ -178,29 +152,16 @@
       "height": 370,
       "opacity": 1,
       "rotation": 0,
-      "origin": [
-        0.5,
-        0.5
-      ],
+      "origin": [0.5, 0.5],
       "type": "image",
       "states": [
         {
           "asset": "bowl-states",
-          "crop": [
-            62,
-            237,
-            794,
-            470
-          ]
+          "crop": [62, 237, 794, 470]
         },
         {
           "asset": "bowl-states",
-          "crop": [
-            915,
-            237,
-            794,
-            470
-          ]
+          "crop": [915, 237, 794, 470]
         }
       ],
       "fit": "contain"
@@ -213,20 +174,12 @@
       "height": 79,
       "opacity": 1,
       "rotation": 0,
-      "origin": [
-        0.5,
-        0.5
-      ],
+      "origin": [0.5, 0.5],
       "type": "image",
       "states": [
         {
           "asset": "objects",
-          "crop": [
-            60,
-            575,
-            416,
-            366
-          ]
+          "crop": [60, 575, 416, 366]
         }
       ],
       "fit": "contain"
@@ -239,10 +192,7 @@
       "height": 0,
       "opacity": 1,
       "rotation": 0,
-      "origin": [
-        0.5,
-        0.5
-      ],
+      "origin": [0.5, 0.5],
       "type": "text",
       "text": "SHARED STORE",
       "fontSize": 27,
@@ -259,10 +209,7 @@
       "height": 0,
       "opacity": 1,
       "rotation": 0,
-      "origin": [
-        0.5,
-        0.5
-      ],
+      "origin": [0.5, 0.5],
       "type": "text",
       "text": "READY FOR USE",
       "fontSize": 27,
@@ -276,10 +223,7 @@
     "preset": "pose_prop_change",
     "actor": "bowl",
     "prop": "portion",
-    "target": [
-      1310,
-      565
-    ]
+    "target": [1310, 565]
   },
   "provenance": "Original Codex-generated illustration assets. See assets/history-offstage-v2/provenance.json. Engineering and creative proof only; no selected episode assets."
 }
