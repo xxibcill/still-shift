@@ -230,8 +230,8 @@ export function compileExit(
     tracks.add(node.id, "opacity", event.window, 0);
     if (event.verb === "lift") {
       const [dx, dy] = direction(event.to ?? "up", event.distance ?? 20);
-      if (dx) tracks.add(node.id, "x", event.window, node.x + dx);
-      if (dy) tracks.add(node.id, "y", event.window, node.y + dy);
+      if (dx) tracks.addRelative(node.id, "x", event.window, dx);
+      if (dy) tracks.addRelative(node.id, "y", event.window, dy);
     }
   }
 }

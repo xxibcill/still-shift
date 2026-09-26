@@ -33,6 +33,7 @@ type Event = {
   start: number;
   end: number;
   value: number;
+  relative?: boolean;
   step?: boolean;
   easing?: StoryWindow["easing"];
 };
@@ -82,6 +83,20 @@ function createTracks(nodes: PreparedNode[]) {
         ...(window.easing ? { easing: window.easing } : {}),
       });
     },
+    addRelative(
+      id: string,
+      property: Property,
+      window: StoryWindow,
+      delta: number,
+    ) {
+      get(id, property).events.push({
+        start: window.start,
+        end: window.end,
+        value: delta,
+        relative: true,
+        ...(window.easing ? { easing: window.easing } : {}),
+      });
+    },
     step(id: string, property: Property, at: number, value: number) {
       if (at === 0) get(id, property).initial = value;
       else
@@ -115,7 +130,9 @@ function createTracks(nodes: PreparedNode[]) {
                   keys.push({ time: event.start, value: last.value });
                 keys.push({
                   time: event.end,
-                  value: event.value,
+                  value: event.relative
+                    ? last.value + event.value
+                    : event.value,
                   ...(event.step ? { step: true } : {}),
                   ...(event.easing ? { easing: event.easing } : {}),
                 });
