@@ -1,9 +1,9 @@
-# Next atomic batch — visibility and sequences
+# Next atomic batch — visibility, sequences and shared relationships
 
 - **Date:** 2026-09-27
 - **Status:** Planned; implementation has not started.
 - **Baseline:** `28c24cb` — RC-07–09, following RC-01–06. See the [authoring guide](./reusable-components.md) and [behavior verification record](./review/reusable-components/behavior-verification.json).
-- **Delivery:** RC-10 visibility windows and RC-11 component sequences, four gallery examples across isolated/commerce/story views, and a portable story timing fixture.
+- **Delivery:** RC-10 visibility windows, RC-11 component sequences, RC-12 anchor pins, RC-13 text fitting and RC-14 alpha masks. Seven gallery examples across isolated/commerce/story views and a portable story fixture demonstrate the five modules together.
 
 ## 1. Smallest useful next responsibility
 
@@ -11,7 +11,9 @@ An instance can already change pose, reveal a path, switch supplied states and t
 
 The next behavior should answer **“is this root visible at this frame?”** A separate composition operator should answer **“where do these complete instances fit in time?”** Keep these as two modules. Visibility is useful without sequencing, and sequencing should hide the work of remapping instances, shifting their timing once and assigning lifetimes.
 
-A product-detail presentation and a phased supply diagram are compositions of existing atoms. They become proof presets for this batch, not additional primitives. More transitions, travel orientations and effect variants can wait.
+A product-detail presentation and a phased supply diagram also repeat three other decisions: **where should a label remain attached, how can supplied text fit its box, and which pixels should an aperture reveal?** Anchor Pin, Text Fit and Alpha Mask each own one of those responsibilities. Pinning owns position, fitting chooses typography during preparation, and masking limits pixel coverage during drawing. None requires a new image or shape primitive.
+
+The two presentations remain proof presets for this batch. More transitions, travel orientations and effect variants can wait.
 
 ## 2. Source findings
 
@@ -25,6 +27,14 @@ A product-detail presentation and a phased supply diagram are compositions of ex
 
 These are local source findings. This batch requires no new library, service or rendering backend.
 
+The three additional modules extend existing machinery:
+
+| Existing source                                                                                                                                                                                                     | Actual gap                                                                                                                                                                                                      |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [Shared anchors](../packages/renderer-core/src/component-annotations.ts), [path travel](../packages/renderer-core/src/component-travel.ts) and [world matrices](../packages/renderer-core/src/commerce-geometry.ts) | Anchors currently rebuild annotation paths. General labels/badges cannot pin their origin to another node's anchor without grouping or manual position updates.                                                 |
+| [Commerce text fitting](../packages/renderer-core/src/commerce-layout.ts), [measured text](../packages/renderer-core/src/text-layout.ts) and [story layout](../packages/renderer-core/src/story-text-layout.ts)     | Commerce can choose a fitting size after fonts load. Shared text boxes already measure in both modes, but there is no shared fitting declaration; native story layout has a separate policy.                    |
+| [Commerce matte contract](../packages/scene-contract/src/commerce-spatial.ts) and [matte compositing](../packages/renderer-core/src/commerce-effects-renderer.ts)                                                   | Commerce has root alpha mattes with explicit ordering and raw mask alpha. Shared definitions/story cannot declare the same relationship; rectangular group clipping does not cover shaped or image-alpha masks. |
+
 ## 3. Queue and two consumers
 
 | ID        | Module / kind                                 | Proposed small interface                                                                                                                                                                                         | Commerce consumer                                                                                                    | Story consumer                                                                                           |
@@ -33,6 +43,12 @@ These are local source findings. This batch requires no new library, service or 
 | **RC-11** | **Component Sequence** — composition operator | `sequenceComponents(clock, clips)` returns ordinary resolved instances accepted by both existing adapters. A clip supplies a definition, instance ID, duration and optional start/placement/external references. | Present three independent product-detail instances in order using supplied crops and labels.                         | Present three independent supply phases using the current symbolic route, marker and state behaviors.    |
 
 Names are proposed until implementation; the contracts below are the acceptance criteria. Both consumers use existing assets and pinned fonts. No new product or historical claims are inferred.
+
+| ID        | Module / kind                         | Proposed small interface                                                                                              | Commerce consumer                                                                                                | Story consumer                                                                                                  |
+| --------- | ------------------------------------- | --------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
+| **RC-12** | **Anchor Pin** — spatial relationship | `pinComponent({ id, target, anchor })`, reusing the existing typed node/source anchor and canvas offset.              | Keep a readable detail badge attached to a moving product landmark without inheriting product rotation or scale. | Keep a phase label attached to a moving diagram subject while the label retains its own pose and camera policy. |
+| **RC-13** | **Text Fit** — preparation behavior   | `fitComponentText({ target, minSize, maxSize })` consumes the text node's fixed box, supplied states and pinned font. | Fit short/long supplied product captions in the same inset caption box.                                          | Fit supplied phase labels and translated captions in the same diagram layout.                                   |
+| **RC-14** | **Alpha Mask** — visual relationship  | `maskComponent({ target, mask, invert? })` uses one independent root as another root's alpha aperture.                | Reveal a supplied detail crop through an animated authored aperture.                                             | Reveal part of a symbolic route diagram through the same aperture behavior.                                     |
 
 ### RC-10 contract
 
@@ -58,6 +74,33 @@ Names are proposed until implementation; the contracts below are the acceptance 
 
 For example, two static definitions with durations 24 and 30 and no explicit starts occupy `[0,24)` and `[24,54)`. Their last visible integer frames are 23 and 53. A state cut at local frame 0 of the second definition resolves to frame 24; it is immediately visible when that clip appears.
 
+### RC-12 contract
+
+- Pin the target's **authored origin** to one evaluated anchor. Reuse `ComponentAnchor`: explicit node-local or source-image point, plus its existing canvas-pixel offset. Resolve the anchor through the shared world/camera matrix, then through the inverse of the target's parent/camera matrix. Apply each transform once. Do not add another normalized anchor vocabulary or implicit parenting.
+- Own target x/y for the whole timeline. The target retains its authored rotation, scale and opacity, with compatible independent animation. Source opacity/visibility is not inherited; pair the target with RC-10 when it should disappear with its source. The pin itself has no timing window or extra story event.
+- Reject competing x/y tracks, value bindings, legacy followers, travel and effect motion. Permit a source that travels or is pinned when the complete dependency graph is acyclic. Extend the existing parent/travel/effect dependency validation to cover pins, including cycles through ancestors; avoid a separate graph that misses mixed relationships.
+- Preserve source-image crop/fit checks and the current single-state image restriction. A source anchor outside the visible crop fails. Node-local anchors use explicit authored points; this is not automatic label placement, silhouette tracking or collision avoidance.
+- Reuse bounded positive target-ancestor scale rules and reject singular/nonfinite projections before preview. Verify nested parents, transformed sources, camera-projected versus screen-locked targets, fractional samples and direct/backward seeks. Initially cap pins at 32 per scene.
+- Namespace target/source references and IDs through instancing. RC-11 may pin to a persistent external scene node, but its ban on references to another clip still applies. Three copies must remain independently editable.
+
+### RC-13 contract
+
+- Start with prepared text nodes that already have a pinned `fontAsset` and fixed `textBox`. Reuse its width, height, locale, maximum lines and line height. Require integer `16 <= minSize <= maxSize <= 180`, matching existing commerce fitting bounds. Do not infer a smaller readable minimum.
+- After fonts and effective styles are ready, choose the largest integer size in the declared range that fits **every authored text state**, using existing measured-text wrapping and glyph metrics. Use the same size throughout playback so RC-08 cuts cannot make type jump in size. Preserve the current 12-state limit and exact supplied words.
+- Treat fit as immutable preparation, not a per-frame animation. Resolve into a prepared copy before measured-text caches and rendering are created. Keep source declarations intact for settings, templates and packages; preparation on reload must reproduce the chosen size. Font changes invalidate preparation through existing identity rules.
+- Own font-size preparation only. Keep authored boxes, positions and panel sizes unchanged. Fail clearly if any state does not fit at `minSize`; never clip, ellipsize, rewrite copy or silently expand the layout. Expose the resolved size in gallery diagnostics.
+- Initially reject duplicate shared fits, native commerce `textFits` on the same target, native story `textLayout` and numeric-text bindings. Existing story layout/style policies remain intact. Allow RC-08 with a shared v3 fit because all states are measured together; retain legacy native-fit ownership restrictions. Numeric fitting and automatically resizing panels are deferred.
+- Cap fits at 32 per scene, including native commerce fits. Test English and Thai with supplied pinned fonts, explicit line breaks, long words, exact fits, failure at minimum size and all future caption states before enabling export.
+
+### RC-14 contract
+
+- Start with independent target and mask roots. Multiply the target's rendered alpha by the mask's raw alpha in canvas space; inversion uses `1 - maskAlpha`. A mask contributes no visible colored layer of its own. Mask RGB must not affect the result. No implicit grouping, geometry cropping or edits to source bytes.
+- Allow an authored image, rectangle, path or a group containing those kinds as the mask. Evaluate its ordinary transforms, opacity, reveal, RC-08 state and RC-10 gate at the requested frame. Reject text, generated routes, flow drawing, effects or further mattes in the mask subtree for this first scope. A target can contain supported text and flows; its complete root output must be masked.
+- Apply masking after target-local effects and before compositing the root into the scene, matching native commerce ordering. Reuse the existing compositor through a focused shared module for story and commerce; do not route story through commerce's entire effect engine. Reuse bounded scratch surfaces rather than allocate a canvas per mask per frame.
+- A hidden target contributes no pixels. A hidden normal mask yields zero target coverage; a hidden inverted mask yields full coverage of an otherwise visible target. Visibility and state cuts on either side must be included in the existing exposure-boundary policy. Verify that effect spill and story tokens cannot escape the aperture.
+- Allow one mask per target, with distinct root references. Reject self-masks, masked mask sources, chains/cycles, and duplicate native/shared mattes on a target. Reuse native root restrictions. Cap native plus shared masks at 16 per commerce scene and shared masks at 16 per story scene.
+- Namespace both references. RC-11 schedules a local mask with its clip's other roots; a persistent external mask is allowed, but a mask owned by another clip remains invalid. Resolve both roots' story camera policies once before canvas-space compositing. No automatic smoothing, feathering, luminance keys, blend-mode menu or arbitrary subtree mattes.
+
 ## 4. Timing edits and serialization
 
 Keep the distinction between authoring and resolved scenes explicit:
@@ -66,19 +109,22 @@ Keep the distinction between authoring and resolved scenes explicit:
 - Resolved story templates contain ordinary events and visibility windows. Editing a visibility cue changes visibility only. To move an entire demonstration phase, bind its lifetime, motions, travel and state points explicitly to one cue with their local offsets and appropriate durations. Moving that cue then shifts those declared links together. Do not imply that moving a gate automatically moves its contents or other phases.
 - In the story proof, give each phase an explicit cue so an edit to the middle phase can be verified without moving its neighbors. Keep gate duration, inclusive motion duration and zero-duration cuts distinct. A one-frame gate uses duration 1; a cut uses duration 0. Existing beat boundaries remain locked.
 
-Reserve strict `component-3` and `scene-components-3` readers for the shared gate field, retaining v1/v2 readers and fixtures unchanged. Expand instancing/merging checks that currently branch specifically on v2 so newer versions retain state and travel data. Opt-in runtime semantics require new commerce/story renderer versions and render-cache identities; old scenes keep their versions.
+Reserve strict `component-3` and `scene-components-3` readers for shared visibility, pins, text fits and masks, retaining v1/v2 readers and fixtures unchanged. All five modules belong to this planned v3 batch. Expand instancing/merging checks that currently branch specifically on v2 so newer versions retain state and travel data. Remap every new typed reference; shift only timed fields. Pins, fits and masks add no standalone event windows. Opt-in runtime semantics require new commerce/story renderer versions and render-cache identities; old scenes keep their versions.
 
-Use `reusable-demo-3` for new timing examples and settings. Save editable sequence settings plus resolved scenes through the current settings/source ZIP paths. Story templates and E7 packages carry resolved v3 data and existing explicit cue bindings; they do not need a separate component registry or sequence interpreter. Unknown fields/versions must fail rather than be dropped.
+Use `reusable-demo-3` for the seven new examples and settings. Save editable sequence/relationship settings plus resolved scenes through the current settings/source ZIP paths. Story templates and E7 packages carry resolved v3 data and existing explicit cue bindings; they do not need a separate component registry or sequence interpreter. Unknown fields/versions must fail rather than be dropped.
 
 ## 5. Implementation order and deliverables
 
 1. **RC-10:** add the gate contract, typed remapping, pure evaluation, draw/exposure integration and story event indexing together. Deliver the isolated visibility example and both composition contexts before adding scheduling.
 2. **RC-11:** add one sequence module over existing instancing. Prove local validation, complete timing offsets, root gate generation, dependency merging and limit diagnostics through its public interface.
-3. **Compose four examples:** `visibility`, `sequence`, `detail-sequence` and `supply-sequence`, each available in isolated/commerce/story views. The last two are presets over RC-01–11. Include adjacent clips, a deliberate gap and an explicit overlap in the examples/checks; retain all existing 39 gallery/context examples.
-4. **Authoring proof:** expose clip start/duration and supplied text controls in the gallery, with settings/source/MP4 round trips. Add a story template with three phase cues and a passage that packages it through E7. Verify middle-phase edits, unlink and undo/redo.
-5. **Record completion:** update the guide and queue with actual measured results in a separate timing verification record. Preserve the RC-01–06 and RC-07–09 records and experimental status.
+3. **RC-12:** add the pin contract and shared position/dependency evaluation. Prove source-to-target coordinate conversion independently, including pins composed with travel and camera transforms.
+4. **RC-13:** extract the reusable fitting preparation from commerce, retain its native adapter and add the shared declaration. Prove all-state measurement and immutable preparation before gallery controls.
+5. **RC-14:** extract the required root mask compositing, retain native commerce behavior and integrate story root output. Prove alpha arithmetic, ordering and visibility edges independently before composition.
+6. **Compose seven examples:** `visibility`, `sequence`, `pin`, `text-fit`, `mask`, `detail-sequence` and `supply-sequence`, each available in isolated/commerce/story views. The last two are presets over RC-01–14: sequenced gated insets/diagram phases, an independently posed pinned label, fitted supplied captions and a masked detail/route. Include adjacent clips, a deliberate gap and an explicit overlap; retain all existing 39 gallery/context examples.
+7. **Authoring proof:** expose clip start/duration, anchor offset, text-size bounds and mask inversion controls in the gallery, with settings/source/MP4 round trips. Add a story template with three phase cues and a passage that packages all five modules through E7. Verify middle-phase edits, unlink and undo/redo.
+8. **Record completion:** update the guide and queue with actual measured results in a separate batch verification record. Preserve the RC-01–06 and RC-07–09 records and experimental status.
 
-Likely implementation sites are the component contracts, `component-instances`, a focused visibility module, a sequence module, the shared evaluator/render paths and story event index. Reuse commerce sequencing rules, but preserve the existing commerce fragment interface and its native effect scoping. Avoid copying validators or exposing a public generic timeline walker.
+Likely implementation sites are the component contracts, `component-instances`, focused visibility/sequence/pin modules, shared text preparation and mask compositing, the shared evaluator/render paths and story event index. Reuse commerce sequencing rules, but preserve the existing commerce fragment interface and its native effect scoping. Share anchor conversion, dependency validation, text measurement and alpha compositing where the two consumers need them. Avoid copying validators or exposing a public generic timeline walker.
 
 ## 6. Release gates
 
@@ -95,6 +141,15 @@ Likely implementation sites are the component contracts, `component-instances`, 
 
 No new test counts or parity results are claimed by this plan. The committed RC-07–09 record is the starting evidence, not verification of these proposed behaviors.
 
+The three additional modules also require independent checks:
+
+| Area     | Required evidence                                                                                                                                                                                                                                                |
+| -------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Pin      | Known anchor/origin coordinates under nested rotation/scale and both camera policies; target keeps its own pose; source crop validation; mixed pin/travel/parent cycles fail; middle-instance edits do not change neighbors.                                     |
+| Fit      | Largest fitting integer size verified against actual pinned-font measurement; all states fit at one size; English/Thai and long-word failure; unchanged source data, boxes and legacy fit behavior; font/style changes trigger preparation again.                |
+| Mask     | Independent alpha reference for normal/inverted opaque and partial masks; mask RGB independence; no mask color in output; transformed image/path/group masks, target effects and flow coverage; camera conversion, gate/state cut edges and fractional exposure. |
+| Combined | All five modules survive settings/source/template/package round trips. A sequenced instance with pin, fit and mask obeys expanded caps, is absent outside its gate, and retains identical decoded output after fresh package relocation.                         |
+
 ## 7. Deferred
 
-Multiple visibility spans per target, arbitrary subtree gates, clip trimming/time stretching, loops, reverse playback, nested timelines, automatic phase dragging, crossfades, dynamic travel routes, tangent orientation, automatic routing/layout, physical simulation, new aspect ratios and new backends are outside this batch. Native commerce effects are not automatically converted into shared definitions. Engineering completion does not change creative or production acceptance.
+Multiple visibility spans per target, arbitrary subtree gates/mattes, clip trimming/time stretching, loops, reverse playback, nested timelines, automatic phase dragging, crossfades, dynamic travel routes, tangent orientation, automatic label placement, numeric text fitting, content-sized panels, mask feathering/luminance keys, automatic routing/layout, physical simulation, new aspect ratios and new backends are outside this batch. Native commerce effects are not automatically converted into shared definitions. Engineering completion does not change creative or production acceptance.
