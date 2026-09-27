@@ -1,6 +1,7 @@
+import { nodeMatrix, transformPoint } from "./node-transform.ts";
 import type { PreparedPath } from "../../scene-contract/src/prepared.ts";
 import { projectStoryPoint } from "./story-camera.ts";
-import { evaluatePreparedNode } from "./prepared-scene.ts";
+import { evaluatePreparedNodeAtTime } from "./prepared-scene.ts";
 import type { StoryRenderScene } from "./story-scene.ts";
 
 export function storyAnchorPosition(
@@ -10,7 +11,13 @@ export function storyAnchorPosition(
   frame: number,
 ): [number, number] {
   const node = scene.nodes.find((node) => node.id === id)!;
-  const state = evaluatePreparedNode(scene, node, frame);
+  const state = evaluatePreparedNodeAtTime(scene, node, frame);
+  if (scene.motionModel) {
+    const result = transformPoint(nodeMatrix(node, state), point);
+    return node.parent
+      ? storyAnchorPosition(scene, node.parent, result, frame)
+      : projectStoryPoint(scene, node.id, result, frame);
+  }
   const ox = node.width * node.origin[0],
     oy = node.height * node.origin[1];
   const x = (point[0] - ox) * state.scaleX,

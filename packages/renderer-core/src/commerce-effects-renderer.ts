@@ -1,7 +1,10 @@
+import type { CinematicRenderScene } from "./cinematic-scene.ts";
+import { storyCameraTransform } from "./story-camera.ts";
 import { componentMasks, compositeRootMask } from "./component-mask.ts";
 import { componentVisibilityCuts } from "./component-visibility.ts";
 import { componentStateCuts } from "./component-state.ts";
 import { nodeMatrix } from "./node-transform.ts";
+import type { StoryRenderScene } from "./story-scene.ts";
 import type { CommerceRenderScene } from "./commerce-scene.ts";
 import type { PreparedNode } from "../../scene-contract/src/prepared.ts";
 import type { EffectOf } from "../../scene-contract/src/commerce-effects.ts";
@@ -121,11 +124,22 @@ function paintGrain(
 
 /** Deterministic, full-canvas effect buffers preserve occlusion and allow blur outside node bounds. */
 export function createCommerceEffectsRenderer(
-  scene: CommerceRenderScene,
+  scene: CommerceRenderScene | StoryRenderScene | CinematicRenderScene,
   paint: Paint,
 ) {
   const effects = scene.effects ?? [];
-  const mattes = [...(scene.mattes ?? []), ...componentMasks(scene)];
+  const componentScene =
+    scene.schemaVersion === "illustrated-scene-2"
+      ? {
+          nodes: scene.nodes,
+          frameCount: scene.timeline.frameCount,
+          componentData: undefined,
+        }
+      : scene;
+  const mattes = [
+    ...(scene.schemaVersion === "commerce-scene-1" ? (scene.mattes ?? []) : []),
+    ...componentMasks(componentScene),
+  ];
   const maskIds = new Set(mattes.map((m) => m.mask));
   const roots = scene.nodes.filter(
     (node) => !node.parent && !maskIds.has(node.id),
@@ -164,6 +178,11 @@ export function createCommerceEffectsRenderer(
       state = evaluatePreparedNodeAtTime(scene, node, frame);
     const [rx, ry, rw, rh] = effect.region;
     ctx.save();
+    if (scene.schemaVersion === "story-scene-1") {
+      const camera = storyCameraTransform(scene, node.id, frame);
+      ctx.translate(camera.x, camera.y);
+      ctx.scale(camera.scale, camera.scale);
+    }
     ctx.transform(...nodeMatrix(node, state));
     ctx.beginPath();
     ctx.rect(
@@ -393,23 +412,26 @@ export function createCommerceEffectsRenderer(
   }
   return {
     render(ctx: CanvasRenderingContext2D, frame: number) {
-      if (!blur || blur.shutterAngle === 0) {
+      if (!blur || !isEffectActive(blur, frame) || blur.shutterAngle === 0) {
         renderSample(ctx, frame);
         return;
       }
       let samples = exposureFrames(
         frame,
-        scene.frameCount,
+        scene.timeline.frameCount,
         blur.shutterAngle,
         blur.samples,
       );
       // Exposure never crosses explicit sequence cuts: hold the edge pose within this shot.
       const cuts = [
         0,
-        scene.frameCount,
-        ...componentStateCuts(scene),
-        ...componentVisibilityCuts(scene),
-        ...(scene.visibility ?? []).flatMap((v) => [v.start, v.end]),
+        scene.timeline.frameCount,
+        ...componentStateCuts(componentScene),
+        ...componentVisibilityCuts(componentScene),
+        ...(scene.schemaVersion === "commerce-scene-1"
+          ? (scene.visibility ?? [])
+          : []
+        ).flatMap((v) => [v.start, v.end]),
         ...effects.flatMap((e) =>
           e.active ? [e.active.start, e.active.end] : [],
         ),
@@ -431,10 +453,15 @@ export function createCommerceEffectsRenderer(
         ].includes(effect.type),
       );
       if (
+        !("motionModel" in scene && scene.motionModel) &&
+        scene.schemaVersion !== "illustrated-scene-2" &&
         !mattes.length &&
-        !scene.attachments?.length &&
-        !scene.componentData?.annotations.length &&
-        !scene.componentData?.bindings.some(
+        !(
+          scene.schemaVersion === "commerce-scene-1" &&
+          scene.attachments?.length
+        ) &&
+        !componentScene.componentData?.annotations.length &&
+        !componentScene.componentData?.bindings.some(
           (binding) => binding.kind === "text",
         ) &&
         !animatedImageEffects &&
@@ -476,3 +503,5 @@ export function createCommerceEffectsRenderer(
     },
   };
 }
+
+export const createSharedEffectsRenderer = createCommerceEffectsRenderer;

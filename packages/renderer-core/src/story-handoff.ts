@@ -16,13 +16,17 @@ export function applyStoryHandoff(
 ) {
   if (
     handoff.mode !== "continue" &&
+    handoff.mode !== "match" &&
     (handoff.camera === "carry" ||
       handoff.subjects.some((s) => s.mode === "carry"))
   )
     passageError("invalid-handoff", "Carry state requires a continue handoff");
   if (
     !previous &&
-    (handoff.mode === "continue" || handoff.subjects.some((s) => s.from))
+    (["continue", "match", "overlap", "crossfade", "push"].includes(
+      handoff.mode,
+    ) ||
+      handoff.subjects.some((s) => s.from))
   )
     passageError("missing-previous-beat", "Handoff requires a preceding beat");
   const before = previous ? compileStoryScene(previous) : undefined;
@@ -85,6 +89,29 @@ export function applyStoryHandoff(
         source!,
         previous!.frameCount - 1,
       );
+      if (handoff.mode === "match") {
+        if (!scene.motionModel)
+          passageError(
+            "invalid-handoff",
+            "Match requires motionModel curves-1 on the incoming scene",
+          );
+        const destination = evaluatePreparedNode(after, target!, 0);
+        for (const property of mapping.properties)
+          scene.recipe.moves.push({
+            node: target!.id,
+            layer: "response",
+            blend: "add",
+            keys: [
+              { frame: 0, [property]: state[property] - destination[property] },
+              {
+                frame: handoff.frames! - 1,
+                [property]: 0,
+                easing: handoff.easing ?? "in-out-cubic",
+              },
+            ],
+          });
+        continue;
+      }
       scene.initialState ??= {};
       scene.initialState[target!.id] = {
         ...scene.initialState[target!.id],

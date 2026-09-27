@@ -1,3 +1,6 @@
+import { evaluateMotionAppearance } from "./motion-appearance.ts";
+import { drawAnimatedText } from "./motion-text.ts";
+import type { TextAnimator } from "../../scene-contract/src/motion-craft.ts";
 import { componentVisible } from "./component-visibility.ts";
 import { prepareComponentTextFits } from "./component-text-fit.ts";
 import {
@@ -44,7 +47,7 @@ import { loadPreparedFonts, type LoadedFont } from "./prepared-fonts.ts";
 import { inkStrokeOutline } from "./ink-path.ts";
 import { brushStroke } from "./brush-path.ts";
 
-type Images = Map<string, HTMLImageElement> & {
+export type Images = Map<string, HTMLImageElement> & {
   revealValidation?: ReturnType<typeof inspectForegroundReveal>;
   fonts?: Map<string, LoadedFont>;
   textLayouts?: Map<string, Map<string, TextLayout>>;
@@ -102,14 +105,14 @@ const traceOutline = (
 
 const strokeInterval = (
   ctx: CanvasRenderingContext2D,
-  node: PreparedPath,
+  node: PreparedPath & { textureWidth?: number },
   start: number,
   end: number,
   pinch = 0,
 ) => {
   if (end <= start) return;
   if (node.lineStyle === "brush") {
-    const mark = brushStroke(node, start, end, pinch);
+    const mark = brushStroke(node, start, end, pinch, node.textureWidth);
     ctx.save();
     ctx.fillStyle = node.stroke;
     const opacity = ctx.globalAlpha;
@@ -164,7 +167,25 @@ const drawPath = (
     ctx.shadowOffsetY = -3 * state.pulse;
   }
   const gap = (node.gapSize * state.gap) / 2;
-  if (gap === 0) strokeInterval(ctx, node, 0, state.reveal, state.pinch);
+  if (
+    state.trimStart !== undefined ||
+    state.trimEnd !== undefined ||
+    state.trimOffset !== undefined
+  ) {
+    const start = state.trimStart ?? 0,
+      end = Math.min(state.reveal, state.trimEnd ?? 1),
+      offset = (((state.trimOffset ?? 0) % 1) + 1) % 1;
+    if (end - start >= 1) strokeInterval(ctx, node, 0, 1, state.pinch);
+    else if (end > start) {
+      const a = (start + offset) % 1,
+        b = (end + offset) % 1;
+      if (b > a) strokeInterval(ctx, node, a, b, state.pinch);
+      else {
+        strokeInterval(ctx, node, a, 1, state.pinch);
+        strokeInterval(ctx, node, 0, b, state.pinch);
+      }
+    }
+  } else if (gap === 0) strokeInterval(ctx, node, 0, state.reveal, state.pinch);
   else {
     strokeInterval(
       ctx,
@@ -221,6 +242,7 @@ const drawShape = (
   state: State,
   images: Images,
   clipImages = true,
+  animator?: { definition: TextAnimator; frame: number },
 ) => {
   switch (node.type) {
     case "image":
@@ -246,6 +268,18 @@ const drawShape = (
         : node.text;
       if (text === undefined)
         throw new Error(`Missing text state on ${node.id}`);
+      if (
+        animator &&
+        drawAnimatedText(
+          ctx,
+          node,
+          text,
+          animator.frame,
+          animator.definition,
+          images.textLayouts?.get(node.id)?.get(text),
+        )
+      )
+        break;
       if (node.textBox) {
         const layout = images.textLayouts?.get(node.id)?.get(text);
         if (!layout)
@@ -338,6 +372,7 @@ export function createIllustratedPreview(
     siblings.push(node);
     children.set(node.parent, siblings);
   }
+  let stateBlend: HTMLCanvasElement | undefined;
   const paint = (
     ctx: CanvasRenderingContext2D,
     node: PreparedNode,
@@ -368,6 +403,7 @@ export function createIllustratedPreview(
       ctx.scale(camera.scale, camera.scale);
     }
     ctx.transform(...nodeMatrix(node, state));
+    if (state.blur) ctx.filter = `blur(${state.blur}px)`;
     if (focus && scene.schemaVersion === "illustrated-scene-2") {
       const blur = sampleCinematicBlur(scene, node.id, frame);
       ctx.filter = blur > 0 ? `blur(${blur}px)` : "none";
@@ -388,7 +424,58 @@ export function createIllustratedPreview(
       if (text !== undefined && drawable.type === "text")
         drawable = { ...drawable, text };
     }
-    drawShape(ctx, drawable, state, images, !focus);
+    const craftScene =
+      scene.schemaVersion === "story-scene-1" ||
+      scene.schemaVersion === "commerce-scene-1"
+        ? scene
+        : undefined;
+    if (craftScene?.motionModel) {
+      drawable = evaluateMotionAppearance(craftScene, drawable, frame);
+      if (state.strokeWidth !== undefined && "lineWidth" in drawable)
+        drawable = Object.assign({}, drawable, {
+          lineWidth: state.strokeWidth,
+          textureWidth: drawable.lineWidth,
+        });
+    }
+    const animator = craftScene?.textAnimators?.find((a) => a.node === node.id);
+    if (state.stateFrom !== undefined && state.stateMix !== undefined) {
+      stateBlend ??= document.createElement("canvas");
+      if (
+        stateBlend.width !== scene.width ||
+        stateBlend.height !== scene.height
+      ) {
+        stateBlend.width = scene.width;
+        stateBlend.height = scene.height;
+      }
+      const blend = stateBlend.getContext("2d")!;
+      blend.resetTransform();
+      blend.clearRect(0, 0, scene.width, scene.height);
+      blend.setTransform(ctx.getTransform());
+      blend.globalCompositeOperation = "source-over";
+      blend.globalAlpha = 1 - state.stateMix;
+      drawShape(
+        blend,
+        drawable,
+        { ...state, state: state.stateFrom },
+        images,
+        !focus,
+      );
+      blend.globalCompositeOperation = "lighter";
+      blend.globalAlpha = state.stateMix;
+      drawShape(blend, drawable, state, images, !focus);
+      ctx.save();
+      ctx.resetTransform();
+      ctx.drawImage(stateBlend, 0, 0);
+      ctx.restore();
+    } else
+      drawShape(
+        ctx,
+        drawable,
+        state,
+        images,
+        !focus,
+        animator ? { definition: animator, frame } : undefined,
+      );
     if (drawable.type === "path") {
       ctx.globalAlpha = parentOpacity;
       for (const flow of flows)
@@ -399,6 +486,7 @@ export function createIllustratedPreview(
           state,
           frame,
           scene.timeline.frameCount,
+          !!craftScene?.motionModel,
         );
       ctx.globalAlpha = parentOpacity * state.opacity;
     }
@@ -406,10 +494,13 @@ export function createIllustratedPreview(
     ctx.restore();
   };
   const effectsRenderer =
-    scene.schemaVersion === "commerce-scene-1" &&
+    (scene.schemaVersion === "commerce-scene-1" ||
+      scene.schemaVersion === "story-scene-1" ||
+      scene.schemaVersion === "illustrated-scene-2") &&
     (scene.effects?.length ||
-      scene.mattes?.length ||
-      componentMasks(scene).length)
+      (scene.schemaVersion === "commerce-scene-1" && scene.mattes?.length) ||
+      (scene.schemaVersion !== "illustrated-scene-2" &&
+        componentMasks(scene).length))
       ? createCommerceEffectsRenderer(scene, paint)
       : undefined;
   const maskRenderer =

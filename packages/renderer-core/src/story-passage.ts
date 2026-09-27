@@ -54,7 +54,10 @@ function eventWindows(value: unknown, windows = new Map<string, CueWindow>()) {
 function applyBeat(beat: PassageBeat, template: StoryScene, start: number) {
   const scene = structuredClone(template);
   const supported: readonly string[] = PURPOSE_RECIPES[beat.purpose];
-  if (!supported.includes(scene.recipe.preset))
+  if (
+    scene.recipe.preset !== "generic" &&
+    !supported.includes(scene.recipe.preset)
+  )
     throw new Error(
       beat.id +
         ": recipe " +

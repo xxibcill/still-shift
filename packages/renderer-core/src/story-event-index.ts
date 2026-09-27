@@ -15,6 +15,7 @@ export type StoryEvent = {
     | "value"
     | "travel"
     | "visibility";
+  layer?: string;
   nodes: string[];
   path: string;
   start: number;
@@ -85,6 +86,9 @@ function editableEvents(scene: StoryScene) {
       add({
         id: typeof record.cue === "string" ? record.cue : "@/" + path,
         kind,
+        ...(typeof (record.layer ?? owner?.layer ?? owner?.role) === "string"
+          ? { layer: String(record.layer ?? owner?.layer ?? owner?.role) }
+          : {}),
         nodes,
         path,
         start: record.start,
@@ -98,6 +102,14 @@ function editableEvents(scene: StoryScene) {
               "Window requires positive duration",
               { event: this.id, frame: start },
             );
+          const weight = record.weight ?? owner?.weight;
+          if (Array.isArray(weight))
+            for (const key of weight as { frame: number }[])
+              key.frame = Math.round(
+                start +
+                  ((key.frame - this.start) * (end - start)) /
+                    (this.end - this.start),
+              );
           record.start = start;
           record.end = end;
           this.start = start;
@@ -114,6 +126,9 @@ function editableEvents(scene: StoryScene) {
             ? record.id
             : "@/" + path,
         kind,
+        ...(typeof (record.layer ?? owner?.layer ?? owner?.role) === "string"
+          ? { layer: String(record.layer ?? owner?.layer ?? owner?.role) }
+          : {}),
         nodes,
         path,
         start: record.frame,
@@ -134,6 +149,49 @@ function editableEvents(scene: StoryScene) {
     for (const [key, child] of Object.entries(record))
       visit(child, path + "/" + key, record);
   };
+  for (const [i, signal] of (scene.signals ?? []).entries()) {
+    const start = signal.keys[0]!.frame,
+      end = signal.keys.at(-1)!.frame;
+    add({
+      id: signal.cue ?? "@/signals/" + i,
+      kind: "value",
+      nodes: (scene.drivers ?? [])
+        .filter((d) => d.signal === signal.id || d.sum?.includes(signal.id))
+        .map((d) => d.target.split(".")[0]!),
+      path: `signals/${i}`,
+      start,
+      end,
+      endExclusive: false,
+      set(nextStart, nextEnd) {
+        if (nextEnd <= nextStart)
+          passageError("invalid-duration", "Signal needs positive duration", {
+            event: this.id,
+          });
+        const remap = (frame: number) =>
+          Math.round(
+            nextStart +
+              ((frame - this.start) * (nextEnd - nextStart)) /
+                (this.end - this.start),
+          );
+        for (const key of signal.keys) key.frame = remap(key.frame);
+        for (const addition of signal.add ?? [])
+          if ("pulse" in addition) {
+            addition.pulse.half = Math.max(
+              1,
+              Math.round(
+                (addition.pulse.half * (nextEnd - nextStart)) /
+                  (this.end - this.start),
+              ),
+            );
+            addition.pulse.at = remap(addition.pulse.at);
+          }
+        this.start = nextStart;
+        this.end = nextEnd;
+      },
+    });
+  }
+  visit(scene.intentPresets?.motions, "intentPresets/motions");
+  visit(scene.periodic, "periodic");
   visit(scene.recipe, "recipe");
   visit(scene.camera, "camera");
   visit(scene.flows, "flows");
@@ -184,7 +242,7 @@ function editableEvents(scene: StoryScene) {
 
 export function indexStoryEvents(scene: StoryScene): StoryEvent[] {
   return [...editableEvents(scene).values()].map(
-    ({ id, kind, nodes, path, start, end, endExclusive }) => ({
+    ({ id, kind, nodes, path, start, end, endExclusive, layer }) => ({
       id,
       kind,
       nodes,
@@ -192,6 +250,7 @@ export function indexStoryEvents(scene: StoryScene): StoryEvent[] {
       start,
       end,
       endExclusive,
+      ...(layer ? { layer } : {}),
     }),
   );
 }

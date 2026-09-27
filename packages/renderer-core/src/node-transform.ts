@@ -7,25 +7,36 @@ type Pose = {
   rotation: number;
   scaleX: number;
   scaleY: number;
+  skewX?: number | undefined;
+  skewY?: number | undefined;
+  anchorX?: number | undefined;
+  anchorY?: number | undefined;
 };
 export function nodeMatrix(node: PreparedNode, state: Pose): Matrix {
   const angle = (state.rotation * Math.PI) / 180,
     cos = Math.cos(angle),
     sin = Math.sin(angle);
-  const a = cos * state.scaleX,
+  let a = cos * state.scaleX,
     b = sin * state.scaleX,
     c = -sin * state.scaleY,
     d = cos * state.scaleY;
-  const ox = node.width * node.origin[0],
-    oy = node.height * node.origin[1];
-  return [
-    a,
-    b,
-    c,
-    d,
-    state.x + ox - a * ox - c * oy,
-    state.y + oy - b * ox - d * oy,
-  ];
+  if (state.skewX !== undefined || state.skewY !== undefined) {
+    const kx = Math.tan(((state.skewX ?? 0) * Math.PI) / 180),
+      ky = Math.tan(((state.skewY ?? 0) * Math.PI) / 180);
+    a = (cos - sin * ky) * state.scaleX;
+    b = (sin + cos * ky) * state.scaleX;
+    c = (cos * kx - sin) * state.scaleY;
+    d = (sin * kx + cos) * state.scaleY;
+  }
+  const ox = node.width * (state.anchorX ?? node.origin[0]),
+    oy = node.height * (state.anchorY ?? node.origin[1]);
+  // Moving the anchor preserves the artwork's placement. Attach/follow constraints
+  // use the animated anchor as their reference point in this compensated matrix.
+  const dx = ox - node.width * node.origin[0],
+    dy = oy - node.height * node.origin[1];
+  const x = state.x + (a - 1) * dx + c * dy,
+    y = state.y + b * dx + (d - 1) * dy;
+  return [a, b, c, d, x + ox - a * ox - c * oy, y + oy - b * ox - d * oy];
 }
 export function multiplyMatrix(a: Matrix, b: Matrix): Matrix {
   return [

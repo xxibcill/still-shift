@@ -1,10 +1,20 @@
-import { analyzeContinuousStory } from "./story-continuous-quality.ts";
+import {
+  analyzeContinuousStory,
+  analyzeMotionCraft,
+  type LayerPixelEnergy,
+} from "./story-continuous-quality.ts";
 import { evaluatePreparedNode, type Property } from "./prepared-scene.ts";
 import type { StoryRenderScene } from "./story-scene.ts";
 import type { PreparedNode } from "../../scene-contract/src/prepared.ts";
 
 type FocusGroup = { id: string; nodes: string[] };
 type Code =
+  | "velocity-discontinuity"
+  | "entrance-pop"
+  | "dead-stop-chain"
+  | "peak-not-story"
+  | "carrier-dominance"
+  | "outside-safe-area"
   | "short-final-hold"
   | "small-essential-text"
   | "competing-focus"
@@ -15,6 +25,8 @@ type Code =
   | "label-in-motion-envelope";
 export type StoryQualityPolicy = {
   preset?: "continuous";
+  motionCraft?: boolean;
+  pixelEnergy?: LayerPixelEnergy;
   displayWidth?: number;
   minimumTextPx?: number;
   preferredHoldSeconds?: number;
@@ -29,6 +41,8 @@ export type StoryQualityDiagnostic = {
   measured: number;
   message: string;
   exception?: string;
+  path?: string;
+  suggestedFix?: string;
 };
 
 function primaryGroups(scene: StoryRenderScene): FocusGroup[] {
@@ -250,6 +264,8 @@ export function analyzeStoryQuality(
       ? analyzeContinuousStory(scene, essentialText)
       : undefined;
   if (continuous) diagnostics.push(...continuous.diagnostics);
+  if (scene.motionModel || policy.motionCraft)
+    diagnostics.push(...analyzeMotionCraft(scene, policy.pixelEnergy));
   for (const diagnostic of diagnostics) {
     const exception = policy.exceptions?.find(
       (e) =>
