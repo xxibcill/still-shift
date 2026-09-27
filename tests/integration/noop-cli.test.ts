@@ -124,6 +124,7 @@ describe("no-op CLI", () => {
       width: V0_1_REQUEST_CONSTRAINTS.width,
       height: V0_1_REQUEST_CONSTRAINTS.height,
     });
+    expect(scene).not.toHaveProperty("format");
     expect(scene.motion).toMatchObject({
       intensity: V0_1_REQUEST_DEFAULTS.intensity,
       seed: V0_1_REQUEST_DEFAULTS.seed,
@@ -145,6 +146,7 @@ describe("no-op CLI", () => {
       JSON.parse(await readFile(result.sceneManifestPath, "utf8")),
     );
     expect(scene.canvas).toEqual({ width: 1080, height: 1920 });
+    expect(scene.format).toBe("vertical");
 
     await expect(
       runNoopCli(join(directory, "invalid.noop.json"), [

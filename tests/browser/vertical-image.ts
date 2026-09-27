@@ -36,6 +36,8 @@ try {
     JSON.parse(await readFile(result.sceneManifestPath, "utf8")),
   );
   assert.equal(manifest.renderScene?.rendererVersion, "preview-render-0.6.0");
+  assert.equal(manifest.format, "vertical");
+  assert.equal(manifest.renderScene?.format, "vertical");
   assert.equal(manifest.framing?.source, "provided");
   assert.equal(manifest.framing?.focus[0], 0.76);
   assert.ok((manifest.framing?.crop.x ?? 0) > 0.5);

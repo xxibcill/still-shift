@@ -6,6 +6,10 @@ import {
   type CropWindow,
   type FocusPoint,
 } from "./depth-reframe.ts";
+import {
+  formatSize,
+  type OutputFormat,
+} from "../../scene-contract/src/output-format.ts";
 
 export const RENDERER_VERSION = "preview-render-0.5.0" as const;
 export const VERTICAL_RENDERER_VERSION = "preview-render-0.6.0" as const;
@@ -239,6 +243,7 @@ export type PreviewInput = {
 
 export type PreviewScene = {
   rendererVersion: typeof RENDERER_VERSION | typeof VERTICAL_RENDERER_VERSION;
+  format?: OutputFormat;
   presetVersion: (typeof PRESET_VERSIONS)[PreviewPreset];
   timeline: { durationMs: number; fps: number; frameCount: number };
   source: { width: number; height: number };
@@ -350,6 +355,11 @@ const validateInput = (input: PreviewInput): void => {
   }
   if (input.canvasHeight > input.canvasWidth && !input.focus)
     throw new Error("Vertical preview needs a normalized focal point");
+  const format =
+    input.canvasHeight > input.canvasWidth ? "vertical" : "landscape";
+  const size = formatSize(format);
+  if (input.canvasWidth !== size.width || input.canvasHeight !== size.height)
+    throw new Error("Preview canvas dimensions must match an output format");
 };
 
 export const resolvePreviewScene = (input: PreviewInput): PreviewScene => {
@@ -423,6 +433,9 @@ export const resolvePreviewScene = (input: PreviewInput): PreviewScene => {
   }
   return {
     rendererVersion: input.focus ? VERTICAL_RENDERER_VERSION : RENDERER_VERSION,
+    ...(input.canvasHeight > input.canvasWidth
+      ? { format: "vertical" as const }
+      : {}),
     presetVersion: PRESET_VERSIONS[input.preset],
     timeline: {
       durationMs: input.durationMs,

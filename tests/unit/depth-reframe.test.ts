@@ -82,6 +82,7 @@ describe("depth image reframing", () => {
       focus: [0.5, 0.5] as const,
     };
     const wide = resolvePreviewScene(input);
+    expect(wide.format).toBe("vertical");
     expect(wide.motion.driftAxis).toBe("x");
     expect(evaluateFrame(wide, 0).translationX).not.toBe(0);
     const tall = resolvePreviewScene({

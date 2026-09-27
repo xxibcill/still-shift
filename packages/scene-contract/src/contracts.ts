@@ -1,5 +1,10 @@
 import { z } from "zod";
-import { isOutputSize, OUTPUT_FORMATS } from "./output-format.ts";
+import {
+  formatSize,
+  isOutputSize,
+  OUTPUT_FORMATS,
+  OutputFormatSchema,
+} from "./output-format.ts";
 
 export const ANIMATION_API_VERSION = "0.1" as const;
 export const ENGINE_VERSION = "0.10" as const;
@@ -283,6 +288,22 @@ const SceneCanvasSchema = z
       });
   });
 
+const validateSceneFormat = (
+  value: {
+    format?: z.infer<typeof OutputFormatSchema> | undefined;
+    canvas: { width: number; height: number };
+  },
+  context: z.RefinementCtx,
+) => {
+  const size = formatSize(value.format ?? "landscape");
+  if (value.canvas.width !== size.width || value.canvas.height !== size.height)
+    context.addIssue({
+      code: "custom",
+      message: "Canvas dimensions must match scene format",
+      path: ["format"],
+    });
+};
+
 const SceneFramingSchema = z.object({
   focus: z.tuple([
     z.number().finite().min(0).max(1),
@@ -297,44 +318,47 @@ const SceneFramingSchema = z.object({
   }),
 });
 
-export const RenderSceneSchema = z.object({
-  rendererVersion: z.string().trim().min(1),
-  presetVersion: z.string().trim().min(1),
-  timeline: SceneTimelineSchema,
-  source: z.object({
-    width: z.number().int().positive(),
-    height: z.number().int().positive(),
-  }),
-  canvas: SceneCanvasSchema,
-  framing: SceneFramingSchema.optional(),
-  motion: z.object({
-    mode: z.enum(["depth", "flat_2d", "fallback_2d"]),
-    preset: ResolvedAnimationPresetSchema,
-    intensity: AnimationIntensitySchema,
-    seed: z
-      .number()
-      .int()
-      .min(V0_1_REQUEST_CONSTRAINTS.seed.minimum)
-      .max(V0_1_REQUEST_CONSTRAINTS.seed.maximum),
-    travel: z.number().finite().nonnegative(),
-    depthStrength: z.number().finite().nonnegative(),
-    lateralTravel: z.number().finite().nonnegative(),
-    rollDegrees: z.number().finite(),
-    overscan: z.number().finite().min(0).max(1),
-    maximumCrop: z.number().finite().min(0).max(1),
-    driftAxis: z.enum(["x", "y"]).optional(),
-  }),
-  quality: z
-    .object({
-      analysisVersion: z.string().trim().min(1),
-      riskScore: z.number().finite().min(0).max(1),
-      fallback: z.boolean(),
-      fallbackReason: AnimationWarningCodeSchema.nullable(),
-      signals: z.record(z.string(), z.number().finite()),
-    })
-    .nullable(),
-  warnings: z.array(AnimationWarningSchema),
-});
+export const RenderSceneSchema = z
+  .object({
+    rendererVersion: z.string().trim().min(1),
+    format: OutputFormatSchema.optional(),
+    presetVersion: z.string().trim().min(1),
+    timeline: SceneTimelineSchema,
+    source: z.object({
+      width: z.number().int().positive(),
+      height: z.number().int().positive(),
+    }),
+    canvas: SceneCanvasSchema,
+    framing: SceneFramingSchema.optional(),
+    motion: z.object({
+      mode: z.enum(["depth", "flat_2d", "fallback_2d"]),
+      preset: ResolvedAnimationPresetSchema,
+      intensity: AnimationIntensitySchema,
+      seed: z
+        .number()
+        .int()
+        .min(V0_1_REQUEST_CONSTRAINTS.seed.minimum)
+        .max(V0_1_REQUEST_CONSTRAINTS.seed.maximum),
+      travel: z.number().finite().nonnegative(),
+      depthStrength: z.number().finite().nonnegative(),
+      lateralTravel: z.number().finite().nonnegative(),
+      rollDegrees: z.number().finite(),
+      overscan: z.number().finite().min(0).max(1),
+      maximumCrop: z.number().finite().min(0).max(1),
+      driftAxis: z.enum(["x", "y"]).optional(),
+    }),
+    quality: z
+      .object({
+        analysisVersion: z.string().trim().min(1),
+        riskScore: z.number().finite().min(0).max(1),
+        fallback: z.boolean(),
+        fallbackReason: AnimationWarningCodeSchema.nullable(),
+        signals: z.record(z.string(), z.number().finite()),
+      })
+      .nullable(),
+    warnings: z.array(AnimationWarningSchema),
+  })
+  .superRefine(validateSceneFormat);
 
 export const SceneManifestSchema = z
   .object({
@@ -345,6 +369,7 @@ export const SceneManifestSchema = z
     pipelineVersion: z.string().trim().min(1),
     model: DepthModelSchema.nullable().optional(),
     rendererVersion: z.string().trim().min(1),
+    format: OutputFormatSchema.optional(),
     timeline: SceneTimelineSchema,
     canvas: SceneCanvasSchema,
     framing: SceneFramingSchema.optional(),
@@ -382,6 +407,7 @@ export const SceneManifestSchema = z
     ]),
   })
   .superRefine((manifest, context) => {
+    validateSceneFormat(manifest, context);
     const scene = manifest.renderScene;
     if (manifest.execution.adapter === "webgl" && !scene) {
       context.addIssue({
@@ -400,6 +426,10 @@ export const SceneManifestSchema = z
 
     const mismatches = [
       ["rendererVersion", scene.rendererVersion !== manifest.rendererVersion],
+      [
+        "format",
+        (scene.format ?? "landscape") !== (manifest.format ?? "landscape"),
+      ],
       [
         "timeline",
         JSON.stringify(scene.timeline) !== JSON.stringify(manifest.timeline),

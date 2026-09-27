@@ -496,6 +496,7 @@ export class WebGLAnimationEngine implements AnimationEngine {
       pipelineVersion: PIPELINE_VERSION,
       model: prepared.model,
       rendererVersion: scene.rendererVersion,
+      ...(scene.format ? { format: scene.format } : {}),
       timeline: scene.timeline,
       canvas: scene.canvas,
       ...(scene.framing ? { framing: scene.framing } : {}),
