@@ -79,6 +79,45 @@ describe("vertical story proposal and lint", () => {
     );
   });
 
+  it("continues geometry lint after camera coverage fails", () => {
+    const scene = proposed(source());
+    scene.motionGrammar = "v2";
+    scene.camera = {
+      keys: [
+        { frame: 0, x: 540, y: 960, zoom: 1 },
+        { frame: scene.frameCount - 1, x: 540, y: 960, zoom: 1 },
+      ],
+      depth: {},
+      cover: ["house-a"],
+    };
+    for (const id of ["house-a", "house-b"]) {
+      const house = scene.nodes.find((node) => node.id === id)!;
+      house.width = 20;
+      house.height = 20;
+    }
+    const diagnostics = lintVertical(scene, { focusIds: ["house-a"] });
+    expect(diagnostics).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          code: "invalid-scene",
+          message: expect.stringContaining("Camera exposes uncovered edge"),
+        }),
+        expect.objectContaining({ code: "subject-too-small", node: "house-a" }),
+      ]),
+    );
+  });
+
+  it("reports usable geometry alongside a contract error", () => {
+    const scene = proposed(source());
+    const house = scene.nodes.find((node) => node.id === "house-a")!;
+    house.width = 20;
+    house.height = 20;
+    const diagnostics = lintVertical(scene, { focusIds: ["house-a"] });
+    expect(diagnostics.map((diagnostic) => diagnostic.code)).toEqual(
+      expect.arrayContaining(["invalid-contract", "subject-too-small"]),
+    );
+  });
+
   it("requires a measured text box when vertical safe zones exist", () => {
     const scene = source();
     scene.formats = {

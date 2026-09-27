@@ -300,10 +300,22 @@ export function lintVertical(
       severity: "error",
       message: "Vertical lint requires a resolved 1080x1920 story scene",
     });
-  if (!checked.success || scene.format !== "vertical") return diagnostics;
+  if (
+    scene.format !== "vertical" ||
+    !Array.isArray(scene.nodes) ||
+    !Array.isArray(scene.connectors) ||
+    !Number.isInteger(scene.frameCount) ||
+    scene.frameCount < 1 ||
+    scene.frameCount > 108000
+  )
+    return diagnostics;
   let rendered;
   try {
-    rendered = compileStoryScene(scene, { validateSafeZones: false });
+    rendered = compileStoryScene(scene, {
+      validateSafeZones: false,
+      onValidationError: (error) =>
+        diagnostics.push(...passageDiagnostics(error)),
+    });
   } catch (error) {
     diagnostics.push(...passageDiagnostics(error));
     return diagnostics;

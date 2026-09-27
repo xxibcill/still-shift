@@ -191,7 +191,10 @@ export type StoryTracks = ReturnType<typeof createTracks>;
 
 export function compileStoryScene(
   source: StoryScene,
-  options: { validateSafeZones?: boolean } = {},
+  options: {
+    validateSafeZones?: boolean;
+    onValidationError?: (error: unknown) => void;
+  } = {},
 ): StoryRenderScene {
   const input = { ...source, nodes: source.nodes.map((n) => ({ ...n })) };
   const events: StoryRenderScene["motionEvents"] = [];
@@ -494,20 +497,29 @@ export function compileStoryScene(
     }
   }
   if (input.motionModel) scene.compiledMotion = compileMotionCraft(scene);
-  validateComponentOwnership(scene);
-  validateComponentRelationships(scene);
-  validateStoryCameraCoverage(scene);
-  validateTravelTransforms(scene);
-  validatePinTransforms(scene);
+  const validate = (check: () => void) => {
+    if (!options.onValidationError) return check();
+    try {
+      check();
+    } catch (error) {
+      options.onValidationError(error);
+    }
+  };
+  validate(() => validateComponentOwnership(scene));
+  validate(() => validateComponentRelationships(scene));
+  validate(() => validateStoryCameraCoverage(scene));
+  validate(() => validateTravelTransforms(scene));
+  validate(() => validatePinTransforms(scene));
   const features = componentCapabilities(input.componentData);
-  if (features.supportsBehaviors) indexStoryEvents(input);
+  if (features.supportsBehaviors) validate(() => indexStoryEvents(input));
   scene.rendererVersion =
     componentRendererVersions(input.componentData)?.story ??
     scene.rendererVersion;
-  validateStorySemanticChecks(scene);
+  validate(() => validateStorySemanticChecks(scene));
   if (input.motionModel) scene.rendererVersion = "story-canvas-0.19.0";
   if (input.format === "vertical")
     scene.rendererVersion = "story-canvas-0.20.0";
-  if (options.validateSafeZones !== false) validateStorySafeZones(scene);
+  if (options.validateSafeZones !== false)
+    validate(() => validateStorySafeZones(scene));
   return scene;
 }
