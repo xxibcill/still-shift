@@ -24,8 +24,15 @@ import {
   CommerceProfileSchema,
   CommerceSelectionSchema,
 } from "./commerce-catalog.ts";
-import { MotionEasingSchema } from "./motion-easing.ts";
+import { CurveEasingSchema as MotionEasingSchema } from "./motion-easing.ts";
 import { commerceCapabilities } from "./commerce-library.ts";
+
+import {
+  motionAppearanceFields,
+  motionCraftFields,
+  layerFields,
+} from "./motion-craft.ts";
+import { validateMotionCraft } from "./motion-craft-validation.ts";
 
 const finite = z.number().finite();
 const frame = finite.int().nonnegative();
@@ -135,6 +142,7 @@ export type CommerceBrief = z.infer<typeof CommerceBriefSchema>;
 export const CommerceEventSchema = z
   .object({
     node: text,
+    ...layerFields,
     property: z.enum([
       "x",
       "y",
@@ -169,6 +177,8 @@ const shape = PreparedSceneFieldsSchema.omit({
 })
   .extend({
     schemaVersion: z.literal("commerce-scene-1"),
+    ...motionCraftFields,
+    ...motionAppearanceFields,
     componentData: ComponentDataSchema.optional(),
     width: finite.int().positive(),
     height: finite.int().positive(),
@@ -224,6 +234,7 @@ export const CommerceSceneSchema = shape.superRefine((scene, ctx) => {
   const fail = (message: string) => ctx.addIssue({ code: "custom", message });
   const { nodes } = validatePreparedGraph(scene, fail);
   validateComponentData(scene, fail);
+  validateMotionCraft(scene, ctx);
   validateCommerceSpatial(scene, fail);
   const profile = COMMERCE_PROFILES[scene.metadata.profile];
   if (scene.width !== profile.width || scene.height !== profile.height)

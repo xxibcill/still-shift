@@ -1,3 +1,4 @@
+import { sharedEffectsFields } from "./shared-effects.ts";
 import { CommerceSceneSchema } from "./commerce.ts";
 import { StorySceneSchema } from "./story.ts";
 import { z } from "zod";
@@ -41,6 +42,7 @@ export const CameraValidationSchema = z
 
 const cinematicShape = PreparedSceneFieldsSchema.extend({
   schemaVersion: z.literal("illustrated-scene-2"),
+  ...sharedEffectsFields,
   nodes: z.array(PreparedImageSchema).min(3).max(20),
   layers: z
     .array(
@@ -115,6 +117,21 @@ export type CinematicScene = z.infer<typeof cinematicShape>;
 export const CinematicSceneSchema = cinematicShape.superRefine((scene, ctx) => {
   const fail = (message: string) => ctx.addIssue({ code: "custom", message });
   validatePreparedGraph(scene, fail);
+  if (scene.effects && scene.effectsVersion !== "effects-1")
+    fail("motion-opt-in: effects require effectsVersion effects-1");
+  for (const effect of scene.effects ?? []) {
+    if (
+      "target" in effect &&
+      !scene.nodes.some((n) => n.id === effect.target && !n.parent)
+    )
+      fail("motion-effect-target: missing root node");
+    if (
+      "end" in effect &&
+      (effect.end <= effect.start ||
+        effect.end >= (scene.durationMs * scene.fps) / 1000)
+    )
+      fail("motion-effect-window: effect outside timeline");
+  }
   if (!Number.isInteger((scene.durationMs * scene.fps) / 1000))
     fail("Duration must resolve to whole frames");
   const nodes = new Map(scene.nodes.map((node) => [node.id, node]));

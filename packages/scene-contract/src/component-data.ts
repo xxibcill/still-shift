@@ -1,8 +1,9 @@
 import { z } from "zod";
 import type { PreparedNode } from "./prepared.ts";
-import { MotionEasingSchema } from "./motion-easing.ts";
+import { CurveEasingSchema as MotionEasingSchema } from "./motion-easing.ts";
 
 export const ComponentIdSchema = z.string().regex(/^[a-zA-Z][\w-]*$/);
+import { layerFields } from "./motion-craft.ts";
 const finite = z.number().finite();
 export const ComponentWindowSchema = z
   .object({
@@ -10,6 +11,7 @@ export const ComponentWindowSchema = z
     end: finite.int().positive(),
     easing: MotionEasingSchema.default("linear"),
     cue: z.string().min(1).optional(),
+    ...layerFields,
   })
   .strict()
   .refine(
@@ -110,6 +112,7 @@ export const ComponentStateSchema = z
             id: ComponentIdSchema,
             frame: finite.int().nonnegative(),
             state: finite.int().nonnegative(),
+            ramp: finite.int().min(1).max(3).optional(),
           })
           .strict(),
       )
@@ -340,7 +343,8 @@ function validateBehaviorData(
       )
     )
       fail("Missing component state index: " + node.id);
-    let previous = -1;
+    let previous = -1,
+      previousRampEnd = -1;
     for (const cut of schedule.cuts) {
       cue(cut.id);
       if (cut.frame <= previous)
@@ -349,7 +353,16 @@ function validateBehaviorData(
         );
       if (cut.frame >= scene.frameCount)
         fail("Component state cut exceeds timeline: " + cut.id);
+      if (
+        cut.frame < previousRampEnd ||
+        (cut.ramp && cut.frame + cut.ramp >= scene.frameCount)
+      )
+        fail(
+          "motion-state-ramp: ramp must finish before the next cut and within the timeline: " +
+            cut.id,
+        );
       previous = cut.frame;
+      previousRampEnd = cut.frame + (cut.ramp ?? 0);
     }
   }
   const travellers = new Set<string>();
