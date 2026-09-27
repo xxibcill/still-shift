@@ -1,8 +1,7 @@
-import type { PreparedNode } from "../../scene-contract/src/prepared.ts";
 import { PreparedNodeSchema } from "../../scene-contract/src/prepared.ts";
 import type { CommerceRenderScene } from "./commerce-scene.ts";
 import type { LoadedFont } from "./prepared-fonts.ts";
-import { measureTextLayout } from "./text-layout.ts";
+import { prepareTextFits } from "./component-text-fit.ts";
 import { buildTextBlock } from "./commerce-text.ts";
 import type {
   ComponentBounds,
@@ -74,52 +73,5 @@ export function prepareCommerceTextFits(
   ctx: CanvasRenderingContext2D,
   fonts: Map<string, LoadedFont>,
 ): CommerceRenderScene {
-  if (!scene.textFits?.length) return scene;
-  const nodes = scene.nodes.map((node) => ({ ...node }));
-  for (const fit of scene.textFits) {
-    const node = nodes.find((n) => n.id === fit.target) as Extract<
-      PreparedNode,
-      { type: "text" }
-    >;
-    const font = fonts.get(node.fontAsset!);
-    if (!font)
-      throw new Error(
-        "Text fitting requires loaded pinned font " + node.fontAsset,
-      );
-    let height: number | undefined;
-    for (let size = fit.maxSize; size >= fit.minSize; size--) {
-      ctx.font = `${font.weight} ${size}px "${font.family}"`;
-      try {
-        const layouts = (node.states ?? [node.text]).map((text) =>
-          measureTextLayout(ctx, { ...node, fontSize: size, text }),
-        );
-        height = Math.max(
-          ...layouts.map(
-            (layout) =>
-              layout.baseline +
-              layout.descent +
-              Math.max(0, layout.lines.length - 1) * layout.lineHeight,
-          ),
-        );
-        node.fontSize = size;
-        break;
-      } catch (error) {
-        if (
-          !(error instanceof Error) ||
-          !/^Text (overflows|does not fit)/.test(error.message)
-        )
-          throw error;
-      }
-    }
-    if (height === undefined)
-      throw new Error("Text cannot fit at minimum size: " + node.id);
-    if (fit.panel) {
-      const panel = nodes.find((n) => n.id === fit.panel)!;
-      panel.x = node.x - fit.padding;
-      panel.y = node.y - fit.padding;
-      panel.width = node.width + fit.padding * 2;
-      panel.height = height + fit.padding * 2;
-    }
-  }
-  return { ...scene, nodes };
+  return prepareTextFits(scene, scene.textFits ?? [], ctx, fonts);
 }

@@ -1,0 +1,21 @@
+{
+  "schemaVersion": "reusable-demo-2",
+  "mode": "commerce",
+  "example": "supply",
+  "fps": 24,
+  "count": 3,
+  "gap": 32,
+  "stagger": 12,
+  "middleDelay": 0,
+  "middleText": "Second marker",
+  "from": 20,
+  "to": 80,
+  "decimals": 0,
+  "scale": 1.15,
+  "rotation": 12,
+  "drawFrom": 0,
+  "drawTo": 1,
+  "cutFrame": 72,
+  "travelFrom": 0,
+  "travelTo": 1
+}

@@ -1,3 +1,9 @@
+import { componentVisible } from "./component-visibility.ts";
+import { prepareComponentTextFits } from "./component-text-fit.ts";
+import {
+  componentMasks,
+  createComponentMaskRenderer,
+} from "./component-mask.ts";
 import { prepareCommerceTextFits } from "./commerce-layout.ts";
 import { nodeMatrix, imagePlacement } from "./node-transform.ts";
 import {
@@ -5,7 +11,12 @@ import {
   validateAttachedPaths,
 } from "./commerce-geometry.ts";
 import { createCommerceEffectsRenderer } from "./commerce-effects-renderer.ts";
-import { measureTextLayout, type TextLayout } from "./text-layout.ts";
+import { type TextLayout } from "./text-layout.ts";
+import { componentText, prepareMeasuredText } from "./component-values.ts";
+import {
+  evaluateComponentAnnotation,
+  validateComponentAnnotations,
+} from "./component-annotations.ts";
 import type {
   PreparedImage,
   PreparedNode,
@@ -296,6 +307,11 @@ export function createIllustratedPreview(
   canvas.height = scene.height;
   if (scene.schemaVersion === "commerce-scene-1")
     scene = prepareCommerceTextFits(scene, ctx, images.fonts ?? new Map());
+  if (
+    scene.schemaVersion === "commerce-scene-1" ||
+    scene.schemaVersion === "story-scene-1"
+  )
+    scene = prepareComponentTextFits(scene, ctx, images.fonts ?? new Map());
   images = Object.assign(new Map(images), {
     ...(images.fonts ? { fonts: images.fonts } : {}),
     ...(images.rasters ? { rasters: images.rasters } : {}),
@@ -304,27 +320,18 @@ export function createIllustratedPreview(
       : {}),
     textLayouts: new Map(),
   });
-  images.textLayouts = new Map();
-  for (const node of scene.nodes) {
-    if (node.type !== "text" || !node.textBox) continue;
-    const font = node.fontAsset ? images.fonts?.get(node.fontAsset) : undefined;
-    if (!font)
-      throw new Error("Text layout requires a prepared font: " + node.id);
-    ctx.font = font.weight + " " + node.fontSize + 'px "' + font.family + '"';
-    ctx.textBaseline = "alphabetic";
-    ctx.textAlign = "left";
-    images.textLayouts.set(
-      node.id,
-      new Map(
-        (node.states ?? [node.text]).map((text) => [
-          text,
-          measureTextLayout(ctx, { ...node, text }),
-        ]),
-      ),
-    );
-  }
+  images.textLayouts = prepareMeasuredText(
+    scene,
+    ctx,
+    images.fonts ?? new Map(),
+  );
 
   if (scene.schemaVersion === "commerce-scene-1") validateAttachedPaths(scene);
+  if (
+    scene.schemaVersion === "commerce-scene-1" ||
+    scene.schemaVersion === "story-scene-1"
+  )
+    validateComponentAnnotations(scene);
   const children = new Map<string | undefined, PreparedNode[]>();
   for (const node of scene.nodes) {
     const siblings = children.get(node.parent) ?? [];
@@ -336,6 +343,12 @@ export function createIllustratedPreview(
     node: PreparedNode,
     frame: number,
   ) => {
+    if (
+      (scene.schemaVersion === "commerce-scene-1" ||
+        scene.schemaVersion === "story-scene-1") &&
+      !componentVisible(scene, node.id, frame)
+    )
+      return;
     const state = evaluatePreparedNodeAtTime(scene, node, frame);
     const flows =
       scene.schemaVersion === "story-scene-1"
@@ -359,12 +372,22 @@ export function createIllustratedPreview(
       const blur = sampleCinematicBlur(scene, node.id, frame);
       ctx.filter = blur > 0 ? `blur(${blur}px)` : "none";
     }
-    const drawable =
+    let drawable =
       scene.schemaVersion === "story-scene-1" && node.type === "path"
         ? evaluateStoryPath(scene, node, frame)
         : scene.schemaVersion === "commerce-scene-1" && node.type === "path"
           ? evaluateAttachedPath(scene, node, frame)
           : node;
+    if (
+      scene.schemaVersion === "commerce-scene-1" ||
+      scene.schemaVersion === "story-scene-1"
+    ) {
+      if (drawable.type === "path")
+        drawable = evaluateComponentAnnotation(scene, drawable, frame);
+      const text = componentText(scene, node, frame);
+      if (text !== undefined && drawable.type === "text")
+        drawable = { ...drawable, text };
+    }
     drawShape(ctx, drawable, state, images, !focus);
     if (drawable.type === "path") {
       ctx.globalAlpha = parentOpacity;
@@ -384,10 +407,21 @@ export function createIllustratedPreview(
   };
   const effectsRenderer =
     scene.schemaVersion === "commerce-scene-1" &&
-    (scene.effects?.length || scene.mattes?.length)
+    (scene.effects?.length ||
+      scene.mattes?.length ||
+      componentMasks(scene).length)
       ? createCommerceEffectsRenderer(scene, paint)
       : undefined;
+  const maskRenderer =
+    scene.schemaVersion === "story-scene-1" && componentMasks(scene).length
+      ? createComponentMaskRenderer(scene, paint)
+      : undefined;
   return {
+    resolvedTextSizes: Object.fromEntries(
+      scene.nodes.flatMap((n) =>
+        n.type === "text" ? [[n.id, n.fontSize]] : [],
+      ),
+    ),
     renderFrame(frame: number) {
       if (
         !Number.isInteger(frame) ||
@@ -403,10 +437,12 @@ export function createIllustratedPreview(
       ctx.globalAlpha = 1;
       ctx.fillStyle = scene.background;
       ctx.fillRect(0, 0, canvas.width, canvas.height);
-      for (const node of children.get(undefined) ?? []) paint(ctx, node, frame);
+      for (const node of children.get(undefined) ?? [])
+        (maskRenderer?.paint ?? paint)(ctx, node, frame);
     },
     dispose() {
       effectsRenderer?.dispose();
+      maskRenderer?.dispose();
       ctx.clearRect(0, 0, canvas.width, canvas.height);
     },
   };

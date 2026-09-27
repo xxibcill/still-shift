@@ -1,0 +1,182 @@
+{
+  "title": "Reusable components · commerce",
+  "fps": 24,
+  "background": "#F2EDE3",
+  "assets": [
+    {
+      "id": "product-image",
+      "path": "../../../assets/ecommerce-motion/beauty-floating-product-v1.png",
+      "sha256": "sha256:0c832682d129412b2fcd1b726e92275dc0dcbe12f1231d23c18efb3318b49e9c",
+      "width": 1122,
+      "height": 1402
+    }
+  ],
+  "fonts": [
+    {
+      "id": "commerce-font",
+      "path": "../../../assets/ecommerce-motion/fonts/noto-sans-thai.ttf",
+      "sha256": "sha256:5a1c559bb539583c8a1fd99d1c5b9491e5e14478c9cd2bd0970d5c3096cc9ef8",
+      "weight": "400"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "behavior__detail",
+      "x": 1202,
+      "y": 450,
+      "width": 260,
+      "height": 260,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "group",
+      "clip": false
+    },
+    {
+      "id": "behavior__panel",
+      "parent": "behavior__detail",
+      "x": 0,
+      "y": 0,
+      "width": 260,
+      "height": 260,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "rect",
+      "fill": "#E5E0D4",
+      "lineWidth": 0,
+      "radius": 16
+    },
+    {
+      "id": "behavior__inset",
+      "parent": "behavior__detail",
+      "x": 18,
+      "y": 18,
+      "width": 224,
+      "height": 224,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "image",
+      "states": [
+        { "asset": "product-image" },
+        {
+          "asset": "product-image",
+          "crop": [
+            224.4, 140.20000000000002, 673.1999999999999, 841.1999999999999
+          ]
+        }
+      ],
+      "fit": "contain"
+    },
+    {
+      "id": "behavior__caption",
+      "x": 882,
+      "y": 755,
+      "width": 730,
+      "height": 110,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "text",
+      "text": "Product · overview",
+      "states": ["Product · overview", "Product · detail crop"],
+      "fontSize": 38,
+      "color": "#233B32",
+      "weight": "normal",
+      "font": "sans-serif",
+      "fontAsset": "commerce-font",
+      "textBox": { "locale": "en", "maxLines": 2, "lineHeight": 1.25 },
+      "align": "left"
+    },
+    {
+      "id": "behavior__route-plane",
+      "x": 192,
+      "y": 630,
+      "width": 980,
+      "height": 140,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0, 0],
+      "type": "group",
+      "clip": false
+    },
+    {
+      "id": "behavior__route",
+      "parent": "behavior__route-plane",
+      "x": 0,
+      "y": 0,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "path",
+      "points": [
+        [0, 100],
+        [260, 100],
+        [510, 20],
+        [980, 20]
+      ],
+      "stroke": "#477D65",
+      "lineWidth": 5,
+      "gapAt": 0.6,
+      "gapSize": 0.1
+    },
+    {
+      "id": "behavior__marker",
+      "x": 178,
+      "y": 716,
+      "width": 28,
+      "height": 28,
+      "opacity": 0,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "rect",
+      "fill": "#A65E46",
+      "lineWidth": 0,
+      "radius": 14
+    }
+  ],
+  "provenance": "Fictional SAMPLE 01 engineering demonstration; supplied intact image reused without alteration.",
+  "schemaVersion": "commerce-scene-1",
+  "componentData": {
+    "schemaVersion": "scene-components-2",
+    "annotations": [],
+    "values": [],
+    "bindings": [],
+    "states": [
+      {
+        "id": "behavior__image-states",
+        "target": "behavior__inset",
+        "initial": 0,
+        "cuts": [{ "id": "behavior__image-change", "frame": 72, "state": 1 }]
+      },
+      {
+        "id": "behavior__caption-states",
+        "target": "behavior__caption",
+        "initial": 0,
+        "cuts": [{ "id": "behavior__caption-change", "frame": 72, "state": 1 }]
+      }
+    ],
+    "travels": []
+  },
+  "width": 1920,
+  "height": 1080,
+  "frameCount": 192,
+  "recipe": { "preset": "studio" },
+  "events": [],
+  "geometry": [],
+  "metadata": {
+    "registration": { "status": "experimental" },
+    "catalogVersion": "1.0",
+    "selection": { "kind": "component-demo", "id": "studio" },
+    "profile": "landscape",
+    "productId": "sample-01",
+    "productSource": "Existing fictional intact SAMPLE 01 PNG",
+    "copySource": "Meet SAMPLE 01.",
+    "claimSources": [],
+    "locale": "en",
+    "protectedRegion": [0, 0, 1, 1]
+  }
+}

@@ -1,0 +1,590 @@
+{
+  "title": "Reusable components · commerce",
+  "fps": 24,
+  "background": "#F2EDE3",
+  "assets": [
+    {
+      "id": "product-image",
+      "path": "../../../assets/ecommerce-motion/beauty-floating-product-v1.png",
+      "sha256": "sha256:0c832682d129412b2fcd1b726e92275dc0dcbe12f1231d23c18efb3318b49e9c",
+      "width": 1122,
+      "height": 1402
+    }
+  ],
+  "fonts": [
+    {
+      "id": "commerce-font",
+      "path": "../../../assets/ecommerce-motion/fonts/noto-sans-thai.ttf",
+      "sha256": "sha256:5a1c559bb539583c8a1fd99d1c5b9491e5e14478c9cd2bd0970d5c3096cc9ef8",
+      "weight": "400"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "phase1__detail",
+      "x": 150,
+      "y": 690,
+      "width": 220,
+      "height": 190,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0, 0],
+      "type": "group",
+      "clip": false
+    },
+    {
+      "id": "phase1__paper",
+      "parent": "phase1__detail",
+      "x": 0,
+      "y": 0,
+      "width": 220,
+      "height": 190,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "rect",
+      "fill": "#E5E0D4",
+      "lineWidth": 0,
+      "radius": 10
+    },
+    {
+      "id": "phase1__image",
+      "parent": "phase1__detail",
+      "x": 10,
+      "y": 10,
+      "width": 200,
+      "height": 170,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "image",
+      "states": [
+        { "asset": "product-image" },
+        {
+          "asset": "product-image",
+          "crop": [168.29999999999998, 140.20000000000002, 785.4, 981.4]
+        }
+      ],
+      "fit": "contain"
+    },
+    {
+      "id": "phase1__badge",
+      "x": 394,
+      "y": 720,
+      "width": 220,
+      "height": 100,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0, 0],
+      "type": "text",
+      "text": "Detail 1",
+      "fontSize": 42,
+      "color": "#477D65",
+      "weight": "normal",
+      "font": "sans-serif",
+      "fontAsset": "commerce-font",
+      "textBox": { "locale": "en", "maxLines": 2, "lineHeight": 1.2 },
+      "align": "left"
+    },
+    {
+      "id": "phase1__caption",
+      "x": 150,
+      "y": 910,
+      "width": 480,
+      "height": 110,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0, 0],
+      "type": "text",
+      "text": "Detail 1 · the supplied image",
+      "states": [
+        "Detail 1 · the supplied image",
+        "The same image, a different view"
+      ],
+      "fontSize": 54,
+      "color": "#233B32",
+      "weight": "normal",
+      "font": "sans-serif",
+      "fontAsset": "commerce-font",
+      "textBox": { "locale": "th", "maxLines": 2, "lineHeight": 1.2 },
+      "align": "left"
+    },
+    {
+      "id": "phase1__mask",
+      "x": 150,
+      "y": 690,
+      "width": 220,
+      "height": 190,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0, 0],
+      "type": "rect",
+      "fill": "#8F2FE0",
+      "lineWidth": 0,
+      "radius": 45
+    },
+    {
+      "id": "phase2__detail",
+      "x": 700,
+      "y": 690,
+      "width": 220,
+      "height": 190,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0, 0],
+      "type": "group",
+      "clip": false
+    },
+    {
+      "id": "phase2__paper",
+      "parent": "phase2__detail",
+      "x": 0,
+      "y": 0,
+      "width": 220,
+      "height": 190,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "rect",
+      "fill": "#E5E0D4",
+      "lineWidth": 0,
+      "radius": 10
+    },
+    {
+      "id": "phase2__image",
+      "parent": "phase2__detail",
+      "x": 10,
+      "y": 10,
+      "width": 200,
+      "height": 170,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "image",
+      "states": [
+        { "asset": "product-image" },
+        {
+          "asset": "product-image",
+          "crop": [168.29999999999998, 140.20000000000002, 785.4, 981.4]
+        }
+      ],
+      "fit": "contain"
+    },
+    {
+      "id": "phase2__badge",
+      "x": 944,
+      "y": 720,
+      "width": 220,
+      "height": 100,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0, 0],
+      "type": "text",
+      "text": "Detail 2",
+      "fontSize": 42,
+      "color": "#477D65",
+      "weight": "normal",
+      "font": "sans-serif",
+      "fontAsset": "commerce-font",
+      "textBox": { "locale": "en", "maxLines": 2, "lineHeight": 1.2 },
+      "align": "left"
+    },
+    {
+      "id": "phase2__caption",
+      "x": 700,
+      "y": 910,
+      "width": 480,
+      "height": 110,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0, 0],
+      "type": "text",
+      "text": "A closer look at the supplied detail",
+      "states": [
+        "A closer look at the supplied detail",
+        "The same image, a different view"
+      ],
+      "fontSize": 54,
+      "color": "#233B32",
+      "weight": "normal",
+      "font": "sans-serif",
+      "fontAsset": "commerce-font",
+      "textBox": { "locale": "th", "maxLines": 2, "lineHeight": 1.2 },
+      "align": "left"
+    },
+    {
+      "id": "phase2__mask",
+      "x": 700,
+      "y": 690,
+      "width": 220,
+      "height": 190,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0, 0],
+      "type": "rect",
+      "fill": "#8F2FE0",
+      "lineWidth": 0,
+      "radius": 45
+    },
+    {
+      "id": "phase3__detail",
+      "x": 1250,
+      "y": 690,
+      "width": 220,
+      "height": 190,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0, 0],
+      "type": "group",
+      "clip": false
+    },
+    {
+      "id": "phase3__paper",
+      "parent": "phase3__detail",
+      "x": 0,
+      "y": 0,
+      "width": 220,
+      "height": 190,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "rect",
+      "fill": "#E5E0D4",
+      "lineWidth": 0,
+      "radius": 10
+    },
+    {
+      "id": "phase3__image",
+      "parent": "phase3__detail",
+      "x": 10,
+      "y": 10,
+      "width": 200,
+      "height": 170,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "image",
+      "states": [
+        { "asset": "product-image" },
+        {
+          "asset": "product-image",
+          "crop": [168.29999999999998, 140.20000000000002, 785.4, 981.4]
+        }
+      ],
+      "fit": "contain"
+    },
+    {
+      "id": "phase3__badge",
+      "x": 1494,
+      "y": 720,
+      "width": 220,
+      "height": 100,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0, 0],
+      "type": "text",
+      "text": "Detail 3",
+      "fontSize": 42,
+      "color": "#477D65",
+      "weight": "normal",
+      "font": "sans-serif",
+      "fontAsset": "commerce-font",
+      "textBox": { "locale": "en", "maxLines": 2, "lineHeight": 1.2 },
+      "align": "left"
+    },
+    {
+      "id": "phase3__caption",
+      "x": 1250,
+      "y": 910,
+      "width": 480,
+      "height": 110,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0, 0],
+      "type": "text",
+      "text": "Detail 3 · the supplied image",
+      "states": [
+        "Detail 3 · the supplied image",
+        "The same image, a different view"
+      ],
+      "fontSize": 54,
+      "color": "#233B32",
+      "weight": "normal",
+      "font": "sans-serif",
+      "fontAsset": "commerce-font",
+      "textBox": { "locale": "th", "maxLines": 2, "lineHeight": 1.2 },
+      "align": "left"
+    },
+    {
+      "id": "phase3__mask",
+      "x": 1250,
+      "y": 690,
+      "width": 220,
+      "height": 190,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0, 0],
+      "type": "rect",
+      "fill": "#8F2FE0",
+      "lineWidth": 0,
+      "radius": 45
+    }
+  ],
+  "provenance": "Fictional SAMPLE 01 engineering demonstration; supplied intact image reused without alteration.",
+  "schemaVersion": "commerce-scene-1",
+  "componentData": {
+    "schemaVersion": "scene-components-3",
+    "annotations": [],
+    "values": [
+      {
+        "id": "phase1__aperture",
+        "range": [0, 1],
+        "from": 0.2,
+        "to": 1,
+        "window": {
+          "start": 12,
+          "end": 47,
+          "easing": "in-out-sine",
+          "cue": "phase1__aperture"
+        }
+      },
+      {
+        "id": "phase2__aperture",
+        "range": [0, 1],
+        "from": 0.2,
+        "to": 1,
+        "window": {
+          "start": 72,
+          "end": 107,
+          "easing": "in-out-sine",
+          "cue": "phase2__aperture"
+        }
+      },
+      {
+        "id": "phase3__aperture",
+        "range": [0, 1],
+        "from": 0.2,
+        "to": 1,
+        "window": {
+          "start": 120,
+          "end": 155,
+          "easing": "in-out-sine",
+          "cue": "phase3__aperture"
+        }
+      }
+    ],
+    "bindings": [
+      {
+        "kind": "property",
+        "value": "phase1__aperture",
+        "target": "phase1__mask",
+        "property": "reveal",
+        "output": [0, 1]
+      },
+      {
+        "kind": "property",
+        "value": "phase2__aperture",
+        "target": "phase2__mask",
+        "property": "reveal",
+        "output": [0, 1]
+      },
+      {
+        "kind": "property",
+        "value": "phase3__aperture",
+        "target": "phase3__mask",
+        "property": "reveal",
+        "output": [0, 1]
+      }
+    ],
+    "states": [
+      {
+        "id": "phase1__crop",
+        "target": "phase1__image",
+        "initial": 0,
+        "cuts": [{ "id": "phase1__crop-change", "frame": 36, "state": 1 }]
+      },
+      {
+        "id": "phase1__caption-state",
+        "target": "phase1__caption",
+        "initial": 0,
+        "cuts": [{ "id": "phase1__caption-change", "frame": 36, "state": 1 }]
+      },
+      {
+        "id": "phase2__crop",
+        "target": "phase2__image",
+        "initial": 0,
+        "cuts": [{ "id": "phase2__crop-change", "frame": 96, "state": 1 }]
+      },
+      {
+        "id": "phase2__caption-state",
+        "target": "phase2__caption",
+        "initial": 0,
+        "cuts": [{ "id": "phase2__caption-change", "frame": 96, "state": 1 }]
+      },
+      {
+        "id": "phase3__crop",
+        "target": "phase3__image",
+        "initial": 0,
+        "cuts": [{ "id": "phase3__crop-change", "frame": 144, "state": 1 }]
+      },
+      {
+        "id": "phase3__caption-state",
+        "target": "phase3__caption",
+        "initial": 0,
+        "cuts": [{ "id": "phase3__caption-change", "frame": 144, "state": 1 }]
+      }
+    ],
+    "travels": [],
+    "visibility": [
+      {
+        "id": "phase1__lifetime-detail",
+        "target": "phase1__detail",
+        "window": { "start": 12, "end": 60, "cue": "phase1__lifetime-detail" }
+      },
+      {
+        "id": "phase1__lifetime-badge",
+        "target": "phase1__badge",
+        "window": { "start": 12, "end": 60, "cue": "phase1__lifetime-badge" }
+      },
+      {
+        "id": "phase1__lifetime-caption",
+        "target": "phase1__caption",
+        "window": { "start": 12, "end": 60, "cue": "phase1__lifetime-caption" }
+      },
+      {
+        "id": "phase1__lifetime-mask",
+        "target": "phase1__mask",
+        "window": { "start": 12, "end": 60, "cue": "phase1__lifetime-mask" }
+      },
+      {
+        "id": "phase2__lifetime-detail",
+        "target": "phase2__detail",
+        "window": { "start": 72, "end": 120, "cue": "phase2__lifetime-detail" }
+      },
+      {
+        "id": "phase2__lifetime-badge",
+        "target": "phase2__badge",
+        "window": { "start": 72, "end": 120, "cue": "phase2__lifetime-badge" }
+      },
+      {
+        "id": "phase2__lifetime-caption",
+        "target": "phase2__caption",
+        "window": { "start": 72, "end": 120, "cue": "phase2__lifetime-caption" }
+      },
+      {
+        "id": "phase2__lifetime-mask",
+        "target": "phase2__mask",
+        "window": { "start": 72, "end": 120, "cue": "phase2__lifetime-mask" }
+      },
+      {
+        "id": "phase3__lifetime-detail",
+        "target": "phase3__detail",
+        "window": { "start": 120, "end": 168, "cue": "phase3__lifetime-detail" }
+      },
+      {
+        "id": "phase3__lifetime-badge",
+        "target": "phase3__badge",
+        "window": { "start": 120, "end": 168, "cue": "phase3__lifetime-badge" }
+      },
+      {
+        "id": "phase3__lifetime-caption",
+        "target": "phase3__caption",
+        "window": {
+          "start": 120,
+          "end": 168,
+          "cue": "phase3__lifetime-caption"
+        }
+      },
+      {
+        "id": "phase3__lifetime-mask",
+        "target": "phase3__mask",
+        "window": { "start": 120, "end": 168, "cue": "phase3__lifetime-mask" }
+      }
+    ],
+    "pins": [
+      {
+        "id": "phase1__badge-pin",
+        "target": "phase1__badge",
+        "anchor": {
+          "node": "phase1__detail",
+          "point": [220, 30],
+          "space": "node",
+          "offset": [24, 0]
+        }
+      },
+      {
+        "id": "phase2__badge-pin",
+        "target": "phase2__badge",
+        "anchor": {
+          "node": "phase2__detail",
+          "point": [220, 30],
+          "space": "node",
+          "offset": [24, 0]
+        }
+      },
+      {
+        "id": "phase3__badge-pin",
+        "target": "phase3__badge",
+        "anchor": {
+          "node": "phase3__detail",
+          "point": [220, 30],
+          "space": "node",
+          "offset": [24, 0]
+        }
+      }
+    ],
+    "textFits": [
+      { "target": "phase1__caption", "minSize": 32, "maxSize": 54 },
+      { "target": "phase2__caption", "minSize": 32, "maxSize": 54 },
+      { "target": "phase3__caption", "minSize": 32, "maxSize": 54 }
+    ],
+    "masks": [
+      { "target": "phase1__detail", "mask": "phase1__mask", "invert": false },
+      { "target": "phase2__detail", "mask": "phase2__mask", "invert": false },
+      { "target": "phase3__detail", "mask": "phase3__mask", "invert": false }
+    ]
+  },
+  "width": 1920,
+  "height": 1080,
+  "frameCount": 192,
+  "recipe": { "preset": "studio" },
+  "events": [
+    {
+      "node": "phase1__detail",
+      "property": "y",
+      "start": 12,
+      "end": 47,
+      "to": 666,
+      "easing": "in-out-sine"
+    },
+    {
+      "node": "phase2__detail",
+      "property": "y",
+      "start": 72,
+      "end": 107,
+      "to": 666,
+      "easing": "in-out-sine"
+    },
+    {
+      "node": "phase3__detail",
+      "property": "y",
+      "start": 120,
+      "end": 155,
+      "to": 666,
+      "easing": "in-out-sine"
+    }
+  ],
+  "geometry": [],
+  "metadata": {
+    "registration": { "status": "experimental" },
+    "catalogVersion": "1.0",
+    "selection": { "kind": "component-demo", "id": "studio" },
+    "profile": "landscape",
+    "productId": "sample-01",
+    "productSource": "Existing fictional intact SAMPLE 01 PNG",
+    "copySource": "Meet SAMPLE 01.",
+    "claimSources": [],
+    "locale": "en",
+    "protectedRegion": [0, 0, 1, 1]
+  }
+}

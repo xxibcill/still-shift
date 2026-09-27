@@ -1,0 +1,215 @@
+{
+  "date": "2026-09-27",
+  "milestone": "E7 portable workspace directory packaging",
+  "baseCommit": "fb562b3",
+  "implementation": "codex/story-workspace-packaging branch; original E1–E6 records are unchanged.",
+  "environment": {
+    "node": "22.23.1",
+    "pnpm": "10.29.3",
+    "python": "3.12.11",
+    "uv": "0.7.12",
+    "playwright": "1.62.1",
+    "chromiumRevision": "1234",
+    "chromiumVersion": "151.0.7922.34",
+    "ffmpeg": "8.0.1"
+  },
+  "fixture": {
+    "path": "benchmarks/fixtures/story-authoring/linked-comparison.json",
+    "sha256": "3687715aceb398ed81d98a8ce98df38c7e6f8eabeae5a672d6ed5a08a0fa5202"
+  },
+  "checks": [
+    {
+      "command": "pnpm exec vitest run tests/unit tests/integration",
+      "status": "passed",
+      "files": 61,
+      "tests": 349
+    },
+    {
+      "command": "pnpm test:browser:passage:authoring",
+      "status": "passed",
+      "output": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-authoring-HNwR7l"
+    },
+    {
+      "command": "pnpm build",
+      "status": "passed"
+    },
+    {
+      "command": "pnpm exec eslint .",
+      "status": "passed"
+    },
+    {
+      "command": "pnpm schema:check",
+      "status": "passed"
+    },
+    {
+      "command": "pnpm exec prettier --check <changed TypeScript, JSON and Markdown files>",
+      "status": "passed"
+    },
+    {
+      "command": "pnpm toolchain:check",
+      "status": "passed"
+    },
+    {
+      "command": "pnpm exec vitest run tests/integration/story-workspace.test.ts tests/integration/passage-lab.test.ts",
+      "status": "passed",
+      "files": 2,
+      "tests": 25,
+      "note": "Final rerun after loader cleanup."
+    }
+  ],
+  "lab": {
+    "packageRelocation": "passed",
+    "identicalPreviewFrame": 192,
+    "invalidPackageRetainsValidPreview": "passed"
+  },
+  "sample": {
+    "packageCommand": "pnpm story:package --plan benchmarks/fixtures/story-authoring/linked-comparison.json --output-dir benchmarks/results/story-workspace-20260927",
+    "loadCommand": "pnpm story:passage --plan benchmarks/results/story-workspace-20260927/workspace.json --output-dir benchmarks/results/story-workspace-prepared-20260927 --prepare-only",
+    "status": "passed",
+    "dependencyFiles": 16,
+    "dependencyBytes": 906979,
+    "frameCount": 576,
+    "manifestSha256": "74ee988a4241259291aa54729708d57c593f489bfa1ec6f5efa3fce13e346bca"
+  },
+  "browser": {
+    "status": "passed",
+    "scores": [
+      {
+        "frame": 0,
+        "version": "golden-parity-0.7.0",
+        "meanAbsoluteError": 0.008498497135479706,
+        "edgeAbsoluteError": 0.0035222988523392652,
+        "channelMeanError": 0.008900689905591867,
+        "warning": null
+      },
+      {
+        "frame": 54,
+        "version": "golden-parity-0.7.0",
+        "meanAbsoluteError": 0.00850480109739369,
+        "edgeAbsoluteError": 0.0034972245569461556,
+        "channelMeanError": 0.008912037037037038,
+        "warning": null
+      },
+      {
+        "frame": 110,
+        "version": "golden-parity-0.7.0",
+        "meanAbsoluteError": 0.008496479867667231,
+        "edgeAbsoluteError": 0.003599312759618103,
+        "channelMeanError": 0.008959694989106754,
+        "warning": null
+      },
+      {
+        "frame": 191,
+        "version": "golden-parity-0.7.0",
+        "meanAbsoluteError": 0.008506818365206165,
+        "edgeAbsoluteError": 0.0036248987753253583,
+        "channelMeanError": 0.008971042120551925,
+        "warning": null
+      },
+      {
+        "frame": 192,
+        "version": "golden-parity-0.7.0",
+        "meanAbsoluteError": 0.008525478092471556,
+        "edgeAbsoluteError": 0.0034660096177833045,
+        "channelMeanError": 0.008968016218833212,
+        "warning": null
+      },
+      {
+        "frame": 300,
+        "version": "golden-parity-0.7.0",
+        "meanAbsoluteError": 0.008556997902041475,
+        "edgeAbsoluteError": 0.0035417442242767793,
+        "channelMeanError": 0.00907770515613653,
+        "warning": null
+      },
+      {
+        "frame": 383,
+        "version": "golden-parity-0.7.0",
+        "meanAbsoluteError": 0.008560275962236746,
+        "edgeAbsoluteError": 0.003586775611921548,
+        "channelMeanError": 0.00906181917211329,
+        "warning": null
+      },
+      {
+        "frame": 384,
+        "version": "golden-parity-0.7.0",
+        "meanAbsoluteError": 0.00853581659001049,
+        "edgeAbsoluteError": 0.0034455408052175003,
+        "channelMeanError": 0.009005839990317115,
+        "warning": null
+      },
+      {
+        "frame": 575,
+        "version": "golden-parity-0.7.0",
+        "meanAbsoluteError": 0.00854312918583071,
+        "edgeAbsoluteError": 0.0035417442242767793,
+        "channelMeanError": 0.009073922778988138,
+        "warning": null
+      }
+    ],
+    "cache": [
+      {
+        "beat": "compare",
+        "key": "d8e1510ae9376cdab57ccc8e06cd711756154380e603be4c6d806d9671393dc6",
+        "reused": true,
+        "sha256": "a2c94bb00fe42624c4bb0950bee2d16301a226b3db2db368b8045d7156484ce6"
+      },
+      {
+        "beat": "continue",
+        "key": "e4733564fc05fbaa76b90fc311c3e98122c280db8f298f4fde52592ee266f5db",
+        "reused": true,
+        "sha256": "a99273e72f20deae411af6df9a9e46f5c47222f8c0051d2ab3eb15d2bb4cd26f"
+      },
+      {
+        "beat": "reset",
+        "key": "50e8cc27122146d0cfca8b42e994a41a60f8eed0d084060a9a9e794e2217484e",
+        "reused": true,
+        "sha256": "2789b54f5f85de5be2dfc470e54434200970f30c15ff36115b06babd48555dca"
+      }
+    ],
+    "isolatedEdit": [
+      {
+        "beat": "compare",
+        "key": "21b9c2008eb3b9301dc0aab67a4c90909f6d6a07b69071b1e674650c969b1a35",
+        "reused": false,
+        "sha256": "a2798ffb889237f2df1181fa4039b4a088be95f0eba55d6bd5b5ec54e95b4eb3"
+      },
+      {
+        "beat": "continue",
+        "key": "e4733564fc05fbaa76b90fc311c3e98122c280db8f298f4fde52592ee266f5db",
+        "reused": true,
+        "sha256": "a99273e72f20deae411af6df9a9e46f5c47222f8c0051d2ab3eb15d2bb4cd26f"
+      },
+      {
+        "beat": "reset",
+        "key": "50e8cc27122146d0cfca8b42e994a41a60f8eed0d084060a9a9e794e2217484e",
+        "reused": true,
+        "sha256": "2789b54f5f85de5be2dfc470e54434200970f30c15ff36115b06babd48555dca"
+      }
+    ],
+    "range": {
+      "start": 180,
+      "end": 204,
+      "frames": 24
+    },
+    "browser": "cue editing, invalid recovery, slots, undo/redo, workspace round trip, playback, overlays, 390px layout",
+    "narratedFrames": 576,
+    "portableWorkspace": {
+      "files": 17,
+      "frames": 576,
+      "freshDecodedEquality": true,
+      "relocatedCacheReuse": true,
+      "narration": true
+    }
+  },
+  "limits": [
+    "Directory packages only; existing Lab JSON downloads still reference local files.",
+    "Renderer/runtime are not bundled; Lab package folders must be inside the checkout.",
+    "Narration must be explicitly supplied for narrated packages and selected for playback/rendering.",
+    "The manifest checks integrity, not authenticity; edits require repackaging.",
+    "No packaging performance improvement is claimed. Full pnpm check/test and Python checks were not rerun for this change."
+  ],
+  "executionNotes": [
+    "Local browser servers, tsx IPC and uv cache access required sandbox escalation; the checks passed with the required access."
+  ]
+}

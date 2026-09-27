@@ -1,0 +1,21 @@
+{
+  "schemaVersion": "reusable-demo-3",
+  "mode": "isolated",
+  "example": "pin",
+  "fps": 24,
+  "count": 3,
+  "gap": 32,
+  "stagger": 12,
+  "middleDelay": 0,
+  "middleText": "Second marker",
+  "from": 20,
+  "to": 80,
+  "decimals": 0,
+  "clipStart": 12,
+  "clipDuration": 48,
+  "anchorX": 24,
+  "anchorY": 0,
+  "minSize": 32,
+  "maxSize": 54,
+  "invert": false
+}

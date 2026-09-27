@@ -1,0 +1,145 @@
+{
+  "date": "2026-09-27",
+  "scope": ["RC-10", "RC-11", "RC-12", "RC-13", "RC-14"],
+  "status": "implemented; engineering checks passed; examples remain experimental",
+  "baseline": "28c24cb",
+  "planCommit": "09a2a84",
+  "contracts": {
+    "definitions": ["component-1", "component-2", "component-3"],
+    "resolved": [
+      "scene-components-1",
+      "scene-components-2",
+      "scene-components-3"
+    ],
+    "gallerySettings": [
+      "reusable-demo-1",
+      "reusable-demo-2",
+      "reusable-demo-3"
+    ],
+    "rendererVersions": {
+      "commerce": "commerce-canvas-0.19.0",
+      "story": "story-canvas-0.18.0"
+    },
+    "legacyFixturesChanged": 0
+  },
+  "unitAndIntegration": {
+    "command": "pnpm exec vitest run tests/unit tests/integration --maxWorkers=1 --no-file-parallelism",
+    "files": 65,
+    "tests": 395
+  },
+  "gallery": {
+    "examples": 20,
+    "newExamples": [
+      "visibility",
+      "sequence",
+      "pin",
+      "text-fit",
+      "mask",
+      "detail-sequence",
+      "supply-sequence"
+    ],
+    "contexts": ["commerce", "story", "isolated"],
+    "previewFrameRates": [24, 30],
+    "encodedExamples": 60,
+    "paritySamples": 627,
+    "parityWarnings": 0,
+    "maximumMeanAbsoluteError": 0.007225853304284676,
+    "maximumEdgeAbsoluteError": 0.002302741413652954,
+    "commands": [
+      "node --import tsx tests/browser/reusable-components.ts",
+      "node --import tsx tests/browser/reusable-components.ts --timing-only --smoke-only --ui-export"
+    ],
+    "checks": [
+      "24/30 fps direct and backward seeking across all 60 context combinations",
+      "source ZIP round trips and 60 fresh MP4 encodes with preview/export parity",
+      "focused final run covers 21 new context combinations and v3 commerce/story UI exports of 192 frames each",
+      "v1, v2 and v3 settings reload restores identical pixels",
+      "invalid clip duration and fit bounds preserve valid pixels and disable export",
+      "anchor offsets and mask inversion remain editable and survive reload",
+      "390px layout has no horizontal overflow",
+      "composed commerce and story examples visually inspected"
+    ]
+  },
+  "independentPixels": {
+    "samples": 144,
+    "maximumDifference": 1,
+    "fitChecks": 4,
+    "imageCutChecks": 20,
+    "flowChecks": 7,
+    "worst": {
+      "mode": "commerce",
+      "fps": 24,
+      "invert": true,
+      "alpha": 0.5,
+      "frame": 24,
+      "x": 60,
+      "y": 10,
+      "expected": 134,
+      "actual": 135
+    },
+    "checks": [
+      "normal and inverted masks, half alpha and visibility boundaries at 24/30 fps",
+      "commerce exposure samples remain on the correct side of visibility and image-state cuts",
+      "story masks apply camera projection once, including different target/mask camera policies",
+      "image-mask state changes are exact cuts",
+      "story flow tokens obey root gates and masks even when the path opacity is zero",
+      "pinned-font fitting selects the largest integer size that fits every authored state"
+    ],
+    "note": "Maximum byte difference of one is premultiplied-alpha rounding in the half-alpha inverted mask.",
+    "legacyBehaviorChecks": {
+      "stateMaximum": 0,
+      "stateSamples": 12,
+      "travelMaximum": 0,
+      "travelSamples": 28,
+      "unchangedInstanceMaximum": 0,
+      "editedInstancePixels": 2122
+    },
+    "fractionalNumericExposureDifference": 0
+  },
+  "portableWorkspace": {
+    "command": "node --import tsx tests/browser/reusable-component-package.ts --timing",
+    "frameCount": 576,
+    "beats": 3,
+    "freshRelocatedCacheReuses": 0,
+    "decodedHash": "SHA256=be8ceedf68ef684cb3d88ee1e43da5c955c81b925042874db97dfae37def2759",
+    "relocatedDecodedHash": "SHA256=be8ceedf68ef684cb3d88ee1e43da5c955c81b925042874db97dfae37def2759",
+    "checks": [
+      "gated phases, pins, fitted text states and masks survive template parameters, cue edits, undo/redo and relocation",
+      "unlinked lifetime retains its absolute half-open interval",
+      "relocated cache identities remain equal after the middle phase cue edit",
+      "fresh relocated render uses no source cache and all decoded frames match",
+      "passage preflight and preview/export use the same shared text fitting"
+    ]
+  },
+  "storyEditor": {
+    "checks": [
+      "visibility events label their end as exclusive",
+      "editing the middle phase cue from frame 72 to 78 retimes the linked lifetime and internal behaviors",
+      "undo/redo restores cue timing",
+      "unlink preserves the absolute lifetime [78,126)"
+    ]
+  },
+  "regressions": {
+    "story": "98 parity comparisons, 14 backward seeks, timing controls, phone layout, 646-frame export and 30fps CLI passed",
+    "commerceEffects": "15 effects/compositions; stationary alpha/color, fractional exposure/foreground occlusion, directional alpha, highlight mask and blur bounds passed",
+    "commerceSpatial": "8 examples; attachment, native matte, crop and text layout pixel checks passed",
+    "positionDependencies": "Pin cycles are rejected before camera coverage evaluation; nested parent and camera transforms remain correct"
+  },
+  "staticChecks": [
+    "pnpm build",
+    "ESLint and Ruff",
+    "Prettier and Ruff formatting",
+    "corpus schema",
+    "pinned toolchain",
+    "git diff --check"
+  ],
+  "limits": [
+    "visibility applies to roots with one half-open window per target; 100 combined native/shared windows per scene",
+    "up to 32 sequence clips; too-short clips fail without trimming or stretching; cross-clip owned-node references rejected",
+    "up to 32 pins; targets have one position writer and nonsingular parent transforms",
+    "up to 32 text fits; pinned fonts and fixed boxes; numeric fitting and duplicate native/shared fits rejected",
+    "up to 16 combined native/shared masks; root targets and authored alpha sources; no mask chains or text masks",
+    "no production registrations, crossfades, looping, route rebuilding, tangent orientation or physics"
+  ],
+  "localArtifacts": "benchmarks/results/reusable-components (ignored videos, pixel/parity reports, screenshots and package hashes)"
+}

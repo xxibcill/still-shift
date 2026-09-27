@@ -1,0 +1,240 @@
+{
+  "title": "Reusable components · commerce",
+  "fps": 24,
+  "background": "#F2EDE3",
+  "assets": [
+    {
+      "id": "product-image",
+      "path": "../../../assets/ecommerce-motion/beauty-floating-product-v1.png",
+      "sha256": "sha256:0c832682d129412b2fcd1b726e92275dc0dcbe12f1231d23c18efb3318b49e9c",
+      "width": 1122,
+      "height": 1402
+    }
+  ],
+  "fonts": [
+    {
+      "id": "commerce-font",
+      "path": "../../../assets/ecommerce-motion/fonts/noto-sans-thai.ttf",
+      "sha256": "sha256:5a1c559bb539583c8a1fd99d1c5b9491e5e14478c9cd2bd0970d5c3096cc9ef8",
+      "weight": "400"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "marker1__body",
+      "x": 112,
+      "y": 839,
+      "width": 280,
+      "height": 110,
+      "opacity": 0,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "group",
+      "clip": false
+    },
+    {
+      "id": "marker1__mark",
+      "parent": "marker1__body",
+      "x": 0,
+      "y": 0,
+      "width": 10,
+      "height": 94,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "rect",
+      "fill": "#477D65",
+      "lineWidth": 0,
+      "radius": 0
+    },
+    {
+      "id": "marker1__label",
+      "parent": "marker1__body",
+      "x": 24,
+      "y": 0,
+      "width": 256,
+      "height": 110,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "text",
+      "text": "Marker 1",
+      "fontSize": 36,
+      "color": "#233B32",
+      "weight": "normal",
+      "font": "sans-serif",
+      "fontAsset": "commerce-font",
+      "textBox": { "locale": "en", "maxLines": 2, "lineHeight": 1.25 },
+      "align": "left"
+    },
+    {
+      "id": "marker2__body",
+      "x": 820,
+      "y": 839,
+      "width": 280,
+      "height": 110,
+      "opacity": 0,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "group",
+      "clip": false
+    },
+    {
+      "id": "marker2__mark",
+      "parent": "marker2__body",
+      "x": 0,
+      "y": 0,
+      "width": 10,
+      "height": 94,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "rect",
+      "fill": "#477D65",
+      "lineWidth": 0,
+      "radius": 0
+    },
+    {
+      "id": "marker2__label",
+      "parent": "marker2__body",
+      "x": 24,
+      "y": 0,
+      "width": 256,
+      "height": 110,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "text",
+      "text": "Second marker",
+      "fontSize": 36,
+      "color": "#233B32",
+      "weight": "normal",
+      "font": "sans-serif",
+      "fontAsset": "commerce-font",
+      "textBox": { "locale": "en", "maxLines": 2, "lineHeight": 1.25 },
+      "align": "left"
+    },
+    {
+      "id": "marker3__body",
+      "x": 1528,
+      "y": 839,
+      "width": 280,
+      "height": 110,
+      "opacity": 0,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "group",
+      "clip": false
+    },
+    {
+      "id": "marker3__mark",
+      "parent": "marker3__body",
+      "x": 0,
+      "y": 0,
+      "width": 10,
+      "height": 94,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "rect",
+      "fill": "#477D65",
+      "lineWidth": 0,
+      "radius": 0
+    },
+    {
+      "id": "marker3__label",
+      "parent": "marker3__body",
+      "x": 24,
+      "y": 0,
+      "width": 256,
+      "height": 110,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "text",
+      "text": "Marker 3",
+      "fontSize": 36,
+      "color": "#233B32",
+      "weight": "normal",
+      "font": "sans-serif",
+      "fontAsset": "commerce-font",
+      "textBox": { "locale": "en", "maxLines": 2, "lineHeight": 1.25 },
+      "align": "left"
+    }
+  ],
+  "provenance": "Fictional SAMPLE 01 engineering demonstration; supplied intact image reused without alteration.",
+  "schemaVersion": "commerce-scene-1",
+  "componentData": {
+    "schemaVersion": "scene-components-1",
+    "annotations": [],
+    "values": [],
+    "bindings": []
+  },
+  "width": 1920,
+  "height": 1080,
+  "frameCount": 192,
+  "recipe": { "preset": "studio" },
+  "events": [
+    {
+      "node": "marker1__body",
+      "property": "y",
+      "start": 12,
+      "end": 30,
+      "to": 821,
+      "easing": "out-cubic"
+    },
+    {
+      "node": "marker1__body",
+      "property": "opacity",
+      "start": 12,
+      "end": 30,
+      "to": 1,
+      "easing": "linear"
+    },
+    {
+      "node": "marker2__body",
+      "property": "y",
+      "start": 12,
+      "end": 30,
+      "to": 821,
+      "easing": "out-cubic"
+    },
+    {
+      "node": "marker2__body",
+      "property": "opacity",
+      "start": 12,
+      "end": 30,
+      "to": 1,
+      "easing": "linear"
+    },
+    {
+      "node": "marker3__body",
+      "property": "y",
+      "start": 12,
+      "end": 30,
+      "to": 821,
+      "easing": "out-cubic"
+    },
+    {
+      "node": "marker3__body",
+      "property": "opacity",
+      "start": 12,
+      "end": 30,
+      "to": 1,
+      "easing": "linear"
+    }
+  ],
+  "geometry": [],
+  "metadata": {
+    "registration": { "status": "experimental" },
+    "catalogVersion": "1.0",
+    "selection": { "kind": "component-demo", "id": "studio" },
+    "profile": "landscape",
+    "productId": "sample-01",
+    "productSource": "Existing fictional intact SAMPLE 01 PNG",
+    "copySource": "Meet SAMPLE 01.",
+    "claimSources": [],
+    "locale": "en",
+    "protectedRegion": [0, 0, 1, 1]
+  }
+}

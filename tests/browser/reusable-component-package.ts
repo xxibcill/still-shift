@@ -1,0 +1,94 @@
+import assert from "node:assert/strict";
+import { execFile } from "node:child_process";
+import { promisify } from "node:util";
+import { mkdir, mkdtemp, rename, writeFile, rm } from "node:fs/promises";
+import { join, resolve } from "node:path";
+import { tmpdir } from "node:os";
+import {
+  readStoryPassage,
+  writePreparedPassage,
+} from "../../packages/animation-engine/src/story-passage-io.ts";
+import { writeStoryWorkspace } from "../../packages/animation-engine/src/story-workspace.ts";
+import { renderStoryPassage } from "../../packages/animation-engine/src/story-passage-render.ts";
+
+const timing = process.argv.includes("--timing");
+const behaviors = process.argv.includes("--behaviors");
+const expectedFrames = behaviors ? 768 : 576;
+const run = promisify(execFile),
+  output = resolve("benchmarks/results/reusable-components"),
+  temp = await mkdtemp(join(tmpdir(), "shared-component-package-"));
+await mkdir(output, { recursive: true });
+try {
+  const source = await readStoryPassage(
+    resolve(
+      timing
+        ? "benchmarks/fixtures/reusable-components/story-timing.passage.json"
+        : behaviors
+          ? "benchmarks/fixtures/reusable-components/story-behaviors.passage.json"
+          : "benchmarks/fixtures/reusable-components/story-components.passage.json",
+    ),
+  );
+  const directory = join(temp, "source");
+  await writePreparedPassage(directory, source);
+  const original = await renderStoryPassage(directory, source, undefined, {
+    cacheDirectory: join(temp, "source-cache"),
+  });
+  await writeStoryWorkspace(join(temp, "package"), source);
+  await rename(join(temp, "package"), join(temp, "relocated"));
+  const restored = await readStoryPassage(
+    join(temp, "relocated/workspace.json"),
+  );
+  const moved = join(temp, "fresh-relocated");
+  await writePreparedPassage(moved, restored);
+  const rendered = await renderStoryPassage(moved, restored, undefined, {
+    cacheDirectory: join(temp, "fresh-cache"),
+  });
+  assert.equal(original.frameCount, expectedFrames);
+  assert.equal(rendered.frameCount, expectedFrames);
+  assert.equal(rendered.cache.filter((c) => c.reused).length, 0);
+  const hash = async (video: string) =>
+    (
+      await run("ffmpeg", [
+        "-v",
+        "error",
+        "-i",
+        video,
+        "-map",
+        "0:v",
+        "-f",
+        "hash",
+        "-hash",
+        "sha256",
+        "-",
+      ])
+    ).stdout.trim();
+  const before = await hash(original.video.path),
+    after = await hash(rendered.video.path);
+  assert.equal(after, before);
+  await writeFile(
+    join(
+      output,
+      timing
+        ? "timing-package-verification.json"
+        : behaviors
+          ? "behavior-package-verification.json"
+          : "package-verification.json",
+    ),
+    JSON.stringify(
+      {
+        frameCount: expectedFrames,
+        beats: source.beats.length,
+        freshRelocatedCacheReuses: 0,
+        decodedHash: before,
+        relocatedDecodedHash: after,
+      },
+      null,
+      2,
+    ) + "\n",
+  );
+  console.log(
+    `Shared component package: ${expectedFrames} frames match exactly after relocation and fresh rendering.`,
+  );
+} finally {
+  await rm(temp, { recursive: true, force: true });
+}

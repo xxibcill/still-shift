@@ -1,9 +1,11 @@
 import assert from "node:assert/strict";
-import { readFile } from "node:fs/promises";
-import { resolve } from "node:path";
+import { mkdtemp, readFile, rename, rm, writeFile } from "node:fs/promises";
+import { join, resolve } from "node:path";
 import { chromium, type Browser } from "playwright";
 import { afterAll, beforeAll, describe, test } from "vitest";
 import { createServer, type ViteDevServer } from "vite";
+import { readStoryPassage } from "../../packages/animation-engine/src/story-passage-io.ts";
+import { writeStoryWorkspace } from "../../packages/animation-engine/src/story-workspace.ts";
 
 describe("passage Lab file actions", () => {
   let server: ViteDevServer;
@@ -24,6 +26,58 @@ describe("passage Lab file actions", () => {
     await browser?.close();
     await server?.close();
   });
+
+  test("relocated packages load the same frames and reject corruption without replacing the preview", async () => {
+    const directory = await mkdtemp(
+      resolve("benchmarks/results/workspace-lab-"),
+    );
+    const page = await browser.newPage();
+    try {
+      const passage = await readStoryPassage(
+        resolve("benchmarks/fixtures/story-authoring/linked-comparison.json"),
+      );
+      const manifest = await writeStoryWorkspace(
+        join(directory, "original"),
+        passage,
+      );
+      const moved = join(directory, "moved");
+      await rename(join(directory, "original"), moved);
+      await page.goto(base + "passage.html");
+      await page.waitForFunction(() =>
+        document.querySelector("#status")?.textContent?.includes("576 frames"),
+      );
+      const capture = (frame: number) =>
+        page.evaluate((frame) => {
+          window.passageLab!.seek(frame);
+          return document
+            .querySelector<HTMLCanvasElement>("#preview")!
+            .toDataURL();
+        }, frame);
+      const expected = await capture(192);
+      await page.locator("#plan-path").fill(join(moved, "workspace.json"));
+      await page.locator("#load-form button").click();
+      await page.waitForFunction(
+        () => (window.passageLab!.snapshot() as { frame: number }).frame === 0,
+      );
+      assert.equal(await capture(192), expected);
+      const snapshot = await page.evaluate(() => window.passageLab!.snapshot());
+      const file = manifest.files.find((file) => file.kind === "asset")!;
+      await writeFile(join(moved, file.path), "corrupted");
+      await page.locator("#load-form button").click();
+      await page.waitForFunction(() =>
+        document
+          .querySelector("#errors")
+          ?.textContent?.includes("checksum or size differs"),
+      );
+      assert.deepEqual(
+        await page.evaluate(() => window.passageLab!.snapshot()),
+        snapshot,
+      );
+    } finally {
+      await page.close();
+      await rm(directory, { recursive: true, force: true });
+    }
+  }, 30_000);
 
   test.each([
     ["save-plan", false],
@@ -90,6 +144,175 @@ describe("passage Lab file actions", () => {
     },
     30_000,
   );
+
+  test("shared state cuts expose point controls and preserve cue edits through undo, redo and unlink", async () => {
+    const page = await browser.newPage();
+    page.setDefaultTimeout(10000);
+    try {
+      await page.goto(base + "passage.html");
+      await page.waitForFunction(() =>
+        document.querySelector("#status")?.textContent?.includes("576 frames"),
+      );
+      await page
+        .locator("#plan-path")
+        .fill(
+          resolve(
+            "benchmarks/fixtures/reusable-components/story-behaviors.passage.json",
+          ),
+        );
+      await page.locator("#load-form button").click();
+      await page.waitForFunction(() =>
+        document.querySelector("#status")?.textContent?.includes("768 frames"),
+      );
+      await page.locator("#beat").selectOption("3");
+      assert.equal(
+        await page
+          .getByLabel("behavior__caption-change duration", { exact: true })
+          .count(),
+        0,
+      );
+      assert.equal(
+        await page.getByLabel("change frame", { exact: true }).count(),
+        2,
+      );
+      // The cue and optional timing slot deliberately share their human label; choose the cue group.
+      const input = page
+        .locator("#cues")
+        .getByLabel("change frame", { exact: true });
+      await input.fill("96");
+      await input.press("Tab");
+      await page.waitForFunction(() =>
+        document
+          .querySelector("#bindings")
+          ?.textContent?.includes("behavior__caption-change · frame 96"),
+      );
+      await page.locator("#undo").click();
+      await page.waitForFunction(() =>
+        document
+          .querySelector("#bindings")
+          ?.textContent?.includes("behavior__caption-change · frame 80"),
+      );
+      await page.locator("#redo").click();
+      await page.waitForFunction(() =>
+        document
+          .querySelector("#bindings")
+          ?.textContent?.includes("behavior__caption-change · frame 96"),
+      );
+      await page.getByText("Linked events", { exact: true }).click();
+      await page
+        .getByRole("button", {
+          name: "Unlink behavior__caption-change",
+          exact: true,
+        })
+        .click();
+      await page.waitForFunction(() =>
+        document
+          .querySelector("#bindings")
+          ?.textContent?.includes("Link behavior__caption-change to cue"),
+      );
+      const snapshot = (await page.evaluate(() =>
+        window.passageLab!.snapshot(),
+      )) as {
+        plan: {
+          beats: { timing: Record<string, { start: number; end: number }> }[];
+        };
+      };
+      assert.deepEqual(
+        snapshot.plan.beats[3]!.timing["behavior__caption-change"],
+        { start: 96, end: 96 },
+      );
+    } catch (error) {
+      throw new Error(
+        "Shared state controls: " +
+          (await page.locator("#status").textContent()) +
+          " / " +
+          (await page.locator("#errors").textContent()),
+        { cause: error },
+      );
+    } finally {
+      await page.close();
+    }
+  }, 30000);
+
+  test("shared lifetimes expose exclusive ends and retime a whole linked phase", async () => {
+    const page = await browser.newPage();
+    try {
+      await page.goto(base + "passage.html");
+      await page.waitForFunction(() =>
+        document.querySelector("#status")?.textContent?.includes("576 frames"),
+      );
+      await page
+        .locator("#plan-path")
+        .fill(
+          resolve(
+            "benchmarks/fixtures/reusable-components/story-timing.passage.json",
+          ),
+        );
+      await page.locator("#load-form button").click();
+      await page.waitForFunction(
+        () =>
+          (window.passageLab!.snapshot() as { plan: { id: string } }).plan
+            .id === "shared-timing",
+      );
+      await page.locator("#beat").selectOption("2");
+      await page
+        .locator("#cues")
+        .getByLabel("phase2 frame", { exact: true })
+        .fill("78");
+      await page
+        .locator("#cues")
+        .getByLabel("phase2 frame", { exact: true })
+        .press("Tab");
+      await page.waitForFunction(() =>
+        document
+          .querySelector("#bindings")
+          ?.textContent?.includes(
+            "phase2__lifetime-detail · 78–126 (end exclusive)",
+          ),
+      );
+      await page.locator("#undo").click();
+      await page.waitForFunction(() =>
+        document
+          .querySelector("#bindings")
+          ?.textContent?.includes(
+            "phase2__lifetime-detail · 72–120 (end exclusive)",
+          ),
+      );
+      await page.locator("#redo").click();
+      await page.waitForFunction(() =>
+        document
+          .querySelector("#bindings")
+          ?.textContent?.includes(
+            "phase2__lifetime-detail · 78–126 (end exclusive)",
+          ),
+      );
+      await page.getByText("Linked events", { exact: true }).click();
+      await page
+        .getByRole("button", {
+          name: "Unlink phase2__lifetime-detail",
+          exact: true,
+        })
+        .click();
+      await page.waitForFunction(() =>
+        document
+          .querySelector("#bindings")
+          ?.textContent?.includes("Link phase2__lifetime-detail to cue"),
+      );
+      const snapshot = (await page.evaluate(() =>
+        window.passageLab!.snapshot(),
+      )) as {
+        plan: {
+          beats: { timing: Record<string, { start: number; end: number }> }[];
+        };
+      };
+      assert.deepEqual(
+        snapshot.plan.beats[2]!.timing["phase2__lifetime-detail"],
+        { start: 78, end: 126 },
+      );
+    } finally {
+      await page.close();
+    }
+  }, 30000);
 
   test("relative-plan import uses its explicit base directory", async () => {
     const page = await browser.newPage();

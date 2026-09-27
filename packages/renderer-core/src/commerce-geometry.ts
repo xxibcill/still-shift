@@ -1,4 +1,6 @@
 import type { CommerceRenderScene } from "./commerce-scene.ts";
+import type { StoryRenderScene } from "./story-scene.ts";
+import { storyCameraTransform } from "./story-camera.ts";
 import type { PreparedNode } from "../../scene-contract/src/prepared.ts";
 import type { CommerceGeometry } from "../../scene-contract/src/commerce-spatial.ts";
 import { evaluatePreparedNodeAtTime } from "./prepared-scene.ts";
@@ -13,16 +15,29 @@ import {
 } from "./node-transform.ts";
 import type { ComponentBounds } from "./commerce-composition.ts";
 export function worldMatrix(
-  scene: CommerceRenderScene,
+  scene: CommerceRenderScene | StoryRenderScene,
   node: PreparedNode,
   time: number,
 ): Matrix {
   const own = nodeMatrix(node, evaluatePreparedNodeAtTime(scene, node, time));
-  if (!node.parent) return own;
-  const parent = scene.nodes.find((n) => n.id === node.parent);
-  if (!parent) throw new Error("Missing transform parent " + node.parent);
-  return multiplyMatrix(worldMatrix(scene, parent, time), own);
+  return multiplyMatrix(parentWorldMatrix(scene, node, time), own);
 }
+/** Transform the target's parent coordinates to canvas, including a root's camera once. */
+export function parentWorldMatrix(
+  scene: CommerceRenderScene | StoryRenderScene,
+  node: PreparedNode,
+  time: number,
+): Matrix {
+  if (node.parent) {
+    const parent = scene.nodes.find((n) => n.id === node.parent);
+    if (!parent) throw new Error("Missing transform parent " + node.parent);
+    return worldMatrix(scene, parent, time);
+  }
+  if (scene.schemaVersion !== "story-scene-1") return [1, 0, 0, 1, 0, 0];
+  const camera = storyCameraTransform(scene, node.id, time);
+  return [camera.scale, 0, 0, camera.scale, camera.x, camera.y];
+}
+
 function geometryFor(scene: CommerceRenderScene, id: string) {
   const geometry = scene.geometry?.find((g) => g.node === id),
     node = scene.nodes.find((n) => n.id === id);
@@ -145,6 +160,22 @@ function crossesPolygon(a: Point, b: Point, polygon: Point[]) {
     if (lower >= upper) return false;
   }
   return lower < upper;
+}
+export function assertProtectedPathClear(
+  scene: CommerceRenderScene,
+  source: string,
+  points: Point[],
+  time: number,
+  path: string,
+) {
+  const { geometry } = geometryFor(scene, source);
+  for (const box of geometry.protectedRegions) {
+    const polygon = sourceBoxCorners(scene, source, box, time);
+    if (points.slice(1).some((p, i) => crossesPolygon(points[i]!, p, polygon)))
+      throw new Error(
+        "Attached path crosses protected product region: " + path,
+      );
+  }
 }
 export function evaluateAttachedPath(
   scene: CommerceRenderScene,

@@ -1,3 +1,6 @@
+import { componentMasks, compositeRootMask } from "./component-mask.ts";
+import { componentVisibilityCuts } from "./component-visibility.ts";
+import { componentStateCuts } from "./component-state.ts";
 import { nodeMatrix } from "./node-transform.ts";
 import type { CommerceRenderScene } from "./commerce-scene.ts";
 import type { PreparedNode } from "../../scene-contract/src/prepared.ts";
@@ -122,7 +125,8 @@ export function createCommerceEffectsRenderer(
   paint: Paint,
 ) {
   const effects = scene.effects ?? [];
-  const maskIds = new Set(scene.mattes?.map((m) => m.mask) ?? []);
+  const mattes = [...(scene.mattes ?? []), ...componentMasks(scene)];
+  const maskIds = new Set(mattes.map((m) => m.mask));
   const roots = scene.nodes.filter(
     (node) => !node.parent && !maskIds.has(node.id),
   );
@@ -292,7 +296,7 @@ export function createCommerceEffectsRenderer(
         "target" in effect &&
         effect.target === node.id,
     );
-    const matte = scene.mattes?.find((m) => m.target === node.id);
+    const matte = mattes.find((m) => m.target === node.id);
     if (
       !matte &&
       !treatments.some((effect) =>
@@ -355,12 +359,7 @@ export function createCommerceEffectsRenderer(
     if (matte) {
       clear(scratch);
       paint(scratch.ctx, scene.nodes.find((n) => n.id === matte.mask)!, frame);
-      layer.ctx.save();
-      layer.ctx.globalCompositeOperation = matte.invert
-        ? "destination-out"
-        : "destination-in";
-      layer.ctx.drawImage(scratch.canvas, 0, 0);
-      layer.ctx.restore();
+      compositeRootMask(layer.ctx, scratch.canvas, matte.invert);
     }
     ctx.drawImage(layer.canvas, 0, 0);
   }
@@ -408,6 +407,8 @@ export function createCommerceEffectsRenderer(
       const cuts = [
         0,
         scene.frameCount,
+        ...componentStateCuts(scene),
+        ...componentVisibilityCuts(scene),
         ...(scene.visibility ?? []).flatMap((v) => [v.start, v.end]),
         ...effects.flatMap((e) =>
           e.active ? [e.active.start, e.active.end] : [],
@@ -430,8 +431,12 @@ export function createCommerceEffectsRenderer(
         ].includes(effect.type),
       );
       if (
-        !scene.mattes?.length &&
+        !mattes.length &&
         !scene.attachments?.length &&
+        !scene.componentData?.annotations.length &&
+        !scene.componentData?.bindings.some(
+          (binding) => binding.kind === "text",
+        ) &&
         !animatedImageEffects &&
         roots.every((node) => {
           const current = pose(node, frame);

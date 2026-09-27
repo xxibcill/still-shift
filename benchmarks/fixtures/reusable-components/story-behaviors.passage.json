@@ -1,0 +1,77 @@
+{
+  "schemaVersion": "story-passage-2",
+  "id": "shared-behaviors",
+  "title": "Shared behavior engineering examples",
+  "styleProfile": { "schemaVersion": "story-style-1", "id": "neutral-test" },
+  "contentPolicy": "general",
+  "fps": 24,
+  "sourceStartFrame": 0,
+  "beats": [
+    {
+      "id": "transform",
+      "template": "story-transform.json",
+      "purpose": "compare",
+      "takeaway": "Demonstrate transform",
+      "focus": ["house-a", "house-b"],
+      "intensity": "develop",
+      "frameCount": 192,
+      "cues": [],
+      "parameters": {},
+      "bindings": {}
+    },
+    {
+      "id": "state",
+      "template": "story-state.json",
+      "purpose": "compare",
+      "takeaway": "Demonstrate state",
+      "focus": ["house-a", "house-b"],
+      "intensity": "develop",
+      "frameCount": 192,
+      "cues": [],
+      "parameters": {},
+      "bindings": {}
+    },
+    {
+      "id": "travel",
+      "template": "story-travel.json",
+      "purpose": "compare",
+      "takeaway": "Demonstrate travel",
+      "focus": ["house-a", "house-b"],
+      "intensity": "develop",
+      "frameCount": 192,
+      "cues": [],
+      "parameters": {},
+      "bindings": {}
+    },
+    {
+      "id": "supply",
+      "template": "story-supply.template.json",
+      "purpose": "compare",
+      "takeaway": "Demonstrate supply",
+      "focus": ["house-a", "house-b"],
+      "intensity": "develop",
+      "frameCount": 192,
+      "cues": [
+        {
+          "id": "change",
+          "frame": 80,
+          "phrase": "Route changes",
+          "events": ["behavior__image-change", "behavior__caption-change"]
+        }
+      ],
+      "parameters": { "journey": { "start": 30, "end": 168 } },
+      "bindings": {
+        "behavior__caption-change": {
+          "anchor": { "type": "cue", "id": "change" },
+          "offset": 0,
+          "duration": 0
+        },
+        "behavior__image-change": {
+          "anchor": { "type": "cue", "id": "change" },
+          "offset": 0,
+          "duration": 0
+        }
+      }
+    }
+  ]
+}

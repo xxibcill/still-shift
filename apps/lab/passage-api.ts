@@ -13,10 +13,8 @@ async function workspaceFile(path: string) {
     throw new Error("Passage files must be inside this workspace");
   return actual;
 }
-function packet(
-  passage: Awaited<ReturnType<typeof prepareStoryPassageInput>>,
-  file: string,
-) {
+function packet(passage: Awaited<ReturnType<typeof prepareStoryPassageInput>>) {
+  const file = passage.inputs.plan.path;
   for (const beat of passage.plan.beats)
     beat.template = resolve(dirname(file), beat.template);
   const templates = Object.fromEntries(
@@ -57,7 +55,7 @@ export const passageApi = (): Plugin => ({
             workspaceFile,
           );
           response.setHeader("Content-Type", "application/json");
-          response.end(JSON.stringify(packet(passage, file)));
+          response.end(JSON.stringify(packet(passage)));
           return;
         }
         if (request.method !== "GET")
@@ -92,7 +90,7 @@ export const passageApi = (): Plugin => ({
           workspaceFile,
         );
         response.setHeader("Content-Type", "application/json");
-        response.end(JSON.stringify(packet(passage, file)));
+        response.end(JSON.stringify(packet(passage)));
       } catch (error) {
         response.statusCode = 400;
         response.setHeader("Content-Type", "application/json");

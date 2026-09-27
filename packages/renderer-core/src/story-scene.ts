@@ -13,6 +13,15 @@ import type {
   StoryWindow,
 } from "../../scene-contract/src/story.ts";
 import type { Key, Property, Tracks } from "./prepared-scene.ts";
+import { indexStoryEvents } from "./story-event-index.ts";
+import { validateComponentRelationships } from "./component-relationships.ts";
+import { validatePinTransforms } from "./component-pin.ts";
+import { validateTravelTransforms } from "./component-travel.ts";
+import { validateComponentOwnership } from "./component-values.ts";
+import {
+  componentCapabilities,
+  componentRendererVersions,
+} from "./component-capabilities.ts";
 
 type StoryMotionEventKind =
   | "camera"
@@ -32,9 +41,12 @@ type StoryMotionEventKind =
 
 export type StoryRenderScene = StoryScene & {
   rendererVersion:
+    | "story-canvas-0.18.0"
     | "story-canvas-0.13.3"
     | "story-canvas-0.14.0"
-    | "story-canvas-0.15.0";
+    | "story-canvas-0.15.0"
+    | "story-canvas-0.16.0"
+    | "story-canvas-0.17.0";
   durationMs: number;
   canvas: { width: number; height: number };
   timeline: { fps: number; durationMs: number; frameCount: number };
@@ -410,6 +422,15 @@ export function compileStoryScene(source: StoryScene): StoryRenderScene {
       }
     }
   }
+  validateComponentOwnership(scene);
+  validateComponentRelationships(scene);
   validateStoryCameraCoverage(scene);
+  validateTravelTransforms(scene);
+  validatePinTransforms(scene);
+  const features = componentCapabilities(input.componentData);
+  if (features.supportsBehaviors) indexStoryEvents(input);
+  scene.rendererVersion =
+    componentRendererVersions(input.componentData)?.story ??
+    scene.rendererVersion;
   return scene;
 }

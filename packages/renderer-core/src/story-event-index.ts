@@ -1,10 +1,20 @@
 import type { StoryScene } from "../../scene-contract/src/story.ts";
 import type { TimingBinding } from "../../scene-contract/src/story-authoring.ts";
 import { passageError } from "./passage-diagnostics.ts";
+import { componentCapabilities } from "./component-capabilities.ts";
 
 export type StoryEvent = {
   id: string;
-  kind: "recipe" | "choreography" | "camera" | "text-reveal" | "flow" | "cut";
+  kind:
+    | "recipe"
+    | "choreography"
+    | "camera"
+    | "text-reveal"
+    | "flow"
+    | "cut"
+    | "value"
+    | "travel"
+    | "visibility";
   nodes: string[];
   path: string;
   start: number;
@@ -36,10 +46,17 @@ function editableEvents(scene: StoryScene) {
       labelWindow && scene.recipe.preset === "unequal_margins"
         ? scene.recipe.labels[Number(labelWindow[1])]
         : undefined;
+    const valueTargets = path.startsWith("componentData/values/")
+      ? (scene.componentData?.bindings
+          .filter((b) => b.value === owner?.id)
+          .map((b) => b.target) ?? [])
+      : [];
     const nodes = [
+      ...valueTargets,
       record.node,
       record.path,
       owner?.node,
+      owner?.target,
       owner?.path,
       owner?.destination,
       labelNode,
@@ -47,15 +64,23 @@ function editableEvents(scene: StoryScene) {
     const textNode = nodes.some((id) =>
       scene.nodes.some((n) => n.id === id && n.type === "text"),
     );
-    const kind: StoryEvent["kind"] = path.startsWith("camera")
-      ? "camera"
-      : path.startsWith("flows")
-        ? "flow"
-        : textNode
-          ? "text-reveal"
-          : /moves|entrances|exits|emphasis/.test(path)
-            ? "choreography"
-            : "recipe";
+    const kind: StoryEvent["kind"] = path.startsWith("componentData/visibility")
+      ? "visibility"
+      : path.startsWith("componentData/states")
+        ? "cut"
+        : path.startsWith("componentData/travels")
+          ? "travel"
+          : path.startsWith("componentData")
+            ? "value"
+            : path.startsWith("camera")
+              ? "camera"
+              : path.startsWith("flows")
+                ? "flow"
+                : textNode
+                  ? "text-reveal"
+                  : /moves|entrances|exits|emphasis/.test(path)
+                    ? "choreography"
+                    : "recipe";
     if (typeof record.start === "number" && typeof record.end === "number") {
       add({
         id: typeof record.cue === "string" ? record.cue : "@/" + path,
@@ -64,7 +89,8 @@ function editableEvents(scene: StoryScene) {
         path,
         start: record.start,
         end: record.end,
-        endExclusive: /^flows\/\d+\/window$/.test(path),
+        endExclusive:
+          /^flows\/\d+\/window$/.test(path) || kind === "visibility",
         set(start, end) {
           if (end <= start)
             passageError(
@@ -82,7 +108,11 @@ function editableEvents(scene: StoryScene) {
     }
     if (typeof record.frame === "number") {
       add({
-        id: "@/" + path,
+        id:
+          path.startsWith("componentData/states") &&
+          typeof record.id === "string"
+            ? record.id
+            : "@/" + path,
         kind,
         nodes,
         path,
@@ -107,6 +137,13 @@ function editableEvents(scene: StoryScene) {
   visit(scene.recipe, "recipe");
   visit(scene.camera, "camera");
   visit(scene.flows, "flows");
+  const features = componentCapabilities(scene.componentData);
+  visit(features.values, "componentData/values");
+  visit(features.travels, "componentData/travels");
+  features.states.forEach((s, i) =>
+    visit(s.cuts, `componentData/states/${i}/cuts`, s),
+  );
+  visit(features.visibility, "componentData/visibility");
   const point = (
     record: RecordValue,
     key: string,

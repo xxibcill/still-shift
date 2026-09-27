@@ -10,6 +10,10 @@ import { CommerceEffectSchema } from "./commerce-effects.ts";
 import { ComponentDemoKindSchema } from "./commerce-components.ts";
 import { z } from "zod";
 import {
+  ComponentDataSchema,
+  validateComponentData,
+} from "./component-data.ts";
+import {
   PreparedSceneFieldsSchema,
   PreparedAnimationResultSchema,
   PreparedFontSchema,
@@ -165,6 +169,7 @@ const shape = PreparedSceneFieldsSchema.omit({
 })
   .extend({
     schemaVersion: z.literal("commerce-scene-1"),
+    componentData: ComponentDataSchema.optional(),
     width: finite.int().positive(),
     height: finite.int().positive(),
     fonts: z.array(PreparedFontSchema).min(1).max(12),
@@ -218,6 +223,7 @@ export type PreparedCommerceAssets = {
 export const CommerceSceneSchema = shape.superRefine((scene, ctx) => {
   const fail = (message: string) => ctx.addIssue({ code: "custom", message });
   const { nodes } = validatePreparedGraph(scene, fail);
+  validateComponentData(scene, fail);
   validateCommerceSpatial(scene, fail);
   const profile = COMMERCE_PROFILES[scene.metadata.profile];
   if (scene.width !== profile.width || scene.height !== profile.height)

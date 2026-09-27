@@ -1,0 +1,69 @@
+{
+  "date": "2026-09-27",
+  "scope": ["RC-01", "RC-02", "RC-03", "RC-04", "RC-05", "RC-06"],
+  "status": "implemented; engineering checks passed; examples remain experimental",
+  "unitAndIntegration": {
+    "command": "pnpm exec vitest run tests/unit tests/integration",
+    "files": 63,
+    "tests": 366
+  },
+  "gallery": {
+    "examples": 8,
+    "contexts": ["isolated", "commerce", "story"],
+    "previewFrameRates": [24, 30],
+    "encodedExamples": 24,
+    "paritySamples": 120,
+    "parityWarnings": 0,
+    "maximumMeanAbsoluteError": 0.007059176551278948,
+    "maximumEdgeAbsoluteError": 0.0016091045278292695,
+    "checks": [
+      "direct and backward seeking at both frame rates",
+      "invalid edit preserves valid pixels and disables export",
+      "edited settings reload restores identical pixels",
+      "source ZIP round trip and fresh encoding",
+      "commerce and story UI export with 192 exact frames",
+      "390 px phone viewport has no horizontal overflow",
+      "desktop and phone screenshots visually inspected"
+    ],
+    "commands": [
+      "pnpm test:browser:reusable-components (commerce/story run before adding isolated views)",
+      "pnpm test:browser:reusable-components --isolated-only",
+      "pnpm test:browser:reusable-components --smoke-only --isolated-only"
+    ],
+    "fractionalNumericTextExposure": {
+      "maximum": 0
+    }
+  },
+  "portableWorkspace": {
+    "frameCount": 576,
+    "beats": 3,
+    "freshRelocatedCacheReuses": 0,
+    "decodedHash": "SHA256=6bed96ee3446dcff4669904405a3475fd140063c2fcc6ed3a8fee60a167f99eb",
+    "relocatedDecodedHash": "SHA256=6bed96ee3446dcff4669904405a3475fd140063c2fcc6ed3a8fee60a167f99eb"
+  },
+  "regressions": {
+    "story": "98 preview/export parity comparisons, 14 backward seeks, timing controls, phone layout, 646-frame export and 30 fps CLI passed",
+    "commerceEffects": "stationary alpha/color, fractional exposure/foreground occlusion, directional alpha, highlight mask and blur bounds passed",
+    "commerceSpatial": "attachment, matte, crop and text layout pixel checks passed"
+  },
+  "staticChecks": [
+    "TypeScript",
+    "ESLint and Ruff",
+    "repository Prettier and Ruff formatting",
+    "corpus schema",
+    "pinned toolchain"
+  ],
+  "fixesVerified": [
+    "full authored bounds cannot overwrite calculated layout placements",
+    "numeric endpoints preserve the exact supplied value",
+    "changing numeric text bypasses the stationary motion-blur shortcut"
+  ],
+  "localArtifacts": "benchmarks/results/reusable-components (ignored generated videos, parity reports and screenshots)",
+  "limits": [
+    "shared motion adapters support x/y/opacity; native effects and other motion remain mode-specific",
+    "leaderLabel requires an explicit target group; no implicit wrapping",
+    "annotation protection retains the existing centerline collision policy and commerce geometry requirement",
+    "numeric text requires pinned measured boxes, bounded easing and at most 10000 formatted outputs",
+    "no new production registrations, automatic routing, state switching or general path following"
+  ]
+}

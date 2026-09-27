@@ -171,7 +171,10 @@ export function createPassageControls({
       el("bindings").append(group);
       const title = document.createElement("div");
       title.className = "event-title";
-      title.textContent = `${event.id} · ${event.start}–${event.end}`;
+      title.textContent =
+        event.start === event.end
+          ? `${event.id} · frame ${event.start}`
+          : `${event.id} · ${event.start}–${event.end}${event.endExclusive ? " (end exclusive)" : ""}`;
       group.append(title);
       const binding = beat.bindings[event.id];
       if (!binding) {
@@ -209,7 +212,9 @@ export function createPassageControls({
               : { type: "event", id, edge: kind as "start" | "end" };
         }),
       );
-      for (const key of ["offset", "duration"] as const)
+      for (const key of (event.start === event.end
+        ? ["offset"]
+        : ["offset", "duration"]) as ("offset" | "duration")[])
         field(
           group,
           event.id + " " + key,
@@ -223,8 +228,7 @@ export function createPassageControls({
       button(group, "Unlink " + event.id, () =>
         editBeat((b) => {
           delete b.bindings[event.id];
-          if (event.end > event.start)
-            b.timing[event.id] = { start: event.start, end: event.end };
+          b.timing[event.id] = { start: event.start, end: event.end };
         }),
       );
     }
@@ -256,6 +260,21 @@ export function createPassageControls({
             ...original,
             ...(value && typeof value === "object" ? value : {}),
           } as Record<string, unknown>;
+          if (
+            slot.kind === "timing" &&
+            original &&
+            "start" in original &&
+            original.start === original.end
+          ) {
+            field(
+              el("parameters"),
+              id + " frame",
+              Number(record.start),
+              (v) => put({ start: Number(v), end: Number(v) }),
+              "number",
+            );
+            continue;
+          }
           for (const key of keys)
             field(
               el("parameters"),

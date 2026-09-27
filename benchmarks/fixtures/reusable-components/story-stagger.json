@@ -1,0 +1,550 @@
+{
+  "title": "Reusable components · story",
+  "fps": 24,
+  "width": 1920,
+  "height": 1080,
+  "background": "#F2EDE3",
+  "assets": [
+    {
+      "id": "house",
+      "path": "../../../assets/story-motion/art/house.svg",
+      "sha256": "sha256:a8fa4eff374ba974770317dd483ca7b2e5b8d1f0bd7a9224ada091db42542a60",
+      "width": 600,
+      "height": 440
+    }
+  ],
+  "fonts": [
+    {
+      "id": "commerce-font",
+      "path": "../../../assets/ecommerce-motion/fonts/noto-sans-thai.ttf",
+      "sha256": "sha256:5a1c559bb539583c8a1fd99d1c5b9491e5e14478c9cd2bd0970d5c3096cc9ef8",
+      "weight": "400"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "heading",
+      "x": 112,
+      "y": 85,
+      "width": 1680,
+      "height": 100,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "text",
+      "text": "Two households. Shared building blocks.",
+      "fontSize": 60,
+      "color": "#233B32",
+      "weight": "normal",
+      "font": "sans-serif",
+      "fontAsset": "commerce-font",
+      "textBox": { "locale": "en", "maxLines": 1, "lineHeight": 1.25 },
+      "align": "left"
+    },
+    {
+      "id": "house-a",
+      "x": 370,
+      "y": 265,
+      "width": 320,
+      "height": 235,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "group",
+      "clip": false
+    },
+    {
+      "id": "house-art-a",
+      "parent": "house-a",
+      "x": 0,
+      "y": 0,
+      "width": 320,
+      "height": 235,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "image",
+      "states": [{ "asset": "house" }],
+      "fit": "contain"
+    },
+    {
+      "id": "house-b",
+      "x": 1210,
+      "y": 265,
+      "width": 320,
+      "height": 235,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "group",
+      "clip": false
+    },
+    {
+      "id": "house-art-b",
+      "parent": "house-b",
+      "x": 0,
+      "y": 0,
+      "width": 320,
+      "height": 235,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "image",
+      "states": [{ "asset": "house" }],
+      "fit": "contain"
+    },
+    {
+      "id": "pressure-a",
+      "x": 220,
+      "y": 355,
+      "width": 95,
+      "height": 44,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "rect",
+      "fill": "#477D65",
+      "lineWidth": 0,
+      "radius": 0
+    },
+    {
+      "id": "pressure-b",
+      "x": 1580,
+      "y": 355,
+      "width": 95,
+      "height": 44,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "rect",
+      "fill": "#A65E46",
+      "lineWidth": 0,
+      "radius": 0
+    },
+    {
+      "id": "room",
+      "x": 310,
+      "y": 590,
+      "width": 440,
+      "height": 75,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "text",
+      "text": "More room",
+      "fontSize": 42,
+      "color": "#233B32",
+      "weight": "normal",
+      "font": "sans-serif",
+      "fontAsset": "commerce-font",
+      "textBox": { "locale": "en", "maxLines": 1, "lineHeight": 1.25 },
+      "align": "center"
+    },
+    {
+      "id": "strained",
+      "x": 1150,
+      "y": 590,
+      "width": 440,
+      "height": 75,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "text",
+      "text": "Less room",
+      "fontSize": 42,
+      "color": "#233B32",
+      "weight": "normal",
+      "font": "sans-serif",
+      "fontAsset": "commerce-font",
+      "textBox": { "locale": "en", "maxLines": 1, "lineHeight": 1.25 },
+      "align": "center"
+    },
+    {
+      "id": "marker1__body",
+      "x": 112,
+      "y": 839,
+      "width": 280,
+      "height": 110,
+      "opacity": 0,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "group",
+      "clip": false
+    },
+    {
+      "id": "marker1__mark",
+      "parent": "marker1__body",
+      "x": 0,
+      "y": 0,
+      "width": 10,
+      "height": 94,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "rect",
+      "fill": "#477D65",
+      "lineWidth": 0,
+      "radius": 0
+    },
+    {
+      "id": "marker1__label",
+      "parent": "marker1__body",
+      "x": 24,
+      "y": 0,
+      "width": 256,
+      "height": 110,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "text",
+      "text": "Marker 1",
+      "fontSize": 36,
+      "color": "#233B32",
+      "weight": "normal",
+      "font": "sans-serif",
+      "fontAsset": "commerce-font",
+      "textBox": { "locale": "en", "maxLines": 2, "lineHeight": 1.25 },
+      "align": "left"
+    },
+    {
+      "id": "marker2__body",
+      "x": 466,
+      "y": 839,
+      "width": 280,
+      "height": 110,
+      "opacity": 0,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "group",
+      "clip": false
+    },
+    {
+      "id": "marker2__mark",
+      "parent": "marker2__body",
+      "x": 0,
+      "y": 0,
+      "width": 10,
+      "height": 94,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "rect",
+      "fill": "#477D65",
+      "lineWidth": 0,
+      "radius": 0
+    },
+    {
+      "id": "marker2__label",
+      "parent": "marker2__body",
+      "x": 24,
+      "y": 0,
+      "width": 256,
+      "height": 110,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "text",
+      "text": "Marker 2",
+      "fontSize": 36,
+      "color": "#233B32",
+      "weight": "normal",
+      "font": "sans-serif",
+      "fontAsset": "commerce-font",
+      "textBox": { "locale": "en", "maxLines": 2, "lineHeight": 1.25 },
+      "align": "left"
+    },
+    {
+      "id": "marker3__body",
+      "x": 820,
+      "y": 839,
+      "width": 280,
+      "height": 110,
+      "opacity": 0,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "group",
+      "clip": false
+    },
+    {
+      "id": "marker3__mark",
+      "parent": "marker3__body",
+      "x": 0,
+      "y": 0,
+      "width": 10,
+      "height": 94,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "rect",
+      "fill": "#477D65",
+      "lineWidth": 0,
+      "radius": 0
+    },
+    {
+      "id": "marker3__label",
+      "parent": "marker3__body",
+      "x": 24,
+      "y": 0,
+      "width": 256,
+      "height": 110,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "text",
+      "text": "Second marker",
+      "fontSize": 36,
+      "color": "#233B32",
+      "weight": "normal",
+      "font": "sans-serif",
+      "fontAsset": "commerce-font",
+      "textBox": { "locale": "en", "maxLines": 2, "lineHeight": 1.25 },
+      "align": "left"
+    },
+    {
+      "id": "marker4__body",
+      "x": 1174,
+      "y": 839,
+      "width": 280,
+      "height": 110,
+      "opacity": 0,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "group",
+      "clip": false
+    },
+    {
+      "id": "marker4__mark",
+      "parent": "marker4__body",
+      "x": 0,
+      "y": 0,
+      "width": 10,
+      "height": 94,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "rect",
+      "fill": "#477D65",
+      "lineWidth": 0,
+      "radius": 0
+    },
+    {
+      "id": "marker4__label",
+      "parent": "marker4__body",
+      "x": 24,
+      "y": 0,
+      "width": 256,
+      "height": 110,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "text",
+      "text": "Marker 4",
+      "fontSize": 36,
+      "color": "#233B32",
+      "weight": "normal",
+      "font": "sans-serif",
+      "fontAsset": "commerce-font",
+      "textBox": { "locale": "en", "maxLines": 2, "lineHeight": 1.25 },
+      "align": "left"
+    },
+    {
+      "id": "marker5__body",
+      "x": 1528,
+      "y": 839,
+      "width": 280,
+      "height": 110,
+      "opacity": 0,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "group",
+      "clip": false
+    },
+    {
+      "id": "marker5__mark",
+      "parent": "marker5__body",
+      "x": 0,
+      "y": 0,
+      "width": 10,
+      "height": 94,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "rect",
+      "fill": "#477D65",
+      "lineWidth": 0,
+      "radius": 0
+    },
+    {
+      "id": "marker5__label",
+      "parent": "marker5__body",
+      "x": 24,
+      "y": 0,
+      "width": 256,
+      "height": 110,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "text",
+      "text": "Marker 5",
+      "fontSize": 36,
+      "color": "#233B32",
+      "weight": "normal",
+      "font": "sans-serif",
+      "fontAsset": "commerce-font",
+      "textBox": { "locale": "en", "maxLines": 2, "lineHeight": 1.25 },
+      "align": "left"
+    }
+  ],
+  "provenance": "Original code-authored symbolic editorial illustrations for reusable motion studies. Layered Chronicle palette and typography. No selected S01E01 image is modified; these are explanatory fixtures, not authentic evidence or a finished episode.",
+  "schemaVersion": "story-scene-1",
+  "componentData": {
+    "schemaVersion": "scene-components-1",
+    "annotations": [],
+    "values": [],
+    "bindings": []
+  },
+  "frameCount": 192,
+  "motionGrammar": "v2",
+  "camera": {
+    "keys": [
+      { "frame": 0, "x": 960, "y": 540, "zoom": 1 },
+      { "frame": 191, "x": 980, "y": 540, "zoom": 1.025 }
+    ],
+    "depth": { "heading": 0, "room": 0, "strained": 0 }
+  },
+  "review": { "essentialText": ["heading", "room", "strained"] },
+  "recipe": {
+    "preset": "unequal_margins",
+    "moves": [
+      {
+        "node": "house-a",
+        "window": {
+          "start": 0,
+          "end": 191,
+          "cue": "house-lift",
+          "easing": "linear"
+        },
+        "to": { "y": 245 }
+      },
+      {
+        "node": "marker1__body",
+        "window": {
+          "start": 12,
+          "end": 30,
+          "cue": "marker1__rise",
+          "easing": "out-cubic"
+        },
+        "to": { "y": 821 }
+      },
+      {
+        "node": "marker1__body",
+        "window": {
+          "start": 12,
+          "end": 30,
+          "cue": "marker1__appear",
+          "easing": "linear"
+        },
+        "to": { "opacity": 1 }
+      },
+      {
+        "node": "marker2__body",
+        "window": {
+          "start": 24,
+          "end": 42,
+          "cue": "marker2__rise",
+          "easing": "out-cubic"
+        },
+        "to": { "y": 821 }
+      },
+      {
+        "node": "marker2__body",
+        "window": {
+          "start": 24,
+          "end": 42,
+          "cue": "marker2__appear",
+          "easing": "linear"
+        },
+        "to": { "opacity": 1 }
+      },
+      {
+        "node": "marker3__body",
+        "window": {
+          "start": 36,
+          "end": 54,
+          "cue": "marker3__rise",
+          "easing": "out-cubic"
+        },
+        "to": { "y": 821 }
+      },
+      {
+        "node": "marker3__body",
+        "window": {
+          "start": 36,
+          "end": 54,
+          "cue": "marker3__appear",
+          "easing": "linear"
+        },
+        "to": { "opacity": 1 }
+      },
+      {
+        "node": "marker4__body",
+        "window": {
+          "start": 48,
+          "end": 66,
+          "cue": "marker4__rise",
+          "easing": "out-cubic"
+        },
+        "to": { "y": 821 }
+      },
+      {
+        "node": "marker4__body",
+        "window": {
+          "start": 48,
+          "end": 66,
+          "cue": "marker4__appear",
+          "easing": "linear"
+        },
+        "to": { "opacity": 1 }
+      },
+      {
+        "node": "marker5__body",
+        "window": {
+          "start": 60,
+          "end": 78,
+          "cue": "marker5__rise",
+          "easing": "out-cubic"
+        },
+        "to": { "y": 821 }
+      },
+      {
+        "node": "marker5__body",
+        "window": {
+          "start": 60,
+          "end": 78,
+          "cue": "marker5__appear",
+          "easing": "linear"
+        },
+        "to": { "opacity": 1 }
+      }
+    ],
+    "emphasis": [],
+    "households": ["house-a", "house-b"],
+    "reference": "heading",
+    "pressures": [
+      { "node": "pressure-a", "to": [270, 355], "condition": "room" },
+      { "node": "pressure-b", "to": [1540, 355], "condition": "strained" }
+    ],
+    "labels": ["room", "strained"],
+    "strain": {
+      "start": 48,
+      "end": 104,
+      "cue": "shared-strain",
+      "easing": "in-out-quint"
+    },
+    "labelWindows": [
+      { "start": 86, "end": 106, "cue": "more-room", "easing": "out-cubic" },
+      { "start": 98, "end": 120, "cue": "less-room", "easing": "out-cubic" }
+    ]
+  },
+  "connectors": []
+}
