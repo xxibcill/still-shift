@@ -260,6 +260,11 @@ export function timingDemo(
     return [
       instantiateComponent(definition(0), { id: "timing", offset: [680, 690] }),
     ];
+  const secondStart = settings.clipStart + duration + 12 + settings.middleDelay;
+  const thirdStart =
+    settings.example === "detail-sequence"
+      ? secondStart + duration - Math.min(12, duration)
+      : undefined;
   return sequenceComponents(
     {
       fps: settings.fps,
@@ -273,8 +278,10 @@ export function timingDemo(
       ...(index === 0
         ? { start: settings.clipStart }
         : index === 1
-          ? { start: settings.clipStart + duration + 12 + settings.middleDelay }
-          : {}),
+          ? { start: secondStart }
+          : thirdStart === undefined
+            ? {}
+            : { start: thirdStart }),
       offset: [150 + 550 * index, 690] as [number, number],
     })),
   );

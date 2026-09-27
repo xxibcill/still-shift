@@ -79,6 +79,27 @@ it("preserves masks, state cuts and local gates through one scheduling offset", 
   );
 });
 
+it("shows a gap, adjacency and an explicit overlap across the sequence examples", () => {
+  const starts = (example: "sequence" | "detail-sequence") => {
+    const scene = buildReusableDemo(
+      ReusableDemoSchema.parse({ schemaVersion: "reusable-demo-3", example }),
+    );
+    const data = scene.componentData;
+    if (data?.schemaVersion !== "scene-components-3")
+      throw new Error("v3 expected");
+    return ["phase1", "phase2", "phase3"].map(
+      (id) =>
+        data.visibility.find((gate) => gate.target === id + "__detail")!.window,
+    );
+  };
+  const adjacent = starts("sequence");
+  const overlapping = starts("detail-sequence");
+  expect(adjacent[1]!.start).toBeGreaterThan(adjacent[0]!.end);
+  expect(adjacent[2]!.start).toBe(adjacent[1]!.end);
+  expect(overlapping[2]!.start).toBeLessThan(overlapping[1]!.end);
+  expect(overlapping[2]!.start).toBeGreaterThan(overlapping[1]!.start);
+});
+
 it("rejects local overflow, foreign parents and cross-clip dependencies without cue collisions", () => {
   const d = definition();
   expect(() =>

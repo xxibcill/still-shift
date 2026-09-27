@@ -200,7 +200,7 @@ There is one mask per target, with no self-masking or chains. Shared/native mask
 
 ## Timing batch examples and packages
 
-The gallery adds `visibility`, `sequence`, `pin`, `text-fit`, `mask`, `detail-sequence` and `supply-sequence`, in all three contexts. It now has 20 examples / 60 context combinations. The two compositions demonstrate all five modules with supplied images and captions. The sequence is editable through first-frame, duration and middle-delay controls; pin offsets, fit bounds and mask inversion have their own controls. Invalid edits preserve the last valid preview and disable export.
+The gallery adds `visibility`, `sequence`, `pin`, `text-fit`, `mask`, `detail-sequence` and `supply-sequence`, in all three contexts. It now has 20 examples / 60 context combinations. The two compositions demonstrate all five modules with supplied images and captions. The `sequence` example shows a gap followed by adjacency; `detail-sequence` overlaps its second and third clips. Sequence timing is editable through first-frame, duration and middle-delay controls; pin offsets, fit bounds and mask inversion have their own controls. Invalid edits preserve the last valid preview and disable export.
 
 `story-timing.passage.json` combines visibility, fitting and a three-phase supply template. Every phase explicitly links its lifetime and internal behaviors to its own cue. Settings, resolved source ZIPs and E7 packages retain v3 data and exact dependencies.
 
