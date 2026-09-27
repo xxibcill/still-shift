@@ -1,7 +1,7 @@
 # Vertical video plan
 
-- **Updated:** 2026-09-27
-- **Status:** VV1–VV8 implemented; VV0 awaits owner format and safe-zone decisions.
+- **Updated:** 2026-09-28
+- **Status:** VV0–VV8 complete. Vertical layout and art follow-ups are tracked separately.
 - **Baseline:** `0b2e254` on `codex/motion-craft-engine`
 - **Scope:** Engine primitives and authoring tools only (see [engine tooling scope](story-engine-tooling-plan.md#objective-and-scope)). Vertical motion studies are acceptance fixtures, not deliverables.
 
@@ -34,7 +34,7 @@ The goal is not to author one vertical copy of every scene by hand. The engine s
    - _Depth image:_ a focal point, either `focus: [x, y]` normalised or taken from the depth worker's subject estimate. The crop window follows it. Motion presets use the axis that has spare source pixels, so vertical frames pan across the width.
    - _Cinematic:_ scale layers to cover the frame height, and anchor the crop on `camera.anchor` or the subject. Camera limits are fractions of frame size, not pixels.
    - _Story:_ a deterministic reflow pass maps landscape regions (left/centre/right) to vertical bands (top/middle/bottom). It swaps the axis of `layoutComponentBoxes` rows and refits text to the new line width. The reflow proposes changes and lint judges them. It never silently rewrites motion (invariant 7 of the motion-craft plan).
-6. **Safe zones are separate from `safeInset`.** Add `safeZones`: named rectangles per format, such as caption and interface overlay areas. Text and focal subjects must avoid them. The zone values need a research step (VV0) before they become defaults.
+6. **Safe zones are separate from `safeInset`.** Add `safeZones`: named rectangles per format, such as caption and interface overlay areas. Text and focal subjects must avoid authored zones. Organic YouTube Shorts has no fixed numeric default zone; authors can supply zones for a scene.
 
 ## Invariants
 
@@ -50,7 +50,7 @@ Status: `[ ]` planned, `[~]` in progress, `[x]` complete, `[!]` blocked with a r
 
 | ID  | Deliverable                                                | Depends on | Fixes  | Status |
 | --- | ---------------------------------------------------------- | ---------- | ------ | ------ |
-| VV0 | Safe-zone research and format decisions (owner)            | —          | —      | `[!]`  |
+| VV0 | Safe-zone research and format decisions (owner)            | —          | —      | `[x]`  |
 | VV1 | Shared `OUTPUT_FORMATS` contract with landscape parity     | —          | B1, B4 | `[x]`  |
 | VV2 | Output-size-agnostic export, transitions and verification  | VV1        | B3     | `[x]`  |
 | VV3 | Lab format switcher and safe-zone overlay                  | VV1        | B3     | `[x]`  |
@@ -60,7 +60,7 @@ Status: `[ ]` planned, `[~]` in progress, `[x]` complete, `[!]` blocked with a r
 | VV7 | Story reflow proposal and vertical lint                    | VV6, VV3   | B5     | `[x]`  |
 | VV8 | CLI, batch and passage `--format`, fixtures, docs          | VV4–VV7    | —      | `[x]`  |
 
-VV0 research is recorded in [vertical-safe-zones-research.md](vertical-safe-zones-research.md). Published organic Shorts guidance uses dynamic visual guides rather than a fixed universal rectangle; Google Ads supplies fixed ad-safe guidance with a different scope. Platform priorities and numeric `vertical.safeZones` defaults remain owner decisions, so VV0 is blocked and no default rectangles have been set. The [VV7 proposal trial](review/vertical-video/vv7-proposal-report.md) records the remaining manual layout work for the two legacy passages.
+VV0 research is recorded in [vertical-safe-zones-research.md](vertical-safe-zones-research.md). The owner approved organic YouTube Shorts as the first vertical target, shared narration and timeline for landscape and vertical story cuts, landscape and vertical only outside commerce, batch rendering of both formats only when requested, and no fixed numeric organic-Shorts `vertical.safeZones` default. Authors may supply named zones. Google's numeric ad-safe rectangle remains a research reference for ads, not an automatic organic-Shorts gate. The [VV7 proposal trial](review/vertical-video/vv7-proposal-report.md) records the remaining manual layout work for the two legacy passages.
 
 For landscape parity, parsed legacy scenes omit `format`; absence is treated as
 `landscape` during validation and resolution. Prepared vertical scene JSON must
@@ -74,8 +74,8 @@ VV4, VV5 and VV6 are independent and can run in parallel after VV2.
 ### VV0 — Research and owner decisions
 
 - Use the `research` skill to find the current published interface overlay and safe-area guidance for YouTube Shorts, and optionally TikTok and Reels. Record it in `docs/vertical-safe-zones-research.md` with sources. Do not hard-code zone values before this.
-- Get owner answers to the [open questions](#open-questions).
-- **Exit:** research doc merged; defaults for `vertical.safeZones` agreed.
+- Record the owner's [format and safe-zone decisions](#resolved-owner-decisions).
+- **Exit:** research doc merged; default policy for `vertical.safeZones` agreed. Complete on 2026-09-28.
 
 ### VV1 — Shared format contract
 
@@ -141,9 +141,10 @@ VV4, VV5 and VV6 are independent and can run in parallel after VV2.
 - **Hidden 16:9 constants:** thresholds tuned by eye, such as energy gates and the `0.1–0.9` subject-position bounds in `cinematic-scene.ts`, may mean different things in 9:16. Mitigation: VV2 audit plus vertical fixtures in every browser suite.
 - **Cache churn:** adding `format` to identity must not invalidate landscape caches. Mitigation: omit the field from the hash when it has the default value, and cover this with a test.
 
-## Open questions
+## Resolved owner decisions
 
-1. Which platforms matter first: YouTube Shorts only, or also TikTok and Reels? This sets the VV0 safe zones.
-2. Is vertical a re-cut of the same story (one narration, as planned in VV6), or sometimes separate, shorter content with its own beat plan?
-3. Are square and 4:5 needed outside commerce, or is landscape plus vertical enough?
-4. Should batch renders produce both formats by default, or only on request?
+1. **Platform priority:** Organic YouTube Shorts first. TikTok and Reels are future targets, with their own overlay guidance if added.
+2. **Story relationship:** Landscape and vertical cuts share one narration and cue timeline. Format-specific layout overrides do not change story timing.
+3. **Formats outside commerce:** Landscape and vertical only. Commerce retains its existing profiles.
+4. **Batch behavior:** Render both formats only when the batch request explicitly asks for both.
+5. **Organic Shorts safe zones:** No fixed numeric default. Authors can declare named `vertical.safeZones`; the Google Ads rectangle is an ad-specific research reference, not an organic Shorts rule.

@@ -2,7 +2,7 @@
 
 **Status:** v0.3–v0.10 implementation complete; six richer illustrated presets implemented; creative review, frozen-corpus approval, and human decision gates pending
 
-**Updated:** 2026-09-27
+**Updated:** 2026-09-28
 
 **Current engineering work:** The [E1–E6 engine/tooling implementation](./docs/story-engine-tooling-plan.md)
 is complete on `codex/story-beat-planning`: shared compilation, linked retiming,
@@ -14,8 +14,9 @@ production retain their separate scope and review status below.
 **Vertical video engineering:** The [VV0–VV8 plan](./docs/vertical-video-plan.md)
 adds 1080×1920 output across the shared contracts, renderer paths, Lab and CLI.
 Single-image, prepared-scene and passage paths retain landscape defaults;
-vertical variants must pass crop, coverage and safe-zone checks. Safe-zone
-defaults and platform priorities remain owner decisions in VV0. Existing
+vertical variants must pass crop, coverage and authored safe-zone checks. VV0
+is complete: organic YouTube Shorts is the first vertical target, with no fixed
+numeric organic safe-zone default. Existing
 landscape fixtures are regression baselines, not new creative deliverables.
 
 **Target:** 10 working days  

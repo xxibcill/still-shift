@@ -2,7 +2,7 @@
 
 - **Research date:** 2026-09-27
 - **Plan:** [VV0 in the vertical video plan](vertical-video-plan.md#vv0--research-and-owner-decisions)
-- **Scope:** Platform interface overlays and placement of authored text or focal subjects in 9:16 video. This is evidence for a product decision, not an adopted `vertical.safeZones` default.
+- **Scope:** Platform interface overlays and placement of authored text or focal subjects in 9:16 video. The findings below support the owner policy recorded on 2026-09-28; they do not define a numeric organic-Shorts `vertical.safeZones` default.
 
 ## Findings from platform owners
 
@@ -36,6 +36,6 @@ The red _allowed_ rectangle in [Google's vertical video-ad diagram](https://supp
 3. **Preview the actual viewing surface before shipping.** The creator guidance is dynamic, and optional stickers, description length, device geometry and interface changes can move occlusion. A static rectangle can catch predictable risks, but it cannot prove that text is visible on every device. For final organic-Shorts acceptance, inspect a test upload in the current YouTube mobile feed and record the date and device used.
 4. **Keep `safeInset` separate.** Its existing role is an authored layout margin. An interface-overlay `safeZone` should identify a named occluder or platform region and be enforced only when its profile is selected.
 
-## Decision needed for VV6
+## Owner decision (2026-09-28)
 
-The [plan's open platform question](vertical-video-plan.md#open-questions) determines the default lint profile. Recommended starting choice for the stated faceless-YouTube scope: target **organic YouTube Shorts first**, expose YouTube's ad rectangle as a labeled _reference overlay_, and keep the organic numeric zones configurable until the owner accepts measurements from a real Shorts feed on target devices. If the owner prefers a deliberately conservative automatic gate now, they can explicitly adopt the ad rectangle as a project policy; the implementation and docs should label it **Still Shift policy inferred from Google Ads guidance**, never an official organic-Shorts requirement.
+The owner chose **organic YouTube Shorts first** and **no fixed numeric organic-Shorts safe-zone default**. Authors can configure named zones when a scene or viewing context calls for them. The Google Ads rectangle above remains an ad-specific research reference; it is not an automatic lint gate for organic Shorts. The [vertical video plan](vertical-video-plan.md#resolved-owner-decisions) records the related format, narration and batch choices.

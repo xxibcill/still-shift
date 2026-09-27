@@ -265,8 +265,8 @@ pnpm still-shift passage lint \
 ```
 
 The [safe-zone research](vertical-safe-zones-research.md) found no published
-fixed rectangle for organic Shorts. No numeric overlay zones are enabled by
-default; authors can declare zones for a scene, inspect the Lab guides, and fix
+fixed rectangle for organic Shorts. The approved default has no numeric organic
+Shorts overlay zones; authors can declare zones for a scene, inspect the Lab guides, and fix
 coverage, crop or text diagnostics before using a render.
 
 The [vertical review gallery](review/vertical-video/README.md) shows decoded
