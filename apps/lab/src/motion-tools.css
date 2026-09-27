@@ -1,0 +1,61 @@
+.motion-tools {
+  width: 100%;
+  min-width: 0;
+  padding-block: 16px;
+}
+.motion-tools .controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-block: 16px;
+}
+.motion-tools .controls label,
+#story-events .motion-tools .controls label {
+  display: grid;
+  flex: 1 1 160px;
+  align-content: start;
+  gap: 6px;
+  min-width: 0;
+  padding: 0;
+  border: 0;
+}
+.motion-tools button,
+.motion-tools select {
+  min-height: 44px;
+  max-width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #6d6b5b;
+  background: #33352b;
+  color: #eee8d9;
+  font: inherit;
+}
+.motion-tools :is(button, select):focus-visible {
+  outline: 2px solid #bdcbaa;
+  outline-offset: 3px;
+}
+.motion-tools button:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+.motion-tools canvas {
+  display: block;
+  max-width: 100%;
+  margin-block: 16px;
+}
+.motion-tools output {
+  display: block;
+  min-height: 44px;
+  overflow-wrap: anywhere;
+  font-variant-numeric: tabular-nums;
+}
+.motion-tools .motion-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+@media (max-width: 440px) {
+  .motion-tools .controls label,
+  #story-events .motion-tools .controls label {
+    flex-basis: 140px;
+  }
+}

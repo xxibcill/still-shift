@@ -7,11 +7,13 @@ import {
   loadIllustratedImages,
 } from "../../../packages/renderer-core/src/illustrated-renderer.ts";
 import { storyCameraTransform } from "../../../packages/renderer-core/src/story-camera.ts";
+import { nodeMatrix } from "../../../packages/renderer-core/src/node-transform.ts";
 
 export type ReadyBeat = {
   scene: ReturnType<typeof compileStoryScene>;
   preview: ReturnType<typeof createIllustratedPreview>;
   canvas: HTMLCanvasElement;
+  images: Awaited<ReturnType<typeof loadIllustratedImages>>;
 };
 
 type OverlayOptions = {
@@ -42,6 +44,7 @@ export async function preparePreviews(passage: CompiledStoryPassage) {
       scene,
       preview: createIllustratedPreview(target, scene, images),
       canvas: target,
+      images,
     });
   }
   return prepared;
@@ -81,10 +84,13 @@ export function drawOverlays(
       }
       const ox = node.width * node.origin[0],
         oy = node.height * node.origin[1];
-      ctx.translate(state.x + ox, state.y + oy);
-      ctx.rotate((state.rotation * Math.PI) / 180);
-      ctx.scale(state.scaleX, state.scaleY);
-      ctx.translate(-ox, -oy);
+      if (scene.motionModel) ctx.transform(...nodeMatrix(node, state));
+      else {
+        ctx.translate(state.x + ox, state.y + oy);
+        ctx.rotate((state.rotation * Math.PI) / 180);
+        ctx.scale(state.scaleX, state.scaleY);
+        ctx.translate(-ox, -oy);
+      }
       ctx.strokeStyle =
         diagnostics && targets.has(node.id)
           ? "#ec9878"
