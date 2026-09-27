@@ -14,6 +14,8 @@ import { validatePassageText } from "./passage-text-validation.ts";
 import { isStoryWorkspacePackage } from "../../scene-contract/src/story-workspace.ts";
 import { loadStoryWorkspaceInput } from "./story-workspace-manifest.ts";
 import type { OutputFormat } from "../../scene-contract/src/output-format.ts";
+import { lintVertical } from "../../renderer-core/src/story-vertical.ts";
+import { PassageError } from "../../renderer-core/src/passage-diagnostics.ts";
 
 type PassageReadOptions = { format?: OutputFormat; lint?: boolean };
 
@@ -90,6 +92,16 @@ export async function prepareStoryPassageInput(
     ...(options.format ? { format: options.format } : {}),
     validateSafeZones: !options.lint,
   });
+  if (options.format === "vertical" && !options.lint) {
+    const diagnostics = compiled.beats.flatMap((beat) =>
+      lintVertical(beat.scene, { focusIds: beat.focus }).map((diagnostic) => ({
+        ...diagnostic,
+        beat: beat.id,
+      })),
+    );
+    if (diagnostics.some((diagnostic) => diagnostic.severity === "error"))
+      throw new PassageError(diagnostics);
+  }
   for (const beat of compiled.beats) {
     for (const asset of [...beat.scene.assets, ...(beat.scene.fonts ?? [])])
       await allowPath?.(asset.path);

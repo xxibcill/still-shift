@@ -12,6 +12,7 @@ import {
 } from "../../scene-contract/src/index.ts";
 import { compilePreparedScene } from "../../renderer-core/src/prepared-scene.ts";
 import { PassageError } from "../../renderer-core/src/passage-diagnostics.ts";
+import { lintVertical } from "../../renderer-core/src/story-vertical.ts";
 import {
   exportScene,
   type ExportMetrics,
@@ -44,6 +45,14 @@ export async function loadPreparedScene(scenePath: string) {
     throw new AnimationEngineError("SCENE_INVALID", parsed.error.message);
   let scene: ReturnType<typeof compilePreparedScene>;
   try {
+    if (
+      parsed.data.schemaVersion === "story-scene-1" &&
+      parsed.data.format === "vertical"
+    ) {
+      const diagnostics = lintVertical(parsed.data);
+      if (diagnostics.some((diagnostic) => diagnostic.severity === "error"))
+        throw new PassageError(diagnostics);
+    }
     scene = compilePreparedScene(parsed.data);
   } catch (error) {
     throw new AnimationEngineError(

@@ -3,6 +3,13 @@ import { tmpdir } from "node:os";
 import { dirname, join, resolve } from "node:path";
 import { describe, expect, it } from "vitest";
 import { runCli } from "../../tools/still-shift-cli/src/cli.ts";
+import { readStoryPassage } from "../../packages/animation-engine/src/story-passage-io.ts";
+import { loadPreparedScene } from "../../packages/animation-engine/src/prepared-animation-engine.ts";
+import {
+  instantiateStoryTemplate,
+  parsePassageTemplate,
+} from "../../packages/renderer-core/src/story-template.ts";
+import { parsePassagePlan } from "../../packages/scene-contract/src/story-authoring.ts";
 
 const runLint = async (plan: string) => {
   let stdout = "";
@@ -89,6 +96,89 @@ describe("vertical passage lint CLI", () => {
           }),
         ]),
       );
+    } finally {
+      await rm(directory, { recursive: true, force: true });
+    }
+  });
+
+  it("rejects an off-frame focal subject before a vertical passage can render", async () => {
+    const fixture = resolve(
+      "benchmarks/fixtures/story-authoring/vertical/network-template.json",
+    );
+    const source = JSON.parse(await readFile(fixture, "utf8"));
+    for (const asset of [...source.scene.assets, ...(source.scene.fonts ?? [])])
+      asset.path = resolve(dirname(fixture), asset.path);
+    source.formats.vertical.nodes.store.x = -1000;
+    const plan = JSON.parse(
+      await readFile(
+        "benchmarks/fixtures/story-authoring/vertical/linked-network.json",
+        "utf8",
+      ),
+    );
+    const directory = await mkdtemp(join(tmpdir(), "still-shift-crop-"));
+    try {
+      await writeFile(
+        join(directory, "network-template.json"),
+        JSON.stringify(source),
+      );
+      const planPath = join(directory, "linked-network.json");
+      await writeFile(planPath, JSON.stringify(plan));
+      await expect(
+        readStoryPassage(planPath, { format: "vertical" }),
+      ).rejects.toMatchObject({
+        diagnostics: expect.arrayContaining([
+          expect.objectContaining({
+            code: "subject-outside-frame",
+            beat: "network",
+            node: "store",
+          }),
+        ]),
+      });
+    } finally {
+      await rm(directory, { recursive: true, force: true });
+    }
+  });
+
+  it("rejects an off-frame focal subject in a standalone vertical story scene", async () => {
+    const template = parsePassageTemplate(
+      JSON.parse(
+        await readFile(
+          "benchmarks/fixtures/story-authoring/vertical/network-template.json",
+          "utf8",
+        ),
+      ),
+    );
+    const plan = parsePassagePlan(
+      JSON.parse(
+        await readFile(
+          "benchmarks/fixtures/story-authoring/vertical/linked-network.json",
+          "utf8",
+        ),
+      ),
+    );
+    if (plan.schemaVersion !== "story-passage-2")
+      throw new Error("Fixture changed");
+    const scene = instantiateStoryTemplate(
+      template,
+      plan.beats[0]!.parameters,
+      plan.styleProfile,
+      "vertical",
+    );
+    scene.review = {
+      essentialText: [],
+      focalGroups: [{ id: "store", nodes: ["store"] }],
+    };
+    scene.nodes.find((node) => node.id === "store")!.x = -1000;
+    const directory = await mkdtemp(join(tmpdir(), "still-shift-scene-crop-"));
+    try {
+      const path = join(directory, "scene.json");
+      await writeFile(path, JSON.stringify(scene));
+      await expect(loadPreparedScene(path)).rejects.toMatchObject({
+        code: "SCENE_INVALID",
+        context: {
+          diagnosticsJson: expect.stringContaining("subject-outside-frame"),
+        },
+      });
     } finally {
       await rm(directory, { recursive: true, force: true });
     }
