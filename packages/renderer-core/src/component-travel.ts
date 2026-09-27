@@ -6,6 +6,7 @@ import { worldMatrix, parentWorldMatrix } from "./commerce-geometry.ts";
 import { inverseMatrix, transformPoint } from "./node-transform.ts";
 import { pointOnPath } from "./prepared-scene.ts";
 import { easeMotion } from "./motion-easing.ts";
+import { componentCapabilities } from "./component-capabilities.ts";
 
 export function applyComponentTravel(
   scene: CommerceRenderScene | StoryRenderScene,
@@ -13,12 +14,10 @@ export function applyComponentTravel(
   frame: number,
   state: { x: number; y: number },
 ) {
-  if (
-    !scene.componentData ||
-    scene.componentData.schemaVersion === "scene-components-1"
-  )
-    return;
-  const travel = scene.componentData.travels.find((t) => t.target === node.id);
+  if (!scene.componentData) return;
+  const travel = componentCapabilities(scene.componentData).travels.find(
+    (t) => t.target === node.id,
+  );
   if (!travel) return;
   const path = scene.nodes.find((n) => n.id === travel.path);
   if (path?.type !== "path")
@@ -58,16 +57,15 @@ export function validateTravelOwnership(
     connectors?: { path: string }[] | undefined;
   },
 ) {
-  const data = scene.componentData;
-  if (!data || data.schemaVersion === "scene-components-1") return;
+  const features = componentCapabilities(scene.componentData);
+  if (!features.travels.length && !features.pins.length) return;
   const dependencies = new Map(
     scene.nodes.map((n) => [n.id, n.parent ? [n.parent] : []]),
   );
-  for (const travel of data.travels)
+  for (const travel of features.travels)
     dependencies.get(travel.target)?.push(travel.path);
-  if (data.schemaVersion === "scene-components-3")
-    for (const pin of data.pins)
-      dependencies.get(pin.target)?.push(pin.anchor.node);
+  for (const pin of features.pins)
+    dependencies.get(pin.target)?.push(pin.anchor.node);
   for (const effect of scene.effects ?? [])
     if (effect.type === "height-shadow" && effect.target && effect.source)
       dependencies.get(effect.target)?.push(effect.source);
@@ -82,15 +80,14 @@ export function validateTravelOwnership(
     visiting.delete(id);
     visited.add(id);
   };
-  for (const travel of data.travels) visit(travel.target);
-  if (data.schemaVersion === "scene-components-3")
-    for (const pin of data.pins) visit(pin.target);
-  for (const travel of data.travels) {
+  for (const travel of features.travels) visit(travel.target);
+  for (const pin of features.pins) visit(pin.target);
+  for (const travel of features.travels) {
     if (
       ["x", "y"].some(
         (p) =>
           scene.tracks[travel.target]?.[p]?.length ||
-          data.bindings.some(
+          features.bindings.some(
             (b) =>
               b.target === travel.target &&
               b.kind === "property" &&
@@ -107,7 +104,7 @@ export function validateTravelOwnership(
       [
         ...(scene.attachments ?? []),
         ...(scene.connectors ?? []),
-        ...data.annotations,
+        ...features.annotations,
       ].some((a) => a.path === travel.path)
     )
       throw new Error(
@@ -121,12 +118,7 @@ export function validateTravelOwnership(
 export function validateTravelTransforms(
   scene: CommerceRenderScene | StoryRenderScene,
 ) {
-  if (
-    !scene.componentData ||
-    scene.componentData.schemaVersion === "scene-components-1"
-  )
-    return;
-  for (const travel of scene.componentData.travels) {
+  for (const travel of componentCapabilities(scene.componentData).travels) {
     const node = scene.nodes.find((n) => n.id === travel.target)!;
     validatePositionParents(scene, node);
     for (let frame = 0; frame < scene.frameCount; frame++)

@@ -2,6 +2,7 @@ import type { PreparedNode } from "../../scene-contract/src/prepared.ts";
 import type { ComponentData } from "../../scene-contract/src/component-data.ts";
 import type { LoadedFont } from "./prepared-fonts.ts";
 import { measureTextLayout } from "./text-layout.ts";
+import { componentCapabilities } from "./component-capabilities.ts";
 
 type Fit = {
   target: string;
@@ -78,9 +79,7 @@ export function prepareComponentTextFits<
 >(scene: T, ctx: CanvasRenderingContext2D, fonts: Map<string, LoadedFont>): T {
   return prepareTextFits(
     scene,
-    scene.componentData?.schemaVersion === "scene-components-3"
-      ? scene.componentData.textFits
-      : [],
+    componentCapabilities(scene.componentData).textFits,
     ctx,
     fonts,
   );

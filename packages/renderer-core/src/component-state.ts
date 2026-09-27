@@ -2,6 +2,7 @@ import type {
   ComponentSceneData,
   ComponentState,
 } from "../../scene-contract/src/component-data.ts";
+import { componentCapabilities } from "./component-capabilities.ts";
 
 export function sampleComponentState(schedule: ComponentState, frame: number) {
   if (!Number.isFinite(frame))
@@ -19,21 +20,18 @@ export function applyComponentState(
   frame: number,
   state: { state: number },
 ) {
-  if (
-    !scene.componentData ||
-    scene.componentData.schemaVersion === "scene-components-1"
-  )
-    return;
-  const schedule = scene.componentData.states.find((s) => s.target === id);
+  if (!scene.componentData) return;
+  const schedule = componentCapabilities(scene.componentData).states.find(
+    (s) => s.target === id,
+  );
   if (schedule) state.state = sampleComponentState(schedule, frame);
 }
 export function componentStateCuts(
   scene: Pick<ComponentSceneData, "componentData">,
 ): number[] {
-  return scene.componentData &&
-    scene.componentData.schemaVersion !== "scene-components-1"
-    ? scene.componentData.states.flatMap((s) => s.cuts.map((c) => c.frame))
-    : [];
+  return componentCapabilities(scene.componentData).states.flatMap((s) =>
+    s.cuts.map((c) => c.frame),
+  );
 }
 export function validateStateOwnership(
   scene: ComponentSceneData & {
@@ -41,15 +39,11 @@ export function validateStateOwnership(
     textFits?: { target: string }[] | undefined;
   },
 ) {
-  if (
-    !scene.componentData ||
-    scene.componentData.schemaVersion === "scene-components-1"
-  )
-    return;
-  for (const schedule of scene.componentData.states) {
+  const features = componentCapabilities(scene.componentData);
+  for (const schedule of features.states) {
     if (
       scene.tracks[schedule.target]?.state?.length ||
-      scene.componentData.bindings.some(
+      features.bindings.some(
         (b) => b.target === schedule.target && b.kind === "text",
       ) ||
       scene.textFits?.some((f) => f.target === schedule.target)

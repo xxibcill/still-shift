@@ -1,6 +1,7 @@
 import type { StoryScene } from "../../scene-contract/src/story.ts";
 import type { TimingBinding } from "../../scene-contract/src/story-authoring.ts";
 import { passageError } from "./passage-diagnostics.ts";
+import { componentCapabilities } from "./component-capabilities.ts";
 
 export type StoryEvent = {
   id: string;
@@ -136,18 +137,13 @@ function editableEvents(scene: StoryScene) {
   visit(scene.recipe, "recipe");
   visit(scene.camera, "camera");
   visit(scene.flows, "flows");
-  visit(scene.componentData?.values, "componentData/values");
-  if (
-    scene.componentData &&
-    scene.componentData.schemaVersion !== "scene-components-1"
-  ) {
-    visit(scene.componentData.travels, "componentData/travels");
-    scene.componentData.states.forEach((s, i) =>
-      visit(s.cuts, `componentData/states/${i}/cuts`, s),
-    );
-  }
-  if (scene.componentData?.schemaVersion === "scene-components-3")
-    visit(scene.componentData.visibility, "componentData/visibility");
+  const features = componentCapabilities(scene.componentData);
+  visit(features.values, "componentData/values");
+  visit(features.travels, "componentData/travels");
+  features.states.forEach((s, i) =>
+    visit(s.cuts, `componentData/states/${i}/cuts`, s),
+  );
+  visit(features.visibility, "componentData/visibility");
   const point = (
     record: RecordValue,
     key: string,

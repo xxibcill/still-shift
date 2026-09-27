@@ -18,6 +18,10 @@ import { validateComponentRelationships } from "./component-relationships.ts";
 import { validatePinTransforms } from "./component-pin.ts";
 import { validateTravelTransforms } from "./component-travel.ts";
 import { validateComponentOwnership } from "./component-values.ts";
+import {
+  componentCapabilities,
+  componentRendererVersions,
+} from "./component-capabilities.ts";
 
 type StoryMotionEventKind =
   | "camera"
@@ -423,17 +427,10 @@ export function compileStoryScene(source: StoryScene): StoryRenderScene {
   validateStoryCameraCoverage(scene);
   validateTravelTransforms(scene);
   validatePinTransforms(scene);
-  if (
-    input.componentData &&
-    input.componentData.schemaVersion !== "scene-components-1"
-  )
-    indexStoryEvents(input);
-  if (input.componentData)
-    scene.rendererVersion =
-      input.componentData.schemaVersion === "scene-components-3"
-        ? "story-canvas-0.18.0"
-        : input.componentData.schemaVersion === "scene-components-2"
-          ? "story-canvas-0.17.0"
-          : "story-canvas-0.16.0";
+  const features = componentCapabilities(input.componentData);
+  if (features.supportsBehaviors) indexStoryEvents(input);
+  scene.rendererVersion =
+    componentRendererVersions(input.componentData)?.story ??
+    scene.rendererVersion;
   return scene;
 }

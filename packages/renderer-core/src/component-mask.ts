@@ -1,5 +1,6 @@
 import type { PreparedNode } from "../../scene-contract/src/prepared.ts";
 import type { ComponentData } from "../../scene-contract/src/component-data.ts";
+import { componentCapabilities } from "./component-capabilities.ts";
 
 export type RootMask = { target: string; mask: string; invert: boolean };
 export type RootPaint = (
@@ -10,9 +11,7 @@ export type RootPaint = (
 export function componentMasks(scene: {
   componentData?: ComponentData | undefined;
 }): RootMask[] {
-  return scene.componentData?.schemaVersion === "scene-components-3"
-    ? scene.componentData.masks
-    : [];
+  return componentCapabilities(scene.componentData).masks;
 }
 export function compositeRootMask(
   layer: CanvasRenderingContext2D,

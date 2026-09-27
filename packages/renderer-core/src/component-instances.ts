@@ -2,11 +2,7 @@ import {
   ComponentDefinitionSchema,
   type ComponentDefinition,
 } from "../../scene-contract/src/components.ts";
-import {
-  ComponentDataSchema,
-  ComponentIdSchema,
-  type ComponentData,
-} from "../../scene-contract/src/component-data.ts";
+import { ComponentIdSchema } from "../../scene-contract/src/component-data.ts";
 import {
   CommerceSceneSchema,
   type CommerceScene,
@@ -22,6 +18,11 @@ import {
 } from "./commerce-composition.ts";
 import { compileStoryScene } from "./story-scene.ts";
 import { compileCommerceScene } from "./commerce-scene.ts";
+import {
+  assembleComponentData,
+  componentCapabilities,
+  mergeComponentData,
+} from "./component-capabilities.ts";
 
 export type ComponentInstance = Omit<
   ComponentDefinition,
@@ -92,34 +93,24 @@ export function instantiateComponent(
   const motionIds = new Set(definition.motions.map((m) => m.id));
   if (motionIds.size !== definition.motions.length)
     throw new Error("Duplicate component motion ID");
-  const behaviors =
-    definition.componentData.schemaVersion !== "scene-components-1"
-      ? definition.componentData
-      : undefined;
-  const relationships =
-    definition.componentData.schemaVersion === "scene-components-3"
-      ? definition.componentData
-      : undefined;
-  if (relationships)
-    for (const item of [
-      ...relationships.visibility,
-      ...relationships.pins,
-      ...relationships.textFits,
-      ...relationships.masks,
-    ])
-      if (!local.has(item.target))
-        throw new Error(
-          "Component relationship must own a local target: " + item.target,
-        );
+  const features = componentCapabilities(definition.componentData);
+  for (const item of [
+    ...features.visibility,
+    ...features.pins,
+    ...features.textFits,
+    ...features.masks,
+  ])
+    if (!local.has(item.target))
+      throw new Error(
+        "Component relationship must own a local target: " + item.target,
+      );
   const cues = [
     ...definition.motions,
-    ...definition.componentData.values,
-    ...(behaviors?.travels ?? []),
-    ...(relationships?.visibility ?? []),
+    ...features.values,
+    ...features.travels,
+    ...features.visibility,
   ].map((item) => item.window.cue ?? item.id);
-  cues.push(
-    ...(behaviors?.states.flatMap((s) => s.cuts.map((c) => c.id)) ?? []),
-  );
+  cues.push(...features.states.flatMap((s) => s.cuts.map((c) => c.id)));
   if (new Set(cues).size !== cues.length)
     throw new Error("Duplicate component cue ID");
   const nodes = definition.nodes.map((node) => ({
@@ -145,81 +136,74 @@ export function instantiateComponent(
           : 0),
     };
   });
-  const componentData = ComponentDataSchema.parse({
-    ...(behaviors
-      ? {
-          schemaVersion: "scene-components-2" as const,
-          states: behaviors.states.map((s) => ({
-            ...s,
-            id: `${id}__${s.id}`,
-            target: reference(s.target),
-            cuts: s.cuts.map((c) => ({
-              ...c,
-              id: `${id}__${c.id}`,
-              frame: c.frame + start,
-            })),
-          })),
-          travels: behaviors.travels.map((t) => ({
-            ...t,
-            id: `${id}__${t.id}`,
-            target: reference(t.target),
-            path: reference(t.path),
-            window: window(t.window, t.window.cue ?? t.id),
-          })),
-        }
-      : { schemaVersion: "scene-components-1" as const }),
-    ...(relationships
-      ? {
-          schemaVersion: "scene-components-3",
-          visibility: relationships.visibility.map((g) => ({
-            ...g,
-            id: `${id}__${g.id}`,
-            target: reference(g.target),
-            window: window(g.window, g.window.cue ?? g.id),
-          })),
-          pins: relationships.pins.map((p) => ({
-            ...p,
-            id: `${id}__${p.id}`,
-            target: reference(p.target),
-            anchor: { ...p.anchor, node: reference(p.anchor.node) },
-          })),
-          textFits: relationships.textFits.map((f) => ({
-            ...f,
-            target: reference(f.target),
-          })),
-          masks: relationships.masks.map((m) => ({
-            ...m,
-            target: reference(m.target),
-            mask: reference(m.mask),
-          })),
-        }
-      : {}),
-    annotations: definition.componentData.annotations.map((a) => ({
-      ...a,
-      path: reference(a.path),
-      points: a.points.map((p) => ({ ...p, node: reference(p.node) })),
-      protect: a.protect.map(reference),
-    })),
-    values: definition.componentData.values.map((v) => ({
-      ...v,
-      id: `${id}__${v.id}`,
-      window: window(v.window, v.window.cue ?? v.id),
-    })),
-    bindings: definition.componentData.bindings.map((b) => ({
-      ...b,
-      value: `${id}__${b.value}`,
-      target: reference(b.target),
-      ...(b.kind === "property" &&
-      roots.has(b.target) &&
-      (b.property === "x" || b.property === "y")
-        ? {
-            output: b.output.map(
-              (v) => v + offset[b.property === "x" ? 0 : 1],
-            ) as [number, number],
-          }
-        : {}),
-    })),
-  });
+  const componentData = assembleComponentData(
+    definition.componentData.schemaVersion,
+    {
+      annotations: features.annotations.map((a) => ({
+        ...a,
+        path: reference(a.path),
+        points: a.points.map((p) => ({ ...p, node: reference(p.node) })),
+        protect: a.protect.map(reference),
+      })),
+      values: features.values.map((v) => ({
+        ...v,
+        id: `${id}__${v.id}`,
+        window: window(v.window, v.window.cue ?? v.id),
+      })),
+      bindings: features.bindings.map((b) => ({
+        ...b,
+        value: `${id}__${b.value}`,
+        target: reference(b.target),
+        ...(b.kind === "property" &&
+        roots.has(b.target) &&
+        (b.property === "x" || b.property === "y")
+          ? {
+              output: b.output.map(
+                (v) => v + offset[b.property === "x" ? 0 : 1],
+              ) as [number, number],
+            }
+          : {}),
+      })),
+      states: features.states.map((s) => ({
+        ...s,
+        id: `${id}__${s.id}`,
+        target: reference(s.target),
+        cuts: s.cuts.map((c) => ({
+          ...c,
+          id: `${id}__${c.id}`,
+          frame: c.frame + start,
+        })),
+      })),
+      travels: features.travels.map((t) => ({
+        ...t,
+        id: `${id}__${t.id}`,
+        target: reference(t.target),
+        path: reference(t.path),
+        window: window(t.window, t.window.cue ?? t.id),
+      })),
+      visibility: features.visibility.map((g) => ({
+        ...g,
+        id: `${id}__${g.id}`,
+        target: reference(g.target),
+        window: window(g.window, g.window.cue ?? g.id),
+      })),
+      pins: features.pins.map((p) => ({
+        ...p,
+        id: `${id}__${p.id}`,
+        target: reference(p.target),
+        anchor: { ...p.anchor, node: reference(p.anchor.node) },
+      })),
+      textFits: features.textFits.map((f) => ({
+        ...f,
+        target: reference(f.target),
+      })),
+      masks: features.masks.map((m) => ({
+        ...m,
+        target: reference(m.target),
+        mask: reference(m.mask),
+      })),
+    },
+  );
   return {
     nodes,
     assets: definition.assets,
@@ -280,64 +264,25 @@ export function validateInstances(
 ) {
   validateCommerceClock(clock);
   for (const instance of instances) {
-    if (
-      instance.componentData.schemaVersion === "scene-components-3" &&
-      instance.componentData.visibility.some(
-        (g) => g.window.end > clock.frameCount,
-      )
-    )
+    const features = componentCapabilities(instance.componentData);
+    if (features.visibility.some((g) => g.window.end > clock.frameCount))
       throw new Error("Component visibility exceeds timeline");
     if (
-      instance.componentData.schemaVersion !== "scene-components-1" &&
-      instance.componentData.states.some((s) =>
+      features.states.some((s) =>
         s.cuts.some((c) => c.frame >= clock.frameCount),
       )
     )
       throw new Error("Component state cut exceeds timeline");
     for (const motion of [
       ...instance.motions,
-      ...instance.componentData.values,
-      ...(instance.componentData.schemaVersion !== "scene-components-1"
-        ? instance.componentData.travels
-        : []),
+      ...features.values,
+      ...features.travels,
     ])
       if (motion.window.end >= clock.frameCount)
         throw new Error("Component motion exceeds timeline: " + motion.id);
   }
   if (instances.reduce((count, i) => count + i.nodes.length, 0) > 200)
     throw new Error("Component instances exceed 200 nodes");
-}
-function mergeData(
-  base: ComponentData | undefined,
-  instances: ComponentInstance[],
-) {
-  const parts = [
-    ...(base ? [base] : []),
-    ...instances.map((i) => i.componentData),
-  ];
-  const v2 = parts.filter((p) => p.schemaVersion !== "scene-components-1");
-  const v3 = parts.filter((p) => p.schemaVersion === "scene-components-3");
-  return ComponentDataSchema.parse({
-    ...(v2.length
-      ? {
-          schemaVersion: "scene-components-2",
-          states: v2.flatMap((p) => p.states),
-          travels: v2.flatMap((p) => p.travels),
-        }
-      : { schemaVersion: "scene-components-1" }),
-    ...(v3.length
-      ? {
-          schemaVersion: "scene-components-3",
-          visibility: v3.flatMap((p) => p.visibility),
-          pins: v3.flatMap((p) => p.pins),
-          textFits: v3.flatMap((p) => p.textFits),
-          masks: v3.flatMap((p) => p.masks),
-        }
-      : {}),
-    annotations: parts.flatMap((p) => p.annotations),
-    values: parts.flatMap((p) => p.values),
-    bindings: parts.flatMap((p) => p.bindings),
-  });
 }
 export function addCommerceComponents(
   source: CommerceScene,
@@ -368,7 +313,10 @@ export function addCommerceComponents(
   const scene = CommerceSceneSchema.parse({
     ...source,
     ...fragment,
-    componentData: mergeData(source.componentData, instances),
+    componentData: mergeComponentData([
+      ...(source.componentData ? [source.componentData] : []),
+      ...instances.map((instance) => instance.componentData),
+    ]),
   });
   compileCommerceScene(scene);
   return scene;
@@ -391,7 +339,10 @@ export function addStoryComponents(
     nodes: visuals.nodes,
     assets: visuals.assets,
     fonts: visuals.fonts,
-    componentData: mergeData(source.componentData, instances),
+    componentData: mergeComponentData([
+      ...(source.componentData ? [source.componentData] : []),
+      ...instances.map((instance) => instance.componentData),
+    ]),
     recipe: {
       ...source.recipe,
       moves: [

@@ -5,6 +5,7 @@ import { resolveComponentAnchor } from "./component-annotations.ts";
 import { parentWorldMatrix } from "./commerce-geometry.ts";
 import { inverseMatrix, transformPoint } from "./node-transform.ts";
 import { validatePositionParents } from "./component-travel.ts";
+import { componentCapabilities } from "./component-capabilities.ts";
 
 type Scene = CommerceRenderScene | StoryRenderScene;
 export function applyComponentPin(
@@ -13,8 +14,10 @@ export function applyComponentPin(
   frame: number,
   state: { x: number; y: number },
 ) {
-  if (scene.componentData?.schemaVersion !== "scene-components-3") return;
-  const pin = scene.componentData.pins.find((p) => p.target === node.id);
+  if (!scene.componentData) return;
+  const pin = componentCapabilities(scene.componentData).pins.find(
+    (p) => p.target === node.id,
+  );
   if (!pin) return;
   const point = transformPoint(
     inverseMatrix(parentWorldMatrix(scene, node, frame)),
@@ -26,8 +29,7 @@ export function applyComponentPin(
     throw new Error("Pin projection must be finite: " + pin.id);
 }
 export function validatePinTransforms(scene: Scene) {
-  if (scene.componentData?.schemaVersion !== "scene-components-3") return;
-  for (const pin of scene.componentData.pins) {
+  for (const pin of componentCapabilities(scene.componentData).pins) {
     const node = scene.nodes.find((n) => n.id === pin.target)!;
     validatePositionParents(scene, node);
     for (let frame = 0; frame < scene.frameCount; frame++)

@@ -8,6 +8,7 @@ import {
   validateInstances,
   type ComponentInstanceOptions,
 } from "./component-instances.ts";
+import { componentCapabilities } from "./component-capabilities.ts";
 import {
   validateCommerceClock,
   type CommerceClock,
@@ -123,9 +124,9 @@ export function sequenceComponents(
           ...(clip.external ? { external: clip.external } : {}),
         },
       );
-      if (instance.componentData.schemaVersion !== "scene-components-3")
+      const expanded = componentCapabilities(instance.componentData);
+      if (!expanded.supportsRelationships)
         throw new Error("Sequence requires v3 component data");
-      const expanded = instance.componentData;
       add("nodes", instance.nodes.length, 200);
       if (clock.consumer !== "story")
         add(
