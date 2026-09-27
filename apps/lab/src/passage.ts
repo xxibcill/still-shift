@@ -14,6 +14,7 @@ import {
 import {
   parsePassageTemplate,
   instantiateStoryTemplate,
+  resolveStoryFormat,
   templateScene,
   type PassageTemplate,
 } from "../../../packages/renderer-core/src/story-template.ts";
@@ -329,32 +330,51 @@ function withVerticalOverride(
 }
 function updateTemplates(replacements: ReadonlyMap<string, PassageTemplate>) {
   const owner = editor;
-  const task = async () => {
-    if (editor !== owner || !owner) return;
+  const task = async (): Promise<boolean> => {
+    if (editor !== owner || !owner) return false;
     stop();
     const ticket = ++generation;
-    for (const [key, value] of replacements) templates.set(key, value);
-    let compileFailure: unknown;
     try {
-      owner.setFormat(owner.format);
-    } catch (error) {
-      compileFailure = error;
-      owner.setFormat("landscape");
-    }
-    try {
-      const ready = await preparePreviews(owner.passage);
-      if (ticket !== generation) {
+      const candidateTemplates = new Map(templates);
+      for (const [key, value] of replacements) {
+        candidateTemplates.set(key, value);
+        const override = templateOverride(value);
+        if (override) {
+          const scene = structuredClone(templateScene(value));
+          scene.formats = { vertical: override };
+          resolveStoryFormat(scene, "vertical");
+        }
+      }
+      const candidate = compileStoryPassage(
+        owner.passage.plan,
+        candidateTemplates,
+        { format: owner.format },
+      );
+      const ready = await preparePreviews(candidate);
+      if (ticket !== generation || editor !== owner) {
         ready.forEach((preview) => preview.preview.dispose());
-        return;
+        return false;
+      }
+      const previousTemplates = new Map(templates);
+      try {
+        for (const [key, value] of replacements) templates.set(key, value);
+        owner.setFormat(owner.format);
+      } catch (error) {
+        templates.clear();
+        for (const [key, value] of previousTemplates) templates.set(key, value);
+        ready.forEach((preview) => preview.preview.dispose());
+        throw error;
       }
       installPreviews(ready);
-      if (compileFailure) errors(compileFailure);
+      return true;
     } catch (error) {
       if (ticket === generation) errors(error);
+      return false;
     }
   };
-  edits = edits.then(task, task);
-  return edits;
+  const result = edits.then(task, task);
+  edits = result.then(() => undefined);
+  return result;
 }
 function renderVerticalOverrideEditor() {
   const key = selectedTemplateKey();
@@ -649,9 +669,10 @@ el("propose-vertical").onclick = () => {
         "Every template already has a vertical override.";
       return;
     }
-    void updateTemplates(replacements).then(() => {
-      el("status").textContent =
-        `${replacements.size} vertical template override${replacements.size === 1 ? "" : "s"} added to the workspace. Review diagnostics and save the workspace.`;
+    void updateTemplates(replacements).then((committed) => {
+      if (committed)
+        el("status").textContent =
+          `${replacements.size} vertical template override${replacements.size === 1 ? "" : "s"} added to the workspace. Review diagnostics and save the workspace.`;
     });
   } catch (error) {
     errors(error);

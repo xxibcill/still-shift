@@ -133,6 +133,75 @@ describe("passage Lab file actions", () => {
     }
   }, 30_000);
 
+  test("failed vertical override keeps the active preview and saved template", async () => {
+    const page = await browser.newPage({ acceptDownloads: true });
+    try {
+      await page.goto(base + "passage.html");
+      await page.waitForFunction(() =>
+        document.querySelector("#status")?.textContent?.includes("576 frames"),
+      );
+      await page
+        .locator("#plan-path")
+        .fill(
+          resolve(
+            "benchmarks/fixtures/story-authoring/vertical/linked-network.json",
+          ),
+        );
+      await page.locator("#load-form button").click();
+      await page.waitForFunction(() =>
+        document.querySelector("#status")?.textContent?.includes("192 frames"),
+      );
+      await page.locator("#output-format").selectOption("vertical");
+      await page.waitForFunction(
+        () =>
+          (
+            window.passageLab!.snapshot() as {
+              beats: { scene: { format?: string } }[];
+            }
+          ).beats[0]?.scene.format === "vertical",
+      );
+      const before = await page
+        .locator("#preview")
+        .evaluate((canvas) => (canvas as HTMLCanvasElement).toDataURL());
+      await page.getByText("Vertical override", { exact: true }).click();
+      const override = JSON.parse(
+        await page.locator("#vertical-override").inputValue(),
+      );
+      override.nodes.title = { ...override.nodes.title, lineWidth: 100 };
+      await page.locator("#vertical-override").fill(JSON.stringify(override));
+      await page.locator("#apply-vertical-override").click();
+      await page.waitForFunction(() =>
+        document
+          .querySelector("#errors")
+          ?.textContent?.includes("Line width requires a measured text layout"),
+      );
+      assert.equal(
+        await page.locator("#output-format").inputValue(),
+        "vertical",
+      );
+      assert.equal(
+        await page
+          .locator("#preview")
+          .evaluate((canvas) => (canvas as HTMLCanvasElement).toDataURL()),
+        before,
+      );
+      const downloadStarted = page.waitForEvent("download");
+      await page.locator("#save-workspace").click();
+      const saved = JSON.parse(
+        await readFile(await (await downloadStarted).path()!, "utf8"),
+      );
+      const template = Object.entries(saved.templates).find(([path]) =>
+        path.endsWith("network-template.json"),
+      )?.[1] as {
+        formats: { vertical: { nodes: { title: { lineWidth?: number } } } };
+      };
+      assert.ok(template);
+      assert.equal(template.formats.vertical.nodes.title.lineWidth, undefined);
+    } finally {
+      await page.close();
+    }
+  }, 30_000);
+
   test("relocated packages load the same frames and reject corruption without replacing the preview", async () => {
     const directory = await mkdtemp(
       resolve("benchmarks/results/workspace-lab-"),
