@@ -14,7 +14,7 @@ import {
 } from "../../packages/renderer-core/src/parity.ts";
 import type { PreviewScene } from "../../packages/renderer-core/src/scene.ts";
 import { SHADER_VERSION } from "../../packages/renderer-core/src/webgl-renderer.ts";
-import { exportScene } from "../../tools/export-worker/src/export-worker.ts";
+import { exportScene } from "@still-shift/execution-runtime/export";
 import { GOLDEN_SCENES } from "../visual/golden-scenes.ts";
 
 const sampleWidth = 64;

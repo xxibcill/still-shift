@@ -14,7 +14,25 @@
       "@still-shift/animation-engine": [
         "./packages/animation-engine/src/index.ts"
       ],
-      "@still-shift/scene-contract": ["./packages/scene-contract/src/index.ts"]
+      "@still-shift/scene-contract": ["./packages/scene-contract/src/index.ts"],
+      "@still-shift/execution-runtime": [
+        "./packages/execution-runtime/src/index.ts"
+      ],
+      "@still-shift/execution-runtime/locks": [
+        "./packages/execution-runtime/src/artifact-locks.ts"
+      ],
+      "@still-shift/execution-runtime/export": [
+        "./packages/execution-runtime/src/export-worker.ts"
+      ],
+      "@still-shift/execution-runtime/publication": [
+        "./packages/execution-runtime/src/artifact-publication.ts"
+      ],
+      "@still-shift/execution-runtime/subprocess": [
+        "./packages/execution-runtime/src/subprocess.ts"
+      ],
+      "@still-shift/execution-runtime/browser": [
+        "./packages/execution-runtime/src/browser.ts"
+      ]
     },
     "resolveJsonModule": true,
     "skipLibCheck": true,

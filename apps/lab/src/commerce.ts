@@ -12,17 +12,14 @@ import {
 import type { CommerceSelection } from "../../../packages/scene-contract/src/commerce-catalog.ts";
 import { buildCommerceScene } from "../../../packages/renderer-core/src/commerce-scene.ts";
 import { compilePreparedScene } from "../../../packages/renderer-core/src/prepared-scene.ts";
-import {
-  createIllustratedPreview,
-  loadIllustratedImages,
-} from "../../../packages/renderer-core/src/illustrated-renderer.ts";
+import { loadIllustratedImages } from "../../../packages/renderer-core/src/illustrated-renderer.ts";
 import {
   createSourceZip,
   download,
   type BundleFile,
 } from "./commerce-download.ts";
 import { postCommerceExport } from "./commerce-export.ts";
-import { createCommercePreviewController } from "./commerce-preview-controller.ts";
+import { createPreviewSession } from "./preview-session.ts";
 
 const element = <T extends HTMLElement>(id: string) =>
   document.getElementById(id) as T;
@@ -43,11 +40,11 @@ let draft: CommerceBrief,
   imageBytes: Uint8Array,
   imageName = "sample-one.png";
 let backdropFile: BundleFile | undefined;
-let renderer: ReturnType<typeof createIllustratedPreview> | undefined;
-let active:
-  | { scene: CommerceScene; brief: CommerceBrief; files: BundleFile[] }
-  | undefined;
-let urls: string[] = [];
+type Active = {
+  scene: CommerceScene;
+  brief: CommerceBrief;
+  files: BundleFile[];
+};
 const allEntries = [
   ...commerceCatalog.formats.map((item) => ({
     kind: "format" as const,
@@ -73,18 +70,24 @@ const say = (message: string, error = false) => {
   status.textContent = message;
   status.classList.toggle("error", error);
 };
-const preview = createCommercePreviewController({
+const preview = createPreviewSession<Active>({
   controls: {
     play: element<HTMLButtonElement>("play"),
     restart: element<HTMLButtonElement>("restart"),
     scrub,
-    download: element<HTMLButtonElement>("download"),
+    downloads: [element<HTMLButtonElement>("download")],
     export: element<HTMLButtonElement>("export"),
     timecode: element("timecode"),
     update: element<HTMLButtonElement>("update"),
   },
-  scene: () => active?.scene,
-  renderFrame: (frame) => renderer?.renderFrame(frame),
+  status: say,
+  ready: ({ scene, brief }) => {
+    canvas.hidden = false;
+    element("empty-preview").hidden = true;
+    say(
+      `${brief.selection.id} ready · ${scene.width} × ${scene.height} · ${scene.frameCount} frames`,
+    );
+  },
   canUpdate: () => Boolean(capability(selection).implementation),
 });
 function invalidate() {
@@ -164,47 +167,42 @@ function readBrief(): CommerceBrief {
 }
 
 async function updatePreview() {
-  const run = preview.invalidate();
-  active = undefined;
   if (!capability(selection).implementation) return;
-  const nextUrls: string[] = [];
-  try {
+  await preview.load(async (resources) => {
     const brief = readBrief();
+    const productFile = { name: "assets/" + imageName, bytes: imageBytes };
+    const backdrop = backdropFile;
     renderNotes();
     say("Preparing image, text and timing…");
-    const imageUrl = URL.createObjectURL(
-      blob(imageBytes, "application/octet-stream"),
+    const imageUrl = resources.url(
+      blob(productFile.bytes, "application/octet-stream"),
     );
-    nextUrls.push(imageUrl);
     const image = new Image();
     image.src = imageUrl;
     await image.decode();
     const backdropUrl =
-      brief.floating && backdropFile
-        ? URL.createObjectURL(
-            blob(backdropFile.bytes, "application/octet-stream"),
-          )
+      brief.floating && backdrop
+        ? resources.url(blob(backdrop.bytes, "application/octet-stream"))
         : undefined;
     let backdropAsset;
-    if (backdropUrl && backdropFile) {
-      nextUrls.push(backdropUrl);
-      const backdrop = new Image();
-      backdrop.src = backdropUrl;
-      await backdrop.decode();
+    if (backdropUrl && backdrop) {
+      const backdropImage = new Image();
+      backdropImage.src = backdropUrl;
+      await backdropImage.decode();
       backdropAsset = {
         id: "backdrop-image",
-        path: backdropFile.name,
-        sha256: await checksum(backdropFile.bytes),
-        width: backdrop.naturalWidth,
-        height: backdrop.naturalHeight,
+        path: backdrop.name,
+        sha256: await checksum(backdrop.bytes),
+        width: backdropImage.naturalWidth,
+        height: backdropImage.naturalHeight,
       };
     }
     const scene = buildCommerceScene(brief, {
       ...(backdropAsset ? { backdrop: backdropAsset } : {}),
       product: {
         id: "product-image",
-        path: "assets/" + imageName,
-        sha256: await checksum(imageBytes),
+        path: productFile.name,
+        sha256: await checksum(productFile.bytes),
         width: image.naturalWidth,
         height: image.naturalHeight,
       },
@@ -215,8 +213,7 @@ async function updatePreview() {
         weight: brief.artDirection !== "standard" ? "400" : "600",
       },
     });
-    const fontUrl = URL.createObjectURL(blob(fontBytes, "font/ttf"));
-    nextUrls.push(fontUrl);
+    const fontUrl = resources.url(blob(fontBytes, "font/ttf"));
     const compiled = compilePreparedScene(scene);
     const images = await loadIllustratedImages(compiled, (id) =>
       id === "commerce-font"
@@ -225,51 +222,25 @@ async function updatePreview() {
           ? backdropUrl!
           : imageUrl,
     );
-    if (!preview.isCurrent(run)) {
-      nextUrls.forEach((url) => URL.revokeObjectURL(url));
-      return;
-    }
-    renderer?.dispose();
-    renderer = createIllustratedPreview(canvas, compiled, images);
-    urls.forEach((url) => URL.revokeObjectURL(url));
-    urls = nextUrls;
-    active = {
-      scene,
-      brief,
-      files: [
-        { name: "assets/" + imageName, bytes: imageBytes },
-        { name: "assets/noto-sans-thai.ttf", bytes: fontBytes },
-        ...(brief.floating && backdropFile ? [backdropFile] : []),
-      ],
+    resources.preview(canvas, compiled, images);
+    return {
+      snapshot: {
+        scene,
+        brief,
+        files: [
+          productFile,
+          { name: "assets/noto-sans-thai.ttf", bytes: fontBytes },
+          ...(brief.floating && backdrop ? [backdrop] : []),
+        ],
+      },
+      initialFrame:
+        brief.artDirection === "editorial"
+          ? scene.frameCount - 1
+          : brief.artDirection === "floating"
+            ? 0
+            : Math.floor(scene.frameCount * 0.5),
     };
-    canvas.hidden = false;
-    element("empty-preview").hidden = true;
-    preview.activate(
-      brief.artDirection === "editorial"
-        ? scene.frameCount - 1
-        : brief.artDirection === "floating"
-          ? 0
-          : Math.floor(scene.frameCount * 0.5),
-    );
-    say(
-      selection.id +
-        " ready · " +
-        scene.width +
-        " × " +
-        scene.height +
-        " · " +
-        scene.frameCount +
-        " frames",
-    );
-  } catch (error) {
-    nextUrls.forEach((url) => URL.revokeObjectURL(url));
-    if (preview.isCurrent(run)) {
-      active = undefined;
-      say(error instanceof Error ? error.message : String(error), true);
-    }
-  } finally {
-    if (preview.isCurrent(run)) preview.syncControls();
-  }
+  });
 }
 
 function renderCatalog() {
@@ -498,12 +469,10 @@ async function selectEntry(next: CommerceSelection) {
   if (selection.id === "A01" && Number(value("duration")) < 10)
     set("duration", 10);
   if (!capability(selection).implementation) {
-    renderer?.dispose();
-    active = undefined;
+    preview.clear();
     canvas.hidden = true;
     element("empty-preview").hidden = false;
     say("Reference only. Review the assets and storyboard in Format notes.");
-    preview.syncControls();
     return;
   }
   await updatePreview();
@@ -558,32 +527,39 @@ async function loadFixture(
   name = "h03-landscape",
   preserved: Record<string, string> = {},
 ) {
-  invalidate();
-  const request = preview.generation;
-  const briefResponse = await fetch("/commerce/scenes/" + name + ".brief.json");
-  if (!briefResponse.ok) throw new Error("Could not load the selected example");
-  const brief = CommerceBriefSchema.parse(await briefResponse.json());
-  const filename = brief.product.imagePath.split("/").at(-1)!;
-  const bytes = await fetchBytes("/commerce/assets/" + filename);
-  const backdropName = brief.floating?.imagePath.split("/").at(-1);
-  const backdropBytes = backdropName
-    ? await fetchBytes("/commerce/assets/" + backdropName)
-    : undefined;
-  if (!preview.isCurrent(request)) return;
-  backdropFile =
-    backdropBytes && backdropName
-      ? { name: "assets/" + backdropName, bytes: backdropBytes }
-      : undefined;
-  input("backdrop-file").value = "";
-  imageName = filename;
-  imageBytes = bytes;
-  exampleFamily = name.includes("-beauty-") ? "beauty" : undefined;
-  input("product-file").value = "";
-  element("fixture-note").hidden = false;
-  element("fixture-note").textContent = brief.product.provenance;
-  fillForm(brief);
-  for (const [id, content] of Object.entries(preserved)) set(id, content);
-  await updatePreview();
+  await preview.edit(
+    async () => {
+      const briefResponse = await fetch(
+        "/commerce/scenes/" + name + ".brief.json",
+      );
+      if (!briefResponse.ok)
+        throw new Error("Could not load the selected example");
+      const brief = CommerceBriefSchema.parse(await briefResponse.json());
+      const filename = brief.product.imagePath.split("/").at(-1)!;
+      const bytes = await fetchBytes("/commerce/assets/" + filename);
+      const backdropName = brief.floating?.imagePath.split("/").at(-1);
+      const backdropBytes = backdropName
+        ? await fetchBytes("/commerce/assets/" + backdropName)
+        : undefined;
+      return { brief, filename, bytes, backdropName, backdropBytes };
+    },
+    async ({ brief, filename, bytes, backdropName, backdropBytes }) => {
+      backdropFile =
+        backdropBytes && backdropName
+          ? { name: "assets/" + backdropName, bytes: backdropBytes }
+          : undefined;
+      input("backdrop-file").value = "";
+      imageName = filename;
+      imageBytes = bytes;
+      exampleFamily = name.includes("-beauty-") ? "beauty" : undefined;
+      input("product-file").value = "";
+      element("fixture-note").hidden = false;
+      element("fixture-note").textContent = brief.product.provenance;
+      fillForm(brief);
+      for (const [id, content] of Object.entries(preserved)) set(id, content);
+      await updatePreview();
+    },
+  );
 }
 
 form.addEventListener("submit", (event) => {
@@ -614,37 +590,41 @@ input("product-file").addEventListener("change", async () => {
     say("Choose a PNG, JPEG or WebP image under 20 MB.", true);
     return;
   }
-  imageName =
-    "product." +
-    { "image/png": "png", "image/jpeg": "jpg", "image/webp": "webp" }[
-      file.type
-    ];
-  imageBytes = new Uint8Array(await file.arrayBuffer());
-  exampleFamily = undefined;
-  const floating = value("art-direction") === "floating";
-  if (!floating) {
-    backdropFile = undefined;
-    draft.floating = undefined;
-    set("backdrop-source", "");
-  }
-  draft.product.id = file.name;
-  set("product-name", file.name.replace(/\.[^.]+$/, ""));
-  set("preparation", floating ? "cutout" : "photo");
-  set("product-source", "");
-  set("copy-source", "");
-  set("headline", "");
-  set("cta", "");
-  for (const i of [0, 1]) {
-    set("callout-" + i, "");
-    set("source-" + i, "");
-  }
-  element("fixture-note").hidden = true;
-  document.querySelector<HTMLDetailsElement>(".asset-details")!.open = true;
-  invalidate();
-  say(
-    floating
-      ? "Product loaded. Add its source and check its size and clearance above the hand."
-      : "Image loaded. Add your copy and sources, and check the protected label region.",
+  await preview.edit(
+    () => file.arrayBuffer(),
+    (bytes) => {
+      imageName =
+        "product." +
+        { "image/png": "png", "image/jpeg": "jpg", "image/webp": "webp" }[
+          file.type
+        ];
+      imageBytes = new Uint8Array(bytes);
+      exampleFamily = undefined;
+      const floating = value("art-direction") === "floating";
+      if (!floating) {
+        backdropFile = undefined;
+        draft.floating = undefined;
+        set("backdrop-source", "");
+      }
+      draft.product.id = file.name;
+      set("product-name", file.name.replace(/\.[^.]+$/, ""));
+      set("preparation", floating ? "cutout" : "photo");
+      set("product-source", "");
+      set("copy-source", "");
+      set("headline", "");
+      set("cta", "");
+      for (const i of [0, 1]) {
+        set("callout-" + i, "");
+        set("source-" + i, "");
+      }
+      element("fixture-note").hidden = true;
+      document.querySelector<HTMLDetailsElement>(".asset-details")!.open = true;
+      say(
+        floating
+          ? "Product loaded. Add its source and check its size and clearance above the hand."
+          : "Image loaded. Add your copy and sources, and check the protected label region.",
+      );
+    },
   );
 });
 input("backdrop-file").addEventListener("change", async () => {
@@ -657,22 +637,27 @@ input("backdrop-file").addEventListener("change", async () => {
     say("Choose a PNG or WebP under 20 MB.", true);
     return;
   }
-  backdropFile = {
-    name:
-      "assets/palm-background." + (file.type === "image/png" ? "png" : "webp"),
-    bytes: new Uint8Array(await file.arrayBuffer()),
-  };
-  set("backdrop-source", "");
-  invalidate();
-  say(
-    "Palm background loaded. Check its source and the product clearance before updating.",
+  await preview.edit(
+    () => file.arrayBuffer(),
+    (bytes) => {
+      backdropFile = {
+        name:
+          "assets/palm-background." +
+          (file.type === "image/png" ? "png" : "webp"),
+        bytes: new Uint8Array(bytes),
+      };
+      set("backdrop-source", "");
+      say(
+        "Palm background loaded. Check its source and the product clearance before updating.",
+      );
+    },
   );
 });
 element("download").addEventListener("click", async () => {
-  if (!active || preview.dirty) return;
-  const snapshot = active,
-    encode = (data: unknown) =>
-      new TextEncoder().encode(JSON.stringify(data, null, 2) + "\n");
+  const snapshot = preview.snapshot;
+  if (!snapshot) return;
+  const encode = (data: unknown) =>
+    new TextEncoder().encode(JSON.stringify(data, null, 2) + "\n");
   try {
     const files = [
       ...snapshot.files,
@@ -698,12 +683,9 @@ element("download").addEventListener("click", async () => {
     say(String(error), true);
   }
 });
-element("export").addEventListener("click", async () => {
-  if (!active || preview.dirty || preview.exporting) return;
-  const snapshot = active;
-  preview.setExporting(true);
-  say("Rendering your MP4…");
-  try {
+element("export").addEventListener("click", () => {
+  void preview.export(async (snapshot) => {
+    say("Rendering your MP4…");
     const response = await postCommerceExport(snapshot.scene, snapshot.files);
     if (!response.ok) throw new Error(await response.text());
     download(
@@ -714,13 +696,10 @@ element("export").addEventListener("click", async () => {
         ".mp4",
       "video/mp4",
     );
-    say("MP4 exported. Save the source bundle to reproduce this edit.");
-  } catch (error) {
-    say(error instanceof Error ? error.message : String(error), true);
-  } finally {
-    preview.setExporting(false);
-  }
+    return "MP4 exported. Save the source bundle to reproduce this edit.";
+  });
 });
+
 for (const group of [...new Set(allEntries.map((entry) => entry.group))]) {
   const option = document.createElement("option");
   option.value = group;

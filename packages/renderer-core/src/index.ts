@@ -49,3 +49,8 @@ export * from "./component-state.ts";
 export * from "./component-travel.ts";
 
 export * from "./component-sequence.ts";
+
+export { loadPreparedFonts } from "./prepared-fonts.ts";
+export { compileStoryScene } from "./story-scene.ts";
+export { validateStoryTextLayout } from "./story-text-layout.ts";
+export { prepareComponentTextFits } from "./component-text-fit.ts";

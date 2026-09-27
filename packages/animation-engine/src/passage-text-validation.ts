@@ -1,14 +1,20 @@
 import { readFile } from "node:fs/promises";
-import { resolve } from "node:path";
+import {
+  defaultBrowserProjectRoot,
+  runtimeBrowserUrl,
+  type BrowserRuntimeOptions,
+} from "@still-shift/execution-runtime/browser";
 import { chromium } from "playwright";
 import { createServer } from "vite";
 import type { CompiledStoryPassage } from "../../renderer-core/src/story-passage.ts";
 import { PassageError } from "../../renderer-core/src/passage-diagnostics.ts";
 
-const projectRoot = resolve(import.meta.dirname, "../../..");
-
 /** Measure authored text with the same pinned fonts and Chromium canvas used by preview/export. */
-export async function validatePassageText(passage: CompiledStoryPassage) {
+export async function validatePassageText(
+  passage: CompiledStoryPassage,
+  runtime: BrowserRuntimeOptions = {},
+) {
+  const projectRoot = runtime.projectRoot ?? defaultBrowserProjectRoot;
   const beats = passage.beats.filter((beat) =>
     beat.scene.nodes.some(
       (node) => node.type === "text" && (node.textLayout || node.textBox),
@@ -20,7 +26,11 @@ export async function validatePassageText(passage: CompiledStoryPassage) {
     root: projectRoot,
     configFile: false,
     logLevel: "silent",
-    server: { host: "127.0.0.1", port: 0, fs: { allow: [projectRoot] } },
+    server: {
+      host: "127.0.0.1",
+      port: 0,
+      fs: { allow: [projectRoot, defaultBrowserProjectRoot] },
+    },
   });
   let browser: Awaited<ReturnType<typeof chromium.launch>> | undefined;
   try {
@@ -29,9 +39,7 @@ export async function validatePassageText(passage: CompiledStoryPassage) {
     if (!baseUrl) throw new Error("Text validation server has no local URL");
     browser = await chromium.launch({ headless: true });
     const page = await browser.newPage();
-    await page.goto(
-      new URL("tools/export-worker/passage-text.html", baseUrl).href,
-    );
+    await page.goto(runtimeBrowserUrl(baseUrl, "passage-text"));
     await page.waitForFunction(() =>
       Boolean(window.validateStillShiftPassageText),
     );

@@ -32,6 +32,7 @@ from .models import (
     choose_device,
     sha256_file,
 )
+from .protocol import DEPTH_WORKER_PROTOCOL_VERSION
 
 PIPELINE_VERSION = f"depth-prep-{__version__}"
 PREPROCESSING_VERSION = "image-normalize-0.2.0"
@@ -293,6 +294,28 @@ def _make_preview(
     return preview, {"lower": lower, "upper": upper}
 
 
+def _valid_cache_metrics(metrics: Any, device: str) -> bool:
+    if not isinstance(metrics, dict):
+        return False
+    for field in ("inferenceMs", "postProcessMs", "totalPreparationMs"):
+        value = metrics.get(field)
+        if type(value) not in (int, float) or not math.isfinite(value) or value < 0:
+            return False
+    for field in ("peakCpuMemoryBytes", "peakGpuMemoryBytes"):
+        if field not in metrics:
+            return False
+        value = metrics[field]
+        if value is not None and (type(value) is not int or value < 0):
+            return False
+    hardware = metrics.get("hardwareDescription")
+    return (
+        metrics.get("cacheStatus") == "miss"
+        and metrics.get("selectedDevice") == device
+        and isinstance(hardware, str)
+        and bool(hardware.strip())
+    )
+
+
 def _read_valid_cache(
     entry_dir: Path,
     cache_key: str,
@@ -302,11 +325,17 @@ def _read_valid_cache(
     manifest_path = entry_dir / "manifest.json"
     try:
         manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+        if not isinstance(manifest, dict):
+            return None
+        expected_model = dict(cache_identity["model"])
+        expected_model["weightsChecksum"] = f"sha256:{expected_model.pop('weightsSha256')}"
         if (
             manifest.get("cacheKey") != cache_key
             or manifest.get("cacheIdentity") != cache_identity
             or manifest.get("sourceHash") != f"sha256:{normalized_source_hash}"
             or manifest.get("preparationVersion") != "0.2"
+            or manifest.get("model") != expected_model
+            or not _valid_cache_metrics(manifest.get("metrics"), cache_identity["device"])
         ):
             return None
         expected_assets = {
@@ -314,8 +343,10 @@ def _read_valid_cache(
             "rawDepth": "depth.raw.f32",
             "previewDepth": "depth.png",
         }
-        if manifest.get("assets") != expected_assets or set(manifest.get("checksums", {})) != set(
-            expected_assets
+        if (
+            manifest.get("assets") != expected_assets
+            or not isinstance(manifest.get("checksums"), dict)
+            or set(manifest["checksums"]) != set(expected_assets)
         ):
             return None
         for artifact_name, expected_hash in manifest["checksums"].items():
@@ -342,7 +373,7 @@ def _read_valid_cache(
             if _normalized_source_hash(source) != normalized_source_hash:
                 return None
         return manifest
-    except (OSError, ValueError, KeyError, TypeError, json.JSONDecodeError):
+    except (OSError, ValueError, KeyError, TypeError, OverflowError):
         return None
 
 
@@ -395,6 +426,7 @@ def normalize_source_only(
             finally:
                 temporary_path.unlink(missing_ok=True)
     return {
+        "protocolVersion": DEPTH_WORKER_PROTOCOL_VERSION,
         "status": "normalized",
         "preprocessingVersion": PREPROCESSING_VERSION,
         "sourceHash": f"sha256:{source_hash}",
@@ -632,6 +664,7 @@ class DepthPreparationService:
         request_warnings: list[str],
     ) -> dict[str, Any]:
         return {
+            "protocolVersion": DEPTH_WORKER_PROTOCOL_VERSION,
             "status": "prepared",
             "preparationVersion": manifest["preparationVersion"],
             "cacheKey": manifest["cacheKey"],

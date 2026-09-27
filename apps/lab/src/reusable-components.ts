@@ -7,11 +7,13 @@ import {
 import { buildReusableDemo } from "../../../packages/renderer-core/src/reusable-component-demo.ts";
 import { compilePreparedScene } from "../../../packages/renderer-core/src/prepared-scene.ts";
 import {
-  createIllustratedPreview,
+  type createIllustratedPreview,
   loadIllustratedImages,
 } from "../../../packages/renderer-core/src/illustrated-renderer.ts";
 import { indexStoryEvents } from "../../../packages/renderer-core/src/story-event-index.ts";
 import { createSourceZip, download } from "./commerce-download.ts";
+import { postCommerceExport } from "./commerce-export.ts";
+import { createPreviewSession } from "./preview-session.ts";
 
 const element = <T extends HTMLElement>(id: string) =>
   document.getElementById(id) as T;
@@ -26,49 +28,40 @@ const assetUrl = (id: string) =>
     "commerce-font": "noto-sans-thai.ttf",
     house: "house.svg",
   }[id] ?? "missing");
-let example: ReusableDemo["example"] = "instances",
-  generation = 0,
-  dirty = true,
-  exporting = false,
-  animation = 0,
-  playing = false;
+let example: ReusableDemo["example"] = "instances";
 type Active = {
   settings: ReusableDemo;
   scene: ReturnType<typeof buildReusableDemo>;
-  renderer: ReturnType<typeof createIllustratedPreview>;
-  canvas: HTMLCanvasElement;
+  resolvedTextSizes: ReturnType<
+    typeof createIllustratedPreview
+  >["resolvedTextSizes"];
 };
-let active: Active | undefined;
 const field = (name: string) =>
   form.elements.namedItem(name) as HTMLInputElement | HTMLSelectElement;
 function say(message: string, error = false) {
   element("status").textContent = message;
   element("status").dataset.error = String(error);
 }
-function sync() {
-  for (const id of ["play", "scrub", "source", "export", "save"])
-    (element(id) as HTMLButtonElement | HTMLInputElement).disabled =
-      !active || dirty || exporting;
-  form
-    .querySelectorAll<
-      HTMLButtonElement | HTMLInputElement | HTMLSelectElement
-    >("button,input,select")
-    .forEach((input) => (input.disabled = exporting));
-  element<HTMLButtonElement>("save").disabled = !active || dirty || exporting;
-}
-function pause() {
-  cancelAnimationFrame(animation);
-  playing = false;
-  element("play").textContent = "Play";
-}
-function show(frame: number) {
-  if (!active) return;
-  frame = Math.min(active.scene.frameCount - 1, Math.max(0, Math.round(frame)));
-  active.renderer.renderFrame(frame);
-  canvas.getContext("2d")!.drawImage(active.canvas, 0, 0);
-  scrub.value = String(frame);
-  element("frame").textContent = String(frame);
-}
+const preview = createPreviewSession<Active>({
+  controls: {
+    play: element<HTMLButtonElement>("play"),
+    scrub,
+    export: element<HTMLButtonElement>("export"),
+    downloads: [
+      element<HTMLButtonElement>("source"),
+      element<HTMLButtonElement>("save"),
+    ],
+    frame: element("frame"),
+    edit: [
+      ...form.querySelectorAll<
+        HTMLButtonElement | HTMLInputElement | HTMLSelectElement
+      >("button,input,select"),
+    ],
+  },
+  status: say,
+  ready: showDetails,
+  disableWhileExporting: true,
+});
 function controls() {
   const item = REUSABLE_EXAMPLES.find((e) => e.id === example)!;
   element("title").textContent = item.title;
@@ -150,74 +143,58 @@ function fill(settings: ReusableDemo) {
   controls();
 }
 async function update() {
-  pause();
-  dirty = true;
-  sync();
-  const run = ++generation;
-  say("Preparing changes…");
-  let candidate: ReturnType<typeof createIllustratedPreview> | undefined;
-  try {
+  await preview.load(async (resources) => {
+    say("Preparing changes…");
     const settings = readSettings(),
       scene = buildReusableDemo(settings),
       compiled = compilePreparedScene(scene);
     const images = await loadIllustratedImages(compiled, assetUrl);
-    const staging = document.createElement("canvas");
-    candidate = createIllustratedPreview(staging, compiled, images);
-    candidate.renderFrame(Math.min(Number(scrub.value), scene.frameCount - 1));
-    if (run !== generation) {
-      candidate.dispose();
-      return;
-    }
-    active?.renderer.dispose();
-    active = { settings, scene, renderer: candidate, canvas: staging };
-    candidate = undefined;
-    canvas.width = scene.width;
-    canvas.height = scene.height;
-    scrub.max = String(scene.frameCount - 1);
-    show(Number(scrub.value));
-    dirty = false;
-    element("handles").textContent = JSON.stringify(
-      {
-        nodes: scene.nodes.filter((n) => n.id.includes("__")).map((n) => n.id),
-        timing:
-          scene.schemaVersion === "story-scene-1"
-            ? indexStoryEvents(scene)
-            : scene.events.filter((e) => e.node.includes("__")),
-        values: scene.componentData?.values,
-        resolvedTextSizes: active.renderer.resolvedTextSizes,
-        ...(scene.componentData?.schemaVersion === "scene-components-3"
-          ? {
-              visibility: scene.componentData.visibility,
-              pins: scene.componentData.pins,
-              textFits: scene.componentData.textFits,
-              masks: scene.componentData.masks,
-            }
-          : {}),
-        ...(scene.componentData &&
-        scene.componentData.schemaVersion !== "scene-components-1"
-          ? {
-              states: scene.componentData.states,
-              travels: scene.componentData.travels,
-            }
-          : {}),
+    const renderer = resources.preview(canvas, compiled, images);
+    return {
+      snapshot: {
+        settings,
+        scene,
+        resolvedTextSizes: renderer.resolvedTextSizes,
       },
-      null,
-      2,
-    );
-    say(
-      `${settings.mode === "story" ? "Story" : settings.mode === "isolated" ? "Isolated component" : "Commerce"} ready · ${scene.frameCount} frames · ${scene.fps} fps`,
-    );
-  } catch (error) {
-    candidate?.dispose();
-    if (run === generation)
-      say(
-        (error instanceof Error ? error.message : String(error)) +
-          (active ? " Previous valid preview is preserved." : ""),
-        true,
-      );
-  }
-  sync();
+      initialFrame: preview.frame,
+    };
+  });
 }
+function showDetails(active: Active) {
+  const { scene, settings } = active;
+  element("handles").textContent = JSON.stringify(
+    {
+      nodes: scene.nodes.filter((n) => n.id.includes("__")).map((n) => n.id),
+      timing:
+        scene.schemaVersion === "story-scene-1"
+          ? indexStoryEvents(scene)
+          : scene.events.filter((e) => e.node.includes("__")),
+      values: scene.componentData?.values,
+      resolvedTextSizes: active.resolvedTextSizes,
+      ...(scene.componentData?.schemaVersion === "scene-components-3"
+        ? {
+            visibility: scene.componentData.visibility,
+            pins: scene.componentData.pins,
+            textFits: scene.componentData.textFits,
+            masks: scene.componentData.masks,
+          }
+        : {}),
+      ...(scene.componentData &&
+      scene.componentData.schemaVersion !== "scene-components-1"
+        ? {
+            states: scene.componentData.states,
+            travels: scene.componentData.travels,
+          }
+        : {}),
+    },
+    null,
+    2,
+  );
+  say(
+    `${settings.mode === "story" ? "Story" : settings.mode === "isolated" ? "Isolated component" : "Commerce"} ready · ${scene.frameCount} frames · ${scene.fps} fps`,
+  );
+}
+
 for (const item of REUSABLE_EXAMPLES) {
   const button = document.createElement("button");
   button.type = "button";
@@ -226,7 +203,7 @@ for (const item of REUSABLE_EXAMPLES) {
   kind.textContent = item.kind;
   button.append(kind, document.createTextNode(item.title));
   button.addEventListener("click", () => {
-    if (exporting) return;
+    if (preview.exporting) return;
     example = item.id;
     if (example === "stagger") field("count").value = "5";
     controls();
@@ -235,45 +212,16 @@ for (const item of REUSABLE_EXAMPLES) {
   element("examples").append(button);
 }
 form.addEventListener("input", () => {
-  generation++;
-  pause();
-  dirty = true;
-  sync();
+  preview.invalidate();
   say("Changes pending. Apply to update the preview.");
 });
 form.addEventListener("submit", (event) => {
   event.preventDefault();
   void update();
 });
-scrub.addEventListener("input", () => {
-  pause();
-  show(Number(scrub.value));
-});
-element("play").addEventListener("click", () => {
-  if (playing) {
-    pause();
-    return;
-  }
-  if (!active) return;
-  playing = true;
-  element("play").textContent = "Pause";
-  const initial =
-      Number(scrub.value) >= active.scene.frameCount - 1
-        ? 0
-        : Number(scrub.value),
-    start = performance.now();
-  const tick = (now: number) => {
-    if (!active || !playing) return;
-    const frame =
-      initial + Math.floor(((now - start) * active.scene.fps) / 1000);
-    show(frame);
-    if (frame >= active.scene.frameCount - 1) pause();
-    else animation = requestAnimationFrame(tick);
-  };
-  animation = requestAnimationFrame(tick);
-});
 element("save").addEventListener("click", () => {
-  if (active && !dirty)
+  const active = preview.snapshot;
+  if (active)
     download(
       encoder.encode(JSON.stringify(active.settings, null, 2) + "\n"),
       "components.demo.json",
@@ -283,13 +231,16 @@ element("save").addEventListener("click", () => {
 element<HTMLInputElement>("load").addEventListener("change", async (event) => {
   const file = (event.target as HTMLInputElement).files?.[0];
   if (!file) return;
-  try {
-    if (file.size > 64000) throw new Error("Settings file exceeds 64 KB");
-    fill(ReusableDemoSchema.parse(JSON.parse(await file.text())));
-    await update();
-  } catch (error) {
-    say(error instanceof Error ? error.message : String(error), true);
-  }
+  await preview.edit(
+    async () => {
+      if (file.size > 64000) throw new Error("Settings file exceeds 64 KB");
+      return ReusableDemoSchema.parse(JSON.parse(await file.text()));
+    },
+    async (settings) => {
+      fill(settings);
+      await update();
+    },
+  );
   (event.target as HTMLInputElement).value = "";
 });
 async function sourceFiles(current: Active) {
@@ -300,7 +251,6 @@ async function sourceFiles(current: Active) {
       if (!response.ok) throw new Error("Asset unavailable: " + asset.id);
       asset.path = "assets/" + asset.id + "." + asset.path.split(".").at(-1);
       return {
-        id: asset.id,
         name: asset.path,
         bytes: new Uint8Array(await response.arrayBuffer()),
       };
@@ -309,7 +259,8 @@ async function sourceFiles(current: Active) {
   return { scene, files };
 }
 element("source").addEventListener("click", async () => {
-  if (!active || dirty) return;
+  const active = preview.snapshot;
+  if (!active) return;
   try {
     const current = active,
       { scene, files } = await sourceFiles(current);
@@ -334,28 +285,11 @@ element("source").addEventListener("click", async () => {
     say(String(error), true);
   }
 });
-element("export").addEventListener("click", async () => {
-  if (!active || dirty || exporting) return;
-  const current = active;
-  pause();
-  exporting = true;
-  sync();
-  say("Rendering MP4…");
-  try {
+element("export").addEventListener("click", () => {
+  void preview.export(async (current) => {
+    say("Rendering MP4…");
     const { scene, files } = await sourceFiles(current);
-    const encoded = files.map((file) => {
-      let binary = "";
-      for (const byte of file.bytes) binary += String.fromCharCode(byte);
-      return { id: file.id, base64: btoa(binary) };
-    });
-    const response = await fetch("/commerce/export", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "x-still-shift": "commerce",
-      },
-      body: JSON.stringify({ scene, files: encoded }),
-    });
+    const response = await postCommerceExport(scene, files);
     if (!response.ok)
       throw new Error(((await response.json()) as { error: string }).error);
     download(
@@ -363,14 +297,10 @@ element("export").addEventListener("click", async () => {
       "shared-" + current.settings.mode + ".mp4",
       "video/mp4",
     );
-    say("MP4 ready.");
-  } catch (error) {
-    say(error instanceof Error ? error.message : String(error), true);
-  } finally {
-    exporting = false;
-    sync();
-  }
+    return "MP4 ready.";
+  });
 });
+
 const params = new URLSearchParams(location.search);
 const initial = ReusableDemoSchema.safeParse({
   schemaVersion: reusableDemoVersion(params.get("example") ?? "instances"),

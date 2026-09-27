@@ -20,7 +20,10 @@ import {
   type AnimationResult,
 } from "@still-shift/scene-contract";
 import { hashBatchArtifacts } from "./batch-identity.ts";
-import { acquireBatchLock, prepareBatchItem } from "./batch-recovery.ts";
+import {
+  acquireArtifactLock,
+  prepareBatchItem,
+} from "@still-shift/execution-runtime/locks";
 
 type BatchItem = {
   id: string;
@@ -393,7 +396,7 @@ export const runBatch = async (options: {
     );
   await mkdir(join(outputDir, ".batch-checkpoints"), { recursive: true });
   const lockPath = join(outputDir, ".batch.lock");
-  const releaseLock = await acquireBatchLock(lockPath, outputDir);
+  const releaseLock = await acquireArtifactLock(lockPath, outputDir);
   const started = performance.now();
   try {
     let cursor = 0;

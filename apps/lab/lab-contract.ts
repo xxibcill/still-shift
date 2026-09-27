@@ -1,6 +1,10 @@
 import { z } from "zod";
 
 import { CorpusEntrySchema } from "../../packages/scene-contract/src/corpus.ts";
+import {
+  DepthPreparationResponseSchema,
+  type PreparedDepthResult,
+} from "../../packages/scene-contract/src/depth-worker.ts";
 
 export const CorpusResponseSchema = z.object({
   status: z.enum(["incomplete", "frozen"]),
@@ -48,26 +52,7 @@ export const DepthPreparationFailureSchema = z.object({
   durationMs: z.number().int().positive(),
 });
 
-export const WorkerResultSchema = z.discriminatedUnion("status", [
-  z.object({
-    status: z.literal("prepared"),
-    assets: z.object({
-      normalizedSource: z.string().min(1),
-      previewDepth: z.string().min(1),
-    }),
-    dimensions: z.object({ normalized: ImageDimensionsSchema }),
-    model: ModelIdentitySchema,
-    cacheStatus: z.string().min(1),
-  }),
-  z.object({
-    status: z.literal("failed"),
-    error: z.object({ code: z.string().min(1), message: z.string().min(1) }),
-  }),
-]);
-
-export type PreparedWorkerResult = Extract<
-  z.infer<typeof WorkerResultSchema>,
-  { status: "prepared" }
->;
+export const WorkerResultSchema = DepthPreparationResponseSchema;
+export type PreparedWorkerResult = PreparedDepthResult;
 
 export const ApiErrorSchema = z.object({ error: z.string().min(1) });

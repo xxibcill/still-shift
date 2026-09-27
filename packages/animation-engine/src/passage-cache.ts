@@ -1,7 +1,6 @@
-import { acquireBatchLock } from "../../../tools/still-shift-cli/src/batch-recovery.ts";
-import { execFile } from "node:child_process";
+import { acquireArtifactLock } from "@still-shift/execution-runtime/locks";
+import { runProcess } from "@still-shift/execution-runtime/subprocess";
 import { setTimeout as delay } from "node:timers/promises";
-import { promisify } from "node:util";
 import { chromium } from "playwright";
 import { createHash, randomUUID } from "node:crypto";
 import {
@@ -54,10 +53,12 @@ export function passageBeatKey(scene: StoryScene, runtime: string) {
     }),
   );
 }
-export async function passageRuntimeIdentity() {
+export async function passageRuntimeIdentity(signal?: AbortSignal) {
+  signal?.throwIfAborted();
   const root = resolve(import.meta.dirname, "../../..");
   const files: string[] = [];
   const visit = async (directory: string) => {
+    signal?.throwIfAborted();
     for (const entry of await readdir(join(root, directory), {
       withFileTypes: true,
     })) {
@@ -69,7 +70,7 @@ export async function passageRuntimeIdentity() {
   for (const directory of [
     "packages/renderer-core/src",
     "packages/scene-contract/src",
-    "tools/export-worker/src",
+    "packages/execution-runtime/src",
   ])
     await visit(directory);
   files.push(
@@ -79,13 +80,19 @@ export async function passageRuntimeIdentity() {
   );
   const hash = createHash("sha256");
   for (const file of files.sort()) {
+    signal?.throwIfAborted();
     hash.update(file);
     hash.update(await readFile(join(root, file)));
   }
-  const command = promisify(execFile);
-  hash.update((await command("ffmpeg", ["-version"])).stdout.split("\n")[0]!);
   hash.update(
-    (await command(chromium.executablePath(), ["--version"])).stdout.trim(),
+    (await runProcess("ffmpeg", ["-version"], { signal })).stdout.split(
+      "\n",
+    )[0]!,
+  );
+  hash.update(
+    (
+      await runProcess(chromium.executablePath(), ["--version"], { signal })
+    ).stdout.trim(),
   );
   hash.update(process.version);
   hash.update(process.platform);
@@ -94,10 +101,15 @@ export async function passageRuntimeIdentity() {
 }
 
 /** Assembly changes invalidate a render job without discarding valid beat clips. */
-export async function passageJobRuntimeIdentity(beatRuntime: string) {
+export async function passageJobRuntimeIdentity(
+  beatRuntime: string,
+  signal?: AbortSignal,
+) {
+  signal?.throwIfAborted();
   const assemblySource = await readFile(
     resolve(import.meta.dirname, "story-passage-render.ts"),
   );
+  signal?.throwIfAborted();
   return passageHash(beatRuntime + ":" + passageHash(assemblySource));
 }
 type CacheEntry = {
@@ -112,7 +124,7 @@ async function acquireCacheLock(directory: string, signal?: AbortSignal) {
   for (;;) {
     signal?.throwIfAborted();
     try {
-      return await acquireBatchLock(directory + ".lock", directory);
+      return await acquireArtifactLock(directory + ".lock", directory);
     } catch (error) {
       if (
         !(error instanceof AnimationEngineError) ||
@@ -189,6 +201,7 @@ export async function cachedPassageBeat(options: {
           await options.render(join(attempt, "beat.mp4"));
           options.signal?.throwIfAborted();
           await options.verify(join(attempt, "beat.mp4"));
+          options.signal?.throwIfAborted();
           entry = {
             version: "passage-cache-1",
             key: options.key,
@@ -202,6 +215,7 @@ export async function cachedPassageBeat(options: {
               flag: "wx",
             },
           );
+          options.signal?.throwIfAborted();
           try {
             await rename(directory, directory + ".invalid-" + randomUUID());
           } catch (error) {

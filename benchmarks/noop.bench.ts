@@ -10,6 +10,7 @@ import {
 import { afterAll, beforeAll, bench, describe } from "vitest";
 
 let outputDirectory: string;
+let iteration = 0;
 
 beforeAll(async () => {
   outputDirectory = await mkdtemp(join(tmpdir(), "still-shift-bench-"));
@@ -20,17 +21,21 @@ afterAll(async () => {
 });
 
 describe("v0.1 no-op engine", () => {
-  bench("deterministic end-to-end request", async () => {
-    await new NoopAnimationEngine().animate({
-      inputPath: "tests/fixtures/source-placeholder.txt",
-      outputPath: join(outputDirectory, "benchmark.noop.json"),
-      durationMs: V0_1_REQUEST_DEFAULTS.durationMs,
-      fps: V0_1_REQUEST_CONSTRAINTS.fps,
-      width: V0_1_REQUEST_CONSTRAINTS.width,
-      height: V0_1_REQUEST_CONSTRAINTS.height,
-      preset: V0_1_REQUEST_DEFAULTS.preset,
-      intensity: V0_1_REQUEST_DEFAULTS.intensity,
-      seed: V0_1_REQUEST_DEFAULTS.seed,
-    });
-  });
+  bench(
+    "deterministic end-to-end request",
+    async () => {
+      await new NoopAnimationEngine().animate({
+        inputPath: "tests/fixtures/source-placeholder.txt",
+        outputPath: join(outputDirectory, `benchmark-${iteration++}.noop.json`),
+        durationMs: V0_1_REQUEST_DEFAULTS.durationMs,
+        fps: V0_1_REQUEST_CONSTRAINTS.fps,
+        width: V0_1_REQUEST_CONSTRAINTS.width,
+        height: V0_1_REQUEST_CONSTRAINTS.height,
+        preset: V0_1_REQUEST_DEFAULTS.preset,
+        intensity: V0_1_REQUEST_DEFAULTS.intensity,
+        seed: V0_1_REQUEST_DEFAULTS.seed,
+      });
+    },
+    { throws: true },
+  );
 });

@@ -1,4 +1,5 @@
 import type { CommerceScene } from "../../../packages/scene-contract/src/commerce.ts";
+import type { StoryScene } from "../../../packages/scene-contract/src/story.ts";
 import type { BundleFile } from "./commerce-download.ts";
 
 function base64(bytes: Uint8Array) {
@@ -8,12 +9,17 @@ function base64(bytes: Uint8Array) {
   return btoa(result);
 }
 
-export function postCommerceExport(scene: CommerceScene, files: BundleFile[]) {
-  const dependencies = [...scene.assets, ...scene.fonts].map((asset) => {
-    const file = files.find((file) => file.name === asset.path);
-    if (!file) throw new Error("Missing export asset: " + asset.path);
-    return { id: asset.id, base64: base64(file.bytes) };
-  });
+export function postCommerceExport(
+  scene: CommerceScene | StoryScene,
+  files: BundleFile[],
+) {
+  const dependencies = [...scene.assets, ...(scene.fonts ?? [])].map(
+    (asset) => {
+      const file = files.find((file) => file.name === asset.path);
+      if (!file) throw new Error("Missing export asset: " + asset.path);
+      return { id: asset.id, base64: base64(file.bytes) };
+    },
+  );
   return fetch("/commerce/export", {
     method: "POST",
     headers: {

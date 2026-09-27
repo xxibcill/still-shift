@@ -38,7 +38,7 @@ The current [prepared v1 contract](../packages/scene-contract/src/prepared.ts) r
 
 Introduce a distinct additive story input with integer `frameCount`, integer event frames and a separate episode offset. Derive seconds/milliseconds for display and adapters. Preserve legacy illustrated v1 behavior. [Cinematic v2](../packages/scene-contract/src/cinematic.ts) has an image-layer-specific shape and inherits duration restrictions; a higher version number does not make it suitable for graphs and text.
 
-Audit the [prepared engine adapter](../packages/animation-engine/src/prepared-animation-engine.ts), CLI/result contracts and [export worker](../tools/export-worker/src/export-worker.ts) together. The worker currently checks strict equality against `durationMs * fps / 1000`; the new route must validate authoritative frame counts without brittle floating-point round trips. Keep exact encoded-frame verification. Four-to-eight-second fixtures can still establish the first motion before the long passage is assembled.
+Audit the [prepared engine adapter](../packages/animation-engine/src/prepared-animation-engine.ts), CLI/result contracts and [export worker](../packages/execution-runtime/src/export-worker.ts) together. The worker currently checks strict equality against `durationMs * fps / 1000`; the new route must validate authoritative frame counts without brittle floating-point round trips. Keep exact encoded-frame verification. Four-to-eight-second fixtures can still establish the first motion before the long passage is assembled.
 
 ### 2. Compile narration cues into explicit windows
 

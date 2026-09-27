@@ -10,7 +10,7 @@ import {
   passageBeatKey,
 } from "../../packages/animation-engine/src/passage-cache.ts";
 import { acquirePassageJob } from "../../packages/animation-engine/src/passage-job.ts";
-import { acquireBatchLock } from "../../tools/still-shift-cli/src/batch-recovery.ts";
+import { acquireArtifactLock } from "@still-shift/execution-runtime/locks";
 
 describe("passage render recovery", () => {
   it("recovers a render-job lock left by an abruptly terminated process", async () => {
@@ -134,7 +134,7 @@ describe("passage render recovery", () => {
     const directory = join(root, "cache", "shared");
     const controller = new AbortController();
     await mkdir(join(root, "cache"));
-    const release = await acquireBatchLock(directory + ".lock", directory);
+    const release = await acquireArtifactLock(directory + ".lock", directory);
     let renders = 0;
     try {
       const pending = cachedPassageBeat({
@@ -156,6 +156,42 @@ describe("passage render recovery", () => {
       await rm(root, { recursive: true, force: true });
     }
   });
+  it("does not publish cache entries cancelled during validation and can retry", async () => {
+    const root = await mkdtemp(
+      join(tmpdir(), "passage-cache-validation-cancel-"),
+    );
+    const controller = new AbortController();
+    const output = join(root, "output.mp4");
+    const options = {
+      cacheDirectory: join(root, "cache"),
+      key: "verified",
+      output,
+      render: async (path: string) => {
+        await writeFile(path, "video");
+      },
+      verify: async () => {},
+    };
+    try {
+      await expect(
+        cachedPassageBeat({
+          ...options,
+          signal: controller.signal,
+          verify: async () => {
+            controller.abort();
+          },
+        }),
+      ).rejects.toThrow();
+      await expect(
+        readFile(join(root, "cache/verified/entry.json")),
+      ).rejects.toMatchObject({ code: "ENOENT" });
+      await expect(readFile(output)).rejects.toMatchObject({ code: "ENOENT" });
+      expect((await cachedPassageBeat(options)).reused).toBe(false);
+      expect((await cachedPassageBeat(options)).reused).toBe(true);
+    } finally {
+      await rm(root, { recursive: true, force: true });
+    }
+  });
+
   it("does not mark cancelled work reusable and resumes only the same request", async () => {
     const root = await mkdtemp(join(tmpdir(), "passage-job-test-"));
     const controller = new AbortController();

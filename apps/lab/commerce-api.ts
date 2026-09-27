@@ -3,13 +3,13 @@ import { readFile, writeFile, mkdtemp, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { resolve, join, extname } from "node:path";
 import { pipeline } from "node:stream/promises";
-import type { IncomingMessage } from "node:http";
 import type { Plugin } from "vite";
 import { z } from "zod";
 import { CommerceSceneSchema } from "../../packages/scene-contract/src/commerce.ts";
 import { StorySceneSchema } from "../../packages/scene-contract/src/story.ts";
 import { ComponentDemoKindSchema } from "../../packages/scene-contract/src/commerce-components.ts";
 import { PreparedAnimationEngine } from "../../packages/animation-engine/src/prepared-animation-engine.ts";
+import { readJsonBody } from "./json-body.ts";
 
 const root = resolve(import.meta.dirname, "../..");
 const MAX_COMMERCE_PAYLOAD_BYTES = 64_000_000;
@@ -35,19 +35,6 @@ const payloadSchema = z
       .max(14),
   })
   .strict();
-async function readPayload(request: IncomingMessage) {
-  const chunks: Buffer[] = [];
-  let size = 0;
-  for await (const chunk of request) {
-    size += chunk.length;
-    if (size > MAX_COMMERCE_PAYLOAD_BYTES)
-      throw new Error("Upload exceeds 64 MB");
-    chunks.push(Buffer.from(chunk));
-  }
-  return payloadSchema.parse(
-    JSON.parse(Buffer.concat(chunks).toString("utf8")),
-  );
-}
 export const commerceApi = (): Plugin => {
   let exporting = false;
   return {
@@ -81,7 +68,12 @@ export const commerceApi = (): Plugin => {
           exporting = true;
           let directory: string | undefined;
           try {
-            const payload = await readPayload(request);
+            const payload = payloadSchema.parse(
+              await readJsonBody(request, {
+                maxBytes: MAX_COMMERCE_PAYLOAD_BYTES,
+                limitMessage: "Upload exceeds 64 MB",
+              }),
+            );
             const dependencies = [
               ...payload.scene.assets,
               ...(payload.scene.fonts ?? []),
@@ -146,9 +138,16 @@ export const commerceApi = (): Plugin => {
               );
             }
           } finally {
-            if (directory)
-              await rm(directory, { recursive: true, force: true });
-            exporting = false;
+            try {
+              if (directory)
+                await rm(directory, { recursive: true, force: true });
+            } catch (error) {
+              server.config.logger.error(
+                `Commerce export cleanup failed: ${String(error)}`,
+              );
+            } finally {
+              exporting = false;
+            }
           }
           return;
         }

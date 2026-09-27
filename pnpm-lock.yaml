@@ -10,6 +10,9 @@ importers:
       "@eslint/js":
         specifier: 9.39.5
         version: 9.39.5
+      "@still-shift/execution-runtime":
+        specifier: workspace:*
+        version: link:packages/execution-runtime
       "@types/node":
         specifier: 22.20.1
         version: 22.20.1
@@ -46,9 +49,39 @@ importers:
 
   packages/animation-engine:
     dependencies:
+      "@still-shift/execution-runtime":
+        specifier: workspace:*
+        version: link:../execution-runtime
+      "@still-shift/renderer-core":
+        specifier: workspace:*
+        version: link:../renderer-core
       "@still-shift/scene-contract":
         specifier: workspace:*
         version: link:../scene-contract
+      image-size:
+        specifier: 2.0.2
+        version: 2.0.2
+      playwright:
+        specifier: 1.62.1
+        version: 1.62.1
+      vite:
+        specifier: 7.3.6
+        version: 7.3.6(@types/node@22.20.1)(tsx@4.20.5)
+
+  packages/execution-runtime:
+    dependencies:
+      "@still-shift/renderer-core":
+        specifier: workspace:*
+        version: link:../renderer-core
+      "@still-shift/scene-contract":
+        specifier: workspace:*
+        version: link:../scene-contract
+      playwright:
+        specifier: 1.62.1
+        version: 1.62.1
+      vite:
+        specifier: 7.3.6
+        version: 7.3.6(@types/node@22.20.1)(tsx@4.20.5)
 
   packages/renderer-core:
     dependencies:
@@ -58,6 +91,9 @@ importers:
       three:
         specifier: 0.186.0
         version: 0.186.0
+      zod:
+        specifier: 4.1.5
+        version: 4.1.5
     devDependencies:
       "@types/three":
         specifier: 0.186.0
@@ -74,6 +110,9 @@ importers:
       "@still-shift/animation-engine":
         specifier: workspace:*
         version: link:../../packages/animation-engine
+      "@still-shift/execution-runtime":
+        specifier: workspace:*
+        version: link:../../packages/execution-runtime
       "@still-shift/scene-contract":
         specifier: workspace:*
         version: link:../../packages/scene-contract

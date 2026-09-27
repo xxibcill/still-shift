@@ -4,6 +4,7 @@ import {
   SceneManifestSchema,
 } from "@still-shift/scene-contract";
 import { describe, expect, it } from "vitest";
+import { resolvePreviewScene } from "../../packages/renderer-core/src/scene.ts";
 
 const validRequest = {
   inputPath: "input.png",
@@ -127,6 +128,61 @@ describe("SceneManifestSchema", () => {
 
   it("accepts a complete WebGL renderer scene", () => {
     expect(SceneManifestSchema.safeParse(validWebglScene).success).toBe(true);
+  });
+
+  it.each([
+    "locked_hold",
+    "story_settle",
+    "panel_reveal",
+    "comparison_step",
+  ] as const)(
+    "accepts intentional flat preset %s without depth analysis",
+    (preset) => {
+      const scene = resolvePreviewScene({
+        sourceWidth: 640,
+        sourceHeight: 360,
+        depthWidth: 640,
+        depthHeight: 360,
+        durationMs: 5000,
+        fps: 30,
+        canvasWidth: 1920,
+        canvasHeight: 1080,
+        preset,
+        intensity: "standard",
+        seed: 1842,
+      });
+      const manifest = {
+        ...validWebglScene,
+        rendererVersion: scene.rendererVersion,
+        depth: null,
+        motion: {
+          ...validScene.motion,
+          preset,
+          safeCrop: scene.motion.maximumCrop,
+        },
+        quality: { riskScore: 0, fallback: false, warnings: scene.warnings },
+        renderScene: scene,
+      };
+      const parsed = SceneManifestSchema.parse(manifest);
+      expect(parsed.renderScene?.motion.mode).toBe("flat_2d");
+      expect(parsed.renderScene?.quality).toBeNull();
+      expect(
+        SceneManifestSchema.safeParse({
+          ...manifest,
+          quality: { ...manifest.quality, fallback: true },
+        }).success,
+      ).toBe(false);
+    },
+  );
+
+  it("requires depth scenes to retain their analyzed quality", () => {
+    expect(
+      SceneManifestSchema.safeParse({
+        ...validWebglScene,
+        quality: { riskScore: 0, fallback: false, warnings: [] },
+        renderScene: { ...validRenderScene, quality: null },
+      }).success,
+    ).toBe(false);
   });
 
   it("rejects invalid values inside the renderer scene", () => {

@@ -7,11 +7,11 @@ import {
 } from "./passage-cache.ts";
 import { acquirePassageJob } from "./passage-job.ts";
 import assert from "node:assert/strict";
-import { execFile } from "node:child_process";
-import { readFile, mkdir, rename, rm, stat } from "node:fs/promises";
+import { readFile, mkdir, rm } from "node:fs/promises";
 import { join, resolve } from "node:path";
 import { performance } from "node:perf_hooks";
-import { promisify } from "node:util";
+import { runProcess } from "@still-shift/execution-runtime/subprocess";
+import { publishArtifacts } from "@still-shift/execution-runtime/publication";
 import {
   PreparedAnimationEngine,
   validatePreparedAssets,
@@ -22,7 +22,6 @@ import {
   type PreparedPassage,
 } from "./story-passage-io.ts";
 
-const run = promisify(execFile);
 type Stream = {
   codec_type: string;
   nb_read_frames?: string;
@@ -31,34 +30,34 @@ type Stream = {
   r_frame_rate?: string;
   duration?: string;
 };
-const probe = async (path: string): Promise<{ streams: Stream[] }> => {
-  const { stdout } = await run("ffprobe", [
-    "-v",
-    "error",
-    "-count_frames",
-    "-show_streams",
-    "-of",
-    "json",
-    path,
-  ]);
+const probe = async (
+  path: string,
+  signal?: AbortSignal,
+): Promise<{ streams: Stream[] }> => {
+  const { stdout } = await runProcess(
+    "ffprobe",
+    ["-v", "error", "-count_frames", "-show_streams", "-of", "json", path],
+    { signal },
+  );
   return JSON.parse(stdout);
 };
 
 export async function verifyPassageNarration(
   passage: PreparedPassage,
   narration: string,
+  signal?: AbortSignal,
 ) {
   assert.ok(
     passage.plan.narration,
     "Narrated export requires a narration identity in the plan",
   );
-  const checksum = passageChecksum(await readFile(narration));
+  const checksum = passageChecksum(await readFile(narration, { signal }));
   assert.equal(
     checksum,
     passage.plan.narration!.sha256,
     "Narration bytes must match the beat plan authority",
   );
-  const { streams } = await probe(narration);
+  const { streams } = await probe(narration, signal);
   const audio = streams.find((stream) => stream.codec_type === "audio");
   assert.ok(audio, "Narration must contain audio");
   assert.ok(
@@ -74,7 +73,7 @@ async function verifyVideo(
   audio: boolean,
   signal?: AbortSignal,
 ) {
-  const { streams } = await probe(path);
+  const { streams } = await probe(path, signal);
   const video = streams.find((stream) => stream.codec_type === "video");
   assert.equal(
     Number(video?.nb_read_frames),
@@ -88,10 +87,14 @@ async function verifyVideo(
     streams.some((stream) => stream.codec_type === "audio"),
     audio,
   );
-  await run("ffmpeg", ["-v", "error", "-i", path, "-f", "null", "-"], {
+  await runProcess("ffmpeg", ["-v", "error", "-i", path, "-f", "null", "-"], {
     signal,
   });
-  return { path, sha256: passageChecksum(await readFile(path)), streams };
+  return {
+    path,
+    sha256: passageChecksum(await readFile(path, { signal })),
+    streams,
+  };
 }
 
 async function assembleStoryPassage(
@@ -107,7 +110,7 @@ async function assembleStoryPassage(
 ) {
   const run = (command: string, args: string[]) => {
     options.signal?.throwIfAborted();
-    return promisify(execFile)(command, args, { signal: options.signal });
+    return runProcess(command, args, { signal: options.signal });
   };
   const started = performance.now();
   const { plan } = passage;
@@ -264,6 +267,7 @@ async function assembleStoryPassage(
         shot.end - shot.start,
         plan.fps,
         Boolean(narration),
+        options.signal,
       )),
     });
   }
@@ -364,7 +368,8 @@ export async function renderStoryPassage(
     throw new Error(
       "Preview range must be a nonempty half-open interval inside the passage",
     );
-  if (narration) await verifyPassageNarration(passage, narration);
+  if (narration)
+    await verifyPassageNarration(passage, narration, options.signal);
   for (const beat of passage.beats) {
     await validatePreparedAssets(beat.scene, resolve("."));
     const prepared = JSON.parse(
@@ -375,8 +380,8 @@ export async function renderStoryPassage(
         "Prepared scene changed; prepare a fresh output directory",
       );
   }
-  const runtime = await passageRuntimeIdentity();
-  const jobRuntime = await passageJobRuntimeIdentity(runtime);
+  const runtime = await passageRuntimeIdentity(options.signal);
+  const jobRuntime = await passageJobRuntimeIdentity(runtime, options.signal);
   const job = await acquirePassageJob(
     output,
     {
@@ -408,31 +413,53 @@ export async function renderStoryPassage(
       "passage-motion.jpg",
       ...report.slices.map((s) => "delivery/" + s.id + ".mp4"),
     ];
-    for (const product of products) {
-      options.signal?.throwIfAborted();
-      const target = join(output, product);
-      if (!options.resume) {
-        try {
-          await stat(target);
-          throw new Error("Output already exists: " + target);
-        } catch (error) {
-          if ((error as NodeJS.ErrnoException).code !== "ENOENT") throw error;
-        }
-      }
-      await rename(join(assembly, product), target);
-    }
     report.video.path = join(output, "passage.mp4");
     for (const slice of report.slices)
       slice.path = join(output, "delivery", slice.id + ".mp4");
-    const reportPath = join(output, "render-report.json");
-    await writePassageJson(join(assembly, "final-report.json"), report);
-    await rename(join(assembly, "final-report.json"), reportPath);
-    await job.finish("complete");
+    options.signal?.throwIfAborted();
+    const stagedReport = join(assembly, "final-report.json");
+    await writePassageJson(stagedReport, report);
+    options.signal?.throwIfAborted();
+    const completion = await job.stageCompletion(
+      join(assembly, "complete-job.json"),
+    );
+    options.signal?.throwIfAborted();
+    await publishArtifacts(
+      [
+        ...products.map((product) => ({
+          staged: join(assembly, product),
+          destination: join(output, product),
+        })),
+        {
+          staged: stagedReport,
+          destination: join(output, "render-report.json"),
+        },
+        completion,
+      ],
+      options.signal,
+      { replaceExisting: options.resume ?? false },
+    );
     return report;
   } catch (error) {
-    await job.finish(options.signal?.aborted ? "cancelled" : "failed", error);
-    throw error;
+    const cause = options.signal?.aborted ? options.signal.reason : error;
+    try {
+      await job.finish(options.signal?.aborted ? "cancelled" : "failed", cause);
+    } catch (cleanupError) {
+      process.stderr.write(
+        `Passage job cleanup failed: ${String(cleanupError)}\n`,
+      );
+    }
+    throw cause;
   } finally {
-    await rm(assembly, { recursive: true, force: true });
+    for (const cleanup of [
+      () => rm(assembly, { recursive: true, force: true }),
+      () => job.release(),
+    ]) {
+      try {
+        await cleanup();
+      } catch (error) {
+        process.stderr.write(`Passage cleanup failed: ${String(error)}\n`);
+      }
+    }
   }
 }

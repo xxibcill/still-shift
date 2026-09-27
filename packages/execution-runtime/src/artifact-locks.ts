@@ -14,16 +14,17 @@ import { basename, dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { promisify } from "node:util";
 
-import { AnimationEngineError } from "../../../packages/scene-contract/src/index.ts";
+import { AnimationEngineError } from "@still-shift/scene-contract";
 
 type LockOwner = { pid: number; token: string; processStartedAt: string };
 const execFileAsync = promisify(execFile);
 const helper = fileURLToPath(
-  new URL("./batch-lock-helper.py", import.meta.url),
+  new URL("./artifact-lock-helper.py", import.meta.url),
 );
-const python = fileURLToPath(
-  new URL("../../../.venv/bin/python", import.meta.url),
-);
+export type ArtifactLockOptions = {
+  /** Standard-library Python executable; supplied by the embedding application. */
+  pythonCommand?: string;
+};
 type ProgressMarker = {
   requestHash: string;
   sourceHash: string;
@@ -51,8 +52,8 @@ const removeInterruptedExportTemps = async (
   const prefix = `.${basename(outputPath)}.`;
   for (const entry of await readdir(directory, { withFileTypes: true })) {
     if (!entry.isFile() || !entry.name.startsWith(prefix)) continue;
-    const suffix = [".tmp.mp4", ".scene.tmp.json"].find((candidate) =>
-      entry.name.endsWith(candidate),
+    const suffix = [".tmp.mp4", ".scene.tmp.json", ".result.tmp.json"].find(
+      (candidate) => entry.name.endsWith(candidate),
     );
     if (!suffix) continue;
     const id = entry.name.slice(prefix.length, -suffix.length);
@@ -71,9 +72,10 @@ const lockConflict = (outputDir: string) =>
 const removeStaleLock = async (
   lockPath: string,
   outputDir: string,
+  pythonCommand: string,
 ): Promise<void> =>
   new Promise((resolve, reject) => {
-    const child = spawn(python, [helper, lockPath], {
+    const child = spawn(pythonCommand, [helper, lockPath], {
       stdio: ["ignore", "ignore", "pipe"],
     });
     let stderr = "";
@@ -115,24 +117,31 @@ const releaseOwnedLock = async (
   }
 };
 
-export const acquireBatchLock = async (
+export const acquireArtifactLock = async (
   lockPath: string,
   outputDir: string,
+  options: ArtifactLockOptions = {},
 ): Promise<() => Promise<void>> => {
+  const pythonCommand =
+    options.pythonCommand ?? process.env.STILL_SHIFT_PYTHON ?? "python3";
   for (let attempt = 0; attempt < 3; attempt += 1) {
     let lock: FileHandle;
     try {
       lock = await open(lockPath, "wx");
     } catch (error) {
       if ((error as NodeJS.ErrnoException).code !== "EEXIST") throw error;
-      await removeStaleLock(lockPath, outputDir);
+      await removeStaleLock(lockPath, outputDir, pythonCommand);
       continue;
     }
 
     const token = randomUUID();
     try {
       const processStartedAt = (
-        await execFileAsync(python, [helper, "--identity", String(process.pid)])
+        await execFileAsync(pythonCommand, [
+          helper,
+          "--identity",
+          String(process.pid),
+        ])
       ).stdout.trim();
       await lock.writeFile(
         `${JSON.stringify({ pid: process.pid, token, processStartedAt } satisfies LockOwner)}\n`,
