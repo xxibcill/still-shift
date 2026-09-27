@@ -168,9 +168,16 @@ const ReusableDemoV1Schema = SharedDemoFields.extend({
   to: z.number().finite().min(-100).max(100).default(80),
   decimals: z.number().int().min(0).max(2).default(0),
 }).strict();
+export const BEHAVIOR_EXAMPLES = [
+  "transform",
+  "state",
+  "travel",
+  "tour",
+  "supply",
+] as const;
 export const ReusableDemoV2Schema = SharedDemoFields.extend({
   schemaVersion: z.literal("reusable-demo-2"),
-  example: z.enum(["transform", "state", "travel", "tour", "supply"]),
+  example: z.enum(BEHAVIOR_EXAMPLES),
   scale: z.number().positive().max(4).default(1.15),
   rotation: z.number().finite().min(-720).max(720).default(12),
   drawFrom: z.number().min(0).max(1).default(0),
@@ -238,7 +245,7 @@ export const ReusableDemoSchema = z.preprocess((input) => {
 export const reusableDemoVersion = (example: string) =>
   (TIMING_EXAMPLES as readonly string[]).includes(example)
     ? "reusable-demo-3"
-    : ["transform", "state", "travel", "tour", "supply"].includes(example)
+    : (BEHAVIOR_EXAMPLES as readonly string[]).includes(example)
       ? "reusable-demo-2"
       : "reusable-demo-1";
 export type ReusableDemo = z.infer<typeof ReusableDemoSchema>;
