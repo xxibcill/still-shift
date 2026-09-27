@@ -474,6 +474,10 @@ export function sampleLayer(track: LayerTrack, frame: number, fps = 30) {
     ? samplePeriodic(track.periodic, frame - track.start)
     : sampleCurve(track.keys!, frame, fps);
 }
+export function isLayerActive(track: LayerTrack, frame: number) {
+  if (track.periodic) return frame >= track.start && frame <= track.end;
+  return track.blend !== "replace" || frame >= track.start;
+}
 export function blendValue(
   base: number,
   value: number,
@@ -610,9 +614,7 @@ export function applyMotionCraft(
   for (const layer of layerOrder) {
     for (const track of craft.layers)
       if (track.node === node.id && track.layer === layer) {
-        if (track.periodic && (frame < track.start || frame > track.end))
-          continue;
-        if (track.blend === "replace" && frame < track.start) continue;
+        if (!isLayerActive(track, frame)) continue;
         const weight = track.weight
           ? Math.max(
               0,

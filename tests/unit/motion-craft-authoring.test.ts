@@ -124,6 +124,38 @@ describe("motion craft authoring and inspection", () => {
         evaluatePreparedNode(scene, node, sample.frame).x,
       );
   });
+  it("shows periodic layers only inside their evaluated window", () => {
+    const source = generic();
+    source.periodic = [
+      {
+        node: "store",
+        property: "x",
+        layer: "carrier",
+        start: 10,
+        end: 15,
+        oscillate: { period: 4, amplitude: 10 },
+      },
+    ];
+    const scene = compileStoryScene(source),
+      node = scene.nodes.find((n) => n.id === "store")!,
+      graph = motionGraph(scene, "store", "x"),
+      carrier = graph.layers.find((layer) => layer.layer === "carrier")!;
+    for (const frame of [1, 10, 11, 15, 16])
+      expect(graph.samples[frame]!.value).toBe(
+        evaluatePreparedNode(scene, node, frame).x,
+      );
+    for (const frame of [1, 16])
+      expect(carrier.samples[frame]).toMatchObject({
+        active: false,
+        value: 0,
+        weight: 0,
+      });
+    expect(carrier.samples[11]).toMatchObject({
+      active: true,
+      value: 10,
+      weight: 1,
+    });
+  });
   it("uses measured layer contributions for carrier and story-peak warnings", async () => {
     const scene = compileStoryScene(generic());
     const pixels = await measureLayerPixelEnergy(

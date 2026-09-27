@@ -2,6 +2,7 @@ import type { StoryRenderScene } from "./story-scene.ts";
 import { evaluatePreparedNodeAtTime } from "./prepared-scene.ts";
 import {
   sampleLayer,
+  isLayerActive,
   sampleDriver,
   defaultBlend,
   scalarKeys,
@@ -35,11 +36,23 @@ export function motionGraph(
       blend: track.blend,
       path: track.path,
       keys: track.keys ?? [],
-      samples: samples.map(({ frame }) => ({
-        frame,
-        value: sampleLayer(track, frame, scene.fps),
-        weight: track.weight ? sampleCurve(track.weight, frame, scene.fps) : 1,
-      })),
+      samples: samples.map(({ frame }) => {
+        const active = isLayerActive(track, frame);
+        return {
+          frame,
+          active,
+          value: active
+            ? sampleLayer(track, frame, scene.fps)
+            : track.blend === "multiply"
+              ? 1
+              : 0,
+          weight: active
+            ? track.weight
+              ? sampleCurve(track.weight, frame, scene.fps)
+              : 1
+            : 0,
+        };
+      }),
     }));
   for (const [index, driver] of (scene.drivers ?? []).entries()) {
     if (driver.target !== `${id}.${property}`) continue;
@@ -52,6 +65,7 @@ export function motionGraph(
       keys: signal ? scalarKeys(signal.keys) : [],
       samples: samples.map(({ frame }) => ({
         frame,
+        active: true,
         value: sampleDriver(scene, driver, frame),
         weight: driver.weight
           ? sampleCurve(scalarKeys(driver.weight), frame, scene.fps)

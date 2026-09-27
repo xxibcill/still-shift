@@ -173,16 +173,20 @@ export function createMotionTools(
       },
       ...data.layers.map((layer) => ({
         values: layer.samples.map((s, i, all) =>
-          mode.value === "speed"
-            ? i
-              ? s.value - all[i - 1]!.value
-              : 0
-            : s.value,
+          !s.active
+            ? null
+            : mode.value === "speed"
+              ? i
+                ? s.value - all[i - 1]!.value
+                : 0
+              : s.value,
         ),
         color: MOTION_LAYER_COLORS[layer.layer],
       })),
     ];
-    const values = series.flatMap((s) => s.values),
+    const values = series
+        .flatMap((s) => s.values)
+        .filter((value): value is number => value !== null),
       minimum = Math.min(0, ...values),
       maximum = Math.max(1, ...values),
       range = maximum - minimum;
@@ -196,11 +200,17 @@ export function createMotionTools(
       ctx.strokeStyle = s.color;
       ctx.lineWidth = 2;
       ctx.beginPath();
+      let drawing = false;
       s.values.forEach((v, i) => {
+        if (v === null) {
+          drawing = false;
+          return;
+        }
         const x = 55 + (i / (scene.frameCount - 1)) * 735,
           y = 190 - ((v - minimum) / range) * 170;
-        if (i) ctx.lineTo(x, y);
+        if (drawing) ctx.lineTo(x, y);
         else ctx.moveTo(x, y);
+        drawing = true;
       });
       ctx.stroke();
     });
