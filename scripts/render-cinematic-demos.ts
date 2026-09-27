@@ -10,6 +10,7 @@ import {
   compileCinematicScene,
   projectCinematicNode,
 } from "../packages/renderer-core/src/cinematic-scene.ts";
+import { reviewProbeSize } from "./review-probe-size.ts";
 
 const run = promisify(execFile);
 const presetAt = process.argv.indexOf("--preset");
@@ -155,7 +156,7 @@ for (const entry of entries) {
     "-i",
     video,
     "-vf",
-    "fps=4,scale=480:270,tile=4x7",
+    `fps=4,scale=${reviewProbeSize(scene.width, scene.height)},tile=4x7`,
     "-frames:v",
     "1",
     join(output, `${entry.id}-motion.jpg`),
@@ -214,8 +215,20 @@ const description = reveal
     : threshold
       ? "The doorway opens around you as the vessel and room approach together. A quieter chamber stays farther behind."
       : "The same artwork and seven-second shot. Dramatic starts sooner, carries the doorway farther, and slows gradually into its final framing.";
+const primary = results[0]!;
+if (
+  results.some(
+    (result) =>
+      result.metrics.width !== primary.metrics.width ||
+      result.metrics.height !== primary.metrics.height,
+  )
+)
+  throw new Error("Cinematic comparison clips must use one output format");
+const aspect = `${primary.metrics.width}/${primary.metrics.height}`;
+const maxVideoWidth =
+  primary.metrics.height > primary.metrics.width ? "420px" : "none";
 await writeFile(
   join(output, "index.html"),
-  `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Still Shift · ${template}</title><style>*{box-sizing:border-box}body{margin:0;background:#171913;color:#e8dfc9;font:16px system-ui,sans-serif}main{max-width:1700px;margin:auto;padding:44px 30px}h1,h2{font-family:Georgia,serif;font-weight:normal}h1{font-size:clamp(36px,5vw,68px);margin:12px 0}h2{font-size:26px}p{line-height:1.6;max-width:800px;color:#b8bca9}.eyebrow{color:#c0aa78;font-size:12px;letter-spacing:.14em;text-transform:uppercase}.comparison{display:grid;grid-template-columns:1fr 1fr;gap:24px}section{margin-top:24px}video{display:block;width:100%;aspect-ratio:16/9;background:#211f1b}button{font:inherit;background:#d3ba85;color:#171913;border:0;padding:12px 18px;cursor:pointer;margin-right:8px}details{margin-top:32px}summary{cursor:pointer}footer{margin-top:40px;padding-top:18px;border-top:1px solid #404535}a{color:#c1d1aa}@media(max-width:900px){.comparison{grid-template-columns:1fr}main{padding:24px 12px}}</style></head><body><main><p class="eyebrow">Still Shift / ${template}</p><h1>${heading}</h1><p>${description}</p><p>1920×1080 · 24 fps · original illustrated scene</p>${videos}<footer><p>The alternate composition changes the staging and depth spacing using the same artwork. Standard and Restrained remain available in the lab.</p></footer></main><script>const clips=[...document.querySelectorAll('video.compare')];document.querySelector('#play-both').onclick=async()=>{for(const clip of clips){clip.pause();clip.currentTime=0;}await Promise.all(clips.map(clip=>clip.play()));};document.querySelector('#pause-both').onclick=()=>clips.forEach(clip=>clip.pause());</script></body></html>`,
+  `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Still Shift · ${template}</title><style>*{box-sizing:border-box}body{margin:0;background:#171913;color:#e8dfc9;font:16px system-ui,sans-serif}main{max-width:1700px;margin:auto;padding:44px 30px}h1,h2{font-family:Georgia,serif;font-weight:normal}h1{font-size:clamp(36px,5vw,68px);margin:12px 0}h2{font-size:26px}p{line-height:1.6;max-width:800px;color:#b8bca9}.eyebrow{color:#c0aa78;font-size:12px;letter-spacing:.14em;text-transform:uppercase}.comparison{display:grid;grid-template-columns:1fr 1fr;gap:24px}section{margin-top:24px}video{display:block;width:100%;max-width:${maxVideoWidth};aspect-ratio:${aspect};background:#211f1b}button{font:inherit;background:#d3ba85;color:#171913;border:0;padding:12px 18px;cursor:pointer;margin-right:8px}details{margin-top:32px}summary{cursor:pointer}footer{margin-top:40px;padding-top:18px;border-top:1px solid #404535}a{color:#c1d1aa}@media(max-width:900px){.comparison{grid-template-columns:1fr}main{padding:24px 12px}}</style></head><body><main><p class="eyebrow">Still Shift / ${template}</p><h1>${heading}</h1><p>${description}</p><p>${primary.metrics.width}×${primary.metrics.height} · ${primary.fps} fps · original illustrated scene</p>${videos}<footer><p>The alternate composition changes the staging and depth spacing using the same artwork. Standard and Restrained remain available in the lab.</p></footer></main><script>const clips=[...document.querySelectorAll('video.compare')];document.querySelector('#play-both').onclick=async()=>{for(const clip of clips){clip.pause();clip.currentTime=0;}await Promise.all(clips.map(clip=>clip.play()));};document.querySelector('#pause-both').onclick=()=>clips.forEach(clip=>clip.pause());</script></body></html>`,
 );
 console.log(`Review gallery: ${join(output, "index.html")}`);

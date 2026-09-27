@@ -115,12 +115,20 @@ beforeEach(async () => {
   root = await mkdtemp(join(tmpdir(), "still-shift-passage-publication-"));
   await mkdir(join(root, "scenes"));
   await mkdir(join(root, "delivery"));
-  const scene = { episodeStartFrame: 0, assets: [] };
+  const scene = {
+    episodeStartFrame: 0,
+    frameCount: 3,
+    width: 1920,
+    height: 1080,
+    assets: [],
+  };
   await writeFile(join(root, "scenes/beat.json"), JSON.stringify(scene));
   passage = {
     plan: {
+      schemaVersion: "story-passage-1",
       fps: 30,
       sourceStartFrame: 0,
+      beats: [{ id: "beat" }],
       delivery: [{ id: "shot", start: 0, end: 3 }],
     },
     frameCount: 3,

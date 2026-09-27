@@ -14,6 +14,10 @@ import {
 } from "../../scene-contract/src/story-authoring.ts";
 import { retimeStoryEvents, indexStoryEvents } from "./story-event-index.ts";
 import { passageError } from "./passage-diagnostics.ts";
+import {
+  formatSize,
+  type OutputFormat,
+} from "../../scene-contract/src/output-format.ts";
 
 export type PassageTemplate = StoryScene | StoryTemplate;
 export function parsePassageTemplate(input: unknown): PassageTemplate {
@@ -26,6 +30,101 @@ export function parsePassageTemplate(input: unknown): PassageTemplate {
 }
 export const templateScene = (input: PassageTemplate) =>
   input.schemaVersion === "story-template-1" ? input.scene : input;
+
+export function resolveStoryFormat(scene: StoryScene, format: OutputFormat) {
+  if (format === "landscape") {
+    if (scene.format === "vertical")
+      passageError(
+        "invalid-format-source",
+        "A resolved vertical scene cannot supply the landscape base",
+      );
+    if (!scene.formats) return scene;
+    const landscape = structuredClone(scene);
+    delete landscape.formats;
+    return StorySceneSchema.parse(landscape);
+  }
+  if (scene.format === "vertical") return StorySceneSchema.parse(scene);
+  const override = scene.formats?.vertical;
+  if (!override)
+    passageError(
+      "missing-format-override",
+      "Vertical story output requires formats.vertical",
+    );
+
+  const resolved = structuredClone(scene);
+  delete resolved.formats;
+  const size = formatSize("vertical");
+  resolved.format = "vertical";
+  resolved.width = size.width;
+  resolved.height = size.height;
+  resolved.authoringVersion = "1";
+  delete resolved.safeZones;
+  if (override.safeZones)
+    resolved.safeZones = structuredClone(override.safeZones);
+  if (override.safeInset !== undefined) resolved.safeInset = override.safeInset;
+
+  for (const [id, patch] of Object.entries(override.nodes ?? {})) {
+    const node = resolved.nodes.find((item) => item.id === id);
+    if (!node)
+      passageError("invalid-format-override", "Unknown node: " + id, {
+        node: id,
+      });
+    for (const key of ["x", "y", "width", "height", "origin"] as const)
+      if (patch[key] !== undefined) Object.assign(node, { [key]: patch[key] });
+    if (
+      patch.scale !== undefined ||
+      patch.scaleX !== undefined ||
+      patch.scaleY !== undefined
+    ) {
+      resolved.initialState ??= {};
+      const state = (resolved.initialState[id] ??= {});
+      if (patch.scale !== undefined)
+        Object.assign(state, { scaleX: patch.scale, scaleY: patch.scale });
+      if (patch.scaleX !== undefined) state.scaleX = patch.scaleX;
+      if (patch.scaleY !== undefined) state.scaleY = patch.scaleY;
+    }
+    if (
+      patch.lineWidth !== undefined ||
+      patch.fontSize !== undefined ||
+      patch.align !== undefined
+    ) {
+      if (node.type !== "text")
+        passageError(
+          "invalid-format-override",
+          "Text override requires a text node: " + id,
+          { node: id },
+        );
+      if (patch.lineWidth !== undefined) {
+        if (!node.textLayout)
+          passageError(
+            "invalid-format-override",
+            "Line width requires a measured text layout: " + id,
+            { node: id },
+          );
+        node.textLayout.width = patch.lineWidth;
+      }
+      if (patch.fontSize !== undefined) node.fontSize = patch.fontSize;
+      if (patch.align !== undefined) node.align = patch.align;
+    }
+  }
+  for (const [id, patch] of Object.entries(override.initialState ?? {})) {
+    resolved.initialState ??= {};
+    resolved.initialState[id] = { ...resolved.initialState[id], ...patch };
+  }
+  for (const patch of override.camera?.keys ?? []) {
+    const key = resolved.camera?.keys.find(
+      (item) => item.frame === patch.frame,
+    );
+    if (!key)
+      passageError(
+        "invalid-format-override",
+        "Unknown camera key frame: " + patch.frame,
+        { frame: patch.frame },
+      );
+    Object.assign(key, patch);
+  }
+  return StorySceneSchema.parse(resolved);
+}
 
 function resolveTemplateSlot(
   scene: StoryScene,
@@ -91,17 +190,26 @@ export function instantiateStoryTemplate(
   input: PassageTemplate,
   parameters: Record<string, unknown>,
   style?: StoryStyle,
+  format: OutputFormat = "landscape",
 ) {
   const scene = structuredClone(templateScene(input));
   if (
     !style &&
     !Object.keys(parameters).length &&
-    input.schemaVersion !== "story-template-1"
+    input.schemaVersion !== "story-template-1" &&
+    format === "landscape" &&
+    !scene.formats
   )
     return scene;
   scene.authoringVersion = "1";
   const slotApplications = new Map<string, (value: unknown) => void>();
   if (input.schemaVersion === "story-template-1") {
+    if (input.formats?.vertical && scene.formats?.vertical)
+      passageError(
+        "ambiguous-format-override",
+        "Define formats.vertical on either the template or its scene",
+      );
+    if (input.formats) scene.formats = structuredClone(input.formats);
     const events = new Set(indexStoryEvents(scene).map((event) => event.id));
     for (const [id, slot] of Object.entries(input.slots)) {
       slotApplications.set(id, resolveTemplateSlot(scene, id, slot, events));
@@ -195,5 +303,7 @@ export function instantiateStoryTemplate(
       );
   }
   indexStoryEvents(scene);
-  return scene;
+  const resolved = resolveStoryFormat(scene, format);
+  if (format === "vertical") indexStoryEvents(resolved);
+  return resolved;
 }

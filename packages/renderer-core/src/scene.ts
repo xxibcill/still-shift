@@ -1,8 +1,14 @@
 import type { AnimationWarning } from "@still-shift/scene-contract";
 
 import type { SafetySignals } from "./safety.ts";
+import {
+  focusCropWindow,
+  type CropWindow,
+  type FocusPoint,
+} from "./depth-reframe.ts";
 
 export const RENDERER_VERSION = "preview-render-0.5.0" as const;
+export const VERTICAL_RENDERER_VERSION = "preview-render-0.6.0" as const;
 export const SLOW_PUSH_VERSION = "slow_push@0.3.0" as const;
 export const PRESET_VERSIONS = {
   slow_push: SLOW_PUSH_VERSION,
@@ -227,14 +233,21 @@ export type PreviewInput = {
   requestedDepthStrength?: number;
   requestedLateralTravel?: number;
   requestedRollDegrees?: number;
+  focus?: FocusPoint;
+  focusSource?: "provided" | "depth-estimate";
 };
 
 export type PreviewScene = {
-  rendererVersion: typeof RENDERER_VERSION;
+  rendererVersion: typeof RENDERER_VERSION | typeof VERTICAL_RENDERER_VERSION;
   presetVersion: (typeof PRESET_VERSIONS)[PreviewPreset];
   timeline: { durationMs: number; fps: number; frameCount: number };
   source: { width: number; height: number };
   canvas: { width: number; height: number };
+  framing?: {
+    focus: FocusPoint;
+    source: "provided" | "depth-estimate";
+    crop: CropWindow;
+  };
   motion: {
     mode: "depth" | "flat_2d" | "fallback_2d";
     preset: PreviewPreset;
@@ -246,6 +259,7 @@ export type PreviewScene = {
     rollDegrees: number;
     overscan: number;
     maximumCrop: number;
+    driftAxis?: "x" | "y";
   };
   quality: PreviewQuality | null;
   warnings: PreviewWarning[];
@@ -334,6 +348,8 @@ const validateInput = (input: PreviewInput): void => {
   ) {
     throw new Error("seed must be an unsigned 32-bit integer");
   }
+  if (input.canvasHeight > input.canvasWidth && !input.focus)
+    throw new Error("Vertical preview needs a normalized focal point");
 };
 
 export const resolvePreviewScene = (input: PreviewInput): PreviewScene => {
@@ -406,7 +422,7 @@ export const resolvePreviewScene = (input: PreviewInput): PreviewScene => {
     });
   }
   return {
-    rendererVersion: RENDERER_VERSION,
+    rendererVersion: input.focus ? VERTICAL_RENDERER_VERSION : RENDERER_VERSION,
     presetVersion: PRESET_VERSIONS[input.preset],
     timeline: {
       durationMs: input.durationMs,
@@ -415,6 +431,21 @@ export const resolvePreviewScene = (input: PreviewInput): PreviewScene => {
     },
     source: { width: input.sourceWidth, height: input.sourceHeight },
     canvas: { width: input.canvasWidth, height: input.canvasHeight },
+    ...(input.focus
+      ? {
+          framing: {
+            focus: input.focus,
+            source: input.focusSource ?? ("provided" as const),
+            crop: focusCropWindow(
+              input.sourceWidth,
+              input.sourceHeight,
+              input.canvasWidth,
+              input.canvasHeight,
+              input.focus,
+            ),
+          },
+        }
+      : {}),
     motion: {
       mode: isFlatPreset(input.preset) ? "flat_2d" : "depth",
       preset: input.preset,
@@ -426,6 +457,15 @@ export const resolvePreviewScene = (input: PreviewInput): PreviewScene => {
       rollDegrees,
       overscan: safeOverscan,
       maximumCrop,
+      ...(input.focus
+        ? {
+            driftAxis:
+              input.sourceWidth / input.sourceHeight >
+              input.canvasWidth / input.canvasHeight
+                ? ("x" as const)
+                : ("y" as const),
+          }
+        : {}),
     },
     quality: null,
     warnings,
@@ -513,7 +553,9 @@ export const evaluateFrame = (
       );
     }
   } else if (mode === "fallback_2d" || preset === "horizontal_drift") {
-    translationX = lateralTravel * (2 * eased - 1);
+    if (scene.motion.driftAxis === "y")
+      translationY = lateralTravel * (2 * eased - 1);
+    else translationX = lateralTravel * (2 * eased - 1);
   } else if (preset === "cinematic_float") {
     const phase = seededPhase(seed);
     const envelope = Math.sin(Math.PI * progress);

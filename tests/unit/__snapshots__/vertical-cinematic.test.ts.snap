@@ -1,0 +1,96 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`vertical cinematic reframe > records why each existing painted kit needs vertical work 1`] = `
+[
+  {
+    "edge": "bottom",
+    "fixture": "ci-01-threshold-push-alternate.json",
+    "missingPixels": 128,
+    "node": "far",
+    "result": "coverage",
+  },
+  {
+    "edge": "bottom",
+    "fixture": "ci-01-threshold-push.json",
+    "missingPixels": 136,
+    "node": "far",
+    "result": "coverage",
+  },
+  {
+    "asset": "threshold-far.png",
+    "fixture": "ci-02-lateral-track-alternate.json",
+    "result": "repaint",
+    "sampledSize": {
+      "height": 1569,
+      "width": 2788,
+    },
+  },
+  {
+    "edge": "bottom",
+    "fixture": "ci-02-lateral-track.json",
+    "missingPixels": 33,
+    "node": "far",
+    "result": "coverage",
+  },
+  {
+    "asset": "threshold-far.png",
+    "fixture": "ci-03-foreground-reveal-alternate.json",
+    "result": "repaint",
+    "sampledSize": {
+      "height": 1488,
+      "width": 2643,
+    },
+  },
+  {
+    "edge": "bottom",
+    "fixture": "ci-03-foreground-reveal.json",
+    "missingPixels": 8,
+    "node": "far",
+    "result": "coverage",
+  },
+  {
+    "asset": "landscape.png",
+    "fixture": "ci-04-rising-vista.json",
+    "result": "repaint",
+    "sampledSize": {
+      "height": 1488,
+      "width": 2643,
+    },
+  },
+  {
+    "edge": "bottom",
+    "fixture": "ci-05-detail-to-world.json",
+    "missingPixels": 35,
+    "node": "far",
+    "result": "coverage",
+  },
+  {
+    "edge": "bottom",
+    "fixture": "ci-06-focus-handoff.json",
+    "missingPixels": 74,
+    "node": "background",
+    "result": "coverage",
+  },
+  {
+    "edge": "bottom",
+    "fixture": "ci-07-curved-approach.json",
+    "missingPixels": 26,
+    "node": "far",
+    "result": "coverage",
+  },
+  {
+    "edge": "bottom",
+    "fixture": "ci-09-layered-parallax-alternate.json",
+    "missingPixels": 74,
+    "node": "background",
+    "result": "coverage",
+  },
+  {
+    "edge": "bottom",
+    "fixture": "ci-09-layered-parallax.json",
+    "missingPixels": 74,
+    "node": "background",
+    "result": "coverage",
+  },
+]
+`;

@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { StoryPassagePlanSchema } from "./story-passage.ts";
-import { StorySceneSchema } from "./story.ts";
+import { StoryFormatsSchema, StorySceneSchema } from "./story.ts";
 import { CurveEasingSchema, MotionEasingSchema } from "./motion-easing.ts";
 import {
   checkPassageBeatContent,
@@ -61,6 +61,7 @@ export const StoryTemplateSchema = z
     schemaVersion: z.literal("story-template-1"),
     id: name,
     scene: StorySceneSchema,
+    formats: StoryFormatsSchema.optional(),
     slots: z
       .record(
         name,

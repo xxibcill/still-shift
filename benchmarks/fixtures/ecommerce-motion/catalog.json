@@ -11,6 +11,9 @@
     "title": "H01 / landscape / illustrated fixture",
     "registration": {
       "status": "experimental"
+    },
+    "formats": {
+      "vertical": "vertical/h01-portrait.json"
     }
   },
   {

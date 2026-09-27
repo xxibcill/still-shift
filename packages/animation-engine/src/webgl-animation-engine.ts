@@ -16,6 +16,14 @@ import {
   type PreviewWarning,
 } from "../../renderer-core/src/index.ts";
 import {
+  cropSafetyPixels,
+  estimateDepthSubject,
+  focusCropWindow,
+  subjectCropViolation,
+  type DepthSubjectEstimate,
+  type FocusPoint,
+} from "../../renderer-core/src/depth-reframe.ts";
+import {
   AnimationEngineError,
   ANIMATION_API_VERSION,
   AnimationResultSchema,
@@ -250,7 +258,7 @@ const decodeRgba = async (
   return bytes;
 };
 
-const analyzeAssets = async (
+const readAnalysisPixels = async (
   sourcePath: string,
   depthPath: string,
   dimensions: Dimensions,
@@ -262,7 +270,34 @@ const analyzeAssets = async (
     decodeRgba(sourcePath, width, height),
     decodeRgba(depthPath, width, height),
   ]);
-  return analyzeDepthSafety({ width, height, source, depth });
+  return { width, height, source, depth };
+};
+
+type AnalysisPixels = Awaited<ReturnType<typeof readAnalysisPixels>>;
+
+const analyzeAssets = (
+  pixels: AnalysisPixels,
+  crop?: ReturnType<typeof focusCropWindow>,
+) => {
+  if (!crop) return analyzeDepthSafety(pixels);
+  const source = cropSafetyPixels(
+    pixels.width,
+    pixels.height,
+    pixels.source,
+    crop,
+  );
+  const depth = cropSafetyPixels(
+    pixels.width,
+    pixels.height,
+    pixels.depth,
+    crop,
+  );
+  return analyzeDepthSafety({
+    width: source.width,
+    height: source.height,
+    source: source.pixels,
+    depth: depth.pixels,
+  });
 };
 
 const choosePreset = (
@@ -270,6 +305,7 @@ const choosePreset = (
   normalizedSourceHash: string,
 ): PreviewPreset => {
   if (request.preset !== "auto") return request.preset;
+  if (request.height > request.width) return "horizontal_drift";
   const presets: PreviewPreset[] = [
     "slow_push",
     "horizontal_drift",
@@ -358,6 +394,56 @@ export class WebGLAnimationEngine implements AnimationEngine {
       : undefined;
     const sceneStarted = performance.now();
     const dimensions = prepared.dimensions.normalized;
+    const vertical = request.height > request.width;
+    let analysisPixels: AnalysisPixels | undefined;
+    let focus: FocusPoint | undefined = request.focus;
+    let estimatedSubject: DepthSubjectEstimate | null = null;
+    if (vertical && prepared.depthPath) {
+      try {
+        analysisPixels = await readAnalysisPixels(
+          prepared.sourcePath,
+          prepared.depthPath,
+          dimensions,
+        );
+        estimatedSubject = estimateDepthSubject(
+          analysisPixels.width,
+          analysisPixels.height,
+          analysisPixels.depth,
+        );
+        focus ??= estimatedSubject?.focus;
+      } catch {
+        // The caller receives the same explicit focus requirement below.
+      }
+    }
+    if (vertical && !focus)
+      throw new AnimationEngineError(
+        "SCENE_INVALID",
+        "Vertical output needs a focus point; no large near-depth subject could be estimated",
+      );
+    if (estimatedSubject && focus) {
+      const crop = focusCropWindow(
+        dimensions.width,
+        dimensions.height,
+        request.width,
+        request.height,
+        focus,
+      );
+      const tolerance =
+        1 / Math.min(analysisPixels!.width, analysisPixels!.height);
+      const violation = subjectCropViolation(estimatedSubject, crop, tolerance);
+      if (violation)
+        throw new AnimationEngineError(
+          "SCENE_INVALID",
+          "Estimated near-depth subject exceeds the vertical crop; choose another focus or use wider source art",
+          {
+            focus: focus.join(","),
+            missingLeft: violation.left,
+            missingRight: violation.right,
+            missingTop: violation.top,
+            missingBottom: violation.bottom,
+          },
+        );
+    }
     const initialScene = resolvePreviewScene({
       sourceWidth: dimensions.width,
       sourceHeight: dimensions.height,
@@ -370,6 +456,9 @@ export class WebGLAnimationEngine implements AnimationEngine {
       preset: choosePreset(request, normalizedSourceHash),
       intensity: request.intensity,
       seed: request.seed,
+      ...(focus
+        ? { focus, focusSource: request.focus ? "provided" : "depth-estimate" }
+        : {}),
     });
     let scene: PreviewScene;
     if (initialScene.motion.mode === "flat_2d") {
@@ -378,13 +467,14 @@ export class WebGLAnimationEngine implements AnimationEngine {
       scene = fallback2DScene(initialScene, "DEPTH_PREPARATION_FAILED");
     } else {
       try {
+        analysisPixels ??= await readAnalysisPixels(
+          prepared.sourcePath,
+          prepared.depthPath,
+          dimensions,
+        );
         scene = applySafetyToScene(
           initialScene,
-          await analyzeAssets(
-            prepared.sourcePath,
-            prepared.depthPath,
-            dimensions,
-          ),
+          analyzeAssets(analysisPixels, initialScene.framing?.crop),
         );
       } catch {
         scene = fallback2DScene(initialScene, "DEPTH_SAFETY_ANALYSIS_FAILED");
@@ -408,6 +498,7 @@ export class WebGLAnimationEngine implements AnimationEngine {
       rendererVersion: scene.rendererVersion,
       timeline: scene.timeline,
       canvas: scene.canvas,
+      ...(scene.framing ? { framing: scene.framing } : {}),
       depth: depthHash
         ? {
             asset: depthHash,

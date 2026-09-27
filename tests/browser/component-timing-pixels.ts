@@ -348,7 +348,15 @@ export async function verifyTimingPixels(page: Page, root: string) {
               .getImageData(center, 740, 1, 1).data;
           for (let i = 0; i < 4; i++)
             if (Math.abs(expected[i]! - actual[i]!) > 1)
-              throw new Error("Flow escaped gate/mask at " + frame);
+              throw new Error(
+                "Flow escaped gate/mask: " +
+                  JSON.stringify({
+                    frame,
+                    center,
+                    expected: [...expected],
+                    actual: [...actual],
+                  }),
+              );
           flowChecks++;
         }
         renderer.dispose();

@@ -1,0 +1,260 @@
+{
+  "schemaVersion": "illustrated-scene-1",
+  "title": "Layered reveal · vertical",
+  "durationMs": 7000,
+  "fps": 24,
+  "width": 1080,
+  "height": 1920,
+  "background": "#E8DFC9",
+  "assets": [
+    {
+      "id": "landscape",
+      "path": "../../../../assets/history-offstage-v2/landscape.png",
+      "sha256": "sha256:959ed784b0ac48f0b6f68bc337099020f11476fc35c39c8a583cc2806b6b79b3",
+      "width": 1672,
+      "height": 941
+    },
+    {
+      "id": "objects",
+      "path": "../../../../assets/history-offstage-v2/objects-v1.png",
+      "sha256": "sha256:274cdaed676284c7225a2a83645288ff2fe7771bc75b4bbda6df92fbd9afc741",
+      "width": 1536,
+      "height": 1024
+    },
+    {
+      "id": "bowl-states",
+      "path": "../../../../assets/history-offstage-v2/bowl-states.png",
+      "sha256": "sha256:047a9a3e5183af81567faafea31403d86bae91abb71be3f8f3245b89fe62d02d",
+      "width": 1774,
+      "height": 887
+    }
+  ],
+  "nodes": [
+    {
+      "id": "kicker",
+      "x": 82,
+      "y": 100,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "text",
+      "text": "STILL SHIFT / PORTRAIT STUDY 01",
+      "fontSize": 24,
+      "color": "#59664D",
+      "weight": "bold",
+      "font": "sans-serif",
+      "align": "left"
+    },
+    {
+      "id": "title",
+      "x": 80,
+      "y": 170,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "text",
+      "text": "Beyond the store",
+      "fontSize": 74,
+      "color": "#211F1B",
+      "weight": "normal",
+      "font": "serif",
+      "align": "left"
+    },
+    {
+      "id": "subtitle",
+      "x": 82,
+      "y": 275,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "text",
+      "text": "A threshold reveals the wider relationship.",
+      "fontSize": 28,
+      "color": "#59664D",
+      "weight": "normal",
+      "font": "sans-serif",
+      "align": "left"
+    },
+    {
+      "id": "footer-rule",
+      "x": 80,
+      "y": 1775,
+      "width": 920,
+      "height": 2,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "rect",
+      "fill": "#211F1B",
+      "lineWidth": 0,
+      "radius": 0
+    },
+    {
+      "id": "footer",
+      "x": 80,
+      "y": 1800,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "text",
+      "text": "ORIGINAL ILLUSTRATION  ·  SCHEMATIC MOTION STUDY",
+      "fontSize": 20,
+      "color": "#59664D",
+      "weight": "normal",
+      "font": "sans-serif",
+      "align": "left"
+    },
+    {
+      "id": "land",
+      "x": 80,
+      "y": 380,
+      "width": 920,
+      "height": 820,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "image",
+      "states": [
+        {
+          "asset": "landscape"
+        }
+      ],
+      "fit": "cover"
+    },
+    {
+      "id": "threshold",
+      "x": 335,
+      "y": 690,
+      "width": 390,
+      "height": 475,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "image",
+      "states": [
+        {
+          "asset": "objects",
+          "crop": [565, 516, 408, 478]
+        }
+      ],
+      "fit": "contain"
+    },
+    {
+      "id": "connection",
+      "x": 0,
+      "y": 0,
+      "width": 1080,
+      "height": 1920,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "group",
+      "clip": false
+    },
+    {
+      "id": "connection-path",
+      "parent": "connection",
+      "x": 0,
+      "y": 0,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "path",
+      "points": [
+        [620, 1090],
+        [635.926, 1091.542],
+        [650.026, 1094.248],
+        [662.406, 1098.053],
+        [673.174, 1102.891],
+        [682.437, 1108.695],
+        [690.302, 1115.4],
+        [696.875, 1122.941],
+        [702.266, 1131.25],
+        [706.579, 1140.262],
+        [709.923, 1149.912],
+        [712.405, 1160.133],
+        [714.131, 1170.859],
+        [715.209, 1182.025],
+        [715.746, 1193.564],
+        [715.849, 1205.411],
+        [715.625, 1217.5],
+        [715.181, 1229.764],
+        [714.625, 1242.139],
+        [714.064, 1254.557],
+        [713.604, 1266.953],
+        [713.352, 1279.261],
+        [713.417, 1291.416],
+        [713.904, 1303.351],
+        [714.922, 1315],
+        [716.577, 1326.298],
+        [718.976, 1337.178],
+        [722.226, 1347.574],
+        [726.436, 1357.422],
+        [731.71, 1366.654],
+        [738.158, 1375.205],
+        [745.885, 1383.009],
+        [755, 1390]
+      ],
+      "stroke": "#B47A2A",
+      "lineWidth": 16,
+      "gapAt": 0.6,
+      "gapSize": 0.1
+    },
+    {
+      "id": "destination",
+      "parent": "connection",
+      "x": 725,
+      "y": 1270,
+      "width": 225,
+      "height": 276,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "image",
+      "states": [
+        {
+          "asset": "objects",
+          "crop": [580, 31, 386, 455]
+        }
+      ],
+      "fit": "contain"
+    },
+    {
+      "id": "foreground",
+      "x": 110,
+      "y": 1130,
+      "width": 610,
+      "height": 364,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "image",
+      "states": [
+        {
+          "asset": "objects",
+          "crop": [36, 66, 466, 386]
+        }
+      ],
+      "fit": "contain"
+    }
+  ],
+  "recipe": {
+    "preset": "chronicle_reveal",
+    "foreground": "foreground",
+    "middle": "threshold",
+    "reveal": "connection",
+    "travel": -76
+  },
+  "provenance": "Original Codex-generated illustration assets. See assets/history-offstage-v2/provenance.json. Engineering and creative proof only; no selected episode assets.",
+  "format": "vertical"
+}

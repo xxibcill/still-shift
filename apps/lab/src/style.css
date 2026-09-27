@@ -179,10 +179,30 @@ code {
   background: #1d241f;
   overflow: hidden;
 }
+.preview-stage.portrait {
+  width: min(100%, 420px);
+  margin-inline: auto;
+}
 .preview-stage canvas {
   display: block;
   width: 100%;
   height: 100%;
+}
+.preview-stage #preview-guides {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.guide-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 12px;
+  color: #576054;
+  font-size: 0.8rem;
+}
+.guide-toggle input {
+  accent-color: #658268;
 }
 .empty-preview {
   position: absolute;

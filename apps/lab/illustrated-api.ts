@@ -11,7 +11,7 @@ export const illustratedApi = (): Plugin => ({
       if (!/^\/(illustrated|cinematic|story)\//.test(url.pathname))
         return next();
       const match =
-        /^\/(illustrated|cinematic|story)\/(scenes|assets)\/([a-z0-9-]+\.(json|png|svg|otf|ttf))$/.exec(
+        /^\/(illustrated|cinematic|story)\/(scenes|assets)\/((?:vertical\/)?[a-z0-9-]+\.(json|png|svg|otf|ttf))$/.exec(
           url.pathname,
         );
       if (!match) {
@@ -19,6 +19,10 @@ export const illustratedApi = (): Plugin => ({
         response.end("Unknown illustrated asset");
         return;
       }
+      const vertical = match[3]!.startsWith("vertical/");
+      const filename = vertical
+        ? match[3]!.slice("vertical/".length)
+        : match[3]!;
       const directory =
         match[1] === "story"
           ? match[2] === "scenes"
@@ -31,18 +35,26 @@ export const illustratedApi = (): Plugin => ({
           : match[1] === "cinematic"
             ? match[2] === "scenes"
               ? "benchmarks/fixtures/cinematic-illustrated"
-              : match[3]!.startsWith("threshold-")
-                ? "assets/cinematic-illustrated/kit-a-threshold"
-                : match[3]!.startsWith("vista-")
-                  ? "assets/cinematic-illustrated/kit-c-vista"
-                  : match[3] === "landscape.png"
-                    ? "assets/history-offstage-v2"
-                    : "assets/cinematic-illustrated/kit-b-courtyard"
+              : vertical
+                ? "assets/cinematic-illustrated/kit-v-vertical"
+                : match[3]!.startsWith("threshold-")
+                  ? "assets/cinematic-illustrated/kit-a-threshold"
+                  : match[3]!.startsWith("vista-")
+                    ? "assets/cinematic-illustrated/kit-c-vista"
+                    : match[3] === "landscape.png"
+                      ? "assets/history-offstage-v2"
+                      : "assets/cinematic-illustrated/kit-b-courtyard"
             : match[2] === "scenes"
               ? "benchmarks/fixtures/history-offstage-v2"
               : "assets/history-offstage-v2";
       try {
-        const bytes = await readFile(resolve(root, directory, match[3]!));
+        const bytes = await readFile(
+          resolve(
+            root,
+            directory,
+            match[2] === "scenes" ? match[3]! : filename,
+          ),
+        );
         response.setHeader(
           "Content-Type",
           (

@@ -50,7 +50,8 @@ a {
 }
 button,
 input,
-select {
+select,
+textarea {
   font: inherit;
 }
 button,
@@ -82,9 +83,22 @@ input:not([type="checkbox"]):not([type="range"]):not([type="file"]) {
 button:focus-visible,
 input:focus-visible,
 select:focus-visible,
+textarea:focus-visible,
 summary:focus-visible {
   outline: 2px solid #b4c590;
   outline-offset: 3px;
+}
+#vertical-override {
+  width: 100%;
+  min-height: 220px;
+  padding: 10px;
+  border: 1px solid #696456;
+  border-radius: 3px;
+  color: #eee8d9;
+  background: #292822;
+  font:
+    12px/1.5 ui-monospace,
+    monospace;
 }
 .load-bar {
   display: flex;
@@ -115,11 +129,23 @@ summary:focus-visible {
 .stage {
   min-width: 0;
 }
+.format-control {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 14px 0;
+  font-size: 13px;
+  color: #c3bca9;
+}
 .canvas-wrap {
   position: relative;
   background: #181914;
   aspect-ratio: 16/9;
   overflow: hidden;
+}
+.canvas-wrap.portrait {
+  width: min(100%, 420px);
+  margin-inline: auto;
 }
 canvas {
   width: 100%;

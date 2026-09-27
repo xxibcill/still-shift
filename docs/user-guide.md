@@ -12,7 +12,7 @@ not necessarily features you can use today.
 
 **Jump to:** [choose a workflow](#choose-a-workflow) · [start the lab](#start-the-lab) ·
 [image animation](#animate-one-image) · [cinematic scenes](#cinematic-scenes) ·
-[storytelling](#storytelling) · [commerce](#commerce) ·
+[storytelling](#storytelling) · [vertical video](#vertical-video) · [commerce](#commerce) ·
 [reusable components](#reusable-components) · [batch](#batch-animation) ·
 [outputs](#save-export-and-share) · [help](#when-something-does-not-work) ·
 [ask an AI](#ask-an-ai-about-still-shift)
@@ -90,7 +90,8 @@ This writes an H.264 MP4 and a scene manifest; the terminal prints a JSON result
 The four editorial presets use flat 2D and skip depth inference. They do not
 identify panels or separate objects automatically.
 
-**Controls:** 3–8 seconds resolving to whole frames, fixed 1920×1080 at 30 fps,
+**Controls:** 3–8 seconds resolving to whole frames, landscape 1920×1080 by
+default or vertical 1080×1920 with `--format vertical`, both at 30 fps,
 `subtle`, `standard` or `strong` intensity, and an unsigned 32-bit seed. `auto`
 does not select editorial presets. Depth safety checks may reduce motion or
 produce a valid 2D fallback; inspect the result's status and warnings.
@@ -209,11 +210,70 @@ a half-open range such as `--start-frame 180 --end-frame 204`. Verified beat ren
 are cached; `--resume` continues an interrupted render with the same request.
 Changed plans need a fresh output directory and can still reuse matching beats.
 
+`--format vertical` resolves each beat from its template's `formats.vertical`
+override before rendering. If any template lacks a vertical variant, preparation
+stops with a diagnostic. The narration, cues and frame count remain shared with
+the landscape cut.
+
 Linked authoring is available, including explicit handoffs. The broader continuous
 storytelling rollout remains an opt-in engine/prototype; do not assume every
 recipe or episode has been converted. See [passage authoring](story-beat-planning.md),
 [engine/workbench details](story-engine-tooling.md) and the
 [continuous prototype status](story-motion-continuous-implementation.md).
+
+## Vertical video
+
+Use `--format vertical` for a 1080×1920 output. The default remains 1920×1080,
+and each render uses one format throughout. The image Lab has a format selector;
+its guide toggle shows authored safe areas and the landscape frame's footprint.
+In vertical image mode, **Auto** estimates focus from depth; switch to manual
+X/Y focus when the depth map has no discrete subject.
+The illustrated gallery selects authored vertical variants and can reframe
+cinematic scenes when their artwork has enough coverage. The passage workbench
+uses authored story overrides.
+
+For a single image, a depth preset can estimate a focal point from its depth
+texture. Supply a normalized `--focus x,y` when you know the subject position;
+`0,0` is the upper left and `1,1` the lower right. Flat presets and source-only
+vertical previews require an explicit focus because they have no depth estimate:
+
+```sh
+pnpm --silent still-shift animate \
+  --input ./stills/subject.png \
+  --output ./outputs/subject-vertical.mp4 \
+  --format vertical --focus 0.55,0.42 \
+  --preset slow_push
+```
+
+`animate-scene --format vertical` and `cinematic:preview --format vertical`
+select a catalog-declared variant when available. A cinematic scene without one
+uses automatic reframe and either produces a resolved 9:16 scene or reports the
+specific coverage or source-resolution problem. Standalone illustrated scenes
+need an authored vertical variant. A standalone story scene can include
+`formats.vertical` for direct CLI resolution. The commands never stretch a
+landscape scene. For a story passage, add vertical overrides to the relevant
+templates and run:
+
+```sh
+pnpm story:passage \
+  --plan ./path/to/passage.json \
+  --output-dir ./outputs/passage-vertical \
+  --format vertical --silent
+
+pnpm still-shift passage lint \
+  --plan ./path/to/passage.json --format vertical
+```
+
+The [safe-zone research](vertical-safe-zones-research.md) found no published
+fixed rectangle for organic Shorts. No numeric overlay zones are enabled by
+default; authors can declare zones for a scene, inspect the Lab guides, and fix
+coverage, crop or text diagnostics before using a render.
+
+The [vertical review gallery](review/vertical-video/README.md) shows decoded
+1080×1920 frames from all five render families. The
+[dual-format story plan](../benchmarks/fixtures/story-authoring/vertical/linked-network.json)
+and [illustrated portrait variant](../benchmarks/fixtures/history-offstage-v2/vertical/chronicle-reveal.json)
+are runnable examples.
 
 ## Commerce
 
@@ -326,6 +386,7 @@ Create `shots.jsonl` with one object per line; image paths are relative to this 
 ```jsonl
 {"id":"shot-001","inputPath":"./stills/first.png","durationMs":5000,"preset":"slow_push","intensity":"standard","seed":1842}
 {"id":"shot-002","inputPath":"./stills/second.png","durationMs":3000,"preset":"locked_hold"}
+{"id":"shot-003","inputPath":"./stills/third.png","durationMs":3000,"preset":"locked_hold","focus":[0.5,0.5],"formats":["landscape","vertical"]}
 ```
 
 ```sh
@@ -339,6 +400,10 @@ can be reused on retry. **Exit code 0 means every item was processed, not that
 every item succeeded:** read `batch-summary.json` and `batch-results.jsonl` for
 failures. Changed requests and conflicting outputs require inspection; the batch
 does not silently overwrite them. See [batch details](../tools/still-shift-cli/README.md#unattended-batch).
+Use `--format vertical` as the batch default, `"format":"vertical"` on one
+item, or `"formats":["landscape","vertical"]` to render both. A dual-format
+item writes separate `-landscape` and `-vertical` outputs. Include `focus` for
+flat vertical presets.
 
 ## Save, export and share
 

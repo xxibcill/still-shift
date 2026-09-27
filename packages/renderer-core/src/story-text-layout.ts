@@ -2,6 +2,7 @@ import type { PreparedNode } from "../../scene-contract/src/prepared.ts";
 import type { StoryRenderScene } from "./story-scene.ts";
 import type { LoadedFont } from "./prepared-fonts.ts";
 import { passageError } from "./passage-diagnostics.ts";
+import { validateStorySafeZones } from "./story-safe-zones.ts";
 
 type TextNode = Extract<PreparedNode, { type: "text" }>;
 export function wrapStoryText(
@@ -46,6 +47,7 @@ export function measureStoryText(
 export function validateStoryTextLayout(
   scene: StoryRenderScene,
   fonts: Map<string, LoadedFont>,
+  options: { validateSafeZones?: boolean } = {},
 ) {
   const context = document.createElement("canvas").getContext("2d")!;
   for (const node of scene.nodes) {
@@ -81,4 +83,5 @@ export function validateStoryTextLayout(
         { node: node.id },
       );
   }
+  if (options.validateSafeZones !== false) validateStorySafeZones(scene);
 }

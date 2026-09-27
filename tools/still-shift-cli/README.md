@@ -13,7 +13,7 @@ pnpm --silent still-shift animate \
   --seed 1842
 ```
 
-The command writes a 1920×1080 H.264 MP4 and `still.mp4.scene.json`. `--silent` keeps pnpm's script banner off stdout, so stdout contains one JSON `AnimationResult` with the output path, scene path, rendered/fallback status, selected preset, stable warnings, source/depth/scene/output SHA-256 checksums, cache status, timings, and tool versions. The output and manifest paths must not already exist. The result's `checksums.source` hashes the original input file. The scene manifest identifies the normalized source and depth by checksum so its bytes and scene checksum do not depend on the local cache directory. The result's `assetPaths` gives the current normalized source and depth paths for local reproduction. Both the result and scene manifest record the depth model ID, revision, and weight checksum, or `null` when depth preparation failed.
+The command writes a 1920×1080 H.264 MP4 by default, or a 1080×1920 MP4 with `--format vertical`, plus `still.mp4.scene.json`. `--silent` keeps pnpm's script banner off stdout, so stdout contains one JSON `AnimationResult` with the output path, scene path, rendered/fallback status, selected preset, stable warnings, source/depth/scene/output SHA-256 checksums, cache status, timings, and tool versions. The output and manifest paths must not already exist. The result's `checksums.source` hashes the original input file. The scene manifest identifies the normalized source and depth by checksum so its bytes and scene checksum do not depend on the local cache directory. The result's `assetPaths` gives the current normalized source and depth paths for local reproduction. Both the result and scene manifest record the depth model ID, revision, and weight checksum, or `null` when depth preparation failed.
 
 `--preset auto` chooses among the three presets using the normalized source checksum and seed. Durations are 3–8 seconds in whole 30-FPS frames. The default depth model is Depth Anything V2 Small; preparation is cached. Valid images whose depth preparation or safety analysis fails produce a deterministic 2D MP4 with `DEPTH_PREPARATION_FAILED` or `DEPTH_SAFETY_ANALYSIS_FAILED`, respectively. Invalid inputs and export failures are errors. The CLI does not overwrite outputs.
 
@@ -31,6 +31,11 @@ authored for its reading order; see the
 Exit code 0 means a complete result, including a valid 2D fallback. Exit code 2 means invalid command options or request constraints. Exit code 1 means an input, preparation, render, encode, or publication failure; stderr contains one JSON `AnimationFailure`. `--adapter noop` keeps the v0.1 fake path available for compatibility checks. For local fixtures, `STILL_SHIFT_DEPTH_ADAPTER=fake` selects the deterministic fake depth worker.
 
 `pnpm test:browser:cli` exercises an explainer-shaped fixture, cache reuse, repeated checksums, intentional flat 2D, depth-failure fallback, invalid input, and existing-output protection.
+
+For vertical crops, depth motion estimates a focal point when `--focus` is absent.
+Pass `--focus 0.55,0.42` to choose a normalized source point explicitly. Flat
+presets and source-only vertical rendering require this focus value. The
+resolved crop and focal source are recorded in the scene manifest.
 
 ## Prepared illustrated scenes
 
@@ -54,6 +59,16 @@ The scene supplies its preset, duration, and explicit 24 or 30 fps frame rate.
 Clips must span 3–8 seconds in whole frames. Assets are resolved relative to the
 JSON and checked against their SHA-256 hashes and dimensions. Missing roles,
 invalid paths/crops, and missing alternate states produce errors before export.
+`animate-scene --format vertical` selects a catalog-declared variant when the
+base scene has one. The [Chronicle Reveal portrait fixture](../../benchmarks/fixtures/history-offstage-v2/vertical/chronicle-reveal.json)
+is one example. Standalone illustrated scenes require an already resolved
+1080×1920 input. A `story-scene-1` file can carry `formats.vertical`; the CLI
+resolves that authored override before rendering. Cinematic scenes without a catalog variant run the
+automatic vertical reframe; it fails with a coverage or source-resolution report
+when the supplied art cannot fill a safe portrait camera path. Story passage
+plans use `story:passage --format vertical` to resolve authored template
+overrides. `still-shift passage lint --plan <plan.json> --format vertical`
+checks the resolved story scene and reports all vertical layout diagnostics.
 
 This command writes the MP4, `.mp4.scene.json`, and `.mp4.result.json`; stdout
 contains an `illustrated-result-1` result. Output files must not already exist.
@@ -68,6 +83,11 @@ the scene JSON and returns `illustrated-result-2` with camera-validation metrics
 Every frame must satisfy declared background coverage and subject framing;
 unsafe or insufficiently separated planes fail explicitly. See the
 [cinematic guide](../../docs/cinematic-parallax-implementation.md) for examples.
+For coverage or source-resolution failures, the JSON failure's
+`error.context.diagnosticsJson` and `error.context.reportJson` preserve the
+structured diagnostic and the affected layer, edge, frame and pixel shortage.
+`cinematic:preview --format vertical` applies the same catalog selection and
+automatic reframe, returning JSON diagnostics and a coverage report on failure.
 
 The same command accepts the `threshold_push` recipe with `camera.push`, two
 foreground sides, a subject assembly, and a distant plate. It checks source
@@ -115,6 +135,7 @@ Create a UTF-8 JSONL file with one object per line. IDs must be unique regardles
 ```jsonl
 {"id":"shot-001","inputPath":"./stills/first.png","durationMs":5000,"preset":"auto","intensity":"standard","seed":1842}
 {"id":"shot-002","inputPath":"./stills/second.png","durationMs":3000}
+{"id":"shot-003","inputPath":"./stills/third.png","durationMs":3000,"preset":"locked_hold","focus":[0.5,0.5],"formats":["landscape","vertical"]}
 ```
 
 ```bash
@@ -125,6 +146,11 @@ pnpm still-shift batch \
 ```
 
 `durationMs`, `preset`, `intensity`, and `seed` default to the single-image CLI values. Concurrency is bounded to 1–2 renders; it defaults to 1. Each item writes `<id>.mp4`, `<id>.mp4.scene.json`, and a private `.batch-checkpoints/<id>.json` checkpoint. After all items finish, the command atomically writes `batch-results.jsonl` in input order and `batch-summary.json`. Each result record includes line number, ID, input path, request hash, reuse flag, status, and either the full `AnimationResult` (paths, warnings, checksums, timings, selected preset) or an `AnimationFailure`. The summary contains counts, reuse count, success rate, elapsed time, and paths.
+
+`--format vertical` sets a batch-wide default. An item can set `format` for one
+render, or `formats: ["landscape", "vertical"]` to render both. The latter writes
+`<id>-landscape.mp4` and `<id>-vertical.mp4`, with separate result and checkpoint
+IDs. Give flat vertical items a normalized `focus: [x, y]`.
 
 The batch keeps going after an individual item fails. Exit code 0 means every manifest item has a result record, including any per-item failures; check `batch-summary.json` and `batch-results.jsonl` for their status. Exit code 2 means invalid batch configuration, and 1 means batch execution stopped before the results were complete. For a partial failure, fix the source or manifest and rerun the same command. Completed items are reused only when their request, source, scene, MP4, normalized source, and depth hashes match the checkpoint. A changed request or damaged artifact is reported as an item failure to avoid silently overwriting earlier work. An interrupted run leaves an owner lock and per-item progress markers; the next run reclaims a lock whose process has exited and rerenders an uncheckpointed item only when its request and source still match the marker. If an uncheckpointed MP4 or scene manifest exists, the batch preserves it and reports an item failure because the progress marker cannot prove who created it. Inspect and move those files before retrying. To intentionally rerender one ID, move its MP4, scene manifest, and checkpoint out of the output directory before retrying. Concurrent batch commands targeting one output directory are rejected.
 

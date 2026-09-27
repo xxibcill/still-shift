@@ -1,17 +1,31 @@
 #!/usr/bin/env node
+import { readFile } from "node:fs/promises";
+import { dirname, resolve } from "node:path";
 import { prepareCommerceFile } from "../../../packages/animation-engine/src/commerce-preparation.ts";
 import { pathToFileURL } from "node:url";
+import { readStoryPassage } from "../../../packages/animation-engine/src/story-passage-io.ts";
+import {
+  PassageError,
+  passageDiagnostics,
+} from "../../../packages/renderer-core/src/passage-diagnostics.ts";
+import { lintVertical } from "../../../packages/renderer-core/src/story-vertical.ts";
+import { resolveCinematicFormat } from "../../../packages/renderer-core/src/cinematic-scene.ts";
+import { resolveStoryFormat } from "../../../packages/renderer-core/src/story-template.ts";
+import { CinematicSceneSchema } from "../../../packages/scene-contract/src/cinematic.ts";
+import { StorySceneSchema } from "../../../packages/scene-contract/src/story.ts";
 
 import {
   NoopAnimationEngine,
   WebGLAnimationEngine,
   PreparedAnimationEngine,
+  loadPreparedScene,
 } from "@still-shift/animation-engine";
 import {
   AnimationEngineError,
   AnimationIntensitySchema,
   AnimationPresetSchema,
   ENGINE_VERSION,
+  formatSize,
   parseAnimationRequest,
   V0_1_REQUEST_CONSTRAINTS,
   V0_1_REQUEST_DEFAULTS,
@@ -19,6 +33,11 @@ import {
 } from "@still-shift/scene-contract";
 
 import { runBatch } from "./batch.ts";
+import { parseOutputFormat } from "./format-option.ts";
+import {
+  resolveCatalogFormatVariant,
+  writeResolvedInput,
+} from "./format-variant.ts";
 
 type CliIo = {
   stdout: (text: string) => void;
@@ -34,15 +53,18 @@ const HELP = `Still Shift v${ENGINE_VERSION}
 
 Usage:
   pnpm --silent still-shift animate --input <path> --output <path> [options]
-  pnpm still-shift animate-scene --scene <prepared.json> --output <path>
+  pnpm still-shift animate-scene --scene <prepared.json> --output <path> [--format landscape|vertical]
+  pnpm still-shift passage lint --plan <plan.json> --format vertical
   pnpm still-shift prepare-commerce --brief <brief.json> --output <prepared.json>
-  pnpm --silent still-shift batch --manifest <jsonl> --output-dir <path> [--concurrency 1|2]
+  pnpm --silent still-shift batch --manifest <jsonl> --output-dir <path> [--format landscape|vertical] [--concurrency 1|2]
 
 The default adapter writes a validated 1080p H.264 MP4 and scene manifest.
 
 Options:
   --duration <seconds>   ${V0_1_REQUEST_CONSTRAINTS.durationMs.minimum / 1000}-${V0_1_REQUEST_CONSTRAINTS.durationMs.maximum / 1000} seconds (default: ${V0_1_REQUEST_DEFAULTS.durationMs / 1000})
   --fps <integer>        fixed at ${V0_1_REQUEST_CONSTRAINTS.fps} FPS
+  --format <name>        landscape (default) or vertical
+  --focus <x,y>          normalized focal point for vertical crops (0–1)
   --preset <name>       ${AnimationPresetSchema.options.join(", ")} (default: ${V0_1_REQUEST_DEFAULTS.preset})
   --intensity <name>    ${AnimationIntensitySchema.options.join(", ")} (default: ${V0_1_REQUEST_DEFAULTS.intensity})
   --seed <integer>      unsigned 32-bit seed (default: ${V0_1_REQUEST_DEFAULTS.seed})
@@ -65,6 +87,8 @@ const parseNamedArguments = (
     "intensity",
     "seed",
     "adapter",
+    "format",
+    "focus",
   ],
 ): Map<string, string> => {
   const values = new Map<string, string>();
@@ -116,6 +140,27 @@ const parseFiniteNumber = (value: string, name: string): number => {
   return parsed;
 };
 
+const parseFocus = (
+  value: string | undefined,
+): [number, number] | undefined => {
+  if (value === undefined) return undefined;
+  const parts = value.split(",");
+  const point = parts.map(Number);
+  if (
+    parts.length !== 2 ||
+    parts.some((part) => part.trim() === "") ||
+    point.some(
+      (coordinate) =>
+        !Number.isFinite(coordinate) || coordinate < 0 || coordinate > 1,
+    )
+  )
+    throw new AnimationEngineError(
+      "SCENE_INVALID",
+      "--focus must be two normalized coordinates, for example 0.5,0.5",
+    );
+  return [point[0]!, point[1]!];
+};
+
 const createRequest = (values: Map<string, string>) => {
   const durationSeconds = parseFiniteNumber(
     values.get("duration") ?? String(V0_1_REQUEST_DEFAULTS.durationMs / 1000),
@@ -129,14 +174,17 @@ const createRequest = (values: Map<string, string>) => {
     values.get("fps") ?? String(V0_1_REQUEST_CONSTRAINTS.fps),
     "fps",
   );
+  const size = formatSize(parseOutputFormat(values.get("format")));
+  const focus = parseFocus(values.get("focus"));
 
   return parseAnimationRequest({
     inputPath: requireArgument(values, "input"),
     outputPath: requireArgument(values, "output"),
     durationMs: durationSeconds * 1000,
     fps,
-    width: V0_1_REQUEST_CONSTRAINTS.width,
-    height: V0_1_REQUEST_CONSTRAINTS.height,
+    width: size.width,
+    height: size.height,
+    ...(focus ? { focus } : {}),
     preset: values.get("preset") ?? V0_1_REQUEST_DEFAULTS.preset,
     intensity: values.get("intensity") ?? V0_1_REQUEST_DEFAULTS.intensity,
     seed,
@@ -146,6 +194,19 @@ const createRequest = (values: Map<string, string>) => {
 export const toCliFailure = (
   error: unknown,
 ): { exitCode: number; failure: AnimationFailure } => {
+  if (error instanceof PassageError) {
+    const report = "report" in error ? error.report : undefined;
+    const wrapped = new AnimationEngineError(
+      "SCENE_INVALID",
+      error.message,
+      {
+        diagnosticsJson: JSON.stringify(error.diagnostics),
+        ...(report ? { reportJson: JSON.stringify(report) } : {}),
+      },
+      { cause: error },
+    );
+    return { exitCode: 2, failure: wrapped.toFailure() };
+  }
   if (error instanceof AnimationEngineError) {
     return {
       exitCode: error.code === "SCENE_INVALID" ? 2 : 1,
@@ -195,6 +256,7 @@ export const runCli = async (
         "manifest",
         "output-dir",
         "concurrency",
+        "format",
       ]);
       const { summary, exitCode } = await runBatch({
         manifestPath: requireArgument(values, "manifest"),
@@ -203,11 +265,54 @@ export const runCli = async (
           values.get("concurrency") ?? "1",
           "concurrency",
         ),
+        format: parseOutputFormat(values.get("format")),
       });
       io.stdout(`${JSON.stringify(summary)}\n`);
       return exitCode;
     } catch (error) {
       return writeFailure(error, io);
+    }
+  }
+  if (args[0] === "passage" && args[1] === "lint") {
+    try {
+      const values = parseNamedArguments(args.slice(2), ["plan", "format"]);
+      const planPath = requireArgument(values, "plan");
+      if (values.get("format") !== "vertical")
+        throw new AnimationEngineError(
+          "SCENE_INVALID",
+          "Pass --format vertical to lint a vertical passage",
+        );
+      const passage = await readStoryPassage(planPath, {
+        format: "vertical",
+        lint: true,
+      });
+      const diagnostics = [
+        ...passage.diagnostics,
+        ...(passage.lintDiagnostics ?? []),
+        ...passage.beats.flatMap((beat) =>
+          lintVertical(beat.scene, { focusIds: beat.focus }).map(
+            (diagnostic) => ({
+              beat: beat.id,
+              ...diagnostic,
+            }),
+          ),
+        ),
+      ];
+      const status = diagnostics.some(
+        (diagnostic) => diagnostic.severity === "error",
+      )
+        ? "failed"
+        : "passed";
+      io.stdout(
+        `${JSON.stringify({ status, plan: passage.plan.id, format: "vertical", diagnostics })}\n`,
+      );
+      return status === "passed" ? 0 : 1;
+    } catch (error) {
+      if (error instanceof AnimationEngineError) return writeFailure(error, io);
+      io.stderr(
+        `${JSON.stringify({ status: "failed", diagnostics: passageDiagnostics(error) })}\n`,
+      );
+      return 1;
     }
   }
   if (args[0] === "prepare-commerce") {
@@ -225,10 +330,64 @@ export const runCli = async (
   }
   if (args[0] === "animate-scene") {
     try {
-      const values = parseNamedArguments(args.slice(1), ["scene", "output"]);
+      const values = parseNamedArguments(args.slice(1), [
+        "scene",
+        "output",
+        "format",
+      ]);
+      const requestedScenePath = requireArgument(values, "scene");
+      const outputPath = requireArgument(values, "output");
+      let scenePath = requestedScenePath;
+      if (values.has("format")) {
+        const format = parseOutputFormat(values.get("format"));
+        scenePath = await resolveCatalogFormatVariant(scenePath, format);
+        const expected = formatSize(format);
+        let { scene } = await loadPreparedScene(scenePath);
+        if (
+          format === "vertical" &&
+          scenePath === resolve(requestedScenePath) &&
+          (scene.width !== expected.width || scene.height !== expected.height)
+        ) {
+          const authored = JSON.parse(await readFile(scenePath, "utf8"));
+          let resolvedInput: object | undefined;
+          if (authored.schemaVersion === "illustrated-scene-2") {
+            const resolved = resolveCinematicFormat(
+              CinematicSceneSchema.parse(authored),
+              format,
+            );
+            for (const asset of resolved.assets)
+              asset.path = resolve(dirname(scenePath), asset.path);
+            if (resolved.provenance)
+              resolved.provenance = resolve(
+                dirname(scenePath),
+                resolved.provenance,
+              );
+            resolvedInput = resolved;
+          } else if (authored.schemaVersion === "story-scene-1") {
+            const resolved = resolveStoryFormat(
+              StorySceneSchema.parse(authored),
+              format,
+            );
+            for (const asset of resolved.assets)
+              asset.path = resolve(dirname(scenePath), asset.path);
+            for (const font of resolved.fonts ?? [])
+              font.path = resolve(dirname(scenePath), font.path);
+            resolvedInput = resolved;
+          }
+          if (resolvedInput) {
+            scenePath = await writeResolvedInput(outputPath, resolvedInput);
+            ({ scene } = await loadPreparedScene(scenePath));
+          }
+        }
+        if (scene.width !== expected.width || scene.height !== expected.height)
+          throw new AnimationEngineError(
+            "SCENE_INVALID",
+            `Prepared scene is ${scene.width} × ${scene.height}; select a resolved ${values.get("format")} variant before rendering`,
+          );
+      }
       const result = await new PreparedAnimationEngine().animate({
-        scenePath: requireArgument(values, "scene"),
-        outputPath: requireArgument(values, "output"),
+        scenePath,
+        outputPath,
       });
       io.stdout(`${JSON.stringify(result)}\n`);
       return 0;

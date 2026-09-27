@@ -31,6 +31,17 @@ Existing scenes serve as regression fixtures; episode production is tracked sepa
 
 ## Current implementation
 
+**Vertical video:** Single-image renders can request 1080×1920 with
+`--format vertical`; depth motion estimates a focal crop or accepts `--focus
+x,y`. The Lab previews both orientations and shows optional framing guides.
+Prepared illustrated scenes need a resolved vertical variant. Cinematic scenes
+can select one from the catalog or attempt automatic reframe, with a coverage
+report when their art cannot fill the portrait camera. Story passages use
+authored `formats.vertical` overrides. See the [vertical workflow](./docs/user-guide.md#vertical-video)
+and [engineering tracker](./docs/vertical-video-plan.md). The
+[phone-frame gallery](./docs/review/vertical-video/README.md) shows decoded depth,
+illustrated, story, cinematic and commerce export samples.
+
 **Beat plans** now prepare and render both narrated Story Motion passages from
 JSON. Each beat records its communication purpose, focal subjects, evidence
 qualification, narration cues and intended intensity. The review page provides
@@ -169,6 +180,8 @@ pnpm --silent still-shift animate \
 The command prints one machine-readable `AnimationResult` and writes the MP4 plus a
 sibling `.scene.json` manifest. See the [CLI contract](./tools/still-shift-cli/README.md)
 for fallback behavior, hashes, and exit codes.
+Add `--format vertical` for 1080×1920 output; `--focus 0.55,0.42` selects a
+normalized focal point when the depth estimate is unsuitable or unavailable.
 
 ## Exercise the v0.1 no-op adapter
 

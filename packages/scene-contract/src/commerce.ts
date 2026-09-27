@@ -26,6 +26,9 @@ import {
 } from "./commerce-catalog.ts";
 import { CurveEasingSchema as MotionEasingSchema } from "./motion-easing.ts";
 import { commerceCapabilities } from "./commerce-library.ts";
+import { COMMERCE_PROFILES } from "./output-format.ts";
+
+export { COMMERCE_PROFILES } from "./output-format.ts";
 
 import {
   motionAppearanceFields,
@@ -45,13 +48,6 @@ const region = z
     ([x, y, width, height]) => x + width <= 1 && y + height <= 1,
     "Protected region must fit the source image",
   );
-export const COMMERCE_PROFILES = {
-  landscape: { width: 1920, height: 1080 },
-  portrait: { width: 1080, height: 1920 },
-  square: { width: 1080, height: 1080 },
-  feed: { width: 1080, height: 1350 },
-} as const;
-
 export const CommerceBriefSchema = z
   .object({
     schemaVersion: z.literal("commerce-brief-1"),
@@ -172,6 +168,7 @@ const CommerceSceneSelectionSchema = z.union([
 ]);
 const shape = PreparedSceneFieldsSchema.omit({
   durationMs: true,
+  format: true,
   width: true,
   height: true,
 })

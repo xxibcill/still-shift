@@ -22,6 +22,8 @@ import { easeMotion } from "./motion-easing.ts";
 import { evaluatePreparedNodeAtTime, sampleTrack } from "./prepared-scene.ts";
 import { nodeMatrix, transformPoint } from "./node-transform.ts";
 import { pointOnPath } from "./prepared-scene.ts";
+import { boundsFromPoints, safeZoneOffset } from "./safe-zone-geometry.ts";
+import { passageError } from "./passage-diagnostics.ts";
 
 type Scene = StoryRenderScene | CommerceRenderScene;
 type State = Record<string, number>;
@@ -842,6 +844,45 @@ export function applyMotionCraft(
                   ? extent - constraint.inset - upper
                   : 0;
             set(property, state[property]! + delta);
+          }
+          const zones =
+            scene.schemaVersion === "story-scene-1"
+              ? Object.values(scene.safeZones ?? {})
+              : [];
+          if (zones.length) {
+            const corrected = {
+              ...pose,
+              x: state.x!,
+              y: state.y!,
+            };
+            const bounds = boundsFromPoints(
+              [
+                [0, 0],
+                [node.width, 0],
+                [node.width, node.height],
+                [0, node.height],
+              ].map((point) =>
+                transformPoint(
+                  nodeMatrix(node, corrected),
+                  point as [number, number],
+                ),
+              ),
+            );
+            const offset = safeZoneOffset(
+              bounds,
+              zones,
+              constraint.inset,
+              scene.width,
+              scene.height,
+            );
+            if (!offset)
+              passageError(
+                "subject-in-safe-zone",
+                `Cannot keep ${node.id} outside the configured safe zones`,
+                { node: node.id, frame, path: "constraints" },
+              );
+            set("x", state.x! + offset[0]);
+            set("y", state.y! + offset[1]);
           }
         }
       }

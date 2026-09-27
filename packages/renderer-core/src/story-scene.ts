@@ -27,6 +27,7 @@ import {
   componentCapabilities,
   componentRendererVersions,
 } from "./component-capabilities.ts";
+import { validateStorySafeZones } from "./story-safe-zones.ts";
 
 type StoryMotionEventKind =
   | "camera"
@@ -46,6 +47,7 @@ type StoryMotionEventKind =
 
 export type StoryRenderScene = StoryScene & {
   rendererVersion:
+    | "story-canvas-0.20.0"
     | "story-canvas-0.19.0"
     | "story-canvas-0.18.0"
     | "story-canvas-0.13.3"
@@ -187,7 +189,10 @@ function createTracks(nodes: PreparedNode[]) {
 
 export type StoryTracks = ReturnType<typeof createTracks>;
 
-export function compileStoryScene(source: StoryScene): StoryRenderScene {
+export function compileStoryScene(
+  source: StoryScene,
+  options: { validateSafeZones?: boolean } = {},
+): StoryRenderScene {
   const input = { ...source, nodes: source.nodes.map((n) => ({ ...n })) };
   const events: StoryRenderScene["motionEvents"] = [];
   const event = (
@@ -501,5 +506,8 @@ export function compileStoryScene(source: StoryScene): StoryRenderScene {
     scene.rendererVersion;
   validateStorySemanticChecks(scene);
   if (input.motionModel) scene.rendererVersion = "story-canvas-0.19.0";
+  if (input.format === "vertical")
+    scene.rendererVersion = "story-canvas-0.20.0";
+  if (options.validateSafeZones !== false) validateStorySafeZones(scene);
   return scene;
 }

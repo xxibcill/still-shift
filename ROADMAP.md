@@ -2,7 +2,7 @@
 
 **Status:** v0.3–v0.10 implementation complete; six richer illustrated presets implemented; creative review, frozen-corpus approval, and human decision gates pending
 
-**Updated:** 2026-09-26
+**Updated:** 2026-09-27
 
 **Current engineering work:** The [E1–E6 engine/tooling implementation](./docs/story-engine-tooling-plan.md)
 is complete on `codex/story-beat-planning`: shared compilation, linked retiming,
@@ -10,6 +10,13 @@ reusable templates/styles, explicit continuity, the passage workbench and
 incremental rendering. See the [usage guide and verification](./docs/story-engine-tooling.md).
 This work uses scenes as technical fixtures; passage art direction and episode
 production retain their separate scope and review status below.
+
+**Vertical video engineering:** The [VV0–VV8 plan](./docs/vertical-video-plan.md)
+adds 1080×1920 output across the shared contracts, renderer paths, Lab and CLI.
+Single-image, prepared-scene and passage paths retain landscape defaults;
+vertical variants must pass crop, coverage and safe-zone checks. Safe-zone
+defaults and platform priorities remain owner decisions in VV0. Existing
+landscape fixtures are regression baselines, not new creative deliverables.
 
 **Target:** 10 working days  
 **Detailed plan:** [Phase_0_Implementation_Plan.md](./Phase_0_Implementation_Plan.md)  

@@ -11,6 +11,7 @@ import {
   CommerceAnimationResultSchema,
 } from "../../scene-contract/src/index.ts";
 import { compilePreparedScene } from "../../renderer-core/src/prepared-scene.ts";
+import { PassageError } from "../../renderer-core/src/passage-diagnostics.ts";
 import {
   exportScene,
   type ExportMetrics,
@@ -48,6 +49,15 @@ export async function loadPreparedScene(scenePath: string) {
     throw new AnimationEngineError(
       "SCENE_INVALID",
       error instanceof Error ? error.message : String(error),
+      error instanceof PassageError
+        ? {
+            diagnosticsJson: JSON.stringify(error.diagnostics),
+            ...(typeof error === "object" && error && "report" in error
+              ? { reportJson: JSON.stringify(error.report) }
+              : {}),
+          }
+        : undefined,
+      { cause: error },
     );
   }
   const assetPaths = await validatePreparedAssets(
@@ -129,7 +139,14 @@ export class PreparedAnimationEngine {
           scene: hash(manifestBytes),
           output: metrics.outputChecksum,
         },
-        metrics,
+        metrics: {
+          ...metrics,
+          ...(!commerce &&
+          "format" in prepared.scene &&
+          prepared.scene.format === "vertical"
+            ? { format: "vertical" }
+            : {}),
+        },
         ...(prepared.scene.schemaVersion === "illustrated-scene-2"
           ? { cameraValidation: prepared.scene.cameraValidation }
           : {}),

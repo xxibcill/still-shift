@@ -7,12 +7,16 @@ import {
 import { chromium } from "playwright";
 import { createServer } from "vite";
 import type { CompiledStoryPassage } from "../../renderer-core/src/story-passage.ts";
-import { PassageError } from "../../renderer-core/src/passage-diagnostics.ts";
+import {
+  PassageError,
+  type PassageDiagnostic,
+} from "../../renderer-core/src/passage-diagnostics.ts";
 
 /** Measure authored text with the same pinned fonts and Chromium canvas used by preview/export. */
 export async function validatePassageText(
   passage: CompiledStoryPassage,
   runtime: BrowserRuntimeOptions = {},
+  options: { collectAll?: boolean; validateSafeZones?: boolean } = {},
 ) {
   const projectRoot = runtime.projectRoot ?? defaultBrowserProjectRoot;
   const beats = passage.beats.filter((beat) =>
@@ -20,7 +24,7 @@ export async function validatePassageText(
       (node) => node.type === "text" && (node.textLayout || node.textBox),
     ),
   );
-  if (!beats.length) return;
+  if (!beats.length) return [] as PassageDiagnostic[];
 
   const server = await createServer({
     root: projectRoot,
@@ -33,6 +37,7 @@ export async function validatePassageText(
     },
   });
   let browser: Awaited<ReturnType<typeof chromium.launch>> | undefined;
+  const collected: PassageDiagnostic[] = [];
   try {
     await server.listen();
     const baseUrl = server.resolvedUrls?.local[0];
@@ -55,15 +60,20 @@ export async function validatePassageText(
         fontUrls[font.id] = url;
       }
       const diagnostics = await page.evaluate(
-        ({ scene, fontUrls }) =>
-          window.validateStillShiftPassageText!(scene, fontUrls),
-        { scene: beat.scene, fontUrls },
+        ({ scene, fontUrls, options }) =>
+          window.validateStillShiftPassageText!(scene, fontUrls, options),
+        { scene: beat.scene, fontUrls, options },
       );
-      if (diagnostics.length)
-        throw new PassageError(
-          diagnostics.map((diagnostic) => ({ beat: beat.id, ...diagnostic })),
-        );
+      if (diagnostics.length) {
+        const tagged = diagnostics.map((diagnostic) => ({
+          beat: beat.id,
+          ...diagnostic,
+        }));
+        if (!options.collectAll) throw new PassageError(tagged);
+        collected.push(...tagged);
+      }
     }
+    return collected;
   } finally {
     try {
       await browser?.close();

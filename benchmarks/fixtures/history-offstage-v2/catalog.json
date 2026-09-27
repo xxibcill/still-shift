@@ -2,7 +2,10 @@
   {
     "id": "chronicle-reveal",
     "title": "Layered reveal",
-    "description": "The foreground shifts; a route to the threshold becomes visible."
+    "description": "The foreground shifts; a route to the threshold becomes visible.",
+    "formats": {
+      "vertical": "vertical/chronicle-reveal.json"
+    }
   },
   {
     "id": "resource-flow",

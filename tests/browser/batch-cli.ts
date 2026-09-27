@@ -5,7 +5,10 @@ import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 import { promisify } from "node:util";
 
-import { AnimationResultSchema } from "../../packages/scene-contract/src/index.ts";
+import {
+  AnimationResultSchema,
+  SceneManifestSchema,
+} from "../../packages/scene-contract/src/index.ts";
 
 const execFileAsync = promisify(execFile);
 const directory = await mkdtemp(join(tmpdir(), "still-shift-batch-test-"));
@@ -213,8 +216,48 @@ try {
     ).trim(),
   ) as { error: { code: string } };
   assert.equal(missingCacheRecord.error.code, "OUTPUT_VALIDATION_FAILED");
+
+  const dualManifestPath = join(directory, "dual-formats.jsonl");
+  const dualOutputDir = join(directory, "dual-outputs");
+  await writeFile(
+    dualManifestPath,
+    `${JSON.stringify({
+      id: "dual",
+      inputPath: "source.png",
+      durationMs: 3000,
+      preset: "locked_hold",
+      focus: [0.5, 0.5],
+      formats: ["landscape", "vertical"],
+    })}\n`,
+  );
+  const dual = await runBatch(dualManifestPath, dualOutputDir);
+  assert.equal(dual.summary.itemCount, 2);
+  assert.equal(dual.summary.successful, 2);
+  const dualRecords = (
+    await readFile(join(dualOutputDir, "batch-results.jsonl"), "utf8")
+  )
+    .trim()
+    .split("\n")
+    .map((line) => JSON.parse(line));
+  assert.deepEqual(
+    dualRecords.map((record) => record.id),
+    ["dual-landscape", "dual-vertical"],
+  );
+  for (const [index, dimensions] of [
+    [1920, 1080],
+    [1080, 1920],
+  ].entries()) {
+    const result = AnimationResultSchema.parse(dualRecords[index].result);
+    const manifest = SceneManifestSchema.parse(
+      JSON.parse(await readFile(result.sceneManifestPath, "utf8")),
+    );
+    assert.deepEqual(
+      [manifest.canvas.width, manifest.canvas.height],
+      dimensions,
+    );
+  }
   process.stdout.write(
-    "Batch CLI verified: bounded workers, failure isolation, deterministic retries, artifact validation, and repaired-item recovery\n",
+    "Batch CLI verified: bounded workers, failure isolation, deterministic retries, artifact validation, repaired-item recovery, and dual formats\n",
   );
 } finally {
   await rm(directory, { recursive: true, force: true });

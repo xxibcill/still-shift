@@ -13,15 +13,19 @@ export async function cachedStoryTransition(options: {
   incoming: { outputPath: string; key: string };
   handoff: Handoff;
   fps: number;
+  width?: number;
+  height?: number;
   output: string;
   cacheDirectory: string;
   signal?: AbortSignal | undefined;
   verify: (path: string) => Promise<unknown>;
 }) {
   const { handoff, fps, outgoing, incoming } = options,
+    width = options.width ?? 1920,
+    height = options.height ?? 1080,
     frames = handoff.frames!;
   const poses = Array.from({ length: frames }, (_, frame) =>
-    sampleStoryTransition(handoff, frame, 1920, 1080, fps),
+    sampleStoryTransition(handoff, frame, width, height, fps),
   );
   const expression = (values: number[], variable = "N") =>
     values
@@ -39,7 +43,7 @@ export async function cachedStoryTransition(options: {
   const filter =
     handoff.mode === "push"
       ? source +
-        `color=c=black:s=1920x1080:r=${fps}:d=${frames / fps}[base];[base][a]overlay=x='${expression(
+        `color=c=black:s=${width}x${height}:r=${fps}:d=${frames / fps}[base];[base][a]overlay=x='${expression(
           poses.map((p) => p.outgoingX),
           "n-1",
         )}':y='${expression(
@@ -64,6 +68,7 @@ export async function cachedStoryTransition(options: {
         incoming: incoming.key,
         handoff,
         fps,
+        ...(width === 1920 && height === 1080 ? {} : { width, height }),
       }),
     ),
     output: options.output,

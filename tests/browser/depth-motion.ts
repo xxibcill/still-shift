@@ -2,6 +2,10 @@ import assert from "node:assert/strict";
 
 import { chromium, type Browser, type Page } from "playwright";
 import { createServer, type ViteDevServer } from "vite";
+import {
+  estimateDepthSubject,
+  focusCropWindow,
+} from "../../packages/renderer-core/src/depth-reframe.ts";
 
 const sourceSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256">
   <rect width="256" height="256" fill="black"/>
@@ -14,6 +18,10 @@ const depthSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="256" height="25
 </svg>`;
 const flatDepthSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256">
   <rect width="256" height="256" fill="rgb(128,128,128)"/>
+</svg>`;
+const focalDepthSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256">
+  <rect width="256" height="256" fill="rgb(32,32,32)"/>
+  <rect x="170" y="65" width="70" height="110" fill="rgb(240,240,240)"/>
 </svg>`;
 
 const measureMarkers = async (
@@ -83,6 +91,19 @@ try {
     { timeout: 15_000 },
   );
   const first = await measureMarkers(page);
+  await page.locator("#output-format").selectOption("vertical");
+  await page.locator("#focus-mode").selectOption("manual");
+  await page.locator("#focus-x").fill("0.75");
+  await page.locator("#focus-x").press("Tab");
+  assert.deepEqual(
+    await page
+      .locator("#preview")
+      .evaluate((canvas: HTMLCanvasElement) => [canvas.width, canvas.height]),
+    [1080, 1920],
+  );
+  const reframed = await measureMarkers(page);
+  assert.ok(Number.isNaN(reframed.red) && Number.isFinite(reframed.green));
+  await page.locator("#output-format").selectOption("landscape");
   await page.evaluate(() => {
     const slider = document.querySelector<HTMLInputElement>("#frame");
     if (!slider) throw new Error("Frame slider is missing");
@@ -236,6 +257,66 @@ try {
   assert.equal(
     invalidDepthParameters.quality.fallbackReason,
     "DEPTH_PREPARATION_FAILED",
+  );
+
+  const focalPixels = new Uint8Array(256 * 256 * 4);
+  for (let y = 0; y < 256; y++)
+    for (let x = 0; x < 256; x++)
+      focalPixels[(y * 256 + x) * 4] =
+        x >= 170 && x < 240 && y >= 65 && y < 175 ? 240 : 32;
+  const expectedSubject = estimateDepthSubject(256, 256, focalPixels);
+  assert.ok(expectedSubject);
+  const expectedCrop = focusCropWindow(
+    256,
+    256,
+    1080,
+    1920,
+    expectedSubject.focus,
+  );
+  await page.locator("#local-depth").setInputFiles({
+    name: "focal-depth.svg",
+    mimeType: "image/svg+xml",
+    buffer: Buffer.from(focalDepthSvg),
+  });
+  await page.locator("#output-format").selectOption("vertical");
+  await page.locator("#focus-mode").selectOption("auto");
+  await page.locator("#load-local").click();
+  await page.waitForFunction(() =>
+    document.querySelector("#status")?.textContent?.includes("ready"),
+  );
+  const autoParameters = JSON.parse(
+    (await page.locator("#parameters").textContent()) ?? "{}",
+  ) as {
+    framing: {
+      source: string;
+      focus: [number, number];
+      crop: { x: number; y: number; width: number; height: number };
+    };
+  };
+  assert.equal(autoParameters.framing.source, "depth-estimate");
+  assert.ok(
+    Math.abs(autoParameters.framing.focus[0] - expectedSubject.focus[0]) <
+      0.005,
+  );
+  assert.ok(
+    Math.abs(autoParameters.framing.focus[1] - expectedSubject.focus[1]) <
+      0.005,
+  );
+  assert.ok(Math.abs(autoParameters.framing.crop.x - expectedCrop.x) < 0.005);
+  assert.ok(
+    Math.abs(autoParameters.framing.crop.width - expectedCrop.width) < 0.005,
+  );
+  await page.locator("#focus-mode").selectOption("manual");
+  await page.locator("#focus-x").fill("0.2");
+  await page.locator("#focus-x").press("Tab");
+  await page.waitForFunction(() =>
+    document
+      .querySelector("#status")
+      ?.textContent?.includes("subject exceeds the vertical crop"),
+  );
+  await page.locator("#focus-mode").selectOption("auto");
+  await page.waitForFunction(() =>
+    document.querySelector("#status")?.textContent?.includes("ready"),
   );
 
   const rendererModuleUrl =

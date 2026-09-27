@@ -8,6 +8,7 @@ import {
 } from "../../../packages/renderer-core/src/illustrated-renderer.ts";
 import { storyCameraTransform } from "../../../packages/renderer-core/src/story-camera.ts";
 import { nodeMatrix } from "../../../packages/renderer-core/src/node-transform.ts";
+import { drawFormatGuides } from "./format-guides.ts";
 
 export type ReadyBeat = {
   scene: ReturnType<typeof compileStoryScene>;
@@ -38,8 +39,8 @@ export async function preparePreviews(passage: CompiledStoryPassage) {
       ),
     );
     const target = document.createElement("canvas");
-    target.width = 1920;
-    target.height = 1080;
+    target.width = scene.width;
+    target.height = scene.height;
     prepared.push({
       scene,
       preview: createIllustratedPreview(target, scene, images),
@@ -56,15 +57,7 @@ export function drawOverlays(
   options: OverlayOptions,
 ) {
   const ctx = overlay.getContext("2d")!;
-  ctx.clearRect(0, 0, 1920, 1080);
-  if (options.showSafe) {
-    const inset = scene.safeInset ?? 0;
-    ctx.strokeStyle = "#d4b777";
-    ctx.lineWidth = 3;
-    ctx.setLineDash([12, 8]);
-    ctx.strokeRect(inset, inset, 1920 - inset * 2, 1080 - inset * 2);
-    ctx.setLineDash([]);
-  }
+  drawFormatGuides(overlay, scene, options.showSafe);
   const bounds = options.showBounds,
     diagnostics = options.showDiagnostics;
   if (!bounds && !diagnostics) return;

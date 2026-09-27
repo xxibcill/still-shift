@@ -21,6 +21,8 @@ import {
 } from "../../scene-contract/src/story.ts";
 import { compileStoryScene } from "./story-scene.ts";
 import { analyzeStoryQuality } from "./story-quality.ts";
+import type { OutputFormat } from "../../scene-contract/src/output-format.ts";
+import { validateStorySafeZones } from "./story-safe-zones.ts";
 
 export const PURPOSE_RECIPES = {
   compare: ["unequal_margins", "category_swap"],
@@ -138,6 +140,7 @@ function applyBeat(
 export function compileStoryPassage(
   input: unknown,
   templates: ReadonlyMap<string, PassageTemplate>,
+  options: { format?: OutputFormat; validateSafeZones?: boolean } = {},
 ) {
   const plan = parsePassagePlan(input);
   let previous: StoryScene | undefined;
@@ -157,6 +160,7 @@ export function compileStoryPassage(
         plan.schemaVersion === "story-passage-2"
           ? plan.styleProfile
           : undefined,
+        options.format,
       );
       if (!template)
         throw new Error(beat.id + ": missing template " + beat.template);
@@ -176,7 +180,9 @@ export function compileStoryPassage(
         outgoingFrames,
       );
       if ("handoff" in beat)
-        applyStoryHandoff(scene, previous, beat.handoff, previousFrameCount);
+        applyStoryHandoff(scene, previous, beat.handoff, previousFrameCount, {
+          validateSafeZones: options.validateSafeZones ?? true,
+        });
       const validated = StorySceneSchema.parse(scene);
       Object.assign(scene, validated);
       previous = scene;
@@ -192,7 +198,11 @@ export function compileStoryPassage(
           return { ...window };
         }),
       }));
-      const rendered = compileStoryScene(scene);
+      const rendered = compileStoryScene(scene, {
+        validateSafeZones: options.validateSafeZones ?? true,
+      });
+      if (options.validateSafeZones !== false)
+        validateStorySafeZones(rendered, beat.focus);
       const events = indexStoryEvents(scene).map((event) => ({
         ...event,
         nodes: [
@@ -255,6 +265,15 @@ export function compileStoryPassage(
       throw new PassageError(passageDiagnostics(error, beat.id));
     }
   });
+  const first = beats[0]!.scene;
+  for (const beat of beats) {
+    if (beat.scene.width !== first.width || beat.scene.height !== first.height)
+      passageError(
+        "mixed-format-passage",
+        `Beat ${beat.id} has ${beat.scene.width}×${beat.scene.height}; expected ${first.width}×${first.height}`,
+        { beat: beat.id },
+      );
+  }
   return {
     plan,
     beats,
@@ -287,9 +306,10 @@ export type CompiledStoryPassage = ReturnType<typeof compileStoryPassage>;
 export function inspectStoryPassage(
   input: unknown,
   templates: ReadonlyMap<string, PassageTemplate>,
+  options: { format?: OutputFormat } = {},
 ) {
   try {
-    const passage = compileStoryPassage(input, templates);
+    const passage = compileStoryPassage(input, templates, options);
     return { ok: true as const, passage, diagnostics: passage.diagnostics };
   } catch (error) {
     return { ok: false as const, diagnostics: passageDiagnostics(error) };

@@ -141,6 +141,11 @@ export function createCommerceEffectsRenderer(
     ...componentMasks(componentScene),
   ];
   const maskIds = new Set(mattes.map((m) => m.mask));
+  const flowPathIds = new Set(
+    scene.schemaVersion === "story-scene-1"
+      ? (scene.compiledFlows?.map((flow) => flow.path) ?? [])
+      : [],
+  );
   const roots = scene.nodes.filter(
     (node) => !node.parent && !maskIds.has(node.id),
   );
@@ -308,7 +313,11 @@ export function createCommerceEffectsRenderer(
     node: PreparedNode,
     frame: number,
   ) {
-    if (evaluatePreparedNodeAtTime(scene, node, frame).opacity <= 0) return;
+    if (
+      evaluatePreparedNodeAtTime(scene, node, frame).opacity <= 0 &&
+      !flowPathIds.has(node.id)
+    )
+      return;
     const treatments = effects.filter(
       (effect) =>
         isEffectActive(effect, frame) &&

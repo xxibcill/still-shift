@@ -42,7 +42,10 @@
   {
     "id": "ci-04-rising-vista",
     "title": "Rising Vista · Across the fields",
-    "description": "Rise above a near grassy bank. The foreground drops quickly while the fields and distant horizon move more slowly."
+    "description": "Rise above a near grassy bank. The foreground drops quickly while the fields and distant horizon move more slowly.",
+    "formats": {
+      "vertical": "vertical/ci-vertical-rising-vista.json"
+    }
   },
   {
     "id": "ci-07-curved-approach",

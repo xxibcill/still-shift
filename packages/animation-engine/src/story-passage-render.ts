@@ -1,4 +1,5 @@
 import { isStoryTransition } from "../../renderer-core/src/story-transition.ts";
+import { passageError } from "../../renderer-core/src/passage-diagnostics.ts";
 import { cachedStoryTransition } from "./story-transition-render.ts";
 import { randomUUID } from "node:crypto";
 import {
@@ -72,6 +73,7 @@ async function verifyVideo(
   path: string,
   frameCount: number,
   fps: number,
+  size: { width: number; height: number },
   audio: boolean,
   signal?: AbortSignal,
 ) {
@@ -83,8 +85,8 @@ async function verifyVideo(
     "Decoded frame count must match the passage",
   );
   assert.equal(video?.r_frame_rate, fps + "/1");
-  assert.equal(video.width, 1920);
-  assert.equal(video.height, 1080);
+  assert.equal(video.width, size.width);
+  assert.equal(video.height, size.height);
   assert.equal(
     streams.some((stream) => stream.codec_type === "audio"),
     audio,
@@ -116,6 +118,10 @@ async function assembleStoryPassage(
   };
   const started = performance.now();
   const { plan } = passage;
+  const size = {
+    width: passage.beats[0]!.scene.width,
+    height: passage.beats[0]!.scene.height,
+  };
   const range = options.range ?? { start: 0, end: passage.frameCount };
   const frameCount = range.end - range.start,
     sourceStartFrame = plan.sourceStartFrame + range.start,
@@ -154,6 +160,7 @@ async function assembleStoryPassage(
           path,
           beat.scene.frameCount,
           plan.fps,
+          size,
           false,
           options.signal,
         ),
@@ -184,11 +191,20 @@ async function assembleStoryPassage(
         incoming: clips[index]!,
         handoff: handoff!,
         fps: plan.fps,
+        width: size.width,
+        height: size.height,
         output: join(options.sceneDirectory, beat.id + ".join.mp4"),
         cacheDirectory: options.cacheDirectory,
         signal: options.signal,
         verify: (path) =>
-          verifyVideo(path, handoff!.frames!, plan.fps, false, options.signal),
+          verifyVideo(
+            path,
+            handoff!.frames!,
+            plan.fps,
+            size,
+            false,
+            options.signal,
+          ),
       });
       segments.push(`[${assemblyInputs.length}:v]`);
       assemblyInputs.push(joinClip);
@@ -258,6 +274,7 @@ async function assembleStoryPassage(
     video,
     frameCount,
     plan.fps,
+    size,
     Boolean(narration),
     options.signal,
   );
@@ -314,6 +331,7 @@ async function assembleStoryPassage(
         path,
         shot.end - shot.start,
         plan.fps,
+        size,
         Boolean(narration),
         options.signal,
       )),
@@ -327,6 +345,11 @@ async function assembleStoryPassage(
       end = Math.min(range.end, beat.end) - range.start;
     return [start, Math.floor((start + end - 1) / 2), end - 1];
   });
+  const thumbnailArea = 480 * 270;
+  const thumbnailWidth = Math.round(
+    Math.sqrt((thumbnailArea * size.width) / size.height),
+  );
+  const thumbnailHeight = Math.round(thumbnailArea / thumbnailWidth);
   await run("ffmpeg", [
     "-v",
     "error",
@@ -336,7 +359,7 @@ async function assembleStoryPassage(
     "-vf",
     "select='" +
       frames.map((frame) => "eq(n," + frame + ")").join("+") +
-      "',scale=480:270,tile=3x" +
+      `',scale=${thumbnailWidth}:${thumbnailHeight},tile=3x` +
       visibleBeats.length,
     "-frames:v",
     "1",
@@ -408,6 +431,17 @@ export async function renderStoryPassage(
   options: PassageRenderOptions = {},
 ) {
   options.signal?.throwIfAborted();
+  const first = passage.beats[0]?.scene;
+  if (!first)
+    passageError("empty-passage", "A passage needs at least one beat");
+  for (const beat of passage.beats) {
+    if (beat.scene.width !== first.width || beat.scene.height !== first.height)
+      passageError(
+        "mixed-format-passage",
+        `Beat ${beat.id} has ${beat.scene.width}×${beat.scene.height}; expected ${first.width}×${first.height}`,
+        { beat: beat.id },
+      );
+  }
   const range = options.range ?? { start: 0, end: passage.frameCount };
   if (
     !Number.isInteger(range.start) ||

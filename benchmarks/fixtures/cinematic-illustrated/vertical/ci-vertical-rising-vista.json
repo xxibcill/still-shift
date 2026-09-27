@@ -1,0 +1,96 @@
+{
+  "schemaVersion": "illustrated-scene-2",
+  "title": "Vertical Rising Vista · Observatory",
+  "durationMs": 4000,
+  "fps": 24,
+  "format": "vertical",
+  "width": 1080,
+  "height": 1920,
+  "background": "#5B96B8",
+  "assets": [
+    {
+      "id": "far",
+      "path": "../../../../assets/cinematic-illustrated/kit-v-vertical/vista-far.png",
+      "sha256": "sha256:06013b3a2d4308761afd73fec0cae24501f4b4d574a985322d3ca5f05b90e793",
+      "width": 2880,
+      "height": 1620
+    },
+    {
+      "id": "terrain",
+      "path": "../../../../assets/cinematic-illustrated/kit-v-vertical/vista-terrain.png",
+      "sha256": "sha256:6262413b5acb2e453dc347fdf92ed09c3f8c4118062914c3223e3b132bb299c4",
+      "width": 2880,
+      "height": 1620
+    },
+    {
+      "id": "ridge",
+      "path": "../../../../assets/cinematic-illustrated/kit-v-vertical/vista-ridge.png",
+      "sha256": "sha256:3e1ff4d3765a740cbbb0f65bc833bd4df66f09382386c2e8681258f4d24bb6e1",
+      "width": 2880,
+      "height": 1620
+    }
+  ],
+  "nodes": [
+    {
+      "id": "far",
+      "type": "image",
+      "x": -180,
+      "y": -140,
+      "width": 2280,
+      "height": 1282.5,
+      "fit": "stretch",
+      "states": [{ "asset": "far" }]
+    },
+    {
+      "id": "terrain",
+      "type": "image",
+      "x": -180,
+      "y": -140,
+      "width": 2280,
+      "height": 1282.5,
+      "fit": "stretch",
+      "states": [{ "asset": "terrain" }]
+    },
+    {
+      "id": "ridge",
+      "type": "image",
+      "x": -240,
+      "y": -260,
+      "width": 2400,
+      "height": 1350,
+      "fit": "stretch",
+      "states": [{ "asset": "ridge" }]
+    }
+  ],
+  "layers": [
+    {
+      "node": "far",
+      "depth": 12,
+      "paintedBounds": [0, 0, 2280, 1282.5]
+    },
+    {
+      "node": "terrain",
+      "depth": 4,
+      "protectedRegion": [
+        [990, 540],
+        [1280, 540],
+        [1280, 800],
+        [990, 800]
+      ],
+      "edgeAttachments": ["left", "right", "bottom"]
+    },
+    {
+      "node": "ridge",
+      "depth": 1,
+      "edgeAttachments": ["left", "right", "bottom"]
+    }
+  ],
+  "camera": { "travel": [0, -40], "anchor": [0.5, 0.5] },
+  "recipe": {
+    "preset": "rising_vista",
+    "foreground": "ridge",
+    "subject": "terrain",
+    "background": "far",
+    "intensity": "dramatic"
+  }
+}

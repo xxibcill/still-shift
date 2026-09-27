@@ -42,6 +42,97 @@ describe("passage Lab file actions", () => {
     assert.equal(result.plan.title, plan.title);
   });
 
+  test("vertical selector keeps workbench edits and proposal is saved explicitly", async () => {
+    const page = await browser.newPage({ acceptDownloads: true });
+    try {
+      await page.goto(base + "passage.html");
+      await page.waitForFunction(() =>
+        document.querySelector("#status")?.textContent?.includes("576 frames"),
+      );
+      await page.locator("#propose-vertical").click();
+      await page.waitForFunction(() =>
+        document
+          .querySelector("#status")
+          ?.textContent?.includes("vertical template override"),
+      );
+      assert.ok(
+        (await page.locator("#vertical-override").inputValue()).includes(
+          '"nodes"',
+        ),
+      );
+      const downloadStarted = page.waitForEvent("download");
+      await page.locator("#save-workspace").click();
+      const saved = JSON.parse(
+        await readFile(await (await downloadStarted).path()!, "utf8"),
+      );
+      assert.ok(
+        Object.values(saved.templates).some((template) =>
+          Boolean(
+            (template as { formats?: { vertical?: unknown } }).formats
+              ?.vertical,
+          ),
+        ),
+      );
+
+      await page
+        .locator("#plan-path")
+        .fill(
+          resolve(
+            "benchmarks/fixtures/story-authoring/vertical/linked-network.json",
+          ),
+        );
+      await page.locator("#load-form button").click();
+      await page.waitForFunction(() =>
+        document.querySelector("#status")?.textContent?.includes("192 frames"),
+      );
+      await page.locator("#output-format").selectOption("vertical");
+      await page.waitForFunction(
+        () =>
+          (
+            window.passageLab!.snapshot() as {
+              beats: { scene: { format?: string } }[];
+            }
+          ).beats[0]?.scene.format === "vertical",
+      );
+      assert.equal(
+        await page
+          .locator("#preview")
+          .evaluate((canvas) => (canvas as HTMLCanvasElement).height),
+        1920,
+      );
+      const title = page.getByRole("textbox", { name: "title", exact: true });
+      await title.fill("A vertical workbench edit");
+      await title.press("Tab");
+      await page.waitForFunction(
+        () =>
+          (
+            window.passageLab!.snapshot() as {
+              plan: { beats: { parameters: { title: string } }[] };
+            }
+          ).plan.beats[0]?.parameters.title === "A vertical workbench edit",
+      );
+      await page.locator("#output-format").selectOption("landscape");
+      await page.waitForFunction(
+        () =>
+          (
+            window.passageLab!.snapshot() as {
+              beats: { scene: { format?: string } }[];
+            }
+          ).beats[0]?.scene.format === undefined,
+      );
+      assert.equal(
+        (
+          (await page.evaluate(() => window.passageLab!.snapshot())) as {
+            plan: { beats: { parameters: { title: string } }[] };
+          }
+        ).plan.beats[0]?.parameters.title,
+        "A vertical workbench edit",
+      );
+    } finally {
+      await page.close();
+    }
+  }, 30_000);
+
   test("relocated packages load the same frames and reject corruption without replacing the preview", async () => {
     const directory = await mkdtemp(
       resolve("benchmarks/results/workspace-lab-"),

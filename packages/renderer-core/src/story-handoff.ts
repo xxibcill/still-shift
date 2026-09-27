@@ -14,6 +14,7 @@ export function applyStoryHandoff(
   previous: StoryScene | undefined,
   handoff: Handoff,
   previousFrameCount = previous?.frameCount ?? 0,
+  options: { validateSafeZones?: boolean } = {},
 ) {
   if (
     handoff.mode !== "continue" &&
@@ -30,8 +31,8 @@ export function applyStoryHandoff(
       handoff.subjects.some((s) => s.from))
   )
     passageError("missing-previous-beat", "Handoff requires a preceding beat");
-  const before = previous ? compileStoryScene(previous) : undefined;
-  const after = compileStoryScene(scene);
+  const before = previous ? compileStoryScene(previous, options) : undefined;
+  const after = compileStoryScene(scene, options);
   const targets = new Set<string>();
   for (const mapping of handoff.subjects) {
     const source = previous?.nodes.find((n) => n.id === mapping.from);

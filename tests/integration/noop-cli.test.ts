@@ -130,6 +130,35 @@ describe("no-op CLI", () => {
     });
   });
 
+  it("selects vertical dimensions and validates format options", async () => {
+    const directory = await mkdtemp(join(tmpdir(), "still-shift-test-"));
+    temporaryDirectories.push(directory);
+    const result = await runNoopCli(join(directory, "vertical.noop.json"), [
+      "--format",
+      "vertical",
+      "--focus",
+      "0.7,0.4",
+      "--adapter",
+      "noop",
+    ]);
+    const scene = SceneManifestSchema.parse(
+      JSON.parse(await readFile(result.sceneManifestPath, "utf8")),
+    );
+    expect(scene.canvas).toEqual({ width: 1080, height: 1920 });
+
+    await expect(
+      runNoopCli(join(directory, "invalid.noop.json"), [
+        "--format",
+        "widescreen",
+        "--adapter",
+        "noop",
+      ]),
+    ).rejects.toMatchObject({
+      code: 2,
+      stderr: expect.stringContaining('"code":"SCENE_INVALID"'),
+    });
+  });
+
   it("publishes artifacts without overwriting or leaving a partial pair", async () => {
     const directory = await mkdtemp(join(tmpdir(), "still-shift-test-"));
     temporaryDirectories.push(directory);
