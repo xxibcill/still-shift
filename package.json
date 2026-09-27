@@ -57,6 +57,7 @@
     "story:render": "node --import tsx scripts/render-story-demos.ts",
     "story:proof": "node --import tsx scripts/render-story-proof.ts",
     "story:passage": "node --import tsx scripts/prepare-story-passage.ts",
+    "story:package": "node --import tsx scripts/package-story-workspace.ts",
     "test:browser:passage": "node --import tsx tests/browser/story-passage.ts",
     "story:compare": "node --import tsx scripts/compare-story-demos.ts",
     "test:browser:story": "node --import tsx tests/browser/story.ts",

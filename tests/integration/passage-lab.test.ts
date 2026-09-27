@@ -1,9 +1,11 @@
 import assert from "node:assert/strict";
-import { readFile } from "node:fs/promises";
-import { resolve } from "node:path";
+import { mkdtemp, readFile, rename, rm, writeFile } from "node:fs/promises";
+import { join, resolve } from "node:path";
 import { chromium, type Browser } from "playwright";
 import { afterAll, beforeAll, describe, test } from "vitest";
 import { createServer, type ViteDevServer } from "vite";
+import { readStoryPassage } from "../../packages/animation-engine/src/story-passage-io.ts";
+import { writeStoryWorkspace } from "../../packages/animation-engine/src/story-workspace.ts";
 
 describe("passage Lab file actions", () => {
   let server: ViteDevServer;
@@ -24,6 +26,58 @@ describe("passage Lab file actions", () => {
     await browser?.close();
     await server?.close();
   });
+
+  test("relocated packages load the same frames and reject corruption without replacing the preview", async () => {
+    const directory = await mkdtemp(
+      resolve("benchmarks/results/workspace-lab-"),
+    );
+    const page = await browser.newPage();
+    try {
+      const passage = await readStoryPassage(
+        resolve("benchmarks/fixtures/story-authoring/linked-comparison.json"),
+      );
+      const manifest = await writeStoryWorkspace(
+        join(directory, "original"),
+        passage,
+      );
+      const moved = join(directory, "moved");
+      await rename(join(directory, "original"), moved);
+      await page.goto(base + "passage.html");
+      await page.waitForFunction(() =>
+        document.querySelector("#status")?.textContent?.includes("576 frames"),
+      );
+      const capture = (frame: number) =>
+        page.evaluate((frame) => {
+          window.passageLab!.seek(frame);
+          return document
+            .querySelector<HTMLCanvasElement>("#preview")!
+            .toDataURL();
+        }, frame);
+      const expected = await capture(192);
+      await page.locator("#plan-path").fill(join(moved, "workspace.json"));
+      await page.locator("#load-form button").click();
+      await page.waitForFunction(
+        () => (window.passageLab!.snapshot() as { frame: number }).frame === 0,
+      );
+      assert.equal(await capture(192), expected);
+      const snapshot = await page.evaluate(() => window.passageLab!.snapshot());
+      const file = manifest.files.find((file) => file.kind === "asset")!;
+      await writeFile(join(moved, file.path), "corrupted");
+      await page.locator("#load-form button").click();
+      await page.waitForFunction(() =>
+        document
+          .querySelector("#errors")
+          ?.textContent?.includes("checksum or size differs"),
+      );
+      assert.deepEqual(
+        await page.evaluate(() => window.passageLab!.snapshot()),
+        snapshot,
+      );
+    } finally {
+      await page.close();
+      await rm(directory, { recursive: true, force: true });
+    }
+  }, 30_000);
 
   test.each([
     ["save-plan", false],

@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { execFile } from "node:child_process";
 import { promisify } from "node:util";
-import { mkdtemp, readFile, writeFile } from "node:fs/promises";
+import { mkdtemp, readFile, rename, writeFile } from "node:fs/promises";
 import { join, resolve } from "node:path";
 import { tmpdir } from "node:os";
 import { chromium } from "playwright";
@@ -13,6 +13,7 @@ import {
   passageChecksum,
 } from "../../packages/animation-engine/src/story-passage-io.ts";
 import { renderStoryPassage } from "../../packages/animation-engine/src/story-passage-render.ts";
+import { writeStoryWorkspace } from "../../packages/animation-engine/src/story-workspace.ts";
 import { compareFrameSamples } from "../../packages/renderer-core/src/parity.ts";
 import type { PassagePlan } from "../../packages/scene-contract/src/story-authoring.ts";
 import type { StoryScene } from "../../packages/scene-contract/src/story.ts";
@@ -123,6 +124,41 @@ const narratedPassage = await prepareStoryPassageInput(narratedPlan, planPath);
 const narrated = await render("narrated", narratedPassage, narration);
 assert.ok(narrated.report.cache.every((c) => c.reused));
 assert.ok(narrated.report.video.streams.some((s) => s.codec_type === "audio"));
+const workspace = await writeStoryWorkspace(
+  join(output, "workspace-source"),
+  narratedPassage,
+  narration,
+);
+const relocatedDirectory = join(output, "workspace-relocated");
+await rename(join(output, "workspace-source"), relocatedDirectory);
+const relocated = await readStoryPassage(
+  join(relocatedDirectory, "workspace.json"),
+);
+const portableDirectory = join(output, "portable-fresh");
+await writePreparedPassage(portableDirectory, relocated);
+const portableReport = await renderStoryPassage(
+  portableDirectory,
+  relocated,
+  join(relocatedDirectory, workspace.narration!),
+  {
+    cacheDirectory: join(output, "portable-cache"),
+  },
+);
+assert.ok(portableReport.cache.every((c) => !c.reused));
+assert.deepEqual(
+  portableReport.cache.map((c) => c.key),
+  narrated.report.cache.map((c) => c.key),
+);
+assert.equal(
+  await decodedHash(portableReport.video.path),
+  await decodedHash(narrated.report.video.path),
+);
+const portableCached = await render(
+  "portable-cached",
+  relocated,
+  join(relocatedDirectory, workspace.narration!),
+);
+assert.ok(portableCached.report.cache.every((c) => c.reused));
 console.log(
   "Encoded checks passed: exact frames, cache reuse, isolated edit, range export, cancellation/resume, audio reuse.",
 );
@@ -384,6 +420,15 @@ try {
         browser:
           "cue editing, invalid recovery, slots, undo/redo, workspace round trip, playback, overlays, 390px layout",
         narratedFrames: narrated.report.frameCount,
+        portableWorkspace: {
+          files: workspace.files.length,
+          frames: portableReport.frameCount,
+          freshDecodedEquality: true,
+          relocatedCacheReuse: portableCached.report.cache.every(
+            (c) => c.reused,
+          ),
+          narration: Boolean(workspace.narration),
+        },
       },
       null,
       2,

@@ -17,3 +17,4 @@ export {
   verifyPassageNarration,
   type PassageRenderOptions,
 } from "./story-passage-render.ts";
+export { writeStoryWorkspace } from "./story-workspace.ts";

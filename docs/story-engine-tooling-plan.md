@@ -1,9 +1,9 @@
 # Story engine and authoring tools — implementation plan
 
-- **Updated:** 2026-09-26
-- **Status:** E1–E6 implemented and verified together; supported boundaries are recorded below and in the usage guide.
+- **Updated:** 2026-09-27
+- **Status:** E1–E6 implemented and verified together; E7 portable workspace directory packaging implemented and verified on 2026-09-27.
 - **Baseline:** `adc374e` — `feat(story): add purpose-led passage planning and review`
-- **Working branch:** `codex/story-beat-planning`
+- **Original implementation branch:** `codex/story-beat-planning`; E7 branch: `codex/story-workspace-packaging`.
 
 ## Objective and scope
 
@@ -193,17 +193,37 @@ These are individual local test runs, not a production throughput or cost benchm
 - This implementation retains 1920×1080 at 24/30 fps. Arbitrary output formats remain outside E1–E6.
 - Text layout supports root text with pinned fonts and authored boxes. It checks wrapping, overflow and box safe areas; automatic spatial layout, animated collision detection and multilingual shaping policies need separate design.
 - Continuity supports compatible root poses and camera projections. Arbitrary parent-space conversions, subtree/asset morphing and overlapping transitions are not implemented. Cuts and resets keep exact beat durations.
-- Cold-cache range previews render complete intersecting beats before exact trimming. Exports reference local assets; workspace downloads embed templates but do not bundle binary files.
+- Cold-cache range previews render complete intersecting beats before exact trimming. Local JSON workspace downloads embed templates but do not bundle binary files; E7 adds a separate directory package with binary inputs.
 - Abruptly killed jobs can leave ignored attempt directories. Resume recovers stale locks and only uses verified outputs.
 - Readability findings on reused fixtures remain advisory. Engine verification does not establish episode creative acceptance, historical accuracy, audience comprehension or Phase 0 cost gates.
 
-A useful next engineering increment is portable workspace packaging with an explicit asset manifest, followed by broader authoring fixtures for nested continuity and output formats. Those extensions should have their own scope and acceptance tests; they are not silently included in the completed interfaces above.
+The next engineering increment is scoped as E7 below. Broader authoring fixtures for nested continuity and output formats remain separate future work; they are not silently included in E1–E6 or E7.
+
+## E7 — Portable workspace packages (2026-09-27)
+
+**Scope:** A separate, versioned directory package containing an editable plan, reusable templates, asset-slot defaults and overrides, pinned fonts, and narration when declared by the plan. A manifest identifies every file by kind, relative path, SHA-256 and byte length. Existing plan and local workspace downloads retain their behavior.
+
+**Acceptance:** Move the package directory, load its manifest through the CLI and the Lab path field, and obtain the same compiled timing, cache identities, preview pixels and decoded video. Missing or altered files and references outside the package must fail before replacing a valid preview. Packaging must preserve source inputs and refuse existing output directories.
+
+- [x] Add `story-workspace-package-1` and a shared dependency/integrity validator.
+- [x] Add `writeStoryWorkspace` and `pnpm story:package`; deduplicate repeated binary inputs and rewrite filesystem references relative to the packaged JSON.
+- [x] Load a package manifest through the existing preparation API and Lab path field with the package boundary and Lab workspace boundary both enforced.
+- [x] Preserve editable defaults, explicit asset parameters, linked timing, handoffs and pinned font layout.
+- [x] Cover relocation, deterministic manifests, corruption, missing files, duplicate paths, undeclared dependencies, traversal/symlink escapes, narration requirements and non-overwrite behavior.
+- [x] Complete and record fresh/cached encoded output checks and the final verification commands.
+
+**Limits:** This is a directory format, not a ZIP archive or a bundled renderer/runtime. The Lab's **Save workspace** still downloads the existing local JSON format; use **Save plan**, then `story:package`, to package an edited passage. Open the package's `workspace.json` using the Lab path field after placing the folder inside the checkout. Narration is included and verified when declared, but playback/export still selects the packaged audio explicitly. The manifest is an integrity record, not a signature or an editable source file; repackage after source edits. An abruptly terminated pack operation may leave a directory without a completion manifest; use a fresh output directory.
+
+**Implementation:** `packages/scene-contract/src/story-workspace.ts`, `packages/animation-engine/src/story-workspace{,-manifest}.ts`, the existing passage IO/Lab adapters, and `scripts/package-story-workspace.ts`. The E1–E6 commit references above remain historical.
+
+**Verification — 2026-09-27:** 349 unit/integration tests passed across 61 files, including 16 new package checks and the relocated-package Lab flow. The authoring browser suite passed its nine existing preview/export comparisons plus a freshly rendered, narrated 576-frame relocated package with identical decoded video and unchanged beat cache keys; a second relocated render reused all three beats. The Lab produced identical pixels at frame 192 and retained its valid state after an integrity failure. `pnpm story:package` produced the comparison sample with 16 dependency files / 906,979 bytes; `story:passage --prepare-only` loaded its manifest and retained 576 frames. TypeScript, ESLint, corpus-schema and changed-file formatting checks are recorded in the [E7 verification record](./review/story-engine-tooling/workspace-verification.json). Existing small-text fixture warnings remain advisory; no performance improvement is claimed for packaging.
 
 ## Work log and maintenance
 
-| Date       | Milestone | Change                                                                            | Verification / evidence                                                                                                   | Next action                                         |
-| ---------- | --------- | --------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------- |
-| 2026-09-26 | Planning  | Recorded the owner's engine/tooling scope and E1–E6 plan.                         | Baseline `adc374e`; planning record only.                                                                                 | Implement the shared engine and authoring workflow. |
-| 2026-09-26 | E1–E6     | Implemented all six milestones as an integrated feature in the existing worktree. | [Guide](./story-engine-tooling.md), [verification record](./review/story-engine-tooling/verification.json), checks above. | Scope the next engine increment separately.         |
+| Date       | Milestone | Change                                                                            | Verification / evidence                                                                                                                               | Next action                                                                                    |
+| ---------- | --------- | --------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
+| 2026-09-26 | Planning  | Recorded the owner's engine/tooling scope and E1–E6 plan.                         | Baseline `adc374e`; planning record only.                                                                                                             | Implement the shared engine and authoring workflow.                                            |
+| 2026-09-26 | E1–E6     | Implemented all six milestones as an integrated feature in the existing worktree. | [Guide](./story-engine-tooling.md), [verification record](./review/story-engine-tooling/verification.json), checks above.                             | Scope the next engine increment separately.                                                    |
+| 2026-09-27 | E7        | Added verified portable directory packages and manifest loading in the CLI/Lab.   | [Package guide](./story-engine-tooling.md#portable-workspace-packages), [E7 verification](./review/story-engine-tooling/workspace-verification.json). | Consider portable downloads in the Lab; scope nested continuity and output formats separately. |
 
 Update this tracker when supported behavior changes. Keep implementation commits, reproducible commands, actual results and limits distinct from future plans. Do not treat unknown measurements as zero or technical test success as creative acceptance.

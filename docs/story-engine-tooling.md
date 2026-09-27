@@ -1,6 +1,6 @@
 # Story engine and authoring tools
 
-This extension adds reusable authoring and render-job tools above the existing Still Shift renderer. Production artwork and episode choreography are unchanged. Track scope and completion in the [E1–E6 plan](./story-engine-tooling-plan.md).
+This extension adds reusable authoring and render-job tools above the existing Still Shift renderer. Production artwork and episode choreography are unchanged. Track scope and completion in the [engineering plan](./story-engine-tooling-plan.md).
 
 ## Open the workbench
 
@@ -29,11 +29,39 @@ Legacy `story-passage-1` plans still load. Use **Enable linked authoring** to ex
 
 ## Shared interfaces
 
-The browser-safe renderer module exports `compileStoryPassage`, `inspectStoryPassage`, `locatePassageFrame`, `indexStoryEvents`, `convertStoryFrame` and `createPassageEditor`. The Node animation-engine module exports `readStoryPassage`, `prepareStoryPassageInput`, `writePreparedPassage` and `renderStoryPassage`. The older command scripts remain compatible entry points.
+The browser-safe renderer module exports `compileStoryPassage`, `inspectStoryPassage`, `locatePassageFrame`, `indexStoryEvents`, `convertStoryFrame` and `createPassageEditor`. The Node animation-engine module exports `readStoryPassage`, `prepareStoryPassageInput`, `writePreparedPassage`, `writeStoryWorkspace` and `renderStoryPassage`. The older command scripts remain compatible entry points.
 
 Compilation consumes a plan and a map of resolved templates. It performs no filesystem access and does not mutate templates. The Lab and CLI share the same compiler; the Node adapter resolves files and checks asset dimensions and hashes. The browser also verifies authoring asset/font hashes before previewing.
 
 `inspectStoryPassage` returns either a compiled passage and advisory diagnostics, or structured errors. Diagnostics include a stable code, severity and applicable beat, node, event, frame or contract path. `createPassageEditor` commits edits only after successful compilation and keeps valid undo/redo history. The Lab additionally validates decoded assets and text layout before committing its edits.
+
+## Portable workspace packages
+
+Package a plan into a new directory:
+
+```sh
+pnpm story:package --plan benchmarks/fixtures/story-authoring/linked-comparison.json \
+  --output-dir benchmarks/results/comparison-workspace
+```
+
+Move or copy the entire directory, then pass its manifest to the existing preparation/render command:
+
+```sh
+pnpm story:passage --plan benchmarks/results/comparison-workspace/workspace.json \
+  --output-dir benchmarks/results/comparison-from-workspace --silent
+```
+
+To preview it, enter `benchmarks/results/comparison-workspace/workspace.json` in the Lab's plan path field and load it. A package placed elsewhere must first be copied inside the checkout for the Lab to serve its assets. The CLI can load packages outside the checkout.
+
+The directory contains `workspace.json`, `plan.json`, `templates/`, `assets/` and `fonts/`, plus `narrations/` for narrated plans. `story-workspace-package-1` records each file's relative path, kind, SHA-256 and byte length. Binary filenames use content hashes; repeated bytes with the same kind and extension share one file. Template references, assets, fonts and asset parameters are relative to their containing JSON. Template defaults are included even when a beat overrides them, preserving later edits. The directory contains inputs; the Still Shift toolchain is still required to preview or render them.
+
+For a plan with a narration identity, also pass `--narration <file>` to `story:package`. The audio must match the plan checksum and cover its source interval. The manifest's `narration` field gives the packaged audio path. Supply that file explicitly to the render command's `--narration` option or the Lab narration picker. A plan without narration must omit the packaging option.
+
+Opening the manifest verifies every listed file, dependency membership and package containment before preparing scenes. Missing/corrupt files, absolute dependency references, traversal and external symlinks fail with structured diagnostics. The Lab keeps its valid preview when a package fails validation. Loading `plan.json` directly uses the ordinary plan workflow and does not verify the package manifest.
+
+Output directories must be new. Packaging checks copied assets and text layout before publishing `workspace.json` as the completion marker; handled failures remove the new directory. An abrupt process termination can leave an incomplete directory without that marker. Existing directories and source files are never overwritten.
+
+**Save workspace** remains a local JSON download containing template definitions. For a portable copy of Lab edits, use **Save plan** and package that downloaded plan with the CLI. Archive downloads, automatic narration selection and bundling the renderer are future work. To edit a package, load it and save a new plan/workspace, then package the saved plan into a new directory; changing packaged JSON directly invalidates its checksums. Hashes detect changed bytes and do not establish authenticity.
 
 ## Timing and event identity
 
@@ -140,6 +168,8 @@ pnpm test:browser:story:continuous
 The authoring browser suite produces temporary renders, desktop/phone captures and `verification.json`. It checks exact encoded frames, fresh/cached decoded equality, isolated invalidation, range export, cancellation/resume, narration reuse, preview/export parity across joins, backward seeking, cue/parameter edits, invalid-edit recovery, undo/redo, workspace round trips and 390 px overflow. Unit tests additionally exercise schema errors, timing cycles, fps boundaries, camera velocity, content policies, text overflow and recovery from an abruptly killed lock owner.
 
 Both the authoring browser suite and existing continuous-motion checks are included in the normal `pnpm test` sequence. Completion evidence and remaining limits are recorded in the [implementation tracker](./story-engine-tooling-plan.md).
+
+The E7 package checks are included in `tests/integration/story-workspace.test.ts` and `tests/integration/passage-lab.test.ts`. The authoring browser suite also creates a narrated package, relocates it, renders it with a fresh cache, compares decoded video, and verifies reuse from the original beat cache. See the [2026-09-27 package verification record](./review/story-engine-tooling/workspace-verification.json) for the actual results. No renderer or visual-layout behavior is changed by packaging.
 
 ### Recorded result — 2026-09-26
 

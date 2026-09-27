@@ -11,6 +11,8 @@ import {
 import { validatePreparedAssets } from "./prepared-animation-engine.ts";
 import { compileStoryPassage } from "../../renderer-core/src/story-passage.ts";
 import { validatePassageText } from "./passage-text-validation.ts";
+import { isStoryWorkspacePackage } from "../../scene-contract/src/story-workspace.ts";
+import { loadStoryWorkspaceInput } from "./story-workspace-manifest.ts";
 
 export const passageChecksum = (bytes: Uint8Array) =>
   createHash("sha256").update(bytes).digest("hex");
@@ -34,6 +36,13 @@ export async function prepareStoryPassageInput(
   allowPath?: (path: string) => Promise<unknown>,
 ) {
   const started = performance.now();
+  if (isStoryWorkspacePackage(input)) {
+    const workspace = await loadStoryWorkspaceInput(input, planPath, allowPath);
+    input = workspace.plan;
+    planPath = workspace.path;
+    checksum = workspace.sha256;
+    allowPath = workspace.allowPath;
+  }
   const path = resolve(planPath);
   const plan = parsePassagePlan(input);
   const templates = new Map<string, PassageTemplate>();
