@@ -1,5 +1,26 @@
 # Lab
 
+For an outcome-based tour, required inputs and export instructions, start with the
+**[Still Shift user guide](../../docs/user-guide.md)**.
+
+Run `pnpm lab`, then choose a screen:
+
+| Screen                      | Local path                                 |
+| --------------------------- | ------------------------------------------ |
+| Image/depth preview         | `/`                                        |
+| Cinematic variations        | `/illustrated.html?collection=cinematic`   |
+| Story recipes               | `/illustrated.html?collection=story`       |
+| Earlier illustrated studies | `/illustrated.html?collection=illustrated` |
+| Passage editing             | `/passage.html`                            |
+| Product treatments          | `/commerce.html`                           |
+| Commerce components/effects | `/commerce-components.html`                |
+| Shared reusable components  | `/reusable-components.html`                |
+
+The base URL is `http://127.0.0.1:4173`. Commerce and component galleries export
+MP4s directly; illustrated scenes and saved passage plans render through the CLI.
+
+## Image and depth preview
+
 Run `pnpm lab` and open `http://127.0.0.1:4173/`. The lab reads
 `benchmarks/corpus-manifest.json`. Select a corpus entry to verify its source checksum,
 prepare depth with the v0.2 worker, and inspect its animated preview. **Build corpus

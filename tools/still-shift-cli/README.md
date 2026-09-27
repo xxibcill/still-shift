@@ -97,7 +97,8 @@ pnpm still-shift prepare-commerce --brief benchmarks/fixtures/ecommerce-motion/a
 pnpm still-shift animate-scene --scene /tmp/commerce-scene.json --output /tmp/commerce-ad.mp4
 ```
 
-Selections H03/H01/H04/A01 support 24/30 fps in landscape, portrait and square.
+Selections H03/H01/H04/A01 support 24/30 fps in landscape, portrait, square and
+4:5 feed (1080×1350).
 The brief controls integer frame count; the legacy 3–8 second restriction does
 not apply. Image paths are relative to the brief; prepared dependencies are
 relative to the scene. Existing files are never overwritten. Missing sources,
