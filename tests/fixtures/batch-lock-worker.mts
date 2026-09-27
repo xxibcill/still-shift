@@ -1,4 +1,4 @@
-import { acquireBatchLock } from "../../tools/still-shift-cli/src/batch-recovery.ts";
+import { acquireArtifactLock } from "@still-shift/execution-runtime/locks";
 
 const [lockPath, outputDir] = process.argv.slice(2);
 process.chdir(outputDir);
@@ -6,7 +6,7 @@ process.chdir(outputDir);
 process.once("message", async (message) => {
   if (message !== "acquire") return;
   try {
-    const release = await acquireBatchLock(lockPath, outputDir);
+    const release = await acquireArtifactLock(lockPath, outputDir);
     process.send?.("acquired");
     process.once("message", async () => {
       await release();

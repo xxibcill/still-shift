@@ -103,6 +103,13 @@ fails visibly.
 
 ## Verify
 
+See the [technical debt audit and completed cleanup](./docs/technical-debt-audit.md)
+for the engineering findings, completed fixes, and verification limits.
+
+Start with `pnpm check:fast` for normal edits and `pnpm check:runtime` for changes
+to workers, exports, or Lab workflows. See [verification tiers](./docs/verification.md)
+for prerequisites, bounded concurrency, CI, and the full release gate.
+
 Run the software-only foundation checks while the corpus is being assembled:
 
 ```bash

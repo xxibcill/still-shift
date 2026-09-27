@@ -137,6 +137,15 @@ try {
       sceneManifestPath: secondResult.sceneManifestPath,
     }),
   );
+  const priorVideo = await readFile(secondResult.outputPath);
+  const priorScene = await readFile(secondResult.sceneManifestPath);
+  const blocked = await runBatch();
+  assert.equal(blocked.summary.reused, 1);
+  assert.equal(blocked.summary.failed, 2);
+  assert.deepEqual(await readFile(secondResult.outputPath), priorVideo);
+  assert.deepEqual(await readFile(secondResult.sceneManifestPath), priorScene);
+  await rm(secondResult.outputPath);
+  await rm(secondResult.sceneManifestPath);
   const resumed = await runBatch();
   assert.equal(resumed.exitCode, 0);
   assert.equal(resumed.summary.reused, 1);

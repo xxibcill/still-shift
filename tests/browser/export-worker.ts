@@ -11,7 +11,7 @@ import {
 import {
   exportScene,
   processTreeRssBytes,
-} from "../../tools/export-worker/src/export-worker.ts";
+} from "@still-shift/execution-runtime/export";
 
 const sourceSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256">
   <rect width="256" height="256" fill="#161616"/>

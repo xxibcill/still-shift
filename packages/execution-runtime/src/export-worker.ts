@@ -1,27 +1,34 @@
-import { spawn, execFile } from "node:child_process";
+import { spawn } from "node:child_process";
 import { createReadStream } from "node:fs";
-import { link, mkdir, rm, stat, writeFile } from "node:fs/promises";
+import { mkdir, rm, stat, writeFile } from "node:fs/promises";
 import type { IncomingMessage, ServerResponse } from "node:http";
 import { availableParallelism, cpus } from "node:os";
 import { basename, dirname, extname, resolve } from "node:path";
 import { performance } from "node:perf_hooks";
 import { createHash, randomUUID } from "node:crypto";
-import { promisify } from "node:util";
 
 import { chromium, type Browser } from "playwright";
 import { createServer, type Plugin, type ViteDevServer } from "vite";
 
-import type { PreviewScene } from "../../../packages/renderer-core/src/scene.ts";
-import type { IllustratedScene } from "../../../packages/renderer-core/src/prepared-scene.ts";
+import type {
+  PreviewScene,
+  IllustratedScene,
+} from "@still-shift/renderer-core";
+import {
+  defaultBrowserProjectRoot,
+  runtimeBrowserUrl,
+  type BrowserRuntimeOptions,
+} from "./browser.ts";
 import { assertNever, type FrameTransport } from "./transport.ts";
+import { publishArtifacts } from "./artifact-publication.ts";
+import { runProcess } from "./subprocess.ts";
 
 export type ExportableScene = PreviewScene | IllustratedScene;
 
-const execFileAsync = promisify(execFile);
-const projectRoot = resolve(import.meta.dirname, "../../..");
 const EXPORT_WORKER_VERSION = "chromium-ffmpeg-0.6.0";
 
 export type ExportRequest = {
+  runtime?: BrowserRuntimeOptions;
   scene: ExportableScene;
   signal?: AbortSignal | undefined;
   sourcePath: string;
@@ -29,6 +36,8 @@ export type ExportRequest = {
   assetPaths?: Record<string, string>;
   outputPath: string;
   sceneManifestContents?: string;
+  resultManifestContents?: (metrics: ExportMetrics) => string | Promise<string>;
+  validateResult?: (metrics: ExportMetrics) => void | Promise<void>;
   encoder?: "libx264" | "h264_videotoolbox";
   transport?: FrameTransport;
 };
@@ -160,9 +169,13 @@ const ffmpegCpuTimeMs = (output: string): number => {
   return (Number(benchmark[1]) + Number(benchmark[2])) * 1000;
 };
 
-const fileChecksum = async (path: string): Promise<string> => {
+const fileChecksum = async (
+  path: string,
+  signal?: AbortSignal,
+): Promise<string> => {
   const hash = createHash("sha256");
-  for await (const chunk of createReadStream(path)) hash.update(chunk);
+  for await (const chunk of createReadStream(path, { signal }))
+    hash.update(chunk);
   return `sha256:${hash.digest("hex")}`;
 };
 
@@ -202,7 +215,7 @@ export const processTreeRssBytes = (
 const sampleProcessTreeRssBytes = async (
   rootRssBytes: number,
 ): Promise<number> => {
-  const { stdout } = await execFileAsync(
+  const { stdout } = await runProcess(
     "ps",
     ["-A", "-o", "pid=,ppid=,rss=,comm="],
     { maxBuffer: 4 * 1024 * 1024 },
@@ -339,20 +352,25 @@ const assetPlugin = (
 const verifyOutput = async (
   path: string,
   scene: ExportableScene,
+  signal?: AbortSignal,
 ): Promise<void> => {
-  const { stdout } = await execFileAsync("ffprobe", [
-    "-v",
-    "error",
-    "-select_streams",
-    "v:0",
-    "-show_entries",
-    "stream=width,height,r_frame_rate,nb_frames,pix_fmt,duration,color_range,color_space,color_transfer,color_primaries",
-    "-show_entries",
-    "format=duration",
-    "-of",
-    "json",
-    path,
-  ]);
+  const { stdout } = await runProcess(
+    "ffprobe",
+    [
+      "-v",
+      "error",
+      "-select_streams",
+      "v:0",
+      "-show_entries",
+      "stream=width,height,r_frame_rate,nb_frames,pix_fmt,duration,color_range,color_space,color_transfer,color_primaries",
+      "-show_entries",
+      "format=duration",
+      "-of",
+      "json",
+      path,
+    ],
+    { signal },
+  );
   const probe = JSON.parse(stdout) as {
     streams?: {
       width?: number;
@@ -388,13 +406,16 @@ const verifyOutput = async (
       `FFprobe validation failed for exported MP4: ${JSON.stringify({ stream, duration })}`,
     );
   }
-  await execFileAsync("ffmpeg", ["-v", "error", "-i", path, "-f", "null", "-"]);
+  await runProcess("ffmpeg", ["-v", "error", "-i", path, "-f", "null", "-"], {
+    signal,
+  });
 };
 
 export const exportScene = async (
   request: ExportRequest,
 ): Promise<ExportMetrics> => {
   request.signal?.throwIfAborted();
+  const projectRoot = request.runtime?.projectRoot ?? defaultBrowserProjectRoot;
   const start = performance.now();
   const { scene } = request;
   const frameAuthoritative =
@@ -415,6 +436,7 @@ export const exportScene = async (
     throw new Error("Depth motion requires a depth image");
   const outputPath = resolve(request.outputPath);
   const sceneManifestPath = `${outputPath}.scene.json`;
+  const resultPath = `${outputPath}.result.json`;
   const exportId = randomUUID();
   const temporaryPath = resolve(
     dirname(outputPath),
@@ -424,10 +446,17 @@ export const exportScene = async (
     dirname(outputPath),
     `.${basename(outputPath)}.${exportId}.scene.tmp.json`,
   );
+  const temporaryResultPath = resolve(
+    dirname(outputPath),
+    `.${basename(outputPath)}.${exportId}.result.tmp.json`,
+  );
   await mkdir(dirname(outputPath), { recursive: true });
   for (const [path, label] of [
     [outputPath, "Output"],
     [sceneManifestPath, "Scene manifest"],
+    ...(request.resultManifestContents
+      ? [[resultPath, "Result manifest"]]
+      : []),
   ] as const) {
     try {
       await stat(path);
@@ -437,7 +466,7 @@ export const exportScene = async (
     }
   }
   const ffmpegVersion = (
-    await execFileAsync("ffmpeg", ["-version"])
+    await runProcess("ffmpeg", ["-version"], { signal: request.signal })
   ).stdout.split("\n")[0]!;
   const encoderName = request.encoder ?? "libx264";
   const transport = request.transport ?? "png_pipe";
@@ -463,6 +492,9 @@ export const exportScene = async (
         : reject(new Error(`FFmpeg failed (${code}): ${encoderError.trim()}`)),
     );
   });
+  const encoderReaped = new Promise<void>((accept) =>
+    encoder.once("close", () => accept()),
+  );
   encoderClosed.catch(() => undefined);
   const frameState = { nextIndex: 0, error: null as Error | null };
   const expectedBytes =
@@ -481,7 +513,6 @@ export const exportScene = async (
   let peakSampledProcessTreeRssBytes: number | null = null;
   let memorySample: Promise<void> | null = null;
   let published = false;
-  let scenePublished = false;
   const sampleMemory = (): Promise<void> => {
     if (memorySample) return memorySample;
     memorySample = (async () => {
@@ -509,7 +540,11 @@ export const exportScene = async (
       configFile: false,
       logLevel: "silent",
       plugins: [assetPlugin(request, encoder, expectedBytes, frameState)],
-      server: { host: "127.0.0.1", port: 0, fs: { allow: [projectRoot] } },
+      server: {
+        host: "127.0.0.1",
+        port: 0,
+        fs: { allow: [projectRoot, defaultBrowserProjectRoot] },
+      },
     });
     await server.listen();
     const baseUrl = server.resolvedUrls?.local[0];
@@ -520,7 +555,7 @@ export const exportScene = async (
     const page = await browser.newPage({
       viewport: { width: scene.canvas.width, height: scene.canvas.height },
     });
-    await page.goto(new URL("tools/export-worker/index.html", baseUrl).href);
+    await page.goto(runtimeBrowserUrl(baseUrl, "export"));
     await page.waitForFunction(() => Boolean(window.runStillShiftExport));
     encodePathStart = performance.now();
     const browserResult = await page.evaluate(
@@ -535,13 +570,16 @@ export const exportScene = async (
     await encoderClosed;
     await sampleMemory();
     const validationStart = performance.now();
-    await verifyOutput(temporaryPath, scene);
+    await verifyOutput(temporaryPath, scene, request.signal);
     const validationWallMs = performance.now() - validationStart;
     const outputBytes = (await stat(temporaryPath)).size;
-    const outputChecksum = await fileChecksum(temporaryPath);
-    const sourceChecksum = await fileChecksum(request.sourcePath);
+    const outputChecksum = await fileChecksum(temporaryPath, request.signal);
+    const sourceChecksum = await fileChecksum(
+      request.sourcePath,
+      request.signal,
+    );
     const depthChecksum = request.depthPath
-      ? await fileChecksum(request.depthPath)
+      ? await fileChecksum(request.depthPath, request.signal)
       : null;
     const sceneManifest: ExportSceneManifest = {
       schemaVersion: "0.6",
@@ -585,6 +623,14 @@ export const exportScene = async (
       ffmpegCodec: codecArguments(encoderName).join(" "),
       frameTransport: transport,
     };
+    await request.validateResult?.(metrics);
+    if (request.resultManifestContents) {
+      const contents = await request.resultManifestContents(metrics);
+      await writeFile(temporaryResultPath, contents, {
+        flag: "wx",
+        signal: request.signal,
+      });
+    }
     clearInterval(memoryMonitor);
     await memorySample;
     await browser.close();
@@ -592,26 +638,34 @@ export const exportScene = async (
     await server.close();
     server = undefined;
     request.signal?.throwIfAborted();
-    await link(temporaryScenePath, sceneManifestPath);
-    scenePublished = true;
-    await link(temporaryPath, outputPath);
+    await publishArtifacts(
+      [
+        { staged: temporaryScenePath, destination: sceneManifestPath },
+        ...(request.resultManifestContents
+          ? [{ staged: temporaryResultPath, destination: resultPath }]
+          : []),
+        { staged: temporaryPath, destination: outputPath },
+      ],
+      request.signal,
+    );
     published = true;
     return metrics;
   } catch (error) {
     encoder.kill("SIGKILL");
+    request.signal?.throwIfAborted();
     throw error;
   } finally {
     request.signal?.removeEventListener("abort", abort);
     clearInterval(memoryMonitor);
+    // The writer must exit before removing files it might still create.
+    await encoderReaped;
     const cleanup = await Promise.allSettled([
       published ? null : memorySample,
       published ? null : browser?.close(),
       published ? null : server?.close(),
       rm(temporaryPath, { force: true }),
       rm(temporaryScenePath, { force: true }),
-      scenePublished && !published
-        ? rm(sceneManifestPath, { force: true })
-        : null,
+      rm(temporaryResultPath, { force: true }),
     ]);
     const cleanupErrors = cleanup.flatMap((result) =>
       result.status === "rejected" ? [result.reason] : [],

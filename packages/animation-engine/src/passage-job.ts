@@ -1,5 +1,5 @@
-import { acquireBatchLock } from "../../../tools/still-shift-cli/src/batch-recovery.ts";
-import { readFile, writeFile, rename } from "node:fs/promises";
+import { acquireArtifactLock } from "@still-shift/execution-runtime/locks";
+import { readFile, writeFile, rename, rm } from "node:fs/promises";
 import { join } from "node:path";
 import { randomUUID } from "node:crypto";
 import { passageHash, stableJson } from "./passage-cache.ts";
@@ -20,7 +20,9 @@ export async function acquirePassageJob(
   const identity = passageHash(stableJson(input));
   const path = join(output, "render-job.json"),
     lock = join(output, ".render-job.lock");
-  const release = await acquireBatchLock(lock, output);
+  const releaseLock = await acquireArtifactLock(lock, output);
+  let released: Promise<void> | undefined;
+  const release = () => (released ??= releaseLock());
   let state: JobState;
   try {
     let previous: JobState | undefined;
@@ -54,10 +56,18 @@ export async function acquirePassageJob(
   const save = async () => {
     state.updatedAt = new Date().toISOString();
     const temporary = path + "." + randomUUID();
-    await writeFile(temporary, JSON.stringify(state, null, 2) + "\n", {
-      flag: "wx",
-    });
-    await rename(temporary, path);
+    try {
+      await writeFile(temporary, JSON.stringify(state, null, 2) + "\n", {
+        flag: "wx",
+      });
+      await rename(temporary, path);
+    } finally {
+      await rm(temporary, { force: true }).catch((error: unknown) => {
+        process.stderr.write(
+          `Passage checkpoint cleanup failed: ${String(error)}\n`,
+        );
+      });
+    }
   };
   try {
     await save();
@@ -66,6 +76,19 @@ export async function acquirePassageJob(
     throw error;
   }
   return {
+    release,
+    async stageCompletion(staged: string) {
+      await writeFile(
+        staged,
+        JSON.stringify(
+          { ...state, status: "complete", updatedAt: new Date().toISOString() },
+          null,
+          2,
+        ) + "\n",
+        { flag: "wx" },
+      );
+      return { staged, destination: path, replaceExisting: true };
+    },
     async beat(id: string) {
       if (!state.completedBeats.includes(id)) state.completedBeats.push(id);
       await save();

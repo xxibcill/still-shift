@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 import tempfile
 import unittest
 from dataclasses import replace
@@ -142,6 +143,50 @@ class DepthPreparationTests(unittest.TestCase):
         self.assertEqual(rebuilt["cacheStatus"], "miss")
         self.assertTrue(rebuilt["cacheInvalidated"])
         self.assertEqual(rebuilt["checksums"], first["checksums"])
+
+    def test_cache_rebuilds_invalid_manifest_metadata(self) -> None:
+        source = self.save_image(Image.new("RGB", (12, 9), "green"), "source.png")
+        service = self.service()
+        first = service.prepare(source)
+        manifest_path = Path(first["manifestPath"])
+        original = json.loads(manifest_path.read_text(encoding="utf-8"))
+        cases = {
+            "null": None,
+            "array": [],
+            "string": "invalid",
+            "missing model": {key: value for key, value in original.items() if key != "model"},
+            "missing metrics": {key: value for key, value in original.items() if key != "metrics"},
+            "invalid model": {**original, "model": []},
+            "wrong model": {**original, "model": {**original["model"], "revision": "wrong"}},
+            "invalid metrics": {**original, "metrics": []},
+            "empty metrics": {**original, "metrics": {}},
+            "invalid checksums": {**original, "checksums": list(original["checksums"])},
+        }
+        for field, value in (
+            ("inferenceMs", "slow"),
+            ("postProcessMs", -1),
+            ("totalPreparationMs", float("nan")),
+            ("inferenceMs", True),
+            ("inferenceMs", float("inf")),
+            ("peakCpuMemoryBytes", -1),
+            ("peakGpuMemoryBytes", "unknown"),
+            ("selectedDevice", "wrong"),
+            ("hardwareDescription", ""),
+        ):
+            cases[f"invalid {field}: {value}"] = {
+                **original,
+                "metrics": {**original["metrics"], field: value},
+            }
+
+        for name, manifest in cases.items():
+            with self.subTest(name=name):
+                manifest_path.write_text(json.dumps(manifest), encoding="utf-8")
+                rebuilt = service.prepare(source)
+                self.assertEqual(rebuilt["cacheStatus"], "miss")
+                self.assertTrue(rebuilt["cacheInvalidated"])
+                self.assertEqual(rebuilt["checksums"], first["checksums"])
+                self.assertEqual(rebuilt["model"], first["model"])
+                self.assertEqual(service.prepare(source)["cacheStatus"], "hit")
 
     def test_cache_hit_reports_metadata_for_current_source(self) -> None:
         image = Image.new("RGB", (2, 3), "red")

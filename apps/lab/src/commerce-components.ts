@@ -19,17 +19,14 @@ import { buildCommerceComponentDemo } from "../../../packages/renderer-core/src/
 import { prepareCommerceShadow } from "../../../packages/animation-engine/src/commerce-shadow.ts";
 import { DEFAULT_SHADOW_TEXTURE } from "../../../packages/renderer-core/src/shadow-texture.ts";
 import { compilePreparedScene } from "../../../packages/renderer-core/src/prepared-scene.ts";
-import {
-  createIllustratedPreview,
-  loadIllustratedImages,
-} from "../../../packages/renderer-core/src/illustrated-renderer.ts";
+import { loadIllustratedImages } from "../../../packages/renderer-core/src/illustrated-renderer.ts";
 import {
   createSourceZip,
   download,
   type BundleFile,
 } from "./commerce-download.ts";
 import { postCommerceExport } from "./commerce-export.ts";
-import { createCommercePreviewController } from "./commerce-preview-controller.ts";
+import { createPreviewSession } from "./preview-session.ts";
 
 const element = <T extends HTMLElement>(id: string) =>
   document.getElementById(id) as T;
@@ -39,12 +36,11 @@ const form = element<HTMLFormElement>("component-form");
 let kind: ComponentDemoKind = ComponentDemoKindSchema.catch("studio").parse(
   new URLSearchParams(location.search).get("demo"),
 );
-let renderer: ReturnType<typeof createIllustratedPreview> | undefined;
-let baselineRenderer: ReturnType<typeof createIllustratedPreview> | undefined;
-let active:
-  | { scene: CommerceScene; options: ComponentDemo; files: BundleFile[] }
-  | undefined;
-let urls: string[] = [];
+type Active = {
+  scene: CommerceScene;
+  options: ComponentDemo;
+  files: BundleFile[];
+};
 const blob = (bytes: Uint8Array, type: string) =>
   new Blob([new Uint8Array(bytes).buffer], { type });
 const bytes = async (path: string) => {
@@ -57,19 +53,21 @@ const say = (text: string, error = false) => {
   element("status").textContent = text;
   element("status").classList.toggle("error", error);
 };
-const preview = createCommercePreviewController({
+const preview = createPreviewSession<Active>({
   controls: {
     play: element<HTMLButtonElement>("play"),
     restart: element<HTMLButtonElement>("restart"),
     scrub: field("scrub"),
-    download: element<HTMLButtonElement>("download"),
+    downloads: [element<HTMLButtonElement>("download")],
     export: element<HTMLButtonElement>("export"),
     timecode: element("timecode"),
   },
-  scene: () => active?.scene,
-  renderFrame: (frame) => {
-    renderer?.renderFrame(frame);
-    if (field("compare").checked) baselineRenderer?.renderFrame(frame);
+  status: say,
+  ready: ({ scene }) => {
+    canvas.style.aspectRatio = `${scene.width} / ${scene.height}`;
+    say(
+      `${scene.title} ready · ${scene.width} × ${scene.height} · ${scene.frameCount} frames`,
+    );
   },
   disableWhileExporting: true,
   restartOnFirstPlay: true,
@@ -242,37 +240,41 @@ function readOptions() {
     locale: field("locale").value,
   });
 }
-const source = fetch("/commerce/scenes/a01-beauty-feed.json").then(
-  async (response) => {
-    if (!response.ok)
-      throw new Error("Could not load the approved demo assets");
-    const original = CommerceSceneSchema.parse(await response.json());
-    const product = { ...original.assets[0]!, path: "assets/product.png" };
-    const font = { ...original.fonts[0]!, path: "assets/noto-sans-thai.ttf" };
-    const [productBytes, fontBytes, license] = await Promise.all([
-      bytes("/commerce/assets/beauty-floating-product-v1.png"),
-      bytes("/commerce/assets/noto-sans-thai.ttf"),
-      bytes("/commerce/assets/OFL.txt"),
-    ]);
-    return {
-      product,
-      font,
-      files: [
-        { name: product.path, bytes: productBytes },
-        { name: font.path, bytes: fontBytes },
-        { name: "assets/OFL.txt", bytes: license },
-      ],
-    };
-  },
-);
+async function fetchSource() {
+  const response = await fetch("/commerce/scenes/a01-beauty-feed.json");
+  if (!response.ok) throw new Error("Could not load the approved demo assets");
+  const original = CommerceSceneSchema.parse(await response.json());
+  const product = { ...original.assets[0]!, path: "assets/product.png" };
+  const font = { ...original.fonts[0]!, path: "assets/noto-sans-thai.ttf" };
+  const [productBytes, fontBytes, license] = await Promise.all([
+    bytes("/commerce/assets/beauty-floating-product-v1.png"),
+    bytes("/commerce/assets/noto-sans-thai.ttf"),
+    bytes("/commerce/assets/OFL.txt"),
+  ]);
+  return {
+    product,
+    font,
+    files: [
+      { name: product.path, bytes: productBytes },
+      { name: font.path, bytes: fontBytes },
+      { name: "assets/OFL.txt", bytes: license },
+    ],
+  };
+}
+let source: Promise<Awaited<ReturnType<typeof fetchSource>>> | undefined;
+function loadSource() {
+  source ??= fetchSource().catch((error: unknown) => {
+    source = undefined;
+    throw error;
+  });
+  return source;
+}
+
 async function update() {
-  invalidate();
-  const run = preview.generation;
-  active = undefined;
-  const pendingUrls: string[] = [];
-  try {
+  await preview.load(async (resources) => {
+    say("Preparing changes…");
     const options = readOptions();
-    const assets = await source;
+    const assets = await loadSource();
     const shadow = await prepareCommerceShadow({
       ...DEFAULT_SHADOW_TEXTURE,
       softness: options.shadow.softness,
@@ -297,10 +299,7 @@ async function update() {
     const urlsById = new Map<string, string>();
     for (const dependency of [...scene.assets, ...scene.fonts]) {
       const file = files.find((file) => file.name === dependency.path)!;
-      const url = URL.createObjectURL(
-        blob(file.bytes, "application/octet-stream"),
-      );
-      pendingUrls.push(url);
+      const url = resources.url(blob(file.bytes, "application/octet-stream"));
       urlsById.set(dependency.id, url);
     }
     const compiled = compilePreparedScene(scene);
@@ -308,56 +307,37 @@ async function update() {
       compiled,
       (id) => urlsById.get(id)!,
     );
-    if (!preview.isCurrent(run)) {
-      pendingUrls.forEach((url) => URL.revokeObjectURL(url));
-      return;
-    }
-    renderer?.dispose();
-    baselineRenderer?.dispose();
-    baselineRenderer = undefined;
     if (options.treatment) {
       const baseline = buildCommerceComponentDemo(
         { ...options, treatment: { ...options.treatment, enabled: false } },
         { ...assets, shadow: shadow.asset },
       );
-      baselineRenderer = createIllustratedPreview(
+      resources.preview(
         element<HTMLCanvasElement>("baseline-preview"),
         compilePreparedScene(baseline),
         images,
+        () => field("compare").checked,
       );
     }
-    renderer = createIllustratedPreview(canvas, compiled, images);
-    canvas.style.aspectRatio = `${scene.width} / ${scene.height}`;
-    urls.forEach((url) => URL.revokeObjectURL(url));
-    urls = pendingUrls;
-    active = { scene, options, files };
+    resources.preview(canvas, compiled, images);
     const sampleFrame = ["motion-blur", "directional-blur", "echo"].includes(
-      kind,
+      options.kind,
     )
       ? Math.round(scene.fps * 0.45)
-      : kind === "overshoot"
+      : options.kind === "overshoot"
         ? Math.round(scene.fps * 1.22)
-        : kind === "focus-blur"
+        : options.kind === "focus-blur"
           ? Math.round(scene.fps * 0.8)
           : Math.round((scene.frameCount - 1) / (options.cycles * 4));
-    preview.activate(
-      options.treatment ? sampleFrame : Math.floor(scene.frameCount / 2),
-    );
-    say(
-      `${scene.title} ready · ${scene.width} × ${scene.height} · ${scene.frameCount} frames`,
-    );
-  } catch (error) {
-    pendingUrls.forEach((url) => URL.revokeObjectURL(url));
-    if (preview.isCurrent(run)) {
-      renderer?.dispose();
-      renderer = undefined;
-      baselineRenderer?.dispose();
-      baselineRenderer = undefined;
-      say(error instanceof Error ? error.message : String(error), true);
-    }
-  }
-  preview.syncControls();
+    return {
+      snapshot: { scene, options, files },
+      initialFrame: options.treatment
+        ? sampleFrame
+        : Math.floor(scene.frameCount / 2),
+    };
+  });
 }
+
 function syncComparison() {
   const compare = field("compare").checked;
   element("baseline-figure").hidden = !compare;
@@ -394,7 +374,8 @@ form.addEventListener("submit", (event) => {
   void update();
 });
 element("download").addEventListener("click", () => {
-  if (!active || preview.dirty) return;
+  const active = preview.snapshot;
+  if (!active) return;
   download(
     createSourceZip([
       ...active.files,
@@ -413,16 +394,13 @@ element("download").addEventListener("click", () => {
         ),
       },
     ]),
-    kind + "-source.zip",
+    active.options.kind + "-source.zip",
     "application/zip",
   );
 });
-element("export").addEventListener("click", async () => {
-  if (!active || preview.dirty || preview.exporting) return;
-  const snapshot = active;
-  preview.setExporting(true);
-  say("Rendering the prepared scene…");
-  try {
+element("export").addEventListener("click", () => {
+  void preview.export(async (snapshot) => {
+    say("Rendering the prepared scene…");
     const response = await postCommerceExport(snapshot.scene, snapshot.files);
     if (!response.ok) throw new Error((await response.json()).error);
     download(
@@ -430,14 +408,10 @@ element("export").addEventListener("click", async () => {
       snapshot.options.kind + ".mp4",
       "video/mp4",
     );
-    if (active === snapshot && !preview.dirty)
-      say(`${snapshot.scene.title} exported.`);
-  } catch (error) {
-    if (active === snapshot) say(String(error), true);
-  } finally {
-    preview.setExporting(false);
-  }
+    return `${snapshot.scene.title} exported.`;
+  });
 });
+
 function filterCatalog() {
   const filter = field("catalog-filter").value;
   document

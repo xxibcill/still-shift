@@ -2,7 +2,7 @@ import {
   createWebGLPreview,
   createIllustratedPreview,
   loadIllustratedImages,
-} from "../../../packages/renderer-core/src/index.ts";
+} from "@still-shift/renderer-core";
 import type { ExportableScene } from "./export-worker.ts";
 import { assertNever, type FrameTransport } from "./transport.ts";
 

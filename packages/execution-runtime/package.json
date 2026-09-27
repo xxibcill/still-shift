@@ -1,0 +1,20 @@
+{
+  "name": "@still-shift/execution-runtime",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./locks": "./src/artifact-locks.ts",
+    "./export": "./src/export-worker.ts",
+    "./publication": "./src/artifact-publication.ts",
+    "./subprocess": "./src/subprocess.ts",
+    "./browser": "./src/browser.ts"
+  },
+  "dependencies": {
+    "@still-shift/scene-contract": "workspace:*",
+    "@still-shift/renderer-core": "workspace:*",
+    "playwright": "1.62.1",
+    "vite": "7.3.6"
+  }
+}

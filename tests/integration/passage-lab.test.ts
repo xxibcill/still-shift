@@ -27,6 +27,21 @@ describe("passage Lab file actions", () => {
     await server?.close();
   });
 
+  test("import preserves multilingual passage metadata", async () => {
+    const basePath =
+      "benchmarks/fixtures/story-authoring/linked-comparison.json";
+    const plan = JSON.parse(await readFile(basePath, "utf8"));
+    plan.title = "ภาษาไทย — 🎬";
+    const response = await fetch(base + "passage-api/prepare", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ plan, basePath }),
+    });
+    assert.equal(response.status, 200);
+    const result = (await response.json()) as { plan: { title: string } };
+    assert.equal(result.plan.title, plan.title);
+  });
+
   test("relocated packages load the same frames and reject corruption without replacing the preview", async () => {
     const directory = await mkdtemp(
       resolve("benchmarks/results/workspace-lab-"),

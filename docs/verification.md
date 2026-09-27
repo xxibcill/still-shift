@@ -1,0 +1,62 @@
+# Verification tiers
+
+Use the pinned Node and pnpm versions in `toolchain.json` for every tier. Runtime
+checks additionally require the pinned Python/uv environment, FFmpeg/FFprobe,
+and installed Playwright Chromium. `pnpm toolchain:check` verifies them.
+
+| Command                   | Purpose                                                                                                     | Prerequisites                                    |
+| ------------------------- | ----------------------------------------------------------------------------------------------------------- | ------------------------------------------------ |
+| `pnpm check:fast`         | Generated schema, package boundaries, TypeScript formatting/lint/type checks, and unit behavior tests       | Node, pnpm, installed workspace dependencies     |
+| `pnpm test:runtime`       | Filesystem/process locks, cancellation, cache recovery, and FFmpeg evidence tests                           | Python, FFmpeg; OS process inspection permitted  |
+| `pnpm test:integration`   | Real CLI, Python protocol, API, browser, and export transaction tests                                       | Full pinned toolchain and Python environment     |
+| `pnpm test:browser:smoke` | Three Lab session workflows, component playback/pixel checks, and representative Commerce/Story MP4 exports | Full pinned toolchain                            |
+| `pnpm check:runtime`      | Toolchain check plus all three runtime groups and Python tests, sequentially                                | Full pinned toolchain                            |
+| `pnpm check`              | Existing full render matrix plus format/lint/type/schema/boundary gates                                     | Full pinned toolchain                            |
+| `pnpm check:all`          | Full check, benchmark, and real-corpus readiness gate                                                       | Full pinned toolchain and frozen reviewed corpus |
+
+`test:unit` remains an alias for the unit group. Tests that spawn processes moved
+from `tests/unit` to `tests/runtime`; no lock-recovery or media assertions were
+removed. Unit runs are capped at four workers. Runtime and integration files run
+sequentially with a two-worker ceiling so Chromium/FFmpeg contention does not
+turn short test budgets into intermittent failures. Individual render tests
+declare their longer budgets. Run groups sequentially, as the aggregate commands
+do, rather than launching them all at once.
+
+Benchmark discovery is scoped to `benchmarks/`; local worktrees and package-store
+copies are excluded. Benchmark iterations publish to distinct temporary paths and
+throw on failure, so a successful command must contain actual sample measurements.
+
+The Python lock helper uses standard-library modules and defaults to `python3`.
+Set `STILL_SHIFT_PYTHON` or pass `pythonCommand` to the lock boundary when the
+composition environment needs a specific executable. It does not assume a
+repository `.venv` location. The depth protocol integration tests deliberately
+exercise `.venv/bin/python`, installed by `uv sync`, to verify the pinned service.
+
+## Continuous integration
+
+[The workflow](../.github/workflows/verify.yml) runs the fast tier on pushes and
+pull requests with the version from `.node-version` and the locked workspace
+dependencies. Its action configuration follows the maintained
+[checkout](https://github.com/actions/checkout) and
+[setup-node](https://github.com/actions/setup-node) documentation.
+
+The manually dispatched `runtime` and `release` choices run on a trusted runner
+labelled `still-shift-media`. Provision that runner with the exact tools listed in
+`toolchain.json`, a current Actions runner, and sufficient disk space for generated
+videos. The workflow installs the locked Python dependencies and Chromium, then
+verifies toolchain identity before testing. This repository change supplies the
+workflow; it does not register a runner or change repository Actions settings.
+Untrusted pull requests run only on the hosted fast runner.
+
+The release choice intentionally retains `corpus:check`. The currently incomplete
+real-media corpus must fail this gate until its reviewed inputs exist. Fixture
+renders cannot replace corpus acceptance.
+
+## Local sandbox execution
+
+Runtime tests launch local HTTP servers, Chromium, Python, and media processes;
+macOS lock recovery also reads process identities using `ps`. Run these checks in
+an environment that permits those operations. Permission failures are not evidence
+of an application regression. Use a writable `UV_CACHE_DIR` if the environment
+restricts access to the user's default uv cache. Do not disable recovery checks or
+weaken assertions to work around sandbox restrictions.

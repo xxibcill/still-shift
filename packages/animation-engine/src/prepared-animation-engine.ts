@@ -1,5 +1,5 @@
 import { createHash } from "node:crypto";
-import { readFile, writeFile, stat } from "node:fs/promises";
+import { readFile, stat } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 import { imageSize } from "image-size";
 import {
@@ -11,7 +11,10 @@ import {
   CommerceAnimationResultSchema,
 } from "../../scene-contract/src/index.ts";
 import { compilePreparedScene } from "../../renderer-core/src/prepared-scene.ts";
-import { exportScene } from "../../../tools/export-worker/src/export-worker.ts";
+import {
+  exportScene,
+  type ExportMetrics,
+} from "@still-shift/execution-runtime/export";
 
 const hash = (bytes: Uint8Array | string) =>
   `sha256:${createHash("sha256").update(bytes).digest("hex")}`;
@@ -64,7 +67,9 @@ export class PreparedAnimationEngine {
     outputPath: string;
     signal?: AbortSignal | undefined;
   }) {
+    request.signal?.throwIfAborted();
     const prepared = await loadPreparedScene(request.scenePath);
+    request.signal?.throwIfAborted();
     const outputPath = resolve(request.outputPath);
     const sceneManifestPath = `${outputPath}.scene.json`;
     const resultPath = `${outputPath}.result.json`;
@@ -96,7 +101,41 @@ export class PreparedAnimationEngine {
       assetPaths: prepared.assetPaths,
     };
     const manifestBytes = JSON.stringify(manifest, null, 2) + "\n";
-    const metrics = await exportScene({
+    const resultSchema = commerce
+      ? CommerceAnimationResultSchema
+      : story
+        ? StoryAnimationResultSchema
+        : cinematic
+          ? CinematicAnimationResultSchema
+          : PreparedAnimationResultSchema;
+    const buildResult = (metrics: ExportMetrics) =>
+      resultSchema.parse({
+        schemaVersion: commerce
+          ? "commerce-result-1"
+          : story
+            ? "story-result-1"
+            : cinematic
+              ? "illustrated-result-2"
+              : "illustrated-result-1",
+        status: "rendered",
+        preset: prepared.scene.recipe.preset,
+        fps: prepared.scene.fps,
+        durationMs: prepared.scene.durationMs,
+        frameCount: metrics.frameCount,
+        outputPath,
+        sceneManifestPath,
+        checksums: {
+          source: prepared.sourceChecksum,
+          scene: hash(manifestBytes),
+          output: metrics.outputChecksum,
+        },
+        metrics,
+        ...(prepared.scene.schemaVersion === "illustrated-scene-2"
+          ? { cameraValidation: prepared.scene.cameraValidation }
+          : {}),
+      });
+    let result!: ReturnType<typeof resultSchema.parse>;
+    await exportScene({
       scene: prepared.scene,
       signal: request.signal,
       sourcePath: resolve(request.scenePath),
@@ -105,41 +144,10 @@ export class PreparedAnimationEngine {
       outputPath,
       sceneManifestContents: manifestBytes,
       transport: "png_pipe",
-    });
-    const resultSchema = commerce
-      ? CommerceAnimationResultSchema
-      : story
-        ? StoryAnimationResultSchema
-        : cinematic
-          ? CinematicAnimationResultSchema
-          : PreparedAnimationResultSchema;
-    const result = resultSchema.parse({
-      schemaVersion: commerce
-        ? "commerce-result-1"
-        : story
-          ? "story-result-1"
-          : cinematic
-            ? "illustrated-result-2"
-            : "illustrated-result-1",
-      status: "rendered",
-      preset: prepared.scene.recipe.preset,
-      fps: prepared.scene.fps,
-      durationMs: prepared.scene.durationMs,
-      frameCount: metrics.frameCount,
-      outputPath,
-      sceneManifestPath,
-      checksums: {
-        source: prepared.sourceChecksum,
-        scene: hash(manifestBytes),
-        output: hash(await readFile(outputPath)),
+      resultManifestContents: (metrics) => {
+        result = buildResult(metrics);
+        return JSON.stringify(result, null, 2) + "\n";
       },
-      metrics,
-      ...(prepared.scene.schemaVersion === "illustrated-scene-2"
-        ? { cameraValidation: prepared.scene.cameraValidation }
-        : {}),
-    });
-    await writeFile(resultPath, JSON.stringify(result, null, 2) + "\n", {
-      flag: "wx",
     });
     return result;
   }

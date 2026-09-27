@@ -8,10 +8,10 @@ import { promisify } from "node:util";
 import type { Plugin } from "vite";
 
 import { CorpusManifestSchema } from "../../packages/scene-contract/src/corpus.ts";
+import { parseDepthPreparationResponse } from "../../packages/scene-contract/src/depth-worker.ts";
 import {
   CorpusResponseSchema,
   PreparedEntrySchema,
-  WorkerResultSchema,
   type PreparedWorkerResult,
 } from "./lab-contract.ts";
 
@@ -27,6 +27,7 @@ const depthAdapter =
 
 const prepareDepth = async (sourcePath: string) => {
   let stdout: string;
+  let processError: unknown;
   try {
     ({ stdout } = await run(
       "uv",
@@ -44,15 +45,18 @@ const prepareDepth = async (sourcePath: string) => {
   } catch (error) {
     const output = (error as { stdout?: unknown }).stdout;
     if (typeof output !== "string") throw error;
-    try {
-      const result = WorkerResultSchema.parse(JSON.parse(output));
-      if (result.status === "failed") return result;
-    } catch {
-      // Keep the subprocess failure when stdout is not a valid worker result.
-    }
-    throw error;
+    stdout = output;
+    processError = error;
   }
-  return WorkerResultSchema.parse(JSON.parse(stdout));
+  let payload: unknown;
+  try {
+    payload = JSON.parse(stdout);
+  } catch {
+    return parseDepthPreparationResponse(undefined);
+  }
+  const result = parseDepthPreparationResponse(payload);
+  if (processError && result.status !== "failed") throw processError;
+  return result;
 };
 
 const sendJson = (

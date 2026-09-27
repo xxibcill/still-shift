@@ -2,14 +2,13 @@ import { fork, spawn, type ChildProcess } from "node:child_process";
 import { mkdtemp, readFile, rm, stat, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { fileURLToPath } from "node:url";
 
 import { describe, expect, it } from "vitest";
 
 import {
-  acquireBatchLock,
+  acquireArtifactLock,
   prepareBatchItem,
-} from "../../tools/still-shift-cli/src/batch-recovery.ts";
+} from "@still-shift/execution-runtime/locks";
 
 const nextWorkerMessage = (worker: ChildProcess): Promise<string> =>
   new Promise((resolve, reject) => {
@@ -31,16 +30,39 @@ const nextWorkerMessage = (worker: ChildProcess): Promise<string> =>
   });
 
 describe("batch interruption recovery", () => {
+  it("uses the configured interpreter and releases an incompletely acquired lock", async () => {
+    const directory = await mkdtemp(
+      join(tmpdir(), "still-shift-lock-runtime-"),
+    );
+    const lockPath = join(directory, ".batch.lock");
+    try {
+      await expect(
+        acquireArtifactLock(lockPath, directory, {
+          pythonCommand: join(directory, "missing-python"),
+        }),
+      ).rejects.toMatchObject({ code: "ENOENT" });
+      await expect(readFile(lockPath)).rejects.toMatchObject({
+        code: "ENOENT",
+      });
+      const release = await acquireArtifactLock(lockPath, directory, {
+        pythonCommand: process.env.STILL_SHIFT_PYTHON ?? "python3",
+      });
+      await release();
+    } finally {
+      await rm(directory, { recursive: true, force: true });
+    }
+  });
+
   it("keeps a live owner from losing the output-directory lock", async () => {
     const directory = await mkdtemp(join(tmpdir(), "still-shift-lock-"));
     try {
       const lockPath = join(directory, ".batch.lock");
-      const release = await acquireBatchLock(lockPath, directory);
-      await expect(acquireBatchLock(lockPath, directory)).rejects.toThrow(
+      const release = await acquireArtifactLock(lockPath, directory);
+      await expect(acquireArtifactLock(lockPath, directory)).rejects.toThrow(
         "already in use",
       );
       await release();
-      const nextRelease = await acquireBatchLock(lockPath, directory);
+      const nextRelease = await acquireArtifactLock(lockPath, directory);
       await nextRelease();
     } finally {
       await rm(directory, { recursive: true, force: true });
@@ -59,7 +81,7 @@ describe("batch interruption recovery", () => {
           processStartedAt: "earlier process start",
         }),
       );
-      const release = await acquireBatchLock(lockPath, directory);
+      const release = await acquireArtifactLock(lockPath, directory);
       try {
         expect(JSON.parse(await readFile(lockPath, "utf8"))).toMatchObject({
           pid: process.pid,
@@ -121,9 +143,7 @@ describe("batch interruption recovery", () => {
       "    print('locked', flush=True)",
       "    sys.stdin.read()",
     ].join("\n");
-    const python = fileURLToPath(
-      new URL("../../.venv/bin/python", import.meta.url),
-    );
+    const python = process.env.STILL_SHIFT_PYTHON ?? "python3";
     const guard = spawn(python, ["-c", script, `${lockPath}.recovery`], {
       stdio: ["pipe", "pipe", "inherit"],
     });
@@ -139,7 +159,7 @@ describe("batch interruption recovery", () => {
         guard.once("error", reject);
       });
       expect(await ready).toBe("locked");
-      await expect(acquireBatchLock(lockPath, directory)).rejects.toThrow(
+      await expect(acquireArtifactLock(lockPath, directory)).rejects.toThrow(
         "already in use",
       );
       const exited = new Promise<void>((resolve) =>
@@ -148,7 +168,7 @@ describe("batch interruption recovery", () => {
       guard.kill("SIGKILL");
       await exited;
 
-      const release = await acquireBatchLock(lockPath, directory);
+      const release = await acquireArtifactLock(lockPath, directory);
       try {
         expect(JSON.parse(await readFile(lockPath, "utf8"))).toMatchObject({
           pid: process.pid,
@@ -171,7 +191,7 @@ describe("batch interruption recovery", () => {
           lockPath,
           JSON.stringify({ pid: 99999999, token: `dead-${attempt}` }),
         );
-        const release = await acquireBatchLock(lockPath, directory);
+        const release = await acquireArtifactLock(lockPath, directory);
         await release();
       }
       expect((await stat(`${lockPath}.recovery`)).size).toBe(0);
@@ -208,6 +228,35 @@ describe("batch interruption recovery", () => {
     }
   });
 
+  it("preserves final outputs beside a matching interrupted marker", async () => {
+    const directory = await mkdtemp(join(tmpdir(), "still-shift-progress-"));
+    try {
+      const outputPath = join(directory, "clip.mp4");
+      const sceneManifestPath = `${outputPath}.scene.json`;
+      const markerPath = join(directory, "clip.in-progress.json");
+      const progress = {
+        requestHash: "request",
+        sourceHash: "source",
+        outputPath,
+        sceneManifestPath,
+      };
+      await writeFile(markerPath, JSON.stringify(progress));
+      await writeFile(outputPath, "competing video");
+      await writeFile(sceneManifestPath, "competing scene");
+
+      await expect(
+        prepareBatchItem(markerPath, progress),
+      ).rejects.toMatchObject({
+        code: "OUTPUT_VALIDATION_FAILED",
+      });
+      expect(await readFile(outputPath, "utf8")).toBe("competing video");
+      expect(await readFile(sceneManifestPath, "utf8")).toBe("competing scene");
+      expect(JSON.parse(await readFile(markerPath, "utf8"))).toEqual(progress);
+    } finally {
+      await rm(directory, { recursive: true, force: true });
+    }
+  });
+
   it("removes only temporary exports from the interrupted item", async () => {
     const directory = await mkdtemp(join(tmpdir(), "still-shift-orphan-"));
     try {
@@ -222,10 +271,12 @@ describe("batch interruption recovery", () => {
       const uuid = "12345678-1234-1234-1234-123456789abc";
       const orphanVideo = join(directory, `.clip.mp4.${uuid}.tmp.mp4`);
       const orphanScene = join(directory, `.clip.mp4.${uuid}.scene.tmp.json`);
+      const orphanResult = join(directory, `.clip.mp4.${uuid}.result.tmp.json`);
       const otherVideo = join(directory, `.other.mp4.${uuid}.tmp.mp4`);
       await writeFile(markerPath, JSON.stringify(progress));
       await writeFile(orphanVideo, "partial video");
       await writeFile(orphanScene, "partial scene");
+      await writeFile(orphanResult, "partial result");
       await writeFile(otherVideo, "other item");
 
       await prepareBatchItem(markerPath, progress);
@@ -234,6 +285,9 @@ describe("batch interruption recovery", () => {
         code: "ENOENT",
       });
       await expect(readFile(orphanScene)).rejects.toMatchObject({
+        code: "ENOENT",
+      });
+      await expect(readFile(orphanResult)).rejects.toMatchObject({
         code: "ENOENT",
       });
       expect(await readFile(otherVideo, "utf8")).toBe("other item");

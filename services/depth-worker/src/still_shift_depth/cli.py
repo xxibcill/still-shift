@@ -17,6 +17,7 @@ from .preparation import (
     default_cache_directory,
     normalize_source_only,
 )
+from .protocol import DEPTH_WORKER_PROTOCOL_VERSION
 
 
 def _add_preparation_options(parser: argparse.ArgumentParser) -> None:
@@ -96,6 +97,16 @@ def build_parser() -> argparse.ArgumentParser:
     return parser
 
 
+def _write_failure(error: PreparationError) -> int:
+    result = {
+        "protocolVersion": DEPTH_WORKER_PROTOCOL_VERSION,
+        "status": "failed",
+        "error": error.as_dict(),
+    }
+    print(json.dumps(result, ensure_ascii=False))
+    return 2
+
+
 def main() -> int:
     arguments = build_parser().parse_args()
     try:
@@ -113,20 +124,17 @@ def main() -> int:
         print(json.dumps(result, indent=2, ensure_ascii=False))
         return 0
     except PreparationError as error:
-        print(json.dumps({"status": "failed", "error": error.as_dict()}, ensure_ascii=False))
-        return 2
+        return _write_failure(error)
     except ValueError as error:
         failure = PreparationError("CONFIGURATION_INVALID", str(error))
-        print(json.dumps({"status": "failed", "error": failure.as_dict()}, ensure_ascii=False))
-        return 2
+        return _write_failure(failure)
     except Exception as error:
         failure = PreparationError(
             "PREPARATION_FAILED",
             "Unexpected depth preparation failure.",
             {"reason": str(error)},
         )
-        print(json.dumps({"status": "failed", "error": failure.as_dict()}, ensure_ascii=False))
-        return 2
+        return _write_failure(failure)
 
 
 if __name__ == "__main__":

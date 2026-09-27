@@ -270,7 +270,7 @@ export const RenderSceneSchema = z.object({
   }),
   canvas: SceneCanvasSchema,
   motion: z.object({
-    mode: z.enum(["depth", "fallback_2d"]),
+    mode: z.enum(["depth", "flat_2d", "fallback_2d"]),
     preset: ResolvedAnimationPresetSchema,
     intensity: AnimationIntensitySchema,
     seed: z
@@ -352,6 +352,11 @@ export const SceneManifestSchema = z
       return;
     }
     if (!scene) return;
+    const resolvedQuality =
+      scene.quality ??
+      (scene.motion.mode === "flat_2d"
+        ? { riskScore: 0, fallback: false }
+        : undefined);
 
     const mismatches = [
       ["rendererVersion", scene.rendererVersion !== manifest.rendererVersion],
@@ -375,8 +380,8 @@ export const SceneManifestSchema = z
       ],
       [
         "quality",
-        scene.quality?.riskScore !== manifest.quality.riskScore ||
-          scene.quality.fallback !== manifest.quality.fallback,
+        resolvedQuality?.riskScore !== manifest.quality.riskScore ||
+          resolvedQuality?.fallback !== manifest.quality.fallback,
       ],
       [
         "warnings",

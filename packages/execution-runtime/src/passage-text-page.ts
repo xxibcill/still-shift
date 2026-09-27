@@ -1,13 +1,13 @@
-import type { StoryScene } from "../../../packages/scene-contract/src/story.ts";
-import { loadPreparedFonts } from "../../../packages/renderer-core/src/prepared-fonts.ts";
+import type { StoryScene } from "@still-shift/scene-contract";
 import {
+  loadPreparedFonts,
   passageDiagnostics,
   type PassageDiagnostic,
-} from "../../../packages/renderer-core/src/passage-diagnostics.ts";
-import { compileStoryScene } from "../../../packages/renderer-core/src/story-scene.ts";
-import { validateStoryTextLayout } from "../../../packages/renderer-core/src/story-text-layout.ts";
-import { prepareMeasuredText } from "../../../packages/renderer-core/src/component-values.ts";
-import { prepareComponentTextFits } from "../../../packages/renderer-core/src/component-text-fit.ts";
+  compileStoryScene,
+  validateStoryTextLayout,
+  prepareMeasuredText,
+  prepareComponentTextFits,
+} from "@still-shift/renderer-core";
 
 declare global {
   interface Window {

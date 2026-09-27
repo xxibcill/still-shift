@@ -4,6 +4,7 @@ import type { Plugin } from "vite";
 
 import { prepareStoryPassageInput } from "../../packages/animation-engine/src/story-passage-io.ts";
 import { passageDiagnostics } from "../../packages/renderer-core/src/passage-diagnostics.ts";
+import { readJsonBody } from "./json-body.ts";
 
 const root = resolve(import.meta.dirname, "../..");
 async function workspaceFile(path: string) {
@@ -36,13 +37,10 @@ export const passageApi = (): Plugin => ({
           request.method === "POST" &&
           url.pathname === "/passage-api/prepare"
         ) {
-          let body = "";
-          for await (const chunk of request) {
-            body += String(chunk);
-            if (body.length > 2_000_000)
-              throw new Error("Passage plan exceeds the import limit");
-          }
-          const input = JSON.parse(body) as {
+          const input = (await readJsonBody(request, {
+            maxBytes: 2_000_000,
+            limitMessage: "Passage plan exceeds the import limit",
+          })) as {
             plan: unknown;
             basePath?: string;
           };

@@ -29,6 +29,28 @@ If depth inference fails on an otherwise valid source, the animation engine invo
 the same EXIF/color/dimension normalization without loading a depth model and caches
 the PNG for deterministic 2D fallback.
 
+## Worker response contract
+
+`prepare` and `normalize` responses include `protocolVersion: "depth-worker-1"`.
+The [shared response schemas](../../packages/scene-contract/src/depth-worker.ts)
+validate successful preparation, normalization, and failure payloads for both the
+animation engine and Lab. Timing values must be finite and nonnegative; memory
+measurements must be nonnegative integers or `null`. Failure codes and CLI exit
+codes remain unchanged.
+
+The version field is additive to Python's existing responses. Consumers require
+this version and reject missing or unsupported versions with a stable
+`PREPARATION_FAILED` protocol error; deploy the worker and consumers together.
+Additional response fields are permitted. Existing valid cache entries stay
+usable because the wire version is added when returning results, without changing
+the asset format or cache identity. The contact-sheet command retains its separate
+report format.
+
+`tests/integration/depth-worker-protocol.test.ts` executes the real Python CLI
+with the fake adapter to verify preparation, cache reuse, normalization, and
+failure responses against the shared schema. It requires the repository's
+installed `.venv` and does not download model weights.
+
 The cache key covers the normalized source SHA-256, preprocessing and pipeline
 versions, adapter/model identity, model-weight SHA-256, inference device, percentiles,
 and smoothing parameters. Entries publish atomically under

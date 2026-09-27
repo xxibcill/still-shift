@@ -1,6 +1,6 @@
 import { execFile, spawn } from "node:child_process";
 import { createHash } from "node:crypto";
-import { readFile, rm, stat } from "node:fs/promises";
+import { readFile, stat } from "node:fs/promises";
 import { isAbsolute, resolve } from "node:path";
 import { performance } from "node:perf_hooks";
 import { promisify } from "node:util";
@@ -19,7 +19,13 @@ import {
   AnimationEngineError,
   ANIMATION_API_VERSION,
   AnimationResultSchema,
-  DepthModelSchema,
+  DEPTH_WORKER_PROTOCOL_VERSION,
+  parseDepthWorkerResponse,
+  type DepthWorkerResponse,
+  type DepthWorkerFailure,
+  type DepthWorkerMetrics,
+  type NormalizedDepthSource,
+  type DepthImageDimensions,
   ENGINE_VERSION,
   parseAnimationRequest,
   SCENE_SCHEMA_VERSION,
@@ -29,7 +35,7 @@ import {
   type AnimationWarning,
   type DepthModel,
 } from "../../scene-contract/src/index.ts";
-import { exportScene } from "../../../tools/export-worker/src/export-worker.ts";
+import { exportScene } from "@still-shift/execution-runtime/export";
 
 import type { AnimationEngine } from "./animation-engine.ts";
 
@@ -47,41 +53,13 @@ export const resolveFrameTransport = (): "png_pipe" | "jpeg_pipe" => {
 const resolveDepthAdapter = (): string =>
   process.env.STILL_SHIFT_DEPTH_ADAPTER ?? "depth-anything-v2-small";
 
-type Dimensions = { width: number; height: number };
-type WorkerMetrics = {
-  inferenceMs?: number;
-  postProcessMs?: number;
-  totalPreparationMs?: number;
-  peakCpuMemoryBytes?: number | null;
-  peakGpuMemoryBytes?: number | null;
-  selectedDevice?: string;
-  hardwareDescription?: string;
-};
-type PreparedDepth = {
-  status: "prepared";
-  assets: { normalizedSource: string; previewDepth: string };
-  dimensions: { input: Dimensions; normalized: Dimensions };
-  cacheStatus: "hit" | "miss";
-  model: DepthModel;
-  metrics: WorkerMetrics;
-  normalizationWarnings: string[];
-};
-type NormalizedSource = {
-  status: "normalized";
-  sourcePath: string;
-  dimensions: { input: Dimensions; normalized: Dimensions };
-  cacheStatus: "hit" | "miss";
-  normalizationWarnings: string[];
-};
-type WorkerFailure = {
-  status: "failed";
-  error: { code: string; message: string };
-};
+type Dimensions = DepthImageDimensions;
+type WorkerMetrics = Partial<DepthWorkerMetrics>;
 
 const sha256 = (bytes: string | Uint8Array): string =>
   `sha256:${createHash("sha256").update(bytes).digest("hex")}`;
 
-const workerJson = async (args: string[]): Promise<unknown> => {
+const workerJson = async (args: string[]): Promise<DepthWorkerResponse> => {
   const configuredCache = process.env.STILL_SHIFT_CACHE_DIR;
   const workerEnvironment =
     configuredCache &&
@@ -104,77 +82,28 @@ const workerJson = async (args: string[]): Promise<unknown> => {
     const output = (error as { stdout?: unknown }).stdout;
     if (typeof output !== "string") {
       return {
+        protocolVersion: DEPTH_WORKER_PROTOCOL_VERSION,
         status: "failed",
         error: {
           code: "PREPARATION_FAILED",
           message: "Depth worker could not start",
         },
-      } satisfies WorkerFailure;
+      } satisfies DepthWorkerFailure;
     }
     stdout = output;
   }
   try {
-    return JSON.parse(stdout) as unknown;
+    return parseDepthWorkerResponse(JSON.parse(stdout));
   } catch {
     return {
+      protocolVersion: DEPTH_WORKER_PROTOCOL_VERSION,
       status: "failed",
       error: {
         code: "PREPARATION_FAILED",
         message: "Depth worker returned invalid JSON",
       },
-    } satisfies WorkerFailure;
+    } satisfies DepthWorkerFailure;
   }
-};
-
-const isDimensions = (value: unknown): value is Dimensions =>
-  typeof value === "object" &&
-  value !== null &&
-  typeof (value as Dimensions).width === "number" &&
-  typeof (value as Dimensions).height === "number" &&
-  Number.isInteger((value as Dimensions).width) &&
-  Number.isInteger((value as Dimensions).height) &&
-  (value as Dimensions).width > 0 &&
-  (value as Dimensions).height > 0;
-
-const isWarningList = (value: unknown): value is string[] =>
-  Array.isArray(value) &&
-  value.every((warning) => typeof warning === "string" && warning.length > 0);
-
-const isPrepared = (value: unknown): value is PreparedDepth => {
-  const result = value as Partial<PreparedDepth> | null;
-  return (
-    result?.status === "prepared" &&
-    typeof result.assets?.normalizedSource === "string" &&
-    typeof result.assets.previewDepth === "string" &&
-    isDimensions(result.dimensions?.input) &&
-    isDimensions(result.dimensions?.normalized) &&
-    (result.cacheStatus === "hit" || result.cacheStatus === "miss") &&
-    DepthModelSchema.safeParse(result.model).success &&
-    typeof result.metrics === "object" &&
-    result.metrics !== null &&
-    isWarningList(result.normalizationWarnings)
-  );
-};
-
-const isNormalized = (value: unknown): value is NormalizedSource => {
-  const result = value as Partial<NormalizedSource> | null;
-  return (
-    result?.status === "normalized" &&
-    typeof result.sourcePath === "string" &&
-    isDimensions(result.dimensions?.input) &&
-    isDimensions(result.dimensions?.normalized) &&
-    (result.cacheStatus === "hit" || result.cacheStatus === "miss") &&
-    isWarningList(result.normalizationWarnings)
-  );
-};
-
-const isFailure = (value: unknown): value is WorkerFailure => {
-  const result = value as Partial<WorkerFailure> | null;
-  return (
-    result?.status === "failed" &&
-    typeof result.error?.code === "string" &&
-    typeof result.error.message === "string"
-  );
 };
 
 const invalidInputCode = (code: string) =>
@@ -185,10 +114,13 @@ const invalidInputCode = (code: string) =>
 
 const normalizeOrFail = async (
   inputPath: string,
-): Promise<NormalizedSource> => {
+): Promise<NormalizedDepthSource> => {
   const normalized = await workerJson(["normalize", "--input", inputPath]);
-  if (isNormalized(normalized)) return normalized;
-  if (isFailure(normalized) && invalidInputCode(normalized.error.code)) {
+  if (normalized.status === "normalized") return normalized;
+  if (
+    normalized.status === "failed" &&
+    invalidInputCode(normalized.error.code)
+  ) {
     throw new AnimationEngineError(
       normalized.error.code as AnimationEngineError["code"],
       normalized.error.message,
@@ -219,7 +151,7 @@ const prepareAssets = async (
   if (requestedDepthDevice !== "auto")
     args.push("--device", requestedDepthDevice);
   const prepared = await workerJson(args);
-  if (isPrepared(prepared)) {
+  if (prepared.status === "prepared") {
     return {
       sourcePath: prepared.assets.normalizedSource,
       depthPath: prepared.assets.previewDepth,
@@ -230,7 +162,7 @@ const prepareAssets = async (
       normalizationWarnings: prepared.normalizationWarnings,
     };
   }
-  if (isFailure(prepared) && invalidInputCode(prepared.error.code)) {
+  if (prepared.status === "failed" && invalidInputCode(prepared.error.code)) {
     throw new AnimationEngineError(
       prepared.error.code as AnimationEngineError["code"],
       prepared.error.message,
@@ -501,25 +433,7 @@ export class WebGLAnimationEngine implements AnimationEngine {
     });
     const serializedScene = `${JSON.stringify(manifest, null, 2)}\n`;
     const sceneHash = sha256(serializedScene);
-    let exported: Awaited<ReturnType<typeof exportScene>>;
-    try {
-      exported = await exportScene({
-        scene,
-        sourcePath: prepared.sourcePath,
-        depthPath: scene.motion.mode === "depth" ? prepared.depthPath : null,
-        outputPath,
-        transport: frameTransport,
-        sceneManifestContents: serializedScene,
-      });
-    } catch (cause) {
-      throw new AnimationEngineError(
-        "RENDER_FAILED",
-        "Unable to export animation MP4",
-        { outputPath },
-        { cause },
-      );
-    }
-    try {
+    const buildResult = (exported: Awaited<ReturnType<typeof exportScene>>) => {
       if (
         exported.sceneManifestPath !== sceneManifestPath ||
         exported.sceneChecksum !== sceneHash ||
@@ -529,7 +443,7 @@ export class WebGLAnimationEngine implements AnimationEngine {
       ) {
         throw new Error("Export assets changed after scene resolution");
       }
-      const result = AnimationResultSchema.parse({
+      return AnimationResultSchema.parse({
         apiVersion: ANIMATION_API_VERSION,
         status:
           scene.motion.mode === "fallback_2d"
@@ -596,15 +510,25 @@ export class WebGLAnimationEngine implements AnimationEngine {
           output: exported.outputChecksum,
         },
       });
+    };
+    let result!: AnimationResult;
+    try {
+      await exportScene({
+        scene,
+        sourcePath: prepared.sourcePath,
+        depthPath: scene.motion.mode === "depth" ? prepared.depthPath : null,
+        outputPath,
+        transport: frameTransport,
+        sceneManifestContents: serializedScene,
+        validateResult: (metrics) => {
+          result = buildResult(metrics);
+        },
+      });
       return result;
     } catch (cause) {
-      await Promise.allSettled([
-        rm(outputPath, { force: true }),
-        rm(sceneManifestPath, { force: true }),
-      ]);
       throw new AnimationEngineError(
         "RENDER_FAILED",
-        "Unable to validate animation result and scene manifest",
+        "Unable to export animation MP4",
         { outputPath },
         { cause },
       );

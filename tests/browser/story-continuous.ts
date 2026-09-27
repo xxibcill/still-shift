@@ -16,6 +16,7 @@ import { strips, art } from "../../scripts/story-motion/design.ts";
 import type { StoryRenderScene } from "../../packages/renderer-core/src/story-scene.ts";
 import { compileStoryScene } from "../../packages/renderer-core/src/story-scene.ts";
 import { StorySceneSchema } from "../../packages/scene-contract/src/story.ts";
+import { runtimeBrowserUrl } from "@still-shift/execution-runtime/browser";
 
 const root = resolve(".");
 const prepared = await loadPreparedScene(
@@ -34,9 +35,7 @@ const browser = await chromium.launch({ headless: true });
 try {
   const page = await browser.newPage();
   await page.addInitScript("window.__name = (fn) => fn;");
-  await page.goto(
-    `${server.resolvedUrls!.local[0]}tools/export-worker/index.html`,
-  );
+  await page.goto(runtimeBrowserUrl(server.resolvedUrls!.local[0]!, "export"));
   const variants = [
     [art("single", "house", 240, 200, 600, 440)],
     strips("assembled", "house", 240, 200, 600, 440),
