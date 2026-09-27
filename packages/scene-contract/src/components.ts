@@ -7,6 +7,7 @@ import {
 import {
   ComponentDataV1Schema,
   ComponentDataV2Schema,
+  ComponentDataV3Schema,
   ComponentIdSchema,
   ComponentWindowSchema,
 } from "./component-data.ts";
@@ -85,6 +86,21 @@ const ComponentDefinitionV2Schema = ComponentDefinitionV1Schema.extend({
 export const ComponentDefinitionSchema = z.discriminatedUnion("schemaVersion", [
   ComponentDefinitionV1Schema,
   ComponentDefinitionV2Schema,
+  ComponentDefinitionV2Schema.extend({
+    schemaVersion: z.literal("component-3"),
+    componentData: ComponentDataV3Schema.default({
+      schemaVersion: "scene-components-3",
+      annotations: [],
+      values: [],
+      bindings: [],
+      states: [],
+      travels: [],
+      visibility: [],
+      pins: [],
+      textFits: [],
+      masks: [],
+    }),
+  }).strict(),
 ]);
 export type ComponentMotion = z.infer<typeof ComponentMotionSchema>;
 export type ComponentDefinition = z.infer<typeof ComponentDefinitionSchema>;

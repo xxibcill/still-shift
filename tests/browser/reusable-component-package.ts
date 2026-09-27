@@ -11,6 +11,7 @@ import {
 import { writeStoryWorkspace } from "../../packages/animation-engine/src/story-workspace.ts";
 import { renderStoryPassage } from "../../packages/animation-engine/src/story-passage-render.ts";
 
+const timing = process.argv.includes("--timing");
 const behaviors = process.argv.includes("--behaviors");
 const expectedFrames = behaviors ? 768 : 576;
 const run = promisify(execFile),
@@ -20,9 +21,11 @@ await mkdir(output, { recursive: true });
 try {
   const source = await readStoryPassage(
     resolve(
-      behaviors
-        ? "benchmarks/fixtures/reusable-components/story-behaviors.passage.json"
-        : "benchmarks/fixtures/reusable-components/story-components.passage.json",
+      timing
+        ? "benchmarks/fixtures/reusable-components/story-timing.passage.json"
+        : behaviors
+          ? "benchmarks/fixtures/reusable-components/story-behaviors.passage.json"
+          : "benchmarks/fixtures/reusable-components/story-components.passage.json",
     ),
   );
   const directory = join(temp, "source");
@@ -65,9 +68,11 @@ try {
   await writeFile(
     join(
       output,
-      behaviors
-        ? "behavior-package-verification.json"
-        : "package-verification.json",
+      timing
+        ? "timing-package-verification.json"
+        : behaviors
+          ? "behavior-package-verification.json"
+          : "package-verification.json",
     ),
     JSON.stringify(
       {

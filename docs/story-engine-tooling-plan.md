@@ -201,7 +201,7 @@ The next engineering increment is scoped as E7 below. Broader authoring fixtures
 
 For shared component authoring, see the completed [RC-01–06 expansion](./reusable-component-expansion-plan.md) and [authoring guide](./reusable-components.md). It adds safe instances, measured layout, repetition, annotations and numeric bindings using the existing story recipe/cue and E7 package paths. [RC-07–09](./reusable-components-next-atomic-batch-plan.md) additionally supplies shared scale/rotation/draw, exact point-cued state changes and transformed path travel, including template editing and E7 package checks. RC is a separate project-wide queue, not an additional E milestone.
 
-The next planned shared increment is [RC-10–14](./reusable-components-timing-batch-plan.md): visibility windows, component sequences, anchor pins, text fitting and alpha masks. Its story proof uses explicit phase cues and the existing E7 package path. This is planned work; E1–E7 and RC-01–09 remain the implemented baseline.
+The delivered [RC-10–14](./reusable-components-timing-batch-plan.md) increment adds visibility windows, component sequences, anchor pins, text fitting and alpha masks. Its story proof uses explicit phase cues, exclusive lifetime ends and the existing E7 package path. See the [timing verification record](./review/reusable-components/timing-verification.json). E1–E7 and RC-01–14 are implemented; creative/production acceptance remains separate.
 
 ## E7 — Portable workspace packages (2026-09-27)
 

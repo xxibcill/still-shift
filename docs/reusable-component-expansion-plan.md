@@ -144,4 +144,4 @@ Additional blur/glow variants, scene-specific named entrances, new render backen
 
 **Follow-up delivered:** [RC-07–09](./reusable-components-next-atomic-batch-plan.md) adds shared scale/rotate/draw controls, exact state changes and bounded path travel, with product-detail and story-route compositions. See the [behavior verification record](./review/reusable-components/behavior-verification.json). This extends the completed RC-01–06 scope.
 
-**Next batch planned:** [RC-10–14](./reusable-components-timing-batch-plan.md) adds shared visibility windows, component sequences, anchor pins, text fitting and alpha masks. Product-detail and supply-phase presentations remain presets built from these modules. Implementation has not started.
+**Follow-up delivered:** [RC-10–14](./reusable-components-timing-batch-plan.md) adds shared visibility windows, component sequences, anchor pins, text fitting and alpha masks. Product-detail and supply-phase presentations remain presets built from these modules. See the [timing verification record](./review/reusable-components/timing-verification.json).

@@ -174,7 +174,7 @@ export function createPassageControls({
       title.textContent =
         event.start === event.end
           ? `${event.id} · frame ${event.start}`
-          : `${event.id} · ${event.start}–${event.end}`;
+          : `${event.id} · ${event.start}–${event.end}${event.endExclusive ? " (end exclusive)" : ""}`;
       group.append(title);
       const binding = beat.bindings[event.id];
       if (!binding) {

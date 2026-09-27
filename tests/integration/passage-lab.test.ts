@@ -234,6 +234,86 @@ describe("passage Lab file actions", () => {
     }
   }, 30000);
 
+  test("shared lifetimes expose exclusive ends and retime a whole linked phase", async () => {
+    const page = await browser.newPage();
+    try {
+      await page.goto(base + "passage.html");
+      await page.waitForFunction(() =>
+        document.querySelector("#status")?.textContent?.includes("576 frames"),
+      );
+      await page
+        .locator("#plan-path")
+        .fill(
+          resolve(
+            "benchmarks/fixtures/reusable-components/story-timing.passage.json",
+          ),
+        );
+      await page.locator("#load-form button").click();
+      await page.waitForFunction(
+        () =>
+          (window.passageLab!.snapshot() as { plan: { id: string } }).plan
+            .id === "shared-timing",
+      );
+      await page.locator("#beat").selectOption("2");
+      await page
+        .locator("#cues")
+        .getByLabel("phase2 frame", { exact: true })
+        .fill("78");
+      await page
+        .locator("#cues")
+        .getByLabel("phase2 frame", { exact: true })
+        .press("Tab");
+      await page.waitForFunction(() =>
+        document
+          .querySelector("#bindings")
+          ?.textContent?.includes(
+            "phase2__lifetime-detail · 78–126 (end exclusive)",
+          ),
+      );
+      await page.locator("#undo").click();
+      await page.waitForFunction(() =>
+        document
+          .querySelector("#bindings")
+          ?.textContent?.includes(
+            "phase2__lifetime-detail · 72–120 (end exclusive)",
+          ),
+      );
+      await page.locator("#redo").click();
+      await page.waitForFunction(() =>
+        document
+          .querySelector("#bindings")
+          ?.textContent?.includes(
+            "phase2__lifetime-detail · 78–126 (end exclusive)",
+          ),
+      );
+      await page.getByText("Linked events", { exact: true }).click();
+      await page
+        .getByRole("button", {
+          name: "Unlink phase2__lifetime-detail",
+          exact: true,
+        })
+        .click();
+      await page.waitForFunction(() =>
+        document
+          .querySelector("#bindings")
+          ?.textContent?.includes("Link phase2__lifetime-detail to cue"),
+      );
+      const snapshot = (await page.evaluate(() =>
+        window.passageLab!.snapshot(),
+      )) as {
+        plan: {
+          beats: { timing: Record<string, { start: number; end: number }> }[];
+        };
+      };
+      assert.deepEqual(
+        snapshot.plan.beats[2]!.timing["phase2__lifetime-detail"],
+        { start: 78, end: 126 },
+      );
+    } finally {
+      await page.close();
+    }
+  }, 30000);
+
   test("relative-plan import uses its explicit base directory", async () => {
     const page = await browser.newPage();
     try {

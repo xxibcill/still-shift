@@ -22,6 +22,8 @@ import {
 import { requireCommerceCapability } from "../../scene-contract/src/commerce-library.ts";
 import { createFrameTracks } from "./frame-tracks.ts";
 import type { Tracks } from "./prepared-scene.ts";
+import { validateComponentRelationships } from "./component-relationships.ts";
+import { validatePinTransforms } from "./component-pin.ts";
 import { validateTravelTransforms } from "./component-travel.ts";
 import { validateComponentOwnership } from "./component-values.ts";
 
@@ -31,6 +33,7 @@ type Box = { x: number; y: number; width: number; height: number };
 type Point = [number, number];
 export type CommerceRenderScene = CommerceScene & {
   rendererVersion:
+    | "commerce-canvas-0.19.0"
     | "commerce-canvas-0.16.0"
     | "commerce-canvas-0.17.0"
     | "commerce-canvas-0.18.0";
@@ -467,9 +470,11 @@ export function compileCommerceScene(
   const scene: CommerceRenderScene = {
     ...input,
     rendererVersion: input.componentData
-      ? input.componentData.schemaVersion === "scene-components-2"
-        ? "commerce-canvas-0.18.0"
-        : "commerce-canvas-0.17.0"
+      ? input.componentData.schemaVersion === "scene-components-3"
+        ? "commerce-canvas-0.19.0"
+        : input.componentData.schemaVersion === "scene-components-2"
+          ? "commerce-canvas-0.18.0"
+          : "commerce-canvas-0.17.0"
       : "commerce-canvas-0.16.0",
     durationMs,
     canvas: { width: input.width, height: input.height },
@@ -478,6 +483,8 @@ export function compileCommerceScene(
     followers: {},
   };
   validateComponentOwnership(scene);
+  validateComponentRelationships(scene);
   validateTravelTransforms(scene);
+  validatePinTransforms(scene);
   return scene;
 }

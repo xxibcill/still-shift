@@ -93,13 +93,29 @@ export function instantiateComponent(
   if (motionIds.size !== definition.motions.length)
     throw new Error("Duplicate component motion ID");
   const behaviors =
-    definition.componentData.schemaVersion === "scene-components-2"
+    definition.componentData.schemaVersion !== "scene-components-1"
       ? definition.componentData
       : undefined;
+  const relationships =
+    definition.componentData.schemaVersion === "scene-components-3"
+      ? definition.componentData
+      : undefined;
+  if (relationships)
+    for (const item of [
+      ...relationships.visibility,
+      ...relationships.pins,
+      ...relationships.textFits,
+      ...relationships.masks,
+    ])
+      if (!local.has(item.target))
+        throw new Error(
+          "Component relationship must own a local target: " + item.target,
+        );
   const cues = [
     ...definition.motions,
     ...definition.componentData.values,
     ...(behaviors?.travels ?? []),
+    ...(relationships?.visibility ?? []),
   ].map((item) => item.window.cue ?? item.id);
   cues.push(
     ...(behaviors?.states.flatMap((s) => s.cuts.map((c) => c.id)) ?? []),
@@ -129,7 +145,7 @@ export function instantiateComponent(
           : 0),
     };
   });
-  const componentData: ComponentData = {
+  const componentData = ComponentDataSchema.parse({
     ...(behaviors
       ? {
           schemaVersion: "scene-components-2" as const,
@@ -152,6 +168,32 @@ export function instantiateComponent(
           })),
         }
       : { schemaVersion: "scene-components-1" as const }),
+    ...(relationships
+      ? {
+          schemaVersion: "scene-components-3",
+          visibility: relationships.visibility.map((g) => ({
+            ...g,
+            id: `${id}__${g.id}`,
+            target: reference(g.target),
+            window: window(g.window, g.window.cue ?? g.id),
+          })),
+          pins: relationships.pins.map((p) => ({
+            ...p,
+            id: `${id}__${p.id}`,
+            target: reference(p.target),
+            anchor: { ...p.anchor, node: reference(p.anchor.node) },
+          })),
+          textFits: relationships.textFits.map((f) => ({
+            ...f,
+            target: reference(f.target),
+          })),
+          masks: relationships.masks.map((m) => ({
+            ...m,
+            target: reference(m.target),
+            mask: reference(m.mask),
+          })),
+        }
+      : {}),
     annotations: definition.componentData.annotations.map((a) => ({
       ...a,
       path: reference(a.path),
@@ -177,7 +219,7 @@ export function instantiateComponent(
           }
         : {}),
     })),
-  };
+  });
   return {
     nodes,
     assets: definition.assets,
@@ -232,14 +274,21 @@ export function repeatComponent(
   validateInstances(clock, instances);
   return instances;
 }
-function validateInstances(
+export function validateInstances(
   clock: CommerceClock,
   instances: ComponentInstance[],
 ) {
   validateCommerceClock(clock);
   for (const instance of instances) {
     if (
-      instance.componentData.schemaVersion === "scene-components-2" &&
+      instance.componentData.schemaVersion === "scene-components-3" &&
+      instance.componentData.visibility.some(
+        (g) => g.window.end > clock.frameCount,
+      )
+    )
+      throw new Error("Component visibility exceeds timeline");
+    if (
+      instance.componentData.schemaVersion !== "scene-components-1" &&
       instance.componentData.states.some((s) =>
         s.cuts.some((c) => c.frame >= clock.frameCount),
       )
@@ -248,7 +297,7 @@ function validateInstances(
     for (const motion of [
       ...instance.motions,
       ...instance.componentData.values,
-      ...(instance.componentData.schemaVersion === "scene-components-2"
+      ...(instance.componentData.schemaVersion !== "scene-components-1"
         ? instance.componentData.travels
         : []),
     ])
@@ -266,7 +315,8 @@ function mergeData(
     ...(base ? [base] : []),
     ...instances.map((i) => i.componentData),
   ];
-  const v2 = parts.filter((p) => p.schemaVersion === "scene-components-2");
+  const v2 = parts.filter((p) => p.schemaVersion !== "scene-components-1");
+  const v3 = parts.filter((p) => p.schemaVersion === "scene-components-3");
   return ComponentDataSchema.parse({
     ...(v2.length
       ? {
@@ -275,6 +325,15 @@ function mergeData(
           travels: v2.flatMap((p) => p.travels),
         }
       : { schemaVersion: "scene-components-1" }),
+    ...(v3.length
+      ? {
+          schemaVersion: "scene-components-3",
+          visibility: v3.flatMap((p) => p.visibility),
+          pins: v3.flatMap((p) => p.pins),
+          textFits: v3.flatMap((p) => p.textFits),
+          masks: v3.flatMap((p) => p.masks),
+        }
+      : {}),
     annotations: parts.flatMap((p) => p.annotations),
     values: parts.flatMap((p) => p.values),
     bindings: parts.flatMap((p) => p.bindings),

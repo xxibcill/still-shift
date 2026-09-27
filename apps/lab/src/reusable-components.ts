@@ -1,5 +1,6 @@
 import {
   REUSABLE_EXAMPLES,
+  TIMING_EXAMPLES,
   reusableDemoVersion,
   ReusableDemoSchema,
   type ReusableDemo,
@@ -77,6 +78,26 @@ function controls() {
   const markers = ["instances", "layout", "stagger"].includes(example);
   form.querySelectorAll<HTMLElement>("[data-control]").forEach((control) => {
     const kind = control.dataset.control;
+    const composed = ["detail-sequence", "supply-sequence"].includes(example);
+    const timingControls: Record<string, boolean> = {
+      timing: composed || ["visibility", "sequence"].includes(example),
+      pin: composed || example === "pin",
+      fit: composed || example === "text-fit",
+      mask: composed || example === "mask",
+    };
+    if (kind && Object.hasOwn(timingControls, kind)) {
+      control.hidden = !timingControls[kind];
+      return;
+    }
+    if (
+      (TIMING_EXAMPLES as readonly string[]).includes(example) &&
+      (kind === "copy" ||
+        (control.querySelector('[name="middleDelay"]') &&
+          (composed || example === "sequence")))
+    ) {
+      control.hidden = false;
+      return;
+    }
     control.hidden =
       kind === "transform"
         ? !["transform", "tour", "supply"].includes(example)
@@ -117,6 +138,21 @@ function readSettings() {
             "travelTo",
           ].map((key) => [key, Number(field(key).value)]),
         )
+      : {}),
+    ...(reusableDemoVersion(example) === "reusable-demo-3"
+      ? {
+          ...Object.fromEntries(
+            [
+              "clipStart",
+              "clipDuration",
+              "anchorX",
+              "anchorY",
+              "minSize",
+              "maxSize",
+            ].map((key) => [key, Number(field(key).value)]),
+          ),
+          invert: field("invert").value === "true",
+        }
       : {}),
     example,
     mode: field("mode").value,
@@ -173,7 +209,17 @@ async function update() {
             ? indexStoryEvents(scene)
             : scene.events.filter((e) => e.node.includes("__")),
         values: scene.componentData?.values,
-        ...(scene.componentData?.schemaVersion === "scene-components-2"
+        resolvedTextSizes: active.renderer.resolvedTextSizes,
+        ...(scene.componentData?.schemaVersion === "scene-components-3"
+          ? {
+              visibility: scene.componentData.visibility,
+              pins: scene.componentData.pins,
+              textFits: scene.componentData.textFits,
+              masks: scene.componentData.masks,
+            }
+          : {}),
+        ...(scene.componentData &&
+        scene.componentData.schemaVersion !== "scene-components-1"
           ? {
               states: scene.componentData.states,
               travels: scene.componentData.travels,

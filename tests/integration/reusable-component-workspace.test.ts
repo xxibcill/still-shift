@@ -6,6 +6,67 @@ import { readStoryPassage } from "../../packages/animation-engine/src/story-pass
 import { writeStoryWorkspace } from "../../packages/animation-engine/src/story-workspace.ts";
 import { passageBeatKey } from "../../packages/animation-engine/src/passage-cache.ts";
 import { indexStoryEvents } from "../../packages/renderer-core/src/story-event-index.ts";
+it("retimes and relocates gated phases with pins, fitted states and masks", async () => {
+  const { createPassageEditor } = await import(
+    "../../packages/renderer-core/src/passage-editor.ts"
+  );
+  const root = await mkdtemp(join(tmpdir(), "timing-workspace-"));
+  try {
+    const original = await readStoryPassage(
+      resolve(
+        "benchmarks/fixtures/reusable-components/story-timing.passage.json",
+      ),
+    );
+    const editor = createPassageEditor(original.plan, original.templates);
+    const before = structuredClone(editor.passage);
+    editor.edit((plan) => {
+      plan.beats[2]!.cues[1]!.frame += 6;
+    });
+    for (const event of before.beats[2]!.events) {
+      const edited = editor.passage.beats[2]!.events.find(
+        (e) => e.id === event.id,
+      )!;
+      expect(edited.start).toBe(
+        event.start + (event.id.startsWith("phase2__") ? 6 : 0),
+      );
+      expect(edited.end).toBe(
+        event.end + (event.id.startsWith("phase2__") ? 6 : 0),
+      );
+    }
+    expect(editor.undo().plan).toEqual(before.plan);
+    editor.redo();
+    editor.edit((plan) => {
+      if (plan.schemaVersion !== "story-passage-2")
+        throw new Error("v2 expected");
+      delete plan.beats[2]!.bindings["phase2__lifetime-detail"];
+      plan.beats[2]!.timing["phase2__lifetime-detail"] = {
+        start: 78,
+        end: 126,
+      };
+    });
+    const edited = editor.passage;
+    await writeStoryWorkspace(join(root, "package"), {
+      ...original,
+      ...edited,
+    });
+    await rename(join(root, "package"), join(root, "moved"));
+    const restored = await readStoryPassage(join(root, "moved/workspace.json"));
+    for (let i = 0; i < edited.beats.length; i++) {
+      expect(restored.beats[i]!.scene.componentData).toEqual(
+        edited.beats[i]!.scene.componentData,
+      );
+      expect(indexStoryEvents(restored.beats[i]!.scene)).toEqual(
+        indexStoryEvents(edited.beats[i]!.scene),
+      );
+      expect(passageBeatKey(restored.beats[i]!.scene, "test")).toEqual(
+        passageBeatKey(edited.beats[i]!.scene, "test"),
+      );
+    }
+    expect(restored.frameCount).toBe(576);
+  } finally {
+    await rm(root, { recursive: true, force: true });
+  }
+}, 30000);
 it("packages and relocates editable instances, annotations and numeric bindings", async () => {
   const root = await mkdtemp(join(tmpdir(), "shared-workspace-"));
   try {

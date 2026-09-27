@@ -7,6 +7,7 @@ import {
 import { compileStoryScene } from "../../../packages/renderer-core/src/story-scene.ts";
 import { validateStoryTextLayout } from "../../../packages/renderer-core/src/story-text-layout.ts";
 import { prepareMeasuredText } from "../../../packages/renderer-core/src/component-values.ts";
+import { prepareComponentTextFits } from "../../../packages/renderer-core/src/component-text-fit.ts";
 
 declare global {
   interface Window {
@@ -22,9 +23,10 @@ window.validateStillShiftPassageText = async (scene, fontUrls) => {
     const compiled = compileStoryScene(scene);
     const fonts = await loadPreparedFonts(compiled, (id) => fontUrls[id]!);
     validateStoryTextLayout(compiled, fonts);
+    const context = document.createElement("canvas").getContext("2d")!;
     prepareMeasuredText(
-      compiled,
-      document.createElement("canvas").getContext("2d")!,
+      prepareComponentTextFits(compiled, context, fonts),
+      context,
       fonts,
     );
     return [];

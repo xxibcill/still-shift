@@ -1,0 +1,232 @@
+{
+  "schemaVersion": "story-passage-2",
+  "id": "shared-timing",
+  "title": "Shared timing and relationships",
+  "styleProfile": { "schemaVersion": "story-style-1", "id": "neutral-test" },
+  "contentPolicy": "general",
+  "fps": 24,
+  "sourceStartFrame": 0,
+  "beats": [
+    {
+      "id": "visibility",
+      "template": "story-visibility.json",
+      "purpose": "compare",
+      "takeaway": "Demonstrate visibility",
+      "focus": ["house-a", "house-b"],
+      "intensity": "develop",
+      "frameCount": 192,
+      "cues": [],
+      "parameters": {},
+      "bindings": {}
+    },
+    {
+      "id": "text-fit",
+      "template": "story-text-fit.json",
+      "purpose": "compare",
+      "takeaway": "Demonstrate text-fit",
+      "focus": ["house-a", "house-b"],
+      "intensity": "develop",
+      "frameCount": 192,
+      "cues": [],
+      "parameters": {},
+      "bindings": {}
+    },
+    {
+      "id": "supply-sequence",
+      "template": "story-supply-sequence.template.json",
+      "purpose": "compare",
+      "takeaway": "Demonstrate supply-sequence",
+      "focus": ["house-a", "house-b"],
+      "intensity": "develop",
+      "frameCount": 192,
+      "cues": [
+        {
+          "id": "phase1",
+          "frame": 12,
+          "phrase": "Supply phase 1",
+          "events": [
+            "phase1__rise",
+            "phase1__aperture",
+            "phase1__journey",
+            "phase1__crop-change",
+            "phase1__caption-change",
+            "phase1__lifetime-detail",
+            "phase1__lifetime-badge",
+            "phase1__lifetime-caption",
+            "phase1__lifetime-mask"
+          ]
+        },
+        {
+          "id": "phase2",
+          "frame": 72,
+          "phrase": "Supply phase 2",
+          "events": [
+            "phase2__rise",
+            "phase2__aperture",
+            "phase2__journey",
+            "phase2__crop-change",
+            "phase2__caption-change",
+            "phase2__lifetime-detail",
+            "phase2__lifetime-badge",
+            "phase2__lifetime-caption",
+            "phase2__lifetime-mask"
+          ]
+        },
+        {
+          "id": "phase3",
+          "frame": 120,
+          "phrase": "Supply phase 3",
+          "events": [
+            "phase3__rise",
+            "phase3__aperture",
+            "phase3__journey",
+            "phase3__crop-change",
+            "phase3__caption-change",
+            "phase3__lifetime-detail",
+            "phase3__lifetime-badge",
+            "phase3__lifetime-caption",
+            "phase3__lifetime-mask"
+          ]
+        }
+      ],
+      "parameters": {},
+      "bindings": {
+        "phase1__rise": {
+          "anchor": { "type": "cue", "id": "phase1" },
+          "offset": 0,
+          "duration": 35
+        },
+        "phase1__aperture": {
+          "anchor": { "type": "cue", "id": "phase1" },
+          "offset": 0,
+          "duration": 35
+        },
+        "phase1__journey": {
+          "anchor": { "type": "cue", "id": "phase1" },
+          "offset": 0,
+          "duration": 35
+        },
+        "phase1__crop-change": {
+          "anchor": { "type": "cue", "id": "phase1" },
+          "offset": 24,
+          "duration": 0
+        },
+        "phase1__caption-change": {
+          "anchor": { "type": "cue", "id": "phase1" },
+          "offset": 24,
+          "duration": 0
+        },
+        "phase1__lifetime-detail": {
+          "anchor": { "type": "cue", "id": "phase1" },
+          "offset": 0,
+          "duration": 48
+        },
+        "phase1__lifetime-badge": {
+          "anchor": { "type": "cue", "id": "phase1" },
+          "offset": 0,
+          "duration": 48
+        },
+        "phase1__lifetime-caption": {
+          "anchor": { "type": "cue", "id": "phase1" },
+          "offset": 0,
+          "duration": 48
+        },
+        "phase1__lifetime-mask": {
+          "anchor": { "type": "cue", "id": "phase1" },
+          "offset": 0,
+          "duration": 48
+        },
+        "phase2__rise": {
+          "anchor": { "type": "cue", "id": "phase2" },
+          "offset": 0,
+          "duration": 35
+        },
+        "phase2__aperture": {
+          "anchor": { "type": "cue", "id": "phase2" },
+          "offset": 0,
+          "duration": 35
+        },
+        "phase2__journey": {
+          "anchor": { "type": "cue", "id": "phase2" },
+          "offset": 0,
+          "duration": 35
+        },
+        "phase2__crop-change": {
+          "anchor": { "type": "cue", "id": "phase2" },
+          "offset": 24,
+          "duration": 0
+        },
+        "phase2__caption-change": {
+          "anchor": { "type": "cue", "id": "phase2" },
+          "offset": 24,
+          "duration": 0
+        },
+        "phase2__lifetime-detail": {
+          "anchor": { "type": "cue", "id": "phase2" },
+          "offset": 0,
+          "duration": 48
+        },
+        "phase2__lifetime-badge": {
+          "anchor": { "type": "cue", "id": "phase2" },
+          "offset": 0,
+          "duration": 48
+        },
+        "phase2__lifetime-caption": {
+          "anchor": { "type": "cue", "id": "phase2" },
+          "offset": 0,
+          "duration": 48
+        },
+        "phase2__lifetime-mask": {
+          "anchor": { "type": "cue", "id": "phase2" },
+          "offset": 0,
+          "duration": 48
+        },
+        "phase3__rise": {
+          "anchor": { "type": "cue", "id": "phase3" },
+          "offset": 0,
+          "duration": 35
+        },
+        "phase3__aperture": {
+          "anchor": { "type": "cue", "id": "phase3" },
+          "offset": 0,
+          "duration": 35
+        },
+        "phase3__journey": {
+          "anchor": { "type": "cue", "id": "phase3" },
+          "offset": 0,
+          "duration": 35
+        },
+        "phase3__crop-change": {
+          "anchor": { "type": "cue", "id": "phase3" },
+          "offset": 24,
+          "duration": 0
+        },
+        "phase3__caption-change": {
+          "anchor": { "type": "cue", "id": "phase3" },
+          "offset": 24,
+          "duration": 0
+        },
+        "phase3__lifetime-detail": {
+          "anchor": { "type": "cue", "id": "phase3" },
+          "offset": 0,
+          "duration": 48
+        },
+        "phase3__lifetime-badge": {
+          "anchor": { "type": "cue", "id": "phase3" },
+          "offset": 0,
+          "duration": 48
+        },
+        "phase3__lifetime-caption": {
+          "anchor": { "type": "cue", "id": "phase3" },
+          "offset": 0,
+          "duration": 48
+        },
+        "phase3__lifetime-mask": {
+          "anchor": { "type": "cue", "id": "phase3" },
+          "offset": 0,
+          "duration": 48
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,230 @@
+{
+  "title": "Reusable components · commerce",
+  "fps": 24,
+  "background": "#F2EDE3",
+  "assets": [
+    {
+      "id": "product-image",
+      "path": "../../../assets/ecommerce-motion/beauty-floating-product-v1.png",
+      "sha256": "sha256:0c832682d129412b2fcd1b726e92275dc0dcbe12f1231d23c18efb3318b49e9c",
+      "width": 1122,
+      "height": 1402
+    }
+  ],
+  "fonts": [
+    {
+      "id": "commerce-font",
+      "path": "../../../assets/ecommerce-motion/fonts/noto-sans-thai.ttf",
+      "sha256": "sha256:5a1c559bb539583c8a1fd99d1c5b9491e5e14478c9cd2bd0970d5c3096cc9ef8",
+      "weight": "400"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "heading",
+      "x": 112,
+      "y": 85,
+      "width": 1680,
+      "height": 100,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "text",
+      "text": "A few details. One product.",
+      "fontSize": 60,
+      "color": "#233B32",
+      "weight": "normal",
+      "font": "sans-serif",
+      "fontAsset": "commerce-font",
+      "textBox": { "locale": "en", "maxLines": 1, "lineHeight": 1.25 },
+      "align": "left"
+    },
+    {
+      "id": "subject-a",
+      "x": 560,
+      "y": 230,
+      "width": 330,
+      "height": 410,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "group",
+      "clip": false
+    },
+    {
+      "id": "subject-art",
+      "parent": "subject-a",
+      "x": 0,
+      "y": 0,
+      "width": 330,
+      "height": 410,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "image",
+      "states": [{ "asset": "product-image" }],
+      "fit": "contain"
+    },
+    {
+      "id": "timing__detail",
+      "x": 680,
+      "y": 690,
+      "width": 220,
+      "height": 190,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0, 0],
+      "type": "group",
+      "clip": false
+    },
+    {
+      "id": "timing__paper",
+      "parent": "timing__detail",
+      "x": 0,
+      "y": 0,
+      "width": 220,
+      "height": 190,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "rect",
+      "fill": "#E5E0D4",
+      "lineWidth": 0,
+      "radius": 10
+    },
+    {
+      "id": "timing__image",
+      "parent": "timing__detail",
+      "x": 10,
+      "y": 10,
+      "width": 200,
+      "height": 170,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "image",
+      "states": [
+        { "asset": "product-image" },
+        {
+          "asset": "product-image",
+          "crop": [168.29999999999998, 140.20000000000002, 785.4, 981.4]
+        }
+      ],
+      "fit": "contain"
+    },
+    {
+      "id": "timing__badge",
+      "x": 924,
+      "y": 720,
+      "width": 220,
+      "height": 100,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0, 0],
+      "type": "text",
+      "text": "Detail 1",
+      "fontSize": 42,
+      "color": "#477D65",
+      "weight": "normal",
+      "font": "sans-serif",
+      "fontAsset": "commerce-font",
+      "textBox": { "locale": "en", "maxLines": 2, "lineHeight": 1.2 },
+      "align": "left"
+    },
+    {
+      "id": "timing__caption",
+      "x": 680,
+      "y": 910,
+      "width": 480,
+      "height": 110,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0, 0],
+      "type": "text",
+      "text": "A closer look at the supplied detail",
+      "fontSize": 36,
+      "color": "#233B32",
+      "weight": "normal",
+      "font": "sans-serif",
+      "fontAsset": "commerce-font",
+      "textBox": { "locale": "th", "maxLines": 2, "lineHeight": 1.2 },
+      "align": "left"
+    }
+  ],
+  "provenance": "Fictional SAMPLE 01 engineering demonstration; supplied intact image reused without alteration.",
+  "schemaVersion": "commerce-scene-1",
+  "componentData": {
+    "schemaVersion": "scene-components-3",
+    "annotations": [],
+    "values": [],
+    "bindings": [],
+    "states": [
+      {
+        "id": "timing__crop",
+        "target": "timing__image",
+        "initial": 0,
+        "cuts": [{ "id": "timing__crop-change", "frame": 24, "state": 1 }]
+      }
+    ],
+    "travels": [],
+    "visibility": [],
+    "pins": [
+      {
+        "id": "timing__badge-pin",
+        "target": "timing__badge",
+        "anchor": {
+          "node": "timing__detail",
+          "point": [220, 30],
+          "space": "node",
+          "offset": [24, 0]
+        }
+      }
+    ],
+    "textFits": [],
+    "masks": []
+  },
+  "width": 1920,
+  "height": 1080,
+  "frameCount": 192,
+  "recipe": { "preset": "studio" },
+  "events": [
+    {
+      "node": "subject-a",
+      "property": "y",
+      "start": 0,
+      "end": 191,
+      "to": 210,
+      "easing": "smoothstep"
+    },
+    {
+      "node": "timing__detail",
+      "property": "y",
+      "start": 0,
+      "end": 35,
+      "to": 666,
+      "easing": "in-out-sine"
+    }
+  ],
+  "geometry": [
+    {
+      "node": "subject-art",
+      "asset": "product-image",
+      "sha256": "sha256:0c832682d129412b2fcd1b726e92275dc0dcbe12f1231d23c18efb3318b49e9c",
+      "visibleBounds": [0, 0, 1122, 1402],
+      "anchors": { "center": [561, 701] },
+      "protectedRegions": []
+    }
+  ],
+  "metadata": {
+    "registration": { "status": "experimental" },
+    "catalogVersion": "1.0",
+    "selection": { "kind": "component-demo", "id": "studio" },
+    "profile": "landscape",
+    "productId": "sample-01",
+    "productSource": "Existing fictional intact SAMPLE 01 PNG",
+    "copySource": "Meet SAMPLE 01.",
+    "claimSources": [],
+    "locale": "en",
+    "protectedRegion": [0, 0, 1, 1]
+  }
+}

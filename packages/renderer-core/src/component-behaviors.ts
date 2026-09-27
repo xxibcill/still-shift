@@ -4,6 +4,10 @@ import {
   ComponentDataV1Schema,
   ComponentStateSchema,
   ComponentTravelSchema,
+  ComponentVisibilitySchema,
+  ComponentPinSchema,
+  ComponentTextFitSchema,
+  ComponentMaskSchema,
 } from "../../scene-contract/src/component-data.ts";
 import type { ComponentMotion } from "../../scene-contract/src/components.ts";
 
@@ -66,3 +70,13 @@ export const stepComponentState = (
 export const travelComponentPath = (
   input: z.input<typeof ComponentTravelSchema>,
 ) => ComponentTravelSchema.parse(input);
+export const showComponentDuring = (
+  input: z.input<typeof ComponentVisibilitySchema>,
+) => ComponentVisibilitySchema.parse(input);
+export const pinComponent = (input: z.input<typeof ComponentPinSchema>) =>
+  ComponentPinSchema.parse(input);
+export const fitComponentText = (
+  input: z.input<typeof ComponentTextFitSchema>,
+) => ComponentTextFitSchema.parse(input);
+export const maskComponent = (input: z.input<typeof ComponentMaskSchema>) =>
+  ComponentMaskSchema.parse(input);

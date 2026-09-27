@@ -19,14 +19,19 @@ export function applyComponentState(
   frame: number,
   state: { state: number },
 ) {
-  if (scene.componentData?.schemaVersion !== "scene-components-2") return;
+  if (
+    !scene.componentData ||
+    scene.componentData.schemaVersion === "scene-components-1"
+  )
+    return;
   const schedule = scene.componentData.states.find((s) => s.target === id);
   if (schedule) state.state = sampleComponentState(schedule, frame);
 }
 export function componentStateCuts(
   scene: Pick<ComponentSceneData, "componentData">,
 ): number[] {
-  return scene.componentData?.schemaVersion === "scene-components-2"
+  return scene.componentData &&
+    scene.componentData.schemaVersion !== "scene-components-1"
     ? scene.componentData.states.flatMap((s) => s.cuts.map((c) => c.frame))
     : [];
 }
@@ -36,7 +41,11 @@ export function validateStateOwnership(
     textFits?: { target: string }[] | undefined;
   },
 ) {
-  if (scene.componentData?.schemaVersion !== "scene-components-2") return;
+  if (
+    !scene.componentData ||
+    scene.componentData.schemaVersion === "scene-components-1"
+  )
+    return;
   for (const schedule of scene.componentData.states) {
     if (
       scene.tracks[schedule.target]?.state?.length ||

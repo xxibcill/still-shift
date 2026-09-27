@@ -1,4 +1,5 @@
 import { verifyBehaviorPixels } from "./component-behavior-pixels.ts";
+import { verifyTimingPixels } from "./component-timing-pixels.ts";
 import assert from "node:assert/strict";
 import { verifyReusableExposure } from "./reusable-component-pixels.ts";
 import { execFile } from "node:child_process";
@@ -84,12 +85,25 @@ const evidence: unknown[] = [];
 const pixelsOnly = process.argv.includes("--pixels-only");
 const isolatedOnly = process.argv.includes("--isolated-only");
 const storyOnly = process.argv.includes("--story-only");
+const timingOnly = process.argv.includes("--timing-only");
 const behaviorsOnly = process.argv.includes("--behaviors-only");
-const examples = behaviorsOnly
+const examples = timingOnly
   ? REUSABLE_EXAMPLES.filter((e) =>
-      ["transform", "state", "travel", "tour", "supply"].includes(e.id),
+      [
+        "visibility",
+        "sequence",
+        "pin",
+        "text-fit",
+        "mask",
+        "detail-sequence",
+        "supply-sequence",
+      ].includes(e.id),
     )
-  : REUSABLE_EXAMPLES;
+  : behaviorsOnly
+    ? REUSABLE_EXAMPLES.filter((e) =>
+        ["transform", "state", "travel", "tour", "supply"].includes(e.id),
+      )
+    : REUSABLE_EXAMPLES;
 const modes = storyOnly
   ? ["story"]
   : isolatedOnly
@@ -143,9 +157,11 @@ try {
           );
           assert.equal(
             scene.componentData.schemaVersion,
-            settings.schemaVersion === "reusable-demo-2"
-              ? "scene-components-2"
-              : "scene-components-1",
+            settings.schemaVersion === "reusable-demo-3"
+              ? "scene-components-3"
+              : settings.schemaVersion === "reusable-demo-2"
+                ? "scene-components-2"
+                : "scene-components-1",
           );
           const video = join(output, name + ".mp4");
           for (const suffix of ["", ".scene.json", ".result.json"])
@@ -157,20 +173,40 @@ try {
           assert.equal(result.frameCount, fps * 8);
           const parity = [];
           const frames =
-            settings.schemaVersion === "reusable-demo-2"
+            settings.schemaVersion === "reusable-demo-3"
               ? [
                   0,
-                  fps - 1,
-                  fps,
-                  fps * 2,
+                  11,
+                  12,
+                  23,
+                  24,
+                  47,
+                  59,
+                  60,
                   71,
                   72,
-                  73,
-                  fps * 7,
-                  fps * 7 + 1,
+                  95,
+                  96,
+                  119,
+                  120,
+                  167,
+                  168,
                   fps * 8 - 1,
                 ]
-              : [0, 12, Math.floor(fps * 2.5), fps * 4, fps * 8 - 1];
+              : settings.schemaVersion === "reusable-demo-2"
+                ? [
+                    0,
+                    fps - 1,
+                    fps,
+                    fps * 2,
+                    71,
+                    72,
+                    73,
+                    fps * 7,
+                    fps * 7 + 1,
+                    fps * 8 - 1,
+                  ]
+                : [0, 12, Math.floor(fps * 2.5), fps * 4, fps * 8 - 1];
           for (const frame of frames) {
             const path = join(temp, name + "-" + frame + ".png");
             await writeFile(path, Buffer.from(await seek(frame), "base64"));
@@ -242,15 +278,30 @@ try {
       fullPage: true,
     });
     await page.setViewportSize({ width: 1440, height: 1000 });
-    if (!process.argv.includes("--smoke-only") && !isolatedOnly)
+    if (
+      (!process.argv.includes("--smoke-only") ||
+        process.argv.includes("--ui-export")) &&
+      !isolatedOnly
+    )
       for (const mode of ["commerce", "story"]) {
         await page.goto(
-          origin + "reusable-components.html?mode=" + mode + "&example=tour",
+          origin +
+            "reusable-components.html?mode=" +
+            mode +
+            "&example=" +
+            (timingOnly ? "detail-sequence" : "tour"),
         );
         await ready();
         const exported = page.waitForEvent("download", { timeout: 180000 });
         await page.locator("#export").click();
-        await (await exported).saveAs(join(output, mode + "-ui-export.mp4"));
+        await (
+          await exported
+        ).saveAs(
+          join(
+            output,
+            mode + (timingOnly ? "-timing-ui-export.mp4" : "-ui-export.mp4"),
+          ),
+        );
         const { stdout } = await run("ffprobe", [
           "-v",
           "error",
@@ -260,7 +311,10 @@ try {
           "stream=nb_frames",
           "-of",
           "csv=p=0",
-          join(output, mode + "-ui-export.mp4"),
+          join(
+            output,
+            mode + (timingOnly ? "-timing-ui-export.mp4" : "-ui-export.mp4"),
+          ),
         ]);
         assert.equal(Number(stdout.trim()), 192);
       }
@@ -326,22 +380,78 @@ try {
       path: join(output, "behavior-gallery-mobile.png"),
       fullPage: true,
     });
+    await page.setViewportSize({ width: 1440, height: 1000 });
+    await page.goto(
+      origin + "reusable-components.html?mode=story&example=supply-sequence",
+    );
+    await ready();
+    await seek(90);
+    const timingBefore = await canvas();
+    await page.locator('[name="clipDuration"]').fill("12");
+    await apply();
+    await page.waitForFunction(() =>
+      document.querySelector("#status")?.textContent?.includes("preserved"),
+    );
+    assert.equal(await canvas(), timingBefore);
+    assert.equal(await page.locator("#export").isDisabled(), true);
+    await page.locator('[name="clipDuration"]').fill("48");
+    await page.locator('[name="minSize"]').fill("60");
+    await apply();
+    await page.waitForFunction(() =>
+      document.querySelector("#status")?.textContent?.includes("preserved"),
+    );
+    assert.equal(await canvas(), timingBefore);
+    await page.locator('[name="minSize"]').fill("32");
+    await page.locator('[name="anchorX"]').fill("50");
+    await page.locator('[name="invert"]').selectOption("true");
+    await apply();
+    await ready();
+    const timingEdited = await canvas();
+    assert.notEqual(timingEdited, timingBefore);
+    const timingSaved = page.waitForEvent("download");
+    await page.locator("#save").click();
+    const timingSettings = join(temp, "timing.demo.json");
+    await (await timingSaved).saveAs(timingSettings);
+    await page.locator('[name="invert"]').selectOption("false");
+    await apply();
+    await ready();
+    await page.locator("#load").setInputFiles(timingSettings);
+    await ready();
+    assert.equal(await canvas(), timingEdited, "v3 settings restore pixels");
+    await page.screenshot({
+      path: join(output, "timing-gallery-desktop.png"),
+      fullPage: true,
+    });
+    await page.setViewportSize({ width: 390, height: 844 });
+    assert.equal(
+      await page.evaluate(
+        () => document.documentElement.scrollWidth <= innerWidth,
+      ),
+      true,
+    );
+    await page.screenshot({
+      path: join(output, "timing-gallery-mobile.png"),
+      fullPage: true,
+    });
   } else await page.goto(origin + "reusable-components.html");
   assert.deepEqual(errors, []);
   const exposure = await verifyReusableExposure(page, resolve("."));
   const behaviors = await verifyBehaviorPixels(page, resolve("."));
+  const timing = await verifyTimingPixels(page, resolve("."));
   await writeFile(
     join(
       output,
-      pixelsOnly
-        ? "behavior-pixels.json"
-        : process.argv.includes("--smoke-only")
-          ? "smoke.json"
-          : storyOnly && behaviorsOnly
-            ? "story-behaviors-verification.json"
-            : isolatedOnly
-              ? "isolated-verification.json"
-              : "verification.json",
+      timingOnly
+        ? "timing-verification.json"
+        : pixelsOnly
+          ? "behavior-pixels.json"
+          : process.argv.includes("--smoke-only")
+            ? "smoke.json"
+            : storyOnly && behaviorsOnly
+              ? "story-behaviors-verification.json"
+              : isolatedOnly
+                ? "isolated-verification.json"
+                : "verification.json",
     ),
     JSON.stringify(
       {
@@ -350,6 +460,7 @@ try {
         errors,
         exposure,
         behaviors,
+        timing,
         evidence,
       },
       null,

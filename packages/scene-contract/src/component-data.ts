@@ -136,9 +136,53 @@ export const ComponentDataV2Schema = ComponentDataV1Schema.extend({
   states: z.array(ComponentStateSchema).max(100).default([]),
   travels: z.array(ComponentTravelSchema).max(32).default([]),
 }).strict();
+export const ComponentVisibilitySchema = z
+  .object({
+    id: ComponentIdSchema,
+    target: ComponentIdSchema,
+    window: z
+      .object({
+        start: finite.int().nonnegative(),
+        end: finite.int().positive(),
+        cue: ComponentIdSchema.optional(),
+      })
+      .strict()
+      .refine((w) => w.end > w.start, "Visibility requires positive duration"),
+  })
+  .strict();
+export const ComponentPinSchema = z
+  .object({
+    id: ComponentIdSchema,
+    target: ComponentIdSchema,
+    anchor: ComponentAnchorSchema,
+  })
+  .strict();
+export const ComponentTextFitSchema = z
+  .object({
+    target: ComponentIdSchema,
+    minSize: finite.int().min(16).max(180),
+    maxSize: finite.int().min(16).max(180),
+  })
+  .strict()
+  .refine((f) => f.minSize <= f.maxSize, "Text fit minimum exceeds maximum");
+export const ComponentMaskSchema = z
+  .object({
+    target: ComponentIdSchema,
+    mask: ComponentIdSchema,
+    invert: z.boolean().default(false),
+  })
+  .strict();
+export const ComponentDataV3Schema = ComponentDataV2Schema.extend({
+  schemaVersion: z.literal("scene-components-3"),
+  visibility: z.array(ComponentVisibilitySchema).max(100).default([]),
+  pins: z.array(ComponentPinSchema).max(32).default([]),
+  textFits: z.array(ComponentTextFitSchema).max(32).default([]),
+  masks: z.array(ComponentMaskSchema).max(16).default([]),
+}).strict();
 export const ComponentDataSchema = z.discriminatedUnion("schemaVersion", [
   ComponentDataV1Schema,
   ComponentDataV2Schema,
+  ComponentDataV3Schema,
 ]);
 export type ComponentState = z.infer<typeof ComponentStateSchema>;
 export type ComponentTravel = z.infer<typeof ComponentTravelSchema>;
@@ -250,7 +294,7 @@ function validateBehaviorData(
   fail: (message: string) => void,
 ) {
   const data = scene.componentData;
-  if (data?.schemaVersion !== "scene-components-2") return;
+  if (!data || data.schemaVersion === "scene-components-1") return;
   const nodes = new Map(scene.nodes.map((n) => [n.id, n]));
   const ids = new Set<string>();
   const cue = (id: string) => {
@@ -258,6 +302,10 @@ function validateBehaviorData(
     ids.add(id);
   };
   data.values.forEach((v) => cue(v.window.cue ?? v.id));
+  if (data.schemaVersion === "scene-components-3") {
+    for (const gate of data.visibility) cue(gate.window.cue ?? gate.id);
+    validateRelationships(scene, data, fail);
+  }
   if (
     new Set(data.states.map((s) => s.id)).size !== data.states.length ||
     new Set(data.travels.map((t) => t.id)).size !== data.travels.length
@@ -353,5 +401,76 @@ function validateBehaviorData(
       seen.add(node.id);
       node = node.parent ? nodes.get(node.parent) : undefined;
     }
+  }
+}
+
+function validateRelationships(
+  scene: ComponentSceneData,
+  data: z.infer<typeof ComponentDataV3Schema>,
+  fail: (message: string) => void,
+) {
+  const nodes = new Map(scene.nodes.map((n) => [n.id, n]));
+  for (const [kind, entries] of [
+    ["visibility", data.visibility],
+    ["pin", data.pins],
+    ["text fit", data.textFits],
+    ["mask", data.masks],
+  ] as const) {
+    const targets = new Set<string>();
+    for (const entry of entries) {
+      if (!nodes.has(entry.target))
+        fail("Missing component " + kind + " target: " + entry.target);
+      if (targets.has(entry.target))
+        fail("Duplicate component " + kind + " ownership: " + entry.target);
+      targets.add(entry.target);
+    }
+  }
+  if (new Set(data.pins.map((p) => p.id)).size !== data.pins.length)
+    fail("Duplicate component pin ID");
+  if (new Set(data.visibility.map((g) => g.id)).size !== data.visibility.length)
+    fail("Duplicate component visibility ID");
+  for (const gate of data.visibility) {
+    if (nodes.get(gate.target)?.parent)
+      fail("Visibility requires a scene root: " + gate.target);
+    if (gate.window.end > scene.frameCount)
+      fail("Component visibility exceeds timeline: " + gate.id);
+  }
+  for (const pin of data.pins) {
+    const source = nodes.get(pin.anchor.node);
+    if (!source || source.type === "path")
+      fail("Pin anchor needs an independent visual node: " + pin.anchor.node);
+    if (
+      pin.anchor.space === "source" &&
+      (source?.type !== "image" || source.states.length !== 1)
+    )
+      fail("Source anchor needs one image state: " + pin.anchor.node);
+  }
+  for (const fit of data.textFits) {
+    const node = nodes.get(fit.target);
+    if (
+      node?.type !== "text" ||
+      !node.fontAsset ||
+      !node.textBox ||
+      node.textLayout
+    )
+      fail(
+        "Shared text fit requires a pinned measured text box: " + fit.target,
+      );
+    if (data.bindings.some((b) => b.target === fit.target && b.kind === "text"))
+      fail("Text fit conflicts with numeric text: " + fit.target);
+  }
+  for (const matte of data.masks) {
+    const target = nodes.get(matte.target),
+      mask = nodes.get(matte.mask);
+    if (
+      !target ||
+      target.parent ||
+      !mask ||
+      mask.parent ||
+      target.id === mask.id
+    )
+      fail("Component mask requires independent roots: " + matte.target);
+    if (data.masks.some((m) => m.target === matte.mask))
+      fail("Component mask chains are unsupported: " + matte.mask);
   }
 }

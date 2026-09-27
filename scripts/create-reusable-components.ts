@@ -7,6 +7,7 @@ import {
   ReusableDemoSchema,
 } from "../packages/scene-contract/src/reusable-component-demo.ts";
 import { buildReusableDemo } from "../packages/renderer-core/src/reusable-component-demo.ts";
+import { indexStoryEvents } from "../packages/renderer-core/src/story-event-index.ts";
 const directory = resolve("benchmarks/fixtures/reusable-components");
 const writeJson = async (name: string, value: unknown) =>
   writeFile(
@@ -129,5 +130,67 @@ await writeJson("story-behaviors.passage.json", {
             },
           }
         : {},
+  })),
+});
+
+const phasedScene = buildReusableDemo(
+  ReusableDemoSchema.parse({
+    schemaVersion: "reusable-demo-3",
+    example: "supply-sequence",
+    mode: "story",
+  }),
+);
+if (phasedScene.schemaVersion !== "story-scene-1")
+  throw new Error("Story expected");
+await writeJson("story-supply-sequence.template.json", {
+  schemaVersion: "story-template-1",
+  id: "supply-phases",
+  scene: phasedScene,
+  slots: { middleWindow: { kind: "timing", event: "phase2__lifetime-detail" } },
+});
+const phases = [12, 72, 120].map((frame, i) => ({
+  id: "phase" + (i + 1),
+  frame,
+  phrase: "Supply phase " + (i + 1),
+  events: indexStoryEvents(phasedScene)
+    .filter((e) => e.id.startsWith("phase" + (i + 1) + "__"))
+    .map((e) => e.id),
+}));
+const phaseBindings = Object.fromEntries(
+  phases.flatMap((cue) =>
+    indexStoryEvents(phasedScene)
+      .filter((e) => cue.events.includes(e.id))
+      .map((event) => [
+        event.id,
+        {
+          anchor: { type: "cue", id: cue.id },
+          offset: event.start - cue.frame,
+          duration: event.end - event.start,
+        },
+      ]),
+  ),
+);
+await writeJson("story-timing.passage.json", {
+  schemaVersion: "story-passage-2",
+  id: "shared-timing",
+  title: "Shared timing and relationships",
+  styleProfile: { schemaVersion: "story-style-1", id: "neutral-test" },
+  contentPolicy: "general",
+  fps: 24,
+  sourceStartFrame: 0,
+  beats: ["visibility", "text-fit", "supply-sequence"].map((example) => ({
+    id: example,
+    template:
+      "story-" +
+      example +
+      (example === "supply-sequence" ? ".template.json" : ".json"),
+    purpose: "compare",
+    takeaway: "Demonstrate " + example,
+    focus: ["house-a", "house-b"],
+    intensity: "develop",
+    frameCount: 192,
+    cues: example === "supply-sequence" ? phases : [],
+    parameters: {},
+    bindings: example === "supply-sequence" ? phaseBindings : {},
   })),
 });

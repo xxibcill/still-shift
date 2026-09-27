@@ -1,9 +1,11 @@
 # Next atomic batch — visibility, sequences and shared relationships
 
 - **Date:** 2026-09-27
-- **Status:** Planned; implementation has not started.
+- **Status:** RC-10–14 implemented together at the owner's request. See the [guide](./reusable-components.md) and [verification record](./review/reusable-components/timing-verification.json). Examples remain Experimental.
 - **Baseline:** `28c24cb` — RC-07–09, following RC-01–06. See the [authoring guide](./reusable-components.md) and [behavior verification record](./review/reusable-components/behavior-verification.json).
 - **Delivery:** RC-10 visibility windows, RC-11 component sequences, RC-12 anchor pins, RC-13 text fitting and RC-14 alpha masks. Seven gallery examples across isolated/commerce/story views and a portable story fixture demonstrate the five modules together.
+
+The source findings and contracts below retain the planning baseline. The delivered helpers are `showComponentDuring`, `sequenceComponents`, `pinComponent`, `fitComponentText` and `maskComponent`.
 
 ## 1. Smallest useful next responsibility
 
@@ -42,7 +44,7 @@ The three additional modules extend existing machinery:
 | **RC-10** | **Visibility Window** — discrete behavior     | `showComponentDuring({ id, target, window: { start, end, cue? } })` returns a serializable root gate.                                                                                                            | Show a supplied detail inset and its caption only during their presentation span, while the product remains visible. | Show a phase marker and label only during their named narration span, while the diagram remains visible. |
 | **RC-11** | **Component Sequence** — composition operator | `sequenceComponents(clock, clips)` returns ordinary resolved instances accepted by both existing adapters. A clip supplies a definition, instance ID, duration and optional start/placement/external references. | Present three independent product-detail instances in order using supplied crops and labels.                         | Present three independent supply phases using the current symbolic route, marker and state behaviors.    |
 
-Names are proposed until implementation; the contracts below are the acceptance criteria. Both consumers use existing assets and pinned fonts. No new product or historical claims are inferred.
+The contracts below are the acceptance criteria. Both consumers use existing assets and pinned fonts. No new product or historical claims are inferred.
 
 | ID        | Module / kind                         | Proposed small interface                                                                                              | Commerce consumer                                                                                                | Story consumer                                                                                                  |
 | --------- | ------------------------------------- | --------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
@@ -139,7 +141,7 @@ Likely implementation sites are the component contracts, `component-instances`, 
 | Rendering/package | Preview versus fresh encoded output using current parity thresholds at gate edges and overlaps. Relocate the E7 package and freshly render with zero source cache reuse; compare all decoded frames and cache identities.     |
 | Regression        | Affected unit/integration suites, build, lint, schema/toolchain/format checks and story/commerce/shared gallery browser suites. Run standalone browser suites sequentially to avoid the observed local Vite cache contention. |
 
-No new test counts or parity results are claimed by this plan. The committed RC-07–09 record is the starting evidence, not verification of these proposed behaviors.
+Measured RC-10–14 results are recorded separately in the [timing verification record](./review/reusable-components/timing-verification.json). The committed RC-07–09 record remains the earlier baseline.
 
 The three additional modules also require independent checks:
 

@@ -1,3 +1,4 @@
+import { timingDemo } from "./component-timing-demo.ts";
 import { behaviorDemo } from "./component-behavior-demo.ts";
 import commerceFixture from "../../../benchmarks/fixtures/ecommerce-motion/atoms/studio.json" with { type: "json" };
 import storyFixture from "../../../benchmarks/fixtures/story-authoring/comparison-template.json" with { type: "json" };
@@ -235,14 +236,14 @@ export function buildReusableDemo(input: ReusableDemo) {
   });
   const source = settings.mode === "story" ? story : commerce;
   if (
-    settings.schemaVersion === "reusable-demo-2" &&
+    settings.schemaVersion !== "reusable-demo-1" &&
     source.schemaVersion === "commerce-scene-1"
   ) {
     source.nodes = source.nodes.filter((n) => n.id !== "subject-b");
     source.events = source.events.filter((e) => e.node !== "subject-b");
   }
   if (
-    settings.schemaVersion === "reusable-demo-2" &&
+    settings.schemaVersion !== "reusable-demo-1" &&
     source.schemaVersion === "story-scene-1"
   )
     source.nodes = source.nodes.map((n) =>
@@ -298,6 +299,12 @@ export function buildReusableDemo(input: ReusableDemo) {
         })),
       };
     });
+  } else if (settings.schemaVersion === "reusable-demo-3") {
+    instances = timingDemo(
+      settings,
+      font,
+      settings.mode === "story" ? house : product,
+    );
   } else if (settings.schemaVersion === "reusable-demo-2") {
     const instance = instantiateComponent(
       behaviorDemo(settings, font, settings.mode === "story" ? house : product),

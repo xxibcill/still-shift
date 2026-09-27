@@ -91,6 +91,55 @@ export const REUSABLE_EXAMPLES = [
     description:
       "A symbolic route connects a travelling resource marker with exact image and caption changes. An engineering example, not a historical claim.",
   },
+  {
+    id: "visibility",
+    title: "Visible for a moment",
+    kind: "Behavior",
+    description:
+      "A detail appears at one exact frame and disappears at another. Authored fades remain independent.",
+  },
+  {
+    id: "sequence",
+    title: "One detail after another",
+    kind: "Operator",
+    description:
+      "Complete instances share a local clock, then take their places in the scene. Gaps and overlaps are explicit.",
+  },
+  {
+    id: "pin",
+    title: "An attached badge",
+    kind: "Relationship",
+    description:
+      "The badge follows an authored anchor while retaining its own readable size and angle.",
+  },
+  {
+    id: "text-fit",
+    title: "Words that fit",
+    kind: "Behavior",
+    description:
+      "Every supplied caption is measured with the pinned font. One stable size fits the whole set.",
+  },
+  {
+    id: "mask",
+    title: "Through an aperture",
+    kind: "Relationship",
+    description:
+      "An animated shape controls the visible part of a supplied image. Its color never appears in the picture.",
+  },
+  {
+    id: "detail-sequence",
+    title: "Three detail moments",
+    kind: "Composition",
+    description:
+      "Timed detail windows combine attached badges, fitted captions and moving apertures.",
+  },
+  {
+    id: "supply-sequence",
+    title: "Three supply phases",
+    kind: "Composition",
+    description:
+      "A symbolic route unfolds in three independently cued phases with pinned labels and shaped reveals.",
+  },
 ] as const;
 const ReusableDemoV1Schema = z
   .object({
@@ -130,12 +179,35 @@ export const ReusableDemoV2Schema = ReusableDemoV1Schema.extend({
   travelFrom: z.number().min(0).max(1).default(0),
   travelTo: z.number().min(0).max(1).default(1),
 }).strict();
+export const TIMING_EXAMPLES = [
+  "visibility",
+  "sequence",
+  "pin",
+  "text-fit",
+  "mask",
+  "detail-sequence",
+  "supply-sequence",
+] as const;
+export const ReusableDemoV3Schema = ReusableDemoV1Schema.extend({
+  schemaVersion: z.literal("reusable-demo-3"),
+  example: z.enum(TIMING_EXAMPLES),
+  clipStart: z.number().int().nonnegative().max(239).default(12),
+  clipDuration: z.number().int().positive().max(240).default(48),
+  anchorX: z.number().finite().min(-200).max(300).default(24),
+  anchorY: z.number().finite().min(-150).max(150).default(0),
+  minSize: z.number().int().min(16).max(180).default(32),
+  maxSize: z.number().int().min(16).max(180).default(54),
+  invert: z.boolean().default(false),
+}).strict();
 export const ReusableDemoSchema = z.discriminatedUnion("schemaVersion", [
   ReusableDemoV1Schema,
   ReusableDemoV2Schema,
+  ReusableDemoV3Schema,
 ]);
 export const reusableDemoVersion = (example: string) =>
-  ["transform", "state", "travel", "tour", "supply"].includes(example)
-    ? "reusable-demo-2"
-    : "reusable-demo-1";
+  (TIMING_EXAMPLES as readonly string[]).includes(example)
+    ? "reusable-demo-3"
+    : ["transform", "state", "travel", "tour", "supply"].includes(example)
+      ? "reusable-demo-2"
+      : "reusable-demo-1";
 export type ReusableDemo = z.infer<typeof ReusableDemoSchema>;

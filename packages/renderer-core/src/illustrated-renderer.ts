@@ -1,3 +1,9 @@
+import { componentVisible } from "./component-visibility.ts";
+import { prepareComponentTextFits } from "./component-text-fit.ts";
+import {
+  componentMasks,
+  createComponentMaskRenderer,
+} from "./component-mask.ts";
 import { prepareCommerceTextFits } from "./commerce-layout.ts";
 import { nodeMatrix, imagePlacement } from "./node-transform.ts";
 import {
@@ -301,6 +307,11 @@ export function createIllustratedPreview(
   canvas.height = scene.height;
   if (scene.schemaVersion === "commerce-scene-1")
     scene = prepareCommerceTextFits(scene, ctx, images.fonts ?? new Map());
+  if (
+    scene.schemaVersion === "commerce-scene-1" ||
+    scene.schemaVersion === "story-scene-1"
+  )
+    scene = prepareComponentTextFits(scene, ctx, images.fonts ?? new Map());
   images = Object.assign(new Map(images), {
     ...(images.fonts ? { fonts: images.fonts } : {}),
     ...(images.rasters ? { rasters: images.rasters } : {}),
@@ -332,6 +343,12 @@ export function createIllustratedPreview(
     node: PreparedNode,
     frame: number,
   ) => {
+    if (
+      (scene.schemaVersion === "commerce-scene-1" ||
+        scene.schemaVersion === "story-scene-1") &&
+      !componentVisible(scene, node.id, frame)
+    )
+      return;
     const state = evaluatePreparedNodeAtTime(scene, node, frame);
     const flows =
       scene.schemaVersion === "story-scene-1"
@@ -390,10 +407,21 @@ export function createIllustratedPreview(
   };
   const effectsRenderer =
     scene.schemaVersion === "commerce-scene-1" &&
-    (scene.effects?.length || scene.mattes?.length)
+    (scene.effects?.length ||
+      scene.mattes?.length ||
+      componentMasks(scene).length)
       ? createCommerceEffectsRenderer(scene, paint)
       : undefined;
+  const maskRenderer =
+    scene.schemaVersion === "story-scene-1" && componentMasks(scene).length
+      ? createComponentMaskRenderer(scene, paint)
+      : undefined;
   return {
+    resolvedTextSizes: Object.fromEntries(
+      scene.nodes.flatMap((n) =>
+        n.type === "text" ? [[n.id, n.fontSize]] : [],
+      ),
+    ),
     renderFrame(frame: number) {
       if (
         !Number.isInteger(frame) ||
@@ -409,10 +437,12 @@ export function createIllustratedPreview(
       ctx.globalAlpha = 1;
       ctx.fillStyle = scene.background;
       ctx.fillRect(0, 0, canvas.width, canvas.height);
-      for (const node of children.get(undefined) ?? []) paint(ctx, node, frame);
+      for (const node of children.get(undefined) ?? [])
+        (maskRenderer?.paint ?? paint)(ctx, node, frame);
     },
     dispose() {
       effectsRenderer?.dispose();
+      maskRenderer?.dispose();
       ctx.clearRect(0, 0, canvas.width, canvas.height);
     },
   };

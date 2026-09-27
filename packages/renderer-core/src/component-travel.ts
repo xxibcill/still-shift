@@ -13,7 +13,11 @@ export function applyComponentTravel(
   frame: number,
   state: { x: number; y: number },
 ) {
-  if (scene.componentData?.schemaVersion !== "scene-components-2") return;
+  if (
+    !scene.componentData ||
+    scene.componentData.schemaVersion === "scene-components-1"
+  )
+    return;
   const travel = scene.componentData.travels.find((t) => t.target === node.id);
   if (!travel) return;
   const path = scene.nodes.find((n) => n.id === travel.path);
@@ -55,12 +59,15 @@ export function validateTravelOwnership(
   },
 ) {
   const data = scene.componentData;
-  if (data?.schemaVersion !== "scene-components-2") return;
+  if (!data || data.schemaVersion === "scene-components-1") return;
   const dependencies = new Map(
     scene.nodes.map((n) => [n.id, n.parent ? [n.parent] : []]),
   );
   for (const travel of data.travels)
     dependencies.get(travel.target)?.push(travel.path);
+  if (data.schemaVersion === "scene-components-3")
+    for (const pin of data.pins)
+      dependencies.get(pin.target)?.push(pin.anchor.node);
   for (const effect of scene.effects ?? [])
     if (effect.type === "height-shadow" && effect.target && effect.source)
       dependencies.get(effect.target)?.push(effect.source);
@@ -68,7 +75,7 @@ export function validateTravelOwnership(
     visited = new Set<string>();
   const visit = (id: string) => {
     if (visiting.has(id))
-      throw new Error("Component travel dependency cycle: " + id);
+      throw new Error("Component position dependency cycle: " + id);
     if (visited.has(id)) return;
     visiting.add(id);
     for (const next of dependencies.get(id) ?? []) visit(next);
@@ -76,6 +83,8 @@ export function validateTravelOwnership(
     visited.add(id);
   };
   for (const travel of data.travels) visit(travel.target);
+  if (data.schemaVersion === "scene-components-3")
+    for (const pin of data.pins) visit(pin.target);
   for (const travel of data.travels) {
     if (
       ["x", "y"].some(
@@ -112,28 +121,38 @@ export function validateTravelOwnership(
 export function validateTravelTransforms(
   scene: CommerceRenderScene | StoryRenderScene,
 ) {
-  if (scene.componentData?.schemaVersion !== "scene-components-2") return;
+  if (
+    !scene.componentData ||
+    scene.componentData.schemaVersion === "scene-components-1"
+  )
+    return;
   for (const travel of scene.componentData.travels) {
     const node = scene.nodes.find((n) => n.id === travel.target)!;
-    let ancestor = node.parent
-      ? scene.nodes.find((n) => n.id === node.parent)
-      : undefined;
-    while (ancestor) {
-      for (const property of ["scaleX", "scaleY"] as const)
-        if (
-          scene.tracks[ancestor.id]?.[property]?.some(
-            (k) => k.value <= 0 || k.easing === "out-back-soft",
-          )
-        )
-          throw new Error(
-            "Travel parent scale must stay positive with bounded easing: " +
-              ancestor.id,
-          );
-      ancestor = ancestor.parent
-        ? scene.nodes.find((n) => n.id === ancestor!.parent)
-        : undefined;
-    }
+    validatePositionParents(scene, node);
     for (let frame = 0; frame < scene.frameCount; frame++)
       applyComponentTravel(scene, node, frame, { x: 0, y: 0 });
+  }
+}
+export function validatePositionParents(
+  scene: CommerceRenderScene | StoryRenderScene,
+  node: PreparedNode,
+) {
+  let ancestor = node.parent
+    ? scene.nodes.find((n) => n.id === node.parent)
+    : undefined;
+  while (ancestor) {
+    for (const property of ["scaleX", "scaleY"] as const)
+      if (
+        scene.tracks[ancestor.id]?.[property]?.some(
+          (k) => k.value <= 0 || k.easing === "out-back-soft",
+        )
+      )
+        throw new Error(
+          "Position parent scale must stay positive with bounded easing: " +
+            ancestor.id,
+        );
+    ancestor = ancestor.parent
+      ? scene.nodes.find((n) => n.id === ancestor!.parent)
+      : undefined;
   }
 }

@@ -15,6 +15,8 @@ import type { MotionEasing } from "../../scene-contract/src/motion-easing.ts";
 import { easeMotion } from "./motion-easing.ts";
 import { applyComponentState } from "./component-state.ts";
 import { applyComponentTravel } from "./component-travel.ts";
+import { applyComponentPin } from "./component-pin.ts";
+import { componentVisible } from "./component-visibility.ts";
 import { applyComponentValues } from "./component-values.ts";
 import { compileStoryScene, type StoryRenderScene } from "./story-scene.ts";
 import {
@@ -371,6 +373,8 @@ export function evaluatePreparedNodeAtTime(
     applyComponentValues(scene, node.id, frame, state);
     applyComponentState(scene, node.id, frame, state);
     applyComponentTravel(scene, node, frame, state);
+    applyComponentPin(scene, node, frame, state);
+    if (!componentVisible(scene, node.id, frame)) state.opacity = 0;
   }
   const follower = Object.hasOwn(scene.followers, node.id)
     ? scene.followers[node.id]

@@ -143,4 +143,71 @@ pnpm story:package \
 
 Fixtures live in `benchmarks/fixtures/reusable-components`. The passage combines markers, a following label and a value display; the marker template exposes `middleLabel` and `middleRise` slots. These are synthetic engineering examples, not historical claims or production registrations. `story-behaviors.passage.json` adds transform, state, travel and supply-route beats; the supply template exposes a point timing slot and a journey window, and synchronizes image/caption cuts through one cue. The product tour and symbolic supply-route composition reuse supplied assets. Existing commerce examples remain experimental. RC-01–06 results remain in the [baseline record](./review/reusable-components/verification.json); RC-07–09 results are recorded separately in the [behavior verification record](./review/reusable-components/behavior-verification.json).
 
-The next batch is [RC-10–14](./reusable-components-timing-batch-plan.md), planned but not implemented: visibility windows, component sequences, anchor pins, text fitting and alpha masks. Product-detail and supply-phase presets demonstrate these modules together. Tangent orientation, rebuilt routes, crossfades, routing and physics remain deferred.
+## Visibility and sequences (RC-10–11)
+
+Use `component-3` definitions with `scene-components-3` data for the new relationships. Version 3 includes all earlier state/travel/value behavior and adds `visibility`, `pins`, `textFits` and `masks`. Strict version 1/2 readers and their fixtures remain unchanged. Opt-in renderer versions are `commerce-canvas-0.19.0` and `story-canvas-0.18.0`.
+
+`showComponentDuring({ id, target, window: { start, end, cue? } })` returns a visibility record for an independent scene root. Add it to `componentData.visibility`. Visibility is **half-open**: `[start,end)`, with a one-frame window allowed and `end` allowed to equal `frameCount`. Authored opacity remains active inside the gate; the root and its complete output are absent outside it. Gates do not inherit source visibility through a relationship. There is one gate per root, with a combined native/shared cap of 100 in commerce.
+
+```ts
+const instances = sequenceComponents(clock, [
+  { definition: detail, id: "first", start: 12, duration: 48 },
+  { definition: detail, id: "second", duration: 48, offset: [550, 0] },
+  {
+    definition: detail,
+    id: "third",
+    start: 120,
+    duration: 48,
+    offset: [1100, 0],
+  },
+]);
+const scene = addStoryComponents(storyScene, instances);
+```
+
+`sequenceComponents` accepts local definitions and returns ordinary instances for either adapter. It shifts every local motion, value, cut, travel and gate once, and supplies a full-duration gate to each ungated root. Existing local gates keep their narrower spans. An omitted start follows the preceding clip's end; an explicit start can create a gap or overlap. Input order remains drawing order. The list is limited to 32 clips, with all existing expanded scene limits still enforced.
+
+Inclusive behavior endpoints and state cuts must be less than the clip duration; exclusive gate ends may equal it. Too-short clips fail rather than trim or stretch animation. A definition root cannot be parented to an external node, and clips cannot reference one another's owned nodes. Relationships to persistent scene targets remain explicit.
+
+Story gates appear as named events with **end exclusive** in the editor. Moving a gate changes visibility only. To move an entire phase, explicitly bind its gates, motions, values, travel and state cuts to one phase cue, using their local offsets and durations. The supply-phase template demonstrates this, including point cuts with duration zero. Editing gallery clip settings instead re-runs the sequence builder and recalculates following implicit starts.
+
+## Anchor pins (RC-12)
+
+```ts
+const pin = pinComponent({
+  id: "badge-pin",
+  target: "badge",
+  anchor: { node: "detail", point: [220, 30], offset: [24, 0] },
+});
+```
+
+Add the record to `componentData.pins`. It aligns the target's authored origin to the evaluated anchor, converting through the existing world/camera and target-parent transforms once. `space: "node"` is the default; `space: "source"` supports a single-state image with existing crop/fit checks. The offset is in canvas pixels.
+
+Pins own x/y while retaining the target's independent scale, rotation and opacity. Native position motion, travel, followers and effect motion on the target conflict. Parent, pin, travel and effect dependency cycles fail before rendering, as do noninvertible target-parent transforms. A hidden source still has a position; add a gate to the badge if it should disappear too. Pins have no separate timing event and are capped at 32 per scene.
+
+## Fitted text (RC-13)
+
+Add `fitComponentText({ target: "caption", minSize: 32, maxSize: 54 })` to `componentData.textFits`. The node supplies a pinned font, fixed `textBox`, exact text and optional states. After fonts/styles load, the shared preparation chooses the largest integer size that fits **all** supplied states. The same size is used at every frame; source data, node boxes and panels stay unchanged.
+
+Bounds must be integers in `[16,180]`. Text that cannot fit at the minimum fails before preview/export. There is no copy rewriting, truncation or automatic panel resizing. The initial interface supports up to 32 fits and rejects numeric text, duplicate native/shared fits and native story `textLayout` on the same target. Shared state cuts work with fitted text. The gallery's diagnostic disclosure reports resolved sizes. Passage validation uses the same fitting preparation as preview/export.
+
+## Alpha masks (RC-14)
+
+Add `maskComponent({ target: "detail", mask: "aperture", invert: false })` to `componentData.masks`. Both are independent roots. The mask supplies raw alpha in canvas space and is hidden as a visible layer; its RGB color does not affect the result. Normal mode multiplies target alpha by mask alpha; inversion uses `1 - maskAlpha`. A hidden normal mask conceals its target; a hidden inverted mask leaves an otherwise visible target uncovered.
+
+Mask sources can be authored images, rectangles, paths or groups of these. Ordinary transform, opacity, reveal, state and visibility behaviors still apply. Text, generated routes, flows, effects and further mattes in the mask subtree are rejected. The target's complete root output, including supported story flows or commerce effects, is masked before scene compositing. Native commerce keeps its existing after-effects order. Shared masks reuse two scratch surfaces in story rather than allocating one per target.
+
+There is one mask per target, with no self-masking or chains. Shared/native masks together are limited to 16 in commerce; story supports 16 shared masks. Camera policies on each root remain independent. Mask/target gates and state cuts participate in commerce exposure clamping.
+
+## Timing batch examples and packages
+
+The gallery adds `visibility`, `sequence`, `pin`, `text-fit`, `mask`, `detail-sequence` and `supply-sequence`, in all three contexts. It now has 20 examples / 60 context combinations. The two compositions demonstrate all five modules with supplied images and captions. The sequence is editable through first-frame, duration and middle-delay controls; pin offsets, fit bounds and mask inversion have their own controls. Invalid edits preserve the last valid preview and disable export.
+
+`story-timing.passage.json` combines visibility, fitting and a three-phase supply template. Every phase explicitly links its lifetime and internal behaviors to its own cue. Settings, resolved source ZIPs and E7 packages retain v3 data and exact dependencies.
+
+```sh
+pnpm components:prepare
+node --import tsx tests/browser/reusable-components.ts --timing-only
+pnpm test:browser:reusable-timing-package
+```
+
+The [RC-10–14 contract](./reusable-components-timing-batch-plan.md) records scope and acceptance criteria; the [verification record](./review/reusable-components/timing-verification.json) contains measured results. Tangent orientation, rebuilt routes, crossfades, routing, numeric fitting, arbitrary subtree masks and physics remain deferred. Examples remain Experimental.

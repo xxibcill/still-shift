@@ -12,7 +12,8 @@ export type StoryEvent = {
     | "flow"
     | "cut"
     | "value"
-    | "travel";
+    | "travel"
+    | "visibility";
   nodes: string[];
   path: string;
   start: number;
@@ -62,21 +63,23 @@ function editableEvents(scene: StoryScene) {
     const textNode = nodes.some((id) =>
       scene.nodes.some((n) => n.id === id && n.type === "text"),
     );
-    const kind: StoryEvent["kind"] = path.startsWith("componentData/states")
-      ? "cut"
-      : path.startsWith("componentData/travels")
-        ? "travel"
-        : path.startsWith("componentData")
-          ? "value"
-          : path.startsWith("camera")
-            ? "camera"
-            : path.startsWith("flows")
-              ? "flow"
-              : textNode
-                ? "text-reveal"
-                : /moves|entrances|exits|emphasis/.test(path)
-                  ? "choreography"
-                  : "recipe";
+    const kind: StoryEvent["kind"] = path.startsWith("componentData/visibility")
+      ? "visibility"
+      : path.startsWith("componentData/states")
+        ? "cut"
+        : path.startsWith("componentData/travels")
+          ? "travel"
+          : path.startsWith("componentData")
+            ? "value"
+            : path.startsWith("camera")
+              ? "camera"
+              : path.startsWith("flows")
+                ? "flow"
+                : textNode
+                  ? "text-reveal"
+                  : /moves|entrances|exits|emphasis/.test(path)
+                    ? "choreography"
+                    : "recipe";
     if (typeof record.start === "number" && typeof record.end === "number") {
       add({
         id: typeof record.cue === "string" ? record.cue : "@/" + path,
@@ -85,7 +88,8 @@ function editableEvents(scene: StoryScene) {
         path,
         start: record.start,
         end: record.end,
-        endExclusive: /^flows\/\d+\/window$/.test(path),
+        endExclusive:
+          /^flows\/\d+\/window$/.test(path) || kind === "visibility",
         set(start, end) {
           if (end <= start)
             passageError(
@@ -133,12 +137,17 @@ function editableEvents(scene: StoryScene) {
   visit(scene.camera, "camera");
   visit(scene.flows, "flows");
   visit(scene.componentData?.values, "componentData/values");
-  if (scene.componentData?.schemaVersion === "scene-components-2") {
+  if (
+    scene.componentData &&
+    scene.componentData.schemaVersion !== "scene-components-1"
+  ) {
     visit(scene.componentData.travels, "componentData/travels");
     scene.componentData.states.forEach((s, i) =>
       visit(s.cuts, `componentData/states/${i}/cuts`, s),
     );
   }
+  if (scene.componentData?.schemaVersion === "scene-components-3")
+    visit(scene.componentData.visibility, "componentData/visibility");
   const point = (
     record: RecordValue,
     key: string,

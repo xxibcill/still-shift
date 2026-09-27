@@ -1,0 +1,72 @@
+import type { CommerceRenderScene } from "./commerce-scene.ts";
+import type { StoryRenderScene } from "./story-scene.ts";
+
+export function validateComponentRelationships(
+  scene: CommerceRenderScene | StoryRenderScene,
+) {
+  const data = scene.componentData;
+  if (data?.schemaVersion !== "scene-components-3") return;
+  const commerce =
+    scene.schemaVersion === "commerce-scene-1" ? scene : undefined;
+  for (const [name, shared, native, limit] of [
+    ["visibility", data.visibility, commerce?.visibility ?? [], 100],
+    ["text fit", data.textFits, commerce?.textFits ?? [], 32],
+    ["mask", data.masks, commerce?.mattes ?? [], 16],
+  ] as const) {
+    if (shared.length + native.length > limit)
+      throw new Error(
+        `Component ${name} count ${shared.length + native.length} exceeds ${limit}`,
+      );
+    for (const item of shared)
+      if (native.some((n) => n.target === item.target))
+        throw new Error(`Conflicting native/component ${name}: ${item.target}`);
+  }
+  for (const pin of data.pins) {
+    if (
+      ["x", "y"].some(
+        (p) =>
+          scene.tracks[pin.target]?.[p as "x" | "y"]?.length ||
+          data.bindings.some(
+            (b) =>
+              b.target === pin.target &&
+              b.kind === "property" &&
+              b.property === p,
+          ),
+      ) ||
+      data.travels.some((t) => t.target === pin.target) ||
+      Object.hasOwn(scene.followers, pin.target) ||
+      commerce?.effects?.some((e) => "target" in e && e.target === pin.target)
+    )
+      throw new Error("Conflicting component pin ownership: " + pin.target);
+  }
+  const masks = [...data.masks, ...(commerce?.mattes ?? [])];
+  for (const matte of masks) {
+    if (masks.some((m) => m.target === matte.mask))
+      throw new Error("Mask chains are unsupported: " + matte.mask);
+  }
+  for (const matte of data.masks) {
+    const subtree = new Set([matte.mask]);
+    let previous = -1;
+    while (previous !== subtree.size) {
+      previous = subtree.size;
+      for (const n of scene.nodes)
+        if (n.parent && subtree.has(n.parent)) subtree.add(n.id);
+    }
+    if (
+      scene.nodes.some(
+        (n) =>
+          subtree.has(n.id) &&
+          !["group", "image", "rect", "path"].includes(n.type),
+      ) ||
+      commerce?.effects?.some((e) => "target" in e && subtree.has(e.target)) ||
+      commerce?.attachments?.some((a) => subtree.has(a.path)) ||
+      data.annotations.some((a) => subtree.has(a.path)) ||
+      (scene.schemaVersion === "story-scene-1" &&
+        (scene.flows?.some((f) => subtree.has(f.path)) ||
+          scene.connectors?.some((c) => subtree.has(c.path))))
+    )
+      throw new Error(
+        "Mask source requires raw authored image/shape alpha: " + matte.mask,
+      );
+  }
+}

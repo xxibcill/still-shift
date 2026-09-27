@@ -1,3 +1,5 @@
+import { componentVisibilityCuts } from "./component-visibility.ts";
+import { componentStateCuts } from "./component-state.ts";
 import type { ComponentAnchor } from "../../scene-contract/src/component-data.ts";
 import type { PreparedPath } from "../../scene-contract/src/prepared.ts";
 import type { CommerceRenderScene } from "./commerce-scene.ts";
@@ -89,6 +91,8 @@ export function validateComponentAnnotations(scene: Scene) {
   const cuts = [
     0,
     scene.frameCount,
+    ...componentVisibilityCuts(scene),
+    ...componentStateCuts(scene),
     ...(commerce?.visibility ?? []).flatMap((v) => [v.start, v.end]),
     ...(commerce?.effects ?? []).flatMap((e) =>
       e.active ? [e.active.start, e.active.end] : [],
