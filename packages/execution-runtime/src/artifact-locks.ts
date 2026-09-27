@@ -6,7 +6,7 @@ import {
   readFile,
   rename,
   rm,
-  stat,
+  lstat,
   writeFile,
   type FileHandle,
 } from "node:fs/promises";
@@ -34,7 +34,7 @@ type ProgressMarker = {
 
 const exists = async (path: string): Promise<boolean> => {
   try {
-    await stat(path);
+    await lstat(path);
     return true;
   } catch (error) {
     if ((error as NodeJS.ErrnoException).code === "ENOENT") return false;
@@ -183,19 +183,24 @@ export const prepareBatchItem = async (
         "Batch item changed after an interrupted render",
         { markerPath },
       );
-    await rm(progress.outputPath, { force: true });
-    await rm(progress.sceneManifestPath, { force: true });
-    await removeInterruptedExportTemps(progress.outputPath);
-    await rm(markerPath, { force: true });
-  } else if (
+  }
+  // A progress marker identifies a request, not the owner of a final path.
+  // A different writer may have created either file after the prior preflight.
+  if (
     (await exists(progress.outputPath)) ||
     (await exists(progress.sceneManifestPath))
   ) {
     throw new AnimationEngineError(
       "OUTPUT_VALIDATION_FAILED",
-      "Batch output exists without a checkpoint or progress marker",
+      previous
+        ? "Uncheckpointed batch output requires inspection before retry"
+        : "Batch output exists without a checkpoint or progress marker",
       { outputPath: progress.outputPath },
     );
+  }
+  if (previous) {
+    await removeInterruptedExportTemps(progress.outputPath);
+    await rm(markerPath, { force: true });
   }
 
   const temporary = `${markerPath}.${randomUUID()}.tmp`;

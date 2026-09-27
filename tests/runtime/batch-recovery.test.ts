@@ -228,6 +228,35 @@ describe("batch interruption recovery", () => {
     }
   });
 
+  it("preserves final outputs beside a matching interrupted marker", async () => {
+    const directory = await mkdtemp(join(tmpdir(), "still-shift-progress-"));
+    try {
+      const outputPath = join(directory, "clip.mp4");
+      const sceneManifestPath = `${outputPath}.scene.json`;
+      const markerPath = join(directory, "clip.in-progress.json");
+      const progress = {
+        requestHash: "request",
+        sourceHash: "source",
+        outputPath,
+        sceneManifestPath,
+      };
+      await writeFile(markerPath, JSON.stringify(progress));
+      await writeFile(outputPath, "competing video");
+      await writeFile(sceneManifestPath, "competing scene");
+
+      await expect(
+        prepareBatchItem(markerPath, progress),
+      ).rejects.toMatchObject({
+        code: "OUTPUT_VALIDATION_FAILED",
+      });
+      expect(await readFile(outputPath, "utf8")).toBe("competing video");
+      expect(await readFile(sceneManifestPath, "utf8")).toBe("competing scene");
+      expect(JSON.parse(await readFile(markerPath, "utf8"))).toEqual(progress);
+    } finally {
+      await rm(directory, { recursive: true, force: true });
+    }
+  });
+
   it("removes only temporary exports from the interrupted item", async () => {
     const directory = await mkdtemp(join(tmpdir(), "still-shift-orphan-"));
     try {

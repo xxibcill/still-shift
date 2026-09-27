@@ -295,13 +295,9 @@ const runItem = async (
     try {
       result = await engine.animate(request);
     } catch (error) {
-      // The item was handled as a failure, so its marker no longer represents
-      // an interrupted render. The paths were reserved by prepareBatchItem.
-      await Promise.all([
-        rm(request.outputPath, { force: true }),
-        rm(`${request.outputPath}.scene.json`, { force: true }),
-        rm(progressPath, { force: true }),
-      ]);
+      // The exporter rolls back its own files. The progress marker does not
+      // establish ownership of either final path, so leave those paths alone.
+      await rm(progressPath, { force: true });
       throw error;
     }
     await atomicJson(checkpointPath, {
