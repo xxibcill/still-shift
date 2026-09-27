@@ -38,7 +38,7 @@ export type LayerTrack = {
   end: number;
   path: string;
 };
-export type CompiledMotionCraft = { layers: LayerTrack[]; order: string[] };
+export type CompiledMotionCraft = { layers: LayerTrack[] };
 export const layerOrder: MotionLayer[] = [
   "action",
   "response",
@@ -378,42 +378,12 @@ export function compileMotionCraft(scene: Scene): CompiledMotionCraft {
       );
     replaceDrivers.add(driver.target);
   }
-  const order: string[] = [],
-    active: string[] = [];
-  const visit = (id: string) => {
-    if (active.includes(id))
-      motionError("motion-cycle", "/drivers", [...active, id].join(" → "));
-    if (order.includes(id)) return;
-    active.push(id);
-    for (const driver of scene.drivers ?? [])
-      if (driver.target.split(".")[0] === id)
-        for (const source of driver.sum ?? [driver.source ?? driver.signal!])
-          if (source.includes(".")) visit(source.split(".")[0]!);
-    for (const constraint of scene.constraints ?? [])
-      if (constraint.target === id) {
-        const source =
-          "surface" in constraint
-            ? constraint.surface
-            : "anchor" in constraint
-              ? constraint.anchor
-              : "toward" in constraint
-                ? constraint.toward
-                : "path" in constraint
-                  ? constraint.path
-                  : undefined;
-        if (source) visit(source);
-      }
-    active.pop();
-    order.push(id);
-  };
-  scene.nodes.forEach((n) => visit(n.id));
   return {
     layers: layers.sort(
       (a, b) =>
         layerOrder.indexOf(a.layer) - layerOrder.indexOf(b.layer) ||
         a.start - b.start,
     ),
-    order,
   };
 }
 
