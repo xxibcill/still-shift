@@ -1,0 +1,1105 @@
+{
+  "title": "Reusable components · story",
+  "fps": 24,
+  "width": 1920,
+  "height": 1080,
+  "background": "#F2EDE3",
+  "assets": [
+    {
+      "id": "house",
+      "path": "../../../assets/story-motion/art/house.svg",
+      "sha256": "sha256:a8fa4eff374ba974770317dd483ca7b2e5b8d1f0bd7a9224ada091db42542a60",
+      "width": 600,
+      "height": 440
+    }
+  ],
+  "fonts": [
+    {
+      "id": "commerce-font",
+      "path": "../../../assets/ecommerce-motion/fonts/noto-sans-thai.ttf",
+      "sha256": "sha256:5a1c559bb539583c8a1fd99d1c5b9491e5e14478c9cd2bd0970d5c3096cc9ef8",
+      "weight": "400"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "heading",
+      "x": 112,
+      "y": 85,
+      "width": 1680,
+      "height": 100,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "text",
+      "text": "Two households. Shared building blocks.",
+      "fontSize": 60,
+      "color": "#233B32",
+      "weight": "normal",
+      "font": "sans-serif",
+      "fontAsset": "commerce-font",
+      "textBox": {
+        "locale": "en",
+        "maxLines": 1,
+        "lineHeight": 1.25
+      },
+      "align": "left"
+    },
+    {
+      "id": "house-a",
+      "x": 370,
+      "y": 265,
+      "width": 320,
+      "height": 235,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "group",
+      "clip": false
+    },
+    {
+      "id": "house-art-a",
+      "parent": "house-a",
+      "x": 0,
+      "y": 0,
+      "width": 320,
+      "height": 235,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "image",
+      "states": [
+        {
+          "asset": "house"
+        }
+      ],
+      "fit": "contain"
+    },
+    {
+      "id": "house-b",
+      "x": 1210,
+      "y": 265,
+      "width": 320,
+      "height": 235,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "group",
+      "clip": false
+    },
+    {
+      "id": "house-art-b",
+      "parent": "house-b",
+      "x": 0,
+      "y": 0,
+      "width": 320,
+      "height": 235,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "image",
+      "states": [
+        {
+          "asset": "house"
+        }
+      ],
+      "fit": "contain"
+    },
+    {
+      "id": "pressure-a",
+      "x": 220,
+      "y": 355,
+      "width": 95,
+      "height": 44,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "rect",
+      "fill": "#477D65",
+      "lineWidth": 0,
+      "radius": 0
+    },
+    {
+      "id": "pressure-b",
+      "x": 1580,
+      "y": 355,
+      "width": 95,
+      "height": 44,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "rect",
+      "fill": "#A65E46",
+      "lineWidth": 0,
+      "radius": 0
+    },
+    {
+      "id": "room",
+      "x": 310,
+      "y": 530,
+      "width": 440,
+      "height": 75,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "text",
+      "text": "More room",
+      "fontSize": 42,
+      "color": "#233B32",
+      "weight": "normal",
+      "font": "sans-serif",
+      "fontAsset": "commerce-font",
+      "textBox": {
+        "locale": "en",
+        "maxLines": 1,
+        "lineHeight": 1.25
+      },
+      "align": "center"
+    },
+    {
+      "id": "strained",
+      "x": 1150,
+      "y": 530,
+      "width": 440,
+      "height": 75,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "text",
+      "text": "Less room",
+      "fontSize": 42,
+      "color": "#233B32",
+      "weight": "normal",
+      "font": "sans-serif",
+      "fontAsset": "commerce-font",
+      "textBox": {
+        "locale": "en",
+        "maxLines": 1,
+        "lineHeight": 1.25
+      },
+      "align": "center"
+    },
+    {
+      "id": "phase1__detail",
+      "x": 150,
+      "y": 690,
+      "width": 220,
+      "height": 190,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0, 0],
+      "type": "group",
+      "clip": false
+    },
+    {
+      "id": "phase1__paper",
+      "parent": "phase1__detail",
+      "x": 0,
+      "y": 0,
+      "width": 220,
+      "height": 190,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "rect",
+      "fill": "#E5E0D4",
+      "lineWidth": 0,
+      "radius": 10
+    },
+    {
+      "id": "phase1__image",
+      "parent": "phase1__detail",
+      "x": 10,
+      "y": 10,
+      "width": 200,
+      "height": 170,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "image",
+      "states": [
+        {
+          "asset": "house"
+        },
+        {
+          "asset": "house",
+          "crop": [90, 44, 420, 308]
+        }
+      ],
+      "fit": "contain"
+    },
+    {
+      "id": "phase1__route",
+      "parent": "phase1__detail",
+      "x": 15,
+      "y": 140,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "path",
+      "points": [
+        [0, 0],
+        [60, -35],
+        [150, 0]
+      ],
+      "stroke": "#477D65",
+      "lineWidth": 6,
+      "gapAt": 0.6,
+      "gapSize": 0.1
+    },
+    {
+      "id": "phase1__resource",
+      "parent": "phase1__detail",
+      "x": 0,
+      "y": 0,
+      "width": 12,
+      "height": 12,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "rect",
+      "fill": "#AA5A44",
+      "lineWidth": 0,
+      "radius": 6
+    },
+    {
+      "id": "phase1__badge",
+      "x": 394,
+      "y": 720,
+      "width": 220,
+      "height": 100,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0, 0],
+      "type": "text",
+      "text": "Phase 1",
+      "fontSize": 42,
+      "color": "#477D65",
+      "weight": "normal",
+      "font": "sans-serif",
+      "fontAsset": "commerce-font",
+      "textBox": {
+        "locale": "en",
+        "maxLines": 2,
+        "lineHeight": 1.2
+      },
+      "align": "left"
+    },
+    {
+      "id": "phase1__caption",
+      "x": 150,
+      "y": 910,
+      "width": 480,
+      "height": 110,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0, 0],
+      "type": "text",
+      "text": "Phase 1 · the shared route",
+      "states": ["Phase 1 · the shared route", "เส้นทางร่วมกัน · shared route"],
+      "fontSize": 54,
+      "color": "#233B32",
+      "weight": "normal",
+      "font": "sans-serif",
+      "fontAsset": "commerce-font",
+      "textBox": {
+        "locale": "th",
+        "maxLines": 2,
+        "lineHeight": 1.2
+      },
+      "align": "left"
+    },
+    {
+      "id": "phase1__mask",
+      "x": 150,
+      "y": 690,
+      "width": 220,
+      "height": 190,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0, 0],
+      "type": "rect",
+      "fill": "#8F2FE0",
+      "lineWidth": 0,
+      "radius": 45
+    },
+    {
+      "id": "phase2__detail",
+      "x": 700,
+      "y": 690,
+      "width": 220,
+      "height": 190,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0, 0],
+      "type": "group",
+      "clip": false
+    },
+    {
+      "id": "phase2__paper",
+      "parent": "phase2__detail",
+      "x": 0,
+      "y": 0,
+      "width": 220,
+      "height": 190,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "rect",
+      "fill": "#E5E0D4",
+      "lineWidth": 0,
+      "radius": 10
+    },
+    {
+      "id": "phase2__image",
+      "parent": "phase2__detail",
+      "x": 10,
+      "y": 10,
+      "width": 200,
+      "height": 170,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "image",
+      "states": [
+        {
+          "asset": "house"
+        },
+        {
+          "asset": "house",
+          "crop": [90, 44, 420, 308]
+        }
+      ],
+      "fit": "contain"
+    },
+    {
+      "id": "phase2__route",
+      "parent": "phase2__detail",
+      "x": 15,
+      "y": 140,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "path",
+      "points": [
+        [0, 0],
+        [60, -35],
+        [150, 0]
+      ],
+      "stroke": "#477D65",
+      "lineWidth": 6,
+      "gapAt": 0.6,
+      "gapSize": 0.1
+    },
+    {
+      "id": "phase2__resource",
+      "parent": "phase2__detail",
+      "x": 0,
+      "y": 0,
+      "width": 12,
+      "height": 12,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "rect",
+      "fill": "#AA5A44",
+      "lineWidth": 0,
+      "radius": 6
+    },
+    {
+      "id": "phase2__badge",
+      "x": 944,
+      "y": 720,
+      "width": 220,
+      "height": 100,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0, 0],
+      "type": "text",
+      "text": "Phase 2",
+      "fontSize": 42,
+      "color": "#477D65",
+      "weight": "normal",
+      "font": "sans-serif",
+      "fontAsset": "commerce-font",
+      "textBox": {
+        "locale": "en",
+        "maxLines": 2,
+        "lineHeight": 1.2
+      },
+      "align": "left"
+    },
+    {
+      "id": "phase2__caption",
+      "x": 700,
+      "y": 910,
+      "width": 480,
+      "height": 110,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0, 0],
+      "type": "text",
+      "text": "A closer look at the supplied detail",
+      "states": [
+        "A closer look at the supplied detail",
+        "เส้นทางร่วมกัน · shared route"
+      ],
+      "fontSize": 54,
+      "color": "#233B32",
+      "weight": "normal",
+      "font": "sans-serif",
+      "fontAsset": "commerce-font",
+      "textBox": {
+        "locale": "th",
+        "maxLines": 2,
+        "lineHeight": 1.2
+      },
+      "align": "left"
+    },
+    {
+      "id": "phase2__mask",
+      "x": 700,
+      "y": 690,
+      "width": 220,
+      "height": 190,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0, 0],
+      "type": "rect",
+      "fill": "#8F2FE0",
+      "lineWidth": 0,
+      "radius": 45
+    },
+    {
+      "id": "phase3__detail",
+      "x": 1250,
+      "y": 690,
+      "width": 220,
+      "height": 190,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0, 0],
+      "type": "group",
+      "clip": false
+    },
+    {
+      "id": "phase3__paper",
+      "parent": "phase3__detail",
+      "x": 0,
+      "y": 0,
+      "width": 220,
+      "height": 190,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "rect",
+      "fill": "#E5E0D4",
+      "lineWidth": 0,
+      "radius": 10
+    },
+    {
+      "id": "phase3__image",
+      "parent": "phase3__detail",
+      "x": 10,
+      "y": 10,
+      "width": 200,
+      "height": 170,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "image",
+      "states": [
+        {
+          "asset": "house"
+        },
+        {
+          "asset": "house",
+          "crop": [90, 44, 420, 308]
+        }
+      ],
+      "fit": "contain"
+    },
+    {
+      "id": "phase3__route",
+      "parent": "phase3__detail",
+      "x": 15,
+      "y": 140,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "path",
+      "points": [
+        [0, 0],
+        [60, -35],
+        [150, 0]
+      ],
+      "stroke": "#477D65",
+      "lineWidth": 6,
+      "gapAt": 0.6,
+      "gapSize": 0.1
+    },
+    {
+      "id": "phase3__resource",
+      "parent": "phase3__detail",
+      "x": 0,
+      "y": 0,
+      "width": 12,
+      "height": 12,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "rect",
+      "fill": "#AA5A44",
+      "lineWidth": 0,
+      "radius": 6
+    },
+    {
+      "id": "phase3__badge",
+      "x": 1494,
+      "y": 720,
+      "width": 220,
+      "height": 100,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0, 0],
+      "type": "text",
+      "text": "Phase 3",
+      "fontSize": 42,
+      "color": "#477D65",
+      "weight": "normal",
+      "font": "sans-serif",
+      "fontAsset": "commerce-font",
+      "textBox": {
+        "locale": "en",
+        "maxLines": 2,
+        "lineHeight": 1.2
+      },
+      "align": "left"
+    },
+    {
+      "id": "phase3__caption",
+      "x": 1250,
+      "y": 910,
+      "width": 480,
+      "height": 110,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0, 0],
+      "type": "text",
+      "text": "Phase 3 · the shared route",
+      "states": ["Phase 3 · the shared route", "เส้นทางร่วมกัน · shared route"],
+      "fontSize": 54,
+      "color": "#233B32",
+      "weight": "normal",
+      "font": "sans-serif",
+      "fontAsset": "commerce-font",
+      "textBox": {
+        "locale": "th",
+        "maxLines": 2,
+        "lineHeight": 1.2
+      },
+      "align": "left"
+    },
+    {
+      "id": "phase3__mask",
+      "x": 1250,
+      "y": 690,
+      "width": 220,
+      "height": 190,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0, 0],
+      "type": "rect",
+      "fill": "#8F2FE0",
+      "lineWidth": 0,
+      "radius": 45
+    }
+  ],
+  "provenance": "Original code-authored symbolic editorial illustrations for reusable motion studies. Layered Chronicle palette and typography. No selected S01E01 image is modified; these are explanatory fixtures, not authentic evidence or a finished episode.",
+  "schemaVersion": "story-scene-1",
+  "componentData": {
+    "schemaVersion": "scene-components-3",
+    "annotations": [],
+    "values": [
+      {
+        "id": "phase1__aperture",
+        "range": [0, 1],
+        "from": 0.2,
+        "to": 1,
+        "window": {
+          "start": 12,
+          "end": 47,
+          "easing": "in-out-sine",
+          "cue": "phase1__aperture"
+        }
+      },
+      {
+        "id": "phase2__aperture",
+        "range": [0, 1],
+        "from": 0.2,
+        "to": 1,
+        "window": {
+          "start": 72,
+          "end": 107,
+          "easing": "in-out-sine",
+          "cue": "phase2__aperture"
+        }
+      },
+      {
+        "id": "phase3__aperture",
+        "range": [0, 1],
+        "from": 0.2,
+        "to": 1,
+        "window": {
+          "start": 120,
+          "end": 155,
+          "easing": "in-out-sine",
+          "cue": "phase3__aperture"
+        }
+      }
+    ],
+    "bindings": [
+      {
+        "kind": "property",
+        "value": "phase1__aperture",
+        "target": "phase1__mask",
+        "property": "reveal",
+        "output": [0, 1]
+      },
+      {
+        "kind": "property",
+        "value": "phase2__aperture",
+        "target": "phase2__mask",
+        "property": "reveal",
+        "output": [0, 1]
+      },
+      {
+        "kind": "property",
+        "value": "phase3__aperture",
+        "target": "phase3__mask",
+        "property": "reveal",
+        "output": [0, 1]
+      }
+    ],
+    "states": [
+      {
+        "id": "phase1__crop",
+        "target": "phase1__image",
+        "initial": 0,
+        "cuts": [
+          {
+            "id": "phase1__crop-change",
+            "frame": 36,
+            "state": 1,
+            "ramp": 3
+          }
+        ]
+      },
+      {
+        "id": "phase1__caption-state",
+        "target": "phase1__caption",
+        "initial": 0,
+        "cuts": [
+          {
+            "id": "phase1__caption-change",
+            "frame": 36,
+            "state": 1,
+            "ramp": 3
+          }
+        ]
+      },
+      {
+        "id": "phase2__crop",
+        "target": "phase2__image",
+        "initial": 0,
+        "cuts": [
+          {
+            "id": "phase2__crop-change",
+            "frame": 96,
+            "state": 1,
+            "ramp": 3
+          }
+        ]
+      },
+      {
+        "id": "phase2__caption-state",
+        "target": "phase2__caption",
+        "initial": 0,
+        "cuts": [
+          {
+            "id": "phase2__caption-change",
+            "frame": 96,
+            "state": 1,
+            "ramp": 3
+          }
+        ]
+      },
+      {
+        "id": "phase3__crop",
+        "target": "phase3__image",
+        "initial": 0,
+        "cuts": [
+          {
+            "id": "phase3__crop-change",
+            "frame": 144,
+            "state": 1,
+            "ramp": 3
+          }
+        ]
+      },
+      {
+        "id": "phase3__caption-state",
+        "target": "phase3__caption",
+        "initial": 0,
+        "cuts": [
+          {
+            "id": "phase3__caption-change",
+            "frame": 144,
+            "state": 1,
+            "ramp": 3
+          }
+        ]
+      }
+    ],
+    "travels": [
+      {
+        "id": "phase1__journey",
+        "target": "phase1__resource",
+        "path": "phase1__route",
+        "from": 0,
+        "to": 1,
+        "window": {
+          "start": 12,
+          "end": 47,
+          "easing": "in-out-sine",
+          "cue": "phase1__journey"
+        }
+      },
+      {
+        "id": "phase2__journey",
+        "target": "phase2__resource",
+        "path": "phase2__route",
+        "from": 0,
+        "to": 1,
+        "window": {
+          "start": 72,
+          "end": 107,
+          "easing": "in-out-sine",
+          "cue": "phase2__journey"
+        }
+      },
+      {
+        "id": "phase3__journey",
+        "target": "phase3__resource",
+        "path": "phase3__route",
+        "from": 0,
+        "to": 1,
+        "window": {
+          "start": 120,
+          "end": 155,
+          "easing": "in-out-sine",
+          "cue": "phase3__journey"
+        }
+      }
+    ],
+    "visibility": [
+      {
+        "id": "phase1__lifetime-detail",
+        "target": "phase1__detail",
+        "window": {
+          "start": 12,
+          "end": 60,
+          "cue": "phase1__lifetime-detail"
+        }
+      },
+      {
+        "id": "phase1__lifetime-badge",
+        "target": "phase1__badge",
+        "window": {
+          "start": 12,
+          "end": 60,
+          "cue": "phase1__lifetime-badge"
+        }
+      },
+      {
+        "id": "phase1__lifetime-caption",
+        "target": "phase1__caption",
+        "window": {
+          "start": 12,
+          "end": 60,
+          "cue": "phase1__lifetime-caption"
+        }
+      },
+      {
+        "id": "phase1__lifetime-mask",
+        "target": "phase1__mask",
+        "window": {
+          "start": 12,
+          "end": 60,
+          "cue": "phase1__lifetime-mask"
+        }
+      },
+      {
+        "id": "phase2__lifetime-detail",
+        "target": "phase2__detail",
+        "window": {
+          "start": 72,
+          "end": 120,
+          "cue": "phase2__lifetime-detail"
+        }
+      },
+      {
+        "id": "phase2__lifetime-badge",
+        "target": "phase2__badge",
+        "window": {
+          "start": 72,
+          "end": 120,
+          "cue": "phase2__lifetime-badge"
+        }
+      },
+      {
+        "id": "phase2__lifetime-caption",
+        "target": "phase2__caption",
+        "window": {
+          "start": 72,
+          "end": 120,
+          "cue": "phase2__lifetime-caption"
+        }
+      },
+      {
+        "id": "phase2__lifetime-mask",
+        "target": "phase2__mask",
+        "window": {
+          "start": 72,
+          "end": 120,
+          "cue": "phase2__lifetime-mask"
+        }
+      },
+      {
+        "id": "phase3__lifetime-detail",
+        "target": "phase3__detail",
+        "window": {
+          "start": 120,
+          "end": 168,
+          "cue": "phase3__lifetime-detail"
+        }
+      },
+      {
+        "id": "phase3__lifetime-badge",
+        "target": "phase3__badge",
+        "window": {
+          "start": 120,
+          "end": 168,
+          "cue": "phase3__lifetime-badge"
+        }
+      },
+      {
+        "id": "phase3__lifetime-caption",
+        "target": "phase3__caption",
+        "window": {
+          "start": 120,
+          "end": 168,
+          "cue": "phase3__lifetime-caption"
+        }
+      },
+      {
+        "id": "phase3__lifetime-mask",
+        "target": "phase3__mask",
+        "window": {
+          "start": 120,
+          "end": 168,
+          "cue": "phase3__lifetime-mask"
+        }
+      }
+    ],
+    "pins": [
+      {
+        "id": "phase1__badge-pin",
+        "target": "phase1__badge",
+        "anchor": {
+          "node": "phase1__detail",
+          "point": [220, 30],
+          "space": "node",
+          "offset": [24, 0]
+        }
+      },
+      {
+        "id": "phase2__badge-pin",
+        "target": "phase2__badge",
+        "anchor": {
+          "node": "phase2__detail",
+          "point": [220, 30],
+          "space": "node",
+          "offset": [24, 0]
+        }
+      },
+      {
+        "id": "phase3__badge-pin",
+        "target": "phase3__badge",
+        "anchor": {
+          "node": "phase3__detail",
+          "point": [220, 30],
+          "space": "node",
+          "offset": [24, 0]
+        }
+      }
+    ],
+    "textFits": [
+      {
+        "target": "phase1__caption",
+        "minSize": 32,
+        "maxSize": 54
+      },
+      {
+        "target": "phase2__caption",
+        "minSize": 32,
+        "maxSize": 54
+      },
+      {
+        "target": "phase3__caption",
+        "minSize": 32,
+        "maxSize": 54
+      }
+    ],
+    "masks": [
+      {
+        "target": "phase1__detail",
+        "mask": "phase1__mask",
+        "invert": false
+      },
+      {
+        "target": "phase2__detail",
+        "mask": "phase2__mask",
+        "invert": false
+      },
+      {
+        "target": "phase3__detail",
+        "mask": "phase3__mask",
+        "invert": false
+      }
+    ]
+  },
+  "frameCount": 192,
+  "motionModel": "curves-1",
+  "motionGrammar": "v2",
+  "camera": {
+    "keys": [
+      {
+        "frame": 0,
+        "x": 960,
+        "y": 540,
+        "zoom": 1
+      },
+      {
+        "frame": 191,
+        "x": 980,
+        "y": 540,
+        "zoom": 1.025
+      }
+    ],
+    "depth": {
+      "heading": 0,
+      "room": 0,
+      "strained": 0
+    }
+  },
+  "review": {
+    "essentialText": ["heading", "room", "strained"]
+  },
+  "recipe": {
+    "preset": "unequal_margins",
+    "moves": [
+      {
+        "node": "house-a",
+        "window": {
+          "start": 0,
+          "end": 191,
+          "cue": "house-lift",
+          "easing": "linear"
+        },
+        "to": {
+          "y": 245
+        }
+      },
+      {
+        "node": "phase1__detail",
+        "window": {
+          "start": 12,
+          "end": 47,
+          "cue": "phase1__rise",
+          "easing": "in-out-sine"
+        },
+        "to": {
+          "y": 666
+        }
+      },
+      {
+        "node": "phase2__detail",
+        "window": {
+          "start": 72,
+          "end": 107,
+          "cue": "phase2__rise",
+          "easing": "in-out-sine"
+        },
+        "to": {
+          "y": 666
+        }
+      },
+      {
+        "node": "phase3__detail",
+        "window": {
+          "start": 120,
+          "end": 155,
+          "cue": "phase3__rise",
+          "easing": "in-out-sine"
+        },
+        "to": {
+          "y": 666
+        }
+      }
+    ],
+    "emphasis": [],
+    "households": ["house-a", "house-b"],
+    "reference": "heading",
+    "pressures": [
+      {
+        "node": "pressure-a",
+        "to": [270, 355],
+        "condition": "room"
+      },
+      {
+        "node": "pressure-b",
+        "to": [1540, 355],
+        "condition": "strained"
+      }
+    ],
+    "labels": ["room", "strained"],
+    "strain": {
+      "start": 48,
+      "end": 104,
+      "cue": "shared-strain",
+      "easing": "in-out-quint"
+    },
+    "labelWindows": [
+      {
+        "start": 86,
+        "end": 106,
+        "cue": "more-room",
+        "easing": "out-cubic"
+      },
+      {
+        "start": 98,
+        "end": 120,
+        "cue": "less-room",
+        "easing": "out-cubic"
+      }
+    ]
+  },
+  "connectors": []
+}

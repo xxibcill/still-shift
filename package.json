@@ -83,7 +83,8 @@
     "lint:ts": "eslint .",
     "check:fast": "pnpm schema:check && pnpm check:boundaries && pnpm format:check:ts && pnpm lint:ts && pnpm build && pnpm test:fast",
     "check:runtime": "pnpm toolchain:check && pnpm test:runtime && pnpm test:integration && pnpm test:depth && pnpm test:browser:smoke",
-    "test:browser:lab-session": "node --import tsx tests/browser/lab-session.ts"
+    "test:browser:lab-session": "node --import tsx tests/browser/lab-session.ts",
+    "test:browser:motion-craft": "node --import tsx tests/browser/motion-craft.ts"
   },
   "devDependencies": {
     "@eslint/js": "9.39.5",
