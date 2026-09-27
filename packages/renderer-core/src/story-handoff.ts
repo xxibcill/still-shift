@@ -13,6 +13,7 @@ export function applyStoryHandoff(
   scene: StoryScene,
   previous: StoryScene | undefined,
   handoff: Handoff,
+  previousFrameCount = previous?.frameCount ?? 0,
 ) {
   if (
     handoff.mode !== "continue" &&
@@ -87,7 +88,7 @@ export function applyStoryHandoff(
       const state = evaluatePreparedNode(
         before!,
         source!,
-        previous!.frameCount - 1,
+        previousFrameCount - 1,
       );
       if (handoff.mode === "match") {
         if (!scene.motionModel)
@@ -129,8 +130,8 @@ export function applyStoryHandoff(
       );
     if (
       mapping.mode === "exit" &&
-      evaluatePreparedNode(before!, source!, previous!.frameCount - 1)
-        .opacity !== 0
+      evaluatePreparedNode(before!, source!, previousFrameCount - 1).opacity !==
+        0
     )
       passageError("invalid-exit", "An exiting subject must finish invisible", {
         node: source!.id,
@@ -152,7 +153,10 @@ export function applyStoryHandoff(
         "Incoming camera must start at frame zero",
       );
     Object.assign(first, end);
-    const tangent = storyCameraBoundaryVelocity(previous, "end");
+    const tangent = storyCameraBoundaryVelocity(
+      { ...previous, frameCount: previousFrameCount },
+      "end",
+    );
     scene.camera.startTangent = tangent;
     scene.camera.easeIn = false;
     const actual = storyCameraBoundaryVelocity(scene, "start");
@@ -170,7 +174,7 @@ export function applyStoryHandoff(
     const outgoing = storyCameraTransform(
       previous!,
       mapping.from!,
-      previous!.frameCount - 1,
+      previousFrameCount - 1,
     );
     const incoming = storyCameraTransform(scene, mapping.to!, 0);
     if (

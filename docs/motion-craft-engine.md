@@ -64,7 +64,7 @@ Story scenes can use `effectsVersion: "effects-1"` with motion blur, directional
 
 ## Joins and state ramps
 
-Passages opt in with `transitionModel: "joins-1"`. Incoming beat handoffs can use `overlap`, `crossfade`, `push` or `match`, with `frames`, optional `easing` and push `direction`. The join occupies the first N incoming frames; outgoing imagery extends by holding its last frame. Beat durations, source intervals and narration cues stay fixed. Overlap and crossfade currently share the same opacity blend.
+Passages opt in with `transitionModel: "joins-1"`. Incoming beat handoffs can use `overlap`, `crossfade`, `push` or `match`, with `frames`, optional `easing` and push `direction`. The join occupies the first N incoming frames and renders outgoing scene frames after its nominal beat boundary. To keep an outgoing subject moving through the join, author its motion through beat frame count + N − 1 and give the template enough frames to validate those keys. Motion without authored continuation holds its endpoint. The outgoing render handle does not change beat durations, source intervals or narration cues. Overlap and crossfade currently share the same opacity blend.
 
 Match requires an explicit carried identity, compatible root-node geometry, and motion craft on the incoming scene. It adds a response curve from the outgoing pose difference back to the incoming motion. Join cache keys include both beat identities, transition data, frame rate and join renderer version.
 

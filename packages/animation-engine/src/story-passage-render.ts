@@ -150,7 +150,13 @@ async function assembleStoryPassage(
           signal: options.signal,
         }),
       verify: (path) =>
-        verifyVideo(path, beat.frameCount, plan.fps, false, options.signal),
+        verifyVideo(
+          path,
+          beat.scene.frameCount,
+          plan.fps,
+          false,
+          options.signal,
+        ),
     });
     clips.push(clip);
     await options.job.beat(beat.id);
@@ -172,7 +178,8 @@ async function assembleStoryPassage(
       const joinClip = await cachedStoryTransition({
         outgoing: {
           ...clips[index - 1]!,
-          frameCount: selected[index - 1]!.frameCount,
+          frameCount: selected[index - 1]!.scene.frameCount,
+          joinStart: selected[index - 1]!.frameCount,
         },
         incoming: clips[index]!,
         handoff: handoff!,
@@ -187,9 +194,9 @@ async function assembleStoryPassage(
       assemblyInputs.push(joinClip);
       start = handoff!.frames!;
     }
-    if (start) {
+    if (start || beat.scene.frameCount > beat.frameCount) {
       trims.push(
-        `[${index}:v]trim=start_frame=${start},setpts=PTS-STARTPTS[tail${index}];`,
+        `[${index}:v]trim=start_frame=${start}:end_frame=${beat.frameCount},setpts=PTS-STARTPTS[tail${index}];`,
       );
       segments.push(`[tail${index}]`);
     } else segments.push(`[${index}:v]`);

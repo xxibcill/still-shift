@@ -22,27 +22,28 @@ it("keeps passage source and cue boundaries unchanged through cached joins and r
     ).assets[0];
     asset.path = resolve("benchmarks/fixtures/story-motion", asset.path);
     for (const [name, color] of [
-      ["first", "#ff0000"],
+      ["first", "#ffffff"],
       ["second", "#0000ff"],
     ]) {
+      const outgoing = name === "first";
       const scene = {
         schemaVersion: "story-scene-1",
         title: name,
         fps: 24,
-        frameCount: 12,
+        frameCount: outgoing ? 18 : 12,
         width: 1920,
         height: 1080,
-        background: color,
+        background: "#000000",
         assets: [asset],
         motionModel: "curves-1",
         nodes: [
           {
             id: "box",
             type: "rect",
-            x: 0,
-            y: 0,
-            width: 1920,
-            height: 1080,
+            x: outgoing ? 100 : 0,
+            y: outgoing ? 100 : 0,
+            width: outgoing ? 100 : 1920,
+            height: outgoing ? 100 : 1080,
             fill: color,
           },
         ],
@@ -51,8 +52,8 @@ it("keeps passage source and cue boundaries unchanged through cached joins and r
           moves: [
             {
               node: "box",
-              window: { start: 6, end: 11, cue: "mark" },
-              to: { x: 0 },
+              window: { start: 6, end: outgoing ? 17 : 11, cue: "mark" },
+              to: { x: outgoing ? 1000 : 0 },
             },
           ],
           emphasis: [],
@@ -112,6 +113,35 @@ it("keeps passage source and cue boundaries unchanged through cached joins and r
     expect(cached.cache.every((c) => c.reused)).toBe(true);
     expect(ranged.frameCount).toBe(6);
     expect(ranged.sourceStartFrame).toBe(60);
+    expect(passage.beats[0]!.scene.frameCount).toBe(18);
+    const { stdout: rows } = await run(
+      "ffmpeg",
+      [
+        "-v",
+        "error",
+        "-i",
+        join(directory, "fresh", "scenes", "second.join.mp4"),
+        "-vf",
+        "crop=1920:2:0:150",
+        "-frames:v",
+        "3",
+        "-f",
+        "rawvideo",
+        "-pix_fmt",
+        "rgb24",
+        "pipe:1",
+      ],
+      { encoding: "buffer" },
+    );
+    const whiteCenter = (frame: number) => {
+      const xs = Array.from({ length: 1920 }, (_, x) => x).filter((x) => {
+        const offset = frame * 1920 * 2 * 3 + x * 3;
+        return rows[offset]! > 45 && rows[offset + 1]! > 45;
+      });
+      expect(xs.length).toBeGreaterThan(50);
+      return xs.reduce((sum, x) => sum + x, 0) / xs.length;
+    };
+    expect(whiteCenter(2) - whiteCenter(0)).toBeGreaterThan(100);
   } finally {
     await rm(directory, { recursive: true, force: true });
   }

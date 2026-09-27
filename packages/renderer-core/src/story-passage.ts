@@ -8,6 +8,7 @@ import {
 } from "./story-template.ts";
 import { indexStoryEvents, retimeStoryEvents } from "./story-event-index.ts";
 import { applyStoryHandoff } from "./story-handoff.ts";
+import { isStoryTransition } from "./story-transition.ts";
 import {
   PassageError,
   passageDiagnostics,
@@ -51,7 +52,12 @@ function eventWindows(value: unknown, windows = new Map<string, CueWindow>()) {
   return windows;
 }
 
-function applyBeat(beat: PassageBeat, template: StoryScene, start: number) {
+function applyBeat(
+  beat: PassageBeat,
+  template: StoryScene,
+  start: number,
+  outgoingFrames = 0,
+) {
   const scene = structuredClone(template);
   const supported: readonly string[] = PURPOSE_RECIPES[beat.purpose];
   if (
@@ -65,7 +71,7 @@ function applyBeat(beat: PassageBeat, template: StoryScene, start: number) {
         " cannot serve purpose " +
         beat.purpose,
     );
-  scene.frameCount = beat.frameCount;
+  scene.frameCount = beat.frameCount + outgoingFrames;
   scene.episodeStartFrame = start;
   const nodes = new Map(scene.nodes.map((node) => [node.id, node]));
   for (const [id, copy] of Object.entries(beat.copy)) {
@@ -135,8 +141,9 @@ export function compileStoryPassage(
 ) {
   const plan = parsePassagePlan(input);
   let previous: StoryScene | undefined;
+  let previousFrameCount = 0;
   let localStart = 0;
-  const beats = plan.beats.map((beat) => {
+  const beats = plan.beats.map((beat, index) => {
     try {
       const source = templates.get(beat.template);
       if (!source)
@@ -157,15 +164,23 @@ export function compileStoryPassage(
         throw new Error(
           beat.id + ": template fps must match the passage; retime explicitly",
         );
+      const next = plan.beats[index + 1];
+      const outgoingFrames =
+        next && "handoff" in next && isStoryTransition(next.handoff)
+          ? next.handoff.frames!
+          : 0;
       const { scene, windows } = applyBeat(
         beat,
         template,
         plan.sourceStartFrame + localStart,
+        outgoingFrames,
       );
-      if ("handoff" in beat) applyStoryHandoff(scene, previous, beat.handoff);
+      if ("handoff" in beat)
+        applyStoryHandoff(scene, previous, beat.handoff, previousFrameCount);
       const validated = StorySceneSchema.parse(scene);
       Object.assign(scene, validated);
       previous = scene;
+      previousFrameCount = beat.frameCount;
       const cues = beat.cues.map((cue) => ({
         ...cue,
         localFrame: localStart + cue.frame,

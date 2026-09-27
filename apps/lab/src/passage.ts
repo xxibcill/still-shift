@@ -166,7 +166,9 @@ function show(next: number) {
   const handoff = "handoff" in planned ? planned.handoff : undefined;
   if (index && isStoryTransition(handoff) && at.frame < handoff!.frames!) {
     const outgoing = previews[index - 1]!;
-    outgoing.preview.renderFrame(outgoing.scene.frameCount - 1);
+    outgoing.preview.renderFrame(
+      outgoing.scene.frameCount - handoff!.frames! + at.frame,
+    );
     drawStoryTransition(
       canvas.getContext("2d")!,
       outgoing.canvas,

@@ -4,7 +4,12 @@ import { cachedPassageBeat, passageHash, stableJson } from "./passage-cache.ts";
 import { runProcess } from "@still-shift/execution-runtime/subprocess";
 
 export async function cachedStoryTransition(options: {
-  outgoing: { outputPath: string; key: string; frameCount: number };
+  outgoing: {
+    outputPath: string;
+    key: string;
+    frameCount: number;
+    joinStart?: number;
+  };
   incoming: { outputPath: string; key: string };
   handoff: Handoff;
   fps: number;
@@ -25,8 +30,12 @@ export async function cachedStoryTransition(options: {
         (tail, value, i) => `if(eq(${variable},${i}),${value},${tail})`,
         String(values.at(-1)!),
       );
-  const progress = expression(poses.map((p) => p.progress));
-  const source = `[0:v]trim=start_frame=${outgoing.frameCount - 1},setpts=PTS-STARTPTS,tpad=stop_mode=clone:stop_duration=${frames / fps},trim=end_frame=${frames}[a];[1:v]trim=end_frame=${frames},setpts=PTS-STARTPTS[b];`;
+  const progress = expression(
+    poses.map((p) => p.progress),
+    "N-1",
+  );
+  const joinStart = outgoing.joinStart ?? outgoing.frameCount - frames;
+  const source = `[0:v]trim=start_frame=${joinStart}:end_frame=${joinStart + frames},setpts=PTS-STARTPTS[a];[1:v]trim=end_frame=${frames},setpts=PTS-STARTPTS[b];`;
   const filter =
     handoff.mode === "push"
       ? source +
@@ -51,6 +60,7 @@ export async function cachedStoryTransition(options: {
       stableJson({
         version: "story-join-1",
         outgoing: outgoing.key,
+        joinStart,
         incoming: incoming.key,
         handoff,
         fps,
