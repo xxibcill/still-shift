@@ -1,3 +1,4 @@
+import { verifyBehaviorPixels } from "./component-behavior-pixels.ts";
 import assert from "node:assert/strict";
 import { verifyReusableExposure } from "./reusable-component-pixels.ts";
 import { execFile } from "node:child_process";
@@ -26,9 +27,16 @@ const page = await browser.newPage({ viewport: { width: 1440, height: 1000 } }),
 const errors: string[] = [];
 page.on("pageerror", (error) => errors.push(error.message));
 const ready = () =>
-  page.waitForFunction(() =>
-    document.querySelector("#status")?.textContent?.includes(" ready ·"),
-  );
+  page
+    .waitForFunction(() =>
+      document.querySelector("#status")?.textContent?.includes(" ready ·"),
+    )
+    .catch(async (error) => {
+      throw new Error(
+        page.url() + ": " + (await page.locator("#status").textContent()),
+        { cause: error },
+      );
+    });
 const seek = (frame: number) =>
   page.evaluate((value) => {
     const input = document.querySelector<HTMLInputElement>("#scrub")!;
@@ -73,178 +81,275 @@ async function rgb(path: string, frame?: number) {
   return new Uint8Array(stdout);
 }
 const evidence: unknown[] = [];
+const pixelsOnly = process.argv.includes("--pixels-only");
 const isolatedOnly = process.argv.includes("--isolated-only");
-const modes = isolatedOnly ? ["isolated"] : ["commerce", "story", "isolated"];
+const storyOnly = process.argv.includes("--story-only");
+const behaviorsOnly = process.argv.includes("--behaviors-only");
+const examples = behaviorsOnly
+  ? REUSABLE_EXAMPLES.filter((e) =>
+      ["transform", "state", "travel", "tour", "supply"].includes(e.id),
+    )
+  : REUSABLE_EXAMPLES;
+const modes = storyOnly
+  ? ["story"]
+  : isolatedOnly
+    ? ["isolated"]
+    : ["commerce", "story", "isolated"];
 try {
-  for (const mode of modes)
-    for (const example of REUSABLE_EXAMPLES) {
-      await page.goto(
-        origin +
-          "reusable-components.html?mode=" +
-          mode +
-          "&example=" +
-          example.id,
-      );
-      await ready();
-      for (const fps of [24, 30]) {
+  if (!pixelsOnly) {
+    for (const mode of modes)
+      for (const example of examples) {
+        await page.goto(
+          origin +
+            "reusable-components.html?mode=" +
+            mode +
+            "&example=" +
+            example.id,
+        );
+        await ready();
+        for (const fps of [24, 30]) {
+          await page.locator('[name="fps"]').selectOption(String(fps));
+          await apply();
+          await ready();
+          const middle = Math.floor(fps * 4),
+            reference = await seek(middle);
+          for (const frame of [0, fps * 8 - 1, 12, middle - 1])
+            await seek(frame);
+          assert.equal(
+            await seek(middle),
+            reference,
+            mode + " " + example.id + " backward seek at " + fps,
+          );
+        }
+        const fps = mode === "commerce" ? 24 : 30;
         await page.locator('[name="fps"]').selectOption(String(fps));
         await apply();
         await ready();
-        const middle = Math.floor(fps * 4),
-          reference = await seek(middle);
-        for (const frame of [0, fps * 8 - 1, 12, middle - 1]) await seek(frame);
-        assert.equal(
-          await seek(middle),
-          reference,
-          mode + " " + example.id + " backward seek at " + fps,
-        );
-      }
-      const fps = mode === "commerce" ? 24 : 30;
-      await page.locator('[name="fps"]').selectOption(String(fps));
-      await apply();
-      await ready();
-      const name = mode + "-" + example.id;
-      if (!process.argv.includes("--smoke-only")) {
-        const downloaded = page.waitForEvent("download");
-        await page.locator("#source").click();
-        const zip = join(temp, name + ".zip");
-        await (await downloaded).saveAs(zip);
-        const bundle = join(temp, name);
-        await run("unzip", ["-q", zip, "-d", bundle]);
-        const settings = JSON.parse(
-          await readFile(join(bundle, "components.demo.json"), "utf8"),
-        );
-        assert.equal(settings.mode, mode);
-        assert.equal(settings.example, example.id);
-        const scene = JSON.parse(
-          await readFile(join(bundle, "scene.json"), "utf8"),
-        );
-        assert.equal(scene.componentData.schemaVersion, "scene-components-1");
-        const video = join(output, name + ".mp4");
-        for (const suffix of ["", ".scene.json", ".result.json"])
-          await rm(video + suffix, { force: true });
-        const result = await new PreparedAnimationEngine().animate({
-          scenePath: join(bundle, "scene.json"),
-          outputPath: video,
-        });
-        assert.equal(result.frameCount, fps * 8);
-        const parity = [];
-        for (const frame of [
-          0,
-          12,
-          Math.floor(fps * 2.5),
-          fps * 4,
-          fps * 8 - 1,
-        ]) {
-          const path = join(temp, name + "-" + frame + ".png");
-          await writeFile(path, Buffer.from(await seek(frame), "base64"));
-          const score = compareFrameSamples(
-            await rgb(path),
-            await rgb(video, frame),
-            96,
-            54,
+        const name = mode + "-" + example.id;
+        if (!process.argv.includes("--smoke-only")) {
+          const downloaded = page.waitForEvent("download");
+          await page.locator("#source").click();
+          const zip = join(temp, name + ".zip");
+          await (await downloaded).saveAs(zip);
+          const bundle = join(temp, name);
+          await run("unzip", ["-q", zip, "-d", bundle]);
+          const settings = JSON.parse(
+            await readFile(join(bundle, "components.demo.json"), "utf8"),
+          );
+          assert.equal(settings.mode, mode);
+          assert.equal(settings.example, example.id);
+          const scene = JSON.parse(
+            await readFile(join(bundle, "scene.json"), "utf8"),
           );
           assert.equal(
-            score.warning,
-            null,
-            name + " parity " + frame + ": " + JSON.stringify(score),
+            scene.componentData.schemaVersion,
+            settings.schemaVersion === "reusable-demo-2"
+              ? "scene-components-2"
+              : "scene-components-1",
           );
-          parity.push({ frame, ...score });
+          const video = join(output, name + ".mp4");
+          for (const suffix of ["", ".scene.json", ".result.json"])
+            await rm(video + suffix, { force: true });
+          const result = await new PreparedAnimationEngine().animate({
+            scenePath: join(bundle, "scene.json"),
+            outputPath: video,
+          });
+          assert.equal(result.frameCount, fps * 8);
+          const parity = [];
+          const frames =
+            settings.schemaVersion === "reusable-demo-2"
+              ? [
+                  0,
+                  fps - 1,
+                  fps,
+                  fps * 2,
+                  71,
+                  72,
+                  73,
+                  fps * 7,
+                  fps * 7 + 1,
+                  fps * 8 - 1,
+                ]
+              : [0, 12, Math.floor(fps * 2.5), fps * 4, fps * 8 - 1];
+          for (const frame of frames) {
+            const path = join(temp, name + "-" + frame + ".png");
+            await writeFile(path, Buffer.from(await seek(frame), "base64"));
+            const score = compareFrameSamples(
+              await rgb(path),
+              await rgb(video, frame),
+              96,
+              54,
+            );
+            assert.equal(
+              score.warning,
+              null,
+              name + " parity " + frame + ": " + JSON.stringify(score),
+            );
+            parity.push({ frame, ...score });
+          }
+          evidence.push({ name, fps, frameCount: result.frameCount, parity });
         }
-        evidence.push({ name, fps, frameCount: result.frameCount, parity });
+        console.log(
+          name +
+            ": 24/30 fps, direct/backward seeking" +
+            (process.argv.includes("--smoke-only")
+              ? ""
+              : "; source bundle, encode and boundary parity samples passed"),
+        );
       }
-      console.log(
-        name +
-          ": 24/30 fps, direct/backward seeking" +
-          (process.argv.includes("--smoke-only")
-            ? ""
-            : "; source bundle, encode and 5 parity samples passed"),
-      );
-    }
-  await page.goto(
-    origin + "reusable-components.html?mode=story&example=instances",
-  );
-  await ready();
-  await seek(90);
-  const before = await canvas();
-  await page.locator('[name="middleText"]').fill("X".repeat(120));
-  await apply();
-  await page.waitForFunction(() =>
-    document.querySelector("#status")?.textContent?.includes("preserved"),
-  );
-  assert.equal(await canvas(), before, "invalid edit preserves valid pixels");
-  assert.equal(await page.locator("#export").isDisabled(), true);
-  await page.locator('[name="middleText"]').fill("Middle changed");
-  await page.locator('[name="middleDelay"]').fill("9");
-  await apply();
-  await ready();
-  const edited = await canvas();
-  assert.notEqual(edited, before);
-  const saved = page.waitForEvent("download");
-  await page.locator("#save").click();
-  const settingsPath = join(temp, "saved.demo.json");
-  await (await saved).saveAs(settingsPath);
-  await page.locator('[name="middleText"]').fill("Another edit");
-  await apply();
-  await ready();
-  await page.locator("#load").setInputFiles(settingsPath);
-  await ready();
-  assert.equal(await canvas(), edited, "settings reload restores pixels");
-  await page.screenshot({
-    path: join(output, "gallery-desktop.png"),
-    fullPage: true,
-  });
-  await page.setViewportSize({ width: 390, height: 844 });
-  assert.equal(
-    await page.evaluate(
-      () => document.documentElement.scrollWidth <= innerWidth,
-    ),
-    true,
-  );
-  await page.screenshot({
-    path: join(output, "gallery-mobile.png"),
-    fullPage: true,
-  });
-  await page.setViewportSize({ width: 1440, height: 1000 });
-  if (!process.argv.includes("--smoke-only") && !isolatedOnly)
-    for (const mode of ["commerce", "story"]) {
-      await page.goto(
-        origin + "reusable-components.html?mode=" + mode + "&example=value",
-      );
-      await ready();
-      const exported = page.waitForEvent("download", { timeout: 180000 });
-      await page.locator("#export").click();
-      await (await exported).saveAs(join(output, mode + "-ui-export.mp4"));
-      const { stdout } = await run("ffprobe", [
-        "-v",
-        "error",
-        "-select_streams",
-        "v:0",
-        "-show_entries",
-        "stream=nb_frames",
-        "-of",
-        "csv=p=0",
-        join(output, mode + "-ui-export.mp4"),
-      ]);
-      assert.equal(Number(stdout.trim()), 192);
-    }
+    await page.goto(
+      origin + "reusable-components.html?mode=story&example=instances",
+    );
+    await ready();
+    await seek(90);
+    const before = await canvas();
+    await page.locator('[name="middleText"]').fill("X".repeat(120));
+    await apply();
+    await page.waitForFunction(() =>
+      document.querySelector("#status")?.textContent?.includes("preserved"),
+    );
+    assert.equal(await canvas(), before, "invalid edit preserves valid pixels");
+    assert.equal(await page.locator("#export").isDisabled(), true);
+    await page.locator('[name="middleText"]').fill("Middle changed");
+    await page.locator('[name="middleDelay"]').fill("9");
+    await apply();
+    await ready();
+    const edited = await canvas();
+    assert.notEqual(edited, before);
+    const saved = page.waitForEvent("download");
+    await page.locator("#save").click();
+    const settingsPath = join(temp, "saved.demo.json");
+    await (await saved).saveAs(settingsPath);
+    await page.locator('[name="middleText"]').fill("Another edit");
+    await apply();
+    await ready();
+    await page.locator("#load").setInputFiles(settingsPath);
+    await ready();
+    assert.equal(await canvas(), edited, "settings reload restores pixels");
+    await page.screenshot({
+      path: join(output, "gallery-desktop.png"),
+      fullPage: true,
+    });
+    await page.setViewportSize({ width: 390, height: 844 });
+    assert.equal(
+      await page.evaluate(
+        () => document.documentElement.scrollWidth <= innerWidth,
+      ),
+      true,
+    );
+    await page.screenshot({
+      path: join(output, "gallery-mobile.png"),
+      fullPage: true,
+    });
+    await page.setViewportSize({ width: 1440, height: 1000 });
+    if (!process.argv.includes("--smoke-only") && !isolatedOnly)
+      for (const mode of ["commerce", "story"]) {
+        await page.goto(
+          origin + "reusable-components.html?mode=" + mode + "&example=tour",
+        );
+        await ready();
+        const exported = page.waitForEvent("download", { timeout: 180000 });
+        await page.locator("#export").click();
+        await (await exported).saveAs(join(output, mode + "-ui-export.mp4"));
+        const { stdout } = await run("ffprobe", [
+          "-v",
+          "error",
+          "-select_streams",
+          "v:0",
+          "-show_entries",
+          "stream=nb_frames",
+          "-of",
+          "csv=p=0",
+          join(output, mode + "-ui-export.mp4"),
+        ]);
+        assert.equal(Number(stdout.trim()), 192);
+      }
+    await page.goto(
+      origin + "reusable-components.html?mode=commerce&example=tour",
+    );
+    await ready();
+    await seek(0);
+    const tourBefore = await canvas();
+    await page.locator('[name="middleText"]').fill("X".repeat(120));
+    await apply();
+    await page.waitForFunction(() =>
+      document.querySelector("#status")?.textContent?.includes("preserved"),
+    );
+    assert.equal(
+      await canvas(),
+      tourBefore,
+      "every authored caption is measured before accepting a state edit",
+    );
+    await page.locator('[name="middleText"]').fill("Second marker");
+    await page.locator('[name="cutFrame"]').fill("200");
+    await apply();
+    await page.waitForFunction(() =>
+      document.querySelector("#status")?.textContent?.includes("preserved"),
+    );
+    assert.equal(await canvas(), tourBefore);
+    assert.equal(await page.locator("#export").isDisabled(), true);
+    await page.locator('[name="cutFrame"]').fill("96");
+    await page.locator('[name="rotation"]').fill("-120");
+    await page.locator('[name="travelFrom"]').fill("1");
+    await page.locator('[name="travelTo"]').fill("0");
+    await page.locator('[name="middleText"]').fill("Supplied detail");
+    await apply();
+    await ready();
+    const tourEdited = await canvas();
+    assert.notEqual(tourEdited, tourBefore);
+    const tourSaved = page.waitForEvent("download");
+    await page.locator("#save").click();
+    const tourSettings = join(temp, "tour.demo.json");
+    await (await tourSaved).saveAs(tourSettings);
+    await page.locator('[name="rotation"]').fill("12");
+    await apply();
+    await ready();
+    await page.locator("#load").setInputFiles(tourSettings);
+    await ready();
+    assert.equal(
+      await canvas(),
+      tourEdited,
+      "v2 settings reload restores pixels",
+    );
+    await page.screenshot({
+      path: join(output, "behavior-gallery-desktop.png"),
+      fullPage: true,
+    });
+    await page.setViewportSize({ width: 390, height: 844 });
+    assert.equal(
+      await page.evaluate(
+        () => document.documentElement.scrollWidth <= innerWidth,
+      ),
+      true,
+    );
+    await page.screenshot({
+      path: join(output, "behavior-gallery-mobile.png"),
+      fullPage: true,
+    });
+  } else await page.goto(origin + "reusable-components.html");
   assert.deepEqual(errors, []);
   const exposure = await verifyReusableExposure(page, resolve("."));
+  const behaviors = await verifyBehaviorPixels(page, resolve("."));
   await writeFile(
     join(
       output,
-      process.argv.includes("--smoke-only")
-        ? "smoke.json"
-        : isolatedOnly
-          ? "isolated-verification.json"
-          : "verification.json",
+      pixelsOnly
+        ? "behavior-pixels.json"
+        : process.argv.includes("--smoke-only")
+          ? "smoke.json"
+          : storyOnly && behaviorsOnly
+            ? "story-behaviors-verification.json"
+            : isolatedOnly
+              ? "isolated-verification.json"
+              : "verification.json",
     ),
     JSON.stringify(
       {
-        examples: modes.length * REUSABLE_EXAMPLES.length,
+        examples: pixelsOnly ? 0 : modes.length * examples.length,
         clocks: [24, 30],
         errors,
         exposure,
+        behaviors,
         evidence,
       },
       null,

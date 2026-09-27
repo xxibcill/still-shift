@@ -43,3 +43,66 @@ it("packages and relocates editable instances, annotations and numeric bindings"
     await rm(root, { recursive: true, force: true });
   }
 }, 30000);
+
+it("preserves state points and path windows through cue edits, undo/redo and relocation", async () => {
+  const { createPassageEditor } = await import(
+    "../../packages/renderer-core/src/passage-editor.ts"
+  );
+  const root = await mkdtemp(join(tmpdir(), "behavior-workspace-"));
+  try {
+    const original = await readStoryPassage(
+      resolve(
+        "benchmarks/fixtures/reusable-components/story-behaviors.passage.json",
+      ),
+    );
+    const editor = createPassageEditor(original.plan, original.templates);
+    const before = structuredClone(editor.passage.plan);
+    editor.edit((plan) => {
+      plan.beats[3]!.cues[0]!.frame = 96;
+    });
+    for (const id of ["behavior__caption-change", "behavior__image-change"])
+      expect(
+        editor.passage.beats[3]!.events.find((e) => e.id === id),
+      ).toMatchObject({ start: 96, end: 96, kind: "cut" });
+    expect(editor.undo().plan).toEqual(before);
+    expect(
+      editor
+        .redo()
+        .beats[3]!.events.find((e) => e.id === "behavior__caption-change")
+        ?.start,
+    ).toBe(96);
+    expect(() =>
+      editor.edit((plan) => {
+        plan.beats[3]!.cues[0]!.frame = 192;
+      }),
+    ).toThrow();
+    editor.edit((plan) => {
+      if (plan.schemaVersion !== "story-passage-2")
+        throw new Error("authoring plan expected");
+      const beat = plan.beats[3]!;
+      delete beat.bindings["behavior__caption-change"];
+      beat.timing["behavior__caption-change"] = { start: 96, end: 96 };
+    });
+    const edited = editor.passage;
+    await writeStoryWorkspace(join(root, "package"), {
+      ...original,
+      ...edited,
+    });
+    await rename(join(root, "package"), join(root, "moved"));
+    const restored = await readStoryPassage(join(root, "moved/workspace.json"));
+    expect(restored.frameCount).toBe(768);
+    for (let i = 0; i < edited.beats.length; i++) {
+      expect(restored.beats[i]!.scene.componentData).toEqual(
+        edited.beats[i]!.scene.componentData,
+      );
+      expect(indexStoryEvents(restored.beats[i]!.scene)).toEqual(
+        indexStoryEvents(edited.beats[i]!.scene),
+      );
+      expect(passageBeatKey(restored.beats[i]!.scene, "test")).toBe(
+        passageBeatKey(edited.beats[i]!.scene, "test"),
+      );
+    }
+  } finally {
+    await rm(root, { recursive: true, force: true });
+  }
+}, 30000);

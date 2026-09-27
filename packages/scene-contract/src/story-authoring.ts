@@ -52,7 +52,10 @@ export const StoryStyleSchema = z
     easing: MotionEasingSchema.optional(),
   })
   .strict();
-const timing = z.object({ start: frame, end: frame }).strict();
+export const SlotTimingSchema = z
+  .object({ start: frame, end: frame })
+  .strict()
+  .refine((v) => v.end >= v.start, "Event end must not precede start");
 export const StoryTemplateSchema = z
   .object({
     schemaVersion: z.literal("story-template-1"),
@@ -166,6 +169,7 @@ export const StoryAuthoringPlanSchema = z
             ...legacyBeat.shape,
             evidence: legacyBeat.shape.evidence.optional(),
             cues: z.array(legacyBeat.shape.cues.element).max(100),
+            timing: z.record(name, SlotTimingSchema).default({}),
             parameters: z.record(name, z.unknown()).default({}),
             bindings: z.record(name, TimingBindingSchema).default({}),
             handoff: HandoffSchema.default({
@@ -270,7 +274,3 @@ export const SlotRelationshipSchema = z
       .strict(),
   })
   .strict();
-export const SlotTimingSchema = timing.refine(
-  (v) => v.end >= v.start,
-  "Event end must not precede start",
-);

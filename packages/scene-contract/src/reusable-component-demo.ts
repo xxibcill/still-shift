@@ -56,8 +56,43 @@ export const REUSABLE_EXAMPLES = [
     description:
       "One bounded value drives both the number and the bar. Formatting and frame endpoints are explicit.",
   },
+  {
+    id: "transform",
+    title: "Scale, turn and draw",
+    kind: "Behavior",
+    description:
+      "A shared origin keeps the subject steady as it grows and turns. The line draws between explicit endpoints.",
+  },
+  {
+    id: "state",
+    title: "Exact state cuts",
+    kind: "Behavior",
+    description:
+      "An image and caption change at named frames. Each state holds until the next cut.",
+  },
+  {
+    id: "travel",
+    title: "Follow a route",
+    kind: "Behavior",
+    description:
+      "A marker follows an authored route through parent and camera transforms. Reverse the progress to travel back.",
+  },
+  {
+    id: "tour",
+    title: "Product detail tour",
+    kind: "Composition",
+    description:
+      "A separate detail inset, caption cuts and a travelling focus marker share one timed tour.",
+  },
+  {
+    id: "supply",
+    title: "Supply-route change",
+    kind: "Composition",
+    description:
+      "A symbolic route connects a travelling resource marker with exact image and caption changes. An engineering example, not a historical claim.",
+  },
 ] as const;
-export const ReusableDemoSchema = z
+const ReusableDemoV1Schema = z
   .object({
     schemaVersion: z.literal("reusable-demo-1"),
     mode: z.enum(["commerce", "story", "isolated"]).default("commerce"),
@@ -84,4 +119,23 @@ export const ReusableDemoSchema = z
     decimals: z.number().int().min(0).max(2).default(0),
   })
   .strict();
+export const ReusableDemoV2Schema = ReusableDemoV1Schema.extend({
+  schemaVersion: z.literal("reusable-demo-2"),
+  example: z.enum(["transform", "state", "travel", "tour", "supply"]),
+  scale: z.number().positive().max(4).default(1.15),
+  rotation: z.number().finite().min(-720).max(720).default(12),
+  drawFrom: z.number().min(0).max(1).default(0),
+  drawTo: z.number().min(0).max(1).default(1),
+  cutFrame: z.number().int().nonnegative().max(239).default(72),
+  travelFrom: z.number().min(0).max(1).default(0),
+  travelTo: z.number().min(0).max(1).default(1),
+}).strict();
+export const ReusableDemoSchema = z.discriminatedUnion("schemaVersion", [
+  ReusableDemoV1Schema,
+  ReusableDemoV2Schema,
+]);
+export const reusableDemoVersion = (example: string) =>
+  ["transform", "state", "travel", "tour", "supply"].includes(example)
+    ? "reusable-demo-2"
+    : "reusable-demo-1";
 export type ReusableDemo = z.infer<typeof ReusableDemoSchema>;

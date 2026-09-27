@@ -92,8 +92,17 @@ export function instantiateComponent(
   const motionIds = new Set(definition.motions.map((m) => m.id));
   if (motionIds.size !== definition.motions.length)
     throw new Error("Duplicate component motion ID");
-  const cues = [...definition.motions, ...definition.componentData.values].map(
-    (item) => item.window.cue ?? item.id,
+  const behaviors =
+    definition.componentData.schemaVersion === "scene-components-2"
+      ? definition.componentData
+      : undefined;
+  const cues = [
+    ...definition.motions,
+    ...definition.componentData.values,
+    ...(behaviors?.travels ?? []),
+  ].map((item) => item.window.cue ?? item.id);
+  cues.push(
+    ...(behaviors?.states.flatMap((s) => s.cuts.map((c) => c.id)) ?? []),
   );
   if (new Set(cues).size !== cues.length)
     throw new Error("Duplicate component cue ID");
@@ -115,13 +124,34 @@ export function instantiateComponent(
       window: window(m.window, m.window.cue ?? m.id),
       to:
         m.to +
-        (roots.has(m.node) && m.property !== "opacity"
+        (roots.has(m.node) && (m.property === "x" || m.property === "y")
           ? offset[m.property === "x" ? 0 : 1]
           : 0),
     };
   });
   const componentData: ComponentData = {
-    schemaVersion: "scene-components-1",
+    ...(behaviors
+      ? {
+          schemaVersion: "scene-components-2" as const,
+          states: behaviors.states.map((s) => ({
+            ...s,
+            id: `${id}__${s.id}`,
+            target: reference(s.target),
+            cuts: s.cuts.map((c) => ({
+              ...c,
+              id: `${id}__${c.id}`,
+              frame: c.frame + start,
+            })),
+          })),
+          travels: behaviors.travels.map((t) => ({
+            ...t,
+            id: `${id}__${t.id}`,
+            target: reference(t.target),
+            path: reference(t.path),
+            window: window(t.window, t.window.cue ?? t.id),
+          })),
+        }
+      : { schemaVersion: "scene-components-1" as const }),
     annotations: definition.componentData.annotations.map((a) => ({
       ...a,
       path: reference(a.path),
@@ -207,13 +237,24 @@ function validateInstances(
   instances: ComponentInstance[],
 ) {
   validateCommerceClock(clock);
-  for (const instance of instances)
+  for (const instance of instances) {
+    if (
+      instance.componentData.schemaVersion === "scene-components-2" &&
+      instance.componentData.states.some((s) =>
+        s.cuts.some((c) => c.frame >= clock.frameCount),
+      )
+    )
+      throw new Error("Component state cut exceeds timeline");
     for (const motion of [
       ...instance.motions,
       ...instance.componentData.values,
+      ...(instance.componentData.schemaVersion === "scene-components-2"
+        ? instance.componentData.travels
+        : []),
     ])
       if (motion.window.end >= clock.frameCount)
         throw new Error("Component motion exceeds timeline: " + motion.id);
+  }
   if (instances.reduce((count, i) => count + i.nodes.length, 0) > 200)
     throw new Error("Component instances exceed 200 nodes");
 }
@@ -225,8 +266,15 @@ function mergeData(
     ...(base ? [base] : []),
     ...instances.map((i) => i.componentData),
   ];
+  const v2 = parts.filter((p) => p.schemaVersion === "scene-components-2");
   return ComponentDataSchema.parse({
-    schemaVersion: "scene-components-1",
+    ...(v2.length
+      ? {
+          schemaVersion: "scene-components-2",
+          states: v2.flatMap((p) => p.states),
+          travels: v2.flatMap((p) => p.travels),
+        }
+      : { schemaVersion: "scene-components-1" }),
     annotations: parts.flatMap((p) => p.annotations),
     values: parts.flatMap((p) => p.values),
     bindings: parts.flatMap((p) => p.bindings),
@@ -243,14 +291,19 @@ export function addCommerceComponents(
       nodes: i.nodes,
       assets: i.assets,
       fonts: i.fonts,
-      events: i.motions.map((m) => ({
-        node: m.node,
-        property: m.property,
-        start: m.window.start,
-        end: m.window.end,
-        to: m.to,
-        easing: m.window.easing,
-      })),
+      events: i.motions.flatMap((m) =>
+        (m.property === "scale"
+          ? (["scaleX", "scaleY"] as const)
+          : [m.property]
+        ).map((property) => ({
+          node: m.node,
+          property,
+          start: m.window.start,
+          end: m.window.end,
+          to: m.to,
+          easing: m.window.easing,
+        })),
+      ),
     })),
   ]);
   const scene = CommerceSceneSchema.parse({

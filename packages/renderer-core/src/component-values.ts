@@ -1,3 +1,5 @@
+import { validateStateOwnership } from "./component-state.ts";
+import { validateTravelOwnership } from "./component-travel.ts";
 import type {
   ComponentNumberFormat,
   ComponentSceneData,
@@ -152,6 +154,8 @@ export function validateComponentOwnership(
     geometry?: { node: string }[] | undefined;
   },
 ) {
+  validateStateOwnership(scene);
+  validateTravelOwnership(scene);
   for (const binding of scene.componentData?.bindings ?? []) {
     const property = binding.kind === "text" ? "state" : binding.property;
     if (

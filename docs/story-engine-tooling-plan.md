@@ -199,7 +199,7 @@ These are individual local test runs, not a production throughput or cost benchm
 
 The next engineering increment is scoped as E7 below. Broader authoring fixtures for nested continuity and output formats remain separate future work; they are not silently included in E1–E6 or E7.
 
-For shared component authoring, see the completed [RC-01–06 expansion](./reusable-component-expansion-plan.md) and [authoring guide](./reusable-components.md). It adds safe instances, measured layout, repetition, annotations and numeric bindings using the existing story recipe/cue and E7 package paths. RC is a separate project-wide queue, not an additional E milestone.
+For shared component authoring, see the completed [RC-01–06 expansion](./reusable-component-expansion-plan.md) and [authoring guide](./reusable-components.md). It adds safe instances, measured layout, repetition, annotations and numeric bindings using the existing story recipe/cue and E7 package paths. [RC-07–09](./reusable-components-next-atomic-batch-plan.md) additionally supplies shared scale/rotation/draw, exact point-cued state changes and transformed path travel, including template editing and E7 package checks. RC is a separate project-wide queue, not an additional E milestone.
 
 ## E7 — Portable workspace packages (2026-09-27)
 

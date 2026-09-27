@@ -11,6 +11,8 @@ import {
 import { writeStoryWorkspace } from "../../packages/animation-engine/src/story-workspace.ts";
 import { renderStoryPassage } from "../../packages/animation-engine/src/story-passage-render.ts";
 
+const behaviors = process.argv.includes("--behaviors");
+const expectedFrames = behaviors ? 768 : 576;
 const run = promisify(execFile),
   output = resolve("benchmarks/results/reusable-components"),
   temp = await mkdtemp(join(tmpdir(), "shared-component-package-"));
@@ -18,7 +20,9 @@ await mkdir(output, { recursive: true });
 try {
   const source = await readStoryPassage(
     resolve(
-      "benchmarks/fixtures/reusable-components/story-components.passage.json",
+      behaviors
+        ? "benchmarks/fixtures/reusable-components/story-behaviors.passage.json"
+        : "benchmarks/fixtures/reusable-components/story-components.passage.json",
     ),
   );
   const directory = join(temp, "source");
@@ -36,8 +40,8 @@ try {
   const rendered = await renderStoryPassage(moved, restored, undefined, {
     cacheDirectory: join(temp, "fresh-cache"),
   });
-  assert.equal(original.frameCount, 576);
-  assert.equal(rendered.frameCount, 576);
+  assert.equal(original.frameCount, expectedFrames);
+  assert.equal(rendered.frameCount, expectedFrames);
   assert.equal(rendered.cache.filter((c) => c.reused).length, 0);
   const hash = async (video: string) =>
     (
@@ -59,11 +63,16 @@ try {
     after = await hash(rendered.video.path);
   assert.equal(after, before);
   await writeFile(
-    join(output, "package-verification.json"),
+    join(
+      output,
+      behaviors
+        ? "behavior-package-verification.json"
+        : "package-verification.json",
+    ),
     JSON.stringify(
       {
-        frameCount: 576,
-        beats: 3,
+        frameCount: expectedFrames,
+        beats: source.beats.length,
         freshRelocatedCacheReuses: 0,
         decodedHash: before,
         relocatedDecodedHash: after,
@@ -73,7 +82,7 @@ try {
     ) + "\n",
   );
   console.log(
-    "Shared component package: 576 frames match exactly after relocation and fresh rendering.",
+    `Shared component package: ${expectedFrames} frames match exactly after relocation and fresh rendering.`,
   );
 } finally {
   await rm(temp, { recursive: true, force: true });

@@ -1,3 +1,4 @@
+import { componentStateCuts } from "./component-state.ts";
 import { nodeMatrix } from "./node-transform.ts";
 import type { CommerceRenderScene } from "./commerce-scene.ts";
 import type { PreparedNode } from "../../scene-contract/src/prepared.ts";
@@ -408,6 +409,7 @@ export function createCommerceEffectsRenderer(
       const cuts = [
         0,
         scene.frameCount,
+        ...componentStateCuts(scene),
         ...(scene.visibility ?? []).flatMap((v) => [v.start, v.end]),
         ...effects.flatMap((e) =>
           e.active ? [e.active.start, e.active.end] : [],

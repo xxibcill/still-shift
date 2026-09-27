@@ -1,0 +1,101 @@
+{
+  "date": "2026-09-27",
+  "scope": ["RC-07", "RC-08", "RC-09"],
+  "status": "implemented; engineering checks passed; examples remain experimental",
+  "baseline": "bde52d6",
+  "contracts": {
+    "definitions": ["component-1", "component-2"],
+    "resolved": ["scene-components-1", "scene-components-2"],
+    "gallerySettings": ["reusable-demo-1", "reusable-demo-2"],
+    "rendererVersions": {
+      "commerce": "commerce-canvas-0.18.0",
+      "story": "story-canvas-0.17.0"
+    },
+    "legacyFixturesChanged": 0
+  },
+  "unitAndIntegration": {
+    "command": "pnpm exec vitest run tests/unit tests/integration --maxWorkers=1 --no-file-parallelism",
+    "files": 64,
+    "tests": 383,
+    "note": "Sequential execution avoids local Vite dependency-cache contention seen when several standalone browser suites run concurrently."
+  },
+  "gallery": {
+    "examples": 13,
+    "newExamples": ["transform", "state", "travel", "tour", "supply"],
+    "contexts": ["commerce", "story", "isolated"],
+    "previewFrameRates": [24, 30],
+    "encodedExamples": 39,
+    "paritySamples": 270,
+    "parityWarnings": 0,
+    "maximumMeanAbsoluteError": 0.007225853304284676,
+    "maximumEdgeAbsoluteError": 0.002302741413652954,
+    "commands": [
+      "node --import tsx tests/browser/reusable-components.ts",
+      "node --import tsx tests/browser/reusable-components.ts --story-only --behaviors-only"
+    ],
+    "note": "The focused second run replaces the five story behavior results after clearing the household labels in the final composition. Counts refer to unique final examples.",
+    "checks": [
+      "24/30 fps direct and backward seeking",
+      "before/on/after state cuts and motion endpoints in preview/export parity",
+      "source ZIP round trips and fresh MP4 encoding",
+      "commerce and story UI exports with 192 frames",
+      "v1 and v2 settings reload restores identical pixels",
+      "invalid cut and overflowing future caption preserve valid pixels and disable export",
+      "390px layout has no horizontal overflow",
+      "commerce and final story compositions visually inspected"
+    ]
+  },
+  "independentPixels": {
+    "stateExposureSamples": 12,
+    "maximumStateByteDifference": 0,
+    "transformedTravelSamples": 28,
+    "maximumTravelByteDifference": 0,
+    "unrelatedRepeatedInstanceByteDifference": 0,
+    "middleEditChangesPixels": true,
+    "fractionalNumericExposureDifference": 0
+  },
+  "portableWorkspace": {
+    "command": "node --import tsx tests/browser/reusable-component-package.ts --behaviors",
+    "frameCount": 768,
+    "beats": 4,
+    "freshRelocatedCacheReuses": 0,
+    "decodedHash": "SHA256=36bce0029b8ff687b93637b4fba30d4dacc87e314e350024f5b73f46a1d70c99",
+    "relocatedDecodedHash": "SHA256=36bce0029b8ff687b93637b4fba30d4dacc87e314e350024f5b73f46a1d70c99",
+    "checks": [
+      "state points and travel windows survive template parameters, cue edits, undo/redo and relocation",
+      "unlinked absolute point timing survives packaging",
+      "relocated cache identities remain equal",
+      "fresh render uses no source cache and all decoded frames match"
+    ]
+  },
+  "storyEditor": {
+    "checks": [
+      "point event shows one frame and no duration field",
+      "cue edits update both image and caption cuts",
+      "undo/redo restores cue timing",
+      "unlink preserves equal start/end",
+      "v2 absolute timing accepts point events; v1 duration-only reader remains strict"
+    ]
+  },
+  "regressions": {
+    "story": "98 parity comparisons, 14 backward seeks, timing controls, phone layout, 646-frame export and 30fps CLI passed",
+    "commerceEffects": "stationary alpha/color, fractional exposure/foreground occlusion, directional alpha, highlight mask and blur bounds passed",
+    "commerceSpatial": "attachment, matte, crop and text layout pixel checks passed"
+  },
+  "staticChecks": [
+    "TypeScript",
+    "ESLint and Ruff",
+    "Prettier and Ruff formatting",
+    "corpus schema",
+    "pinned toolchain",
+    "git diff --check"
+  ],
+  "limits": [
+    "one shared reveal binding per target; multiple whole-timeline draw bindings do not form a sequence",
+    "40 cuts per schedule, 100 cuts and 32 travellers per scene",
+    "authored fixed polylines only; generated routes and route dependencies through travellers rejected",
+    "target-parent scales must stay positive with bounded easing",
+    "no new production registrations, tangent orientation, shared visibility clips, state crossfades or physics"
+  ],
+  "localArtifacts": "benchmarks/results/reusable-components (ignored videos, pixel/parity reports, screenshots and package hashes)"
+}

@@ -43,3 +43,7 @@ export * from "./component-layout.ts";
 export * from "./component-annotations.ts";
 export * from "./component-presets.ts";
 export * from "./component-values.ts";
+
+export * from "./component-behaviors.ts";
+export * from "./component-state.ts";
+export * from "./component-travel.ts";

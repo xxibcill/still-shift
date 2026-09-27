@@ -1,5 +1,6 @@
 import {
   REUSABLE_EXAMPLES,
+  reusableDemoVersion,
   ReusableDemoSchema,
   type ReusableDemo,
 } from "../../../packages/scene-contract/src/reusable-component-demo.ts";
@@ -77,13 +78,20 @@ function controls() {
   form.querySelectorAll<HTMLElement>("[data-control]").forEach((control) => {
     const kind = control.dataset.control;
     control.hidden =
-      kind === "value"
-        ? example !== "value"
-        : kind === "row"
-          ? !["layout", "stagger"].includes(example)
-          : kind === "markers"
-            ? !markers
-            : !markers && example !== "leader";
+      kind === "transform"
+        ? !["transform", "tour", "supply"].includes(example)
+        : kind === "state"
+          ? !["state", "tour", "supply"].includes(example)
+          : kind === "travel"
+            ? !["travel", "tour", "supply"].includes(example)
+            : kind === "value"
+              ? example !== "value"
+              : kind === "row"
+                ? !["layout", "stagger"].includes(example)
+                : kind === "markers"
+                  ? !markers
+                  : !markers &&
+                    !["leader", "state", "tour", "supply"].includes(example);
   });
   element("examples")
     .querySelectorAll<HTMLButtonElement>("button")
@@ -96,7 +104,20 @@ function controls() {
 }
 function readSettings() {
   return ReusableDemoSchema.parse({
-    schemaVersion: "reusable-demo-1",
+    schemaVersion: reusableDemoVersion(example),
+    ...(reusableDemoVersion(example) === "reusable-demo-2"
+      ? Object.fromEntries(
+          [
+            "scale",
+            "rotation",
+            "drawFrom",
+            "drawTo",
+            "cutFrame",
+            "travelFrom",
+            "travelTo",
+          ].map((key) => [key, Number(field(key).value)]),
+        )
+      : {}),
     example,
     mode: field("mode").value,
     fps: Number(field("fps").value),
@@ -152,6 +173,12 @@ async function update() {
             ? indexStoryEvents(scene)
             : scene.events.filter((e) => e.node.includes("__")),
         values: scene.componentData?.values,
+        ...(scene.componentData?.schemaVersion === "scene-components-2"
+          ? {
+              states: scene.componentData.states,
+              travels: scene.componentData.travels,
+            }
+          : {}),
       },
       null,
       2,
@@ -325,7 +352,7 @@ element("export").addEventListener("click", async () => {
 });
 const params = new URLSearchParams(location.search);
 const initial = ReusableDemoSchema.safeParse({
-  schemaVersion: "reusable-demo-1",
+  schemaVersion: reusableDemoVersion(params.get("example") ?? "instances"),
   ...(params.has("mode") ? { mode: params.get("mode") } : {}),
   ...(params.has("example") ? { example: params.get("example") } : {}),
 });

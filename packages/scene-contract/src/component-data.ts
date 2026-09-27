@@ -90,7 +90,7 @@ export const ComponentValueBindingSchema = z.discriminatedUnion("kind", [
     })
     .strict(),
 ]);
-export const ComponentDataSchema = z
+export const ComponentDataV1Schema = z
   .object({
     schemaVersion: z.literal("scene-components-1"),
     annotations: z.array(ComponentAnnotationSchema).max(40).default([]),
@@ -98,6 +98,50 @@ export const ComponentDataSchema = z
     bindings: z.array(ComponentValueBindingSchema).max(80).default([]),
   })
   .strict();
+export const ComponentStateSchema = z
+  .object({
+    id: ComponentIdSchema,
+    target: ComponentIdSchema,
+    initial: finite.int().nonnegative(),
+    cuts: z
+      .array(
+        z
+          .object({
+            id: ComponentIdSchema,
+            frame: finite.int().nonnegative(),
+            state: finite.int().nonnegative(),
+          })
+          .strict(),
+      )
+      .min(1)
+      .max(40),
+  })
+  .strict();
+export const ComponentTravelSchema = z
+  .object({
+    id: ComponentIdSchema,
+    target: ComponentIdSchema,
+    path: ComponentIdSchema,
+    from: finite.min(0).max(1),
+    to: finite.min(0).max(1),
+    window: ComponentWindowSchema,
+  })
+  .strict()
+  .refine(
+    (t) => t.window.easing !== "out-back-soft",
+    "Path travel requires bounded easing",
+  );
+export const ComponentDataV2Schema = ComponentDataV1Schema.extend({
+  schemaVersion: z.literal("scene-components-2"),
+  states: z.array(ComponentStateSchema).max(100).default([]),
+  travels: z.array(ComponentTravelSchema).max(32).default([]),
+}).strict();
+export const ComponentDataSchema = z.discriminatedUnion("schemaVersion", [
+  ComponentDataV1Schema,
+  ComponentDataV2Schema,
+]);
+export type ComponentState = z.infer<typeof ComponentStateSchema>;
+export type ComponentTravel = z.infer<typeof ComponentTravelSchema>;
 export type ComponentData = z.infer<typeof ComponentDataSchema>;
 export type ComponentAnchor = z.infer<typeof ComponentAnchorSchema>;
 export type ComponentValue = z.infer<typeof ComponentValueSchema>;
@@ -114,6 +158,7 @@ export function validateComponentData(
 ) {
   const data = scene.componentData;
   if (!data) return;
+  validateBehaviorData(scene, fail);
   const nodes = new Map(scene.nodes.map((n) => [n.id, n]));
   const values = new Map(data.values.map((v) => [v.id, v]));
   const paths = new Set(data.annotations.map((a) => a.path));
@@ -196,6 +241,117 @@ export function validateComponentData(
         binding.output.some((v) => v <= 0 || v > 4)
       )
         fail("Numeric scale must stay in (0,4]");
+    }
+  }
+}
+
+function validateBehaviorData(
+  scene: ComponentSceneData,
+  fail: (message: string) => void,
+) {
+  const data = scene.componentData;
+  if (data?.schemaVersion !== "scene-components-2") return;
+  const nodes = new Map(scene.nodes.map((n) => [n.id, n]));
+  const ids = new Set<string>();
+  const cue = (id: string) => {
+    if (ids.has(id)) fail("Duplicate component cue ID: " + id);
+    ids.add(id);
+  };
+  data.values.forEach((v) => cue(v.window.cue ?? v.id));
+  if (
+    new Set(data.states.map((s) => s.id)).size !== data.states.length ||
+    new Set(data.travels.map((t) => t.id)).size !== data.travels.length
+  )
+    fail("Duplicate component behavior ID");
+  const stateTargets = new Set<string>();
+  if (data.states.reduce((count, s) => count + s.cuts.length, 0) > 100)
+    fail("Component state cuts exceed 100 per scene");
+  for (const schedule of data.states) {
+    const node = nodes.get(schedule.target);
+    if (stateTargets.has(schedule.target))
+      fail("Duplicate component state ownership: " + schedule.target);
+    stateTargets.add(schedule.target);
+    if (
+      !node ||
+      (node.type !== "text" && node.type !== "image") ||
+      !node.states?.length
+    ) {
+      fail(
+        "State step requires authored image or text states: " + schedule.target,
+      );
+      continue;
+    }
+    if (
+      node.type === "text" &&
+      (!node.fontAsset || !node.textBox || node.textLayout)
+    )
+      fail("State text requires a pinned, measured text box: " + node.id);
+    if (
+      [schedule.initial, ...schedule.cuts.map((c) => c.state)].some(
+        (i) => i >= node.states!.length,
+      )
+    )
+      fail("Missing component state index: " + node.id);
+    let previous = -1;
+    for (const cut of schedule.cuts) {
+      cue(cut.id);
+      if (cut.frame <= previous)
+        fail(
+          "Component state cuts must be strictly increasing: " + schedule.id,
+        );
+      if (cut.frame >= scene.frameCount)
+        fail("Component state cut exceeds timeline: " + cut.id);
+      previous = cut.frame;
+    }
+  }
+  const travellers = new Set<string>();
+  for (const travel of data.travels) {
+    cue(travel.window.cue ?? travel.id);
+    if (travellers.has(travel.target))
+      fail("Duplicate component travel ownership: " + travel.target);
+    travellers.add(travel.target);
+    if (!nodes.has(travel.target))
+      fail("Missing component travel target: " + travel.target);
+    const path = nodes.get(travel.path);
+    if (path?.type !== "path")
+      fail("Component travel requires a path: " + travel.path);
+    else if (
+      !path.points.some(
+        (p) => p[0] !== path.points[0]![0] || p[1] !== path.points[0]![1],
+      )
+    )
+      fail("Component travel requires nonzero path length: " + travel.path);
+    if (
+      path?.type === "path" &&
+      !Number.isFinite(
+        path.points
+          .slice(1)
+          .reduce(
+            (sum, point, i) =>
+              sum +
+              Math.hypot(
+                point[0] - path.points[i]![0],
+                point[1] - path.points[i]![1],
+              ),
+            0,
+          ),
+      )
+    )
+      fail("Component travel requires finite path length: " + travel.path);
+    if (travel.window.end >= scene.frameCount)
+      fail("Component travel exceeds timeline: " + travel.id);
+  }
+  // A route cannot depend on any traveller, including through its ancestors.
+  for (const travel of data.travels) {
+    let node = nodes.get(travel.path);
+    const seen = new Set<string>();
+    while (node) {
+      if (seen.has(node.id) || travellers.has(node.id)) {
+        fail("Component travel route dependency: " + travel.path);
+        break;
+      }
+      seen.add(node.id);
+      node = node.parent ? nodes.get(node.parent) : undefined;
     }
   }
 }

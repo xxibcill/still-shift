@@ -3,6 +3,7 @@ import { resolve, join } from "node:path";
 import { format } from "prettier";
 import {
   REUSABLE_EXAMPLES,
+  reusableDemoVersion,
   ReusableDemoSchema,
 } from "../packages/scene-contract/src/reusable-component-demo.ts";
 import { buildReusableDemo } from "../packages/renderer-core/src/reusable-component-demo.ts";
@@ -16,7 +17,7 @@ await mkdir(directory, { recursive: true });
 for (const mode of ["commerce", "story", "isolated"] as const)
   for (const example of REUSABLE_EXAMPLES) {
     const demo = ReusableDemoSchema.parse({
-      schemaVersion: "reusable-demo-1",
+      schemaVersion: reusableDemoVersion(example.id),
       mode,
       example: example.id,
       count: example.id === "stagger" ? 5 : 3,
@@ -36,7 +37,9 @@ for (const mode of ["commerce", "story", "isolated"] as const)
         },
       });
   }
-console.log("Prepared 8 reusable examples in isolation, commerce and story.");
+console.log(
+  `Prepared ${REUSABLE_EXAMPLES.length} reusable examples in isolation, commerce and story.`,
+);
 await writeJson("story-components.passage.json", {
   schemaVersion: "story-passage-2",
   id: "shared-components",
@@ -62,5 +65,69 @@ await writeJson("story-components.passage.json", {
         ? { middleLabel: "Middle marker", middleRise: { start: 33, end: 51 } }
         : {},
     bindings: {},
+  })),
+});
+
+const behaviorScene = buildReusableDemo(
+  ReusableDemoSchema.parse({
+    schemaVersion: "reusable-demo-2",
+    example: "supply",
+    mode: "story",
+  }),
+);
+await writeJson("story-supply.template.json", {
+  schemaVersion: "story-template-1",
+  id: "supply-route",
+  scene: behaviorScene,
+  slots: {
+    change: { kind: "timing", event: "behavior__caption-change" },
+    journey: { kind: "timing", event: "behavior__journey" },
+  },
+});
+await writeJson("story-behaviors.passage.json", {
+  schemaVersion: "story-passage-2",
+  id: "shared-behaviors",
+  title: "Shared behavior engineering examples",
+  styleProfile: { schemaVersion: "story-style-1", id: "neutral-test" },
+  contentPolicy: "general",
+  fps: 24,
+  sourceStartFrame: 0,
+  beats: ["transform", "state", "travel", "supply"].map((example) => ({
+    id: example,
+    template:
+      "story-" + example + (example === "supply" ? ".template.json" : ".json"),
+    purpose: "compare",
+    takeaway: "Demonstrate " + example,
+    focus: ["house-a", "house-b"],
+    intensity: "develop",
+    frameCount: 192,
+    cues:
+      example === "supply"
+        ? [
+            {
+              id: "change",
+              frame: 80,
+              phrase: "Route changes",
+              events: ["behavior__image-change", "behavior__caption-change"],
+            },
+          ]
+        : [],
+    parameters:
+      example === "supply" ? { journey: { start: 30, end: 168 } } : {},
+    bindings:
+      example === "supply"
+        ? {
+            "behavior__caption-change": {
+              anchor: { type: "cue", id: "change" },
+              offset: 0,
+              duration: 0,
+            },
+            "behavior__image-change": {
+              anchor: { type: "cue", id: "change" },
+              offset: 0,
+              duration: 0,
+            },
+          }
+        : {},
   })),
 });

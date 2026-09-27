@@ -145,6 +145,95 @@ describe("passage Lab file actions", () => {
     30_000,
   );
 
+  test("shared state cuts expose point controls and preserve cue edits through undo, redo and unlink", async () => {
+    const page = await browser.newPage();
+    page.setDefaultTimeout(10000);
+    try {
+      await page.goto(base + "passage.html");
+      await page.waitForFunction(() =>
+        document.querySelector("#status")?.textContent?.includes("576 frames"),
+      );
+      await page
+        .locator("#plan-path")
+        .fill(
+          resolve(
+            "benchmarks/fixtures/reusable-components/story-behaviors.passage.json",
+          ),
+        );
+      await page.locator("#load-form button").click();
+      await page.waitForFunction(() =>
+        document.querySelector("#status")?.textContent?.includes("768 frames"),
+      );
+      await page.locator("#beat").selectOption("3");
+      assert.equal(
+        await page
+          .getByLabel("behavior__caption-change duration", { exact: true })
+          .count(),
+        0,
+      );
+      assert.equal(
+        await page.getByLabel("change frame", { exact: true }).count(),
+        2,
+      );
+      // The cue and optional timing slot deliberately share their human label; choose the cue group.
+      const input = page
+        .locator("#cues")
+        .getByLabel("change frame", { exact: true });
+      await input.fill("96");
+      await input.press("Tab");
+      await page.waitForFunction(() =>
+        document
+          .querySelector("#bindings")
+          ?.textContent?.includes("behavior__caption-change · frame 96"),
+      );
+      await page.locator("#undo").click();
+      await page.waitForFunction(() =>
+        document
+          .querySelector("#bindings")
+          ?.textContent?.includes("behavior__caption-change · frame 80"),
+      );
+      await page.locator("#redo").click();
+      await page.waitForFunction(() =>
+        document
+          .querySelector("#bindings")
+          ?.textContent?.includes("behavior__caption-change · frame 96"),
+      );
+      await page.getByText("Linked events", { exact: true }).click();
+      await page
+        .getByRole("button", {
+          name: "Unlink behavior__caption-change",
+          exact: true,
+        })
+        .click();
+      await page.waitForFunction(() =>
+        document
+          .querySelector("#bindings")
+          ?.textContent?.includes("Link behavior__caption-change to cue"),
+      );
+      const snapshot = (await page.evaluate(() =>
+        window.passageLab!.snapshot(),
+      )) as {
+        plan: {
+          beats: { timing: Record<string, { start: number; end: number }> }[];
+        };
+      };
+      assert.deepEqual(
+        snapshot.plan.beats[3]!.timing["behavior__caption-change"],
+        { start: 96, end: 96 },
+      );
+    } catch (error) {
+      throw new Error(
+        "Shared state controls: " +
+          (await page.locator("#status").textContent()) +
+          " / " +
+          (await page.locator("#errors").textContent()),
+        { cause: error },
+      );
+    } finally {
+      await page.close();
+    }
+  }, 30000);
+
   test("relative-plan import uses its explicit base directory", async () => {
     const page = await browser.newPage();
     try {

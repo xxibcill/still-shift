@@ -1,3 +1,4 @@
+import { behaviorDemo } from "./component-behavior-demo.ts";
 import commerceFixture from "../../../benchmarks/fixtures/ecommerce-motion/atoms/studio.json" with { type: "json" };
 import storyFixture from "../../../benchmarks/fixtures/story-authoring/comparison-template.json" with { type: "json" };
 import { CommerceSceneSchema } from "../../scene-contract/src/commerce.ts";
@@ -233,6 +234,20 @@ export function buildReusableDemo(input: ReusableDemo) {
     },
   });
   const source = settings.mode === "story" ? story : commerce;
+  if (
+    settings.schemaVersion === "reusable-demo-2" &&
+    source.schemaVersion === "commerce-scene-1"
+  ) {
+    source.nodes = source.nodes.filter((n) => n.id !== "subject-b");
+    source.events = source.events.filter((e) => e.node !== "subject-b");
+  }
+  if (
+    settings.schemaVersion === "reusable-demo-2" &&
+    source.schemaVersion === "story-scene-1"
+  )
+    source.nodes = source.nodes.map((n) =>
+      ["room", "strained"].includes(n.id) ? { ...n, y: 530 } : n,
+    );
   const targets =
     settings.mode === "story"
       ? ["house-a", "house-b"]
@@ -283,6 +298,28 @@ export function buildReusableDemo(input: ReusableDemo) {
         })),
       };
     });
+  } else if (settings.schemaVersion === "reusable-demo-2") {
+    const instance = instantiateComponent(
+      behaviorDemo(settings, font, settings.mode === "story" ? house : product),
+      { id: "behavior", offset: [112, 290] },
+    );
+    instances = [instance];
+    if (settings.example === "tour" || settings.example === "supply")
+      instances.push(
+        instantiateComponent(
+          boundsHighlight({
+            width: 260,
+            height: 260,
+            padding: 10,
+            kind: "outline",
+            color: style.accent,
+          }),
+          {
+            id: "detail-focus",
+            external: { target: instance.exports.subject! },
+          },
+        ),
+      );
   } else if (settings.example === "value") {
     instances = [
       instantiateComponent(

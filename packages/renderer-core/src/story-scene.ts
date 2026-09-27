@@ -13,6 +13,8 @@ import type {
   StoryWindow,
 } from "../../scene-contract/src/story.ts";
 import type { Key, Property, Tracks } from "./prepared-scene.ts";
+import { indexStoryEvents } from "./story-event-index.ts";
+import { validateTravelTransforms } from "./component-travel.ts";
 import { validateComponentOwnership } from "./component-values.ts";
 
 type StoryMotionEventKind =
@@ -36,7 +38,8 @@ export type StoryRenderScene = StoryScene & {
     | "story-canvas-0.13.3"
     | "story-canvas-0.14.0"
     | "story-canvas-0.15.0"
-    | "story-canvas-0.16.0";
+    | "story-canvas-0.16.0"
+    | "story-canvas-0.17.0";
   durationMs: number;
   canvas: { width: number; height: number };
   timeline: { fps: number; durationMs: number; frameCount: number };
@@ -414,6 +417,13 @@ export function compileStoryScene(source: StoryScene): StoryRenderScene {
   }
   validateStoryCameraCoverage(scene);
   validateComponentOwnership(scene);
-  if (input.componentData) scene.rendererVersion = "story-canvas-0.16.0";
+  validateTravelTransforms(scene);
+  if (input.componentData?.schemaVersion === "scene-components-2")
+    indexStoryEvents(input);
+  if (input.componentData)
+    scene.rendererVersion =
+      input.componentData.schemaVersion === "scene-components-2"
+        ? "story-canvas-0.17.0"
+        : "story-canvas-0.16.0";
   return scene;
 }

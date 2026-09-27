@@ -11,7 +11,8 @@ export type StoryEvent = {
     | "text-reveal"
     | "flow"
     | "cut"
-    | "value";
+    | "value"
+    | "travel";
   nodes: string[];
   path: string;
   start: number;
@@ -53,6 +54,7 @@ function editableEvents(scene: StoryScene) {
       record.node,
       record.path,
       owner?.node,
+      owner?.target,
       owner?.path,
       owner?.destination,
       labelNode,
@@ -60,17 +62,21 @@ function editableEvents(scene: StoryScene) {
     const textNode = nodes.some((id) =>
       scene.nodes.some((n) => n.id === id && n.type === "text"),
     );
-    const kind: StoryEvent["kind"] = path.startsWith("componentData")
-      ? "value"
-      : path.startsWith("camera")
-        ? "camera"
-        : path.startsWith("flows")
-          ? "flow"
-          : textNode
-            ? "text-reveal"
-            : /moves|entrances|exits|emphasis/.test(path)
-              ? "choreography"
-              : "recipe";
+    const kind: StoryEvent["kind"] = path.startsWith("componentData/states")
+      ? "cut"
+      : path.startsWith("componentData/travels")
+        ? "travel"
+        : path.startsWith("componentData")
+          ? "value"
+          : path.startsWith("camera")
+            ? "camera"
+            : path.startsWith("flows")
+              ? "flow"
+              : textNode
+                ? "text-reveal"
+                : /moves|entrances|exits|emphasis/.test(path)
+                  ? "choreography"
+                  : "recipe";
     if (typeof record.start === "number" && typeof record.end === "number") {
       add({
         id: typeof record.cue === "string" ? record.cue : "@/" + path,
@@ -97,7 +103,11 @@ function editableEvents(scene: StoryScene) {
     }
     if (typeof record.frame === "number") {
       add({
-        id: "@/" + path,
+        id:
+          path.startsWith("componentData/states") &&
+          typeof record.id === "string"
+            ? record.id
+            : "@/" + path,
         kind,
         nodes,
         path,
@@ -123,6 +133,12 @@ function editableEvents(scene: StoryScene) {
   visit(scene.camera, "camera");
   visit(scene.flows, "flows");
   visit(scene.componentData?.values, "componentData/values");
+  if (scene.componentData?.schemaVersion === "scene-components-2") {
+    visit(scene.componentData.travels, "componentData/travels");
+    scene.componentData.states.forEach((s, i) =>
+      visit(s.cuts, `componentData/states/${i}/cuts`, s),
+    );
+  }
   const point = (
     record: RecordValue,
     key: string,

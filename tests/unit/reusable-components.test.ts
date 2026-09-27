@@ -27,6 +27,7 @@ import {
 import {
   ReusableDemoSchema,
   REUSABLE_EXAMPLES,
+  reusableDemoVersion,
 } from "../../packages/scene-contract/src/reusable-component-demo.ts";
 import { buildReusableDemo } from "../../packages/renderer-core/src/reusable-component-demo.ts";
 import {
@@ -201,7 +202,7 @@ describe("shared reusable components", () => {
         for (const example of REUSABLE_EXAMPLES) {
           const scene = buildReusableDemo(
             ReusableDemoSchema.parse({
-              schemaVersion: "reusable-demo-1",
+              schemaVersion: reusableDemoVersion(example.id),
               mode,
               example: example.id,
               fps,
@@ -262,7 +263,9 @@ describe("shared reusable components", () => {
     });
     const markers = buildReusableDemo(settings);
     expect(markers.nodes.every((n) => n.id.startsWith("marker"))).toBe(true);
-    const leader = buildReusableDemo({ ...settings, example: "leader" });
+    const leader = buildReusableDemo(
+      ReusableDemoSchema.parse({ ...settings, example: "leader" }),
+    );
     expect(leader.nodes.some((n) => n.id === "heading")).toBe(false);
     expect(leader.nodes.some((n) => n.id === "subject-art")).toBe(true);
     expect(leader.nodes.some((n) => n.id === "subject-b")).toBe(false);
@@ -313,6 +316,7 @@ describe("shared reusable components", () => {
   it("rejects expanded limits and overlapping motion ownership", () => {
     const scene = CommerceSceneSchema.parse(commerceFixture),
       part = definition();
+    if (part.schemaVersion !== "component-1") throw new Error("v1 expected");
     part.motions.push({ ...part.motions[0]!, id: "conflict" });
     expect(() =>
       addCommerceComponents(scene, [instantiateComponent(part, { id: "a" })]),

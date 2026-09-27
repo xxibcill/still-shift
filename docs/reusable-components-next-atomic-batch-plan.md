@@ -1,9 +1,9 @@
 # Next atomic batch — motion, state and path travel
 
 - **Date:** 2026-09-27
-- **Status:** Planned; this document does not implement or register new capabilities.
+- **Status:** RC-07–09 implemented together at the owner’s request; see the [guide](./reusable-components.md) and [verification record](./review/reusable-components/behavior-verification.json). Examples remain Experimental.
 - **Baseline:** `bde52d6` — RC-01–06, with shared instances, layout, repetition, annotations, values, gallery and export/package verification.
-- **Recommendation:** Implement RC-07–09 as three bounded behavior modules, followed by two composed proofs. Reuse the current visual atoms and renderer.
+- **Delivery:** Three bounded behavior modules, five gallery examples in isolated/commerce/story views, two composed proofs, and a portable four-beat story workspace. Existing atoms and renderer are reused.
 
 ## 1. First-principles choice
 
@@ -29,7 +29,7 @@ These are local source findings. There is no external library or service depende
 
 ## 3. Queue and two consumers
 
-The helper names below describe proposed interfaces, not currently exported functions.
+The implemented public helpers are `scaleComponent`, `rotateComponent`, `drawComponent`, `stepComponentState` and `travelComponentPath`. The following table preserves the batch contract.
 
 | ID        | Module / kind                                                 | Small interface and ownership                                                                                                      | Commerce consumer                                                                   | Story consumer                                             | Completion behavior                                                                                                                                                    |
 | --------- | ------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- | ---------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -37,7 +37,7 @@ The helper names below describe proposed interfaces, not currently exported func
 | **RC-08** | **State Step** — discrete behavior                            | Target, explicit initial state, ordered `{id, frame, state}` cuts. Owns state selection on one image or text node.                 | Switch a detail inset between supplied crops and synchronize its supplied captions. | Switch a supplied symbolic subject/caption at a named cue. | Exact state on the cut frame, arbitrary/backward seeking, independent instance edits, pinned text measurement and exposure without blending across the cut.            |
 | **RC-09** | **Path Travel** — spatial relationship                        | Target, path handle, from/to progress, window and easing. Owns target x/y and aligns its authored origin to the path point.        | Move a focus marker along an explicitly drawn feature route.                        | Move one resource marker along a supply route.             | Nested transforms and story cameras are applied exactly once. Reverse travel, endpoint holds, fractional commerce samples and dependency errors are deterministic.     |
 
-Both consumers are **planned engineering fixtures**, not evidence of present adoption. Build them using existing assets and pinned fonts. Keep supplied copy and state meaning explicit; do not infer commercial benefits or historical claims.
+Both consumers are implemented **engineering fixtures** using existing assets and pinned fonts. Their supplied crops and symbolic captions demonstrate behavior, with no commercial benefits or historical claims inferred.
 
 ### RC-07 contract
 
@@ -95,7 +95,7 @@ For every module, require an isolated example and both composition consumers. Te
 | Authoring and files  | Invalid edits preserve valid pixels; settings/source reload reproduces output; story template parameters/cues survive edit/undo/redo; relocated packages retain cache identity and freshly decoded frames. |
 | Regression           | Existing RC-01–06 fixtures and legacy story/commerce behavior remain unchanged; run the affected unit/integration/browser suites, build, lint, schema and formatting checks.                               |
 
-No new benchmark result is claimed in this plan. The completed batch's [verification record](./review/reusable-components/verification.json) is the baseline, not proof of future capabilities.
+The [RC-01–06 record](./review/reusable-components/verification.json) remains the baseline. The [RC-07–09 record](./review/reusable-components/behavior-verification.json) contains the commands and measured results for this implementation.
 
 ## 6. Deferred from this batch
 
