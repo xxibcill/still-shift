@@ -434,6 +434,58 @@ describe("shared lifetimes and sequences", () => {
       ]),
     ).toThrow(/clip.*bad|bad.*clip/i);
   });
+  it("reports the clip and expanded count when a consumer limit is crossed", () => {
+    const d = definition();
+    if (d.schemaVersion !== "component-3") throw new Error("v3 expected");
+    d.componentData = ComponentDataV3Schema.parse({
+      schemaVersion: "scene-components-3",
+    });
+    d.motions = [
+      {
+        id: "move-x",
+        node: "body",
+        property: "x",
+        to: 10,
+        window: { start: 0, end: 1, easing: "linear" },
+      },
+      {
+        id: "move-y",
+        node: "body",
+        property: "y",
+        to: 10,
+        window: { start: 0, end: 1, easing: "linear" },
+      },
+    ];
+    const clips = (count: number) =>
+      Array.from({ length: count }, (_, index) => ({
+        id: "phase" + (index + 1),
+        definition: d,
+        duration: 2,
+      }));
+    expect(() =>
+      sequenceComponents({ fps: 24, frameCount: 192 }, clips(21)),
+    ).toThrow(/phase21.*storyMoves count 42 exceeds 40/);
+
+    d.motions.push({
+      id: "grow",
+      node: "body",
+      property: "scale",
+      to: 1.2,
+      window: { start: 0, end: 1, easing: "linear" },
+    });
+    expect(
+      sequenceComponents(
+        { fps: 24, frameCount: 192, consumer: "commerce" },
+        clips(14),
+      ),
+    ).toHaveLength(14);
+    expect(() =>
+      sequenceComponents(
+        { fps: 24, frameCount: 192, consumer: "commerce" },
+        clips(26),
+      ),
+    ).toThrow(/phase26.*commerceEvents count 104 exceeds 100/);
+  });
   it("indexes an exclusive lifetime through the final scene edge", () => {
     const source = sources()[1]!;
     if (source.schemaVersion !== "story-scene-1")

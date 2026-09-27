@@ -150,7 +150,7 @@ Use `component-3` definitions with `scene-components-3` data for the new relatio
 `showComponentDuring({ id, target, window: { start, end, cue? } })` returns a visibility record for an independent scene root. Add it to `componentData.visibility`. Visibility is **half-open**: `[start,end)`, with a one-frame window allowed and `end` allowed to equal `frameCount`. Authored opacity remains active inside the gate; the root and its complete output are absent outside it. Gates do not inherit source visibility through a relationship. There is one gate per root, with a combined native/shared cap of 100 in commerce.
 
 ```ts
-const instances = sequenceComponents(clock, [
+const instances = sequenceComponents({ ...clock, consumer: "story" }, [
   { definition: detail, id: "first", start: 12, duration: 48 },
   { definition: detail, id: "second", duration: 48, offset: [550, 0] },
   {
@@ -164,7 +164,7 @@ const instances = sequenceComponents(clock, [
 const scene = addStoryComponents(storyScene, instances);
 ```
 
-`sequenceComponents` accepts local definitions and returns ordinary instances for either adapter. It shifts every local motion, value, cut, travel and gate once, and supplies a full-duration gate to each ungated root. Existing local gates keep their narrower spans. An omitted start follows the preceding clip's end; an explicit start can create a gap or overlap. Input order remains drawing order. The list is limited to 32 clips, with all existing expanded scene limits still enforced.
+`sequenceComponents` accepts local definitions and returns ordinary instances for either adapter. Set `consumer` to `story` or `commerce` for the corresponding motion limit; omitting it enforces both limits. It shifts every local motion, value, cut, travel and gate once, and supplies a full-duration gate to each ungated root. Existing local gates keep their narrower spans. An omitted start follows the preceding clip's end; an explicit start can create a gap or overlap. Input order remains drawing order. The list is limited to 32 clips. Component-expanded counts are checked at the clip that crosses each limit; the adapters still check totals after combining with a source scene.
 
 Inclusive behavior endpoints and state cuts must be less than the clip duration; exclusive gate ends may equal it. Too-short clips fail rather than trim or stretch animation. A definition root cannot be parented to an external node, and clips cannot reference one another's owned nodes. Relationships to persistent scene targets remain explicit.
 

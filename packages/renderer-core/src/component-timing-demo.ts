@@ -261,7 +261,11 @@ export function timingDemo(
       instantiateComponent(definition(0), { id: "timing", offset: [680, 690] }),
     ];
   return sequenceComponents(
-    { fps: settings.fps, frameCount: settings.fps * 8 },
+    {
+      fps: settings.fps,
+      frameCount: settings.fps * 8,
+      consumer: settings.mode === "story" ? "story" : "commerce",
+    },
     [0, 1, 2].map((index) => ({
       definition: definition(index),
       id: "phase" + (index + 1),

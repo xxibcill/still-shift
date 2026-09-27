@@ -17,10 +17,14 @@ export type ComponentClip = ComponentInstanceOptions & {
   definition: ComponentDefinition;
   duration: number;
 };
+export type ComponentSequenceClock = CommerceClock & {
+  /** Omit to require that the sequence fits both scene consumers. */
+  consumer?: "commerce" | "story";
+};
 
 /** Local definitions are expanded once. Explicit starts can create gaps or overlap. */
 export function sequenceComponents(
-  clock: CommerceClock,
+  clock: ComponentSequenceClock,
   clips: ComponentClip[],
 ) {
   validateCommerceClock(clock);
@@ -31,6 +35,26 @@ export function sequenceComponents(
   )
     throw new Error("Sequence needs 1–32 clips with unique IDs");
   let cursor = 0;
+  const counts = {
+    nodes: 0,
+    commerceEvents: 0,
+    storyMoves: 0,
+    annotations: 0,
+    values: 0,
+    bindings: 0,
+    states: 0,
+    cuts: 0,
+    travels: 0,
+    visibility: 0,
+    pins: 0,
+    textFits: 0,
+    masks: 0,
+  };
+  const add = (key: keyof typeof counts, amount: number, limit: number) => {
+    counts[key] += amount;
+    if (counts[key] > limit)
+      throw new Error(`${key} count ${counts[key]} exceeds ${limit}`);
+  };
   const instances = clips.map((clip) => {
     try {
       const start = clip.start ?? cursor;
@@ -70,7 +94,7 @@ export function sequenceComponents(
             window: { start: 0, end: clip.duration },
           });
       }
-      return instantiateComponent(
+      const instance = instantiateComponent(
         ComponentDefinitionSchema.parse({
           ...definition,
           schemaVersion: "component-3",
@@ -83,6 +107,36 @@ export function sequenceComponents(
           ...(clip.external ? { external: clip.external } : {}),
         },
       );
+      if (instance.componentData.schemaVersion !== "scene-components-3")
+        throw new Error("Sequence requires v3 component data");
+      const expanded = instance.componentData;
+      add("nodes", instance.nodes.length, 200);
+      if (clock.consumer !== "story")
+        add(
+          "commerceEvents",
+          instance.motions.reduce(
+            (count, motion) => count + (motion.property === "scale" ? 2 : 1),
+            0,
+          ),
+          100,
+        );
+      if (clock.consumer !== "commerce")
+        add("storyMoves", instance.motions.length, 40);
+      add("annotations", expanded.annotations.length, 40);
+      add("values", expanded.values.length, 40);
+      add("bindings", expanded.bindings.length, 80);
+      add("states", expanded.states.length, 100);
+      add(
+        "cuts",
+        expanded.states.reduce((count, state) => count + state.cuts.length, 0),
+        100,
+      );
+      add("travels", expanded.travels.length, 32);
+      add("visibility", expanded.visibility.length, 100);
+      add("pins", expanded.pins.length, 32);
+      add("textFits", expanded.textFits.length, 32);
+      add("masks", expanded.masks.length, 16);
+      return instance;
     } catch (error) {
       throw new Error(
         "Sequence clip " +
