@@ -206,7 +206,9 @@ describe("shared reusable components", () => {
               mode,
               example: example.id,
               fps,
-              count: example.id === "stagger" ? 5 : 2,
+              ...(reusableDemoVersion(example.id) === "reusable-demo-1"
+                ? { count: example.id === "stagger" ? 5 : 2 }
+                : {}),
             }),
           );
           expect(
@@ -216,11 +218,35 @@ describe("shared reusable components", () => {
         }
     },
   );
+  it("loads legacy V2/V3 settings without retaining inactive controls", () => {
+    for (const [version, example] of [
+      ["reusable-demo-2", "transform"],
+      ["reusable-demo-3", "visibility"],
+    ] as const) {
+      const legacy = {
+        schemaVersion: version,
+        example,
+        count: 3,
+        gap: 32,
+        stagger: 12,
+        middleDelay: 0,
+        from: 20,
+        to: 80,
+        decimals: 0,
+      };
+      const settings = ReusableDemoSchema.parse(legacy);
+      expect(settings).not.toHaveProperty("count");
+      expect(settings).not.toHaveProperty("from");
+      expect(() => ReusableDemoSchema.parse({ ...legacy, count: 4 })).toThrow();
+    }
+  });
   it("keeps middle edits and cue retiming local to the named instance", () => {
     const settings = ReusableDemoSchema.parse({
       schemaVersion: "reusable-demo-1",
       mode: "story",
     });
+    if (settings.schemaVersion !== "reusable-demo-1")
+      throw new Error("V1 expected");
     const first = StorySceneSchema.parse(buildReusableDemo(settings)),
       changed = StorySceneSchema.parse(
         buildReusableDemo({

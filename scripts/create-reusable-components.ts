@@ -21,7 +21,9 @@ for (const mode of ["commerce", "story", "isolated"] as const)
       schemaVersion: reusableDemoVersion(example.id),
       mode,
       example: example.id,
-      count: example.id === "stagger" ? 5 : 3,
+      ...(reusableDemoVersion(example.id) === "reusable-demo-1"
+        ? { count: example.id === "stagger" ? 5 : 3 }
+        : {}),
     });
     const scene = buildReusableDemo(demo),
       name = mode + "-" + example.id;

@@ -141,34 +141,34 @@ export const REUSABLE_EXAMPLES = [
       "A symbolic route unfolds in three independently cued phases with pinned labels and shaped reveals.",
   },
 ] as const;
-const ReusableDemoV1Schema = z
-  .object({
-    schemaVersion: z.literal("reusable-demo-1"),
-    mode: z.enum(["commerce", "story", "isolated"]).default("commerce"),
-    example: z
-      .enum([
-        "instances",
-        "layout",
-        "stagger",
-        "leader",
-        "outline",
-        "underline",
-        "bracket",
-        "value",
-      ])
-      .default("instances"),
-    fps: z.union([z.literal(24), z.literal(30)]).default(24),
-    count: z.number().int().min(2).max(5).default(3),
-    gap: z.number().finite().min(0).max(200).default(32),
-    stagger: z.number().int().min(0).max(100).default(12),
-    middleDelay: z.number().int().min(0).max(150).default(0),
-    middleText: z.string().min(1).max(120).default("Second marker"),
-    from: z.number().finite().min(-100).max(100).default(20),
-    to: z.number().finite().min(-100).max(100).default(80),
-    decimals: z.number().int().min(0).max(2).default(0),
-  })
-  .strict();
-export const ReusableDemoV2Schema = ReusableDemoV1Schema.extend({
+const SharedDemoFields = z.object({
+  mode: z.enum(["commerce", "story", "isolated"]).default("commerce"),
+  fps: z.union([z.literal(24), z.literal(30)]).default(24),
+  middleText: z.string().min(1).max(120).default("Second marker"),
+});
+const ReusableDemoV1Schema = SharedDemoFields.extend({
+  schemaVersion: z.literal("reusable-demo-1"),
+  example: z
+    .enum([
+      "instances",
+      "layout",
+      "stagger",
+      "leader",
+      "outline",
+      "underline",
+      "bracket",
+      "value",
+    ])
+    .default("instances"),
+  count: z.number().int().min(2).max(5).default(3),
+  gap: z.number().finite().min(0).max(200).default(32),
+  stagger: z.number().int().min(0).max(100).default(12),
+  middleDelay: z.number().int().min(0).max(150).default(0),
+  from: z.number().finite().min(-100).max(100).default(20),
+  to: z.number().finite().min(-100).max(100).default(80),
+  decimals: z.number().int().min(0).max(2).default(0),
+}).strict();
+export const ReusableDemoV2Schema = SharedDemoFields.extend({
   schemaVersion: z.literal("reusable-demo-2"),
   example: z.enum(["transform", "state", "travel", "tour", "supply"]),
   scale: z.number().positive().max(4).default(1.15),
@@ -188,9 +188,10 @@ export const TIMING_EXAMPLES = [
   "detail-sequence",
   "supply-sequence",
 ] as const;
-export const ReusableDemoV3Schema = ReusableDemoV1Schema.extend({
+export const ReusableDemoV3Schema = SharedDemoFields.extend({
   schemaVersion: z.literal("reusable-demo-3"),
   example: z.enum(TIMING_EXAMPLES),
+  middleDelay: z.number().int().min(0).max(150).default(0),
   clipStart: z.number().int().nonnegative().max(239).default(12),
   clipDuration: z.number().int().positive().max(240).default(48),
   anchorX: z.number().finite().min(-200).max(300).default(24),
@@ -199,11 +200,41 @@ export const ReusableDemoV3Schema = ReusableDemoV1Schema.extend({
   maxSize: z.number().int().min(16).max(180).default(54),
   invert: z.boolean().default(false),
 }).strict();
-export const ReusableDemoSchema = z.discriminatedUnion("schemaVersion", [
+const currentDemoSchema = z.discriminatedUnion("schemaVersion", [
   ReusableDemoV1Schema,
   ReusableDemoV2Schema,
   ReusableDemoV3Schema,
 ]);
+const legacyDefaults = ReusableDemoV1Schema.parse({
+  schemaVersion: "reusable-demo-1",
+});
+const legacyFields = [
+  "count",
+  "gap",
+  "stagger",
+  "from",
+  "to",
+  "decimals",
+] as const;
+/** Older saved V2/V3 settings contain unused V1 defaults; canonical output omits them. */
+export const ReusableDemoSchema = z.preprocess((input) => {
+  if (!input || typeof input !== "object" || Array.isArray(input)) return input;
+  const record = input as Record<string, unknown>;
+  if (
+    record.schemaVersion !== "reusable-demo-2" &&
+    record.schemaVersion !== "reusable-demo-3"
+  )
+    return input;
+  const clean = { ...record };
+  for (const field of legacyFields)
+    if (clean[field] === legacyDefaults[field]) delete clean[field];
+  if (
+    record.schemaVersion === "reusable-demo-2" &&
+    clean.middleDelay === legacyDefaults.middleDelay
+  )
+    delete clean.middleDelay;
+  return clean;
+}, currentDemoSchema);
 export const reusableDemoVersion = (example: string) =>
   (TIMING_EXAMPLES as readonly string[]).includes(example)
     ? "reusable-demo-3"

@@ -255,7 +255,10 @@ export function buildReusableDemo(input: ReusableDemo) {
       : ["subject-a", "subject-b"];
   const target = source.nodes.find((n) => n.id === targets[0])!;
   let instances: ComponentInstance[] = [];
-  if (["instances", "layout", "stagger"].includes(settings.example)) {
+  if (
+    settings.schemaVersion === "reusable-demo-1" &&
+    ["instances", "layout", "stagger"].includes(settings.example)
+  ) {
     const count = settings.example === "instances" ? 3 : settings.count;
     const marker = labeledMarker({
       ...style,

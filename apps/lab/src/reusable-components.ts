@@ -124,9 +124,10 @@ function controls() {
     );
 }
 function readSettings() {
+  const version = reusableDemoVersion(example);
   return ReusableDemoSchema.parse({
-    schemaVersion: reusableDemoVersion(example),
-    ...(reusableDemoVersion(example) === "reusable-demo-2"
+    schemaVersion: version,
+    ...(version === "reusable-demo-2"
       ? Object.fromEntries(
           [
             "scale",
@@ -139,7 +140,7 @@ function readSettings() {
           ].map((key) => [key, Number(field(key).value)]),
         )
       : {}),
-    ...(reusableDemoVersion(example) === "reusable-demo-3"
+    ...(version === "reusable-demo-3"
       ? {
           ...Object.fromEntries(
             [
@@ -158,11 +159,21 @@ function readSettings() {
     mode: field("mode").value,
     fps: Number(field("fps").value),
     middleText: field("middleText").value,
-    ...Object.fromEntries(
-      ["count", "gap", "stagger", "middleDelay", "from", "to", "decimals"].map(
-        (key) => [key, Number(field(key).value)],
-      ),
-    ),
+    ...(version === "reusable-demo-1"
+      ? Object.fromEntries(
+          [
+            "count",
+            "gap",
+            "stagger",
+            "middleDelay",
+            "from",
+            "to",
+            "decimals",
+          ].map((key) => [key, Number(field(key).value)]),
+        )
+      : version === "reusable-demo-3"
+        ? { middleDelay: Number(field("middleDelay").value) }
+        : {}),
   });
 }
 function fill(settings: ReusableDemo) {
