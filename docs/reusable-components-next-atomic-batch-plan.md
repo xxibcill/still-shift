@@ -3,6 +3,7 @@
 - **Date:** 2026-09-27
 - **Status:** RC-07–09 implemented together at the owner’s request; see the [guide](./reusable-components.md) and [verification record](./review/reusable-components/behavior-verification.json). Examples remain Experimental.
 - **Baseline:** `bde52d6` — RC-01–06, with shared instances, layout, repetition, annotations, values, gallery and export/package verification.
+- **Implementation commit:** `28c24cb`. The next planned increment is [RC-10–11: visibility and sequences](./reusable-components-timing-batch-plan.md).
 - **Delivery:** Three bounded behavior modules, five gallery examples in isolated/commerce/story views, two composed proofs, and a portable four-beat story workspace. Existing atoms and renderer are reused.
 
 ## 1. First-principles choice
