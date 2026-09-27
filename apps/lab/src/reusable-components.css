@@ -1,0 +1,150 @@
+.shared-workbench {
+  display: grid;
+  grid-template-columns: 260px minmax(0, 1fr);
+  gap: 38px;
+  max-width: 1540px;
+  margin: auto;
+  padding: 32px;
+}
+.shared-workspace {
+  min-width: 0;
+}
+.shared-workbench .library {
+  position: static;
+  height: auto;
+}
+.shared-catalog {
+  display: grid;
+  gap: 8px;
+  margin-top: 28px;
+}
+.shared-catalog button {
+  text-align: left;
+  padding: 14px 16px;
+  background: transparent;
+  color: var(--ink, #24362c);
+  border: 1px solid #d4d8cf;
+}
+.shared-catalog button[aria-pressed="true"] {
+  background: #e3eee5;
+  border-color: #477d65;
+}
+.shared-catalog small {
+  display: block;
+  font-size: 11px;
+  color: #627168;
+  margin-bottom: 5px;
+  letter-spacing: 0.04em;
+}
+.shared-preview {
+  margin-top: 24px;
+  background: #dedbd1;
+  border-radius: 8px;
+  overflow: hidden;
+}
+.shared-preview canvas {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.shared-transport {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 16px;
+}
+.shared-transport input {
+  flex: 1;
+  min-width: 100px;
+  accent-color: #477d65;
+}
+.shared-settings {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+  padding: 24px 0;
+  border-top: 1px solid #d4d8cf;
+}
+.shared-settings label {
+  display: grid;
+  gap: 6px;
+  font-size: 13px;
+}
+.shared-settings input,
+.shared-settings select {
+  min-width: 0;
+  width: 100%;
+  box-sizing: border-box;
+}
+.shared-settings [hidden] {
+  display: none;
+}
+.shared-actions {
+  grid-column: 1/-1;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.shared-load input {
+  max-width: 230px;
+}
+#status {
+  min-height: 24px;
+  font-size: 14px;
+  color: #436050;
+}
+#status[data-error="true"] {
+  color: #9a3927;
+}
+details {
+  border-top: 1px solid #d4d8cf;
+  padding: 16px 0;
+}
+summary {
+  cursor: pointer;
+  font-size: 14px;
+}
+pre {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font-size: 12px;
+}
+@media (max-width: 1000px) {
+  .shared-workbench {
+    grid-template-columns: 210px minmax(0, 1fr);
+    gap: 24px;
+    padding: 24px;
+  }
+  .shared-settings {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 700px) {
+  .shared-workbench {
+    display: block;
+    padding: 20px;
+  }
+  .shared-catalog {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin: 20px 0 32px;
+  }
+  .shared-workspace h2 {
+    font-size: 26px;
+  }
+  .shared-settings {
+    grid-template-columns: 1fr 1fr;
+  }
+  .shared-transport button {
+    padding: 10px;
+  }
+  .shared-transport input {
+    order: 5;
+    flex-basis: 100%;
+  }
+  .masthead {
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+}

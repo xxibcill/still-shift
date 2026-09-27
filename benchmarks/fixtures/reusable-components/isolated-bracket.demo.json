@@ -1,0 +1,14 @@
+{
+  "schemaVersion": "reusable-demo-1",
+  "mode": "isolated",
+  "example": "bracket",
+  "fps": 24,
+  "count": 3,
+  "gap": 32,
+  "stagger": 12,
+  "middleDelay": 0,
+  "middleText": "Second marker",
+  "from": 20,
+  "to": 80,
+  "decimals": 0
+}

@@ -1,0 +1,50 @@
+{
+  "schemaVersion": "story-passage-2",
+  "id": "shared-components",
+  "title": "Shared components · engineering examples",
+  "styleProfile": { "schemaVersion": "story-style-1", "id": "neutral-test" },
+  "contentPolicy": "general",
+  "fps": 24,
+  "sourceStartFrame": 0,
+  "beats": [
+    {
+      "id": "instances",
+      "template": "story-instances.template.json",
+      "purpose": "compare",
+      "takeaway": "Demonstrate reusable instances",
+      "focus": ["house-a", "house-b"],
+      "intensity": "develop",
+      "frameCount": 192,
+      "cues": [],
+      "parameters": {
+        "middleLabel": "Middle marker",
+        "middleRise": { "start": 33, "end": 51 }
+      },
+      "bindings": {}
+    },
+    {
+      "id": "leader",
+      "template": "story-leader.json",
+      "purpose": "compare",
+      "takeaway": "Demonstrate reusable leader",
+      "focus": ["house-a", "house-b"],
+      "intensity": "develop",
+      "frameCount": 192,
+      "cues": [],
+      "parameters": {},
+      "bindings": {}
+    },
+    {
+      "id": "value",
+      "template": "story-value.json",
+      "purpose": "compare",
+      "takeaway": "Demonstrate reusable value",
+      "focus": ["house-a", "house-b"],
+      "intensity": "develop",
+      "frameCount": 192,
+      "cues": [],
+      "parameters": {},
+      "bindings": {}
+    }
+  ]
+}

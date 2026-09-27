@@ -10,7 +10,9 @@ const projectRoot = resolve(import.meta.dirname, "../../..");
 /** Measure authored text with the same pinned fonts and Chromium canvas used by preview/export. */
 export async function validatePassageText(passage: CompiledStoryPassage) {
   const beats = passage.beats.filter((beat) =>
-    beat.scene.nodes.some((node) => node.type === "text" && node.textLayout),
+    beat.scene.nodes.some(
+      (node) => node.type === "text" && (node.textLayout || node.textBox),
+    ),
   );
   if (!beats.length) return;
 

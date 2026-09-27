@@ -199,6 +199,8 @@ These are individual local test runs, not a production throughput or cost benchm
 
 The next engineering increment is scoped as E7 below. Broader authoring fixtures for nested continuity and output formats remain separate future work; they are not silently included in E1–E6 or E7.
 
+For shared component authoring, see the completed [RC-01–06 expansion](./reusable-component-expansion-plan.md) and [authoring guide](./reusable-components.md). It adds safe instances, measured layout, repetition, annotations and numeric bindings using the existing story recipe/cue and E7 package paths. RC is a separate project-wide queue, not an additional E milestone.
+
 ## E7 — Portable workspace packages (2026-09-27)
 
 **Scope:** A separate, versioned directory package containing an editable plan, reusable templates, asset-slot defaults and overrides, pinned fonts, and narration when declared by the plan. A manifest identifies every file by kind, relative path, SHA-256 and byte length. Existing plan and local workspace downloads retain their behavior.

@@ -432,6 +432,10 @@ export function createCommerceEffectsRenderer(
       if (
         !scene.mattes?.length &&
         !scene.attachments?.length &&
+        !scene.componentData?.annotations.length &&
+        !scene.componentData?.bindings.some(
+          (binding) => binding.kind === "text",
+        ) &&
         !animatedImageEffects &&
         roots.every((node) => {
           const current = pose(node, frame);

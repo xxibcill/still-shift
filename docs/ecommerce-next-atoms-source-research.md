@@ -23,15 +23,15 @@ These findings are based on the local source files above, not inferred from exte
 
 ## Prioritized additions
 
-| Order | Small component or extension | Concrete use | Scope |
-|---|---|---|---|
-| 1 | Visible bounds + named anchor + point resolver | Position different SKUs by their actual silhouette; attach to `cap-center`, `label-edge`, or `base-center` | Small geometry/metadata foundation with correct parent matrices |
-| 2 | Uniform Scale and Rotate motion helpers | Deliberate push-in or subtle tilt around a named pivot, without stretching the SKU | Reuse existing tracks; helper and validation work |
-| 3 | Anchored connector | Keep a benefit label stationary while its line endpoint follows a floating product | Extend Path with dynamic endpoint resolution |
-| 4 | Bounded text fitting and placement | Reuse a headline/benefit layout with longer names or Thai copy | Extend existing measured Text Block, not a second text renderer |
-| 5 | Local-time clip / sequence helper | Reuse an entrance → hold → detail → exit phrase at another start time | Compile local authoring into the existing global clock |
-| 6 | General alpha matte | Allow product/graphics to pass behind an authored foreground or restrict treatment to a supplied material mask | New compositing capability; greater renderer and export burden |
-| 7 | Detail viewport | Show a closer view of actual label/cap pixels | Recipe using existing crop/clip plus anchors and layout |
+| Order | Small component or extension                   | Concrete use                                                                                                   | Scope                                                           |
+| ----- | ---------------------------------------------- | -------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------- |
+| 1     | Visible bounds + named anchor + point resolver | Position different SKUs by their actual silhouette; attach to `cap-center`, `label-edge`, or `base-center`     | Small geometry/metadata foundation with correct parent matrices |
+| 2     | Uniform Scale and Rotate motion helpers        | Deliberate push-in or subtle tilt around a named pivot, without stretching the SKU                             | Reuse existing tracks; helper and validation work               |
+| 3     | Anchored connector                             | Keep a benefit label stationary while its line endpoint follows a floating product                             | Extend Path with dynamic endpoint resolution                    |
+| 4     | Bounded text fitting and placement             | Reuse a headline/benefit layout with longer names or Thai copy                                                 | Extend existing measured Text Block, not a second text renderer |
+| 5     | Local-time clip / sequence helper              | Reuse an entrance → hold → detail → exit phrase at another start time                                          | Compile local authoring into the existing global clock          |
+| 6     | General alpha matte                            | Allow product/graphics to pass behind an authored foreground or restrict treatment to a supplied material mask | New compositing capability; greater renderer and export burden  |
+| 7     | Detail viewport                                | Show a closer view of actual label/cap pixels                                                                  | Recipe using existing crop/clip plus anchors and layout         |
 
 Orders 2–5 can be chosen by the first concrete demo, but should share the foundation from order 1. All complete demos remain Experimental. The palm-up float keeps its existing constraints as a visual baseline.
 

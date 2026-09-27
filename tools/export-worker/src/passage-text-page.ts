@@ -6,6 +6,7 @@ import {
 } from "../../../packages/renderer-core/src/passage-diagnostics.ts";
 import { compileStoryScene } from "../../../packages/renderer-core/src/story-scene.ts";
 import { validateStoryTextLayout } from "../../../packages/renderer-core/src/story-text-layout.ts";
+import { prepareMeasuredText } from "../../../packages/renderer-core/src/component-values.ts";
 
 declare global {
   interface Window {
@@ -21,6 +22,11 @@ window.validateStillShiftPassageText = async (scene, fontUrls) => {
     const compiled = compileStoryScene(scene);
     const fonts = await loadPreparedFonts(compiled, (id) => fontUrls[id]!);
     validateStoryTextLayout(compiled, fonts);
+    prepareMeasuredText(
+      compiled,
+      document.createElement("canvas").getContext("2d")!,
+      fonts,
+    );
     return [];
   } catch (error) {
     return passageDiagnostics(error);

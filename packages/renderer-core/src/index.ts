@@ -38,3 +38,8 @@ export {
   passageDiagnostics,
   type PassageDiagnostic,
 } from "./passage-diagnostics.ts";
+export * from "./component-instances.ts";
+export * from "./component-layout.ts";
+export * from "./component-annotations.ts";
+export * from "./component-presets.ts";
+export * from "./component-values.ts";

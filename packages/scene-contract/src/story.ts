@@ -1,5 +1,9 @@
 import { z } from "zod";
 import {
+  ComponentDataSchema,
+  validateComponentData,
+} from "./component-data.ts";
+import {
   PreparedAnimationResultSchema,
   PreparedSceneFieldsSchema,
   validatePreparedGraph,
@@ -158,6 +162,7 @@ const anchor = z.object({ node: id, point }).strict();
 const shape = PreparedSceneFieldsSchema.omit({ durationMs: true })
   .extend({
     schemaVersion: z.literal("story-scene-1"),
+    componentData: ComponentDataSchema.optional(),
     frameCount: frame.positive().max(108000),
     episodeStartFrame: frame.optional(),
     motionGrammar: z.literal("v2").optional(),
@@ -211,6 +216,7 @@ export type StoryScene = z.infer<typeof shape>;
 export const StorySceneSchema = shape.superRefine((scene, ctx) => {
   const fail = (message: string) => ctx.addIssue({ code: "custom", message });
   const { nodes } = validatePreparedGraph(scene, fail);
+  validateComponentData(scene, fail);
   validateStoryBindings(scene, nodes, fail);
   if (
     (scene.initialState ||

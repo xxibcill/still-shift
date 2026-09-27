@@ -13,6 +13,7 @@ import type {
   StoryWindow,
 } from "../../scene-contract/src/story.ts";
 import type { Key, Property, Tracks } from "./prepared-scene.ts";
+import { validateComponentOwnership } from "./component-values.ts";
 
 type StoryMotionEventKind =
   | "camera"
@@ -34,7 +35,8 @@ export type StoryRenderScene = StoryScene & {
   rendererVersion:
     | "story-canvas-0.13.3"
     | "story-canvas-0.14.0"
-    | "story-canvas-0.15.0";
+    | "story-canvas-0.15.0"
+    | "story-canvas-0.16.0";
   durationMs: number;
   canvas: { width: number; height: number };
   timeline: { fps: number; durationMs: number; frameCount: number };
@@ -411,5 +413,7 @@ export function compileStoryScene(source: StoryScene): StoryRenderScene {
     }
   }
   validateStoryCameraCoverage(scene);
+  validateComponentOwnership(scene);
+  if (input.componentData) scene.rendererVersion = "story-canvas-0.16.0";
   return scene;
 }

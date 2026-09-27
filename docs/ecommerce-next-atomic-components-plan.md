@@ -3,6 +3,8 @@
 Date: 2026-09-26
 Status: **AC-08–14 complete.** See [implementation and verification](ecommerce-spatial-components-implementation.md). The original research rationale and acceptance criteria are retained below.
 
+The project-wide [RC-01–06 reusable-component queue](reusable-component-expansion-plan.md) is also implemented, covering shared story/commerce authoring and new composition capabilities; see the [guide](reusable-components.md). The Product Anchor recommendation below is historical and has been implemented.
+
 ## Recommendation
 
 Build **Product Anchor** next: an authored point on the intact product that can be resolved into canvas coordinates at any frame. Add visible bounds and named landmarks as its preparation data. The first useful composition is a floating product with a connector that stays attached to a selected feature while its text remains still.

@@ -13,6 +13,7 @@ import type { CinematicScene } from "../../scene-contract/src/cinematic.ts";
 import type { StoryScene } from "../../scene-contract/src/story.ts";
 import type { MotionEasing } from "../../scene-contract/src/motion-easing.ts";
 import { easeMotion } from "./motion-easing.ts";
+import { applyComponentValues } from "./component-values.ts";
 import { compileStoryScene, type StoryRenderScene } from "./story-scene.ts";
 import {
   compileCinematicScene,
@@ -361,6 +362,11 @@ export function evaluatePreparedNodeAtTime(
     : {};
   for (const [property, keys] of Object.entries(tracks))
     state[property as Property] = sampleTrack(keys, time);
+  if (
+    scene.schemaVersion === "commerce-scene-1" ||
+    scene.schemaVersion === "story-scene-1"
+  )
+    applyComponentValues(scene, node.id, frame, state);
   const follower = Object.hasOwn(scene.followers, node.id)
     ? scene.followers[node.id]
     : undefined;

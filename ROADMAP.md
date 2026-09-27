@@ -75,7 +75,7 @@ output shapes, English/Thai typography, editable briefs and MP4/source downloads
 Technical fixtures are verified; real-product creative proof remains pending.
 This branch tracks v0.14 as active; v0.13 episode integration is retained and deferred here.
 
-**Commerce component foundation:** The [atomic component plan](./docs/ecommerce-atomic-components-plan.md) defines the next seven implementation tasks and supersedes ad-hoc selection of the next effect. AC-01–07 are complete; the [implementation evidence](./docs/ecommerce-atomic-components-implementation.md) records 12 examples, composed exports and regression coverage. The atomic components are available for use; all complete e-commerce motion formats, including palm-up float, remain Experimental. The palm-up scene remains a visual regression baseline.
+**Reusable component foundation:** Commerce AC-01–14 and the effects expansion are complete, with 35 gallery examples across atoms, relationships, effects and compositions. See the [foundation evidence](./docs/ecommerce-atomic-components-implementation.md) and [spatial implementation](./docs/ecommerce-spatial-components-implementation.md). Project-wide [RC-01–06](./docs/reusable-component-expansion-plan.md) are implemented: safe instances, shared story/commerce authoring, measured layout, repetition, annotations and numeric bindings. The [shared gallery and authoring guide](./docs/reusable-components.md) add eight examples, each available in isolation and in both contexts, with settings/source export and portable story-package verification. All complete e-commerce motion formats, including palm-up float, remain Experimental. The palm-up scene remains a visual regression baseline.
 
 ## Phase 0 outcome
 

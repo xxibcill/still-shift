@@ -22,13 +22,14 @@ import {
 import { requireCommerceCapability } from "../../scene-contract/src/commerce-library.ts";
 import { createFrameTracks } from "./frame-tracks.ts";
 import type { Tracks } from "./prepared-scene.ts";
+import { validateComponentOwnership } from "./component-values.ts";
 
 import { buildCommerceFloating } from "./commerce-floating.ts";
 
 type Box = { x: number; y: number; width: number; height: number };
 type Point = [number, number];
 export type CommerceRenderScene = CommerceScene & {
-  rendererVersion: "commerce-canvas-0.16.0";
+  rendererVersion: "commerce-canvas-0.16.0" | "commerce-canvas-0.17.0";
   durationMs: number;
   canvas: { width: number; height: number };
   timeline: { fps: number; durationMs: number; frameCount: number };
@@ -459,13 +460,17 @@ export function compileCommerceScene(
     tracks.add(event.node, event.property, event, event.to);
   }
   const durationMs = (input.frameCount * 1000) / input.fps;
-  return {
+  const scene: CommerceRenderScene = {
     ...input,
-    rendererVersion: "commerce-canvas-0.16.0",
+    rendererVersion: input.componentData
+      ? "commerce-canvas-0.17.0"
+      : "commerce-canvas-0.16.0",
     durationMs,
     canvas: { width: input.width, height: input.height },
     timeline: { fps: input.fps, frameCount: input.frameCount, durationMs },
     tracks: tracks.finish(),
     followers: {},
   };
+  validateComponentOwnership(scene);
+  return scene;
 }

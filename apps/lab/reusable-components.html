@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Still Shift · Shared components</title>
+    <link rel="stylesheet" href="/src/commerce.css" />
+    <link rel="stylesheet" href="/src/reusable-components.css" />
+  </head>
+  <body>
+    <header class="masthead">
+      <a class="brand" href="/commerce-components.html"
+        >Still Shift <span>/ Shared components</span></a
+      >
+      <nav aria-label="Library">
+        <a href="/commerce-components.html">All building blocks</a
+        ><a href="/passage.html">Story workspace</a>
+      </nav>
+    </header>
+    <main class="shared-workbench">
+      <aside class="library">
+        <p class="section-label">Build once, use again</p>
+        <h1>Small parts.<br />More possibilities.</h1>
+        <p class="note">
+          Explore the same building blocks in product motion and story diagrams.
+        </p>
+        <div id="examples" class="shared-catalog"></div>
+      </aside>
+      <section class="shared-workspace" aria-label="Shared component preview">
+        <div class="workspace-heading">
+          <div>
+            <p class="section-label" id="kind">Operator</p>
+            <h2 id="title">Independent markers</h2>
+          </div>
+          <span class="support">Experimental examples</span>
+        </div>
+        <p id="description" class="note"></p>
+        <div class="shared-preview">
+          <canvas
+            id="preview"
+            width="1920"
+            height="1080"
+            aria-label="Shared component motion preview"
+          ></canvas>
+        </div>
+        <div class="shared-transport">
+          <button id="play" type="button">Play</button
+          ><label for="scrub">Frame <output id="frame">0</output></label
+          ><input id="scrub" type="range" min="0" max="191" value="90" /><button
+            id="source"
+            type="button"
+          >
+            Save source ZIP</button
+          ><button id="export" type="button">Export MP4</button>
+        </div>
+        <p id="status" role="status" aria-live="polite">Preparing preview…</p>
+        <form id="settings" class="shared-settings">
+          <label
+            >Context<select name="mode">
+              <option value="commerce">Commerce</option>
+              <option value="story">Story</option>
+              <option value="isolated">Isolated component</option>
+            </select></label
+          ><label
+            >Frame rate<select name="fps">
+              <option value="24">24 fps</option>
+              <option value="30">30 fps</option>
+            </select></label
+          >
+          <label data-control="copy"
+            >Middle / annotation label<input
+              name="middleText"
+              value="Second marker"
+              maxlength="120"
+          /></label>
+          <label data-control="row"
+            >Copies<input
+              name="count"
+              type="number"
+              min="2"
+              max="5"
+              value="3" /></label
+          ><label data-control="row"
+            >Minimum gap · px<input
+              name="gap"
+              type="number"
+              min="0"
+              max="200"
+              value="32"
+          /></label>
+          <label data-control="markers"
+            >Stagger · frames<input
+              name="stagger"
+              type="number"
+              min="0"
+              max="100"
+              value="12" /></label
+          ><label data-control="markers"
+            >Middle cue delay · frames<input
+              name="middleDelay"
+              type="number"
+              min="0"
+              max="150"
+              value="0"
+          /></label>
+          <label data-control="value"
+            >From<input
+              name="from"
+              type="number"
+              min="-100"
+              max="100"
+              step=".01"
+              value="20" /></label
+          ><label data-control="value"
+            >To<input
+              name="to"
+              type="number"
+              min="-100"
+              max="100"
+              step=".01"
+              value="80" /></label
+          ><label data-control="value"
+            >Decimal places<input
+              name="decimals"
+              type="number"
+              min="0"
+              max="2"
+              value="0"
+          /></label>
+          <div class="shared-actions">
+            <button type="submit">Apply changes</button
+            ><button id="save" type="button">Save settings</button
+            ><label class="shared-load"
+              >Load settings<input
+                id="load"
+                type="file"
+                accept="application/json,.json"
+            /></label>
+          </div>
+        </form>
+        <details>
+          <summary>Named timing and exported handles</summary>
+          <pre id="handles"></pre>
+        </details>
+      </section>
+    </main>
+    <script type="module" src="/src/reusable-components.ts"></script>
+  </body>
+</html>

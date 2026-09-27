@@ -5,7 +5,12 @@ import {
   validateAttachedPaths,
 } from "./commerce-geometry.ts";
 import { createCommerceEffectsRenderer } from "./commerce-effects-renderer.ts";
-import { measureTextLayout, type TextLayout } from "./text-layout.ts";
+import { type TextLayout } from "./text-layout.ts";
+import { componentText, prepareMeasuredText } from "./component-values.ts";
+import {
+  evaluateComponentAnnotation,
+  validateComponentAnnotations,
+} from "./component-annotations.ts";
 import type {
   PreparedImage,
   PreparedNode,
@@ -304,27 +309,18 @@ export function createIllustratedPreview(
       : {}),
     textLayouts: new Map(),
   });
-  images.textLayouts = new Map();
-  for (const node of scene.nodes) {
-    if (node.type !== "text" || !node.textBox) continue;
-    const font = node.fontAsset ? images.fonts?.get(node.fontAsset) : undefined;
-    if (!font)
-      throw new Error("Text layout requires a prepared font: " + node.id);
-    ctx.font = font.weight + " " + node.fontSize + 'px "' + font.family + '"';
-    ctx.textBaseline = "alphabetic";
-    ctx.textAlign = "left";
-    images.textLayouts.set(
-      node.id,
-      new Map(
-        (node.states ?? [node.text]).map((text) => [
-          text,
-          measureTextLayout(ctx, { ...node, text }),
-        ]),
-      ),
-    );
-  }
+  images.textLayouts = prepareMeasuredText(
+    scene,
+    ctx,
+    images.fonts ?? new Map(),
+  );
 
   if (scene.schemaVersion === "commerce-scene-1") validateAttachedPaths(scene);
+  if (
+    scene.schemaVersion === "commerce-scene-1" ||
+    scene.schemaVersion === "story-scene-1"
+  )
+    validateComponentAnnotations(scene);
   const children = new Map<string | undefined, PreparedNode[]>();
   for (const node of scene.nodes) {
     const siblings = children.get(node.parent) ?? [];
@@ -359,12 +355,22 @@ export function createIllustratedPreview(
       const blur = sampleCinematicBlur(scene, node.id, frame);
       ctx.filter = blur > 0 ? `blur(${blur}px)` : "none";
     }
-    const drawable =
+    let drawable =
       scene.schemaVersion === "story-scene-1" && node.type === "path"
         ? evaluateStoryPath(scene, node, frame)
         : scene.schemaVersion === "commerce-scene-1" && node.type === "path"
           ? evaluateAttachedPath(scene, node, frame)
           : node;
+    if (
+      scene.schemaVersion === "commerce-scene-1" ||
+      scene.schemaVersion === "story-scene-1"
+    ) {
+      if (drawable.type === "path")
+        drawable = evaluateComponentAnnotation(scene, drawable, frame);
+      const text = componentText(scene, node, frame);
+      if (text !== undefined && drawable.type === "text")
+        drawable = { ...drawable, text };
+    }
     drawShape(ctx, drawable, state, images, !focus);
     if (drawable.type === "path") {
       ctx.globalAlpha = parentOpacity;

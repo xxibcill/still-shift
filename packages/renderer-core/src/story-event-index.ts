@@ -4,7 +4,14 @@ import { passageError } from "./passage-diagnostics.ts";
 
 export type StoryEvent = {
   id: string;
-  kind: "recipe" | "choreography" | "camera" | "text-reveal" | "flow" | "cut";
+  kind:
+    | "recipe"
+    | "choreography"
+    | "camera"
+    | "text-reveal"
+    | "flow"
+    | "cut"
+    | "value";
   nodes: string[];
   path: string;
   start: number;
@@ -36,7 +43,13 @@ function editableEvents(scene: StoryScene) {
       labelWindow && scene.recipe.preset === "unequal_margins"
         ? scene.recipe.labels[Number(labelWindow[1])]
         : undefined;
+    const valueTargets = path.startsWith("componentData/values/")
+      ? (scene.componentData?.bindings
+          .filter((b) => b.value === owner?.id)
+          .map((b) => b.target) ?? [])
+      : [];
     const nodes = [
+      ...valueTargets,
       record.node,
       record.path,
       owner?.node,
@@ -47,15 +60,17 @@ function editableEvents(scene: StoryScene) {
     const textNode = nodes.some((id) =>
       scene.nodes.some((n) => n.id === id && n.type === "text"),
     );
-    const kind: StoryEvent["kind"] = path.startsWith("camera")
-      ? "camera"
-      : path.startsWith("flows")
-        ? "flow"
-        : textNode
-          ? "text-reveal"
-          : /moves|entrances|exits|emphasis/.test(path)
-            ? "choreography"
-            : "recipe";
+    const kind: StoryEvent["kind"] = path.startsWith("componentData")
+      ? "value"
+      : path.startsWith("camera")
+        ? "camera"
+        : path.startsWith("flows")
+          ? "flow"
+          : textNode
+            ? "text-reveal"
+            : /moves|entrances|exits|emphasis/.test(path)
+              ? "choreography"
+              : "recipe";
     if (typeof record.start === "number" && typeof record.end === "number") {
       add({
         id: typeof record.cue === "string" ? record.cue : "@/" + path,
@@ -107,6 +122,7 @@ function editableEvents(scene: StoryScene) {
   visit(scene.recipe, "recipe");
   visit(scene.camera, "camera");
   visit(scene.flows, "flows");
+  visit(scene.componentData?.values, "componentData/values");
   const point = (
     record: RecordValue,
     key: string,

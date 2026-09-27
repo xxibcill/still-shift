@@ -7,6 +7,7 @@ import type { IncomingMessage } from "node:http";
 import type { Plugin } from "vite";
 import { z } from "zod";
 import { CommerceSceneSchema } from "../../packages/scene-contract/src/commerce.ts";
+import { StorySceneSchema } from "../../packages/scene-contract/src/story.ts";
 import { ComponentDemoKindSchema } from "../../packages/scene-contract/src/commerce-components.ts";
 import { PreparedAnimationEngine } from "../../packages/animation-engine/src/prepared-animation-engine.ts";
 
@@ -23,7 +24,7 @@ const componentFixtures = new Set([
 ]);
 const payloadSchema = z
   .object({
-    scene: CommerceSceneSchema,
+    scene: z.union([CommerceSceneSchema, StorySceneSchema]),
     files: z
       .array(
         z
@@ -83,7 +84,7 @@ export const commerceApi = (): Plugin => {
             const payload = await readPayload(request);
             const dependencies = [
               ...payload.scene.assets,
-              ...payload.scene.fonts,
+              ...(payload.scene.fonts ?? []),
             ];
             const files = new Map(
               payload.files.map((file) => [file.id, file.base64]),
@@ -100,9 +101,17 @@ export const commerceApi = (): Plugin => {
             for (const asset of dependencies) {
               const extension = extname(asset.path).toLowerCase();
               if (
-                ![".png", ".jpg", ".jpeg", ".webp", ".ttf", ".otf"].includes(
-                  extension,
-                )
+                ![
+                  ".png",
+                  ".jpg",
+                  ".jpeg",
+                  ".webp",
+                  ".ttf",
+                  ".otf",
+                  ...(payload.scene.schemaVersion === "story-scene-1"
+                    ? [".svg"]
+                    : []),
+                ].includes(extension)
               )
                 throw new Error("Unsupported commerce asset extension");
               asset.path = asset.id + extension;
@@ -146,6 +155,13 @@ export const commerceApi = (): Plugin => {
         if (request.method !== "GET") {
           response.statusCode = 405;
           response.end();
+          return;
+        }
+        if (url.pathname === "/commerce/assets/house.svg") {
+          response.setHeader("Content-Type", "image/svg+xml");
+          response.end(
+            await readFile(resolve(root, "assets/story-motion/art/house.svg")),
+          );
           return;
         }
         const asset =

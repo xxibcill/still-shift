@@ -1,0 +1,201 @@
+import { z } from "zod";
+import type { PreparedNode } from "./prepared.ts";
+import { MotionEasingSchema } from "./motion-easing.ts";
+
+export const ComponentIdSchema = z.string().regex(/^[a-zA-Z][\w-]*$/);
+const finite = z.number().finite();
+export const ComponentWindowSchema = z
+  .object({
+    start: finite.int().nonnegative(),
+    end: finite.int().positive(),
+    easing: MotionEasingSchema.default("linear"),
+    cue: z.string().min(1).optional(),
+  })
+  .strict()
+  .refine(
+    (w) => w.end > w.start,
+    "Component window must have positive duration",
+  );
+export const ComponentAnchorSchema = z
+  .object({
+    node: ComponentIdSchema,
+    point: z.tuple([finite, finite]),
+    space: z.enum(["node", "source"]).default("node"),
+    offset: z.tuple([finite, finite]).default([0, 0]),
+  })
+  .strict();
+export const ComponentAnnotationSchema = z
+  .object({
+    path: ComponentIdSchema,
+    points: z.array(ComponentAnchorSchema).min(2).max(128),
+    protect: z.array(ComponentIdSchema).max(16).default([]),
+  })
+  .strict();
+export const ComponentValueSchema = z
+  .object({
+    id: ComponentIdSchema,
+    range: z.tuple([finite.min(-1e9), finite.max(1e9)]),
+    from: finite,
+    to: finite,
+    window: ComponentWindowSchema,
+  })
+  .strict()
+  .superRefine((v, ctx) => {
+    if (
+      v.range[0] >= v.range[1] ||
+      [v.from, v.to].some((n) => n < v.range[0] || n > v.range[1])
+    )
+      ctx.addIssue({
+        code: "custom",
+        message: "Value endpoints must fit an increasing declared range",
+      });
+    if (v.window.easing === "out-back-soft")
+      ctx.addIssue({
+        code: "custom",
+        message: "Numeric values require bounded easing",
+      });
+  });
+export const ComponentNumberFormatSchema = z
+  .object({
+    decimals: finite.int().min(0).max(4).default(0),
+    rounding: z
+      .enum(["half-away-from-zero", "truncate"])
+      .default("half-away-from-zero"),
+    decimalSeparator: z.enum([".", ","]).default("."),
+    groupSeparator: z.enum(["", ".", ",", " "]).default(""),
+    prefix: z.string().max(32).default(""),
+    suffix: z.string().max(32).default(""),
+  })
+  .strict()
+  .refine(
+    (f) => !f.groupSeparator || f.groupSeparator !== f.decimalSeparator,
+    "Number separators must differ",
+  );
+export const ComponentValueBindingSchema = z.discriminatedUnion("kind", [
+  z
+    .object({
+      kind: z.literal("text"),
+      value: ComponentIdSchema,
+      target: ComponentIdSchema,
+      format: ComponentNumberFormatSchema,
+    })
+    .strict(),
+  z
+    .object({
+      kind: z.literal("property"),
+      value: ComponentIdSchema,
+      target: ComponentIdSchema,
+      property: z.enum(["x", "y", "scaleX", "scaleY", "opacity", "reveal"]),
+      output: z.tuple([finite, finite]),
+    })
+    .strict(),
+]);
+export const ComponentDataSchema = z
+  .object({
+    schemaVersion: z.literal("scene-components-1"),
+    annotations: z.array(ComponentAnnotationSchema).max(40).default([]),
+    values: z.array(ComponentValueSchema).max(40).default([]),
+    bindings: z.array(ComponentValueBindingSchema).max(80).default([]),
+  })
+  .strict();
+export type ComponentData = z.infer<typeof ComponentDataSchema>;
+export type ComponentAnchor = z.infer<typeof ComponentAnchorSchema>;
+export type ComponentValue = z.infer<typeof ComponentValueSchema>;
+export type ComponentNumberFormat = z.infer<typeof ComponentNumberFormatSchema>;
+export type ComponentSceneData = {
+  nodes: PreparedNode[];
+  frameCount: number;
+  componentData?: ComponentData | undefined;
+};
+
+export function validateComponentData(
+  scene: ComponentSceneData,
+  fail: (message: string) => void,
+) {
+  const data = scene.componentData;
+  if (!data) return;
+  const nodes = new Map(scene.nodes.map((n) => [n.id, n]));
+  const values = new Map(data.values.map((v) => [v.id, v]));
+  const paths = new Set(data.annotations.map((a) => a.path));
+  if (values.size !== data.values.length) fail("Duplicate component value");
+  if (paths.size !== data.annotations.length)
+    fail("Duplicate component annotation");
+  for (const value of data.values)
+    if (value.window.end >= scene.frameCount)
+      fail("Component value exceeds timeline: " + value.id);
+  for (const annotation of data.annotations) {
+    const path = nodes.get(annotation.path);
+    if (path?.type !== "path" || path.parent)
+      fail("Annotation needs a root path: " + annotation.path);
+    for (const anchor of annotation.points) {
+      const node = nodes.get(anchor.node);
+      if (!node || node.type === "path")
+        fail(
+          "Annotation anchor needs an independent visual node: " + anchor.node,
+        );
+      if (
+        anchor.space === "source" &&
+        (node?.type !== "image" || node.states.length !== 1)
+      )
+        fail("Source anchor needs one image state: " + anchor.node);
+    }
+    for (const id of annotation.protect)
+      if (nodes.get(id)?.type !== "image")
+        fail("Protected annotation source must be an image: " + id);
+  }
+  const owned = new Set<string>();
+  for (const binding of data.bindings) {
+    const value = values.get(binding.value),
+      node = nodes.get(binding.target);
+    if (!value || !node) {
+      fail("Missing component value or target: " + binding.target);
+      continue;
+    }
+    const key =
+      binding.target +
+      "." +
+      (binding.kind === "text" ? "text" : binding.property);
+    if (owned.has(key)) fail("Duplicate component binding: " + key);
+    owned.add(key);
+    if (binding.kind === "text") {
+      if (
+        node.type !== "text" ||
+        !node.fontAsset ||
+        !node.textBox ||
+        node.states ||
+        node.textLayout
+      )
+        fail("Numeric text requires one pinned, measured text box: " + node.id);
+      if (
+        Math.ceil(
+          Math.abs(value.to - value.from) * 10 ** binding.format.decimals,
+        ) +
+          3 >
+        10000
+      )
+        fail(
+          "Numeric text exceeds 10000 formatted values; reduce precision or range: " +
+            node.id,
+        );
+    } else {
+      if (!Number.isFinite(binding.output[1] - binding.output[0]))
+        fail("Numeric output span must be finite: " + node.id);
+      if (
+        binding.property === "reveal" &&
+        node.type !== "rect" &&
+        node.type !== "path"
+      )
+        fail("Numeric reveal requires a rectangle or path: " + node.id);
+      if (
+        ["opacity", "reveal"].includes(binding.property) &&
+        binding.output.some((v) => v < 0 || v > 1)
+      )
+        fail("Numeric opacity/reveal must stay in [0,1]");
+      if (
+        ["scaleX", "scaleY"].includes(binding.property) &&
+        binding.output.some((v) => v <= 0 || v > 4)
+      )
+        fail("Numeric scale must stay in (0,4]");
+    }
+  }
+}

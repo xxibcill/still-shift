@@ -1,0 +1,253 @@
+{
+  "title": "Reusable components · story",
+  "fps": 24,
+  "width": 1920,
+  "height": 1080,
+  "background": "#F2EDE3",
+  "assets": [
+    {
+      "id": "house",
+      "path": "../../../assets/story-motion/art/house.svg",
+      "sha256": "sha256:a8fa4eff374ba974770317dd483ca7b2e5b8d1f0bd7a9224ada091db42542a60",
+      "width": 600,
+      "height": 440
+    }
+  ],
+  "fonts": [
+    {
+      "id": "commerce-font",
+      "path": "../../../assets/ecommerce-motion/fonts/noto-sans-thai.ttf",
+      "sha256": "sha256:5a1c559bb539583c8a1fd99d1c5b9491e5e14478c9cd2bd0970d5c3096cc9ef8",
+      "weight": "400"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "heading",
+      "x": 112,
+      "y": 85,
+      "width": 1680,
+      "height": 100,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "text",
+      "text": "Two households. Shared building blocks.",
+      "fontSize": 60,
+      "color": "#233B32",
+      "weight": "normal",
+      "font": "sans-serif",
+      "fontAsset": "commerce-font",
+      "textBox": { "locale": "en", "maxLines": 1, "lineHeight": 1.25 },
+      "align": "left"
+    },
+    {
+      "id": "house-a",
+      "x": 370,
+      "y": 265,
+      "width": 320,
+      "height": 235,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "group",
+      "clip": false
+    },
+    {
+      "id": "house-art-a",
+      "parent": "house-a",
+      "x": 0,
+      "y": 0,
+      "width": 320,
+      "height": 235,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "image",
+      "states": [{ "asset": "house" }],
+      "fit": "contain"
+    },
+    {
+      "id": "house-b",
+      "x": 1210,
+      "y": 265,
+      "width": 320,
+      "height": 235,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "group",
+      "clip": false
+    },
+    {
+      "id": "house-art-b",
+      "parent": "house-b",
+      "x": 0,
+      "y": 0,
+      "width": 320,
+      "height": 235,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "image",
+      "states": [{ "asset": "house" }],
+      "fit": "contain"
+    },
+    {
+      "id": "pressure-a",
+      "x": 220,
+      "y": 355,
+      "width": 95,
+      "height": 44,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "rect",
+      "fill": "#477D65",
+      "lineWidth": 0,
+      "radius": 0
+    },
+    {
+      "id": "pressure-b",
+      "x": 1580,
+      "y": 355,
+      "width": 95,
+      "height": 44,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "rect",
+      "fill": "#A65E46",
+      "lineWidth": 0,
+      "radius": 0
+    },
+    {
+      "id": "room",
+      "x": 310,
+      "y": 590,
+      "width": 440,
+      "height": 75,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "text",
+      "text": "More room",
+      "fontSize": 42,
+      "color": "#233B32",
+      "weight": "normal",
+      "font": "sans-serif",
+      "fontAsset": "commerce-font",
+      "textBox": { "locale": "en", "maxLines": 1, "lineHeight": 1.25 },
+      "align": "center"
+    },
+    {
+      "id": "strained",
+      "x": 1150,
+      "y": 590,
+      "width": 440,
+      "height": 75,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "text",
+      "text": "Less room",
+      "fontSize": 42,
+      "color": "#233B32",
+      "weight": "normal",
+      "font": "sans-serif",
+      "fontAsset": "commerce-font",
+      "textBox": { "locale": "en", "maxLines": 1, "lineHeight": 1.25 },
+      "align": "center"
+    },
+    {
+      "id": "focus__line",
+      "x": 0,
+      "y": 0,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "path",
+      "points": [
+        [0, 0],
+        [1, 1]
+      ],
+      "stroke": "#477D65",
+      "lineWidth": 3,
+      "gapAt": 0.6,
+      "gapSize": 0.1
+    }
+  ],
+  "provenance": "Original code-authored symbolic editorial illustrations for reusable motion studies. Layered Chronicle palette and typography. No selected S01E01 image is modified; these are explanatory fixtures, not authentic evidence or a finished episode.",
+  "schemaVersion": "story-scene-1",
+  "componentData": {
+    "schemaVersion": "scene-components-1",
+    "annotations": [
+      {
+        "path": "focus__line",
+        "points": [
+          {
+            "node": "house-a",
+            "point": [-18, 253],
+            "space": "node",
+            "offset": [0, 0]
+          },
+          {
+            "node": "house-a",
+            "point": [338, 253],
+            "space": "node",
+            "offset": [0, 0]
+          }
+        ],
+        "protect": []
+      }
+    ],
+    "values": [],
+    "bindings": []
+  },
+  "frameCount": 192,
+  "motionGrammar": "v2",
+  "camera": {
+    "keys": [
+      { "frame": 0, "x": 960, "y": 540, "zoom": 1 },
+      { "frame": 191, "x": 980, "y": 540, "zoom": 1.025 }
+    ],
+    "depth": { "heading": 0, "room": 0, "strained": 0 }
+  },
+  "review": { "essentialText": ["heading", "room", "strained"] },
+  "recipe": {
+    "preset": "unequal_margins",
+    "moves": [
+      {
+        "node": "house-a",
+        "window": {
+          "start": 0,
+          "end": 191,
+          "cue": "house-lift",
+          "easing": "linear"
+        },
+        "to": { "y": 245 }
+      }
+    ],
+    "emphasis": [],
+    "households": ["house-a", "house-b"],
+    "reference": "heading",
+    "pressures": [
+      { "node": "pressure-a", "to": [270, 355], "condition": "room" },
+      { "node": "pressure-b", "to": [1540, 355], "condition": "strained" }
+    ],
+    "labels": ["room", "strained"],
+    "strain": {
+      "start": 48,
+      "end": 104,
+      "cue": "shared-strain",
+      "easing": "in-out-quint"
+    },
+    "labelWindows": [
+      { "start": 86, "end": 106, "cue": "more-room", "easing": "out-cubic" },
+      { "start": 98, "end": 120, "cue": "less-room", "easing": "out-cubic" }
+    ]
+  },
+  "connectors": []
+}
