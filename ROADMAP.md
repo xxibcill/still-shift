@@ -77,6 +77,8 @@ This branch tracks v0.14 as active; v0.13 episode integration is retained and de
 
 **Reusable component foundation:** Commerce AC-01–14 and the effects expansion are complete, with 35 gallery examples across atoms, relationships, effects and compositions. See the [foundation evidence](./docs/ecommerce-atomic-components-implementation.md) and [spatial implementation](./docs/ecommerce-spatial-components-implementation.md). Project-wide [RC-01–06](./docs/reusable-component-expansion-plan.md) are implemented: safe instances, shared story/commerce authoring, measured layout, repetition, annotations and numeric bindings. The [shared gallery and authoring guide](./docs/reusable-components.md) add eight examples, each available in isolation and in both contexts, with settings/source export and portable story-package verification. All complete e-commerce motion formats, including palm-up float, remain Experimental. The palm-up scene remains a visual regression baseline.
 
+**Next atomic batch (planned):** [RC-07–09](./docs/reusable-components-next-atomic-batch-plan.md) adds shared scale/rotate/draw authoring, exact image/text state changes and single-node path travel. Start with the shared motion controls, then prove state and travel in a product-detail tour and a story supply-route composition. These capabilities are not yet implemented as shared modules.
+
 ## Phase 0 outcome
 
 Prove that Still Shift can turn a representative batch of explainer-video stills into varied, deterministic 3–8 second MP4 footage with minimal manual repair and substantially lower cost than generative video.
