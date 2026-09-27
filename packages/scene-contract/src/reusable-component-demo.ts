@@ -2,6 +2,8 @@ import { z } from "zod";
 export const REUSABLE_EXAMPLES = [
   {
     id: "instances",
+    version: "reusable-demo-1",
+    controls: ["copy", "markers", "delay"],
     title: "Independent markers",
     kind: "Operator",
     description:
@@ -9,6 +11,8 @@ export const REUSABLE_EXAMPLES = [
   },
   {
     id: "layout",
+    version: "reusable-demo-1",
+    controls: ["copy", "row", "markers", "delay"],
     title: "Measured feature row",
     kind: "Operator",
     description:
@@ -16,6 +20,8 @@ export const REUSABLE_EXAMPLES = [
   },
   {
     id: "stagger",
+    version: "reusable-demo-1",
+    controls: ["copy", "row", "markers", "delay"],
     title: "Staggered markers",
     kind: "Operator",
     description:
@@ -23,6 +29,8 @@ export const REUSABLE_EXAMPLES = [
   },
   {
     id: "leader",
+    version: "reusable-demo-1",
+    controls: ["copy"],
     title: "Following label",
     kind: "Preset",
     description:
@@ -30,6 +38,8 @@ export const REUSABLE_EXAMPLES = [
   },
   {
     id: "outline",
+    version: "reusable-demo-1",
+    controls: [],
     title: "Focus outline",
     kind: "Relationship",
     description:
@@ -37,6 +47,8 @@ export const REUSABLE_EXAMPLES = [
   },
   {
     id: "underline",
+    version: "reusable-demo-1",
+    controls: [],
     title: "Underline",
     kind: "Relationship",
     description:
@@ -44,6 +56,8 @@ export const REUSABLE_EXAMPLES = [
   },
   {
     id: "bracket",
+    version: "reusable-demo-1",
+    controls: [],
     title: "Range bracket",
     kind: "Preset",
     description:
@@ -51,6 +65,8 @@ export const REUSABLE_EXAMPLES = [
   },
   {
     id: "value",
+    version: "reusable-demo-1",
+    controls: ["value"],
     title: "Counter and bar",
     kind: "Behavior",
     description:
@@ -58,6 +74,8 @@ export const REUSABLE_EXAMPLES = [
   },
   {
     id: "transform",
+    version: "reusable-demo-2",
+    controls: ["transform"],
     title: "Scale, turn and draw",
     kind: "Behavior",
     description:
@@ -65,6 +83,8 @@ export const REUSABLE_EXAMPLES = [
   },
   {
     id: "state",
+    version: "reusable-demo-2",
+    controls: ["copy", "state"],
     title: "Exact state cuts",
     kind: "Behavior",
     description:
@@ -72,6 +92,8 @@ export const REUSABLE_EXAMPLES = [
   },
   {
     id: "travel",
+    version: "reusable-demo-2",
+    controls: ["travel"],
     title: "Follow a route",
     kind: "Behavior",
     description:
@@ -79,6 +101,8 @@ export const REUSABLE_EXAMPLES = [
   },
   {
     id: "tour",
+    version: "reusable-demo-2",
+    controls: ["copy", "transform", "state", "travel"],
     title: "Product detail tour",
     kind: "Composition",
     description:
@@ -86,6 +110,8 @@ export const REUSABLE_EXAMPLES = [
   },
   {
     id: "supply",
+    version: "reusable-demo-2",
+    controls: ["copy", "transform", "state", "travel"],
     title: "Supply-route change",
     kind: "Composition",
     description:
@@ -93,6 +119,8 @@ export const REUSABLE_EXAMPLES = [
   },
   {
     id: "visibility",
+    version: "reusable-demo-3",
+    controls: ["copy", "timing"],
     title: "Visible for a moment",
     kind: "Behavior",
     description:
@@ -100,6 +128,8 @@ export const REUSABLE_EXAMPLES = [
   },
   {
     id: "sequence",
+    version: "reusable-demo-3",
+    controls: ["copy", "timing", "delay"],
     title: "One detail after another",
     kind: "Operator",
     description:
@@ -107,6 +137,8 @@ export const REUSABLE_EXAMPLES = [
   },
   {
     id: "pin",
+    version: "reusable-demo-3",
+    controls: ["copy", "pin"],
     title: "An attached badge",
     kind: "Relationship",
     description:
@@ -114,6 +146,8 @@ export const REUSABLE_EXAMPLES = [
   },
   {
     id: "text-fit",
+    version: "reusable-demo-3",
+    controls: ["copy", "fit"],
     title: "Words that fit",
     kind: "Behavior",
     description:
@@ -121,6 +155,8 @@ export const REUSABLE_EXAMPLES = [
   },
   {
     id: "mask",
+    version: "reusable-demo-3",
+    controls: ["copy", "mask"],
     title: "Through an aperture",
     kind: "Relationship",
     description:
@@ -128,6 +164,8 @@ export const REUSABLE_EXAMPLES = [
   },
   {
     id: "detail-sequence",
+    version: "reusable-demo-3",
+    controls: ["copy", "timing", "delay", "pin", "fit", "mask"],
     title: "Three detail moments",
     kind: "Composition",
     description:
@@ -135,12 +173,27 @@ export const REUSABLE_EXAMPLES = [
   },
   {
     id: "supply-sequence",
+    version: "reusable-demo-3",
+    controls: ["copy", "timing", "delay", "pin", "fit", "mask"],
     title: "Three supply phases",
     kind: "Composition",
     description:
       "A symbolic route unfolds in three independently cued phases with pinned labels and shaped reveals.",
   },
 ] as const;
+type Example = (typeof REUSABLE_EXAMPLES)[number];
+type ExampleVersion = Example["version"];
+type ExampleId<V extends ExampleVersion> = Extract<
+  Example,
+  { version: V }
+>["id"];
+const examplesForVersion = <V extends ExampleVersion>(version: V) =>
+  REUSABLE_EXAMPLES.filter((item) => item.version === version).map(
+    (item) => item.id,
+  ) as [ExampleId<V>, ...ExampleId<V>[]];
+const LEGACY_EXAMPLES = examplesForVersion("reusable-demo-1");
+export const BEHAVIOR_EXAMPLES = examplesForVersion("reusable-demo-2");
+export const TIMING_EXAMPLES = examplesForVersion("reusable-demo-3");
 const SharedDemoFields = z.object({
   mode: z.enum(["commerce", "story", "isolated"]).default("commerce"),
   fps: z.union([z.literal(24), z.literal(30)]).default(24),
@@ -148,18 +201,7 @@ const SharedDemoFields = z.object({
 });
 const ReusableDemoV1Schema = SharedDemoFields.extend({
   schemaVersion: z.literal("reusable-demo-1"),
-  example: z
-    .enum([
-      "instances",
-      "layout",
-      "stagger",
-      "leader",
-      "outline",
-      "underline",
-      "bracket",
-      "value",
-    ])
-    .default("instances"),
+  example: z.enum(LEGACY_EXAMPLES).default("instances"),
   count: z.number().int().min(2).max(5).default(3),
   gap: z.number().finite().min(0).max(200).default(32),
   stagger: z.number().int().min(0).max(100).default(12),
@@ -168,13 +210,6 @@ const ReusableDemoV1Schema = SharedDemoFields.extend({
   to: z.number().finite().min(-100).max(100).default(80),
   decimals: z.number().int().min(0).max(2).default(0),
 }).strict();
-export const BEHAVIOR_EXAMPLES = [
-  "transform",
-  "state",
-  "travel",
-  "tour",
-  "supply",
-] as const;
 export const ReusableDemoV2Schema = SharedDemoFields.extend({
   schemaVersion: z.literal("reusable-demo-2"),
   example: z.enum(BEHAVIOR_EXAMPLES),
@@ -186,15 +221,6 @@ export const ReusableDemoV2Schema = SharedDemoFields.extend({
   travelFrom: z.number().min(0).max(1).default(0),
   travelTo: z.number().min(0).max(1).default(1),
 }).strict();
-export const TIMING_EXAMPLES = [
-  "visibility",
-  "sequence",
-  "pin",
-  "text-fit",
-  "mask",
-  "detail-sequence",
-  "supply-sequence",
-] as const;
 export const ReusableDemoV3Schema = SharedDemoFields.extend({
   schemaVersion: z.literal("reusable-demo-3"),
   example: z.enum(TIMING_EXAMPLES),
@@ -243,9 +269,6 @@ export const ReusableDemoSchema = z.preprocess((input) => {
   return clean;
 }, currentDemoSchema);
 export const reusableDemoVersion = (example: string) =>
-  (TIMING_EXAMPLES as readonly string[]).includes(example)
-    ? "reusable-demo-3"
-    : (BEHAVIOR_EXAMPLES as readonly string[]).includes(example)
-      ? "reusable-demo-2"
-      : "reusable-demo-1";
+  REUSABLE_EXAMPLES.find((item) => item.id === example)?.version ??
+  "reusable-demo-1";
 export type ReusableDemo = z.infer<typeof ReusableDemoSchema>;

@@ -1,6 +1,5 @@
 import {
   REUSABLE_EXAMPLES,
-  TIMING_EXAMPLES,
   reusableDemoVersion,
   ReusableDemoSchema,
   type ReusableDemo,
@@ -75,44 +74,9 @@ function controls() {
   element("title").textContent = item.title;
   element("kind").textContent = item.kind;
   element("description").textContent = item.description;
-  const markers = ["instances", "layout", "stagger"].includes(example);
+  const visible = new Set<string>(item.controls);
   form.querySelectorAll<HTMLElement>("[data-control]").forEach((control) => {
-    const kind = control.dataset.control;
-    const composed = ["detail-sequence", "supply-sequence"].includes(example);
-    const timingControls: Record<string, boolean> = {
-      timing: composed || ["visibility", "sequence"].includes(example),
-      pin: composed || example === "pin",
-      fit: composed || example === "text-fit",
-      mask: composed || example === "mask",
-    };
-    if (kind && Object.hasOwn(timingControls, kind)) {
-      control.hidden = !timingControls[kind];
-      return;
-    }
-    if (
-      (TIMING_EXAMPLES as readonly string[]).includes(example) &&
-      (kind === "copy" ||
-        (control.querySelector('[name="middleDelay"]') &&
-          (composed || example === "sequence")))
-    ) {
-      control.hidden = false;
-      return;
-    }
-    control.hidden =
-      kind === "transform"
-        ? !["transform", "tour", "supply"].includes(example)
-        : kind === "state"
-          ? !["state", "tour", "supply"].includes(example)
-          : kind === "travel"
-            ? !["travel", "tour", "supply"].includes(example)
-            : kind === "value"
-              ? example !== "value"
-              : kind === "row"
-                ? !["layout", "stagger"].includes(example)
-                : kind === "markers"
-                  ? !markers
-                  : !markers &&
-                    !["leader", "state", "tour", "supply"].includes(example);
+    control.hidden = !visible.has(control.dataset.control ?? "");
   });
   element("examples")
     .querySelectorAll<HTMLButtonElement>("button")

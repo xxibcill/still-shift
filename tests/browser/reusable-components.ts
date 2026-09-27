@@ -88,21 +88,9 @@ const storyOnly = process.argv.includes("--story-only");
 const timingOnly = process.argv.includes("--timing-only");
 const behaviorsOnly = process.argv.includes("--behaviors-only");
 const examples = timingOnly
-  ? REUSABLE_EXAMPLES.filter((e) =>
-      [
-        "visibility",
-        "sequence",
-        "pin",
-        "text-fit",
-        "mask",
-        "detail-sequence",
-        "supply-sequence",
-      ].includes(e.id),
-    )
+  ? REUSABLE_EXAMPLES.filter((e) => e.version === "reusable-demo-3")
   : behaviorsOnly
-    ? REUSABLE_EXAMPLES.filter((e) =>
-        ["transform", "state", "travel", "tour", "supply"].includes(e.id),
-      )
+    ? REUSABLE_EXAMPLES.filter((e) => e.version === "reusable-demo-2")
     : REUSABLE_EXAMPLES;
 const modes = storyOnly
   ? ["story"]
