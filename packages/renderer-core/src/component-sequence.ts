@@ -83,16 +83,32 @@ export function sequenceComponents(
         throw new Error("Local cut exceeds clip duration");
       if (data.visibility.some((g) => g.window.end > clip.duration))
         throw new Error("Local visibility exceeds clip duration");
+      const cues = new Set([
+        ...definition.motions.map((m) => m.window.cue ?? m.id),
+        ...data.values.map((v) => v.window.cue ?? v.id),
+        ...data.travels.map((t) => t.window.cue ?? t.id),
+        ...data.visibility.map((g) => g.window.cue ?? g.id),
+        ...data.states.flatMap((s) => s.cuts.map((c) => c.id)),
+      ]);
       const local = new Set(definition.nodes.map((n) => n.id));
       for (const node of definition.nodes) {
         if (node.parent && !local.has(node.parent))
           throw new Error("Clip requires independent scene roots: " + node.id);
-        if (!node.parent && !data.visibility.some((g) => g.target === node.id))
+        if (
+          !node.parent &&
+          !data.visibility.some((g) => g.target === node.id)
+        ) {
+          const base = "lifetime-" + node.id;
+          let cue = base;
+          for (let suffix = 2; cues.has(cue); suffix++)
+            cue = base + "-" + suffix;
+          cues.add(cue);
           data.visibility.push({
-            id: "lifetime-" + node.id,
+            id: cue,
             target: node.id,
             window: { start: 0, end: clip.duration },
           });
+        }
       }
       const instance = instantiateComponent(
         ComponentDefinitionSchema.parse({

@@ -79,7 +79,7 @@ it("preserves masks, state cuts and local gates through one scheduling offset", 
   );
 });
 
-it("rejects local overflow, foreign parents, cross-clip dependencies and generated cue collisions", () => {
+it("rejects local overflow, foreign parents and cross-clip dependencies without cue collisions", () => {
   const d = definition();
   expect(() =>
     sequenceComponents({ fps: 24, frameCount: 192 }, [
@@ -127,16 +127,20 @@ it("rejects local overflow, foreign parents, cross-clip dependencies and generat
       window: { start: 0, end: 5, easing: "linear" },
     },
   ];
-  expect(() =>
-    sequenceComponents({ fps: 24, frameCount: 192 }, [
-      {
-        id: "collision",
-        definition: d,
-        duration: 10,
-        external: { other: "persistent" },
-      },
-    ]),
-  ).toThrow(/cue/);
+  const [collision] = sequenceComponents({ fps: 24, frameCount: 192 }, [
+    {
+      id: "collision",
+      definition: d,
+      duration: 10,
+      external: { other: "persistent" },
+    },
+  ]);
+  expect(collision?.motions[0]?.window.cue).toBe("collision__lifetime-body");
+  expect(collision?.componentData.schemaVersion).toBe("scene-components-3");
+  if (collision?.componentData.schemaVersion === "scene-components-3")
+    expect(collision.componentData.visibility[0]?.window.cue).toBe(
+      "collision__lifetime-body-2",
+    );
 });
 
 it("rejects duplicate native gates, shared masks and incompatible fit ownership", () => {
