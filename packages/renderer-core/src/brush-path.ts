@@ -26,6 +26,7 @@ export function brushStroke(
   start: number,
   end: number,
   pinch = 0,
+  textureWidth?: number,
 ): BrushStroke {
   start = clamp(start);
   end = clamp(end);
@@ -62,9 +63,16 @@ export function brushStroke(
     return {
       p,
       normal: [-dy / length, dx / length] as Point,
-      middle: middle * path.lineWidth * tip * multiplier,
+      middle: middle * (textureWidth ?? path.lineWidth) * tip * multiplier,
       radius:
-        Math.min(0.48 - Math.abs(middle), pressure + tooth) *
+        Math.min(
+          0.48 - Math.abs(middle),
+          pressure +
+            tooth *
+              (textureWidth === undefined
+                ? 1
+                : textureWidth / Math.max(1e-6, path.lineWidth)),
+        ) *
         path.lineWidth *
         tip *
         multiplier,
@@ -98,9 +106,13 @@ export function brushStroke(
   };
   const wash = band(start, end, () => [1, -1]);
   // An asymmetric loaded edge and a softer trailing edge suggest the angle of a nib.
+  const textureScale =
+    textureWidth === undefined
+      ? 1
+      : textureWidth / Math.max(1e-6, path.lineWidth);
   const body = band(start, end, (t) => [
-    0.78 + 0.05 * Math.sin(97 * t + phase),
-    -0.7 + 0.06 * Math.sin(131 * t + phase),
+    0.78 + 0.05 * Math.sin(97 * t + phase) * textureScale,
+    -0.7 + 0.06 * Math.sin(131 * t + phase) * textureScale,
   ]);
   const cuts: Point[][] = [];
   for (const [from, to, lane, width] of [
@@ -116,7 +128,10 @@ export function brushStroke(
       band(a, b, (t) => {
         const taper = Math.sin((Math.PI * (t - from)) / (to - from)) ** 0.55;
         const drift = 0.05 * Math.sin(23 * t + phase);
-        return [lane + drift + width * taper, lane + drift - width * taper];
+        return [
+          (lane + drift + width * taper) * textureScale,
+          (lane + drift - width * taper) * textureScale,
+        ];
       }),
     );
   }

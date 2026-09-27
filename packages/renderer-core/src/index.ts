@@ -54,3 +54,12 @@ export { loadPreparedFonts } from "./prepared-fonts.ts";
 export { compileStoryScene } from "./story-scene.ts";
 export { validateStoryTextLayout } from "./story-text-layout.ts";
 export { prepareComponentTextFits } from "./component-text-fit.ts";
+
+export * from "./curve.ts";
+export * from "./motion-craft.ts";
+export * from "./motion-appearance.ts";
+export * from "./motion-inspector.ts";
+export * from "./motion-text.ts";
+export * from "./story-motion-presets.ts";
+export * from "./story-generic.ts";
+export * from "./story-transition.ts";

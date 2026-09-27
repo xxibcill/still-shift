@@ -26,6 +26,9 @@ let playing = false,
 const show = (frame: number) => {
   if (!scene || !preview) return;
   preview.renderFrame(frame);
+  document
+    .getElementById("motion-tools")
+    ?.dispatchEvent(new CustomEvent("story-frame", { detail: frame }));
   slider.value = String(frame);
   el("time").textContent =
     `${(frame / scene.fps).toFixed(2)} s · ${frame + 1} / ${scene.timeline.frameCount}`;
@@ -174,6 +177,7 @@ const load = async () => {
           stop();
           show(frame);
         },
+        images,
       );
     }
     slider.max = String(next.timeline.frameCount - 1);

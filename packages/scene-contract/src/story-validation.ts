@@ -350,7 +350,27 @@ export function validateStoryBindings(
       fail("Access constraint uses fixed local routes, not bound connectors");
     if (
       "moves" in recipe &&
-      recipe.moves.some((move) => move.node === binding.path)
+      recipe.moves.some(
+        (move) =>
+          move.node === binding.path &&
+          (!scene.motionModel ||
+            [move.to, ...(move.keys ?? [])].some(
+              (pose) =>
+                pose &&
+                [
+                  "x",
+                  "y",
+                  "scaleX",
+                  "scaleY",
+                  "scale",
+                  "rotation",
+                  "skewX",
+                  "skewY",
+                  "anchorX",
+                  "anchorY",
+                ].some((property) => property in pose),
+            )),
+      )
     )
       fail("Bound connector geometry cannot also have transform events");
   }

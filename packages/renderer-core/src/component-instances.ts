@@ -80,7 +80,12 @@ export function instantiateComponent(
       .map((n) => n.id),
   );
   const window = <
-    T extends { start: number; end: number; cue?: string | undefined },
+    T extends {
+      start: number;
+      end: number;
+      cue?: string | undefined;
+      weight?: { frame: number; value: number }[] | undefined;
+    },
   >(
     w: T,
     cue: string,
@@ -89,6 +94,11 @@ export function instantiateComponent(
     start: w.start + start,
     end: w.end + start,
     cue: `${id}__${cue}`,
+    ...(w.weight
+      ? {
+          weight: w.weight.map((key) => ({ ...key, frame: key.frame + start })),
+        }
+      : {}),
   });
   const motionIds = new Set(definition.motions.map((m) => m.id));
   if (motionIds.size !== definition.motions.length)
@@ -131,7 +141,10 @@ export function instantiateComponent(
       window: window(m.window, m.window.cue ?? m.id),
       to:
         m.to +
-        (roots.has(m.node) && (m.property === "x" || m.property === "y")
+        (roots.has(m.node) &&
+        (m.property === "x" || m.property === "y") &&
+        (m.window.blend === "replace" ||
+          (!m.window.blend && (m.window.layer ?? "action") === "action"))
           ? offset[m.property === "x" ? 0 : 1]
           : 0),
     };
@@ -300,6 +313,9 @@ export function addCommerceComponents(
           ? (["scaleX", "scaleY"] as const)
           : [m.property]
         ).map((property) => ({
+          ...(m.window.layer ? { layer: m.window.layer } : {}),
+          ...(m.window.blend ? { blend: m.window.blend } : {}),
+          ...(m.window.weight ? { weight: m.window.weight } : {}),
           node: m.node,
           property,
           start: m.window.start,

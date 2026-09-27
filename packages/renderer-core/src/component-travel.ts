@@ -30,7 +30,11 @@ export function applyComponentTravel(
         ? travel.to
         : travel.from +
           (travel.to - travel.from) *
-            easeMotion((frame - start) / (end - start), easing);
+            easeMotion(
+              (frame - start) / (end - start),
+              easing,
+              (end - start) / scene.fps,
+            );
   const local = pointOnPath(path, progress);
   const canvas = transformPoint(worldMatrix(scene, path, frame), local);
   const point = transformPoint(

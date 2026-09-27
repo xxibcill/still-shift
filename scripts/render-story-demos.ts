@@ -1,3 +1,5 @@
+import { requireMotionCraft } from "../packages/renderer-core/src/story-continuous-quality.ts";
+import { measureSceneLayerEnergy } from "./story-motion/motion-craft-energy.ts";
 import {
   measureMotionEnergy,
   requireContinuousEnergy,
@@ -21,6 +23,7 @@ const { values } = parseArgs({
       type: "string",
       default: "benchmarks/fixtures/story-motion",
     },
+    "require-motion-craft": { type: "boolean", default: false },
     "require-continuous-motion": { type: "boolean", default: false },
   },
   strict: true,
@@ -54,6 +57,27 @@ for (const entry of entries) {
         ? { preset: "continuous" }
         : {},
     );
+    if (values["require-motion-craft"]) {
+      const pixelEnergy = await measureSceneLayerEnergy(scenePath);
+      const craft = analyzeStoryQuality(scene, {
+        motionCraft: true,
+        pixelEnergy,
+      });
+      await writeFile(
+        join(output, `${entry.id}.motion-craft.json`),
+        JSON.stringify(
+          { pixelEnergy, diagnostics: craft.diagnostics },
+          null,
+          2,
+        ) + "\n",
+        { flag: "wx" },
+      );
+      try {
+        requireMotionCraft(craft.diagnostics);
+      } catch (error) {
+        failures.push(`${entry.id}: ${String(error)}`);
+      }
+    }
     quality.push({
       id: entry.id,
       sourceChecksum: result.checksums.source,
@@ -113,7 +137,7 @@ for (const entry of entries) {
     "-i",
     video,
     "-vf",
-    `select=eq(n\\,${entry.id === "dated-system-break" ? 112 : 166})`,
+    `select=eq(n\\,${Math.min(scene.timeline.frameCount - 1, entry.id === "dated-system-break" ? 112 : 166)})`,
     "-frames:v",
     "1",
     join(output, `${entry.id}.png`),

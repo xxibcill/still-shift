@@ -1,4 +1,8 @@
 import {
+  drawStoryTransition,
+  isStoryTransition,
+} from "../../../packages/renderer-core/src/story-transition.ts";
+import {
   parsePassagePlan,
   type PassagePlan,
 } from "../../../packages/scene-contract/src/story-authoring.ts";
@@ -18,6 +22,7 @@ import {
 import { evaluatePreparedNode } from "../../../packages/renderer-core/src/prepared-scene.ts";
 import { sha256Hex } from "../../../packages/renderer-core/src/browser-checksum.ts";
 import { createPassageControls } from "./passage-controls.ts";
+import { createMotionTools } from "./motion-tools.ts";
 import {
   preparePreviews,
   drawOverlays,
@@ -86,6 +91,7 @@ function installPreviews(ready: ReadyBeat[]) {
   slider.max = String(editor!.passage.frameCount - 1);
   frame = Math.min(frame, editor!.passage.frameCount - 1);
   renderControls();
+  renderMotionInspector();
   show(frame);
   el("status").textContent =
     `${editor!.passage.plan.title} · ${editor!.passage.beats.length} beats · ${editor!.passage.frameCount} frames · ${editor!.passage.plan.fps} fps`;
@@ -156,7 +162,24 @@ function show(next: number) {
     index = editor.passage.beats.indexOf(at.beat),
     ready = previews[index]!;
   ready.preview.renderFrame(at.frame);
-  canvas.getContext("2d")!.drawImage(ready.canvas, 0, 0);
+  const planned = editor.passage.plan.beats[index]!;
+  const handoff = "handoff" in planned ? planned.handoff : undefined;
+  if (index && isStoryTransition(handoff) && at.frame < handoff!.frames!) {
+    const outgoing = previews[index - 1]!;
+    outgoing.preview.renderFrame(
+      outgoing.scene.frameCount - handoff!.frames! + at.frame,
+    );
+    drawStoryTransition(
+      canvas.getContext("2d")!,
+      outgoing.canvas,
+      ready.canvas,
+      handoff!,
+      at.frame,
+      canvas.width,
+      canvas.height,
+      ready.scene.fps,
+    );
+  } else canvas.getContext("2d")!.drawImage(ready.canvas, 0, 0);
   el("frame-label").textContent =
     `Frame ${frame} · Beat ${at.frame} · Source ${at.sourceFrame} · ${(frame / editor.passage.plan.fps).toFixed(2)} s`;
   if (beatSelect.value !== String(index)) {
@@ -188,6 +211,9 @@ function show(next: number) {
       "active",
       frame >= Number(mark.dataset.start) && frame <= Number(mark.dataset.end),
     );
+  document
+    .getElementById("motion-tools")
+    ?.dispatchEvent(new CustomEvent("story-frame", { detail: at.frame }));
 }
 function diagnosticBeat(diagnostic: PassageDiagnostic, fallbackBeat?: string) {
   if (!editor || !previews.length) return undefined;
@@ -248,6 +274,23 @@ function renderControls() {
 }
 function renderInspector() {
   controls.renderInspector(editor!, templates);
+  renderMotionInspector();
+}
+function renderMotionInspector() {
+  document.getElementById("motion-tools")?.remove();
+  const index = Number(beatSelect.value),
+    ready = previews[index],
+    beat = editor?.passage.beats[index];
+  if (!ready || !beat) return;
+  const tools = createMotionTools(
+    beat.scene,
+    (local) => {
+      stop();
+      show(beat.start + local);
+    },
+    ready.images,
+  );
+  el("timeline").after(tools);
 }
 async function loadPacket(
   packet: {

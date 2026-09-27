@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { StoryPassagePlanSchema } from "./story-passage.ts";
 import { StorySceneSchema } from "./story.ts";
-import { MotionEasingSchema } from "./motion-easing.ts";
+import { CurveEasingSchema, MotionEasingSchema } from "./motion-easing.ts";
 import {
   checkPassageBeatContent,
   checkPassageCueIds,
@@ -133,7 +133,20 @@ const properties = z.enum([
 ]);
 export const HandoffSchema = z
   .object({
-    mode: z.enum(["cut", "continue", "reset"]).default("cut"),
+    mode: z
+      .enum([
+        "cut",
+        "continue",
+        "reset",
+        "overlap",
+        "crossfade",
+        "push",
+        "match",
+      ])
+      .default("cut"),
+    frames: z.number().int().min(2).max(120).optional(),
+    direction: z.enum(["left", "right", "up", "down"]).optional(),
+    easing: CurveEasingSchema.optional(),
     camera: z.enum(["carry", "reset"]).default("reset"),
     subjects: z
       .array(
@@ -159,6 +172,7 @@ export const StoryAuthoringPlanSchema = z
   .object({
     ...StoryPassagePlanSchema.shape,
     schemaVersion: z.literal("story-passage-2"),
+    transitionModel: z.literal("joins-1").optional(),
     styleProfile: StoryStyleSchema,
     contentPolicy: z.enum(["general", "historical"]).default("general"),
     narration: StoryPassagePlanSchema.shape.narration.optional(),
@@ -191,6 +205,41 @@ export const StoryAuthoringPlanSchema = z
     let total = 0;
     plan.beats.forEach((beat, index) => {
       total += beat.frameCount;
+      const transition = ["overlap", "crossfade", "push", "match"].includes(
+        beat.handoff.mode,
+      );
+      if (
+        transition &&
+        (plan.transitionModel !== "joins-1" ||
+          !index ||
+          !beat.handoff.frames ||
+          beat.handoff.frames >= beat.frameCount)
+      )
+        fail(
+          "transition-contract: joins require transitionModel joins-1, a previous beat and frames shorter than the incoming beat",
+          ["beats", index, "handoff"],
+        );
+      if (
+        !transition &&
+        (beat.handoff.frames !== undefined ||
+          beat.handoff.direction !== undefined ||
+          beat.handoff.easing !== undefined)
+      )
+        fail("transition-contract: transition fields require a join mode", [
+          "beats",
+          index,
+          "handoff",
+        ]);
+      if (
+        beat.handoff.mode === "match" &&
+        !beat.handoff.subjects.some((s) => s.mode === "carry")
+      )
+        fail("transition-match: match requires a carried subject identity", [
+          "beats",
+          index,
+          "handoff",
+          "subjects",
+        ]);
       checkPassageCueIds(beat, fail);
       requireUniqueIds(
         beat.handoff.subjects.map((s) => s.id),

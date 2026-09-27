@@ -1,3 +1,5 @@
+import { requireMotionCraft } from "../packages/renderer-core/src/story-continuous-quality.ts";
+import { measureSceneLayerEnergy } from "./story-motion/motion-craft-energy.ts";
 import {
   measureMotionEnergy,
   requireContinuousEnergy,
@@ -27,6 +29,7 @@ const { values } = parseArgs({
     narration: { type: "string" },
     "narration-sha256": { type: "string" },
     passage: { type: "string", default: "comparison" },
+    "require-motion-craft": { type: "boolean", default: false },
     "require-continuous-motion": { type: "boolean", default: false },
   },
   strict: true,
@@ -304,3 +307,26 @@ if (values["require-continuous-motion"]) {
       throw new Error(`${scene.title} fails compiled continuous gates`);
   }
 }
+
+if (values["require-motion-craft"])
+  for (const [index, scene] of scenes.entries()) {
+    const id = resources
+      ? `beat-${index + 1}`
+      : index === 0
+        ? "st013"
+        : "st014";
+    const pixelEnergy = await measureSceneLayerEnergy(
+      join(output, `${id}.json`),
+    );
+    await writeFile(
+      join(output, `${id}.layer-energy.json`),
+      JSON.stringify(pixelEnergy, null, 2) + "\n",
+      { flag: "wx" },
+    );
+    requireMotionCraft(
+      analyzeStoryQuality(compileStoryScene(scene), {
+        motionCraft: true,
+        pixelEnergy,
+      }).diagnostics,
+    );
+  }

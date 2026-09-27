@@ -1,3 +1,5 @@
+import { createMotionTools } from "./motion-tools.ts";
+import type { Images } from "../../../packages/renderer-core/src/illustrated-renderer.ts";
 import {
   StorySceneSchema,
   type StoryScene,
@@ -10,6 +12,7 @@ export function createStoryControls(
   input: StoryScene,
   apply: (input: StoryScene) => void,
   seek: (frame: number) => void,
+  images?: Images,
 ) {
   const host = document.getElementById("story-events")!;
   host.replaceChildren();
@@ -117,6 +120,9 @@ export function createStoryControls(
       const parsed = StorySceneSchema.parse(draft);
       apply(parsed);
       showQuality(parsed);
+      host
+        .querySelector("#motion-tools")
+        ?.replaceWith(createMotionTools(parsed, seek, images));
       message.textContent =
         "Timing applied to this preview. Download the scene to keep it.";
     } catch (error) {
@@ -133,6 +139,9 @@ export function createStoryControls(
       const parsed = StorySceneSchema.parse(draft);
       apply(parsed);
       showQuality(parsed);
+      host
+        .querySelector("#motion-tools")
+        ?.replaceWith(createMotionTools(parsed, seek, images));
       const url = URL.createObjectURL(
         new Blob([JSON.stringify(parsed, null, 2) + "\n"], {
           type: "application/json",
@@ -152,4 +161,5 @@ export function createStoryControls(
   };
   host.append(button, download, message, quality);
   showQuality(input);
+  host.append(createMotionTools(input, seek, images));
 }

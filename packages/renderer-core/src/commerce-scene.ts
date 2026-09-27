@@ -30,14 +30,21 @@ import { componentRendererVersions } from "./component-capabilities.ts";
 
 import { buildCommerceFloating } from "./commerce-floating.ts";
 
+import {
+  compileMotionCraft,
+  type CompiledMotionCraft,
+} from "./motion-craft.ts";
+
 type Box = { x: number; y: number; width: number; height: number };
 type Point = [number, number];
 export type CommerceRenderScene = CommerceScene & {
   rendererVersion:
+    | "commerce-canvas-0.20.0"
     | "commerce-canvas-0.19.0"
     | "commerce-canvas-0.16.0"
     | "commerce-canvas-0.17.0"
     | "commerce-canvas-0.18.0";
+  compiledMotion?: CompiledMotionCraft;
   durationMs: number;
   canvas: { width: number; height: number };
   timeline: { fps: number; durationMs: number; frameCount: number };
@@ -457,7 +464,7 @@ export function compileCommerceScene(
 ): CommerceRenderScene {
   const tracks = createFrameTracks(input.nodes);
   const initialized = new Set<string>();
-  for (const event of input.events) {
+  for (const event of input.motionModel ? [] : input.events) {
     if (event.from !== undefined) {
       const key = event.node + "." + event.property;
       if (initialized.has(key))
@@ -479,6 +486,10 @@ export function compileCommerceScene(
     tracks: tracks.finish(),
     followers: {},
   };
+  if (input.motionModel) {
+    scene.compiledMotion = compileMotionCraft(scene);
+    scene.rendererVersion = "commerce-canvas-0.20.0";
+  }
   validateComponentOwnership(scene);
   validateComponentRelationships(scene);
   validateTravelTransforms(scene);

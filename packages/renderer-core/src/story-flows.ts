@@ -1,6 +1,7 @@
 import type { StoryFlow } from "../../scene-contract/src/story-motion.ts";
 import type { PreparedPath } from "../../scene-contract/src/prepared.ts";
 import { pathLength, pointOnPath, sampleTrack } from "./prepared-scene.ts";
+import { interpolateColor } from "./motion-appearance.ts";
 
 export const storyBump = (t: number) =>
   Math.abs(t) < 1 ? (1 - t * t) ** 2 : 0;
@@ -61,6 +62,7 @@ export function sampleStoryFlow(
   state: { reveal: number; gap: number },
   frame: number,
   frameCount: number,
+  interpolateColors = false,
 ) {
   if (frame < flow.window.start || frame >= flow.window.end) return [];
   const length = pathLength(path.points);
@@ -74,9 +76,34 @@ export function sampleStoryFlow(
   let color = flow.color;
   for (const key of flow.colorStates ?? [])
     if (frame >= key.frame) color = key.color;
+  if (interpolateColors) {
+    const keys = [
+      { frame: flow.window.start, color: flow.color },
+      ...(flow.colorStates ?? []),
+    ];
+    const end = keys.findIndex((key) => key.frame > frame);
+    if (
+      end > 0 &&
+      /^#[\da-f]{6}$/i.test(keys[end - 1]!.color) &&
+      /^#[\da-f]{6}$/i.test(keys[end]!.color)
+    )
+      color = interpolateColor(
+        keys[end - 1]!.color,
+        keys[end]!.color,
+        (frame - keys[end - 1]!.frame) /
+          (keys[end]!.frame - keys[end - 1]!.frame),
+      );
+  }
   return Array.from({ length: flow.count }, (_, i) => {
     const offset =
-      flow.direction * flow.offsets[frame]! + (i * length) / flow.count;
+      flow.direction *
+        (flow.offsets[Math.floor(frame)]! +
+          (frame % 1) *
+            ((flow.offsets[
+              Math.min(flow.offsets.length - 1, Math.ceil(frame))
+            ] ?? flow.offsets[Math.floor(frame)]!) -
+              flow.offsets[Math.floor(frame)]!)) +
+      (i * length) / flow.count;
     let progress = (((offset % length) + length) % length) / length;
     if (flow.warp) {
       const index = progress * (SAMPLES - 1),
@@ -108,8 +135,16 @@ export function drawStoryFlow(
   state: { reveal: number; gap: number },
   frame: number,
   frameCount: number,
+  interpolateColors = false,
 ) {
-  for (const token of sampleStoryFlow(flow, path, state, frame, frameCount)) {
+  for (const token of sampleStoryFlow(
+    flow,
+    path,
+    state,
+    frame,
+    frameCount,
+    interpolateColors,
+  )) {
     ctx.save();
     ctx.globalAlpha *= token.opacity;
     ctx.fillStyle = token.color;

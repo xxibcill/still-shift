@@ -1,5 +1,12 @@
 import { z } from "zod";
-import { MotionEasingSchema } from "./motion-easing.ts";
+import { CurveEasingSchema as MotionEasingSchema } from "./motion-easing.ts";
+
+import {
+  curveFields,
+  layerFields,
+  paintFields,
+  spatialFields,
+} from "./motion-craft.ts";
 
 const finite = z.number().finite();
 const frame = finite.int().nonnegative();
@@ -19,35 +26,51 @@ export const StoryWindowSchema = z
     cue: z.string().min(1).optional(),
     easing: MotionEasingSchema.optional(),
     role: StoryRoleSchema.optional(),
+    ...layerFields,
   })
   .strict()
   .refine((v) => v.end > v.start, "Event end must follow start");
-const pose = {
+export const motionPose = {
+  ...paintFields,
+  reveal: finite.optional(),
+  gap: finite.optional(),
+  pulse: finite.optional(),
+  pinch: finite.optional(),
+  strokeWidth: finite.min(0).max(200).optional(),
+  trimStart: finite.optional(),
+  trimEnd: finite.optional(),
+  trimOffset: finite.optional(),
+  blur: finite.min(0).max(40).optional(),
+  skewX: finite.min(-80).max(80).optional(),
+  skewY: finite.min(-80).max(80).optional(),
+  anchorX: finite.optional(),
+  anchorY: finite.optional(),
   x: finite.optional(),
   y: finite.optional(),
-  scaleX: finite.positive().max(4).optional(),
-  scaleY: finite.positive().max(4).optional(),
+  scaleX: finite.optional(),
+  scaleY: finite.optional(),
   rotation: finite.optional(),
-  opacity: finite.min(0).max(1).optional(),
+  opacity: finite.optional(),
 };
 export const StoryMoveSchema = z
   .object({
     node: id,
     window: StoryWindowSchema.optional(),
     to: z
-      .object({ ...pose, scale: finite.positive().max(4).optional() })
+      .object({ ...motionPose, scale: finite.optional() })
       .strict()
       .optional(),
     keys: z
       .array(
         z
-          .object({ frame, ...pose, easing: MotionEasingSchema.optional() })
+          .object({ frame, ...motionPose, ...curveFields, ...spatialFields })
           .strict(),
       )
       .min(2)
       .max(100)
       .optional(),
     role: StoryRoleSchema.optional(),
+    ...layerFields,
   })
   .strict()
   .superRefine((move, ctx) => {
@@ -66,6 +89,13 @@ export const StoryMoveSchema = z
     if (move.to && !Object.values(move.to).some((v) => v !== undefined))
       fail("Move target cannot be empty");
     move.keys?.forEach((key, i, keys) => {
+      if (
+        (key.smooth || key.interpolation === "smooth") &&
+        (i === 0 || i === keys.length - 1)
+      )
+        fail("motion-smooth-neighbors: smooth keys require neighbors");
+      if (key.interpolation === "bezier" && !key.bezier)
+        fail("motion-bezier-handles: bezier interpolation requires handles");
       if (i && key.frame <= keys[i - 1]!.frame)
         fail("Move key frames must be strictly increasing");
     });
@@ -166,7 +196,7 @@ export const StoryCameraSchema = z
           })
           .strict(),
       )
-      .max(1)
+      .max(32)
       .optional(),
   })
   .strict();

@@ -12,6 +12,9 @@ import type {
 import type { CinematicScene } from "../../scene-contract/src/cinematic.ts";
 import type { StoryScene } from "../../scene-contract/src/story.ts";
 import type { MotionEasing } from "../../scene-contract/src/motion-easing.ts";
+import { applyMotionCraft } from "./motion-craft.ts";
+import { sampleCurve, type CurveKey } from "./curve.ts";
+import type { NumericMotionProperty } from "../../scene-contract/src/motion-craft.ts";
 import { easeMotion } from "./motion-easing.ts";
 import { applyComponentState } from "./component-state.ts";
 import { applyComponentTravel } from "./component-travel.ts";
@@ -26,7 +29,7 @@ import {
 } from "./cinematic-scene.ts";
 
 export const ILLUSTRATED_RENDERER_VERSION = "illustrated-canvas-0.12.0";
-export type Key = {
+export type Key = CurveKey & {
   time: number;
   value: number;
   step?: boolean;
@@ -57,7 +60,19 @@ export type IllustratedScene =
   | CinematicRenderScene
   | StoryRenderScene
   | CommerceRenderScene;
-export const sampleTrack = (keys: Key[], time: number): number => {
+export const sampleTrack = (keys: Key[], time: number, fps = 30): number => {
+  if (
+    keys.some(
+      (k) =>
+        k.smooth ||
+        k.interpolation ||
+        k.in ||
+        k.out ||
+        k.bezier ||
+        typeof k.easing === "object",
+    )
+  )
+    return sampleCurve(keys, time, fps);
   if (time <= keys[0]!.time) return keys[0]!.value;
   for (let i = 1; i < keys.length; i++) {
     const end = keys[i]!;
@@ -323,12 +338,21 @@ export function evaluatePreparedNodeAtTime(
   scene: IllustratedScene,
   node: PreparedNode,
   frame: number,
-): Record<Property, number> {
+): Record<Property, number> &
+  Partial<Record<NumericMotionProperty, number>> & {
+    stateFrom?: number;
+    stateMix?: number;
+  } {
   if (
     !Number.isFinite(frame) ||
     frame < 0 ||
     frame > scene.timeline.frameCount - 1 ||
-    (scene.schemaVersion !== "commerce-scene-1" && !Number.isInteger(frame))
+    (scene.schemaVersion !== "commerce-scene-1" &&
+      !(scene.schemaVersion === "story-scene-1" && scene.motionModel) &&
+      !(
+        scene.schemaVersion === "illustrated-scene-2" && scene.effectsVersion
+      ) &&
+      !Number.isInteger(frame))
   )
     throw new Error("Sample time outside illustrated timeline");
   const time =
@@ -365,12 +389,12 @@ export function evaluatePreparedNodeAtTime(
     ? scene.tracks[node.id]!
     : {};
   for (const [property, keys] of Object.entries(tracks))
-    state[property as Property] = sampleTrack(keys, time);
+    state[property as Property] = sampleTrack(keys, time, scene.fps);
   if (
     scene.schemaVersion === "commerce-scene-1" ||
     scene.schemaVersion === "story-scene-1"
   ) {
-    applyComponentValues(scene, node.id, frame, state);
+    if (!scene.motionModel) applyComponentValues(scene, node.id, frame, state);
     applyComponentState(scene, node.id, frame, state);
     applyComponentTravel(scene, node, frame, state);
     applyComponentPin(scene, node, frame, state);
@@ -390,6 +414,23 @@ export function evaluatePreparedNodeAtTime(
   if (scene.schemaVersion === "commerce-scene-1") {
     const visibility = scene.visibility?.find((v) => v.target === node.id);
     if (visibility && (frame < visibility.start || frame >= visibility.end))
+      state.opacity = 0;
+  }
+  if (
+    (scene.schemaVersion === "story-scene-1" ||
+      scene.schemaVersion === "commerce-scene-1") &&
+    scene.motionModel
+  ) {
+    applyMotionCraft(scene, node, frame, state);
+    // Visibility is a render envelope, including when an opacity driver is active.
+    const visibility =
+      scene.schemaVersion === "commerce-scene-1"
+        ? scene.visibility?.find((v) => v.target === node.id)
+        : undefined;
+    if (
+      !componentVisible(scene, node.id, frame) ||
+      (visibility && (frame < visibility.start || frame >= visibility.end))
+    )
       state.opacity = 0;
   }
   if (scene.schemaVersion === "commerce-scene-1" && scene.effects?.length)

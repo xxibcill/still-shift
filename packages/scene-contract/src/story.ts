@@ -18,11 +18,16 @@ import {
   StoryFlowSchema,
 } from "./story-motion.ts";
 
+import { sharedEffectsFields } from "./shared-effects.ts";
+import { motionAppearanceFields, motionCraftFields } from "./motion-craft.ts";
+import { validateMotionCraft } from "./motion-craft-validation.ts";
+
 const finite = z.number().finite();
 const frame = finite.int().nonnegative();
 const id = z.string().regex(/^[a-zA-Z][\w-]*$/);
 const point = z.tuple([finite, finite]);
 export const StoryRecipeSchema = z.discriminatedUnion("preset", [
+  z.object({ preset: z.literal("generic"), ...choreography }).strict(),
   z
     .object({
       preset: z.literal("unequal_margins"),
@@ -154,9 +159,9 @@ export const StoryRecipeSchema = z.discriminatedUnion("preset", [
 export type StoryRecipe = z.infer<typeof StoryRecipeSchema>;
 export type StoryWindow = z.infer<typeof window>;
 export type StoryMove = z.infer<typeof move>;
-export const STORY_PRESETS = StoryRecipeSchema.options.map(
-  (option) => option.shape.preset.value,
-);
+export const STORY_PRESETS = StoryRecipeSchema.options
+  .map((option) => option.shape.preset.value)
+  .filter((preset) => preset !== "generic");
 
 const anchor = z.object({ node: id, point }).strict();
 const shape = PreparedSceneFieldsSchema.omit({ durationMs: true })
@@ -165,6 +170,9 @@ const shape = PreparedSceneFieldsSchema.omit({ durationMs: true })
     componentData: ComponentDataSchema.optional(),
     frameCount: frame.positive().max(108000),
     episodeStartFrame: frame.optional(),
+    ...motionCraftFields,
+    ...motionAppearanceFields,
+    ...sharedEffectsFields,
     motionGrammar: z.literal("v2").optional(),
     authoringVersion: z.literal("1").optional(),
     safeInset: finite.min(0).max(400).optional(),
@@ -217,6 +225,7 @@ export const StorySceneSchema = shape.superRefine((scene, ctx) => {
   const fail = (message: string) => ctx.addIssue({ code: "custom", message });
   const { nodes } = validatePreparedGraph(scene, fail);
   validateComponentData(scene, fail);
+  validateMotionCraft(scene, ctx);
   validateStoryBindings(scene, nodes, fail);
   if (
     (scene.initialState ||
@@ -243,7 +252,7 @@ export const StoryAnimationResultSchema = z
   .object({
     ...PreparedAnimationResultSchema.shape,
     schemaVersion: z.literal("story-result-1"),
-    preset: z.enum(STORY_PRESETS),
+    preset: z.enum([...STORY_PRESETS, "generic"]),
     durationMs: finite.positive(),
     metrics: PreparedAnimationResultSchema.shape.metrics.extend({
       durationMs: finite.positive(),

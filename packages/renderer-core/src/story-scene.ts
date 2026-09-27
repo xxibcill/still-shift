@@ -1,3 +1,8 @@
+import { validateStorySemanticChecks } from "./story-generic.ts";
+import {
+  compileMotionCraft,
+  type CompiledMotionCraft,
+} from "./motion-craft.ts";
 import { compileStoryFlows, type CompiledStoryFlow } from "./story-flows.ts";
 import {
   compileEntrance,
@@ -41,12 +46,14 @@ type StoryMotionEventKind =
 
 export type StoryRenderScene = StoryScene & {
   rendererVersion:
+    | "story-canvas-0.19.0"
     | "story-canvas-0.18.0"
     | "story-canvas-0.13.3"
     | "story-canvas-0.14.0"
     | "story-canvas-0.15.0"
     | "story-canvas-0.16.0"
     | "story-canvas-0.17.0";
+  compiledMotion?: CompiledMotionCraft;
   durationMs: number;
   canvas: { width: number; height: number };
   timeline: { fps: number; durationMs: number; frameCount: number };
@@ -188,7 +195,13 @@ export function compileStoryScene(source: StoryScene): StoryRenderScene {
     window: StoryWindow,
     kind: StoryMotionEventKind,
     role: StoryRole = "action",
-  ) => events.push({ node, window, kind, role: window.role ?? role });
+  ) =>
+    events.push({
+      node,
+      window,
+      kind,
+      role: window.layer ?? window.role ?? role,
+    });
   const tracks = createTracks(input.nodes);
   const node = (id: string) => input.nodes.find((node) => node.id === id)!;
   const enter = (id: string, window: StoryWindow) => {
@@ -198,11 +211,17 @@ export function compileStoryScene(source: StoryScene): StoryRenderScene {
       node(id),
       input.motionGrammar === "v2" ? undefined : "fade",
     );
-    compileEntrance(tracks, input.nodes, {
-      node: id,
-      window,
-      verb: policy.verb,
-    });
+    compileEntrance(
+      tracks,
+      input.nodes,
+      {
+        node: id,
+        window,
+        verb: policy.verb,
+      },
+      false,
+      input.entranceProfile === "accelerate",
+    );
     event(id, window, "entrance", policy.role);
   };
   const reveal = (id: string, window: StoryWindow) => {
@@ -344,6 +363,7 @@ export function compileStoryScene(source: StoryScene): StoryRenderScene {
       input.nodes,
       { ...entrance, verb: policy.verb },
       subsequent,
+      input.entranceProfile === "accelerate",
     );
     event(entrance.node, entrance.window, "entrance", policy.role);
   }
@@ -352,7 +372,7 @@ export function compileStoryScene(source: StoryScene): StoryRenderScene {
     event(exit.node, exit.window, "exit");
   }
   for (const move of recipe.moves) {
-    compileMove(tracks, move);
+    if (!input.motionModel) compileMove(tracks, move);
     const window = move.window ?? {
       start: move.keys![0]!.frame,
       end: move.keys!.at(-1)!.frame,
@@ -361,12 +381,58 @@ export function compileStoryScene(source: StoryScene): StoryRenderScene {
       move.node,
       window,
       "move",
-      move.role ?? (window.easing === "out-back-soft" ? "response" : "action"),
+      move.layer ??
+        move.role ??
+        (window.easing === "out-back-soft" ? "response" : "action"),
     );
   }
   for (const emphasis of recipe.emphasis) {
-    tracks.add(emphasis.node, "opacity", emphasis.window, emphasis.opacity);
+    if (!input.motionModel)
+      tracks.add(emphasis.node, "opacity", emphasis.window, emphasis.opacity);
     event(emphasis.node, emphasis.window, "emphasis", "response");
+  }
+  for (const motion of input.intentPresets?.motions ?? [])
+    event(
+      motion.node,
+      motion.window,
+      "move",
+      motion.preset === "breathe"
+        ? "carrier"
+        : ["settle", "recoil"].includes(motion.preset)
+          ? "response"
+          : "action",
+    );
+  for (const motion of input.periodic ?? [])
+    event(
+      motion.node,
+      { start: motion.start, end: motion.end },
+      "move",
+      motion.layer ?? "carrier",
+    );
+  for (const driver of input.drivers ?? []) {
+    const signal = input.signals?.find((s) => s.id === driver.signal);
+    if (!signal) continue;
+    const offset = driver.map?.delay ?? 0,
+      id = driver.target.split(".")[0]!;
+    const record = (start: number, end: number) =>
+      event(
+        id,
+        {
+          start: Math.max(0, start + offset),
+          end: Math.min(input.frameCount - 1, end + offset),
+        },
+        "move",
+        driver.layer ?? "action",
+      );
+    for (let i = 1; i < signal.keys.length; i++)
+      if (signal.keys[i - 1]!.value !== signal.keys[i]!.value)
+        record(signal.keys[i - 1]!.frame, signal.keys[i]!.frame);
+    for (const addition of signal.add ?? [])
+      if ("pulse" in addition)
+        record(
+          addition.pulse.at - addition.pulse.half,
+          addition.pulse.at + addition.pulse.half,
+        );
   }
   if (input.camera)
     event(
@@ -422,6 +488,7 @@ export function compileStoryScene(source: StoryScene): StoryRenderScene {
       }
     }
   }
+  if (input.motionModel) scene.compiledMotion = compileMotionCraft(scene);
   validateComponentOwnership(scene);
   validateComponentRelationships(scene);
   validateStoryCameraCoverage(scene);
@@ -432,5 +499,7 @@ export function compileStoryScene(source: StoryScene): StoryRenderScene {
   scene.rendererVersion =
     componentRendererVersions(input.componentData)?.story ??
     scene.rendererVersion;
+  validateStorySemanticChecks(scene);
+  if (input.motionModel) scene.rendererVersion = "story-canvas-0.19.0";
   return scene;
 }

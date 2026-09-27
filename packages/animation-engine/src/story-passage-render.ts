@@ -1,3 +1,5 @@
+import { isStoryTransition } from "../../renderer-core/src/story-transition.ts";
+import { cachedStoryTransition } from "./story-transition-render.ts";
 import { randomUUID } from "node:crypto";
 import {
   cachedPassageBeat,
@@ -118,9 +120,14 @@ async function assembleStoryPassage(
   const frameCount = range.end - range.start,
     sourceStartFrame = plan.sourceStartFrame + range.start,
     endFrameExclusive = plan.sourceStartFrame + range.end;
-  const selected = passage.beats.filter(
-    (beat) => beat.end > range.start && beat.start < range.end,
-  );
+  const hasTransitions =
+    plan.schemaVersion === "story-passage-2" &&
+    plan.beats.some((b) => isStoryTransition(b.handoff));
+  const selected = hasTransitions
+    ? passage.beats
+    : passage.beats.filter(
+        (beat) => beat.end > range.start && beat.start < range.end,
+      );
   const renderStart = range.start - selected[0]!.start;
   const clips = [];
   for (const beat of selected) {
@@ -143,7 +150,13 @@ async function assembleStoryPassage(
           signal: options.signal,
         }),
       verify: (path) =>
-        verifyVideo(path, beat.frameCount, plan.fps, false, options.signal),
+        verifyVideo(
+          path,
+          beat.scene.frameCount,
+          plan.fps,
+          false,
+          options.signal,
+        ),
     });
     clips.push(clip);
     await options.job.beat(beat.id);
@@ -154,6 +167,40 @@ async function assembleStoryPassage(
       total: selected.length,
     });
   }
+  const assemblyInputs = clips.slice();
+  const segments: string[] = [];
+  const trims: string[] = [];
+  for (const [index, beat] of selected.entries()) {
+    const planned = plan.beats.find((b) => b.id === beat.id)!;
+    const handoff = "handoff" in planned ? planned.handoff : undefined;
+    let start = 0;
+    if (index && isStoryTransition(handoff)) {
+      const joinClip = await cachedStoryTransition({
+        outgoing: {
+          ...clips[index - 1]!,
+          frameCount: selected[index - 1]!.scene.frameCount,
+          joinStart: selected[index - 1]!.frameCount,
+        },
+        incoming: clips[index]!,
+        handoff: handoff!,
+        fps: plan.fps,
+        output: join(options.sceneDirectory, beat.id + ".join.mp4"),
+        cacheDirectory: options.cacheDirectory,
+        signal: options.signal,
+        verify: (path) =>
+          verifyVideo(path, handoff!.frames!, plan.fps, false, options.signal),
+      });
+      segments.push(`[${assemblyInputs.length}:v]`);
+      assemblyInputs.push(joinClip);
+      start = handoff!.frames!;
+    }
+    if (start || beat.scene.frameCount > beat.frameCount) {
+      trims.push(
+        `[${index}:v]trim=start_frame=${start}:end_frame=${beat.frameCount},setpts=PTS-STARTPTS[tail${index}];`,
+      );
+      segments.push(`[tail${index}]`);
+    } else segments.push(`[${index}:v]`);
+  }
   const beatsMs = performance.now() - started;
   options.onProgress?.({
     stage: "assembly",
@@ -162,9 +209,10 @@ async function assembleStoryPassage(
   });
   const video = join(output, "passage.mp4");
   const concat =
-    clips.map((_, index) => "[" + index + ":v]").join("") +
+    trims.join("") +
+    segments.join("") +
     "concat=n=" +
-    clips.length +
+    segments.length +
     ":v=1:a=0[whole];[whole]trim=start_frame=" +
     renderStart +
     ":end_frame=" +
@@ -172,7 +220,7 @@ async function assembleStoryPassage(
     ",setpts=PTS-STARTPTS[v]";
   const audio = narration
     ? ";[" +
-      clips.length +
+      assemblyInputs.length +
       ":a:0]atrim=start=" +
       sourceStartFrame / plan.fps +
       ":end=" +
@@ -183,7 +231,7 @@ async function assembleStoryPassage(
     "-v",
     "error",
     "-n",
-    ...clips.flatMap((clip) => ["-i", clip.outputPath]),
+    ...assemblyInputs.flatMap((clip) => ["-i", clip.outputPath]),
     ...(narration ? ["-i", narration] : []),
     "-filter_complex",
     concat + audio,
@@ -271,7 +319,10 @@ async function assembleStoryPassage(
       )),
     });
   }
-  const frames = selected.flatMap((beat) => {
+  const visibleBeats = selected.filter(
+    (beat) => beat.end > range.start && beat.start < range.end,
+  );
+  const frames = visibleBeats.flatMap((beat) => {
     const start = Math.max(range.start, beat.start) - range.start,
       end = Math.min(range.end, beat.end) - range.start;
     return [start, Math.floor((start + end - 1) / 2), end - 1];
@@ -286,7 +337,7 @@ async function assembleStoryPassage(
     "select='" +
       frames.map((frame) => "eq(n," + frame + ")").join("+") +
       "',scale=480:270,tile=3x" +
-      selected.length,
+      visibleBeats.length,
     "-frames:v",
     "1",
     join(output, "passage-motion.jpg"),

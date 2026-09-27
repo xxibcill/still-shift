@@ -1,5 +1,16 @@
 # Still Shift
 
+## Start here
+
+Read the **[user guide and feature map](./docs/user-guide.md)** to choose a workflow,
+find the right Lab screen, see required inputs and try an export. It covers image
+animation, cinematic scenes, storytelling, commerce, shared components and batch
+processing, with clear availability and limits.
+
+For AI-assisted guidance, use the **[ask-still-shift skill](./skills/ask-still-shift/SKILL.md)**:
+`Use $ask-still-shift to explain which features fit what I want to make.`
+The guide includes [installation and example questions](./docs/user-guide.md#ask-an-ai-about-still-shift).
+
 ## Product direction
 
 Still Shift aims to lower the cost of faceless YouTube videos by automatically mixing

@@ -84,7 +84,29 @@ export function compileEntrance(
   nodes: PreparedNode[],
   event: StoryEntrance,
   subsequent = false,
+  accelerate = false,
 ) {
+  if (accelerate) {
+    const original = tracks;
+    tracks = {
+      ...tracks,
+      add: (id, property, window, value) =>
+        original.add(
+          id,
+          property,
+          {
+            ...window,
+            easing:
+              window.easing === "out-quint" ||
+              window.easing === "out-expo" ||
+              window.easing === "out-cubic"
+                ? "in-out-cubic"
+                : window.easing,
+          },
+          value,
+        ),
+    };
+  }
   const node = nodes.find((n) => n.id === event.node)!;
   const { window, distance, from = "down" } = event;
   const verb = event.verb ?? "fade";

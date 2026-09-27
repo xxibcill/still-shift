@@ -1,0 +1,4 @@
+interface:
+  display_name: "Ask Still Shift"
+  short_description: "Find Still Shift features and how to use them"
+  default_prompt: "Use $ask-still-shift to explain which Still Shift features fit what I want to make and show me how to start."

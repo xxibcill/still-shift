@@ -10,7 +10,11 @@ import { easeMotion } from "./motion-easing.ts";
 import type { LoadedFont } from "./prepared-fonts.ts";
 import { measureTextLayout, type TextLayout } from "./text-layout.ts";
 
-export function sampleComponentValue(value: ComponentValue, frame: number) {
+export function sampleComponentValue(
+  value: ComponentValue,
+  frame: number,
+  fps = 30,
+) {
   if (!Number.isFinite(frame))
     throw new Error("Numeric sample requires a finite frame");
   if (frame <= value.window.start) return value.from;
@@ -23,7 +27,13 @@ export function sampleComponentValue(value: ComponentValue, frame: number) {
     ),
   );
   return (
-    value.from + (value.to - value.from) * easeMotion(t, value.window.easing)
+    value.from +
+    (value.to - value.from) *
+      easeMotion(
+        t,
+        value.window.easing,
+        (value.window.end - value.window.start) / fps,
+      )
   );
 }
 export function formatComponentValue(
@@ -51,7 +61,7 @@ export function formatComponentValue(
   );
 }
 export function componentText(
-  scene: { componentData?: ComponentSceneData["componentData"] },
+  scene: { fps?: number; componentData?: ComponentSceneData["componentData"] },
   node: PreparedNode,
   frame: number,
 ) {
@@ -64,12 +74,12 @@ export function componentText(
     (v) => v.id === binding.value,
   )!;
   return formatComponentValue(
-    sampleComponentValue(value, frame),
+    sampleComponentValue(value, frame, scene.fps),
     binding.format,
   );
 }
 export function componentTextVariants(
-  scene: { componentData?: ComponentSceneData["componentData"] },
+  scene: { fps?: number; componentData?: ComponentSceneData["componentData"] },
   node: Extract<PreparedNode, { type: "text" }>,
 ) {
   const binding = scene.componentData?.bindings.find(
@@ -93,7 +103,7 @@ export function componentTextVariants(
   ];
 }
 export function applyComponentValues(
-  scene: { componentData?: ComponentSceneData["componentData"] },
+  scene: { fps?: number; componentData?: ComponentSceneData["componentData"] },
   id: string,
   frame: number,
   state: Record<string, number>,
@@ -104,7 +114,7 @@ export function applyComponentValues(
       (v) => v.id === binding.value,
     )!;
     const t =
-      (sampleComponentValue(value, frame) - value.range[0]) /
+      (sampleComponentValue(value, frame, scene.fps) - value.range[0]) /
       (value.range[1] - value.range[0]);
     state[binding.property] =
       t === 0

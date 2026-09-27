@@ -1,0 +1,27 @@
+[
+  {
+    "id": "buffer-press",
+    "title": "Buffer Press · declared contact",
+    "description": "One pressure signal drives houses, margins and bands; roof contact is solved analytically."
+  },
+  {
+    "id": "buffer-press-accelerate",
+    "title": "Buffer Press · acceleration and layers",
+    "description": "Opt-in accelerated entrances and a ducked carrier layer."
+  },
+  {
+    "id": "supply-ramps",
+    "title": "Supply sequence · three-frame state ramps",
+    "description": "Measured text and image changes blend across three frames."
+  },
+  {
+    "id": "intent-presets",
+    "title": "Motion craft · intent presets",
+    "description": "Land and recoil authored entirely with serializable intent presets."
+  },
+  {
+    "id": "gallery",
+    "title": "Motion craft · primitive gallery",
+    "description": "Smooth keys, color, trim, width, blur, skew, Bézier paths, path morph and glyph selectors."
+  }
+]

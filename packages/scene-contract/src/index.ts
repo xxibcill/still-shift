@@ -18,3 +18,6 @@ export * from "./story-passage.ts";
 export * from "./story-authoring.ts";
 export * from "./component-data.ts";
 export * from "./components.ts";
+
+export * from "./motion-craft.ts";
+export * from "./shared-effects.ts";

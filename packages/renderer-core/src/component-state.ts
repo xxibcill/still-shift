@@ -18,13 +18,25 @@ export function applyComponentState(
   scene: ComponentSceneData,
   id: string,
   frame: number,
-  state: { state: number },
+  state: { state: number; stateFrom?: number; stateMix?: number },
 ) {
   if (!scene.componentData) return;
   const schedule = componentCapabilities(scene.componentData).states.find(
     (s) => s.target === id,
   );
-  if (schedule) state.state = sampleComponentState(schedule, frame);
+  if (schedule) {
+    state.state = sampleComponentState(schedule, frame);
+    let previous = schedule.initial;
+    for (const cut of schedule.cuts) {
+      if (cut.ramp && frame >= cut.frame && frame < cut.frame + cut.ramp) {
+        state.stateFrom = previous;
+        state.stateMix = (frame - cut.frame) / cut.ramp;
+        break;
+      }
+      if (frame < cut.frame) break;
+      previous = cut.state;
+    }
+  }
 }
 export function componentStateCuts(
   scene: Pick<ComponentSceneData, "componentData">,

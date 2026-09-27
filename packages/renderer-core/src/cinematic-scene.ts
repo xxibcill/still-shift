@@ -147,7 +147,7 @@ type CameraKey = {
   focal: number;
 };
 type CompiledCamera = CinematicScene & {
-  rendererVersion: typeof CINEMATIC_RENDERER_VERSION;
+  rendererVersion: typeof CINEMATIC_RENDERER_VERSION | "cinematic-canvas-0.9.0";
   canvas: { width: number; height: number };
   timeline: { fps: number; durationMs: number; frameCount: number };
   cameraFrames: CameraKey[];
@@ -163,7 +163,8 @@ export function sampleCinematicBlur(
   frame: number,
 ) {
   if (
-    !Number.isInteger(frame) ||
+    (!scene.effectsVersion && !Number.isInteger(frame)) ||
+    !Number.isFinite(frame) ||
     frame < 0 ||
     frame >= scene.timeline.frameCount
   )
@@ -199,7 +200,8 @@ export function sampleCinematicBlur(
 
 function sampleCamera(scene: CompiledCamera, frame: number): CameraKey {
   if (
-    !Number.isInteger(frame) ||
+    (!scene.effectsVersion && !Number.isInteger(frame)) ||
+    !Number.isFinite(frame) ||
     frame < 0 ||
     frame >= scene.timeline.frameCount
   )
@@ -677,7 +679,9 @@ export function compileCinematicScene(
   const scene: CompiledCamera = {
     ...input,
     nodes: [...input.nodes].sort((a, b) => depth.get(b.id)! - depth.get(a.id)!),
-    rendererVersion: CINEMATIC_RENDERER_VERSION,
+    rendererVersion: input.effectsVersion
+      ? "cinematic-canvas-0.9.0"
+      : CINEMATIC_RENDERER_VERSION,
     canvas: { width: input.width, height: input.height },
     timeline: { frameCount, fps: input.fps, durationMs: input.durationMs },
     cameraFrames: [
