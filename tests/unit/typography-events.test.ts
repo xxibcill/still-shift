@@ -3,6 +3,7 @@ import { describe, expect, it } from "vitest";
 import { StorySceneSchema } from "../../packages/scene-contract/src/story.ts";
 import { compileStoryScene } from "../../packages/renderer-core/src/story-scene.ts";
 import {
+  analyzePassageTypography,
   analyzeTypography,
   contrastRatio,
 } from "../../packages/renderer-core/src/typography-quality.ts";
@@ -633,6 +634,31 @@ describe("semantic typography and lint", () => {
       }).diagnostics.map((d) => d.code),
     ).toEqual(
       expect.arrayContaining(["text-contrast", "animator-handoff-snap"]),
+    );
+  });
+  it("detects variable weight hierarchy drift across passage beats", () => {
+    const scene = StorySceneSchema.parse({
+      ...input(),
+      fonts: [
+        {
+          ...input().fonts[0],
+          variable: { wght: { min: 100, default: 400, max: 900 } },
+        },
+      ],
+      textStyles: {
+        ...input().textStyles,
+        heading: { fontAsset: "font", axes: { wght: 400 } },
+      },
+      nodes: input().nodes.map((node) =>
+        node.id === "claim" ? { ...node, style: "heading" } : node,
+      ),
+    });
+    const heavier = structuredClone(scene);
+    heavier.textStyles!.heading!.axes!.wght = 700;
+    expect(analyzePassageTypography([scene, heavier])).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ code: "hierarchy-drift", nodes: ["claim"] }),
+      ]),
     );
   });
   it("combines signal selectors, excludes spaces, and keeps held destinations after end", () => {

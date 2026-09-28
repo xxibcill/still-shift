@@ -10,6 +10,7 @@ import { findNarrationPhrase } from "./narration-timing.ts";
 import { storyCameraTransform } from "./story-camera.ts";
 import { evaluatePreparedNode } from "./prepared-scene.ts";
 import { resolveTextEvents } from "./typography-events.ts";
+import type { TextStyle } from "../../scene-contract/src/typography.ts";
 
 export type TypographyReviewScene = StoryRenderScene | CommerceRenderScene;
 export type TypeQualityCode =
@@ -164,6 +165,17 @@ export function ragScore(layout: ShapedLayout) {
       ) / mean
     : 0;
 }
+function hierarchySignature(
+  style: TextStyle,
+  fontWeight: string | undefined,
+  nodeWeight: string | undefined,
+) {
+  return JSON.stringify([
+    style.size,
+    style.axes?.wght ?? fontWeight ?? nodeWeight,
+    style.tracking,
+  ]);
+}
 /** Finds a one-frame glyph displacement that its neighbouring frames do not share. */
 export function poseJump(
   node: Extract<TypographyReviewScene["nodes"][number], { type: "text" }>,
@@ -240,11 +252,7 @@ export function analyzeTypography(
     const style = resolvedTextStyle(node, scene.textStyles ?? {});
     const font = scene.fonts?.find((f) => f.id === style.fontAsset);
     if (node.textRole) {
-      const signature = JSON.stringify([
-          style.size,
-          style.axes?.wght ?? font?.weight ?? node.weight,
-          style.tracking,
-        ]),
+      const signature = hierarchySignature(style, font?.weight, node.weight),
         prior = roles.get(node.textRole);
       if (prior && signature !== prior.signature)
         add(
@@ -467,7 +475,7 @@ export function analyzePassageTypography(scenes: StoryScene[]) {
       if (node.type !== "text" || !node.textRole) continue;
       const style = resolvedTextStyle(node, scene.textStyles ?? {}),
         font = scene.fonts?.find((f) => f.id === style.fontAsset),
-        signature = JSON.stringify([style.size, font?.weight, style.tracking]);
+        signature = hierarchySignature(style, font?.weight, node.weight);
       if (seen.has(node.textRole) && seen.get(node.textRole) !== signature)
         diagnostics.push({
           code: "hierarchy-drift",
