@@ -50,21 +50,10 @@ export function measureTypographyPixels(
   try {
     for (const node of scene.nodes) {
       if (node.type !== "text") continue;
-      const hidden = structuredClone(scene);
-      // Use a blank prepared raster while retaining layout, motion, effects and occlusion.
-      const target = hidden.nodes.find((n) => n.id === node.id)!;
-      target.opacity = 0;
-      hidden.tracks[node.id] = {
-        ...hidden.tracks[node.id],
-        opacity: [{ time: 0, value: 0 }],
-      };
-      if (hidden.compiledMotion)
-        hidden.compiledMotion.layers = hidden.compiledMotion.layers.filter(
-          (l) => l.node !== node.id || l.property !== "opacity",
-        );
-      hidden.drivers = hidden.drivers?.filter(
-        (d) => d.target !== `${node.id}.opacity`,
-      );
+      const probeImages = (mode: "ink-only" | "container-only"): Images =>
+        Object.assign(new Map(images), images, {
+          textProbe: { node: node.id, mode },
+        });
       const inkScene = structuredClone(scene);
       inkScene.background = "#000000";
       inkScene.effects = [];
@@ -128,8 +117,16 @@ export function measureTypographyPixels(
           : a,
       );
       const inkCanvas = document.createElement("canvas"),
-        ink = createIllustratedPreview(inkCanvas, inkScene, images);
-      const background = createIllustratedPreview(backdrop, hidden, images);
+        ink = createIllustratedPreview(
+          inkCanvas,
+          inkScene,
+          probeImages("ink-only"),
+        );
+      const background = createIllustratedPreview(
+        backdrop,
+        scene,
+        probeImages("container-only"),
+      );
       for (const frame of frames) {
         visible.renderFrame(frame);
         background.renderFrame(frame);

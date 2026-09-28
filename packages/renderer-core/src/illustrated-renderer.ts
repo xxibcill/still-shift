@@ -62,6 +62,10 @@ export type Images = Map<string, HTMLImageElement> & {
   textLayouts?: Map<string, Map<string, TextLayout>>;
   typography?: PreparedTypography;
   rasters?: Map<string, HTMLCanvasElement>;
+  textProbe?: {
+    node: string;
+    mode: "ink-only" | "container-only";
+  };
 };
 type State = ReturnType<typeof evaluatePreparedNodeAtTime>;
 
@@ -267,8 +271,10 @@ const drawShape = (
       drawPath(ctx, node, state);
       break;
     case "text": {
+      const probe =
+        images.textProbe?.node === node.id ? images.textProbe.mode : undefined;
       if (images.typography) {
-        drawTypography(ctx, node, state, images.typography, frame);
+        drawTypography(ctx, node, state, images.typography, frame, probe);
         break;
       }
       const font = node.fontAsset
@@ -287,8 +293,9 @@ const drawShape = (
         : node.text;
       if (text === undefined)
         throw new Error(`Missing text state on ${node.id}`);
-      if (node.container && state.reveal > 0)
+      if (node.container && state.reveal > 0 && probe !== "ink-only")
         drawTextContainer(ctx, node, text);
+      if (probe === "container-only") break;
       if (
         animator &&
         drawAnimatedText(
@@ -385,6 +392,7 @@ export function createIllustratedPreview(
   images = Object.assign(new Map(images), {
     ...(images.fonts ? { fonts: images.fonts } : {}),
     ...(images.rasters ? { rasters: images.rasters } : {}),
+    ...(images.textProbe ? { textProbe: images.textProbe } : {}),
     ...(images.revealValidation
       ? { revealValidation: images.revealValidation }
       : {}),

@@ -464,6 +464,28 @@ try {
         textEvents: [],
         textAnimators: [],
       };
+      const contrastScene = {
+        ...bubbleScene,
+        background: "#ffffff",
+        nodes: [
+          {
+            ...bubble,
+            color: "#ffffff",
+            container: {
+              ...bubble.container,
+              fill: "#000000",
+              stroke: "#000000",
+            },
+          },
+        ],
+      };
+      const containerContrast = Math.min(
+        ...measureTypographyPixels(contrastScene, images)
+          .filter(
+            (sample: { contrast?: number }) => sample.contrast !== undefined,
+          )
+          .map((sample: { contrast: number }) => sample.contrast),
+      );
       const bubblePrepared = prepareTypography(bubbleScene, fonts);
       const bubbleCanvas = document.createElement("canvas");
       bubbleCanvas.width = 900;
@@ -505,6 +527,7 @@ try {
       }
       return {
         containerFill,
+        containerContrast,
         containerSafeArea,
         invisibleContrast,
         releaseHandoff,
@@ -539,6 +562,10 @@ try {
     result.containerFill,
     [255, 0, 255],
     "Typography text container is not drawn",
+  );
+  assert.ok(
+    result.containerContrast > 12,
+    `Container contrast used the wrong backdrop: ${result.containerContrast}`,
   );
   assert.match(
     result.containerSafeArea,

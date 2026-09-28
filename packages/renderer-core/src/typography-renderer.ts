@@ -778,15 +778,20 @@ export function drawTypography(
   state: { state: number; reveal: number },
   prepared: PreparedTypography,
   frame: number,
+  probe?: "ink-only" | "container-only",
 ) {
   ctx.save();
   // Containers sit behind the type and outside its overflow clip, as in the legacy renderer.
-  if (node.container && state.reveal > 0)
+  if (node.container && state.reveal > 0 && probe !== "ink-only")
     drawTextContainerShape(
       ctx,
       node.container,
       displayedContainerContent(node, prepared, frame, state.state),
     );
+  if (probe === "container-only") {
+    ctx.restore();
+    return;
+  }
   if (node.textLayout?.overflow === "clip") {
     const width = node.textLayout.width,
       left =
