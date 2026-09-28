@@ -1,4 +1,5 @@
 import type { PreparedNode } from "../../scene-contract/src/prepared.ts";
+import type { StoryScene } from "../../scene-contract/src/story.ts";
 import { evaluatePreparedNode } from "./prepared-scene.ts";
 import { storyAnchorPosition } from "./story-geometry.ts";
 import { evaluateStoryPath } from "./story-geometry.ts";
@@ -64,12 +65,10 @@ export function storyNodeBounds(
   );
 }
 
-export function storySafeZoneDiagnostics(
-  scene: StoryRenderScene,
+export function storyFocalSubjects(
+  scene: StoryScene,
   focusIds: readonly string[] = [],
-): PassageDiagnostic[] {
-  const zones = Object.entries(scene.safeZones ?? {});
-  if (!zones.length) return [];
+): Set<string> {
   const subjects = new Set([
     ...focusIds,
     ...(scene.review?.focalGroups ?? []).flatMap((group) => group.nodes),
@@ -88,6 +87,16 @@ export function storySafeZoneDiagnostics(
         !(node.width > scene.width * 0.8 && node.y > scene.height * 0.55)
       )
         subjects.add(node.id);
+  return subjects;
+}
+
+export function storySafeZoneDiagnostics(
+  scene: StoryRenderScene,
+  focusIds: readonly string[] = [],
+): PassageDiagnostic[] {
+  const zones = Object.entries(scene.safeZones ?? {});
+  if (!zones.length) return [];
+  const subjects = storyFocalSubjects(scene, focusIds);
   const diagnostics: PassageDiagnostic[] = [];
   const reported = new Set<string>();
   for (const node of scene.nodes) {

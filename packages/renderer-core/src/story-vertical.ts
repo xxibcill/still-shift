@@ -14,6 +14,7 @@ import {
 import { compileStoryScene } from "./story-scene.ts";
 import {
   isStoryNodeVisible,
+  storyFocalSubjects,
   storyNodeBounds,
   storySafeZoneDiagnostics,
 } from "./story-safe-zones.ts";
@@ -321,10 +322,7 @@ export function lintVertical(
     return diagnostics;
   }
   diagnostics.push(...storySafeZoneDiagnostics(rendered, options.focusIds));
-  const subjects = new Set([
-    ...(options.focusIds ?? []),
-    ...(scene.review?.focalGroups ?? []).flatMap((group) => group.nodes),
-  ]);
+  const subjects = storyFocalSubjects(scene, options.focusIds);
   const attached = new Set(scene.connectors.map((connector) => connector.path));
   const reported = new Set<string>();
   const add = (code: string, message: string, node: string, frame: number) => {

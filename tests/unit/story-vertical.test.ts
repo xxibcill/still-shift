@@ -79,6 +79,23 @@ describe("vertical story proposal and lint", () => {
     );
   });
 
+  it("catches unannotated standalone subjects outside the vertical frame", () => {
+    const scene = proposed(source());
+    const house = scene.nodes.find((node) => node.id === "house-a")!;
+    house.x = -1000;
+    expect(scene.safeZones).toBeUndefined();
+    expect(scene.review?.focalGroups).toBeUndefined();
+
+    expect(lintVertical(scene)).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          code: "subject-outside-frame",
+          node: "house-a",
+        }),
+      ]),
+    );
+  });
+
   it("continues geometry lint after camera coverage fails", () => {
     const scene = proposed(source());
     scene.motionGrammar = "v2";
