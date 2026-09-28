@@ -28,6 +28,7 @@ import {
   componentRendererVersions,
 } from "./component-capabilities.ts";
 import { validateStorySafeZones } from "./story-safe-zones.ts";
+import { validateStoryProps } from "./story-props.ts";
 
 type StoryMotionEventKind =
   | "camera"
@@ -47,6 +48,7 @@ type StoryMotionEventKind =
 
 export type StoryRenderScene = StoryScene & {
   rendererVersion:
+    | "story-canvas-0.21.0"
     | "story-canvas-0.20.0"
     | "story-canvas-0.19.0"
     | "story-canvas-0.18.0"
@@ -505,6 +507,7 @@ export function compileStoryScene(
       options.onValidationError(error);
     }
   };
+  validate(() => validateStoryProps(scene));
   validate(() => validateComponentOwnership(scene));
   validate(() => validateComponentRelationships(scene));
   validate(() => validateStoryCameraCoverage(scene));
@@ -519,6 +522,8 @@ export function compileStoryScene(
   if (input.motionModel) scene.rendererVersion = "story-canvas-0.19.0";
   if (input.format === "vertical")
     scene.rendererVersion = "story-canvas-0.20.0";
+  if (input.propAttachments?.length || input.characterActions?.length)
+    scene.rendererVersion = "story-canvas-0.21.0";
   if (options.validateSafeZones !== false)
     validate(() => validateStorySafeZones(scene));
   return scene;

@@ -2,6 +2,7 @@ import type { StoryScene } from "../../scene-contract/src/story.ts";
 import type { PreparedImage } from "../../scene-contract/src/prepared.ts";
 import type { StoryRenderScene } from "./story-scene.ts";
 import { evaluatePreparedNode } from "./prepared-scene.ts";
+import { imagePlacement } from "./node-transform.ts";
 
 type Axis = "x" | "y" | "zoom";
 type Camera = NonNullable<StoryScene["camera"]>;
@@ -137,19 +138,16 @@ function imageDrawBounds(
   const variant = node.states[stateIndex];
   if (!variant) throw new Error(`Missing state ${stateIndex} on ${node.id}`);
   const asset = scene.assets.find((item) => item.id === variant.asset)!;
-  const sourceWidth = variant.crop?.[2] ?? asset.width;
-  const sourceHeight = variant.crop?.[3] ?? asset.height;
-  const ratio =
-    node.fit === "cover"
-      ? Math.max(node.width / sourceWidth, node.height / sourceHeight)
-      : Math.min(node.width / sourceWidth, node.height / sourceHeight);
-  const width = sourceWidth * ratio;
-  const height = sourceHeight * ratio;
+  const { x, y, width, height } = imagePlacement(
+    node,
+    variant.crop ?? [0, 0, asset.width, asset.height],
+    variant.registration?.anchor,
+  );
   return {
-    left: (node.width - width) / 2,
-    top: (node.height - height) / 2,
-    right: (node.width + width) / 2,
-    bottom: (node.height + height) / 2,
+    left: x,
+    top: y,
+    right: x + width,
+    bottom: y + height,
   };
 }
 
@@ -158,7 +156,15 @@ export function validateStoryCameraCoverage(scene: StoryRenderScene) {
     const node = scene.nodes.find((n) => n.id === id)!;
     const fittedBounds =
       node.type === "image" && node.fit === "contain"
-        ? node.states.map((_, index) => imageDrawBounds(scene, node, index))
+        ? node.states.map((_, index) => {
+            const drawn = imageDrawBounds(scene, node, index);
+            return {
+              left: Math.max(0, drawn.left),
+              top: Math.max(0, drawn.top),
+              right: Math.min(node.width, drawn.right),
+              bottom: Math.min(node.height, drawn.bottom),
+            };
+          })
         : undefined;
     for (let frame = 0; frame < scene.frameCount; frame++) {
       const state = evaluatePreparedNode(scene, node, frame);

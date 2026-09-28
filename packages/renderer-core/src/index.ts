@@ -63,3 +63,17 @@ export * from "./motion-text.ts";
 export * from "./story-motion-presets.ts";
 export * from "./story-generic.ts";
 export * from "./story-transition.ts";
+
+export * from "./passage-audio.ts";
+export * from "./passage-audio-playback.ts";
+export {
+  parseNarrationTiming,
+  narrationTimingEntries,
+  findNarrationPhrase,
+} from "./narration-timing.ts";
+export {
+  importNarrationTiming,
+  type NarrationImportOptions,
+  type NarrationCueChange,
+} from "./narration-timing-import.ts";
+export { characterPoseBrief } from "./story-acting.ts";

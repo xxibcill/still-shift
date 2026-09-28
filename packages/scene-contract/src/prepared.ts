@@ -1,5 +1,7 @@
 import { z } from "zod";
 import { formatSize, OutputFormatSchema } from "./output-format.ts";
+import { TextContainerSchema, PoseRegistrationSchema } from "./story-acting.ts";
+import { PoseAnchorSchema } from "./character-actions.ts";
 
 const number = z.number().finite();
 const id = z.string().regex(/^[a-zA-Z][\w-]*$/);
@@ -47,7 +49,17 @@ export const PreparedNodeSchema = z.discriminatedUnion("type", [
       width: number.positive(),
       height: number.positive(),
       states: z
-        .array(z.object({ asset: id, crop: crop.optional() }).strict())
+        .array(
+          z
+            .object({
+              asset: id,
+              crop: crop.optional(),
+              pose: id.optional(),
+              registration: PoseRegistrationSchema.optional(),
+              anchors: z.record(id, PoseAnchorSchema).optional(),
+            })
+            .strict(),
+        )
         .min(1),
       fit: z.enum(["contain", "cover", "stretch"]).default("contain"),
     })
@@ -71,6 +83,7 @@ export const PreparedNodeSchema = z.discriminatedUnion("type", [
     .object({
       ...base,
       type: z.literal("text"),
+      container: TextContainerSchema.optional(),
       text: z.string().min(1),
       textRole: z
         .enum(["heading", "label", "qualification", "body"])
@@ -255,6 +268,30 @@ export function validatePreparedGraph(
   if (nodes.size !== scene.nodes.length || assets.size !== scene.assets.length)
     fail("Asset and node IDs must be unique");
   for (const node of scene.nodes) {
+    if (
+      node.type === "text" &&
+      node.container &&
+      (!node.fontAsset || (!node.textLayout && !node.textBox))
+    )
+      fail(
+        `Text containers require a pinned font and measured text layout: ${node.id}`,
+      );
+    if (node.type === "image") {
+      const names = node.states.flatMap((state) =>
+        state.pose ? [state.pose] : [],
+      );
+      if (
+        names.length &&
+        (names.length !== node.states.length ||
+          new Set(names).size !== names.length)
+      )
+        fail(`Every character pose must have a unique name: ${node.id}`);
+      if (
+        node.fit !== "contain" &&
+        node.states.some((state) => state.registration)
+      )
+        fail(`Pose registration requires contain fit: ${node.id}`);
+    }
     if (node.type === "text" && node.fontAsset && !fonts.has(node.fontAsset))
       fail(`Missing font asset ${node.fontAsset}`);
     const parents = new Set([node.id]);

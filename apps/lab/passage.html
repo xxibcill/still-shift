@@ -35,6 +35,26 @@
             accept=".json"
         /></label>
       </form>
+      <p>
+        Try the
+        <a
+          href="/passage.html?plan=benchmarks%2Ffixtures%2Fillustrated-sequence%2Faccess-story.json"
+          >30-second illustrated sequence</a
+        >
+        or its
+        <a
+          href="/passage.html?plan=benchmarks%2Ffixtures%2Fillustrated-sequence%2Fnarrated%2Faccess-story.json"
+          >narration-paced version</a
+        >, or
+        <a
+          href="/passage.html?plan=benchmarks%2Ffixtures%2Fillustrated-sequence%2Fsound%2Faccess-story.json"
+          >edit linked sound cues</a
+        >. Try a new story with
+        <a
+          href="/passage.html?plan=benchmarks%2Ffixtures%2Fparcel-story%2Factions%2Fparcel-story.json"
+          >character actions, held props and narrated timing</a
+        >.
+      </p>
       <p id="status" role="status">Loading passage…</p>
       <div id="errors" role="alert"></div>
       <div class="workspace">
@@ -57,6 +77,10 @@
             ></canvas>
           </div>
           <div class="transport">
+            <label
+              ><input id="sound-effects-enabled" type="checkbox" checked />
+              Sound effects</label
+            >
             <button id="play" type="button">Play</button
             ><button id="restart" type="button">Restart</button
             ><output id="frame-label">Frame 0</output>
@@ -113,10 +137,166 @@
           <details open>
             <summary>Narration cues</summary>
             <div id="cues"></div>
+            <details id="narration-timing-import">
+              <summary>Import narration timing</summary>
+              <p class="hint">
+                Use measured word timestamps or subtitles from this exact
+                recording. Preview changes before applying. Shot lengths stay
+                unchanged.
+              </p>
+              <form id="timing-form">
+                <label
+                  >Narration audio to import<input
+                    id="timing-audio"
+                    type="file"
+                    accept=".wav,.mp3"
+                    required
+                /></label>
+                <label
+                  >Word timing JSON or SRT<input
+                    id="timing-file"
+                    type="file"
+                    accept=".json,.srt"
+                    required
+                /></label>
+                <label
+                  >Timing import mode<select
+                    id="timing-mode"
+                    aria-label="Timing import mode"
+                  >
+                    <option value="match">Match existing cue phrases</option>
+                    <option value="add">Add transcript cues</option>
+                  </select></label
+                >
+                <button id="timing-prepare" type="submit">
+                  Preview timing import
+                </button>
+              </form>
+              <p id="timing-status" class="hint" role="status"></p>
+              <div id="timing-preview"></div>
+              <button id="timing-apply" type="button" disabled>
+                Apply timing import
+              </button>
+            </details>
           </details>
           <details>
             <summary>Linked events</summary>
             <div id="bindings"></div>
+          </details>
+          <details>
+            <summary>Text containers</summary>
+            <p class="hint">
+              Frame narration in a caption panel, or choose speech and thought
+              bubbles. Padding and tails participate in safe-area checks.
+            </p>
+            <div id="text-containers"></div>
+          </details>
+          <details>
+            <summary>Character poses</summary>
+            <p class="hint">
+              Choose supplied poses and link changes to narration or events. Use
+              a cut or a brief blend; changes remain editable and undoable.
+            </p>
+            <div id="character-poses"></div>
+          </details>
+          <details>
+            <summary>Character actions</summary>
+            <p class="hint">
+              Coordinate poses and travel from one cue. Link sound cues to the
+              action's start or end.
+            </p>
+            <div id="character-actions"></div>
+          </details>
+          <details>
+            <summary>Held props</summary>
+            <p class="hint">
+              Attach a prop to a character's hand, transfer it or release it.
+              Unattached props stay in their last held position.
+            </p>
+            <div id="prop-attachments"></div>
+          </details>
+          <details open>
+            <summary>Sound cues</summary>
+            <div id="sound-cues"></div>
+            <details id="sfx-generator">
+              <summary>Generate sound with ElevenLabs</summary>
+              <p id="sfx-config" class="hint" role="status">
+                Checking ElevenLabs setup…
+              </p>
+              <button id="sfx-refresh" type="button">Refresh connection</button>
+              <form id="sfx-form">
+                <fieldset id="sfx-fields">
+                  <legend>New sound effect</legend>
+                  <label
+                    >Generated sound ID<input
+                      id="sfx-id"
+                      value="generated-sound"
+                      required
+                      pattern="[a-z0-9][a-z0-9-]{0,63}"
+                      maxlength="64"
+                  /></label>
+                  <label
+                    >Sound description<textarea
+                      id="sfx-prompt"
+                      rows="3"
+                      required
+                      maxlength="2000"
+                      placeholder="A single soft wooden tap, short dry decay, no music or voices"
+                    ></textarea>
+                  </label>
+                  <label
+                    >Duration (seconds)<input
+                      id="sfx-duration"
+                      type="number"
+                      min="0.5"
+                      max="30"
+                      step="0.1"
+                      value="1"
+                      required
+                  /></label>
+                  <details>
+                    <summary>Generation settings</summary>
+                    <label
+                      >Prompt influence<input
+                        id="sfx-influence"
+                        type="number"
+                        min="0"
+                        max="1"
+                        step="0.05"
+                        value="0.3"
+                        required
+                    /></label>
+                    <label class="sfx-loop"
+                      ><input id="sfx-loop" type="checkbox" /> Create a loopable
+                      source</label
+                    >
+                    <p class="hint">
+                      Loopable sources still play for the duration selected in a
+                      sound cue.
+                    </p>
+                  </details>
+                  <p class="hint">
+                    Each generation uses your ElevenLabs account credits.
+                  </p>
+                  <button id="sfx-generate" type="submit" disabled>
+                    Generate with ElevenLabs
+                  </button>
+                </fieldset>
+              </form>
+              <p id="sfx-status" class="hint" role="status"></p>
+              <div id="sfx-result" hidden>
+                <audio
+                  id="sfx-preview"
+                  aria-label="Generated sound preview"
+                  controls
+                  preload="metadata"
+                ></audio>
+                <p id="sfx-file" class="hint"></p>
+                <button id="sfx-register" type="button">
+                  Add to current passage
+                </button>
+              </div>
+            </details>
           </details>
           <details open>
             <summary>Template parameters</summary>

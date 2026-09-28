@@ -116,7 +116,7 @@ export const ComponentStateSchema = z
           })
           .strict(),
       )
-      .min(1)
+      .min(0)
       .max(40),
   })
   .strict();

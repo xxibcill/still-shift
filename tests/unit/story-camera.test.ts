@@ -129,6 +129,22 @@ describe("story camera", () => {
     ];
     expect(() => compileStoryScene(StorySceneSchema.parse(raw))).not.toThrow();
   });
+  it("does not count registered image pixels outside the node clip as camera coverage", () => {
+    const raw = input();
+    const background = raw.nodes.find(
+      (node: { id: string }) => node.id === "paper",
+    );
+    Object.assign(background, {
+      x: 100,
+      y: -100,
+      width: 2100,
+      height: 1181.25,
+    });
+    background.states[0].registration = { anchor: [0.55, 1] };
+    expect(() => compileStoryScene(StorySceneSchema.parse(raw))).toThrow(
+      "Camera exposes uncovered edge on paper at frame 0",
+    );
+  });
   it("rejects transparent source pixels inside the projected viewport", () => {
     const scene = compileStoryScene(StorySceneSchema.parse(input()));
     const data = new Uint8ClampedArray(1920 * 1080 * 4);

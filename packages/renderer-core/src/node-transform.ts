@@ -70,6 +70,7 @@ export function inverseMatrix(m: Matrix): Matrix {
 export function imagePlacement(
   node: { width: number; height: number; fit: "contain" | "cover" | "stretch" },
   crop: [number, number, number, number],
+  footAnchor?: [number, number],
 ) {
   const [sx, sy, sw, sh] = crop;
   const ratio =
@@ -85,7 +86,11 @@ export function imagePlacement(
     sh,
     width,
     height,
-    x: (node.width - width) / 2,
-    y: (node.height - height) / 2,
+    x: footAnchor
+      ? node.width / 2 - width * footAnchor[0]
+      : (node.width - width) / 2,
+    y: footAnchor
+      ? node.height - height * footAnchor[1]
+      : (node.height - height) / 2,
   };
 }

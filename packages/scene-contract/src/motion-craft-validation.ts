@@ -335,6 +335,10 @@ export function validateMotionCraft(
       );
   }
   // Existing component dependencies participate in cycle detection too.
+  if (scene.schemaVersion === "story-scene-1")
+    for (const track of scene.propAttachments ?? [])
+      for (const hold of [track.initial, ...track.changes.map((c) => c.hold)])
+        if (hold) dependency(track.target, hold.actor);
   for (const node of scene.nodes)
     if (node.parent) dependency(node.id, node.parent);
   if (scene.componentData?.schemaVersion === "scene-components-3")

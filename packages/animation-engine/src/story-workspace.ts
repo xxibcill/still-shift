@@ -53,7 +53,7 @@ export async function writeStoryWorkspace(
       addFile(path, Buffer.from(JSON.stringify(value, null, 2) + "\n"), kind);
     const addBinary = async (
       asset: { path: string; sha256: string },
-      kind: "asset" | "font" | "narration",
+      kind: "asset" | "font" | "narration" | "audio",
     ) => {
       const bytes = await readFile(asset.path);
       const hash = passageChecksum(bytes);
@@ -73,6 +73,9 @@ export async function writeStoryWorkspace(
       return addFile(kind + "s/" + hash + extension, bytes, kind);
     };
     const plan = structuredClone(passage.plan);
+    if (plan.schemaVersion === "story-passage-2")
+      for (const asset of plan.audio?.assets ?? [])
+        asset.path = await addBinary(asset, "audio");
     const templatePaths = new Map<string, string>();
     for (const [reference, original] of passage.templates) {
       const template = structuredClone(original);

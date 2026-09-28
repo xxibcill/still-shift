@@ -108,6 +108,9 @@ export async function loadStoryWorkspaceInput(
   const plan = parsePassagePlan(
     JSON.parse(contents.get(planPath)!.toString("utf8")),
   );
+  if (plan.schemaVersion === "story-passage-2")
+    for (const asset of plan.audio?.assets ?? [])
+      reference(dirname(planPath), asset.path, "audio");
   for (const beat of plan.beats) {
     const path = reference(dirname(planPath), beat.template, "template");
     const template = parsePassageTemplate(

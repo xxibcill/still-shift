@@ -18,3 +18,6 @@ export {
   type PassageRenderOptions,
 } from "./story-passage-render.ts";
 export { writeStoryWorkspace } from "./story-workspace.ts";
+export { generateSfx, type GeneratedSfx } from "./sfx-generation.ts";
+export { SfxGenerationError } from "./elevenlabs-sfx.ts";
+export { importNarrationFile } from "./narration-import.ts";

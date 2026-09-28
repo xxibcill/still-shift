@@ -19,6 +19,9 @@ import {
   WebGLAnimationEngine,
   PreparedAnimationEngine,
   loadPreparedScene,
+  generateSfx,
+  SfxGenerationError,
+  importNarrationFile,
 } from "@still-shift/animation-engine";
 import {
   AnimationEngineError,
@@ -55,6 +58,8 @@ Usage:
   pnpm --silent still-shift animate --input <path> --output <path> [options]
   pnpm still-shift animate-scene --scene <prepared.json> --output <path> [--format landscape|vertical]
   pnpm still-shift passage lint --plan <plan.json> --format vertical
+  pnpm still-shift passage import-narration --plan <plan.json> --narration <audio.wav|mp3> --timing <words.json|captions.srt> --mode match|add --output <new-plan.json>
+  pnpm still-shift sfx generate --provider elevenlabs --id <slug> --prompt <text> --duration <seconds> --output-dir <new-directory> [--prompt-influence 0.3] [--loop true|false]
   pnpm still-shift prepare-commerce --brief <brief.json> --output <prepared.json>
   pnpm --silent still-shift batch --manifest <jsonl> --output-dir <path> [--format landscape|vertical] [--concurrency 1|2]
 
@@ -74,6 +79,10 @@ Options:
 
 Batch exits 0 after processing every item, including recorded item failures, and 2 for invalid configuration.
 Completed items with matching request and artifact hashes are reused on retry.
+
+SFX generation uses ELEVENLABS_API_KEY from the server environment and consumes account credits.
+SFX duration: 0.5–30 seconds. Prompt influence: 0–1. Loop defaults to false.
+Each SFX request needs a fresh output directory; paid requests are never automatically retried.
 `;
 
 const parseNamedArguments = (
@@ -249,6 +258,73 @@ export const runCli = async (
   if (args.includes("--version")) {
     io.stdout(`${ENGINE_VERSION}\n`);
     return 0;
+  }
+  if (args[0] === "sfx" && args[1] === "generate") {
+    try {
+      const values = parseNamedArguments(args.slice(2), [
+        "provider",
+        "id",
+        "prompt",
+        "duration",
+        "output-dir",
+        "prompt-influence",
+        "loop",
+      ]);
+      const loop = values.get("loop") ?? "false";
+      if (loop !== "true" && loop !== "false")
+        throw new SfxGenerationError("--loop must be true or false");
+      const result = await generateSfx(
+        {
+          provider: requireArgument(values, "provider"),
+          id: requireArgument(values, "id"),
+          prompt: requireArgument(values, "prompt"),
+          durationSeconds: Number(requireArgument(values, "duration")),
+          promptInfluence: Number(values.get("prompt-influence") ?? "0.3"),
+          loop: loop === "true",
+        },
+        { outputDir: requireArgument(values, "output-dir") },
+      );
+      io.stdout(JSON.stringify(result) + "\n");
+      return 0;
+    } catch (error) {
+      if (!(error instanceof SfxGenerationError))
+        return writeFailure(error, io);
+      io.stderr(
+        JSON.stringify({ status: "failed", message: error.message }) + "\n",
+      );
+      return 1;
+    }
+  }
+  if (args[0] === "passage" && args[1] === "import-narration") {
+    try {
+      const values = parseNamedArguments(args.slice(2), [
+        "plan",
+        "narration",
+        "timing",
+        "mode",
+        "output",
+      ]);
+      const mode = requireArgument(values, "mode");
+      if (mode !== "match" && mode !== "add")
+        throw new Error("--mode must be match or add");
+      const result = await importNarrationFile({
+        plan: requireArgument(values, "plan"),
+        narration: requireArgument(values, "narration"),
+        timing: requireArgument(values, "timing"),
+        mode,
+        output: requireArgument(values, "output"),
+      });
+      io.stdout(JSON.stringify(result) + "\n");
+      return 0;
+    } catch (error) {
+      io.stderr(
+        JSON.stringify({
+          status: "failed",
+          diagnostics: passageDiagnostics(error),
+        }) + "\n",
+      );
+      return 1;
+    }
   }
   if (args[0] === "batch") {
     try {

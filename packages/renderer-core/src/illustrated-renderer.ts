@@ -46,6 +46,7 @@ import { evaluateStoryPath } from "./story-geometry.ts";
 import { loadPreparedFonts, type LoadedFont } from "./prepared-fonts.ts";
 import { inkStrokeOutline } from "./ink-path.ts";
 import { brushStroke } from "./brush-path.ts";
+import { drawTextContainer } from "./text-container.ts";
 
 export type Images = Map<string, HTMLImageElement> & {
   revealValidation?: ReturnType<typeof inspectForegroundReveal>;
@@ -72,7 +73,11 @@ const drawImage = (
     image.naturalWidth,
     image.naturalHeight,
   ];
-  const { width, height } = imagePlacement(node, [sx, sy, sw, sh]);
+  const { width, height, x, y } = imagePlacement(
+    node,
+    [sx, sy, sw, sh],
+    variant.registration?.anchor,
+  );
   ctx.save();
   if (clip) {
     ctx.beginPath();
@@ -85,8 +90,8 @@ const drawImage = (
     sy,
     sw,
     sh,
-    (node.width - width) / 2,
-    (node.height - height) / 2,
+    x,
+    y,
     width,
     height,
   );
@@ -268,6 +273,8 @@ const drawShape = (
         : node.text;
       if (text === undefined)
         throw new Error(`Missing text state on ${node.id}`);
+      if (node.container && state.reveal > 0)
+        drawTextContainer(ctx, node, text);
       if (
         animator &&
         drawAnimatedText(
