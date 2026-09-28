@@ -124,9 +124,40 @@ describe("no-op CLI", () => {
       width: V0_1_REQUEST_CONSTRAINTS.width,
       height: V0_1_REQUEST_CONSTRAINTS.height,
     });
+    expect(scene).not.toHaveProperty("format");
     expect(scene.motion).toMatchObject({
       intensity: V0_1_REQUEST_DEFAULTS.intensity,
       seed: V0_1_REQUEST_DEFAULTS.seed,
+    });
+  });
+
+  it("selects vertical dimensions and validates format options", async () => {
+    const directory = await mkdtemp(join(tmpdir(), "still-shift-test-"));
+    temporaryDirectories.push(directory);
+    const result = await runNoopCli(join(directory, "vertical.noop.json"), [
+      "--format",
+      "vertical",
+      "--focus",
+      "0.7,0.4",
+      "--adapter",
+      "noop",
+    ]);
+    const scene = SceneManifestSchema.parse(
+      JSON.parse(await readFile(result.sceneManifestPath, "utf8")),
+    );
+    expect(scene.canvas).toEqual({ width: 1080, height: 1920 });
+    expect(scene.format).toBe("vertical");
+
+    await expect(
+      runNoopCli(join(directory, "invalid.noop.json"), [
+        "--format",
+        "widescreen",
+        "--adapter",
+        "noop",
+      ]),
+    ).rejects.toMatchObject({
+      code: 2,
+      stderr: expect.stringContaining('"code":"SCENE_INVALID"'),
     });
   });
 

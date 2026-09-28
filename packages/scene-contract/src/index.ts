@@ -1,4 +1,11 @@
 export * from "./contracts.ts";
+export {
+  OUTPUT_FORMATS,
+  OutputFormatSchema,
+  formatSize,
+  isOutputSize,
+} from "./output-format.ts";
+export type { OutputFormat } from "./output-format.ts";
 export * from "./depth-worker.ts";
 export * from "./corpus.ts";
 export * from "./errors.ts";

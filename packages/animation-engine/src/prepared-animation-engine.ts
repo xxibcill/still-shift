@@ -11,6 +11,8 @@ import {
   CommerceAnimationResultSchema,
 } from "../../scene-contract/src/index.ts";
 import { compilePreparedScene } from "../../renderer-core/src/prepared-scene.ts";
+import { PassageError } from "../../renderer-core/src/passage-diagnostics.ts";
+import { lintVertical } from "../../renderer-core/src/story-vertical.ts";
 import {
   exportScene,
   type ExportMetrics,
@@ -43,11 +45,28 @@ export async function loadPreparedScene(scenePath: string) {
     throw new AnimationEngineError("SCENE_INVALID", parsed.error.message);
   let scene: ReturnType<typeof compilePreparedScene>;
   try {
+    if (
+      parsed.data.schemaVersion === "story-scene-1" &&
+      parsed.data.format === "vertical"
+    ) {
+      const diagnostics = lintVertical(parsed.data);
+      if (diagnostics.some((diagnostic) => diagnostic.severity === "error"))
+        throw new PassageError(diagnostics);
+    }
     scene = compilePreparedScene(parsed.data);
   } catch (error) {
     throw new AnimationEngineError(
       "SCENE_INVALID",
       error instanceof Error ? error.message : String(error),
+      error instanceof PassageError
+        ? {
+            diagnosticsJson: JSON.stringify(error.diagnostics),
+            ...(typeof error === "object" && error && "report" in error
+              ? { reportJson: JSON.stringify(error.report) }
+              : {}),
+          }
+        : undefined,
+      { cause: error },
     );
   }
   const assetPaths = await validatePreparedAssets(
@@ -129,7 +148,14 @@ export class PreparedAnimationEngine {
           scene: hash(manifestBytes),
           output: metrics.outputChecksum,
         },
-        metrics,
+        metrics: {
+          ...metrics,
+          ...(!commerce &&
+          "format" in prepared.scene &&
+          prepared.scene.format === "vertical"
+            ? { format: "vertical" }
+            : {}),
+        },
         ...(prepared.scene.schemaVersion === "illustrated-scene-2"
           ? { cameraValidation: prepared.scene.cameraValidation }
           : {}),

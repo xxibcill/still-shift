@@ -95,6 +95,7 @@ export function createPassageControls({
   function renderControls(
     editor: PassageEditor,
     templates: ReadonlyMap<string, PassageTemplate>,
+    verticalDiagnostics: readonly PassageDiagnostic[] = [],
   ) {
     const passage = editor.passage,
       selected = beatSelect.value;
@@ -108,12 +109,12 @@ export function createPassageControls({
     renderTimeline(passage);
     const host = el("diagnostics");
     host.replaceChildren();
-    if (!passage.diagnostics.length)
+    if (!passage.diagnostics.length && !verticalDiagnostics.length)
       host.textContent = "No compiler diagnostics.";
-    for (const diagnostic of passage.diagnostics)
+    for (const diagnostic of [...passage.diagnostics, ...verticalDiagnostics])
       button(
         host,
-        `${diagnostic.beat} · ${diagnostic.code}: ${diagnostic.message}`,
+        `${diagnostic.beat ?? "Scene"} · ${diagnostic.code}: ${diagnostic.message}`,
         () => jumpToDiagnostic(diagnostic),
       ).className = "note";
   }

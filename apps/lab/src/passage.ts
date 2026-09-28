@@ -13,8 +13,20 @@ import {
 } from "../../../packages/renderer-core/src/story-passage.ts";
 import {
   parsePassageTemplate,
+  instantiateStoryTemplate,
+  resolveStoryFormat,
+  templateScene,
   type PassageTemplate,
 } from "../../../packages/renderer-core/src/story-template.ts";
+import {
+  StoryFormatOverrideSchema,
+  type StoryFormatOverride,
+} from "../../../packages/scene-contract/src/story.ts";
+import type { OutputFormat } from "../../../packages/scene-contract/src/output-format.ts";
+import {
+  lintVertical,
+  proposeVerticalLayout,
+} from "../../../packages/renderer-core/src/story-vertical.ts";
 import {
   passageDiagnostics,
   type PassageDiagnostic,
@@ -28,16 +40,19 @@ import {
   drawOverlays,
   type ReadyBeat,
 } from "./passage-preview.ts";
+import { setPreviewAspect } from "./format-guides.ts";
 
 const el = <T extends HTMLElement>(id: string) =>
   document.getElementById(id) as T;
 const canvas = el<HTMLCanvasElement>("preview"),
   overlay = el<HTMLCanvasElement>("overlay"),
   slider = el<HTMLInputElement>("scrub");
+const formatSelect = el<HTMLSelectElement>("output-format");
 const beatSelect = el<HTMLSelectElement>("beat"),
   nodeSelect = el<HTMLSelectElement>("node");
 let editor: ReturnType<typeof createPassageEditor> | undefined;
 let templates = new Map<string, PassageTemplate>();
+let verticalDiagnostics: PassageDiagnostic[] = [];
 let previews: ReadyBeat[] = [],
   frame = 0,
   animation = 0,
@@ -88,9 +103,13 @@ function button(host: HTMLElement, title: string, action: () => void) {
 function installPreviews(ready: ReadyBeat[]) {
   previews.forEach((p) => p.preview.dispose());
   previews = ready;
+  const first = ready[0]?.scene;
+  if (first)
+    formatSelect.value = first.height > first.width ? "vertical" : "landscape";
   slider.max = String(editor!.passage.frameCount - 1);
   frame = Math.min(frame, editor!.passage.frameCount - 1);
   renderControls();
+  renderVerticalOverrideEditor();
   renderMotionInspector();
   show(frame);
   el("status").textContent =
@@ -110,7 +129,9 @@ function apply(change: (draft: PassagePlan) => void) {
     try {
       draft = structuredClone(editor.passage.plan);
       change(draft);
-      const candidate = compileStoryPassage(draft, templates);
+      const candidate = compileStoryPassage(draft, templates, {
+        format: editor.format,
+      });
       const ready = await preparePreviews(candidate);
       if (ticket !== generation) {
         ready.forEach((p) => p.preview.dispose());
@@ -161,6 +182,9 @@ function show(next: number) {
   const at = locatePassageFrame(editor.passage, frame),
     index = editor.passage.beats.indexOf(at.beat),
     ready = previews[index]!;
+  if (canvas.width !== ready.scene.width) canvas.width = ready.scene.width;
+  if (canvas.height !== ready.scene.height) canvas.height = ready.scene.height;
+  setPreviewAspect(el("canvas-wrap"), ready.scene);
   ready.preview.renderFrame(at.frame);
   const planned = editor.passage.plan.beats[index]!;
   const handoff = "handoff" in planned ? planned.handoff : undefined;
@@ -270,11 +294,132 @@ function jumpToDiagnostic(
   show(beat.start + boundedFrame);
 }
 function renderControls() {
-  controls.renderControls(editor!, templates);
+  refreshVerticalDiagnostics();
+  controls.renderControls(editor!, templates, verticalDiagnostics);
 }
 function renderInspector() {
   controls.renderInspector(editor!, templates);
+  renderVerticalOverrideEditor();
   renderMotionInspector();
+}
+function selectedTemplateKey() {
+  return editor?.passage.plan.beats[Number(beatSelect.value)]?.template;
+}
+function templateOverride(template: PassageTemplate) {
+  return (
+    template.formats?.vertical ?? templateScene(template).formats?.vertical
+  );
+}
+function withVerticalOverride(
+  source: PassageTemplate,
+  override?: StoryFormatOverride,
+) {
+  const draft = structuredClone(source);
+  if (draft.schemaVersion === "story-template-1") {
+    if (draft.scene.formats) {
+      delete draft.scene.formats.vertical;
+      if (!Object.keys(draft.scene.formats).length) delete draft.scene.formats;
+    }
+    if (override) draft.formats = { vertical: override };
+    else delete draft.formats;
+  } else {
+    if (override) draft.formats = { vertical: override };
+    else delete draft.formats;
+  }
+  return parsePassageTemplate(draft);
+}
+function updateTemplates(replacements: ReadonlyMap<string, PassageTemplate>) {
+  const owner = editor;
+  const task = async (): Promise<boolean> => {
+    if (editor !== owner || !owner) return false;
+    stop();
+    const ticket = ++generation;
+    try {
+      const candidateTemplates = new Map(templates);
+      for (const [key, value] of replacements) {
+        candidateTemplates.set(key, value);
+        const override = templateOverride(value);
+        if (override) {
+          const scene = structuredClone(templateScene(value));
+          scene.formats = { vertical: override };
+          resolveStoryFormat(scene, "vertical");
+        }
+      }
+      const candidate = compileStoryPassage(
+        owner.passage.plan,
+        candidateTemplates,
+        { format: owner.format },
+      );
+      const ready = await preparePreviews(candidate);
+      if (ticket !== generation || editor !== owner) {
+        ready.forEach((preview) => preview.preview.dispose());
+        return false;
+      }
+      const previousTemplates = new Map(templates);
+      try {
+        for (const [key, value] of replacements) templates.set(key, value);
+        owner.setFormat(owner.format);
+      } catch (error) {
+        templates.clear();
+        for (const [key, value] of previousTemplates) templates.set(key, value);
+        ready.forEach((preview) => preview.preview.dispose());
+        throw error;
+      }
+      installPreviews(ready);
+      return true;
+    } catch (error) {
+      if (ticket === generation) errors(error);
+      return false;
+    }
+  };
+  const result = edits.then(task, task);
+  edits = result.then(() => undefined);
+  return result;
+}
+function renderVerticalOverrideEditor() {
+  const key = selectedTemplateKey();
+  const template = key && templates.get(key);
+  const override = template && templateOverride(template);
+  el<HTMLTextAreaElement>("vertical-override").value = override
+    ? JSON.stringify(override, null, 2)
+    : "";
+}
+function refreshVerticalDiagnostics() {
+  verticalDiagnostics = [];
+  if (!editor) return;
+  if (editor.format === "vertical") {
+    verticalDiagnostics = editor.passage.beats.flatMap((beat) =>
+      lintVertical(beat.scene, { focusIds: beat.focus }).map((diagnostic) => ({
+        ...diagnostic,
+        beat: beat.id,
+      })),
+    );
+    return;
+  }
+  if (![...templates.values()].some((template) => templateOverride(template)))
+    return;
+  verticalDiagnostics = editor.passage.plan.beats.flatMap((beat) => {
+    const source = templates.get(beat.template);
+    if (!source) return [];
+    try {
+      const scene = instantiateStoryTemplate(
+        source,
+        "parameters" in beat ? beat.parameters : {},
+        editor!.passage.plan.schemaVersion === "story-passage-2"
+          ? editor!.passage.plan.styleProfile
+          : undefined,
+        "vertical",
+      );
+      return lintVertical(scene, { focusIds: beat.focus }).map(
+        (diagnostic) => ({
+          ...diagnostic,
+          beat: beat.id,
+        }),
+      );
+    } catch (error) {
+      return passageDiagnostics(error, beat.id);
+    }
+  });
 }
 function renderMotionInspector() {
   document.getElementById("motion-tools")?.remove();
@@ -311,6 +456,7 @@ async function loadPacket(
   const nextEditor = createPassageEditor(
     parsePassagePlan(packet.plan),
     nextTemplates,
+    { format: "landscape" },
   );
   const ready = await preparePreviews(nextEditor.passage);
   if (ticket !== generation || request !== loadRequest) {
@@ -472,6 +618,88 @@ el("restart").onclick = () => {
 };
 for (const name of ["show-bounds", "show-safe", "show-diagnostics"])
   el<HTMLInputElement>(name).onchange = () => show(frame);
+formatSelect.onchange = () => {
+  const owner = editor;
+  if (!owner) return;
+  const requested = formatSelect.value as OutputFormat;
+  formatSelect.value = owner.format;
+  const task = async () => {
+    if (editor !== owner || requested === owner.format) return;
+    stop();
+    const ticket = ++generation;
+    try {
+      const candidate = compileStoryPassage(owner.passage.plan, templates, {
+        format: requested,
+      });
+      const ready = await preparePreviews(candidate);
+      if (ticket !== generation) {
+        ready.forEach((p) => p.preview.dispose());
+        return;
+      }
+      owner.setFormat(requested);
+      installPreviews(ready);
+    } catch (error) {
+      if (ticket === generation) errors(error);
+    }
+  };
+  edits = edits.then(task, task);
+};
+el("propose-vertical").onclick = () => {
+  if (!editor) return;
+  try {
+    const replacements = new Map<string, PassageTemplate>();
+    for (const beat of editor.passage.plan.beats) {
+      const source = templates.get(beat.template);
+      if (
+        !source ||
+        templateOverride(source) ||
+        replacements.has(beat.template)
+      )
+        continue;
+      replacements.set(
+        beat.template,
+        withVerticalOverride(
+          source,
+          proposeVerticalLayout(templateScene(source)),
+        ),
+      );
+    }
+    if (!replacements.size) {
+      el("status").textContent =
+        "Every template already has a vertical override.";
+      return;
+    }
+    void updateTemplates(replacements).then((committed) => {
+      if (committed)
+        el("status").textContent =
+          `${replacements.size} vertical template override${replacements.size === 1 ? "" : "s"} added to the workspace. Review diagnostics and save the workspace.`;
+    });
+  } catch (error) {
+    errors(error);
+  }
+};
+el("apply-vertical-override").onclick = () => {
+  const key = selectedTemplateKey();
+  const source = key && templates.get(key);
+  if (!key || !source) return;
+  try {
+    const raw = el<HTMLTextAreaElement>("vertical-override").value.trim();
+    const override = raw
+      ? StoryFormatOverrideSchema.parse(JSON.parse(raw))
+      : undefined;
+    void updateTemplates(
+      new Map([[key, withVerticalOverride(source, override)]]),
+    );
+  } catch (error) {
+    errors(error);
+  }
+};
+el("clear-vertical-override").onclick = () => {
+  const key = selectedTemplateKey();
+  const source = key && templates.get(key);
+  if (!key || !source) return;
+  void updateTemplates(new Map([[key, withVerticalOverride(source)]]));
+};
 const tick = (now: number) => {
   if (!playing || !editor) return;
   const fps = editor.passage.plan.fps;

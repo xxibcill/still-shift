@@ -79,6 +79,31 @@
         background: #e8dfc9;
         border: 1px solid #514c3c;
       }
+      .preview-stage {
+        position: relative;
+        width: 100%;
+        aspect-ratio: 16 / 9;
+      }
+      .preview-stage.portrait {
+        width: min(100%, 420px);
+        margin-inline: auto;
+      }
+      .preview-stage canvas {
+        height: 100%;
+      }
+      .preview-stage #preview-guides {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        background: transparent;
+        border: 0;
+      }
+      .guide-toggle {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        margin: 0 0 12px;
+      }
       #scrub {
         flex: 1;
         min-width: 160px;
@@ -181,6 +206,10 @@
       <div class="controls">
         <label for="scene">Variation / scene</label
         ><select id="scene" aria-label="Prepared scene"></select
+        ><label for="output-format">Output format</label
+        ><select id="output-format">
+          <option value="landscape">Landscape · 1920 × 1080</option>
+          <option value="vertical">Vertical · 1080 × 1920</option></select
         ><label for="strength">Motion</label
         ><select id="strength" disabled>
           <option value="dramatic">Dramatic</option>
@@ -198,12 +227,24 @@
         ><button id="restart" disabled>Restart</button>
       </div>
       <p id="description"></p>
-      <canvas
-        id="illustrated-preview"
-        width="1920"
-        height="1080"
-        aria-label="Illustrated animation preview"
-      ></canvas>
+      <label class="guide-toggle"
+        ><input id="show-guides" type="checkbox" /> Show safe areas and
+        landscape footprint</label
+      >
+      <div id="illustrated-stage" class="preview-stage">
+        <canvas
+          id="illustrated-preview"
+          width="1920"
+          height="1080"
+          aria-label="Illustrated animation preview"
+        ></canvas>
+        <canvas
+          id="preview-guides"
+          width="1920"
+          height="1080"
+          aria-hidden="true"
+        ></canvas>
+      </div>
       <div class="controls">
         <label for="scrub">Frame</label
         ><input id="scrub" type="range" min="0" max="167" value="0" /><output

@@ -6,6 +6,7 @@ import {
 import {
   PreparedAnimationResultSchema,
   PreparedSceneFieldsSchema,
+  validatePreparedFormat,
   validatePreparedGraph,
 } from "./prepared.ts";
 import { validateStoryBindings } from "./story-validation.ts";
@@ -21,6 +22,7 @@ import {
 import { sharedEffectsFields } from "./shared-effects.ts";
 import { motionAppearanceFields, motionCraftFields } from "./motion-craft.ts";
 import { validateMotionCraft } from "./motion-craft-validation.ts";
+import { formatSize } from "./output-format.ts";
 
 const finite = z.number().finite();
 const frame = finite.int().nonnegative();
@@ -164,6 +166,80 @@ export const STORY_PRESETS = StoryRecipeSchema.options
   .filter((preset) => preset !== "generic");
 
 const anchor = z.object({ node: id, point }).strict();
+const initialStatePose = z
+  .object({
+    x: finite.optional(),
+    y: finite.optional(),
+    rotation: finite.optional(),
+    scaleX: finite.positive().max(4).optional(),
+    scaleY: finite.positive().max(4).optional(),
+    opacity: finite.min(0).max(1).optional(),
+  })
+  .strict();
+
+export const StorySafeZoneSchema = z
+  .object({
+    x: finite.nonnegative(),
+    y: finite.nonnegative(),
+    width: finite.positive(),
+    height: finite.positive(),
+  })
+  .strict();
+export const StorySafeZonesSchema = z.record(id, StorySafeZoneSchema);
+
+const formatNodePatch = z
+  .object({
+    x: finite.optional(),
+    y: finite.optional(),
+    width: finite.nonnegative().optional(),
+    height: finite.nonnegative().optional(),
+    origin: point.optional(),
+    scale: finite.positive().max(4).optional(),
+    scaleX: finite.positive().max(4).optional(),
+    scaleY: finite.positive().max(4).optional(),
+    lineWidth: finite.positive().optional(),
+    fontSize: finite.min(16).max(180).optional(),
+    align: z.enum(["left", "center", "right"]).optional(),
+  })
+  .strict()
+  .refine(
+    (patch) =>
+      patch.scale === undefined ||
+      (patch.scaleX === undefined && patch.scaleY === undefined),
+    "Format node scale cannot combine with scaleX or scaleY",
+  );
+
+export const StoryFormatOverrideSchema = z
+  .object({
+    nodes: z.record(id, formatNodePatch).optional(),
+    initialState: z.record(id, initialStatePose).optional(),
+    camera: z
+      .object({
+        keys: z
+          .array(
+            z
+              .object({
+                frame,
+                x: finite.optional(),
+                y: finite.optional(),
+                zoom: finite.min(1).optional(),
+              })
+              .strict(),
+          )
+          .min(1)
+          .max(100),
+      })
+      .strict()
+      .optional(),
+    safeInset: finite.min(0).max(400).optional(),
+    safeZones: StorySafeZonesSchema.optional(),
+  })
+  .strict();
+export const StoryFormatsSchema = z
+  .object({ vertical: StoryFormatOverrideSchema.optional() })
+  .strict();
+export type StoryFormatOverride = z.infer<typeof StoryFormatOverrideSchema>;
+
 const shape = PreparedSceneFieldsSchema.omit({ durationMs: true })
   .extend({
     schemaVersion: z.literal("story-scene-1"),
@@ -176,21 +252,9 @@ const shape = PreparedSceneFieldsSchema.omit({ durationMs: true })
     motionGrammar: z.literal("v2").optional(),
     authoringVersion: z.literal("1").optional(),
     safeInset: finite.min(0).max(400).optional(),
-    initialState: z
-      .record(
-        id,
-        z
-          .object({
-            x: finite.optional(),
-            y: finite.optional(),
-            rotation: finite.optional(),
-            scaleX: finite.positive().max(4).optional(),
-            scaleY: finite.positive().max(4).optional(),
-            opacity: finite.min(0).max(1).optional(),
-          })
-          .strict(),
-      )
-      .optional(),
+    safeZones: StorySafeZonesSchema.optional(),
+    formats: StoryFormatsSchema.optional(),
+    initialState: z.record(id, initialStatePose).optional(),
     camera: StoryCameraSchema.optional(),
     flows: z.array(StoryFlowSchema).max(40).optional(),
     review: z
@@ -223,13 +287,60 @@ export type StoryScene = z.infer<typeof shape>;
 
 export const StorySceneSchema = shape.superRefine((scene, ctx) => {
   const fail = (message: string) => ctx.addIssue({ code: "custom", message });
+  validatePreparedFormat(scene, fail);
+  const checkZones = (
+    zones: z.infer<typeof StorySafeZonesSchema> | undefined,
+    width: number,
+    height: number,
+    path: (string | number)[],
+  ) => {
+    for (const [name, zone] of Object.entries(zones ?? {}))
+      if (zone.x + zone.width > width || zone.y + zone.height > height)
+        ctx.addIssue({
+          code: "custom",
+          message: `Safe zone ${name} must fit the output format`,
+          path: [...path, name],
+        });
+  };
+  checkZones(scene.safeZones, scene.width, scene.height, ["safeZones"]);
+  const verticalSize = formatSize("vertical");
+  checkZones(
+    scene.formats?.vertical?.safeZones,
+    verticalSize.width,
+    verticalSize.height,
+    ["formats", "vertical", "safeZones"],
+  );
   const { nodes } = validatePreparedGraph(scene, fail);
+  const vertical = scene.formats?.vertical;
+  for (const [nodeId, patch] of Object.entries(vertical?.nodes ?? {})) {
+    const node = nodes.get(nodeId);
+    if (!node) fail(`Format override references a missing node: ${nodeId}`);
+    if (
+      node?.type !== "text" &&
+      (patch.lineWidth !== undefined ||
+        patch.fontSize !== undefined ||
+        patch.align !== undefined)
+    )
+      fail(`Format text override requires a text node: ${nodeId}`);
+  }
+  for (const nodeId of Object.keys(vertical?.initialState ?? {}))
+    if (!nodes.has(nodeId))
+      fail(`Format initial state references a missing node: ${nodeId}`);
+  if (vertical?.camera) {
+    const frames = new Set(scene.camera?.keys.map((key) => key.frame));
+    const patches = vertical.camera.keys.map((key) => key.frame);
+    if (!scene.camera || patches.some((frame) => !frames.has(frame)))
+      fail("Format camera keys must patch existing camera frames");
+    if (new Set(patches).size !== patches.length)
+      fail("Format camera key patches must have unique frames");
+  }
   validateComponentData(scene, fail);
   validateMotionCraft(scene, ctx);
   validateStoryBindings(scene, nodes, fail);
   if (
     (scene.initialState ||
       scene.safeInset !== undefined ||
+      scene.safeZones !== undefined ||
       scene.nodes.some(
         (n) => n.type === "text" && (n.textRole || n.textLayout),
       )) &&
@@ -260,6 +371,9 @@ export const StoryAnimationResultSchema = z
   })
   .strict()
   .superRefine((result, ctx) => {
+    validatePreparedFormat(result.metrics, (message) =>
+      ctx.addIssue({ code: "custom", message, path: ["metrics"] }),
+    );
     if (
       result.durationMs !== (result.frameCount * 1000) / result.fps ||
       result.metrics.frameCount !== result.frameCount ||

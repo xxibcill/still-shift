@@ -11,6 +11,7 @@ import {
   verifyPassageNarration,
 } from "../packages/animation-engine/src/story-passage-render.ts";
 import { passageDiagnostics } from "../packages/renderer-core/src/passage-diagnostics.ts";
+import { OutputFormatSchema } from "../packages/scene-contract/src/output-format.ts";
 
 const { values } = parseArgs({
   options: {
@@ -25,6 +26,7 @@ const { values } = parseArgs({
     "end-frame": { type: "string" },
     beat: { type: "string" },
     "compare-with": { type: "string" },
+    format: { type: "string" },
   },
   strict: true,
 });
@@ -52,7 +54,13 @@ try {
     (values["start-frame"] !== undefined || values["end-frame"] !== undefined)
   )
     throw new Error("Choose --beat or a frame range");
-  const passage = await readStoryPassage(values.plan);
+  const format = values.format
+    ? OutputFormatSchema.parse(values.format)
+    : undefined;
+  const passage = await readStoryPassage(
+    values.plan,
+    format ? { format } : undefined,
+  );
   const output = resolve(values["output-dir"]),
     narration = values.narration ? resolve(values.narration) : undefined;
   const range = {

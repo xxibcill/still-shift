@@ -87,6 +87,23 @@ describe("AnimationRequestSchema", () => {
     expect(AnimationRequestSchema.parse(validRequest)).toEqual(validRequest);
   });
 
+  it("accepts vertical output and rejects mixed dimensions", () => {
+    expect(
+      AnimationRequestSchema.safeParse({
+        ...validRequest,
+        width: 1080,
+        height: 1920,
+      }).success,
+    ).toBe(true);
+    expect(
+      AnimationRequestSchema.safeParse({
+        ...validRequest,
+        width: 1920,
+        height: 1920,
+      }).success,
+    ).toBe(false);
+  });
+
   it("rejects durations that do not map to a whole frame", () => {
     const result = AnimationRequestSchema.safeParse({
       ...validRequest,
@@ -98,6 +115,51 @@ describe("AnimationRequestSchema", () => {
 });
 
 describe("SceneManifestSchema", () => {
+  it("requires vertical format data and matching dimensions", () => {
+    expect(
+      SceneManifestSchema.safeParse({
+        ...validScene,
+        format: "vertical",
+        canvas: { width: 1080, height: 1920 },
+      }).success,
+    ).toBe(true);
+    expect(
+      SceneManifestSchema.safeParse({
+        ...validScene,
+        canvas: { width: 1080, height: 1920 },
+      }).success,
+    ).toBe(false);
+    expect(
+      SceneManifestSchema.safeParse({
+        ...validScene,
+        canvas: { width: 1920, height: 1920 },
+      }).success,
+    ).toBe(false);
+  });
+
+  it("checks format across manifest and resolved WebGL scene", () => {
+    const canvas = { width: 1080, height: 1920 };
+    const vertical = {
+      ...validWebglScene,
+      format: "vertical",
+      canvas,
+      renderScene: { ...validRenderScene, format: "vertical", canvas },
+    };
+    expect(SceneManifestSchema.safeParse(vertical).success).toBe(true);
+    expect(
+      SceneManifestSchema.safeParse({
+        ...vertical,
+        renderScene: { ...vertical.renderScene, format: "landscape" },
+      }).success,
+    ).toBe(false);
+    expect(
+      SceneManifestSchema.safeParse({
+        ...vertical,
+        renderScene: { ...vertical.renderScene, format: undefined },
+      }).success,
+    ).toBe(false);
+  });
+
   it("reports schema version 0.1 and ignores unknown fields", () => {
     const parsed = SceneManifestSchema.parse({
       ...validScene,

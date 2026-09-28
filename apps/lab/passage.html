@@ -39,7 +39,15 @@
       <div id="errors" role="alert"></div>
       <div class="workspace">
         <section class="stage" aria-label="Passage preview">
-          <div class="canvas-wrap">
+          <label class="format-control" for="output-format"
+            >Output format
+            <select id="output-format">
+              <option value="landscape">Landscape · 1920 × 1080</option>
+              <option value="vertical">Vertical · 1080 × 1920</option>
+            </select></label
+          >
+          <button id="propose-vertical" type="button">Propose vertical</button>
+          <div id="canvas-wrap" class="canvas-wrap">
             <canvas id="preview" width="1920" height="1080"></canvas
             ><canvas
               id="overlay"
@@ -73,7 +81,9 @@
               <label
                 ><input id="show-bounds" type="checkbox" /> Bounds &amp;
                 origins</label
-              ><label><input id="show-safe" type="checkbox" /> Safe area</label
+              ><label
+                ><input id="show-safe" type="checkbox" /> Safe areas and
+                landscape footprint</label
               ><label
                 ><input id="show-diagnostics" type="checkbox" /> Diagnostic
                 targets</label
@@ -115,6 +125,26 @@
           <details>
             <summary>Style profile</summary>
             <div id="style"></div>
+          </details>
+          <details>
+            <summary>Vertical override</summary>
+            <p class="hint">
+              Edit the selected beat’s template override, then save the
+              workspace.
+            </p>
+            <textarea
+              id="vertical-override"
+              aria-label="Vertical override JSON"
+              spellcheck="false"
+            ></textarea>
+            <div class="toolbar">
+              <button id="apply-vertical-override" type="button">
+                Apply override
+              </button>
+              <button id="clear-vertical-override" type="button">
+                Clear override
+              </button>
+            </div>
           </details>
           <details>
             <summary>Beat handoff</summary>

@@ -41,6 +41,7 @@ export function stableJson(value: unknown): string {
 export function passageBeatKey(scene: StoryScene, runtime: string) {
   const normalized = structuredClone(scene);
   delete normalized.episodeStartFrame;
+  if (normalized.format === "landscape") delete normalized.format;
   for (const asset of [...normalized.assets, ...(normalized.fonts ?? [])])
     asset.path = asset.sha256;
   return passageHash(

@@ -59,6 +59,15 @@ void main() {
   gl_Position = projectionMatrix * modelViewMatrix * vec4(displaced, depth * uDepthStrength, 1.0);
   vUv = uv;
 }`;
+const focusedVertexShader = vertexShader
+  .replace(
+    "uniform vec2 uCover;",
+    "uniform vec2 uCover;\nuniform vec2 uFramingOffset;",
+  )
+  .replace(
+    "position.xy * uCover * (1.0 + uOverscan)",
+    "(position.xy * uCover + uFramingOffset) * (1.0 + uOverscan)",
+  );
 
 const fragmentShader = `
 uniform sampler2D uSource;
@@ -159,6 +168,9 @@ export const createWebGLPreview = (
     scene.canvas.width,
     scene.canvas.height,
   );
+  const crop = scene.framing?.crop;
+  const cropCenterX = crop ? crop.x + crop.width / 2 : 0.5;
+  const cropCenterY = crop ? crop.y + crop.height / 2 : 0.5;
   const geometry = new PlaneGeometry(
     2,
     2,
@@ -166,7 +178,7 @@ export const createWebGLPreview = (
     PREVIEW_LIMITS.gridRows,
   );
   const material = new ShaderMaterial({
-    vertexShader,
+    vertexShader: crop ? focusedVertexShader : vertexShader,
     fragmentShader,
     depthTest: false,
     depthWrite: false,
@@ -183,6 +195,12 @@ export const createWebGLPreview = (
       uRevealProgress: { value: 1 },
       uDepth: { value: depthTexture },
       uCover: { value: [cover.x, cover.y] },
+      uFramingOffset: {
+        value: [
+          (0.5 - cropCenterX) * 2 * cover.x,
+          (cropCenterY - 0.5) * 2 * cover.y,
+        ],
+      },
       uDepthSampleStep: {
         value: [
           Math.max(1 / scene.source.width, 1 / PREVIEW_LIMITS.gridColumns),

@@ -13,19 +13,29 @@ import { compileStoryPassage } from "../../renderer-core/src/story-passage.ts";
 import { validatePassageText } from "./passage-text-validation.ts";
 import { isStoryWorkspacePackage } from "../../scene-contract/src/story-workspace.ts";
 import { loadStoryWorkspaceInput } from "./story-workspace-manifest.ts";
+import type { OutputFormat } from "../../scene-contract/src/output-format.ts";
+import { lintVertical } from "../../renderer-core/src/story-vertical.ts";
+import { PassageError } from "../../renderer-core/src/passage-diagnostics.ts";
+
+type PassageReadOptions = { format?: OutputFormat; lint?: boolean };
 
 export const passageChecksum = (bytes: Uint8Array) =>
   createHash("sha256").update(bytes).digest("hex");
 export const writePassageJson = (path: string, value: unknown) =>
   writeFile(path, JSON.stringify(value, null, 2) + "\n", { flag: "wx" });
 
-export async function readStoryPassage(planPath: string) {
+export async function readStoryPassage(
+  planPath: string,
+  options: PassageReadOptions = {},
+) {
   const path = resolve(planPath);
   const bytes = await readFile(path);
   return prepareStoryPassageInput(
     JSON.parse(bytes.toString("utf8")),
     path,
     passageChecksum(bytes),
+    undefined,
+    options,
   );
 }
 
@@ -34,6 +44,7 @@ export async function prepareStoryPassageInput(
   planPath: string,
   checksum?: string,
   allowPath?: (path: string) => Promise<unknown>,
+  options: PassageReadOptions = {},
 ) {
   const started = performance.now();
   if (isStoryWorkspacePackage(input)) {
@@ -77,15 +88,32 @@ export async function prepareStoryPassageInput(
             value.path = resolve(dirname(path), value.path);
         }
     }
-  const compiled = compileStoryPassage(plan, templates);
+  const compiled = compileStoryPassage(plan, templates, {
+    ...(options.format ? { format: options.format } : {}),
+    validateSafeZones: !options.lint,
+  });
+  if (options.format === "vertical" && !options.lint) {
+    const diagnostics = compiled.beats.flatMap((beat) =>
+      lintVertical(beat.scene, { focusIds: beat.focus }).map((diagnostic) => ({
+        ...diagnostic,
+        beat: beat.id,
+      })),
+    );
+    if (diagnostics.some((diagnostic) => diagnostic.severity === "error"))
+      throw new PassageError(diagnostics);
+  }
   for (const beat of compiled.beats) {
     for (const asset of [...beat.scene.assets, ...(beat.scene.fonts ?? [])])
       await allowPath?.(asset.path);
     await validatePreparedAssets(beat.scene, dirname(path));
   }
-  await validatePassageText(compiled);
+  const textDiagnostics = await validatePassageText(compiled, undefined, {
+    collectAll: options.lint ?? false,
+    validateSafeZones: !options.lint,
+  });
   return {
     ...compiled,
+    ...(options.lint ? { lintDiagnostics: textDiagnostics } : {}),
     templates,
     inputs: {
       plan: {

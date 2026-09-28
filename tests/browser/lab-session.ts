@@ -251,6 +251,68 @@ try {
   console.log(
     "Commerce components: failed source request retries without reloading the page",
   );
+
+  await page.goto(origin + "?format=vertical");
+  await page.locator("#preset").selectOption("locked_hold");
+  await page.locator("#local-source").setInputFiles({
+    name: "vertical-lab-source.svg",
+    mimeType: "image/svg+xml",
+    buffer: Buffer.from(
+      '<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360"><rect width="640" height="360" fill="#72896d"/><circle cx="320" cy="180" r="72" fill="#ebc783"/></svg>',
+    ),
+  });
+  await page.locator("#load-local").click();
+  await page.waitForFunction(() =>
+    document
+      .querySelector("#status")
+      ?.textContent?.includes("Vertical preview needs a focus point"),
+  );
+  assert.match(
+    await page.locator("#status").innerText(),
+    /Choose Set manually/,
+  );
+  await page.locator("#focus-mode").selectOption("manual");
+  await page.locator("#load-local").click();
+  await page.waitForFunction(() =>
+    document
+      .querySelector("#status")
+      ?.textContent?.includes("ready · 1080 × 1920"),
+  );
+  assert.deepEqual(
+    await page
+      .locator("#preview")
+      .evaluate((node: HTMLCanvasElement) => [node.width, node.height]),
+    [1080, 1920],
+  );
+  await page.locator("#show-guides").check();
+  assert.equal(
+    await page
+      .locator("#preview-guides")
+      .evaluate((node: HTMLCanvasElement) => {
+        const pixels = node
+          .getContext("2d")!
+          .getImageData(0, 0, node.width, node.height).data;
+        for (let i = 3; i < pixels.length; i += 4) if (pixels[i]) return true;
+        return false;
+      }),
+    true,
+    "the vertical preview shows the landscape footprint guide",
+  );
+  await page.locator("#output-format").selectOption("landscape");
+  await page.waitForFunction(() =>
+    document
+      .querySelector("#status")
+      ?.textContent?.includes("ready · 1920 × 1080"),
+  );
+  assert.deepEqual(
+    await page
+      .locator("#preview")
+      .evaluate((node: HTMLCanvasElement) => [node.width, node.height]),
+    [1920, 1080],
+  );
+  console.log(
+    "Depth Lab: vertical format, scene-sized canvas and guide overlay passed",
+  );
   assert.deepEqual(errors, []);
 } finally {
   await browser?.close();

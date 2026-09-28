@@ -13,6 +13,19 @@ import {
   type WebGLPreview,
 } from "../../../packages/renderer-core/src/index.ts";
 import type { z } from "zod";
+import {
+  formatSize,
+  OutputFormatSchema,
+} from "../../../packages/scene-contract/src/output-format.ts";
+import { drawFormatGuides, setPreviewAspect } from "./format-guides.ts";
+import {
+  cropSafetyPixels,
+  type CropWindow,
+  estimateDepthSubject,
+  focusCropWindow,
+  subjectCropViolation,
+  type FocusPoint,
+} from "../../../packages/renderer-core/src/depth-reframe.ts";
 
 import {
   ApiErrorSchema,
@@ -31,6 +44,13 @@ const byId = <T extends HTMLElement>(id: string): T => {
 };
 
 const canvas = byId<HTMLCanvasElement>("preview");
+const guides = byId<HTMLCanvasElement>("preview-guides");
+const formatSelect = byId<HTMLSelectElement>("output-format");
+const focusModeSelect = byId<HTMLSelectElement>("focus-mode");
+const focusXInput = byId<HTMLInputElement>("focus-x");
+const focusYInput = byId<HTMLInputElement>("focus-y");
+const showGuides = byId<HTMLInputElement>("show-guides");
+const previewStage = byId<HTMLElement>("preview-stage");
 const frameSlider = byId<HTMLInputElement>("frame");
 const playButton = byId<HTMLButtonElement>("play");
 const select = byId<HTMLSelectElement>("corpus-entry");
@@ -61,6 +81,14 @@ let activeImages: {
   depth: HTMLImageElement | null;
 } | null = null;
 const safetyAssessments = new WeakMap<HTMLImageElement, SafetyAssessment>();
+type AnalysisPixels = {
+  source: HTMLImageElement;
+  width: number;
+  height: number;
+  sourcePixels: Uint8ClampedArray;
+  depthPixels: Uint8ClampedArray;
+};
+const analysisPixels = new WeakMap<HTMLImageElement, AnalysisPixels>();
 
 const depthPresets: PreviewPreset[] = [
   "slow_push",
@@ -95,6 +123,7 @@ const showFrame = (frameIndex: number): void => {
   if (!scene || !renderer) return;
   currentFrame = frameIndex;
   renderer.renderFrame(frameIndex);
+  drawFormatGuides(guides, scene.canvas, showGuides.checked);
   frameSlider.value = String(frameIndex);
   const frame = evaluateFrame(scene, frameIndex);
   byId<HTMLElement>("timecode").textContent =
@@ -105,6 +134,7 @@ const showFrame = (frameIndex: number): void => {
       presetVersion: scene.presetVersion,
       source: scene.source,
       canvas: scene.canvas,
+      framing: scene.framing,
       timeline: scene.timeline,
       motion: scene.motion,
       quality: scene.quality,
@@ -123,12 +153,12 @@ const loadImage = async (url: string): Promise<HTMLImageElement> => {
   return image;
 };
 
-const analyzePair = (
+const readAnalysisPixels = (
   source: HTMLImageElement,
   depth: HTMLImageElement,
-): SafetyAssessment => {
-  const cached = safetyAssessments.get(depth);
-  if (cached) return cached;
+): AnalysisPixels => {
+  const cached = analysisPixels.get(depth);
+  if (cached?.source === source) return cached;
   const scale = Math.min(256 / source.naturalWidth, 256 / source.naturalHeight);
   const width = Math.max(2, Math.round(source.naturalWidth * scale));
   const height = Math.max(2, Math.round(source.naturalHeight * scale));
@@ -142,13 +172,35 @@ const analyzePair = (
   context.clearRect(0, 0, width, height);
   context.drawImage(depth, 0, 0, width, height);
   const depthPixels = context.getImageData(0, 0, width, height).data;
+  const pixels = { source, width, height, sourcePixels, depthPixels };
+  analysisPixels.set(depth, pixels);
+  return pixels;
+};
+
+const analyzePair = (
+  source: HTMLImageElement,
+  depth: HTMLImageElement,
+  crop?: CropWindow,
+): SafetyAssessment => {
+  const cached = crop ? undefined : safetyAssessments.get(depth);
+  if (cached) return cached;
+  const { width, height, sourcePixels, depthPixels } = readAnalysisPixels(
+    source,
+    depth,
+  );
+  const visibleSource = crop
+    ? cropSafetyPixels(width, height, sourcePixels, crop)
+    : { width, height, pixels: sourcePixels };
+  const visibleDepth = crop
+    ? cropSafetyPixels(width, height, depthPixels, crop)
+    : { pixels: depthPixels };
   const assessment = analyzeDepthSafety({
-    width,
-    height,
-    source: sourcePixels,
-    depth: depthPixels,
+    width: visibleSource.width,
+    height: visibleSource.height,
+    source: visibleSource.pixels,
+    depth: visibleDepth.pixels,
   });
-  safetyAssessments.set(depth, assessment);
+  if (!crop) safetyAssessments.set(depth, assessment);
   return assessment;
 };
 
@@ -168,6 +220,42 @@ const resolveLabScene = (
   intensity: PreviewIntensity = intensitySelect.value as PreviewIntensity,
   seed: number = selectedSeed(),
 ): PreviewScene => {
+  const size = formatSize(OutputFormatSchema.parse(formatSelect.value));
+  const vertical = size.height > size.width;
+  let focus: FocusPoint | undefined;
+  let focusSource: "provided" | "depth-estimate" | undefined;
+  if (vertical) {
+    const pixels = depth ? readAnalysisPixels(source, depth) : undefined;
+    const subject = pixels
+      ? estimateDepthSubject(pixels.width, pixels.height, pixels.depthPixels)
+      : null;
+    if (focusModeSelect.value === "manual") {
+      focus = [Number(focusXInput.value), Number(focusYInput.value)];
+      focusSource = "provided";
+    } else {
+      focus = subject?.focus;
+      focusSource = focus ? "depth-estimate" : undefined;
+    }
+    if (!focus)
+      throw new Error(
+        "Vertical preview needs a focus point; no large near-depth subject could be estimated. Choose Set manually.",
+      );
+    const crop = focusCropWindow(
+      source.naturalWidth,
+      source.naturalHeight,
+      size.width,
+      size.height,
+      focus,
+    );
+    if (subject && pixels) {
+      const tolerance = 1 / Math.min(pixels.width, pixels.height);
+      const violation = subjectCropViolation(subject, crop, tolerance);
+      if (violation)
+        throw new Error(
+          `Estimated near-depth subject exceeds the vertical crop (left ${violation.left.toFixed(3)}, right ${violation.right.toFixed(3)}, top ${violation.top.toFixed(3)}, bottom ${violation.bottom.toFixed(3)}). Choose another focus or use wider source art.`,
+        );
+    }
+  }
   const scene = resolvePreviewScene({
     sourceWidth: source.naturalWidth,
     sourceHeight: source.naturalHeight,
@@ -175,15 +263,16 @@ const resolveLabScene = (
     depthHeight: depth?.naturalHeight ?? source.naturalHeight,
     durationMs,
     fps: 30,
-    canvasWidth: 1920,
-    canvasHeight: 1080,
+    canvasWidth: size.width,
+    canvasHeight: size.height,
+    ...(focus && focusSource ? { focus, focusSource } : {}),
     preset,
     intensity,
     seed,
   });
   if (scene.motion.mode === "flat_2d") return scene;
   return depth
-    ? applySafetyToScene(scene, analyzePair(source, depth))
+    ? applySafetyToScene(scene, analyzePair(source, depth, scene.framing?.crop))
     : fallback2DScene(scene, "DEPTH_PREPARATION_FAILED");
 };
 
@@ -214,6 +303,9 @@ const activateScene = (
 ): void => {
   stop();
   renderer?.dispose();
+  canvas.width = nextScene.canvas.width;
+  canvas.height = nextScene.canvas.height;
+  setPreviewAspect(previewStage, nextScene.canvas);
   renderer = createWebGLPreview(canvas, nextScene, source, depth);
   scene = nextScene;
   activeImages = { name, pair, source, depth };
@@ -230,7 +322,7 @@ const activateScene = (
   playButton.disabled = false;
   showFrame(Math.min(frameIndex, nextScene.timeline.frameCount - 1));
   status.classList.remove("error");
-  status.textContent = `${name} ready · ${nextScene.motion.preset} / ${nextScene.motion.intensity} · ${nextScene.motion.mode} · ${nextScene.timeline.frameCount} frames · ${nextScene.warnings.length} warnings`;
+  status.textContent = `${name} ready · ${nextScene.canvas.width} × ${nextScene.canvas.height} · ${nextScene.motion.preset} / ${nextScene.motion.intensity} · ${nextScene.motion.mode} · ${nextScene.timeline.frameCount} frames · ${nextScene.warnings.length} warnings`;
 };
 
 const inspectPair = async (
@@ -326,6 +418,7 @@ type GalleryCard = {
   intensity: PreviewIntensity;
   seed: number;
   poster: string | null;
+  aspectRatio?: string;
   error?: unknown;
 };
 
@@ -335,6 +428,7 @@ const addGalleryCard = ({
   intensity,
   seed,
   poster,
+  aspectRatio,
   error,
 }: GalleryCard): void => {
   const card = document.createElement("button");
@@ -343,6 +437,7 @@ const addGalleryCard = ({
   if (poster) {
     const image = document.createElement("img");
     image.src = poster;
+    if (aspectRatio) image.style.aspectRatio = aspectRatio;
     image.alt = "Preview frame for " + entry.id + " with " + preset;
     card.append(image);
     card.addEventListener("click", () => {
@@ -386,8 +481,6 @@ const buildGallery = async (): Promise<void> => {
     gallery.replaceChildren();
     posters.clear();
     const posterCanvas = document.createElement("canvas");
-    posterCanvas.width = canvas.width;
-    posterCanvas.height = canvas.height;
     for (const [index, entry] of corpusEntries.entries()) {
       byId<HTMLElement>("gallery-note").textContent =
         "Building gallery " +
@@ -409,6 +502,8 @@ const buildGallery = async (): Promise<void> => {
               intensity,
               seed,
             );
+            posterCanvas.width = resolvedScene.canvas.width;
+            posterCanvas.height = resolvedScene.canvas.height;
             const posterRenderer = createWebGLPreview(
               posterCanvas,
               resolvedScene,
@@ -423,7 +518,14 @@ const buildGallery = async (): Promise<void> => {
               posterRenderer.dispose();
             }
             posters.set(entry.id + ":" + preset, poster);
-            addGalleryCard({ entry, preset, intensity, seed, poster });
+            addGalleryCard({
+              entry,
+              preset,
+              intensity,
+              seed,
+              poster,
+              aspectRatio: `${resolvedScene.canvas.width} / ${resolvedScene.canvas.height}`,
+            });
           } catch (error) {
             addGalleryCard({
               entry,
@@ -462,6 +564,30 @@ const buildGallery = async (): Promise<void> => {
 presetSelect.addEventListener("change", refreshScene);
 intensitySelect.addEventListener("change", refreshScene);
 seedInput.addEventListener("change", refreshScene);
+const updateFormatNote = () => {
+  byId<HTMLElement>("format-note").hidden = formatSelect.value !== "vertical";
+  byId<HTMLElement>("focus-controls").hidden =
+    formatSelect.value !== "vertical";
+  byId<HTMLElement>("manual-focus").hidden =
+    formatSelect.value !== "vertical" || focusModeSelect.value !== "manual";
+};
+formatSelect.addEventListener("change", () => {
+  updateFormatNote();
+  refreshScene();
+});
+focusXInput.addEventListener("change", refreshScene);
+focusYInput.addEventListener("change", refreshScene);
+focusModeSelect.addEventListener("change", () => {
+  updateFormatNote();
+  refreshScene();
+});
+showGuides.addEventListener("change", () => {
+  if (scene) drawFormatGuides(guides, scene.canvas, showGuides.checked);
+});
+const requestedFormat = new URLSearchParams(location.search).get("format");
+if (OutputFormatSchema.safeParse(requestedFormat).success)
+  formatSelect.value = requestedFormat!;
+updateFormatNote();
 
 select.addEventListener("change", () => {
   previewRequestId += 1;

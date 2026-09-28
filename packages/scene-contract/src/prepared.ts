@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { formatSize, OutputFormatSchema } from "./output-format.ts";
 
 const number = z.number().finite();
 const id = z.string().regex(/^[a-zA-Z][\w-]*$/);
@@ -205,8 +206,9 @@ const preparedShape = z
     title: z.string().min(1),
     durationMs: number.int().min(3000).max(8000),
     fps: z.union([z.literal(24), z.literal(30)]),
-    width: z.literal(1920).default(1920),
-    height: z.literal(1080).default(1080),
+    format: OutputFormatSchema.optional(),
+    width: number.int().positive().default(1920),
+    height: number.int().positive().default(1080),
     background: color.default("#E8DFC9"),
     assets: z.array(asset).min(1),
     fonts: z.array(PreparedFontSchema).max(12).optional(),
@@ -223,6 +225,20 @@ export const PreparedSceneFieldsSchema = preparedShape.omit({
   schemaVersion: true,
   recipe: true,
 });
+
+export function validatePreparedFormat(
+  output: {
+    format?: z.infer<typeof OutputFormatSchema> | undefined;
+    width: number;
+    height: number;
+  },
+  fail: (message: string) => void,
+) {
+  const format = output.format ?? "landscape";
+  const { width, height } = formatSize(format);
+  if (output.width !== width || output.height !== height)
+    fail(`Output dimensions must match ${format} format (${width}x${height})`);
+}
 
 export function validatePreparedGraph(
   scene: Pick<PreparedScene, "nodes" | "assets" | "fonts">,
@@ -283,6 +299,7 @@ export function validatePreparedGraph(
 
 export const PreparedSceneSchema = preparedShape.superRefine((scene, ctx) => {
   const fail = (message: string) => ctx.addIssue({ code: "custom", message });
+  validatePreparedFormat(scene, fail);
   if (!Number.isInteger((scene.durationMs * scene.fps) / 1000))
     fail("Duration must resolve to whole frames");
   const { nodes } = validatePreparedGraph(scene, fail);
@@ -388,14 +405,18 @@ export const PreparedAnimationResultSchema = z
       .object({
         frameCount: number.int().positive(),
         durationMs: number.int().positive(),
-        width: z.literal(1920),
-        height: z.literal(1080),
+        format: OutputFormatSchema.optional(),
+        width: number.int().positive(),
+        height: number.int().positive(),
         totalWallMs: number.nonnegative(),
       })
       .passthrough(),
   })
   .strict()
   .superRefine((result, ctx) => {
+    validatePreparedFormat(result.metrics, (message) =>
+      ctx.addIssue({ code: "custom", message, path: ["metrics"] }),
+    );
     if (
       result.frameCount !== (result.durationMs * result.fps) / 1000 ||
       result.metrics.frameCount !== result.frameCount ||

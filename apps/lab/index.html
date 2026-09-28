@@ -45,6 +45,42 @@
             Build corpus gallery
           </button>
           <div class="divider"><span>motion settings</span></div>
+          <label for="output-format">Output format</label>
+          <select id="output-format">
+            <option value="landscape">Landscape · 1920 × 1080</option>
+            <option value="vertical">Vertical · 1080 × 1920</option>
+          </select>
+          <p id="format-note" class="hint" hidden>
+            Auto focus follows the nearest large subject in the depth map. Set a
+            focal point manually when needed.
+          </p>
+          <div id="focus-controls" hidden>
+            <label for="focus-mode">Focal point</label>
+            <select id="focus-mode">
+              <option value="auto">Auto from depth</option>
+              <option value="manual">Set manually</option>
+            </select>
+            <div id="manual-focus" hidden>
+              <label for="focus-x">Focal X (0–1)</label>
+              <input
+                id="focus-x"
+                type="number"
+                min="0"
+                max="1"
+                step="0.01"
+                value="0.5"
+              />
+              <label for="focus-y">Focal Y (0–1)</label>
+              <input
+                id="focus-y"
+                type="number"
+                min="0"
+                max="1"
+                step="0.01"
+                value="0.5"
+              />
+            </div>
+          </div>
           <label for="preset">Preset</label>
           <select id="preset">
             <optgroup label="Depth motion">
@@ -105,12 +141,22 @@
             </div>
             <p id="scene-name" class="scene-name">No scene loaded</p>
           </div>
-          <div class="preview-stage">
+          <label class="guide-toggle"
+            ><input id="show-guides" type="checkbox" /> Show safe areas and
+            landscape footprint</label
+          >
+          <div id="preview-stage" class="preview-stage">
             <canvas
               id="preview"
               width="960"
               height="540"
               aria-label="Animated still preview"
+            ></canvas>
+            <canvas
+              id="preview-guides"
+              width="960"
+              height="540"
+              aria-hidden="true"
             ></canvas>
             <div id="empty-preview" class="empty-preview">
               Choose a corpus image or load local source files.

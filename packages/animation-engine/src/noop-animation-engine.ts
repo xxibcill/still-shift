@@ -40,6 +40,7 @@ const buildScene = (
     sourceHash,
     pipelineVersion: PIPELINE_VERSION,
     rendererVersion: RENDERER_VERSION,
+    ...(request.height > request.width ? { format: "vertical" } : {}),
     timeline: {
       durationMs: request.durationMs,
       fps: request.fps,

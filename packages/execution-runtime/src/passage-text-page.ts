@@ -14,15 +14,20 @@ declare global {
     validateStillShiftPassageText?: (
       scene: StoryScene,
       fontUrls: Record<string, string>,
+      options?: { validateSafeZones?: boolean },
     ) => Promise<PassageDiagnostic[]>;
   }
 }
 
-window.validateStillShiftPassageText = async (scene, fontUrls) => {
+window.validateStillShiftPassageText = async (
+  scene,
+  fontUrls,
+  options = {},
+) => {
   try {
-    const compiled = compileStoryScene(scene);
+    const compiled = compileStoryScene(scene, options);
     const fonts = await loadPreparedFonts(compiled, (id) => fontUrls[id]!);
-    validateStoryTextLayout(compiled, fonts);
+    validateStoryTextLayout(compiled, fonts, options);
     const context = document.createElement("canvas").getContext("2d")!;
     prepareMeasuredText(
       prepareComponentTextFits(compiled, context, fonts),

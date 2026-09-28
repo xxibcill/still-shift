@@ -11,6 +11,7 @@ import {
   AnimationEngineError,
   AnimationResultSchema,
   ENGINE_VERSION,
+  formatSize,
   parseAnimationRequest,
   SceneManifestSchema,
   V0_1_REQUEST_CONSTRAINTS,
@@ -18,8 +19,10 @@ import {
   type AnimationFailure,
   type AnimationRequest,
   type AnimationResult,
+  type OutputFormat,
 } from "@still-shift/scene-contract";
 import { hashBatchArtifacts } from "./batch-identity.ts";
+import { parseOutputFormat } from "./format-option.ts";
 import {
   acquireArtifactLock,
   prepareBatchItem,
@@ -32,6 +35,9 @@ type BatchItem = {
   preset?: string;
   intensity?: string;
   seed?: number;
+  focus?: [number, number];
+  format?: OutputFormat;
+  formats?: OutputFormat[];
 };
 
 type BatchRecord = {
@@ -119,8 +125,31 @@ const parseItem = (line: string, lineNumber: number): BatchItem => {
         line: lineNumber,
       },
     );
+  if (item.format !== undefined) parseOutputFormat(item.format);
+  if (item.formats !== undefined) {
+    if (
+      item.format !== undefined ||
+      !Array.isArray(item.formats) ||
+      item.formats.length === 0 ||
+      item.formats.length > 2 ||
+      new Set(item.formats).size !== item.formats.length
+    )
+      throw new AnimationEngineError(
+        "SCENE_INVALID",
+        "Batch item formats must list distinct formats and cannot accompany format",
+        { line: lineNumber },
+      );
+    item.formats.forEach((format) => parseOutputFormat(format));
+  }
   return item as BatchItem;
 };
+
+const expandItem = (item: BatchItem, defaultFormat: OutputFormat) =>
+  (item.formats ?? [item.format ?? defaultFormat]).map((format) => ({
+    ...item,
+    id: item.formats ? `${item.id}-${format}` : item.id,
+    format,
+  }));
 
 const requestForItem = (
   item: BatchItem,
@@ -132,11 +161,11 @@ const requestForItem = (
     outputPath: join(outputDir, `${item.id}.mp4`),
     durationMs: item.durationMs ?? V0_1_REQUEST_DEFAULTS.durationMs,
     fps: V0_1_REQUEST_CONSTRAINTS.fps,
-    width: V0_1_REQUEST_CONSTRAINTS.width,
-    height: V0_1_REQUEST_CONSTRAINTS.height,
+    ...formatSize(item.format ?? "landscape"),
     preset: item.preset ?? V0_1_REQUEST_DEFAULTS.preset,
     intensity: item.intensity ?? V0_1_REQUEST_DEFAULTS.intensity,
     seed: item.seed ?? V0_1_REQUEST_DEFAULTS.seed,
+    ...(item.focus ? { focus: item.focus } : {}),
   });
 
 const checkpointResult = async (
@@ -323,6 +352,7 @@ export const runBatch = async (options: {
   manifestPath: string;
   outputDir: string;
   concurrency: number;
+  format?: OutputFormat;
 }): Promise<{ summary: Record<string, unknown>; exitCode: number }> => {
   const engine: AnimationEngine = new WebGLAnimationEngine();
   if (
@@ -353,35 +383,42 @@ export const runBatch = async (options: {
     [];
   const records: Array<BatchRecord | undefined> = [];
   const outputIds = new Set<string>();
+  const defaultFormat = options.format ?? "landscape";
   let invalidConfiguration = false;
   for (const [index, line] of lines.entries()) {
     if (!line.trim()) continue;
     const lineNumber = index + 1;
-    const position = records.length;
-    records.push(undefined);
     try {
       const item = parseItem(line, lineNumber);
-      requestForItem(item, manifestPath, outputDir);
-      const outputId = item.id.toLowerCase();
-      if (outputIds.has(outputId))
-        throw new AnimationEngineError(
-          "SCENE_INVALID",
-          "Duplicate batch item id (case-insensitive)",
-          {
-            id: item.id,
-            line: lineNumber,
-          },
-        );
-      outputIds.add(outputId);
-      jobs.push({ position, lineNumber, item });
+      const variants = expandItem(item, defaultFormat);
+      const candidateIds = new Set<string>();
+      for (const variant of variants) {
+        if (!/^[a-zA-Z0-9][a-zA-Z0-9_-]{0,79}$/.test(variant.id))
+          throw new AnimationEngineError(
+            "SCENE_INVALID",
+            "Expanded batch item id exceeds the safe 80-character limit",
+            { id: variant.id, line: lineNumber },
+          );
+        requestForItem(variant, manifestPath, outputDir);
+        const outputId = variant.id.toLowerCase();
+        if (candidateIds.has(outputId) || outputIds.has(outputId))
+          throw new AnimationEngineError(
+            "SCENE_INVALID",
+            "Duplicate batch item id (case-insensitive)",
+            { id: variant.id, line: lineNumber },
+          );
+        candidateIds.add(outputId);
+      }
+      for (const variant of variants) {
+        const position = records.length;
+        records.push(undefined);
+        outputIds.add(variant.id.toLowerCase());
+        jobs.push({ position, lineNumber, item: variant });
+      }
     } catch (error) {
       invalidConfiguration = true;
-      records[position] = failureRecord(
-        lineNumber,
-        `line-${lineNumber}`,
-        null,
-        null,
-        error,
+      records.push(
+        failureRecord(lineNumber, `line-${lineNumber}`, null, null, error),
       );
     }
   }

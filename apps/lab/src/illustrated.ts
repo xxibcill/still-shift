@@ -1,4 +1,7 @@
-import { PreparedSceneInputSchema } from "../../../packages/scene-contract/src/cinematic.ts";
+import {
+  CinematicSceneSchema,
+  PreparedSceneInputSchema,
+} from "../../../packages/scene-contract/src/cinematic.ts";
 import { createStoryControls } from "./story-controls.ts";
 import {
   compilePreparedScene,
@@ -8,6 +11,13 @@ import {
   createIllustratedPreview,
   loadIllustratedImages,
 } from "../../../packages/renderer-core/src/illustrated-renderer.ts";
+import {
+  formatSize,
+  OutputFormatSchema,
+  type OutputFormat,
+} from "../../../packages/scene-contract/src/output-format.ts";
+import { drawFormatGuides, setPreviewAspect } from "./format-guides.ts";
+import { resolveCinematicFormat } from "../../../packages/renderer-core/src/cinematic-scene.ts";
 
 const el = <T extends HTMLElement>(id: string) =>
   document.getElementById(id) as T;
@@ -17,6 +27,10 @@ const select = el<HTMLSelectElement>("scene"),
 const strength = el<HTMLSelectElement>("strength");
 const duration = el<HTMLSelectElement>("duration");
 const canvas = el<HTMLCanvasElement>("illustrated-preview");
+const guides = el<HTMLCanvasElement>("preview-guides");
+const formatSelect = el<HTMLSelectElement>("output-format");
+const showGuides = el<HTMLInputElement>("show-guides");
+const stage = el<HTMLElement>("illustrated-stage");
 let preview: ReturnType<typeof createIllustratedPreview> | undefined;
 let scene: IllustratedScene | undefined;
 let playing = false,
@@ -26,6 +40,7 @@ let playing = false,
 const show = (frame: number) => {
   if (!scene || !preview) return;
   preview.renderFrame(frame);
+  drawFormatGuides(guides, scene, showGuides.checked);
   document
     .getElementById("motion-tools")
     ?.dispatchEvent(new CustomEvent("story-frame", { detail: frame }));
@@ -72,12 +87,15 @@ slider.oninput = () => {
   stop();
   show(Number(slider.value));
 };
+showGuides.onchange = () => show(Number(slider.value));
 type Entry = {
   id: string;
   title: string;
   description: string;
   collection: string;
   value: string;
+  format?: OutputFormat;
+  formats?: Partial<Record<OutputFormat, string>>;
 };
 const entries: Entry[] = [];
 for (const collection of ["illustrated", "cinematic", "story"]) {
@@ -123,6 +141,9 @@ if (
   )
 )
   duration.value = requestedDuration;
+const requestedFormat = new URLSearchParams(location.search).get("format");
+if (OutputFormatSchema.safeParse(requestedFormat).success)
+  formatSelect.value = requestedFormat!;
 const load = async () => {
   const current = ++generation;
   stop();
@@ -134,11 +155,33 @@ const load = async () => {
   el("story-controls").hidden = true;
   try {
     const entry = entries.find((item) => item.value === select.value)!;
-    const response = await fetch(
-      `/${entry.collection}/scenes/${entry.id}.json`,
-    );
+    const requested = OutputFormatSchema.parse(formatSelect.value);
+    const variant = entry.formats?.[requested];
+    const automaticCinematic =
+      requested === "vertical" && !variant && entry.collection === "cinematic";
+    if (
+      requested !== (entry.format ?? "landscape") &&
+      !variant &&
+      !automaticCinematic
+    )
+      throw new Error(
+        `${entry.title} has no resolved ${requested} scene in its catalog.`,
+      );
+    const scenePath = variant ?? `${entry.id}.json`;
+    const url = scenePath.startsWith("/")
+      ? scenePath
+      : `/${entry.collection}/scenes/${scenePath}`;
+    const response = await fetch(url);
     if (!response.ok) throw new Error("Scene unavailable");
-    const input = PreparedSceneInputSchema.parse(await response.json());
+    const source = PreparedSceneInputSchema.parse(await response.json());
+    const input = automaticCinematic
+      ? resolveCinematicFormat(CinematicSceneSchema.parse(source), requested)
+      : source;
+    const size = formatSize(requested);
+    if (input.width !== size.width || input.height !== size.height)
+      throw new Error(
+        `${entry.title} ${requested} scene dimensions must be ${size.width} × ${size.height}.`,
+      );
     strength.disabled = input.schemaVersion !== "illustrated-scene-2";
     duration.disabled = input.schemaVersion !== "illustrated-scene-2";
     if (input.schemaVersion === "illustrated-scene-2") {
@@ -155,12 +198,14 @@ const load = async () => {
       const asset = [...next.assets, ...(next.fonts ?? [])].find(
         (item) => item.id === id,
       )!;
-      return `/${entry.collection}/assets/${asset.path.split("/").at(-1)}`;
+      const filename = asset.path.split("/").at(-1);
+      return `/${entry.collection}/assets/${asset.path.includes("/kit-v-vertical/") ? "vertical/" : ""}${filename}`;
     });
     if (current !== generation) return;
     preview?.dispose();
     scene = next;
     preview = createIllustratedPreview(canvas, next, images);
+    setPreviewAspect(stage, next);
     if (input.schemaVersion === "story-scene-1") {
       el("story-controls").hidden = false;
       createStoryControls(
@@ -171,6 +216,7 @@ const load = async () => {
           preview?.dispose();
           scene = compiled;
           preview = createIllustratedPreview(canvas, compiled, images);
+          setPreviewAspect(stage, compiled);
           show(Number(slider.value));
         },
         (frame) => {
@@ -190,12 +236,21 @@ const load = async () => {
     el<HTMLButtonElement>("restart").disabled = false;
   } catch (error) {
     if (current !== generation) return;
+    if (scene && preview) {
+      formatSelect.value =
+        scene.height > scene.width ? "vertical" : "landscape";
+      play.disabled = false;
+      slider.disabled = false;
+      el<HTMLButtonElement>("restart").disabled = false;
+      el("story-controls").hidden = scene.schemaVersion !== "story-scene-1";
+    }
     el("status").textContent = "Scene unavailable";
     el("error").textContent =
       error instanceof Error ? error.message : String(error);
   }
 };
 select.onchange = () => void load();
+formatSelect.onchange = () => void load();
 strength.onchange = () => void load();
 duration.onchange = () => void load();
 await load();

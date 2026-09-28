@@ -15,6 +15,7 @@ import {
 import { storyGallery, storyContactSheet } from "./story-motion/gallery.ts";
 import { evaluatePreparedNode } from "../packages/renderer-core/src/prepared-scene.ts";
 import { analyzeStoryQuality } from "../packages/renderer-core/src/story-quality.ts";
+import { reviewProbeSize } from "./review-probe-size.ts";
 
 const { values } = parseArgs({
   options: {
@@ -148,7 +149,7 @@ for (const entry of entries) {
     "-i",
     video,
     "-vf",
-    "fps=2,scale=480:270,tile=4x4",
+    `fps=2,scale=${reviewProbeSize(scene.width, scene.height)},tile=4x4`,
     "-frames:v",
     "1",
     join(output, `${entry.id}-motion.jpg`),

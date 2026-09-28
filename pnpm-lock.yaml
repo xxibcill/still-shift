@@ -110,6 +110,9 @@ importers:
       "@still-shift/animation-engine":
         specifier: workspace:*
         version: link:../../packages/animation-engine
+      "@still-shift/renderer-core":
+        specifier: workspace:*
+        version: link:../../packages/renderer-core
       "@still-shift/execution-runtime":
         specifier: workspace:*
         version: link:../../packages/execution-runtime

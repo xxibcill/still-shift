@@ -162,6 +162,7 @@ async function update() {
 }
 function showDetails(active: Active) {
   const { scene, settings } = active;
+  canvas.style.aspectRatio = `${scene.width} / ${scene.height}`;
   element("handles").textContent = JSON.stringify(
     {
       nodes: scene.nodes.filter((n) => n.id.includes("__")).map((n) => n.id),

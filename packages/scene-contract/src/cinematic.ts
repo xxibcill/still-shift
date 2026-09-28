@@ -1,12 +1,14 @@
 import { sharedEffectsFields } from "./shared-effects.ts";
 import { CommerceSceneSchema } from "./commerce.ts";
 import { StorySceneSchema } from "./story.ts";
+import { formatSize, type OutputFormat } from "./output-format.ts";
 import { z } from "zod";
 import {
   PreparedImageSchema,
   PreparedSceneFieldsSchema,
   PreparedSceneSchema,
   PreparedAnimationResultSchema,
+  validatePreparedFormat,
   validatePreparedGraph,
 } from "./prepared.ts";
 
@@ -19,6 +21,17 @@ const rectangle = z.tuple([
   finite.positive(),
 ]);
 const id = z.string().regex(/^[a-zA-Z][\w-]*$/);
+
+const CAMERA_TRAVEL_FRACTIONS = {
+  landscape: { x: 160 / 1920, y: 40 / 1080 },
+  vertical: { x: 160 / 1080, y: 192 / 1920 },
+} as const;
+
+function cameraTravelLimits(format: OutputFormat) {
+  const size = formatSize(format);
+  const fractions = CAMERA_TRAVEL_FRACTIONS[format];
+  return { x: size.width * fractions.x, y: size.height * fractions.y };
+}
 
 export const CameraValidationSchema = z
   .object({
@@ -64,7 +77,7 @@ const cinematicShape = PreparedSceneFieldsSchema.extend({
     .max(20),
   camera: z
     .object({
-      travel: z.tuple([finite.min(-160).max(160), finite.min(-40).max(40)]),
+      travel: z.tuple([finite, finite]),
       push: finite.positive().max(10).optional(),
       pullback: finite.positive().max(10).optional(),
       focus: z
@@ -77,13 +90,7 @@ const cinematicShape = PreparedSceneFieldsSchema.extend({
         })
         .strict()
         .optional(),
-      curve: z
-        .tuple([
-          finite.min(-160).max(160),
-          finite.min(-40).max(40),
-          finite.nonnegative().max(10),
-        ])
-        .optional(),
+      curve: z.tuple([finite, finite, finite.nonnegative().max(10)]).optional(),
       anchor: z
         .tuple([finite.min(0).max(1), finite.min(0).max(1)])
         .default([0.5, 0.5]),
@@ -116,7 +123,19 @@ const cinematicShape = PreparedSceneFieldsSchema.extend({
 export type CinematicScene = z.infer<typeof cinematicShape>;
 export const CinematicSceneSchema = cinematicShape.superRefine((scene, ctx) => {
   const fail = (message: string) => ctx.addIssue({ code: "custom", message });
+  validatePreparedFormat(scene, fail);
   validatePreparedGraph(scene, fail);
+  const cameraLimits = cameraTravelLimits(scene.format ?? "landscape");
+  const withinCameraLimits = ([x, y]: readonly [number, number, ...number[]]) =>
+    Math.abs(x) <= cameraLimits.x && Math.abs(y) <= cameraLimits.y;
+  if (!withinCameraLimits(scene.camera.travel))
+    fail(
+      `Camera travel exceeds ${scene.format ?? "landscape"} frame limits (${cameraLimits.x}px horizontal, ${cameraLimits.y}px vertical)`,
+    );
+  if (scene.camera.curve && !withinCameraLimits(scene.camera.curve))
+    fail(
+      `Camera curve exceeds ${scene.format ?? "landscape"} frame limits (${cameraLimits.x}px horizontal, ${cameraLimits.y}px vertical)`,
+    );
   if (scene.effects && scene.effectsVersion !== "effects-1")
     fail("motion-opt-in: effects require effectsVersion effects-1");
   for (const effect of scene.effects ?? []) {
@@ -341,6 +360,9 @@ export const CinematicAnimationResultSchema = z
   })
   .strict()
   .superRefine((result, ctx) => {
+    validatePreparedFormat(result.metrics, (message) =>
+      ctx.addIssue({ code: "custom", message, path: ["metrics"] }),
+    );
     if (
       result.frameCount !== (result.durationMs * result.fps) / 1000 ||
       result.metrics.frameCount !== result.frameCount ||

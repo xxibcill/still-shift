@@ -83,6 +83,7 @@ const preview = createPreviewSession<Active>({
   status: say,
   ready: ({ scene, brief }) => {
     canvas.hidden = false;
+    canvas.style.aspectRatio = `${scene.width} / ${scene.height}`;
     element("empty-preview").hidden = true;
     say(
       `${brief.selection.id} ready · ${scene.width} × ${scene.height} · ${scene.frameCount} frames`,
