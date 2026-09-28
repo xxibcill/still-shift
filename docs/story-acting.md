@@ -1,0 +1,260 @@
+# Text containers and character acting
+
+These are shared Still Shift features: the scene contract, passage compiler,
+Canvas renderer, Lab controls and MP4 exporter use the same data. Existing scenes
+without these optional fields retain their behavior.
+
+## Text containers
+
+A text node with a pinned `fontAsset` and measured `textLayout` or `textBox` can
+include a `container`. The renderer measures the current text state, wraps it with
+padding, and draws the text and container under the same transform and opacity.
+For a `textLayout`, the container hugs the measured text; a `textBox` uses its
+authored box. Font measurement, padding, border and tail participate in safe-area
+validation. Text still needs to fit its authored layout.
+
+```json
+{
+  "kind": "speech",
+  "fill": "#FFF8E7",
+  "stroke": "#514638",
+  "strokeWidth": 2,
+  "padding": 20,
+  "radius": 18,
+  "tail": { "side": "bottom", "position": 0.3, "length": 28 }
+}
+```
+
+Kinds are `caption` (rounded panel), `speech` (pointed tail) and `thought`
+(scalloped outline and small bubbles). Tails can face any of four sides;
+`position` runs from 0 to 1 along that side. Caption panels have no tail.
+In `story-passage-2`, `beat.textContainers[nodeId]` overrides a template's
+container; `null` removes it. The Lab exposes these options under **Text containers**.
+Door numbers and other labels do not acquire containers automatically.
+
+## Prepare a reusable character library
+
+Generate each posture as its own transparent PNG using one identity reference.
+Preserve face, costume, proportions, lighting, camera, scale and foot baseline.
+Use distinct silhouettes: rest, inspect, knock, receive, thank and walking phases.
+Keep moving props separate. Review identity and hand/prop alignment before use.
+
+Register each PNG in the template's normal `assets` collection with dimensions,
+relative path and SHA-256 checksum. Then give the image node named states:
+
+```json
+{
+  "fit": "contain",
+  "states": [
+    {
+      "asset": "actor-rest",
+      "pose": "rest",
+      "registration": { "anchor": [0.52, 0.97] }
+    },
+    {
+      "asset": "actor-knock",
+      "pose": "knock",
+      "registration": { "anchor": [0.55, 0.96] }
+    }
+  ]
+}
+```
+
+All states on a named character must have unique pose names. Optional
+`registration.anchor` specifies a normalized source point, usually the midpoint
+between the feet at their baseline. With a crop, coordinates are relative to that
+crop. The engine places this point at the node's bottom center, preserving aspect
+ratio. Give the node enough width for every silhouette; image content is clipped
+to its node box. Registration aligns position, not differently drawn body sizes.
+Without registration, existing centered image placement is unchanged.
+
+The Lab's **Download pose generation brief** records the identity reference,
+canvas dimensions and required poses. This is a prompt handoff, not an in-app
+image-provider call. The included artwork was generated with the built-in
+image model; there is no SVG substitute or runtime image-model dependency.
+
+## Link poses to narration or events
+
+In a `story-passage-2` beat:
+
+```json
+{
+  "poseTracks": {
+    "actor": {
+      "initial": "rest",
+      "changes": [
+        {
+          "id": "actor-knocks",
+          "pose": "knock",
+          "anchor": { "type": "cue", "id": "knock" },
+          "offset": 0,
+          "blendFrames": 0
+        },
+        {
+          "id": "actor-rests",
+          "pose": "rest",
+          "anchor": { "type": "event", "id": "actor-knocks", "edge": "end" },
+          "offset": 16,
+          "blendFrames": 0
+        }
+      ]
+    }
+  }
+}
+```
+
+Offsets and blends use frames. Default hard cuts give crisp limited animation;
+optional blends last 1–3 frames. Pose events are instantaneous, so their start
+and end coincide; a blend changes rendering without changing that event time.
+A pose remains selected until the next change. An empty `changes` list sets only
+the initial pose. For reusable walking and gesture sequences, use the action
+presets below. The engine does not synthesize a skeletal walk or interpolate new
+anatomy.
+
+The compiler resolves cue/event dependencies, rejects missing poses, cycles,
+out-of-range or colliding changes, and prevents competing state owners. Pose
+event IDs can also anchor sound and movement. Moving a narration cue retimes all
+its dependents. Do not duplicate pose timing in `bindings` or `timing`.
+
+Use **Character poses** in the Lab to choose poses, cue/event anchors, offsets and
+blends, or add/remove changes. Undo/redo and saved plans retain authoring data;
+portable workspace export includes every pose asset and registration.
+
+## Reusable actions
+
+Add `actions` to a `story-passage-2` beat. `walk` alternates two supplied poses
+while moving to a destination; `knock`, `offer`, `receive` and `react` hold a
+selected pose, optionally moving the character. Each action can settle into a
+`finishPose`; omit it to keep the last pose. The gesture names describe intent:
+they do not automatically draw hands, transfer props or generate audio.
+
+```json
+{
+  "actions": [
+    {
+      "id": "walk-home",
+      "actor": "actor",
+      "kind": "walk",
+      "anchor": { "type": "cue", "id": "return" },
+      "durationFrames": 48,
+      "poses": ["step-a", "step-b"],
+      "stepFrames": 8,
+      "finishPose": "rest",
+      "to": [300, 278]
+    },
+    {
+      "id": "gentle-knock",
+      "actor": "actor",
+      "kind": "knock",
+      "anchor": { "type": "cue", "id": "knock" },
+      "durationFrames": 16,
+      "pose": "knock",
+      "finishPose": "rest"
+    }
+  ]
+}
+```
+
+All timing uses beat-local frames. Actions expose their own start and end events:
+anchor a sound cue to `gentle-knock` → `start` to keep it synchronized when the
+action or narration cue moves. `offset` defaults to zero. Walking uses linear
+travel; optional gesture travel uses cubic easing. Generated pose cuts are crisp.
+
+Actions on the same actor cannot overlap, and manual pose changes cannot fall
+inside an action. A finish pose at the exact start of the next action would
+create two pose changes at one frame; omit that finish pose. Action end frames
+must be inside the beat. Each walk supports at most 40 generated pose changes,
+including its finish pose. Keep generated IDs (`-pose-N`, `-settle`, `-move`) out
+of manual bindings and timing overrides.
+
+In **Character actions**, select a character, action kind, cue, duration and
+poses, then add it. Existing actions expose offsets, destinations and finish
+poses. Changes participate in normal undo/redo, preview, save and workspace export.
+
+## Props that follow a hand
+
+Add a named anchor to each character pose that will hold a prop. Like foot
+registration, anchor coordinates are normalized relative to the source image or
+its crop. The renderer accounts for image fit, foot registration, pose blends,
+character movement, scale and rotation.
+
+```json
+{
+  "asset": "actor-offer",
+  "pose": "offer",
+  "registration": { "anchor": [0.52, 0.97] },
+  "anchors": { "hand": [0.85, 0.32] }
+}
+```
+
+Then add a prop track to the beat. The prop's `grip` is a normalized point in its
+node box. That point follows the named hand anchor. Each hold can include an
+`offset: [x, y]` in shared-parent coordinates; it defaults to zero.
+
+```json
+{
+  "propTracks": {
+    "parcel": {
+      "grip": [0.5, 0.88],
+      "initial": { "actor": "actor", "anchor": "hand" },
+      "changes": [
+        {
+          "id": "parcel-handover",
+          "anchor": { "type": "cue", "id": "handover" },
+          "hold": { "actor": "neighbor", "anchor": "hand" },
+          "transitionFrames": 18
+        },
+        {
+          "id": "parcel-release",
+          "anchor": { "type": "cue", "id": "release" },
+          "hold": null
+        }
+      ]
+    }
+  }
+}
+```
+
+An `initial: null` prop starts at its authored position. A pickup or handover can
+blend to the new hand over `transitionFrames` (default zero, maximum 120).
+Both hands must remain valid during a transfer. `hold: null` releases at the
+previous frame's contact point; releases have zero transition frames. Seeking
+directly to any frame produces the same result as sequential playback.
+
+Attachments own the prop's position for the entire beat. Remove existing prop
+movement, pins, travels, position drivers and constraints before adding one;
+opacity, rotation and scale animation remain available. This feature follows
+position only: it does not inherit hand rotation or calculate occlusion. Use the
+scene's normal drawing order. Prop and holder must share the same parent and
+camera space; nested prop attachments are unsupported. Missing or clipped hand
+anchors, dependency cycles and overlapping transfers fail validation before
+rendering.
+
+Use **Held props** to choose initial holders, adjust grip points, and add or edit
+cue/event-linked pickups, transfers and releases. Hand anchors are currently
+authored in the character's image states; there is no visual anchor-placement
+editor yet.
+
+## Example and verification
+
+Load `benchmarks/fixtures/parcel-story/actions/parcel-story.json` in the Passage Lab.
+Seven new posture images supplement the original offer/receive states; see
+[asset provenance and prompts](../assets/parcel-story/poses-v001/README.md).
+The narration remains 36 seconds, 864 frames at 24 fps. Existing narration cues
+and SFX timing are preserved; new pose/prop movements follow them.
+
+```sh
+pnpm story:passage \
+  --plan benchmarks/fixtures/parcel-story/actions/parcel-story.json \
+  --narration assets/parcel-story/narration-v001/narration.wav \
+  --output-dir benchmarks/results/my-character-acting
+```
+
+Tests cover exact pose boundaries, cue and sound retiming, static initial poses,
+invalid ownership/timing, container bounds, registration, Lab edits/undo/save,
+generation brief download, font-based safe-area validation and relocation of a
+workspace containing real pose artwork. Action tests cover walking cadence,
+gesture duration, hand tracking through pose changes and blends, moving-hand
+transfers, releases, random seeking, ownership conflicts and dependency cycles.
+The example is also rendered through the normal MP4 pipeline and inspected at
+gesture, handover and walking boundaries.
