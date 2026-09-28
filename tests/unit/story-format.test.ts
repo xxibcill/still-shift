@@ -110,6 +110,18 @@ describe("story format overrides", () => {
     ).toBe(false);
   });
 
+  it("keeps the landscape cache key when the default format is explicit", () => {
+    const implicit = fixtureScene();
+    const explicit = StorySceneSchema.parse({
+      ...implicit,
+      format: "landscape",
+    });
+    expect(resolveStoryFormat(explicit, "landscape")).toEqual(explicit);
+    expect(passageBeatKey(explicit, "test-runtime")).toBe(
+      passageBeatKey(implicit, "test-runtime"),
+    );
+  });
+
   it("patches only existing camera keys and measured text line width", () => {
     const source = fixtureScene();
     source.motionGrammar = "v2";
