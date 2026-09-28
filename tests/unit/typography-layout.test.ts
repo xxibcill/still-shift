@@ -1,5 +1,8 @@
 import { describe, expect, it } from "vitest";
-import { textBreaks } from "../../packages/renderer-core/src/shaped-text.ts";
+import {
+  shapeText,
+  textBreaks,
+} from "../../packages/renderer-core/src/shaped-text.ts";
 import { commonClusters } from "../../packages/renderer-core/src/typography-transition.ts";
 import { resolveNarrationWord } from "../../packages/renderer-core/src/typography-events.ts";
 import { parseNarrationTiming } from "../../packages/renderer-core/src/narration-timing.ts";
@@ -9,8 +12,71 @@ import {
 } from "../../packages/renderer-core/src/typography-animation.ts";
 import { readFontMetrics } from "../../packages/renderer-core/src/font-metrics.ts";
 import { readFileSync } from "node:fs";
+import type { LoadedFont } from "../../packages/renderer-core/src/prepared-fonts.ts";
+import type { TextNode } from "../../packages/renderer-core/src/typography-style.ts";
+
+const measuredContext = () =>
+  ({
+    font: "",
+    measureText(text: string) {
+      const size = Number(this.font.match(/([\d.]+)px/u)?.[1] ?? 48);
+      const width = text.length * size * 0.5;
+      return {
+        width,
+        actualBoundingBoxLeft: 0,
+        actualBoundingBoxRight: width,
+        actualBoundingBoxAscent: size * 0.8,
+        actualBoundingBoxDescent: size * 0.2,
+      };
+    },
+  }) as unknown as CanvasRenderingContext2D;
+const measuredFonts = new Map<string, LoadedFont>([
+  [
+    "test-font",
+    {
+      family: "Test",
+      weight: "400",
+      metrics: {
+        unitsPerEm: 1000,
+        ascent: 800,
+        descent: 200,
+        capHeight: 700,
+        xHeight: 500,
+        underlinePosition: 100,
+        underlineThickness: 50,
+        axes: {},
+        features: [],
+      },
+    },
+  ],
+]);
+const mixedSizeNode = {
+  id: "mixed-size",
+  type: "text",
+  text: "a\nB",
+  fontAsset: "test-font",
+  fontSize: 48,
+  color: "#ffffff",
+  align: "left",
+  spans: [{ start: 2, end: 3, style: "large" }],
+} as TextNode;
 
 describe("shaped typography", () => {
+  it("spaces lines using their actual span metrics", () => {
+    const layout = shapeText(
+      measuredContext(),
+      mixedSizeNode,
+      mixedSizeNode.text,
+      measuredFonts,
+      { large: { size: 160 } },
+    );
+    expect(
+      layout.lines[1]!.baseline - layout.lines[0]!.baseline,
+    ).toBeGreaterThanOrEqual(
+      layout.lines[0]!.descent + layout.lines[1]!.ascent,
+    );
+    expect(layout.runs[1]!.baseline).toBe(layout.lines[1]!.baseline);
+  });
   it("prevents the recovered pantry orphan without changing text", () => {
     const text = "Not a recovered pantry";
     const greedy = textBreaks(text, 16, (s) => s.length, { wrap: "greedy" });

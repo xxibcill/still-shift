@@ -360,6 +360,25 @@ export function shapeText(
     }
     lines.push(line);
   });
+  let nextBaseline = firstBaseline;
+  lines.forEach((line, index) => {
+    const lineClusters = line.clusters.map((i) => clusters[i]!);
+    line.ascent = Math.max(ascent, ...lineClusters.map((c) => c.ascent));
+    line.descent = Math.max(descent, ...lineClusters.map((c) => c.descent));
+    if (index)
+      nextBaseline += Math.max(
+        lineHeight,
+        lines[index - 1]!.descent + line.ascent,
+      );
+    const shift = nextBaseline - line.baseline;
+    line.baseline = nextBaseline;
+    for (const cluster of lineClusters) {
+      cluster.baseline += shift;
+      if (cluster.ink) cluster.ink.y += shift;
+    }
+    for (const runIndex of new Set(lineClusters.map((c) => c.runIndex)))
+      runs[runIndex]!.baseline += shift;
+  });
   const left = Math.min(0, ...lines.map((l) => l.x)),
     top = firstBaseline - Math.max(ascent, ...clusters.map((c) => c.ascent));
   const height = Math.max(...lines.map((l) => l.baseline + l.descent)) - top;
