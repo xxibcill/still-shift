@@ -39,6 +39,17 @@ export function textStateAtFrame(node: TextNode, frame: number, state: number) {
   }
   return Math.round(resolved);
 }
+/** The text shown outside an active transition, including a finished count. */
+export function settledText(node: TextNode, frame: number, state: number) {
+  const completed = (
+    node.transitions ?? (node.transition ? [node.transition] : [])
+  )
+    .filter((transition) => frame >= transition.window.end)
+    .at(-1);
+  return completed?.kind === "count"
+    ? countText(node, completed, completed.window.end)
+    : (node.states?.[textStateAtFrame(node, frame, state)] ?? node.text);
+}
 export function transitionProgress(t: TextTransition, frame: number) {
   return easeMotion(
     (frame - t.window.start) / (t.window.end - t.window.start),

@@ -11,6 +11,7 @@ import { storyCameraTransform } from "./story-camera.ts";
 import { evaluatePreparedNode } from "./prepared-scene.ts";
 import { resolveTextEvents } from "./typography-events.ts";
 import type { TextStyle } from "../../scene-contract/src/typography.ts";
+import { settledText } from "./typography-transition.ts";
 
 export type TypographyReviewScene = StoryRenderScene | CommerceRenderScene;
 export type TypeQualityCode =
@@ -60,21 +61,17 @@ export function textReadingWindows(
   for (const node of scene.nodes) {
     if (node.type !== "text" || !essential.has(node.id)) continue;
     let start = -1;
+    let shownText = node.text;
     const finish = (end: number) => {
       if (start < 0) return;
-      const characters = Math.max(
-        ...(node.states ?? [node.text]).map(
-          (s) =>
-            [
-              ...new Intl.Segmenter(node.locale ?? "en", {
-                granularity: "grapheme",
-              }).segment(s),
-            ].length,
-        ),
-      );
+      const characters = [
+        ...new Intl.Segmenter(node.locale ?? "en", {
+          granularity: "grapheme",
+        }).segment(shownText),
+      ].length;
       const spokenSpan =
-        scene.narrationTiming && /[\p{L}\p{N}]/u.test(node.text)
-          ? findNarrationPhrase(scene.narrationTiming, node.text).find(
+        scene.narrationTiming && /[\p{L}\p{N}]/u.test(shownText)
+          ? findNarrationPhrase(scene.narrationTiming, shownText).find(
               (w) => w.start * scene.fps >= start && w.end * scene.fps <= end,
             )
           : undefined;
@@ -119,7 +116,14 @@ export function textReadingWindows(
       ).some((t) => frame >= t.window.start && frame < t.window.end);
       const settled =
         opacity >= 0.95 && state.reveal >= 0.99 && !entering && !changing;
-      if (settled && start < 0) start = frame;
+      const displayed = settled
+        ? settledText(node, frame, state.state)
+        : undefined;
+      if (settled && start >= 0 && displayed !== shownText) finish(frame);
+      if (settled && start < 0) {
+        start = frame;
+        shownText = displayed!;
+      }
       if (!settled) finish(frame);
     }
     finish(scene.frameCount);

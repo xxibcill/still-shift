@@ -25,7 +25,7 @@ import {
   commonClusters,
   countText,
   retypedClusters,
-  textStateAtFrame,
+  settledText,
   transitionProgress,
   transitionSlideLimit,
 } from "./typography-transition.ts";
@@ -290,17 +290,6 @@ export function prepareTypography(
     maskLayer: surface(1, 1),
     transitionLayer: surface(1, 1),
   };
-}
-/** The text shown outside an active transition, including a finished count. */
-function settledText(node: TextNode, frame: number, state: number) {
-  const completed = (
-    node.transitions ?? (node.transition ? [node.transition] : [])
-  )
-    .filter((t) => frame >= t.window.end)
-    .at(-1);
-  return completed?.kind === "count"
-    ? countText(node, completed, completed.window.end)
-    : (node.states?.[textStateAtFrame(node, frame, state)] ?? node.text);
 }
 /** Container content box in node space, matching the legacy text-box and text-layout limits. */
 export function typographyContainerContent(

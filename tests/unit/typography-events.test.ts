@@ -6,6 +6,7 @@ import {
   analyzePassageTypography,
   analyzeTypography,
   contrastRatio,
+  textReadingWindows,
 } from "../../packages/renderer-core/src/typography-quality.ts";
 import {
   indexStoryEvents,
@@ -660,6 +661,35 @@ describe("semantic typography and lint", () => {
         expect.objectContaining({ code: "hierarchy-drift", nodes: ["claim"] }),
       ]),
     );
+  });
+  it("starts a new reading window when a text state cuts", () => {
+    const scene = compileStoryScene(
+      StorySceneSchema.parse({
+        ...input(),
+        nodes: input().nodes.map((node) =>
+          node.id === "claim"
+            ? { ...node, states: ["Less room", "New message"] }
+            : node,
+        ),
+      }),
+    );
+    scene.tracks.claim = {
+      state: [
+        { time: 0, value: 0 },
+        { time: 110, value: 1, step: true },
+      ],
+    };
+    expect(textReadingWindows(scene).filter((w) => w.node === "claim")).toEqual(
+      [
+        expect.objectContaining({ start: 0, end: 110, characters: 9 }),
+        expect.objectContaining({ start: 110, end: 121, characters: 11 }),
+      ],
+    );
+    expect(
+      analyzeTypography(scene).diagnostics.some(
+        (d) => d.code === "reading-time" && d.nodes[0] === "claim",
+      ),
+    ).toBe(true);
   });
   it("uses selector order to choose units in a partial range", () => {
     const scene = compileStoryScene(StorySceneSchema.parse(input()));
