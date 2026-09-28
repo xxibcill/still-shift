@@ -257,10 +257,46 @@ export const IntentPresetSchema = z
               "breathe",
               "draw-on",
               "land",
+              "text-reveal",
+              "text-emphasize",
+              "text-correct",
+              "text-qualify",
+              "text-retype",
+              "text-count",
+              "text-redact",
+              "text-release",
             ]),
             node: id,
             property: NumericMotionPropertySchema.optional(),
             amount: finite.optional(),
+            span: id.optional(),
+            target: id.optional(),
+            replacement: z.string().min(1).optional(),
+            manner: z
+              .enum([
+                "weight",
+                "color",
+                "underline",
+                "highlight",
+                "compress",
+                "expand",
+              ])
+              .optional(),
+            color: z
+              .string()
+              .regex(/^#[\da-fA-F]{6}$/)
+              .optional(),
+            at: z
+              .object({
+                narrationWord: z.union([
+                  z.string().min(1),
+                  z.object({ segment: frame, index: frame }).strict(),
+                ]),
+                occurrence: frame.positive().optional(),
+                offset: finite.int().optional(),
+              })
+              .strict()
+              .optional(),
             window: z
               .object({ start: frame, end: frame, cue: id.optional() })
               .strict()
@@ -362,6 +398,56 @@ export const PathMorphSchema = z
         });
     });
   });
+export const TextSelectorValueSchema = z.union([
+  finite,
+  ScalarCurveSchema,
+  z
+    .object({ signal: id, scale: finite.optional(), offset: finite.optional() })
+    .strict(),
+]);
+export const TextSelectorSchema = z
+  .object({
+    start: TextSelectorValueSchema,
+    end: TextSelectorValueSchema,
+    offset: TextSelectorValueSchema.optional(),
+    shape: z
+      .enum([
+        "square",
+        "ramp",
+        "ramp-up",
+        "ramp-down",
+        "triangle",
+        "round",
+        "smooth",
+      ])
+      .optional(),
+    easing: CurveEasingSchema.optional(),
+    easeHigh: finite.min(0).max(100).optional(),
+    easeLow: finite.min(0).max(100).optional(),
+    basedOn: z.enum(["clusters", "words", "lines"]).optional(),
+    order: z.enum(["forward", "reverse", "center-out", "seeded"]).optional(),
+    seed: frame.optional(),
+    mode: z.enum(["add", "intersect"]).optional(),
+  })
+  .strict();
+export const TextAnimatorPropertiesSchema = z
+  .object({
+    opacity: unit.optional(),
+    offset: xy.optional(),
+    scale: finite.positive().max(4).optional(),
+    rotation: finite.optional(),
+    blur: finite.min(0).max(40).optional(),
+    color: color.optional(),
+    tracking: finite.min(-2000).max(2000).optional(),
+    leading: finite.min(-4).max(4).optional(),
+    skew: finite.min(-80).max(80).optional(),
+    baselineShift: finite.optional(),
+    axes: z.record(z.string().regex(/^[A-Za-z0-9]{4}$/), finite).optional(),
+    fill: color.optional(),
+    stroke: color.optional(),
+    strokeWidth: finite.min(0).max(40).optional(),
+  })
+  .strict();
 export const TextAnimatorSchema = z
   .object({
     node: id,
@@ -369,29 +455,28 @@ export const TextAnimatorSchema = z
     start: frame,
     end: frame,
     stagger: frame.max(120),
-    selector: z
-      .object({
-        start: unit,
-        end: unit,
-        offset: finite.min(-1).max(1).optional(),
-        shape: z.enum(["square", "ramp", "triangle"]).optional(),
-        easing: CurveEasingSchema.optional(),
-      })
-      .strict(),
-    from: z
-      .object({
-        opacity: unit.optional(),
-        offset: xy.optional(),
-        scale: finite.positive().max(4).optional(),
-        rotation: finite.optional(),
-        blur: finite.min(0).max(40).optional(),
-        color: color.optional(),
-      })
-      .strict(),
+    selector: TextSelectorSchema,
+    selectors: z.array(TextSelectorSchema).max(8).optional(),
+    from: TextAnimatorPropertiesSchema,
+    to: TextAnimatorPropertiesSchema.optional(),
+    anchor: z.enum(["glyph", "word", "line", "all"]).optional(),
+    anchorAlign: z.tuple([unit, unit]).optional(),
+    excludeSpaces: z.boolean().optional(),
+    mask: z.enum(["none", "line", "word"]).optional(),
+    feather: finite.min(0).max(2).optional(),
+    lineOverlap: unit.optional(),
+    span: id.optional(),
+    cue: id.optional(),
+    signal: id.optional(),
+    ...layerFields,
   })
   .strict()
   .refine(
-    (a) => a.end > a.start && a.selector.end >= a.selector.start,
+    (a) =>
+      a.end > a.start &&
+      (typeof a.selector.start !== "number" ||
+        typeof a.selector.end !== "number" ||
+        a.selector.end >= a.selector.start),
     "motion-text-range: invalid animator range",
   );
 export const motionAppearanceFields = {

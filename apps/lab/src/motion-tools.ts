@@ -1,3 +1,4 @@
+import { createTypographyTools } from "./typography-tools.ts";
 import "./motion-tools.css";
 import type { StoryScene } from "../../../packages/scene-contract/src/story.ts";
 import { compileStoryScene } from "../../../packages/renderer-core/src/story-scene.ts";
@@ -18,6 +19,7 @@ export function createMotionTools(
   input: StoryScene,
   seek: (frame: number) => void,
   images?: Images,
+  apply?: (scene: StoryScene) => void,
 ) {
   const scene = compileStoryScene(input),
     host = document.createElement("section");
@@ -348,6 +350,8 @@ export function createMotionTools(
     energy,
     status,
   );
+  if (input.nodes.some((n) => n.type === "text"))
+    host.append(createTypographyTools(input, seek, images, apply));
   update();
   return host;
 }

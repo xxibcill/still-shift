@@ -1,3 +1,4 @@
+import { TextStyleSchema } from "./typography.ts";
 import { z } from "zod";
 import { CharacterActionSchema, PropTrackSchema } from "./character-actions.ts";
 import { NarrationTimingSchema } from "./narration-timing.ts";
@@ -41,12 +42,14 @@ export const StoryStyleSchema = z
     id: name,
     background: color.optional(),
     colors: z.record(color, color).default({}),
+    textStyles: z.record(name, TextStyleSchema).optional(),
     text: z
       .partialRecord(
         TextRoleSchema,
         z
           .object({
-            fontSize: z.number().min(16).max(180).optional(),
+            fontSize: z.number().min(16).max(640).optional(),
+            style: name.optional(),
             color: color.optional(),
             fontAsset: name.optional(),
           })

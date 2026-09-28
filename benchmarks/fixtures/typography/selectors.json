@@ -1,0 +1,249 @@
+{
+  "title": "Selectors and held span emphasis",
+  "fps": 30,
+  "width": 1920,
+  "height": 1080,
+  "background": "#f4f1e8",
+  "assets": [
+    {
+      "id": "house",
+      "path": "../../../assets/story-motion/art/house.svg",
+      "sha256": "sha256:a8fa4eff374ba974770317dd483ca7b2e5b8d1f0bd7a9224ada091db42542a60",
+      "width": 600,
+      "height": 440
+    }
+  ],
+  "fonts": [
+    {
+      "id": "body",
+      "path": "../../../assets/story-motion/fonts/plex-sans-semibold.ttf",
+      "sha256": "sha256:a20caf8286023a6a7a85e40b1d2a4ae9fc3e3b1f9eda8f4c542dd4986af67bb1",
+      "weight": "600"
+    },
+    {
+      "id": "serif",
+      "path": "../../../assets/story-motion/fonts/source-serif-4-semibold.otf",
+      "sha256": "sha256:25e034392847d9965c92f98971b3646436b7ab919ece9118b0c0e5ec94c02efc",
+      "weight": "600"
+    },
+    {
+      "id": "thai",
+      "path": "../../../assets/ecommerce-motion/fonts/noto-sans-thai.ttf",
+      "sha256": "sha256:5a1c559bb539583c8a1fd99d1c5b9491e5e14478c9cd2bd0970d5c3096cc9ef8",
+      "weight": "400",
+      "variable": {
+        "wght": {
+          "min": 100,
+          "default": 400,
+          "max": 900
+        },
+        "wdth": {
+          "min": 62.5,
+          "default": 100,
+          "max": 100
+        }
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "id": "headline",
+      "x": 140,
+      "y": 200,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "text",
+      "style": "display",
+      "spans": [
+        {
+          "id": "focus",
+          "start": 7,
+          "end": 13
+        }
+      ],
+      "anchor": "cap",
+      "text": "AVATAR office affine typography",
+      "textRole": "heading",
+      "fontSize": 96,
+      "color": "#292827",
+      "weight": "normal",
+      "font": "sans-serif",
+      "align": "left"
+    },
+    {
+      "id": "tracking",
+      "x": 140,
+      "y": 480,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "text",
+      "style": "prose",
+      "anchor": "cap",
+      "text": "Words share the same constraint",
+      "textRole": "qualification",
+      "fontSize": 48,
+      "color": "#292827",
+      "weight": "normal",
+      "font": "sans-serif",
+      "align": "left"
+    }
+  ],
+  "schemaVersion": "story-scene-1",
+  "frameCount": 151,
+  "motionModel": "curves-1",
+  "signals": [
+    {
+      "id": "margin",
+      "keys": [
+        {
+          "frame": 0,
+          "value": 0
+        },
+        {
+          "frame": 60,
+          "value": 1
+        },
+        {
+          "frame": 100,
+          "value": 1
+        },
+        {
+          "frame": 140,
+          "value": 0
+        }
+      ]
+    }
+  ],
+  "textAnimators": [
+    {
+      "node": "tracking",
+      "unit": "word",
+      "start": 0,
+      "end": 40,
+      "stagger": 2,
+      "selector": {
+        "start": 0,
+        "end": 1,
+        "order": "center-out"
+      },
+      "from": {
+        "opacity": 0,
+        "offset": [0, 60]
+      },
+      "anchor": "word",
+      "mask": "word",
+      "layer": "action"
+    },
+    {
+      "node": "headline",
+      "unit": "glyph",
+      "start": 0,
+      "end": 40,
+      "stagger": 1,
+      "selector": {
+        "start": 0,
+        "end": 1,
+        "order": "seeded",
+        "seed": 44
+      },
+      "from": {
+        "opacity": 0,
+        "scale": 0.25,
+        "rotation": -15
+      },
+      "anchor": "glyph",
+      "layer": "action"
+    },
+    {
+      "node": "headline",
+      "unit": "glyph",
+      "start": 50,
+      "end": 80,
+      "stagger": 0,
+      "selector": {
+        "start": 0,
+        "end": 1
+      },
+      "from": {
+        "tracking": 0
+      },
+      "to": {
+        "tracking": -60,
+        "skew": -8,
+        "baselineShift": 5,
+        "fill": "#a4362f"
+      },
+      "span": "focus",
+      "layer": "response"
+    },
+    {
+      "node": "tracking",
+      "unit": "glyph",
+      "start": 0,
+      "end": 140,
+      "stagger": 0,
+      "selector": {
+        "start": 0,
+        "end": 1
+      },
+      "selectors": [
+        {
+          "start": 0,
+          "end": 1,
+          "shape": "round",
+          "basedOn": "words",
+          "mode": "intersect"
+        }
+      ],
+      "from": {
+        "tracking": 0
+      },
+      "to": {
+        "tracking": -80
+      },
+      "signal": "margin",
+      "layer": "current"
+    }
+  ],
+  "typography": "type-1",
+  "textStyles": {
+    "display": {
+      "fontAsset": "body",
+      "size": 96,
+      "tracking": -15
+    },
+    "prose": {
+      "fontAsset": "body",
+      "size": 48
+    },
+    "emphasis": {
+      "fontAsset": "serif",
+      "size": 96
+    },
+    "number": {
+      "fontAsset": "body",
+      "size": 96,
+      "figures": "tabular"
+    },
+    "variable": {
+      "fontAsset": "thai",
+      "size": 80,
+      "axes": {
+        "wdth": 100
+      }
+    }
+  },
+  "authoringVersion": "1",
+  "recipe": {
+    "preset": "generic",
+    "moves": [],
+    "emphasis": []
+  },
+  "connectors": []
+}

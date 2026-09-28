@@ -1,0 +1,395 @@
+{
+  "title": "Vertical type hierarchy",
+  "fps": 30,
+  "format": "vertical",
+  "width": 1080,
+  "height": 1920,
+  "background": "#f4f1e8",
+  "assets": [
+    {
+      "id": "house",
+      "path": "../../../assets/story-motion/art/house.svg",
+      "sha256": "sha256:a8fa4eff374ba974770317dd483ca7b2e5b8d1f0bd7a9224ada091db42542a60",
+      "width": 600,
+      "height": 440
+    }
+  ],
+  "fonts": [
+    {
+      "id": "body",
+      "path": "../../../assets/story-motion/fonts/plex-sans-semibold.ttf",
+      "sha256": "sha256:a20caf8286023a6a7a85e40b1d2a4ae9fc3e3b1f9eda8f4c542dd4986af67bb1",
+      "weight": "600"
+    },
+    {
+      "id": "serif",
+      "path": "../../../assets/story-motion/fonts/source-serif-4-semibold.otf",
+      "sha256": "sha256:25e034392847d9965c92f98971b3646436b7ab919ece9118b0c0e5ec94c02efc",
+      "weight": "600"
+    },
+    {
+      "id": "thai",
+      "path": "../../../assets/ecommerce-motion/fonts/noto-sans-thai.ttf",
+      "sha256": "sha256:5a1c559bb539583c8a1fd99d1c5b9491e5e14478c9cd2bd0970d5c3096cc9ef8",
+      "weight": "400",
+      "variable": {
+        "wght": {
+          "min": 100,
+          "default": 400,
+          "max": 900
+        },
+        "wdth": {
+          "min": 62.5,
+          "default": 100,
+          "max": 100
+        }
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "id": "pressure",
+      "x": 90,
+      "y": 954,
+      "width": 800,
+      "height": 96,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "rect",
+      "fill": "#a4362f",
+      "lineWidth": 0,
+      "radius": 0
+    },
+    {
+      "id": "claim",
+      "x": 90,
+      "y": 288,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "text",
+      "style": "prose",
+      "spans": [
+        {
+          "id": "wrong",
+          "start": 30,
+          "end": 35
+        }
+      ],
+      "anchor": "cap",
+      "text": "The parcel was waiting at the wrong door.",
+      "textRole": "heading",
+      "textLayout": {
+        "width": 900,
+        "height": 350,
+        "lineHeight": 1.4,
+        "overflow": "error"
+      },
+      "fontSize": 48,
+      "color": "#292827",
+      "weight": "normal",
+      "font": "sans-serif",
+      "align": "left"
+    },
+    {
+      "id": "margin",
+      "x": 90,
+      "y": 702,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "text",
+      "style": "display",
+      "spans": [
+        {
+          "id": "room",
+          "start": 5,
+          "end": 9
+        }
+      ],
+      "anchor": "cap",
+      "text": "Less room",
+      "textRole": "heading",
+      "textLayout": {
+        "width": 900,
+        "height": 350,
+        "lineHeight": 1.4,
+        "overflow": "error"
+      },
+      "fontSize": 96,
+      "color": "#292827",
+      "weight": "normal",
+      "font": "sans-serif",
+      "align": "left"
+    },
+    {
+      "id": "qualifier",
+      "x": 90,
+      "y": 1170,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "text",
+      "style": "prose",
+      "anchor": "cap",
+      "text": "Not every detail",
+      "textRole": "qualification",
+      "textLayout": {
+        "width": 900,
+        "height": 350,
+        "lineHeight": 1.4,
+        "overflow": "error"
+      },
+      "fontSize": 48,
+      "color": "#292827",
+      "weight": "normal",
+      "font": "sans-serif",
+      "align": "left"
+    }
+  ],
+  "schemaVersion": "story-scene-1",
+  "frameCount": 181,
+  "motionModel": "curves-1",
+  "signals": [
+    {
+      "id": "margin-pressure",
+      "keys": [
+        {
+          "frame": 0,
+          "value": 0
+        },
+        {
+          "frame": 60,
+          "value": 1
+        },
+        {
+          "frame": 100,
+          "value": 1
+        },
+        {
+          "frame": 140,
+          "value": 0
+        }
+      ]
+    }
+  ],
+  "drivers": [
+    {
+      "target": "pressure.scaleX",
+      "signal": "margin-pressure",
+      "map": {
+        "range": [0, 1],
+        "to": [1, 0.35]
+      }
+    }
+  ],
+  "typography": "type-1",
+  "textStyles": {
+    "display": {
+      "fontAsset": "body",
+      "size": 96,
+      "tracking": -15
+    },
+    "prose": {
+      "fontAsset": "body",
+      "size": 48
+    },
+    "emphasis": {
+      "fontAsset": "serif",
+      "size": 96
+    },
+    "number": {
+      "fontAsset": "body",
+      "size": 96,
+      "figures": "tabular"
+    },
+    "variable": {
+      "fontAsset": "thai",
+      "size": 80,
+      "axes": {
+        "wdth": 100
+      }
+    }
+  },
+  "textEvents": [
+    {
+      "id": "spoken-emphasis",
+      "node": "claim",
+      "verb": "emphasize",
+      "span": "wrong",
+      "manner": "color",
+      "color": "#a4362f",
+      "at": {
+        "narrationWord": "wrong"
+      },
+      "duration": 8
+    },
+    {
+      "id": "compress",
+      "node": "margin",
+      "verb": "emphasize",
+      "span": "room",
+      "manner": "compress",
+      "signal": "margin-pressure",
+      "at": 0,
+      "duration": 140
+    },
+    {
+      "id": "qualification",
+      "node": "qualifier",
+      "verb": "qualify",
+      "target": "margin",
+      "at": 45,
+      "duration": 25
+    },
+    {
+      "id": "correct",
+      "node": "claim",
+      "verb": "correct",
+      "span": "wrong",
+      "replacement": "opposite",
+      "at": 100,
+      "duration": 30
+    },
+    {
+      "id": "release",
+      "node": "margin",
+      "verb": "release",
+      "span": "room",
+      "at": 145,
+      "duration": 20
+    }
+  ],
+  "narrationTiming": {
+    "schemaVersion": "narration-timing-1",
+    "granularity": "word",
+    "segments": [
+      {
+        "text": "The",
+        "segmentIndex": 0,
+        "wordIndex": 0,
+        "start": 0,
+        "end": 0.3
+      },
+      {
+        "text": "parcel",
+        "segmentIndex": 0,
+        "wordIndex": 1,
+        "start": 0.3,
+        "end": 0.54
+      },
+      {
+        "text": "was",
+        "segmentIndex": 0,
+        "wordIndex": 2,
+        "start": 0.54,
+        "end": 0.76
+      },
+      {
+        "text": "waiting",
+        "segmentIndex": 0,
+        "wordIndex": 3,
+        "start": 0.76,
+        "end": 1.02
+      },
+      {
+        "text": "at",
+        "segmentIndex": 0,
+        "wordIndex": 4,
+        "start": 1.02,
+        "end": 1.26
+      },
+      {
+        "text": "the",
+        "segmentIndex": 0,
+        "wordIndex": 5,
+        "start": 1.26,
+        "end": 1.36
+      },
+      {
+        "text": "wrong",
+        "segmentIndex": 0,
+        "wordIndex": 6,
+        "start": 1.36,
+        "end": 1.56
+      },
+      {
+        "text": "door.",
+        "segmentIndex": 0,
+        "wordIndex": 7,
+        "start": 1.56,
+        "end": 1.96
+      },
+      {
+        "text": "Nora",
+        "segmentIndex": 0,
+        "wordIndex": 8,
+        "start": 3.08,
+        "end": 3.08
+      },
+      {
+        "text": "checked",
+        "segmentIndex": 0,
+        "wordIndex": 9,
+        "start": 3.08,
+        "end": 3.4
+      },
+      {
+        "text": "the",
+        "segmentIndex": 0,
+        "wordIndex": 10,
+        "start": 3.4,
+        "end": 3.6
+      },
+      {
+        "text": "label,",
+        "segmentIndex": 0,
+        "wordIndex": 11,
+        "start": 3.6,
+        "end": 3.94
+      },
+      {
+        "text": "then",
+        "segmentIndex": 0,
+        "wordIndex": 12,
+        "start": 4.16,
+        "end": 4.5
+      },
+      {
+        "text": "looked",
+        "segmentIndex": 0,
+        "wordIndex": 13,
+        "start": 4.5,
+        "end": 4.66
+      },
+      {
+        "text": "across",
+        "segmentIndex": 0,
+        "wordIndex": 14,
+        "start": 4.66,
+        "end": 4.92
+      },
+      {
+        "text": "the",
+        "segmentIndex": 0,
+        "wordIndex": 15,
+        "start": 4.92,
+        "end": 5.12
+      }
+    ]
+  },
+  "authoringVersion": "1",
+  "recipe": {
+    "preset": "generic",
+    "moves": [],
+    "emphasis": []
+  },
+  "connectors": []
+}

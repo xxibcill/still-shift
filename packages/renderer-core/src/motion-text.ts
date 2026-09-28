@@ -14,8 +14,8 @@ export function textUnitProgress(
 ) {
   const position = count <= 1 ? 0.5 : index / (count - 1),
     selector = animator.selector;
-  const left = selector.start + (selector.offset ?? 0),
-    right = selector.end + (selector.offset ?? 0);
+  const left = Number(selector.start) + Number(selector.offset ?? 0),
+    right = Number(selector.end) + Number(selector.offset ?? 0);
   if (position < left || position > right) return 1;
   const lastStart = Math.min(
     animator.end - 1,

@@ -38,3 +38,5 @@ export {
 export * from "./narration-timing.ts";
 export * from "./story-acting.ts";
 export * from "./character-actions.ts";
+
+export * from "./typography.ts";

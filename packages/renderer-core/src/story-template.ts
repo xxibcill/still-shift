@@ -103,7 +103,18 @@ export function resolveStoryFormat(scene: StoryScene, format: OutputFormat) {
           );
         node.textLayout.width = patch.lineWidth;
       }
-      if (patch.fontSize !== undefined) node.fontSize = patch.fontSize;
+      if (patch.fontSize !== undefined) {
+        node.fontSize = patch.fontSize;
+        if (resolved.typography && node.style) {
+          const styleId = `vertical-${node.id}`;
+          resolved.textStyles ??= {};
+          resolved.textStyles[styleId] = {
+            ...resolved.textStyles[node.style],
+            size: patch.fontSize,
+          };
+          node.style = styleId;
+        }
+      }
       if (patch.align !== undefined) node.align = patch.align;
     }
   }
@@ -227,6 +238,7 @@ export function instantiateStoryTemplate(
           { node: id },
         );
       node.textRole = role;
+      if (scene.typography && node.anchor === undefined) node.anchor = "cap";
     }
     for (const [id, layout] of Object.entries(input.textLayout)) {
       const node = scene.nodes.find((n) => n.id === id);
@@ -240,6 +252,8 @@ export function instantiateStoryTemplate(
     }
   }
   if (style) {
+    if (style.textStyles)
+      scene.textStyles = { ...scene.textStyles, ...style.textStyles };
     if (style.background) scene.background = style.background;
     if (style.safeInset !== undefined) scene.safeInset = style.safeInset;
     for (const node of scene.nodes) {
@@ -285,13 +299,16 @@ export function instantiateStoryTemplate(
   }
   for (const node of scene.nodes) {
     if (node.type !== "text") continue;
-    if (node.textLayout && !node.fontAsset)
+    const fontAsset =
+      (node.style ? scene.textStyles?.[node.style]?.fontAsset : undefined) ??
+      node.fontAsset;
+    if (node.textLayout && !fontAsset)
       passageError(
         "unpinned-layout-font",
         "Measured text layout requires a pinned font",
         { node: node.id },
       );
-    if (node.fontAsset && !scene.fonts?.some((f) => f.id === node.fontAsset))
+    if (fontAsset && !scene.fonts?.some((f) => f.id === fontAsset))
       passageError("missing-font", "Unknown font: " + node.fontAsset, {
         node: node.id,
       });

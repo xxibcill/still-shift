@@ -1,3 +1,4 @@
+import { resolveTextEvents } from "./typography-events.ts";
 import type { StoryScene } from "../../scene-contract/src/story.ts";
 import type { TimingBinding } from "../../scene-contract/src/story-authoring.ts";
 import { passageError } from "./passage-diagnostics.ts";
@@ -191,6 +192,39 @@ function editableEvents(scene: StoryScene) {
       },
     });
   }
+  for (const [i, event] of resolveTextEvents(scene).entries()) {
+    const source =
+      scene.textEvents!.find(
+        (e) =>
+          e === event ||
+          (e.id && e.id === event.id) ||
+          (e.node === event.node && e.verb === event.verb && e.at === event.at),
+      ) ?? scene.textEvents![i]!;
+    add({
+      id: event.id ?? `@/textEvents/${i}`,
+      kind: "text-reveal",
+      nodes: [event.node],
+      path: `textEvents/${i}`,
+      start: event.start,
+      end: event.end,
+      endExclusive: false,
+      set(start, end) {
+        if (end <= start)
+          passageError(
+            "invalid-duration",
+            "Text event needs positive duration",
+          );
+        source.at = start;
+        source.duration = end - start;
+        this.start = start;
+        this.end = end;
+      },
+    });
+  }
+  scene.textAnimators?.forEach((a, i) => {
+    if (!a.cue || !scene.textEvents?.some((e) => e.id === a.cue))
+      visit(a, `textAnimators/${i}`);
+  });
   visit(scene.intentPresets?.motions, "intentPresets/motions");
   visit(scene.periodic, "periodic");
   visit(scene.recipe, "recipe");

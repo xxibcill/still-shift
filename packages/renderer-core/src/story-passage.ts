@@ -1,3 +1,4 @@
+import { analyzePassageTypography } from "./typography-quality.ts";
 import {
   parsePassagePlan,
   type PassageBeat,
@@ -173,6 +174,25 @@ export function compileStoryPassage(
           : undefined,
         options.format,
       );
+      if (
+        template.typography &&
+        plan.schemaVersion === "story-passage-2" &&
+        plan.narration?.timing
+      ) {
+        const offsetSeconds = (plan.sourceStartFrame + localStart) / plan.fps;
+        template.narrationTiming = {
+          ...plan.narration.timing,
+          segments: plan.narration.timing.segments
+            .map((w) => ({
+              ...w,
+              start: w.start - offsetSeconds,
+              end: w.end - offsetSeconds,
+            }))
+            .filter(
+              (w) => w.start >= 0 && w.start < beat.frameCount / plan.fps,
+            ),
+        };
+      }
       if (!template)
         throw new Error(beat.id + ": missing template " + beat.template);
       if (template.fps !== plan.fps)
@@ -295,25 +315,36 @@ export function compileStoryPassage(
       beats,
       localStart,
     ),
-    diagnostics: beats.flatMap((beat) => [
-      ...beat.cueWarnings.map((note) => ({
-        code: "cue-distance",
-        severity: "warning" as const,
-        beat: beat.id,
-        event: note.event,
-        ...(note.node ? { node: note.node } : {}),
-        frame: note.frame,
-        message: note.message,
-      })),
-      ...beat.quality.diagnostics.map((note) => ({
+    diagnostics: [
+      ...analyzePassageTypography(beats.map((b) => b.scene)).map((note) => ({
         code: note.code,
         severity: "warning" as const,
-        beat: beat.id,
-        ...(note.nodes[0] ? { node: note.nodes[0] } : {}),
+        beat:
+          beats.find((b) => note.frames[0] >= b.start && note.frames[0] < b.end)
+            ?.id ?? beats[0]!.id,
         frame: note.frames[0],
         message: note.message,
       })),
-    ]),
+      ...beats.flatMap((beat) => [
+        ...beat.cueWarnings.map((note) => ({
+          code: "cue-distance",
+          severity: "warning" as const,
+          beat: beat.id,
+          event: note.event,
+          ...(note.node ? { node: note.node } : {}),
+          frame: note.frame,
+          message: note.message,
+        })),
+        ...beat.quality.diagnostics.map((note) => ({
+          code: note.code,
+          severity: "warning" as const,
+          beat: beat.id,
+          ...(note.nodes[0] ? { node: note.nodes[0] } : {}),
+          frame: note.frames[0],
+          message: note.message,
+        })),
+      ]),
+    ],
   };
 }
 

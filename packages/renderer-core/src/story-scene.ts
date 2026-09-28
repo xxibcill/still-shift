@@ -1,3 +1,4 @@
+import { compileTextEvents } from "./typography-events.ts";
 import { validateStorySemanticChecks } from "./story-generic.ts";
 import {
   compileMotionCraft,
@@ -48,6 +49,7 @@ type StoryMotionEventKind =
 
 export type StoryRenderScene = StoryScene & {
   rendererVersion:
+    | "story-canvas-0.22.0"
     | "story-canvas-0.21.0"
     | "story-canvas-0.20.0"
     | "story-canvas-0.19.0"
@@ -198,7 +200,8 @@ export function compileStoryScene(
     onValidationError?: (error: unknown) => void;
   } = {},
 ): StoryRenderScene {
-  const input = { ...source, nodes: source.nodes.map((n) => ({ ...n })) };
+  const resolved = compileTextEvents(source);
+  const input = { ...resolved, nodes: resolved.nodes.map((n) => ({ ...n })) };
   const events: StoryRenderScene["motionEvents"] = [];
   const event = (
     node: string,
@@ -526,5 +529,6 @@ export function compileStoryScene(
     scene.rendererVersion = "story-canvas-0.21.0";
   if (options.validateSafeZones !== false)
     validate(() => validateStorySafeZones(scene));
+  if (input.typography) scene.rendererVersion = "story-canvas-0.22.0";
   return scene;
 }

@@ -1,3 +1,6 @@
+import { shapeText } from "./shaped-text.ts";
+import type { TextStyle } from "../../scene-contract/src/typography.ts";
+import { resolvedTextStyle } from "./typography-style.ts";
 import type { PreparedNode } from "../../scene-contract/src/prepared.ts";
 import type { ComponentData } from "../../scene-contract/src/component-data.ts";
 import type { LoadedFont } from "./prepared-fonts.ts";
@@ -12,7 +15,13 @@ type Fit = {
   padding?: number | undefined;
 };
 /** Font metrics and all supplied states decide one stable size, on a prepared copy. */
-export function prepareTextFits<T extends { nodes: PreparedNode[] }>(
+export function prepareTextFits<
+  T extends {
+    nodes: PreparedNode[];
+    typography?: "type-1" | undefined;
+    textStyles?: Record<string, TextStyle> | undefined;
+  },
+>(
   scene: T,
   fits: Fit[],
   ctx: CanvasRenderingContext2D,
@@ -24,7 +33,10 @@ export function prepareTextFits<T extends { nodes: PreparedNode[] }>(
     const node = nodes.find((n) => n.id === fit.target);
     if (node?.type !== "text")
       throw new Error("Text fit requires a text target: " + fit.target);
-    const font = fonts.get(node.fontAsset!);
+    const style = scene.typography
+      ? resolvedTextStyle(node, scene.textStyles ?? {})
+      : undefined;
+    const font = fonts.get(style?.fontAsset ?? node.fontAsset!);
     if (!font)
       throw new Error(
         "Text fitting requires loaded pinned font " + node.fontAsset,
@@ -35,9 +47,25 @@ export function prepareTextFits<T extends { nodes: PreparedNode[] }>(
       ctx.textAlign = "left";
       ctx.textBaseline = "alphabetic";
       try {
-        const layouts = (node.states ?? [node.text]).map((text) =>
-          measureTextLayout(ctx, { ...node, fontSize: size, text }),
-        );
+        const fittedStyles = { ...scene.textStyles };
+        if (node.style && style) fittedStyles[node.style] = { ...style, size };
+        const layouts = (node.states ?? [node.text]).map((text) => {
+          if (!scene.typography)
+            return measureTextLayout(ctx, { ...node, fontSize: size, text });
+          const shaped = shapeText(
+            ctx,
+            { ...node, fontSize: size },
+            text,
+            fonts,
+            fittedStyles,
+          );
+          return {
+            lines: shaped.lines,
+            baseline: shaped.ascent,
+            descent: shaped.descent,
+            lineHeight: shaped.lineHeight,
+          };
+        });
         height = Math.max(
           ...layouts.map(
             (layout) =>
@@ -47,6 +75,15 @@ export function prepareTextFits<T extends { nodes: PreparedNode[] }>(
           ),
         );
         node.fontSize = size;
+        if (scene.typography && style) {
+          // A fitted node gets its own style so siblings sharing the role keep their size.
+          const id = `${node.id}-fitted`;
+          scene = {
+            ...scene,
+            textStyles: { ...scene.textStyles, [id]: { ...style, size } },
+          };
+          node.style = id;
+        }
         break;
       } catch (error) {
         if (
@@ -74,6 +111,8 @@ export function prepareTextFits<T extends { nodes: PreparedNode[] }>(
 export function prepareComponentTextFits<
   T extends {
     nodes: PreparedNode[];
+    typography?: "type-1" | undefined;
+    textStyles?: Record<string, TextStyle> | undefined;
     componentData?: ComponentData | undefined;
   },
 >(scene: T, ctx: CanvasRenderingContext2D, fonts: Map<string, LoadedFont>): T {

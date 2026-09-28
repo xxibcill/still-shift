@@ -1,4 +1,9 @@
 import {
+  analyzeTypography,
+  type TypeQualityCode,
+  type TypographyQualityPolicy,
+} from "./typography-quality.ts";
+import {
   analyzeContinuousStory,
   analyzeMotionCraft,
   type LayerPixelEnergy,
@@ -9,6 +14,7 @@ import type { PreparedNode } from "../../scene-contract/src/prepared.ts";
 
 type FocusGroup = { id: string; nodes: string[] };
 type Code =
+  | TypeQualityCode
   | "velocity-discontinuity"
   | "entrance-pop"
   | "dead-stop-chain"
@@ -24,6 +30,7 @@ type Code =
   | "camera-too-fast"
   | "label-in-motion-envelope";
 export type StoryQualityPolicy = {
+  typography?: TypographyQualityPolicy;
   preset?: "continuous";
   motionCraft?: boolean;
   pixelEnergy?: LayerPixelEnergy;
@@ -266,6 +273,11 @@ export function analyzeStoryQuality(
   if (continuous) diagnostics.push(...continuous.diagnostics);
   if (scene.motionModel || policy.motionCraft)
     diagnostics.push(...analyzeMotionCraft(scene, policy.pixelEnergy));
+  const typography =
+    scene.typography || policy.typography
+      ? analyzeTypography(scene, policy.typography)
+      : undefined;
+  if (typography) diagnostics.push(...typography.diagnostics);
   for (const diagnostic of diagnostics) {
     const exception = policy.exceptions?.find(
       (e) =>
@@ -278,6 +290,7 @@ export function analyzeStoryQuality(
   }
   return {
     version: "story-quality-1" as const,
+    ...(typography ? { typography } : {}),
     ...(continuous ? { continuous } : {}),
     displayWidth,
     minimumTextPx,
