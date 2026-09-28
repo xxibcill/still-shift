@@ -277,7 +277,80 @@ try {
           )
           .map((sample: { contrast: number }) => sample.contrast),
       );
+      // Text containers must render and be validated on the typography path too.
+      const { validateTypographySafeArea } = await import(
+        `/@fs/${root}/packages/renderer-core/src/typography-safe-area.ts`
+      );
+      const bubble = {
+        ...glyph,
+        id: "bubble",
+        text: "Wrong door?",
+        textRole: "label",
+        style: "body",
+        textLayout: {
+          width: 600,
+          height: 120,
+          lineHeight: 1.2,
+          overflow: "error",
+        },
+        container: {
+          kind: "speech",
+          fill: "#ff00ff",
+          stroke: "#514638",
+          strokeWidth: 2,
+          padding: 24,
+          radius: 18,
+          tail: { side: "bottom", position: 0.3, length: 28 },
+        },
+      };
+      const bubbleScene = {
+        ...scene,
+        nodes: [bubble],
+        textEvents: [],
+        textAnimators: [],
+      };
+      const bubblePrepared = prepareTypography(bubbleScene, fonts);
+      const bubbleCanvas = document.createElement("canvas");
+      bubbleCanvas.width = 900;
+      bubbleCanvas.height = 400;
+      const bubbleCtx = bubbleCanvas.getContext("2d")!;
+      bubbleCtx.translate(100, 100);
+      drawTypography(
+        bubbleCtx,
+        bubble,
+        { state: 0, reveal: 1 },
+        bubblePrepared,
+        0,
+      );
+      const layout = bubblePrepared.nodes.get("bubble").get(bubble.text).layout;
+      const padding = bubbleCtx.getImageData(
+        100 + layout.lines[0].x - 12,
+        100 + layout.top + layout.height / 2,
+        1,
+        1,
+      ).data;
+      const containerFill = [padding[0], padding[1], padding[2]];
+      // The text alone ends 10 px inside the frame; only padding and tail cross it.
+      const textInsideY = 1080 - (layout.top + layout.height) - 10;
+      let containerSafeArea = "accepted";
+      validateTypographySafeArea(
+        {
+          ...bubbleScene,
+          nodes: [{ ...bubble, y: textInsideY, container: undefined }],
+        },
+        bubblePrepared,
+      );
+      try {
+        validateTypographySafeArea(
+          { ...bubbleScene, nodes: [{ ...bubble, y: textInsideY }] },
+          bubblePrepared,
+        );
+      } catch (error) {
+        containerSafeArea = String(error);
+      }
       return {
+        containerFill,
+        containerSafeArea,
         invisibleContrast,
         centroidDrift,
         captures,
@@ -293,6 +366,16 @@ try {
   assert.ok(
     result.centroidDrift <= 0.5,
     `Glyph pivot drifts ${result.centroidDrift} px`,
+  );
+  assert.deepEqual(
+    result.containerFill,
+    [255, 0, 255],
+    "Typography text container is not drawn",
+  );
+  assert.match(
+    result.containerSafeArea,
+    /outside the output safe area/,
+    "Container tail is not part of the typography safe area",
   );
   assert.ok(result.backward, "Backward seek changes pixels");
   assert.ok(result.handoff, "Animator handoff changes pixels");

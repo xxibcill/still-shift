@@ -350,7 +350,8 @@ export function createMotionTools(
     energy,
     status,
   );
-  if (input.nodes.some((n) => n.type === "text"))
+  // Legacy scenes keep their existing inspector; the text lane is part of the type-1 opt-in.
+  if (input.typography && input.nodes.some((n) => n.type === "text"))
     host.append(createTypographyTools(input, seek, images, apply));
   update();
   return host;

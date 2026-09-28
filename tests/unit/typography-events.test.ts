@@ -12,6 +12,7 @@ import {
 } from "../../packages/renderer-core/src/story-event-index.ts";
 import { evaluateTextPoses } from "../../packages/renderer-core/src/typography-animation.ts";
 import type { ShapedLayout } from "../../packages/renderer-core/src/shaped-text.ts";
+import type { PreparedTypography } from "../../packages/renderer-core/src/typography-renderer.ts";
 
 const input = () => ({
   schemaVersion: "story-scene-1",
@@ -90,6 +91,82 @@ const input = () => ({
   },
 });
 
+type Compiled = ReturnType<typeof compileStoryScene>;
+type TextNode = Extract<Compiled["nodes"][number], { type: "text" }>;
+const textNode = (scene: Compiled, id: string) => {
+  const node = scene.nodes.find((n) => n.id === id);
+  if (node?.type !== "text") throw new Error("missing text node " + id);
+  return node;
+};
+/** One-line layout with 30 px glyph advances; enough for pose evaluation. */
+function mockLayout(node: TextNode): ShapedLayout {
+  const chars = Array.from(node.text);
+  const spanIndex = (i: number) =>
+    node.spans?.findIndex((s) => i >= s.start && i < s.end) ?? -1;
+  const clusters = chars.map((text, i) => ({
+    text,
+    sourceIndex: i,
+    spanIndex: spanIndex(i),
+    wordIndex: chars.slice(0, i).filter((c) => c === " ").length,
+    lineIndex: 0,
+    x: i * 30,
+    advance: 30,
+    baseline: 60,
+    ascent: 60,
+    descent: 10,
+    runIndex: 0,
+  }));
+  const width = chars.length * 30,
+    indices = clusters.map((_, i) => i);
+  return {
+    text: node.text,
+    lines: [
+      {
+        text: node.text,
+        x: 0,
+        width,
+        baseline: 60,
+        ascent: 60,
+        descent: 10,
+        clusters: indices,
+      },
+    ],
+    clusters,
+    runs: [
+      {
+        text: node.text,
+        x: 0,
+        baseline: 60,
+        width,
+        style: { size: node.fontSize },
+        color: node.color,
+        clusters: indices,
+      },
+    ],
+    width,
+    height: 70,
+    left: 0,
+    top: 0,
+    lineHeight: node.fontSize * 1.2,
+    ascent: 60,
+    descent: 10,
+    capHeight: 55,
+    xHeight: 40,
+    tracking: 0,
+    leading: 1.2,
+    underlinePosition: 3,
+    underlineThickness: 2,
+    overflow: false,
+  };
+}
+const preparedFor = (node: TextNode) =>
+  ({
+    nodes: new Map([
+      [node.id, new Map([[node.text, { layout: mockLayout(node) }]])],
+    ]),
+    corrections: new Map(),
+  }) as unknown as PreparedTypography;
+
 describe("semantic typography and lint", () => {
   it("compiles compression to the same geometry signal and releases held values", () => {
     const scene = compileStoryScene(
@@ -122,10 +199,197 @@ describe("semantic typography and lint", () => {
       span: "room",
       to: { tracking: -45 },
     });
-    expect(scene.textAnimators?.[1]).toMatchObject({
-      from: { tracking: -45 },
-      to: {},
+    // Release fades the emphasis layer; it does not add a second animator.
+    expect(scene.textAnimators).toHaveLength(1);
+    expect(scene.textAnimators?.[0]?.weight).toEqual([
+      { frame: 80, value: 1 },
+      { frame: 100, value: 0, easing: "in-out-cubic" },
+    ]);
+  });
+  it("releases a signal-bound emphasis from its current value without a jump", () => {
+    const source = StorySceneSchema.parse({
+      ...input(),
+      signals: [
+        {
+          id: "margin",
+          keys: [
+            { frame: 0, value: 0 },
+            { frame: 30, value: 1 },
+            { frame: 60, value: 0 },
+          ],
+        },
+      ],
+      textEvents: [
+        {
+          node: "claim",
+          span: "room",
+          verb: "emphasize",
+          manner: "compress",
+          signal: "margin",
+          at: 0,
+          duration: 70,
+        },
+        { node: "claim", span: "room", verb: "release", at: 80, duration: 20 },
+      ],
     });
+    const scene = compileStoryScene(source),
+      node = textNode(scene, "claim"),
+      layout = mockLayout(node);
+    const x = Array.from(
+      { length: scene.frameCount },
+      (_, frame) =>
+        evaluateTextPoses(node, layout, scene.textAnimators!, frame, scene).at(
+          -1,
+        )!.x,
+    );
+    const steps = x.slice(1).map((value, i) => Math.abs(value - x[i]!));
+    expect(Math.abs(x[79]! - x[80]!)).toBeLessThan(0.01);
+    expect(Math.max(...steps)).toBeLessThan(1);
+    expect(x[120]).toBe(0);
+  });
+  it("fades a held emphasis out over the release window", () => {
+    const scene = compileStoryScene(
+        StorySceneSchema.parse({
+          ...input(),
+          textEvents: [
+            {
+              node: "claim",
+              span: "room",
+              verb: "emphasize",
+              manner: "compress",
+              at: 0,
+              duration: 20,
+            },
+            {
+              node: "claim",
+              span: "room",
+              verb: "release",
+              at: 80,
+              duration: 20,
+            },
+          ],
+        }),
+      ),
+      node = textNode(scene, "claim"),
+      layout = mockLayout(node);
+    const tracking = (frame: number) =>
+      evaluateTextPoses(node, layout, scene.textAnimators!, frame, scene).at(
+        -1,
+      )!.tracking;
+    expect(tracking(79)).toBe(-45);
+    expect(tracking(80)).toBe(-45);
+    expect(tracking(90)).toBeGreaterThan(-45);
+    expect(tracking(90)).toBeLessThan(0);
+    expect(tracking(100)).toBe(0);
+  });
+  it("moves a single-line claim away from its qualifier", () => {
+    for (const [qualifierY, direction] of [
+      [200, -1],
+      [-200, 1],
+    ] as const) {
+      const raw = input();
+      raw.nodes[1] = { ...raw.nodes[1]!, y: qualifierY } as never;
+      const scene = compileStoryScene(
+          StorySceneSchema.parse({
+            ...raw,
+            textEvents: [
+              {
+                node: "qualifier",
+                verb: "qualify",
+                target: "claim",
+                at: 10,
+                duration: 20,
+              },
+            ],
+          }),
+        ),
+        claim = textNode(scene, "claim"),
+        layout = mockLayout(claim);
+      const y = (frame: number) =>
+        evaluateTextPoses(
+          claim,
+          layout,
+          scene.textAnimators!,
+          frame,
+          scene,
+        ).map((p) => p.y);
+      expect(y(5).every((v) => v === 0)).toBe(true);
+      expect(y(40)).toEqual(y(40).map(() => direction * 0.15 * 80));
+    }
+  });
+  it("flags a single-frame glyph jump and passes the compiled release", () => {
+    const signals = [
+      {
+        id: "margin",
+        keys: [
+          { frame: 0, value: 0 },
+          { frame: 30, value: 1 },
+          { frame: 60, value: 0 },
+        ],
+      },
+    ];
+    const emphasis = {
+      node: "claim",
+      unit: "word" as const,
+      start: 0,
+      end: 70,
+      stagger: 0,
+      span: "room",
+      signal: "margin",
+      selector: { start: 0, end: 1 },
+      from: {},
+      to: { tracking: -45 },
+    };
+    // The previous release compiled to this: a restart from the full target.
+    const popping = compileStoryScene(
+      StorySceneSchema.parse({
+        ...input(),
+        signals,
+        textAnimators: [
+          emphasis,
+          {
+            ...emphasis,
+            signal: undefined,
+            start: 80,
+            end: 100,
+            from: { tracking: -45 },
+            to: {},
+          },
+        ],
+      }),
+    );
+    const fixed = compileStoryScene(
+      StorySceneSchema.parse({
+        ...input(),
+        signals,
+        textEvents: [
+          {
+            node: "claim",
+            span: "room",
+            verb: "emphasize",
+            manner: "compress",
+            signal: "margin",
+            at: 0,
+            duration: 70,
+          },
+          {
+            node: "claim",
+            span: "room",
+            verb: "release",
+            at: 80,
+            duration: 20,
+          },
+        ],
+      }),
+    );
+    const jumps = (scene: typeof fixed) =>
+      analyzeTypography(scene, {
+        prepared: preparedFor(textNode(scene, "claim")),
+      }).diagnostics.filter((d) => d.code === "text-pose-jump");
+    expect(jumps(popping)).toMatchObject([
+      { nodes: ["claim"], frames: [79, 80] },
+    ]);
+    expect(jumps(fixed)).toEqual([]);
   });
   it("lands emphasis on the spoken onset and indexes its editable window", () => {
     const source = StorySceneSchema.parse({

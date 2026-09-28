@@ -30,6 +30,8 @@ import {
   transitionSlideLimit,
 } from "./typography-transition.ts";
 import { drawTextDecorations } from "./typography-decorations.ts";
+import { drawTextContainerShape } from "./text-container.ts";
+import type { Rect } from "./text-container-layout.ts";
 import { componentTextVariants } from "./component-values.ts";
 import type { ComponentSceneData } from "../../scene-contract/src/component-data.ts";
 
@@ -273,6 +275,62 @@ export function prepareTypography(
     layer: surface(1, 1),
     maskLayer: surface(1, 1),
     transitionLayer: surface(1, 1),
+  };
+}
+/** The text shown outside an active transition, including a finished count. */
+function settledText(node: TextNode, frame: number, state: number) {
+  const completed = (
+    node.transitions ?? (node.transition ? [node.transition] : [])
+  )
+    .filter((t) => frame >= t.window.end)
+    .at(-1);
+  return completed?.kind === "count"
+    ? countText(node, completed, completed.window.end)
+    : (node.states?.[textStateAtFrame(node, frame, state)] ?? node.text);
+}
+/** Container content box in node space, matching the legacy text-box and text-layout limits. */
+export function typographyContainerContent(
+  node: TextNode,
+  layout: ShapedLayout,
+): Rect {
+  if (node.textBox)
+    return { x: 0, y: 0, width: node.width, height: node.height };
+  const x = Math.min(...layout.lines.map((l) => l.x)),
+    right = Math.max(...layout.lines.map((l) => l.x + l.width));
+  return {
+    x,
+    y: layout.top,
+    width: Math.min(right - x, node.textLayout?.width ?? Infinity),
+    height: Math.min(layout.height, node.textLayout?.height ?? Infinity),
+  };
+}
+function displayedContainerContent(
+  node: TextNode,
+  prepared: PreparedTypography,
+  frame: number,
+  state: number,
+): Rect {
+  const states = prepared.nodes.get(node.id)!;
+  const content = (text: string) => {
+    const raster = states.get(text);
+    if (!raster)
+      throw new Error(`text-layout-not-prepared: ${node.id}: ${text}`);
+    return typographyContainerContent(node, raster.layout);
+  };
+  const transition = activeTextTransition(node, frame);
+  if (!transition || transition.kind === "cut")
+    return content(settledText(node, frame, state));
+  if (transition.kind === "count")
+    return content(countText(node, transition, frame));
+  // The container eases between the two state boxes instead of snapping.
+  const a = content(node.states![transition.fromState ?? 0]!),
+    b = content(node.states![transition.toState ?? 1]!),
+    p = transitionProgress(transition, frame);
+  return {
+    x: a.x + (b.x - a.x) * p,
+    y: a.y + (b.y - a.y) * p,
+    width: a.width + (b.width - a.width) * p,
+    height: a.height + (b.height - a.height) * p,
   };
 }
 function pairKey(node: TextNode, t: TextTransition) {
@@ -540,17 +598,7 @@ function drawTypographyContent(
   };
   const transition = activeTextTransition(node, frame);
   if (!transition || transition.kind === "cut") {
-    const completed = (
-      node.transitions ?? (node.transition ? [node.transition] : [])
-    )
-      .filter((t) => frame >= t.window.end)
-      .at(-1);
-    const text =
-      completed?.kind === "count"
-        ? countText(node, completed, completed.window.end)
-        : (node.states?.[textStateAtFrame(node, frame, state.state)] ??
-          node.text);
-    const raster = get(text);
+    const raster = get(settledText(node, frame, state.state));
     drawRaster(
       ctx,
       node,
@@ -704,6 +752,13 @@ export function drawTypography(
   frame: number,
 ) {
   ctx.save();
+  // Containers sit behind the type and outside its overflow clip, as in the legacy renderer.
+  if (node.container && state.reveal > 0)
+    drawTextContainerShape(
+      ctx,
+      node.container,
+      displayedContainerContent(node, prepared, frame, state.state),
+    );
   if (node.textLayout?.overflow === "clip") {
     const width = node.textLayout.width,
       left =

@@ -19,7 +19,8 @@ export type TypeQualityCode =
   | "text-contrast"
   | "hierarchy-drift"
   | "idle-type-motion"
-  | "x-height-floor";
+  | "x-height-floor"
+  | "text-pose-jump";
 export type TypePixelEvidence = {
   node: string;
   frame: number;
@@ -30,6 +31,8 @@ export type TypographyQualityPolicy = {
   readingRate?: number;
   readingFloorSeconds?: number;
   displacementBudget?: number;
+  /** Largest single-frame glyph displacement, in px, allowed next to near-still frames. */
+  jumpBudget?: number;
   minimumXHeight?: number;
   displayWidth?: number;
   prepared?: PreparedTypography;
@@ -159,6 +162,50 @@ export function ragScore(layout: ShapedLayout) {
         widths.reduce((a, b) => a + (b - mean) ** 2, 0) / widths.length,
       ) / mean
     : 0;
+}
+/** Finds a one-frame glyph displacement that its neighbouring frames do not share. */
+export function poseJump(
+  node: Extract<TypographyReviewScene["nodes"][number], { type: "text" }>,
+  layout: ShapedLayout,
+  scene: TypographyReviewScene,
+  budget: number,
+) {
+  const animators = (scene.textAnimators ?? []).filter(
+    (a) => a.node === node.id,
+  );
+  if (!animators.length) return undefined;
+  const poses = Array.from({ length: scene.frameCount }, (_, frame) =>
+    evaluateTextPoses(node, layout, animators, frame, scene),
+  );
+  const step = (frame: number) => {
+    if (frame < 1 || frame >= poses.length) return 0;
+    return Math.max(
+      0,
+      ...poses[frame]!.map((pose, i) => {
+        const before = poses[frame - 1]![i]!;
+        if (Math.min(pose.opacity, before.opacity) < 0.05) return 0;
+        const c = layout.clusters[i]!;
+        return (
+          Math.hypot(pose.x - before.x, pose.y - before.y) +
+          Math.abs(pose.scale - before.scale) * c.advance +
+          ((Math.abs(pose.rotation - before.rotation) * Math.PI) / 180) *
+            layout.capHeight
+        );
+      }),
+    );
+  };
+  let worst: { frame: number; distance: number } | undefined;
+  for (let frame = 1; frame < poses.length; frame++) {
+    const distance = step(frame),
+      neighbours = Math.max(step(frame - 1), step(frame + 1));
+    if (
+      distance > budget &&
+      distance > 3 * neighbours &&
+      distance > (worst?.distance ?? 0)
+    )
+      worst = { frame, distance };
+  }
+  return worst;
 }
 export function analyzeTypography(
   scene: TypographyReviewScene,
@@ -334,6 +381,17 @@ export function analyzeTypography(
           );
       }
     }
+    const jump = layouts[0]
+      ? poseJump(node, layouts[0], scene, policy.jumpBudget ?? 2)
+      : undefined;
+    if (jump)
+      add(
+        "text-pose-jump",
+        node.id,
+        [jump.frame - 1, jump.frame],
+        jump.distance,
+        `${node.id} glyphs jump ${jump.distance.toFixed(1)} px in one frame while neighbouring frames barely move.`,
+      );
     const evidence = policy.pixels?.filter(
       (p) => p.node === node.id && p.contrast !== undefined,
     );

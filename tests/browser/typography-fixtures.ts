@@ -103,10 +103,16 @@ try {
           [];
         for (const node of scene.nodes) {
           if (node.type !== "text") continue;
+          // A release fades an emphasis through its weight curve, so an animator
+          // settles at its end or its last weight key, whichever is later.
+          const settles = (a: {
+            end: number;
+            weight?: { frame: number }[] | undefined;
+          }) => Math.max(a.end, ...(a.weight ?? []).map((k) => k.frame));
           const ends = [
             ...(scene.textAnimators ?? [])
               .filter((a: { node: string }) => a.node === node.id)
-              .map((a: { end: number }) => a.end),
+              .map(settles),
             ...(
               node.transitions ?? (node.transition ? [node.transition] : [])
             ).map((t: { window: { end: number } }) => t.window.end),
@@ -126,8 +132,11 @@ try {
               compiledFlows: [],
               componentData: undefined,
               textAnimators: (scene.textAnimators ?? []).filter(
-                (a: { node: string; end: number }) =>
-                  a.node === node.id && a.end <= frame,
+                (a: {
+                  node: string;
+                  end: number;
+                  weight?: { frame: number }[] | undefined;
+                }) => a.node === node.id && settles(a) <= frame,
               ),
             };
             const probe = document.createElement("canvas"),
@@ -294,6 +303,10 @@ try {
       result.endpointChecks.every((c) => c.same),
       `${name}: completion snap ${JSON.stringify(result.endpointChecks)}`,
     );
+    const jumps = (result.quality?.diagnostics ?? []).filter(
+      (d: { code: string }) => d.code === "text-pose-jump",
+    );
+    assert.deepEqual(jumps, [], `${name}: single-frame glyph jump`);
     if (name === "editorial")
       assert.ok(
         result.rag!.at(-1)!.trim().split(/\s+/).length > 1,

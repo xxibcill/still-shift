@@ -104,7 +104,7 @@ export function compileTextEvents<T extends TextEventScene>(source: T): T {
   if (intents.length)
     scene.textEvents = [...(scene.textEvents ?? []), ...intents];
   const events = resolveTextEvents(scene);
-  const active = new Map<string, TextAnimator["from"]>();
+  const active = new Map<string, TextAnimator>();
   for (const event of events) {
     const node = scene.nodes.find((n) => n.id === event.node);
     if (node?.type !== "text")
@@ -161,14 +161,20 @@ export function compileTextEvents<T extends TextEventScene>(source: T): T {
             throw new Error(
               "text-qualifier-hierarchy: qualification must be smaller than its claim",
             );
+          // Make room by moving the whole claim away from its qualifier. A leading
+          // change only moves later lines, so a single-line claim would not move.
+          const away = node.y >= claim.y ? -1 : 1;
           (scene.textAnimators ??= []).push({
             ...animator,
             node: claim.id,
             unit: "line",
             stagger: 0,
+            anchor: "all",
+            // Spaces travel with the claim so marks and masks keep their extent.
+            excludeSpaces: false,
             mask: "none",
-            from: { leading: 0 },
-            to: { leading: event.amount ?? 0.15 },
+            from: {},
+            to: { offset: [0, away * (event.amount ?? 0.15) * claimSize] },
           });
         }
         break;
@@ -195,20 +201,34 @@ export function compileTextEvents<T extends TextEventScene>(source: T): T {
               : {}),
           };
         }
-        active.set(key, animator.to ?? {});
+        active.set(key, animator);
         break;
       }
-      case "release":
-        animator.from = active.get(key) ?? {};
-        animator.to = {};
+      case "release": {
+        // Fade the emphasis layer out from whatever value it currently has. A
+        // signal-bound emphasis may already be near rest, so restarting from its
+        // full target would jump.
+        const emphasis = active.get(key);
         active.delete(key);
+        if (emphasis) {
+          const fade = [
+            { frame: event.start, value: emphasis.weight?.at(-1)?.value ?? 1 },
+            { frame: event.end, value: 0, easing: "in-out-cubic" as const },
+          ];
+          if (emphasis.weight?.some((k) => k.frame >= event.start))
+            throw new Error(
+              "text-release-weight: release overlaps the emphasis weight curve",
+            );
+          emphasis.weight = [...(emphasis.weight ?? []), ...fade];
+        }
         for (const decoration of node.decorations ?? [])
           if (decoration.span === event.span && decoration.reveal)
             decoration.reveal.push(
               { frame: event.start, value: 1 },
               { frame: event.end, value: 0 },
             );
-        break;
+        continue;
+      }
       case "redact":
         decorate("strike", size * 1.1);
         continue;

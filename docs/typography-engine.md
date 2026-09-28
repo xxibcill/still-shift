@@ -57,6 +57,8 @@ Text nodes reference a style with `style: "display"`. `spans` use half-open **gr
 
 Spans must not overlap and must fit every state. A span can reference another named style. Color-only spans retain the same shaped run across their boundary. New template text uses cap alignment; nodes may choose `top`, `cap`, or `baseline`. Wrapping uses locale-aware word segmentation, with `greedy`, `balance` (up to four lines), and `pretty` modes. `orphanFraction` defaults to 0.2. Explicit newlines remain paragraph boundaries. The renderer caches shaped state layouts and complete run rasters before playback, including numeric and variable-axis variants. Component fitting uses these same layouts and picks one size across states.
 
+Text `container`s (caption, speech and thought) keep their legacy geometry and are drawn around the shaped layout's content box, behind the type. The box follows the displayed state and eases between state boxes during transitions. Safe-area validation includes the container and its tail, and any offset an animator holds after completion.
+
 ## Text animation
 
 Existing animator properties remain available. The new evaluator adds `tracking`, `leading`, `skew`, `baselineShift`, variable `axes` deltas, `fill`, `stroke`, and `strokeWidth`. `from` animates toward rest; `to` can hold a destination after completion. `layer`, `blend`, and `weight` use the motion layer order and blending rules.
@@ -103,7 +105,7 @@ Kinds: `cut`, cluster-diff `crossfade`, masked `roll`, prefix-aware `retype`, an
 
 ## Semantic events and narration
 
-`textEvents` expose `reveal`, `emphasize`, `correct`, `qualify`, `retype`, `count`, `redact`, and `release`. Emphasis manners are `weight`, `color`, `underline`, `highlight`, `compress`, and `expand`. A correction strikes its source span and settles a replacement above it. A qualification requires a larger claim target and adjusts its leading. Release restores a previous held emphasis and retracts associated marks.
+`textEvents` expose `reveal`, `emphasize`, `correct`, `qualify`, `retype`, `count`, `redact`, and `release`. Emphasis manners are `weight`, `color`, `underline`, `highlight`, `compress`, and `expand`. A correction strikes its source span and settles a replacement above it. A qualification requires a larger claim target; the whole claim moves away from the qualifier by `amount` × claim size (default 0.15) and holds there. Release fades the emphasis on the same node and span to rest from its current value, so a signal-bound emphasis that has already relaxed does not jump, and it retracts associated marks. A release that overlaps an emphasis weight curve fails with `text-release-weight`.
 
 ```json
 {
@@ -122,7 +124,7 @@ Kinds: `cut`, cluster-diff `crossfade`, masked `roll`, prefix-aware `retype`, an
 
 ## Review and verification
 
-The Lab motion inspector includes a text lane with word ticks, animator/event bars, reading windows, and clickable diagnostics. With imported word alignment, “Emphasize on spoken word” adds a validated event. The specimen action downloads all text states, spans, and marks. “Check contrast and animation handoff” measures rendered pixels and pins the resulting findings to the text lanes.
+For `type-1` scenes, the Lab motion inspector includes a text lane with word ticks, animator/event bars, reading windows, and clickable diagnostics. With imported word alignment, “Emphasize on spoken word” adds a validated event. The specimen action downloads all text states, spans, and marks. “Check contrast and animation handoff” measures rendered pixels and pins the resulting findings to the text lanes.
 
 ```sh
 pnpm story:type-specimen --scene benchmarks/fixtures/typography/editorial.json --output-dir /tmp/type-review
@@ -130,7 +132,7 @@ pnpm story:type-specimen --directory benchmarks/results/story-motion-v013 --outp
 pnpm story:type-specimen --passage benchmarks/fixtures/story-authoring/linked-comparison.json --output-dir /tmp/passage-type-review
 ```
 
-The command accepts scene JSON, saved story render manifests, templates, and passage plans. Scenes with vertical overrides produce both formats. It writes specimen PNGs, `*.quality.json`, and a manifest. Lint codes are `reading-time`, `moving-while-read`, `animator-handoff-snap`, `rag`, `text-contrast`, `hierarchy-drift`, `idle-type-motion`, and `x-height-floor`. Lint remains advisory; use `--strict reading-time,text-contrast` to gate selected codes. Programmatic policies configure reading rate (default 15 graphemes/s), a reading floor, displacement budget, output review width, and x-height floor. Reports distinguish measured layout/pixel evidence from checks possible without a browser.
+The command accepts scene JSON, saved story render manifests, templates, and passage plans. Scenes with vertical overrides produce both formats. It writes specimen PNGs, `*.quality.json`, and a manifest. Lint codes are `reading-time`, `moving-while-read`, `animator-handoff-snap`, `rag`, `text-contrast`, `hierarchy-drift`, `idle-type-motion`, `x-height-floor`, and `text-pose-jump` (a single-frame glyph jump that neighbouring frames do not share). Lint remains advisory; use `--strict reading-time,text-contrast` to gate selected codes. Programmatic policies configure reading rate (default 15 graphemes/s), a reading floor, displacement budget, jump budget (default 2 px), output review width, and x-height floor. Reports distinguish measured layout/pixel evidence from checks possible without a browser.
 
 Preparation is deliberately bounded: 4,096 clusters per state, 10,000 formatted values, 2,048 axis combinations, 32 megapixels per text layer, and 128 megapixels of cached text rasters per scene. Unsupported font features and axis ranges fail during preparation. No glyph measurement or font loading occurs during frame drawing.
 

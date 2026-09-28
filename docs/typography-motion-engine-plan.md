@@ -1,7 +1,7 @@
 # Typography and text motion engine plan
 
 - **Updated:** 2026-09-28
-- **Status:** TY1–TY8 implemented on `codex/typography-motion-engine`; verification and pre-existing fixture limitations are recorded below.
+- **Status:** TY1–TY8 implemented on `codex/typography-motion-engine`. A post-implementation review found four defects (a legacy Lab regression, dropped text containers, a release pop and a no-op qualification); they are fixed and re-verified. See [review fixes](#review-fixes-2026-09-28) and the remaining [follow-ups](#follow-ups).
 - **Baseline:** `1e63aa3` on `main` (story renderer `story-canvas-0.21.0`)
 - **Scope owner decision:** engine primitives and authoring tools only; motion studies are acceptance fixtures, not deliverables (see the [engine tooling plan](story-engine-tooling-plan.md#objective-and-scope), 2026-09-26). The owner named text and typography as the next focus on 2026-09-28.
 
@@ -178,8 +178,8 @@ Recommended order: TY1 → TY2 → TY3 ship together as the first slice (they fi
   - `reveal` — line-mask or word reveal chosen by role and length.
   - `emphasize(span, manner)` — `weight`, `color`, `underline`, `highlight`, `compress` (tracking and width axis tighten) or `expand`.
   - `correct(span, replacement)` — strike draws, replacement settles in beside or above.
-  - `qualify(target)` — a qualifier arrives subordinate to its claim and nudges the claim's leading to make room.
-  - `retype`, `count`, `redact` (span replaced by a drawn bar), `release` (return an emphasized span to rest).
+  - `qualify(target)` — a qualifier arrives subordinate to its claim, and the whole claim moves away from it (a held offset of `amount` × claim size, default 0.15) to make room. Leading alone is not used because it moves only second and later lines, so a single-line claim would not move.
+  - `retype`, `count`, `redact` (span replaced by a drawn bar), `release` (fade an emphasis layer to rest from whatever value it currently has, including a signal-bound emphasis that is already partly released).
 - Timing anchors: `at: { narrationWord: { segment, index } }` or `{ narrationWord: "text", occurrence }`, resolved from the imported word-level alignment. Offsets are in frames. Resolution fails loudly if the word is missing or ambiguous.
 - Intent presets (MC8) gain text entries, so the lab can offer "emphasize on spoken word" as one control.
 
@@ -201,6 +201,7 @@ Recommended order: TY1 → TY2 → TY3 ship together as the first slice (they fi
 | `hierarchy-drift`       | A role's rendered size, weight or tracking differs across beats of one passage.                                                                                                                                |
 | `idle-type-motion`      | A text property animates with no linked story event, signal or role (decorative drift).                                                                                                                        |
 | `x-height-floor`        | Extends `small-essential-text` to x-height at each output format, including vertical.                                                                                                                          |
+| `text-pose-jump`        | A glyph moves more than a budget (default 2 px) in one frame while the frames on either side move less than a third of that. Catches pops that fall outside reading windows and animator end frames.           |
 
 **Tooling.**
 
@@ -237,7 +238,7 @@ The eight milestones are implemented. [Typography engine authoring guide](typogr
 - **TY3–TY4:** full-run raster shaping with contextual cluster placement; ink-box pivots; spaces excluded from stagger; continuous feathered line/word masks and line overlap; layer blur; held typographic properties, signal/track selectors, ordering and layer composition.
 - **TY5–TY6:** line-following marks and stroke; LCS crossfade with an eased per-frame velocity budget, staggered roll, caret retype, and tabular counters with stable layout width and persistent locale formatting.
 - **TY7:** explicit role styles; semantic reveal, emphasis, correction, qualification, retype, count, redaction and release; imported word provenance, word anchors and text intent presets. Near the start of a scene, emphasis pre-roll is shortened; an onset at frame zero peaks at frame one, within the two-frame acceptance tolerance.
-- **TY8:** all eight advisory diagnostics, explicit strict gates, measured contrast/handoff checks, passage hierarchy checks, multi-format specimens, and the Lab text timeline with seeking, word-emphasis authoring and pixel review controls.
+- **TY8:** all nine advisory diagnostics (including `text-pose-jump`, added in review), explicit strict gates, measured contrast/handoff checks, passage hierarchy checks, multi-format specimens, and the Lab text timeline with seeking, word-emphasis authoring and pixel review controls.
 
 ### Recorded checks
 
@@ -266,3 +267,38 @@ Local review output is retained at `benchmarks/results/typography-review-2026092
 Three illustrated-sequence passage plans (`access-story.json`, its `sound` variant and its `narrated` variant) cannot load because the pinned `access-open` checksum differs from the local asset. This also reproduces using `1e63aa3` and causes the five narration/audio/SFX integration failures. Their checksums and artwork were preserved; they are excluded from the 13 valid plans above.
 
 The archived v013 Access Constraint video also differs from a fresh render of the starting commit from frame 72. Direct before/after comparison of this implementation against that commit is clean across every frame. Archived goldens were not rewritten to hide that pre-existing difference.
+
+## Review fixes (2026-09-28)
+
+An independent review of the branch reproduced the recorded checks above and found four defects. Each is fixed and covered by a test that fails on the previous behaviour.
+
+| #   | Defect                                                                                                                                                                                                                                                                                    | Fix                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| --- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| R1  | **Legacy Lab regression.** The text timeline was attached to every scene containing text, including scenes without `type-1`. Its extra disclosure made `pnpm test:browser:story` (part of `pnpm test`) fail with a strict-mode locator violation on Category Swap.                        | The text timeline is part of the `type-1` opt-in ([motion-tools.ts](../apps/lab/src/motion-tools.ts)); legacy scenes keep their previous inspector.                                                                                                                                                                                                                                                                                                                                     |
+| R2  | **Text containers dropped.** The typography draw path returned before `drawTextContainer`, so speech, thought and caption bubbles silently disappeared in opted-in scenes, and the typography safe-area check ignored container bounds and tails.                                         | `drawTextContainerShape` draws the legacy container geometry around the shaped layout's content box, behind the type and outside its overflow clip. The box follows the displayed state and eases between state boxes during transitions. [`validateTypographySafeArea`](../packages/renderer-core/src/typography-safe-area.ts) includes container bounds with tails, which also covers passage preflight. Legacy container pixels are unchanged (the drawing code was only extracted). |
+| R3  | **Release pop.** `release` restarted from the emphasis's full target value. In the semantic fixture the signal-bound compression had already returned to rest at frame 140, so "Less room" tracking jumped from 0 to −45 at frame 145 (about 13 px on the last glyph) before easing back. | `release` no longer adds an animator. It fades the emphasis layer's `weight` from 1 to 0 over the release window, so it releases from the current value whether the emphasis is held or signal-bound. An existing weight curve is continued from its last value; overlapping curves fail with `text-release-weight`.                                                                                                                                                                    |
+| R4  | **Qualification did not make room.** `qualify` animated the claim's leading, which moves only later lines. For a single-line claim, including the fixture's "Less room", the claim moved 0 px at every frame.                                                                             | The claim moves away from its qualifier as a held offset (`amount` × claim size, default 0.15), with spaces travelling with it. Held animator offsets are now part of the settled safe area.                                                                                                                                                                                                                                                                                            |
+
+To catch pops like R3 in future, a ninth diagnostic, `text-pose-jump`, flags a single-frame glyph displacement above `jumpBudget` (default 2 px) that neighbouring frames do not share. The fixture suite now fails on any `text-pose-jump`, and its end-frame checks use the later of an animator's `end` and its last weight key, so release fades receive the same end/end+1 pixel comparison.
+
+### Re-verification after the fixes
+
+| Check                                                                                                | Result                                                                                                                                                                                                                                              |
+| ---------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `pnpm check:fast`                                                                                    | Pass; **509 unit tests** (four new: signal-bound release continuity, held release fade, qualification in both directions, and `text-pose-jump` flagging the previous release while passing the compiled one).                                       |
+| `pnpm test:browser:story`                                                                            | Pass again (R1): 98 parity comparisons, 14 backward seeks, timing controls, phone layout, 646-frame export and 30 fps CLI.                                                                                                                          |
+| `pnpm test:browser:typography`                                                                       | Pass, with a new container probe (R2): the speech container's fill is drawn, and a text node whose bubble tail crosses the frame edge fails the safe-area check while the same text without its container passes. Centroid drift is still 0.247 px. |
+| `pnpm test:browser:typography:fixtures`                                                              | All eight fixtures pass with no `text-pose-jump`. The semantic and vertical fixtures now also compare the release end (frame 165) with the next frame; both are identical. Glyph performance measured 1.43× on a loaded machine (limit 1.5×).       |
+| Legacy container pixels                                                                              | Speech, thought and caption containers at left, centre and right alignment hash identically before and after the extraction (nine renders).                                                                                                         |
+| Story continuous, passage authoring, Lab session, motion craft, illustrated, commerce, golden parity | Pass (run during the review, before the fixes; the fixes touch no code these suites exercise beyond the extracted container drawer).                                                                                                                |
+| `pnpm test:integration`                                                                              | 86/91, unchanged. The same five tests fail on `main` because `access-open.svg` hashes to `52ab…` while fixtures pin `f83c…`.                                                                                                                        |
+
+The 1,344-frame legacy source-parity comparison was not re-run after the fixes; the only legacy drawing code touched is the container extraction verified above.
+
+## Follow-ups
+
+These craft issues were found in the same review. They do not break a milestone contract but should be addressed before relying on the features in production studies.
+
+1. **Layer blur uses the maximum blur of any glyph.** A staggered blur-in therefore also blurs glyphs that have already settled. Blur should be grouped by value (or by unit) before compositing.
+2. **`weight` emphasis and text stroke are approximated** by eight offset copies of the text raster. When the font has a `wght` axis, weight emphasis should animate the axis; stroke should use a true outline.
+3. **Lint blind spots.** `moving-while-read` inspects only the first reading window, and `idle-type-motion` is skipped whenever an animator sets any `layer`, so decorative drift can pass by naming a layer.
