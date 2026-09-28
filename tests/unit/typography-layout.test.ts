@@ -15,11 +15,11 @@ import { readFileSync } from "node:fs";
 import type { LoadedFont } from "../../packages/renderer-core/src/prepared-fonts.ts";
 import type { TextNode } from "../../packages/renderer-core/src/typography-style.ts";
 
-const measuredContext = () =>
-  ({
+const measuredContext = () => {
+  const context = {
     font: "",
     measureText(text: string) {
-      const size = Number(this.font.match(/([\d.]+)px/u)?.[1] ?? 48);
+      const size = Number(context.font.match(/([\d.]+)px/u)?.[1] ?? 48);
       const width = text.length * size * 0.5;
       return {
         width,
@@ -29,7 +29,9 @@ const measuredContext = () =>
         actualBoundingBoxDescent: size * 0.2,
       };
     },
-  }) as unknown as CanvasRenderingContext2D;
+  };
+  return context as unknown as CanvasRenderingContext2D;
+};
 const measuredFonts = new Map<string, LoadedFont>([
   [
     "test-font",
@@ -76,6 +78,37 @@ describe("shaped typography", () => {
       layout.lines[0]!.descent + layout.lines[1]!.ascent,
     );
     expect(layout.runs[1]!.baseline).toBe(layout.lines[1]!.baseline);
+  });
+  it("measures a large final span for overflow without adding phantom space", () => {
+    const node = {
+      ...mixedSizeNode,
+      textLayout: {
+        width: 1000,
+        height: 220,
+        lineHeight: 1.5,
+        overflow: "error" as const,
+      },
+    };
+    const layout = shapeText(
+      measuredContext(),
+      node,
+      node.text,
+      measuredFonts,
+      {
+        large: { size: 160 },
+      },
+    );
+    expect(layout.top).toBeCloseTo(0);
+    expect(layout.height).toBeCloseTo(208);
+    expect(() =>
+      shapeText(
+        measuredContext(),
+        { ...node, textLayout: { ...node.textLayout, height: 200 } },
+        node.text,
+        measuredFonts,
+        { large: { size: 160 } },
+      ),
+    ).toThrow("Text exceeds its layout box");
   });
   it("prevents the recovered pantry orphan without changing text", () => {
     const text = "Not a recovered pantry";

@@ -49,31 +49,28 @@ export function prepareTextFits<
       try {
         const fittedStyles = { ...scene.textStyles };
         if (node.style && style) fittedStyles[node.style] = { ...style, size };
-        const layouts = (node.states ?? [node.text]).map((text) => {
-          if (!scene.typography)
-            return measureTextLayout(ctx, { ...node, fontSize: size, text });
-          const shaped = shapeText(
+        const heights = (node.states ?? [node.text]).map((text) => {
+          if (!scene.typography) {
+            const layout = measureTextLayout(ctx, {
+              ...node,
+              fontSize: size,
+              text,
+            });
+            return (
+              layout.baseline +
+              layout.descent +
+              Math.max(0, layout.lines.length - 1) * layout.lineHeight
+            );
+          }
+          return shapeText(
             ctx,
             { ...node, fontSize: size },
             text,
             fonts,
             fittedStyles,
-          );
-          return {
-            lines: shaped.lines,
-            baseline: shaped.ascent,
-            descent: shaped.descent,
-            lineHeight: shaped.lineHeight,
-          };
+          ).height;
         });
-        height = Math.max(
-          ...layouts.map(
-            (layout) =>
-              layout.baseline +
-              layout.descent +
-              Math.max(0, layout.lines.length - 1) * layout.lineHeight,
-          ),
-        );
+        height = Math.max(...heights);
         node.fontSize = size;
         if (scene.typography && style) {
           // A fitted node gets its own style so siblings sharing the role keep their size.

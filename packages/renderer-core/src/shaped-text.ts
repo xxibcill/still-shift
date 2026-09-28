@@ -380,7 +380,7 @@ export function shapeText(
       runs[runIndex]!.baseline += shift;
   });
   const left = Math.min(0, ...lines.map((l) => l.x)),
-    top = firstBaseline - Math.max(ascent, ...clusters.map((c) => c.ascent));
+    top = Math.min(...lines.map((l) => l.baseline - l.ascent));
   const height = Math.max(...lines.map((l) => l.baseline + l.descent)) - top;
   const width = Math.max(0, ...lines.map((l) => l.width));
   const limitHeight =
