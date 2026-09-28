@@ -240,6 +240,47 @@ try {
                 .map((r: { layout: { width: number } }) => r.layout.width)
                 .toArray()
             : [];
+        let weightAxisRendered = false;
+        if (name === "variable-thai") {
+          const { compileTextEvents } = await import(
+            `/@fs/${root}/packages/renderer-core/src/typography-events.ts`
+          );
+          const { loadTextAnimationFonts } = await import(
+            `/@fs/${root}/packages/renderer-core/src/typography-axes.ts`
+          );
+          const base = {
+            ...scene,
+            textAnimators: [],
+            textEvents: [],
+          };
+          const weighted = compileTextEvents({
+            ...base,
+            textEvents: [
+              {
+                node: "thai",
+                verb: "emphasize",
+                manner: "weight",
+                at: 0,
+                duration: 20,
+              },
+            ],
+          });
+          await loadTextAnimationFonts(weighted, images.fonts);
+          const plainCanvas = document.createElement("canvas"),
+            weightedCanvas = document.createElement("canvas"),
+            plain = createIllustratedPreview(plainCanvas, base, images),
+            emphasized = createIllustratedPreview(
+              weightedCanvas,
+              weighted,
+              images,
+            );
+          plain.renderFrame(30);
+          emphasized.renderFrame(30);
+          weightAxisRendered =
+            plainCanvas.toDataURL() !== weightedCanvas.toDataURL();
+          plain.dispose();
+          emphasized.dispose();
+        }
         let thaiBreaks: { before: string[]; after: string[] }[] = [];
         if (name === "commerce") {
           const { measureTextLayout } = await import(
@@ -279,6 +320,7 @@ try {
           performanceRatio,
           rag,
           variableWidths,
+          weightAxisRendered,
         };
       },
       { root, scene: loaded.scene, source, paths: loaded.assetPaths, name },
@@ -318,6 +360,11 @@ try {
           2,
         "Variable axes did not change measured widths",
       );
+    if (name === "variable-thai")
+      assert.ok(
+        result.weightAxisRendered,
+        "Weight emphasis did not render the wght axis",
+      );
     if (result.performanceRatio !== undefined)
       assert.ok(
         result.performanceRatio <= 1.5,
@@ -346,6 +393,7 @@ try {
       thaiBreaks: result.thaiBreaks,
       labActions: result.labActions,
       rag: result.rag,
+      weightAxisRendered: result.weightAxisRendered,
     };
     reports.push(report);
     console.log(JSON.stringify(report));

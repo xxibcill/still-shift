@@ -107,6 +107,8 @@ Kinds: `cut`, cluster-diff `crossfade`, masked `roll`, prefix-aware `retype`, an
 
 `textEvents` expose `reveal`, `emphasize`, `correct`, `qualify`, `retype`, `count`, `redact`, and `release`. Emphasis manners are `weight`, `color`, `underline`, `highlight`, `compress`, and `expand`. A correction strikes its source span and settles a replacement above it. A qualification requires a larger claim target; the whole claim moves away from the qualifier by `amount` × claim size (default 0.15) and holds there. Release fades the emphasis on the same node and span to rest from its current value, so a signal-bound emphasis that has already relaxed does not jump, and it retracts associated marks. A release that overlaps an emphasis weight curve fails with `text-release-weight`.
 
+`weight` uses the pinned font's `wght` axis when every targeted run supports it. Its default increase is 150 axis units, clamped to the font's maximum; a positive `amount` specifies an axis-unit increase. For a font without `wght`, weight emphasis uses a Canvas glyph outline, and `amount` is a positive outline width in pixels (at most 40). Animated `strokeWidth` also uses the glyph outline. Blur is composited per consecutive group of glyphs with the same blur, leaving settled glyphs sharp.
+
 ```json
 {
   "id": "spoken-emphasis",

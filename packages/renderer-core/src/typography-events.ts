@@ -8,7 +8,10 @@ import type {
   IntentPresets,
   TextAnimator,
 } from "../../scene-contract/src/motion-craft.ts";
-import type { PreparedNode } from "../../scene-contract/src/prepared.ts";
+import type {
+  PreparedNode,
+  PreparedScene,
+} from "../../scene-contract/src/prepared.ts";
 import { tabularFigures } from "../../scene-contract/src/typography.ts";
 import { resolvedTextStyle } from "./typography-style.ts";
 
@@ -47,6 +50,7 @@ export function resolveNarrationWord(
 export type TextEventScene = {
   intentPresets?: IntentPresets | undefined;
   nodes: PreparedNode[];
+  fonts?: PreparedScene["fonts"] | undefined;
   fps: number;
   frameCount: number;
   typography?: "type-1" | undefined;
@@ -187,11 +191,41 @@ export function compileTextEvents<T extends TextEventScene>(source: T): T {
         }
         if (manner === "color")
           animator.to = { fill: event.color ?? "#b64032" };
-        if (manner === "weight")
-          animator.to = {
-            stroke: event.color ?? node.color,
-            strokeWidth: event.amount ?? size * 0.014,
-          };
+        if (manner === "weight") {
+          if (event.amount !== undefined && event.amount <= 0)
+            throw new Error(
+              "text-weight-amount: weight emphasis must be positive",
+            );
+          const spanStyle = event.span
+            ? node.spans?.find((span) => span.id === event.span)?.style
+            : undefined;
+          const targetStyles = event.span
+            ? [resolvedTextStyle(node, scene.textStyles ?? {}, spanStyle)]
+            : [
+                style,
+                ...(node.spans ?? []).map((span) =>
+                  resolvedTextStyle(node, scene.textStyles ?? {}, span.style),
+                ),
+              ];
+          const ranges = targetStyles.map((targetStyle) => {
+            const range = scene.fonts?.find(
+              (font) => font.id === targetStyle.fontAsset,
+            )?.variable?.wght;
+            return range
+              ? range.max - (targetStyle.axes?.wght ?? range.default)
+              : 0;
+          });
+          const available = Math.min(...ranges);
+          if (available <= 0 && event.amount !== undefined && event.amount > 40)
+            throw new Error("text-weight-amount: outline width exceeds 40 px");
+          animator.to =
+            available > 0
+              ? { axes: { wght: Math.min(event.amount ?? 150, available) } }
+              : {
+                  stroke: event.color ?? node.color,
+                  strokeWidth: event.amount ?? size * 0.014,
+                };
+        }
         if (manner === "compress" || manner === "expand") {
           const amount = event.amount ?? (manner === "compress" ? -45 : 45);
           animator.to = {

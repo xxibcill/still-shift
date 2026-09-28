@@ -7,6 +7,7 @@ import {
   type Images,
 } from "./illustrated-renderer.ts";
 import { contrastRatio, type TypePixelEvidence } from "./typography-quality.ts";
+import { textAnimatorSettleFrame } from "./typography-animation.ts";
 
 const pixelHex = (data: Uint8ClampedArray, at: number) =>
   "#" +
@@ -157,7 +158,8 @@ export function measureTypographyPixels(
       for (const animator of scene.textAnimators?.filter(
         (a) => a.node === node.id,
       ) ?? []) {
-        if (animator.end + 1 >= scene.frameCount) continue;
+        const settleFrame = textAnimatorSettleFrame(animator);
+        if (settleFrame + 1 >= scene.frameCount) continue;
         const isolated = {
           ...scene,
           nodes: [
@@ -185,9 +187,9 @@ export function measureTypographyPixels(
         };
         const probe = document.createElement("canvas"),
           renderer = createIllustratedPreview(probe, isolated, images);
-        renderer.renderFrame(animator.end);
+        renderer.renderFrame(settleFrame);
         const end = read(probe);
-        renderer.renderFrame(animator.end + 1);
+        renderer.renderFrame(settleFrame + 1);
         let handoffPixels = changedPixels(end, read(probe));
         renderer.dispose();
         if (!scene.typography) {
@@ -237,7 +239,7 @@ export function measureTypographyPixels(
             changedPixels(draw(true), draw(false)),
           );
         }
-        evidence.push({ node: node.id, frame: animator.end, handoffPixels });
+        evidence.push({ node: node.id, frame: settleFrame, handoffPixels });
       }
     }
   } finally {

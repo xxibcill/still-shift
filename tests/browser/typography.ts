@@ -208,8 +208,10 @@ try {
       const { prepareTypography, drawTypography } = await import(
         `/@fs/${root}/packages/renderer-core/src/typography-renderer.ts`
       );
+      const headline = scene.nodes.find((node) => node.id === "headline");
+      if (headline?.type !== "text") throw new Error("Missing headline");
       const glyph = {
-        ...scene.nodes[0],
+        ...headline,
         id: "pivot",
         text: "O",
         style: "display",
@@ -260,6 +262,131 @@ try {
           Math.hypot(c.x - centroids.at(-1)!.x, c.y - centroids.at(-1)!.y),
         ),
       );
+      const renderProbe = (
+        node: typeof headline,
+        animators: typeof scene.textAnimators,
+        frame: number,
+      ) => {
+        const probeScene = {
+          ...scene,
+          nodes: [node],
+          textEvents: [],
+          textAnimators: animators,
+        };
+        const typography = prepareTypography(probeScene, fonts);
+        const surface = document.createElement("canvas");
+        surface.width = 650;
+        surface.height = 400;
+        const context = surface.getContext("2d")!;
+        context.translate(200, 160);
+        drawTypography(
+          context,
+          node,
+          { state: 0, reveal: 1 },
+          typography,
+          frame,
+        );
+        return {
+          surface,
+          layout: typography.nodes.get(node.id)!.get(node.text)!.layout,
+        };
+      };
+      const pixelDifference = (
+        a: HTMLCanvasElement,
+        b: HTMLCanvasElement,
+        left: number,
+        top: number,
+        width: number,
+        height: number,
+      ) => {
+        const first = a
+          .getContext("2d")!
+          .getImageData(left, top, width, height).data;
+        const second = b
+          .getContext("2d")!
+          .getImageData(left, top, width, height).data;
+        let changed = 0;
+        for (let i = 0; i < first.length; i++)
+          if (first[i] !== second[i]) changed++;
+        return changed;
+      };
+      const blurNode = {
+        ...glyph,
+        id: "blur-probe",
+        text: "O     O",
+        spans: [{ id: "second", start: 6, end: 7 }],
+      };
+      const blurControl = renderProbe(blurNode, [], 0);
+      const blurred = renderProbe(
+        blurNode,
+        [
+          {
+            node: blurNode.id,
+            unit: "glyph",
+            start: 0,
+            end: 40,
+            stagger: 0,
+            span: "second",
+            selector: { start: 0, end: 1 },
+            from: { blur: 12 },
+          },
+        ],
+        0,
+      );
+      const glyphDifference = (index: number) => {
+        const ink = blurred.layout.clusters[index]!.ink!;
+        return pixelDifference(
+          blurControl.surface,
+          blurred.surface,
+          Math.floor(200 + ink.x - 8),
+          Math.floor(160 + ink.y - 8),
+          Math.ceil(ink.width + 16),
+          Math.ceil(ink.height + 16),
+        );
+      };
+      const settledBlurPixels = glyphDifference(0);
+      const activeBlurPixels = glyphDifference(6);
+      const outlineNode = { ...glyph, id: "outline-probe", text: "O" };
+      const outlined = renderProbe(
+        outlineNode,
+        [
+          {
+            node: outlineNode.id,
+            unit: "glyph",
+            start: 0,
+            end: 1,
+            stagger: 0,
+            selector: { start: 0, end: 1 },
+            from: {},
+            to: { strokeWidth: 10, stroke: "#b64032" },
+          },
+        ],
+        1,
+      );
+      const reference = document.createElement("canvas");
+      reference.width = 650;
+      reference.height = 400;
+      const referenceCtx = reference.getContext("2d")!;
+      const { applyTextStyle } = await import(
+        `/@fs/${root}/packages/renderer-core/src/typography-style.ts`
+      );
+      const run = outlined.layout.runs[0]!;
+      referenceCtx.translate(200, 160);
+      applyTextStyle(referenceCtx, run.style, fonts);
+      referenceCtx.strokeStyle = "#b64032";
+      referenceCtx.lineWidth = 10;
+      referenceCtx.lineJoin = "round";
+      referenceCtx.strokeText(run.text, run.x, run.baseline);
+      referenceCtx.fillStyle = outlineNode.color;
+      referenceCtx.fillText(run.text, run.x, run.baseline);
+      const outlinePixels = pixelDifference(
+        outlined.surface,
+        reference,
+        0,
+        0,
+        reference.width,
+        reference.height,
+      );
       const { measureTypographyPixels } = await import(
         `/@fs/${root}/packages/renderer-core/src/typography-pixels.ts`
       );
@@ -277,6 +404,34 @@ try {
           )
           .map((sample: { contrast: number }) => sample.contrast),
       );
+      const releaseNode = { ...glyph, id: "release-handoff" };
+      const releaseHandoff = measureTypographyPixels(
+        {
+          ...scene,
+          nodes: [releaseNode],
+          textEvents: [],
+          textAnimators: [
+            {
+              node: releaseNode.id,
+              unit: "glyph",
+              start: 0,
+              end: 10,
+              stagger: 0,
+              selector: { start: 0, end: 1 },
+              from: {},
+              to: { offset: [20, 0] },
+              weight: [
+                { frame: 20, value: 1 },
+                { frame: 40, value: 0 },
+              ],
+            },
+          ],
+        },
+        images,
+      ).find(
+        (sample: { handoffPixels?: number }) =>
+          sample.handoffPixels !== undefined,
+      )?.frame;
       // Text containers must render and be validated on the typography path too.
       const { validateTypographySafeArea } = await import(
         `/@fs/${root}/packages/renderer-core/src/typography-safe-area.ts`
@@ -352,7 +507,11 @@ try {
         containerFill,
         containerSafeArea,
         invisibleContrast,
+        releaseHandoff,
         centroidDrift,
+        settledBlurPixels,
+        activeBlurPixels,
+        outlinePixels,
         captures,
         backward,
         handoff,
@@ -367,6 +526,15 @@ try {
     result.centroidDrift <= 0.5,
     `Glyph pivot drifts ${result.centroidDrift} px`,
   );
+  assert.equal(result.settledBlurPixels, 0, "Blur altered a settled glyph");
+  assert.ok(
+    result.activeBlurPixels > 0,
+    "Blur did not affect its selected glyph",
+  );
+  assert.ok(
+    result.outlinePixels < 500,
+    `Stroke differs from a true glyph outline by ${result.outlinePixels} channels`,
+  );
   assert.deepEqual(
     result.containerFill,
     [255, 0, 255],
@@ -379,6 +547,11 @@ try {
   );
   assert.ok(result.backward, "Backward seek changes pixels");
   assert.ok(result.handoff, "Animator handoff changes pixels");
+  assert.equal(
+    result.releaseHandoff,
+    40,
+    "Release handoff checked before settling",
+  );
   const count = result.layouts.find((l) => l.id === "number")!;
   assert.equal(
     new Set(count.states.map((s) => s.width)).size,

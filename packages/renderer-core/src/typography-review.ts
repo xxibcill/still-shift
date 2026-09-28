@@ -86,6 +86,8 @@ export function prepareTypeReview(
         left: layout.left,
         top: layout.top,
         colors: new Map(),
+        strokes: new Map(),
+        fonts: reviewFonts,
         variants: new Map(),
       });
     }

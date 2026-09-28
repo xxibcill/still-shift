@@ -9,6 +9,7 @@ import { resolvedTextStyle } from "./typography-style.ts";
 import { findNarrationPhrase } from "./narration-timing.ts";
 import { storyCameraTransform } from "./story-camera.ts";
 import { evaluatePreparedNode } from "./prepared-scene.ts";
+import { resolveTextEvents } from "./typography-events.ts";
 
 export type TypographyReviewScene = StoryRenderScene | CommerceRenderScene;
 export type TypeQualityCode =
@@ -213,6 +214,7 @@ export function analyzeTypography(
 ) {
   const diagnostics: StoryQualityDiagnostic[] = [],
     windows = textReadingWindows(scene, policy);
+  const events = scene.typography ? resolveTextEvents(scene) : [];
   const add = (
     code: TypeQualityCode,
     node: string,
@@ -334,8 +336,7 @@ export function analyzeTypography(
           displayed,
           `${node.id} x-height is ${displayed.toFixed(1)} px at the review width.`,
         );
-      const window = windows.find((w) => w.node === node.id);
-      if (window) {
+      for (const window of windows.filter((w) => w.node === node.id)) {
         const base = evaluateTextPoses(
           node,
           layout,
@@ -412,12 +413,14 @@ export function analyzeTypography(
     for (const animator of scene.textAnimators?.filter(
       (a) => a.node === node.id,
     ) ?? []) {
-      if (
-        !animator.cue &&
-        !animator.signal &&
-        !animator.layer &&
-        !scene.textEvents?.some((e) => e.node === node.id)
-      )
+      const linkedEvent = events.some(
+        (event) =>
+          (event.node === node.id || event.target === node.id) &&
+          (!animator.span || !event.span || animator.span === event.span) &&
+          animator.start < event.end &&
+          event.start < animator.end,
+      );
+      if (!animator.cue && !animator.signal && !linkedEvent)
         add(
           "idle-type-motion",
           node.id,

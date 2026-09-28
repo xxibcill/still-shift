@@ -39,6 +39,12 @@ export type TextAnimationContext = {
   fps: number;
   signals?: Signal[] | undefined;
 };
+export function textAnimatorSettleFrame(animator: TextAnimator) {
+  return Math.max(
+    animator.end,
+    ...(animator.weight ?? []).map((key) => key.frame),
+  );
+}
 export function selectorValue(
   value: Selector["start"] | undefined,
   frame: number,

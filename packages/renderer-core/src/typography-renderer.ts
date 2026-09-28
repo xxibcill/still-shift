@@ -41,6 +41,8 @@ export type TextRaster = {
   left: number;
   top: number;
   colors: Map<string, HTMLCanvasElement>;
+  strokes: Map<string, HTMLCanvasElement>;
+  fonts: Map<string, LoadedFont>;
   variants: Map<string, TextRaster>;
 };
 export type PreparedTypography = {
@@ -77,8 +79,11 @@ export function rasterizeText(
   fonts: Map<string, LoadedFont>,
 ): TextRaster {
   const pad = Math.ceil(
-    Math.max(...layout.runs.map((r) => r.style.size ?? node.fontSize)) * 0.5 +
-      2,
+    Math.max(
+      22,
+      Math.max(...layout.runs.map((r) => r.style.size ?? node.fontSize)) * 0.5 +
+        2,
+    ),
   );
   const left = Math.floor(Math.min(0, ...layout.lines.map((l) => l.x)) - pad),
     top = Math.floor(layout.top - pad);
@@ -121,7 +126,16 @@ export function rasterizeText(
       ctx.restore();
     }
   }
-  return { layout, canvas, left, top, colors: new Map(), variants: new Map() };
+  return {
+    layout,
+    canvas,
+    left,
+    top,
+    colors: new Map(),
+    strokes: new Map(),
+    fonts,
+    variants: new Map(),
+  };
 }
 export function prepareTypography(
   scene: TextEventScene &
@@ -351,6 +365,25 @@ function coloredRaster(raster: TextRaster, color: string) {
   }
   return canvas;
 }
+function strokedRaster(raster: TextRaster, width: number, color: string) {
+  const key = `${width}:${color}`;
+  let canvas = raster.strokes.get(key);
+  if (canvas) return canvas;
+  canvas = surface(raster.canvas.width, raster.canvas.height);
+  const ctx = canvas.getContext("2d")!;
+  ctx.translate(-raster.left, -raster.top);
+  ctx.strokeStyle = color;
+  ctx.lineWidth = width;
+  ctx.lineJoin = "round";
+  for (const run of raster.layout.runs) {
+    applyTextStyle(ctx, run.style, raster.fonts);
+    ctx.strokeText(run.text, run.x, run.baseline);
+  }
+  if (raster.strokes.size >= 8)
+    raster.strokes.delete(raster.strokes.keys().next().value!);
+  raster.strokes.set(key, canvas);
+  return canvas;
+}
 function drawCluster(
   ctx: CanvasRenderingContext2D,
   node: TextNode,
@@ -417,13 +450,7 @@ function drawCluster(
       bottom - y,
     );
   if (pose.strokeWidth > 0) {
-    const stroke = coloredRaster(raster, pose.stroke);
-    for (let i = 0; i < 8; i++)
-      paint(
-        stroke,
-        (Math.cos((i * Math.PI) / 4) * pose.strokeWidth) / 2,
-        (Math.sin((i * Math.PI) / 4) * pose.strokeWidth) / 2,
-      );
+    paint(strokedRaster(raster, pose.strokeWidth, pose.stroke));
   }
   paint(
     pose.fill === (node.spans?.[cluster.spanIndex]?.color ?? node.color)
@@ -441,6 +468,17 @@ function resetLayer(canvas: HTMLCanvasElement, width: number, height: number) {
   ctx.resetTransform();
   ctx.clearRect(0, 0, width, height);
   return ctx;
+}
+function textBlurRuns(poses: TextPose[]) {
+  const runs: { blur: number; indices: number[] }[] = [];
+  poses.forEach((pose, index) => {
+    if (pose.opacity <= 0) return;
+    const blur = Math.max(0, pose.blur);
+    const previous = runs.at(-1);
+    if (previous?.blur === blur) previous.indices.push(index);
+    else runs.push({ blur, indices: [index] });
+  });
+  return runs;
 }
 function drawRaster(
   ctx: CanvasRenderingContext2D,
@@ -464,10 +502,8 @@ function drawRaster(
     height = raster.canvas.height + pad * 2;
   if (width * height > 32_000_000)
     throw new Error("text-raster-budget: animated text extent");
-  const layer = resetLayer(prepared.layer, width, height);
-  layer.translate(-left, -top);
   drawTextDecorations(
-    layer,
+    ctx,
     node,
     raster.layout,
     frame,
@@ -497,70 +533,78 @@ function drawRaster(
     });
     reveal = 1;
   }
-  const masked = new Map<string, number[]>();
-  poses.forEach((pose, i) => {
-    const c = raster.layout.clusters[i]!;
-    const key =
-      pose.mask === "none" && reveal >= 1
-        ? "plain"
-        : pose.mask === "word"
-          ? `word:${c.wordIndex}`
-          : `line:${c.lineIndex}`;
-    const list = masked.get(key) ?? [];
-    list.push(i);
-    masked.set(key, list);
-  });
-  for (const [key, indices] of masked) {
-    if (key === "plain") {
-      indices.forEach((i) => drawCluster(layer, node, raster, i, poses[i]!));
-      continue;
+  for (const group of textBlurRuns(poses)) {
+    const layer = resetLayer(prepared.layer, width, height);
+    layer.translate(-left, -top);
+    const masked = new Map<string, number[]>();
+    for (const index of group.indices) {
+      const pose = poses[index]!,
+        cluster = raster.layout.clusters[index]!;
+      const key =
+        pose.mask === "none" && reveal >= 1
+          ? "plain"
+          : pose.mask === "word"
+            ? `word:${cluster.wordIndex}`
+            : `line:${cluster.lineIndex}`;
+      const list = masked.get(key) ?? [];
+      list.push(index);
+      masked.set(key, list);
     }
-    const mask = resetLayer(prepared.maskLayer, width, height);
-    mask.translate(-left, -top);
-    indices.forEach((i) => drawCluster(mask, node, raster, i, poses[i]!));
-    const clusters = indices.map((i) => raster.layout.clusters[i]!),
-      box = clusterBox(clusters),
-      pose = poses[indices[0]!]!;
-    const line = raster.layout.lines[clusters[0]!.lineIndex]!;
-    const feather = pose.feather * node.fontSize;
-    mask.globalCompositeOperation = "destination-in";
-    const vertical = pose.mask !== "none";
-    const overlap = node.lineOverlap ?? 0;
-    const progress = Math.max(
-      0,
-      Math.min(
-        1,
-        reveal * (1 + (raster.layout.lines.length - 1) * (1 - overlap)) -
-          clusters[0]!.lineIndex * (1 - overlap),
-      ),
-    );
-    const x = box.x - node.fontSize,
-      y = vertical ? line.baseline - raster.layout.ascent : raster.top;
-    const right =
-      progress >= 1
-        ? box.x + box.width + node.fontSize
-        : box.x + box.width * progress;
-    const bottom = vertical
-      ? line.baseline + raster.layout.descent
-      : raster.top + raster.canvas.height;
-    if (progress <= 0) mask.clearRect(left, top, width, height);
-    else {
-      if (feather > 0 && (vertical || progress < 1)) {
-        const gradient = vertical
-          ? mask.createLinearGradient(0, bottom - feather, 0, bottom)
-          : mask.createLinearGradient(right - feather, 0, right, 0);
-        gradient.addColorStop(0, "#000000");
-        gradient.addColorStop(1, "#00000000");
-        mask.fillStyle = gradient;
-      } else mask.fillStyle = "#000000";
-      // destination-in clears the layer outside the source rectangle.
-      mask.fillRect(x, y, right - x, bottom - y);
+    for (const [key, indices] of masked) {
+      if (key === "plain") {
+        indices.forEach((i) => drawCluster(layer, node, raster, i, poses[i]!));
+        continue;
+      }
+      const mask = resetLayer(prepared.maskLayer, width, height);
+      mask.translate(-left, -top);
+      indices.forEach((i) => drawCluster(mask, node, raster, i, poses[i]!));
+      const clusters = indices.map((i) => raster.layout.clusters[i]!),
+        box = clusterBox(clusters),
+        pose = poses[indices[0]!]!;
+      const line = raster.layout.lines[clusters[0]!.lineIndex]!;
+      const feather = pose.feather * node.fontSize;
+      mask.globalCompositeOperation = "destination-in";
+      const vertical = pose.mask !== "none";
+      const overlap = node.lineOverlap ?? 0;
+      const progress = Math.max(
+        0,
+        Math.min(
+          1,
+          reveal * (1 + (raster.layout.lines.length - 1) * (1 - overlap)) -
+            clusters[0]!.lineIndex * (1 - overlap),
+        ),
+      );
+      const x = box.x - node.fontSize,
+        y = vertical ? line.baseline - raster.layout.ascent : raster.top;
+      const right =
+        progress >= 1
+          ? box.x + box.width + node.fontSize
+          : box.x + box.width * progress;
+      const bottom = vertical
+        ? line.baseline + raster.layout.descent
+        : raster.top + raster.canvas.height;
+      if (progress <= 0) mask.clearRect(left, top, width, height);
+      else {
+        if (feather > 0 && (vertical || progress < 1)) {
+          const gradient = vertical
+            ? mask.createLinearGradient(0, bottom - feather, 0, bottom)
+            : mask.createLinearGradient(right - feather, 0, right, 0);
+          gradient.addColorStop(0, "#000000");
+          gradient.addColorStop(1, "#00000000");
+          mask.fillStyle = gradient;
+        } else mask.fillStyle = "#000000";
+        mask.fillRect(x, y, right - x, bottom - y);
+      }
+      mask.globalCompositeOperation = "source-over";
+      layer.drawImage(prepared.maskLayer, left, top);
     }
-    mask.globalCompositeOperation = "source-over";
-    layer.drawImage(prepared.maskLayer, left, top);
+    ctx.save();
+    if (group.blur) ctx.filter = `blur(${group.blur}px)`;
+    ctx.drawImage(prepared.layer, left, top);
+    ctx.restore();
   }
   drawTextDecorations(
-    layer,
+    ctx,
     node,
     raster.layout,
     frame,
@@ -568,11 +612,6 @@ function drawRaster(
     false,
     poses,
   );
-  const blur = Math.max(0, ...poses.map((p) => p.blur));
-  ctx.save();
-  if (blur) ctx.filter = `blur(${blur}px)`;
-  ctx.drawImage(prepared.layer, left, top);
-  ctx.restore();
 }
 function drawTypographyContent(
   ctx: CanvasRenderingContext2D,

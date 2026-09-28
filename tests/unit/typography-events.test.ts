@@ -10,7 +10,10 @@ import {
   indexStoryEvents,
   retimeStoryEvents,
 } from "../../packages/renderer-core/src/story-event-index.ts";
-import { evaluateTextPoses } from "../../packages/renderer-core/src/typography-animation.ts";
+import {
+  evaluateTextPoses,
+  textAnimatorSettleFrame,
+} from "../../packages/renderer-core/src/typography-animation.ts";
 import type { ShapedLayout } from "../../packages/renderer-core/src/shaped-text.ts";
 import type { PreparedTypography } from "../../packages/renderer-core/src/typography-renderer.ts";
 
@@ -281,6 +284,105 @@ describe("semantic typography and lint", () => {
     expect(tracking(90)).toBeGreaterThan(-45);
     expect(tracking(90)).toBeLessThan(0);
     expect(tracking(100)).toBe(0);
+    expect(textAnimatorSettleFrame(scene.textAnimators![0]!)).toBe(100);
+  });
+  it("uses a pinned weight axis for weight emphasis", () => {
+    const scene = compileStoryScene(
+      StorySceneSchema.parse({
+        ...input(),
+        fonts: [
+          {
+            ...input().fonts[0],
+            variable: { wght: { min: 100, default: 400, max: 900 } },
+          },
+        ],
+        textEvents: [
+          {
+            node: "claim",
+            span: "room",
+            verb: "emphasize",
+            manner: "weight",
+            at: 10,
+            duration: 20,
+          },
+        ],
+      }),
+    );
+    expect(scene.textAnimators?.[0]?.to).toEqual({ axes: { wght: 150 } });
+    const outlined = compileStoryScene(
+      StorySceneSchema.parse({
+        ...input(),
+        textEvents: [
+          {
+            node: "claim",
+            span: "room",
+            verb: "emphasize",
+            manner: "weight",
+            at: 10,
+            duration: 20,
+          },
+        ],
+      }),
+    );
+    expect(outlined.textAnimators?.[0]?.to).toEqual({
+      stroke: "#222222",
+      strokeWidth: 1.12,
+    });
+    expect(() =>
+      compileStoryScene(
+        StorySceneSchema.parse({
+          ...input(),
+          textEvents: [
+            {
+              node: "claim",
+              verb: "emphasize",
+              manner: "weight",
+              amount: -1,
+              at: 10,
+              duration: 20,
+            },
+          ],
+        }),
+      ),
+    ).toThrow("text-weight-amount");
+  });
+  it("checks motion in every reading window and flags a named drift layer", () => {
+    const scene = compileStoryScene(StorySceneSchema.parse(input()));
+    scene.tracks.claim = {
+      opacity: [
+        { time: 0, value: 1 },
+        { time: 20, value: 0, step: true },
+        { time: 40, value: 1, step: true },
+      ],
+    };
+    scene.textAnimators = [
+      {
+        node: "claim",
+        unit: "word",
+        start: 50,
+        end: 70,
+        stagger: 0,
+        selector: { start: 0, end: 1 },
+        from: {},
+        to: { offset: [20, 0] },
+        layer: "current",
+      },
+    ];
+    const diagnostics = analyzeTypography(scene, {
+      prepared: preparedFor(textNode(scene, "claim")),
+    }).diagnostics;
+    expect(diagnostics).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          code: "moving-while-read",
+          nodes: ["claim"],
+        }),
+        expect.objectContaining({ code: "idle-type-motion", nodes: ["claim"] }),
+      ]),
+    );
+    expect(
+      diagnostics.find((d) => d.code === "moving-while-read")?.frames[0],
+    ).toBeGreaterThanOrEqual(40);
   });
   it("moves a single-line claim away from its qualifier", () => {
     for (const [qualifierY, direction] of [

@@ -1,7 +1,7 @@
 # Typography and text motion engine plan
 
 - **Updated:** 2026-09-28
-- **Status:** TY1–TY8 implemented on `codex/typography-motion-engine`. A post-implementation review found four defects (a legacy Lab regression, dropped text containers, a release pop and a no-op qualification); they are fixed and re-verified. See [review fixes](#review-fixes-2026-09-28) and the remaining [follow-ups](#follow-ups).
+- **Status:** TY1–TY8 implemented on `codex/typography-motion-engine`. The post-implementation review defects and its three production follow-ups are fixed and re-verified. See [review fixes](#review-fixes-2026-09-28) and [follow-up fixes](#follow-up-fixes-2026-09-28).
 - **Baseline:** `1e63aa3` on `main` (story renderer `story-canvas-0.21.0`)
 - **Scope owner decision:** engine primitives and authoring tools only; motion studies are acceptance fixtures, not deliverables (see the [engine tooling plan](story-engine-tooling-plan.md#objective-and-scope), 2026-09-26). The owner named text and typography as the next focus on 2026-09-28.
 
@@ -295,10 +295,12 @@ To catch pops like R3 in future, a ninth diagnostic, `text-pose-jump`, flags a s
 
 The 1,344-frame legacy source-parity comparison was not re-run after the fixes; the only legacy drawing code touched is the container extraction verified above.
 
-## Follow-ups
+## Follow-up fixes (2026-09-28)
 
-These craft issues were found in the same review. They do not break a milestone contract but should be addressed before relying on the features in production studies.
+The three craft follow-ups from the review are resolved:
 
-1. **Layer blur uses the maximum blur of any glyph.** A staggered blur-in therefore also blurs glyphs that have already settled. Blur should be grouped by value (or by unit) before compositing.
-2. **`weight` emphasis and text stroke are approximated** by eight offset copies of the text raster. When the font has a `wght` axis, weight emphasis should animate the axis; stroke should use a true outline.
-3. **Lint blind spots.** `moving-while-read` inspects only the first reading window, and `idle-type-motion` is skipped whenever an animator sets any `layer`, so decorative drift can pass by naming a layer.
+1. **Blur isolation.** Text is composited in consecutive glyph groups with the same blur value. A settled glyph is drawn without a filter even while another glyph is blurred. The focused browser test compares its pixels with an unanimated control.
+2. **Weight and stroke.** `weight` emphasis uses the pinned font's `wght` axis when all targeted runs support it, with a bounded default increase of 150 axis units. Fonts without that axis use a true Canvas glyph outline for emphasis and `strokeWidth`; the eight-copy approximation is removed. The browser test compares the result with a direct `strokeText` reference.
+3. **Lint coverage.** `moving-while-read` checks every reading window. `idle-type-motion` requires a cue, signal, or time-overlapping semantic text event, so naming a layer alone cannot suppress it. Unit tests cover later-window motion and a named drift layer.
+
+The measured `animator-handoff-snap` check also now samples the later of the animator end and its final weight key, matching the fixture checks for releases. The focused browser test verifies a release ending after its animator window. The eight typography fixtures, seven preview/export samples and the focused browser test pass after these changes.
