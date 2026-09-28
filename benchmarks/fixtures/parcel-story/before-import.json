@@ -1,0 +1,319 @@
+{
+  "schemaVersion": "story-passage-2",
+  "id": "parcel-story",
+  "title": "The parcel at the wrong door",
+  "styleProfile": {
+    "schemaVersion": "story-style-1",
+    "id": "parcel-illustration",
+    "colors": {},
+    "safeInset": 80
+  },
+  "fps": 24,
+  "sourceStartFrame": 0,
+  "contentPolicy": "general",
+  "beats": [
+    {
+      "id": "wrong-door",
+      "template": "wrong-door.json",
+      "purpose": "explain-relationships",
+      "takeaway": "A parcel outside door 12 belongs at door 21.",
+      "focus": ["nora", "parcel", "right-door"],
+      "intensity": "develop",
+      "frameCount": 204,
+      "copy": {},
+      "timing": {},
+      "cues": [
+        {
+          "id": "inspect",
+          "phrase": "checked the label",
+          "frame": 60,
+          "events": ["label-lifts"]
+        },
+        {
+          "id": "opposite",
+          "phrase": "number matched",
+          "frame": 145,
+          "events": ["label-reveals"]
+        }
+      ],
+      "parameters": {},
+      "bindings": {
+        "label-lifts": {
+          "anchor": {
+            "type": "cue",
+            "id": "inspect"
+          },
+          "duration": 16,
+          "offset": 0
+        },
+        "label-reveals": {
+          "anchor": {
+            "type": "cue",
+            "id": "opposite"
+          },
+          "duration": 4,
+          "offset": 0
+        }
+      },
+      "handoff": {
+        "mode": "cut",
+        "camera": "reset",
+        "subjects": []
+      }
+    },
+    {
+      "id": "knock",
+      "template": "knock.json",
+      "purpose": "show-change",
+      "takeaway": "Nora carries the parcel over and the neighbor answers.",
+      "focus": ["nora", "parcel", "right-door"],
+      "intensity": "develop",
+      "frameCount": 276,
+      "copy": {},
+      "timing": {},
+      "cues": [
+        {
+          "id": "carry",
+          "phrase": "carried the parcel",
+          "frame": 8,
+          "events": ["carry-person", "carry-parcel"]
+        },
+        {
+          "id": "knock",
+          "phrase": "knocked",
+          "frame": 40,
+          "events": ["knock-reveals"]
+        },
+        {
+          "id": "open",
+          "phrase": "opened",
+          "frame": 136,
+          "events": ["door-opens"]
+        },
+        {
+          "id": "neighbor",
+          "phrase": "an anxious",
+          "frame": 160,
+          "events": ["neighbor-reveals"]
+        }
+      ],
+      "parameters": {},
+      "bindings": {
+        "carry-person": {
+          "anchor": {
+            "type": "cue",
+            "id": "carry"
+          },
+          "duration": 28,
+          "offset": 0
+        },
+        "carry-parcel": {
+          "anchor": {
+            "type": "cue",
+            "id": "carry"
+          },
+          "duration": 28,
+          "offset": 0
+        },
+        "knock-reveals": {
+          "anchor": {
+            "type": "cue",
+            "id": "knock"
+          },
+          "duration": 3,
+          "offset": 0
+        },
+        "knock-hides": {
+          "anchor": {
+            "type": "cue",
+            "id": "knock"
+          },
+          "duration": 3,
+          "offset": 10
+        },
+        "door-opens": {
+          "anchor": {
+            "type": "cue",
+            "id": "open"
+          },
+          "duration": 0,
+          "offset": 0
+        },
+        "number-hides": {
+          "anchor": {
+            "type": "cue",
+            "id": "open"
+          },
+          "duration": 4,
+          "offset": 0
+        },
+        "neighbor-reveals": {
+          "anchor": {
+            "type": "cue",
+            "id": "neighbor"
+          },
+          "duration": 8,
+          "offset": 0
+        }
+      },
+      "handoff": {
+        "mode": "cut",
+        "camera": "reset",
+        "subjects": []
+      }
+    },
+    {
+      "id": "handover",
+      "template": "handover.json",
+      "purpose": "resolve",
+      "takeaway": "A small act of kindness puts the parcel in the right hands.",
+      "focus": ["nora", "parcel", "right-door"],
+      "intensity": "develop",
+      "frameCount": 384,
+      "copy": {},
+      "timing": {},
+      "cues": [
+        {
+          "id": "handover",
+          "phrase": "handed it over",
+          "frame": 16,
+          "events": ["parcel-handover"]
+        },
+        {
+          "id": "step",
+          "phrase": "stepped back",
+          "frame": 40,
+          "events": ["step-back"]
+        },
+        {
+          "id": "return",
+          "phrase": "returned home",
+          "frame": 175,
+          "events": ["return-home"]
+        },
+        {
+          "id": "quiet",
+          "phrase": "quiet again",
+          "frame": 218,
+          "events": ["neighbor-hides", "parcel-hides"]
+        },
+        {
+          "id": "resolve",
+          "phrase": "exactly where it belonged",
+          "frame": 295,
+          "events": ["resolve-reveals"]
+        }
+      ],
+      "parameters": {},
+      "bindings": {
+        "parcel-handover": {
+          "anchor": {
+            "type": "cue",
+            "id": "handover"
+          },
+          "duration": 18,
+          "offset": 0
+        },
+        "step-back": {
+          "anchor": {
+            "type": "cue",
+            "id": "step"
+          },
+          "duration": 18,
+          "offset": 0
+        },
+        "return-home": {
+          "anchor": {
+            "type": "cue",
+            "id": "return"
+          },
+          "duration": 48,
+          "offset": 0
+        },
+        "neighbor-hides": {
+          "anchor": {
+            "type": "cue",
+            "id": "quiet"
+          },
+          "duration": 12,
+          "offset": 0
+        },
+        "parcel-hides": {
+          "anchor": {
+            "type": "cue",
+            "id": "quiet"
+          },
+          "duration": 12,
+          "offset": 0
+        },
+        "door-closes": {
+          "anchor": {
+            "type": "cue",
+            "id": "quiet"
+          },
+          "duration": 0,
+          "offset": 14
+        },
+        "number-returns": {
+          "anchor": {
+            "type": "cue",
+            "id": "quiet"
+          },
+          "duration": 8,
+          "offset": 14
+        },
+        "resolve-reveals": {
+          "anchor": {
+            "type": "cue",
+            "id": "resolve"
+          },
+          "duration": 12,
+          "offset": 0
+        },
+        "nora-hides": {
+          "anchor": {
+            "type": "cue",
+            "id": "quiet"
+          },
+          "offset": 0,
+          "duration": 12
+        }
+      },
+      "handoff": {
+        "mode": "cut",
+        "camera": "reset",
+        "subjects": []
+      }
+    }
+  ],
+  "delivery": [],
+  "audio": {
+    "schemaVersion": "passage-audio-1",
+    "assets": [
+      {
+        "id": "door-knock",
+        "path": "../../../assets/parcel-story/sfx-v001/door-knock.mp3",
+        "sha256": "sha256:79750e478536cd449faee92c0ef36d20182384386a741a7634e5f287f9d4c889"
+      }
+    ],
+    "sounds": [
+      {
+        "id": "knuckles",
+        "beat": "knock",
+        "asset": "door-knock",
+        "anchor": {
+          "type": "cue",
+          "id": "knock"
+        },
+        "offset": 0,
+        "sourceStartFrame": 26,
+        "durationFrames": 14,
+        "gainDb": -12,
+        "fadeInFrames": 0,
+        "fadeOutFrames": 4
+      }
+    ],
+    "masterGainDb": -3,
+    "narrationGainDb": 0
+  }
+}

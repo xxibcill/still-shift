@@ -1,0 +1,86 @@
+{
+  "schemaVersion": "image-asset-lineage-1",
+  "generator": "built-in image_gen",
+  "assets": [
+    {
+      "id": "neighbor",
+      "path": "assets/parcel-story/image-model-v001/neighbor.png",
+      "width": 957,
+      "height": 1643,
+      "mode": "RGBA",
+      "alphaBounds": [51, 15, 941, 1611],
+      "alphaRange": [0, 255],
+      "sha256": "sha256:c1551496b2b16b566285bd0f142bb9f525180aa779479044ba37185a6a5b138e"
+    },
+    {
+      "id": "door-open",
+      "path": "assets/parcel-story/image-model-v001/door-open.png",
+      "width": 971,
+      "height": 1620,
+      "mode": "RGBA",
+      "alphaBounds": [98, 13, 939, 1602],
+      "alphaRange": [0, 254],
+      "sha256": "sha256:f5f0175cf0a96358b2d2f58c20fe9b72e874ff4f34d5997f46c1a87dea7f7052"
+    },
+    {
+      "id": "nora",
+      "path": "assets/parcel-story/image-model-v001/nora.png",
+      "width": 957,
+      "height": 1643,
+      "mode": "RGBA",
+      "alphaBounds": [90, 20, 910, 1597],
+      "alphaRange": [0, 255],
+      "sha256": "sha256:70ed8377ce15ea602312cbe20ed7a9173c1dd0f01e5d696f857cf9da5f405572"
+    },
+    {
+      "id": "door-closed",
+      "path": "assets/parcel-story/image-model-v001/door-closed.png",
+      "width": 971,
+      "height": 1619,
+      "mode": "RGBA",
+      "alphaBounds": [41, 15, 902, 1591],
+      "alphaRange": [0, 255],
+      "sha256": "sha256:569b5dbc80a0ae84ae68d8ffbb45d375c81d4a99e4f576e2fb18072d7503e55f"
+    },
+    {
+      "id": "parcel",
+      "path": "assets/parcel-story/image-model-v001/parcel.png",
+      "width": 1448,
+      "height": 1086,
+      "mode": "RGBA",
+      "alphaBounds": [73, 28, 1428, 1086],
+      "alphaRange": [0, 255],
+      "sha256": "sha256:f2e438f14b0ea328c47c3e4a167b97e8a7c2455774e70b325af98236662f16ab"
+    },
+    {
+      "id": "hall",
+      "path": "assets/parcel-story/image-model-v001/hall.png",
+      "width": 1672,
+      "height": 941,
+      "mode": "RGB",
+      "alphaBounds": null,
+      "alphaRange": null,
+      "sha256": "sha256:967683cc1540463d34b74390646c54221f8f021989877cfa5e32e53f20800fc0"
+    },
+    {
+      "id": "door-blue",
+      "path": "assets/parcel-story/image-model-v001/door-blue.png",
+      "width": 971,
+      "height": 1619,
+      "mode": "RGBA",
+      "alphaBounds": [108, 13, 916, 1593],
+      "alphaRange": [0, 255],
+      "sha256": "sha256:8a14dfbff1b25944e8cd98a1ca78eded80b740fbff3f364bb6de32474f08133c"
+    },
+    {
+      "id": "knock",
+      "path": "assets/parcel-story/image-model-v001/knock.png",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "alphaBounds": [33, 21, 1230, 1230],
+      "alphaRange": [0, 255],
+      "sha256": "sha256:6ff765d7331a25ba7da1768256903820da23af97d6f71ae846263638ec22b9fa"
+    }
+  ]
+}

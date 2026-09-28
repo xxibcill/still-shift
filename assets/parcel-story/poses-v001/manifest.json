@@ -1,0 +1,84 @@
+{
+  "generator": "built-in image_gen",
+  "modelVersion": "not exposed by tool",
+  "pixelPostProcessing": false,
+  "assets": [
+    {
+      "id": "nora-idle",
+      "path": "nora-idle.png",
+      "width": 957,
+      "height": 1643,
+      "sha256": "sha256:67c41109f1a49b6387760f92970d86e4c10e53a447c7f310f9bc299d1b9f2433",
+      "alphaBounds": [189, 23, 757, 1584],
+      "registration": {
+        "anchor": [0.5606, 0.9641]
+      }
+    },
+    {
+      "id": "nora-inspect",
+      "path": "nora-inspect.png",
+      "width": 957,
+      "height": 1643,
+      "sha256": "sha256:4abc1cfa082c01b11f6131b0b7ed2396cee8d8cedbff93a503dfa97d71c10a18",
+      "alphaBounds": [219, 27, 862, 1573],
+      "registration": {
+        "anchor": [0.5731, 0.9574]
+      }
+    },
+    {
+      "id": "nora-knock",
+      "path": "nora-knock.png",
+      "width": 957,
+      "height": 1643,
+      "sha256": "sha256:4892fa83f326b4d8ae2bba998062f5dfd31bfdea6895fcb7f9df1fc920227eff",
+      "alphaBounds": [213, 24, 807, 1586],
+      "registration": {
+        "anchor": [0.5841, 0.9653]
+      }
+    },
+    {
+      "id": "nora-step-a",
+      "path": "nora-step-a.png",
+      "width": 957,
+      "height": 1643,
+      "sha256": "sha256:3ca4c076680c799b6e9459f35fa50bf6df0c9cb633cbd7b24827e7f8395158f4",
+      "alphaBounds": [114, 42, 847, 1564],
+      "registration": {
+        "anchor": [0.4613, 0.9519]
+      }
+    },
+    {
+      "id": "nora-step-b",
+      "path": "nora-step-b.png",
+      "width": 957,
+      "height": 1643,
+      "sha256": "sha256:0055cc2c672e485ee283b88a5e042b670056d8591ef38939c29f710df0d5a3f0",
+      "alphaBounds": [128, 42, 803, 1558],
+      "registration": {
+        "anchor": [0.4932, 0.9483]
+      }
+    },
+    {
+      "id": "neighbor-idle",
+      "path": "neighbor-idle.png",
+      "width": 957,
+      "height": 1643,
+      "sha256": "sha256:a6dedf0a0a1b059ce7eaf2d8720cd767cee80b1f1ed6beb64ff5adf6dab539c6",
+      "alphaBounds": [234, 17, 768, 1606],
+      "registration": {
+        "anchor": [0.5538, 0.9775]
+      }
+    },
+    {
+      "id": "neighbor-thanks",
+      "path": "neighbor-thanks.png",
+      "width": 957,
+      "height": 1643,
+      "sha256": "sha256:e4dc1e68ef4ba325ae62cca98b7ca3eb009a54ce8783aabfba88a897f2f6fac8",
+      "alphaBounds": [57, 22, 849, 1602],
+      "registration": {
+        "anchor": [0.6432, 0.975]
+      }
+    }
+  ]
+}

@@ -1,0 +1,55 @@
+{
+  "provider": "ElevenLabs",
+  "flowId": "jKAIVPrL5tMwdEQOE9L3",
+  "flowUrl": "https://elevenlabs.io/app/flows/jKAIVPrL5tMwdEQOE9L3",
+  "voiceId": "iI1oPSSfpLPrU8ILUEwO",
+  "voiceName": "HOS — Wry Archivist — Male v001",
+  "model": "eleven_multilingual_v2",
+  "selectedGenerationId": "CPAsLHuvbRNHvR2XeipS",
+  "rawFile": "raw.mp3",
+  "inputFile": "script.txt",
+  "numericVoiceSettings": "Not exposed by connector; no per-request overrides supplied.",
+  "takes": [
+    {
+      "id": "nzbIh4wK8Gz4gfzI0mZa",
+      "status": "completed",
+      "durationSeconds": 17.41496598639456,
+      "price": {
+        "credits": 259.974,
+        "price_cents": 4.7268,
+        "cost_fiat_currency": "usd"
+      }
+    },
+    {
+      "id": "CPAsLHuvbRNHvR2XeipS",
+      "status": "completed",
+      "durationSeconds": 20.108480725623583,
+      "price": {
+        "credits": 259.974,
+        "price_cents": 4.7268,
+        "cost_fiat_currency": "usd"
+      }
+    },
+    {
+      "id": "rYtzjNNBCy0VXkIiGOA2",
+      "status": "completed",
+      "durationSeconds": 19.4118820861678,
+      "price": {
+        "credits": 259.974,
+        "price_cents": 4.7268,
+        "cost_fiat_currency": "usd"
+      }
+    },
+    {
+      "id": "VybouwqulwGVgx3l9XbI",
+      "status": "completed",
+      "durationSeconds": 20.387120181405894,
+      "price": {
+        "credits": 259.974,
+        "price_cents": 4.7268,
+        "cost_fiat_currency": "usd"
+      }
+    }
+  ],
+  "selectionBasis": "Second take selected as the timing candidate from measured duration; waveform/transcript verification follows. No subjective listening comparison claimed."
+}

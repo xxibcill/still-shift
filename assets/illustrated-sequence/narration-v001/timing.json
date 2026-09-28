@@ -1,0 +1,90 @@
+{
+  "fps": 24,
+  "frameCount": 495,
+  "durationSeconds": 20.625,
+  "alignmentMethod": "Local mlx-whisper small.en word timestamps; rounded to nearest 24 fps frame",
+  "spokenEndSeconds": 19.74,
+  "shots": [
+    {
+      "id": "detail",
+      "start": 0,
+      "end": 147,
+      "cues": [
+        {
+          "id": "question",
+          "phrase": "But can this household reach it",
+          "frame": 57,
+          "events": ["question-appears"],
+          "globalFrame": 57
+        },
+        {
+          "id": "connection",
+          "phrase": "Watch the connection",
+          "frame": 115,
+          "events": ["route-reveals"],
+          "globalFrame": 115
+        }
+      ]
+    },
+    {
+      "id": "action",
+      "start": 147,
+      "end": 224,
+      "cues": [
+        {
+          "id": "pressure",
+          "phrase": "As pressure builds",
+          "frame": 5,
+          "events": ["pressure-visible"],
+          "globalFrame": 152
+        },
+        {
+          "id": "restriction",
+          "phrase": "narrows",
+          "frame": 47,
+          "events": ["access-changes"],
+          "globalFrame": 194
+        }
+      ]
+    },
+    {
+      "id": "consequence",
+      "start": 224,
+      "end": 495,
+      "cues": [
+        {
+          "id": "grain",
+          "phrase": "basket",
+          "frame": 10,
+          "events": ["consequence-appears"],
+          "globalFrame": 234
+        },
+        {
+          "id": "consequence",
+          "phrase": "access",
+          "frame": 125,
+          "events": ["access-response"],
+          "globalFrame": 349
+        }
+      ]
+    }
+  ],
+  "captions": [
+    { "text": "The grain is right there.", "start": 0, "end": 1.58 },
+    { "text": "But can this household reach it?", "start": 2.38, "end": 3.96 },
+    { "text": "Watch the connection.", "start": 4.8, "end": 5.62 },
+    {
+      "text": "As pressure builds, the route narrows.",
+      "start": 6.32,
+      "end": 8.9
+    },
+    { "text": "The basket is still full.", "start": 9.48, "end": 10.9 },
+    { "text": "No grain has disappeared.", "start": 11.48, "end": 12.7 },
+    { "text": "What changed is access.", "start": 13.5, "end": 15.06 },
+    {
+      "text": "And for the household, that changes what it can actually use.",
+      "start": 15.76,
+      "end": 19.74
+    }
+  ]
+}

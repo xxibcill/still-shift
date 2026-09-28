@@ -1,0 +1,143 @@
+{
+  "schemaVersion": "story-passage-2",
+  "id": "illustrated-access-story",
+  "title": "Access changes · an illustrated sequence",
+  "styleProfile": {
+    "schemaVersion": "story-style-1",
+    "id": "layered-chronicle-sequence",
+    "colors": {},
+    "safeInset": 80
+  },
+  "fps": 24,
+  "sourceStartFrame": 0,
+  "beats": [
+    {
+      "id": "detail",
+      "template": "detail-reveal.json",
+      "purpose": "explain-relationships",
+      "takeaway": "The household depends on a connection to the grain.",
+      "focus": ["household", "access", "resource"],
+      "intensity": "develop",
+      "frameCount": 192,
+      "copy": {},
+      "timing": {},
+      "cues": [
+        {
+          "id": "connection",
+          "phrase": "Access links household and resource.",
+          "frame": 24,
+          "events": ["route-reveals"]
+        }
+      ],
+      "parameters": {},
+      "bindings": {
+        "route-reveals": {
+          "anchor": { "type": "cue", "id": "connection" },
+          "offset": 0,
+          "duration": 72
+        },
+        "route-visible": {
+          "anchor": { "type": "event", "id": "route-reveals", "edge": "start" },
+          "offset": 0,
+          "duration": 36
+        }
+      },
+      "handoff": { "mode": "cut", "camera": "reset", "subjects": [] }
+    },
+    {
+      "id": "action",
+      "template": "action-state-change.json",
+      "purpose": "show-change",
+      "takeaway": "Pressure constrains the route while leaving a connection open.",
+      "focus": ["access", "pressure-top", "pressure-bottom"],
+      "intensity": "peak",
+      "frameCount": 240,
+      "copy": {},
+      "timing": {},
+      "cues": [
+        {
+          "id": "restriction",
+          "phrase": "Access becomes restricted.",
+          "frame": 96,
+          "events": ["access-changes"]
+        }
+      ],
+      "parameters": {},
+      "bindings": {
+        "access-changes": {
+          "anchor": { "type": "cue", "id": "restriction" },
+          "offset": 0,
+          "duration": 0
+        },
+        "pressure-arrives": {
+          "anchor": { "type": "cue", "id": "restriction" },
+          "offset": -48,
+          "duration": 48
+        },
+        "opposition-arrives": {
+          "anchor": {
+            "type": "event",
+            "id": "pressure-arrives",
+            "edge": "start"
+          },
+          "offset": 0,
+          "duration": 48
+        },
+        "pressure-visible": {
+          "anchor": {
+            "type": "event",
+            "id": "pressure-arrives",
+            "edge": "start"
+          },
+          "offset": -24,
+          "duration": 24
+        },
+        "opposition-visible": {
+          "anchor": {
+            "type": "event",
+            "id": "pressure-visible",
+            "edge": "start"
+          },
+          "offset": 0,
+          "duration": 24
+        },
+        "consequence-appears": {
+          "anchor": { "type": "event", "id": "access-changes", "edge": "end" },
+          "offset": 12,
+          "duration": 24
+        }
+      },
+      "handoff": { "mode": "cut", "camera": "reset", "subjects": [] }
+    },
+    {
+      "id": "consequence",
+      "template": "reaction-consequence.json",
+      "purpose": "resolve",
+      "takeaway": "The resource is unchanged; the household's access is different.",
+      "focus": ["resource", "access", "household"],
+      "intensity": "quiet",
+      "frameCount": 288,
+      "copy": {},
+      "timing": {},
+      "cues": [
+        {
+          "id": "consequence",
+          "phrase": "The grain remains; reaching it has changed.",
+          "frame": 24,
+          "events": ["consequence-appears"]
+        }
+      ],
+      "parameters": {},
+      "bindings": {
+        "consequence-appears": {
+          "anchor": { "type": "cue", "id": "consequence" },
+          "offset": 0,
+          "duration": 24
+        }
+      },
+      "handoff": { "mode": "cut", "camera": "reset", "subjects": [] }
+    }
+  ],
+  "delivery": [],
+  "contentPolicy": "general"
+}

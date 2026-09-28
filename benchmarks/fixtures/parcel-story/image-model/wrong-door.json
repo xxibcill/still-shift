@@ -1,0 +1,341 @@
+{
+  "schemaVersion": "story-template-1",
+  "id": "wrong-door-image-model",
+  "scene": {
+    "title": "wrong-door",
+    "schemaVersion": "story-scene-1",
+    "fps": 24,
+    "frameCount": 204,
+    "width": 1920,
+    "height": 1080,
+    "background": "#F0E8D8",
+    "assets": [
+      {
+        "id": "neighbor",
+        "path": "../../../../assets/parcel-story/image-model-v001/neighbor.png",
+        "sha256": "sha256:c1551496b2b16b566285bd0f142bb9f525180aa779479044ba37185a6a5b138e",
+        "width": 957,
+        "height": 1643
+      },
+      {
+        "id": "door-open",
+        "path": "../../../../assets/parcel-story/image-model-v001/door-open.png",
+        "sha256": "sha256:f5f0175cf0a96358b2d2f58c20fe9b72e874ff4f34d5997f46c1a87dea7f7052",
+        "width": 971,
+        "height": 1620
+      },
+      {
+        "id": "nora",
+        "path": "../../../../assets/parcel-story/image-model-v001/nora.png",
+        "sha256": "sha256:70ed8377ce15ea602312cbe20ed7a9173c1dd0f01e5d696f857cf9da5f405572",
+        "width": 957,
+        "height": 1643
+      },
+      {
+        "id": "door-closed",
+        "path": "../../../../assets/parcel-story/image-model-v001/door-closed.png",
+        "sha256": "sha256:569b5dbc80a0ae84ae68d8ffbb45d375c81d4a99e4f576e2fb18072d7503e55f",
+        "width": 971,
+        "height": 1619
+      },
+      {
+        "id": "parcel",
+        "path": "../../../../assets/parcel-story/image-model-v001/parcel.png",
+        "sha256": "sha256:f2e438f14b0ea328c47c3e4a167b97e8a7c2455774e70b325af98236662f16ab",
+        "width": 1448,
+        "height": 1086
+      },
+      {
+        "id": "hall",
+        "path": "../../../../assets/parcel-story/image-model-v001/hall.png",
+        "sha256": "sha256:967683cc1540463d34b74390646c54221f8f021989877cfa5e32e53f20800fc0",
+        "width": 1672,
+        "height": 941
+      },
+      {
+        "id": "door-blue",
+        "path": "../../../../assets/parcel-story/image-model-v001/door-blue.png",
+        "sha256": "sha256:8a14dfbff1b25944e8cd98a1ca78eded80b740fbff3f364bb6de32474f08133c",
+        "width": 971,
+        "height": 1619
+      },
+      {
+        "id": "knock",
+        "path": "../../../../assets/parcel-story/image-model-v001/knock.png",
+        "sha256": "sha256:6ff765d7331a25ba7da1768256903820da23af97d6f71ae846263638ec22b9fa",
+        "width": 1254,
+        "height": 1254
+      }
+    ],
+    "fonts": [
+      {
+        "id": "display",
+        "path": "../../../../assets/story-motion/fonts/source-serif-4-semibold.otf",
+        "sha256": "sha256:25e034392847d9965c92f98971b3646436b7ab919ece9118b0c0e5ec94c02efc",
+        "weight": "600"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "world",
+        "type": "group",
+        "x": 0,
+        "y": 0,
+        "width": 1920,
+        "height": 1080,
+        "opacity": 1,
+        "rotation": 0,
+        "origin": [0, 0],
+        "clip": false
+      },
+      {
+        "id": "hall",
+        "type": "image",
+        "parent": "world",
+        "x": 0,
+        "y": 0,
+        "width": 1920,
+        "height": 1080,
+        "opacity": 1,
+        "rotation": 0,
+        "origin": [0.5, 0.5],
+        "fit": "cover",
+        "states": [
+          {
+            "asset": "hall"
+          }
+        ]
+      },
+      {
+        "id": "left-door",
+        "type": "image",
+        "parent": "world",
+        "x": 220,
+        "y": 175,
+        "width": 432,
+        "height": 720,
+        "opacity": 1,
+        "rotation": 0,
+        "origin": [0.5, 0.5],
+        "fit": "contain",
+        "states": [
+          {
+            "asset": "door-blue"
+          }
+        ]
+      },
+      {
+        "id": "right-door",
+        "type": "image",
+        "parent": "world",
+        "x": 1180,
+        "y": 175,
+        "width": 432,
+        "height": 720,
+        "opacity": 1,
+        "rotation": 0,
+        "origin": [0.5, 0.5],
+        "fit": "contain",
+        "states": [
+          {
+            "asset": "door-closed"
+          },
+          {
+            "asset": "door-open"
+          }
+        ]
+      },
+      {
+        "id": "left-number",
+        "type": "text",
+        "text": "12",
+        "x": 404,
+        "y": 285,
+        "width": 0,
+        "height": 0,
+        "opacity": 1,
+        "rotation": 0,
+        "origin": [0, 0],
+        "font": "serif",
+        "fontAsset": "display",
+        "fontSize": 38,
+        "color": "#FFF8E7",
+        "weight": "normal",
+        "align": "left",
+        "parent": "world"
+      },
+      {
+        "id": "right-number",
+        "type": "text",
+        "text": "21",
+        "x": 1364,
+        "y": 285,
+        "width": 0,
+        "height": 0,
+        "opacity": 1,
+        "rotation": 0,
+        "origin": [0, 0],
+        "font": "serif",
+        "fontAsset": "display",
+        "fontSize": 38,
+        "color": "#FFF8E7",
+        "weight": "normal",
+        "align": "left",
+        "parent": "world"
+      },
+      {
+        "id": "nora",
+        "type": "image",
+        "parent": "world",
+        "x": 300,
+        "y": 300,
+        "width": 337.83323189287887,
+        "height": 580,
+        "opacity": 1,
+        "rotation": 0,
+        "origin": [0.5, 0.5],
+        "fit": "contain",
+        "states": [
+          {
+            "asset": "nora"
+          }
+        ]
+      },
+      {
+        "id": "parcel",
+        "type": "image",
+        "parent": "world",
+        "x": 550,
+        "y": 768,
+        "width": 145,
+        "height": 108.75,
+        "opacity": 1,
+        "rotation": 0,
+        "origin": [0.5, 0.5],
+        "fit": "contain",
+        "states": [
+          {
+            "asset": "parcel"
+          }
+        ]
+      },
+      {
+        "id": "title",
+        "type": "text",
+        "text": "The wrong door.",
+        "x": 100,
+        "y": 85,
+        "width": 0,
+        "height": 0,
+        "opacity": 1,
+        "rotation": 0,
+        "origin": [0, 0],
+        "font": "serif",
+        "fontAsset": "display",
+        "fontSize": 48,
+        "color": "#303E41",
+        "weight": "normal",
+        "align": "left",
+        "textLayout": {
+          "width": 1600,
+          "height": 80,
+          "lineHeight": 1.18,
+          "overflow": "error"
+        }
+      },
+      {
+        "id": "caption",
+        "type": "text",
+        "text": "The label says No. 21.",
+        "x": 100,
+        "y": 920,
+        "width": 0,
+        "height": 0,
+        "opacity": 1,
+        "rotation": 0,
+        "origin": [0, 0],
+        "font": "serif",
+        "fontAsset": "display",
+        "fontSize": 44,
+        "color": "#303E41",
+        "weight": "normal",
+        "align": "left",
+        "textLayout": {
+          "width": 1600,
+          "height": 80,
+          "lineHeight": 1.18,
+          "overflow": "error"
+        }
+      }
+    ],
+    "provenance": "Original fictional sequence. All eight picture assets generated with the built-in image model; actual transparent PNG layers, not rasterized SVG. See assets/parcel-story/image-model-v001/README.md. Narration, cue timing and SFX retained.",
+    "componentData": {
+      "schemaVersion": "scene-components-2",
+      "annotations": [],
+      "values": [],
+      "bindings": [],
+      "states": [],
+      "travels": []
+    },
+    "motionModel": "curves-1",
+    "motionGrammar": "v2",
+    "authoringVersion": "1",
+    "camera": {
+      "keys": [
+        {
+          "frame": 0,
+          "x": 960,
+          "y": 540,
+          "zoom": 1
+        },
+        {
+          "frame": 203,
+          "x": 1050,
+          "y": 540,
+          "zoom": 1.06
+        }
+      ],
+      "depth": {
+        "world": 1,
+        "title": 0,
+        "caption": 0
+      },
+      "easeIn": false,
+      "easeOut": false
+    },
+    "recipe": {
+      "preset": "generic",
+      "moves": [
+        {
+          "node": "parcel",
+          "window": {
+            "start": 60,
+            "end": 76,
+            "cue": "label-lifts",
+            "easing": "in-out-cubic"
+          },
+          "to": {
+            "y": 382
+          }
+        }
+      ],
+      "emphasis": [],
+      "entrances": [
+        {
+          "node": "caption",
+          "window": {
+            "start": 145,
+            "end": 149,
+            "cue": "label-reveals"
+          },
+          "verb": "fade"
+        }
+      ],
+      "exits": []
+    },
+    "connectors": []
+  },
+  "slots": {},
+  "textRoles": {},
+  "textLayout": {}
+}

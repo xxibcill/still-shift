@@ -1,0 +1,21 @@
+{
+  "provider": "elevenlabs-connector",
+  "flowId": "kdTRXzPLPlZ6xoM984ny",
+  "generations": [
+    {
+      "id": "6BqZzzFgtFUMQsCuYQ3F",
+      "status": "completed",
+      "model_id": "eleven_text_to_sound_v2",
+      "modality": "audio",
+      "prompt": "Two gentle knuckle knocks on an interior wooden door, close and dry, short natural decay, no music or voices.",
+      "duration_secs": 14,
+      "created_at_unix_ms": 1790580885893,
+      "price": {
+        "credits": 16.665,
+        "price_cents": 0.303,
+        "cost_fiat_currency": "usd"
+      }
+    }
+  ],
+  "prompt": "Two gentle knuckle knocks on an interior wooden door, close and dry, short natural decay, no music or voices."
+}

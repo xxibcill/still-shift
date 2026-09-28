@@ -1,0 +1,67 @@
+[
+  {
+    "id": "nora-idle",
+    "prompt": "Use case: identity-preserve. Asset type: alternate pose for a reusable character sprite set. Image 1 is the exact identity and costume reference. Preserve the same person, facial features, hair, skin tone, clothing, proportions, palette, hand-inked and gouache anime illustration style, light from upper left and detail level. Change only posture/expression as directed: Nora stands neutrally with BOTH arms relaxed by her sides, looking attentively toward screen RIGHT. Her body stays upright; right-facing three-quarter view. Do not keep the palm-up offering gesture.\nRegistration requirements: one full-body pose only, same portrait canvas aspect ratio as the reference (957:1643), matching full body scale, head-to-shoes height, and foot baseline near 97% canvas height. Allow 5% transparent margin around complete silhouette. Entire head, hands and both shoes visible. Genuine transparent alpha background; no scene, floor, shadow ellipse, labels, lettering, props, additional figures or pose sheet. Keep anatomy coherent and gestures clearly different, suitable for limited-animation pose switching.",
+    "path": "/Users/jjae/.codex/generated_images/01a0e62e-28f7-74c1-8296-e6c1650c5356/exec-aac5bcfd-e663-4de0-a388-0ab3a36cea4c.png",
+    "generator": "built-in image_gen",
+    "transparentBackground": true,
+    "identityReference": "../image-model-v001/nora.png",
+    "referenceImages": ["../image-model-v001/nora.png"]
+  },
+  {
+    "id": "nora-inspect",
+    "prompt": "Use case: identity-preserve. Asset type: alternate pose for a reusable character sprite set. Image 1 is the exact identity and costume reference. Preserve the same person, facial features, hair, skin tone, clothing, proportions, palette, hand-inked and gouache anime illustration style, light from upper left and detail level. Change only posture/expression as directed: Nora tilts her head and gaze DOWN toward a parcel near waist level to her screen right; bends forward slightly with a curious focused expression. Her screen-right hand is palm-up in approximately the reference position, her other hand slightly raised with an index finger pointing to the implied label. No parcel is drawn; it is a separate layer.\nRegistration requirements: one full-body pose only, same portrait canvas aspect ratio as the reference (957:1643), matching full body scale, head-to-shoes height, and foot baseline near 97% canvas height. Allow 5% transparent margin around complete silhouette. Entire head, hands and both shoes visible. Genuine transparent alpha background; no scene, floor, shadow ellipse, labels, lettering, props, additional figures or pose sheet. Keep anatomy coherent and gestures clearly different, suitable for limited-animation pose switching.",
+    "path": "/Users/jjae/.codex/generated_images/01a0e62e-28f7-74c1-8296-e6c1650c5356/exec-59578675-d652-47fa-941c-c3db48d70885.png",
+    "generator": "built-in image_gen",
+    "transparentBackground": true,
+    "identityReference": "../image-model-v001/nora.png",
+    "referenceImages": ["../image-model-v001/nora.png"]
+  },
+  {
+    "id": "nora-knock",
+    "prompt": "Use case: identity-preserve. Image 1 is the edit target and identity reference. Keep the raised screen-right knocking fist and entire identity, body, feet, costume and canvas unchanged. Change ONLY the lowered OTHER arm: bend it at waist height and hold its palm facing upward in front of her lower chest, ready to support a separately composited cardboard parcel. Do NOT draw a parcel. Preserve the two distinct hands: raised knocking fist and bent supporting palm near torso. Single full-body sprite, same canvas aspect ratio and size, same foot baseline. Preserve genuine transparent background, no floor or shadow ellipse. No extra props, words or figures.",
+    "path": "/Users/jjae/.codex/generated_images/01a0e62e-28f7-74c1-8296-e6c1650c5356/exec-f8fc4261-f2fa-4ab0-9f04-4196f64170c5.png",
+    "generator": "built-in image_gen",
+    "transparentBackground": true,
+    "identityReference": "../image-model-v001/nora.png",
+    "referenceImages": [
+      "/Users/jjae/.codex/generated_images/01a0e62e-28f7-74c1-8296-e6c1650c5356/exec-260cda18-70b2-4e66-a36a-bab08b332ea8.png"
+    ]
+  },
+  {
+    "id": "nora-step-a",
+    "prompt": "Use case: identity-preserve. Asset type: alternate pose for a reusable character sprite set. Image 1 is the exact identity and costume reference. Preserve the same person, facial features, hair, skin tone, clothing, proportions, palette, hand-inked and gouache anime illustration style, light from upper left and detail level. Change only posture/expression as directed: Nora is WALKING LEFT, three-quarter side view looking LEFT, with a restrained natural stride: leftward leading foot forward and opposite arm swinging lightly, trailing heel raised. Hands empty, arms lowered. Entire body turns left, including feet and gaze. No prop.\nRegistration requirements: one full-body pose only, same portrait canvas aspect ratio as the reference (957:1643), matching full body scale, head-to-shoes height, and foot baseline near 97% canvas height. Allow 5% transparent margin around complete silhouette. Entire head, hands and both shoes visible. Genuine transparent alpha background; no scene, floor, shadow ellipse, labels, lettering, props, additional figures or pose sheet. Keep anatomy coherent and gestures clearly different, suitable for limited-animation pose switching.",
+    "path": "/Users/jjae/.codex/generated_images/01a0e62e-28f7-74c1-8296-e6c1650c5356/exec-3d77f03d-6385-4511-8ff5-7e9093476296.png",
+    "generator": "built-in image_gen",
+    "transparentBackground": true,
+    "identityReference": "../image-model-v001/nora.png",
+    "referenceImages": ["../image-model-v001/nora.png"]
+  },
+  {
+    "id": "nora-step-b",
+    "prompt": "Use case: identity-preserve. Image 1 is the edit target and identity reference. Change the walking stride to its distinct PASSING phase. Keep facing and looking LEFT. The weight-bearing foot is directly below the hip, leg straight. The other knee is bent and passing it, lifted foot near the weight-bearing ankle: feet close together, NOT spread in a long stride. Reverse arm swing. Keep exact same head, torso proportions, clothing, illustration style, canvas and full-body scale. This must alternate with the reference stride in a walk cycle. Single full-body sprite, same canvas aspect ratio and size, same foot baseline. Preserve genuine transparent background, no floor or shadow ellipse. No extra props, words or figures.",
+    "path": "/Users/jjae/.codex/generated_images/01a0e62e-28f7-74c1-8296-e6c1650c5356/exec-c6538d37-ec60-4217-a865-3ee201c598d8.png",
+    "generator": "built-in image_gen",
+    "transparentBackground": true,
+    "identityReference": "../image-model-v001/nora.png",
+    "referenceImages": ["nora-step-a.png"]
+  },
+  {
+    "id": "neighbor-idle",
+    "prompt": "Use case: identity-preserve. Asset type: alternate pose for a reusable character sprite set. Image 1 is the exact identity and costume reference. Preserve the same person, facial features, hair, skin tone, clothing, proportions, palette, hand-inked and gouache anime illustration style, light from upper left and detail level. Change only posture/expression as directed: The older male neighbor stands with BOTH arms down near his sides and looks screen LEFT with a slightly concerned, expectant expression. Same glasses, sweater and face; no extended receiving hand.\nRegistration requirements: one full-body pose only, same portrait canvas aspect ratio as the reference (957:1643), matching full body scale, head-to-shoes height, and foot baseline near 97% canvas height. Allow 5% transparent margin around complete silhouette. Entire head, hands and both shoes visible. Genuine transparent alpha background; no scene, floor, shadow ellipse, labels, lettering, props, additional figures or pose sheet. Keep anatomy coherent and gestures clearly different, suitable for limited-animation pose switching.",
+    "path": "/Users/jjae/.codex/generated_images/01a0e62e-28f7-74c1-8296-e6c1650c5356/exec-0c1a1632-07bd-4216-bf2b-12d826b39712.png",
+    "generator": "built-in image_gen",
+    "transparentBackground": true,
+    "identityReference": "../image-model-v001/neighbor.png",
+    "referenceImages": ["../image-model-v001/neighbor.png"]
+  },
+  {
+    "id": "neighbor-thanks",
+    "prompt": "Use case: identity-preserve. Asset type: alternate pose for a reusable character sprite set. Image 1 is the exact identity and costume reference. Preserve the same person, facial features, hair, skin tone, clothing, proportions, palette, hand-inked and gouache anime illustration style, light from upper left and detail level. Change only posture/expression as directed: The older male neighbor looks toward screen LEFT with a warm grateful smile, slight head tilt. Keep his LEFTWARD extended palm-up hand to support the separately composited parcel. His other hand is raised gently to his chest in a thankful gesture. No parcel drawn.\nRegistration requirements: one full-body pose only, same portrait canvas aspect ratio as the reference (957:1643), matching full body scale, head-to-shoes height, and foot baseline near 97% canvas height. Allow 5% transparent margin around complete silhouette. Entire head, hands and both shoes visible. Genuine transparent alpha background; no scene, floor, shadow ellipse, labels, lettering, props, additional figures or pose sheet. Keep anatomy coherent and gestures clearly different, suitable for limited-animation pose switching.",
+    "path": "/Users/jjae/.codex/generated_images/01a0e62e-28f7-74c1-8296-e6c1650c5356/exec-24e18934-9f2e-41c2-a97b-c6378030ae86.png",
+    "generator": "built-in image_gen",
+    "transparentBackground": true,
+    "identityReference": "../image-model-v001/neighbor.png",
+    "referenceImages": ["../image-model-v001/neighbor.png"]
+  }
+]
