@@ -19,6 +19,7 @@ import { easeMotion } from "./motion-easing.ts";
 import { applyComponentState } from "./component-state.ts";
 import { applyComponentTravel } from "./component-travel.ts";
 import { applyComponentPin } from "./component-pin.ts";
+import { applyStoryPropAttachment } from "./story-props.ts";
 import { componentVisible } from "./component-visibility.ts";
 import { applyComponentValues } from "./component-values.ts";
 import { compileStoryScene, type StoryRenderScene } from "./story-scene.ts";
@@ -444,5 +445,7 @@ export function evaluatePreparedNodeAtTime(
         return evaluatePreparedNodeAtTime(scene, source, frame).y;
       },
     );
+  if (scene.schemaVersion === "story-scene-1")
+    applyStoryPropAttachment(scene, node, frame, state);
   return state;
 }

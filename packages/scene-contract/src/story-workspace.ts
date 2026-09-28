@@ -16,7 +16,14 @@ export const StoryWorkspaceManifestSchema = z
         z
           .object({
             path,
-            kind: z.enum(["plan", "template", "asset", "font", "narration"]),
+            kind: z.enum([
+              "plan",
+              "template",
+              "asset",
+              "font",
+              "narration",
+              "audio",
+            ]),
             sha256: z.string().regex(/^[a-f0-9]{64}$/),
             bytes: z.number().int().nonnegative(),
           })

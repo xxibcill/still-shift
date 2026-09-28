@@ -1,5 +1,9 @@
 import { z } from "zod";
 import {
+  ResolvedCharacterActionSchema,
+  ResolvedPropTrackSchema,
+} from "./character-actions.ts";
+import {
   ComponentDataSchema,
   validateComponentData,
 } from "./component-data.ts";
@@ -244,6 +248,8 @@ const shape = PreparedSceneFieldsSchema.omit({ durationMs: true })
   .extend({
     schemaVersion: z.literal("story-scene-1"),
     componentData: ComponentDataSchema.optional(),
+    characterActions: z.array(ResolvedCharacterActionSchema).max(40).optional(),
+    propAttachments: z.array(ResolvedPropTrackSchema).max(32).optional(),
     frameCount: frame.positive().max(108000),
     episodeStartFrame: frame.optional(),
     ...motionCraftFields,

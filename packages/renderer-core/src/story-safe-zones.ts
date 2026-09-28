@@ -6,6 +6,7 @@ import { evaluateStoryPath } from "./story-geometry.ts";
 import type { StoryRenderScene } from "./story-scene.ts";
 import { PassageError, type PassageDiagnostic } from "./passage-diagnostics.ts";
 import { boundsFromPoints, overlapsSafeZone } from "./safe-zone-geometry.ts";
+import { textContainerBounds } from "./text-container-layout.ts";
 
 export function isStoryNodeVisible(
   scene: StoryRenderScene,
@@ -36,17 +37,27 @@ function localBounds(node: PreparedNode): [number, number][] {
       Math.max(...lines.map((line) => line.length)) * node.fontSize * 0.65);
   const height =
     node.textLayout?.height ??
-    Math.max(...text.map((value) => value.split("\n").length)) *
-      node.fontSize *
-      1.4;
-  const left =
-    node.align === "center" ? -width / 2 : node.align === "right" ? -width : 0;
+    (node.textBox
+      ? node.height
+      : Math.max(...text.map((value) => value.split("\n").length)) *
+        node.fontSize *
+        1.4);
+  const left = node.textBox
+    ? 0
+    : node.align === "center"
+      ? -width / 2
+      : node.align === "right"
+        ? -width
+        : 0;
+  const box = node.container
+    ? textContainerBounds({ x: left, y: 0, width, height }, node.container)
+    : { x: left, y: 0, width, height };
   return [
-    [left, 0],
-    [left + width, 0],
-    [left + width, height],
-    [left, height],
-  ];
+    [box.x, box.y],
+    [box.x + box.width, box.y],
+    [box.x + box.width, box.y + box.height],
+    [box.x, box.y + box.height],
+  ] as [number, number][];
 }
 
 export function storyNodeBounds(

@@ -1,0 +1,70 @@
+{
+  "provider": "elevenlabs-connector",
+  "model": "eleven_multilingual_v2",
+  "voice": {
+    "voice_id": "wGCJpA17l87s9LEil0QE",
+    "name": "HOS — Wry Archivist — v001"
+  },
+  "flowId": "kdTRXzPLPlZ6xoM984ny",
+  "selectedGenerationId": "H4OlcHDYWr6jNKWkqCJx",
+  "takes": [
+    {
+      "id": "H4OlcHDYWr6jNKWkqCJx",
+      "status": "completed",
+      "model_id": "eleven_multilingual_v2",
+      "modality": "audio",
+      "prompt": "The parcel was waiting at the wrong door. Nora checked the label, then looked across the hall. The number matched the apartment opposite.\n\nShe carried the parcel over and knocked. For a moment, nothin",
+      "duration_secs": 34.73705215419501,
+      "created_at_unix_ms": 1790580543030,
+      "price": {
+        "credits": 490.9509,
+        "price_cents": 8.92638,
+        "cost_fiat_currency": "usd"
+      }
+    },
+    {
+      "id": "e0Tn1whmy0Nur6wXY2O0",
+      "status": "completed",
+      "model_id": "eleven_multilingual_v2",
+      "modality": "audio",
+      "prompt": "The parcel was waiting at the wrong door. Nora checked the label, then looked across the hall. The number matched the apartment opposite.\n\nShe carried the parcel over and knocked. For a moment, nothin",
+      "duration_secs": 36.03736961451247,
+      "created_at_unix_ms": 1790580543078,
+      "price": {
+        "credits": 490.9509,
+        "price_cents": 8.92638,
+        "cost_fiat_currency": "usd"
+      }
+    },
+    {
+      "id": "OAXqlhspc0DSJpKYPV3D",
+      "status": "completed",
+      "model_id": "eleven_multilingual_v2",
+      "modality": "audio",
+      "prompt": "The parcel was waiting at the wrong door. Nora checked the label, then looked across the hall. The number matched the apartment opposite.\n\nShe carried the parcel over and knocked. For a moment, nothin",
+      "duration_secs": 35.898049886621315,
+      "created_at_unix_ms": 1790580543111,
+      "price": {
+        "credits": 490.9509,
+        "price_cents": 8.92638,
+        "cost_fiat_currency": "usd"
+      }
+    },
+    {
+      "id": "eSiMbq2eR1gG9QvJCrfe",
+      "status": "completed",
+      "model_id": "eleven_multilingual_v2",
+      "modality": "audio",
+      "prompt": "The parcel was waiting at the wrong door. Nora checked the label, then looked across the hall. The number matched the apartment opposite.\n\nShe carried the parcel over and knocked. For a moment, nothin",
+      "duration_secs": 37.24480725623583,
+      "created_at_unix_ms": 1790580543142,
+      "price": {
+        "credits": 490.9509,
+        "price_cents": 8.92638,
+        "cost_fiat_currency": "usd"
+      }
+    }
+  ],
+  "selection": "Take 1 selected as the timing proof candidate; no additional generation requested.",
+  "status": "candidate"
+}

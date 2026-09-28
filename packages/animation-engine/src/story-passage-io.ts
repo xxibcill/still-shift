@@ -16,6 +16,7 @@ import { loadStoryWorkspaceInput } from "./story-workspace-manifest.ts";
 import type { OutputFormat } from "../../scene-contract/src/output-format.ts";
 import { lintVertical } from "../../renderer-core/src/story-vertical.ts";
 import { PassageError } from "../../renderer-core/src/passage-diagnostics.ts";
+import { verifyPassageAudioAssets } from "./passage-audio.ts";
 
 type PassageReadOptions = { format?: OutputFormat; lint?: boolean };
 
@@ -56,6 +57,9 @@ export async function prepareStoryPassageInput(
   }
   const path = resolve(planPath);
   const plan = parsePassagePlan(input);
+  if (plan.schemaVersion === "story-passage-2")
+    for (const asset of plan.audio?.assets ?? [])
+      asset.path = resolve(dirname(path), asset.path);
   const templates = new Map<string, PassageTemplate>();
   const sources = [];
   for (const reference of new Set(plan.beats.map((beat) => beat.template))) {
@@ -92,6 +96,7 @@ export async function prepareStoryPassageInput(
     ...(options.format ? { format: options.format } : {}),
     validateSafeZones: !options.lint,
   });
+  await verifyPassageAudioAssets(compiled, allowPath);
   if (options.format === "vertical" && !options.lint) {
     const diagnostics = compiled.beats.flatMap((beat) =>
       lintVertical(beat.scene, { focusIds: beat.focus }).map((diagnostic) => ({
@@ -160,6 +165,7 @@ export async function writePreparedPassage(
     frameCount: passage.frameCount,
     endFrameExclusive: passage.endFrameExclusive,
     narration: passage.plan.narration,
+    audio: passage.audio,
     inputs: passage.inputs,
     delivery: passage.plan.delivery,
     beats: passage.beats.map(({ scene, ...beat }) => ({

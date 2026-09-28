@@ -1,4 +1,9 @@
 import { MotionEasingSchema } from "../../../packages/scene-contract/src/motion-easing.ts";
+import { renderPassageAudioControls } from "./passage-audio-controls.ts";
+import { renderStoryActingControls } from "./passage-acting-controls.ts";
+import { renderCharacterActionControls } from "./character-action-controls.ts";
+import { renderPropAttachmentControls } from "./prop-attachment-controls.ts";
+import { characterActionEventIds } from "../../../packages/renderer-core/src/character-actions.ts";
 import {
   StoryAuthoringPlanSchema,
   type PassagePlan,
@@ -127,13 +132,24 @@ export function createPassageControls({
       beat = passage.plan.beats[index]!,
       compiled = passage.beats[index]!;
     el("takeaway").textContent = beat.takeaway;
+    renderPassageAudioControls(el("sound-cues"), passage, beat.id, apply);
     const node = nodeSelect.value;
     nodeSelect.replaceChildren(
       ...compiled.scene.nodes.map((n) => option(n.id)),
     );
     if ([...nodeSelect.options].some((o) => o.value === node))
       nodeSelect.value = node;
-    for (const id of ["cues", "bindings", "parameters", "style", "handoff"])
+    for (const id of [
+      "cues",
+      "bindings",
+      "parameters",
+      "style",
+      "handoff",
+      "text-containers",
+      "character-poses",
+      "character-actions",
+      "prop-attachments",
+    ])
       el(id).replaceChildren();
     if (
       passage.plan.schemaVersion !== "story-passage-2" ||
@@ -155,6 +171,29 @@ export function createPassageControls({
       });
       return;
     }
+    const acting = {
+      textHost: el("text-containers"),
+      poseHost: el("character-poses"),
+      scene: compiled.scene,
+      beat,
+      events: compiled.events,
+      edit: editBeat,
+      field,
+      select,
+      button,
+    };
+    renderStoryActingControls(acting);
+    renderCharacterActionControls(el("character-actions"), acting);
+    renderPropAttachmentControls(el("prop-attachments"), acting);
+    const poseEvents = new Set([
+      ...(beat.actions ?? []).flatMap(characterActionEventIds),
+      ...Object.values(beat.propTracks ?? {}).flatMap((t) =>
+        t.changes.map((c) => c.id),
+      ),
+      ...Object.values(beat.poseTracks ?? {}).flatMap((track) =>
+        track.changes.map((change) => change.id),
+      ),
+    ]);
     for (const cue of beat.cues)
       field(
         el("cues"),
@@ -167,6 +206,7 @@ export function createPassageControls({
         "number",
       );
     for (const event of compiled.events) {
+      if (poseEvents.has(event.id)) continue;
       const group = document.createElement("div");
       group.className = "event";
       el("bindings").append(group);
@@ -649,6 +689,15 @@ export function createPassageControls({
           events.filter((event) => event.title === id),
         );
     }
+    for (const sound of passage.audio?.sounds ?? [])
+      track("Sound · " + sound.id, [
+        {
+          start: sound.start,
+          end: sound.end - 1,
+          title: sound.id,
+          kind: "sound",
+        },
+      ]);
   }
   return { renderControls, renderInspector };
 }

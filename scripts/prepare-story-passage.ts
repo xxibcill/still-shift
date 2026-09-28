@@ -19,6 +19,8 @@ const { values } = parseArgs({
     "output-dir": { type: "string" },
     narration: { type: "string" },
     silent: { type: "boolean", default: false },
+    "sound-only": { type: "boolean", default: false },
+    "without-sound-effects": { type: "boolean", default: false },
     "prepare-only": { type: "boolean", default: false },
     resume: { type: "boolean", default: false },
     "cache-dir": { type: "string" },
@@ -37,16 +39,21 @@ process.once("SIGTERM", cancel);
 try {
   if (!values.plan || !values["output-dir"])
     throw new Error(
-      "Pass --plan <JSON> --output-dir <directory>, plus --narration <WAV>, --silent, or --prepare-only",
+      "Pass --plan <JSON> --output-dir <directory>, plus --narration <WAV>, --sound-only, --silent, or --prepare-only",
     );
   if (
-    [Boolean(values.narration), values.silent, values["prepare-only"]].filter(
-      Boolean,
-    ).length !== 1
+    [
+      Boolean(values.narration),
+      values["sound-only"],
+      values.silent,
+      values["prepare-only"],
+    ].filter(Boolean).length !== 1
   )
     throw new Error(
-      "Choose exactly one of --narration, --silent or --prepare-only",
+      "Choose exactly one of --narration, --sound-only, --silent or --prepare-only",
     );
+  if (values["without-sound-effects"] && !values.narration)
+    throw new Error("--without-sound-effects requires --narration");
   if (values.resume && values["prepare-only"])
     throw new Error("--resume requires a render mode");
   if (
@@ -61,6 +68,8 @@ try {
     values.plan,
     format ? { format } : undefined,
   );
+  if (values["sound-only"] && !passage.audio?.sounds.length)
+    throw new Error("--sound-only requires sound cues in the plan");
   const output = resolve(values["output-dir"]),
     narration = values.narration ? resolve(values.narration) : undefined;
   const range = {
@@ -86,6 +95,7 @@ try {
   let report: Awaited<ReturnType<typeof renderStoryPassage>> | undefined;
   if (!values["prepare-only"])
     report = await renderStoryPassage(output, passage, narration, {
+      soundEffects: !values.silent && !values["without-sound-effects"],
       resume: values.resume,
       signal: controller.signal,
       range,
@@ -99,7 +109,9 @@ try {
     ? "prepared"
     : narration
       ? "narrated"
-      : "silent";
+      : values["sound-only"]
+        ? "sound-only"
+        : "silent";
   const html =
     (range.start === 0 && range.end === passage.frameCount) ||
     values["prepare-only"]

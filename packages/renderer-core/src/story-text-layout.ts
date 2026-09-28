@@ -3,6 +3,7 @@ import type { StoryRenderScene } from "./story-scene.ts";
 import type { LoadedFont } from "./prepared-fonts.ts";
 import { passageError } from "./passage-diagnostics.ts";
 import { validateStorySafeZones } from "./story-safe-zones.ts";
+import { textContainerBounds } from "./text-container-layout.ts";
 
 type TextNode = Extract<PreparedNode, { type: "text" }>;
 export function wrapStoryText(
@@ -51,7 +52,7 @@ export function validateStoryTextLayout(
 ) {
   const context = document.createElement("canvas").getContext("2d")!;
   for (const node of scene.nodes) {
-    if (node.type !== "text" || !node.textLayout) continue;
+    if (node.type !== "text" || (!node.textLayout && !node.container)) continue;
     const font = fonts.get(node.fontAsset ?? "");
     if (!font)
       passageError(
@@ -60,8 +61,37 @@ export function validateStoryTextLayout(
         { node: node.id },
       );
     context.font = `${font.weight} ${node.fontSize}px "${font.family}"`;
-    for (const text of node.states ?? [node.text])
-      measureStoryText(node, text, (value) => context.measureText(value).width);
+    const inset = scene.safeInset ?? 0;
+    for (const text of node.states ?? [node.text]) {
+      const measured = measureStoryText(
+        node,
+        text,
+        (value) => context.measureText(value).width,
+      );
+      if (node.container && !node.parent) {
+        const content = node.textBox
+          ? { x: 0, y: 0, width: node.width, height: node.height }
+          : {
+              x: measured.left,
+              y: 0,
+              width: measured.width,
+              height: measured.height,
+            };
+        const box = textContainerBounds(content, node.container);
+        if (
+          node.x + box.x < inset ||
+          node.y + box.y < inset ||
+          node.x + box.x + box.width > scene.width - inset ||
+          node.y + box.y + box.height > scene.height - inset
+        )
+          passageError(
+            "text-outside-safe-area",
+            "Text container including its tail is outside the output safe area",
+            { node: node.id },
+          );
+      }
+    }
+    if (!node.textLayout) continue;
     const { width, height } = node.textLayout;
     const left =
       node.align === "center"
@@ -69,7 +99,6 @@ export function validateStoryTextLayout(
         : node.align === "right"
           ? -width
           : 0;
-    const inset = scene.safeInset ?? 0;
     if (
       !node.parent &&
       (node.x + left < inset ||

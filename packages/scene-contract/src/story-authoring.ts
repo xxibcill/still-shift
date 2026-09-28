@@ -1,4 +1,11 @@
 import { z } from "zod";
+import { CharacterActionSchema, PropTrackSchema } from "./character-actions.ts";
+import { NarrationTimingSchema } from "./narration-timing.ts";
+import {
+  CharacterPoseTrackSchema,
+  TextContainerSchema,
+} from "./story-acting.ts";
+import { PassageAnchorSchema, PassageAudioSchema } from "./passage-audio.ts";
 import { StoryPassagePlanSchema } from "./story-passage.ts";
 import { StoryFormatsSchema, StorySceneSchema } from "./story.ts";
 import { CurveEasingSchema, MotionEasingSchema } from "./motion-easing.ts";
@@ -110,16 +117,7 @@ export const StoryTemplateSchema = z
   .strict();
 export const TimingBindingSchema = z
   .object({
-    anchor: z.discriminatedUnion("type", [
-      z.object({ type: z.literal("cue"), id: name }).strict(),
-      z
-        .object({
-          type: z.literal("event"),
-          id: name,
-          edge: z.enum(["start", "end"]),
-        })
-        .strict(),
-    ]),
+    anchor: PassageAnchorSchema,
     offset: z.number().int().default(0),
     duration: frame,
   })
@@ -176,16 +174,31 @@ export const StoryAuthoringPlanSchema = z
     transitionModel: z.literal("joins-1").optional(),
     styleProfile: StoryStyleSchema,
     contentPolicy: z.enum(["general", "historical"]).default("general"),
-    narration: StoryPassagePlanSchema.shape.narration.optional(),
+    narration: StoryPassagePlanSchema.shape.narration
+      .extend({ timing: NarrationTimingSchema.optional() })
+      .optional(),
+    audio: PassageAudioSchema.optional(),
     beats: z
       .array(
         z
           .object({
             ...legacyBeat.shape,
             evidence: legacyBeat.shape.evidence.optional(),
-            cues: z.array(legacyBeat.shape.cues.element).max(100),
+            cues: z
+              .array(
+                legacyBeat.shape.cues.element.extend({
+                  events: z.array(name).max(20).default([]),
+                }),
+              )
+              .max(100),
             timing: z.record(name, SlotTimingSchema).default({}),
             parameters: z.record(name, z.unknown()).default({}),
+            textContainers: z
+              .record(name, TextContainerSchema.nullable())
+              .optional(),
+            poseTracks: z.record(name, CharacterPoseTrackSchema).optional(),
+            actions: z.array(CharacterActionSchema).max(40).optional(),
+            propTracks: z.record(name, PropTrackSchema).optional(),
             bindings: z.record(name, TimingBindingSchema).default({}),
             handoff: HandoffSchema.default({
               mode: "cut",

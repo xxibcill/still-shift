@@ -378,3 +378,67 @@ pre {
   background: #edbb83;
   pointer-events: none;
 }
+#sfx-fields {
+  border: 0;
+  margin: 12px 0;
+  padding: 0;
+  min-width: 0;
+}
+#sfx-fields legend {
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+#sfx-fields label {
+  display: grid;
+  gap: 6px;
+  margin: 10px 0;
+}
+#sfx-fields :is(input:not([type="checkbox"]), textarea) {
+  width: 100%;
+  min-width: 0;
+}
+#sfx-fields textarea {
+  resize: vertical;
+  background: #292822;
+  color: #eee8d9;
+  border: 1px solid #696456;
+  border-radius: 3px;
+  padding: 8px;
+}
+#sfx-fields .sfx-loop {
+  display: flex;
+  align-items: center;
+}
+#sfx-preview {
+  width: 100%;
+}
+#sfx-file {
+  overflow-wrap: anywhere;
+}
+#timing-form label {
+  display: grid;
+  gap: 6px;
+  margin: 10px 0;
+}
+#timing-form input {
+  width: 100%;
+  min-width: 0;
+}
+#timing-preview {
+  max-height: 260px;
+  overflow: auto;
+  font-size: 12px;
+  line-height: 1.6;
+}
+.acting-group {
+  min-width: 0;
+  margin: 10px 0;
+  padding: 10px;
+  border: 1px solid #c9c1b1;
+  border-radius: 8px;
+}
+.acting-group legend {
+  padding: 0 6px;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}

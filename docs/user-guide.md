@@ -191,6 +191,46 @@ Start with `benchmarks/fixtures/story-authoring/linked-comparison.json` or
 `linked-network.json`. When importing JSON with relative paths, set **Import base
 directory** to its containing directory relative to the repository root.
 
+For a complete illustrated example, choose **30-second illustrated sequence** in
+the workbench. It combines a detail reveal, an action with a registered before/after
+state, and a consequence shot. See the [reuse guide](illustrated-sequence.md) for
+artwork slots, cue retiming and export commands. Narration-paced and linked sound
+versions are also available. Use **Sound cues** to bind effects to narration cues
+or visual events, adjust gain/fades, and save the plan. See the
+[sound guide](passage-audio.md) for preview, audio assets, mixing and export modes.
+For generated effects, set `ELEVENLABS_API_KEY` on the server and open **Sound cues
+→ Generate sound with ElevenLabs**. This optional generator saves reusable audio
+and prompt metadata; importing existing WAV/MP3 files needs no provider account.
+The same feature is available through `pnpm still-shift sfx generate --help`.
+
+To pace a passage from recorded speech, open **Narration cues → Import narration
+timing**. Select WAV/MP3 plus word JSON or SRT, preview changes, then apply them.
+Match existing phrases to move linked animation and sounds, or add transcript
+cues for new links. The import is undoable and cues remain editable. See the
+[timing import guide](narration-timing.md) and the workbench's **imported narration
+timing** example for a new 36-second story. Beat lengths stay authored; this step
+does not transcribe audio or generate a voice.
+
+Open **Text containers** to give measured text a caption panel, speech balloon or
+thought cloud. Set its padding, fill, border and tail; it follows the text's
+movement and fades. Open **Character poses** on a template with named image states
+to choose an initial pose and add changes anchored to cues or event edges. Changing
+a cue retimes its poses and linked sounds together. These edits support undo/redo,
+Save plan and portable workspaces.
+
+Use **Character actions** for reusable walk, knock, offer, receive and react
+sequences. Choose their poses, duration and cue; sounds can follow each action's
+start or end. **Held props** attaches a prop's grip to a named hand anchor, with
+editable pickups, transfers and releases. Hand anchor coordinates are authored
+in the template's pose states. Remove competing prop movement before attaching it.
+
+The workbench's **character actions, held props and narrated timing** example
+demonstrates these features. For another character, generate
+transparent posture images from one identity reference, then register them as
+named template states. **Download pose generation brief** supplies reusable image
+instructions; generation itself is external to the Lab. See the
+[container and pose guide](story-acting.md) for the asset contract and commands.
+
 Prepare a plan before rendering it:
 
 ```sh
@@ -407,14 +447,14 @@ flat vertical presets.
 
 ## Save, export and share
 
-| Output                     | What it preserves                                                                            | Use it for                                                            |
-| -------------------------- | -------------------------------------------------------------------------------------------- | --------------------------------------------------------------------- |
-| MP4                        | Rendered video                                                                               | Editing into a larger video or reviewing playback                     |
-| Scene/result JSON          | Resolved scene, checksums, warnings and render details; exact sidecars depend on the command | Reproduction and diagnosis                                            |
-| Commerce/shared source ZIP | Prepared scene and exact dependencies; brief or gallery settings where applicable            | Moving a renderable source example between checkouts                  |
-| Passage **Save plan**      | Current source plan with resolved local references                                           | CLI preparation/rendering or packaging                                |
-| Passage **Save workspace** | Local editing JSON with loaded template definitions                                          | Reopening edits on the same filesystem; assets/fonts are not embedded |
-| Portable passage package   | Plan, templates, images, fonts and optional narration, plus `workspace.json` checksums       | Moving a complete set of passage inputs                               |
+| Output                     | What it preserves                                                                                    | Use it for                                                            |
+| -------------------------- | ---------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------- |
+| MP4                        | Rendered video                                                                                       | Editing into a larger video or reviewing playback                     |
+| Scene/result JSON          | Resolved scene, checksums, warnings and render details; exact sidecars depend on the command         | Reproduction and diagnosis                                            |
+| Commerce/shared source ZIP | Prepared scene and exact dependencies; brief or gallery settings where applicable                    | Moving a renderable source example between checkouts                  |
+| Passage **Save plan**      | Current source plan with resolved local references                                                   | CLI preparation/rendering or packaging                                |
+| Passage **Save workspace** | Local editing JSON with loaded template definitions                                                  | Reopening edits on the same filesystem; assets/fonts are not embedded |
+| Portable passage package   | Plan, templates, images, fonts, sound assets and optional narration, plus `workspace.json` checksums | Moving a complete set of passage inputs                               |
 
 To package a passage into a new directory:
 

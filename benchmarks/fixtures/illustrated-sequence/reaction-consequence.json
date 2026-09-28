@@ -1,0 +1,229 @@
+{
+  "schemaVersion": "story-template-1",
+  "id": "reaction-consequence",
+  "scene": {
+    "title": "Reaction and consequence",
+    "fps": 24,
+    "width": 1920,
+    "height": 1080,
+    "background": "#E8DFC9",
+    "assets": [
+      {
+        "id": "house",
+        "path": "../../../assets/story-motion/art/house.svg",
+        "sha256": "sha256:a8fa4eff374ba974770317dd483ca7b2e5b8d1f0bd7a9224ada091db42542a60",
+        "width": 600,
+        "height": 440
+      },
+      {
+        "id": "store",
+        "path": "../../../assets/story-motion/art/store.svg",
+        "sha256": "sha256:8ba708bf4866da92ada1eed3dc788db98a961e7cf84fcafe8615fe734f13042c",
+        "width": 600,
+        "height": 520
+      },
+      {
+        "id": "access-open",
+        "path": "../../../assets/illustrated-sequence/access-open.svg",
+        "sha256": "sha256:f83c28a6767aecd1975a620e9ed2fa59ee677b71cb7997c7cd35c5daa06ea801",
+        "width": 800,
+        "height": 240
+      },
+      {
+        "id": "access-restricted",
+        "path": "../../../assets/illustrated-sequence/access-restricted.svg",
+        "sha256": "sha256:43968f4b50b0eb314c86350b25b44a874985b884b46c0b6a748aa2dbce988525",
+        "width": 800,
+        "height": 240
+      },
+      {
+        "id": "pressure",
+        "path": "../../../assets/illustrated-sequence/pressure.svg",
+        "sha256": "sha256:b7115a6f076baf0305f85b664bca217b7ed16b1e73f6de0b0d84d97da9d7b628",
+        "width": 240,
+        "height": 160
+      }
+    ],
+    "fonts": [
+      {
+        "id": "display",
+        "path": "../../../assets/story-motion/fonts/source-serif-4-semibold.otf",
+        "sha256": "sha256:25e034392847d9965c92f98971b3646436b7ab919ece9118b0c0e5ec94c02efc",
+        "weight": "600"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "world",
+        "x": 0,
+        "y": 0,
+        "width": 1920,
+        "height": 1080,
+        "opacity": 1,
+        "rotation": 0,
+        "origin": [0, 0],
+        "type": "group",
+        "clip": false
+      },
+      {
+        "id": "household",
+        "parent": "world",
+        "x": 100,
+        "y": 390,
+        "width": 540,
+        "height": 396,
+        "opacity": 1,
+        "rotation": 0,
+        "origin": [0.5, 0.5],
+        "type": "image",
+        "states": [{ "asset": "house" }],
+        "fit": "contain"
+      },
+      {
+        "id": "resource",
+        "parent": "world",
+        "x": 1320,
+        "y": 360,
+        "width": 500,
+        "height": 433,
+        "opacity": 1,
+        "rotation": 0,
+        "origin": [0.5, 0.5],
+        "type": "image",
+        "states": [{ "asset": "store" }],
+        "fit": "contain"
+      },
+      {
+        "id": "access",
+        "parent": "world",
+        "x": 610,
+        "y": 555,
+        "width": 760,
+        "height": 228,
+        "opacity": 1,
+        "rotation": 0,
+        "origin": [0.5, 0.5],
+        "type": "image",
+        "states": [
+          { "asset": "access-open" },
+          { "asset": "access-restricted" }
+        ],
+        "fit": "contain"
+      },
+      {
+        "id": "pressure-top",
+        "parent": "world",
+        "x": 875,
+        "y": 518,
+        "width": 228,
+        "height": 152,
+        "opacity": 1,
+        "rotation": 0,
+        "origin": [0.5, 0.5],
+        "type": "image",
+        "states": [{ "asset": "pressure" }],
+        "fit": "contain"
+      },
+      {
+        "id": "pressure-bottom",
+        "parent": "world",
+        "x": 875,
+        "y": 668,
+        "width": 228,
+        "height": 152,
+        "opacity": 1,
+        "rotation": 180,
+        "origin": [0.5, 0.5],
+        "type": "image",
+        "states": [{ "asset": "pressure" }],
+        "fit": "contain"
+      },
+      {
+        "id": "caption",
+        "x": 1080,
+        "y": 115,
+        "width": 0,
+        "height": 0,
+        "opacity": 1,
+        "rotation": 0,
+        "origin": [0, 0],
+        "type": "text",
+        "text": "The grain remains.\nAccess has changed.",
+        "textLayout": {
+          "width": 760,
+          "height": 200,
+          "lineHeight": 1.18,
+          "overflow": "error"
+        },
+        "fontSize": 72,
+        "color": "#211F1B",
+        "weight": "normal",
+        "font": "serif",
+        "fontAsset": "display",
+        "align": "left"
+      }
+    ],
+    "provenance": "Original symbolic dependency demonstration. No measured quantities or documented historical event. Artwork lineage: assets/illustrated-sequence/README.md.",
+    "schemaVersion": "story-scene-1",
+    "componentData": {
+      "schemaVersion": "scene-components-2",
+      "annotations": [],
+      "values": [],
+      "bindings": [],
+      "states": [
+        {
+          "id": "access-condition",
+          "target": "access",
+          "initial": 1,
+          "cuts": [{ "id": "changed-context", "frame": 0, "state": 1 }]
+        }
+      ],
+      "travels": []
+    },
+    "frameCount": 288,
+    "motionModel": "curves-1",
+    "motionGrammar": "v2",
+    "authoringVersion": "1",
+    "camera": {
+      "keys": [
+        { "frame": 0, "x": 1180, "y": 590, "zoom": 1.18 },
+        { "frame": 287, "x": 910, "y": 565, "zoom": 1.02 }
+      ],
+      "depth": { "world": 1, "caption": 0 },
+      "easeIn": false,
+      "easeOut": false
+    },
+    "recipe": {
+      "preset": "generic",
+      "moves": [],
+      "emphasis": [],
+      "entrances": [
+        {
+          "node": "caption",
+          "window": {
+            "start": 24,
+            "end": 48,
+            "cue": "consequence-appears",
+            "role": "response"
+          },
+          "verb": "fade"
+        }
+      ]
+    },
+    "connectors": []
+  },
+  "slots": {
+    "caption": { "kind": "text", "node": "caption", "required": false },
+    "householdArt": { "kind": "asset", "asset": "house", "required": false },
+    "resourceArt": { "kind": "asset", "asset": "store", "required": false },
+    "beforeArt": { "kind": "asset", "asset": "access-open", "required": false },
+    "afterArt": {
+      "kind": "asset",
+      "asset": "access-restricted",
+      "required": false
+    },
+    "pressureArt": { "kind": "asset", "asset": "pressure", "required": false }
+  },
+  "textRoles": {},
+  "textLayout": {}
+}

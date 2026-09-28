@@ -1,3 +1,7 @@
+import {
+  renderPassageAudio,
+  verifyPassageAudioAssets,
+} from "./passage-audio.ts";
 import { isStoryTransition } from "../../renderer-core/src/story-transition.ts";
 import { passageError } from "../../renderer-core/src/passage-diagnostics.ts";
 import { cachedStoryTransition } from "./story-transition-render.ts";
@@ -234,26 +238,29 @@ async function assembleStoryPassage(
     ":end_frame=" +
     (renderStart + frameCount) +
     ",setpts=PTS-STARTPTS[v]";
-  const audio = narration
-    ? ";[" +
-      assemblyInputs.length +
-      ":a:0]atrim=start=" +
-      sourceStartFrame / plan.fps +
-      ":end=" +
-      endFrameExclusive / plan.fps +
-      ",asetpts=PTS-STARTPTS[a]"
-    : "";
+  const mixedAudio = await renderPassageAudio(
+    join(output, "mix.wav"),
+    passage,
+    narration,
+    {
+      range,
+      soundEffects: options.soundEffects,
+      signal: options.signal,
+    },
+  );
+  const hasAudio = Boolean(mixedAudio);
+  const audio = mixedAudio ? `;[${assemblyInputs.length}:a:0]anull[a]` : "";
   await run("ffmpeg", [
     "-v",
     "error",
     "-n",
     ...assemblyInputs.flatMap((clip) => ["-i", clip.outputPath]),
-    ...(narration ? ["-i", narration] : []),
+    ...(mixedAudio ? ["-i", mixedAudio.path] : []),
     "-filter_complex",
     concat + audio,
     "-map",
     "[v]",
-    ...(narration ? ["-map", "[a]", "-c:a", "aac", "-b:a", "192k"] : []),
+    ...(hasAudio ? ["-map", "[a]", "-c:a", "aac", "-b:a", "192k"] : []),
     "-frames:v",
     String(frameCount),
     "-t",
@@ -275,7 +282,7 @@ async function assembleStoryPassage(
     frameCount,
     plan.fps,
     size,
-    Boolean(narration),
+    hasAudio,
     options.signal,
   );
   const slices = [];
@@ -293,7 +300,7 @@ async function assembleStoryPassage(
       ":end_frame=" +
       shot.end +
       ",setpts=PTS-STARTPTS[v]";
-    const trimAudio = narration
+    const trimAudio = hasAudio
       ? ";[0:a]atrim=start=" +
         shot.start / plan.fps +
         ":end=" +
@@ -310,7 +317,7 @@ async function assembleStoryPassage(
       filter + trimAudio,
       "-map",
       "[v]",
-      ...(narration ? ["-map", "[a]", "-c:a", "aac"] : []),
+      ...(hasAudio ? ["-map", "[a]", "-c:a", "aac"] : []),
       "-frames:v",
       String(shot.end - shot.start),
       "-t",
@@ -332,7 +339,7 @@ async function assembleStoryPassage(
         shot.end - shot.start,
         plan.fps,
         size,
-        Boolean(narration),
+        hasAudio,
         options.signal,
       )),
     });
@@ -394,6 +401,7 @@ async function assembleStoryPassage(
     narration: narration
       ? { sha256: plan.narration!.sha256, reference: plan.narration!.reference }
       : null,
+    audio: mixedAudio ? { ...mixedAudio, path: undefined } : null,
     video: verified,
     slices,
     metrics: {
@@ -412,6 +420,7 @@ async function assembleStoryPassage(
 }
 
 export type PassageRenderOptions = {
+  soundEffects?: boolean;
   cacheDirectory?: string;
   resume?: boolean;
   signal?: AbortSignal | undefined;
@@ -455,6 +464,7 @@ export async function renderStoryPassage(
     );
   if (narration)
     await verifyPassageNarration(passage, narration, options.signal);
+  await verifyPassageAudioAssets(passage, undefined, options.signal);
   for (const beat of passage.beats) {
     await validatePreparedAssets(beat.scene, resolve("."));
     const prepared = JSON.parse(
@@ -473,6 +483,8 @@ export async function renderStoryPassage(
       plan: passage.inputs.plan.sha256,
       scenes: passage.beats.map((b) => passageBeatKey(b.scene, runtime)),
       narration: narration ? passage.plan.narration?.sha256 : null,
+      audio: passage.audio,
+      soundEffects: options.soundEffects !== false,
       range,
       runtime: jobRuntime,
     },

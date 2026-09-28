@@ -28,3 +28,13 @@ export * from "./components.ts";
 
 export * from "./motion-craft.ts";
 export * from "./shared-effects.ts";
+
+export * from "./passage-audio.ts";
+export {
+  SfxGenerationRequestSchema,
+  SfxGenerationProvenanceSchema,
+  type SfxGenerationRequest,
+} from "./sfx-generation.ts";
+export * from "./narration-timing.ts";
+export * from "./story-acting.ts";
+export * from "./character-actions.ts";

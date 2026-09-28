@@ -31,6 +31,31 @@ Existing scenes serve as regression fixtures; episode production is tracked sepa
 
 ## Current implementation
 
+**Illustrated sequences:** Three reusable templates turn still artwork into a
+detail reveal, an action with an exact state change, and a consequence shot.
+The [30-second example and reuse guide](./docs/illustrated-sequence.md) includes
+cue-linked timing, replaceable artwork and continuous camera movement. Open the
+example from the Passage workbench. It includes silent, narration-paced and
+[linked sound](./docs/passage-audio.md) versions. Sound cues follow edited animation
+timing in Lab playback and MP4 export.
+
+Optional [ElevenLabs SFX generation](./docs/passage-audio.md#optional-elevenlabs-generation)
+is available in the Passage Lab and through `pnpm still-shift sfx generate`.
+Set `ELEVENLABS_API_KEY` on the server to generate reusable sound assets.
+
+**Narration timing import:** Load WAV/MP3 plus word JSON or SRT, preview cue changes,
+and apply them as one undoable edit. Existing animation and sound links follow.
+Use the Passage Lab or `pnpm still-shift passage import-narration`; see the
+[timing guide and new 36-second story](./docs/narration-timing.md).
+
+**Text containers and character acting:** Caption panels, speech balloons and
+thought clouds render with native text. Named image poses can change on narration
+cues or visual events, with optional foot registration and short blends. Edit them
+in the Passage Lab. Reusable walk, knock, offer, receive and react actions coordinate
+poses and movement; held props follow named hand anchors and transfer between
+characters. See the [authoring guide](./docs/story-acting.md) and the 36-second
+example with seven additional image-model poses.
+
 **Vertical video:** Single-image renders can request 1080×1920 with
 `--format vertical`; depth motion estimates a focal crop or accepts `--focus
 x,y`. The Lab previews both orientations and shows optional framing guides.

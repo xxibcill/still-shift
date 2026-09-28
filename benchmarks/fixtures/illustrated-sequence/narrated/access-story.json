@@ -1,0 +1,179 @@
+{
+  "schemaVersion": "story-passage-2",
+  "id": "illustrated-access-narrated",
+  "title": "Access changes · paced to narration",
+  "styleProfile": {
+    "schemaVersion": "story-style-1",
+    "id": "layered-chronicle-sequence",
+    "colors": {},
+    "safeInset": 80
+  },
+  "fps": 24,
+  "sourceStartFrame": 0,
+  "narration": {
+    "reference": "Wry Archivist · narration-v001/narration.wav",
+    "sha256": "805c433b78008df27730052f5778e804a512e1659e95bf51c0ca880284cdef79"
+  },
+  "beats": [
+    {
+      "id": "detail",
+      "template": "detail-reveal.json",
+      "purpose": "explain-relationships",
+      "takeaway": "The household depends on a connection to the grain.",
+      "focus": ["household", "access", "resource"],
+      "intensity": "develop",
+      "frameCount": 147,
+      "copy": {},
+      "timing": {},
+      "cues": [
+        {
+          "id": "question",
+          "phrase": "But can this household reach it",
+          "frame": 57,
+          "events": ["question-appears"]
+        },
+        {
+          "id": "connection",
+          "phrase": "Watch the connection",
+          "frame": 115,
+          "events": ["route-reveals"]
+        }
+      ],
+      "parameters": {},
+      "bindings": {
+        "question-appears": {
+          "anchor": { "type": "cue", "id": "question" },
+          "offset": 0,
+          "duration": 8
+        },
+        "route-reveals": {
+          "anchor": { "type": "cue", "id": "connection" },
+          "offset": 0,
+          "duration": 20
+        },
+        "route-visible": {
+          "anchor": { "type": "event", "id": "route-reveals", "edge": "start" },
+          "offset": 0,
+          "duration": 10
+        }
+      },
+      "handoff": { "mode": "cut", "camera": "reset", "subjects": [] }
+    },
+    {
+      "id": "action",
+      "template": "action-state-change.json",
+      "purpose": "show-change",
+      "takeaway": "Pressure constrains the route while leaving a connection open.",
+      "focus": ["access", "pressure-top", "pressure-bottom"],
+      "intensity": "peak",
+      "frameCount": 77,
+      "copy": {},
+      "timing": {},
+      "cues": [
+        {
+          "id": "pressure",
+          "phrase": "As pressure builds",
+          "frame": 5,
+          "events": ["pressure-visible"]
+        },
+        {
+          "id": "restriction",
+          "phrase": "narrows",
+          "frame": 47,
+          "events": ["access-changes"]
+        }
+      ],
+      "parameters": {},
+      "bindings": {
+        "access-changes": {
+          "anchor": { "type": "cue", "id": "restriction" },
+          "offset": 0,
+          "duration": 0
+        },
+        "pressure-arrives": {
+          "anchor": { "type": "cue", "id": "restriction" },
+          "offset": -36,
+          "duration": 36
+        },
+        "opposition-arrives": {
+          "anchor": {
+            "type": "event",
+            "id": "pressure-arrives",
+            "edge": "start"
+          },
+          "offset": 0,
+          "duration": 36
+        },
+        "pressure-visible": {
+          "anchor": {
+            "type": "event",
+            "id": "pressure-arrives",
+            "edge": "start"
+          },
+          "offset": -6,
+          "duration": 6
+        },
+        "opposition-visible": {
+          "anchor": {
+            "type": "event",
+            "id": "pressure-visible",
+            "edge": "start"
+          },
+          "offset": 0,
+          "duration": 6
+        },
+        "consequence-appears": {
+          "anchor": {
+            "type": "event",
+            "id": "access-changes",
+            "edge": "start"
+          },
+          "offset": 0,
+          "duration": 10
+        }
+      },
+      "handoff": { "mode": "cut", "camera": "reset", "subjects": [] }
+    },
+    {
+      "id": "consequence",
+      "template": "reaction-consequence.json",
+      "purpose": "resolve",
+      "takeaway": "The resource is unchanged; the household's access is different.",
+      "focus": ["resource", "access", "household"],
+      "intensity": "quiet",
+      "frameCount": 271,
+      "copy": {},
+      "timing": {},
+      "cues": [
+        {
+          "id": "grain",
+          "phrase": "basket",
+          "frame": 10,
+          "events": ["consequence-appears"]
+        },
+        {
+          "id": "consequence",
+          "phrase": "access",
+          "frame": 125,
+          "events": ["access-response"]
+        }
+      ],
+      "parameters": {},
+      "bindings": {
+        "consequence-appears": {
+          "anchor": { "type": "cue", "id": "grain" },
+          "offset": 0,
+          "duration": 8
+        },
+        "access-response": {
+          "anchor": { "type": "cue", "id": "consequence" },
+          "offset": 0,
+          "duration": 12
+        }
+      },
+      "handoff": { "mode": "cut", "camera": "reset", "subjects": [] }
+    }
+  ],
+  "delivery": [],
+  "contentPolicy": "general"
+}

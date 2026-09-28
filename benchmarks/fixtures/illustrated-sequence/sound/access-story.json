@@ -1,0 +1,305 @@
+{
+  "schemaVersion": "story-passage-2",
+  "id": "illustrated-access-sound",
+  "title": "Access changes · narration and linked sound",
+  "styleProfile": {
+    "schemaVersion": "story-style-1",
+    "id": "layered-chronicle-sequence",
+    "colors": {},
+    "safeInset": 80
+  },
+  "fps": 24,
+  "sourceStartFrame": 0,
+  "narration": {
+    "reference": "Wry Archivist · narration-v001/narration.wav",
+    "sha256": "805c433b78008df27730052f5778e804a512e1659e95bf51c0ca880284cdef79"
+  },
+  "beats": [
+    {
+      "id": "detail",
+      "template": "../narrated/detail-reveal.json",
+      "purpose": "explain-relationships",
+      "takeaway": "The household depends on a connection to the grain.",
+      "focus": ["household", "access", "resource"],
+      "intensity": "develop",
+      "frameCount": 147,
+      "copy": {},
+      "timing": {},
+      "cues": [
+        {
+          "id": "question",
+          "phrase": "But can this household reach it",
+          "frame": 57,
+          "events": ["question-appears"]
+        },
+        {
+          "id": "connection",
+          "phrase": "Watch the connection",
+          "frame": 115,
+          "events": ["route-reveals"]
+        }
+      ],
+      "parameters": {},
+      "bindings": {
+        "question-appears": {
+          "anchor": {
+            "type": "cue",
+            "id": "question"
+          },
+          "offset": 0,
+          "duration": 8
+        },
+        "route-reveals": {
+          "anchor": {
+            "type": "cue",
+            "id": "connection"
+          },
+          "offset": 0,
+          "duration": 20
+        },
+        "route-visible": {
+          "anchor": {
+            "type": "event",
+            "id": "route-reveals",
+            "edge": "start"
+          },
+          "offset": 0,
+          "duration": 10
+        }
+      },
+      "handoff": {
+        "mode": "cut",
+        "camera": "reset",
+        "subjects": []
+      }
+    },
+    {
+      "id": "action",
+      "template": "../narrated/action-state-change.json",
+      "purpose": "show-change",
+      "takeaway": "Pressure constrains the route while leaving a connection open.",
+      "focus": ["access", "pressure-top", "pressure-bottom"],
+      "intensity": "peak",
+      "frameCount": 77,
+      "copy": {},
+      "timing": {},
+      "cues": [
+        {
+          "id": "pressure",
+          "phrase": "As pressure builds",
+          "frame": 5,
+          "events": ["pressure-visible"]
+        },
+        {
+          "id": "restriction",
+          "phrase": "narrows",
+          "frame": 47,
+          "events": ["access-changes"]
+        }
+      ],
+      "parameters": {},
+      "bindings": {
+        "access-changes": {
+          "anchor": {
+            "type": "cue",
+            "id": "restriction"
+          },
+          "offset": 0,
+          "duration": 0
+        },
+        "pressure-arrives": {
+          "anchor": {
+            "type": "cue",
+            "id": "restriction"
+          },
+          "offset": -36,
+          "duration": 36
+        },
+        "opposition-arrives": {
+          "anchor": {
+            "type": "event",
+            "id": "pressure-arrives",
+            "edge": "start"
+          },
+          "offset": 0,
+          "duration": 36
+        },
+        "pressure-visible": {
+          "anchor": {
+            "type": "event",
+            "id": "pressure-arrives",
+            "edge": "start"
+          },
+          "offset": -6,
+          "duration": 6
+        },
+        "opposition-visible": {
+          "anchor": {
+            "type": "event",
+            "id": "pressure-visible",
+            "edge": "start"
+          },
+          "offset": 0,
+          "duration": 6
+        },
+        "consequence-appears": {
+          "anchor": {
+            "type": "event",
+            "id": "access-changes",
+            "edge": "start"
+          },
+          "offset": 0,
+          "duration": 10
+        }
+      },
+      "handoff": {
+        "mode": "cut",
+        "camera": "reset",
+        "subjects": []
+      }
+    },
+    {
+      "id": "consequence",
+      "template": "../narrated/reaction-consequence.json",
+      "purpose": "resolve",
+      "takeaway": "The resource is unchanged; the household's access is different.",
+      "focus": ["resource", "access", "household"],
+      "intensity": "quiet",
+      "frameCount": 271,
+      "copy": {},
+      "timing": {},
+      "cues": [
+        {
+          "id": "grain",
+          "phrase": "basket",
+          "frame": 10,
+          "events": ["consequence-appears"]
+        },
+        {
+          "id": "consequence",
+          "phrase": "access",
+          "frame": 125,
+          "events": ["access-response"]
+        }
+      ],
+      "parameters": {},
+      "bindings": {
+        "consequence-appears": {
+          "anchor": {
+            "type": "cue",
+            "id": "grain"
+          },
+          "offset": 0,
+          "duration": 8
+        },
+        "access-response": {
+          "anchor": {
+            "type": "cue",
+            "id": "consequence"
+          },
+          "offset": 0,
+          "duration": 12
+        }
+      },
+      "handoff": {
+        "mode": "cut",
+        "camera": "reset",
+        "subjects": []
+      }
+    }
+  ],
+  "delivery": [],
+  "contentPolicy": "general",
+  "audio": {
+    "schemaVersion": "passage-audio-1",
+    "assets": [
+      {
+        "id": "route-brush",
+        "path": "../../../../assets/illustrated-sequence/sounds-v001/route-brush.wav",
+        "sha256": "sha256:47f4ccf59ee82ff34f6c2572888d035df887f43a9515fe1d296ca28bbd166e85"
+      },
+      {
+        "id": "pressure-creak",
+        "path": "../../../../assets/illustrated-sequence/sounds-v001/pressure-creak.wav",
+        "sha256": "sha256:871cf1cae62c9d05ee0dadb4bef2760b417eee36dbdb6aedce9020e61ee736d9"
+      },
+      {
+        "id": "wood-tap",
+        "path": "../../../../assets/illustrated-sequence/sounds-v001/wood-tap.wav",
+        "sha256": "sha256:75dfbc71f7a934e8d434bdddf218ccab0dca69d25c39c6d2847559248bf80b53"
+      },
+      {
+        "id": "soft-resolve",
+        "path": "../../../../assets/illustrated-sequence/sounds-v001/soft-resolve.wav",
+        "sha256": "sha256:2cf2592d5467930d302664badcddb9db8b6248eeb4e5a1613db3a86b4d1b2db5"
+      }
+    ],
+    "sounds": [
+      {
+        "id": "connection-brush",
+        "beat": "detail",
+        "asset": "route-brush",
+        "anchor": {
+          "type": "event",
+          "id": "route-reveals",
+          "edge": "start"
+        },
+        "offset": 0,
+        "sourceStartFrame": 0,
+        "durationFrames": 20,
+        "gainDb": -16,
+        "fadeInFrames": 1,
+        "fadeOutFrames": 5
+      },
+      {
+        "id": "pressure-build",
+        "beat": "action",
+        "asset": "pressure-creak",
+        "anchor": {
+          "type": "event",
+          "id": "pressure-arrives",
+          "edge": "start"
+        },
+        "offset": 0,
+        "sourceStartFrame": 0,
+        "durationFrames": 36,
+        "gainDb": -20,
+        "fadeInFrames": 4,
+        "fadeOutFrames": 4
+      },
+      {
+        "id": "restriction-tap",
+        "beat": "action",
+        "asset": "wood-tap",
+        "anchor": {
+          "type": "event",
+          "id": "access-changes",
+          "edge": "start"
+        },
+        "offset": 0,
+        "sourceStartFrame": 0,
+        "durationFrames": 12,
+        "gainDb": -14,
+        "fadeInFrames": 0,
+        "fadeOutFrames": 8
+      },
+      {
+        "id": "access-resolve",
+        "beat": "consequence",
+        "asset": "soft-resolve",
+        "anchor": {
+          "type": "cue",
+          "id": "consequence"
+        },
+        "offset": 0,
+        "sourceStartFrame": 0,
+        "durationFrames": 18,
+        "gainDb": -18,
+        "fadeInFrames": 2,
+        "fadeOutFrames": 8
+      }
+    ],
+    "masterGainDb": 0,
+    "narrationGainDb": 0
+  }
+}

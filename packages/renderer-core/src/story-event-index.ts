@@ -121,7 +121,8 @@ function editableEvents(scene: StoryScene) {
     if (typeof record.frame === "number") {
       add({
         id:
-          path.startsWith("componentData/states") &&
+          (path.startsWith("componentData/states") ||
+            path.startsWith("propAttachments")) &&
           typeof record.id === "string"
             ? record.id
             : "@/" + path,
@@ -195,6 +196,8 @@ function editableEvents(scene: StoryScene) {
   visit(scene.recipe, "recipe");
   visit(scene.camera, "camera");
   visit(scene.flows, "flows");
+  visit(scene.characterActions, "characterActions");
+  visit(scene.propAttachments, "propAttachments");
   const features = componentCapabilities(scene.componentData);
   visit(features.values, "componentData/values");
   visit(features.travels, "componentData/travels");

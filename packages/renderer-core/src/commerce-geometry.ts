@@ -47,6 +47,7 @@ function geometryFor(scene: CommerceRenderScene, id: string) {
   const placement = imagePlacement(
     node,
     node.states[0]!.crop ?? [0, 0, asset.width, asset.height],
+    node.states[0]!.registration?.anchor,
   );
   return { geometry, node, placement };
 }

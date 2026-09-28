@@ -7,6 +7,8 @@ import {
   type PassageTemplate,
 } from "./story-template.ts";
 import { indexStoryEvents, retimeStoryEvents } from "./story-event-index.ts";
+import { applyStoryActing, sortCharacterPoseCuts } from "./story-acting.ts";
+import { validateBeatActingWindows } from "./character-actions.ts";
 import { applyStoryHandoff } from "./story-handoff.ts";
 import { isStoryTransition } from "./story-transition.ts";
 import {
@@ -23,6 +25,7 @@ import { compileStoryScene } from "./story-scene.ts";
 import { analyzeStoryQuality } from "./story-quality.ts";
 import type { OutputFormat } from "../../scene-contract/src/output-format.ts";
 import { validateStorySafeZones } from "./story-safe-zones.ts";
+import { compilePassageAudio } from "./passage-audio.ts";
 
 export const PURPOSE_RECIPES = {
   compare: ["unequal_margins", "category_swap"],
@@ -125,7 +128,15 @@ function applyBeat(
       end: scene.recipe.reset.atFrame,
     });
   if ("bindings" in beat) {
-    retimeStoryEvents(scene, beat.cues, beat.bindings, beat.timing);
+    const poseBindings = applyStoryActing(scene, beat);
+    retimeStoryEvents(
+      scene,
+      beat.cues,
+      { ...beat.bindings, ...poseBindings },
+      beat.timing,
+    );
+    sortCharacterPoseCuts(scene, beat);
+    validateBeatActingWindows(scene, beat);
     windows.clear();
     for (const event of indexStoryEvents(scene))
       windows.set(event.id, {
@@ -279,6 +290,11 @@ export function compileStoryPassage(
     beats,
     frameCount: localStart,
     endFrameExclusive: plan.sourceStartFrame + localStart,
+    audio: compilePassageAudio(
+      plan.schemaVersion === "story-passage-2" ? plan.audio : undefined,
+      beats,
+      localStart,
+    ),
     diagnostics: beats.flatMap((beat) => [
       ...beat.cueWarnings.map((note) => ({
         code: "cue-distance",

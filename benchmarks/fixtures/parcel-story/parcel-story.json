@@ -1,0 +1,754 @@
+{
+  "schemaVersion": "story-passage-2",
+  "id": "parcel-story",
+  "title": "The parcel at the wrong door",
+  "styleProfile": {
+    "schemaVersion": "story-style-1",
+    "id": "parcel-illustration",
+    "colors": {},
+    "safeInset": 80
+  },
+  "fps": 24,
+  "sourceStartFrame": 0,
+  "narration": {
+    "reference": "../../../assets/parcel-story/narration-v001/narration.wav",
+    "sha256": "053fc20f00c26dd628ef6700ace620198ba1b476b93f36707c5a4e866c5100b9",
+    "timing": {
+      "schemaVersion": "narration-timing-1",
+      "granularity": "word",
+      "segments": [
+        {
+          "text": "The",
+          "start": 0,
+          "end": 0.3
+        },
+        {
+          "text": "parcel",
+          "start": 0.3,
+          "end": 0.54
+        },
+        {
+          "text": "was",
+          "start": 0.54,
+          "end": 0.76
+        },
+        {
+          "text": "waiting",
+          "start": 0.76,
+          "end": 1.02
+        },
+        {
+          "text": "at",
+          "start": 1.02,
+          "end": 1.26
+        },
+        {
+          "text": "the",
+          "start": 1.26,
+          "end": 1.36
+        },
+        {
+          "text": "wrong",
+          "start": 1.36,
+          "end": 1.56
+        },
+        {
+          "text": "door.",
+          "start": 1.56,
+          "end": 1.96
+        },
+        {
+          "text": "Nora",
+          "start": 3.08,
+          "end": 3.08
+        },
+        {
+          "text": "checked",
+          "start": 3.08,
+          "end": 3.4
+        },
+        {
+          "text": "the",
+          "start": 3.4,
+          "end": 3.6
+        },
+        {
+          "text": "label,",
+          "start": 3.6,
+          "end": 3.94
+        },
+        {
+          "text": "then",
+          "start": 4.16,
+          "end": 4.5
+        },
+        {
+          "text": "looked",
+          "start": 4.5,
+          "end": 4.66
+        },
+        {
+          "text": "across",
+          "start": 4.66,
+          "end": 4.92
+        },
+        {
+          "text": "the",
+          "start": 4.92,
+          "end": 5.12
+        },
+        {
+          "text": "hall.",
+          "start": 5.12,
+          "end": 5.34
+        },
+        {
+          "text": "The",
+          "start": 6.04,
+          "end": 6.24
+        },
+        {
+          "text": "number",
+          "start": 6.24,
+          "end": 6.46
+        },
+        {
+          "text": "matched",
+          "start": 6.46,
+          "end": 6.9
+        },
+        {
+          "text": "the",
+          "start": 6.9,
+          "end": 7.12
+        },
+        {
+          "text": "apartment",
+          "start": 7.12,
+          "end": 7.54
+        },
+        {
+          "text": "opposite.",
+          "start": 7.54,
+          "end": 7.86
+        },
+        {
+          "text": "She",
+          "start": 8.76,
+          "end": 8.86
+        },
+        {
+          "text": "carried",
+          "start": 8.86,
+          "end": 9.06
+        },
+        {
+          "text": "the",
+          "start": 9.06,
+          "end": 9.28
+        },
+        {
+          "text": "parcel",
+          "start": 9.28,
+          "end": 9.58
+        },
+        {
+          "text": "over",
+          "start": 9.58,
+          "end": 9.92
+        },
+        {
+          "text": "and",
+          "start": 9.92,
+          "end": 10.14
+        },
+        {
+          "text": "knocked.",
+          "start": 10.14,
+          "end": 10.42
+        },
+        {
+          "text": "For",
+          "start": 11.3,
+          "end": 11.48
+        },
+        {
+          "text": "a",
+          "start": 11.48,
+          "end": 11.58
+        },
+        {
+          "text": "moment,",
+          "start": 11.58,
+          "end": 11.94
+        },
+        {
+          "text": "nothing",
+          "start": 12.22,
+          "end": 12.38
+        },
+        {
+          "text": "happened.",
+          "start": 12.38,
+          "end": 12.82
+        },
+        {
+          "text": "Then",
+          "start": 13.66,
+          "end": 13.82
+        },
+        {
+          "text": "the",
+          "start": 13.82,
+          "end": 13.94
+        },
+        {
+          "text": "door",
+          "start": 13.94,
+          "end": 14.14
+        },
+        {
+          "text": "opened,",
+          "start": 14.14,
+          "end": 14.56
+        },
+        {
+          "text": "and",
+          "start": 15.08,
+          "end": 15.22
+        },
+        {
+          "text": "an",
+          "start": 15.22,
+          "end": 15.36
+        },
+        {
+          "text": "anxious",
+          "start": 15.36,
+          "end": 15.72
+        },
+        {
+          "text": "neighbour",
+          "start": 15.72,
+          "end": 16.08
+        },
+        {
+          "text": "smiled.",
+          "start": 16.08,
+          "end": 16.6
+        },
+        {
+          "text": "He",
+          "start": 17.64,
+          "end": 17.84
+        },
+        {
+          "text": "had",
+          "start": 17.84,
+          "end": 17.96
+        },
+        {
+          "text": "been",
+          "start": 17.96,
+          "end": 18.1
+        },
+        {
+          "text": "waiting",
+          "start": 18.1,
+          "end": 18.38
+        },
+        {
+          "text": "all",
+          "start": 18.38,
+          "end": 18.66
+        },
+        {
+          "text": "morning.",
+          "start": 18.66,
+          "end": 19
+        },
+        {
+          "text": "Nora",
+          "start": 20.32,
+          "end": 20.66
+        },
+        {
+          "text": "handed",
+          "start": 20.66,
+          "end": 20.96
+        },
+        {
+          "text": "it",
+          "start": 20.96,
+          "end": 21.14
+        },
+        {
+          "text": "over",
+          "start": 21.14,
+          "end": 21.38
+        },
+        {
+          "text": "and",
+          "start": 21.38,
+          "end": 21.6
+        },
+        {
+          "text": "stepped",
+          "start": 21.6,
+          "end": 21.86
+        },
+        {
+          "text": "back.",
+          "start": 21.86,
+          "end": 22.24
+        },
+        {
+          "text": "A",
+          "start": 23.34,
+          "end": 23.6
+        },
+        {
+          "text": "small",
+          "start": 23.6,
+          "end": 23.9
+        },
+        {
+          "text": "mistake",
+          "start": 23.9,
+          "end": 24.3
+        },
+        {
+          "text": "had",
+          "start": 24.3,
+          "end": 24.54
+        },
+        {
+          "text": "taken",
+          "start": 24.54,
+          "end": 24.74
+        },
+        {
+          "text": "only",
+          "start": 24.74,
+          "end": 25.02
+        },
+        {
+          "text": "a",
+          "start": 25.02,
+          "end": 25.18
+        },
+        {
+          "text": "minute",
+          "start": 25.18,
+          "end": 25.34
+        },
+        {
+          "text": "to",
+          "start": 25.34,
+          "end": 25.6
+        },
+        {
+          "text": "fix.",
+          "start": 25.6,
+          "end": 25.84
+        },
+        {
+          "text": "When",
+          "start": 26.94,
+          "end": 27.16
+        },
+        {
+          "text": "she",
+          "start": 27.16,
+          "end": 27.28
+        },
+        {
+          "text": "returned",
+          "start": 27.28,
+          "end": 27.64
+        },
+        {
+          "text": "home,",
+          "start": 27.64,
+          "end": 28.04
+        },
+        {
+          "text": "the",
+          "start": 28.34,
+          "end": 28.52
+        },
+        {
+          "text": "hallway",
+          "start": 28.52,
+          "end": 28.78
+        },
+        {
+          "text": "was",
+          "start": 28.78,
+          "end": 29.06
+        },
+        {
+          "text": "quiet",
+          "start": 29.06,
+          "end": 29.38
+        },
+        {
+          "text": "again.",
+          "start": 29.38,
+          "end": 29.7
+        },
+        {
+          "text": "This",
+          "start": 30.76,
+          "end": 31.02
+        },
+        {
+          "text": "time,",
+          "start": 31.02,
+          "end": 31.28
+        },
+        {
+          "text": "the",
+          "start": 31.58,
+          "end": 31.72
+        },
+        {
+          "text": "parcel",
+          "start": 31.72,
+          "end": 32.02
+        },
+        {
+          "text": "was",
+          "start": 32.02,
+          "end": 32.3
+        },
+        {
+          "text": "exactly",
+          "start": 32.3,
+          "end": 32.76
+        },
+        {
+          "text": "where",
+          "start": 32.76,
+          "end": 33.12
+        },
+        {
+          "text": "it",
+          "start": 33.12,
+          "end": 33.28
+        },
+        {
+          "text": "belonged.",
+          "start": 33.28,
+          "end": 33.6
+        }
+      ]
+    }
+  },
+  "beats": [
+    {
+      "id": "wrong-door",
+      "template": "wrong-door.json",
+      "purpose": "explain-relationships",
+      "takeaway": "A parcel outside door 12 belongs at door 21.",
+      "focus": ["nora", "parcel", "right-door"],
+      "intensity": "develop",
+      "frameCount": 204,
+      "copy": {},
+      "timing": {},
+      "cues": [
+        {
+          "id": "inspect",
+          "phrase": "checked the label",
+          "frame": 74,
+          "events": ["label-lifts"]
+        },
+        {
+          "id": "opposite",
+          "phrase": "number matched",
+          "frame": 150,
+          "events": ["label-reveals"]
+        }
+      ],
+      "parameters": {},
+      "bindings": {
+        "label-lifts": {
+          "anchor": {
+            "type": "cue",
+            "id": "inspect"
+          },
+          "offset": 0,
+          "duration": 16
+        },
+        "label-reveals": {
+          "anchor": {
+            "type": "cue",
+            "id": "opposite"
+          },
+          "offset": 0,
+          "duration": 4
+        }
+      },
+      "handoff": {
+        "mode": "cut",
+        "camera": "reset",
+        "subjects": []
+      }
+    },
+    {
+      "id": "knock",
+      "template": "knock.json",
+      "purpose": "show-change",
+      "takeaway": "Nora carries the parcel over and the neighbor answers.",
+      "focus": ["nora", "parcel", "right-door"],
+      "intensity": "develop",
+      "frameCount": 276,
+      "copy": {},
+      "timing": {},
+      "cues": [
+        {
+          "id": "carry",
+          "phrase": "carried the parcel",
+          "frame": 9,
+          "events": ["carry-person", "carry-parcel"]
+        },
+        {
+          "id": "knock",
+          "phrase": "knocked",
+          "frame": 39,
+          "events": ["knock-reveals"]
+        },
+        {
+          "id": "open",
+          "phrase": "opened",
+          "frame": 135,
+          "events": ["door-opens"]
+        },
+        {
+          "id": "neighbor",
+          "phrase": "an anxious",
+          "frame": 161,
+          "events": ["neighbor-reveals"]
+        }
+      ],
+      "parameters": {},
+      "bindings": {
+        "carry-person": {
+          "anchor": {
+            "type": "cue",
+            "id": "carry"
+          },
+          "offset": 0,
+          "duration": 28
+        },
+        "carry-parcel": {
+          "anchor": {
+            "type": "cue",
+            "id": "carry"
+          },
+          "offset": 0,
+          "duration": 28
+        },
+        "knock-reveals": {
+          "anchor": {
+            "type": "cue",
+            "id": "knock"
+          },
+          "offset": 0,
+          "duration": 3
+        },
+        "knock-hides": {
+          "anchor": {
+            "type": "cue",
+            "id": "knock"
+          },
+          "offset": 10,
+          "duration": 3
+        },
+        "door-opens": {
+          "anchor": {
+            "type": "cue",
+            "id": "open"
+          },
+          "offset": 0,
+          "duration": 0
+        },
+        "number-hides": {
+          "anchor": {
+            "type": "cue",
+            "id": "open"
+          },
+          "offset": 0,
+          "duration": 4
+        },
+        "neighbor-reveals": {
+          "anchor": {
+            "type": "cue",
+            "id": "neighbor"
+          },
+          "offset": 0,
+          "duration": 8
+        }
+      },
+      "handoff": {
+        "mode": "cut",
+        "camera": "reset",
+        "subjects": []
+      }
+    },
+    {
+      "id": "handover",
+      "template": "handover.json",
+      "purpose": "resolve",
+      "takeaway": "A small act of kindness puts the parcel in the right hands.",
+      "focus": ["nora", "parcel", "right-door"],
+      "intensity": "develop",
+      "frameCount": 384,
+      "copy": {},
+      "timing": {},
+      "cues": [
+        {
+          "id": "handover",
+          "phrase": "handed it over",
+          "frame": 16,
+          "events": ["parcel-handover"]
+        },
+        {
+          "id": "step",
+          "phrase": "stepped back",
+          "frame": 38,
+          "events": ["step-back"]
+        },
+        {
+          "id": "return",
+          "phrase": "returned home",
+          "frame": 175,
+          "events": ["return-home"]
+        },
+        {
+          "id": "quiet",
+          "phrase": "quiet again",
+          "frame": 217,
+          "events": ["neighbor-hides", "parcel-hides"]
+        },
+        {
+          "id": "resolve",
+          "phrase": "exactly where it belonged",
+          "frame": 295,
+          "events": ["resolve-reveals"]
+        }
+      ],
+      "parameters": {},
+      "bindings": {
+        "parcel-handover": {
+          "anchor": {
+            "type": "cue",
+            "id": "handover"
+          },
+          "offset": 0,
+          "duration": 18
+        },
+        "step-back": {
+          "anchor": {
+            "type": "cue",
+            "id": "step"
+          },
+          "offset": 0,
+          "duration": 18
+        },
+        "return-home": {
+          "anchor": {
+            "type": "cue",
+            "id": "return"
+          },
+          "offset": 0,
+          "duration": 48
+        },
+        "neighbor-hides": {
+          "anchor": {
+            "type": "cue",
+            "id": "quiet"
+          },
+          "offset": 0,
+          "duration": 12
+        },
+        "parcel-hides": {
+          "anchor": {
+            "type": "cue",
+            "id": "quiet"
+          },
+          "offset": 0,
+          "duration": 12
+        },
+        "door-closes": {
+          "anchor": {
+            "type": "cue",
+            "id": "quiet"
+          },
+          "offset": 14,
+          "duration": 0
+        },
+        "number-returns": {
+          "anchor": {
+            "type": "cue",
+            "id": "quiet"
+          },
+          "offset": 14,
+          "duration": 8
+        },
+        "resolve-reveals": {
+          "anchor": {
+            "type": "cue",
+            "id": "resolve"
+          },
+          "offset": 0,
+          "duration": 12
+        },
+        "nora-hides": {
+          "anchor": {
+            "type": "cue",
+            "id": "quiet"
+          },
+          "offset": 0,
+          "duration": 12
+        }
+      },
+      "handoff": {
+        "mode": "cut",
+        "camera": "reset",
+        "subjects": []
+      }
+    }
+  ],
+  "delivery": [],
+  "contentPolicy": "general",
+  "audio": {
+    "schemaVersion": "passage-audio-1",
+    "assets": [
+      {
+        "id": "door-knock",
+        "path": "../../../assets/parcel-story/sfx-v001/door-knock.mp3",
+        "sha256": "sha256:79750e478536cd449faee92c0ef36d20182384386a741a7634e5f287f9d4c889"
+      }
+    ],
+    "sounds": [
+      {
+        "id": "knuckles",
+        "beat": "knock",
+        "asset": "door-knock",
+        "anchor": {
+          "type": "cue",
+          "id": "knock"
+        },
+        "offset": 0,
+        "sourceStartFrame": 26,
+        "durationFrames": 14,
+        "gainDb": -12,
+        "fadeInFrames": 0,
+        "fadeOutFrames": 4
+      }
+    ],
+    "masterGainDb": -3,
+    "narrationGainDb": 0
+  }
+}

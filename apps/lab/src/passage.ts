@@ -32,7 +32,10 @@ import {
   type PassageDiagnostic,
 } from "../../../packages/renderer-core/src/passage-diagnostics.ts";
 import { evaluatePreparedNode } from "../../../packages/renderer-core/src/prepared-scene.ts";
-import { sha256Hex } from "../../../packages/renderer-core/src/browser-checksum.ts";
+import { PassageAudioPlayer } from "./passage-audio-player.ts";
+import { PassageAudioSchema } from "../../../packages/scene-contract/src/passage-audio.ts";
+import { createSfxGenerator } from "./sfx-generator.ts";
+import { createNarrationTimingImport } from "./narration-timing-import.ts";
 import { createPassageControls } from "./passage-controls.ts";
 import { createMotionTools } from "./motion-tools.ts";
 import {
@@ -57,11 +60,10 @@ let previews: ReadyBeat[] = [],
   frame = 0,
   animation = 0,
   playing = false,
-  started = 0,
   generation = 0;
 let loadRequest = 0;
-const audio = new Audio();
-let audioUrl: string | undefined;
+let narrationRequest = 0;
+const audio = new PassageAudioPlayer();
 type FailedEdit = { beat: string; draft: PassagePlan | undefined };
 const errors = (error: unknown, failedEdit?: FailedEdit) => {
   const host = el("errors");
@@ -89,7 +91,7 @@ const errors = (error: unknown, failedEdit?: FailedEdit) => {
 const stop = () => {
   playing = false;
   cancelAnimationFrame(animation);
-  audio.pause();
+  audio.stop();
   el("play").textContent = "Play";
 };
 function button(host: HTMLElement, title: string, action: () => void) {
@@ -132,6 +134,7 @@ function apply(change: (draft: PassagePlan) => void) {
       const candidate = compileStoryPassage(draft, templates, {
         format: editor.format,
       });
+      await audio.prepare(candidate);
       const ready = await preparePreviews(candidate);
       if (ticket !== generation) {
         ready.forEach((p) => p.preview.dispose());
@@ -170,6 +173,85 @@ const controls = createPassageControls({
     show(next);
   },
   jumpToDiagnostic,
+});
+createNarrationTimingImport(
+  () => {
+    const owner = editor;
+    if (!owner || owner.passage.plan.schemaVersion !== "story-passage-2")
+      return undefined;
+    const original = owner.passage.plan,
+      format = owner.format;
+    const unchanged = () =>
+      editor === owner &&
+      owner.passage.plan === original &&
+      owner.format === format;
+    return {
+      plan: structuredClone(original),
+      validate(plan) {
+        if (!unchanged())
+          throw new Error("Passage changed. Preview the timing import again.");
+        compileStoryPassage(plan, templates, { format });
+      },
+      async commit(plan, voice) {
+        if (!unchanged())
+          throw new Error("Passage changed. Preview the timing import again.");
+        await apply((draft) => {
+          if (!unchanged())
+            throw new Error(
+              "Passage changed. Preview the timing import again.",
+            );
+          Object.assign(draft, plan);
+        });
+        const committed =
+          editor === owner &&
+          owner.passage.plan !== original &&
+          JSON.stringify(owner.passage.plan) === JSON.stringify(plan);
+        if (committed) {
+          narrationRequest++;
+          audio.setNarration(voice);
+        }
+        return committed;
+      },
+    };
+  },
+  (file) => audio.decodeNarrationSource(file),
+);
+createSfxGenerator(() => {
+  const owner = editor;
+  if (!owner || owner.passage.plan.schemaVersion !== "story-passage-2")
+    return undefined;
+  return async (asset) => {
+    if (editor !== owner) return undefined;
+    await apply((plan) => {
+      if (plan.schemaVersion !== "story-passage-2") return;
+      plan.audio ??= PassageAudioSchema.parse({
+        schemaVersion: "passage-audio-1",
+        assets: [],
+        sounds: [],
+      });
+      if (
+        plan.audio.assets.some(
+          (existing) =>
+            existing.path === asset.path && existing.sha256 === asset.sha256,
+        )
+      )
+        return;
+      let id = asset.id,
+        suffix = 2;
+      while (plan.audio.assets.some((existing) => existing.id === id))
+        id = `${asset.id}-${suffix++}`;
+      plan.audio.assets.push({ ...asset, id });
+    });
+    if (
+      editor !== owner ||
+      owner.passage.plan.schemaVersion !== "story-passage-2"
+    )
+      return undefined;
+    return owner.passage.plan.audio?.assets.find(
+      (existing) =>
+        existing.path === asset.path && existing.sha256 === asset.sha256,
+    )?.id;
+  };
 });
 function show(next: number) {
   if (!editor || !previews.length) return;
@@ -350,6 +432,7 @@ function updateTemplates(replacements: ReadonlyMap<string, PassageTemplate>) {
         candidateTemplates,
         { format: owner.format },
       );
+      await audio.prepare(candidate);
       const ready = await preparePreviews(candidate);
       if (ticket !== generation || editor !== owner) {
         ready.forEach((preview) => preview.preview.dispose());
@@ -458,6 +541,7 @@ async function loadPacket(
     nextTemplates,
     { format: "landscape" },
   );
+  await audio.prepare(nextEditor.passage);
   const ready = await preparePreviews(nextEditor.passage);
   if (ticket !== generation || request !== loadRequest) {
     ready.forEach((p) => p.preview.dispose());
@@ -467,9 +551,9 @@ async function loadPacket(
   editor = nextEditor;
   frame = 0;
   beatSelect.value = "0";
-  audio.removeAttribute("src");
-  if (audioUrl) URL.revokeObjectURL(audioUrl);
-  audioUrl = undefined;
+  audio.setNarration();
+  narrationRequest++;
+  el<HTMLInputElement>("narration").value = "";
   installPreviews(ready);
 }
 async function loadPath() {
@@ -532,6 +616,8 @@ openWorkspace.onchange = async () => {
         !directory &&
         (plan.beats.some((beat) => !absolutePath(beat.template)) ||
           (plan.schemaVersion === "story-passage-2" &&
+            plan.audio?.assets.some((asset) => !absolutePath(asset.path))) ||
+          (plan.schemaVersion === "story-passage-2" &&
             plan.beats.some((beat) =>
               Object.values(beat.parameters).some(
                 (value) =>
@@ -593,6 +679,7 @@ for (const name of ["undo", "redo"] as const)
       const ticket = ++generation;
       try {
         editor[name]();
+        await audio.prepare(editor.passage);
         const ready = await preparePreviews(editor.passage);
         if (ticket === generation) installPreviews(ready);
         else ready.forEach((p) => p.preview.dispose());
@@ -631,6 +718,7 @@ formatSelect.onchange = () => {
       const candidate = compileStoryPassage(owner.passage.plan, templates, {
         format: requested,
       });
+      await audio.prepare(candidate);
       const ready = await preparePreviews(candidate);
       if (ticket !== generation) {
         ready.forEach((p) => p.preview.dispose());
@@ -700,16 +788,9 @@ el("clear-vertical-override").onclick = () => {
   if (!key || !source) return;
   void updateTemplates(new Map([[key, withVerticalOverride(source)]]));
 };
-const tick = (now: number) => {
+const tick = () => {
   if (!playing || !editor) return;
-  const fps = editor.passage.plan.fps;
-  const next = audio.src
-    ? Math.floor(
-        audio.currentTime * fps -
-          editor.passage.plan.sourceStartFrame +
-          0.00001,
-      )
-    : Math.floor(((now - started) * fps) / 1000);
+  const next = audio.frame;
   if (next >= editor.passage.frameCount) {
     show(editor.passage.frameCount - 1);
     stop();
@@ -725,14 +806,15 @@ el("play").onclick = async () => {
     return;
   }
   if (frame === editor.passage.frameCount - 1) show(0);
-  started = performance.now() - (frame / editor.passage.plan.fps) * 1000;
   try {
-    if (audio.src) {
-      audio.currentTime =
-        (editor.passage.plan.sourceStartFrame + frame) /
-        editor.passage.plan.fps;
-      await audio.play();
-    }
+    if (
+      !(await audio.play(
+        editor.passage,
+        frame,
+        el<HTMLInputElement>("sound-effects-enabled").checked,
+      ))
+    )
+      return;
     playing = true;
     el("play").textContent = "Pause";
     animation = requestAnimationFrame(tick);
@@ -740,41 +822,23 @@ el("play").onclick = async () => {
     errors(error);
   }
 };
-audio.onended = stop;
+el<HTMLInputElement>("sound-effects-enabled").onchange = stop;
 el<HTMLInputElement>("narration").onchange = async (event) => {
   stop();
+  const owner = editor;
+  const ticket = ++narrationRequest;
   try {
     const file = (event.target as HTMLInputElement).files?.[0];
-    if (!file || !editor) return;
-    const identity = editor.passage.plan.narration;
-    if (!identity)
-      throw new Error(
-        "This plan has no narration identity. Add one before previewing narration.",
-      );
-    const digest = await sha256Hex(await file.arrayBuffer());
-    if (digest !== identity.sha256)
-      throw new Error("Narration checksum differs from the plan");
-    const url = URL.createObjectURL(file);
-    audio.src = url;
-    await new Promise<void>((resolve, reject) => {
-      audio.onloadedmetadata = () => resolve();
-      audio.onerror = () => reject(new Error("Cannot decode narration"));
-    });
-    if (
-      audio.duration <
-      editor.passage.endFrameExclusive / editor.passage.plan.fps
-    ) {
-      audio.removeAttribute("src");
-      URL.revokeObjectURL(url);
-      throw new Error("Narration does not cover the passage");
-    }
-    if (audioUrl) URL.revokeObjectURL(audioUrl);
-    audioUrl = url;
+    if (!file || !owner) return;
+    const voice = await audio.decodeNarration(file, owner.passage);
+    if (owner !== editor || ticket !== narrationRequest) return;
+    audio.setNarration(voice);
     el("status").textContent = "Narration verified and ready.";
   } catch (error) {
-    errors(error);
+    if (owner === editor && ticket === narrationRequest) errors(error);
   }
 };
+
 declare global {
   interface Window {
     passageLab?: { snapshot(): unknown; seek(frame: number): void };
@@ -791,6 +855,9 @@ window.passageLab = {
             scene: b.scene,
           })),
           frame,
+          playing,
+          audio: editor.passage.audio,
+          narrationReady: audio.hasNarration(editor.passage),
           diagnostics: editor.passage.diagnostics,
         }
       : null,
@@ -799,4 +866,6 @@ window.passageLab = {
     show(value);
   },
 };
+const requestedPlan = new URLSearchParams(location.search).get("plan");
+if (requestedPlan) el<HTMLInputElement>("plan-path").value = requestedPlan;
 await loadPath();

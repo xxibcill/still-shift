@@ -1,0 +1,514 @@
+{
+  "schemaVersion": "story-template-1",
+  "id": "handover-image-model",
+  "scene": {
+    "title": "handover",
+    "schemaVersion": "story-scene-1",
+    "fps": 24,
+    "frameCount": 384,
+    "width": 1920,
+    "height": 1080,
+    "background": "#F0E8D8",
+    "assets": [
+      {
+        "id": "neighbor",
+        "path": "../../../../assets/parcel-story/image-model-v001/neighbor.png",
+        "sha256": "sha256:c1551496b2b16b566285bd0f142bb9f525180aa779479044ba37185a6a5b138e",
+        "width": 957,
+        "height": 1643
+      },
+      {
+        "id": "door-open",
+        "path": "../../../../assets/parcel-story/image-model-v001/door-open.png",
+        "sha256": "sha256:f5f0175cf0a96358b2d2f58c20fe9b72e874ff4f34d5997f46c1a87dea7f7052",
+        "width": 971,
+        "height": 1620
+      },
+      {
+        "id": "nora",
+        "path": "../../../../assets/parcel-story/image-model-v001/nora.png",
+        "sha256": "sha256:70ed8377ce15ea602312cbe20ed7a9173c1dd0f01e5d696f857cf9da5f405572",
+        "width": 957,
+        "height": 1643
+      },
+      {
+        "id": "door-closed",
+        "path": "../../../../assets/parcel-story/image-model-v001/door-closed.png",
+        "sha256": "sha256:569b5dbc80a0ae84ae68d8ffbb45d375c81d4a99e4f576e2fb18072d7503e55f",
+        "width": 971,
+        "height": 1619
+      },
+      {
+        "id": "parcel",
+        "path": "../../../../assets/parcel-story/image-model-v001/parcel.png",
+        "sha256": "sha256:f2e438f14b0ea328c47c3e4a167b97e8a7c2455774e70b325af98236662f16ab",
+        "width": 1448,
+        "height": 1086
+      },
+      {
+        "id": "hall",
+        "path": "../../../../assets/parcel-story/image-model-v001/hall.png",
+        "sha256": "sha256:967683cc1540463d34b74390646c54221f8f021989877cfa5e32e53f20800fc0",
+        "width": 1672,
+        "height": 941
+      },
+      {
+        "id": "door-blue",
+        "path": "../../../../assets/parcel-story/image-model-v001/door-blue.png",
+        "sha256": "sha256:8a14dfbff1b25944e8cd98a1ca78eded80b740fbff3f364bb6de32474f08133c",
+        "width": 971,
+        "height": 1619
+      },
+      {
+        "id": "knock",
+        "path": "../../../../assets/parcel-story/image-model-v001/knock.png",
+        "sha256": "sha256:6ff765d7331a25ba7da1768256903820da23af97d6f71ae846263638ec22b9fa",
+        "width": 1254,
+        "height": 1254
+      },
+      {
+        "id": "neighbor-idle",
+        "width": 957,
+        "height": 1643,
+        "sha256": "sha256:a6dedf0a0a1b059ce7eaf2d8720cd767cee80b1f1ed6beb64ff5adf6dab539c6",
+        "path": "../../../../assets/parcel-story/poses-v001/neighbor-idle.png"
+      },
+      {
+        "id": "neighbor-thanks",
+        "width": 957,
+        "height": 1643,
+        "sha256": "sha256:e4dc1e68ef4ba325ae62cca98b7ca3eb009a54ce8783aabfba88a897f2f6fac8",
+        "path": "../../../../assets/parcel-story/poses-v001/neighbor-thanks.png"
+      },
+      {
+        "id": "nora-idle",
+        "width": 957,
+        "height": 1643,
+        "sha256": "sha256:67c41109f1a49b6387760f92970d86e4c10e53a447c7f310f9bc299d1b9f2433",
+        "path": "../../../../assets/parcel-story/poses-v001/nora-idle.png"
+      },
+      {
+        "id": "nora-inspect",
+        "width": 957,
+        "height": 1643,
+        "sha256": "sha256:4abc1cfa082c01b11f6131b0b7ed2396cee8d8cedbff93a503dfa97d71c10a18",
+        "path": "../../../../assets/parcel-story/poses-v001/nora-inspect.png"
+      },
+      {
+        "id": "nora-knock",
+        "width": 957,
+        "height": 1643,
+        "sha256": "sha256:4892fa83f326b4d8ae2bba998062f5dfd31bfdea6895fcb7f9df1fc920227eff",
+        "path": "../../../../assets/parcel-story/poses-v001/nora-knock.png"
+      },
+      {
+        "id": "nora-step-a",
+        "width": 957,
+        "height": 1643,
+        "sha256": "sha256:3ca4c076680c799b6e9459f35fa50bf6df0c9cb633cbd7b24827e7f8395158f4",
+        "path": "../../../../assets/parcel-story/poses-v001/nora-step-a.png"
+      },
+      {
+        "id": "nora-step-b",
+        "width": 957,
+        "height": 1643,
+        "sha256": "sha256:0055cc2c672e485ee283b88a5e042b670056d8591ef38939c29f710df0d5a3f0",
+        "path": "../../../../assets/parcel-story/poses-v001/nora-step-b.png"
+      }
+    ],
+    "fonts": [
+      {
+        "id": "display",
+        "path": "../../../../assets/story-motion/fonts/source-serif-4-semibold.otf",
+        "sha256": "sha256:25e034392847d9965c92f98971b3646436b7ab919ece9118b0c0e5ec94c02efc",
+        "weight": "600"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "world",
+        "type": "group",
+        "x": 0,
+        "y": 0,
+        "width": 1920,
+        "height": 1080,
+        "opacity": 1,
+        "rotation": 0,
+        "origin": [0, 0],
+        "clip": false
+      },
+      {
+        "id": "hall",
+        "type": "image",
+        "parent": "world",
+        "x": 0,
+        "y": 0,
+        "width": 1920,
+        "height": 1080,
+        "opacity": 1,
+        "rotation": 0,
+        "origin": [0.5, 0.5],
+        "fit": "cover",
+        "states": [
+          {
+            "asset": "hall"
+          }
+        ]
+      },
+      {
+        "id": "left-door",
+        "type": "image",
+        "parent": "world",
+        "x": 220,
+        "y": 175,
+        "width": 432,
+        "height": 720,
+        "opacity": 1,
+        "rotation": 0,
+        "origin": [0.5, 0.5],
+        "fit": "contain",
+        "states": [
+          {
+            "asset": "door-blue"
+          }
+        ]
+      },
+      {
+        "id": "right-door",
+        "type": "image",
+        "parent": "world",
+        "x": 1180,
+        "y": 175,
+        "width": 432,
+        "height": 720,
+        "opacity": 1,
+        "rotation": 0,
+        "origin": [0.5, 0.5],
+        "fit": "contain",
+        "states": [
+          {
+            "asset": "door-closed"
+          },
+          {
+            "asset": "door-open"
+          }
+        ]
+      },
+      {
+        "id": "left-number",
+        "type": "text",
+        "text": "12",
+        "x": 404,
+        "y": 285,
+        "width": 0,
+        "height": 0,
+        "opacity": 1,
+        "rotation": 0,
+        "origin": [0, 0],
+        "font": "serif",
+        "fontAsset": "display",
+        "fontSize": 38,
+        "color": "#FFF8E7",
+        "weight": "normal",
+        "align": "left",
+        "parent": "world"
+      },
+      {
+        "id": "right-number",
+        "type": "text",
+        "text": "21",
+        "x": 1364,
+        "y": 285,
+        "width": 0,
+        "height": 0,
+        "opacity": 1,
+        "rotation": 0,
+        "origin": [0, 0],
+        "font": "serif",
+        "fontAsset": "display",
+        "fontSize": 38,
+        "color": "#FFF8E7",
+        "weight": "normal",
+        "align": "left",
+        "parent": "world"
+      },
+      {
+        "id": "neighbor",
+        "type": "image",
+        "parent": "world",
+        "x": 1190,
+        "y": 258,
+        "width": 449.4826536822885,
+        "height": 600,
+        "opacity": 1,
+        "rotation": 0,
+        "origin": [0.5, 0.5],
+        "fit": "contain",
+        "states": [
+          {
+            "asset": "neighbor",
+            "pose": "receive",
+            "registration": {
+              "anchor": [0.6322, 0.9775]
+            }
+          },
+          {
+            "asset": "neighbor-idle",
+            "pose": "idle",
+            "registration": {
+              "anchor": [0.5538, 0.9775]
+            }
+          },
+          {
+            "asset": "neighbor-thanks",
+            "pose": "thanks",
+            "registration": {
+              "anchor": [0.6432, 0.975]
+            }
+          }
+        ]
+      },
+      {
+        "id": "nora",
+        "type": "image",
+        "parent": "world",
+        "x": 950,
+        "y": 278,
+        "width": 337.83323189287887,
+        "height": 580,
+        "opacity": 1,
+        "rotation": 0,
+        "origin": [0.5, 0.5],
+        "fit": "contain",
+        "states": [
+          {
+            "asset": "nora",
+            "pose": "offer",
+            "registration": {
+              "anchor": [0.5517, 0.9659]
+            }
+          },
+          {
+            "asset": "nora-idle",
+            "pose": "idle",
+            "registration": {
+              "anchor": [0.5606, 0.9641]
+            }
+          },
+          {
+            "asset": "nora-inspect",
+            "pose": "inspect",
+            "registration": {
+              "anchor": [0.5731, 0.9574]
+            }
+          },
+          {
+            "asset": "nora-knock",
+            "pose": "knock",
+            "registration": {
+              "anchor": [0.5841, 0.9653]
+            }
+          },
+          {
+            "asset": "nora-step-a",
+            "pose": "step-a",
+            "registration": {
+              "anchor": [0.4613, 0.9519]
+            }
+          },
+          {
+            "asset": "nora-step-b",
+            "pose": "step-b",
+            "registration": {
+              "anchor": [0.4932, 0.9483]
+            }
+          }
+        ]
+      },
+      {
+        "id": "parcel",
+        "type": "image",
+        "parent": "world",
+        "x": 1200,
+        "y": 382,
+        "width": 145,
+        "height": 108.75,
+        "opacity": 1,
+        "rotation": 0,
+        "origin": [0.5, 0.5],
+        "fit": "contain",
+        "states": [
+          {
+            "asset": "parcel"
+          }
+        ]
+      },
+      {
+        "id": "caption",
+        "type": "text",
+        "text": "Exactly where it belonged.",
+        "x": 120,
+        "y": 915,
+        "width": 0,
+        "height": 0,
+        "opacity": 1,
+        "rotation": 0,
+        "origin": [0, 0],
+        "font": "serif",
+        "fontAsset": "display",
+        "fontSize": 48,
+        "color": "#303E41",
+        "weight": "normal",
+        "align": "left",
+        "textLayout": {
+          "width": 1600,
+          "height": 80,
+          "lineHeight": 1.18,
+          "overflow": "error"
+        }
+      }
+    ],
+    "provenance": "Original fictional sequence. All eight picture assets generated with the built-in image model; actual transparent PNG layers, not rasterized SVG. See assets/parcel-story/image-model-v001/README.md. Narration, cue timing and SFX retained.",
+    "componentData": {
+      "schemaVersion": "scene-components-2",
+      "annotations": [],
+      "values": [],
+      "bindings": [],
+      "states": [
+        {
+          "id": "door-state",
+          "target": "right-door",
+          "initial": 1,
+          "cuts": [
+            {
+              "id": "door-closes",
+              "frame": 232,
+              "state": 0
+            }
+          ]
+        }
+      ],
+      "travels": []
+    },
+    "motionModel": "curves-1",
+    "motionGrammar": "v2",
+    "authoringVersion": "1",
+    "camera": {
+      "keys": [
+        {
+          "frame": 0,
+          "x": 1200,
+          "y": 560,
+          "zoom": 1.35
+        },
+        {
+          "frame": 383,
+          "x": 960,
+          "y": 540,
+          "zoom": 1
+        }
+      ],
+      "depth": {
+        "world": 1,
+        "caption": 0
+      },
+      "easeIn": false,
+      "easeOut": false
+    },
+    "recipe": {
+      "preset": "generic",
+      "moves": [
+        {
+          "node": "parcel",
+          "window": {
+            "start": 16,
+            "end": 34,
+            "cue": "parcel-handover",
+            "easing": "in-out-cubic"
+          },
+          "to": {
+            "x": 1245
+          }
+        },
+        {
+          "node": "nora",
+          "window": {
+            "start": 40,
+            "end": 58,
+            "cue": "step-back",
+            "easing": "in-out-cubic"
+          },
+          "to": {
+            "x": 860
+          }
+        },
+        {
+          "node": "nora",
+          "window": {
+            "start": 175,
+            "end": 223,
+            "cue": "return-home",
+            "easing": "in-out-cubic"
+          },
+          "to": {
+            "x": 300
+          }
+        }
+      ],
+      "emphasis": [],
+      "entrances": [
+        {
+          "node": "right-number",
+          "window": {
+            "start": 232,
+            "end": 240,
+            "cue": "number-returns"
+          },
+          "verb": "fade"
+        },
+        {
+          "node": "caption",
+          "window": {
+            "start": 295,
+            "end": 307,
+            "cue": "resolve-reveals"
+          },
+          "verb": "fade"
+        }
+      ],
+      "exits": [
+        {
+          "node": "neighbor",
+          "window": {
+            "start": 218,
+            "end": 230,
+            "cue": "neighbor-hides"
+          },
+          "verb": "fade"
+        },
+        {
+          "node": "parcel",
+          "window": {
+            "start": 218,
+            "end": 230,
+            "cue": "parcel-hides"
+          },
+          "verb": "fade"
+        },
+        {
+          "node": "nora",
+          "window": {
+            "start": 218,
+            "end": 230,
+            "cue": "nora-hides"
+          },
+          "verb": "fade"
+        }
+      ]
+    },
+    "connectors": []
+  },
+  "slots": {},
+  "textRoles": {},
+  "textLayout": {}
+}

@@ -107,11 +107,13 @@ export async function passageJobRuntimeIdentity(
   signal?: AbortSignal,
 ) {
   signal?.throwIfAborted();
-  const assemblySource = await readFile(
-    resolve(import.meta.dirname, "story-passage-render.ts"),
+  const sources = await Promise.all(
+    ["story-passage-render.ts", "passage-audio.ts"].map((file) =>
+      readFile(resolve(import.meta.dirname, file)),
+    ),
   );
   signal?.throwIfAborted();
-  return passageHash(beatRuntime + ":" + passageHash(assemblySource));
+  return passageHash(beatRuntime + ":" + sources.map(passageHash).join(":"));
 }
 type CacheEntry = {
   version: "passage-cache-1";

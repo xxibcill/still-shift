@@ -5,6 +5,7 @@ import type { Plugin } from "vite";
 import { prepareStoryPassageInput } from "../../packages/animation-engine/src/story-passage-io.ts";
 import { passageDiagnostics } from "../../packages/renderer-core/src/passage-diagnostics.ts";
 import { readJsonBody } from "./json-body.ts";
+import { inspectPassageAudioAsset } from "../../packages/animation-engine/src/passage-audio.ts";
 
 const root = resolve(import.meta.dirname, "../..");
 async function workspaceFile(path: string) {
@@ -62,6 +63,11 @@ export const passageApi = (): Plugin => ({
           url.searchParams.get("path") ??
             "benchmarks/fixtures/story-authoring/linked-comparison.json",
         );
+        if (url.pathname === "/passage-api/audio") {
+          response.setHeader("Content-Type", "application/json");
+          response.end(JSON.stringify(await inspectPassageAudioAsset(file)));
+          return;
+        }
         if (url.pathname === "/passage-api/asset") {
           const types: Record<string, string> = {
             ".svg": "image/svg+xml",
