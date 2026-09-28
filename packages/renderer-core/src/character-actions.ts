@@ -124,16 +124,22 @@ export function expandCharacterActions(scene: StoryScene, beat: Beat) {
   return { tracks, bindings };
 }
 
-export function validateCharacterActionWindows(scene: StoryScene, beat: Beat) {
-  for (const track of scene.propAttachments ?? [])
+export function validateBeatActingWindows(scene: StoryScene, beat: Beat) {
+  for (const track of scene.propAttachments ?? []) {
     track.changes.sort((a, b) => a.frame - b.frame);
+    for (const cut of track.changes)
+      if (cut.frame + cut.transitionFrames >= beat.frameCount)
+        passageError("prop-range", "Prop transition outside beat: " + cut.id, {
+          event: cut.id,
+        });
+  }
   const actions = [...(scene.characterActions ?? [])].sort(
     (a, b) => a.window.start - b.window.start,
   );
   for (const [i, action] of actions.entries()) {
     if (
       action.window.end <= action.window.start ||
-      action.window.end >= scene.frameCount
+      action.window.end >= beat.frameCount
     )
       passageError("action-range", "Action outside beat: " + action.window.cue);
     if (

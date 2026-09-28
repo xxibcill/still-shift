@@ -281,6 +281,47 @@ describe("reusable character actions and held props", () => {
       createPassageEditor(plan, new Map([["scene", template]])),
     ).toThrow(/prop.*ownership/i);
   });
+  it("keeps actions and prop transfers inside the authored beat during a crossfade", () => {
+    const { plan, template } = input();
+    const first = plan.beats[0]!;
+    const second = structuredClone(first);
+    plan.transitionModel = "joins-1";
+    plan.audio = undefined;
+    first.cues[0]!.frame = 180;
+    first.cues[1]!.frame = 190;
+    second.id = "two";
+    second.actions = [];
+    second.propTracks = undefined;
+    second.poseTracks = undefined;
+    second.handoff = {
+      mode: "crossfade",
+      frames: 20,
+      camera: "reset",
+      subjects: [],
+    };
+    plan.beats.push(second);
+    const compile = () =>
+      createPassageEditor(plan, new Map([["scene", template]]));
+
+    first.actions![0]!.durationFrames = 23;
+    expect(compile().passage.beats[0]!.scene.frameCount).toBe(224);
+    first.actions![0]!.durationFrames = 24;
+    expect(compile).toThrow(/action outside beat/i);
+
+    first.actions = [];
+    first.propTracks!.parcel!.changes = [
+      {
+        id: "give",
+        anchor: { type: "cue", id: "release" },
+        offset: 0,
+        hold: { actor: "other", anchor: "hand", offset: [0, 0] },
+        transitionFrames: 13,
+      },
+    ];
+    expect(compile().passage.beats[0]!.scene.frameCount).toBe(224);
+    first.propTracks!.parcel!.changes[0]!.transitionFrames = 14;
+    expect(compile).toThrow(/prop transition outside beat/i);
+  });
   it.each(["knock", "offer", "receive", "react"] as const)(
     "holds and settles a %s action",
     (kind) => {

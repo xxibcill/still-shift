@@ -8,7 +8,7 @@ import {
 } from "./story-template.ts";
 import { indexStoryEvents, retimeStoryEvents } from "./story-event-index.ts";
 import { applyStoryActing, sortCharacterPoseCuts } from "./story-acting.ts";
-import { validateCharacterActionWindows } from "./character-actions.ts";
+import { validateBeatActingWindows } from "./character-actions.ts";
 import { applyStoryHandoff } from "./story-handoff.ts";
 import { isStoryTransition } from "./story-transition.ts";
 import {
@@ -136,7 +136,7 @@ function applyBeat(
       beat.timing,
     );
     sortCharacterPoseCuts(scene, beat);
-    validateCharacterActionWindows(scene, beat);
+    validateBeatActingWindows(scene, beat);
     windows.clear();
     for (const event of indexStoryEvents(scene))
       windows.set(event.id, {
