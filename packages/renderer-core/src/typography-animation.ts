@@ -201,11 +201,18 @@ export function evaluateTextPoses(
     const weights = new Map<number, number>();
     for (const [selectorIndex, selector] of selectors.entries()) {
       const groups = groupsFor(layout, eligible, selector.basedOn ?? a.unit);
+      const selectorRank = textOrder(groups.length, selector).reduce<number[]>(
+        (ranks, group, rank) => {
+          ranks[group] = rank;
+          return ranks;
+        },
+        [],
+      );
       groups.forEach((indices, index) =>
         indices.forEach((i) => {
           const value = selectorAmount(
               selector,
-              index,
+              selectorRank[index]!,
               groups.length,
               frame,
               context,

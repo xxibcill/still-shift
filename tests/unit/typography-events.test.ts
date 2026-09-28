@@ -661,6 +661,24 @@ describe("semantic typography and lint", () => {
       ]),
     );
   });
+  it("uses selector order to choose units in a partial range", () => {
+    const scene = compileStoryScene(StorySceneSchema.parse(input()));
+    const node = textNode(scene, "claim");
+    const layout = mockLayout(node);
+    const animator = {
+      node: node.id,
+      unit: "word" as const,
+      start: 0,
+      end: 10,
+      stagger: 0,
+      selector: { start: 0, end: 0, order: "reverse" as const },
+      from: {},
+      to: { offset: [12, 0] as [number, number] },
+    };
+    const poses = evaluateTextPoses(node, layout, [animator], 10, scene);
+    expect(poses[0]!.x).toBe(0);
+    expect(poses[5]!.x).toBe(12);
+  });
   it("combines signal selectors, excludes spaces, and keeps held destinations after end", () => {
     const scene = compileStoryScene(StorySceneSchema.parse(input())),
       node = scene.nodes[0]!;
