@@ -3,7 +3,10 @@ import {
   shapeText,
   textBreaks,
 } from "../../packages/renderer-core/src/shaped-text.ts";
-import { commonClusters } from "../../packages/renderer-core/src/typography-transition.ts";
+import {
+  commonClusters,
+  reserveCountWidth,
+} from "../../packages/renderer-core/src/typography-transition.ts";
 import { resolveNarrationWord } from "../../packages/renderer-core/src/typography-events.ts";
 import { parseNarrationTiming } from "../../packages/renderer-core/src/narration-timing.ts";
 import {
@@ -65,6 +68,17 @@ const mixedSizeNode = {
 } as TextNode;
 
 describe("shaped typography", () => {
+  it("reserves counter width without moving left, center, or right anchors", () => {
+    for (const align of ["left", "center", "right"] as const) {
+      const node = { ...mixedSizeNode, spans: undefined, align };
+      const short = shapeText(measuredContext(), node, "9", measuredFonts);
+      const wide = shapeText(measuredContext(), node, "100", measuredFonts);
+      const positions = [short.lines[0]!.x, wide.lines[0]!.x];
+      reserveCountWidth([short, wide]);
+      expect(short.width).toBe(wide.width);
+      expect([short.lines[0]!.x, wide.lines[0]!.x]).toEqual(positions);
+    }
+  });
   it("tries smaller fitted sizes after a shared layout overflow", () => {
     const scene = {
       typography: "type-1" as const,

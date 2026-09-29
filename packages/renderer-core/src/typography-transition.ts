@@ -25,6 +25,12 @@ export function commonClusters(a: string[], b: string[]): [number, number][] {
   }
   return pairs;
 }
+/** Reserve one width for a count without moving its authored alignment anchor. */
+export function reserveCountWidth(layouts: Iterable<ShapedLayout>) {
+  const values = [...layouts];
+  const maxWidth = Math.max(...values.map((layout) => layout.width));
+  for (const layout of values) layout.width = maxWidth;
+}
 export function activeTextTransition(node: TextNode, frame: number) {
   return (node.transitions ?? (node.transition ? [node.transition] : [])).find(
     (t) => frame >= t.window.start && frame < t.window.end,

@@ -25,6 +25,7 @@ import {
   commonClusters,
   countText,
   retypedClusters,
+  reserveCountWidth,
   settledText,
   transitionProgress,
   transitionSlideLimit,
@@ -172,20 +173,7 @@ export function prepareTypography(
     const count = (
       node.transitions ?? (node.transition ? [node.transition] : [])
     ).some((t) => t.kind === "count");
-    if (count) {
-      const maxWidth = Math.max(...[...layouts.values()].map((l) => l.width));
-      for (const layout of layouts.values()) {
-        const shift =
-          (maxWidth - layout.width) * (node.align === "center" ? 0.5 : 1);
-        for (const cluster of layout.clusters) {
-          cluster.x += shift;
-          if (cluster.ink) cluster.ink.x += shift;
-        }
-        for (const run of layout.runs) run.x += shift;
-        for (const line of layout.lines) line.x += shift;
-        layout.width = maxWidth;
-      }
-    }
+    if (count) reserveCountWidth(layouts.values());
     const rasters = new Map<string, TextRaster>();
     for (const [text, layout] of layouts) {
       const raster = rasterizeText(node, layout, fonts);
