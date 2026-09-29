@@ -9,7 +9,11 @@ import {
   sampleTrack,
 } from "../../packages/renderer-core/src/prepared-scene.ts";
 import { compileStoryScene } from "../../packages/renderer-core/src/story-scene.ts";
-import { compareDecodedVideos, sha256File } from "./historical-video.ts";
+import {
+  compareDecodedVideos,
+  sha256File,
+  verifyV014HistoricalIdentity,
+} from "./historical-video.ts";
 
 const { values } = parseArgs({
   options: {
@@ -50,8 +54,7 @@ async function archivalSource(resultPath: string) {
   const video = path.slice(0, -".result.json".length);
   const result = JSON.parse(await readFile(path, "utf8"));
   const manifest = JSON.parse(await readFile(`${video}.scene.json`, "utf8"));
-  assert.equal(await sha256File(video), result.checksums.output);
-  assert.equal(manifest.sourceChecksum, result.checksums.source);
+  await verifyV014HistoricalIdentity(video, result, manifest);
   const input = Object.fromEntries(
     Object.entries(manifest.scene).filter(([key]) =>
       Object.hasOwn(StorySceneSchema.shape, key),

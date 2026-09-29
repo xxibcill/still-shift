@@ -15,7 +15,11 @@ import { tmpdir } from "node:os";
 import { extname, join, resolve } from "node:path";
 import { promisify } from "node:util";
 import { parseArgs } from "node:util";
-import { compareDecodedVideos, sha256File } from "./historical-video.ts";
+import {
+  compareDecodedVideos,
+  sha256File,
+  verifyV014HistoricalIdentity,
+} from "./historical-video.ts";
 
 const run = promisify(execFile);
 const engineCommit = "50b5dca0bea23d86fd2cb35ad68e63b6813794b3";
@@ -154,8 +158,14 @@ const historicalResult = resolve(values["historical-result"]!);
 assert.ok(historicalResult.endsWith(".mp4.result.json"));
 const historicalVideo = historicalResult.slice(0, -".result.json".length);
 const historicalSidecar = JSON.parse(await readFile(historicalResult, "utf8"));
-const historicalHash = await sha256File(historicalVideo);
-assert.equal(historicalHash, historicalSidecar.checksums.output);
+const historicalManifest = JSON.parse(
+  await readFile(`${historicalVideo}.scene.json`, "utf8"),
+);
+const historicalHash = await verifyV014HistoricalIdentity(
+  historicalVideo,
+  historicalSidecar,
+  historicalManifest,
+);
 const prior = JSON.parse(
   await readFile(join(replayDir, "report.json"), "utf8"),
 );

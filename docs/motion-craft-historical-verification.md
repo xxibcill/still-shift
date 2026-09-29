@@ -6,14 +6,12 @@ different compositions. This check keeps their evidence separate.
 
 ## Reproduce the comparison
 
-The MP4s and their result/scene sidecars are generated files under
-`benchmarks/results/` and are not committed. With both local render directories
-available, run from the repository root:
+The [pinned MP4s and sanitized render sidecars](../benchmarks/reference/motion-craft-v014-g/README.md) are tracked under `benchmarks/reference/motion-craft-v014-g/`, so a fresh checkout has the exact comparison inputs. Run from the repository root:
 
 ```sh
 node --import tsx scripts/story-motion/check-motion-craft-historical.ts \
-  --historical-result benchmarks/results/story-motion-v014-proto-g/unequal-margins.mp4.result.json \
-  --candidate-result benchmarks/results/motion-craft-20260927-browser-03/buffer-press.mp4.result.json \
+  --historical-result benchmarks/reference/motion-craft-v014-g/archived.mp4.result.json \
+  --candidate-result benchmarks/reference/motion-craft-v014-g/later-buffer-press.mp4.result.json \
   --candidate-scene benchmarks/fixtures/motion-craft/buffer-press.json \
   --output-dir benchmarks/results/motion-craft-historical-audit \
   --report-only
@@ -35,7 +33,7 @@ The restored assets also support an isolated replay under the current engine:
 
 ```sh
 node --import tsx scripts/story-motion/replay-motion-craft-v014.ts \
-  --historical-result benchmarks/results/story-motion-v014-proto-g/unequal-margins.mp4.result.json \
+  --historical-result benchmarks/reference/motion-craft-v014-g/archived.mp4.result.json \
   --archived-assets benchmarks/results/motion-craft-historical-audit/archived-assets \
   --output-dir benchmarks/results/motion-craft-v014-replay
 ```
@@ -69,7 +67,7 @@ writes both reports, and removes the temporary engine checkout:
 
 ```sh
 node --import tsx scripts/story-motion/replay-motion-craft-v014-archive.ts \
-  --historical-result benchmarks/results/story-motion-v014-proto-g/unequal-margins.mp4.result.json \
+  --historical-result benchmarks/reference/motion-craft-v014-g/archived.mp4.result.json \
   --replay-dir benchmarks/results/motion-craft-v014-replay \
   --output-dir benchmarks/results/motion-craft-v014-archival-transform
 ```

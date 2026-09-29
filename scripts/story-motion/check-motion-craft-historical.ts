@@ -4,7 +4,11 @@ import { createHash } from "node:crypto";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { dirname, join, relative, resolve, sep } from "node:path";
 import { parseArgs, promisify } from "node:util";
-import { compareDecodedVideos, sha256File } from "./historical-video.ts";
+import {
+  compareDecodedVideos,
+  sha256File,
+  verifyV014HistoricalIdentity,
+} from "./historical-video.ts";
 
 type Asset = { id: string; path: string; sha256: string };
 type Scene = {
@@ -59,7 +63,7 @@ assert.ok(Number.isInteger(tolerance) && tolerance >= 0 && tolerance <= 255);
 const output = resolve(values["output-dir"]!);
 await mkdir(output);
 
-async function loadRender(resultPath: string) {
+async function loadRender(resultPath: string, archivedV014 = false) {
   const path = resolve(resultPath);
   assert.ok(
     path.endsWith(".mp4.result.json"),
@@ -69,7 +73,9 @@ async function loadRender(resultPath: string) {
   const manifestPath = `${videoPath}.scene.json`;
   const result = JSON.parse(await readFile(path, "utf8")) as Result;
   const manifest = JSON.parse(await readFile(manifestPath, "utf8")) as Manifest;
-  const videoChecksum = await sha256File(videoPath);
+  const videoChecksum = archivedV014
+    ? await verifyV014HistoricalIdentity(videoPath, result, manifest)
+    : await sha256File(videoPath);
   assert.equal(
     videoChecksum,
     result.checksums.output,
@@ -203,7 +209,7 @@ function sceneDifferences(historical: Scene, candidate: Scene) {
   };
 }
 
-const historical = await loadRender(values["historical-result"]!);
+const historical = await loadRender(values["historical-result"]!, true);
 const candidate = await loadRender(values["candidate-result"]!);
 const candidateSourceChecksum = await sha256File(
   resolve(values["candidate-scene"]!),

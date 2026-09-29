@@ -1,6 +1,6 @@
 import { execFile } from "node:child_process";
 import { readFileSync } from "node:fs";
-import { mkdtemp, rm } from "node:fs/promises";
+import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { promisify } from "node:util";
@@ -9,11 +9,54 @@ import { StorySceneSchema } from "../../packages/scene-contract/src/story.ts";
 import { evaluatePreparedNode } from "../../packages/renderer-core/src/prepared-scene.ts";
 import { compileStoryScene } from "../../packages/renderer-core/src/story-scene.ts";
 import {
+  V014_ARCHIVED_MP4_SHA256,
+  V014_ARCHIVED_SOURCE_SHA256,
   compareDecodedVideos,
   measureRgbDifference,
+  sha256File,
+  verifyV014HistoricalIdentity,
 } from "../../scripts/story-motion/historical-video.ts";
 
 const run = promisify(execFile);
+
+it("rejects a replacement historical video even when its sidecar is updated", async () => {
+  const directory = await mkdtemp(join(tmpdir(), "still-shift-v014-identity-"));
+  try {
+    const video = join(directory, "unequal-margins.mp4");
+    const resultPath = `${video}.result.json`;
+    const manifestPath = `${video}.scene.json`;
+    await writeFile(video, "replacement video bytes");
+    const replacementHash = await sha256File(video);
+    expect(replacementHash).not.toBe(V014_ARCHIVED_MP4_SHA256);
+    await writeFile(
+      resultPath,
+      JSON.stringify({
+        checksums: {
+          source: V014_ARCHIVED_SOURCE_SHA256,
+          output: replacementHash,
+        },
+      }),
+    );
+    await writeFile(
+      manifestPath,
+      JSON.stringify({ sourceChecksum: V014_ARCHIVED_SOURCE_SHA256 }),
+    );
+    const result = JSON.parse(await readFile(resultPath, "utf8"));
+    const manifest = JSON.parse(await readFile(manifestPath, "utf8"));
+    await expect(
+      verifyV014HistoricalIdentity(video, result, manifest),
+    ).rejects.toThrow(/pinned video/);
+
+    const replacementSource = `sha256:${"0".repeat(64)}`;
+    result.checksums.source = replacementSource;
+    manifest.sourceChecksum = replacementSource;
+    await expect(
+      verifyV014HistoricalIdentity(video, result, manifest),
+    ).rejects.toThrow(/pinned source/);
+  } finally {
+    await rm(directory, { recursive: true, force: true });
+  }
+});
 
 it("measures the exact RGB channel and pixel of the first violation", () => {
   const result = measureRgbDifference(

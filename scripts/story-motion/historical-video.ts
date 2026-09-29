@@ -1,3 +1,4 @@
+import assert from "node:assert/strict";
 import { spawn } from "node:child_process";
 import { createHash } from "node:crypto";
 import { once } from "node:events";
@@ -21,6 +22,40 @@ export async function sha256File(path: string): Promise<string> {
   return `sha256:${createHash("sha256")
     .update(await readFile(path))
     .digest("hex")}`;
+}
+
+export const V014_ARCHIVED_MP4_SHA256 =
+  "sha256:59916b3457df4c92e0a188d0d591195fa05a4e477dfd00040b17f7e9a1ac862a";
+export const V014_ARCHIVED_SOURCE_SHA256 =
+  "sha256:ed3a58c0b805277de2e4e608ce5e4b6b09a9cfdbc41d30b714933c19a9b77b8f";
+
+export async function verifyV014HistoricalIdentity(
+  videoPath: string,
+  result: { checksums: { source: string; output: string } },
+  manifest: { sourceChecksum: string },
+): Promise<string> {
+  assert.equal(
+    manifest.sourceChecksum,
+    result.checksums.source,
+    "Historical v014-g source sidecars disagree",
+  );
+  assert.equal(
+    manifest.sourceChecksum,
+    V014_ARCHIVED_SOURCE_SHA256,
+    "Historical v014-g source checksum differs from the pinned source",
+  );
+  const videoChecksum = await sha256File(videoPath);
+  assert.equal(
+    videoChecksum,
+    result.checksums.output,
+    "Historical v014-g video sidecar disagrees with its MP4",
+  );
+  assert.equal(
+    videoChecksum,
+    V014_ARCHIVED_MP4_SHA256,
+    "Historical v014-g MP4 checksum differs from the pinned video",
+  );
+  return videoChecksum;
 }
 
 export function measureRgbDifference(

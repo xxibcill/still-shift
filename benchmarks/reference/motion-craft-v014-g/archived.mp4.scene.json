@@ -1,0 +1,1965 @@
+{
+  "schemaVersion": "story-render-1",
+  "sourcePath": "/archive/still-shift/benchmarks/fixtures/story-motion-v2/unequal-margins.json",
+  "sourceChecksum": "sha256:ed3a58c0b805277de2e4e608ce5e4b6b09a9cfdbc41d30b714933c19a9b77b8f",
+  "scene": {
+    "title": "Unequal Margins",
+    "fps": 24,
+    "width": 1920,
+    "height": 1080,
+    "background": "#E8DFC9",
+    "assets": [
+      {
+        "id": "house",
+        "path": "../../../assets/story-motion/art/house.svg",
+        "sha256": "sha256:a8fa4eff374ba974770317dd483ca7b2e5b8d1f0bd7a9224ada091db42542a60",
+        "width": 600,
+        "height": 440
+      },
+      {
+        "id": "store",
+        "path": "../../../assets/story-motion/art/store.svg",
+        "sha256": "sha256:8ba708bf4866da92ada1eed3dc788db98a961e7cf84fcafe8615fe734f13042c",
+        "width": 600,
+        "height": 520
+      },
+      {
+        "id": "land",
+        "path": "../../../assets/story-motion/art/land.svg",
+        "sha256": "sha256:c5c5d753a8ddd1f93da52c1171d204b260a0a2e01aa6d8c034065294345237fc",
+        "width": 640,
+        "height": 260
+      },
+      {
+        "id": "access",
+        "path": "../../../assets/story-motion/art/access.svg",
+        "sha256": "sha256:e9c7985f055ac7e07a49dbbfeadba7796175c856d5e32ab3e72f81e36b91dd1d",
+        "width": 520,
+        "height": 240
+      },
+      {
+        "id": "pressure",
+        "path": "../../../assets/story-motion/art/pressure.svg",
+        "sha256": "sha256:9ad0b18f2455c3fb9abe39f88a78c30dfa8ecfaf338a4d6235abfa14378958d7",
+        "width": 350,
+        "height": 110
+      },
+      {
+        "id": "access-crisis",
+        "path": "../../../assets/story-motion/art/access-crisis.svg",
+        "sha256": "sha256:bcfd00a8edd0787983aaa028b6a084f7a7b9d55dfa319b232922f0c5767f20ec",
+        "width": 520,
+        "height": 240
+      },
+      {
+        "id": "category-a",
+        "path": "../../../assets/story-motion/art/category-a.svg",
+        "sha256": "sha256:b5453d5780bb242d3022d460bb3f08191c1c93a0fba5c6448e2ba0c56c134d78",
+        "width": 600,
+        "height": 420
+      },
+      {
+        "id": "category-b",
+        "path": "../../../assets/story-motion/art/category-b.svg",
+        "sha256": "sha256:4887350b4a8f18324724a9727a30768be9fd9273cbffe535fd3df2341e9f0352",
+        "width": 600,
+        "height": 420
+      },
+      {
+        "id": "ground",
+        "path": "../../../assets/story-motion/art/ground.svg",
+        "sha256": "sha256:05a94509840b715518e055bc586a084c7d5c742d07486391c72cb7fa5ec86238",
+        "width": 1920,
+        "height": 300
+      },
+      {
+        "id": "paper",
+        "path": "../../../assets/story-motion/art/paper.svg",
+        "sha256": "sha256:f5a47b015f900631504b76ad6ebe587c43914b0ef0e45db460bb187c69f37b30",
+        "width": 1920,
+        "height": 1080
+      },
+      {
+        "id": "house-body",
+        "path": "../../../assets/story-motion/art/house-body.svg",
+        "sha256": "sha256:92f4db09d5b4e9d005d60ceabce0df90c4aae000e0d7e914056a15b5a084799f",
+        "width": 600,
+        "height": 440
+      },
+      {
+        "id": "house-shadow",
+        "path": "../../../assets/story-motion/art/house-shadow.svg",
+        "sha256": "sha256:4f775915beb116a469c26af03b5a65f52f53708d5cb92a37f9567cb5f65d69e8",
+        "width": 600,
+        "height": 440
+      },
+      {
+        "id": "store-body",
+        "path": "../../../assets/story-motion/art/store-body.svg",
+        "sha256": "sha256:eeba00a2c5b1d5c09e9935e224113a623215a81838cd841befe7b398bbc238c4",
+        "width": 600,
+        "height": 520
+      },
+      {
+        "id": "store-shadow",
+        "path": "../../../assets/story-motion/art/store-shadow.svg",
+        "sha256": "sha256:8ed9f7aa5f46df5961a9a8bbac8a6909273dc691be426abd4f93877cd5de1587",
+        "width": 600,
+        "height": 520
+      },
+      {
+        "id": "land-body",
+        "path": "../../../assets/story-motion/art/land-body.svg",
+        "sha256": "sha256:3401e6afef978bd5cf11a6c264f6659dbda4b1661e3207f9ea10c143b3ba28b3",
+        "width": 640,
+        "height": 260
+      },
+      {
+        "id": "land-shadow",
+        "path": "../../../assets/story-motion/art/land-shadow.svg",
+        "sha256": "sha256:bd999c2f8bc52333fe26233d52ac95dd7d5066fcabaeee77cbf5a6c27aac18a0",
+        "width": 640,
+        "height": 260
+      }
+    ],
+    "fonts": [
+      {
+        "id": "display",
+        "path": "../../../assets/story-motion/fonts/source-serif-4-semibold.otf",
+        "sha256": "sha256:25e034392847d9965c92f98971b3646436b7ab919ece9118b0c0e5ec94c02efc",
+        "weight": "600"
+      },
+      {
+        "id": "label",
+        "path": "../../../assets/story-motion/fonts/plex-sans-medium.ttf",
+        "sha256": "sha256:331c8639d7598b2cde62a911a71db195e30cb655cd6bdf2e324a7e984955f907",
+        "weight": "500"
+      },
+      {
+        "id": "label-strong",
+        "path": "../../../assets/story-motion/fonts/plex-sans-semibold.ttf",
+        "sha256": "sha256:a20caf8286023a6a7a85e40b1d2a4ae9fc3e3b1f9eda8f4c542dd4986af67bb1",
+        "weight": "600"
+      },
+      {
+        "id": "source",
+        "path": "../../../assets/story-motion/fonts/plex-mono-medium.ttf",
+        "sha256": "sha256:98fbd727aae340b236955879dabed4d991aac9e8e90b3b2a67ce4a59221cc97c",
+        "weight": "500"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "paper",
+        "x": 0,
+        "y": 0,
+        "width": 1920,
+        "height": 1080,
+        "opacity": 1,
+        "rotation": 0,
+        "origin": [
+          0.5,
+          0.5
+        ],
+        "type": "image",
+        "states": [
+          {
+            "asset": "paper"
+          }
+        ],
+        "fit": "contain"
+      },
+      {
+        "id": "ground",
+        "x": -160,
+        "y": 720,
+        "width": 2240,
+        "height": 360,
+        "opacity": 1,
+        "rotation": 0,
+        "origin": [
+          0.5,
+          0.5
+        ],
+        "type": "image",
+        "states": [
+          {
+            "asset": "ground"
+          }
+        ],
+        "fit": "stretch"
+      },
+      {
+        "id": "reference",
+        "x": 112,
+        "y": 96,
+        "width": 0,
+        "height": 0,
+        "opacity": 1,
+        "rotation": 0,
+        "origin": [
+          0.5,
+          0.5
+        ],
+        "type": "text",
+        "text": "The same season.",
+        "fontSize": 112,
+        "color": "#211F1B",
+        "weight": "normal",
+        "font": "sans-serif",
+        "fontAsset": "display",
+        "align": "left"
+      },
+      {
+        "id": "question",
+        "x": 116,
+        "y": 246,
+        "width": 0,
+        "height": 0,
+        "opacity": 1,
+        "rotation": 0,
+        "origin": [
+          0.5,
+          0.5
+        ],
+        "type": "text",
+        "text": "Different room to absorb strain.",
+        "revealMode": "words",
+        "fontSize": 64,
+        "color": "#211F1B",
+        "weight": "normal",
+        "font": "sans-serif",
+        "fontAsset": "label",
+        "align": "left"
+      },
+      {
+        "id": "common-ground",
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "opacity": 1,
+        "rotation": 0,
+        "origin": [
+          0.5,
+          0.5
+        ],
+        "type": "path",
+        "points": [
+          [
+            140,
+            830
+          ],
+          [
+            1780,
+            830
+          ]
+        ],
+        "stroke": "#59664D",
+        "lineWidth": 3,
+        "gapAt": 0.6,
+        "gapSize": 0.1
+      },
+      {
+        "id": "margin-a",
+        "x": 220,
+        "y": 830,
+        "width": 570,
+        "height": 1,
+        "opacity": 0.55,
+        "rotation": 0,
+        "origin": [
+          0.5,
+          0.5
+        ],
+        "type": "path",
+        "points": [
+          [
+            0,
+            0
+          ],
+          [
+            570,
+            0
+          ]
+        ],
+        "stroke": "#59664D",
+        "lineWidth": 34,
+        "lineStyle": "brush",
+        "gapAt": 0.6,
+        "gapSize": 0.1
+      },
+      {
+        "id": "margin-b",
+        "x": 1110,
+        "y": 830,
+        "width": 570,
+        "height": 1,
+        "opacity": 0.55,
+        "rotation": 0,
+        "origin": [
+          0.5,
+          0.5
+        ],
+        "type": "path",
+        "points": [
+          [
+            0,
+            0
+          ],
+          [
+            570,
+            0
+          ]
+        ],
+        "stroke": "#59664D",
+        "lineWidth": 34,
+        "lineStyle": "brush",
+        "gapAt": 0.6,
+        "gapSize": 0.1
+      },
+      {
+        "id": "house-a",
+        "x": 220,
+        "y": 402,
+        "width": 570,
+        "height": 418,
+        "opacity": 1,
+        "rotation": 0,
+        "origin": [
+          0.5,
+          1
+        ],
+        "type": "group",
+        "clip": false
+      },
+      {
+        "id": "house-a-shadow",
+        "parent": "house-a",
+        "x": 0,
+        "y": 0,
+        "width": 570,
+        "height": 418,
+        "opacity": 1,
+        "rotation": 0,
+        "origin": [
+          0.5,
+          1
+        ],
+        "type": "image",
+        "states": [
+          {
+            "asset": "house-shadow"
+          }
+        ],
+        "fit": "contain"
+      },
+      {
+        "id": "house-a-art",
+        "parent": "house-a",
+        "x": 0,
+        "y": 0,
+        "width": 570,
+        "height": 418,
+        "opacity": 1,
+        "rotation": 0,
+        "origin": [
+          0.5,
+          1
+        ],
+        "type": "image",
+        "states": [
+          {
+            "asset": "house-body"
+          }
+        ],
+        "fit": "contain"
+      },
+      {
+        "id": "house-b",
+        "x": 1110,
+        "y": 402,
+        "width": 570,
+        "height": 418,
+        "opacity": 1,
+        "rotation": 0,
+        "origin": [
+          0.5,
+          1
+        ],
+        "type": "group",
+        "clip": false
+      },
+      {
+        "id": "house-b-shadow",
+        "parent": "house-b",
+        "x": 0,
+        "y": 0,
+        "width": 570,
+        "height": 418,
+        "opacity": 1,
+        "rotation": 0,
+        "origin": [
+          0.5,
+          1
+        ],
+        "type": "image",
+        "states": [
+          {
+            "asset": "house-shadow"
+          }
+        ],
+        "fit": "contain"
+      },
+      {
+        "id": "house-b-art",
+        "parent": "house-b",
+        "x": 0,
+        "y": 0,
+        "width": 570,
+        "height": 418,
+        "opacity": 1,
+        "rotation": 0,
+        "origin": [
+          0.5,
+          1
+        ],
+        "type": "image",
+        "states": [
+          {
+            "asset": "house-body"
+          }
+        ],
+        "fit": "contain"
+      },
+      {
+        "id": "pressure-a",
+        "x": 118,
+        "y": 490,
+        "width": 0,
+        "height": 0,
+        "opacity": 1,
+        "rotation": 0,
+        "origin": [
+          0.5,
+          0.5
+        ],
+        "type": "path",
+        "points": [
+          [
+            0,
+            0
+          ],
+          [
+            0,
+            280
+          ],
+          [
+            58,
+            280
+          ]
+        ],
+        "stroke": "#B47A2A",
+        "lineWidth": 24,
+        "lineStyle": "brush",
+        "gapAt": 0.6,
+        "gapSize": 0.1
+      },
+      {
+        "id": "pressure-b",
+        "x": 1744,
+        "y": 490,
+        "width": 0,
+        "height": 0,
+        "opacity": 1,
+        "rotation": 0,
+        "origin": [
+          0.5,
+          0.5
+        ],
+        "type": "path",
+        "points": [
+          [
+            58,
+            0
+          ],
+          [
+            58,
+            280
+          ],
+          [
+            0,
+            280
+          ]
+        ],
+        "stroke": "#8B3F36",
+        "lineWidth": 24,
+        "lineStyle": "brush",
+        "gapAt": 0.6,
+        "gapSize": 0.1
+      },
+      {
+        "id": "room",
+        "x": 505,
+        "y": 854,
+        "width": 0,
+        "height": 0,
+        "opacity": 1,
+        "rotation": 0,
+        "origin": [
+          0.5,
+          0.5
+        ],
+        "type": "text",
+        "text": "More room",
+        "fontSize": 56,
+        "color": "#211F1B",
+        "weight": "normal",
+        "font": "sans-serif",
+        "fontAsset": "label",
+        "align": "center"
+      },
+      {
+        "id": "strained",
+        "x": 1395,
+        "y": 854,
+        "width": 0,
+        "height": 0,
+        "opacity": 1,
+        "rotation": 0,
+        "origin": [
+          0.5,
+          0.5
+        ],
+        "type": "text",
+        "text": "Less room",
+        "fontSize": 56,
+        "color": "#8B3F36",
+        "weight": "normal",
+        "font": "sans-serif",
+        "fontAsset": "label",
+        "align": "center"
+      },
+      {
+        "id": "qualifier",
+        "x": 112,
+        "y": 968,
+        "width": 0,
+        "height": 0,
+        "opacity": 1,
+        "rotation": 0,
+        "origin": [
+          0.5,
+          0.5
+        ],
+        "type": "text",
+        "text": "A qualitative comparison",
+        "fontSize": 52,
+        "color": "#211F1B",
+        "weight": "normal",
+        "font": "sans-serif",
+        "fontAsset": "label",
+        "align": "left"
+      },
+      {
+        "id": "strain-path",
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "opacity": 0,
+        "rotation": 0,
+        "origin": [
+          0.5,
+          0.5
+        ],
+        "type": "path",
+        "points": [
+          [
+            -100,
+            360
+          ],
+          [
+            2020,
+            360
+          ]
+        ],
+        "stroke": "#4B5F70",
+        "lineWidth": 1,
+        "gapAt": 0.6,
+        "gapSize": 0.1
+      }
+    ],
+    "provenance": "Original code-authored symbolic editorial illustrations for reusable motion studies. Layered Chronicle palette and typography. No selected S01E01 image is modified; these are explanatory fixtures, not authentic evidence or a finished episode.",
+    "schemaVersion": "story-scene-1",
+    "frameCount": 192,
+    "motionGrammar": "v2",
+    "camera": {
+      "keys": [
+        {
+          "frame": 0,
+          "x": 960,
+          "y": 540,
+          "zoom": 1
+        },
+        {
+          "frame": 110,
+          "x": 976,
+          "y": 542,
+          "zoom": 1.02
+        },
+        {
+          "frame": 191,
+          "x": 998,
+          "y": 546,
+          "zoom": 1.04
+        }
+      ],
+      "depth": {
+        "paper": 0,
+        "reference": 0,
+        "question": 0,
+        "qualifier": 0,
+        "ground": 0.7
+      },
+      "cover": [
+        "paper"
+      ]
+    },
+    "flows": [
+      {
+        "id": "strain",
+        "path": "strain-path",
+        "direction": 1,
+        "count": 6,
+        "shape": "dash",
+        "size": 7,
+        "color": "#4B5F70",
+        "window": {
+          "start": 40,
+          "end": 192,
+          "role": "current"
+        },
+        "speed": [
+          {
+            "frame": 40,
+            "pxPerFrame": 5
+          },
+          {
+            "frame": 110,
+            "pxPerFrame": 5
+          },
+          {
+            "frame": 124,
+            "pxPerFrame": 2,
+            "easing": "in-out-sine"
+          }
+        ]
+      }
+    ],
+    "review": {
+      "essentialText": [
+        "room",
+        "strained",
+        "qualifier"
+      ]
+    },
+    "recipe": {
+      "preset": "unequal_margins",
+      "moves": [
+        {
+          "node": "margin-a",
+          "window": {
+            "start": 48,
+            "end": 92,
+            "cue": "more-room-retained",
+            "easing": "in-out-quint"
+          },
+          "to": {
+            "scaleX": 0.82
+          }
+        },
+        {
+          "node": "margin-b",
+          "window": {
+            "start": 48,
+            "end": 104,
+            "cue": "less-room-remains",
+            "easing": "in-out-quint"
+          },
+          "to": {
+            "scaleX": 0.36
+          }
+        },
+        {
+          "node": "house-b",
+          "keys": [
+            {
+              "frame": 77,
+              "scaleY": 1,
+              "rotation": 0
+            },
+            {
+              "frame": 85,
+              "scaleY": 0.92,
+              "rotation": -2.5,
+              "easing": "in-quad"
+            },
+            {
+              "frame": 116,
+              "scaleY": 0.985,
+              "rotation": -0.8,
+              "easing": "out-back-soft"
+            }
+          ],
+          "role": "response"
+        },
+        {
+          "node": "pressure-b",
+          "keys": [
+            {
+              "frame": 150,
+              "x": 1630
+            },
+            {
+              "frame": 162,
+              "x": 1628,
+              "easing": "in-out-sine"
+            },
+            {
+              "frame": 174,
+              "x": 1630,
+              "easing": "in-out-sine"
+            },
+            {
+              "frame": 186,
+              "x": 1628,
+              "easing": "in-out-sine"
+            },
+            {
+              "frame": 191,
+              "x": 1628.5,
+              "easing": "linear"
+            }
+          ],
+          "role": "current"
+        }
+      ],
+      "emphasis": [
+        {
+          "node": "house-a-art",
+          "window": {
+            "start": 80,
+            "end": 88,
+            "cue": "focus-less-room",
+            "easing": "out-cubic",
+            "role": "response"
+          },
+          "opacity": 0.7
+        }
+      ],
+      "entrances": [
+        {
+          "node": "reference",
+          "window": {
+            "start": 0,
+            "end": 18,
+            "cue": "the-same-season",
+            "easing": "out-cubic"
+          },
+          "verb": "wipe"
+        },
+        {
+          "node": "question",
+          "window": {
+            "start": 8,
+            "end": 30,
+            "cue": "different-room",
+            "easing": "out-cubic"
+          },
+          "verb": "wipe"
+        },
+        {
+          "node": "house-a",
+          "window": {
+            "start": 4,
+            "end": 42,
+            "cue": "household-a",
+            "easing": "out-cubic"
+          },
+          "verb": "set-down"
+        },
+        {
+          "node": "house-b",
+          "window": {
+            "start": 28,
+            "end": 76,
+            "cue": "household-b",
+            "easing": "out-cubic"
+          },
+          "verb": "set-down"
+        },
+        {
+          "node": "margin-a",
+          "window": {
+            "start": 22,
+            "end": 46,
+            "cue": "same-visible-margin",
+            "easing": "out-cubic"
+          },
+          "verb": "draw"
+        },
+        {
+          "node": "margin-b",
+          "window": {
+            "start": 22,
+            "end": 46,
+            "cue": "same-visible-margin",
+            "easing": "out-cubic"
+          },
+          "verb": "draw"
+        },
+        {
+          "node": "pressure-a",
+          "window": {
+            "start": 30,
+            "end": 52,
+            "cue": "shared-pressure",
+            "easing": "out-cubic"
+          },
+          "verb": "draw"
+        },
+        {
+          "node": "pressure-b",
+          "window": {
+            "start": 30,
+            "end": 52,
+            "cue": "shared-pressure",
+            "easing": "out-cubic"
+          },
+          "verb": "draw"
+        },
+        {
+          "node": "qualifier",
+          "window": {
+            "start": 140,
+            "end": 164,
+            "cue": "qualitative-comparison",
+            "easing": "out-cubic"
+          },
+          "verb": "wipe"
+        }
+      ],
+      "households": [
+        "house-a",
+        "house-b"
+      ],
+      "reference": "reference",
+      "pressures": [
+        {
+          "node": "pressure-a",
+          "to": [
+            155,
+            490
+          ],
+          "condition": "room"
+        },
+        {
+          "node": "pressure-b",
+          "to": [
+            1630,
+            490
+          ],
+          "condition": "strained"
+        }
+      ],
+      "labels": [
+        "room",
+        "strained"
+      ],
+      "strain": {
+        "start": 48,
+        "end": 104,
+        "cue": "shared-strain",
+        "easing": "in-out-quint"
+      },
+      "labelWindows": [
+        {
+          "start": 86,
+          "end": 106,
+          "cue": "more-room",
+          "easing": "out-cubic"
+        },
+        {
+          "start": 98,
+          "end": 120,
+          "cue": "less-room",
+          "easing": "out-cubic"
+        }
+      ]
+    },
+    "connectors": [],
+    "rendererVersion": "story-canvas-0.14.0",
+    "durationMs": 8000,
+    "canvas": {
+      "width": 1920,
+      "height": 1080
+    },
+    "timeline": {
+      "fps": 24,
+      "frameCount": 192,
+      "durationMs": 8000
+    },
+    "tracks": {
+      "pressure-a": {
+        "x": [
+          {
+            "time": 0,
+            "value": 118
+          },
+          {
+            "time": 48,
+            "value": 118
+          },
+          {
+            "time": 104,
+            "value": 155,
+            "easing": "in-out-quint"
+          }
+        ],
+        "y": [
+          {
+            "time": 0,
+            "value": 490
+          },
+          {
+            "time": 48,
+            "value": 490
+          },
+          {
+            "time": 104,
+            "value": 490,
+            "easing": "in-out-quint"
+          }
+        ],
+        "reveal": [
+          {
+            "time": 0,
+            "value": 0
+          },
+          {
+            "time": 30,
+            "value": 0
+          },
+          {
+            "time": 52,
+            "value": 1,
+            "easing": "out-cubic"
+          }
+        ]
+      },
+      "pressure-b": {
+        "x": [
+          {
+            "time": 0,
+            "value": 1744
+          },
+          {
+            "time": 48,
+            "value": 1744
+          },
+          {
+            "time": 104,
+            "value": 1630,
+            "easing": "in-out-quint"
+          },
+          {
+            "time": 150,
+            "value": 1630,
+            "step": true
+          },
+          {
+            "time": 162,
+            "value": 1628,
+            "easing": "in-out-sine"
+          },
+          {
+            "time": 174,
+            "value": 1630,
+            "easing": "in-out-sine"
+          },
+          {
+            "time": 186,
+            "value": 1628,
+            "easing": "in-out-sine"
+          },
+          {
+            "time": 191,
+            "value": 1628.5,
+            "easing": "linear"
+          }
+        ],
+        "y": [
+          {
+            "time": 0,
+            "value": 490
+          },
+          {
+            "time": 48,
+            "value": 490
+          },
+          {
+            "time": 104,
+            "value": 490,
+            "easing": "in-out-quint"
+          }
+        ],
+        "reveal": [
+          {
+            "time": 0,
+            "value": 0
+          },
+          {
+            "time": 30,
+            "value": 0
+          },
+          {
+            "time": 52,
+            "value": 1,
+            "easing": "out-cubic"
+          }
+        ]
+      },
+      "room": {
+        "y": [
+          {
+            "time": 0,
+            "value": 878
+          },
+          {
+            "time": 86,
+            "value": 878
+          },
+          {
+            "time": 106,
+            "value": 854,
+            "easing": "out-expo"
+          }
+        ],
+        "opacity": [
+          {
+            "time": 0,
+            "value": 0
+          },
+          {
+            "time": 86,
+            "value": 0
+          },
+          {
+            "time": 96,
+            "value": 1,
+            "easing": "out-cubic"
+          }
+        ]
+      },
+      "strained": {
+        "y": [
+          {
+            "time": 0,
+            "value": 878
+          },
+          {
+            "time": 98,
+            "value": 878
+          },
+          {
+            "time": 120,
+            "value": 854,
+            "easing": "out-expo"
+          }
+        ],
+        "opacity": [
+          {
+            "time": 0,
+            "value": 0
+          },
+          {
+            "time": 98,
+            "value": 0
+          },
+          {
+            "time": 109,
+            "value": 1,
+            "easing": "out-cubic"
+          }
+        ]
+      },
+      "reference": {
+        "reveal": [
+          {
+            "time": 0,
+            "value": 0
+          },
+          {
+            "time": 18,
+            "value": 1,
+            "easing": "out-expo"
+          }
+        ],
+        "y": [
+          {
+            "time": 0,
+            "value": 104
+          },
+          {
+            "time": 18,
+            "value": 96,
+            "easing": "out-expo"
+          }
+        ]
+      },
+      "house-a": {
+        "y": [
+          {
+            "time": 0,
+            "value": 374
+          },
+          {
+            "time": 4,
+            "value": 374
+          },
+          {
+            "time": 42,
+            "value": 402,
+            "easing": "out-quint"
+          }
+        ],
+        "opacity": [
+          {
+            "time": 0,
+            "value": 0
+          },
+          {
+            "time": 4,
+            "value": 0
+          },
+          {
+            "time": 19.200000000000003,
+            "value": 1,
+            "easing": "out-cubic"
+          }
+        ],
+        "scaleY": [
+          {
+            "time": 0,
+            "value": 0.985
+          },
+          {
+            "time": 32.5,
+            "value": 0.985
+          },
+          {
+            "time": 42,
+            "value": 1,
+            "easing": "out-back-soft"
+          }
+        ]
+      },
+      "house-a-shadow": {
+        "y": [
+          {
+            "time": 0,
+            "value": 28
+          },
+          {
+            "time": 4,
+            "value": 28
+          },
+          {
+            "time": 42,
+            "value": 0,
+            "easing": "out-quint"
+          }
+        ],
+        "scaleX": [
+          {
+            "time": 0,
+            "value": 0.6
+          },
+          {
+            "time": 4,
+            "value": 0.6
+          },
+          {
+            "time": 26.8,
+            "value": 1,
+            "easing": "out-cubic"
+          }
+        ],
+        "opacity": [
+          {
+            "time": 0,
+            "value": 0
+          },
+          {
+            "time": 4,
+            "value": 0
+          },
+          {
+            "time": 26.8,
+            "value": 1,
+            "easing": "out-cubic"
+          }
+        ]
+      },
+      "question": {
+        "reveal": [
+          {
+            "time": 0,
+            "value": 0
+          },
+          {
+            "time": 8,
+            "value": 0
+          },
+          {
+            "time": 30,
+            "value": 1,
+            "easing": "out-expo"
+          }
+        ],
+        "y": [
+          {
+            "time": 0,
+            "value": 254
+          },
+          {
+            "time": 8,
+            "value": 254
+          },
+          {
+            "time": 30,
+            "value": 246,
+            "easing": "out-expo"
+          }
+        ]
+      },
+      "margin-a": {
+        "reveal": [
+          {
+            "time": 0,
+            "value": 0
+          },
+          {
+            "time": 22,
+            "value": 0
+          },
+          {
+            "time": 46,
+            "value": 1,
+            "easing": "out-cubic"
+          }
+        ],
+        "scaleX": [
+          {
+            "time": 0,
+            "value": 1
+          },
+          {
+            "time": 48,
+            "value": 1
+          },
+          {
+            "time": 92,
+            "value": 0.82,
+            "easing": "in-out-quint"
+          }
+        ]
+      },
+      "margin-b": {
+        "reveal": [
+          {
+            "time": 0,
+            "value": 0
+          },
+          {
+            "time": 22,
+            "value": 0
+          },
+          {
+            "time": 46,
+            "value": 1,
+            "easing": "out-cubic"
+          }
+        ],
+        "scaleX": [
+          {
+            "time": 0,
+            "value": 1
+          },
+          {
+            "time": 48,
+            "value": 1
+          },
+          {
+            "time": 104,
+            "value": 0.36,
+            "easing": "in-out-quint"
+          }
+        ]
+      },
+      "house-b": {
+        "y": [
+          {
+            "time": 0,
+            "value": 374
+          },
+          {
+            "time": 28,
+            "value": 374
+          },
+          {
+            "time": 76,
+            "value": 402,
+            "easing": "out-quint"
+          }
+        ],
+        "opacity": [
+          {
+            "time": 0,
+            "value": 0
+          },
+          {
+            "time": 28,
+            "value": 0
+          },
+          {
+            "time": 47.2,
+            "value": 1,
+            "easing": "out-cubic"
+          }
+        ],
+        "scaleY": [
+          {
+            "time": 0,
+            "value": 0.985
+          },
+          {
+            "time": 64,
+            "value": 0.985
+          },
+          {
+            "time": 76,
+            "value": 1,
+            "easing": "out-back-soft"
+          },
+          {
+            "time": 77,
+            "value": 1,
+            "step": true
+          },
+          {
+            "time": 85,
+            "value": 0.92,
+            "easing": "in-quad"
+          },
+          {
+            "time": 116,
+            "value": 0.985,
+            "easing": "out-back-soft"
+          }
+        ],
+        "rotation": [
+          {
+            "time": 0,
+            "value": 0
+          },
+          {
+            "time": 77,
+            "value": 0,
+            "step": true
+          },
+          {
+            "time": 85,
+            "value": -2.5,
+            "easing": "in-quad"
+          },
+          {
+            "time": 116,
+            "value": -0.8,
+            "easing": "out-back-soft"
+          }
+        ]
+      },
+      "house-b-shadow": {
+        "y": [
+          {
+            "time": 0,
+            "value": 28
+          },
+          {
+            "time": 28,
+            "value": 28
+          },
+          {
+            "time": 76,
+            "value": 0,
+            "easing": "out-quint"
+          }
+        ],
+        "scaleX": [
+          {
+            "time": 0,
+            "value": 0.6
+          },
+          {
+            "time": 28,
+            "value": 0.6
+          },
+          {
+            "time": 56.8,
+            "value": 1,
+            "easing": "out-cubic"
+          }
+        ],
+        "opacity": [
+          {
+            "time": 0,
+            "value": 0
+          },
+          {
+            "time": 28,
+            "value": 0
+          },
+          {
+            "time": 56.8,
+            "value": 1,
+            "easing": "out-cubic"
+          }
+        ]
+      },
+      "qualifier": {
+        "reveal": [
+          {
+            "time": 0,
+            "value": 0
+          },
+          {
+            "time": 140,
+            "value": 0
+          },
+          {
+            "time": 164,
+            "value": 1,
+            "easing": "out-expo"
+          }
+        ],
+        "y": [
+          {
+            "time": 0,
+            "value": 976
+          },
+          {
+            "time": 140,
+            "value": 976
+          },
+          {
+            "time": 164,
+            "value": 968,
+            "easing": "out-expo"
+          }
+        ]
+      },
+      "house-a-art": {
+        "opacity": [
+          {
+            "time": 0,
+            "value": 1
+          },
+          {
+            "time": 80,
+            "value": 1
+          },
+          {
+            "time": 88,
+            "value": 0.7,
+            "easing": "out-cubic"
+          }
+        ]
+      }
+    },
+    "followers": {},
+    "motionEvents": [
+      {
+        "node": "pressure-a",
+        "window": {
+          "start": 48,
+          "end": 104,
+          "cue": "shared-strain",
+          "easing": "in-out-quint"
+        },
+        "kind": "strain",
+        "role": "action"
+      },
+      {
+        "node": "pressure-b",
+        "window": {
+          "start": 48,
+          "end": 104,
+          "cue": "shared-strain",
+          "easing": "in-out-quint"
+        },
+        "kind": "strain",
+        "role": "action"
+      },
+      {
+        "node": "room",
+        "window": {
+          "start": 86,
+          "end": 106,
+          "cue": "more-room",
+          "easing": "out-cubic"
+        },
+        "kind": "entrance",
+        "role": "response"
+      },
+      {
+        "node": "strained",
+        "window": {
+          "start": 98,
+          "end": 120,
+          "cue": "less-room",
+          "easing": "out-cubic"
+        },
+        "kind": "entrance",
+        "role": "response"
+      },
+      {
+        "node": "reference",
+        "window": {
+          "start": 0,
+          "end": 18,
+          "cue": "the-same-season",
+          "easing": "out-cubic"
+        },
+        "kind": "entrance",
+        "role": "action"
+      },
+      {
+        "node": "house-a",
+        "window": {
+          "start": 4,
+          "end": 42,
+          "cue": "household-a",
+          "easing": "out-cubic"
+        },
+        "kind": "entrance",
+        "role": "action"
+      },
+      {
+        "node": "question",
+        "window": {
+          "start": 8,
+          "end": 30,
+          "cue": "different-room",
+          "easing": "out-cubic"
+        },
+        "kind": "entrance",
+        "role": "action"
+      },
+      {
+        "node": "margin-a",
+        "window": {
+          "start": 22,
+          "end": 46,
+          "cue": "same-visible-margin",
+          "easing": "out-cubic"
+        },
+        "kind": "entrance",
+        "role": "action"
+      },
+      {
+        "node": "margin-b",
+        "window": {
+          "start": 22,
+          "end": 46,
+          "cue": "same-visible-margin",
+          "easing": "out-cubic"
+        },
+        "kind": "entrance",
+        "role": "action"
+      },
+      {
+        "node": "house-b",
+        "window": {
+          "start": 28,
+          "end": 76,
+          "cue": "household-b",
+          "easing": "out-cubic"
+        },
+        "kind": "entrance",
+        "role": "action"
+      },
+      {
+        "node": "pressure-a",
+        "window": {
+          "start": 30,
+          "end": 52,
+          "cue": "shared-pressure",
+          "easing": "out-cubic"
+        },
+        "kind": "entrance",
+        "role": "action"
+      },
+      {
+        "node": "pressure-b",
+        "window": {
+          "start": 30,
+          "end": 52,
+          "cue": "shared-pressure",
+          "easing": "out-cubic"
+        },
+        "kind": "entrance",
+        "role": "action"
+      },
+      {
+        "node": "qualifier",
+        "window": {
+          "start": 140,
+          "end": 164,
+          "cue": "qualitative-comparison",
+          "easing": "out-cubic"
+        },
+        "kind": "entrance",
+        "role": "action"
+      },
+      {
+        "node": "margin-a",
+        "window": {
+          "start": 48,
+          "end": 92,
+          "cue": "more-room-retained",
+          "easing": "in-out-quint"
+        },
+        "kind": "move",
+        "role": "action"
+      },
+      {
+        "node": "margin-b",
+        "window": {
+          "start": 48,
+          "end": 104,
+          "cue": "less-room-remains",
+          "easing": "in-out-quint"
+        },
+        "kind": "move",
+        "role": "action"
+      },
+      {
+        "node": "house-b",
+        "window": {
+          "start": 77,
+          "end": 116
+        },
+        "kind": "move",
+        "role": "response"
+      },
+      {
+        "node": "pressure-b",
+        "window": {
+          "start": 150,
+          "end": 191
+        },
+        "kind": "move",
+        "role": "current"
+      },
+      {
+        "node": "house-a-art",
+        "window": {
+          "start": 80,
+          "end": 88,
+          "cue": "focus-less-room",
+          "easing": "out-cubic",
+          "role": "response"
+        },
+        "kind": "emphasis",
+        "role": "response"
+      },
+      {
+        "node": "camera",
+        "window": {
+          "start": 0,
+          "end": 191
+        },
+        "kind": "camera",
+        "role": "carrier"
+      },
+      {
+        "node": "strain-path",
+        "window": {
+          "start": 40,
+          "end": 192,
+          "role": "current"
+        },
+        "kind": "flow",
+        "role": "current"
+      },
+      {
+        "node": "strain-path",
+        "window": {
+          "start": 110,
+          "end": 124
+        },
+        "kind": "flow-speed",
+        "role": "current"
+      }
+    ],
+    "compiledFlows": [
+      {
+        "id": "strain",
+        "path": "strain-path",
+        "direction": 1,
+        "count": 6,
+        "shape": "dash",
+        "size": 7,
+        "color": "#4B5F70",
+        "window": {
+          "start": 40,
+          "end": 192,
+          "role": "current"
+        },
+        "speed": [
+          {
+            "frame": 40,
+            "pxPerFrame": 5
+          },
+          {
+            "frame": 110,
+            "pxPerFrame": 5
+          },
+          {
+            "frame": 124,
+            "pxPerFrame": 2,
+            "easing": "in-out-sine"
+          }
+        ],
+        "offsets": {
+          "0": 0,
+          "1": 5,
+          "2": 10,
+          "3": 15,
+          "4": 20,
+          "5": 25,
+          "6": 30,
+          "7": 35,
+          "8": 40,
+          "9": 45,
+          "10": 50,
+          "11": 55,
+          "12": 60,
+          "13": 65,
+          "14": 70,
+          "15": 75,
+          "16": 80,
+          "17": 85,
+          "18": 90,
+          "19": 95,
+          "20": 100,
+          "21": 105,
+          "22": 110,
+          "23": 115,
+          "24": 120,
+          "25": 125,
+          "26": 130,
+          "27": 135,
+          "28": 140,
+          "29": 145,
+          "30": 150,
+          "31": 155,
+          "32": 160,
+          "33": 165,
+          "34": 170,
+          "35": 175,
+          "36": 180,
+          "37": 185,
+          "38": 190,
+          "39": 195,
+          "40": 200,
+          "41": 205,
+          "42": 210,
+          "43": 215,
+          "44": 220,
+          "45": 225,
+          "46": 230,
+          "47": 235,
+          "48": 240,
+          "49": 245,
+          "50": 250,
+          "51": 255,
+          "52": 260,
+          "53": 265,
+          "54": 270,
+          "55": 275,
+          "56": 280,
+          "57": 285,
+          "58": 290,
+          "59": 295,
+          "60": 300,
+          "61": 305,
+          "62": 310,
+          "63": 315,
+          "64": 320,
+          "65": 325,
+          "66": 330,
+          "67": 335,
+          "68": 340,
+          "69": 345,
+          "70": 350,
+          "71": 355,
+          "72": 360,
+          "73": 365,
+          "74": 370,
+          "75": 375,
+          "76": 380,
+          "77": 385,
+          "78": 390,
+          "79": 395,
+          "80": 400,
+          "81": 405,
+          "82": 410,
+          "83": 415,
+          "84": 420,
+          "85": 425,
+          "86": 430,
+          "87": 435,
+          "88": 440,
+          "89": 445,
+          "90": 450,
+          "91": 455,
+          "92": 460,
+          "93": 465,
+          "94": 470,
+          "95": 475,
+          "96": 480,
+          "97": 485,
+          "98": 490,
+          "99": 495,
+          "100": 500,
+          "101": 505,
+          "102": 510,
+          "103": 515,
+          "104": 520,
+          "105": 525,
+          "106": 530,
+          "107": 535,
+          "108": 540,
+          "109": 545,
+          "110": 550,
+          "111": 555,
+          "112": 559.9623918682728,
+          "113": 564.8138451701265,
+          "114": 569.4865923938285,
+          "115": 573.9218270966165,
+          "116": 578.0726527052929,
+          "117": 581.9064341062274,
+          "118": 585.4064341062274,
+          "119": 588.5726527052929,
+          "120": 591.4218270966165,
+          "121": 593.9865923938285,
+          "122": 596.3138451701265,
+          "123": 598.4623918682728,
+          "124": 600.5,
+          "125": 602.5,
+          "126": 604.5,
+          "127": 606.5,
+          "128": 608.5,
+          "129": 610.5,
+          "130": 612.5,
+          "131": 614.5,
+          "132": 616.5,
+          "133": 618.5,
+          "134": 620.5,
+          "135": 622.5,
+          "136": 624.5,
+          "137": 626.5,
+          "138": 628.5,
+          "139": 630.5,
+          "140": 632.5,
+          "141": 634.5,
+          "142": 636.5,
+          "143": 638.5,
+          "144": 640.5,
+          "145": 642.5,
+          "146": 644.5,
+          "147": 646.5,
+          "148": 648.5,
+          "149": 650.5,
+          "150": 652.5,
+          "151": 654.5,
+          "152": 656.5,
+          "153": 658.5,
+          "154": 660.5,
+          "155": 662.5,
+          "156": 664.5,
+          "157": 666.5,
+          "158": 668.5,
+          "159": 670.5,
+          "160": 672.5,
+          "161": 674.5,
+          "162": 676.5,
+          "163": 678.5,
+          "164": 680.5,
+          "165": 682.5,
+          "166": 684.5,
+          "167": 686.5,
+          "168": 688.5,
+          "169": 690.5,
+          "170": 692.5,
+          "171": 694.5,
+          "172": 696.5,
+          "173": 698.5,
+          "174": 700.5,
+          "175": 702.5,
+          "176": 704.5,
+          "177": 706.5,
+          "178": 708.5,
+          "179": 710.5,
+          "180": 712.5,
+          "181": 714.5,
+          "182": 716.5,
+          "183": 718.5,
+          "184": 720.5,
+          "185": 722.5,
+          "186": 724.5,
+          "187": 726.5,
+          "188": 728.5,
+          "189": 730.5,
+          "190": 732.5,
+          "191": 734.5
+        }
+      }
+    ]
+  },
+  "assetPaths": {
+    "house": "/archive/still-shift/assets/story-motion/art/house.svg",
+    "store": "/archive/still-shift/assets/story-motion/art/store.svg",
+    "land": "/archive/still-shift/assets/story-motion/art/land.svg",
+    "access": "/archive/still-shift/assets/story-motion/art/access.svg",
+    "pressure": "/archive/still-shift/assets/story-motion/art/pressure.svg",
+    "access-crisis": "/archive/still-shift/assets/story-motion/art/access-crisis.svg",
+    "category-a": "/archive/still-shift/assets/story-motion/art/category-a.svg",
+    "category-b": "/archive/still-shift/assets/story-motion/art/category-b.svg",
+    "ground": "/archive/still-shift/assets/story-motion/art/ground.svg",
+    "paper": "/archive/still-shift/assets/story-motion/art/paper.svg",
+    "house-body": "/archive/still-shift/assets/story-motion/art/house-body.svg",
+    "house-shadow": "/archive/still-shift/assets/story-motion/art/house-shadow.svg",
+    "store-body": "/archive/still-shift/assets/story-motion/art/store-body.svg",
+    "store-shadow": "/archive/still-shift/assets/story-motion/art/store-shadow.svg",
+    "land-body": "/archive/still-shift/assets/story-motion/art/land-body.svg",
+    "land-shadow": "/archive/still-shift/assets/story-motion/art/land-shadow.svg",
+    "display": "/archive/still-shift/assets/story-motion/fonts/source-serif-4-semibold.otf",
+    "label": "/archive/still-shift/assets/story-motion/fonts/plex-sans-medium.ttf",
+    "label-strong": "/archive/still-shift/assets/story-motion/fonts/plex-sans-semibold.ttf",
+    "source": "/archive/still-shift/assets/story-motion/fonts/plex-mono-medium.ttf"
+  }
+}
