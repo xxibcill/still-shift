@@ -80,6 +80,13 @@ exports[`vertical cinematic reframe > records why each existing painted kit need
   },
   {
     "edge": "bottom",
+    "fixture": "ci-08-dolly-zoom-tension.json",
+    "missingPixels": 74,
+    "node": "background",
+    "result": "coverage",
+  },
+  {
+    "edge": "bottom",
     "fixture": "ci-09-layered-parallax-alternate.json",
     "missingPixels": 74,
     "node": "background",
