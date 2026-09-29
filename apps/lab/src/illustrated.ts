@@ -3,6 +3,7 @@ import {
   PreparedSceneInputSchema,
 } from "../../../packages/scene-contract/src/cinematic.ts";
 import { createStoryControls } from "./story-controls.ts";
+import { setStoryActivityFrame } from "./story-activity.ts";
 import {
   compilePreparedScene,
   type IllustratedScene,
@@ -45,6 +46,8 @@ const show = (frame: number) => {
     .getElementById("motion-tools")
     ?.dispatchEvent(new CustomEvent("story-frame", { detail: frame }));
   slider.value = String(frame);
+  if (scene.schemaVersion === "story-scene-1")
+    setStoryActivityFrame(frame, scene.timeline.frameCount);
   el("time").textContent =
     `${(frame / scene.fps).toFixed(2)} s · ${frame + 1} / ${scene.timeline.frameCount}`;
 };
@@ -153,6 +156,7 @@ const load = async () => {
   el("error").textContent = "";
   el("status").textContent = "Loading scene…";
   el("story-controls").hidden = true;
+  el("story-activity").hidden = true;
   try {
     const entry = entries.find((item) => item.value === select.value)!;
     const requested = OutputFormatSchema.parse(formatSelect.value);
@@ -225,6 +229,9 @@ const load = async () => {
         },
         images,
       );
+    } else {
+      el("story-controls").hidden = true;
+      el("story-activity").hidden = true;
     }
     slider.max = String(next.timeline.frameCount - 1);
     show(0);
@@ -243,6 +250,7 @@ const load = async () => {
       slider.disabled = false;
       el<HTMLButtonElement>("restart").disabled = false;
       el("story-controls").hidden = scene.schemaVersion !== "story-scene-1";
+      el("story-activity").hidden = scene.schemaVersion !== "story-scene-1";
     }
     el("status").textContent = "Scene unavailable";
     el("error").textContent =

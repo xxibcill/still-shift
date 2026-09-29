@@ -7,6 +7,7 @@ import {
 import { MotionEasingSchema } from "../../../packages/scene-contract/src/motion-easing.ts";
 import { compileStoryScene } from "../../../packages/renderer-core/src/story-scene.ts";
 import { analyzeStoryQuality } from "../../../packages/renderer-core/src/story-quality.ts";
+import { showStoryActivity } from "./story-activity.ts";
 
 export function createStoryControls(
   input: StoryScene,
@@ -21,17 +22,24 @@ export function createStoryControls(
   quality.id = "story-quality";
   quality.setAttribute("aria-label", "Motion quality");
   const showQuality = (scene: StoryScene) => {
-    const report = analyzeStoryQuality(compileStoryScene(scene));
+    const compiled = compileStoryScene(scene);
+    const report = analyzeStoryQuality(
+      compiled,
+      scene.motionGrammar === "v2" ? { preset: "continuous" } : {},
+    );
+    showStoryActivity(compiled);
     quality.replaceChildren();
     const heading = document.createElement("h3");
     heading.textContent = "Motion quality";
     const summary = document.createElement("p");
-    summary.textContent = `Final hold: ${report.finalHoldSeconds.toFixed(2)} s · Text-size estimate at 350 px video width. Check hierarchy and crowding visually; these suggestions do not block export.`;
+    summary.textContent = report.continuous
+      ? `Longest freeze: ${report.continuous.longestFrozenRun} frames · Longest semantic gap: ${report.continuous.longestSemanticGap} frames · Essential text velocity: ${report.continuous.maxTextVelocity.toFixed(1)} px/s. Review motion and readability in playback.`
+      : `Final hold: ${report.finalHoldSeconds.toFixed(2)} s · Text-size estimate at 350 px video width. Check hierarchy and crowding visually; these suggestions do not block export.`;
     quality.append(heading, summary);
     if (report.diagnostics.length === 0) {
       const note = document.createElement("p");
       note.textContent =
-        "No timing, text-size or competing-focus warnings. Review the composition and narration in playback.";
+        "No motion-quality warnings. Review the composition and narration in playback.";
       quality.append(note);
     }
     for (const diagnostic of report.diagnostics) {

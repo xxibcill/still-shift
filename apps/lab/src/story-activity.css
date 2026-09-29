@@ -1,0 +1,71 @@
+.story-activity {
+  margin: 4px 0 18px;
+  padding: 12px 16px;
+  border: 1px solid #514c3c;
+  border-radius: 8px;
+  background: #2b2a24;
+}
+
+.story-activity h2 {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.story-activity p {
+  margin: 3px 0 10px;
+  color: #c7c1b1;
+  font-size: 12px;
+}
+
+.story-activity-row {
+  display: grid;
+  grid-template-columns: 66px minmax(0, 1fr);
+  align-items: center;
+  gap: 10px;
+  margin-top: 4px;
+  font-size: 12px;
+  text-transform: capitalize;
+}
+
+.story-activity-track {
+  position: relative;
+  height: 11px;
+  overflow: hidden;
+  border-radius: 3px;
+  background: #424137;
+}
+
+.story-activity-track::after {
+  position: absolute;
+  top: 0;
+  left: var(--activity-position, 0%);
+  z-index: 1;
+  width: 1px;
+  height: 100%;
+  background: #f5f1e6;
+  content: "";
+}
+
+.story-activity-segment {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  background: var(--activity-color);
+}
+
+.story-activity-carrier {
+  --activity-color: #9db38d;
+}
+
+.story-activity-action {
+  --activity-color: #d4aa67;
+}
+
+.story-activity-response {
+  --activity-color: #ca8476;
+}
+
+.story-activity-current {
+  --activity-color: #88b5b7;
+}
