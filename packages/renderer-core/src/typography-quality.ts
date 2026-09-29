@@ -11,7 +11,11 @@ import { storyCameraTransform } from "./story-camera.ts";
 import { evaluatePreparedNode } from "./prepared-scene.ts";
 import { resolveTextEvents } from "./typography-events.ts";
 import type { TextStyle } from "../../scene-contract/src/typography.ts";
-import { settledText } from "./typography-transition.ts";
+import {
+  resolveDisplayedText,
+  retypedClusters,
+  settledText,
+} from "./typography-transition.ts";
 
 export type TypographyReviewScene = StoryRenderScene | CommerceRenderScene;
 export type TypeQualityCode =
@@ -186,20 +190,35 @@ export function poseJump(
   layout: ShapedLayout,
   scene: TypographyReviewScene,
   budget: number,
+  visibleFrames?: ReadonlySet<number>,
 ) {
   const animators = (scene.textAnimators ?? []).filter(
     (a) => a.node === node.id,
   );
   if (!animators.length) return undefined;
-  const poses = Array.from({ length: scene.frameCount }, (_, frame) =>
-    evaluateTextPoses(node, layout, animators, frame, scene),
-  );
+  const poses = new Map<number, ReturnType<typeof evaluateTextPoses>>();
+  const poseAt = (frame: number) => {
+    let pose = poses.get(frame);
+    if (!pose) {
+      pose = evaluateTextPoses(node, layout, animators, frame, scene);
+      poses.set(frame, pose);
+    }
+    return pose;
+  };
   const step = (frame: number) => {
-    if (frame < 1 || frame >= poses.length) return 0;
+    if (
+      frame < 1 ||
+      frame >= scene.frameCount ||
+      (visibleFrames &&
+        (!visibleFrames.has(frame) || !visibleFrames.has(frame - 1)))
+    )
+      return 0;
+    const current = poseAt(frame),
+      previous = poseAt(frame - 1);
     return Math.max(
       0,
-      ...poses[frame]!.map((pose, i) => {
-        const before = poses[frame - 1]![i]!;
+      ...current.map((pose, i) => {
+        const before = previous[i]!;
         if (Math.min(pose.opacity, before.opacity) < 0.05) return 0;
         const c = layout.clusters[i]!;
         return (
@@ -212,7 +231,11 @@ export function poseJump(
     );
   };
   let worst: { frame: number; distance: number } | undefined;
-  for (let frame = 1; frame < poses.length; frame++) {
+  const frames =
+    visibleFrames ??
+    new Set(Array.from({ length: scene.frameCount }, (_, frame) => frame));
+  for (const frame of frames) {
+    if (frame < 1) continue;
     const distance = step(frame),
       neighbours = Math.max(step(frame - 1), step(frame + 1));
     if (
@@ -394,9 +417,45 @@ export function analyzeTypography(
           );
       }
     }
-    const jump = layouts[0]
-      ? poseJump(node, layouts[0], scene, policy.jumpBudget ?? 2)
-      : undefined;
+    const layoutsByText = new Map(
+      layouts.map((layout) => [layout.text, layout]),
+    );
+    const visibleFrames = new Map<string, Set<number>>();
+    const markVisible = (text: string, frame: number) => {
+      if (!layoutsByText.has(text)) return;
+      const frames = visibleFrames.get(text) ?? new Set<number>();
+      frames.add(frame);
+      visibleFrames.set(text, frames);
+    };
+    for (let frame = 0; frame < scene.frameCount; frame++) {
+      const state = evaluatePreparedNode(scene, node, frame).state;
+      const displayed = resolveDisplayedText(node, frame, state);
+      if (displayed.kind === "single") markVisible(displayed.text, frame);
+      else if (displayed.transition.kind === "retype") {
+        const from = layoutsByText.get(displayed.fromText),
+          to = layoutsByText.get(displayed.toText);
+        if (from && to)
+          markVisible(
+            retypedClusters(from, to, displayed.progress).layout.text,
+            frame,
+          );
+      } else {
+        markVisible(displayed.fromText, frame);
+        markVisible(displayed.toText, frame);
+      }
+    }
+    let jump: { frame: number; distance: number } | undefined;
+    for (const [text, frames] of visibleFrames) {
+      const candidate = poseJump(
+        node,
+        layoutsByText.get(text)!,
+        scene,
+        policy.jumpBudget ?? 2,
+        frames,
+      );
+      if (candidate && candidate.distance > (jump?.distance ?? 0))
+        jump = candidate;
+    }
     if (jump)
       add(
         "text-pose-jump",

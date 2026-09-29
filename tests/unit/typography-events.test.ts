@@ -495,6 +495,50 @@ describe("semantic typography and lint", () => {
     ]);
     expect(jumps(fixed)).toEqual([]);
   });
+  it("checks pose jumps in glyphs introduced by later text states", () => {
+    const raw = input();
+    raw.nodes[0] = {
+      ...raw.nodes[0]!,
+      text: "A",
+      states: ["A", "AB"],
+      spans: undefined,
+      transition: { kind: "cut", window: { start: 60, end: 61 } },
+    } as never;
+    const scene = compileStoryScene(
+      StorySceneSchema.parse({
+        ...raw,
+        textAnimators: [
+          {
+            node: "claim",
+            unit: "glyph",
+            start: 80,
+            end: 100,
+            stagger: 0,
+            selector: { start: 1, end: 1 },
+            from: { offset: [20, 0] },
+            to: { offset: [0, 0] },
+          },
+        ],
+      }),
+    );
+    const node = textNode(scene, "claim");
+    const prepared = {
+      nodes: new Map([
+        [
+          node.id,
+          new Map([
+            ["A", { layout: mockLayout({ ...node, text: "A" }) }],
+            ["AB", { layout: mockLayout({ ...node, text: "AB" }) }],
+          ]),
+        ],
+      ]),
+    } as unknown as PreparedTypography;
+    expect(
+      analyzeTypography(scene, { prepared }).diagnostics.filter(
+        (diagnostic) => diagnostic.code === "text-pose-jump",
+      ),
+    ).toMatchObject([{ nodes: ["claim"], frames: [79, 80] }]);
+  });
   it("lands emphasis on the spoken onset and indexes its editable window", () => {
     const source = StorySceneSchema.parse({
       ...input(),
