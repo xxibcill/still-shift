@@ -56,6 +56,32 @@ export function settledText(node: TextNode, frame: number, state: number) {
     ? countText(node, completed, completed.window.end)
     : (node.states?.[textStateAtFrame(node, frame, state)] ?? node.text);
 }
+export function resolveDisplayedText(
+  node: TextNode,
+  frame: number,
+  state: number,
+):
+  | { kind: "single"; text: string }
+  | {
+      kind: "transition";
+      transition: TextTransition;
+      fromText: string;
+      toText: string;
+      progress: number;
+    } {
+  const transition = activeTextTransition(node, frame);
+  if (!transition || transition.kind === "cut")
+    return { kind: "single", text: settledText(node, frame, state) };
+  if (transition.kind === "count")
+    return { kind: "single", text: countText(node, transition, frame) };
+  return {
+    kind: "transition",
+    transition,
+    fromText: node.states![transition.fromState ?? 0]!,
+    toText: node.states![transition.toState ?? 1]!,
+    progress: transitionProgress(transition, frame),
+  };
+}
 export function transitionProgress(t: TextTransition, frame: number) {
   return easeMotion(
     (frame - t.window.start) / (t.window.end - t.window.start),

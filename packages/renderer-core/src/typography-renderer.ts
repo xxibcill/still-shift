@@ -21,13 +21,11 @@ import {
   type TextAnimationContext,
 } from "./typography-animation.ts";
 import {
-  activeTextTransition,
   commonClusters,
   countText,
   retypedClusters,
   reserveCountWidth,
-  settledText,
-  transitionProgress,
+  resolveDisplayedText,
   transitionSlideLimit,
 } from "./typography-transition.ts";
 import { drawTextDecorations } from "./typography-decorations.ts";
@@ -307,15 +305,12 @@ function displayedContainerContent(
       throw new Error(`text-layout-not-prepared: ${node.id}: ${text}`);
     return typographyContainerContent(node, raster.layout);
   };
-  const transition = activeTextTransition(node, frame);
-  if (!transition || transition.kind === "cut")
-    return content(settledText(node, frame, state));
-  if (transition.kind === "count")
-    return content(countText(node, transition, frame));
+  const displayed = resolveDisplayedText(node, frame, state);
+  if (displayed.kind === "single") return content(displayed.text);
   // The container eases between the two state boxes instead of snapping.
-  const a = content(node.states![transition.fromState ?? 0]!),
-    b = content(node.states![transition.toState ?? 1]!),
-    p = transitionProgress(transition, frame);
+  const a = content(displayed.fromText),
+    b = content(displayed.toText),
+    p = displayed.progress;
   return {
     x: a.x + (b.x - a.x) * p,
     y: a.y + (b.y - a.y) * p,
@@ -611,9 +606,9 @@ function drawTypographyContent(
     if (!r) throw new Error(`text-layout-not-prepared: ${node.id}: ${text}`);
     return r;
   };
-  const transition = activeTextTransition(node, frame);
-  if (!transition || transition.kind === "cut") {
-    const raster = get(settledText(node, frame, state.state));
+  const displayed = resolveDisplayedText(node, frame, state.state);
+  if (displayed.kind === "single") {
+    const raster = get(displayed.text);
     drawRaster(
       ctx,
       node,
@@ -625,22 +620,9 @@ function drawTypographyContent(
     );
     return;
   }
-  if (transition.kind === "count") {
-    const raster = get(countText(node, transition, frame));
-    drawRaster(
-      ctx,
-      node,
-      raster,
-      posesFor(raster),
-      prepared,
-      frame,
-      state.reveal,
-    );
-    return;
-  }
-  const from = get(node.states![transition.fromState ?? 0]!),
-    to = get(node.states![transition.toState ?? 1]!),
-    p = transitionProgress(transition, frame);
+  const { transition, progress: p } = displayed;
+  const from = get(displayed.fromText),
+    to = get(displayed.toText);
   if (transition.kind === "retype") {
     const visible = retypedClusters(from.layout, to.layout, p),
       raster = visible.layout === from.layout ? from : to,

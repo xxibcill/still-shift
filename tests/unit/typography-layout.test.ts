@@ -6,6 +6,7 @@ import {
 import {
   commonClusters,
   reserveCountWidth,
+  resolveDisplayedText,
 } from "../../packages/renderer-core/src/typography-transition.ts";
 import { resolveNarrationWord } from "../../packages/renderer-core/src/typography-events.ts";
 import { parseNarrationTiming } from "../../packages/renderer-core/src/narration-timing.ts";
@@ -68,6 +69,30 @@ const mixedSizeNode = {
 } as TextNode;
 
 describe("shaped typography", () => {
+  it("resolves the same displayed state for text and its container", () => {
+    const node = {
+      ...mixedSizeNode,
+      text: "First",
+      states: ["First", "Second"],
+      transition: {
+        kind: "crossfade",
+        window: { start: 10, end: 20 },
+      },
+    } as TextNode;
+    expect(resolveDisplayedText(node, 9, 0)).toEqual({
+      kind: "single",
+      text: "First",
+    });
+    expect(resolveDisplayedText(node, 15, 0)).toMatchObject({
+      kind: "transition",
+      fromText: "First",
+      toText: "Second",
+    });
+    expect(resolveDisplayedText(node, 20, 0)).toEqual({
+      kind: "single",
+      text: "Second",
+    });
+  });
   it("reserves counter width without moving left, center, or right anchors", () => {
     for (const align of ["left", "center", "right"] as const) {
       const node = { ...mixedSizeNode, spans: undefined, align };
