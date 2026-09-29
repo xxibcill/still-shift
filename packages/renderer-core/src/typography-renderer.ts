@@ -150,6 +150,12 @@ export function prepareTypography(
     slideLimits = new Map<string, number>();
   const ctx = surface(1, 1).getContext("2d")!;
   let pixels = 0;
+  const reserveRaster = (raster: TextRaster) => {
+    pixels += raster.canvas.width * raster.canvas.height;
+    if (pixels > 128_000_000)
+      throw new Error("text-raster-budget: scene exceeds 128 megapixels");
+    return raster;
+  };
   for (const node of scene.nodes) {
     if (node.type !== "text") continue;
     const values = new Set([
@@ -176,11 +182,7 @@ export function prepareTypography(
     if (count) reserveCountWidth(layouts.values());
     const rasters = new Map<string, TextRaster>();
     for (const [text, layout] of layouts) {
-      const raster = rasterizeText(node, layout, fonts);
-      pixels += raster.canvas.width * raster.canvas.height;
-      if (pixels > 128_000_000)
-        throw new Error("text-raster-budget: scene exceeds 128 megapixels");
-      rasters.set(text, raster);
+      rasters.set(text, reserveRaster(rasterizeText(node, layout, fonts)));
     }
     const axes = nodeAxisVariants(scene, node, [...layouts.values()], fonts);
     for (const [text, raster] of rasters)
@@ -193,13 +195,10 @@ export function prepareTypography(
           fonts,
           deltas,
         );
-        const variant = rasterizeText(node, layout, fonts);
-        pixels += variant.canvas.width * variant.canvas.height;
-        if (pixels > 128_000_000)
-          throw new Error(
-            "text-raster-budget: axis variants exceed 128 megapixels",
-          );
-        raster.variants.set(key, variant);
+        raster.variants.set(
+          key,
+          reserveRaster(rasterizeText(node, layout, fonts)),
+        );
       }
     nodes.set(node.id, rasters);
     for (const t of node.transitions ??
@@ -253,7 +252,7 @@ export function prepareTypography(
     const layout = shapeText(ctx, replacement, replacement.text, fonts, {
       correction,
     });
-    const raster = rasterizeText(replacement, layout, fonts);
+    const raster = reserveRaster(rasterizeText(replacement, layout, fonts));
     const entries = corrections.get(node.id) ?? [];
     entries.push({
       node: replacement,
