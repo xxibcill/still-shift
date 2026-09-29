@@ -11,6 +11,7 @@ import { createLateralScenes } from "./create-lateral-demos.ts";
 import { createParallaxPathScenes } from "./create-parallax-path-demos.ts";
 import { createDetailScene } from "./create-detail-demos.ts";
 import { createFocusScene } from "./create-focus-demos.ts";
+import { createDollyScene } from "./create-dolly-demos.ts";
 
 const directory = resolve("benchmarks/fixtures/cinematic-illustrated");
 await mkdir(directory, { recursive: true });
@@ -125,6 +126,7 @@ const revealEntries = await createRevealScenes(directory);
 const pathEntries = await createParallaxPathScenes(directory);
 const detailEntry = await createDetailScene(directory);
 const focusEntry = await createFocusScene(directory);
+const dollyEntry = await createDollyScene(directory);
 await writeFile(
   resolve(directory, "catalog.json"),
   await format(
@@ -137,9 +139,17 @@ await writeFile(
       ...thresholdEntries,
       ...lateralEntries,
       ...revealEntries,
-      ...pathEntries,
+      ...pathEntries.map((entry) =>
+        entry.id === "ci-04-rising-vista"
+          ? {
+              ...entry,
+              formats: { vertical: "vertical/ci-vertical-rising-vista.json" },
+            }
+          : entry,
+      ),
       detailEntry,
       focusEntry,
+      dollyEntry,
     ]),
     { parser: "json" },
   ),

@@ -16,6 +16,7 @@ import {
 
 export const CINEMATIC_RENDERER_VERSION = "cinematic-canvas-0.8.0";
 export const VERTICAL_CINEMATIC_RENDERER_VERSION = "cinematic-canvas-1.0.0";
+export const DOLLY_ZOOM_RENDERER_VERSION = "cinematic-canvas-1.1.0";
 
 type Edge = "left" | "top" | "right" | "bottom";
 type CoverageKind =
@@ -135,6 +136,7 @@ type PresetBehavior = {
   risingVista?: boolean;
   lateralTrack?: boolean;
   foregroundReveal?: boolean;
+  dollyZoom?: boolean;
 };
 const unchanged = (_: Intensity, base: CameraProfile) => base;
 const vistaProfile =
@@ -210,6 +212,14 @@ const PRESET_BEHAVIORS: Record<
     trackTiming: true,
     lateralTrack: true,
   },
+  dolly_zoom_tension: {
+    profile: (_, base) => ({
+      ...base,
+      start: 1 / 7,
+      end: 4.8 / 7,
+    }),
+    dollyZoom: true,
+  },
 };
 
 function cameraProfile(scene: CinematicScene) {
@@ -242,7 +252,8 @@ type CompiledCamera = CinematicScene & {
   rendererVersion:
     | typeof CINEMATIC_RENDERER_VERSION
     | "cinematic-canvas-0.9.0"
-    | typeof VERTICAL_CINEMATIC_RENDERER_VERSION;
+    | typeof VERTICAL_CINEMATIC_RENDERER_VERSION
+    | typeof DOLLY_ZOOM_RENDERER_VERSION;
   canvas: { width: number; height: number };
   timeline: { fps: number; durationMs: number; frameCount: number };
   cameraFrames: CameraKey[];
@@ -548,7 +559,8 @@ function inspectCamera(scene: CompiledCamera) {
     (layer) => layer.node === plate.id,
   )!.paintedBounds!;
   for (let frame = 0; frame < scene.timeline.frameCount; frame++) {
-    if (pullback || focus) inspectSubjectVisibility(scene, frame);
+    if (pullback || focus || behavior.dollyZoom)
+      inspectSubjectVisibility(scene, frame);
     const projected = projectCinematicNode(scene, plate, frame);
     const left = projected.left + painted[0] * projected.scale;
     const top = projected.top + painted[1] * projected.scale;
@@ -622,6 +634,7 @@ function inspectCamera(scene: CompiledCamera) {
         !axial &&
         !pullback &&
         !behavior.curvedPath &&
+        !behavior.dollyZoom &&
         Math.abs(p.top - node.y) > scene.height * profile.maximumVerticalTravel
       )
         throw new Error(
@@ -787,6 +800,41 @@ function inspectCamera(scene: CompiledCamera) {
   ].map(scaleChange);
   const foregroundScaleChange = Math.max(...nearScales);
   const backgroundScaleChange = scaleChange(scene.recipe.background);
+  let backgroundScaleReduction: number | undefined;
+  if (behavior.dollyZoom) {
+    const last = scene.timeline.frameCount - 1;
+    const startBackground = projectCinematicNode(scene, plate, 0);
+    const endBackground = projectCinematicNode(scene, plate, last);
+    backgroundScaleReduction = 1 - endBackground.scale / startBackground.scale;
+    const subjectDepth = scene.layers.find(
+      (layer) => layer.node === subject.id,
+    )!.depth;
+    const nearDisplacement = Math.max(
+      ...scene.layers
+        .filter((layer) => layer.depth < subjectDepth)
+        .map((layer) => {
+          const node = scene.nodes.find((item) => item.id === layer.node)!;
+          const initial = projectCinematicNode(scene, node, 0);
+          return Math.max(
+            ...Array.from({ length: scene.timeline.frameCount }, (_, frame) => {
+              const p = projectCinematicNode(scene, node, frame);
+              return Math.max(
+                Math.abs(p.left - initial.left),
+                Math.abs(p.left + p.width - (initial.left + initial.width)),
+              );
+            }),
+          );
+        }),
+    );
+    if (subjectScaleChange > 0.01 || subjectAnchorTravelPx > 0.01)
+      throw new Error(
+        "Dolly zoom must hold the protected subject size and anchor",
+      );
+    if (backgroundScaleReduction < 0.03 || backgroundScaleReduction > 0.06)
+      throw new Error("Dolly zoom distant scale change must be 3–6%");
+    if (nearDisplacement > horizontalSpan * 0.03)
+      throw new Error("Dolly zoom near displacement exceeds 3% of frame width");
+  }
   if (axial) {
     const minimumNear =
       scene.recipe.intensity === "dramatic"
@@ -824,6 +872,9 @@ function inspectCamera(scene: CompiledCamera) {
     foregroundVerticalTravelPx,
     backgroundVerticalTravelPx,
     backgroundScaleChange,
+    ...(backgroundScaleReduction === undefined
+      ? {}
+      : { backgroundScaleReduction }),
     sourcePixelsPerOutputPixel,
   });
 }
@@ -844,8 +895,14 @@ export function compileCinematicScene(
       : source.recipe.intensity === "standard"
         ? 0.65
         : 0.4;
-  const z =
-    behavior.axial || behavior.curvedPath
+  const z = behavior.dollyZoom
+    ? source.camera.push! *
+      (source.recipe.intensity === "dramatic"
+        ? 1.12
+        : source.recipe.intensity === "standard"
+          ? 1
+          : 0.88)
+    : behavior.axial || behavior.curvedPath
       ? source.camera.push! * pushStrength
       : 0;
   const startZ = behavior.pullback
@@ -858,23 +915,26 @@ export function compileCinematicScene(
     : 0;
   if (source.layers.some((layer) => layer.depth - Math.max(startZ, z) < 0.1))
     throw new Error("Camera crosses a depth plane");
+  const depth = new Map(
+    source.layers.map((layer) => [layer.node, layer.depth]),
+  );
+  const subjectDepth = depth.get(source.recipe.subject)!;
+  // Keep focal / (subjectDepth - z) constant throughout the axial move.
   const key = (frame: number, x: number, y: number, z = 0): CameraKey => ({
     frame,
     x,
     y,
     z,
-    focal: 1,
+    focal: behavior.dollyZoom ? (subjectDepth - z) / subjectDepth : 1,
   });
-  const depth = new Map(
-    source.layers.map((layer) => [layer.node, layer.depth]),
-  );
   const scene: CompiledCamera = {
     ...source,
     nodes: [...source.nodes].sort(
       (a, b) => depth.get(b.id)! - depth.get(a.id)!,
     ),
-    rendererVersion:
-      source.format === "vertical"
+    rendererVersion: behavior.dollyZoom
+      ? DOLLY_ZOOM_RENDERER_VERSION
+      : source.format === "vertical"
         ? VERTICAL_CINEMATIC_RENDERER_VERSION
         : source.effectsVersion
           ? "cinematic-canvas-0.9.0"
