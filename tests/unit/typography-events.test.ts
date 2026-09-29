@@ -18,6 +18,7 @@ import {
 } from "../../packages/renderer-core/src/typography-animation.ts";
 import type { ShapedLayout } from "../../packages/renderer-core/src/shaped-text.ts";
 import type { PreparedTypography } from "../../packages/renderer-core/src/typography-renderer.ts";
+import { contrastSampleFrames } from "../../packages/renderer-core/src/typography-pixels.ts";
 
 const input = () => ({
   schemaVersion: "story-scene-1",
@@ -173,6 +174,18 @@ const preparedFor = (node: TextNode) =>
   }) as unknown as PreparedTypography;
 
 describe("semantic typography and lint", () => {
+  it("samples contrast inside a short text visibility window", () => {
+    const scene = compileStoryScene(StorySceneSchema.parse(input()));
+    scene.tracks.claim = {
+      opacity: [
+        { time: 0, value: 0 },
+        { time: 20, value: 1, step: true },
+        { time: 30, value: 0, step: true },
+      ],
+    };
+    const frames = contrastSampleFrames(scene, textNode(scene, "claim"));
+    expect(frames.some((frame) => frame >= 20 && frame < 30)).toBe(true);
+  });
   it("compiles compression to the same geometry signal and releases held values", () => {
     const scene = compileStoryScene(
       StorySceneSchema.parse({

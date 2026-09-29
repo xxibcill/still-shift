@@ -8,6 +8,8 @@ import {
 } from "./illustrated-renderer.ts";
 import { contrastRatio, type TypePixelEvidence } from "./typography-quality.ts";
 import { textAnimatorSettleFrame } from "./typography-animation.ts";
+import { evaluatePreparedNode } from "./prepared-scene.ts";
+import type { TextNode } from "./typography-style.ts";
 
 const pixelHex = (data: Uint8ClampedArray, at: number) =>
   "#" +
@@ -26,6 +28,53 @@ export function changedPixels(a: Uint8ClampedArray, b: Uint8ClampedArray) {
       changed++;
   return changed;
 }
+/** Include a sample inside every interval where the text and its parents are visible. */
+export function contrastSampleFrames(
+  scene: TypographyReviewScene,
+  node: TextNode,
+) {
+  const frames = new Set([
+    0,
+    Math.floor(scene.frameCount / 4),
+    Math.floor(scene.frameCount / 2),
+    Math.floor((scene.frameCount * 3) / 4),
+    scene.frameCount - 1,
+  ]);
+  let start = -1;
+  const closeWindow = (end: number) => {
+    if (start < 0) return;
+    frames.add(Math.floor((start + end - 1) / 2));
+    start = -1;
+  };
+  for (let frame = 0; frame < scene.frameCount; frame++) {
+    const state = evaluatePreparedNode(scene, node, frame);
+    let opacity = state.opacity;
+    let parent = node.parent;
+    while (parent) {
+      const ancestor = scene.nodes.find(
+        (candidate) => candidate.id === parent,
+      )!;
+      opacity *= evaluatePreparedNode(scene, ancestor, frame).opacity;
+      parent = ancestor.parent;
+    }
+    const visible = opacity > 0.05 && state.reveal > 0.05;
+    if (visible && start < 0) start = frame;
+    if (!visible) closeWindow(frame);
+  }
+  closeWindow(scene.frameCount);
+  for (const window of [
+    ...(node.transitions ?? (node.transition ? [node.transition] : [])).map(
+      (transition) => transition.window,
+    ),
+    ...(scene.textAnimators ?? [])
+      .filter((animator) => animator.node === node.id)
+      .map((animator) => ({ start: animator.start, end: animator.end })),
+  ]) {
+    frames.add(Math.floor((window.start + window.end - 1) / 2));
+    frames.add(Math.min(scene.frameCount - 1, window.end));
+  }
+  return [...frames].sort((a, b) => a - b);
+}
 export function measureTypographyPixels(
   scene: TypographyReviewScene,
   images: Images,
@@ -38,15 +87,6 @@ export function measureTypographyPixels(
     c
       .getContext("2d", { willReadFrequently: true })!
       .getImageData(0, 0, c.width, c.height).data;
-  const frames = [
-    ...new Set([
-      0,
-      Math.floor(scene.frameCount / 4),
-      Math.floor(scene.frameCount / 2),
-      Math.floor((scene.frameCount * 3) / 4),
-      scene.frameCount - 1,
-    ]),
-  ];
   try {
     for (const node of scene.nodes) {
       if (node.type !== "text") continue;
@@ -127,7 +167,7 @@ export function measureTypographyPixels(
         scene,
         probeImages("container-only"),
       );
-      for (const frame of frames) {
+      for (const frame of contrastSampleFrames(scene, node)) {
         visible.renderFrame(frame);
         background.renderFrame(frame);
         ink.renderFrame(frame);
