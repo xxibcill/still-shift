@@ -30,7 +30,8 @@ assert.ok(
   preset === "layered_parallax" ||
     preset === "threshold_push" ||
     preset === "lateral_track" ||
-    preset === "foreground_reveal",
+    preset === "foreground_reveal" ||
+    preset === "dolly_zoom_tension",
   "Unknown cinematic preset",
 );
 const server = await createServer({
@@ -131,10 +132,11 @@ try {
         threshold_push: "ci-01-",
         lateral_track: "ci-02-",
         foreground_reveal: "ci-03-",
+        dolly_zoom_tension: "ci-08-",
       }[preset],
     ),
   );
-  assert.equal(entries.length, 2);
+  assert.equal(entries.length, preset === "dolly_zoom_tension" ? 1 : 2);
   for (const entry of entries) {
     await page.locator("#scene").selectOption(`cinematic:${entry.id}`);
     await page.waitForFunction(
@@ -216,16 +218,30 @@ try {
     const reviewFrames =
       preset === "foreground_reveal"
         ? [0, 6, 7, 8, 12, 24, 40, 53, 76, 77, 78, 120, 167, 0]
-        : preset === "lateral_track"
-          ? [0, 2, 3, 4, 12, 22, 53, 84, 138, 156, 157, 158, 167, 0]
-          : [0, 2, 3, 4, 12, 24, 53, 84, 131, 153, 154, 155, 167, 0];
+        : preset === "dolly_zoom_tension"
+          ? [0, 23, 24, 25, 70, 114, 115, 116, 167, 0]
+          : preset === "lateral_track"
+            ? [0, 2, 3, 4, 12, 22, 53, 84, 138, 156, 157, 158, 167, 0]
+            : [0, 2, 3, 4, 12, 24, 53, 84, 131, 153, 154, 155, 167, 0];
     for (const frame of reviewFrames)
       frames.push(await comparePreviewFrame(entry.id, frame, video));
-    assert.notEqual(
-      frames[0],
-      frames[4],
-      "Dramatic motion must start within the first half second",
-    );
+    if (preset === "dolly_zoom_tension") {
+      assert.equal(frames[0], frames[1], "The opening hold must be stable");
+      assert.equal(
+        frames[1],
+        frames[2],
+        "The opening hold must last through frame 24",
+      );
+      assert.notEqual(frames[0], frames[4], "The dolly must move by midpoint");
+      assert.equal(frames[6], frames[7], "The dolly must stop at its boundary");
+      assert.equal(frames[7], frames[8], "The final hold must be stable");
+    } else {
+      assert.notEqual(
+        frames[0],
+        frames[4],
+        "Dramatic motion must start within the first half second",
+      );
+    }
     assert.equal(
       frames[0],
       frames.at(-1),
@@ -387,7 +403,7 @@ try {
       JSON.stringify(report, null, 2) + "\n",
     );
   console.log(
-    `Cinematic QA passed: ${samples.length} frame comparisons, two compositions, 24/30 fps, deterministic repeat, transparent and uncovered plate rejection.`,
+    `Cinematic QA passed: ${samples.length} frame comparisons, ${entries.length} composition(s), 24/30 fps, deterministic repeat, transparent and uncovered plate rejection.`,
   );
 } finally {
   await browser?.close();

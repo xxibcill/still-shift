@@ -832,7 +832,7 @@ function inspectCamera(scene: CompiledCamera) {
       );
     if (backgroundScaleReduction < 0.03 || backgroundScaleReduction > 0.06)
       throw new Error("Dolly zoom distant scale change must be 3–6%");
-    if (nearDisplacement > horizontalSpan * 0.03)
+    if (nearDisplacement > scene.width * 0.03)
       throw new Error("Dolly zoom near displacement exceeds 3% of frame width");
   }
   if (axial) {

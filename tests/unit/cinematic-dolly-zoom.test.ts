@@ -99,4 +99,53 @@ describe("CI-08 dolly zoom", () => {
     });
     expect(() => compileCinematicScene(input)).toThrow(/near displacement/);
   });
+
+  it("limits vertical near displacement to 3% of the output width", () => {
+    const vertical = structuredClone(fixture);
+    vertical.format = "vertical";
+    vertical.width = 1080;
+    vertical.height = 1920;
+    // Synthetic overscan and source metadata isolate the camera envelope.
+    for (const asset of vertical.assets) {
+      asset.width = 4096;
+      asset.height = 4096;
+    }
+    for (const node of vertical.nodes) {
+      node.states[0].crop = [0, 0, 4096, 4096];
+      if (node.id === "background" || node.id === "foreground") {
+        node.y -= 100;
+        node.height += 200;
+      }
+    }
+    const plate = vertical.nodes.find(
+      (node: { id: string }) => node.id === "background",
+    )!;
+    vertical.layers.find(
+      (layer: { node: string }) => layer.node === "background",
+    )!.paintedBounds = [0, 0, plate.width, plate.height];
+    const nearLayer = vertical.layers.find(
+      (layer: { node: string }) => layer.node === "foreground",
+    )!;
+    nearLayer.depth = 3.4;
+    expect(() =>
+      compileCinematicScene(CinematicSceneSchema.parse(vertical)),
+    ).toThrow(/near displacement exceeds 3% of frame width/);
+
+    nearLayer.depth = 3.5;
+    const accepted = compileCinematicScene(
+      CinematicSceneSchema.parse(vertical),
+    );
+    const near = accepted.nodes.find((node) => node.id === "foreground")!;
+    const first = projectCinematicNode(accepted, near, 0);
+    const last = projectCinematicNode(
+      accepted,
+      near,
+      accepted.timeline.frameCount - 1,
+    );
+    const displacement = Math.max(
+      Math.abs(last.left - first.left),
+      Math.abs(last.left + last.width - (first.left + first.width)),
+    );
+    expect(displacement).toBeLessThanOrEqual(accepted.width * 0.03);
+  });
 });
