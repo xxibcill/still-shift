@@ -148,10 +148,14 @@ export function prepareTypography(
     slideLimits = new Map<string, number>();
   const ctx = surface(1, 1).getContext("2d")!;
   let pixels = 0;
-  const reserveRaster = (raster: TextRaster) => {
-    pixels += raster.canvas.width * raster.canvas.height;
+  const reserveCanvas = (canvas: HTMLCanvasElement) => {
+    pixels += canvas.width * canvas.height;
     if (pixels > 128_000_000)
       throw new Error("text-raster-budget: scene exceeds 128 megapixels");
+    return canvas;
+  };
+  const reserveRaster = (raster: TextRaster) => {
+    reserveCanvas(raster.canvas);
     return raster;
   };
   for (const node of scene.nodes) {
@@ -198,6 +202,54 @@ export function prepareTypography(
           reserveRaster(rasterizeText(node, layout, fonts)),
         );
       }
+    if (
+      scene.textAnimators?.some(
+        (animator) =>
+          animator.node === node.id &&
+          (animator.from.strokeWidth !== undefined ||
+            animator.to?.strokeWidth !== undefined),
+      )
+    ) {
+      const staticValues = new Set([
+        node.text,
+        ...(node.states ?? []),
+        ...componentTextVariants(scene, node),
+      ]);
+      for (let frame = 0; frame < scene.frameCount; frame++) {
+        const visibleValues = new Set(staticValues);
+        for (const transition of node.transitions ??
+          (node.transition ? [node.transition] : []))
+          if (
+            transition.kind === "count" &&
+            frame >= transition.window.start &&
+            frame <= transition.window.end
+          )
+            visibleValues.add(countText(node, transition, frame));
+        for (const text of visibleValues) {
+          const raster = rasters.get(text)!;
+          const poses = evaluateTextPoses(
+            node,
+            raster.layout,
+            scene.textAnimators ?? [],
+            frame,
+            scene,
+          );
+          for (const pose of poses) {
+            if (pose.opacity <= 0 || pose.strokeWidth <= 0) continue;
+            const key = axisKey(pose.axes);
+            const target = key === "[]" ? raster : raster.variants.get(key)!;
+            const strokeKey = `${pose.strokeWidth}:${pose.stroke}`;
+            if (!target.strokes.has(strokeKey))
+              target.strokes.set(
+                strokeKey,
+                reserveCanvas(
+                  renderStrokedRaster(target, pose.strokeWidth, pose.stroke),
+                ),
+              );
+          }
+        }
+      }
+    }
     nodes.set(node.id, rasters);
     for (const t of node.transitions ??
       (node.transition ? [node.transition] : [])) {
@@ -336,11 +388,8 @@ function coloredRaster(raster: TextRaster, color: string) {
   }
   return canvas;
 }
-function strokedRaster(raster: TextRaster, width: number, color: string) {
-  const key = `${width}:${color}`;
-  let canvas = raster.strokes.get(key);
-  if (canvas) return canvas;
-  canvas = surface(raster.canvas.width, raster.canvas.height);
+function renderStrokedRaster(raster: TextRaster, width: number, color: string) {
+  const canvas = surface(raster.canvas.width, raster.canvas.height);
   const ctx = canvas.getContext("2d")!;
   ctx.translate(-raster.left, -raster.top);
   ctx.strokeStyle = color;
@@ -350,9 +399,12 @@ function strokedRaster(raster: TextRaster, width: number, color: string) {
     applyTextStyle(ctx, run.style, raster.fonts);
     ctx.strokeText(run.text, run.x, run.baseline);
   }
-  if (raster.strokes.size >= 8)
-    raster.strokes.delete(raster.strokes.keys().next().value!);
-  raster.strokes.set(key, canvas);
+  return canvas;
+}
+function strokedRaster(raster: TextRaster, width: number, color: string) {
+  const canvas = raster.strokes.get(`${width}:${color}`);
+  if (!canvas)
+    throw new Error("text-stroke-not-prepared: missing cached outline");
   return canvas;
 }
 function drawCluster(

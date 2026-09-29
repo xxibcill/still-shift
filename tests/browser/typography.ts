@@ -274,6 +274,8 @@ try {
           textAnimators: animators,
         };
         const typography = prepareTypography(probeScene, fonts);
+        const raster = typography.nodes.get(node.id)!.get(node.text)!;
+        const preparedStrokeCount = raster.strokes.size;
         const surface = document.createElement("canvas");
         surface.width = 650;
         surface.height = 400;
@@ -288,7 +290,9 @@ try {
         );
         return {
           surface,
-          layout: typography.nodes.get(node.id)!.get(node.text)!.layout,
+          layout: raster.layout,
+          preparedStrokeCount,
+          drawnStrokeCount: raster.strokes.size,
         };
       };
       const pixelDifference = (
@@ -535,6 +539,8 @@ try {
         settledBlurPixels,
         activeBlurPixels,
         outlinePixels,
+        preparedStrokeCount: outlined.preparedStrokeCount,
+        drawnStrokeCount: outlined.drawnStrokeCount,
         captures,
         backward,
         handoff,
@@ -557,6 +563,15 @@ try {
   assert.ok(
     result.outlinePixels < 500,
     `Stroke differs from a true glyph outline by ${result.outlinePixels} channels`,
+  );
+  assert.ok(
+    result.preparedStrokeCount > 0,
+    "Stroke variants were not prepared",
+  );
+  assert.equal(
+    result.drawnStrokeCount,
+    result.preparedStrokeCount,
+    "Drawing added a stroke raster after preparation",
   );
   assert.deepEqual(
     result.containerFill,
