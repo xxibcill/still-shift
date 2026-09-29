@@ -24,7 +24,11 @@ import {
 } from "./story-motion.ts";
 
 import { sharedEffectsFields } from "./shared-effects.ts";
-import { motionAppearanceFields, motionCraftFields } from "./motion-craft.ts";
+import {
+  motionAppearanceFields,
+  motionCraftFields,
+  NumericMotionPropertySchema,
+} from "./motion-craft.ts";
 import { validateMotionCraft } from "./motion-craft-validation.ts";
 import { formatSize } from "./output-format.ts";
 
@@ -266,6 +270,18 @@ const shape = PreparedSceneFieldsSchema.omit({ durationMs: true })
     review: z
       .object({
         essentialText: z.array(id).max(100),
+        focalEvents: z
+          .array(
+            z
+              .object({
+                node: id,
+                property: NumericMotionPropertySchema,
+                cue: z.string().trim().min(1),
+              })
+              .strict(),
+          )
+          .max(40)
+          .optional(),
         focalGroups: z
           .array(z.object({ id, nodes: z.array(id).min(1).max(40) }).strict())
           .max(30)
@@ -359,6 +375,9 @@ export const StorySceneSchema = shape.superRefine((scene, ctx) => {
   for (const textId of scene.review?.essentialText ?? [])
     if (nodes.get(textId)?.type !== "text")
       fail(`Essential text role must bind a text node: ${textId}`);
+  for (const focal of scene.review?.focalEvents ?? [])
+    if (!nodes.has(focal.node))
+      fail(`Focal event references a missing node: ${focal.node}`);
   for (const group of scene.review?.focalGroups ?? [])
     for (const nodeId of group.nodes)
       if (!nodes.has(nodeId))

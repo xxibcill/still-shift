@@ -10,7 +10,14 @@ import {
   compileMove,
   entrancePolicy,
 } from "./story-choreography.ts";
-import type { StoryRole } from "../../scene-contract/src/story-motion.ts";
+import type {
+  StoryEntrance,
+  StoryRole,
+} from "../../scene-contract/src/story-motion.ts";
+import {
+  NumericMotionPropertySchema,
+  type NumericMotionProperty,
+} from "../../scene-contract/src/motion-craft.ts";
 import { validateStoryCameraCoverage } from "./story-camera.ts";
 import type { PreparedNode } from "../../scene-contract/src/prepared.ts";
 import type {
@@ -69,8 +76,32 @@ export type StoryRenderScene = StoryScene & {
     window: StoryWindow;
     role: StoryRole;
     kind: StoryMotionEventKind;
+    properties?: NumericMotionProperty[];
   }[];
 };
+function entranceProperties(
+  verb: NonNullable<StoryEntrance["verb"]>,
+): NumericMotionProperty[] {
+  switch (verb) {
+    case "fade":
+      return ["opacity"];
+    case "draw":
+      return ["reveal"];
+    case "wipe":
+      return ["reveal", "y"];
+    case "set-down":
+      return ["y", "opacity", "scaleY"];
+    case "attach":
+      return ["x", "y", "opacity"];
+    case "rise":
+      return ["y", "opacity"];
+    case "stamp":
+      return ["scaleX", "scaleY", "opacity"];
+    case "assemble":
+      return ["scaleY"];
+  }
+}
+
 type Event = {
   start: number;
   end: number;
@@ -205,12 +236,14 @@ export function compileStoryScene(
     window: StoryWindow,
     kind: StoryMotionEventKind,
     role: StoryRole = "action",
+    properties?: NumericMotionProperty[],
   ) =>
     events.push({
       node,
       window,
       kind,
       role: window.layer ?? window.role ?? role,
+      ...(properties ? { properties } : {}),
     });
   const tracks = createTracks(input.nodes);
   const node = (id: string) => input.nodes.find((node) => node.id === id)!;
@@ -232,7 +265,7 @@ export function compileStoryScene(
       false,
       input.entranceProfile === "accelerate",
     );
-    event(id, window, "entrance", policy.role);
+    event(id, window, "entrance", policy.role, entranceProperties(policy.verb));
   };
   const reveal = (id: string, window: StoryWindow) => {
     if (
@@ -250,13 +283,13 @@ export function compileStoryScene(
       return;
     tracks.initial(id, "reveal", 0);
     tracks.add(id, "reveal", window, 1);
-    event(id, window, "reveal");
+    event(id, window, "reveal", "action", ["reveal"]);
   };
   const recipe = input.recipe;
   switch (recipe.preset) {
     case "unequal_margins":
       for (const pressure of recipe.pressures) {
-        event(pressure.node, recipe.strain, "strain");
+        event(pressure.node, recipe.strain, "strain", "action", ["x", "y"]);
         tracks.add(pressure.node, "x", recipe.strain, pressure.to[0]);
         tracks.add(pressure.node, "y", recipe.strain, pressure.to[1]);
       }
@@ -291,7 +324,7 @@ export function compileStoryScene(
           tracks.add(id, property as "x" | "y", recipe.narrow, end[index]!);
         }
         enter(id, recipe.sidesEnter ?? recipe.reveal);
-        event(id, recipe.narrow, "narrow");
+        event(id, recipe.narrow, "narrow", "action", ["x", "y"]);
       });
       for (const id of recipe.connections) reveal(id, recipe.reveal);
       if (recipe.pinch) {
@@ -301,7 +334,9 @@ export function compileStoryScene(
           recipe.pinch.window,
           recipe.pinch.amount,
         );
-        event(recipe.pinch.path, recipe.pinch.window, "pinch");
+        event(recipe.pinch.path, recipe.pinch.window, "pinch", "action", [
+          "pinch",
+        ]);
       }
       break;
     }
@@ -322,7 +357,7 @@ export function compileStoryScene(
     case "dated_system_break":
       for (const fracture of recipe.breaks) {
         tracks.add(fracture.path, "gap", fracture.window, 1);
-        event(fracture.path, fracture.window, "fracture");
+        event(fracture.path, fracture.window, "fracture", "action", ["gap"]);
       }
       if (recipe.reset) {
         event(
@@ -375,11 +410,27 @@ export function compileStoryScene(
       subsequent,
       input.entranceProfile === "accelerate",
     );
-    event(entrance.node, entrance.window, "entrance", policy.role);
+    event(
+      entrance.node,
+      entrance.window,
+      "entrance",
+      policy.role,
+      entranceProperties(policy.verb),
+    );
   }
   for (const exit of recipe.exits ?? []) {
     compileExit(tracks, input.nodes, exit);
-    event(exit.node, exit.window, "exit");
+    event(
+      exit.node,
+      exit.window,
+      "exit",
+      "action",
+      exit.verb === "wipe-out" || exit.verb === "retract"
+        ? ["reveal"]
+        : exit.verb === "lift"
+          ? ["opacity", "x", "y"]
+          : ["opacity"],
+    );
   }
   for (const move of recipe.moves) {
     if (!input.motionModel) compileMove(tracks, move);
@@ -387,6 +438,15 @@ export function compileStoryScene(
       start: move.keys![0]!.frame,
       end: move.keys!.at(-1)!.frame,
     };
+    const properties = new Set<NumericMotionProperty>();
+    for (const pose of move.keys ?? (move.to ? [move.to] : []))
+      for (const property of Object.keys(pose)) {
+        if (property === "scale") {
+          properties.add("scaleX");
+          properties.add("scaleY");
+        } else if (NumericMotionPropertySchema.safeParse(property).success)
+          properties.add(property as NumericMotionProperty);
+      }
     event(
       move.node,
       window,
@@ -394,12 +454,13 @@ export function compileStoryScene(
       move.layer ??
         move.role ??
         (window.easing === "out-back-soft" ? "response" : "action"),
+      [...properties],
     );
   }
   for (const emphasis of recipe.emphasis) {
     if (!input.motionModel)
       tracks.add(emphasis.node, "opacity", emphasis.window, emphasis.opacity);
-    event(emphasis.node, emphasis.window, "emphasis", "response");
+    event(emphasis.node, emphasis.window, "emphasis", "response", ["opacity"]);
   }
   for (const motion of input.intentPresets?.motions ?? [])
     event(
@@ -411,6 +472,7 @@ export function compileStoryScene(
         : ["settle", "recoil"].includes(motion.preset)
           ? "response"
           : "action",
+      motion.property ? [motion.property] : undefined,
     );
   for (const motion of input.periodic ?? [])
     event(
@@ -418,6 +480,7 @@ export function compileStoryScene(
       { start: motion.start, end: motion.end },
       "move",
       motion.layer ?? "carrier",
+      [motion.property],
     );
   for (const driver of input.drivers ?? []) {
     const signal = input.signals?.find((s) => s.id === driver.signal);
@@ -433,6 +496,7 @@ export function compileStoryScene(
         },
         "move",
         driver.layer ?? "action",
+        [driver.target.split(".")[1]! as NumericMotionProperty],
       );
     for (let i = 1; i < signal.keys.length; i++)
       if (signal.keys[i - 1]!.value !== signal.keys[i]!.value)
