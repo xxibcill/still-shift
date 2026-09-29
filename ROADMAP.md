@@ -82,7 +82,7 @@ outside the current scope.
 worktree. The [Commerce implementation](./docs/ecommerce-motion-implementation.md)
 imports the full reference catalog and implements H03, H01, H04 and A01, with three
 output shapes, English/Thai typography, editable briefs and MP4/source downloads.
-Technical fixtures are verified; real-product creative proof remains pending.
+Technical fixtures and the [H03 proof ledger](./docs/commerce-real-product-proof.md) are verified; the real-product render, operator effort, creative review and demand-based next-technique choice remain pending.
 This branch tracks v0.14 as active; the v0.13 episode checklist is retained as historical context after the owner reported publication.
 
 **Reusable component foundation:** Commerce AC-01–14 and the effects expansion are complete, with 35 gallery examples across atoms, relationships, effects and compositions. See the [foundation evidence](./docs/ecommerce-atomic-components-implementation.md) and [spatial implementation](./docs/ecommerce-spatial-components-implementation.md). Project-wide [RC-01–14](./docs/reusable-components.md) are implemented: safe instances, shared story/commerce authoring, measured layout, repetition, annotations, numeric bindings, shared motion, state, path travel, visibility windows, sequences, pins, text fitting and masks. The [RC-07–09](./docs/reusable-components-next-atomic-batch-plan.md) and [RC-10–14](./docs/reusable-components-timing-batch-plan.md) plans record their implementation and verification. All complete e-commerce motion formats, including palm-up float, remain Experimental. The palm-up scene remains a visual regression baseline.
@@ -547,8 +547,8 @@ proofs do not reinstate retired corpus entries or establish Phase 0 acceptance.
 
 ## v0.14 — E-commerce motion library adoption
 
-**Status:** Implemented and verified with original technical fixtures in the Commerce worktree; real-product proof pending. See the
-[implementation evidence](./docs/ecommerce-motion-implementation.md) and [adoption plan](./docs/ecommerce-motion-adoption-plan.md).
+**Status:** M0–M4 implemented and verified with original technical fixtures. The H03 M5 proof ledger is implemented; real-product proof and operator measurements remain pending. See the
+[implementation evidence](./docs/ecommerce-motion-implementation.md), [proof runbook](./docs/commerce-real-product-proof.md) and [adoption plan](./docs/ecommerce-motion-adoption-plan.md).
 
 **Release outcome:** Supply a product brief and prepared imagery, preview a supported
 format and export a deterministic ad with its scene and provenance. All 40 formats
@@ -562,7 +562,7 @@ the ten-second A01 recipe.
 - [x] **M2:** Add H01/H04 and the ten-second A01 sequence with registered product groups and callouts.
 - [x] **M3:** Verify landscape, portrait, square and 4:5 layouts through preview and export; add the [built-in image-model editorial example](./docs/ecommerce-4x5-example.md).
 - [x] **M4:** Add the Commerce lab and brief preparation workflow; exercise a second fictional product and source-bundle reproduction.
-- [x] **M5:** Record executable coverage, preparation/repair effort and the next shared technique.
+- [~] **M5:** Executable coverage and the H03 proof ledger are recorded; real-product preparation/repair effort, creative review and a demand-based next-technique decision remain open.
 
 - [ ] Verify a real authorized product image and approved copy, and measure actual preparation/repair effort.
 
