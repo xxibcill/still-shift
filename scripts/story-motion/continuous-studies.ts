@@ -808,7 +808,7 @@ export function continuousMotifResolve(): MotionDesign {
     node.id === "subtitle"
       ? { ...node, revealMode: "words" }
       : node.id === "outgoing" && node.type === "path"
-        ? { ...node, lineWidth: 64 }
+        ? { ...node, lineWidth: 84 }
         : node,
   );
   design.camera = camera(

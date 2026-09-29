@@ -1,6 +1,6 @@
 # Story Motion continuous storytelling plan
 
-**Date:** 2026-09-26 · **Status:** ready for implementation (handoff to Codex) · **Scope:** Story Motion library (7 recipes), the ST-013/014 proof and the ST-006–008 resource passage.
+**Date:** 2026-09-26 · **Status:** P0–P3 and the standalone P5 checks implemented; creative review and documented visual deviations remain open. The owner reported S01E01 published, so P4 episode-passage work is outside the current scope. · **Original scope:** Story Motion library (7 recipes), the ST-013/014 proof and the ST-006–008 resource passage.
 
 ## 0. Read this first
 
