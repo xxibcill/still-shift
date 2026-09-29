@@ -97,6 +97,8 @@ The new optional opacity timing did not solve the omitted entrances on its own. 
 
 The P2 Unequal Margins concern remains: household A's fading art contributes more changed pixels than the margin line at its strain peak. Other residuals are the subtle contrast between the two access flows at phone size and the locally small labels in Relationship and Evidence at phone playback size. The current designs preserve the approved typography roles and qualification wording; a future creative pass should judge whether the named action reads most strongly at normal viewing size before treating the library as accepted.
 
+A separate P2 scratch variant removed the household-A fade, strengthened both margin plates and compressed household B's margin shrink to frames 72–88. At frame 81 the margin's reduced-resolution property contribution rose from 2,295 to 20,083 RGB difference units, but the full-resolution encoded peak moved to the earlier entrance at frame 29 and G4 fell from 2.986× to **2.471×**, below the 2.5× hard limit. The darker plates still read as short underlines at 390 px. This variant was not adopted; the verified P2 source remains the review candidate.
+
 Reproduce with pinned Node 22.23.1 and fresh output paths:
 
 ```sh
