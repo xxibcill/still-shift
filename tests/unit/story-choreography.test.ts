@@ -69,6 +69,30 @@ describe("story choreography", () => {
     expect(pose(scene, "house-b", 116).scaleY).toBe(0.985);
     expect(pose(scene, "house-b", 94)).toEqual(pose(scene, "house-b", 94));
   });
+  it("lets a set-down reveal its art gradually without changing the default entrance", () => {
+    const gradual = compile({
+      entrances: [
+        {
+          node: "house-a",
+          verb: "set-down",
+          window: { start: 4, end: 28 },
+          opacityTiming: { portion: 1, easing: "linear" },
+        },
+      ],
+    });
+    const original = compile({
+      entrances: [
+        { node: "house-a", verb: "set-down", window: { start: 4, end: 28 } },
+      ],
+    });
+    expect(pose(gradual, "house-a", 4).opacity).toBe(0);
+    expect(pose(gradual, "house-a", 16).opacity).toBeCloseTo(0.5);
+    expect(pose(gradual, "house-a", 28).opacity).toBe(1);
+    expect(pose(original, "house-a", 16).opacity).toBe(1);
+    expect(pose(gradual, "house-a", 16).y).toBe(
+      pose(original, "house-a", 16).y,
+    );
+  });
   it("rejects ambiguous moves and conflicting explicit entrances", () => {
     const scene = raw();
     scene.recipe.moves = [
@@ -76,6 +100,16 @@ describe("story choreography", () => {
         node: "house-b",
         window: { start: 40, end: 60 },
         to: { scale: 0.8, scaleX: 0.9 },
+      },
+    ];
+    expect(StorySceneSchema.safeParse(scene).success).toBe(false);
+    scene.recipe.moves = [];
+    scene.recipe.entrances = [
+      {
+        node: "house-a",
+        verb: "fade",
+        window: { start: 4, end: 28 },
+        opacityTiming: { portion: 1, easing: "linear" },
       },
     ];
     expect(StorySceneSchema.safeParse(scene).success).toBe(false);

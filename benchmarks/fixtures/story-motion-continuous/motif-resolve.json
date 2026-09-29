@@ -270,7 +270,7 @@
         [1, 1]
       ],
       "stroke": "#8B3F36",
-      "lineWidth": 48,
+      "lineWidth": 64,
       "lineStyle": "brush",
       "endArrow": true,
       "gapAt": 0.6,
@@ -540,6 +540,9 @@
       "land-label",
       "claims-label",
       "qualifier"
+    ],
+    "focalEvents": [
+      { "node": "outgoing", "property": "reveal", "cue": "land-to-claims" }
     ]
   },
   "recipe": {
@@ -605,8 +608,8 @@
       {
         "node": "resources-art",
         "window": {
-          "start": 108,
-          "end": 128,
+          "start": 116,
+          "end": 126,
           "cue": "land-focus",
           "easing": "out-cubic"
         },
@@ -615,8 +618,8 @@
       {
         "node": "access-art",
         "window": {
-          "start": 108,
-          "end": 128,
+          "start": 116,
+          "end": 126,
           "cue": "land-focus",
           "easing": "out-cubic"
         },
@@ -625,8 +628,8 @@
       {
         "node": "resource-link",
         "window": {
-          "start": 108,
-          "end": 128,
+          "start": 116,
+          "end": 126,
           "cue": "land-focus",
           "easing": "out-cubic"
         },
@@ -635,8 +638,8 @@
       {
         "node": "access-link",
         "window": {
-          "start": 108,
-          "end": 128,
+          "start": 116,
+          "end": 126,
           "cue": "land-focus",
           "easing": "out-cubic"
         },
@@ -672,7 +675,8 @@
           "cue": "resources-arrive",
           "easing": "out-cubic"
         },
-        "verb": "set-down"
+        "verb": "set-down",
+        "opacityTiming": { "portion": 1, "easing": "linear" }
       },
       {
         "node": "access",
@@ -682,17 +686,19 @@
           "cue": "access-arrives",
           "easing": "out-cubic"
         },
-        "verb": "set-down"
+        "verb": "set-down",
+        "opacityTiming": { "portion": 1, "easing": "linear" }
       },
       {
         "node": "land",
         "window": {
-          "start": 44,
-          "end": 88,
+          "start": 52,
+          "end": 96,
           "cue": "land-arrives",
           "easing": "out-cubic"
         },
-        "verb": "set-down"
+        "verb": "set-down",
+        "opacityTiming": { "portion": 1, "easing": "linear" }
       },
       {
         "node": "claims",
@@ -749,8 +755,8 @@
     "outgoing": "outgoing",
     "qualifier": "qualifier",
     "resolve": {
-      "start": 116,
-      "end": 130,
+      "start": 112,
+      "end": 126,
       "cue": "land-to-claims",
       "easing": "in-out-quint"
     }

@@ -99,6 +99,7 @@ for (const design of selectedDesigns) {
     ...(design.flows ? { flows: design.flows } : {}),
     review: {
       essentialText: design.essentialText,
+      ...(design.focalEvents ? { focalEvents: design.focalEvents } : {}),
       ...(design.focalGroups ? { focalGroups: design.focalGroups } : {}),
     },
     recipe: design.recipe,

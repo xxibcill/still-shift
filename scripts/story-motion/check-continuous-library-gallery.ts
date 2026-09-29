@@ -4,6 +4,9 @@ import { join, relative, resolve } from "node:path";
 import { parseArgs } from "node:util";
 import { chromium } from "playwright";
 import { createServer } from "vite";
+import { loadPreparedScene } from "../../packages/animation-engine/src/prepared-animation-engine.ts";
+import { analyzeMotionCraft } from "../../packages/renderer-core/src/story-continuous-quality.ts";
+import { measureSceneLayerEnergy } from "./motion-craft-energy.ts";
 
 const { values } = parseArgs({
   options: { directory: { type: "string" } },
@@ -13,6 +16,29 @@ if (!values.directory)
 
 const root = resolve(".");
 const directory = resolve(values.directory);
+const motifPath = resolve(
+  "benchmarks/fixtures/story-motion-continuous/motif-resolve.json",
+);
+const { scene: motif } = await loadPreparedScene(motifPath);
+assert.equal(motif.schemaVersion, "story-scene-1");
+if (motif.schemaVersion !== "story-scene-1") throw new Error("Story expected");
+assert.deepEqual(motif.review?.focalEvents, [
+  { node: "outgoing", property: "reveal", cue: "land-to-claims" },
+]);
+const motifPixels = await measureSceneLayerEnergy(motifPath);
+assert.ok(motifPixels.focal);
+const focalWarnings = analyzeMotionCraft(motif, motifPixels).filter(
+  (diagnostic) => diagnostic.code === "peak-not-story",
+);
+assert.deepEqual(focalWarnings, []);
+const focalPeak = motifPixels.total.indexOf(Math.max(...motifPixels.total));
+const motifFocal = {
+  peakFrame: focalPeak,
+  rgbDifferenceSum: motifPixels.total[focalPeak],
+  outgoingDifference: motifPixels.focal?.contribution[focalPeak],
+  remainingDifference: motifPixels.focal?.remainder[focalPeak],
+  peakNotStoryWarnings: focalWarnings,
+};
 const server = await createServer({
   root,
   configFile: false,
@@ -167,6 +193,7 @@ try {
   assert.equal(phoneOverflow, false);
   assert.deepEqual(errors, []);
   const report = {
+    motifFocal,
     playback,
     pairedPauseResynced,
     pairedStallResynced,

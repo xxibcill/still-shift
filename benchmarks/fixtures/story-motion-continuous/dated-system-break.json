@@ -260,10 +260,10 @@
         [1260, 454]
       ],
       "stroke": "#E8DFC9",
-      "lineWidth": 28,
+      "lineWidth": 34,
       "lineStyle": "brush",
       "gapAt": 0.6,
-      "gapSize": 0.18
+      "gapSize": 0.25
     },
     {
       "id": "break-b",
@@ -281,10 +281,10 @@
         [1220, 815]
       ],
       "stroke": "#E8DFC9",
-      "lineWidth": 28,
+      "lineWidth": 32,
       "lineStyle": "brush",
       "gapAt": 0.6,
-      "gapSize": 0.18
+      "gapSize": 0.25
     },
     {
       "id": "crisis-resources",
@@ -522,6 +522,94 @@
       "lineStyle": "brush",
       "gapAt": 0.6,
       "gapSize": 0.1
+    },
+    {
+      "id": "fracture-a-left",
+      "parent": "crisis",
+      "x": 0,
+      "y": 0,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "path",
+      "points": [
+        [972, 519],
+        [996, 549],
+        [1015, 548]
+      ],
+      "stroke": "#E8DFC9",
+      "lineWidth": 18,
+      "lineStyle": "brush",
+      "gapAt": 0.6,
+      "gapSize": 0.1
+    },
+    {
+      "id": "fracture-a-right",
+      "parent": "crisis",
+      "x": 0,
+      "y": 0,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "path",
+      "points": [
+        [1109, 488],
+        [1085, 453],
+        [1067, 453]
+      ],
+      "stroke": "#E8DFC9",
+      "lineWidth": 18,
+      "lineStyle": "brush",
+      "gapAt": 0.6,
+      "gapSize": 0.1
+    },
+    {
+      "id": "fracture-b-left",
+      "parent": "crisis",
+      "x": 0,
+      "y": 0,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "path",
+      "points": [
+        [958, 793],
+        [978, 759],
+        [994, 758]
+      ],
+      "stroke": "#E8DFC9",
+      "lineWidth": 18,
+      "lineStyle": "brush",
+      "gapAt": 0.6,
+      "gapSize": 0.1
+    },
+    {
+      "id": "fracture-b-right",
+      "parent": "crisis",
+      "x": 0,
+      "y": 0,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "path",
+      "points": [
+        [1083, 804],
+        [1061, 838],
+        [1044, 838]
+      ],
+      "stroke": "#E8DFC9",
+      "lineWidth": 18,
+      "lineStyle": "brush",
+      "gapAt": 0.6,
+      "gapSize": 0.1
     }
   ],
   "provenance": "Original code-authored symbolic editorial illustrations for reusable motion studies. Layered Chronicle palette and typography. No selected S01E01 image is modified; these are explanatory fixtures, not authentic evidence or a finished episode.",
@@ -615,9 +703,9 @@
         "node": "crisis-resources",
         "keys": [
           { "frame": 74, "y": 304, "rotation": 0 },
-          { "frame": 84, "y": 318, "rotation": 2, "easing": "in-cubic" },
-          { "frame": 94, "y": 313, "rotation": 0.7, "easing": "out-back-soft" },
-          { "frame": 119, "y": 316, "rotation": 0.7, "easing": "linear" }
+          { "frame": 84, "y": 330, "rotation": 2.4, "easing": "in-cubic" },
+          { "frame": 94, "y": 321, "rotation": 0.7, "easing": "out-back-soft" },
+          { "frame": 119, "y": 324, "rotation": 0.7, "easing": "linear" }
         ],
         "role": "response"
       },
@@ -625,10 +713,10 @@
         "node": "crisis-access",
         "keys": [
           { "frame": 90, "y": 705, "rotation": 0 },
-          { "frame": 104, "y": 710, "rotation": -2.5, "easing": "in-cubic" },
+          { "frame": 104, "y": 720, "rotation": -2.5, "easing": "in-cubic" },
           {
             "frame": 119,
-            "y": 713,
+            "y": 724,
             "rotation": -0.7,
             "easing": "out-back-soft"
           }
@@ -727,6 +815,46 @@
           "easing": "out-cubic"
         },
         "verb": "attach"
+      },
+      {
+        "node": "fracture-a-left",
+        "window": {
+          "start": 74,
+          "end": 84,
+          "cue": "resource-fracture-left",
+          "easing": "out-cubic"
+        },
+        "verb": "draw"
+      },
+      {
+        "node": "fracture-a-right",
+        "window": {
+          "start": 74,
+          "end": 84,
+          "cue": "resource-fracture-right",
+          "easing": "out-cubic"
+        },
+        "verb": "draw"
+      },
+      {
+        "node": "fracture-b-left",
+        "window": {
+          "start": 90,
+          "end": 104,
+          "cue": "access-fracture-left",
+          "easing": "out-cubic"
+        },
+        "verb": "draw"
+      },
+      {
+        "node": "fracture-b-right",
+        "window": {
+          "start": 90,
+          "end": 104,
+          "cue": "access-fracture-right",
+          "easing": "out-cubic"
+        },
+        "verb": "draw"
       },
       {
         "node": "later-house",

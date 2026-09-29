@@ -52,10 +52,11 @@ Reveal with measured alpha concealment, complete clearance, and a held destinati
 Start with Unequal Margins and Access Constraint, prove their visible change in
 one short preview, then assemble the 26.917-second ST-013/014 narrated sequence.
 Relationship Build, Evidence Boundary, Dated System Break, Category Swap and
-Motif Resolve now share the implemented event compiler and renderer. All seven
-recipes have rendered fixtures, lab timing controls and CLI export; narrated
-S01E01 integration remains in progress. See the [implementation evidence](./docs/story-motion-implementation.md).
-Cinematic iteration remains deferred; Phase 0 acceptance remains separate.
+Motif Resolve share the implemented event compiler and renderer. All seven
+recipes have rendered fixtures, lab timing controls and CLI export. The owner
+reported S01E01 published; its narrated integration checklist is historical
+context here. See the [implementation evidence](./docs/story-motion-implementation.md).
+The cinematic nine-template family is implemented, with creative review pending.
 The [implementation research](./docs/s01e01-story-motion-research.md) now covers
 all seven, including source precedents, asset preparation and exact-frame timing requirements.
 
@@ -73,9 +74,9 @@ S01E01 published, so its episode integration checklist is historical context.
 **Separate creative workstream:** [Continuous storytelling](./docs/story-motion-continuous-implementation.md)
 supersedes frozen-hold guidance. The optional engine, Unequal Margins prototype
 and seven opt-in standalone studies are implemented; G1–G6 pass. The Lab activity
-strip is implemented. Creative acceptance remains open: Motif Resolve peaks at
-land arrival instead of the outgoing arrow, and the P2 strain response still
-needs owner judgement. The published episode's narrated-passage rollout is
+strip is implemented. Motif Resolve's encoded peak now falls inside the outgoing
+arrow beat, with a property-level focal check. Creative acceptance remains open
+for the P2 strain response and the documented P3 visual deviations. The published episode's narrated-passage rollout is
 outside the current scope.
 
 **Commerce adoption:** The user requested v0.14 implementation in an isolated
@@ -525,7 +526,7 @@ shots. Still Shift supplies motion scenes; Remotion retains episode assembly.
 - [x] Add the opt-in continuous camera, choreography, text reveal, currents and analyzer; all 1,344 v012 decoded frames remain identical.
 - [~] Deliver the [Unequal Margins P2 prototype](./docs/story-motion-continuous-implementation.md); numeric gates pass, owner review and peak-emphasis decision pending.
 - [x] Add the [Lab activity strip](./docs/story-motion-continuous-implementation.md#lab-activity-strip-p5-slice) with per-frame role activity and continuous diagnostics.
-- [~] Roll out continuous motion to the other six reusable recipes: seven opt-in studies are rendered and G1–G6 pass; Motif Resolve R4 story emphasis and owner creative review remain open. The two narrated passages belonged to the earlier episode plan.
+- [~] Roll out continuous motion to the other six reusable recipes: seven opt-in studies are rendered and G1–G6 pass; Motif Resolve's encoded peak and property-level focal check now align with the outgoing arrow. Other planned entrances, the Dated fracture response and owner creative review remain open. The two narrated passages belonged to the earlier episode plan.
 - [~] Render the refreshed 646-frame comparison/access and new 1507-frame resource passage; independent frame review and technical checks passed, continuous audiovisual acceptance remains open.
 - [x] Add [purpose-led beat plans](./docs/story-beat-planning.md), reusable prepared templates, validated narration and delivery timing, and a passage review page for both proofs. Existing motion is preserved as the regression baseline; new passage choreography remains separate.
 - [x] Implement the [E1–E7 engine and tooling plan](./docs/story-engine-tooling-plan.md): shared compilation and retiming, template/style contracts, explicit continuity, passage editing and verified incremental rendering. Supported limits and verification are recorded separately from the episode milestones below.

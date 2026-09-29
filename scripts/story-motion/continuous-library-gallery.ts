@@ -34,6 +34,12 @@ const energies = await Promise.all(
     after: await energy(after, entry.id),
   })),
 );
+const motifPeak = energies.find((entry) => entry.id === "motif-resolve")?.after
+  .peakFrame;
+if (motifPeak === undefined || motifPeak < 112 || motifPeak > 126)
+  throw new Error(
+    `Motif Resolve's encoded peak must land during the outgoing arrow (112–126); measured ${motifPeak}`,
+  );
 const quality = JSON.parse(
   await readFile(join(after, "quality-report.json"), "utf8"),
 ) as {

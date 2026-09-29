@@ -513,7 +513,18 @@ export function continuousDatedSystemBreak(): MotionDesign {
   if (design.recipe.preset !== "dated_system_break")
     throw new Error("Recipe mismatch");
   const paper = design.nodes.find((node) => node.id === "paper")!;
-  design.nodes = [paper, ...design.nodes.filter((node) => node.id !== "paper")];
+  design.nodes = [
+    paper,
+    ...design.nodes
+      .filter((node) => node.id !== "paper")
+      .map((node) =>
+        node.id === "break-a" && node.type === "path"
+          ? { ...node, lineWidth: 34, gapSize: 0.25 }
+          : node.id === "break-b" && node.type === "path"
+            ? { ...node, lineWidth: 32, gapSize: 0.25 }
+            : node,
+      ),
+  ];
   design.nodes.push(
     path(
       "unknown-underline",
@@ -522,6 +533,42 @@ export function continuousDatedSystemBreak(): MotionDesign {
         [690, 745],
       ],
       { stroke: c.red, lineWidth: 12, lineStyle: "brush", parent: "later" },
+    ),
+    path(
+      "fracture-a-left",
+      [
+        [972, 519],
+        [996, 549],
+        [1015, 548],
+      ],
+      { parent: "crisis", stroke: c.bone, lineWidth: 18, lineStyle: "brush" },
+    ),
+    path(
+      "fracture-a-right",
+      [
+        [1109, 488],
+        [1085, 453],
+        [1067, 453],
+      ],
+      { parent: "crisis", stroke: c.bone, lineWidth: 18, lineStyle: "brush" },
+    ),
+    path(
+      "fracture-b-left",
+      [
+        [958, 793],
+        [978, 759],
+        [994, 758],
+      ],
+      { parent: "crisis", stroke: c.bone, lineWidth: 18, lineStyle: "brush" },
+    ),
+    path(
+      "fracture-b-right",
+      [
+        [1083, 804],
+        [1061, 838],
+        [1044, 838],
+      ],
+      { parent: "crisis", stroke: c.bone, lineWidth: 18, lineStyle: "brush" },
     ),
   );
   design.camera = camera(
@@ -545,6 +592,10 @@ export function continuousDatedSystemBreak(): MotionDesign {
     entrance("crisis-access", "set-down", 44, 66, "access-arrives"),
     entrance("crisis-resources-label", "attach", 42, 60, "resources-named"),
     entrance("crisis-access-label", "attach", 52, 70, "access-named"),
+    entrance("fracture-a-left", "draw", 74, 84, "resource-fracture-left"),
+    entrance("fracture-a-right", "draw", 74, 84, "resource-fracture-right"),
+    entrance("fracture-b-left", "draw", 90, 104, "access-fracture-left"),
+    entrance("fracture-b-right", "draw", 90, 104, "access-fracture-right"),
     entrance("later-house", "set-down", 120, 150, "new-context-household"),
     entrance("unknown-underline", "draw", 128, 150, "unknown-local-conditions"),
     entrance("later-qualifier", "wipe", 140, 166, "different-place-time"),
@@ -567,9 +618,9 @@ export function continuousDatedSystemBreak(): MotionDesign {
       role: "response",
       keys: [
         { frame: 74, y: 304, rotation: 0 },
-        { frame: 84, y: 318, rotation: 2, easing: "in-cubic" },
-        { frame: 94, y: 313, rotation: 0.7, easing: "out-back-soft" },
-        { frame: 119, y: 316, rotation: 0.7, easing: "linear" },
+        { frame: 84, y: 330, rotation: 2.4, easing: "in-cubic" },
+        { frame: 94, y: 321, rotation: 0.7, easing: "out-back-soft" },
+        { frame: 119, y: 324, rotation: 0.7, easing: "linear" },
       ],
     },
     {
@@ -577,8 +628,8 @@ export function continuousDatedSystemBreak(): MotionDesign {
       role: "response",
       keys: [
         { frame: 90, y: 705, rotation: 0 },
-        { frame: 104, y: 710, rotation: -2.5, easing: "in-cubic" },
-        { frame: 119, y: 713, rotation: -0.7, easing: "out-back-soft" },
+        { frame: 104, y: 720, rotation: -2.5, easing: "in-cubic" },
+        { frame: 119, y: 724, rotation: -0.7, easing: "out-back-soft" },
       ],
     },
   ];
@@ -744,12 +795,20 @@ export function continuousMotifResolve(): MotionDesign {
   const design = base("motif-resolve");
   if (design.recipe.preset !== "motif_resolve")
     throw new Error("Recipe mismatch");
-  design.recipe.resolve = cue(116, 130, "land-to-claims", "in-out-quint");
+  design.focalEvents = [
+    { node: "outgoing", property: "reveal", cue: "land-to-claims" },
+  ];
+  design.recipe.resolve = cue(112, 126, "land-to-claims", "in-out-quint");
+  design.recipe.emphasis = (design.recipe.emphasis ?? []).map((event) =>
+    event.window.cue === "land-focus"
+      ? { ...event, window: { ...event.window, start: 116, end: 126 } }
+      : event,
+  );
   design.nodes = design.nodes.map((node) =>
     node.id === "subtitle"
       ? { ...node, revealMode: "words" }
       : node.id === "outgoing" && node.type === "path"
-        ? { ...node, lineWidth: 48 }
+        ? { ...node, lineWidth: 64 }
         : node,
   );
   design.camera = camera(
@@ -773,9 +832,15 @@ export function continuousMotifResolve(): MotionDesign {
   design.recipe.entrances = [
     entrance("title", "wipe", 0, 18, "a-household"),
     entrance("subtitle", "wipe", 16, 36, "and-connections"),
-    entrance("resources", "set-down", 18, 58, "resources-arrive"),
-    entrance("access", "set-down", 30, 70, "access-arrives"),
-    entrance("land", "set-down", 44, 88, "land-arrives"),
+    entrance("resources", "set-down", 18, 58, "resources-arrive", {
+      opacityTiming: { portion: 1, easing: "linear" },
+    }),
+    entrance("access", "set-down", 30, 70, "access-arrives", {
+      opacityTiming: { portion: 1, easing: "linear" },
+    }),
+    entrance("land", "set-down", 52, 96, "land-arrives", {
+      opacityTiming: { portion: 1, easing: "linear" },
+    }),
     entrance("claims", "set-down", 54, 64, "claims-arrive"),
     entrance("resource-link", "draw", 30, 60, "resources-link"),
     entrance("access-link", "draw", 46, 76, "access-link"),

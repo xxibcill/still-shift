@@ -114,12 +114,12 @@ export function compileEntrance(
     if (subsequent) tracks.step(id, property, window.start, value);
     else tracks.initial(id, property, value);
   };
-  const fade = (fraction = 1) => {
+  const fade = (fraction = 1, easing: StoryWindow["easing"] = "out-cubic") => {
     start(node.id, "opacity", 0);
     tracks.add(
       node.id,
       "opacity",
-      partWindow(window, 0, fraction, "out-cubic"),
+      partWindow(window, 0, fraction, easing),
       node.opacity,
     );
   };
@@ -141,7 +141,10 @@ export function compileEntrance(
     case "set-down": {
       node.origin = [0.5, 1];
       slide(0, -(distance ?? 28), "out-quint");
-      fade(0.4);
+      fade(
+        event.opacityTiming?.portion ?? 0.4,
+        event.opacityTiming?.easing ?? "out-cubic",
+      );
       start(node.id, "scaleY", 0.985);
       tracks.add(
         node.id,
