@@ -1,7 +1,6 @@
 # Continuous storytelling implementation
 
-Date: 2026-09-26. **Status: P2 prototype ready for owner review** on `codex/story-continuous-motion`. Engine work is implemented; library roll-out, passage choreography and the lab timeline strip remain pending.
-The [implementation plan](story-motion-continuous-storytelling-plan.md) requires owner review after the Unequal Margins prototype (P2), before the other studies or narrated passages change.
+Updated: 2026-09-29. **Status: seven-study technical candidate rendered; plan-specific creative items pending.** Engine work, the Lab activity strip and seven opt-in continuous studies are implemented. The owner reported S01E01 published and excluded further episode passage work. The [implementation plan](story-motion-continuous-storytelling-plan.md) calls for owner review after the Unequal Margins prototype (P2). The owner's later instruction to continue Still Shift implementation authorized the standalone P3 studies. The published episode and its narrated passages were not changed.
 
 ## Calibration (P0)
 
@@ -66,4 +65,49 @@ node --import tsx tests/browser/story-continuous.ts --prototype <new-directory>
 node --import tsx scripts/story-motion/check-prototype-gallery.ts --directory <new-directory>
 ```
 
-The plan’s **“P2 Prototype, then STOP”** instruction applies here. Do not roll out the six remaining studies, modify narrated passages or claim final creative acceptance until the owner reviews this candidate's emphasis. P3–P5 remain pending, including passage cue maps/handoff tests and the lab activity strip.
+The P2 artifact remains a checkpoint. The later owner instruction to continue authorized P3 technical roll-out, while creative acceptance of the P2 and P3 emphasis remains open. P4 episode passage choreography is outside the current scope after the owner reported publication.
+
+## Standalone study library (P3)
+
+The opt-in `--continuous` preparation mode generates seven 192-frame, 24 fps fixtures in `benchmarks/fixtures/story-motion-continuous/`: the P2 Unequal Margins design and six additional studies. The default legacy catalog and its preparation command remain unchanged. P3 has a fresh [render index](../benchmarks/results/story-motion-v013-continuous-p3-20260929-i/index.html), 16-frame contact sheets, encoded energy JSON per clip, compiled quality report and exact-cut PNGs. A separate [synchronized paired comparison gallery](../benchmarks/results/story-motion-v013-continuous-p3-20260929-sync-check/comparison.html) and [browser playback report](../benchmarks/results/story-motion-v013-continuous-p3-20260929-sync-check/gallery-checks.json) use a copy of the verified -i media. These local media directories are ignored by Git; the source and fixtures reproduce them. The paired baseline is a fresh replay of the checked-in legacy fixtures in `story-motion-v012-replay-20260929/`, not a claim that all seven MP4 bytes match the older saved v012 render.
+
+| Study              | G1 frozen frames | G2 moving | G3 gap | G4 peak/median | G5 text px/s | Peak frame |
+| ------------------ | ---------------: | --------: | -----: | -------------: | -----------: | ---------: |
+| Unequal Margins    |                0 |      100% |     44 |          2.99× |        18.51 |         81 |
+| Access Constraint  |                0 |      100% |     36 |          2.61× |            0 |         90 |
+| Relationship Build |                0 |      100% |     36 |          3.72× |         4.46 |        120 |
+| Evidence Boundary  |                0 |      100% |     22 |          8.71× |        10.84 |        158 |
+| Dated System Break |                0 |      100% |     30 |        124.42× |         9.58 |        120 |
+| Category Swap      |                0 |      100% |     36 |          5.37× |            0 |         72 |
+| Motif Resolve      |                0 |      100% |     29 |          3.80× |        11.11 |         45 |
+
+All seven pass the hard G1–G5 limits, and compilation verifies G6 cover-plane coverage at every frame. Maximum camera motion across the library is 1.350 px/frame pan and 0.000650/frame zoom, within R7. Camera paths are milder than the illustrative values in §§5.2–5.7 because those values exceeded R7 or moved essential labels faster than G5 allows in this composition. The smaller pans retain continuous parallax and keep titles, labels and qualifications readable. At normal speed, the seven paired videos reached their ends in Chromium, each with an eight-second duration and no video or page error; frame-90 scrubbing aligned each pair at 3.75 seconds. The comparison gallery uses shared controls to keep pairs synchronized. Simulated one-sided pause and stall paused and realigned both videos before resume. A 390 px viewport had no horizontal overflow. This is automated playback plus sampled contact/full-frame visual review, not owner acceptance or a human continuous watch.
+
+The exact category cut changes the basket state, caption state and current colour at **frame 72**; frame 71 still shows the first category. The encoded cut changes 160,958 pixels, compared with 27,025 on frame 71. The dated cut switches from the 1315–17 crisis at **frame 119** to a distinct Walsham 1327–29 context at **frame 120**, changing 2,015,664 pixels. The new household settles after the cut; frame 120 itself establishes the separate date and local context. [Cut stills and counts](../benchmarks/results/story-motion-v013-continuous-p3-20260929-i/exact-cut-review.json) support the compiled-state assertions in `tests/integration/story-continuous-library.test.ts`.
+
+The strongest measured moment is semantically aligned in Access (route pinch/household response), Relationship (claim pull), Category (the exact swap) and Unequal Margins (strain response, with the P2 caveat below). Evidence deliberately moves its largest moment from the plan's composite assembly to the final full evidence-boundary reveal at frame 158. The final tableau keeps **Supported**, **Exact details Unknown** and **Composite** visible together, with the qualifier intact. Dated System Break's exact context cut is much larger in pixel energy than the preceding break; this preserves the mandated sharp change of place and time but differs from the plan's proposed break peak. Motif Resolve still peaks at frame 45 when land arrives. The land→rent/service arrow was thickened and its draw concentrated to frames 116–130, followed by red outgoing current and the rent/service label; the arrival remains stronger in encoded energy. The recipe requires the motif regrouping moves before `resolve`, so simply moving the land arrival past the arrow is invalid. Motif therefore **does not meet the intended R4 story emphasis**, despite passing G4's numerical contrast gate. These are creative review exceptions, not hidden gate passes.
+
+The authored fixtures deliberately differ from several illustrative entrances in the plan. Access leaves the grain source and two households present before the pinch; Relationship leaves its initial store present before land and access arrive; Motif leaves the household present from the opening frame. Dated System Break has no camera jolt at frame 74. The -i design uses the system lines, destination drop and exact context cut for that break. These omissions keep the named actions from being displaced by large-art entrances or a camera speed violation. They remain open plan deviations, not silently completed beats.
+
+Two bounded revisions were measured in separate ignored render directories and then reverted. In `story-motion-v013-continuous-p3-20260929-j/`, Access set-downs moved its peak to frame 4 (180,283 changed pixels), Motif still peaked on an early arrival at frame 22 (73,013 versus 41,045 at the arrow), and a 2 px jolt drove Dated camera pan to 3.030 px/frame, above R7. In `story-motion-v013-continuous-p3-20260929-k/`, staggered linear arrivals restored Access's pinch peak at frame 90 but lowered G4 contrast to 2.21×; Relationship's initial store fade moved its peak from claims to frame 26; Motif peaked at frame 4 (80,349 pixels); and a smaller Dated jolt passed R7 at 2.278 px/frame but was too slight to carry the proposed break emphasis. The verified -i study source and fixtures were restored. No new household fade was kept to force the measurements.
+
+The P2 Unequal Margins concern remains: household A's fading art contributes more changed pixels than the margin line at its strain peak. Other residuals are the subtle contrast between the two access flows at phone size and the locally small labels in Relationship and Evidence at phone playback size. The current designs preserve the approved typography roles and qualification wording; a future creative pass should judge whether the named action reads most strongly at normal viewing size before treating the library as accepted.
+
+Reproduce with pinned Node 22.23.1 and fresh output paths:
+
+```sh
+pnpm story:prepare --continuous
+pnpm story:render --fixtures-dir benchmarks/fixtures/story-motion --output-dir <new-legacy-replay-directory>
+pnpm story:render --fixtures-dir benchmarks/fixtures/story-motion-continuous --output-dir <new-p3-directory> --require-continuous-motion
+node --import tsx scripts/story-motion/continuous-library-gallery.ts --before <new-legacy-replay-directory> --after <new-p3-directory>
+node --import tsx scripts/story-motion/check-continuous-library-gallery.ts --directory <new-p3-directory>
+pnpm exec vitest run tests/integration/story-continuous-library.test.ts
+```
+
+The comparison gallery and playback checker are opt-in; no default render or Lab catalog is replaced. The P3 regression compiles all seven, asserts G3/G5/G6/R7, final living currents, category states at 71/72, the dated reset at 119/120 and the final three-part evidence tableau. Full build, focused lint, integration tests and the existing broad story browser suite are separate verification steps; see the final P5 record for the last combined run.
+
+## Lab activity strip (P5 slice)
+
+The Story recipe Lab now shows carrier, action, response and current activity below the scrubber. Each coloured frame records a change from its predecessor, sampled from the compiled camera, flow tokens, node tracks and Motion Craft layers/drivers. An authored event window with no actual change stays uncoloured. Continuous V2 scenes also show frozen-run, semantic-gap and essential-text-velocity diagnostics with seek buttons.
+
+The focused browser test checks a 192-frame study with a static camera, an active pan and another static interval; only the pan appears in the carrier row. It checks timing edits, collection switching and a phone-width viewport. The 192-frame V2 controls refreshed in 13 ms under pinned Node 22.23.1 and local Chromium; the test allows up to 2.5 seconds to catch a regression, not as a product performance promise. Integrated checks remain required for release verification.

@@ -1,0 +1,671 @@
+{
+  "title": "Category Swap",
+  "fps": 24,
+  "width": 1920,
+  "height": 1080,
+  "background": "#E8DFC9",
+  "assets": [
+    {
+      "id": "house",
+      "path": "../../../assets/story-motion/art/house.svg",
+      "sha256": "sha256:a8fa4eff374ba974770317dd483ca7b2e5b8d1f0bd7a9224ada091db42542a60",
+      "width": 600,
+      "height": 440
+    },
+    {
+      "id": "store",
+      "path": "../../../assets/story-motion/art/store.svg",
+      "sha256": "sha256:8ba708bf4866da92ada1eed3dc788db98a961e7cf84fcafe8615fe734f13042c",
+      "width": 600,
+      "height": 520
+    },
+    {
+      "id": "land",
+      "path": "../../../assets/story-motion/art/land.svg",
+      "sha256": "sha256:c5c5d753a8ddd1f93da52c1171d204b260a0a2e01aa6d8c034065294345237fc",
+      "width": 640,
+      "height": 260
+    },
+    {
+      "id": "access",
+      "path": "../../../assets/story-motion/art/access.svg",
+      "sha256": "sha256:e9c7985f055ac7e07a49dbbfeadba7796175c856d5e32ab3e72f81e36b91dd1d",
+      "width": 520,
+      "height": 240
+    },
+    {
+      "id": "pressure",
+      "path": "../../../assets/story-motion/art/pressure.svg",
+      "sha256": "sha256:9ad0b18f2455c3fb9abe39f88a78c30dfa8ecfaf338a4d6235abfa14378958d7",
+      "width": 350,
+      "height": 110
+    },
+    {
+      "id": "access-crisis",
+      "path": "../../../assets/story-motion/art/access-crisis.svg",
+      "sha256": "sha256:bcfd00a8edd0787983aaa028b6a084f7a7b9d55dfa319b232922f0c5767f20ec",
+      "width": 520,
+      "height": 240
+    },
+    {
+      "id": "category-a",
+      "path": "../../../assets/story-motion/art/category-a.svg",
+      "sha256": "sha256:b5453d5780bb242d3022d460bb3f08191c1c93a0fba5c6448e2ba0c56c134d78",
+      "width": 600,
+      "height": 420
+    },
+    {
+      "id": "category-b",
+      "path": "../../../assets/story-motion/art/category-b.svg",
+      "sha256": "sha256:4887350b4a8f18324724a9727a30768be9fd9273cbffe535fd3df2341e9f0352",
+      "width": 600,
+      "height": 420
+    },
+    {
+      "id": "ground",
+      "path": "../../../assets/story-motion/art/ground.svg",
+      "sha256": "sha256:05a94509840b715518e055bc586a084c7d5c742d07486391c72cb7fa5ec86238",
+      "width": 1920,
+      "height": 300
+    },
+    {
+      "id": "paper",
+      "path": "../../../assets/story-motion/art/paper.svg",
+      "sha256": "sha256:f5a47b015f900631504b76ad6ebe587c43914b0ef0e45db460bb187c69f37b30",
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "id": "paper-cover",
+      "path": "../../../assets/story-motion/art/paper-cover.svg",
+      "sha256": "sha256:c4e232f634fe0fca808498e1643e609681b1a66178da68bfa484a939e2d179d3",
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "id": "house-body",
+      "path": "../../../assets/story-motion/art/house-body.svg",
+      "sha256": "sha256:cd4a3240451d66236369e5571b74ba8650d1739ec4168aa4400801cda248fec5",
+      "width": 600,
+      "height": 440
+    },
+    {
+      "id": "house-shadow",
+      "path": "../../../assets/story-motion/art/house-shadow.svg",
+      "sha256": "sha256:4f775915beb116a469c26af03b5a65f52f53708d5cb92a37f9567cb5f65d69e8",
+      "width": 600,
+      "height": 440
+    },
+    {
+      "id": "store-body",
+      "path": "../../../assets/story-motion/art/store-body.svg",
+      "sha256": "sha256:ea5e8d33e253278a880dc1d2c3e57bc059ff5fa14953ad4bba99982ab0bd9ef0",
+      "width": 600,
+      "height": 520
+    },
+    {
+      "id": "store-shadow",
+      "path": "../../../assets/story-motion/art/store-shadow.svg",
+      "sha256": "sha256:8ed9f7aa5f46df5961a9a8bbac8a6909273dc691be426abd4f93877cd5de1587",
+      "width": 600,
+      "height": 520
+    },
+    {
+      "id": "land-body",
+      "path": "../../../assets/story-motion/art/land-body.svg",
+      "sha256": "sha256:51e2c6dfcba0c9b188ca7c210b93068ead78a50da1a71cfcc7f060f61fabb696",
+      "width": 640,
+      "height": 260
+    },
+    {
+      "id": "land-shadow",
+      "path": "../../../assets/story-motion/art/land-shadow.svg",
+      "sha256": "sha256:bd999c2f8bc52333fe26233d52ac95dd7d5066fcabaeee77cbf5a6c27aac18a0",
+      "width": 640,
+      "height": 260
+    }
+  ],
+  "fonts": [
+    {
+      "id": "display",
+      "path": "../../../assets/story-motion/fonts/source-serif-4-semibold.otf",
+      "sha256": "sha256:25e034392847d9965c92f98971b3646436b7ab919ece9118b0c0e5ec94c02efc",
+      "weight": "600"
+    },
+    {
+      "id": "label",
+      "path": "../../../assets/story-motion/fonts/plex-sans-medium.ttf",
+      "sha256": "sha256:331c8639d7598b2cde62a911a71db195e30cb655cd6bdf2e324a7e984955f907",
+      "weight": "500"
+    },
+    {
+      "id": "label-strong",
+      "path": "../../../assets/story-motion/fonts/plex-sans-semibold.ttf",
+      "sha256": "sha256:a20caf8286023a6a7a85e40b1d2a4ae9fc3e3b1f9eda8f4c542dd4986af67bb1",
+      "weight": "600"
+    },
+    {
+      "id": "source",
+      "path": "../../../assets/story-motion/fonts/plex-mono-medium.ttf",
+      "sha256": "sha256:98fbd727aae340b236955879dabed4d991aac9e8e90b3b2a67ce4a59221cc97c",
+      "weight": "500"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "paper",
+      "x": 0,
+      "y": 0,
+      "width": 1920,
+      "height": 1080,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "image",
+      "states": [{ "asset": "paper-cover" }],
+      "fit": "contain"
+    },
+    {
+      "id": "ground",
+      "x": -160,
+      "y": 770,
+      "width": 2240,
+      "height": 310,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "image",
+      "states": [{ "asset": "ground" }],
+      "fit": "stretch"
+    },
+    {
+      "id": "title",
+      "x": 112,
+      "y": 94,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "text",
+      "text": "The category changes.",
+      "fontSize": 94,
+      "color": "#211F1B",
+      "weight": "normal",
+      "font": "sans-serif",
+      "fontAsset": "display",
+      "align": "left"
+    },
+    {
+      "id": "comparison",
+      "x": 116,
+      "y": 227,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "text",
+      "text": "Hinderclay · comparison",
+      "fontSize": 56,
+      "color": "#211F1B",
+      "weight": "normal",
+      "font": "sans-serif",
+      "fontAsset": "label",
+      "align": "left"
+    },
+    {
+      "id": "category",
+      "x": 150,
+      "y": 300,
+      "width": 850,
+      "height": 595,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "image",
+      "states": [{ "asset": "category-a" }, { "asset": "category-b" }],
+      "fit": "contain"
+    },
+    {
+      "id": "category-label",
+      "x": 575,
+      "y": 870,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "text",
+      "text": "One grain category",
+      "states": ["One grain category", "Another grain category"],
+      "fontSize": 56,
+      "color": "#211F1B",
+      "weight": "normal",
+      "font": "sans-serif",
+      "fontAsset": "label",
+      "align": "center"
+    },
+    {
+      "id": "relation",
+      "x": 0,
+      "y": 0,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "path",
+      "points": [
+        [0, 0],
+        [1, 1]
+      ],
+      "stroke": "#59664D",
+      "lineWidth": 32,
+      "lineStyle": "brush",
+      "gapAt": 0.6,
+      "gapSize": 0.1
+    },
+    {
+      "id": "household",
+      "x": 1270,
+      "y": 470,
+      "width": 510,
+      "height": 374,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "image",
+      "states": [{ "asset": "house" }],
+      "fit": "contain"
+    },
+    {
+      "id": "relation-label",
+      "x": 1260,
+      "y": 882,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "text",
+      "text": "Still connected",
+      "fontSize": 56,
+      "color": "#211F1B",
+      "weight": "normal",
+      "font": "sans-serif",
+      "fontAsset": "label",
+      "align": "left"
+    },
+    {
+      "id": "qualifier",
+      "x": 112,
+      "y": 968,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "text",
+      "text": "Symbolic: no species or amount implied",
+      "fontSize": 52,
+      "color": "#211F1B",
+      "weight": "normal",
+      "font": "sans-serif",
+      "fontAsset": "label",
+      "align": "left"
+    },
+    {
+      "id": "bracket-tl",
+      "x": 0,
+      "y": 0,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "path",
+      "points": [
+        [150, 300],
+        [235, 300],
+        [235, 340]
+      ],
+      "stroke": "#211F1B",
+      "lineWidth": 8,
+      "lineStyle": "brush",
+      "gapAt": 0.6,
+      "gapSize": 0.1
+    },
+    {
+      "id": "bracket-tr",
+      "x": 0,
+      "y": 0,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "path",
+      "points": [
+        [915, 300],
+        [1000, 300],
+        [1000, 340]
+      ],
+      "stroke": "#211F1B",
+      "lineWidth": 8,
+      "lineStyle": "brush",
+      "gapAt": 0.6,
+      "gapSize": 0.1
+    },
+    {
+      "id": "bracket-bl",
+      "x": 0,
+      "y": 0,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "path",
+      "points": [
+        [150, 845],
+        [235, 845],
+        [235, 805]
+      ],
+      "stroke": "#211F1B",
+      "lineWidth": 8,
+      "lineStyle": "brush",
+      "gapAt": 0.6,
+      "gapSize": 0.1
+    },
+    {
+      "id": "bracket-br",
+      "x": 0,
+      "y": 0,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "path",
+      "points": [
+        [915, 845],
+        [1000, 845],
+        [1000, 805]
+      ],
+      "stroke": "#211F1B",
+      "lineWidth": 8,
+      "lineStyle": "brush",
+      "gapAt": 0.6,
+      "gapSize": 0.1
+    },
+    {
+      "id": "caption-underline",
+      "x": 0,
+      "y": 0,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "path",
+      "points": [
+        [260, 948],
+        [890, 948]
+      ],
+      "stroke": "#59664D",
+      "lineWidth": 11,
+      "lineStyle": "brush",
+      "gapAt": 0.6,
+      "gapSize": 0.1
+    },
+    {
+      "id": "connection-underline",
+      "x": 0,
+      "y": 0,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "path",
+      "points": [
+        [1240, 960],
+        [1740, 960]
+      ],
+      "stroke": "#59664D",
+      "lineWidth": 8,
+      "lineStyle": "brush",
+      "gapAt": 0.6,
+      "gapSize": 0.1
+    }
+  ],
+  "provenance": "Original code-authored symbolic editorial illustrations for reusable motion studies. Layered Chronicle palette and typography. No selected S01E01 image is modified; these are explanatory fixtures, not authentic evidence or a finished episode.",
+  "schemaVersion": "story-scene-1",
+  "frameCount": 192,
+  "motionGrammar": "v2",
+  "camera": {
+    "keys": [
+      { "frame": 0, "x": 950, "y": 550, "zoom": 1 },
+      { "frame": 71, "x": 928, "y": 556, "zoom": 1.012 },
+      { "frame": 191, "x": 968, "y": 556, "zoom": 1.018 }
+    ],
+    "depth": {
+      "paper": 0,
+      "title": 0,
+      "comparison": 0,
+      "category-label": 0,
+      "relation-label": 0,
+      "qualifier": 0,
+      "ground": 0
+    },
+    "cover": ["paper"]
+  },
+  "flows": [
+    {
+      "id": "supply",
+      "path": "relation",
+      "direction": 1,
+      "count": 4,
+      "shape": "dot",
+      "size": 5,
+      "color": "#B47A2A",
+      "colorStates": [{ "frame": 72, "color": "#59664D" }],
+      "window": { "start": 40, "end": 192, "role": "current" },
+      "speed": [
+        { "frame": 40, "pxPerFrame": 5 },
+        { "frame": 56, "pxPerFrame": 5 },
+        { "frame": 71, "pxPerFrame": 2, "easing": "in-out-sine" },
+        { "frame": 84, "pxPerFrame": 4, "easing": "out-cubic" }
+      ]
+    }
+  ],
+  "review": {
+    "essentialText": ["category-label", "relation-label", "qualifier"]
+  },
+  "recipe": {
+    "preset": "category_swap",
+    "moves": [
+      {
+        "node": "category",
+        "keys": [
+          { "frame": 60, "scaleY": 1 },
+          { "frame": 71, "scaleY": 0.97, "easing": "in-quad" },
+          { "frame": 72, "scaleY": 0.97, "easing": "linear" },
+          { "frame": 84, "scaleY": 1, "easing": "out-back-soft" }
+        ],
+        "role": "response"
+      },
+      {
+        "node": "bracket-tl",
+        "keys": [
+          { "frame": 72, "scaleX": 1.04, "scaleY": 1.04 },
+          { "frame": 84, "scaleX": 1, "scaleY": 1, "easing": "out-back-soft" }
+        ],
+        "role": "response"
+      },
+      {
+        "node": "bracket-tr",
+        "keys": [
+          { "frame": 72, "scaleX": 1.04, "scaleY": 1.04 },
+          { "frame": 84, "scaleX": 1, "scaleY": 1, "easing": "out-back-soft" }
+        ],
+        "role": "response"
+      },
+      {
+        "node": "bracket-bl",
+        "keys": [
+          { "frame": 72, "scaleX": 1.04, "scaleY": 1.04 },
+          { "frame": 84, "scaleX": 1, "scaleY": 1, "easing": "out-back-soft" }
+        ],
+        "role": "response"
+      },
+      {
+        "node": "bracket-br",
+        "keys": [
+          { "frame": 72, "scaleX": 1.04, "scaleY": 1.04 },
+          { "frame": 84, "scaleX": 1, "scaleY": 1, "easing": "out-back-soft" }
+        ],
+        "role": "response"
+      }
+    ],
+    "emphasis": [],
+    "entrances": [
+      {
+        "node": "title",
+        "window": {
+          "start": 0,
+          "end": 18,
+          "cue": "category-changes",
+          "easing": "out-cubic"
+        },
+        "verb": "wipe"
+      },
+      {
+        "node": "comparison",
+        "window": {
+          "start": 8,
+          "end": 28,
+          "cue": "comparison-source",
+          "easing": "out-cubic"
+        },
+        "verb": "wipe"
+      },
+      {
+        "node": "household",
+        "window": {
+          "start": 10,
+          "end": 32,
+          "cue": "connected-household",
+          "easing": "out-cubic"
+        },
+        "verb": "set-down"
+      },
+      {
+        "node": "relation",
+        "window": {
+          "start": 20,
+          "end": 44,
+          "cue": "supply-connection",
+          "easing": "out-cubic"
+        },
+        "verb": "draw"
+      },
+      {
+        "node": "bracket-tl",
+        "window": {
+          "start": 48,
+          "end": 62,
+          "cue": "category-registration",
+          "easing": "out-cubic"
+        },
+        "verb": "draw"
+      },
+      {
+        "node": "bracket-tr",
+        "window": {
+          "start": 51,
+          "end": 65,
+          "cue": "category-registration",
+          "easing": "out-cubic"
+        },
+        "verb": "draw"
+      },
+      {
+        "node": "bracket-bl",
+        "window": {
+          "start": 54,
+          "end": 68,
+          "cue": "category-registration",
+          "easing": "out-cubic"
+        },
+        "verb": "draw"
+      },
+      {
+        "node": "bracket-br",
+        "window": {
+          "start": 57,
+          "end": 71,
+          "cue": "category-registration",
+          "easing": "out-cubic"
+        },
+        "verb": "draw"
+      },
+      {
+        "node": "caption-underline",
+        "window": {
+          "start": 74,
+          "end": 92,
+          "cue": "new-category-named",
+          "easing": "out-cubic"
+        },
+        "verb": "draw"
+      },
+      {
+        "node": "relation-label",
+        "window": {
+          "start": 96,
+          "end": 112,
+          "cue": "still-connected",
+          "easing": "out-cubic"
+        },
+        "verb": "stamp"
+      },
+      {
+        "node": "qualifier",
+        "window": {
+          "start": 110,
+          "end": 134,
+          "cue": "symbolic-qualification",
+          "easing": "out-cubic"
+        },
+        "verb": "wipe"
+      },
+      {
+        "node": "connection-underline",
+        "window": {
+          "start": 150,
+          "end": 170,
+          "cue": "connection-continues",
+          "easing": "out-cubic"
+        },
+        "verb": "draw"
+      }
+    ],
+    "subject": "category",
+    "fromState": 0,
+    "toState": 1,
+    "swapFrame": 72,
+    "qualifier": "qualifier",
+    "stableAnchors": ["relation", "household", "comparison"],
+    "stateLabels": ["category-label"]
+  },
+  "connectors": [
+    {
+      "path": "relation",
+      "from": { "node": "category", "point": [693, 362] },
+      "to": { "node": "household", "point": [50, 192] },
+      "bend": -44
+    }
+  ]
+}
