@@ -44,8 +44,8 @@ try {
     depthHeight: 256,
     durationMs: 3000,
     fps: 30,
-    canvasWidth: 320,
-    canvasHeight: 180,
+    canvasWidth: 1920,
+    canvasHeight: 1080,
     preset: "horizontal_drift",
     intensity: "standard",
     seed: 1842,
@@ -60,6 +60,8 @@ try {
   });
   assert.equal(first.frameCount, 90);
   assert.equal(first.durationMs, 3000);
+  assert.equal(first.width, 1920);
+  assert.equal(first.height, 1080);
   assert.equal(first.sceneManifestPath, `${firstPath}.scene.json`);
   assert.equal(
     first.sourceChecksum,
