@@ -585,11 +585,17 @@ export function continuousDatedSystemBreak(): MotionDesign {
   design.recipe.entrances = [
     entrance("crisis-date", "wipe", 0, 24, "dated-crisis"),
     entrance("crisis-context", "wipe", 10, 30, "comparison-context"),
-    entrance("crisis-store", "set-down", 0, 26, "system-source"),
+    entrance("crisis-store", "set-down", 0, 26, "system-source", {
+      opacityTiming: { portion: 1, easing: "linear" },
+    }),
     entrance("break-a", "draw", 20, 44, "resource-connection"),
     entrance("break-b", "draw", 26, 50, "access-connection"),
-    entrance("crisis-resources", "set-down", 36, 58, "resources-arrive"),
-    entrance("crisis-access", "set-down", 44, 66, "access-arrives"),
+    entrance("crisis-resources", "set-down", 36, 58, "resources-arrive", {
+      opacityTiming: { portion: 1, easing: "linear" },
+    }),
+    entrance("crisis-access", "set-down", 44, 66, "access-arrives", {
+      opacityTiming: { portion: 1, easing: "linear" },
+    }),
     entrance("crisis-resources-label", "attach", 42, 60, "resources-named"),
     entrance("crisis-access-label", "attach", 52, 70, "access-named"),
     entrance("fracture-a-left", "draw", 74, 84, "resource-fracture-left"),
@@ -630,6 +636,16 @@ export function continuousDatedSystemBreak(): MotionDesign {
         { frame: 90, y: 705, rotation: 0 },
         { frame: 104, y: 720, rotation: -2.5, easing: "in-cubic" },
         { frame: 119, y: 724, rotation: -0.7, easing: "out-back-soft" },
+      ],
+    },
+    {
+      node: "crisis-store",
+      role: "response",
+      keys: [
+        { frame: 74, x: 120, y: 372, rotation: 0 },
+        { frame: 84, x: 128, y: 382, rotation: -2, easing: "in-cubic" },
+        { frame: 94, x: 122, y: 374, rotation: -0.4, easing: "out-back-soft" },
+        { frame: 119, x: 122, y: 374, rotation: -0.4, easing: "linear" },
       ],
     },
   ];

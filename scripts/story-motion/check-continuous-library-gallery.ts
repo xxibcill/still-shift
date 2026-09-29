@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { writeFile } from "node:fs/promises";
+import { readFile, writeFile } from "node:fs/promises";
 import { join, relative, resolve } from "node:path";
 import { parseArgs } from "node:util";
 import { chromium } from "playwright";
@@ -39,6 +39,28 @@ const motifFocal = {
   remainingDifference: motifPixels.focal?.remainder[focalPeak],
   peakNotStoryWarnings: focalWarnings,
 };
+const datedEnergy = JSON.parse(
+  await readFile(
+    join(directory, "dated-system-break.motion-energy.json"),
+    "utf8",
+  ),
+) as { changedPixels: number[]; peakFrame: number };
+const datedPreResetPeak = datedEnergy.changedPixels
+  .slice(1, 120)
+  .reduce(
+    (peak, pixels, index) =>
+      pixels > datedEnergy.changedPixels[peak]! ? index + 1 : peak,
+    1,
+  );
+const datedPreReset = {
+  peakFrame: datedPreResetPeak,
+  changedPixels: datedEnergy.changedPixels[datedPreResetPeak],
+  largestEarlierArrival: Math.max(...datedEnergy.changedPixels.slice(1, 74)),
+  globalPeakFrame: datedEnergy.peakFrame,
+};
+assert.ok(datedPreResetPeak >= 74 && datedPreResetPeak <= 84);
+assert.ok(datedPreReset.changedPixels! > datedPreReset.largestEarlierArrival);
+assert.equal(datedPreReset.globalPeakFrame, 120);
 const server = await createServer({
   root,
   configFile: false,
@@ -194,6 +216,7 @@ try {
   assert.deepEqual(errors, []);
   const report = {
     motifFocal,
+    datedPreReset,
     playback,
     pairedPauseResynced,
     pairedStallResynced,

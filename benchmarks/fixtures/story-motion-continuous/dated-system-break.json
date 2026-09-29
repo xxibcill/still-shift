@@ -722,6 +722,34 @@
           }
         ],
         "role": "response"
+      },
+      {
+        "node": "crisis-store",
+        "keys": [
+          { "frame": 74, "x": 120, "y": 372, "rotation": 0 },
+          {
+            "frame": 84,
+            "x": 128,
+            "y": 382,
+            "rotation": -2,
+            "easing": "in-cubic"
+          },
+          {
+            "frame": 94,
+            "x": 122,
+            "y": 374,
+            "rotation": -0.4,
+            "easing": "out-back-soft"
+          },
+          {
+            "frame": 119,
+            "x": 122,
+            "y": 374,
+            "rotation": -0.4,
+            "easing": "linear"
+          }
+        ],
+        "role": "response"
       }
     ],
     "emphasis": [],
@@ -754,7 +782,8 @@
           "cue": "system-source",
           "easing": "out-cubic"
         },
-        "verb": "set-down"
+        "verb": "set-down",
+        "opacityTiming": { "portion": 1, "easing": "linear" }
       },
       {
         "node": "break-a",
@@ -784,7 +813,8 @@
           "cue": "resources-arrive",
           "easing": "out-cubic"
         },
-        "verb": "set-down"
+        "verb": "set-down",
+        "opacityTiming": { "portion": 1, "easing": "linear" }
       },
       {
         "node": "crisis-access",
@@ -794,7 +824,8 @@
           "cue": "access-arrives",
           "easing": "out-cubic"
         },
-        "verb": "set-down"
+        "verb": "set-down",
+        "opacityTiming": { "portion": 1, "easing": "linear" }
       },
       {
         "node": "crisis-resources-label",
