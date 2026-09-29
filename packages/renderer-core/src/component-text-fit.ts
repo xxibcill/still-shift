@@ -1,6 +1,7 @@
 import { shapeText } from "./shaped-text.ts";
 import type { TextStyle } from "../../scene-contract/src/typography.ts";
 import { resolvedTextStyle } from "./typography-style.ts";
+import { PassageError } from "./passage-diagnostics.ts";
 import type { PreparedNode } from "../../scene-contract/src/prepared.ts";
 import type { ComponentData } from "../../scene-contract/src/component-data.ts";
 import type { LoadedFont } from "./prepared-fonts.ts";
@@ -83,9 +84,15 @@ export function prepareTextFits<
         }
         break;
       } catch (error) {
+        const layoutOverflow =
+          error instanceof PassageError &&
+          error.diagnostics.every(
+            (diagnostic) => diagnostic.code === "text-overflow",
+          );
         if (
-          !(error instanceof Error) ||
-          !/^Text (overflows|does not fit)/.test(error.message)
+          !layoutOverflow &&
+          (!(error instanceof Error) ||
+            !/^Text (overflows|does not fit)/.test(error.message))
         )
           throw error;
       }

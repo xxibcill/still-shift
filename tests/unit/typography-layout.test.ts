@@ -11,6 +11,7 @@ import {
   selectorAmount,
 } from "../../packages/renderer-core/src/typography-animation.ts";
 import { readFontMetrics } from "../../packages/renderer-core/src/font-metrics.ts";
+import { prepareTextFits } from "../../packages/renderer-core/src/component-text-fit.ts";
 import { readFileSync } from "node:fs";
 import type { LoadedFont } from "../../packages/renderer-core/src/prepared-fonts.ts";
 import type { TextNode } from "../../packages/renderer-core/src/typography-style.ts";
@@ -64,6 +65,33 @@ const mixedSizeNode = {
 } as TextNode;
 
 describe("shaped typography", () => {
+  it("tries smaller fitted sizes after a shared layout overflow", () => {
+    const scene = {
+      typography: "type-1" as const,
+      nodes: [
+        {
+          ...mixedSizeNode,
+          id: "fitted",
+          text: "abcdefghij",
+          spans: undefined,
+          fontSize: 40,
+          textLayout: {
+            width: 80,
+            height: 50,
+            lineHeight: 1.5,
+            overflow: "error",
+          },
+        } as TextNode,
+      ],
+    };
+    const fitted = prepareTextFits(
+      scene,
+      [{ target: "fitted", minSize: 16, maxSize: 40 }],
+      measuredContext(),
+      measuredFonts,
+    );
+    expect(fitted.nodes[0]!.fontSize).toBe(16);
+  });
   it("spaces lines using their actual span metrics", () => {
     const layout = shapeText(
       measuredContext(),
