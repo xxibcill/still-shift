@@ -47,6 +47,8 @@ export type TypographyQualityPolicy = {
 };
 export type ReadingWindow = {
   node: string;
+  /** Text displayed throughout the window; lints measure only its layout. */
+  text: string;
   start: number;
   end: number;
   requiredFrames: number;
@@ -87,6 +89,7 @@ export function textReadingWindows(
         );
       windows.push({
         node: node.id,
+        text: shownText,
         start,
         end,
         requiredFrames: Math.ceil(required * scene.fps),
@@ -130,6 +133,7 @@ export function textReadingWindows(
       ].length;
       windows.push({
         node: node.id,
+        text: node.text,
         start: 0,
         end: 0,
         characters,
@@ -308,106 +312,7 @@ export function analyzeTypography(
           `${preceding.id} and ${node.id} form a manually split block ending in one word; consider a shared block with pretty wrapping.`,
         );
     }
-    for (const layout of layouts) {
-      if (
-        layout.lines.length > 1 &&
-        node.wrap !== "pretty" &&
-        node.wrap !== "balance"
-      ) {
-        const score = ragScore(layout),
-          last = layout.lines.at(-1)!.text.trim().split(/\s+/u).length;
-        if (last === 1 || score > 0.3)
-          add(
-            "rag",
-            node.id,
-            [0, scene.frameCount - 1],
-            score,
-            `${node.id} has an orphan or uneven line lengths; consider pretty or balance wrapping.`,
-          );
-      }
-      const essential =
-        ("review" in scene
-          ? scene.review?.essentialText?.includes(node.id)
-          : undefined) ?? true;
-      const reading = windows.filter((w) => w.node === node.id);
-      let displayed = Infinity,
-        smallestFrame = 0;
-      if (essential)
-        for (const window of reading)
-          for (let frame = window.start; frame < window.end; frame++) {
-            let scale = 1,
-              current: (typeof scene.nodes)[number] | undefined = node;
-            let root = node.id;
-            while (current) {
-              const state = evaluatePreparedNode(scene, current, frame);
-              scale *= Math.abs(state.scaleY);
-              root = current.id;
-              current = scene.nodes.find((n) => n.id === current!.parent);
-            }
-            if (scene.schemaVersion === "story-scene-1")
-              scale *= storyCameraTransform(scene, root, frame).scale;
-            const value =
-              (layout.xHeight * scale * (policy.displayWidth ?? 350)) /
-              scene.width;
-            if (value < displayed) {
-              displayed = value;
-              smallestFrame = frame;
-            }
-          }
-      if (displayed < (policy.minimumXHeight ?? 7))
-        add(
-          "x-height-floor",
-          node.id,
-          [smallestFrame, smallestFrame],
-          displayed,
-          `${node.id} x-height is ${displayed.toFixed(1)} px at the review width.`,
-        );
-      for (const window of windows.filter((w) => w.node === node.id)) {
-        const base = evaluateTextPoses(
-          node,
-          layout,
-          scene.textAnimators ?? [],
-          window.start,
-          scene,
-        );
-        let maximum = 0,
-          at = window.start;
-        for (
-          let frame = window.start + 1;
-          frame < Math.min(window.end, window.start + window.requiredFrames);
-          frame++
-        ) {
-          const poses = evaluateTextPoses(
-            node,
-            layout,
-            scene.textAnimators ?? [],
-            frame,
-            scene,
-          );
-          poses.forEach((pose, i) => {
-            const c = layout.clusters[i]!,
-              before = base[i]!;
-            const displaced =
-              Math.hypot(pose.x - before.x, pose.y - before.y) +
-              Math.abs(pose.scale - before.scale) * c.advance +
-              ((Math.abs(pose.rotation - before.rotation) * Math.PI) / 180) *
-                layout.capHeight;
-            if (displaced > maximum) {
-              maximum = displaced;
-              at = frame;
-            }
-          });
-        }
-        if (maximum > (policy.displacementBudget ?? 3))
-          add(
-            "moving-while-read",
-            node.id,
-            [window.start, at],
-            maximum,
-            `${node.id} glyphs move ${maximum.toFixed(1)} px during their reading window.`,
-          );
-      }
-    }
+    // Every layout lint measures only text the renderer actually shows, and reports its worst case once.
     const layoutsByText = new Map(
       layouts.map((layout) => [layout.text, layout]),
     );
@@ -415,6 +320,106 @@ export function analyzeTypography(
       textVisibility(scene, node, layoutsByText),
       layoutsByText,
     );
+    if (node.wrap !== "pretty" && node.wrap !== "balance") {
+      let rag: { score: number; frames: [number, number] } | undefined;
+      for (const [text, frames] of visibleFrames) {
+        const layout = layoutsByText.get(text)!;
+        if (layout.lines.length < 2) continue;
+        const score = ragScore(layout),
+          last = layout.lines.at(-1)!.text.trim().split(/\s+/u).length;
+        if ((last === 1 || score > 0.3) && score >= (rag?.score ?? -1))
+          rag = {
+            score,
+            frames: [Math.min(...frames), Math.max(...frames)],
+          };
+      }
+      if (rag)
+        add(
+          "rag",
+          node.id,
+          rag.frames,
+          rag.score,
+          `${node.id} has an orphan or uneven line lengths; consider pretty or balance wrapping.`,
+        );
+    }
+    const reading = windows.filter((w) => w.node === node.id);
+    let displayed = Infinity,
+      smallestFrame = 0;
+    for (const window of reading) {
+      const layout = layoutsByText.get(window.text);
+      if (!layout) continue;
+      for (let frame = window.start; frame < window.end; frame++) {
+        let scale = 1,
+          current: (typeof scene.nodes)[number] | undefined = node;
+        let root = node.id;
+        while (current) {
+          const state = evaluatePreparedNode(scene, current, frame);
+          scale *= Math.abs(state.scaleY);
+          root = current.id;
+          current = scene.nodes.find((n) => n.id === current!.parent);
+        }
+        if (scene.schemaVersion === "story-scene-1")
+          scale *= storyCameraTransform(scene, root, frame).scale;
+        const value =
+          (layout.xHeight * scale * (policy.displayWidth ?? 350)) / scene.width;
+        if (value < displayed) {
+          displayed = value;
+          smallestFrame = frame;
+        }
+      }
+    }
+    if (displayed < (policy.minimumXHeight ?? 7))
+      add(
+        "x-height-floor",
+        node.id,
+        [smallestFrame, smallestFrame],
+        displayed,
+        `${node.id} x-height is ${displayed.toFixed(1)} px at the review width.`,
+      );
+    let moving: { distance: number; frames: [number, number] } | undefined;
+    for (const window of reading) {
+      const layout = layoutsByText.get(window.text);
+      if (!layout) continue;
+      const base = evaluateTextPoses(
+        node,
+        layout,
+        scene.textAnimators ?? [],
+        window.start,
+        scene,
+      );
+      for (
+        let frame = window.start + 1;
+        frame < Math.min(window.end, window.start + window.requiredFrames);
+        frame++
+      ) {
+        const poses = evaluateTextPoses(
+          node,
+          layout,
+          scene.textAnimators ?? [],
+          frame,
+          scene,
+        );
+        poses.forEach((pose, i) => {
+          const c = layout.clusters[i]!,
+            before = base[i]!;
+          const displaced =
+            Math.hypot(pose.x - before.x, pose.y - before.y) +
+            Math.abs(pose.scale - before.scale) * c.advance +
+            ((Math.abs(pose.rotation - before.rotation) * Math.PI) / 180) *
+              layout.capHeight;
+          if (displaced > (moving?.distance ?? 0))
+            moving = { distance: displaced, frames: [window.start, frame] };
+        });
+      }
+    }
+    if (moving && moving.distance > (policy.displacementBudget ?? 3))
+      add(
+        "moving-while-read",
+        node.id,
+        moving.frames,
+        moving.distance,
+        `${node.id} glyphs move ${moving.distance.toFixed(1)} px during their reading window.`,
+      );
     let jump: { frame: number; distance: number } | undefined;
     for (const [text, frames] of visibleFrames) {
       const candidate = poseJump(

@@ -399,6 +399,61 @@ describe("semantic typography and lint", () => {
       diagnostics.find((d) => d.code === "moving-while-read")?.frames[0],
     ).toBeGreaterThanOrEqual(40);
   });
+  it("measures only the layout displayed in each reading window", () => {
+    const raw = input();
+    raw.nodes[0] = {
+      ...raw.nodes[0]!,
+      text: "A",
+      states: ["A", "AB"],
+      spans: undefined,
+    } as never;
+    const scene = compileStoryScene(
+      StorySceneSchema.parse({
+        ...raw,
+        textAnimators: [
+          {
+            node: "claim",
+            unit: "glyph",
+            start: 10,
+            end: 60,
+            stagger: 0,
+            selector: { start: 1, end: 1 },
+            from: {},
+            to: { offset: [40, 0] },
+            cue: "second-glyph",
+          },
+        ],
+      }),
+    );
+    const node = textNode(scene, "claim");
+    const prepared = (texts: string[]) =>
+      ({
+        nodes: new Map([
+          [
+            node.id,
+            new Map(
+              texts.map((text) => [
+                text,
+                { layout: mockLayout({ ...node, text }) },
+              ]),
+            ),
+          ],
+        ]),
+        corrections: new Map(),
+      }) as unknown as PreparedTypography;
+    const moving = (texts: string[]) =>
+      analyzeTypography(scene, {
+        prepared: prepared(texts),
+      }).diagnostics.filter(
+        (d) => d.code === "moving-while-read" && d.nodes[0] === "claim",
+      );
+    // "AB" is prepared as a state but never displayed; its second glyph must not be reviewed.
+    expect(moving(["A", "AB"])).toEqual(moving(["A"]));
+    expect(moving(["A", "AB"])).toEqual([]);
+    expect(
+      textReadingWindows(scene).find((w) => w.node === "claim")?.text,
+    ).toBe("A");
+  });
   it("moves a single-line claim away from its qualifier", () => {
     for (const [qualifierY, direction] of [
       [200, -1],
