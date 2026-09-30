@@ -32,6 +32,27 @@ composition environment needs a specific executable. It does not assume a
 repository `.venv` location. The depth protocol integration tests deliberately
 exercise `.venv/bin/python`, installed by `uv sync`, to verify the pinned service.
 
+## Composition baselines
+
+`pnpm test` ends with `pnpm test:browser:composition-baselines`. It renders every frame
+of the 176 acceptance items in
+[`tests/visual/composition-baselines/fixtures.json`](../tests/visual/composition-baselines/fixtures.json)
+through the export renderer and compares per-frame hashes with the stored baseline for
+the current platform and architecture (for example `darwin-arm64.json`). It takes about
+four and a half minutes on an Apple M5 Pro. See the
+[composition engine plan](./composition-engine-plan.md#ce0--baseline-parity-harness-and-feature-matrix).
+
+- A failure lists the items and frames whose pixels changed. An intentional rendering
+  change regenerates the baseline with `pnpm composition:baselines --write` (use
+  `--only id,id` or `--family name` for a subset) and records the reason in the commit.
+- Baselines exist per `platform-arch`. On an environment without one, the check stops
+  with an explanation instead of comparing against another platform's pixels.
+- Rendering uses the pinned software profile `chromium-software-1`
+  (`--disable-gpu --enable-unsafe-swiftshader`); the command refuses to run on any other
+  renderer.
+- `pnpm composition:baselines --compare-hardware` measures how far a hardware-GPU
+  preview drifts from export and writes a report beside the baseline.
+
 ## Continuous integration
 
 [The workflow](../.github/workflows/verify.yml) runs the fast tier on pushes and
