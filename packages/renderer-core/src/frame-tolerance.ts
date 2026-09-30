@@ -103,7 +103,12 @@ export function compareFrames(
   width: number,
   height: number,
 ): FrameComparison {
-  if (!Number.isInteger(width) || !Number.isInteger(height) || width < 1)
+  if (
+    !Number.isInteger(width) ||
+    !Number.isInteger(height) ||
+    width < 1 ||
+    height < 1
+  )
     throw new Error("Frame dimensions must be positive integers");
   const pixels = width * height;
   const strideA = channels(reference, pixels);

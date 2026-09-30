@@ -85,6 +85,12 @@ describe("frame tolerance", () => {
     ).toThrow("Frame size");
   });
 
+  it.each([0, -1])("rejects invalid height %s", (invalidHeight) => {
+    expect(() =>
+      compareFrames(new Uint8Array(0), new Uint8Array(0), 1, invalidHeight),
+    ).toThrow("Frame dimensions must be positive integers");
+  });
+
   it("reports the loosest tier across frames", () => {
     expect(worstTier(["exact", "exact"])).toBe("exact");
     expect(worstTier(["exact", "near", "perceptual"])).toBe("perceptual");
