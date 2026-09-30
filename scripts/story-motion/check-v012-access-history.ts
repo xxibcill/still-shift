@@ -1,16 +1,6 @@
 import assert from "node:assert/strict";
 import { execFile } from "node:child_process";
-import {
-  mkdir,
-  mkdtemp,
-  readFile,
-  readdir,
-  realpath,
-  rm,
-  symlink,
-  writeFile,
-} from "node:fs/promises";
-import { tmpdir } from "node:os";
+import { mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import { join, resolve } from "node:path";
 import { parseArgs, promisify } from "node:util";
 import { chromium } from "playwright";
@@ -25,6 +15,10 @@ import {
 import { evaluateStoryPath } from "../../packages/renderer-core/src/story-geometry.ts";
 import { measureMotionEnergy } from "./motion-energy.ts";
 import { sha256File } from "./historical-video.ts";
+import {
+  archivalCanvasPatch,
+  createIsolatedArchivalEngine,
+} from "./archival-engine.ts";
 
 const run = promisify(execFile);
 const projectRoot = resolve(".");
@@ -33,15 +27,6 @@ const pinnedVideo =
   "sha256:5511c3c9660be5075c3872cdd563686c299155bf96c4c95869bcac9347bb6e27";
 const pinnedSource =
   "sha256:84fefa2a18ed061e1fc585d3af6957492c1b089eff8587479275b37dcf10b856";
-const rendererPath = "packages/renderer-core/src/illustrated-renderer.ts";
-const currentTransform = "    ctx.transform(...nodeMatrix(node, state));";
-const archivalTransform = `    const ox = node.width * node.origin[0];
-    const oy = node.height * node.origin[1];
-    ctx.translate(state.x + ox, state.y + oy);
-    ctx.rotate((state.rotation * Math.PI) / 180);
-    ctx.scale(state.scaleX, state.scaleY);
-    ctx.translate(-ox, -oy);`;
-
 const { values } = parseArgs({
   options: {
     "historical-result": { type: "string" },
@@ -176,64 +161,13 @@ await new PreparedAnimationEngine().animate({
   outputPath: currentVideo,
 });
 
-async function isolatedEngine() {
-  const checkout = await mkdtemp(
-    join(await realpath(tmpdir()), "story-v012-access-engine-"),
-  );
-  try {
-    const archive = join(checkout, "source.tar");
-    await run("git", ["archive", pinnedEngine, "-o", archive], {
-      cwd: projectRoot,
-    });
-    await run("tar", ["-xf", archive, "-C", checkout]);
-    await rm(archive);
-    const modules = join(checkout, "node_modules");
-    await mkdir(modules);
-    for (const entry of await readdir(join(projectRoot, "node_modules"), {
-      withFileTypes: true,
-    })) {
-      if (
-        entry.name.startsWith(".") ||
-        entry.name === "@still-shift" ||
-        entry.name === "three"
-      )
-        continue;
-      await symlink(
-        await realpath(join(projectRoot, "node_modules", entry.name)),
-        join(modules, entry.name),
-      );
-    }
-    await symlink(
-      await realpath(
-        join(projectRoot, "packages/renderer-core/node_modules/three"),
-      ),
-      join(modules, "three"),
-    );
-    const workspaceModules = join(modules, "@still-shift");
-    await mkdir(workspaceModules);
-    for (const name of [
-      "execution-runtime",
-      "renderer-core",
-      "scene-contract",
-      "animation-engine",
-    ])
-      await symlink(
-        join(checkout, "packages", name),
-        join(workspaceModules, name),
-      );
-    const file = join(checkout, rendererPath);
-    const source = await readFile(file, "utf8");
-    assert.equal(source.split(currentTransform).length, 2);
-    await writeFile(file, source.replace(currentTransform, archivalTransform));
-    return checkout;
-  } catch (error) {
-    await rm(checkout, { recursive: true, force: true });
-    throw error;
-  }
-}
-
 const archivalVideo = join(outputDir, "archival-transform.mp4");
-const checkout = await isolatedEngine();
+const checkout = await createIsolatedArchivalEngine({
+  projectRoot,
+  commit: pinnedEngine,
+  tempPrefix: "story-v012-access-engine-",
+  rendererPatch: archivalCanvasPatch,
+});
 try {
   const code = `const { PreparedAnimationEngine } = await import('./packages/animation-engine/src/prepared-animation-engine.ts');
 await new PreparedAnimationEngine().animate({ scenePath: ${JSON.stringify(scenePath)}, outputPath: ${JSON.stringify(archivalVideo)} });`;
