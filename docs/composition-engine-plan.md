@@ -1,6 +1,6 @@
 # Programmable composition engine — implementation plan
 
-- **Updated:** 2026-09-30
+- **Updated:** 2026-10-01
 - **Status:** Planned. No milestone started. Q1 and Q3 decided 2026-09-30.
 - **Baseline:** `6772717` — `Merge pull request #22 from xxibcill/codex/still-shift-plan-completion`
 - **Tracker owner:** unassigned. Record the owner and branch per milestone in the [tracker](#milestone-tracker).
@@ -952,7 +952,13 @@ built-ins cannot express, add a built-in; do not add an escape hatch to arbitrar
       `loopIn`/`loopOut` with modes `cycle`, `pingpong`, `offset` and `continue`,
       `smooth(width, samples)`, `lookAt`, `length`, `normalize`, `step`, `if`.
 - [ ] Dependency graph across properties with cycle detection (`comp-expression-cycle`).
-      `valueAtTime` references to earlier times are allowed; same-time cycles are errors.
+      Include every `ref`, `valueAtTime` and `velocityAtTime` path alongside driver
+      and constraint dependencies. Reject every dependency cycle, including self
+      references and cycles whose reads request earlier times; changing time does
+      not remove a dependency edge. Earlier-time reads are allowed only across an
+      acyclic graph. `value` reads the property's keyed value without re-entering
+      its expression. Recursive feedback needs a separate finite-history design
+      before it can be supported.
 - [ ] Re-express signals, drivers and periodic motion as expression sugar internally;
       their schemas remain valid.
 - [ ] Behaviours (compile to expressions/drivers, each with parameters and tests):
@@ -973,9 +979,12 @@ overlap, a bounce and squash is expressed without per-layer keys and matches its
 baked version exactly.
 
 **Verification:** Parser tests (valid, invalid, limits, column positions), print/parse
-round trip, evaluator unit tests per built-in, type errors, cycle detection, seek
-determinism, bake round trip. A fuzz test with a fixed seed confirms that arbitrary
-input either parses to a valid AST or returns a diagnostic, never throws.
+round trip, evaluator unit tests per built-in, type errors, cycle detection (same-time,
+self-delayed and mutually delayed references, plus mixed expression/driver/constraint
+cycles), and an allowed earlier-time read across an acyclic graph. Verify cycle
+rejection before rendering at frame 0 and on random seeks, then seek determinism and
+bake round trip. A fuzz test with a fixed seed confirms that arbitrary input either
+parses to a valid AST or returns a diagnostic, never throws.
 
 **Completion record:** _to be filled in._
 
@@ -1273,6 +1282,7 @@ A milestone is complete when **all** of the following hold:
 | 2026-09-30 | Video frames are pre-decoded with FFmpeg for export                                                                         | Browser media seeking is not frame-accurate or deterministic enough for export                                                                                      |                |
 | 2026-09-30 | Q1: hybrid GPU policy — export, caches and tests pinned to SwiftShader; Lab preview may use a hardware GPU within tolerance | Exact reproducible output where caches, resume and chunking depend on it; fast interactive preview. Formalises what headless export already does by default         |                |
 | 2026-09-30 | Q3: expressions are written in a small text syntax and parsed into a validated AST; no arbitrary JavaScript at render time  | AE-like brevity for authors and agents, with safety, known dependencies and precise diagnostics. Full JavaScript remains available at authoring time in the builder |                |
+| 2026-10-01 | CE9 rejects every property dependency cycle, including earlier-time feedback                                                | Delayed self/mutual references have no finite-history base case; acyclic temporal reads preserve pure seeking and terminate                                         |                |
 
 ## Open questions for the owner
 
