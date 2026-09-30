@@ -88,5 +88,6 @@ export * from "./typography-pixels.ts";
 export * from "./typography-specimen.ts";
 export * from "./typography-safe-area.ts";
 export * from "./typography-axes.ts";
+export * from "./typography-visibility.ts";
 
 export * from "./typography-review.ts";

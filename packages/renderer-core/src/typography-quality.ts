@@ -12,10 +12,9 @@ import { evaluatePreparedNode } from "./prepared-scene.ts";
 import { resolveTextEvents } from "./typography-events.ts";
 import type { TextStyle } from "../../scene-contract/src/typography.ts";
 import {
-  resolveDisplayedText,
-  retypedClusters,
-  settledText,
-} from "./typography-transition.ts";
+  framesByDisplayedText,
+  textVisibility,
+} from "./typography-visibility.ts";
 
 export type TypographyReviewScene = StoryRenderScene | CommerceRenderScene;
 export type TypeQualityCode =
@@ -95,15 +94,8 @@ export function textReadingWindows(
       });
       start = -1;
     };
-    for (let frame = 0; frame < scene.frameCount; frame++) {
-      const state = evaluatePreparedNode(scene, node, frame);
-      let opacity = state.opacity;
-      let parent = node.parent;
-      while (parent) {
-        const p = scene.nodes.find((n) => n.id === parent)!;
-        opacity *= evaluatePreparedNode(scene, p, frame).opacity;
-        parent = p.parent;
-      }
+    for (const visible of textVisibility(scene, node)) {
+      const frame = visible.frame;
       const entering = scene.textAnimators?.some(
         (a) =>
           a.node === node.id &&
@@ -115,14 +107,13 @@ export function textReadingWindows(
                 (key) => !["fill", "color", "stroke"].includes(key),
               ))),
       );
-      const changing = (
-        node.transitions ?? (node.transition ? [node.transition] : [])
-      ).some((t) => frame >= t.window.start && frame < t.window.end);
       const settled =
-        opacity >= 0.95 && state.reveal >= 0.99 && !entering && !changing;
-      const displayed = settled
-        ? settledText(node, frame, state.state)
-        : undefined;
+        visible.opacity >= 0.95 &&
+        visible.reveal >= 0.99 &&
+        !entering &&
+        !visible.changing;
+      // Outside a transition window the displayed text is the single settled text.
+      const displayed = settled ? visible.texts[0] : undefined;
       if (settled && start >= 0 && displayed !== shownText) finish(frame);
       if (settled && start < 0) {
         start = frame;
@@ -420,30 +411,10 @@ export function analyzeTypography(
     const layoutsByText = new Map(
       layouts.map((layout) => [layout.text, layout]),
     );
-    const visibleFrames = new Map<string, Set<number>>();
-    const markVisible = (text: string, frame: number) => {
-      if (!layoutsByText.has(text)) return;
-      const frames = visibleFrames.get(text) ?? new Set<number>();
-      frames.add(frame);
-      visibleFrames.set(text, frames);
-    };
-    for (let frame = 0; frame < scene.frameCount; frame++) {
-      const state = evaluatePreparedNode(scene, node, frame).state;
-      const displayed = resolveDisplayedText(node, frame, state);
-      if (displayed.kind === "single") markVisible(displayed.text, frame);
-      else if (displayed.transition.kind === "retype") {
-        const from = layoutsByText.get(displayed.fromText),
-          to = layoutsByText.get(displayed.toText);
-        if (from && to)
-          markVisible(
-            retypedClusters(from, to, displayed.progress).layout.text,
-            frame,
-          );
-      } else {
-        markVisible(displayed.fromText, frame);
-        markVisible(displayed.toText, frame);
-      }
-    }
+    const visibleFrames = framesByDisplayedText(
+      textVisibility(scene, node, layoutsByText),
+      layoutsByText,
+    );
     let jump: { frame: number; distance: number } | undefined;
     for (const [text, frames] of visibleFrames) {
       const candidate = poseJump(

@@ -8,7 +8,7 @@ import {
 } from "./illustrated-renderer.ts";
 import { contrastRatio, type TypePixelEvidence } from "./typography-quality.ts";
 import { textAnimatorSettleFrame } from "./typography-animation.ts";
-import { evaluatePreparedNode } from "./prepared-scene.ts";
+import { textVisibility } from "./typography-visibility.ts";
 import type { TextNode } from "./typography-style.ts";
 
 const pixelHex = (data: Uint8ClampedArray, at: number) =>
@@ -46,18 +46,8 @@ export function contrastSampleFrames(
     frames.add(Math.floor((start + end - 1) / 2));
     start = -1;
   };
-  for (let frame = 0; frame < scene.frameCount; frame++) {
-    const state = evaluatePreparedNode(scene, node, frame);
-    let opacity = state.opacity;
-    let parent = node.parent;
-    while (parent) {
-      const ancestor = scene.nodes.find(
-        (candidate) => candidate.id === parent,
-      )!;
-      opacity *= evaluatePreparedNode(scene, ancestor, frame).opacity;
-      parent = ancestor.parent;
-    }
-    const visible = opacity > 0.05 && state.reveal > 0.05;
+  for (const { frame, opacity, reveal } of textVisibility(scene, node)) {
+    const visible = opacity > 0.05 && reveal > 0.05;
     if (visible && start < 0) start = frame;
     if (!visible) closeWindow(frame);
   }
