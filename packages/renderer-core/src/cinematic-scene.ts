@@ -821,6 +821,8 @@ function inspectCamera(scene: CompiledCamera) {
               return Math.max(
                 Math.abs(p.left - initial.left),
                 Math.abs(p.left + p.width - (initial.left + initial.width)),
+                Math.abs(p.top - initial.top),
+                Math.abs(p.top + p.height - (initial.top + initial.height)),
               );
             }),
           );

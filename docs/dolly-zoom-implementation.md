@@ -10,14 +10,14 @@ The [prepared fixture](../benchmarks/fixtures/cinematic-illustrated/ci-08-dolly-
 
 For the seven-second Dramatic fixture at 1920×1080 and 24 fps, the compiler validates all 168 frames:
 
-| Check                                     |                    Result |            Limit |
-| ----------------------------------------- | ------------------------: | ---------------: |
-| Subject size change                       |            effectively 0% |              ≤1% |
-| Subject anchor travel                     |          effectively 0 px | protected anchor |
-| Distant plate scale reduction             |                     4.08% |             3–6% |
-| Maximum near horizontal edge displacement |        49.93 px (2.60% W) |  ≤57.6 px (3% W) |
-| Minimum painted rear-plate margin         |                  21.13 px |            ≥0 px |
-| Minimum source sampling density           | 0.767 source px/output px |           ≥0.667 |
+| Check                             |                    Result |            Limit |
+| --------------------------------- | ------------------------: | ---------------: |
+| Subject size change               |            effectively 0% |              ≤1% |
+| Subject anchor travel             |          effectively 0 px | protected anchor |
+| Distant plate scale reduction     |                     4.08% |             3–6% |
+| Maximum near edge displacement    |        49.93 px (2.60% W) |  ≤57.6 px (3% W) |
+| Minimum painted rear-plate margin |                  21.13 px |            ≥0 px |
+| Minimum source sampling density   | 0.767 source px/output px |           ≥0.667 |
 
 The compiler also checks the protected subject polygon, near-plane overlap, painted coverage, attached foreground cut edges and sampled resolution at every frame. Tests cover 24 and 30 fps, all three strengths, and rejection when the camera move is absent, the distant change misses its range or the near plane exceeds its travel bound.
 

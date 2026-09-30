@@ -145,7 +145,21 @@ describe("CI-08 dolly zoom", () => {
     const displacement = Math.max(
       Math.abs(last.left - first.left),
       Math.abs(last.left + last.width - (first.left + first.width)),
+      Math.abs(last.top - first.top),
+      Math.abs(last.top + last.height - (first.top + first.height)),
     );
     expect(displacement).toBeLessThanOrEqual(accepted.width * 0.03);
+
+    // Stretch the near plane upward while preserving its bottom cut edge.
+    // Horizontal motion still passes, but the top now exceeds the bound.
+    nearLayer.depth = 3.5;
+    const nearNode = vertical.nodes.find(
+      (node: { id: string }) => node.id === "foreground",
+    )!;
+    nearNode.y -= 800;
+    nearNode.height += 800;
+    expect(() =>
+      compileCinematicScene(CinematicSceneSchema.parse(vertical)),
+    ).toThrow(/near displacement exceeds 3% of frame width/);
   });
 });
