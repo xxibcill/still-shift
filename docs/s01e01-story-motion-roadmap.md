@@ -1,7 +1,7 @@
 # Story motion roadmap — S01E01
 
-**Updated:** 2026-09-26
-**Project milestone:** v0.13 · **Status:** all seven recipes implemented; episode integration in progress
+**Updated:** 2026-09-29
+**Project milestone:** v0.13 · **Status:** all seven recipes implemented; owner reported S01E01 published on 2026-09-29 and excluded further episode work. The episode tasks below remain a historical plan, not a claim of completed integration in this repository.
 **Consumer:** History Offstage S01E01, followed by other prepared illustrated episodes
 **Design:** [28-still motion study](../prompt-packs/s01e01-motion-design.md) · [source/timing ledger](../prompt-packs/s01e01-motion-source-ledger.json)
 

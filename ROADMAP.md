@@ -2,20 +2,20 @@
 
 **Status:** v0.3–v0.10 implementation complete; six richer illustrated presets implemented; creative review, frozen-corpus approval, and human decision gates pending
 
-**Updated:** 2026-09-28
+**Updated:** 2026-09-29
 
-**Current engineering work:** The [E1–E6 engine/tooling implementation](./docs/story-engine-tooling-plan.md)
-is complete on `codex/story-beat-planning`: shared compilation, linked retiming,
+**Current engineering work:** The [E1–E7 engine/tooling implementation](./docs/story-engine-tooling-plan.md)
+is complete on `main`: shared compilation, linked retiming,
 reusable templates/styles, explicit continuity, the passage workbench and
 incremental rendering. See the [usage guide and verification](./docs/story-engine-tooling.md).
 This work uses scenes as technical fixtures; passage art direction and episode
 production retain their separate scope and review status below.
 
 **Vertical video engineering:** The [VV0–VV8 plan](./docs/vertical-video-plan.md)
-adds 1080×1920 output across the shared contracts, renderer paths, Lab and CLI.
+is complete. It adds 1080×1920 output across the shared contracts, renderer paths, Lab and CLI.
 Single-image, prepared-scene and passage paths retain landscape defaults;
-vertical variants must pass crop, coverage and authored safe-zone checks. VV0
-is complete: organic YouTube Shorts is the first vertical target, with no fixed
+vertical variants must pass crop, coverage and authored safe-zone checks. Organic
+YouTube Shorts is the first vertical target, with no fixed
 numeric organic safe-zone default. Existing
 landscape fixtures are regression baselines, not new creative deliverables.
 
@@ -52,10 +52,11 @@ Reveal with measured alpha concealment, complete clearance, and a held destinati
 Start with Unequal Margins and Access Constraint, prove their visible change in
 one short preview, then assemble the 26.917-second ST-013/014 narrated sequence.
 Relationship Build, Evidence Boundary, Dated System Break, Category Swap and
-Motif Resolve now share the implemented event compiler and renderer. All seven
-recipes have rendered fixtures, lab timing controls and CLI export; narrated
-S01E01 integration remains in progress. See the [implementation evidence](./docs/story-motion-implementation.md).
-Cinematic iteration remains deferred; Phase 0 acceptance remains separate.
+Motif Resolve share the implemented event compiler and renderer. All seven
+recipes have rendered fixtures, lab timing controls and CLI export. The owner
+reported S01E01 published; its narrated integration checklist is historical
+context here. See the [implementation evidence](./docs/story-motion-implementation.md).
+The cinematic nine-template family is implemented, with creative review pending.
 The [implementation research](./docs/s01e01-story-motion-research.md) now covers
 all seven, including source precedents, asset preparation and exact-frame timing requirements.
 
@@ -67,25 +68,25 @@ symbol meanings. The visual pass and line refinements are recorded below; episod
 adds a corrected text hierarchy after user feedback, longer Relationship/Motif endings,
 advisory lab/render diagnostics, a refreshed ST-013/014 proof and a new
 1507-frame ST-006–008 candidate. All seven studies and both proofs have sampled
-visual and technical evidence. Continuous audiovisual review, full episode
-integration and creative acceptance remain pending within active v0.13.
+visual and technical evidence. Creative acceptance of the reusable studies remains pending. The owner reported
+S01E01 published, so its episode integration checklist is historical context.
 
 **Separate creative workstream:** [Continuous storytelling](./docs/story-motion-continuous-implementation.md)
-supersedes frozen-hold guidance. The optional engine and Unequal Margins prototype
-are implemented; G1–G6 pass, with the strongest measured change now in the strain
-response. Its visual emphasis is flagged for the required P2 owner review. Other
-studies, narrated passages and the lab activity strip await that checkpoint.
+supersedes frozen-hold guidance. The optional engine, Unequal Margins prototype
+and seven opt-in standalone studies are implemented; G1–G6 pass. The Lab activity
+strip is implemented. Motif Resolve's encoded peak now falls inside the outgoing
+arrow beat, with a property-level focal check. Creative acceptance remains open
+for the P2 strain response and the documented P3 visual deviations. The published episode's narrated-passage rollout is
+outside the current scope.
 
 **Commerce adoption:** The user requested v0.14 implementation in an isolated
 worktree. The [Commerce implementation](./docs/ecommerce-motion-implementation.md)
 imports the full reference catalog and implements H03, H01, H04 and A01, with three
 output shapes, English/Thai typography, editable briefs and MP4/source downloads.
-Technical fixtures are verified; real-product creative proof remains pending.
-This branch tracks v0.14 as active; v0.13 episode integration is retained and deferred here.
+Technical fixtures and the [H03 proof ledger](./docs/commerce-real-product-proof.md) are verified; the real-product render, operator effort, creative review and demand-based next-technique choice remain pending.
+This branch tracks v0.14 as active; the v0.13 episode checklist is retained as historical context after the owner reported publication.
 
-**Reusable component foundation:** Commerce AC-01–14 and the effects expansion are complete, with 35 gallery examples across atoms, relationships, effects and compositions. See the [foundation evidence](./docs/ecommerce-atomic-components-implementation.md) and [spatial implementation](./docs/ecommerce-spatial-components-implementation.md). Project-wide [RC-01–06](./docs/reusable-component-expansion-plan.md) are implemented: safe instances, shared story/commerce authoring, measured layout, repetition, annotations and numeric bindings. The [shared gallery and authoring guide](./docs/reusable-components.md) add eight examples, each available in isolation and in both contexts, with settings/source export and portable story-package verification. All complete e-commerce motion formats, including palm-up float, remain Experimental. The palm-up scene remains a visual regression baseline.
-
-**Next atomic batch (planned):** [RC-07–09](./docs/reusable-components-next-atomic-batch-plan.md) adds shared scale/rotate/draw authoring, exact image/text state changes and single-node path travel. Start with the shared motion controls, then prove state and travel in a product-detail tour and a story supply-route composition. These capabilities are not yet implemented as shared modules.
+**Reusable component foundation:** Commerce AC-01–14 and the effects expansion are complete, with 35 gallery examples across atoms, relationships, effects and compositions. See the [foundation evidence](./docs/ecommerce-atomic-components-implementation.md) and [spatial implementation](./docs/ecommerce-spatial-components-implementation.md). Project-wide [RC-01–14](./docs/reusable-components.md) are implemented: safe instances, shared story/commerce authoring, measured layout, repetition, annotations, numeric bindings, shared motion, state, path travel, visibility windows, sequences, pins, text fitting and masks. The [RC-07–09](./docs/reusable-components-next-atomic-batch-plan.md) and [RC-10–14](./docs/reusable-components-timing-batch-plan.md) plans record their implementation and verification. All complete e-commerce motion formats, including palm-up float, remain Experimental. The palm-up scene remains a visual regression baseline.
 
 ## Phase 0 outcome
 
@@ -124,8 +125,8 @@ When work begins, update the roadmap date, mark exactly one version as in progre
 | v0.9    | Unattended batch execution               |     Day 8 | `[!]`  | [50-item technical batch passes; frozen-corpus gate pending](./docs/v0.9-unattended-batch.md)                          |
 | v0.10   | Evaluation release and Phase 1 decision  | Days 9–10 | `[!]`  | [Candidate gallery, 7.97-minute assembly, and gate report; human decision pending](./docs/v0.10-evaluation-release.md) |
 | v0.11   | Illustrated editorial preset trial       | Extension | `[!]`  | [Six presets implemented and verified; creative review pending](./docs/history-offstage-motion-implementation.md)      |
-| v0.12   | Cinematic illustrated template study     | Extension | `[–]`  | [Cinematic Parallax family: eight variations; quick preview workflow](./docs/cinematic-template-plan.md)               |
-| v0.13   | S01E01 reusable story-motion treatments  | Extension | `[–]`  | [Seven-treatment roadmap; short proof first, then episode integration](./docs/s01e01-story-motion-roadmap.md)          |
+| v0.12   | Cinematic illustrated template study     | Extension | `[–]`  | [Cinematic Parallax family: nine variations; quick preview workflow](./docs/cinematic-template-plan.md)                |
+| v0.13   | S01E01 reusable story-motion treatments  | Extension | `[–]`  | [Seven-treatment roadmap and historical episode checklist](./docs/s01e01-story-motion-roadmap.md)                      |
 | v0.14   | E-commerce catalog and prepared ads      | Extension | `[~]`  | [Fixture implementation verified; real-product proof pending](./docs/ecommerce-motion-implementation.md)               |
 
 ## Critical path
@@ -462,7 +463,7 @@ technical checks but was judged too basic by the owner. See the
 
 ## v0.12 — Cinematic illustrated template study
 
-**Status:** Cinematic Parallax is one family with eight implemented variations, including [Focus Handoff](./docs/focus-handoff-implementation.md), [Detail to World](./docs/detail-to-world-implementation.md) and [Rising Vista and Curved Approach](./docs/parallax-path-variations.md). The owner requested faster iteration after finding the last three too similar. Future work starts with one short preview and targeted verification; the list below records the earlier study rather than requiring a separate feature/research cycle per variation. See the [current iteration policy](./docs/cinematic-template-plan.md).
+**Status:** Cinematic Parallax is one family with nine implemented variations, including [Dolly-Zoom Tension](./docs/dolly-zoom-implementation.md), [Focus Handoff](./docs/focus-handoff-implementation.md), [Detail to World](./docs/detail-to-world-implementation.md) and [Rising Vista and Curved Approach](./docs/parallax-path-variations.md). The owner requested faster iteration after finding the last three too similar. Future work starts with one short preview and targeted verification; the list below records the earlier study rather than requiring a separate feature/research cycle per variation. See the [current iteration policy](./docs/cinematic-template-plan.md).
 
 **Release outcome:** One configurable Cinematic Parallax family, with additional
 shot ideas evaluated through short previews. See the
@@ -495,13 +496,13 @@ shot ideas evaluated through short previews. See the
 - [x] Research and implement Focus Handoff with layer-local blur, preserved alpha
       edges, pixel sharpness checks, one short preview and export parity.
 - [ ] Obtain creative acceptance of Focus Handoff.
-- [ ] Evaluate Dolly-Zoom Tension with its specific quality checks.
+- [x] Evaluate Dolly-Zoom Tension with bounded subject registration, distant-scale and near-displacement checks, plus 24/30 fps and preview/export verification.
 - [x] Add one-clip iteration command and lab duration controls for the shared family.
 - [ ] Review visible differences in short previews before expanding production scope.
 
 ## v0.13 — S01E01 reusable story motion
 
-**Status:** Seven recipes implemented and rendered; episode integration is deferred in this Commerce worktree and continues separately.
+**Status:** Seven recipes implemented and rendered. On 2026-09-29 the owner reported that S01E01 has been published and excluded further episode integration from this work. The M0–M6 episode checklist below is retained as a historical plan; its unchecked items are not claimed as completed Still Shift evidence.
 [Implementation and verification](./docs/story-motion-implementation.md) records the working engine,
 lab, CLI and preview gallery. The detailed
 [roadmap](./docs/s01e01-story-motion-roadmap.md) defines dependencies, proof
@@ -523,11 +524,12 @@ shots. Still Shift supplies motion scenes; Remotion retains episode assembly.
 - [x] Give narrative lines a distinct [split-nib brush treatment](./docs/story-motion-brush-lines.md), with stable texture, expressive pressure and bounded access clearance.
 - [x] Implement the [motion quality pass](./docs/motion-quality-implementation.md): differentiated typography, revised closing holds, before/after review and advisory authoring checks.
 - [x] Add the opt-in continuous camera, choreography, text reveal, currents and analyzer; all 1,344 v012 decoded frames remain identical.
-- [~] Deliver the [Unequal Margins P2 prototype](./docs/story-motion-continuous-implementation.md); numeric gates pass, owner review and peak-emphasis decision pending.
-- [ ] Roll out continuous motion to the other six recipes and both narrated passages after P2 review; add the lab activity strip and final continuous-motion verification.
+- [~] Deliver the [Unequal Margins P2 prototype](./docs/story-motion-continuous-implementation.md); numeric gates pass, a separate Buffer Press option is measured, and owner review of the competing emphasis remains pending.
+- [x] Add the [Lab activity strip](./docs/story-motion-continuous-implementation.md#lab-activity-strip-p5-slice) with per-frame role activity and continuous diagnostics.
+- [~] Roll out continuous motion to the other six reusable recipes: seven opt-in studies are rendered and G1–G6 pass; Motif Resolve's encoded peak aligns with the outgoing arrow, which supplies 61% of its property-level peak. Dated System Break's strongest pre-reset beat now lands on the first fracture, while its exact context cut remains the global pixel peak. Other planned entrances, phone-size label readability and owner creative review remain open. The two narrated passages belonged to the earlier episode plan.
 - [~] Render the refreshed 646-frame comparison/access and new 1507-frame resource passage; independent frame review and technical checks passed, continuous audiovisual acceptance remains open.
 - [x] Add [purpose-led beat plans](./docs/story-beat-planning.md), reusable prepared templates, validated narration and delivery timing, and a passage review page for both proofs. Existing motion is preserved as the regression baseline; new passage choreography remains separate.
-- [x] Implement the [E1–E6 engine and tooling plan](./docs/story-engine-tooling-plan.md): shared compilation and retiming, template/style contracts, explicit continuity, passage editing and verified incremental rendering. Supported limits and verification are recorded separately from the episode milestones below.
+- [x] Implement the [E1–E7 engine and tooling plan](./docs/story-engine-tooling-plan.md): shared compilation and retiming, template/style contracts, explicit continuity, passage editing and verified incremental rendering. Supported limits and verification are recorded separately from the episode milestones below.
 - [~] **M0:** Shared contract and fixture kit complete; episode-specific preparation pending.
 - [~] **M1:** Implement Unequal Margins and Access Constraint; inspect one short
   illustrated preview, then the 26.917-second ST-013/014 narrated proof.
@@ -546,8 +548,8 @@ proofs do not reinstate retired corpus entries or establish Phase 0 acceptance.
 
 ## v0.14 — E-commerce motion library adoption
 
-**Status:** Implemented and verified with original technical fixtures in the Commerce worktree; real-product proof pending. See the
-[implementation evidence](./docs/ecommerce-motion-implementation.md) and [adoption plan](./docs/ecommerce-motion-adoption-plan.md).
+**Status:** M0–M4 implemented and verified with original technical fixtures. The H03 M5 proof ledger is implemented; real-product proof and operator measurements remain pending. See the
+[implementation evidence](./docs/ecommerce-motion-implementation.md), [proof runbook](./docs/commerce-real-product-proof.md) and [adoption plan](./docs/ecommerce-motion-adoption-plan.md).
 
 **Release outcome:** Supply a product brief and prepared imagery, preview a supported
 format and export a deterministic ad with its scene and provenance. All 40 formats
@@ -561,7 +563,7 @@ the ten-second A01 recipe.
 - [x] **M2:** Add H01/H04 and the ten-second A01 sequence with registered product groups and callouts.
 - [x] **M3:** Verify landscape, portrait, square and 4:5 layouts through preview and export; add the [built-in image-model editorial example](./docs/ecommerce-4x5-example.md).
 - [x] **M4:** Add the Commerce lab and brief preparation workflow; exercise a second fictional product and source-bundle reproduction.
-- [x] **M5:** Record executable coverage, preparation/repair effort and the next shared technique.
+- [~] **M5:** Executable coverage and the H03 proof ledger are recorded; real-product preparation/repair effort, creative review and a demand-based next-technique decision remain open.
 
 - [ ] Verify a real authorized product image and approved copy, and measure actual preparation/repair effort.
 

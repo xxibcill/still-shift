@@ -272,16 +272,22 @@ import type { MotionLayer } from "../../scene-contract/src/motion-craft.ts";
 export type LayerPixelEnergy = {
   total: number[];
   layers: Record<MotionLayer, number[]>;
+  focal?: { contribution: number[]; remainder: number[] };
 };
 
 /** Marginal pixel-change contribution, measured by leaving each role out. Overlaps are not additive. */
 export async function measureLayerPixelEnergy(
   frameCount: number,
-  render: (frame: number, disabled?: MotionLayer) => Promise<Uint8ClampedArray>,
+  render: (
+    frame: number,
+    disabled?: MotionLayer | "focal",
+  ) => Promise<Uint8ClampedArray>,
+  includeFocal = false,
 ): Promise<LayerPixelEnergy> {
   const result: LayerPixelEnergy = {
     total: [],
     layers: { action: [], response: [], current: [], carrier: [] },
+    ...(includeFocal ? { focal: { contribution: [], remainder: [] } } : {}),
   };
   const previous = new Map<string, Uint8ClampedArray>();
   for (let frame = 0; frame < frameCount; frame++) {
@@ -305,6 +311,24 @@ export async function measureLayerPixelEnergy(
             );
       result.layers[layer].push(contribution);
       previous.set(layer, pixels);
+    }
+    if (result.focal) {
+      const pixels = await render(frame, "focal"),
+        prior = previous.get("focal");
+      let contribution = 0,
+        remainder = 0;
+      if (before && prior)
+        for (let i = 0; i < full.length; i += 4)
+          for (let c = 0; c < 3; c++) {
+            const otherChange = pixels[i + c]! - prior[i + c]!;
+            contribution += Math.abs(
+              full[i + c]! - before[i + c]! - otherChange,
+            );
+            remainder += Math.abs(otherChange);
+          }
+      result.focal.contribution.push(contribution);
+      result.focal.remainder.push(remainder);
+      previous.set("focal", pixels);
     }
     previous.set("full", full);
   }
@@ -502,29 +526,58 @@ export function analyzeMotionCraft(
           "Carrier contributes more than half of measured marginal pixel motion.",
       });
     const peak = pixels.total.indexOf(Math.max(...pixels.total));
-    const focal = scene.motionEvents.some(
-      (e) =>
-        e.role === "action" &&
-        e.window.start <= peak &&
-        e.window.end >= peak &&
-        (!groups.length || groups.some((g) => g.nodes.includes(e.node))),
-    );
-    const actionEnergy = pixels.layers.action[peak] ?? 0;
-    const otherEnergy = Math.max(
-      ...layerOrder
-        .filter((l) => l !== "action")
-        .map((l) => pixels.layers[l][peak] ?? 0),
-    );
-    if (peak > 0 && (!focal || otherEnergy > actionEnergy * 1.25))
-      diagnostics.push({
-        code: "peak-not-story",
-        nodes: [],
-        frames: [peak, peak],
-        measured: pixels.total[peak]!,
-        path: "/review/focalGroups",
-        message:
-          "The strongest pixel change falls outside the declared focal action or is dominated by another motion role.",
-      });
+    const focalEvents = scene.review?.focalEvents ?? [];
+    if (focalEvents.length) {
+      const inFocalWindow = focalEvents.some((target) =>
+        scene.motionEvents.some(
+          (event) =>
+            event.node === target.node &&
+            event.window.cue === target.cue &&
+            event.window.start <= peak &&
+            event.window.end >= peak,
+        ),
+      );
+      const focalEnergy = pixels.focal?.contribution[peak] ?? 0;
+      const otherEnergy = pixels.focal?.remainder[peak] ?? 0;
+      if (
+        peak > 0 &&
+        (!pixels.focal || !inFocalWindow || otherEnergy > focalEnergy * 1.25)
+      )
+        diagnostics.push({
+          code: "peak-not-story",
+          nodes: [...new Set(focalEvents.map((event) => event.node))],
+          frames: [peak, peak],
+          measured: pixels.total[peak]!,
+          path: "/review/focalEvents",
+          message: pixels.focal
+            ? "The strongest pixel change falls outside the declared focal event or another property dominates its motion."
+            : "Declared focal events need property-level pixel attribution.",
+        });
+    } else {
+      const focal = scene.motionEvents.some(
+        (e) =>
+          e.role === "action" &&
+          e.window.start <= peak &&
+          e.window.end >= peak &&
+          (!groups.length || groups.some((g) => g.nodes.includes(e.node))),
+      );
+      const actionEnergy = pixels.layers.action[peak] ?? 0;
+      const otherEnergy = Math.max(
+        ...layerOrder
+          .filter((l) => l !== "action")
+          .map((l) => pixels.layers[l][peak] ?? 0),
+      );
+      if (peak > 0 && (!focal || otherEnergy > actionEnergy * 1.25))
+        diagnostics.push({
+          code: "peak-not-story",
+          nodes: [],
+          frames: [peak, peak],
+          measured: pixels.total[peak]!,
+          path: "/review/focalGroups",
+          message:
+            "The strongest pixel change falls outside the declared focal action or is dominated by another motion role.",
+        });
+    }
   }
   for (const constraint of scene.constraints ?? [])
     if (constraint.type === "keep-in-safe-area" && !constraint.clamp) {

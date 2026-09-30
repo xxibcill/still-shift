@@ -14,6 +14,7 @@ export type MotionDesign = {
   title: string;
   description: string;
   essentialText: string[];
+  focalEvents?: NonNullable<StoryScene["review"]>["focalEvents"];
   focalGroups?: { id: string; nodes: string[] }[];
   nodes: Node[];
   recipe: z.input<typeof StoryRecipeSchema>;

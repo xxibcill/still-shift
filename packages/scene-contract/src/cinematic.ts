@@ -107,6 +107,7 @@ const cinematicShape = PreparedSceneFieldsSchema.extend({
         "curved_approach",
         "detail_to_world",
         "focus_handoff",
+        "dolly_zoom_tension",
       ]),
       foreground: id,
       foregroundRight: id.optional(),
@@ -257,10 +258,18 @@ export const CinematicSceneSchema = cinematicShape.superRefine((scene, ctx) => {
       fail("Paired doorway sides belong to threshold_push");
     if (
       scene.camera.push !== undefined &&
-      scene.recipe.preset !== "curved_approach"
+      scene.recipe.preset !== "curved_approach" &&
+      scene.recipe.preset !== "dolly_zoom_tension"
     )
-      fail("Axial travel belongs to threshold_push or curved_approach");
+      fail(
+        "Axial travel belongs to threshold_push, curved_approach or dolly_zoom_tension",
+      );
   }
+  if (
+    scene.recipe.preset === "dolly_zoom_tension" &&
+    (!scene.camera.push || scene.camera.travel.some((value) => value !== 0))
+  )
+    fail("Dolly zoom requires forward travel and no lateral travel");
   if (
     scene.recipe.preset === "rising_vista" &&
     (scene.camera.travel[0] !== 0 || scene.camera.travel[1] >= 0)
@@ -355,6 +364,7 @@ export const CinematicAnimationResultSchema = z
       "curved_approach",
       "detail_to_world",
       "focus_handoff",
+      "dolly_zoom_tension",
     ]),
     cameraValidation: CameraValidationSchema,
   })

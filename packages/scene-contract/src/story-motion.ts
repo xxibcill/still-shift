@@ -119,6 +119,13 @@ export const StoryEntranceSchema = z
       .optional(),
     from: direction.optional(),
     distance: finite.nonnegative().optional(),
+    opacityTiming: z
+      .object({
+        portion: finite.min(0.1).max(1),
+        easing: MotionEasingSchema,
+      })
+      .strict()
+      .optional(),
     parts: z
       .array(
         z
@@ -135,7 +142,11 @@ export const StoryEntranceSchema = z
       .optional(),
   })
   .strict()
-  .refine((v) => v.verb !== "assemble" || !!v.parts, "Assemble requires parts");
+  .refine((v) => v.verb !== "assemble" || !!v.parts, "Assemble requires parts")
+  .refine(
+    (v) => !v.opacityTiming || v.verb === "set-down",
+    "Opacity timing requires a set-down entrance",
+  );
 export const StoryExitSchema = z
   .object({
     node: id,

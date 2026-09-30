@@ -34,9 +34,10 @@ export async function measureSceneLayerEnergy(
           await import(
             `/@fs/${root}/packages/renderer-core/src/illustrated-renderer.ts`
           );
-        const { withoutMotionLayer, layerOrder } = await import(
-          `/@fs/${root}/packages/renderer-core/src/motion-inspector.ts`
-        );
+        const { withoutMotionLayer, withoutFocalMotion, layerOrder } =
+          await import(
+            `/@fs/${root}/packages/renderer-core/src/motion-inspector.ts`
+          );
         const { measureLayerPixelEnergy } = await import(
           `/@fs/${root}/packages/renderer-core/src/story-continuous-quality.ts`
         );
@@ -51,13 +52,22 @@ export async function measureSceneLayerEnergy(
             preview: ReturnType<typeof createIllustratedPreview>;
           }
         >();
-        for (const role of ["full", ...layerOrder]) {
+        const includeFocal = !!scene.review?.focalEvents?.length;
+        for (const role of [
+          "full",
+          ...layerOrder,
+          ...(includeFocal ? ["focal"] : []),
+        ]) {
           const canvas = document.createElement("canvas");
           variants.set(role, {
             canvas,
             preview: createIllustratedPreview(
               canvas,
-              role === "full" ? scene : withoutMotionLayer(scene, role),
+              role === "full"
+                ? scene
+                : role === "focal"
+                  ? withoutFocalMotion(scene)
+                  : withoutMotionLayer(scene, role),
               images,
             ),
           });
@@ -76,6 +86,7 @@ export async function measureSceneLayerEnergy(
               ctx.drawImage(variant.canvas, 0, 0, 320, 180);
               return ctx.getImageData(0, 0, 320, 180).data;
             },
+            includeFocal,
           );
         } finally {
           for (const variant of variants.values()) variant.preview.dispose();

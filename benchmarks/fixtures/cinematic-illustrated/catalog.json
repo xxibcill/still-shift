@@ -43,9 +43,7 @@
     "id": "ci-04-rising-vista",
     "title": "Rising Vista · Across the fields",
     "description": "Rise above a near grassy bank. The foreground drops quickly while the fields and distant horizon move more slowly.",
-    "formats": {
-      "vertical": "vertical/ci-vertical-rising-vista.json"
-    }
+    "formats": { "vertical": "vertical/ci-vertical-rising-vista.json" }
   },
   {
     "id": "ci-07-curved-approach",
@@ -61,5 +59,15 @@
     "id": "ci-06-focus-handoff",
     "title": "Focus Handoff · From stone to figure",
     "description": "Focus leaves the near masonry and settles on the courtyard figure. A slight lateral drift supports the transfer."
+  },
+  {
+    "id": "ci-08-dolly-zoom-tension",
+    "title": "Dolly-Zoom Tension · The courtyard",
+    "description": "The courtyard contracts behind a stationary figure as the near masonry approaches, while the figure keeps its size and position."
+  },
+  {
+    "id": "ci-08-dolly-zoom-tension-alternate",
+    "title": "Dolly-Zoom Tension · Across the courtyard",
+    "description": "A shifted figure and masonry edge use wider depth spacing for a second distance-compression study."
   }
 ]

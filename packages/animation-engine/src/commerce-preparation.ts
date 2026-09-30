@@ -4,7 +4,10 @@ import { dirname, resolve, relative } from "node:path";
 import { fileURLToPath } from "node:url";
 import { imageSize } from "image-size";
 import { AnimationEngineError } from "../../scene-contract/src/errors.ts";
-import { CommerceBriefSchema } from "../../scene-contract/src/commerce.ts";
+import {
+  CommerceBriefSchema,
+  CommerceSceneSchema,
+} from "../../scene-contract/src/commerce.ts";
 import { buildCommerceScene } from "../../renderer-core/src/commerce-scene.ts";
 
 const fontPath = fileURLToPath(
@@ -23,8 +26,9 @@ export async function prepareCommerceFile(
   const absoluteBrief = resolve(briefPath),
     absoluteOutput = resolve(outputPath);
   try {
+    const briefBytes = await readFile(absoluteBrief);
     const brief = CommerceBriefSchema.parse(
-      JSON.parse(await readFile(absoluteBrief, "utf8")),
+      JSON.parse(briefBytes.toString("utf8")),
     );
     const productPath = resolve(
       dirname(absoluteBrief),
@@ -42,7 +46,7 @@ export async function prepareCommerceFile(
       ? await readFile(backdropPath)
       : undefined;
     const backdropSize = backdropBytes ? imageSize(backdropBytes) : undefined;
-    const scene = buildCommerceScene(brief, {
+    const prepared = buildCommerceScene(brief, {
       ...(backdropBytes && backdropSize && backdropPath
         ? {
             backdrop: {
@@ -66,6 +70,13 @@ export async function prepareCommerceFile(
         path: relative(dirname(absoluteOutput), fontPath),
         sha256: sha256(font),
         weight: brief.artDirection !== "standard" ? "400" : "600",
+      },
+    });
+    const scene = CommerceSceneSchema.parse({
+      ...prepared,
+      metadata: {
+        ...prepared.metadata,
+        briefChecksum: sha256(briefBytes),
       },
     });
     await mkdir(dirname(absoluteOutput), { recursive: true });

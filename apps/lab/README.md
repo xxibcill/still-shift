@@ -19,6 +19,11 @@ Run `pnpm lab`, then choose a screen:
 The base URL is `http://127.0.0.1:4173`. Commerce and component galleries export
 MP4s directly; illustrated scenes and saved passage plans render through the CLI.
 
+The Story recipes screen shows compiled carrier, action, response and current
+activity under the frame scrubber. The line follows the preview frame, and the
+strip updates when narration timing is applied. V2 scenes also show continuous
+motion diagnostics with buttons that seek to the affected frames.
+
 ## Image and depth preview
 
 Run `pnpm lab` and open `http://127.0.0.1:4173/`. The lab reads

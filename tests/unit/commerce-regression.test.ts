@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { createHash } from "node:crypto";
 import { readFileSync, readdirSync } from "node:fs";
 import { resolve } from "node:path";
 import { CommerceSceneSchema } from "../../packages/scene-contract/src/commerce.ts";
@@ -9,9 +10,8 @@ describe("component extraction preserves saved commerce scenes", () => {
     name.endsWith(".brief.json"),
   )) {
     it(filename, () => {
-      const brief = JSON.parse(
-        readFileSync(resolve(directory, filename), "utf8"),
-      );
+      const briefBytes = readFileSync(resolve(directory, filename));
+      const brief = JSON.parse(briefBytes.toString("utf8"));
       const original = CommerceSceneSchema.parse(
         JSON.parse(
           readFileSync(
@@ -25,7 +25,12 @@ describe("component extraction preserves saved commerce scenes", () => {
         font: original.fonts[0]!,
         ...(original.assets[1] ? { backdrop: original.assets[1] } : {}),
       });
-      expect(rebuilt).toEqual(original);
+      const { briefChecksum, ...metadata } = original.metadata;
+      if (briefChecksum)
+        expect(briefChecksum).toBe(
+          `sha256:${createHash("sha256").update(briefBytes).digest("hex")}`,
+        );
+      expect(rebuilt).toEqual({ ...original, metadata });
     });
   }
 });

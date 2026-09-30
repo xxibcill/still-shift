@@ -1,6 +1,7 @@
 import { parseArgs } from "node:util";
 import { unequalMarginsV2 } from "./story-motion/unequal-margins-v2.ts";
 import { unequalMarginsV3 } from "./story-motion/unequal-margins-v3.ts";
+import { continuousStudies } from "./story-motion/continuous-studies.ts";
 import { createHash } from "node:crypto";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { resolve } from "node:path";
@@ -18,27 +19,36 @@ import { designs } from "./story-motion/scenes.ts";
 const { values } = parseArgs({
   options: {
     prototype: { type: "boolean", default: false },
+    continuous: { type: "boolean", default: false },
     // Motion-direction studies each get their own fixture set; v2 stays the reviewed baseline.
     direction: { type: "string" },
   },
 });
 const directions = { "buffer-press": unequalMarginsV3 } as const;
+if (values.continuous && (values.prototype || values.direction))
+  throw new Error(
+    "--continuous cannot be combined with --prototype or --direction",
+  );
 if (values.direction && !Object.hasOwn(directions, values.direction))
   throw new Error(`Unknown direction ${values.direction}`);
 const direction =
   values.direction && directions[values.direction as keyof typeof directions];
-const continuous = values.prototype || !!direction;
-const selectedDesigns = direction
-  ? [direction()]
-  : values.prototype
-    ? [unequalMarginsV2()]
-    : designs;
+const continuous = values.prototype || values.continuous || !!direction;
+const selectedDesigns = values.continuous
+  ? [unequalMarginsV2(), ...continuousStudies.map((study) => study())]
+  : direction
+    ? [direction()]
+    : values.prototype
+      ? [unequalMarginsV2()]
+      : designs;
 const directory = resolve(
   direction
     ? `benchmarks/fixtures/story-motion-${values.direction}`
-    : values.prototype
-      ? "benchmarks/fixtures/story-motion-v2"
-      : "benchmarks/fixtures/story-motion",
+    : values.continuous
+      ? "benchmarks/fixtures/story-motion-continuous"
+      : values.prototype
+        ? "benchmarks/fixtures/story-motion-v2"
+        : "benchmarks/fixtures/story-motion",
 );
 const checksum = (bytes: Uint8Array | string) =>
   `sha256:${createHash("sha256").update(bytes).digest("hex")}`;
@@ -89,6 +99,7 @@ for (const design of selectedDesigns) {
     ...(design.flows ? { flows: design.flows } : {}),
     review: {
       essentialText: design.essentialText,
+      ...(design.focalEvents ? { focalEvents: design.focalEvents } : {}),
       ...(design.focalGroups ? { focalGroups: design.focalGroups } : {}),
     },
     recipe: design.recipe,

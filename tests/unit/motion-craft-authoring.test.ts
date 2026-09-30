@@ -7,7 +7,11 @@ import {
   interpolateColor,
   sampleSpatialPath,
 } from "../../packages/renderer-core/src/motion-appearance.ts";
-import { motionGraph } from "../../packages/renderer-core/src/motion-inspector.ts";
+import {
+  focalMotionEvents,
+  motionGraph,
+  withoutFocalMotion,
+} from "../../packages/renderer-core/src/motion-inspector.ts";
 import {
   analyzeMotionCraft,
   measureLayerPixelEnergy,
@@ -196,6 +200,172 @@ describe("motion craft authoring and inspection", () => {
       analyzeMotionCraft(compileStoryScene(source), calm).map((d) => d.code),
     ).not.toContain("peak-not-story");
   });
+  it("attributes a same-role fade separately from the declared focal press", async () => {
+    const source = generic();
+    source.recipe.moves = [
+      {
+        node: "store",
+        window: { start: 0, end: 20, cue: "press" },
+        to: { x: 80 },
+        role: "action",
+      },
+      {
+        node: "store",
+        window: { start: 0, end: 20, cue: "fade" },
+        to: { opacity: 0.3 },
+        role: "action",
+      },
+    ];
+    source.review = {
+      essentialText: [],
+      focalGroups: [{ id: "store", nodes: ["store"] }],
+      focalEvents: [{ node: "store", property: "x", cue: "press" }],
+    };
+    const scene = compileStoryScene(source);
+    expect(focalMotionEvents(scene)).toHaveLength(1);
+    const withoutPress = withoutFocalMotion(scene);
+    const node = scene.nodes.find((item) => item.id === "store")!;
+    for (const frame of [0, 10, 20]) {
+      expect(evaluatePreparedNode(withoutPress, node, frame).x).toBeCloseTo(
+        evaluatePreparedNode(scene, node, 0).x,
+      );
+      expect(evaluatePreparedNode(withoutPress, node, frame).opacity).toBe(
+        evaluatePreparedNode(scene, node, frame).opacity,
+      );
+    }
+    const pixels = await measureLayerPixelEnergy(
+      3,
+      async (frame, disabled) => {
+        const value =
+          disabled === "focal"
+            ? [0, 25, 30][frame]!
+            : disabled === "action"
+              ? 0
+              : [0, 30, 40][frame]!;
+        return new Uint8ClampedArray([value, 0, 0, 255]);
+      },
+      true,
+    );
+    expect(pixels.layers.action[1]).toBe(30);
+    expect(pixels.focal).toEqual({
+      contribution: [0, 5, 5],
+      remainder: [0, 25, 5],
+    });
+    expect(
+      analyzeMotionCraft(scene, pixels).map((item) => item.code),
+    ).toContain("peak-not-story");
+    const pressDominant = {
+      ...pixels,
+      focal: { contribution: [0, 25, 5], remainder: [0, 5, 5] },
+    };
+    expect(
+      analyzeMotionCraft(scene, pressDominant).map((item) => item.code),
+    ).not.toContain("peak-not-story");
+    expect(
+      analyzeMotionCraft(scene, {
+        total: pixels.total,
+        layers: pixels.layers,
+      }).map((item) => item.code),
+    ).toContain("peak-not-story");
+  });
+
+  it("rejects ambiguous focal cues and shared-property events", () => {
+    const source = generic();
+    source.recipe.moves = [
+      {
+        node: "store",
+        window: { start: 0, end: 20, cue: "press" },
+        to: { x: 80 },
+      },
+    ];
+    source.review = {
+      essentialText: [],
+      focalEvents: [{ node: "store", property: "opacity", cue: "press" }],
+    };
+    expect(() => withoutFocalMotion(compileStoryScene(source))).toThrow(
+      "focal-event-ambiguous",
+    );
+    source.review.focalEvents![0]!.property = "x";
+    const scene = compileStoryScene(source);
+    scene.motionEvents.push({
+      node: "store",
+      window: { start: 20, end: 40, cue: "other" },
+      kind: "move",
+      role: "action",
+      properties: ["x"],
+    });
+    expect(() => withoutFocalMotion(scene)).not.toThrow();
+    scene.motionEvents.at(-1)!.window.start = 19;
+    expect(() => withoutFocalMotion(scene)).toThrow("focal-event-ambiguous");
+  });
+
+  it("accepts unrelated constraints but rejects constraints that can write the focal property", () => {
+    const source = generic();
+    const store = source.nodes.find((node) => node.id === "store")!;
+    source.recipe.moves = [
+      {
+        node: "store",
+        window: { start: 10, end: 20, cue: "press" },
+        to: { x: store.x + 80 },
+      },
+    ];
+    source.review = {
+      essentialText: [],
+      focalEvents: [{ node: "store", property: "x", cue: "press" }],
+    };
+    const scene = compileStoryScene(source);
+    scene.constraints = [{ type: "look-at", target: "store", toward: "paper" }];
+    expect(() => withoutFocalMotion(scene)).not.toThrow();
+    scene.constraints.push({
+      type: "attach",
+      target: "store",
+      anchor: "paper",
+    });
+    expect(() => withoutFocalMotion(scene)).toThrow("focal-event-ambiguous");
+  });
+
+  it("rejects focal property tracks that do not change during the named cue", () => {
+    const source = generic();
+    const store = source.nodes.find((node) => node.id === "store")!;
+    source.recipe.moves = [
+      {
+        node: "store",
+        window: { start: 10, end: 20, cue: "press" },
+        to: { x: store.x },
+      },
+    ];
+    source.review = {
+      essentialText: [],
+      focalEvents: [{ node: "store", property: "x", cue: "press" }],
+    };
+    expect(() => withoutFocalMotion(compileStoryScene(source))).toThrow(
+      "focal-event-ambiguous",
+    );
+    source.recipe.moves[0]!.to!.x = store.x + 80;
+    const scene = compileStoryScene(source);
+    const focalEvent = scene.motionEvents.find(
+      (event) => event.node === "store" && event.window.cue === "press",
+    )!;
+    focalEvent.window = { start: 30, end: 40, cue: "press" };
+    expect(() => withoutFocalMotion(scene)).toThrow("focal-event-ambiguous");
+
+    source.recipe.moves = [
+      {
+        node: "store",
+        window: { start: 0, end: 20, cue: "lead" },
+        to: { x: store.x + 10 },
+      },
+      {
+        node: "store",
+        window: { start: 20, end: 30, cue: "press" },
+        to: { x: store.x + 10 },
+      },
+    ];
+    expect(() => withoutFocalMotion(compileStoryScene(source))).toThrow(
+      "focal-event-ambiguous",
+    );
+  });
+
   it("reports velocity discontinuities and competing focal peaks with negative controls", () => {
     const source = generic(),
       other = source.nodes.find((n) => n.id !== "store" && !n.parent)!.id;
