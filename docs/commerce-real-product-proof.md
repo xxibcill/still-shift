@@ -20,6 +20,8 @@ pnpm still-shift animate-scene \
   --output /absolute/path/proof/h03.mp4
 ```
 
+Preparation records the exact brief SHA-256 in the scene. Keep that brief with the final export; if it changes, prepare and render a new scene. The proof verifier requires this binding for real-product evidence. Older fictional fixtures without the binding are checked by rebuilding their complete scene from the supplied brief.
+
 The **export wall time** comes from `h03.mp4.result.json`; it is measured by the export worker and includes rendering and encoding. Do not substitute a hand-timed command duration. The ledger also records encode-path, validation, frame-render-average and FFmpeg CPU times from that sidecar. The CLI checks the scene and dependency hashes, the MP4 hash and byte count, and decoded dimensions, frame rate and frame count with `ffprobe -count_frames`.
 
 Start the **repair stopwatch** only after the first complete preview or MP4 review reveals an issue. Count active minutes spent on changes to the prepared image, brief or scene and on rechecking those changes. Count each distinct repair round. Record `repairMinutes: 0` and `repairCount: 0` if the first version needs no repair. Keep the first export and every repaired export separately; the final ledger points at the selected export. Record defects against that selected export; `[]` means it was inspected and none were found, while `null` means inspection has not happened.

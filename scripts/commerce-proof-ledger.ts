@@ -19,6 +19,7 @@ import {
   CommerceProofReviewSchema,
   type CommerceProofLedger,
 } from "../packages/scene-contract/src/commerce-proof.ts";
+import { buildCommerceScene } from "../packages/renderer-core/src/commerce-scene.ts";
 
 const run = promisify(execFile);
 const digest = async (path: string) => {
@@ -129,6 +130,14 @@ export async function createCommerceProofLedger(
     ? CommerceProofReviewSchema.parse(await readJson(resolve(input.reviewPath)))
     : null;
 
+  if (input.kind === "real-product")
+    requireMatch(
+      !/fictional|synthetic fixture|not a real product/i.test(
+        `${brief.product.provenance} ${brief.copy.source}`,
+      ),
+      "A fictional fixture cannot be labeled real-product proof",
+    );
+
   requireMatch(
     brief.selection.kind === "format" && brief.selection.id === "H03",
     "Proof ledger currently supports H03 only",
@@ -211,6 +220,30 @@ export async function createCommerceProofLedger(
         `Prepared dependency dimensions differ: ${dependency.id}`,
       );
     }
+  }
+
+  if (scene.metadata.briefChecksum) {
+    requireMatch(
+      scene.metadata.briefChecksum === (await digest(briefPath)),
+      "Prepared scene was built from a different brief",
+    );
+  } else {
+    requireMatch(
+      input.kind === "fixture",
+      "Real-product proof requires a scene prepared with a bound brief checksum",
+    );
+    const backdrop = scene.assets.find(
+      (candidate) => candidate.id === "backdrop-image",
+    );
+    const rebuilt = buildCommerceScene(brief, {
+      product: productAsset!,
+      font: scene.fonts[0]!,
+      ...(backdrop ? { backdrop } : {}),
+    });
+    requireMatch(
+      isDeepStrictEqual(scene, rebuilt),
+      "Brief and prepared scene differ",
+    );
   }
 
   const preparedScene = await artifact(scenePath);
@@ -305,12 +338,6 @@ export async function createCommerceProofLedger(
         review?.productAuthorizationReference && review.copyApprovalReference,
       ),
       "Real-product proof requires product authorization and copy approval references",
-    );
-    requireMatch(
-      !/fictional|synthetic fixture|not a real product/i.test(
-        `${brief.product.provenance} ${brief.copy.source}`,
-      ),
-      "A fictional fixture cannot be labeled real-product proof",
     );
   } else requireMatch(!review, "Fixture proof must remain technical-only");
 

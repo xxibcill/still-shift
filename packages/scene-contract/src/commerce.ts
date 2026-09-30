@@ -214,6 +214,10 @@ const shape = PreparedSceneFieldsSchema.omit({
         copySource: text,
         claimSources: z.array(text),
         locale: z.enum(["en", "th"]),
+        briefChecksum: z
+          .string()
+          .regex(/^sha256:[a-f0-9]{64}$/)
+          .optional(),
         protectedRegion: z.tuple([
           finite,
           finite,

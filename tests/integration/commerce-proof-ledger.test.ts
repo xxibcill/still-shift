@@ -1,11 +1,14 @@
 import { execFile } from "node:child_process";
+import { createHash } from "node:crypto";
 import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
-import { join, resolve } from "node:path";
+import { dirname, join, resolve } from "node:path";
 import { promisify } from "node:util";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { PreparedAnimationEngine } from "../../packages/animation-engine/src/prepared-animation-engine.ts";
+import { prepareCommerceFile } from "../../packages/animation-engine/src/commerce-preparation.ts";
 import { CommerceProofLedgerSchema } from "../../packages/scene-contract/src/commerce-proof.ts";
+import { buildCommerceScene } from "../../packages/renderer-core/src/commerce-scene.ts";
 import {
   commerceMeasurementStatus,
   createCommerceProofLedger,
@@ -147,6 +150,82 @@ describe("H03 Commerce proof ledger", () => {
       }),
     ).rejects.toThrow("fictional fixture cannot be labeled real-product");
   });
+
+  it("rejects a stale protected region or theme in a legacy fixture brief", async () => {
+    for (const change of ["protected-region", "theme"] as const) {
+      const changedBrief = JSON.parse(await readFile(briefPath, "utf8"));
+      changedBrief.product.imagePath = resolve(
+        dirname(briefPath),
+        changedBrief.product.imagePath,
+      );
+      if (change === "protected-region")
+        changedBrief.product.protectedRegion = [0.2, 0.2, 0.2, 0.2];
+      else
+        changedBrief.theme = {
+          background: "#F2EDE4",
+          ink: "#000000",
+          accent: "#C75B39",
+          muted: "#656D62",
+        };
+      const alteredBriefPath = join(directory, `${change}.brief.json`);
+      await writeFile(alteredBriefPath, JSON.stringify(changedBrief));
+      await expect(
+        createCommerceProofLedger({
+          kind: "fixture",
+          briefPath: alteredBriefPath,
+          scenePath,
+          resultPath,
+          videoPath,
+        }),
+      ).rejects.toThrow("Brief and prepared scene differ");
+    }
+  });
+
+  it("binds newly prepared scenes to the exact brief bytes", async () => {
+    const output = join(directory, "bound.scene.json");
+    await prepareCommerceFile(briefPath, output);
+    const prepared = JSON.parse(await readFile(output, "utf8"));
+    const briefBytes = await readFile(briefPath);
+    expect(prepared.metadata.briefChecksum).toBe(
+      `sha256:${createHash("sha256").update(briefBytes).digest("hex")}`,
+    );
+    const preparedWithoutHash = structuredClone(prepared);
+    delete preparedWithoutHash.metadata.briefChecksum;
+    expect(
+      buildCommerceScene(JSON.parse(briefBytes.toString("utf8")), {
+        product: prepared.assets[0],
+        font: prepared.fonts[0],
+      }),
+    ).toEqual(preparedWithoutHash);
+
+    const boundVideo = join(directory, "bound.mp4");
+    await new PreparedAnimationEngine().animate({
+      scenePath: output,
+      outputPath: boundVideo,
+    });
+    const proof = {
+      kind: "fixture" as const,
+      briefPath,
+      scenePath: output,
+      resultPath: `${boundVideo}.result.json`,
+      videoPath: boundVideo,
+    };
+    await expect(createCommerceProofLedger(proof)).resolves.toMatchObject({
+      technicalStatus: "verified",
+    });
+
+    const changedBrief = JSON.parse(briefBytes.toString("utf8"));
+    changedBrief.product.imagePath = resolve(
+      dirname(briefPath),
+      changedBrief.product.imagePath,
+    );
+    changedBrief.product.protectedRegion = [0.2, 0.2, 0.2, 0.2];
+    const alteredBriefPath = join(directory, "changed-bound.brief.json");
+    await writeFile(alteredBriefPath, JSON.stringify(changedBrief));
+    await expect(
+      createCommerceProofLedger({ ...proof, briefPath: alteredBriefPath }),
+    ).rejects.toThrow("Prepared scene was built from a different brief");
+  }, 120_000);
 });
 
 it("records complete operator observations without a next-technique request", () => {
