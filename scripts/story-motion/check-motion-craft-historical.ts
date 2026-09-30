@@ -2,9 +2,10 @@ import assert from "node:assert/strict";
 import { execFile } from "node:child_process";
 import { createHash } from "node:crypto";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
-import { dirname, join, relative, resolve, sep } from "node:path";
+import { dirname, join, resolve } from "node:path";
 import { parseArgs, promisify } from "node:util";
 import {
+  archivedStoryAssetPath,
   compareDecodedVideos,
   sha256File,
   verifyV014HistoricalIdentity,
@@ -86,31 +87,17 @@ async function loadRender(resultPath: string, archivedV014 = false) {
   return { path, videoPath, manifestPath, manifest, videoChecksum };
 }
 
-function sourcePathInRepository(sourcePath: string): string {
-  const marker = `${sep}benchmarks${sep}fixtures${sep}`;
-  const offset = sourcePath.lastIndexOf(marker);
-  assert.ok(offset >= 0, `Unrecognized historical source path: ${sourcePath}`);
-  return sourcePath.slice(offset + 1);
-}
-
-function assetPathInRepository(manifest: Manifest, asset: Asset): string {
-  const source = sourcePathInRepository(manifest.sourcePath);
-  const file = resolve(projectRoot, dirname(source), asset.path);
-  const path = relative(projectRoot, file);
-  assert.ok(
-    path.startsWith(`assets${sep}story-motion${sep}`),
-    `Historical asset leaves story-motion: ${asset.path}`,
-  );
-  return path;
-}
-
 async function recoverArchivedAssets(manifest: Manifest, gitRef: string) {
   const recovered = [];
   for (const asset of [
     ...manifest.scene.assets,
     ...(manifest.scene.fonts ?? []),
   ]) {
-    const path = assetPathInRepository(manifest, asset);
+    const path = archivedStoryAssetPath(
+      projectRoot,
+      manifest.sourcePath,
+      asset.path,
+    );
     const { stdout } = await run("git", ["show", `${gitRef}:${path}`], {
       cwd: projectRoot,
       encoding: "buffer",

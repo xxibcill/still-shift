@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
-import { dirname, join, relative, resolve, sep } from "node:path";
+import { join, resolve } from "node:path";
 import { parseArgs } from "node:util";
 import { PreparedAnimationEngine } from "../../packages/animation-engine/src/prepared-animation-engine.ts";
 import { StorySceneSchema } from "../../packages/scene-contract/src/story.ts";
@@ -10,6 +10,7 @@ import {
 } from "../../packages/renderer-core/src/prepared-scene.ts";
 import { compileStoryScene } from "../../packages/renderer-core/src/story-scene.ts";
 import {
+  archivedStoryAssetPath,
   compareDecodedVideos,
   sha256File,
   verifyV014HistoricalIdentity,
@@ -35,19 +36,6 @@ await mkdir(output);
 
 type ArchivedAsset = { id: string; path: string; sha256: string };
 
-function assetPath(sourcePath: string, asset: ArchivedAsset) {
-  const marker = `${sep}benchmarks${sep}fixtures${sep}`;
-  const offset = sourcePath.lastIndexOf(marker);
-  assert.ok(offset >= 0, "Archived source path is not a known fixture");
-  const source = sourcePath.slice(offset + 1);
-  const path = relative(
-    projectRoot,
-    resolve(projectRoot, dirname(source), asset.path),
-  );
-  assert.ok(path.startsWith(`assets${sep}story-motion${sep}`));
-  return join(assetRoot, path);
-}
-
 async function archivalSource(resultPath: string) {
   const path = resolve(resultPath);
   assert.ok(path.endsWith(".mp4.result.json"));
@@ -65,7 +53,10 @@ async function archivalSource(resultPath: string) {
     ...((input.fonts ?? []) as ArchivedAsset[]),
   ];
   for (const asset of assets) {
-    const restored = assetPath(manifest.sourcePath, asset);
+    const restored = join(
+      assetRoot,
+      archivedStoryAssetPath(projectRoot, manifest.sourcePath, asset.path),
+    );
     assert.equal(await sha256File(restored), asset.sha256, asset.id);
     asset.path = restored;
   }

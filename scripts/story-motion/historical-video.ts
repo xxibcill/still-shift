@@ -3,6 +3,27 @@ import { spawn } from "node:child_process";
 import { createHash } from "node:crypto";
 import { once } from "node:events";
 import { readFile } from "node:fs/promises";
+import { dirname, relative, resolve, sep } from "node:path";
+
+export function archivedStoryAssetPath(
+  projectRoot: string,
+  sourcePath: string,
+  assetPath: string,
+): string {
+  const marker = `${sep}benchmarks${sep}fixtures${sep}`;
+  const offset = sourcePath.lastIndexOf(marker);
+  assert.ok(offset >= 0, `Unrecognized historical source path: ${sourcePath}`);
+  const source = sourcePath.slice(offset + 1);
+  const path = relative(
+    projectRoot,
+    resolve(projectRoot, dirname(source), assetPath),
+  );
+  assert.ok(
+    path.startsWith(`assets${sep}story-motion${sep}`),
+    `Historical asset leaves story-motion: ${assetPath}`,
+  );
+  return path;
+}
 
 export type VideoDimensions = {
   width: number;
