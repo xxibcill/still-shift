@@ -124,12 +124,19 @@ export function drawTextContainer(
   node: TextNode,
   text: string,
 ) {
-  const container = node.container!;
-  const content = textContainerContent(
-    node,
-    text,
-    (value) => ctx.measureText(value).width,
+  drawTextContainerShape(
+    ctx,
+    node.container!,
+    textContainerContent(node, text, (value) => ctx.measureText(value).width),
   );
+}
+
+/** Draws a caption, speech or thought container around an already measured content box. */
+export function drawTextContainerShape(
+  ctx: CanvasRenderingContext2D,
+  container: TextContainer,
+  content: Rect,
+) {
   const box = {
     x: content.x - container.padding,
     y: content.y - container.padding,

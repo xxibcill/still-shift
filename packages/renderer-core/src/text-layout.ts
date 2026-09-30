@@ -1,4 +1,5 @@
 import type { PreparedNode } from "../../scene-contract/src/prepared.ts";
+import { passageError } from "./passage-diagnostics.ts";
 type TextNode = Extract<PreparedNode, { type: "text" }>;
 export type TextLayout = {
   lines: string[];
@@ -33,8 +34,10 @@ export function measureTextLayout(
       if (line.trim()) lines.push(line.trimEnd());
       line = segment.trimStart();
       if (width(line) > node.width)
-        throw new Error(
+        passageError(
+          "text-overflow",
           "Text does not fit " + node.id + "; shorten a word or widen its box",
+          { node: node.id },
         );
     }
     lines.push(line.trimEnd());
@@ -53,10 +56,12 @@ export function measureTextLayout(
     lines.length > box.maxLines ||
     ascent + descent + Math.max(0, lines.length - 1) * lineHeight > node.height
   )
-    throw new Error(
+    passageError(
+      "text-overflow",
       "Text overflows " +
         node.id +
         "; shorten the copy or choose a larger layout",
+      { node: node.id },
     );
   return { lines, lineHeight, baseline: ascent, descent };
 }

@@ -59,6 +59,7 @@ export function expandMotionIntents(input?: IntentPresets) {
   for (const motion of input?.motions ?? []) {
     const { node, window, preset } = motion,
       amount = motion.amount ?? 20;
+    if (preset.startsWith("text-")) continue;
     if (preset === "breathe") {
       periodic.push({
         node,
@@ -75,7 +76,13 @@ export function expandMotionIntents(input?: IntentPresets) {
       });
       continue;
     }
-    const definition = STORY_MOTION_PRESETS[preset],
+    const definition =
+        STORY_MOTION_PRESETS[
+          preset as Exclude<
+            keyof typeof STORY_MOTION_PRESETS,
+            "version" | "breathe"
+          >
+        ],
       property = preset === "draw-on" ? "reveal" : (motion.property ?? "y");
     const keys = definition.keys.map(([at, value], i, all) => ({
       frame: window.start + Math.round((window.end - window.start) * at),
@@ -92,3 +99,14 @@ export function expandMotionIntents(input?: IntentPresets) {
   }
   return { moves, periodic };
 }
+
+export const TEXT_INTENT_PRESETS = [
+  { preset: "text-reveal", label: "Reveal text" },
+  { preset: "text-emphasize", label: "Emphasize on spoken word" },
+  { preset: "text-correct", label: "Correct a claim" },
+  { preset: "text-qualify", label: "Add qualification" },
+  { preset: "text-retype", label: "Retype" },
+  { preset: "text-count", label: "Count" },
+  { preset: "text-redact", label: "Redact" },
+  { preset: "text-release", label: "Release emphasis" },
+] as const;

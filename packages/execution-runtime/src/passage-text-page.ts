@@ -1,6 +1,9 @@
 import type { StoryScene } from "@still-shift/scene-contract";
 import {
   loadPreparedFonts,
+  prepareTypography,
+  validateTypographySafeArea,
+  loadTextAnimationFonts,
   passageDiagnostics,
   type PassageDiagnostic,
   compileStoryScene,
@@ -27,6 +30,13 @@ window.validateStillShiftPassageText = async (
   try {
     const compiled = compileStoryScene(scene, options);
     const fonts = await loadPreparedFonts(compiled, (id) => fontUrls[id]!);
+    if (compiled.typography) {
+      await loadTextAnimationFonts(compiled, fonts);
+      const prepared = prepareTypography(compiled, fonts);
+      if (options.validateSafeZones !== false)
+        validateTypographySafeArea(compiled, prepared);
+      return [];
+    }
     validateStoryTextLayout(compiled, fonts, options);
     const context = document.createElement("canvas").getContext("2d")!;
     prepareMeasuredText(

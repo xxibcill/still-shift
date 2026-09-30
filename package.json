@@ -38,7 +38,7 @@
     "schema:check": "node --import tsx scripts/generate-corpus-schema.ts --check",
     "schema:generate": "node --import tsx scripts/generate-corpus-schema.ts",
     "still-shift": "tsx tools/still-shift-cli/src/cli.ts",
-    "test": "pnpm test:unit && pnpm test:runtime && pnpm test:integration && pnpm test:depth && pnpm test:browser:depth && pnpm test:browser:vertical-image && pnpm test:browser:export && pnpm test:golden && pnpm test:browser:cli && pnpm test:browser:batch && pnpm test:browser:illustrated && pnpm test:browser:illustrated:vertical && pnpm test:browser:cinematic && pnpm test:browser:cinematic:vertical && pnpm test:browser:threshold && pnpm test:browser:lateral && pnpm test:browser:reveal && pnpm test:browser:story && pnpm test:browser:story:continuous && pnpm test:browser:passage:authoring && pnpm test:browser:lab-session && pnpm test:browser:commerce && pnpm test:browser:commerce-components && pnpm test:browser:commerce-effects && pnpm test:browser:commerce-spatial && pnpm test:browser:reusable-components && pnpm test:browser:reusable-package && pnpm test:browser:reusable-behavior-package && pnpm test:browser:reusable-timing-package",
+    "test": "pnpm test:unit && pnpm test:runtime && pnpm test:integration && pnpm test:depth && pnpm test:browser:depth && pnpm test:browser:vertical-image && pnpm test:browser:export && pnpm test:golden && pnpm test:browser:cli && pnpm test:browser:batch && pnpm test:browser:illustrated && pnpm test:browser:illustrated:vertical && pnpm test:browser:cinematic && pnpm test:browser:cinematic:vertical && pnpm test:browser:threshold && pnpm test:browser:lateral && pnpm test:browser:reveal && pnpm test:browser:story && pnpm test:browser:story:continuous && pnpm test:browser:passage:authoring && pnpm test:browser:lab-session && pnpm test:browser:commerce && pnpm test:browser:commerce-components && pnpm test:browser:commerce-effects && pnpm test:browser:commerce-spatial && pnpm test:browser:reusable-components && pnpm test:browser:reusable-package && pnpm test:browser:reusable-behavior-package && pnpm test:browser:reusable-timing-package && pnpm test:browser:typography && pnpm test:browser:typography:fixtures",
     "test:browser:illustrated": "node --import tsx tests/browser/illustrated.ts",
     "test:browser:batch": "tsx tests/browser/batch-cli.ts",
     "test:browser:depth": "tsx tests/browser/depth-motion.ts",
@@ -90,7 +90,11 @@
     "check:runtime": "pnpm toolchain:check && pnpm test:runtime && pnpm test:integration && pnpm test:depth && pnpm test:browser:smoke",
     "test:browser:lab-session": "node --import tsx tests/browser/lab-session.ts",
     "test:browser:motion-craft": "node --import tsx tests/browser/motion-craft.ts",
-    "test:browser:illustrated:vertical": "node --import tsx tests/browser/vertical-illustrated.ts"
+    "test:browser:illustrated:vertical": "node --import tsx tests/browser/vertical-illustrated.ts",
+    "story:type-specimen": "node --import tsx scripts/story-type-specimen.ts",
+    "test:browser:typography": "node --import tsx tests/browser/typography.ts",
+    "test:browser:typography:fixtures": "node --import tsx tests/browser/typography-fixtures.ts",
+    "typography:prepare": "node --import tsx scripts/story-motion/create-typography-fixtures.ts"
   },
   "devDependencies": {
     "@eslint/js": "9.39.5",

@@ -1,3 +1,4 @@
+import { compileTextEvents } from "./typography-events.ts";
 import { buildPath } from "./commerce-path.ts";
 import { buildTextBlock } from "./commerce-text.ts";
 import {
@@ -39,6 +40,7 @@ type Box = { x: number; y: number; width: number; height: number };
 type Point = [number, number];
 export type CommerceRenderScene = CommerceScene & {
   rendererVersion:
+    | "commerce-canvas-0.21.0"
     | "commerce-canvas-0.20.0"
     | "commerce-canvas-0.19.0"
     | "commerce-canvas-0.16.0"
@@ -462,6 +464,7 @@ export function buildCommerceScene(
 export function compileCommerceScene(
   input: CommerceScene,
 ): CommerceRenderScene {
+  input = compileTextEvents(input);
   const tracks = createFrameTracks(input.nodes);
   const initialized = new Set<string>();
   for (const event of input.motionModel ? [] : input.events) {
@@ -494,5 +497,6 @@ export function compileCommerceScene(
   validateComponentRelationships(scene);
   validateTravelTransforms(scene);
   validatePinTransforms(scene);
+  if (input.typography) scene.rendererVersion = "commerce-canvas-0.21.0";
   return scene;
 }
