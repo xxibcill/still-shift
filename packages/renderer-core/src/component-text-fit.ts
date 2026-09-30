@@ -84,17 +84,13 @@ export function prepareTextFits<
         }
         break;
       } catch (error) {
-        const layoutOverflow =
+        // Every layout path reports overflow as a typed text-overflow; retry only that.
+        const overflow =
           error instanceof PassageError &&
           error.diagnostics.every(
             (diagnostic) => diagnostic.code === "text-overflow",
           );
-        if (
-          !layoutOverflow &&
-          (!(error instanceof Error) ||
-            !/^Text (overflows|does not fit)/.test(error.message))
-        )
-          throw error;
+        if (!overflow) throw error;
       }
     }
     if (height === undefined)

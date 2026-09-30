@@ -131,6 +131,44 @@ describe("shaped typography", () => {
     );
     expect(fitted.nodes[0]!.fontSize).toBe(16);
   });
+  it("retries a legacy word overflow and rethrows unrelated layout errors", () => {
+    const legacy = {
+      id: "legacy-fit",
+      type: "text",
+      text: "abcdefghij",
+      fontAsset: "test-font",
+      fontSize: 60,
+      color: "#ffffff",
+      align: "left",
+      width: 200,
+      height: 100,
+      textBox: { locale: "en", maxLines: 1, lineHeight: 1.2 },
+    } as unknown as TextNode;
+    const fit = [{ target: "legacy-fit", minSize: 16, maxSize: 60 }];
+    // At 60 px the single word is 300 px wide; the typed overflow retries down to 40 px.
+    expect(
+      prepareTextFits(
+        { nodes: [legacy] },
+        fit,
+        measuredContext(),
+        measuredFonts,
+      ).nodes[0]!.fontSize,
+    ).toBe(40);
+    const withoutMetrics = new Map([
+      ["test-font", { ...measuredFonts.get("test-font")!, metrics: undefined }],
+    ]) as unknown as Map<string, LoadedFont>;
+    expect(() =>
+      prepareTextFits(
+        {
+          typography: "type-1" as const,
+          nodes: [{ ...legacy, textBox: undefined } as TextNode],
+        },
+        fit,
+        measuredContext(),
+        withoutMetrics,
+      ),
+    ).toThrow("font-metadata");
+  });
   it("spaces lines using their actual span metrics", () => {
     const layout = shapeText(
       measuredContext(),

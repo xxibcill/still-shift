@@ -390,13 +390,13 @@ export function shapeText(
     height > limitHeight + 0.01 ||
     lines.length > (node.textBox?.maxLines ?? 64);
   if (overflow && node.textLayout?.overflow !== "clip") {
-    if (node.textBox)
-      throw new Error(
-        `Text overflows ${node.id}; shorten the copy or choose a larger layout`,
-      );
-    passageError("text-overflow", "Text exceeds its layout box: " + node.id, {
-      node: node.id,
-    });
+    passageError(
+      "text-overflow",
+      node.textBox
+        ? `Text overflows ${node.id}; shorten the copy or choose a larger layout`
+        : "Text exceeds its layout box: " + node.id,
+      { node: node.id },
+    );
   }
   return {
     text,
