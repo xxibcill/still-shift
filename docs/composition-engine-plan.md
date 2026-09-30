@@ -1,7 +1,7 @@
 # Programmable composition engine — implementation plan
 
 - **Updated:** 2026-09-30
-- **Status:** Planned. No milestone started.
+- **Status:** Planned. No milestone started. Q1 and Q3 decided 2026-09-30.
 - **Baseline:** `6772717` — `Merge pull request #22 from xxibcill/codex/still-shift-plan-completion`
 - **Tracker owner:** unassigned. Record the owner and branch per milestone in the [tracker](#milestone-tracker).
 
@@ -180,7 +180,9 @@ These apply to every milestone. A change that breaks one needs a decision-log en
 2. **Evaluation is pure.** `evaluateComp(comp, time)` depends only on its inputs, never
    on previous frames. Seeking backwards must equal playing forwards.
 3. **Determinism.** The same composition, assets, fonts, renderer version and toolchain
-   produce identical encoded frames. Randomness is seeded and part of the contract.
+   produce identical encoded frames on the export render path, which is pinned to
+   software rendering (see [GPU determinism](#gpu-determinism-policy)). Randomness is
+   seeded and part of the contract.
 4. **Explicit versions.** New contracts start at `composition-1`. Each backend and effect
    has a version string that participates in cache identity, like the existing
    `ILLUSTRATED_RENDERER_VERSION`.
@@ -188,13 +190,59 @@ These apply to every milestone. A change that breaks one needs a decision-log en
    Adapters produce pixel parity within the tolerances recorded in CE0 before any old
    code path is removed.
 6. **Preview/export parity.** Lab preview and CLI export use the same evaluator and
-   backend for a given composition.
+   backend code for a given composition. Export output is exact and reproducible.
+   Lab preview may run on a hardware GPU and must match export within the `near`
+   tier, or the fixture's recorded tier where effects make `near` unattainable.
+   Evaluated state (positions, timing, visibility) must match exactly; only pixel
+   rasterisation may differ.
 7. **Structured diagnostics.** Every validation failure returns a stable code, severity,
    message and a JSON path (and a builder source location once CE10 lands). Extend
    [`passage-diagnostics.ts`](../packages/renderer-core/src/passage-diagnostics.ts) rather than
    inventing a parallel mechanism.
 8. **Bounded inputs.** Every array, string and numeric range in the schema has an explicit
    limit, as current contracts do.
+
+### GPU determinism policy
+
+Decided 2026-09-30 (Q1, option C: hybrid).
+
+**Background.** Different GPUs and drivers compute the same shader with slightly
+different floating-point precision, texture filtering and summation order. The
+differences are usually 1–2 levels per channel: invisible to viewers, but enough to
+break exact checksums, cache identity, job resume and chunked rendering. At the
+baseline, export already renders on software graphics by accident rather than by
+setting: [`export-worker.ts`](../packages/execution-runtime/src/export-worker.ts) calls
+`chromium.launch({ headless: true })` with no GPU flags, headless Chromium falls back to
+SwiftShader, and [`golden-baseline.json`](../tests/visual/golden-baseline.json) records
+`gpuRenderer` as `ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device …), SwiftShader driver)`.
+
+**Policy.**
+
+| Render path                                        | Graphics                                      | Guarantee                                                  |
+| -------------------------------------------------- | --------------------------------------------- | ---------------------------------------------------------- |
+| CLI and Lab-triggered export, caches, golden tests | Pinned software rendering (SwiftShader)       | Exact: identical frames for identical inputs and toolchain |
+| Lab interactive preview                            | Hardware GPU when available, else SwiftShader | Matches export within the fixture's tolerance tier         |
+
+**Rules.**
+
+1. Export launches Chromium with explicit flags that force SwiftShader. Verify the
+   exact flag set against the pinned Chromium (see [`toolchain.json`](../toolchain.json))
+   in CE0 and record it here; do not rely on the headless default.
+2. Before rendering, export reads the WebGL renderer string and fails with a stable
+   diagnostic (`export-renderer-mismatch`) if it is not the pinned software renderer.
+3. The renderer string, Chromium version and CPU architecture are written to every
+   export manifest and are part of cache identity.
+4. The Lab shows which renderer the preview uses and labels hardware previews as
+   approximate.
+5. Speed is recovered through per-layer caching and parallel chunk rendering (CE15),
+   not by switching export to hardware. Heavy effects record their SwiftShader cost in
+   CE6 so budgets are visible.
+6. **Cross-architecture exactness is unverified.** SwiftShader compiles shaders to CPU
+   code at run time, so arm64 macOS and x86_64 Linux may differ. CE0 renders the
+   fixture set on both and records the result. If they differ, CPU architecture stays
+   in cache identity, golden baselines become per-architecture, and cross-architecture
+   comparison uses the `near` tier. Chunks of one export must always come from the same
+   architecture.
 
 ## Core conventions
 
@@ -316,13 +364,22 @@ existing behaviour and did not regress performance.
       camera jolt, etc.) mapped to its `composition-1` representation and the milestone
       that provides it. Features with no mapping block their adapter milestone until a
       mapping is decided.
-- [ ] Record in the decision log how GPU nondeterminism will be handled (see
-      [open questions](#open-questions-for-the-owner) Q1).
+- [ ] Implement rules 1–3 of the [GPU determinism policy](#gpu-determinism-policy)
+      for the existing export path: explicit SwiftShader launch flags, a renderer check
+      before rendering, and renderer/Chromium/architecture fields in manifests and
+      cache identity. Record the verified flag set in the policy section.
+- [ ] Render the CE0 fixture set on arm64 macOS and x86_64 Linux with the pinned
+      toolchain, compare, and record whether software rendering is exact across
+      architectures (policy rule 6). Update baselines to per-architecture if not.
+- [ ] Measure hardware-GPU Lab preview against export for the fixture set and record
+      the observed differences, confirming each fixture's tolerance tier.
 
 **Acceptance:** The baseline command runs from a clean checkout and reproduces its
 own stored values. The feature matrix has no unmapped entries without an owner.
 
 **Verification:** Run the baseline twice in fresh processes; results must be identical.
+Launch export with a forced hardware GPU and confirm it fails with
+`export-renderer-mismatch`.
 
 **Completion record:** _to be filled in._
 
@@ -360,7 +417,7 @@ type Composition = {
   signals?: Signal[];
   drivers?: Driver[];
   constraints?: Constraint[]; // reused from motion-craft
-  expressions?: Record<PropertyPath, Expression>; // CE9
+  expressions?: Record<PropertyPath, { source: string; ast?: ExpressionAst }>; // CE9: text syntax parsed to AST
   format?: OutputFormat; // reuse output-format.ts
 };
 
@@ -420,10 +477,9 @@ type Transform = {
   spatialTangents?: SpatialTangent[]; // reuse SpatialPathSchema semantics
 };
 
-type Animatable<T> =
-  | T
-  | { keys: Key<T>[] }
-  | { expression: string /* id into expressions */ };
+// An expression attaches to a property through the `expressions` map (keyed by
+// property path) and receives the keyed value as `value`, as in AE.
+type Animatable<T> = T | { keys: Key<T>[] };
 ```
 
 `Key<T>` extends the existing `ScalarKeySchema` fields (`easing`, `interpolation`,
@@ -727,10 +783,17 @@ type EffectDefinition<P> = {
       "effects" (overshoot, drift, parallax) become behaviours (CE9) or drivers, not
       pixel effects.
 - [ ] Optional linear-light compositing (`colorSpace: "linear-srgb"`).
-- [ ] Decide and implement the determinism strategy from CE0 (see Q1). Record the
-      Chromium flags used for export and the GPU identity in manifests, as the golden
-      test already does for `gpuRenderer`.
+- [ ] Apply the [GPU determinism policy](#gpu-determinism-policy) to the WebGL2
+      backend: export and tests run on pinned SwiftShader; the Lab may use a hardware
+      GPU and shows which renderer is active.
+- [ ] Avoid avoidable nondeterminism even on software rendering: fixed summation order
+      in multi-pass effects, no reliance on driver-specific precision qualifiers, seeded
+      noise computed in shaders from integer hashes rather than `sin`-based tricks.
+- [ ] Record SwiftShader render cost per effect at 1920×1080 and representative
+      parameters, so heavy effects have visible budgets.
 - [ ] Backend parity suite: every fixture renders on both backends and meets its tier.
+- [ ] Preview parity suite: on a machine with a hardware GPU, Lab preview frames match
+      export within each fixture's tier.
 
 **Acceptance:** Every effect is usable on every layer type, including adjustment
 layers and precomps. The commerce effect demos meet their tiers through the registry.
@@ -811,19 +874,77 @@ line of intent.
 
 ### Expression form
 
-Expressions are a **serialisable, deterministic AST**, not arbitrary JavaScript, so
-compositions stay portable, safe to evaluate in export workers and easy for agents to
-generate and validate. The builder (CE10) provides a JavaScript-like surface that
-compiles to this AST. See Q3.
+Decided 2026-09-30 (Q3, middle ground): a **short text syntax that parses into a
+serialisable, deterministic AST**. Arbitrary JavaScript is not evaluated at render time.
+
+Two kinds of code exist, and only the second is an expression:
+
+- **Authoring-time code** is the TypeScript builder (CE10). It runs once to build the
+  composition and may use full JavaScript: loops, functions, data files, seeded random
+  generators. Its output is plain data.
+- **Render-time code** (expressions) is stored in the composition and evaluated per
+  frame. It covers only logic that depends on other animated values during playback.
+
+Authors and agents write expressions as text; the engine validates them by parsing into
+an AST, and the AST is what it evaluates, caches by and emits in normalised output. The
+original text is kept for display and editing.
 
 ```json
-{ "fn": "wiggle", "args": [{ "num": 2 }, { "num": 12 }, { "seed": 7 }] }
-{ "fn": "linear", "args": [{ "ref": "slider.transform.position.x" }, { "num": 0 }, { "num": 100 }, { "num": 0 }, { "num": 1 }] }
+{
+  "expressions": {
+    "shadow.transform.position": {
+      "source": "ref('hero.transform.position') + [12, 18]"
+    },
+    "flag.transform.rotation": { "source": "wiggle(2, 6, 7)" },
+    "bar.transform.scale.y": {
+      "source": "linear(ref('slider.transform.position.x'), 0, 100, 0, 1)"
+    }
+  }
+}
 ```
+
+Normalised form of the second example (as written by `comp export-json --normalized`):
+
+```json
+{
+  "source": "wiggle(2, 6, 7)",
+  "ast": {
+    "call": "wiggle",
+    "args": [{ "num": 2 }, { "num": 6 }, { "num": 7 }]
+  }
+}
+```
+
+**Grammar (deliberately small).**
+
+- Literals: numbers, vectors `[a, b]` / `[a, b, c]`, colours `#RRGGBB[AA]`, `true`,
+  `false`, single-quoted strings (only as `ref` paths and enum arguments).
+- Operators: `+ - * / %` (component-wise on vectors, scalar broadcast), unary `-`,
+  comparisons, `&&`, `||`, `!`, ternary `a ? b : c`, parentheses.
+- Identifiers: `time` (seconds), `frame`, `value` (the property's keyed value), `index`,
+  `layerCount`, `fps`.
+- Component access `.x`, `.y`, `.z`, `.r`, `.g`, `.b`, `.a`; no other member access.
+- Calls to registered built-ins only. No assignment, declarations, loops, user
+  functions, `this`, globals or property access on arbitrary objects.
+- Limits: 2,000 characters and 500 AST nodes per expression.
+
+**Why not raw JavaScript.** The AST cannot perform I/O or read clocks or unseeded random
+sources, so export workers can evaluate compositions from agents or other authors
+safely. Property dependencies are known before rendering, so evaluation order, cycle
+errors and targeted cache invalidation work. Validation failures point at a JSON path
+and a character column instead of crashing mid-render. If a need arises that the
+built-ins cannot express, add a built-in; do not add an escape hatch to arbitrary code.
 
 ### Checklist
 
-- [ ] AST schema, type checker (scalar/vector/colour) and evaluator.
+- [ ] Text syntax parser producing the AST, with diagnostics carrying the JSON path
+      and a 1-based character column (`comp-expression-syntax`,
+      `comp-expression-unknown-function`, `comp-expression-type`, `comp-expression-limit`).
+- [ ] AST schema, type checker (scalar/vector/colour/bool) and evaluator.
+- [ ] Printer from AST back to canonical text, so normalised output and the Lab show a
+      consistent form; `parse(print(ast))` must equal `ast`.
+- [ ] When both `source` and `ast` are present in an input, validate that they agree
+      (`comp-expression-mismatch`).
 - [ ] Built-ins: `time`, `frame`, `value`, `index`, `layerCount`, `ref(path)`,
       `valueAtTime(path, t)`, `velocityAtTime(path, t)`, arithmetic and vector ops,
       `clamp`, `mix`, `linear`, `ease`, `easeIn`, `easeOut`,
@@ -851,8 +972,10 @@ compiles to this AST. See Q3.
 overlap, a bounce and squash is expressed without per-layer keys and matches its
 baked version exactly.
 
-**Verification:** Evaluator unit tests per built-in, cycle detection, seek determinism,
-bake round trip.
+**Verification:** Parser tests (valid, invalid, limits, column positions), print/parse
+round trip, evaluator unit tests per built-in, type errors, cycle detection, seek
+determinism, bake round trip. A fuzz test with a fixed seed confirms that arbitrary
+input either parses to a valid AST or returns a diagnostic, never throws.
 
 **Completion record:** _to be filled in._
 
@@ -931,8 +1054,11 @@ export default comp({ width: 1920, height: 1080, fps: 30, seconds: 8 }, (c) => {
 - [ ] CLI: `still-shift comp` subcommands `validate`, `render`, `preview --watch`,
       `lint`, `bake` and `export-json`, accepting `.json` or `.ts` sources.
 - [ ] AI reference: generated `docs/composition-reference.md` (schema, property paths,
-      diagnostics, built-ins) plus a compact `skills/compose-with-still-shift/SKILL.md`
-      with examples; keep both generated from the schema where possible.
+      diagnostics, built-ins, expression grammar) plus a compact
+      `skills/compose-with-still-shift/SKILL.md` with examples; keep both generated from
+      the schema and the built-in registry where possible.
+- [ ] Builder helpers for expressions (an `expr` tagged template such as `` expr`wiggle(2, 6, 7)` `` and `ref(path)`) that
+      emit the text syntax and validate it at build time with source locations.
 - [ ] Examples directory with at least eight small programs covering the milestones
       delivered so far.
 
@@ -1125,36 +1251,39 @@ A milestone is complete when **all** of the following hold:
 
 ## Risks
 
-| Risk                                                             | Impact                                             | Mitigation                                                                                |
-| ---------------------------------------------------------------- | -------------------------------------------------- | ----------------------------------------------------------------------------------------- |
-| GPU output differs across machines                               | Breaks determinism and cache identity              | Decide Q1 in CE0; pin export GPU path; tolerance tiers; record GPU identity in manifests  |
-| Adapter parity is harder than expected (hidden family behaviour) | CE4 stalls; two render paths coexist for long      | Feature matrix in CE0; content providers as an escape hatch; flag-gated switch per family |
-| Scope creep toward a GUI editor                                  | Lab work displaces engine work                     | CE11 is inspection plus light edits; code remains primary                                 |
-| Expression language too weak or too strong                       | Authors blocked, or unsafe/nondeterministic output | AST with bake; builder offers JS ergonomics that compile to AST; revisit via Q3           |
-| Performance regression from per-layer surfaces                   | Slower renders than today                          | Surfaces only when needed; culling; budgets in CE0/CE2/CE6; caching in CE15               |
-| Media decode nondeterminism                                      | Video frames drift between runs                    | FFmpeg pre-decode with content-addressed cache; no element seeking in export              |
-| Third-party geometry libraries (boolean ops, triangulation)      | Licence or determinism problems                    | Record library, version and licence in the decision log before adoption                   |
+| Risk                                                             | Impact                                             | Mitigation                                                                                                                                                                                 |
+| ---------------------------------------------------------------- | -------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| GPU output differs across machines                               | Breaks determinism and cache identity              | [GPU determinism policy](#gpu-determinism-policy): export pinned to SwiftShader, renderer check, identity in manifests; hardware preview within tolerance; cross-architecture check in CE0 |
+| Adapter parity is harder than expected (hidden family behaviour) | CE4 stalls; two render paths coexist for long      | Feature matrix in CE0; content providers as an escape hatch; flag-gated switch per family                                                                                                  |
+| Scope creep toward a GUI editor                                  | Lab work displaces engine work                     | CE11 is inspection plus light edits; code remains primary                                                                                                                                  |
+| Expression language too weak or too strong                       | Authors blocked, or unsafe/nondeterministic output | Text syntax parsed to AST; full JavaScript at authoring time in the builder; add built-ins for new needs; bake to keys                                                                     |
+| Software export rendering is too slow for heavy effects          | Long renders for effect-heavy or long compositions | Per-effect SwiftShader budgets in CE6; per-layer caching and parallel chunks in CE15                                                                                                       |
+| Performance regression from per-layer surfaces                   | Slower renders than today                          | Surfaces only when needed; culling; budgets in CE0/CE2/CE6; caching in CE15                                                                                                                |
+| Media decode nondeterminism                                      | Video frames drift between runs                    | FFmpeg pre-decode with content-addressed cache; no element seeking in export                                                                                                               |
+| Third-party geometry libraries (boolean ops, triangulation)      | Licence or determinism problems                    | Record library, version and licence in the decision log before adoption                                                                                                                    |
 
 ## Decision log
 
-| Date       | Decision                                                                                              | Reason                                                                                  | Superseded by |
-| ---------- | ----------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- | ------------- |
-| 2026-09-30 | Introduce one `composition-1` contract; existing families become compilers into it                    | Removes per-family duplication; every later feature is built once                       |               |
-| 2026-09-30 | Keep Canvas 2D as the reference backend and add WebGL2 as the production backend behind one interface | Preserves parity with existing output while enabling GPU effects and performance        |               |
-| 2026-09-30 | Expressions are a serialisable AST; JavaScript ergonomics live in the builder                         | Determinism, sandbox safety in export workers, easy validation of agent output (see Q3) |               |
-| 2026-09-30 | JSON remains the serialisation format; the TypeScript builder is the primary code surface             | Keeps compositions portable and inspectable; gives coders and agents types              |               |
-| 2026-09-30 | Video frames are pre-decoded with FFmpeg for export                                                   | Browser media seeking is not frame-accurate or deterministic enough for export          |               |
+| Date       | Decision                                                                                                                    | Reason                                                                                                                                                              | Superseded by  |
+| ---------- | --------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------- |
+| 2026-09-30 | Introduce one `composition-1` contract; existing families become compilers into it                                          | Removes per-family duplication; every later feature is built once                                                                                                   |                |
+| 2026-09-30 | Keep Canvas 2D as the reference backend and add WebGL2 as the production backend behind one interface                       | Preserves parity with existing output while enabling GPU effects and performance                                                                                    |                |
+| 2026-09-30 | Expressions are a serialisable AST; JavaScript ergonomics live in the builder                                               | Determinism, sandbox safety in export workers, easy validation of agent output (see Q3)                                                                             | Q3 entry below |
+| 2026-09-30 | JSON remains the serialisation format; the TypeScript builder is the primary code surface                                   | Keeps compositions portable and inspectable; gives coders and agents types                                                                                          |                |
+| 2026-09-30 | Video frames are pre-decoded with FFmpeg for export                                                                         | Browser media seeking is not frame-accurate or deterministic enough for export                                                                                      |                |
+| 2026-09-30 | Q1: hybrid GPU policy — export, caches and tests pinned to SwiftShader; Lab preview may use a hardware GPU within tolerance | Exact reproducible output where caches, resume and chunking depend on it; fast interactive preview. Formalises what headless export already does by default         |                |
+| 2026-09-30 | Q3: expressions are written in a small text syntax and parsed into a validated AST; no arbitrary JavaScript at render time  | AE-like brevity for authors and agents, with safety, known dependencies and precise diagnostics. Full JavaScript remains available at authoring time in the builder |                |
 
 ## Open questions for the owner
 
-| ID  | Question                                                                                                                                                       | Needed by | Answer |
-| --- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- | ------ |
-| Q1  | GPU determinism: pin export to a software GL path (SwiftShader, slower but reproducible), or accept `near`-tier tolerance across GPUs with hardware rendering? | CE0       |        |
-| Q2  | Once adapters reach parity, should the four family schemas be frozen (still accepted, no new features) so new work targets `composition-1` only?               | CE4d      |        |
-| Q3  | Is an AST expression language acceptable, or must compositions accept raw JavaScript expressions (with a sandbox) for AE-style familiarity?                    | CE9       |        |
-| Q4  | Which output formats matter first: alpha for editors (ProRes 4444/PNG), social delivery (H.264/HEVC), or both?                                                 | CE15      |        |
-| Q5  | Priority between mesh deformation (CE14) and video layers (CE13) for the faceless-video product goal.                                                          | Phase D   |        |
-| Q6  | Should lights and 3D shading be planned after CE8, or is 2.5D without lighting sufficient?                                                                     | After CE8 |        |
+| ID  | Question                                                                                                                                                       | Needed by | Answer                                                                                                     |
+| --- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- | ---------------------------------------------------------------------------------------------------------- |
+| Q1  | GPU determinism: pin export to a software GL path (SwiftShader, slower but reproducible), or accept `near`-tier tolerance across GPUs with hardware rendering? | CE0       | 2026-09-30: hybrid (option C). See [GPU determinism policy](#gpu-determinism-policy)                       |
+| Q2  | Once adapters reach parity, should the four family schemas be frozen (still accepted, no new features) so new work targets `composition-1` only?               | CE4d      |                                                                                                            |
+| Q3  | Is an AST expression language acceptable, or must compositions accept raw JavaScript expressions (with a sandbox) for AE-style familiarity?                    | CE9       | 2026-09-30: text syntax parsed into an AST; no raw JavaScript. See [CE9 expression form](#expression-form) |
+| Q4  | Which output formats matter first: alpha for editors (ProRes 4444/PNG), social delivery (H.264/HEVC), or both?                                                 | CE15      |                                                                                                            |
+| Q5  | Priority between mesh deformation (CE14) and video layers (CE13) for the faceless-video product goal.                                                          | Phase D   |                                                                                                            |
+| Q6  | Should lights and 3D shading be planned after CE8, or is 2.5D without lighting sufficient?                                                                     | After CE8 |                                                                                                            |
 
 ## Appendix — AE feature coverage map
 
