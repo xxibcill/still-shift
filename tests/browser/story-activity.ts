@@ -150,6 +150,61 @@ try {
   assert.ok(cameraSpans[0]!.start > 48 && cameraSpans[0]!.start < 60);
   assert.ok(cameraSpans[0]!.end > 90 && cameraSpans[0]!.end <= 97);
 
+  const inactiveConstraint = await page.evaluate(
+    async ({ source, compilerPath, evaluatorPath }) => {
+      const { compileStoryScene } = await import(
+        /* @vite-ignore */ compilerPath
+      );
+      const { evaluatePreparedNode } = await import(
+        /* @vite-ignore */ evaluatorPath
+      );
+      const activityPath = "/src/story-activity.ts";
+      const { showStoryActivity } = await import(
+        /* @vite-ignore */ activityPath
+      );
+      const scene = compileStoryScene(source);
+      const target = scene.nodes.find(
+        (node: { id: string }) => node.id === "house-a",
+      )!;
+      scene.tracks = {
+        [target.id]: {
+          x: [
+            { time: 0, value: target.x },
+            { time: 20, value: target.x + 20 },
+          ],
+        },
+      };
+      scene.motionEvents = [];
+      scene.compiledMotion = undefined;
+      scene.drivers = [];
+      scene.constraints = [
+        {
+          type: "keep-in-safe-area",
+          target: target.id,
+          inset: 0,
+          clamp: true,
+        },
+      ];
+      const targetMoved =
+        evaluatePreparedNode(scene, target, 0).x !==
+        evaluatePreparedNode(scene, target, 20).x;
+      showStoryActivity(scene);
+      return {
+        targetMoved,
+        response: document
+          .querySelector("[data-role=response]")
+          ?.getAttribute("aria-label"),
+      };
+    },
+    {
+      source: v2,
+      compilerPath: `/@fs${resolve("packages/renderer-core/src/story-scene.ts")}`,
+      evaluatorPath: `/@fs${resolve("packages/renderer-core/src/prepared-scene.ts")}`,
+    },
+  );
+  assert.equal(inactiveConstraint.targetMoved, true);
+  assert.equal(inactiveConstraint.response, "response: no compiled activity");
+
   await page.selectOption("#scene", "cinematic:ci-09-layered-parallax");
   await page.waitForFunction(
     () =>

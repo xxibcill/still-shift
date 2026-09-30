@@ -163,6 +163,28 @@ function layerChanged(
   );
 }
 
+function constraintChanged(
+  stateAt: StateAt,
+  withoutConstraintAt: StateAt,
+  nodeId: string,
+  frame: number,
+): boolean {
+  if (!nodeChanged(stateAt, nodeId, frame)) return false;
+  const current = stateAt(nodeId, frame)!;
+  const previous = stateAt(nodeId, frame - 1)!;
+  const withoutCurrent = withoutConstraintAt(nodeId, frame)!;
+  const withoutPrevious = withoutConstraintAt(nodeId, frame - 1)!;
+  return Object.keys(current).some((property) => {
+    const values = [current, previous, withoutCurrent, withoutPrevious].map(
+      (state) => (state as Record<string, unknown>)[property],
+    );
+    return (
+      values.every((value) => typeof value === "number") &&
+      differs(values[0]! - values[2]!, values[1]! - values[3]!)
+    );
+  });
+}
+
 function activeFrames(scene: StoryRenderScene): Record<StoryRole, boolean[]> {
   const stateAt = createStateSampler(scene);
   const active = Object.fromEntries(
@@ -171,6 +193,13 @@ function activeFrames(scene: StoryRenderScene): Record<StoryRole, boolean[]> {
   const drivers = scene.drivers ?? [];
   const previousDriverValues = drivers.map((driver) =>
     sampleDriver(scene, driver, 0),
+  );
+  const constraints = scene.constraints ?? [];
+  const withoutConstraint = constraints.map((_, index) =>
+    createStateSampler({
+      ...scene,
+      constraints: constraints.filter((_, candidate) => candidate !== index),
+    }),
   );
   for (let frame = 1; frame < scene.frameCount; frame++) {
     for (const event of scene.motionEvents)
@@ -189,8 +218,15 @@ function activeFrames(scene: StoryRenderScene): Record<StoryRole, boolean[]> {
         active[driver.layer ?? "action"][frame] = true;
       previousDriverValues[index] = currentValue;
     }
-    for (const constraint of scene.constraints ?? [])
-      if (nodeChanged(stateAt, constraint.target, frame))
+    for (const [index, constraint] of constraints.entries())
+      if (
+        constraintChanged(
+          stateAt,
+          withoutConstraint[index]!,
+          constraint.target,
+          frame,
+        )
+      )
         active[constraint.layer ?? "response"][frame] = true;
   }
   return active;
