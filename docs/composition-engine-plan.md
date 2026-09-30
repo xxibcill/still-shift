@@ -278,7 +278,7 @@ Fix these in CE1 and do not change them later without a decision-log entry.
 | CE5  | Shape layers                                    | B     | CE3                       |       |        | `[ ]`  |                     |
 | CE6  | WebGL2 backend and effect registry              | B     | CE3                       |       |        | `[ ]`  |                     |
 | CE7  | Motion blur and time controls                   | B     | CE3                       |       |        | `[ ]`  |                     |
-| CE8  | 2.5D layers and unified camera                  | B     | CE3                       |       |        | `[ ]`  |                     |
+| CE8  | 2.5D layers and unified camera                  | B     | CE3, CE6, CE9             |       |        | `[ ]`  |                     |
 | CE9  | Expressions and motion behaviours               | C     | CE2                       |       |        | `[ ]`  |                     |
 | CE10 | TypeScript builder API and CLI                  | C     | CE1, CE2                  |       |        | `[ ]`  |                     |
 | CE11 | Lab composition inspector and graph editor      | C     | CE3, CE10                 |       |        | `[ ]`  |                     |
@@ -292,25 +292,35 @@ Fix these in CE1 and do not change them later without a decision-log entry.
 - **Phase A — Foundation.** CE0 → CE1 → CE2 → CE3 is strictly sequential. Nothing in
   Phases B–D should start before CE2 is merged, because every later milestone targets
   the evaluator's types.
-- **Phase B — Visual vocabulary.** After CE3, CE5, CE6, CE7 and CE8 can run in
-  parallel on separate branches. CE4a can run alongside them.
+- **Phase B — Visual vocabulary.** After CE3, CE5, CE6 and CE7 can run in parallel
+  on separate branches. CE4a can run alongside them. CE8 follows CE6 (WebGL2 and
+  lens blur) and CE9 (camera-shake behaviours).
 - **Phase C — Authoring.** CE9, CE10 and CE12 need only CE2 and can start early. CE11
   follows CE10.
 - **Phase D — Media and output.** CE15 can start after CE3. CE13 and CE14 follow their
   dependencies.
 
 ```text
-CE0 → CE1 → CE2 → CE3 ─┬─ CE4a ────────────────┐
-                 │     ├─ CE5                  │
-                 │     ├─ CE6 ─┬─ CE4b         ├─ CE4d
-                 │     │       └─ CE14         │
-                 │     ├─ CE7 ── CE13          │
-                 │     ├─ CE8 ── CE4c ─────────┘
-                 │     └─ CE15
-                 ├─ CE9
-                 ├─ CE10 ── CE11
-                 └─ CE12
+CE0 → CE1 → CE2 → CE3
+             ├─ CE9
+             ├─ CE10
+             └─ CE12
+
+CE3 ─┬─ CE4a
+     ├─ CE5
+     ├─ CE6 ─┬─ CE4b
+     │       └─ CE14
+     ├─ CE7 ── CE13
+     └─ CE15
+
+CE6 + CE9 → CE8 → CE4c
+CE4a + CE4b + CE4c → CE4d
+CE3 + CE10 → CE11
 ```
+
+Backend and camera milestones use native `composition-1` fixtures for their
+completion gates. Family-fixture parity is a CE4 adapter gate after its prerequisite
+milestones are complete; it cannot block the backend or camera that the adapter needs.
 
 ## First implementation slice
 
@@ -678,6 +688,7 @@ General rules for all adapters:
       text fits, component state/travel/pin/values/visibility/masks.
 - [ ] Commerce effects become CE6 registry effects; parity requires CE6.
 - [ ] Parity for all commerce fixtures and all 63 reusable-component combinations.
+      Run these through both backends against their CE0 tiers after CE6 is complete.
 
 ### CE4c — Cinematic
 
@@ -686,6 +697,8 @@ General rules for all adapters:
 - [ ] Keep coverage, source-resolution and framing validations, now evaluated on the
       composition camera.
 - [ ] Parity for all cinematic fixtures, landscape and vertical.
+      Verify camera-path reproduction against CE0 on WebGL2 after CE8 is complete;
+      compare Canvas 2D only for the affine camera moves it supports.
 
 ### CE4d — Legacy illustrated and removal
 
@@ -791,14 +804,17 @@ type EffectDefinition<P> = {
       noise computed in shaders from integer hashes rather than `sin`-based tricks.
 - [ ] Record SwiftShader render cost per effect at 1920×1080 and representative
       parameters, so heavy effects have visible budgets.
-- [ ] Backend parity suite: every fixture renders on both backends and meets its tier.
-- [ ] Preview parity suite: on a machine with a hardware GPU, Lab preview frames match
-      export within each fixture's tier.
+- [ ] Backend parity suite: native `composition-1` fixtures covering the implemented
+      effects and layer features supported by both backends meet their recorded tiers.
+      Family-fixture comparisons belong to CE4b/CE4c after their adapters are available.
+- [ ] Preview parity suite: on a machine with a hardware GPU, native-composition
+      preview frames match export within each fixture's tier.
 
-**Acceptance:** Every effect is usable on every layer type, including adjustment
-layers and precomps. The commerce effect demos meet their tiers through the registry.
-The WebGL2 backend renders the CE0 fixture set at least 2× faster than Canvas 2D at
-1920×1080 (record numbers).
+**Acceptance:** Every effect is usable on every implemented drawable layer type,
+including adjustment layers and precomps, demonstrated by native-composition
+fixtures. The WebGL2 backend renders that shared fixture set at least 2× faster than
+Canvas 2D at 1920×1080 (record numbers). Commerce demo parity is verified in CE4b;
+CE6 completion does not require any family adapter.
 
 **Verification:** Per-effect pixel tests at several parameter values, bounds expansion
 tests, backend parity suite, repeated-export determinism test.
@@ -855,9 +871,11 @@ and cinematic cameras.
 - [ ] Optional lights (point, spot, ambient) are **not** in this milestone; record them
       as a follow-up if needed.
 
-**Acceptance:** Cinematic fixtures (CE4c) and a story fixture reproduce their camera
-paths through the unified camera. A test scene demonstrates correct parallax from z
-depth alone.
+**Acceptance:** Native-composition test scenes demonstrate correct perspective and
+parallax from z depth, depth sorting, depth of field, camera shake and affine 2D
+story-style camera paths. Test true perspective on WebGL2 and affine moves on both
+backends. Cinematic family camera-path parity is verified in CE4c against CE0;
+CE8 completion does not require CE4c.
 
 **Verification:** Projection unit tests against hand-computed points, depth-sort tests,
 DOF blur amount vs focus distance, coverage-check regression tests.
@@ -1283,6 +1301,7 @@ A milestone is complete when **all** of the following hold:
 | 2026-09-30 | Q1: hybrid GPU policy — export, caches and tests pinned to SwiftShader; Lab preview may use a hardware GPU within tolerance | Exact reproducible output where caches, resume and chunking depend on it; fast interactive preview. Formalises what headless export already does by default         |                |
 | 2026-09-30 | Q3: expressions are written in a small text syntax and parsed into a validated AST; no arbitrary JavaScript at render time  | AE-like brevity for authors and agents, with safety, known dependencies and precise diagnostics. Full JavaScript remains available at authoring time in the builder |                |
 | 2026-10-01 | CE9 rejects every property dependency cycle, including earlier-time feedback                                                | Delayed self/mutual references have no finite-history base case; acyclic temporal reads preserve pure seeking and terminate                                         |                |
+| 2026-10-01 | CE6/CE8 complete against native compositions; CE4 owns family parity; CE8 depends on CE6 and CE9                            | Removes circular backend/adapter acceptance gates and makes camera prerequisites explicit                                                                           |                |
 
 ## Open questions for the owner
 
