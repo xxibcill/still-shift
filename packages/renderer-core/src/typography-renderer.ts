@@ -32,7 +32,9 @@ import { drawTextDecorations } from "./typography-decorations.ts";
 import { drawTextContainerShape } from "./text-container.ts";
 import type { Rect } from "./text-container-layout.ts";
 import { componentTextVariants } from "./component-values.ts";
-import type { ComponentSceneData } from "../../scene-contract/src/component-data.ts";
+import { textVisibility } from "./typography-visibility.ts";
+import type { StoryRenderScene } from "./story-scene.ts";
+import type { CommerceRenderScene } from "./commerce-scene.ts";
 
 export type TextRaster = {
   layout: ShapedLayout;
@@ -137,10 +139,7 @@ export function rasterizeText(
   };
 }
 export function prepareTypography(
-  scene: TextEventScene &
-    TextAnimationContext & {
-      componentData?: ComponentSceneData["componentData"];
-    },
+  scene: StoryRenderScene | CommerceRenderScene,
   fonts: Map<string, LoadedFont>,
 ): PreparedTypography {
   const nodes = new Map<string, Map<string, TextRaster>>(),
@@ -210,23 +209,21 @@ export function prepareTypography(
             animator.to?.strokeWidth !== undefined),
       )
     ) {
-      const staticValues = new Set([
-        node.text,
-        ...(node.states ?? []),
-        ...componentTextVariants(scene, node),
-      ]);
-      for (let frame = 0; frame < scene.frameCount; frame++) {
-        const visibleValues = new Set(staticValues);
-        for (const transition of node.transitions ??
-          (node.transition ? [node.transition] : []))
-          if (
-            transition.kind === "count" &&
-            frame >= transition.window.start &&
-            frame <= transition.window.end
-          )
-            visibleValues.add(countText(node, transition, frame));
-        for (const text of visibleValues) {
-          const raster = rasters.get(text)!;
+      // Authored states stay drawable at any frame (the type specimen draws each one); generated
+      // count and component texts get outlines only on frames where the renderer shows them.
+      const staticValues = [node.text, ...(node.states ?? [])];
+      const layoutsByText = new Map(
+        [...rasters].map(([text, raster]) => [text, raster.layout]),
+      );
+      for (const { frame, texts } of textVisibility(
+        scene,
+        node,
+        layoutsByText,
+      )) {
+        for (const text of new Set([...staticValues, ...texts])) {
+          const raster = rasters.get(text);
+          if (!raster)
+            throw new Error(`text-layout-not-prepared: ${node.id}: ${text}`);
           const poses = evaluateTextPoses(
             node,
             raster.layout,
@@ -235,16 +232,14 @@ export function prepareTypography(
             scene,
           );
           for (const pose of poses) {
-            if (pose.opacity <= 0 || pose.strokeWidth <= 0) continue;
-            const key = axisKey(pose.axes);
-            const target = key === "[]" ? raster : raster.variants.get(key)!;
-            const strokeKey = `${pose.strokeWidth}:${pose.stroke}`;
+            const width = quantizeStrokeWidth(pose.strokeWidth);
+            if (pose.opacity <= 0 || width <= 0) continue;
+            const target = axisRaster(raster, pose.axes);
+            const strokeKey = `${width}:${pose.stroke}`;
             if (!target.strokes.has(strokeKey))
               target.strokes.set(
                 strokeKey,
-                reserveCanvas(
-                  renderStrokedRaster(target, pose.strokeWidth, pose.stroke),
-                ),
+                reserveCanvas(renderStrokedRaster(target, width, pose.stroke)),
               );
           }
         }
@@ -401,6 +396,20 @@ function renderStrokedRaster(raster: TextRaster, width: number, color: string) {
   }
   return canvas;
 }
+/** Outlines are cached per width, so animated widths share a 0.25 px grid. */
+export function quantizeStrokeWidth(width: number) {
+  return Math.round(width * 4) / 4;
+}
+function axisRaster(raster: TextRaster, axes: Record<string, number>) {
+  const key = axisKey(axes);
+  if (key === "[]") return raster;
+  const variant = raster.variants.get(key);
+  if (!variant)
+    throw new Error(
+      "text-axis-not-prepared: animated font must be prepared before drawing",
+    );
+  return variant;
+}
 function strokedRaster(raster: TextRaster, width: number, color: string) {
   const canvas = raster.strokes.get(`${width}:${color}`);
   if (!canvas)
@@ -415,14 +424,7 @@ function drawCluster(
   pose: TextPose,
 ) {
   if (pose.opacity <= 0) return;
-  if (axisKey(pose.axes) !== "[]") {
-    const variant = raster.variants.get(axisKey(pose.axes));
-    if (!variant)
-      throw new Error(
-        "text-axis-not-prepared: animated font must be prepared before drawing",
-      );
-    raster = variant;
-  }
+  raster = axisRaster(raster, pose.axes);
   const layout = raster.layout,
     cluster = layout.clusters[index]!,
     line = layout.lines[cluster.lineIndex]!;
@@ -472,9 +474,8 @@ function drawCluster(
       right - x,
       bottom - y,
     );
-  if (pose.strokeWidth > 0) {
-    paint(strokedRaster(raster, pose.strokeWidth, pose.stroke));
-  }
+  const strokeWidth = quantizeStrokeWidth(pose.strokeWidth);
+  if (strokeWidth > 0) paint(strokedRaster(raster, strokeWidth, pose.stroke));
   paint(
     pose.fill === (node.spans?.[cluster.spanIndex]?.color ?? node.color)
       ? raster.canvas

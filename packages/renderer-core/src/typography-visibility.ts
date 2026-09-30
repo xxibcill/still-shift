@@ -3,6 +3,7 @@ import type { StoryRenderScene } from "./story-scene.ts";
 import type { ShapedLayout } from "./shaped-text.ts";
 import type { TextNode } from "./typography-style.ts";
 import { evaluatePreparedNode } from "./prepared-scene.ts";
+import { componentText } from "./component-values.ts";
 import {
   activeTextTransition,
   resolveDisplayedText,
@@ -38,7 +39,7 @@ export type TextFrameVisibility = {
   opacity: number;
   reveal: number;
   state: number;
-  /** A source text transition window (including cuts and counts) covers this frame. */
+  /** A source text transition window (including cuts and counts) or a counting bound value covers this frame. */
   changing: boolean;
   texts: string[];
 };
@@ -50,6 +51,10 @@ export function textVisibility(
   layouts?: ReadonlyMap<string, ShapedLayout>,
 ): TextFrameVisibility[] {
   const frames: TextFrameVisibility[] = [];
+  const boundText = (frame: number) =>
+    frame < 0 || frame >= scene.frameCount
+      ? undefined
+      : componentText(scene, node, frame);
   for (let frame = 0; frame < scene.frameCount; frame++) {
     const evaluated = evaluatePreparedNode(scene, node, frame);
     let opacity = evaluated.opacity;
@@ -59,13 +64,24 @@ export function textVisibility(
       opacity *= evaluatePreparedNode(scene, ancestor, frame).opacity;
       parent = ancestor.parent;
     }
+    // Mirror the renderer: component data replaces the text, and a state blend also draws stateFrom.
+    const bound = boundText(frame);
+    const shown = bound === undefined ? node : { ...node, text: bound };
+    const texts = displayedTexts(shown, frame, evaluated.state, layouts);
+    if (evaluated.stateFrom !== undefined && evaluated.stateMix !== undefined)
+      texts.push(...displayedTexts(shown, frame, evaluated.stateFrom, layouts));
     frames.push({
       frame,
       opacity,
       reveal: evaluated.reveal,
       state: evaluated.state,
-      changing: !!activeTextTransition(node, frame),
-      texts: displayedTexts(node, frame, evaluated.state, layouts),
+      // A bound value that is still counting changes like a count transition does.
+      changing:
+        !!activeTextTransition(node, frame) ||
+        (bound !== undefined &&
+          ((frame > 0 && boundText(frame - 1) !== bound) ||
+            (frame + 1 < scene.frameCount && boundText(frame + 1) !== bound))),
+      texts: [...new Set(texts)],
     });
   }
   return frames;

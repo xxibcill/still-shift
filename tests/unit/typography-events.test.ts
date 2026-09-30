@@ -19,6 +19,8 @@ import {
 import type { ShapedLayout } from "../../packages/renderer-core/src/shaped-text.ts";
 import type { PreparedTypography } from "../../packages/renderer-core/src/typography-renderer.ts";
 import { contrastSampleFrames } from "../../packages/renderer-core/src/typography-pixels.ts";
+import { textVisibility } from "../../packages/renderer-core/src/typography-visibility.ts";
+import { quantizeStrokeWidth } from "../../packages/renderer-core/src/typography-renderer.ts";
 
 const input = () => ({
   schemaVersion: "story-scene-1",
@@ -453,6 +455,52 @@ describe("semantic typography and lint", () => {
     expect(
       textReadingWindows(scene).find((w) => w.node === "claim")?.text,
     ).toBe("A");
+  });
+  it("reports only the texts the renderer draws at each frame", () => {
+    const raw = input();
+    raw.nodes[2] = {
+      ...raw.nodes[2]!,
+      transition: { kind: "count", window: { start: 30, end: 80 } },
+    } as never;
+    raw.nodes[1] = {
+      ...raw.nodes[1]!,
+      text: "Not every detail",
+      states: ["Not every detail", "Not every date"],
+      transition: { kind: "retype", window: { start: 30, end: 80 } },
+    } as never;
+    const scene = compileStoryScene(StorySceneSchema.parse(raw));
+    const count = textVisibility(scene, textNode(scene, "count"));
+    expect(count[0]!.texts).toEqual(["12"]);
+    expect(count[55]!.changing).toBe(true);
+    expect(count[55]!.texts).toHaveLength(1);
+    expect(count[55]!.texts[0]).not.toMatch(/^(12|1,280)$/);
+    expect(count.at(-1)!.texts).toEqual(["1,280"]);
+    const qualifier = textNode(scene, "qualifier");
+    const layouts = new Map(
+      qualifier.states!.map((text) => [
+        text,
+        mockLayout({ ...qualifier, text }),
+      ]),
+    );
+    // A retype draws one of its two layouts; a blended transition would draw both.
+    expect(textVisibility(scene, qualifier, layouts)[40]!.texts).toHaveLength(
+      1,
+    );
+    expect(textVisibility(scene, qualifier)[40]!.texts).toEqual(
+      qualifier.states,
+    );
+  });
+  it("shares animated outline widths on a quarter-pixel grid", () => {
+    expect(quantizeStrokeWidth(0.1)).toBe(0);
+    expect(quantizeStrokeWidth(3.37)).toBe(3.25);
+    expect(quantizeStrokeWidth(3.38)).toBe(3.5);
+    expect(
+      new Set(
+        Array.from({ length: 120 }, (_, i) =>
+          quantizeStrokeWidth((i / 119) * 4),
+        ),
+      ).size,
+    ).toBe(17);
   });
   it("moves a single-line claim away from its qualifier", () => {
     for (const [qualifierY, direction] of [
