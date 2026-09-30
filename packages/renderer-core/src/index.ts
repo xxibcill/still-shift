@@ -1,6 +1,7 @@
 export * from "./scene.ts";
 export * from "./safety.ts";
 export * from "./parity.ts";
+export * from "./frame-tolerance.ts";
 export * from "./webgl-renderer.ts";
 export * from "./prepared-scene.ts";
 export * from "./cinematic-scene.ts";
