@@ -101,10 +101,129 @@ const cutPanels = cuts
       `<section class="study"><h2>${esc(cut.title)}</h2><div class="pair">${cut.frames.map((frame) => `<figure><figcaption>Frame ${frame}</figcaption><img src="${esc(cut.id)}-cut-${frame}.png" alt="${esc(cut.id)} at frame ${frame}"></figure>`).join("")}</div></section>`,
   )
   .join("");
+const playerScript = String.raw`
+for (const section of document.querySelectorAll("[data-study]")) {
+  const videos = [...section.querySelectorAll("video")];
+  const range = section.querySelector("input");
+  const output = section.querySelector("output");
+  const status = section.querySelector("[role=status]");
+  let synchronizing = false;
+  let pendingPlay = 0;
+
+  const showTime = (time) => {
+    range.value = String(Math.min(191, Math.floor(time * 24)));
+    output.value = range.value + " / 191";
+  };
+  const align = (time) => {
+    for (const video of videos)
+      if (Math.abs(video.currentTime - time) > 0.001) video.currentTime = time;
+    showTime(time);
+  };
+  const hold = (message = "") => {
+    pendingPlay++;
+    synchronizing = true;
+    const time = Math.min(...videos.map((video) => video.currentTime));
+    videos.forEach((video) => {
+      video.pause();
+      video.style.visibility = "";
+    });
+    align(time);
+    status.textContent = message;
+    synchronizing = false;
+  };
+  const ready = (video) => {
+    if (video.error) return Promise.reject(video.error);
+    if (video.readyState >= 3) return Promise.resolve();
+    return new Promise((resolve, reject) => {
+      const cleanup = () => {
+        video.removeEventListener("canplay", onReady);
+        video.removeEventListener("error", onError);
+      };
+      const onReady = () => { cleanup(); resolve(); };
+      const onError = () => { cleanup(); reject(video.error); };
+      video.addEventListener("canplay", onReady);
+      video.addEventListener("error", onError);
+      video.preload = "auto";
+    });
+  };
+  const play = async () => {
+    if (synchronizing) return;
+    const request = ++pendingPlay;
+    synchronizing = true;
+    status.textContent = "Preparing synchronized playback…";
+    const time = videos.every((video) => video.ended)
+      ? 0
+      : Math.min(...videos.map((video) => video.currentTime));
+    videos.forEach((video) => {
+      video.pause();
+      video.preload = "auto";
+      video.currentTime = time;
+      video.style.visibility = "hidden";
+    });
+    try {
+      await Promise.all(videos.map(ready));
+      if (request !== pendingPlay) return;
+      align(time);
+      await Promise.all(videos.map((video) => video.play()));
+      if (request !== pendingPlay) return;
+      align(Math.min(...videos.map((video) => video.currentTime)));
+      status.textContent = "";
+    } catch {
+      if (request === pendingPlay) {
+        videos.forEach((video) => video.pause());
+        status.textContent = "Playback failed. Try Play again.";
+      }
+    } finally {
+      if (request === pendingPlay) {
+        videos.forEach((video) => video.style.visibility = "");
+        synchronizing = false;
+      }
+    }
+  };
+  section.querySelector(".play").onclick = play;
+  section.querySelector(".pause").onclick = () => hold();
+  range.oninput = () => {
+    pendingPlay++;
+    synchronizing = true;
+    videos.forEach((video) => {
+      video.pause();
+      video.style.visibility = "";
+    });
+    align(Number(range.value) / 24);
+    status.textContent = "";
+    synchronizing = false;
+  };
+  for (const video of videos) {
+    video.addEventListener("pause", () => {
+      if (!synchronizing && videos.some((item) => !item.paused) &&
+          !videos.every((item) => item.currentTime > 7.8))
+        hold("Paused to keep both videos aligned.");
+    });
+    for (const event of ["waiting", "stalled"])
+      video.addEventListener(event, () => {
+        if (!synchronizing && !video.seeking &&
+            videos.some((item) => !item.paused))
+          hold("Buffering paused both videos. Press Play to resume.");
+      });
+    video.addEventListener("timeupdate", () => {
+      if (synchronizing || videos.some((item) => item.paused)) return;
+      const times = videos.map((item) => item.currentTime);
+      const earliest = Math.min(...times);
+      const latest = Math.max(...times);
+      if (latest - earliest > 1 / 24) {
+        synchronizing = true;
+        videos.find((item) => item.currentTime === latest).currentTime = earliest;
+        synchronizing = false;
+      }
+      showTime(videos[1].currentTime);
+    });
+  }
+}
+`;
 const page = `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Continuous story library · comparison</title><style>
 @font-face{font-family:Chronicle;src:url('${relative(after, resolve("assets/story-motion/fonts/source-serif-4-semibold.otf"))}')}@font-face{font-family:Plex;src:url('${relative(after, resolve("assets/story-motion/fonts/plex-sans-medium.ttf"))}')}*{box-sizing:border-box}body{margin:0;background:#e8dfc9;color:#211f1b;font:16px/1.55 Plex,sans-serif}main{max-width:1500px;margin:auto;padding:50px 32px}h1,h2{font-family:Chronicle,serif;font-weight:600;line-height:1.1}h1{font-size:clamp(38px,6vw,76px);margin:18px 0}h2{font-size:clamp(30px,4vw,48px);margin:10px 0}.eyebrow{text-transform:uppercase;letter-spacing:.12em;color:#59664d;font-size:12px}header{max-width:920px;padding-bottom:30px}.study{border-top:1px solid #59664d66;padding:32px 0}.study>p{max-width:900px}.pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}figure{margin:0;min-width:0}figcaption{margin:0 0 8px}video,img{display:block;width:100%;height:auto}video{aspect-ratio:16/9;background:#211f1b}.controls{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin:18px 0}button{font:inherit;color:inherit;background:transparent;border:1px solid #59664d;padding:8px 14px;min-height:44px;cursor:pointer}input{accent-color:#8b3f36}button:focus-visible,input:focus-visible,a:focus-visible{outline:3px solid #8b3f36;outline-offset:3px}svg{display:block;width:100%;height:auto;max-height:100px}.legend,.measurement,.links{font-size:14px;margin:5px 0}.before{color:#59664d}.after,a{color:#8b3f36}a{text-underline-offset:4px}footer{border-top:1px solid #59664d66;padding-top:24px;font-size:14px}@media(max-width:760px){main{padding:28px 18px}.pair{grid-template-columns:1fr}.controls{gap:8px}}
 </style></head><body><main><header><div class="eyebrow">Still Shift / P3 library review</div><h1>Stories that keep moving.</h1><p>Seven 192-frame, 24 fps silent studies. Each pair compares the current continuous candidate with a fresh replay of its legacy fixture. Charts share one scale within each pair. Technical motion gates pass; creative emphasis still needs owner review.</p><p><a href="index.html">Open the P3 index</a> · <a href="contact-sheet.html">Style frames</a> · <a href="quality-report.json">Compiled quality report</a></p></header>${entries.map(section).join("")}<h2>Exact cut review</h2>${cutPanels}<footer>The legacy replay is generated from the checked-in non-v2 fixtures. These studies are reusable explanatory graphics and do not modify the published S01E01 episode.</footer></main><script>
-for(const section of document.querySelectorAll('[data-study]')){const videos=[...section.querySelectorAll('video')],range=section.querySelector('input'),output=section.querySelector('output'),status=section.querySelector('[role=status]');let synchronizing=false;const showTime=time=>{range.value=String(Math.min(191,Math.floor(time*24)));output.value=range.value+' / 191';};const hold=(message='')=>{if(synchronizing)return;synchronizing=true;const time=Math.min(...videos.map(video=>video.currentTime));videos.forEach(video=>video.pause());videos.forEach(video=>video.currentTime=time);showTime(time);status.textContent=message;synchronizing=false;};const play=async()=>{if(synchronizing)return;synchronizing=true;const time=videos.every(video=>video.ended)?0:Math.min(...videos.map(video=>video.currentTime));videos.forEach(video=>video.currentTime=time);showTime(time);try{await Promise.all(videos.map(video=>video.play()));status.textContent='';}catch{videos.forEach(video=>video.pause());status.textContent='Playback failed. Try Play again.';}finally{synchronizing=false;}};section.querySelector('.play').onclick=play;section.querySelector('.pause').onclick=()=>hold();range.oninput=()=>{synchronizing=true;videos.forEach(video=>video.pause());videos.forEach(video=>video.currentTime=Number(range.value)/24);output.value=range.value+' / 191';synchronizing=false;};videos.forEach(video=>{video.addEventListener('pause',()=>{if(!synchronizing&&videos.some(item=>!item.paused)&&!videos.every(item=>item.currentTime>7.8))hold('Paused to keep both videos aligned.');});for(const event of ['waiting','stalled'])video.addEventListener(event,()=>{if(!synchronizing&&videos.some(item=>!item.paused))hold('Buffering paused both videos. Press Play to resume.');});});videos[1].ontimeupdate=()=>{if(!videos[1].paused)showTime(videos[1].currentTime);};}
+${playerScript}
 </script></body></html>`;
 await writeFile(join(after, "comparison.html"), page, { flag: "wx" });
 await writeFile(

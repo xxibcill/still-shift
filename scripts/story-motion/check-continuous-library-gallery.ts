@@ -130,12 +130,72 @@ try {
     assert.ok(scrubTimes.every((time) => Math.abs(time - 90 / 24) < 0.001));
     await study.locator("input[type=range]").fill("0");
     await study.locator("input[type=range]").dispatchEvent("input");
+    if (index === 0)
+      await study
+        .locator("video")
+        .last()
+        .evaluate((element) => {
+          const video = element as HTMLVideoElement & {
+            originalPlay?: HTMLVideoElement["play"];
+          };
+          video.originalPlay = video.play.bind(video);
+          video.play = () =>
+            new Promise<void>((resolve) => setTimeout(resolve, 350))
+              .then(() => video.originalPlay!())
+              .then(() => {
+                video.dataset.delayedPlayStarted = "true";
+              });
+        });
     await study.locator("button.play").click();
     if (index === 0) {
       await page.waitForFunction(() => {
         const videos =
           document.querySelectorAll<HTMLVideoElement>("[data-study] video");
+        return (
+          videos[1]?.dataset.delayedPlayStarted === "true" &&
+          videos[1].currentTime > 0.1
+        );
+      });
+      const startTimes = await study
+        .locator("video")
+        .evaluateAll((videos) =>
+          videos.map((video) => (video as HTMLVideoElement).currentTime),
+        );
+      assert.ok(
+        Math.abs(startTimes[0]! - startTimes[1]!) < 0.05,
+        "Paired videos must realign after an uneven start",
+      );
+      await study
+        .locator("video")
+        .last()
+        .evaluate((element) => {
+          const video = element as HTMLVideoElement & {
+            originalPlay?: HTMLVideoElement["play"];
+          };
+          video.play = video.originalPlay!;
+          delete video.originalPlay;
+        });
+      await page.waitForFunction(() => {
+        const videos =
+          document.querySelectorAll<HTMLVideoElement>("[data-study] video");
         return videos[0] && videos[1] && videos[1].currentTime > 0.8;
+      });
+      await study
+        .locator("video")
+        .first()
+        .evaluate((element) => {
+          const video = element as HTMLVideoElement;
+          video.currentTime += 0.25;
+          video.dispatchEvent(new Event("timeupdate"));
+        });
+      await page.waitForFunction(() => {
+        const videos =
+          document.querySelectorAll<HTMLVideoElement>("[data-study] video");
+        return (
+          videos[0] &&
+          videos[1] &&
+          Math.abs(videos[0].currentTime - videos[1].currentTime) < 0.05
+        );
       });
       await study
         .locator("video")
