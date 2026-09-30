@@ -259,9 +259,31 @@ Fix these in CE1 and do not change them later without a decision-log entry.
 | Colour authoring  | `#RRGGBB` or `#RRGGBBAA` sRGB. Evaluated internally as floating-point RGBA.                                                                                 |
 | Compositing space | sRGB-encoded by default for parity with existing renders. Linear-light compositing is an opt-in composition setting introduced in CE6.                      |
 | Alpha             | Premultiplied in all render surfaces.                                                                                                                       |
-| Time              | Integer composition frames; layer-local time = `(compFrame − startFrame) × stretch` (with time remap overriding). In point inclusive, out point exclusive.  |
+| Time              | Integer composition frames; layer-local time follows the signed-rate mapping below. In point inclusive, out point exclusive; time remap overrides stretch.  |
 | Frame rates       | 24, 25, 30, 50 and 60 fps. A precomp with a different rate is sampled at the parent's time; a posterize-time effect or layer setting snaps to its own rate. |
 | Identifiers       | `^[a-zA-Z][\w-]*$`, unique within a composition. Precomps have their own namespace.                                                                         |
+
+### Layer time and reverse playback
+
+`startFrame` is the composition-frame anchor at which layer-local time is zero; it
+defaults to `0`. `stretch` defaults to `1` and is a signed playback-rate multiplier:
+`1` plays forwards at normal speed, `2` at twice the speed, and `-1` in reverse at
+normal speed. The mapping is `localFrame = (compFrame - startFrame) * stretch`.
+Zero and non-finite values are invalid; use a hold key in `timeRemap`
+to freeze a supported source. `timeRemap`, when present, replaces the mapped local
+time rather than multiplying it by stretch again.
+
+For example, with matching source and composition frame rates, a 30-frame layer
+with `inPoint: 0`, `outPoint: 30`, `startFrame: 29` and `stretch: -1` samples source
+frames 29 through 0. In/out visibility is always tested in composition time, so
+reversal does not swap the inclusive in point and exclusive out point.
+
+Keyed properties hold their first/last keyed value outside their key range, matching
+`sampleCurve`. For finite precomp, video and image-sequence sources, convert mapped
+local time to source frames (`sourceFrame = localFrame * sourceFps / comp.fps`), then clamp sampling to
+`[0, sourceFrameCount - 1]`; fractional sampling follows the enabled time controls.
+This frame-hold rule applies before and after the source range, for either stretch
+sign and for time remap. It does not change the layer's composition-time visibility.
 
 ## Milestone tracker
 
@@ -449,9 +471,9 @@ type LayerBase = {
     | "audio";
   inPoint: number;
   outPoint: number; // comp frames, [in, out)
-  startFrame?: number; // layer time 0 in comp frames
-  stretch?: number; // time stretch, > 0
-  timeRemap?: Animatable<number>; // precomp/video only
+  startFrame?: number; // layer time 0 in comp frames; default 0
+  stretch?: number; // finite, nonzero playback-rate multiplier; default 1; negative = reverse
+  timeRemap?: Animatable<number>; // precomp/video only; values in composition-frame units
   parent?: string;
   enabled?: boolean;
   solo?: boolean;
@@ -534,8 +556,9 @@ examples: title.transform.position
       property paths; keep the old node-and-property form valid as an alias.
 - [ ] Semantic validation: unique ids, parent cycles, matte layer exists and is
       directly above (AE rule) or explicitly referenced, precomp cycles, in < out,
-      key frames ascending and inside a sane window, asset hashes present, precomp
-      nesting depth ≤ 8, total layer count ≤ 2,000.
+      finite nonzero stretch (both signs valid), key frames ascending and inside a
+      sane window, asset hashes present, precomp nesting depth ≤ 8, total layer count
+      ≤ 2,000.
 - [ ] Diagnostic codes prefixed `comp-` with JSON paths; document every code in
       `docs/composition-reference.md` (created in this milestone and extended by each
       later milestone).
@@ -579,7 +602,8 @@ at any frame, in Node or the browser, with no rendering.
       parameterisation (reuse `SpatialPathSchema` semantics).
 - [ ] Parenting with AE semantics: position, rotation, scale and skew inherit; opacity
       does not.
-- [ ] Time stretch, negative stretch (reverse) and time remap.
+- [ ] Signed nonzero time stretch (negative = reverse) and time remap, following
+      [layer-time anchors and source-boundary rules](#layer-time-and-reverse-playback).
 - [ ] Screen-space bounding boxes for culling and diagnostics (images/solids exact;
       text from measured layout; shapes after CE5).
 - [ ] Memoise per frame; cache compiled curves by object identity (as `story-camera.ts`
@@ -591,8 +615,10 @@ at any frame, in Node or the browser, with no rendering.
 Parenting, stretch and remap match hand-computed expectations.
 
 **Verification:** Unit tests for every transform component, parent chains up to depth
-16, reversed time, remapped precomps, and a property-based test (random seeks vs forward
-play) using a fixed seed.
+16, positive/negative stretch, zero/non-finite stretch rejection, reversed first/last
+source frames, exclusive out points, source-boundary holds, and remap overriding
+stretch. Test remapped precomps with different frame rates, plus a property-based
+test (random seeks vs forward play) using a fixed seed.
 
 **Completion record:** _to be filled in._
 
@@ -1302,6 +1328,7 @@ A milestone is complete when **all** of the following hold:
 | 2026-09-30 | Q3: expressions are written in a small text syntax and parsed into a validated AST; no arbitrary JavaScript at render time  | AE-like brevity for authors and agents, with safety, known dependencies and precise diagnostics. Full JavaScript remains available at authoring time in the builder |                |
 | 2026-10-01 | CE9 rejects every property dependency cycle, including earlier-time feedback                                                | Delayed self/mutual references have no finite-history base case; acyclic temporal reads preserve pure seeking and terminate                                         |                |
 | 2026-10-01 | CE6/CE8 complete against native compositions; CE4 owns family parity; CE8 depends on CE6 and CE9                            | Removes circular backend/adapter acceptance gates and makes camera prerequisites explicit                                                                           |                |
+| 2026-10-01 | Stretch is a signed nonzero rate; startFrame anchors local time zero; finite visual sources hold boundary frames            | Makes CE1 accept CE2 reverse playback and defines deterministic source sampling without changing composition-time visibility                                        |                |
 
 ## Open questions for the owner
 
