@@ -79,6 +79,21 @@ const direction = (
         ? [0, -distance]
         : [0, distance];
 
+export function assemblyPartWindow(
+  window: StoryWindow,
+  part: NonNullable<StoryEntrance["parts"]>[number],
+): StoryWindow {
+  return {
+    ...window,
+    start: window.start + part.offset,
+    end:
+      window.start +
+      part.offset +
+      (window.end - window.start - part.offset) * 0.8,
+    easing: "out-quint",
+  };
+}
+
 export function compileEntrance(
   tracks: StoryTracks,
   nodes: PreparedNode[],
@@ -214,15 +229,7 @@ export function compileEntrance(
     case "assemble":
       for (const part of event.parts ?? []) {
         const child = nodes.find((n) => n.id === part.node)!;
-        const subwindow = {
-          ...window,
-          start: window.start + part.offset,
-          end:
-            window.start +
-            part.offset +
-            (window.end - window.start - part.offset) * 0.8,
-          easing: "out-quint" as const,
-        };
+        const subwindow = assemblyPartWindow(window, part);
         const [dx, dy] = direction(part.from, part.distance);
         for (const [property, offset] of [
           ["x", dx],

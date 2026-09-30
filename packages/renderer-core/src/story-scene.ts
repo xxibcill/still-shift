@@ -6,6 +6,7 @@ import {
 } from "./motion-craft.ts";
 import { compileStoryFlows, type CompiledStoryFlow } from "./story-flows.ts";
 import {
+  assemblyPartWindow,
   compileEntrance,
   compileExit,
   compileMove,
@@ -250,6 +251,31 @@ export function compileStoryScene(
     });
   const tracks = createTracks(input.nodes);
   const node = (id: string) => input.nodes.find((node) => node.id === id)!;
+  const entranceEvents = (
+    entrance: StoryEntrance,
+    verb: NonNullable<StoryEntrance["verb"]>,
+    role: StoryRole,
+  ) => {
+    event(
+      entrance.node,
+      entrance.window,
+      "entrance",
+      role,
+      entranceProperties(verb),
+    );
+    if (verb === "assemble")
+      for (const part of entrance.parts ?? [])
+        event(
+          part.node,
+          assemblyPartWindow(entrance.window, part),
+          "entrance",
+          role,
+          [
+            part.from === "left" || part.from === "right" ? "x" : "y",
+            "opacity",
+          ],
+        );
+  };
   const enter = (id: string, window: StoryWindow) => {
     if (input.recipe.entrances?.some((e) => e.node === id)) return;
     const policy = entrancePolicy(
@@ -268,7 +294,7 @@ export function compileStoryScene(
       false,
       input.entranceProfile === "accelerate",
     );
-    event(id, window, "entrance", policy.role, entranceProperties(policy.verb));
+    entranceEvents({ node: id, window }, policy.verb, policy.role);
   };
   const reveal = (id: string, window: StoryWindow) => {
     if (
@@ -413,13 +439,7 @@ export function compileStoryScene(
       subsequent,
       input.entranceProfile === "accelerate",
     );
-    event(
-      entrance.node,
-      entrance.window,
-      "entrance",
-      policy.role,
-      entranceProperties(policy.verb),
-    );
+    entranceEvents(entrance, policy.verb, policy.role);
   }
   for (const exit of recipe.exits ?? []) {
     compileExit(tracks, input.nodes, exit);

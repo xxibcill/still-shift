@@ -205,6 +205,69 @@ try {
   assert.equal(inactiveConstraint.targetMoved, true);
   assert.equal(inactiveConstraint.response, "response: no compiled activity");
 
+  const evidence = JSON.parse(
+    await readFile(
+      "benchmarks/fixtures/story-motion-continuous/evidence-boundary.json",
+      "utf8",
+    ),
+  );
+  const assembly = await page.evaluate(
+    async ({ source, compilerPath, evaluatorPath }) => {
+      const { compileStoryScene } = await import(
+        /* @vite-ignore */ compilerPath
+      );
+      const { evaluatePreparedNode } = await import(
+        /* @vite-ignore */ evaluatorPath
+      );
+      const activityPath = "/src/story-activity.ts";
+      const { showStoryActivity } = await import(
+        /* @vite-ignore */ activityPath
+      );
+      const scene = compileStoryScene(source);
+      scene.motionEvents = scene.motionEvents.filter(
+        (event: { window: { cue?: string } }) =>
+          event.window.cue === "assembled-not-recovered",
+      );
+      scene.compiledMotion = undefined;
+      scene.drivers = [];
+      scene.constraints = [];
+      const part = scene.nodes.find(
+        (node: { id: string }) => node.id === "composite-house-strip-0",
+      )!;
+      const parent = scene.nodes.find(
+        (node: { id: string }) => node.id === "composite-house",
+      )!;
+      showStoryActivity(scene);
+      const spans = [
+        ...document.querySelectorAll(
+          "[data-role=action] .story-activity-segment",
+        ),
+      ].map((segment) => ({
+        start: Number((segment as HTMLElement).dataset.start),
+        end: Number((segment as HTMLElement).dataset.end),
+      }));
+      return {
+        childMoved:
+          evaluatePreparedNode(scene, part, 93).y !==
+          evaluatePreparedNode(scene, part, 94).y,
+        parentSettled:
+          evaluatePreparedNode(scene, parent, 93).scaleY ===
+          evaluatePreparedNode(scene, parent, 94).scaleY,
+        activeAt94: spans.some(({ start, end }) => start <= 94 && 94 < end),
+      };
+    },
+    {
+      source: evidence,
+      compilerPath: `/@fs${resolve("packages/renderer-core/src/story-scene.ts")}`,
+      evaluatorPath: `/@fs${resolve("packages/renderer-core/src/prepared-scene.ts")}`,
+    },
+  );
+  assert.deepEqual(assembly, {
+    childMoved: true,
+    parentSettled: true,
+    activeAt94: true,
+  });
+
   await page.selectOption("#scene", "cinematic:ci-09-layered-parallax");
   await page.waitForFunction(
     () =>
