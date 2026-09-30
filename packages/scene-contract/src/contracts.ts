@@ -157,6 +157,16 @@ export const DepthModelSchema = z.object({
 export const AnimationMetricsSchema = z.object({
   adapter: z.enum(["noop", "webgl"]),
   frameTransport: z.enum(["png_pipe", "jpeg_pipe"]).optional(),
+  renderEnvironment: z
+    .object({
+      profile: z.string().trim().min(1),
+      browserVersion: z.string().trim().min(1),
+      webglRenderer: z.string().trim().min(1),
+      rasterFingerprint: Sha256Schema,
+      platform: z.string().trim().min(1),
+      arch: z.string().trim().min(1),
+    })
+    .optional(),
   cacheStatus: z.enum(["not_applicable", "hit", "miss"]),
   inputWidth: z.number().int().positive().nullable(),
   inputHeight: z.number().int().positive().nullable(),

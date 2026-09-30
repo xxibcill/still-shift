@@ -556,6 +556,7 @@ export class WebGLAnimationEngine implements AnimationEngine {
         metrics: {
           adapter: "webgl",
           frameTransport,
+          renderEnvironment: exported.renderEnvironment,
           cacheStatus: prepared.cacheStatus,
           inputWidth: prepared.dimensions.input.width,
           inputHeight: prepared.dimensions.input.height,
