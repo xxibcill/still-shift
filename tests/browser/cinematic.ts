@@ -136,7 +136,7 @@ try {
       }[preset],
     ),
   );
-  assert.equal(entries.length, preset === "dolly_zoom_tension" ? 1 : 2);
+  assert.equal(entries.length, 2);
   for (const entry of entries) {
     await page.locator("#scene").selectOption(`cinematic:${entry.id}`);
     await page.waitForFunction(

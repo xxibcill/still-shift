@@ -11,7 +11,7 @@ import { createLateralScenes } from "./create-lateral-demos.ts";
 import { createParallaxPathScenes } from "./create-parallax-path-demos.ts";
 import { createDetailScene } from "./create-detail-demos.ts";
 import { createFocusScene } from "./create-focus-demos.ts";
-import { createDollyScene } from "./create-dolly-demos.ts";
+import { createDollyScenes } from "./create-dolly-demos.ts";
 
 const directory = resolve("benchmarks/fixtures/cinematic-illustrated");
 await mkdir(directory, { recursive: true });
@@ -126,7 +126,7 @@ const revealEntries = await createRevealScenes(directory);
 const pathEntries = await createParallaxPathScenes(directory);
 const detailEntry = await createDetailScene(directory);
 const focusEntry = await createFocusScene(directory);
-const dollyEntry = await createDollyScene(directory);
+const dollyEntries = await createDollyScenes(directory);
 await writeFile(
   resolve(directory, "catalog.json"),
   await format(
@@ -149,7 +149,7 @@ await writeFile(
       ),
       detailEntry,
       focusEntry,
-      dollyEntry,
+      ...dollyEntries,
     ]),
     { parser: "json" },
   ),

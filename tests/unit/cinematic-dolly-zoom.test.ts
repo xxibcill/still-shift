@@ -15,54 +15,93 @@ const fixture = JSON.parse(
     "utf8",
   ),
 );
+const alternate = JSON.parse(
+  readFileSync(
+    resolve(
+      "benchmarks/fixtures/cinematic-illustrated/ci-08-dolly-zoom-tension-alternate.json",
+    ),
+    "utf8",
+  ),
+);
 
 describe("CI-08 dolly zoom", () => {
+  it("uses distinct subject positions and depth staging", () => {
+    const subject = (scene: typeof fixture) =>
+      scene.nodes.find((node: { id: string }) => node.id === "subject")!;
+    expect(Math.abs(subject(fixture).x - subject(alternate).x)).toBeGreaterThan(
+      100,
+    );
+    expect(
+      fixture.layers.map((layer: { depth: number }) => layer.depth),
+    ).not.toEqual(
+      alternate.layers.map((layer: { depth: number }) => layer.depth),
+    );
+  });
+
   it("holds the subject while the rear plane contracts at 24 and 30 fps", () => {
-    for (const fps of [24, 30]) {
-      for (const intensity of ["restrained", "standard", "dramatic"]) {
-        const input = CinematicSceneSchema.parse({
-          ...fixture,
-          fps,
-          recipe: { ...fixture.recipe, intensity },
-        });
-        const scene = compileCinematicScene(input);
-        const last = scene.timeline.frameCount - 1;
-        const subject = scene.nodes.find((node) => node.id === "subject")!;
-        const background = scene.nodes.find(
-          (node) => node.id === "background",
-        )!;
-        const foreground = scene.nodes.find(
-          (node) => node.id === "foreground",
-        )!;
-        const initialNear = projectCinematicNode(scene, foreground, 0);
-        for (let frame = 0; frame <= last; frame++) {
-          const projectedSubject = projectCinematicNode(scene, subject, frame);
-          const projectedNear = projectCinematicNode(scene, foreground, frame);
-          expect(projectedSubject.scale).toBeCloseTo(1, 10);
-          expect(projectedSubject.left).toBeCloseTo(subject.x, 10);
-          expect(projectedSubject.top).toBeCloseTo(subject.y, 10);
-          expect(
-            Math.max(
-              Math.abs(projectedNear.left - initialNear.left),
-              Math.abs(
-                projectedNear.left +
-                  projectedNear.width -
-                  (initialNear.left + initialNear.width),
+    for (const composition of [fixture, alternate]) {
+      for (const fps of [24, 30]) {
+        for (const intensity of ["restrained", "standard", "dramatic"]) {
+          const input = CinematicSceneSchema.parse({
+            ...composition,
+            fps,
+            recipe: { ...composition.recipe, intensity },
+          });
+          const scene = compileCinematicScene(input);
+          const last = scene.timeline.frameCount - 1;
+          const subject = scene.nodes.find((node) => node.id === "subject")!;
+          const background = scene.nodes.find(
+            (node) => node.id === "background",
+          )!;
+          const foreground = scene.nodes.find(
+            (node) => node.id === "foreground",
+          )!;
+          const initialNear = projectCinematicNode(scene, foreground, 0);
+          for (let frame = 0; frame <= last; frame++) {
+            const projectedSubject = projectCinematicNode(
+              scene,
+              subject,
+              frame,
+            );
+            const projectedNear = projectCinematicNode(
+              scene,
+              foreground,
+              frame,
+            );
+            expect(projectedSubject.scale).toBeCloseTo(1, 10);
+            expect(projectedSubject.left).toBeCloseTo(subject.x, 10);
+            expect(projectedSubject.top).toBeCloseTo(subject.y, 10);
+            expect(
+              Math.max(
+                Math.abs(projectedNear.left - initialNear.left),
+                Math.abs(
+                  projectedNear.left +
+                    projectedNear.width -
+                    (initialNear.left + initialNear.width),
+                ),
+                Math.abs(projectedNear.top - initialNear.top),
+                Math.abs(
+                  projectedNear.top +
+                    projectedNear.height -
+                    (initialNear.top + initialNear.height),
+                ),
               ),
-            ),
-          ).toBeLessThanOrEqual(scene.width * 0.03);
+            ).toBeLessThanOrEqual(scene.width * 0.03);
+          }
+          const distantScaleReduction =
+            1 -
+            projectCinematicNode(scene, background, last).scale /
+              projectCinematicNode(scene, background, 0).scale;
+          expect(distantScaleReduction).toBeGreaterThanOrEqual(0.03);
+          expect(distantScaleReduction).toBeLessThanOrEqual(0.06);
+          expect(scene.cameraValidation.backgroundScaleReduction).toBeCloseTo(
+            distantScaleReduction,
+          );
+          expect(scene.cameraValidation.minimumCoverageMargin).toBeGreaterThan(
+            0,
+          );
+          expect(scene.cameraValidation.checkedFrames).toBe(fps * 7);
         }
-        const distantScaleReduction =
-          1 -
-          projectCinematicNode(scene, background, last).scale /
-            projectCinematicNode(scene, background, 0).scale;
-        expect(distantScaleReduction).toBeGreaterThanOrEqual(0.03);
-        expect(distantScaleReduction).toBeLessThanOrEqual(0.06);
-        expect(scene.cameraValidation.backgroundScaleReduction).toBeCloseTo(
-          distantScaleReduction,
-        );
-        expect(scene.cameraValidation.minimumCoverageMargin).toBeGreaterThan(0);
-        expect(scene.cameraValidation.checkedFrames).toBe(fps * 7);
       }
     }
   });
