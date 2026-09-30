@@ -25,7 +25,22 @@ export function parseNarrationTiming(
     : (input?.words ??
       (Array.isArray(input?.segments)
         ? input.segments.flatMap(
-            (segment: { words?: unknown[] } | null) => segment?.words ?? [],
+            (
+              segment: {
+                words?: {
+                  word?: string;
+                  text?: string;
+                  start?: number;
+                  end?: number;
+                }[];
+              } | null,
+              segmentIndex: number,
+            ) =>
+              (segment?.words ?? []).map((word, wordIndex) => ({
+                ...word,
+                segmentIndex,
+                wordIndex,
+              })),
           )
         : undefined));
   if (!Array.isArray(words))
@@ -39,6 +54,9 @@ export function parseNarrationTiming(
       text: word?.word ?? word?.text,
       start: word?.start,
       end: word?.end,
+      ...(word?.segmentIndex !== undefined
+        ? { segmentIndex: word.segmentIndex, wordIndex: word.wordIndex }
+        : {}),
     })),
   });
 }

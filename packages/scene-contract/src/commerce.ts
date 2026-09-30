@@ -9,6 +9,8 @@ import {
 import { CommerceEffectSchema } from "./commerce-effects.ts";
 import { ComponentDemoKindSchema } from "./commerce-components.ts";
 import { z } from "zod";
+import { typographySceneFields } from "./typography.ts";
+import { validateTypography } from "./typography-validation.ts";
 import {
   ComponentDataSchema,
   validateComponentData,
@@ -176,6 +178,7 @@ const shape = PreparedSceneFieldsSchema.omit({
     schemaVersion: z.literal("commerce-scene-1"),
     ...motionCraftFields,
     ...motionAppearanceFields,
+    ...typographySceneFields,
     componentData: ComponentDataSchema.optional(),
     width: finite.int().positive(),
     height: finite.int().positive(),
@@ -232,6 +235,7 @@ export const CommerceSceneSchema = shape.superRefine((scene, ctx) => {
   const { nodes } = validatePreparedGraph(scene, fail);
   validateComponentData(scene, fail);
   validateMotionCraft(scene, ctx);
+  validateTypography(scene, ctx);
   validateCommerceSpatial(scene, fail);
   const profile = COMMERCE_PROFILES[scene.metadata.profile];
   if (scene.width !== profile.width || scene.height !== profile.height)

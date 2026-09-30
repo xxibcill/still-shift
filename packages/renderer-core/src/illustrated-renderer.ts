@@ -1,3 +1,11 @@
+import { loadTextAnimationFonts } from "./typography-axes.ts";
+import { validateTypographySafeArea } from "./typography-safe-area.ts";
+import {
+  prepareTypography,
+  drawTypography,
+  resolveTypographyNodes,
+  type PreparedTypography,
+} from "./typography-renderer.ts";
 import { evaluateMotionAppearance } from "./motion-appearance.ts";
 import { drawAnimatedText } from "./motion-text.ts";
 import type { TextAnimator } from "../../scene-contract/src/motion-craft.ts";
@@ -52,7 +60,12 @@ export type Images = Map<string, HTMLImageElement> & {
   revealValidation?: ReturnType<typeof inspectForegroundReveal>;
   fonts?: Map<string, LoadedFont>;
   textLayouts?: Map<string, Map<string, TextLayout>>;
+  typography?: PreparedTypography;
   rasters?: Map<string, HTMLCanvasElement>;
+  textProbe?: {
+    node: string;
+    mode: "ink-only" | "container-only";
+  };
 };
 type State = ReturnType<typeof evaluatePreparedNodeAtTime>;
 
@@ -248,6 +261,7 @@ const drawShape = (
   images: Images,
   clipImages = true,
   animator?: { definition: TextAnimator; frame: number },
+  frame = 0,
 ) => {
   switch (node.type) {
     case "image":
@@ -257,6 +271,12 @@ const drawShape = (
       drawPath(ctx, node, state);
       break;
     case "text": {
+      const probe =
+        images.textProbe?.node === node.id ? images.textProbe.mode : undefined;
+      if (images.typography) {
+        drawTypography(ctx, node, state, images.typography, frame, probe);
+        break;
+      }
       const font = node.fontAsset
         ? images.fonts?.get(node.fontAsset)
         : undefined;
@@ -273,8 +293,9 @@ const drawShape = (
         : node.text;
       if (text === undefined)
         throw new Error(`Missing text state on ${node.id}`);
-      if (node.container && state.reveal > 0)
+      if (node.container && state.reveal > 0 && probe !== "ink-only")
         drawTextContainer(ctx, node, text);
+      if (probe === "container-only") break;
       if (
         animator &&
         drawAnimatedText(
@@ -337,7 +358,22 @@ export function createIllustratedPreview(
 ) {
   const ctx = canvas.getContext("2d", { alpha: false });
   if (!ctx) throw new Error("Canvas 2D is unavailable");
-  if (scene.schemaVersion === "story-scene-1" && scene.authoringVersion === "1")
+  const hasTypography =
+    (scene.schemaVersion === "story-scene-1" ||
+      scene.schemaVersion === "commerce-scene-1") &&
+    scene.typography;
+  if (hasTypography)
+    scene = resolveTypographyNodes(
+      scene as Extract<
+        IllustratedScene,
+        { schemaVersion: "story-scene-1" | "commerce-scene-1" }
+      >,
+    );
+  if (
+    scene.schemaVersion === "story-scene-1" &&
+    scene.authoringVersion === "1" &&
+    !hasTypography
+  )
     validateStoryTextLayout(scene, images.fonts ?? new Map());
   const focus =
     scene.schemaVersion === "illustrated-scene-2" &&
@@ -356,17 +392,25 @@ export function createIllustratedPreview(
   images = Object.assign(new Map(images), {
     ...(images.fonts ? { fonts: images.fonts } : {}),
     ...(images.rasters ? { rasters: images.rasters } : {}),
+    ...(images.textProbe ? { textProbe: images.textProbe } : {}),
     ...(images.revealValidation
       ? { revealValidation: images.revealValidation }
       : {}),
     textLayouts: new Map(),
   });
-  images.textLayouts = prepareMeasuredText(
-    scene,
-    ctx,
-    images.fonts ?? new Map(),
-  );
+  images.textLayouts = hasTypography
+    ? new Map()
+    : prepareMeasuredText(scene, ctx, images.fonts ?? new Map());
 
+  if (
+    hasTypography &&
+    (scene.schemaVersion === "story-scene-1" ||
+      scene.schemaVersion === "commerce-scene-1")
+  ) {
+    images.typography = prepareTypography(scene, images.fonts ?? new Map());
+    if (scene.schemaVersion === "story-scene-1")
+      validateTypographySafeArea(scene, images.typography);
+  }
   if (scene.schemaVersion === "commerce-scene-1") validateAttachedPaths(scene);
   if (
     scene.schemaVersion === "commerce-scene-1" ||
@@ -466,10 +510,12 @@ export function createIllustratedPreview(
         { ...state, state: state.stateFrom },
         images,
         !focus,
+        undefined,
+        frame,
       );
       blend.globalCompositeOperation = "lighter";
       blend.globalAlpha = state.stateMix;
-      drawShape(blend, drawable, state, images, !focus);
+      drawShape(blend, drawable, state, images, !focus, undefined, frame);
       ctx.save();
       ctx.resetTransform();
       ctx.drawImage(stateBlend, 0, 0);
@@ -482,6 +528,7 @@ export function createIllustratedPreview(
         images,
         !focus,
         animator ? { definition: animator, frame } : undefined,
+        frame,
       );
     if (drawable.type === "path") {
       ctx.globalAlpha = parentOpacity;
@@ -515,6 +562,7 @@ export function createIllustratedPreview(
       ? createComponentMaskRenderer(scene, paint)
       : undefined;
   return {
+    typography: images.typography,
     resolvedTextSizes: Object.fromEntries(
       scene.nodes.flatMap((n) =>
         n.type === "text" ? [[n.id, n.fontSize]] : [],
@@ -599,6 +647,12 @@ export async function loadIllustratedImages(
     });
   }
   images.fonts = await loadPreparedFonts(scene, assetUrl);
+  if (
+    (scene.schemaVersion === "story-scene-1" ||
+      scene.schemaVersion === "commerce-scene-1") &&
+    scene.typography
+  )
+    await loadTextAnimationFonts(scene, images.fonts);
   if (scene.schemaVersion === "story-scene-1" && scene.motionGrammar === "v2") {
     // SVG rasterization can depend on the active clip. Cache the complete image
     // once so adjacent assembly strips share exactly the same deposited pixels.

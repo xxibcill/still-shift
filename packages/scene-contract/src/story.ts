@@ -1,4 +1,6 @@
 import { z } from "zod";
+import { typographySceneFields } from "./typography.ts";
+import { validateTypography } from "./typography-validation.ts";
 import {
   ResolvedCharacterActionSchema,
   ResolvedPropTrackSchema,
@@ -258,6 +260,7 @@ const shape = PreparedSceneFieldsSchema.omit({ durationMs: true })
     episodeStartFrame: frame.optional(),
     ...motionCraftFields,
     ...motionAppearanceFields,
+    ...typographySceneFields,
     ...sharedEffectsFields,
     motionGrammar: z.literal("v2").optional(),
     authoringVersion: z.literal("1").optional(),
@@ -358,6 +361,7 @@ export const StorySceneSchema = shape.superRefine((scene, ctx) => {
   }
   validateComponentData(scene, fail);
   validateMotionCraft(scene, ctx);
+  validateTypography(scene, ctx);
   validateStoryBindings(scene, nodes, fail);
   if (
     (scene.initialState ||

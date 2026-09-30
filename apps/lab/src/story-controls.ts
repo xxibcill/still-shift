@@ -130,7 +130,7 @@ export function createStoryControls(
       showQuality(parsed);
       host
         .querySelector("#motion-tools")
-        ?.replaceWith(createMotionTools(parsed, seek, images));
+        ?.replaceWith(createMotionTools(parsed, seek, images, apply));
       message.textContent =
         "Timing applied to this preview. Download the scene to keep it.";
     } catch (error) {
@@ -149,7 +149,7 @@ export function createStoryControls(
       showQuality(parsed);
       host
         .querySelector("#motion-tools")
-        ?.replaceWith(createMotionTools(parsed, seek, images));
+        ?.replaceWith(createMotionTools(parsed, seek, images, apply));
       const url = URL.createObjectURL(
         new Blob([JSON.stringify(parsed, null, 2) + "\n"], {
           type: "application/json",
@@ -169,5 +169,5 @@ export function createStoryControls(
   };
   host.append(button, download, message, quality);
   showQuality(input);
-  host.append(createMotionTools(input, seek, images));
+  host.append(createMotionTools(input, seek, images, apply));
 }

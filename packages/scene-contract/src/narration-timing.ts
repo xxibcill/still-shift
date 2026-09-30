@@ -3,6 +3,8 @@ import { z } from "zod";
 export const NarrationSegmentSchema = z
   .object({
     text: z.string().trim().min(1).max(10000),
+    segmentIndex: z.number().int().nonnegative().optional(),
+    wordIndex: z.number().int().nonnegative().optional(),
     start: z.number().min(0).max(86400),
     end: z.number().min(0).max(86400),
   })

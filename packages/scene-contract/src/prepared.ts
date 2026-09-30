@@ -1,4 +1,9 @@
 import { z } from "zod";
+import {
+  FontAxesSchema,
+  typographyNodeFields,
+  type TextStyle,
+} from "./typography.ts";
 import { formatSize, OutputFormatSchema } from "./output-format.ts";
 import { TextContainerSchema, PoseRegistrationSchema } from "./story-acting.ts";
 import { PoseAnchorSchema } from "./character-actions.ts";
@@ -27,7 +32,11 @@ export const PreparedFontSchema = z
     id,
     path: z.string().min(1),
     sha256: z.string().regex(/^sha256:[a-f0-9]{64}$/),
-    weight: z.enum(["400", "500", "600", "700"]),
+    weight: z
+      .string()
+      .regex(/^(?:[1-8]\d{2}|900)$/, "Font weight must be 100–900"),
+    style: z.enum(["normal", "italic"]).optional(),
+    variable: FontAxesSchema.optional(),
   })
   .strict();
 const base = {
@@ -83,6 +92,7 @@ export const PreparedNodeSchema = z.discriminatedUnion("type", [
     .object({
       ...base,
       type: z.literal("text"),
+      ...typographyNodeFields,
       container: TextContainerSchema.optional(),
       text: z.string().min(1),
       textRole: z
@@ -99,7 +109,7 @@ export const PreparedNodeSchema = z.discriminatedUnion("type", [
         .optional(),
       revealMode: z.enum(["wipe", "words"]).optional(),
       states: z.array(z.string().min(1)).min(1).max(12).optional(),
-      fontSize: number.min(16).max(180),
+      fontSize: number.min(16).max(640),
       color,
       weight: z.enum(["normal", "bold"]).default("normal"),
       font: z.enum(["serif", "sans-serif"]).default("sans-serif"),
@@ -114,7 +124,11 @@ export const PreparedNodeSchema = z.discriminatedUnion("type", [
         .optional(),
       align: z.enum(["left", "center", "right"]).default("left"),
     })
-    .strict(),
+    .strict()
+    .refine(
+      (n) => n.fontSize <= 180 || !!n.fontAsset || !!n.style,
+      "Display sizes above 180 require a pinned font",
+    ),
   z
     .object({
       ...base,
@@ -254,12 +268,25 @@ export function validatePreparedFormat(
 }
 
 export function validatePreparedGraph(
-  scene: Pick<PreparedScene, "nodes" | "assets" | "fonts">,
+  scene: Pick<PreparedScene, "nodes" | "assets" | "fonts"> & {
+    typography?: "type-1" | undefined;
+    textStyles?: Record<string, TextStyle> | undefined;
+  },
   fail: (message: string) => void,
 ) {
   const nodes = new Map(scene.nodes.map((node) => [node.id, node]));
   const assets = new Map(scene.assets.map((item) => [item.id, item]));
   const fonts = new Map(scene.fonts?.map((item) => [item.id, item]));
+  if (
+    !scene.typography &&
+    scene.fonts?.some(
+      (font) =>
+        font.style !== undefined ||
+        font.variable ||
+        !["400", "500", "600", "700"].includes(font.weight),
+    )
+  )
+    fail("typography-opt-in: Extended font styles require typography type-1");
   if (
     fonts.size !== (scene.fonts?.length ?? 0) ||
     [...fonts.keys()].some((id) => assets.has(id))
@@ -271,7 +298,11 @@ export function validatePreparedGraph(
     if (
       node.type === "text" &&
       node.container &&
-      (!node.fontAsset || (!node.textLayout && !node.textBox))
+      (!(
+        node.fontAsset ??
+        (node.style ? scene.textStyles?.[node.style]?.fontAsset : undefined)
+      ) ||
+        (!node.textLayout && !node.textBox))
     )
       fail(
         `Text containers require a pinned font and measured text layout: ${node.id}`,
@@ -292,6 +323,15 @@ export function validatePreparedGraph(
       )
         fail(`Pose registration requires contain fit: ${node.id}`);
     }
+    if (
+      node.type === "text" &&
+      !("typography" in scene && scene.typography === "type-1") &&
+      (node.fontSize > 180 ||
+        Object.keys(typographyNodeFields).some(
+          (key) => node[key as keyof typeof node] !== undefined,
+        ))
+    )
+      fail(`typography-opt-in: ${node.id} requires typography type-1`);
     if (node.type === "text" && node.fontAsset && !fonts.has(node.fontAsset))
       fail(`Missing font asset ${node.fontAsset}`);
     const parents = new Set([node.id]);
