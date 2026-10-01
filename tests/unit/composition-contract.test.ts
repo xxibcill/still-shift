@@ -122,6 +122,106 @@ describe("composition-1 text style references", () => {
   );
 });
 
+describe("composition-1 display fonts", () => {
+  it.each([
+    { fontSize: 600, styleSize: undefined },
+    { fontSize: 36, styleSize: 600 },
+  ])(
+    "requires a pinned font for effective display size $fontSize/$styleSize",
+    ({ fontSize, styleSize }) => {
+      const doc = minimalComposition();
+      doc.textStyles = {
+        large: { ...(styleSize === undefined ? {} : { size: styleSize }) },
+      };
+      doc.layers = [
+        {
+          id: "title",
+          type: "text",
+          text: "Hi",
+          fontSize,
+          color: "#ffffff",
+          style: "large",
+        },
+      ];
+      expectDiagnostic(errors(doc), "comp-text-font");
+    },
+  );
+
+  it("requires a pinned font for a display-sized span", () => {
+    const doc = minimalComposition();
+    doc.textStyles = { large: { size: 600 } };
+    doc.layers = [
+      {
+        id: "title",
+        type: "text",
+        text: "Hi",
+        fontSize: 36,
+        color: "#ffffff",
+        spans: [{ start: 0, end: 2, style: "large" }],
+      },
+    ];
+    expectDiagnostic(errors(doc), "comp-text-font", "layers[0].spans[0].style");
+  });
+
+  it.each(["layer", "style", "span"])(
+    "accepts a pinned %s font at display size",
+    (placement) => {
+      const doc = minimalComposition();
+      doc.assets = [
+        {
+          id: "display",
+          type: "font",
+          path: "display.otf",
+          sha256: `sha256:${"0".repeat(64)}`,
+          weight: "600",
+        },
+      ];
+      doc.textStyles = {
+        large: {
+          size: 600,
+          ...(placement === "layer" ? {} : { fontAsset: "display" }),
+        },
+      };
+      doc.layers = [
+        {
+          id: "title",
+          type: "text",
+          text: "Hi",
+          fontSize: placement === "span" ? 36 : 600,
+          color: "#ffffff",
+          ...(placement === "layer" ? { fontAsset: "display" } : {}),
+          ...(placement === "span"
+            ? { spans: [{ start: 0, end: 2, style: "large" }] }
+            : { style: "large" }),
+        },
+      ];
+      expect(validateComposition(doc)).toMatchObject({
+        ok: true,
+        diagnostics: [],
+      });
+    },
+  );
+
+  it("allows an unpinned style at size 180", () => {
+    const doc = minimalComposition();
+    doc.textStyles = { ordinary: { size: 180 } };
+    doc.layers = [
+      {
+        id: "title",
+        type: "text",
+        text: "Hi",
+        fontSize: 180,
+        color: "#ffffff",
+        style: "ordinary",
+      },
+    ];
+    expect(validateComposition(doc)).toMatchObject({
+      ok: true,
+      diagnostics: [],
+    });
+  });
+});
+
 describe("composition-1 fixtures", () => {
   it.each(["first-slice", "every-field"])(
     "%s validates without diagnostics",

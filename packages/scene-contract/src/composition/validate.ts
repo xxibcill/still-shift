@@ -245,12 +245,6 @@ function checkLayer(
           [...path, "style"],
           `no text style "${layer.style}"`,
         );
-      if (layer.fontSize > 180 && !layer.fontAsset && !layer.style)
-        fail(
-          "comp-text-font",
-          [...path, "fontSize"],
-          "display sizes above 180 require a pinned font",
-        );
       stateRange("state", layer.states?.length ?? 1, "text states");
       checkText(comp, layer, path, fail, assets);
       break;
@@ -273,6 +267,23 @@ function checkLayer(
 
 type TextLayer = Extract<CompositionLayer, { type: "text" }>;
 const NUMERIC_STATE = /^-?\d+(?:,\d{3})*(?:\.\d+)?$/;
+
+function checkDisplayFont(
+  fail: IssueReporter,
+  assets: Map<string, CompositionAsset>,
+  style: TextStyle,
+  path: Path,
+) {
+  if (
+    (style.size ?? 0) > 180 &&
+    assets.get(style.fontAsset ?? "")?.type !== "font"
+  )
+    fail(
+      "comp-text-font",
+      path,
+      "display sizes above 180 require a pinned font",
+    );
+}
 
 /** Variable-font axes must stay inside the pinned font's fvar range. */
 function checkAxes(
@@ -309,7 +320,11 @@ function checkText(
   assets: Map<string, CompositionAsset>,
 ) {
   const style = declaredTextStyle(comp, layer.style);
-  const base = { fontAsset: layer.fontAsset, ...style };
+  const base = { fontAsset: layer.fontAsset, size: layer.fontSize, ...style };
+  checkDisplayFont(fail, assets, base, [
+    ...path,
+    style?.size === undefined ? "fontSize" : "style",
+  ]);
   checkAxes(fail, assets, base, [...path, "style"], `"${layer.id}"`);
 
   let locale = layer.locale ?? layer.textBox?.locale ?? "en";
@@ -354,14 +369,17 @@ function checkText(
         [...spanPath, "style"],
         `no text style "${span.style}"`,
       );
-    else if (span.style)
+    else if (span.style) {
+      const effectiveStyle = { ...base, ...spanStyle };
+      checkDisplayFont(fail, assets, effectiveStyle, [...spanPath, "style"]);
       checkAxes(
         fail,
         assets,
-        { ...base, ...spanStyle },
+        effectiveStyle,
         [...spanPath, "style"],
         `span "${span.id ?? i}"`,
       );
+    }
   });
   layer.decorations?.forEach((decoration, i) => {
     if (decoration.span && !spanIds.has(decoration.span))
