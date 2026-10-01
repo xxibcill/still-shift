@@ -585,6 +585,116 @@ try {
   );
   results.push("animated text color recolors cached stroke coverage");
 
+  for (const [label, from, to, middle] of [
+    ["transparent to opaque", "#ffffff00", "#ffffff", "#ffffff55"],
+    ["translucent to opaque", "#ffffff80", "#ffffff", "#ffffffaa"],
+    ["opaque to transparent", "#ffffff", "#ffffff00", "#ffffffaa"],
+  ] as const) {
+    const fadingText = structuredClone(strokeText);
+    fadingText.textAnimators = [];
+    const fadingLayer = fadingText.layers[0]!;
+    if (fadingLayer.type !== "text") throw new Error("Expected text");
+    fadingLayer.color = {
+      keys: [
+        { frame: 0, value: from },
+        { frame: 9, value: to, interpolation: "linear" },
+      ],
+    };
+    const fade = await render(
+      page,
+      fadingText,
+      [0, 3, 9, 0, 9],
+      assetUrls(fadingText),
+    );
+    for (const [index, color] of [from, middle, to].entries()) {
+      const control = structuredClone(fadingText);
+      const controlLayer = control.layers[0]!;
+      if (controlLayer.type !== "text") throw new Error("Expected text");
+      controlLayer.color = color;
+      const expected = await render(page, control, [0], assetUrls(control));
+      assert.ok(
+        meetsTier(
+          compareFrames(fade.frames[index]!, expected.frames[0]!, 300, 100),
+          "near",
+        ),
+        `${label}: sampled alpha matches static alpha`,
+      );
+    }
+    assert.deepEqual(fade.frames[3], fade.frames[0], `${label}: backward seek`);
+    assert.deepEqual(fade.frames[4], fade.frames[2], `${label}: repeat seek`);
+  }
+  results.push(
+    "animated text alpha matches static coverage in both directions",
+  );
+
+  const spanFade = structuredClone(strokeText);
+  spanFade.textAnimators = [];
+  const spanLayer = spanFade.layers[0]!;
+  if (spanLayer.type !== "text") throw new Error("Expected text");
+  spanLayer.color = {
+    keys: [
+      { frame: 0, value: "#ffffff00" },
+      { frame: 9, value: "#ffffff" },
+    ],
+  };
+  spanLayer.spans = [{ id: "accent", start: 0, end: 2, color: "#ff0000" }];
+  const spanFrames = await render(page, spanFade, [0, 9], assetUrls(spanFade));
+  const redInk = (frame: Uint8Array) =>
+    frame.reduce(
+      (sum, value, index) =>
+        sum + (index % 4 === 0 ? Math.max(0, value - frame[index + 1]!) : 0),
+      0,
+    );
+  assert.ok(
+    redInk(spanFrames.frames[0]!) > 0,
+    "span color survives transparent layer color",
+  );
+  assert.equal(
+    redInk(spanFrames.frames[0]!),
+    redInk(spanFrames.frames[1]!),
+    "span color remains independent of animated layer color",
+  );
+  const green = (frame: Uint8Array) =>
+    frame.filter((_, index) => index % 4 === 1);
+  const red = (frame: Uint8Array) =>
+    frame.filter((_, index) => index % 4 === 0);
+  assert.ok(
+    Math.max(...red(spanFrames.frames[0]!)) === 255,
+    "span retains its authored color",
+  );
+  assert.equal(Math.max(...green(spanFrames.frames[0]!)), 0);
+  assert.equal(Math.max(...green(spanFrames.frames[1]!)), 255);
+
+  const filledFade = structuredClone(spanFade);
+  const filledLayer = filledFade.layers[0]!;
+  if (filledLayer.type !== "text") throw new Error("Expected text");
+  delete filledLayer.spans;
+  filledFade.textAnimators = [
+    {
+      ...strokeText.textAnimators![0]!,
+      from: { fill: "#00ff00" },
+      to: { fill: "#00ff00" },
+    },
+  ];
+  const fillFrames = await render(
+    page,
+    filledFade,
+    [0, 9],
+    assetUrls(filledFade),
+  );
+  assert.deepEqual(
+    fillFrames.frames[0],
+    fillFrames.frames[1],
+    "animator fill remains independent of layer color",
+  );
+  assert.ok(
+    Math.max(...green(fillFrames.frames[0]!)) === 255,
+    "animator fill retains its authored color",
+  );
+  results.push(
+    "span colors and animator fills remain independent during layer fades",
+  );
+
   const motionCases: [
     string,
     string,

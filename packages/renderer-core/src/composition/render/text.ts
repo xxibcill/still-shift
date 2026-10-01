@@ -17,7 +17,6 @@ import {
   drawTypography,
   prepareTypography,
   type PreparedTypography,
-  type TextRaster,
 } from "../../typography-renderer.ts";
 import { resolvedTextStyle, type TextNode } from "../../typography-style.ts";
 import { drawStoryText } from "../../story-text.ts";
@@ -56,8 +55,8 @@ const scopes = (comp: Composition): [CompositionScope, string][] => [
 const textLayers = (scope: CompositionScope) =>
   scope.layers.filter((l): l is TextLayer => l.type === "text");
 
-/** The baked raster colour, in the same normalised form the drawer receives. */
-const staticColor = (layer: TextLayer) =>
+/** Initial node colour; drawing supplies the evaluated layer colour. */
+const initialColor = (layer: TextLayer) =>
   cssColor(
     rgba(
       typeof layer.color === "string"
@@ -81,7 +80,7 @@ function textNode(comp: Composition, layer: TextLayer): TextNode {
     text: layer.text,
     ...(layer.states ? { states: layer.states } : {}),
     fontSize: layer.fontSize,
-    color: staticColor(layer),
+    color: initialColor(layer),
     weight: layer.weight ?? "normal",
     font: layer.font ?? "sans-serif",
     align: layer.align ?? "left",
@@ -232,11 +231,6 @@ function compositionTextFrames(
   return collectCompositionTextFrames(comp, bounds);
 }
 
-function markBaseColor(raster: TextRaster, color: string) {
-  raster.baseColor = color;
-  for (const variant of raster.variants.values()) variant.baseColor = color;
-}
-
 function union(boxes: Bounds[]): Bounds {
   return {
     left: Math.min(...boxes.map((b) => b.left)),
@@ -283,15 +277,16 @@ export function prepareCompositionText(
       frames,
     );
     const prepared = typed.length
-      ? prepareTypography(scene, fonts, { strokeCoverage: true })
+      ? prepareTypography(scene, fonts, {
+          strokeCoverage: true,
+          colorCoverage: true,
+        })
       : undefined;
     for (const { layer, node } of nodes) {
       const key = prefix + layer.id;
       const texts = layer.states ?? [layer.text];
       if (prepared && pinned(comp, node)) {
         const rasters = prepared.nodes.get(node.id)!;
-        for (const raster of rasters.values())
-          markBaseColor(raster, node.color);
         const measured = new Map(
           [...rasters].map(([text, raster]) => [
             text,
