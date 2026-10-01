@@ -58,6 +58,11 @@ import type {
   SampleRenderOptions,
 } from "./baseline-page.ts";
 
+import {
+  assertBaselineInventory,
+  selectBaselineFixtures,
+} from "./baseline-check.ts";
+
 const BASELINE_VERSION = "composition-baseline-1";
 const root = resolve(import.meta.dirname, "../..");
 const baselineDirectory = join(root, "tests/visual/composition-baselines");
@@ -133,15 +138,7 @@ if (manifest.version !== "composition-fixtures-1")
   throw new Error("Unknown fixture manifest version");
 const only = option("--only");
 const families = option("--family");
-const selected = manifest.fixtures.filter(
-  (fixture) =>
-    (!only || only.includes(fixture.id)) &&
-    (!families || families.includes(fixture.family)),
-);
-if (only && selected.length !== only.length)
-  throw new Error(
-    `Unknown fixture ids: ${only.filter((id) => !selected.some((f) => f.id === id)).join(", ")}`,
-  );
+const selected = selectBaselineFixtures(manifest.fixtures, { only, families });
 
 async function expand(fixture: FixtureEntry): Promise<RenderItem[]> {
   const path = join(root, fixture.path);
@@ -388,6 +385,16 @@ if (mode === "list") {
   exit(0);
 }
 
+const stored = mode === "check" ? await readBaseline(baselinePath) : undefined;
+const renderItems: RenderItem[] = [];
+for (const fixture of selected) renderItems.push(...(await expand(fixture)));
+if (stored)
+  assertBaselineInventory({
+    storedItems: stored.items,
+    renderItems,
+    filters: { only, families },
+  });
+
 const frameDirectory = await mkdtemp(join(tmpdir(), "still-shift-baselines-"));
 const state = { assets: {} as Record<string, string> };
 let server: ViteDevServer | undefined;
@@ -417,8 +424,6 @@ try {
   if (hardware)
     console.log(`hardware preview: ${hardware.environment.webglRenderer}`);
 
-  const stored =
-    mode === "check" ? await readBaseline(baselinePath) : undefined;
   if (
     stored &&
     stored.renderEnvironment.rasterFingerprint !==
@@ -432,107 +437,99 @@ try {
   const timings: Record<string, unknown> = {};
   const hardwareReport: Record<string, unknown> = {};
   const started = performance.now();
-  for (const fixture of selected) {
-    for (const item of await expand(fixture)) {
-      const itemStart = performance.now();
-      const result = await renderItem(
-        pinned,
-        state,
-        item,
-        "pinned",
-        mode === "compare-hardware",
-      );
-      const baselineItem = toBaselineItem(item, result);
-      items[item.id] = baselineItem;
-      const totalMs = result.renderMs.map(
-        (render, frame) => render + result.readbackMs[frame]!,
-      );
-      const average = (values: number[]) =>
-        round(values.reduce((a, b) => a + b, 0) / values.length);
-      timings[item.id] = {
-        width: baselineItem.width,
-        height: baselineItem.height,
-        frames: baselineItem.frameCount,
-        frameAverageMs: average(totalMs),
-        frameP95Ms: round(percentile(totalMs, 0.95)),
-        renderAverageMs: average(result.renderMs),
-        readbackAverageMs: average(result.readbackMs),
-      };
-      let status = "";
-      if (stored) {
-        const problem = compareWithBaseline(
-          stored.items[item.id],
-          baselineItem,
-        );
-        if (problem) failed = true;
-        status = problem ? `FAIL ${problem}` : "ok";
-      }
-      if (hardware) {
-        state.assets = item.assetPaths;
-        await hardware.page.setViewportSize({
-          width: item.scene.canvas.width,
-          height: item.scene.canvas.height,
-        });
-        const sampleOptions: SampleRenderOptions = {
-          sampleFrames: sampleFrames(item.scene.timeline.frameCount),
-          profile: "hardware",
-          item: item.id,
-          assetBase: `/_baseline/assets/${++assetSequence}/`,
-        };
-        await hardware.page.evaluate(
-          ({ scene, options }) => window.runCompositionSamples!(scene, options),
-          { scene: item.scene, options: sampleOptions },
-        );
-        const comparisons = await Promise.all(
-          sampleFrames(item.scene.timeline.frameCount).map(async (frame) => {
-            const read = (profile: string) =>
-              readFile(
-                join(
-                  frameDirectory,
-                  profile,
-                  encodeURIComponent(item.id),
-                  `${frame}.rgba`,
-                ),
-              );
-            return compareFrames(
-              await read("pinned"),
-              await read("hardware"),
-              item.scene.canvas.width,
-              item.scene.canvas.height,
-            );
-          }),
-        );
-        await rm(join(frameDirectory, "pinned", encodeURIComponent(item.id)), {
-          recursive: true,
-        });
-        await rm(
-          join(frameDirectory, "hardware", encodeURIComponent(item.id)),
-          { recursive: true },
-        );
-        const observed = worstTier(comparisons.map(strictestTier));
-        const minPsnr = Math.min(...comparisons.map((c) => c.psnr));
-        hardwareReport[item.id] = {
-          observedTier: observed,
-          assignedTier: item.fixture.tier,
-          sampledFrames: comparisons.length,
-          maxChannelDelta: Math.max(
-            ...comparisons.map((c) => c.maxChannelDelta),
-          ),
-          // JSON cannot represent Infinity, the PSNR of identical frames.
-          minPsnr: Number.isFinite(minPsnr) ? round(minPsnr) : "identical",
-          minSsim:
-            Math.round(Math.min(...comparisons.map((c) => c.ssim)) * 1e5) / 1e5,
-        };
-        status = `hardware ${observed ?? "none"}`;
-      }
-      console.log(
-        `${item.id.padEnd(52)} ${String(baselineItem.frameCount).padStart(4)}f ${Math.round(
-          performance.now() - itemStart,
-        )
-          .toString()
-          .padStart(6)}ms ${status}`,
-      );
+  for (const item of renderItems) {
+    const itemStart = performance.now();
+    const result = await renderItem(
+      pinned,
+      state,
+      item,
+      "pinned",
+      mode === "compare-hardware",
+    );
+    const baselineItem = toBaselineItem(item, result);
+    items[item.id] = baselineItem;
+    const totalMs = result.renderMs.map(
+      (render, frame) => render + result.readbackMs[frame]!,
+    );
+    const average = (values: number[]) =>
+      round(values.reduce((a, b) => a + b, 0) / values.length);
+    timings[item.id] = {
+      width: baselineItem.width,
+      height: baselineItem.height,
+      frames: baselineItem.frameCount,
+      frameAverageMs: average(totalMs),
+      frameP95Ms: round(percentile(totalMs, 0.95)),
+      renderAverageMs: average(result.renderMs),
+      readbackAverageMs: average(result.readbackMs),
+    };
+    let status = "";
+    if (stored) {
+      const problem = compareWithBaseline(stored.items[item.id], baselineItem);
+      if (problem) failed = true;
+      status = problem ? `FAIL ${problem}` : "ok";
     }
+    if (hardware) {
+      state.assets = item.assetPaths;
+      await hardware.page.setViewportSize({
+        width: item.scene.canvas.width,
+        height: item.scene.canvas.height,
+      });
+      const sampleOptions: SampleRenderOptions = {
+        sampleFrames: sampleFrames(item.scene.timeline.frameCount),
+        profile: "hardware",
+        item: item.id,
+        assetBase: `/_baseline/assets/${++assetSequence}/`,
+      };
+      await hardware.page.evaluate(
+        ({ scene, options }) => window.runCompositionSamples!(scene, options),
+        { scene: item.scene, options: sampleOptions },
+      );
+      const comparisons = await Promise.all(
+        sampleFrames(item.scene.timeline.frameCount).map(async (frame) => {
+          const read = (profile: string) =>
+            readFile(
+              join(
+                frameDirectory,
+                profile,
+                encodeURIComponent(item.id),
+                `${frame}.rgba`,
+              ),
+            );
+          return compareFrames(
+            await read("pinned"),
+            await read("hardware"),
+            item.scene.canvas.width,
+            item.scene.canvas.height,
+          );
+        }),
+      );
+      await rm(join(frameDirectory, "pinned", encodeURIComponent(item.id)), {
+        recursive: true,
+      });
+      await rm(join(frameDirectory, "hardware", encodeURIComponent(item.id)), {
+        recursive: true,
+      });
+      const observed = worstTier(comparisons.map(strictestTier));
+      const minPsnr = Math.min(...comparisons.map((c) => c.psnr));
+      hardwareReport[item.id] = {
+        observedTier: observed,
+        assignedTier: item.fixture.tier,
+        sampledFrames: comparisons.length,
+        maxChannelDelta: Math.max(...comparisons.map((c) => c.maxChannelDelta)),
+        // JSON cannot represent Infinity, the PSNR of identical frames.
+        minPsnr: Number.isFinite(minPsnr) ? round(minPsnr) : "identical",
+        minSsim:
+          Math.round(Math.min(...comparisons.map((c) => c.ssim)) * 1e5) / 1e5,
+      };
+      status = `hardware ${observed ?? "none"}`;
+    }
+    console.log(
+      `${item.id.padEnd(52)} ${String(baselineItem.frameCount).padStart(4)}f ${Math.round(
+        performance.now() - itemStart,
+      )
+        .toString()
+        .padStart(6)}ms ${status}`,
+    );
   }
   const elapsedSeconds = round((performance.now() - started) / 1000);
   const itemCount = Object.keys(items).length;
