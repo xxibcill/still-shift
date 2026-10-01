@@ -1,6 +1,6 @@
 # Programmable composition engine — implementation plan
 
-- **Updated:** 2026-09-30
+- **Updated:** 2026-10-01
 - **Status:** CE0 complete (2026-10-01). Q1 and Q3 decided 2026-09-30; Q2 and Q4–Q8 open.
 - **Baseline:** `6772717` — `Merge pull request #22 from xxibcill/codex/still-shift-plan-completion`
 - **Tracker owner:** unassigned. Record the owner and branch per milestone in the [tracker](#milestone-tracker).
@@ -296,9 +296,31 @@ Fix these in CE1 and do not change them later without a decision-log entry.
 | Colour authoring  | `#RRGGBB` or `#RRGGBBAA` sRGB. Evaluated internally as floating-point RGBA.                                                                                 |
 | Compositing space | sRGB-encoded by default for parity with existing renders. Linear-light compositing is an opt-in composition setting introduced in CE6.                      |
 | Alpha             | Premultiplied in all render surfaces.                                                                                                                       |
-| Time              | Integer composition frames; layer-local time = `(compFrame − startFrame) × stretch` (with time remap overriding). In point inclusive, out point exclusive.  |
+| Time              | Integer composition frames; layer-local time follows the signed-rate mapping below. In point inclusive, out point exclusive; time remap overrides stretch.  |
 | Frame rates       | 24, 25, 30, 50 and 60 fps. A precomp with a different rate is sampled at the parent's time; a posterize-time effect or layer setting snaps to its own rate. |
 | Identifiers       | `^[a-zA-Z][\w-]*$`, unique within a composition. Precomps have their own namespace.                                                                         |
+
+### Layer time and reverse playback
+
+`startFrame` is the composition-frame anchor at which layer-local time is zero; it
+defaults to `0`. `stretch` defaults to `1` and is a signed playback-rate multiplier:
+`1` plays forwards at normal speed, `2` at twice the speed, and `-1` in reverse at
+normal speed. The mapping is `localFrame = (compFrame - startFrame) * stretch`.
+Zero and non-finite values are invalid; use a hold key in `timeRemap`
+to freeze a supported source. `timeRemap`, when present, replaces the mapped local
+time rather than multiplying it by stretch again.
+
+For example, with matching source and composition frame rates, a 30-frame layer
+with `inPoint: 0`, `outPoint: 30`, `startFrame: 29` and `stretch: -1` samples source
+frames 29 through 0. In/out visibility is always tested in composition time, so
+reversal does not swap the inclusive in point and exclusive out point.
+
+Keyed properties hold their first/last keyed value outside their key range, matching
+`sampleCurve`. For finite precomp, video and image-sequence sources, convert mapped
+local time to source frames (`sourceFrame = localFrame * sourceFps / comp.fps`), then clamp sampling to
+`[0, sourceFrameCount - 1]`; fractional sampling follows the enabled time controls.
+This frame-hold rule applies before and after the source range, for either stretch
+sign and for time remap. It does not change the layer's composition-time visibility.
 
 ## Milestone tracker
 
@@ -315,9 +337,9 @@ Fix these in CE1 and do not change them later without a decision-log entry.
 | CE5  | Shape layers                                    | B     | CE3                       |                        |                         | `[ ]`  |                                                                |
 | CE6  | WebGL2 backend and effect registry              | B     | CE3                       |                        |                         | `[ ]`  |                                                                |
 | CE7  | Motion blur and time controls                   | B     | CE3                       |                        |                         | `[ ]`  |                                                                |
-| CE8  | 2.5D layers and unified camera                  | B     | CE3                       |                        |                         | `[ ]`  |                                                                |
+| CE8  | 2.5D layers and unified camera                  | B     | CE3, CE6, CE9             |                        |                         | `[ ]`  |                                                                |
 | CE9  | Expressions and motion behaviours               | C     | CE2                       |                        |                         | `[ ]`  |                                                                |
-| CE10 | TypeScript builder API and CLI                  | C     | CE1, CE2                  |                        |                         | `[ ]`  |                                                                |
+| CE10 | TypeScript builder API and CLI                  | C     | CE3, CE4a, CE9, CE12      |                        |                         | `[ ]`  |                                                                |
 | CE11 | Lab composition inspector and graph editor      | C     | CE3, CE10                 |                        |                         | `[ ]`  |                                                                |
 | CE12 | Motion linting                                  | C     | CE2                       |                        |                         | `[ ]`  |                                                                |
 | CE13 | Video, image-sequence and audio layers          | D     | CE3, CE7                  |                        |                         | `[ ]`  |                                                                |
@@ -329,25 +351,36 @@ Fix these in CE1 and do not change them later without a decision-log entry.
 - **Phase A — Foundation.** CE0 → CE1 → CE2 → CE3 is strictly sequential. Nothing in
   Phases B–D should start before CE2 is merged, because every later milestone targets
   the evaluator's types.
-- **Phase B — Visual vocabulary.** After CE3, CE5, CE6, CE7 and CE8 can run in
-  parallel on separate branches. CE4a can run alongside them.
-- **Phase C — Authoring.** CE9, CE10 and CE12 need only CE2 and can start early. CE11
-  follows CE10.
+- **Phase B — Visual vocabulary.** After CE3, CE5, CE6 and CE7 can run in parallel
+  on separate branches. CE4a can run alongside them. CE8 follows CE6 (WebGL2 and
+  lens blur) and CE9 (camera-shake behaviours).
+- **Phase C — Authoring.** CE9 and CE12 need only CE2 and can start early. CE10
+  follows CE3, CE4a, CE9 and CE12 so rendering, adapter parity, expression validation,
+  baking and linting are available for its completion gates. CE11 follows CE10.
 - **Phase D — Media and output.** CE15 can start after CE3. CE13 and CE14 follow their
   dependencies.
 
 ```text
-CE0 → CE1 → CE2 → CE3 ─┬─ CE4a ────────────────┐
-                 │     ├─ CE5                  │
-                 │     ├─ CE6 ─┬─ CE4b         ├─ CE4d
-                 │     │       └─ CE14         │
-                 │     ├─ CE7 ── CE13          │
-                 │     ├─ CE8 ── CE4c ─────────┘
-                 │     └─ CE15
-                 ├─ CE9
-                 ├─ CE10 ── CE11
-                 └─ CE12
+CE0 → CE1 → CE2 → CE3
+             ├─ CE9
+             └─ CE12
+
+CE3 ─┬─ CE4a
+     ├─ CE5
+     ├─ CE6 ─┬─ CE4b
+     │       └─ CE14
+     ├─ CE7 ── CE13
+     └─ CE15
+
+CE6 + CE9 → CE8 → CE4c
+CE4a + CE4b + CE4c → CE4d
+CE3 + CE4a + CE9 + CE12 → CE10
+CE3 + CE10 → CE11
 ```
+
+Backend and camera milestones use native `composition-1` fixtures for their
+completion gates. Family-fixture parity is a CE4 adapter gate after its prerequisite
+milestones are complete; it cannot block the backend or camera that the adapter needs.
 
 ## First implementation slice
 
@@ -363,6 +396,8 @@ through the story adapter with recorded parity.
 - [ ] CE3 Canvas 2D backend covering those features, wired into export.
 - [ ] CE4a adapter for `benchmarks/fixtures/story-motion-continuous/access-constraint.json`
       with the parity result recorded.
+- [ ] CE9 expressions and baking, and CE12 linting, as prerequisites for the CE10 CLI.
+- [ ] CE10 builder and CLI, including `comp render`, after CE4a, CE9 and CE12.
 - [ ] Record commands, results and limitations here before marking the slice complete.
 
 ---
@@ -595,9 +630,9 @@ type LayerBase = {
     | "audio";
   inPoint: number;
   outPoint: number; // comp frames, [in, out)
-  startFrame?: number; // layer time 0 in comp frames
-  stretch?: number; // time stretch, > 0
-  timeRemap?: Animatable<number>; // precomp/video only
+  startFrame?: number; // layer time 0 in comp frames; default 0
+  stretch?: number; // finite, nonzero playback-rate multiplier; default 1; negative = reverse
+  timeRemap?: Animatable<number>; // precomp/video only; values in composition-frame units
   parent?: string;
   enabled?: boolean;
   solo?: boolean;
@@ -650,15 +685,36 @@ A single grammar addresses anything animatable, used by drivers, expressions,
 diagnostics, the builder and the Lab:
 
 ```text
-path     := [ precompId "/" ]* layerId "." segment ( "." segment )*
+path     := [ precompLayerId "/" ]* layerId "." segment ( "." segment )*
 segment  := name | name "[" index "]"
 examples: title.transform.position
           title.transform.position.x          (component access)
           bg.effects[glow].radius              (effect by instance id)
           bars.contents[bar1].trimEnd          (shape contents, CE5)
-          scene/hero.transform.opacity         (inside a precomp)
+          intro/hero.transform.opacity         (inside the intro precomp layer)
+          outro/hero.transform.opacity         (another instance of the same source)
           comp.camera.zoom
 ```
+
+Each slash segment identifies a **precomp layer instance** in the current
+composition, not a source composition definition. Resolve that layer's source and
+continue in its namespace. Multiple layers may reference the same definition; their
+paths remain distinct. A source definition id alone is not a traversal segment.
+
+`evaluateProperty(comp, path, time)` receives time in the calling composition's frame
+units. At each precomp hop, apply that instance's start/stretch/remap, convert to the
+source frame rate and apply the source-boundary rules before continuing. Sample the
+terminal property in that instance's resulting time context. Expression paths are
+relative to the composition instance containing the expression; dependency resolution
+and memoisation retain the full instance path and requested sample time, so repeated
+sources cannot share evaluated values across different time mappings.
+
+For example, `intro` and `outro` both reference a 30-frame, 30-fps precomp with `hero`
+opacity keyed linearly from `0` at frame 0 to `1` at frame 29. In a 30-fps parent,
+`intro` has `startFrame: 0, stretch: 1`, and `outro` has
+`startFrame: 29, stretch: -1`; both are visible on `[0, 30)`. At parent frame 10,
+`intro/hero.transform.opacity` is `10/29` and
+`outro/hero.transform.opacity` is `19/29`.
 
 ### Checklist
 
@@ -676,6 +732,8 @@ examples: title.transform.position
       `opacity`.
 - [ ] Implement the property-path parser and resolver with typed results
       (scalar/vec/colour/bool/enum) and use it for validation of every path reference.
+      Precomp traversal resolves layer instances; reject missing or non-precomp hops
+      even when a source definition with that id exists.
 - [ ] Generalise `MotionTargetSchema` and `DriverSchema` so targets and sources are
       property paths; keep the old node-and-property form valid as an alias.
 - [ ] Resolve the CE0 [parity notes](#parity-notes-for-adapter-work): an opacity
@@ -684,8 +742,9 @@ examples: title.transform.position
       image rasterisation option. Record each decision in the decision log.
 - [ ] Semantic validation: unique ids, parent cycles, matte layer exists and is
       directly above (AE rule) or explicitly referenced, precomp cycles, in < out,
-      key frames ascending and inside a sane window, asset hashes present, precomp
-      nesting depth ≤ 8, total layer count ≤ 2,000.
+      finite nonzero stretch (both signs valid), key frames ascending and inside a
+      sane window, asset hashes present, precomp nesting depth ≤ 8, total layer count
+      ≤ 2,000.
 - [ ] Diagnostic codes prefixed `comp-` with JSON paths; document every code in
       `docs/composition-reference.md` (created in this milestone and extended by each
       later milestone).
@@ -696,7 +755,8 @@ examples: title.transform.position
 invalid variant in the test suite fails with the expected code and path.
 
 **Verification:** Unit tests for schema, path grammar (valid, invalid, ambiguous,
-precomp-scoped), cycles and limits. Round trip: parse → serialise → parse is identical.
+precomp-scoped, repeated-source instances, invalid instance hops), cycles and limits.
+Round trip: parse → serialise → parse is identical.
 
 **Completion record:** _to be filled in._
 
@@ -729,7 +789,8 @@ at any frame, in Node or the browser, with no rendering.
       parameterisation (reuse `SpatialPathSchema` semantics).
 - [ ] Parenting with AE semantics: position, rotation, scale and skew inherit; opacity
       does not.
-- [ ] Time stretch, negative stretch (reverse) and time remap.
+- [ ] Signed nonzero time stretch (negative = reverse) and time remap, following
+      [layer-time anchors and source-boundary rules](#layer-time-and-reverse-playback).
 - [ ] Screen-space bounding boxes for culling and diagnostics (images/solids exact;
       text from measured layout; shapes after CE5).
 - [ ] Memoise per frame; cache compiled curves by object identity (as `story-camera.ts`
@@ -741,8 +802,12 @@ at any frame, in Node or the browser, with no rendering.
 Parenting, stretch and remap match hand-computed expectations.
 
 **Verification:** Unit tests for every transform component, parent chains up to depth
-16, reversed time, remapped precomps, and a property-based test (random seeks vs forward
-play) using a fixed seed.
+16, positive/negative stretch, zero/non-finite stretch rejection, reversed first/last
+source frames, exclusive out points, source-boundary holds, and remap overriding
+stretch. Test remapped precomps with different frame rates, plus a property-based
+test (random seeks vs forward play) using a fixed seed. Verify the repeated-instance
+property-path example above, nested instance paths and independent memoisation with
+different remaps and source frame rates.
 
 **Completion record:** _to be filled in._
 
@@ -838,6 +903,7 @@ General rules for all adapters:
       text fits, component state/travel/pin/values/visibility/masks.
 - [ ] Commerce effects become CE6 registry effects; parity requires CE6.
 - [ ] Parity for all commerce fixtures and all 63 reusable-component combinations.
+      Run these through both backends against their CE0 tiers after CE6 is complete.
 
 ### CE4c — Cinematic
 
@@ -846,6 +912,8 @@ General rules for all adapters:
 - [ ] Keep coverage, source-resolution and framing validations, now evaluated on the
       composition camera.
 - [ ] Parity for all cinematic fixtures, landscape and vertical.
+      Verify camera-path reproduction against CE0 on WebGL2 after CE8 is complete;
+      compare Canvas 2D only for the affine camera moves it supports.
 
 ### CE4d — Legacy illustrated and removal
 
@@ -951,14 +1019,17 @@ type EffectDefinition<P> = {
       noise computed in shaders from integer hashes rather than `sin`-based tricks.
 - [ ] Record SwiftShader render cost per effect at 1920×1080 and representative
       parameters, so heavy effects have visible budgets.
-- [ ] Backend parity suite: every fixture renders on both backends and meets its tier.
-- [ ] Preview parity suite: on a machine with a hardware GPU, Lab preview frames match
-      export within each fixture's tier.
+- [ ] Backend parity suite: native `composition-1` fixtures covering the implemented
+      effects and layer features supported by both backends meet their recorded tiers.
+      Family-fixture comparisons belong to CE4b/CE4c after their adapters are available.
+- [ ] Preview parity suite: on a machine with a hardware GPU, native-composition
+      preview frames match export within each fixture's tier.
 
-**Acceptance:** Every effect is usable on every layer type, including adjustment
-layers and precomps. The commerce effect demos meet their tiers through the registry.
-The WebGL2 backend renders the CE0 fixture set at least 2× faster than Canvas 2D at
-1920×1080 (record numbers).
+**Acceptance:** Every effect is usable on every implemented drawable layer type,
+including adjustment layers and precomps, demonstrated by native-composition
+fixtures. The WebGL2 backend renders that shared fixture set at least 2× faster than
+Canvas 2D at 1920×1080 (record numbers). Commerce demo parity is verified in CE4b;
+CE6 completion does not require any family adapter.
 
 **Verification:** Per-effect pixel tests at several parameter values, bounds expansion
 tests, backend parity suite, repeated-export determinism test.
@@ -1015,9 +1086,11 @@ and cinematic cameras.
 - [ ] Optional lights (point, spot, ambient) are **not** in this milestone; record them
       as a follow-up if needed.
 
-**Acceptance:** Cinematic fixtures (CE4c) and a story fixture reproduce their camera
-paths through the unified camera. A test scene demonstrates correct parallax from z
-depth alone.
+**Acceptance:** Native-composition test scenes demonstrate correct perspective and
+parallax from z depth, depth sorting, depth of field, camera shake and affine 2D
+story-style camera paths. Test true perspective on WebGL2 and affine moves on both
+backends. Cinematic family camera-path parity is verified in CE4c against CE0;
+CE8 completion does not require CE4c.
 
 **Verification:** Projection unit tests against hand-computed points, depth-sort tests,
 DOF blur amount vs focus distance, coverage-check regression tests.
@@ -1112,7 +1185,13 @@ built-ins cannot express, add a built-in; do not add an escape hatch to arbitrar
       `loopIn`/`loopOut` with modes `cycle`, `pingpong`, `offset` and `continue`,
       `smooth(width, samples)`, `lookAt`, `length`, `normalize`, `step`, `if`.
 - [ ] Dependency graph across properties with cycle detection (`comp-expression-cycle`).
-      `valueAtTime` references to earlier times are allowed; same-time cycles are errors.
+      Include every `ref`, `valueAtTime` and `velocityAtTime` path alongside driver
+      and constraint dependencies. Reject every dependency cycle, including self
+      references and cycles whose reads request earlier times; changing time does
+      not remove a dependency edge. Earlier-time reads are allowed only across an
+      acyclic graph. `value` reads the property's keyed value without re-entering
+      its expression. Recursive feedback needs a separate finite-history design
+      before it can be supported.
 - [ ] Re-express signals, drivers and periodic motion as expression sugar internally;
       their schemas remain valid.
 - [ ] Behaviours (compile to expressions/drivers, each with parameters and tests):
@@ -1133,9 +1212,14 @@ overlap, a bounce and squash is expressed without per-layer keys and matches its
 baked version exactly.
 
 **Verification:** Parser tests (valid, invalid, limits, column positions), print/parse
-round trip, evaluator unit tests per built-in, type errors, cycle detection, seek
-determinism, bake round trip. A fuzz test with a fixed seed confirms that arbitrary
-input either parses to a valid AST or returns a diagnostic, never throws.
+round trip, evaluator unit tests per built-in, type errors, cycle detection (same-time,
+self-delayed and mutually delayed references, plus mixed expression/driver/constraint
+cycles), and an allowed earlier-time read across an acyclic graph. Verify cycle
+rejection before rendering at frame 0 and on random seeks, then seek determinism and
+bake round trip. Cross-precomp reads must distinguish repeated source instances with
+different start frames, reverse stretch, remap and source frame rates, including random
+seek order and nested instance paths. A fuzz test with a fixed seed confirms that
+arbitrary input either parses to a valid AST or returns a diagnostic, never throws.
 
 **Completion record:** _to be filled in._
 
@@ -1145,6 +1229,11 @@ input either parses to a valid AST or returns a diagnostic, never throws.
 
 **Outcome:** A coder or an agent writes motion as code, with types, autocompletion and
 fast feedback, and the result is ordinary `composition-1` JSON.
+
+**Prerequisites:** CE3 provides rendering and preview, CE4a provides the story-adapter
+output used for acceptance, CE9 provides expression parsing and baking, and CE12
+provides lint diagnostics. Core builder work may be prototyped earlier, but CE10
+cannot start or complete as a tracked milestone until these dependencies are complete.
 
 ### API sketch
 
@@ -1434,6 +1523,11 @@ A milestone is complete when **all** of the following hold:
 | 2026-09-30 | Video frames are pre-decoded with FFmpeg for export                                                                         | Browser media seeking is not frame-accurate or deterministic enough for export                                                                                      |                |
 | 2026-09-30 | Q1: hybrid GPU policy — export, caches and tests pinned to SwiftShader; Lab preview may use a hardware GPU within tolerance | Exact reproducible output where caches, resume and chunking depend on it; fast interactive preview. Formalises what headless export already does by default         |                |
 | 2026-09-30 | Q3: expressions are written in a small text syntax and parsed into a validated AST; no arbitrary JavaScript at render time  | AE-like brevity for authors and agents, with safety, known dependencies and precise diagnostics. Full JavaScript remains available at authoring time in the builder |                |
+| 2026-10-01 | CE9 rejects every property dependency cycle, including earlier-time feedback                                                | Delayed self/mutual references have no finite-history base case; acyclic temporal reads preserve pure seeking and terminate                                         |                |
+| 2026-10-01 | CE6/CE8 complete against native compositions; CE4 owns family parity; CE8 depends on CE6 and CE9                            | Removes circular backend/adapter acceptance gates and makes camera prerequisites explicit                                                                           |                |
+| 2026-10-01 | Stretch is a signed nonzero rate; startFrame anchors local time zero; finite visual sources hold boundary frames            | Makes CE1 accept CE2 reverse playback and defines deterministic source sampling without changing composition-time visibility                                        |                |
+| 2026-10-01 | CE10 depends on CE3, CE4a, CE9 and CE12                                                                                     | Its CLI, expression helpers and adapter-parity acceptance require rendering, expressions, baking, linting and the story adapter                                     |                |
+| 2026-10-01 | Property paths traverse precomp layer instances and carry instance-local time at each hop                                   | Repeated sources with different start/stretch/remap must remain separately addressable and independently evaluated                                                  |                |
 
 ## Open questions for the owner
 
