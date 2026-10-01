@@ -152,7 +152,8 @@ const frameTransportArguments = (
   }
 };
 
-const ffmpegArguments = (
+/** Encoder command line; exported so verification can re-encode reference frames. */
+export const ffmpegArguments = (
   scene: ExportableScene,
   temporaryPath: string,
   encoder: "libx264" | "h264_videotoolbox",

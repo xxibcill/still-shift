@@ -469,7 +469,12 @@ class Evaluation {
           path: this.bindings(ctx, state.id) + ".bounds",
           frame: ctx.time,
         });
-      if (state.layer.type === "precomp" && state.visible)
+      // Track mattes ignore `enabled` and solo, so matte precomps need content too.
+      if (
+        state.layer.type === "precomp" &&
+        (state.visible ||
+          ctx.scope.layers.some((l) => l.trackMatte?.layer === state.id))
+      )
         state.precomp = this.tree(this.child(ctx, state.layer));
     }
     return {
