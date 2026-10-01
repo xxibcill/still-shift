@@ -1,7 +1,7 @@
 # Programmable composition engine — implementation plan
 
 - **Updated:** 2026-10-01
-- **Status:** CE0 and CE1 complete (2026-10-01); CE2 is next. Q1 and Q3 decided
+- **Status:** CE0 and CE1 complete (2026-10-01); CE2 in progress. Q1 and Q3 decided
   2026-09-30; Q2, Q4 and Q8 decided 2026-10-01; Q5–Q7 open.
 - **Baseline:** `6772717` — `Merge pull request #22 from xxibcill/codex/still-shift-plan-completion`
 - **Tracker owner:** unassigned. Record the owner and branch per milestone in the [tracker](#milestone-tracker).
@@ -328,7 +328,7 @@ change them without a decision-log entry.
 | ---- | ----------------------------------------------- | ----- | ------------------------- | ---------------------- | ----------------------- | ------ | -------------------------------------------------------------- |
 | CE0  | Baseline, parity harness and feature matrix     | A     | —                         | xxibcill (Claude Code) | `codex/composition-ce0` | `[x]`  | [CE0 record](#ce0--baseline-parity-harness-and-feature-matrix) |
 | CE1  | `composition-1` contract and property paths     | A     | CE0                       | xxibcill (Claude Code) | `codex/composition-ce1` | `[x]`  | [CE1 record](#ce1--composition-1-contract-and-property-paths)  |
-| CE2  | Pure composition evaluator                      | A     | CE1                       |                        |                         | `[ ]`  |                                                                |
+| CE2  | Pure composition evaluator                      | A     | CE1                       | Codex                  | `codex/composition-ce2`  | `[~]`  | Implementation started from `codex/composition-ce1` (`9186720`)  |
 | CE3  | Render graph and Canvas 2D reference backend    | A     | CE2                       |                        |                         | `[ ]`  |                                                                |
 | CE4a | Story adapter with visual parity                | A     | CE3                       |                        |                         | `[ ]`  |                                                                |
 | CE4b | Commerce and reusable-component adapter         | A     | CE3, CE6 (effects parity) |                        |                         | `[ ]`  |                                                                |
