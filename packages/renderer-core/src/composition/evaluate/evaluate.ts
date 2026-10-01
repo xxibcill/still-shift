@@ -49,7 +49,7 @@ import type {
   PropertyValue,
 } from "./types.ts";
 
-export const COMPOSITION_EVALUATOR_VERSION = "composition-evaluator-3";
+export const COMPOSITION_EVALUATOR_VERSION = "composition-evaluator-4";
 const order = ["action", "response", "current", "carrier"] as const;
 type Context = {
   scope: CompositionScope;
@@ -184,10 +184,8 @@ function baseState(
   if (layer.type === "image" || layer.type === "text")
     state.state = discrete(layer.state, time);
   if (layer.type === "image") {
-    if (layer.stateFrom !== undefined)
-      state.stateFrom = discrete(layer.stateFrom, time);
-    if (layer.stateMix !== undefined)
-      state.stateMix = unit(scalar(layer.stateMix, time, fps));
+    state.stateFrom = discrete(layer.stateFrom, time, state.state!);
+    state.stateMix = unit(scalar(layer.stateMix, time, fps, 1));
   }
   if (layer.type === "text") {
     state.text = layer.states?.[state.state!] ?? layer.text;
