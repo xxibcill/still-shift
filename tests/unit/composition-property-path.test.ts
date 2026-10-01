@@ -8,6 +8,7 @@ import {
   isPropertyPathError,
   parsePropertyPath,
   resolvePropertyPath,
+  validateComposition,
   type Composition,
 } from "@still-shift/scene-contract";
 
@@ -109,6 +110,15 @@ describe("property path grammar", () => {
 });
 
 describe("property path resolution", () => {
+  const inheritedNames = [
+    "constructor",
+    "toString",
+    "valueOf",
+    "hasOwnProperty",
+    "isPrototypeOf",
+    "propertyIsEnumerable",
+    "toLocaleString",
+  ];
   const ok = (text: string) => {
     const resolved = resolvePropertyPath(comp, text);
     if ("code" in resolved)
@@ -213,6 +223,49 @@ describe("property path resolution", () => {
       code: "comp-path-property",
     });
   });
+
+  it.each(inheritedNames)("rejects inherited property %s", (name) => {
+    expect(resolvePropertyPath(comp, `house.${name}`)).toEqual({
+      code: "comp-path-property",
+      message: `"house.${name}" does not name a property`,
+    });
+  });
+
+  it.each(inheritedNames)(
+    "reports inherited property %s at each driver reference",
+    (name) => {
+      const invalidPath = `house.${name}`;
+      const cases = [
+        {
+          driver: { target: invalidPath, source: "needle.opacity" },
+          path: "drivers[0].target",
+        },
+        {
+          driver: { target: "needle.opacity", source: invalidPath },
+          path: "drivers[0].source",
+        },
+        {
+          driver: { target: "needle.opacity", sum: [invalidPath] },
+          path: "drivers[0].sum[0]",
+        },
+      ];
+      for (const { driver, path } of cases) {
+        const doc = structuredClone(comp);
+        doc.drivers = [driver];
+        expect(validateComposition(doc)).toMatchObject({
+          ok: false,
+          diagnostics: [
+            {
+              code: "comp-path-property",
+              severity: "error",
+              path,
+              message: `"${invalidPath}" does not name a property`,
+            },
+          ],
+        });
+      }
+    },
+  );
 
   it("does not let the reserved root shadow a layer", () => {
     // A layer named `comp` is rejected by validation, so `comp.` is never ambiguous.

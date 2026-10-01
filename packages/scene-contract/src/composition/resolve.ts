@@ -187,9 +187,11 @@ export function resolvePropertyPath(comp: Composition, text: string): Result {
   let segments = parsed.segments;
   if (segments.length === 1 && segments[0]!.index === undefined) {
     const name = segments[0]!.name;
-    if (LEGACY_UNAVAILABLE_PROPERTIES[name])
-      return unavailable(text, LEGACY_UNAVAILABLE_PROPERTIES[name]);
-    const alias = LEGACY_PROPERTY_ALIASES[name];
+    if (Object.hasOwn(LEGACY_UNAVAILABLE_PROPERTIES, name))
+      return unavailable(text, LEGACY_UNAVAILABLE_PROPERTIES[name]!);
+    const alias = Object.hasOwn(LEGACY_PROPERTY_ALIASES, name)
+      ? LEGACY_PROPERTY_ALIASES[name]
+      : undefined;
     if (alias) segments = alias.split(".").map((name) => ({ name }));
   }
   const resolved = resolveSegments(layer, segments, text);

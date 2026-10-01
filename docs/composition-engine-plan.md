@@ -772,6 +772,11 @@ precomp-scoped), cycles and limits. Round trip: parse → serialise → parse is
   metadata, the depth boundary and shared objects. The metadata and contract unit
   groups passed (161 tests), along with schema freshness, TypeScript and lint on
   Node 22.23.1.
+- **Property-path validation follow-up:** legacy alias tables now match only their
+  own entries. Seven inherited JavaScript property names return `comp-path-property`
+  through direct resolution and through driver targets, sources and sum terms.
+  The path, time-dependency and contract unit groups passed (229 tests), along with
+  TypeScript and lint on Node 22.23.1.
 
 ---
 
