@@ -1,0 +1,116 @@
+import type {
+  Composition,
+  CompositionLayer,
+  CompositionScope,
+} from "@still-shift/scene-contract";
+import {
+  imagePlacement,
+  transformPoint,
+  type Matrix,
+  type Point,
+} from "../../node-transform.ts";
+import type {
+  Bounds,
+  EvaluatedLayer,
+  EvaluatedTransform,
+  EvaluationOptions,
+} from "./types.ts";
+
+export const identity = (): Matrix => [1, 0, 0, 1, 0, 0];
+
+export function transformMatrix(t: EvaluatedTransform): Matrix {
+  const angle = (t.rotation * Math.PI) / 180,
+    cos = Math.cos(angle),
+    sin = Math.sin(angle);
+  const kx = Math.tan((t.skewX * Math.PI) / 180),
+    ky = Math.tan((t.skewY * Math.PI) / 180);
+  const a = (cos - sin * ky) * t.scale[0],
+    b = (sin + cos * ky) * t.scale[0];
+  const c = (cos * kx - sin) * t.scale[1],
+    d = (sin * kx + cos) * t.scale[1];
+  return [
+    a,
+    b,
+    c,
+    d,
+    t.position[0] - a * t.anchor[0] - c * t.anchor[1],
+    t.position[1] - b * t.anchor[0] - d * t.anchor[1],
+  ];
+}
+
+export function layerSize(
+  comp: Composition,
+  scope: CompositionScope,
+  layer: CompositionLayer,
+): Point {
+  if ("size" in layer && layer.size) return [...layer.size];
+  if (layer.type === "precomp") {
+    const precomp = comp.precomps!.find((p) => p.id === layer.comp)!;
+    return [precomp.width, precomp.height];
+  }
+  if (layer.type === "adjustment") return [scope.width, scope.height];
+  return [0, 0];
+}
+
+export function projectBounds(bounds: Bounds, matrix: Matrix): Bounds {
+  const points = [
+    [bounds.left, bounds.top],
+    [bounds.right, bounds.top],
+    [bounds.right, bounds.bottom],
+    [bounds.left, bounds.bottom],
+  ].map((p) => transformPoint(matrix, p as Point));
+  return {
+    left: Math.min(...points.map((p) => p[0])),
+    top: Math.min(...points.map((p) => p[1])),
+    right: Math.max(...points.map((p) => p[0])),
+    bottom: Math.max(...points.map((p) => p[1])),
+  };
+}
+
+export function localBounds(
+  comp: Composition,
+  scope: CompositionScope,
+  state: EvaluatedLayer,
+  options: EvaluationOptions,
+): Bounds | null {
+  const layer = state.layer;
+  if (layer.type === "null") return null;
+  if (layer.type === "text") {
+    const key = scope === comp ? layer.id : `${scope.id}/${layer.id}`;
+    const measured = Object.hasOwn(options.textBounds ?? {}, key)
+      ? options.textBounds![key]?.[state.state ?? 0]
+      : undefined;
+    return measured ? { ...measured } : null;
+  }
+  const [width, height] = layerSize(comp, scope, layer);
+  if (layer.type !== "image" || (layer.fit ?? "contain") !== "contain")
+    return { left: 0, top: 0, right: width, bottom: height };
+  const sourceBounds = (index: number) => {
+    const source = layer.sources[index]!;
+    const asset = comp.assets.find((a) => a.id === source.asset)!;
+    if (asset.type !== "image")
+      return { left: 0, top: 0, right: width, bottom: height };
+    const placement = imagePlacement(
+      { width, height, fit: "contain" },
+      source.crop ?? [0, 0, asset.width, asset.height],
+      source.registration?.anchor,
+    );
+    return {
+      left: Math.max(0, placement.x),
+      top: Math.max(0, placement.y),
+      right: Math.min(width, placement.x + placement.width),
+      bottom: Math.min(height, placement.y + placement.height),
+    };
+  };
+  const current = sourceBounds(state.state ?? 0);
+  if (state.stateFrom === undefined || (state.stateMix ?? 1) >= 1)
+    return current;
+  const prior = sourceBounds(state.stateFrom);
+  if ((state.stateMix ?? 1) <= 0) return prior;
+  return {
+    left: Math.min(current.left, prior.left),
+    top: Math.min(current.top, prior.top),
+    right: Math.max(current.right, prior.right),
+    bottom: Math.max(current.bottom, prior.bottom),
+  };
+}

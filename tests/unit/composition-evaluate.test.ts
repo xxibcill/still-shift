@@ -1,0 +1,1005 @@
+import { readFileSync } from "node:fs";
+import { describe, expect, it } from "vitest";
+import {
+  CompositionSchema,
+  type Composition,
+  type CompositionLayer,
+} from "@still-shift/scene-contract";
+import {
+  evaluateComp,
+  evaluateProperty,
+} from "../../packages/renderer-core/src/composition/evaluate/index.ts";
+import { transformPoint } from "../../packages/renderer-core/src/node-transform.ts";
+import { passageDiagnostics } from "../../packages/renderer-core/src/passage-diagnostics.ts";
+import { sampleStoryCamera } from "../../packages/renderer-core/src/story-camera.ts";
+import type { StoryScene } from "../../packages/scene-contract/src/story.ts";
+
+const linear = (a: number, b: number, end = 20) => ({
+  keys: [
+    { frame: 0, value: a },
+    { frame: end, value: b, interpolation: "linear" as const },
+  ],
+});
+const comp = (layers: CompositionLayer[] = []): Composition => ({
+  schemaVersion: "composition-1",
+  id: "main",
+  width: 200,
+  height: 100,
+  fps: 30,
+  frameCount: 60,
+  assets: [],
+  layers,
+});
+const solid = (id = "box"): Extract<CompositionLayer, { type: "solid" }> => ({
+  id,
+  type: "solid",
+  size: [20, 10],
+  color: "#ffffff",
+  transform: { position: [50, 30] },
+});
+const state = (doc: Composition, time = 0, id = "box") =>
+  evaluateComp(doc, time).layers.find((l) => l.id === id)!;
+const assertMatrix = (actual: number[], expected: number[]) =>
+  actual.forEach((v, i) => expect(v).toBeCloseTo(expected[i]!, 9));
+const diagnostic = (run: () => unknown) => {
+  try {
+    run();
+    throw new Error("Expected evaluation failure");
+  } catch (error) {
+    return passageDiagnostics(error);
+  }
+};
+
+describe("pure composition property sampling", () => {
+  it("evaluates the CE1 first slice and all-field fixture without a DOM", () => {
+    for (const name of ["first-slice", "every-field"]) {
+      const doc = JSON.parse(
+        readFileSync(
+          new URL(
+            `../../benchmarks/fixtures/composition/ce1/${name}.json`,
+            import.meta.url,
+          ),
+          "utf8",
+        ),
+      ) as Composition;
+      const result = evaluateComp(doc, 10.5);
+      expect(result.layers).toHaveLength(doc.layers.length);
+      expect(
+        result.layers.every((l) => l.worldMatrix.every(Number.isFinite)),
+      ).toBe(true);
+    }
+  });
+  it("samples separated dimensions and canonical/legacy property paths at fractional frames", () => {
+    const doc = comp([
+      {
+        ...solid(),
+        transform: {
+          position: { x: linear(10, 50), y: 20 },
+          rotation: linear(0, 90),
+        },
+      },
+    ]);
+    expect(evaluateProperty(doc, "box.x", 5.5)).toBe(21);
+    expect(evaluateProperty(doc, "box.transform.position", 5.5)).toEqual([
+      21, 20,
+    ]);
+    expect(evaluateProperty(doc, "box.transform.rotation", 5.5)).toBeCloseTo(
+      24.75,
+    );
+  });
+  it("preserves hold and discrete boundaries, including before the first key", () => {
+    const doc = comp([
+      {
+        ...solid(),
+        transform: {
+          rotation: {
+            keys: [
+              { frame: 5, value: 10 },
+              { frame: 20, value: 90, interpolation: "hold" },
+            ],
+          },
+        },
+      },
+    ]);
+    expect(evaluateProperty(doc, "box.rotation", -10)).toBe(10);
+    expect(evaluateProperty(doc, "box.rotation", 19.9)).toBe(10);
+    expect(evaluateProperty(doc, "box.rotation", 20)).toBe(90);
+    const text = comp([
+      {
+        id: "title",
+        type: "text",
+        text: "one",
+        states: ["one", "two"],
+        fontSize: 24,
+        color: "#ffffff",
+        state: {
+          keys: [
+            { frame: 0, value: 0 },
+            { frame: 10, value: 1 },
+          ],
+        },
+      },
+    ]);
+    expect(evaluateProperty(text, "title.state", 9.9)).toBe(0);
+    expect(evaluateComp(text, 10).layers[0]!.text).toBe("two");
+  });
+  it("interpolates sRGB RGBA channels, including alpha, in floating point", () => {
+    const doc = comp([
+      {
+        ...solid(),
+        type: "solid",
+        size: [20, 10],
+        color: {
+          keys: [
+            { frame: 0, value: "#ff000000" },
+            { frame: 20, value: "#0000ffff", interpolation: "linear" },
+          ],
+        },
+      },
+    ]);
+    expect(evaluateProperty(doc, "box.color", 5)).toEqual([
+      0.75, 0, 0.25, 0.25,
+    ]);
+    expect(evaluateProperty(doc, "box.color.a", 5)).toBe(0.25);
+  });
+  it("uses temporal scalar speed in property units per frame", () => {
+    const doc = comp([
+      {
+        ...solid(),
+        transform: {
+          rotation: {
+            keys: [
+              { frame: 0, value: 0, out: { ease: 1 / 3, speed: 2 } },
+              { frame: 20, value: 40, in: { ease: 1 / 3, speed: 2 } },
+            ],
+          },
+        },
+      },
+    ]);
+    expect(evaluateProperty(doc, "box.rotation", 5)).toBeCloseTo(10, 6);
+  });
+  it("uses arc length for spatial position instead of cubic parameter time", () => {
+    const doc = comp([
+      {
+        ...solid(),
+        transform: {
+          position: {
+            keys: [
+              { frame: 0, value: [0, 0], spatialOut: [0, 0] },
+              {
+                frame: 20,
+                value: [100, 0],
+                spatialIn: [-100, 0],
+                interpolation: "linear",
+              },
+            ],
+          },
+        },
+      },
+    ]);
+    expect(evaluateProperty(doc, "box.transform.position", 5)).toEqual([25, 0]);
+    expect(evaluateProperty(doc, "box.transform.position", 20)).toEqual([
+      100, 0,
+    ]);
+  });
+  it("samples curved spatial positions and clamps holds before the next key", () => {
+    const doc = comp([
+      {
+        ...solid(),
+        transform: {
+          position: {
+            keys: [
+              { frame: 0, value: [0, 0], spatialOut: [0, 100] },
+              {
+                frame: 20,
+                value: [100, 0],
+                spatialIn: [0, 100],
+                interpolation: "linear",
+              },
+            ],
+          },
+        },
+      },
+    ]);
+    const point = evaluateProperty(
+      doc,
+      "box.transform.position",
+      10,
+    ) as number[];
+    expect(point[0]).toBeCloseTo(50, 6);
+    expect(point[1]).toBeCloseTo(75, 6);
+    const held = structuredClone(doc);
+    held.layers[0]!.transform!.position = {
+      keys: [
+        { frame: 0, value: [0, 0], spatialOut: [0, 100] },
+        { frame: 20, value: [100, 0], interpolation: "hold" },
+      ],
+    };
+    expect(evaluateProperty(held, "box.transform.position", 10)).toEqual([
+      0, 0,
+    ]);
+  });
+  it("interpolates mask vertices and missing tangents as zero", () => {
+    const doc = comp([
+      {
+        ...solid(),
+        masks: [
+          {
+            id: "mask",
+            mode: "add",
+            opacity: linear(0, 1),
+            path: {
+              keys: [
+                {
+                  frame: 0,
+                  value: {
+                    closed: true,
+                    vertices: [
+                      [0, 0],
+                      [10, 0],
+                      [0, 10],
+                    ],
+                  },
+                },
+                {
+                  frame: 20,
+                  value: {
+                    closed: true,
+                    vertices: [
+                      [0, 0],
+                      [20, 0],
+                      [0, 20],
+                    ],
+                    outTangents: [
+                      [0, 0],
+                      [2, 0],
+                      [0, 0],
+                    ],
+                  },
+                  interpolation: "linear",
+                },
+              ],
+            },
+          },
+        ],
+      },
+    ]);
+    expect(evaluateProperty(doc, "box.masks[mask].opacity", 5)).toBe(0.25);
+    expect(evaluateProperty(doc, "box.masks[mask].path", 10)).toMatchObject({
+      vertices: [
+        [0, 0],
+        [15, 0],
+        [0, 15],
+      ],
+      outTangents: [
+        [0, 0],
+        [1, 0],
+        [0, 0],
+      ],
+    });
+  });
+  it("returns diagnostics for bad paths, invalid data and invalid evaluation times", () => {
+    expect(
+      diagnostic(() => evaluateProperty(comp(), "missing.x", 0))[0]!.code,
+    ).toBe("comp-path-layer");
+    expect(
+      diagnostic(() =>
+        evaluateComp({ ...comp(), fps: 17 } as unknown as Composition, 0),
+      )[0]!.code,
+    ).toBe("comp-schema-union");
+    for (const time of [NaN, Infinity, 216001])
+      expect(diagnostic(() => evaluateComp(comp(), time))[0]).toMatchObject({
+        code: "comp-evaluation-time",
+        path: "time",
+      });
+  });
+});
+
+describe("composition transforms and bounds", () => {
+  it("defaults sized anchors to the centre and null anchors to zero", () => {
+    const doc = comp([solid(), { id: "root", type: "null" }]);
+    expect(state(doc).transform.anchor).toEqual([10, 5]);
+    expect(state(doc, 0, "root").transform.anchor).toEqual([0, 0]);
+    assertMatrix(state(doc).worldMatrix, [1, 0, 0, 1, 40, 25]);
+    expect(state(doc).bounds).toEqual({
+      left: 40,
+      top: 25,
+      right: 60,
+      bottom: 35,
+    });
+  });
+  it("composes position, rotation, skew and scale around the anchor", () => {
+    const doc = comp([
+      {
+        ...solid(),
+        transform: {
+          anchor: [2, 3],
+          position: [50, 30],
+          rotation: 90,
+          scale: [2, 3],
+          skewX: 45,
+          skewY: 45,
+        },
+      },
+    ]);
+    assertMatrix(state(doc).worldMatrix, [-2, 2, -3, 3, 63, 17]);
+    expect(transformPoint(state(doc).worldMatrix, [2, 3])).toEqual([50, 30]);
+  });
+  it("moving an anchor moves artwork; moving constraintReference leaves the matrix unchanged", () => {
+    const doc = comp([
+      {
+        ...solid(),
+        transform: { position: [50, 30], anchor: { x: linear(0, 10), y: 0 } },
+        constraintReference: { x: linear(5, 15), y: 8 },
+      },
+    ]);
+    expect(state(doc, 0).worldMatrix[4]).toBe(50);
+    expect(state(doc, 20).worldMatrix[4]).toBe(40);
+    const reference = comp([
+      { ...solid(), constraintReference: { x: linear(5, 15), y: 8 } },
+    ]);
+    expect(state(reference, 0).worldMatrix).toEqual(
+      state(reference, 20).worldMatrix,
+    );
+    expect(evaluateProperty(reference, "box.constraintReference.x", 10)).toBe(
+      10,
+    );
+  });
+  it("inherits all parent transforms but never ordinary parent opacity", () => {
+    const doc = comp([
+      {
+        id: "root",
+        type: "null",
+        transform: {
+          position: [100, 50],
+          rotation: 90,
+          scale: [2, 3],
+          opacity: 0.1,
+        },
+      },
+      {
+        ...solid(),
+        parent: "root",
+        transform: { anchor: [0, 0], position: [10, 5], opacity: 0.8 },
+      },
+    ]);
+    assertMatrix(state(doc).worldMatrix, [0, 2, -3, 0, 85, 70]);
+    expect(state(doc).opacity).toBe(0.8);
+  });
+  it("handles depth-16 parent chains in reverse array order", () => {
+    const layers: CompositionLayer[] = Array.from({ length: 16 }, (_, i) => ({
+      id: `node${i}`,
+      type: "null",
+      ...(i ? { parent: `node${i - 1}` } : {}),
+      transform: { position: [1, 2] },
+    }));
+    expect(
+      state(comp(layers.reverse()), 0, "node15").worldMatrix.slice(4),
+    ).toEqual([16, 32]);
+  });
+  it("multiplies group opacity through ordinary parents and gates group visibility", () => {
+    const doc = comp([
+      {
+        id: "group",
+        type: "group",
+        size: [100, 100],
+        transform: { opacity: 0.5 },
+      },
+      {
+        id: "root",
+        type: "null",
+        parent: "group",
+        transform: { opacity: 0.1 },
+      },
+      { ...solid(), parent: "root", transform: { opacity: 0.8 } },
+    ]);
+    expect(state(doc).opacity).toBe(0.4);
+    const hidden = structuredClone(doc);
+    hidden.layers[0]!.enabled = false;
+    expect(state(hidden).visible).toBe(false);
+  });
+  it("computes rotated and reflected bounds without dropping negative scales", () => {
+    const doc = comp([
+      {
+        ...solid(),
+        transform: {
+          anchor: [0, 0],
+          position: [50, 30],
+          rotation: 90,
+          scale: [-2, 3],
+        },
+      },
+    ]);
+    const bounds = state(doc).bounds!;
+    expect(bounds.left).toBeCloseTo(20);
+    expect(bounds.top).toBeCloseTo(-10);
+    expect(bounds.right).toBeCloseTo(50);
+    expect(bounds.bottom).toBeCloseTo(30);
+  });
+  it("uses fitted image geometry and supplied measured text bounds", () => {
+    const doc = comp([
+      {
+        id: "image",
+        type: "image",
+        size: [100, 100],
+        sources: [{ asset: "art" }],
+      },
+      {
+        id: "title",
+        type: "text",
+        text: "Title",
+        fontSize: 24,
+        color: "#ffffff",
+      },
+    ]);
+    doc.assets = [
+      {
+        id: "art",
+        type: "image",
+        path: "art.png",
+        sha256: "sha256:" + "0".repeat(64),
+        width: 200,
+        height: 100,
+      },
+    ];
+    expect(state(doc, 0, "image").bounds).toEqual({
+      left: -50,
+      top: -25,
+      right: 50,
+      bottom: 25,
+    });
+    expect(evaluateComp(doc, 0).diagnostics[0]!.code).toBe(
+      "comp-text-layout-missing",
+    );
+    const result = evaluateComp(doc, 0, {
+      textBounds: { title: [{ left: 0, top: -18, right: 70, bottom: 4 }] },
+    });
+    expect(result.layers[1]!.bounds).toEqual({
+      left: 0,
+      top: -18,
+      right: 70,
+      bottom: 4,
+    });
+    expect(result.diagnostics).toEqual([]);
+  });
+  it("keeps invisible parents and matte sources available as dependencies", () => {
+    const doc = comp([
+      {
+        id: "root",
+        type: "null",
+        enabled: false,
+        transform: { position: [20, 0] },
+      },
+      {
+        ...solid(),
+        parent: "root",
+        trackMatte: { layer: "matte", mode: "alpha" },
+      },
+      solid("matte"),
+    ]);
+    expect(state(doc).visible).toBe(true);
+    expect(state(doc).worldMatrix[4]).toBe(60);
+    expect(state(doc, 0, "matte").drawable).toBe(false);
+  });
+});
+
+describe("composition time and precomps", () => {
+  it("respects inclusive in points, exclusive out points, enabled, solo and guides", () => {
+    const doc = comp([{ ...solid(), inPoint: 5, outPoint: 10 }]);
+    expect(state(doc, 4.99).visible).toBe(false);
+    expect(state(doc, 5).visible).toBe(true);
+    expect(state(doc, 10).visible).toBe(false);
+    const solo = comp([{ ...solid(), solo: true }, solid("other")]);
+    expect(state(solo, 0, "other").visible).toBe(false);
+    const guide = comp([{ ...solid(), guide: true }]);
+    expect(state(guide).visible).toBe(false);
+    expect(
+      evaluateComp(guide, 0, { includeGuides: true }).layers[0]!.visible,
+    ).toBe(true);
+  });
+  it("stretches and reverses layer time without playback state", () => {
+    const doc = comp([
+      {
+        ...solid(),
+        startFrame: 10,
+        stretch: 2,
+        transform: { rotation: linear(0, 100) },
+      },
+      {
+        ...solid("reverse"),
+        startFrame: 30,
+        stretch: -1,
+        transform: { rotation: linear(0, 100) },
+      },
+    ]);
+    expect(evaluateProperty(doc, "box.rotation", 20)).toBe(25);
+    expect(evaluateProperty(doc, "reverse.rotation", 20)).toBe(50);
+    expect(evaluateProperty(doc, "reverse.rotation", 30)).toBe(0);
+  });
+  const nested = (): Composition => ({
+    ...comp([
+      {
+        id: "host",
+        type: "precomp",
+        comp: "child",
+        startFrame: 10,
+        stretch: 2,
+      },
+    ]),
+    precomps: [
+      {
+        id: "child",
+        width: 100,
+        height: 100,
+        fps: 60,
+        frameCount: 120,
+        layers: [{ ...solid(), transform: { rotation: linear(0, 100) } }],
+      },
+    ],
+  });
+  it("samples a different-rate precomp at the parent's elapsed seconds", () => {
+    const doc = nested();
+    expect(evaluateComp(doc, 20).layers[0]!.precomp!.time).toBe(10);
+    expect(evaluateProperty(doc, "child/box.rotation", 20)).toBe(50);
+    expect(state(doc, 20, "host").transform.anchor).toEqual([50, 50]);
+  });
+  it("samples remap keys at layer time and treats values as child frames", () => {
+    const doc = nested();
+    (
+      doc.layers[0] as Extract<CompositionLayer, { type: "precomp" }>
+    ).timeRemap = linear(20, 0);
+    expect(evaluateComp(doc, 20).layers[0]!.precomp!.time).toBe(15);
+    expect(evaluateProperty(doc, "child/box.rotation", 20)).toBe(75);
+  });
+  it("evaluates reused precomps independently and rejects ambiguous property reads", () => {
+    const doc = nested();
+    doc.layers = [
+      { id: "a", type: "precomp", comp: "child", timeRemap: 5 },
+      { id: "b", type: "precomp", comp: "child", timeRemap: 15 },
+    ];
+    const result = evaluateComp(doc, 20);
+    expect(
+      result.layers.map((l) => l.precomp!.layers[0]!.transform.rotation),
+    ).toEqual([25, 75]);
+    expect(
+      diagnostic(() => evaluateProperty(doc, "child/box.rotation", 20))[0]!
+        .code,
+    ).toBe("comp-evaluation-scope");
+  });
+  it("does not inherit precomp opacity into its unflattened child states", () => {
+    const doc = nested();
+    doc.layers[0]!.transform = { opacity: 0.25 };
+    const host = evaluateComp(doc, 20).layers[0]!;
+    expect(host.opacity).toBe(0.25);
+    expect(host.precomp!.layers[0]!.opacity).toBe(1);
+  });
+  it("reaches nested precomps through their own clocks", () => {
+    const doc = nested();
+    doc.precomps![0]!.layers = [
+      { id: "inner", type: "precomp", comp: "deep", timeRemap: 8 },
+    ];
+    doc.precomps!.push({
+      id: "deep",
+      width: 100,
+      height: 100,
+      frameCount: 60,
+      layers: [{ ...solid(), transform: { rotation: linear(0, 100) } }],
+    });
+    expect(evaluateProperty(doc, "child/deep/box.rotation", 20)).toBe(40);
+  });
+  it("evaluates the CE2 timing fixture against hand-computed clocks", () => {
+    const doc = JSON.parse(
+      readFileSync(
+        new URL(
+          "../../benchmarks/fixtures/composition/ce2/timing.json",
+          import.meta.url,
+        ),
+        "utf8",
+      ),
+    ) as Composition;
+    const result = evaluateComp(doc, 20);
+    const clocks = result.layers
+      .filter((l) => l.precomp)
+      .map((l) => l.precomp!.time);
+    expect(clocks).toEqual([10, 40, 0]);
+    expect(
+      result.layers.find((l) => l.id === "forward")!.precomp!.layers[0]!
+        .transform.position,
+    ).toEqual([25, 50]);
+  });
+  it("returns transparent precomp content outside its frame range", () => {
+    const doc = nested();
+    doc.precomps![0]!.background = "#ffffff";
+    const host = doc.layers[0] as Extract<
+      CompositionLayer,
+      { type: "precomp" }
+    >;
+    host.timeRemap = -1;
+    const result = evaluateComp(doc, 20).layers[0]!.precomp!;
+    expect(result.background).toBeNull();
+    expect(result.layers.every((l) => !l.visible)).toBe(true);
+  });
+});
+
+describe("composition motion and constraints", () => {
+  it("uses dependency order rather than painter order for driver sources", () => {
+    const doc = comp([
+      { ...solid(), transform: { position: [1, 2] } },
+      {
+        id: "source",
+        type: "null",
+        transform: { position: { x: linear(0, 20), y: 0 } },
+      },
+    ]);
+    doc.drivers = [
+      { target: "box.x", source: "source.x", map: { scale: 2, offset: 3 } },
+    ];
+    expect(evaluateProperty(doc, "box.x", 5)).toBe(13);
+  });
+  it("applies action, response, current and carrier layers in that order", () => {
+    const doc = comp([solid()]);
+    doc.signals = [
+      {
+        id: "value",
+        keys: [
+          { frame: 0, value: 2 },
+          { frame: 20, value: 2 },
+        ],
+      },
+    ];
+    doc.drivers = [
+      {
+        target: "box.transform.scale.x",
+        signal: "value",
+        layer: "current",
+        blend: "add",
+      },
+      { target: "box.transform.scale.x", signal: "value", layer: "response" },
+      { target: "box.transform.scale.x", signal: "value", layer: "action" },
+    ];
+    doc.periodic = [
+      {
+        target: "box.transform.scale.x",
+        start: 0,
+        end: 20,
+        oscillate: { period: 20, amplitude: 1 },
+        layer: "carrier",
+      },
+    ];
+    expect(evaluateProperty(doc, "box.scaleX", 5)).toBe(7);
+  });
+  it("supports signal sums, delay, range, clamp, step and weights", () => {
+    const doc = comp([solid()]);
+    doc.signals = [
+      {
+        id: "ramp",
+        keys: [
+          { frame: 0, value: 0 },
+          { frame: 20, value: 20, interpolation: "linear" },
+        ],
+      },
+    ];
+    doc.drivers = [
+      {
+        target: "box.x",
+        sum: ["ramp", "ramp"],
+        map: {
+          delay: 2,
+          range: [0, 20],
+          to: [0, 100],
+          clamp: [0, 35],
+          step: 10,
+        },
+        weight: [
+          { frame: 0, value: 0.5 },
+          { frame: 20, value: 0.5 },
+        ],
+      },
+    ];
+    expect(evaluateProperty(doc, "box.x", 10)).toBe(40);
+  });
+  it("computes lag from source history, including fractional time, without previous frames", () => {
+    const doc = comp([solid()]);
+    doc.signals = [
+      {
+        id: "ramp",
+        keys: [
+          { frame: 0, value: 0 },
+          { frame: 20, value: 20, interpolation: "linear" },
+        ],
+      },
+    ];
+    doc.drivers = [{ target: "box.x", signal: "ramp", map: { lag: 2 } }];
+    // Critically damped response to x(t)=t with omega=1 and zero initial state.
+    expect(evaluateProperty(doc, "box.x", 2.5)).toBeCloseTo(
+      2.5 - 2 + (2 + 2.5) * Math.exp(-2.5),
+      9,
+    );
+  });
+  it("evaluates remap motion once and allows a host transform to read its child", () => {
+    const doc = {
+      ...comp([{ id: "host", type: "precomp", comp: "child", timeRemap: 5 }]),
+      precomps: [
+        {
+          id: "child",
+          width: 100,
+          height: 100,
+          frameCount: 60,
+          layers: [
+            { ...solid(), transform: { position: { x: linear(0, 20), y: 0 } } },
+          ],
+        },
+      ],
+    };
+    doc.signals = [
+      {
+        id: "offset",
+        keys: [
+          { frame: 0, value: 5 },
+          { frame: 20, value: 5 },
+        ],
+      },
+    ];
+    doc.drivers = [
+      { target: "host.timeRemap", signal: "offset", blend: "add" },
+      { target: "host.x", source: "child/box.x" },
+    ];
+    const host = evaluateComp(doc, 20).layers[0]!;
+    expect(host.timeRemap).toBe(10);
+    expect(host.precomp!.time).toBe(10);
+    expect(host.transform.position[0]).toBe(10);
+  });
+  it("keeps drivers within each reused precomp instance", () => {
+    const doc: Composition = {
+      ...comp([
+        { id: "a", type: "precomp", comp: "child", timeRemap: 5 },
+        { id: "b", type: "precomp", comp: "child", timeRemap: 15 },
+      ]),
+      precomps: [
+        {
+          id: "child",
+          width: 100,
+          height: 100,
+          frameCount: 60,
+          layers: [
+            solid(),
+            {
+              id: "source",
+              type: "null",
+              transform: { position: { x: linear(0, 20), y: 0 } },
+            },
+          ],
+        },
+      ],
+      drivers: [{ target: "child/box.x", source: "child/source.x" }],
+    };
+    expect(
+      evaluateComp(doc, 10).layers.map(
+        (l) => l.precomp!.layers[0]!.transform.position[0],
+      ),
+    ).toEqual([5, 15]);
+  });
+  it("attaches the separate reference point through a transformed parent", () => {
+    const doc = comp([
+      {
+        id: "parent",
+        type: "null",
+        transform: { position: [10, 0], scale: [2, 2] },
+      },
+      {
+        ...solid(),
+        parent: "parent",
+        constraintReference: [20, 0],
+        transform: { anchor: [0, 0] },
+      },
+      {
+        ...solid("source"),
+        transform: { anchor: [0, 0], position: [100, 50] },
+      },
+    ]);
+    doc.constraints = [
+      { type: "attach", target: "box", anchor: "source", point: [0, 0] },
+    ];
+    expect(transformPoint(state(doc).worldMatrix, [20, 0])).toEqual([100, 50]);
+    expect(state(doc).transform.position).toEqual([25, 25]);
+  });
+  it("looks at a target in parent space", () => {
+    const doc = comp([
+      { id: "parent", type: "null", transform: { rotation: 90 } },
+      {
+        ...solid(),
+        parent: "parent",
+        transform: { anchor: [0, 0], position: [0, 0] },
+      },
+      { id: "target", type: "null", transform: { position: [100, 0] } },
+    ]);
+    doc.constraints = [{ type: "look-at", target: "box", toward: "target" }];
+    expect(state(doc).transform.rotation).toBeCloseTo(-90);
+  });
+  it("defaults the constraint reference to the driven anchor", () => {
+    const doc = comp([
+      solid(),
+      {
+        ...solid("source"),
+        transform: { anchor: [0, 0], position: [100, 50] },
+      },
+    ]);
+    doc.signals = [
+      {
+        id: "anchor",
+        keys: [
+          { frame: 0, value: 60 },
+          { frame: 20, value: 60 },
+        ],
+      },
+    ];
+    doc.drivers = [{ target: "box.anchorX", signal: "anchor" }];
+    doc.constraints = [
+      { type: "attach", target: "box", anchor: "source", point: [0, 0] },
+    ];
+    expect(state(doc).constraintReference).toEqual([60, 5]);
+    expect(state(doc).transform.position).toEqual([100, 50]);
+  });
+  it.each(["y", "scaleY", "rotation"] as const)(
+    "solves contact using %s",
+    (solve) => {
+      const doc = comp([
+        { ...solid(), transform: { anchor: [0, 0], position: [0, 0] } },
+        {
+          ...solid("surface"),
+          type: "solid",
+          size: [100, 10],
+          transform: { anchor: [0, 0], position: [0, 5] },
+        },
+      ]);
+      doc.constraints = [
+        {
+          type: "contact",
+          target: "box",
+          surface: "surface",
+          edge: "top",
+          point: [0.5, 1],
+          solve: [solve],
+        },
+      ];
+      expect(transformPoint(state(doc).worldMatrix, [10, 10])[1]).toBeCloseTo(
+        5,
+        7,
+      );
+    },
+  );
+  it("corrects safe-area bounds in composition space through parent rotation", () => {
+    const doc = comp([
+      { id: "parent", type: "null", transform: { rotation: 90 } },
+      {
+        ...solid(),
+        parent: "parent",
+        transform: { anchor: [0, 0], position: [0, 0] },
+      },
+    ]);
+    doc.constraints = [
+      { type: "keep-in-safe-area", target: "box", inset: 5, clamp: true },
+    ];
+    const bounds = state(doc).bounds!;
+    expect(bounds.left).toBeCloseTo(5);
+    expect(bounds.top).toBeCloseTo(5);
+  });
+  it("reports collapsed parent transforms only when a constraint needs their inverse", () => {
+    const doc = comp([
+      { id: "parent", type: "null", transform: { scale: [0, 1] } },
+      { ...solid(), parent: "parent" },
+      solid("source"),
+    ]);
+    expect(state(doc).worldMatrix[0]).toBe(0);
+    const constrained = structuredClone(doc);
+    constrained.constraints = [
+      { type: "attach", target: "box", anchor: "source" },
+    ];
+    expect(diagnostic(() => evaluateComp(constrained, 0))[0]!.code).toBe(
+      "comp-constraint-singular",
+    );
+  });
+});
+
+describe("composition determinism and camera", () => {
+  it("matches the story camera curves, depth and jolt timing", () => {
+    const doc = comp([solid(), { ...solid("fixed"), cameraDepth: 0 }]);
+    doc.camera2d = {
+      keys: [
+        { frame: 0, x: 100, y: 50, zoom: 1 },
+        { frame: 59, x: 120, y: 60, zoom: 2 },
+      ],
+      jolts: [{ frame: 10, dx: 4, dy: -3, decayFrames: 8 }],
+    };
+    const story = {
+      width: doc.width,
+      height: doc.height,
+      camera: { ...doc.camera2d, depth: {} },
+    } as StoryScene;
+    for (const time of [0, 10, 10.5, 17.9, 18, 35, 59]) {
+      const expected = sampleStoryCamera(story, time);
+      for (const axis of ["x", "y", "zoom"] as const)
+        expect(evaluateProperty(doc, `comp.camera.${axis}`, time)).toBeCloseTo(
+          expected[axis],
+          10,
+        );
+      expect(state(doc, time, "fixed").screenMatrix).toEqual(
+        state(doc, time, "fixed").worldMatrix,
+      );
+    }
+  });
+  it("random fixed-seed seeks equal sequential playback, including precomps and noise", () => {
+    const doc: Composition = {
+      ...comp([
+        {
+          ...solid(),
+          transform: {
+            position: { x: linear(0, 100), y: 20 },
+            rotation: linear(0, 90),
+          },
+        },
+        {
+          id: "host",
+          type: "precomp",
+          comp: "child",
+          stretch: -1,
+          startFrame: 59,
+        },
+      ]),
+      precomps: [
+        {
+          id: "child",
+          width: 100,
+          height: 100,
+          frameCount: 60,
+          layers: [solid()],
+        },
+      ],
+      periodic: [
+        {
+          target: "box.x",
+          start: 0,
+          end: 59,
+          noise: { seed: 123, period: 7, amplitude: 4 },
+        },
+      ],
+    };
+    const sequential = Array.from({ length: 120 }, (_, i) =>
+      evaluateComp(doc, i / 2),
+    );
+    let seed = 0x12345678;
+    for (let i = 0; i < 300; i++) {
+      seed = (Math.imul(seed, 1664525) + 1013904223) >>> 0;
+      const index = seed % 120;
+      expect(evaluateComp(doc, index / 2)).toEqual(sequential[index]);
+    }
+  });
+  it("does not mutate inputs or expose cached mutable results", () => {
+    const doc = comp([
+      { ...solid(), transform: { position: { x: linear(0, 100), y: 20 } } },
+    ]);
+    const original = structuredClone(doc);
+    const result = evaluateComp(doc, 5);
+    result.layers[0]!.transform.position[0] = -1000;
+    const point = evaluateProperty(
+      doc,
+      "box.transform.position",
+      5,
+    ) as number[];
+    point[0] = -1000;
+    expect(evaluateProperty(doc, "box.x", 5)).toBe(25);
+    expect(doc).toEqual(original);
+  });
+  it("accepts the new reference point contract and rejects 3D references", () => {
+    expect(() =>
+      CompositionSchema.parse(
+        comp([{ ...solid(), constraintReference: [10, 20] }]),
+      ),
+    ).not.toThrow();
+    expect(() =>
+      CompositionSchema.parse(
+        comp([{ ...solid(), constraintReference: [10, 20, 30] }]),
+      ),
+    ).toThrow();
+  });
+});

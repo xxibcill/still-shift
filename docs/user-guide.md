@@ -14,6 +14,7 @@ not necessarily features you can use today.
 [image animation](#animate-one-image) · [cinematic scenes](#cinematic-scenes) ·
 [storytelling](#storytelling) · [vertical video](#vertical-video) · [commerce](#commerce) ·
 [reusable components](#reusable-components) · [batch](#batch-animation) ·
+[composition evaluation](#evaluate-programmable-compositions) ·
 [outputs](#save-export-and-share) · [help](#when-something-does-not-work) ·
 [ask an AI](#ask-an-ai-about-still-shift)
 
@@ -34,6 +35,19 @@ not necessarily features you can use today.
 Still Shift currently supplies local authoring, preview and rendering tools. It
 does not automatically turn a script into a finished episode, generate new video
 with an AI model, cut out products, or invent missing illustration layers.
+
+## Evaluate programmable compositions
+
+The `composition-1` format now supports pure frame and property evaluation in Node
+and browsers through `evaluateComp` and `evaluateProperty` from
+`@still-shift/renderer-core`. Use it to inspect animated transforms, visibility,
+colours, masks, constraints and precomp timing before rendering. Fractional frame
+times and seeking backwards produce deterministic state.
+
+See the [composition reference](./composition-reference.md#evaluating-a-frame) for
+examples, measured text bounds and the immutable-input requirement. The composition
+render backend and CLI follow in CE3 and CE10; existing scene workflows remain
+available for producing videos.
 
 ## Start the Lab
 

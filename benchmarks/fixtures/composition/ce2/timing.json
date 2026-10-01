@@ -1,0 +1,78 @@
+{
+  "schemaVersion": "composition-1",
+  "id": "timing",
+  "width": 200,
+  "height": 100,
+  "fps": 30,
+  "frameCount": 60,
+  "assets": [],
+  "layers": [
+    {
+      "id": "parent",
+      "type": "null",
+      "transform": { "position": [100, 50], "rotation": 90, "scale": [2, 3] }
+    },
+    {
+      "id": "box",
+      "type": "solid",
+      "size": [20, 10],
+      "color": "#ffffff",
+      "parent": "parent",
+      "constraintReference": [5, 5],
+      "transform": { "position": [10, 5] }
+    },
+    {
+      "id": "forward",
+      "type": "precomp",
+      "comp": "child",
+      "stretch": 2,
+      "startFrame": 10
+    },
+    {
+      "id": "reverse",
+      "type": "precomp",
+      "comp": "child",
+      "stretch": -1,
+      "startFrame": 40
+    },
+    {
+      "id": "remapped",
+      "type": "precomp",
+      "comp": "child",
+      "timeRemap": {
+        "keys": [
+          { "frame": 0, "value": 20 },
+          { "frame": 20, "value": 0, "interpolation": "linear" }
+        ]
+      }
+    }
+  ],
+  "precomps": [
+    {
+      "id": "child",
+      "width": 100,
+      "height": 100,
+      "fps": 60,
+      "frameCount": 120,
+      "layers": [
+        {
+          "id": "dot",
+          "type": "solid",
+          "size": [10, 10],
+          "color": "#ff000080",
+          "transform": {
+            "position": {
+              "x": {
+                "keys": [
+                  { "frame": 0, "value": 0 },
+                  { "frame": 40, "value": 100, "interpolation": "linear" }
+                ]
+              },
+              "y": 50
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,509 @@
+import {
+  COMPOSITION_LIMITS,
+  SIZED_LAYER_TYPES,
+  type Composition,
+  type CompositionLayer,
+  type CompositionScope,
+  type PropertyPath,
+} from "@still-shift/scene-contract";
+import { multiplyMatrix } from "../../node-transform.ts";
+import { passageError } from "../../passage-diagnostics.ts";
+import {
+  blendValue,
+  mapDriver,
+  samplePeriodic,
+  sampleSignal,
+} from "../../motion-sampling.ts";
+import {
+  compileComposition,
+  layerKey,
+  resolvedPath,
+  type CompiledComposition,
+} from "./compile.ts";
+import { applyConstraints } from "./constraints.ts";
+import { cameraMatrix, sampleCamera } from "./camera.ts";
+import {
+  identity,
+  layerSize,
+  localBounds,
+  projectBounds,
+  transformMatrix,
+} from "./geometry.ts";
+import { readProperty, writeProperty } from "./properties.ts";
+import {
+  color,
+  discrete,
+  motionScalar,
+  path as samplePath,
+  rgba,
+  scalar,
+  unit,
+  vector,
+} from "./sample.ts";
+import type {
+  EvaluatedLayer,
+  EvaluatedLayerTree,
+  EvaluationOptions,
+  PropertyValue,
+} from "./types.ts";
+
+export const COMPOSITION_EVALUATOR_VERSION = "composition-evaluator-1";
+const order = ["action", "response", "current", "carrier"] as const;
+type Context = {
+  scope: CompositionScope;
+  time: number;
+  fps: number;
+  route: string[];
+  hosts: string[];
+  states: Map<string, EvaluatedLayer>;
+  active: Set<string>;
+  clocks: Map<string, number>;
+  children: Map<string, Context>;
+  groupOpacity: Map<string, number>;
+  groupVisible: Map<string, boolean>;
+};
+
+function context(
+  scope: CompositionScope,
+  time: number,
+  fps: number,
+  route: string[] = [],
+  hosts: string[] = [],
+): Context {
+  return {
+    scope,
+    time,
+    fps,
+    route,
+    hosts,
+    states: new Map(),
+    active: new Set(),
+    clocks: new Map(),
+    children: new Map(),
+    groupOpacity: new Map(),
+    groupVisible: new Map(),
+  };
+}
+
+function localTime(layer: CompositionLayer, time: number) {
+  const local = (time - (layer.startFrame ?? 0)) / (layer.stretch ?? 1);
+  if (!Number.isFinite(local))
+    passageError("comp-evaluation-time", "Layer time must be finite", {
+      path: `${layer.id}.stretch`,
+      frame: time,
+    });
+  return local;
+}
+
+function baseState(
+  comp: Composition,
+  ctx: Context,
+  layer: CompositionLayer,
+): EvaluatedLayer {
+  const time = localTime(layer, ctx.time),
+    fps = ctx.fps,
+    t = layer.transform;
+  const size = layerSize(comp, ctx.scope, layer);
+  const anchor = vector(
+    t?.anchor,
+    time,
+    fps,
+    SIZED_LAYER_TYPES.has(layer.type) ? [size[0] / 2, size[1] / 2] : [0, 0],
+  );
+  const visible =
+    ctx.time >= 0 &&
+    ctx.time < ctx.scope.frameCount &&
+    ctx.time >= (layer.inPoint ?? 0) &&
+    ctx.time < (layer.outPoint ?? ctx.scope.frameCount) &&
+    layer.enabled !== false &&
+    (!ctx.scope.layers.some((l) => l.solo) || layer.solo === true);
+  const state: EvaluatedLayer = {
+    id: layer.id,
+    layer,
+    time,
+    visible,
+    drawable: false,
+    transform: {
+      anchor,
+      position: vector(t?.position, time, fps, [0, 0]),
+      scale: vector(t?.scale, time, fps, [1, 1]),
+      rotation: scalar(t?.rotation, time, fps),
+      skewX: scalar(t?.skewX, time, fps),
+      skewY: scalar(t?.skewY, time, fps),
+      opacity: unit(scalar(t?.opacity, time, fps, 1)),
+    },
+    constraintReference: vector(layer.constraintReference, time, fps, anchor),
+    localMatrix: identity(),
+    worldMatrix: identity(),
+    screenMatrix: identity(),
+    opacity: 1,
+    bounds: null,
+    masks: (layer.masks ?? []).map((m) => ({
+      ...m,
+      path: samplePath(m.path, time, fps),
+      feather: scalar(m.feather, time, fps),
+      expansion: scalar(m.expansion, time, fps),
+      opacity: unit(scalar(m.opacity, time, fps, 1)),
+    })),
+  };
+  if (layer.type === "solid" || layer.type === "text")
+    state.color = color(layer.color, time, fps);
+  if (layer.type === "image" || layer.type === "text")
+    state.state = discrete(layer.state, time);
+  if (layer.type === "image") {
+    if (layer.stateFrom !== undefined)
+      state.stateFrom = discrete(layer.stateFrom, time);
+    if (layer.stateMix !== undefined)
+      state.stateMix = unit(scalar(layer.stateMix, time, fps));
+  }
+  if (layer.type === "text") {
+    state.text = layer.states?.[state.state!] ?? layer.text;
+    state.reveal = unit(scalar(layer.reveal, time, fps, 1));
+  }
+  if (layer.type === "precomp") {
+    const nested = comp.precomps!.find((p) => p.id === layer.comp)!;
+    state.timeRemap =
+      layer.timeRemap !== undefined
+        ? scalar(layer.timeRemap, time, fps)
+        : (time * (nested.fps ?? comp.fps)) / fps;
+  }
+  return state;
+}
+
+class Evaluation {
+  readonly root: Context;
+  private readonly history = new Map<number, Evaluation>();
+  private count = 0;
+  constructor(
+    readonly compiled: CompiledComposition,
+    readonly time: number,
+    readonly options: EvaluationOptions,
+  ) {
+    this.root = context(compiled.comp, time, compiled.comp.fps);
+  }
+
+  private bindings(ctx: Context, id: string) {
+    return layerKey(ctx.route.at(-1), id);
+  }
+  private layer(ctx: Context, id: string) {
+    return this.compiled.layers.get(ctx.scope)!.get(id)!;
+  }
+
+  private at(time: number): Evaluation {
+    if (time === this.time) return this;
+    let evaluation = this.history.get(time);
+    if (!evaluation) {
+      if (this.history.size >= 128)
+        this.history.delete(this.history.keys().next().value!);
+      evaluation = new Evaluation(this.compiled, time, this.options);
+      this.history.set(time, evaluation);
+    }
+    return evaluation;
+  }
+
+  private child(ctx: Context, host: CompositionLayer): Context {
+    const cached = ctx.children.get(host.id);
+    if (cached) return cached;
+    if (host.type !== "precomp")
+      passageError("comp-path-scope", "Expected a precomp layer", {
+        path: host.id,
+      });
+    const scope = this.compiled.scopes.get(host.comp)!;
+    const next = context(
+      scope,
+      this.clock(ctx, host),
+      scope.fps ?? this.compiled.comp.fps,
+      [...ctx.route, host.comp],
+      [...ctx.hosts, host.id],
+    );
+    ctx.children.set(host.id, next);
+    return next;
+  }
+
+  private clock(ctx: Context, host: CompositionLayer) {
+    const cached = ctx.clocks.get(host.id);
+    if (cached !== undefined) return cached;
+    const state = baseState(this.compiled.comp, ctx, host);
+    this.motion(ctx, state, true);
+    const time = state.timeRemap!;
+    if (!Number.isFinite(time))
+      passageError("comp-evaluation-time", "Precomp time must be finite", {
+        path: `${host.id}.timeRemap`,
+      });
+    ctx.clocks.set(host.id, time);
+    return time;
+  }
+
+  private scopeFor(path: PropertyPath, preferred?: Context): Context {
+    let ctx = this.root;
+    for (const [depth, id] of path.scope.entries()) {
+      const hosts = ctx.scope.layers.filter(
+        (l) => l.type === "precomp" && l.comp === id,
+      );
+      const sameRoute =
+        preferred?.route.slice(0, depth + 1).join("/") ===
+        path.scope.slice(0, depth + 1).join("/");
+      const selected = sameRoute
+        ? hosts.find((l) => l.id === preferred!.hosts[depth])
+        : undefined;
+      if (!selected && hosts.length !== 1)
+        passageError(
+          "comp-evaluation-scope",
+          `Property path ${path.scope.join("/")} has multiple precomp instances`,
+          { path: path.scope.join("/") },
+        );
+      ctx = this.child(ctx, selected ?? hosts[0]!);
+    }
+    return ctx;
+  }
+
+  property(path: PropertyPath, preferred?: Context): PropertyValue {
+    if (path.layer === "comp")
+      return sampleCamera(this.compiled.comp, this.time)[
+        path.segments[1]!.name as "x" | "y" | "zoom"
+      ];
+    const ctx = this.scopeFor(path, preferred);
+    const layer = this.layer(ctx, path.layer);
+    // A clock can be read without asking for the enclosing layer's transform.
+    if (layer.type === "precomp" && path.segments[0]!.name === "timeRemap")
+      return this.clock(ctx, layer);
+    return readProperty(this.evaluate(ctx, layer), path.segments);
+  }
+
+  private source(text: string, time: number, preferred: Context): number {
+    if (!text.includes("."))
+      return sampleSignal(
+        this.compiled.comp.signals!.find((s) => s.id === text)!,
+        time,
+        this.compiled.comp.fps,
+      );
+    return this.at(time).property(
+      resolvedPath(this.compiled, text),
+      preferred,
+    ) as number;
+  }
+
+  private motion(ctx: Context, state: EvaluatedLayer, remapOnly = false) {
+    const key = this.bindings(ctx, state.id),
+      comp = this.compiled.comp;
+    const accepts = (path: PropertyPath) =>
+      !remapOnly || path.segments[0]!.name === "timeRemap";
+    for (const layer of order) {
+      for (const { motion, path } of this.compiled.periodic.get(key) ?? []) {
+        if (
+          !accepts(path) ||
+          (motion.layer ?? "carrier") !== layer ||
+          this.time < motion.start ||
+          this.time > motion.end
+        )
+          continue;
+        const base = readProperty(state, path.segments) as number;
+        const weight = motion.weight
+          ? unit(motionScalar(motion.weight, this.time, comp.fps))
+          : 1;
+        writeProperty(
+          state,
+          path.segments,
+          blendValue(
+            base,
+            samplePeriodic(motion, this.time - motion.start),
+            motion.blend ?? "add",
+            weight,
+          ),
+        );
+      }
+      for (const { motion, path } of this.compiled.drivers.get(key) ?? []) {
+        if (!accepts(path) || (motion.layer ?? "action") !== layer) continue;
+        const value = mapDriver(
+          (time) =>
+            (motion.sum ?? [motion.source ?? motion.signal!]).reduce(
+              (sum, source) => sum + this.source(source, time, ctx),
+              0,
+            ),
+          this.time,
+          motion.map,
+        );
+        const weight = motion.weight
+          ? unit(motionScalar(motion.weight, this.time, comp.fps))
+          : 1;
+        const multiply =
+          path.segments[0]!.name === "transform" &&
+          ["scale", "opacity"].includes(path.segments[1]!.name);
+        const blend =
+          motion.blend ??
+          (layer === "action"
+            ? "replace"
+            : layer === "response" && multiply
+              ? "multiply"
+              : "add");
+        writeProperty(
+          state,
+          path.segments,
+          blendValue(
+            readProperty(state, path.segments) as number,
+            value,
+            blend,
+            weight,
+          ),
+        );
+      }
+    }
+    state.transform.opacity = unit(state.transform.opacity);
+    if (state.color) state.color = state.color.map(unit) as typeof state.color;
+    if (state.reveal !== undefined) state.reveal = unit(state.reveal);
+    if (state.stateMix !== undefined) state.stateMix = unit(state.stateMix);
+    for (const mask of state.masks) {
+      mask.opacity = unit(mask.opacity);
+      mask.feather = Math.max(0, mask.feather);
+    }
+    if (state.layer.constraintReference === undefined) {
+      const writers = [
+        ...(this.compiled.drivers.get(key) ?? []),
+        ...(this.compiled.periodic.get(key) ?? []).filter(
+          ({ motion }) => this.time >= motion.start && this.time <= motion.end,
+        ),
+      ];
+      for (const [axis, name] of ["x", "y"].entries())
+        if (
+          !writers.some(
+            ({ path }) =>
+              path.segments[0]!.name === "constraintReference" &&
+              path.segments[1]?.name === name,
+          )
+        )
+          state.constraintReference[axis] = state.transform.anchor[axis]!;
+    }
+  }
+
+  evaluate(ctx: Context, layer: CompositionLayer): EvaluatedLayer {
+    const cached = ctx.states.get(layer.id);
+    if (cached) return cached;
+    if (ctx.active.has(layer.id))
+      passageError("comp-motion-cycle", "Evaluation dependency cycle", {
+        path: this.bindings(ctx, layer.id),
+      });
+    if (++this.count > 20_000)
+      passageError(
+        "comp-evaluation-limit",
+        "Evaluation exceeds 20,000 layer instances",
+        { path: "layers" },
+      );
+    ctx.active.add(layer.id);
+    const state = baseState(this.compiled.comp, ctx, layer);
+    this.motion(ctx, state);
+    if (layer.type === "precomp") state.timeRemap = this.clock(ctx, layer);
+    // Expressions are validated as unavailable until CE9; this stage is a no-op.
+    const parent = layer.parent
+      ? this.evaluate(ctx, this.layer(ctx, layer.parent))
+      : undefined;
+    const parentMatrix = parent?.worldMatrix ?? identity();
+    applyConstraints(state, {
+      comp: this.compiled.comp,
+      scope: ctx.scope,
+      time: ctx.time,
+      fps: ctx.fps,
+      options: this.options,
+      parentMatrix,
+      other: (id) => this.evaluate(ctx, this.layer(ctx, id)),
+    });
+    state.localMatrix = transformMatrix(state.transform);
+    state.worldMatrix = multiplyMatrix(parentMatrix, state.localMatrix);
+    const inherited = parent
+      ? (ctx.groupOpacity.get(parent.id) ?? 1) *
+        (parent.layer.type === "group" ? parent.transform.opacity : 1)
+      : 1;
+    ctx.groupOpacity.set(layer.id, inherited);
+    state.opacity = state.transform.opacity * inherited;
+    let root = layer;
+    while (root.parent) root = this.layer(ctx, root.parent);
+    const camera =
+      ctx.scope === this.compiled.comp && this.compiled.comp.camera2d
+        ? cameraMatrix(this.compiled.comp, this.time, root.cameraDepth ?? 1)
+        : identity();
+    state.screenMatrix = multiplyMatrix(camera, state.worldMatrix);
+    const local = localBounds(
+      this.compiled.comp,
+      ctx.scope,
+      state,
+      this.options,
+    );
+    state.bounds = local ? projectBounds(local, state.screenMatrix) : null;
+    state.visible &&= !layer.guide || this.options.includeGuides === true;
+    // Group visibility gates descendants; ordinary null parenting only carries transforms.
+    const groupVisible = parent
+      ? (ctx.groupVisible.get(parent.id) ?? true) &&
+        (parent.layer.type !== "group" || parent.visible)
+      : true;
+    ctx.groupVisible.set(layer.id, groupVisible);
+    state.visible &&= groupVisible;
+    state.drawable =
+      state.visible &&
+      !["null", "group"].includes(layer.type) &&
+      !ctx.scope.layers.some((l) => l.trackMatte?.layer === layer.id);
+    ctx.active.delete(layer.id);
+    ctx.states.set(layer.id, state);
+    return state;
+  }
+
+  tree(ctx = this.root): EvaluatedLayerTree {
+    const layers = ctx.scope.layers.map((layer) => this.evaluate(ctx, layer));
+    const diagnostics: EvaluatedLayerTree["diagnostics"] = [];
+    for (const state of layers) {
+      if (state.layer.type === "text" && !state.bounds && state.visible)
+        diagnostics.push({
+          code: "comp-text-layout-missing",
+          severity: "warning",
+          message: "Supply measured text bounds for culling and diagnostics",
+          node: state.id,
+          path: this.bindings(ctx, state.id) + ".bounds",
+          frame: ctx.time,
+        });
+      if (state.layer.type === "precomp" && state.visible)
+        state.precomp = this.tree(this.child(ctx, state.layer));
+    }
+    return {
+      id: ctx.scope.id,
+      time: ctx.time,
+      width: ctx.scope.width,
+      height: ctx.scope.height,
+      fps: ctx.fps,
+      background:
+        ctx.time >= 0 && ctx.time < ctx.scope.frameCount && ctx.scope.background
+          ? rgba(ctx.scope.background)
+          : null,
+      layers,
+      diagnostics,
+    };
+  }
+}
+
+function session(comp: Composition, time: number, options: EvaluationOptions) {
+  if (!Number.isFinite(time) || Math.abs(time) > COMPOSITION_LIMITS.maxKeyFrame)
+    passageError(
+      "comp-evaluation-time",
+      `Evaluation time must be finite and within ±${COMPOSITION_LIMITS.maxKeyFrame} frames`,
+      { path: "time" },
+    );
+  return new Evaluation(compileComposition(comp), time, options);
+}
+
+/** Evaluate immutable, validated composition data at an integer or fractional frame. */
+export function evaluateComp(
+  comp: Composition,
+  time: number,
+  options: EvaluationOptions = {},
+): EvaluatedLayerTree {
+  return session(comp, time, options).tree();
+}
+
+export function evaluateProperty(
+  comp: Composition,
+  path: string,
+  time: number,
+  options: EvaluationOptions = {},
+): PropertyValue {
+  const evaluation = session(comp, time, options);
+  return structuredClone(
+    evaluation.property(resolvedPath(evaluation.compiled, path)),
+  );
+}

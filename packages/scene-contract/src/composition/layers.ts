@@ -126,6 +126,8 @@ const layerBase = {
   guide: z.boolean().optional(),
   threeD: z.boolean().optional(),
   transform: TransformSchema.optional(),
+  /** Layer-space point used by attach constraints; moving it does not move artwork. */
+  constraintReference: animatableVector(bounded).optional(),
   blendMode: CompositionBlendModeSchema.optional(),
   trackMatte: TrackMatteSchema.optional(),
   masks: z.array(MaskSchema).max(L.maxMasks).optional(),

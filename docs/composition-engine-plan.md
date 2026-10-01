@@ -324,27 +324,27 @@ change them without a decision-log entry.
 
 ## Milestone tracker
 
-| ID   | Deliverable                                     | Phase | Depends on                | Owner                  | Branch                  | Status | Completion evidence                                            |
-| ---- | ----------------------------------------------- | ----- | ------------------------- | ---------------------- | ----------------------- | ------ | -------------------------------------------------------------- |
-| CE0  | Baseline, parity harness and feature matrix     | A     | —                         | xxibcill (Claude Code) | `codex/composition-ce0` | `[x]`  | [CE0 record](#ce0--baseline-parity-harness-and-feature-matrix) |
-| CE1  | `composition-1` contract and property paths     | A     | CE0                       | xxibcill (Claude Code) | `codex/composition-ce1` | `[x]`  | [CE1 record](#ce1--composition-1-contract-and-property-paths)  |
-| CE2  | Pure composition evaluator                      | A     | CE1                       | Codex                  | `codex/composition-ce2`  | `[~]`  | Implementation started from `codex/composition-ce1` (`9186720`)  |
-| CE3  | Render graph and Canvas 2D reference backend    | A     | CE2                       |                        |                         | `[ ]`  |                                                                |
-| CE4a | Story adapter with visual parity                | A     | CE3                       |                        |                         | `[ ]`  |                                                                |
-| CE4b | Commerce and reusable-component adapter         | A     | CE3, CE6 (effects parity) |                        |                         | `[ ]`  |                                                                |
-| CE4c | Cinematic adapter                               | A     | CE3, CE8                  |                        |                         | `[ ]`  |                                                                |
-| CE4d | Legacy illustrated adapter and old-path removal | A     | CE4a–CE4c                 |                        |                         | `[ ]`  |                                                                |
-| CE5  | Shape layers                                    | B     | CE3                       |                        |                         | `[ ]`  |                                                                |
-| CE6  | WebGL2 backend and effect registry              | B     | CE3                       |                        |                         | `[ ]`  |                                                                |
-| CE7  | Motion blur and time controls                   | B     | CE3                       |                        |                         | `[ ]`  |                                                                |
-| CE8  | 2.5D layers and unified camera                  | B     | CE3                       |                        |                         | `[ ]`  |                                                                |
-| CE9  | Expressions and motion behaviours               | C     | CE2                       |                        |                         | `[ ]`  |                                                                |
-| CE10 | TypeScript builder API and CLI                  | C     | CE1, CE2                  |                        |                         | `[ ]`  |                                                                |
-| CE11 | Lab composition inspector and graph editor      | C     | CE3, CE10                 |                        |                         | `[ ]`  |                                                                |
-| CE12 | Motion linting                                  | C     | CE2                       |                        |                         | `[ ]`  |                                                                |
-| CE13 | Video, image-sequence and audio layers          | D     | CE3, CE7                  |                        |                         | `[ ]`  |                                                                |
-| CE14 | Mesh warp and puppet pins                       | D     | CE6                       |                        |                         | `[ ]`  |                                                                |
-| CE15 | Output formats, caching and parallel rendering  | D     | CE3                       |                        |                         | `[ ]`  |                                                                |
+| ID   | Deliverable                                     | Phase | Depends on                | Owner                  | Branch                  | Status | Completion evidence                                             |
+| ---- | ----------------------------------------------- | ----- | ------------------------- | ---------------------- | ----------------------- | ------ | --------------------------------------------------------------- |
+| CE0  | Baseline, parity harness and feature matrix     | A     | —                         | xxibcill (Claude Code) | `codex/composition-ce0` | `[x]`  | [CE0 record](#ce0--baseline-parity-harness-and-feature-matrix)  |
+| CE1  | `composition-1` contract and property paths     | A     | CE0                       | xxibcill (Claude Code) | `codex/composition-ce1` | `[x]`  | [CE1 record](#ce1--composition-1-contract-and-property-paths)   |
+| CE2  | Pure composition evaluator                      | A     | CE1                       | Codex                  | `codex/composition-ce2` | `[~]`  | Implementation started from `codex/composition-ce1` (`9186720`) |
+| CE3  | Render graph and Canvas 2D reference backend    | A     | CE2                       |                        |                         | `[ ]`  |                                                                 |
+| CE4a | Story adapter with visual parity                | A     | CE3                       |                        |                         | `[ ]`  |                                                                 |
+| CE4b | Commerce and reusable-component adapter         | A     | CE3, CE6 (effects parity) |                        |                         | `[ ]`  |                                                                 |
+| CE4c | Cinematic adapter                               | A     | CE3, CE8                  |                        |                         | `[ ]`  |                                                                 |
+| CE4d | Legacy illustrated adapter and old-path removal | A     | CE4a–CE4c                 |                        |                         | `[ ]`  |                                                                 |
+| CE5  | Shape layers                                    | B     | CE3                       |                        |                         | `[ ]`  |                                                                 |
+| CE6  | WebGL2 backend and effect registry              | B     | CE3                       |                        |                         | `[ ]`  |                                                                 |
+| CE7  | Motion blur and time controls                   | B     | CE3                       |                        |                         | `[ ]`  |                                                                 |
+| CE8  | 2.5D layers and unified camera                  | B     | CE3                       |                        |                         | `[ ]`  |                                                                 |
+| CE9  | Expressions and motion behaviours               | C     | CE2                       |                        |                         | `[ ]`  |                                                                 |
+| CE10 | TypeScript builder API and CLI                  | C     | CE1, CE2                  |                        |                         | `[ ]`  |                                                                 |
+| CE11 | Lab composition inspector and graph editor      | C     | CE3, CE10                 |                        |                         | `[ ]`  |                                                                 |
+| CE12 | Motion linting                                  | C     | CE2                       |                        |                         | `[ ]`  |                                                                 |
+| CE13 | Video, image-sequence and audio layers          | D     | CE3, CE7                  |                        |                         | `[ ]`  |                                                                 |
+| CE14 | Mesh warp and puppet pins                       | D     | CE6                       |                        |                         | `[ ]`  |                                                                 |
+| CE15 | Output formats, caching and parallel rendering  | D     | CE3                       |                        |                         | `[ ]`  |                                                                 |
 
 ### Phases and parallel work
 
@@ -382,7 +382,7 @@ through the story adapter with recorded parity.
 - [x] CE1 schema for comp, precomp, solid, image, text and null layers; transforms;
       parenting; in/out points; blend modes; alpha mattes. The slice composition is
       [`first-slice.json`](../benchmarks/fixtures/composition/ce1/first-slice.json).
-- [ ] CE2 evaluator covering those features.
+- [x] CE2 evaluator covering those features.
 - [ ] CE3 Canvas 2D backend covering those features, wired into export.
 - [ ] CE4a adapter for `benchmarks/fixtures/story-motion-continuous/access-constraint.json`
       with the parity result recorded.
@@ -814,26 +814,28 @@ at any frame, in Node or the browser, with no rendering.
 
 ### Checklist
 
-- [ ] `evaluateComp` and `evaluateProperty(comp, path, time)` in
+- [x] `evaluateComp` and `evaluateProperty(comp, path, time)` in
       `renderer-core/src/composition/evaluate/`, with no DOM or Canvas imports
       (enforce with a lint rule or boundary check).
-- [ ] Vector and colour interpolation, spatial bezier for position with arc-length
+- [x] Vector and colour interpolation, spatial bezier for position with arc-length
       parameterisation (reuse `SpatialPathSchema` semantics).
-- [ ] Resolve the CE1 temporal-speed follow-up: define grouped vector/colour speed
+- [x] Resolve the CE1 temporal-speed follow-up: define grouped vector/colour speed
       units and representation, including spatial arc length and colour channels,
       and record a decision before enabling these handles. CE1 keeps explicit speed
-      scalar-only; separate vector dimensions already accept scalar speeds.
-- [ ] Parenting with AE semantics: position, rotation, scale and skew inherit; opacity
+      scalar-only; separate vector dimensions already accept scalar speeds. CE2
+      records the units/representation below; enabling grouped handles moves to
+      CE9 alongside velocity expressions and spatial speed controls.
+- [x] Parenting with AE semantics: position, rotation, scale and skew inherit; opacity
       does not.
-- [ ] Time stretch, negative stretch (reverse) and time remap.
-- [ ] Accept fractional evaluation times from the start (parity note 4).
-- [ ] A constraint reference point separate from the transform anchor, so adapted
+- [x] Time stretch, negative stretch (reverse) and time remap.
+- [x] Accept fractional evaluation times from the start (parity note 4).
+- [x] A constraint reference point separate from the transform anchor, so adapted
       legacy anchor animation keeps its meaning (parity note 7).
-- [ ] Screen-space bounding boxes for culling and diagnostics (images/solids exact;
+- [x] Screen-space bounding boxes for culling and diagnostics (images/solids exact;
       text from measured layout; shapes after CE5).
-- [ ] Memoise per frame; cache compiled curves by object identity (as `story-camera.ts`
+- [x] Memoise per frame; cache compiled curves by object identity (as `story-camera.ts`
       does with a `WeakMap`).
-- [ ] Performance budget: evaluating a 200-layer composition must take ≤ 2 ms per frame
+- [x] Performance budget: evaluating a 200-layer composition must take ≤ 2 ms per frame
       in Node on the reference machine; record the measurement.
 
 **Acceptance:** For random frame orders, evaluation equals sequential evaluation.
@@ -843,7 +845,53 @@ Parenting, stretch and remap match hand-computed expectations.
 16, reversed time, remapped precomps, and a property-based test (random seeks vs forward
 play) using a fixed seed.
 
-**Completion record:** _to be filled in._
+**Implementation record (2026-10-01; full verification in progress).**
+
+- Branch: `codex/composition-ce2`, based on CE1 `9186720`; tracker start commit
+  `3e3e486`. Owner: Codex.
+- Public APIs: `evaluateComp`, `evaluateProperty`, `COMPOSITION_EVALUATOR_VERSION`
+  (`composition-evaluator-1`) and typed evaluated trees in
+  `packages/renderer-core/src/composition/evaluate/`. ESLint prevents DOM/Canvas
+  globals, runtime imports and imports of impure renderer helpers in this directory.
+- Scalar/vector/colour/path curves and spatial arc tables are cached by object
+  identity; layer state and precomp clocks are memoised within each call. Inputs are
+  immutable; output state is fresh. Drivers reuse the extracted pure motion-craft
+  sampling, blending and lag/map implementation; legacy rendering is unchanged.
+- Added `constraintReference` (and scalar component paths), regenerated the JSON
+  Schema, and documented timing, group visibility/opacity, scope selection, bounds
+  and diagnostics in the composition reference and user guide. The CE2 timing
+  fixture covers parent transforms, half-speed/reversed/different-rate precomps and
+  remap. Every transform component, depth-16 parents, constraints, masks, fixed-seed
+  random seeks, discrete state and input immutability have unit coverage.
+- Verified: `pnpm check:fast` (87 files, 878 unit tests), including
+  `pnpm exec vitest run tests/unit/composition-evaluate.test.ts --maxWorkers=2`
+  after the final reference-point correction (45 evaluator tests passed).
+  `pnpm test:browser:composition-evaluator` passed for three fixtures × nine frames:
+  timing/visibility and reverse seeks are exact; Node 22 versus Chromium 151 differs
+  by at most `1.1102230246251565e-16` in numeric state. The cross-runtime check allows
+  `1e-9`; preview/export still use the same browser evaluator and retain invariant 6.
+- Performance: `node --import tsx scripts/composition/benchmark-evaluator.ts`, Apple
+  M5 Pro, macOS arm64, pinned Node 22.23.1. A 200-layer fixture with depth-16 chains,
+  animated transforms, 40 drivers, 40 noise motions and a camera averaged **1.0394
+  ms/frame** over five batches of 5,000 frames after 1,000 warm-up frames, while the
+  full render suite was running. Batch means: 1.2364, 1.0579, 0.9368, 0.9055, 1.0604
+  ms; budget ≤ 2 ms passed. The initial isolated run measured 0.5316 ms/frame.
+- Follow-ups: CE3 prepares measured text bounds and text animator geometry through
+  the data-only `textBounds` option. Missing measurements warn and produce null
+  bounds; bounds-dependent constraints fail explicitly. CE5 owns shape bounds and
+  follow-path constraints, still rejected by CE1 validation. CE9 owns grouped
+  temporal velocity authoring: a vector/colour velocity tuple must match its value's
+  dimensions (pixels/frame, scale factors/frame, normalized RGBA channels/frame);
+  spatial speed is a separate scalar in arc-length pixels/frame. Scalar `speed` and
+  separated vector dimensions remain available. CE10 must define instance-specific
+  paths; repeated precomps evaluate independently, but ambiguous cross-instance
+  reads currently produce `comp-evaluation-scope` rather than selecting a host.
+  Stateful font measurement and ambiguous grouped slopes would break the pure,
+  explicit CE2 interface, which is why those authoring/preparation pieces live in
+  their owning milestones. Existing lag cost is proportional to elapsed source
+  frames and is outside this no-lag performance fixture.
+- Full `pnpm check` and CE0 baseline evidence will be recorded before completion.
+  No legacy renderer version bump is required; the new evaluator has its own version.
 
 ---
 
@@ -880,6 +928,8 @@ masks and adjustment layers, and export through the existing runtime.
 - [ ] Masks as Path2D with `add/subtract/intersect/difference`; feather via blurred
       mask surface; expansion via stroke-and-fill approximation (document the limits).
 - [ ] Precomps with and without collapsed transforms; nested time.
+- [ ] Prepare pinned measured text bounds and text animator geometry for the CE2
+      `textBounds` data API; preserve missing-measurement diagnostics (CE2 follow-up).
 - [ ] Culling of layers whose bounds miss the viewport.
 - [ ] Wire `composition-1` into [`export-page.ts`](../packages/execution-runtime/src/export-page.ts)
       and [`export-worker.ts`](../packages/execution-runtime/src/export-worker.ts) as an
@@ -1235,6 +1285,10 @@ built-ins cannot express, add a built-in; do not add an escape hatch to arbitrar
       `smooth(width, samples)`, `lookAt`, `length`, `normalize`, `step`, `if`.
 - [ ] Dependency graph across properties with cycle detection (`comp-expression-cycle`).
       `valueAtTime` references to earlier times are allowed; same-time cycles are errors.
+- [ ] Enable grouped temporal velocity tuples with dimensions/units matching the
+      property, plus a distinct spatial speed in arc-length pixels/frame; extend
+      schema, sampler and documentation together (CE2 follow-up). Keep scalar
+      `speed` unchanged.
 - [ ] Re-express signals, drivers and periodic motion as expression sugar internally;
       their schemas remain valid.
 - [ ] Behaviours (compile to expressions/drivers, each with parameters and tests):
@@ -1331,6 +1385,8 @@ export default comp({ width: 1920, height: 1080, fps: 30, seconds: 8 }, (c) => {
       accepts precomputed hashes (browser).
 - [ ] Presets as plain functions (for example `presets.drawOn(path)`); port the story
       intent presets.
+- [ ] Define instance-specific property addressing for reused precomps (CE2 follow-up);
+      preserve definition-scoped drivers while making cross-instance reads explicit.
 - [ ] Source maps: every emitted node records the builder call site; diagnostics show
       `file:line`.
 - [ ] CLI: `still-shift comp` subcommands `validate`, `render`, `preview --watch`,
@@ -1572,6 +1628,9 @@ A milestone is complete when **all** of the following hold:
 | 2026-10-01 | CE1: precomps are a flat list on the root with their own layer namespace; property-path prefixes are precomp ids                                                                                                                                                                                                                                                                                                                                                                                                                    | Avoids duplicated nested definitions when a precomp is reused, and lets paths and diagnostics name a precomp once                                                                                                                               |                |
 | 2026-10-01 | CE1: composition drivers and periodic motion use property paths in new schemas; story and commerce motion schemas stay unchanged                                                                                                                                                                                                                                                                                                                                                                                                    | Family schemas remain as written for CE0 parity, and legacy `node.property` targets stay valid inside compositions as aliases                                                                                                                   |                |
 | 2026-10-01 | CE1: explicit temporal handle `speed` remains scalar-only; vector and colour keys accept `ease`. Grouped speed semantics are deferred to CE2; separate vector dimensions already support scalar speeds                                                                                                                                                                                                                                                                                                                              | A scalar slope has no defined mapping to grouped vectors, spatial arc length or RGBA values. Keep the validated contract explicit until CE2 defines the units and representation                                                                |                |
+| 2026-10-01 | CE2: keep scalar temporal `speed` in property units/frame; future grouped velocity is a matching vector/RGBA tuple, while spatial speed is a distinct arc-length pixels/frame scalar. Enabling those new forms moves to CE9                                                                                                                                                                                                                                                                                                         | Component velocities and arc speed are different quantities; preserve validated CE1 authoring until each has an explicit field and sampler                                                                                                      |                |
+| 2026-10-01 | CE2: measured text bounds enter through immutable data; CE3 prepares font layout and text animator geometry                                                                                                                                                                                                                                                                                                                                                                                                                         | Keeps Node/browser evaluation pure and avoids guessed glyph bounds; missing measurements are diagnosed                                                                                                                                          |                |
+| 2026-10-01 | CE2: reused precomps evaluate per instance; ambiguous scoped reads fail until CE10 adds instance addressing                                                                                                                                                                                                                                                                                                                                                                                                                         | CE1 paths identify definitions, so choosing an arbitrary host would make sampled time ambiguous                                                                                                                                                 |                |
 
 ## Open questions for the owner
 
