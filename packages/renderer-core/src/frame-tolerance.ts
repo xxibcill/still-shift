@@ -4,7 +4,7 @@
  * size; alpha is ignored because exports are opaque.
  */
 
-export const FRAME_TOLERANCE_VERSION = "frame-tolerance-1" as const;
+export const FRAME_TOLERANCE_VERSION = "frame-tolerance-2" as const;
 
 export type ToleranceTier = "exact" | "near" | "perceptual";
 
@@ -166,12 +166,13 @@ export function strictestTier(comparison: FrameComparison) {
   return TIER_ORDER.find((tier) => meetsTier(comparison, tier)) ?? null;
 }
 
-/** The loosest tier among several comparisons, e.g. every sampled frame of a fixture. */
+/** Strictest tier every comparison meets; near and perceptual limits are independent. */
 export function worstTier(
-  tiers: (ToleranceTier | null)[],
+  comparisons: readonly FrameComparison[],
 ): ToleranceTier | null {
-  if (tiers.some((tier) => tier === null)) return null;
   return (
-    [...TIER_ORDER].reverse().find((tier) => tiers.includes(tier)) ?? "exact"
+    TIER_ORDER.find((tier) =>
+      comparisons.every((comparison) => meetsTier(comparison, tier)),
+    ) ?? null
   );
 }

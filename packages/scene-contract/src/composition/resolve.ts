@@ -22,6 +22,7 @@ export type PropertyValueType =
 export type ResolvedProperty = {
   /** Canonical form: aliases expanded. */
   path: string;
+  /** Precomp layer instance ids, from the root to the containing scope. */
   scope: string[];
   layer?: CompositionLayer;
   type: PropertyValueType;
@@ -48,7 +49,7 @@ const TRANSFORM_VECTORS = new Set(["anchor", "position", "scale"]);
 const COMPONENTS = { vec2: ["x", "y"], vec3: ["x", "y", "z"] } as const;
 const COLOR_COMPONENTS = ["r", "g", "b", "a"];
 
-/** Scopes reachable from the root, keyed by precomp id. */
+/** Precomp source definitions, including unused ones, keyed by definition id. */
 export function precompsById(comp: Composition) {
   return new Map((comp.precomps ?? []).map((p) => [p.id, p]));
 }
@@ -168,14 +169,13 @@ export function resolvePropertyPath(comp: Composition, text: string): Result {
   const precomps = precompsById(comp);
   let scope: CompositionScope = comp;
   for (const id of parsed.scope) {
-    const next = precomps.get(id);
-    if (
-      !next ||
-      !scope.layers.some((l) => l.type === "precomp" && l.comp === id)
-    )
+    const instance = scope.layers.find((layer) => layer.id === id);
+    const next =
+      instance?.type === "precomp" ? precomps.get(instance.comp) : undefined;
+    if (!next)
       return {
         code: "comp-path-scope",
-        message: `"${text}": precomp "${id}" is not used by ${scope === comp ? "the composition" : `precomp "${scope.id}"`}`,
+        message: `"${text}": no precomp layer instance "${id}" in ${scope === comp ? "the composition" : `precomp "${scope.id}"`}`,
       };
     scope = next;
   }

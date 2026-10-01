@@ -91,9 +91,43 @@ describe("frame tolerance", () => {
     ).toThrow("Frame dimensions must be positive integers");
   });
 
-  it("reports the loosest tier across frames", () => {
-    expect(worstTier(["exact", "exact"])).toBe("exact");
-    expect(worstTier(["exact", "near", "perceptual"])).toBe("perceptual");
-    expect(worstTier(["near", null])).toBeNull();
+  it("reports the strictest tier that every frame satisfies", () => {
+    const frame = chart();
+    const exact = compareFrames(frame, frame, width, height);
+    const near = compareFrames(
+      frame,
+      adjust(frame, (index) => (index % 97 === 0 ? 1 : 0)),
+      width,
+      height,
+    );
+    const perceptual = compareFrames(
+      frame,
+      adjust(frame, () => 2),
+      width,
+      height,
+    );
+    const rejected = compareFrames(
+      frame,
+      adjust(frame, () => 60),
+      width,
+      height,
+    );
+    expect(worstTier([exact, exact])).toBe("exact");
+    expect(worstTier([exact, near, perceptual])).toBe("perceptual");
+    expect(worstTier([near, rejected])).toBeNull();
+  });
+
+  it("does not infer perceptual parity from a near classification", () => {
+    const frame = new Uint8Array(8 * 8 * 3).fill(100);
+    const rounded = frame.slice();
+    for (let pixel = 0; pixel < 40; pixel += 1)
+      rounded.fill(pixel % 2 ? 101 : 99, pixel * 3, pixel * 3 + 3);
+    const near = compareFrames(frame, rounded, 8, 8);
+    const perceptual = compareFrames(frame, frame.slice().fill(102), 8, 8);
+    expect(strictestTier(near)).toBe("near");
+    expect(meetsTier(near, "perceptual")).toBe(false);
+    expect(strictestTier(perceptual)).toBe("perceptual");
+    expect(worstTier([near])).toBe("near");
+    expect(worstTier([near, perceptual])).toBeNull();
   });
 });

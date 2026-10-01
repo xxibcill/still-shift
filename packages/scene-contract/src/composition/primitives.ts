@@ -33,6 +33,8 @@ export const COMPOSITION_LIMITS = {
   maxPropertyPathLength: 512,
   maxMetadataBytes: 65_536,
   maxMetadataDepth: 64,
+  maxJsonBytes: 65_536,
+  maxJsonDepth: 64,
   maxCoordinate: 1_000_000,
   maxStretch: 100,
   maxSeed: 2_147_483_647,
@@ -64,69 +66,144 @@ export const size2 = z.tuple([
 export const sha256 = z.string().regex(/^sha256:[a-f0-9]{64}$/);
 export const label = z.string().min(1).max(200);
 
-/**
- * Free-form JSON carried through unchanged (registration, claims, review notes).
- * Bound container depth before recursive JSON parsing. Size is checked during
- * semantic validation.
- */
-export const metadata = z
-  .unknown()
-  .superRefine((value, ctx) => {
-    type Entry = {
-      value: unknown;
-      depth: number;
-      path: (string | number)[];
-      exit?: boolean;
-    };
-    const stack: Entry[] = [{ value, depth: 0, path: [] }];
-    const ancestors = new WeakSet<object>();
-    const fail = (code: string, path: (string | number)[], message: string) =>
-      ctx.addIssue({
-        code: "custom",
-        path,
-        message: `${code}: ${message}`,
-        params: { diagnosticCode: code },
-        fatal: true,
-      });
-    while (stack.length) {
-      const entry = stack.pop()!;
-      if (entry.value === null || typeof entry.value !== "object") continue;
-      if (entry.exit) {
-        ancestors.delete(entry.value);
-        continue;
-      }
-      if (ancestors.has(entry.value)) {
-        fail(
-          "comp-schema-type",
-          entry.path,
-          "metadata must contain JSON values without cycles",
-        );
-        return;
-      }
-      if (entry.depth > L.maxMetadataDepth) {
-        fail(
-          "comp-metadata-depth",
-          entry.path,
-          `metadata may nest at most ${L.maxMetadataDepth} container levels below its root`,
-        );
-        return;
-      }
-      ancestors.add(entry.value);
-      stack.push({ ...entry, exit: true });
-      const children = Array.isArray(entry.value)
-        ? entry.value.entries()
-        : Object.entries(entry.value);
-      for (const [key, child] of children) {
-        if (child === null || typeof child !== "object") continue;
-        stack.push({
-          value: child,
-          depth: entry.depth + 1,
-          path: [...entry.path, key],
+type JsonBounds = {
+  bytes: number;
+  depth: number;
+  sizeCode: string;
+  depthCode: string;
+  label: string;
+};
+
+/** Bound the expanded JSON tree before Zod recursively parses it. */
+export function boundedJson<T extends z.ZodType>(
+  schema: T,
+  bounds: JsonBounds = {
+    bytes: L.maxJsonBytes,
+    depth: L.maxJsonDepth,
+    sizeCode: "comp-json-size",
+    depthCode: "comp-json-depth",
+    label: "JSON payload",
+  },
+) {
+  return z
+    .unknown()
+    .superRefine((value, ctx) => {
+      type Entry = {
+        value: unknown;
+        depth: number;
+        path: (string | number)[];
+        exit?: boolean;
+      };
+      const stack: Entry[] = [{ value, depth: 0, path: [] }];
+      const ancestors = new WeakSet<object>();
+      const encoder = new TextEncoder();
+      let bytes = 0;
+      const fail = (code: string, path: (string | number)[], message: string) =>
+        ctx.addIssue({
+          code: "custom",
+          path,
+          message: `${code}: ${message}`,
+          params: { diagnosticCode: code },
+          fatal: true,
         });
+      const addBytes = (count: number) => {
+        bytes += count;
+        if (bytes <= bounds.bytes) return true;
+        fail(
+          bounds.sizeCode,
+          [],
+          `${bounds.label} must serialise to at most ${bounds.bytes} bytes`,
+        );
+        return false;
+      };
+      const stringBytes = (text: string) =>
+        text.length > bounds.bytes
+          ? bounds.bytes + 1
+          : encoder.encode(JSON.stringify(text)).length;
+
+      while (stack.length) {
+        const entry = stack.pop()!;
+        const child = entry.value;
+        if (child === null) {
+          if (!addBytes(4)) return;
+          continue;
+        }
+        if (typeof child !== "object") {
+          if (
+            typeof child !== "string" &&
+            typeof child !== "boolean" &&
+            !(typeof child === "number" && Number.isFinite(child))
+          ) {
+            fail(
+              "comp-schema-type",
+              entry.path,
+              `${bounds.label} must contain JSON values`,
+            );
+            return;
+          }
+          const count =
+            typeof child === "string"
+              ? stringBytes(child)
+              : JSON.stringify(child).length;
+          if (!addBytes(count)) return;
+          continue;
+        }
+        if (entry.exit) {
+          ancestors.delete(child);
+          continue;
+        }
+        if (ancestors.has(child)) {
+          fail(
+            "comp-schema-type",
+            entry.path,
+            `${bounds.label} must contain JSON values without cycles`,
+          );
+          return;
+        }
+        if (entry.depth > bounds.depth) {
+          fail(
+            bounds.depthCode,
+            entry.path,
+            `${bounds.label} may nest at most ${bounds.depth} container levels below its root`,
+          );
+          return;
+        }
+        const array = Array.isArray(child);
+        const prototype = Object.getPrototypeOf(child);
+        if (!array && prototype !== Object.prototype && prototype !== null) {
+          fail(
+            "comp-schema-type",
+            entry.path,
+            `${bounds.label} must contain JSON objects`,
+          );
+          return;
+        }
+        const children = array ? child.entries() : Object.entries(child);
+        const count = array ? child.length : Object.keys(child).length;
+        if (!addBytes(2 + Math.max(0, count - 1))) return;
+        ancestors.add(child);
+        stack.push({ ...entry, exit: true });
+        for (const [key, nested] of children) {
+          if (!array && !addBytes(stringBytes(String(key)) + 1)) return;
+          stack.push({
+            value: nested,
+            depth: entry.depth + 1,
+            path: [...entry.path, key],
+          });
+        }
       }
-    }
-  })
-  .pipe(z.record(z.string().max(128), z.json()));
+    })
+    .pipe(schema);
+}
+
+/** Free-form metadata, bounded before recursive parsing. */
+export const metadata = boundedJson(z.record(z.string().max(128), z.json()), {
+  bytes: L.maxMetadataBytes,
+  depth: L.maxMetadataDepth,
+  sizeCode: "comp-metadata-size",
+  depthCode: "comp-metadata-depth",
+  label: "metadata",
+});
 
 /** Reported on semantic issues so validation can return stable codes. */
 export type IssueReporter = (

@@ -334,13 +334,13 @@ describe("composition-1 motion dependencies", () => {
       },
     ];
     doc.drivers = [
-      { target: "a.x", source: "scene/a.x" },
-      { target: "scene/a.x", source: "a.x" },
+      { target: "a.x", source: "instance/a.x" },
+      { target: "instance/a.x", source: "a.x" },
     ];
     expectDiagnostic(errors(doc), "comp-motion-cycle");
   });
 
-  it("recognises the same precomp through different path prefixes", () => {
+  it("keeps reused precomp instances independent through different path prefixes", () => {
     const doc = minimalComposition();
     doc.layers = [
       { id: "first", type: "precomp", comp: "one" },
@@ -363,9 +363,12 @@ describe("composition-1 motion dependencies", () => {
       },
     ];
     doc.drivers = [
-      { target: "one/leaf/a.x", source: "two/leaf/a.transform.position.x" },
+      {
+        target: "first/inner/a.x",
+        source: "second/inner/a.transform.position.x",
+      },
     ];
-    expectDiagnostic(errors(doc), "comp-motion-cycle", "drivers[0].source");
+    expect(validateComposition(doc)).toMatchObject({ ok: true });
   });
 
   it("accepts acyclic sources, signals and separate layer namespaces", () => {
@@ -390,7 +393,7 @@ describe("composition-1 motion dependencies", () => {
       },
     ];
     doc.drivers = [
-      { target: "a.x", sum: ["pressure", "scene/a.x"] },
+      { target: "a.x", sum: ["pressure", "instance/a.x"] },
       { target: "b.x", signal: "pressure" },
     ];
     doc.constraints = [{ type: "attach", target: "a", anchor: "b" }];

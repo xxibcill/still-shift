@@ -255,6 +255,14 @@ Text layers follow the story typography rules: spans fit every text state and do
 overlap, decorations and animators name existing spans, variable-font axes stay in the
 pinned font's range, and text transitions do not overlap and name existing states.
 
+Text animator `from.axes` and `to.axes` are deltas from each affected layer or span
+style, falling back to the font's default axis value. Axis names must exist on every
+affected pinned variable font. Validation conservatively bounds the combined deltas
+in motion-layer order, including weights, easing overshoot and replace/add/multiply
+blends; the entire bound must fit the font's range. Animators restricted to a named
+span affect only that span's style. Conservative bounds can reject animations whose
+actual time-dependent values stay in range; reduce the deltas or separate their targets.
+
 ## Layers
 
 ### Fields on every layer
@@ -348,8 +356,8 @@ targets:
 Property sources read a layer's evaluated state. Driver, constraint and parent
 dependencies must form an acyclic graph, including dependencies inside precomps
 and across property-path scopes. Legacy aliases resolve to the same layer; a driver
-cannot read its own evaluated layer. Reused precomps have one layer namespace,
-even when reached through different path prefixes.
+cannot read its own evaluated layer instance. Reused source definitions retain separate
+layer identities and clocks for each full instance route.
 
 Reading a precomp layer's contents also depends on the time at which that precomp is
 sampled. A `timeRemap` driver cannot read a descendant whose evaluated state requires
@@ -368,14 +376,19 @@ time is independent of that driver.
 ## Property paths
 
 ```text
-path     := [ precompId "/" ]* layerId "." segment ( "." segment )*
+path     := [ precompLayerId "/" ]* layerId "." segment ( "." segment )*
 segment  := name | name "[" id "]"
 ```
 
 - `title.transform.position` — a vector; `title.transform.position.x` — its component.
-- `scene/hero.transform.opacity` — layer `hero` inside precomp `scene`. Each prefix is a
-  **precomp id**, and each must be used by a precomp layer in the scope before it
-  (`scene/leaf/dot.color` when `scene` uses `leaf`).
+- `intro/hero.transform.opacity` — layer `hero` inside precomp layer `intro`. Each prefix
+  names a **precomp layer instance** in the current scope, then follows its `comp`
+  source definition. `intro/nested/dot.color` traverses two layer instances. A source
+  definition id alone is not a valid hop.
+- `outro/hero.transform.opacity` — a separate instance of the same source. Drivers
+  and cycle checks retain the entire instance route; sibling instances with different
+  start/stretch/remap settings do not share a clock. Evaluation applies each hop's
+  time mapping in CE2.
 - `house.masks[window].feather`, `bg.effects[glow].radius` — indexed by mask or effect id.
 - `comp.camera.zoom` — composition properties.
 
@@ -459,6 +472,8 @@ Features that are in the contract but not yet implemented fail with
 | Property path length                                      | 512 characters                     |
 | Metadata                                                  | 64 KiB per object                  |
 | Metadata nesting depth                                    | 64 container levels below its root |
+| Expression AST, effect parameters or shape contents       | 64 KiB per payload                 |
+| Opaque JSON nesting depth                                 | 64 container levels below its root |
 | Other numbers                                             | ±1,000,000                         |
 
 The same values are exported as `COMPOSITION_LIMITS`.
@@ -468,7 +483,9 @@ values, generator amplitudes, driver maps, temporal speeds, bezier handles, cons
 offsets, text animation and font axes, and camera coordinates, zoom, tangents and jolts.
 These use the general numeric limit unless their field has a tighter range. Imported
 curves retain their existing 2–100 key limit and nonnegative frame convention. Metadata
-remains free-form JSON subject to its byte and nesting-depth limits. Cyclic values
+remains free-form JSON subject to its byte and nesting-depth limits. Expression ASTs,
+effect parameter objects and shape contents have the same byte and depth limits,
+checked before recursive parsing even while those features are unavailable. Cyclic values
 are rejected as invalid JSON. Legacy story and commerce contracts
 retain their original bounds.
 
@@ -518,7 +535,7 @@ retain their original bounds.
 | `comp-text-font`            | A text size above 180 without a pinned font (`fontAsset` or `style`).                                                                              |
 | `comp-text-span-range`      | A span ends after the text or one of its states, or overlaps another span.                                                                         |
 | `comp-text-span-missing`    | A decoration or text animator names a span the text layer does not have.                                                                           |
-| `comp-text-font-axis`       | A variable-font axis value (style or span) is outside the pinned font's range, or the font is not variable.                                        |
+| `comp-text-font-axis`       | A variable-font axis value (style, span or blended animator) is outside the pinned font's range, or the font is not variable.                      |
 | `comp-text-locale`          | A text layer's locale is not recognised.                                                                                                           |
 | `comp-text-transition`      | `transition` and `transitions` together, overlapping windows, a missing from/to state, or a count without numeric states and tabular figures.      |
 | `comp-marker-frame`         | A marker lies at or after `frameCount`.                                                                                                            |
@@ -532,12 +549,14 @@ retain their original bounds.
 | `comp-camera-key-range`     | A `camera2d` key lies at or after `frameCount`.                                                                                                    |
 | `comp-format-size`          | `format` disagrees with `width` and `height`.                                                                                                      |
 | `comp-metadata-size`        | Metadata serialises to more than 64 KiB.                                                                                                           |
+| `comp-json-size`            | An expression AST, effect parameter object or shape contents payload serialises to more than 64 KiB.                                               |
+| `comp-json-depth`           | An opaque JSON payload nests more than 64 container levels below its root; checked before recursive JSON parsing.                                  |
 | `comp-metadata-depth`       | Metadata nests more than 64 container levels below its root; checked before recursive JSON parsing.                                                |
 | `comp-driver-source`        | A driver has none or several of `signal`, `source` and `sum`.                                                                                      |
 | `comp-motion-cycle`         | Driver, constraint or parent dependencies form a cycle, including precomp-scoped dependencies.                                                     |
 | `comp-periodic`             | Invalid periodic window or generator, or both / neither of `target` and `node` + `property`.                                                       |
 | `comp-path-syntax`          | A property path does not match the grammar.                                                                                                        |
-| `comp-path-scope`           | A path prefix is not a precomp used at that level.                                                                                                 |
+| `comp-path-scope`           | A path prefix does not name a precomp layer instance at that level.                                                                                |
 | `comp-path-layer`           | A path names no layer in its scope.                                                                                                                |
 | `comp-path-property`        | A path names no property of its layer (including unknown mask and effect ids).                                                                     |
 | `comp-path-type`            | A driver or periodic motion targets a non-scalar property.                                                                                         |

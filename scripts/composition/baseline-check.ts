@@ -1,3 +1,27 @@
+import { isDeepStrictEqual } from "node:util";
+import type { RenderEnvironment } from "../../packages/execution-runtime/src/render-browser.ts";
+import type { TimingMachine } from "./baseline-timings.ts";
+
+type BaselineProvenance = {
+  browserArgs: readonly string[];
+  renderEnvironment: Omit<RenderEnvironment, "profile"> & { profile: string };
+  machine?: TimingMachine;
+};
+
+export function assertBaselineProvenance(
+  previous: BaselineProvenance,
+  current: BaselineProvenance,
+) {
+  if (
+    !isDeepStrictEqual(previous.renderEnvironment, current.renderEnvironment) ||
+    !isDeepStrictEqual(previous.browserArgs, current.browserArgs) ||
+    !isDeepStrictEqual(previous.machine, current.machine)
+  )
+    throw new Error(
+      "Cannot retain pixel baselines from different renderer or machine provenance; run a full --write without --only or --family",
+    );
+}
+
 type Fixture = { id: string; family: string };
 type FixtureFilters = {
   only?: readonly string[] | undefined;
@@ -51,4 +75,23 @@ export function assertBaselineInventory(options: {
   ];
   if (problems.length)
     throw new Error(`Baseline inventory mismatch: ${problems.join("; ")}`);
+}
+
+export function replaceBaselineItems<
+  T extends { fixture: string; family: string },
+>(
+  previous: Record<string, T>,
+  regenerated: Record<string, T>,
+  filters: FixtureFilters = {},
+): Record<string, T> {
+  const retained = Object.fromEntries(
+    Object.entries(previous).filter(
+      ([, item]) =>
+        !(
+          (!filters.only || filters.only.includes(item.fixture)) &&
+          (!filters.families || filters.families.includes(item.family))
+        ),
+    ),
+  );
+  return { ...retained, ...regenerated };
 }

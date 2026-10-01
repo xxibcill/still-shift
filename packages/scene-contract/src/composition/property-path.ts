@@ -4,10 +4,10 @@ import { COMPOSITION_LIMITS } from "./primitives.ts";
 /**
  * Property paths address anything animatable:
  *
- *   path    := [ precompId "/" ]* layerId "." segment ( "." segment )*
+ *   path    := [ precompLayerId "/" ]* layerId "." segment ( "." segment )*
  *   segment := name | name "[" index "]"
  *
- * `scene/hero.transform.opacity` is layer `hero` inside precomp `scene`;
+ * `intro/hero.transform.opacity` is layer `hero` inside precomp layer `intro`;
  * `comp.camera.zoom` addresses the composition itself. Legacy targets such as
  * `title.x` are aliases (see LEGACY_PROPERTY_ALIASES).
  */
@@ -42,7 +42,8 @@ export function parsePropertyPath(
   const parts = text.split("/");
   const tail = parts.pop()!;
   for (const scope of parts)
-    if (!identifier.test(scope)) return syntax(`invalid precomp id "${scope}"`);
+    if (!identifier.test(scope))
+      return syntax(`invalid precomp layer id "${scope}"`);
   const [layer, ...rest] = tail.split(".");
   if (!layer || !identifier.test(layer))
     return syntax(`invalid layer id "${layer ?? ""}"`);
