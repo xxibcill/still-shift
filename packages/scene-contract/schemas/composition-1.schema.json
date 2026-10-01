@@ -631,6 +631,7 @@
               },
               "state": { "$ref": "#/$defs/__schema70" },
               "fontSize": { "type": "number", "minimum": 1, "maximum": 2000 },
+              "size": { "$ref": "#/$defs/__schema67" },
               "color": { "$ref": "#/$defs/__schema68" },
               "weight": { "type": "string", "enum": ["normal", "bold"] },
               "font": { "type": "string", "enum": ["serif", "sans-serif"] },

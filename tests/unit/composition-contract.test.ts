@@ -49,6 +49,13 @@ const layerOf = (doc: Doc, id: string) =>
 const indexOf = (doc: Doc, id: string) =>
   doc.layers.findIndex((l) => l.id === id);
 
+const pinnedFont = () => ({
+  id: "display",
+  type: "font" as const,
+  path: "display.otf",
+  sha256: `sha256:${"0".repeat(64)}`,
+  weight: "600",
+});
 const errors = (input: unknown) => {
   const result = validateComposition(input);
   expect(result.ok, JSON.stringify(result.diagnostics)).toBe(false);
@@ -102,6 +109,7 @@ describe("composition-1 text style references", () => {
     "accepts explicitly declared style %s on layers and spans",
     (style) => {
       const doc = minimalComposition();
+      doc.assets = [pinnedFont()];
       doc.textStyles = { [style]: { tracking: 20 } };
       doc.layers = [
         {
@@ -110,6 +118,7 @@ describe("composition-1 text style references", () => {
           text: "Hi",
           fontSize: 36,
           color: "#ffffff",
+          fontAsset: "display",
           style,
           spans: [{ start: 0, end: 2, style }],
         },
@@ -189,7 +198,8 @@ describe("composition-1 display fonts", () => {
           text: "Hi",
           fontSize: placement === "span" ? 36 : 600,
           color: "#ffffff",
-          ...(placement === "layer" ? { fontAsset: "display" } : {}),
+          // Spans also need a pinned base font: shaping uses its metrics (CE3).
+          ...(placement === "style" ? {} : { fontAsset: "display" }),
           ...(placement === "span"
             ? { spans: [{ start: 0, end: 2, style: "large" }] }
             : { style: "large" }),
@@ -201,6 +211,82 @@ describe("composition-1 display fonts", () => {
       });
     },
   );
+
+  it.each([
+    ["spans", { spans: [{ start: 0, end: 2 }] }],
+    ["decorations", { decorations: [{ kind: "underline", color: "#000000" }] }],
+    [
+      "transition",
+      {
+        states: ["Hi", "Yo"],
+        transition: { kind: "crossfade", window: { start: 0, end: 10 } },
+      },
+    ],
+    [
+      "textBox",
+      {
+        size: [200, 80],
+        textBox: { locale: "en", maxLines: 2, lineHeight: 1.2 },
+      },
+    ],
+  ])("requires a pinned font for %s", (field, fields) => {
+    const doc = minimalComposition();
+    doc.layers = [
+      {
+        id: "title",
+        type: "text",
+        text: "Hi",
+        fontSize: 36,
+        color: "#ffffff",
+        ...fields,
+      } as Composition["layers"][number],
+    ];
+    expectDiagnostic(
+      errors(doc),
+      "comp-text-pinned-font",
+      `layers[0].${field}`,
+    );
+  });
+
+  it("requires a pinned font for a text animator target", () => {
+    const doc = minimalComposition();
+    doc.layers = [
+      { id: "title", type: "text", text: "Hi", fontSize: 36, color: "#ffffff" },
+    ];
+    doc.textAnimators = [
+      {
+        node: "title",
+        unit: "glyph",
+        start: 0,
+        end: 10,
+        stagger: 1,
+        selector: { start: 0, end: 1 },
+        from: { opacity: 0 },
+      },
+    ];
+    expectDiagnostic(
+      errors(doc),
+      "comp-text-pinned-font",
+      "textAnimators[0].node",
+    );
+  });
+
+  it("requires a size for textBox layouts", () => {
+    const doc = minimalComposition();
+    doc.assets = [pinnedFont()];
+    doc.layers = [
+      {
+        id: "title",
+        type: "text",
+        text: "Hi",
+        fontSize: 36,
+        color: "#ffffff",
+        fontAsset: "display",
+        textBox: { locale: "en", maxLines: 2, lineHeight: 1.2 },
+      },
+    ];
+    expectDiagnostic(errors(doc), "comp-text-box-size", "layers[0].size");
+  });
 
   it("allows an unpinned style at size 180", () => {
     const doc = minimalComposition();

@@ -203,6 +203,8 @@ export const TextLayerSchema = z
       .optional(),
     state: AnimatableDiscreteSchema.optional(),
     fontSize: finite.min(1).max(2000),
+    /** Wrap box `[width, height]` for `textBox` layouts, in layer pixels (CE3). */
+    size: size2.optional(),
     color: AnimatableColorSchema,
     weight: z.enum(["normal", "bold"]).optional(),
     font: z.enum(["serif", "sans-serif"]).optional(),

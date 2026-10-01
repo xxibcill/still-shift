@@ -337,6 +337,30 @@ function checkText(
     style?.size === undefined ? "fontSize" : "style",
   ]);
   checkAxes(fail, assets, base, [...path, "style"], `"${layer.id}"`);
+  // The typography renderer shapes text with the pinned font's metrics (CE3).
+  if (assets.get(base.fontAsset ?? "")?.type !== "font") {
+    const feature = (
+      [
+        ["spans", layer.spans],
+        ["decorations", layer.decorations],
+        ["transition", layer.transition],
+        ["transitions", layer.transitions],
+        ["textBox", layer.textBox],
+      ] as const
+    ).find(([, value]) => value !== undefined);
+    if (feature)
+      fail(
+        "comp-text-pinned-font",
+        [...path, feature[0]],
+        `${feature[0]} needs a pinned font (fontAsset or a style with one)`,
+      );
+  }
+  if (layer.textBox && !layer.size)
+    fail(
+      "comp-text-box-size",
+      [...path, "size"],
+      "textBox layouts need a size [width, height]",
+    );
 
   let locale = layer.locale ?? layer.textBox?.locale ?? "en";
   try {
@@ -545,6 +569,7 @@ function checkPrecompGraph(comp: Composition, fail: IssueReporter) {
 }
 
 function checkConstraints(
+  comp: Composition,
   scope: CompositionScope,
   base: Path,
   fail: IssueReporter,
@@ -602,6 +627,19 @@ function checkConstraints(
         `no signal "${animator.signal}"`,
       );
     const node = layers.get(animator.node);
+    if (
+      node?.type === "text" &&
+      comp.assets.find(
+        (asset) =>
+          asset.id ===
+          (declaredTextStyle(comp, node.style)?.fontAsset ?? node.fontAsset),
+      )?.type !== "font"
+    )
+      fail(
+        "comp-text-pinned-font",
+        [...path, "node"],
+        `text animators need a pinned font on "${node.id}"`,
+      );
     if (
       animator.span &&
       node?.type === "text" &&
@@ -806,6 +844,7 @@ export function validateCompositionSemantics(
     );
     checkParents(scope, base, fail);
     checkConstraints(
+      comp,
       scope,
       base,
       fail,
