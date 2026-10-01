@@ -518,7 +518,231 @@ below).
 - **Pinned flags:** see policy rule 1. The obvious `--use-angle=swiftshader` choice
   would have changed existing Canvas 2D output; `--disable-gpu` reproduces the
   historical default exactly.
-- **Checks run:** the full `pnpm check` on the pinned toolchain (Node 22.23.1,
+- **Checks run:** `pnpm check:fast` (schema, boundaries, format, lint, types, 546 unit
+  tests), `pnpm test:runtime` (43 tests), `pnpm test:integration` (108 tests including
+  the new export-renderer tests), `pnpm test:browser:export`, `pnpm test:golden`, and
+  `pnpm test:browser:composition-baselines`. The full `pnpm check` browser matrix was
+  not run in this session.
+- **Cross-platform (2026-10-01):** Linux runs used
+  `mcr.microsoft.com/playwright:v1.62.1-noble` with Node 22.23.1 and pnpm 10.29.3
+  installed at their pinned versions, and Ubuntu's FFmpeg 6.1.1 for audio probing only
+  (it never touches pixels). Compared with macOS arm64, frames that differed were saved
+  at full resolution (the first difference and differing sampled frames, up to six per
+  item) and classified:
+
+  | Environment            | Exact | Near | Perceptual | Below every tier | Raster fingerprint |
+  | ---------------------- | ----- | ---- | ---------- | ---------------- | ------------------ |
+  | Linux arm64 (native)   | 45    | 0    | 9          | 122              | same as macOS      |
+  | Linux x86_64 (Rosetta) | 4     | 36   | 15         | 121              | different          |
+  - Items without text (all 15 cinematic scenes, most Commerce atoms) are exact on
+    Linux arm64. On x86_64 they are `near`, down to 54.9 dB for cinematic scenes.
+  - Items with text are below every tier on both, with PSNR as low as 22.7 dB
+    (typography) and 24.5 dB (passages). The cause is glyph advance drift, not
+    antialiasing.
+  - A split probe inside the x86_64 container matched macOS for gradients and
+    antialiased shapes and differed from the blur filter onward.
+  - A second Linux arm64 container reproduced all 176 items (36,061 frames) exactly,
+    so Linux rendering is deterministic within its own environment.
+  - Timing: about 6 minutes per full render in the arm64 container, and about
+    34 minutes under Rosetta.
+
+- **Limitations:**
+  - The `linux-x64` baseline was generated under Rosetta (its file records the CPU as
+    `VirtualApple`). SwiftShader and Skia choose code paths by CPU features, so a real
+    x86 CPU with AVX may differ again. Confirm on real x86 hardware before relying on
+    it, and regenerate there if it differs.
+  - Linux runs used Ubuntu's FFmpeg 6.1.1 instead of the pinned 8.0.1, only for audio
+    duration probing during passage preparation.
+  - The hardware profile is headless Chromium with Metal (ANGLE). It approximates a
+    user's desktop Chrome, which may use a different GPU and driver.
+  - Only the export path, passage text validation and the baseline harness use the
+    pinned launcher. Other test and script launches keep the headless default, which
+    CE0 showed is byte-identical today; migrating them is a follow-up.
+  - Frame hashes are 64-bit prefixes, sufficient for regression detection, not for
+    proving identity against an adversary.
+
+---
+
+## CE1 — `composition-1` contract and property paths
+
+**Outcome:** One validated, versioned data format can describe everything an After
+Effects composition can for this project's needs.
+
+### Contract sketch
+
+This sketch reflects the implemented names. The complete contract, field defaults,
+limits and diagnostics are in the [composition reference](./composition-reference.md)
+and `packages/scene-contract/src/composition/`. Implementation decisions are recorded
+in the [decision log](#decision-log).
+
+```ts
+type Composition = {
+  schemaVersion: "composition-1";
+  id: string;
+  width: number;
+  height: number; // 16–8192
+  fps: 24 | 25 | 30 | 50 | 60;
+  frameCount: number; // integer ≥ 1
+  background?: Color | null; // null = transparent
+  colorSpace?: "srgb" | "linear-srgb"; // compositing space, CE6
+  motionBlur?: {
+    enabled: boolean;
+    shutterAngle: number;
+    shutterPhase: number;
+    samples: number;
+  }; // CE7
+  assets: Asset[]; // images, fonts, video, audio (sha256-pinned)
+  precomps?: Precomp[]; // flat root list; own layer namespaces; depth ≤ 8
+  layers: Layer[]; // index 0 = top, as in AE
+  markers?: Marker[]; // cues: { id, frame, duration?, label? }
+  signals?: Signal[];
+  drivers?: CompositionDriver[];
+  constraints?: Constraint[]; // per scope, reused from motion-craft
+  periodic?: CompositionPeriodic[];
+  textAnimators?: TextAnimator[]; // per scope
+  camera2d?: Camera2d; // story-compatible camera with layer cameraDepth
+  expressions?: Record<PropertyPath, { source: string; ast?: ExpressionAst }>; // CE9: text syntax parsed to AST
+  format?: OutputFormat; // reuse output-format.ts
+};
+
+type LayerBase = {
+  id: string;
+  name?: string;
+  type:
+    | "solid"
+    | "image"
+    | "text"
+    | "shape"
+    | "null"
+    | "group"
+    | "precomp"
+    | "adjustment"
+    | "camera"
+    | "light"
+    | "video"
+    | "sequence"
+    | "audio";
+  inPoint?: number; // default 0
+  outPoint?: number; // default scope frameCount; comp frames, [in, out)
+  startFrame?: number; // layer time 0 in comp frames
+  stretch?: number; // nonzero; 2 is half speed, negative reverses
+  timeRemap?: Animatable<number>; // precomp or media layers
+  parent?: string;
+  enabled?: boolean;
+  solo?: boolean;
+  guide?: boolean;
+  threeD?: boolean; // CE8
+  transform?: Transform; // fields optional and animatable
+  blendMode?: BlendMode;
+  trackMatte?: {
+    layer: string;
+    mode: "alpha" | "alpha-inverted" | "luma" | "luma-inverted";
+  };
+  masks?: Mask[];
+  effects?: EffectInstance[]; // CE6 registry ids
+  motionBlur?: boolean; // CE7
+  collapseTransforms?: boolean; // precomp
+  cameraDepth?: number; // unparented root layers only
+  qualification?: string; // keep evidence/qualification metadata from story
+  source?: { family: string; id: string }; // adapter provenance for diagnostics
+};
+
+type Transform = {
+  anchor?: Animatable<Vec2 | Vec3>;
+  position?: Animatable<Vec2 | Vec3>;
+  scale?: Animatable<Vec2 | Vec3>;
+  rotation?: Animatable<number>;
+  orientation?: Animatable<Vec3>;
+  rotationX?: Animatable<number>;
+  rotationY?: Animatable<number>;
+  skewX?: Animatable<number>;
+  skewY?: Animatable<number>;
+  opacity?: Animatable<number>;
+  autoOrient?: "off" | "path" | "camera";
+};
+
+// An expression attaches to a property through the `expressions` map (keyed by
+// property path) and receives the keyed value as `value`, as in AE.
+type Animatable<T> = T | { keys: Key<T>[] };
+```
+
+`Key<T>` extends the existing `ScalarKeySchema` fields (`easing`, `interpolation`,
+`bezier`, `in`, `out`, `smooth`) to vector and colour values. Vector keys interpolate
+component-wise unless per-key `spatialIn` / `spatialOut` tangents are given, in which
+case position follows the spatial bezier with the temporal curve controlling progress
+along arc length (roving
+keys become possible in CE9). Separate dimensions use `{ x, y, z? }` with each
+component animatable; keys are integer frames in layer time, bounded to ±216,000.
+
+### Property paths
+
+A single grammar addresses anything animatable, used by drivers, expressions,
+diagnostics, the builder and the Lab:
+
+```text
+path     := [ precompId "/" ]* layerId "." segment ( "." segment )*
+segment  := name | name "[" id "]"
+examples: title.transform.position
+          title.transform.position.x          (component access)
+          bg.effects[glow].radius              (effect by instance id)
+          bars.contents[bar1].trimEnd          (shape contents, CE5)
+          scene/hero.transform.opacity         (inside a precomp)
+          comp.camera.zoom
+```
+
+### Checklist
+
+- [x] Add `packages/scene-contract/src/composition/` with schemas for composition,
+      assets, markers, all layer types listed above (types that later milestones
+      implement may be schema-only here, rejected by a `comp-feature-unavailable`
+      diagnostic until then), transforms, keys for scalar/vec2/vec3/colour/discrete/path,
+      masks, track mattes and blend modes.
+- [x] Blend modes: `normal`, `multiply`, `screen`, `overlay`, `darken`, `lighten`,
+      `color-dodge`, `color-burn`, `hard-light`, `soft-light`, `difference`,
+      `exclusion`, `hue`, `saturation`, `color`, `luminosity` and `add` (Canvas
+      `lighter`).
+- [x] Masks: closed bezier path (Animatable); mode `add`, `subtract`, `intersect`,
+      `difference` or `none`; `inverted`, `feather` (px), `expansion` (px) and
+      `opacity`.
+- [x] Implement the property-path parser and resolver with typed results
+      (scalar/vec2/vec3/colour/discrete/path) and use it for validation of every path
+      reference.
+- [x] Add composition driver and periodic schemas whose targets and sources use
+      property paths; keep legacy `node.property` aliases and periodic `node` +
+      `property` valid. Existing story and commerce schemas remain unchanged.
+- [x] Resolve the CE0 [parity notes](#parity-notes-for-adapter-work): an opacity
+      inheritance option for group layers, fractional key times or baking for legacy
+      millisecond tracks, a composition 2D camera with per-layer depth factor, and an
+      image rasterisation option. Record each decision in the decision log.
+- [x] Semantic validation: unique ids, parent cycles, matte layer exists and is
+      directly above (AE rule) or explicitly referenced, precomp cycles, in < out,
+      key frames ascending and inside a sane window, asset hashes present, precomp
+      nesting depth ≤ 8 across every precomp graph, total layer count ≤ 2,000.
+      Driver, constraint and parent dependencies must be acyclic. Text layers follow
+      the supported story typography rules.
+- [x] Diagnostic codes prefixed `comp-` with JSON paths; document every code in
+      `docs/composition-reference.md` (created in this milestone and extended by each
+      later milestone).
+- [x] Add the schema to `scripts/generate-corpus-schema.ts` so `pnpm schema:check`
+      covers it and a JSON Schema file is generated for editors and AI agents.
+
+**Acceptance:** A hand-written composition exercising every CE1 field validates; each
+invalid variant in the test suite fails with the expected code and path.
+
+**Verification:** Unit tests for schema, path grammar (valid, invalid, ambiguous,
+precomp-scoped), cycles and limits. Round trip: parse → serialise → parse is identical.
+
+**Completion record (2026-10-01).** CE1 is implemented on
+`codex/composition-ce1`, stacked on `codex/composition-ce0`.
+
+- **Contract:** exported from `@still-shift/scene-contract`, with structural and
+  semantic validation and stable `comp-*` diagnostics.
+- **Fixtures:** `first-slice.json` and `every-field.json` in
+  `benchmarks/fixtures/composition/ce1/`; the field-coverage test checks the latter.
+- **Reference and schema:** `docs/composition-reference.md` and generated
+  `packages/scene-contract/schemas/composition-1.schema.json`, covered by
+  `pnpm schema:check`.
+- **Original implementation checks:** the full `pnpm check` on the pinned toolchain (Node 22.23.1,
   pnpm 10.29.3, Python 3.12.11, Playwright 1.62.1, FFmpeg 8.0.1) passed in about
   27 minutes: toolchain, schema, boundaries, format, lint and types; 736 unit tests
   (181 new: 99 contract and 82 property-path tests); 43 runtime and 110 integration
@@ -536,6 +760,12 @@ below).
   - The generated JSON Schema was checked against both fixtures with a draft-07
     validator already in `node_modules`, which ignores `prefixItems`. No 2020-12
     validator was added as a dependency.
+- **Review follow-up:** regression tests cover inherited style names, empty path
+  keys, resolved display fonts, motion dependency cycles (including precomp scopes),
+  and unused precomp depth. `pnpm check:fast` passed on Node 22.23.1: generated schema,
+  package boundaries, formatting, lint, TypeScript and all 771 unit tests (including
+  123 composition contract tests). Full rendering was not rerun for these validation
+  fixes.
 
 ---
 
