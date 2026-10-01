@@ -457,7 +457,12 @@ const invalid: Mutation[] = [
   ],
   [
     "display text without pinned font",
-    (d) => set(layerOf(d, "textbox"), { fontSize: 200, fontAsset: undefined }),
+    (d) =>
+      set(layerOf(d, "textbox"), {
+        fontSize: 200,
+        fontAsset: undefined,
+        style: undefined,
+      }),
     "comp-text-font",
   ],
   [
@@ -615,6 +620,123 @@ const invalid: Mutation[] = [
     (d) => set(d, { colorSpace: "linear-srgb" }),
     "comp-feature-unavailable",
     "colorSpace",
+  ],
+  [
+    "marker past the end",
+    (d) => set(d.markers![0]!, { duration: 121 }),
+    "comp-marker-duration",
+    "markers[0].duration",
+  ],
+  [
+    "camera key after the end",
+    (d) => set(d.camera2d!.keys[1]!, { frame: 120 }),
+    "comp-camera-key-range",
+    "camera2d.keys[1].frame",
+  ],
+  [
+    "unknown animator span",
+    (d) => set(d.textAnimators![0]!, { span: "ghost" }),
+    "comp-text-span-missing",
+    "textAnimators[0].span",
+  ],
+  [
+    "unknown decoration span",
+    (d) =>
+      set((layerOf(d, "headline").decorations as object[])[0]!, {
+        span: "ghost",
+      }),
+    "comp-text-span-missing",
+  ],
+  [
+    "span longer than a state",
+    (d) => set((layerOf(d, "headline").spans as object[])[0]!, { end: 40 }),
+    "comp-text-span-range",
+  ],
+  [
+    "overlapping spans",
+    (d) =>
+      (layerOf(d, "headline").spans as object[]).push({ start: 10, end: 12 }),
+    "comp-text-span-range",
+  ],
+  [
+    "duplicate span id",
+    (d) =>
+      (layerOf(d, "headline").spans as object[]).push({
+        id: "season",
+        start: 0,
+        end: 3,
+      }),
+    "comp-duplicate-id",
+  ],
+  [
+    "unknown span style",
+    (d) =>
+      set((layerOf(d, "headline").spans as object[])[0]!, { style: "ghost" }),
+    "comp-text-style-missing",
+  ],
+  [
+    "axis on a static font",
+    (d) => set(d.textStyles!.heading!, { axes: { wght: 500 } }),
+    "comp-text-font-axis",
+  ],
+  [
+    "axis outside the font range",
+    (d) => set(d.textStyles!.variable!, { axes: { wght: 950 } }),
+    "comp-text-font-axis",
+  ],
+  [
+    "unknown style font",
+    (d) => set(d.textStyles!.heading!, { fontAsset: "ghost" }),
+    "comp-asset-missing",
+    "textStyles.heading.fontAsset",
+  ],
+  [
+    "style font that is an image",
+    (d) => set(d.textStyles!.heading!, { fontAsset: "house" }),
+    "comp-asset-type",
+    "textStyles.heading.fontAsset",
+  ],
+  [
+    "invalid locale",
+    (d) => set(layerOf(d, "headline"), { locale: "en_US!!" }),
+    "comp-text-locale",
+  ],
+  [
+    "transition and transitions",
+    (d) =>
+      set(layerOf(d, "headline"), {
+        transitions: [{ kind: "cut", window: { start: 80, end: 90 } }],
+      }),
+    "comp-text-transition",
+  ],
+  [
+    "transition to a missing state",
+    (d) =>
+      set((layerOf(d, "textbox").transitions as object[])[0]!, { toState: 3 }),
+    "comp-text-transition",
+  ],
+  [
+    "overlapping transitions",
+    (d) =>
+      (layerOf(d, "textbox").transitions as object[]).push({
+        kind: "cut",
+        window: { start: 70, end: 95 },
+      }),
+    "comp-text-transition",
+  ],
+  [
+    "count without numbers",
+    (d) =>
+      set((layerOf(d, "textbox").transitions as object[])[0]!, {
+        kind: "count",
+      }),
+    "comp-text-transition",
+  ],
+  [
+    "unknown selector signal",
+    (d) => set(d.textAnimators![0]!.selector, { start: { signal: "ghost" } }),
+    "comp-signal-missing",
+    "textAnimators[0].selector.start.signal",
   ],
   [
     "video asset",

@@ -81,6 +81,14 @@
       "size": 72,
       "tracking": -10,
       "leading": 1.1
+    },
+    "variable": {
+      "fontAsset": "body",
+      "size": 32,
+      "axes": {
+        "wght": 600,
+        "wdth": 90
+      }
     }
   },
   "markers": [
@@ -488,7 +496,8 @@
             "end": 90
           }
         }
-      ]
+      ],
+      "style": "variable"
     },
     {
       "id": "rig",

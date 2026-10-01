@@ -1,5 +1,6 @@
 import type { z } from "zod";
 import { formatSize } from "../output-format.ts";
+import { tabularFigures, type TextStyle } from "../typography.ts";
 import type {
   Composition,
   CompositionAsset,
@@ -246,6 +247,7 @@ function checkLayer(
           "display sizes above 180 require a pinned font",
         );
       stateRange("state", layer.states?.length ?? 1, "text states");
+      checkText(comp, layer, path, fail, assets);
       break;
     case "precomp":
       if (!comp.precomps?.some((p) => p.id === layer.comp))
@@ -262,6 +264,149 @@ function checkLayer(
       break;
   }
   checkMetadata(fail, layer.metadata, [...path, "metadata"]);
+}
+
+type TextLayer = Extract<CompositionLayer, { type: "text" }>;
+const NUMERIC_STATE = /^-?\d+(?:,\d{3})*(?:\.\d+)?$/;
+
+/** Variable-font axes must stay inside the pinned font's fvar range. */
+function checkAxes(
+  fail: IssueReporter,
+  assets: Map<string, CompositionAsset>,
+  style: TextStyle,
+  path: Path,
+  label: string,
+) {
+  const font = assets.get(style.fontAsset ?? "");
+  for (const [axis, value] of Object.entries(style.axes ?? {})) {
+    const range = font?.type === "font" ? font.variable?.[axis] : undefined;
+    if (!range || value < range.min || value > range.max)
+      fail(
+        "comp-text-font-axis",
+        path,
+        `${label} axis ${axis} = ${value} is outside the pinned font's range`,
+      );
+  }
+}
+
+function graphemeCount(text: string, locale: string) {
+  return [
+    ...new Intl.Segmenter(locale, { granularity: "grapheme" }).segment(text),
+  ].length;
+}
+
+/** The story typography rules (typography-validation.ts), applied to text layers. */
+function checkText(
+  comp: Composition,
+  layer: TextLayer,
+  path: Path,
+  fail: IssueReporter,
+  assets: Map<string, CompositionAsset>,
+) {
+  const styles = comp.textStyles ?? {};
+  const style = layer.style ? styles[layer.style] : undefined;
+  const base = { fontAsset: layer.fontAsset, ...style };
+  checkAxes(fail, assets, base, [...path, "style"], `"${layer.id}"`);
+
+  let locale = layer.locale ?? layer.textBox?.locale ?? "en";
+  try {
+    new Intl.Segmenter(locale);
+  } catch {
+    fail("comp-text-locale", [...path, "locale"], `unknown locale "${locale}"`);
+    locale = "en";
+  }
+  const lengths = [layer.text, ...(layer.states ?? [])].map((text) =>
+    graphemeCount(text, locale),
+  );
+  const spanIds = new Set<string>();
+  const ordered = (layer.spans ?? [])
+    .map((span, i) => ({ span, i }))
+    .sort((a, b) => a.span.start - b.span.start);
+  ordered.forEach(({ span, i }, n) => {
+    const spanPath = [...path, "spans", i];
+    if (lengths.some((length) => span.end > length))
+      fail(
+        "comp-text-span-range",
+        [...spanPath, "end"],
+        `span ends after the shortest text or state (${Math.min(...lengths)} characters)`,
+      );
+    if (n && ordered[n - 1]!.span.end > span.start)
+      fail(
+        "comp-text-span-range",
+        [...spanPath, "start"],
+        "spans must not overlap",
+      );
+    if (span.id && spanIds.has(span.id))
+      fail(
+        "comp-duplicate-id",
+        [...spanPath, "id"],
+        `duplicate span id "${span.id}"`,
+      );
+    if (span.id) spanIds.add(span.id);
+    if (span.style && !styles[span.style])
+      fail(
+        "comp-text-style-missing",
+        [...spanPath, "style"],
+        `no text style "${span.style}"`,
+      );
+    else if (span.style)
+      checkAxes(
+        fail,
+        assets,
+        { ...base, ...styles[span.style] },
+        [...spanPath, "style"],
+        `span "${span.id ?? i}"`,
+      );
+  });
+  layer.decorations?.forEach((decoration, i) => {
+    if (decoration.span && !spanIds.has(decoration.span))
+      fail(
+        "comp-text-span-missing",
+        [...path, "decorations", i, "span"],
+        `no span "${decoration.span}"`,
+      );
+  });
+
+  if (layer.transition && layer.transitions)
+    fail(
+      "comp-text-transition",
+      [...path, "transitions"],
+      "use transition or transitions, not both",
+    );
+  const transitions =
+    layer.transitions ?? (layer.transition ? [layer.transition] : []);
+  const field = layer.transitions ? "transitions" : "transition";
+  let end = -1;
+  transitions.forEach((transition, i) => {
+    const at = layer.transitions ? [...path, field, i] : [...path, field];
+    if (transition.window.start < end)
+      fail(
+        "comp-text-transition",
+        [...at, "window"],
+        "transition windows must not overlap",
+      );
+    end = transition.window.end;
+    const from = transition.fromState ?? 0,
+      to = transition.toState ?? 1;
+    if (layer.states?.[from] === undefined || layer.states?.[to] === undefined)
+      fail(
+        "comp-text-transition",
+        at,
+        `transition needs text states ${from} and ${to}`,
+      );
+    else if (
+      transition.kind === "count" &&
+      (!tabularFigures(style) ||
+        ![layer.states[from], layer.states[to]].every((s) =>
+          NUMERIC_STATE.test(s!),
+        ))
+    )
+      fail(
+        "comp-text-transition",
+        at,
+        "count transitions need numeric states and tabular figures",
+      );
+  });
 }
 
 function checkParents(
@@ -419,6 +564,35 @@ function checkConstraints(
         [...path, "signal"],
         `no signal "${animator.signal}"`,
       );
+    const node = layers.get(animator.node);
+    if (
+      animator.span &&
+      node?.type === "text" &&
+      !node.spans?.some((span) => span.id === animator.span)
+    )
+      fail(
+        "comp-text-span-missing",
+        [...path, "span"],
+        `text layer "${node.id}" has no span "${animator.span}"`,
+      );
+    [animator.selector, ...(animator.selectors ?? [])].forEach(
+      (selector, j) => {
+        const at = j ? [...path, "selectors", j - 1] : [...path, "selector"];
+        for (const field of ["start", "end", "offset"] as const) {
+          const value = selector[field];
+          if (
+            typeof value === "object" &&
+            !Array.isArray(value) &&
+            !signals.has(value.signal)
+          )
+            fail(
+              "comp-signal-missing",
+              [...at, field, "signal"],
+              `no signal "${value.signal}"`,
+            );
+        }
+      },
+    );
   });
 }
 
@@ -544,6 +718,27 @@ export function validateCompositionSemantics(
       );
   });
   const signals = new Set(comp.signals?.map((s) => s.id));
+  for (const [id, style] of Object.entries(comp.textStyles ?? {})) {
+    if (!style.fontAsset) continue;
+    const font = assets.get(style.fontAsset);
+    const path = ["textStyles", id, "fontAsset"];
+    if (!font)
+      fail("comp-asset-missing", path, `no asset "${style.fontAsset}"`);
+    else if (font.type !== "font")
+      fail(
+        "comp-asset-type",
+        path,
+        `asset "${font.id}" is a ${font.type}, not a font`,
+      );
+    else
+      checkAxes(
+        fail,
+        assets,
+        style,
+        ["textStyles", id, "axes"],
+        `style "${id}"`,
+      );
+  }
 
   const scopes: CompositionScope[] = [comp, ...(comp.precomps ?? [])];
   let layerCount = 0;
@@ -552,6 +747,16 @@ export function validateCompositionSemantics(
     duplicates(fail, scope.layers, [...base, "layers"], "layer");
     duplicates(fail, scope.markers, [...base, "markers"], "marker");
     scope.markers?.forEach((marker, i) => {
+      if (
+        marker.frame < scope.frameCount &&
+        marker.duration !== undefined &&
+        marker.frame + marker.duration > scope.frameCount
+      )
+        fail(
+          "comp-marker-duration",
+          [...base, "markers", i, "duration"],
+          `marker runs past the end (frame ${marker.frame} + ${marker.duration} > ${scope.frameCount})`,
+        );
       if (marker.frame >= scope.frameCount)
         fail(
           "comp-marker-frame",
@@ -583,6 +788,12 @@ export function validateCompositionSemantics(
 
   if (comp.camera2d) {
     comp.camera2d.keys.forEach((key, i) => {
+      if (key.frame >= comp.frameCount)
+        fail(
+          "comp-camera-key-range",
+          ["camera2d", "keys", i, "frame"],
+          `camera keys must be below frameCount (${comp.frameCount})`,
+        );
       if (i && key.frame <= comp.camera2d!.keys[i - 1]!.frame)
         fail(
           "comp-key-order",

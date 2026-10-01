@@ -147,6 +147,10 @@ Value forms:
 - **Path** — `{ closed, vertices, inTangents?, outTangents? }`, tangents relative to their
   vertex. Every key of one path needs the same vertex count.
 
+Text layers follow the story typography rules: spans fit every text state and do not
+overlap, decorations and animators name existing spans, variable-font axes stay in the
+pinned font's range, and text transitions do not overlap and name existing states.
+
 ## Layers
 
 ### Fields on every layer
@@ -369,21 +373,28 @@ The same values are exported as `COMPOSITION_LIMITS`.
 | `comp-precomp-missing`      | A precomp layer references an unknown precomp.                                                                                                     |
 | `comp-precomp-cycle`        | A precomp contains itself directly or indirectly.                                                                                                  |
 | `comp-precomp-depth`        | Precomps nest deeper than 8.                                                                                                                       |
-| `comp-asset-missing`        | A layer references an unknown asset.                                                                                                               |
-| `comp-asset-type`           | A layer references an asset of the wrong type.                                                                                                     |
+| `comp-asset-missing`        | A layer or text style references an unknown asset.                                                                                                 |
+| `comp-asset-type`           | A layer or text style references an asset of the wrong type.                                                                                       |
 | `comp-crop-bounds`          | An image crop extends beyond its asset.                                                                                                            |
 | `comp-image-registration`   | Pose registration on an image whose `fit` is not `contain`.                                                                                        |
 | `comp-state-range`          | A `state` or `stateFrom` value has no matching source or text state.                                                                               |
 | `comp-state-mix`            | Only one of `stateFrom` and `stateMix` is set.                                                                                                     |
 | `comp-text-style-missing`   | A text layer uses an unknown text style.                                                                                                           |
 | `comp-text-font`            | A text size above 180 without a pinned font (`fontAsset` or `style`).                                                                              |
+| `comp-text-span-range`      | A span ends after the text or one of its states, or overlaps another span.                                                                         |
+| `comp-text-span-missing`    | A decoration or text animator names a span the text layer does not have.                                                                           |
+| `comp-text-font-axis`       | A variable-font axis value (style or span) is outside the pinned font's range, or the font is not variable.                                        |
+| `comp-text-locale`          | A text layer's locale is not recognised.                                                                                                           |
+| `comp-text-transition`      | `transition` and `transitions` together, overlapping windows, a missing from/to state, or a count without numeric states and tabular figures.      |
 | `comp-marker-frame`         | A marker lies at or after `frameCount`.                                                                                                            |
+| `comp-marker-duration`      | A marker's `duration` runs past `frameCount`.                                                                                                      |
 | `comp-marker-missing`       | A `cue` names no marker in the same scope.                                                                                                         |
-| `comp-signal-missing`       | A driver, constraint or text animator names an unknown signal.                                                                                     |
+| `comp-signal-missing`       | A driver, constraint, text animator or text selector names an unknown signal.                                                                      |
 | `comp-constraint-target`    | A constraint names no layer in the same scope.                                                                                                     |
 | `comp-text-animator-target` | A text animator's `node` is not a text layer in the same scope.                                                                                    |
 | `comp-camera-depth`         | `cameraDepth` on a parented layer or inside a precomp.                                                                                             |
 | `comp-camera-jolt`          | A camera jolt starts at or after `frameCount`.                                                                                                     |
+| `comp-camera-key-range`     | A `camera2d` key lies at or after `frameCount`.                                                                                                    |
 | `comp-format-size`          | `format` disagrees with `width` and `height`.                                                                                                      |
 | `comp-metadata-size`        | Metadata serialises to more than 64 KiB.                                                                                                           |
 | `comp-driver-source`        | A driver has none or several of `signal`, `source` and `sum`.                                                                                      |

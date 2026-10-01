@@ -61,6 +61,17 @@ export const COMPOSITION_DIAGNOSTICS = {
   "comp-text-style-missing": "A text layer uses an unknown text style.",
   "comp-text-font": "A text size above 180 without a pinned font.",
   "comp-marker-frame": "A marker lies at or after `frameCount`.",
+  "comp-marker-duration": "A marker's `duration` runs past `frameCount`.",
+  "comp-text-span-range":
+    "A text span ends after the text or a state, or overlaps another span.",
+  "comp-text-span-missing":
+    "A decoration or text animator names an unknown span.",
+  "comp-text-font-axis":
+    "A variable-font axis value is outside the pinned font's range.",
+  "comp-text-locale": "A text layer's locale is not recognised.",
+  "comp-text-transition":
+    "Conflicting, overlapping or impossible text transitions.",
+  "comp-camera-key-range": "A `camera2d` key lies at or after `frameCount`.",
   "comp-marker-missing": "A `cue` names no marker in the same composition.",
   "comp-signal-missing": "A reference names no signal.",
   "comp-constraint-target":
