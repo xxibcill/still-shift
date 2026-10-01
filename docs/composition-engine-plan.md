@@ -792,6 +792,13 @@ precomp-scoped), cycles and limits. Round trip: parse → serialise → parse is
   package boundaries, formatting, lint, TypeScript and all 833 unit tests. Full
   rendering was not rerun for these contract-validation and documentation fixes.
 
+- **Opaque JSON validation follow-up:** expression ASTs, effect parameter objects and
+  shape contents now share metadata's iterative preflight, with 64 KiB byte and
+  64-level container-depth limits. Cycles and oversized expanded shared references
+  return structured diagnostics before recursive parsing. Added 34 regression tests
+  covering all three payloads, boundaries, UTF-8 sizing and invalid JSON values.
+  `pnpm check:fast` passed on Node 22.23.1 with all 867 unit tests.
+
 ---
 
 ## CE2 — Pure composition evaluator

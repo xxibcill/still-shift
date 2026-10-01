@@ -54,18 +54,6 @@ function duplicates(
   });
 }
 
-const jsonBytes = (value: unknown) =>
-  new TextEncoder().encode(JSON.stringify(value)).length;
-
-function checkMetadata(fail: IssueReporter, value: unknown, path: Path) {
-  if (value !== undefined && jsonBytes(value) > L.maxMetadataBytes)
-    fail(
-      "comp-metadata-size",
-      path,
-      `metadata must serialise to at most ${L.maxMetadataBytes} bytes`,
-    );
-}
-
 function checkVectorDimensions(
   fail: IssueReporter,
   layer: CompositionLayer,
@@ -263,7 +251,6 @@ function checkLayer(
       asset(layer.asset, layer.type, ["asset"]);
       break;
   }
-  checkMetadata(fail, layer.metadata, [...path, "metadata"]);
 }
 
 type TextLayer = Extract<CompositionLayer, { type: "text" }>;
@@ -859,7 +846,6 @@ export function validateCompositionSemantics(
         `${comp.format} format requires ${size.width}x${size.height}`,
       );
   }
-  checkMetadata(fail, comp.metadata, ["metadata"]);
 }
 
 export type CompositionWarning = {

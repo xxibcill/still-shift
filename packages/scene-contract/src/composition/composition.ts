@@ -20,6 +20,7 @@ import { PropertyPathSchema } from "./property-path.ts";
 import {
   COMPOSITION_LIMITS,
   COMPOSITION_SCHEMA_VERSION,
+  boundedJson,
   compFrame,
   compositionColor,
   compositionId,
@@ -158,7 +159,7 @@ export { Camera2dSchema } from "./motion.ts";
 export const ExpressionSchema = z
   .object({
     source: z.string().min(1).max(L.maxExpressionLength),
-    ast: z.json().optional(),
+    ast: boundedJson(z.json()).optional(),
   })
   .strict();
 

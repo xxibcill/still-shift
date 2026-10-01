@@ -11,6 +11,7 @@ import {
 } from "./keys.ts";
 import {
   bounded,
+  boundedJson,
   COMPOSITION_LIMITS,
   compFrame,
   compositionId,
@@ -73,7 +74,7 @@ export const EffectInstanceSchema = z
       .regex(/^[a-z][\w.-]*$/)
       .max(64),
     enabled: z.boolean().optional(),
-    params: z.record(compositionId, z.json()).optional(),
+    params: boundedJson(z.record(compositionId, z.json())).optional(),
   })
   .strict();
 
@@ -273,7 +274,7 @@ export const ShapeLayerSchema = z
   .object({
     ...layerBase,
     type: z.literal("shape"),
-    contents: z.array(z.json()).max(L.maxPathVertices),
+    contents: boundedJson(z.array(z.json()).max(L.maxPathVertices)),
   })
   .strict();
 
