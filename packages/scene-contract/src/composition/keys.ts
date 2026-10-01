@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { curveFields } from "../motion-craft.ts";
+import { compositionCurveFields } from "./curves.ts";
 import {
   COMPOSITION_LIMITS,
   compositionColor,
@@ -72,7 +72,12 @@ function keyed<T extends z.ZodType>(
       keys: z
         .array(
           z
-            .object({ frame: keyFrame, value, ...curveFields, ...spatial })
+            .object({
+              frame: keyFrame,
+              value,
+              ...compositionCurveFields,
+              ...spatial,
+            })
             .strict(),
         )
         .min(1)

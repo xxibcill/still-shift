@@ -34,6 +34,7 @@ export const COMPOSITION_LIMITS = {
   maxMetadataBytes: 65_536,
   maxCoordinate: 1_000_000,
   maxStretch: 100,
+  maxSeed: 2_147_483_647,
 } as const;
 
 const L = COMPOSITION_LIMITS;

@@ -321,27 +321,37 @@ Features that are in the contract but not yet implemented fail with
 
 ## Limits
 
-| Limit                                                   | Value                    |
-| ------------------------------------------------------- | ------------------------ |
-| Width, height                                           | 16–8,192                 |
-| `frameCount`                                            | 1–108,000                |
-| Key frames                                              | ±216,000 (layer time)    |
-| Keys per property                                       | 2,000                    |
-| Layers (root and all precomps)                          | 2,000                    |
-| Precomps / nesting depth                                | 200 / 8                  |
-| Parent chain depth                                      | 32                       |
-| Assets, markers                                         | 500 each                 |
-| Masks, effects per layer                                | 32 each                  |
-| Path vertices                                           | 1,024                    |
-| Image sources, text states                              | 32, 12                   |
-| Text length                                             | 4,000 characters         |
-| Signals, drivers, constraints, periodic, text animators | 200, 500, 200, 200, 200  |
-| Expressions / expression length                         | 2,000 / 2,000 characters |
-| Property path length                                    | 512 characters           |
-| Metadata                                                | 64 KiB per object        |
-| Other numbers                                           | ±1,000,000               |
+| Limit                                                     | Value                    |
+| --------------------------------------------------------- | ------------------------ |
+| Width, height                                             | 16–8,192                 |
+| `frameCount`                                              | 1–108,000                |
+| Key frames                                                | ±216,000 (layer time)    |
+| Motion windows, periods, delays and imported curve frames | 0–216,000                |
+| Noise and text-selector seeds                             | 0–2,147,483,647          |
+| Keys per property                                         | 2,000                    |
+| Layers (root and all precomps)                            | 2,000                    |
+| Precomps / nesting depth                                  | 200 / 8                  |
+| Parent chain depth                                        | 32                       |
+| Assets, markers                                           | 500 each                 |
+| Masks, effects per layer                                  | 32 each                  |
+| Path vertices                                             | 1,024                    |
+| Image sources, text states                                | 32, 12                   |
+| Text length                                               | 4,000 characters         |
+| Signals, drivers, constraints, periodic, text animators   | 200, 500, 200, 200, 200  |
+| Expressions / expression length                           | 2,000 / 2,000 characters |
+| Property path length                                      | 512 characters           |
+| Metadata                                                  | 64 KiB per object        |
+| Other numbers                                             | ±1,000,000               |
 
 The same values are exported as `COMPOSITION_LIMITS`.
+
+Composition-specific bounds also cover reused motion and typography fields: signal
+values, generator amplitudes, driver maps, temporal speeds, bezier handles, constraint
+offsets, text animation and font axes, and camera coordinates, zoom, tangents and jolts.
+These use the general numeric limit unless their field has a tighter range. Imported
+curves retain their existing 2–100 key limit and nonnegative frame convention. Metadata
+remains free-form JSON subject to its byte limit. Legacy story and commerce contracts
+retain their original bounds.
 
 ## Diagnostics
 

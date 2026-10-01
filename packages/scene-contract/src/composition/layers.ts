@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { PoseAnchorSchema } from "../character-actions.ts";
 import { PoseRegistrationSchema } from "../story-acting.ts";
-import { typographyNodeFields } from "../typography.ts";
+import { compositionTypographyFields } from "./typography.ts";
 import {
   AnimatableColorSchema,
   AnimatableDiscreteSchema,
@@ -226,7 +226,7 @@ export const TextLayerSchema = z
       .optional(),
     revealMode: z.enum(["wipe", "words"]).optional(),
     reveal: animatableScalar(unit).optional(),
-    ...typographyNodeFields,
+    ...compositionTypographyFields,
   })
   .strict();
 

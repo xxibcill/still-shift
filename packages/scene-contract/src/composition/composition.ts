@@ -1,18 +1,21 @@
 import { z } from "zod";
-import {
-  ConstraintSchema,
-  DriverMapSchema,
-  layerFields,
-  NoiseSchema,
-  NumericMotionPropertySchema,
-  OscillatorSchema,
-  SignalSchema,
-  TextAnimatorSchema,
-} from "../motion-craft.ts";
+import { NumericMotionPropertySchema } from "../motion-craft.ts";
 import { OutputFormatSchema } from "../output-format.ts";
-import { StoryCameraSchema } from "../story-motion.ts";
-import { FontAxesSchema, TextStyleSchema } from "../typography.ts";
 import { CompositionLayerSchema } from "./layers.ts";
+import {
+  Camera2dSchema,
+  CompositionConstraintSchema,
+  CompositionDriverMapSchema,
+  compositionMotionLayerFields,
+  CompositionNoiseSchema,
+  CompositionOscillatorSchema,
+  CompositionSignalSchema,
+  CompositionTextAnimatorSchema,
+} from "./motion.ts";
+import {
+  CompositionFontAxesSchema,
+  CompositionTextStyleSchema,
+} from "./typography.ts";
 import { PropertyPathSchema } from "./property-path.ts";
 import {
   COMPOSITION_LIMITS,
@@ -29,7 +32,7 @@ import {
 import { validateCompositionSemantics } from "./validate.ts";
 
 const L = COMPOSITION_LIMITS;
-const frame = finite.int().nonnegative();
+const frame = compFrame;
 const dimension = finite.int().min(L.minSize).max(L.maxSize);
 const assetPath = z.string().min(1).max(1024);
 
@@ -68,7 +71,7 @@ export const CompositionAssetSchema = z.discriminatedUnion("type", [
         .string()
         .regex(/^(?:[1-8]\d{2}|900)$/, "Font weight must be 100–900"),
       style: z.enum(["normal", "italic"]).optional(),
-      variable: FontAxesSchema.optional(),
+      variable: CompositionFontAxesSchema.optional(),
     })
     .strict(),
   // Media assets are completed in CE13.
@@ -105,8 +108,8 @@ export const CompositionDriverSchema = z
       .min(1)
       .max(16)
       .optional(),
-    map: DriverMapSchema.optional(),
-    ...layerFields,
+    map: CompositionDriverMapSchema.optional(),
+    ...compositionMotionLayerFields,
   })
   .strict()
   .refine(
@@ -128,9 +131,9 @@ export const CompositionPeriodicSchema = z
     start: frame,
     end: frame,
     cue: compositionId.optional(),
-    oscillate: OscillatorSchema.optional(),
-    noise: NoiseSchema.optional(),
-    ...layerFields,
+    oscillate: CompositionOscillatorSchema.optional(),
+    noise: CompositionNoiseSchema.optional(),
+    ...compositionMotionLayerFields,
   })
   .strict()
   .refine(
@@ -150,10 +153,7 @@ export const CompositionPeriodicSchema = z
  * The story camera, applied to unparented root layers in proportion to their
  * `cameraDepth` (parity note 3). Replaced by the CE8 camera.
  */
-export const Camera2dSchema = StoryCameraSchema.omit({
-  depth: true,
-  cover: true,
-});
+export { Camera2dSchema } from "./motion.ts";
 
 export const ExpressionSchema = z
   .object({
@@ -172,8 +172,14 @@ const scopeFields = {
   background: compositionColor.nullable().optional(),
   layers: z.array(CompositionLayerSchema).max(L.maxLayers),
   markers: z.array(CompositionMarkerSchema).max(L.maxMarkers).optional(),
-  constraints: z.array(ConstraintSchema).max(L.maxConstraints).optional(),
-  textAnimators: z.array(TextAnimatorSchema).max(L.maxTextAnimators).optional(),
+  constraints: z
+    .array(CompositionConstraintSchema)
+    .max(L.maxConstraints)
+    .optional(),
+  textAnimators: z
+    .array(CompositionTextAnimatorSchema)
+    .max(L.maxTextAnimators)
+    .optional(),
 };
 
 export const PrecompSchema = z
@@ -198,8 +204,8 @@ const compositionShape = z
       .optional(),
     assets: z.array(CompositionAssetSchema).max(L.maxAssets),
     precomps: z.array(PrecompSchema).max(L.maxPrecomps).optional(),
-    textStyles: z.record(compositionId, TextStyleSchema).optional(),
-    signals: z.array(SignalSchema).max(L.maxSignals).optional(),
+    textStyles: z.record(compositionId, CompositionTextStyleSchema).optional(),
+    signals: z.array(CompositionSignalSchema).max(L.maxSignals).optional(),
     drivers: z.array(CompositionDriverSchema).max(L.maxDrivers).optional(),
     periodic: z.array(CompositionPeriodicSchema).max(L.maxPeriodic).optional(),
     expressions: z
