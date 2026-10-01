@@ -141,7 +141,7 @@ hardware GPU the Lab labels its preview approximate: previews stay within the
 `pnpm composition:hardware-preview`). `renderComposition` (animation engine) and
 `comp render` resolve asset paths relative to the composition file and write the MP4,
 a scene manifest and a result manifest. The manifest records
-`COMPOSITION_RENDERER_VERSION` (`composition-canvas-1.0.4`) and
+`COMPOSITION_RENDERER_VERSION` (`composition-canvas-1.0.5`) and
 `COMPOSITION_EVALUATOR_VERSION`, so both participate in cache identity.
 
 MP4 export requires even composition width and height for H.264's `yuv420p` format;
@@ -250,6 +250,8 @@ changing the contract.
   like keys; signal-driven animator selectors therefore also sample layer time.
   Font-axis and stroke caches prepare the rounded layer times reachable at output
   frames, including stretched, reversed, remapped and reused precomp instances.
+  Font variants include generated count strings, including formatted endpoints,
+  so selectors use the same glyph layout during preparation and drawing.
 - **State and transitions:** `state` keys choose the displayed text until the first
   transition window opens. From then on the latest transition that has started
   decides: its `fromState` during the window (blending towards `toState`), its

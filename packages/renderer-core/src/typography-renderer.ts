@@ -23,7 +23,6 @@ import {
 } from "./typography-animation.ts";
 import {
   commonClusters,
-  countText,
   retypedClusters,
   reserveCountWidth,
   resolveDisplayedText,
@@ -32,7 +31,7 @@ import {
 import { drawTextDecorations } from "./typography-decorations.ts";
 import { drawTextContainerShape } from "./text-container.ts";
 import type { Rect } from "./text-container-layout.ts";
-import { componentTextVariants } from "./component-values.ts";
+import { typographyTextValues } from "./typography-text-values.ts";
 import { textVisibility } from "./typography-visibility.ts";
 import type { StoryRenderScene } from "./story-scene.ts";
 import type { CommerceRenderScene } from "./commerce-scene.ts";
@@ -164,18 +163,7 @@ export function prepareTypography(
   };
   for (const node of scene.nodes) {
     if (node.type !== "text") continue;
-    const values = new Set([
-      node.text,
-      ...(node.states ?? []),
-      ...componentTextVariants(scene, node),
-    ]);
-    for (const t of node.transitions ??
-      (node.transition ? [node.transition] : []))
-      if (t.kind === "count")
-        for (let frame = t.window.start; frame <= t.window.end; frame++)
-          values.add(countText(node, t, frame));
-    if (values.size > 10000)
-      throw new Error("text-layout-budget: more than 10000 states");
+    const values = typographyTextValues(scene, node);
     const layouts = new Map(
       [...values].map((text) => [
         text,

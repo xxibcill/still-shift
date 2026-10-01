@@ -923,6 +923,71 @@ try {
     "font-axis variants follow stretched, reversed and reused precomp clocks",
   );
 
+  const axisCount: Composition = {
+    ...axisText,
+    id: "axis-count",
+    textStyles: { count: { fontAsset: "body", size: 60, figures: "tabular" } },
+    layers: [
+      {
+        id: "text",
+        type: "text",
+        text: "0",
+        states: ["0", "1000"],
+        style: "count",
+        fontSize: 60,
+        color: "#ffffff",
+        transition: {
+          kind: "count",
+          window: { start: 0, end: 9 },
+          easing: "linear",
+        },
+        transform: { position: [30, 10] },
+      },
+    ],
+    textAnimators: [
+      {
+        ...axisText.textAnimators![0]!,
+        selector: { start: 0, end: 1, shape: "ramp", easing: "linear" },
+        from: { axes: { wght: 200 } },
+        to: { axes: { wght: 200 } },
+      },
+    ],
+  };
+  const countedAxes = await render(
+    page,
+    axisCount,
+    [9, 1, 9],
+    assetUrls(axisCount),
+  );
+  for (const [index, text] of ["1,000", "111"].entries()) {
+    const control = structuredClone(axisCount);
+    const controlLayer = control.layers[0]!;
+    if (controlLayer.type !== "text") throw new Error("Expected text");
+    controlLayer.text = text;
+    delete controlLayer.states;
+    delete controlLayer.transition;
+    const expected = await render(
+      page,
+      control,
+      [index === 0 ? 9 : 1],
+      assetUrls(control),
+    );
+    assert.ok(
+      countedAxes.frames[index]!.every(
+        (value, i) => value === expected.frames[0]![i],
+      ),
+      "generated count text uses the same variable-font axes as static text",
+    );
+  }
+  assert.deepEqual(
+    countedAxes.frames[2],
+    countedAxes.frames[0],
+    "count axis variants support backward seeking",
+  );
+  results.push(
+    "count font-axis variants include intermediate and formatted endpoint text",
+  );
+
   // First slice: deterministic preview, and MP4 export from the same renderer.
   const firstSlice = JSON.parse(
     await readFile(resolve(fixtureDir, "first-slice.json"), "utf8"),

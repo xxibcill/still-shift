@@ -964,7 +964,7 @@ masks and adjustment layers, and export through the existing runtime.
 - [x] Wire `composition-1` into [`export-page.ts`](../packages/execution-runtime/src/export-page.ts)
       and [`export-worker.ts`](../packages/execution-runtime/src/export-worker.ts) as an
       `ExportableScene`; add engine entry points in `packages/animation-engine`.
-- [x] `COMPOSITION_RENDERER_VERSION = "composition-canvas-1.0.4"`, included in manifests
+- [x] `COMPOSITION_RENDERER_VERSION = "composition-canvas-1.0.5"`, included in manifests
       and cache identities.
 - [x] Keep text layout (shaping, advances, line breaks) behind one module, so
       platform-independent text layout (Q8 option C) can later replace the operating
@@ -1099,6 +1099,14 @@ tracker stays `[~]` until review.
   font-size control, including partially offscreen text that would otherwise be
   culled. The composition renderer is `composition-canvas-1.0.4`. Validation:
   `pnpm check:fast` (928 unit tests) and `test:browser:composition` pass.
+- **PR #27 count font-axis correction:** font loading and raster preparation share
+  one set of authored and generated text values, including count intermediates and
+  formatted endpoints. A browser regression compares a ramp glyph selector's
+  animated variable-font count with equivalent static text and verifies backward
+  seeking. The composition renderer is `composition-canvas-1.0.5`. Validation on
+  Node 22.23.1: `pnpm check:fast` (928 unit tests), the composition browser suite,
+  both legacy typography browser suites, and CE0 baselines pass. All 176 baseline
+  items and 36,061 frames match exactly without regenerating baselines.
 - **Limitations and follow-ups:**
   - Adjustment layers apply only their blend mode until effects arrive (CE6).
   - Isolated layers use scope-sized surfaces; bounds-sized surfaces and caching belong

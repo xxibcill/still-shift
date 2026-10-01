@@ -12,6 +12,7 @@ import {
   type TextNode,
 } from "./typography-style.ts";
 import type { TextEventScene } from "./typography-events.ts";
+import { typographyTextValues } from "./typography-text-values.ts";
 
 export const axisKey = (axes: Record<string, number>) =>
   JSON.stringify(
@@ -88,7 +89,7 @@ export async function loadTextAnimationFonts(
       )
     )
       continue;
-    const layouts = (node.states ?? [node.text]).map((text) =>
+    const layouts = [...typographyTextValues(scene, node)].map((text) =>
       shapeText(ctx, node, text, fonts, scene.textStyles),
     );
     const variants = nodeAxisVariants(scene, node, layouts, fonts);
