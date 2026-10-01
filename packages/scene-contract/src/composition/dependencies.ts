@@ -54,7 +54,33 @@ function addScopeDependencies(
   });
 }
 
-function driverLayer(comp: Composition, path: string) {
+/** Each precomp layer samples its contents using its evaluated remap. */
+function addPrecompTimeDependencies(graph: Graph, comp: Composition) {
+  const precomps = new Set(comp.precomps?.map((scope) => scope.id));
+  for (const scope of [comp, ...(comp.precomps ?? [])]) {
+    const prefix = scope === comp ? "" : `${scope.id}/`;
+    const base: Path =
+      scope === comp ? [] : ["precomps", comp.precomps!.indexOf(scope)];
+    scope.layers.forEach((layer, i) => {
+      const node = `${prefix}${layer.id}`;
+      const path = [...base, "layers", i];
+      if (scope !== comp) {
+        // One scope clock avoids duplicating every child edge for reused precomps.
+        const clock = `${scope.id}/comp.time`;
+        addDependency(graph, node, clock, path);
+        if (layer.type === "precomp")
+          addDependency(graph, `${node}.timeRemap`, clock, path);
+      }
+      if (layer.type === "precomp" && precomps.has(layer.comp))
+        addDependency(graph, `${layer.comp}/comp.time`, `${node}.timeRemap`, [
+          ...path,
+          "comp",
+        ]);
+    });
+  }
+}
+
+function driverProperty(comp: Composition, path: string) {
   const resolved = resolvePropertyPath(comp, path);
   if (
     !isResolvedProperty(resolved) ||
@@ -64,16 +90,26 @@ function driverLayer(comp: Composition, path: string) {
     return undefined;
   // A reused precomp owns one layer namespace, regardless of the route into it.
   const scope = resolved.scope.at(-1);
-  return `${scope ? `${scope}/` : ""}${resolved.layer.id}`;
+  const node = `${scope ? `${scope}/` : ""}${resolved.layer.id}`;
+  return {
+    node,
+    timeNode:
+      resolved.layer.type === "precomp" && resolved.path.endsWith(".timeRemap")
+        ? `${node}.timeRemap`
+        : undefined,
+  };
 }
 
 function addDriverDependencies(graph: Graph, comp: Composition) {
   comp.drivers?.forEach((driver, i) => {
-    const target = driverLayer(comp, driver.target);
+    const target = driverProperty(comp, driver.target);
     if (!target) return;
     const addSource = (source: string, path: Path) => {
-      const layer = driverLayer(comp, source);
-      if (layer) addDependency(graph, target, layer, path);
+      const property = driverProperty(comp, source);
+      if (!property) return;
+      addDependency(graph, target.node, property.node, path);
+      if (target.timeNode)
+        addDependency(graph, target.timeNode, property.node, path);
     };
     if (driver.source) addSource(driver.source, ["drivers", i, "source"]);
     driver.sum?.forEach((source, j) => {
@@ -84,6 +120,7 @@ function addDriverDependencies(graph: Graph, comp: Composition) {
 
 function reportCycles(graph: Graph, fail: IssueReporter) {
   const active: string[] = [];
+  const activeDependencies: Dependency[] = [];
   const positions = new Map<string, number>();
   const done = new Set<string>();
   const visit = (layer: string) => {
@@ -92,13 +129,24 @@ function reportCycles(graph: Graph, fail: IssueReporter) {
     active.push(layer);
     for (const dependency of graph.get(layer) ?? []) {
       const cycleStart = positions.get(dependency.source);
-      if (cycleStart !== undefined)
+      if (cycleStart !== undefined) {
+        const cycleDependencies = [
+          ...activeDependencies.slice(cycleStart),
+          dependency,
+        ];
+        const reportedDependency =
+          cycleDependencies.findLast((edge) => edge.path[0] === "drivers") ??
+          dependency;
         fail(
           "comp-motion-cycle",
-          dependency.path,
+          reportedDependency.path,
           `motion dependencies form a cycle: ${[...active.slice(cycleStart), dependency.source].join(" → ")}`,
         );
-      else visit(dependency.source);
+      } else {
+        activeDependencies.push(dependency);
+        visit(dependency.source);
+        activeDependencies.pop();
+      }
     }
     active.pop();
     positions.delete(layer);
@@ -117,6 +165,7 @@ export function checkMotionDependencies(
   comp.precomps?.forEach((scope, i) =>
     addScopeDependencies(graph, scope, `${scope.id}/`, ["precomps", i]),
   );
+  addPrecompTimeDependencies(graph, comp);
   addDriverDependencies(graph, comp);
   reportCycles(graph, fail);
 }

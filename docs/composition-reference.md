@@ -246,6 +246,12 @@ and across property-path scopes. Legacy aliases resolve to the same layer; a dri
 cannot read its own evaluated layer. Reused precomps have one layer namespace,
 even when reached through different path prefixes.
 
+Reading a precomp layer's contents also depends on the time at which that precomp is
+sampled. A `timeRemap` driver cannot read a descendant whose evaluated state requires
+the same remap, including indirect dependencies through controllers or nested precomps.
+Driving the enclosing layer's transform from a child remains valid when its sampled
+time is independent of that driver.
+
 | Field           | Scope       | Shape                                                                                                                                    |
 | --------------- | ----------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
 | `signals`       | Composition | As in story scenes; `cue` names a root marker.                                                                                           |
