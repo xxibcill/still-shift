@@ -466,13 +466,16 @@ describe("composition-1 fixtures", () => {
         missing(
           option,
           allLayers.filter((l) => l.type === type),
-          Object.keys(layerBaseExemptions),
+          [...Object.keys(layerBaseExemptions), "constraintReference"],
         ),
         type,
       ).toEqual([]);
     }
     // Base fields need to appear on at least one layer of any type.
-    expect(missing(layers.NullLayerSchema, allLayers)).toEqual([]);
+    // CE2's reference point is covered by the CE2 timing fixture/evaluator tests.
+    expect(
+      missing(layers.NullLayerSchema, allLayers, ["constraintReference"]),
+    ).toEqual([]);
     expect(
       missing(
         TransformSchema,

@@ -57,6 +57,7 @@ export { validateStoryTextLayout } from "./story-text-layout.ts";
 export { prepareComponentTextFits } from "./component-text-fit.ts";
 
 export * from "./curve.ts";
+export * from "./composition/evaluate/index.ts";
 export * from "./motion-craft.ts";
 export * from "./motion-appearance.ts";
 export * from "./motion-inspector.ts";

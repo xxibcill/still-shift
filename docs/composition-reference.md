@@ -12,7 +12,111 @@
 A composition describes timed layers, their animated properties and how they combine,
 in the spirit of an After Effects composition. It is plain JSON, validated in two steps:
 a structural schema, then semantic rules (references, cycles, limits). The CE1 milestone
-defines and validates the format; rendering arrives in CE2–CE3.
+defines and validates the format. CE2 evaluates it without drawing; the CE3 backend
+will render the evaluated state.
+
+## Evaluating a frame
+
+```ts
+import { evaluateComp, evaluateProperty } from "@still-shift/renderer-core";
+
+const tree = evaluateComp(composition, 10.5);
+const position = evaluateProperty(composition, "hero.transform.position", 10.5);
+```
+
+These pure functions run in Node and browsers. They validate once per composition
+object, compile curves into identity-keyed weak caches and memoise dependencies within
+each evaluation. Treat the composition and its nested objects as immutable: replace
+the composition object after an edit. Returned states are fresh on every call.
+`COMPOSITION_EVALUATOR_VERSION` is `composition-evaluator-7`.
+
+`evaluateComp` returns an `EvaluatedLayerTree`: scope id, time, dimensions, fps,
+floating-point RGBA background, ordered `layers` and structured `diagnostics`.
+Each layer retains its contract data alongside local time, visibility, transform,
+constraint reference point, local/world/screen matrices, effective opacity, bounds,
+sampled masks and applicable colour/state/reveal/text/remap values. A visible precomp
+has its own `precomp` tree in its own coordinate system; CE3 applies the host matrix
+and opacity to that flattened tree. Invisible layers remain in `layers` so the
+renderer and inspector can resolve parents and matte sources. `drawable` excludes
+invisible layers, nulls, groups and layers used as mattes.
+
+Keys sample at `(scopeFrame - startFrame) / stretch`, including fractional and negative
+times. Keys hold their endpoints outside their authored range. The precomp content
+clock defaults to local time × child fps / parent fps, preserving elapsed seconds;
+an explicit `timeRemap` is sampled at layer time and its value is already in child
+frames. A driven remap is applied once before sampling children. Precomp sampling
+clamps to `[0, sourceFrameCount - 1]`, holding the first or last source frame outside
+that range. The host's evaluated `timeRemap` retains its authored or driven value;
+the child tree's `time` reports the clamped sampling frame. Root content outside
+`[0, frameCount)` is transparent. Host in/out points and solo use composition frames.
+Ordinary invisible parents continue to supply transforms; an invisible `group` also
+gates its descendants. Guides are hidden unless `includeGuides: true` is supplied.
+
+Solo selection is local to each scope. A soloed child retains its group ancestors;
+a soloed group selects all its descendants, including through ordinary parents.
+Retained ancestors do not select unrelated siblings, and soloing an ordinary parent
+does not select its children. Enabled, guide and in/out-point gates still apply to
+selected layers and groups.
+
+Motion drivers, signals, delays, lag, weights and periodic windows use root composition
+frames. Their targets may lie inside precomps. Dependencies read evaluated state,
+independent of painter order; corrections from constraints follow motion layers.
+Layer and precomp-clock dependencies use an explicit work stack, so accepted long
+driver chains do not consume the JavaScript call stack. Delayed and lagged reads
+resume at their own source times without depending on previous playback.
+Signal curves and smooth tangents are compiled once per immutable signal object.
+Each evaluation call shares a bounded cache of 128 source-time samples per signal
+across root, precomp and historical dependency reads.
+The 2D camera uses the existing story camera curves and jolts. It changes screen
+matrices and bounds; world matrices remain in composition coordinates.
+
+An image without an authored crossfade evaluates `stateFrom` to its sampled `state`
+and `stateMix` to `1`, displaying the current source at full mix. Property reads,
+drivers and periodic motion use these finite defaults even when the optional fields
+are absent from the input. Authored `stateFrom` and `stateMix` still take precedence.
+
+Each instance of a reused precomp gets its own clock and memoised state. Property
+paths traverse named precomp layer instances, following each host's `comp` source
+definition and local clock. Public property reads and driver sources use the full
+absolute instance path; delayed reads traverse that same path at the requested root
+time. Reused definitions remain independently addressable, and source definition ids
+alone are not valid path hops.
+Driver and periodic-motion targets retain the complete instance route, so motion
+affects only its addressed host, even when nested hosts reuse the same layer ids.
+
+Colour interpolation uses independent, unpremultiplied sRGB RGBA channels in `[0,1]`.
+Render surfaces become premultiplied in CE3. Spatial position uses temporal progress
+over a deterministic 128-subdivision cubic arc-length table, matching the existing
+spatial-path semantics. Nonspatial grouped vectors interpolate per component.
+Scalar temporal speeds are property units per frame, including pixels, degrees,
+scale factors and normalized colour channels when driven by scalar signals.
+Grouped vector/colour `speed` remains rejected. A future explicit velocity tuple must
+match the property's dimensions and units; spatial speed needs a distinct scalar
+in arc-length pixels per frame. These authoring extensions are deferred to CE9.
+
+Bounds are geometric axis-aligned screen bounds before masks and effects; solids and
+image placement boxes are exact. Supply measured text bounds without invoking font
+measurement inside evaluation:
+
+```ts
+const tree = evaluateComp(composition, 10, {
+  textBounds: {
+    title: [{ left: 0, top: -24, right: 180, bottom: 6 }],
+    "card/caption": [{ left: 0, top: -16, right: 90, bottom: 4 }],
+  },
+});
+```
+
+Bounds arrays are indexed by text state; keys are root layer ids or
+`precomp-id/layer-id`. Missing text measurements yield `bounds: null` and a
+`comp-text-layout-missing` warning; a safe-area constraint requiring those bounds
+returns an error. Attach/look-at/contact points on text also use measured local bounds
+and require those measurements. CE3 prepares these measurements, including text animator geometry,
+with the pinned font/layout path. Shape bounds and follow-path constraints arrive in
+CE5. Attach, look-at, contact and safe-area correction are available now. Singular
+parents are valid transforms; constraints that need their inverse report
+`comp-constraint-singular`. Evaluation limits each call to 20,000 layer instances
+and accepts finite root times within ±216,000 frames.
 
 ## Validating
 
@@ -168,22 +272,23 @@ actual time-dependent values stay in range; reduce the deltas or separate their 
 
 ### Fields on every layer
 
-| Field                                 | Notes                                                                                     |
-| ------------------------------------- | ----------------------------------------------------------------------------------------- |
-| `id`, `type`                          | Required. `type` selects the fields below.                                                |
-| `name`                                | Display name.                                                                             |
-| `inPoint`, `outPoint`                 | Composition frames, `[in, out)`. Default `0` and the scope's `frameCount`.                |
-| `startFrame`, `stretch`               | Layer time 0 and time stretch. Defaults `0` and `1`.                                      |
-| `parent`                              | Layer id in the same scope. Position, rotation, scale and skew inherit; opacity does not. |
-| `enabled`, `solo`, `guide`            | Visibility switches; guides never render in export.                                       |
-| `transform`                           | See [transform](#transform).                                                              |
-| `blendMode`                           | See [blend modes](#blend-modes). Default `normal`.                                        |
-| `trackMatte`                          | `{ layer, mode }`; see [track mattes](#track-mattes).                                     |
-| `masks`                               | See [masks](#masks).                                                                      |
-| `effects`                             | `{ id, effect, enabled?, params? }[]`. Effects arrive in CE6; an empty list is allowed.   |
-| `cameraDepth`                         | 0–2, unparented root layers only; see [2D camera](#2d-camera).                            |
-| `threeD`, `motionBlur`                | Arrive in CE8 and CE7; `false` is allowed.                                                |
-| `qualification`, `source`, `metadata` | Evidence and provenance carried through from story scenes and adapters.                   |
+| Field                                 | Notes                                                                                                              |
+| ------------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
+| `id`, `type`                          | Required. `type` selects the fields below.                                                                         |
+| `name`                                | Display name.                                                                                                      |
+| `inPoint`, `outPoint`                 | Composition frames, `[in, out)`. Default `0` and the scope's `frameCount`.                                         |
+| `startFrame`, `stretch`               | Layer time 0 and time stretch. Defaults `0` and `1`.                                                               |
+| `parent`                              | Layer id in the same scope. Position, rotation, scale and skew inherit; opacity does not.                          |
+| `enabled`, `solo`, `guide`            | Visibility switches; guides never render in export.                                                                |
+| `transform`                           | See [transform](#transform).                                                                                       |
+| `constraintReference`                 | Animatable layer-space vector, defaulting to the transform anchor. Constraints can move it without moving artwork. |
+| `blendMode`                           | See [blend modes](#blend-modes). Default `normal`.                                                                 |
+| `trackMatte`                          | `{ layer, mode }`; see [track mattes](#track-mattes).                                                              |
+| `masks`                               | See [masks](#masks).                                                                                               |
+| `effects`                             | `{ id, effect, enabled?, params? }[]`. Effects arrive in CE6; an empty list is allowed.                            |
+| `cameraDepth`                         | 0–2, unparented root layers only; see [2D camera](#2d-camera).                                                     |
+| `threeD`, `motionBlur`                | Arrive in CE8 and CE7; `false` is allowed.                                                                         |
+| `qualification`, `source`, `metadata` | Evidence and provenance carried through from story scenes and adapters.                                            |
 
 ### Layer types
 
@@ -325,6 +430,12 @@ Aliases are names only: values follow `composition-1` semantics. For example,
 `position` is where the anchor sits, not a legacy node's top-left corner, so family
 adapters convert legacy values rather than copying them.
 
+`constraintReference` and `constraintReference.x|y` are readable and animatable;
+scalar components can be driven. Attach places the target's constraint reference
+point on the source's normalized `point` (default `[0.5,0.5]`) plus a composition-space
+offset. Legacy adapters emit the animated legacy anchor here, retaining a static
+transform anchor. Transform `anchorX|anchorY` aliases keep their AE meaning.
+
 `resolvePropertyPath(comp, path)` returns `{ path, scope, layer, type, readOnly }` or a
 diagnostic code.
 
@@ -465,3 +576,15 @@ retain their original bounds.
 | `comp-matte-not-adjacent`  | A track matte is not the layer directly above.              |
 | `comp-camera-depth-unused` | `cameraDepth` is set but the composition has no `camera2d`. |
 | `comp-precomp-unused`      | A precomp is never referenced.                              |
+
+### Evaluation diagnostics
+
+Evaluation uses `PassageError` and `passageDiagnostics`, with the same code, severity,
+message and path shape as contract validation.
+
+| Code                       | Meaning                                                                                                           |
+| -------------------------- | ----------------------------------------------------------------------------------------------------------------- |
+| `comp-evaluation-time`     | Root time is nonfinite or outside ±216,000 frames, or stretch/remap produces nonfinite local time.                |
+| `comp-evaluation-limit`    | A call exceeds 20,000 evaluated layer instances.                                                                  |
+| `comp-constraint-singular` | A constraint needs the inverse of a collapsed parent or a noncollapsed contact edge.                              |
+| `comp-text-layout-missing` | Text bounds were not supplied: a warning for inspection, an error when required by a bounds-dependent constraint. |

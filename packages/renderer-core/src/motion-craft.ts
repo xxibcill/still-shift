@@ -1,3 +1,10 @@
+import {
+  samplePeriodic,
+  sampleSignal,
+  blendValue,
+  mapDriver,
+} from "./motion-sampling.ts";
+export { samplePeriodic, sampleSignal, blendValue } from "./motion-sampling.ts";
 import { expandMotionIntents } from "./story-motion-presets.ts";
 import {
   sampleSpatialPath,
@@ -11,7 +18,6 @@ import {
   type MotionBlend,
   type ScalarKey,
   type PeriodicMotion,
-  type Signal,
   type Driver,
 } from "../../scene-contract/src/motion-craft.ts";
 import type { PreparedNode } from "../../scene-contract/src/prepared.ts";
@@ -389,45 +395,6 @@ export function compileMotionCraft(scene: Scene): CompiledMotionCraft {
   };
 }
 
-function randomAt(seed: number, cell: number) {
-  let h = Math.imul(seed ^ cell, 0x45d9f3b);
-  h = Math.imul(h ^ (h >>> 16), 0x45d9f3b);
-  return (((h ^ (h >>> 16)) >>> 0) / 4294967295) * 2 - 1;
-}
-export function samplePeriodic(
-  motion: Pick<PeriodicMotion, "oscillate" | "noise">,
-  frame: number,
-) {
-  if (motion.oscillate) {
-    const o = motion.oscillate;
-    return (
-      Math.sin((frame / o.period) * Math.PI * 2 + (o.phase ?? 0)) * o.amplitude
-    );
-  }
-  const n = motion.noise!,
-    position = frame / n.period,
-    cell = Math.floor(position),
-    t = position - cell;
-  return (
-    (randomAt(n.seed, cell) +
-      (randomAt(n.seed, cell + 1) - randomAt(n.seed, cell)) *
-        t *
-        t *
-        (3 - 2 * t)) *
-    n.amplitude
-  );
-}
-export function sampleSignal(signal: Signal, frame: number, fps = 30) {
-  let value = sampleCurve(scalarKeys(signal.keys), frame, fps);
-  for (const addition of signal.add ?? []) {
-    if ("pulse" in addition) {
-      const { at, half, depth } = addition.pulse;
-      const t = Math.abs(frame - at) / half;
-      if (t < 1) value += (depth * (1 + Math.cos(t * Math.PI))) / 2;
-    } else value += samplePeriodic(addition, frame);
-  }
-  return value;
-}
 export function sampleLayer(track: LayerTrack, frame: number, fps = 30) {
   if (track.spatial) {
     const { frames, paths } = track.spatial;
@@ -449,18 +416,6 @@ export function sampleLayer(track: LayerTrack, frame: number, fps = 30) {
 export function isLayerActive(track: LayerTrack, frame: number) {
   if (track.periodic) return frame >= track.start && frame <= track.end;
   return track.blend !== "replace" || frame >= track.start;
-}
-export function blendValue(
-  base: number,
-  value: number,
-  blend: MotionBlend,
-  weight = 1,
-) {
-  return blend === "add"
-    ? base + value * weight
-    : blend === "multiply"
-      ? base * (1 + (value - 1) * weight)
-      : base + (value - base) * weight;
 }
 function sourceValue(scene: Scene, source: string, frame: number) {
   if (!source.includes("."))
@@ -487,44 +442,12 @@ export function sampleDriver(
   frame: number,
 ): number {
   const mapping = driver.map ?? {};
-  const time = frame - (mapping.delay ?? 0);
   const read = (t: number) =>
     (driver.sum ?? [driver.source ?? driver.signal!]).reduce(
       (sum, source) => sum + sourceValue(scene, source, t),
       0,
     );
-  let value = read(time);
-  if (mapping.lag) {
-    // Exact critically damped response to piecewise-linear source intervals; no playback state.
-    const omega = 2 / mapping.lag;
-    let y = read(0),
-      velocity = 0;
-    for (let start = 0; start < time; start++) {
-      const h = Math.min(1, time - start),
-        a = read(start),
-        b = read(start + h),
-        slope = (b - a) / h;
-      const offset = y - a + (2 * slope) / omega,
-        tangent = velocity - slope + omega * offset,
-        decay = Math.exp(-omega * h);
-      y = b - (2 * slope) / omega + (offset + tangent * h) * decay;
-      velocity = slope + (tangent - omega * (offset + tangent * h)) * decay;
-    }
-    value = y;
-  }
-  if (mapping.range && mapping.to) {
-    const t =
-      (value - mapping.range[0]) / (mapping.range[1] - mapping.range[0]);
-    value =
-      mapping.to[0] +
-      (mapping.to[1] - mapping.to[0]) *
-        easeMotion(t, mapping.easing ?? "linear");
-  }
-  value *= mapping.scale ?? 1;
-  if (mapping.clamp)
-    value = Math.max(mapping.clamp[0], Math.min(mapping.clamp[1], value));
-  if (mapping.step) value = Math.floor(value / mapping.step) * mapping.step;
-  return value + (mapping.offset ?? 0);
+  return mapDriver(read, frame, mapping);
 }
 function clampState(state: State) {
   for (const property of [

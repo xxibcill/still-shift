@@ -82,6 +82,8 @@ function resolveSegments(
     return missing(text, "an indexed property");
 
   switch (head.name) {
+    case "constraintReference":
+      return component("vec2", COMPONENTS.vec2, segments.slice(1));
     case "transform": {
       if (!next || indexed(next)) return missing(text, "a transform property");
       if (TRANSFORM_SCALARS.has(next.name))

@@ -68,7 +68,12 @@ export function hermite(
     (t ** 3 - t ** 2) * duration * mb
   );
 }
-export function sampleCurve(keys: CurveKey[], time: number, fps = 30): number {
+export function sampleCurve(
+  keys: CurveKey[],
+  time: number,
+  fps = 30,
+  compiledTangents?: number[],
+): number {
   if (time <= keys[0]!.time) return keys[0]!.value;
   if (time >= keys.at(-1)!.time) return keys.at(-1)!.value;
   const i = keys.findIndex((key, i) => i > 0 && key.time > time) - 1;
@@ -80,10 +85,12 @@ export function sampleCurve(keys: CurveKey[], time: number, fps = 30): number {
   const smooth = (key: CurveKey) =>
     key.smooth || key.interpolation === "smooth";
   if (smooth(a) || smooth(b) || a.out || b.in) {
-    const tangents = monotoneTangents(
-      keys.map((k) => k.time),
-      keys.map((k) => k.value),
-    );
+    const tangents =
+      compiledTangents ??
+      monotoneTangents(
+        keys.map((k) => k.time),
+        keys.map((k) => k.value),
+      );
     const ma = a.out?.speed ?? (smooth(a) ? tangents[i]! : 0);
     const mb = b.in?.speed ?? (smooth(b) ? tangents[i + 1]! : 0);
     if (!a.out && !b.in) return hermite(a.value, b.value, ma, mb, duration, t);

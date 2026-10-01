@@ -24,4 +24,54 @@ export default tseslint.config(
       ],
     },
   },
+  {
+    files: [
+      "packages/renderer-core/src/composition/evaluate/**/*.ts",
+      "packages/renderer-core/src/{curve,node-transform,camera-sampling,motion-sampling,passage-diagnostics,motion-easing}.ts",
+    ],
+    rules: {
+      "no-restricted-globals": [
+        "error",
+        "window",
+        "document",
+        "CanvasRenderingContext2D",
+        "HTMLCanvasElement",
+        "OffscreenCanvas",
+        "ImageData",
+        "requestAnimationFrame",
+        "performance",
+        "Date",
+      ],
+      "no-restricted-imports": [
+        "error",
+        { patterns: ["node:*", "playwright", "vite", "three"] },
+      ],
+    },
+  },
+  {
+    files: ["packages/renderer-core/src/composition/evaluate/**/*.ts"],
+    rules: {
+      "no-restricted-imports": [
+        "error",
+        {
+          patterns: [
+            { group: ["node:*", "playwright", "vite", "three"] },
+            {
+              group: [
+                "../../*",
+                "!../../curve.ts",
+                "!../../camera-sampling.ts",
+                "!../../node-transform.ts",
+                "!../../motion-sampling.ts",
+                "!../../passage-diagnostics.ts",
+                "!../../motion-easing.ts",
+              ],
+              message:
+                "Composition evaluation may only import pure renderer helpers.",
+            },
+          ],
+        },
+      ],
+    },
+  },
 );

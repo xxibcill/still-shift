@@ -1,7 +1,7 @@
 # Programmable composition engine — implementation plan
 
 - **Updated:** 2026-10-01
-- **Status:** CE0 and CE1 complete (2026-10-01); CE2 is next. Q1 and Q3 decided
+- **Status:** CE0, CE1 and CE2 complete (2026-10-01); CE3 is next. Q1 and Q3 decided
   2026-09-30; Q2, Q4 and Q8 decided 2026-10-01; Q5–Q7 open.
 - **Baseline:** `6772717` — `Merge pull request #22 from xxibcill/codex/still-shift-plan-completion`
 - **Tracker owner:** unassigned. Record the owner and branch per milestone in the [tracker](#milestone-tracker).
@@ -351,7 +351,7 @@ sign and for time remap. It does not change the layer's composition-time visibil
 | ---- | ----------------------------------------------- | ----- | ------------------------- | ---------------------- | ----------------------- | ------ | -------------------------------------------------------------- |
 | CE0  | Baseline, parity harness and feature matrix     | A     | —                         | xxibcill (Claude Code) | `codex/composition-ce0` | `[x]`  | [CE0 record](#ce0--baseline-parity-harness-and-feature-matrix) |
 | CE1  | `composition-1` contract and property paths     | A     | CE0                       | xxibcill (Claude Code) | `codex/composition-ce1` | `[x]`  | [CE1 record](#ce1--composition-1-contract-and-property-paths)  |
-| CE2  | Pure composition evaluator                      | A     | CE1                       |                        |                         | `[ ]`  |                                                                |
+| CE2  | Pure composition evaluator                      | A     | CE1                       | Codex                  | `codex/composition-ce2` | `[x]`  | [CE2 record](#ce2--pure-composition-evaluator)                 |
 | CE3  | Render graph and Canvas 2D reference backend    | A     | CE2                       |                        |                         | `[ ]`  |                                                                |
 | CE4a | Story adapter with visual parity                | A     | CE3                       |                        |                         | `[ ]`  |                                                                |
 | CE4b | Commerce and reusable-component adapter         | A     | CE3, CE6 (effects parity) |                        |                         | `[ ]`  |                                                                |
@@ -416,7 +416,7 @@ through the story adapter with recorded parity.
 - [x] CE1 schema for comp, precomp, solid, image, text and null layers; transforms;
       parenting; in/out points; blend modes; alpha mattes. The slice composition is
       [`first-slice.json`](../benchmarks/fixtures/composition/ce1/first-slice.json).
-- [ ] CE2 evaluator covering those features.
+- [x] CE2 evaluator covering those features.
 - [ ] CE3 Canvas 2D backend covering those features, wired into export.
 - [ ] CE4a adapter for `benchmarks/fixtures/story-motion-continuous/access-constraint.json`
       with the parity result recorded.
@@ -899,27 +899,29 @@ at any frame, in Node or the browser, with no rendering.
 
 ### Checklist
 
-- [ ] `evaluateComp` and `evaluateProperty(comp, path, time)` in
+- [x] `evaluateComp` and `evaluateProperty(comp, path, time)` in
       `renderer-core/src/composition/evaluate/`, with no DOM or Canvas imports
       (enforce with a lint rule or boundary check).
-- [ ] Vector and colour interpolation, spatial bezier for position with arc-length
+- [x] Vector and colour interpolation, spatial bezier for position with arc-length
       parameterisation (reuse `SpatialPathSchema` semantics).
-- [ ] Resolve the CE1 temporal-speed follow-up: define grouped vector/colour speed
+- [x] Resolve the CE1 temporal-speed follow-up: define grouped vector/colour speed
       units and representation, including spatial arc length and colour channels,
       and record a decision before enabling these handles. CE1 keeps explicit speed
-      scalar-only; separate vector dimensions already accept scalar speeds.
-- [ ] Parenting with AE semantics: position, rotation, scale and skew inherit; opacity
+      scalar-only; separate vector dimensions already accept scalar speeds. CE2
+      records the units/representation below; enabling grouped handles moves to
+      CE9 alongside velocity expressions and spatial speed controls.
+- [x] Parenting with AE semantics: position, rotation, scale and skew inherit; opacity
       does not.
-- [ ] Signed nonzero time stretch (negative = reverse) and time remap, following
+- [x] Signed nonzero time stretch (negative = reverse) and time remap, following
       [layer-time anchors and source-boundary rules](#layer-time-and-reverse-playback).
-- [ ] Accept fractional evaluation times from the start (parity note 4).
-- [ ] A constraint reference point separate from the transform anchor, so adapted
+- [x] Accept fractional evaluation times from the start (parity note 4).
+- [x] A constraint reference point separate from the transform anchor, so adapted
       legacy anchor animation keeps its meaning (parity note 7).
-- [ ] Screen-space bounding boxes for culling and diagnostics (images/solids exact;
+- [x] Screen-space bounding boxes for culling and diagnostics (images/solids exact;
       text from measured layout; shapes after CE5).
-- [ ] Memoise per frame; cache compiled curves by object identity (as `story-camera.ts`
+- [x] Memoise per frame; cache compiled curves by object identity (as `story-camera.ts`
       does with a `WeakMap`).
-- [ ] Performance budget: evaluating a 200-layer composition must take ≤ 2 ms per frame
+- [x] Performance budget: evaluating a 200-layer composition must take ≤ 2 ms per frame
       in Node on the reference machine; record the measurement.
 
 **Acceptance:** For random frame orders, evaluation equals sequential evaluation.
@@ -933,7 +935,85 @@ test (random seeks vs forward play) using a fixed seed. Verify the repeated-inst
 property-path example above, nested instance paths and independent memoisation with
 different remaps and source frame rates.
 
-**Completion record:** _to be filled in._
+**Completion record (2026-10-01).** CE2 is complete on its milestone branch; follow-ups are assigned below.
+
+- Branch: `codex/composition-ce2`, based on CE1 `9186720`; tracker start commit
+  `3e3e486`; implementation `23876a6`, final corrections `ee06567`. Owner: Codex.
+- Public APIs: `evaluateComp`, `evaluateProperty`, `COMPOSITION_EVALUATOR_VERSION`
+  (`composition-evaluator-1`) and typed evaluated trees in
+  `packages/renderer-core/src/composition/evaluate/`. ESLint prevents DOM/Canvas
+  globals, runtime imports and imports of impure renderer helpers in this directory.
+- Scalar/vector/colour/path curves and spatial arc tables are cached by object
+  identity; layer state and precomp clocks are memoised within each call. Inputs are
+  immutable; output state is fresh. Drivers reuse the extracted pure motion-craft
+  sampling, blending and lag/map implementation; legacy rendering is unchanged.
+- Added `constraintReference` (and scalar component paths), regenerated the JSON
+  Schema, and documented timing, group visibility/opacity, scope selection, bounds
+  and diagnostics in the composition reference and user guide. The CE2 timing
+  fixture covers parent transforms, half-speed/reversed/different-rate precomps and
+  remap. Every transform component, depth-16 parents, constraints, masks, fixed-seed
+  random seeks, discrete state and input immutability have unit coverage.
+- Verified: `pnpm check:fast` (87 files, 880 unit tests), including
+  `pnpm exec vitest run tests/unit/composition-evaluate.test.ts --maxWorkers=2`
+  after the final reference-point/text-bounds and reused-instance corrections
+  (47 evaluator tests passed).
+  `pnpm test:browser:composition-evaluator` passed for three fixtures × nine frames:
+  timing/visibility and reverse seeks are exact; Node 22 versus Chromium 151 differs
+  by at most `1.1102230246251565e-16` in numeric state. The cross-runtime check allows
+  `1e-9`; preview/export still use the same browser evaluator and retain invariant 6.
+- Performance: `node --import tsx scripts/composition/benchmark-evaluator.ts`, Apple
+  M5 Pro, macOS arm64, pinned Node 22.23.1. A 200-layer fixture with depth-16 chains,
+  animated transforms, 40 drivers, 40 noise motions and a camera averaged **1.0394
+  ms/frame** over five batches of 5,000 frames after 1,000 warm-up frames, while the
+  full render suite was running. Batch means: 1.2364, 1.0579, 0.9368, 0.9055, 1.0604
+  ms; budget ≤ 2 ms passed. The initial isolated run measured 0.5316 ms/frame.
+- Follow-ups: CE3 prepares measured text bounds and text animator geometry through
+  the data-only `textBounds` option. Missing measurements warn and produce null
+  bounds; bounds-dependent constraints fail explicitly. CE5 owns shape bounds and
+  follow-path constraints, still rejected by CE1 validation. CE9 owns grouped
+  temporal velocity authoring: a vector/colour velocity tuple must match its value's
+  dimensions (pixels/frame, scale factors/frame, normalized RGBA channels/frame);
+  spatial speed is a separate scalar in arc-length pixels/frame. Scalar `speed` and
+  separated vector dimensions remain available. Property paths follow CE1's complete
+  precomp layer-instance routes, with independent clocks for reused sources; CE10
+  exposes those existing paths through builder helpers.
+  Stateful font measurement and ambiguous grouped slopes would break the pure,
+  explicit CE2 interface, which is why those authoring/preparation pieces live in
+  their owning milestones. Existing lag cost is proportional to elapsed source
+  frames and is outside this no-lag performance fixture.
+- Full `pnpm check` passed on the pinned toolchain: schema/boundaries, TypeScript
+  and Python formatting/lint, type checking, unit/runtime/integration/depth tests,
+  the complete legacy browser/export/authoring/typography matrix and CE0 baselines.
+  Runtime: 43 tests; integration: 110 tests; depth: 14 tests. CE0 checked **176 items,
+  36,061 frames in 267.11 s**, all exact against `darwin-arm64`; no baselines were
+  regenerated. The final `pnpm check:fast` and new browser evaluator group also
+  passed after the last CE2 corrections (the full matrix had already started).
+  No legacy renderer version bump is required; the new evaluator has its own version.
+- PR #26 dependency-chain correction (2026-10-01): layer and precomp-clock tasks
+  now run on an explicit work stack, including delayed and lagged source reads.
+  Accepted 500-driver chains are covered in both painter orders and independently
+  timed reused precomps. The evaluator version is now `composition-evaluator-3`.
+  Pinned Node 22.23.1 passed 62 evaluator regressions, the existing motion-craft
+  tests, type/lint/format/boundary checks and Node/browser evaluator parity. The
+  200-layer benchmark averaged 0.6301 ms/frame on the reference Apple M5 Pro.
+- PR #26 signal-cache correction (2026-10-01): immutable signal curves and smooth
+  tangents now share the evaluator's object-identity cache. Each evaluation call
+  memoises up to 128 source times per signal across root, precomp and historical
+  reads. Four regressions cover reuse, fractional lag, legacy numerical parity and
+  bounded-cache eviction. Pinned Node 22.23.1 passed `pnpm check:fast` in a clean
+  snapshot (88 files, 899 tests), Node/browser evaluator parity and all 176 legacy
+  baseline items (36,061 frames, exact; no baselines regenerated). The final
+  200-layer benchmark averaged 0.7492 ms/frame against the 2 ms/frame budget.
+- PR #26 source-boundary correction (2026-10-01): finite precomp sources now hold
+  their first or last frame outside the source range, including reverse, stretch,
+  different-rate and remapped playback. Authored/driven remap values remain readable;
+  only the child sampling clock is clamped, and host in/out gates stay in composition
+  time. The evaluator version is `composition-evaluator-7`. After the three review
+  fixes, pinned Node 22.23.1 passed all 1,010 unit tests in 93 files, schema,
+  boundaries, formatting, types and lint (excluding the unrelated nested `.claude`
+  checkout). Node/browser parity passed three fixtures at nine times, including
+  reverse seeks; maximum numeric error was `1.1102230246251565e-16`. The 200-layer
+  benchmark averaged 0.7087 ms/frame against the 2 ms/frame budget.
 
 ---
 
@@ -970,6 +1050,8 @@ masks and adjustment layers, and export through the existing runtime.
 - [ ] Masks as Path2D with `add/subtract/intersect/difference`; feather via blurred
       mask surface; expansion via stroke-and-fill approximation (document the limits).
 - [ ] Precomps with and without collapsed transforms; nested time.
+- [ ] Prepare pinned measured text bounds and text animator geometry for the CE2
+      `textBounds` data API; preserve missing-measurement diagnostics (CE2 follow-up).
 - [ ] Culling of layers whose bounds miss the viewport.
 - [ ] Wire `composition-1` into [`export-page.ts`](../packages/execution-runtime/src/export-page.ts)
       and [`export-worker.ts`](../packages/execution-runtime/src/export-worker.ts) as an
@@ -1339,6 +1421,10 @@ built-ins cannot express, add a built-in; do not add an escape hatch to arbitrar
       acyclic graph. `value` reads the property's keyed value without re-entering
       its expression. Recursive feedback needs a separate finite-history design
       before it can be supported.
+- [ ] Enable grouped temporal velocity tuples with dimensions/units matching the
+      property, plus a distinct spatial speed in arc-length pixels/frame; extend
+      schema, sampler and documentation together (CE2 follow-up). Keep scalar
+      `speed` unchanged.
 - [ ] Re-express signals, drivers and periodic motion as expression sugar internally;
       their schemas remain valid.
 - [ ] Behaviours (compile to expressions/drivers, each with parameters and tests):
@@ -1445,6 +1531,8 @@ export default comp({ width: 1920, height: 1080, fps: 30, seconds: 8 }, (c) => {
       accepts precomputed hashes (browser).
 - [ ] Presets as plain functions (for example `presets.drawOn(path)`); port the story
       intent presets.
+- [ ] Expose CE1's instance-specific property paths through builder helpers for
+      reused precomps, including explicit cross-instance driver sources and targets.
 - [ ] Source maps: every emitted node records the builder call site; diagnostics show
       `file:line`.
 - [ ] CLI: `still-shift comp` subcommands `validate`, `render`, `preview --watch`,
@@ -1691,6 +1779,9 @@ A milestone is complete when **all** of the following hold:
 | 2026-10-01 | Stretch is a signed nonzero rate; startFrame anchors local time zero; finite visual sources hold boundary frames                                                                                                                                                                                                                                                                                                                                                                                                                    | Makes CE1 accept CE2 reverse playback and defines deterministic source sampling without changing composition-time visibility                                                                                                                    | CE1 AE stretch convention  |
 | 2026-10-01 | CE10 depends on CE3, CE4a, CE9 and CE12                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             | Its CLI, expression helpers and adapter-parity acceptance require rendering, expressions, baking, linting and the story adapter                                                                                                                 |                            |
 | 2026-10-01 | Property paths traverse precomp layer instances and carry instance-local time at each hop                                                                                                                                                                                                                                                                                                                                                                                                                                           | Repeated sources with different start/stretch/remap must remain separately addressable and independently evaluated                                                                                                                              |                            |
+| 2026-10-01 | CE2: keep scalar temporal `speed` in property units/frame; future grouped velocity is a matching vector/RGBA tuple, while spatial speed is a distinct arc-length pixels/frame scalar. Enabling those new forms moves to CE9                                                                                                                                                                                                                                                                                                         | Component velocities and arc speed are different quantities; preserve validated CE1 authoring until each has an explicit field and sampler                                                                                                      |                            |
+| 2026-10-01 | CE2: measured text bounds enter through immutable data; CE3 prepares font layout and text animator geometry                                                                                                                                                                                                                                                                                                                                                                                                                         | Keeps Node/browser evaluation pure and avoids guessed glyph bounds; missing measurements are diagnosed                                                                                                                                          |                            |
+| 2026-10-01 | CE2: reused precomps evaluate per instance; ambiguous scoped reads fail until CE10 adds instance addressing                                                                                                                                                                                                                                                                                                                                                                                                                         | CE1 paths identify definitions, so choosing an arbitrary host would make sampled time ambiguous                                                                                                                                                 | Instance paths entry above |
 
 ## Open questions for the owner
 

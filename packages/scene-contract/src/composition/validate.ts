@@ -61,8 +61,16 @@ function checkVectorDimensions(
   path: Path,
 ) {
   if (layer.threeD) return;
-  for (const field of ["anchor", "position", "scale"] as const) {
-    const value = layer.transform?.[field];
+  for (const field of [
+    "anchor",
+    "position",
+    "scale",
+    "constraintReference",
+  ] as const) {
+    const value =
+      field === "constraintReference"
+        ? layer.constraintReference
+        : layer.transform?.[field];
     if (value === undefined) continue;
     const threeD = Array.isArray(value)
       ? value.length === 3
@@ -72,7 +80,9 @@ function checkVectorDimensions(
     if (threeD)
       fail(
         "comp-vector-dimension",
-        [...path, "transform", field],
+        field === "constraintReference"
+          ? [...path, field]
+          : [...path, "transform", field],
         "three-component values require threeD",
       );
   }
