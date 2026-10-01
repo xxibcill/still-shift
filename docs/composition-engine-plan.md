@@ -1061,6 +1061,9 @@ tracker stays `[~]` until review.
   result and lists the layers in the scene manifest. Among the CE0 acceptance
   fixtures only the History Offstage presets and the story calibration pan use
   generic faces (44 of 427 text nodes, 8 of 160 fixtures).
+- Full `pnpm check` at `e9c5641` passed in 29 min 22 s on the pinned toolchain: 922
+  unit tests, every browser group including the Lab parity check, and CE0 baselines
+  (176 items, 36,061 frames, all exact).
 - **Limitations and follow-ups:**
   - Adjustment layers apply only their blend mode until effects arrive (CE6).
   - Isolated layers use scope-sized surfaces; bounds-sized surfaces and caching belong
