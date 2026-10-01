@@ -148,6 +148,10 @@
       "sum": ["pressure", "house.transform.rotation"],
       "layer": "current",
       "blend": "add"
+    },
+    {
+      "target": "inset/deeper/dot.transform.rotation",
+      "signal": "pressure"
     }
   ],
   "periodic": [

@@ -45,6 +45,18 @@ four and a half minutes on an Apple M5 Pro. See the
 - A failure lists the items and frames whose pixels changed. An intentional rendering
   change regenerates the baseline with `pnpm composition:baselines --write` (use
   `--only id,id` or `--family name` for a subset) and records the reason in the commit.
+  Partial writes replace the selected fixtures' entries, including removed or renamed
+  passage beats, and remove their obsolete timing entries.
+  Retaining pixel hashes requires the same renderer environment, launch arguments and
+  machine metadata as the existing file. An incompatible partial write stops before
+  rendering or changing either baseline file; regenerate with a full `--write` without
+  filters. This also applies to legacy files with an older profile or missing machine
+  metadata. Filtered writes that replace every existing item need no compatibility
+  check because they retain no old hashes.
+- Timing writes use `composition-timings-2`, with `machine` and `renderEnvironment`
+  on each item. Partial runs retain the provenance of unselected measurements, even
+  across platforms or machines. Older files with global provenance migrate on write;
+  retained measurements without provenance require a full `--write` regeneration.
 - Baselines exist per `platform-arch` (`darwin-arm64`, `linux-arm64`, `linux-x64`)
   because output differs across operating systems and CPU architectures; see policy
   rule 6 in the plan. On an environment without one, the check stops with an
@@ -58,6 +70,9 @@ four and a half minutes on an Apple M5 Pro. See the
   machine. `CHECK=1 scripts/composition/linux/run.sh arm64` checks the committed Linux
   baseline instead. The `linux-x64` baseline was generated under Rosetta; confirm it on
   real x86 hardware.
+- Each `--save-mismatches <dir>` run replaces that directory's `reference/` frames
+  and `environment.json`, including filtered runs. Reusing a directory cannot retain
+  frames from an earlier fixture revision; use separate directories to keep older runs.
 - Rendering uses the pinned software profile `chromium-software-2`
   (`--disable-gpu --enable-unsafe-swiftshader`); the command refuses to run on any other
   renderer.

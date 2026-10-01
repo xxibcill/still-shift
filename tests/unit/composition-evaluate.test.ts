@@ -760,7 +760,7 @@ describe("composition time and precomps", () => {
   it("samples a different-rate precomp at the parent's elapsed seconds", () => {
     const doc = nested();
     expect(evaluateComp(doc, 20).layers[0]!.precomp!.time).toBe(10);
-    expect(evaluateProperty(doc, "child/box.rotation", 20)).toBe(50);
+    expect(evaluateProperty(doc, "host/box.rotation", 20)).toBe(50);
     expect(state(doc, 20, "host").transform.anchor).toEqual([50, 50]);
   });
   it("samples remap keys at layer time and treats values as child frames", () => {
@@ -769,9 +769,9 @@ describe("composition time and precomps", () => {
       doc.layers[0] as Extract<CompositionLayer, { type: "precomp" }>
     ).timeRemap = linear(20, 0);
     expect(evaluateComp(doc, 20).layers[0]!.precomp!.time).toBe(15);
-    expect(evaluateProperty(doc, "child/box.rotation", 20)).toBe(75);
+    expect(evaluateProperty(doc, "host/box.rotation", 20)).toBe(75);
   });
-  it("evaluates reused precomps independently and rejects ambiguous property reads", () => {
+  it("reads independently timed reused precomps by their host instance paths", () => {
     const doc = nested();
     doc.layers = [
       { id: "a", type: "precomp", comp: "child", timeRemap: 5 },
@@ -781,10 +781,12 @@ describe("composition time and precomps", () => {
     expect(
       result.layers.map((l) => l.precomp!.layers[0]!.transform.rotation),
     ).toEqual([25, 75]);
+    expect(evaluateProperty(doc, "a/box.rotation", 20)).toBe(25);
+    expect(evaluateProperty(doc, "b/box.rotation", 20)).toBe(75);
     expect(
       diagnostic(() => evaluateProperty(doc, "child/box.rotation", 20))[0]!
         .code,
-    ).toBe("comp-evaluation-scope");
+    ).toBe("comp-path-scope");
   });
   it("does not inherit precomp opacity into its unflattened child states", () => {
     const doc = nested();
@@ -792,6 +794,28 @@ describe("composition time and precomps", () => {
     const host = evaluateComp(doc, 20).layers[0]!;
     expect(host.opacity).toBe(0.25);
     expect(host.precomp!.layers[0]!.opacity).toBe(1);
+  });
+  it("reads delayed driver sources through independent sibling instance clocks", () => {
+    const doc = nested();
+    doc.precomps![0]!.fps = 30;
+    doc.layers = [
+      { id: "intro", type: "precomp", comp: "child", startFrame: 5 },
+      { id: "outro", type: "precomp", comp: "child", startFrame: -5 },
+      { id: "controller", type: "null" },
+    ];
+    doc.drivers = [
+      {
+        target: "controller.x",
+        source: "intro/box.rotation",
+        map: { delay: 2 },
+      },
+      {
+        target: "controller.y",
+        source: "outro/box.rotation",
+        map: { delay: 2 },
+      },
+    ];
+    expect(state(doc, 10, "controller").transform.position).toEqual([15, 65]);
   });
   it("reaches nested precomps through their own clocks", () => {
     const doc = nested();
@@ -805,7 +829,11 @@ describe("composition time and precomps", () => {
       frameCount: 60,
       layers: [{ ...solid(), transform: { rotation: linear(0, 100) } }],
     });
-    expect(evaluateProperty(doc, "child/deep/box.rotation", 20)).toBe(40);
+    expect(evaluateProperty(doc, "host/inner/box.rotation", 20)).toBe(40);
+    expect(
+      diagnostic(() => evaluateProperty(doc, "host/deep/box.rotation", 20))[0]!
+        .code,
+    ).toBe("comp-path-scope");
   });
   it("evaluates the CE2 timing fixture against hand-computed clocks", () => {
     const doc = JSON.parse(
@@ -827,7 +855,116 @@ describe("composition time and precomps", () => {
         .transform.position,
     ).toEqual([25, 50]);
   });
-  it("returns transparent precomp content outside its frame range", () => {
+  it.each([
+    {
+      name: "before forward playback",
+      host: { startFrame: 10 },
+      frame: 0,
+      expected: 0,
+    },
+    {
+      name: "after forward playback",
+      host: { startFrame: 10 },
+      frame: 40,
+      expected: 29,
+    },
+    {
+      name: "before reverse playback",
+      host: { startFrame: 50, stretch: -1 },
+      frame: 0,
+      expected: 29,
+    },
+    {
+      name: "after reverse playback",
+      host: { startFrame: 29, stretch: -1 },
+      frame: 40,
+      expected: 0,
+    },
+    {
+      name: "after half-speed playback",
+      host: { startFrame: -5, stretch: 2 },
+      frame: 59,
+      expected: 29,
+    },
+    {
+      name: "with a different source rate",
+      host: {},
+      fps: 60 as const,
+      frame: 20,
+      expected: 29,
+    },
+    {
+      name: "with a negative remap",
+      host: { timeRemap: -5 },
+      frame: 10,
+      expected: 0,
+    },
+    {
+      name: "with an oversized remap",
+      host: { timeRemap: 35 },
+      frame: 10,
+      expected: 29,
+    },
+    {
+      name: "with a fractional boundary remap",
+      host: { timeRemap: 29.5 },
+      frame: 10,
+      expected: 29,
+    },
+    {
+      name: "with a fractional interior remap",
+      host: { timeRemap: 5.25 },
+      frame: 10,
+      expected: 5.25,
+    },
+    {
+      name: "with a keyed remap",
+      host: { timeRemap: linear(-5, 35) },
+      frame: 20,
+      expected: 29,
+    },
+    {
+      name: "with a single-frame source",
+      host: { timeRemap: 35 },
+      frameCount: 1,
+      frame: 10,
+      expected: 0,
+    },
+  ])(
+    "holds source boundaries $name",
+    ({ host, fps = 30 as const, frameCount = 30, frame, expected }) => {
+      const doc: Composition = {
+        ...comp([{ id: "host", type: "precomp", comp: "child", ...host }]),
+        precomps: [
+          {
+            id: "child",
+            width: 100,
+            height: 100,
+            fps,
+            frameCount,
+            background: "#ffffff",
+            layers: [
+              { ...solid(), transform: { rotation: linear(0, 290, 29) } },
+            ],
+          },
+        ],
+      };
+      const result = evaluateComp(doc, frame).layers[0]!;
+      expect(result.visible).toBe(true);
+      expect(result.precomp!.time).toBe(expected);
+      expect(result.precomp!.background).toEqual([1, 1, 1, 1]);
+      expect(result.precomp!.layers[0]!.drawable).toBe(true);
+      expect(result.precomp!.layers[0]!.transform.rotation).toBeCloseTo(
+        expected * 10,
+        9,
+      );
+      expect(evaluateProperty(doc, "host/box.rotation", frame)).toBeCloseTo(
+        expected * 10,
+        9,
+      );
+    },
+  );
+  it("preserves authored remap values while holding the sampled source", () => {
     const doc = nested();
     doc.precomps![0]!.background = "#ffffff";
     const host = doc.layers[0] as Extract<
@@ -835,24 +972,45 @@ describe("composition time and precomps", () => {
       { type: "precomp" }
     >;
     host.timeRemap = -1;
-    const result = evaluateComp(doc, 20).layers[0]!.precomp!;
-    expect(result.background).toBeNull();
-    expect(result.layers.every((l) => !l.visible)).toBe(true);
+    const result = evaluateComp(doc, 20).layers[0]!;
+    expect(result.timeRemap).toBe(-1);
+    expect(evaluateProperty(doc, "host.timeRemap", 20)).toBe(-1);
+    expect(result.precomp!.time).toBe(0);
+    expect(result.precomp!.background).toEqual([1, 1, 1, 1]);
+    expect(result.precomp!.layers.every((layer) => layer.visible)).toBe(true);
+  });
+  it("keeps host in/out gates in composition time when the source holds", () => {
+    const doc = nested();
+    doc.precomps![0]!.frameCount = 30;
+    doc.precomps![0]!.fps = 30;
+    Object.assign(doc.layers[0]!, {
+      startFrame: 10,
+      stretch: 1,
+      inPoint: 5,
+      outPoint: 40,
+    });
+    for (const frame of [0, 40]) {
+      const host = evaluateComp(doc, frame).layers[0]!;
+      expect(host.visible).toBe(false);
+      expect(host.precomp).toBeUndefined();
+    }
+    expect(evaluateComp(doc, 5).layers[0]!.precomp!.time).toBe(0);
+    expect(evaluateComp(doc, 39).layers[0]!.precomp!.time).toBe(29);
   });
 });
 
 describe("composition motion and constraints", () => {
-  const driverChain = (): Composition => ({
+  const driverChain = (length = 500): Composition => ({
     ...comp(
-      Array.from({ length: 501 }, (_, i) => ({
+      Array.from({ length: length + 1 }, (_, i) => ({
         id: `node${i}`,
         type: "null" as const,
         transform: {
-          position: i === 500 ? { x: linear(0, 40), y: 0 } : [0, 0],
+          position: i === length ? { x: linear(0, 40), y: 0 } : [0, 0],
         },
       })),
     ),
-    drivers: Array.from({ length: 500 }, (_, i) => ({
+    drivers: Array.from({ length }, (_, i) => ({
       target: `node${i}.x`,
       source: `node${i + 1}.x`,
       map: { offset: 1 },
@@ -887,7 +1045,7 @@ describe("composition motion and constraints", () => {
     );
   });
   it("keeps long dependency chains local to each reused precomp instance", () => {
-    const chain = driverChain();
+    const chain = driverChain(250);
     const doc: Composition = {
       ...comp([
         { id: "first", type: "precomp", comp: "child", startFrame: 5 },
@@ -902,17 +1060,19 @@ describe("composition motion and constraints", () => {
           layers: chain.layers,
         },
       ],
-      drivers: chain.drivers!.map((driver) => ({
-        ...driver,
-        target: `child/${driver.target}`,
-        source: `child/${driver.source}`,
-      })),
+      drivers: ["first", "second"].flatMap((instance) =>
+        chain.drivers!.map((driver) => ({
+          ...driver,
+          target: `${instance}/${driver.target}`,
+          source: `${instance}/${driver.source}`,
+        })),
+      ),
     };
     expect(
       evaluateComp(doc, 10.5).layers.map(
         (layer) => layer.precomp!.layers[0]!.transform.position[0],
       ),
-    ).toEqual([511, 531]);
+    ).toEqual([261, 281]);
   });
   it("uses dependency order rather than painter order for driver sources", () => {
     const doc = comp([
@@ -1034,7 +1194,7 @@ describe("composition motion and constraints", () => {
     ];
     doc.drivers = [
       { target: "host.timeRemap", signal: "offset", blend: "add" },
-      { target: "host.x", source: "child/box.x" },
+      { target: "host.x", source: "host/box.x" },
     ];
     const host = evaluateComp(doc, 20).layers[0]!;
     expect(host.timeRemap).toBe(10);
@@ -1063,13 +1223,120 @@ describe("composition motion and constraints", () => {
           ],
         },
       ],
-      drivers: [{ target: "child/box.x", source: "child/source.x" }],
+      drivers: ["a", "b"].map((instance) => ({
+        target: `${instance}/box.x`,
+        source: `${instance}/source.x`,
+      })),
     };
     expect(
       evaluateComp(doc, 10).layers.map(
         (l) => l.precomp!.layers[0]!.transform.position[0],
       ),
     ).toEqual([5, 15]);
+  });
+  it("applies a cross-instance driver only to its addressed target", () => {
+    const doc: Composition = {
+      ...comp([
+        { id: "a", type: "precomp", comp: "child", timeRemap: 5 },
+        { id: "b", type: "precomp", comp: "child", timeRemap: 15 },
+      ]),
+      precomps: [
+        {
+          id: "child",
+          width: 100,
+          height: 100,
+          frameCount: 60,
+          layers: [
+            solid(),
+            {
+              id: "source",
+              type: "null",
+              transform: { position: { x: linear(0, 20), y: 0 } },
+            },
+          ],
+        },
+      ],
+      drivers: [{ target: "a/box.x", source: "b/source.x" }],
+    };
+    expect(
+      evaluateComp(doc, 10).layers.map(
+        (layer) => layer.precomp!.layers[0]!.transform.position[0],
+      ),
+    ).toEqual([15, 50]);
+  });
+  it("binds periodic motion to individual instances using root-frame windows", () => {
+    const doc: Composition = {
+      ...comp([
+        { id: "a", type: "precomp", comp: "child", startFrame: 5 },
+        { id: "b", type: "precomp", comp: "child", startFrame: -5 },
+      ]),
+      precomps: [
+        {
+          id: "child",
+          width: 100,
+          height: 100,
+          frameCount: 60,
+          layers: [solid()],
+        },
+      ],
+      periodic: ["a", "b"].map((instance, i) => ({
+        target: `${instance}/box.rotation`,
+        start: 0,
+        end: 8,
+        oscillate: { amplitude: i === 0 ? 2 : 5, period: 8 },
+      })),
+    };
+    const rotations = (time: number) =>
+      evaluateComp(doc, time).layers.map(
+        (layer) => layer.precomp!.layers[0]!.transform.rotation,
+      );
+    expect(rotations(2)).toEqual([2, 5]);
+    expect(rotations(9)).toEqual([0, 0]);
+    expect(rotations(2)).toEqual([2, 5]);
+  });
+  it("binds nested remap drivers to independently reused host clocks", () => {
+    const doc: Composition = {
+      ...comp([
+        { id: "a", type: "precomp", comp: "child" },
+        { id: "b", type: "precomp", comp: "child" },
+      ]),
+      precomps: [
+        {
+          id: "child",
+          width: 100,
+          height: 100,
+          frameCount: 60,
+          layers: [
+            { id: "inner", type: "precomp", comp: "deep", timeRemap: 5 },
+          ],
+        },
+        {
+          id: "deep",
+          width: 100,
+          height: 100,
+          frameCount: 60,
+          layers: [solid()],
+        },
+      ],
+      signals: ["first", "second"].map((id, i) => ({
+        id,
+        keys: [
+          { frame: 0, value: i === 0 ? 7 : 17 },
+          { frame: 20, value: i === 0 ? 7 : 17 },
+        ],
+      })),
+      drivers: [
+        { target: "a/inner.timeRemap", signal: "first" },
+        { target: "b/inner.timeRemap", signal: "second" },
+      ],
+    };
+    expect(
+      evaluateComp(doc, 10).layers.map(
+        (layer) => layer.precomp!.layers[0]!.precomp!.time,
+      ),
+    ).toEqual([7, 17]);
+    expect(evaluateProperty(doc, "a/inner.timeRemap", 10)).toBe(7);
+    expect(evaluateProperty(doc, "b/inner.timeRemap", 10)).toBe(17);
   });
   it("attaches the separate reference point through a transformed parent", () => {
     const doc = comp([
@@ -1095,7 +1362,7 @@ describe("composition motion and constraints", () => {
     expect(transformPoint(state(doc).worldMatrix, [20, 0])).toEqual([100, 50]);
     expect(state(doc).transform.position).toEqual([25, 25]);
   });
-  it("keeps definition-scoped driver sources local across different ancestor routes", () => {
+  it("keeps nested driver sources local to their addressed ancestor routes", () => {
     const doc: Composition = {
       ...comp([
         { id: "a", type: "precomp", comp: "aScene", startFrame: 5 },
@@ -1131,13 +1398,11 @@ describe("composition motion and constraints", () => {
           ],
         },
       ],
-      drivers: [
-        {
-          target: "aScene/deep/box.x",
-          source: "aScene/deep/source.x",
-          map: { delay: 2 },
-        },
-      ],
+      drivers: ["a", "b"].map((instance) => ({
+        target: `${instance}/inner/box.x`,
+        source: `${instance}/inner/source.x`,
+        map: { delay: 2 },
+      })),
     };
     expect(
       evaluateComp(doc, 10).layers.map(

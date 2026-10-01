@@ -49,14 +49,13 @@ import type {
   PropertyValue,
 } from "./types.ts";
 
-export const COMPOSITION_EVALUATOR_VERSION = "composition-evaluator-5";
+export const COMPOSITION_EVALUATOR_VERSION = "composition-evaluator-8";
 const order = ["action", "response", "current", "carrier"] as const;
 type Context = {
   scope: CompositionScope;
   time: number;
   fps: number;
   route: string[];
-  hosts: string[];
   states: Map<string, EvaluatedLayer>;
   active: Set<string>;
   activeClocks: Set<string>;
@@ -99,14 +98,12 @@ function context(
   time: number,
   fps: number,
   route: string[] = [],
-  hosts: string[] = [],
 ): Context {
   return {
     scope,
     time,
     fps,
     route,
-    hosts,
     states: new Map(),
     active: new Set(),
     activeClocks: new Set(),
@@ -215,7 +212,7 @@ class Evaluation {
   }
 
   private bindings(ctx: Context, id: string) {
-    return layerKey(ctx.route.at(-1), id);
+    return layerKey(ctx.route, id);
   }
   private layer(ctx: Context, id: string) {
     return this.compiled.layers.get(ctx.scope)!.get(id)!;
@@ -286,12 +283,12 @@ class Evaluation {
         path: host.id,
       });
     const scope = this.compiled.scopes.get(host.comp)!;
+    const sourceTime = yield* this.clock(ctx, host);
     const next = context(
       scope,
-      yield* this.clock(ctx, host),
+      Math.max(0, Math.min(scope.frameCount - 1, sourceTime)),
       scope.fps ?? this.compiled.comp.fps,
-      [...ctx.route, host.comp],
-      [...ctx.hosts, host.id],
+      [...ctx.route, host.id],
     );
     ctx.children.set(host.id, next);
     return next;
@@ -317,53 +314,23 @@ class Evaluation {
     return time;
   }
 
-  private *scopeFor(path: PropertyPath, preferred?: Context): Task<Context> {
+  private *scopeFor(path: PropertyPath): Task<Context> {
     let ctx = this.root;
-    // Definition-scoped drivers apply to every instance, including instances
-    // reached through a different ancestor route. Rebuild the instance at this
-    // session's time so delayed source reads keep the same host identities.
-    if (
-      preferred?.route.length &&
-      path.scope.at(-1) === preferred.route.at(-1)
-    ) {
-      for (const host of preferred.hosts)
-        ctx = yield* this.child(ctx, this.layer(ctx, host));
-      return ctx;
-    }
-    for (const [depth, id] of path.scope.entries()) {
-      const hosts = ctx.scope.layers.filter(
-        (l) => l.type === "precomp" && l.comp === id,
-      );
-      const sameRoute =
-        preferred?.route.slice(0, depth + 1).join("/") ===
-        path.scope.slice(0, depth + 1).join("/");
-      const selected = sameRoute
-        ? hosts.find((l) => l.id === preferred!.hosts[depth])
-        : undefined;
-      if (!selected && hosts.length !== 1)
-        passageError(
-          "comp-evaluation-scope",
-          `Property path ${path.scope.join("/")} has multiple precomp instances`,
-          { path: path.scope.join("/") },
-        );
-      ctx = yield* this.child(ctx, selected ?? hosts[0]!);
-    }
+    for (const id of path.scope)
+      ctx = yield* this.child(ctx, this.layer(ctx, id));
     return ctx;
   }
 
-  property(path: PropertyPath, preferred?: Context): PropertyValue {
-    return this.run(this.propertyTask(path, preferred));
+  property(path: PropertyPath): PropertyValue {
+    return this.run(this.propertyTask(path));
   }
 
-  private *propertyTask(
-    path: PropertyPath,
-    preferred?: Context,
-  ): Task<PropertyValue> {
+  private *propertyTask(path: PropertyPath): Task<PropertyValue> {
     if (path.layer === "comp")
       return sampleCamera(this.compiled.comp, this.time)[
         path.segments[1]!.name as "x" | "y" | "zoom"
       ];
-    const ctx = yield* this.scopeFor(path, preferred);
+    const ctx = yield* this.scopeFor(path);
     const layer = this.layer(ctx, path.layer);
     // A clock can be read without asking for the enclosing layer's transform.
     if (layer.type === "precomp" && path.segments[0]!.name === "timeRemap")
@@ -371,15 +338,10 @@ class Evaluation {
     return readProperty(yield* this.layerState(ctx, layer), path.segments);
   }
 
-  private *source(
-    text: string,
-    time: number,
-    preferred: Context,
-  ): Task<number> {
+  private *source(text: string, time: number): Task<number> {
     if (!text.includes(".")) return this.signalAt(text, time);
     return (yield* this.at(time).propertyTask(
       resolvedPath(this.compiled, text),
-      preferred,
     )) as number;
   }
 
@@ -395,13 +357,13 @@ class Evaluation {
     return value;
   }
 
-  private *driverValue(motion: CompositionDriver, ctx: Context): Task<number> {
+  private *driverValue(motion: CompositionDriver): Task<number> {
     const samples = driverSamples(this.time, motion.map);
     let sample = samples.next();
     while (!sample.done) {
       let value = 0;
       for (const source of motion.sum ?? [motion.source ?? motion.signal!])
-        value += yield* this.source(source, sample.value, ctx);
+        value += yield* this.source(source, sample.value);
       sample = samples.next(value);
     }
     return sample.value;
@@ -442,7 +404,7 @@ class Evaluation {
       }
       for (const { motion, path } of this.compiled.drivers.get(key) ?? []) {
         if (!accepts(path) || (motion.layer ?? "action") !== layer) continue;
-        const value = yield* this.driverValue(motion, ctx);
+        const value = yield* this.driverValue(motion);
         const weight = motion.weight
           ? unit(motionScalar(motion.weight, this.time, comp.fps))
           : 1;

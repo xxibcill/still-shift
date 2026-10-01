@@ -27,7 +27,6 @@ import {
   compareFrames,
   FRAME_TOLERANCE_VERSION,
   meetsTier,
-  strictestTier,
   worstTier,
 } from "../../packages/renderer-core/src/frame-tolerance.ts";
 import { COMPOSITION_RENDERER_VERSION } from "../../packages/renderer-core/src/composition/render/version.ts";
@@ -156,7 +155,7 @@ try {
           item.comp.height,
         ),
       );
-    const observedTier = worstTier(comparisons.map(strictestTier));
+    const observedTier = worstTier(comparisons);
     const minPsnr = Math.min(...comparisons.map((c) => c.psnr));
     const perceptual = comparisons.every((c) => meetsTier(c, "perceptual"));
     if (!perceptual) missed.push(item.id);

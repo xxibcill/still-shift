@@ -16,6 +16,7 @@ import {
   type IssueReporter,
 } from "./primitives.ts";
 import { isResolvedProperty, resolvePropertyPath } from "./resolve.ts";
+import { checkTextAnimatorAxes } from "./text-axes.ts";
 
 const L = COMPOSITION_LIMITS;
 type Path = (string | number)[];
@@ -52,18 +53,6 @@ function duplicates(
       );
     seen.add(item.id);
   });
-}
-
-const jsonBytes = (value: unknown) =>
-  new TextEncoder().encode(JSON.stringify(value)).length;
-
-function checkMetadata(fail: IssueReporter, value: unknown, path: Path) {
-  if (value !== undefined && jsonBytes(value) > L.maxMetadataBytes)
-    fail(
-      "comp-metadata-size",
-      path,
-      `metadata must serialise to at most ${L.maxMetadataBytes} bytes`,
-    );
 }
 
 function checkVectorDimensions(
@@ -273,7 +262,6 @@ function checkLayer(
       asset(layer.asset, layer.type, ["asset"]);
       break;
   }
-  checkMetadata(fail, layer.metadata, [...path, "metadata"]);
 }
 
 type TextLayer = Extract<CompositionLayer, { type: "text" }>;
@@ -851,6 +839,7 @@ export function validateCompositionSemantics(
       signals,
       new Set(scope.markers?.map((m) => m.id)),
     );
+    checkTextAnimatorAxes(comp, scope, base, fail, assets);
     layerCount += scope.layers.length;
   }
   if (layerCount > L.maxLayers)
@@ -908,7 +897,6 @@ export function validateCompositionSemantics(
         `${comp.format} format requires ${size.width}x${size.height}`,
       );
   }
-  checkMetadata(fail, comp.metadata, ["metadata"]);
 }
 
 export type CompositionWarning = {

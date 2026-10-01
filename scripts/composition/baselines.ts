@@ -51,7 +51,6 @@ import {
 import {
   compareFrames,
   FRAME_TOLERANCE_VERSION,
-  strictestTier,
   worstTier,
   type ToleranceTier,
 } from "../../packages/renderer-core/src/frame-tolerance.ts";
@@ -67,8 +66,16 @@ import type {
 
 import {
   assertBaselineInventory,
+  assertBaselineProvenance,
   selectBaselineFixtures,
+  replaceBaselineItems,
 } from "./baseline-check.ts";
+
+import {
+  mergeBaselineTimings,
+  type BaselineTimingsFile,
+  type FrameTimings,
+} from "./baseline-timings.ts";
 
 const BASELINE_VERSION = "composition-baseline-1";
 const root = resolve(import.meta.dirname, "../..");
@@ -464,7 +471,7 @@ async function compareSavedFrames(
   );
   const minPsnr = Math.min(...comparisons.map((c) => c.psnr));
   return {
-    observedTier: worstTier(comparisons.map(strictestTier)),
+    observedTier: worstTier(comparisons),
     differingFrames: mismatch.differingFrames,
     frames: mismatch.frames,
     comparedFrames: frames,
@@ -489,6 +496,16 @@ const stored =
   mode === "check" || saveDirectory
     ? await readBaseline(join(baselineDirectory, `${compareKey}.json`))
     : undefined;
+const partialWrite = mode === "write" && Boolean(only || families);
+const previousBaseline =
+  partialWrite && (await stat(baselinePath).catch(() => undefined))
+    ? await readBaseline(baselinePath)
+    : undefined;
+const retainedBaselineItems = replaceBaselineItems(
+  previousBaseline?.items ?? {},
+  {},
+  { only, families },
+);
 const renderItems: RenderItem[] = [];
 for (const fixture of selected) renderItems.push(...(await expand(fixture)));
 if (stored)
@@ -501,7 +518,12 @@ if (stored)
 const frameDirectory = saveDirectory
   ? resolve(saveDirectory)
   : await mkdtemp(join(tmpdir(), "still-shift-baselines-"));
-if (saveDirectory) await mkdir(frameDirectory, { recursive: true });
+if (saveDirectory) {
+  await mkdir(frameDirectory, { recursive: true });
+  // environment.json describes only this run, so its reference frames must too.
+  await rm(join(frameDirectory, "reference"), { recursive: true, force: true });
+  await rm(join(frameDirectory, "environment.json"), { force: true });
+}
 const machine = {
   cpu: cpus()[0]?.model ?? "unknown",
   logicalCores: availableParallelism(),
@@ -540,6 +562,12 @@ try {
   if (!baseUrl) throw new Error("Baseline server has no local URL");
   const pinned = await openSession(baseUrl, "pinned");
   sessions.push(pinned);
+  if (previousBaseline && Object.keys(retainedBaselineItems).length)
+    assertBaselineProvenance(previousBaseline, {
+      browserArgs: RENDER_BROWSER_ARGS,
+      renderEnvironment: pinned.environment,
+      machine,
+    });
   const hardware =
     mode === "compare-hardware"
       ? await openSession(baseUrl, "hardware")
@@ -563,7 +591,7 @@ try {
     );
 
   const items: Record<string, BaselineItem> = {};
-  const timings: Record<string, unknown> = {};
+  const timings: Record<string, FrameTimings> = {};
   const hardwareReport: Record<string, unknown> = {};
   const started = performance.now();
   for (const item of renderItems) {
@@ -657,7 +685,7 @@ try {
       await rm(join(frameDirectory, "hardware", encodeURIComponent(item.id)), {
         recursive: true,
       });
-      const observed = worstTier(comparisons.map(strictestTier));
+      const observed = worstTier(comparisons);
       const minPsnr = Math.min(...comparisons.map((c) => c.psnr));
       hardwareReport[item.id] = {
         observedTier: observed,
@@ -685,34 +713,28 @@ try {
   console.log(`${itemCount} items, ${frameCount} frames in ${elapsedSeconds}s`);
 
   if (mode === "write") {
-    const partial = Boolean(only || families);
-    // A partial write merges into this platform's baseline, if one exists yet.
-    const previous =
-      partial && (await stat(baselinePath).catch(() => undefined))
-        ? await readBaseline(baselinePath)
-        : undefined;
     const file: BaselineFile = {
       version: BASELINE_VERSION,
       renderer: "illustrated-canvas",
       browserArgs: RENDER_BROWSER_ARGS,
       renderEnvironment: pinned.environment,
       machine,
-      items: sortedById({ ...previous?.items, ...items }),
+      items: sortedById({ ...retainedBaselineItems, ...items }),
     };
+    const previousTimings = partialWrite
+      ? (JSON.parse(await readFile(timingPath, "utf8")) as BaselineTimingsFile)
+      : undefined;
+    const timingFile = mergeBaselineTimings({
+      previous: previousTimings,
+      measurements: timings,
+      provenance: { machine, renderEnvironment: pinned.environment },
+      itemIds: Object.keys(file.items),
+    });
     await writeJson(baselinePath, file);
-    const previousTimings = partial
-      ? (
-          JSON.parse(await readFile(timingPath, "utf8")) as {
-            items: Record<string, unknown>;
-          }
-        ).items
-      : {};
     await writeJson(timingPath, {
-      version: BASELINE_VERSION,
-      note: "Machine-specific timings for the CE0 acceptance fixtures; compare only with runs on similar hardware. frame* is render plus pixel readback: Canvas 2D records commands in renderFrame and rasterises lazily, so most drawing cost appears in readback.",
-      machine,
-      renderEnvironment: pinned.environment,
-      items: sortedById({ ...previousTimings, ...timings }),
+      ...timingFile,
+      note: "Per-item machine and render environment identify each CE0 timing measurement; compare only measurements from similar hardware and environments. frame* is render plus pixel readback: Canvas 2D records commands in renderFrame and rasterises lazily, so most drawing cost appears in readback.",
+      items: sortedById(timingFile.items),
     });
     console.log(`wrote ${baselinePath}\nwrote ${timingPath}`);
   }

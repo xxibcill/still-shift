@@ -70,7 +70,7 @@ export const COMPOSITION_DIAGNOSTICS = {
   "comp-text-span-missing":
     "A decoration or text animator names an unknown span.",
   "comp-text-font-axis":
-    "A variable-font axis value is outside the pinned font's range.",
+    "A style, span or animated variable-font axis is absent or outside the pinned font's range.",
   "comp-text-locale": "A text layer's locale is not recognised.",
   "comp-text-transition":
     "Conflicting, overlapping or impossible text transitions.",
@@ -85,6 +85,9 @@ export const COMPOSITION_DIAGNOSTICS = {
   "comp-camera-jolt": "A camera jolt starts at or after `frameCount`.",
   "comp-format-size": "`format` disagrees with `width` and `height`.",
   "comp-metadata-size": "Metadata serialises to more than 64 KiB.",
+  "comp-json-size": "An opaque JSON payload serialises to more than 64 KiB.",
+  "comp-json-depth":
+    "An opaque JSON payload nests more than 64 container levels below its root.",
   "comp-metadata-depth":
     "Metadata nests more than 64 container levels below its root.",
   "comp-driver-source":
@@ -95,7 +98,7 @@ export const COMPOSITION_DIAGNOSTICS = {
   // Property paths
   "comp-path-syntax": "A property path does not match the grammar.",
   "comp-path-scope":
-    "A path's precomp prefix is unknown or not used at that level.",
+    "A path's precomp layer instance is missing or not a precomp at that level.",
   "comp-path-layer": "A path names no layer in its composition.",
   "comp-path-property": "A path names no property of its layer.",
   "comp-path-type":

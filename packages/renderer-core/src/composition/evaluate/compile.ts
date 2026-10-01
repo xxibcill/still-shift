@@ -29,8 +29,8 @@ export type CompiledComposition = {
   paths: Map<string, PropertyPath>;
 };
 const compiled = new WeakMap<Composition, CompiledComposition>();
-export const layerKey = (scope: string | undefined, id: string) =>
-  `${scope ? scope + "/" : ""}${id}`;
+export const layerKey = (scope: readonly string[], id: string) =>
+  [...scope, id].join("/");
 
 export function resolvedPath(
   compiled: CompiledComposition,
@@ -69,7 +69,7 @@ export function compileComposition(comp: Composition): CompiledComposition {
     map: Map<string, T[]>,
     binding: T,
   ) => {
-    const key = layerKey(binding.path.scope.at(-1), binding.path.layer);
+    const key = layerKey(binding.path.scope, binding.path.layer);
     const bindings = map.get(key) ?? [];
     bindings.push(binding);
     map.set(key, bindings);
