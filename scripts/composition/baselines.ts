@@ -68,6 +68,7 @@ import type {
 import {
   assertBaselineInventory,
   selectBaselineFixtures,
+  replaceBaselineItems,
 } from "./baseline-check.ts";
 
 const BASELINE_VERSION = "composition-baseline-1";
@@ -697,7 +698,9 @@ try {
       browserArgs: RENDER_BROWSER_ARGS,
       renderEnvironment: pinned.environment,
       machine,
-      items: sortedById({ ...previous?.items, ...items }),
+      items: sortedById(
+        replaceBaselineItems(previous?.items ?? {}, items, { only, families }),
+      ),
     };
     await writeJson(baselinePath, file);
     const previousTimings = partial
@@ -712,7 +715,13 @@ try {
       note: "Machine-specific timings for the CE0 acceptance fixtures; compare only with runs on similar hardware. frame* is render plus pixel readback: Canvas 2D records commands in renderFrame and rasterises lazily, so most drawing cost appears in readback.",
       machine,
       renderEnvironment: pinned.environment,
-      items: sortedById({ ...previousTimings, ...timings }),
+      items: sortedById(
+        Object.fromEntries(
+          Object.entries({ ...previousTimings, ...timings }).filter(([id]) =>
+            Object.hasOwn(file.items, id),
+          ),
+        ),
+      ),
     });
     console.log(`wrote ${baselinePath}\nwrote ${timingPath}`);
   }

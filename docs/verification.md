@@ -45,6 +45,8 @@ four and a half minutes on an Apple M5 Pro. See the
 - A failure lists the items and frames whose pixels changed. An intentional rendering
   change regenerates the baseline with `pnpm composition:baselines --write` (use
   `--only id,id` or `--family name` for a subset) and records the reason in the commit.
+  Partial writes replace the selected fixtures' entries, including removed or renamed
+  passage beats, and remove their obsolete timing entries.
 - Baselines exist per `platform-arch` (`darwin-arm64`, `linux-arm64`, `linux-x64`)
   because output differs across operating systems and CPU architectures; see policy
   rule 6 in the plan. On an environment without one, the check stops with an

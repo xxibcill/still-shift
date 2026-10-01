@@ -52,3 +52,22 @@ export function assertBaselineInventory(options: {
   if (problems.length)
     throw new Error(`Baseline inventory mismatch: ${problems.join("; ")}`);
 }
+
+export function replaceBaselineItems<
+  T extends { fixture: string; family: string },
+>(
+  previous: Record<string, T>,
+  regenerated: Record<string, T>,
+  filters: FixtureFilters = {},
+): Record<string, T> {
+  const retained = Object.fromEntries(
+    Object.entries(previous).filter(
+      ([, item]) =>
+        !(
+          (!filters.only || filters.only.includes(item.fixture)) &&
+          (!filters.families || filters.families.includes(item.family))
+        ),
+    ),
+  );
+  return { ...retained, ...regenerated };
+}
