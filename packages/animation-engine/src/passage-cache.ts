@@ -1,7 +1,11 @@
 import { acquireArtifactLock } from "@still-shift/execution-runtime/locks";
 import { runProcess } from "@still-shift/execution-runtime/subprocess";
+import {
+  assertPinnedRenderEnvironment,
+  launchRenderBrowser,
+  probeRenderEnvironment,
+} from "@still-shift/execution-runtime/render-browser";
 import { setTimeout as delay } from "node:timers/promises";
-import { chromium } from "playwright";
 import { createHash, randomUUID } from "node:crypto";
 import {
   readFile,
@@ -54,6 +58,27 @@ export function passageBeatKey(scene: StoryScene, runtime: string) {
     }),
   );
 }
+
+async function measurePassageRenderEnvironment(signal?: AbortSignal) {
+  signal?.throwIfAborted();
+  const browser = await launchRenderBrowser();
+  const cancel = () => void browser.close().catch(() => undefined);
+  try {
+    signal?.throwIfAborted();
+    signal?.addEventListener("abort", cancel, { once: true });
+    const environment = await probeRenderEnvironment(await browser.newPage());
+    signal?.throwIfAborted();
+    assertPinnedRenderEnvironment(environment);
+    return environment;
+  } catch (error) {
+    signal?.throwIfAborted();
+    throw error;
+  } finally {
+    signal?.removeEventListener("abort", cancel);
+    await browser.close();
+  }
+}
+
 export async function passageRuntimeIdentity(signal?: AbortSignal) {
   signal?.throwIfAborted();
   const root = resolve(import.meta.dirname, "../../..");
@@ -90,11 +115,8 @@ export async function passageRuntimeIdentity(signal?: AbortSignal) {
       "\n",
     )[0]!,
   );
-  hash.update(
-    (
-      await runProcess(chromium.executablePath(), ["--version"], { signal })
-    ).stdout.trim(),
-  );
+  const renderEnvironment = await measurePassageRenderEnvironment(signal);
+  hash.update(stableJson({ renderEnvironment }));
   hash.update(process.version);
   hash.update(process.platform);
   hash.update(process.arch);
