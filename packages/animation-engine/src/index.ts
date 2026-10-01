@@ -5,6 +5,12 @@ export {
 } from "./prepared-animation-engine.ts";
 export { NoopAnimationEngine } from "./noop-animation-engine.ts";
 export { WebGLAnimationEngine } from "./webgl-animation-engine.ts";
+export {
+  loadComposition,
+  renderComposition,
+  type CompositionRenderResult,
+  type LoadedComposition,
+} from "./composition-render.ts";
 
 export {
   readStoryPassage,

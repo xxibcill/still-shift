@@ -22,6 +22,7 @@ import {
   generateSfx,
   SfxGenerationError,
   importNarrationFile,
+  renderComposition,
 } from "@still-shift/animation-engine";
 import {
   AnimationEngineError,
@@ -61,6 +62,7 @@ Usage:
   pnpm still-shift passage import-narration --plan <plan.json> --narration <audio.wav|mp3> --timing <words.json|captions.srt> --mode match|add --output <new-plan.json>
   pnpm still-shift sfx generate --provider elevenlabs --id <slug> --prompt <text> --duration <seconds> --output-dir <new-directory> [--prompt-influence 0.3] [--loop true|false]
   pnpm still-shift prepare-commerce --brief <brief.json> --output <prepared.json>
+  pnpm --silent still-shift comp render --input <composition.json> --output <path.mp4>
   pnpm --silent still-shift batch --manifest <jsonl> --output-dir <path> [--format landscape|vertical] [--concurrency 1|2]
 
 The default adapter writes a validated 1080p H.264 MP4 and scene manifest.
@@ -389,6 +391,19 @@ export const runCli = async (
         `${JSON.stringify({ status: "failed", diagnostics: passageDiagnostics(error) })}\n`,
       );
       return 1;
+    }
+  }
+  if (args[0] === "comp" && args[1] === "render") {
+    try {
+      const values = parseNamedArguments(args.slice(2), ["input", "output"]);
+      const result = await renderComposition({
+        compositionPath: requireArgument(values, "input"),
+        outputPath: requireArgument(values, "output"),
+      });
+      io.stdout(`${JSON.stringify(result)}\n`);
+      return 0;
+    } catch (error) {
+      return writeFailure(error, io);
     }
   }
   if (args[0] === "prepare-commerce") {
