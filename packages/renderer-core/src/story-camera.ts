@@ -3,64 +3,16 @@ import type { PreparedImage } from "../../scene-contract/src/prepared.ts";
 import type { StoryRenderScene } from "./story-scene.ts";
 import { evaluatePreparedNode } from "./prepared-scene.ts";
 import { imagePlacement } from "./node-transform.ts";
-
-type Axis = "x" | "y" | "zoom";
-type Camera = NonNullable<StoryScene["camera"]>;
-import { monotoneTangents, type Curve } from "./curve.ts";
-const curves = new WeakMap<Camera, Record<Axis, Curve>>();
-
-function cameraCurves(camera: Camera) {
-  const existing = curves.get(camera);
-  if (existing) return existing;
-  const result = Object.fromEntries(
-    (["x", "y", "zoom"] as const).map((axis) => {
-      const frames = camera.keys.map((k) => k.frame),
-        values = camera.keys.map((k) => k[axis]);
-      const tangents = monotoneTangents(frames, values, {
-        ...(camera.startTangent ? { start: camera.startTangent[axis] } : {}),
-        ...(camera.endTangent ? { end: camera.endTangent[axis] } : {}),
-      });
-      return [axis, { frames, values, tangents }];
-    }),
-  ) as Record<Axis, Curve>;
-  curves.set(camera, result);
-  return result;
-}
-
-function sampleCurve(curve: Curve, frame: number, camera: Camera) {
-  const { frames, values, tangents } = curve;
-  if (frame <= frames[0]!) return values[0]!;
-  if (frame >= frames.at(-1)!) return values.at(-1)!;
-  const i = frames.findIndex((f, i) => i > 0 && f > frame) - 1;
-  const duration = frames[i + 1]! - frames[i]!;
-  let t = (frame - frames[i]!) / duration;
-  const easeIn = i === 0 && camera.easeIn !== false;
-  const easeOut = i === frames.length - 2 && camera.easeOut !== false;
-  // These time profiles have derivative 1 at an interior key, retaining C1 continuity.
-  if (easeIn && easeOut) t = t - Math.sin(2 * Math.PI * t) / (2 * Math.PI);
-  else if (easeIn) t = t - ((1 - t) * Math.sin(Math.PI * t)) / Math.PI;
-  else if (easeOut) t = t + (t * Math.sin(Math.PI * t)) / Math.PI;
-  return (
-    (2 * t ** 3 - 3 * t ** 2 + 1) * values[i]! +
-    (t ** 3 - 2 * t ** 2 + t) * duration * tangents[i]! +
-    (-2 * t ** 3 + 3 * t ** 2) * values[i + 1]! +
-    (t ** 3 - t ** 2) * duration * tangents[i + 1]!
-  );
-}
+import {
+  cameraCurves,
+  cameraProjection,
+  sampleCameraMotion,
+} from "./camera-sampling.ts";
 
 export function sampleStoryCamera(scene: StoryScene, frame: number) {
-  const camera = scene.camera;
-  if (!camera) return { x: scene.width / 2, y: scene.height / 2, zoom: 1 };
-  const prepared = cameraCurves(camera);
-  let x = sampleCurve(prepared.x, frame, camera),
-    y = sampleCurve(prepared.y, frame, camera);
-  for (const jolt of camera.jolts ?? []) {
-    if (frame < jolt.frame || frame >= jolt.frame + jolt.decayFrames) continue;
-    const decay = (1 - (frame - jolt.frame) / jolt.decayFrames) ** 3;
-    x += jolt.dx * decay;
-    y += jolt.dy * decay;
-  }
-  return { x, y, zoom: sampleCurve(prepared.zoom, frame, camera) };
+  if (!scene.camera)
+    return { x: scene.width / 2, y: scene.height / 2, zoom: 1 };
+  return sampleCameraMotion(scene.camera, frame);
 }
 
 /** Actual endpoint velocity after monotonicity limiting and endpoint easing. */
@@ -104,15 +56,7 @@ export function storyCameraTransform(
     ? 0
     : (scene.camera?.depth[root] ?? 1);
   if (!scene.camera || depth === 0) return { scale: 1, x: 0, y: 0 };
-  const camera = sampleStoryCamera(scene, frame),
-    cx = scene.width / 2,
-    cy = scene.height / 2;
-  const scale = 1 + (camera.zoom - 1) * depth;
-  return {
-    scale,
-    x: cx - scale * (cx + (camera.x - cx) * depth),
-    y: cy - scale * (cy + (camera.y - cy) * depth),
-  };
+  return cameraProjection(scene, sampleStoryCamera(scene, frame), depth);
 }
 
 export function projectStoryPoint(

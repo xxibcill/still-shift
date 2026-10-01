@@ -27,7 +27,7 @@ export default tseslint.config(
   {
     files: [
       "packages/renderer-core/src/composition/evaluate/**/*.ts",
-      "packages/renderer-core/src/{curve,node-transform,motion-sampling,passage-diagnostics,motion-easing}.ts",
+      "packages/renderer-core/src/{curve,node-transform,camera-sampling,motion-sampling,passage-diagnostics,motion-easing}.ts",
     ],
     rules: {
       "no-restricted-globals": [
@@ -60,6 +60,7 @@ export default tseslint.config(
               group: [
                 "../../*",
                 "!../../curve.ts",
+                "!../../camera-sampling.ts",
                 "!../../node-transform.ts",
                 "!../../motion-sampling.ts",
                 "!../../passage-diagnostics.ts",
