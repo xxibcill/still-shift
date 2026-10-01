@@ -7,6 +7,7 @@ import type {
   CompositionScope,
 } from "./composition.ts";
 import { isKeyed } from "./keys.ts";
+import { checkMotionDependencies } from "./dependencies.ts";
 import { UNAVAILABLE_LAYER_TYPES, type CompositionLayer } from "./layers.ts";
 import { COMPOSITION_PATH_ROOT } from "./property-path.ts";
 import {
@@ -808,6 +809,7 @@ export function validateCompositionSemantics(
     );
   checkPrecompGraph(comp, fail);
   checkMotion(comp, fail, signals, new Set(comp.markers?.map((m) => m.id)));
+  checkMotionDependencies(comp, fail);
 
   if (comp.camera2d) {
     comp.camera2d.keys.forEach((key, i) => {

@@ -222,6 +222,185 @@ describe("composition-1 display fonts", () => {
   });
 });
 
+describe("composition-1 motion dependencies", () => {
+  const pair = () => {
+    const doc = minimalComposition();
+    doc.layers = [
+      { id: "a", type: "null" },
+      { id: "b", type: "null" },
+    ];
+    return doc;
+  };
+
+  it("rejects mutual driver dependencies", () => {
+    const doc = pair();
+    doc.drivers = [
+      { target: "a.x", source: "b.x" },
+      { target: "b.x", source: "a.x" },
+    ];
+    expectDiagnostic(errors(doc), "comp-motion-cycle", "drivers[1].source");
+  });
+
+  it("rejects an alias-hidden self dependency", () => {
+    const doc = pair();
+    doc.drivers = [{ target: "a.x", source: "a.transform.position.x" }];
+    expectDiagnostic(errors(doc), "comp-motion-cycle", "drivers[0].source");
+  });
+
+  it("rejects cycles through sum terms", () => {
+    const doc = pair();
+    doc.drivers = [
+      { target: "a.x", source: "b.x" },
+      { target: "b.y", sum: ["a.transform.position.x"] },
+    ];
+    expectDiagnostic(errors(doc), "comp-motion-cycle", "drivers[1].sum[0]");
+  });
+
+  it.each(["attach", "contact", "look-at"] as const)(
+    "rejects mutual %s constraints",
+    (type) => {
+      const doc = pair();
+      doc.constraints =
+        type === "attach"
+          ? [
+              { type, target: "a", anchor: "b" },
+              { type, target: "b", anchor: "a" },
+            ]
+          : type === "contact"
+            ? [
+                {
+                  type,
+                  target: "a",
+                  surface: "b",
+                  point: [0, 0],
+                  solve: ["x"],
+                },
+                {
+                  type,
+                  target: "b",
+                  surface: "a",
+                  point: [0, 0],
+                  solve: ["x"],
+                },
+              ]
+            : [
+                { type, target: "a", toward: "b" },
+                { type, target: "b", toward: "a" },
+              ];
+      expectDiagnostic(errors(doc), "comp-motion-cycle");
+    },
+  );
+
+  it("rejects mixed driver, constraint and parent cycles", () => {
+    const doc = pair();
+    doc.layers.push({ id: "c", type: "null", parent: "a" });
+    doc.drivers = [{ target: "a.x", source: "b.x" }];
+    doc.constraints = [{ type: "attach", target: "b", anchor: "c" }];
+    expectDiagnostic(errors(doc), "comp-motion-cycle");
+  });
+
+  it("rejects cycles inside unused precomps", () => {
+    const doc = minimalComposition();
+    doc.precomps = [
+      {
+        id: "scene",
+        width: 100,
+        height: 100,
+        frameCount: 24,
+        layers: pair().layers,
+        constraints: [
+          { type: "attach", target: "a", anchor: "b" },
+          { type: "attach", target: "b", anchor: "a" },
+        ],
+      },
+    ];
+    expectDiagnostic(
+      errors(doc),
+      "comp-motion-cycle",
+      "precomps[0].constraints[1].anchor",
+    );
+  });
+
+  it("rejects cycles spanning root and precomp driver paths", () => {
+    const doc = pair();
+    doc.layers.push({ id: "instance", type: "precomp", comp: "scene" });
+    doc.precomps = [
+      {
+        id: "scene",
+        width: 100,
+        height: 100,
+        frameCount: 24,
+        layers: [{ id: "a", type: "null" }],
+      },
+    ];
+    doc.drivers = [
+      { target: "a.x", source: "scene/a.x" },
+      { target: "scene/a.x", source: "a.x" },
+    ];
+    expectDiagnostic(errors(doc), "comp-motion-cycle");
+  });
+
+  it("recognises the same precomp through different path prefixes", () => {
+    const doc = minimalComposition();
+    doc.layers = [
+      { id: "first", type: "precomp", comp: "one" },
+      { id: "second", type: "precomp", comp: "two" },
+    ];
+    doc.precomps = [
+      ...["one", "two"].map((id) => ({
+        id,
+        width: 100,
+        height: 100,
+        frameCount: 24,
+        layers: [{ id: "inner", type: "precomp" as const, comp: "leaf" }],
+      })),
+      {
+        id: "leaf",
+        width: 100,
+        height: 100,
+        frameCount: 24,
+        layers: [{ id: "a", type: "null" }],
+      },
+    ];
+    doc.drivers = [
+      { target: "one/leaf/a.x", source: "two/leaf/a.transform.position.x" },
+    ];
+    expectDiagnostic(errors(doc), "comp-motion-cycle", "drivers[0].source");
+  });
+
+  it("accepts acyclic sources, signals and separate layer namespaces", () => {
+    const doc = pair();
+    doc.layers.push({ id: "instance", type: "precomp", comp: "scene" });
+    doc.precomps = [
+      {
+        id: "scene",
+        width: 100,
+        height: 100,
+        frameCount: 24,
+        layers: [{ id: "a", type: "null" }],
+      },
+    ];
+    doc.signals = [
+      {
+        id: "pressure",
+        keys: [
+          { frame: 0, value: 0 },
+          { frame: 23, value: 1 },
+        ],
+      },
+    ];
+    doc.drivers = [
+      { target: "a.x", sum: ["pressure", "scene/a.x"] },
+      { target: "b.x", signal: "pressure" },
+    ];
+    doc.constraints = [{ type: "attach", target: "a", anchor: "b" }];
+    expect(validateComposition(doc)).toMatchObject({
+      ok: true,
+      diagnostics: [],
+    });
+  });
+});
+
 describe("composition-1 fixtures", () => {
   it.each(["first-slice", "every-field"])(
     "%s validates without diagnostics",

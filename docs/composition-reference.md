@@ -240,6 +240,12 @@ parent. Its values can be read as `comp.camera.x|y|zoom` but not driven.
 The motion-craft model carries over with property paths in place of `node.property`
 targets:
 
+Property sources read a layer's evaluated state. Driver, constraint and parent
+dependencies must form an acyclic graph, including dependencies inside precomps
+and across property-path scopes. Legacy aliases resolve to the same layer; a driver
+cannot read its own evaluated layer. Reused precomps have one layer namespace,
+even when reached through different path prefixes.
+
 | Field           | Scope       | Shape                                                                                                                                    |
 | --------------- | ----------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
 | `signals`       | Composition | As in story scenes; `cue` names a root marker.                                                                                           |
@@ -398,6 +404,7 @@ The same values are exported as `COMPOSITION_LIMITS`.
 | `comp-format-size`          | `format` disagrees with `width` and `height`.                                                                                                      |
 | `comp-metadata-size`        | Metadata serialises to more than 64 KiB.                                                                                                           |
 | `comp-driver-source`        | A driver has none or several of `signal`, `source` and `sum`.                                                                                      |
+| `comp-motion-cycle`         | Driver, constraint or parent dependencies form a cycle, including precomp-scoped dependencies.                                                     |
 | `comp-periodic`             | Invalid periodic window or generator, or both / neither of `target` and `node` + `property`.                                                       |
 | `comp-path-syntax`          | A property path does not match the grammar.                                                                                                        |
 | `comp-path-scope`           | A path prefix is not a precomp used at that level.                                                                                                 |

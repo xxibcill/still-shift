@@ -84,6 +84,8 @@ export const COMPOSITION_DIAGNOSTICS = {
   "comp-metadata-size": "Metadata serialises to more than 64 KiB.",
   "comp-driver-source":
     "A driver has none or several of `signal`, `source` and `sum`.",
+  "comp-motion-cycle":
+    "Driver, constraint or parent dependencies form a cycle.",
   "comp-periodic": "Invalid periodic motion window, generator or target form.",
   // Property paths
   "comp-path-syntax": "A property path does not match the grammar.",
