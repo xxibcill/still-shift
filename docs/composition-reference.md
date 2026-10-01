@@ -28,7 +28,7 @@ These pure functions run in Node and browsers. They validate once per compositio
 object, compile curves into identity-keyed weak caches and memoise dependencies within
 each evaluation. Treat the composition and its nested objects as immutable: replace
 the composition object after an edit. Returned states are fresh on every call.
-`COMPOSITION_EVALUATOR_VERSION` is `composition-evaluator-4`.
+`COMPOSITION_EVALUATOR_VERSION` is `composition-evaluator-5`.
 
 `evaluateComp` returns an `EvaluatedLayerTree`: scope id, time, dimensions, fps,
 floating-point RGBA background, ordered `layers` and structured `diagnostics`.
@@ -66,6 +66,11 @@ Each evaluation call shares a bounded cache of 128 source-time samples per signa
 across root, precomp and historical dependency reads.
 The 2D camera uses the existing story camera curves and jolts. It changes screen
 matrices and bounds; world matrices remain in composition coordinates.
+
+An image without an authored crossfade evaluates `stateFrom` to its sampled `state`
+and `stateMix` to `1`, displaying the current source at full mix. Property reads,
+drivers and periodic motion use these finite defaults even when the optional fields
+are absent from the input. Authored `stateFrom` and `stateMix` still take precedence.
 
 Each instance of a reused precomp gets its own clock and memoised state. A scoped
 driver reading within that instance uses its own source instance. A public property

@@ -1035,7 +1035,7 @@ tracker stays `[~]` until review.
     out three depth-worker tests; they pass on their own.)
   - After merging the CE2 fixes: `pnpm check:fast` (914 unit tests),
     `test:browser:composition-evaluator` and `test:browser:composition` pass. The
-    matte-precomp content change bumps the evaluator to `composition-evaluator-4`.
+    matte-precomp content change bumps the evaluator to `composition-evaluator-5` (CE2 used `-4` for its crossfade-default fix).
 - **Limitations and follow-ups:**
   - Acceptance names the Lab preview. The Lab has no composition page until CE11, so
     CE3 verifies the shared `createCompositionPreview` in the pinned browser. Hardware

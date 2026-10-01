@@ -50,6 +50,91 @@ const diagnostic = (run: () => unknown) => {
   }
 };
 
+describe("composition image crossfade defaults", () => {
+  const imageComp = (): Composition => ({
+    ...comp([
+      {
+        id: "image",
+        type: "image",
+        size: [100, 100],
+        sources: [{ asset: "art" }, { asset: "art" }],
+        state: 1,
+      },
+      { id: "controller", type: "null" },
+    ]),
+    assets: [
+      {
+        id: "art",
+        type: "image",
+        path: "art.png",
+        sha256: "sha256:" + "0".repeat(64),
+        width: 200,
+        height: 100,
+      },
+    ],
+  });
+
+  it("defaults unauthored crossfade properties to the selected source at full mix", () => {
+    const doc = imageComp();
+    expect(evaluateProperty(doc, "image.stateFrom", 5.5)).toBe(1);
+    expect(evaluateProperty(doc, "image.stateMix", 5.5)).toBe(1);
+  });
+
+  it("lets drivers read an unauthored crossfade mix without corrupting transforms", () => {
+    const doc = imageComp();
+    doc.drivers = [{ target: "controller.x", source: "image.stateMix" }];
+    const result = state(doc, 5.5, "controller");
+    expect(result.transform.position).toEqual([1, 0]);
+    expect(result.worldMatrix).toEqual([1, 0, 0, 1, 1, 0]);
+  });
+
+  it("blends a weighted driver into an unauthored crossfade mix", () => {
+    const doc = imageComp();
+    doc.signals = [
+      {
+        id: "fade",
+        keys: [
+          { frame: 0, value: 0.5 },
+          { frame: 20, value: 0.5 },
+        ],
+      },
+    ];
+    doc.drivers = [
+      {
+        target: "image.stateMix",
+        signal: "fade",
+        weight: [
+          { frame: 0, value: 0.5 },
+          { frame: 20, value: 0.5 },
+        ],
+      },
+    ];
+    expect(evaluateProperty(doc, "image.stateMix", 5.5)).toBe(0.75);
+  });
+
+  it("adds periodic motion to an unauthored crossfade mix", () => {
+    const doc = imageComp();
+    doc.periodic = [
+      {
+        target: "image.stateMix",
+        start: 0,
+        end: 20,
+        oscillate: { period: 20, amplitude: -0.75 },
+      },
+    ];
+    expect(evaluateProperty(doc, "image.stateMix", 5)).toBe(0.25);
+  });
+
+  it("preserves authored crossfade properties", () => {
+    const doc = imageComp();
+    const layer = doc.layers[0] as Extract<CompositionLayer, { type: "image" }>;
+    layer.stateFrom = 0;
+    layer.stateMix = linear(0, 1);
+    expect(evaluateProperty(doc, "image.stateFrom", 5.5)).toBe(0);
+    expect(evaluateProperty(doc, "image.stateMix", 5.5)).toBe(0.275);
+  });
+});
+
 describe("pure composition property sampling", () => {
   it("evaluates the CE1 first slice and all-field fixture without a DOM", () => {
     for (const name of ["first-slice", "every-field"]) {
