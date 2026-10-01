@@ -6,6 +6,7 @@ import {
   type CompositionScope,
   type CompositionDriver,
   type PropertyPath,
+  type Signal,
 } from "@still-shift/scene-contract";
 import { multiplyMatrix } from "../../node-transform.ts";
 import { passageError } from "../../passage-diagnostics.ts";
@@ -13,7 +14,6 @@ import {
   blendValue,
   driverSamples,
   samplePeriodic,
-  sampleSignal,
 } from "../../motion-sampling.ts";
 import {
   compileComposition,
@@ -38,6 +38,7 @@ import {
   path as samplePath,
   rgba,
   scalar,
+  signal as sampleSignal,
   unit,
   vector,
 } from "./sample.ts";
@@ -73,6 +74,7 @@ type Request = {
   kind: "layer" | "clock";
 };
 type Task<T> = Generator<Request, T, unknown>;
+type SignalCache = Map<Signal, Map<number, number>>;
 
 function selectSoloLayers(scope: CompositionScope): Set<string> | null {
   if (!scope.layers.some((layer) => layer.solo)) return null;
@@ -209,6 +211,7 @@ class Evaluation {
     readonly compiled: CompiledComposition,
     readonly time: number,
     readonly options: EvaluationOptions,
+    private readonly signalCache: SignalCache = new Map(),
   ) {
     this.root = context(compiled.comp, time, compiled.comp.fps);
   }
@@ -266,7 +269,12 @@ class Evaluation {
     if (!evaluation) {
       if (this.history.size >= 128)
         this.history.delete(this.history.keys().next().value!);
-      evaluation = new Evaluation(this.compiled, time, this.options);
+      evaluation = new Evaluation(
+        this.compiled,
+        time,
+        this.options,
+        this.signalCache,
+      );
       this.history.set(time, evaluation);
     }
     return evaluation;
@@ -370,16 +378,23 @@ class Evaluation {
     time: number,
     preferred: Context,
   ): Task<number> {
-    if (!text.includes("."))
-      return sampleSignal(
-        this.compiled.comp.signals!.find((s) => s.id === text)!,
-        time,
-        this.compiled.comp.fps,
-      );
+    if (!text.includes(".")) return this.signalAt(text, time);
     return (yield* this.at(time).propertyTask(
       resolvedPath(this.compiled, text),
       preferred,
     )) as number;
+  }
+
+  private signalAt(id: string, time: number): number {
+    const signal = this.compiled.signals.get(id)!;
+    let samples = this.signalCache.get(signal);
+    if (!samples) this.signalCache.set(signal, (samples = new Map()));
+    const cached = samples.get(time);
+    if (cached !== undefined) return cached;
+    const value = sampleSignal(signal, time, this.compiled.comp.fps);
+    if (samples.size >= 128) samples.delete(samples.keys().next().value!);
+    samples.set(time, value);
+    return value;
   }
 
   private *driverValue(motion: CompositionDriver, ctx: Context): Task<number> {

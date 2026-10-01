@@ -906,6 +906,14 @@ play) using a fixed seed.
   Pinned Node 22.23.1 passed 62 evaluator regressions, the existing motion-craft
   tests, type/lint/format/boundary checks and Node/browser evaluator parity. The
   200-layer benchmark averaged 0.6301 ms/frame on the reference Apple M5 Pro.
+- PR #26 signal-cache correction (2026-10-01): immutable signal curves and smooth
+  tangents now share the evaluator's object-identity cache. Each evaluation call
+  memoises up to 128 source times per signal across root, precomp and historical
+  reads. Four regressions cover reuse, fractional lag, legacy numerical parity and
+  bounded-cache eviction. Pinned Node 22.23.1 passed `pnpm check:fast` in a clean
+  snapshot (88 files, 899 tests), Node/browser evaluator parity and all 176 legacy
+  baseline items (36,061 frames, exact; no baselines regenerated). The final
+  200-layer benchmark averaged 0.7492 ms/frame against the 2 ms/frame budget.
 
 ---
 

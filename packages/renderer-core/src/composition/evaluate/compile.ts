@@ -10,6 +10,7 @@ import {
   type CompositionDriver,
   type CompositionPeriodic,
   type PropertyPath,
+  type Signal,
 } from "@still-shift/scene-contract";
 import { PassageError, passageError } from "../../passage-diagnostics.ts";
 
@@ -22,6 +23,7 @@ export type CompiledComposition = {
   comp: Composition;
   scopes: Map<string, CompositionScope>;
   layers: Map<CompositionScope, Map<string, CompositionLayer>>;
+  signals: Map<string, Signal>;
   drivers: Map<string, DriverBinding[]>;
   periodic: Map<string, PeriodicBinding[]>;
   paths: Map<string, PropertyPath>;
@@ -58,6 +60,7 @@ export function compileComposition(comp: Composition): CompiledComposition {
     layers: new Map(
       scopes.map((s) => [s, new Map(s.layers.map((l) => [l.id, l]))]),
     ),
+    signals: new Map((comp.signals ?? []).map((signal) => [signal.id, signal])),
     drivers: new Map(),
     periodic: new Map(),
     paths: new Map(),

@@ -61,6 +61,9 @@ independent of painter order; corrections from constraints follow motion layers.
 Layer and precomp-clock dependencies use an explicit work stack, so accepted long
 driver chains do not consume the JavaScript call stack. Delayed and lagged reads
 resume at their own source times without depending on previous playback.
+Signal curves and smooth tangents are compiled once per immutable signal object.
+Each evaluation call shares a bounded cache of 128 source-time samples per signal
+across root, precomp and historical dependency reads.
 The 2D camera uses the existing story camera curves and jolts. It changes screen
 matrices and bounds; world matrices remain in composition coordinates.
 

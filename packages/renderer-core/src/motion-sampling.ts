@@ -37,7 +37,18 @@ export function samplePeriodic(
   );
 }
 export function sampleSignal(signal: Signal, frame: number, fps = 30) {
-  let value = sampleCurve(scalarKeys(signal.keys), frame, fps);
+  return addSignalMotion(
+    signal,
+    frame,
+    sampleCurve(scalarKeys(signal.keys), frame, fps),
+  );
+}
+
+export function addSignalMotion(
+  signal: Pick<Signal, "add">,
+  frame: number,
+  value: number,
+) {
   for (const addition of signal.add ?? []) {
     if ("pulse" in addition) {
       const { at, half, depth } = addition.pulse;
