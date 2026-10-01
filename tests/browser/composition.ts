@@ -743,6 +743,66 @@ try {
     first.frames.map(digest),
     "first-slice preview is identical across page loads",
   );
+  // The Lab composition page renders the same pixels in the pinned browser.
+  const lab = await createServer({
+    configFile: resolve(root, "apps/lab/vite.config.ts"),
+    server: { port: 0, strictPort: false, watch: null },
+    logLevel: "error",
+  });
+  try {
+    await lab.listen();
+    const labPage = await browser.newPage({
+      viewport: { width: 1440, height: 1080 },
+    });
+    const pageErrors: string[] = [];
+    labPage.on("pageerror", (error) => pageErrors.push(error.message));
+    await labPage.goto(
+      new URL(
+        "/composition.html?scene=ce1/first-slice.json",
+        lab.resolvedUrls!.local[0]!,
+      ).href,
+    );
+    await labPage.waitForFunction(
+      () => document.querySelector("#status")?.getAttribute("data-ready"),
+      undefined,
+      { timeout: 30_000 },
+    );
+    assert.equal(
+      await labPage.locator("#status").getAttribute("data-ready"),
+      "ce1/first-slice.json",
+      (await labPage.locator("#error").textContent()) ?? "",
+    );
+    assert.equal(
+      await labPage.locator("#renderer").getAttribute("data-kind"),
+      "software",
+    );
+    for (const [i, frame] of sliceFrames.entries()) {
+      const encoded = await labPage.evaluate((frame) => {
+        const slider = document.querySelector<HTMLInputElement>("#frame")!;
+        slider.value = String(frame);
+        slider.dispatchEvent(new Event("input", { bubbles: true }));
+        const canvas = document.querySelector<HTMLCanvasElement>("#preview")!;
+        const data = canvas
+          .getContext("2d")!
+          .getImageData(0, 0, canvas.width, canvas.height).data;
+        let binary = "";
+        for (let at = 0; at < data.length; at += 0x8000)
+          binary += String.fromCharCode(...data.subarray(at, at + 0x8000));
+        return btoa(binary);
+      }, frame);
+      assert.equal(
+        digest(new Uint8Array(Buffer.from(encoded, "base64"))),
+        digest(first.frames[i]!),
+        `Lab frame ${frame} equals the export renderer's frame`,
+      );
+    }
+    assert.deepEqual(pageErrors, []);
+    results.push(
+      "the Lab composition page renders first-slice frames identical to the export renderer",
+    );
+  } finally {
+    await lab.close();
+  }
   const outputPath = join(directory, "first-slice.mp4");
   const exported = await renderComposition({
     compositionPath: resolve(fixtureDir, "first-slice.json"),

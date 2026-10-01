@@ -1,4 +1,5 @@
 import { commerceApi } from "./commerce-api.ts";
+import { compositionApi } from "./composition-api.ts";
 import { resolve } from "node:path";
 
 import { defineConfig } from "vite";
@@ -17,6 +18,7 @@ export default defineConfig({
     passageSfxApi(),
     passageApi(),
     illustratedApi(),
+    compositionApi(),
     labApi(),
   ],
   server: {
