@@ -49,6 +49,8 @@ four and a half minutes on an Apple M5 Pro. See the
   because output differs across operating systems and CPU architectures; see policy
   rule 6 in the plan. On an environment without one, the check stops with an
   explanation instead of comparing against another platform's pixels.
+  `darwin-arm64` is the reference environment (Q8, Mac first); the Linux baselines
+  are kept for future machines and are not required by any check.
 - `scripts/composition/linux/run.sh arm64|amd64` renders the baseline in the pinned
   Linux container (Docker required), writes `linux-<arch>.json`, and saves frames that
   differ from `darwin-arm64` under `benchmarks/results/`. `pnpm composition:baselines
