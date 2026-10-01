@@ -521,13 +521,16 @@ function checkPrecompGraph(comp: Composition, fail: IssueReporter) {
     depth.set(id, result);
     return result;
   };
-  const rootDepth = Math.max(0, ...refs(comp).map(visit));
-  for (const { p } of precomps.values()) visit(p.id);
-  if (rootDepth > L.maxPrecompDepth)
+  const maxDepth = Math.max(
+    0,
+    ...refs(comp).map(visit),
+    ...Array.from(precomps.keys(), visit),
+  );
+  if (maxDepth > L.maxPrecompDepth)
     fail(
       "comp-precomp-depth",
       ["precomps"],
-      `precomps may nest at most ${L.maxPrecompDepth} deep (found ${rootDepth})`,
+      `precomps may nest at most ${L.maxPrecompDepth} deep (found ${maxDepth})`,
     );
 }
 

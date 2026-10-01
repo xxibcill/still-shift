@@ -1178,6 +1178,27 @@ describe("composition-1 invalid variants", () => {
     );
   });
 
+  it("limits unused precomp nesting to 8", () => {
+    const nest = (depth: number) => {
+      const doc = minimalComposition();
+      doc.precomps = Array.from({ length: depth }, (_, i) => ({
+        id: `p${i}`,
+        width: 100,
+        height: 100,
+        frameCount: 24,
+        layers:
+          i < depth - 1
+            ? [{ id: "inner", type: "precomp" as const, comp: `p${i + 1}` }]
+            : [],
+      }));
+      return validateComposition(doc);
+    };
+    expect(nest(COMPOSITION_LIMITS.maxPrecompDepth).ok).toBe(true);
+    const result = nest(COMPOSITION_LIMITS.maxPrecompDepth + 1);
+    expect(result.ok).toBe(false);
+    expectDiagnostic(result.diagnostics, "comp-precomp-depth", "precomps");
+  });
+
   it("limits the total layer count across precomps", () => {
     const doc = firstSlice() as Doc;
     const solids = (n: number, prefix: string) =>
