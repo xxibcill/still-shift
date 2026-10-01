@@ -45,6 +45,9 @@ export type TextRaster = {
   strokes: Map<string, HTMLCanvasElement>;
   fonts: Map<string, LoadedFont>;
   variants: Map<string, TextRaster>;
+  /** Colour baked into unspanned clusters when it can differ from the drawn node's
+   * colour (animated composition text). Unset rasters compare with `node.color`. */
+  baseColor?: string;
 };
 export type PreparedTypography = {
   corrections: Map<
@@ -477,7 +480,8 @@ function drawCluster(
   const strokeWidth = quantizeStrokeWidth(pose.strokeWidth);
   if (strokeWidth > 0) paint(strokedRaster(raster, strokeWidth, pose.stroke));
   paint(
-    pose.fill === (node.spans?.[cluster.spanIndex]?.color ?? node.color)
+    pose.fill ===
+      (node.spans?.[cluster.spanIndex]?.color ?? raster.baseColor ?? node.color)
       ? raster.canvas
       : coloredRaster(raster, pose.fill),
   );
