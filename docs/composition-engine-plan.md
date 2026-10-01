@@ -302,7 +302,7 @@ sign and for time remap. It does not change the layer's composition-time visibil
 | CE7  | Motion blur and time controls                   | B     | CE3                       |       |        | `[ ]`  |                     |
 | CE8  | 2.5D layers and unified camera                  | B     | CE3, CE6, CE9             |       |        | `[ ]`  |                     |
 | CE9  | Expressions and motion behaviours               | C     | CE2                       |       |        | `[ ]`  |                     |
-| CE10 | TypeScript builder API and CLI                  | C     | CE1, CE2                  |       |        | `[ ]`  |                     |
+| CE10 | TypeScript builder API and CLI                  | C     | CE3, CE4a, CE9, CE12      |       |        | `[ ]`  |                     |
 | CE11 | Lab composition inspector and graph editor      | C     | CE3, CE10                 |       |        | `[ ]`  |                     |
 | CE12 | Motion linting                                  | C     | CE2                       |       |        | `[ ]`  |                     |
 | CE13 | Video, image-sequence and audio layers          | D     | CE3, CE7                  |       |        | `[ ]`  |                     |
@@ -317,15 +317,15 @@ sign and for time remap. It does not change the layer's composition-time visibil
 - **Phase B — Visual vocabulary.** After CE3, CE5, CE6 and CE7 can run in parallel
   on separate branches. CE4a can run alongside them. CE8 follows CE6 (WebGL2 and
   lens blur) and CE9 (camera-shake behaviours).
-- **Phase C — Authoring.** CE9, CE10 and CE12 need only CE2 and can start early. CE11
-  follows CE10.
+- **Phase C — Authoring.** CE9 and CE12 need only CE2 and can start early. CE10
+  follows CE3, CE4a, CE9 and CE12 so rendering, adapter parity, expression validation,
+  baking and linting are available for its completion gates. CE11 follows CE10.
 - **Phase D — Media and output.** CE15 can start after CE3. CE13 and CE14 follow their
   dependencies.
 
 ```text
 CE0 → CE1 → CE2 → CE3
              ├─ CE9
-             ├─ CE10
              └─ CE12
 
 CE3 ─┬─ CE4a
@@ -337,6 +337,7 @@ CE3 ─┬─ CE4a
 
 CE6 + CE9 → CE8 → CE4c
 CE4a + CE4b + CE4c → CE4d
+CE3 + CE4a + CE9 + CE12 → CE10
 CE3 + CE10 → CE11
 ```
 
@@ -358,6 +359,8 @@ through the story adapter with recorded parity.
 - [ ] CE3 Canvas 2D backend covering those features, wired into export.
 - [ ] CE4a adapter for `benchmarks/fixtures/story-motion-continuous/access-constraint.json`
       with the parity result recorded.
+- [ ] CE9 expressions and baking, and CE12 linting, as prerequisites for the CE10 CLI.
+- [ ] CE10 builder and CLI, including `comp render`, after CE4a, CE9 and CE12.
 - [ ] Record commands, results and limitations here before marking the slice complete.
 
 ---
@@ -1039,6 +1042,11 @@ parses to a valid AST or returns a diagnostic, never throws.
 **Outcome:** A coder or an agent writes motion as code, with types, autocompletion and
 fast feedback, and the result is ordinary `composition-1` JSON.
 
+**Prerequisites:** CE3 provides rendering and preview, CE4a provides the story-adapter
+output used for acceptance, CE9 provides expression parsing and baking, and CE12
+provides lint diagnostics. Core builder work may be prototyped earlier, but CE10
+cannot start or complete as a tracked milestone until these dependencies are complete.
+
 ### API sketch
 
 ```ts
@@ -1329,6 +1337,7 @@ A milestone is complete when **all** of the following hold:
 | 2026-10-01 | CE9 rejects every property dependency cycle, including earlier-time feedback                                                | Delayed self/mutual references have no finite-history base case; acyclic temporal reads preserve pure seeking and terminate                                         |                |
 | 2026-10-01 | CE6/CE8 complete against native compositions; CE4 owns family parity; CE8 depends on CE6 and CE9                            | Removes circular backend/adapter acceptance gates and makes camera prerequisites explicit                                                                           |                |
 | 2026-10-01 | Stretch is a signed nonzero rate; startFrame anchors local time zero; finite visual sources hold boundary frames            | Makes CE1 accept CE2 reverse playback and defines deterministic source sampling without changing composition-time visibility                                        |                |
+| 2026-10-01 | CE10 depends on CE3, CE4a, CE9 and CE12                                                                                     | Its CLI, expression helpers and adapter-parity acceptance require rendering, expressions, baking, linting and the story adapter                                     |                |
 
 ## Open questions for the owner
 
