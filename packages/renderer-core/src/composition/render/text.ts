@@ -282,7 +282,9 @@ export function prepareCompositionText(
       typed.map(({ node }) => node),
       frames,
     );
-    const prepared = typed.length ? prepareTypography(scene, fonts) : undefined;
+    const prepared = typed.length
+      ? prepareTypography(scene, fonts, { strokeCoverage: true })
+      : undefined;
     for (const { layer, node } of nodes) {
       const key = prefix + layer.id;
       const texts = layer.states ?? [layer.text];

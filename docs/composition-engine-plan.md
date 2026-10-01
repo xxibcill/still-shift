@@ -964,7 +964,7 @@ masks and adjustment layers, and export through the existing runtime.
 - [x] Wire `composition-1` into [`export-page.ts`](../packages/execution-runtime/src/export-page.ts)
       and [`export-worker.ts`](../packages/execution-runtime/src/export-worker.ts) as an
       `ExportableScene`; add engine entry points in `packages/animation-engine`.
-- [x] `COMPOSITION_RENDERER_VERSION = "composition-canvas-1.0.1"`, included in manifests
+- [x] `COMPOSITION_RENDERER_VERSION = "composition-canvas-1.0.2"`, included in manifests
       and cache identities.
 - [x] Keep text layout (shaping, advances, line breaks) behind one module, so
       platform-independent text layout (Q8 option C) can later replace the operating
@@ -1078,6 +1078,12 @@ tracker stays `[~]` until review.
   performance assertion (1.52× static against a 1.50× limit); that group passed on
   an isolated retry at 1.39×, and the remaining composition groups passed separately.
   No performance threshold or baseline was changed.
+- **PR #27 animated stroke colour correction:** composition stroke caches hold opaque
+  coverage per width and font-axis variant. Drawing recolours that coverage with the
+  current stroke colour, so animated layer colour cannot request an uncached outline.
+  The composition renderer is `composition-canvas-1.0.2`; legacy typography keeps its
+  existing raster path. The browser regression compares the settled animated stroke
+  with static red text and verifies backward seeking.
 - **Limitations and follow-ups:**
   - Adjustment layers apply only their blend mode until effects arrive (CE6).
   - Isolated layers use scope-sized surfaces; bounds-sized surfaces and caching belong

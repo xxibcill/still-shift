@@ -49,6 +49,8 @@ export type TextRaster = {
   /** Colour baked into unspanned clusters when it can differ from the drawn node's
    * colour (animated composition text). Unset rasters compare with `node.color`. */
   baseColor?: string;
+  /** Composition outlines cache opaque coverage, independent of animated colour. */
+  strokeCoverage?: boolean;
 };
 export type PreparedTypography = {
   corrections: Map<
@@ -145,6 +147,7 @@ export function rasterizeText(
 export function prepareTypography(
   scene: (StoryRenderScene | CommerceRenderScene) & TextAnimationContext,
   fonts: Map<string, LoadedFont>,
+  options: { strokeCoverage?: boolean } = {},
 ): PreparedTypography {
   const nodes = new Map<string, Map<string, TextRaster>>(),
     pairs = new Map<string, [number, number][]>(),
@@ -159,6 +162,7 @@ export function prepareTypography(
   };
   const reserveRaster = (raster: TextRaster) => {
     reserveCanvas(raster.canvas);
+    if (options.strokeCoverage) raster.strokeCoverage = true;
     return raster;
   };
   for (const node of scene.nodes) {
@@ -241,11 +245,12 @@ export function prepareTypography(
             const width = quantizeStrokeWidth(pose.strokeWidth);
             if (pose.opacity <= 0 || width <= 0) continue;
             const target = axisRaster(raster, pose.axes);
-            const strokeKey = `${width}:${pose.stroke}`;
+            const strokeColor = target.strokeCoverage ? "#ffffff" : pose.stroke;
+            const strokeKey = `${width}:${strokeColor}`;
             if (!target.strokes.has(strokeKey))
               target.strokes.set(
                 strokeKey,
-                reserveCanvas(renderStrokedRaster(target, width, pose.stroke)),
+                reserveCanvas(renderStrokedRaster(target, width, strokeColor)),
               );
           }
         }
@@ -374,18 +379,23 @@ function displayedContainerContent(
 function pairKey(node: TextNode, t: TextTransition) {
   return `${node.id}:${t.fromState ?? 0}:${t.toState ?? 1}:${t.window.start}:${t.window.end}`;
 }
-function coloredRaster(raster: TextRaster, color: string) {
-  let canvas = raster.colors.get(color);
+function coloredRaster(
+  raster: TextRaster,
+  color: string,
+  source = raster.canvas,
+  key = color,
+) {
+  let canvas = raster.colors.get(key);
   if (!canvas) {
     canvas = surface(raster.canvas.width, raster.canvas.height);
     const ctx = canvas.getContext("2d")!;
-    ctx.drawImage(raster.canvas, 0, 0);
+    ctx.drawImage(source, 0, 0);
     ctx.globalCompositeOperation = "source-in";
     ctx.fillStyle = color;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     if (raster.colors.size >= 16)
       raster.colors.delete(raster.colors.keys().next().value!);
-    raster.colors.set(color, canvas);
+    raster.colors.set(key, canvas);
   }
   return canvas;
 }
@@ -417,10 +427,14 @@ function axisRaster(raster: TextRaster, axes: Record<string, number>) {
   return variant;
 }
 function strokedRaster(raster: TextRaster, width: number, color: string) {
-  const canvas = raster.strokes.get(`${width}:${color}`);
+  const canvas = raster.strokes.get(
+    `${width}:${raster.strokeCoverage ? "#ffffff" : color}`,
+  );
   if (!canvas)
     throw new Error("text-stroke-not-prepared: missing cached outline");
-  return canvas;
+  return raster.strokeCoverage && color !== "#ffffff"
+    ? coloredRaster(raster, color, canvas, `stroke:${width}:${color}`)
+    : canvas;
 }
 function drawCluster(
   ctx: CanvasRenderingContext2D,

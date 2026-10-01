@@ -33,6 +33,7 @@ import {
   nestedChart,
 } from "../../benchmarks/fixtures/composition/ce3/charts.ts";
 import type * as Render from "../../packages/renderer-core/src/composition/render/index.ts";
+import { COMPOSITION_RENDERER_VERSION } from "../../packages/renderer-core/src/composition/render/index.ts";
 import {
   compareFrames,
   meetsTier,
@@ -538,6 +539,52 @@ try {
     "stroke-width text animators prepare and render through settlement",
   );
 
+  const changingStroke = structuredClone(strokeText);
+  const changingStrokeLayer = changingStroke.layers[0]!;
+  if (changingStrokeLayer.type !== "text") throw new Error("Expected text");
+  changingStrokeLayer.color = {
+    keys: [
+      { frame: 0, value: "#ffffff", interpolation: "hold" },
+      { frame: 5, value: "#ff0000" },
+    ],
+  };
+  const redStroke = structuredClone(strokeText);
+  const redStrokeLayer = redStroke.layers[0]!;
+  if (redStrokeLayer.type !== "text") throw new Error("Expected text");
+  redStrokeLayer.color = "#ff0000";
+  const animatedStroke = await render(
+    page,
+    changingStroke,
+    [0, 5, 9, 0],
+    assetUrls(changingStroke),
+  );
+  const redStrokeFrames = await render(
+    page,
+    redStroke,
+    [5, 9],
+    assetUrls(redStroke),
+  );
+  assert.deepEqual(animatedStroke.frames[0], strokeFrames.frames[0]);
+  for (const i of [0, 1])
+    assert.ok(
+      meetsTier(
+        compareFrames(
+          animatedStroke.frames[i + 1]!,
+          redStrokeFrames.frames[i]!,
+          300,
+          100,
+        ),
+        "near",
+      ),
+      "animated default stroke color matches static red text",
+    );
+  assert.deepEqual(
+    animatedStroke.frames[3],
+    animatedStroke.frames[0],
+    "stroke recoloring supports backward seeks",
+  );
+  results.push("animated text color recolors cached stroke coverage");
+
   const motionCases: [
     string,
     string,
@@ -804,12 +851,12 @@ try {
     compositionPath: resolve(fixtureDir, "first-slice.json"),
     outputPath,
   });
-  assert.equal(exported.rendererVersion, "composition-canvas-1.0.1");
+  assert.equal(exported.rendererVersion, COMPOSITION_RENDERER_VERSION);
   assert.deepEqual(exported.systemFontLayers, []);
   const manifest = JSON.parse(
     await readFile(`${outputPath}.scene.json`, "utf8"),
   );
-  assert.equal(manifest.rendererVersion, "composition-canvas-1.0.1");
+  assert.equal(manifest.rendererVersion, COMPOSITION_RENDERER_VERSION);
   // Encode the preview's own frames with the export's encoder arguments: when
   // export renders the same pixels, the decoded videos are identical.
   const previewPngs = await page.evaluate(
