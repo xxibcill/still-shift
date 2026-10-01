@@ -63,7 +63,7 @@ function expectCycle(doc: Composition, path?: string) {
 }
 
 describe("precomp time dependencies", () => {
-  it.each(["scene/dot.x", "scene/dot.transform.position.x"])(
+  it.each(["inset/dot.x", "inset/dot.transform.position.x"])(
     "rejects remapping a precomp from its evaluated child %s",
     (source) => {
       const doc = nestedComposition();
@@ -74,7 +74,7 @@ describe("precomp time dependencies", () => {
 
   it("rejects a remap cycle through a sum term", () => {
     const doc = nestedComposition();
-    doc.drivers = [{ target: "inset.timeRemap", sum: ["scene/dot.x"] }];
+    doc.drivers = [{ target: "inset.timeRemap", sum: ["inset/dot.x"] }];
     expectCycle(doc, "drivers[0].sum[0]");
   });
 
@@ -82,21 +82,21 @@ describe("precomp time dependencies", () => {
     const doc = nestedComposition();
     doc.drivers = [
       { target: "inset.timeRemap", source: "controller.x" },
-      { target: "controller.x", source: "scene/dot.x" },
+      { target: "controller.x", source: "inset/dot.x" },
     ];
     expectCycle(doc);
   });
 
   it("propagates sampled-time dependencies through nested precomps", () => {
     const doc = nestedComposition();
-    doc.drivers = [{ target: "inset.timeRemap", source: "scene/leaf/dot.x" }];
+    doc.drivers = [{ target: "inset.timeRemap", source: "inset/deeper/dot.x" }];
     expectCycle(doc);
   });
 
   it("checks a remap target inside a precomp", () => {
     const doc = nestedComposition();
     doc.drivers = [
-      { target: "scene/deeper.timeRemap", source: "scene/leaf/dot.x" },
+      { target: "inset/deeper.timeRemap", source: "inset/deeper/dot.x" },
     ];
     expectCycle(doc);
   });
@@ -104,7 +104,7 @@ describe("precomp time dependencies", () => {
   it("checks every instance of a reused precomp", () => {
     const doc = nestedComposition();
     doc.layers.push({ id: "second", type: "precomp", comp: "scene" });
-    doc.drivers = [{ target: "second.timeRemap", source: "scene/dot.x" }];
+    doc.drivers = [{ target: "second.timeRemap", source: "second/dot.x" }];
     expectCycle(doc);
   });
 
@@ -121,7 +121,7 @@ describe("precomp time dependencies", () => {
         ],
       },
     };
-    doc.drivers = [{ target: "inset.opacity", source: "scene/leaf/dot.x" }];
+    doc.drivers = [{ target: "inset.opacity", source: "inset/deeper/dot.x" }];
     expect(validateComposition(doc)).toMatchObject({ ok: true });
   });
 
@@ -129,7 +129,7 @@ describe("precomp time dependencies", () => {
     const doc = nestedComposition();
     doc.drivers = [
       { target: "inset.timeRemap", source: "controller.x" },
-      { target: "scene/deeper.timeRemap", source: "scene/dot.x" },
+      { target: "inset/deeper.timeRemap", source: "inset/dot.x" },
     ];
     expect(validateComposition(doc)).toMatchObject({ ok: true });
   });
@@ -141,7 +141,7 @@ describe("precomp time dependencies", () => {
       ...doc.precomps![1]!,
       id: "other",
     });
-    doc.drivers = [{ target: "inset.timeRemap", source: "other/dot.x" }];
+    doc.drivers = [{ target: "inset.timeRemap", source: "other-inset/dot.x" }];
     expect(validateComposition(doc)).toMatchObject({ ok: true });
   });
 });

@@ -150,23 +150,23 @@ describe("property path resolution", () => {
     ["headline.reveal", "scalar"],
     ["headline.state", "discrete"],
     ["inset.timeRemap", "scalar"],
-    ["scene/inner-house.transform.position.x", "scalar"],
-    ["scene/leaf/dot.color.r", "scalar"],
+    ["inset/inner-house.transform.position.x", "scalar"],
+    ["inset/deeper/dot.color.r", "scalar"],
   ] as const)("%s is %s", (text, type) => {
     expect(ok(text).type).toBe(type);
   });
 
-  it("addresses precomp scopes by precomp id through the layers that use them", () => {
-    // `scene` is used by root layer `inset`; the prefix names the precomp, not the layer.
-    expect(ok("scene/inner-house.transform.position.x").scope).toEqual([
-      "scene",
+  it("addresses precomp scopes by layer instance id", () => {
+    // Each hop names a precomp layer, then follows that layer's source definition.
+    expect(ok("inset/inner-house.transform.position.x").scope).toEqual([
+      "inset",
     ]);
-    expect(ok("scene/leaf/dot.color").layer?.id).toBe("dot");
+    expect(ok("inset/deeper/dot.color").layer?.id).toBe("dot");
     expect(code("leaf/dot.color")).toBe("comp-path-scope");
     expect(code("ghost/dot.color")).toBe("comp-path-scope");
-    // Layer ids are per scope: the root has no `dot`, and `scene` has no `house`.
+    // Layer ids are per scope: the root has no `dot`, and the inset has no `house`.
     expect(code("dot.color")).toBe("comp-path-layer");
-    expect(code("scene/house.transform.rotation")).toBe("comp-path-layer");
+    expect(code("inset/house.transform.rotation")).toBe("comp-path-layer");
   });
 
   it.each([
@@ -181,7 +181,7 @@ describe("property path resolution", () => {
     ["house.skewX", "house.transform.skewX"],
     ["house.skewY", "house.transform.skewY"],
     ["headline.reveal", "headline.reveal"],
-    ["scene/inner-house.x", "scene/inner-house.transform.position.x"],
+    ["inset/inner-house.x", "inset/inner-house.transform.position.x"],
   ])("legacy target %s resolves to %s", (text, canonical) => {
     expect(ok(text)).toMatchObject({ path: canonical, type: "scalar" });
   });
@@ -200,7 +200,7 @@ describe("property path resolution", () => {
     ["house.transform.position.x.y", "comp-path-property"],
     ["house.transform[0].rotation", "comp-path-syntax"],
     ["house.transform[pos].rotation", "comp-path-property"],
-    ["inset/inner-house.x", "comp-path-scope"],
+    ["scene/inner-house.x", "comp-path-scope"],
     ["house.color", "comp-path-property"],
     ["house.reveal", "comp-path-property"],
     ["shadow.state", "comp-path-property"],

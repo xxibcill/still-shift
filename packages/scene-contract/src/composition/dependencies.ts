@@ -1,10 +1,20 @@
 import type { Composition, CompositionScope } from "./composition.ts";
 import type { IssueReporter } from "./primitives.ts";
-import { isResolvedProperty, resolvePropertyPath } from "./resolve.ts";
+import {
+  isResolvedProperty,
+  precompsById,
+  resolvePropertyPath,
+} from "./resolve.ts";
 
 type Path = (string | number)[];
 type Dependency = { source: string; path: Path };
 type Graph = Map<string, Dependency[]>;
+type InstanceGraph = {
+  graph: Graph;
+  comp: Composition;
+  clocks: Set<string>;
+  expanded: Set<string>;
+};
 
 function addDependency(
   graph: Graph,
@@ -54,29 +64,57 @@ function addScopeDependencies(
   });
 }
 
-/** Each precomp layer samples its contents using its evaluated remap. */
-function addPrecompTimeDependencies(graph: Graph, comp: Composition) {
-  const precomps = new Set(comp.precomps?.map((scope) => scope.id));
-  for (const scope of [comp, ...(comp.precomps ?? [])]) {
-    const prefix = scope === comp ? "" : `${scope.id}/`;
-    const base: Path =
-      scope === comp ? [] : ["precomps", comp.precomps!.indexOf(scope)];
-    scope.layers.forEach((layer, i) => {
-      const node = `${prefix}${layer.id}`;
-      const path = [...base, "layers", i];
-      if (scope !== comp) {
-        // One scope clock avoids duplicating every child edge for reused precomps.
-        const clock = `${scope.id}/comp.time`;
-        addDependency(graph, node, clock, path);
-        if (layer.type === "precomp")
-          addDependency(graph, `${node}.timeRemap`, clock, path);
-      }
-      if (layer.type === "precomp" && precomps.has(layer.comp))
-        addDependency(graph, `${layer.comp}/comp.time`, `${node}.timeRemap`, [
-          ...path,
-          "comp",
-        ]);
-    });
+/** Instantiate only paths read by drivers, rather than expanding every reused source. */
+function addInstanceDependencies(
+  context: InstanceGraph,
+  route: string[],
+  layerId: string,
+) {
+  const { graph, comp, clocks, expanded } = context;
+  const precomps = precompsById(comp);
+  let scope: CompositionScope = comp;
+  let prefix = "";
+  for (const id of route) {
+    const instance = scope.layers.find((layer) => layer.id === id);
+    if (instance?.type !== "precomp") return;
+    const next = precomps.get(instance.comp);
+    if (!next) return;
+    const nextPrefix = `${prefix}${id}/`;
+    if (!clocks.has(nextPrefix)) {
+      const base: Path =
+        scope === comp ? [] : ["precomps", comp.precomps!.indexOf(scope)];
+      const path = [...base, "layers", scope.layers.indexOf(instance), "comp"];
+      const remap = `${prefix}${id}.timeRemap`;
+      addDependency(graph, `${nextPrefix}comp.time`, remap, path);
+      if (prefix) addDependency(graph, remap, `${prefix}comp.time`, path);
+      clocks.add(nextPrefix);
+    }
+    prefix = nextPrefix;
+    scope = next;
+  }
+  if (!prefix) return;
+
+  // Parent/constraint edges are local templates; copy only reachable layer state.
+  const templatePrefix = `@${scope.id}/`;
+  const layers = new Map(scope.layers.map((layer) => [layer.id, layer]));
+  const pending = [layerId];
+  while (pending.length) {
+    const id = pending.pop()!;
+    const node = `${prefix}${id}`;
+    if (expanded.has(node)) continue;
+    expanded.add(node);
+    const base: Path = ["precomps", comp.precomps!.indexOf(scope)];
+    const layer = layers.get(id);
+    if (!layer) continue;
+    const path = [...base, "layers", scope.layers.indexOf(layer)];
+    addDependency(graph, node, `${prefix}comp.time`, path);
+    if (layer.type === "precomp")
+      addDependency(graph, `${node}.timeRemap`, `${prefix}comp.time`, path);
+    for (const dependency of graph.get(`${templatePrefix}${id}`) ?? []) {
+      const source = dependency.source.slice(templatePrefix.length);
+      addDependency(graph, node, `${prefix}${source}`, dependency.path);
+      pending.push(source);
+    }
   }
 }
 
@@ -88,11 +126,11 @@ function driverProperty(comp: Composition, path: string) {
     resolved.type !== "scalar"
   )
     return undefined;
-  // A reused precomp owns one layer namespace, regardless of the route into it.
-  const scope = resolved.scope.at(-1);
-  const node = `${scope ? `${scope}/` : ""}${resolved.layer.id}`;
+  const node = [...resolved.scope, resolved.layer.id].join("/");
   return {
     node,
+    scope: resolved.scope,
+    layerId: resolved.layer.id,
     timeNode:
       resolved.layer.type === "precomp" && resolved.path.endsWith(".timeRemap")
         ? `${node}.timeRemap`
@@ -101,15 +139,27 @@ function driverProperty(comp: Composition, path: string) {
 }
 
 function addDriverDependencies(graph: Graph, comp: Composition) {
+  const context: InstanceGraph = {
+    graph,
+    comp,
+    clocks: new Set(),
+    expanded: new Set(),
+  };
+  const property = (path: string) => {
+    const resolved = driverProperty(comp, path);
+    if (resolved)
+      addInstanceDependencies(context, resolved.scope, resolved.layerId);
+    return resolved;
+  };
   comp.drivers?.forEach((driver, i) => {
-    const target = driverProperty(comp, driver.target);
+    const target = property(driver.target);
     if (!target) return;
     const addSource = (source: string, path: Path) => {
-      const property = driverProperty(comp, source);
-      if (!property) return;
-      addDependency(graph, target.node, property.node, path);
+      const resolved = property(source);
+      if (!resolved) return;
+      addDependency(graph, target.node, resolved.node, path);
       if (target.timeNode)
-        addDependency(graph, target.timeNode, property.node, path);
+        addDependency(graph, target.timeNode, resolved.node, path);
     };
     if (driver.source) addSource(driver.source, ["drivers", i, "source"]);
     driver.sum?.forEach((source, j) => {
@@ -163,9 +213,8 @@ export function checkMotionDependencies(
   const graph: Graph = new Map();
   addScopeDependencies(graph, comp, "", []);
   comp.precomps?.forEach((scope, i) =>
-    addScopeDependencies(graph, scope, `${scope.id}/`, ["precomps", i]),
+    addScopeDependencies(graph, scope, `@${scope.id}/`, ["precomps", i]),
   );
-  addPrecompTimeDependencies(graph, comp);
   addDriverDependencies(graph, comp);
   reportCycles(graph, fail);
 }

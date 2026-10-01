@@ -256,8 +256,8 @@ targets:
 Property sources read a layer's evaluated state. Driver, constraint and parent
 dependencies must form an acyclic graph, including dependencies inside precomps
 and across property-path scopes. Legacy aliases resolve to the same layer; a driver
-cannot read its own evaluated layer. Reused precomps have one layer namespace,
-even when reached through different path prefixes.
+cannot read its own evaluated layer instance. Reused source definitions retain separate
+layer identities and clocks for each full instance route.
 
 Reading a precomp layer's contents also depends on the time at which that precomp is
 sampled. A `timeRemap` driver cannot read a descendant whose evaluated state requires
@@ -276,14 +276,19 @@ time is independent of that driver.
 ## Property paths
 
 ```text
-path     := [ precompId "/" ]* layerId "." segment ( "." segment )*
+path     := [ precompLayerId "/" ]* layerId "." segment ( "." segment )*
 segment  := name | name "[" id "]"
 ```
 
 - `title.transform.position` — a vector; `title.transform.position.x` — its component.
-- `scene/hero.transform.opacity` — layer `hero` inside precomp `scene`. Each prefix is a
-  **precomp id**, and each must be used by a precomp layer in the scope before it
-  (`scene/leaf/dot.color` when `scene` uses `leaf`).
+- `intro/hero.transform.opacity` — layer `hero` inside precomp layer `intro`. Each prefix
+  names a **precomp layer instance** in the current scope, then follows its `comp`
+  source definition. `intro/nested/dot.color` traverses two layer instances. A source
+  definition id alone is not a valid hop.
+- `outro/hero.transform.opacity` — a separate instance of the same source. Drivers
+  and cycle checks retain the entire instance route; sibling instances with different
+  start/stretch/remap settings do not share a clock. Evaluation applies each hop's
+  time mapping in CE2.
 - `house.masks[window].feather`, `bg.effects[glow].radius` — indexed by mask or effect id.
 - `comp.camera.zoom` — composition properties.
 
@@ -445,7 +450,7 @@ retain their original bounds.
 | `comp-motion-cycle`         | Driver, constraint or parent dependencies form a cycle, including precomp-scoped dependencies.                                                     |
 | `comp-periodic`             | Invalid periodic window or generator, or both / neither of `target` and `node` + `property`.                                                       |
 | `comp-path-syntax`          | A property path does not match the grammar.                                                                                                        |
-| `comp-path-scope`           | A path prefix is not a precomp used at that level.                                                                                                 |
+| `comp-path-scope`           | A path prefix does not name a precomp layer instance at that level.                                                                                |
 | `comp-path-layer`           | A path names no layer in its scope.                                                                                                                |
 | `comp-path-property`        | A path names no property of its layer (including unknown mask and effect ids).                                                                     |
 | `comp-path-type`            | A driver or periodic motion targets a non-scalar property.                                                                                         |

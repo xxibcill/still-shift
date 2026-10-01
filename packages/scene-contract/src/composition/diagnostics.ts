@@ -95,7 +95,7 @@ export const COMPOSITION_DIAGNOSTICS = {
   // Property paths
   "comp-path-syntax": "A property path does not match the grammar.",
   "comp-path-scope":
-    "A path's precomp prefix is unknown or not used at that level.",
+    "A path's precomp layer instance is missing or not a precomp at that level.",
   "comp-path-layer": "A path names no layer in its composition.",
   "comp-path-property": "A path names no property of its layer.",
   "comp-path-type":
