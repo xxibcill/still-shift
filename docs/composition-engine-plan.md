@@ -899,6 +899,13 @@ play) using a fixed seed.
   regenerated. The final `pnpm check:fast` and new browser evaluator group also
   passed after the last CE2 corrections (the full matrix had already started).
   No legacy renderer version bump is required; the new evaluator has its own version.
+- PR #26 dependency-chain correction (2026-10-01): layer and precomp-clock tasks
+  now run on an explicit work stack, including delayed and lagged source reads.
+  Accepted 500-driver chains are covered in both painter orders and independently
+  timed reused precomps. The evaluator version is now `composition-evaluator-3`.
+  Pinned Node 22.23.1 passed 62 evaluator regressions, the existing motion-craft
+  tests, type/lint/format/boundary checks and Node/browser evaluator parity. The
+  200-layer benchmark averaged 0.6301 ms/frame on the reference Apple M5 Pro.
 
 ---
 
