@@ -964,7 +964,7 @@ masks and adjustment layers, and export through the existing runtime.
 - [x] Wire `composition-1` into [`export-page.ts`](../packages/execution-runtime/src/export-page.ts)
       and [`export-worker.ts`](../packages/execution-runtime/src/export-worker.ts) as an
       `ExportableScene`; add engine entry points in `packages/animation-engine`.
-- [x] `COMPOSITION_RENDERER_VERSION = "composition-canvas-1.0.0"`, included in manifests
+- [x] `COMPOSITION_RENDERER_VERSION = "composition-canvas-1.0.1"`, included in manifests
       and cache identities.
 - [x] Keep text layout (shaping, advances, line breaks) behind one module, so
       platform-independent text layout (Q8 option C) can later replace the operating
@@ -1064,6 +1064,20 @@ tracker stays `[~]` until review.
 - Full `pnpm check` at `e9c5641` passed in 29 min 22 s on the pinned toolchain: 922
   unit tests, every browser group including the Lab parity check, and CE0 baselines
   (176 items, 36,061 frames, all exact).
+- **PR #27 review corrections:** six separate fixes preserve visible collapsed
+  precomp overflow, reject odd MP4 dimensions before encoding, supply stroke
+  preparation's scene fields, prepare text caches at reachable layer times, apply
+  collapsed host opacity only once through mattes, and measure combined text poses
+  for culling. The composition renderer is now `composition-canvas-1.0.1` so the
+  corrected output has a new cache identity. Regression coverage includes all four
+  matte modes; additive offsets, tracking, leading and group rotation; and stretched,
+  reversed, remapped, differing-fps and reused precomp clocks.
+  All `pnpm check` groups passed on the pinned toolchain: 928 unit, 43 runtime,
+  110 integration and 14 depth tests; every browser group; and CE0 baselines,
+  **176 items, 36,061 frames, all exact**. The aggregate run stopped at the typography
+  performance assertion (1.52× static against a 1.50× limit); that group passed on
+  an isolated retry at 1.39×, and the remaining composition groups passed separately.
+  No performance threshold or baseline was changed.
 - **Limitations and follow-ups:**
   - Adjustment layers apply only their blend mode until effects arrive (CE6).
   - Isolated layers use scope-sized surfaces; bounds-sized surfaces and caching belong

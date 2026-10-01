@@ -28,9 +28,10 @@ import { cssColor, type CanvasTextDrawer } from "./canvas2d.ts";
 import type { TextContent } from "./graph.ts";
 import {
   collectCompositionTextFrames,
-  cachedTextNodes,
+  animatedTextNodes,
   type CompositionTextFrames,
 } from "./text-frames.ts";
+import { animatedTextBounds } from "./text-bounds.ts";
 
 type TextLayer = Extract<CompositionLayer, { type: "text" }>;
 type TypographyScene = Parameters<typeof prepareTypography>[0];
@@ -212,7 +213,7 @@ function compositionTextFrames(
   context: CanvasRenderingContext2D,
 ): CompositionTextFrames {
   const animated = [comp, ...(comp.precomps ?? [])].some(
-    (scope) => cachedTextNodes(scope).size > 0,
+    (scope) => animatedTextNodes(scope).size > 0,
   );
   if (!animated) return {};
   const staticComp: Composition = {
@@ -250,55 +251,6 @@ const pad = (b: Bounds, by: number): Bounds => ({
   right: b.right + by,
   bottom: b.bottom + by,
 });
-
-function layoutBounds(raster: TextRaster): Bounds {
-  const { layout } = raster;
-  const boxes: Bounds[] = layout.lines.map((line) => ({
-    left: line.x,
-    top: line.baseline - line.ascent,
-    right: line.x + line.width,
-    bottom: line.baseline + line.descent,
-  }));
-  for (const cluster of layout.clusters)
-    if (cluster.ink && cluster.ink.width > 0)
-      boxes.push({
-        left: cluster.ink.x,
-        top: cluster.ink.y,
-        right: cluster.ink.x + cluster.ink.width,
-        bottom: cluster.ink.y + cluster.ink.height,
-      });
-  return union(boxes);
-}
-
-/**
- * Conservative reach of animated glyphs beyond their layout box: offsets,
- * baseline shifts, blur, stroke, scale/rotation/skew and decorations.
- */
-function animatedReach(
-  node: TextNode,
-  animators: readonly TextAnimator[],
-): number {
-  let reach = node.decorations?.length ? node.fontSize * 0.5 : 0;
-  for (const animator of animators) {
-    if (animator.node !== node.id) continue;
-    for (const p of [animator.from, animator.to]) {
-      if (!p) continue;
-      const offset = (p as { offset?: [number, number] }).offset;
-      reach = Math.max(
-        reach,
-        Math.abs(offset?.[0] ?? 0) +
-          Math.abs(offset?.[1] ?? 0) +
-          Math.abs(p.baselineShift ?? 0) +
-          (p.blur ?? 0) * 3 +
-          (p.strokeWidth ?? 0) +
-          (p.scale !== undefined || p.rotation !== undefined || p.skew
-            ? node.fontSize * Math.max(1, p.scale ?? 1)
-            : 0),
-      );
-    }
-  }
-  return reach;
-}
 
 /**
  * Shape every text layer once with its pinned fonts, measure local bounds per
@@ -338,14 +290,19 @@ export function prepareCompositionText(
         const rasters = prepared.nodes.get(node.id)!;
         for (const raster of rasters.values())
           markBaseColor(raster, node.color);
-        const reach = animatedReach(node, scene.textAnimators ?? []);
-        const perState = texts.map((text) => layoutBounds(rasters.get(text)!));
+        const measured = new Map(
+          [...rasters].map(([text, raster]) => [
+            text,
+            animatedTextBounds(node, raster, prepared.scene),
+          ]),
+        );
+        const perState = texts.map((text) => measured.get(text)!);
         // Transitions and counts show other texts in between: use their union.
         const transitions = layer.transition ?? layer.transitions?.length;
         const all = transitions
-          ? pad(union([...rasters.values()].map(layoutBounds)), node.fontSize)
+          ? pad(union([...measured.values()]), node.fontSize)
           : undefined;
-        bounds[key] = perState.map((box) => pad(all ?? box, reach));
+        bounds[key] = perState.map((box) => all ?? box);
         entries.set(key, { kind: "typography", node, prepared });
       } else {
         const ctx = measureContext;

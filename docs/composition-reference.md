@@ -141,7 +141,7 @@ hardware GPU the Lab labels its preview approximate: previews stay within the
 `pnpm composition:hardware-preview`). `renderComposition` (animation engine) and
 `comp render` resolve asset paths relative to the composition file and write the MP4,
 a scene manifest and a result manifest. The manifest records
-`COMPOSITION_RENDERER_VERSION` (`composition-canvas-1.0.0`) and
+`COMPOSITION_RENDERER_VERSION` (`composition-canvas-1.0.1`) and
 `COMPOSITION_EVALUATOR_VERSION`, so both participate in cache identity.
 
 MP4 export requires even composition width and height for H.264's `yuv420p` format;
@@ -256,11 +256,11 @@ changing the contract.
   `toState` afterwards. This is the story typography rule.
 - An animated `color` recolours unspanned glyphs each frame; span colours, decoration
   colours and animator fills keep their own values.
-- Preparation measures every state's layout once, and passes it to the evaluator as
-  `textBounds`, so text layers get bounds for culling and constraints. Bounds are
-  conservative: they add the reach of text animator offsets, baseline shifts, blur,
-  strokes, scale and rotation, decorations, and the union of all states while
-  transitions can show another text.
+- Preparation measures every state's layout and its combined glyph poses over
+  reachable layer times, and passes the bounds to the evaluator as `textBounds` for
+  culling and constraints. The bounds include additive animator offsets, tracking,
+  leading, group pivots, font-axis variants, blur, strokes and decorations, plus the
+  union of all states while transitions can show another text.
 
 ## Validating
 

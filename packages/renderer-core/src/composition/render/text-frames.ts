@@ -7,16 +7,8 @@ import type { Bounds, EvaluatedLayerTree } from "../evaluate/types.ts";
 
 export type CompositionTextFrames = Record<string, readonly number[]>;
 
-export function cachedTextNodes(scope: CompositionScope): Set<string> {
-  return new Set(
-    (scope.textAnimators ?? [])
-      .filter((animator) =>
-        [animator.from, animator.to].some(
-          (p) => p && (p.axes || p.strokeWidth !== undefined),
-        ),
-      )
-      .map((animator) => animator.node),
-  );
+export function animatedTextNodes(scope: CompositionScope): Set<string> {
+  return new Set((scope.textAnimators ?? []).map((animator) => animator.node));
 }
 
 /** Cache preparation uses the same rounded layer clock as glyph drawing. */
@@ -27,7 +19,7 @@ export function collectCompositionTextFrames(
   const samples = new Map<string, Set<number>>();
   for (const scope of [comp, ...(comp.precomps ?? [])]) {
     const prefix = scope === comp ? "" : `${scope.id}/`;
-    for (const node of cachedTextNodes(scope))
+    for (const node of animatedTextNodes(scope))
       samples.set(prefix + node, new Set());
   }
   if (!samples.size) return {};

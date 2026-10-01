@@ -10,6 +10,7 @@ import { launchRenderBrowser } from "@still-shift/execution-runtime";
 import type {
   Composition,
   CompositionBlendMode,
+  TextAnimator,
 } from "@still-shift/scene-contract";
 import { COMPOSITION_BLEND_MODES } from "@still-shift/scene-contract";
 import { ffmpegArguments } from "@still-shift/execution-runtime/export";
@@ -537,6 +538,68 @@ try {
     "stroke-width text animators prepare and render through settlement",
   );
 
+  const motionCases: [
+    string,
+    string,
+    [number, number],
+    TextAnimator["from"][],
+    Pick<TextAnimator, "anchor" | "anchorAlign">,
+  ][] = [
+    [
+      "additive offsets",
+      "Test",
+      [-300, 30],
+      [{ offset: [200, 0] }, { offset: [200, 0] }],
+      {},
+    ],
+    ["tracking", "Test", [-100, 30], [{ tracking: 2000 }], {}],
+    ["leading", "Test\nTest\nTest", [30, -150], [{ leading: 4 }], {}],
+    [
+      "group rotation",
+      "MMMMMMMMMMMM",
+      [320, 30],
+      [{ rotation: 180 }],
+      { anchor: "all", anchorAlign: [0, 0.5] },
+    ],
+  ];
+  for (const [label, text, position, properties, extra] of motionCases) {
+    const moving: Composition = {
+      ...strokeText,
+      layers: [
+        {
+          id: "text",
+          type: "text",
+          text,
+          fontSize: 30,
+          color: "#ffffff",
+          fontAsset: "display",
+          transform: { position: [...position] },
+        },
+      ],
+      textAnimators: properties.map((property) => ({
+        ...strokeText.textAnimators![0]!,
+        ...extra,
+        blend: "add",
+        ...(extra.anchorAlign ? { anchorAlign: [...extra.anchorAlign] } : {}),
+        from: structuredClone(property),
+        to: structuredClone(property),
+      })),
+    };
+    const rendered = await render(page, moving, [0, 5, 9], assetUrls(moving));
+    assert.ok(
+      rendered.frames.every((frame) => litPixels(frame) > 0),
+      `${label} brings offscreen text into view`,
+    );
+    assert.deepEqual(
+      rendered.culled,
+      [[], [], []],
+      `${label} is included in measured bounds`,
+    );
+  }
+  results.push(
+    "text bounds cover combined offsets, tracking, leading and group rotation",
+  );
+
   const fastStroke: Composition = {
     ...strokeText,
     layers: strokeText.layers.map((layer) => ({ ...layer, stretch: 0.5 })),
@@ -741,12 +804,12 @@ try {
     compositionPath: resolve(fixtureDir, "first-slice.json"),
     outputPath,
   });
-  assert.equal(exported.rendererVersion, "composition-canvas-1.0.0");
+  assert.equal(exported.rendererVersion, "composition-canvas-1.0.1");
   assert.deepEqual(exported.systemFontLayers, []);
   const manifest = JSON.parse(
     await readFile(`${outputPath}.scene.json`, "utf8"),
   );
-  assert.equal(manifest.rendererVersion, "composition-canvas-1.0.0");
+  assert.equal(manifest.rendererVersion, "composition-canvas-1.0.1");
   // Encode the preview's own frames with the export's encoder arguments: when
   // export renders the same pixels, the decoded videos are identical.
   const previewPngs = await page.evaluate(
