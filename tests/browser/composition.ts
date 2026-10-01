@@ -10,12 +10,27 @@ import { launchRenderBrowser } from "@still-shift/execution-runtime";
 import type {
   Composition,
   CompositionBlendMode,
-  CompositionLayer,
-  TrackMatte,
 } from "@still-shift/scene-contract";
 import { COMPOSITION_BLEND_MODES } from "@still-shift/scene-contract";
 import { ffmpegArguments } from "@still-shift/execution-runtime/export";
 import { renderComposition } from "../../packages/animation-engine/src/composition-render.ts";
+import {
+  ADJUSTMENT_BACKDROP,
+  BACKDROPS,
+  MASK_CASES,
+  MASK_POINTS,
+  MATTE_COLORS,
+  MATTE_TARGET,
+  SOURCES,
+  adjustmentChart,
+  blendChart,
+  clipChart,
+  expansionChart,
+  featherChart,
+  maskChart,
+  matteChart,
+  nestedChart,
+} from "../../benchmarks/fixtures/composition/ce3/charts.ts";
 import type * as Render from "../../packages/renderer-core/src/composition/render/index.ts";
 import {
   compareFrames,
@@ -115,142 +130,6 @@ const hex = (c: string): Rgba => {
   const n = (i: number) => parseInt(v.slice(i, i + 2), 16) / 255;
   return [n(0), n(2), n(4), v.length > 6 ? n(6) : 1];
 };
-
-// ---------------------------------------------------------------------------
-// Fixtures built in code.
-// ---------------------------------------------------------------------------
-const base = (
-  layers: CompositionLayer[],
-  extra: Partial<Composition> = {},
-): Composition => ({
-  schemaVersion: "composition-1",
-  id: "test",
-  width: 160,
-  height: 160,
-  fps: 30,
-  frameCount: 30,
-  background: null,
-  assets: [],
-  layers,
-  ...extra,
-});
-const solid = (
-  id: string,
-  color: string,
-  [x, y, w, h]: [number, number, number, number],
-  extra: Partial<Extract<CompositionLayer, { type: "solid" }>> = {},
-): CompositionLayer => ({
-  id,
-  type: "solid",
-  size: [w, h],
-  color,
-  transform: { position: [x, y], anchor: [0, 0] },
-  ...extra,
-});
-const rect = (x: number, y: number, w: number, h: number) => ({
-  closed: true,
-  vertices: [
-    [x, y],
-    [x + w, y],
-    [x + w, y + h],
-    [x, y + h],
-  ] as [number, number][],
-});
-
-const BACKDROPS = [
-  "#000000",
-  "#FFFFFF",
-  "#FF0000",
-  "#00FF00",
-  "#3366CC",
-  "#CC9933",
-  "#808080C0",
-  "#1A2B3C80",
-];
-const SOURCES = [
-  "#FFFFFF",
-  "#000000",
-  "#0000FF",
-  "#FFCC00",
-  "#66CC99",
-  "#993366",
-  "#E0E0E0C0",
-  "#40404080",
-];
-
-/** 8 × 8 cells: backdrop columns under source rows blended with `mode`, in a
- * transparent precomp so translucent backdrops keep their alpha. */
-function blendChart(mode: CompositionBlendMode): Composition {
-  return base(
-    [
-      {
-        id: "chart",
-        type: "precomp",
-        comp: "cells",
-        transform: { position: [80, 80] },
-      },
-    ],
-    {
-      precomps: [
-        {
-          id: "cells",
-          width: 160,
-          height: 160,
-          frameCount: 30,
-          background: null,
-          layers: [
-            ...SOURCES.map((c, i) =>
-              solid(`s${i}`, c, [0, i * 20, 160, 20], { blendMode: mode }),
-            ),
-            ...BACKDROPS.map((c, i) => solid(`b${i}`, c, [i * 20, 0, 20, 160])),
-          ],
-        },
-      ],
-    },
-  );
-}
-
-const MATTE_COLORS = [
-  "#FFFFFF",
-  "#000000",
-  "#FF0000",
-  "#00FF00",
-  "#0000FF",
-  "#808080",
-  "#FFFFFF80",
-  "#33669940",
-];
-function matteChart(mode: TrackMatte["mode"]): Composition {
-  return base(
-    [
-      {
-        id: "stripes",
-        type: "precomp",
-        comp: "stripes",
-        enabled: false,
-        transform: { position: [80, 80] },
-      },
-      solid("target", "#FF8000", [0, 0, 160, 160], {
-        trackMatte: { layer: "stripes", mode },
-      }),
-    ],
-    {
-      precomps: [
-        {
-          id: "stripes",
-          width: 160,
-          height: 160,
-          frameCount: 30,
-          background: null,
-          // The last column stays transparent.
-          layers: MATTE_COLORS.slice(0, 7).map((c, i) =>
-            solid(`m${i}`, c, [i * 20, 0, 20, 160]),
-          ),
-        },
-      ],
-    },
-  );
-}
 
 // ---------------------------------------------------------------------------
 // Rendering in the pinned browser.
@@ -397,7 +276,7 @@ try {
               ? luma
               : 1 - luma;
       const expected = toBytes(
-        hex("#FF8000")
+        hex(MATTE_TARGET)
           .slice(0, 3)
           .map((c) => c * value),
       );
@@ -415,102 +294,19 @@ try {
   results.push(`4 matte modes × 8 matte values match (max Δ${worstMatte})`);
 
   // Masks: boolean modes, inversion, opacity, feather and expansion.
-  const A = rect(20, 20, 80, 80),
-    B = rect(60, 60, 80, 80);
-  const points = {
-    a: [40, 40],
-    both: [80, 80],
-    b: [120, 120],
-    none: [130, 30],
-  } as const;
-  const maskCases: [
-    string,
-    CompositionLayer["masks"],
-    Record<keyof typeof points, number>,
-  ][] = [
-    [
-      "add+add",
-      [
-        { id: "a", path: A, mode: "add" },
-        { id: "b", path: B, mode: "add" },
-      ],
-      { a: 1, both: 1, b: 1, none: 0 },
-    ],
-    [
-      "add+subtract",
-      [
-        { id: "a", path: A, mode: "add" },
-        { id: "b", path: B, mode: "subtract" },
-      ],
-      { a: 1, both: 0, b: 0, none: 0 },
-    ],
-    [
-      "add+intersect",
-      [
-        { id: "a", path: A, mode: "add" },
-        { id: "b", path: B, mode: "intersect" },
-      ],
-      { a: 0, both: 1, b: 0, none: 0 },
-    ],
-    [
-      "add+difference",
-      [
-        { id: "a", path: A, mode: "add" },
-        { id: "b", path: B, mode: "difference" },
-      ],
-      { a: 1, both: 0, b: 1, none: 0 },
-    ],
-    [
-      "subtract",
-      [{ id: "a", path: A, mode: "subtract" }],
-      { a: 0, both: 0, b: 1, none: 1 },
-    ],
-    [
-      "inverted",
-      [{ id: "a", path: A, mode: "add", inverted: true }],
-      { a: 0, both: 0, b: 1, none: 1 },
-    ],
-    [
-      "half opacity",
-      [{ id: "a", path: A, mode: "add", opacity: 0.5 }],
-      { a: 0.5, both: 0.5, b: 0, none: 0 },
-    ],
-    [
-      "add+half subtract",
-      [
-        { id: "a", path: A, mode: "add" },
-        { id: "b", path: B, mode: "subtract", opacity: 0.5 },
-      ],
-      { a: 1, both: 0.5, b: 0, none: 0 },
-    ],
-  ];
-  for (const [label, masks, expected] of maskCases) {
-    const rendered = await render(
-      page,
-      base([solid("white", "#FFFFFF", [0, 0, 160, 160], { masks: masks! })]),
-      [0],
-    );
-    for (const [name, [x, y]] of Object.entries(points))
+  for (const { label, masks, expected } of MASK_CASES) {
+    const rendered = await render(page, maskChart(masks), [0]);
+    for (const [name, [x, y]] of Object.entries(MASK_POINTS))
       near(
         pixel(rendered, x, y),
         toBytes(
-          [1, 1, 1].map((v) => v * expected[name as keyof typeof points]!),
+          [1, 1, 1].map((v) => v * expected[name as keyof typeof MASK_POINTS]!),
         ),
         1,
         `mask ${label} at ${name}`,
       );
   }
-  const feathered = await render(
-    page,
-    base([
-      solid("white", "#FFFFFF", [0, 0, 160, 160], {
-        masks: [
-          { id: "a", path: rect(40, 40, 80, 80), mode: "add", feather: 20 },
-        ],
-      }),
-    ]),
-    [0],
-  );
+  const feathered = await render(page, featherChart(), [0]);
   const ramp = [30, 35, 40, 45, 50].map((x) => pixel(feathered, x, 80)[0]);
   assert.ok(
     ramp.every((v, i) => i === 0 || v > ramp[i - 1]!),
@@ -528,22 +324,7 @@ try {
     1,
     "feather leaves the centre",
   );
-  const expanded = await render(
-    page,
-    base([
-      solid("grow", "#FFFFFF", [0, 0, 160, 80], {
-        masks: [
-          { id: "a", path: rect(40, 20, 80, 40), mode: "add", expansion: 10 },
-        ],
-      }),
-      solid("shrink", "#FFFFFF", [0, 80, 160, 80], {
-        masks: [
-          { id: "a", path: rect(40, 20, 80, 40), mode: "add", expansion: -10 },
-        ],
-      }),
-    ]),
-    [0],
-  );
+  const expanded = await render(page, expansionChart(), [0]);
   near(pixel(expanded, 34, 40), [255, 255, 255], 1, "positive expansion grows");
   near(pixel(expanded, 26, 40), [0, 0, 0], 1, "positive expansion is bounded");
   near(pixel(expanded, 46, 120), [0, 0, 0], 1, "negative expansion shrinks");
@@ -554,63 +335,13 @@ try {
     "negative expansion keeps the inside",
   );
   results.push(
-    `${maskCases.length} mask combinations, feather and expansion match`,
+    `${MASK_CASES.length} mask combinations, feather and expansion match`,
   );
 
   // Precomps: nesting, clipping to bounds unless collapsed, nested time.
-  const nested = (collapse: boolean): Composition =>
-    base(
-      [
-        {
-          id: "outer",
-          type: "precomp",
-          comp: "outer",
-          collapseTransforms: collapse,
-          transform: { position: [80, 80] },
-        },
-      ],
-      {
-        precomps: [
-          {
-            id: "outer",
-            width: 100,
-            height: 100,
-            frameCount: 30,
-            layers: [
-              {
-                id: "inner",
-                type: "precomp",
-                comp: "inner",
-                collapseTransforms: collapse,
-                startFrame: 10,
-                stretch: -1,
-                transform: { position: [50, 50] },
-              },
-            ],
-          },
-          {
-            id: "inner",
-            width: 60,
-            height: 60,
-            frameCount: 30,
-            layers: [
-              // Extends 20 px beyond the inner precomp on the right.
-              solid("swatch", "#000000", [10, 10, 70, 20], {
-                color: {
-                  keys: [
-                    { frame: 0, value: "#000000" },
-                    { frame: 10, value: "#FF0000", interpolation: "linear" },
-                  ],
-                },
-              }),
-            ],
-          },
-        ],
-      },
-    );
   for (const collapse of [false, true]) {
     // Reversed from frame 10: inner time = 10 − frame.
-    const rendered = await render(page, nested(collapse), [0, 5]);
+    const rendered = await render(page, nestedChart(collapse), [0, 5]);
     // inner origin = 80 − 50 + 50 − 30 = 50.
     near(
       pixel(rendered, 70, 70, 0),
@@ -634,28 +365,8 @@ try {
   results.push("nested precomps keep nested time and clip unless collapsed");
 
   // Adjustment layers re-composite what is below within their region.
-  const adjusted = await render(
-    page,
-    base([
-      {
-        id: "adjust",
-        type: "adjustment",
-        size: [80, 160],
-        blendMode: "multiply",
-        transform: { position: [0, 0], anchor: [0, 0] },
-      },
-      {
-        id: "half",
-        type: "adjustment",
-        size: [160, 80],
-        blendMode: "screen",
-        transform: { position: [0, 80], anchor: [0, 0], opacity: 0.5 },
-      },
-      solid("backdrop", "#996633", [0, 0, 160, 160]),
-    ]),
-    [0],
-  );
-  const c = hex("#996633").slice(0, 3) as Rgb;
+  const adjusted = await render(page, adjustmentChart(), [0]);
+  const c = hex(ADJUSTMENT_BACKDROP).slice(0, 3) as Rgb;
   near(
     pixel(adjusted, 40, 40),
     toBytes(c.map((v) => v * v)),
@@ -672,21 +383,7 @@ try {
   results.push("adjustment layers apply their blend inside their region");
 
   // Group clips and culling.
-  const clipped = await render(
-    page,
-    base([
-      solid("off", "#FFFFFF", [400, 0, 20, 20]),
-      solid("child", "#FFFFFF", [0, 0, 160, 160], { parent: "frame" }),
-      {
-        id: "frame",
-        type: "group",
-        size: [40, 40],
-        clip: true,
-        transform: { position: [60, 60], anchor: [0, 0] },
-      },
-    ]),
-    [0],
-  );
+  const clipped = await render(page, clipChart(), [0]);
   near(pixel(clipped, 80, 80), [255, 255, 255], 0, "inside the group clip");
   near(pixel(clipped, 30, 30), [0, 0, 0], 0, "outside the group clip");
   assert.deepEqual(clipped.culled[0], ["off"]);

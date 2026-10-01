@@ -267,6 +267,14 @@ SwiftShader, and [`golden-baseline.json`](../tests/visual/golden-baseline.json) 
    SSIM 0.987), whose animated Canvas 2D blur rasterises differently on the GPU. Its
    blur moves to the CE6 lens-blur effect, which must bring it within `perceptual`.
    See [`hardware-preview-darwin-arm64.json`](../tests/visual/composition-baselines/hardware-preview-darwin-arm64.json).
+   The Lab's composition page (`/composition.html`) shows this label. CE3 measured
+   composition previews with `pnpm composition:hardware-preview`: of 38 items (the CE3
+   charts and the composition fixtures) on Apple M5 Pro Metal, 28 are `exact`, 6
+   `near` and 3 `perceptual` (mask expansion, first slice, every-field). The one
+   exception is the feathered-mask chart (PSNR 46.1 dB, SSIM 0.984, max Δ5): mask
+   feather is a Canvas 2D blur, like Focus Handoff, and moves to the CE6 GPU blur,
+   which must bring it within `perceptual`. See
+   [`ce3-hardware-preview-darwin-arm64.json`](../tests/visual/composition-baselines/ce3-hardware-preview-darwin-arm64.json).
 5. Speed is recovered through per-layer caching and parallel chunk rendering (CE15),
    not by switching export to hardware. Heavy effects record their SwiftShader cost in
    CE6 so budgets are visible.
@@ -1036,18 +1044,34 @@ tracker stays `[~]` until review.
   - After merging the CE2 fixes: `pnpm check:fast` (914 unit tests),
     `test:browser:composition-evaluator` and `test:browser:composition` pass. The
     matte-precomp content change bumps the evaluator to `composition-evaluator-5` (CE2 used `-4` for its crossfade-default fix).
+- **Lab preview and hardware GPUs** (follow-up to the first review, 2026-10-01):
+  - `apps/lab/composition.html` previews composition fixtures through
+    `createCompositionPreview`, the export renderer, with play, scrub, warnings,
+    frame diagnostics, culled layers and the renderer label the GPU policy requires.
+    `test:browser:composition` opens it in the pinned browser and checks that first-
+    slice frames 0, 20, 45 and 89 are byte-identical to the export renderer's. This
+    closes the acceptance's Lab clause; CE11 grows the page into the inspector.
+  - `pnpm composition:hardware-preview` renders the CE3 charts (moved to
+    `benchmarks/fixtures/composition/ce3/charts.ts`, shared with the browser group)
+    and the composition fixtures in the pinned and hardware browsers. On Apple M5 Pro
+    Metal all 38 items meet `perceptual` except the feathered mask (see the
+    [GPU policy](#gpu-determinism-policy)); results are stable across runs.
+- **Generic-font text:** `comp-text-system-font` warns on text layers without a
+  pinned font; `renderComposition` reports `warnings` and `systemFontLayers` in the
+  result and lists the layers in the scene manifest. Among the CE0 acceptance
+  fixtures only the History Offstage presets and the story calibration pan use
+  generic faces (44 of 427 text nodes, 8 of 160 fixtures).
 - **Limitations and follow-ups:**
-  - Acceptance names the Lab preview. The Lab has no composition page until CE11, so
-    CE3 verifies the shared `createCompositionPreview` in the pinned browser. Hardware
-    GPU previews of compositions are unmeasured; CE11 measures them against the
-    `perceptual` tier.
   - Adjustment layers apply only their blend mode until effects arrive (CE6).
   - Isolated layers use scope-sized surfaces; bounds-sized surfaces and caching belong
     to CE15. Luma mattes read pixels back on the CPU (GPU in CE6).
   - Mask expansion rounds concave corners; feather scales σ by the layer's average
     screen scale, so skewed or non-uniformly scaled layers feather approximately.
   - Text without a pinned font uses the browser's generic faces and is not
-    reproducible across machines. Signal-driven text selectors sample layer time.
+    reproducible across machines. Validation warns (`comp-text-system-font`) and render
+    results and manifests list such layers in `systemFontLayers`; CE10 makes it an
+    error for authored compositions (see the decision log). Signal-driven text
+    selectors sample layer time.
     Animated layer colour recolours cached rasters (a 16-entry cache per raster).
   - CE4a must check legacy non-typography story text, which the composition draws
     through the generic-font path only when no font is pinned.
@@ -1739,6 +1763,8 @@ A milestone is complete when **all** of the following hold:
 | 2026-10-01 | CE3: adjustment layers composite `below·(1−k) + adjusted·k`; `normal` ones without effects are skipped. Collapsed precomps draw no background and multiply host opacity into each layer                                                                                                                                                                                                                                                                                                                                             | AE semantics, including blend modes on adjustment layers without effects                                                                                                                                                                        |                |
 | 2026-10-01 | CE3: preview and export canvases are opaque; transparent backgrounds render over black until alpha formats (CE15)                                                                                                                                                                                                                                                                                                                                                                                                                   | Matches legacy export and gives MP4, which has no alpha, one deterministic flattening                                                                                                                                                           |                |
 | 2026-10-01 | CE3: export/preview identity is proven by encoding the preview's frames with the export's encoder arguments and requiring identical decoded frames                                                                                                                                                                                                                                                                                                                                                                                  | H.264 at CRF 18 costs 38–41 dB against raw frames on fine line art, so tolerances against raw frames cannot separate codec loss from renderer differences                                                                                       |                |
+| 2026-10-01 | CE3: text without a pinned font warns (`comp-text-system-font`) and is listed in render results; CE10 makes it an error for authored compositions, keeping the warning for adapter output (`source.family`)                                                                                                                                                                                                                                                                                                                         | Determinism (invariant 3) cannot hold with system fonts; adapted legacy scenes still need the generic path for visual parity until CE4d decides whether to pin their fonts                                                                      |                |
+| 2026-10-01 | CE3: close the acceptance's Lab clause with a minimal composition page and a hardware-preview measurement now, rather than in CE11; the feathered mask is a recorded GPU exception until the CE6 blur                                                                                                                                                                                                                                                                                                                               | The page is the seed of the CE11 inspector; measuring now records the preview guarantee for every CE3 feature                                                                                                                                   |                |
 
 ## Open questions for the owner
 

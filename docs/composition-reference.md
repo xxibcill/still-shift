@@ -133,9 +133,12 @@ pnpm --silent still-shift comp render --input first-slice.json --output out.mp4
 ```
 
 `loadCompositionResources` fetches every image and font, checks its SHA-256 and pixel
-size, and loads style and animated-axis font variants. Lab preview and export call
-the same `createCompositionPreview`, so they share evaluator and backend code; export
-runs it in the pinned software browser. `renderComposition` (animation engine) and
+size, and loads style and animated-axis font variants. Lab preview
+(`/composition.html`) and export call the same `createCompositionPreview`, so they
+share evaluator and backend code; export runs it in the pinned software browser. On a
+hardware GPU the Lab labels its preview approximate: previews stay within the
+`perceptual` tier except feathered masks until CE6 (measured by
+`pnpm composition:hardware-preview`). `renderComposition` (animation engine) and
 `comp render` resolve asset paths relative to the composition file and write the MP4,
 a scene manifest and a result manifest. The manifest records
 `COMPOSITION_RENDERER_VERSION` (`composition-canvas-1.0.0`) and

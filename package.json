@@ -97,6 +97,7 @@
     "test:browser:typography": "node --import tsx tests/browser/typography.ts",
     "test:browser:typography:fixtures": "node --import tsx tests/browser/typography-fixtures.ts",
     "typography:prepare": "node --import tsx scripts/story-motion/create-typography-fixtures.ts",
+    "composition:hardware-preview": "node --import tsx scripts/composition/hardware-preview.ts",
     "composition:baselines": "node --import tsx scripts/composition/baselines.ts",
     "test:browser:composition-baselines": "node --import tsx scripts/composition/baselines.ts --check",
     "test:browser:composition": "node --import tsx tests/browser/composition.ts",

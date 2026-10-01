@@ -57,8 +57,15 @@ output checksum and timing metrics, and writes `out.mp4.scene.json` and
 adjustment layers and typography text render today; effects, shapes, motion blur and
 3D layers arrive in later milestones. Transparent backgrounds show black in MP4.
 
+To preview, run `pnpm lab` and open
+[`/composition.html`](http://127.0.0.1:4173/composition.html): play or scrub the
+fixtures in `benchmarks/fixtures/composition/` and read their warnings. On a normal
+browser with a graphics card the preview is labelled approximate; the exported MP4 is
+always exact. A text layer without a `fontAsset` triggers a `comp-text-system-font`
+warning because its font depends on the computer.
+
 See the [composition reference](./composition-reference.md#rendering-a-composition)
-for the rendering rules. A Lab composition inspector and the full `comp` CLI follow in
+for the rendering rules. The full Lab composition inspector and `comp` CLI follow in
 CE11 and CE10; existing scene workflows remain available for producing videos.
 
 ## Start the Lab

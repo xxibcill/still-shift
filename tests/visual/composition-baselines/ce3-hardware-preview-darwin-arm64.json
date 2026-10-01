@@ -1,0 +1,291 @@
+{
+  "version": "ce3-hardware-preview-1",
+  "tolerance": "frame-tolerance-1",
+  "renderer": "composition-canvas-1.0.0",
+  "method": "Each sampled frame renders through createCompositionPreview on a fresh canvas and is read back once, in the pinned software browser and in a hardware-GPU browser.",
+  "pinned": {
+    "profile": "chromium-software-2",
+    "browserVersion": "151.0.7922.34",
+    "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+    "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+    "platform": "darwin",
+    "arch": "arm64"
+  },
+  "hardware": {
+    "profile": "hardware",
+    "browserVersion": "151.0.7922.34",
+    "webglRenderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M5 Pro, Unspecified Version)",
+    "rasterFingerprint": "sha256:1635aedc2b987dcd5c74dce4b4098aff37754174c33461d6f626c9dcad69e4a9",
+    "platform": "darwin",
+    "arch": "arm64"
+  },
+  "belowPerceptual": ["mask/feather"],
+  "items": {
+    "adjustment": {
+      "observedTier": "exact",
+      "sampledFrames": 1,
+      "maxChannelDelta": 0,
+      "minPsnr": "identical",
+      "minSsim": 1
+    },
+    "blend/add": {
+      "observedTier": "exact",
+      "sampledFrames": 1,
+      "maxChannelDelta": 0,
+      "minPsnr": "identical",
+      "minSsim": 1
+    },
+    "blend/color": {
+      "observedTier": "near",
+      "sampledFrames": 1,
+      "maxChannelDelta": 1,
+      "minPsnr": 63.18,
+      "minSsim": 0.99999
+    },
+    "blend/color-burn": {
+      "observedTier": "exact",
+      "sampledFrames": 1,
+      "maxChannelDelta": 0,
+      "minPsnr": "identical",
+      "minSsim": 1
+    },
+    "blend/color-dodge": {
+      "observedTier": "exact",
+      "sampledFrames": 1,
+      "maxChannelDelta": 0,
+      "minPsnr": "identical",
+      "minSsim": 1
+    },
+    "blend/darken": {
+      "observedTier": "exact",
+      "sampledFrames": 1,
+      "maxChannelDelta": 0,
+      "minPsnr": "identical",
+      "minSsim": 1
+    },
+    "blend/difference": {
+      "observedTier": "near",
+      "sampledFrames": 1,
+      "maxChannelDelta": 1,
+      "minPsnr": 59.82,
+      "minSsim": 0.99999
+    },
+    "blend/exclusion": {
+      "observedTier": "near",
+      "sampledFrames": 1,
+      "maxChannelDelta": 1,
+      "minPsnr": 55.78,
+      "minSsim": 0.99994
+    },
+    "blend/hard-light": {
+      "observedTier": "exact",
+      "sampledFrames": 1,
+      "maxChannelDelta": 0,
+      "minPsnr": "identical",
+      "minSsim": 1
+    },
+    "blend/hue": {
+      "observedTier": "near",
+      "sampledFrames": 1,
+      "maxChannelDelta": 1,
+      "minPsnr": 63.18,
+      "minSsim": 0.99999
+    },
+    "blend/lighten": {
+      "observedTier": "exact",
+      "sampledFrames": 1,
+      "maxChannelDelta": 0,
+      "minPsnr": "identical",
+      "minSsim": 1
+    },
+    "blend/luminosity": {
+      "observedTier": "exact",
+      "sampledFrames": 1,
+      "maxChannelDelta": 0,
+      "minPsnr": "identical",
+      "minSsim": 1
+    },
+    "blend/multiply": {
+      "observedTier": "exact",
+      "sampledFrames": 1,
+      "maxChannelDelta": 0,
+      "minPsnr": "identical",
+      "minSsim": 1
+    },
+    "blend/normal": {
+      "observedTier": "near",
+      "sampledFrames": 1,
+      "maxChannelDelta": 1,
+      "minPsnr": 61.42,
+      "minSsim": 0.99999
+    },
+    "blend/overlay": {
+      "observedTier": "exact",
+      "sampledFrames": 1,
+      "maxChannelDelta": 0,
+      "minPsnr": "identical",
+      "minSsim": 1
+    },
+    "blend/saturation": {
+      "observedTier": "near",
+      "sampledFrames": 1,
+      "maxChannelDelta": 1,
+      "minPsnr": 63.18,
+      "minSsim": 1
+    },
+    "blend/screen": {
+      "observedTier": "exact",
+      "sampledFrames": 1,
+      "maxChannelDelta": 0,
+      "minPsnr": "identical",
+      "minSsim": 1
+    },
+    "blend/soft-light": {
+      "observedTier": "exact",
+      "sampledFrames": 1,
+      "maxChannelDelta": 0,
+      "minPsnr": "identical",
+      "minSsim": 1
+    },
+    "ce1/every-field": {
+      "observedTier": "perceptual",
+      "sampledFrames": 13,
+      "maxChannelDelta": 93,
+      "minPsnr": 47.3,
+      "minSsim": 0.99952
+    },
+    "ce1/first-slice": {
+      "observedTier": "perceptual",
+      "sampledFrames": 10,
+      "maxChannelDelta": 100,
+      "minPsnr": 42.69,
+      "minSsim": 0.99893
+    },
+    "ce2/timing": {
+      "observedTier": "exact",
+      "sampledFrames": 7,
+      "maxChannelDelta": 0,
+      "minPsnr": "identical",
+      "minSsim": 1
+    },
+    "group-clip": {
+      "observedTier": "exact",
+      "sampledFrames": 1,
+      "maxChannelDelta": 0,
+      "minPsnr": "identical",
+      "minSsim": 1
+    },
+    "mask/add+add": {
+      "observedTier": "exact",
+      "sampledFrames": 1,
+      "maxChannelDelta": 0,
+      "minPsnr": "identical",
+      "minSsim": 1
+    },
+    "mask/add+difference": {
+      "observedTier": "exact",
+      "sampledFrames": 1,
+      "maxChannelDelta": 0,
+      "minPsnr": "identical",
+      "minSsim": 1
+    },
+    "mask/add+half subtract": {
+      "observedTier": "exact",
+      "sampledFrames": 1,
+      "maxChannelDelta": 0,
+      "minPsnr": "identical",
+      "minSsim": 1
+    },
+    "mask/add+intersect": {
+      "observedTier": "exact",
+      "sampledFrames": 1,
+      "maxChannelDelta": 0,
+      "minPsnr": "identical",
+      "minSsim": 1
+    },
+    "mask/add+subtract": {
+      "observedTier": "exact",
+      "sampledFrames": 1,
+      "maxChannelDelta": 0,
+      "minPsnr": "identical",
+      "minSsim": 1
+    },
+    "mask/expansion": {
+      "observedTier": "perceptual",
+      "sampledFrames": 1,
+      "maxChannelDelta": 73,
+      "minPsnr": 41.6,
+      "minSsim": 0.99927
+    },
+    "mask/feather": {
+      "observedTier": null,
+      "sampledFrames": 1,
+      "maxChannelDelta": 5,
+      "minPsnr": 46.11,
+      "minSsim": 0.98352
+    },
+    "mask/half opacity": {
+      "observedTier": "exact",
+      "sampledFrames": 1,
+      "maxChannelDelta": 0,
+      "minPsnr": "identical",
+      "minSsim": 1
+    },
+    "mask/inverted": {
+      "observedTier": "exact",
+      "sampledFrames": 1,
+      "maxChannelDelta": 0,
+      "minPsnr": "identical",
+      "minSsim": 1
+    },
+    "mask/subtract": {
+      "observedTier": "exact",
+      "sampledFrames": 1,
+      "maxChannelDelta": 0,
+      "minPsnr": "identical",
+      "minSsim": 1
+    },
+    "matte/alpha": {
+      "observedTier": "exact",
+      "sampledFrames": 1,
+      "maxChannelDelta": 0,
+      "minPsnr": "identical",
+      "minSsim": 1
+    },
+    "matte/alpha-inverted": {
+      "observedTier": "exact",
+      "sampledFrames": 1,
+      "maxChannelDelta": 0,
+      "minPsnr": "identical",
+      "minSsim": 1
+    },
+    "matte/luma": {
+      "observedTier": "exact",
+      "sampledFrames": 1,
+      "maxChannelDelta": 0,
+      "minPsnr": "identical",
+      "minSsim": 1
+    },
+    "matte/luma-inverted": {
+      "observedTier": "exact",
+      "sampledFrames": 1,
+      "maxChannelDelta": 0,
+      "minPsnr": "identical",
+      "minSsim": 1
+    },
+    "precomp/collapsed": {
+      "observedTier": "exact",
+      "sampledFrames": 2,
+      "maxChannelDelta": 0,
+      "minPsnr": "identical",
+      "minSsim": 1
+    },
+    "precomp/nested": {
+      "observedTier": "exact",
+      "sampledFrames": 2,
+      "maxChannelDelta": 0,
+      "minPsnr": "identical",
+      "minSsim": 1
+    }
+  }
+}
