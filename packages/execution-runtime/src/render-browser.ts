@@ -9,7 +9,7 @@ import { AnimationEngineError } from "@still-shift/scene-contract";
  * Identity of the pinned render browser. Bump it whenever the launch flags or the
  * probe drawing change, because either changes cache identity and fingerprints.
  */
-export const RENDER_BROWSER_PROFILE = "chromium-software-1" as const;
+export const RENDER_BROWSER_PROFILE = "chromium-software-2" as const;
 
 /**
  * `--disable-gpu` keeps Canvas 2D on Skia's CPU rasteriser and WebGL on SwiftShader.
@@ -68,7 +68,8 @@ function rasterProbe(): { webglRenderer: string; pixels: string } {
   const canvas = document.createElement("canvas");
   canvas.width = 192;
   canvas.height = 128;
-  const ctx = canvas.getContext("2d", { willReadFrequently: true });
+  // Match export: frequent-readback mode would force a CPU raster path even on a GPU.
+  const ctx = canvas.getContext("2d", { alpha: false });
   if (!ctx) throw new Error("Canvas 2D is unavailable");
   const gradient = ctx.createLinearGradient(0, 0, 192, 128);
   gradient.addColorStop(0, "#e8dfc9");

@@ -47,7 +47,7 @@ four and a half minutes on an Apple M5 Pro. See the
   `--only id,id` or `--family name` for a subset) and records the reason in the commit.
 - Baselines exist per `platform-arch`. On an environment without one, the check stops
   with an explanation instead of comparing against another platform's pixels.
-- Rendering uses the pinned software profile `chromium-software-1`
+- Rendering uses the pinned software profile `chromium-software-2`
   (`--disable-gpu --enable-unsafe-swiftshader`); the command refuses to run on any other
   renderer.
 - `pnpm composition:baselines --compare-hardware` measures how far a hardware-GPU

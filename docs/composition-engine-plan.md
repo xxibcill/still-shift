@@ -230,7 +230,7 @@ SwiftShader, and [`golden-baseline.json`](../tests/visual/golden-baseline.json) 
 1. Export launches Chromium with the pinned flag set `--disable-gpu
 --enable-unsafe-swiftshader`, defined once as `RENDER_BROWSER_ARGS` in
    [`render-browser.ts`](../packages/execution-runtime/src/render-browser.ts) (profile
-   `chromium-software-1`). Verified in CE0 on Chromium 151.0.7922.34:
+   `chromium-software-2`). Verified in CE0 on Chromium 151.0.7922.34:
    - `--disable-gpu` reproduces the historical headless default byte for byte, for both
      Canvas 2D and WebGL, across repeated launches.
    - `--use-angle=swiftshader --use-gl=angle` must **not** be used: it moves Canvas 2D
@@ -240,6 +240,10 @@ SwiftShader, and [`golden-baseline.json`](../tests/visual/golden-baseline.json) 
      back to SwiftShader automatically; it did not change output on 151.
    - Canvas 2D output cannot be identified from the WebGL renderer string alone, so
      the probe also hashes a fixed Canvas 2D and WebGL drawing (`rasterFingerprint`).
+   - Profile version 2 probes a fresh Canvas 2D context with export's `{ alpha: false }`
+     attributes and one readback. This fixes detection of GPU rasterisation without
+     changing the launch flags or pinned frame pixels. CE0 baseline and timing files
+     retain their recorded version 1 identity.
 2. Before rendering, export reads the WebGL renderer string and fails with a stable
    diagnostic (`export-renderer-mismatch`) if it is not the pinned software renderer.
 3. The renderer string, Chromium version and CPU architecture are written to every
