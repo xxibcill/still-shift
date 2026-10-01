@@ -1,0 +1,1604 @@
+{
+  "version": "composition-baseline-1",
+  "note": "Machine-specific timings for the CE0 acceptance fixtures; compare only with runs on similar hardware. frame* is render plus pixel readback: Canvas 2D records commands in renderFrame and rasterises lazily, so most drawing cost appears in readback.",
+  "machine": {
+    "cpu": "Apple M5 Pro",
+    "logicalCores": 15,
+    "platform": "darwin",
+    "arch": "arm64"
+  },
+  "renderEnvironment": {
+    "profile": "chromium-software-1",
+    "browserVersion": "151.0.7922.34",
+    "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+    "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+    "platform": "darwin",
+    "arch": "arm64"
+  },
+  "items": {
+    "acting/illustrated-sequence/action": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 240,
+      "frameAverageMs": 3.06,
+      "frameP95Ms": 3.4,
+      "renderAverageMs": 0.06,
+      "readbackAverageMs": 3
+    },
+    "acting/illustrated-sequence/consequence": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 288,
+      "frameAverageMs": 2.07,
+      "frameP95Ms": 2.3,
+      "renderAverageMs": 0.06,
+      "readbackAverageMs": 2
+    },
+    "acting/illustrated-sequence/detail": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 192,
+      "frameAverageMs": 1.86,
+      "frameP95Ms": 2.3,
+      "renderAverageMs": 0.06,
+      "readbackAverageMs": 1.8
+    },
+    "acting/parcel-actions/handover": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 384,
+      "frameAverageMs": 6.37,
+      "frameP95Ms": 6.8,
+      "renderAverageMs": 3.81,
+      "readbackAverageMs": 2.56
+    },
+    "acting/parcel-actions/knock": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 276,
+      "frameAverageMs": 6.59,
+      "frameP95Ms": 6.9,
+      "renderAverageMs": 3.07,
+      "readbackAverageMs": 3.52
+    },
+    "acting/parcel-actions/wrong-door": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 204,
+      "frameAverageMs": 5.94,
+      "frameP95Ms": 5.8,
+      "renderAverageMs": 0.37,
+      "readbackAverageMs": 5.57
+    },
+    "acting/parcel-image-model/handover": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 384,
+      "frameAverageMs": 6.23,
+      "frameP95Ms": 6.9,
+      "renderAverageMs": 3.75,
+      "readbackAverageMs": 2.48
+    },
+    "acting/parcel-image-model/knock": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 276,
+      "frameAverageMs": 6.8,
+      "frameP95Ms": 6.9,
+      "renderAverageMs": 3.06,
+      "readbackAverageMs": 3.75
+    },
+    "acting/parcel-image-model/wrong-door": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 204,
+      "frameAverageMs": 6,
+      "frameP95Ms": 6.2,
+      "renderAverageMs": 0.3,
+      "readbackAverageMs": 5.7
+    },
+    "cinematic/curved-approach": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 96,
+      "frameAverageMs": 9.4,
+      "frameP95Ms": 9.2,
+      "renderAverageMs": 0.04,
+      "readbackAverageMs": 9.37
+    },
+    "cinematic/detail-to-world": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 96,
+      "frameAverageMs": 8.19,
+      "frameP95Ms": 8.4,
+      "renderAverageMs": 0.04,
+      "readbackAverageMs": 8.15
+    },
+    "cinematic/dolly-zoom-tension": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 168,
+      "frameAverageMs": 5.83,
+      "frameP95Ms": 5.9,
+      "renderAverageMs": 0.03,
+      "readbackAverageMs": 5.8
+    },
+    "cinematic/dolly-zoom-tension-alternate": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 168,
+      "frameAverageMs": 5.35,
+      "frameP95Ms": 5.4,
+      "renderAverageMs": 0.03,
+      "readbackAverageMs": 5.32
+    },
+    "cinematic/focus-handoff": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 96,
+      "frameAverageMs": 20.81,
+      "frameP95Ms": 29.5,
+      "renderAverageMs": 0.06,
+      "readbackAverageMs": 20.75
+    },
+    "cinematic/foreground-reveal": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 168,
+      "frameAverageMs": 8.72,
+      "frameP95Ms": 9.4,
+      "renderAverageMs": 0.04,
+      "readbackAverageMs": 8.68
+    },
+    "cinematic/foreground-reveal-alternate": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 168,
+      "frameAverageMs": 8.83,
+      "frameP95Ms": 9.3,
+      "renderAverageMs": 0.06,
+      "readbackAverageMs": 8.77
+    },
+    "cinematic/lateral-track": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 168,
+      "frameAverageMs": 8.99,
+      "frameP95Ms": 9.1,
+      "renderAverageMs": 0.07,
+      "readbackAverageMs": 8.92
+    },
+    "cinematic/lateral-track-alternate": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 168,
+      "frameAverageMs": 8.63,
+      "frameP95Ms": 8.6,
+      "renderAverageMs": 0.07,
+      "readbackAverageMs": 8.56
+    },
+    "cinematic/layered-parallax": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 168,
+      "frameAverageMs": 5.56,
+      "frameP95Ms": 5.9,
+      "renderAverageMs": 0.03,
+      "readbackAverageMs": 5.53
+    },
+    "cinematic/layered-parallax-alternate": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 168,
+      "frameAverageMs": 5.67,
+      "frameP95Ms": 5.8,
+      "renderAverageMs": 0.03,
+      "readbackAverageMs": 5.65
+    },
+    "cinematic/rising-vista": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 96,
+      "frameAverageMs": 10.49,
+      "frameP95Ms": 10.4,
+      "renderAverageMs": 0.08,
+      "readbackAverageMs": 10.41
+    },
+    "cinematic/threshold-push": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 168,
+      "frameAverageMs": 9.25,
+      "frameP95Ms": 9.3,
+      "renderAverageMs": 0.04,
+      "readbackAverageMs": 9.21
+    },
+    "cinematic/threshold-push-alternate": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 168,
+      "frameAverageMs": 9.37,
+      "frameP95Ms": 9.4,
+      "renderAverageMs": 0.03,
+      "readbackAverageMs": 9.35
+    },
+    "cinematic/vertical-rising-vista": {
+      "width": 1080,
+      "height": 1920,
+      "frames": 96,
+      "frameAverageMs": 10.71,
+      "frameP95Ms": 10.8,
+      "renderAverageMs": 6.83,
+      "readbackAverageMs": 3.88
+    },
+    "commerce/a01-feed": {
+      "width": 1080,
+      "height": 1350,
+      "frames": 300,
+      "frameAverageMs": 1.08,
+      "frameP95Ms": 1.2,
+      "renderAverageMs": 0.03,
+      "readbackAverageMs": 1.06
+    },
+    "commerce/a01-landscape": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 300,
+      "frameAverageMs": 1.5,
+      "frameP95Ms": 1.6,
+      "renderAverageMs": 0.04,
+      "readbackAverageMs": 1.47
+    },
+    "commerce/atom-anchor": {
+      "width": 1080,
+      "height": 1350,
+      "frames": 240,
+      "frameAverageMs": 2.18,
+      "frameP95Ms": 2.6,
+      "renderAverageMs": 0.02,
+      "readbackAverageMs": 2.16
+    },
+    "commerce/atom-attachment": {
+      "width": 1080,
+      "height": 1350,
+      "frames": 240,
+      "frameAverageMs": 1.23,
+      "frameP95Ms": 1.3,
+      "renderAverageMs": 0.02,
+      "readbackAverageMs": 1.21
+    },
+    "commerce/atom-background": {
+      "width": 1080,
+      "height": 1350,
+      "frames": 240,
+      "frameAverageMs": 0.52,
+      "frameP95Ms": 0.6,
+      "renderAverageMs": 0.01,
+      "readbackAverageMs": 0.51
+    },
+    "commerce/atom-background-light": {
+      "width": 1080,
+      "height": 1350,
+      "frames": 240,
+      "frameAverageMs": 3.99,
+      "frameP95Ms": 4.1,
+      "renderAverageMs": 0.02,
+      "readbackAverageMs": 3.96
+    },
+    "commerce/atom-callout": {
+      "width": 1080,
+      "height": 1350,
+      "frames": 240,
+      "frameAverageMs": 1.2,
+      "frameP95Ms": 1.3,
+      "renderAverageMs": 0.01,
+      "readbackAverageMs": 1.19
+    },
+    "commerce/atom-detail": {
+      "width": 1080,
+      "height": 1350,
+      "frames": 240,
+      "frameAverageMs": 1.29,
+      "frameP95Ms": 1.4,
+      "renderAverageMs": 0.02,
+      "readbackAverageMs": 1.27
+    },
+    "commerce/atom-directional-blur": {
+      "width": 1080,
+      "height": 1350,
+      "frames": 240,
+      "frameAverageMs": 114.64,
+      "frameP95Ms": 121.7,
+      "renderAverageMs": 113.81,
+      "readbackAverageMs": 0.83
+    },
+    "commerce/atom-displacement": {
+      "width": 1080,
+      "height": 1350,
+      "frames": 240,
+      "frameAverageMs": 5.62,
+      "frameP95Ms": 6.1,
+      "renderAverageMs": 3.95,
+      "readbackAverageMs": 1.66
+    },
+    "commerce/atom-drift": {
+      "width": 1080,
+      "height": 1350,
+      "frames": 240,
+      "frameAverageMs": 1.82,
+      "frameP95Ms": 1.9,
+      "renderAverageMs": 0.05,
+      "readbackAverageMs": 1.77
+    },
+    "commerce/atom-echo": {
+      "width": 1080,
+      "height": 1350,
+      "frames": 240,
+      "frameAverageMs": 2.12,
+      "frameP95Ms": 5.3,
+      "renderAverageMs": 1.33,
+      "readbackAverageMs": 0.79
+    },
+    "commerce/atom-effects-studio": {
+      "width": 1080,
+      "height": 1350,
+      "frames": 240,
+      "frameAverageMs": 4.54,
+      "frameP95Ms": 4.7,
+      "renderAverageMs": 0.04,
+      "readbackAverageMs": 4.5
+    },
+    "commerce/atom-fade": {
+      "width": 1080,
+      "height": 1350,
+      "frames": 240,
+      "frameAverageMs": 1.14,
+      "frameP95Ms": 1.3,
+      "renderAverageMs": 0.01,
+      "readbackAverageMs": 1.13
+    },
+    "commerce/atom-float": {
+      "width": 1080,
+      "height": 1350,
+      "frames": 240,
+      "frameAverageMs": 1.2,
+      "frameP95Ms": 1.3,
+      "renderAverageMs": 0.01,
+      "readbackAverageMs": 1.19
+    },
+    "commerce/atom-focus-blur": {
+      "width": 1080,
+      "height": 1350,
+      "frames": 240,
+      "frameAverageMs": 10.47,
+      "frameP95Ms": 15.8,
+      "renderAverageMs": 9.24,
+      "readbackAverageMs": 1.23
+    },
+    "commerce/atom-glow": {
+      "width": 1080,
+      "height": 1350,
+      "frames": 240,
+      "frameAverageMs": 12.6,
+      "frameP95Ms": 12.8,
+      "renderAverageMs": 11.74,
+      "readbackAverageMs": 0.86
+    },
+    "commerce/atom-grain": {
+      "width": 1080,
+      "height": 1350,
+      "frames": 240,
+      "frameAverageMs": 2.05,
+      "frameP95Ms": 3.3,
+      "renderAverageMs": 0.4,
+      "readbackAverageMs": 1.65
+    },
+    "commerce/atom-height-shadow": {
+      "width": 1080,
+      "height": 1350,
+      "frames": 240,
+      "frameAverageMs": 1.3,
+      "frameP95Ms": 1.3,
+      "renderAverageMs": 0.05,
+      "readbackAverageMs": 1.26
+    },
+    "commerce/atom-introduction": {
+      "width": 1080,
+      "height": 1350,
+      "frames": 240,
+      "frameAverageMs": 1.23,
+      "frameP95Ms": 1.3,
+      "renderAverageMs": 0.01,
+      "readbackAverageMs": 1.22
+    },
+    "commerce/atom-layout": {
+      "width": 1080,
+      "height": 1350,
+      "frames": 240,
+      "frameAverageMs": 1.07,
+      "frameP95Ms": 1.1,
+      "renderAverageMs": 0.01,
+      "readbackAverageMs": 1.06
+    },
+    "commerce/atom-light-sweep": {
+      "width": 1080,
+      "height": 1350,
+      "frames": 240,
+      "frameAverageMs": 4.24,
+      "frameP95Ms": 4.3,
+      "renderAverageMs": 3.44,
+      "readbackAverageMs": 0.79
+    },
+    "commerce/atom-matte": {
+      "width": 1080,
+      "height": 1350,
+      "frames": 240,
+      "frameAverageMs": 4.43,
+      "frameP95Ms": 4.7,
+      "renderAverageMs": 3.65,
+      "readbackAverageMs": 0.79
+    },
+    "commerce/atom-motion-blur": {
+      "width": 1080,
+      "height": 1350,
+      "frames": 240,
+      "frameAverageMs": 21.12,
+      "frameP95Ms": 144.2,
+      "renderAverageMs": 19.93,
+      "readbackAverageMs": 1.19
+    },
+    "commerce/atom-overshoot": {
+      "width": 1080,
+      "height": 1350,
+      "frames": 240,
+      "frameAverageMs": 1.34,
+      "frameP95Ms": 1.4,
+      "renderAverageMs": 0.02,
+      "readbackAverageMs": 1.32
+    },
+    "commerce/atom-panel": {
+      "width": 1080,
+      "height": 1350,
+      "frames": 240,
+      "frameAverageMs": 0.55,
+      "frameP95Ms": 0.6,
+      "renderAverageMs": 0.01,
+      "readbackAverageMs": 0.55
+    },
+    "commerce/atom-parallax": {
+      "width": 1080,
+      "height": 1350,
+      "frames": 240,
+      "frameAverageMs": 1.41,
+      "frameP95Ms": 1.5,
+      "renderAverageMs": 0.05,
+      "readbackAverageMs": 1.36
+    },
+    "commerce/atom-particles": {
+      "width": 1080,
+      "height": 1350,
+      "frames": 240,
+      "frameAverageMs": 1.34,
+      "frameP95Ms": 1.4,
+      "renderAverageMs": 0.03,
+      "readbackAverageMs": 1.32
+    },
+    "commerce/atom-path": {
+      "width": 1080,
+      "height": 1350,
+      "frames": 240,
+      "frameAverageMs": 0.46,
+      "frameP95Ms": 0.6,
+      "renderAverageMs": 0.01,
+      "readbackAverageMs": 0.45
+    },
+    "commerce/atom-product": {
+      "width": 1080,
+      "height": 1350,
+      "frames": 240,
+      "frameAverageMs": 1.23,
+      "frameP95Ms": 1.3,
+      "renderAverageMs": 0,
+      "readbackAverageMs": 1.23
+    },
+    "commerce/atom-rotate": {
+      "width": 1080,
+      "height": 1350,
+      "frames": 240,
+      "frameAverageMs": 2.03,
+      "frameP95Ms": 2.3,
+      "renderAverageMs": 0.02,
+      "readbackAverageMs": 2.01
+    },
+    "commerce/atom-scale": {
+      "width": 1080,
+      "height": 1350,
+      "frames": 240,
+      "frameAverageMs": 1.33,
+      "frameP95Ms": 1.4,
+      "renderAverageMs": 0.01,
+      "readbackAverageMs": 1.32
+    },
+    "commerce/atom-sequence": {
+      "width": 1080,
+      "height": 1350,
+      "frames": 240,
+      "frameAverageMs": 1.34,
+      "frameP95Ms": 1.6,
+      "renderAverageMs": 0.04,
+      "readbackAverageMs": 1.3
+    },
+    "commerce/atom-shadow": {
+      "width": 1080,
+      "height": 1350,
+      "frames": 240,
+      "frameAverageMs": 0.53,
+      "frameP95Ms": 0.6,
+      "renderAverageMs": 0,
+      "readbackAverageMs": 0.53
+    },
+    "commerce/atom-studio": {
+      "width": 1080,
+      "height": 1350,
+      "frames": 240,
+      "frameAverageMs": 1.29,
+      "frameP95Ms": 1.4,
+      "renderAverageMs": 0.01,
+      "readbackAverageMs": 1.28
+    },
+    "commerce/atom-text": {
+      "width": 1080,
+      "height": 1350,
+      "frames": 240,
+      "frameAverageMs": 0.47,
+      "frameP95Ms": 0.6,
+      "renderAverageMs": 0.01,
+      "readbackAverageMs": 0.46
+    },
+    "commerce/atom-translate": {
+      "width": 1080,
+      "height": 1350,
+      "frames": 240,
+      "frameAverageMs": 1.23,
+      "frameP95Ms": 1.3,
+      "renderAverageMs": 0.01,
+      "readbackAverageMs": 1.22
+    },
+    "commerce/h01-landscape": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 240,
+      "frameAverageMs": 1.49,
+      "frameP95Ms": 1.5,
+      "renderAverageMs": 0.03,
+      "readbackAverageMs": 1.46
+    },
+    "commerce/h01-portrait": {
+      "width": 1080,
+      "height": 1920,
+      "frames": 240,
+      "frameAverageMs": 1.54,
+      "frameP95Ms": 1.6,
+      "renderAverageMs": 0.03,
+      "readbackAverageMs": 1.51
+    },
+    "commerce/h03-thai": {
+      "width": 1080,
+      "height": 1920,
+      "frames": 192,
+      "frameAverageMs": 1.53,
+      "frameP95Ms": 1.6,
+      "renderAverageMs": 0.03,
+      "readbackAverageMs": 1.5
+    },
+    "commerce/h04-square": {
+      "width": 1080,
+      "height": 1080,
+      "frames": 240,
+      "frameAverageMs": 0.8,
+      "frameP95Ms": 0.9,
+      "renderAverageMs": 0.02,
+      "readbackAverageMs": 0.78
+    },
+    "commerce/vertical-h01-portrait": {
+      "width": 1080,
+      "height": 1920,
+      "frames": 240,
+      "frameAverageMs": 1.5,
+      "frameP95Ms": 1.6,
+      "renderAverageMs": 0.03,
+      "readbackAverageMs": 1.47
+    },
+    "component/commerce-bracket": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 192,
+      "frameAverageMs": 1.04,
+      "frameP95Ms": 1.1,
+      "renderAverageMs": 0.04,
+      "readbackAverageMs": 0.99
+    },
+    "component/commerce-detail-sequence": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 192,
+      "frameAverageMs": 3.2,
+      "frameP95Ms": 4.2,
+      "renderAverageMs": 1.93,
+      "readbackAverageMs": 1.27
+    },
+    "component/commerce-instances": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 192,
+      "frameAverageMs": 0.97,
+      "frameP95Ms": 1,
+      "renderAverageMs": 0.04,
+      "readbackAverageMs": 0.94
+    },
+    "component/commerce-layout": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 192,
+      "frameAverageMs": 0.97,
+      "frameP95Ms": 1.1,
+      "renderAverageMs": 0.04,
+      "readbackAverageMs": 0.93
+    },
+    "component/commerce-leader": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 192,
+      "frameAverageMs": 0.94,
+      "frameP95Ms": 1,
+      "renderAverageMs": 0.03,
+      "readbackAverageMs": 0.91
+    },
+    "component/commerce-mask": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 192,
+      "frameAverageMs": 3.7,
+      "frameP95Ms": 3.8,
+      "renderAverageMs": 2.39,
+      "readbackAverageMs": 1.31
+    },
+    "component/commerce-outline": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 192,
+      "frameAverageMs": 0.96,
+      "frameP95Ms": 1,
+      "renderAverageMs": 0.02,
+      "readbackAverageMs": 0.94
+    },
+    "component/commerce-pin": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 192,
+      "frameAverageMs": 0.97,
+      "frameP95Ms": 1,
+      "renderAverageMs": 0.03,
+      "readbackAverageMs": 0.94
+    },
+    "component/commerce-sequence": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 192,
+      "frameAverageMs": 0.94,
+      "frameP95Ms": 1,
+      "renderAverageMs": 0.03,
+      "readbackAverageMs": 0.91
+    },
+    "component/commerce-stagger": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 192,
+      "frameAverageMs": 0.93,
+      "frameP95Ms": 1,
+      "renderAverageMs": 0.03,
+      "readbackAverageMs": 0.89
+    },
+    "component/commerce-state": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 192,
+      "frameAverageMs": 1,
+      "frameP95Ms": 1.1,
+      "renderAverageMs": 0.02,
+      "readbackAverageMs": 0.98
+    },
+    "component/commerce-supply": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 192,
+      "frameAverageMs": 1.23,
+      "frameP95Ms": 1.4,
+      "renderAverageMs": 0.05,
+      "readbackAverageMs": 1.18
+    },
+    "component/commerce-supply-sequence": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 192,
+      "frameAverageMs": 3.01,
+      "frameP95Ms": 3.8,
+      "renderAverageMs": 1.78,
+      "readbackAverageMs": 1.23
+    },
+    "component/commerce-text-fit": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 192,
+      "frameAverageMs": 1.02,
+      "frameP95Ms": 1.1,
+      "renderAverageMs": 0.03,
+      "readbackAverageMs": 0.99
+    },
+    "component/commerce-tour": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 192,
+      "frameAverageMs": 1.22,
+      "frameP95Ms": 1.3,
+      "renderAverageMs": 0.04,
+      "readbackAverageMs": 1.17
+    },
+    "component/commerce-transform": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 192,
+      "frameAverageMs": 1.2,
+      "frameP95Ms": 1.3,
+      "renderAverageMs": 0.04,
+      "readbackAverageMs": 1.15
+    },
+    "component/commerce-travel": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 192,
+      "frameAverageMs": 1.07,
+      "frameP95Ms": 1.1,
+      "renderAverageMs": 0.04,
+      "readbackAverageMs": 1.03
+    },
+    "component/commerce-underline": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 192,
+      "frameAverageMs": 0.98,
+      "frameP95Ms": 1,
+      "renderAverageMs": 0.03,
+      "readbackAverageMs": 0.94
+    },
+    "component/commerce-value": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 192,
+      "frameAverageMs": 0.97,
+      "frameP95Ms": 1,
+      "renderAverageMs": 0.04,
+      "readbackAverageMs": 0.94
+    },
+    "component/commerce-visibility": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 192,
+      "frameAverageMs": 0.96,
+      "frameP95Ms": 1,
+      "renderAverageMs": 0.02,
+      "readbackAverageMs": 0.95
+    },
+    "component/isolated-bracket": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 192,
+      "frameAverageMs": 0.91,
+      "frameP95Ms": 1,
+      "renderAverageMs": 0.02,
+      "readbackAverageMs": 0.89
+    },
+    "component/isolated-detail-sequence": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 192,
+      "frameAverageMs": 2.85,
+      "frameP95Ms": 3.5,
+      "renderAverageMs": 1.79,
+      "readbackAverageMs": 1.06
+    },
+    "component/isolated-instances": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 192,
+      "frameAverageMs": 0.62,
+      "frameP95Ms": 0.7,
+      "renderAverageMs": 0.02,
+      "readbackAverageMs": 0.6
+    },
+    "component/isolated-layout": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 192,
+      "frameAverageMs": 0.62,
+      "frameP95Ms": 0.7,
+      "renderAverageMs": 0.02,
+      "readbackAverageMs": 0.61
+    },
+    "component/isolated-leader": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 192,
+      "frameAverageMs": 0.89,
+      "frameP95Ms": 1,
+      "renderAverageMs": 0.02,
+      "readbackAverageMs": 0.87
+    },
+    "component/isolated-mask": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 192,
+      "frameAverageMs": 3.45,
+      "frameP95Ms": 3.6,
+      "renderAverageMs": 2.38,
+      "readbackAverageMs": 1.07
+    },
+    "component/isolated-outline": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 192,
+      "frameAverageMs": 0.89,
+      "frameP95Ms": 1,
+      "renderAverageMs": 0.01,
+      "readbackAverageMs": 0.88
+    },
+    "component/isolated-pin": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 192,
+      "frameAverageMs": 0.71,
+      "frameP95Ms": 0.8,
+      "renderAverageMs": 0.02,
+      "readbackAverageMs": 0.69
+    },
+    "component/isolated-sequence": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 192,
+      "frameAverageMs": 0.69,
+      "frameP95Ms": 0.8,
+      "renderAverageMs": 0.02,
+      "readbackAverageMs": 0.67
+    },
+    "component/isolated-stagger": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 192,
+      "frameAverageMs": 0.62,
+      "frameP95Ms": 0.7,
+      "renderAverageMs": 0.03,
+      "readbackAverageMs": 0.6
+    },
+    "component/isolated-state": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 192,
+      "frameAverageMs": 0.79,
+      "frameP95Ms": 0.9,
+      "renderAverageMs": 0.03,
+      "readbackAverageMs": 0.76
+    },
+    "component/isolated-supply": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 192,
+      "frameAverageMs": 0.88,
+      "frameP95Ms": 1,
+      "renderAverageMs": 0.03,
+      "readbackAverageMs": 0.86
+    },
+    "component/isolated-supply-sequence": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 192,
+      "frameAverageMs": 2.86,
+      "frameP95Ms": 3.9,
+      "renderAverageMs": 1.89,
+      "readbackAverageMs": 0.97
+    },
+    "component/isolated-text-fit": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 192,
+      "frameAverageMs": 0.7,
+      "frameP95Ms": 0.8,
+      "renderAverageMs": 0.02,
+      "readbackAverageMs": 0.68
+    },
+    "component/isolated-tour": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 192,
+      "frameAverageMs": 0.89,
+      "frameP95Ms": 1,
+      "renderAverageMs": 0.03,
+      "readbackAverageMs": 0.86
+    },
+    "component/isolated-transform": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 192,
+      "frameAverageMs": 0.85,
+      "frameP95Ms": 0.9,
+      "renderAverageMs": 0.02,
+      "readbackAverageMs": 0.83
+    },
+    "component/isolated-travel": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 192,
+      "frameAverageMs": 0.76,
+      "frameP95Ms": 0.8,
+      "renderAverageMs": 0.01,
+      "readbackAverageMs": 0.74
+    },
+    "component/isolated-underline": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 192,
+      "frameAverageMs": 0.88,
+      "frameP95Ms": 0.9,
+      "renderAverageMs": 0.02,
+      "readbackAverageMs": 0.86
+    },
+    "component/isolated-value": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 192,
+      "frameAverageMs": 0.62,
+      "frameP95Ms": 0.8,
+      "renderAverageMs": 0.02,
+      "readbackAverageMs": 0.61
+    },
+    "component/isolated-visibility": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 192,
+      "frameAverageMs": 0.72,
+      "frameP95Ms": 0.8,
+      "renderAverageMs": 0.02,
+      "readbackAverageMs": 0.71
+    },
+    "component/passage-behaviors/state": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 192,
+      "frameAverageMs": 1.07,
+      "frameP95Ms": 1.1,
+      "renderAverageMs": 0.04,
+      "readbackAverageMs": 1.02
+    },
+    "component/passage-behaviors/supply": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 192,
+      "frameAverageMs": 1.21,
+      "frameP95Ms": 1.3,
+      "renderAverageMs": 0.05,
+      "readbackAverageMs": 1.16
+    },
+    "component/passage-behaviors/transform": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 192,
+      "frameAverageMs": 1.16,
+      "frameP95Ms": 1.3,
+      "renderAverageMs": 0.05,
+      "readbackAverageMs": 1.11
+    },
+    "component/passage-behaviors/travel": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 192,
+      "frameAverageMs": 1.09,
+      "frameP95Ms": 1.2,
+      "renderAverageMs": 0.05,
+      "readbackAverageMs": 1.04
+    },
+    "component/passage-components/instances": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 192,
+      "frameAverageMs": 0.98,
+      "frameP95Ms": 1.1,
+      "renderAverageMs": 0.05,
+      "readbackAverageMs": 0.93
+    },
+    "component/passage-components/leader": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 192,
+      "frameAverageMs": 1,
+      "frameP95Ms": 1.1,
+      "renderAverageMs": 0.04,
+      "readbackAverageMs": 0.96
+    },
+    "component/passage-components/value": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 192,
+      "frameAverageMs": 0.99,
+      "frameP95Ms": 1.1,
+      "renderAverageMs": 0.05,
+      "readbackAverageMs": 0.94
+    },
+    "component/passage-timing/supply-sequence": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 192,
+      "frameAverageMs": 3.14,
+      "frameP95Ms": 4.2,
+      "renderAverageMs": 1.86,
+      "readbackAverageMs": 1.28
+    },
+    "component/passage-timing/text-fit": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 192,
+      "frameAverageMs": 1.12,
+      "frameP95Ms": 1.2,
+      "renderAverageMs": 0.05,
+      "readbackAverageMs": 1.07
+    },
+    "component/passage-timing/visibility": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 192,
+      "frameAverageMs": 0.95,
+      "frameP95Ms": 1.1,
+      "renderAverageMs": 0.03,
+      "readbackAverageMs": 0.91
+    },
+    "component/story-bracket": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 192,
+      "frameAverageMs": 1.08,
+      "frameP95Ms": 1.2,
+      "renderAverageMs": 0.07,
+      "readbackAverageMs": 1.01
+    },
+    "component/story-detail-sequence": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 192,
+      "frameAverageMs": 3.21,
+      "frameP95Ms": 4.2,
+      "renderAverageMs": 1.9,
+      "readbackAverageMs": 1.31
+    },
+    "component/story-instances": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 192,
+      "frameAverageMs": 1.07,
+      "frameP95Ms": 1.2,
+      "renderAverageMs": 0.06,
+      "readbackAverageMs": 1.01
+    },
+    "component/story-layout": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 192,
+      "frameAverageMs": 1.07,
+      "frameP95Ms": 1.2,
+      "renderAverageMs": 0.06,
+      "readbackAverageMs": 1.01
+    },
+    "component/story-leader": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 192,
+      "frameAverageMs": 1.11,
+      "frameP95Ms": 1.2,
+      "renderAverageMs": 0.06,
+      "readbackAverageMs": 1.05
+    },
+    "component/story-mask": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 192,
+      "frameAverageMs": 4.1,
+      "frameP95Ms": 4.6,
+      "renderAverageMs": 2.58,
+      "readbackAverageMs": 1.51
+    },
+    "component/story-outline": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 192,
+      "frameAverageMs": 0.95,
+      "frameP95Ms": 1.1,
+      "renderAverageMs": 0.05,
+      "readbackAverageMs": 0.9
+    },
+    "component/story-pin": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 192,
+      "frameAverageMs": 1.1,
+      "frameP95Ms": 1.2,
+      "renderAverageMs": 0.05,
+      "readbackAverageMs": 1.05
+    },
+    "component/story-sequence": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 192,
+      "frameAverageMs": 1.07,
+      "frameP95Ms": 1.2,
+      "renderAverageMs": 0.05,
+      "readbackAverageMs": 1.02
+    },
+    "component/story-stagger": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 192,
+      "frameAverageMs": 1.04,
+      "frameP95Ms": 1.1,
+      "renderAverageMs": 0.06,
+      "readbackAverageMs": 0.98
+    },
+    "component/story-state": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 192,
+      "frameAverageMs": 1.1,
+      "frameP95Ms": 1.2,
+      "renderAverageMs": 0.05,
+      "readbackAverageMs": 1.05
+    },
+    "component/story-supply": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 192,
+      "frameAverageMs": 1.23,
+      "frameP95Ms": 1.3,
+      "renderAverageMs": 0.06,
+      "readbackAverageMs": 1.17
+    },
+    "component/story-supply-sequence": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 192,
+      "frameAverageMs": 3.1,
+      "frameP95Ms": 4,
+      "renderAverageMs": 1.83,
+      "readbackAverageMs": 1.27
+    },
+    "component/story-text-fit": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 192,
+      "frameAverageMs": 1.12,
+      "frameP95Ms": 1.2,
+      "renderAverageMs": 0.05,
+      "readbackAverageMs": 1.06
+    },
+    "component/story-tour": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 192,
+      "frameAverageMs": 1.28,
+      "frameP95Ms": 1.4,
+      "renderAverageMs": 0.08,
+      "readbackAverageMs": 1.2
+    },
+    "component/story-transform": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 192,
+      "frameAverageMs": 1.2,
+      "frameP95Ms": 1.3,
+      "renderAverageMs": 0.06,
+      "readbackAverageMs": 1.14
+    },
+    "component/story-travel": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 192,
+      "frameAverageMs": 1.08,
+      "frameP95Ms": 1.1,
+      "renderAverageMs": 0.04,
+      "readbackAverageMs": 1.03
+    },
+    "component/story-underline": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 192,
+      "frameAverageMs": 1.01,
+      "frameP95Ms": 1.2,
+      "renderAverageMs": 0.05,
+      "readbackAverageMs": 0.97
+    },
+    "component/story-value": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 192,
+      "frameAverageMs": 1.03,
+      "frameP95Ms": 1.1,
+      "renderAverageMs": 0.04,
+      "readbackAverageMs": 0.99
+    },
+    "component/story-visibility": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 192,
+      "frameAverageMs": 1.02,
+      "frameP95Ms": 1.1,
+      "renderAverageMs": 0.05,
+      "readbackAverageMs": 0.98
+    },
+    "legacy/access-pressure": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 168,
+      "frameAverageMs": 1.26,
+      "frameP95Ms": 1.3,
+      "renderAverageMs": 0.06,
+      "readbackAverageMs": 1.2
+    },
+    "legacy/chronicle-reveal": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 168,
+      "frameAverageMs": 3.36,
+      "frameP95Ms": 3.3,
+      "renderAverageMs": 0.04,
+      "readbackAverageMs": 3.31
+    },
+    "legacy/comparison-build": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 168,
+      "frameAverageMs": 2.11,
+      "frameP95Ms": 2.1,
+      "renderAverageMs": 0.07,
+      "readbackAverageMs": 2.04
+    },
+    "legacy/crisis-fracture": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 168,
+      "frameAverageMs": 1.51,
+      "frameP95Ms": 1.6,
+      "renderAverageMs": 0.07,
+      "readbackAverageMs": 1.44
+    },
+    "legacy/pose-prop-change": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 168,
+      "frameAverageMs": 1.49,
+      "frameP95Ms": 1.5,
+      "renderAverageMs": 0.02,
+      "readbackAverageMs": 1.47
+    },
+    "legacy/resource-flow": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 168,
+      "frameAverageMs": 1.36,
+      "frameP95Ms": 1.5,
+      "renderAverageMs": 0.06,
+      "readbackAverageMs": 1.3
+    },
+    "legacy/vertical-chronicle-reveal": {
+      "width": 1080,
+      "height": 1920,
+      "frames": 168,
+      "frameAverageMs": 2.64,
+      "frameP95Ms": 2.7,
+      "renderAverageMs": 0.04,
+      "readbackAverageMs": 2.6
+    },
+    "motion-craft/buffer-press": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 192,
+      "frameAverageMs": 4.55,
+      "frameP95Ms": 6.2,
+      "renderAverageMs": 1.69,
+      "readbackAverageMs": 2.86
+    },
+    "motion-craft/buffer-press-accelerate": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 192,
+      "frameAverageMs": 4.43,
+      "frameP95Ms": 6.4,
+      "renderAverageMs": 1.61,
+      "readbackAverageMs": 2.83
+    },
+    "motion-craft/gallery": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 61,
+      "frameAverageMs": 306.93,
+      "frameP95Ms": 628.9,
+      "renderAverageMs": 305.9,
+      "readbackAverageMs": 1.03
+    },
+    "motion-craft/intent-presets": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 61,
+      "frameAverageMs": 0.74,
+      "frameP95Ms": 0.9,
+      "renderAverageMs": 0.08,
+      "readbackAverageMs": 0.66
+    },
+    "motion-craft/supply-ramps": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 192,
+      "frameAverageMs": 3.35,
+      "frameP95Ms": 5.3,
+      "renderAverageMs": 1.96,
+      "readbackAverageMs": 1.39
+    },
+    "passage/comparison-access/unequal-access": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 312,
+      "frameAverageMs": 7.33,
+      "frameP95Ms": 8.1,
+      "renderAverageMs": 0.54,
+      "readbackAverageMs": 6.79
+    },
+    "passage/comparison-access/unequal-margins": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 334,
+      "frameAverageMs": 6.47,
+      "frameP95Ms": 7.6,
+      "renderAverageMs": 0.59,
+      "readbackAverageMs": 5.88
+    },
+    "passage/linked-comparison/compare": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 192,
+      "frameAverageMs": 6.6,
+      "frameP95Ms": 7.9,
+      "renderAverageMs": 0.61,
+      "readbackAverageMs": 6
+    },
+    "passage/linked-comparison/continue": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 192,
+      "frameAverageMs": 6.53,
+      "frameP95Ms": 7.7,
+      "renderAverageMs": 0.63,
+      "readbackAverageMs": 5.9
+    },
+    "passage/linked-comparison/reset": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 192,
+      "frameAverageMs": 6.47,
+      "frameP95Ms": 7.5,
+      "renderAverageMs": 0.6,
+      "readbackAverageMs": 5.88
+    },
+    "passage/linked-network-vertical/network": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 192,
+      "frameAverageMs": 8.79,
+      "frameP95Ms": 12.5,
+      "renderAverageMs": 5.55,
+      "readbackAverageMs": 3.24
+    },
+    "story/buffer-press-unequal-margins": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 192,
+      "frameAverageMs": 4.34,
+      "frameP95Ms": 6.4,
+      "renderAverageMs": 1.52,
+      "readbackAverageMs": 2.82
+    },
+    "story/calibration-pan": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 192,
+      "frameAverageMs": 1.15,
+      "frameP95Ms": 1.4,
+      "renderAverageMs": 0.16,
+      "readbackAverageMs": 1
+    },
+    "story/continuous-access-constraint": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 192,
+      "frameAverageMs": 4.12,
+      "frameP95Ms": 5.2,
+      "renderAverageMs": 0.58,
+      "readbackAverageMs": 3.54
+    },
+    "story/continuous-category-swap": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 192,
+      "frameAverageMs": 6.72,
+      "frameP95Ms": 8.9,
+      "renderAverageMs": 2.97,
+      "readbackAverageMs": 3.75
+    },
+    "story/continuous-dated-system-break": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 192,
+      "frameAverageMs": 3.74,
+      "frameP95Ms": 6.1,
+      "renderAverageMs": 0.6,
+      "readbackAverageMs": 3.14
+    },
+    "story/continuous-evidence-boundary": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 192,
+      "frameAverageMs": 1.76,
+      "frameP95Ms": 2.4,
+      "renderAverageMs": 0.16,
+      "readbackAverageMs": 1.6
+    },
+    "story/continuous-motif-resolve": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 192,
+      "frameAverageMs": 8.39,
+      "frameP95Ms": 13,
+      "renderAverageMs": 5.09,
+      "readbackAverageMs": 3.3
+    },
+    "story/continuous-relationship-build": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 192,
+      "frameAverageMs": 8.48,
+      "frameP95Ms": 12.2,
+      "renderAverageMs": 5.12,
+      "readbackAverageMs": 3.36
+    },
+    "story/continuous-unequal-margins": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 192,
+      "frameAverageMs": 5.63,
+      "frameP95Ms": 7.9,
+      "renderAverageMs": 0.9,
+      "readbackAverageMs": 4.72
+    },
+    "story/template-resource-network": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 648,
+      "frameAverageMs": 9.22,
+      "frameP95Ms": 19.4,
+      "renderAverageMs": 3.89,
+      "readbackAverageMs": 5.33
+    },
+    "story/template-unequal-access": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 312,
+      "frameAverageMs": 7.47,
+      "frameP95Ms": 8.9,
+      "renderAverageMs": 0.58,
+      "readbackAverageMs": 6.89
+    },
+    "story/v013-access-constraint": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 192,
+      "frameAverageMs": 7.39,
+      "frameP95Ms": 8.4,
+      "renderAverageMs": 0.54,
+      "readbackAverageMs": 6.85
+    },
+    "story/v013-unequal-margins": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 192,
+      "frameAverageMs": 6.47,
+      "frameP95Ms": 8.1,
+      "renderAverageMs": 0.59,
+      "readbackAverageMs": 5.89
+    },
+    "story/v2-unequal-margins": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 192,
+      "frameAverageMs": 5.44,
+      "frameP95Ms": 7.9,
+      "renderAverageMs": 0.94,
+      "readbackAverageMs": 4.5
+    },
+    "typography/commerce": {
+      "width": 1080,
+      "height": 1920,
+      "frames": 192,
+      "frameAverageMs": 2.44,
+      "frameP95Ms": 3.1,
+      "renderAverageMs": 0.67,
+      "readbackAverageMs": 1.77
+    },
+    "typography/editorial": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 151,
+      "frameAverageMs": 4.62,
+      "frameP95Ms": 9.5,
+      "renderAverageMs": 3.37,
+      "readbackAverageMs": 1.24
+    },
+    "typography/glyph-performance": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 151,
+      "frameAverageMs": 1.35,
+      "frameP95Ms": 2.2,
+      "renderAverageMs": 0.47,
+      "readbackAverageMs": 0.88
+    },
+    "typography/selectors": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 151,
+      "frameAverageMs": 3.86,
+      "frameP95Ms": 6.9,
+      "renderAverageMs": 2.65,
+      "readbackAverageMs": 1.21
+    },
+    "typography/semantic": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 181,
+      "frameAverageMs": 2.6,
+      "frameP95Ms": 3,
+      "renderAverageMs": 1.33,
+      "readbackAverageMs": 1.27
+    },
+    "typography/transitions": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 151,
+      "frameAverageMs": 4.01,
+      "frameP95Ms": 7.8,
+      "renderAverageMs": 2.79,
+      "readbackAverageMs": 1.21
+    },
+    "typography/variable-thai": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 151,
+      "frameAverageMs": 1.47,
+      "frameP95Ms": 2.5,
+      "renderAverageMs": 0.55,
+      "readbackAverageMs": 0.92
+    },
+    "typography/vertical": {
+      "width": 1080,
+      "height": 1920,
+      "frames": 181,
+      "frameAverageMs": 2.66,
+      "frameP95Ms": 3.4,
+      "renderAverageMs": 1.35,
+      "readbackAverageMs": 1.32
+    }
+  }
+}

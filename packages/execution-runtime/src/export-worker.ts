@@ -22,6 +22,13 @@ import {
 import { assertNever, type FrameTransport } from "./transport.ts";
 import { publishArtifacts } from "./artifact-publication.ts";
 import { runProcess } from "./subprocess.ts";
+import {
+  assertPinnedRenderEnvironment,
+  launchRenderBrowser,
+  probeRenderEnvironment,
+  type RenderBrowserProfile,
+  type RenderEnvironment,
+} from "./render-browser.ts";
 
 export type ExportableScene = PreviewScene | IllustratedScene;
 
@@ -40,6 +47,11 @@ export type ExportRequest = {
   validateResult?: (metrics: ExportMetrics) => void | Promise<void>;
   encoder?: "libx264" | "h264_videotoolbox";
   transport?: FrameTransport;
+  /**
+   * Verification hook only. Export always requires the pinned profile; any other
+   * value makes it fail with `export-renderer-mismatch` before rendering.
+   */
+  browserProfile?: RenderBrowserProfile;
 };
 
 export type ExportMetrics = {
@@ -69,6 +81,7 @@ export type ExportMetrics = {
   browserVersion: string;
   browserExecutable: string;
   gpuRenderer: string;
+  renderEnvironment: RenderEnvironment;
   ffmpegVersion: string;
   ffmpegCodec: string;
   frameTransport: FrameTransport;
@@ -550,13 +563,19 @@ export const exportScene = async (
     const baseUrl = server.resolvedUrls?.local[0];
     if (!baseUrl) throw new Error("Export browser server has no local URL");
     request.signal?.throwIfAborted();
-    browser = await chromium.launch({ headless: true });
+    const browserProfile = request.browserProfile ?? "pinned";
+    browser = await launchRenderBrowser({ profile: browserProfile });
     request.signal?.throwIfAborted();
     const page = await browser.newPage({
       viewport: { width: scene.canvas.width, height: scene.canvas.height },
     });
     await page.goto(runtimeBrowserUrl(baseUrl, "export"));
     await page.waitForFunction(() => Boolean(window.runStillShiftExport));
+    const renderEnvironment = await probeRenderEnvironment(
+      page,
+      browserProfile,
+    );
+    assertPinnedRenderEnvironment(renderEnvironment);
     encodePathStart = performance.now();
     const browserResult = await page.evaluate(
       ({ scene, hasDepth, transport }) =>
@@ -619,6 +638,7 @@ export const exportScene = async (
       browserVersion: browser.version(),
       browserExecutable: chromium.executablePath(),
       gpuRenderer: browserResult.gpuRenderer,
+      renderEnvironment,
       ffmpegVersion,
       ffmpegCodec: codecArguments(encoderName).join(" "),
       frameTransport: transport,

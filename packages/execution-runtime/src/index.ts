@@ -3,3 +3,4 @@ export * from "./artifact-publication.ts";
 export * from "./export-worker.ts";
 export * from "./subprocess.ts";
 export * from "./browser.ts";
+export * from "./render-browser.ts";

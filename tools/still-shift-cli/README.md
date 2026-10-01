@@ -15,6 +15,10 @@ pnpm --silent still-shift animate \
 
 The command writes a 1920×1080 H.264 MP4 by default, or a 1080×1920 MP4 with `--format vertical`, plus `still.mp4.scene.json`. `--silent` keeps pnpm's script banner off stdout, so stdout contains one JSON `AnimationResult` with the output path, scene path, rendered/fallback status, selected preset, stable warnings, source/depth/scene/output SHA-256 checksums, cache status, timings, and tool versions. The output and manifest paths must not already exist. The result's `checksums.source` hashes the original input file. The scene manifest identifies the normalized source and depth by checksum so its bytes and scene checksum do not depend on the local cache directory. The result's `assetPaths` gives the current normalized source and depth paths for local reproduction. Both the result and scene manifest record the depth model ID, revision, and weight checksum, or `null` when depth preparation failed.
 
+Depth, flat and fallback video results include `metrics.renderEnvironment`: the pinned
+browser profile, Chromium version, WebGL renderer, raster fingerprint, platform and CPU
+architecture. The field is optional when parsing older results or no-op results.
+
 `--preset auto` chooses among the three presets using the normalized source checksum and seed. Durations are 3–8 seconds in whole 30-FPS frames. The default depth model is Depth Anything V2 Small; preparation is cached. Valid images whose depth preparation or safety analysis fails produce a deterministic 2D MP4 with `DEPTH_PREPARATION_FAILED` or `DEPTH_SAFETY_ANALYSIS_FAILED`, respectively. Invalid inputs and export failures are errors. The CLI does not overwrite outputs.
 
 Source-normalization warnings use the stable `SOURCE_NORMALIZATION_WARNING` code and include the depth worker's specific reason in `context.workerCode`.
@@ -69,6 +73,9 @@ when the supplied art cannot fill a safe portrait camera path. Story passage
 plans use `story:passage --format vertical` to resolve authored template
 overrides. `still-shift passage lint --plan <plan.json> --format vertical`
 checks the resolved story scene and reports all vertical layout diagnostics.
+Passage exports include `metrics.renderEnvironment` in `render-report.json` for both
+fresh renders and cache hits, recording the pinned browser profile, Chromium version,
+WebGL renderer, raster fingerprint, platform and CPU architecture.
 
 This command writes the MP4, `.mp4.scene.json`, and `.mp4.result.json`; stdout
 contains an `illustrated-result-1` result. Output files must not already exist.

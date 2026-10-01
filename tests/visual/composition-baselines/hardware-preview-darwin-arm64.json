@@ -1,0 +1,1431 @@
+{
+  "version": "composition-baseline-1",
+  "tolerance": "frame-tolerance-1",
+  "method": "Each sampled frame is rendered on a fresh canvas and read back once, because Chromium moves a canvas off the GPU after repeated readbacks.",
+  "pinned": {
+    "profile": "chromium-software-1",
+    "browserVersion": "151.0.7922.34",
+    "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+    "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+    "platform": "darwin",
+    "arch": "arm64"
+  },
+  "hardware": {
+    "profile": "hardware",
+    "browserVersion": "151.0.7922.34",
+    "webglRenderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M5 Pro, Unspecified Version)",
+    "rasterFingerprint": "sha256:89085ac487c8e2d6b077a75c6a095570a09b58481fc20d2be44cb4b92aa31ca2",
+    "platform": "darwin",
+    "arch": "arm64"
+  },
+  "items": {
+    "acting/illustrated-sequence/action": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 11,
+      "maxChannelDelta": 81,
+      "minPsnr": 44.51,
+      "minSsim": 0.9986
+    },
+    "acting/illustrated-sequence/consequence": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 13,
+      "maxChannelDelta": 84,
+      "minPsnr": 44.97,
+      "minSsim": 0.99917
+    },
+    "acting/illustrated-sequence/detail": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 9,
+      "maxChannelDelta": 79,
+      "minPsnr": 45.24,
+      "minSsim": 0.9993
+    },
+    "acting/parcel-actions/handover": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 17,
+      "maxChannelDelta": 70,
+      "minPsnr": 49.68,
+      "minSsim": 0.99809
+    },
+    "acting/parcel-actions/knock": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 13,
+      "maxChannelDelta": 13,
+      "minPsnr": 49.73,
+      "minSsim": 0.99814
+    },
+    "acting/parcel-actions/wrong-door": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 10,
+      "maxChannelDelta": 82,
+      "minPsnr": 47.02,
+      "minSsim": 0.99808
+    },
+    "acting/parcel-image-model/handover": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 17,
+      "maxChannelDelta": 16,
+      "minPsnr": 49.88,
+      "minSsim": 0.99809
+    },
+    "acting/parcel-image-model/knock": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 13,
+      "maxChannelDelta": 15,
+      "minPsnr": 49.75,
+      "minSsim": 0.99814
+    },
+    "acting/parcel-image-model/wrong-door": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 10,
+      "maxChannelDelta": 14,
+      "minPsnr": 49.82,
+      "minSsim": 0.99813
+    },
+    "cinematic/curved-approach": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 5,
+      "maxChannelDelta": 16,
+      "minPsnr": 48.68,
+      "minSsim": 0.99852
+    },
+    "cinematic/detail-to-world": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 5,
+      "maxChannelDelta": 15,
+      "minPsnr": 49.46,
+      "minSsim": 0.99834
+    },
+    "cinematic/dolly-zoom-tension": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 8,
+      "maxChannelDelta": 14,
+      "minPsnr": 48.73,
+      "minSsim": 0.99843
+    },
+    "cinematic/dolly-zoom-tension-alternate": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 8,
+      "maxChannelDelta": 13,
+      "minPsnr": 48.25,
+      "minSsim": 0.99848
+    },
+    "cinematic/focus-handoff": {
+      "observedTier": null,
+      "assignedTier": "near",
+      "sampledFrames": 5,
+      "maxChannelDelta": 48,
+      "minPsnr": 39.63,
+      "minSsim": 0.98701
+    },
+    "cinematic/foreground-reveal": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 8,
+      "maxChannelDelta": 16,
+      "minPsnr": 48.92,
+      "minSsim": 0.99853
+    },
+    "cinematic/foreground-reveal-alternate": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 8,
+      "maxChannelDelta": 14,
+      "minPsnr": 48.75,
+      "minSsim": 0.99848
+    },
+    "cinematic/lateral-track": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 8,
+      "maxChannelDelta": 17,
+      "minPsnr": 49.04,
+      "minSsim": 0.99851
+    },
+    "cinematic/lateral-track-alternate": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 8,
+      "maxChannelDelta": 16,
+      "minPsnr": 49.32,
+      "minSsim": 0.99839
+    },
+    "cinematic/layered-parallax": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 8,
+      "maxChannelDelta": 13,
+      "minPsnr": 48.11,
+      "minSsim": 0.99843
+    },
+    "cinematic/layered-parallax-alternate": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 8,
+      "maxChannelDelta": 13,
+      "minPsnr": 48.28,
+      "minSsim": 0.99841
+    },
+    "cinematic/rising-vista": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 5,
+      "maxChannelDelta": 12,
+      "minPsnr": 49.02,
+      "minSsim": 0.99816
+    },
+    "cinematic/threshold-push": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 8,
+      "maxChannelDelta": 15,
+      "minPsnr": 48.74,
+      "minSsim": 0.99847
+    },
+    "cinematic/threshold-push-alternate": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 8,
+      "maxChannelDelta": 17,
+      "minPsnr": 48.63,
+      "minSsim": 0.99851
+    },
+    "cinematic/vertical-rising-vista": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 5,
+      "maxChannelDelta": 15,
+      "minPsnr": 61.88,
+      "minSsim": 0.99986
+    },
+    "commerce/a01-feed": {
+      "observedTier": "perceptual",
+      "assignedTier": "near",
+      "sampledFrames": 14,
+      "maxChannelDelta": 62,
+      "minPsnr": 59.71,
+      "minSsim": 0.99988
+    },
+    "commerce/a01-landscape": {
+      "observedTier": "perceptual",
+      "assignedTier": "near",
+      "sampledFrames": 14,
+      "maxChannelDelta": 36,
+      "minPsnr": 60.17,
+      "minSsim": 0.99987
+    },
+    "commerce/atom-anchor": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 11,
+      "maxChannelDelta": 14,
+      "minPsnr": 58.4,
+      "minSsim": 0.99985
+    },
+    "commerce/atom-attachment": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 11,
+      "maxChannelDelta": 41,
+      "minPsnr": 57.54,
+      "minSsim": 0.99986
+    },
+    "commerce/atom-background": {
+      "observedTier": "exact",
+      "assignedTier": "exact",
+      "sampledFrames": 11,
+      "maxChannelDelta": 0,
+      "minPsnr": "identical",
+      "minSsim": 1
+    },
+    "commerce/atom-background-light": {
+      "observedTier": "perceptual",
+      "assignedTier": "near",
+      "sampledFrames": 11,
+      "maxChannelDelta": 15,
+      "minPsnr": 54.67,
+      "minSsim": 0.9979
+    },
+    "commerce/atom-callout": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 11,
+      "maxChannelDelta": 41,
+      "minPsnr": 58.09,
+      "minSsim": 0.99987
+    },
+    "commerce/atom-detail": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 11,
+      "maxChannelDelta": 12,
+      "minPsnr": 57.76,
+      "minSsim": 0.99985
+    },
+    "commerce/atom-directional-blur": {
+      "observedTier": "exact",
+      "assignedTier": "near",
+      "sampledFrames": 11,
+      "maxChannelDelta": 0,
+      "minPsnr": "identical",
+      "minSsim": 1
+    },
+    "commerce/atom-displacement": {
+      "observedTier": "perceptual",
+      "assignedTier": "near",
+      "sampledFrames": 11,
+      "maxChannelDelta": 15,
+      "minPsnr": 58.55,
+      "minSsim": 0.99988
+    },
+    "commerce/atom-drift": {
+      "observedTier": "perceptual",
+      "assignedTier": "near",
+      "sampledFrames": 11,
+      "maxChannelDelta": 15,
+      "minPsnr": 58.95,
+      "minSsim": 0.99985
+    },
+    "commerce/atom-echo": {
+      "observedTier": "exact",
+      "assignedTier": "near",
+      "sampledFrames": 11,
+      "maxChannelDelta": 0,
+      "minPsnr": "identical",
+      "minSsim": 1
+    },
+    "commerce/atom-effects-studio": {
+      "observedTier": "perceptual",
+      "assignedTier": "near",
+      "sampledFrames": 11,
+      "maxChannelDelta": 15,
+      "minPsnr": 54.59,
+      "minSsim": 0.9979
+    },
+    "commerce/atom-fade": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 11,
+      "maxChannelDelta": 12,
+      "minPsnr": 57.6,
+      "minSsim": 0.99985
+    },
+    "commerce/atom-float": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 11,
+      "maxChannelDelta": 15,
+      "minPsnr": 59.3,
+      "minSsim": 0.99987
+    },
+    "commerce/atom-focus-blur": {
+      "observedTier": "near",
+      "assignedTier": "near",
+      "sampledFrames": 11,
+      "maxChannelDelta": 2,
+      "minPsnr": 73.29,
+      "minSsim": 0.99998
+    },
+    "commerce/atom-glow": {
+      "observedTier": "near",
+      "assignedTier": "near",
+      "sampledFrames": 11,
+      "maxChannelDelta": 2,
+      "minPsnr": 72.94,
+      "minSsim": 0.99998
+    },
+    "commerce/atom-grain": {
+      "observedTier": "perceptual",
+      "assignedTier": "near",
+      "sampledFrames": 11,
+      "maxChannelDelta": 14,
+      "minPsnr": 59.25,
+      "minSsim": 0.99988
+    },
+    "commerce/atom-height-shadow": {
+      "observedTier": "perceptual",
+      "assignedTier": "near",
+      "sampledFrames": 11,
+      "maxChannelDelta": 15,
+      "minPsnr": 59.1,
+      "minSsim": 0.99985
+    },
+    "commerce/atom-introduction": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 11,
+      "maxChannelDelta": 13,
+      "minPsnr": 59.26,
+      "minSsim": 0.99988
+    },
+    "commerce/atom-layout": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 11,
+      "maxChannelDelta": 13,
+      "minPsnr": 56.83,
+      "minSsim": 0.99983
+    },
+    "commerce/atom-light-sweep": {
+      "observedTier": "near",
+      "assignedTier": "near",
+      "sampledFrames": 11,
+      "maxChannelDelta": 2,
+      "minPsnr": 72.94,
+      "minSsim": 0.99998
+    },
+    "commerce/atom-matte": {
+      "observedTier": "near",
+      "assignedTier": "exact",
+      "sampledFrames": 11,
+      "maxChannelDelta": 1,
+      "minPsnr": 78.42,
+      "minSsim": 1
+    },
+    "commerce/atom-motion-blur": {
+      "observedTier": "perceptual",
+      "assignedTier": "near",
+      "sampledFrames": 11,
+      "maxChannelDelta": 12,
+      "minPsnr": 59.51,
+      "minSsim": 0.99988
+    },
+    "commerce/atom-overshoot": {
+      "observedTier": "perceptual",
+      "assignedTier": "near",
+      "sampledFrames": 11,
+      "maxChannelDelta": 13,
+      "minPsnr": 59.51,
+      "minSsim": 0.99988
+    },
+    "commerce/atom-panel": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 11,
+      "maxChannelDelta": 6,
+      "minPsnr": 83.54,
+      "minSsim": 1
+    },
+    "commerce/atom-parallax": {
+      "observedTier": "perceptual",
+      "assignedTier": "near",
+      "sampledFrames": 11,
+      "maxChannelDelta": 19,
+      "minPsnr": 57.41,
+      "minSsim": 0.99978
+    },
+    "commerce/atom-particles": {
+      "observedTier": "perceptual",
+      "assignedTier": "near",
+      "sampledFrames": 11,
+      "maxChannelDelta": 15,
+      "minPsnr": 59.07,
+      "minSsim": 0.99984
+    },
+    "commerce/atom-path": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 11,
+      "maxChannelDelta": 34,
+      "minPsnr": 58.14,
+      "minSsim": 0.99997
+    },
+    "commerce/atom-product": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 11,
+      "maxChannelDelta": 12,
+      "minPsnr": 59.51,
+      "minSsim": 0.99988
+    },
+    "commerce/atom-rotate": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 11,
+      "maxChannelDelta": 16,
+      "minPsnr": 59.03,
+      "minSsim": 0.99988
+    },
+    "commerce/atom-scale": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 11,
+      "maxChannelDelta": 13,
+      "minPsnr": 58.54,
+      "minSsim": 0.99985
+    },
+    "commerce/atom-sequence": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 11,
+      "maxChannelDelta": 41,
+      "minPsnr": 57.53,
+      "minSsim": 0.99986
+    },
+    "commerce/atom-shadow": {
+      "observedTier": "near",
+      "assignedTier": "near",
+      "sampledFrames": 11,
+      "maxChannelDelta": 2,
+      "minPsnr": 72.94,
+      "minSsim": 0.99998
+    },
+    "commerce/atom-studio": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 11,
+      "maxChannelDelta": 15,
+      "minPsnr": 59.12,
+      "minSsim": 0.99985
+    },
+    "commerce/atom-text": {
+      "observedTier": "near",
+      "assignedTier": "exact",
+      "sampledFrames": 11,
+      "maxChannelDelta": 1,
+      "minPsnr": 79.21,
+      "minSsim": 1
+    },
+    "commerce/atom-translate": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 11,
+      "maxChannelDelta": 13,
+      "minPsnr": 59.51,
+      "minSsim": 0.99988
+    },
+    "commerce/h01-landscape": {
+      "observedTier": "perceptual",
+      "assignedTier": "near",
+      "sampledFrames": 11,
+      "maxChannelDelta": 19,
+      "minPsnr": 60.43,
+      "minSsim": 0.99988
+    },
+    "commerce/h01-portrait": {
+      "observedTier": "perceptual",
+      "assignedTier": "near",
+      "sampledFrames": 11,
+      "maxChannelDelta": 3,
+      "minPsnr": 64.91,
+      "minSsim": 0.9999
+    },
+    "commerce/h03-thai": {
+      "observedTier": "near",
+      "assignedTier": "near",
+      "sampledFrames": 9,
+      "maxChannelDelta": 2,
+      "minPsnr": 65.15,
+      "minSsim": 0.9999
+    },
+    "commerce/h04-square": {
+      "observedTier": "perceptual",
+      "assignedTier": "near",
+      "sampledFrames": 11,
+      "maxChannelDelta": 52,
+      "minPsnr": 59.46,
+      "minSsim": 0.99983
+    },
+    "commerce/vertical-h01-portrait": {
+      "observedTier": "perceptual",
+      "assignedTier": "near",
+      "sampledFrames": 11,
+      "maxChannelDelta": 3,
+      "minPsnr": 64.91,
+      "minSsim": 0.9999
+    },
+    "component/commerce-bracket": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 9,
+      "maxChannelDelta": 51,
+      "minPsnr": 56.23,
+      "minSsim": 0.99993
+    },
+    "component/commerce-detail-sequence": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 9,
+      "maxChannelDelta": 14,
+      "minPsnr": 62.06,
+      "minSsim": 0.99997
+    },
+    "component/commerce-instances": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 9,
+      "maxChannelDelta": 14,
+      "minPsnr": 62.06,
+      "minSsim": 0.99996
+    },
+    "component/commerce-layout": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 9,
+      "maxChannelDelta": 14,
+      "minPsnr": 62.06,
+      "minSsim": 0.99996
+    },
+    "component/commerce-leader": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 9,
+      "maxChannelDelta": 74,
+      "minPsnr": 59.91,
+      "minSsim": 0.99996
+    },
+    "component/commerce-mask": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 9,
+      "maxChannelDelta": 14,
+      "minPsnr": 62.07,
+      "minSsim": 0.99997
+    },
+    "component/commerce-outline": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 9,
+      "maxChannelDelta": 68,
+      "minPsnr": 61.85,
+      "minSsim": 0.99996
+    },
+    "component/commerce-pin": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 9,
+      "maxChannelDelta": 166,
+      "minPsnr": 47.44,
+      "minSsim": 0.99955
+    },
+    "component/commerce-sequence": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 9,
+      "maxChannelDelta": 166,
+      "minPsnr": 47.44,
+      "minSsim": 0.99954
+    },
+    "component/commerce-stagger": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 9,
+      "maxChannelDelta": 14,
+      "minPsnr": 62.02,
+      "minSsim": 0.99996
+    },
+    "component/commerce-state": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 9,
+      "maxChannelDelta": 110,
+      "minPsnr": 49.8,
+      "minSsim": 0.99968
+    },
+    "component/commerce-supply": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 9,
+      "maxChannelDelta": 118,
+      "minPsnr": 48.44,
+      "minSsim": 0.99956
+    },
+    "component/commerce-supply-sequence": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 9,
+      "maxChannelDelta": 14,
+      "minPsnr": 62.07,
+      "minSsim": 0.99997
+    },
+    "component/commerce-text-fit": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 9,
+      "maxChannelDelta": 166,
+      "minPsnr": 47.44,
+      "minSsim": 0.99955
+    },
+    "component/commerce-tour": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 9,
+      "maxChannelDelta": 118,
+      "minPsnr": 48.44,
+      "minSsim": 0.99956
+    },
+    "component/commerce-transform": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 9,
+      "maxChannelDelta": 171,
+      "minPsnr": 48.98,
+      "minSsim": 0.99958
+    },
+    "component/commerce-travel": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 9,
+      "maxChannelDelta": 110,
+      "minPsnr": 49.71,
+      "minSsim": 0.99967
+    },
+    "component/commerce-underline": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 9,
+      "maxChannelDelta": 38,
+      "minPsnr": 55.98,
+      "minSsim": 0.99991
+    },
+    "component/commerce-value": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 9,
+      "maxChannelDelta": 14,
+      "minPsnr": 61.77,
+      "minSsim": 0.99996
+    },
+    "component/commerce-visibility": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 9,
+      "maxChannelDelta": 166,
+      "minPsnr": 47.45,
+      "minSsim": 0.99956
+    },
+    "component/isolated-bracket": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 9,
+      "maxChannelDelta": 51,
+      "minPsnr": 56.26,
+      "minSsim": 0.99993
+    },
+    "component/isolated-detail-sequence": {
+      "observedTier": "near",
+      "assignedTier": "exact",
+      "sampledFrames": 9,
+      "maxChannelDelta": 2,
+      "minPsnr": 77.79,
+      "minSsim": 1
+    },
+    "component/isolated-instances": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 9,
+      "maxChannelDelta": 10,
+      "minPsnr": 77.11,
+      "minSsim": 1
+    },
+    "component/isolated-layout": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 9,
+      "maxChannelDelta": 10,
+      "minPsnr": 74.2,
+      "minSsim": 1
+    },
+    "component/isolated-leader": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 9,
+      "maxChannelDelta": 28,
+      "minPsnr": 60.93,
+      "minSsim": 0.99996
+    },
+    "component/isolated-mask": {
+      "observedTier": "near",
+      "assignedTier": "exact",
+      "sampledFrames": 9,
+      "maxChannelDelta": 2,
+      "minPsnr": 78.77,
+      "minSsim": 1
+    },
+    "component/isolated-outline": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 9,
+      "maxChannelDelta": 68,
+      "minPsnr": 61.97,
+      "minSsim": 0.99997
+    },
+    "component/isolated-pin": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 9,
+      "maxChannelDelta": 88,
+      "minPsnr": 52.99,
+      "minSsim": 0.9998
+    },
+    "component/isolated-sequence": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 9,
+      "maxChannelDelta": 88,
+      "minPsnr": 52.99,
+      "minSsim": 0.9998
+    },
+    "component/isolated-stagger": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 9,
+      "maxChannelDelta": 10,
+      "minPsnr": 76.01,
+      "minSsim": 1
+    },
+    "component/isolated-state": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 9,
+      "maxChannelDelta": 57,
+      "minPsnr": 53.79,
+      "minSsim": 0.99991
+    },
+    "component/isolated-supply": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 9,
+      "maxChannelDelta": 72,
+      "minPsnr": 50.84,
+      "minSsim": 0.99979
+    },
+    "component/isolated-supply-sequence": {
+      "observedTier": "near",
+      "assignedTier": "exact",
+      "sampledFrames": 9,
+      "maxChannelDelta": 2,
+      "minPsnr": 77.88,
+      "minSsim": 1
+    },
+    "component/isolated-text-fit": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 9,
+      "maxChannelDelta": 88,
+      "minPsnr": 52.99,
+      "minSsim": 0.9998
+    },
+    "component/isolated-tour": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 9,
+      "maxChannelDelta": 72,
+      "minPsnr": 50.84,
+      "minSsim": 0.99979
+    },
+    "component/isolated-transform": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 9,
+      "maxChannelDelta": 72,
+      "minPsnr": 52.9,
+      "minSsim": 0.99986
+    },
+    "component/isolated-travel": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 9,
+      "maxChannelDelta": 61,
+      "minPsnr": 53.58,
+      "minSsim": 0.9999
+    },
+    "component/isolated-underline": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 9,
+      "maxChannelDelta": 36,
+      "minPsnr": 56.97,
+      "minSsim": 0.99992
+    },
+    "component/isolated-value": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 9,
+      "maxChannelDelta": 11,
+      "minPsnr": 71.7,
+      "minSsim": 1
+    },
+    "component/isolated-visibility": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 9,
+      "maxChannelDelta": 88,
+      "minPsnr": 52.99,
+      "minSsim": 0.9998
+    },
+    "component/passage-behaviors/state": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 9,
+      "maxChannelDelta": 86,
+      "minPsnr": 49.8,
+      "minSsim": 0.99979
+    },
+    "component/passage-behaviors/supply": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 9,
+      "maxChannelDelta": 86,
+      "minPsnr": 48.05,
+      "minSsim": 0.99968
+    },
+    "component/passage-behaviors/transform": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 9,
+      "maxChannelDelta": 86,
+      "minPsnr": 49.66,
+      "minSsim": 0.9998
+    },
+    "component/passage-behaviors/travel": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 9,
+      "maxChannelDelta": 86,
+      "minPsnr": 49.76,
+      "minSsim": 0.9998
+    },
+    "component/passage-components/instances": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 9,
+      "maxChannelDelta": 70,
+      "minPsnr": 51.39,
+      "minSsim": 0.99986
+    },
+    "component/passage-components/leader": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 9,
+      "maxChannelDelta": 70,
+      "minPsnr": 51.32,
+      "minSsim": 0.99986
+    },
+    "component/passage-components/value": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 9,
+      "maxChannelDelta": 70,
+      "minPsnr": 47.95,
+      "minSsim": 0.99924
+    },
+    "component/passage-timing/supply-sequence": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 9,
+      "maxChannelDelta": 70,
+      "minPsnr": 50.72,
+      "minSsim": 0.99984
+    },
+    "component/passage-timing/text-fit": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 9,
+      "maxChannelDelta": 73,
+      "minPsnr": 50.56,
+      "minSsim": 0.99983
+    },
+    "component/passage-timing/visibility": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 9,
+      "maxChannelDelta": 70,
+      "minPsnr": 50.92,
+      "minSsim": 0.99985
+    },
+    "component/story-bracket": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 9,
+      "maxChannelDelta": 70,
+      "minPsnr": 50.4,
+      "minSsim": 0.99982
+    },
+    "component/story-detail-sequence": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 9,
+      "maxChannelDelta": 70,
+      "minPsnr": 50.72,
+      "minSsim": 0.99984
+    },
+    "component/story-instances": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 9,
+      "maxChannelDelta": 70,
+      "minPsnr": 51.39,
+      "minSsim": 0.99986
+    },
+    "component/story-layout": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 9,
+      "maxChannelDelta": 70,
+      "minPsnr": 51.39,
+      "minSsim": 0.99986
+    },
+    "component/story-leader": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 9,
+      "maxChannelDelta": 70,
+      "minPsnr": 51.32,
+      "minSsim": 0.99986
+    },
+    "component/story-mask": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 9,
+      "maxChannelDelta": 70,
+      "minPsnr": 50.68,
+      "minSsim": 0.99983
+    },
+    "component/story-outline": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 9,
+      "maxChannelDelta": 70,
+      "minPsnr": 50.94,
+      "minSsim": 0.99972
+    },
+    "component/story-pin": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 9,
+      "maxChannelDelta": 73,
+      "minPsnr": 50.56,
+      "minSsim": 0.99983
+    },
+    "component/story-sequence": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 9,
+      "maxChannelDelta": 79,
+      "minPsnr": 50.7,
+      "minSsim": 0.99984
+    },
+    "component/story-stagger": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 9,
+      "maxChannelDelta": 70,
+      "minPsnr": 51.38,
+      "minSsim": 0.99986
+    },
+    "component/story-state": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 9,
+      "maxChannelDelta": 86,
+      "minPsnr": 49.8,
+      "minSsim": 0.99979
+    },
+    "component/story-supply": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 9,
+      "maxChannelDelta": 86,
+      "minPsnr": 48.05,
+      "minSsim": 0.99968
+    },
+    "component/story-supply-sequence": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 9,
+      "maxChannelDelta": 70,
+      "minPsnr": 50.72,
+      "minSsim": 0.99984
+    },
+    "component/story-text-fit": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 9,
+      "maxChannelDelta": 73,
+      "minPsnr": 50.56,
+      "minSsim": 0.99983
+    },
+    "component/story-tour": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 9,
+      "maxChannelDelta": 86,
+      "minPsnr": 48.05,
+      "minSsim": 0.99968
+    },
+    "component/story-transform": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 9,
+      "maxChannelDelta": 86,
+      "minPsnr": 49.66,
+      "minSsim": 0.9998
+    },
+    "component/story-travel": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 9,
+      "maxChannelDelta": 86,
+      "minPsnr": 49.76,
+      "minSsim": 0.9998
+    },
+    "component/story-underline": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 9,
+      "maxChannelDelta": 70,
+      "minPsnr": 51.13,
+      "minSsim": 0.99986
+    },
+    "component/story-value": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 9,
+      "maxChannelDelta": 70,
+      "minPsnr": 47.95,
+      "minSsim": 0.99924
+    },
+    "component/story-visibility": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 9,
+      "maxChannelDelta": 70,
+      "minPsnr": 50.92,
+      "minSsim": 0.99985
+    },
+    "legacy/access-pressure": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 8,
+      "maxChannelDelta": 128,
+      "minPsnr": 47.95,
+      "minSsim": 0.99922
+    },
+    "legacy/chronicle-reveal": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 8,
+      "maxChannelDelta": 45,
+      "minPsnr": 50.55,
+      "minSsim": 0.99913
+    },
+    "legacy/comparison-build": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 8,
+      "maxChannelDelta": 55,
+      "minPsnr": 48.3,
+      "minSsim": 0.99859
+    },
+    "legacy/crisis-fracture": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 8,
+      "maxChannelDelta": 100,
+      "minPsnr": 45.86,
+      "minSsim": 0.99856
+    },
+    "legacy/pose-prop-change": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 8,
+      "maxChannelDelta": 132,
+      "minPsnr": 47.59,
+      "minSsim": 0.99901
+    },
+    "legacy/resource-flow": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 8,
+      "maxChannelDelta": 106,
+      "minPsnr": 46.9,
+      "minSsim": 0.99883
+    },
+    "legacy/vertical-chronicle-reveal": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 8,
+      "maxChannelDelta": 53,
+      "minPsnr": 51.46,
+      "minSsim": 0.99929
+    },
+    "motion-craft/buffer-press": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 9,
+      "maxChannelDelta": 73,
+      "minPsnr": 47.01,
+      "minSsim": 0.99907
+    },
+    "motion-craft/buffer-press-accelerate": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 9,
+      "maxChannelDelta": 76,
+      "minPsnr": 47.01,
+      "minSsim": 0.99907
+    },
+    "motion-craft/gallery": {
+      "observedTier": "exact",
+      "assignedTier": "exact",
+      "sampledFrames": 4,
+      "maxChannelDelta": 0,
+      "minPsnr": "identical",
+      "minSsim": 1
+    },
+    "motion-craft/intent-presets": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 4,
+      "maxChannelDelta": 84,
+      "minPsnr": 50.51,
+      "minSsim": 0.99963
+    },
+    "motion-craft/supply-ramps": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 9,
+      "maxChannelDelta": 70,
+      "minPsnr": 50.7,
+      "minSsim": 0.99984
+    },
+    "passage/comparison-access/unequal-access": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 14,
+      "maxChannelDelta": 100,
+      "minPsnr": 42.13,
+      "minSsim": 0.99848
+    },
+    "passage/comparison-access/unequal-margins": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 15,
+      "maxChannelDelta": 97,
+      "minPsnr": 44.2,
+      "minSsim": 0.99885
+    },
+    "passage/linked-comparison/compare": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 9,
+      "maxChannelDelta": 97,
+      "minPsnr": 44.2,
+      "minSsim": 0.99885
+    },
+    "passage/linked-comparison/continue": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 9,
+      "maxChannelDelta": 97,
+      "minPsnr": 44.2,
+      "minSsim": 0.99885
+    },
+    "passage/linked-comparison/reset": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 9,
+      "maxChannelDelta": 97,
+      "minPsnr": 44.2,
+      "minSsim": 0.99885
+    },
+    "passage/linked-network-vertical/network": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 9,
+      "maxChannelDelta": 72,
+      "minPsnr": 44.45,
+      "minSsim": 0.99867
+    },
+    "story/buffer-press-unequal-margins": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 9,
+      "maxChannelDelta": 73,
+      "minPsnr": 47,
+      "minSsim": 0.99907
+    },
+    "story/calibration-pan": {
+      "observedTier": "near",
+      "assignedTier": "exact",
+      "sampledFrames": 9,
+      "maxChannelDelta": 1,
+      "minPsnr": 60.68,
+      "minSsim": 0.99999
+    },
+    "story/continuous-access-constraint": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 9,
+      "maxChannelDelta": 94,
+      "minPsnr": 44.09,
+      "minSsim": 0.99877
+    },
+    "story/continuous-category-swap": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 9,
+      "maxChannelDelta": 95,
+      "minPsnr": 45.24,
+      "minSsim": 0.99876
+    },
+    "story/continuous-dated-system-break": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 9,
+      "maxChannelDelta": 86,
+      "minPsnr": 45.25,
+      "minSsim": 0.99918
+    },
+    "story/continuous-evidence-boundary": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 9,
+      "maxChannelDelta": 86,
+      "minPsnr": 47.3,
+      "minSsim": 0.99933
+    },
+    "story/continuous-motif-resolve": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 9,
+      "maxChannelDelta": 76,
+      "minPsnr": 46.27,
+      "minSsim": 0.99894
+    },
+    "story/continuous-relationship-build": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 9,
+      "maxChannelDelta": 84,
+      "minPsnr": 44.38,
+      "minSsim": 0.99867
+    },
+    "story/continuous-unequal-margins": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 9,
+      "maxChannelDelta": 68,
+      "minPsnr": 46.23,
+      "minSsim": 0.99895
+    },
+    "story/template-resource-network": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 28,
+      "maxChannelDelta": 100,
+      "minPsnr": 44.25,
+      "minSsim": 0.99877
+    },
+    "story/template-unequal-access": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 14,
+      "maxChannelDelta": 100,
+      "minPsnr": 42.13,
+      "minSsim": 0.99848
+    },
+    "story/v013-access-constraint": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 9,
+      "maxChannelDelta": 100,
+      "minPsnr": 41.42,
+      "minSsim": 0.99819
+    },
+    "story/v013-unequal-margins": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 9,
+      "maxChannelDelta": 97,
+      "minPsnr": 44.2,
+      "minSsim": 0.99885
+    },
+    "story/v2-unequal-margins": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 9,
+      "maxChannelDelta": 68,
+      "minPsnr": 46.23,
+      "minSsim": 0.99895
+    },
+    "typography/commerce": {
+      "observedTier": "near",
+      "assignedTier": "exact",
+      "sampledFrames": 9,
+      "maxChannelDelta": 1,
+      "minPsnr": 65.21,
+      "minSsim": 0.9999
+    },
+    "typography/editorial": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 8,
+      "maxChannelDelta": 47,
+      "minPsnr": 61.41,
+      "minSsim": 0.99998
+    },
+    "typography/glyph-performance": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 8,
+      "maxChannelDelta": 29,
+      "minPsnr": 57.55,
+      "minSsim": 0.99999
+    },
+    "typography/selectors": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 8,
+      "maxChannelDelta": 14,
+      "minPsnr": 56.25,
+      "minSsim": 0.99997
+    },
+    "typography/semantic": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 9,
+      "maxChannelDelta": 14,
+      "minPsnr": 62.22,
+      "minSsim": 0.99999
+    },
+    "typography/transitions": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 8,
+      "maxChannelDelta": 36,
+      "minPsnr": 65.26,
+      "minSsim": 0.99998
+    },
+    "typography/variable-thai": {
+      "observedTier": "near",
+      "assignedTier": "exact",
+      "sampledFrames": 8,
+      "maxChannelDelta": 1,
+      "minPsnr": 77.66,
+      "minSsim": 1
+    },
+    "typography/vertical": {
+      "observedTier": "perceptual",
+      "assignedTier": "exact",
+      "sampledFrames": 9,
+      "maxChannelDelta": 14,
+      "minPsnr": 62.22,
+      "minSsim": 0.99999
+    }
+  }
+}

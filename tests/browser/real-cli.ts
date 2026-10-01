@@ -19,6 +19,7 @@ import {
   SceneManifestSchema,
   type AnimationRequest,
 } from "../../packages/scene-contract/src/index.ts";
+import { RENDER_BROWSER_PROFILE } from "../../packages/execution-runtime/src/render-browser.ts";
 
 const execFileAsync = promisify(execFile);
 const fixture = JSON.parse(
@@ -86,7 +87,22 @@ const runCli = async (
     },
     maxBuffer: 4 * 1024 * 1024,
   });
-  return AnimationResultSchema.parse(JSON.parse(stdout));
+  const result = AnimationResultSchema.parse(JSON.parse(stdout));
+  const renderEnvironment = result.metrics.renderEnvironment;
+  assert.ok(
+    renderEnvironment,
+    "Single-image results must identify the renderer",
+  );
+  assert.equal(renderEnvironment.profile, RENDER_BROWSER_PROFILE);
+  assert.equal(renderEnvironment.platform, process.platform);
+  assert.equal(renderEnvironment.arch, process.arch);
+  assert.equal(
+    renderEnvironment.browserVersion,
+    result.metrics.versions.browser,
+  );
+  assert.match(renderEnvironment.webglRenderer, /SwiftShader/);
+  assert.match(renderEnvironment.rasterFingerprint, /^sha256:[a-f0-9]{64}$/);
+  return result;
 };
 
 const realFfmpegPath = (await execFileAsync("which", ["ffmpeg"])).stdout.trim();

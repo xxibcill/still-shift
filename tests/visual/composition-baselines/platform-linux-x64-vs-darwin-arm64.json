@@ -1,0 +1,1607 @@
+{
+  "version": "composition-baseline-1",
+  "tolerance": "frame-tolerance-1",
+  "method": "Frames were rendered on linux-x64, checked against the darwin-arm64 baseline, and every differing frame's first occurrence plus differing sampled frames (up to 6 per item) were saved at full resolution, then compared with the same frames rendered here.",
+  "reference": {
+    "renderEnvironment": {
+      "profile": "chromium-software-1",
+      "browserVersion": "151.0.7922.34",
+      "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+      "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+      "platform": "darwin",
+      "arch": "arm64"
+    },
+    "machine": {
+      "cpu": "Apple M5 Pro",
+      "logicalCores": 15,
+      "platform": "darwin",
+      "arch": "arm64"
+    }
+  },
+  "other": {
+    "renderEnvironment": {
+      "profile": "chromium-software-1",
+      "browserVersion": "151.0.7922.34",
+      "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+      "rasterFingerprint": "sha256:2891ffded3253c7b6012cc9fd213a8b1dfff1f14a772747fcde7ad5c5ef3f9fa",
+      "platform": "linux",
+      "arch": "x64"
+    },
+    "machine": {
+      "cpu": "VirtualApple @ 2.50GHz",
+      "logicalCores": 15,
+      "platform": "linux",
+      "arch": "x64"
+    }
+  },
+  "items": {
+    "acting/illustrated-sequence/action": {
+      "observedTier": "perceptual",
+      "differingFrames": 240,
+      "frames": 240,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 99,
+      "minPsnr": 42.01,
+      "minSsim": 0.99806
+    },
+    "acting/illustrated-sequence/consequence": {
+      "observedTier": null,
+      "differingFrames": 288,
+      "frames": 288,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 199,
+      "minPsnr": 32.72,
+      "minSsim": 0.99543
+    },
+    "acting/illustrated-sequence/detail": {
+      "observedTier": null,
+      "differingFrames": 192,
+      "frames": 192,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 199,
+      "minPsnr": 32.31,
+      "minSsim": 0.9947
+    },
+    "acting/parcel-actions/handover": {
+      "observedTier": "perceptual",
+      "differingFrames": 384,
+      "frames": 384,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 170,
+      "minPsnr": 49.86,
+      "minSsim": 0.99978
+    },
+    "acting/parcel-actions/knock": {
+      "observedTier": "perceptual",
+      "differingFrames": 276,
+      "frames": 276,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 172,
+      "minPsnr": 47.97,
+      "minSsim": 0.99963
+    },
+    "acting/parcel-actions/wrong-door": {
+      "observedTier": null,
+      "differingFrames": 204,
+      "frames": 204,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 207,
+      "minPsnr": 39.27,
+      "minSsim": 0.99884
+    },
+    "acting/parcel-image-model/handover": {
+      "observedTier": "perceptual",
+      "differingFrames": 384,
+      "frames": 384,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 170,
+      "minPsnr": 49.83,
+      "minSsim": 0.99977
+    },
+    "acting/parcel-image-model/knock": {
+      "observedTier": "perceptual",
+      "differingFrames": 276,
+      "frames": 276,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 172,
+      "minPsnr": 47.97,
+      "minSsim": 0.99963
+    },
+    "acting/parcel-image-model/wrong-door": {
+      "observedTier": "perceptual",
+      "differingFrames": 204,
+      "frames": 204,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 205,
+      "minPsnr": 41.65,
+      "minSsim": 0.99928
+    },
+    "cinematic/curved-approach": {
+      "observedTier": "near",
+      "differingFrames": 96,
+      "frames": 96,
+      "comparedFrames": [0, 24, 48, 72, 95],
+      "maxChannelDelta": 2,
+      "minPsnr": 55.35,
+      "minSsim": 0.99972
+    },
+    "cinematic/detail-to-world": {
+      "observedTier": "near",
+      "differingFrames": 96,
+      "frames": 96,
+      "comparedFrames": [0, 24, 48, 72, 95],
+      "maxChannelDelta": 2,
+      "minPsnr": 54.86,
+      "minSsim": 0.99965
+    },
+    "cinematic/dolly-zoom-tension": {
+      "observedTier": "near",
+      "differingFrames": 168,
+      "frames": 168,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 1,
+      "minPsnr": 59.55,
+      "minSsim": 0.99987
+    },
+    "cinematic/dolly-zoom-tension-alternate": {
+      "observedTier": "near",
+      "differingFrames": 168,
+      "frames": 168,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 1,
+      "minPsnr": 62.1,
+      "minSsim": 0.99995
+    },
+    "cinematic/focus-handoff": {
+      "observedTier": "near",
+      "differingFrames": 96,
+      "frames": 96,
+      "comparedFrames": [0, 24, 48, 72, 95],
+      "maxChannelDelta": 1,
+      "minPsnr": 58.99,
+      "minSsim": 0.99977
+    },
+    "cinematic/foreground-reveal": {
+      "observedTier": "near",
+      "differingFrames": 168,
+      "frames": 168,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 2,
+      "minPsnr": 55.61,
+      "minSsim": 0.9997
+    },
+    "cinematic/foreground-reveal-alternate": {
+      "observedTier": "near",
+      "differingFrames": 168,
+      "frames": 168,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 2,
+      "minPsnr": 55.83,
+      "minSsim": 0.99972
+    },
+    "cinematic/lateral-track": {
+      "observedTier": "near",
+      "differingFrames": 168,
+      "frames": 168,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 2,
+      "minPsnr": 55.02,
+      "minSsim": 0.99969
+    },
+    "cinematic/lateral-track-alternate": {
+      "observedTier": "near",
+      "differingFrames": 168,
+      "frames": 168,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 2,
+      "minPsnr": 55.03,
+      "minSsim": 0.9997
+    },
+    "cinematic/layered-parallax": {
+      "observedTier": "near",
+      "differingFrames": 168,
+      "frames": 168,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 1,
+      "minPsnr": 59.55,
+      "minSsim": 0.99987
+    },
+    "cinematic/layered-parallax-alternate": {
+      "observedTier": "near",
+      "differingFrames": 168,
+      "frames": 168,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 1,
+      "minPsnr": 59.72,
+      "minSsim": 0.99987
+    },
+    "cinematic/rising-vista": {
+      "observedTier": "near",
+      "differingFrames": 96,
+      "frames": 96,
+      "comparedFrames": [0, 24, 48, 72, 95],
+      "maxChannelDelta": 2,
+      "minPsnr": 55.55,
+      "minSsim": 0.99978
+    },
+    "cinematic/threshold-push": {
+      "observedTier": "near",
+      "differingFrames": 168,
+      "frames": 168,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 2,
+      "minPsnr": 55.11,
+      "minSsim": 0.99969
+    },
+    "cinematic/threshold-push-alternate": {
+      "observedTier": "near",
+      "differingFrames": 168,
+      "frames": 168,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 2,
+      "minPsnr": 55.2,
+      "minSsim": 0.9997
+    },
+    "cinematic/vertical-rising-vista": {
+      "observedTier": "near",
+      "differingFrames": 96,
+      "frames": 96,
+      "comparedFrames": [0, 24, 48, 72, 95],
+      "maxChannelDelta": 1,
+      "minPsnr": 80.34,
+      "minSsim": 1
+    },
+    "commerce/a01-feed": {
+      "observedTier": null,
+      "differingFrames": 300,
+      "frames": 300,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 206,
+      "minPsnr": 35.95,
+      "minSsim": 0.99714
+    },
+    "commerce/a01-landscape": {
+      "observedTier": null,
+      "differingFrames": 300,
+      "frames": 300,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 206,
+      "minPsnr": 35.82,
+      "minSsim": 0.99736
+    },
+    "commerce/atom-anchor": {
+      "observedTier": null,
+      "differingFrames": 240,
+      "frames": 240,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 178,
+      "minPsnr": 33.67,
+      "minSsim": 0.99664
+    },
+    "commerce/atom-attachment": {
+      "observedTier": "perceptual",
+      "differingFrames": 240,
+      "frames": 240,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 172,
+      "minPsnr": 42.9,
+      "minSsim": 0.99964
+    },
+    "commerce/atom-background": {
+      "observedTier": "exact",
+      "differingFrames": 0,
+      "frames": 240
+    },
+    "commerce/atom-background-light": {
+      "observedTier": "near",
+      "differingFrames": 240,
+      "frames": 240,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 1,
+      "minPsnr": 72.63,
+      "minSsim": 0.99999
+    },
+    "commerce/atom-callout": {
+      "observedTier": "perceptual",
+      "differingFrames": 240,
+      "frames": 240,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 162,
+      "minPsnr": 41.84,
+      "minSsim": 0.99954
+    },
+    "commerce/atom-detail": {
+      "observedTier": null,
+      "differingFrames": 240,
+      "frames": 240,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 177,
+      "minPsnr": 38.82,
+      "minSsim": 0.9991
+    },
+    "commerce/atom-directional-blur": {
+      "observedTier": "near",
+      "differingFrames": 237,
+      "frames": 240,
+      "comparedFrames": [3, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 1,
+      "minPsnr": 71.07,
+      "minSsim": 0.99999
+    },
+    "commerce/atom-displacement": {
+      "observedTier": "near",
+      "differingFrames": 240,
+      "frames": 240,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 2,
+      "minPsnr": 62.28,
+      "minSsim": 0.99997
+    },
+    "commerce/atom-drift": {
+      "observedTier": "perceptual",
+      "differingFrames": 240,
+      "frames": 240,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 15,
+      "minPsnr": 58.33,
+      "minSsim": 0.99985
+    },
+    "commerce/atom-echo": {
+      "observedTier": "perceptual",
+      "differingFrames": 237,
+      "frames": 240,
+      "comparedFrames": [3, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 4,
+      "minPsnr": 59.81,
+      "minSsim": 0.9999
+    },
+    "commerce/atom-effects-studio": {
+      "observedTier": "perceptual",
+      "differingFrames": 240,
+      "frames": 240,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 15,
+      "minPsnr": 58.3,
+      "minSsim": 0.99985
+    },
+    "commerce/atom-fade": {
+      "observedTier": "near",
+      "differingFrames": 201,
+      "frames": 240,
+      "comparedFrames": [31, 48, 72, 96, 120, 144],
+      "maxChannelDelta": 1,
+      "minPsnr": 59.72,
+      "minSsim": 0.99999
+    },
+    "commerce/atom-float": {
+      "observedTier": "near",
+      "differingFrames": 240,
+      "frames": 240,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 1,
+      "minPsnr": 77.15,
+      "minSsim": 1
+    },
+    "commerce/atom-focus-blur": {
+      "observedTier": "near",
+      "differingFrames": 240,
+      "frames": 240,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 2,
+      "minPsnr": 59.08,
+      "minSsim": 0.99974
+    },
+    "commerce/atom-glow": {
+      "observedTier": "near",
+      "differingFrames": 240,
+      "frames": 240,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 1,
+      "minPsnr": 72.21,
+      "minSsim": 0.99999
+    },
+    "commerce/atom-grain": {
+      "observedTier": "near",
+      "differingFrames": 240,
+      "frames": 240,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 2,
+      "minPsnr": 53.11,
+      "minSsim": 0.99834
+    },
+    "commerce/atom-height-shadow": {
+      "observedTier": "near",
+      "differingFrames": 240,
+      "frames": 240,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 1,
+      "minPsnr": 72,
+      "minSsim": 0.99999
+    },
+    "commerce/atom-introduction": {
+      "observedTier": null,
+      "differingFrames": 237,
+      "frames": 240,
+      "comparedFrames": [3, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 178,
+      "minPsnr": 36.5,
+      "minSsim": 0.99797
+    },
+    "commerce/atom-layout": {
+      "observedTier": null,
+      "differingFrames": 240,
+      "frames": 240,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 165,
+      "minPsnr": 29.32,
+      "minSsim": 0.98871
+    },
+    "commerce/atom-light-sweep": {
+      "observedTier": "perceptual",
+      "differingFrames": 240,
+      "frames": 240,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 3,
+      "minPsnr": 68.04,
+      "minSsim": 0.99998
+    },
+    "commerce/atom-matte": {
+      "observedTier": null,
+      "differingFrames": 240,
+      "frames": 240,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 178,
+      "minPsnr": 30.26,
+      "minSsim": 0.9936
+    },
+    "commerce/atom-motion-blur": {
+      "observedTier": "near",
+      "differingFrames": 237,
+      "frames": 240,
+      "comparedFrames": [3, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 1,
+      "minPsnr": 77.17,
+      "minSsim": 1
+    },
+    "commerce/atom-overshoot": {
+      "observedTier": "near",
+      "differingFrames": 237,
+      "frames": 240,
+      "comparedFrames": [3, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 1,
+      "minPsnr": 77.17,
+      "minSsim": 1
+    },
+    "commerce/atom-panel": {
+      "observedTier": "exact",
+      "differingFrames": 0,
+      "frames": 240
+    },
+    "commerce/atom-parallax": {
+      "observedTier": "near",
+      "differingFrames": 240,
+      "frames": 240,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 1,
+      "minPsnr": 62.37,
+      "minSsim": 0.99997
+    },
+    "commerce/atom-particles": {
+      "observedTier": "near",
+      "differingFrames": 240,
+      "frames": 240,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 1,
+      "minPsnr": 72.6,
+      "minSsim": 0.99999
+    },
+    "commerce/atom-path": {
+      "observedTier": "exact",
+      "differingFrames": 0,
+      "frames": 240
+    },
+    "commerce/atom-product": {
+      "observedTier": "near",
+      "differingFrames": 240,
+      "frames": 240,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 1,
+      "minPsnr": 77.17,
+      "minSsim": 1
+    },
+    "commerce/atom-rotate": {
+      "observedTier": "perceptual",
+      "differingFrames": 240,
+      "frames": 240,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 14,
+      "minPsnr": 58.42,
+      "minSsim": 0.99986
+    },
+    "commerce/atom-scale": {
+      "observedTier": "near",
+      "differingFrames": 240,
+      "frames": 240,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 1,
+      "minPsnr": 76.82,
+      "minSsim": 1
+    },
+    "commerce/atom-sequence": {
+      "observedTier": null,
+      "differingFrames": 240,
+      "frames": 240,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 177,
+      "minPsnr": 35.27,
+      "minSsim": 0.99764
+    },
+    "commerce/atom-shadow": {
+      "observedTier": "near",
+      "differingFrames": 240,
+      "frames": 240,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 1,
+      "minPsnr": 74.48,
+      "minSsim": 0.99999
+    },
+    "commerce/atom-studio": {
+      "observedTier": "near",
+      "differingFrames": 240,
+      "frames": 240,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 1,
+      "minPsnr": 72.6,
+      "minSsim": 0.99999
+    },
+    "commerce/atom-text": {
+      "observedTier": null,
+      "differingFrames": 240,
+      "frames": 240,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 178,
+      "minPsnr": 36.5,
+      "minSsim": 0.99758
+    },
+    "commerce/atom-translate": {
+      "observedTier": "near",
+      "differingFrames": 237,
+      "frames": 240,
+      "comparedFrames": [3, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 1,
+      "minPsnr": 77.17,
+      "minSsim": 1
+    },
+    "commerce/h01-landscape": {
+      "observedTier": null,
+      "differingFrames": 240,
+      "frames": 240,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 206,
+      "minPsnr": 37.49,
+      "minSsim": 0.99786
+    },
+    "commerce/h01-portrait": {
+      "observedTier": null,
+      "differingFrames": 240,
+      "frames": 240,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 206,
+      "minPsnr": 35.32,
+      "minSsim": 0.99696
+    },
+    "commerce/h03-thai": {
+      "observedTier": null,
+      "differingFrames": 192,
+      "frames": 192,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 206,
+      "minPsnr": 35.16,
+      "minSsim": 0.997
+    },
+    "commerce/h04-square": {
+      "observedTier": null,
+      "differingFrames": 240,
+      "frames": 240,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 206,
+      "minPsnr": 33.58,
+      "minSsim": 0.99582
+    },
+    "commerce/vertical-h01-portrait": {
+      "observedTier": null,
+      "differingFrames": 240,
+      "frames": 240,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 206,
+      "minPsnr": 35.32,
+      "minSsim": 0.99696
+    },
+    "component/commerce-bracket": {
+      "observedTier": null,
+      "differingFrames": 192,
+      "frames": 192,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 207,
+      "minPsnr": 31,
+      "minSsim": 0.99469
+    },
+    "component/commerce-detail-sequence": {
+      "observedTier": null,
+      "differingFrames": 192,
+      "frames": 192,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 207,
+      "minPsnr": 28.02,
+      "minSsim": 0.98961
+    },
+    "component/commerce-instances": {
+      "observedTier": null,
+      "differingFrames": 192,
+      "frames": 192,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 207,
+      "minPsnr": 30.44,
+      "minSsim": 0.99398
+    },
+    "component/commerce-layout": {
+      "observedTier": null,
+      "differingFrames": 192,
+      "frames": 192,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 207,
+      "minPsnr": 30.44,
+      "minSsim": 0.99396
+    },
+    "component/commerce-leader": {
+      "observedTier": null,
+      "differingFrames": 192,
+      "frames": 192,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 207,
+      "minPsnr": 30.64,
+      "minSsim": 0.99423
+    },
+    "component/commerce-mask": {
+      "observedTier": null,
+      "differingFrames": 192,
+      "frames": 192,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 207,
+      "minPsnr": 28.07,
+      "minSsim": 0.98981
+    },
+    "component/commerce-outline": {
+      "observedTier": null,
+      "differingFrames": 192,
+      "frames": 192,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 207,
+      "minPsnr": 31,
+      "minSsim": 0.99469
+    },
+    "component/commerce-pin": {
+      "observedTier": null,
+      "differingFrames": 192,
+      "frames": 192,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 207,
+      "minPsnr": 28.07,
+      "minSsim": 0.98981
+    },
+    "component/commerce-sequence": {
+      "observedTier": null,
+      "differingFrames": 192,
+      "frames": 192,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 207,
+      "minPsnr": 27.56,
+      "minSsim": 0.98817
+    },
+    "component/commerce-stagger": {
+      "observedTier": null,
+      "differingFrames": 192,
+      "frames": 192,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 207,
+      "minPsnr": 30.24,
+      "minSsim": 0.99377
+    },
+    "component/commerce-state": {
+      "observedTier": null,
+      "differingFrames": 192,
+      "frames": 192,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 207,
+      "minPsnr": 30.12,
+      "minSsim": 0.99353
+    },
+    "component/commerce-supply": {
+      "observedTier": null,
+      "differingFrames": 192,
+      "frames": 192,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 207,
+      "minPsnr": 30.34,
+      "minSsim": 0.99387
+    },
+    "component/commerce-supply-sequence": {
+      "observedTier": null,
+      "differingFrames": 192,
+      "frames": 192,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 207,
+      "minPsnr": 28.07,
+      "minSsim": 0.98991
+    },
+    "component/commerce-text-fit": {
+      "observedTier": null,
+      "differingFrames": 192,
+      "frames": 192,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 207,
+      "minPsnr": 28.02,
+      "minSsim": 0.98965
+    },
+    "component/commerce-tour": {
+      "observedTier": null,
+      "differingFrames": 192,
+      "frames": 192,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 207,
+      "minPsnr": 30.12,
+      "minSsim": 0.99352
+    },
+    "component/commerce-transform": {
+      "observedTier": null,
+      "differingFrames": 192,
+      "frames": 192,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 207,
+      "minPsnr": 30.12,
+      "minSsim": 0.99352
+    },
+    "component/commerce-travel": {
+      "observedTier": null,
+      "differingFrames": 192,
+      "frames": 192,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 207,
+      "minPsnr": 30.12,
+      "minSsim": 0.99353
+    },
+    "component/commerce-underline": {
+      "observedTier": null,
+      "differingFrames": 192,
+      "frames": 192,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 207,
+      "minPsnr": 31,
+      "minSsim": 0.99469
+    },
+    "component/commerce-value": {
+      "observedTier": null,
+      "differingFrames": 192,
+      "frames": 192,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 207,
+      "minPsnr": 30.64,
+      "minSsim": 0.99397
+    },
+    "component/commerce-visibility": {
+      "observedTier": null,
+      "differingFrames": 192,
+      "frames": 192,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 207,
+      "minPsnr": 28.07,
+      "minSsim": 0.98981
+    },
+    "component/isolated-bracket": {
+      "observedTier": "near",
+      "differingFrames": 192,
+      "frames": 192,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 1,
+      "minPsnr": 83.92,
+      "minSsim": 1
+    },
+    "component/isolated-detail-sequence": {
+      "observedTier": null,
+      "differingFrames": 144,
+      "frames": 192,
+      "comparedFrames": [12, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 207,
+      "minPsnr": 31.06,
+      "minSsim": 0.99492
+    },
+    "component/isolated-instances": {
+      "observedTier": null,
+      "differingFrames": 179,
+      "frames": 192,
+      "comparedFrames": [13, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 194,
+      "minPsnr": 39.61,
+      "minSsim": 0.99929
+    },
+    "component/isolated-layout": {
+      "observedTier": null,
+      "differingFrames": 179,
+      "frames": 192,
+      "comparedFrames": [13, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 194,
+      "minPsnr": 39.61,
+      "minSsim": 0.99927
+    },
+    "component/isolated-leader": {
+      "observedTier": "perceptual",
+      "differingFrames": 192,
+      "frames": 192,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 194,
+      "minPsnr": 41.64,
+      "minSsim": 0.99954
+    },
+    "component/isolated-mask": {
+      "observedTier": null,
+      "differingFrames": 192,
+      "frames": 192,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 207,
+      "minPsnr": 31.17,
+      "minSsim": 0.99512
+    },
+    "component/isolated-outline": {
+      "observedTier": "near",
+      "differingFrames": 192,
+      "frames": 192,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 1,
+      "minPsnr": 83.92,
+      "minSsim": 1
+    },
+    "component/isolated-pin": {
+      "observedTier": null,
+      "differingFrames": 192,
+      "frames": 192,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 207,
+      "minPsnr": 31.17,
+      "minSsim": 0.99512
+    },
+    "component/isolated-sequence": {
+      "observedTier": null,
+      "differingFrames": 144,
+      "frames": 192,
+      "comparedFrames": [12, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 207,
+      "minPsnr": 30.18,
+      "minSsim": 0.99348
+    },
+    "component/isolated-stagger": {
+      "observedTier": null,
+      "differingFrames": 179,
+      "frames": 192,
+      "comparedFrames": [13, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 194,
+      "minPsnr": 38.2,
+      "minSsim": 0.99908
+    },
+    "component/isolated-state": {
+      "observedTier": null,
+      "differingFrames": 192,
+      "frames": 192,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 207,
+      "minPsnr": 37.5,
+      "minSsim": 0.99884
+    },
+    "component/isolated-supply": {
+      "observedTier": null,
+      "differingFrames": 192,
+      "frames": 192,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 207,
+      "minPsnr": 38.87,
+      "minSsim": 0.99918
+    },
+    "component/isolated-supply-sequence": {
+      "observedTier": null,
+      "differingFrames": 144,
+      "frames": 192,
+      "comparedFrames": [12, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 207,
+      "minPsnr": 31.17,
+      "minSsim": 0.99522
+    },
+    "component/isolated-text-fit": {
+      "observedTier": null,
+      "differingFrames": 192,
+      "frames": 192,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 207,
+      "minPsnr": 31.06,
+      "minSsim": 0.99497
+    },
+    "component/isolated-tour": {
+      "observedTier": null,
+      "differingFrames": 192,
+      "frames": 192,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 207,
+      "minPsnr": 37.49,
+      "minSsim": 0.99883
+    },
+    "component/isolated-transform": {
+      "observedTier": null,
+      "differingFrames": 192,
+      "frames": 192,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 207,
+      "minPsnr": 37.49,
+      "minSsim": 0.99883
+    },
+    "component/isolated-travel": {
+      "observedTier": null,
+      "differingFrames": 192,
+      "frames": 192,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 207,
+      "minPsnr": 37.5,
+      "minSsim": 0.99884
+    },
+    "component/isolated-underline": {
+      "observedTier": "near",
+      "differingFrames": 192,
+      "frames": 192,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 1,
+      "minPsnr": 83.92,
+      "minSsim": 1
+    },
+    "component/isolated-value": {
+      "observedTier": "perceptual",
+      "differingFrames": 192,
+      "frames": 192,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 207,
+      "minPsnr": 41.69,
+      "minSsim": 0.99928
+    },
+    "component/isolated-visibility": {
+      "observedTier": null,
+      "differingFrames": 48,
+      "frames": 192,
+      "comparedFrames": [12, 24, 48],
+      "maxChannelDelta": 207,
+      "minPsnr": 31.17,
+      "minSsim": 0.99513
+    },
+    "component/passage-behaviors/state": {
+      "observedTier": null,
+      "differingFrames": 192,
+      "frames": 192,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 207,
+      "minPsnr": 32.35,
+      "minSsim": 0.99543
+    },
+    "component/passage-behaviors/supply": {
+      "observedTier": null,
+      "differingFrames": 192,
+      "frames": 192,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 207,
+      "minPsnr": 32.35,
+      "minSsim": 0.99542
+    },
+    "component/passage-behaviors/transform": {
+      "observedTier": null,
+      "differingFrames": 192,
+      "frames": 192,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 207,
+      "minPsnr": 31.82,
+      "minSsim": 0.99495
+    },
+    "component/passage-behaviors/travel": {
+      "observedTier": null,
+      "differingFrames": 192,
+      "frames": 192,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 207,
+      "minPsnr": 31.82,
+      "minSsim": 0.99496
+    },
+    "component/passage-components/instances": {
+      "observedTier": null,
+      "differingFrames": 192,
+      "frames": 192,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 207,
+      "minPsnr": 31.59,
+      "minSsim": 0.99468
+    },
+    "component/passage-components/leader": {
+      "observedTier": null,
+      "differingFrames": 192,
+      "frames": 192,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 207,
+      "minPsnr": 32.19,
+      "minSsim": 0.99523
+    },
+    "component/passage-components/value": {
+      "observedTier": null,
+      "differingFrames": 192,
+      "frames": 192,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 207,
+      "minPsnr": 32.28,
+      "minSsim": 0.99526
+    },
+    "component/passage-timing/supply-sequence": {
+      "observedTier": null,
+      "differingFrames": 192,
+      "frames": 192,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 207,
+      "minPsnr": 29.57,
+      "minSsim": 0.99184
+    },
+    "component/passage-timing/text-fit": {
+      "observedTier": null,
+      "differingFrames": 192,
+      "frames": 192,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 207,
+      "minPsnr": 29.54,
+      "minSsim": 0.99212
+    },
+    "component/passage-timing/visibility": {
+      "observedTier": null,
+      "differingFrames": 192,
+      "frames": 192,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 207,
+      "minPsnr": 29.62,
+      "minSsim": 0.99235
+    },
+    "component/story-bracket": {
+      "observedTier": null,
+      "differingFrames": 192,
+      "frames": 192,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 207,
+      "minPsnr": 32.84,
+      "minSsim": 0.99576
+    },
+    "component/story-detail-sequence": {
+      "observedTier": null,
+      "differingFrames": 192,
+      "frames": 192,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 207,
+      "minPsnr": 29.57,
+      "minSsim": 0.99184
+    },
+    "component/story-instances": {
+      "observedTier": null,
+      "differingFrames": 192,
+      "frames": 192,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 207,
+      "minPsnr": 31.78,
+      "minSsim": 0.99483
+    },
+    "component/story-layout": {
+      "observedTier": null,
+      "differingFrames": 192,
+      "frames": 192,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 207,
+      "minPsnr": 31.78,
+      "minSsim": 0.99483
+    },
+    "component/story-leader": {
+      "observedTier": null,
+      "differingFrames": 192,
+      "frames": 192,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 207,
+      "minPsnr": 32.19,
+      "minSsim": 0.99523
+    },
+    "component/story-mask": {
+      "observedTier": null,
+      "differingFrames": 192,
+      "frames": 192,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 207,
+      "minPsnr": 28.8,
+      "minSsim": 0.99088
+    },
+    "component/story-outline": {
+      "observedTier": null,
+      "differingFrames": 192,
+      "frames": 192,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 207,
+      "minPsnr": 32.8,
+      "minSsim": 0.99574
+    },
+    "component/story-pin": {
+      "observedTier": null,
+      "differingFrames": 192,
+      "frames": 192,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 207,
+      "minPsnr": 28.8,
+      "minSsim": 0.99087
+    },
+    "component/story-sequence": {
+      "observedTier": null,
+      "differingFrames": 192,
+      "frames": 192,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 207,
+      "minPsnr": 29.03,
+      "minSsim": 0.99133
+    },
+    "component/story-stagger": {
+      "observedTier": null,
+      "differingFrames": 192,
+      "frames": 192,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 207,
+      "minPsnr": 31.43,
+      "minSsim": 0.99451
+    },
+    "component/story-state": {
+      "observedTier": null,
+      "differingFrames": 192,
+      "frames": 192,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 207,
+      "minPsnr": 32.35,
+      "minSsim": 0.99543
+    },
+    "component/story-supply": {
+      "observedTier": null,
+      "differingFrames": 192,
+      "frames": 192,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 207,
+      "minPsnr": 32.35,
+      "minSsim": 0.99542
+    },
+    "component/story-supply-sequence": {
+      "observedTier": null,
+      "differingFrames": 192,
+      "frames": 192,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 207,
+      "minPsnr": 29.57,
+      "minSsim": 0.99184
+    },
+    "component/story-text-fit": {
+      "observedTier": null,
+      "differingFrames": 192,
+      "frames": 192,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 207,
+      "minPsnr": 29.54,
+      "minSsim": 0.99212
+    },
+    "component/story-tour": {
+      "observedTier": null,
+      "differingFrames": 192,
+      "frames": 192,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 207,
+      "minPsnr": 32.35,
+      "minSsim": 0.99542
+    },
+    "component/story-transform": {
+      "observedTier": null,
+      "differingFrames": 192,
+      "frames": 192,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 207,
+      "minPsnr": 31.82,
+      "minSsim": 0.99495
+    },
+    "component/story-travel": {
+      "observedTier": null,
+      "differingFrames": 192,
+      "frames": 192,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 207,
+      "minPsnr": 31.82,
+      "minSsim": 0.99496
+    },
+    "component/story-underline": {
+      "observedTier": null,
+      "differingFrames": 192,
+      "frames": 192,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 207,
+      "minPsnr": 32.8,
+      "minSsim": 0.99574
+    },
+    "component/story-value": {
+      "observedTier": null,
+      "differingFrames": 192,
+      "frames": 192,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 207,
+      "minPsnr": 32.28,
+      "minSsim": 0.99526
+    },
+    "component/story-visibility": {
+      "observedTier": null,
+      "differingFrames": 192,
+      "frames": 192,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 207,
+      "minPsnr": 29.62,
+      "minSsim": 0.99235
+    },
+    "legacy/access-pressure": {
+      "observedTier": null,
+      "differingFrames": 168,
+      "frames": 168,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 199,
+      "minPsnr": 27.53,
+      "minSsim": 0.9831
+    },
+    "legacy/chronicle-reveal": {
+      "observedTier": null,
+      "differingFrames": 168,
+      "frames": 168,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 199,
+      "minPsnr": 29.39,
+      "minSsim": 0.98829
+    },
+    "legacy/comparison-build": {
+      "observedTier": null,
+      "differingFrames": 168,
+      "frames": 168,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 208,
+      "minPsnr": 26.46,
+      "minSsim": 0.97878
+    },
+    "legacy/crisis-fracture": {
+      "observedTier": null,
+      "differingFrames": 168,
+      "frames": 168,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 199,
+      "minPsnr": 28.27,
+      "minSsim": 0.98537
+    },
+    "legacy/pose-prop-change": {
+      "observedTier": null,
+      "differingFrames": 168,
+      "frames": 168,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 199,
+      "minPsnr": 28.31,
+      "minSsim": 0.98575
+    },
+    "legacy/resource-flow": {
+      "observedTier": null,
+      "differingFrames": 168,
+      "frames": 168,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 199,
+      "minPsnr": 27.64,
+      "minSsim": 0.98509
+    },
+    "legacy/vertical-chronicle-reveal": {
+      "observedTier": null,
+      "differingFrames": 168,
+      "frames": 168,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 199,
+      "minPsnr": 31.43,
+      "minSsim": 0.99289
+    },
+    "motion-craft/buffer-press": {
+      "observedTier": null,
+      "differingFrames": 192,
+      "frames": 192,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 199,
+      "minPsnr": 27.37,
+      "minSsim": 0.98615
+    },
+    "motion-craft/buffer-press-accelerate": {
+      "observedTier": null,
+      "differingFrames": 192,
+      "frames": 192,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 199,
+      "minPsnr": 27.37,
+      "minSsim": 0.98615
+    },
+    "motion-craft/gallery": {
+      "observedTier": null,
+      "differingFrames": 61,
+      "frames": 61,
+      "comparedFrames": [0, 24, 48, 60],
+      "maxChannelDelta": 196,
+      "minPsnr": 35.76,
+      "minSsim": 0.99734
+    },
+    "motion-craft/intent-presets": {
+      "observedTier": null,
+      "differingFrames": 61,
+      "frames": 61,
+      "comparedFrames": [0, 24, 48, 60],
+      "maxChannelDelta": 196,
+      "minPsnr": 35.76,
+      "minSsim": 0.99734
+    },
+    "motion-craft/supply-ramps": {
+      "observedTier": null,
+      "differingFrames": 192,
+      "frames": 192,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 207,
+      "minPsnr": 29.06,
+      "minSsim": 0.99136
+    },
+    "passage/comparison-access/unequal-access": {
+      "observedTier": null,
+      "differingFrames": 312,
+      "frames": 312,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 199,
+      "minPsnr": 29.69,
+      "minSsim": 0.98859
+    },
+    "passage/comparison-access/unequal-margins": {
+      "observedTier": null,
+      "differingFrames": 334,
+      "frames": 334,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 199,
+      "minPsnr": 26.3,
+      "minSsim": 0.98284
+    },
+    "passage/linked-comparison/compare": {
+      "observedTier": null,
+      "differingFrames": 192,
+      "frames": 192,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 199,
+      "minPsnr": 24.56,
+      "minSsim": 0.97396
+    },
+    "passage/linked-comparison/continue": {
+      "observedTier": null,
+      "differingFrames": 192,
+      "frames": 192,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 199,
+      "minPsnr": 26.23,
+      "minSsim": 0.98217
+    },
+    "passage/linked-comparison/reset": {
+      "observedTier": null,
+      "differingFrames": 192,
+      "frames": 192,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 199,
+      "minPsnr": 24.53,
+      "minSsim": 0.97474
+    },
+    "passage/linked-network-vertical/network": {
+      "observedTier": null,
+      "differingFrames": 192,
+      "frames": 192,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 199,
+      "minPsnr": 27.8,
+      "minSsim": 0.98565
+    },
+    "story/buffer-press-unequal-margins": {
+      "observedTier": null,
+      "differingFrames": 192,
+      "frames": 192,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 199,
+      "minPsnr": 27.37,
+      "minSsim": 0.98615
+    },
+    "story/calibration-pan": {
+      "observedTier": "exact",
+      "differingFrames": 0,
+      "frames": 192
+    },
+    "story/continuous-access-constraint": {
+      "observedTier": null,
+      "differingFrames": 192,
+      "frames": 192,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 199,
+      "minPsnr": 28.96,
+      "minSsim": 0.98637
+    },
+    "story/continuous-category-swap": {
+      "observedTier": null,
+      "differingFrames": 192,
+      "frames": 192,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 199,
+      "minPsnr": 28.42,
+      "minSsim": 0.98679
+    },
+    "story/continuous-dated-system-break": {
+      "observedTier": null,
+      "differingFrames": 191,
+      "frames": 192,
+      "comparedFrames": [1, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 199,
+      "minPsnr": 28.6,
+      "minSsim": 0.98818
+    },
+    "story/continuous-evidence-boundary": {
+      "observedTier": null,
+      "differingFrames": 192,
+      "frames": 192,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 199,
+      "minPsnr": 26.25,
+      "minSsim": 0.97784
+    },
+    "story/continuous-motif-resolve": {
+      "observedTier": null,
+      "differingFrames": 192,
+      "frames": 192,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 199,
+      "minPsnr": 32.14,
+      "minSsim": 0.99411
+    },
+    "story/continuous-relationship-build": {
+      "observedTier": null,
+      "differingFrames": 192,
+      "frames": 192,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 199,
+      "minPsnr": 31.37,
+      "minSsim": 0.993
+    },
+    "story/continuous-unequal-margins": {
+      "observedTier": null,
+      "differingFrames": 192,
+      "frames": 192,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 199,
+      "minPsnr": 27.33,
+      "minSsim": 0.98614
+    },
+    "story/template-resource-network": {
+      "observedTier": null,
+      "differingFrames": 648,
+      "frames": 648,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 199,
+      "minPsnr": 26.73,
+      "minSsim": 0.98339
+    },
+    "story/template-unequal-access": {
+      "observedTier": null,
+      "differingFrames": 312,
+      "frames": 312,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 199,
+      "minPsnr": 29.69,
+      "minSsim": 0.98859
+    },
+    "story/v013-access-constraint": {
+      "observedTier": null,
+      "differingFrames": 192,
+      "frames": 192,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 199,
+      "minPsnr": 28.92,
+      "minSsim": 0.98627
+    },
+    "story/v013-unequal-margins": {
+      "observedTier": null,
+      "differingFrames": 192,
+      "frames": 192,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 199,
+      "minPsnr": 26.13,
+      "minSsim": 0.98219
+    },
+    "story/v2-unequal-margins": {
+      "observedTier": null,
+      "differingFrames": 192,
+      "frames": 192,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 199,
+      "minPsnr": 27.33,
+      "minSsim": 0.98614
+    },
+    "typography/commerce": {
+      "observedTier": null,
+      "differingFrames": 192,
+      "frames": 192,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 206,
+      "minPsnr": 33.54,
+      "minSsim": 0.9953
+    },
+    "typography/editorial": {
+      "observedTier": null,
+      "differingFrames": 151,
+      "frames": 151,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 203,
+      "minPsnr": 24.64,
+      "minSsim": 0.97409
+    },
+    "typography/glyph-performance": {
+      "observedTier": null,
+      "differingFrames": 151,
+      "frames": 151,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 203,
+      "minPsnr": 30.39,
+      "minSsim": 0.99431
+    },
+    "typography/selectors": {
+      "observedTier": null,
+      "differingFrames": 149,
+      "frames": 151,
+      "comparedFrames": [2, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 203,
+      "minPsnr": 22.68,
+      "minSsim": 0.97179
+    },
+    "typography/semantic": {
+      "observedTier": null,
+      "differingFrames": 181,
+      "frames": 181,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 203,
+      "minPsnr": 29.56,
+      "minSsim": 0.99159
+    },
+    "typography/transitions": {
+      "observedTier": null,
+      "differingFrames": 151,
+      "frames": 151,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 204,
+      "minPsnr": 29.58,
+      "minSsim": 0.99238
+    },
+    "typography/variable-thai": {
+      "observedTier": null,
+      "differingFrames": 151,
+      "frames": 151,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 203,
+      "minPsnr": 28.23,
+      "minSsim": 0.99073
+    },
+    "typography/vertical": {
+      "observedTier": null,
+      "differingFrames": 181,
+      "frames": 181,
+      "comparedFrames": [0, 24, 48, 72, 96, 120],
+      "maxChannelDelta": 203,
+      "minPsnr": 30.34,
+      "minSsim": 0.99282
+    }
+  }
+}

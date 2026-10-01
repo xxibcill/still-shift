@@ -4,7 +4,8 @@ import {
   runtimeBrowserUrl,
   type BrowserRuntimeOptions,
 } from "@still-shift/execution-runtime/browser";
-import { chromium } from "playwright";
+import { launchRenderBrowser } from "@still-shift/execution-runtime/render-browser";
+import type { Browser } from "playwright";
 import { createServer } from "vite";
 import type { CompiledStoryPassage } from "../../renderer-core/src/story-passage.ts";
 import {
@@ -36,13 +37,13 @@ export async function validatePassageText(
       fs: { allow: [projectRoot, defaultBrowserProjectRoot] },
     },
   });
-  let browser: Awaited<ReturnType<typeof chromium.launch>> | undefined;
+  let browser: Browser | undefined;
   const collected: PassageDiagnostic[] = [];
   try {
     await server.listen();
     const baseUrl = server.resolvedUrls?.local[0];
     if (!baseUrl) throw new Error("Text validation server has no local URL");
-    browser = await chromium.launch({ headless: true });
+    browser = await launchRenderBrowser();
     const page = await browser.newPage();
     await page.goto(runtimeBrowserUrl(baseUrl, "passage-text"));
     await page.waitForFunction(() =>

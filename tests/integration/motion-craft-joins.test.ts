@@ -10,6 +10,7 @@ import {
   writePreparedPassage,
 } from "../../packages/animation-engine/src/story-passage-io.ts";
 import { renderStoryPassage } from "../../packages/animation-engine/src/story-passage-render.ts";
+import { RENDER_BROWSER_PROFILE } from "../../packages/execution-runtime/src/render-browser.ts";
 const run = promisify(execFile);
 it("keeps passage source and cue boundaries unchanged through cached joins and range export", async () => {
   const directory = await mkdtemp(join(tmpdir(), "motion-craft-passage-"));
@@ -111,6 +112,25 @@ it("keeps passage source and cue boundaries unchanged through cached joins and r
       ranged = await exportOne("range", { start: 12, end: 18 });
     expect(fresh.frameCount).toBe(24);
     expect(cached.cache.every((c) => c.reused)).toBe(true);
+    const environment = {
+      profile: RENDER_BROWSER_PROFILE,
+      browserVersion: expect.stringMatching(/^\d+\./),
+      webglRenderer: expect.stringContaining("SwiftShader"),
+      rasterFingerprint: expect.stringMatching(/^sha256:[a-f0-9]{64}$/),
+      platform: process.platform,
+      arch: process.arch,
+    };
+    for (const [name, report] of [
+      ["fresh", fresh],
+      ["cached", cached],
+    ] as const) {
+      expect(report.metrics).toMatchObject({ renderEnvironment: environment });
+      const saved = JSON.parse(
+        await readFile(join(directory, name, "render-report.json"), "utf8"),
+      );
+      expect(saved.metrics).toMatchObject({ renderEnvironment: environment });
+    }
+
     expect(ranged.frameCount).toBe(6);
     expect(ranged.sourceStartFrame).toBe(60);
     expect(passage.beats[0]!.scene.frameCount).toBe(18);
