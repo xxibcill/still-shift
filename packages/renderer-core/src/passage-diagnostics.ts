@@ -31,7 +31,10 @@ export function passageDiagnostics(
     return error.diagnostics.map((d) => ({ ...(beat ? { beat } : {}), ...d }));
   if (error instanceof ZodError)
     return error.issues.map((issue) => ({
-      code: "invalid-contract",
+      // Contracts tag semantic issues with a stable code (motion-craft, composition-1).
+      code:
+        (issue as { params?: { diagnosticCode?: string } }).params
+          ?.diagnosticCode ?? "invalid-contract",
       severity: "error",
       message: issue.message,
       path: issue.path.join("."),
