@@ -58,27 +58,27 @@ structure only; use `validateComposition` for the full rules.
 
 ## Top-level fields
 
-| Field                            | Type                                               | Notes                                                                          |
-| -------------------------------- | -------------------------------------------------- | ------------------------------------------------------------------------------ |
-| `schemaVersion`                  | `"composition-1"`                                  | Required.                                                                      |
-| `id`, `name`                     | id, text                                           | `id` required.                                                                 |
-| `width`, `height`                | integer 16–8192                                    | Required.                                                                      |
-| `fps`                            | 24, 25, 30, 50, 60                                 | Required.                                                                      |
-| `frameCount`                     | integer 1–108,000                                  | Required.                                                                      |
-| `background`                     | colour or `null`                                   | `null` or absent: transparent.                                                 |
-| `format`                         | `landscape` or `vertical`                          | When set, `width` and `height` must match it.                                  |
-| `colorSpace`                     | `srgb` or `linear-srgb`                            | `linear-srgb` arrives in CE6.                                                  |
-| `motionBlur`                     | `{ enabled, shutterAngle, shutterPhase, samples }` | Enabling it arrives in CE7.                                                    |
-| `assets`                         | [asset](#assets)[]                                 | Required (may be empty).                                                       |
-| `layers`                         | [layer](#layers)[]                                 | Required (may be empty).                                                       |
-| `markers`                        | [marker](#markers)[]                               |                                                                                |
-| `precomps`                       | [precomp](#precomps-and-scopes)[]                  |                                                                                |
-| `textStyles`                     | id → text style                                    | Same fields as story `textStyles`.                                             |
-| `signals`, `drivers`, `periodic` | see [motion craft](#motion-craft)                  | Composition-wide.                                                              |
-| `constraints`, `textAnimators`   | see [motion craft](#motion-craft)                  | Per scope (root or precomp).                                                   |
-| `expressions`                    | property path → `{ source, ast? }`                 | Arrives in CE9; an empty object is allowed.                                    |
-| `camera2d`                       | see [2D camera](#2d-camera)                        |                                                                                |
-| `metadata`                       | JSON object                                        | Passed through unchanged (registration, claims, review notes); at most 64 KiB. |
+| Field                            | Type                                               | Notes                                                                                                                 |
+| -------------------------------- | -------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
+| `schemaVersion`                  | `"composition-1"`                                  | Required.                                                                                                             |
+| `id`, `name`                     | id, text                                           | `id` required.                                                                                                        |
+| `width`, `height`                | integer 16–8192                                    | Required.                                                                                                             |
+| `fps`                            | 24, 25, 30, 50, 60                                 | Required.                                                                                                             |
+| `frameCount`                     | integer 1–108,000                                  | Required.                                                                                                             |
+| `background`                     | colour or `null`                                   | `null` or absent: transparent.                                                                                        |
+| `format`                         | `landscape` or `vertical`                          | When set, `width` and `height` must match it.                                                                         |
+| `colorSpace`                     | `srgb` or `linear-srgb`                            | `linear-srgb` arrives in CE6.                                                                                         |
+| `motionBlur`                     | `{ enabled, shutterAngle, shutterPhase, samples }` | Enabling it arrives in CE7.                                                                                           |
+| `assets`                         | [asset](#assets)[]                                 | Required (may be empty).                                                                                              |
+| `layers`                         | [layer](#layers)[]                                 | Required (may be empty).                                                                                              |
+| `markers`                        | [marker](#markers)[]                               |                                                                                                                       |
+| `precomps`                       | [precomp](#precomps-and-scopes)[]                  |                                                                                                                       |
+| `textStyles`                     | id → text style                                    | Same fields as story `textStyles`.                                                                                    |
+| `signals`, `drivers`, `periodic` | see [motion craft](#motion-craft)                  | Composition-wide.                                                                                                     |
+| `constraints`, `textAnimators`   | see [motion craft](#motion-craft)                  | Per scope (root or precomp).                                                                                          |
+| `expressions`                    | property path → `{ source, ast? }`                 | Arrives in CE9; an empty object is allowed.                                                                           |
+| `camera2d`                       | see [2D camera](#2d-camera)                        |                                                                                                                       |
+| `metadata`                       | JSON object                                        | Passed through unchanged (registration, claims, review notes); at most 64 KiB and 64 container levels below its root. |
 
 ## Precomps and scopes
 
@@ -327,27 +327,28 @@ Features that are in the contract but not yet implemented fail with
 
 ## Limits
 
-| Limit                                                     | Value                    |
-| --------------------------------------------------------- | ------------------------ |
-| Width, height                                             | 16–8,192                 |
-| `frameCount`                                              | 1–108,000                |
-| Key frames                                                | ±216,000 (layer time)    |
-| Motion windows, periods, delays and imported curve frames | 0–216,000                |
-| Noise and text-selector seeds                             | 0–2,147,483,647          |
-| Keys per property                                         | 2,000                    |
-| Layers (root and all precomps)                            | 2,000                    |
-| Precomps / nesting depth                                  | 200 / 8                  |
-| Parent chain depth                                        | 32                       |
-| Assets, markers                                           | 500 each                 |
-| Masks, effects per layer                                  | 32 each                  |
-| Path vertices                                             | 1,024                    |
-| Image sources, text states                                | 32, 12                   |
-| Text length                                               | 4,000 characters         |
-| Signals, drivers, constraints, periodic, text animators   | 200, 500, 200, 200, 200  |
-| Expressions / expression length                           | 2,000 / 2,000 characters |
-| Property path length                                      | 512 characters           |
-| Metadata                                                  | 64 KiB per object        |
-| Other numbers                                             | ±1,000,000               |
+| Limit                                                     | Value                              |
+| --------------------------------------------------------- | ---------------------------------- |
+| Width, height                                             | 16–8,192                           |
+| `frameCount`                                              | 1–108,000                          |
+| Key frames                                                | ±216,000 (layer time)              |
+| Motion windows, periods, delays and imported curve frames | 0–216,000                          |
+| Noise and text-selector seeds                             | 0–2,147,483,647                    |
+| Keys per property                                         | 2,000                              |
+| Layers (root and all precomps)                            | 2,000                              |
+| Precomps / nesting depth                                  | 200 / 8                            |
+| Parent chain depth                                        | 32                                 |
+| Assets, markers                                           | 500 each                           |
+| Masks, effects per layer                                  | 32 each                            |
+| Path vertices                                             | 1,024                              |
+| Image sources, text states                                | 32, 12                             |
+| Text length                                               | 4,000 characters                   |
+| Signals, drivers, constraints, periodic, text animators   | 200, 500, 200, 200, 200            |
+| Expressions / expression length                           | 2,000 / 2,000 characters           |
+| Property path length                                      | 512 characters                     |
+| Metadata                                                  | 64 KiB per object                  |
+| Metadata nesting depth                                    | 64 container levels below its root |
+| Other numbers                                             | ±1,000,000                         |
 
 The same values are exported as `COMPOSITION_LIMITS`.
 
@@ -356,7 +357,8 @@ values, generator amplitudes, driver maps, temporal speeds, bezier handles, cons
 offsets, text animation and font axes, and camera coordinates, zoom, tangents and jolts.
 These use the general numeric limit unless their field has a tighter range. Imported
 curves retain their existing 2–100 key limit and nonnegative frame convention. Metadata
-remains free-form JSON subject to its byte limit. Legacy story and commerce contracts
+remains free-form JSON subject to its byte and nesting-depth limits. Cyclic values
+are rejected as invalid JSON. Legacy story and commerce contracts
 retain their original bounds.
 
 ## Diagnostics
@@ -419,6 +421,7 @@ retain their original bounds.
 | `comp-camera-key-range`     | A `camera2d` key lies at or after `frameCount`.                                                                                                    |
 | `comp-format-size`          | `format` disagrees with `width` and `height`.                                                                                                      |
 | `comp-metadata-size`        | Metadata serialises to more than 64 KiB.                                                                                                           |
+| `comp-metadata-depth`       | Metadata nests more than 64 container levels below its root; checked before recursive JSON parsing.                                                |
 | `comp-driver-source`        | A driver has none or several of `signal`, `source` and `sum`.                                                                                      |
 | `comp-motion-cycle`         | Driver, constraint or parent dependencies form a cycle, including precomp-scoped dependencies.                                                     |
 | `comp-periodic`             | Invalid periodic window or generator, or both / neither of `target` and `node` + `property`.                                                       |

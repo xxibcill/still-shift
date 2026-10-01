@@ -766,6 +766,12 @@ precomp-scoped), cycles and limits. Round trip: parse → serialise → parse is
   package boundaries, formatting, lint, TypeScript and all 771 unit tests (including
   123 composition contract tests). Full rendering was not rerun for these validation
   fixes.
+- **Metadata validation follow-up:** nesting is limited to 64 container levels
+  below each metadata root before recursive parsing; cyclic values also return a
+  structured diagnostic. Regression checks cover root, layer and precomp-layer
+  metadata, the depth boundary and shared objects. The metadata and contract unit
+  groups passed (161 tests), along with schema freshness, TypeScript and lint on
+  Node 22.23.1.
 
 ---
 

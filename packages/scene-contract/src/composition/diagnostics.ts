@@ -82,6 +82,8 @@ export const COMPOSITION_DIAGNOSTICS = {
   "comp-camera-jolt": "A camera jolt starts at or after `frameCount`.",
   "comp-format-size": "`format` disagrees with `width` and `height`.",
   "comp-metadata-size": "Metadata serialises to more than 64 KiB.",
+  "comp-metadata-depth":
+    "Metadata nests more than 64 container levels below its root.",
   "comp-driver-source":
     "A driver has none or several of `signal`, `source` and `sum`.",
   "comp-motion-cycle":

@@ -3,6 +3,7 @@ import { resolve } from "node:path";
 import { describe, expect, it } from "vitest";
 import {
   COMPOSITION_LIMITS,
+  CompositionSchema,
   validateComposition,
 } from "@still-shift/scene-contract";
 import {
@@ -156,5 +157,75 @@ describe("composition-specific bounds on reused schemas", () => {
         depth: {},
       }).success,
     ).toBe(true);
+  });
+});
+
+describe("composition metadata nesting", () => {
+  const nested = (depth: number) => {
+    let value: unknown = 0;
+    for (let i = 0; i < depth; i++) value = [value];
+    return value;
+  };
+
+  it.each([
+    ["metadata", "metadata.note"],
+    ["layers.0.metadata", "layers[0].metadata.note"],
+    ["precomps.0.layers.0.metadata", "precomps[0].layers[0].metadata.note"],
+  ])(
+    "reports deeply nested %s without overflowing the stack",
+    (field, path) => {
+      const doc = fixture();
+      const metadata = { note: nested(4_000) };
+      expect(
+        new TextEncoder().encode(JSON.stringify(metadata)).length,
+      ).toBeLessThan(COMPOSITION_LIMITS.maxMetadataBytes);
+      setPath(doc, field!, metadata);
+      expect(CompositionSchema.safeParse(doc).success).toBe(false);
+      expect(validateComposition(doc)).toMatchObject({
+        ok: false,
+        diagnostics: [
+          {
+            code: "comp-metadata-depth",
+            severity: "error",
+            path: path + "[0]".repeat(COMPOSITION_LIMITS.maxMetadataDepth),
+          },
+        ],
+      });
+    },
+  );
+
+  it("accepts the depth boundary and rejects the next level", () => {
+    const doc = fixture();
+    setPath(doc, "metadata", {
+      note: nested(COMPOSITION_LIMITS.maxMetadataDepth),
+    });
+    expect(validateComposition(doc)).toMatchObject({ ok: true });
+    setPath(doc, "metadata", {
+      note: nested(COMPOSITION_LIMITS.maxMetadataDepth + 1),
+    });
+    expect(validateComposition(doc)).toMatchObject({
+      ok: false,
+      diagnostics: [expect.objectContaining({ code: "comp-metadata-depth" })],
+    });
+  });
+
+  it("rejects cyclic values but accepts shared JSON objects", () => {
+    const doc = fixture();
+    const note: Record<string, unknown> = {};
+    note.self = note;
+    setPath(doc, "metadata", { note });
+    expect(validateComposition(doc)).toMatchObject({
+      ok: false,
+      diagnostics: [
+        {
+          code: "comp-schema-type",
+          severity: "error",
+          path: "metadata.note.self",
+        },
+      ],
+    });
+    const shared = { value: [1, 2] };
+    setPath(doc, "metadata", { first: shared, second: shared });
+    expect(validateComposition(doc)).toMatchObject({ ok: true });
   });
 });

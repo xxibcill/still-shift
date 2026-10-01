@@ -32,6 +32,7 @@ export const COMPOSITION_LIMITS = {
   maxExpressionLength: 2_000,
   maxPropertyPathLength: 512,
   maxMetadataBytes: 65_536,
+  maxMetadataDepth: 64,
   maxCoordinate: 1_000_000,
   maxStretch: 100,
   maxSeed: 2_147_483_647,
@@ -65,9 +66,67 @@ export const label = z.string().min(1).max(200);
 
 /**
  * Free-form JSON carried through unchanged (registration, claims, review notes).
- * Size is checked during semantic validation.
+ * Bound container depth before recursive JSON parsing. Size is checked during
+ * semantic validation.
  */
-export const metadata = z.record(z.string().max(128), z.json());
+export const metadata = z
+  .unknown()
+  .superRefine((value, ctx) => {
+    type Entry = {
+      value: unknown;
+      depth: number;
+      path: (string | number)[];
+      exit?: boolean;
+    };
+    const stack: Entry[] = [{ value, depth: 0, path: [] }];
+    const ancestors = new WeakSet<object>();
+    const fail = (code: string, path: (string | number)[], message: string) =>
+      ctx.addIssue({
+        code: "custom",
+        path,
+        message: `${code}: ${message}`,
+        params: { diagnosticCode: code },
+        fatal: true,
+      });
+    while (stack.length) {
+      const entry = stack.pop()!;
+      if (entry.value === null || typeof entry.value !== "object") continue;
+      if (entry.exit) {
+        ancestors.delete(entry.value);
+        continue;
+      }
+      if (ancestors.has(entry.value)) {
+        fail(
+          "comp-schema-type",
+          entry.path,
+          "metadata must contain JSON values without cycles",
+        );
+        return;
+      }
+      if (entry.depth > L.maxMetadataDepth) {
+        fail(
+          "comp-metadata-depth",
+          entry.path,
+          `metadata may nest at most ${L.maxMetadataDepth} container levels below its root`,
+        );
+        return;
+      }
+      ancestors.add(entry.value);
+      stack.push({ ...entry, exit: true });
+      const children = Array.isArray(entry.value)
+        ? entry.value.entries()
+        : Object.entries(entry.value);
+      for (const [key, child] of children) {
+        if (child === null || typeof child !== "object") continue;
+        stack.push({
+          value: child,
+          depth: entry.depth + 1,
+          path: [...entry.path, key],
+        });
+      }
+    }
+  })
+  .pipe(z.record(z.string().max(128), z.json()));
 
 /** Reported on semantic issues so validation can return stable codes. */
 export type IssueReporter = (
