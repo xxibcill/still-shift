@@ -529,15 +529,36 @@ A single grammar addresses anything animatable, used by drivers, expressions,
 diagnostics, the builder and the Lab:
 
 ```text
-path     := [ precompId "/" ]* layerId "." segment ( "." segment )*
+path     := [ precompLayerId "/" ]* layerId "." segment ( "." segment )*
 segment  := name | name "[" index "]"
 examples: title.transform.position
           title.transform.position.x          (component access)
           bg.effects[glow].radius              (effect by instance id)
           bars.contents[bar1].trimEnd          (shape contents, CE5)
-          scene/hero.transform.opacity         (inside a precomp)
+          intro/hero.transform.opacity         (inside the intro precomp layer)
+          outro/hero.transform.opacity         (another instance of the same source)
           comp.camera.zoom
 ```
+
+Each slash segment identifies a **precomp layer instance** in the current
+composition, not a source composition definition. Resolve that layer's source and
+continue in its namespace. Multiple layers may reference the same definition; their
+paths remain distinct. A source definition id alone is not a traversal segment.
+
+`evaluateProperty(comp, path, time)` receives time in the calling composition's frame
+units. At each precomp hop, apply that instance's start/stretch/remap, convert to the
+source frame rate and apply the source-boundary rules before continuing. Sample the
+terminal property in that instance's resulting time context. Expression paths are
+relative to the composition instance containing the expression; dependency resolution
+and memoisation retain the full instance path and requested sample time, so repeated
+sources cannot share evaluated values across different time mappings.
+
+For example, `intro` and `outro` both reference a 30-frame, 30-fps precomp with `hero`
+opacity keyed linearly from `0` at frame 0 to `1` at frame 29. In a 30-fps parent,
+`intro` has `startFrame: 0, stretch: 1`, and `outro` has
+`startFrame: 29, stretch: -1`; both are visible on `[0, 30)`. At parent frame 10,
+`intro/hero.transform.opacity` is `10/29` and
+`outro/hero.transform.opacity` is `19/29`.
 
 ### Checklist
 
@@ -555,6 +576,8 @@ examples: title.transform.position
       `opacity`.
 - [ ] Implement the property-path parser and resolver with typed results
       (scalar/vec/colour/bool/enum) and use it for validation of every path reference.
+      Precomp traversal resolves layer instances; reject missing or non-precomp hops
+      even when a source definition with that id exists.
 - [ ] Generalise `MotionTargetSchema` and `DriverSchema` so targets and sources are
       property paths; keep the old node-and-property form valid as an alias.
 - [ ] Semantic validation: unique ids, parent cycles, matte layer exists and is
@@ -572,7 +595,8 @@ examples: title.transform.position
 invalid variant in the test suite fails with the expected code and path.
 
 **Verification:** Unit tests for schema, path grammar (valid, invalid, ambiguous,
-precomp-scoped), cycles and limits. Round trip: parse → serialise → parse is identical.
+precomp-scoped, repeated-source instances, invalid instance hops), cycles and limits.
+Round trip: parse → serialise → parse is identical.
 
 **Completion record:** _to be filled in._
 
@@ -621,7 +645,9 @@ Parenting, stretch and remap match hand-computed expectations.
 16, positive/negative stretch, zero/non-finite stretch rejection, reversed first/last
 source frames, exclusive out points, source-boundary holds, and remap overriding
 stretch. Test remapped precomps with different frame rates, plus a property-based
-test (random seeks vs forward play) using a fixed seed.
+test (random seeks vs forward play) using a fixed seed. Verify the repeated-instance
+property-path example above, nested instance paths and independent memoisation with
+different remaps and source frame rates.
 
 **Completion record:** _to be filled in._
 
@@ -1030,8 +1056,10 @@ round trip, evaluator unit tests per built-in, type errors, cycle detection (sam
 self-delayed and mutually delayed references, plus mixed expression/driver/constraint
 cycles), and an allowed earlier-time read across an acyclic graph. Verify cycle
 rejection before rendering at frame 0 and on random seeks, then seek determinism and
-bake round trip. A fuzz test with a fixed seed confirms that arbitrary input either
-parses to a valid AST or returns a diagnostic, never throws.
+bake round trip. Cross-precomp reads must distinguish repeated source instances with
+different start frames, reverse stretch, remap and source frame rates, including random
+seek order and nested instance paths. A fuzz test with a fixed seed confirms that
+arbitrary input either parses to a valid AST or returns a diagnostic, never throws.
 
 **Completion record:** _to be filled in._
 
@@ -1338,6 +1366,7 @@ A milestone is complete when **all** of the following hold:
 | 2026-10-01 | CE6/CE8 complete against native compositions; CE4 owns family parity; CE8 depends on CE6 and CE9                            | Removes circular backend/adapter acceptance gates and makes camera prerequisites explicit                                                                           |                |
 | 2026-10-01 | Stretch is a signed nonzero rate; startFrame anchors local time zero; finite visual sources hold boundary frames            | Makes CE1 accept CE2 reverse playback and defines deterministic source sampling without changing composition-time visibility                                        |                |
 | 2026-10-01 | CE10 depends on CE3, CE4a, CE9 and CE12                                                                                     | Its CLI, expression helpers and adapter-parity acceptance require rendering, expressions, baking, linting and the story adapter                                     |                |
+| 2026-10-01 | Property paths traverse precomp layer instances and carry instance-local time at each hop                                   | Repeated sources with different start/stretch/remap must remain separately addressable and independently evaluated                                                  |                |
 
 ## Open questions for the owner
 
