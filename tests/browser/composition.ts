@@ -472,6 +472,119 @@ try {
     "stroke-width text animators prepare and render through settlement",
   );
 
+  const fastStroke: Composition = {
+    ...strokeText,
+    layers: strokeText.layers.map((layer) => ({ ...layer, stretch: 0.5 })),
+    textAnimators: strokeText.textAnimators!.map((animator) => ({
+      ...animator,
+      end: 10,
+    })),
+  };
+  const fastStrokeFrames = await render(
+    page,
+    fastStroke,
+    [5, 9],
+    assetUrls(fastStroke),
+  );
+  assert.deepEqual(
+    fastStrokeFrames.frames[0],
+    strokeFrames.frames[1],
+    "stroke caches include settled layer times beyond scope frames",
+  );
+  assert.deepEqual(
+    fastStrokeFrames.frames[1],
+    strokeFrames.frames[1],
+    "settled strokes remain cached at later layer times",
+  );
+
+  const axisText: Composition = {
+    ...strokeText,
+    id: "axis-text",
+    assets: everyField.assets.filter((asset) => asset.id === "body"),
+    layers: [
+      {
+        ...strokeText.layers[0]!,
+        type: "text",
+        text: "Test",
+        fontSize: 30,
+        color: "#ffffff",
+        fontAsset: "body",
+      },
+    ],
+    textAnimators: [
+      {
+        ...strokeText.textAnimators![0]!,
+        end: 10,
+        from: { axes: { wght: 0 } },
+        to: { axes: { wght: 100 } },
+      },
+    ],
+  };
+  for (const clock of [
+    { stretch: 0.5, startFrame: 0 },
+    { stretch: 2, startFrame: -10 },
+    { stretch: -1, startFrame: 10 },
+  ]) {
+    const timed = {
+      ...axisText,
+      layers: axisText.layers.map((layer) => ({ ...layer, ...clock })),
+    };
+    const rendered = await render(page, timed, [0, 5, 9], assetUrls(timed));
+    assert.ok(
+      rendered.frames.every((frame) => litPixels(frame) > 0),
+      "axis variants follow layer clocks",
+    );
+  }
+  const reusedAxes: Composition = {
+    ...axisText,
+    frameCount: 12,
+    layers: [
+      {
+        id: "fast",
+        type: "precomp",
+        comp: "inner",
+        transform: { anchor: [0, 0] },
+      },
+      {
+        id: "remapped",
+        type: "precomp",
+        comp: "inner",
+        timeRemap: {
+          keys: [
+            { frame: 0, value: 29 },
+            { frame: 11, value: 0 },
+          ],
+        },
+        transform: { anchor: [0, 0], position: [150, 0] },
+      },
+    ],
+    textAnimators: [],
+    precomps: [
+      {
+        id: "inner",
+        width: 150,
+        height: 100,
+        fps: 60,
+        frameCount: 30,
+        layers: axisText.layers.map((layer) => ({ ...layer, stretch: 0.5 })),
+        textAnimators: axisText.textAnimators!,
+      },
+    ],
+  };
+  const nestedAxes = await render(
+    page,
+    reusedAxes,
+    [0, 5, 11],
+    assetUrls(reusedAxes),
+  );
+  assert.ok(
+    nestedAxes.frames.every((frame) => litPixels(frame) > 0),
+    "axis variants cover reused, remapped and differing-fps precomps",
+  );
+  results.push(
+    "font-axis variants follow stretched, reversed and reused precomp clocks",
+  );
+
   // First slice: deterministic preview, and MP4 export from the same renderer.
   const firstSlice = JSON.parse(
     await readFile(resolve(fixtureDir, "first-slice.json"), "utf8"),

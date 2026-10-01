@@ -3,6 +3,7 @@ import { loadTextStyleFont, type LoadedFont } from "./prepared-fonts.ts";
 import { shapeText, type ShapedLayout } from "./shaped-text.ts";
 import {
   evaluateTextPoses,
+  textAnimationFrames,
   type TextAnimationContext,
 } from "./typography-animation.ts";
 import {
@@ -48,7 +49,7 @@ export function nodeAxisVariants(
   const variants = new Map<string, Record<string, number>>();
   if (!animators.some((a) => a.from.axes || a.to?.axes)) return variants;
   for (const layout of layouts)
-    for (let frame = 0; frame < scene.frameCount; frame++) {
+    for (const frame of textAnimationFrames(scene, node)) {
       for (const [i, pose] of evaluateTextPoses(
         node,
         layout,

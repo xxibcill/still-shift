@@ -246,6 +246,8 @@ changing the contract.
   places the first line.
 - Transitions, decoration reveals, counts and text animators sample **layer time**,
   like keys; signal-driven animator selectors therefore also sample layer time.
+  Font-axis and stroke caches prepare the rounded layer times reachable at output
+  frames, including stretched, reversed, remapped and reused precomp instances.
 - **State and transitions:** `state` keys choose the displayed text until the first
   transition window opens. From then on the latest transition that has started
   decides: its `fromState` during the window (blending towards `toState`), its

@@ -26,6 +26,11 @@ import { rgba } from "../evaluate/sample.ts";
 import type { Bounds } from "../evaluate/types.ts";
 import { cssColor, type CanvasTextDrawer } from "./canvas2d.ts";
 import type { TextContent } from "./graph.ts";
+import {
+  collectCompositionTextFrames,
+  cachedTextNodes,
+  type CompositionTextFrames,
+} from "./text-frames.ts";
 
 type TextLayer = Extract<CompositionLayer, { type: "text" }>;
 type TypographyScene = Parameters<typeof prepareTypography>[0];
@@ -115,9 +120,11 @@ function typographyScene(
   comp: Composition,
   scope: CompositionScope,
   nodes: TextNode[],
+  frames: CompositionTextFrames = {},
 ): TypographyScene {
   const ids = new Set(nodes.map((n) => n.id));
   const fps = scope.fps ?? comp.fps;
+  const prefix = scope === comp ? "" : `${scope.id}/`;
   return {
     nodes,
     fps,
@@ -129,6 +136,13 @@ function typographyScene(
     },
     tracks: {},
     followers: {},
+    animationFrames: Object.fromEntries(
+      nodes.flatMap((node) =>
+        Object.hasOwn(frames, prefix + node.id)
+          ? [[node.id, frames[prefix + node.id]!]]
+          : [],
+      ),
+    ),
     typography: "type-1",
     textStyles: comp.textStyles ?? {},
     textEvents: [],
@@ -173,8 +187,48 @@ export async function loadCompositionFonts(
     },
     assetUrl,
   );
-  for (const scene of typed) await loadTextAnimationFonts(scene, loaded);
+  const frames = compositionTextFrames(
+    comp,
+    loaded,
+    document.createElement("canvas").getContext("2d")!,
+  );
+  for (const [scope] of scopes(comp)) {
+    const scene = typographyScene(
+      comp,
+      scope,
+      textLayers(scope)
+        .map((layer) => textNode(comp, layer))
+        .filter((node) => pinned(comp, node)),
+      frames,
+    );
+    await loadTextAnimationFonts(scene, loaded);
+  }
   return loaded;
+}
+
+function compositionTextFrames(
+  comp: Composition,
+  fonts: Map<string, LoadedFont>,
+  context: CanvasRenderingContext2D,
+): CompositionTextFrames {
+  const animated = [comp, ...(comp.precomps ?? [])].some(
+    (scope) => cachedTextNodes(scope).size > 0,
+  );
+  if (!animated) return {};
+  const staticComp: Composition = {
+    ...comp,
+    textAnimators: [],
+    ...(comp.precomps
+      ? {
+          precomps: comp.precomps.map((scope) => ({
+            ...scope,
+            textAnimators: [],
+          })),
+        }
+      : {}),
+  };
+  const { bounds } = prepareCompositionText(staticComp, fonts, context, {});
+  return collectCompositionTextFrames(comp, bounds);
 }
 
 function markBaseColor(raster: TextRaster, color: string) {
@@ -256,6 +310,11 @@ export function prepareCompositionText(
   comp: Composition,
   fonts: Map<string, LoadedFont>,
   measureContext: CanvasRenderingContext2D,
+  frames: CompositionTextFrames = compositionTextFrames(
+    comp,
+    fonts,
+    measureContext,
+  ),
 ): CompositionText {
   const entries = new Map<string, Entry>();
   const bounds: Record<string, Bounds[]> = {};
@@ -269,6 +328,7 @@ export function prepareCompositionText(
       comp,
       scope,
       typed.map(({ node }) => node),
+      frames,
     );
     const prepared = typed.length ? prepareTypography(scene, fonts) : undefined;
     for (const { layer, node } of nodes) {

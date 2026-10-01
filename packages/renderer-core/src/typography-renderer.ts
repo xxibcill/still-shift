@@ -16,6 +16,7 @@ import {
 import { shapeText, type ShapedLayout } from "./shaped-text.ts";
 import {
   evaluateTextPoses,
+  textAnimationFrames,
   clusterBox,
   type TextPose,
   type TextAnimationContext,
@@ -142,7 +143,7 @@ export function rasterizeText(
   };
 }
 export function prepareTypography(
-  scene: StoryRenderScene | CommerceRenderScene,
+  scene: (StoryRenderScene | CommerceRenderScene) & TextAnimationContext,
   fonts: Map<string, LoadedFont>,
 ): PreparedTypography {
   const nodes = new Map<string, Map<string, TextRaster>>(),
@@ -218,11 +219,13 @@ export function prepareTypography(
       const layoutsByText = new Map(
         [...rasters].map(([text, raster]) => [text, raster.layout]),
       );
-      for (const { frame, texts } of textVisibility(
-        scene,
-        node,
-        layoutsByText,
-      )) {
+      const visibility = Object.hasOwn(scene.animationFrames ?? {}, node.id)
+        ? [...textAnimationFrames(scene, node)].map((frame) => ({
+            frame,
+            texts: [...rasters.keys()],
+          }))
+        : textVisibility(scene, node, layoutsByText);
+      for (const { frame, texts } of visibility) {
         for (const text of new Set([...staticValues, ...texts])) {
           const raster = rasters.get(text);
           if (!raster)
