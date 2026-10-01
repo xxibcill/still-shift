@@ -1,0 +1,901 @@
+{
+  "schemaVersion": "composition-1",
+  "id": "every-field",
+  "name": "Every CE1 field",
+  "width": 1920,
+  "height": 1080,
+  "fps": 30,
+  "frameCount": 120,
+  "background": "#E8DFC9",
+  "format": "landscape",
+  "colorSpace": "srgb",
+  "motionBlur": {
+    "enabled": false,
+    "shutterAngle": 180,
+    "shutterPhase": -90,
+    "samples": 8
+  },
+  "assets": [
+    {
+      "id": "house",
+      "type": "image",
+      "path": "../../../../assets/story-motion/art/house.svg",
+      "sha256": "sha256:a8fa4eff374ba974770317dd483ca7b2e5b8d1f0bd7a9224ada091db42542a60",
+      "width": 600,
+      "height": 440
+    },
+    {
+      "id": "store",
+      "type": "image",
+      "path": "../../../../assets/story-motion/art/store.svg",
+      "sha256": "sha256:8ba708bf4866da92ada1eed3dc788db98a961e7cf84fcafe8615fe734f13042c",
+      "width": 600,
+      "height": 520
+    },
+    {
+      "id": "land",
+      "type": "image",
+      "path": "../../../../assets/story-motion/art/land.svg",
+      "sha256": "sha256:c5c5d753a8ddd1f93da52c1171d204b260a0a2e01aa6d8c034065294345237fc",
+      "width": 640,
+      "height": 260
+    },
+    {
+      "id": "display",
+      "type": "font",
+      "path": "../../../../assets/story-motion/fonts/source-serif-4-semibold.otf",
+      "sha256": "sha256:25e034392847d9965c92f98971b3646436b7ab919ece9118b0c0e5ec94c02efc",
+      "weight": "600"
+    },
+    {
+      "id": "label",
+      "type": "font",
+      "path": "../../../../assets/story-motion/fonts/plex-sans-medium.ttf",
+      "sha256": "sha256:331c8639d7598b2cde62a911a71db195e30cb655cd6bdf2e324a7e984955f907",
+      "weight": "500"
+    },
+    {
+      "id": "body",
+      "type": "font",
+      "path": "../../../../assets/ecommerce-motion/fonts/noto-sans-thai.ttf",
+      "sha256": "sha256:5a1c559bb539583c8a1fd99d1c5b9491e5e14478c9cd2bd0970d5c3096cc9ef8",
+      "weight": "400",
+      "style": "normal",
+      "variable": {
+        "wght": {
+          "min": 100,
+          "default": 400,
+          "max": 900
+        },
+        "wdth": {
+          "min": 62.5,
+          "default": 100,
+          "max": 100
+        }
+      }
+    }
+  ],
+  "textStyles": {
+    "heading": {
+      "fontAsset": "display",
+      "size": 72,
+      "tracking": -10,
+      "leading": 1.1
+    }
+  },
+  "markers": [
+    {
+      "id": "intro",
+      "frame": 0,
+      "duration": 30,
+      "label": "Intro"
+    },
+    {
+      "id": "turn",
+      "frame": 60
+    }
+  ],
+  "signals": [
+    {
+      "id": "pressure",
+      "cue": "turn",
+      "keys": [
+        {
+          "frame": 0,
+          "value": 0
+        },
+        {
+          "frame": 60,
+          "value": 1,
+          "interpolation": "smooth"
+        },
+        {
+          "frame": 119,
+          "value": 0.4
+        }
+      ]
+    }
+  ],
+  "drivers": [
+    {
+      "target": "shadow.transform.opacity",
+      "signal": "pressure",
+      "map": {
+        "range": [0, 1],
+        "to": [0.2, 0.7]
+      },
+      "layer": "response",
+      "blend": "replace"
+    },
+    {
+      "target": "shadow.x",
+      "source": "house.transform.position.x",
+      "map": {
+        "offset": 24
+      },
+      "layer": "response"
+    },
+    {
+      "target": "tint.transform.rotation",
+      "sum": ["pressure", "house.transform.rotation"],
+      "layer": "current",
+      "blend": "add"
+    }
+  ],
+  "periodic": [
+    {
+      "target": "cloud.transform.position.y",
+      "start": 0,
+      "end": 120,
+      "oscillate": {
+        "period": 60,
+        "amplitude": 6
+      },
+      "layer": "carrier",
+      "blend": "add"
+    },
+    {
+      "node": "cloud",
+      "property": "rotation",
+      "start": 30,
+      "end": 90,
+      "cue": "turn",
+      "noise": {
+        "seed": 7,
+        "period": 40,
+        "amplitude": 2
+      },
+      "layer": "carrier",
+      "blend": "add"
+    }
+  ],
+  "expressions": {},
+  "camera2d": {
+    "keys": [
+      {
+        "frame": 0,
+        "x": 960,
+        "y": 540,
+        "zoom": 1
+      },
+      {
+        "frame": 119,
+        "x": 1000,
+        "y": 520,
+        "zoom": 1.08
+      }
+    ],
+    "easeIn": true,
+    "easeOut": true,
+    "startTangent": {
+      "x": 0,
+      "y": 0,
+      "zoom": 0
+    },
+    "endTangent": {
+      "x": 0,
+      "y": 0,
+      "zoom": 0
+    },
+    "jolts": [
+      {
+        "frame": 60,
+        "dx": 6,
+        "dy": -4,
+        "decayFrames": 12
+      }
+    ]
+  },
+  "metadata": {
+    "registration": {
+      "source": "hand-written CE1 fixture"
+    },
+    "claims": []
+  },
+  "constraints": [
+    {
+      "type": "look-at",
+      "target": "needle",
+      "toward": "house"
+    },
+    {
+      "type": "attach",
+      "target": "key",
+      "anchor": "house",
+      "point": [0.5, 0.2],
+      "offset": [0, -12]
+    }
+  ],
+  "textAnimators": [
+    {
+      "node": "headline",
+      "unit": "word",
+      "start": 0,
+      "end": 30,
+      "stagger": 3,
+      "selector": {
+        "start": 0,
+        "end": 1,
+        "shape": "ramp-up",
+        "basedOn": "words"
+      },
+      "from": {
+        "opacity": 0,
+        "offset": [0, 18]
+      },
+      "cue": "intro"
+    }
+  ],
+  "precomps": [
+    {
+      "id": "scene",
+      "name": "Nested scene",
+      "width": 800,
+      "height": 600,
+      "fps": 30,
+      "frameCount": 90,
+      "background": null,
+      "markers": [
+        {
+          "id": "inner",
+          "frame": 10
+        }
+      ],
+      "constraints": [
+        {
+          "type": "keep-in-safe-area",
+          "target": "inner-house",
+          "inset": 24,
+          "clamp": true
+        }
+      ],
+      "textAnimators": [
+        {
+          "node": "inner-label",
+          "unit": "glyph",
+          "start": 10,
+          "end": 40,
+          "stagger": 1,
+          "selector": {
+            "start": 0,
+            "end": 1
+          },
+          "from": {
+            "opacity": 0
+          },
+          "cue": "inner"
+        }
+      ],
+      "layers": [
+        {
+          "id": "inner-label",
+          "type": "text",
+          "text": "Inside",
+          "fontSize": 48,
+          "color": "#2B2A26",
+          "fontAsset": "label"
+        },
+        {
+          "id": "inner-house",
+          "type": "image",
+          "size": [300, 220],
+          "sources": [
+            {
+              "asset": "house"
+            }
+          ],
+          "transform": {
+            "position": [400, 300]
+          }
+        },
+        {
+          "id": "deeper",
+          "type": "precomp",
+          "comp": "leaf"
+        }
+      ]
+    },
+    {
+      "id": "leaf",
+      "width": 200,
+      "height": 200,
+      "frameCount": 30,
+      "layers": [
+        {
+          "id": "dot",
+          "type": "solid",
+          "size": [40, 40],
+          "color": {
+            "keys": [
+              {
+                "frame": 0,
+                "value": "#C05A3C"
+              },
+              {
+                "frame": 29,
+                "value": "#2B4A3AFF"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "layers": [
+    {
+      "id": "headline",
+      "name": "Headline",
+      "type": "text",
+      "text": "The same season.",
+      "states": ["The same season.", "A different harvest."],
+      "state": {
+        "keys": [
+          {
+            "frame": 0,
+            "value": 0
+          },
+          {
+            "frame": 60,
+            "value": 1
+          }
+        ]
+      },
+      "fontSize": 72,
+      "color": {
+        "keys": [
+          {
+            "frame": 0,
+            "value": "#2B2A26"
+          },
+          {
+            "frame": 60,
+            "value": "#7A2E1F",
+            "easing": "in-out-cubic"
+          }
+        ]
+      },
+      "weight": "bold",
+      "font": "serif",
+      "fontAsset": "display",
+      "align": "left",
+      "textRole": "heading",
+      "textLayout": {
+        "width": 900,
+        "height": 200,
+        "lineHeight": 1.15,
+        "overflow": "error"
+      },
+      "revealMode": "words",
+      "reveal": {
+        "keys": [
+          {
+            "frame": 0,
+            "value": 0
+          },
+          {
+            "frame": 24,
+            "value": 1,
+            "easing": "out-cubic"
+          }
+        ]
+      },
+      "style": "heading",
+      "spans": [
+        {
+          "id": "season",
+          "start": 9,
+          "end": 15,
+          "color": "#7A2E1F"
+        }
+      ],
+      "locale": "en",
+      "anchor": "cap",
+      "wrap": "balance",
+      "orphanFraction": 0.2,
+      "feather": 0.4,
+      "lineOverlap": 0.3,
+      "inPoint": 0,
+      "outPoint": 120,
+      "startFrame": 0,
+      "stretch": 1,
+      "enabled": true,
+      "solo": false,
+      "guide": false,
+      "threeD": false,
+      "motionBlur": false,
+      "blendMode": "normal",
+      "effects": [],
+      "cameraDepth": 0,
+      "qualification": "Illustrative; not to scale.",
+      "source": {
+        "family": "hand-written",
+        "id": "headline"
+      },
+      "metadata": {
+        "note": "top layer"
+      },
+      "transform": {
+        "position": [120, 120],
+        "autoOrient": "off"
+      },
+      "decorations": [
+        {
+          "span": "season",
+          "kind": "underline",
+          "color": "#7A2E1F",
+          "lineStyle": "brush",
+          "reveal": [
+            {
+              "frame": 30,
+              "value": 0
+            },
+            {
+              "frame": 50,
+              "value": 1
+            }
+          ]
+        }
+      ],
+      "transition": {
+        "kind": "crossfade",
+        "window": {
+          "start": 58,
+          "end": 70
+        }
+      }
+    },
+    {
+      "id": "textbox",
+      "type": "text",
+      "text": "Short label",
+      "fontSize": 32,
+      "color": "#2B2A26",
+      "fontAsset": "body",
+      "textBox": {
+        "locale": "en",
+        "maxLines": 2,
+        "lineHeight": 1.2
+      },
+      "transform": {
+        "position": [120, 980]
+      },
+      "states": ["Short label", "Longer label"],
+      "transitions": [
+        {
+          "kind": "retype",
+          "window": {
+            "start": 60,
+            "end": 90
+          }
+        }
+      ]
+    },
+    {
+      "id": "rig",
+      "type": "null",
+      "transform": {
+        "position": {
+          "keys": [
+            {
+              "frame": 0,
+              "value": [960, 540],
+              "spatialOut": [80, -40]
+            },
+            {
+              "frame": 60,
+              "value": [1100, 500],
+              "spatialIn": [-60, 0],
+              "out": {
+                "ease": 0.6
+              },
+              "in": {
+                "ease": 0.4
+              }
+            },
+            {
+              "frame": 119,
+              "value": [1180, 520],
+              "interpolation": "linear"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "house",
+      "type": "image",
+      "parent": "rig",
+      "size": [600, 440],
+      "fit": "contain",
+      "rasterize": "natural-size",
+      "sources": [
+        {
+          "asset": "house",
+          "pose": "rest",
+          "registration": {
+            "anchor": [0.5, 1]
+          },
+          "anchors": {
+            "door": [0.5, 0.8]
+          }
+        },
+        {
+          "asset": "house",
+          "crop": [0, 0, 600, 400],
+          "pose": "lean",
+          "registration": {
+            "anchor": [0.5, 1]
+          }
+        }
+      ],
+      "state": {
+        "keys": [
+          {
+            "frame": 0,
+            "value": 0
+          },
+          {
+            "frame": 50,
+            "value": 1
+          }
+        ]
+      },
+      "stateFrom": {
+        "keys": [
+          {
+            "frame": 0,
+            "value": 0
+          }
+        ]
+      },
+      "stateMix": {
+        "keys": [
+          {
+            "frame": 50,
+            "value": 0
+          },
+          {
+            "frame": 56,
+            "value": 1
+          }
+        ]
+      },
+      "transform": {
+        "anchor": {
+          "x": 300,
+          "y": {
+            "keys": [
+              {
+                "frame": 0,
+                "value": 440
+              },
+              {
+                "frame": 30,
+                "value": 420
+              }
+            ]
+          }
+        },
+        "position": [0, 0],
+        "scale": {
+          "keys": [
+            {
+              "frame": 0,
+              "value": [1, 1]
+            },
+            {
+              "frame": 30,
+              "value": [1.04, 0.96],
+              "interpolation": "bezier",
+              "bezier": [0.3, 0, 0.2, 1]
+            }
+          ]
+        },
+        "rotation": {
+          "keys": [
+            {
+              "frame": 0,
+              "value": 0,
+              "out": {
+                "ease": 0.5,
+                "speed": 0
+              }
+            },
+            {
+              "frame": 20,
+              "value": -4,
+              "in": {
+                "ease": 0.5,
+                "speed": 0
+              },
+              "smooth": true
+            },
+            {
+              "frame": 40,
+              "value": 0
+            }
+          ]
+        },
+        "skewX": {
+          "keys": [
+            {
+              "frame": 0,
+              "value": 0
+            },
+            {
+              "frame": 10,
+              "value": 3,
+              "interpolation": "hold"
+            }
+          ]
+        },
+        "skewY": 0,
+        "opacity": {
+          "keys": [
+            {
+              "frame": 0,
+              "value": 0
+            },
+            {
+              "frame": 12,
+              "value": 1,
+              "easing": {
+                "spring": {
+                  "stiffness": 180,
+                  "damping": 18,
+                  "mass": 1
+                }
+              }
+            }
+          ]
+        }
+      },
+      "masks": [
+        {
+          "id": "window",
+          "mode": "add",
+          "inverted": false,
+          "path": {
+            "keys": [
+              {
+                "frame": 0,
+                "value": {
+                  "closed": true,
+                  "vertices": [
+                    [0, 0],
+                    [600, 0],
+                    [600, 440],
+                    [0, 440]
+                  ]
+                }
+              },
+              {
+                "frame": 30,
+                "value": {
+                  "closed": true,
+                  "vertices": [
+                    [20, 20],
+                    [580, 20],
+                    [580, 420],
+                    [20, 420]
+                  ],
+                  "inTangents": [
+                    [0, 0],
+                    [0, 0],
+                    [0, 0],
+                    [0, 0]
+                  ],
+                  "outTangents": [
+                    [10, 0],
+                    [0, 10],
+                    [-10, 0],
+                    [0, -10]
+                  ]
+                }
+              }
+            ]
+          },
+          "feather": {
+            "keys": [
+              {
+                "frame": 0,
+                "value": 0
+              },
+              {
+                "frame": 30,
+                "value": 8
+              }
+            ]
+          },
+          "expansion": 2,
+          "opacity": 1
+        },
+        {
+          "id": "hole",
+          "mode": "subtract",
+          "path": {
+            "closed": true,
+            "vertices": [
+              [250, 300],
+              [350, 300],
+              [350, 400],
+              [250, 400]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "key",
+      "type": "solid",
+      "size": [20, 20],
+      "color": "#2B2A26",
+      "parent": "rig"
+    },
+    {
+      "id": "needle",
+      "type": "solid",
+      "size": [8, 120],
+      "color": "#2B2A26",
+      "transform": {
+        "anchor": [4, 120],
+        "position": [1500, 900]
+      },
+      "cameraDepth": 1
+    },
+    {
+      "id": "shadow",
+      "type": "solid",
+      "size": [600, 80],
+      "color": "#2B2A2680",
+      "blendMode": "multiply",
+      "cameraDepth": 0.5,
+      "transform": {
+        "position": [960, 820]
+      }
+    },
+    {
+      "id": "cloud-matte",
+      "type": "solid",
+      "size": [640, 200],
+      "color": "#FFFFFF",
+      "cameraDepth": 0.3,
+      "transform": {
+        "position": [400, 200]
+      }
+    },
+    {
+      "id": "cloud",
+      "type": "image",
+      "size": [640, 260],
+      "sources": [
+        {
+          "asset": "land"
+        }
+      ],
+      "blendMode": "screen",
+      "cameraDepth": 0.3,
+      "transform": {
+        "position": [400, 200]
+      },
+      "trackMatte": {
+        "layer": "cloud-matte",
+        "mode": "alpha"
+      }
+    },
+    {
+      "id": "panel",
+      "type": "group",
+      "size": [700, 400],
+      "clip": true,
+      "transform": {
+        "position": [1400, 300],
+        "opacity": 0.8
+      }
+    },
+    {
+      "id": "panel-matte",
+      "type": "solid",
+      "parent": "panel",
+      "size": [700, 400],
+      "color": "#FFFFFF"
+    },
+    {
+      "id": "panel-store",
+      "type": "image",
+      "parent": "panel",
+      "size": [600, 520],
+      "sources": [
+        {
+          "asset": "store"
+        }
+      ],
+      "trackMatte": {
+        "layer": "panel-matte",
+        "mode": "luma-inverted"
+      }
+    },
+    {
+      "id": "inset",
+      "type": "precomp",
+      "comp": "scene",
+      "collapseTransforms": true,
+      "timeRemap": {
+        "keys": [
+          {
+            "frame": 0,
+            "value": 0
+          },
+          {
+            "frame": 119,
+            "value": 89
+          }
+        ]
+      },
+      "transform": {
+        "position": [480, 700],
+        "scale": [0.5, 0.5]
+      }
+    },
+    {
+      "id": "tint-matte",
+      "type": "solid",
+      "size": [1920, 1080],
+      "color": "#000000",
+      "stretch": -1,
+      "startFrame": 119
+    },
+    {
+      "id": "tint",
+      "type": "adjustment",
+      "size": [1920, 1080],
+      "blendMode": "soft-light",
+      "trackMatte": {
+        "layer": "tint-matte",
+        "mode": "alpha-inverted"
+      }
+    },
+    {
+      "id": "bg-luma",
+      "type": "solid",
+      "size": [1920, 1080],
+      "color": "#808080",
+      "transform": {
+        "position": [960, 540]
+      }
+    },
+    {
+      "id": "bg-wash",
+      "type": "solid",
+      "size": [1920, 1080],
+      "color": "#F2ECDD",
+      "transform": {
+        "position": [960, 540]
+      },
+      "trackMatte": {
+        "layer": "bg-luma",
+        "mode": "luma"
+      }
+    }
+  ]
+}

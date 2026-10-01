@@ -40,3 +40,5 @@ export * from "./story-acting.ts";
 export * from "./character-actions.ts";
 
 export * from "./typography.ts";
+
+export * from "./composition/index.ts";

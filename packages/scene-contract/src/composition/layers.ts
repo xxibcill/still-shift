@@ -1,0 +1,343 @@
+import { z } from "zod";
+import { PoseAnchorSchema } from "../character-actions.ts";
+import { PoseRegistrationSchema } from "../story-acting.ts";
+import { typographyNodeFields } from "../typography.ts";
+import {
+  AnimatableColorSchema,
+  AnimatableDiscreteSchema,
+  AnimatablePathSchema,
+  animatableScalar,
+  animatableVector,
+} from "./keys.ts";
+import {
+  bounded,
+  COMPOSITION_LIMITS,
+  compFrame,
+  compositionId,
+  finite,
+  keyFrame,
+  label,
+  metadata,
+  size2,
+  unit,
+} from "./primitives.ts";
+
+const L = COMPOSITION_LIMITS;
+
+export const COMPOSITION_BLEND_MODES = [
+  "normal",
+  "multiply",
+  "screen",
+  "overlay",
+  "darken",
+  "lighten",
+  "color-dodge",
+  "color-burn",
+  "hard-light",
+  "soft-light",
+  "difference",
+  "exclusion",
+  "hue",
+  "saturation",
+  "color",
+  "luminosity",
+  "add",
+] as const;
+export const CompositionBlendModeSchema = z.enum(COMPOSITION_BLEND_MODES);
+
+export const TrackMatteSchema = z
+  .object({
+    layer: compositionId,
+    mode: z.enum(["alpha", "alpha-inverted", "luma", "luma-inverted"]),
+  })
+  .strict();
+
+export const MaskSchema = z
+  .object({
+    id: compositionId,
+    path: AnimatablePathSchema,
+    mode: z.enum(["add", "subtract", "intersect", "difference", "none"]),
+    inverted: z.boolean().optional(),
+    feather: animatableScalar(finite.min(0).max(1000)).optional(),
+    expansion: animatableScalar(finite.min(-1000).max(1000)).optional(),
+    opacity: animatableScalar(unit).optional(),
+  })
+  .strict();
+
+/** Registry effects arrive in CE6; until then a non-empty stack is rejected. */
+export const EffectInstanceSchema = z
+  .object({
+    id: compositionId,
+    effect: z
+      .string()
+      .regex(/^[a-z][\w.-]*$/)
+      .max(64),
+    enabled: z.boolean().optional(),
+    params: z.record(compositionId, z.json()).optional(),
+  })
+  .strict();
+
+const scaleComponent = finite.min(-1000).max(1000);
+const angle = bounded;
+const skewAngle = finite.min(-85).max(85);
+
+/**
+ * Matrix = translate(position) · rotate · skew · scale · translate(−anchor), where
+ * skew is the shear `[[1, tan skewX], [tan skewY, 1]]` used by the existing renderer.
+ * Every field is optional; defaults are listed in docs/composition-reference.md.
+ */
+export const TransformSchema = z
+  .object({
+    anchor: animatableVector(bounded).optional(),
+    position: animatableVector(bounded, { spatial: true }).optional(),
+    scale: animatableVector(scaleComponent).optional(),
+    rotation: animatableScalar(angle).optional(),
+    skewX: animatableScalar(skewAngle).optional(),
+    skewY: animatableScalar(skewAngle).optional(),
+    opacity: animatableScalar(unit).optional(),
+    rotationX: animatableScalar(angle).optional(),
+    rotationY: animatableScalar(angle).optional(),
+    orientation: animatableVector(angle).optional(),
+    autoOrient: z.enum(["off", "path", "camera"]).optional(),
+  })
+  .strict();
+
+const layerBase = {
+  id: compositionId,
+  name: label.optional(),
+  /** Inclusive, in composition frames. Defaults to 0. */
+  inPoint: compFrame.optional(),
+  /** Exclusive, in composition frames. Defaults to the composition's frameCount. */
+  outPoint: compFrame.optional(),
+  /** Composition frame at which layer time is 0. Defaults to 0. */
+  startFrame: keyFrame.optional(),
+  /** AE time stretch: 2 plays at half speed, negative values play in reverse. */
+  stretch: finite
+    .min(-L.maxStretch)
+    .max(L.maxStretch)
+    .refine((value) => value !== 0, {
+      message: "stretch cannot be 0",
+      params: { diagnosticCode: "comp-schema-range" },
+    })
+    .optional(),
+  parent: compositionId.optional(),
+  enabled: z.boolean().optional(),
+  solo: z.boolean().optional(),
+  guide: z.boolean().optional(),
+  threeD: z.boolean().optional(),
+  transform: TransformSchema.optional(),
+  blendMode: CompositionBlendModeSchema.optional(),
+  trackMatte: TrackMatteSchema.optional(),
+  masks: z.array(MaskSchema).max(L.maxMasks).optional(),
+  effects: z.array(EffectInstanceSchema).max(L.maxEffects).optional(),
+  motionBlur: z.boolean().optional(),
+  /** How strongly the composition 2D camera moves an unparented layer (0 = fixed to screen). */
+  cameraDepth: finite.min(0).max(2).optional(),
+  qualification: z.string().min(1).max(400).optional(),
+  source: z
+    .object({ family: compositionId, id: z.string().min(1).max(200) })
+    .strict()
+    .optional(),
+  metadata: metadata.optional(),
+};
+
+const timeRemap = animatableScalar(
+  finite.min(-L.maxKeyFrame).max(L.maxKeyFrame),
+);
+
+export const SolidLayerSchema = z
+  .object({
+    ...layerBase,
+    type: z.literal("solid"),
+    size: size2,
+    color: AnimatableColorSchema,
+  })
+  .strict();
+
+export const ImageSourceSchema = z
+  .object({
+    asset: compositionId,
+    crop: z
+      .tuple([
+        finite.nonnegative(),
+        finite.nonnegative(),
+        finite.positive(),
+        finite.positive(),
+      ])
+      .optional(),
+    pose: compositionId.optional(),
+    registration: PoseRegistrationSchema.optional(),
+    anchors: z.record(compositionId, PoseAnchorSchema).optional(),
+  })
+  .strict();
+
+export const ImageLayerSchema = z
+  .object({
+    ...layerBase,
+    type: z.literal("image"),
+    size: size2,
+    fit: z.enum(["contain", "cover", "stretch"]).optional(),
+    sources: z.array(ImageSourceSchema).min(1).max(L.maxImageSources),
+    /** Index into `sources`; held between keys. Defaults to 0. */
+    state: AnimatableDiscreteSchema.optional(),
+    /** Previous source and blend amount for a state crossfade; set both or neither. */
+    stateFrom: AnimatableDiscreteSchema.optional(),
+    stateMix: animatableScalar(unit).optional(),
+    /** `natural-size` rasterises vector sources once at their natural size (parity note 5). */
+    rasterize: z.enum(["draw", "natural-size"]).optional(),
+  })
+  .strict();
+
+export const TextLayerSchema = z
+  .object({
+    ...layerBase,
+    type: z.literal("text"),
+    text: z.string().min(1).max(L.maxTextLength),
+    /** Alternative texts selected by `state`, as in story text states. */
+    states: z
+      .array(z.string().min(1).max(L.maxTextLength))
+      .min(1)
+      .max(L.maxTextStates)
+      .optional(),
+    state: AnimatableDiscreteSchema.optional(),
+    fontSize: finite.min(1).max(2000),
+    color: AnimatableColorSchema,
+    weight: z.enum(["normal", "bold"]).optional(),
+    font: z.enum(["serif", "sans-serif"]).optional(),
+    fontAsset: compositionId.optional(),
+    align: z.enum(["left", "center", "right"]).optional(),
+    textRole: z.enum(["heading", "label", "qualification", "body"]).optional(),
+    textLayout: z
+      .object({
+        width: finite.positive().max(L.maxCoordinate),
+        height: finite.positive().max(L.maxCoordinate),
+        lineHeight: finite.min(1).max(3),
+        overflow: z.enum(["error", "clip"]),
+      })
+      .strict()
+      .optional(),
+    textBox: z
+      .object({
+        locale: z.enum(["en", "th"]),
+        maxLines: finite.int().min(1).max(8),
+        lineHeight: finite.min(1).max(2),
+      })
+      .strict()
+      .optional(),
+    revealMode: z.enum(["wipe", "words"]).optional(),
+    reveal: animatableScalar(unit).optional(),
+    ...typographyNodeFields,
+  })
+  .strict();
+
+export const NullLayerSchema = z
+  .object({ ...layerBase, type: z.literal("null") })
+  .strict();
+
+/**
+ * Children multiply this layer's opacity and, with `clip`, are clipped to its bounds.
+ * Unlike a null, opacity reaches the children; unlike a precomp, it applies per child
+ * rather than to a flattened result (parity note 1).
+ */
+export const GroupLayerSchema = z
+  .object({
+    ...layerBase,
+    type: z.literal("group"),
+    size: size2,
+    clip: z.boolean().optional(),
+  })
+  .strict();
+
+export const PrecompLayerSchema = z
+  .object({
+    ...layerBase,
+    type: z.literal("precomp"),
+    comp: compositionId,
+    collapseTransforms: z.boolean().optional(),
+    /** Precomp frame shown at each layer frame; overrides start and stretch. */
+    timeRemap: timeRemap.optional(),
+  })
+  .strict();
+
+export const AdjustmentLayerSchema = z
+  .object({
+    ...layerBase,
+    type: z.literal("adjustment"),
+    /** Defaults to the composition size. */
+    size: size2.optional(),
+  })
+  .strict();
+
+/** Shape contents are defined in CE5. */
+export const ShapeLayerSchema = z
+  .object({
+    ...layerBase,
+    type: z.literal("shape"),
+    contents: z.array(z.json()).max(L.maxPathVertices),
+  })
+  .strict();
+
+export const CameraLayerSchema = z
+  .object({ ...layerBase, type: z.literal("camera") })
+  .strict();
+
+export const LightLayerSchema = z
+  .object({ ...layerBase, type: z.literal("light") })
+  .strict();
+
+const mediaLayer = <T extends string>(type: T) =>
+  z
+    .object({
+      ...layerBase,
+      type: z.literal(type),
+      asset: compositionId,
+      timeRemap: timeRemap.optional(),
+    })
+    .strict();
+export const VideoLayerSchema = mediaLayer("video");
+export const SequenceLayerSchema = mediaLayer("sequence");
+export const AudioLayerSchema = mediaLayer("audio");
+
+export const CompositionLayerSchema = z.discriminatedUnion("type", [
+  SolidLayerSchema,
+  ImageLayerSchema,
+  TextLayerSchema,
+  NullLayerSchema,
+  GroupLayerSchema,
+  PrecompLayerSchema,
+  AdjustmentLayerSchema,
+  ShapeLayerSchema,
+  CameraLayerSchema,
+  LightLayerSchema,
+  VideoLayerSchema,
+  SequenceLayerSchema,
+  AudioLayerSchema,
+]);
+
+export type CompositionLayer = z.infer<typeof CompositionLayerSchema>;
+export type CompositionLayerType = CompositionLayer["type"];
+export type CompositionTransform = z.infer<typeof TransformSchema>;
+export type CompositionMask = z.infer<typeof MaskSchema>;
+export type CompositionBlendMode = z.infer<typeof CompositionBlendModeSchema>;
+export type TrackMatte = z.infer<typeof TrackMatteSchema>;
+
+/** Layer types that are part of the contract but not yet implemented. */
+export const UNAVAILABLE_LAYER_TYPES: Partial<
+  Record<CompositionLayerType, string>
+> = {
+  shape: "CE5",
+  camera: "CE8",
+  light: "a later plan (Q6)",
+  video: "CE13",
+  sequence: "CE13",
+  audio: "CE13",
+};
+
+/** Layer types with a size, whose anchor defaults to their centre. */
+export const SIZED_LAYER_TYPES = new Set<CompositionLayerType>([
+  "solid",
+  "image",
+  "group",
+  "precomp",
+  "adjustment",
+]);
