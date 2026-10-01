@@ -45,8 +45,17 @@ four and a half minutes on an Apple M5 Pro. See the
 - A failure lists the items and frames whose pixels changed. An intentional rendering
   change regenerates the baseline with `pnpm composition:baselines --write` (use
   `--only id,id` or `--family name` for a subset) and records the reason in the commit.
-- Baselines exist per `platform-arch`. On an environment without one, the check stops
-  with an explanation instead of comparing against another platform's pixels.
+- Baselines exist per `platform-arch` (`darwin-arm64`, `linux-arm64`, `linux-x64`)
+  because output differs across operating systems and CPU architectures; see policy
+  rule 6 in the plan. On an environment without one, the check stops with an
+  explanation instead of comparing against another platform's pixels.
+- `scripts/composition/linux/run.sh arm64|amd64` renders the baseline in the pinned
+  Linux container (Docker required), writes `linux-<arch>.json`, and saves frames that
+  differ from `darwin-arm64` under `benchmarks/results/`. `pnpm composition:baselines
+--compare-frames <dir>` then classifies those frames against renders on this
+  machine. `CHECK=1 scripts/composition/linux/run.sh arm64` checks the committed Linux
+  baseline instead. The `linux-x64` baseline was generated under Rosetta; confirm it on
+  real x86 hardware.
 - Rendering uses the pinned software profile `chromium-software-2`
   (`--disable-gpu --enable-unsafe-swiftshader`); the command refuses to run on any other
   renderer.

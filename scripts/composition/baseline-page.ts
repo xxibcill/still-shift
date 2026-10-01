@@ -11,6 +11,13 @@ export type BaselineRenderOptions = {
   thumbnailFrames: number[];
   thumbnailWidth: number;
   uploadSampleFrames: boolean;
+  /**
+   * 64-bit hash prefixes from another environment's baseline. Frames that differ are
+   * uploaded (the first mismatch plus mismatching sampled frames, up to
+   * `maxMismatchUploads`) so they can be compared at full resolution elsewhere.
+   */
+  expectedFrames?: string[];
+  maxMismatchUploads?: number;
   profile: string;
   item: string;
   /** Unique per item: fixtures reuse asset ids for different files, so URLs must not collide in the page cache. */
@@ -95,6 +102,7 @@ window.runCompositionBaseline = async (scene, options) => {
   })!;
   thumbnailContext.imageSmoothingQuality = "high";
   const samples = new Set(options.sampleFrames);
+  let mismatchUploads = 0;
   const thumbnails = new Set(options.thumbnailFrames);
   const result: BaselineRenderResult = {
     frameHashes: [],
@@ -116,9 +124,17 @@ window.runCompositionBaseline = async (scene, options) => {
       const readbackEnd = performance.now();
       result.renderMs.push(readbackStart - renderStart);
       result.readbackMs.push(readbackEnd - readbackStart);
-      result.frameHashes.push(
-        hex(await crypto.subtle.digest("SHA-256", pixels)),
-      );
+      const hash = hex(await crypto.subtle.digest("SHA-256", pixels));
+      result.frameHashes.push(hash);
+      if (
+        options.expectedFrames &&
+        hash.slice(0, 16) !== options.expectedFrames[frame] &&
+        mismatchUploads < (options.maxMismatchUploads ?? 0) &&
+        (mismatchUploads === 0 || samples.has(frame))
+      ) {
+        mismatchUploads += 1;
+        await uploadFrame(pixels, options, frame);
+      }
       if (thumbnails.has(frame)) {
         thumbnailContext.drawImage(
           canvas,

@@ -1,7 +1,7 @@
 # Programmable composition engine — implementation plan
 
 - **Updated:** 2026-09-30
-- **Status:** CE0 in progress (six of seven items complete; cross-architecture comparison open). Q1 and Q3 decided 2026-09-30.
+- **Status:** CE0 complete (2026-10-01). Q1 and Q3 decided 2026-09-30; Q2 and Q4–Q8 open.
 - **Baseline:** `6772717` — `Merge pull request #22 from xxibcill/codex/still-shift-plan-completion`
 - **Tracker owner:** unassigned. Record the owner and branch per milestone in the [tracker](#milestone-tracker).
 
@@ -181,7 +181,9 @@ These apply to every milestone. A change that breaks one needs a decision-log en
    on previous frames. Seeking backwards must equal playing forwards.
 3. **Determinism.** The same composition, assets, fonts, renderer version and toolchain
    produce identical encoded frames on the export render path, which is pinned to
-   software rendering (see [GPU determinism](#gpu-determinism-policy)). Randomness is
+   software rendering (see [GPU determinism](#gpu-determinism-policy)), **on the same
+   operating system and CPU architecture**. CE0 showed that output differs across
+   operating systems and architectures, so identity always includes both. Randomness is
    seeded and part of the contract.
 4. **Explicit versions.** New contracts start at `composition-1`. Each backend and effect
    has a version string that participates in cache identity, like the existing
@@ -257,12 +259,27 @@ SwiftShader, and [`golden-baseline.json`](../tests/visual/golden-baseline.json) 
 5. Speed is recovered through per-layer caching and parallel chunk rendering (CE15),
    not by switching export to hardware. Heavy effects record their SwiftShader cost in
    CE6 so budgets are visible.
-6. **Cross-architecture exactness is unverified.** SwiftShader compiles shaders to CPU
-   code at run time, so arm64 macOS and x86_64 Linux may differ. CE0 renders the
-   fixture set on both and records the result. If they differ, CPU architecture stays
-   in cache identity, golden baselines become per-architecture, and cross-architecture
-   comparison uses the `near` tier. Chunks of one export must always come from the same
-   architecture.
+6. **Output is exact only within one operating system and CPU architecture.** CE0
+   rendered the full fixture set on macOS arm64, Linux arm64 and Linux x86_64 (the
+   last under Rosetta) and found two independent causes of difference:
+   - **Operating system → text layout.** Chromium shapes and positions text through
+     CoreText on macOS and FreeType on Linux. With identical font files, glyph
+     advances differ slightly and accumulate along a line (a measured headline drifted
+     0 → 6 px across its 20 glyph runs). Frames with text therefore differ beyond every
+     tolerance tier (PSNR 22.7–33.6 dB), while frames without text are exact between
+     macOS and Linux on arm64.
+   - **CPU architecture → blur and resampling rounding.** Skia's vectorised blur and
+     image-resampling paths round differently on x86 and ARM. Gradients and
+     antialiased shapes are identical; blurred or scaled content differs at the `near`
+     level (all cinematic scenes ≥ 54.9 dB). The raster fingerprint changes with it.
+
+   Consequences: baselines, caches and job resume are keyed by `platform-arch`
+   (already true for passage caches and the baseline files); chunks of one export must
+   come from the same `platform-arch`; and text layout validation (overflow, fit,
+   line breaks) can reach different results on different operating systems. Output
+   that must be identical across machines needs one canonical render environment
+   ([Q8](#open-questions-for-the-owner)). The Linux image in
+   [`scripts/composition/linux/`](../scripts/composition/linux/) is the candidate.
 
 ## Core conventions
 
@@ -287,7 +304,7 @@ Fix these in CE1 and do not change them later without a decision-log entry.
 
 | ID   | Deliverable                                     | Phase | Depends on                | Owner                  | Branch                  | Status | Completion evidence                                            |
 | ---- | ----------------------------------------------- | ----- | ------------------------- | ---------------------- | ----------------------- | ------ | -------------------------------------------------------------- |
-| CE0  | Baseline, parity harness and feature matrix     | A     | —                         | xxibcill (Claude Code) | `codex/composition-ce0` | `[~]`  | [CE0 record](#ce0--baseline-parity-harness-and-feature-matrix) |
+| CE0  | Baseline, parity harness and feature matrix     | A     | —                         | xxibcill (Claude Code) | `codex/composition-ce0` | `[x]`  | [CE0 record](#ce0--baseline-parity-harness-and-feature-matrix) |
 | CE1  | `composition-1` contract and property paths     | A     | CE0                       |                        |                         | `[ ]`  |                                                                |
 | CE2  | Pure composition evaluator                      | A     | CE1                       |                        |                         | `[ ]`  |                                                                |
 | CE3  | Render graph and Canvas 2D reference backend    | A     | CE2                       |                        |                         | `[ ]`  |                                                                |
@@ -410,12 +427,15 @@ existing behaviour and did not regress performance.
       `renderEnvironment`. Passage cache identity already hashes every
       `execution-runtime` source file with the Chromium version, platform and
       architecture, so the pinned profile is part of it without further change.
-- [ ] Render the CE0 fixture set on arm64 macOS and x86_64 Linux with the pinned
-      toolchain, compare, and record whether software rendering is exact across
-      architectures (policy rule 6). Include arm64 Linux: text is rasterised through
-      CoreText on macOS and FreeType on Linux, so the operating system may matter more
-      than the CPU. Baselines are already stored per `platform-arch` and the check fails
-      with a clear message where none exists.
+- [x] Render the CE0 fixture set on Linux and compare with macOS arm64. Done in the
+      pinned Playwright 1.62.1 image with Node 22.23.1
+      ([`scripts/composition/linux/`](../scripts/composition/linux/)) on Linux arm64
+      (native) and Linux x86_64 (Rosetta). Software rendering is **not** exact across
+      operating systems or architectures; policy rule 6 records the causes and
+      consequences. Baselines now exist for `darwin-arm64`, `linux-arm64` and
+      `linux-x64`, and reports compare each Linux run with macOS at full resolution:
+      [`platform-linux-arm64-vs-darwin-arm64.json`](../tests/visual/composition-baselines/platform-linux-arm64-vs-darwin-arm64.json),
+      [`platform-linux-x64-vs-darwin-arm64.json`](../tests/visual/composition-baselines/platform-linux-x64-vs-darwin-arm64.json).
 - [x] Measure hardware-GPU Lab preview against export for the fixture set and record
       the observed differences. `pnpm composition:baselines --compare-hardware`
       renders the sampled frames (first, last, every 24th) with Metal and compares
@@ -431,8 +451,9 @@ own stored values. The feature matrix has no unmapped entries without an owner.
 Launch export with a forced hardware GPU and confirm it fails with
 `export-renderer-mismatch`.
 
-**Completion record (partial, 2026-09-30).** Six of seven items are complete. The
-cross-architecture comparison remains open, so CE0 stays `[~]`.
+**Completion record (2026-10-01).** All seven items are complete. The x86_64 result
+was produced under Rosetta and should be confirmed on real x86 hardware (follow-up
+below).
 
 - **Branch:** `codex/composition-ce0`, based on `codex/composition-engine-plan`.
 - **Environment:** Apple M5 Pro, macOS 26.6.2 arm64, Node 22.23.1, Chromium
@@ -477,9 +498,36 @@ cross-architecture comparison remains open, so CE0 stays `[~]`.
   the new export-renderer tests), `pnpm test:browser:export`, `pnpm test:golden`, and
   `pnpm test:browser:composition-baselines`. The full `pnpm check` browser matrix was
   not run in this session.
+- **Cross-platform (2026-10-01):** Linux runs used
+  `mcr.microsoft.com/playwright:v1.62.1-noble` with Node 22.23.1 and pnpm 10.29.3
+  installed at their pinned versions, and Ubuntu's FFmpeg 6.1.1 for audio probing only
+  (it never touches pixels). Compared with macOS arm64, frames that differed were saved
+  at full resolution (the first difference and differing sampled frames, up to six per
+  item) and classified:
+
+  | Environment            | Exact | Near | Perceptual | Below every tier | Raster fingerprint |
+  | ---------------------- | ----- | ---- | ---------- | ---------------- | ------------------ |
+  | Linux arm64 (native)   | 45    | 0    | 9          | 122              | same as macOS      |
+  | Linux x86_64 (Rosetta) | 4     | 36   | 15         | 121              | different          |
+  - Items without text (all 15 cinematic scenes, most Commerce atoms) are exact on
+    Linux arm64. On x86_64 they are `near`, down to 54.9 dB for cinematic scenes.
+  - Items with text are below every tier on both, with PSNR as low as 22.7 dB
+    (typography) and 24.5 dB (passages). The cause is glyph advance drift, not
+    antialiasing.
+  - A split probe inside the x86_64 container matched macOS for gradients and
+    antialiased shapes and differed from the blur filter onward.
+  - A second Linux arm64 container reproduced all 176 items (36,061 frames) exactly,
+    so Linux rendering is deterministic within its own environment.
+  - Timing: about 6 minutes per full render in the arm64 container, and about
+    34 minutes under Rosetta.
+
 - **Limitations:**
-  - Baselines exist for `darwin-arm64` only; other environments stop with an
-    explanation.
+  - The `linux-x64` baseline was generated under Rosetta (its file records the CPU as
+    `VirtualApple`). SwiftShader and Skia choose code paths by CPU features, so a real
+    x86 CPU with AVX may differ again. Confirm on real x86 hardware before relying on
+    it, and regenerate there if it differs.
+  - Linux runs used Ubuntu's FFmpeg 6.1.1 instead of the pinned 8.0.1, only for audio
+    duration probing during passage preparation.
   - The hardware profile is headless Chromium with Metal (ANGLE). It approximates a
     user's desktop Chrome, which may use a different GPU and driver.
   - Only the export path, passage text validation and the baseline harness use the
@@ -1360,16 +1408,17 @@ A milestone is complete when **all** of the following hold:
 
 ## Risks
 
-| Risk                                                             | Impact                                             | Mitigation                                                                                                                                                                                 |
-| ---------------------------------------------------------------- | -------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| GPU output differs across machines                               | Breaks determinism and cache identity              | [GPU determinism policy](#gpu-determinism-policy): export pinned to SwiftShader, renderer check, identity in manifests; hardware preview within tolerance; cross-architecture check in CE0 |
-| Adapter parity is harder than expected (hidden family behaviour) | CE4 stalls; two render paths coexist for long      | Feature matrix in CE0; content providers as an escape hatch; flag-gated switch per family                                                                                                  |
-| Scope creep toward a GUI editor                                  | Lab work displaces engine work                     | CE11 is inspection plus light edits; code remains primary                                                                                                                                  |
-| Expression language too weak or too strong                       | Authors blocked, or unsafe/nondeterministic output | Text syntax parsed to AST; full JavaScript at authoring time in the builder; add built-ins for new needs; bake to keys                                                                     |
-| Software export rendering is too slow for heavy effects          | Long renders for effect-heavy or long compositions | Per-effect SwiftShader budgets in CE6; per-layer caching and parallel chunks in CE15                                                                                                       |
-| Performance regression from per-layer surfaces                   | Slower renders than today                          | Surfaces only when needed; culling; budgets in CE0/CE2/CE6; caching in CE15                                                                                                                |
-| Media decode nondeterminism                                      | Video frames drift between runs                    | FFmpeg pre-decode with content-addressed cache; no element seeking in export                                                                                                               |
-| Third-party geometry libraries (boolean ops, triangulation)      | Licence or determinism problems                    | Record library, version and licence in the decision log before adoption                                                                                                                    |
+| Risk                                                             | Impact                                                                                          | Mitigation                                                                                                                                                                                 |
+| ---------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| GPU output differs across machines                               | Breaks determinism and cache identity                                                           | [GPU determinism policy](#gpu-determinism-policy): export pinned to SwiftShader, renderer check, identity in manifests; hardware preview within tolerance; cross-architecture check in CE0 |
+| Adapter parity is harder than expected (hidden family behaviour) | CE4 stalls; two render paths coexist for long                                                   | Feature matrix in CE0; content providers as an escape hatch; flag-gated switch per family                                                                                                  |
+| Scope creep toward a GUI editor                                  | Lab work displaces engine work                                                                  | CE11 is inspection plus light edits; code remains primary                                                                                                                                  |
+| Expression language too weak or too strong                       | Authors blocked, or unsafe/nondeterministic output                                              | Text syntax parsed to AST; full JavaScript at authoring time in the builder; add built-ins for new needs; bake to keys                                                                     |
+| Text layout differs between operating systems (CE0)              | Text fit, overflow and line-break decisions may pass on macOS and fail on Linux, or the reverse | Validate text in the canonical render environment once Q8 is decided; keep layout diagnostics platform-aware                                                                               |
+| Software export rendering is too slow for heavy effects          | Long renders for effect-heavy or long compositions                                              | Per-effect SwiftShader budgets in CE6; per-layer caching and parallel chunks in CE15                                                                                                       |
+| Performance regression from per-layer surfaces                   | Slower renders than today                                                                       | Surfaces only when needed; culling; budgets in CE0/CE2/CE6; caching in CE15                                                                                                                |
+| Media decode nondeterminism                                      | Video frames drift between runs                                                                 | FFmpeg pre-decode with content-addressed cache; no element seeking in export                                                                                                               |
+| Third-party geometry libraries (boolean ops, triangulation)      | Licence or determinism problems                                                                 | Record library, version and licence in the decision log before adoption                                                                                                                    |
 
 ## Decision log
 
@@ -1385,15 +1434,16 @@ A milestone is complete when **all** of the following hold:
 
 ## Open questions for the owner
 
-| ID  | Question                                                                                                                                                                                                        | Needed by | Answer                                                                                                     |
-| --- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- | ---------------------------------------------------------------------------------------------------------- |
-| Q1  | GPU determinism: pin export to a software GL path (SwiftShader, slower but reproducible), or accept `near`-tier tolerance across GPUs with hardware rendering?                                                  | CE0       | 2026-09-30: hybrid (option C). See [GPU determinism policy](#gpu-determinism-policy)                       |
-| Q2  | Once adapters reach parity, should the four family schemas be frozen (still accepted, no new features) so new work targets `composition-1` only?                                                                | CE4d      |                                                                                                            |
-| Q3  | Is an AST expression language acceptable, or must compositions accept raw JavaScript expressions (with a sandbox) for AE-style familiarity?                                                                     | CE9       | 2026-09-30: text syntax parsed into an AST; no raw JavaScript. See [CE9 expression form](#expression-form) |
-| Q4  | Which output formats matter first: alpha for editors (ProRes 4444/PNG), social delivery (H.264/HEVC), or both?                                                                                                  | CE15      |                                                                                                            |
-| Q5  | Priority between mesh deformation (CE14) and video layers (CE13) for the faceless-video product goal.                                                                                                           | Phase D   |                                                                                                            |
-| Q6  | Should lights and 3D shading be planned after CE8, or is 2.5D without lighting sufficient?                                                                                                                      | After CE8 |                                                                                                            |
-| Q7  | Single-image depth animation (depth presets and flat editorial presets) uses a separate WebGL renderer. Should it become a composition layer type (for example a `depth-image` layer), or stay a separate path? | CE4d      |                                                                                                            |
+| ID  | Question                                                                                                                                                                                                                                                                                                                                       | Needed by                                                       | Answer                                                                                                     |
+| --- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| Q1  | GPU determinism: pin export to a software GL path (SwiftShader, slower but reproducible), or accept `near`-tier tolerance across GPUs with hardware rendering?                                                                                                                                                                                 | CE0                                                             | 2026-09-30: hybrid (option C). See [GPU determinism policy](#gpu-determinism-policy)                       |
+| Q2  | Once adapters reach parity, should the four family schemas be frozen (still accepted, no new features) so new work targets `composition-1` only?                                                                                                                                                                                               | CE4d                                                            |                                                                                                            |
+| Q3  | Is an AST expression language acceptable, or must compositions accept raw JavaScript expressions (with a sandbox) for AE-style familiarity?                                                                                                                                                                                                    | CE9                                                             | 2026-09-30: text syntax parsed into an AST; no raw JavaScript. See [CE9 expression form](#expression-form) |
+| Q4  | Which output formats matter first: alpha for editors (ProRes 4444/PNG), social delivery (H.264/HEVC), or both?                                                                                                                                                                                                                                 | CE15                                                            |                                                                                                            |
+| Q5  | Priority between mesh deformation (CE14) and video layers (CE13) for the faceless-video product goal.                                                                                                                                                                                                                                          | Phase D                                                         |                                                                                                            |
+| Q6  | Should lights and 3D shading be planned after CE8, or is 2.5D without lighting sufficient?                                                                                                                                                                                                                                                     | After CE8                                                       |                                                                                                            |
+| Q7  | Single-image depth animation (depth presets and flat editorial presets) uses a separate WebGL renderer. Should it become a composition layer type (for example a `depth-image` layer), or stay a separate path?                                                                                                                                | CE4d                                                            |                                                                                                            |
+| Q8  | Output is exact only within one operating system and CPU architecture (policy rule 6). Should one canonical render environment, for example the Linux container in `scripts/composition/linux/` on a fixed architecture, be used for CI, caches shared between machines and final exports, with macOS renders treated as development previews? | Before shared caches or CE15 parallel rendering across machines |                                                                                                            |
 
 ## Appendix — AE feature coverage map
 

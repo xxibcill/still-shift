@@ -9,11 +9,18 @@
  *   pnpm composition:baselines --write              regenerate baseline and timings
  *   pnpm composition:baselines --compare-hardware   measure hardware-GPU preview drift
  *   options: --only id[,id]  --family name[,name]  --list
+ *
+ * Cross-platform comparison (another environment against this one):
+ *   there:  --check --baseline darwin-arm64 --save-mismatches <dir>
+ *           checks against another platform's baseline and saves full frames that differ
+ *   here:   --compare-frames <dir>
+ *           renders the same frames here and reports their tolerance tier
  */
 import { createReadStream } from "node:fs";
 import {
   mkdir,
   mkdtemp,
+  readdir,
   readFile,
   rm,
   stat,
@@ -115,6 +122,13 @@ type BaselineFile = {
   renderer: "illustrated-canvas";
   browserArgs: readonly string[];
   renderEnvironment: RenderEnvironment;
+  /** Machine that generated the file; a "VirtualApple" CPU means Rosetta emulation. */
+  machine?: {
+    cpu: string;
+    logicalCores: number;
+    platform: string;
+    arch: string;
+  };
   items: Record<string, BaselineItem>;
 };
 
@@ -127,9 +141,15 @@ const mode = args.includes("--write")
   ? "write"
   : args.includes("--compare-hardware")
     ? "compare-hardware"
-    : args.includes("--list")
-      ? "list"
-      : "check";
+    : args.includes("--compare-frames")
+      ? "compare-frames"
+      : args.includes("--list")
+        ? "list"
+        : "check";
+const compareKey = option("--baseline")?.[0] ?? environmentKey;
+const saveDirectory = option("--save-mismatches")?.[0];
+const savedFrames = option("--compare-frames")?.[0];
+const MAX_MISMATCH_UPLOADS = 6;
 
 const manifest = JSON.parse(
   await readFile(manifestPath, "utf8"),
@@ -233,7 +253,10 @@ function harnessPlugin(
         const profile = url.searchParams.get("profile") ?? "";
         const item = url.searchParams.get("item") ?? "";
         const frame = url.searchParams.get("frame") ?? "";
-        if (!/^(pinned|hardware)$/.test(profile) || !/^\d+$/.test(frame))
+        if (
+          !/^(pinned|hardware|reference)$/.test(profile) ||
+          !/^\d+$/.test(frame)
+        )
           return fail(response, 400, "Invalid frame upload");
         void readBody(incoming)
           .then(async (bytes) => {
@@ -282,6 +305,7 @@ async function renderItem(
   item: RenderItem,
   profile: RenderBrowserProfile,
   uploadSampleFrames: boolean,
+  expectedFrames?: string[],
 ) {
   state.assets = item.assetPaths;
   await session.page.setViewportSize({
@@ -293,7 +317,10 @@ async function renderItem(
     thumbnailFrames: thumbnailFrames(item.scene.timeline.frameCount),
     thumbnailWidth: manifest.thumbnailWidth,
     uploadSampleFrames,
-    profile,
+    ...(expectedFrames
+      ? { expectedFrames, maxMismatchUploads: MAX_MISMATCH_UPLOADS }
+      : {}),
+    profile: expectedFrames ? "reference" : profile,
     item: item.id,
     assetBase: `/_baseline/assets/${++assetSequence}/`,
   };
@@ -310,7 +337,7 @@ async function readBaseline(path: string) {
   } catch (error) {
     if ((error as NodeJS.ErrnoException).code !== "ENOENT") throw error;
     throw new Error(
-      `No composition baseline for ${environmentKey} (${path}). Baselines are per platform and architecture; see the GPU determinism policy in docs/composition-engine-plan.md before writing one with --write.`,
+      `No composition baseline at ${path}. Baselines are per platform and architecture; see the GPU determinism policy in docs/composition-engine-plan.md before writing one with --write, or compare with another platform using --baseline.`,
       { cause: error },
     );
   }
@@ -377,6 +404,77 @@ function compareWithBaseline(
   return `${differing.length} frame(s) differ: ${listed}${differing.length > 8 ? ", …" : ""}`;
 }
 
+/**
+ * Renders the frames another environment saved (because they differed from this
+ * environment's baseline) and classifies each pair. Items without saved frames matched
+ * exactly on every frame.
+ */
+async function compareSavedFrames(
+  session: Session,
+  item: RenderItem,
+  mismatch: { differingFrames: number; frames: number } | undefined,
+) {
+  if (!mismatch)
+    return { observedTier: null, note: "item missing from the other run" };
+  if (!mismatch.differingFrames)
+    return {
+      observedTier: "exact",
+      differingFrames: 0,
+      frames: mismatch.frames,
+    };
+  const itemDirectory = join(
+    resolve(savedFrames!),
+    "reference",
+    encodeURIComponent(item.id),
+  );
+  const frames = (await readdir(itemDirectory))
+    .map((name) => Number(name.replace(".rgba", "")))
+    .sort((a, b) => a - b);
+  state.assets = item.assetPaths;
+  await session.page.setViewportSize({
+    width: item.scene.canvas.width,
+    height: item.scene.canvas.height,
+  });
+  const options: SampleRenderOptions = {
+    sampleFrames: frames,
+    profile: "pinned",
+    item: item.id,
+    assetBase: `/_baseline/assets/${++assetSequence}/`,
+  };
+  await session.page.evaluate(
+    ({ scene, options }) => window.runCompositionSamples!(scene, options),
+    { scene: item.scene, options },
+  );
+  const comparisons = await Promise.all(
+    frames.map(async (frame) =>
+      compareFrames(
+        await readFile(
+          join(
+            frameDirectory,
+            "pinned",
+            encodeURIComponent(item.id),
+            `${frame}.rgba`,
+          ),
+        ),
+        await readFile(join(itemDirectory, `${frame}.rgba`)),
+        item.scene.canvas.width,
+        item.scene.canvas.height,
+      ),
+    ),
+  );
+  const minPsnr = Math.min(...comparisons.map((c) => c.psnr));
+  return {
+    observedTier: worstTier(comparisons.map(strictestTier)),
+    differingFrames: mismatch.differingFrames,
+    frames: mismatch.frames,
+    comparedFrames: frames,
+    maxChannelDelta: Math.max(...comparisons.map((c) => c.maxChannelDelta)),
+    minPsnr: Number.isFinite(minPsnr) ? round(minPsnr) : "identical",
+    minSsim:
+      Math.round(Math.min(...comparisons.map((c) => c.ssim)) * 1e5) / 1e5,
+  };
+}
+
 if (mode === "list") {
   for (const fixture of selected)
     console.log(
@@ -385,7 +483,12 @@ if (mode === "list") {
   exit(0);
 }
 
-const stored = mode === "check" ? await readBaseline(baselinePath) : undefined;
+// --write with --save-mismatches also compares, so one pass can write this
+// platform's baseline and collect differences from another platform's.
+const stored =
+  mode === "check" || saveDirectory
+    ? await readBaseline(join(baselineDirectory, `${compareKey}.json`))
+    : undefined;
 const renderItems: RenderItem[] = [];
 for (const fixture of selected) renderItems.push(...(await expand(fixture)));
 if (stored)
@@ -395,7 +498,31 @@ if (stored)
     filters: { only, families },
   });
 
-const frameDirectory = await mkdtemp(join(tmpdir(), "still-shift-baselines-"));
+const frameDirectory = saveDirectory
+  ? resolve(saveDirectory)
+  : await mkdtemp(join(tmpdir(), "still-shift-baselines-"));
+if (saveDirectory) await mkdir(frameDirectory, { recursive: true });
+const machine = {
+  cpu: cpus()[0]?.model ?? "unknown",
+  logicalCores: availableParallelism(),
+  platform,
+  arch,
+};
+type SavedEnvironment = {
+  renderEnvironment: RenderEnvironment;
+  machine: typeof machine;
+  comparedWith: string;
+  mismatches: Record<string, { differingFrames: number; frames: number }>;
+};
+const saved: SavedEnvironment | undefined = savedFrames
+  ? (JSON.parse(
+      await readFile(join(resolve(savedFrames), "environment.json"), "utf8"),
+    ) as SavedEnvironment)
+  : undefined;
+if (saved && saved.comparedWith !== environmentKey)
+  throw new Error(
+    `Saved frames were compared with ${saved.comparedWith}; run --compare-frames on that environment`,
+  );
 const state = { assets: {} as Record<string, string> };
 let server: ViteDevServer | undefined;
 const sessions: Session[] = [];
@@ -424,6 +551,8 @@ try {
   if (hardware)
     console.log(`hardware preview: ${hardware.environment.webglRenderer}`);
 
+  const mismatches: SavedEnvironment["mismatches"] = {};
+  const platformReport: Record<string, unknown> = {};
   if (
     stored &&
     stored.renderEnvironment.rasterFingerprint !==
@@ -439,12 +568,24 @@ try {
   const started = performance.now();
   for (const item of renderItems) {
     const itemStart = performance.now();
+    if (saved) {
+      platformReport[item.id] = await compareSavedFrames(
+        pinned,
+        item,
+        saved.mismatches[item.id],
+      );
+      console.log(
+        `${item.id.padEnd(52)} ${String(item.scene.timeline.frameCount).padStart(4)}f ${(platformReport[item.id] as { observedTier: string | null }).observedTier ?? "none"}`,
+      );
+      continue;
+    }
     const result = await renderItem(
       pinned,
       state,
       item,
       "pinned",
       mode === "compare-hardware",
+      saveDirectory ? stored?.items[item.id]?.frames.split(" ") : undefined,
     );
     const baselineItem = toBaselineItem(item, result);
     items[item.id] = baselineItem;
@@ -465,8 +606,15 @@ try {
     let status = "";
     if (stored) {
       const problem = compareWithBaseline(stored.items[item.id], baselineItem);
-      if (problem) failed = true;
+      if (problem && mode === "check") failed = true;
       status = problem ? `FAIL ${problem}` : "ok";
+      const storedFrames = stored.items[item.id]?.frames.split(" ");
+      mismatches[item.id] = {
+        frames: baselineItem.frameCount,
+        differingFrames: baselineItem.frames
+          .split(" ")
+          .filter((hash, frame) => hash !== storedFrames?.[frame]).length,
+      };
     }
     if (hardware) {
       state.assets = item.assetPaths;
@@ -538,12 +686,17 @@ try {
 
   if (mode === "write") {
     const partial = Boolean(only || families);
-    const previous = partial ? await readBaseline(baselinePath) : undefined;
+    // A partial write merges into this platform's baseline, if one exists yet.
+    const previous =
+      partial && (await stat(baselinePath).catch(() => undefined))
+        ? await readBaseline(baselinePath)
+        : undefined;
     const file: BaselineFile = {
       version: BASELINE_VERSION,
       renderer: "illustrated-canvas",
       browserArgs: RENDER_BROWSER_ARGS,
       renderEnvironment: pinned.environment,
+      machine,
       items: sortedById({ ...previous?.items, ...items }),
     };
     await writeJson(baselinePath, file);
@@ -557,12 +710,7 @@ try {
     await writeJson(timingPath, {
       version: BASELINE_VERSION,
       note: "Machine-specific timings for the CE0 acceptance fixtures; compare only with runs on similar hardware. frame* is render plus pixel readback: Canvas 2D records commands in renderFrame and rasterises lazily, so most drawing cost appears in readback.",
-      machine: {
-        cpu: cpus()[0]?.model ?? "unknown",
-        logicalCores: availableParallelism(),
-        platform,
-        arch,
-      },
+      machine,
       renderEnvironment: pinned.environment,
       items: sortedById({ ...previousTimings, ...timings }),
     });
@@ -588,11 +736,40 @@ try {
     });
     console.log(`wrote ${hardwareReportPath}`);
   }
+  if (saveDirectory) {
+    await writeJson(join(frameDirectory, "environment.json"), {
+      renderEnvironment: pinned.environment,
+      machine,
+      comparedWith: compareKey,
+      mismatches,
+    } satisfies SavedEnvironment);
+    console.log(`saved differing frames in ${frameDirectory}`);
+  }
+  if (saved) {
+    const other = `${saved.renderEnvironment.platform}-${saved.renderEnvironment.arch}`;
+    const reportPath = join(
+      baselineDirectory,
+      `platform-${other}-vs-${environmentKey}.json`,
+    );
+    await writeJson(reportPath, {
+      version: BASELINE_VERSION,
+      tolerance: FRAME_TOLERANCE_VERSION,
+      method: `Frames were rendered on ${other}, checked against the ${environmentKey} baseline, and every differing frame's first occurrence plus differing sampled frames (up to ${MAX_MISMATCH_UPLOADS} per item) were saved at full resolution, then compared with the same frames rendered here.`,
+      reference: { renderEnvironment: pinned.environment, machine },
+      other: {
+        renderEnvironment: saved.renderEnvironment,
+        machine: saved.machine,
+      },
+      items: sortedById(platformReport),
+    });
+    console.log(`wrote ${reportPath}`);
+  }
   if (failed) console.error("Baseline check failed");
 } finally {
   for (const session of sessions)
     await session.browser.close().catch(() => undefined);
   await server?.close();
-  await rm(frameDirectory, { recursive: true, force: true });
+  if (!saveDirectory)
+    await rm(frameDirectory, { recursive: true, force: true });
 }
 exit(failed ? 1 : 0);
