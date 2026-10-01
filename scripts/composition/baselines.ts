@@ -71,6 +71,12 @@ import {
   replaceBaselineItems,
 } from "./baseline-check.ts";
 
+import {
+  mergeBaselineTimings,
+  type BaselineTimingsFile,
+  type FrameTimings,
+} from "./baseline-timings.ts";
+
 const BASELINE_VERSION = "composition-baseline-1";
 const root = resolve(import.meta.dirname, "../..");
 const baselineDirectory = join(root, "tests/visual/composition-baselines");
@@ -564,7 +570,7 @@ try {
     );
 
   const items: Record<string, BaselineItem> = {};
-  const timings: Record<string, unknown> = {};
+  const timings: Record<string, FrameTimings> = {};
   const hardwareReport: Record<string, unknown> = {};
   const started = performance.now();
   for (const item of renderItems) {
@@ -702,26 +708,20 @@ try {
         replaceBaselineItems(previous?.items ?? {}, items, { only, families }),
       ),
     };
-    await writeJson(baselinePath, file);
     const previousTimings = partial
-      ? (
-          JSON.parse(await readFile(timingPath, "utf8")) as {
-            items: Record<string, unknown>;
-          }
-        ).items
-      : {};
+      ? (JSON.parse(await readFile(timingPath, "utf8")) as BaselineTimingsFile)
+      : undefined;
+    const timingFile = mergeBaselineTimings({
+      previous: previousTimings,
+      measurements: timings,
+      provenance: { machine, renderEnvironment: pinned.environment },
+      itemIds: Object.keys(file.items),
+    });
+    await writeJson(baselinePath, file);
     await writeJson(timingPath, {
-      version: BASELINE_VERSION,
-      note: "Machine-specific timings for the CE0 acceptance fixtures; compare only with runs on similar hardware. frame* is render plus pixel readback: Canvas 2D records commands in renderFrame and rasterises lazily, so most drawing cost appears in readback.",
-      machine,
-      renderEnvironment: pinned.environment,
-      items: sortedById(
-        Object.fromEntries(
-          Object.entries({ ...previousTimings, ...timings }).filter(([id]) =>
-            Object.hasOwn(file.items, id),
-          ),
-        ),
-      ),
+      ...timingFile,
+      note: "Per-item machine and render environment identify each CE0 timing measurement; compare only measurements from similar hardware and environments. frame* is render plus pixel readback: Canvas 2D records commands in renderFrame and rasterises lazily, so most drawing cost appears in readback.",
+      items: sortedById(timingFile.items),
     });
     console.log(`wrote ${baselinePath}\nwrote ${timingPath}`);
   }

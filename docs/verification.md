@@ -47,6 +47,10 @@ four and a half minutes on an Apple M5 Pro. See the
   `--only id,id` or `--family name` for a subset) and records the reason in the commit.
   Partial writes replace the selected fixtures' entries, including removed or renamed
   passage beats, and remove their obsolete timing entries.
+- Timing writes use `composition-timings-2`, with `machine` and `renderEnvironment`
+  on each item. Partial runs retain the provenance of unselected measurements, even
+  across platforms or machines. Older files with global provenance migrate on write;
+  retained measurements without provenance require a full `--write` regeneration.
 - Baselines exist per `platform-arch` (`darwin-arm64`, `linux-arm64`, `linux-x64`)
   because output differs across operating systems and CPU architectures; see policy
   rule 6 in the plan. On an environment without one, the check stops with an
