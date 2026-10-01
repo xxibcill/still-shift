@@ -51,7 +51,6 @@ import {
 import {
   compareFrames,
   FRAME_TOLERANCE_VERSION,
-  strictestTier,
   worstTier,
   type ToleranceTier,
 } from "../../packages/renderer-core/src/frame-tolerance.ts";
@@ -471,7 +470,7 @@ async function compareSavedFrames(
   );
   const minPsnr = Math.min(...comparisons.map((c) => c.psnr));
   return {
-    observedTier: worstTier(comparisons.map(strictestTier)),
+    observedTier: worstTier(comparisons),
     differingFrames: mismatch.differingFrames,
     frames: mismatch.frames,
     comparedFrames: frames,
@@ -664,7 +663,7 @@ try {
       await rm(join(frameDirectory, "hardware", encodeURIComponent(item.id)), {
         recursive: true,
       });
-      const observed = worstTier(comparisons.map(strictestTier));
+      const observed = worstTier(comparisons);
       const minPsnr = Math.min(...comparisons.map((c) => c.psnr));
       hardwareReport[item.id] = {
         observedTier: observed,

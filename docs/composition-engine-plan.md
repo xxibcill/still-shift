@@ -402,11 +402,14 @@ existing behaviour and did not regress performance.
       [`darwin-arm64.json`](../tests/visual/composition-baselines/darwin-arm64.json).
 - [x] Define and record tolerance tiers in
       [`frame-tolerance.ts`](../packages/renderer-core/src/frame-tolerance.ts)
-      (`frame-tolerance-1`):
+      (`frame-tolerance-2`):
   - **exact** — identical RGB;
   - **near** — max per-channel difference ≤ 2 and PSNR ≥ 50 dB;
   - **perceptual** — PSNR ≥ 40 dB and SSIM ≥ 0.99 (Rec. 709 luma, 8×8 windows,
     stride 4).
+    Aggregate classification requires every sampled frame to satisfy the same tier;
+    the near and perceptual thresholds are independent. Version 2 fixes this
+    aggregation; the recorded CE0 comparison reports retain version 1.
     Every fixture carries an assigned tier for adapter parity with a justification:
     `exact` by default; `near` for the 16 Commerce atoms and 7 heroes that use pixel
     or effect-driven motion effects and for Focus Handoff, whose effects move to the
