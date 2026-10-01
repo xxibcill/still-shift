@@ -37,7 +37,18 @@ export function samplePeriodic(
   );
 }
 export function sampleSignal(signal: Signal, frame: number, fps = 30) {
-  let value = sampleCurve(scalarKeys(signal.keys), frame, fps);
+  return addSignalMotion(
+    signal,
+    frame,
+    sampleCurve(scalarKeys(signal.keys), frame, fps),
+  );
+}
+
+export function addSignalMotion(
+  signal: Pick<Signal, "add">,
+  frame: number,
+  value: number,
+) {
   for (const addition of signal.add ?? []) {
     if ("pulse" in addition) {
       const { at, half, depth } = addition.pulse;
@@ -60,22 +71,22 @@ export function blendValue(
       : base + (value - base) * weight;
 }
 
-export function mapDriver(
-  read: (time: number) => number,
+/** Yield source times so dependency evaluation can suspend without recursion. */
+export function* driverSamples(
   frame: number,
   mapping: NonNullable<Driver["map"]> = {},
-) {
+): Generator<number, number, number> {
   const time = frame - (mapping.delay ?? 0);
-  let value = read(time);
+  let value = yield time;
   if (mapping.lag) {
     // Exact critically damped response to piecewise-linear source intervals; no playback state.
     const omega = 2 / mapping.lag;
-    let y = read(0),
+    let y = yield 0,
       velocity = 0;
     for (let start = 0; start < time; start++) {
       const h = Math.min(1, time - start),
-        a = read(start),
-        b = read(start + h),
+        a = yield start,
+        b = yield start + h,
         slope = (b - a) / h;
       const offset = y - a + (2 * slope) / omega,
         tangent = velocity - slope + omega * offset,
@@ -98,4 +109,15 @@ export function mapDriver(
     value = Math.max(mapping.clamp[0], Math.min(mapping.clamp[1], value));
   if (mapping.step) value = Math.floor(value / mapping.step) * mapping.step;
   return value + (mapping.offset ?? 0);
+}
+
+export function mapDriver(
+  read: (time: number) => number,
+  frame: number,
+  mapping: NonNullable<Driver["map"]> = {},
+) {
+  const samples = driverSamples(frame, mapping);
+  let sample = samples.next();
+  while (!sample.done) sample = samples.next(read(sample.value));
+  return sample.value;
 }

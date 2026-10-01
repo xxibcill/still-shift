@@ -899,6 +899,21 @@ play) using a fixed seed.
   regenerated. The final `pnpm check:fast` and new browser evaluator group also
   passed after the last CE2 corrections (the full matrix had already started).
   No legacy renderer version bump is required; the new evaluator has its own version.
+- PR #26 dependency-chain correction (2026-10-01): layer and precomp-clock tasks
+  now run on an explicit work stack, including delayed and lagged source reads.
+  Accepted 500-driver chains are covered in both painter orders and independently
+  timed reused precomps. The evaluator version is now `composition-evaluator-3`.
+  Pinned Node 22.23.1 passed 62 evaluator regressions, the existing motion-craft
+  tests, type/lint/format/boundary checks and Node/browser evaluator parity. The
+  200-layer benchmark averaged 0.6301 ms/frame on the reference Apple M5 Pro.
+- PR #26 signal-cache correction (2026-10-01): immutable signal curves and smooth
+  tangents now share the evaluator's object-identity cache. Each evaluation call
+  memoises up to 128 source times per signal across root, precomp and historical
+  reads. Four regressions cover reuse, fractional lag, legacy numerical parity and
+  bounded-cache eviction. Pinned Node 22.23.1 passed `pnpm check:fast` in a clean
+  snapshot (88 files, 899 tests), Node/browser evaluator parity and all 176 legacy
+  baseline items (36,061 frames, exact; no baselines regenerated). The final
+  200-layer benchmark averaged 0.7492 ms/frame against the 2 ms/frame budget.
 
 ---
 
@@ -957,8 +972,9 @@ precomp nesting; mask boolean combinations; export transaction tests reused from
 `tests/browser/export-worker.ts`.
 
 **Completion record (in progress, 2026-10-01).** Every checklist item is implemented on
-`codex/composition-ce3` (owner: xxibcill with Claude Code), based on CE2 `273d2c1`;
-the tracker stays `[~]` until the full `pnpm check` result is recorded below.
+`codex/composition-ce3` (owner: xxibcill with Claude Code), based on CE2 `273d2c1`
+and merged with the later CE2 review fixes (`4130c27`, `b1697b8`, `50314eb`). The
+tracker stays `[~]` until review.
 
 - Commits: tracker start `2b359b2`; contract `ee733ed`; renderer `32c6eab`; export
   `101c014`; browser tests `e3f59fc`; docs `2144a42`.
@@ -1006,9 +1022,20 @@ the tracker stays `[~]` until the full `pnpm check` result is recorded below.
     transports are byte-identical; existing outputs, invalid compositions and
     tampered assets fail and publish nothing.
   - `pnpm check:fast`: schema, boundaries, format, lint, types and 895 unit tests
-    (9 new render-graph tests, 6 new contract tests).
+    (9 render-graph tests, 6 contract tests; a tenth render-graph test followed the merge).
   - The first slice exports 90 frames at 1080p in about 2.1 s: 14.6 ms average and
     17.2 ms p95 per frame, including capture.
+  - Full `pnpm check` at `32e4410` passed in 30 min 21 s: schema, boundaries,
+    format, lint, types; 895 unit, 43 runtime, 110 integration and 14 depth tests;
+    every legacy browser, export, authoring and typography group; the composition
+    evaluator and `test:browser:composition` groups; and CE0 baselines, **176 items,
+    36,061 frames in 268.62 s, all exact** against `darwin-arm64`. No baseline was
+    regenerated and no legacy renderer version changed. (A first run failed only
+    because the new worktree's Python environment was created mid-run, which timed
+    out three depth-worker tests; they pass on their own.)
+  - After merging the CE2 fixes: `pnpm check:fast` (914 unit tests),
+    `test:browser:composition-evaluator` and `test:browser:composition` pass. The
+    matte-precomp content change bumps the evaluator to `composition-evaluator-4`.
 - **Limitations and follow-ups:**
   - Acceptance names the Lab preview. The Lab has no composition page until CE11, so
     CE3 verifies the shared `createCompositionPreview` in the pinned browser. Hardware

@@ -28,7 +28,7 @@ These pure functions run in Node and browsers. They validate once per compositio
 object, compile curves into identity-keyed weak caches and memoise dependencies within
 each evaluation. Treat the composition and its nested objects as immutable: replace
 the composition object after an edit. Returned states are fresh on every call.
-`COMPOSITION_EVALUATOR_VERSION` is `composition-evaluator-1`.
+`COMPOSITION_EVALUATOR_VERSION` is `composition-evaluator-4`.
 
 `evaluateComp` returns an `EvaluatedLayerTree`: scope id, time, dimensions, fps,
 floating-point RGBA background, ordered `layers` and structured `diagnostics`.
@@ -49,9 +49,21 @@ scope's `[0, frameCount)` is transparent. In/out points and solo use scope frame
 Ordinary invisible parents continue to supply transforms; an invisible `group` also
 gates its descendants. Guides are hidden unless `includeGuides: true` is supplied.
 
+Solo selection is local to each scope. A soloed child retains its group ancestors;
+a soloed group selects all its descendants, including through ordinary parents.
+Retained ancestors do not select unrelated siblings, and soloing an ordinary parent
+does not select its children. Enabled, guide and in/out-point gates still apply to
+selected layers and groups.
+
 Motion drivers, signals, delays, lag, weights and periodic windows use root composition
 frames. Their targets may lie inside precomps. Dependencies read evaluated state,
 independent of painter order; corrections from constraints follow motion layers.
+Layer and precomp-clock dependencies use an explicit work stack, so accepted long
+driver chains do not consume the JavaScript call stack. Delayed and lagged reads
+resume at their own source times without depending on previous playback.
+Signal curves and smooth tangents are compiled once per immutable signal object.
+Each evaluation call shares a bounded cache of 128 source-time samples per signal
+across root, precomp and historical dependency reads.
 The 2D camera uses the existing story camera curves and jolts. It changes screen
 matrices and bounds; world matrices remain in composition coordinates.
 

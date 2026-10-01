@@ -190,6 +190,33 @@ describe("render graph", () => {
     );
   });
 
+  it("evaluates disabled precomps that serve as track mattes", () => {
+    const doc = comp(
+      [
+        { id: "matte", type: "precomp", comp: "inner", enabled: false },
+        solid("target", { trackMatte: { layer: "matte", mode: "alpha" } }),
+      ],
+      {
+        precomps: [
+          {
+            id: "inner",
+            width: 40,
+            height: 20,
+            frameCount: 60,
+            layers: [solid("child")],
+          },
+        ],
+      },
+    );
+    const tree = evaluateComp(doc, 0);
+    expect(tree.layers[0]!.visible).toBe(false);
+    expect(tree.layers[0]!.precomp?.layers.map((l) => l.id)).toEqual(["child"]);
+    const [target] = buildRenderGraph(doc, tree).root.ops as IsolateOp[];
+    expect(summary(target!.matte!.ops)).toEqual([
+      { draw: "matte", content: "surface" },
+    ]);
+  });
+
   it("chains mattes and ignores the matte source's blend mode", () => {
     const doc = comp([
       solid("outer"),

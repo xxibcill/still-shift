@@ -497,6 +497,141 @@ describe("composition time and precomps", () => {
       evaluateComp(guide, 0, { includeGuides: true }).layers[0]!.visible,
     ).toBe(true);
   });
+  it("keeps soloed children visible through nested groups and ordinary parents", () => {
+    const layers: CompositionLayer[] = [
+      { id: "outer", type: "group", size: [100, 100] },
+      { id: "parent", type: "null", parent: "outer", enabled: false },
+      { id: "inner", type: "group", size: [100, 100], parent: "parent" },
+      { ...solid(), parent: "inner", solo: true },
+      { ...solid("sibling"), parent: "inner" },
+      { ...solid("outerSibling"), parent: "outer" },
+      solid("other"),
+    ];
+    const doc = comp(layers.reverse());
+    const result = evaluateComp(doc, 0);
+    expect(result.layers.filter((l) => l.visible).map((l) => l.id)).toEqual([
+      "box",
+      "inner",
+      "outer",
+    ]);
+    expect(result.layers.filter((l) => l.drawable).map((l) => l.id)).toEqual([
+      "box",
+    ]);
+  });
+  it("includes descendants of soloed groups without selecting unrelated layers", () => {
+    const doc = comp([
+      { id: "group", type: "group", size: [100, 100], solo: true },
+      { id: "parent", type: "null", parent: "group", enabled: false },
+      { id: "inner", type: "group", size: [100, 100], parent: "parent" },
+      { ...solid(), parent: "inner" },
+      { ...solid("sibling"), parent: "group" },
+      solid("other"),
+    ]);
+    const result = evaluateComp(doc, 0);
+    expect(result.layers.filter((l) => l.visible).map((l) => l.id)).toEqual([
+      "group",
+      "inner",
+      "box",
+      "sibling",
+    ]);
+    expect(result.layers.filter((l) => l.drawable).map((l) => l.id)).toEqual([
+      "box",
+      "sibling",
+    ]);
+  });
+  it("keeps multiple solo selections separate from their unselected siblings", () => {
+    const doc = comp([
+      { id: "a", type: "group", size: [100, 100] },
+      { id: "b", type: "group", size: [100, 100] },
+      { ...solid(), parent: "a", solo: true },
+      { ...solid("selected"), parent: "b", solo: true },
+      { ...solid("aSibling"), parent: "a" },
+      { ...solid("bSibling"), parent: "b" },
+    ]);
+    expect(
+      evaluateComp(doc, 0)
+        .layers.filter((l) => l.drawable)
+        .map((l) => l.id),
+    ).toEqual(["box", "selected"]);
+  });
+  it.each([
+    { gate: "disabled", fields: { enabled: false }, time: 5 },
+    { gate: "guide", fields: { guide: true }, time: 5 },
+    { gate: "before in point", fields: { inPoint: 5 }, time: 4.99 },
+    { gate: "at out point", fields: { outPoint: 10 }, time: 10 },
+  ])(
+    "preserves a group's $gate visibility gate when soloing",
+    ({ fields, time }) => {
+      for (const solo of ["group", "box"]) {
+        const doc = comp([
+          {
+            id: "group",
+            type: "group",
+            size: [100, 100],
+            ...fields,
+            solo: solo === "group",
+          },
+          { ...solid(), parent: "group", solo: solo === "box" },
+        ]);
+        expect(state(doc, time).visible).toBe(false);
+      }
+    },
+  );
+  it("allows soloed children of guide groups when guides are included", () => {
+    const doc = comp([
+      { id: "group", type: "group", size: [100, 100], guide: true },
+      { ...solid(), parent: "group", solo: true },
+    ]);
+    expect(
+      evaluateComp(doc, 0, { includeGuides: true }).layers[1]!.drawable,
+    ).toBe(true);
+  });
+  it("does not select children merely because an ordinary parent is soloed", () => {
+    const doc = comp([
+      { ...solid("parent"), solo: true },
+      { ...solid(), parent: "parent" },
+    ]);
+    expect(
+      evaluateComp(doc, 0)
+        .layers.filter((l) => l.drawable)
+        .map((l) => l.id),
+    ).toEqual(["parent"]);
+  });
+  it("keeps group solo selection scoped to independently timed precomp instances", () => {
+    const doc: Composition = {
+      ...comp([
+        { id: "a", type: "precomp", comp: "child", timeRemap: 5 },
+        { id: "b", type: "precomp", comp: "child", timeRemap: 15 },
+        solid("other"),
+      ]),
+      precomps: [
+        {
+          id: "child",
+          width: 100,
+          height: 100,
+          frameCount: 60,
+          layers: [
+            {
+              id: "group",
+              type: "group",
+              size: [100, 100],
+              inPoint: 10,
+              outPoint: 20,
+            },
+            { ...solid(), parent: "group", solo: true },
+            { ...solid("sibling"), parent: "group" },
+          ],
+        },
+      ],
+    };
+    const result = evaluateComp(doc, 0);
+    expect(result.layers[0]!.precomp!.layers.every((l) => !l.drawable)).toBe(
+      true,
+    );
+    expect(result.layers[1]!.precomp!.layers[1]!.drawable).toBe(true);
+    expect(result.layers[1]!.precomp!.layers[2]!.drawable).toBe(false);
+    expect(result.layers[2]!.drawable).toBe(true);
+  });
   it("stretches and reverses layer time without playback state", () => {
     const doc = comp([
       {
@@ -622,6 +757,78 @@ describe("composition time and precomps", () => {
 });
 
 describe("composition motion and constraints", () => {
+  const driverChain = (): Composition => ({
+    ...comp(
+      Array.from({ length: 501 }, (_, i) => ({
+        id: `node${i}`,
+        type: "null" as const,
+        transform: {
+          position: i === 500 ? { x: linear(0, 40), y: 0 } : [0, 0],
+        },
+      })),
+    ),
+    drivers: Array.from({ length: 500 }, (_, i) => ({
+      target: `node${i}.x`,
+      source: `node${i + 1}.x`,
+      map: { offset: 1 },
+    })),
+  });
+  it.each([false, true])(
+    "evaluates the maximum driver chain independently of painter order (reversed: %s)",
+    (reverse) => {
+      const doc = driverChain();
+      if (reverse) doc.layers.reverse();
+      expect(() => CompositionSchema.parse(doc)).not.toThrow();
+      for (const time of [10.5, 0, 5.5]) {
+        expect(evaluateProperty(doc, "node0.x", time)).toBe(500 + 2 * time);
+        expect(state(doc, time, "node0").transform.position[0]).toBe(
+          500 + 2 * time,
+        );
+      }
+    },
+  );
+  it("evaluates long driver dependencies at delayed source times", () => {
+    const doc = driverChain();
+    for (const driver of doc.drivers!) driver.map!.delay = 1;
+    expect(evaluateProperty(doc, "node0.x", 10.5)).toBe(500);
+  });
+  it("resumes lag sampling across long driver dependencies", () => {
+    const doc = driverChain();
+    doc.drivers![0]!.map!.lag = 2;
+    const time = 2.5;
+    expect(evaluateProperty(doc, "node0.x", time)).toBeCloseTo(
+      500 + 2 * (time - 2 + (2 + time) * Math.exp(-time)),
+      9,
+    );
+  });
+  it("keeps long dependency chains local to each reused precomp instance", () => {
+    const chain = driverChain();
+    const doc: Composition = {
+      ...comp([
+        { id: "first", type: "precomp", comp: "child", startFrame: 5 },
+        { id: "second", type: "precomp", comp: "child", startFrame: -5 },
+      ]),
+      precomps: [
+        {
+          id: "child",
+          width: 100,
+          height: 100,
+          frameCount: 60,
+          layers: chain.layers,
+        },
+      ],
+      drivers: chain.drivers!.map((driver) => ({
+        ...driver,
+        target: `child/${driver.target}`,
+        source: `child/${driver.source}`,
+      })),
+    };
+    expect(
+      evaluateComp(doc, 10.5).layers.map(
+        (layer) => layer.precomp!.layers[0]!.transform.position[0],
+      ),
+    ).toEqual([511, 531]);
+  });
   it("uses dependency order rather than painter order for driver sources", () => {
     const doc = comp([
       { ...solid(), transform: { position: [1, 2] } },

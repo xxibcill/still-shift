@@ -2,9 +2,11 @@ import {
   isKeyed,
   type BezierPath,
   type Keyed,
+  type Signal,
 } from "@still-shift/scene-contract";
 import { monotoneTangents, sampleCurve, type CurveKey } from "../../curve.ts";
 import type { Point } from "../../node-transform.ts";
+import { addSignalMotion } from "../../motion-sampling.ts";
 import type { Rgba } from "./types.ts";
 
 type Key = Keyed<unknown>["keys"][number];
@@ -90,6 +92,21 @@ export function scalar(
 /** Imported motion curves use an array rather than a keyed object. */
 export function motionScalar(keys: Key[], time: number, fps: number) {
   return channel(keys, keys, "scalar", (k) => k.value as number, time, fps);
+}
+
+export function signal(value: Signal, time: number, fps: number): number {
+  return addSignalMotion(
+    value,
+    time,
+    channel(
+      value,
+      value.keys,
+      "scalar",
+      (key) => key.value as number,
+      time,
+      fps,
+    ),
+  );
 }
 
 export function discrete(value: unknown, time: number, fallback = 0): number {

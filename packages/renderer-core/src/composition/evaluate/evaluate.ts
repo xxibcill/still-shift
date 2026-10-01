@@ -4,15 +4,16 @@ import {
   type Composition,
   type CompositionLayer,
   type CompositionScope,
+  type CompositionDriver,
   type PropertyPath,
+  type Signal,
 } from "@still-shift/scene-contract";
 import { multiplyMatrix } from "../../node-transform.ts";
 import { passageError } from "../../passage-diagnostics.ts";
 import {
   blendValue,
-  mapDriver,
+  driverSamples,
   samplePeriodic,
-  sampleSignal,
 } from "../../motion-sampling.ts";
 import {
   compileComposition,
@@ -37,6 +38,7 @@ import {
   path as samplePath,
   rgba,
   scalar,
+  signal as sampleSignal,
   unit,
   vector,
 } from "./sample.ts";
@@ -47,7 +49,7 @@ import type {
   PropertyValue,
 } from "./types.ts";
 
-export const COMPOSITION_EVALUATOR_VERSION = "composition-evaluator-1";
+export const COMPOSITION_EVALUATOR_VERSION = "composition-evaluator-4";
 const order = ["action", "response", "current", "carrier"] as const;
 type Context = {
   scope: CompositionScope;
@@ -57,11 +59,40 @@ type Context = {
   hosts: string[];
   states: Map<string, EvaluatedLayer>;
   active: Set<string>;
+  activeClocks: Set<string>;
   clocks: Map<string, number>;
   children: Map<string, Context>;
   groupOpacity: Map<string, number>;
   groupVisible: Map<string, boolean>;
+  soloLayers: Set<string> | null;
 };
+
+type Request = {
+  evaluation: Evaluation;
+  ctx: Context;
+  layer: CompositionLayer;
+  kind: "layer" | "clock";
+};
+type Task<T> = Generator<Request, T, unknown>;
+type SignalCache = Map<Signal, Map<number, number>>;
+
+function selectSoloLayers(scope: CompositionScope): Set<string> | null {
+  if (!scope.layers.some((layer) => layer.solo)) return null;
+  const layers = new Map(scope.layers.map((layer) => [layer.id, layer]));
+  const selected = new Set<string>();
+  for (const layer of scope.layers) {
+    const groups: CompositionLayer[] = [];
+    for (let id = layer.parent; id; ) {
+      const parent = layers.get(id)!;
+      if (parent.type === "group") groups.push(parent);
+      id = parent.parent;
+    }
+    if (!layer.solo && !groups.some((group) => group.solo)) continue;
+    selected.add(layer.id);
+    for (const group of groups) selected.add(group.id);
+  }
+  return selected;
+}
 
 function context(
   scope: CompositionScope,
@@ -78,10 +109,12 @@ function context(
     hosts,
     states: new Map(),
     active: new Set(),
+    activeClocks: new Set(),
     clocks: new Map(),
     children: new Map(),
     groupOpacity: new Map(),
     groupVisible: new Map(),
+    soloLayers: selectSoloLayers(scope),
   };
 }
 
@@ -116,7 +149,7 @@ function baseState(
     ctx.time >= (layer.inPoint ?? 0) &&
     ctx.time < (layer.outPoint ?? ctx.scope.frameCount) &&
     layer.enabled !== false &&
-    (!ctx.scope.layers.some((l) => l.solo) || layer.solo === true);
+    (!ctx.soloLayers || ctx.soloLayers.has(layer.id));
   const state: EvaluatedLayer = {
     id: layer.id,
     layer,
@@ -178,6 +211,7 @@ class Evaluation {
     readonly compiled: CompiledComposition,
     readonly time: number,
     readonly options: EvaluationOptions,
+    private readonly signalCache: SignalCache = new Map(),
   ) {
     this.root = context(compiled.comp, time, compiled.comp.fps);
   }
@@ -189,19 +223,64 @@ class Evaluation {
     return this.compiled.layers.get(ctx.scope)!.get(id)!;
   }
 
+  private run<T>(task: Task<T>): T {
+    const stack: Task<unknown>[] = [task];
+    let value: unknown;
+    while (stack.length) {
+      const step = stack.at(-1)!.next(value);
+      value = undefined;
+      if (step.done) {
+        stack.pop();
+        value = step.value;
+        continue;
+      }
+      const { evaluation, ctx, layer, kind } = step.value;
+      value =
+        kind === "layer" ? ctx.states.get(layer.id) : ctx.clocks.get(layer.id);
+      if (value === undefined)
+        stack.push(
+          kind === "layer"
+            ? evaluation.layerTask(ctx, layer)
+            : evaluation.clockTask(ctx, layer),
+        );
+    }
+    return value as T;
+  }
+
+  private *layerState(
+    ctx: Context,
+    layer: CompositionLayer,
+  ): Task<EvaluatedLayer> {
+    return (yield {
+      evaluation: this,
+      ctx,
+      layer,
+      kind: "layer",
+    }) as EvaluatedLayer;
+  }
+
+  private *clock(ctx: Context, layer: CompositionLayer): Task<number> {
+    return (yield { evaluation: this, ctx, layer, kind: "clock" }) as number;
+  }
+
   private at(time: number): Evaluation {
     if (time === this.time) return this;
     let evaluation = this.history.get(time);
     if (!evaluation) {
       if (this.history.size >= 128)
         this.history.delete(this.history.keys().next().value!);
-      evaluation = new Evaluation(this.compiled, time, this.options);
+      evaluation = new Evaluation(
+        this.compiled,
+        time,
+        this.options,
+        this.signalCache,
+      );
       this.history.set(time, evaluation);
     }
     return evaluation;
   }
 
-  private child(ctx: Context, host: CompositionLayer): Context {
+  private *child(ctx: Context, host: CompositionLayer): Task<Context> {
     const cached = ctx.children.get(host.id);
     if (cached) return cached;
     if (host.type !== "precomp")
@@ -211,7 +290,7 @@ class Evaluation {
     const scope = this.compiled.scopes.get(host.comp)!;
     const next = context(
       scope,
-      this.clock(ctx, host),
+      yield* this.clock(ctx, host),
       scope.fps ?? this.compiled.comp.fps,
       [...ctx.route, host.comp],
       [...ctx.hosts, host.id],
@@ -220,21 +299,27 @@ class Evaluation {
     return next;
   }
 
-  private clock(ctx: Context, host: CompositionLayer) {
+  private *clockTask(ctx: Context, host: CompositionLayer): Task<number> {
     const cached = ctx.clocks.get(host.id);
     if (cached !== undefined) return cached;
+    if (ctx.activeClocks.has(host.id))
+      passageError("comp-motion-cycle", "Precomp clock dependency cycle", {
+        path: this.bindings(ctx, host.id) + ".timeRemap",
+      });
+    ctx.activeClocks.add(host.id);
     const state = baseState(this.compiled.comp, ctx, host);
-    this.motion(ctx, state, true);
+    yield* this.motion(ctx, state, true);
     const time = state.timeRemap!;
     if (!Number.isFinite(time))
       passageError("comp-evaluation-time", "Precomp time must be finite", {
         path: `${host.id}.timeRemap`,
       });
     ctx.clocks.set(host.id, time);
+    ctx.activeClocks.delete(host.id);
     return time;
   }
 
-  private scopeFor(path: PropertyPath, preferred?: Context): Context {
+  private *scopeFor(path: PropertyPath, preferred?: Context): Task<Context> {
     let ctx = this.root;
     // Definition-scoped drivers apply to every instance, including instances
     // reached through a different ancestor route. Rebuild the instance at this
@@ -244,7 +329,7 @@ class Evaluation {
       path.scope.at(-1) === preferred.route.at(-1)
     ) {
       for (const host of preferred.hosts)
-        ctx = this.child(ctx, this.layer(ctx, host));
+        ctx = yield* this.child(ctx, this.layer(ctx, host));
       return ctx;
     }
     for (const [depth, id] of path.scope.entries()) {
@@ -263,38 +348,72 @@ class Evaluation {
           `Property path ${path.scope.join("/")} has multiple precomp instances`,
           { path: path.scope.join("/") },
         );
-      ctx = this.child(ctx, selected ?? hosts[0]!);
+      ctx = yield* this.child(ctx, selected ?? hosts[0]!);
     }
     return ctx;
   }
 
   property(path: PropertyPath, preferred?: Context): PropertyValue {
+    return this.run(this.propertyTask(path, preferred));
+  }
+
+  private *propertyTask(
+    path: PropertyPath,
+    preferred?: Context,
+  ): Task<PropertyValue> {
     if (path.layer === "comp")
       return sampleCamera(this.compiled.comp, this.time)[
         path.segments[1]!.name as "x" | "y" | "zoom"
       ];
-    const ctx = this.scopeFor(path, preferred);
+    const ctx = yield* this.scopeFor(path, preferred);
     const layer = this.layer(ctx, path.layer);
     // A clock can be read without asking for the enclosing layer's transform.
     if (layer.type === "precomp" && path.segments[0]!.name === "timeRemap")
-      return this.clock(ctx, layer);
-    return readProperty(this.evaluate(ctx, layer), path.segments);
+      return yield* this.clock(ctx, layer);
+    return readProperty(yield* this.layerState(ctx, layer), path.segments);
   }
 
-  private source(text: string, time: number, preferred: Context): number {
-    if (!text.includes("."))
-      return sampleSignal(
-        this.compiled.comp.signals!.find((s) => s.id === text)!,
-        time,
-        this.compiled.comp.fps,
-      );
-    return this.at(time).property(
+  private *source(
+    text: string,
+    time: number,
+    preferred: Context,
+  ): Task<number> {
+    if (!text.includes(".")) return this.signalAt(text, time);
+    return (yield* this.at(time).propertyTask(
       resolvedPath(this.compiled, text),
       preferred,
-    ) as number;
+    )) as number;
   }
 
-  private motion(ctx: Context, state: EvaluatedLayer, remapOnly = false) {
+  private signalAt(id: string, time: number): number {
+    const signal = this.compiled.signals.get(id)!;
+    let samples = this.signalCache.get(signal);
+    if (!samples) this.signalCache.set(signal, (samples = new Map()));
+    const cached = samples.get(time);
+    if (cached !== undefined) return cached;
+    const value = sampleSignal(signal, time, this.compiled.comp.fps);
+    if (samples.size >= 128) samples.delete(samples.keys().next().value!);
+    samples.set(time, value);
+    return value;
+  }
+
+  private *driverValue(motion: CompositionDriver, ctx: Context): Task<number> {
+    const samples = driverSamples(this.time, motion.map);
+    let sample = samples.next();
+    while (!sample.done) {
+      let value = 0;
+      for (const source of motion.sum ?? [motion.source ?? motion.signal!])
+        value += yield* this.source(source, sample.value, ctx);
+      sample = samples.next(value);
+    }
+    return sample.value;
+  }
+
+  private *motion(
+    ctx: Context,
+    state: EvaluatedLayer,
+    remapOnly = false,
+  ): Task<void> {
     const key = this.bindings(ctx, state.id),
       comp = this.compiled.comp;
     const accepts = (path: PropertyPath) =>
@@ -325,15 +444,7 @@ class Evaluation {
       }
       for (const { motion, path } of this.compiled.drivers.get(key) ?? []) {
         if (!accepts(path) || (motion.layer ?? "action") !== layer) continue;
-        const value = mapDriver(
-          (time) =>
-            (motion.sum ?? [motion.source ?? motion.signal!]).reduce(
-              (sum, source) => sum + this.source(source, time, ctx),
-              0,
-            ),
-          this.time,
-          motion.map,
-        );
+        const value = yield* this.driverValue(motion, ctx);
         const weight = motion.weight
           ? unit(motionScalar(motion.weight, this.time, comp.fps))
           : 1;
@@ -387,6 +498,13 @@ class Evaluation {
   }
 
   evaluate(ctx: Context, layer: CompositionLayer): EvaluatedLayer {
+    return this.run(this.layerTask(ctx, layer));
+  }
+
+  private *layerTask(
+    ctx: Context,
+    layer: CompositionLayer,
+  ): Task<EvaluatedLayer> {
     const cached = ctx.states.get(layer.id);
     if (cached) return cached;
     if (ctx.active.has(layer.id))
@@ -401,13 +519,26 @@ class Evaluation {
       );
     ctx.active.add(layer.id);
     const state = baseState(this.compiled.comp, ctx, layer);
-    this.motion(ctx, state);
-    if (layer.type === "precomp") state.timeRemap = this.clock(ctx, layer);
+    yield* this.motion(ctx, state);
+    if (layer.type === "precomp")
+      state.timeRemap = yield* this.clock(ctx, layer);
     // Expressions are validated as unavailable until CE9; this stage is a no-op.
     const parent = layer.parent
-      ? this.evaluate(ctx, this.layer(ctx, layer.parent))
+      ? yield* this.layerState(ctx, this.layer(ctx, layer.parent))
       : undefined;
     const parentMatrix = parent?.worldMatrix ?? identity();
+    for (const constraint of ctx.scope.constraints ?? []) {
+      if (constraint.target !== layer.id) continue;
+      const reference =
+        "anchor" in constraint
+          ? constraint.anchor
+          : "surface" in constraint
+            ? constraint.surface
+            : "toward" in constraint
+              ? constraint.toward
+              : undefined;
+      if (reference) yield* this.layerState(ctx, this.layer(ctx, reference));
+    }
     applyConstraints(state, {
       comp: this.compiled.comp,
       scope: ctx.scope,
@@ -415,7 +546,7 @@ class Evaluation {
       fps: ctx.fps,
       options: this.options,
       parentMatrix,
-      other: (id) => this.evaluate(ctx, this.layer(ctx, id)),
+      other: (id) => ctx.states.get(id)!,
     });
     state.localMatrix = transformMatrix(state.transform);
     state.worldMatrix = multiplyMatrix(parentMatrix, state.localMatrix);
@@ -475,7 +606,7 @@ class Evaluation {
         (state.visible ||
           ctx.scope.layers.some((l) => l.trackMatte?.layer === state.id))
       )
-        state.precomp = this.tree(this.child(ctx, state.layer));
+        state.precomp = this.tree(this.run(this.child(ctx, state.layer)));
     }
     return {
       id: ctx.scope.id,
