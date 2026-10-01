@@ -133,10 +133,9 @@ Benchmark discovery is restricted to `benchmarks/`, excluding copies in local
 worktrees and package stores. Each benchmark iteration uses a fresh output path,
 and benchmark errors are thrown instead of silently ending an output-collision run.
 
-[The CI workflow](../.github/workflows/verify.yml) runs the fast gate on pushes and PRs.
-Manual runtime/release jobs use a provisioned trusted media runner and verify the pinned
-toolchain. Repository configuration is supplied; runner registration, hosted CI execution,
-and branch-protection settings have not been performed in this local task.
+GitHub Actions were removed at the owner's request. Verification runs locally
+through the existing tiers; [AGENTS.md](../AGENTS.md) prohibits restoring workflows
+or enabling repository Actions unless the owner explicitly revokes the rule.
 
 ## Verification
 
