@@ -22,6 +22,7 @@ import {
 import { resolvedTextStyle, type TextNode } from "../../typography-style.ts";
 import { drawStoryText } from "../../story-text.ts";
 import { passageError } from "../../passage-diagnostics.ts";
+import { rgba } from "../evaluate/sample.ts";
 import type { Bounds } from "../evaluate/types.ts";
 import { cssColor, type CanvasTextDrawer } from "./canvas2d.ts";
 import type { TextContent } from "./graph.ts";
@@ -49,8 +50,15 @@ const scopes = (comp: Composition): [CompositionScope, string][] => [
 const textLayers = (scope: CompositionScope) =>
   scope.layers.filter((l): l is TextLayer => l.type === "text");
 
+/** The baked raster colour, in the same normalised form the drawer receives. */
 const staticColor = (layer: TextLayer) =>
-  typeof layer.color === "string" ? layer.color : layer.color.keys[0]!.value;
+  cssColor(
+    rgba(
+      typeof layer.color === "string"
+        ? layer.color
+        : layer.color.keys[0]!.value,
+    ),
+  );
 
 /** Map a text layer onto the typography renderer's node shape, in layer space. */
 function textNode(comp: Composition, layer: TextLayer): TextNode {
