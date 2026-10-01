@@ -799,6 +799,15 @@ precomp-scoped), cycles and limits. Round trip: parse → serialise → parse is
   covering all three payloads, boundaries, UTF-8 sizing and invalid JSON values.
   `pnpm check:fast` passed on Node 22.23.1 with all 867 unit tests.
 
+- **Text animator axis follow-up:** validation now checks axis names and conservative
+  effective value bounds against each affected layer or span's pinned font, using
+  font defaults when no base axis is authored. Checks include precomp scopes,
+  motion-layer ordering, stacked replace/add/multiply blends, easing overshoot and
+  keyed weights with temporal handles. Added 21 regression tests. Conservative
+  bounds can reject safe time-correlated animation; the reference documents this
+  limitation. `pnpm check:fast` passed on Node 22.23.1 with all 888 unit tests.
+  Full browser rendering was not rerun for either validation fix.
+
 ---
 
 ## CE2 — Pure composition evaluator

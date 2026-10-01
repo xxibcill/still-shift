@@ -16,6 +16,7 @@ import {
   type IssueReporter,
 } from "./primitives.ts";
 import { isResolvedProperty, resolvePropertyPath } from "./resolve.ts";
+import { checkTextAnimatorAxes } from "./text-axes.ts";
 
 const L = COMPOSITION_LIMITS;
 type Path = (string | number)[];
@@ -789,6 +790,7 @@ export function validateCompositionSemantics(
       signals,
       new Set(scope.markers?.map((m) => m.id)),
     );
+    checkTextAnimatorAxes(comp, scope, base, fail, assets);
     layerCount += scope.layers.length;
   }
   if (layerCount > L.maxLayers)

@@ -156,6 +156,14 @@ Text layers follow the story typography rules: spans fit every text state and do
 overlap, decorations and animators name existing spans, variable-font axes stay in the
 pinned font's range, and text transitions do not overlap and name existing states.
 
+Text animator `from.axes` and `to.axes` are deltas from each affected layer or span
+style, falling back to the font's default axis value. Axis names must exist on every
+affected pinned variable font. Validation conservatively bounds the combined deltas
+in motion-layer order, including weights, easing overshoot and replace/add/multiply
+blends; the entire bound must fit the font's range. Animators restricted to a named
+span affect only that span's style. Conservative bounds can reject animations whose
+actual time-dependent values stay in range; reduce the deltas or separate their targets.
+
 ## Layers
 
 ### Fields on every layer
@@ -416,7 +424,7 @@ retain their original bounds.
 | `comp-text-font`            | A text size above 180 without a pinned font (`fontAsset` or `style`).                                                                              |
 | `comp-text-span-range`      | A span ends after the text or one of its states, or overlaps another span.                                                                         |
 | `comp-text-span-missing`    | A decoration or text animator names a span the text layer does not have.                                                                           |
-| `comp-text-font-axis`       | A variable-font axis value (style or span) is outside the pinned font's range, or the font is not variable.                                        |
+| `comp-text-font-axis`       | A variable-font axis value (style, span or blended animator) is outside the pinned font's range, or the font is not variable.                      |
 | `comp-text-locale`          | A text layer's locale is not recognised.                                                                                                           |
 | `comp-text-transition`      | `transition` and `transitions` together, overlapping windows, a missing from/to state, or a count without numeric states and tabular figures.      |
 | `comp-marker-frame`         | A marker lies at or after `frameCount`.                                                                                                            |

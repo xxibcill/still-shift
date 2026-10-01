@@ -67,7 +67,7 @@ export const COMPOSITION_DIAGNOSTICS = {
   "comp-text-span-missing":
     "A decoration or text animator names an unknown span.",
   "comp-text-font-axis":
-    "A variable-font axis value is outside the pinned font's range.",
+    "A style, span or animated variable-font axis is absent or outside the pinned font's range.",
   "comp-text-locale": "A text layer's locale is not recognised.",
   "comp-text-transition":
     "Conflicting, overlapping or impossible text transitions.",
