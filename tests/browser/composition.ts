@@ -47,6 +47,7 @@ type Rendered = {
   frames: Uint8Array[];
   culled: string[][];
   diagnostics: string[][];
+  textBounds: Render.CompositionPreview["textBounds"];
 };
 
 const root = resolve(import.meta.dirname, "../..");
@@ -192,6 +193,7 @@ async function render(
         encoded,
         culled,
         diagnostics,
+        textBounds: preview.textBounds,
       };
     },
     {
@@ -207,6 +209,7 @@ async function render(
     frames: out.encoded.map((b) => new Uint8Array(Buffer.from(b, "base64"))),
     culled: out.culled,
     diagnostics: out.diagnostics,
+    textBounds: out.textBounds,
   };
 }
 
@@ -479,6 +482,56 @@ try {
   );
   results.push(
     `every-field renders ${everyFrames.length} frames without text-layout diagnostics`,
+  );
+
+  const genericStyle: Composition = {
+    schemaVersion: "composition-1",
+    id: "generic-style",
+    width: 300,
+    height: 100,
+    fps: 30,
+    frameCount: 1,
+    background: "#000000",
+    assets: [],
+    textStyles: { large: { size: 80 } },
+    layers: [
+      {
+        id: "text",
+        type: "text",
+        text: "TEST",
+        fontSize: 20,
+        style: "large",
+        color: "#ffffff",
+        transform: { position: [30, 10] },
+      },
+    ],
+  };
+  for (const position of [
+    [30, 10],
+    [-100, 10],
+  ] as [number, number][]) {
+    const styled = structuredClone(genericStyle);
+    styled.layers[0]!.transform = { position };
+    const control = structuredClone(styled);
+    const controlLayer = control.layers[0]!;
+    if (controlLayer.type !== "text") throw new Error("Expected text");
+    delete controlLayer.style;
+    controlLayer.fontSize = 80;
+    const actual = await render(page, styled, [0]);
+    const expected = await render(page, control, [0]);
+    assert.ok(
+      actual.frames[0]!.every((value, i) => value === expected.frames[0]![i]),
+      "generic text uses style size",
+    );
+    assert.deepEqual(
+      actual.textBounds,
+      expected.textBounds,
+      "generic text measures style size",
+    );
+    assert.deepEqual(actual.culled, [[]], "style-sized text remains visible");
+  }
+  results.push(
+    "generic-font style size controls rendering, measured bounds and culling",
   );
 
   const strokeText: Composition = {

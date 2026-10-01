@@ -107,9 +107,11 @@ function textNode(comp: Composition, layer: TextLayer): TextNode {
   } as TextNode;
   const style = resolvedTextStyle(node, comp.textStyles ?? {});
   // As resolveTypographyNodes does for story scenes: the style decides font and size.
-  return style.fontAsset
-    ? { ...node, fontAsset: style.fontAsset, fontSize: style.size! }
-    : node;
+  return {
+    ...node,
+    fontSize: style.size!,
+    ...(style.fontAsset ? { fontAsset: style.fontAsset } : {}),
+  };
 }
 
 function pinned(comp: Composition, node: TextNode) {
