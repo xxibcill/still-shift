@@ -28,7 +28,7 @@ These pure functions run in Node and browsers. They validate once per compositio
 object, compile curves into identity-keyed weak caches and memoise dependencies within
 each evaluation. Treat the composition and its nested objects as immutable: replace
 the composition object after an edit. Returned states are fresh on every call.
-`COMPOSITION_EVALUATOR_VERSION` is `composition-evaluator-1`.
+`COMPOSITION_EVALUATOR_VERSION` is `composition-evaluator-2`.
 
 `evaluateComp` returns an `EvaluatedLayerTree`: scope id, time, dimensions, fps,
 floating-point RGBA background, ordered `layers` and structured `diagnostics`.
@@ -48,6 +48,12 @@ frames. A driven remap is applied once before sampling children. Content outside
 scope's `[0, frameCount)` is transparent. In/out points and solo use scope frames.
 Ordinary invisible parents continue to supply transforms; an invisible `group` also
 gates its descendants. Guides are hidden unless `includeGuides: true` is supplied.
+
+Solo selection is local to each scope. A soloed child retains its group ancestors;
+a soloed group selects all its descendants, including through ordinary parents.
+Retained ancestors do not select unrelated siblings, and soloing an ordinary parent
+does not select its children. Enabled, guide and in/out-point gates still apply to
+selected layers and groups.
 
 Motion drivers, signals, delays, lag, weights and periodic windows use root composition
 frames. Their targets may lie inside precomps. Dependencies read evaluated state,

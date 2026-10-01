@@ -47,7 +47,7 @@ import type {
   PropertyValue,
 } from "./types.ts";
 
-export const COMPOSITION_EVALUATOR_VERSION = "composition-evaluator-1";
+export const COMPOSITION_EVALUATOR_VERSION = "composition-evaluator-2";
 const order = ["action", "response", "current", "carrier"] as const;
 type Context = {
   scope: CompositionScope;
@@ -61,7 +61,26 @@ type Context = {
   children: Map<string, Context>;
   groupOpacity: Map<string, number>;
   groupVisible: Map<string, boolean>;
+  soloLayers: Set<string> | null;
 };
+
+function selectSoloLayers(scope: CompositionScope): Set<string> | null {
+  if (!scope.layers.some((layer) => layer.solo)) return null;
+  const layers = new Map(scope.layers.map((layer) => [layer.id, layer]));
+  const selected = new Set<string>();
+  for (const layer of scope.layers) {
+    const groups: CompositionLayer[] = [];
+    for (let id = layer.parent; id; ) {
+      const parent = layers.get(id)!;
+      if (parent.type === "group") groups.push(parent);
+      id = parent.parent;
+    }
+    if (!layer.solo && !groups.some((group) => group.solo)) continue;
+    selected.add(layer.id);
+    for (const group of groups) selected.add(group.id);
+  }
+  return selected;
+}
 
 function context(
   scope: CompositionScope,
@@ -82,6 +101,7 @@ function context(
     children: new Map(),
     groupOpacity: new Map(),
     groupVisible: new Map(),
+    soloLayers: selectSoloLayers(scope),
   };
 }
 
@@ -116,7 +136,7 @@ function baseState(
     ctx.time >= (layer.inPoint ?? 0) &&
     ctx.time < (layer.outPoint ?? ctx.scope.frameCount) &&
     layer.enabled !== false &&
-    (!ctx.scope.layers.some((l) => l.solo) || layer.solo === true);
+    (!ctx.soloLayers || ctx.soloLayers.has(layer.id));
   const state: EvaluatedLayer = {
     id: layer.id,
     layer,
