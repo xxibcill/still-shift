@@ -73,6 +73,9 @@ when the supplied art cannot fill a safe portrait camera path. Story passage
 plans use `story:passage --format vertical` to resolve authored template
 overrides. `still-shift passage lint --plan <plan.json> --format vertical`
 checks the resolved story scene and reports all vertical layout diagnostics.
+Passage exports include `metrics.renderEnvironment` in `render-report.json` for both
+fresh renders and cache hits, recording the pinned browser profile, Chromium version,
+WebGL renderer, raster fingerprint, platform and CPU architecture.
 
 This command writes the MP4, `.mp4.scene.json`, and `.mp4.result.json`; stdout
 contains an `illustrated-result-1` result. Output files must not already exist.

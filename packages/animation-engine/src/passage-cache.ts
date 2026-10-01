@@ -4,6 +4,7 @@ import {
   assertPinnedRenderEnvironment,
   launchRenderBrowser,
   probeRenderEnvironment,
+  type RenderEnvironment,
 } from "@still-shift/execution-runtime/render-browser";
 import { setTimeout as delay } from "node:timers/promises";
 import { createHash, randomUUID } from "node:crypto";
@@ -79,7 +80,14 @@ async function measurePassageRenderEnvironment(signal?: AbortSignal) {
   }
 }
 
-export async function passageRuntimeIdentity(signal?: AbortSignal) {
+export type PassageRenderRuntime = {
+  identity: string;
+  renderEnvironment: RenderEnvironment;
+};
+
+export async function passageRenderRuntime(
+  signal?: AbortSignal,
+): Promise<PassageRenderRuntime> {
   signal?.throwIfAborted();
   const root = resolve(import.meta.dirname, "../../..");
   const files: string[] = [];
@@ -120,7 +128,11 @@ export async function passageRuntimeIdentity(signal?: AbortSignal) {
   hash.update(process.version);
   hash.update(process.platform);
   hash.update(process.arch);
-  return hash.digest("hex");
+  return { identity: hash.digest("hex"), renderEnvironment };
+}
+
+export async function passageRuntimeIdentity(signal?: AbortSignal) {
+  return (await passageRenderRuntime(signal)).identity;
 }
 
 /** Assembly changes invalidate a render job without discarding valid beat clips. */

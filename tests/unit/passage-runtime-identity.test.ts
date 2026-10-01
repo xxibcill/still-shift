@@ -1,7 +1,10 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import type * as RenderBrowser from "../../packages/execution-runtime/src/render-browser.ts";
 
-import { passageRuntimeIdentity } from "../../packages/animation-engine/src/passage-cache.ts";
+import {
+  passageRenderRuntime,
+  passageRuntimeIdentity,
+} from "../../packages/animation-engine/src/passage-cache.ts";
 import {
   RENDER_BROWSER_PROFILE,
   type RenderEnvironment,
@@ -52,6 +55,14 @@ beforeEach(() => {
 });
 
 describe("passage runtime render identity", () => {
+  it("returns report provenance alongside the compatible cache identity", async () => {
+    const runtime = await passageRenderRuntime();
+    expect(runtime.renderEnvironment).toEqual(environment);
+    expect(runtime.identity).toMatch(/^[a-f0-9]{64}$/);
+    expect(browser.probe).toHaveBeenCalledOnce();
+    expect(await passageRuntimeIdentity()).toBe(runtime.identity);
+  });
+
   it("measures the renderer even when configuration and tool versions are unchanged", async () => {
     const first = await passageRuntimeIdentity();
     expect(await passageRuntimeIdentity()).toBe(first);

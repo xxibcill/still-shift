@@ -84,7 +84,17 @@ vi.mock(
     const actual = await importOriginal<typeof PassageCache>();
     return {
       ...actual,
-      passageRuntimeIdentity: async () => "fixed-runtime",
+      passageRenderRuntime: async () => ({
+        identity: "fixed-runtime",
+        renderEnvironment: {
+          profile: "chromium-software-2",
+          browserVersion: "151.0.7922.34",
+          webglRenderer: "SwiftShader",
+          rasterFingerprint: `sha256:${"0".repeat(64)}`,
+          platform: process.platform,
+          arch: process.arch,
+        },
+      }),
       passageJobRuntimeIdentity: async () => "fixed-job-runtime",
       passageBeatKey: () => "fixed-beat",
       cachedPassageBeat: async ({ output }: { output: string }) => {

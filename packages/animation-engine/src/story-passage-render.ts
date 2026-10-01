@@ -10,8 +10,9 @@ import {
   cachedPassageBeat,
   passageBeatKey,
   passageJobRuntimeIdentity,
-  passageRuntimeIdentity,
+  passageRenderRuntime,
 } from "./passage-cache.ts";
+import type { RenderEnvironment } from "@still-shift/execution-runtime/render-browser";
 import { acquirePassageJob } from "./passage-job.ts";
 import assert from "node:assert/strict";
 import { readFile, mkdir, rm } from "node:fs/promises";
@@ -112,6 +113,7 @@ async function assembleStoryPassage(
   options: PassageRenderOptions & {
     cacheDirectory: string;
     runtime: string;
+    renderEnvironment: RenderEnvironment;
     sceneDirectory: string;
     job: Awaited<ReturnType<typeof acquirePassageJob>>;
   },
@@ -405,6 +407,7 @@ async function assembleStoryPassage(
     video: verified,
     slices,
     metrics: {
+      renderEnvironment: options.renderEnvironment,
       preparationMs: passage.preparationMs,
       renderingMs: performance.now() - started,
       beatsMs,
@@ -475,7 +478,9 @@ export async function renderStoryPassage(
         "Prepared scene changed; prepare a fresh output directory",
       );
   }
-  const runtime = await passageRuntimeIdentity(options.signal);
+  const { identity: runtime, renderEnvironment } = await passageRenderRuntime(
+    options.signal,
+  );
   const jobRuntime = await passageJobRuntimeIdentity(runtime, options.signal);
   const job = await acquirePassageJob(
     output,
@@ -501,6 +506,7 @@ export async function renderStoryPassage(
         options.cacheDirectory ?? "benchmarks/results/passage-cache",
       ),
       runtime,
+      renderEnvironment,
       sceneDirectory: join(output, "scenes"),
       job,
     });
