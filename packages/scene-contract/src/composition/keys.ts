@@ -170,7 +170,7 @@ export const BezierPathSchema = z
 export const AnimatablePathSchema = z
   .union([BezierPathSchema, keyed(BezierPathSchema)])
   .superRefine((value, ctx) => {
-    if (!("keys" in value)) return;
+    if (!("keys" in value) || !value.keys.length) return;
     const count = value.keys[0]!.value.vertices.length;
     value.keys.forEach((key, i) => {
       if (key.value.vertices.length !== count)

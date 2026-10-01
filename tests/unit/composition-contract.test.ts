@@ -247,6 +247,11 @@ const set = <T>(target: T, patch: Partial<T>) =>
 
 const invalid: Mutation[] = [
   [
+    "empty path keys",
+    (d) => set((house(d).masks as object[])[0]!, { path: { keys: [] } }),
+    "comp-limit",
+  ],
+  [
     "schema version",
     (d) => set(d, { schemaVersion: "composition-2" as never }),
     "comp-schema-version",
