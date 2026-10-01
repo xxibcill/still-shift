@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { spawn } from "node:child_process";
 import { createHash } from "node:crypto";
-import { mkdtemp, readFile, rm } from "node:fs/promises";
+import { mkdtemp, readdir, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 import { createServer } from "vite";
@@ -853,6 +853,92 @@ try {
   }
   results.push(
     `first-slice preview is identical across loads; export decodes identically to the encoded preview (H.264 vs raw preview PSNR ${psnr.join(", ")} dB)`,
+  );
+  // Export transactions, as for legacy scenes (tests/browser/export-worker.ts).
+  const firstBytes = await readFile(outputPath);
+  const again = join(directory, "again.mp4");
+  await renderComposition({
+    compositionPath: resolve(fixtureDir, "first-slice.json"),
+    outputPath: again,
+  });
+  assert.deepEqual(
+    await readFile(again),
+    firstBytes,
+    "repeat export is byte-identical",
+  );
+  const raw = join(directory, "raw.mp4");
+  const rawResult = await renderComposition({
+    compositionPath: resolve(fixtureDir, "first-slice.json"),
+    outputPath: raw,
+    transport: "raw_rgba",
+  });
+  assert.equal(rawResult.metrics.frameTransport, "raw_rgba");
+  assert.deepEqual(
+    await readFile(raw),
+    firstBytes,
+    "raw RGBA transport matches PNG",
+  );
+  const jpeg = await renderComposition({
+    compositionPath: resolve(fixtureDir, "first-slice.json"),
+    outputPath: join(directory, "jpeg.mp4"),
+    transport: "jpeg_pipe",
+  });
+  assert.equal(jpeg.frameCount, 90);
+  const existing = join(directory, "existing.mp4");
+  await writeFile(existing, "existing output");
+  await assert.rejects(
+    renderComposition({
+      compositionPath: resolve(fixtureDir, "first-slice.json"),
+      outputPath: existing,
+    }),
+    /Output already exists/,
+  );
+  assert.equal(await readFile(existing, "utf8"), "existing output");
+  const invalidPath = join(directory, "invalid.json");
+  await writeFile(
+    invalidPath,
+    JSON.stringify({ ...firstSlice, frameCount: 0 }),
+  );
+  await assert.rejects(
+    renderComposition({
+      compositionPath: invalidPath,
+      outputPath: join(directory, "invalid.mp4"),
+    }),
+    (error: Error & { code?: string }) => error.code === "SCENE_INVALID",
+  );
+  const tamperedPath = join(fixtureDir, ".tampered-first-slice.json");
+  await writeFile(
+    tamperedPath,
+    JSON.stringify({
+      ...firstSlice,
+      assets: firstSlice.assets.map((a) =>
+        a.id === "house" ? { ...a, sha256: `sha256:${"0".repeat(64)}` } : a,
+      ),
+    }),
+  );
+  try {
+    await assert.rejects(
+      renderComposition({
+        compositionPath: tamperedPath,
+        outputPath: join(directory, "tampered.mp4"),
+      }),
+      /checksum differs/,
+    );
+  } finally {
+    await rm(tamperedPath, { force: true });
+  }
+  assert.deepEqual(
+    (await readdir(directory)).filter(
+      (path) =>
+        path.includes(".tmp.") ||
+        path.startsWith("invalid.mp4") ||
+        path.startsWith("tampered.mp4"),
+    ),
+    [],
+    "failed exports leave no files",
+  );
+  results.push(
+    "export is byte-identical on repeat and across PNG/raw transports; failures publish nothing",
   );
   for (const line of results) console.log(`Composition render: ${line}`);
 } finally {

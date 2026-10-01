@@ -12,8 +12,8 @@
 A composition describes timed layers, their animated properties and how they combine,
 in the spirit of an After Effects composition. It is plain JSON, validated in two steps:
 a structural schema, then semantic rules (references, cycles, limits). The CE1 milestone
-defines and validates the format. CE2 evaluates it without drawing; the CE3 backend
-will render the evaluated state.
+defines and validates the format. CE2 evaluates it without drawing; the CE3 render
+graph and Canvas 2D backend [render](#rendering-a-composition) the evaluated state.
 
 ## Evaluating a frame
 
@@ -34,9 +34,9 @@ the composition object after an edit. Returned states are fresh on every call.
 floating-point RGBA background, ordered `layers` and structured `diagnostics`.
 Each layer retains its contract data alongside local time, visibility, transform,
 constraint reference point, local/world/screen matrices, effective opacity, bounds,
-sampled masks and applicable colour/state/reveal/text/remap values. A visible precomp
-has its own `precomp` tree in its own coordinate system; CE3 applies the host matrix
-and opacity to that flattened tree. Invisible layers remain in `layers` so the
+sampled masks and applicable colour/state/reveal/text/remap values. A visible precomp,
+and any precomp used as a track matte (mattes ignore `enabled`), has its own `precomp`
+tree in its own coordinate system; the renderer applies the host matrix and opacity. Invisible layers remain in `layers` so the
 renderer and inspector can resolve parents and matte sources. `drawable` excludes
 invisible layers, nulls, groups and layers used as mattes.
 
@@ -95,6 +95,141 @@ CE5. Attach, look-at, contact and safe-area correction are available now. Singul
 parents are valid transforms; constraints that need their inverse report
 `comp-constraint-singular`. Evaluation limits each call to 20,000 layer instances
 and accepts finite root times within ±216,000 frames.
+
+## Rendering a composition
+
+```ts
+import {
+  createCompositionPreview,
+  loadCompositionResources,
+} from "@still-shift/renderer-core";
+
+const resources = await loadCompositionResources(composition, (id) =>
+  urlFor(id),
+);
+const preview = createCompositionPreview(canvas, composition, resources);
+const { diagnostics, culled } = preview.renderFrame(42);
+```
+
+```bash
+pnpm --silent still-shift comp render --input first-slice.json --output out.mp4
+```
+
+`loadCompositionResources` fetches every image and font, checks its SHA-256 and pixel
+size, and loads style and animated-axis font variants. Lab preview and export call
+the same `createCompositionPreview`, so they share evaluator and backend code; export
+runs it in the pinned software browser. `renderComposition` (animation engine) and
+`comp render` resolve asset paths relative to the composition file and write the MP4,
+a scene manifest and a result manifest. The manifest records
+`COMPOSITION_RENDERER_VERSION` (`composition-canvas-1.0.0`) and
+`COMPOSITION_EVALUATOR_VERSION`, so both participate in cache identity.
+
+The output canvas is opaque: a transparent or absent `background` renders over black
+until alpha output formats arrive (CE15). Internal surfaces keep premultiplied alpha.
+
+### Render graph
+
+Each frame, `buildRenderGraph(comp, tree)` turns the evaluated tree into a pure,
+backend-independent graph (no DOM). `executeGraph` runs it on any `RenderBackend`;
+the Canvas 2D backend is the reference and CE6 adds WebGL2 behind the same interface.
+
+- Layers paint from the last array entry (bottom) to `layers[0]` (top).
+- A layer draws straight into its scope's surface unless it needs its own: a
+  non-`normal` blend mode, a mask, or a track matte. Isolated content draws at full
+  opacity into a scope-sized surface; masks, then the matte, multiply it, and the
+  layer's opacity and blend mode apply when it composites back.
+- Nulls, groups, invisible layers and matte sources do not draw. Layers with zero
+  effective opacity are skipped. Layers whose screen bounds miss their surface are
+  culled and listed in `renderFrame(...).culled`; text bounds come from the text
+  module below.
+
+### Blend mode compositing
+
+Blend modes follow the W3C Compositing and Blending Level 1 formulas in sRGB-encoded
+values, as Canvas `globalCompositeOperation` implements them; `add` is
+`plus-lighter` (`lighter`). The CE3 tests check all 17 modes on a test chart with
+opaque and translucent colours within the `near` tier (2 levels per channel).
+
+### Track matte rendering
+
+A matte source renders with its own transform, opacity, masks and matte (mattes may
+chain), into a separate surface; its blend mode is ignored. As in AE, the source's
+`enabled` switch and solo do not hide it as a matte, but its in/out points do: outside
+them it contributes nothing (`alpha` hides the target, `alpha-inverted` shows it).
+
+| Mode             | Matte value                                                                  |
+| ---------------- | ---------------------------------------------------------------------------- |
+| `alpha`          | matte alpha                                                                  |
+| `alpha-inverted` | 1 − matte alpha                                                              |
+| `luma`           | `(0.2125 R + 0.7154 G + 0.0721 B) × A`, the CSS Masking luminance over black |
+| `luma-inverted`  | 1 − that luminance                                                           |
+
+### Mask rendering
+
+Masks combine in array order into one coverage `a`, which multiplies the layer. Each
+mask's value is `m = opacity × coverage`, where coverage is the path fill (`1 −` fill
+when `inverted`). A first mask in `subtract` or `intersect` mode starts from the whole
+layer (`a = 1`); otherwise `a` starts at 0. Then:
+
+| Mode         | Combination     |
+| ------------ | --------------- |
+| `add`        | `a + m − a·m`   |
+| `subtract`   | `a · (1 − m)`   |
+| `intersect`  | `a · m`         |
+| `difference` | `a + m − 2·a·m` |
+
+`feather` blurs a mask's coverage with a Gaussian of σ = feather / 2 layer pixels
+(scaled by the layer's screen scale). `expansion` grows or shrinks the path by a
+round-joined stroke of that width; this matches a true offset path for convex paths
+and rounds sharp concave corners. Open paths close with their last segment.
+
+### Precomps, groups and adjustment layers
+
+- An uncollapsed precomp renders into its own surface of the precomp's size, filled
+  with its `background`, then draws with the host transform, opacity and blend mode;
+  content outside the precomp's bounds is clipped.
+- `collapseTransforms: true` draws the precomp's layers straight into the host's
+  surface with combined transforms, each keeping its own blend mode, and with the
+  host's opacity multiplied into each layer. Nothing is clipped, and the precomp's
+  `background` is not drawn. With a mask, matte or blend mode on the host, the
+  collapsed layers render together into one isolated surface first.
+- A `group` with `clip: true` clips every descendant to its `size` box.
+- An `adjustment` layer re-composites what is below it in its scope within its `size`
+  box (default: the scope size), masks and matte: with coverage `k = opacity ×
+region`, the result is `below·(1 − k) + adjusted·k`. Until effects arrive (CE6),
+  `adjusted` is the content below blended onto itself with the layer's blend mode;
+  a `normal` adjustment layer without effects changes nothing and is skipped.
+
+### Text
+
+All shaping, measurement and line breaking happens in one module
+([`render/text.ts`](../packages/renderer-core/src/composition/render/text.ts)), so a
+platform-independent layout can replace the operating system's later without
+changing the contract.
+
+- A text layer with a pinned base font (`fontAsset`, or a `style` with one) renders
+  through the typography renderer: styles, spans, decorations, transitions and text
+  animators. Spans, decorations, transitions, text animators and `textBox` require
+  one (`comp-text-pinned-font`). `textBox` wraps inside `size`
+  (`comp-text-box-size`).
+- A layer without a pinned font draws with the browser's generic `serif` or
+  `sans-serif` face, `reveal` and `textLayout` included. These faces are not pinned,
+  so their output may differ between machines.
+- Text draws at the layer origin; the typography `anchor` (`top`, `cap`, `baseline`)
+  places the first line.
+- Transitions, decoration reveals, counts and text animators sample **layer time**,
+  like keys; signal-driven animator selectors therefore also sample layer time.
+- **State and transitions:** `state` keys choose the displayed text until the first
+  transition window opens. From then on the latest transition that has started
+  decides: its `fromState` during the window (blending towards `toState`), its
+  `toState` afterwards. This is the story typography rule.
+- An animated `color` recolours unspanned glyphs each frame; span colours, decoration
+  colours and animator fills keep their own values.
+- Preparation measures every state's layout once, and passes it to the evaluator as
+  `textBounds`, so text layers get bounds for culling and constraints. Bounds are
+  conservative: they add the reach of text animator offsets, baseline shifts, blur,
+  strokes, scale and rotation, decorations, and the union of all states while
+  transitions can show another text.
 
 ## Validating
 
@@ -262,19 +397,19 @@ pinned font's range, and text transitions do not overlap and name existing state
 
 ### Layer types
 
-| `type`                       | Fields                                                                                                                                                                                                                                                                                                                                         | Available |
-| ---------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- |
-| `solid`                      | `size` `[w, h]`; `color` (animatable).                                                                                                                                                                                                                                                                                                         | CE1       |
-| `image`                      | `size`; `fit` (`contain` default, `cover`, `stretch`); `sources` (`{ asset, crop?, pose?, registration?, anchors? }[]`); `state` (discrete index into `sources`); `stateFrom` + `stateMix` (crossfade); `rasterize` (`draw` default, `natural-size`).                                                                                          | CE1       |
-| `text`                       | `text`; `states` + `state`; `fontSize`; `color` (animatable); `weight`, `font`, `fontAsset`, `style`, `align`, `textRole`, `textLayout`, `textBox`, `revealMode`, `reveal` (animatable 0–1) and the story typography fields (`spans`, `locale`, `anchor`, `wrap`, `orphanFraction`, `decorations`, `transition(s)`, `feather`, `lineOverlap`). | CE1       |
-| `null`                       | No content; a transform for parenting.                                                                                                                                                                                                                                                                                                         | CE1       |
-| `group`                      | `size`; `clip`. Children (layers parented to it) multiply its opacity and, with `clip`, are clipped to its bounds. Opacity applies per child, unlike a precomp. Produced by family adapters (parity note 1).                                                                                                                                   | CE1       |
-| `precomp`                    | `comp` (precomp id); `collapseTransforms`; `timeRemap` (animatable precomp frame).                                                                                                                                                                                                                                                             | CE1       |
-| `adjustment`                 | `size` (default: composition size). Applies its effects to the layers below.                                                                                                                                                                                                                                                                   | CE1       |
-| `shape`                      | `contents`.                                                                                                                                                                                                                                                                                                                                    | CE5       |
-| `camera`                     | —                                                                                                                                                                                                                                                                                                                                              | CE8       |
-| `light`                      | —                                                                                                                                                                                                                                                                                                                                              | Q6        |
-| `video`, `sequence`, `audio` | `asset`; `timeRemap`.                                                                                                                                                                                                                                                                                                                          | CE13      |
+| `type`                       | Fields                                                                                                                                                                                                                                                                                                                                                                          | Available |
+| ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- |
+| `solid`                      | `size` `[w, h]`; `color` (animatable).                                                                                                                                                                                                                                                                                                                                          | CE1       |
+| `image`                      | `size`; `fit` (`contain` default, `cover`, `stretch`); `sources` (`{ asset, crop?, pose?, registration?, anchors? }[]`); `state` (discrete index into `sources`); `stateFrom` + `stateMix` (crossfade); `rasterize` (`draw` default, `natural-size`).                                                                                                                           | CE1       |
+| `text`                       | `text`; `states` + `state`; `fontSize`; `size` (the `textBox` wrap box); `color` (animatable); `weight`, `font`, `fontAsset`, `style`, `align`, `textRole`, `textLayout`, `textBox`, `revealMode`, `reveal` (animatable 0–1) and the story typography fields (`spans`, `locale`, `anchor`, `wrap`, `orphanFraction`, `decorations`, `transition(s)`, `feather`, `lineOverlap`). | CE1       |
+| `null`                       | No content; a transform for parenting.                                                                                                                                                                                                                                                                                                                                          | CE1       |
+| `group`                      | `size`; `clip`. Children (layers parented to it) multiply its opacity and, with `clip`, are clipped to its bounds. Opacity applies per child, unlike a precomp. Produced by family adapters (parity note 1).                                                                                                                                                                    | CE1       |
+| `precomp`                    | `comp` (precomp id); `collapseTransforms`; `timeRemap` (animatable precomp frame).                                                                                                                                                                                                                                                                                              | CE1       |
+| `adjustment`                 | `size` (default: composition size). Applies its effects to the layers below.                                                                                                                                                                                                                                                                                                    | CE1       |
+| `shape`                      | `contents`.                                                                                                                                                                                                                                                                                                                                                                     | CE5       |
+| `camera`                     | —                                                                                                                                                                                                                                                                                                                                                                               | CE8       |
+| `light`                      | —                                                                                                                                                                                                                                                                                                                                                                               | Q6        |
+| `video`, `sequence`, `audio` | `asset`; `timeRemap`.                                                                                                                                                                                                                                                                                                                                                           | CE13      |
 
 Layers of an unavailable type validate structurally and then fail with
 `comp-feature-unavailable`, so agents learn which milestone provides them.
@@ -298,21 +433,21 @@ Three-component vectors require `threeD`.
 
 `normal`, `multiply`, `screen`, `overlay`, `darken`, `lighten`, `color-dodge`,
 `color-burn`, `hard-light`, `soft-light`, `difference`, `exclusion`, `hue`,
-`saturation`, `color`, `luminosity` and `add` (Canvas `lighter`).
+`saturation`, `color`, `luminosity` and `add` (Canvas `lighter`). How they composite: [rendering](#blend-mode-compositing).
 
 ### Track mattes
 
 `trackMatte: { layer, mode }` with mode `alpha`, `alpha-inverted`, `luma` or
 `luma-inverted`. The matte layer is named explicitly and must be in the same scope; it
 need not be directly above (that classic AE layout only produces a warning when
-broken). Mattes may chain but not loop.
+broken). Mattes may chain but not loop. How mattes render: [rendering](#track-matte-rendering).
 
 ### Masks
 
 `{ id, path, mode, inverted?, feather?, expansion?, opacity? }`. `path` is an animatable
 closed path in layer pixels; `mode` is `add`, `subtract`, `intersect`, `difference` or
 `none`; `feather` and `expansion` are pixels (animatable); `opacity` is 0–1 (animatable).
-At most 32 per layer.
+At most 32 per layer. How masks combine: [rendering](#mask-rendering).
 
 ## 2D camera
 
