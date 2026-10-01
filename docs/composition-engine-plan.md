@@ -383,7 +383,7 @@ through the story adapter with recorded parity.
       parenting; in/out points; blend modes; alpha mattes. The slice composition is
       [`first-slice.json`](../benchmarks/fixtures/composition/ce1/first-slice.json).
 - [x] CE2 evaluator covering those features.
-- [ ] CE3 Canvas 2D backend covering those features, wired into export.
+- [x] CE3 Canvas 2D backend covering those features, wired into export.
 - [ ] CE4a adapter for `benchmarks/fixtures/story-motion-continuous/access-constraint.json`
       with the parity result recorded.
 - [ ] Record commands, results and limitations here before marking the slice complete.
@@ -922,31 +922,31 @@ masks and adjustment layers, and export through the existing runtime.
 
 ### Checklist
 
-- [ ] Render graph builder and Canvas 2D backend in `composition/render/`.
-- [ ] Layer drawing for solid, image (reuse `imagePlacement`/`fit`), text (reuse the
+- [x] Render graph builder and Canvas 2D backend in `composition/render/`.
+- [x] Layer drawing for solid, image (reuse `imagePlacement`/`fit`), text (reuse the
       typography renderer and text animators as a layer content provider), null (no
       draw), group (per-child opacity and clip), adjustment (applies its effects to
       everything below within its bounds).
-- [ ] Define how a text layer's `state` keys combine with typography `transition`s,
+- [x] Define how a text layer's `state` keys combine with typography `transition`s,
       which also change the displayed state.
-- [ ] All CE1 blend modes via `globalCompositeOperation`.
-- [ ] Alpha and inverted alpha mattes via `destination-in`/`destination-out`. Luma
+- [x] All CE1 blend modes via `globalCompositeOperation`.
+- [x] Alpha and inverted alpha mattes via `destination-in`/`destination-out`. Luma
       mattes via a luminance pass (pixel loop in this backend; GPU in CE6).
-- [ ] Masks as Path2D with `add/subtract/intersect/difference`; feather via blurred
+- [x] Masks as Path2D with `add/subtract/intersect/difference`; feather via blurred
       mask surface; expansion via stroke-and-fill approximation (document the limits).
-- [ ] Precomps with and without collapsed transforms; nested time.
-- [ ] Prepare pinned measured text bounds and text animator geometry for the CE2
+- [x] Precomps with and without collapsed transforms; nested time.
+- [x] Prepare pinned measured text bounds and text animator geometry for the CE2
       `textBounds` data API; preserve missing-measurement diagnostics (CE2 follow-up).
-- [ ] Culling of layers whose bounds miss the viewport.
-- [ ] Wire `composition-1` into [`export-page.ts`](../packages/execution-runtime/src/export-page.ts)
+- [x] Culling of layers whose bounds miss the viewport.
+- [x] Wire `composition-1` into [`export-page.ts`](../packages/execution-runtime/src/export-page.ts)
       and [`export-worker.ts`](../packages/execution-runtime/src/export-worker.ts) as an
       `ExportableScene`; add engine entry points in `packages/animation-engine`.
-- [ ] `COMPOSITION_RENDERER_VERSION = "composition-canvas-1.0.0"`, included in manifests
+- [x] `COMPOSITION_RENDERER_VERSION = "composition-canvas-1.0.0"`, included in manifests
       and cache identities.
-- [ ] Keep text layout (shaping, advances, line breaks) behind one module, so
+- [x] Keep text layout (shaping, advances, line breaks) behind one module, so
       platform-independent text layout (Q8 option C) can later replace the operating
       system's layout without changing the text layer contract.
-- [ ] Add a browser test group `test:browser:composition` and include it in `pnpm test`.
+- [x] Add a browser test group `test:browser:composition` and include it in `pnpm test`.
 
 **Acceptance:** The first-slice composition renders identically in Lab preview and MP4
 export. Every blend mode and matte mode matches a reference image generated from the
@@ -956,7 +956,74 @@ formulas in the W3C Compositing and Blending specification within the `near` tie
 precomp nesting; mask boolean combinations; export transaction tests reused from
 `tests/browser/export-worker.ts`.
 
-**Completion record:** _to be filled in._
+**Completion record (in progress, 2026-10-01).** Every checklist item is implemented on
+`codex/composition-ce3` (owner: xxibcill with Claude Code), based on CE2 `273d2c1`;
+the tracker stays `[~]` until the full `pnpm check` result is recorded below.
+
+- Commits: tracker start `2b359b2`; contract `ee733ed`; renderer `32c6eab`; export
+  `101c014`; browser tests `e3f59fc`; docs `2144a42`.
+- **Render graph** (`composition/render/graph.ts`): pure and DOM-free (enforced by
+  ESLint, with `backend.ts` and `version.ts`), built per frame from the evaluated tree.
+  Ops are direct draws, isolated layers (masks, matte, blend), and adjustment
+  re-composites; precomp surfaces nest as draw content. `executeGraph` runs any
+  `RenderBackend`. The interface is `createSurface`/`releaseSurface` (pooled by size),
+  `clear`, `fillRect`, `drawImage`, `drawText`, `composite`, `applyMask`, `applyMatte`,
+  `lerp` and `readPixels`; path drawing for shapes joins with CE5.
+- **Canvas 2D backend** (`canvas2d.ts`): every blend mode through
+  `globalCompositeOperation`; alpha mattes by `destination-in`/`-out`, luma mattes by
+  a pixel pass; masks as `Path2D` combined with `source-over`, `destination-out`,
+  `destination-in` and `xor`; feather by blur; expansion by stroke. Image crossfades
+  and `rasterize: natural-size` follow the legacy renderer.
+- **Text** (`text.ts`): the single shaping/measuring/drawing module. Pinned-font layers
+  render through the typography renderer; prepared bounds per state feed the
+  evaluator's `textBounds`. The state/transition rule and the other semantics are in
+  the [composition reference](./composition-reference.md#rendering-a-composition).
+  The typography renderer gained an opt-in raster `baseColor` for animated layer
+  colour; legacy rasters leave it unset, so legacy output is unchanged.
+- **Contract:** text `size`; `comp-text-pinned-font` and `comp-text-box-size`;
+  `every-field.json` gained a `size` on its `textBox` layer; two CE1 tests now pin a
+  base font (see the [decision log](#decision-log)). The evaluator also builds content
+  for precomps used as track mattes.
+- **Export:** `CompositionScene` (`composition-scene-1`) is an `ExportableScene`;
+  `loadComposition`/`renderComposition` in the animation engine resolve and verify
+  assets and record `COMPOSITION_RENDERER_VERSION` and `COMPOSITION_EVALUATOR_VERSION`
+  in the scene manifest (and so in its checksum). `still-shift comp render` is a
+  minimal command until CE10.
+- **Verification so far** (pinned toolchain: Node 22.23.1, Chromium 151.0.7922.34,
+  macOS arm64): `pnpm test:browser:composition` passes in about 36 s:
+  - 17 blend modes × 64 cells (opaque and translucent backdrops and sources) against
+    the W3C formulas: max Δ2, the `near` tier;
+  - 4 matte modes × 8 matte values: max Δ1;
+  - 8 mask boolean/inversion/opacity cases, feather ramp and midpoint, positive and
+    negative expansion;
+  - nested precomps with reversed nested time, clipped unless collapsed; adjustment
+    layers (multiply, half-opacity screen); group clips; culling;
+  - `every-field.json`, 12 frames, without `comp-text-layout-missing`;
+  - first slice: preview pixels identical across fresh page loads; the exported MP4
+    decodes identically to the preview's own frames encoded with the export's encoder
+    arguments (H.264 at CRF 18 costs 38.6–41.1 dB against the raw preview, which is
+    why the check compares encoded frames); repeat exports and PNG versus raw-RGBA
+    transports are byte-identical; existing outputs, invalid compositions and
+    tampered assets fail and publish nothing.
+  - `pnpm check:fast`: schema, boundaries, format, lint, types and 895 unit tests
+    (9 new render-graph tests, 6 new contract tests).
+  - The first slice exports 90 frames at 1080p in about 2.1 s: 14.6 ms average and
+    17.2 ms p95 per frame, including capture.
+- **Limitations and follow-ups:**
+  - Acceptance names the Lab preview. The Lab has no composition page until CE11, so
+    CE3 verifies the shared `createCompositionPreview` in the pinned browser. Hardware
+    GPU previews of compositions are unmeasured; CE11 measures them against the
+    `perceptual` tier.
+  - Adjustment layers apply only their blend mode until effects arrive (CE6).
+  - Isolated layers use scope-sized surfaces; bounds-sized surfaces and caching belong
+    to CE15. Luma mattes read pixels back on the CPU (GPU in CE6).
+  - Mask expansion rounds concave corners; feather scales σ by the layer's average
+    screen scale, so skewed or non-uniformly scaled layers feather approximately.
+  - Text without a pinned font uses the browser's generic faces and is not
+    reproducible across machines. Signal-driven text selectors sample layer time.
+    Animated layer colour recolours cached rasters (a 16-entry cache per raster).
+  - CE4a must check legacy non-typography story text, which the composition draws
+    through the generic-font path only when no font is pinned.
 
 ---
 
@@ -1638,6 +1705,13 @@ A milestone is complete when **all** of the following hold:
 | 2026-10-01 | CE2: keep scalar temporal `speed` in property units/frame; future grouped velocity is a matching vector/RGBA tuple, while spatial speed is a distinct arc-length pixels/frame scalar. Enabling those new forms moves to CE9                                                                                                                                                                                                                                                                                                         | Component velocities and arc speed are different quantities; preserve validated CE1 authoring until each has an explicit field and sampler                                                                                                      |                |
 | 2026-10-01 | CE2: measured text bounds enter through immutable data; CE3 prepares font layout and text animator geometry                                                                                                                                                                                                                                                                                                                                                                                                                         | Keeps Node/browser evaluation pure and avoids guessed glyph bounds; missing measurements are diagnosed                                                                                                                                          |                |
 | 2026-10-01 | CE2: reused precomps evaluate per instance; ambiguous scoped reads fail until CE10 adds instance addressing                                                                                                                                                                                                                                                                                                                                                                                                                         | CE1 paths identify definitions, so choosing an arbitrary host would make sampled time ambiguous                                                                                                                                                 |                |
+| 2026-10-01 | CE3: text layers gain an optional `size` (the `textBox` wrap box). Spans, decorations, transitions, text animators and `textBox` require a pinned base font (`comp-text-pinned-font`, `comp-text-box-size`)                                                                                                                                                                                                                                                                                                                         | The typography renderer shapes with the base font's metrics and wraps `textBox` to the box width; CE1 accepted a span-only pinned font that cannot render                                                                                       |                |
+| 2026-10-01 | CE3: text transitions, decoration reveals, counts and text animators sample layer time. `state` keys choose the text until the first transition starts; then the latest started transition decides (the story typography rule)                                                                                                                                                                                                                                                                                                      | Keys are in layer time, so typography moves with its layer; reusing the story rule keeps CE4a parity                                                                                                                                            |                |
+| 2026-10-01 | CE3: track mattes ignore the source's `enabled`, solo and blend mode but honour its in/out points; luma mattes use the CSS Masking luminance of the premultiplied colour. The evaluator builds content for precomps used as mattes                                                                                                                                                                                                                                                                                                  | AE behaviour, and a published formula for the reference renders                                                                                                                                                                                 |                |
+| 2026-10-01 | CE3: masks combine as `m = opacity × coverage` with add `a+m−am`, subtract `a(1−m)`, intersect `am`, difference `a+m−2am`; a leading subtract or intersect starts from the whole layer. Feather is a Gaussian with σ = feather/2; expansion is a round-joined stroke                                                                                                                                                                                                                                                                | Matches AE at full opacity and maps exactly onto Canvas `source-over`, `destination-out`, `destination-in` and `xor`; approximation limits are documented                                                                                       |                |
+| 2026-10-01 | CE3: adjustment layers composite `below·(1−k) + adjusted·k`; `normal` ones without effects are skipped. Collapsed precomps draw no background and multiply host opacity into each layer                                                                                                                                                                                                                                                                                                                                             | AE semantics, including blend modes on adjustment layers without effects                                                                                                                                                                        |                |
+| 2026-10-01 | CE3: preview and export canvases are opaque; transparent backgrounds render over black until alpha formats (CE15)                                                                                                                                                                                                                                                                                                                                                                                                                   | Matches legacy export and gives MP4, which has no alpha, one deterministic flattening                                                                                                                                                           |                |
+| 2026-10-01 | CE3: export/preview identity is proven by encoding the preview's frames with the export's encoder arguments and requiring identical decoded frames                                                                                                                                                                                                                                                                                                                                                                                  | H.264 at CRF 18 costs 38–41 dB against raw frames on fine line art, so tolerances against raw frames cannot separate codec loss from renderer differences                                                                                       |                |
 
 ## Open questions for the owner
 
