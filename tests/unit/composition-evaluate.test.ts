@@ -855,7 +855,116 @@ describe("composition time and precomps", () => {
         .transform.position,
     ).toEqual([25, 50]);
   });
-  it("returns transparent precomp content outside its frame range", () => {
+  it.each([
+    {
+      name: "before forward playback",
+      host: { startFrame: 10 },
+      frame: 0,
+      expected: 0,
+    },
+    {
+      name: "after forward playback",
+      host: { startFrame: 10 },
+      frame: 40,
+      expected: 29,
+    },
+    {
+      name: "before reverse playback",
+      host: { startFrame: 50, stretch: -1 },
+      frame: 0,
+      expected: 29,
+    },
+    {
+      name: "after reverse playback",
+      host: { startFrame: 29, stretch: -1 },
+      frame: 40,
+      expected: 0,
+    },
+    {
+      name: "after half-speed playback",
+      host: { startFrame: -5, stretch: 2 },
+      frame: 59,
+      expected: 29,
+    },
+    {
+      name: "with a different source rate",
+      host: {},
+      fps: 60 as const,
+      frame: 20,
+      expected: 29,
+    },
+    {
+      name: "with a negative remap",
+      host: { timeRemap: -5 },
+      frame: 10,
+      expected: 0,
+    },
+    {
+      name: "with an oversized remap",
+      host: { timeRemap: 35 },
+      frame: 10,
+      expected: 29,
+    },
+    {
+      name: "with a fractional boundary remap",
+      host: { timeRemap: 29.5 },
+      frame: 10,
+      expected: 29,
+    },
+    {
+      name: "with a fractional interior remap",
+      host: { timeRemap: 5.25 },
+      frame: 10,
+      expected: 5.25,
+    },
+    {
+      name: "with a keyed remap",
+      host: { timeRemap: linear(-5, 35) },
+      frame: 20,
+      expected: 29,
+    },
+    {
+      name: "with a single-frame source",
+      host: { timeRemap: 35 },
+      frameCount: 1,
+      frame: 10,
+      expected: 0,
+    },
+  ])(
+    "holds source boundaries $name",
+    ({ host, fps = 30 as const, frameCount = 30, frame, expected }) => {
+      const doc: Composition = {
+        ...comp([{ id: "host", type: "precomp", comp: "child", ...host }]),
+        precomps: [
+          {
+            id: "child",
+            width: 100,
+            height: 100,
+            fps,
+            frameCount,
+            background: "#ffffff",
+            layers: [
+              { ...solid(), transform: { rotation: linear(0, 290, 29) } },
+            ],
+          },
+        ],
+      };
+      const result = evaluateComp(doc, frame).layers[0]!;
+      expect(result.visible).toBe(true);
+      expect(result.precomp!.time).toBe(expected);
+      expect(result.precomp!.background).toEqual([1, 1, 1, 1]);
+      expect(result.precomp!.layers[0]!.drawable).toBe(true);
+      expect(result.precomp!.layers[0]!.transform.rotation).toBeCloseTo(
+        expected * 10,
+        9,
+      );
+      expect(evaluateProperty(doc, "host/box.rotation", frame)).toBeCloseTo(
+        expected * 10,
+        9,
+      );
+    },
+  );
+  it("preserves authored remap values while holding the sampled source", () => {
     const doc = nested();
     doc.precomps![0]!.background = "#ffffff";
     const host = doc.layers[0] as Extract<
@@ -863,9 +972,30 @@ describe("composition time and precomps", () => {
       { type: "precomp" }
     >;
     host.timeRemap = -1;
-    const result = evaluateComp(doc, 20).layers[0]!.precomp!;
-    expect(result.background).toBeNull();
-    expect(result.layers.every((l) => !l.visible)).toBe(true);
+    const result = evaluateComp(doc, 20).layers[0]!;
+    expect(result.timeRemap).toBe(-1);
+    expect(evaluateProperty(doc, "host.timeRemap", 20)).toBe(-1);
+    expect(result.precomp!.time).toBe(0);
+    expect(result.precomp!.background).toEqual([1, 1, 1, 1]);
+    expect(result.precomp!.layers.every((layer) => layer.visible)).toBe(true);
+  });
+  it("keeps host in/out gates in composition time when the source holds", () => {
+    const doc = nested();
+    doc.precomps![0]!.frameCount = 30;
+    doc.precomps![0]!.fps = 30;
+    Object.assign(doc.layers[0]!, {
+      startFrame: 10,
+      stretch: 1,
+      inPoint: 5,
+      outPoint: 40,
+    });
+    for (const frame of [0, 40]) {
+      const host = evaluateComp(doc, frame).layers[0]!;
+      expect(host.visible).toBe(false);
+      expect(host.precomp).toBeUndefined();
+    }
+    expect(evaluateComp(doc, 5).layers[0]!.precomp!.time).toBe(0);
+    expect(evaluateComp(doc, 39).layers[0]!.precomp!.time).toBe(29);
   });
 });
 

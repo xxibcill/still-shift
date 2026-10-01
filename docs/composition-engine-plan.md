@@ -1004,6 +1004,16 @@ different remaps and source frame rates.
   snapshot (88 files, 899 tests), Node/browser evaluator parity and all 176 legacy
   baseline items (36,061 frames, exact; no baselines regenerated). The final
   200-layer benchmark averaged 0.7492 ms/frame against the 2 ms/frame budget.
+- PR #26 source-boundary correction (2026-10-01): finite precomp sources now hold
+  their first or last frame outside the source range, including reverse, stretch,
+  different-rate and remapped playback. Authored/driven remap values remain readable;
+  only the child sampling clock is clamped, and host in/out gates stay in composition
+  time. The evaluator version is `composition-evaluator-7`. After the three review
+  fixes, pinned Node 22.23.1 passed all 1,010 unit tests in 93 files, schema,
+  boundaries, formatting, types and lint (excluding the unrelated nested `.claude`
+  checkout). Node/browser parity passed three fixtures at nine times, including
+  reverse seeks; maximum numeric error was `1.1102230246251565e-16`. The 200-layer
+  benchmark averaged 0.7087 ms/frame against the 2 ms/frame budget.
 
 ---
 

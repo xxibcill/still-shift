@@ -28,7 +28,7 @@ These pure functions run in Node and browsers. They validate once per compositio
 object, compile curves into identity-keyed weak caches and memoise dependencies within
 each evaluation. Treat the composition and its nested objects as immutable: replace
 the composition object after an edit. Returned states are fresh on every call.
-`COMPOSITION_EVALUATOR_VERSION` is `composition-evaluator-6`.
+`COMPOSITION_EVALUATOR_VERSION` is `composition-evaluator-7`.
 
 `evaluateComp` returns an `EvaluatedLayerTree`: scope id, time, dimensions, fps,
 floating-point RGBA background, ordered `layers` and structured `diagnostics`.
@@ -44,8 +44,11 @@ Keys sample at `(scopeFrame - startFrame) / stretch`, including fractional and n
 times. Keys hold their endpoints outside their authored range. The precomp content
 clock defaults to local time × child fps / parent fps, preserving elapsed seconds;
 an explicit `timeRemap` is sampled at layer time and its value is already in child
-frames. A driven remap is applied once before sampling children. Content outside a
-scope's `[0, frameCount)` is transparent. In/out points and solo use scope frames.
+frames. A driven remap is applied once before sampling children. Precomp sampling
+clamps to `[0, sourceFrameCount - 1]`, holding the first or last source frame outside
+that range. The host's evaluated `timeRemap` retains its authored or driven value;
+the child tree's `time` reports the clamped sampling frame. Root content outside
+`[0, frameCount)` is transparent. Host in/out points and solo use composition frames.
 Ordinary invisible parents continue to supply transforms; an invisible `group` also
 gates its descendants. Guides are hidden unless `includeGuides: true` is supplied.
 

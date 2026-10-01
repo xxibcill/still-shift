@@ -49,7 +49,7 @@ import type {
   PropertyValue,
 } from "./types.ts";
 
-export const COMPOSITION_EVALUATOR_VERSION = "composition-evaluator-6";
+export const COMPOSITION_EVALUATOR_VERSION = "composition-evaluator-7";
 const order = ["action", "response", "current", "carrier"] as const;
 type Context = {
   scope: CompositionScope;
@@ -283,9 +283,10 @@ class Evaluation {
         path: host.id,
       });
     const scope = this.compiled.scopes.get(host.comp)!;
+    const sourceTime = yield* this.clock(ctx, host);
     const next = context(
       scope,
-      yield* this.clock(ctx, host),
+      Math.max(0, Math.min(scope.frameCount - 1, sourceTime)),
       scope.fps ?? this.compiled.comp.fps,
       [...ctx.route, host.id],
     );
