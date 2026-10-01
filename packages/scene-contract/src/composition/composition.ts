@@ -221,9 +221,11 @@ const compositionShape = z
   })
   .strict();
 
-export const CompositionSchema = compositionShape.superRefine(
-  validateCompositionSemantics,
-);
+export const CompositionSchema = compositionShape.superRefine((comp, ctx) => {
+  // Size failures are nonfatal in Zod; do not traverse an unbounded invalid graph.
+  if (ctx.issues.length) return;
+  validateCompositionSemantics(comp, ctx);
+});
 
 export type Composition = z.infer<typeof compositionShape>;
 export type Precomp = z.infer<typeof PrecompSchema>;
