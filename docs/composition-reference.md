@@ -133,6 +133,11 @@ existing motion-craft ones (`curve.ts`):
 | `smooth`        | Monotone cubic through neighbouring keys; not allowed on the first or last key.                                |
 | `out`, `in`     | Temporal handles `{ ease, speed? }` on the segment leaving / arriving at this key. `speed` is scalar-only.     |
 
+Explicit temporal `speed` is scalar-only in CE1. Use separately keyed vector
+components for independent speeds; joint vector and colour keys accept temporal
+`ease` handles. Grouped vector/colour speed semantics are a recorded CE2 follow-up in
+the [engine plan](./composition-engine-plan.md#ce2--pure-composition-evaluator).
+
 Value forms:
 
 - **Scalar** — a number.

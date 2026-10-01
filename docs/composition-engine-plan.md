@@ -667,8 +667,13 @@ type Animatable<T> = T | { keys: Key<T>[] };
 ```
 
 `Key<T>` extends the existing `ScalarKeySchema` fields (`easing`, `interpolation`,
-`bezier`, `in`, `out`, `smooth`) to vector and colour values. Vector keys interpolate
-component-wise unless per-key `spatialIn` / `spatialOut` tangents are given, in which
+`bezier`, `in`, `out`, `smooth`) to vector and colour values, with one recorded CE1
+restriction: `in`/`out` accept `ease` on these values, while explicit `speed` is
+scalar-only. Separate dimensions support per-component scalar speeds. Grouped
+vector/colour speed semantics are deferred to CE2, which must define their units
+and representation before enabling them (see the [decision log](#decision-log)).
+Vector keys interpolate component-wise unless per-key `spatialIn` / `spatialOut`
+tangents are given, in which
 case position follows the spatial bezier with the temporal curve controlling progress
 along arc length (roving
 keys become possible in CE9). Separate dimensions use `{ x, y, z? }` with each
@@ -750,6 +755,10 @@ precomp-scoped), cycles and limits. Round trip: parse → serialise → parse is
   (176 of 176 items unchanged). Earlier runs during development used Node 24.16, the
   shell default, which `pnpm check` rejects.
 - **Limitations and follow-ups:**
+  - Temporal handle `speed` is scalar-only in CE1. Joint vector and colour keys
+    accept `ease`; grouped speed semantics are deferred to CE2 because one scalar
+    slope has no defined interpretation for spatial vectors or RGBA values.
+    Authors can already set independent vector speeds with separate dimensions.
   - Text layers can change text through `state` keys and through typography
     `transition`s. CE3 must define how the two combine (the typography renderer
     currently drives state from transitions).
@@ -777,6 +786,11 @@ precomp-scoped), cycles and limits. Round trip: parse → serialise → parse is
   through direct resolution and through driver targets, sources and sum terms.
   The path, time-dependency and contract unit groups passed (229 tests), along with
   TypeScript and lint on Node 22.23.1.
+- **Temporal-speed clarification:** the contract sketch, this record, the decision
+  log and the CE2 checklist now agree with the scalar-only restriction documented
+  in the reference. Final `pnpm check:fast` passed on Node 22.23.1: schema freshness,
+  package boundaries, formatting, lint, TypeScript and all 833 unit tests. Full
+  rendering was not rerun for these contract-validation and documentation fixes.
 
 ---
 
@@ -805,6 +819,10 @@ at any frame, in Node or the browser, with no rendering.
       (enforce with a lint rule or boundary check).
 - [ ] Vector and colour interpolation, spatial bezier for position with arc-length
       parameterisation (reuse `SpatialPathSchema` semantics).
+- [ ] Resolve the CE1 temporal-speed follow-up: define grouped vector/colour speed
+      units and representation, including spatial arc length and colour channels,
+      and record a decision before enabling these handles. CE1 keeps explicit speed
+      scalar-only; separate vector dimensions already accept scalar speeds.
 - [ ] Parenting with AE semantics: position, rotation, scale and skew inherit; opacity
       does not.
 - [ ] Time stretch, negative stretch (reverse) and time remap.
@@ -1553,6 +1571,7 @@ A milestone is complete when **all** of the following hold:
 | 2026-10-01 | CE1: separate dimensions are the value form `{ x, y, z? }`; spatial tangents are per-key `spatialIn`/`spatialOut`                                                                                                                                                                                                                                                                                                                                                                                                                   | Adapters need independently keyed x and y; a value form keeps each property self-describing, and per-key tangents match the existing motion-craft fields                                                                                        |                |
 | 2026-10-01 | CE1: precomps are a flat list on the root with their own layer namespace; property-path prefixes are precomp ids                                                                                                                                                                                                                                                                                                                                                                                                                    | Avoids duplicated nested definitions when a precomp is reused, and lets paths and diagnostics name a precomp once                                                                                                                               |                |
 | 2026-10-01 | CE1: composition drivers and periodic motion use property paths in new schemas; story and commerce motion schemas stay unchanged                                                                                                                                                                                                                                                                                                                                                                                                    | Family schemas remain as written for CE0 parity, and legacy `node.property` targets stay valid inside compositions as aliases                                                                                                                   |                |
+| 2026-10-01 | CE1: explicit temporal handle `speed` remains scalar-only; vector and colour keys accept `ease`. Grouped speed semantics are deferred to CE2; separate vector dimensions already support scalar speeds                                                                                                                                                                                                                                                                                                                              | A scalar slope has no defined mapping to grouped vectors, spatial arc length or RGBA values. Keep the validated contract explicit until CE2 defines the units and representation                                                                |                |
 
 ## Open questions for the owner
 
