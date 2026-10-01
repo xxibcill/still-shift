@@ -11,6 +11,12 @@ incremental rendering. See the [usage guide and verification](./docs/story-engin
 This work uses scenes as technical fixtures; passage art direction and episode
 production retain their separate scope and review status below.
 
+**Next engineering work:** The [programmable composition engine plan](./docs/composition-engine-plan.md)
+(CE0–CE15) turns Still Shift into a code-driven, After Effects-style composition
+engine: one `composition-1` contract for every scene family, precomps, blend modes,
+mattes, shape layers, an effect registry, a 2.5D camera, expressions, a TypeScript
+builder API and media layers. No milestone has started.
+
 **Vertical video engineering:** The [VV0–VV8 plan](./docs/vertical-video-plan.md)
 is complete. It adds 1080×1920 output across the shared contracts, renderer paths, Lab and CLI.
 Single-image, prepared-scene and passage paths retain landscape defaults;
