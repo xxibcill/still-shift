@@ -1,7 +1,7 @@
 # Programmable composition engine — implementation plan
 
 - **Updated:** 2026-10-01
-- **Status:** CE0, CE1 and CE2 complete (2026-10-01); CE3 is next. Q1 and Q3 decided
+- **Status:** CE0, CE1 and CE2 complete (2026-10-01); CE3 in progress. Q1 and Q3 decided
   2026-09-30; Q2, Q4 and Q8 decided 2026-10-01; Q5–Q7 open.
 - **Baseline:** `6772717` — `Merge pull request #22 from xxibcill/codex/still-shift-plan-completion`
 - **Tracker owner:** unassigned. Record the owner and branch per milestone in the [tracker](#milestone-tracker).
@@ -324,27 +324,27 @@ change them without a decision-log entry.
 
 ## Milestone tracker
 
-| ID   | Deliverable                                     | Phase | Depends on                | Owner                  | Branch                  | Status | Completion evidence                                            |
-| ---- | ----------------------------------------------- | ----- | ------------------------- | ---------------------- | ----------------------- | ------ | -------------------------------------------------------------- |
-| CE0  | Baseline, parity harness and feature matrix     | A     | —                         | xxibcill (Claude Code) | `codex/composition-ce0` | `[x]`  | [CE0 record](#ce0--baseline-parity-harness-and-feature-matrix) |
-| CE1  | `composition-1` contract and property paths     | A     | CE0                       | xxibcill (Claude Code) | `codex/composition-ce1` | `[x]`  | [CE1 record](#ce1--composition-1-contract-and-property-paths)  |
-| CE2  | Pure composition evaluator                      | A     | CE1                       | Codex                  | `codex/composition-ce2` | `[x]`  | [CE2 record](#ce2--pure-composition-evaluator)                 |
-| CE3  | Render graph and Canvas 2D reference backend    | A     | CE2                       |                        |                         | `[ ]`  |                                                                |
-| CE4a | Story adapter with visual parity                | A     | CE3                       |                        |                         | `[ ]`  |                                                                |
-| CE4b | Commerce and reusable-component adapter         | A     | CE3, CE6 (effects parity) |                        |                         | `[ ]`  |                                                                |
-| CE4c | Cinematic adapter                               | A     | CE3, CE8                  |                        |                         | `[ ]`  |                                                                |
-| CE4d | Legacy illustrated adapter and old-path removal | A     | CE4a–CE4c                 |                        |                         | `[ ]`  |                                                                |
-| CE5  | Shape layers                                    | B     | CE3                       |                        |                         | `[ ]`  |                                                                |
-| CE6  | WebGL2 backend and effect registry              | B     | CE3                       |                        |                         | `[ ]`  |                                                                |
-| CE7  | Motion blur and time controls                   | B     | CE3                       |                        |                         | `[ ]`  |                                                                |
-| CE8  | 2.5D layers and unified camera                  | B     | CE3                       |                        |                         | `[ ]`  |                                                                |
-| CE9  | Expressions and motion behaviours               | C     | CE2                       |                        |                         | `[ ]`  |                                                                |
-| CE10 | TypeScript builder API and CLI                  | C     | CE1, CE2                  |                        |                         | `[ ]`  |                                                                |
-| CE11 | Lab composition inspector and graph editor      | C     | CE3, CE10                 |                        |                         | `[ ]`  |                                                                |
-| CE12 | Motion linting                                  | C     | CE2                       |                        |                         | `[ ]`  |                                                                |
-| CE13 | Video, image-sequence and audio layers          | D     | CE3, CE7                  |                        |                         | `[ ]`  |                                                                |
-| CE14 | Mesh warp and puppet pins                       | D     | CE6                       |                        |                         | `[ ]`  |                                                                |
-| CE15 | Output formats, caching and parallel rendering  | D     | CE3                       |                        |                         | `[ ]`  |                                                                |
+| ID   | Deliverable                                     | Phase | Depends on                | Owner                  | Branch                  | Status | Completion evidence                                             |
+| ---- | ----------------------------------------------- | ----- | ------------------------- | ---------------------- | ----------------------- | ------ | --------------------------------------------------------------- |
+| CE0  | Baseline, parity harness and feature matrix     | A     | —                         | xxibcill (Claude Code) | `codex/composition-ce0` | `[x]`  | [CE0 record](#ce0--baseline-parity-harness-and-feature-matrix)  |
+| CE1  | `composition-1` contract and property paths     | A     | CE0                       | xxibcill (Claude Code) | `codex/composition-ce1` | `[x]`  | [CE1 record](#ce1--composition-1-contract-and-property-paths)   |
+| CE2  | Pure composition evaluator                      | A     | CE1                       | Codex                  | `codex/composition-ce2` | `[x]`  | [CE2 record](#ce2--pure-composition-evaluator)                  |
+| CE3  | Render graph and Canvas 2D reference backend    | A     | CE2                       | xxibcill (Claude Code) | `codex/composition-ce3` | `[~]`  | Implementation started from `codex/composition-ce2` (`273d2c1`) |
+| CE4a | Story adapter with visual parity                | A     | CE3                       |                        |                         | `[ ]`  |                                                                 |
+| CE4b | Commerce and reusable-component adapter         | A     | CE3, CE6 (effects parity) |                        |                         | `[ ]`  |                                                                 |
+| CE4c | Cinematic adapter                               | A     | CE3, CE8                  |                        |                         | `[ ]`  |                                                                 |
+| CE4d | Legacy illustrated adapter and old-path removal | A     | CE4a–CE4c                 |                        |                         | `[ ]`  |                                                                 |
+| CE5  | Shape layers                                    | B     | CE3                       |                        |                         | `[ ]`  |                                                                 |
+| CE6  | WebGL2 backend and effect registry              | B     | CE3                       |                        |                         | `[ ]`  |                                                                 |
+| CE7  | Motion blur and time controls                   | B     | CE3                       |                        |                         | `[ ]`  |                                                                 |
+| CE8  | 2.5D layers and unified camera                  | B     | CE3                       |                        |                         | `[ ]`  |                                                                 |
+| CE9  | Expressions and motion behaviours               | C     | CE2                       |                        |                         | `[ ]`  |                                                                 |
+| CE10 | TypeScript builder API and CLI                  | C     | CE1, CE2                  |                        |                         | `[ ]`  |                                                                 |
+| CE11 | Lab composition inspector and graph editor      | C     | CE3, CE10                 |                        |                         | `[ ]`  |                                                                 |
+| CE12 | Motion linting                                  | C     | CE2                       |                        |                         | `[ ]`  |                                                                 |
+| CE13 | Video, image-sequence and audio layers          | D     | CE3, CE7                  |                        |                         | `[ ]`  |                                                                 |
+| CE14 | Mesh warp and puppet pins                       | D     | CE6                       |                        |                         | `[ ]`  |                                                                 |
+| CE15 | Output formats, caching and parallel rendering  | D     | CE3                       |                        |                         | `[ ]`  |                                                                 |
 
 ### Phases and parallel work
 
