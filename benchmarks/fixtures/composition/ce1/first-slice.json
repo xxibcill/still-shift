@@ -1,0 +1,187 @@
+{
+  "schemaVersion": "composition-1",
+  "id": "first-slice",
+  "name": "CE1 first implementation slice",
+  "width": 1920,
+  "height": 1080,
+  "fps": 30,
+  "frameCount": 90,
+  "background": "#E8DFC9",
+  "assets": [
+    {
+      "id": "house",
+      "type": "image",
+      "path": "../../../../assets/story-motion/art/house.svg",
+      "sha256": "sha256:a8fa4eff374ba974770317dd483ca7b2e5b8d1f0bd7a9224ada091db42542a60",
+      "width": 600,
+      "height": 440
+    },
+    {
+      "id": "store",
+      "type": "image",
+      "path": "../../../../assets/story-motion/art/store.svg",
+      "sha256": "sha256:8ba708bf4866da92ada1eed3dc788db98a961e7cf84fcafe8615fe734f13042c",
+      "width": 600,
+      "height": 520
+    },
+    {
+      "id": "display",
+      "type": "font",
+      "path": "../../../../assets/story-motion/fonts/source-serif-4-semibold.otf",
+      "sha256": "sha256:25e034392847d9965c92f98971b3646436b7ab919ece9118b0c0e5ec94c02efc",
+      "weight": "600"
+    }
+  ],
+  "precomps": [
+    {
+      "id": "badge",
+      "width": 600,
+      "height": 440,
+      "frameCount": 60,
+      "background": null,
+      "layers": [
+        {
+          "id": "badge-house",
+          "type": "image",
+          "size": [600, 440],
+          "sources": [
+            {
+              "asset": "house"
+            }
+          ],
+          "transform": {
+            "position": [300, 220],
+            "scale": {
+              "keys": [
+                {
+                  "frame": 0,
+                  "value": [0.9, 0.9]
+                },
+                {
+                  "frame": 30,
+                  "value": [1, 1],
+                  "easing": "out-cubic"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "markers": [
+    {
+      "id": "settle",
+      "frame": 45,
+      "label": "Badge settles"
+    }
+  ],
+  "layers": [
+    {
+      "id": "rig",
+      "type": "null",
+      "transform": {
+        "position": {
+          "keys": [
+            {
+              "frame": 0,
+              "value": [160, 140]
+            },
+            {
+              "frame": 45,
+              "value": [220, 140],
+              "easing": "in-out-sine"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "title",
+      "type": "text",
+      "parent": "rig",
+      "text": "The same season.",
+      "fontSize": 96,
+      "color": "#2B2A26",
+      "fontAsset": "display",
+      "transform": {
+        "opacity": {
+          "keys": [
+            {
+              "frame": 0,
+              "value": 0
+            },
+            {
+              "frame": 18,
+              "value": 1,
+              "easing": "out-cubic"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "shade",
+      "type": "solid",
+      "size": [1920, 360],
+      "color": "#C05A3C",
+      "blendMode": "multiply",
+      "transform": {
+        "position": [960, 900],
+        "opacity": 0.6
+      }
+    },
+    {
+      "id": "store-matte",
+      "type": "solid",
+      "size": [600, 520],
+      "color": "#FFFFFF",
+      "transform": {
+        "position": [1380, 560],
+        "scale": {
+          "keys": [
+            {
+              "frame": 0,
+              "value": [1, 0]
+            },
+            {
+              "frame": 40,
+              "value": [1, 1],
+              "easing": "out-quint"
+            }
+          ]
+        },
+        "anchor": [300, 520]
+      }
+    },
+    {
+      "id": "store",
+      "type": "image",
+      "size": [600, 520],
+      "sources": [
+        {
+          "asset": "store"
+        }
+      ],
+      "trackMatte": {
+        "layer": "store-matte",
+        "mode": "alpha"
+      },
+      "transform": {
+        "position": [1380, 560],
+        "anchor": [300, 520]
+      }
+    },
+    {
+      "id": "badge-layer",
+      "type": "precomp",
+      "comp": "badge",
+      "inPoint": 15,
+      "outPoint": 90,
+      "startFrame": 15,
+      "transform": {
+        "position": [620, 640]
+      }
+    }
+  ]
+}

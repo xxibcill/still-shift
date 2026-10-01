@@ -1,7 +1,8 @@
 # Programmable composition engine — implementation plan
 
 - **Updated:** 2026-10-01
-- **Status:** CE0 complete (2026-10-01). Q1 and Q3 decided 2026-09-30; Q2 and Q4–Q8 open.
+- **Status:** CE0 and CE1 complete (2026-10-01); CE2 is next. Q1 and Q3 decided
+  2026-09-30; Q2, Q4 and Q8 decided 2026-10-01; Q5–Q7 open.
 - **Baseline:** `6772717` — `Merge pull request #22 from xxibcill/codex/still-shift-plan-completion`
 - **Tracker owner:** unassigned. Record the owner and branch per milestone in the [tracker](#milestone-tracker).
 
@@ -188,9 +189,19 @@ These apply to every milestone. A change that breaks one needs a decision-log en
 4. **Explicit versions.** New contracts start at `composition-1`. Each backend and effect
    has a version string that participates in cache identity, like the existing
    `ILLUSTRATED_RENDERER_VERSION`.
-5. **Legacy formats keep working.** Existing scene files continue to validate and render.
-   Adapters produce pixel parity within the tolerances recorded in CE0 before any old
-   code path is removed.
+5. **Legacy formats keep working, and look the same.** Existing scene files continue to
+   validate and render. Before any old code path is removed, adapter output must look
+   the same as the old renderer to a viewer; it need not be pixel-identical. Concretely:
+   - every fixture meets its assigned tier in the CE0 manifest: `near` by default,
+     `perceptual` only for a fixture with a recorded reason, never looser;
+   - evaluated state matches the old path: identical frame timing and visibility, and
+     positions within 0.001 composition pixels, so motion cannot drift or jitter even
+     where each frame passes on its own;
+   - text-bearing fixtures stay at `near`, because glyph shifts accumulate along a line.
+
+   This is parity with the **old renderer**. The new engine's own export stays exact and
+   reproducible (invariant 3).
+
 6. **Preview/export parity.** Lab preview and CLI export use the same evaluator and
    backend code for a given composition. Export output is exact and reproducible.
    Lab preview may run on a hardware GPU and must match export within the
@@ -276,36 +287,48 @@ SwiftShader, and [`golden-baseline.json`](../tests/visual/golden-baseline.json) 
    Consequences: baselines, caches and job resume are keyed by `platform-arch`
    (already true for passage caches and the baseline files); chunks of one export must
    come from the same `platform-arch`; and text layout validation (overflow, fit,
-   line breaks) can reach different results on different operating systems. Output
-   that must be identical across machines needs one canonical render environment
-   ([Q8](#open-questions-for-the-owner)). The Linux image in
-   [`scripts/composition/linux/`](../scripts/composition/linux/) is the candidate.
+   line breaks) can reach different results on different operating systems.
+
+   **Reference environment (Q8, 2026-10-01): Mac first.** While the owner renders on a
+   single MacBook, `darwin-arm64` is the reference environment for exports, baselines
+   and caches, so previews and final output come from the same machine and match
+   exactly. The Linux baselines and the container in
+   [`scripts/composition/linux/`](../scripts/composition/linux/) are kept but not
+   required by any check. Before a second machine type is supported, decide between
+   one canonical environment with other machines as previews (option B) and
+   platform-independent text layout (option C, preferred). Adopting C changes text
+   output once, including on macOS, so the baselines would be regenerated and checked
+   visually.
 
 ## Core conventions
 
-Fix these in CE1 and do not change them later without a decision-log entry.
+Fixed in CE1 (2026-10-01; see the [decision log](#decision-log)) and documented for
+authors in the [composition reference](./composition-reference.md#conventions). Do not
+change them without a decision-log entry.
 
-| Topic             | Convention                                                                                                                                                  |
-| ----------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Coordinates       | Origin top-left of the composition, +x right, +y down, +z away from the viewer. Units are composition pixels.                                               |
-| Rotation          | Degrees, clockwise positive in 2D (matches Canvas and AE). 3D uses X, Y, Z rotation plus orientation, applied Z·Y·X.                                        |
-| Anchor point      | In layer-space pixels, as in AE; default is the layer centre for sized layers and `[0,0]` for shape and null layers.                                        |
-| Transform order   | Translate(position) · Rotate · Skew · Scale · Translate(−anchor). Parent matrices premultiply.                                                              |
-| Scale             | Percent-free: `1` means 100%.                                                                                                                               |
-| Opacity           | 0–1. Parent opacity does **not** inherit, matching AE; group/precomp opacity applies to the flattened result.                                               |
-| Colour authoring  | `#RRGGBB` or `#RRGGBBAA` sRGB. Evaluated internally as floating-point RGBA.                                                                                 |
-| Compositing space | sRGB-encoded by default for parity with existing renders. Linear-light compositing is an opt-in composition setting introduced in CE6.                      |
-| Alpha             | Premultiplied in all render surfaces.                                                                                                                       |
-| Time              | Integer composition frames; layer-local time follows the signed-rate mapping below. In point inclusive, out point exclusive; time remap overrides stretch.  |
-| Frame rates       | 24, 25, 30, 50 and 60 fps. A precomp with a different rate is sampled at the parent's time; a posterize-time effect or layer setting snaps to its own rate. |
-| Identifiers       | `^[a-zA-Z][\w-]*$`, unique within a composition. Precomps have their own namespace.                                                                         |
+| Topic             | Convention                                                                                                                                                                                                       |
+| ----------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Coordinates       | Origin top-left of the composition, +x right, +y down, +z away from the viewer. Units are composition pixels.                                                                                                    |
+| Rotation          | Degrees, clockwise positive in 2D (matches Canvas and AE). 3D uses X, Y, Z rotation plus orientation, applied Z·Y·X.                                                                                             |
+| Anchor point      | In layer-space pixels, as in AE; default is the layer centre for sized layers (solid, image, group, precomp, adjustment) and `[0,0]` otherwise.                                                                  |
+| Transform order   | Translate(position) · Rotate · Skew · Scale · Translate(−anchor), where skew is the shear `[[1, tan skewX], [tan skewY, 1]]` of the existing renderer. Parent matrices premultiply.                              |
+| Scale             | Percent-free: `1` means 100%.                                                                                                                                                                                    |
+| Opacity           | 0–1. Parent opacity does **not** inherit, matching AE; precomp opacity applies to the flattened result; a `group` layer's opacity multiplies into each child.                                                    |
+| Colour authoring  | `#RRGGBB` or `#RRGGBBAA` sRGB. Evaluated internally as floating-point RGBA.                                                                                                                                      |
+| Compositing space | sRGB-encoded by default for parity with existing renders. Linear-light compositing is an opt-in composition setting introduced in CE6.                                                                           |
+| Alpha             | Premultiplied in all render surfaces.                                                                                                                                                                            |
+| Time              | Integer composition frames; layer time = `(compFrame − startFrame) / stretch`, as AE (`stretch: 2` plays at half speed; negative reverses), with time remap overriding. In point inclusive, out point exclusive. |
+| Keys              | Integer frames in **layer time**, as in AE. No fractional key frames.                                                                                                                                            |
+| Frame rates       | 24, 25, 30, 50 and 60 fps. A precomp with a different rate is sampled at the parent's time; a posterize-time effect or layer setting snaps to its own rate.                                                      |
+| Identifiers       | `^[a-zA-Z][\w-]*$`, at most 128 characters, unique within their scope; precomps have their own layer namespace. `comp` is reserved for composition properties.                                                   |
 
 ### Layer time and reverse playback
 
 `startFrame` is the composition-frame anchor at which layer-local time is zero; it
-defaults to `0`. `stretch` defaults to `1` and is a signed playback-rate multiplier:
-`1` plays forwards at normal speed, `2` at twice the speed, and `-1` in reverse at
-normal speed. The mapping is `localFrame = (compFrame - startFrame) * stretch`.
+defaults to `0`. CE1 fixed `stretch` as an AE-style signed time-stretch factor:
+`1` plays forwards at normal speed, `2` at half speed, and `-1` in reverse at
+normal speed. The mapping is `localFrame = (compFrame - startFrame) / stretch`.
+This supersedes the earlier signed-rate proposal; source-boundary rules are unchanged.
 Zero and non-finite values are invalid; use a hold key in `timeRemap`
 to freeze a supported source. `timeRemap`, when present, replaces the mapped local
 time rather than multiplying it by stretch again.
@@ -327,10 +350,10 @@ sign and for time remap. It does not change the layer's composition-time visibil
 | ID   | Deliverable                                     | Phase | Depends on                | Owner                  | Branch                  | Status | Completion evidence                                            |
 | ---- | ----------------------------------------------- | ----- | ------------------------- | ---------------------- | ----------------------- | ------ | -------------------------------------------------------------- |
 | CE0  | Baseline, parity harness and feature matrix     | A     | —                         | xxibcill (Claude Code) | `codex/composition-ce0` | `[x]`  | [CE0 record](#ce0--baseline-parity-harness-and-feature-matrix) |
-| CE1  | `composition-1` contract and property paths     | A     | CE0                       |                        |                         | `[ ]`  |                                                                |
+| CE1  | `composition-1` contract and property paths     | A     | CE0                       | xxibcill (Claude Code) | `codex/composition-ce1` | `[x]`  | [CE1 record](#ce1--composition-1-contract-and-property-paths)  |
 | CE2  | Pure composition evaluator                      | A     | CE1                       |                        |                         | `[ ]`  |                                                                |
 | CE3  | Render graph and Canvas 2D reference backend    | A     | CE2                       |                        |                         | `[ ]`  |                                                                |
-| CE4a | Story adapter with pixel parity                 | A     | CE3                       |                        |                         | `[ ]`  |                                                                |
+| CE4a | Story adapter with visual parity                | A     | CE3                       |                        |                         | `[ ]`  |                                                                |
 | CE4b | Commerce and reusable-component adapter         | A     | CE3, CE6 (effects parity) |                        |                         | `[ ]`  |                                                                |
 | CE4c | Cinematic adapter                               | A     | CE3, CE8                  |                        |                         | `[ ]`  |                                                                |
 | CE4d | Legacy illustrated adapter and old-path removal | A     | CE4a–CE4c                 |                        |                         | `[ ]`  |                                                                |
@@ -389,9 +412,10 @@ layers, a multiply-blended layer and an alpha track matte renders identically in
 Lab and through `pnpm still-shift comp render`, and one existing story fixture renders
 through the story adapter with recorded parity.
 
-- [ ] CE0 parity harness and baselines for at least one fixture per family.
-- [ ] CE1 schema for comp, precomp, solid, image, text and null layers; transforms;
-      parenting; in/out points; blend modes; alpha mattes.
+- [x] CE0 parity harness and baselines for at least one fixture per family.
+- [x] CE1 schema for comp, precomp, solid, image, text and null layers; transforms;
+      parenting; in/out points; blend modes; alpha mattes. The slice composition is
+      [`first-slice.json`](../benchmarks/fixtures/composition/ce1/first-slice.json).
 - [ ] CE2 evaluator covering those features.
 - [ ] CE3 Canvas 2D backend covering those features, wired into export.
 - [ ] CE4a adapter for `benchmarks/fixtures/story-motion-continuous/access-constraint.json`
@@ -445,10 +469,12 @@ existing behaviour and did not regress performance.
     Aggregate classification requires every sampled frame to satisfy the same tier;
     the near and perceptual thresholds are independent. Version 2 fixes this
     aggregation; the recorded CE0 comparison reports retain version 1.
-    Every fixture carries an assigned tier for adapter parity with a justification:
-    `exact` by default; `near` for the 16 Commerce atoms and 7 heroes that use pixel
-    or effect-driven motion effects and for Focus Handoff, whose effects move to the
-    CE6 registry.
+    Every fixture carries an assigned tier for adapter parity with a justification.
+    CE0 assigned `exact` by default and `near` for the 16 Commerce atoms and 7 heroes
+    that use pixel or effect-driven motion effects and for Focus Handoff, whose effects
+    move to the CE6 registry. On 2026-10-01 the owner set the requirement to "the same
+    to the human eye, not pixel-identical", so all 176 items are now `near`
+    ([decision log](#decision-log), invariant 5).
 - [x] Record render-time baselines in
       [`composition-baseline.json`](../benchmarks/composition-baseline.json): per-item
       average and 95th-percentile frame cost (render plus pixel readback), with machine
@@ -583,7 +609,10 @@ Effects composition can for this project's needs.
 
 ### Contract sketch
 
-This is the intended shape; refine names during implementation and record changes.
+This sketch reflects the implemented names. The complete contract, field defaults,
+limits and diagnostics are in the [composition reference](./composition-reference.md)
+and `packages/scene-contract/src/composition/`. Implementation decisions are recorded
+in the [decision log](#decision-log).
 
 ```ts
 type Composition = {
@@ -602,12 +631,15 @@ type Composition = {
     samples: number;
   }; // CE7
   assets: Asset[]; // images, fonts, video, audio (sha256-pinned)
-  precomps?: Composition[]; // referenced by id, may nest (depth ≤ 8)
+  precomps?: Precomp[]; // flat root list; own layer namespaces; depth ≤ 8
   layers: Layer[]; // index 0 = top, as in AE
   markers?: Marker[]; // cues: { id, frame, duration?, label? }
   signals?: Signal[];
-  drivers?: Driver[];
-  constraints?: Constraint[]; // reused from motion-craft
+  drivers?: CompositionDriver[];
+  constraints?: Constraint[]; // per scope, reused from motion-craft
+  periodic?: CompositionPeriodic[];
+  textAnimators?: TextAnimator[]; // per scope
+  camera2d?: Camera2d; // story-compatible camera with layer cameraDepth
   expressions?: Record<PropertyPath, { source: string; ast?: ExpressionAst }>; // CE9: text syntax parsed to AST
   format?: OutputFormat; // reuse output-format.ts
 };
@@ -621,6 +653,7 @@ type LayerBase = {
     | "text"
     | "shape"
     | "null"
+    | "group"
     | "precomp"
     | "adjustment"
     | "camera"
@@ -628,17 +661,17 @@ type LayerBase = {
     | "video"
     | "sequence"
     | "audio";
-  inPoint: number;
-  outPoint: number; // comp frames, [in, out)
-  startFrame?: number; // layer time 0 in comp frames; default 0
-  stretch?: number; // finite, nonzero playback-rate multiplier; default 1; negative = reverse
-  timeRemap?: Animatable<number>; // precomp/video only; values in composition-frame units
+  inPoint?: number; // default 0
+  outPoint?: number; // default scope frameCount; comp frames, [in, out)
+  startFrame?: number; // layer time 0 in comp frames
+  stretch?: number; // nonzero; 2 is half speed, negative reverses
+  timeRemap?: Animatable<number>; // precomp or media layers
   parent?: string;
   enabled?: boolean;
   solo?: boolean;
   guide?: boolean;
   threeD?: boolean; // CE8
-  transform: Transform; // every field Animatable
+  transform?: Transform; // fields optional and animatable
   blendMode?: BlendMode;
   trackMatte?: {
     layer: string;
@@ -648,24 +681,23 @@ type LayerBase = {
   effects?: EffectInstance[]; // CE6 registry ids
   motionBlur?: boolean; // CE7
   collapseTransforms?: boolean; // precomp
+  cameraDepth?: number; // unparented root layers only
   qualification?: string; // keep evidence/qualification metadata from story
   source?: { family: string; id: string }; // adapter provenance for diagnostics
 };
 
 type Transform = {
-  anchor: Animatable<Vec2 | Vec3>;
-  position: Animatable<Vec2 | Vec3>;
-  scale: Animatable<Vec2 | Vec3>;
-  rotation: Animatable<number>;
+  anchor?: Animatable<Vec2 | Vec3>;
+  position?: Animatable<Vec2 | Vec3>;
+  scale?: Animatable<Vec2 | Vec3>;
+  rotation?: Animatable<number>;
   orientation?: Animatable<Vec3>;
   rotationX?: Animatable<number>;
   rotationY?: Animatable<number>;
-  skew?: Animatable<number>;
-  skewAxis?: Animatable<number>;
-  opacity: Animatable<number>;
-  separateDimensions?: boolean;
+  skewX?: Animatable<number>;
+  skewY?: Animatable<number>;
+  opacity?: Animatable<number>;
   autoOrient?: "off" | "path" | "camera";
-  spatialTangents?: SpatialTangent[]; // reuse SpatialPathSchema semantics
 };
 
 // An expression attaches to a property through the `expressions` map (keyed by
@@ -674,10 +706,17 @@ type Animatable<T> = T | { keys: Key<T>[] };
 ```
 
 `Key<T>` extends the existing `ScalarKeySchema` fields (`easing`, `interpolation`,
-`bezier`, `in`, `out`, `smooth`) to vector and colour values. Vector keys interpolate
-component-wise unless `spatial` tangents are given, in which case position follows the
-spatial bezier with the temporal curve controlling progress along arc length (roving
-keys become possible in CE9).
+`bezier`, `in`, `out`, `smooth`) to vector and colour values, with one recorded CE1
+restriction: `in`/`out` accept `ease` on these values, while explicit `speed` is
+scalar-only. Separate dimensions support per-component scalar speeds. Grouped
+vector/colour speed semantics are deferred to CE2, which must define their units
+and representation before enabling them (see the [decision log](#decision-log)).
+Vector keys interpolate component-wise unless per-key `spatialIn` / `spatialOut`
+tangents are given, in which
+case position follows the spatial bezier with the temporal curve controlling progress
+along arc length (roving
+keys become possible in CE9). Separate dimensions use `{ x, y, z? }` with each
+component animatable; keys are integer frames in layer time, bounded to ±216,000.
 
 ### Property paths
 
@@ -686,7 +725,7 @@ diagnostics, the builder and the Lab:
 
 ```text
 path     := [ precompLayerId "/" ]* layerId "." segment ( "." segment )*
-segment  := name | name "[" index "]"
+segment  := name | name "[" id "]"
 examples: title.transform.position
           title.transform.position.x          (component access)
           bg.effects[glow].radius              (effect by instance id)
@@ -718,37 +757,41 @@ opacity keyed linearly from `0` at frame 0 to `1` at frame 29. In a 30-fps paren
 
 ### Checklist
 
-- [ ] Add `packages/scene-contract/src/composition/` with schemas for composition,
+- [x] Add `packages/scene-contract/src/composition/` with schemas for composition,
       assets, markers, all layer types listed above (types that later milestones
       implement may be schema-only here, rejected by a `comp-feature-unavailable`
-      diagnostic until then), transforms, keys for scalar/vec2/vec3/colour, masks, track
-      mattes and blend modes.
-- [ ] Blend modes: `normal`, `multiply`, `screen`, `overlay`, `darken`, `lighten`,
+      diagnostic until then), transforms, keys for scalar/vec2/vec3/colour/discrete/path,
+      masks, track mattes and blend modes.
+- [x] Blend modes: `normal`, `multiply`, `screen`, `overlay`, `darken`, `lighten`,
       `color-dodge`, `color-burn`, `hard-light`, `soft-light`, `difference`,
       `exclusion`, `hue`, `saturation`, `color`, `luminosity` and `add` (Canvas
       `lighter`).
-- [ ] Masks: closed bezier path (Animatable); mode `add`, `subtract`, `intersect`,
+- [x] Masks: closed bezier path (Animatable); mode `add`, `subtract`, `intersect`,
       `difference` or `none`; `inverted`, `feather` (px), `expansion` (px) and
       `opacity`.
-- [ ] Implement the property-path parser and resolver with typed results
-      (scalar/vec/colour/bool/enum) and use it for validation of every path reference.
-      Precomp traversal resolves layer instances; reject missing or non-precomp hops
-      even when a source definition with that id exists.
-- [ ] Generalise `MotionTargetSchema` and `DriverSchema` so targets and sources are
-      property paths; keep the old node-and-property form valid as an alias.
-- [ ] Resolve the CE0 [parity notes](#parity-notes-for-adapter-work): an opacity
+- [x] Implement the property-path parser and resolver with typed results
+      (scalar/vec2/vec3/colour/discrete/path) and use it for validation of every path
+      reference.
+- [x] Precomp traversal resolves layer instances; reject missing or non-precomp hops
+      even when a source definition with that id exists. Dependency checks retain
+      full instance routes and independent sampled-time clocks.
+- [x] Add composition driver and periodic schemas whose targets and sources use
+      property paths; keep legacy `node.property` aliases and periodic `node` +
+      `property` valid. Existing story and commerce schemas remain unchanged.
+- [x] Resolve the CE0 [parity notes](#parity-notes-for-adapter-work): an opacity
       inheritance option for group layers, fractional key times or baking for legacy
       millisecond tracks, a composition 2D camera with per-layer depth factor, and an
       image rasterisation option. Record each decision in the decision log.
-- [ ] Semantic validation: unique ids, parent cycles, matte layer exists and is
+- [x] Semantic validation: unique ids, parent cycles, matte layer exists and is
       directly above (AE rule) or explicitly referenced, precomp cycles, in < out,
-      finite nonzero stretch (both signs valid), key frames ascending and inside a
-      sane window, asset hashes present, precomp nesting depth ≤ 8, total layer count
-      ≤ 2,000.
-- [ ] Diagnostic codes prefixed `comp-` with JSON paths; document every code in
+      finite nonzero stretch (both signs valid), key frames ascending and inside a sane window, asset hashes present, precomp
+      nesting depth ≤ 8 across every precomp graph, total layer count ≤ 2,000.
+      Driver, constraint and parent dependencies must be acyclic. Text layers follow
+      the supported story typography rules.
+- [x] Diagnostic codes prefixed `comp-` with JSON paths; document every code in
       `docs/composition-reference.md` (created in this milestone and extended by each
       later milestone).
-- [ ] Add the schema to `scripts/generate-corpus-schema.ts` so `pnpm schema:check`
+- [x] Add the schema to `scripts/generate-corpus-schema.ts` so `pnpm schema:check`
       covers it and a JSON Schema file is generated for editors and AI agents.
 
 **Acceptance:** A hand-written composition exercising every CE1 field validates; each
@@ -758,7 +801,81 @@ invalid variant in the test suite fails with the expected code and path.
 precomp-scoped, repeated-source instances, invalid instance hops), cycles and limits.
 Round trip: parse → serialise → parse is identical.
 
-**Completion record:** _to be filled in._
+**Completion record (2026-10-01).** CE1 is implemented on
+`codex/composition-ce1`, stacked on `codex/composition-ce0`.
+
+- **Contract:** exported from `@still-shift/scene-contract`, with structural and
+  semantic validation and stable `comp-*` diagnostics.
+- **Fixtures:** `first-slice.json` and `every-field.json` in
+  `benchmarks/fixtures/composition/ce1/`; the field-coverage test checks the latter.
+- **Reference and schema:** `docs/composition-reference.md` and generated
+  `packages/scene-contract/schemas/composition-1.schema.json`, covered by
+  `pnpm schema:check`.
+- **Original implementation checks:** the full `pnpm check` on the pinned toolchain (Node 22.23.1,
+  pnpm 10.29.3, Python 3.12.11, Playwright 1.62.1, FFmpeg 8.0.1) passed in about
+  27 minutes: toolchain, schema, boundaries, format, lint and types; 736 unit tests
+  (181 new: 99 contract and 82 property-path tests); 43 runtime and 110 integration
+  tests; the depth tests; and all 29 browser groups, ending with the CE0 baselines
+  (176 of 176 items unchanged). Earlier runs during development used Node 24.16, the
+  shell default, which `pnpm check` rejects.
+- **PR review fixes (2026-10-01):** structural failures stop semantic traversal before
+  over-limit graphs can overflow; paths and motion dependencies now retain complete
+  precomp layer-instance routes and independent clocks. Regression coverage includes
+  oversized graphs, repeated and nested sources, missing/non-precomp hops, sibling
+  remap reads and actual cycles. `pnpm check:fast` passed with 922 unit tests.
+- **Limitations and follow-ups:**
+  - Temporal handle `speed` is scalar-only in CE1. Joint vector and colour keys
+    accept `ease`; grouped speed semantics are deferred to CE2 because one scalar
+    slope has no defined interpretation for spatial vectors or RGBA values.
+    Authors can already set independent vector speeds with separate dimensions.
+  - Text layers can change text through `state` keys and through typography
+    `transition`s. CE3 must define how the two combine (the typography renderer
+    currently drives state from transitions).
+  - "Key frames inside a sane window" is only the ±216,000 schema bound. Keys outside a
+    layer's visible range are allowed, as in AE.
+  - Content providers (CE4) are not in the contract yet. CE4a adds them as a layer type
+    with a versioned provider id.
+  - The generated JSON Schema was checked against both fixtures with a draft-07
+    validator already in `node_modules`, which ignores `prefixItems`. No 2020-12
+    validator was added as a dependency.
+- **Review follow-up:** regression tests cover inherited style names, empty path
+  keys, resolved display fonts, motion dependency cycles (including precomp scopes),
+  and unused precomp depth. `pnpm check:fast` passed on Node 22.23.1: generated schema,
+  package boundaries, formatting, lint, TypeScript and all 771 unit tests (including
+  123 composition contract tests). Full rendering was not rerun for these validation
+  fixes.
+- **Metadata validation follow-up:** nesting is limited to 64 container levels
+  below each metadata root before recursive parsing; cyclic values also return a
+  structured diagnostic. Regression checks cover root, layer and precomp-layer
+  metadata, the depth boundary and shared objects. The metadata and contract unit
+  groups passed (161 tests), along with schema freshness, TypeScript and lint on
+  Node 22.23.1.
+- **Property-path validation follow-up:** legacy alias tables now match only their
+  own entries. Seven inherited JavaScript property names return `comp-path-property`
+  through direct resolution and through driver targets, sources and sum terms.
+  The path, time-dependency and contract unit groups passed (229 tests), along with
+  TypeScript and lint on Node 22.23.1.
+- **Temporal-speed clarification:** the contract sketch, this record, the decision
+  log and the CE2 checklist now agree with the scalar-only restriction documented
+  in the reference. Final `pnpm check:fast` passed on Node 22.23.1: schema freshness,
+  package boundaries, formatting, lint, TypeScript and all 833 unit tests. Full
+  rendering was not rerun for these contract-validation and documentation fixes.
+
+- **Opaque JSON validation follow-up:** expression ASTs, effect parameter objects and
+  shape contents now share metadata's iterative preflight, with 64 KiB byte and
+  64-level container-depth limits. Cycles and oversized expanded shared references
+  return structured diagnostics before recursive parsing. Added 34 regression tests
+  covering all three payloads, boundaries, UTF-8 sizing and invalid JSON values.
+  `pnpm check:fast` passed on Node 22.23.1 with all 867 unit tests.
+
+- **Text animator axis follow-up:** validation now checks axis names and conservative
+  effective value bounds against each affected layer or span's pinned font, using
+  font defaults when no base axis is authored. Checks include precomp scopes,
+  motion-layer ordering, stacked replace/add/multiply blends, easing overshoot and
+  keyed weights with temporal handles. Added 21 regression tests. Conservative
+  bounds can reject safe time-correlated animation; the reference documents this
+  limitation. `pnpm check:fast` passed on Node 22.23.1 with all 888 unit tests.
+  Full browser rendering was not rerun for either validation fix.
 
 ---
 
@@ -787,10 +904,17 @@ at any frame, in Node or the browser, with no rendering.
       (enforce with a lint rule or boundary check).
 - [ ] Vector and colour interpolation, spatial bezier for position with arc-length
       parameterisation (reuse `SpatialPathSchema` semantics).
+- [ ] Resolve the CE1 temporal-speed follow-up: define grouped vector/colour speed
+      units and representation, including spatial arc length and colour channels,
+      and record a decision before enabling these handles. CE1 keeps explicit speed
+      scalar-only; separate vector dimensions already accept scalar speeds.
 - [ ] Parenting with AE semantics: position, rotation, scale and skew inherit; opacity
       does not.
 - [ ] Signed nonzero time stretch (negative = reverse) and time remap, following
       [layer-time anchors and source-boundary rules](#layer-time-and-reverse-playback).
+- [ ] Accept fractional evaluation times from the start (parity note 4).
+- [ ] A constraint reference point separate from the transform anchor, so adapted
+      legacy anchor animation keeps its meaning (parity note 7).
 - [ ] Screen-space bounding boxes for culling and diagnostics (images/solids exact;
       text from measured layout; shapes after CE5).
 - [ ] Memoise per frame; cache compiled curves by object identity (as `story-camera.ts`
@@ -836,7 +960,10 @@ masks and adjustment layers, and export through the existing runtime.
 - [ ] Render graph builder and Canvas 2D backend in `composition/render/`.
 - [ ] Layer drawing for solid, image (reuse `imagePlacement`/`fit`), text (reuse the
       typography renderer and text animators as a layer content provider), null (no
-      draw), adjustment (applies its effects to everything below within its bounds).
+      draw), group (per-child opacity and clip), adjustment (applies its effects to
+      everything below within its bounds).
+- [ ] Define how a text layer's `state` keys combine with typography `transition`s,
+      which also change the displayed state.
 - [ ] All CE1 blend modes via `globalCompositeOperation`.
 - [ ] Alpha and inverted alpha mattes via `destination-in`/`destination-out`. Luma
       mattes via a luminance pass (pixel loop in this backend; GPU in CE6).
@@ -849,6 +976,9 @@ masks and adjustment layers, and export through the existing runtime.
       `ExportableScene`; add engine entry points in `packages/animation-engine`.
 - [ ] `COMPOSITION_RENDERER_VERSION = "composition-canvas-1.0.0"`, included in manifests
       and cache identities.
+- [ ] Keep text layout (shaping, advances, line breaks) behind one module, so
+      platform-independent text layout (Q8 option C) can later replace the operating
+      system's layout without changing the text layer contract.
 - [ ] Add a browser test group `test:browser:composition` and include it in `pnpm test`.
 
 **Acceptance:** The first-slice composition renders identically in Lab preview and MP4
@@ -879,12 +1009,23 @@ General rules for all adapters:
   prefer migrating it to shapes/effects later.
 - Keep the adapter's output inspectable: `pnpm still-shift comp export-json --scene X`
   writes the compiled composition for debugging.
-- Switch a family over only after its fixtures meet their CE0 tolerance tier. Until then,
-  a flag (`--renderer composition`) selects the new path.
+- Switch a family over only after its fixtures meet their CE0 tolerance tier and their
+  evaluated state matches the old path (invariant 5). Until then, a flag
+  (`--renderer composition`) selects the new path.
+- Each adapter records an evaluated-state comparison per fixture: frame timing and
+  visibility identical, positions within 0.001 composition pixels. A fixture moves to
+  `perceptual` only with its reason recorded in the manifest's `note` and in the
+  completion record.
 
 ### CE4a — Story
 
-- [ ] Map roots, groups (with `clip` → mask), images with states and state blends,
+- [ ] Add content providers to the contract as a layer type with a versioned provider
+      id, with schema, reference and diagnostics as in CE1.
+- [ ] Decide how a family scene uses a composition-only feature (Q2 freezes the
+      family's visual vocabulary): a passage beat that is a `composition-1` file, a
+      story scene that references a `composition-1` precomp, or both. Decide with the
+      first real case and record it in the decision log.
+- [ ] Map roots, groups (to `group` layers with `clip`), images with states and state blends,
       paths (ink/brush line styles as content providers until CE5), text and text
       containers, flows, props attached to hand anchors, poses and actions.
 - [ ] Map the story camera to a camera or null-layer parent (2D until CE8), including
@@ -922,7 +1063,13 @@ General rules for all adapters:
 - [ ] Remove per-family branches from `illustrated-renderer.ts` and
       `evaluatePreparedNodeAtTime`, leaving family modules as adapters. Target: zero
       `schemaVersion` comparisons in the render path.
-- [ ] Update [user guide](./user-guide.md) and README.
+- [ ] Freeze the visual vocabulary of the four family schemas (Q2, option C): add a
+      schema comment and a contributor note that rendering features land only in
+      `composition-1`, while story-level additions (recipes, actions, presets, passage
+      features) remain allowed if they compile to existing composition features.
+      Mark `illustrated-scene-1` as frozen entirely.
+- [ ] Update [user guide](./user-guide.md) and README, including which format to use
+      for which kind of work after the freeze.
 
 **Acceptance (each part):** All fixtures in that family meet their tolerance tiers;
 Lab preview and export agree; render time is no worse than 1.25× the CE0 baseline.
@@ -1446,9 +1593,11 @@ targets), flip detection, pixel tests on both backends.
 **Outcome:** Output fits professional pipelines, and long compositions render quickly.
 
 - [ ] Transparent composition backgrounds carried through export.
-- [ ] Formats: ProRes 4444 with alpha, ProRes 422 HQ, PNG sequence (8/16-bit),
-      WebM VP9 with alpha, H.264 and HEVC 10-bit, all tagged BT.709. Extend the ffprobe
-      verification in `export-worker.ts` per format.
+- [ ] First formats (Q4: both audiences, delivered together): ProRes 4444 with alpha
+      and PNG sequence (8/16-bit) for editors; H.264 and HEVC 10-bit for social
+      delivery. All tagged BT.709. Extend the ffprobe verification in
+      `export-worker.ts` per format.
+- [ ] Then ProRes 422 HQ and WebM VP9 with alpha.
 - [ ] Frame rates up to 60 fps; arbitrary sizes within limits.
 - [ ] Per-layer and per-precomp caching: static subtrees render once per export and are
       reused, keyed by content hash, backend version and evaluated state.
@@ -1506,7 +1655,7 @@ A milestone is complete when **all** of the following hold:
 | Adapter parity is harder than expected (hidden family behaviour) | CE4 stalls; two render paths coexist for long                                                   | Feature matrix in CE0; content providers as an escape hatch; flag-gated switch per family                                                                                                  |
 | Scope creep toward a GUI editor                                  | Lab work displaces engine work                                                                  | CE11 is inspection plus light edits; code remains primary                                                                                                                                  |
 | Expression language too weak or too strong                       | Authors blocked, or unsafe/nondeterministic output                                              | Text syntax parsed to AST; full JavaScript at authoring time in the builder; add built-ins for new needs; bake to keys                                                                     |
-| Text layout differs between operating systems (CE0)              | Text fit, overflow and line-break decisions may pass on macOS and fail on Linux, or the reverse | Validate text in the canonical render environment once Q8 is decided; keep layout diagnostics platform-aware                                                                               |
+| Text layout differs between operating systems (CE0)              | Text fit, overflow and line-break decisions may pass on macOS and fail on Linux, or the reverse | Q8: `darwin-arm64` is the reference while the owner uses one MacBook; decide between a canonical environment and platform-independent text before supporting a second machine type         |
 | Software export rendering is too slow for heavy effects          | Long renders for effect-heavy or long compositions                                              | Per-effect SwiftShader budgets in CE6; per-layer caching and parallel chunks in CE15                                                                                                       |
 | Performance regression from per-layer surfaces                   | Slower renders than today                                                                       | Surfaces only when needed; culling; budgets in CE0/CE2/CE6; caching in CE15                                                                                                                |
 | Media decode nondeterminism                                      | Video frames drift between runs                                                                 | FFmpeg pre-decode with content-addressed cache; no element seeking in export                                                                                                               |
@@ -1514,33 +1663,47 @@ A milestone is complete when **all** of the following hold:
 
 ## Decision log
 
-| Date       | Decision                                                                                                                    | Reason                                                                                                                                                              | Superseded by  |
-| ---------- | --------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------- |
-| 2026-09-30 | Introduce one `composition-1` contract; existing families become compilers into it                                          | Removes per-family duplication; every later feature is built once                                                                                                   |                |
-| 2026-09-30 | Keep Canvas 2D as the reference backend and add WebGL2 as the production backend behind one interface                       | Preserves parity with existing output while enabling GPU effects and performance                                                                                    |                |
-| 2026-09-30 | Expressions are a serialisable AST; JavaScript ergonomics live in the builder                                               | Determinism, sandbox safety in export workers, easy validation of agent output (see Q3)                                                                             | Q3 entry below |
-| 2026-09-30 | JSON remains the serialisation format; the TypeScript builder is the primary code surface                                   | Keeps compositions portable and inspectable; gives coders and agents types                                                                                          |                |
-| 2026-09-30 | Video frames are pre-decoded with FFmpeg for export                                                                         | Browser media seeking is not frame-accurate or deterministic enough for export                                                                                      |                |
-| 2026-09-30 | Q1: hybrid GPU policy — export, caches and tests pinned to SwiftShader; Lab preview may use a hardware GPU within tolerance | Exact reproducible output where caches, resume and chunking depend on it; fast interactive preview. Formalises what headless export already does by default         |                |
-| 2026-09-30 | Q3: expressions are written in a small text syntax and parsed into a validated AST; no arbitrary JavaScript at render time  | AE-like brevity for authors and agents, with safety, known dependencies and precise diagnostics. Full JavaScript remains available at authoring time in the builder |                |
-| 2026-10-01 | CE9 rejects every property dependency cycle, including earlier-time feedback                                                | Delayed self/mutual references have no finite-history base case; acyclic temporal reads preserve pure seeking and terminate                                         |                |
-| 2026-10-01 | CE6/CE8 complete against native compositions; CE4 owns family parity; CE8 depends on CE6 and CE9                            | Removes circular backend/adapter acceptance gates and makes camera prerequisites explicit                                                                           |                |
-| 2026-10-01 | Stretch is a signed nonzero rate; startFrame anchors local time zero; finite visual sources hold boundary frames            | Makes CE1 accept CE2 reverse playback and defines deterministic source sampling without changing composition-time visibility                                        |                |
-| 2026-10-01 | CE10 depends on CE3, CE4a, CE9 and CE12                                                                                     | Its CLI, expression helpers and adapter-parity acceptance require rendering, expressions, baking, linting and the story adapter                                     |                |
-| 2026-10-01 | Property paths traverse precomp layer instances and carry instance-local time at each hop                                   | Repeated sources with different start/stretch/remap must remain separately addressable and independently evaluated                                                  |                |
+| Date       | Decision                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            | Reason                                                                                                                                                                                                                                          | Superseded by              |
+| ---------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------- |
+| 2026-09-30 | Introduce one `composition-1` contract; existing families become compilers into it                                                                                                                                                                                                                                                                                                                                                                                                                                                  | Removes per-family duplication; every later feature is built once                                                                                                                                                                               |                            |
+| 2026-09-30 | Keep Canvas 2D as the reference backend and add WebGL2 as the production backend behind one interface                                                                                                                                                                                                                                                                                                                                                                                                                               | Preserves parity with existing output while enabling GPU effects and performance                                                                                                                                                                |                            |
+| 2026-09-30 | Expressions are a serialisable AST; JavaScript ergonomics live in the builder                                                                                                                                                                                                                                                                                                                                                                                                                                                       | Determinism, sandbox safety in export workers, easy validation of agent output (see Q3)                                                                                                                                                         | Q3 entry below             |
+| 2026-09-30 | JSON remains the serialisation format; the TypeScript builder is the primary code surface                                                                                                                                                                                                                                                                                                                                                                                                                                           | Keeps compositions portable and inspectable; gives coders and agents types                                                                                                                                                                      |                            |
+| 2026-09-30 | Video frames are pre-decoded with FFmpeg for export                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 | Browser media seeking is not frame-accurate or deterministic enough for export                                                                                                                                                                  |                            |
+| 2026-09-30 | Q1: hybrid GPU policy — export, caches and tests pinned to SwiftShader; Lab preview may use a hardware GPU within tolerance                                                                                                                                                                                                                                                                                                                                                                                                         | Exact reproducible output where caches, resume and chunking depend on it; fast interactive preview. Formalises what headless export already does by default                                                                                     |                            |
+| 2026-09-30 | Q3: expressions are written in a small text syntax and parsed into a validated AST; no arbitrary JavaScript at render time                                                                                                                                                                                                                                                                                                                                                                                                          | AE-like brevity for authors and agents, with safety, known dependencies and precise diagnostics. Full JavaScript remains available at authoring time in the builder                                                                             |                            |
+| 2026-10-01 | Adapter parity means "the same to the human eye, not pixel-identical" (owner). Default adapter tier is `near` for all 176 CE0 items; `perceptual` only per fixture with a recorded reason; evaluated state must match the old path (timing and visibility identical, positions within 0.001 px); the new engine's own export stays exact                                                                                                                                                                                            | Invisible differences in antialiasing, blur or resampling no longer block CE4, while `near` keeps a margin against differences that encoding or other displays could reveal, and state parity catches motion jitter that per-frame metrics miss |                            |
+| 2026-10-01 | Q2: option C. After CE4d the four family schemas stay accepted and keep rendering through adapters, but their visual vocabulary is frozen: effects, shapes, masks, blend modes, 3D, motion blur and mesh warp exist only in `composition-1` and the builder. Story recipes, character actions, commerce presets and passage features may still grow if they compile to existing composition features. Story stays the main front end, commerce keeps its presets, cinematic is mostly frozen, legacy illustrated is frozen entirely | Each visual feature is built once, as the plan intends, while the families keep the high-level authoring verbs that `composition-1` deliberately does not model                                                                                 |                            |
+| 2026-10-01 | Q4: both. CE15 delivers alpha formats for editors (ProRes 4444, PNG sequence) and social delivery formats (H.264, HEVC 10-bit) together; ProRes 422 HQ and WebM VP9 alpha follow                                                                                                                                                                                                                                                                                                                                                    | The product needs finished social videos and assets that editors can composite                                                                                                                                                                  |                            |
+| 2026-10-01 | Q8: Mac first. `darwin-arm64` is the reference environment for exports, baselines and caches while the owner uses a single MacBook. Linux baselines and the container are kept but not required. Before supporting a second machine type, decide between a canonical environment (B) and platform-independent text layout (C, preferred)                                                                                                                                                                                            | With one machine, previews and final output already match exactly, so the cross-platform cost can wait until it is needed. C best meets the "same to the human eye" requirement across machines                                                 |                            |
+| 2026-10-01 | CE1, parity note 1: add a `group` layer type whose opacity multiplies into each child and which can clip children to its bounds                                                                                                                                                                                                                                                                                                                                                                                                     | Legacy groups apply opacity per child, which neither AE parenting (no inheritance) nor a precomp (flattened) reproduces; a named type keeps AE semantics intact elsewhere                                                                       |                            |
+| 2026-10-01 | CE1, parity note 2: no fractional key frames; CE4d bakes legacy millisecond tracks to one key per integer frame                                                                                                                                                                                                                                                                                                                                                                                                                     | Keeps invariant 1. Baking is exact because legacy scenes are only sampled at integer frames; CE4d must confirm this against the CE0 baselines                                                                                                   |                            |
+| 2026-10-01 | CE1, parity note 3: composition-level `camera2d` (story camera semantics) applied by per-layer `cameraDepth` until CE8                                                                                                                                                                                                                                                                                                                                                                                                              | The story camera scales each root by its depth, which a parent transform cannot express; reusing its curve keeps adapted story motion exact                                                                                                     |                            |
+| 2026-10-01 | CE1, parity note 5: image layers take `rasterize: "draw" \| "natural-size"`                                                                                                                                                                                                                                                                                                                                                                                                                                                         | `motionGrammar: "v2"` pre-rasterises SVGs at natural size; without the option, output would depend on clipping                                                                                                                                  |                            |
+| 2026-10-01 | CE1: transforms use `skewX`/`skewY` (shear `[[1, tan skewX], [tan skewY, 1]]`) instead of AE `skew`/`skewAxis`                                                                                                                                                                                                                                                                                                                                                                                                                      | The existing renderer's two-axis shear cannot be expressed by AE's skew and axis in general; AE-style skew can be builder sugar later                                                                                                           |                            |
+| 2026-10-01 | CE1: layer time = `(compFrame − startFrame) / stretch`, and keys are in layer time; corrects the original `× stretch` convention                                                                                                                                                                                                                                                                                                                                                                                                    | Matches AE, where a stretch of 200% plays at half speed and moving a layer moves its keys                                                                                                                                                       |                            |
+| 2026-10-01 | CE1: separate dimensions are the value form `{ x, y, z? }`; spatial tangents are per-key `spatialIn`/`spatialOut`                                                                                                                                                                                                                                                                                                                                                                                                                   | Adapters need independently keyed x and y; a value form keeps each property self-describing, and per-key tangents match the existing motion-craft fields                                                                                        |                            |
+| 2026-10-01 | CE1: precomps are a flat list on the root with their own layer namespace; the initial resolver uses precomp definition ids                                                                                                                                                                                                                                                                                                                                                                                                          | Avoids duplicated nested definitions when a precomp is reused, and lets paths and diagnostics name a precomp once                                                                                                                               | Instance paths entry below |
+| 2026-10-01 | CE1: composition drivers and periodic motion use property paths in new schemas; story and commerce motion schemas stay unchanged                                                                                                                                                                                                                                                                                                                                                                                                    | Family schemas remain as written for CE0 parity, and legacy `node.property` targets stay valid inside compositions as aliases                                                                                                                   |                            |
+| 2026-10-01 | CE1: explicit temporal handle `speed` remains scalar-only; vector and colour keys accept `ease`. Grouped speed semantics are deferred to CE2; separate vector dimensions already support scalar speeds                                                                                                                                                                                                                                                                                                                              | A scalar slope has no defined mapping to grouped vectors, spatial arc length or RGBA values. Keep the validated contract explicit until CE2 defines the units and representation                                                                |                            |
+| 2026-10-01 | CE9 rejects every property dependency cycle, including earlier-time feedback                                                                                                                                                                                                                                                                                                                                                                                                                                                        | Delayed self/mutual references have no finite-history base case; acyclic temporal reads preserve pure seeking and terminate                                                                                                                     |                            |
+| 2026-10-01 | CE6/CE8 complete against native compositions; CE4 owns family parity; CE8 depends on CE6 and CE9                                                                                                                                                                                                                                                                                                                                                                                                                                    | Removes circular backend/adapter acceptance gates and makes camera prerequisites explicit                                                                                                                                                       |                            |
+| 2026-10-01 | Stretch is a signed nonzero rate; startFrame anchors local time zero; finite visual sources hold boundary frames                                                                                                                                                                                                                                                                                                                                                                                                                    | Makes CE1 accept CE2 reverse playback and defines deterministic source sampling without changing composition-time visibility                                                                                                                    | CE1 AE stretch convention  |
+| 2026-10-01 | CE10 depends on CE3, CE4a, CE9 and CE12                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             | Its CLI, expression helpers and adapter-parity acceptance require rendering, expressions, baking, linting and the story adapter                                                                                                                 |                            |
+| 2026-10-01 | Property paths traverse precomp layer instances and carry instance-local time at each hop                                                                                                                                                                                                                                                                                                                                                                                                                                           | Repeated sources with different start/stretch/remap must remain separately addressable and independently evaluated                                                                                                                              |                            |
 
 ## Open questions for the owner
 
-| ID  | Question                                                                                                                                                                                                                                                                                                                                       | Needed by                                                       | Answer                                                                                                     |
-| --- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
-| Q1  | GPU determinism: pin export to a software GL path (SwiftShader, slower but reproducible), or accept `near`-tier tolerance across GPUs with hardware rendering?                                                                                                                                                                                 | CE0                                                             | 2026-09-30: hybrid (option C). See [GPU determinism policy](#gpu-determinism-policy)                       |
-| Q2  | Once adapters reach parity, should the four family schemas be frozen (still accepted, no new features) so new work targets `composition-1` only?                                                                                                                                                                                               | CE4d                                                            |                                                                                                            |
-| Q3  | Is an AST expression language acceptable, or must compositions accept raw JavaScript expressions (with a sandbox) for AE-style familiarity?                                                                                                                                                                                                    | CE9                                                             | 2026-09-30: text syntax parsed into an AST; no raw JavaScript. See [CE9 expression form](#expression-form) |
-| Q4  | Which output formats matter first: alpha for editors (ProRes 4444/PNG), social delivery (H.264/HEVC), or both?                                                                                                                                                                                                                                 | CE15                                                            |                                                                                                            |
-| Q5  | Priority between mesh deformation (CE14) and video layers (CE13) for the faceless-video product goal.                                                                                                                                                                                                                                          | Phase D                                                         |                                                                                                            |
-| Q6  | Should lights and 3D shading be planned after CE8, or is 2.5D without lighting sufficient?                                                                                                                                                                                                                                                     | After CE8                                                       |                                                                                                            |
-| Q7  | Single-image depth animation (depth presets and flat editorial presets) uses a separate WebGL renderer. Should it become a composition layer type (for example a `depth-image` layer), or stay a separate path?                                                                                                                                | CE4d                                                            |                                                                                                            |
-| Q8  | Output is exact only within one operating system and CPU architecture (policy rule 6). Should one canonical render environment, for example the Linux container in `scripts/composition/linux/` on a fixed architecture, be used for CI, caches shared between machines and final exports, with macOS renders treated as development previews? | Before shared caches or CE15 parallel rendering across machines |                                                                                                            |
+| ID  | Question                                                                                                                                                                                                                                                                                                                                       | Needed by                                                       | Answer                                                                                                                                                                                                                                                                    |
+| --- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Q1  | GPU determinism: pin export to a software GL path (SwiftShader, slower but reproducible), or accept `near`-tier tolerance across GPUs with hardware rendering?                                                                                                                                                                                 | CE0                                                             | 2026-09-30: hybrid (option C). See [GPU determinism policy](#gpu-determinism-policy)                                                                                                                                                                                      |
+| Q2  | Once adapters reach parity, should the four family schemas be frozen (still accepted, no new features) so new work targets `composition-1` only?                                                                                                                                                                                               | CE4d                                                            | 2026-10-01: option C — freeze the families' visual vocabulary; story-level features may still grow. See [decision log](#decision-log) and CE4d                                                                                                                            |
+| Q3  | Is an AST expression language acceptable, or must compositions accept raw JavaScript expressions (with a sandbox) for AE-style familiarity?                                                                                                                                                                                                    | CE9                                                             | 2026-09-30: text syntax parsed into an AST; no raw JavaScript. See [CE9 expression form](#expression-form)                                                                                                                                                                |
+| Q4  | Which output formats matter first: alpha for editors (ProRes 4444/PNG), social delivery (H.264/HEVC), or both?                                                                                                                                                                                                                                 | CE15                                                            | 2026-10-01: both — alpha formats for editors and social delivery formats ship together. See CE15                                                                                                                                                                          |
+| Q5  | Priority between mesh deformation (CE14) and video layers (CE13) for the faceless-video product goal.                                                                                                                                                                                                                                          | Phase D                                                         |                                                                                                                                                                                                                                                                           |
+| Q6  | Should lights and 3D shading be planned after CE8, or is 2.5D without lighting sufficient?                                                                                                                                                                                                                                                     | After CE8                                                       |                                                                                                                                                                                                                                                                           |
+| Q7  | Single-image depth animation (depth presets and flat editorial presets) uses a separate WebGL renderer. Should it become a composition layer type (for example a `depth-image` layer), or stay a separate path?                                                                                                                                | CE4d                                                            |                                                                                                                                                                                                                                                                           |
+| Q8  | Output is exact only within one operating system and CPU architecture (policy rule 6). Should one canonical render environment, for example the Linux container in `scripts/composition/linux/` on a fixed architecture, be used for CI, caches shared between machines and final exports, with macOS renders treated as development previews? | Before shared caches or CE15 parallel rendering across machines | 2026-10-01: Mac first — `darwin-arm64` is the reference environment for now; before supporting a second machine type, decide between B (canonical environment) and C (platform-independent text, preferred). See [GPU determinism policy](#gpu-determinism-policy) rule 6 |
 
 ## Appendix — AE feature coverage map
 
@@ -1715,3 +1878,18 @@ with general primitives; the "Target" column names that later form.
    isolated and story contexts (60 scene fixtures). The acceptance set adds the three
    `story-*.passage.json` component passages, matching the "63 combinations" figure in
    the technical debt audit.
+7. **Legacy anchors do not move artwork** (found in CE1). In
+   [`nodeMatrix`](../packages/renderer-core/src/node-transform.ts), `x`/`y` place the
+   top-left corner of the node's box and rotation, skew and scale pivot about the
+   static `origin`. Animated `anchorX`/`anchorY` leave the matrix unchanged; they only
+   move the reference point that attach and follow constraints use. In `composition-1`
+   (as in AE), the anchor is the pivot and moving it moves the artwork. Adapters
+   therefore emit `position = [x + width·originX, y + height·originY]` and a static
+   anchor `[width·originX, height·originY]`. Animated legacy anchors must not become
+   `transform.anchor` keys; CE2 needs a separate constraint reference point for them.
+
+**Resolutions (CE1, 2026-10-01).** Note 1: `group` layer type. Note 2: legacy tracks are
+baked to one key per integer frame in CE4d; no fractional key frames. Note 3: `camera2d`
+with `cameraDepth`. Note 4: no contract change; CE2 accepts fractional evaluation times.
+Note 5: image `rasterize: "natural-size"`. Note 6: no contract change. Note 7: adapter
+rule above, plus a CE2 follow-up. See the [decision log](#decision-log).
