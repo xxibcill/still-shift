@@ -481,6 +481,7 @@
       "type": "text",
       "text": "Short label",
       "fontSize": 32,
+      "size": [480, 96],
       "color": "#2B2A26",
       "fontAsset": "body",
       "textBox": {

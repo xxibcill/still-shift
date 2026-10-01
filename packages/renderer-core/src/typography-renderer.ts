@@ -16,13 +16,13 @@ import {
 import { shapeText, type ShapedLayout } from "./shaped-text.ts";
 import {
   evaluateTextPoses,
+  textAnimationFrames,
   clusterBox,
   type TextPose,
   type TextAnimationContext,
 } from "./typography-animation.ts";
 import {
   commonClusters,
-  countText,
   retypedClusters,
   reserveCountWidth,
   resolveDisplayedText,
@@ -31,7 +31,7 @@ import {
 import { drawTextDecorations } from "./typography-decorations.ts";
 import { drawTextContainerShape } from "./text-container.ts";
 import type { Rect } from "./text-container-layout.ts";
-import { componentTextVariants } from "./component-values.ts";
+import { typographyTextValues } from "./typography-text-values.ts";
 import { textVisibility } from "./typography-visibility.ts";
 import type { StoryRenderScene } from "./story-scene.ts";
 import type { CommerceRenderScene } from "./commerce-scene.ts";
@@ -45,6 +45,10 @@ export type TextRaster = {
   strokes: Map<string, HTMLCanvasElement>;
   fonts: Map<string, LoadedFont>;
   variants: Map<string, TextRaster>;
+  /** Opaque glyph coverage; authored fill colour and alpha apply only when drawing. */
+  colorCoverage?: boolean;
+  /** Composition outlines cache opaque coverage, independent of animated colour. */
+  strokeCoverage?: boolean;
 };
 export type PreparedTypography = {
   corrections: Map<
@@ -78,6 +82,7 @@ export function rasterizeText(
   node: TextNode,
   layout: ShapedLayout,
   fonts: Map<string, LoadedFont>,
+  colorCoverage = false,
 ): TextRaster {
   const pad = Math.ceil(
     Math.max(
@@ -95,25 +100,21 @@ export function rasterizeText(
     ),
     ctx = canvas.getContext("2d")!;
   ctx.translate(-left, -top);
+  const clusterColor = (index: number) =>
+    colorCoverage
+      ? "#ffffff"
+      : (node.spans?.[layout.clusters[index]!.spanIndex]?.color ?? node.color);
   for (const run of layout.runs) {
     applyTextStyle(ctx, run.style, fonts);
     const first = run.clusters[0]!,
       last = run.clusters.at(-1)!;
-    const colors = [
-      ...new Set(
-        run.clusters.map(
-          (i) =>
-            node.spans?.[layout.clusters[i]!.spanIndex]?.color ?? node.color,
-        ),
-      ),
-    ];
+    const colors = [...new Set(run.clusters.map(clusterColor))];
     for (const color of colors) {
       ctx.save();
       ctx.beginPath();
       for (const i of run.clusters) {
         const cluster = layout.clusters[i]!;
-        if ((node.spans?.[cluster.spanIndex]?.color ?? node.color) !== color)
-          continue;
+        if (clusterColor(i) !== color) continue;
         const x = i === first ? run.x - pad : Math.round(cluster.x);
         const right =
           i === last
@@ -136,11 +137,13 @@ export function rasterizeText(
     strokes: new Map(),
     fonts,
     variants: new Map(),
+    ...(colorCoverage ? { colorCoverage: true } : {}),
   };
 }
 export function prepareTypography(
-  scene: StoryRenderScene | CommerceRenderScene,
+  scene: (StoryRenderScene | CommerceRenderScene) & TextAnimationContext,
   fonts: Map<string, LoadedFont>,
+  options: { strokeCoverage?: boolean; colorCoverage?: boolean } = {},
 ): PreparedTypography {
   const nodes = new Map<string, Map<string, TextRaster>>(),
     pairs = new Map<string, [number, number][]>(),
@@ -155,22 +158,12 @@ export function prepareTypography(
   };
   const reserveRaster = (raster: TextRaster) => {
     reserveCanvas(raster.canvas);
+    if (options.strokeCoverage) raster.strokeCoverage = true;
     return raster;
   };
   for (const node of scene.nodes) {
     if (node.type !== "text") continue;
-    const values = new Set([
-      node.text,
-      ...(node.states ?? []),
-      ...componentTextVariants(scene, node),
-    ]);
-    for (const t of node.transitions ??
-      (node.transition ? [node.transition] : []))
-      if (t.kind === "count")
-        for (let frame = t.window.start; frame <= t.window.end; frame++)
-          values.add(countText(node, t, frame));
-    if (values.size > 10000)
-      throw new Error("text-layout-budget: more than 10000 states");
+    const values = typographyTextValues(scene, node);
     const layouts = new Map(
       [...values].map((text) => [
         text,
@@ -183,7 +176,12 @@ export function prepareTypography(
     if (count) reserveCountWidth(layouts.values());
     const rasters = new Map<string, TextRaster>();
     for (const [text, layout] of layouts) {
-      rasters.set(text, reserveRaster(rasterizeText(node, layout, fonts)));
+      rasters.set(
+        text,
+        reserveRaster(
+          rasterizeText(node, layout, fonts, options.colorCoverage),
+        ),
+      );
     }
     const axes = nodeAxisVariants(scene, node, [...layouts.values()], fonts);
     for (const [text, raster] of rasters)
@@ -198,7 +196,9 @@ export function prepareTypography(
         );
         raster.variants.set(
           key,
-          reserveRaster(rasterizeText(node, layout, fonts)),
+          reserveRaster(
+            rasterizeText(node, layout, fonts, options.colorCoverage),
+          ),
         );
       }
     if (
@@ -215,11 +215,13 @@ export function prepareTypography(
       const layoutsByText = new Map(
         [...rasters].map(([text, raster]) => [text, raster.layout]),
       );
-      for (const { frame, texts } of textVisibility(
-        scene,
-        node,
-        layoutsByText,
-      )) {
+      const visibility = Object.hasOwn(scene.animationFrames ?? {}, node.id)
+        ? [...textAnimationFrames(scene, node)].map((frame) => ({
+            frame,
+            texts: [...rasters.keys()],
+          }))
+        : textVisibility(scene, node, layoutsByText);
+      for (const { frame, texts } of visibility) {
         for (const text of new Set([...staticValues, ...texts])) {
           const raster = rasters.get(text);
           if (!raster)
@@ -235,11 +237,12 @@ export function prepareTypography(
             const width = quantizeStrokeWidth(pose.strokeWidth);
             if (pose.opacity <= 0 || width <= 0) continue;
             const target = axisRaster(raster, pose.axes);
-            const strokeKey = `${width}:${pose.stroke}`;
+            const strokeColor = target.strokeCoverage ? "#ffffff" : pose.stroke;
+            const strokeKey = `${width}:${strokeColor}`;
             if (!target.strokes.has(strokeKey))
               target.strokes.set(
                 strokeKey,
-                reserveCanvas(renderStrokedRaster(target, width, pose.stroke)),
+                reserveCanvas(renderStrokedRaster(target, width, strokeColor)),
               );
           }
         }
@@ -368,18 +371,23 @@ function displayedContainerContent(
 function pairKey(node: TextNode, t: TextTransition) {
   return `${node.id}:${t.fromState ?? 0}:${t.toState ?? 1}:${t.window.start}:${t.window.end}`;
 }
-function coloredRaster(raster: TextRaster, color: string) {
-  let canvas = raster.colors.get(color);
+function coloredRaster(
+  raster: TextRaster,
+  color: string,
+  source = raster.canvas,
+  key = color,
+) {
+  let canvas = raster.colors.get(key);
   if (!canvas) {
     canvas = surface(raster.canvas.width, raster.canvas.height);
     const ctx = canvas.getContext("2d")!;
-    ctx.drawImage(raster.canvas, 0, 0);
+    ctx.drawImage(source, 0, 0);
     ctx.globalCompositeOperation = "source-in";
     ctx.fillStyle = color;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     if (raster.colors.size >= 16)
       raster.colors.delete(raster.colors.keys().next().value!);
-    raster.colors.set(color, canvas);
+    raster.colors.set(key, canvas);
   }
   return canvas;
 }
@@ -411,10 +419,14 @@ function axisRaster(raster: TextRaster, axes: Record<string, number>) {
   return variant;
 }
 function strokedRaster(raster: TextRaster, width: number, color: string) {
-  const canvas = raster.strokes.get(`${width}:${color}`);
+  const canvas = raster.strokes.get(
+    `${width}:${raster.strokeCoverage ? "#ffffff" : color}`,
+  );
   if (!canvas)
     throw new Error("text-stroke-not-prepared: missing cached outline");
-  return canvas;
+  return raster.strokeCoverage && color !== "#ffffff"
+    ? coloredRaster(raster, color, canvas, `stroke:${width}:${color}`)
+    : canvas;
 }
 function drawCluster(
   ctx: CanvasRenderingContext2D,
@@ -477,7 +489,10 @@ function drawCluster(
   const strokeWidth = quantizeStrokeWidth(pose.strokeWidth);
   if (strokeWidth > 0) paint(strokedRaster(raster, strokeWidth, pose.stroke));
   paint(
-    pose.fill === (node.spans?.[cluster.spanIndex]?.color ?? node.color)
+    pose.fill ===
+      (raster.colorCoverage
+        ? "#ffffff"
+        : (node.spans?.[cluster.spanIndex]?.color ?? node.color))
       ? raster.canvas
       : coloredRaster(raster, pose.fill),
   );

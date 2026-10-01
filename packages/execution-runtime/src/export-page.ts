@@ -1,7 +1,10 @@
 import {
+  createCompositionPreview,
   createWebGLPreview,
   createIllustratedPreview,
+  loadCompositionResources,
   loadIllustratedImages,
+  type CompositionScene,
 } from "@still-shift/renderer-core";
 import type { ExportableScene } from "./export-worker.ts";
 import { assertNever, type FrameTransport } from "./transport.ts";
@@ -96,7 +99,11 @@ const captureFrame = (
   }
 };
 
+const isComposition = (scene: ExportableScene): scene is CompositionScene =>
+  "schemaVersion" in scene && scene.schemaVersion === "composition-scene-1";
+
 window.runStillShiftExport = async (scene, hasDepth, transport) => {
+  if (isComposition(scene)) return exportComposition(scene, transport);
   const illustrated = "recipe" in scene;
   const source = illustrated ? null : await loadImage("/_export/source");
   const depth =
@@ -133,16 +140,58 @@ window.runStillShiftExport = async (scene, hasDepth, transport) => {
       : gl
         ? String(gl.getParameter(gl.RENDERER))
         : "Canvas2D illustrated compositor";
+  return renderFrames(
+    scene.timeline.frameCount,
+    (frame) => preview.renderFrame(frame),
+    () => preview.dispose(),
+    canvas,
+    gl,
+    transport,
+    gpuRenderer,
+  );
+};
+
+const exportComposition = async (
+  scene: CompositionScene,
+  transport: FrameTransport,
+): Promise<BrowserExportResult> => {
+  const resources = await loadCompositionResources(
+    scene.composition,
+    (id) => `/_export/assets/${id}`,
+  );
+  const canvas = document.createElement("canvas");
+  document.body.append(canvas);
+  const preview = createCompositionPreview(
+    canvas,
+    scene.composition,
+    resources,
+  );
+  return renderFrames(
+    scene.timeline.frameCount,
+    (frame) => preview.renderFrame(frame),
+    () => preview.dispose(),
+    canvas,
+    null,
+    transport,
+    `Canvas2D ${scene.rendererVersion}`,
+  );
+};
+
+const renderFrames = async (
+  frameCount: number,
+  renderFrame: (frame: number) => void,
+  dispose: () => void,
+  canvas: HTMLCanvasElement,
+  gl: WebGL2RenderingContext | null,
+  transport: FrameTransport,
+  gpuRenderer: string,
+): Promise<BrowserExportResult> => {
   const timings: number[] = [];
   const uploadTimings: number[] = [];
   try {
-    for (
-      let frameIndex = 0;
-      frameIndex < scene.timeline.frameCount;
-      frameIndex += 1
-    ) {
+    for (let frameIndex = 0; frameIndex < frameCount; frameIndex += 1) {
       const frameStart = performance.now();
-      preview.renderFrame(frameIndex);
+      renderFrame(frameIndex);
       const frameBytes = await captureFrame(canvas, gl, transport);
       timings.push(performance.now() - frameStart);
       const uploadStart = performance.now();
@@ -158,7 +207,7 @@ window.runStillShiftExport = async (scene, hasDepth, transport) => {
       uploadTimings.push(performance.now() - uploadStart);
     }
   } finally {
-    preview.dispose();
+    dispose();
   }
   const render = summarizeTimings(timings);
   const upload = summarizeTimings(uploadTimings);

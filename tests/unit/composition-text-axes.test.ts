@@ -111,7 +111,7 @@ describe("composition text animator axes", () => {
   it("validates only the selected span's font and base value", () => {
     const input = doc();
     input.textStyles!.span = { fontAsset: "variable", axes: { wght: 400 } };
-    input.textStyles!.base = {};
+    input.textStyles!.base = { fontAsset: "variable", axes: { wght: 800 } };
     const layer = input.layers[0]!;
     if (layer.type !== "text") throw new Error("text fixture");
     layer.spans = [{ id: "word", start: 0, end: 2, style: "span" }];
@@ -121,14 +121,22 @@ describe("composition text animator axes", () => {
     input.textStyles!.span.axes = { wght: 800 };
     axisError(input, "textAnimators[0].from.axes.wght");
   });
-  it("does not require the base font when styled spans cover all text", () => {
+  it("requires a pinned base font even when styled spans cover all text", () => {
     const input = doc();
     input.textStyles!.base = {};
     input.textStyles!.span = { fontAsset: "variable" };
     const layer = input.layers[0]!;
     if (layer.type !== "text") throw new Error("text fixture");
     layer.spans = [{ start: 0, end: 5, style: "span" }];
-    expect(validateComposition(input).ok).toBe(true);
+    expect(validateComposition(input)).toMatchObject({
+      ok: false,
+      diagnostics: expect.arrayContaining([
+        expect.objectContaining({
+          code: "comp-text-pinned-font",
+          path: "layers[0].spans",
+        }),
+      ]),
+    });
   });
   it("checks span fonts rather than only the layer font", () => {
     const input = doc();

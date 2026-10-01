@@ -5,16 +5,17 @@ For an outcome-based tour, required inputs and export instructions, start with t
 
 Run `pnpm lab`, then choose a screen:
 
-| Screen                      | Local path                                 |
-| --------------------------- | ------------------------------------------ |
-| Image/depth preview         | `/`                                        |
-| Cinematic variations        | `/illustrated.html?collection=cinematic`   |
-| Story recipes               | `/illustrated.html?collection=story`       |
-| Earlier illustrated studies | `/illustrated.html?collection=illustrated` |
-| Passage editing             | `/passage.html`                            |
-| Product treatments          | `/commerce.html`                           |
-| Commerce components/effects | `/commerce-components.html`                |
-| Shared reusable components  | `/reusable-components.html`                |
+| Screen                         | Local path                                 |
+| ------------------------------ | ------------------------------------------ |
+| Image/depth preview            | `/`                                        |
+| Cinematic variations           | `/illustrated.html?collection=cinematic`   |
+| Story recipes                  | `/illustrated.html?collection=story`       |
+| Earlier illustrated studies    | `/illustrated.html?collection=illustrated` |
+| Passage editing                | `/passage.html`                            |
+| Product treatments             | `/commerce.html`                           |
+| Commerce components/effects    | `/commerce-components.html`                |
+| Shared reusable components     | `/reusable-components.html`                |
+| Compositions (`composition-1`) | `/composition.html`                        |
 
 The base URL is `http://127.0.0.1:4173`. Commerce and component galleries export
 MP4s directly; illustrated scenes and saved passage plans render through the CLI.
@@ -23,6 +24,17 @@ The Story recipes screen shows compiled carrier, action, response and current
 activity under the frame scrubber. The line follows the preview frame, and the
 strip updates when narration timing is applied. V2 scenes also show continuous
 motion diagnostics with buttons that seek to the affected frames.
+
+## Compositions
+
+Open `/composition.html` to preview the `composition-1` fixtures in
+`benchmarks/fixtures/composition/`: play, scrub, and read validation warnings,
+evaluation diagnostics and culled layers per frame. The page uses the same renderer
+as `pnpm still-shift comp render`. A badge shows the preview renderer: on a hardware
+GPU the preview is approximate (within the `perceptual` tier, see the
+[GPU determinism policy](../../docs/composition-engine-plan.md#gpu-determinism-policy));
+export always renders on the pinned software renderer. The page serves only those
+fixtures and the assets they list.
 
 ## Image and depth preview
 

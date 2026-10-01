@@ -11,6 +11,7 @@ import { chromium, type Browser } from "playwright";
 import { createServer, type Plugin, type ViteDevServer } from "vite";
 
 import type {
+  CompositionScene,
   PreviewScene,
   IllustratedScene,
 } from "@still-shift/renderer-core";
@@ -30,7 +31,10 @@ import {
   type RenderEnvironment,
 } from "./render-browser.ts";
 
-export type ExportableScene = PreviewScene | IllustratedScene;
+export type ExportableScene =
+  | PreviewScene
+  | IllustratedScene
+  | CompositionScene;
 
 const EXPORT_WORKER_VERSION = "chromium-ffmpeg-0.6.0";
 
@@ -148,7 +152,8 @@ const frameTransportArguments = (
   }
 };
 
-const ffmpegArguments = (
+/** Encoder command line; exported so verification can re-encode reference frames. */
+export const ffmpegArguments = (
   scene: ExportableScene,
   temporaryPath: string,
   encoder: "libx264" | "h264_videotoolbox",
@@ -434,11 +439,15 @@ export const exportScene = async (
   const frameAuthoritative =
     "schemaVersion" in scene &&
     (scene.schemaVersion === "story-scene-1" ||
-      scene.schemaVersion === "commerce-scene-1");
+      scene.schemaVersion === "commerce-scene-1" ||
+      scene.schemaVersion === "composition-scene-1");
   if (
     frameAuthoritative
       ? !Number.isInteger(scene.timeline.frameCount) ||
-        scene.timeline.frameCount !== scene.frameCount ||
+        scene.timeline.frameCount !==
+          ("composition" in scene
+            ? scene.composition.frameCount
+            : scene.frameCount) ||
         scene.timeline.durationMs !==
           (scene.timeline.frameCount * 1000) / scene.timeline.fps
       : scene.timeline.frameCount !==
@@ -580,7 +589,12 @@ export const exportScene = async (
     const browserResult = await page.evaluate(
       ({ scene, hasDepth, transport }) =>
         window.runStillShiftExport!(scene, hasDepth, transport),
-      { scene, hasDepth: request.depthPath !== null, transport },
+      // The deep composition type exceeds Playwright's serialisable-type check.
+      {
+        scene: scene as PreviewScene,
+        hasDepth: request.depthPath !== null,
+        transport,
+      },
     );
     if (frameState.error) throw frameState.error;
     if (frameState.nextIndex !== scene.timeline.frameCount)

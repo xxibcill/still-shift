@@ -38,7 +38,19 @@ export type TextPose = {
 export type TextAnimationContext = {
   fps: number;
   signals?: Signal[] | undefined;
+  /** Rounded layer times reachable through composition clocks, by node id. */
+  animationFrames?: Readonly<Record<string, readonly number[]>> | undefined;
 };
+export function* textAnimationFrames(
+  scene: TextAnimationContext & { frameCount: number },
+  node: TextNode,
+): Generator<number> {
+  if (Object.hasOwn(scene.animationFrames ?? {}, node.id)) {
+    yield* scene.animationFrames![node.id]!;
+    return;
+  }
+  for (let frame = 0; frame < scene.frameCount; frame++) yield frame;
+}
 export function textAnimatorSettleFrame(animator: TextAnimator) {
   return Math.max(
     animator.end,

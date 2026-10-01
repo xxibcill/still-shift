@@ -14,7 +14,7 @@ not necessarily features you can use today.
 [image animation](#animate-one-image) · [cinematic scenes](#cinematic-scenes) ·
 [storytelling](#storytelling) · [vertical video](#vertical-video) · [commerce](#commerce) ·
 [reusable components](#reusable-components) · [batch](#batch-animation) ·
-[composition evaluation](#evaluate-programmable-compositions) ·
+[compositions](#evaluate-and-render-programmable-compositions) ·
 [outputs](#save-export-and-share) · [help](#when-something-does-not-work) ·
 [ask an AI](#ask-an-ai-about-still-shift)
 
@@ -36,18 +36,37 @@ Still Shift currently supplies local authoring, preview and rendering tools. It
 does not automatically turn a script into a finished episode, generate new video
 with an AI model, cut out products, or invent missing illustration layers.
 
-## Evaluate programmable compositions
+## Evaluate and render programmable compositions
 
-The `composition-1` format now supports pure frame and property evaluation in Node
+The `composition-1` format supports pure frame and property evaluation in Node
 and browsers through `evaluateComp` and `evaluateProperty` from
 `@still-shift/renderer-core`. Use it to inspect animated transforms, visibility,
 colours, masks, constraints and precomp timing before rendering. Fractional frame
 times and seeking backwards produce deterministic state.
 
-See the [composition reference](./composition-reference.md#evaluating-a-frame) for
-examples, measured text bounds and the immutable-input requirement. The composition
-render backend and CLI follow in CE3 and CE10; existing scene workflows remain
-available for producing videos.
+To render a composition to MP4:
+
+```bash
+pnpm --silent still-shift comp render --input composition.json --output out.mp4
+```
+
+Asset paths are relative to the composition file and every asset's SHA-256 is
+checked. The command prints a result with the renderer and evaluator versions, the
+output checksum and timing metrics, and writes `out.mp4.scene.json` and
+`out.mp4.result.json` beside the video. Precomps, blend modes, track mattes, masks,
+adjustment layers and typography text render today; effects, shapes, motion blur and
+3D layers arrive in later milestones. Transparent backgrounds show black in MP4.
+
+To preview, run `pnpm lab` and open
+[`/composition.html`](http://127.0.0.1:4173/composition.html): play or scrub the
+fixtures in `benchmarks/fixtures/composition/` and read their warnings. On a normal
+browser with a graphics card the preview is labelled approximate; the exported MP4 is
+always exact. A text layer without a `fontAsset` triggers a `comp-text-system-font`
+warning because its font depends on the computer.
+
+See the [composition reference](./composition-reference.md#rendering-a-composition)
+for the rendering rules. The full Lab composition inspector and `comp` CLI follow in
+CE11 and CE10; existing scene workflows remain available for producing videos.
 
 ## Start the Lab
 

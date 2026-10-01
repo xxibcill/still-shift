@@ -3,6 +3,7 @@ import { loadTextStyleFont, type LoadedFont } from "./prepared-fonts.ts";
 import { shapeText, type ShapedLayout } from "./shaped-text.ts";
 import {
   evaluateTextPoses,
+  textAnimationFrames,
   type TextAnimationContext,
 } from "./typography-animation.ts";
 import {
@@ -11,6 +12,7 @@ import {
   type TextNode,
 } from "./typography-style.ts";
 import type { TextEventScene } from "./typography-events.ts";
+import { typographyTextValues } from "./typography-text-values.ts";
 
 export const axisKey = (axes: Record<string, number>) =>
   JSON.stringify(
@@ -48,7 +50,7 @@ export function nodeAxisVariants(
   const variants = new Map<string, Record<string, number>>();
   if (!animators.some((a) => a.from.axes || a.to?.axes)) return variants;
   for (const layout of layouts)
-    for (let frame = 0; frame < scene.frameCount; frame++) {
+    for (const frame of textAnimationFrames(scene, node)) {
       for (const [i, pose] of evaluateTextPoses(
         node,
         layout,
@@ -87,7 +89,7 @@ export async function loadTextAnimationFonts(
       )
     )
       continue;
-    const layouts = (node.states ?? [node.text]).map((text) =>
+    const layouts = [...typographyTextValues(scene, node)].map((text) =>
       shapeText(ctx, node, text, fonts, scene.textStyles),
     );
     const variants = nodeAxisVariants(scene, node, layouts, fonts);
