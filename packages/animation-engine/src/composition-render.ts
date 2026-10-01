@@ -5,6 +5,7 @@ import {
   AnimationEngineError,
   validateComposition,
   type Composition,
+  type CompositionDiagnostic,
 } from "@still-shift/scene-contract";
 import {
   COMPOSITION_EVALUATOR_VERSION,
@@ -22,8 +23,29 @@ import { validatePreparedAssets } from "./prepared-animation-engine.ts";
 const hash = (bytes: Uint8Array | string) =>
   `sha256:${createHash("sha256").update(bytes).digest("hex")}`;
 
+/** Text layers drawn with a generic browser face: root ids or `precomp-id/layer-id`. */
+function systemFontLayers(composition: Composition): string[] {
+  const fonts = new Set(
+    composition.assets.flatMap((a) => (a.type === "font" ? [a.id] : [])),
+  );
+  return [composition, ...(composition.precomps ?? [])].flatMap((scope) =>
+    scope.layers.flatMap((layer) => {
+      if (layer.type !== "text") return [];
+      const style = layer.style
+        ? composition.textStyles?.[layer.style]
+        : undefined;
+      if (fonts.has(style?.fontAsset ?? layer.fontAsset ?? "")) return [];
+      return [scope === composition ? layer.id : `${scope.id}/${layer.id}`];
+    }),
+  );
+}
+
 export type LoadedComposition = {
   composition: Composition;
+  /** Validation warnings, such as `comp-text-system-font`. */
+  warnings: CompositionDiagnostic[];
+  /** Text layers whose output depends on the machine's generic fonts. */
+  systemFontLayers: string[];
   scene: CompositionScene;
   /** Absolute paths of image and font assets, by asset id. */
   assetPaths: Record<string, string>;
@@ -82,6 +104,8 @@ export async function loadComposition(
   );
   return {
     composition,
+    warnings: result.diagnostics,
+    systemFontLayers: systemFontLayers(composition),
     scene: compositionScene(composition),
     assetPaths,
     sourcePath,
@@ -100,6 +124,11 @@ export type CompositionRenderResult = {
   durationMs: number;
   outputPath: string;
   sceneManifestPath: string;
+  /** Validation warnings for the rendered composition. */
+  warnings: CompositionDiagnostic[];
+  /** Non-empty when text used generic browser faces: output is then not
+   * reproducible on other machines or browser versions. */
+  systemFontLayers: string[];
   checksums: { source: string; scene: string; output: string };
   metrics: ExportMetrics;
 };
@@ -137,6 +166,7 @@ export async function renderComposition(request: {
       evaluatorVersion: COMPOSITION_EVALUATOR_VERSION,
       sourcePath: loaded.sourcePath,
       sourceChecksum: loaded.sourceChecksum,
+      systemFontLayers: loaded.systemFontLayers,
       scene: loaded.scene,
       assetPaths: loaded.assetPaths,
     },
@@ -165,6 +195,8 @@ export async function renderComposition(request: {
         durationMs: loaded.scene.timeline.durationMs,
         outputPath,
         sceneManifestPath,
+        warnings: loaded.warnings,
+        systemFontLayers: loaded.systemFontLayers,
         checksums: {
           source: loaded.sourceChecksum,
           scene: hash(manifestBytes),

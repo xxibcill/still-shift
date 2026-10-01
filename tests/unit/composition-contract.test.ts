@@ -301,9 +301,12 @@ describe("composition-1 display fonts", () => {
         style: "ordinary",
       },
     ];
+    // Allowed, but generic faces are not reproducible across machines.
     expect(validateComposition(doc)).toMatchObject({
       ok: true,
-      diagnostics: [],
+      diagnostics: [
+        { code: "comp-text-system-font", path: "layers[0].fontAsset" },
+      ],
     });
   });
 });
@@ -1352,11 +1355,33 @@ describe("composition-1 warnings", () => {
         }),
       "comp-precomp-unused",
     ],
+    [
+      "text without a pinned font",
+      (d) =>
+        d.layers.push({
+          id: "plain",
+          type: "text",
+          text: "Generic",
+          fontSize: 30,
+          color: "#000000",
+          font: "serif",
+        }),
+      "comp-text-system-font",
+    ],
   ])("%s", (_, mutate, code) => {
     const doc = everyField() as Doc;
     mutate(doc);
     expect(warnings(doc)).toContainEqual(
       expect.objectContaining({ code, severity: "warning" }),
+    );
+  });
+});
+
+describe("composition system-font warning", () => {
+  it("is silent when every text layer pins its font", () => {
+    const result = validateComposition(everyField());
+    expect(result.diagnostics.map((d) => d.code)).not.toContain(
+      "comp-text-system-font",
     );
   });
 });

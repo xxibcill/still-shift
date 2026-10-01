@@ -749,6 +749,7 @@ try {
     outputPath,
   });
   assert.equal(exported.rendererVersion, "composition-canvas-1.0.0");
+  assert.deepEqual(exported.systemFontLayers, []);
   const manifest = JSON.parse(
     await readFile(`${outputPath}.scene.json`, "utf8"),
   );
@@ -906,6 +907,42 @@ try {
     }),
     (error: Error & { code?: string }) => error.code === "SCENE_INVALID",
   );
+  const systemFontPath = join(fixtureDir, ".system-font-first-slice.json");
+  await writeFile(
+    systemFontPath,
+    JSON.stringify({
+      ...firstSlice,
+      layers: [
+        {
+          id: "generic",
+          type: "text",
+          text: "Generic face",
+          fontSize: 48,
+          color: "#2B2A26",
+          font: "serif",
+          transform: { position: [80, 1000] },
+        },
+        ...firstSlice.layers,
+      ],
+    }),
+  );
+  try {
+    const generic = await renderComposition({
+      compositionPath: systemFontPath,
+      outputPath: join(directory, "system-font.mp4"),
+    });
+    assert.deepEqual(generic.systemFontLayers, ["generic"]);
+    assert.ok(
+      generic.warnings.some((w) => w.code === "comp-text-system-font"),
+      "system-font warning reaches the render result",
+    );
+    const genericManifest = JSON.parse(
+      await readFile(join(directory, "system-font.mp4.scene.json"), "utf8"),
+    );
+    assert.deepEqual(genericManifest.systemFontLayers, ["generic"]);
+  } finally {
+    await rm(systemFontPath, { force: true });
+  }
   const tamperedPath = join(fixtureDir, ".tampered-first-slice.json");
   await writeFile(
     tamperedPath,
@@ -938,7 +975,7 @@ try {
     "failed exports leave no files",
   );
   results.push(
-    "export is byte-identical on repeat and across PNG/raw transports; failures publish nothing",
+    "export is byte-identical on repeat and across PNG/raw transports; failures publish nothing; system-font text is reported",
   );
   for (const line of results) console.log(`Composition render: ${line}`);
 } finally {

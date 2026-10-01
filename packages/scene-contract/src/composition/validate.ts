@@ -938,6 +938,20 @@ export function compositionWarnings(comp: Composition): CompositionWarning[] {
           path: [...base, "layers", i, "trackMatte", "layer"],
           message: `matte "${matte}" is not directly above "${layer.id}"; this is valid but differs from the classic AE layout`,
         });
+      if (
+        layer.type === "text" &&
+        comp.assets.find(
+          (asset) =>
+            asset.id ===
+            (declaredTextStyle(comp, layer.style)?.fontAsset ??
+              layer.fontAsset),
+        )?.type !== "font"
+      )
+        warnings.push({
+          code: "comp-text-system-font",
+          path: [...base, "layers", i, "fontAsset"],
+          message: `"${layer.id}" has no pinned font and draws with the browser's generic ${layer.font ?? "sans-serif"} face, which can differ between machines and browser versions; set fontAsset to a font asset`,
+        });
       if (layer.cameraDepth !== undefined && !comp.camera2d && scope === comp)
         warnings.push({
           code: "comp-camera-depth-unused",

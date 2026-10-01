@@ -114,6 +114,8 @@ export const COMPOSITION_WARNINGS = {
   "comp-camera-depth-unused":
     "`cameraDepth` is set but the composition has no `camera2d`.",
   "comp-precomp-unused": "A precomp is never referenced.",
+  "comp-text-system-font":
+    "A text layer has no pinned font, so it draws with the browser's generic face and may render differently on other machines or browser versions.",
 } as const;
 
 export type CompositionDiagnosticCode =

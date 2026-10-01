@@ -231,7 +231,10 @@ changing the contract.
   (`comp-text-box-size`).
 - A layer without a pinned font draws with the browser's generic `serif` or
   `sans-serif` face, `reveal` and `textLayout` included. These faces are not pinned,
-  so their output may differ between machines.
+  so their output may differ between machines and browser versions: validation warns
+  with `comp-text-system-font`, and render results list the affected layers in
+  `systemFontLayers`. Pin a font for anything you author by hand; the generic path
+  exists so adapted legacy scenes keep their look.
 - Text draws at the layer origin; the typography `anchor` (`top`, `cap`, `baseline`)
   places the first line.
 - Transitions, decoration reveals, counts and text animators sample **layer time**,
@@ -683,12 +686,13 @@ retain their original bounds.
 
 ### Warnings
 
-| Code                       | Meaning                                                     |
-| -------------------------- | ----------------------------------------------------------- |
-| `comp-layer-never-visible` | A layer starts at or after the composition's last frame.    |
-| `comp-matte-not-adjacent`  | A track matte is not the layer directly above.              |
-| `comp-camera-depth-unused` | `cameraDepth` is set but the composition has no `camera2d`. |
-| `comp-precomp-unused`      | A precomp is never referenced.                              |
+| Code                       | Meaning                                                                                                                                                                                                                                           |
+| -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `comp-layer-never-visible` | A layer starts at or after the composition's last frame.                                                                                                                                                                                          |
+| `comp-matte-not-adjacent`  | A track matte is not the layer directly above.                                                                                                                                                                                                    |
+| `comp-camera-depth-unused` | `cameraDepth` is set but the composition has no `camera2d`.                                                                                                                                                                                       |
+| `comp-precomp-unused`      | A precomp is never referenced.                                                                                                                                                                                                                    |
+| `comp-text-system-font`    | A text layer without a pinned font; it draws with the browser's generic face, which can differ between machines and browser versions. CE10 makes this an error for authored compositions; adapter output (`source.family`) keeps it as a warning. |
 
 ### Evaluation diagnostics
 
