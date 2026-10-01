@@ -28,7 +28,7 @@ These pure functions run in Node and browsers. They validate once per compositio
 object, compile curves into identity-keyed weak caches and memoise dependencies within
 each evaluation. Treat the composition and its nested objects as immutable: replace
 the composition object after an edit. Returned states are fresh on every call.
-`COMPOSITION_EVALUATOR_VERSION` is `composition-evaluator-5`.
+`COMPOSITION_EVALUATOR_VERSION` is `composition-evaluator-6`.
 
 `evaluateComp` returns an `EvaluatedLayerTree`: scope id, time, dimensions, fps,
 floating-point RGBA background, ordered `layers` and structured `diagnostics`.
@@ -78,6 +78,8 @@ definition and local clock. Public property reads and driver sources use the ful
 absolute instance path; delayed reads traverse that same path at the requested root
 time. Reused definitions remain independently addressable, and source definition ids
 alone are not valid path hops.
+Driver and periodic-motion targets retain the complete instance route, so motion
+affects only its addressed host, even when nested hosts reuse the same layer ids.
 
 Colour interpolation uses independent, unpremultiplied sRGB RGBA channels in `[0,1]`.
 Render surfaces become premultiplied in CE3. Spatial position uses temporal progress

@@ -49,7 +49,7 @@ import type {
   PropertyValue,
 } from "./types.ts";
 
-export const COMPOSITION_EVALUATOR_VERSION = "composition-evaluator-5";
+export const COMPOSITION_EVALUATOR_VERSION = "composition-evaluator-6";
 const order = ["action", "response", "current", "carrier"] as const;
 type Context = {
   scope: CompositionScope;
@@ -212,7 +212,7 @@ class Evaluation {
   }
 
   private bindings(ctx: Context, id: string) {
-    return layerKey(ctx.route.at(-1), id);
+    return layerKey(ctx.route, id);
   }
   private layer(ctx: Context, id: string) {
     return this.compiled.layers.get(ctx.scope)!.get(id)!;
@@ -287,7 +287,7 @@ class Evaluation {
       scope,
       yield* this.clock(ctx, host),
       scope.fps ?? this.compiled.comp.fps,
-      [...ctx.route, host.comp],
+      [...ctx.route, host.id],
     );
     ctx.children.set(host.id, next);
     return next;
