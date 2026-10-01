@@ -414,6 +414,64 @@ try {
     `every-field renders ${everyFrames.length} frames without text-layout diagnostics`,
   );
 
+  const strokeText: Composition = {
+    schemaVersion: "composition-1",
+    id: "stroke-text",
+    width: 300,
+    height: 100,
+    fps: 30,
+    frameCount: 10,
+    background: "#000000",
+    assets: everyField.assets.filter((asset) => asset.id === "display"),
+    layers: [
+      {
+        id: "text",
+        type: "text",
+        text: "Test",
+        fontSize: 30,
+        fontAsset: "display",
+        color: "#ffffff",
+        transform: { position: [30, 30] },
+      },
+    ],
+    textAnimators: [
+      {
+        node: "text",
+        unit: "glyph",
+        start: 0,
+        end: 5,
+        stagger: 0,
+        selector: { start: 0, end: 1, easing: "linear" },
+        from: { strokeWidth: 0 },
+        to: { strokeWidth: 10 },
+      },
+    ],
+  };
+  const strokeFrames = await render(
+    page,
+    strokeText,
+    [0, 5, 9],
+    assetUrls(strokeText),
+  );
+  const litPixels = (frame: Uint8Array) =>
+    frame.reduce(
+      (count, value, index) => count + (index % 4 !== 3 && value > 0 ? 1 : 0),
+      0,
+    );
+  assert.ok(litPixels(strokeFrames.frames[0]!) > 0, "base text is visible");
+  assert.ok(
+    litPixels(strokeFrames.frames[1]!) > litPixels(strokeFrames.frames[0]!),
+    "animated stroke increases visible ink",
+  );
+  assert.deepEqual(
+    strokeFrames.frames[1],
+    strokeFrames.frames[2],
+    "settled stroke remains drawable",
+  );
+  results.push(
+    "stroke-width text animators prepare and render through settlement",
+  );
+
   // First slice: deterministic preview, and MP4 export from the same renderer.
   const firstSlice = JSON.parse(
     await readFile(resolve(fixtureDir, "first-slice.json"), "utf8"),

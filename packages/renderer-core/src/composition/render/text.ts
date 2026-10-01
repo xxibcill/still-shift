@@ -117,10 +117,18 @@ function typographyScene(
   nodes: TextNode[],
 ): TypographyScene {
   const ids = new Set(nodes.map((n) => n.id));
+  const fps = scope.fps ?? comp.fps;
   return {
     nodes,
-    fps: scope.fps ?? comp.fps,
+    fps,
     frameCount: scope.frameCount,
+    timeline: {
+      fps,
+      frameCount: scope.frameCount,
+      durationMs: (scope.frameCount * 1000) / fps,
+    },
+    tracks: {},
+    followers: {},
     typography: "type-1",
     textStyles: comp.textStyles ?? {},
     textEvents: [],
