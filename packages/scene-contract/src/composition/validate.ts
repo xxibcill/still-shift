@@ -22,6 +22,11 @@ type Path = (string | number)[];
 const scopeBase = (comp: Composition, scope: CompositionScope): Path =>
   scope === comp ? [] : ["precomps", comp.precomps!.indexOf(scope)];
 
+function declaredTextStyle(comp: Composition, id: string | undefined) {
+  const styles = comp.textStyles;
+  return id && styles && Object.hasOwn(styles, id) ? styles[id] : undefined;
+}
+
 /** Values of an animatable, fixed or keyed. */
 function values<T>(value: T | { keys: { value: T }[] } | undefined): T[] {
   if (value === undefined) return [];
@@ -234,7 +239,7 @@ function checkLayer(
     }
     case "text":
       if (layer.fontAsset) asset(layer.fontAsset, "font", ["fontAsset"]);
-      if (layer.style && !comp.textStyles?.[layer.style])
+      if (layer.style && !declaredTextStyle(comp, layer.style))
         fail(
           "comp-text-style-missing",
           [...path, "style"],
@@ -303,8 +308,7 @@ function checkText(
   fail: IssueReporter,
   assets: Map<string, CompositionAsset>,
 ) {
-  const styles = comp.textStyles ?? {};
-  const style = layer.style ? styles[layer.style] : undefined;
+  const style = declaredTextStyle(comp, layer.style);
   const base = { fontAsset: layer.fontAsset, ...style };
   checkAxes(fail, assets, base, [...path, "style"], `"${layer.id}"`);
 
@@ -343,7 +347,8 @@ function checkText(
         `duplicate span id "${span.id}"`,
       );
     if (span.id) spanIds.add(span.id);
-    if (span.style && !styles[span.style])
+    const spanStyle = declaredTextStyle(comp, span.style);
+    if (span.style && !spanStyle)
       fail(
         "comp-text-style-missing",
         [...spanPath, "style"],
@@ -353,7 +358,7 @@ function checkText(
       checkAxes(
         fail,
         assets,
-        { ...base, ...styles[span.style] },
+        { ...base, ...spanStyle },
         [...spanPath, "style"],
         `span "${span.id ?? i}"`,
       );

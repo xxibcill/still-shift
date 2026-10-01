@@ -31,6 +31,16 @@ const load = (name: string) =>
   ) as Composition;
 const everyField = () => load("every-field");
 const firstSlice = () => load("first-slice");
+const minimalComposition = (): Composition => ({
+  schemaVersion: "composition-1",
+  id: "main",
+  width: 100,
+  height: 100,
+  fps: 24,
+  frameCount: 24,
+  assets: [],
+  layers: [],
+});
 
 type Doc = ReturnType<typeof everyField> & Record<string, unknown>;
 type AnyLayer = Record<string, unknown> & { id: string; type: string };
@@ -56,6 +66,61 @@ const expectDiagnostic = (
       ...(path === undefined ? {} : { path }),
     }),
   );
+
+describe("composition-1 text style references", () => {
+  it.each(["constructor", "toString"])(
+    "rejects undeclared inherited style %s on layers and spans",
+    (style) => {
+      const doc = minimalComposition();
+      doc.textStyles = {};
+      doc.layers = [
+        {
+          id: "title",
+          type: "text",
+          text: "Hi",
+          fontSize: 36,
+          color: "#ffffff",
+          style,
+          spans: [{ start: 0, end: 2, style }],
+        },
+      ];
+      const diagnostics = errors(doc);
+      expectDiagnostic(
+        diagnostics,
+        "comp-text-style-missing",
+        "layers[0].style",
+      );
+      expectDiagnostic(
+        diagnostics,
+        "comp-text-style-missing",
+        "layers[0].spans[0].style",
+      );
+    },
+  );
+
+  it.each(["toString", "valueOf"])(
+    "accepts explicitly declared style %s on layers and spans",
+    (style) => {
+      const doc = minimalComposition();
+      doc.textStyles = { [style]: { tracking: 20 } };
+      doc.layers = [
+        {
+          id: "title",
+          type: "text",
+          text: "Hi",
+          fontSize: 36,
+          color: "#ffffff",
+          style,
+          spans: [{ start: 0, end: 2, style }],
+        },
+      ];
+      expect(validateComposition(doc)).toMatchObject({
+        ok: true,
+        diagnostics: [],
+      });
+    },
+  );
+});
 
 describe("composition-1 fixtures", () => {
   it.each(["first-slice", "every-field"])(
