@@ -142,6 +142,12 @@ export async function renderComposition(request: {
 }): Promise<CompositionRenderResult> {
   request.signal?.throwIfAborted();
   const loaded = await loadComposition(request.compositionPath);
+  const { width, height } = loaded.scene.canvas;
+  if (width % 2 !== 0 || height % 2 !== 0)
+    throw new AnimationEngineError(
+      "SCENE_INVALID",
+      `MP4 export requires even width and height; received ${width} × ${height}`,
+    );
   const outputPath = resolve(request.outputPath);
   const sceneManifestPath = `${outputPath}.scene.json`;
   for (const path of [

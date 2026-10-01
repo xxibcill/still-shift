@@ -144,6 +144,10 @@ a scene manifest and a result manifest. The manifest records
 `COMPOSITION_RENDERER_VERSION` (`composition-canvas-1.0.0`) and
 `COMPOSITION_EVALUATOR_VERSION`, so both participate in cache identity.
 
+MP4 export requires even composition width and height for H.264's `yuv420p` format;
+`renderComposition` rejects odd dimensions before encoding. Odd dimensions remain
+valid for preview.
+
 The output canvas is opaque: a transparent or absent `background` renders over black
 until alpha output formats arrive (CE15). Internal surfaces keep premultiplied alpha.
 
