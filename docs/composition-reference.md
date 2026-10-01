@@ -28,7 +28,7 @@ These pure functions run in Node and browsers. They validate once per compositio
 object, compile curves into identity-keyed weak caches and memoise dependencies within
 each evaluation. Treat the composition and its nested objects as immutable: replace
 the composition object after an edit. Returned states are fresh on every call.
-`COMPOSITION_EVALUATOR_VERSION` is `composition-evaluator-4`.
+`COMPOSITION_EVALUATOR_VERSION` is `composition-evaluator-5`.
 
 `evaluateComp` returns an `EvaluatedLayerTree`: scope id, time, dimensions, fps,
 floating-point RGBA background, ordered `layers` and structured `diagnostics`.
@@ -72,12 +72,12 @@ and `stateMix` to `1`, displaying the current source at full mix. Property reads
 drivers and periodic motion use these finite defaults even when the optional fields
 are absent from the input. Authored `stateFrom` and `stateMix` still take precedence.
 
-Each instance of a reused precomp gets its own clock and memoised state. A scoped
-driver reading within that instance uses its own source instance. A public property
-read or a driver reading across scopes with several matching instances returns
-`comp-evaluation-scope`, because the CE1 grammar names precomp definitions, not hosts.
-An instance-addressing extension belongs to the CE10 builder; the evaluator never
-chooses one instance arbitrarily.
+Each instance of a reused precomp gets its own clock and memoised state. Property
+paths traverse named precomp layer instances, following each host's `comp` source
+definition and local clock. Public property reads and driver sources use the full
+absolute instance path; delayed reads traverse that same path at the requested root
+time. Reused definitions remain independently addressable, and source definition ids
+alone are not valid path hops.
 
 Colour interpolation uses independent, unpremultiplied sRGB RGBA channels in `[0,1]`.
 Render surfaces become premultiplied in CE3. Spatial position uses temporal progress
@@ -580,7 +580,6 @@ message and path shape as contract validation.
 | Code                       | Meaning                                                                                                           |
 | -------------------------- | ----------------------------------------------------------------------------------------------------------------- |
 | `comp-evaluation-time`     | Root time is nonfinite or outside ±216,000 frames, or stretch/remap produces nonfinite local time.                |
-| `comp-evaluation-scope`    | A property path cannot select one instance of a reused precomp.                                                   |
 | `comp-evaluation-limit`    | A call exceeds 20,000 evaluated layer instances.                                                                  |
 | `comp-constraint-singular` | A constraint needs the inverse of a collapsed parent or a noncollapsed contact edge.                              |
 | `comp-text-layout-missing` | Text bounds were not supplied: a warning for inspection, an error when required by a bounds-dependent constraint. |

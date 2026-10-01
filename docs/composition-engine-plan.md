@@ -974,9 +974,9 @@ different remaps and source frame rates.
   temporal velocity authoring: a vector/colour velocity tuple must match its value's
   dimensions (pixels/frame, scale factors/frame, normalized RGBA channels/frame);
   spatial speed is a separate scalar in arc-length pixels/frame. Scalar `speed` and
-  separated vector dimensions remain available. CE10 must define instance-specific
-  paths; repeated precomps evaluate independently, but ambiguous cross-instance
-  reads currently produce `comp-evaluation-scope` rather than selecting a host.
+  separated vector dimensions remain available. Property paths follow CE1's complete
+  precomp layer-instance routes, with independent clocks for reused sources; CE10
+  exposes those existing paths through builder helpers.
   Stateful font measurement and ambiguous grouped slopes would break the pure,
   explicit CE2 interface, which is why those authoring/preparation pieces live in
   their owning milestones. Existing lag cost is proportional to elapsed source
@@ -1521,8 +1521,8 @@ export default comp({ width: 1920, height: 1080, fps: 30, seconds: 8 }, (c) => {
       accepts precomputed hashes (browser).
 - [ ] Presets as plain functions (for example `presets.drawOn(path)`); port the story
       intent presets.
-- [ ] Define instance-specific property addressing for reused precomps (CE2 follow-up);
-      preserve definition-scoped drivers while making cross-instance reads explicit.
+- [ ] Expose CE1's instance-specific property paths through builder helpers for
+      reused precomps, including explicit cross-instance driver sources and targets.
 - [ ] Source maps: every emitted node records the builder call site; diagnostics show
       `file:line`.
 - [ ] CLI: `still-shift comp` subcommands `validate`, `render`, `preview --watch`,

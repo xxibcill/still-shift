@@ -760,7 +760,7 @@ describe("composition time and precomps", () => {
   it("samples a different-rate precomp at the parent's elapsed seconds", () => {
     const doc = nested();
     expect(evaluateComp(doc, 20).layers[0]!.precomp!.time).toBe(10);
-    expect(evaluateProperty(doc, "child/box.rotation", 20)).toBe(50);
+    expect(evaluateProperty(doc, "host/box.rotation", 20)).toBe(50);
     expect(state(doc, 20, "host").transform.anchor).toEqual([50, 50]);
   });
   it("samples remap keys at layer time and treats values as child frames", () => {
@@ -769,9 +769,9 @@ describe("composition time and precomps", () => {
       doc.layers[0] as Extract<CompositionLayer, { type: "precomp" }>
     ).timeRemap = linear(20, 0);
     expect(evaluateComp(doc, 20).layers[0]!.precomp!.time).toBe(15);
-    expect(evaluateProperty(doc, "child/box.rotation", 20)).toBe(75);
+    expect(evaluateProperty(doc, "host/box.rotation", 20)).toBe(75);
   });
-  it("evaluates reused precomps independently and rejects ambiguous property reads", () => {
+  it("reads independently timed reused precomps by their host instance paths", () => {
     const doc = nested();
     doc.layers = [
       { id: "a", type: "precomp", comp: "child", timeRemap: 5 },
@@ -781,10 +781,12 @@ describe("composition time and precomps", () => {
     expect(
       result.layers.map((l) => l.precomp!.layers[0]!.transform.rotation),
     ).toEqual([25, 75]);
+    expect(evaluateProperty(doc, "a/box.rotation", 20)).toBe(25);
+    expect(evaluateProperty(doc, "b/box.rotation", 20)).toBe(75);
     expect(
       diagnostic(() => evaluateProperty(doc, "child/box.rotation", 20))[0]!
         .code,
-    ).toBe("comp-evaluation-scope");
+    ).toBe("comp-path-scope");
   });
   it("does not inherit precomp opacity into its unflattened child states", () => {
     const doc = nested();
@@ -792,6 +794,28 @@ describe("composition time and precomps", () => {
     const host = evaluateComp(doc, 20).layers[0]!;
     expect(host.opacity).toBe(0.25);
     expect(host.precomp!.layers[0]!.opacity).toBe(1);
+  });
+  it("reads delayed driver sources through independent sibling instance clocks", () => {
+    const doc = nested();
+    doc.precomps![0]!.fps = 30;
+    doc.layers = [
+      { id: "intro", type: "precomp", comp: "child", startFrame: 5 },
+      { id: "outro", type: "precomp", comp: "child", startFrame: -5 },
+      { id: "controller", type: "null" },
+    ];
+    doc.drivers = [
+      {
+        target: "controller.x",
+        source: "intro/box.rotation",
+        map: { delay: 2 },
+      },
+      {
+        target: "controller.y",
+        source: "outro/box.rotation",
+        map: { delay: 2 },
+      },
+    ];
+    expect(state(doc, 10, "controller").transform.position).toEqual([15, 65]);
   });
   it("reaches nested precomps through their own clocks", () => {
     const doc = nested();
@@ -805,7 +829,11 @@ describe("composition time and precomps", () => {
       frameCount: 60,
       layers: [{ ...solid(), transform: { rotation: linear(0, 100) } }],
     });
-    expect(evaluateProperty(doc, "child/deep/box.rotation", 20)).toBe(40);
+    expect(evaluateProperty(doc, "host/inner/box.rotation", 20)).toBe(40);
+    expect(
+      diagnostic(() => evaluateProperty(doc, "host/deep/box.rotation", 20))[0]!
+        .code,
+    ).toBe("comp-path-scope");
   });
   it("evaluates the CE2 timing fixture against hand-computed clocks", () => {
     const doc = JSON.parse(
@@ -1034,7 +1062,7 @@ describe("composition motion and constraints", () => {
     ];
     doc.drivers = [
       { target: "host.timeRemap", signal: "offset", blend: "add" },
-      { target: "host.x", source: "child/box.x" },
+      { target: "host.x", source: "host/box.x" },
     ];
     const host = evaluateComp(doc, 20).layers[0]!;
     expect(host.timeRemap).toBe(10);
