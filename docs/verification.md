@@ -62,6 +62,9 @@ four and a half minutes on an Apple M5 Pro. See the
   machine. `CHECK=1 scripts/composition/linux/run.sh arm64` checks the committed Linux
   baseline instead. The `linux-x64` baseline was generated under Rosetta; confirm it on
   real x86 hardware.
+- Each `--save-mismatches <dir>` run replaces that directory's `reference/` frames
+  and `environment.json`, including filtered runs. Reusing a directory cannot retain
+  frames from an earlier fixture revision; use separate directories to keep older runs.
 - Rendering uses the pinned software profile `chromium-software-2`
   (`--disable-gpu --enable-unsafe-swiftshader`); the command refuses to run on any other
   renderer.

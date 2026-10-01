@@ -507,7 +507,12 @@ if (stored)
 const frameDirectory = saveDirectory
   ? resolve(saveDirectory)
   : await mkdtemp(join(tmpdir(), "still-shift-baselines-"));
-if (saveDirectory) await mkdir(frameDirectory, { recursive: true });
+if (saveDirectory) {
+  await mkdir(frameDirectory, { recursive: true });
+  // environment.json describes only this run, so its reference frames must too.
+  await rm(join(frameDirectory, "reference"), { recursive: true, force: true });
+  await rm(join(frameDirectory, "environment.json"), { force: true });
+}
 const machine = {
   cpu: cpus()[0]?.model ?? "unknown",
   logicalCores: availableParallelism(),
