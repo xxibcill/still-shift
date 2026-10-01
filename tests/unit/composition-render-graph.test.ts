@@ -148,6 +148,50 @@ describe("render graph", () => {
     expect(op!.matrix).toEqual([1, 0, 0, 1, 80, 40]);
   });
 
+  it.each(["normal", "multiply"] as const)(
+    "keeps visible overflow of an offscreen collapsed precomp (%s)",
+    (blendMode) => {
+      const doc = comp(
+        [
+          {
+            id: "host",
+            type: "precomp",
+            comp: "inner",
+            collapseTransforms: true,
+            blendMode,
+            transform: { anchor: [0, 0], position: [300, 50] },
+          },
+        ],
+        {
+          precomps: [
+            {
+              id: "inner",
+              width: 40,
+              height: 20,
+              frameCount: 60,
+              layers: [
+                solid("child", {
+                  transform: { anchor: [0, 0], position: [-250, 0] },
+                }),
+                solid("off", { transform: { position: [500, 0] } }),
+              ],
+            },
+          ],
+        },
+      );
+      const result = graph(doc);
+      expect(result.culled).toEqual(["host/off"]);
+      const host = result.root.ops[0]!;
+      const child = (host.kind === "isolate" ? host.ops[0] : host) as DrawOp;
+      expect(child.layer).toBe("host/child");
+      expect(child.matrix).toEqual([1, 0, 0, 1, 50, 50]);
+      const offscreenHost = doc.layers[0]!;
+      if (offscreenHost.type === "precomp")
+        offscreenHost.collapseTransforms = false;
+      expect(graph(doc).root.ops).toEqual([]);
+    },
+  );
+
   it("renders uncollapsed precomps into their own surface", () => {
     const doc = comp(
       [{ id: "host", type: "precomp", comp: "inner", blendMode: "screen" }],

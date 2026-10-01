@@ -346,6 +346,7 @@ class GraphBuilder {
     if (opacity <= 0) return [];
     if (
       options.cull !== false &&
+      !(layer.type === "precomp" && layer.collapseTransforms) &&
       state.bounds &&
       boundsMiss(state.bounds, frame.matrix, frame)
     ) {
