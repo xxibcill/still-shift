@@ -66,6 +66,7 @@ import type {
 
 import {
   assertBaselineInventory,
+  assertBaselineProvenance,
   selectBaselineFixtures,
   replaceBaselineItems,
 } from "./baseline-check.ts";
@@ -495,6 +496,16 @@ const stored =
   mode === "check" || saveDirectory
     ? await readBaseline(join(baselineDirectory, `${compareKey}.json`))
     : undefined;
+const partialWrite = mode === "write" && Boolean(only || families);
+const previousBaseline =
+  partialWrite && (await stat(baselinePath).catch(() => undefined))
+    ? await readBaseline(baselinePath)
+    : undefined;
+const retainedBaselineItems = replaceBaselineItems(
+  previousBaseline?.items ?? {},
+  {},
+  { only, families },
+);
 const renderItems: RenderItem[] = [];
 for (const fixture of selected) renderItems.push(...(await expand(fixture)));
 if (stored)
@@ -551,6 +562,12 @@ try {
   if (!baseUrl) throw new Error("Baseline server has no local URL");
   const pinned = await openSession(baseUrl, "pinned");
   sessions.push(pinned);
+  if (previousBaseline && Object.keys(retainedBaselineItems).length)
+    assertBaselineProvenance(previousBaseline, {
+      browserArgs: RENDER_BROWSER_ARGS,
+      renderEnvironment: pinned.environment,
+      machine,
+    });
   const hardware =
     mode === "compare-hardware"
       ? await openSession(baseUrl, "hardware")
@@ -696,23 +713,15 @@ try {
   console.log(`${itemCount} items, ${frameCount} frames in ${elapsedSeconds}s`);
 
   if (mode === "write") {
-    const partial = Boolean(only || families);
-    // A partial write merges into this platform's baseline, if one exists yet.
-    const previous =
-      partial && (await stat(baselinePath).catch(() => undefined))
-        ? await readBaseline(baselinePath)
-        : undefined;
     const file: BaselineFile = {
       version: BASELINE_VERSION,
       renderer: "illustrated-canvas",
       browserArgs: RENDER_BROWSER_ARGS,
       renderEnvironment: pinned.environment,
       machine,
-      items: sortedById(
-        replaceBaselineItems(previous?.items ?? {}, items, { only, families }),
-      ),
+      items: sortedById({ ...retainedBaselineItems, ...items }),
     };
-    const previousTimings = partial
+    const previousTimings = partialWrite
       ? (JSON.parse(await readFile(timingPath, "utf8")) as BaselineTimingsFile)
       : undefined;
     const timingFile = mergeBaselineTimings({

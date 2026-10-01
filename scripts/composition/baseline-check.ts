@@ -1,3 +1,27 @@
+import { isDeepStrictEqual } from "node:util";
+import type { RenderEnvironment } from "../../packages/execution-runtime/src/render-browser.ts";
+import type { TimingMachine } from "./baseline-timings.ts";
+
+type BaselineProvenance = {
+  browserArgs: readonly string[];
+  renderEnvironment: Omit<RenderEnvironment, "profile"> & { profile: string };
+  machine?: TimingMachine;
+};
+
+export function assertBaselineProvenance(
+  previous: BaselineProvenance,
+  current: BaselineProvenance,
+) {
+  if (
+    !isDeepStrictEqual(previous.renderEnvironment, current.renderEnvironment) ||
+    !isDeepStrictEqual(previous.browserArgs, current.browserArgs) ||
+    !isDeepStrictEqual(previous.machine, current.machine)
+  )
+    throw new Error(
+      "Cannot retain pixel baselines from different renderer or machine provenance; run a full --write without --only or --family",
+    );
+}
+
 type Fixture = { id: string; family: string };
 type FixtureFilters = {
   only?: readonly string[] | undefined;

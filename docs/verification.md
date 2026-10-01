@@ -47,6 +47,12 @@ four and a half minutes on an Apple M5 Pro. See the
   `--only id,id` or `--family name` for a subset) and records the reason in the commit.
   Partial writes replace the selected fixtures' entries, including removed or renamed
   passage beats, and remove their obsolete timing entries.
+  Retaining pixel hashes requires the same renderer environment, launch arguments and
+  machine metadata as the existing file. An incompatible partial write stops before
+  rendering or changing either baseline file; regenerate with a full `--write` without
+  filters. This also applies to legacy files with an older profile or missing machine
+  metadata. Filtered writes that replace every existing item need no compatibility
+  check because they retain no old hashes.
 - Timing writes use `composition-timings-2`, with `machine` and `renderEnvironment`
   on each item. Partial runs retain the provenance of unselected measurements, even
   across platforms or machines. Older files with global provenance migrate on write;
