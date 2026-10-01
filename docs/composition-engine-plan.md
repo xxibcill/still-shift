@@ -1,7 +1,8 @@
 # Programmable composition engine — implementation plan
 
-- **Updated:** 2026-09-30
-- **Status:** CE0 complete (2026-10-01). Q1 and Q3 decided 2026-09-30; Q2 and Q4–Q8 open.
+- **Updated:** 2026-10-01
+- **Status:** CE0 and CE1 complete (2026-10-01); CE2 is next. Q1 and Q3 decided
+  2026-09-30; Q2 and Q4–Q8 open.
 - **Baseline:** `6772717` — `Merge pull request #22 from xxibcill/codex/still-shift-plan-completion`
 - **Tracker owner:** unassigned. Record the owner and branch per milestone in the [tracker](#milestone-tracker).
 
@@ -283,29 +284,32 @@ SwiftShader, and [`golden-baseline.json`](../tests/visual/golden-baseline.json) 
 
 ## Core conventions
 
-Fix these in CE1 and do not change them later without a decision-log entry.
+Fixed in CE1 (2026-10-01; see the [decision log](#decision-log)) and documented for
+authors in the [composition reference](./composition-reference.md#conventions). Do not
+change them without a decision-log entry.
 
-| Topic             | Convention                                                                                                                                                  |
-| ----------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Coordinates       | Origin top-left of the composition, +x right, +y down, +z away from the viewer. Units are composition pixels.                                               |
-| Rotation          | Degrees, clockwise positive in 2D (matches Canvas and AE). 3D uses X, Y, Z rotation plus orientation, applied Z·Y·X.                                        |
-| Anchor point      | In layer-space pixels, as in AE; default is the layer centre for sized layers and `[0,0]` for shape and null layers.                                        |
-| Transform order   | Translate(position) · Rotate · Skew · Scale · Translate(−anchor). Parent matrices premultiply.                                                              |
-| Scale             | Percent-free: `1` means 100%.                                                                                                                               |
-| Opacity           | 0–1. Parent opacity does **not** inherit, matching AE; group/precomp opacity applies to the flattened result.                                               |
-| Colour authoring  | `#RRGGBB` or `#RRGGBBAA` sRGB. Evaluated internally as floating-point RGBA.                                                                                 |
-| Compositing space | sRGB-encoded by default for parity with existing renders. Linear-light compositing is an opt-in composition setting introduced in CE6.                      |
-| Alpha             | Premultiplied in all render surfaces.                                                                                                                       |
-| Time              | Integer composition frames; layer-local time = `(compFrame − startFrame) × stretch` (with time remap overriding). In point inclusive, out point exclusive.  |
-| Frame rates       | 24, 25, 30, 50 and 60 fps. A precomp with a different rate is sampled at the parent's time; a posterize-time effect or layer setting snaps to its own rate. |
-| Identifiers       | `^[a-zA-Z][\w-]*$`, unique within a composition. Precomps have their own namespace.                                                                         |
+| Topic             | Convention                                                                                                                                                                                                       |
+| ----------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Coordinates       | Origin top-left of the composition, +x right, +y down, +z away from the viewer. Units are composition pixels.                                                                                                    |
+| Rotation          | Degrees, clockwise positive in 2D (matches Canvas and AE). 3D uses X, Y, Z rotation plus orientation, applied Z·Y·X.                                                                                             |
+| Anchor point      | In layer-space pixels, as in AE; default is the layer centre for sized layers (solid, image, group, precomp, adjustment) and `[0,0]` otherwise.                                                                  |
+| Transform order   | Translate(position) · Rotate · Skew · Scale · Translate(−anchor), where skew is the shear `[[1, tan skewX], [tan skewY, 1]]` of the existing renderer. Parent matrices premultiply.                              |
+| Scale             | Percent-free: `1` means 100%.                                                                                                                                                                                    |
+| Opacity           | 0–1. Parent opacity does **not** inherit, matching AE; precomp opacity applies to the flattened result; a `group` layer's opacity multiplies into each child.                                                    |
+| Colour authoring  | `#RRGGBB` or `#RRGGBBAA` sRGB. Evaluated internally as floating-point RGBA.                                                                                                                                      |
+| Compositing space | sRGB-encoded by default for parity with existing renders. Linear-light compositing is an opt-in composition setting introduced in CE6.                                                                           |
+| Alpha             | Premultiplied in all render surfaces.                                                                                                                                                                            |
+| Time              | Integer composition frames; layer time = `(compFrame − startFrame) / stretch`, as AE (`stretch: 2` plays at half speed; negative reverses), with time remap overriding. In point inclusive, out point exclusive. |
+| Keys              | Integer frames in **layer time**, as in AE. No fractional key frames.                                                                                                                                            |
+| Frame rates       | 24, 25, 30, 50 and 60 fps. A precomp with a different rate is sampled at the parent's time; a posterize-time effect or layer setting snaps to its own rate.                                                      |
+| Identifiers       | `^[a-zA-Z][\w-]*$`, at most 128 characters, unique within their scope; precomps have their own layer namespace. `comp` is reserved for composition properties.                                                   |
 
 ## Milestone tracker
 
 | ID   | Deliverable                                     | Phase | Depends on                | Owner                  | Branch                  | Status | Completion evidence                                            |
 | ---- | ----------------------------------------------- | ----- | ------------------------- | ---------------------- | ----------------------- | ------ | -------------------------------------------------------------- |
 | CE0  | Baseline, parity harness and feature matrix     | A     | —                         | xxibcill (Claude Code) | `codex/composition-ce0` | `[x]`  | [CE0 record](#ce0--baseline-parity-harness-and-feature-matrix) |
-| CE1  | `composition-1` contract and property paths     | A     | CE0                       |                        |                         | `[ ]`  |                                                                |
+| CE1  | `composition-1` contract and property paths     | A     | CE0                       | xxibcill (Claude Code) | `codex/composition-ce1` | `[x]`  | [CE1 record](#ce1--composition-1-contract-and-property-paths)  |
 | CE2  | Pure composition evaluator                      | A     | CE1                       |                        |                         | `[ ]`  |                                                                |
 | CE3  | Render graph and Canvas 2D reference backend    | A     | CE2                       |                        |                         | `[ ]`  |                                                                |
 | CE4a | Story adapter with pixel parity                 | A     | CE3                       |                        |                         | `[ ]`  |                                                                |
@@ -356,9 +360,10 @@ layers, a multiply-blended layer and an alpha track matte renders identically in
 Lab and through `pnpm still-shift comp render`, and one existing story fixture renders
 through the story adapter with recorded parity.
 
-- [ ] CE0 parity harness and baselines for at least one fixture per family.
-- [ ] CE1 schema for comp, precomp, solid, image, text and null layers; transforms;
-      parenting; in/out points; blend modes; alpha mattes.
+- [x] CE0 parity harness and baselines for at least one fixture per family.
+- [x] CE1 schema for comp, precomp, solid, image, text and null layers; transforms;
+      parenting; in/out points; blend modes; alpha mattes. The slice composition is
+      [`first-slice.json`](../benchmarks/fixtures/composition/ce1/first-slice.json).
 - [ ] CE2 evaluator covering those features.
 - [ ] CE3 Canvas 2D backend covering those features, wired into export.
 - [ ] CE4a adapter for `benchmarks/fixtures/story-motion-continuous/access-constraint.json`
@@ -545,7 +550,9 @@ Effects composition can for this project's needs.
 
 ### Contract sketch
 
-This is the intended shape; refine names during implementation and record changes.
+This was the intended shape. The implemented contract is documented in the
+[composition reference](./composition-reference.md); differences from this sketch are
+listed in the [CE1 completion record](#ce1-completion-record).
 
 ```ts
 type Composition = {
@@ -659,34 +666,42 @@ examples: title.transform.position
 
 ### Checklist
 
-- [ ] Add `packages/scene-contract/src/composition/` with schemas for composition,
+- [x] Add `packages/scene-contract/src/composition/` with schemas for composition,
       assets, markers, all layer types listed above (types that later milestones
       implement may be schema-only here, rejected by a `comp-feature-unavailable`
       diagnostic until then), transforms, keys for scalar/vec2/vec3/colour, masks, track
-      mattes and blend modes.
-- [ ] Blend modes: `normal`, `multiply`, `screen`, `overlay`, `darken`, `lighten`,
+      mattes and blend modes. Also discrete keys (image and text state) and bezier path
+      keys (masks).
+- [x] Blend modes: `normal`, `multiply`, `screen`, `overlay`, `darken`, `lighten`,
       `color-dodge`, `color-burn`, `hard-light`, `soft-light`, `difference`,
       `exclusion`, `hue`, `saturation`, `color`, `luminosity` and `add` (Canvas
       `lighter`).
-- [ ] Masks: closed bezier path (Animatable); mode `add`, `subtract`, `intersect`,
+- [x] Masks: closed bezier path (Animatable); mode `add`, `subtract`, `intersect`,
       `difference` or `none`; `inverted`, `feather` (px), `expansion` (px) and
       `opacity`.
-- [ ] Implement the property-path parser and resolver with typed results
-      (scalar/vec/colour/bool/enum) and use it for validation of every path reference.
-- [ ] Generalise `MotionTargetSchema` and `DriverSchema` so targets and sources are
+- [x] Implement the property-path parser and resolver with typed results and use it
+      for validation of every path reference (driver targets, sources and sum terms,
+      periodic targets, expression keys). Types are scalar, vec2, vec3, colour,
+      discrete and path; the plan's bool and enum types have no animatable property
+      yet.
+- [x] Generalise `MotionTargetSchema` and `DriverSchema` so targets and sources are
       property paths; keep the old node-and-property form valid as an alias.
-- [ ] Resolve the CE0 [parity notes](#parity-notes-for-adapter-work): an opacity
+      Implemented as `CompositionDriverSchema` and `CompositionPeriodicSchema` so the
+      story and commerce schemas stay unchanged; `title.x` resolves to
+      `title.transform.position.x`, and periodic motion also accepts `node` + `property`.
+- [x] Resolve the CE0 [parity notes](#parity-notes-for-adapter-work): an opacity
       inheritance option for group layers, fractional key times or baking for legacy
       millisecond tracks, a composition 2D camera with per-layer depth factor, and an
       image rasterisation option. Record each decision in the decision log.
-- [ ] Semantic validation: unique ids, parent cycles, matte layer exists and is
+- [x] Semantic validation: unique ids, parent cycles, matte layer exists and is
       directly above (AE rule) or explicitly referenced, precomp cycles, in < out,
       key frames ascending and inside a sane window, asset hashes present, precomp
-      nesting depth ≤ 8, total layer count ≤ 2,000.
-- [ ] Diagnostic codes prefixed `comp-` with JSON paths; document every code in
+      nesting depth ≤ 8, total layer count ≤ 2,000. Mattes are always explicit; a
+      matte that is not directly above produces a warning.
+- [x] Diagnostic codes prefixed `comp-` with JSON paths; document every code in
       `docs/composition-reference.md` (created in this milestone and extended by each
       later milestone).
-- [ ] Add the schema to `scripts/generate-corpus-schema.ts` so `pnpm schema:check`
+- [x] Add the schema to `scripts/generate-corpus-schema.ts` so `pnpm schema:check`
       covers it and a JSON Schema file is generated for editors and AI agents.
 
 **Acceptance:** A hand-written composition exercising every CE1 field validates; each
@@ -695,7 +710,73 @@ invalid variant in the test suite fails with the expected code and path.
 **Verification:** Unit tests for schema, path grammar (valid, invalid, ambiguous,
 precomp-scoped), cycles and limits. Round trip: parse → serialise → parse is identical.
 
-**Completion record:** _to be filled in._
+### CE1 completion record
+
+Completed 2026-10-01 on `codex/composition-ce1`, branched from `codex/composition-ce0`.
+
+- **Contract:** [`packages/scene-contract/src/composition/`](../packages/scene-contract/src/composition/)
+  — `primitives.ts` (limits), `keys.ts` (animatable values), `layers.ts`,
+  `composition.ts`, `property-path.ts` (grammar), `resolve.ts` (typed resolution),
+  `validate.ts` (semantic rules and warnings), `diagnostics.ts` (code catalogue and
+  `validateComposition`). Exported from `@still-shift/scene-contract`.
+- **Reference:** [`composition-reference.md`](./composition-reference.md) documents every
+  field, default, property path, limit and diagnostic code; a unit test fails if a code
+  is missing from it.
+- **JSON Schema:** [`composition-1.schema.json`](../packages/scene-contract/schemas/composition-1.schema.json)
+  (draft 2020-12, 115 KB with shared `$defs`), generated and checked by
+  `pnpm schema:generate` / `pnpm schema:check`. It covers structure only. Inlining
+  sub-schemas produced 9.3 MB, so this target uses zod's `reused: "ref"`.
+- **Fixtures:** [`first-slice.json`](../benchmarks/fixtures/composition/ce1/first-slice.json)
+  (precomp, parented pair, multiply layer, alpha track matte) and
+  [`every-field.json`](../benchmarks/fixtures/composition/ce1/every-field.json). A
+  coverage test fails if any implemented field of the schema is missing from
+  `every-field.json`, so it grows with the contract. Asset hashes are checked against
+  the files.
+- **Differences from the sketch** (decisions in the [log](#decision-log)):
+  - A `group` layer type for adapter output (parity note 1).
+  - `camera2d` with a per-layer `cameraDepth` (parity note 3).
+  - `skewX` and `skewY` replace AE's `skew` and `skewAxis`.
+  - Separate dimensions are a value form (`{ x, y }`) instead of a
+    `separateDimensions` flag; spatial tangents are `spatialIn`/`spatialOut` on
+    position keys instead of a `spatialTangents` list.
+  - `precomps` is a flat list on the root composition rather than nested compositions.
+    Precomps have their own layer namespace, and path prefixes are precomp ids.
+  - Signals, drivers and periodic motion are composition-wide. Constraints and text
+    animators belong to a scope, because they name layers by id.
+  - Transform fields, `inPoint` and `outPoint` are optional, with defaults documented in
+    the reference. The schema applies no defaults, so parsing returns its input
+    unchanged.
+  - Image layers carry `sources`, a discrete `state`, a `stateFrom`/`stateMix`
+    crossfade and a `rasterize` option (parity note 5). Text layers reuse the prepared
+    text and typography fields.
+  - Story text events and narration timing stay out of the contract. Adapters compile
+    them to keys and markers, as the feature matrix already planned.
+- **Also changed:** `passageDiagnostics` now reports the stable code a contract attaches
+  to an issue (`params.diagnosticCode`) instead of `invalid-contract`. The existing
+  motion-craft opt-in codes now reach passage tooling too; untagged issues still report
+  `invalid-contract`.
+- **Finding for CE4:** legacy matrices ignore animated anchors; see
+  [parity note 7](#parity-notes-for-adapter-work).
+- **Acceptance:** `every-field.json` validates with no diagnostics. 63 invalid variants
+  each fail with their expected code (and JSON path where asserted), and every
+  returned code is in the catalogue. Limit tests cover parent depth 32/33, precomp
+  depth 8/9 and the 2,000-layer total. Both fixtures round-trip through parse →
+  serialise → parse unchanged.
+- **Checks run:** `pnpm check:fast` (schema, boundaries, format, lint, types and 718 unit
+  tests, 163 of them new: 81 contract and 82 property-path tests),
+  `pnpm test:runtime` (43 tests) and `pnpm test:integration` (110 tests). No render
+  path changed, so the browser matrix and CE0 baselines were not re-run.
+- **Limitations and follow-ups:**
+  - Text layers can change text through `state` keys and through typography
+    `transition`s. CE3 must define how the two combine (the typography renderer
+    currently drives state from transitions).
+  - "Key frames inside a sane window" is only the ±216,000 schema bound. Keys outside a
+    layer's visible range are allowed, as in AE.
+  - Content providers (CE4) are not in the contract yet. CE4a adds them as a layer type
+    with a versioned provider id.
+  - The generated JSON Schema was checked against both fixtures with a draft-07
+    validator already in `node_modules`, which ignores `prefixItems`. No 2020-12
+    validator was added as a dependency.
 
 ---
 
@@ -727,6 +808,9 @@ at any frame, in Node or the browser, with no rendering.
 - [ ] Parenting with AE semantics: position, rotation, scale and skew inherit; opacity
       does not.
 - [ ] Time stretch, negative stretch (reverse) and time remap.
+- [ ] Accept fractional evaluation times from the start (parity note 4).
+- [ ] A constraint reference point separate from the transform anchor, so adapted
+      legacy anchor animation keeps its meaning (parity note 7).
 - [ ] Screen-space bounding boxes for culling and diagnostics (images/solids exact;
       text from measured layout; shapes after CE5).
 - [ ] Memoise per frame; cache compiled curves by object identity (as `story-camera.ts`
@@ -768,7 +852,10 @@ masks and adjustment layers, and export through the existing runtime.
 - [ ] Render graph builder and Canvas 2D backend in `composition/render/`.
 - [ ] Layer drawing for solid, image (reuse `imagePlacement`/`fit`), text (reuse the
       typography renderer and text animators as a layer content provider), null (no
-      draw), adjustment (applies its effects to everything below within its bounds).
+      draw), group (per-child opacity and clip), adjustment (applies its effects to
+      everything below within its bounds).
+- [ ] Define how a text layer's `state` keys combine with typography `transition`s,
+      which also change the displayed state.
 - [ ] All CE1 blend modes via `globalCompositeOperation`.
 - [ ] Alpha and inverted alpha mattes via `destination-in`/`destination-out`. Luma
       mattes via a luminance pass (pixel loop in this backend; GPU in CE6).
@@ -816,7 +903,9 @@ General rules for all adapters:
 
 ### CE4a — Story
 
-- [ ] Map roots, groups (with `clip` → mask), images with states and state blends,
+- [ ] Add content providers to the contract as a layer type with a versioned provider
+      id, with schema, reference and diagnostics as in CE1.
+- [ ] Map roots, groups (to `group` layers with `clip`), images with states and state blends,
       paths (ink/brush line styles as content providers until CE5), text and text
       containers, flows, props attached to hand anchors, poses and actions.
 - [ ] Map the story camera to a camera or null-layer parent (2D until CE8), including
@@ -1422,15 +1511,24 @@ A milestone is complete when **all** of the following hold:
 
 ## Decision log
 
-| Date       | Decision                                                                                                                    | Reason                                                                                                                                                              | Superseded by  |
-| ---------- | --------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------- |
-| 2026-09-30 | Introduce one `composition-1` contract; existing families become compilers into it                                          | Removes per-family duplication; every later feature is built once                                                                                                   |                |
-| 2026-09-30 | Keep Canvas 2D as the reference backend and add WebGL2 as the production backend behind one interface                       | Preserves parity with existing output while enabling GPU effects and performance                                                                                    |                |
-| 2026-09-30 | Expressions are a serialisable AST; JavaScript ergonomics live in the builder                                               | Determinism, sandbox safety in export workers, easy validation of agent output (see Q3)                                                                             | Q3 entry below |
-| 2026-09-30 | JSON remains the serialisation format; the TypeScript builder is the primary code surface                                   | Keeps compositions portable and inspectable; gives coders and agents types                                                                                          |                |
-| 2026-09-30 | Video frames are pre-decoded with FFmpeg for export                                                                         | Browser media seeking is not frame-accurate or deterministic enough for export                                                                                      |                |
-| 2026-09-30 | Q1: hybrid GPU policy — export, caches and tests pinned to SwiftShader; Lab preview may use a hardware GPU within tolerance | Exact reproducible output where caches, resume and chunking depend on it; fast interactive preview. Formalises what headless export already does by default         |                |
-| 2026-09-30 | Q3: expressions are written in a small text syntax and parsed into a validated AST; no arbitrary JavaScript at render time  | AE-like brevity for authors and agents, with safety, known dependencies and precise diagnostics. Full JavaScript remains available at authoring time in the builder |                |
+| Date       | Decision                                                                                                                         | Reason                                                                                                                                                                    | Superseded by  |
+| ---------- | -------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------- |
+| 2026-09-30 | Introduce one `composition-1` contract; existing families become compilers into it                                               | Removes per-family duplication; every later feature is built once                                                                                                         |                |
+| 2026-09-30 | Keep Canvas 2D as the reference backend and add WebGL2 as the production backend behind one interface                            | Preserves parity with existing output while enabling GPU effects and performance                                                                                          |                |
+| 2026-09-30 | Expressions are a serialisable AST; JavaScript ergonomics live in the builder                                                    | Determinism, sandbox safety in export workers, easy validation of agent output (see Q3)                                                                                   | Q3 entry below |
+| 2026-09-30 | JSON remains the serialisation format; the TypeScript builder is the primary code surface                                        | Keeps compositions portable and inspectable; gives coders and agents types                                                                                                |                |
+| 2026-09-30 | Video frames are pre-decoded with FFmpeg for export                                                                              | Browser media seeking is not frame-accurate or deterministic enough for export                                                                                            |                |
+| 2026-09-30 | Q1: hybrid GPU policy — export, caches and tests pinned to SwiftShader; Lab preview may use a hardware GPU within tolerance      | Exact reproducible output where caches, resume and chunking depend on it; fast interactive preview. Formalises what headless export already does by default               |                |
+| 2026-09-30 | Q3: expressions are written in a small text syntax and parsed into a validated AST; no arbitrary JavaScript at render time       | AE-like brevity for authors and agents, with safety, known dependencies and precise diagnostics. Full JavaScript remains available at authoring time in the builder       |                |
+| 2026-10-01 | CE1, parity note 1: add a `group` layer type whose opacity multiplies into each child and which can clip children to its bounds  | Legacy groups apply opacity per child, which neither AE parenting (no inheritance) nor a precomp (flattened) reproduces; a named type keeps AE semantics intact elsewhere |                |
+| 2026-10-01 | CE1, parity note 2: no fractional key frames; CE4d bakes legacy millisecond tracks to one key per integer frame                  | Keeps invariant 1. Baking is exact because legacy scenes are only sampled at integer frames; CE4d must confirm this against the CE0 baselines                             |                |
+| 2026-10-01 | CE1, parity note 3: composition-level `camera2d` (story camera semantics) applied by per-layer `cameraDepth` until CE8           | The story camera scales each root by its depth, which a parent transform cannot express; reusing its curve keeps adapted story motion exact                               |                |
+| 2026-10-01 | CE1, parity note 5: image layers take `rasterize: "draw" \| "natural-size"`                                                      | `motionGrammar: "v2"` pre-rasterises SVGs at natural size; without the option, output would depend on clipping                                                            |                |
+| 2026-10-01 | CE1: transforms use `skewX`/`skewY` (shear `[[1, tan skewX], [tan skewY, 1]]`) instead of AE `skew`/`skewAxis`                   | The existing renderer's two-axis shear cannot be expressed by AE's skew and axis in general; AE-style skew can be builder sugar later                                     |                |
+| 2026-10-01 | CE1: layer time = `(compFrame − startFrame) / stretch`, and keys are in layer time; corrects the original `× stretch` convention | Matches AE, where a stretch of 200% plays at half speed and moving a layer moves its keys                                                                                 |                |
+| 2026-10-01 | CE1: separate dimensions are the value form `{ x, y, z? }`; spatial tangents are per-key `spatialIn`/`spatialOut`                | Adapters need independently keyed x and y; a value form keeps each property self-describing, and per-key tangents match the existing motion-craft fields                  |                |
+| 2026-10-01 | CE1: precomps are a flat list on the root with their own layer namespace; property-path prefixes are precomp ids                 | Avoids duplicated nested definitions when a precomp is reused, and lets paths and diagnostics name a precomp once                                                         |                |
+| 2026-10-01 | CE1: composition drivers and periodic motion use property paths in new schemas; story and commerce motion schemas stay unchanged | Family schemas remain as written for CE0 parity, and legacy `node.property` targets stay valid inside compositions as aliases                                             |                |
 
 ## Open questions for the owner
 
@@ -1618,3 +1716,18 @@ with general primitives; the "Target" column names that later form.
    isolated and story contexts (60 scene fixtures). The acceptance set adds the three
    `story-*.passage.json` component passages, matching the "63 combinations" figure in
    the technical debt audit.
+7. **Legacy anchors do not move artwork** (found in CE1). In
+   [`nodeMatrix`](../packages/renderer-core/src/node-transform.ts), `x`/`y` place the
+   top-left corner of the node's box and rotation, skew and scale pivot about the
+   static `origin`. Animated `anchorX`/`anchorY` leave the matrix unchanged; they only
+   move the reference point that attach and follow constraints use. In `composition-1`
+   (as in AE), the anchor is the pivot and moving it moves the artwork. Adapters
+   therefore emit `position = [x + width·originX, y + height·originY]` and a static
+   anchor `[width·originX, height·originY]`. Animated legacy anchors must not become
+   `transform.anchor` keys; CE2 needs a separate constraint reference point for them.
+
+**Resolutions (CE1, 2026-10-01).** Note 1: `group` layer type. Note 2: legacy tracks are
+baked to one key per integer frame in CE4d; no fractional key frames. Note 3: `camera2d`
+with `cameraDepth`. Note 4: no contract change; CE2 accepts fractional evaluation times.
+Note 5: image `rasterize: "natural-size"`. Note 6: no contract change. Note 7: adapter
+rule above, plus a CE2 follow-up. See the [decision log](#decision-log).
