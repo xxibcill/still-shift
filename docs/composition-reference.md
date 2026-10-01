@@ -180,6 +180,8 @@ A matte source renders with its own transform, opacity, masks and matte (mattes 
 chain), into a separate surface; its blend mode is ignored. As in AE, the source's
 `enabled` switch and solo do not hide it as a matte, but its in/out points do: outside
 them it contributes nothing (`alpha` hides the target, `alpha-inverted` shows it).
+Inherited collapsed-host opacity applies to the target's composite, not to matte
+coverage; the matte keeps its own layer and group opacity.
 
 | Mode             | Matte value                                                                  |
 | ---------------- | ---------------------------------------------------------------------------- |

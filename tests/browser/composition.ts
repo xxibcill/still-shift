@@ -293,6 +293,71 @@ try {
   }
   results.push(`4 matte modes × 8 matte values match (max Δ${worstMatte})`);
 
+  for (const mode of [
+    "alpha",
+    "alpha-inverted",
+    "luma",
+    "luma-inverted",
+  ] as const) {
+    for (const sourceOpacity of [1, 0.5]) {
+      const doc: Composition = {
+        schemaVersion: "composition-1",
+        id: "collapsed-matte",
+        width: 100,
+        height: 100,
+        fps: 30,
+        frameCount: 1,
+        assets: [],
+        background: "#000000",
+        layers: [
+          {
+            id: "host",
+            type: "precomp",
+            comp: "inner",
+            collapseTransforms: true,
+            transform: { anchor: [0, 0], opacity: 0.5 },
+          },
+        ],
+        precomps: [
+          {
+            id: "inner",
+            width: 100,
+            height: 100,
+            frameCount: 1,
+            layers: [
+              {
+                id: "matte",
+                type: "solid",
+                size: [100, 100],
+                color: "#ffffff",
+                transform: { anchor: [0, 0], opacity: sourceOpacity },
+              },
+              {
+                id: "target",
+                type: "solid",
+                size: [100, 100],
+                color: "#ffffff",
+                transform: { anchor: [0, 0] },
+                trackMatte: { layer: "matte", mode },
+              },
+            ],
+          },
+        ],
+      };
+      const rendered = await render(page, doc, [0]);
+      const coverage = mode.endsWith("inverted")
+        ? 1 - sourceOpacity
+        : sourceOpacity;
+      near(
+        pixel(rendered, 25, 25),
+        toBytes([1, 1, 1].map(() => 0.5 * coverage)),
+        1,
+        `${mode} preserves source opacity inside a collapsed host`,
+      );
+    }
+  }
+  results.push("collapsed host opacity applies once across all matte modes");
+
   // Masks: boolean modes, inversion, opacity, feather and expansion.
   for (const { label, masks, expected } of MASK_CASES) {
     const rendered = await render(page, maskChart(masks), [0]);

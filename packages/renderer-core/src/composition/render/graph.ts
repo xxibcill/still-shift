@@ -266,11 +266,16 @@ class GraphBuilder {
       mode: matte.mode,
       layer: frame.prefix + matte.layer,
       ops: active
-        ? this.layerOps(scope, source, frame, {
-            blend: "normal",
-            seen: new Set([...seen, layer.id]),
-            cull: false,
-          })
+        ? this.layerOps(
+            scope,
+            source,
+            { ...frame, opacity: 1 },
+            {
+              blend: "normal",
+              seen: new Set([...seen, layer.id]),
+              cull: false,
+            },
+          )
         : [],
     };
   }

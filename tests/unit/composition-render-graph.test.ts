@@ -261,6 +261,45 @@ describe("render graph", () => {
     ]);
   });
 
+  it("applies collapsed host opacity to targets without dimming their matte coverage", () => {
+    const doc = comp(
+      [
+        {
+          id: "host",
+          type: "precomp",
+          comp: "inner",
+          collapseTransforms: true,
+          transform: { anchor: [0, 0], opacity: 0.5 },
+        },
+      ],
+      {
+        precomps: [
+          {
+            id: "inner",
+            width: 200,
+            height: 100,
+            frameCount: 60,
+            layers: [
+              solid("outer", { transform: { opacity: 0.8 } }),
+              solid("matte", {
+                transform: { opacity: 0.6 },
+                trackMatte: { layer: "outer", mode: "alpha" },
+              }),
+              solid("target", {
+                trackMatte: { layer: "matte", mode: "alpha" },
+              }),
+            ],
+          },
+        ],
+      },
+    );
+    const target = graph(doc).root.ops[0] as IsolateOp;
+    expect(target.opacity).toBe(0.5);
+    const matte = target.matte!.ops[0] as IsolateOp;
+    expect(matte.opacity).toBe(0.6);
+    expect((matte.matte!.ops[0] as DrawOp).opacity).toBe(0.8);
+  });
+
   it("chains mattes and ignores the matte source's blend mode", () => {
     const doc = comp([
       solid("outer"),
