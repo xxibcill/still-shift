@@ -88,7 +88,8 @@ const tree = evaluateComp(composition, 10, {
 Bounds arrays are indexed by text state; keys are root layer ids or
 `precomp-id/layer-id`. Missing text measurements yield `bounds: null` and a
 `comp-text-layout-missing` warning; a safe-area constraint requiring those bounds
-returns an error. CE3 prepares these measurements, including text animator geometry,
+returns an error. Attach/look-at/contact points on text also use measured local bounds
+and require those measurements. CE3 prepares these measurements, including text animator geometry,
 with the pinned font/layout path. Shape bounds and follow-path constraints arrive in
 CE5. Attach, look-at, contact and safe-area correction are available now. Singular
 parents are valid transforms; constraints that need their inverse report

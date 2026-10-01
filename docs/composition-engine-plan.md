@@ -863,9 +863,10 @@ play) using a fixed seed.
   fixture covers parent transforms, half-speed/reversed/different-rate precomps and
   remap. Every transform component, depth-16 parents, constraints, masks, fixed-seed
   random seeks, discrete state and input immutability have unit coverage.
-- Verified: `pnpm check:fast` (87 files, 878 unit tests), including
+- Verified: `pnpm check:fast` (87 files, 880 unit tests), including
   `pnpm exec vitest run tests/unit/composition-evaluate.test.ts --maxWorkers=2`
-  after the final reference-point correction (45 evaluator tests passed).
+  after the final reference-point/text-bounds and reused-instance corrections
+  (47 evaluator tests passed).
   `pnpm test:browser:composition-evaluator` passed for three fixtures × nine frames:
   timing/visibility and reverse seeks are exact; Node 22 versus Chromium 151 differs
   by at most `1.1102230246251565e-16` in numeric state. The cross-runtime check allows

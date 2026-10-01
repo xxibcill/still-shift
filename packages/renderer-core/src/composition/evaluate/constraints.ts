@@ -17,7 +17,7 @@ import {
   transformMatrix,
 } from "./geometry.ts";
 import { motionScalar, unit } from "./sample.ts";
-import type { EvaluatedLayer, EvaluationOptions } from "./types.ts";
+import type { Bounds, EvaluatedLayer, EvaluationOptions } from "./types.ts";
 
 type Constraint = NonNullable<CompositionScope["constraints"]>[number];
 type Context = {
@@ -40,6 +40,33 @@ function inverse(matrix: Matrix, state: EvaluatedLayer): Matrix {
       { node: state.id, path: `${state.id}.parent` },
     );
   }
+}
+
+function rectangle(state: EvaluatedLayer, ctx: Context): Bounds {
+  if (state.layer.type === "text") {
+    const bounds = localBounds(ctx.comp, ctx.scope, state, ctx.options);
+    if (!bounds)
+      passageError(
+        "comp-text-layout-missing",
+        "Text constraints need measured layer bounds",
+        { node: state.id, path: `${state.id}.bounds` },
+      );
+    return bounds;
+  }
+  const [w, h] = layerSize(ctx.comp, ctx.scope, state.layer);
+  return { left: 0, top: 0, right: w, bottom: h };
+}
+
+function pointInLayer(
+  state: EvaluatedLayer,
+  point: Point,
+  ctx: Context,
+): Point {
+  const bounds = rectangle(state, ctx);
+  return [
+    bounds.left + (bounds.right - bounds.left) * point[0],
+    bounds.top + (bounds.bottom - bounds.top) * point[1],
+  ];
 }
 
 export function applyConstraints(state: EvaluatedLayer, context: Context) {
@@ -84,23 +111,21 @@ function applyConstraint(
     set(t.position, 1, local[1] - offset[1]);
   };
   if (constraint.type === "attach") {
-    const source = other(constraint.anchor),
-      [w, h] = layerSize(comp, scope, source.layer);
+    const source = other(constraint.anchor);
     const point = constraint.point ?? [0.5, 0.5];
-    const location = transformPoint(source.worldMatrix, [
-      w * point[0],
-      h * point[1],
-    ]);
+    const location = transformPoint(
+      source.worldMatrix,
+      pointInLayer(source, point, ctx),
+    );
     moveReference([
       location[0] + (constraint.offset?.[0] ?? 0),
       location[1] + (constraint.offset?.[1] ?? 0),
     ]);
   } else if (constraint.type === "look-at") {
-    const source = other(constraint.toward),
-      [w, h] = layerSize(comp, scope, source.layer);
+    const source = other(constraint.toward);
     const target = transformPoint(
       inverse(parentMatrix, state),
-      transformPoint(source.worldMatrix, [w / 2, h / 2]),
+      transformPoint(source.worldMatrix, pointInLayer(source, [0.5, 0.5], ctx)),
     );
     const skewDirection = Math.atan2(
       Math.tan((t.skewY * Math.PI) / 180) * t.scale[0],
@@ -117,17 +142,25 @@ function applyConstraint(
     );
   } else if (constraint.type === "contact") {
     const surface = other(constraint.surface),
-      [w, h] = layerSize(comp, scope, surface.layer);
+      bounds = rectangle(surface, ctx);
     const edge = constraint.edge ?? "bottom",
       horizontal = edge === "top" || edge === "bottom";
-    const at = horizontal ? (edge === "top" ? 0 : h) : edge === "left" ? 0 : w;
+    const at = horizontal
+      ? edge === "top"
+        ? bounds.top
+        : bounds.bottom
+      : edge === "left"
+        ? bounds.left
+        : bounds.right;
     const a = transformPoint(
       surface.worldMatrix,
-      horizontal ? [0, at] : [at, 0],
+      horizontal ? [bounds.left, at] : [at, bounds.top],
     );
     const b = transformPoint(
       surface.worldMatrix,
-      horizontal ? [Math.max(1, w), at] : [at, Math.max(1, h)],
+      horizontal
+        ? [Math.max(bounds.left + 1, bounds.right), at]
+        : [at, Math.max(bounds.top + 1, bounds.bottom)],
     );
     const length = Math.hypot(b[0] - a[0], b[1] - a[1]);
     if (length < 1e-12)
@@ -138,11 +171,7 @@ function applyConstraint(
       );
     const nx = -(b[1] - a[1]) / length,
       ny = (b[0] - a[0]) / length;
-    const size = layerSize(comp, scope, state.layer);
-    const point: Point = [
-      size[0] * constraint.point[0],
-      size[1] * constraint.point[1],
-    ];
+    const point = pointInLayer(state, constraint.point, ctx);
     const distance = () => {
       const p = transformPoint(matrix(), point);
       return nx * (p[0] - a[0]) + ny * (p[1] - a[1]);

@@ -803,6 +803,56 @@ describe("composition motion and constraints", () => {
     expect(transformPoint(state(doc).worldMatrix, [20, 0])).toEqual([100, 50]);
     expect(state(doc).transform.position).toEqual([25, 25]);
   });
+  it("keeps definition-scoped driver sources local across different ancestor routes", () => {
+    const doc: Composition = {
+      ...comp([
+        { id: "a", type: "precomp", comp: "aScene", startFrame: 5 },
+        { id: "b", type: "precomp", comp: "bScene", startFrame: -5 },
+      ]),
+      precomps: [
+        {
+          id: "aScene",
+          width: 100,
+          height: 100,
+          frameCount: 60,
+          layers: [{ id: "inner", type: "precomp", comp: "deep" }],
+        },
+        {
+          id: "bScene",
+          width: 100,
+          height: 100,
+          frameCount: 60,
+          layers: [{ id: "inner", type: "precomp", comp: "deep" }],
+        },
+        {
+          id: "deep",
+          width: 100,
+          height: 100,
+          frameCount: 60,
+          layers: [
+            solid(),
+            {
+              id: "source",
+              type: "null",
+              transform: { position: { x: linear(0, 20), y: 0 } },
+            },
+          ],
+        },
+      ],
+      drivers: [
+        {
+          target: "aScene/deep/box.x",
+          source: "aScene/deep/source.x",
+          map: { delay: 2 },
+        },
+      ],
+    };
+    expect(
+      evaluateComp(doc, 10).layers.map(
+        (l) => l.precomp!.layers[0]!.precomp!.layers[0]!.transform.position[0],
+      ),
+    ).toEqual([3, 13]);
+  });
   it("looks at a target in parent space", () => {
     const doc = comp([
       { id: "parent", type: "null", transform: { rotation: 90 } },
@@ -839,6 +889,27 @@ describe("composition motion and constraints", () => {
     ];
     expect(state(doc).constraintReference).toEqual([60, 5]);
     expect(state(doc).transform.position).toEqual([100, 50]);
+  });
+  it("uses measured text geometry for constraint points and diagnoses missing measurements", () => {
+    const doc = comp([
+      solid(),
+      {
+        id: "title",
+        type: "text",
+        text: "Title",
+        fontSize: 24,
+        color: "#ffffff",
+        transform: { position: [100, 50] },
+      },
+    ]);
+    doc.constraints = [{ type: "attach", target: "box", anchor: "title" }];
+    expect(diagnostic(() => evaluateComp(doc, 0))[0]!.code).toBe(
+      "comp-text-layout-missing",
+    );
+    const result = evaluateComp(doc, 0, {
+      textBounds: { title: [{ left: 0, top: -10, right: 100, bottom: 20 }] },
+    });
+    expect(result.layers[0]!.transform.position).toEqual([150, 55]);
   });
   it.each(["y", "scaleY", "rotation"] as const)(
     "solves contact using %s",

@@ -236,6 +236,17 @@ class Evaluation {
 
   private scopeFor(path: PropertyPath, preferred?: Context): Context {
     let ctx = this.root;
+    // Definition-scoped drivers apply to every instance, including instances
+    // reached through a different ancestor route. Rebuild the instance at this
+    // session's time so delayed source reads keep the same host identities.
+    if (
+      preferred?.route.length &&
+      path.scope.at(-1) === preferred.route.at(-1)
+    ) {
+      for (const host of preferred.hosts)
+        ctx = this.child(ctx, this.layer(ctx, host));
+      return ctx;
+    }
     for (const [depth, id] of path.scope.entries()) {
       const hosts = ctx.scope.layers.filter(
         (l) => l.type === "precomp" && l.comp === id,
