@@ -15,6 +15,11 @@ import { createCanvas2dBackend } from "./canvas2d.ts";
 import { buildRenderGraph } from "./graph.ts";
 import { loadCompositionFonts, prepareCompositionText } from "./text.ts";
 import { COMPOSITION_RENDERER_VERSION } from "./version.ts";
+import {
+  prepareCompositionProviders,
+  type CanvasContentProvider,
+} from "./providers.ts";
+import { STORY_CONTENT_PROVIDERS } from "../adapters/story-providers.ts";
 
 /** A validated composition wrapped with the export runtime's canvas and timeline. */
 export type CompositionScene = {
@@ -112,6 +117,7 @@ export function createCompositionPreview(
   resources: CompositionResources,
   options: {
     createCanvas?: (width: number, height: number) => HTMLCanvasElement;
+    providers?: readonly CanvasContentProvider[];
   } = {},
 ): CompositionPreview {
   const validation = validateComposition(composition);
@@ -121,6 +127,10 @@ export function createCompositionPreview(
   const ctx = canvas.getContext("2d", { alpha: false });
   if (!ctx) throw new Error("Canvas 2D is unavailable");
   const text = prepareCompositionText(composition, resources.fonts, ctx);
+  const drawProvider = prepareCompositionProviders(composition, resources, [
+    ...STORY_CONTENT_PROVIDERS,
+    ...(options.providers ?? []),
+  ]);
   const backend = createCanvas2dBackend({
     images: {
       images: resources.images,
@@ -131,6 +141,7 @@ export function createCompositionPreview(
       ),
     },
     drawText: text.draw,
+    drawProvider,
     ...(options.createCanvas ? { createCanvas: options.createCanvas } : {}),
   });
   const target = backend.wrap(canvas, ctx);

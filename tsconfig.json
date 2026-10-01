@@ -11,6 +11,7 @@
     "noImplicitOverride": true,
     "noUncheckedIndexedAccess": true,
     "paths": {
+      "@still-shift/renderer-core": ["./packages/renderer-core/src/index.ts"],
       "@still-shift/animation-engine": [
         "./packages/animation-engine/src/index.ts"
       ],

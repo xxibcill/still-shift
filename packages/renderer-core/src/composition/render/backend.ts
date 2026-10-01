@@ -12,6 +12,7 @@ import type {
   RenderOp,
   SurfaceNode,
   TextContent,
+  ProviderContent,
 } from "./graph.ts";
 
 /** A premultiplied RGBA render target owned by a backend. */
@@ -37,6 +38,7 @@ export interface RenderBackend<S extends Surface = Surface> {
     opacity: number,
     blend: CompositionBlendMode,
     clips: ClipRect[],
+    transforms?: Matrix[],
   ): void;
   drawImage(
     dst: S,
@@ -45,6 +47,7 @@ export interface RenderBackend<S extends Surface = Surface> {
     opacity: number,
     blend: CompositionBlendMode,
     clips: ClipRect[],
+    transforms?: Matrix[],
   ): void;
   drawText(
     dst: S,
@@ -53,6 +56,16 @@ export interface RenderBackend<S extends Surface = Surface> {
     opacity: number,
     blend: CompositionBlendMode,
     clips: ClipRect[],
+    transforms?: Matrix[],
+  ): void;
+  drawProvider(
+    dst: S,
+    content: ProviderContent,
+    matrix: Matrix,
+    opacity: number,
+    blend: CompositionBlendMode,
+    clips: ClipRect[],
+    transforms?: Matrix[],
   ): void;
   /** Draw `src` (its pixel grid placed by `matrix`) onto `dst`. */
   composite(
@@ -62,6 +75,7 @@ export interface RenderBackend<S extends Surface = Surface> {
     opacity: number,
     matrix: Matrix,
     clips: ClipRect[],
+    transforms?: Matrix[],
   ): void;
   /** Multiply `target` by the combined coverage of `masks`. */
   applyMask(target: S, masks: MaskOp[]): void;
@@ -108,7 +122,7 @@ export function executeGraph<S extends Surface>(
   const run = (op: RenderOp, dst: S): void => {
     switch (op.kind) {
       case "draw": {
-        const { content: c, matrix, opacity, blend, clips } = op;
+        const { content: c, matrix, opacity, blend, clips, transforms } = op;
         if (c.type === "solid")
           backend.fillRect(
             dst,
@@ -119,14 +133,33 @@ export function executeGraph<S extends Surface>(
             opacity,
             blend,
             clips,
+            transforms,
           );
         else if (c.type === "image")
-          backend.drawImage(dst, c, matrix, opacity, blend, clips);
+          backend.drawImage(dst, c, matrix, opacity, blend, clips, transforms);
         else if (c.type === "text")
-          backend.drawText(dst, c, matrix, opacity, blend, clips);
+          backend.drawText(dst, c, matrix, opacity, blend, clips, transforms);
+        else if (c.type === "provider")
+          backend.drawProvider(
+            dst,
+            c,
+            matrix,
+            opacity,
+            blend,
+            clips,
+            transforms,
+          );
         else {
           const nested = surface(c.surface);
-          backend.composite(nested, dst, blend, opacity, matrix, clips);
+          backend.composite(
+            nested,
+            dst,
+            blend,
+            opacity,
+            matrix,
+            clips,
+            transforms,
+          );
           backend.releaseSurface(nested);
         }
         return;
@@ -154,6 +187,7 @@ export function executeGraph<S extends Surface>(
           1,
           "normal",
           op.clips,
+          op.transforms,
         );
         mask(coverage, op.masks, op.matte);
         backend.lerp(dst, src, coverage, op.opacity);

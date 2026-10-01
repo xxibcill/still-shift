@@ -107,6 +107,17 @@ export const COMPOSITION_DIAGNOSTICS = {
   // Availability
   "comp-feature-unavailable":
     "A contract feature whose implementation milestone has not landed.",
+  "comp-provider-bounds": "Provider bounds have non-positive width or height.",
+  "comp-provider-unavailable":
+    "A versioned content provider is not registered in this renderer.",
+  "comp-provider-duplicate": "A provider id was registered more than once.",
+  "comp-provider-params": "A provider payload fails its registered schema.",
+  "comp-provider-asset":
+    "A provider uses an undeclared, missing or incompatible asset.",
+  "comp-adapter-unsupported":
+    "A family feature is not supported by the current adapter slice.",
+  "comp-adapter-limit":
+    "Baking an adapter scene would exceed composition limits.",
 } as const;
 
 /** Advisory codes; they never make a composition invalid. */

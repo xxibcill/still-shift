@@ -548,6 +548,18 @@ describe("composition-1 fixtures", () => {
       ).toEqual([]);
     }
     const allLayers = [doc, ...doc.precomps!].flatMap((s) => s.layers);
+    // CE4 providers have their own fixture; keep the CE1 acceptance file unchanged.
+    const providers = JSON.parse(
+      readFileSync(
+        new URL(
+          "../../benchmarks/fixtures/composition/ce4a/providers.json",
+          import.meta.url,
+        ),
+        "utf8",
+      ),
+    ) as Composition;
+    expect(validateComposition(providers).ok).toBe(true);
+    allLayers.push(...providers.layers);
     for (const option of layers.CompositionLayerSchema.options) {
       const type = option.shape.type.value;
       if (UNAVAILABLE_LAYER_TYPES[type]) continue;

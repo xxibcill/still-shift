@@ -12,6 +12,7 @@ export * from "./errors.ts";
 export * from "./prepared.ts";
 export * from "./cinematic.ts";
 export * from "./story.ts";
+export { StoryFlowSchema, type StoryFlow } from "./story-motion.ts";
 export * from "./commerce.ts";
 export * from "./commerce-catalog.ts";
 

@@ -358,7 +358,12 @@ describe("render graph", () => {
     ]);
     const [op] = graph(doc).root.ops as DrawOp[];
     expect(op!.clips).toEqual([
-      { matrix: [1, 0, 0, 1, 45, 30], width: 30, height: 20 },
+      {
+        matrix: [1, 0, 0, 1, 45, 30],
+        transforms: [[1, 0, 0, 1, 45, 30]],
+        width: 30,
+        height: 20,
+      },
     ]);
   });
 

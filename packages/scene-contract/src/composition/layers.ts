@@ -239,6 +239,25 @@ export const NullLayerSchema = z
   .object({ ...layerBase, type: z.literal("null") })
   .strict();
 
+/** Inspectable adapter content; executable draw functions live in the renderer registry. */
+export const ProviderLayerSchema = z
+  .object({
+    ...layerBase,
+    type: z.literal("provider"),
+    provider: z
+      .string()
+      .max(128)
+      .regex(/^[a-z][a-z0-9.-]*@\d+\.\d+\.\d+$/),
+    params: boundedJson(z.record(z.string().max(128), z.json())),
+    /** Assets the provider may consume; checked against the composition asset namespace. */
+    assets: z.array(compositionId).max(L.maxAssets).optional(),
+    /** Provider text that intentionally depends on the browser's generic fonts. */
+    usesSystemFonts: z.boolean().optional(),
+    /** Conservative layer-space [left, top, right, bottom]; omitted means no culling. */
+    bounds: z.tuple([bounded, bounded, bounded, bounded]).optional(),
+  })
+  .strict();
+
 /**
  * Children multiply this layer's opacity and, with `clip`, are clipped to its bounds.
  * Unlike a null, opacity reaches the children; unlike a precomp, it applies per child
@@ -308,6 +327,7 @@ export const CompositionLayerSchema = z.discriminatedUnion("type", [
   ImageLayerSchema,
   TextLayerSchema,
   NullLayerSchema,
+  ProviderLayerSchema,
   GroupLayerSchema,
   PrecompLayerSchema,
   AdjustmentLayerSchema,

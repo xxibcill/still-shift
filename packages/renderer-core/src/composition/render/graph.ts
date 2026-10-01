@@ -18,12 +18,18 @@ import type {
   EvaluatedLayerTree,
   Rgba,
 } from "../evaluate/types.ts";
+import { cameraMatrix } from "../evaluate/camera.ts";
 
 type TextLayer = Extract<CompositionLayer, { type: "text" }>;
 type ImageLayer = Extract<CompositionLayer, { type: "image" }>;
 
 /** An axis-aligned rectangle `[0, width] × [0, height]` in the space of `matrix`. */
-export type ClipRect = { matrix: Matrix; width: number; height: number };
+export type ClipRect = {
+  matrix: Matrix;
+  transforms?: Matrix[];
+  width: number;
+  height: number;
+};
 
 export type MaskOp = {
   id: string;
@@ -35,6 +41,7 @@ export type MaskOp = {
   opacity: number;
   /** Layer space to surface space. */
   matrix: Matrix;
+  transforms?: Matrix[];
 };
 
 export type SolidContent = {
@@ -66,10 +73,17 @@ export type TextContent = {
   color: Rgba;
 };
 export type SurfaceContent = { type: "surface"; surface: SurfaceNode };
+export type ProviderContent = {
+  type: "provider";
+  key: string;
+  layer: Extract<CompositionLayer, { type: "provider" }>;
+  time: number;
+};
 export type LayerContent =
   | SolidContent
   | ImageContent
   | TextContent
+  | ProviderContent
   | SurfaceContent;
 
 /** Draw content straight into the current surface. */
@@ -78,6 +92,8 @@ export type DrawOp = {
   layer: string;
   content: LayerContent;
   matrix: Matrix;
+  /** Preserve native Canvas concatenation precision through cameras and parents. */
+  transforms: Matrix[];
   opacity: number;
   blend: CompositionBlendMode;
   clips: ClipRect[];
@@ -98,6 +114,7 @@ export type AdjustOp = {
   kind: "adjust";
   layer: string;
   matrix: Matrix;
+  transforms: Matrix[];
   width: number;
   height: number;
   masks: MaskOp[];
@@ -131,6 +148,7 @@ export type RenderGraph = {
 
 type Frame = {
   matrix: Matrix;
+  transforms: Matrix[];
   opacity: number;
   clips: ClipRect[];
   viewport: { width: number; height: number };
@@ -180,6 +198,7 @@ class GraphBuilder {
       background: tree.background,
       ops: this.scopeOps(tree, def, {
         matrix: IDENTITY,
+        transforms: [],
         opacity: 1,
         clips: [],
         viewport: { width: tree.width, height: tree.height },
@@ -218,6 +237,7 @@ class GraphBuilder {
       if (ancestor.layer.type === "group" && ancestor.layer.clip)
         clips.push({
           matrix: multiplyMatrix(frame.matrix, ancestor.screenMatrix),
+          transforms: this.transforms(scope, ancestor, frame),
           width: ancestor.layer.size[0],
           height: ancestor.layer.size[1],
         });
@@ -225,7 +245,38 @@ class GraphBuilder {
     return [...frame.clips, ...clips.reverse()];
   }
 
-  private masks(state: EvaluatedLayer, matrix: Matrix): MaskOp[] {
+  private transforms(
+    scope: Scope,
+    state: EvaluatedLayer,
+    frame: Frame,
+  ): Matrix[] {
+    const local: Matrix[] = [];
+    let root = state;
+    for (;;) {
+      local.unshift(root.localMatrix);
+      if (!root.layer.parent) break;
+      root = scope.byId.get(root.layer.parent)!;
+    }
+    return [
+      ...frame.transforms,
+      ...(scope.def === this.comp && this.comp.camera2d
+        ? [
+            cameraMatrix(
+              this.comp,
+              scope.tree.time,
+              root.layer.cameraDepth ?? 1,
+            ),
+          ]
+        : []),
+      ...local,
+    ];
+  }
+
+  private masks(
+    state: EvaluatedLayer,
+    matrix: Matrix,
+    transforms: Matrix[],
+  ): MaskOp[] {
     return state.masks.flatMap((mask) =>
       mask.mode === "none"
         ? []
@@ -239,6 +290,7 @@ class GraphBuilder {
               expansion: mask.expansion,
               opacity: mask.opacity,
               matrix,
+              transforms,
             },
           ],
     );
@@ -287,6 +339,13 @@ class GraphBuilder {
   ): LayerContent | null {
     const layer = state.layer;
     switch (layer.type) {
+      case "provider":
+        return {
+          type: "provider",
+          key: frame.prefix ? `${scope.def.id}/${layer.id}` : layer.id,
+          layer,
+          time: state.time,
+        };
       case "solid":
         return {
           type: "solid",
@@ -346,6 +405,7 @@ class GraphBuilder {
     const key = frame.prefix + state.id,
       layer = state.layer;
     const matrix = multiplyMatrix(frame.matrix, state.screenMatrix);
+    const transforms = this.transforms(scope, state, frame);
     const opacity = frame.opacity * state.opacity;
     const blend = options.blend ?? layer.blendMode ?? "normal";
     if (opacity <= 0) return [];
@@ -359,7 +419,7 @@ class GraphBuilder {
       return [];
     }
     const clips = this.groupClips(scope, state, frame);
-    const masks = this.masks(state, matrix);
+    const masks = this.masks(state, matrix, transforms);
     const seen = options.seen ?? new Set([layer.id]);
     const matte = this.matte(scope, state, frame, seen);
     if (layer.type === "adjustment") {
@@ -369,6 +429,7 @@ class GraphBuilder {
           kind: "adjust",
           layer: key,
           matrix,
+          transforms,
           width: layer.size?.[0] ?? scope.tree.width,
           height: layer.size?.[1] ?? scope.tree.height,
           masks,
@@ -386,6 +447,7 @@ class GraphBuilder {
       ops = state.precomp
         ? this.scopeOps(state.precomp, this.precomp(layer.comp), {
             matrix,
+            transforms,
             opacity: isolated ? state.opacity : opacity,
             clips: isolated ? [] : clips,
             viewport: frame.viewport,
@@ -402,6 +464,7 @@ class GraphBuilder {
           layer: key,
           content,
           matrix,
+          transforms,
           opacity: isolated ? 1 : opacity,
           blend: "normal",
           clips: isolated ? [] : clips,

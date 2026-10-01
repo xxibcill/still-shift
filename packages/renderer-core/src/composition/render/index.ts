@@ -15,6 +15,7 @@ export {
   type SurfaceContent,
   type SurfaceNode,
   type TextContent,
+  type ProviderContent,
 } from "./graph.ts";
 export { executeGraph, type RenderBackend, type Surface } from "./backend.ts";
 export {
@@ -38,3 +39,10 @@ export {
   type CompositionResources,
   type CompositionScene,
 } from "./renderer.ts";
+export {
+  prepareCompositionProviders,
+  type CanvasContentProvider,
+  type CanvasProviderDrawer,
+  type ProviderLayer,
+  type ProviderResources,
+} from "./providers.ts";
