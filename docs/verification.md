@@ -79,23 +79,14 @@ four and a half minutes on an Apple M5 Pro. See the
 - `pnpm composition:baselines --compare-hardware` measures how far a hardware-GPU
   preview drifts from export and writes a report beside the baseline.
 
-## Continuous integration
+## Verification policy
 
-[The workflow](../.github/workflows/verify.yml) runs the fast tier on pushes and
-pull requests with the version from `.node-version` and the locked workspace
-dependencies. Its action configuration follows the maintained
-[checkout](https://github.com/actions/checkout) and
-[setup-node](https://github.com/actions/setup-node) documentation.
+GitHub Actions are prohibited in this project; see [AGENTS.md](../AGENTS.md).
+Run the verification tiers locally with the pinned toolchain and locked dependencies.
+Use `pnpm check:fast`, `pnpm check:runtime`, and `pnpm check:all` for the fast,
+runtime, and full release gates respectively.
 
-The manually dispatched `runtime` and `release` choices run on a trusted runner
-labelled `still-shift-media`. Provision that runner with the exact tools listed in
-`toolchain.json`, a current Actions runner, and sufficient disk space for generated
-videos. The workflow installs the locked Python dependencies and Chromium, then
-verifies toolchain identity before testing. This repository change supplies the
-workflow; it does not register a runner or change repository Actions settings.
-Untrusted pull requests run only on the hosted fast runner.
-
-The release choice intentionally retains `corpus:check`. The currently incomplete
+The release gate intentionally retains `corpus:check`. The currently incomplete
 real-media corpus must fail this gate until its reviewed inputs exist. Fixture
 renders cannot replace corpus acceptance.
 
