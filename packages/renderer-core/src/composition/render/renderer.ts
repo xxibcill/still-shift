@@ -45,10 +45,11 @@ export type CompositionBackend = "canvas2d" | "webgl2";
 export type CompositionRendererVersion =
   | typeof COMPOSITION_RENDERER_VERSION
   | typeof COMPOSITION_WEBGL_RENDERER_VERSION;
-export const compositionRendererVersion = (backend: CompositionBackend) =>
-  backend === "webgl2"
-    ? COMPOSITION_WEBGL_RENDERER_VERSION
-    : COMPOSITION_RENDERER_VERSION;
+export function compositionRendererVersion(backend: CompositionBackend) {
+  if (backend === "webgl2") return COMPOSITION_WEBGL_RENDERER_VERSION;
+  if (backend === "canvas2d") return COMPOSITION_RENDERER_VERSION;
+  throw new Error(`comp-backend-unsupported: ${String(backend)}`);
+}
 
 /** A validated composition wrapped with the export runtime's canvas and timeline. */
 export type CompositionScene = {
@@ -172,6 +173,7 @@ export function createCompositionPreview(
   canvas.width = composition.width;
   canvas.height = composition.height;
   const kind = options.backend ?? "canvas2d";
+  compositionRendererVersion(kind);
   const measurementCanvas =
     kind === "webgl2" ? document.createElement("canvas") : canvas;
   const ctx = measurementCanvas.getContext("2d", { alpha: false });

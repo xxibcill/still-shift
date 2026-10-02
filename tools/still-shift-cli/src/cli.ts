@@ -65,7 +65,7 @@ Usage:
   pnpm still-shift passage import-narration --plan <plan.json> --narration <audio.wav|mp3> --timing <words.json|captions.srt> --mode match|add --output <new-plan.json>
   pnpm still-shift sfx generate --provider elevenlabs --id <slug> --prompt <text> --duration <seconds> --output-dir <new-directory> [--prompt-influence 0.3] [--loop true|false]
   pnpm still-shift prepare-commerce --brief <brief.json> --output <prepared.json>
-  pnpm --silent still-shift comp render --input <composition.json> --output <path.mp4>
+  pnpm --silent still-shift comp render --input <composition.json> --output <path.mp4> [--backend canvas2d|webgl2]
   pnpm --silent still-shift comp export-json --scene <story-or-commerce.json> [--output <composition.json>]
   pnpm --silent still-shift batch --manifest <jsonl> --output-dir <path> [--format landscape|vertical] [--concurrency 1|2]
 
@@ -443,10 +443,21 @@ export const runCli = async (
   }
   if (args[0] === "comp" && args[1] === "render") {
     try {
-      const values = parseNamedArguments(args.slice(2), ["input", "output"]);
+      const values = parseNamedArguments(args.slice(2), [
+        "input",
+        "output",
+        "backend",
+      ]);
+      const backend = values.get("backend") ?? "canvas2d";
+      if (backend !== "canvas2d" && backend !== "webgl2")
+        throw new AnimationEngineError(
+          "SCENE_INVALID",
+          "Composition backend must be canvas2d or webgl2",
+        );
       const result = await renderComposition({
         compositionPath: requireArgument(values, "input"),
         outputPath: requireArgument(values, "output"),
+        backend,
       });
       io.stdout(`${JSON.stringify(result)}\n`);
       return 0;

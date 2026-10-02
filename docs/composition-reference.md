@@ -137,6 +137,7 @@ const { diagnostics, culled } = preview.renderFrame(42);
 
 ```bash
 pnpm --silent still-shift comp render --input first-slice.json --output out.mp4
+pnpm --silent still-shift comp render --input first-slice.json --output gpu.mp4 --backend webgl2
 ```
 
 `loadCompositionResources` fetches every image and font, checks its SHA-256 and pixel
@@ -1135,5 +1136,9 @@ storage is capped at 128 MiB, with at most 16 surfaces per dimensions/type key.
 Unsupported WebGL2 or floating accumulation capabilities fail explicitly.
 
 The native backend suite compares 57 focused cases and 612 fixture frames on the
-pinned software browser at the existing near tier. Family acceptance, measured
-performance, export and Lab selection are tracked separately in the plan.
+pinned software browser at the existing near tier. The CLI accepts `comp render --backend webgl2`; engine callers pass
+`backend: "webgl2"` to `renderComposition`. The Lab renderer selector uses the same
+backend and includes it in the displayed export command. Export uses pinned
+SwiftShader; hardware previews are labeled approximate. Both scene and result
+manifests report the selected renderer version. Canvas remains the default.
+Family acceptance and measured performance are tracked separately in the plan.

@@ -2063,6 +2063,25 @@ comparisons; the full `pnpm check`.
   CE4b-required effects path; broader CE6 features and its acceleration target
   are not marked complete.
 
+### CE4b WebGL2 export and Lab selection (2026-10-02)
+
+- **Delivered:** `comp render --backend canvas2d|webgl2`, matching engine request
+  selection and backend-specific scene/result renderer identity. Canvas remains
+  the default. WebGL export captures the presented framebuffer on pinned
+  SwiftShader; PNG and raw RGBA retain the same orientation and pixels.
+- **Lab:** the composition page offers both renderers, replaces its canvas when
+  switching context type, retains selection in the URL, labels the active backend
+  and hardware/software status, and shows the matching export command.
+- **Verification:** `pnpm test:browser:composition-webgl-export` passes four native
+  fixtures / **204 frames** (echo, generators, exposure and providers). CLI export,
+  repeated PNG export, raw export and a separately encoded preview produce
+  identical MP4 bytes. Lab frames agree before/after switching through Canvas;
+  renderer metadata, invalid backend diagnostics and overwrite protection pass.
+  `pnpm check:fast` passes **1,220 unit tests**. The existing Canvas composition
+  suite also passes, including default Lab preview and repeat/transport exports.
+- **Remaining:** full commerce/reusable WebGL pixel and performance acceptance,
+  followed by the complete local check and frozen baseline matrix.
+
 **Completion record:** CE4a and CE4b are in progress; CE4c–CE4d have not started.
 
 ---

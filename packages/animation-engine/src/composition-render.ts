@@ -9,8 +9,9 @@ import {
 } from "@still-shift/scene-contract";
 import {
   COMPOSITION_EVALUATOR_VERSION,
-  COMPOSITION_RENDERER_VERSION,
   compositionScene,
+  type CompositionBackend,
+  type CompositionRendererVersion,
   type CompositionScene,
 } from "@still-shift/renderer-core";
 import {
@@ -58,6 +59,7 @@ export type LoadedComposition = {
 /** Read, validate and resolve a `composition-1` file and its pinned assets. */
 export async function loadComposition(
   compositionPath: string,
+  backend: CompositionBackend = "canvas2d",
 ): Promise<LoadedComposition> {
   const sourcePath = resolve(compositionPath);
   let bytes: Buffer;
@@ -108,7 +110,7 @@ export async function loadComposition(
     composition,
     warnings: result.diagnostics,
     systemFontLayers: systemFontLayers(composition),
-    scene: compositionScene(composition),
+    scene: compositionScene(composition, backend),
     assetPaths,
     sourcePath,
     sourceChecksum: hash(bytes),
@@ -119,7 +121,7 @@ export type CompositionRenderResult = {
   schemaVersion: "composition-result-1";
   status: "rendered";
   composition: string;
-  rendererVersion: typeof COMPOSITION_RENDERER_VERSION;
+  rendererVersion: CompositionRendererVersion;
   evaluatorVersion: typeof COMPOSITION_EVALUATOR_VERSION;
   fps: number;
   frameCount: number;
@@ -141,9 +143,13 @@ export async function renderComposition(request: {
   outputPath: string;
   signal?: AbortSignal | undefined;
   transport?: ExportRequest["transport"];
+  backend?: CompositionBackend;
 }): Promise<CompositionRenderResult> {
   request.signal?.throwIfAborted();
-  const loaded = await loadComposition(request.compositionPath);
+  const loaded = await loadComposition(
+    request.compositionPath,
+    request.backend,
+  );
   const { width, height } = loaded.scene.canvas;
   if (width % 2 !== 0 || height % 2 !== 0)
     throw new AnimationEngineError(
@@ -170,7 +176,7 @@ export async function renderComposition(request: {
   const manifestBytes = `${JSON.stringify(
     {
       schemaVersion: "composition-render-1",
-      rendererVersion: COMPOSITION_RENDERER_VERSION,
+      rendererVersion: loaded.scene.rendererVersion,
       evaluatorVersion: COMPOSITION_EVALUATOR_VERSION,
       sourcePath: loaded.sourcePath,
       sourceChecksum: loaded.sourceChecksum,
@@ -196,7 +202,7 @@ export async function renderComposition(request: {
         schemaVersion: "composition-result-1",
         status: "rendered",
         composition: loaded.composition.id,
-        rendererVersion: COMPOSITION_RENDERER_VERSION,
+        rendererVersion: loaded.scene.rendererVersion,
         evaluatorVersion: COMPOSITION_EVALUATOR_VERSION,
         fps: loaded.scene.timeline.fps,
         frameCount: metrics.frameCount,
