@@ -1,7 +1,79 @@
-import type { CommerceScene } from "@still-shift/scene-contract";
+import {
+  PreparedNodeSchema,
+  type CommerceScene,
+} from "@still-shift/scene-contract";
 import { commerceMaskVariants } from "./composition-commerce-masks.ts";
 
 export function commerceEffectVariants(id: string, source: CommerceScene) {
+  if (id === "commerce/atom-light-sweep") {
+    const rotated = structuredClone(source);
+    const product = rotated.nodes.find((node) => node.id === "product")!;
+    product.rotation = 17;
+    product.opacity = 0.6;
+    rotated.motionModel = "curves-1";
+    rotated.signals = [
+      {
+        id: "skew",
+        keys: [
+          { frame: 0, value: -8 },
+          { frame: 120, value: 12 },
+        ],
+      },
+    ];
+    rotated.drivers = [{ target: "product.skewX", signal: "skew" }];
+    const image = structuredClone(rotated);
+    const root = image.nodes.find((node) => node.id === "product")!;
+    const art = image.nodes.find((node) => node.id === "product-art")!;
+    if (art.type !== "image") throw new Error("Expected image");
+    image.nodes = image.nodes.filter((node) => node.id !== art.id);
+    const imageNode: Record<string, unknown> = {
+      ...root,
+      type: "image",
+      states: art.states,
+      fit: art.fit,
+    };
+    delete imageNode.clip;
+    image.nodes[image.nodes.indexOf(root)] =
+      PreparedNodeSchema.parse(imageNode);
+    image.nodes.push(
+      PreparedNodeSchema.parse({
+        id: "sweepMask",
+        type: "rect",
+        x: 300,
+        y: 320,
+        width: 350,
+        height: 360,
+        fill: "#ffffff",
+        opacity: 0.65,
+        radius: 22,
+      }),
+    );
+    image.mattes = [
+      {
+        target: "product",
+        mask: "sweepMask",
+        invert: true,
+        space: "canvas",
+        order: "after-effects",
+      },
+    ];
+    const stacked = structuredClone(image);
+    stacked.effects = [
+      {
+        type: "glow",
+        target: "product",
+        radius: 6,
+        intensity: 0.55,
+        threshold: 0.2,
+      },
+      ...stacked.effects!,
+    ];
+    return [
+      { id: `${id}/rotated-skew`, scene: rotated },
+      { id: `${id}/image-matte`, scene: image },
+      { id: `${id}/glow-first`, scene: stacked },
+    ];
+  }
   if (id === "commerce/atom-particles") {
     const combined = structuredClone(source);
     combined.nodes.find((node) => node.id === "product")!.opacity = 0.7;

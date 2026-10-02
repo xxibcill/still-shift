@@ -1,3 +1,4 @@
+import type { RenderEffect } from "./graph.ts";
 import {
   paintRadialLight,
   paintRisingParticles,
@@ -9,6 +10,8 @@ import {
   glow,
   directionalBlur,
   sineDisplacement,
+  lightSweep,
+  type LightSweepParams,
 } from "../../pixel-effects.ts";
 import type { EvaluatedEffect } from "../evaluate/effects.ts";
 import type { CanvasSurface } from "./canvas2d.ts";
@@ -22,9 +25,17 @@ type CanvasEffect = (
   context: CanvasEffectContext,
   target: CanvasSurface,
   params: EvaluatedEffect["params"],
+  placement: RenderEffect["placement"],
 ) => void;
 
 const effects: Readonly<Record<string, CanvasEffect>> = {
+  "light.sweep": (context, target, params, placement) => {
+    if (!placement)
+      throw new Error(
+        "comp-effect-space: light.sweep requires layer coordinates",
+      );
+    lightSweep(context, target, params as LightSweepParams, placement);
+  },
   "light.radial": (_context, target, params) =>
     paintRadialLight(
       target.ctx,
@@ -106,7 +117,7 @@ const effects: Readonly<Record<string, CanvasEffect>> = {
 export function applyCanvasEffects(
   context: CanvasEffectContext,
   target: CanvasSurface,
-  stack: EvaluatedEffect[],
+  stack: RenderEffect[],
 ) {
   for (const effect of stack) {
     const render = Object.hasOwn(effects, effect.effect)
@@ -116,6 +127,7 @@ export function applyCanvasEffects(
       throw new Error(
         `comp-effect-unavailable: ${effect.effect} has no Canvas implementation`,
       );
-    if (effect.enabled) render(context, target, effect.params);
+    if (effect.enabled)
+      render(context, target, effect.params, effect.placement);
   }
 }

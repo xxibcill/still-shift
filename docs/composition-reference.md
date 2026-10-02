@@ -572,23 +572,23 @@ actual time-dependent values stay in range; reduce the deltas or separate their 
 
 ### Fields on every layer
 
-| Field                                 | Notes                                                                                                                  |
-| ------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
-| `id`, `type`                          | Required. `type` selects the fields below.                                                                             |
-| `name`                                | Display name.                                                                                                          |
-| `inPoint`, `outPoint`                 | Composition frames, `[in, out)`. Default `0` and the scope's `frameCount`.                                             |
-| `startFrame`, `stretch`               | Layer time 0 and time stretch. Defaults `0` and `1`.                                                                   |
-| `parent`                              | Layer id in the same scope. Position, rotation, scale and skew inherit; opacity does not.                              |
-| `enabled`, `solo`, `guide`            | Visibility switches; guides never render in export.                                                                    |
-| `transform`                           | See [transform](#transform).                                                                                           |
-| `constraintReference`                 | Animatable layer-space vector, defaulting to the transform anchor. Constraints can move it without moving artwork.     |
-| `blendMode`                           | See [blend modes](#blend-modes). Default `normal`.                                                                     |
-| `trackMatte`                          | `{ layer, mode }`; see [track mattes](#track-mattes).                                                                  |
-| `masks`                               | See [masks](#masks).                                                                                                   |
-| `effects`                             | `{ id, effect, enabled?, inPoint?, outPoint?, params? }[]`. Ordered registry effects; active intervals use layer time. |
-| `cameraDepth`                         | 0–2, unparented root layers only; see [2D camera](#2d-camera).                                                         |
-| `threeD`, `motionBlur`                | Arrive in CE8 and CE7; `false` is allowed.                                                                             |
-| `qualification`, `source`, `metadata` | Evidence and provenance carried through from story scenes and adapters.                                                |
+| Field                                 | Notes                                                                                                                          |
+| ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| `id`, `type`                          | Required. `type` selects the fields below.                                                                                     |
+| `name`                                | Display name.                                                                                                                  |
+| `inPoint`, `outPoint`                 | Composition frames, `[in, out)`. Default `0` and the scope's `frameCount`.                                                     |
+| `startFrame`, `stretch`               | Layer time 0 and time stretch. Defaults `0` and `1`.                                                                           |
+| `parent`                              | Layer id in the same scope. Position, rotation, scale and skew inherit; opacity does not.                                      |
+| `enabled`, `solo`, `guide`            | Visibility switches; guides never render in export.                                                                            |
+| `transform`                           | See [transform](#transform).                                                                                                   |
+| `constraintReference`                 | Animatable layer-space vector, defaulting to the transform anchor. Constraints can move it without moving artwork.             |
+| `blendMode`                           | See [blend modes](#blend-modes). Default `normal`.                                                                             |
+| `trackMatte`                          | `{ layer, mode }`; see [track mattes](#track-mattes).                                                                          |
+| `masks`                               | See [masks](#masks).                                                                                                           |
+| `effects`                             | `{ id, effect, enabled?, space?, inPoint?, outPoint?, params? }[]`. Ordered registry effects; active intervals use layer time. |
+| `cameraDepth`                         | 0–2, unparented root layers only; see [2D camera](#2d-camera).                                                                 |
+| `threeD`, `motionBlur`                | Arrive in CE8 and CE7; `false` is allowed.                                                                                     |
+| `qualification`, `source`, `metadata` | Evidence and provenance carried through from story scenes and adapters.                                                        |
 
 ### Layer types
 
@@ -974,3 +974,27 @@ artwork and uses time relative to its active interval. Full-coverage normal
 adjustments containing only effects that preserve opaque input can paint the
 backdrop directly. Alpha-changing stacks retain an RGBA intermediate, including
 when the final output canvas is opaque.
+
+### Light sweep and effect coordinates (CE6 dependency slice)
+
+`light.sweep` version `1.0.0` paints a white sweep in layer coordinates, intersects
+it with the processed input alpha, then applies `source-atop` with `strength`.
+It uses the owner's evaluated transform by default. Set an effect instance's
+`space` to a layer id in the same scope to use that layer's coordinates; its
+visibility and opacity are not borrowed. Missing coordinate layers and `space` on
+surface-coordinate effects are rejected. Parent, camera and precomp transforms
+remain part of the coordinate chain.
+
+| Parameter                     | Default | Range / meaning                                            |
+| ----------------------------- | ------- | ---------------------------------------------------------- |
+| `width`, `height`             | 100     | 0.01–1,000,000; local rectangle dimensions                 |
+| `left`, `top`                 | 0       | 0–1; region origin as fractions of that rectangle          |
+| `regionWidth`, `regionHeight` | 1       | 0.001–1; fractional region dimensions                      |
+| `band`                        | 0.1     | 0.001–1; sweep half-width as a fraction of rectangle width |
+| `progress`                    | 0       | 0–1; band passage across the region                        |
+| `strength`                    | 0.5     | 0–1; source-atop blend amount                              |
+
+Every parameter accepts scalar keys and drivers. The commerce adapter compiles its
+cosine phase to `progress` keys, retains source dimensions and normalized regions,
+and names the original target as the coordinate layer when an opacity/matte wrapper
+owns the effect stack. Source region and protected-artwork validation still applies.

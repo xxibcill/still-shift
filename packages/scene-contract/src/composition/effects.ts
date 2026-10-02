@@ -17,6 +17,7 @@ export type CompositionEffectDefinition = {
   properties: Readonly<Record<string, EffectScalar | EffectColor>>;
   generatesContent?: boolean;
   preservesOpaque?: boolean;
+  usesLayerSpace?: boolean;
 };
 
 function defineEffect(
@@ -24,7 +25,7 @@ function defineEffect(
   colors: Record<string, string> = {},
   options: Pick<
     CompositionEffectDefinition,
-    "generatesContent" | "preservesOpaque"
+    "generatesContent" | "preservesOpaque" | "usesLayerSpace"
   > = {},
 ): CompositionEffectDefinition {
   return {
@@ -59,6 +60,21 @@ function defineEffect(
 }
 
 const definitions: Readonly<Record<string, CompositionEffectDefinition>> = {
+  "light.sweep": defineEffect(
+    {
+      width: { default: 100, min: 0.01, max: 1000000 },
+      height: { default: 100, min: 0.01, max: 1000000 },
+      left: { default: 0, min: 0, max: 1 },
+      top: { default: 0, min: 0, max: 1 },
+      regionWidth: { default: 1, min: 0.001, max: 1 },
+      regionHeight: { default: 1, min: 0.001, max: 1 },
+      band: { default: 0.1, min: 0.001, max: 1 },
+      progress: { default: 0, min: 0, max: 1 },
+      strength: { default: 0.5, min: 0, max: 1 },
+    },
+    {},
+    { usesLayerSpace: true, preservesOpaque: true },
+  ),
   "light.radial": defineEffect(
     {
       x: { default: 0, min: -1000000, max: 1000000 },

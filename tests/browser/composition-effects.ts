@@ -214,6 +214,26 @@ try {
             ...effect,
             inPoint: 2,
           }));
+        if (kind === "text") {
+          const sweep = root.effects.find(
+            (effect) => effect.effect === "light.sweep",
+          );
+          if (sweep) {
+            sweep.space = "screen";
+            sweep.params = {
+              ...sweep.params,
+              width: 128,
+              height: 96,
+              left: 0,
+              top: 0,
+              regionWidth: 1,
+              regionHeight: 1,
+              band: 0.5,
+              progress: 0.5,
+            };
+            comp.layers.push({ id: "screen", type: "null", enabled: false });
+          }
+        }
         if (kind === "masked")
           root.masks = [
             {
@@ -274,9 +294,25 @@ try {
               ctx.drawImage(painted, 0, 0);
               painted = next;
             }
-          if (treatment !== "gaussian" && frame >= 2)
-            for (const effect of pixelStacks[treatment]!)
-              painted = pixelReference(painted, effect);
+          if (treatment !== "gaussian" && frame >= 2) {
+            const x =
+              kind === "offscreen"
+                ? -53
+                : ["solid", "image", "provider", "masked"].includes(kind)
+                  ? 25
+                  : 0;
+            const y = [
+              "solid",
+              "image",
+              "provider",
+              "masked",
+              "offscreen",
+            ].includes(kind)
+              ? 20
+              : 0;
+            for (const effect of root.effects!)
+              painted = pixelReference(painted, effect, [1, 0, 0, 1, x, y]);
+          }
           if (kind === "masked") {
             const ctx = painted.getContext("2d")!;
             ctx.filter = "none";
@@ -363,7 +399,14 @@ try {
         if (treatment !== "gaussian") {
           let source = raw.c;
           for (const effect of pixelStacks[treatment]!)
-            source = pixelReference(source, effect);
+            source = pixelReference(source, effect, [
+              1,
+              0,
+              0,
+              1,
+              full ? 0 : 30,
+              full ? 0 : 20,
+            ]);
           fc.filter = "none";
           fc.clearRect(0, 0, 128, 96);
           fc.drawImage(source, 0, 0);
@@ -412,7 +455,12 @@ try {
 
 const output = await mkdtemp(join(tmpdir(), "still-shift-gaussian-"));
 try {
-  for (const fixture of ["gaussian", "pixel-stack", "generators"]) {
+  for (const fixture of [
+    "gaussian",
+    "pixel-stack",
+    "generators",
+    "light-sweep",
+  ]) {
     const compositionPath = resolve(
       `benchmarks/fixtures/composition/ce6/${fixture}.json`,
     );

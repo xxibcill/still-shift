@@ -9,6 +9,7 @@ export type EvaluatedEffect = {
   id: string;
   effect: string;
   enabled: boolean;
+  space?: string;
   params: Record<string, number | Rgba>;
 };
 
@@ -22,6 +23,7 @@ export function sampleEffects(
     return {
       id: effect.id,
       effect: effect.effect,
+      ...(effect.space ? { space: effect.space } : {}),
       enabled:
         effect.enabled !== false &&
         time >= (effect.inPoint ?? -Infinity) &&

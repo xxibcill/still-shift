@@ -3,7 +3,12 @@ import {
   paintRisingParticles,
   paintFilmGrain,
 } from "./pixel-generators.ts";
-import { glow, directionalBlur, sineDisplacement } from "./pixel-effects.ts";
+import {
+  glow,
+  directionalBlur,
+  sineDisplacement,
+  lightSweep as paintLightSweep,
+} from "./pixel-effects.ts";
 import type { CinematicRenderScene } from "./cinematic-scene.ts";
 import { storyCameraTransform } from "./story-camera.ts";
 import { componentMasks, compositeRootMask } from "./component-mask.ts";
@@ -107,49 +112,35 @@ export function createCommerceEffectsRenderer(
     node: PreparedNode,
     frame: number,
   ) {
-    clear(scratch);
-    const ctx = scratch.ctx,
-      state = evaluatePreparedNodeAtTime(scene, node, frame);
-    const [rx, ry, rw, rh] = effect.region;
-    ctx.save();
+    const state = evaluatePreparedNodeAtTime(scene, node, frame);
+    const matrix = nodeMatrix(node, state);
+    const transforms: (typeof matrix)[] = [];
     if (scene.schemaVersion === "story-scene-1") {
       const camera = storyCameraTransform(scene, node.id, frame);
-      ctx.translate(camera.x, camera.y);
-      ctx.scale(camera.scale, camera.scale);
+      transforms.push(
+        [1, 0, 0, 1, camera.x, camera.y],
+        [camera.scale, 0, 0, camera.scale, 0, 0],
+      );
     }
-    ctx.transform(...nodeMatrix(node, state));
-    ctx.beginPath();
-    ctx.rect(
-      rx * node.width,
-      ry * node.height,
-      rw * node.width,
-      rh * node.height,
+    transforms.push(matrix);
+    paintLightSweep(
+      pixelContext,
+      layer,
+      {
+        width: node.width,
+        height: node.height,
+        left: effect.region[0],
+        top: effect.region[1],
+        regionWidth: effect.region[2],
+        regionHeight: effect.region[3],
+        band: effect.width,
+        progress: (1 - Math.cos(effectPhase(effect, frame))) / 2,
+        strength: effect.strength,
+      },
+      { matrix, transforms },
     );
-    ctx.clip();
-    const progress = (1 - Math.cos(effectPhase(effect, frame))) / 2;
-    const center =
-      (rx - effect.width + (rw + effect.width * 2) * progress) * node.width;
-    const radius = effect.width * node.width;
-    const gradient = ctx.createLinearGradient(
-      center - radius,
-      0,
-      center + radius,
-      0,
-    );
-    gradient.addColorStop(0, "#FFFFFF00");
-    gradient.addColorStop(0.5, "#FFFFFF");
-    gradient.addColorStop(1, "#FFFFFF00");
-    ctx.fillStyle = gradient;
-    ctx.fillRect(0, 0, node.width, node.height);
-    ctx.restore();
-    ctx.globalCompositeOperation = "destination-in";
-    ctx.drawImage(layer.canvas, 0, 0);
-    layer.ctx.save();
-    layer.ctx.globalCompositeOperation = "source-atop";
-    layer.ctx.globalAlpha = effect.strength;
-    layer.ctx.drawImage(scratch.canvas, 0, 0);
-    layer.ctx.restore();
   }
+
   function drawRoot(
     ctx: CanvasRenderingContext2D,
     node: PreparedNode,

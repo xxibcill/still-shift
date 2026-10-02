@@ -1,3 +1,4 @@
+import { compositionEffectDefinition } from "@still-shift/scene-contract";
 import type { EvaluatedEffect } from "../evaluate/effects.ts";
 import type {
   BezierPath,
@@ -16,6 +17,10 @@ import type {
 } from "../evaluate/types.ts";
 import { cameraMatrix } from "../evaluate/camera.ts";
 import { projectBounds } from "../evaluate/geometry.ts";
+
+export type RenderEffect = EvaluatedEffect & {
+  placement?: { matrix: Matrix; transforms: Matrix[] };
+};
 
 type TextLayer = Extract<CompositionLayer, { type: "text" }>;
 type ImageLayer = Extract<CompositionLayer, { type: "image" }>;
@@ -105,7 +110,7 @@ export type IsolateOp = {
   kind: "isolate";
   layer: string;
   ops: RenderOp[];
-  effects: EvaluatedEffect[];
+  effects: RenderEffect[];
   masks: MaskOp[];
   matte: MatteOp | null;
   opacity: number;
@@ -120,7 +125,7 @@ export type AdjustOp = {
   transforms: Matrix[];
   width: number;
   height: number;
-  effects: EvaluatedEffect[];
+  effects: RenderEffect[];
   masks: MaskOp[];
   matte: MatteOp | null;
   opacity: number;
@@ -485,7 +490,20 @@ class GraphBuilder {
     }
     const clips = this.groupClips(scope, state, frame);
     const masks = this.masks(state, matrix, transforms);
-    const effects = state.effects.filter((effect) => effect.enabled);
+    const effects: RenderEffect[] = state.effects
+      .filter((effect) => effect.enabled)
+      .map((effect) => {
+        if (!compositionEffectDefinition(effect.effect)!.usesLayerSpace)
+          return effect;
+        const source = effect.space ? scope.byId.get(effect.space)! : state;
+        return {
+          ...effect,
+          placement: {
+            matrix: multiplyMatrix(frame.matrix, source.screenMatrix),
+            transforms: this.transforms(scope, source, frame),
+          },
+        };
+      });
     const seen = options.seen ?? new Set([layer.id]);
     const matte = this.matte(scope, state, frame, seen);
     if (layer.type === "adjustment") {

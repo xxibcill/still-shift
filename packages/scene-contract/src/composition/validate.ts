@@ -133,6 +133,18 @@ function checkLayer(
       );
       return;
     }
+    if (
+      effect.space &&
+      (!definition.usesLayerSpace ||
+        !scope.layers.some((layer) => layer.id === effect.space))
+    )
+      fail(
+        "comp-effect-space",
+        [...at, "space"],
+        definition.usesLayerSpace
+          ? `No coordinate layer "${effect.space}" in this scope`
+          : "This effect uses surface coordinates",
+      );
     if ((effect.inPoint ?? -Infinity) >= (effect.outPoint ?? Infinity))
       fail("comp-effect-time", at, "Effect inPoint must precede outPoint");
     const parsed = definition.params.safeParse(effect.params ?? {});

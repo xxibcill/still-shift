@@ -76,6 +76,8 @@ export const EffectInstanceSchema = z
       .regex(/^[a-z][\w.-]*$/)
       .max(64),
     enabled: z.boolean().optional(),
+    /** Coordinate layer for effects that use layer space; defaults to the owner. */
+    space: compositionId.optional(),
     inPoint: keyFrame.optional(),
     outPoint: keyFrame.optional(),
     params: boundedJson(z.record(compositionId, z.json())).optional(),

@@ -8,6 +8,29 @@ import { baked } from "./prepared.ts";
 
 function effectParameters(scene: CommerceScene, effect: CommerceEffect) {
   switch (effect.type) {
+    case "light-sweep": {
+      const node = scene.nodes.find((node) => node.id === effect.target)!;
+      return {
+        effect: "light.sweep",
+        space: effect.target,
+        params: {
+          width: node.width,
+          height: node.height,
+          left: effect.region[0],
+          top: effect.region[1],
+          regionWidth: effect.region[2],
+          regionHeight: effect.region[3],
+          band: effect.width,
+          strength: effect.strength,
+          progress: baked(
+            Array.from(
+              { length: scene.frameCount },
+              (_, frame) => (1 - Math.cos(effectPhase(effect, frame))) / 2,
+            ),
+          ),
+        },
+      };
+    }
     case "background-light":
       return {
         effect: "light.radial",

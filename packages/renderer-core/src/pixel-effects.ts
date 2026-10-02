@@ -1,3 +1,4 @@
+import type { Matrix } from "./node-transform.ts";
 /** Deterministic pixel kernels shared by family and composition renderers. */
 export type PixelSurface = {
   canvas: HTMLCanvasElement;
@@ -107,6 +108,75 @@ export function sineDisplacement<S extends PixelSurface>(
     }
     context.clear(layer, null);
     layer.ctx.drawImage(scratch.canvas, 0, 0);
+  } finally {
+    context.releaseSurface(scratch);
+  }
+}
+
+export type PixelEffectPlacement = { matrix: Matrix; transforms?: Matrix[] };
+export type LightSweepParams = {
+  width: number;
+  height: number;
+  left: number;
+  top: number;
+  regionWidth: number;
+  regionHeight: number;
+  band: number;
+  progress: number;
+  strength: number;
+};
+
+/** Paint in layer coordinates, intersect source alpha, then mix with source-atop. */
+export function lightSweep<S extends PixelSurface>(
+  context: PixelEffectContext<S>,
+  layer: S,
+  params: LightSweepParams,
+  placement: PixelEffectPlacement,
+) {
+  const scratch = context.createSurface(
+    layer.canvas.width,
+    layer.canvas.height,
+  );
+  try {
+    context.clear(scratch, null);
+    const ctx = scratch.ctx;
+    ctx.save();
+    if (placement.transforms)
+      for (const transform of placement.transforms) ctx.transform(...transform);
+    else ctx.transform(...placement.matrix);
+    ctx.beginPath();
+    ctx.rect(
+      params.left * params.width,
+      params.top * params.height,
+      params.regionWidth * params.width,
+      params.regionHeight * params.height,
+    );
+    ctx.clip();
+    const center =
+      (params.left -
+        params.band +
+        (params.regionWidth + params.band * 2) * params.progress) *
+      params.width;
+    const radius = params.band * params.width;
+    const gradient = ctx.createLinearGradient(
+      center - radius,
+      0,
+      center + radius,
+      0,
+    );
+    gradient.addColorStop(0, "#FFFFFF00");
+    gradient.addColorStop(0.5, "#FFFFFF");
+    gradient.addColorStop(1, "#FFFFFF00");
+    ctx.fillStyle = gradient;
+    ctx.fillRect(0, 0, params.width, params.height);
+    ctx.restore();
+    ctx.globalCompositeOperation = "destination-in";
+    ctx.drawImage(layer.canvas, 0, 0);
+    layer.ctx.save();
+    layer.ctx.globalCompositeOperation = "source-atop";
+    layer.ctx.globalAlpha = params.strength;
+    layer.ctx.drawImage(scratch.canvas, 0, 0);
+    layer.ctx.restore();
   } finally {
     context.releaseSurface(scratch);
   }

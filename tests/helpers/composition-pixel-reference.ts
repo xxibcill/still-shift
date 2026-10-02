@@ -4,6 +4,23 @@ export const pixelStacks: Record<
   string,
   NonNullable<CompositionLayer["effects"]>
 > = {
+  sweep: [
+    {
+      id: "sweep",
+      effect: "light.sweep",
+      params: {
+        width: 50,
+        height: 45,
+        left: 0.1,
+        top: 0.1,
+        regionWidth: 0.8,
+        regionHeight: 0.8,
+        band: 0.2,
+        progress: 0.6,
+        strength: 0.7,
+      },
+    },
+  ],
   radial: [
     {
       id: "lamp",
@@ -59,11 +76,15 @@ pixelStacks.ordered = [
   ...pixelStacks.glow!,
   ...pixelStacks.displacement!,
 ];
+pixelStacks.sweepStack = [...pixelStacks.glow!, ...pixelStacks.sweep!];
 
 /** Reference equations, independent of native graph/effect evaluation and kernels. */
 export function pixelReference(
   source: HTMLCanvasElement,
   effect: NonNullable<CompositionLayer["effects"]>[number],
+  placement: [number, number, number, number, number, number] = [
+    1, 0, 0, 1, 0, 0,
+  ],
 ) {
   const { width, height } = source;
   const surface = () => {
@@ -80,7 +101,42 @@ export function pixelReference(
     state = (Math.imul(state, 1664525) + 1013904223) >>> 0;
     return state / 4294967296;
   };
-  if (effect.effect === "light.radial") {
+  if (effect.effect === "light.sweep") {
+    const light = surface(),
+      lc = light.getContext("2d")!;
+    lc.save();
+    lc.transform(...placement);
+    lc.beginPath();
+    lc.rect(
+      p.left! * p.width!,
+      p.top! * p.height!,
+      p.regionWidth! * p.width!,
+      p.regionHeight! * p.height!,
+    );
+    lc.clip();
+    const center =
+      (p.left! - p.band! + (p.regionWidth! + p.band! * 2) * p.progress!) *
+      p.width!;
+    const radius = p.band! * p.width!;
+    const gradient = lc.createLinearGradient(
+      center - radius,
+      0,
+      center + radius,
+      0,
+    );
+    gradient.addColorStop(0, "#ffffff00");
+    gradient.addColorStop(0.5, "#ffffff");
+    gradient.addColorStop(1, "#ffffff00");
+    lc.fillStyle = gradient;
+    lc.fillRect(0, 0, p.width!, p.height!);
+    lc.restore();
+    lc.globalCompositeOperation = "destination-in";
+    lc.drawImage(source, 0, 0);
+    ctx.drawImage(source, 0, 0);
+    ctx.globalCompositeOperation = "source-atop";
+    ctx.globalAlpha = p.strength!;
+    ctx.drawImage(light, 0, 0);
+  } else if (effect.effect === "light.radial") {
     ctx.drawImage(source, 0, 0);
     const gradient = ctx.createRadialGradient(
       p.x!,

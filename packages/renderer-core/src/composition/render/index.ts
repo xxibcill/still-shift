@@ -11,6 +11,7 @@ export {
   type MatteOp,
   type RenderGraph,
   type RenderOp,
+  type RenderEffect,
   type SolidContent,
   type SurfaceContent,
   type SurfaceNode,

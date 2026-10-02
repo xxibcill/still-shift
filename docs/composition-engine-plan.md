@@ -1848,6 +1848,28 @@ comparisons; the full `pnpm check`.
   story-effect integration, WebGL2 acceptance and final full local verification.
   The active goal continues after this slice's commit.
 
+### CE4b light-sweep follow-up (2026-10-02)
+
+- **Delivered:** native `light.sweep@1.0.0`, with animated band progress and a
+  validated optional coordinate-layer reference. Effects can retain source-local
+  coordinates when a group owns the processed image; camera, parent, rotation and
+  skew transforms are preserved. The shared low-level primitive also retains the
+  frozen legacy renderer's operation order.
+- **Versions:** commerce adapter `commerce-composition-0.14.0`, evaluator
+  `composition-evaluator-15`, Canvas renderer `composition-canvas-1.15.0`.
+- **Verification:** `pnpm check:fast` passes **1,199 unit tests**. Four commerce
+  cases / **960 frames** match exactly, including transformed groups, a single
+  image, inverted matte and glow-before-sweep. Worst paired median render/readback
+  ratio is **1.0165×**. The frozen CE0 sweep fixture passes all **240 frames**.
+  Native effects pass **800 exact frames** and **30 adjustment cases** within one
+  channel value. Four saved native fixtures each export 60 frames twice with
+  identical bytes. Three commerce cases each produce two byte-identical CLI MP4s,
+  with relocated assets and overwrite protection verified.
+- **Coverage:** **103 of 105** commerce/reusable CE0 entries have Canvas coverage.
+- **Remaining:** echo, motion blur, animated primitive blur, shared story-effect
+  integration, WebGL2 acceptance and final full local verification. The active
+  goal continues after this slice's commit.
+
 **Completion record:** CE4a and CE4b are in progress; CE4c–CE4d have not started.
 
 ---

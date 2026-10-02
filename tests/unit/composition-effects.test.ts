@@ -50,6 +50,51 @@ const fixture = (): Composition => ({
 });
 
 describe("composition effect stack", () => {
+  it("resolves light-sweep coordinates from a local layer without borrowing visibility or opacity", () => {
+    const comp = fixture();
+    comp.layers[0]!.transform!.position = [20, 20];
+    comp.layers[0]!.effects = [
+      {
+        id: "sweep",
+        effect: "light.sweep",
+        space: "guide",
+        params: { width: 20, height: 20, progress: 0.5 },
+      },
+    ];
+    comp.layers.push({
+      id: "guide",
+      type: "null",
+      enabled: false,
+      transform: {
+        position: [40, 50],
+        rotation: {
+          keys: [
+            { frame: 0, value: 0 },
+            { frame: 10, value: 90 },
+          ],
+        },
+        opacity: 0,
+      },
+    });
+    expect(validateComposition(comp).ok).toBe(true);
+    const tree = evaluateComp(comp, 5),
+      graph = buildRenderGraph(comp, tree);
+    const op = graph.root.ops[0]!;
+    expect(op.kind).toBe("isolate");
+    if (op.kind !== "isolate") throw new Error("effect surface required");
+    expect(op.effects[0]!.placement!.matrix).toEqual(
+      tree.layers.find((l) => l.id === "guide")!.screenMatrix,
+    );
+    expect(op.opacity).toBe(1);
+    const missing = structuredClone(comp);
+    missing.layers[0]!.effects![0]!.space = "outside";
+    expect(validateComposition(missing).ok).toBe(false);
+    const surfaceEffect = structuredClone(comp);
+    surfaceEffect.layers[0]!.effects = [
+      { id: "grain", effect: "stylize.grain", space: "guide" },
+    ];
+    expect(validateComposition(surfaceEffect).ok).toBe(false);
+  });
   it("animates effect colors and their components, and retains generated content beyond input bounds", () => {
     const comp = fixture();
     comp.layers[0]!.effects = [

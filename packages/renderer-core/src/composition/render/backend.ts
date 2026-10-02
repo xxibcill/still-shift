@@ -1,5 +1,5 @@
 import { compositionEffectDefinition } from "@still-shift/scene-contract";
-import type { EvaluatedEffect } from "../evaluate/effects.ts";
+import type { RenderEffect } from "./graph.ts";
 import type {
   CompositionBlendMode,
   TrackMatte,
@@ -86,7 +86,7 @@ export interface RenderBackend<S extends Surface = Surface> {
     transforms?: Matrix[],
   ): void;
   /** Apply the ordered effect stack in surface pixel space, before masks/mattes. */
-  applyEffects(target: S, effects: EvaluatedEffect[]): void;
+  applyEffects(target: S, effects: RenderEffect[]): void;
   /** Multiply `target` by the combined coverage of `masks`. */
   applyMask(target: S, masks: MaskOp[]): void;
   /** Multiply `target` by the matte value of `matte`. */
