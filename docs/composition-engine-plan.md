@@ -2400,6 +2400,31 @@ comparisons; the full `pnpm check`.
 - **Remaining:** 10 typography timing failures (1.2851–1.9627×), component
   timing failures, full commerce GPU acceptance and final full verification.
 
+### CE4b commerce GPU audit and translated sampling (2026-10-03)
+
+- **Audit:** the diagnostic commerce run at `composition-webgl2-0.19.0`
+  completed **48 cases / 11,592 frames** before being stopped to address confirmed
+  failures. **21 cases passed both gates**, including all seven commerce demos
+  and four motion-blur variants. Pixel failures were directional blur (maximum
+  difference 8), displacement (3), and its two stacked variants (4). This was a
+  partial audit with exports skipped, not full commerce acceptance.
+- **Version:** `composition-webgl2-0.20.0` clips translated image rectangles at
+  pixel centers and clamps filtering to source edges. It also initializes
+  fixed-step coordinates per 127-pixel bitmap span, matching the pinned Canvas
+  renderer's float32 mapping instead of rounding each destination coordinate
+  independently. Both corrections apply to GPU directional blur and sine
+  displacement; effect arithmetic and the pixel/timing gates are unchanged.
+- **Displacement verification:** all **720 frames** pass pixels. The base case is
+  exact; both stacked variants have maximum difference **2**. Timing remains
+  over budget at **2.2747× / 2.3556× / 2.4462×**, respectively.
+- **Directional verification:** all **240 frames** pass both gates, reducing
+  maximum difference from **8 to 1** with a paired median time of **0.0943×**.
+- **Regression verification:** four new 1080-pixel-wide sampling cases cover
+  horizontal, vertical and angled clipped translations plus fractional sine
+  coordinates beyond the first span. They pass at maximum difference **1 / 1 /
+  1 / 0**. Native GPU checks, all **1,242 unit tests**, fast checks and **204
+  export/Lab frames** pass.
+
 **Completion record:** CE4a and CE4b are in progress; CE4c–CE4d have not started.
 
 ---

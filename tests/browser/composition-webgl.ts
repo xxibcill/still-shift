@@ -5,6 +5,7 @@ import { launchRenderBrowser } from "@still-shift/execution-runtime";
 import type * as Rational from "../helpers/composition-webgl-float-sum.ts";
 import type * as Checks from "../helpers/composition-webgl-reference.ts";
 import type * as VectorPaints from "../helpers/composition-webgl-vector-paints.ts";
+import type * as Sampling from "../helpers/composition-webgl-sampling.ts";
 const server = await createServer({
   root: resolve(import.meta.dirname, "../.."),
   configFile: false,
@@ -22,6 +23,11 @@ try {
     return ((await import(url)) as typeof Rational).checkWebglFloatSum();
   });
   console.log("WebGL exact Float32 accumulation:", sums);
+  const sampling = await page.evaluate(async () => {
+    const url = "/tests/helpers/composition-webgl-sampling.ts";
+    return ((await import(url)) as typeof Sampling).checkWebglEffectSampling();
+  });
+  console.log("WebGL translated effect sampling:", sampling);
   const reuse = await page.evaluate(async () => {
     const url = "/tests/helpers/composition-webgl-reference.ts";
     return ((await import(url)) as typeof Checks).checkWebglFrameReuse();

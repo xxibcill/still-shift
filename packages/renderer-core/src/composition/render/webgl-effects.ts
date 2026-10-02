@@ -19,10 +19,23 @@ vec4 atPixel(ivec2 p) {
   ivec2 size = textureSize(source, 0);
   return any(lessThan(p,ivec2(0))) || any(greaterThanEqual(p,size)) ? vec4(0.0) : texelFetch(source,p,0);
 }
-vec4 bilinear(vec2 p) {
-  vec2 base=floor(p-0.5), f=floor(fract(p-0.5)*16.0)/16.0;
-  vec4 top=mix(floor(atPixel(ivec2(base))*255.0+0.5),floor(atPixel(ivec2(base)+ivec2(1,0))*255.0+0.5),f.x);
-  vec4 bottom=mix(floor(atPixel(ivec2(base)+ivec2(0,1))*255.0+0.5),floor(atPixel(ivec2(base)+ivec2(1,1))*255.0+0.5),f.x);
+vec4 translated(vec2 offset) {
+  offset=pixelTranslation(offset);
+  float start=max(0.0,floor(offset.x+0.5));
+  float span=start+floor((floor(gl_FragCoord.x)-start)/127.0)*127.0;
+  // Canvas starts each fixed-step bitmap span with a float32 mapping. Mapping
+  // every pixel separately can round across a 1/16-pixel filter boundary.
+  vec2 initial=vec2(span+0.5,gl_FragCoord.y)-offset-0.5;
+  vec2 base=floor(initial)+vec2(floor(gl_FragCoord.x)-span,0.0);
+  vec2 fraction=fract(initial), p=gl_FragCoord.xy-offset;
+  ivec2 size=textureSize(source,0);
+  // Canvas clips translated image rectangles at pixel centers, then clamps
+  // filtering to the source edge rather than mixing with transparent texels.
+  if(any(lessThan(p,vec2(0.0))) || any(greaterThanEqual(p,vec2(size)))) return vec4(0.0);
+  vec2 f=floor(fraction*16.0)/16.0;
+  ivec2 first=clamp(ivec2(base),ivec2(0),size-1), last=clamp(ivec2(base)+1,ivec2(0),size-1);
+  vec4 top=mix(floor(atPixel(first)*255.0+0.5),floor(atPixel(ivec2(last.x,first.y))*255.0+0.5),f.x);
+  vec4 bottom=mix(floor(atPixel(ivec2(first.x,last.y))*255.0+0.5),floor(atPixel(last)*255.0+0.5),f.x);
   return floor(mix(top,bottom,f.y))/255.0;
 }
 `;
@@ -314,7 +327,7 @@ ${FLOAT32_RATIONAL_SUM}
             for(int i=0;i<64;i++) {
               if(float(i)>=samples) break;
               float distance=((float(i)+0.5)/samples-0.5)*length;
-              vec4 value=bilinear(gl_FragCoord.xy-pixelTranslation(direction*distance));
+              vec4 value=translated(direction*distance);
               uvec4 rgba=uvec4(floor(value*255.0+0.5));
               uvec3 rgb=rgba.a>0u ? (rgba.rgb*255u+rgba.a/2u)/rgba.a : uvec3(0u);
               sum.r=addByteFraction(sum.r,rgb.r*rgba.a,uvec2(rgb.r,rgba.a));
@@ -360,7 +373,7 @@ ${FLOAT32_RATIONAL_SUM}
               `${SAMPLE}
             void main() {
               float shift=texelFetch(backdrop,ivec2(0,int(gl_FragCoord.y)),0).r;
-              pixel=bilinear(gl_FragCoord.xy-pixelTranslation(vec2(shift,0.0)));
+              pixel=translated(vec2(shift,0.0));
             }`,
               [dst, offsets],
               {},
