@@ -14,13 +14,20 @@ import { validateAttachedPaths } from "../../commerce-geometry.ts";
 import { validateComponentAnnotations } from "../../component-annotations.ts";
 import { evaluatePreparedNode } from "../../prepared-scene.ts";
 import { passageError, PassageError } from "../../passage-diagnostics.ts";
-import { params, preparedNodeLayer, trimSettledSamples } from "./prepared.ts";
+import {
+  params,
+  preparedNodeLayer,
+  trimSettledSamples,
+  baked,
+  bakedState,
+  type Samples,
+} from "./prepared.ts";
 import { compileCommercePathGeometry } from "./commerce-path.ts";
 import { prepareCommerceTextFits } from "../../commerce-layout.ts";
 import { prepareComponentTextFits } from "../../component-text-fit.ts";
 import { loadPreparedFonts, type LoadedFont } from "../../prepared-fonts.ts";
 
-export const COMMERCE_ADAPTER_VERSION = "commerce-composition-0.5.0";
+export const COMMERCE_ADAPTER_VERSION = "commerce-composition-0.6.0";
 
 export type CommerceCompositionOptions = {
   id?: string;
@@ -46,10 +53,9 @@ function checkSupported(scene: CommerceScene) {
       `The commerce adapter bakes at most ${COMPOSITION_LIMITS.maxKeys} frames`,
       { path: "frameCount" },
     );
-  if (scene.motionModel) unsupported("motionModel", "Motion-craft scenes");
-  if (scene.typography) unsupported("typography", "Typography scenes");
-  for (const field of ["textAnimators"] as const)
+  for (const field of ["spatialPaths", "pathMorphs"] as const)
     if (scene[field]?.length) unsupported(field, field);
+  if (scene.typography) unsupported("typography", "Typography scenes");
   scene.effects?.forEach((effect, index) => {
     if (!["drift", "parallax", "overshoot"].includes(effect.type))
       unsupported(
@@ -57,7 +63,6 @@ function checkSupported(scene: CommerceScene) {
         `${effect.type} effects (pending CE6/CE7)`,
       );
   });
-  const components = componentCapabilities(scene.componentData);
   scene.nodes.forEach((node, index) => {
     const path = `nodes[${index}]`;
     if (
@@ -67,7 +72,6 @@ function checkSupported(scene: CommerceScene) {
       unsupported(`${path}.parent`, "Parenting to drawable nodes");
     if (node.type !== "text") return;
     for (const field of [
-      "container",
       "style",
       "spans",
       "decorations",
@@ -82,13 +86,6 @@ function checkSupported(scene: CommerceScene) {
     ] as const)
       if (node[field] !== undefined)
         unsupported(`${path}.${field}`, `Text ${field}`);
-    if (
-      components.states.some(
-        (schedule) =>
-          schedule.target === node.id && schedule.cuts.some((cut) => cut.ramp),
-      )
-    )
-      unsupported("componentData.states", "Blended text states");
   });
 }
 
@@ -97,6 +94,7 @@ function measuredTextLayer(
   node: Extract<PreparedNode, { type: "text" }>,
   layer: Extract<CompositionLayer, { type: "provider" }>,
   layoutResolved: boolean,
+  samples: Samples,
 ) {
   const components = componentCapabilities(scene.componentData);
   const fit = [...(scene.textFits ?? []), ...components.textFits].find(
@@ -117,9 +115,34 @@ function measuredTextLayer(
           ).map((sample) => sample.text),
         }
       : undefined;
+  const animator = scene.textAnimators?.find(
+    (animator) => animator.node === node.id,
+  );
+  const blends = samples.some((s) => s.stateFrom !== undefined);
+  const extended = !!node.container || !!animator || blends;
+  const blendWindows = components.states.flatMap((s) =>
+    s.target === node.id
+      ? s.cuts.flatMap((c) => (c.ramp ? [[c.frame, c.frame + c.ramp]] : []))
+      : [],
+  );
   return {
     ...layer,
-    provider: fit || numeric ? "commerce.text@1.1.0" : "commerce.text@1.0.0",
+    provider: extended
+      ? "commerce.text@1.2.0"
+      : fit || numeric
+        ? "commerce.text@1.1.0"
+        : "commerce.text@1.0.0",
+    ...(extended
+      ? { state: bakedState(samples.map((s) => Math.round(s.state))) }
+      : {}),
+    ...(blends
+      ? {
+          stateFrom: bakedState(
+            samples.map((s) => Math.round(s.stateFrom ?? s.state)),
+          ),
+          stateMix: baked(samples.map((s) => s.stateMix ?? 1)),
+        }
+      : {}),
     params: params(
       {
         ...layer.params,
@@ -132,6 +155,8 @@ function measuredTextLayer(
             }
           : {}),
         ...(numeric ? { numeric } : {}),
+        ...(animator ? { animator } : {}),
+        ...(blendWindows.length ? { blendWindows } : {}),
       },
       `nodes[${scene.nodes.indexOf(node)}]`,
       node.id,
@@ -178,6 +203,18 @@ export function commerceToComposition(
       const samples = Array.from({ length: scene.frameCount }, (_, frame) =>
         evaluatePreparedNode(scene, node, frame),
       );
+      for (const property of [
+        "blur",
+        "strokeWidth",
+        "trimStart",
+        "trimEnd",
+        "trimOffset",
+      ] as const)
+        if (samples.some((sample) => sample[property] !== undefined))
+          unsupported(
+            `nodes[${scene.nodes.indexOf(node)}].${property}`,
+            `Motion ${property}`,
+          );
       // Keep path-based rectangle rasterization and parent transform concatenation.
       let layer = preparedNodeLayer(scene, node, samples, {
         nativeSolids: false,
@@ -187,8 +224,21 @@ export function commerceToComposition(
         layer.inPoint = gate.start;
         layer.outPoint = gate.end;
       }
-      if (node.type === "text" && node.textBox && layer.type === "provider")
-        layer = measuredTextLayer(scene, node, layer, !!options.textLayout);
+      if (
+        node.type === "text" &&
+        layer.type === "provider" &&
+        (node.textBox ||
+          node.container ||
+          scene.textAnimators?.some((a) => a.node === node.id) ||
+          samples.some((s) => s.stateFrom !== undefined))
+      )
+        layer = measuredTextLayer(
+          scene,
+          node,
+          layer,
+          !!options.textLayout,
+          samples,
+        );
       if (node.type === "path" && layer.type === "provider") {
         const geometry = compileCommercePathGeometry(scene, node);
         if (geometry) {

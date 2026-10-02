@@ -64,6 +64,8 @@ export type TextContent = {
   layer: TextLayer;
   /** Layer time: text transitions, decorations and animators are sampled here. */
   time: number;
+  stateFrom?: number;
+  stateMix?: number;
   state: number;
   reveal: number;
   color: Rgba;
@@ -74,6 +76,9 @@ export type ProviderContent = {
   key: string;
   layer: Extract<CompositionLayer, { type: "provider" }>;
   time: number;
+  state?: number;
+  stateFrom?: number;
+  stateMix?: number;
 };
 export type LayerContent =
   | SolidContent
@@ -388,6 +393,12 @@ class GraphBuilder {
           key: frame.prefix ? `${scope.def.id}/${layer.id}` : layer.id,
           layer,
           time: state.time,
+          ...(layer.state !== undefined || layer.stateFrom !== undefined
+            ? { state: state.state! }
+            : {}),
+          ...(layer.stateFrom !== undefined || state.stateMix !== 1
+            ? { stateFrom: state.stateFrom!, stateMix: state.stateMix! }
+            : {}),
         };
       case "solid":
         return {
@@ -418,6 +429,9 @@ class GraphBuilder {
           state: state.state ?? 0,
           reveal: state.reveal ?? 1,
           color: state.color!,
+          ...(layer.stateFrom !== undefined || state.stateMix !== 1
+            ? { stateFrom: state.stateFrom!, stateMix: state.stateMix! }
+            : {}),
         };
       case "precomp":
         return state.precomp

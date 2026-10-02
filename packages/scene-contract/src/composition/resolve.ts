@@ -101,13 +101,33 @@ function resolveSegments(
         return missing(text, `a property of a ${layer.type} layer`);
       return component("color", COLOR_COMPONENTS, segments.slice(1));
     case "state":
-      if (layer.type !== "image" && layer.type !== "text")
+      if (
+        layer.type !== "image" &&
+        layer.type !== "text" &&
+        layer.type !== "provider"
+      )
         return missing(text, `a property of a ${layer.type} layer`);
+      if (
+        layer.type === "provider" &&
+        layer.state === undefined &&
+        layer.stateFrom === undefined
+      )
+        return missing(text, "a declared provider content state");
       return component("discrete", [], segments.slice(1));
     case "stateFrom":
     case "stateMix":
-      if (layer.type !== "image")
+      if (
+        layer.type !== "image" &&
+        layer.type !== "text" &&
+        layer.type !== "provider"
+      )
         return missing(text, `a property of a ${layer.type} layer`);
+      if (
+        layer.type === "provider" &&
+        layer.state === undefined &&
+        layer.stateFrom === undefined
+      )
+        return missing(text, "a declared provider content state");
       return component(
         head.name === "stateFrom" ? "discrete" : "scalar",
         [],

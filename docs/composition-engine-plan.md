@@ -1282,6 +1282,8 @@ General rules for all adapters:
       including grouped targets and grouped sources.
 - [x] Resolve fitted backing-panel geometry with pinned fonts before baking transforms
       and annotation anchors; perform measurement automatically during JSON export.
+- [x] Preserve text state ramps, containers and legacy text animators; bake motion-craft
+      transforms with exact skew and moving-anchor matrix compensation.
 - [ ] Map commerce layout, product layers, shadows, floating, detail windows, paths,
       text fits, component state/travel/pin/values/visibility/masks.
 - [ ] Commerce effects become CE6 registry effects; parity requires CE6.
@@ -1592,6 +1594,35 @@ comparisons; the full `pnpm check`.
 - **Remaining:** typography/text animation, motion-craft, reusable story contexts
   and passages, and the CE6/CE7 dependencies needed for full acceptance. The active
   goal continues on the same branch, with a commit after each verified slice.
+
+### CE4b text-state and transform follow-up (2026-10-02)
+
+- **Delivered:** native text and provider content can blend outgoing/incoming states
+  before opacity, clipping and mattes. Provider state paths are available only when
+  native state control is declared, preserving existing provider-owned playback.
+  `commerce.text@1.2.0` adds caption/speech/thought containers and legacy text
+  animators, including animator suppression during component state ramps. Existing
+  provider versions remain supported.
+- **Transforms:** motion-craft transforms, signals, drivers, constraints and periodic
+  motion bake to native keys. Both skew axes and moving anchors retain the legacy
+  matrix calculation order. Canvas state isolation also preserves the legacy matrix
+  transfer to its blend surface; a same-state ramp under skew exposed that precision
+  requirement. Tests cover exact matrices, nested clipping/opacity, text containers,
+  overlapping animation/ramp windows, repeated states and backward seeking.
+- **Versions:** commerce adapter `commerce-composition-0.6.0`, evaluator
+  `composition-evaluator-11`, Canvas renderer `composition-canvas-1.7.0`.
+- **Verification:** all **82 cases / 17,640 frames** are pixel-exact (70 CE0 fixtures
+  and 12 derived variants), with reverse state checks, backward seeks and **68
+  preparation checks**. The unchanged three-pass median render/readback gate passes
+  at a worst ratio of **1.2119×** (Panel atom). `pnpm check:fast` passes, including
+  **1,144 unit tests**. Native composition and Node/browser evaluator checks pass.
+  Eight MP4 pairs (text-fit, value, leader, attachment, matte, mask, layout and animated
+  text) are byte-identical after JSON relocation, with pinned assets and overwrite
+  protection intact. Invalid pinned fonts and impossible fitted panels still fail
+  without writing output. Timing methods, tolerances and CE0 baselines are unchanged.
+- **Remaining:** rich typography, spatial paths/morphs and animated appearance,
+  reusable story contexts/passages, and the CE6/CE7 dependencies. The user's goal
+  remains active and work continues after this slice's commit.
 
 **Completion record:** CE4a and CE4b are in progress; CE4c–CE4d have not started.
 
@@ -2422,9 +2453,13 @@ with general primitives; the "Target" column names that later form.
    static `origin`. Animated `anchorX`/`anchorY` leave the matrix unchanged; they only
    move the reference point that attach and follow constraints use. In `composition-1`
    (as in AE), the anchor is the pivot and moving it moves the artwork. Adapters
-   therefore emit `position = [x + width·originX, y + height·originY]` and a static
-   anchor `[width·originX, height·originY]`. Animated legacy anchors must not become
-   `transform.anchor` keys; CE2 needs a separate constraint reference point for them.
+   preserve that visual transform. Static anchors use
+   `position = [x + width·originX, y + height·originY]` and
+   `anchor = [width·originX, height·originY]`. CE4b retains moving anchor keys with
+   compensated position keys calculated before the legacy matrix's final anchor
+   subtraction; copying animated anchors without that compensation is incorrect.
+   This also preserves the legacy floating-point calculation order. Native
+   `constraintReference` remains available for independently moving reference points.
 
 **Resolutions (CE1, 2026-10-01).** Note 1: `group` layer type. Note 2: legacy tracks are
 baked to one key per integer frame in CE4d; no fractional key frames. Note 3: `camera2d`

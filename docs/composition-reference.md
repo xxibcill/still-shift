@@ -70,10 +70,12 @@ across root, precomp and historical dependency reads.
 The 2D camera uses the existing story camera curves and jolts. It changes screen
 matrices and bounds; world matrices remain in composition coordinates.
 
-An image without an authored crossfade evaluates `stateFrom` to its sampled `state`
+An image or text layer without an authored crossfade evaluates `stateFrom` to its sampled `state`
 and `stateMix` to `1`, displaying the current source at full mix. Property reads,
 drivers and periodic motion use these finite defaults even when the optional fields
 are absent from the input. Authored `stateFrom` and `stateMix` still take precedence.
+Provider state paths become available only after `state` or `stateFrom` is declared;
+existing providers can continue to control their content through their own parameters.
 
 Each instance of a reused precomp gets its own clock and memoised state. Property
 paths traverse named precomp layer instances, following each host's `comp` source
@@ -357,6 +359,12 @@ value range for overflow, including values absent from those frames. Existing
 1.0.0 payloads remain supported. Rectangles, plain paths and unmeasured text reuse
 the existing `story.*` providers; those providers do not evaluate a story scene.
 
+`commerce.text@1.2.0` adds caption/speech/thought containers and legacy text
+animators. Component text ramps become native `state`, `stateFrom` and `stateMix`
+channels. The backend combines outgoing and incoming content before applying layer
+opacity, clipping and mattes, including the first frame of a ramp. The provider
+disables the text animator during a state ramp, preserving legacy behavior.
+
 Fits that resize backing panels require font measurement before geometry is baked.
 In a browser, use `await prepareCommerceComposition(scene, assetUrl)` or supply
 `commerceToComposition(scene, { textLayout: { context, fonts } })` with loaded pinned
@@ -384,8 +392,11 @@ metadata remain in `metadata.commerce`. Like the story slice, this compiler acce
 at most 2,000 frames, holds between integer samples, and bounds provider payloads
 to 64 KiB. Rendering never calls the commerce evaluator.
 
-Pixel effects, motion blur, blended text states, typography and motion-craft
-currently return `comp-adapter-unsupported` with a source path.
+Motion-craft transforms, signals, drivers, constraints and periodic motion bake
+into native transform keys, including both skew axes and compensated moving
+anchors. Pixel effects, motion blur, rich typography, spatial paths, path morphs
+and animated blur/stroke/trim channels still return `comp-adapter-unsupported`
+with a source path.
 Legacy commerce parents must be groups, as required by its source schema.
 Effects parity requires CE6, and full CE4b fixture acceptance remains open. Existing
 commerce commands retain their current renderer.
@@ -572,20 +583,20 @@ actual time-dependent values stay in range; reduce the deltas or separate their 
 
 ### Layer types
 
-| `type`                       | Fields                                                                                                                                                                                                                                                                                                                                                                          | Available |
-| ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- |
-| `solid`                      | `size` `[w, h]`; `color` (animatable).                                                                                                                                                                                                                                                                                                                                          | CE1       |
-| `image`                      | `size`; `fit` (`contain` default, `cover`, `stretch`); `sources` (`{ asset, crop?, pose?, registration?, anchors? }[]`); `state` (discrete index into `sources`); `stateFrom` + `stateMix` (crossfade); `rasterize` (`draw` default, `natural-size`).                                                                                                                           | CE1       |
-| `text`                       | `text`; `states` + `state`; `fontSize`; `size` (the `textBox` wrap box); `color` (animatable); `weight`, `font`, `fontAsset`, `style`, `align`, `textRole`, `textLayout`, `textBox`, `revealMode`, `reveal` (animatable 0–1) and the story typography fields (`spans`, `locale`, `anchor`, `wrap`, `orphanFraction`, `decorations`, `transition(s)`, `feather`, `lineOverlap`). | CE1       |
-| `provider`                   | Versioned `provider` id; bounded `params`; declared `assets`; optional `bounds` and `usesSystemFonts`. See [content providers](#content-providers-ce4a).                                                                                                                                                                                                                        | CE4a      |
-| `null`                       | No content; a transform for parenting.                                                                                                                                                                                                                                                                                                                                          | CE1       |
-| `group`                      | `size`; `clip`. Children (layers parented to it) multiply its opacity and, with `clip`, are clipped to its bounds. Opacity applies per child, unlike a precomp. Produced by family adapters (parity note 1).                                                                                                                                                                    | CE1       |
-| `precomp`                    | `comp` (precomp id); `collapseTransforms`; `timeRemap` (animatable precomp frame).                                                                                                                                                                                                                                                                                              | CE1       |
-| `adjustment`                 | `size` (default: composition size). Applies its effects to the layers below.                                                                                                                                                                                                                                                                                                    | CE1       |
-| `shape`                      | `contents`.                                                                                                                                                                                                                                                                                                                                                                     | CE5       |
-| `camera`                     | —                                                                                                                                                                                                                                                                                                                                                                               | CE8       |
-| `light`                      | —                                                                                                                                                                                                                                                                                                                                                                               | Q6        |
-| `video`, `sequence`, `audio` | `asset`; `timeRemap`.                                                                                                                                                                                                                                                                                                                                                           | CE13      |
+| `type`                       | Fields                                                                                                                                                                                                                                                                                                                                                                                                                     | Available |
+| ---------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- |
+| `solid`                      | `size` `[w, h]`; `color` (animatable).                                                                                                                                                                                                                                                                                                                                                                                     | CE1       |
+| `image`                      | `size`; `fit` (`contain` default, `cover`, `stretch`); `sources` (`{ asset, crop?, pose?, registration?, anchors? }[]`); `state` (discrete index into `sources`); `stateFrom` + `stateMix` (crossfade); `rasterize` (`draw` default, `natural-size`).                                                                                                                                                                      | CE1       |
+| `text`                       | `text`; `states` + `state`; paired `stateFrom`/`stateMix` (crossfade); `fontSize`; `size` (the `textBox` wrap box); `color` (animatable); `weight`, `font`, `fontAsset`, `style`, `align`, `textRole`, `textLayout`, `textBox`, `revealMode`, `reveal` (animatable 0–1) and the story typography fields (`spans`, `locale`, `anchor`, `wrap`, `orphanFraction`, `decorations`, `transition(s)`, `feather`, `lineOverlap`). | CE1       |
+| `provider`                   | Versioned `provider` id; bounded `params`; declared `assets`; optional `bounds`, `usesSystemFonts`, `state`, and paired `stateFrom`/`stateMix`. Content state bounds are checked by the provider. See [content providers](#content-providers-ce4a).                                                                                                                                                                        | CE4a      |
+| `null`                       | No content; a transform for parenting.                                                                                                                                                                                                                                                                                                                                                                                     | CE1       |
+| `group`                      | `size`; `clip`. Children (layers parented to it) multiply its opacity and, with `clip`, are clipped to its bounds. Opacity applies per child, unlike a precomp. Produced by family adapters (parity note 1).                                                                                                                                                                                                               | CE1       |
+| `precomp`                    | `comp` (precomp id); `collapseTransforms`; `timeRemap` (animatable precomp frame).                                                                                                                                                                                                                                                                                                                                         | CE1       |
+| `adjustment`                 | `size` (default: composition size). Applies its effects to the layers below.                                                                                                                                                                                                                                                                                                                                               | CE1       |
+| `shape`                      | `contents`.                                                                                                                                                                                                                                                                                                                                                                                                                | CE5       |
+| `camera`                     | —                                                                                                                                                                                                                                                                                                                                                                                                                          | CE8       |
+| `light`                      | —                                                                                                                                                                                                                                                                                                                                                                                                                          | Q6        |
+| `video`, `sequence`, `audio` | `asset`; `timeRemap`.                                                                                                                                                                                                                                                                                                                                                                                                      | CE13      |
 
 Layers of an unavailable type validate structurally and then fail with
 `comp-feature-unavailable`, so agents learn which milestone provides them.
@@ -684,8 +695,8 @@ segment  := name | name "[" id "]"
 | `transform.<vector>.x\|y\|z`                         | scalar                             | all                             |
 | `transform.rotation`, `.skewX`, `.skewY`, `.opacity` | scalar                             | all                             |
 | `color`                                              | colour; `.r\|g\|b\|a` scalar       | solid, text                     |
-| `state`                                              | discrete                           | image, text                     |
-| `stateFrom` / `stateMix`                             | discrete / scalar                  | image                           |
+| `state`                                              | discrete                           | image, text, provider           |
+| `stateFrom` / `stateMix`                             | discrete / scalar                  | image, text, provider           |
 | `reveal`                                             | scalar                             | text                            |
 | `timeRemap`                                          | scalar                             | precomp, video, sequence, audio |
 | `masks[id].path`                                     | path                               | all                             |

@@ -1,0 +1,59 @@
+{
+  "schemaVersion": "composition-1",
+  "id": "text-states",
+  "width": 200,
+  "height": 100,
+  "fps": 24,
+  "frameCount": 48,
+  "background": "#ffffff",
+  "assets": [],
+  "layers": [
+    {
+      "id": "native",
+      "type": "text",
+      "text": "OUT",
+      "states": ["OUT", "IN"],
+      "state": 1,
+      "stateFrom": 0,
+      "stateMix": {
+        "keys": [
+          { "frame": 0, "value": 0 },
+          { "frame": 24, "value": 1 }
+        ]
+      },
+      "fontSize": 24,
+      "color": "#223344",
+      "font": "sans-serif",
+      "align": "left",
+      "transform": { "position": [10, 20], "opacity": 0.7 }
+    },
+    {
+      "id": "provider",
+      "type": "provider",
+      "provider": "commerce.text@1.2.0",
+      "usesSystemFonts": true,
+      "state": 1,
+      "stateFrom": 0,
+      "stateMix": {
+        "keys": [
+          { "frame": 0, "value": 0 },
+          { "frame": 24, "value": 1 }
+        ]
+      },
+      "transform": { "position": [110, 20], "opacity": 0.7 },
+      "params": {
+        "node": {
+          "id": "provider",
+          "type": "text",
+          "text": "OUT",
+          "states": ["OUT", "IN"],
+          "fontSize": 24,
+          "color": "#223344",
+          "font": "sans-serif",
+          "align": "left"
+        },
+        "samples": [{ "reveal": 1, "state": 0 }]
+      }
+    }
+  ]
+}

@@ -204,6 +204,8 @@ export const TextLayerSchema = z
       .optional(),
     state: AnimatableDiscreteSchema.optional(),
     fontSize: finite.min(1).max(2000),
+    stateFrom: AnimatableDiscreteSchema.optional(),
+    stateMix: animatableScalar(unit).optional(),
     /** Wrap box `[width, height]` for `textBox` layouts, in layer pixels (CE3). */
     size: size2.optional(),
     color: AnimatableColorSchema,
@@ -249,6 +251,10 @@ export const ProviderLayerSchema = z
       .max(128)
       .regex(/^[a-z][a-z0-9.-]*@\d+\.\d+\.\d+$/),
     params: boundedJson(z.record(z.string().max(128), z.json())),
+    /** Optional discrete content states; the backend composites crossfades. */
+    state: AnimatableDiscreteSchema.optional(),
+    stateFrom: AnimatableDiscreteSchema.optional(),
+    stateMix: animatableScalar(unit).optional(),
     /** Assets the provider may consume; checked against the composition asset namespace. */
     assets: z.array(compositionId).max(L.maxAssets).optional(),
     /** Provider text that intentionally depends on the browser's generic fonts. */

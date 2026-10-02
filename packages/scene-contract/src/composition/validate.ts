@@ -213,6 +213,17 @@ function checkLayer(
       );
   };
 
+  if (
+    (layer.type === "image" ||
+      layer.type === "text" ||
+      layer.type === "provider") &&
+    (layer.stateFrom === undefined) !== (layer.stateMix === undefined)
+  )
+    fail(
+      "comp-state-mix",
+      [...path, layer.stateFrom === undefined ? "stateMix" : "stateFrom"],
+      "stateFrom and stateMix must be set together",
+    );
   switch (layer.type) {
     case "image": {
       layer.sources.forEach((source, i) => {
@@ -244,12 +255,6 @@ function checkLayer(
         );
       stateRange("state", layer.sources.length, "sources");
       stateRange("stateFrom", layer.sources.length, "sources");
-      if ((layer.stateFrom === undefined) !== (layer.stateMix === undefined))
-        fail(
-          "comp-state-mix",
-          [...path, layer.stateFrom === undefined ? "stateMix" : "stateFrom"],
-          "stateFrom and stateMix must be set together",
-        );
       break;
     }
     case "text":
@@ -261,6 +266,7 @@ function checkLayer(
           `no text style "${layer.style}"`,
         );
       stateRange("state", layer.states?.length ?? 1, "text states");
+      stateRange("stateFrom", layer.states?.length ?? 1, "text states");
       checkText(comp, layer, path, fail, assets);
       break;
     case "precomp":

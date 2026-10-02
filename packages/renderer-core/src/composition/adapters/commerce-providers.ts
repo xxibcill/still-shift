@@ -19,6 +19,10 @@ import {
   StoryPathParamsSchema,
 } from "./story-providers.ts";
 import { CommercePathGeometrySchema } from "./commerce-path.ts";
+import { TextAnimatorSchema } from "../../../../scene-contract/src/motion-craft.ts";
+import { drawTextContainer } from "../../text-container.ts";
+import { drawAnimatedText } from "../../motion-text.ts";
+import { drawStoryText } from "../../story-text.ts";
 
 const CommercePathParamsSchema = StoryPathParamsSchema.extend({
   geometry: CommercePathGeometrySchema,
@@ -48,15 +52,35 @@ const CommerceTextParamsSchema = StoryTextParamsSchema.extend({
     .strict()
     .optional(),
 });
-type TextParams = z.infer<typeof CommerceTextParamsSchema>;
+const CommerceAnimatedTextParamsSchema = CommerceTextParamsSchema.extend({
+  animator: TextAnimatorSchema.optional(),
+  blendWindows: z
+    .array(
+      z
+        .tuple([z.number().int().nonnegative(), z.number().int().positive()])
+        .refine(
+          ([start, end]) => end > start,
+          "Text blend window must have positive duration",
+        ),
+    )
+    .max(100)
+    .optional(),
+});
+type TextParams = z.infer<typeof CommerceAnimatedTextParamsSchema>;
 
 function validateText(
-  { node, samples, fit, numeric }: TextParams,
+  { node, samples, fit, numeric, animator }: TextParams,
   path: string,
+  extended: boolean,
 ) {
+  if (animator && (animator.node !== node.id || animator.end <= animator.start))
+    passageError(
+      "comp-provider-params",
+      "Text animator must target its content and have positive duration",
+      { path: `${path}.params.animator` },
+    );
   if (
-    !node.textBox ||
-    node.container ||
+    (!extended && (!node.textBox || node.container)) ||
     node.style ||
     node.spans?.length ||
     node.decorations?.length ||
@@ -111,12 +135,13 @@ function prepareText(
   params: TextParams,
   resources: ProviderResources,
   path: string,
+  extended = false,
 ) {
-  validateText(params, path);
+  validateText(params, path, extended);
   let { node } = params;
   const { samples, fit, numeric } = params;
   const font = node.fontAsset ? resources.fonts.get(node.fontAsset) : undefined;
-  if (!font)
+  if (!font && (!extended || node.fontAsset || node.textBox))
     passageError(
       "comp-provider-asset",
       "Commerce text requires a declared pinned font",
@@ -136,18 +161,20 @@ function prepareText(
         measurement,
         fonts,
       ).nodes[0] as typeof node;
-    layouts = prepareMeasuredText(
-      {
-        nodes: [node],
-        ...(numeric ? { componentData: numericData(node, numeric) } : {}),
-      },
-      measurement,
-      fonts,
-    ).get(node.id)!;
+    layouts = node.textBox
+      ? prepareMeasuredText(
+          {
+            nodes: [node],
+            ...(numeric ? { componentData: numericData(node, numeric) } : {}),
+          },
+          measurement,
+          fonts,
+        ).get(node.id)!
+      : undefined;
   } finally {
     canvas.width = canvas.height = 0;
   }
-  if (numeric?.samples.some((text) => !layouts.has(text)))
+  if (numeric?.samples.some((text) => !layouts?.has(text)))
     passageError(
       "comp-provider-params",
       "Numeric sample has no corresponding formatted value",
@@ -155,16 +182,43 @@ function prepareText(
         path: `${path}.params.numeric.samples`,
       },
     );
-  return (ctx: CanvasRenderingContext2D, time: number) => {
+  return (
+    ctx: CanvasRenderingContext2D,
+    time: number,
+    contentState?: number,
+  ) => {
     const frame = Math.max(0, Math.floor(time));
     const state = samples[Math.min(samples.length - 1, frame)]!;
     const text = numeric
       ? numeric.samples[Math.min(numeric.samples.length - 1, frame)]!
-      : (node.states?.[state.state] ?? node.text);
-    const layout = layouts.get(text)!;
+      : (node.states?.[contentState ?? state.state] ?? node.text);
+    const layout = layouts?.get(text);
     ctx.fillStyle = node.color;
-    ctx.font = `${font.weight} ${node.fontSize}px "${font.family}"`;
+    ctx.font = font
+      ? `${font.weight} ${node.fontSize}px "${font.family}"`
+      : `${node.weight} ${node.fontSize}px ${node.font}`;
     ctx.textAlign = node.align;
+    if (extended) {
+      ctx.textBaseline = "top";
+      if (node.container && state.reveal > 0)
+        drawTextContainer(ctx, node, text);
+      const blending = params.blendWindows?.some(
+        ([start, end]) => time >= start && time < end,
+      );
+      if (
+        !blending &&
+        drawAnimatedText(ctx, node, text, frame, params.animator, layout)
+      )
+        return;
+      if (!node.textBox) {
+        drawStoryText(ctx, node, text, state.reveal);
+        return;
+      }
+    }
+    if (!layout)
+      passageError("comp-provider-params", "Text state was not prepared", {
+        path,
+      });
     ctx.textBaseline = "alphabetic";
     const x =
       node.align === "center"
@@ -183,6 +237,7 @@ const TEXT_CONTENT_PROVIDERS: readonly CanvasContentProvider[] = (
   [
     ["commerce.text@1.0.0", StoryTextParamsSchema],
     ["commerce.text@1.1.0", CommerceTextParamsSchema],
+    ["commerce.text@1.2.0", CommerceAnimatedTextParamsSchema],
   ] as const
 ).map(([id, schema]) => ({
   id,
@@ -192,7 +247,26 @@ const TEXT_CONTENT_PROVIDERS: readonly CanvasContentProvider[] = (
       passageError("comp-provider-params", parsed.error.issues[0]!.message, {
         path: `${path}.params`,
       });
-    return prepareText(parsed.data, resources, path);
+    const extended = id === "commerce.text@1.2.0";
+    if (extended) {
+      if (!parsed.data.node.fontAsset && !layer.usesSystemFonts)
+        passageError(
+          "comp-provider-params",
+          "Generic text must declare usesSystemFonts",
+          { path: `${path}.usesSystemFonts` },
+        );
+      for (const state of [layer.state, layer.stateFrom])
+        for (const value of typeof state === "number"
+          ? [state]
+          : (state?.keys.map((key) => key.value) ?? []))
+          if (value >= (parsed.data.node.states?.length ?? 1))
+            passageError(
+              "comp-provider-params",
+              "Text state has no corresponding content",
+              { path: `${path}.state` },
+            );
+    }
+    return prepareText(parsed.data, resources, path, extended);
   },
 }));
 

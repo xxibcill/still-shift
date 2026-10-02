@@ -272,9 +272,28 @@ export function createCanvas2dBackend(
       backend.releaseSurface(tmp);
     },
     drawText(dst, content, matrix, opacity, blend, clips, transforms) {
-      const ctx = begin(dst, matrix, opacity, blend, clips, transforms);
-      options.drawText(ctx, content);
-      ctx.restore();
+      if (content.stateFrom === undefined) {
+        const ctx = begin(dst, matrix, opacity, blend, clips, transforms);
+        try {
+          options.drawText(ctx, content);
+        } finally {
+          ctx.restore();
+        }
+        return;
+      }
+      drawStateContent(
+        dst,
+        content,
+        {
+          matrix,
+          opacity,
+          blend,
+          clips,
+          ...(transforms ? { transforms } : {}),
+        },
+        (ctx, state) =>
+          options.drawText(ctx, { ...content, state: state ?? content.state }),
+      );
     },
     drawProvider(dst, content, matrix, opacity, blend, clips, transforms) {
       if (!options.drawProvider)
@@ -283,12 +302,31 @@ export function createCanvas2dBackend(
           `Provider ${content.layer.provider} was not prepared`,
           { path: content.key },
         );
-      const ctx = begin(dst, matrix, opacity, blend, clips, transforms);
-      try {
-        options.drawProvider(ctx, content);
-      } finally {
-        ctx.restore();
+      if (content.stateFrom === undefined) {
+        const ctx = begin(dst, matrix, opacity, blend, clips, transforms);
+        try {
+          options.drawProvider(ctx, content);
+        } finally {
+          ctx.restore();
+        }
+        return;
       }
+      drawStateContent(
+        dst,
+        content,
+        {
+          matrix,
+          opacity,
+          blend,
+          clips,
+          ...(transforms ? { transforms } : {}),
+        },
+        (ctx, state) =>
+          options.drawProvider!(ctx, {
+            ...content,
+            ...(state !== undefined ? { state } : {}),
+          }),
+      );
     },
     composite(src, dst, blend, opacity, matrix, clips, transforms) {
       const ctx = begin(dst, matrix, opacity, blend, clips, transforms);
@@ -385,6 +423,47 @@ export function createCanvas2dBackend(
       allocated = 0;
     },
   };
+
+  /** Blend local content on a full surface so opacity, masks and clipping apply once. */
+  function drawStateContent(
+    dst: CanvasSurface,
+    content: TextContent | ProviderContent,
+    placement: {
+      matrix: Matrix;
+      opacity: number;
+      blend: CompositionBlendMode;
+      clips: ClipRect[];
+      transforms?: Matrix[];
+    },
+    draw: (ctx: CanvasRenderingContext2D, state?: number) => void,
+  ) {
+    const { matrix, opacity, blend, clips, transforms } = placement;
+    const mix = content.stateMix ?? 1;
+    if (content.stateFrom === undefined || mix === 1) {
+      const ctx = begin(dst, matrix, opacity, blend, clips, transforms);
+      try {
+        draw(ctx, content.state);
+      } finally {
+        ctx.restore();
+      }
+      return;
+    }
+    const tmp = backend.createSurface(dst.width, dst.height);
+    try {
+      const ctx = tmp.ctx;
+      transform(ctx, matrix, transforms);
+      // Match the Canvas matrix transfer used when legacy content is isolated.
+      ctx.setTransform(ctx.getTransform());
+      ctx.globalAlpha = 1 - mix;
+      draw(ctx, content.stateFrom);
+      ctx.globalCompositeOperation = "lighter";
+      ctx.globalAlpha = mix;
+      draw(ctx, content.state);
+      backend.composite(tmp, dst, blend, opacity, [1, 0, 0, 1, 0, 0], clips);
+    } finally {
+      backend.releaseSurface(tmp);
+    }
+  }
 
   /** Matte value = CSS Masking luminance of the premultiplied colour. */
   function lumaToAlpha(matte: CanvasSurface, mode: TrackMatte["mode"]) {

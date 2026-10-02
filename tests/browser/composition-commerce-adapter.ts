@@ -21,6 +21,8 @@ import type * as CommerceTextTests from "../helpers/composition-commerce-text.ts
 import { commerceGeometryVariants } from "../helpers/composition-commerce-geometry.ts";
 import { commerceMaskVariants } from "../helpers/composition-commerce-masks.ts";
 import { commerceLayoutVariants } from "../helpers/composition-commerce-layout.ts";
+import { commerceTextStateVariants } from "../helpers/composition-commerce-text-states.ts";
+import type * as TextStateTests from "../helpers/composition-commerce-text-states.ts";
 
 const root = resolve(import.meta.dirname, "../..");
 const inventory = JSON.parse(
@@ -38,6 +40,7 @@ const inventory = JSON.parse(
   }[];
 };
 const only = process.argv.indexOf("--only");
+const variant = process.argv.indexOf("--variant");
 const accepted = new Set(
   [
     "a01-landscape",
@@ -127,8 +130,11 @@ try {
       ...commerceGeometryVariants(entry.id, source),
       ...commerceMaskVariants(entry.id, source),
       ...commerceLayoutVariants(entry.id, source),
+      ...commerceTextStateVariants(entry.id, source),
     ];
     for (const item of inputs) {
+      if (variant >= 0 && !item.id.includes(process.argv[variant + 1]!))
+        continue;
       const input = CommerceSceneSchema.parse(item.scene);
       const composition = await compileCommerceComposition(
           input,
@@ -174,10 +180,14 @@ try {
           const { assertCommerceTextPreparation } = (await import(
             testModule
           )) as typeof CommerceTextTests;
-          const preparationChecks = assertCommerceTextPreparation(
-            composition,
-            resources,
-          );
+          const stateModule =
+            "/tests/helpers/composition-commerce-text-states.ts";
+          const { assertCommerceTextStatePreparation } = (await import(
+            stateModule
+          )) as typeof TextStateTests;
+          const preparationChecks =
+            assertCommerceTextPreparation(composition, resources) +
+            assertCommerceTextStatePreparation(composition, resources);
           const oldCtx = legacyCanvas.getContext("2d")!,
             ctx = canvas.getContext("2d")!;
           const measurement = document.createElement("canvas");
@@ -431,15 +441,33 @@ try {
       "matte",
       "mask",
       "layout",
+      "animated-text",
     ]) {
       const directory = await mkdtemp(join(tmpdir(), "still-shift-ce4b-"));
       try {
-        const sourcePath = resolve(
+        let sourcePath = resolve(
           root,
-          name === "attachment" || name === "matte" || name === "layout"
-            ? `benchmarks/fixtures/ecommerce-motion/atoms/${name}.json`
-            : `benchmarks/fixtures/reusable-components/commerce-${name}.json`,
+          name === "animated-text"
+            ? "benchmarks/fixtures/ecommerce-motion/atoms/text.json"
+            : name === "attachment" || name === "matte" || name === "layout"
+              ? `benchmarks/fixtures/ecommerce-motion/atoms/${name}.json`
+              : `benchmarks/fixtures/reusable-components/commerce-${name}.json`,
         );
+        if (name === "animated-text") {
+          const input = commerceTextStateVariants(
+            "commerce/atom-text",
+            CommerceSceneSchema.parse(
+              JSON.parse(await readFile(sourcePath, "utf8")),
+            ),
+          )[2]!.scene;
+          for (const asset of [...input.assets, ...input.fonts])
+            asset.path = relative(
+              directory,
+              resolve(dirname(sourcePath), asset.path),
+            );
+          sourcePath = join(directory, "scene.json");
+          await writeFile(sourcePath, JSON.stringify(input));
+        }
         const compositionPath = join(directory, "composition.json");
         let errors = "";
         assert.equal(

@@ -6,6 +6,7 @@ import {
 import type { evaluatePreparedNode } from "../../prepared-scene.ts";
 import { passageDiagnostics, PassageError } from "../../passage-diagnostics.ts";
 import type { compileStoryPathGeometry } from "./story-path.ts";
+import { nodeMatrix } from "../../node-transform.ts";
 
 type PreparedAdapterScene = {
   schemaVersion: string;
@@ -45,7 +46,7 @@ export function trimSettledSamples<T extends Record<string, number | string>>(
 }
 
 /** Exact integer-frame keys; constant channels stay compact and inspectable. */
-function baked(values: number[]) {
+export function baked(values: number[]) {
   if (values.every((v) => v === values[0])) return values[0]!;
   return {
     keys: values.map((value, frame) => ({
@@ -56,11 +57,51 @@ function baked(values: number[]) {
   };
 }
 
-function bakedState(values: number[]) {
+export function bakedState(values: number[]) {
   const keys = values.flatMap((value, frame) =>
     frame === 0 || value !== values[frame - 1] ? [{ frame, value }] : [],
   );
   return keys.length === 1 ? keys[0]!.value : { keys };
+}
+
+function bakedVector(points: [number, number][]) {
+  return {
+    x: baked(points.map((p) => p[0])),
+    y: baked(points.map((p) => p[1])),
+  };
+}
+
+/** Preserve the legacy compensation when a moving anchor changes the reference point. */
+function bakedPlacement(node: PreparedNode, samples: Samples) {
+  const anchor: [number, number] = [
+    node.width * node.origin[0],
+    node.height * node.origin[1],
+  ];
+  if (!samples.some((s) => s.anchorX !== undefined || s.anchorY !== undefined))
+    return {
+      anchor,
+      position: bakedVector(
+        samples.map((s) => [s.x + anchor[0], s.y + anchor[1]]),
+      ),
+    };
+  const poses = samples.map((state) => {
+    const anchor: [number, number] = [
+      node.width * (state.anchorX ?? node.origin[0]),
+      node.height * (state.anchorY ?? node.origin[1]),
+    ];
+    const [a, b, c, d] = nodeMatrix(node, state);
+    const dx = anchor[0] - node.width * node.origin[0];
+    const dy = anchor[1] - node.height * node.origin[1];
+    const position: [number, number] = [
+      state.x + (a - 1) * dx + c * dy + anchor[0],
+      state.y + b * dx + (d - 1) * dy + anchor[1],
+    ];
+    return { anchor, position };
+  });
+  return {
+    anchor: bakedVector(poses.map((p) => p.anchor)),
+    position: bakedVector(poses.map((p) => p.position)),
+  };
 }
 
 export function preparedBaseLayer(
@@ -68,25 +109,23 @@ export function preparedBaseLayer(
   node: PreparedNode,
   samples: Samples,
 ) {
-  const anchor: [number, number] = [
-    node.width * node.origin[0],
-    node.height * node.origin[1],
-  ];
   return {
     id: node.id,
     ...(node.parent ? { parent: node.parent } : {}),
     source: { family: scene.schemaVersion, id: node.id },
     transform: {
-      anchor,
-      position: {
-        x: baked(samples.map((s) => s.x + anchor[0])),
-        y: baked(samples.map((s) => s.y + anchor[1])),
-      },
+      ...bakedPlacement(node, samples),
       scale: {
         x: baked(samples.map((s) => s.scaleX)),
         y: baked(samples.map((s) => s.scaleY)),
       },
       rotation: baked(samples.map((s) => s.rotation)),
+      ...(samples.some((s) => s.skewX !== undefined)
+        ? { skewX: baked(samples.map((s) => s.skewX ?? 0)) }
+        : {}),
+      ...(samples.some((s) => s.skewY !== undefined)
+        ? { skewY: baked(samples.map((s) => s.skewY ?? 0)) }
+        : {}),
       opacity: baked(samples.map((s) => s.opacity)),
     },
   };

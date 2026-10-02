@@ -83,7 +83,8 @@ pnpm --silent still-shift comp render --input hero.composition.json --output her
 This slice supports prepared product imagery, groups, simple shapes, attached paths,
 component annotations, alpha masks and mattes,
 pinned measured text, text fitting, formatted numeric labels and integer-frame
-commerce/component motion. Text fitting selects one size for all text states;
+commerce/component motion, including text state crossfades, caption containers
+and text animation. Text fitting selects one size for all text states;
 JSON export measures pinned fonts before resizing fitted backing panels. Pixel effects,
 motion blur and the remaining component features return explicit
 unsupported-feature diagnostics. See the [commerce adapter reference](./composition-reference.md#commerce-adapter-ce4b-in-progress)

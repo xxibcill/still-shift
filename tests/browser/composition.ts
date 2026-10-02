@@ -235,6 +235,37 @@ try {
   const page = await browser.newPage();
   await page.goto(origin);
 
+  const textStates = JSON.parse(
+    await readFile(
+      resolve(root, "benchmarks/fixtures/composition/ce4b/text-states.json"),
+      "utf8",
+    ),
+  ) as Composition;
+  const blendedText = await render(page, textStates, [0, 6, 12, 24, 12, 0]);
+  for (const frame of blendedText.frames)
+    for (let y = 0; y < 100; y++)
+      for (let x = 0; x < 100; x++) {
+        const offset = (y * 200 + x) * 4;
+        assert.deepEqual(
+          frame.slice(offset, offset + 4),
+          frame.slice(offset + 400, offset + 404),
+          "native and provider text crossfades match",
+        );
+      }
+  assert.deepEqual(
+    blendedText.frames[2],
+    blendedText.frames[4],
+    "text crossfade backward seek",
+  );
+  assert.deepEqual(
+    blendedText.frames[0],
+    blendedText.frames[5],
+    "text crossfade returns to first frame",
+  );
+  results.push(
+    "native and provider text crossfades match through backward seeks",
+  );
+
   // Blend modes against the W3C formulas, `near` tier (≤ 2 levels per channel).
   let worstBlend = 0;
   for (const mode of COMPOSITION_BLEND_MODES) {

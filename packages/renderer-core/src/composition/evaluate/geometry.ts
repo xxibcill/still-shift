@@ -85,9 +85,12 @@ export function localBounds(
   if (layer.type === "text") {
     const key = scope === comp ? layer.id : `${scope.id}/${layer.id}`;
     const measured = Object.hasOwn(options.textBounds ?? {}, key)
-      ? options.textBounds![key]?.[state.state ?? 0]
+      ? options.textBounds![key]
       : undefined;
-    return measured ? { ...measured } : null;
+    const current = measured?.[state.state ?? 0];
+    const prior = measured?.[state.stateFrom ?? state.state ?? 0];
+    if (!current || !prior) return current ? { ...current } : null;
+    return blendedBounds(current, prior, state.stateMix ?? 1);
   }
   const [width, height] = layerSize(comp, scope, layer);
   if (layer.type !== "image" || (layer.fit ?? "contain") !== "contain")
@@ -114,6 +117,12 @@ export function localBounds(
     return current;
   const prior = sourceBounds(state.stateFrom);
   if ((state.stateMix ?? 1) <= 0) return prior;
+  return blendedBounds(current, prior, state.stateMix ?? 1);
+}
+
+function blendedBounds(current: Bounds, prior: Bounds, mix: number): Bounds {
+  if (mix >= 1) return { ...current };
+  if (mix <= 0) return { ...prior };
   return {
     left: Math.min(current.left, prior.left),
     top: Math.min(current.top, prior.top),
