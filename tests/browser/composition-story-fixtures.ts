@@ -15,6 +15,7 @@ import {
 import type * as Render from "../../packages/renderer-core/src/index.ts";
 import { assertAdapterExport } from "../helpers/composition-adapter-exports.ts";
 import { storyComponentVariants } from "../helpers/composition-story-components.ts";
+import { motionPathVariants } from "../helpers/composition-motion-path.ts";
 import { assertCompositionAdapterState } from "../helpers/composition-adapter-state.ts";
 
 const root = resolve(import.meta.dirname, "../..");
@@ -77,6 +78,7 @@ try {
     const cases = inputs.flatMap((item) => [
       item,
       ...storyComponentVariants(item.id, StorySceneSchema.parse(item.scene)),
+      ...motionPathVariants(item.id, StorySceneSchema.parse(item.scene)),
     ]);
     for (const item of cases) {
       const input = StorySceneSchema.parse(item.scene);
@@ -230,6 +232,11 @@ try {
       );
       totalFrames += input.frameCount;
       totalItems++;
+      if (
+        (only < 0 || process.argv.includes("--exports")) &&
+        item.id === "component/story-leader/spatial-morph"
+      )
+        await assertAdapterExport(input, dirname(sourcePath), item.id);
       if (
         only < 0 &&
         ([

@@ -16,6 +16,7 @@ import { resolveTextEvents } from "../../typography-events.ts";
 import { compileAdapterMarkers } from "./markers.ts";
 import { typographyLayer } from "./typography.ts";
 import { numericTypographyLayer } from "./numeric-typography.ts";
+import { withMotionPath } from "./motion-path.ts";
 import { componentTextLayer } from "./component-text.ts";
 import { componentCapabilities } from "../../component-capabilities.ts";
 import { validateAttachedPaths } from "../../commerce-geometry.ts";
@@ -28,7 +29,7 @@ import { prepareCommerceTextFits } from "../../commerce-layout.ts";
 import { prepareComponentTextFits } from "../../component-text-fit.ts";
 import { loadPreparedFonts } from "../../prepared-fonts.ts";
 
-export const COMMERCE_ADAPTER_VERSION = "commerce-composition-0.8.0";
+export const COMMERCE_ADAPTER_VERSION = "commerce-composition-0.9.0";
 
 export type CommerceCompositionOptions = {
   id?: string;
@@ -51,8 +52,6 @@ function checkSupported(scene: CommerceScene) {
       `The commerce adapter bakes at most ${COMPOSITION_LIMITS.maxKeys} frames`,
       { path: "frameCount" },
     );
-  for (const field of ["spatialPaths", "pathMorphs"] as const)
-    if (scene[field]?.length) unsupported(field, field);
   scene.effects?.forEach((effect, index) => {
     if (!["drift", "parallax", "overshoot"].includes(effect.type))
       unsupported(
@@ -181,6 +180,8 @@ export function commerceToComposition(
           );
         }
       }
+      if (node.type === "path" && layer.type === "provider")
+        layer = withMotionPath(scene, node, layer);
       layers.push(layer);
       visit(node.id);
     }

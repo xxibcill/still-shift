@@ -29,6 +29,7 @@ import { resolveTextEvents } from "../../typography-events.ts";
 import { compileAdapterMarkers } from "./markers.ts";
 import { typographyLayer } from "./typography.ts";
 import { numericTypographyLayer } from "./numeric-typography.ts";
+import { withMotionPath } from "./motion-path.ts";
 import { componentTextLayer } from "./component-text.ts";
 import { compileAttachedPathGeometry } from "./commerce-path.ts";
 
@@ -50,7 +51,7 @@ export type StoryCompositionOptions = {
   textLayout?: CompositionTextLayout;
 };
 
-export const STORY_ADAPTER_VERSION = "story-composition-0.5.0";
+export const STORY_ADAPTER_VERSION = "story-composition-0.6.0";
 function checkSupported(scene: StoryScene) {
   const unsupported = (path: string, feature: string): never =>
     passageError(
@@ -64,8 +65,6 @@ function checkSupported(scene: StoryScene) {
       `The first story adapter bakes at most ${COMPOSITION_LIMITS.maxKeys} frames`,
       { path: "frameCount" },
     );
-  for (const field of ["spatialPaths", "pathMorphs"] as const)
-    if (scene[field]?.length) unsupported(field, field);
   if (scene.effects?.length) unsupported("effects", "Pixel effects");
   scene.nodes.forEach((node, i) => {
     const path = `nodes[${i}]`;
@@ -178,6 +177,8 @@ export function storyToComposition(
           node.id,
         );
       }
+      if (node.type === "path" && layer.type === "provider")
+        layer = withMotionPath(scene, node, layer);
       layers.push(layer);
       if (node.type === "path") {
         for (const flow of (scene.flows ?? []).filter(
@@ -191,38 +192,40 @@ export function storyToComposition(
             ...cameraLayer(scene, node),
           };
           const geometry = compileStoryPathGeometry(scene, node);
-          layers.push({
-            ...base,
-            id,
-            type: "provider",
-            provider: componentGeometry
-              ? "component.flow@1.0.0"
-              : geometry
-                ? "story.flow@1.1.0"
-                : "story.flow@1.0.0",
-            ...(visibility
-              ? {
-                  inPoint: visibility.window.start,
-                  outPoint: visibility.window.end,
-                }
-              : {}),
-            transform: { ...base.transform, opacity: 1 },
-            params: params(
-              {
-                node,
-                ...(componentGeometry
-                  ? { geometry: componentGeometry }
-                  : geometry
-                    ? { geometry }
-                    : {}),
-                flow,
-                // Flow playback uses sample count as its source clock, including the settled tail.
-                samples: samples.map(({ reveal, gap }) => ({ reveal, gap })),
-              },
-              `nodes[${scene.nodes.indexOf(node)}]`,
-              node.id,
-            ),
-          });
+          layers.push(
+            withMotionPath(scene, node, {
+              ...base,
+              id,
+              type: "provider",
+              provider: componentGeometry
+                ? "component.flow@1.0.0"
+                : geometry
+                  ? "story.flow@1.1.0"
+                  : "story.flow@1.0.0",
+              ...(visibility
+                ? {
+                    inPoint: visibility.window.start,
+                    outPoint: visibility.window.end,
+                  }
+                : {}),
+              transform: { ...base.transform, opacity: 1 },
+              params: params(
+                {
+                  node,
+                  ...(componentGeometry
+                    ? { geometry: componentGeometry }
+                    : geometry
+                      ? { geometry }
+                      : {}),
+                  flow,
+                  // Flow playback uses sample count as its source clock, including the settled tail.
+                  samples: samples.map(({ reveal, gap }) => ({ reveal, gap })),
+                },
+                `nodes[${scene.nodes.indexOf(node)}]`,
+                node.id,
+              ),
+            }),
+          );
         }
       }
       visit(node.id);

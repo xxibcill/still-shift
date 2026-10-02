@@ -22,6 +22,8 @@ import { commerceGeometryVariants } from "../helpers/composition-commerce-geomet
 import { commerceMaskVariants } from "../helpers/composition-commerce-masks.ts";
 import { commerceLayoutVariants } from "../helpers/composition-commerce-layout.ts";
 import { commerceTextStateVariants } from "../helpers/composition-commerce-text-states.ts";
+import { motionPathVariants } from "../helpers/composition-motion-path.ts";
+import { assertAdapterExport } from "../helpers/composition-adapter-exports.ts";
 import type * as TextStateTests from "../helpers/composition-commerce-text-states.ts";
 
 const root = resolve(import.meta.dirname, "../..");
@@ -131,6 +133,7 @@ try {
       ...commerceMaskVariants(entry.id, source),
       ...commerceLayoutVariants(entry.id, source),
       ...commerceTextStateVariants(entry.id, source),
+      ...motionPathVariants(entry.id, source),
     ];
     for (const item of inputs) {
       if (variant >= 0 && !item.id.includes(process.argv[variant + 1]!))
@@ -365,6 +368,11 @@ try {
       );
       totalFrames += input.frameCount;
       totalItems++;
+      if (
+        (only < 0 || process.argv.includes("--exports")) &&
+        item.id === "commerce/atom-path/morph"
+      )
+        await assertAdapterExport(input, dirname(sourcePath), item.id);
     }
   }
   console.log(

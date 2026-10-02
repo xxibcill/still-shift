@@ -1713,6 +1713,30 @@ comparisons; the full `pnpm check`.
 - **Remaining:** spatial paths, morphs, animated appearance, CE6/CE7 dependencies
   and both-backend acceptance. The active goal continues after this slice's commit.
 
+### CE4b spatial-path and morph follow-up (2026-10-02)
+
+- **Delivered:** `component.path@1.0.0` and `component.flow@1.1.0` retain authored
+  cubic segments and eased morph keys as bounded data. They use the same local
+  geometry primitive as the legacy renderer, preserving segment sampling and
+  morph precedence without baking thousands of vertices per frame. Existing
+  attachments and annotations resolve before motion geometry, as in the source.
+- **Composition:** path-following constraints bake to native transforms; story flows
+  follow the deformed path and retain their own opacity, camera, visibility and
+  group-matte behavior. Provider preparation validates path ownership, segment
+  joins and morph timing. Frame, key and provider-payload limits remain unchanged.
+- **Versions:** commerce adapter `commerce-composition-0.9.0`, story adapter
+  `story-composition-0.6.0`, Canvas renderer `composition-canvas-1.10.0`;
+  evaluator remains `composition-evaluator-11`.
+- **Verification:** `pnpm check:fast` passes with **1,183 unit tests**. Focused
+  commerce/story parity passes **11 cases / 2,304 pixel-exact frames**, including
+  six new spatial/morph cases, brush/ink paths, path followers, masked flows and
+  zero-opacity path strokes. Reverse geometry/state checks and backward seeks pass.
+  Worst render/readback ratio is **1.1903×**, below the unchanged 1.25× gate.
+  Brush morph and masked story-flow CLI exports each produce two byte-identical
+  MP4s; relocated assets and overwrite protection pass.
+- **Remaining:** animated appearance, CE6/CE7 dependencies and both-backend
+  acceptance. The active goal continues after this slice's commit.
+
 **Completion record:** CE4a and CE4b are in progress; CE4c–CE4d have not started.
 
 ---

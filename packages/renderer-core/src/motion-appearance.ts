@@ -179,42 +179,57 @@ export function evaluateMotionAppearance(
           : 1;
         result = { ...result, [property]: interpolateColor(base, value, mix) };
       }
-  if (result.type === "path") {
-    const path = scene.spatialPaths?.find((p) => p.node === node.id);
-    if (path)
+  if (result.type === "path")
+    return sampleMotionPath(
+      result,
+      scene.spatialPaths?.find((p) => p.node === node.id),
+      scene.pathMorphs?.find((m) => m.node === node.id),
+      frame,
+      scene.fps,
+    );
+  return result;
+}
+
+/** Shared local geometry primitive; transforms and scene evaluation stay with the caller. */
+export function sampleMotionPath(
+  node: Extract<PreparedNode, { type: "path" }>,
+  path: SpatialPath | undefined,
+  morph: NonNullable<StoryRenderScene["pathMorphs"]>[number] | undefined,
+  frame: number,
+  fps: number,
+): Extract<PreparedNode, { type: "path" }> {
+  let result = node;
+  if (path)
+    result = {
+      ...result,
+      points: [
+        path.segments[0]![0],
+        ...path.segments.flatMap((segment) =>
+          Array.from({ length: 128 }, (_, i) =>
+            cubicPoint(segment, (i + 1) / 128),
+          ),
+        ),
+      ],
+    };
+  if (morph) {
+    const end = morph.keys.findIndex((k) => k.frame > frame);
+    if (end === 0) result = { ...result, points: morph.keys[0]!.points };
+    else if (end < 0) result = { ...result, points: morph.keys.at(-1)!.points };
+    else {
+      const a = morph.keys[end - 1]!,
+        b = morph.keys[end]!,
+        t = easeMotion(
+          (frame - a.frame) / (b.frame - a.frame),
+          b.easing,
+          (b.frame - a.frame) / fps,
+        );
       result = {
         ...result,
-        points: [
-          path.segments[0]![0],
-          ...path.segments.flatMap((segment) =>
-            Array.from({ length: 128 }, (_, i) =>
-              cubicPoint(segment, (i + 1) / 128),
-            ),
-          ),
-        ],
+        points: a.points.map((p, i) => [
+          p[0] + (b.points[i]![0] - p[0]) * t,
+          p[1] + (b.points[i]![1] - p[1]) * t,
+        ]),
       };
-    const morph = scene.pathMorphs?.find((m) => m.node === node.id);
-    if (morph) {
-      const end = morph.keys.findIndex((k) => k.frame > frame);
-      if (end === 0) result = { ...result, points: morph.keys[0]!.points };
-      else if (end < 0)
-        result = { ...result, points: morph.keys.at(-1)!.points };
-      else {
-        const a = morph.keys[end - 1]!,
-          b = morph.keys[end]!,
-          t = easeMotion(
-            (frame - a.frame) / (b.frame - a.frame),
-            b.easing,
-            (b.frame - a.frame) / scene.fps,
-          );
-        result = {
-          ...result,
-          points: a.points.map((p, i) => [
-            p[0] + (b.points[i]![0] - p[0]) * t,
-            p[1] + (b.points[i]![1] - p[1]) * t,
-          ]),
-        };
-      }
     }
   }
   return result;
