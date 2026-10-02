@@ -97,6 +97,57 @@ describe("CE4a story adapter first slice", () => {
     }
   });
 
+  it.each(["access constrained", "การเข้าถึง", "1-access", "a".repeat(129)])(
+    "preserves cue labels with valid deterministic marker IDs: %s",
+    (cue) => {
+      const scene = fixture();
+      if (scene.recipe.preset !== "access_constraint")
+        throw new Error("access fixture required");
+      scene.recipe.narrow.cue = cue;
+      const composition = storyToComposition(scene);
+      expect(composition.markers).toContainEqual(
+        expect.objectContaining({
+          label: cue,
+          frame: scene.recipe.narrow.start,
+          duration: scene.recipe.narrow.end - scene.recipe.narrow.start,
+        }),
+      );
+      expect(validateComposition(composition).ok).toBe(true);
+      expect(storyToComposition(scene).markers).toEqual(composition.markers);
+    },
+  );
+
+  it("reserves authored marker IDs before assigning IDs to other cue labels", () => {
+    const scene = fixture();
+    if (scene.recipe.preset !== "access_constraint")
+      throw new Error("access fixture required");
+    scene.recipe.reveal.cue = "cue with spaces";
+    scene.recipe.narrow.cue = "cue-1";
+    const markers = storyToComposition(scene).markers!;
+    expect(markers.find((marker) => marker.label === "cue-1")?.id).toBe(
+      "cue-1",
+    );
+    expect(new Set(markers.map((marker) => marker.id)).size).toBe(
+      markers.length,
+    );
+    expect(
+      markers.filter((marker) => marker.label === "cue with spaces"),
+    ).toHaveLength(1);
+  });
+
+  it("bounds long cue labels without rejecting the story", () => {
+    const scene = fixture();
+    if (scene.recipe.preset !== "access_constraint")
+      throw new Error("access fixture required");
+    scene.recipe.narrow.cue = "a".repeat(201);
+    expect(storyToComposition(scene).markers).toContainEqual(
+      expect.objectContaining({
+        label: "a".repeat(200),
+        frame: scene.recipe.narrow.start,
+      }),
+    );
+  });
+
   it("rejects unsupported features with a path instead of dropping them", () => {
     const scene = fixture();
     scene.nodes.push({

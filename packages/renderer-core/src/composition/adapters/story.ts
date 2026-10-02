@@ -2,6 +2,7 @@ import {
   COMPOSITION_LIMITS,
   StorySceneSchema,
   ProviderLayerSchema,
+  CompositionMarkerSchema,
   validateComposition,
   type Composition,
   type CompositionLayer,
@@ -12,7 +13,7 @@ import { compileStoryScene, type StoryRenderScene } from "../../story-scene.ts";
 import { evaluatePreparedNode } from "../../prepared-scene.ts";
 import { passageError, PassageError } from "../../passage-diagnostics.ts";
 
-export const STORY_ADAPTER_VERSION = "story-composition-0.1.0";
+export const STORY_ADAPTER_VERSION = "story-composition-0.1.1";
 type Samples = ReturnType<typeof evaluatePreparedNode>[];
 const params = (value: unknown) =>
   ProviderLayerSchema.shape.params.parse(JSON.parse(JSON.stringify(value)));
@@ -229,10 +230,30 @@ export function storyToComposition(
     string,
     NonNullable<Composition["markers"]>[number]
   >();
+  const markerIds = new Set(
+    scene.motionEvents.flatMap(({ window }) =>
+      window.cue &&
+      CompositionMarkerSchema.shape.id.safeParse(window.cue).success
+        ? [window.cue]
+        : [],
+    ),
+  );
   for (const event of scene.motionEvents) {
     const { cue, start, end } = event.window;
-    if (cue && !markers.has(cue))
-      markers.set(cue, { id: cue, frame: start, duration: end - start });
+    if (!cue || markers.has(cue)) continue;
+    let id = cue;
+    if (!CompositionMarkerSchema.shape.id.safeParse(cue).success) {
+      let suffix = 1;
+      do id = `cue-${suffix++}`;
+      while (markerIds.has(id));
+      markerIds.add(id);
+    }
+    markers.set(cue, {
+      id,
+      label: cue.slice(0, 200),
+      frame: start,
+      duration: end - start,
+    });
   }
   const composition: Composition = {
     schemaVersion: "composition-1",
