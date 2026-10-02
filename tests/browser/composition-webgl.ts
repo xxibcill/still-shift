@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { resolve } from "node:path";
 import { createServer } from "vite";
 import { launchRenderBrowser } from "@still-shift/execution-runtime";
+import type * as Rational from "../helpers/composition-webgl-float-sum.ts";
 import type * as Checks from "../helpers/composition-webgl-reference.ts";
 const server = await createServer({
   root: resolve(import.meta.dirname, "../.."),
@@ -15,6 +16,11 @@ try {
   const page = await browser.newPage();
   await page.addInitScript("window.__name = (fn) => fn;");
   await page.goto(server.resolvedUrls!.local[0]!);
+  const sums = await page.evaluate(async () => {
+    const url = "/tests/helpers/composition-webgl-float-sum.ts";
+    return ((await import(url)) as typeof Rational).checkWebglFloatSum();
+  });
+  console.log("WebGL exact Float32 accumulation:", sums);
   const reuse = await page.evaluate(async () => {
     const url = "/tests/helpers/composition-webgl-reference.ts";
     return ((await import(url)) as typeof Checks).checkWebglFrameReuse();

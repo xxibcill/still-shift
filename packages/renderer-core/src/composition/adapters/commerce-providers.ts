@@ -1,3 +1,4 @@
+import { pointBounds, preparedTextBounds } from "./provider-bounds.ts";
 import { z } from "zod";
 import { COMPOSITION_LIMITS } from "@still-shift/scene-contract";
 import {
@@ -258,6 +259,7 @@ function prepareText(
     params.animator
       ? {}
       : {
+          bounds: preparedTextBounds(preparedNode, font, layouts),
           visualKey(time, contentState) {
             const frame = Math.max(0, Math.floor(time));
             const state = samples[Math.min(samples.length - 1, frame)]!;
@@ -326,20 +328,28 @@ export const COMMERCE_CONTENT_PROVIDERS: readonly CanvasContentProvider[] = [
       const { node, geometry, samples } = parsed.data;
       const paths = geometry.points.map((points) => ({ ...node, points }));
       const flow = compileStoryFlows([parsed.data.flow], samples.length)[0]!;
-      return (ctx, time) => {
-        const frame = Math.max(
-          0,
-          Math.min(samples.length - 1, Math.floor(time)),
-        );
-        drawStoryFlow(
-          ctx,
-          flow,
-          paths[Math.min(frame, paths.length - 1)]!,
-          samples[frame]!,
-          frame,
-          samples.length,
-        );
-      };
+      return preparedProvider(
+        (ctx, time) => {
+          const frame = Math.max(
+            0,
+            Math.min(samples.length - 1, Math.floor(time)),
+          );
+          drawStoryFlow(
+            ctx,
+            flow,
+            paths[Math.min(frame, paths.length - 1)]!,
+            samples[frame]!,
+            frame,
+            samples.length,
+          );
+        },
+        {
+          bounds: pointBounds(
+            geometry.points.flat(),
+            Math.hypot(flow.size, Math.min(2, flow.size)),
+          ),
+        },
+      );
     },
   },
 
@@ -363,6 +373,12 @@ export const COMMERCE_CONTENT_PROVIDERS: readonly CanvasContentProvider[] = [
           );
         },
         {
+          bounds: samples.some((s) => s.pulse > 0)
+            ? undefined
+            : pointBounds(
+                geometry.points.flat(),
+                Math.max(1, node.lineWidth) * 3,
+              ),
           visualKey(time) {
             const frame = Math.max(0, Math.floor(time));
             return JSON.stringify([

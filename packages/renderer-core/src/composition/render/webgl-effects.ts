@@ -1,3 +1,4 @@
+import { FLOAT32_RATIONAL_SUM } from "./webgl-float-sum.ts";
 import { blurKernel } from "./webgl-blur-kernel.ts";
 import { boxBlur } from "./webgl-box-blur.ts";
 import type { WebglBounds } from "./webgl-bounds.ts";
@@ -287,6 +288,7 @@ export class WebglEffects {
           this.replace(
             dst,
             `${SAMPLE}
+${FLOAT32_RATIONAL_SUM}
           uniform float length; uniform vec2 direction; uniform float samples;
           void main() {
             vec4 sum=vec4(0.0);
@@ -294,11 +296,16 @@ export class WebglEffects {
               if(float(i)>=samples) break;
               float distance=((float(i)+0.5)/samples-0.5)*length;
               vec4 value=bilinear(gl_FragCoord.xy-pixelTranslation(direction*distance));
-              vec3 rgb=value.a>0.0?bytes(vec4(value.rgb/value.a,1.0)).rgb:vec3(0.0);
-              sum += vec4(rgb*value.a,value.a);
+              uvec4 rgba=uvec4(floor(value*255.0+0.5));
+              uvec3 rgb=rgba.a>0u ? (rgba.rgb*255u+rgba.a/2u)/rgba.a : uvec3(0u);
+              sum.r=addByteFraction(sum.r,rgb.r*rgba.a,uvec2(rgb.r,rgba.a));
+              sum.g=addByteFraction(sum.g,rgb.g*rgba.a,uvec2(rgb.g,rgba.a));
+              sum.b=addByteFraction(sum.b,rgb.b*rgba.a,uvec2(rgb.b,rgba.a));
+              sum.a=addByteFraction(sum.a,rgba.a);
             }
-            float alpha=floor(sum.a/samples*255.0+0.5)/255.0;
-            pixel=bytes(vec4(sum.a>0.0?bytes(vec4(sum.rgb/sum.a,1.0)).rgb*alpha:vec3(0.0),alpha));
+            uint alpha=averageAlpha(sum.a,uint(samples));
+            uvec3 rgb=sum.a>0.0 ? uvec3(straightByte(sum.r,sum.a),straightByte(sum.g,sum.a),straightByte(sum.b,sum.a)) : uvec3(0u);
+            pixel=vec4(vec3((rgb*alpha+127u)/255u),float(alpha))/255.0;
           }`,
             [dst],
             {
@@ -343,24 +350,30 @@ export class WebglEffects {
         }
         case "light.glow": {
           if (!p.radius || !p.intensity) break;
+          // Canvas filters the opacity-scaled input; scaling the blurred result
+          // changes byte rounding and can accumulate through a matte or effect stack.
           const glow = this.device.surface(dst.width, dst.height);
           try {
             this.device.pass(
-              `uniform float threshold;
+              `uniform float threshold; uniform float opacity;
             void main() {
               vec4 value=texture(source,uv);
               vec3 rgb=value.a>0.0?bytes(vec4(value.rgb/value.a,1.0)).rgb:vec3(0.0);
               float luminance=dot(rgb,vec3(0.2126,0.7152,0.0722));
               float alpha=floor(value.a * max(0.0,(luminance-threshold)/max(0.001,1.0-threshold))*255.0+0.5)/255.0;
-              pixel=bytes(vec4(rgb*alpha,alpha));
+              vec4 thresholded=floor(bytes(vec4(rgb*alpha,alpha))*255.0+0.5);
+              pixel=floor(thresholded*(floor(opacity*255.0+0.5)+1.0)/256.0)/255.0;
             }`,
               glow,
               [dst],
-              { threshold: p.threshold as number },
+              {
+                threshold: p.threshold as number,
+                opacity: p.intensity as number,
+              },
             );
             this.blur(glow, p.radius as number);
             this.replace(dst, blendShader("screen"), [glow, dst], {
-              opacity: p.intensity as number,
+              opacity: 1,
             });
           } finally {
             this.device.release(glow);

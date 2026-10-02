@@ -30,6 +30,20 @@ export const APPEARANCE_PROVIDERS: readonly CanvasContentProvider[] = [
           );
         },
         {
+          bounds: (() => {
+            const stroke =
+              Math.max(
+                1,
+                Math.abs(node.lineWidth),
+                ...(appearance.strokeWidth ?? []).map(Math.abs),
+              ) / 2;
+            return {
+              left: -stroke,
+              top: -stroke,
+              right: node.width + stroke,
+              bottom: node.height + stroke,
+            };
+          })(),
           visualKey: (time) =>
             JSON.stringify([
               appearanceAt(appearance, time),

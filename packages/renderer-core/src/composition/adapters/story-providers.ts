@@ -1,3 +1,4 @@
+import { pointBounds, preparedTextBounds } from "./provider-bounds.ts";
 import { z } from "zod";
 import {
   COMPOSITION_LIMITS,
@@ -117,6 +118,15 @@ export const STORY_CONTENT_PROVIDERS: readonly CanvasContentProvider[] = [
               sampleStoryPath(params.node, params.geometry, time).points,
               sample(params.samples, time),
             ]),
+          bounds: params.samples.some((s) => s.pulse > 0)
+            ? undefined
+            : pointBounds(
+                params.geometry.endpoints.flatMap(
+                  (_, frame) =>
+                    sampleStoryPath(params.node, params.geometry, frame).points,
+                ),
+                Math.max(1, params.node.lineWidth) * 3,
+              ),
         },
       );
     },
@@ -126,20 +136,31 @@ export const STORY_CONTENT_PROVIDERS: readonly CanvasContentProvider[] = [
     prepare(layer, _resources, path) {
       const params = parse(StoryAttachedFlowParamsSchema, layer, path);
       const flow = compileStoryFlows([params.flow], params.samples.length)[0]!;
-      return (ctx, time) => {
-        const frame = Math.max(
-          0,
-          Math.min(params.samples.length - 1, Math.floor(time)),
-        );
-        drawStoryFlow(
-          ctx,
-          flow,
-          sampleStoryPath(params.node, params.geometry, frame),
-          sample(params.samples, frame),
-          frame,
-          params.samples.length,
-        );
-      };
+      return preparedProvider(
+        (ctx, time) => {
+          const frame = Math.max(
+            0,
+            Math.min(params.samples.length - 1, Math.floor(time)),
+          );
+          drawStoryFlow(
+            ctx,
+            flow,
+            sampleStoryPath(params.node, params.geometry, frame),
+            sample(params.samples, frame),
+            frame,
+            params.samples.length,
+          );
+        },
+        {
+          bounds: pointBounds(
+            params.geometry.endpoints.flatMap(
+              (_, frame) =>
+                sampleStoryPath(params.node, params.geometry, frame).points,
+            ),
+            Math.hypot(flow.size, Math.min(2, flow.size)),
+          ),
+        },
+      );
     },
   },
   {
@@ -149,7 +170,15 @@ export const STORY_CONTENT_PROVIDERS: readonly CanvasContentProvider[] = [
       return preparedProvider(
         (ctx, time) =>
           drawPreparedPath(ctx, params.node, sample(params.samples, time)),
-        { visualKey: (time) => JSON.stringify(sample(params.samples, time)) },
+        {
+          visualKey: (time) => JSON.stringify(sample(params.samples, time)),
+          bounds: params.samples.some((s) => s.pulse > 0)
+            ? undefined
+            : pointBounds(
+                params.node.points,
+                Math.max(1, params.node.lineWidth) * 3,
+              ),
+        },
       );
     },
   },
@@ -158,21 +187,29 @@ export const STORY_CONTENT_PROVIDERS: readonly CanvasContentProvider[] = [
     prepare(layer, _resources, path) {
       const params = parse(StoryFlowParamsSchema, layer, path);
       const flow = compileStoryFlows([params.flow], params.samples.length)[0]!;
-      return (ctx, time) => {
-        // Baked adapter content has one exact sample per integer source frame.
-        const frame = Math.max(
-          0,
-          Math.min(params.samples.length - 1, Math.floor(time)),
-        );
-        drawStoryFlow(
-          ctx,
-          flow,
-          params.node,
-          sample(params.samples, frame),
-          frame,
-          params.samples.length,
-        );
-      };
+      return preparedProvider(
+        (ctx, time) => {
+          // Baked adapter content has one exact sample per integer source frame.
+          const frame = Math.max(
+            0,
+            Math.min(params.samples.length - 1, Math.floor(time)),
+          );
+          drawStoryFlow(
+            ctx,
+            flow,
+            params.node,
+            sample(params.samples, frame),
+            frame,
+            params.samples.length,
+          );
+        },
+        {
+          bounds: pointBounds(
+            params.node.points,
+            Math.hypot(flow.size, Math.min(2, flow.size)),
+          ),
+        },
+      );
     },
   },
   {
@@ -231,7 +268,10 @@ export const STORY_CONTENT_PROVIDERS: readonly CanvasContentProvider[] = [
             state.reveal,
           );
         },
-        { visualKey: (time) => JSON.stringify(sample(samples, time)) },
+        {
+          visualKey: (time) => JSON.stringify(sample(samples, time)),
+          bounds: preparedTextBounds(node, font),
+        },
       );
     },
   },

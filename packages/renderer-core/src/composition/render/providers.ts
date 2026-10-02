@@ -23,7 +23,7 @@ export type CanvasProviderDrawer = DrawProvider & {
   /** Equal keys promise identical local pixels, including every clock-dependent value. */
   visualKey?: (time: number, state?: number, sourceTime?: number) => string;
   /** Conservative local painted bounds across all states and clocks. */
-  bounds?: Bounds;
+  bounds?: Bounds | undefined;
 };
 export function preparedProvider(
   draw: DrawProvider,

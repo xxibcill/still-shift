@@ -21,6 +21,9 @@ import type {
 } from "./graph.ts";
 
 export type SolidDraw = DrawOp & { content: SolidContent };
+export type VectorDraw = DrawOp & {
+  content: Exclude<DrawOp["content"], { type: "image" | "surface" }>;
+};
 
 /** A premultiplied RGBA render target owned by a backend. */
 export type Surface = { readonly width: number; readonly height: number };
@@ -42,6 +45,8 @@ export interface RenderBackend<S extends Surface = Surface> {
   clear(surface: S, background: Rgba | null): void;
   /** Optional batch for consecutive normal solid fills without clips. */
   fillRects?(dst: S, ops: SolidDraw[]): void;
+  /** Prepare adjacent vectors/text together; effects and compositing boundaries stay explicit. */
+  drawVectors?(dst: S, ops: VectorDraw[]): void;
   fillRect(
     dst: S,
     matrix: Matrix,
@@ -290,10 +295,25 @@ export function executeGraph<S extends Surface>(
     op.blend === "normal" &&
     op.clips.length === 0 &&
     !op.paintBlur;
+  const vector = (op: RenderOp): op is VectorDraw =>
+    op.kind === "draw" &&
+    op.content.type !== "image" &&
+    op.content.type !== "surface" &&
+    op.blend === "normal" &&
+    !op.paintBlur;
   const runOps = (ops: RenderOp[], dst: S) => {
     for (let index = 0; index < ops.length; index++) {
       const op = ops[index]!;
-      if (backend.fillRects && batchable(op)) {
+      if (backend.drawVectors && vector(op)) {
+        const batch = [op];
+        while (index + 1 < ops.length) {
+          const next = ops[index + 1]!;
+          if (!vector(next)) break;
+          batch.push(next);
+          index++;
+        }
+        backend.drawVectors(dst, batch);
+      } else if (backend.fillRects && batchable(op)) {
         const batch = [op];
         while (index + 1 < ops.length) {
           const next = ops[index + 1]!;

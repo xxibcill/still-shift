@@ -2175,10 +2175,34 @@ comparisons; the full `pnpm check`.
   regression covering opacity/content changes and backward seeks, the 204-frame
   export/Lab suite and 1,226 unit tests pass. Framebuffer readback stays exact.
 - **Measured limit:** the story bracket's pixel tier passes, but its render/readback
-  ratio remains **16.3029×**, versus **18.4746×** in the preceding diagnostic run.
+  ratio remains **16.3029×**, versus **18.4706×** in the preceding diagnostic run.
   This comparison identifies remaining cost; it does not satisfy the unchanged
   **1.25×** acceptance gate. Vector batching, provider extents, full family acceptance
   and final local/frozen-baseline verification remain open.
+
+### CE4b bounded vector preparation and effect rounding (2026-10-03)
+
+- **Version:** `composition-webgl2-0.7.0` prepares adjacent vector/text operations
+  as a single raster batch and composites its bounded texture on the GPU. Image,
+  surface, effect and isolation boundaries stay explicit. The latest batch per
+  layer sequence is retained within 128 MiB. Rectangle strokes, path geometry,
+  flow tokens, measured text, word reveals and text containers supply conservative
+  preparation bounds. Unknown content, animated glyphs and path shadows retain
+  the full surface. Rasterization keeps global coordinates to preserve precision.
+- **Effect corrections:** directional blur now reproduces the reference's per-step
+  Float32 stores, double-product ties and final byte rounding. Two-word integer
+  comparisons correct software-GPU division errors; 42 byte-product exceptions
+  are generated as shader constants. Glow applies opacity before Gaussian blur,
+  matching the reference's filtered draw order.
+- **Verification:** 4,096 GPU arithmetic cases include every double-product tie
+  exception. All 68 focused GPU cases, 612 native frames, 204 export/Lab frames
+  and local fast checks pass. All 576 frames across the flow/effect/matte variants
+  now satisfy the pixel tier (maximum channel delta 2), including backward seeks.
+- **Performance remains open:** bracket improves from 16.3029× to **3.8721×**;
+  commerce A01 landscape measures **1.5805×**. Their pixel tiers pass. Corrected
+  flow variants measure **2.4108–2.5248×**. These remain above the unchanged 1.25×
+  limit. Bounded effect passes, reduced framebuffer transfers, remaining family
+  parity/timing checks and final local/frozen-baseline verification are still required.
 
 **Completion record:** CE4a and CE4b are in progress; CE4c–CE4d have not started.
 
