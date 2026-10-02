@@ -106,7 +106,16 @@ export class WebglVectors {
   }
 
   private paint(dst: WebglSurface, ops: VectorDraw[], rect: Bounds) {
-    const pixels = this.raster.createSurface(dst.width, dst.height);
+    // Custom drawers can inspect their canvas dimensions. Only native solids
+    // can use smaller preparation canvases without an additional contract.
+    const solid = ops.every(({ content }) => content.type === "solid");
+    const rasterWidth = solid
+      ? Math.min(dst.width, Math.ceil((rect.right + 63) / 256) * 256)
+      : dst.width;
+    const rasterHeight = solid
+      ? Math.min(dst.height, Math.ceil((rect.bottom + 63) / 256) * 256)
+      : dst.height;
+    const pixels = this.raster.createSurface(rasterWidth, rasterHeight);
     // draw() separates overlapping coverage before batching paints over a backdrop.
     const imageOnly = ops.every(
       ({ content }) => content.type !== "solid" && this.singleImage?.(content),
@@ -200,7 +209,7 @@ export class WebglVectors {
             upload(pixels.canvas, group.bounds, group.primitive);
             continue;
           }
-          const scratch = this.raster.createSurface(dst.width, dst.height);
+          const scratch = this.raster.createSurface(rasterWidth, rasterHeight);
           try {
             replayVectorPaints(scratch.ctx, group);
             upload(scratch.canvas, group.bounds, group.primitive);

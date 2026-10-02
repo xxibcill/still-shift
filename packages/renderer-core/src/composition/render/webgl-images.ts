@@ -84,7 +84,12 @@ export class WebglImages {
       if (bytes > 128 * 1024 * 1024) return false;
       while (this.bytes + bytes > 128 * 1024 * 1024 && this.cached.size)
         this.forget(this.cached.keys().next().value!);
-      const pixels = this.raster.createSurface(dst.width, dst.height);
+      // Preserve device coordinates and sampling spans while dropping unused
+      // trailing rows/columns. Buckets keep the preparation pool reusable.
+      const pixels = this.raster.createSurface(
+        Math.min(dst.width, Math.ceil((left + width) / 256) * 256),
+        Math.min(dst.height, Math.ceil((top + height) / 256) * 256),
+      );
       const surface = this.device.surface(width, height);
       try {
         this.raster.drawImage(

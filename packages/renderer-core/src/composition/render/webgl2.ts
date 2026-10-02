@@ -22,7 +22,7 @@ import { WebglDevice, type WebglSurface } from "./webgl-device.ts";
 import { blendShader } from "./webgl-blend.ts";
 
 export const COMPOSITION_WEBGL_RENDERER_VERSION =
-  "composition-webgl2-0.28.0" as const;
+  "composition-webgl2-0.29.0" as const;
 const IDENTITY: Matrix = [1, 0, 0, 1, 0, 0];
 const COPY =
   "uniform float opacity; void main() { pixel = floor(floor(texture(source, uv) * 255.0 + 0.5) * (floor(opacity * 255.0 + 0.5) + 1.0) / 256.0) / 255.0; }";
@@ -63,7 +63,10 @@ export function createWebgl2Backend(
   options: Webgl2BackendOptions,
 ): Webgl2Backend {
   const device = new WebglDevice(canvas);
-  const raster = createCanvas2dBackend(options);
+  const raster = createCanvas2dBackend({
+    ...options,
+    poolByteLimit: 128 * 1024 * 1024,
+  });
   const target = device.surface(canvas.width, canvas.height, false, true, true);
   const gl = device.gl;
   const bounds = new WebglBounds(target);

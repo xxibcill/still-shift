@@ -2578,6 +2578,29 @@ comparisons; the full `pnpm check`.
   local/CE0 verification. Cropped ImageBitmap staging increased measured upload
   cost and was discarded.
 
+### CE4b origin-preserving preparation bounds (2026-10-03)
+
+- **Version:** `composition-webgl2-0.29.0` drops unused trailing rows and columns
+  from image and native-solid preparation canvases while retaining their device
+  origin. Custom text/provider drawers keep full canvas dimensions. Preparation
+  sizes use 256-pixel buckets and the GPU backend caps idle Canvas surfaces at
+  128 MiB across sizes; active surfaces are never evicted.
+- **Verification:** fast checks, **1,251 unit tests**, native GPU checks and
+  **204 export/Lab frames** pass. The full story run covers **68 cases / 13,894
+  frames**: all **48 reusable-component cases / 9,216 frames** pass pixels, five
+  pass both gates, and all **13 required component export pairs** pass repeated
+  MP4, asset-relocation and overwrite checks. Bracket timing is **3.2869×**,
+  compared with **3.5165×** in the preceding component audit.
+- **Broader audit:** nine non-component CE4a story/passage cases exceed their
+  pixel tier (maximum difference 3). Full-size preparation reproduces both
+  representative failures: v013 Unequal Margins frame 0 and continuous Evidence
+  Boundary frame 112. These remain CE4a acceptance work; CE4b component pixels
+  pass. The full story command correctly exits nonzero for these and timing
+  failures. No tier or timing budget changed.
+- **Remaining:** CE4b family timing gates, commerce/typography family exports and
+  final full local/CE0 verification. OffscreenCanvas and read-frequent contexts
+  showed no consistent transfer improvement and were not adopted.
+
 **Completion record:** CE4a and CE4b are in progress; CE4c–CE4d have not started.
 
 ---

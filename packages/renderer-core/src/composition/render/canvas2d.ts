@@ -108,6 +108,8 @@ export type Canvas2dBackendOptions = {
   createCanvas?: (width: number, height: number) => HTMLCanvasElement;
   /** Surfaces kept per size between frames. */
   poolLimit?: number;
+  /** Maximum bytes retained by idle preparation surfaces across all sizes. */
+  poolByteLimit?: number;
 };
 
 export type Canvas2dBackend = RenderBackend<CanvasSurface> & {
@@ -132,6 +134,8 @@ export function createCanvas2dBackend(
     });
   const limit = options.poolLimit ?? 16;
   const pool = new Map<string, CanvasSurface[]>();
+  let pooledBytes = 0;
+  const byteLimit = options.poolByteLimit ?? Infinity;
   const rasters = new Map<string, HTMLCanvasElement>();
   let allocated = 0;
   let accumulation: Float32Array | undefined;
@@ -190,8 +194,12 @@ export function createCanvas2dBackend(
       return { width: canvas.width, height: canvas.height, canvas, ctx };
     },
     createSurface(width, height) {
-      const surface = pool.get(`${width}x${height}`)?.pop();
+      const key = `${width}x${height}`;
+      const list = pool.get(key);
+      const surface = list?.pop();
+      if (!list?.length) pool.delete(key);
       if (surface) {
+        pooledBytes -= width * height * 4;
         reset(surface.ctx);
         surface.ctx.clearRect(0, 0, width, height);
         return surface;
@@ -203,11 +211,24 @@ export function createCanvas2dBackend(
     },
     releaseSurface(surface) {
       const key = `${surface.width}x${surface.height}`;
+      const bytes = surface.width * surface.height * 4;
+      if (bytes > byteLimit || (pool.get(key)?.length ?? 0) >= limit) {
+        allocated -= 1;
+        return;
+      }
+      while (pooledBytes + bytes > byteLimit && pool.size) {
+        const oldestKey = pool.keys().next().value!;
+        const oldest = pool.get(oldestKey)!;
+        const evicted = oldest.shift()!;
+        pooledBytes -= evicted.width * evicted.height * 4;
+        evicted.canvas.width = evicted.canvas.height = 0;
+        allocated -= 1;
+        if (!oldest.length) pool.delete(oldestKey);
+      }
       const list = pool.get(key) ?? [];
-      if (list.length < limit) {
-        list.push(surface);
-        pool.set(key, list);
-      } else allocated -= 1;
+      list.push(surface);
+      pool.set(key, list);
+      pooledBytes += bytes;
     },
     clear(surface, background) {
       const ctx = surface.ctx;
@@ -535,6 +556,7 @@ export function createCanvas2dBackend(
     dispose() {
       accumulation = undefined;
       pool.clear();
+      pooledBytes = 0;
       rasters.clear();
       allocated = 0;
     },
