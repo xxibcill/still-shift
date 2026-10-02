@@ -17,6 +17,30 @@ const WIDTH = 96,
   HEIGHT = 64;
 type Paint = <S extends Surface>(backend: RenderBackend<S>, target: S) => void;
 
+function assertFullGpuReadback(
+  canvas: HTMLCanvasElement,
+  pixels: Uint8ClampedArray,
+) {
+  const gl = canvas.getContext("webgl2")!;
+  const full = new Uint8Array(pixels.length);
+  gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+  gl.readPixels(
+    0,
+    0,
+    canvas.width,
+    canvas.height,
+    gl.RGBA,
+    gl.UNSIGNED_BYTE,
+    full,
+  );
+  for (let y = 0; y < canvas.height; y++)
+    for (let x = 0; x < canvas.width * 4; x++) {
+      const i = y * canvas.width * 4 + x;
+      if (pixels[i] !== full[(canvas.height - 1 - y) * canvas.width * 4 + x])
+        throw new Error(`Optimized GPU readback differs at byte ${i}`);
+    }
+}
+
 export function checkWebglFrames() {
   const asset = document.createElement("canvas");
   asset.width = 32;
@@ -68,6 +92,7 @@ export function checkWebglFrames() {
     gpu.present();
     const a = reference.readPixels(expected),
       b = gpu.readPixels(gpu.target);
+    assertFullGpuReadback(canvas, b);
     let maxDelta = 0,
       squared = 0;
     for (let i = 0; i < a.length; i++) {
@@ -156,6 +181,49 @@ export function checkWebglFrames() {
           [],
         );
     });
+    for (const alpha of [0, 0.5, 1])
+      check(`surface/clear/${alpha}`, (backend, dst) =>
+        backend.clear(dst, [0.7, 0.5, 0.1, alpha]),
+      );
+    check("surface/exposure-background", (backend, dst) =>
+      backend.accumulateExposure(dst, 2, (index) =>
+        backend.clear(dst, index ? [0.2, 0.4, 0.6, 1] : [0.8, 0.6, 0.2, 1]),
+      ),
+    );
+    const imageContent = {
+      type: "image" as const,
+      width: 36,
+      height: 32,
+      fit: "contain" as const,
+      rasterize: "natural-size" as const,
+      sources: [
+        { asset: "image" },
+        {
+          asset: "image",
+          crop: [3, 4, 20, 16] as [number, number, number, number],
+        },
+      ],
+      state: 0,
+    };
+    for (const [state, mix, opacity, x] of [
+      [0, 1, 1, 10],
+      [0, 1, 1, 10],
+      [1, 0.4, 0.5, 10],
+      [1, 1, 1, 18],
+      [0, 1, 1, 10],
+    ] as const)
+      check(
+        `layer/image-cache/${state}/${mix}/${opacity}/${x}`,
+        (backend, dst) =>
+          backend.drawImage(
+            dst,
+            { ...imageContent, state, stateFrom: 0, stateMix: mix },
+            [1, 0.07, -0.1, 1, x, 10],
+            opacity,
+            "normal",
+            [{ matrix: [1, 0, 0, 1, x + 2, 12], width: 25, height: 27 }],
+          ),
+      );
     check("layer/image", (backend, dst) =>
       backend.drawImage(
         dst,
@@ -561,12 +629,10 @@ export async function checkWebglFrameReuse() {
     ],
   };
   const resources = { images: new Map(), fonts: new Map() };
-  const gpu = createCompositionPreview(
-    document.createElement("canvas"),
-    composition,
-    resources,
-    { backend: "webgl2" },
-  );
+  const canvas = document.createElement("canvas");
+  const gpu = createCompositionPreview(canvas, composition, resources, {
+    backend: "webgl2",
+  });
   const reference = createCompositionPreview(
     document.createElement("canvas"),
     composition,
@@ -579,6 +645,7 @@ export async function checkWebglFrameReuse() {
       reference.renderFrame(frame);
       const actual = gpu.readPixels(),
         expected = reference.readPixels();
+      assertFullGpuReadback(canvas, actual);
       if (actual.some((v, i) => Math.abs(v - expected[i]!) > 2))
         throw new Error(`Cached GPU frame ${frame} differs`);
       const before = actual[0]!;

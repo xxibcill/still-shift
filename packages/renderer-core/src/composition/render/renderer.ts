@@ -216,8 +216,13 @@ export function createCompositionPreview(
     const cache: CompositionFrameCache | undefined =
       kind === "webgl2" ? {} : undefined;
     let pixels: Uint8ClampedArray | undefined;
+    let reusePixels = false;
     const readPixels = () => {
-      if (!cache || target.width * target.height * 4 > 64 * 1024 * 1024)
+      if (
+        !cache ||
+        !reusePixels ||
+        target.width * target.height * 4 > 64 * 1024 * 1024
+      )
         return backend.readPixels(target);
       pixels ??= backend.readPixels(target);
       return pixels.slice();
@@ -244,6 +249,7 @@ export function createCompositionPreview(
           },
           cache,
         );
+        reusePixels = report.samples === 0;
         if (report.samples > 0) {
           pixels = undefined;
           present();

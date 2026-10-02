@@ -2103,6 +2103,28 @@ comparisons; the full `pnpm check`.
 - **Remaining:** full family parity and performance, including continuously
   animated content, and final full local/frozen-baseline verification.
 
+### CE4b bounded GPU image work (2026-10-02)
+
+- **Version:** `composition-webgl2-0.3.0` bounds image uploads, compositing,
+  presentation and readback to conservative painted regions. Image rasterization
+  retains the reference sampler's global coordinates; each image's latest prepared
+  texture can be reused when its content, transform, clips and opacity are unchanged.
+  The texture cache is capped at 128 MiB, separate from the 128 MiB idle surface pool.
+  Effects, opaque masks/mattes and changing exposure backgrounds conservatively
+  retain full-surface bounds. Changing frames avoid an unnecessary readback copy.
+- **Verification:** the expanded **66 focused GPU cases** and **11 native fixture
+  groups / 612 frames** pass their unchanged pixel tiers. Readback is also compared
+  byte-for-byte with the complete GPU framebuffer, covering image cache invalidation,
+  fractional clear colors, exposure backgrounds, reverse seeks and caller mutation.
+  The **204-frame** export/Lab suite and **1,220 unit tests** pass.
+- **Performance remains open:** continuously animated Drift is pixel-exact for all
+  **240 frames** and improves from **5.2101×** to **2.6641×** reference time. This
+  still fails the unchanged **1.25×** acceptance limit. A direct GPU image-sampling
+  experiment produced channel differences up to 12 and was discarded; neither the
+  pixel tier nor timing threshold was relaxed.
+- **Remaining:** further software-GPU performance work, full family acceptance,
+  and final local/frozen-baseline verification. CE4b is not complete.
+
 **Completion record:** CE4a and CE4b are in progress; CE4c–CE4d have not started.
 
 ---

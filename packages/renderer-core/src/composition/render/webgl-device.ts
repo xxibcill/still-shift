@@ -166,6 +166,34 @@ export class WebglDevice {
     gl.texSubImage2D(gl.TEXTURE_2D, 0, 0, 0, gl.RGBA, gl.UNSIGNED_BYTE, canvas);
   }
 
+  uploadRegion(
+    surface: WebglSurface,
+    canvas: HTMLCanvasElement,
+    x: number,
+    y: number,
+  ) {
+    const gl = this.gl;
+    gl.bindTexture(gl.TEXTURE_2D, surface.texture);
+    gl.pixelStorei(gl.UNPACK_SKIP_PIXELS, x);
+    gl.pixelStorei(gl.UNPACK_SKIP_ROWS, y);
+    try {
+      gl.texSubImage2D(
+        gl.TEXTURE_2D,
+        0,
+        0,
+        0,
+        surface.width,
+        surface.height,
+        gl.RGBA,
+        gl.UNSIGNED_BYTE,
+        canvas,
+      );
+    } finally {
+      gl.pixelStorei(gl.UNPACK_SKIP_PIXELS, 0);
+      gl.pixelStorei(gl.UNPACK_SKIP_ROWS, 0);
+    }
+  }
+
   uploadFloats(surface: WebglSurface, pixels: Float32Array<ArrayBuffer>) {
     const gl = this.gl;
     gl.bindTexture(gl.TEXTURE_2D, surface.texture);
@@ -291,27 +319,65 @@ export class WebglDevice {
   }
 
   read(surface: WebglSurface) {
+    return this.readRegion(surface, 0, 0, surface.width, surface.height);
+  }
+
+  readRegion(
+    surface: WebglSurface,
+    x: number,
+    y: number,
+    width: number,
+    height: number,
+  ) {
     const gl = this.gl;
-    const pixels = new Uint8Array(surface.width * surface.height * 4);
+    const pixels = new Uint8Array(width * height * 4);
     gl.bindFramebuffer(gl.FRAMEBUFFER, surface.framebuffer);
-    gl.readPixels(
-      0,
-      0,
-      surface.width,
-      surface.height,
-      gl.RGBA,
-      gl.UNSIGNED_BYTE,
-      pixels,
-    );
+    gl.readPixels(x, y, width, height, gl.RGBA, gl.UNSIGNED_BYTE, pixels);
+    gl.bindFramebuffer(gl.FRAMEBUFFER, null);
     return pixels;
   }
 
-  present(surface: WebglSurface) {
-    this.pass(
-      "void main() { pixel = vec4(texture(source, vec2(uv.x, 1.0 - uv.y)).rgb, 1.0); }",
-      null,
-      [surface],
+  present(
+    surface: WebglSurface,
+    region?: {
+      left: number;
+      top: number;
+      right: number;
+      bottom: number;
+    },
+    background?: Uint8Array,
+  ) {
+    const gl = this.gl;
+    gl.bindFramebuffer(gl.READ_FRAMEBUFFER, surface.framebuffer);
+    gl.bindFramebuffer(gl.DRAW_FRAMEBUFFER, null);
+    if (background) {
+      gl.clearColor(
+        background[0]! / 255,
+        background[1]! / 255,
+        background[2]! / 255,
+        1,
+      );
+      gl.clear(gl.COLOR_BUFFER_BIT);
+    }
+    const { left, top, right, bottom } = region ?? {
+      left: 0,
+      top: 0,
+      right: surface.width,
+      bottom: surface.height,
+    };
+    gl.blitFramebuffer(
+      left,
+      top,
+      right,
+      bottom,
+      left,
+      this.canvas.height - top,
+      right,
+      this.canvas.height - bottom,
+      gl.COLOR_BUFFER_BIT,
+      gl.NEAREST,
     );
+    gl.bindFramebuffer(gl.FRAMEBUFFER, null);
   }
 
   dispose() {

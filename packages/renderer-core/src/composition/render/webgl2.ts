@@ -1,3 +1,5 @@
+import { WebglBounds } from "./webgl-bounds.ts";
+import { WebglImages } from "./webgl-images.ts";
 import { WebglEffects } from "./webgl-effects.ts";
 import type { CompositionBlendMode } from "@still-shift/scene-contract";
 import type { Matrix } from "../../node-transform.ts";
@@ -12,7 +14,7 @@ import { WebglDevice, type WebglSurface } from "./webgl-device.ts";
 import { blendShader } from "./webgl-blend.ts";
 
 export const COMPOSITION_WEBGL_RENDERER_VERSION =
-  "composition-webgl2-0.2.0" as const;
+  "composition-webgl2-0.3.0" as const;
 const IDENTITY: Matrix = [1, 0, 0, 1, 0, 0];
 const COPY =
   "uniform float opacity; void main() { pixel = floor(floor(texture(source, uv) * 255.0 + 0.5) * (floor(opacity * 255.0 + 0.5) + 1.0) / 256.0) / 255.0; }";
@@ -47,7 +49,9 @@ export function createWebgl2Backend(
   const raster = createCanvas2dBackend(options);
   const target = device.surface(canvas.width, canvas.height, false, true);
   const gl = device.gl;
+  const bounds = new WebglBounds(target);
   const effects = new WebglEffects(device, raster);
+  const images = new WebglImages(device, raster);
 
   function replace(
     dst: WebglSurface,
@@ -173,9 +177,19 @@ export function createWebgl2Backend(
     get passes() {
       return device.passes;
     },
-    createSurface: (w, h) => device.surface(w, h),
-    releaseSurface: (surface) => device.release(surface),
-    clear: (surface, color) => device.clear(surface, color ?? undefined),
+    createSurface: (w, h) => {
+      const surface = device.surface(w, h);
+      bounds.clear(surface, null);
+      return surface;
+    },
+    releaseSurface: (surface) => {
+      bounds.release(surface);
+      device.release(surface);
+    },
+    clear: (surface, color) => {
+      bounds.clear(surface, color);
+      device.clear(surface, color ?? undefined);
+    },
     fillRect(
       dst,
       matrix,
@@ -188,6 +202,8 @@ export function createWebgl2Backend(
       transforms,
       paintBlur,
     ) {
+      if (paintBlur) bounds.full(dst);
+      else bounds.draw(dst, matrix, width, height);
       draw(
         dst,
         mode,
@@ -210,6 +226,8 @@ export function createWebgl2Backend(
     // Keep a vector batch together: raster coverage rounds each overlapping fill.
     // Splitting it into separately quantized uploads changes repeated AA edges.
     fillRects(dst, ops) {
+      for (const op of ops)
+        bounds.draw(dst, op.matrix, op.content.width, op.content.height);
       draw(dst, "normal", (pixels) => raster.fillRects!(pixels, ops));
     },
     drawImage(
@@ -222,6 +240,14 @@ export function createWebgl2Backend(
       transforms,
       paintBlur,
     ) {
+      if (paintBlur) bounds.full(dst);
+      else bounds.draw(dst, matrix, content.width, content.height);
+      if (
+        !paintBlur &&
+        mode === "normal" &&
+        images.draw(dst, content, matrix, opacity, clips, transforms)
+      )
+        return;
       draw(dst, mode, (pixels) =>
         raster.drawImage(
           pixels,
@@ -245,6 +271,7 @@ export function createWebgl2Backend(
       transforms,
       paintBlur,
     ) {
+      bounds.full(dst);
       draw(dst, mode, (pixels) =>
         raster.drawText(
           pixels,
@@ -268,6 +295,7 @@ export function createWebgl2Backend(
       transforms,
       paintBlur,
     ) {
+      bounds.full(dst);
       draw(dst, mode, (pixels) =>
         raster.drawProvider(
           pixels,
@@ -282,6 +310,8 @@ export function createWebgl2Backend(
       );
     },
     composite(src, dst, mode, opacity, matrix, clips, transforms, paintBlur) {
+      if (paintBlur) bounds.full(dst);
+      else bounds.composite(src, dst, matrix);
       if (paintBlur) {
         const source = placed(src, dst, matrix, [], transforms);
         try {
@@ -333,8 +363,12 @@ export function createWebgl2Backend(
         }
       }
     },
-    applyEffects: (target, stack) => effects.apply(target, stack),
+    applyEffects: (target, stack) => {
+      if (stack.some((effect) => effect.enabled)) bounds.full(target);
+      effects.apply(target, stack);
+    },
     applyMask(dst, masks) {
+      if (dst.opaque) bounds.full(dst);
       const combined = device.surface(dst.width, dst.height);
       const coverage = device.surface(dst.width, dst.height);
       const pixels = raster.createSurface(dst.width, dst.height);
@@ -385,6 +419,7 @@ export function createWebgl2Backend(
       }
     },
     applyMatte(dst, matte, mode) {
+      if (dst.opaque) bounds.full(dst);
       const luma = mode === "luma" || mode === "luma-inverted";
       const inverted = mode === "alpha-inverted" || mode === "luma-inverted";
       replace(
@@ -398,6 +433,7 @@ export function createWebgl2Backend(
       );
     },
     lerp(dst, src, coverage, opacity) {
+      bounds.include(dst, bounds.snapshot(src));
       replace(
         dst,
         `uniform float opacity;
@@ -409,6 +445,8 @@ export function createWebgl2Backend(
       );
     },
     readPixels(surface) {
+      const region = bounds.read(device, surface);
+      if (region) return region;
       const pixels = device.read(surface);
       if (surface.opaque) return new Uint8ClampedArray(pixels.buffer);
       const result = new Uint8ClampedArray(pixels.length);
@@ -427,11 +465,17 @@ export function createWebgl2Backend(
         render(0);
         return;
       }
+      let painted: ReturnType<WebglBounds["snapshot"]> = null;
+      let background: number | undefined;
       const sum = device.surface(dst.width, dst.height, true);
       const next = device.surface(dst.width, dst.height, true);
       try {
         for (let i = 0; i < count; i++) {
           render(i);
+          if (i === 0) background = bounds.clearColor(dst);
+          else if (background !== bounds.clearColor(dst)) bounds.full(dst);
+          bounds.include(dst, painted);
+          painted = bounds.snapshot(dst);
           device.pass(
             "void main() { pixel = texture(backdrop,uv) + floor(texture(source,uv)*255.0+0.5); }",
             next,
@@ -450,7 +494,7 @@ export function createWebgl2Backend(
         device.release(next);
       }
     },
-    present: () => device.present(target),
+    present: () => bounds.present(device),
     dispose() {
       raster.dispose();
       device.dispose();

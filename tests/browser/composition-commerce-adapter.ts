@@ -247,7 +247,12 @@ try {
             compositionMs = 0,
             legacyRenderMs = 0,
             compositionRenderMs = 0;
-          const failures: { frame: number; delta: number; psnr: number }[] = [];
+          const failures: {
+            frame: number;
+            delta: number;
+            psnr: number;
+            pixel?: unknown;
+          }[] = [];
           const renderTimings: { frame: number; milliseconds: number }[] = [];
           legacy.renderFrame(0);
           preview.renderFrame(0);
@@ -284,6 +289,19 @@ try {
                 frame,
                 delta: comparison.maxChannelDelta,
                 psnr: comparison.psnr,
+                pixel: (() => {
+                  const offset = expected.findIndex(
+                    (v, i) =>
+                      Math.abs(v - actual[i]!) === comparison.maxChannelDelta,
+                  );
+                  const start = offset - (offset % 4);
+                  return {
+                    x: (start / 4) % canvas.width,
+                    y: Math.floor(start / 4 / canvas.width),
+                    expected: Array.from(expected.slice(start, start + 4)),
+                    actual: Array.from(actual.slice(start, start + 4)),
+                  };
+                })(),
               });
             if (
               frame === 0 ||
