@@ -106,6 +106,7 @@ export type DrawOp = {
   opacity: number;
   blend: CompositionBlendMode;
   clips: ClipRect[];
+  paintBlur?: number;
 };
 /** Render `ops` into a scope-sized surface, apply masks and matte, then composite. */
 export type IsolateOp = {
@@ -171,6 +172,7 @@ type Frame = {
   prefix: string;
   /** An ancestor effect may pull offscreen content into view. */
   cull?: boolean;
+  paintBlur?: number;
 };
 type Scope = {
   tree: EvaluatedLayerTree;
@@ -478,6 +480,25 @@ class GraphBuilder {
     }
   }
 
+  /** A positive paint blur overrides inherited group blur; zero retains it. */
+  private paintBlur(scope: Scope, state: EvaluatedLayer, frame: Frame): number {
+    for (
+      let current: EvaluatedLayer | undefined = state;
+      current;
+      current = current.layer.parent
+        ? scope.byId.get(current.layer.parent)
+        : undefined
+    ) {
+      if (current !== state && current.layer.type !== "group") continue;
+      const blur = current.effects.find(
+        (effect) => effect.enabled && effect.effect === "blur.primitive",
+      );
+      if (blur && (blur.params.radius as number) > 0)
+        return blur.params.radius as number;
+    }
+    return frame.paintBlur ?? 0;
+  }
+
   /** Historical input is painted before current input and this frame's pixel stack/matte. */
   private echoOps(
     scope: Scope,
@@ -552,6 +573,7 @@ class GraphBuilder {
   ): RenderOp[] {
     const key = frame.prefix + state.id,
       layer = state.layer;
+    const paintBlur = this.paintBlur(scope, state, frame);
     const matrix = multiplyMatrix(frame.matrix, state.screenMatrix);
     const transforms = this.transforms(scope, state, frame);
     const opacity = frame.opacity * state.opacity;
@@ -560,6 +582,7 @@ class GraphBuilder {
     if (
       options.cull !== false &&
       frame.cull !== false &&
+      !paintBlur &&
       layer.type !== "group" &&
       !(layer.type === "precomp" && layer.collapseTransforms) &&
       state.bounds &&
@@ -577,7 +600,11 @@ class GraphBuilder {
           )
         : undefined;
     const effects: RenderEffect[] = (options.raw ? [] : state.effects)
-      .filter((effect) => effect.enabled && effect.effect !== "time.echo")
+      .filter(
+        (effect) =>
+          effect.enabled &&
+          !["time.echo", "blur.primitive"].includes(effect.effect),
+      )
       .map((effect) => {
         if (!compositionEffectDefinition(effect.effect)!.usesLayerSpace)
           return effect;
@@ -671,6 +698,7 @@ class GraphBuilder {
             clips: isolated ? [] : clips,
             viewport: frame.viewport,
             prefix: `${key}/`,
+            ...(paintBlur ? { paintBlur } : {}),
             ...(effects.length || frame.cull === false ? { cull: false } : {}),
           })
         : [];
@@ -688,6 +716,7 @@ class GraphBuilder {
           opacity: isolated ? 1 : opacity,
           blend: "normal",
           clips: isolated ? [] : clips,
+          ...(paintBlur ? { paintBlur } : {}),
         },
       ];
       if (!isolated) return ops;

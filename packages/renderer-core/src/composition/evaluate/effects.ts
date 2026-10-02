@@ -69,7 +69,11 @@ export function effectBounds(
       if (compositionEffectDefinition(effect.effect)!.generatesContent)
         return null;
       const params = effect.params as Record<string, number>;
-      if (effect.effect === "blur.gaussian" || effect.effect === "light.glow")
+      if (
+        effect.effect === "blur.gaussian" ||
+        effect.effect === "blur.primitive" ||
+        effect.effect === "light.glow"
+      )
         margin += params.radius! > 0 ? 3 * params.radius! + 2 : 0;
       else if (effect.effect === "blur.directional")
         margin += params.length! / 2 + 1;

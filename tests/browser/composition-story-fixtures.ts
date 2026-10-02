@@ -18,6 +18,7 @@ import { storyComponentVariants } from "../helpers/composition-story-components.
 import { motionPathVariants } from "../helpers/composition-motion-path.ts";
 import { appearanceVariants } from "../helpers/composition-appearance.ts";
 import { storyEffectVariants } from "../helpers/composition-story-effects.ts";
+import { primitiveBlurVariants } from "../helpers/composition-primitive-blur.ts";
 import { assertCompositionAdapterState } from "../helpers/composition-adapter-state.ts";
 
 const root = resolve(import.meta.dirname, "../..");
@@ -85,6 +86,7 @@ try {
         ...motionPathVariants(item.id, StorySceneSchema.parse(item.scene)),
         ...appearanceVariants(item.id, StorySceneSchema.parse(item.scene)),
         ...storyEffectVariants(item.id, StorySceneSchema.parse(item.scene)),
+        ...primitiveBlurVariants(item.id, StorySceneSchema.parse(item.scene)),
       ])
       .filter(
         (item) => variant < 0 || item.id.includes(process.argv[variant + 1]!),
@@ -246,6 +248,7 @@ try {
         [
           "component/story-leader/spatial-morph",
           "component/story-state/appearance-uniform",
+          "component/story-state/primitive-blur-stack",
           "component/story-state/effects-text-sweep",
           "component/story-leader/effects-flow-target-inverted",
         ].includes(item.id)

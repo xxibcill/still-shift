@@ -47,6 +47,7 @@ export interface RenderBackend<S extends Surface = Surface> {
     blend: CompositionBlendMode,
     clips: ClipRect[],
     transforms?: Matrix[],
+    paintBlur?: number,
   ): void;
   drawImage(
     dst: S,
@@ -56,6 +57,7 @@ export interface RenderBackend<S extends Surface = Surface> {
     blend: CompositionBlendMode,
     clips: ClipRect[],
     transforms?: Matrix[],
+    paintBlur?: number,
   ): void;
   drawText(
     dst: S,
@@ -65,6 +67,7 @@ export interface RenderBackend<S extends Surface = Surface> {
     blend: CompositionBlendMode,
     clips: ClipRect[],
     transforms?: Matrix[],
+    paintBlur?: number,
   ): void;
   drawProvider(
     dst: S,
@@ -74,6 +77,7 @@ export interface RenderBackend<S extends Surface = Surface> {
     blend: CompositionBlendMode,
     clips: ClipRect[],
     transforms?: Matrix[],
+    paintBlur?: number,
   ): void;
   /** Draw `src` (its pixel grid placed by `matrix`) onto `dst`. */
   composite(
@@ -84,6 +88,7 @@ export interface RenderBackend<S extends Surface = Surface> {
     matrix: Matrix,
     clips: ClipRect[],
     transforms?: Matrix[],
+    paintBlur?: number,
   ): void;
   /** Apply the ordered effect stack in surface pixel space, before masks/mattes. */
   applyEffects(target: S, effects: RenderEffect[]): void;
@@ -132,7 +137,15 @@ export function executeGraph<S extends Surface>(
   const run = (op: RenderOp, dst: S): void => {
     switch (op.kind) {
       case "draw": {
-        const { content: c, matrix, opacity, blend, clips, transforms } = op;
+        const {
+          content: c,
+          matrix,
+          opacity,
+          blend,
+          clips,
+          transforms,
+          paintBlur,
+        } = op;
         if (c.type === "solid")
           backend.fillRect(
             dst,
@@ -144,11 +157,30 @@ export function executeGraph<S extends Surface>(
             blend,
             clips,
             transforms,
+            paintBlur,
           );
         else if (c.type === "image")
-          backend.drawImage(dst, c, matrix, opacity, blend, clips, transforms);
+          backend.drawImage(
+            dst,
+            c,
+            matrix,
+            opacity,
+            blend,
+            clips,
+            transforms,
+            paintBlur,
+          );
         else if (c.type === "text")
-          backend.drawText(dst, c, matrix, opacity, blend, clips, transforms);
+          backend.drawText(
+            dst,
+            c,
+            matrix,
+            opacity,
+            blend,
+            clips,
+            transforms,
+            paintBlur,
+          );
         else if (c.type === "provider")
           backend.drawProvider(
             dst,
@@ -158,6 +190,7 @@ export function executeGraph<S extends Surface>(
             blend,
             clips,
             transforms,
+            paintBlur,
           );
         else {
           const nested = surface(c.surface);
@@ -169,6 +202,7 @@ export function executeGraph<S extends Surface>(
             matrix,
             clips,
             transforms,
+            paintBlur,
           );
           backend.releaseSurface(nested);
         }
@@ -239,7 +273,8 @@ export function executeGraph<S extends Surface>(
     op.kind === "draw" &&
     op.content.type === "solid" &&
     op.blend === "normal" &&
-    op.clips.length === 0;
+    op.clips.length === 0 &&
+    !op.paintBlur;
   const runOps = (ops: RenderOp[], dst: S) => {
     for (let index = 0; index < ops.length; index++) {
       const op = ops[index]!;

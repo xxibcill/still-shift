@@ -113,6 +113,19 @@ export function preparedBaseLayer(
     id: node.id,
     ...(node.parent ? { parent: node.parent } : {}),
     source: { family: scene.schemaVersion, id: node.id },
+    ...(samples.some((sample) => sample.blur !== undefined)
+      ? {
+          effects: [
+            {
+              id: "primitiveBlur",
+              effect: "blur.primitive",
+              params: {
+                radius: baked(samples.map((sample) => sample.blur ?? 0)),
+              },
+            },
+          ],
+        }
+      : {}),
     transform: {
       ...bakedPlacement(node, samples),
       scale: {

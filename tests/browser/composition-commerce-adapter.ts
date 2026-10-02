@@ -26,6 +26,7 @@ import { commerceTextStateVariants } from "../helpers/composition-commerce-text-
 import { motionPathVariants } from "../helpers/composition-motion-path.ts";
 import { assertAdapterExport } from "../helpers/composition-adapter-exports.ts";
 import { appearanceVariants } from "../helpers/composition-appearance.ts";
+import { primitiveBlurVariants } from "../helpers/composition-primitive-blur.ts";
 import type * as TextStateTests from "../helpers/composition-commerce-text-states.ts";
 
 const root = resolve(import.meta.dirname, "../..");
@@ -148,6 +149,7 @@ try {
       ...commerceTextStateVariants(entry.id, source),
       ...motionPathVariants(entry.id, source),
       ...appearanceVariants(entry.id, source),
+      ...primitiveBlurVariants(entry.id, source),
       ...commerceEffectVariants(entry.id, source),
     ];
     for (const item of inputs) {
@@ -388,6 +390,8 @@ try {
         [
           "commerce/atom-path/morph",
           "commerce/atom-path/appearance-brush",
+          "commerce/atom-path/primitive-blur-brush",
+          "component/commerce-state/primitive-blur-stack",
           "commerce/atom-height-shadow",
           "commerce/atom-focus-blur",
           "commerce/atom-directional-blur",

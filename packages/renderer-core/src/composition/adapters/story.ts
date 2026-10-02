@@ -53,7 +53,7 @@ export type StoryCompositionOptions = {
   textLayout?: CompositionTextLayout;
 };
 
-export const STORY_ADAPTER_VERSION = "story-composition-0.8.0";
+export const STORY_ADAPTER_VERSION = "story-composition-0.9.0";
 function checkSupported(scene: StoryScene) {
   const unsupported = (path: string, feature: string): never =>
     passageError(
@@ -125,13 +125,6 @@ export function storyToComposition(
       const samples = Array.from({ length: scene.frameCount }, (_, frame) =>
         evaluatePreparedNode(scene, node, frame),
       );
-      for (const property of ["blur"] as const)
-        if (samples.some((sample) => sample[property] !== undefined))
-          passageError(
-            "comp-adapter-unsupported",
-            `Motion ${property} is not supported by the story adapter`,
-            { path: `nodes[${scene.nodes.indexOf(node)}].${property}` },
-          );
       const appearance = compileAppearance(scene, node, samples);
       const componentGeometry =
         node.type === "path"

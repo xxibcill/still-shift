@@ -147,6 +147,19 @@ function checkLayer(
         "One echo is allowed per drawable layer or group; adjustment backdrops have no source history",
       );
     if (
+      effect.effect === "blur.primitive" &&
+      (layer.type === "adjustment" ||
+        layer.type === "null" ||
+        layer
+          .effects!.slice(0, index)
+          .some((prior) => prior.effect === "blur.primitive"))
+    )
+      fail(
+        "comp-effect-paint",
+        at,
+        "One primitive blur is allowed per drawable layer or group",
+      );
+    if (
       effect.space &&
       (!definition.usesLayerSpace ||
         !scope.layers.some((layer) => layer.id === effect.space))

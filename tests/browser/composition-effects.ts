@@ -1,5 +1,6 @@
 import type * as PixelTests from "../helpers/composition-pixel-reference.ts";
 import type * as EchoTests from "../helpers/composition-echo-reference.ts";
+import type * as PrimitiveTests from "../helpers/composition-primitive-reference.ts";
 import { mkdtemp, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { renderComposition } from "@still-shift/animation-engine";
@@ -446,6 +447,11 @@ try {
     const echoUrl = "/tests/helpers/composition-echo-reference.ts";
     const { checkEchoFrames } = (await import(echoUrl)) as typeof EchoTests;
     result.push(...checkEchoFrames());
+    const primitiveUrl = "/tests/helpers/composition-primitive-reference.ts";
+    const { checkPrimitiveFrames } = (await import(
+      primitiveUrl
+    )) as typeof PrimitiveTests;
+    result.push(...checkPrimitiveFrames());
     return result;
   });
   for (const result of results)
@@ -465,6 +471,7 @@ try {
     "generators",
     "light-sweep",
     "echo",
+    "primitive-blur",
   ]) {
     const compositionPath = resolve(
       `benchmarks/fixtures/composition/ce6/${fixture}.json`,

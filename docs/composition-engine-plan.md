@@ -1932,6 +1932,29 @@ comparisons; the full `pnpm check`.
 - **Remaining:** motion blur, animated primitive blur, WebGL2 acceptance and final
   full local verification. The active goal continues after this slice's commit.
 
+### CE4b primitive-blur follow-up (2026-10-02)
+
+- **Delivered:** native `blur.primitive@1.0.0` runs during content drawing before
+  surface effects. Positive child radii override group blur; zero retains it.
+  Overlapping primitives, clipped groups, state crossfades, providers, text
+  containers, ordinary precomps and collapsed precomps preserve their drawing
+  semantics. Blur prevents inappropriate offscreen culling. Both adapters compile
+  motion-craft blur through this entry.
+- **Versions:** commerce `commerce-composition-0.16.0`, story
+  `story-composition-0.9.0`, evaluator `composition-evaluator-17`, Canvas renderer
+  `composition-canvas-1.18.0`.
+- **Verification:** `pnpm check:fast` passes **1,208 unit tests**. Ten family cases /
+  **2,023 frames** pass their unchanged tiers, including group inheritance and
+  overrides, state ramps, text containers, mattes, combined surface blur, all three
+  path styles and rich typography. Path styles and rich typography match exactly;
+  commerce/story component cases differ by at most two channel values, with PSNR
+  at least **98.90 dB**. Worst render/readback ratio is **1.0057×**. The native
+  suite adds **64 exact primitive-blur frames** while retaining earlier effect
+  references. Six native fixtures each export 60 frames twice with identical bytes.
+  Four family cases pass repeat CLI exports, asset relocation and overwrite checks.
+- **Remaining:** motion blur, WebGL2 acceptance and final full local verification.
+  The active goal continues after this slice's commit.
+
 **Completion record:** CE4a and CE4b are in progress; CE4c–CE4d have not started.
 
 ---

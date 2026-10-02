@@ -35,7 +35,7 @@ import { prepareCommerceTextFits } from "../../commerce-layout.ts";
 import { prepareComponentTextFits } from "../../component-text-fit.ts";
 import { loadPreparedFonts } from "../../prepared-fonts.ts";
 
-export const COMMERCE_ADAPTER_VERSION = "commerce-composition-0.15.0";
+export const COMMERCE_ADAPTER_VERSION = "commerce-composition-0.16.0";
 
 export type CommerceCompositionOptions = {
   id?: string;
@@ -152,12 +152,6 @@ export function commerceToComposition(
       const samples = Array.from({ length: scene.frameCount }, (_, frame) =>
         evaluatePreparedNode(scene, node, frame),
       );
-      for (const property of ["blur"] as const)
-        if (samples.some((sample) => sample[property] !== undefined))
-          unsupported(
-            `nodes[${scene.nodes.indexOf(node)}].${property}`,
-            `Motion ${property}`,
-          );
       const appearance = compileAppearance(scene, node, samples);
       // Keep path-based rectangle rasterization and parent transform concatenation.
       let layer =

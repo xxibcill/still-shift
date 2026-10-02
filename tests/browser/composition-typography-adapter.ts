@@ -23,6 +23,7 @@ import {
 } from "../helpers/composition-typography.ts";
 import { assertAdapterExport } from "../helpers/composition-adapter-exports.ts";
 import { appearanceVariants } from "../helpers/composition-appearance.ts";
+import { primitiveBlurVariants } from "../helpers/composition-primitive-blur.ts";
 import type * as Render from "../../packages/renderer-core/src/index.ts";
 import { assertCompositionAdapterState } from "../helpers/composition-adapter-state.ts";
 
@@ -42,6 +43,7 @@ const inventory = JSON.parse(
   }[];
 };
 const only = process.argv.indexOf("--only");
+const variant = process.argv.indexOf("--variant");
 const selected = inventory.fixtures.filter(
   (f) =>
     f.family === "typography" &&
@@ -77,7 +79,10 @@ try {
         id: `${entry.id}/${item.id}`,
       })),
       ...appearanceVariants(entry.id, source),
-    ];
+      ...primitiveBlurVariants(entry.id, source),
+    ].filter(
+      (item) => variant < 0 || item.id.includes(process.argv[variant + 1]!),
+    );
     for (const item of inputs) {
       const input =
         item.scene.schemaVersion === "commerce-scene-1"
@@ -247,6 +252,7 @@ try {
         [
           "typography/editorial/numeric",
           "typography/editorial/appearance-uniform",
+          "typography/editorial/primitive-blur-text",
           "typography/commerce/numeric",
           "typography/variable-thai/numeric",
           "typography/semantic",

@@ -909,7 +909,7 @@ pixels of the composition surface containing the layer. It uses the Canvas
 Gaussian filter. The WebGL2 implementation and remaining registry entries are
 still in progress; this slice does not complete CE6.
 
-Effects apply in array order to isolated layer pixels, then masks and track mattes,
+Pixel effects apply in array order to isolated layer pixels, then masks and track mattes,
 then final layer opacity and blend. Group children retain their inherited per-child
 opacity before the group stack. Adjustment stacks process the existing backdrop,
 blend the filtered result with that backdrop, and interpolate through the adjustment
@@ -1039,3 +1039,20 @@ Animated text preparation visits echo history as well as ordinary playback.
 Frozen/remapped precomps and disabled matte sources therefore prepare every
 required glyph/stroke frame, including offscreen samples before final text bounds
 are known. The existing glyph preparation memory budget still applies.
+
+### Primitive blur (CE4b drawing parity)
+
+`blur.primitive@1.0.0` filters each content drawing operation, with an animatable
+`radius` (default 0; 0–1,000 surface pixels). It runs during painting before the
+ordinary pixel effect stack. A positive radius overrides the nearest inherited
+group radius; zero retains that inherited radius. Null parenting does not inherit
+paint effects. One primitive blur may be attached to a drawable layer or group;
+adjustment and null layers reject it.
+
+Group children retain separate overlapping filtered draws. Non-collapsed precomps
+filter their flattened surface; collapsed precomps carry the drawing filter to
+their contents. Providers and text containers retain their individual draw calls;
+state crossfade surfaces receive the filter when composited. Masks, mattes and
+pixel-stack ordering are unchanged. A positive drawing blur prevents inappropriate
+culling of artwork that can blur into view. Commerce and story adapters bake their
+motion-craft `blur` samples into this entry, including child zero/inheritance.

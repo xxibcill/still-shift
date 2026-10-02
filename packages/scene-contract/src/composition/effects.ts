@@ -2,7 +2,7 @@ import { z } from "zod";
 import { animatableScalar, AnimatableColorSchema } from "./keys.ts";
 import { finite } from "./primitives.ts";
 
-/** The contract owns parameter validation and property paths; backends own kernels. */
+/** The contract owns validation and paths; the graph and backends execute effect stages. */
 export type EffectScalar = {
   type: "scalar";
   default: number;
@@ -60,6 +60,7 @@ function defineEffect(
 }
 
 const definitions: Readonly<Record<string, CompositionEffectDefinition>> = {
+  "blur.primitive": defineEffect({ radius: { default: 0, min: 0, max: 1000 } }),
   "time.echo": defineEffect(
     {
       spacing: { default: 1, min: 1, max: 120 },

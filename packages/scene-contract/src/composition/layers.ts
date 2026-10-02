@@ -67,7 +67,7 @@ export const MaskSchema = z
   })
   .strict();
 
-/** Versioned registry effects, sampled in layer time and applied in array order. */
+/** Registry effects sampled in layer time; pixel stacks retain array order. */
 export const EffectInstanceSchema = z
   .object({
     id: compositionId,
