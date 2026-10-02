@@ -42,6 +42,7 @@ import type {
 } from "../render/providers.ts";
 import { preparedProvider } from "../render/providers.ts";
 import { preparedTextBounds } from "../render/text-bounds.ts";
+import { typographyClock } from "../render/text-clock.ts";
 import {
   AppearanceSchema,
   appearanceAt,
@@ -197,12 +198,10 @@ function typographyProvider(id: string): CanvasContentProvider {
         bounds.right += data.node.fontSize;
         bounds.bottom += data.node.fontSize;
       }
-      const timed = !!(
-        data.node.transition ||
-        data.node.transitions?.length ||
-        data.node.decorations?.length ||
-        data.textAnimators.length ||
-        data.textEvents.length
+      const clock = typographyClock(
+        data.node,
+        data.textAnimators,
+        prepared.corrections.get(data.node.id) ?? [],
       );
       const frameAt = (time: number, sourceTime?: number) =>
         Math.max(
@@ -241,7 +240,7 @@ function typographyProvider(id: string): CanvasContentProvider {
               textAt(frame),
               { ...sample, state: state ?? sample.state },
               appearanceAt(data.appearance, frame),
-              timed ? (sourceTime ?? frame) : 0,
+              clock(sourceTime ?? frame),
             ]);
           },
         },

@@ -2369,6 +2369,22 @@ comparisons; the full `pnpm check`.
   animation continues to invalidate coverage. Commerce GPU acceptance and final
   full verification remain open alongside the component performance gates.
 
+### CE4b settled typography clocks (2026-10-03)
+
+- **Version:** `composition-webgl2-0.18.0` stops invalidating native and provider
+  glyph coverage after finite text animation, transitions, decoration curves,
+  layer weights and corrections settle. Fractional clocks and backward seeks
+  remain distinct while active; signals and animated selectors remain live.
+- **Verification:** all **20 cases / 3,367 typography frames** retain pixel
+  parity. **Nine cases now pass both gates**, up from six: commerce numeric
+  improves from **1.5140×** to **0.8171×**; editorial primitive blur passes at
+  **1.1015×**, and glyph performance at **1.2442×**. Editorial is **1.6090×**,
+  Thai text **1.3311×**, Thai numeric **1.6830×**. Four clock regressions,
+  all 1,240 unit tests, native GPU checks and 204 export/Lab frames pass.
+- **Remaining:** 11 typography timing failures, component timing failures,
+  commerce GPU acceptance and final full verification. Idle gaps before and
+  between finite text effects still offer coverage reuse opportunities.
+
 **Completion record:** CE4a and CE4b are in progress; CE4c–CE4d have not started.
 
 ---

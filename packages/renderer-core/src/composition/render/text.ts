@@ -36,6 +36,7 @@ import {
   type CompositionTextFrames,
 } from "./text-frames.ts";
 import { preparedTextBounds } from "./text-bounds.ts";
+import { typographyClock } from "./text-clock.ts";
 
 type TextLayer = Extract<CompositionLayer, { type: "text" }>;
 type TypographyScene = Parameters<typeof prepareTypography>[0];
@@ -49,7 +50,12 @@ export type CompositionText = {
 };
 
 type Entry =
-  | { kind: "typography"; node: TextNode; prepared: PreparedTypography }
+  | {
+      kind: "typography";
+      node: TextNode;
+      prepared: PreparedTypography;
+      clock: (frame: number) => number;
+    }
   | { kind: "system"; node: TextNode };
 
 const scopes = (comp: Composition): [CompositionScope, string][] => [
@@ -340,7 +346,16 @@ export function prepareCompositionText(
           ? pad(union([...measured.values()]), node.fontSize)
           : undefined;
         bounds[key] = perState.map((box) => all ?? box);
-        entries.set(key, { kind: "typography", node, prepared });
+        entries.set(key, {
+          kind: "typography",
+          node,
+          prepared,
+          clock: typographyClock(
+            node,
+            prepared.scene.textAnimators ?? [],
+            prepared.corrections.get(node.id) ?? [],
+          ),
+        });
       } else {
         const ctx = measureContext;
         ctx.save();
@@ -429,16 +444,7 @@ export function prepareCompositionText(
       const entry = entries.get(content.key);
       if (!entry) return undefined;
       if (entry.kind === "system") return "static";
-      const { node, prepared } = entry;
-      return !node.transition &&
-        !node.transitions?.length &&
-        !node.decorations?.length &&
-        !prepared.corrections.get(node.id)?.length &&
-        !prepared.scene.textAnimators?.some(
-          (animator) => animator.node === node.id,
-        )
-        ? "static"
-        : undefined;
+      return String(entry.clock(content.time));
     },
     contentBounds(content) {
       const states = bounds[content.key];
