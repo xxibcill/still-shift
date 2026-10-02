@@ -2507,6 +2507,23 @@ comparisons; the full `pnpm check`.
   resolved them. Direct GPU-flipped readback and disjoint-damage prototypes were
   slower and were discarded.
 
+### CE4b direct image-paint blending (2026-10-03)
+
+- **Version:** `composition-webgl2-0.25.0` blends individual prepared image
+  paints directly into non-floating GPU targets with premultiplied source-over,
+  matching the existing image-layer path. It avoids backdrop copies and temporary
+  surfaces for those paints. Primitive integer rounding, floating targets and
+  multi-paint batches retain their existing paths.
+- **Verification:** all **20 typography cases / 3,367 frames** pass pixels;
+  **14 pass both gates**. Editorial passes at **1.2154×** and component-fit at
+  **1.2258×**; selectors improves to **0.9477×**. Six timing failures remain,
+  including semantic **1.2520×** and vertical **1.2509×**, which are still failures
+  despite their small margin. Native GPU checks, all **1,248 unit tests**, fast
+  checks and **204 export/Lab frames** pass.
+- **Remaining:** family timing gates, full family exports and final full local/CE0
+  verification. A separate single-image paint-bound measurement prototype added
+  overhead without improving the matrix and was discarded.
+
 **Completion record:** CE4a and CE4b are in progress; CE4c–CE4d have not started.
 
 ---

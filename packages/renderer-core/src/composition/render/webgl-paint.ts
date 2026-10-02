@@ -112,6 +112,28 @@ export class WebglPaint {
   ) {
     const active = this.device.drawRegion(dst, rect);
     if (!active) return;
+    if (!primitive && !dst.floating) {
+      const gl = this.device.gl;
+      gl.enable(gl.BLEND);
+      gl.blendEquation(gl.FUNC_ADD);
+      gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
+      try {
+        this.device.pass(
+          `uniform vec2 origin; void main() {
+            pixel=texelFetch(source,ivec2(gl_FragCoord.xy-origin),0);
+          }`,
+          dst,
+          [source],
+          { origin: [rect.left, rect.top] },
+          true,
+          active,
+        );
+        this.bounds.include(dst, rect);
+      } finally {
+        gl.disable(gl.BLEND);
+      }
+      return;
+    }
     const previous = this.bounds.snapshot(dst);
     const backdrop = dst.screen ? this.device.copyRegion(dst, active) : dst;
     const output = dst.screen
