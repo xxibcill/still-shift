@@ -2541,6 +2541,24 @@ comparisons; the full `pnpm check`.
 - **Remaining:** timing margins are narrow for semantic and vertical text;
   family timing gates, full exports and final local/CE0 verification remain open.
 
+### CE4b stable glyph-image replay (2026-10-03)
+
+- **Version:** `composition-webgl2-0.27.0` lets prepared drawers declare image
+  sources stable until the next content draw. A single eligible content draw
+  borrows those sources during immediate paint replay instead of snapshotting
+  them. Native/rich typography opts in only without transitions, corrections or
+  multiple blur runs; containers and decorations may still surround the glyph
+  image. Multi-content batches and state crossfades keep snapshots.
+- **Verification:** all **20 typography cases / 3,367 frames** pass pixels;
+  **15 pass both gates** in this run. Containers improves to **1.4282×**,
+  editorial numeric to **1.2716×**, uniform appearance to **1.6355×**, and numeric
+  Thai to **1.5609×**. Vertical text measures **1.2548×**, so the timing margin
+  remains unresolved. Native GPU checks, all **1,248 unit tests**, fast checks and
+  **204 export/Lab frames** pass, including mutable-source fallback and borrowed
+  source replay with overlapping primitive/image paints and backward seeking.
+- **Remaining:** family timing gates, complete family exports and final full
+  local/CE0 verification.
+
 **Completion record:** CE4a and CE4b are in progress; CE4c–CE4d have not started.
 
 ---

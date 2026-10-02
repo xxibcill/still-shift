@@ -39,6 +39,9 @@ export class WebglVectors {
     private readonly singleImage?: (
       content: ProviderContent | TextContent,
     ) => boolean,
+    private readonly stableImages?: (
+      content: ProviderContent | TextContent,
+    ) => boolean,
   ) {}
 
   private forget(id: string) {
@@ -108,9 +111,15 @@ export class WebglVectors {
     const imageOnly = ops.every(
       ({ content }) => content.type !== "solid" && this.singleImage?.(content),
     );
+    const content = ops.length === 1 ? ops[0]!.content : undefined;
+    const stableImages =
+      !!content &&
+      content.type !== "solid" &&
+      content.stateFrom === undefined &&
+      this.stableImages?.(content) === true;
     const recording =
       this.paintOver.hasBackdrop(dst) && !imageOnly
-        ? recordVectorPaints(pixels.ctx, rect)
+        ? recordVectorPaints(pixels.ctx, rect, { stableImages })
         : undefined;
     const painting = recording ? { ...pixels, ctx: recording.context } : pixels;
     const parts: RasterPart[] = [];

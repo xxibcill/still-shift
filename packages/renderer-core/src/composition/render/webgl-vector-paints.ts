@@ -34,6 +34,7 @@ const queries = new Set([
 export function recordVectorPaints(
   ctx: CanvasRenderingContext2D,
   fallback: Bounds,
+  options: { stableImages?: boolean } = {},
 ) {
   const commands: Command[] = [],
     marks: Paint[] = [];
@@ -72,6 +73,7 @@ export function recordVectorPaints(
         if (
           name === "drawImage" &&
           args[0] instanceof HTMLCanvasElement &&
+          !options.stableImages &&
           supported
         ) {
           const image = args[0];

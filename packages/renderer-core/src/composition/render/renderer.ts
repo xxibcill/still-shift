@@ -206,6 +206,10 @@ export function createCompositionPreview(
         content.type === "provider"
           ? drawProvider.singleImage(content)
           : text.singleImage(content),
+      stableImages: (content) =>
+        content.type === "provider"
+          ? drawProvider.stableImages(content)
+          : text.stableImages(content),
       contentKey: (content) =>
         content.type === "provider"
           ? drawProvider.contentKey(content)

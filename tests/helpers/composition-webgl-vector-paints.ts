@@ -7,7 +7,7 @@ import { preparedProvider } from "../../packages/renderer-core/src/composition/r
 import type { Composition } from "../../packages/scene-contract/src/index.ts";
 
 /** Single-image preparation must preserve the paint even if its source later changes. */
-export function checkSingleImageProvider() {
+export function checkSingleImageProvider(stable = false) {
   const composition: Composition = {
     schemaVersion: "composition-1",
     id: "single-image-provider",
@@ -17,7 +17,7 @@ export function checkSingleImageProvider() {
     frameCount: 4,
     background: "#f2ede3",
     assets: [],
-    layers: Array.from({ length: 3 }, (_, index) => ({
+    layers: Array.from({ length: stable ? 1 : 3 }, (_, index) => ({
       id: `image-${index}`,
       type: "provider" as const,
       provider: "test.image@1.0.0",
@@ -47,11 +47,16 @@ export function checkSingleImageProvider() {
                   paint.clearRect(0, 0, 32, 24);
                   paint.fillStyle = time === 1 ? "#477d659a" : "#b739636d";
                   paint.fillRect(1.25, 2.5, 24, 18);
+                  if (stable) {
+                    ctx.fillStyle = "#83765c";
+                    ctx.fillRect(8, 6, 40, 30);
+                  }
                   ctx.drawImage(source, 10.25 + time, 8.5);
-                  paint.clearRect(0, 0, 32, 24);
+                  if (!stable) paint.clearRect(0, 0, 32, 24);
                 },
                 {
-                  singleImage: true,
+                  singleImage: !stable,
+                  stableImages: stable,
                   bounds: { left: 8, top: 6, right: 48, bottom: 36 },
                 },
               );

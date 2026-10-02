@@ -21,6 +21,7 @@ import {
   prepareTypography,
   drawTypography,
   isSingleImageTypography,
+  hasStableTypographyImage,
 } from "../../typography-renderer.ts";
 import { loadTextStyleFont } from "../../prepared-fonts.ts";
 import { loadTextAnimationFonts } from "../../typography-axes.ts";
@@ -235,6 +236,7 @@ function typographyProvider(id: string): CanvasContentProvider {
         {
           bounds,
           singleImage: isSingleImageTypography(data.node, prepared),
+          stableImages: hasStableTypographyImage(data.node, prepared),
           visualKey(time, state, sourceTime) {
             const frame = frameAt(time, sourceTime);
             const sample =

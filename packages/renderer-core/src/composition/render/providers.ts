@@ -26,10 +26,15 @@ export type CanvasProviderDrawer = DrawProvider & {
   bounds?: Bounds | undefined;
   /** The drawer emits at most one source-over drawImage paint, including its filter. */
   singleImage?: boolean;
+  /** Image sources remain unchanged until the next content draw, even after this drawer returns. */
+  stableImages?: boolean;
 };
 export function preparedProvider(
   draw: DrawProvider,
-  metadata: Pick<CanvasProviderDrawer, "visualKey" | "bounds" | "singleImage">,
+  metadata: Pick<
+    CanvasProviderDrawer,
+    "visualKey" | "bounds" | "singleImage" | "stableImages"
+  >,
 ): CanvasProviderDrawer {
   return Object.assign(draw, metadata);
 }
@@ -134,6 +139,9 @@ export function prepareCompositionProviders(
   return Object.assign(draw, {
     singleImage(content: ProviderContent): boolean {
       return drawers.get(content.key)?.singleImage === true;
+    },
+    stableImages(content: ProviderContent): boolean {
+      return drawers.get(content.key)?.stableImages === true;
     },
     contentKey(content: ProviderContent): string | undefined {
       const key = drawers.get(content.key)?.visualKey;

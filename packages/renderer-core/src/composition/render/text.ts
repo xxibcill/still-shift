@@ -16,6 +16,7 @@ import { loadTextAnimationFonts } from "../../typography-axes.ts";
 import {
   drawTypography,
   isSingleImageTypography,
+  hasStableTypographyImage,
   prepareTypography,
   type PreparedTypography,
 } from "../../typography-renderer.ts";
@@ -49,6 +50,7 @@ export type CompositionText = {
   contentKey(content: TextContent): string | undefined;
   contentBounds(content: TextContent): Bounds | undefined;
   singleImage(content: TextContent): boolean;
+  stableImages(content: TextContent): boolean;
 };
 
 type Entry =
@@ -58,6 +60,7 @@ type Entry =
       prepared: PreparedTypography;
       clock: (frame: number) => number;
       singleImage: boolean;
+      stableImages: boolean;
     }
   | { kind: "system"; node: TextNode };
 
@@ -354,6 +357,7 @@ export function prepareCompositionText(
           node,
           prepared,
           singleImage: isSingleImageTypography(node, prepared),
+          stableImages: hasStableTypographyImage(node, prepared),
           clock: typographyClock(
             node,
             prepared.scene.textAnimators ?? [],
@@ -448,6 +452,10 @@ export function prepareCompositionText(
     singleImage(content) {
       const entry = entries.get(content.key);
       return entry?.kind === "typography" && entry.singleImage;
+    },
+    stableImages(content) {
+      const entry = entries.get(content.key);
+      return entry?.kind === "typography" && entry.stableImages;
     },
     contentKey(content) {
       const entry = entries.get(content.key);

@@ -80,6 +80,16 @@ export function isSingleImageTypography(
   return (
     !node.container &&
     !node.decorations?.length &&
+    hasStableTypographyImage(node, prepared)
+  );
+}
+
+/** The composed glyph source stays unchanged until the next typography draw. */
+export function hasStableTypographyImage(
+  node: TextNode,
+  prepared: PreparedTypography,
+) {
+  return (
     !node.transition &&
     !node.transitions?.length &&
     !prepared.corrections.get(node.id)?.length &&
