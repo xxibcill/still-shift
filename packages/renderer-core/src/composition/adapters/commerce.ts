@@ -16,8 +16,20 @@ import { evaluatePreparedNode } from "../../prepared-scene.ts";
 import { passageError, PassageError } from "../../passage-diagnostics.ts";
 import { params, preparedNodeLayer, trimSettledSamples } from "./prepared.ts";
 import { compileCommercePathGeometry } from "./commerce-path.ts";
+import { prepareCommerceTextFits } from "../../commerce-layout.ts";
+import { prepareComponentTextFits } from "../../component-text-fit.ts";
+import { loadPreparedFonts, type LoadedFont } from "../../prepared-fonts.ts";
 
-export const COMMERCE_ADAPTER_VERSION = "commerce-composition-0.4.0";
+export const COMMERCE_ADAPTER_VERSION = "commerce-composition-0.5.0";
+
+export type CommerceCompositionOptions = {
+  id?: string;
+  /** Pinned-font context used before geometry is baked; required for backing panels. */
+  textLayout?: {
+    context: CanvasRenderingContext2D;
+    fonts: Map<string, LoadedFont>;
+  };
+};
 
 function unsupported(path: string, feature: string): never {
   return passageError(
@@ -38,10 +50,6 @@ function checkSupported(scene: CommerceScene) {
   if (scene.typography) unsupported("typography", "Typography scenes");
   for (const field of ["textAnimators"] as const)
     if (scene[field]?.length) unsupported(field, field);
-  scene.textFits?.forEach((fit, index) => {
-    if (fit.panel)
-      unsupported(`textFits[${index}].panel`, "Fitted panel geometry");
-  });
   scene.effects?.forEach((effect, index) => {
     if (!["drift", "parallax", "overshoot"].includes(effect.type))
       unsupported(
@@ -88,6 +96,7 @@ function measuredTextLayer(
   scene: CommerceScene,
   node: Extract<PreparedNode, { type: "text" }>,
   layer: Extract<CompositionLayer, { type: "provider" }>,
+  layoutResolved: boolean,
 ) {
   const components = componentCapabilities(scene.componentData);
   const fit = [...(scene.textFits ?? []), ...components.textFits].find(
@@ -114,7 +123,14 @@ function measuredTextLayer(
     params: params(
       {
         ...layer.params,
-        ...(fit ? { fit: { minSize: fit.minSize, maxSize: fit.maxSize } } : {}),
+        ...(fit
+          ? {
+              fit: {
+                minSize: layoutResolved ? node.fontSize : fit.minSize,
+                maxSize: layoutResolved ? node.fontSize : fit.maxSize,
+              },
+            }
+          : {}),
         ...(numeric ? { numeric } : {}),
       },
       `nodes[${scene.nodes.indexOf(node)}]`,
@@ -126,11 +142,28 @@ function measuredTextLayer(
 /** Compile once to bounded data; rendering never calls the commerce evaluator. */
 export function commerceToComposition(
   source: CommerceScene,
-  options: { id?: string } = {},
+  options: CommerceCompositionOptions = {},
 ): Composition {
   const input = CommerceSceneSchema.parse(source);
   checkSupported(input);
-  const scene = compileCommerceScene(input);
+  let scene = compileCommerceScene(input);
+  const panel = input.textFits?.findIndex((fit) => fit.panel);
+  if (panel !== undefined && panel >= 0 && !options.textLayout)
+    passageError(
+      "comp-adapter-layout-required",
+      "Fitted panels require pinned-font measurement; use prepareCommerceComposition or supply textLayout",
+      {
+        path: `textFits[${panel}].panel`,
+      },
+    );
+  if (options.textLayout) {
+    const { context, fonts } = options.textLayout;
+    scene = prepareComponentTextFits(
+      prepareCommerceTextFits(scene, context, fonts),
+      context,
+      fonts,
+    );
+  }
   validateAttachedPaths(scene);
   validateComponentAnnotations(scene);
   const visibility = new Map<string, { start: number; end: number }>([
@@ -155,7 +188,7 @@ export function commerceToComposition(
         layer.outPoint = gate.end;
       }
       if (node.type === "text" && node.textBox && layer.type === "provider")
-        layer = measuredTextLayer(scene, node, layer);
+        layer = measuredTextLayer(scene, node, layer, !!options.textLayout);
       if (node.type === "path" && layer.type === "provider") {
         const geometry = compileCommercePathGeometry(scene, node);
         if (geometry) {
@@ -208,4 +241,23 @@ export function commerceToComposition(
   const result = validateComposition(composition);
   if (!result.ok) throw new PassageError(result.diagnostics);
   return result.composition;
+}
+
+/** Browser preparation resolves font-dependent geometry into ordinary composition data. */
+export async function prepareCommerceComposition(
+  source: CommerceScene,
+  assetUrl: (id: string) => string,
+  options: Pick<CommerceCompositionOptions, "id"> = {},
+): Promise<Composition> {
+  const input = CommerceSceneSchema.parse(source);
+  const fonts = await loadPreparedFonts(input, assetUrl);
+  const canvas = document.createElement("canvas");
+  try {
+    return commerceToComposition(input, {
+      ...options,
+      textLayout: { context: canvas.getContext("2d")!, fonts },
+    });
+  } finally {
+    canvas.width = canvas.height = 0;
+  }
 }

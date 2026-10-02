@@ -1280,7 +1280,8 @@ General rules for all adapters:
       protected-region validation.
 - [x] Translate native mattes and reusable-component masks to alpha track mattes,
       including grouped targets and grouped sources.
-
+- [x] Resolve fitted backing-panel geometry with pinned fonts before baking transforms
+      and annotation anchors; perform measurement automatically during JSON export.
 - [ ] Map commerce layout, product layers, shadows, floating, detail windows, paths,
       text fits, component state/travel/pin/values/visibility/masks.
 - [ ] Commerce effects become CE6 registry effects; parity requires CE6.
@@ -1560,6 +1561,37 @@ comparisons; the full `pnpm check`.
   motion-craft, remaining reusable contexts/passages and CE6/CE7 dependencies.
   The user's full-CE4b goal remains active; each verified slice is committed
   separately on `codex/composition-ce4b`.
+
+### CE4b fitted-panel follow-up (2026-10-02)
+
+- **Delivered:** `prepareCommerceComposition` resolves native backing-panel bounds
+  with verified pinned fonts before baking node transforms and annotation anchors.
+  The synchronous compiler accepts an explicit text-layout context and returns
+  `comp-adapter-layout-required` when a panel needs measurement. CLI JSON export
+  performs preparation in pinned Chromium through the package-owned runtime page.
+  Exported text retains the measured size; rendering consumes ordinary composition
+  data. Event tracks retain their original pre-layout initial values.
+- **Versions:** commerce adapter `commerce-composition-0.5.0`; evaluator, Canvas
+  renderer and legacy versions unchanged.
+- **Coverage:** the layout atom and derived transformed/annotated and multiple-state
+  layouts pass all 720 frames exactly. The expanded commerce run passes **75 cases /
+  16,056 frames**, all pixel-exact, with **48 preparation checks** and the unchanged
+  1.25× timing gate (worst median **1.2197×**, isolated visibility). Invalid font
+  checksums and impossible minimum-size fits produce diagnostics without creating
+  an output file. The anchor, sequence and commerce/isolated supply-sequence fixtures
+  also pass separately and join the acceptance list for existing geometry/state
+  support: **79 cases / 16,920 frames in total** (70 CE0 fixtures and nine variants),
+  with **56 preparation checks**. Seven pairs of MP4 exports (text-fit, value,
+  leader, attachment, matte, mask and layout) are byte-identical and preserve
+  relocated assets, pinned fonts and overwrite protection. `pnpm check:fast`
+  passes, including **1,137 unit tests**. All checks ran locally with the pinned
+  toolchain; thresholds, timing methods and baselines are unchanged.
+- **Scope correction:** the earlier remaining-work lists mentioned drawable parents.
+  The legacy prepared-scene validator requires group parents, so drawable parenting
+  is not a CE4b migration requirement. Native compositions already support it.
+- **Remaining:** typography/text animation, motion-craft, reusable story contexts
+  and passages, and the CE6/CE7 dependencies needed for full acceptance. The active
+  goal continues on the same branch, with a commit after each verified slice.
 
 **Completion record:** CE4a and CE4b are in progress; CE4c–CE4d have not started.
 

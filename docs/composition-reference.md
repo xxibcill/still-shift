@@ -350,12 +350,21 @@ same translation. Images (including prepared shadows and crops), clipped groups,
 rectangles, paths and plain text are supported. Pinned measured
 text uses `commerce.text@1.0.0`, which shares commerce's font layout and draws local
 content through the composition graph. `commerce.text@1.1.0` adds native and component
-text fits without backing-panel resizing, plus formatted numeric text. Fits choose
+text fits, plus formatted numeric text. Fits choose
 one stable font size across all supplied states after pinned fonts load. Numeric
 labels are baked at integer frames; preparation validates the entire formatted
 value range for overflow, including values absent from those frames. Existing
 1.0.0 payloads remain supported. Rectangles, plain paths and unmeasured text reuse
 the existing `story.*` providers; those providers do not evaluate a story scene.
+
+Fits that resize backing panels require font measurement before geometry is baked.
+In a browser, use `await prepareCommerceComposition(scene, assetUrl)` or supply
+`commerceToComposition(scene, { textLayout: { context, fonts } })` with loaded pinned
+fonts. `comp export-json` performs that preparation automatically in the pinned
+browser. The exported composition contains resolved panel geometry and a fixed
+fitted font size; rendering needs no family layout evaluation. Calling the
+synchronous compiler without measurement for a fitted panel reports
+`comp-adapter-layout-required`.
 
 Attached paths and component annotations use `commerce.path@1.0.0`. The adapter
 resolves local vertices at each integer frame, retaining source crops, endpoint
@@ -375,9 +384,9 @@ metadata remain in `metadata.commerce`. Like the story slice, this compiler acce
 at most 2,000 frames, holds between integer samples, and bounds provider payloads
 to 64 KiB. Rendering never calls the commerce evaluator.
 
-Pixel effects, motion blur, fitted panel
-geometry, blended text states, typography, motion-craft and parenting
-to drawable nodes currently return `comp-adapter-unsupported` with a source path.
+Pixel effects, motion blur, blended text states, typography and motion-craft
+currently return `comp-adapter-unsupported` with a source path.
+Legacy commerce parents must be groups, as required by its source schema.
 Effects parity requires CE6, and full CE4b fixture acceptance remains open. Existing
 commerce commands retain their current renderer.
 
@@ -770,84 +779,85 @@ retain their original bounds.
 
 ### Errors
 
-| Code                        | Meaning                                                                                                                                                    |
-| --------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `comp-schema-version`       | `schemaVersion` is not `composition-1`.                                                                                                                    |
-| `comp-schema-type`          | A value has the wrong JSON type.                                                                                                                           |
-| `comp-schema-unknown-key`   | An object has a field the contract does not define.                                                                                                        |
-| `comp-schema-value`         | A value is not one of the allowed literals or enum members.                                                                                                |
-| `comp-schema-format`        | A string does not match its format (id, colour, hash).                                                                                                     |
-| `comp-schema-range`         | A number is outside its range (including `stretch: 0`).                                                                                                    |
-| `comp-schema-union`         | A value matches none of the allowed forms, for example an unknown layer `type`.                                                                            |
-| `comp-schema`               | Any other structural error.                                                                                                                                |
-| `comp-limit`                | An array, string or record exceeds its size limit.                                                                                                         |
-| `comp-key-order`            | Key frames are not strictly increasing (keys and `camera2d.keys`).                                                                                         |
-| `comp-key-smooth`           | A smooth key is the first or last key.                                                                                                                     |
-| `comp-key-bezier`           | `interpolation: "bezier"` without `bezier` handles.                                                                                                        |
-| `comp-key-speed-vector`     | A temporal handle `speed` on a vector or colour property.                                                                                                  |
-| `comp-path-tangents`        | A path's tangent count differs from its vertex count.                                                                                                      |
-| `comp-path-vertex-count`    | Keys of one path property have different vertex counts.                                                                                                    |
-| `comp-vector-dimension`     | A three-component vector on a layer without `threeD`.                                                                                                      |
-| `comp-duplicate-id`         | An id is used twice in its namespace (layers and markers per scope; assets, precomps, signals, masks and effects per layer; pose names per image).         |
-| `comp-reserved-id`          | A layer or precomp uses the reserved id `comp`.                                                                                                            |
-| `comp-layer-time`           | `inPoint` is not before `outPoint`.                                                                                                                        |
-| `comp-layer-limit`          | More than 2,000 layers across the composition and its precomps.                                                                                            |
-| `comp-parent-missing`       | `parent` names no layer in the same scope.                                                                                                                 |
-| `comp-parent-cycle`         | A parent chain loops.                                                                                                                                      |
-| `comp-parent-depth`         | A parent chain is deeper than 32.                                                                                                                          |
-| `comp-matte-missing`        | `trackMatte.layer` names no layer in the same scope.                                                                                                       |
-| `comp-matte-self`           | A layer is its own track matte.                                                                                                                            |
-| `comp-matte-cycle`          | Track mattes reference each other in a loop.                                                                                                               |
-| `comp-mask-open`            | A mask path is not closed.                                                                                                                                 |
-| `comp-precomp-missing`      | A precomp layer references an unknown precomp.                                                                                                             |
-| `comp-precomp-cycle`        | A precomp contains itself directly or indirectly.                                                                                                          |
-| `comp-precomp-depth`        | Precomps nest deeper than 8.                                                                                                                               |
-| `comp-asset-missing`        | A layer or text style references an unknown asset.                                                                                                         |
-| `comp-asset-type`           | A layer or text style references an asset of the wrong type.                                                                                               |
-| `comp-crop-bounds`          | An image crop extends beyond its asset.                                                                                                                    |
-| `comp-image-registration`   | Pose registration on an image whose `fit` is not `contain`.                                                                                                |
-| `comp-state-range`          | A `state` or `stateFrom` value has no matching source or text state.                                                                                       |
-| `comp-state-mix`            | Only one of `stateFrom` and `stateMix` is set.                                                                                                             |
-| `comp-text-style-missing`   | A text layer uses an unknown text style.                                                                                                                   |
-| `comp-text-font`            | A text size above 180 without a pinned font (`fontAsset` or `style`).                                                                                      |
-| `comp-text-pinned-font`     | Spans, decorations, transitions, a text animator or `textBox` on a text layer without a pinned base font; the typography renderer shapes with its metrics. |
-| `comp-text-box-size`        | A `textBox` text layer without `size`.                                                                                                                     |
-| `comp-text-span-range`      | A span ends after the text or one of its states, or overlaps another span.                                                                                 |
-| `comp-text-span-missing`    | A decoration or text animator names a span the text layer does not have.                                                                                   |
-| `comp-text-font-axis`       | A variable-font axis value (style, span or blended animator) is outside the pinned font's range, or the font is not variable.                              |
-| `comp-text-locale`          | A text layer's locale is not recognised.                                                                                                                   |
-| `comp-text-transition`      | `transition` and `transitions` together, overlapping windows, a missing from/to state, or a count without numeric states and tabular figures.              |
-| `comp-marker-frame`         | A marker lies at or after `frameCount`.                                                                                                                    |
-| `comp-marker-duration`      | A marker's `duration` runs past `frameCount`.                                                                                                              |
-| `comp-marker-missing`       | A `cue` names no marker in the same scope.                                                                                                                 |
-| `comp-signal-missing`       | A driver, constraint, text animator or text selector names an unknown signal.                                                                              |
-| `comp-constraint-target`    | A constraint names no layer in the same scope.                                                                                                             |
-| `comp-text-animator-target` | A text animator's `node` is not a text layer in the same scope.                                                                                            |
-| `comp-camera-depth`         | `cameraDepth` on a parented layer or inside a precomp.                                                                                                     |
-| `comp-camera-jolt`          | A camera jolt starts at or after `frameCount`.                                                                                                             |
-| `comp-camera-key-range`     | A `camera2d` key lies at or after `frameCount`.                                                                                                            |
-| `comp-format-size`          | `format` disagrees with `width` and `height`.                                                                                                              |
-| `comp-metadata-size`        | Metadata serialises to more than 64 KiB.                                                                                                                   |
-| `comp-json-size`            | An expression AST, effect parameter object or shape contents payload serialises to more than 64 KiB.                                                       |
-| `comp-json-depth`           | An opaque JSON payload nests more than 64 container levels below its root; checked before recursive JSON parsing.                                          |
-| `comp-metadata-depth`       | Metadata nests more than 64 container levels below its root; checked before recursive JSON parsing.                                                        |
-| `comp-driver-source`        | A driver has none or several of `signal`, `source` and `sum`.                                                                                              |
-| `comp-motion-cycle`         | Driver, constraint or parent dependencies form a cycle, including precomp-scoped dependencies.                                                             |
-| `comp-periodic`             | Invalid periodic window or generator, or both / neither of `target` and `node` + `property`.                                                               |
-| `comp-path-syntax`          | A property path does not match the grammar.                                                                                                                |
-| `comp-path-scope`           | A path prefix does not name a precomp layer instance at that level.                                                                                        |
-| `comp-path-layer`           | A path names no layer in its scope.                                                                                                                        |
-| `comp-path-property`        | A path names no property of its layer (including unknown mask and effect ids).                                                                             |
-| `comp-path-type`            | A driver or periodic motion targets a non-scalar property.                                                                                                 |
-| `comp-path-readonly`        | A read-only path (`comp.camera.*`) is used as a target.                                                                                                    |
-| `comp-feature-unavailable`  | A contract feature whose milestone has not landed; see [availability](#feature-availability).                                                              |
-| `comp-provider-bounds`      | Provider bounds have non-positive width or height.                                                                                                         |
-| `comp-provider-unavailable` | Provider preparation cannot find the exact versioned id.                                                                                                   |
-| `comp-provider-duplicate`   | The renderer registry contains the same versioned id twice.                                                                                                |
-| `comp-provider-params`      | A built-in provider payload is invalid; reported during preparation.                                                                                       |
-| `comp-provider-asset`       | A provider uses an undeclared, missing or incompatible asset.                                                                                              |
-| `comp-adapter-unsupported`  | A story feature is outside the current adapter slice; the path identifies it.                                                                              |
-| `comp-adapter-limit`        | Baking the story would exceed the 2,000-key limit.                                                                                                         |
+| Code                           | Meaning                                                                                                                                                    |
+| ------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `comp-schema-version`          | `schemaVersion` is not `composition-1`.                                                                                                                    |
+| `comp-schema-type`             | A value has the wrong JSON type.                                                                                                                           |
+| `comp-schema-unknown-key`      | An object has a field the contract does not define.                                                                                                        |
+| `comp-schema-value`            | A value is not one of the allowed literals or enum members.                                                                                                |
+| `comp-schema-format`           | A string does not match its format (id, colour, hash).                                                                                                     |
+| `comp-schema-range`            | A number is outside its range (including `stretch: 0`).                                                                                                    |
+| `comp-schema-union`            | A value matches none of the allowed forms, for example an unknown layer `type`.                                                                            |
+| `comp-schema`                  | Any other structural error.                                                                                                                                |
+| `comp-limit`                   | An array, string or record exceeds its size limit.                                                                                                         |
+| `comp-key-order`               | Key frames are not strictly increasing (keys and `camera2d.keys`).                                                                                         |
+| `comp-key-smooth`              | A smooth key is the first or last key.                                                                                                                     |
+| `comp-key-bezier`              | `interpolation: "bezier"` without `bezier` handles.                                                                                                        |
+| `comp-key-speed-vector`        | A temporal handle `speed` on a vector or colour property.                                                                                                  |
+| `comp-path-tangents`           | A path's tangent count differs from its vertex count.                                                                                                      |
+| `comp-path-vertex-count`       | Keys of one path property have different vertex counts.                                                                                                    |
+| `comp-vector-dimension`        | A three-component vector on a layer without `threeD`.                                                                                                      |
+| `comp-duplicate-id`            | An id is used twice in its namespace (layers and markers per scope; assets, precomps, signals, masks and effects per layer; pose names per image).         |
+| `comp-reserved-id`             | A layer or precomp uses the reserved id `comp`.                                                                                                            |
+| `comp-layer-time`              | `inPoint` is not before `outPoint`.                                                                                                                        |
+| `comp-layer-limit`             | More than 2,000 layers across the composition and its precomps.                                                                                            |
+| `comp-parent-missing`          | `parent` names no layer in the same scope.                                                                                                                 |
+| `comp-parent-cycle`            | A parent chain loops.                                                                                                                                      |
+| `comp-parent-depth`            | A parent chain is deeper than 32.                                                                                                                          |
+| `comp-matte-missing`           | `trackMatte.layer` names no layer in the same scope.                                                                                                       |
+| `comp-matte-self`              | A layer is its own track matte.                                                                                                                            |
+| `comp-matte-cycle`             | Track mattes reference each other in a loop.                                                                                                               |
+| `comp-mask-open`               | A mask path is not closed.                                                                                                                                 |
+| `comp-precomp-missing`         | A precomp layer references an unknown precomp.                                                                                                             |
+| `comp-precomp-cycle`           | A precomp contains itself directly or indirectly.                                                                                                          |
+| `comp-precomp-depth`           | Precomps nest deeper than 8.                                                                                                                               |
+| `comp-asset-missing`           | A layer or text style references an unknown asset.                                                                                                         |
+| `comp-asset-type`              | A layer or text style references an asset of the wrong type.                                                                                               |
+| `comp-crop-bounds`             | An image crop extends beyond its asset.                                                                                                                    |
+| `comp-image-registration`      | Pose registration on an image whose `fit` is not `contain`.                                                                                                |
+| `comp-state-range`             | A `state` or `stateFrom` value has no matching source or text state.                                                                                       |
+| `comp-state-mix`               | Only one of `stateFrom` and `stateMix` is set.                                                                                                             |
+| `comp-text-style-missing`      | A text layer uses an unknown text style.                                                                                                                   |
+| `comp-text-font`               | A text size above 180 without a pinned font (`fontAsset` or `style`).                                                                                      |
+| `comp-text-pinned-font`        | Spans, decorations, transitions, a text animator or `textBox` on a text layer without a pinned base font; the typography renderer shapes with its metrics. |
+| `comp-text-box-size`           | A `textBox` text layer without `size`.                                                                                                                     |
+| `comp-text-span-range`         | A span ends after the text or one of its states, or overlaps another span.                                                                                 |
+| `comp-text-span-missing`       | A decoration or text animator names a span the text layer does not have.                                                                                   |
+| `comp-text-font-axis`          | A variable-font axis value (style, span or blended animator) is outside the pinned font's range, or the font is not variable.                              |
+| `comp-text-locale`             | A text layer's locale is not recognised.                                                                                                                   |
+| `comp-text-transition`         | `transition` and `transitions` together, overlapping windows, a missing from/to state, or a count without numeric states and tabular figures.              |
+| `comp-marker-frame`            | A marker lies at or after `frameCount`.                                                                                                                    |
+| `comp-marker-duration`         | A marker's `duration` runs past `frameCount`.                                                                                                              |
+| `comp-marker-missing`          | A `cue` names no marker in the same scope.                                                                                                                 |
+| `comp-signal-missing`          | A driver, constraint, text animator or text selector names an unknown signal.                                                                              |
+| `comp-constraint-target`       | A constraint names no layer in the same scope.                                                                                                             |
+| `comp-text-animator-target`    | A text animator's `node` is not a text layer in the same scope.                                                                                            |
+| `comp-camera-depth`            | `cameraDepth` on a parented layer or inside a precomp.                                                                                                     |
+| `comp-camera-jolt`             | A camera jolt starts at or after `frameCount`.                                                                                                             |
+| `comp-camera-key-range`        | A `camera2d` key lies at or after `frameCount`.                                                                                                            |
+| `comp-format-size`             | `format` disagrees with `width` and `height`.                                                                                                              |
+| `comp-metadata-size`           | Metadata serialises to more than 64 KiB.                                                                                                                   |
+| `comp-json-size`               | An expression AST, effect parameter object or shape contents payload serialises to more than 64 KiB.                                                       |
+| `comp-json-depth`              | An opaque JSON payload nests more than 64 container levels below its root; checked before recursive JSON parsing.                                          |
+| `comp-metadata-depth`          | Metadata nests more than 64 container levels below its root; checked before recursive JSON parsing.                                                        |
+| `comp-driver-source`           | A driver has none or several of `signal`, `source` and `sum`.                                                                                              |
+| `comp-motion-cycle`            | Driver, constraint or parent dependencies form a cycle, including precomp-scoped dependencies.                                                             |
+| `comp-periodic`                | Invalid periodic window or generator, or both / neither of `target` and `node` + `property`.                                                               |
+| `comp-path-syntax`             | A property path does not match the grammar.                                                                                                                |
+| `comp-path-scope`              | A path prefix does not name a precomp layer instance at that level.                                                                                        |
+| `comp-path-layer`              | A path names no layer in its scope.                                                                                                                        |
+| `comp-path-property`           | A path names no property of its layer (including unknown mask and effect ids).                                                                             |
+| `comp-path-type`               | A driver or periodic motion targets a non-scalar property.                                                                                                 |
+| `comp-path-readonly`           | A read-only path (`comp.camera.*`) is used as a target.                                                                                                    |
+| `comp-feature-unavailable`     | A contract feature whose milestone has not landed; see [availability](#feature-availability).                                                              |
+| `comp-provider-bounds`         | Provider bounds have non-positive width or height.                                                                                                         |
+| `comp-provider-unavailable`    | Provider preparation cannot find the exact versioned id.                                                                                                   |
+| `comp-provider-duplicate`      | The renderer registry contains the same versioned id twice.                                                                                                |
+| `comp-provider-params`         | A built-in provider payload is invalid; reported during preparation.                                                                                       |
+| `comp-provider-asset`          | A provider uses an undeclared, missing or incompatible asset.                                                                                              |
+| `comp-adapter-unsupported`     | A story feature is outside the current adapter slice; the path identifies it.                                                                              |
+| `comp-adapter-limit`           | Baking the story would exceed the 2,000-key limit.                                                                                                         |
+| `comp-adapter-layout-required` | A fitted backing panel requires a pinned-font measurement context; browser preparation and CLI JSON export supply it.                                      |
 
 ### Warnings
 

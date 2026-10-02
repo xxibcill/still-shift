@@ -188,6 +188,7 @@ describe("CE4b commerce adapter first slice", () => {
     "sequence",
     "stagger",
     "state",
+    "supply-sequence",
     "transform",
     "travel",
     "visibility",
@@ -208,6 +209,8 @@ describe("CE4b commerce adapter first slice", () => {
 
   it.each([
     "h01-landscape",
+    "atoms/anchor",
+    "atoms/sequence",
     "atoms/detail",
     "atoms/drift",
     "atoms/parallax",
@@ -253,7 +256,6 @@ describe("CE4b commerce adapter first slice", () => {
   it.each([
     ["atoms/glow", "effects[0]"],
     ["atoms/motion-blur", "effects[0]"],
-    ["atoms/layout", "textFits[0].panel"],
   ])("rejects unsupported %s with a source path", (name, path) => {
     expect.assertions(1);
     try {

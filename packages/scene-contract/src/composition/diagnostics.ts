@@ -118,6 +118,8 @@ export const COMPOSITION_DIAGNOSTICS = {
     "A family feature is not supported by the current adapter slice.",
   "comp-adapter-limit":
     "Baking an adapter scene would exceed composition limits.",
+  "comp-adapter-layout-required":
+    "Font-dependent geometry needs a pinned-font measurement context before compilation.",
 } as const;
 
 /** Advisory codes; they never make a composition invalid. */

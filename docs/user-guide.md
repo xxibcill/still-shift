@@ -84,7 +84,7 @@ This slice supports prepared product imagery, groups, simple shapes, attached pa
 component annotations, alpha masks and mattes,
 pinned measured text, text fitting, formatted numeric labels and integer-frame
 commerce/component motion. Text fitting selects one size for all text states;
-fits that resize a backing panel remain unsupported. Pixel effects,
+JSON export measures pinned fonts before resizing fitted backing panels. Pixel effects,
 motion blur and the remaining component features return explicit
 unsupported-feature diagnostics. See the [commerce adapter reference](./composition-reference.md#commerce-adapter-ce4b-in-progress)
 for the current limits. CE4b remains in progress.

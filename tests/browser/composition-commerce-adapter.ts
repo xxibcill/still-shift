@@ -1,25 +1,26 @@
 import assert from "node:assert/strict";
-import { mkdtemp, readFile, rm } from "node:fs/promises";
+import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
-import { renderComposition } from "@still-shift/animation-engine";
+import {
+  renderComposition,
+  compileCommerceComposition,
+} from "@still-shift/animation-engine";
 import { runCli } from "../../tools/still-shift-cli/src/cli.ts";
-import { dirname, resolve, join } from "node:path";
+import { dirname, resolve, join, relative } from "node:path";
 import { createServer } from "vite";
 import { launchRenderBrowser } from "@still-shift/execution-runtime";
 import {
   CommerceSceneSchema,
   type Composition,
 } from "@still-shift/scene-contract";
-import {
-  compileCommerceScene,
-  commerceToComposition,
-} from "@still-shift/renderer-core";
+import { compileCommerceScene } from "@still-shift/renderer-core";
 import type * as Render from "../../packages/renderer-core/src/index.ts";
 import { assertCompositionAdapterState } from "../helpers/composition-adapter-state.ts";
 import { commerceTextVariants } from "../helpers/composition-commerce-text.ts";
 import type * as CommerceTextTests from "../helpers/composition-commerce-text.ts";
 import { commerceGeometryVariants } from "../helpers/composition-commerce-geometry.ts";
 import { commerceMaskVariants } from "../helpers/composition-commerce-masks.ts";
+import { commerceLayoutVariants } from "../helpers/composition-commerce-layout.ts";
 
 const root = resolve(import.meta.dirname, "../..");
 const inventory = JSON.parse(
@@ -47,6 +48,7 @@ const accepted = new Set(
     "h04-square",
     "vertical-h01-portrait",
     ...[
+      "anchor",
       "attachment",
       "background",
       "callout",
@@ -55,6 +57,7 @@ const accepted = new Set(
       "fade",
       "float",
       "introduction",
+      "layout",
       "matte",
       "overshoot",
       "panel",
@@ -63,6 +66,7 @@ const accepted = new Set(
       "product",
       "rotate",
       "scale",
+      "sequence",
       "shadow",
       "studio",
       "text",
@@ -84,6 +88,7 @@ for (const context of ["commerce", "isolated"])
     "stagger",
     "state",
     "supply",
+    "supply-sequence",
     "text-fit",
     "tour",
     "transform",
@@ -121,12 +126,17 @@ try {
       ...commerceTextVariants(entry.id, source),
       ...commerceGeometryVariants(entry.id, source),
       ...commerceMaskVariants(entry.id, source),
+      ...commerceLayoutVariants(entry.id, source),
     ];
     for (const item of inputs) {
       const input = CommerceSceneSchema.parse(item.scene);
-      const composition = commerceToComposition(input),
+      const composition = await compileCommerceComposition(
+          input,
+          dirname(sourcePath),
+        ),
         scene = compileCommerceScene(input);
-      assertCompositionAdapterState(scene, composition);
+      if (!input.textFits?.some((fit) => fit.panel))
+        assertCompositionAdapterState(scene, composition);
       const urls = Object.fromEntries(
         composition.assets.map((a) => [
           a.id,
@@ -170,6 +180,19 @@ try {
           );
           const oldCtx = legacyCanvas.getContext("2d")!,
             ctx = canvas.getContext("2d")!;
+          const measurement = document.createElement("canvas");
+          const preparedNodes = scene.textFits?.some((fit) => fit.panel)
+            ? m.prepareComponentTextFits(
+                m.prepareCommerceTextFits(
+                  scene,
+                  measurement.getContext("2d")!,
+                  resources.fonts,
+                ),
+                measurement.getContext("2d")!,
+                resources.fonts,
+              ).nodes
+            : null;
+          measurement.width = measurement.height = 0;
           const hashes = new Map<number, string>();
           const hash = async (bytes: Uint8ClampedArray<ArrayBuffer>) =>
             Array.from(
@@ -291,6 +314,7 @@ try {
             ratio,
             timings,
             preparationChecks,
+            preparedNodes,
             ...(profile
               ? {
                   legacyMs,
@@ -314,8 +338,14 @@ try {
           profile: process.argv.includes("--profile"),
         },
       );
+      const { preparedNodes, ...metrics } = report;
+      if (preparedNodes)
+        assertCompositionAdapterState(
+          { ...scene, nodes: preparedNodes },
+          composition,
+        );
       console.log(
-        `${item.id}: ${input.frameCount} frames ${JSON.stringify(report)}`,
+        `${item.id}: ${input.frameCount} frames ${JSON.stringify(metrics)}`,
       );
       await page.close();
       assert.deepEqual(report.failures, [], `${item.id} pixel parity`);
@@ -330,6 +360,68 @@ try {
   console.log(
     `CE4b commerce parity: ${totalItems} items, ${totalFrames} frames`,
   );
+  if (selected.some((entry) => entry.id === "commerce/atom-layout")) {
+    const directory = await mkdtemp(join(tmpdir(), "still-shift-ce4b-layout-"));
+    try {
+      const sourcePath = resolve(
+        root,
+        "benchmarks/fixtures/ecommerce-motion/atoms/layout.json",
+      );
+      for (const failure of ["font", "overflow"] as const) {
+        const input = CommerceSceneSchema.parse(
+          JSON.parse(await readFile(sourcePath, "utf8")),
+        );
+        for (const asset of [...input.assets, ...input.fonts])
+          asset.path = relative(
+            directory,
+            resolve(dirname(sourcePath), asset.path),
+          );
+        if (failure === "font")
+          input.fonts[0]!.sha256 = `sha256:${"0".repeat(64)}`;
+        else
+          input.nodes.find(
+            (node) => node.id === input.textFits![0]!.target,
+          )!.height = 1;
+        const invalidPath = join(directory, `${failure}.json`);
+        const outputPath = join(directory, `${failure}-composition.json`);
+        await writeFile(invalidPath, JSON.stringify(input));
+        let errors = "";
+        assert.equal(
+          await runCli(
+            [
+              "comp",
+              "export-json",
+              "--scene",
+              invalidPath,
+              "--output",
+              outputPath,
+            ],
+            {
+              stdout: () => {},
+              stderr: (text) => {
+                errors += text;
+              },
+            },
+          ),
+          1,
+        );
+        const report = JSON.parse(errors) as {
+          diagnostics: { code: string; message: string }[];
+        };
+        assert.equal(report.diagnostics[0]!.code, "invalid-scene");
+        assert.match(
+          report.diagnostics[0]!.message,
+          failure === "font" ? /Font checksum differs/ : /Text cannot fit/,
+        );
+        await assert.rejects(readFile(outputPath), { code: "ENOENT" });
+      }
+      console.log(
+        "CE4b fitted-panel export: bad font and impossible fit return diagnostics without writing output",
+      );
+    } finally {
+      await rm(directory, { recursive: true, force: true });
+    }
+  }
   if (only < 0)
     for (const name of [
       "text-fit",
@@ -338,12 +430,13 @@ try {
       "attachment",
       "matte",
       "mask",
+      "layout",
     ]) {
       const directory = await mkdtemp(join(tmpdir(), "still-shift-ce4b-"));
       try {
         const sourcePath = resolve(
           root,
-          name === "attachment" || name === "matte"
+          name === "attachment" || name === "matte" || name === "layout"
             ? `benchmarks/fixtures/ecommerce-motion/atoms/${name}.json`
             : `benchmarks/fixtures/reusable-components/commerce-${name}.json`,
         );

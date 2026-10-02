@@ -1,10 +1,7 @@
 #!/usr/bin/env node
 import { readFile, writeFile } from "node:fs/promises";
 import { dirname, resolve, relative } from "node:path";
-import {
-  storyToComposition,
-  commerceToComposition,
-} from "@still-shift/renderer-core";
+import { storyToComposition } from "@still-shift/renderer-core";
 import { CommerceSceneSchema } from "@still-shift/scene-contract";
 import { prepareCommerceFile } from "../../../packages/animation-engine/src/commerce-preparation.ts";
 import { pathToFileURL } from "node:url";
@@ -28,6 +25,7 @@ import {
   SfxGenerationError,
   importNarrationFile,
   renderComposition,
+  compileCommerceComposition,
 } from "@still-shift/animation-engine";
 import {
   AnimationEngineError,
@@ -409,7 +407,10 @@ export const runCli = async (
         typeof scene === "object" &&
         "schemaVersion" in scene &&
         scene.schemaVersion === "commerce-scene-1"
-          ? commerceToComposition(CommerceSceneSchema.parse(scene))
+          ? await compileCommerceComposition(
+              CommerceSceneSchema.parse(scene),
+              dirname(scenePath),
+            )
           : storyToComposition(StorySceneSchema.parse(scene));
       const output = values.get("output");
       if (!output) io.stdout(`${JSON.stringify(composition, null, 2)}\n`);
