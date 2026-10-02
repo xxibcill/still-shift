@@ -50,6 +50,46 @@ const fixture = (): Composition => ({
 });
 
 describe("composition effect stack", () => {
+  it("animates effect colors and their components, and retains generated content beyond input bounds", () => {
+    const comp = fixture();
+    comp.layers[0]!.effects = [
+      {
+        id: "lamp",
+        effect: "light.radial",
+        params: {
+          color: {
+            keys: [
+              { frame: 0, value: "#00000000" },
+              { frame: 10, value: "#ffffffff", interpolation: "linear" },
+            ],
+          },
+        },
+      },
+    ];
+    const path = "box.effects[lamp].color";
+    expect(resolvePropertyPath(comp, path)).toMatchObject({ type: "color" });
+    expect(resolvePropertyPath(comp, `${path}.r`)).toMatchObject({
+      type: "scalar",
+    });
+    expect(resolvePropertyPath(comp, `${path}.x`)).toMatchObject({
+      code: "comp-path-property",
+    });
+    expect(evaluateProperty(comp, path, 5)).toEqual([0.5, 0.5, 0.5, 0.5]);
+    expect(buildRenderGraph(comp, evaluateComp(comp, 5)).culled).toEqual([]);
+    const driven = structuredClone(comp);
+    driven.signals = [
+      {
+        id: "red",
+        keys: [
+          { frame: 0, value: 2 },
+          { frame: 10, value: 2 },
+        ],
+      },
+    ];
+    driven.drivers = [{ target: `${path}.r`, signal: "red", blend: "replace" }];
+    expect(evaluateProperty(driven, path, 5)).toEqual([1, 0.5, 0.5, 0.5]);
+    expect(evaluateProperty(comp, path, 5)).toEqual([0.5, 0.5, 0.5, 0.5]);
+  });
   it("samples registered pixel parameters, rounds sample counts and preserves instance order", () => {
     const comp = fixture();
     comp.layers[0]!.effects = [

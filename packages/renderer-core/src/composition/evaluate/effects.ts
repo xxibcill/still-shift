@@ -2,14 +2,14 @@ import {
   compositionEffectDefinition,
   type CompositionLayer,
 } from "@still-shift/scene-contract";
-import { scalar } from "./sample.ts";
-import type { Bounds } from "./types.ts";
+import { scalar, color, unit } from "./sample.ts";
+import type { Bounds, Rgba } from "./types.ts";
 
 export type EvaluatedEffect = {
   id: string;
   effect: string;
   enabled: boolean;
-  params: Record<string, number>;
+  params: Record<string, number | Rgba>;
 };
 
 export function sampleEffects(
@@ -29,7 +29,9 @@ export function sampleEffects(
       params: Object.fromEntries(
         Object.entries(definition.properties).map(([name, property]) => [
           name,
-          scalar(effect.params?.[name], time, fps, property.default),
+          property.type === "color"
+            ? color(effect.params?.[name] ?? property.default, time, fps)
+            : scalar(effect.params?.[name], time, fps, property.default),
         ]),
       ),
     };
@@ -41,32 +43,36 @@ export function clampEffects(effects: EvaluatedEffect[]) {
   for (const effect of effects)
     for (const [name, property] of Object.entries(
       compositionEffectDefinition(effect.effect)!.properties,
-    ))
-      effect.params[name] = Math.max(
-        property.min,
-        Math.min(
-          property.max,
-          property.integer
-            ? Math.round(effect.params[name]!)
-            : effect.params[name]!,
-        ),
-      );
+    )) {
+      if (property.type === "color")
+        effect.params[name] = (effect.params[name] as Rgba).map(unit) as Rgba;
+      else {
+        const value = effect.params[name] as number;
+        effect.params[name] = Math.max(
+          property.min,
+          Math.min(property.max, property.integer ? Math.round(value) : value),
+        );
+      }
+    }
 }
 
 /** Kernels operate in the current composition surface's pixel space. */
 export function effectBounds(
   bounds: Bounds,
   effects: EvaluatedEffect[],
-): Bounds {
+): Bounds | null {
   let margin = 0;
   for (const effect of effects)
     if (effect.enabled) {
+      if (compositionEffectDefinition(effect.effect)!.generatesContent)
+        return null;
+      const params = effect.params as Record<string, number>;
       if (effect.effect === "blur.gaussian" || effect.effect === "light.glow")
-        margin += effect.params.radius! > 0 ? 3 * effect.params.radius! + 2 : 0;
+        margin += params.radius! > 0 ? 3 * params.radius! + 2 : 0;
       else if (effect.effect === "blur.directional")
-        margin += effect.params.length! / 2 + 1;
+        margin += params.length! / 2 + 1;
       else if (effect.effect === "distort.sine")
-        margin += Math.abs(effect.params.amount!) + 1;
+        margin += Math.abs(params.amount!) + 1;
     }
   return margin
     ? {

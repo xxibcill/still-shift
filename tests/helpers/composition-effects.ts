@@ -2,6 +2,42 @@ import type { CommerceScene } from "@still-shift/scene-contract";
 import { commerceMaskVariants } from "./composition-commerce-masks.ts";
 
 export function commerceEffectVariants(id: string, source: CommerceScene) {
+  if (id === "commerce/atom-particles") {
+    const combined = structuredClone(source);
+    combined.nodes.find((node) => node.id === "product")!.opacity = 0.7;
+    combined.effects = [
+      { ...combined.effects![0]!, active: { start: 10, end: 190 } },
+      {
+        type: "background-light",
+        start: 0,
+        end: 200,
+        cycles: 2,
+        x: 480,
+        y: 650,
+        radius: 600,
+        travel: 130,
+        strength: 0.65,
+        color: "#c85c23",
+        active: { start: 20, end: 170 },
+      },
+      {
+        type: "grain",
+        amount: 0.075,
+        seed: 246,
+        active: { start: 17, end: 210 },
+      },
+    ];
+    const reversed = structuredClone(combined);
+    reversed.effects = [
+      reversed.effects![1]!,
+      reversed.effects![0]!,
+      reversed.effects![2]!,
+    ];
+    return [
+      { id: `${id}/environment-stack`, scene: combined },
+      { id: `${id}/environment-reversed`, scene: reversed },
+    ];
+  }
   if (id === "commerce/atom-focus-blur") {
     const gated = structuredClone(source);
     for (const effect of gated.effects ?? []) {

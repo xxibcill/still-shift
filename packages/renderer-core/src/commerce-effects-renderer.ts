@@ -1,3 +1,8 @@
+import {
+  paintRadialLight,
+  paintRisingParticles,
+  paintFilmGrain,
+} from "./pixel-generators.ts";
 import { glow, directionalBlur, sineDisplacement } from "./pixel-effects.ts";
 import type { CinematicRenderScene } from "./cinematic-scene.ts";
 import { storyCameraTransform } from "./story-camera.ts";
@@ -14,7 +19,6 @@ import {
   effectPhase,
   effectProgress,
   exposureFrames,
-  seededRandom,
   isEffectActive,
 } from "./commerce-effect-motion.ts";
 
@@ -42,87 +46,6 @@ function clear({ canvas, ctx }: Surface) {
 function smooth(progress: number) {
   return progress * progress * (3 - 2 * progress);
 }
-function paintLight(
-  ctx: CanvasRenderingContext2D,
-  effect: EffectOf<"background-light">,
-  frame: number,
-  width: number,
-  height: number,
-) {
-  const x = effect.x + Math.sin(effectPhase(effect, frame)) * effect.travel;
-  const gradient = ctx.createRadialGradient(
-    x,
-    effect.y,
-    0,
-    x,
-    effect.y,
-    effect.radius,
-  );
-  gradient.addColorStop(0, effect.color);
-  gradient.addColorStop(1, effect.color + "00");
-  ctx.save();
-  ctx.globalAlpha = effect.strength;
-  ctx.fillStyle = gradient;
-  ctx.fillRect(0, 0, width, height);
-  ctx.restore();
-}
-function paintParticles(
-  ctx: CanvasRenderingContext2D,
-  effect: EffectOf<"particles">,
-  frame: number,
-  width: number,
-  height: number,
-) {
-  const random = seededRandom(effect.seed);
-  const progress = effectProgress(effect, frame) * effect.cycles;
-  ctx.save();
-  ctx.fillStyle = effect.color;
-  for (let index = 0; index < effect.count; index++) {
-    const x = random() * width,
-      offset = random(),
-      radius = effect.radius * (0.35 + random() * 0.65),
-      sway = 10 + random() * 30;
-    const phase = (offset + progress) % 1;
-    ctx.globalAlpha = effect.opacity * Math.sin(phase * Math.PI) ** 2;
-    ctx.beginPath();
-    ctx.arc(
-      x + Math.sin(phase * Math.PI * 2) * sway,
-      height * (1 - phase),
-      radius,
-      0,
-      Math.PI * 2,
-    );
-    ctx.fill();
-  }
-  ctx.restore();
-}
-function paintGrain(
-  ctx: CanvasRenderingContext2D,
-  effect: EffectOf<"grain">,
-  frame: number,
-  grain: Surface,
-  width: number,
-  height: number,
-) {
-  const random = seededRandom(effect.seed + Math.floor(frame) * 7919);
-  const pixels = grain.ctx.createImageData(
-    grain.canvas.width,
-    grain.canvas.height,
-  );
-  for (let index = 0; index < pixels.data.length; index += 4) {
-    const value = random() < 0.5 ? 0 : 255;
-    pixels.data[index] = value;
-    pixels.data[index + 1] = value;
-    pixels.data[index + 2] = value;
-    pixels.data[index + 3] = Math.round(random() * effect.amount * 255);
-  }
-  grain.ctx.putImageData(pixels, 0, 0);
-  ctx.save();
-  ctx.fillStyle = ctx.createPattern(grain.canvas, "repeat")!;
-  ctx.fillRect(0, 0, width, height);
-  ctx.restore();
-}
-
 /** Deterministic, full-canvas effect buffers preserve occlusion and allow blur outside node bounds. */
 export function createCommerceEffectsRenderer(
   scene: CommerceRenderScene | StoryRenderScene | CinematicRenderScene,
@@ -324,17 +247,32 @@ export function createCommerceEffectsRenderer(
     for (const effect of effects) {
       if (!isEffectActive(effect, frame)) continue;
       if (effect.type === "background-light")
-        paintLight(ctx, effect, frame, scene.width, scene.height);
+        paintRadialLight(
+          ctx,
+          {
+            ...effect,
+            x: effect.x + Math.sin(effectPhase(effect, frame)) * effect.travel,
+          },
+          scene.width,
+          scene.height,
+        );
       if (effect.type === "particles")
-        paintParticles(ctx, effect, frame, scene.width, scene.height);
+        paintRisingParticles(
+          ctx,
+          {
+            ...effect,
+            progress: effectProgress(effect, frame) * effect.cycles,
+          },
+          scene.width,
+          scene.height,
+        );
     }
     for (const node of roots) drawRoot(ctx, node, frame);
     for (const effect of effects)
       if (effect.type === "grain" && isEffectActive(effect, frame))
-        paintGrain(
+        paintFilmGrain(
           ctx,
-          effect,
-          frame - (effect.active?.start ?? 0),
+          { ...effect, evolution: frame - (effect.active?.start ?? 0) },
           grain,
           scene.width,
           scene.height,

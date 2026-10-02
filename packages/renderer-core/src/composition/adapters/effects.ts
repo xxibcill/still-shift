@@ -8,6 +8,54 @@ import { baked } from "./prepared.ts";
 
 function effectParameters(scene: CommerceScene, effect: CommerceEffect) {
   switch (effect.type) {
+    case "background-light":
+      return {
+        effect: "light.radial",
+        params: {
+          x: baked(
+            Array.from(
+              { length: scene.frameCount },
+              (_, frame) =>
+                effect.x + Math.sin(effectPhase(effect, frame)) * effect.travel,
+            ),
+          ),
+          y: effect.y,
+          radius: effect.radius,
+          strength: effect.strength,
+          color: effect.color,
+        },
+      };
+    case "particles":
+      return {
+        effect: "particles.rise",
+        params: {
+          count: effect.count,
+          radius: effect.radius,
+          opacity: effect.opacity,
+          seed: effect.seed,
+          color: effect.color,
+          progress: baked(
+            Array.from(
+              { length: scene.frameCount },
+              (_, frame) => effectProgress(effect, frame) * effect.cycles,
+            ),
+          ),
+        },
+      };
+    case "grain":
+      return {
+        effect: "stylize.grain",
+        params: {
+          amount: effect.amount,
+          seed: effect.seed,
+          evolution: baked(
+            Array.from(
+              { length: scene.frameCount },
+              (_, frame) => frame - (effect.active?.start ?? 0),
+            ),
+          ),
+        },
+      };
     case "directional-blur":
       return {
         effect: "blur.directional",
@@ -67,19 +115,36 @@ export function compileCommerceEffects(
   const owners = new Map<string, CompositionLayer>();
   const ids = new Set(layers.map((layer) => layer.id));
   let serial = 0;
+  const freshId = () => {
+    let id: string;
+    do {
+      id = `effectGroup${++serial}`;
+    } while (ids.has(id));
+    ids.add(id);
+    return id;
+  };
+  const environment: NonNullable<CompositionLayer["effects"]> = [];
+  const finishing: NonNullable<CompositionLayer["effects"]> = [];
   for (const effect of scene.effects ?? []) {
     const compiled = effectParameters(scene, effect);
-    if (!compiled || !("target" in effect)) continue;
+    if (!compiled) continue;
+    const instance = {
+      id: `effect${scene.effects!.indexOf(effect)}`,
+      ...compiled,
+      ...(effect.active
+        ? { inPoint: effect.active.start, outPoint: effect.active.end }
+        : {}),
+    };
+    if (!("target" in effect)) {
+      (effect.type === "grain" ? finishing : environment).push(instance);
+      continue;
+    }
     let owner = owners.get(effect.target);
     if (!owner) {
       const target = layers.find((layer) => layer.id === effect.target)!;
       if (target.type === "group") owner = target;
       else {
-        let id: string;
-        do {
-          id = `effectGroup${++serial}`;
-        } while (ids.has(id));
-        ids.add(id);
+        const id = freshId();
         owner = {
           id,
           type: "group",
@@ -94,12 +159,17 @@ export function compileCommerceEffects(
       owners.set(effect.target, owner);
     }
     owner.effects ??= [];
-    owner.effects.push({
-      id: `effect${scene.effects!.indexOf(effect)}`,
-      ...compiled,
-      ...(effect.active
-        ? { inPoint: effect.active.start, outPoint: effect.active.end }
-        : {}),
-    });
+    owner.effects.push(instance);
   }
+  const adjustment = (
+    effects: NonNullable<CompositionLayer["effects"]>,
+  ): CompositionLayer => ({
+    id: freshId(),
+    type: "adjustment",
+    size: [scene.width, scene.height],
+    transform: { anchor: [0, 0] },
+    effects,
+  });
+  if (environment.length) layers.unshift(adjustment(environment));
+  if (finishing.length) layers.push(adjustment(finishing));
 }

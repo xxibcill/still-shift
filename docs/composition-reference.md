@@ -947,3 +947,30 @@ legacy pixel primitives while keeping the native evaluator and graph independent
 of family scenes. Stack order, layer time, activation, masks and adjustments use
 the same rules as Gaussian blur. `distort.sine` is the commerce wave displacement;
 general displacement maps remain part of the broader CE6 work.
+
+### Light, particles and grain (CE6 dependency slice)
+
+`light.radial`, `particles.rise` and `stylize.grain`, version `1.0.0`, generate
+pixels over their input on the Canvas reference backend. They share source pixel
+primitives with the family renderer. Their parameters use the same layer clocks,
+activation, property paths and bounds rules; generating effects disable input-bounds
+culling because their output may extend beyond the original artwork.
+
+| Effect           | Parameters (default; accepted range)                                                                                                                                   |
+| ---------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `light.radial`   | `x`, `y` (0; ±1,000,000 pixels), `radius` (100; 0.01–10,000), `strength` (1; 0–1), `color` (white)                                                                     |
+| `particles.rise` | `count` (20; 1–100 integer), `radius` (2; 0.01–100 pixels), `opacity` (0.5; 0–1), `seed` (1; 0–2,147,483,647 integer), `progress` (0; 0–1,000 cycles), `color` (white) |
+| `stylize.grain`  | `amount` (0; 0–1), `seed` (1; 0–2,147,483,647 integer), `evolution` (0; ±216,000 frames)                                                                               |
+
+Colors accept ordinary composition color keys; components such as
+`layer.effects[lamp].color.r` accept scalar drivers. Their evaluated channels clamp
+to 0–1. Particle positions use a seeded integer generator; grain regenerates a
+128×128 repeating tile using `seed + floor(evolution) × 7919`. Random access and
+backward seeks produce the same pixels.
+
+The commerce adapter places background light and particles in an adjustment stack
+behind the artwork, retaining their relative authored order. Grain runs after the
+artwork and uses time relative to its active interval. Full-coverage normal
+adjustments containing only effects that preserve opaque input can paint the
+backdrop directly. Alpha-changing stacks retain an RGBA intermediate, including
+when the final output canvas is opaque.

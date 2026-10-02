@@ -1820,6 +1820,34 @@ comparisons; the full `pnpm check`.
   blur, animated primitive blur, WebGL2 acceptance and final full verification.
   The active goal continues after this slice's commit.
 
+### CE4b light, particle and grain follow-up (2026-10-02)
+
+- **Delivered:** native `light.radial`, `particles.rise` and `stylize.grain` registry
+  entries, version `1.0.0`. Registry colors now accept color keys and scalar channel
+  drivers. Seeded generators retain random-access determinism, and generated
+  pixels prevent inappropriate culling based on the input artwork's bounds.
+- **Adapter:** background light and particles compile to a rear adjustment stack
+  in authored order; grain compiles to a final adjustment with evolution relative
+  to its active window. Full-coverage normal generator stacks paint the backdrop
+  directly. Effects that can change opaque input to transparent still use an RGBA
+  intermediate, preserving multi-pass alpha and edge behavior.
+- **Versions:** commerce adapter `commerce-composition-0.13.0`, evaluator
+  `composition-evaluator-14`, Canvas renderer `composition-canvas-1.14.0`.
+- **Verification:** `pnpm check:fast` passes **1,198 unit tests**. Six commerce
+  cases / **1,440 frames** match exactly, including combined/reversed environment
+  stacks, active windows and grain clocks. Worst paired median render/readback
+  ratio is **1.0519×**. The extracted legacy generators pass the frozen CE0 checks:
+  **4 entries / 960 frames**. Native tests pass **640 exact frames** across every
+  drawable type and **24 adjustment cases** within one channel value, including
+  full coverage and alpha-changing stacks. Three saved native fixtures each
+  export 60 frames twice with identical bytes. Background light, combined particles,
+  grain and effects-studio each produce two byte-identical CLI MP4s, with asset
+  relocation and overwrite protection verified.
+- **Coverage:** **102 of 105** commerce/reusable CE0 entries have Canvas coverage.
+- **Remaining:** light sweep, echo, motion blur, animated primitive blur, shared
+  story-effect integration, WebGL2 acceptance and final full local verification.
+  The active goal continues after this slice's commit.
+
 **Completion record:** CE4a and CE4b are in progress; CE4c–CE4d have not started.
 
 ---

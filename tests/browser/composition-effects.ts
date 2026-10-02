@@ -320,7 +320,9 @@ try {
         });
       }
     for (const treatment of ["gaussian", ...Object.keys(pixelStacks)])
-      for (const blendMode of ["normal", "multiply"] as const) {
+      for (const mode of ["normal", "multiply", "full"] as const) {
+        const full = mode === "full",
+          blendMode = full ? "normal" : mode;
         const comp = base();
         comp.layers = [
           {
@@ -336,6 +338,11 @@ try {
           solid("front", 55, 20),
           { ...solid("back", 25, 35), color: "#56a999" },
         ];
+        if (full)
+          Object.assign(comp.layers[0]!, {
+            size: [128, 96],
+            transform: { anchor: [0, 0], opacity: 1 },
+          });
         if (treatment !== "gaussian")
           comp.layers[0]!.effects = pixelStacks[treatment]!;
         const actual = canvas(),
@@ -369,9 +376,16 @@ try {
           for (let x = 0; x < 128; x++)
             for (let c = 0; c < 3; c++) {
               const i = (y * 128 + x) * 4 + c;
-              const coverage = x >= 30 && x < 95 && y >= 20 && y < 75 ? 0.5 : 0;
+              const coverage = full
+                ? 1
+                : x >= 30 && x < 95 && y >= 20 && y < 75
+                  ? 0.5
+                  : 0;
+              const alpha = f[(y * 128 + x) * 4 + 3]! / 255;
               const adjusted =
-                blendMode === "normal" ? f[i]! : (f[i]! * b[i]!) / 255;
+                blendMode === "normal"
+                  ? f[i]! * alpha
+                  : b[i]! * (1 - alpha) + ((f[i]! * b[i]!) / 255) * alpha;
               const expected = Math.round(
                 b[i]! * (1 - coverage) + adjusted * coverage,
               );
@@ -380,7 +394,7 @@ try {
         preview.dispose();
         raw.backend.dispose();
         result.push({
-          id: `adjustment-${treatment}-${blendMode}`,
+          id: `adjustment-${treatment}-${mode}`,
           frames: 1,
           maxDelta,
         });
@@ -398,7 +412,7 @@ try {
 
 const output = await mkdtemp(join(tmpdir(), "still-shift-gaussian-"));
 try {
-  for (const fixture of ["gaussian", "pixel-stack"]) {
+  for (const fixture of ["gaussian", "pixel-stack", "generators"]) {
     const compositionPath = resolve(
       `benchmarks/fixtures/composition/ce6/${fixture}.json`,
     );

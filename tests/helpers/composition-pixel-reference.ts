@@ -4,6 +4,34 @@ export const pixelStacks: Record<
   string,
   NonNullable<CompositionLayer["effects"]>
 > = {
+  radial: [
+    {
+      id: "lamp",
+      effect: "light.radial",
+      params: { x: 64, y: 48, radius: 48, color: "#ddbb88", strength: 0.7 },
+    },
+  ],
+  particles: [
+    {
+      id: "dust",
+      effect: "particles.rise",
+      params: {
+        count: 40,
+        radius: 3,
+        color: "#ddbb88",
+        opacity: 0.65,
+        seed: 17,
+        progress: 0.6,
+      },
+    },
+  ],
+  grain: [
+    {
+      id: "grain",
+      effect: "stylize.grain",
+      params: { amount: 0.15, seed: 3, evolution: 11 },
+    },
+  ],
   directional: [
     {
       id: "direction",
@@ -47,7 +75,65 @@ export function pixelReference(
   const canvas = surface(),
     ctx = canvas.getContext("2d")!;
   const p = effect.params as Record<string, number>;
-  if (effect.effect === "distort.sine") {
+  let state = p.seed! >>> 0;
+  const random = () => {
+    state = (Math.imul(state, 1664525) + 1013904223) >>> 0;
+    return state / 4294967296;
+  };
+  if (effect.effect === "light.radial") {
+    ctx.drawImage(source, 0, 0);
+    const gradient = ctx.createRadialGradient(
+      p.x!,
+      p.y!,
+      0,
+      p.x!,
+      p.y!,
+      p.radius!,
+    );
+    gradient.addColorStop(0, effect.params!.color as string);
+    gradient.addColorStop(
+      1,
+      `${(effect.params!.color as string).slice(0, 7)}00`,
+    );
+    ctx.globalAlpha = p.strength!;
+    ctx.fillStyle = gradient;
+    ctx.fillRect(0, 0, width, height);
+  } else if (effect.effect === "particles.rise") {
+    ctx.drawImage(source, 0, 0);
+    ctx.fillStyle = effect.params!.color as string;
+    for (let n = 0; n < p.count!; n++) {
+      const x = random() * width,
+        offset = random(),
+        radius = p.radius! * (0.35 + random() * 0.65),
+        sway = 10 + random() * 30;
+      const phase = (offset + p.progress!) % 1;
+      ctx.globalAlpha = p.opacity! * Math.sin(phase * Math.PI) ** 2;
+      ctx.beginPath();
+      ctx.arc(
+        x + Math.sin(phase * Math.PI * 2) * sway,
+        height * (1 - phase),
+        radius,
+        0,
+        Math.PI * 2,
+      );
+      ctx.fill();
+    }
+  } else if (effect.effect === "stylize.grain") {
+    state = (p.seed! + Math.floor(p.evolution!) * 7919) >>> 0;
+    ctx.drawImage(source, 0, 0);
+    const tile = document.createElement("canvas");
+    tile.width = tile.height = 128;
+    const tc = tile.getContext("2d")!,
+      pixels = tc.createImageData(128, 128);
+    for (let i = 0; i < pixels.data.length; i += 4) {
+      const value = random() < 0.5 ? 0 : 255;
+      pixels.data[i] = pixels.data[i + 1] = pixels.data[i + 2] = value;
+      pixels.data[i + 3] = Math.round(random() * p.amount! * 255);
+    }
+    tc.putImageData(pixels, 0, 0);
+    ctx.fillStyle = ctx.createPattern(tile, "repeat")!;
+    ctx.fillRect(0, 0, width, height);
+  } else if (effect.effect === "distort.sine") {
     for (let y = 0; y < height; y++)
       ctx.drawImage(
         source,

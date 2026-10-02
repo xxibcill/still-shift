@@ -1,4 +1,11 @@
 import {
+  paintRadialLight,
+  paintRisingParticles,
+  paintFilmGrain,
+} from "../../pixel-generators.ts";
+import { cssColor } from "./canvas2d.ts";
+import type { Rgba } from "../evaluate/types.ts";
+import {
   glow,
   directionalBlur,
   sineDisplacement,
@@ -14,30 +21,76 @@ export type CanvasEffectContext = {
 type CanvasEffect = (
   context: CanvasEffectContext,
   target: CanvasSurface,
-  params: Record<string, number>,
+  params: EvaluatedEffect["params"],
 ) => void;
 
 const effects: Readonly<Record<string, CanvasEffect>> = {
+  "light.radial": (_context, target, params) =>
+    paintRadialLight(
+      target.ctx,
+      {
+        x: params.x as number,
+        y: params.y as number,
+        radius: params.radius as number,
+        strength: params.strength as number,
+        color: cssColor(params.color as Rgba),
+      },
+      target.width,
+      target.height,
+    ),
+  "particles.rise": (_context, target, params) =>
+    paintRisingParticles(
+      target.ctx,
+      {
+        progress: params.progress as number,
+        count: params.count as number,
+        radius: params.radius as number,
+        opacity: params.opacity as number,
+        seed: params.seed as number,
+        color: cssColor(params.color as Rgba),
+      },
+      target.width,
+      target.height,
+    ),
+  "stylize.grain": (context, target, params) => {
+    const grain = context.createSurface(128, 128);
+    try {
+      paintFilmGrain(
+        target.ctx,
+        {
+          amount: params.amount as number,
+          seed: params.seed as number,
+          evolution: params.evolution as number,
+        },
+        grain,
+        target.width,
+        target.height,
+      );
+    } finally {
+      context.releaseSurface(grain);
+    }
+  },
+
   "blur.directional": (context, target, params) =>
     directionalBlur(context, target, {
-      length: params.length!,
-      angle: params.angle!,
-      samples: params.samples!,
+      length: params.length as number,
+      angle: params.angle as number,
+      samples: params.samples as number,
     }),
   "light.glow": (context, target, params) =>
     glow(context, target, {
-      radius: params.radius!,
-      intensity: params.intensity!,
-      threshold: params.threshold!,
+      radius: params.radius as number,
+      intensity: params.intensity as number,
+      threshold: params.threshold as number,
     }),
   "distort.sine": (context, target, params) =>
     sineDisplacement(context, target, {
-      amount: params.amount!,
-      wavelength: params.wavelength!,
-      phase: params.phase!,
+      amount: params.amount as number,
+      wavelength: params.wavelength as number,
+      phase: params.phase as number,
     }),
   "blur.gaussian": (context, target, params) => {
-    if (params.radius! <= 0) return;
+    if ((params.radius as number) <= 0) return;
     const scratch = context.createSurface(target.width, target.height);
     try {
       scratch.ctx.filter = `blur(${params.radius}px)`;

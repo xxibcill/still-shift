@@ -1,3 +1,4 @@
+import { compositionEffectDefinition } from "@still-shift/scene-contract";
 import type { EvaluatedEffect } from "../evaluate/effects.ts";
 import type {
   CompositionBlendMode,
@@ -182,6 +183,26 @@ export function executeGraph<S extends Surface>(
         return;
       }
       case "adjust": {
+        // Unit coverage replaces the complete backdrop. Generators can paint it
+        // directly, preserving rasterization and avoiding copies. Alpha-changing
+        // kernels still need an RGBA intermediate when the target is opaque.
+        if (
+          op.effects.every(
+            (effect) =>
+              compositionEffectDefinition(effect.effect)!.preservesOpaque,
+          ) &&
+          op.blend === "normal" &&
+          op.opacity === 1 &&
+          !op.clips.length &&
+          !op.masks.length &&
+          !op.matte &&
+          op.width === dst.width &&
+          op.height === dst.height &&
+          op.matrix.every((value, i) => value === IDENTITY[i])
+        ) {
+          backend.applyEffects(dst, op.effects);
+          return;
+        }
         // Process the backdrop before blending it and applying adjustment coverage.
         const src = backend.createSurface(dst.width, dst.height);
         backend.composite(dst, src, "normal", 1, IDENTITY, []);

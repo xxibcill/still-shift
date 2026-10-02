@@ -160,11 +160,11 @@ function resolveSegments(
       if (
         !next ||
         indexed(next) ||
-        rest.length ||
         !Object.hasOwn(definition.properties, next.name)
       )
         return missing(text, "an effect parameter");
-      return { type: definition.properties[next.name]!.type };
+      const type = definition.properties[next.name]!.type;
+      return component(type, type === "color" ? COLOR_COMPONENTS : [], rest);
     }
     case "contents":
       return unavailable(text, "CE5");
