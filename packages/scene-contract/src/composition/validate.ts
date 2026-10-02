@@ -1,3 +1,4 @@
+import { compositionEffectDefinition } from "./effects.ts";
 import type { z } from "zod";
 import { formatSize } from "../output-format.ts";
 import { tabularFigures, type TextStyle } from "../typography.ts";
@@ -121,7 +122,32 @@ function checkLayer(
   if (missingType) unavailable(["type"], `${layer.type} layers`, missingType);
   if (layer.threeD) unavailable(["threeD"], "3D layers", "CE8");
   if (layer.motionBlur) unavailable(["motionBlur"], "motion blur", "CE7");
-  if (layer.effects?.length) unavailable(["effects"], "effects", "CE6");
+  layer.effects?.forEach((effect, index) => {
+    const at = [...path, "effects", index];
+    const definition = compositionEffectDefinition(effect.effect);
+    if (!definition) {
+      fail(
+        "comp-feature-unavailable",
+        [...at, "effect"],
+        `Unknown or unavailable effect "${effect.effect}"`,
+      );
+      return;
+    }
+    if ((effect.inPoint ?? -Infinity) >= (effect.outPoint ?? Infinity))
+      fail("comp-effect-time", at, "Effect inPoint must precede outPoint");
+    const parsed = definition.params.safeParse(effect.params ?? {});
+    if (!parsed.success)
+      for (const issue of parsed.error.issues)
+        fail(
+          "comp-effect-params",
+          [
+            ...at,
+            "params",
+            ...issue.path.map((p) => (typeof p === "symbol" ? String(p) : p)),
+          ],
+          issue.message,
+        );
+  });
   for (const field of ["rotationX", "rotationY", "orientation"] as const)
     if (layer.transform?.[field] !== undefined)
       unavailable(["transform", field], `transform.${field}`, "CE8");

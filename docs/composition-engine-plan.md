@@ -1766,6 +1766,34 @@ comparisons; the full `pnpm check`.
   both-backend acceptance and final full local verification. The active goal
   continues after this slice's commit.
 
+### CE4b effect-stack and focus-blur follow-up (2026-10-02)
+
+- **Delivered:** the first required CE6 dependency: a validated effect registry and
+  native `blur.gaussian` Canvas kernel. Effect parameters use layer clocks, accept
+  property-path drivers, clamp after motion, and support explicit active intervals.
+  The graph applies ordered effects before masks/mattes; adjustment effects process
+  and blend the backdrop before coverage interpolation. Bounds account for blur,
+  and ancestor effects prevent incorrect child culling.
+- **Adapter:** focus blur compiles to native effects around already-painted root
+  opacity, preserving grouped artwork and source matte order. Effect radii are
+  inspectable keys; rendering does not call the commerce evaluator.
+- **Versions:** commerce adapter `commerce-composition-0.11.0`, evaluator
+  `composition-evaluator-12`, Canvas renderer `composition-canvas-1.12.0`.
+- **Verification:** `pnpm check:fast` passes **1,193 unit tests**. Four commerce
+  cases / **960 frames** match exactly, including active intervals, opacity,
+  overlapping groups, inverted mattes and shared matte sources. Worst paired
+  median render/readback ratio is **1.0102×**. The existing native renderer suite
+  passes. New native checks cover all implemented drawable types, stacked effects,
+  masks, precomps, collapsed precomps, offscreen bounds and backward seeks:
+  **80 exact frames**, plus two adjustment cases within **one channel value** of
+  independent blend equations. A saved native Gaussian fixture exports 60 frames
+  twice with identical bytes. Focus blur and a shared-matte variant each export
+  two byte-identical MP4s through relocated CLI JSON.
+- **Coverage:** **95 of 105** commerce/reusable CE0 entries have Canvas coverage.
+- **Remaining:** the other commerce pixel effects, animated primitive blur, motion
+  blur, WebGL2 parity and final full local verification. This is a CE6 dependency
+  slice, not CE6 completion. The active goal continues after its commit.
+
 **Completion record:** CE4a and CE4b are in progress; CE4c–CE4d have not started.
 
 ---

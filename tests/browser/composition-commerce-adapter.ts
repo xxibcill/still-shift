@@ -1,3 +1,4 @@
+import { commerceEffectVariants } from "../helpers/composition-effects.ts";
 import assert from "node:assert/strict";
 import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
@@ -63,6 +64,7 @@ const accepted = new Set(
       "fade",
       "float",
       "height-shadow",
+      "focus-blur",
       "introduction",
       "layout",
       "matte",
@@ -137,6 +139,7 @@ try {
       ...commerceTextStateVariants(entry.id, source),
       ...motionPathVariants(entry.id, source),
       ...appearanceVariants(entry.id, source),
+      ...commerceEffectVariants(entry.id, source),
     ];
     for (const item of inputs) {
       if (variant >= 0 && !item.id.includes(process.argv[variant + 1]!))
@@ -377,6 +380,8 @@ try {
           "commerce/atom-path/morph",
           "commerce/atom-path/appearance-brush",
           "commerce/atom-height-shadow",
+          "commerce/atom-focus-blur",
+          "commerce/atom-matte/shared-group-source/focus-matte",
         ].includes(item.id)
       )
         await assertAdapterExport(input, dirname(sourcePath), item.id);

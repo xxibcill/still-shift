@@ -1,3 +1,4 @@
+import { applyCanvasEffects } from "./effects.ts";
 import type {
   BezierPath,
   CompositionBlendMode,
@@ -332,6 +333,9 @@ export function createCanvas2dBackend(
       const ctx = begin(dst, matrix, opacity, blend, clips, transforms);
       ctx.drawImage(src.canvas, 0, 0);
       ctx.restore();
+    },
+    applyEffects(target, effects) {
+      applyCanvasEffects(backend, target, effects);
     },
     applyMask(target, masks) {
       const combined = backend.createSurface(target.width, target.height);

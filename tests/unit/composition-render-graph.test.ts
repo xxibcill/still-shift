@@ -174,6 +174,7 @@ describe("render graph", () => {
           calls.push("mask");
         },
         applyMatte: () => {},
+        applyEffects: () => {},
         lerp: () => {},
         readPixels: () => new Uint8ClampedArray(),
         ...(batching

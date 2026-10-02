@@ -1,3 +1,4 @@
+import type { EvaluatedEffect } from "../evaluate/effects.ts";
 import type {
   BezierPath,
   Composition,
@@ -104,6 +105,7 @@ export type IsolateOp = {
   kind: "isolate";
   layer: string;
   ops: RenderOp[];
+  effects: EvaluatedEffect[];
   masks: MaskOp[];
   matte: MatteOp | null;
   opacity: number;
@@ -118,6 +120,7 @@ export type AdjustOp = {
   transforms: Matrix[];
   width: number;
   height: number;
+  effects: EvaluatedEffect[];
   masks: MaskOp[];
   matte: MatteOp | null;
   opacity: number;
@@ -155,6 +158,8 @@ type Frame = {
   viewport: { width: number; height: number };
   /** Key prefix for layers of this scope (`""` at the root). */
   prefix: string;
+  /** An ancestor effect may pull offscreen content into view. */
+  cull?: boolean;
 };
 type Scope = {
   tree: EvaluatedLayerTree;
@@ -234,6 +239,7 @@ class GraphBuilder {
             (scope.matteSources.has(layer.id) ||
               layer.trackMatte ||
               layer.masks?.length ||
+              layer.effects?.length ||
               (layer.blendMode && layer.blendMode !== "normal")),
         )
         .map((layer) => layer.id),
@@ -468,6 +474,7 @@ class GraphBuilder {
     if (opacity <= 0) return [];
     if (
       options.cull !== false &&
+      frame.cull !== false &&
       layer.type !== "group" &&
       !(layer.type === "precomp" && layer.collapseTransforms) &&
       state.bounds &&
@@ -478,10 +485,11 @@ class GraphBuilder {
     }
     const clips = this.groupClips(scope, state, frame);
     const masks = this.masks(state, matrix, transforms);
+    const effects = state.effects.filter((effect) => effect.enabled);
     const seen = options.seen ?? new Set([layer.id]);
     const matte = this.matte(scope, state, frame, seen);
     if (layer.type === "adjustment") {
-      if (blend === "normal" && !layer.effects?.length) return [];
+      if (blend === "normal" && !effects.length) return [];
       return [
         {
           kind: "adjust",
@@ -490,6 +498,7 @@ class GraphBuilder {
           transforms,
           width: layer.size?.[0] ?? scope.tree.width,
           height: layer.size?.[1] ?? scope.tree.height,
+          effects,
           masks,
           matte,
           opacity,
@@ -498,17 +507,26 @@ class GraphBuilder {
         },
       ];
     }
-    const isolated = blend !== "normal" || masks.length > 0 || matte !== null;
+    const isolated =
+      blend !== "normal" ||
+      masks.length > 0 ||
+      matte !== null ||
+      effects.length > 0;
     let ops: RenderOp[];
     if (layer.type === "group") {
       // Group opacity is already inherited by each child, including overlapping ones.
-      ops = this.scopeLayers(scope, frame, layer.id);
+      ops = this.scopeLayers(
+        scope,
+        effects.length ? { ...frame, cull: false } : frame,
+        layer.id,
+      );
       if (!isolated) return ops;
       return [
         {
           kind: "isolate",
           layer: key,
           ops,
+          effects,
           masks,
           matte,
           opacity: 1,
@@ -526,6 +544,7 @@ class GraphBuilder {
             clips: isolated ? [] : clips,
             viewport: frame.viewport,
             prefix: `${key}/`,
+            ...(effects.length || frame.cull === false ? { cull: false } : {}),
           })
         : [];
       if (!isolated) return ops;
@@ -551,6 +570,7 @@ class GraphBuilder {
         kind: "isolate",
         layer: key,
         ops,
+        effects,
         masks,
         matte,
         opacity:

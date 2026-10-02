@@ -96,7 +96,7 @@ Grouped vector/colour `speed` remains rejected. A future explicit velocity tuple
 match the property's dimensions and units; spatial speed needs a distinct scalar
 in arc-length pixels per frame. These authoring extensions are deferred to CE9.
 
-Bounds are geometric axis-aligned screen bounds before masks and effects; solids and
+Bounds are geometric axis-aligned screen bounds before masks, expanded conservatively for supported effects; solids and
 image placement boxes are exact. Supply measured text bounds without invoking font
 measurement inside evaluation:
 
@@ -241,8 +241,9 @@ and rounds sharp concave corners. Open paths close with their last segment.
   feedback through group descendants.
 - An `adjustment` layer re-composites what is below it in its scope within its `size`
   box (default: the scope size), masks and matte: with coverage `k = opacity ×
-region`, the result is `below·(1 − k) + adjusted·k`. Until effects arrive (CE6),
-  `adjusted` is the content below blended onto itself with the layer's blend mode;
+region`, the result is `below·(1 − k) + adjusted·k`. The effect stack processes
+  the backdrop, then its filtered result blends onto the original backdrop using
+  the layer's blend mode to produce `adjusted`;
   a `normal` adjustment layer without effects changes nothing and is skipped.
 
 ### Text
@@ -571,23 +572,23 @@ actual time-dependent values stay in range; reduce the deltas or separate their 
 
 ### Fields on every layer
 
-| Field                                 | Notes                                                                                                              |
-| ------------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
-| `id`, `type`                          | Required. `type` selects the fields below.                                                                         |
-| `name`                                | Display name.                                                                                                      |
-| `inPoint`, `outPoint`                 | Composition frames, `[in, out)`. Default `0` and the scope's `frameCount`.                                         |
-| `startFrame`, `stretch`               | Layer time 0 and time stretch. Defaults `0` and `1`.                                                               |
-| `parent`                              | Layer id in the same scope. Position, rotation, scale and skew inherit; opacity does not.                          |
-| `enabled`, `solo`, `guide`            | Visibility switches; guides never render in export.                                                                |
-| `transform`                           | See [transform](#transform).                                                                                       |
-| `constraintReference`                 | Animatable layer-space vector, defaulting to the transform anchor. Constraints can move it without moving artwork. |
-| `blendMode`                           | See [blend modes](#blend-modes). Default `normal`.                                                                 |
-| `trackMatte`                          | `{ layer, mode }`; see [track mattes](#track-mattes).                                                              |
-| `masks`                               | See [masks](#masks).                                                                                               |
-| `effects`                             | `{ id, effect, enabled?, params? }[]`. Effects arrive in CE6; an empty list is allowed.                            |
-| `cameraDepth`                         | 0–2, unparented root layers only; see [2D camera](#2d-camera).                                                     |
-| `threeD`, `motionBlur`                | Arrive in CE8 and CE7; `false` is allowed.                                                                         |
-| `qualification`, `source`, `metadata` | Evidence and provenance carried through from story scenes and adapters.                                            |
+| Field                                 | Notes                                                                                                                  |
+| ------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| `id`, `type`                          | Required. `type` selects the fields below.                                                                             |
+| `name`                                | Display name.                                                                                                          |
+| `inPoint`, `outPoint`                 | Composition frames, `[in, out)`. Default `0` and the scope's `frameCount`.                                             |
+| `startFrame`, `stretch`               | Layer time 0 and time stretch. Defaults `0` and `1`.                                                                   |
+| `parent`                              | Layer id in the same scope. Position, rotation, scale and skew inherit; opacity does not.                              |
+| `enabled`, `solo`, `guide`            | Visibility switches; guides never render in export.                                                                    |
+| `transform`                           | See [transform](#transform).                                                                                           |
+| `constraintReference`                 | Animatable layer-space vector, defaulting to the transform anchor. Constraints can move it without moving artwork.     |
+| `blendMode`                           | See [blend modes](#blend-modes). Default `normal`.                                                                     |
+| `trackMatte`                          | `{ layer, mode }`; see [track mattes](#track-mattes).                                                                  |
+| `masks`                               | See [masks](#masks).                                                                                                   |
+| `effects`                             | `{ id, effect, enabled?, inPoint?, outPoint?, params? }[]`. Ordered registry effects; active intervals use layer time. |
+| `cameraDepth`                         | 0–2, unparented root layers only; see [2D camera](#2d-camera).                                                         |
+| `threeD`, `motionBlur`                | Arrive in CE8 and CE7; `false` is allowed.                                                                             |
+| `qualification`, `source`, `metadata` | Evidence and provenance carried through from story scenes and adapters.                                                |
 
 ### Layer types
 
@@ -709,7 +710,7 @@ segment  := name | name "[" id "]"
 | `timeRemap`                                          | scalar                             | precomp, video, sequence, audio |
 | `masks[id].path`                                     | path                               | all                             |
 | `masks[id].feather`, `.expansion`, `.opacity`        | scalar                             | all                             |
-| `effects[id].<param>`                                | CE6                                | all                             |
+| `effects[id].<param>`                                | scalar (registered parameter)      | all                             |
 | `contents[...]`                                      | CE5                                | shape                           |
 
 Drivers and periodic motion target scalars. Legacy `node.property` targets remain valid
@@ -899,3 +900,29 @@ message and path shape as contract validation.
 | `comp-evaluation-limit`    | A call exceeds 20,000 evaluated layer instances.                                                                  |
 | `comp-constraint-singular` | A constraint needs the inverse of a collapsed parent or a noncollapsed contact edge.                              |
 | `comp-text-layout-missing` | Text bounds were not supplied: a warning for inspection, an error when required by a bounds-dependent constraint. |
+
+### Gaussian effect stack (CE6 dependency slice)
+
+`blur.gaussian` version `1.0.0` is available on the Canvas reference backend.
+Its `radius` parameter is an animatable scalar from 0 to 1,000 (default 0), in
+pixels of the composition surface containing the layer. It uses the Canvas
+Gaussian filter. The WebGL2 implementation and remaining registry entries are
+still in progress; this slice does not complete CE6.
+
+Effects apply in array order to isolated layer pixels, then masks and track mattes,
+then final layer opacity and blend. Group children retain their inherited per-child
+opacity before the group stack. Adjustment stacks process the existing backdrop,
+blend the filtered result with that backdrop, and interpolate through the adjustment
+region/masks/opacity. Gaussian bounds expand by three radii plus two pixels per pass;
+ancestor effects prevent child bounds culling. Surfaces remain clipped to their
+composition dimensions, including isolated precomp surfaces.
+
+`enabled: false` disables an effect. Optional `inPoint` (inclusive) and `outPoint`
+(exclusive) gate it in layer time without resetting its parameter clock. Parameter
+paths such as `hero.effects[soft].radius` support drivers and motion curves. Final
+values clamp to the registered range after drivers; malformed keys, unknown
+parameters, duplicate instance ids and invalid intervals produce diagnostics.
+
+Commerce focus blur compiles to this stack. A group preserves the source's order:
+paint node opacity, apply blur, then apply its matte. Authored effect activation and
+radius progression are retained. No family evaluator runs during composition rendering.

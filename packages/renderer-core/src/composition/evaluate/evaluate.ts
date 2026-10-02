@@ -1,3 +1,4 @@
+import { sampleEffects, clampEffects, effectBounds } from "./effects.ts";
 import {
   COMPOSITION_LIMITS,
   SIZED_LAYER_TYPES,
@@ -49,7 +50,7 @@ import type {
   PropertyValue,
 } from "./types.ts";
 
-export const COMPOSITION_EVALUATOR_VERSION = "composition-evaluator-11";
+export const COMPOSITION_EVALUATOR_VERSION = "composition-evaluator-12";
 const order = ["action", "response", "current", "carrier"] as const;
 type Context = {
   scope: CompositionScope;
@@ -181,6 +182,7 @@ function baseState(
     screenMatrix: identity(),
     opacity: 1,
     bounds: null,
+    effects: sampleEffects(layer, time, fps),
     masks: (layer.masks ?? []).map((m) => ({
       ...m,
       path: samplePath(m.path, time, fps),
@@ -415,6 +417,7 @@ class Evaluation {
       comp = this.compiled.comp;
     if (
       !state.masks.length &&
+      !state.effects.length &&
       !this.compiled.periodic.has(key) &&
       !this.compiled.drivers.has(key)
     )
@@ -474,6 +477,7 @@ class Evaluation {
       }
     }
     state.transform.opacity = unit(state.transform.opacity);
+    clampEffects(state.effects);
     if (state.color) state.color = state.color.map(unit) as typeof state.color;
     if (state.reveal !== undefined) state.reveal = unit(state.reveal);
     if (state.stateMix !== undefined) state.stateMix = unit(state.stateMix);
@@ -572,7 +576,9 @@ class Evaluation {
       state,
       this.options,
     );
-    state.bounds = local ? projectBounds(local, state.screenMatrix) : null;
+    state.bounds = local
+      ? effectBounds(projectBounds(local, state.screenMatrix), state.effects)
+      : null;
     state.visible &&= !layer.guide || this.options.includeGuides === true;
     // Group visibility gates descendants; ordinary null parenting only carries transforms.
     // A matte's enable/solo switches do not hide its alpha-producing children.

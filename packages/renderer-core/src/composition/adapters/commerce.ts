@@ -1,3 +1,4 @@
+import { compileCommerceEffects } from "./effects.ts";
 import {
   COMPOSITION_LIMITS,
   CommerceSceneSchema,
@@ -34,7 +35,7 @@ import { prepareCommerceTextFits } from "../../commerce-layout.ts";
 import { prepareComponentTextFits } from "../../component-text-fit.ts";
 import { loadPreparedFonts } from "../../prepared-fonts.ts";
 
-export const COMMERCE_ADAPTER_VERSION = "commerce-composition-0.10.0";
+export const COMMERCE_ADAPTER_VERSION = "commerce-composition-0.11.0";
 
 export type CommerceCompositionOptions = {
   id?: string;
@@ -59,7 +60,13 @@ function checkSupported(scene: CommerceScene) {
     );
   scene.effects?.forEach((effect, index) => {
     if (
-      !["drift", "parallax", "overshoot", "height-shadow"].includes(effect.type)
+      ![
+        "drift",
+        "parallax",
+        "overshoot",
+        "height-shadow",
+        "focus-blur",
+      ].includes(effect.type)
     )
       unsupported(
         `effects[${index}]`,
@@ -209,6 +216,7 @@ export function commerceToComposition(
       mode: mask.invert ? "alpha-inverted" : "alpha",
     };
   }
+  compileCommerceEffects(scene, layers);
   const { markers, cueIds } = compileAdapterMarkers(
     scene.typography
       ? [

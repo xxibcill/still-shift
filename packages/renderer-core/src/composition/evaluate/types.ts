@@ -1,3 +1,4 @@
+import type { EvaluatedEffect } from "./effects.ts";
 import type {
   BezierPath,
   CompositionLayer,
@@ -44,6 +45,7 @@ export type EvaluatedLayer = {
   opacity: number;
   bounds: Bounds | null;
   masks: EvaluatedMask[];
+  effects: EvaluatedEffect[];
   color?: Rgba;
   state?: number;
   stateFrom?: number;

@@ -67,7 +67,7 @@ export const MaskSchema = z
   })
   .strict();
 
-/** Registry effects arrive in CE6; until then a non-empty stack is rejected. */
+/** Versioned registry effects, sampled in layer time and applied in array order. */
 export const EffectInstanceSchema = z
   .object({
     id: compositionId,
@@ -76,6 +76,8 @@ export const EffectInstanceSchema = z
       .regex(/^[a-z][\w.-]*$/)
       .max(64),
     enabled: z.boolean().optional(),
+    inPoint: keyFrame.optional(),
+    outPoint: keyFrame.optional(),
     params: boundedJson(z.record(compositionId, z.json())).optional(),
   })
   .strict();

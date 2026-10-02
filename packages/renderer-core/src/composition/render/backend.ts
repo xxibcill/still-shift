@@ -1,3 +1,4 @@
+import type { EvaluatedEffect } from "../evaluate/effects.ts";
 import type {
   CompositionBlendMode,
   TrackMatte,
@@ -83,6 +84,8 @@ export interface RenderBackend<S extends Surface = Surface> {
     clips: ClipRect[],
     transforms?: Matrix[],
   ): void;
+  /** Apply the ordered effect stack in surface pixel space, before masks/mattes. */
+  applyEffects(target: S, effects: EvaluatedEffect[]): void;
   /** Multiply `target` by the combined coverage of `masks`. */
   applyMask(target: S, masks: MaskOp[]): void;
   /** Multiply `target` by the matte value of `matte`. */
@@ -172,17 +175,25 @@ export function executeGraph<S extends Surface>(
       }
       case "isolate": {
         const tmp = isolated(op.ops, dst);
+        if (op.effects.length) backend.applyEffects(tmp, op.effects);
         mask(tmp, op.masks, op.matte);
         backend.composite(tmp, dst, op.blend, op.opacity, IDENTITY, op.clips);
         backend.releaseSurface(tmp);
         return;
       }
       case "adjust": {
-        // Effects (CE6) will process `src` here; blend modes already apply.
+        // Process the backdrop before blending it and applying adjustment coverage.
         const src = backend.createSurface(dst.width, dst.height);
         backend.composite(dst, src, "normal", 1, IDENTITY, []);
-        if (op.blend !== "normal")
-          backend.composite(dst, src, op.blend, 1, IDENTITY, []);
+        if (op.effects.length) backend.applyEffects(src, op.effects);
+        if (op.blend !== "normal") {
+          const blended = backend.createSurface(dst.width, dst.height);
+          backend.composite(dst, blended, "normal", 1, IDENTITY, []);
+          backend.composite(src, blended, op.blend, 1, IDENTITY, []);
+          backend.clear(src, null);
+          backend.composite(blended, src, "normal", 1, IDENTITY, []);
+          backend.releaseSurface(blended);
+        }
         const coverage = backend.createSurface(dst.width, dst.height);
         backend.fillRect(
           coverage,

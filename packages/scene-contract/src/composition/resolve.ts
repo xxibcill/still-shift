@@ -1,3 +1,4 @@
+import { compositionEffectDefinition } from "./effects.ts";
 import type { Composition, CompositionScope } from "./composition.ts";
 import type { CompositionLayer } from "./layers.ts";
 import {
@@ -151,10 +152,20 @@ function resolveSegments(
         return { type: "scalar" };
       return missing(text, "a mask property");
     }
-    case "effects":
-      if (!layer.effects?.some((e) => e.id === head.index))
-        return missing(text, "an effect on this layer");
-      return unavailable(text, "CE6");
+    case "effects": {
+      const effect = layer.effects?.find((e) => e.id === head.index);
+      if (!effect) return missing(text, "an effect on this layer");
+      const definition = compositionEffectDefinition(effect.effect);
+      if (!definition) return unavailable(text, "CE6");
+      if (
+        !next ||
+        indexed(next) ||
+        rest.length ||
+        !Object.hasOwn(definition.properties, next.name)
+      )
+        return missing(text, "an effect parameter");
+      return { type: definition.properties[next.name]!.type };
+    }
     case "contents":
       return unavailable(text, "CE5");
     default:
