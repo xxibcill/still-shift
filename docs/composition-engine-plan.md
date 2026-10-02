@@ -1276,6 +1276,8 @@ General rules for all adapters:
       parity completion gate.
 - [x] Add native/component text fitting without panel resizing and formatted
       numeric text through a versioned measured-text provider.
+- [x] Bake commerce attached paths and component annotations, retaining crop and
+      protected-region validation.
 
 - [ ] Map commerce layout, product layers, shadows, floating, detail windows, paths,
       text fits, component state/travel/pin/values/visibility/masks.
@@ -1486,6 +1488,45 @@ comparisons; the full `pnpm check`.
   masks/mattes, typography, motion-craft, drawable parents, story contexts and
   passages remain open. Full effects/two-backend acceptance still requires CE6;
   motion blur requires CE7. Family defaults remain unchanged.
+
+### CE4b attached-geometry follow-up (2026-10-02)
+
+- **Delivered:** `commerce.path@1.0.0` draws attached paths and component
+  annotations from bounded integer-frame local vertices. Baking uses the existing
+  geometry evaluators, preserving source crops, offsets and ancestor transforms.
+  Crop, protected-region and ownership validation run before export; hidden paths
+  avoid invisible inverse transforms, and settled geometry holds its last sample.
+  The provider retains the shared uniform/ink/brush stroke and reveal behavior.
+- **Versions:** adapter `commerce-composition-0.3.0`, Canvas renderer
+  `composition-canvas-1.5.0`; evaluator and legacy renderer versions unchanged.
+- **Coverage:** the CE0 attachment fixture and commerce/isolated leader, outline,
+  underline, bracket, tour and supply fixtures join the adapter suite. Derived
+  cases exercise both attached endpoints, cropped source anchors, offsets, nested
+  animated parents, rotated annotation paths, brush/ink strokes and arrows.
+  Unit checks cover every baked vertex, backward/fractional local-time sampling,
+  invalid geometry, protected regions, cropping, conflicting ownership, hidden
+  paths, settled tails and payload limits. CLI coverage adds attachment and leader
+  exports with relocated assets and repeated MP4 renders.
+- **Adapter verification:** **65 cases, 13,848 integer frames, all pixel-exact**
+  (60 CE0 fixtures plus five derived variants), including reverse state checks and
+  backward render seeks. All cases meet the unchanged 1.25× render/readback gate;
+  worst median: the existing Panel atom, **1.2444×**. All 28 preparation checks
+  pass. Text-fit, value and leader fixtures each produce two byte-identical
+  192-frame MP4s; the attachment fixture produces two identical 240-frame MP4s.
+  Relocated assets, no system-font layers and overwrite protection pass.
+- **Local regression matrix:** on Node 22.23.1 / pnpm 10.29.3, `pnpm check:fast`
+  passes. The full `pnpm check` passes schema, boundaries, formatting, lint, types,
+  **1,119 unit / 46 runtime / 111 integration / 14 depth tests**, legacy browser
+  suites, typography, composition rendering and CE4a parity before stopping on the
+  unchanged Text atom's timing gate (**1.2682×** against 1.25×, with exact pixels).
+  The complete commerce group passes unchanged on retry; that case measures
+  **1.1301×**. No timing method, threshold or baseline was changed.
+  The remaining CE0 baseline check passes: **176 items, 36,061 frames in 281.09 s**
+  against `darwin-arm64`. All verification ran locally.
+- **Remaining:** fitted backing panels, masks/mattes, typography, motion-craft,
+  drawable parents, reusable story contexts and passages. Full effects/two-backend
+  acceptance still requires CE6; motion blur requires CE7. Family defaults remain
+  unchanged, and CE4b remains in progress.
 
 **Completion record:** CE4a and CE4b are in progress; CE4c–CE4d have not started.
 
@@ -2221,18 +2262,18 @@ with general primitives; the "Target" column names that later form.
 
 ### Components (`scene-components-1..3`)
 
-| Feature                                           | Today                                                  | `composition-1` form                                                        | Milestone        |
-| ------------------------------------------------- | ------------------------------------------------------ | --------------------------------------------------------------------------- | ---------------- |
-| Values and numeric text bindings (formatting)     | `component-values.ts`                                  | Interim provider for formatted text; target expression bound to text source | CE4a/b, CE9      |
-| Property bindings                                 | `component-values.ts`                                  | Driver / expression                                                         | CE2, CE9         |
-| State schedules (cuts, ramp)                      | `component-state.ts`                                   | `state` keys with hold interpolation; ramp as `stateMix` keys               | CE1–CE3          |
-| Travels along paths                               | `component-travel.ts`                                  | `follow-path` constraint with keyed progress                                | CE2              |
-| Visibility windows                                | `component-visibility.ts`                              | Layer in/out points; multiple windows as hold-keyed opacity                 | CE1              |
-| Pins                                              | `component-pin.ts`                                     | `attach` constraint                                                         | CE2              |
-| Text fits                                         | `component-text-fit.ts`                                | Text layer fit option resolved at compile with measured fonts               | CE3              |
-| Masks (`invert`)                                  | `component-mask.ts`                                    | Track matte (`alpha` / `alpha-inverted`)                                    | CE3              |
-| Annotations (anchored leaders, protected regions) | `component-annotations.ts`                             | Interim provider; target shape path with expression-driven vertices         | CE4a/b, CE5, CE9 |
-| Relationships and instances                       | `component-relationships.ts`, `component-instances.ts` | Compiled                                                                    | CE4a/b           |
+| Feature                                           | Today                                                  | `composition-1` form                                                                 | Milestone        |
+| ------------------------------------------------- | ------------------------------------------------------ | ------------------------------------------------------------------------------------ | ---------------- |
+| Values and numeric text bindings (formatting)     | `component-values.ts`                                  | Interim provider for formatted text; target expression bound to text source          | CE4a/b, CE9      |
+| Property bindings                                 | `component-values.ts`                                  | Driver / expression                                                                  | CE2, CE9         |
+| State schedules (cuts, ramp)                      | `component-state.ts`                                   | `state` keys with hold interpolation; ramp as `stateMix` keys                        | CE1–CE3          |
+| Travels along paths                               | `component-travel.ts`                                  | `follow-path` constraint with keyed progress                                         | CE2              |
+| Visibility windows                                | `component-visibility.ts`                              | Layer in/out points; multiple windows as hold-keyed opacity                          | CE1              |
+| Pins                                              | `component-pin.ts`                                     | `attach` constraint                                                                  | CE2              |
+| Text fits                                         | `component-text-fit.ts`                                | Text layer fit option resolved at compile with measured fonts                        | CE3              |
+| Masks (`invert`)                                  | `component-mask.ts`                                    | Track matte (`alpha` / `alpha-inverted`)                                             | CE3              |
+| Annotations (anchored leaders, protected regions) | `component-annotations.ts`                             | Commerce: `commerce.path@1.0.0` baked vertices; target expression-driven shape paths | CE4a/b, CE5, CE9 |
+| Relationships and instances                       | `component-relationships.ts`, `component-instances.ts` | Compiled                                                                             | CE4a/b           |
 
 ### Story-only rendering
 
@@ -2249,16 +2290,16 @@ with general primitives; the "Target" column names that later form.
 
 ### Commerce-only rendering
 
-| Feature                                                                                                                         | Today                                                 | `composition-1` form                                                 | Milestone |
-| ------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------- | -------------------------------------------------------------------- | --------- |
-| Effects: directional blur, focus blur, glow, grain, light sweep, background light, displacement, echo, particles, height shadow | `commerce-effects.ts`, `commerce-effects-renderer.ts` | Effect registry entries                                              | CE6       |
-| Effect: motion blur (shutter angle, samples)                                                                                    | `commerce-effects.ts`                                 | Composition/layer motion blur                                        | CE7       |
-| Effects: overshoot, drift, parallax                                                                                             | `commerce-effect-motion.ts`                           | Behaviours or compiled keys, not pixel effects                       | CE9       |
-| Geometry (anchors, protected regions) and attachments                                                                           | `commerce-spatial.ts`, `commerce-geometry.ts`         | Asset anchors; attached paths as interim provider, later expressions | CE4b, CE9 |
-| Mattes (`invert`, `order: after-effects`)                                                                                       | `commerce-spatial.ts`                                 | Track mattes                                                         | CE3       |
-| Visibility windows, text fits                                                                                                   | `commerce-spatial.ts`                                 | In/out points; text fit option                                       | CE1, CE3  |
-| Layout, product preparation, shadow textures, floating hand                                                                     | `commerce-*.ts`, `animation-engine/commerce-*.ts`     | Compiled; generated shadows are prepared files referenced as assets  | CE4b      |
-| Registration, claims and source metadata                                                                                        | `metadata`                                            | Composition metadata passthrough                                     | CE1       |
+| Feature                                                                                                                         | Today                                                 | `composition-1` form                                                       | Milestone |
+| ------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------- | -------------------------------------------------------------------------- | --------- |
+| Effects: directional blur, focus blur, glow, grain, light sweep, background light, displacement, echo, particles, height shadow | `commerce-effects.ts`, `commerce-effects-renderer.ts` | Effect registry entries                                                    | CE6       |
+| Effect: motion blur (shutter angle, samples)                                                                                    | `commerce-effects.ts`                                 | Composition/layer motion blur                                              | CE7       |
+| Effects: overshoot, drift, parallax                                                                                             | `commerce-effect-motion.ts`                           | Behaviours or compiled keys, not pixel effects                             | CE9       |
+| Geometry (anchors, protected regions) and attachments                                                                           | `commerce-spatial.ts`, `commerce-geometry.ts`         | Asset anchors; baked vertices via `commerce.path@1.0.0`, later expressions | CE4b, CE9 |
+| Mattes (`invert`, `order: after-effects`)                                                                                       | `commerce-spatial.ts`                                 | Track mattes                                                               | CE3       |
+| Visibility windows, text fits                                                                                                   | `commerce-spatial.ts`                                 | In/out points; text fit option                                             | CE1, CE3  |
+| Layout, product preparation, shadow textures, floating hand                                                                     | `commerce-*.ts`, `animation-engine/commerce-*.ts`     | Compiled; generated shadows are prepared files referenced as assets        | CE4b      |
+| Registration, claims and source metadata                                                                                        | `metadata`                                            | Composition metadata passthrough                                           | CE1       |
 
 ### Cinematic-only rendering
 

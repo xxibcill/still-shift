@@ -253,7 +253,6 @@ describe("CE4b commerce adapter first slice", () => {
   it.each([
     ["atoms/glow", "effects[0]"],
     ["atoms/motion-blur", "effects[0]"],
-    ["atoms/attachment", "attachments"],
     ["atoms/layout", "textFits[0].panel"],
     ["atoms/matte", "mattes"],
   ])("rejects unsupported %s with a source path", (name, path) => {

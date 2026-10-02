@@ -10,11 +10,14 @@ import {
 import { compileCommerceScene } from "../../commerce-scene.ts";
 import { componentCapabilities } from "../../component-capabilities.ts";
 import { componentText } from "../../component-values.ts";
+import { validateAttachedPaths } from "../../commerce-geometry.ts";
+import { validateComponentAnnotations } from "../../component-annotations.ts";
 import { evaluatePreparedNode } from "../../prepared-scene.ts";
 import { passageError, PassageError } from "../../passage-diagnostics.ts";
 import { params, preparedNodeLayer, trimSettledSamples } from "./prepared.ts";
+import { compileCommercePathGeometry } from "./commerce-path.ts";
 
-export const COMMERCE_ADAPTER_VERSION = "commerce-composition-0.2.0";
+export const COMMERCE_ADAPTER_VERSION = "commerce-composition-0.3.0";
 
 function unsupported(path: string, feature: string): never {
   return passageError(
@@ -33,7 +36,7 @@ function checkSupported(scene: CommerceScene) {
     );
   if (scene.motionModel) unsupported("motionModel", "Motion-craft scenes");
   if (scene.typography) unsupported("typography", "Typography scenes");
-  for (const field of ["textAnimators", "attachments", "mattes"] as const)
+  for (const field of ["textAnimators", "mattes"] as const)
     if (scene[field]?.length) unsupported(field, field);
   scene.textFits?.forEach((fit, index) => {
     if (fit.panel)
@@ -47,8 +50,7 @@ function checkSupported(scene: CommerceScene) {
       );
   });
   const components = componentCapabilities(scene.componentData);
-  for (const field of ["annotations", "masks"] as const)
-    if (components[field].length) unsupported(`componentData.${field}`, field);
+  if (components.masks.length) unsupported("componentData.masks", "masks");
   scene.nodes.forEach((node, index) => {
     const path = `nodes[${index}]`;
     if (
@@ -130,6 +132,8 @@ export function commerceToComposition(
   const input = CommerceSceneSchema.parse(source);
   checkSupported(input);
   const scene = compileCommerceScene(input);
+  validateAttachedPaths(scene);
+  validateComponentAnnotations(scene);
   const visibility = new Map<string, { start: number; end: number }>([
     ...(scene.visibility ?? []).map((gate) => [gate.target, gate] as const),
     ...componentCapabilities(scene.componentData).visibility.map(
@@ -153,6 +157,17 @@ export function commerceToComposition(
       }
       if (node.type === "text" && node.textBox && layer.type === "provider")
         layer = measuredTextLayer(scene, node, layer);
+      if (node.type === "path" && layer.type === "provider") {
+        const geometry = compileCommercePathGeometry(scene, node);
+        if (geometry) {
+          layer.provider = "commerce.path@1.0.0";
+          layer.params = params(
+            { ...layer.params, geometry },
+            `nodes[${scene.nodes.indexOf(node)}]`,
+            node.id,
+          );
+        }
+      }
       layers.push(layer);
       visit(node.id);
     }

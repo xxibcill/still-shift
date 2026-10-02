@@ -8,12 +8,21 @@ import {
 } from "../../../../scene-contract/src/component-data.ts";
 import { prepareTextFits } from "../../component-text-fit.ts";
 import { prepareMeasuredText } from "../../component-values.ts";
+import { drawPreparedPath } from "../../prepared-path-renderer.ts";
 import { passageError } from "../../passage-diagnostics.ts";
 import type {
   CanvasContentProvider,
   ProviderResources,
 } from "../render/providers.ts";
-import { StoryTextParamsSchema } from "./story-providers.ts";
+import {
+  StoryTextParamsSchema,
+  StoryPathParamsSchema,
+} from "./story-providers.ts";
+import { CommercePathGeometrySchema } from "./commerce-path.ts";
+
+const CommercePathParamsSchema = StoryPathParamsSchema.extend({
+  geometry: CommercePathGeometrySchema,
+});
 
 const CommerceTextParamsSchema = StoryTextParamsSchema.extend({
   fit: z
@@ -170,7 +179,7 @@ function prepareText(
 }
 
 /** Pinned measured text uses the same layout as commerce, with local content only. */
-export const COMMERCE_CONTENT_PROVIDERS: readonly CanvasContentProvider[] = (
+const TEXT_CONTENT_PROVIDERS: readonly CanvasContentProvider[] = (
   [
     ["commerce.text@1.0.0", StoryTextParamsSchema],
     ["commerce.text@1.1.0", CommerceTextParamsSchema],
@@ -186,3 +195,27 @@ export const COMMERCE_CONTENT_PROVIDERS: readonly CanvasContentProvider[] = (
     return prepareText(parsed.data, resources, path);
   },
 }));
+
+export const COMMERCE_CONTENT_PROVIDERS: readonly CanvasContentProvider[] = [
+  ...TEXT_CONTENT_PROVIDERS,
+  {
+    id: "commerce.path@1.0.0",
+    prepare(layer, _resources, path) {
+      const parsed = CommercePathParamsSchema.safeParse(layer.params);
+      if (!parsed.success)
+        passageError("comp-provider-params", parsed.error.issues[0]!.message, {
+          path: `${path}.params`,
+        });
+      const { node, geometry, samples } = parsed.data;
+      const paths = geometry.points.map((points) => ({ ...node, points }));
+      return (ctx, time) => {
+        const frame = Math.max(0, Math.floor(time));
+        drawPreparedPath(
+          ctx,
+          paths[Math.min(frame, paths.length - 1)]!,
+          samples[Math.min(frame, samples.length - 1)]!,
+        );
+      };
+    },
+  },
+];

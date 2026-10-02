@@ -348,8 +348,15 @@ text fits without backing-panel resizing, plus formatted numeric text. Fits choo
 one stable font size across all supplied states after pinned fonts load. Numeric
 labels are baked at integer frames; preparation validates the entire formatted
 value range for overflow, including values absent from those frames. Existing
-1.0.0 payloads remain supported. Rectangles, paths and unmeasured text reuse
+1.0.0 payloads remain supported. Rectangles, plain paths and unmeasured text reuse
 the existing `story.*` providers; those providers do not evaluate a story scene.
+
+Attached paths and component annotations use `commerce.path@1.0.0`. The adapter
+resolves local vertices at each integer frame, retaining source crops, endpoint
+offsets and parent transforms. The existing crop, protected-region and ownership
+checks run before baking. Hidden paths retain placeholder geometry without
+evaluating invisible transforms; settled geometry holds its final sample. The
+provider draws the baked points with the existing stroke/reveal implementation.
 
 Commerce events, drift, parallax and overshoot are baked at integer frames, along
 with component state/travel/pin/value/visibility behavior. Image state
@@ -358,7 +365,7 @@ metadata remain in `metadata.commerce`. Like the story slice, this compiler acce
 at most 2,000 frames, holds between integer samples, and bounds provider payloads
 to 64 KiB. Rendering never calls the commerce evaluator.
 
-Pixel effects, motion blur, attached paths, annotations, masks/mattes, fitted panel
+Pixel effects, motion blur, masks/mattes, fitted panel
 geometry, blended text states, typography, motion-craft and parenting
 to drawable nodes currently return `comp-adapter-unsupported` with a source path.
 Effects parity requires CE6, and full CE4b fixture acceptance remains open. Existing

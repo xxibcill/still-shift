@@ -18,6 +18,7 @@ import type * as Render from "../../packages/renderer-core/src/index.ts";
 import { assertCompositionAdapterState } from "../helpers/composition-adapter-state.ts";
 import { commerceTextVariants } from "../helpers/composition-commerce-text.ts";
 import type * as CommerceTextTests from "../helpers/composition-commerce-text.ts";
+import { commerceGeometryVariants } from "../helpers/composition-commerce-geometry.ts";
 
 const root = resolve(import.meta.dirname, "../..");
 const inventory = JSON.parse(
@@ -45,6 +46,7 @@ const accepted = new Set(
     "h04-square",
     "vertical-h01-portrait",
     ...[
+      "attachment",
       "background",
       "callout",
       "detail",
@@ -68,15 +70,21 @@ const accepted = new Set(
 );
 for (const context of ["commerce", "isolated"])
   for (const name of [
+    "bracket",
     "instances",
     "layout",
+    "leader",
+    "outline",
     "pin",
     "sequence",
     "stagger",
     "state",
+    "supply",
     "text-fit",
+    "tour",
     "transform",
     "travel",
+    "underline",
     "value",
     "visibility",
   ])
@@ -107,6 +115,7 @@ try {
     const inputs = [
       { id: entry.id, scene: source },
       ...commerceTextVariants(entry.id, source),
+      ...commerceGeometryVariants(entry.id, source),
     ];
     for (const item of inputs) {
       const input = CommerceSceneSchema.parse(item.scene);
@@ -317,12 +326,14 @@ try {
     `CE4b commerce parity: ${totalItems} items, ${totalFrames} frames`,
   );
   if (only < 0)
-    for (const name of ["text-fit", "value"]) {
+    for (const name of ["text-fit", "value", "leader", "attachment"]) {
       const directory = await mkdtemp(join(tmpdir(), "still-shift-ce4b-"));
       try {
         const sourcePath = resolve(
           root,
-          `benchmarks/fixtures/reusable-components/commerce-${name}.json`,
+          name === "attachment"
+            ? "benchmarks/fixtures/ecommerce-motion/atoms/attachment.json"
+            : `benchmarks/fixtures/reusable-components/commerce-${name}.json`,
         );
         const compositionPath = join(directory, "composition.json");
         let errors = "";
