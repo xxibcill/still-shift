@@ -4,6 +4,7 @@ import { createServer } from "vite";
 import { launchRenderBrowser } from "@still-shift/execution-runtime";
 import type * as Rational from "../helpers/composition-webgl-float-sum.ts";
 import type * as Checks from "../helpers/composition-webgl-reference.ts";
+import type * as VectorPaints from "../helpers/composition-webgl-vector-paints.ts";
 const server = await createServer({
   root: resolve(import.meta.dirname, "../.."),
   configFile: false,
@@ -41,6 +42,13 @@ try {
     return ((await import(url)) as typeof Checks).checkWebglPrimitiveRounding();
   });
   console.log("WebGL overlapping primitive rounding:", rounding);
+  const replay = await page.evaluate(async () => {
+    const url = "/tests/helpers/composition-webgl-vector-paints.ts";
+    return (
+      (await import(url)) as typeof VectorPaints
+    ).checkVectorPaintReplay();
+  });
+  console.log("WebGL provider paint replay:", replay);
   const results = await page.evaluate(async () => {
     const url = "/tests/helpers/composition-webgl-reference.ts";
     const { checkWebglFrames } = (await import(url)) as typeof Checks;

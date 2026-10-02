@@ -1,3 +1,7 @@
+import {
+  recordVectorPaints,
+  replayVectorPaints,
+} from "./webgl-vector-paints.ts";
 import type { WebglPaint } from "./webgl-paint.ts";
 import {
   vectorRegions,
@@ -11,7 +15,13 @@ import type { VectorDraw } from "./backend.ts";
 import type { WebglDevice, WebglSurface } from "./webgl-device.ts";
 import type { WebglVisualKey } from "./webgl-visual-key.ts";
 
-type Raster = { key: string; surface: WebglSurface; rect: Bounds };
+type RasterPart = { surface: WebglSurface; rect: Bounds; primitive: boolean };
+type Raster = { key: string; parts: RasterPart[] };
+const rasterBytes = (entry: Raster) =>
+  entry.parts.reduce(
+    (sum, part) => sum + part.surface.width * part.surface.height * 4,
+    0,
+  );
 
 /** Cache local vector coverage; retain per-primitive rounding where artwork overlaps. */
 export class WebglVectors {
@@ -31,12 +41,13 @@ export class WebglVectors {
   private forget(id: string) {
     const entry = this.cached.get(id)!;
     this.cached.delete(id);
-    this.bytes -= entry.surface.width * entry.surface.height * 4;
-    this.device.release(entry.surface);
+    this.bytes -= rasterBytes(entry);
+    for (const part of entry.parts) this.device.release(part.surface);
   }
 
   private extent(ops: VectorDraw[], dst: WebglSurface): Bounds {
     const corners: DOMPoint[] = [];
+    let padding = 2;
     for (const op of ops) {
       const c = op.content;
       const box =
@@ -48,6 +59,18 @@ export class WebglVectors {
       const world = new DOMMatrix();
       for (const matrix of op.transforms ?? [op.matrix])
         world.multiplySelf(new DOMMatrix(matrix));
+      if (op.paintBlur)
+        padding = Math.max(
+          padding,
+          4 *
+            op.paintBlur *
+            Math.max(
+              1,
+              Math.hypot(world.a, world.b),
+              Math.hypot(world.c, world.d),
+            ) +
+            6,
+        );
       for (const [x, y] of [
         [box.left, box.top],
         [box.right, box.top],
@@ -57,30 +80,50 @@ export class WebglVectors {
         corners.push(world.transformPoint({ x: x!, y: y! }));
     }
     return {
-      left: Math.max(0, Math.floor(Math.min(...corners.map((p) => p.x))) - 2),
-      top: Math.max(0, Math.floor(Math.min(...corners.map((p) => p.y))) - 2),
+      left: Math.max(
+        0,
+        Math.floor(Math.min(...corners.map((p) => p.x)) - padding),
+      ),
+      top: Math.max(
+        0,
+        Math.floor(Math.min(...corners.map((p) => p.y)) - padding),
+      ),
       right: Math.min(
         dst.width,
-        Math.ceil(Math.max(...corners.map((p) => p.x))) + 2,
+        Math.ceil(Math.max(...corners.map((p) => p.x)) + padding),
       ),
       bottom: Math.min(
         dst.height,
-        Math.ceil(Math.max(...corners.map((p) => p.y))) + 2,
+        Math.ceil(Math.max(...corners.map((p) => p.y)) + padding),
       ),
     };
   }
 
   private paint(dst: WebglSurface, ops: VectorDraw[], rect: Bounds) {
     const pixels = this.raster.createSurface(dst.width, dst.height);
-    const width = Math.min(
-      dst.width - rect.left,
-      Math.ceil((rect.right - rect.left) / 64) * 64,
-    );
-    const height = Math.min(
-      dst.height - rect.top,
-      Math.ceil((rect.bottom - rect.top) / 64) * 64,
-    );
-    const surface = this.device.surface(width, height);
+    const recording = this.paintOver.hasBackdrop(dst)
+      ? recordVectorPaints(pixels.ctx, rect)
+      : undefined;
+    const painting = recording ? { ...pixels, ctx: recording.context } : pixels;
+    const parts: RasterPart[] = [];
+    const upload = (
+      canvas: HTMLCanvasElement,
+      box: Bounds,
+      primitive: boolean,
+    ) => {
+      if (box.right <= box.left || box.bottom <= box.top) return;
+      const width = Math.min(
+        dst.width - box.left,
+        Math.ceil((box.right - box.left) / 64) * 64,
+      );
+      const height = Math.min(
+        dst.height - box.top,
+        Math.ceil((box.bottom - box.top) / 64) * 64,
+      );
+      const surface = this.device.surface(width, height);
+      parts.push({ surface, rect: box, primitive });
+      this.device.uploadRegion(surface, canvas, box.left, box.top);
+    };
     try {
       for (const op of ops) {
         const c = op.content;
@@ -90,10 +133,11 @@ export class WebglVectors {
           "normal",
           op.clips,
           op.transforms,
+          op.paintBlur,
         ] as const;
         if (c.type === "solid")
           this.raster.fillRect(
-            pixels,
+            painting,
             op.matrix,
             c.width,
             c.height,
@@ -102,16 +146,47 @@ export class WebglVectors {
             "normal",
             op.clips,
             op.transforms,
+            op.paintBlur,
           );
-        else if (c.type === "text") this.raster.drawText(pixels, c, ...args);
-        else this.raster.drawProvider(pixels, c, ...args);
+        else if (c.type === "text") this.raster.drawText(painting, c, ...args);
+        else this.raster.drawProvider(painting, c, ...args);
       }
-      this.device.uploadRegion(surface, pixels.canvas, rect.left, rect.top);
-      return surface;
+      let groups = recording?.groups();
+      if (
+        groups &&
+        groups.reduce((sum, group) => {
+          const box = group.bounds;
+          return (
+            sum +
+            Math.max(0, Math.ceil((box.right - box.left) / 64) * 64) *
+              Math.max(0, Math.ceil((box.bottom - box.top) / 64) * 64) *
+              4
+          );
+        }, 0) > this.limit
+      )
+        groups = undefined;
+      if (!groups)
+        upload(
+          pixels.canvas,
+          rect,
+          ops.every((op) => !op.paintBlur),
+        );
+      else
+        for (const group of groups) {
+          const scratch = this.raster.createSurface(dst.width, dst.height);
+          try {
+            replayVectorPaints(scratch.ctx, group);
+            upload(scratch.canvas, group.bounds, group.primitive);
+          } finally {
+            this.raster.releaseSurface(scratch);
+          }
+        }
+      return parts;
     } catch (error) {
-      this.device.release(surface);
+      for (const part of parts) this.device.release(part.surface);
       throw error;
     } finally {
+      recording?.dispose();
       this.raster.releaseSurface(pixels);
     }
   }
@@ -155,16 +230,16 @@ export class WebglVectors {
       dst.height,
       ops.map((op) => op.layer),
     ]);
-    const key = this.keys.of(ops);
+    const key = this.keys.of([ops, this.paintOver.hasBackdrop(dst)]);
     let entry = this.cached.get(id);
     const hit = entry?.key === key;
     if (entry?.key !== key) {
       if (entry) this.forget(id);
       const rect = region;
       if (rect.right <= rect.left || rect.bottom <= rect.top) return null;
-      entry = { key, rect, surface: this.paint(dst, ops, rect) };
+      entry = { key, parts: this.paint(dst, ops, rect) };
     } else this.cached.delete(id);
-    const size = entry.surface.width * entry.surface.height * 4;
+    const size = rasterBytes(entry);
     const retained = size <= this.limit;
     if (retained) {
       if (!hit) {
@@ -174,13 +249,14 @@ export class WebglVectors {
       }
       this.cached.set(id, entry);
     }
-    const { surface, rect } = entry;
     try {
-      this.paintOver.draw(surface, dst, rect);
+      for (const { surface, rect, primitive } of entry.parts)
+        this.paintOver.draw(surface, dst, rect, primitive);
     } finally {
-      if (!retained) this.device.release(surface);
+      if (!retained)
+        for (const part of entry.parts) this.device.release(part.surface);
     }
-    return rect;
+    return region;
   }
 
   dispose() {

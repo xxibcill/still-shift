@@ -302,8 +302,7 @@ export function executeGraph<S extends Surface>(
     op.kind === "draw" &&
     op.content.type !== "image" &&
     op.content.type !== "surface" &&
-    op.blend === "normal" &&
-    !op.paintBlur;
+    op.blend === "normal";
   const runOps = (ops: RenderOp[], dst: S) => {
     for (let index = 0; index < ops.length; index++) {
       const op = ops[index]!;

@@ -2291,6 +2291,23 @@ comparisons; the full `pnpm check`.
   Their compositing parity, remaining performance gates and final full verification
   are still open.
 
+### CE4b provider paint boundaries (2026-10-03)
+
+- **Version:** `composition-webgl2-0.13.0` preserves overlapping local paint
+  operations inside providers before compositing them against a GPU backdrop.
+  Filtered primitives and images retain their distinct source-over rounding.
+  Recording preserves transform/clip stacks and snapshots mutable paths, matrices
+  and source canvases. Unsupported paint operations and bounded recording/cache
+  limits use the existing local raster fallback.
+- **Verification:** morph and spatial-morph pass all 384 pixel comparisons (maximum
+  delta 2 and 1); all three primitive-blur variants pass 576 frames at delta 2.
+  Native GPU checks, 4,096 arithmetic cases, replay regressions for mutable sources
+  and clipping, 1,236 unit tests and the 204-frame export/Lab suite pass.
+- **Remaining:** timing still fails: morph **9.0005×**, spatial-morph **4.2604×**,
+  primitive blur **1.3763×**, matte **1.5296×**, stack **1.6630×**. Splitting paint
+  operations increases preparation and GPU pass costs; the performance gates,
+  remaining family checks and final full verification remain open.
+
 **Completion record:** CE4a and CE4b are in progress; CE4c–CE4d have not started.
 
 ---

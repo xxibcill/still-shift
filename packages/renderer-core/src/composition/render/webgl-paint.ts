@@ -3,14 +3,14 @@ import type { WebglBounds } from "./webgl-bounds.ts";
 import type { WebglDevice, WebglSurface } from "./webgl-device.ts";
 import { unionBounds } from "./webgl-vector-regions.ts";
 
-const PAINT = `uniform vec2 origin; uniform vec2 backdropOrigin; uniform vec4 region;
+const PAINT = `uniform vec2 origin; uniform vec2 backdropOrigin; uniform vec4 region; uniform float primitive;
 void main() {
   vec2 p=gl_FragCoord.xy;
   vec4 s=vec4(0.0);
   if(p.x>=region.x && p.y>=region.y && p.x<region.z && p.y<region.w)
     s=floor(texelFetch(source,ivec2(p-origin),0)*255.0+0.5);
   vec4 d=floor(texelFetch(backdrop,ivec2(p-backdropOrigin),0)*255.0+0.5);
-  pixel=(s+floor(d*(256.0-s.a)/256.0))/255.0;
+  pixel=(primitive > 0.5 ? s+floor(d*(256.0-s.a)/256.0) : floor(s+d*(1.0-s.a/255.0)+0.5))/255.0;
 }`;
 
 /** Compose prepared primitive bytes with Canvas's integer source-over rounding. */
@@ -23,7 +23,12 @@ export class WebglPaint {
     return dst.opaque || this.bounds.snapshot(dst) !== null;
   }
 
-  draw(source: WebglSurface, dst: WebglSurface, rect: Bounds) {
+  draw(
+    source: WebglSurface,
+    dst: WebglSurface,
+    rect: Bounds,
+    primitive = true,
+  ) {
     const active = this.device.drawRegion(dst, rect);
     if (!active) return;
     const previous = this.bounds.snapshot(dst);
@@ -40,6 +45,7 @@ export class WebglPaint {
           origin: [rect.left, rect.top],
           backdropOrigin: dst.screen ? [active.left, active.top] : [0, 0],
           region: [rect.left, rect.top, rect.right, rect.bottom],
+          primitive: primitive ? 1 : 0,
         },
         false,
         dst.screen ? active : previous ? unionBounds(previous, rect) : rect,
