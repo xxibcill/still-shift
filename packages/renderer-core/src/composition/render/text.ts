@@ -45,6 +45,8 @@ export type CompositionText = {
   /** Local bounds per text state, for `EvaluationOptions.textBounds`. */
   bounds: Record<string, Bounds[]>;
   draw: CanvasTextDrawer;
+  contentKey(content: TextContent): string | undefined;
+  contentBounds(content: TextContent): Bounds | undefined;
 };
 
 type Entry =
@@ -452,5 +454,33 @@ export function prepareCompositionText(
       drawTextContainer(ctx, node, text);
     drawStoryText(ctx, node, text, content.reveal);
   };
-  return { bounds, draw };
+  return {
+    bounds,
+    draw,
+    contentKey(content) {
+      const entry = entries.get(content.key);
+      if (!entry) return undefined;
+      if (entry.kind === "system") return "static";
+      const { node, prepared } = entry;
+      return !node.transition &&
+        !node.transitions?.length &&
+        !node.decorations?.length &&
+        !prepared.corrections.get(node.id)?.length &&
+        !prepared.scene.textAnimators?.some(
+          (animator) => animator.node === node.id,
+        )
+        ? "static"
+        : undefined;
+    },
+    contentBounds(content) {
+      const states = bounds[content.key];
+      if (!states) return undefined;
+      return union([
+        states[content.state]!,
+        ...(content.stateFrom === undefined
+          ? []
+          : [states[content.stateFrom]!]),
+      ]);
+    },
+  };
 }

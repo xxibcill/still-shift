@@ -2161,6 +2161,25 @@ comparisons; the full `pnpm check`.
   byte-array and extra bitmap-copy upload experiments were slower and discarded.
   Full family acceptance, further performance work and final verification remain open.
 
+### CE4b explicit content and isolate reuse (2026-10-03)
+
+- **Version:** `composition-webgl2-0.6.0` retains the latest immutable isolate per
+  layer within a 128 MiB cache. Nested renders cannot evict borrowed surfaces or
+  exceed the retention budget. Outer opacity, blend and clips remain compositing
+  operations. Providers can explicitly identify identical local pixels; unknown
+  providers retain both clocks. Prepared static text, sampled paths, rectangles,
+  appearance and numeric text supply safe keys. State transitions remain part of
+  the identity. Gaussian radii share a key only when their exact integer kernels
+  match. Root frame reuse uses the same identity rules.
+- **Verification:** 68 focused GPU cases, 612 native frames, a provider-cache
+  regression covering opacity/content changes and backward seeks, the 204-frame
+  export/Lab suite and 1,226 unit tests pass. Framebuffer readback stays exact.
+- **Measured limit:** the story bracket's pixel tier passes, but its render/readback
+  ratio remains **16.3029×**, versus **18.4746×** in the preceding diagnostic run.
+  This comparison identifies remaining cost; it does not satisfy the unchanged
+  **1.25×** acceptance gate. Vector batching, provider extents, full family acceptance
+  and final local/frozen-baseline verification remain open.
+
 **Completion record:** CE4a and CE4b are in progress; CE4c–CE4d have not started.
 
 ---

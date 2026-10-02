@@ -661,3 +661,92 @@ export async function checkWebglFrameReuse() {
     reference.dispose();
   }
 }
+
+export async function checkWebglProviderReuse() {
+  const { createCompositionPreview } = await import(
+    "../../packages/renderer-core/src/composition/render/renderer.ts"
+  );
+  const { preparedProvider } = await import(
+    "../../packages/renderer-core/src/composition/render/providers.ts"
+  );
+  const composition: Composition = {
+    schemaVersion: "composition-1",
+    id: "provider-reuse",
+    width: 96,
+    height: 64,
+    fps: 30,
+    frameCount: 6,
+    background: "#26313b",
+    assets: [],
+    layers: [
+      {
+        id: "mark",
+        type: "provider",
+        provider: "test.cache@1.0.0",
+        params: {},
+        effects: [
+          { id: "soften", effect: "blur.gaussian", params: { radius: 4 } },
+        ],
+        transform: {
+          opacity: {
+            keys: [1, 0.8, 0.6, 1, 1, 1].map((value, frame) => ({
+              frame,
+              value,
+              interpolation: "hold" as const,
+            })),
+          },
+        },
+      },
+    ],
+  };
+  const counts = { webgl2: 0, canvas2d: 0 };
+  const resources = { images: new Map(), fonts: new Map() };
+  const canvas = document.createElement("canvas");
+  const make = (backend: "webgl2" | "canvas2d") =>
+    createCompositionPreview(
+      backend === "webgl2" ? canvas : document.createElement("canvas"),
+      composition,
+      resources,
+      {
+        backend,
+        providers: [
+          {
+            id: "test.cache@1.0.0",
+            prepare: () =>
+              preparedProvider(
+                (ctx, time) => {
+                  counts[backend]++;
+                  ctx.fillStyle = Math.floor(time / 3) ? "#93683d" : "#bfe173";
+                  ctx.fillRect(8, 8, 20, 20);
+                },
+                {
+                  visualKey: (time) => String(Math.floor(time / 3)),
+                  bounds: { left: 8, top: 8, right: 28, bottom: 28 },
+                },
+              ),
+          },
+        ],
+      },
+    );
+  const gpu = make("webgl2"),
+    reference = make("canvas2d");
+  const draws: number[] = [];
+  try {
+    for (const frame of [0, 1, 2, 3, 4, 0]) {
+      gpu.renderFrame(frame);
+      reference.renderFrame(frame);
+      const actual = gpu.readPixels(),
+        expected = reference.readPixels();
+      assertFullGpuReadback(canvas, actual);
+      if (actual.some((value, index) => Math.abs(value - expected[index]!) > 2))
+        throw new Error(`Provider reuse differs at ${frame}`);
+      draws.push(counts.webgl2);
+    }
+    if (draws.join(",") !== "1,1,1,2,2,3")
+      throw new Error(`Unexpected provider draws: ${draws}`);
+    return draws;
+  } finally {
+    gpu.dispose();
+    reference.dispose();
+  }
+}

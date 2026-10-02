@@ -20,6 +20,11 @@ try {
     return ((await import(url)) as typeof Checks).checkWebglFrameReuse();
   });
   console.log("WebGL frame reuse:", reuse);
+  const providerReuse = await page.evaluate(async () => {
+    const url = "/tests/helpers/composition-webgl-reference.ts";
+    return ((await import(url)) as typeof Checks).checkWebglProviderReuse();
+  });
+  console.log("WebGL provider reuse:", providerReuse);
   const results = await page.evaluate(async () => {
     const url = "/tests/helpers/composition-webgl-reference.ts";
     const { checkWebglFrames } = (await import(url)) as typeof Checks;

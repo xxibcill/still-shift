@@ -200,7 +200,17 @@ export function createCompositionPreview(
     ...(options.createCanvas ? { createCanvas: options.createCanvas } : {}),
   };
   if (kind === "webgl2") {
-    const backend = createWebgl2Backend(canvas, backendOptions);
+    const backend = createWebgl2Backend(canvas, {
+      ...backendOptions,
+      contentKey: (content) =>
+        content.type === "provider"
+          ? drawProvider.contentKey(content)
+          : text.contentKey(content),
+      contentBounds: (content) =>
+        content.type === "provider"
+          ? drawProvider.contentBounds(content)
+          : text.contentBounds(content),
+    });
     return preview(backend, backend.target, () => backend.present());
   }
   const backend = createCanvas2dBackend(backendOptions);

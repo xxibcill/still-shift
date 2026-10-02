@@ -5,6 +5,7 @@ import type {
 import { passageError } from "../../passage-diagnostics.ts";
 import type { LoadedFont } from "../../prepared-fonts.ts";
 import type { ProviderContent } from "./graph.ts";
+import type { Bounds } from "../evaluate/types.ts";
 
 export type ProviderLayer = Extract<CompositionLayer, { type: "provider" }>;
 export type ProviderResources = {
@@ -12,12 +13,24 @@ export type ProviderResources = {
   fonts: ReadonlyMap<string, LoadedFont>;
   providerFonts?: ReadonlyMap<string, ReadonlyMap<string, LoadedFont>>;
 };
-export type CanvasProviderDrawer = (
+type DrawProvider = (
   ctx: CanvasRenderingContext2D,
   time: number,
   state?: number,
   sourceTime?: number,
 ) => void;
+export type CanvasProviderDrawer = DrawProvider & {
+  /** Equal keys promise identical local pixels, including every clock-dependent value. */
+  visualKey?: (time: number, state?: number, sourceTime?: number) => string;
+  /** Conservative local painted bounds across all states and clocks. */
+  bounds?: Bounds;
+};
+export function preparedProvider(
+  draw: DrawProvider,
+  metadata: Pick<CanvasProviderDrawer, "visualKey" | "bounds">,
+): CanvasProviderDrawer {
+  return Object.assign(draw, metadata);
+}
 export type CanvasContentProvider = {
   /** Versioned id, exactly as stored in the composition contract. */
   id: string;
@@ -66,7 +79,7 @@ export function prepareCompositionProviders(
   composition: Composition,
   resources: ProviderResources,
   providers: readonly CanvasContentProvider[],
-): (ctx: CanvasRenderingContext2D, content: ProviderContent) => void {
+) {
   const registry = new Map<string, CanvasContentProvider>();
   for (const provider of providers) {
     if (registry.has(provider.id))
@@ -106,7 +119,7 @@ export function prepareCompositionProviders(
       drawers.set(key, provider.prepare(layer, available, path));
     });
   }
-  return (ctx, content) => {
+  const draw = (ctx: CanvasRenderingContext2D, content: ProviderContent) => {
     const draw = drawers.get(content.key);
     if (!draw)
       passageError(
@@ -116,4 +129,22 @@ export function prepareCompositionProviders(
       );
     draw(ctx, content.time, content.state, content.sourceTime);
   };
+  return Object.assign(draw, {
+    contentKey(content: ProviderContent): string | undefined {
+      const key = drawers.get(content.key)?.visualKey;
+      if (!key) return undefined;
+      return JSON.stringify([
+        key(content.time, content.state, content.sourceTime),
+        content.stateFrom === undefined
+          ? null
+          : key(content.time, content.stateFrom, content.sourceTime),
+      ]);
+    },
+    contentBounds(content: ProviderContent): Bounds | undefined {
+      const rect = content.layer.bounds;
+      return rect
+        ? { left: rect[0], top: rect[1], right: rect[2], bottom: rect[3] }
+        : drawers.get(content.key)?.bounds;
+    },
+  });
 }

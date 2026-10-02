@@ -17,6 +17,7 @@ import type {
   ProviderContent,
   DrawOp,
   SolidContent,
+  IsolateOp,
 } from "./graph.ts";
 
 export type SolidDraw = DrawOp & { content: SolidContent };
@@ -30,6 +31,10 @@ export type Surface = { readonly width: number; readonly height: number };
  */
 export interface RenderBackend<S extends Surface = Surface> {
   readonly version: string;
+  /** Optional canonical pixel identity for retained backend content. */
+  frameKey?(root: SurfaceNode): string;
+  /** Cache an immutable isolate; the caller releases the returned surface normally. */
+  renderIsolate?(op: IsolateOp, like: S, draw: () => S): S;
   /** A cleared, transparent surface, usually from a pool. */
   createSurface(width: number, height: number): S;
   releaseSurface(surface: S): void;
@@ -215,9 +220,13 @@ export function executeGraph<S extends Surface>(
         return;
       }
       case "isolate": {
-        const tmp = isolated(op.ops, dst);
-        if (op.effects.length) backend.applyEffects(tmp, op.effects);
-        mask(tmp, op.masks, op.matte);
+        const draw = () => {
+          const tmp = isolated(op.ops, dst);
+          if (op.effects.length) backend.applyEffects(tmp, op.effects);
+          mask(tmp, op.masks, op.matte);
+          return tmp;
+        };
+        const tmp = backend.renderIsolate?.(op, dst, draw) ?? draw();
         backend.composite(tmp, dst, op.blend, op.opacity, IDENTITY, op.clips);
         backend.releaseSurface(tmp);
         return;

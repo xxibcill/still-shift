@@ -8,6 +8,7 @@ import { buildRenderGraph } from "../../packages/renderer-core/src/composition/r
 import {
   prepareCompositionProviders,
   loadProviderFonts,
+  preparedProvider,
 } from "../../packages/renderer-core/src/composition/render/providers.ts";
 import { passageDiagnostics } from "../../packages/renderer-core/src/passage-diagnostics.ts";
 import { STORY_CONTENT_PROVIDERS } from "../../packages/renderer-core/src/composition/adapters/story-providers.ts";
@@ -31,6 +32,57 @@ const fixture = (): Composition => ({
   ],
 });
 describe("composition content providers", () => {
+  it("retains both transition states and the source clock in prepared visual keys", () => {
+    const comp = fixture();
+    const layer = comp.layers[0]!;
+    if (layer.type !== "provider") throw new Error("Expected provider");
+    const prepared = prepareCompositionProviders(
+      comp,
+      { images: new Map(), fonts: new Map() },
+      [
+        {
+          id: layer.provider,
+          prepare: () =>
+            preparedProvider(() => {}, {
+              visualKey: (time, state, sourceTime) =>
+                JSON.stringify([Math.floor(time), state, sourceTime]),
+              bounds: { left: -2, top: -3, right: 10, bottom: 20 },
+            }),
+        },
+      ],
+    );
+    const content = {
+      type: "provider" as const,
+      key: "mark",
+      layer,
+      time: 1.1,
+      state: 1,
+      stateFrom: 0,
+      sourceTime: 4,
+    };
+    expect(prepared.contentKey(content)).toBe(
+      prepared.contentKey({ ...content, time: 1.2 }),
+    );
+    expect(prepared.contentKey(content)).not.toBe(
+      prepared.contentKey({ ...content, stateFrom: 2 }),
+    );
+    expect(prepared.contentKey(content)).not.toBe(
+      prepared.contentKey({ ...content, sourceTime: 5 }),
+    );
+    expect(prepared.contentBounds(content)).toEqual({
+      left: -2,
+      top: -3,
+      right: 10,
+      bottom: 20,
+    });
+    const unknown = prepareCompositionProviders(
+      comp,
+      { images: new Map(), fonts: new Map() },
+      [{ id: layer.provider, prepare: () => () => {} }],
+    );
+    expect(unknown.contentKey(content)).toBeUndefined();
+    expect(unknown.contentBounds(content)).toBeUndefined();
+  });
   it("keeps asynchronously prepared font variants local to each provider and scope", async () => {
     const doc = fixture();
     const layer = doc.layers[0]!;

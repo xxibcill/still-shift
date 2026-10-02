@@ -10,9 +10,10 @@ import { prepareTextFits } from "../../component-text-fit.ts";
 import { prepareMeasuredText } from "../../component-values.ts";
 import { drawPreparedPath } from "../../prepared-path-renderer.ts";
 import { passageError } from "../../passage-diagnostics.ts";
-import type {
-  CanvasContentProvider,
-  ProviderResources,
+import {
+  preparedProvider,
+  type CanvasContentProvider,
+  type ProviderResources,
 } from "../render/providers.ts";
 import {
   StoryTextParamsSchema,
@@ -25,7 +26,7 @@ import { drawTextContainer } from "../../text-container.ts";
 import { drawAnimatedText } from "../../motion-text.ts";
 import { compileStoryFlows, drawStoryFlow } from "../../story-flows.ts";
 import { drawStoryText } from "../../story-text.ts";
-import { AppearanceSchema, paintNode } from "./appearance.ts";
+import { AppearanceSchema, appearanceAt, paintNode } from "./appearance.ts";
 
 const CommercePathParamsSchema = StoryPathParamsSchema.extend({
   geometry: CommercePathGeometrySchema,
@@ -195,64 +196,81 @@ function prepareText(
       },
     );
   const preparedNode = node;
-  return (
-    ctx: CanvasRenderingContext2D,
-    time: number,
-    contentState?: number,
-    sourceTime?: number,
-  ) => {
-    const frame = Math.max(0, Math.floor(time));
-    const node = paintNode(preparedNode, params.appearance, frame);
-    const state = samples[Math.min(samples.length - 1, frame)]!;
-    const text = numeric
-      ? numeric.samples[Math.min(numeric.samples.length - 1, frame)]!
-      : (node.states?.[contentState ?? state.state] ?? node.text);
-    const layout = layouts?.get(text);
-    ctx.fillStyle = node.color;
-    ctx.font = font
-      ? `${font.weight} ${node.fontSize}px "${font.family}"`
-      : `${node.weight} ${node.fontSize}px ${node.font}`;
-    ctx.textAlign = node.align;
-    if (extended) {
-      ctx.textBaseline = "top";
-      if (node.container && state.reveal > 0)
-        drawTextContainer(ctx, node, text);
-      const blending = params.blendWindows?.some(
-        ([start, end]) =>
-          (sourceTime ?? time) >= start && (sourceTime ?? time) < end,
-      );
-      if (
-        !blending &&
-        drawAnimatedText(
-          ctx,
-          node,
-          text,
-          sourceTime ?? frame,
-          params.animator,
-          layout,
+  return preparedProvider(
+    (
+      ctx: CanvasRenderingContext2D,
+      time: number,
+      contentState?: number,
+      sourceTime?: number,
+    ) => {
+      const frame = Math.max(0, Math.floor(time));
+      const node = paintNode(preparedNode, params.appearance, frame);
+      const state = samples[Math.min(samples.length - 1, frame)]!;
+      const text = numeric
+        ? numeric.samples[Math.min(numeric.samples.length - 1, frame)]!
+        : (node.states?.[contentState ?? state.state] ?? node.text);
+      const layout = layouts?.get(text);
+      ctx.fillStyle = node.color;
+      ctx.font = font
+        ? `${font.weight} ${node.fontSize}px "${font.family}"`
+        : `${node.weight} ${node.fontSize}px ${node.font}`;
+      ctx.textAlign = node.align;
+      if (extended) {
+        ctx.textBaseline = "top";
+        if (node.container && state.reveal > 0)
+          drawTextContainer(ctx, node, text);
+        const blending = params.blendWindows?.some(
+          ([start, end]) =>
+            (sourceTime ?? time) >= start && (sourceTime ?? time) < end,
+        );
+        if (
+          !blending &&
+          drawAnimatedText(
+            ctx,
+            node,
+            text,
+            sourceTime ?? frame,
+            params.animator,
+            layout,
+          )
         )
-      )
-        return;
-      if (!node.textBox) {
-        drawStoryText(ctx, node, text, state.reveal);
-        return;
+          return;
+        if (!node.textBox) {
+          drawStoryText(ctx, node, text, state.reveal);
+          return;
+        }
       }
-    }
-    if (!layout)
-      passageError("comp-provider-params", "Text state was not prepared", {
-        path,
-      });
-    ctx.textBaseline = "alphabetic";
-    const x =
-      node.align === "center"
-        ? node.width / 2
-        : node.align === "right"
-          ? node.width
-          : 0;
-    layout.lines.forEach((line, index) =>
-      ctx.fillText(line, x, layout.baseline + index * layout.lineHeight),
-    );
-  };
+      if (!layout)
+        passageError("comp-provider-params", "Text state was not prepared", {
+          path,
+        });
+      ctx.textBaseline = "alphabetic";
+      const x =
+        node.align === "center"
+          ? node.width / 2
+          : node.align === "right"
+            ? node.width
+            : 0;
+      layout.lines.forEach((line, index) =>
+        ctx.fillText(line, x, layout.baseline + index * layout.lineHeight),
+      );
+    },
+    params.animator
+      ? {}
+      : {
+          visualKey(time, contentState) {
+            const frame = Math.max(0, Math.floor(time));
+            const state = samples[Math.min(samples.length - 1, frame)]!;
+            return JSON.stringify([
+              state,
+              numeric
+                ? numeric.samples[Math.min(numeric.samples.length - 1, frame)]!
+                : contentState,
+              appearanceAt(params.appearance, frame),
+            ]);
+          },
+        },
+  );
 }
 
 /** Pinned measured text uses the same layout as commerce, with local content only. */
@@ -335,14 +353,25 @@ export const COMMERCE_CONTENT_PROVIDERS: readonly CanvasContentProvider[] = [
         });
       const { node, geometry, samples } = parsed.data;
       const paths = geometry.points.map((points) => ({ ...node, points }));
-      return (ctx, time) => {
-        const frame = Math.max(0, Math.floor(time));
-        drawPreparedPath(
-          ctx,
-          paths[Math.min(frame, paths.length - 1)]!,
-          samples[Math.min(frame, samples.length - 1)]!,
-        );
-      };
+      return preparedProvider(
+        (ctx, time) => {
+          const frame = Math.max(0, Math.floor(time));
+          drawPreparedPath(
+            ctx,
+            paths[Math.min(frame, paths.length - 1)]!,
+            samples[Math.min(frame, samples.length - 1)]!,
+          );
+        },
+        {
+          visualKey(time) {
+            const frame = Math.max(0, Math.floor(time));
+            return JSON.stringify([
+              paths[Math.min(frame, paths.length - 1)]!.points,
+              samples[Math.min(frame, samples.length - 1)]!,
+            ]);
+          },
+        },
+      );
     },
   },
 ];

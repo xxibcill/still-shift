@@ -33,7 +33,10 @@ function equal(a: unknown, b: unknown): boolean {
 }
 
 /** Only the immediately preceding stationary graph is retained. */
-export type CompositionFrameCache = { root?: SurfaceNode | undefined };
+export type CompositionFrameCache = {
+  root?: SurfaceNode | undefined;
+  key?: string | undefined;
+};
 
 /** Average moving exposures; a proven identical graph needs only one draw. */
 export function renderCompositionExposure<S extends Surface>(
@@ -53,24 +56,38 @@ export function renderCompositionExposure<S extends Surface>(
   };
   const candidates = graphs();
   const first = candidates.next().value!;
+  const firstKey = backend.frameKey?.(first.graph.root);
   let stationary = true;
   for (const candidate of candidates)
-    if (!equal(first.graph.root, candidate.graph.root)) {
+    if (
+      firstKey === undefined
+        ? !equal(first.graph.root, candidate.graph.root)
+        : firstKey !== backend.frameKey!(candidate.graph.root)
+    ) {
       stationary = false;
       break;
     }
   if (stationary) {
     const reused =
-      cache?.root !== undefined && equal(cache.root, first.graph.root);
+      cache?.root !== undefined &&
+      (firstKey === undefined
+        ? equal(cache.root, first.graph.root)
+        : cache.key === firstKey);
     if (!reused) executeGraph(backend, first.graph, target);
-    if (cache) cache.root = first.graph.root;
+    if (cache) {
+      cache.root = first.graph.root;
+      cache.key = firstKey;
+    }
     return {
       diagnostics: first.diagnostics,
       culled: first.graph.culled,
       samples: reused ? 0 : 1,
     };
   }
-  if (cache) cache.root = undefined;
+  if (cache) {
+    cache.root = undefined;
+    cache.key = undefined;
+  }
   const samples = compositionExposureFrames(comp, frame).length;
   const rendered = graphs();
   const diagnostics: PassageDiagnostic[] = [];

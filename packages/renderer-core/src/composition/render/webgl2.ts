@@ -1,3 +1,7 @@
+import { WebglVisualKey, type PreparedContentKey } from "./webgl-visual-key.ts";
+import { WebglIsolates } from "./webgl-isolates.ts";
+import type { Bounds } from "../evaluate/types.ts";
+import type { ProviderContent, TextContent } from "./graph.ts";
 import { WebglBounds } from "./webgl-bounds.ts";
 import { WebglImages } from "./webgl-images.ts";
 import { WebglEffects } from "./webgl-effects.ts";
@@ -14,7 +18,7 @@ import { WebglDevice, type WebglSurface } from "./webgl-device.ts";
 import { blendShader } from "./webgl-blend.ts";
 
 export const COMPOSITION_WEBGL_RENDERER_VERSION =
-  "composition-webgl2-0.5.0" as const;
+  "composition-webgl2-0.6.0" as const;
 const IDENTITY: Matrix = [1, 0, 0, 1, 0, 0];
 const COPY =
   "uniform float opacity; void main() { pixel = floor(floor(texture(source, uv) * 255.0 + 0.5) * (floor(opacity * 255.0 + 0.5) + 1.0) / 256.0) / 255.0; }";
@@ -40,10 +44,17 @@ export type Webgl2Backend = RenderBackend<WebglSurface> & {
   dispose(): void;
 };
 
+export type Webgl2BackendOptions = Canvas2dBackendOptions & {
+  contentKey?: PreparedContentKey;
+  contentBounds?: (
+    content: ProviderContent | TextContent,
+  ) => Bounds | undefined;
+};
+
 /** Rasterize vector batches and prepared content; compose GPU surfaces in shaders. */
 export function createWebgl2Backend(
   canvas: HTMLCanvasElement,
-  options: Canvas2dBackendOptions,
+  options: Webgl2BackendOptions,
 ): Webgl2Backend {
   const device = new WebglDevice(canvas);
   const raster = createCanvas2dBackend(options);
@@ -52,6 +63,11 @@ export function createWebgl2Backend(
   const bounds = new WebglBounds(target);
   const effects = new WebglEffects(device, raster, bounds);
   const images = new WebglImages(device, raster);
+  const keys = new WebglVisualKey(options.contentKey);
+  const isolates = new WebglIsolates(keys, (surface) => {
+    bounds.release(surface);
+    device.release(surface);
+  });
 
   function replace(
     dst: WebglSurface,
@@ -174,6 +190,8 @@ export function createWebgl2Backend(
 
   const backend: Webgl2Backend = {
     version: COMPOSITION_WEBGL_RENDERER_VERSION,
+    frameKey: (root) => keys.of(root),
+    renderIsolate: (op, like, draw) => isolates.render(op, like, draw),
     target,
     get allocated() {
       return device.allocated;
@@ -187,6 +205,7 @@ export function createWebgl2Backend(
       return surface;
     },
     releaseSurface: (surface) => {
+      if (isolates.release(surface)) return;
       bounds.release(surface);
       device.release(surface);
     },
@@ -275,7 +294,9 @@ export function createWebgl2Backend(
       transforms,
       paintBlur,
     ) {
-      bounds.full(dst);
+      const rect = options.contentBounds?.(content);
+      if (paintBlur || !rect) bounds.full(dst);
+      else bounds.transform(dst, rect, matrix);
       draw(dst, mode, (pixels) =>
         raster.drawText(
           pixels,
@@ -299,14 +320,9 @@ export function createWebgl2Backend(
       transforms,
       paintBlur,
     ) {
-      const rect = content.layer.bounds;
+      const rect = options.contentBounds?.(content);
       if (paintBlur || !rect) bounds.full(dst);
-      else
-        bounds.transform(
-          dst,
-          { left: rect[0], top: rect[1], right: rect[2], bottom: rect[3] },
-          matrix,
-        );
+      else bounds.transform(dst, rect, matrix);
       draw(dst, mode, (pixels) =>
         raster.drawProvider(
           pixels,
@@ -506,6 +522,7 @@ export function createWebgl2Backend(
     },
     present: () => device.present(target),
     dispose() {
+      isolates.dispose();
       raster.dispose();
       device.dispose();
     },
