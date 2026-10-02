@@ -2144,6 +2144,23 @@ comparisons; the full `pnpm check`.
   bounds and repeated effect work remain expensive. Full family acceptance and
   final local/frozen-baseline verification remain open.
 
+### CE4b direct GPU presentation (2026-10-02)
+
+- **Version:** `composition-webgl2-0.5.0` renders the root directly to the canvas
+  framebuffer, avoiding the final presentation copy. Shaders retain top-left
+  image coordinates; screen readback reverses the physical framebuffer rows.
+  Effects that sample the backdrop get a GPU-only texture snapshot, refreshed
+  only after the canvas changes. Screen surfaces cannot be swapped with pooled
+  textures. Explicit blend state avoids a per-pass state query.
+- **Verification:** all **68 focused GPU cases / 612 native frames**, the
+  **204-frame** export/Lab suite and **1,220 unit tests** pass. This covers backdrop
+  effects, masks, exposure, byte-exact framebuffer readback, raw/PNG capture,
+  repeat encoded exports and switching between preview backends.
+- **Measured limit:** Drift remains exact for **240 frames** and improves from
+  **2.6641×** to **2.1703×** reference time. It still exceeds **1.25×**. Cropped
+  byte-array and extra bitmap-copy upload experiments were slower and discarded.
+  Full family acceptance, further performance work and final verification remain open.
+
 **Completion record:** CE4a and CE4b are in progress; CE4c–CE4d have not started.
 
 ---

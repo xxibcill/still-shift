@@ -14,7 +14,7 @@ import { WebglDevice, type WebglSurface } from "./webgl-device.ts";
 import { blendShader } from "./webgl-blend.ts";
 
 export const COMPOSITION_WEBGL_RENDERER_VERSION =
-  "composition-webgl2-0.4.0" as const;
+  "composition-webgl2-0.5.0" as const;
 const IDENTITY: Matrix = [1, 0, 0, 1, 0, 0];
 const COPY =
   "uniform float opacity; void main() { pixel = floor(floor(texture(source, uv) * 255.0 + 0.5) * (floor(opacity * 255.0 + 0.5) + 1.0) / 256.0) / 255.0; }";
@@ -47,7 +47,7 @@ export function createWebgl2Backend(
 ): Webgl2Backend {
   const device = new WebglDevice(canvas);
   const raster = createCanvas2dBackend(options);
-  const target = device.surface(canvas.width, canvas.height, false, true);
+  const target = device.surface(canvas.width, canvas.height, false, true, true);
   const gl = device.gl;
   const bounds = new WebglBounds(target);
   const effects = new WebglEffects(device, raster, bounds);
@@ -59,6 +59,10 @@ export function createWebgl2Backend(
     inputs: WebglSurface[],
     uniforms: Parameters<WebglDevice["pass"]>[3] = {},
   ) {
+    if (dst.screen) {
+      device.pass(shader, dst, inputs, uniforms);
+      return;
+    }
     const output = device.surface(dst.width, dst.height, false, dst.opaque);
     try {
       device.pass(shader, output, inputs, uniforms);
@@ -82,7 +86,7 @@ export function createWebgl2Backend(
       gl.blendEquation(gl.FUNC_ADD);
       gl.blendFunc(gl.ONE, mode === "add" ? gl.ONE : gl.ONE_MINUS_SRC_ALPHA);
       try {
-        device.pass(COPY, dst, [src], { opacity });
+        device.pass(COPY, dst, [src], { opacity }, true);
       } finally {
         gl.disable(gl.BLEND);
       }
@@ -500,7 +504,7 @@ export function createWebgl2Backend(
         device.release(next);
       }
     },
-    present: () => bounds.present(device),
+    present: () => device.present(target),
     dispose() {
       raster.dispose();
       device.dispose();

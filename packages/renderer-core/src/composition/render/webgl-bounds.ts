@@ -64,23 +64,6 @@ export class WebglBounds {
   clearColor(surface: WebglSurface) {
     return surface === this.root ? this.background : undefined;
   }
-  present(device: WebglDevice) {
-    const rect = this.snapshot(this.root);
-    if (
-      this.background === undefined ||
-      !rect ||
-      (rect.right - rect.left) * (rect.bottom - rect.top) >
-        this.root.width * this.root.height * 0.75
-    ) {
-      device.present(this.root);
-      return;
-    }
-    device.present(
-      this.root,
-      rect,
-      new Uint8Array(new Uint32Array([this.background]).buffer),
-    );
-  }
   include(surface: WebglSurface, rect: Rect | null) {
     if (!rect) return;
     const prior = this.bounds.get(surface);

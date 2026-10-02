@@ -4,6 +4,8 @@ export type WebglSurface = {
   readonly height: number;
   readonly floating: boolean;
   readonly opaque: boolean;
+  /** Draw directly to the canvas; its texture is a lazily refreshed snapshot. */
+  readonly screen: boolean;
   texture: WebGLTexture;
   framebuffer: WebGLFramebuffer;
 };
@@ -40,6 +42,7 @@ export class WebglDevice {
   private readonly surfaces = new Set<WebglSurface>();
   private readonly pool = new Map<string, WebglSurface[]>();
   private readonly vao: WebGLVertexArrayObject;
+  private readonly dirtyScreens = new Set<WebglSurface>();
   passes = 0;
   private pooledBytes = 0;
 
@@ -72,9 +75,10 @@ export class WebglDevice {
     height: number,
     floating = false,
     opaque = false,
+    screen = false,
   ): WebglSurface {
     const cached = this.pool
-      .get(`${width}x${height}/${floating}/${opaque}`)
+      .get(`${width}x${height}/${floating}/${opaque}/${screen}`)
       ?.pop();
     if (cached) {
       this.pooledBytes -= width * height * (floating ? 16 : 4);
@@ -126,14 +130,22 @@ export class WebglDevice {
       gl.deleteFramebuffer(framebuffer);
       throw new Error("comp-webgl-framebuffer: incomplete render surface");
     }
-    const surface = { width, height, floating, opaque, texture, framebuffer };
+    const surface = {
+      width,
+      height,
+      floating,
+      opaque,
+      screen,
+      texture,
+      framebuffer,
+    };
     this.surfaces.add(surface);
     this.clear(surface);
     return surface;
   }
 
   release(surface: WebglSurface) {
-    const key = `${surface.width}x${surface.height}/${surface.floating}/${surface.opaque}`;
+    const key = `${surface.width}x${surface.height}/${surface.floating}/${surface.opaque}/${surface.screen}`;
     const list = this.pool.get(key) ?? [];
     const bytes = surface.width * surface.height * (surface.floating ? 16 : 4);
     if (list.length < 16 && this.pooledBytes + bytes <= 128 * 1024 * 1024) {
@@ -150,7 +162,10 @@ export class WebglDevice {
   clear(surface: WebglSurface, color: readonly number[] = [0, 0, 0, 0]) {
     const gl = this.gl,
       a = color[3]!;
-    gl.bindFramebuffer(gl.FRAMEBUFFER, surface.framebuffer);
+    gl.bindFramebuffer(
+      gl.FRAMEBUFFER,
+      surface.screen ? null : surface.framebuffer,
+    );
     gl.clearColor(
       color[0]! * a,
       color[1]! * a,
@@ -158,6 +173,7 @@ export class WebglDevice {
       surface.opaque ? 1 : a,
     );
     gl.clear(gl.COLOR_BUFFER_BIT);
+    if (surface.screen) this.dirtyScreens.add(surface);
   }
 
   upload(surface: WebglSurface, canvas: HTMLCanvasElement) {
@@ -218,9 +234,19 @@ export class WebglDevice {
     target: WebglSurface | null,
     inputs: readonly WebglSurface[],
     uniforms: Record<string, UniformValue> = {},
+    blended = false,
   ) {
     const gl = this.gl;
-    if (target?.opaque && !gl.isEnabled(gl.BLEND))
+    if (target?.screen) {
+      // Keep every shader in top-left image coordinates while the canvas's
+      // physical framebuffer has its origin at the bottom left.
+      body =
+        "vec4 pixelPosition;\n" +
+        body
+          .replaceAll("gl_FragCoord", "pixelPosition")
+          .replace("void main()", "void shade()") +
+        `\nvoid main() { pixelPosition=vec4(gl_FragCoord.x,${target.height}.0-gl_FragCoord.y,gl_FragCoord.zw); shade(); ${blended ? "" : "pixel.a=1.0;"} }`;
+    } else if (target?.opaque && !blended)
       body =
         body.replace("void main()", "void shade()") +
         "\nvoid main() { shade(); pixel.a = 1.0; }";
@@ -237,7 +263,12 @@ export class WebglDevice {
         }
         return shader;
       };
-      const vertex = compile(gl.VERTEX_SHADER, VERTEX);
+      const vertex = compile(
+        gl.VERTEX_SHADER,
+        target?.screen
+          ? VERTEX.replace("uv = p;", "uv = vec2(p.x, 1.0-p.y);")
+          : VERTEX,
+      );
       const fragment = compile(gl.FRAGMENT_SHADER, FRAGMENT_HEADER + body);
       const handle = gl.createProgram()!;
       gl.attachShader(handle, vertex);
@@ -269,9 +300,18 @@ export class WebglDevice {
       }
       this.programs.set(body, program);
     }
-    if (target && inputs.some((input) => input.texture === target.texture))
+    if (
+      target &&
+      !target.screen &&
+      inputs.some((input) => input.texture === target.texture)
+    )
       throw new Error("comp-webgl-feedback: input and output textures overlap");
-    gl.bindFramebuffer(gl.FRAMEBUFFER, target?.framebuffer ?? null);
+    for (const input of new Set(inputs))
+      if (input.screen) this.resolveScreen(input);
+    gl.bindFramebuffer(
+      gl.FRAMEBUFFER,
+      target?.screen ? null : (target?.framebuffer ?? null),
+    );
     gl.viewport(
       0,
       0,
@@ -299,10 +339,13 @@ export class WebglDevice {
       else throw new Error(`comp-webgl-uniform: unsupported ${name}`);
     }
     gl.drawArrays(gl.TRIANGLES, 0, 3);
+    if (target?.screen) this.dirtyScreens.add(target);
     this.passes++;
   }
 
   swap(first: WebglSurface, second: WebglSurface) {
+    if (first.screen || second.screen)
+      throw new Error("comp-webgl-screen: canvas surfaces cannot be exchanged");
     if (
       first.width !== second.width ||
       first.height !== second.height ||
@@ -331,49 +374,46 @@ export class WebglDevice {
   ) {
     const gl = this.gl;
     const pixels = new Uint8Array(width * height * 4);
-    gl.bindFramebuffer(gl.FRAMEBUFFER, surface.framebuffer);
-    gl.readPixels(x, y, width, height, gl.RGBA, gl.UNSIGNED_BYTE, pixels);
+    gl.bindFramebuffer(
+      gl.FRAMEBUFFER,
+      surface.screen ? null : surface.framebuffer,
+    );
+    gl.readPixels(
+      x,
+      surface.screen ? surface.height - y - height : y,
+      width,
+      height,
+      gl.RGBA,
+      gl.UNSIGNED_BYTE,
+      pixels,
+    );
     gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+    if (surface.screen) {
+      const stride = width * 4,
+        row = new Uint8Array(stride);
+      for (let top = 0, bottom = height - 1; top < bottom; top++, bottom--) {
+        row.set(pixels.subarray(top * stride, (top + 1) * stride));
+        pixels.copyWithin(top * stride, bottom * stride, (bottom + 1) * stride);
+        pixels.set(row, bottom * stride);
+      }
+    }
     return pixels;
   }
 
-  present(
-    surface: WebglSurface,
-    region?: {
-      left: number;
-      top: number;
-      right: number;
-      bottom: number;
-    },
-    background?: Uint8Array,
-  ) {
+  present(surface: WebglSurface) {
+    if (surface.screen) return;
     const gl = this.gl;
     gl.bindFramebuffer(gl.READ_FRAMEBUFFER, surface.framebuffer);
     gl.bindFramebuffer(gl.DRAW_FRAMEBUFFER, null);
-    if (background) {
-      gl.clearColor(
-        background[0]! / 255,
-        background[1]! / 255,
-        background[2]! / 255,
-        1,
-      );
-      gl.clear(gl.COLOR_BUFFER_BIT);
-    }
-    const { left, top, right, bottom } = region ?? {
-      left: 0,
-      top: 0,
-      right: surface.width,
-      bottom: surface.height,
-    };
     gl.blitFramebuffer(
-      left,
-      top,
-      right,
-      bottom,
-      left,
-      this.canvas.height - top,
-      right,
-      this.canvas.height - bottom,
+      0,
+      0,
+      surface.width,
+      surface.height,
+      0,
+      this.canvas.height,
+      this.canvas.width,
+      0,
       gl.COLOR_BUFFER_BIT,
       gl.NEAREST,
     );
@@ -393,5 +433,30 @@ export class WebglDevice {
     this.surfaces.clear();
     this.pool.clear();
     this.programs.clear();
+    this.dirtyScreens.clear();
+  }
+
+  private resolveScreen(surface: WebglSurface) {
+    // Backdrop-reading effects need a texture. Ordinary draws avoid this copy.
+    if (!this.dirtyScreens.has(surface)) return;
+    const gl = this.gl,
+      scissored = gl.isEnabled(gl.SCISSOR_TEST);
+    if (scissored) gl.disable(gl.SCISSOR_TEST);
+    gl.bindFramebuffer(gl.READ_FRAMEBUFFER, null);
+    gl.bindFramebuffer(gl.DRAW_FRAMEBUFFER, surface.framebuffer);
+    gl.blitFramebuffer(
+      0,
+      0,
+      surface.width,
+      surface.height,
+      0,
+      surface.height,
+      surface.width,
+      0,
+      gl.COLOR_BUFFER_BIT,
+      gl.NEAREST,
+    );
+    if (scissored) gl.enable(gl.SCISSOR_TEST);
+    this.dirtyScreens.delete(surface);
   }
 }

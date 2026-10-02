@@ -101,6 +101,10 @@ export class WebglEffects {
     inputs: WebglSurface[],
     uniforms: Parameters<WebglDevice["pass"]>[3] = {},
   ) {
+    if (dst.screen) {
+      this.device.pass(shader, dst, inputs, uniforms);
+      return;
+    }
     const output = this.device.surface(
       dst.width,
       dst.height,
