@@ -50,6 +50,32 @@ const diagnostic = (run: () => unknown) => {
   }
 };
 
+it("clamps mask feather overshoot without motion bindings", () => {
+  const layer = solid();
+  layer.masks = [
+    {
+      id: "cut",
+      mode: "add",
+      path: {
+        closed: true,
+        vertices: [
+          [0, 0],
+          [20, 0],
+          [20, 10],
+        ],
+      },
+      feather: {
+        keys: [
+          { frame: 0, value: 10 },
+          { frame: 20, value: 0, easing: "out-back" },
+        ],
+      },
+    },
+  ];
+  const doc = CompositionSchema.parse(comp([layer]));
+  expect(state(doc, 15).masks[0]!.feather).toBe(0);
+});
+
 describe("composition image crossfade defaults", () => {
   const imageComp = (): Composition => ({
     ...comp([

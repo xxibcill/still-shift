@@ -170,9 +170,9 @@ export function createCanvas2dBackend(
   ) => {
     const ctx = s.ctx;
     ctx.save();
-    reset(ctx);
     clip(ctx, clips);
     transform(ctx, matrix, transforms);
+    ctx.filter = "none";
     ctx.globalAlpha = opacity;
     ctx.globalCompositeOperation = COMPOSITE[blend];
     return ctx;
@@ -215,21 +215,24 @@ export function createCanvas2dBackend(
         ctx.fillRect(0, 0, surface.width, surface.height);
       }
     },
-    fillRect(
-      dst,
-      matrix,
-      width,
-      height,
-      color,
-      opacity,
-      blend,
-      clips,
-      transforms,
-    ) {
-      const ctx = begin(dst, matrix, opacity, blend, clips, transforms);
+    fillRect(dst, matrix, width, height, color, opacity, blend, clips) {
+      const ctx = begin(dst, matrix, opacity, blend, clips);
       ctx.fillStyle = cssColor(color);
       ctx.fillRect(0, 0, width, height);
       ctx.restore();
+    },
+    fillRects(dst, ops) {
+      const ctx = begin(dst, [1, 0, 0, 1, 0, 0], 1, "normal", []);
+      try {
+        for (const op of ops) {
+          ctx.setTransform(...op.matrix);
+          ctx.globalAlpha = op.opacity;
+          ctx.fillStyle = cssColor(op.content.color);
+          ctx.fillRect(0, 0, op.content.width, op.content.height);
+        }
+      } finally {
+        ctx.restore();
+      }
     },
     drawImage(dst, content, matrix, opacity, blend, clips, transforms) {
       // Settled states draw directly: a screen-sized intermediate resamples pixels

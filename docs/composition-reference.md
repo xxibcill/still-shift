@@ -301,17 +301,28 @@ duplicate ids fail. Export supports the built-in registry. Unknown ids and inval
 provider payloads fail during preparation with a JSON path, rather than being skipped.
 Structural composition validation does not execute provider code.
 
-The initial story adapter registers `story.path@1.0.0` (uniform, ink and brush paths),
-`story.flow@1.0.0` (path flows), and `story.text@1.0.0` (plain legacy text, including
-states, reveals and `textLayout`). The text provider keeps the original direct text
+The story adapter registers `story.path@1.0.0` (uniform, ink and brush paths),
+`story.flow@1.0.0` (path flows), `story.rect@1.0.0` (rounded, stroked or revealing
+rectangles), and `story.text@1.0.0` (plain legacy text, including states, reveals and
+`textLayout`). Plain, fully revealed rectangles become native solids. Consecutive
+normal solids without clips can share a Canvas batch while preserving paint order.
+The text provider keeps the original direct text
 drawing for adapter parity; authored composition typography continues using native
 `text` layers. Adapter transforms and provider samples are baked at integer frames,
-held between frames and outside their source range. This slice rejects motion-craft,
-typography, components, effects, attached paths, rectangles, non-group drawable
+held between frames and outside their source range. Image state changes use discrete
+keys. This slice rejects motion-craft,
+typography, components, effects, non-group drawable
 parents, text containers and `textBox`, and scenes longer than 2,000 frames. These
 are CE4a follow-ups; fractional motion-blur sampling is not supported by this slice.
 
-Repeated trailing samples are omitted for paths and plain text; the providers hold
+Attached connectors use `story.path@1.1.0` and `story.flow@1.1.0`. Their payloads store
+integer-frame endpoint pairs and the authored bend. A shared geometry primitive
+reconstructs the curve without evaluating the source scene at render time. Endpoints
+already include camera projection, so these layers use camera depth zero. Existing
+1.0.0 provider payloads remain supported.
+
+Repeated trailing samples are omitted for paths, rectangles, connector endpoints
+and plain text; the providers hold
 the final sample without changing earlier frame indices. Flow samples retain their
 full source clock. Payloads still exceeding 64 KiB report the source node and path.
 

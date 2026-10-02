@@ -6,12 +6,7 @@ import type {
   CompositionScope,
   TrackMatte,
 } from "@still-shift/scene-contract";
-import {
-  multiplyMatrix,
-  transformPoint,
-  type Matrix,
-  type Point,
-} from "../../node-transform.ts";
+import { multiplyMatrix, type Matrix } from "../../node-transform.ts";
 import type {
   Bounds,
   EvaluatedLayer,
@@ -19,6 +14,7 @@ import type {
   Rgba,
 } from "../evaluate/types.ts";
 import { cameraMatrix } from "../evaluate/camera.ts";
+import { projectBounds } from "../evaluate/geometry.ts";
 
 type TextLayer = Extract<CompositionLayer, { type: "text" }>;
 type ImageLayer = Extract<CompositionLayer, { type: "image" }>;
@@ -164,22 +160,19 @@ type Scope = {
 const IDENTITY: Matrix = [1, 0, 0, 1, 0, 0];
 
 function boundsMiss(bounds: Bounds, matrix: Matrix, frame: Frame) {
-  const corners = [
-    [bounds.left, bounds.top],
-    [bounds.right, bounds.top],
-    [bounds.right, bounds.bottom],
-    [bounds.left, bounds.bottom],
-  ].map((p) => transformPoint(matrix, p as Point));
+  const projected =
+    matrix === IDENTITY ? bounds : projectBounds(bounds, matrix);
   return (
-    Math.max(...corners.map((p) => p[0])) <= 0 ||
-    Math.max(...corners.map((p) => p[1])) <= 0 ||
-    Math.min(...corners.map((p) => p[0])) >= frame.viewport.width ||
-    Math.min(...corners.map((p) => p[1])) >= frame.viewport.height
+    projected.right <= 0 ||
+    projected.bottom <= 0 ||
+    projected.left >= frame.viewport.width ||
+    projected.top >= frame.viewport.height
   );
 }
 
 class GraphBuilder {
   readonly culled: string[] = [];
+  private readonly cameras = new Map<number, Matrix>();
   constructor(readonly comp: Composition) {}
 
   private precomp(id: string): CompositionScope {
@@ -260,16 +253,19 @@ class GraphBuilder {
     return [
       ...frame.transforms,
       ...(scope.def === this.comp && this.comp.camera2d
-        ? [
-            cameraMatrix(
-              this.comp,
-              scope.tree.time,
-              root.layer.cameraDepth ?? 1,
-            ),
-          ]
+        ? [this.camera(scope.tree.time, root.layer.cameraDepth ?? 1)]
         : []),
       ...local,
     ];
+  }
+
+  private camera(time: number, depth: number): Matrix {
+    let matrix = this.cameras.get(depth);
+    if (!matrix) {
+      matrix = cameraMatrix(this.comp, time, depth);
+      this.cameras.set(depth, matrix);
+    }
+    return matrix;
   }
 
   private masks(

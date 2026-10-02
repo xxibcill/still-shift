@@ -16,8 +16,9 @@ import {
   passageDiagnostics,
   PassageError,
 } from "../../passage-diagnostics.ts";
+import { compileStoryPathGeometry } from "./story-path.ts";
 
-export const STORY_ADAPTER_VERSION = "story-composition-0.1.2";
+export const STORY_ADAPTER_VERSION = "story-composition-0.2.0";
 type Samples = ReturnType<typeof evaluatePreparedNode>[];
 function params(value: unknown, path: string, node?: string) {
   const result = ProviderLayerSchema.shape.params.safeParse(
@@ -65,7 +66,6 @@ function checkSupported(scene: StoryScene) {
   if (scene.typography) unsupported("typography", "Typography scenes");
   if (scene.componentData) unsupported("componentData", "Reusable components");
   if (scene.effects?.length) unsupported("effects", "Pixel effects");
-  if (scene.connectors.length) unsupported("connectors", "Attached paths");
   if (scene.textAnimators?.length)
     unsupported("textAnimators", "Text animators");
   scene.nodes.forEach((node, i) => {
@@ -75,8 +75,6 @@ function checkSupported(scene: StoryScene) {
       scene.nodes.find((n) => n.id === node.parent)?.type !== "group"
     )
       unsupported(`${path}.parent`, "Parenting to drawable nodes");
-    if (node.type === "rect")
-      unsupported(`${path}.type`, "Rounded and stroked rectangles");
     if (node.type === "text") {
       for (const field of [
         "container",
@@ -111,6 +109,13 @@ function baked(values: number[]) {
   };
 }
 
+function bakedState(values: number[]) {
+  const keys = values.flatMap((value, frame) =>
+    frame === 0 || value !== values[frame - 1] ? [{ frame, value }] : [],
+  );
+  return keys.length === 1 ? keys[0]!.value : { keys };
+}
+
 function baseLayer(
   scene: StoryRenderScene,
   node: PreparedNode,
@@ -124,7 +129,11 @@ function baseLayer(
     id: node.id,
     ...(node.parent ? { parent: node.parent } : {}),
     ...(!node.parent && scene.camera
-      ? { cameraDepth: scene.camera.depth[node.id] ?? 1 }
+      ? {
+          cameraDepth: scene.connectors.some((c) => c.path === node.id)
+            ? 0
+            : (scene.camera.depth[node.id] ?? 1),
+        }
       : {}),
     source: { family: "story-scene-1", id: node.id },
     transform: {
@@ -158,11 +167,11 @@ function nodeLayer(
         size: [node.width, node.height],
         fit: node.fit,
         sources: node.states,
-        state: baked(samples.map((s) => Math.round(s.state))),
+        state: bakedState(samples.map((s) => Math.round(s.state))),
         rasterize: scene.motionGrammar === "v2" ? "natural-size" : "draw",
         ...(samples.some((s) => s.stateFrom !== undefined)
           ? {
-              stateFrom: baked(
+              stateFrom: bakedState(
                 samples.map((s) => Math.round(s.stateFrom ?? s.state)),
               ),
               stateMix: baked(samples.map((s) => s.stateMix ?? 1)),
@@ -176,14 +185,43 @@ function nodeLayer(
         size: [node.width, node.height],
         clip: node.clip,
       };
-    case "path":
+    case "rect":
+      if (
+        node.radius === 0 &&
+        (!node.stroke || node.lineWidth === 0) &&
+        samples.every((s) => s.reveal === 1)
+      )
+        return {
+          ...base,
+          type: "solid",
+          size: [node.width, node.height],
+          color: node.fill,
+        };
       return {
         ...base,
         type: "provider",
-        provider: "story.path@1.0.0",
+        provider: "story.rect@1.0.0",
         params: params(
           {
             node,
+            samples: trimSettledSamples(
+              samples.map(({ reveal }) => ({ reveal })),
+            ),
+          },
+          path,
+          node.id,
+        ),
+      };
+    case "path": {
+      const geometry = compileStoryPathGeometry(scene, node);
+      return {
+        ...base,
+        type: "provider",
+        provider: geometry ? "story.path@1.1.0" : "story.path@1.0.0",
+        params: params(
+          {
+            node,
+            ...(geometry ? { geometry } : {}),
             samples: trimSettledSamples(
               samples.map(({ reveal, gap, pinch, pulse }) => ({
                 reveal,
@@ -197,6 +235,7 @@ function nodeLayer(
           node.id,
         ),
       };
+    }
     case "text":
       return {
         ...base,
@@ -218,12 +257,6 @@ function nodeLayer(
           node.id,
         ),
       };
-    default:
-      return passageError(
-        "comp-adapter-unsupported",
-        `Unsupported story node ${node.type}`,
-        { path: `nodes.${node.id}` },
-      );
   }
 }
 
@@ -251,15 +284,17 @@ export function storyToComposition(
           while (ids.has(id)) id += "-flow";
           ids.add(id);
           const base = baseLayer(scene, node, samples);
+          const geometry = compileStoryPathGeometry(scene, node);
           layers.push({
             ...base,
             id,
             type: "provider",
-            provider: "story.flow@1.0.0",
+            provider: geometry ? "story.flow@1.1.0" : "story.flow@1.0.0",
             transform: { ...base.transform, opacity: 1 },
             params: params(
               {
                 node,
+                ...(geometry ? { geometry } : {}),
                 flow,
                 // Flow playback uses sample count as its source clock, including the settled tail.
                 samples: samples.map(({ reveal, gap }) => ({ reveal, gap })),

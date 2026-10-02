@@ -155,21 +155,17 @@ describe("CE4a story adapter first slice", () => {
   });
 
   it("rejects unsupported features with a path instead of dropping them", () => {
-    const scene = fixture();
-    scene.nodes.push({
-      id: "box",
-      type: "rect",
-      x: 0,
-      y: 0,
-      width: 100,
-      height: 100,
-      origin: [0, 0],
-      opacity: 1,
-      rotation: 0,
-      fill: "#ffffff",
-      radius: 10,
-      lineWidth: 0,
-    });
+    const scene = StorySceneSchema.parse(
+      JSON.parse(
+        readFileSync(
+          new URL(
+            "../../benchmarks/fixtures/motion-craft/buffer-press.json",
+            import.meta.url,
+          ),
+          "utf8",
+        ),
+      ),
+    );
     try {
       storyToComposition(scene);
       throw new Error("expected rejection");
@@ -177,7 +173,7 @@ describe("CE4a story adapter first slice", () => {
       expect(passageDiagnostics(error)).toContainEqual(
         expect.objectContaining({
           code: "comp-adapter-unsupported",
-          path: `nodes[${scene.nodes.length - 1}].type`,
+          path: "motionModel",
         }),
       );
     }

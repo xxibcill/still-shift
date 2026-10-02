@@ -13,7 +13,11 @@ import type {
   SurfaceNode,
   TextContent,
   ProviderContent,
+  DrawOp,
+  SolidContent,
 } from "./graph.ts";
+
+export type SolidDraw = DrawOp & { content: SolidContent };
 
 /** A premultiplied RGBA render target owned by a backend. */
 export type Surface = { readonly width: number; readonly height: number };
@@ -29,6 +33,8 @@ export interface RenderBackend<S extends Surface = Surface> {
   releaseSurface(surface: S): void;
   /** Clear to transparent, then fill with `background` when given. */
   clear(surface: S, background: Rgba | null): void;
+  /** Optional batch for consecutive normal solid fills without clips. */
+  fillRects?(dst: S, ops: SolidDraw[]): void;
   fillRect(
     dst: S,
     matrix: Matrix,
@@ -99,12 +105,12 @@ export function executeGraph<S extends Surface>(
   const surface = (node: SurfaceNode, into?: S): S => {
     const dst = into ?? backend.createSurface(node.width, node.height);
     backend.clear(dst, node.background);
-    for (const op of node.ops) run(op, dst);
+    runOps(node.ops, dst);
     return dst;
   };
   const isolated = (ops: RenderOp[], like: S) => {
     const tmp = backend.createSurface(like.width, like.height);
-    for (const op of ops) run(op, tmp);
+    runOps(ops, tmp);
     return tmp;
   };
   const mask = (
@@ -195,6 +201,27 @@ export function executeGraph<S extends Surface>(
         backend.releaseSurface(src);
         return;
       }
+    }
+  };
+  const batchable = (op: RenderOp): op is SolidDraw =>
+    op.kind === "draw" &&
+    op.content.type === "solid" &&
+    op.blend === "normal" &&
+    op.clips.length === 0;
+  const runOps = (ops: RenderOp[], dst: S) => {
+    for (let index = 0; index < ops.length; index++) {
+      const op = ops[index]!;
+      if (backend.fillRects && batchable(op)) {
+        const batch = [op];
+        while (index + 1 < ops.length) {
+          const next = ops[index + 1]!;
+          if (!batchable(next)) break;
+          batch.push(next);
+          index++;
+        }
+        if (batch.length > 1) backend.fillRects(dst, batch);
+        else run(op, dst);
+      } else run(op, dst);
     }
   };
   surface(graph.root, target);

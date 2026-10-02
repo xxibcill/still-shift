@@ -5,7 +5,6 @@ import type {
 } from "@still-shift/scene-contract";
 import {
   imagePlacement,
-  transformPoint,
   type Matrix,
   type Point,
 } from "../../node-transform.ts";
@@ -53,17 +52,21 @@ export function layerSize(
 }
 
 export function projectBounds(bounds: Bounds, matrix: Matrix): Bounds {
-  const points = [
-    [bounds.left, bounds.top],
-    [bounds.right, bounds.top],
-    [bounds.right, bounds.bottom],
-    [bounds.left, bounds.bottom],
-  ].map((p) => transformPoint(matrix, p as Point));
+  const [a, b, c, d, e, f] = matrix;
+  const { left, top, right, bottom } = bounds;
+  const x0 = a * left + c * top + e,
+    x1 = a * right + c * top + e;
+  const x2 = a * right + c * bottom + e,
+    x3 = a * left + c * bottom + e;
+  const y0 = b * left + d * top + f,
+    y1 = b * right + d * top + f;
+  const y2 = b * right + d * bottom + f,
+    y3 = b * left + d * bottom + f;
   return {
-    left: Math.min(...points.map((p) => p[0])),
-    top: Math.min(...points.map((p) => p[1])),
-    right: Math.max(...points.map((p) => p[0])),
-    bottom: Math.max(...points.map((p) => p[1])),
+    left: Math.min(x0, x1, x2, x3),
+    top: Math.min(y0, y1, y2, y3),
+    right: Math.max(x0, x1, x2, x3),
+    bottom: Math.max(y0, y1, y2, y3),
   };
 }
 

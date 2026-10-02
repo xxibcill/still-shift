@@ -64,6 +64,7 @@ type Context = {
   groupOpacity: Map<string, number>;
   groupVisible: Map<string, boolean>;
   soloLayers: Set<string> | null;
+  matteLayers: Set<string>;
 };
 
 type Request = {
@@ -112,6 +113,9 @@ function context(
     groupOpacity: new Map(),
     groupVisible: new Map(),
     soloLayers: selectSoloLayers(scope),
+    matteLayers: new Set(
+      scope.layers.flatMap((l) => (l.trackMatte ? [l.trackMatte.layer] : [])),
+    ),
   };
 }
 
@@ -202,6 +206,7 @@ class Evaluation {
   readonly root: Context;
   private readonly history = new Map<number, Evaluation>();
   private count = 0;
+  private readonly cameras = new Map<number, ReturnType<typeof cameraMatrix>>();
   constructor(
     readonly compiled: CompiledComposition,
     readonly time: number,
@@ -216,6 +221,15 @@ class Evaluation {
   }
   private layer(ctx: Context, id: string) {
     return this.compiled.layers.get(ctx.scope)!.get(id)!;
+  }
+
+  private camera(depth: number) {
+    let matrix = this.cameras.get(depth);
+    if (!matrix) {
+      matrix = cameraMatrix(this.compiled.comp, this.time, depth);
+      this.cameras.set(depth, matrix);
+    }
+    return matrix;
   }
 
   private run<T>(task: Task<T>): T {
@@ -376,6 +390,12 @@ class Evaluation {
   ): Task<void> {
     const key = this.bindings(ctx, state.id),
       comp = this.compiled.comp;
+    if (
+      !state.masks.length &&
+      !this.compiled.periodic.has(key) &&
+      !this.compiled.drivers.has(key)
+    )
+      return;
     const accepts = (path: PropertyPath) =>
       !remapOnly || path.segments[0]!.name === "timeRemap";
     for (const layer of order) {
@@ -520,7 +540,7 @@ class Evaluation {
     while (root.parent) root = this.layer(ctx, root.parent);
     const camera =
       ctx.scope === this.compiled.comp && this.compiled.comp.camera2d
-        ? cameraMatrix(this.compiled.comp, this.time, root.cameraDepth ?? 1)
+        ? this.camera(root.cameraDepth ?? 1)
         : identity();
     state.screenMatrix = multiplyMatrix(camera, state.worldMatrix);
     const local = localBounds(
@@ -541,7 +561,7 @@ class Evaluation {
     state.drawable =
       state.visible &&
       !["null", "group"].includes(layer.type) &&
-      !ctx.scope.layers.some((l) => l.trackMatte?.layer === layer.id);
+      !ctx.matteLayers.has(layer.id);
     ctx.active.delete(layer.id);
     ctx.states.set(layer.id, state);
     return state;
@@ -563,8 +583,7 @@ class Evaluation {
       // Track mattes ignore `enabled` and solo, so matte precomps need content too.
       if (
         state.layer.type === "precomp" &&
-        (state.visible ||
-          ctx.scope.layers.some((l) => l.trackMatte?.layer === state.id))
+        (state.visible || ctx.matteLayers.has(state.id))
       )
         state.precomp = this.tree(this.run(this.child(ctx, state.layer)));
     }

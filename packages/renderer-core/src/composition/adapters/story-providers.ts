@@ -5,6 +5,7 @@ import {
   StoryFlowSchema,
 } from "@still-shift/scene-contract";
 import { drawPreparedPath } from "../../prepared-path-renderer.ts";
+import { drawPreparedRect } from "../../prepared-rect-renderer.ts";
 import { compileStoryFlows, drawStoryFlow } from "../../story-flows.ts";
 import { drawStoryText } from "../../story-text.ts";
 import { passageError } from "../../passage-diagnostics.ts";
@@ -12,6 +13,7 @@ import type {
   CanvasContentProvider,
   ProviderLayer,
 } from "../render/providers.ts";
+import { StoryPathGeometrySchema, sampleStoryPath } from "./story-path.ts";
 
 const finite = z.number().finite();
 const unit = finite.min(0).max(1);
@@ -40,6 +42,18 @@ export const StoryTextParamsSchema = z
     ),
   })
   .strict();
+export const StoryAttachedPathParamsSchema = StoryPathParamsSchema.extend({
+  geometry: StoryPathGeometrySchema,
+});
+export const StoryAttachedFlowParamsSchema = StoryFlowParamsSchema.extend({
+  geometry: StoryPathGeometrySchema,
+});
+export const StoryRectParamsSchema = z
+  .object({
+    node: PreparedNodeSchema.options[3],
+    samples: frames(z.object({ reveal: unit }).strict()),
+  })
+  .strict();
 
 function parse<T extends z.ZodType>(
   schema: T,
@@ -59,6 +73,47 @@ function sample<T>(samples: T[], time: number): T {
 
 /** These providers draw local content only; the composition graph owns all transforms and compositing. */
 export const STORY_CONTENT_PROVIDERS: readonly CanvasContentProvider[] = [
+  {
+    id: "story.rect@1.0.0",
+    prepare(layer, _resources, path) {
+      const params = parse(StoryRectParamsSchema, layer, path);
+      return (ctx, time) =>
+        drawPreparedRect(ctx, params.node, sample(params.samples, time).reveal);
+    },
+  },
+  {
+    id: "story.path@1.1.0",
+    prepare(layer, _resources, path) {
+      const params = parse(StoryAttachedPathParamsSchema, layer, path);
+      return (ctx, time) =>
+        drawPreparedPath(
+          ctx,
+          sampleStoryPath(params.node, params.geometry, time),
+          sample(params.samples, time),
+        );
+    },
+  },
+  {
+    id: "story.flow@1.1.0",
+    prepare(layer, _resources, path) {
+      const params = parse(StoryAttachedFlowParamsSchema, layer, path);
+      const flow = compileStoryFlows([params.flow], params.samples.length)[0]!;
+      return (ctx, time) => {
+        const frame = Math.max(
+          0,
+          Math.min(params.samples.length - 1, Math.floor(time)),
+        );
+        drawStoryFlow(
+          ctx,
+          flow,
+          sampleStoryPath(params.node, params.geometry, frame),
+          sample(params.samples, frame),
+          frame,
+          params.samples.length,
+        );
+      };
+    },
+  },
   {
     id: "story.path@1.0.0",
     prepare(layer, _resources, path) {
