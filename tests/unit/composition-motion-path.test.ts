@@ -12,6 +12,7 @@ import { compileStoryScene } from "../../packages/renderer-core/src/story-scene.
 import { evaluateMotionAppearance } from "../../packages/renderer-core/src/motion-appearance.ts";
 import {
   MotionPathParamsSchema,
+  motionPathBounds,
   sampleCompositionMotionPath,
   MOTION_PATH_PROVIDERS,
 } from "../../packages/renderer-core/src/composition/adapters/motion-path.ts";
@@ -56,6 +57,41 @@ describe("CE4b compiled motion paths", () => {
         )!;
         if (layer.type !== "provider") throw new Error("Expected path");
         const data = MotionPathParamsSchema.parse(layer.params);
+        const bounds = motionPathBounds(data, 27)!;
+        expect(bounds).toBeDefined();
+        for (let time = 0; time < scene.frameCount; time += 0.25) {
+          expect(
+            sampleCompositionMotionPath(
+              data,
+              time,
+              Math.floor(time),
+            ).points.every(
+              ([x, y]) =>
+                x >= bounds.left + 27 &&
+                x <= bounds.right - 27 &&
+                y >= bounds.top + 27 &&
+                y <= bounds.bottom - 27,
+            ),
+          ).toBe(true);
+        }
+        if (data.motion.morph) {
+          const overshoot = structuredClone(data);
+          overshoot.motion.morph!.keys[1]!.easing = { overshoot: 5 };
+          expect(motionPathBounds(overshoot, 27)).toBeUndefined();
+          overshoot.motion.morph!.keys[1]!.easing = {
+            bezier: [0.2, -1, 0.8, 2],
+          };
+          expect(motionPathBounds(overshoot, 27)).toBeUndefined();
+        }
+        const shadow = structuredClone(layer);
+        (shadow.params.samples as { pulse: number }[])[0]!.pulse = 1;
+        expect(
+          MOTION_PATH_PROVIDERS[0]!.prepare(
+            shadow,
+            { images: new Map(), fonts: new Map() },
+            "layers[0]",
+          ).bounds,
+        ).toBeUndefined();
         const node = scene.nodes.find((node) => node.id === layer.id)!;
         expect(data.motion.spatial).toEqual(input.spatialPaths?.[0]);
         expect(data.motion.morph).toEqual(input.pathMorphs?.[0]);

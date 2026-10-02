@@ -1,3 +1,5 @@
+import { pointBounds } from "./provider-bounds.ts";
+import { preparedProvider } from "../render/providers.ts";
 import { z } from "zod";
 import {
   COMPOSITION_LIMITS,
@@ -113,24 +115,64 @@ export function sampleCompositionMotionPath(
   );
 }
 
+/** Cubic and non-overshooting morph geometry stays inside its control-point hull. */
+export function motionPathBounds(
+  data: Pick<PathParams, "node" | "geometry" | "motion">,
+  padding: number,
+) {
+  const morph = data.motion.morph;
+  if (
+    morph?.keys.some(({ easing }) =>
+      typeof easing === "object"
+        ? !("bezier" in easing) ||
+          easing.bezier[1] < 0 ||
+          easing.bezier[1] > 1 ||
+          easing.bezier[3] < 0 ||
+          easing.bezier[3] > 1
+        : ["out-back", "out-back-soft", "anticipate"].includes(easing ?? ""),
+    )
+  )
+    return undefined;
+  const geometry = data.geometry;
+  const points = morph
+    ? morph.keys.flatMap((key) => key.points)
+    : data.motion.spatial
+      ? data.motion.spatial.segments.flat()
+      : !geometry
+        ? data.node.points
+        : "points" in geometry
+          ? geometry.points.flat()
+          : geometry.endpoints.flatMap(
+              (_, index) => sampleStoryPath(data.node, geometry, index).points,
+            );
+  return pointBounds(points, padding);
+}
+
 export const MOTION_PATH_PROVIDERS: readonly CanvasContentProvider[] = [
   {
     id: "component.path@1.0.0",
     prepare(layer, _resources, path) {
       const data = parse(MotionPathParamsSchema, layer, path);
-      return (ctx, time, _state, sourceTime) => {
-        const frame = Math.max(
-          0,
-          sourceTime === undefined
-            ? Math.min(data.motion.frameCount - 1, Math.floor(time))
-            : Math.floor(time),
-        );
-        drawPreparedPath(
-          ctx,
-          sampleCompositionMotionPath(data, sourceTime ?? frame, frame),
-          data.samples[Math.min(frame, data.samples.length - 1)]!,
-        );
-      };
+      return preparedProvider(
+        (ctx, time, _state, sourceTime) => {
+          const frame = Math.max(
+            0,
+            sourceTime === undefined
+              ? Math.min(data.motion.frameCount - 1, Math.floor(time))
+              : Math.floor(time),
+          );
+          drawPreparedPath(
+            ctx,
+            sampleCompositionMotionPath(data, sourceTime ?? frame, frame),
+            data.samples[Math.min(frame, data.samples.length - 1)]!,
+          );
+        },
+        {
+          bounds: data.samples.some((sample) => sample.pulse > 0)
+            ? undefined
+            : motionPathBounds(data, Math.max(1, data.node.lineWidth) * 3),
+        },
+      );
     },
   },
   {
@@ -138,55 +180,79 @@ export const MOTION_PATH_PROVIDERS: readonly CanvasContentProvider[] = [
     prepare(layer, _resources, path) {
       const data = parse(MotionFlowParamsSchema, layer, path);
       const flow = compileStoryFlows([data.flow], data.motion.frameCount)[0]!;
-      return (ctx, time, _state, sourceTime) => {
-        const frame = Math.max(
-          0,
-          sourceTime === undefined
-            ? Math.min(data.motion.frameCount - 1, Math.floor(time))
-            : Math.floor(time),
-        );
-        drawStoryFlow(
-          ctx,
-          flow,
-          sampleCompositionMotionPath(data, sourceTime ?? frame, frame),
-          data.samples[Math.min(frame, data.samples.length - 1)]!,
-          sourceTime ?? frame,
-          data.motion.frameCount,
-        );
-      };
+      return preparedProvider(
+        (ctx, time, _state, sourceTime) => {
+          const frame = Math.max(
+            0,
+            sourceTime === undefined
+              ? Math.min(data.motion.frameCount - 1, Math.floor(time))
+              : Math.floor(time),
+          );
+          drawStoryFlow(
+            ctx,
+            flow,
+            sampleCompositionMotionPath(data, sourceTime ?? frame, frame),
+            data.samples[Math.min(frame, data.samples.length - 1)]!,
+            sourceTime ?? frame,
+            data.motion.frameCount,
+          );
+        },
+        {
+          bounds: motionPathBounds(
+            data,
+            Math.hypot(flow.size, Math.min(2, flow.size)),
+          ),
+        },
+      );
     },
   },
   {
     id: "component.path@1.1.0",
     prepare(layer, _resources, path) {
       const data = parse(PaintedPathParamsSchema, layer, path);
-      return (ctx, time, _state, sourceTime) => {
-        const frame = Math.max(
-          0,
-          sourceTime === undefined
-            ? Math.min(data.motion.frameCount - 1, Math.floor(time))
-            : Math.floor(time),
-        );
-        const paint = appearanceAt(data.appearance, frame);
-        drawPreparedPath(
-          ctx,
-          paintNode(
-            sampleCompositionMotionPath(data, sourceTime ?? frame, frame),
-            data.appearance,
-            frame,
-          ),
-          {
-            ...data.samples[Math.min(frame, data.samples.length - 1)]!,
-            ...(paint.trimStart !== undefined
-              ? { trimStart: paint.trimStart }
-              : {}),
-            ...(paint.trimEnd !== undefined ? { trimEnd: paint.trimEnd } : {}),
-            ...(paint.trimOffset !== undefined
-              ? { trimOffset: paint.trimOffset }
-              : {}),
-          },
-        );
-      };
+      return preparedProvider(
+        (ctx, time, _state, sourceTime) => {
+          const frame = Math.max(
+            0,
+            sourceTime === undefined
+              ? Math.min(data.motion.frameCount - 1, Math.floor(time))
+              : Math.floor(time),
+          );
+          const paint = appearanceAt(data.appearance, frame);
+          drawPreparedPath(
+            ctx,
+            paintNode(
+              sampleCompositionMotionPath(data, sourceTime ?? frame, frame),
+              data.appearance,
+              frame,
+            ),
+            {
+              ...data.samples[Math.min(frame, data.samples.length - 1)]!,
+              ...(paint.trimStart !== undefined
+                ? { trimStart: paint.trimStart }
+                : {}),
+              ...(paint.trimEnd !== undefined
+                ? { trimEnd: paint.trimEnd }
+                : {}),
+              ...(paint.trimOffset !== undefined
+                ? { trimOffset: paint.trimOffset }
+                : {}),
+            },
+          );
+        },
+        {
+          bounds: data.samples.some((sample) => sample.pulse > 0)
+            ? undefined
+            : motionPathBounds(
+                data,
+                Math.max(
+                  1,
+                  Math.abs(data.node.lineWidth),
+                  ...(data.appearance.strokeWidth ?? []).map(Math.abs),
+                ) * 3,
+              ),
+        },
+      );
     },
   },
 ];

@@ -2274,6 +2274,23 @@ comparisons; the full `pnpm check`.
   cause large snapshot costs (morph **9.7052×**). Primitive-blur parity, remaining
   family gates and final local/frozen-baseline checks are still required.
 
+### CE4b bounded motion-path providers (2026-10-03)
+
+- **Version:** `composition-webgl2-0.12.0` bounds spatial paths, morphs, attached
+  paths and their flow tokens using conservative control-point hulls and stroke
+  extents. Morph precedence matches the drawer; painted paths include the maximum
+  authored width. Overshooting easings and device-space shadows retain the full
+  conservative fallback. Provider pixels and adapter output are unchanged.
+- **Verification:** quarter-frame geometry containment, overshoot/shadow fallback,
+  1,236 unit tests, native GPU parity, all 4,096 arithmetic cases and all 204
+  export/Lab frames pass. Morph's 192-frame pixels remain unchanged and timing
+  improves from **9.7052×** to **4.9241×**. Spatial-morph retains delta **1** and
+  improves from **4.9815×** to **4.2628×**. Both still miss the 1.25× gate.
+- **Remaining:** the two brush-morph outliers and blurred-caption outliers come
+  from multiple Canvas paint operations flattened inside a single provider.
+  Their compositing parity, remaining performance gates and final full verification
+  are still open.
+
 **Completion record:** CE4a and CE4b are in progress; CE4c–CE4d have not started.
 
 ---
