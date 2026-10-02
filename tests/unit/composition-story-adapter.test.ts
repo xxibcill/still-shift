@@ -3,8 +3,14 @@ import { describe, expect, it } from "vitest";
 import {
   StorySceneSchema,
   validateComposition,
+  COMPOSITION_LIMITS,
 } from "@still-shift/scene-contract";
 import { storyToComposition } from "../../packages/renderer-core/src/composition/adapters/story.ts";
+import {
+  StoryPathParamsSchema,
+  StoryFlowParamsSchema,
+  StoryTextParamsSchema,
+} from "../../packages/renderer-core/src/composition/adapters/story-providers.ts";
 import { evaluateComp } from "../../packages/renderer-core/src/composition/evaluate/index.ts";
 import { compileStoryScene } from "../../packages/renderer-core/src/story-scene.ts";
 import { evaluatePreparedNode } from "../../packages/renderer-core/src/prepared-scene.ts";
@@ -172,6 +178,59 @@ describe("CE4a story adapter first slice", () => {
         expect.objectContaining({
           code: "comp-adapter-unsupported",
           path: `nodes[${scene.nodes.length - 1}].type`,
+        }),
+      );
+    }
+  });
+
+  it.each([1500, COMPOSITION_LIMITS.maxKeys])(
+    "compacts settled provider samples without changing any source frame: %i frames",
+    (frameCount) => {
+      const input = fixture();
+      input.frameCount = frameCount;
+      input.camera!.keys.at(-1)!.frame = frameCount - 1;
+      for (const flow of input.flows ?? []) flow.window.end = frameCount - 1;
+      const scene = compileStoryScene(input);
+      const composition = storyToComposition(input);
+      expect(validateComposition(composition).ok).toBe(true);
+      for (const layer of composition.layers) {
+        if (layer.type !== "provider") continue;
+        const params =
+          layer.provider === "story.path@1.0.0"
+            ? StoryPathParamsSchema.parse(layer.params)
+            : layer.provider === "story.text@1.0.0"
+              ? StoryTextParamsSchema.parse(layer.params)
+              : StoryFlowParamsSchema.parse(layer.params);
+        if (layer.provider === "story.flow@1.0.0")
+          expect(params.samples).toHaveLength(frameCount);
+        else expect(params.samples.length).toBeLessThan(frameCount);
+        const node = scene.nodes.find((n) => n.id === params.node.id)!;
+        for (let frame = frameCount - 1; frame >= 0; frame--) {
+          const expected = evaluatePreparedNode(scene, node, frame);
+          const sample =
+            params.samples[Math.min(frame, params.samples.length - 1)]!;
+          for (const [key, value] of Object.entries(sample))
+            expect(value).toBe(expected[key as keyof typeof expected]);
+        }
+      }
+    },
+  );
+
+  it("identifies the source node when provider content still exceeds the JSON limit", () => {
+    const scene = fixture();
+    const index = scene.nodes.findIndex((node) => node.type === "text");
+    const node = scene.nodes[index]!;
+    if (node.type !== "text") throw new Error("text fixture required");
+    node.text = "x".repeat(COMPOSITION_LIMITS.maxJsonBytes);
+    try {
+      storyToComposition(scene);
+      throw new Error("expected rejection");
+    } catch (error) {
+      expect(passageDiagnostics(error)).toContainEqual(
+        expect.objectContaining({
+          code: "comp-json-size",
+          node: node.id,
+          path: `nodes[${index}]`,
         }),
       );
     }

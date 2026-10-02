@@ -11,12 +11,42 @@ import {
 } from "@still-shift/scene-contract";
 import { compileStoryScene, type StoryRenderScene } from "../../story-scene.ts";
 import { evaluatePreparedNode } from "../../prepared-scene.ts";
-import { passageError, PassageError } from "../../passage-diagnostics.ts";
+import {
+  passageError,
+  passageDiagnostics,
+  PassageError,
+} from "../../passage-diagnostics.ts";
 
-export const STORY_ADAPTER_VERSION = "story-composition-0.1.1";
+export const STORY_ADAPTER_VERSION = "story-composition-0.1.2";
 type Samples = ReturnType<typeof evaluatePreparedNode>[];
-const params = (value: unknown) =>
-  ProviderLayerSchema.shape.params.parse(JSON.parse(JSON.stringify(value)));
+function params(value: unknown, path: string, node?: string) {
+  const result = ProviderLayerSchema.shape.params.safeParse(
+    JSON.parse(JSON.stringify(value)),
+  );
+  if (!result.success)
+    throw new PassageError(
+      passageDiagnostics(result.error).map((diagnostic) => ({
+        ...diagnostic,
+        path: diagnostic.path ? `${path}.${diagnostic.path}` : path,
+        ...(node ? { node } : {}),
+      })),
+    );
+  return result.data;
+}
+
+/** Providers hold the final sample; trimming only that tail preserves all frame indices. */
+function trimSettledSamples<T extends Record<string, number>>(samples: T[]) {
+  let end = samples.length;
+  const last = samples[end - 1]!;
+  while (
+    end > 1 &&
+    Object.entries(last).every(
+      ([key, value]) => samples[end - 2]![key] === value,
+    )
+  )
+    end--;
+  return samples.slice(0, end);
+}
 
 function checkSupported(scene: StoryScene) {
   const unsupported = (path: string, feature: string): never =>
@@ -119,6 +149,7 @@ function nodeLayer(
   samples: Samples,
 ): CompositionLayer {
   const base = baseLayer(scene, node, samples);
+  const path = `nodes[${scene.nodes.indexOf(node)}]`;
   switch (node.type) {
     case "image":
       return {
@@ -150,15 +181,21 @@ function nodeLayer(
         ...base,
         type: "provider",
         provider: "story.path@1.0.0",
-        params: params({
-          node,
-          samples: samples.map(({ reveal, gap, pinch, pulse }) => ({
-            reveal,
-            gap,
-            pinch,
-            pulse,
-          })),
-        }),
+        params: params(
+          {
+            node,
+            samples: trimSettledSamples(
+              samples.map(({ reveal, gap, pinch, pulse }) => ({
+                reveal,
+                gap,
+                pinch,
+                pulse,
+              })),
+            ),
+          },
+          path,
+          node.id,
+        ),
       };
     case "text":
       return {
@@ -167,13 +204,19 @@ function nodeLayer(
         provider: "story.text@1.0.0",
         ...(node.fontAsset ? { assets: [node.fontAsset] } : {}),
         usesSystemFonts: !node.fontAsset,
-        params: params({
-          node,
-          samples: samples.map(({ reveal, state }) => ({
-            reveal,
-            state: Math.round(state),
-          })),
-        }),
+        params: params(
+          {
+            node,
+            samples: trimSettledSamples(
+              samples.map(({ reveal, state }) => ({
+                reveal,
+                state: Math.round(state),
+              })),
+            ),
+          },
+          path,
+          node.id,
+        ),
       };
     default:
       return passageError(
@@ -214,11 +257,16 @@ export function storyToComposition(
             type: "provider",
             provider: "story.flow@1.0.0",
             transform: { ...base.transform, opacity: 1 },
-            params: params({
-              node,
-              flow,
-              samples: samples.map(({ reveal, gap }) => ({ reveal, gap })),
-            }),
+            params: params(
+              {
+                node,
+                flow,
+                // Flow playback uses sample count as its source clock, including the settled tail.
+                samples: samples.map(({ reveal, gap }) => ({ reveal, gap })),
+              },
+              `nodes[${scene.nodes.indexOf(node)}]`,
+              node.id,
+            ),
           });
         }
       }
@@ -279,12 +327,15 @@ export function storyToComposition(
         }
       : {}),
     ...(scene.format ? { format: scene.format } : {}),
-    metadata: params({
-      adapter: STORY_ADAPTER_VERSION,
-      title: scene.title,
-      provenance: scene.provenance ?? "",
-      ...(scene.review ? { review: scene.review } : {}),
-    }),
+    metadata: params(
+      {
+        adapter: STORY_ADAPTER_VERSION,
+        title: scene.title,
+        provenance: scene.provenance ?? "",
+        ...(scene.review ? { review: scene.review } : {}),
+      },
+      "metadata",
+    ),
   };
   const validation = validateComposition(composition);
   if (!validation.ok) throw new PassageError(validation.diagnostics);

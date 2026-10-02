@@ -26,6 +26,13 @@ const input = StorySceneSchema.parse(
 );
 const composition = storyToComposition(input);
 const scene = compileStoryScene(input);
+const extendedInput = structuredClone(input);
+extendedInput.frameCount = 2000;
+extendedInput.camera!.keys.at(-1)!.frame = extendedInput.frameCount - 1;
+for (const flow of extendedInput.flows ?? [])
+  flow.window.end = extendedInput.frameCount - 1;
+const extendedComposition = storyToComposition(extendedInput);
+const extendedScene = compileStoryScene(extendedInput);
 const urls = Object.fromEntries(
   composition.assets.map((a) => [
     a.id,
@@ -46,7 +53,13 @@ try {
   await page.addInitScript("window.__name = (fn) => fn;");
   await page.goto(server.resolvedUrls!.local[0]!);
   const report = await page.evaluate(
-    async ({ sceneJson, compositionJson, urls }) => {
+    async ({
+      sceneJson,
+      compositionJson,
+      extendedSceneJson,
+      extendedCompositionJson,
+      urls,
+    }) => {
       const scene = JSON.parse(sceneJson) as ReturnType<
         typeof Render.compileStoryScene
       >;
@@ -170,6 +183,45 @@ try {
         throw new Error("Provider matte differs from hidden text control");
       controlPreview.dispose();
       maskPreview.dispose();
+      const longScene = JSON.parse(extendedSceneJson) as ReturnType<
+        typeof Render.compileStoryScene
+      >;
+      const longComposition = JSON.parse(
+        extendedCompositionJson,
+      ) as Composition;
+      const longLegacyCanvas = document.createElement("canvas"),
+        longCanvas = document.createElement("canvas");
+      const longLegacy = m.createIllustratedPreview(
+        longLegacyCanvas,
+        longScene,
+        await m.loadIllustratedImages(longScene, (id) => urls[id]!),
+      );
+      const longPreview = m.createCompositionPreview(
+        longCanvas,
+        longComposition,
+        resources,
+      );
+      const extendedFrames = [1999, 0, 114, 1500, 64, 192];
+      for (const frame of extendedFrames) {
+        longLegacy.renderFrame(frame);
+        longPreview.renderFrame(frame);
+        const comparison = m.compareFrames(
+          longLegacyCanvas
+            .getContext("2d")!
+            .getImageData(0, 0, canvas.width, canvas.height).data,
+          longCanvas
+            .getContext("2d")!
+            .getImageData(0, 0, canvas.width, canvas.height).data,
+          canvas.width,
+          canvas.height,
+        );
+        if (comparison.maxChannelDelta !== 0)
+          throw new Error(
+            `Extended source differs at ${frame}: ${JSON.stringify(comparison)}`,
+          );
+      }
+      longPreview.dispose();
+      longLegacy.dispose();
       preview.dispose();
       legacy.dispose();
       return {
@@ -181,11 +233,14 @@ try {
         legacyMs,
         compositionMs,
         ratio: compositionMs / legacyMs,
+        extendedFrames,
       };
     },
     {
       sceneJson: JSON.stringify(scene),
       compositionJson: JSON.stringify(composition),
+      extendedSceneJson: JSON.stringify(extendedScene),
+      extendedCompositionJson: JSON.stringify(extendedComposition),
       urls,
     },
   );

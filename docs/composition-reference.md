@@ -311,6 +311,10 @@ typography, components, effects, attached paths, rectangles, non-group drawable
 parents, text containers and `textBox`, and scenes longer than 2,000 frames. These
 are CE4a follow-ups; fractional motion-blur sampling is not supported by this slice.
 
+Repeated trailing samples are omitted for paths and plain text; the providers hold
+the final sample without changing earlier frame indices. Flow samples retain their
+full source clock. Payloads still exceeding 64 KiB report the source node and path.
+
 Cue windows become markers. Cues that already satisfy the marker ID contract retain
 their IDs; other cues receive deterministic `cue-N` IDs that avoid authored IDs.
 Marker labels keep the cue text, truncated to the label contract's 200 characters.
