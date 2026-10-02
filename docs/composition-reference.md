@@ -343,18 +343,23 @@ existing commerce compiler. `comp export-json --scene <commerce.json>` exposes t
 same translation. Images (including prepared shadows and crops), clipped groups,
 rectangles, paths and plain text are supported. Pinned measured
 text uses `commerce.text@1.0.0`, which shares commerce's font layout and draws local
-content through the composition graph. Rectangles, paths and unmeasured text reuse
+content through the composition graph. `commerce.text@1.1.0` adds native and component
+text fits without backing-panel resizing, plus formatted numeric text. Fits choose
+one stable font size across all supplied states after pinned fonts load. Numeric
+labels are baked at integer frames; preparation validates the entire formatted
+value range for overflow, including values absent from those frames. Existing
+1.0.0 payloads remain supported. Rectangles, paths and unmeasured text reuse
 the existing `story.*` providers; those providers do not evaluate a story scene.
 
 Commerce events, drift, parallax and overshoot are baked at integer frames, along
-with component state/travel/pin/property-value/visibility behavior. Image state
+with component state/travel/pin/value/visibility behavior. Image state
 ramps retain their state and blend keys. Registration, claims and other source
 metadata remain in `metadata.commerce`. Like the story slice, this compiler accepts
 at most 2,000 frames, holds between integer samples, and bounds provider payloads
 to 64 KiB. Rendering never calls the commerce evaluator.
 
-Pixel effects, motion blur, attached paths, annotations, masks/mattes, text fitting,
-formatted numeric text, blended text states, typography, motion-craft and parenting
+Pixel effects, motion blur, attached paths, annotations, masks/mattes, fitted panel
+geometry, blended text states, typography, motion-craft and parenting
 to drawable nodes currently return `comp-adapter-unsupported` with a source path.
 Effects parity requires CE6, and full CE4b fixture acceptance remains open. Existing
 commerce commands retain their current renderer.

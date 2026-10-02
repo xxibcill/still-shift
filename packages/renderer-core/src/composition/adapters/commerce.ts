@@ -5,19 +5,21 @@ import {
   type CommerceScene,
   type Composition,
   type CompositionLayer,
+  type PreparedNode,
 } from "@still-shift/scene-contract";
 import { compileCommerceScene } from "../../commerce-scene.ts";
 import { componentCapabilities } from "../../component-capabilities.ts";
+import { componentText } from "../../component-values.ts";
 import { evaluatePreparedNode } from "../../prepared-scene.ts";
 import { passageError, PassageError } from "../../passage-diagnostics.ts";
-import { params, preparedNodeLayer } from "./prepared.ts";
+import { params, preparedNodeLayer, trimSettledSamples } from "./prepared.ts";
 
-export const COMMERCE_ADAPTER_VERSION = "commerce-composition-0.1.0";
+export const COMMERCE_ADAPTER_VERSION = "commerce-composition-0.2.0";
 
 function unsupported(path: string, feature: string): never {
   return passageError(
     "comp-adapter-unsupported",
-    `${feature} is not supported by the first CE4b adapter slice`,
+    `${feature} is not supported by the CE4b adapter`,
     { path },
   );
 }
@@ -31,13 +33,12 @@ function checkSupported(scene: CommerceScene) {
     );
   if (scene.motionModel) unsupported("motionModel", "Motion-craft scenes");
   if (scene.typography) unsupported("typography", "Typography scenes");
-  for (const field of [
-    "textAnimators",
-    "attachments",
-    "mattes",
-    "textFits",
-  ] as const)
+  for (const field of ["textAnimators", "attachments", "mattes"] as const)
     if (scene[field]?.length) unsupported(field, field);
+  scene.textFits?.forEach((fit, index) => {
+    if (fit.panel)
+      unsupported(`textFits[${index}].panel`, "Fitted panel geometry");
+  });
   scene.effects?.forEach((effect, index) => {
     if (!["drift", "parallax", "overshoot"].includes(effect.type))
       unsupported(
@@ -46,10 +47,8 @@ function checkSupported(scene: CommerceScene) {
       );
   });
   const components = componentCapabilities(scene.componentData);
-  for (const field of ["annotations", "textFits", "masks"] as const)
+  for (const field of ["annotations", "masks"] as const)
     if (components[field].length) unsupported(`componentData.${field}`, field);
-  if (components.bindings.some((binding) => binding.kind === "text"))
-    unsupported("componentData.bindings", "Formatted text bindings");
   scene.nodes.forEach((node, index) => {
     const path = `nodes[${index}]`;
     if (
@@ -84,6 +83,45 @@ function checkSupported(scene: CommerceScene) {
   });
 }
 
+function measuredTextLayer(
+  scene: CommerceScene,
+  node: Extract<PreparedNode, { type: "text" }>,
+  layer: Extract<CompositionLayer, { type: "provider" }>,
+) {
+  const components = componentCapabilities(scene.componentData);
+  const fit = [...(scene.textFits ?? []), ...components.textFits].find(
+    (fit) => fit.target === node.id,
+  );
+  const binding = components.bindings.find(
+    (binding) => binding.kind === "text" && binding.target === node.id,
+  );
+  const numeric =
+    binding?.kind === "text"
+      ? {
+          value: components.values.find((value) => value.id === binding.value)!,
+          format: binding.format,
+          samples: trimSettledSamples(
+            Array.from({ length: scene.frameCount }, (_, frame) => ({
+              text: componentText(scene, node, frame)!,
+            })),
+          ).map((sample) => sample.text),
+        }
+      : undefined;
+  return {
+    ...layer,
+    provider: fit || numeric ? "commerce.text@1.1.0" : "commerce.text@1.0.0",
+    params: params(
+      {
+        ...layer.params,
+        ...(fit ? { fit: { minSize: fit.minSize, maxSize: fit.maxSize } } : {}),
+        ...(numeric ? { numeric } : {}),
+      },
+      `nodes[${scene.nodes.indexOf(node)}]`,
+      node.id,
+    ),
+  };
+}
+
 /** Compile once to bounded data; rendering never calls the commerce evaluator. */
 export function commerceToComposition(
   source: CommerceScene,
@@ -105,7 +143,7 @@ export function commerceToComposition(
         evaluatePreparedNode(scene, node, frame),
       );
       // Keep path-based rectangle rasterization and parent transform concatenation.
-      const layer = preparedNodeLayer(scene, node, samples, {
+      let layer = preparedNodeLayer(scene, node, samples, {
         nativeSolids: false,
       });
       const gate = visibility.get(node.id);
@@ -114,7 +152,7 @@ export function commerceToComposition(
         layer.outPoint = gate.end;
       }
       if (node.type === "text" && node.textBox && layer.type === "provider")
-        layer.provider = "commerce.text@1.0.0";
+        layer = measuredTextLayer(scene, node, layer);
       layers.push(layer);
       visit(node.id);
     }

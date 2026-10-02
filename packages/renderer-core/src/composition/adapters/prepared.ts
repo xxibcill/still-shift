@@ -29,7 +29,7 @@ export function params(value: unknown, path: string, node?: string) {
 }
 
 /** Providers hold the final sample; trimming only that tail preserves all frame indices. */
-export function trimSettledSamples<T extends Record<string, number>>(
+export function trimSettledSamples<T extends Record<string, number | string>>(
   samples: T[],
 ) {
   let end = samples.length;

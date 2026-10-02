@@ -1274,6 +1274,8 @@ General rules for all adapters:
 - [x] Start the CE3-compatible compiler slice with explicit unsupported-feature
       diagnostics, JSON export and Canvas parity coverage; retain CE6 as the effects
       parity completion gate.
+- [x] Add native/component text fitting without panel resizing and formatted
+      numeric text through a versioned measured-text provider.
 
 - [ ] Map commerce layout, product layers, shadows, floating, detail windows, paths,
       text fits, component state/travel/pin/values/visibility/masks.
@@ -1443,6 +1445,47 @@ comparisons; the full `pnpm check`.
   drawable parents; reusable story contexts and passages; all-family/two-backend
   parity. Unsupported inputs return `comp-adapter-unsupported` with a source path.
   Family defaults remain on their existing renderers.
+
+### CE4b measured-text follow-up (2026-10-02)
+
+- **Delivered:** `commerce.text@1.1.0` prepares native and reusable-component text
+  fits with the existing pinned-font fitter. One font size covers every supplied
+  state. Numeric bindings become bounded integer-frame label samples, preserving
+  decimal/group separators, prefixes/suffixes and both rounding modes. Preparation
+  checks every possible formatted value for overflow, including unsampled values.
+  Original `commerce.text@1.0.0` payloads remain supported.
+- **Versions:** adapter `commerce-composition-0.2.0`, Canvas renderer
+  `composition-canvas-1.4.0`; evaluator and legacy renderer versions unchanged.
+- **Coverage:** commerce/isolated text-fit and value fixtures join the CE0 adapter
+  selection. Additional variants exercise native Thai fitting, right/center
+  alignment, transformed numeric children and signed grouped decimals. Preparation
+  tests cover unavailable fonts, malformed payloads, impossible fits and overflow.
+  CLI export tests now round-trip both fitted text and numeric labels through
+  relocated JSON and repeated MP4 exports.
+- **Adapter verification:** **50 cases, 10,872 integer frames, all pixel-exact**
+  (47 CE0 fixtures plus three derived variants), with reverse state checks and
+  backward render seeks. All cases meet the unchanged 1.25× render/readback gate;
+  worst median: Commerce Instances, **1.1783×**. All 28 preparation checks pass.
+  Text-fit and value fixtures each produce two byte-identical 192-frame MP4s with
+  relocated assets, no system-font layers and overwrite protection.
+- **Local regression matrix:** on Node 22.23.1 / pnpm 10.29.3, schema, boundaries,
+  formatting, lint, types, **1,096 unit / 46 runtime / 111 integration / 14 depth
+  tests**, legacy browser suites, composition rendering and CE4a parity pass.
+  The aggregate `pnpm check` stopped at the unchanged typography glyph timing test
+  (1.51× against its 1.50× limit); that suite passed on retry at **1.4176×**, followed
+  by every remaining composition suite. CE0 baseline verification passed:
+  **176 items, 36,061 frames, all exact in 265.51 s** against `darwin-arm64`.
+  No baseline or tolerance changed. All verification ran locally.
+- **Timing method:** the three warmed render/readback passes now pair each frame
+  and alternate backend order per frame and pass. Whole-timeline ordering produced
+  isolated-value ratios of 1.36× and 1.33× while the interleaved pixel-comparison
+  phase measured 1.07×. Frame pairing limits order bias; the median ratio and 1.25×
+  acceptance threshold remain unchanged. Preparation remains outside timing.
+- **Remaining:** fits that resize backing panels change node geometry and still
+  return a diagnostic at `textFits[index].panel`. Attached paths, annotations,
+  masks/mattes, typography, motion-craft, drawable parents, story contexts and
+  passages remain open. Full effects/two-backend acceptance still requires CE6;
+  motion blur requires CE7. Family defaults remain unchanged.
 
 **Completion record:** CE4a and CE4b are in progress; CE4c–CE4d have not started.
 

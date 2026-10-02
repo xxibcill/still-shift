@@ -16,6 +16,7 @@ import {
 import { passageDiagnostics } from "../../packages/renderer-core/src/passage-diagnostics.ts";
 import { assertCompositionAdapterState } from "../helpers/composition-adapter-state.ts";
 import { COMMERCE_CONTENT_PROVIDERS } from "../../packages/renderer-core/src/composition/adapters/commerce-providers.ts";
+import { componentText } from "../../packages/renderer-core/src/component-values.ts";
 
 const fixture = (name: string) =>
   CommerceSceneSchema.parse(
@@ -23,6 +24,144 @@ const fixture = (name: string) =>
       readFileSync(`benchmarks/fixtures/ecommerce-motion/${name}.json`, "utf8"),
     ),
   );
+const componentFixture = (name: string) =>
+  CommerceSceneSchema.parse(
+    JSON.parse(
+      readFileSync(
+        `benchmarks/fixtures/reusable-components/commerce-${name}.json`,
+        "utf8",
+      ),
+    ),
+  );
+
+describe("CE4b measured-text follow-up", () => {
+  it.each(["native", "component"])(
+    "preserves %s fitting for preparation with pinned fonts",
+    (kind) => {
+      const input = componentFixture("text-fit");
+      const fit = { target: "timing__caption", minSize: 32, maxSize: 54 };
+      if (kind === "native") {
+        input.componentData = undefined;
+        input.textFits = [{ ...fit, padding: 24 }];
+      }
+      const original = structuredClone(input);
+      const composition = commerceToComposition(input);
+      expect(
+        composition.layers.find((layer) => layer.id === fit.target),
+      ).toMatchObject({
+        type: "provider",
+        provider: "commerce.text@1.1.0",
+        params: { fit: { minSize: 32, maxSize: 54 } },
+      });
+      expect(input).toEqual(original);
+      assertCompositionAdapterState(compileCommerceScene(input), composition);
+    },
+  );
+
+  it("bakes numeric text at every frame and holds the settled tail", () => {
+    const input = componentFixture("value");
+    const original = structuredClone(input);
+    const composition = commerceToComposition(input);
+    const layer = composition.layers.find(
+      (layer) => layer.id === "quantity__number",
+    )!;
+    expect(layer).toMatchObject({
+      type: "provider",
+      provider: "commerce.text@1.1.0",
+    });
+    if (layer.type !== "provider") throw new Error("expected provider");
+    const numeric = layer.params.numeric as { samples: string[] };
+    const node = input.nodes.find((node) => node.id === layer.id)!;
+    expect(numeric.samples.length).toBeLessThan(input.frameCount);
+    for (let frame = input.frameCount - 1; frame >= 0; frame--)
+      expect(numeric.samples[Math.min(frame, numeric.samples.length - 1)]).toBe(
+        componentText(input, node, frame),
+      );
+    expect(input).toEqual(original);
+  });
+
+  it("reports the source node when numeric samples exceed the provider payload limit", () => {
+    const input = componentFixture("value");
+    input.frameCount = 2000;
+    const value = input.componentData!.values[0]!;
+    value.range = [0, 2000];
+    value.from = 0;
+    value.to = 1999;
+    value.window = { start: 0, end: 1999, easing: "linear" };
+    const binding = input.componentData!.bindings.find(
+      (binding) => binding.kind === "text",
+    )!;
+    if (binding.kind !== "text") throw new Error("expected text binding");
+    binding.format.prefix = "x".repeat(32);
+    binding.format.suffix = "x".repeat(32);
+    const index = input.nodes.findIndex((node) => node.id === binding.target);
+    expect.assertions(1);
+    try {
+      commerceToComposition(input);
+    } catch (error) {
+      expect(passageDiagnostics(error)).toContainEqual(
+        expect.objectContaining({
+          code: "comp-json-size",
+          node: binding.target,
+          path: `nodes[${index}]`,
+        }),
+      );
+    }
+  });
+
+  it.each(["half-away-from-zero", "truncate"] as const)(
+    "bakes signed, grouped decimal text using %s",
+    (rounding) => {
+      const input = componentFixture("value");
+      input.frameCount = 7;
+      input.events = [];
+      input.componentData!.values[0] = {
+        id: "quantity__amount",
+        range: [-2000, 0],
+        from: -1234.01,
+        to: -1233.98,
+        window: { start: 1, end: 5, easing: "linear" },
+      };
+      const binding = input.componentData!.bindings.find(
+        (binding) => binding.kind === "text",
+      )!;
+      if (binding.kind !== "text") throw new Error("expected text binding");
+      binding.format = {
+        decimals: 2,
+        rounding,
+        decimalSeparator: ",",
+        groupSeparator: ".",
+        prefix: "€",
+        suffix: " total",
+      };
+      const composition = commerceToComposition(input);
+      const layer = composition.layers.find(
+        (layer) => layer.id === binding.target,
+      )!;
+      if (layer.type !== "provider") throw new Error("expected provider");
+      const expected =
+        rounding === "truncate"
+          ? [
+              "€-1.234,01 total",
+              "€-1.234,01 total",
+              "€-1.234,00 total",
+              "€-1.233,99 total",
+              "€-1.233,98 total",
+            ]
+          : [
+              "€-1.234,01 total",
+              "€-1.234,01 total",
+              "€-1.234,00 total",
+              "€-1.234,00 total",
+              "€-1.233,99 total",
+              "€-1.233,98 total",
+            ];
+      expect((layer.params.numeric as { samples: string[] }).samples).toEqual(
+        expected,
+      );
+    },
+  );
+});
 
 describe("CE4b commerce adapter first slice", () => {
   it("preserves assets, metadata, measured text and serializable composition data", () => {
@@ -115,7 +254,7 @@ describe("CE4b commerce adapter first slice", () => {
     ["atoms/glow", "effects[0]"],
     ["atoms/motion-blur", "effects[0]"],
     ["atoms/attachment", "attachments"],
-    ["atoms/layout", "textFits"],
+    ["atoms/layout", "textFits[0].panel"],
     ["atoms/matte", "mattes"],
   ])("rejects unsupported %s with a source path", (name, path) => {
     expect.assertions(1);

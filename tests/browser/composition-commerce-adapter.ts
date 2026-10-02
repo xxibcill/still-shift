@@ -16,6 +16,8 @@ import {
 } from "@still-shift/renderer-core";
 import type * as Render from "../../packages/renderer-core/src/index.ts";
 import { assertCompositionAdapterState } from "../helpers/composition-adapter-state.ts";
+import { commerceTextVariants } from "../helpers/composition-commerce-text.ts";
+import type * as CommerceTextTests from "../helpers/composition-commerce-text.ts";
 
 const root = resolve(import.meta.dirname, "../..");
 const inventory = JSON.parse(
@@ -72,8 +74,10 @@ for (const context of ["commerce", "isolated"])
     "sequence",
     "stagger",
     "state",
+    "text-fit",
     "transform",
     "travel",
+    "value",
     "visibility",
   ])
     accepted.add(`component/${context}-${name}`);
@@ -97,8 +101,12 @@ let totalFrames = 0,
 try {
   for (const entry of selected) {
     const sourcePath = resolve(root, entry.path);
+    const source = CommerceSceneSchema.parse(
+      JSON.parse(await readFile(sourcePath, "utf8")),
+    );
     const inputs = [
-      { id: entry.id, scene: JSON.parse(await readFile(sourcePath, "utf8")) },
+      { id: entry.id, scene: source },
+      ...commerceTextVariants(entry.id, source),
     ];
     for (const item of inputs) {
       const input = CommerceSceneSchema.parse(item.scene);
@@ -129,10 +137,22 @@ try {
             scene,
             await m.loadIllustratedImages(scene, (id) => urls[id]!),
           );
+          const resources = await m.loadCompositionResources(
+            composition,
+            (id) => urls[id]!,
+          );
           const preview = m.createCompositionPreview(
             canvas,
             composition,
-            await m.loadCompositionResources(composition, (id) => urls[id]!),
+            resources,
+          );
+          const testModule = "/tests/helpers/composition-commerce-text.ts";
+          const { assertCommerceTextPreparation } = (await import(
+            testModule
+          )) as typeof CommerceTextTests;
+          const preparationChecks = assertCommerceTextPreparation(
+            composition,
+            resources,
           );
           const oldCtx = legacyCanvas.getContext("2d")!,
             ctx = canvas.getContext("2d")!;
@@ -218,27 +238,30 @@ try {
               graphMs += performance.now() - evaluated;
             }
           // Pixel comparison allocates full-frame buffers and analysis data. Measure
-          // render + readback separately once every frame is warm, alternating order
-          // so one backend does not always inherit the other's allocation pressure.
+          // render + readback separately once every frame is warm. Pair the same
+          // frame and alternate which backend runs first, including across passes,
+          // rather than charging a whole timeline's runtime pauses to one backend.
           const benchmark = (
             render: (frame: number) => unknown,
             context: CanvasRenderingContext2D,
+            frame: number,
           ) => {
             const start = performance.now();
-            for (let frame = 0; frame < composition.frameCount; frame++) {
-              render(frame);
-              context.getImageData(0, 0, canvas.width, canvas.height);
-            }
+            render(frame);
+            context.getImageData(0, 0, canvas.width, canvas.height);
             return performance.now() - start;
           };
           const timings = Array.from({ length: 3 }, (_, pass) => {
-            let legacyMs: number, compositionMs: number;
-            if (pass % 2 === 0) {
-              legacyMs = benchmark(legacy.renderFrame, oldCtx);
-              compositionMs = benchmark(preview.renderFrame, ctx);
-            } else {
-              compositionMs = benchmark(preview.renderFrame, ctx);
-              legacyMs = benchmark(legacy.renderFrame, oldCtx);
+            let legacyMs = 0,
+              compositionMs = 0;
+            for (let frame = 0; frame < composition.frameCount; frame++) {
+              if ((frame + pass) % 2 === 0) {
+                legacyMs += benchmark(legacy.renderFrame, oldCtx, frame);
+                compositionMs += benchmark(preview.renderFrame, ctx, frame);
+              } else {
+                compositionMs += benchmark(preview.renderFrame, ctx, frame);
+                legacyMs += benchmark(legacy.renderFrame, oldCtx, frame);
+              }
             }
             return { legacyMs, compositionMs, ratio: compositionMs / legacyMs };
           });
@@ -253,6 +276,7 @@ try {
             failures,
             ratio,
             timings,
+            preparationChecks,
             ...(profile
               ? {
                   legacyMs,
@@ -292,70 +316,71 @@ try {
   console.log(
     `CE4b commerce parity: ${totalItems} items, ${totalFrames} frames`,
   );
-  if (only < 0) {
-    const directory = await mkdtemp(join(tmpdir(), "still-shift-ce4b-"));
-    try {
-      const sourcePath = resolve(
-        root,
-        "benchmarks/fixtures/ecommerce-motion/h01-landscape.json",
-      );
-      const compositionPath = join(directory, "hero.json");
-      let errors = "";
-      assert.equal(
-        await runCli(
-          [
-            "comp",
-            "export-json",
-            "--scene",
-            sourcePath,
-            "--output",
-            compositionPath,
-          ],
-          {
-            stdout: () => {},
-            stderr: (text) => {
-              errors += text;
+  if (only < 0)
+    for (const name of ["text-fit", "value"]) {
+      const directory = await mkdtemp(join(tmpdir(), "still-shift-ce4b-"));
+      try {
+        const sourcePath = resolve(
+          root,
+          `benchmarks/fixtures/reusable-components/commerce-${name}.json`,
+        );
+        const compositionPath = join(directory, "composition.json");
+        let errors = "";
+        assert.equal(
+          await runCli(
+            [
+              "comp",
+              "export-json",
+              "--scene",
+              sourcePath,
+              "--output",
+              compositionPath,
+            ],
+            {
+              stdout: () => {},
+              stderr: (text) => {
+                errors += text;
+              },
             },
-          },
-        ),
-        0,
-        errors,
-      );
-      const composition = JSON.parse(
-        await readFile(compositionPath, "utf8"),
-      ) as Composition;
-      const first = await renderComposition({
-        compositionPath,
-        outputPath: join(directory, "first.mp4"),
-      });
-      const second = await renderComposition({
-        compositionPath,
-        outputPath: join(directory, "second.mp4"),
-      });
-      assert.equal(first.frameCount, composition.frameCount);
-      assert.equal(first.checksums.output, second.checksums.output);
-      assert.deepEqual(first.systemFontLayers, []);
-      assert.equal(
-        await runCli(
-          [
-            "comp",
-            "export-json",
-            "--scene",
-            sourcePath,
-            "--output",
-            compositionPath,
-          ],
-          { stdout: () => {}, stderr: () => {} },
-        ),
-        1,
-      );
-      console.log(
-        `CE4b export: ${first.frameCount} frames, two byte-identical MP4s; relocated assets and overwrite protection pass`,
-      );
-    } finally {
-      await rm(directory, { recursive: true, force: true });
+          ),
+          0,
+          errors,
+        );
+        const composition = JSON.parse(
+          await readFile(compositionPath, "utf8"),
+        ) as Composition;
+        const first = await renderComposition({
+          compositionPath,
+          outputPath: join(directory, "first.mp4"),
+        });
+        const second = await renderComposition({
+          compositionPath,
+          outputPath: join(directory, "second.mp4"),
+        });
+        assert.equal(first.frameCount, composition.frameCount);
+        assert.equal(first.checksums.output, second.checksums.output);
+        assert.deepEqual(first.systemFontLayers, []);
+        assert.equal(
+          await runCli(
+            [
+              "comp",
+              "export-json",
+              "--scene",
+              sourcePath,
+              "--output",
+              compositionPath,
+            ],
+            { stdout: () => {}, stderr: () => {} },
+          ),
+          1,
+        );
+        console.log(
+          `CE4b ${name} export: ${first.frameCount} frames, two byte-identical MP4s; relocated assets and overwrite protection pass`,
+        );
+      } finally {
+        await rm(directory, { recursive: true, force: true });
+      }
     }
-  }
 } finally {
   await browser.close();
   await server.close();
