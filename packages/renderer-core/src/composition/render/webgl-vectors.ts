@@ -104,11 +104,12 @@ export class WebglVectors {
 
   private paint(dst: WebglSurface, ops: VectorDraw[], rect: Bounds) {
     const pixels = this.raster.createSurface(dst.width, dst.height);
-    const content = ops.length === 1 ? ops[0]!.content : undefined;
-    const singleImage =
-      content && content.type !== "solid" && this.singleImage?.(content);
+    // draw() separates overlapping coverage before batching paints over a backdrop.
+    const imageOnly = ops.every(
+      ({ content }) => content.type !== "solid" && this.singleImage?.(content),
+    );
     const recording =
-      this.paintOver.hasBackdrop(dst) && !singleImage
+      this.paintOver.hasBackdrop(dst) && !imageOnly
         ? recordVectorPaints(pixels.ctx, rect)
         : undefined;
     const painting = recording ? { ...pixels, ctx: recording.context } : pixels;
@@ -178,7 +179,7 @@ export class WebglVectors {
         upload(
           pixels.canvas,
           rect,
-          !singleImage && ops.every((op) => !op.paintBlur),
+          !imageOnly && ops.every((op) => !op.paintBlur),
         );
       else
         for (const group of groups) {

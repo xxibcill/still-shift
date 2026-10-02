@@ -11,20 +11,19 @@ export function checkSingleImageProvider() {
   const composition: Composition = {
     schemaVersion: "composition-1",
     id: "single-image-provider",
-    width: 96,
+    width: 192,
     height: 64,
     fps: 30,
-    frameCount: 3,
+    frameCount: 4,
     background: "#f2ede3",
     assets: [],
-    layers: [
-      {
-        id: "image",
-        type: "provider",
-        provider: "test.image@1.0.0",
-        params: {},
-      },
-    ],
+    layers: Array.from({ length: 3 }, (_, index) => ({
+      id: `image-${index}`,
+      type: "provider" as const,
+      provider: "test.image@1.0.0",
+      transform: { position: [index * 46, 0] as [number, number] },
+      params: {},
+    })),
   };
   const make = (backend: "canvas2d" | "webgl2") =>
     createCompositionPreview(
@@ -43,6 +42,8 @@ export function checkSingleImageProvider() {
               const paint = source.getContext("2d")!;
               return preparedProvider(
                 (ctx, time) => {
+                  if (time === 3) return;
+                  if (time === 2) ctx.globalAlpha = 0;
                   paint.clearRect(0, 0, 32, 24);
                   paint.fillStyle = time === 1 ? "#477d659a" : "#b739636d";
                   paint.fillRect(1.25, 2.5, 24, 18);
@@ -63,7 +64,7 @@ export function checkSingleImageProvider() {
     reference = make("canvas2d");
   let maxDelta = 0;
   try {
-    for (const frame of [0, 1, 2, 0]) {
+    for (const frame of [0, 1, 2, 3, 0]) {
       gpu.renderFrame(frame);
       reference.renderFrame(frame);
       const actual = gpu.readPixels(),
@@ -76,7 +77,7 @@ export function checkSingleImageProvider() {
     }
     if (maxDelta > 1)
       throw new Error(`Single image provider differs by ${maxDelta}`);
-    return { frames: 4, maxDelta };
+    return { frames: 5, maxDelta };
   } finally {
     gpu.dispose();
     reference.dispose();

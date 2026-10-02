@@ -2524,6 +2524,23 @@ comparisons; the full `pnpm check`.
   verification. A separate single-image paint-bound measurement prototype added
   overhead without improving the matrix and was discarded.
 
+### CE4b disjoint image-paint batches (2026-10-03)
+
+- **Version:** `composition-webgl2-0.26.0` skips paint recording when every
+  content item in a batch is a known single image. Overlapping content is already
+  separated before batching over a backdrop, so the combined image preserves
+  source-over rounding without mutable-canvas snapshots.
+- **Verification:** all **20 typography cases / 3,367 frames** pass pixels;
+  **16 pass both gates**. Semantic passes at **1.2424×**, vertical at **1.2462×**,
+  and native Thai at **1.0408×**. The four remaining timing failures are containers
+  (**1.5391×**), editorial numeric (**1.3722×**), appearance-uniform (**1.8415×**)
+  and numeric Thai (**1.7147×**). Native GPU checks, all **1,248 unit tests**, fast
+  checks and **204 export/Lab frames** pass. The expanded image-provider regression
+  covers three disjoint mutable sources, transparent and absent paints, and
+  backward seeking across five frames.
+- **Remaining:** timing margins are narrow for semantic and vertical text;
+  family timing gates, full exports and final local/CE0 verification remain open.
+
 **Completion record:** CE4a and CE4b are in progress; CE4c–CE4d have not started.
 
 ---
