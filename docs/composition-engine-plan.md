@@ -2385,6 +2385,21 @@ comparisons; the full `pnpm check`.
   commerce GPU acceptance and final full verification. Idle gaps before and
   between finite text effects still offer coverage reuse opportunities.
 
+### CE4b idle typography windows (2026-10-03)
+
+- **Version:** `composition-webgl2-0.19.0` merges finite typography activity
+  windows and reuses coverage before, between and after them. Active fractional
+  frames remain distinct, overlapping windows stay live, and every idle phase has
+  its own stable key for backward seeking. Signal/selector fallbacks remain.
+- **Verification:** all **20 cases / 3,367 frames** retain pixel parity;
+  **10 now pass both gates**. Transitions pass at **1.1640×**, glyph performance
+  improves to **1.1838×**, and editorial primitive blur is **1.0662×**. Editorial
+  improves to **1.3954×**, selectors to **1.3130×**, and Thai text to **1.2851×**.
+  Six clock regressions, 1,242 unit tests, native GPU checks and 204 export/Lab
+  frames pass.
+- **Remaining:** 10 typography timing failures (1.2851–1.9627×), component
+  timing failures, full commerce GPU acceptance and final full verification.
+
 **Completion record:** CE4a and CE4b are in progress; CE4c–CE4d have not started.
 
 ---
