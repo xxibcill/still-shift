@@ -2239,6 +2239,23 @@ comparisons; the full `pnpm check`.
   timing ratio still exceeds the unchanged 1.25× limit. Further performance work
   and full family/frozen-baseline acceptance remain required.
 
+### CE4b disconnected vector batches (2026-10-03)
+
+- **Version:** `composition-webgl2-0.10.0` partitions vector batches into disjoint
+  conservative rectangles, retaining source order wherever coverage overlaps.
+  Dense batches stay together; the partition count and raster cache remain bounded.
+  This avoids uploading and shading large empty gaps between separate artwork.
+- **Verification:** all 1,236 unit tests, native GPU parity and exact framebuffer
+  checks, 4,096 arithmetic cases and 204 export/Lab frames pass. Bracket retains
+  maximum channel delta 2 and measures **3.2152×**, compared with **3.6483×** in
+  the immediately preceding component matrix. It still misses the 1.25× gate.
+- **Acceptance audit:** the preceding 0.9.0 component matrix completed **48 cases /
+  9,216 frames**. Five cases pass both gates; nine have pixel failures (detail and
+  supply sequences, spatial/morph leaders, and primitive-blur variants); the
+  remaining cases miss timing only. A separate 0.9.0 commerce A01 landscape check
+  passes all 300 frames with maximum delta 1 and paired median **1.1749×**.
+  Full CE4b acceptance and final local/frozen-baseline verification remain open.
+
 **Completion record:** CE4a and CE4b are in progress; CE4c–CE4d have not started.
 
 ---

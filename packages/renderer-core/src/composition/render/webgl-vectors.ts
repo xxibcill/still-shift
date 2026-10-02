@@ -1,3 +1,4 @@
+import { vectorRegions, unionBounds } from "./webgl-vector-regions.ts";
 import type { Canvas2dBackend } from "./canvas2d.ts";
 import type { Bounds } from "../evaluate/types.ts";
 import type { ProviderContent, TextContent } from "./graph.ts";
@@ -110,6 +111,25 @@ export class WebglVectors {
   }
 
   draw(dst: WebglSurface, ops: VectorDraw[]): Bounds | null {
+    let painted: Bounds | null = null;
+    for (const region of vectorRegions(
+      ops.map((op) => this.extent([op], dst)),
+    )) {
+      const bounds = this.drawBatch(
+        dst,
+        region.indices.map((index) => ops[index]!),
+        region.bounds,
+      );
+      if (bounds) painted = painted ? unionBounds(painted, bounds) : bounds;
+    }
+    return painted;
+  }
+
+  private drawBatch(
+    dst: WebglSurface,
+    ops: VectorDraw[],
+    region: Bounds,
+  ): Bounds | null {
     const id = JSON.stringify([
       dst.width,
       dst.height,
@@ -120,7 +140,7 @@ export class WebglVectors {
     const hit = entry?.key === key;
     if (entry?.key !== key) {
       if (entry) this.forget(id);
-      const rect = this.extent(ops, dst);
+      const rect = region;
       if (rect.right <= rect.left || rect.bottom <= rect.top) return null;
       entry = { key, rect, surface: this.paint(dst, ops, rect) };
     } else this.cached.delete(id);
