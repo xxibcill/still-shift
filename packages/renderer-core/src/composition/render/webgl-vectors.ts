@@ -165,7 +165,9 @@ export class WebglVectors {
         }, 0) > this.limit
       )
         groups = undefined;
-      if (!groups)
+      if (groups?.length === 1)
+        upload(pixels.canvas, groups[0]!.bounds, groups[0]!.primitive);
+      else if (!groups)
         upload(
           pixels.canvas,
           rect,

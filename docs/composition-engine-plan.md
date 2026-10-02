@@ -2339,6 +2339,20 @@ comparisons; the full `pnpm check`.
   **1.4207×**, and stack **1.5890×** in the full matrix. Commerce/typography GPU
   matrices, all outstanding performance gates and final full verification remain.
 
+### CE4b actual single-group coverage (2026-10-03)
+
+- **Version:** `composition-webgl2-0.16.0` uploads the actual coverage of a single
+  recorded paint group directly from its original local raster. A provider no
+  longer needs multiple overlapping paints to benefit from recorded path bounds.
+- **Verification:** spatial-leader retains delta 2 across 192 frames and improves
+  from **6.9307×** in the preceding full matrix to **5.4180×**. Spatial-morph
+  retains delta 1 at **4.3177×**; bracket retains delta 1 at **3.6480×**. Native
+  checks include exact rounding across 105 paints in three providers and direct
+  single-group bounds. All 1,236 unit tests and 204 export/Lab frames pass.
+- **Remaining:** performance still exceeds the 1.25× gate. Packed texture uploads
+  and cross-provider batching were tested and discarded because their added work
+  outweighed their savings. Broader family acceptance and final checks remain.
+
 **Completion record:** CE4a and CE4b are in progress; CE4c–CE4d have not started.
 
 ---

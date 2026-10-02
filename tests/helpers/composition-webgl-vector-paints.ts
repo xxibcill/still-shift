@@ -17,14 +17,12 @@ export function checkProviderPaintBatches() {
     frameCount: 3,
     background: "#f2ede3",
     assets: [],
-    layers: [
-      {
-        id: "marks",
-        type: "provider",
-        provider: "test.paints@1.0.0",
-        params: {},
-      },
-    ],
+    layers: Array.from({ length: 3 }, (_, index) => ({
+      id: `marks-${index}`,
+      type: "provider",
+      provider: "test.paints@1.0.0",
+      params: {},
+    })),
   };
   const colors = ["#e5e0d43d", "#46654066", "#ba74392a"];
   const make = (backend: "canvas2d" | "webgl2") =>
@@ -74,7 +72,7 @@ export function checkProviderPaintBatches() {
     }
     if (maxDelta > 1)
       throw new Error(`Provider paint batches differ by ${maxDelta}`);
-    return { paints: 35, frames: 4, maxDelta };
+    return { providers: 3, paints: 105, frames: 4, maxDelta };
   } finally {
     gpu.dispose();
     reference.dispose();
@@ -196,5 +194,21 @@ export function checkVectorPaintReplay() {
           throw new Error(`Paint bounds exclude curved coverage at ${x},${y}`);
   }
   curves.dispose();
-  return { groups: 4, mutableSources: 3, fallbacks: 1, curvedBounds: 2 };
+  const single = recordVectorPaints(canvas().getContext("2d")!, bounds);
+  single.context.fillRect(20, 25, 10, 15);
+  const singleGroup = single.groups();
+  if (
+    singleGroup?.length !== 1 ||
+    JSON.stringify(singleGroup[0]!.bounds) !==
+      JSON.stringify({ left: 18, top: 23, right: 32, bottom: 42 })
+  )
+    throw new Error("Single paint must retain its own coverage bounds");
+  single.dispose();
+  return {
+    groups: 4,
+    mutableSources: 3,
+    fallbacks: 1,
+    curvedBounds: 2,
+    singleBounds: 1,
+  };
 }
