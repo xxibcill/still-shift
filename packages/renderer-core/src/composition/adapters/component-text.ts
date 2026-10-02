@@ -38,8 +38,12 @@ export function componentTextLayer(
           value: components.values.find((value) => value.id === binding.value)!,
           format: binding.format,
           samples: trimSettledSamples(
-            Array.from({ length: scene.frameCount }, (_, frame) => ({
-              text: componentText(scene, node, frame)!,
+            samples.map((_, frame) => ({
+              text: componentText(
+                scene,
+                node,
+                samples.times?.[frame] ?? frame,
+              )!,
             })),
           ).map((sample) => sample.text),
         }

@@ -11,7 +11,11 @@ import { evaluatePreparedNodeAtTime } from "../../prepared-scene.ts";
 type EffectScene = CommerceRenderScene | StoryRenderScene;
 
 /** Equal source poses share an identity even when an animation returns to a prior pose. */
-function echoRevisions(scene: EffectScene, target: string) {
+function echoRevisions(
+  scene: EffectScene,
+  target: string,
+  times: readonly number[],
+) {
   const descendants = new Set([target]);
   for (let i = 0; i < scene.nodes.length; i++)
     for (const node of scene.nodes)
@@ -19,7 +23,7 @@ function echoRevisions(scene: EffectScene, target: string) {
   const nodes = scene.nodes.filter((node) => descendants.has(node.id));
   const identities = new Map<string, number>();
   return baked(
-    Array.from({ length: scene.frameCount }, (_, frame) => {
+    times.map((frame) => {
       const pose = JSON.stringify(
         nodes.map((node) => evaluatePreparedNodeAtTime(scene, node, frame)),
       );
@@ -29,7 +33,11 @@ function echoRevisions(scene: EffectScene, target: string) {
   );
 }
 
-function effectParameters(scene: EffectScene, effect: CommerceEffect) {
+function effectParameters(
+  scene: EffectScene,
+  effect: CommerceEffect,
+  times: readonly number[],
+) {
   switch (effect.type) {
     case "echo":
       return {
@@ -39,7 +47,7 @@ function effectParameters(scene: EffectScene, effect: CommerceEffect) {
           count: effect.count,
           decay: effect.decay,
           skipUnchanged: 1,
-          sourceRevision: echoRevisions(scene, effect.target),
+          sourceRevision: echoRevisions(scene, effect.target, times),
         },
       };
     case "light-sweep": {
@@ -57,9 +65,8 @@ function effectParameters(scene: EffectScene, effect: CommerceEffect) {
           band: effect.width,
           strength: effect.strength,
           progress: baked(
-            Array.from(
-              { length: scene.frameCount },
-              (_, frame) => (1 - Math.cos(effectPhase(effect, frame))) / 2,
+            times.map(
+              (frame) => (1 - Math.cos(effectPhase(effect, frame))) / 2,
             ),
           ),
         },
@@ -70,9 +77,8 @@ function effectParameters(scene: EffectScene, effect: CommerceEffect) {
         effect: "light.radial",
         params: {
           x: baked(
-            Array.from(
-              { length: scene.frameCount },
-              (_, frame) =>
+            times.map(
+              (frame) =>
                 effect.x + Math.sin(effectPhase(effect, frame)) * effect.travel,
             ),
           ),
@@ -92,10 +98,7 @@ function effectParameters(scene: EffectScene, effect: CommerceEffect) {
           seed: effect.seed,
           color: effect.color,
           progress: baked(
-            Array.from(
-              { length: scene.frameCount },
-              (_, frame) => effectProgress(effect, frame) * effect.cycles,
-            ),
+            times.map((frame) => effectProgress(effect, frame) * effect.cycles),
           ),
         },
       };
@@ -106,10 +109,7 @@ function effectParameters(scene: EffectScene, effect: CommerceEffect) {
           amount: effect.amount,
           seed: effect.seed,
           evolution: baked(
-            Array.from(
-              { length: scene.frameCount },
-              (_, frame) => frame - (effect.active?.start ?? 0),
-            ),
+            times.map((frame) => frame - (effect.active?.start ?? 0)),
           ),
         },
       };
@@ -137,11 +137,7 @@ function effectParameters(scene: EffectScene, effect: CommerceEffect) {
         params: {
           amount: effect.amount,
           wavelength: effect.wavelength,
-          phase: baked(
-            Array.from({ length: scene.frameCount }, (_, frame) =>
-              effectPhase(effect, frame),
-            ),
-          ),
+          phase: baked(times.map((frame) => effectPhase(effect, frame))),
         },
       };
     case "focus-blur":
@@ -149,7 +145,7 @@ function effectParameters(scene: EffectScene, effect: CommerceEffect) {
         effect: "blur.gaussian",
         params: {
           radius: baked(
-            Array.from({ length: scene.frameCount }, (_, frame) => {
+            times.map((frame) => {
               const p = effectProgress(effect, frame),
                 smooth = p * p * (3 - 2 * p);
               return (
@@ -169,6 +165,10 @@ export function compileFamilyEffects(
   scene: EffectScene,
   layers: CompositionLayer[],
   roots: ReadonlyMap<string, string> = new Map(),
+  times: readonly number[] = Array.from(
+    { length: scene.frameCount },
+    (_, frame) => frame,
+  ),
 ) {
   const owners = new Map<string, CompositionLayer>();
   const ids = new Set(layers.map((layer) => layer.id));
@@ -184,7 +184,7 @@ export function compileFamilyEffects(
   const environment: NonNullable<CompositionLayer["effects"]> = [];
   const finishing: NonNullable<CompositionLayer["effects"]> = [];
   for (const effect of scene.effects ?? []) {
-    const compiled = effectParameters(scene, effect);
+    const compiled = effectParameters(scene, effect, times);
     if (!compiled) continue;
     const instance = {
       id: `effect${scene.effects!.indexOf(effect)}`,
@@ -225,7 +225,7 @@ export function compileFamilyEffects(
     if (effect.type === "echo" && owner.id !== effect.target) {
       const source = scene.nodes.find((node) => node.id === effect.target)!;
       owner.transform!.opacity = baked(
-        Array.from({ length: scene.frameCount }, (_, frame) =>
+        times.map((frame) =>
           evaluatePreparedNodeAtTime(scene, source, frame).opacity > 0 ? 1 : 0,
         ),
       );

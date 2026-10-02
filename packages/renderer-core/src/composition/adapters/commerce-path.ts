@@ -10,7 +10,7 @@ import type { CommerceRenderScene } from "../../commerce-scene.ts";
 import { evaluateAttachedPath } from "../../commerce-geometry.ts";
 import { evaluateComponentAnnotation } from "../../component-annotations.ts";
 import { componentVisible } from "../../component-visibility.ts";
-import { evaluatePreparedNode } from "../../prepared-scene.ts";
+import { evaluatePreparedNodeAtTime } from "../../prepared-scene.ts";
 
 export const CommercePathGeometrySchema = z
   .object({
@@ -34,7 +34,7 @@ function visible(
     if (!componentVisible(scene, current.id, frame)) return false;
     if (
       !(hasFlow && current === node) &&
-      evaluatePreparedNode(scene, current, frame).opacity <= 0
+      evaluatePreparedNodeAtTime(scene, current, frame).opacity <= 0
     )
       return false;
     const parentId: string | undefined = current.parent;
@@ -49,6 +49,7 @@ function visible(
 export function compileAttachedPathGeometry(
   scene: CommerceRenderScene | StoryRenderScene,
   node: PreparedPath,
+  times?: readonly number[],
 ) {
   if (
     !(
@@ -60,7 +61,9 @@ export function compileAttachedPathGeometry(
     )
   )
     return undefined;
-  const points = Array.from({ length: scene.frameCount }, (_, frame) =>
+  const points = (
+    times ?? Array.from({ length: scene.frameCount }, (_, frame) => frame)
+  ).map((frame) =>
     visible(scene, node, frame)
       ? evaluateComponentAnnotation(
           scene,

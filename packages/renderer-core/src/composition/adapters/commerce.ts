@@ -1,4 +1,5 @@
 import { compileFamilyEffects } from "./effects.ts";
+import { compileCommerceExposure } from "./exposure.ts";
 import {
   COMPOSITION_LIMITS,
   CommerceSceneSchema,
@@ -27,15 +28,15 @@ import { componentTextLayer } from "./component-text.ts";
 import { componentCapabilities } from "../../component-capabilities.ts";
 import { validateAttachedPaths } from "../../commerce-geometry.ts";
 import { validateComponentAnnotations } from "../../component-annotations.ts";
-import { evaluatePreparedNode } from "../../prepared-scene.ts";
+import { evaluatePreparedNodeAtTime } from "../../prepared-scene.ts";
 import { passageError, PassageError } from "../../passage-diagnostics.ts";
-import { params, preparedNodeLayer } from "./prepared.ts";
+import { params, preparedNodeLayer, type Samples } from "./prepared.ts";
 import { compileAttachedPathGeometry } from "./commerce-path.ts";
 import { prepareCommerceTextFits } from "../../commerce-layout.ts";
 import { prepareComponentTextFits } from "../../component-text-fit.ts";
 import { loadPreparedFonts } from "../../prepared-fonts.ts";
 
-export const COMMERCE_ADAPTER_VERSION = "commerce-composition-0.16.0";
+export const COMMERCE_ADAPTER_VERSION = "commerce-composition-0.17.0";
 
 export type CommerceCompositionOptions = {
   id?: string;
@@ -74,6 +75,7 @@ function checkSupported(scene: CommerceScene) {
         "grain",
         "light-sweep",
         "echo",
+        "motion-blur",
       ].includes(effect.type)
     )
       unsupported(
@@ -147,11 +149,16 @@ export function commerceToComposition(
     ),
   ]);
   const layers: CompositionLayer[] = [];
+  const exposure = compileCommerceExposure(scene);
+  const times =
+    exposure?.times ??
+    Array.from({ length: scene.frameCount }, (_, frame) => frame);
   const visit = (parent: string | undefined) => {
     for (const node of scene.nodes.filter((node) => node.parent === parent)) {
-      const samples = Array.from({ length: scene.frameCount }, (_, frame) =>
-        evaluatePreparedNode(scene, node, frame),
+      const samples: Samples = times.map((time) =>
+        evaluatePreparedNodeAtTime(scene, node, time),
       );
+      if (exposure) samples.times = times;
       const appearance = compileAppearance(scene, node, samples);
       // Keep path-based rectangle rasterization and parent transform concatenation.
       let layer =
@@ -183,7 +190,11 @@ export function commerceToComposition(
           appearance,
         );
       if (node.type === "path" && layer.type === "provider") {
-        const geometry = compileAttachedPathGeometry(scene, node);
+        const geometry = compileAttachedPathGeometry(
+          scene,
+          node,
+          exposure?.times,
+        );
         if (geometry) {
           layer.provider = "commerce.path@1.0.0";
           layer.params = params(
@@ -218,7 +229,12 @@ export function commerceToComposition(
       mode: mask.invert ? "alpha-inverted" : "alpha",
     };
   }
-  compileFamilyEffects(scene, layers);
+  compileFamilyEffects(scene, layers, undefined, exposure?.times);
+  if (exposure)
+    for (const layer of layers) {
+      layer.sampleTimes = times;
+      layer.motionBlur = true;
+    }
   const { markers, cueIds } = compileAdapterMarkers(
     scene.typography
       ? [
@@ -239,6 +255,7 @@ export function commerceToComposition(
     fps: scene.fps,
     frameCount: scene.frameCount,
     background: scene.background,
+    ...(exposure ? { motionBlur: exposure.motionBlur } : {}),
     assets: [
       ...scene.assets.map((asset) => ({ ...asset, type: "image" as const })),
       ...scene.fonts.map((font) => ({ ...font, type: "font" as const })),

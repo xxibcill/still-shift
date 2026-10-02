@@ -1995,6 +1995,31 @@ comparisons; the full `pnpm check`.
 - **Remaining:** family exposure compilation, WebGL2 acceptance and final full
   local verification. The active goal continues after the commit.
 
+### CE4b commerce exposure compilation (2026-10-02)
+
+- **Delivered:** commerce `commerce-composition-0.17.0` compiles source shutter
+  samples, state/visibility/effect cuts and echo history to bounded indexed clocks.
+  Native text, paths, numeric providers and effect parameters retain their source
+  timestamps. Exact source-pose equality can compact safe stationary samples;
+  2,000-key/table and 64 KiB provider limits remain unchanged. Canvas renderer is
+  `composition-canvas-1.21.0`; evaluator remains `composition-evaluator-19`.
+- **Text preparation:** fractional numeric labels are paired with the rounded glyph
+  pose used by drawing. Preparation includes shutter and echo times within the
+  existing 128 MP budget, fixing missing stroked glyphs without changing the legacy
+  paint loop or renderer version.
+- **Verification:** `pnpm check:fast` passes **1,220 unit tests**. Ten exposure cases /
+  **2,208 frames** pass unchanged tiers and warmed median timing gates: nine match
+  exactly; component state has maximum delta **1**, PSNR ≥ **101.5977 dB**. The
+  largest time ratio is **1.0369×**. Cases cover zero and 360°/32-sample shutters,
+  active effect and visibility cuts, overlapping transparency/echo/matte, primitive
+  blur, spatial paths/morphs, numeric values and native/rich numeric typography.
+  Six representative cases pass relocated-asset CLI export, overwrite protection
+  and two byte-identical MP4s each. Frozen typography and motion-blur baselines
+  pass **432 frames**, with no baseline changes.
+- **Coverage:** all **105/105 commerce/reusable CE0 entries**, including every one of
+  the **63 reusable combinations**, now have Canvas adapter coverage. WebGL2
+  acceptance and final full local verification remain; the goal continues.
+
 **Completion record:** CE4a and CE4b are in progress; CE4c–CE4d have not started.
 
 ---

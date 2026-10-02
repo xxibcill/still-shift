@@ -33,6 +33,7 @@ import { drawTextContainerShape } from "./text-container.ts";
 import type { Rect } from "./text-container-layout.ts";
 import { typographyTextValues } from "./typography-text-values.ts";
 import { textVisibility } from "./typography-visibility.ts";
+import { sourceExposureTimeline } from "./commerce-exposure.ts";
 import type { StoryRenderScene } from "./story-scene.ts";
 import type { CommerceRenderScene } from "./commerce-scene.ts";
 
@@ -153,6 +154,11 @@ export function prepareTypography(
     pairs = new Map<string, [number, number][]>(),
     slideLimits = new Map<string, number>();
   const ctx = surface(1, 1).getContext("2d")!;
+  const exposureTimes = scene.effects?.some(
+    (effect) => effect.type === "motion-blur" && effect.shutterAngle > 0,
+  )
+    ? sourceExposureTimeline(scene).times
+    : undefined;
   let pixels = 0;
   const reserveCanvas = (canvas: HTMLCanvasElement) => {
     pixels += canvas.width * canvas.height;
@@ -228,7 +234,7 @@ export function prepareTypography(
             frame,
             texts: [...rasters.keys()],
           }))
-        : textVisibility(scene, node, layoutsByText);
+        : textVisibility(scene, node, layoutsByText, exposureTimes);
       for (const { frame, texts } of visibility) {
         for (const text of new Set([...staticValues, ...texts])) {
           const raster = rasters.get(text);
@@ -238,7 +244,7 @@ export function prepareTypography(
             node,
             raster.layout,
             scene.textAnimators ?? [],
-            frame,
+            Math.round(frame),
             scene,
           );
           for (const pose of poses) {

@@ -24,6 +24,7 @@ import {
 import { assertAdapterExport } from "../helpers/composition-adapter-exports.ts";
 import { appearanceVariants } from "../helpers/composition-appearance.ts";
 import { primitiveBlurVariants } from "../helpers/composition-primitive-blur.ts";
+import { commerceExposureVariants } from "../helpers/composition-commerce-exposure.ts";
 import type * as Render from "../../packages/renderer-core/src/index.ts";
 import { assertCompositionAdapterState } from "../helpers/composition-adapter-state.ts";
 
@@ -80,6 +81,9 @@ try {
       })),
       ...appearanceVariants(entry.id, source),
       ...primitiveBlurVariants(entry.id, source),
+      ...(source.schemaVersion === "commerce-scene-1"
+        ? commerceExposureVariants(entry.id, source)
+        : []),
     ].filter(
       (item) => variant < 0 || item.id.includes(process.argv[variant + 1]!),
     );
@@ -254,6 +258,7 @@ try {
           "typography/editorial/appearance-uniform",
           "typography/editorial/primitive-blur-text",
           "typography/commerce/numeric",
+          "typography/commerce/motion-blur-numeric",
           "typography/variable-thai/numeric",
           "typography/semantic",
           "typography/variable-thai",

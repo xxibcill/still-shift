@@ -199,6 +199,7 @@ function prepareText(
     ctx: CanvasRenderingContext2D,
     time: number,
     contentState?: number,
+    sourceTime?: number,
   ) => {
     const frame = Math.max(0, Math.floor(time));
     const node = paintNode(preparedNode, params.appearance, frame);
@@ -217,11 +218,19 @@ function prepareText(
       if (node.container && state.reveal > 0)
         drawTextContainer(ctx, node, text);
       const blending = params.blendWindows?.some(
-        ([start, end]) => time >= start && time < end,
+        ([start, end]) =>
+          (sourceTime ?? time) >= start && (sourceTime ?? time) < end,
       );
       if (
         !blending &&
-        drawAnimatedText(ctx, node, text, frame, params.animator, layout)
+        drawAnimatedText(
+          ctx,
+          node,
+          text,
+          sourceTime ?? frame,
+          params.animator,
+          layout,
+        )
       )
         return;
       if (!node.textBox) {

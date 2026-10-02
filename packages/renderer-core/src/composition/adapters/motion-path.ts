@@ -92,6 +92,7 @@ function parse<
 export function sampleCompositionMotionPath(
   data: Pick<PathParams, "node" | "geometry" | "motion">,
   frame: number,
+  sampleIndex = frame,
 ) {
   const geometry = data.geometry;
   const node = !geometry
@@ -99,9 +100,10 @@ export function sampleCompositionMotionPath(
     : "points" in geometry
       ? {
           ...data.node,
-          points: geometry.points[Math.min(frame, geometry.points.length - 1)]!,
+          points:
+            geometry.points[Math.min(sampleIndex, geometry.points.length - 1)]!,
         }
-      : sampleStoryPath(data.node, geometry, frame);
+      : sampleStoryPath(data.node, geometry, sampleIndex);
   return sampleMotionPath(
     node,
     data.motion.spatial,
@@ -116,14 +118,16 @@ export const MOTION_PATH_PROVIDERS: readonly CanvasContentProvider[] = [
     id: "component.path@1.0.0",
     prepare(layer, _resources, path) {
       const data = parse(MotionPathParamsSchema, layer, path);
-      return (ctx, time) => {
+      return (ctx, time, _state, sourceTime) => {
         const frame = Math.max(
           0,
-          Math.min(data.motion.frameCount - 1, Math.floor(time)),
+          sourceTime === undefined
+            ? Math.min(data.motion.frameCount - 1, Math.floor(time))
+            : Math.floor(time),
         );
         drawPreparedPath(
           ctx,
-          sampleCompositionMotionPath(data, frame),
+          sampleCompositionMotionPath(data, sourceTime ?? frame, frame),
           data.samples[Math.min(frame, data.samples.length - 1)]!,
         );
       };
@@ -134,17 +138,19 @@ export const MOTION_PATH_PROVIDERS: readonly CanvasContentProvider[] = [
     prepare(layer, _resources, path) {
       const data = parse(MotionFlowParamsSchema, layer, path);
       const flow = compileStoryFlows([data.flow], data.motion.frameCount)[0]!;
-      return (ctx, time) => {
+      return (ctx, time, _state, sourceTime) => {
         const frame = Math.max(
           0,
-          Math.min(data.motion.frameCount - 1, Math.floor(time)),
+          sourceTime === undefined
+            ? Math.min(data.motion.frameCount - 1, Math.floor(time))
+            : Math.floor(time),
         );
         drawStoryFlow(
           ctx,
           flow,
-          sampleCompositionMotionPath(data, frame),
+          sampleCompositionMotionPath(data, sourceTime ?? frame, frame),
           data.samples[Math.min(frame, data.samples.length - 1)]!,
-          frame,
+          sourceTime ?? frame,
           data.motion.frameCount,
         );
       };
@@ -154,16 +160,18 @@ export const MOTION_PATH_PROVIDERS: readonly CanvasContentProvider[] = [
     id: "component.path@1.1.0",
     prepare(layer, _resources, path) {
       const data = parse(PaintedPathParamsSchema, layer, path);
-      return (ctx, time) => {
+      return (ctx, time, _state, sourceTime) => {
         const frame = Math.max(
           0,
-          Math.min(data.motion.frameCount - 1, Math.floor(time)),
+          sourceTime === undefined
+            ? Math.min(data.motion.frameCount - 1, Math.floor(time))
+            : Math.floor(time),
         );
         const paint = appearanceAt(data.appearance, frame);
         drawPreparedPath(
           ctx,
           paintNode(
-            sampleCompositionMotionPath(data, frame),
+            sampleCompositionMotionPath(data, sourceTime ?? frame, frame),
             data.appearance,
             frame,
           ),

@@ -177,10 +177,12 @@ function typographyProvider(id: string): CanvasContentProvider {
         textScene(data),
         new Map(resources.fonts),
       );
-      return (ctx, time, state) => {
+      return (ctx, time, state, sourceTime) => {
         const frame = Math.max(
           0,
-          Math.min(data.frameCount - 1, Math.floor(time)),
+          sourceTime === undefined
+            ? Math.min(data.frameCount - 1, Math.floor(time))
+            : Math.floor(time),
         );
         const text = data.numeric
           ? data.numeric.samples[
@@ -193,7 +195,7 @@ function typographyProvider(id: string): CanvasContentProvider {
           { ...paintNode(data.node, data.appearance, frame), text },
           { ...sample, state: state ?? sample.state },
           prepared,
-          frame,
+          sourceTime ?? frame,
         );
       };
     },
@@ -224,8 +226,12 @@ export function componentTypographyLayer(
           )!,
           format: binding.format,
           samples: trimSettledSamples(
-            Array.from({ length: scene.frameCount }, (_, frame) => ({
-              text: componentText(scene, node, frame)!,
+            samples.map((_, frame) => ({
+              text: componentText(
+                scene,
+                node,
+                samples.times?.[frame] ?? frame,
+              )!,
             })),
           ).map((sample) => sample.text),
         }

@@ -1,4 +1,5 @@
 import { commerceEffectVariants } from "../helpers/composition-effects.ts";
+import { commerceExposureVariants } from "../helpers/composition-commerce-exposure.ts";
 import assert from "node:assert/strict";
 import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
@@ -75,6 +76,7 @@ const accepted = new Set(
       "effects-studio",
       "light-sweep",
       "echo",
+      "motion-blur",
       "introduction",
       "layout",
       "matte",
@@ -151,6 +153,7 @@ try {
       ...appearanceVariants(entry.id, source),
       ...primitiveBlurVariants(entry.id, source),
       ...commerceEffectVariants(entry.id, source),
+      ...commerceExposureVariants(entry.id, source),
     ];
     for (const item of inputs) {
       if (variant >= 0 && !item.id.includes(process.argv[variant + 1]!))
@@ -402,6 +405,12 @@ try {
           "commerce/atom-effects-studio",
           "commerce/atom-light-sweep/glow-first",
           "commerce/atom-echo/image-active-stack",
+          "commerce/atom-motion-blur",
+          "commerce/atom-motion-blur/overlap-echo-matte",
+          "commerce/atom-motion-blur/active-cuts",
+          "component/commerce-state/motion-blur",
+          "commerce/atom-path/motion-blur",
+          "component/commerce-value/motion-blur",
           "commerce/atom-displacement/pixel-stack",
           "commerce/atom-matte/shared-group-source/focus-matte",
         ].includes(item.id)

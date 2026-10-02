@@ -254,19 +254,21 @@ describe("CE4b commerce adapter first slice", () => {
     },
   );
 
-  it.each([["atoms/motion-blur", "effects[0]"]])(
-    "rejects unsupported %s with a source path",
-    (name, path) => {
-      expect.assertions(1);
-      try {
-        commerceToComposition(fixture(name!));
-      } catch (error) {
-        expect(passageDiagnostics(error)).toContainEqual(
-          expect.objectContaining({ code: "comp-adapter-unsupported", path }),
-        );
-      }
-    },
-  );
+  it("compiles shutter samples into bounded indexed clocks", () => {
+    const comp = commerceToComposition(fixture("atoms/motion-blur"));
+    expect(comp.motionBlur).toMatchObject({
+      enabled: true,
+      shutterAngle: 180,
+      samples: 16,
+    });
+    expect(
+      comp.layers.every((layer) => layer.motionBlur && layer.sampleTimes),
+    ).toBe(true);
+    expect(comp.layers[0]!.sampleTimes!.length).toBeLessThanOrEqual(2000);
+    expect(
+      comp.layers[0]!.sampleTimes!.some((time) => !Number.isInteger(time)),
+    ).toBe(true);
+  });
 
   it("rejects oversized baking before allocating frame samples", () => {
     const input = fixture("atoms/float");

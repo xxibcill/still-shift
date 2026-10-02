@@ -1077,8 +1077,8 @@ layer visibility, discrete content changes and effect activation also create cut
 Nested precomp clocks clamp at their own cuts, including remapped clocks. Animated
 glyph preparation includes exposure and echo samples within the existing budget.
 `comp-motion-blur-range` diagnoses reversed/out-of-range intervals and unordered,
-duplicate or out-of-range cut entries. The family motion-blur compiler is a
-separate follow-up; the native renderer never invokes a family evaluator.
+duplicate or out-of-range cut entries. Commerce compiles its source shutter schedule to indexed sample clocks; the native
+renderer never invokes a family evaluator.
 
 ### Indexed sample clocks
 
@@ -1100,3 +1100,21 @@ without fractional authored keys or a source-family evaluator during rendering.
 Exposure rendering compares complete draw graphs using exact equality. When all
 samples have identical operations, it renders once; moving samples retain the
 fixed-order accumulation. The frame report's `samples` counts actual draws.
+
+### Commerce exposure compilation
+
+A commerce `motion-blur` effect becomes native composition exposure settings and
+per-layer opt-in. The compiler samples integer output frames, exact shutter times,
+source state/visibility/effect cuts and raw echo history. Baked transforms, appearance,
+text states, geometry and pixel parameters share `sampleTimes`; procedural providers
+receive the original time separately. A zero-angle shutter retains ordinary clocks.
+
+Safe, exactly equal consecutive source poses can share a retained sample. Scenes
+with procedural text, numeric bindings, attachments, masks or time-varying pixel
+effects keep every required time. More than 2,000 retained samples fails with
+`comp-adapter-limit`; provider payloads still have their 64 KiB bound. Exposure
+compilation does not relax integer authored keys or source validation.
+
+Typography stroke preparation visits the actual visible fractional numeric labels
+at each rounded glyph pose, including echo history. It retains the 128 MP preparation
+budget. Rendering uses the same prepared glyph path as ordinary integer playback.

@@ -13,7 +13,9 @@ type PreparedAdapterScene = {
   nodes: PreparedNode[];
   motionGrammar?: "v1" | "v2" | undefined;
 };
-export type Samples = ReturnType<typeof evaluatePreparedNode>[];
+export type Samples = ReturnType<typeof evaluatePreparedNode>[] & {
+  times?: readonly number[];
+};
 export function params(value: unknown, path: string, node?: string) {
   const result = ProviderLayerSchema.shape.params.safeParse(
     JSON.parse(JSON.stringify(value)),
@@ -111,6 +113,7 @@ export function preparedBaseLayer(
 ) {
   return {
     id: node.id,
+    ...(samples.times ? { sampleTimes: [...samples.times] } : {}),
     ...(node.parent ? { parent: node.parent } : {}),
     source: { family: scene.schemaVersion, id: node.id },
     ...(samples.some((sample) => sample.blur !== undefined)

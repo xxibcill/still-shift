@@ -54,7 +54,9 @@ export function compileAppearance(
         ),
     );
   const painted = paints
-    ? samples.map((_, frame) => evaluateMotionAppearance(scene, node, frame))
+    ? samples.map((_, frame) =>
+        evaluateMotionAppearance(scene, node, samples.times?.[frame] ?? frame),
+      )
     : [];
   for (const key of ["fill", "stroke", "color"] as const) {
     if (!(key in node)) continue;
