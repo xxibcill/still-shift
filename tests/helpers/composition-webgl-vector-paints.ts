@@ -163,6 +163,110 @@ export function checkProviderPaintBatches() {
   }
 }
 
+/** Deferral must flush before destination reads and preserve state when recording falls back. */
+export function checkDeferredPaints() {
+  const make = () => {
+    const canvas = document.createElement("canvas");
+    canvas.width = 96;
+    canvas.height = 64;
+    return canvas.getContext("2d")!;
+  };
+  const modes = [
+    "replay",
+    "read",
+    "canvas",
+    "canvas-early",
+    "self",
+    "clear",
+    "destination",
+    "limit",
+    "gradient",
+    "reset",
+    "source",
+  ];
+  for (const mode of modes) {
+    const reference = make(),
+      actual = make();
+    const draw = (ctx: CanvasRenderingContext2D) => {
+      const earlyCanvas = mode === "canvas-early" ? ctx.canvas : undefined;
+      ctx.save();
+      ctx.translate(3, 4);
+      ctx.beginPath();
+      ctx.rect(0, 0, 70, 48);
+      ctx.clip();
+      ctx.fillStyle = "#b7396380";
+      ctx.fillRect(2.25, 1.5, 48, 32);
+      ctx.save();
+      ctx.translate(7, 3);
+      ctx.fillStyle = "#477d659a";
+      ctx.fillRect(0, 0, 25, 20);
+      if (mode === "read" || mode === "canvas" || earlyCanvas) {
+        const read = earlyCanvas
+          ? earlyCanvas.getContext("2d")!
+          : mode === "canvas"
+            ? (ctx.canvas.getContext("2d") as CanvasRenderingContext2D)
+            : ctx;
+        const color = read.getImageData(15, 15, 1, 1).data;
+        ctx.fillStyle = `rgb(${color[0]},${color[1]},${color[2]})`;
+        ctx.fillRect(35, 20, 15, 10);
+      }
+      if (mode === "self")
+        ctx.drawImage(ctx.canvas, 0, 0, 32, 24, 28, 10, 32, 24);
+      if (mode === "clear") ctx.clearRect(10, 8, 15, 12);
+      if (mode === "destination") {
+        ctx.globalCompositeOperation = "destination-out";
+        ctx.fillRect(10, 8, 15, 12);
+      }
+      if (mode === "limit")
+        for (let i = 0; i < 70; i++) ctx.fillRect(i % 30, i % 20, 8, 6);
+      if (mode === "gradient") {
+        const gradient = ctx.createLinearGradient(0, 0, 20, 0);
+        gradient.addColorStop(0, "#eecc88");
+        gradient.addColorStop(1, "#225544");
+        ctx.fillStyle = gradient;
+        ctx.fillRect(10, 8, 20, 12);
+      }
+      if (mode === "reset") {
+        ctx.reset();
+        ctx.fillRect(2, 3, 8, 9);
+      }
+      if (mode === "source") {
+        const image = make();
+        image.fillStyle = "#83765c";
+        image.fillRect(0, 0, 96, 64);
+        ctx.drawImage(image.canvas, 20, 10, 30, 20);
+        image.clearRect(0, 0, 96, 64);
+      }
+      ctx.restore();
+      ctx.restore();
+    };
+    draw(reference);
+    const recording = recordVectorPaints(
+      actual,
+      { left: 0, top: 0, right: 96, bottom: 64 },
+      { deferPaints: true },
+    );
+    try {
+      draw(recording.context);
+      if (mode === "replay" && !recording.firstGroupOnly())
+        throw new Error(
+          "Overlapping paints were not deferred after the first group",
+        );
+      recording.render();
+      recording.render();
+      const expected = reference.getImageData(0, 0, 96, 64).data;
+      const pixels = actual.getImageData(0, 0, 96, 64).data;
+      if (pixels.some((value, index) => value !== expected[index]))
+        throw new Error(`Deferred paint fallback changed ${mode}`);
+    } finally {
+      recording.dispose();
+    }
+    if (!actual.getTransform().isIdentity)
+      throw new Error(`Deferred paint leaked ${mode} state`);
+  }
+  return { cases: modes.length, maxDelta: 0 };
+}
+
 /** Exercise mutable sources, clipping and state independently of renderer caching. */
 export function checkVectorPaintReplay() {
   const canvas = () => {

@@ -30,38 +30,87 @@ const queries = new Set([
   "getContextAttributes",
 ]);
 
-/** Record local paint boundaries without changing the provider's original Canvas execution. */
+const states = new Set([
+  "save",
+  "restore",
+  "resetTransform",
+  "setTransform",
+  "transform",
+  "translate",
+  "rotate",
+  "scale",
+  "clip",
+  "beginPath",
+  "closePath",
+  "moveTo",
+  "lineTo",
+  "bezierCurveTo",
+  "quadraticCurveTo",
+  "rect",
+  "roundRect",
+  "arc",
+  "arcTo",
+  "ellipse",
+  "setLineDash",
+]);
+
+/** Record local paints; optionally retain the first group and defer later raster work.
+ * Deferred targets start with empty pixels/path. Destination reads flush pending paints.
+ */
 export function recordVectorPaints(
   ctx: CanvasRenderingContext2D,
   fallback: Bounds,
-  options: { stableImages?: boolean } = {},
+  options: { stableImages?: boolean; deferPaints?: boolean } = {},
 ) {
   const commands: Command[] = [],
     marks: Paint[] = [];
   let supported = true;
+  let deferred = false;
+  let marker = options.deferPaints === true,
+    depth = 0;
+  const painted = new Set<number>();
+  if (marker) {
+    ctx.save();
+    ctx.beginPath();
+  }
+  const render = () => {
+    if (!deferred) return;
+    deferred = false;
+    for (let i = 0; i < depth; i++) ctx.restore();
+    ctx.restore();
+    ctx.save();
+    ctx.beginPath();
+    const target = ctx as unknown as Record<string, unknown>;
+    for (const [index, command] of commands.entries()) {
+      if (painted.has(index)) continue;
+      if ("property" in command) target[command.property] = command.value;
+      else
+        Reflect.apply(
+          target[command.method] as (...args: unknown[]) => unknown,
+          ctx,
+          command.args,
+        );
+    }
+  };
+  const invalidate = () => {
+    render();
+    supported = false;
+  };
   const snapshots: HTMLCanvasElement[] = [];
   let snapshotBytes = 0;
   const path = new CanvasPathBounds();
   const context = new Proxy(ctx, {
     get(target, property) {
+      if (property === "canvas" && options.deferPaints) invalidate();
       const value = Reflect.get(target, property, target);
       if (typeof value !== "function") return value;
       return (...args: unknown[]) => {
         const name = String(property);
+        if (marker && name === "restore" && depth === 0) return;
+        if (!paints.has(name) && !queries.has(name) && !states.has(name))
+          invalidate();
+        if (name === "drawImage" && args[0] === target.canvas) invalidate();
         path.record(target, name, args);
-        if (
-          [
-            "getImageData",
-            "putImageData",
-            "clearRect",
-            "reset",
-            "createPattern",
-            "createLinearGradient",
-            "createRadialGradient",
-            "createConicGradient",
-          ].includes(name)
-        )
-          supported = false;
         let recorded = args;
         if (
           name === "drawImage" &&
@@ -69,7 +118,7 @@ export function recordVectorPaints(
           !(args[0] instanceof HTMLImageElement) &&
           !(args[0] instanceof ImageBitmap)
         )
-          supported = false;
+          invalidate();
         if (
           name === "drawImage" &&
           args[0] instanceof HTMLCanvasElement &&
@@ -83,7 +132,7 @@ export function recordVectorPaints(
             marks.length >= 64 ||
             image === target.canvas
           )
-            supported = false;
+            invalidate();
           else {
             const snapshot = document.createElement("canvas");
             snapshot.width = image.width;
@@ -94,7 +143,7 @@ export function recordVectorPaints(
             recorded = [snapshot, ...args.slice(1)];
           }
         }
-        if (commands.length >= 65536 || marks.length >= 64) supported = false;
+        if (commands.length >= 65536 || marks.length >= 64) invalidate();
         if (!queries.has(name) && supported) {
           if (paints.has(name)) {
             if (
@@ -102,12 +151,21 @@ export function recordVectorPaints(
               typeof target.fillStyle !== "string" ||
               typeof target.strokeStyle !== "string"
             )
-              supported = false;
-            marks.push({
+              invalidate();
+            const mark = {
               command: commands.length,
               primitive: name !== "drawImage" && target.filter === "none",
               bounds: paintBounds(target, name, args, fallback, path.bounds),
-            });
+            };
+            if (
+              options.deferPaints &&
+              supported &&
+              marks.length &&
+              (marks[0]!.primitive !== mark.primitive ||
+                marks.some((prior) => boundsOverlap(prior.bounds, mark.bounds)))
+            )
+              deferred = true;
+            marks.push(mark);
           }
           commands.push({
             method: name,
@@ -122,18 +180,33 @@ export function recordVectorPaints(
             ),
           });
         }
-        return Reflect.apply(value, target, args);
+        if (deferred && paints.has(name)) return;
+        if (supported && paints.has(name)) painted.add(commands.length - 1);
+        if (marker && name === "save") depth++;
+        if (marker && name === "restore") depth--;
+        const result = Reflect.apply(value, target, args);
+        if (name === "reset") {
+          depth = 0;
+          marker = false;
+        }
+        return result;
       };
     },
     set(target, property, value) {
-      if (commands.length >= 65536) supported = false;
+      if (commands.length >= 65536) invalidate();
       if (supported) commands.push({ property: String(property), value });
       return Reflect.set(target, property, value, target);
     },
   });
   return {
     context,
+    render,
+    firstGroupOnly: () => deferred,
     dispose() {
+      if (marker) {
+        for (let i = 0; i <= depth; i++) ctx.restore();
+        marker = false;
+      }
       for (const canvas of snapshots) canvas.width = canvas.height = 0;
     },
     groups(): VectorPaintGroup[] | undefined {

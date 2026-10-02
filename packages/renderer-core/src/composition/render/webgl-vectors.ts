@@ -119,7 +119,10 @@ export class WebglVectors {
       this.stableImages?.(content) === true;
     const recording =
       this.paintOver.hasBackdrop(dst) && !imageOnly
-        ? recordVectorPaints(pixels.ctx, rect, { stableImages })
+        ? recordVectorPaints(pixels.ctx, rect, {
+            stableImages,
+            deferPaints: true,
+          })
         : undefined;
     const painting = recording ? { ...pixels, ctx: recording.context } : pixels;
     const parts: RasterPart[] = [];
@@ -182,6 +185,7 @@ export class WebglVectors {
         }, 0) > this.limit
       )
         groups = undefined;
+      if (!groups || groups.length === 1) recording?.render();
       if (groups?.length === 1)
         upload(pixels.canvas, groups[0]!.bounds, groups[0]!.primitive);
       else if (!groups)
@@ -191,7 +195,11 @@ export class WebglVectors {
           !imageOnly && ops.every((op) => !op.paintBlur),
         );
       else
-        for (const group of groups) {
+        for (const [index, group] of groups.entries()) {
+          if (index === 0 && recording?.firstGroupOnly()) {
+            upload(pixels.canvas, group.bounds, group.primitive);
+            continue;
+          }
           const scratch = this.raster.createSurface(dst.width, dst.height);
           try {
             replayVectorPaints(scratch.ctx, group);

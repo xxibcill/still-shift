@@ -55,6 +55,11 @@ try {
     ).checkVectorPaintReplay();
   });
   console.log("WebGL provider paint replay:", replay);
+  const deferred = await page.evaluate(async () => {
+    const url = "/tests/helpers/composition-webgl-vector-paints.ts";
+    return ((await import(url)) as typeof VectorPaints).checkDeferredPaints();
+  });
+  console.log("WebGL deferred paint fallback:", deferred);
   const batches = await page.evaluate(async () => {
     const url = "/tests/helpers/composition-webgl-vector-paints.ts";
     return (

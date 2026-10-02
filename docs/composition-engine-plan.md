@@ -2559,6 +2559,25 @@ comparisons; the full `pnpm check`.
 - **Remaining:** family timing gates, complete family exports and final full
   local/CE0 verification.
 
+### CE4b first paint-group reuse (2026-10-03)
+
+- **Version:** `composition-webgl2-0.28.0` retains the first local paint group
+  and records later overlapping groups without rasterizing them twice. Reads,
+  canvas access and unsupported operations flush deferred work before falling
+  back. Mutable image snapshots and Canvas state restoration remain intact.
+- **Verification:** all **20 typography cases / 3,367 frames**, **48 story
+  component cases / 9,216 frames** and **49 commerce component cases / 9,408
+  frames** pass pixels. Respectively **16**, **5** and **14** cases pass both
+  gates. Typography containers measures **1.4348×**, uniform appearance
+  **1.6323×**, semantic text **1.2562×** and numeric Thai **1.5716×**; these four
+  remain over budget. Family runs used `--skip-exports` for diagnostics.
+  Native checks, all **1,248 unit tests**, fast checks and **204 export/Lab
+  frames** pass. Eleven exact deferred-paint cases cover destination reads,
+  early canvas aliases, self-draws, resets, gradients, limits and source mutation.
+- **Remaining:** family timing gates, complete family exports and final full
+  local/CE0 verification. Cropped ImageBitmap staging increased measured upload
+  cost and was discarded.
+
 **Completion record:** CE4a and CE4b are in progress; CE4c–CE4d have not started.
 
 ---
