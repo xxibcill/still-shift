@@ -354,6 +354,7 @@ export function prepareCompositionText(
             node,
             prepared.scene.textAnimators ?? [],
             prepared.corrections.get(node.id) ?? [],
+            prepared.scene.signals ?? [],
           ),
         });
       } else {

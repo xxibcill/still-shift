@@ -202,6 +202,7 @@ function typographyProvider(id: string): CanvasContentProvider {
         data.node,
         data.textAnimators,
         prepared.corrections.get(data.node.id) ?? [],
+        data.signals,
       );
       const frameAt = (time: number, sourceTime?: number) =>
         Math.max(

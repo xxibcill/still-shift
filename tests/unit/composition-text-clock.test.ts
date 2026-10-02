@@ -56,30 +56,135 @@ describe("prepared typography cache clock", () => {
     expect(clock(140)).toBe(140);
     expect(clock(200)).toBe(151);
   });
-  it("keeps signals and animated selectors live beyond the animator end", () => {
+  it("keeps unresolved signals live beyond the animator end", () => {
     for (const animated of [
       { ...animation, signal: "pulse" },
       {
         ...animation,
         selector: { ...animation.selector, offset: { signal: "cursor" } },
       },
-      {
-        ...animation,
-        selectors: [
-          {
-            start: 0,
-            end: 1,
-            offset: [
-              { frame: 0, value: 0 },
-              { frame: 120, value: 1 },
-            ],
-          },
-        ],
-      },
     ]) {
       const clock = typographyClock({ id: "label" }, [animated], []);
       expect(clock(200.5)).toBe(200.5);
     }
+  });
+  it("tracks selector curves beyond the animator and reuses their settled state", () => {
+    const clock = typographyClock(
+      { id: "label" },
+      [
+        {
+          ...animation,
+          selectors: [
+            {
+              start: 0,
+              end: 1,
+              offset: [
+                { frame: 0, value: 0 },
+                { frame: 120, value: 1 },
+              ],
+            },
+          ],
+        },
+      ],
+      [],
+    );
+    expect([80.25, 120, 160, 200].map(clock)).toEqual([80.25, 120, 121, 121]);
+  });
+  it("reuses finite signal plateaus while preserving held animator start gates", () => {
+    const clock = typographyClock(
+      { id: "label" },
+      [
+        {
+          ...animation,
+          start: 80,
+          end: 140,
+          signal: "margin",
+          to: { tracking: 20 },
+        },
+      ],
+      [],
+      [
+        {
+          id: "margin",
+          keys: [
+            { frame: 0, value: 0 },
+            { frame: 60, value: 1 },
+            { frame: 100, value: 1 },
+            { frame: 140, value: 0 },
+          ],
+        },
+      ],
+    );
+    expect([30.5, 65, 75, 80, 85, 95, 120, 160, 65].map(clock)).toEqual([
+      30.5, 61, 61, 80, 81, 81, 120, 141, 61,
+    ]);
+  });
+  it("keeps additive signals live even when their keys are constant", () => {
+    const clock = typographyClock(
+      { id: "label" },
+      [
+        {
+          ...animation,
+          selector: { start: 0, end: 1, offset: { signal: "pulse" } },
+        },
+      ],
+      [],
+      [
+        {
+          id: "pulse",
+          keys: [{ frame: 0, value: 1 }],
+          add: [{ pulse: { at: 100, half: 10, depth: 1 } }],
+        },
+      ],
+    );
+    expect(clock(200.5)).toBe(200.5);
+  });
+  it("holds coverage between discrete keys without freezing key changes", () => {
+    const clock = typographyClock(
+      { id: "label" },
+      [
+        {
+          ...animation,
+          signal: "steps",
+        },
+      ],
+      [],
+      [
+        {
+          id: "steps",
+          keys: [
+            { frame: 0, value: 0 },
+            { frame: 60, value: 1, interpolation: "hold" },
+            { frame: 120, value: 0, interpolation: "hold" },
+          ],
+        },
+      ],
+    );
+    expect([0, 30, 60, 80, 100, 120, 180].map(clock)).toEqual([
+      59, 59, 60, 61, 61, 120, 121,
+    ]);
+  });
+  it("keeps equal-value curves with temporal handles active", () => {
+    const clock = typographyClock(
+      { id: "label" },
+      [
+        {
+          ...animation,
+          signal: "curve",
+        },
+      ],
+      [],
+      [
+        {
+          id: "curve",
+          keys: [
+            { frame: 0, value: 1, out: { speed: 0.1, ease: 0.3 } },
+            { frame: 120, value: 1, in: { speed: -0.1, ease: 0.3 } },
+          ],
+        },
+      ],
+    );
+    expect([30.25, 90.5, 200].map(clock)).toEqual([30.25, 90.5, 121]);
   });
   it("ignores other nodes and constant decorations", () => {
     const clock = typographyClock(

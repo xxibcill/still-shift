@@ -2425,6 +2425,22 @@ comparisons; the full `pnpm check`.
   1 / 0**. Native GPU checks, all **1,242 unit tests**, fast checks and **204
   export/Lab frames** pass.
 
+### CE4b finite signal typography reuse (2026-10-03)
+
+- **Version:** `composition-webgl2-0.21.0` includes finite signal and selector
+  curves in typography activity windows. Constant plateaus and held-key gaps
+  reuse coverage, while destination start gates, temporal handles, fractional
+  frames and backward seeks retain their correct state. Missing signals and
+  signals with additive pulse/oscillation/noise continue using live clocks.
+- **Verification:** all **20 cases / 3,367 frames** pass pixels; **11 pass both
+  gates**. Selectors now passes at **1.1636×**, down from **1.3130×**. Semantic
+  text improves from **1.5150× to 1.3570×** and vertical text from **1.5199× to
+  1.3650×**, but both remain over budget. Eleven clock regressions, all **1,247
+  unit tests**, fast checks, native GPU checks and **204 export/Lab frames** pass.
+- **Remaining:** nine typography timing failures, component/commerce timing
+  failures, the rest of the commerce GPU audit, complete family exports and
+  final full verification. No acceptance gate or baseline has changed.
+
 **Completion record:** CE4a and CE4b are in progress; CE4c–CE4d have not started.
 
 ---
