@@ -4,6 +4,7 @@ import type {
 } from "@still-shift/scene-contract";
 import { evaluateComp } from "../evaluate/evaluate.ts";
 import type { Bounds, EvaluatedLayerTree } from "../evaluate/types.ts";
+import { buildRenderGraph, type RenderOp } from "./graph.ts";
 
 export type CompositionTextFrames = Record<string, readonly number[]>;
 
@@ -23,6 +24,24 @@ export function collectCompositionTextFrames(
       samples.set(prefix + node, new Set());
   }
   if (!samples.size) return {};
+  const hasHistory = [comp, ...(comp.precomps ?? [])].some((scope) =>
+    scope.layers.some((layer) =>
+      layer.effects?.some((effect) => effect.effect === "time.echo"),
+    ),
+  );
+  const visitOps = (ops: RenderOp[]) => {
+    for (const op of ops) {
+      if (op.kind === "draw") {
+        if (op.content.type === "text")
+          samples.get(op.content.key)?.add(Math.round(op.content.time));
+        else if (op.content.type === "surface")
+          visitOps(op.content.surface.ops);
+      } else {
+        if (op.kind === "isolate") visitOps(op.ops);
+        if (op.matte) visitOps(op.matte.ops);
+      }
+    }
+  };
   const visit = (
     tree: EvaluatedLayerTree,
     scope: CompositionScope,
@@ -48,8 +67,14 @@ export function collectCompositionTextFrames(
         );
     }
   };
-  for (let frame = 0; frame < comp.frameCount; frame++)
-    visit(evaluateComp(comp, frame, { textBounds }), comp, "");
+  for (let frame = 0; frame < comp.frameCount; frame++) {
+    const tree = evaluateComp(comp, frame, { textBounds });
+    visit(tree, comp, "");
+    if (hasHistory)
+      visitOps(
+        buildRenderGraph(comp, tree, { textBounds, cull: false }).root.ops,
+      );
+  }
   return Object.fromEntries(
     [...samples].map(([key, frames]) => [
       key,

@@ -10,6 +10,7 @@ export {
   type MaskOp,
   type MatteOp,
   type RenderGraph,
+  type RenderGraphOptions,
   type RenderOp,
   type RenderEffect,
   type SolidContent,

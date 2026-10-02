@@ -156,6 +156,10 @@ export type RenderGraph = {
   /** Layer keys skipped because their bounds miss the surface they draw into. */
   culled: string[];
 };
+export type RenderGraphOptions = EvaluationOptions & {
+  /** Preparation must discover offscreen glyph samples before final bounds exist. */
+  cull?: boolean;
+};
 
 type Frame = {
   matrix: Matrix;
@@ -198,7 +202,7 @@ class GraphBuilder {
   constructor(
     readonly comp: Composition,
     readonly time: number,
-    readonly options: EvaluationOptions,
+    readonly options: RenderGraphOptions,
     readonly historical = false,
   ) {}
 
@@ -223,6 +227,7 @@ class GraphBuilder {
         clips: [],
         viewport: { width: tree.width, height: tree.height },
         prefix,
+        ...(this.options.cull === false ? { cull: false } : {}),
       }),
     };
   }
@@ -713,7 +718,7 @@ class GraphBuilder {
 export function buildRenderGraph(
   comp: Composition,
   tree: EvaluatedLayerTree,
-  options: EvaluationOptions = {},
+  options: RenderGraphOptions = {},
 ): RenderGraph {
   const builder = new GraphBuilder(comp, tree.time, options);
   return {

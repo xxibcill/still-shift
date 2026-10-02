@@ -13,6 +13,7 @@ import {
 } from "../../packages/renderer-core/src/composition/render/graph.ts";
 import { commerceToComposition } from "../../packages/renderer-core/src/composition/adapters/commerce.ts";
 import { commerceEffectVariants } from "../helpers/composition-effects.ts";
+import { collectCompositionTextFrames } from "../../packages/renderer-core/src/composition/render/text-frames.ts";
 
 const fixture = (): Composition => ({
   schemaVersion: "composition-1",
@@ -55,6 +56,72 @@ const graph = (comp: Composition, frame = 10) =>
   buildRenderGraph(comp, evaluateComp(comp, frame));
 
 describe("native temporal echo", () => {
+  it("prepares historical animated glyphs in a frozen, offscreen matte source", () => {
+    const comp = fixture();
+    comp.assets = [
+      {
+        id: "font",
+        type: "font",
+        path: "font.ttf",
+        sha256: `sha256:${"0".repeat(64)}`,
+        weight: "400",
+      },
+    ];
+    comp.layers = [
+      { id: "inset", type: "precomp", comp: "source", timeRemap: 12 },
+    ];
+    comp.precomps = [
+      {
+        id: "source",
+        width: 100,
+        height: 100,
+        frameCount: 60,
+        layers: [
+          {
+            id: "text",
+            type: "text",
+            enabled: false,
+            text: "Aa",
+            fontSize: 30,
+            fontAsset: "font",
+            color: "#ffffff",
+            transform: { position: [-50, 10] },
+            effects: [
+              {
+                id: "trail",
+                effect: "time.echo",
+                params: { count: 3, spacing: 2, decay: 0.5 },
+              },
+            ],
+          },
+          {
+            id: "art",
+            type: "solid",
+            size: [100, 100],
+            color: "#ffffff",
+            trackMatte: { layer: "text", mode: "alpha" },
+          },
+        ],
+        textAnimators: [
+          {
+            node: "text",
+            unit: "glyph",
+            start: 0,
+            end: 20,
+            stagger: 0,
+            selector: { start: 0, end: 1, easing: "linear" },
+            from: { strokeWidth: 0 },
+            to: { strokeWidth: 10 },
+          },
+        ],
+      },
+    ];
+    expect(
+      collectCompositionTextFrames(comp, {
+        "source/text": [{ left: 0, top: 0, right: 20, bottom: 30 }],
+      }),
+    ).toEqual({ "source/text": [6, 8, 10, 12] });
+  });
   it("gates a commerce wrapper when the current image is transparent", () => {
     const source = CommerceSceneSchema.parse(
       JSON.parse(

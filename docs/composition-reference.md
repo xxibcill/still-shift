@@ -1034,3 +1034,8 @@ from complete descendant poses, preserving its unchanged-pose skip rule. Native
 authors can leave `skipUnchanged` disabled, or key revisions for content whose
 identity they can fully describe. Active history includes sampled opacity before
 pixel effects, as do the commerce wrapper groups.
+
+Animated text preparation visits echo history as well as ordinary playback.
+Frozen/remapped precomps and disabled matte sources therefore prepare every
+required glyph/stroke frame, including offscreen samples before final text bounds
+are known. The existing glyph preparation memory budget still applies.

@@ -1917,6 +1917,21 @@ comparisons; the full `pnpm check`.
 - **Remaining:** motion blur, animated primitive blur, WebGL2 acceptance and final
   full local verification. The active goal continues after this slice's commit.
 
+### CE4b temporal-text preparation follow-up (2026-10-02)
+
+- **Delivered:** Canvas renderer `composition-canvas-1.17.0` prepares animated
+  glyph frames reached only through echo history. Preparation inspects the native
+  graph with culling disabled until final glyph bounds exist, covering frozen
+  precomp clocks, offscreen text and disabled matte sources within the existing
+  memory budget.
+- **Verification:** `pnpm check:fast` passes **1,206 unit tests**. The full native
+  composition browser suite passes, including a frozen precomp whose animated
+  stroke echoes match the equivalent running precomp frame byte for byte on
+  repeated and backward seeks. Existing preview/export, transport, deterministic
+  export and failure-cleanup checks also pass.
+- **Remaining:** motion blur, animated primitive blur, WebGL2 acceptance and final
+  full local verification. The active goal continues after this slice's commit.
+
 **Completion record:** CE4a and CE4b are in progress; CE4c–CE4d have not started.
 
 ---

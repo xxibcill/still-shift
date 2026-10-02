@@ -623,6 +623,68 @@ try {
     "stroke-width text animators prepare and render through settlement",
   );
 
+  const echoText = structuredClone(strokeText);
+  echoText.id = "echo-text";
+  const echoed = structuredClone(strokeText.layers[0]!);
+  echoed.transform = {
+    position: {
+      x: {
+        keys: [
+          { frame: 0, value: 30 },
+          { frame: 9, value: 100 },
+        ],
+      },
+      y: 30,
+    },
+    opacity: 0.7,
+  };
+  echoed.effects = [
+    {
+      id: "trail",
+      effect: "time.echo",
+      params: { count: 3, spacing: 1, decay: 0.5 },
+    },
+  ];
+  echoText.textAnimators = [];
+  echoText.precomps = [
+    {
+      id: "glyphs",
+      width: 300,
+      height: 100,
+      frameCount: 10,
+      layers: [echoed],
+      textAnimators: strokeText.textAnimators!,
+    },
+  ];
+  echoText.layers = [
+    {
+      id: "inset",
+      type: "precomp",
+      comp: "glyphs",
+      transform: { anchor: [0, 0] },
+    },
+  ];
+  const expectedEcho = await render(page, echoText, [5], assetUrls(echoText));
+  const frozenEcho = structuredClone(echoText);
+  const inset = frozenEcho.layers[0]!;
+  if (inset.type !== "precomp") throw new Error("Expected precomp");
+  inset.timeRemap = 5;
+  const frozenFrames = await render(
+    page,
+    frozenEcho,
+    [0, 9, 3, 0],
+    assetUrls(frozenEcho),
+  );
+  for (const frame of frozenFrames.frames)
+    assert.deepEqual(
+      frame,
+      expectedEcho.frames[0],
+      "Frozen precomp prepares historical animated stroke samples",
+    );
+  results.push(
+    "echo prepares historical animated glyphs through frozen precomp clocks",
+  );
+
   for (const rasterize of ["coverage", "source-colors"] as const) {
     const strokeLayer = strokeText.layers[0]!;
     if (strokeLayer.type !== "text") throw new Error("Expected text");
