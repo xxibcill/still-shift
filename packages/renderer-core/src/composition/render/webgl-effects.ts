@@ -4,7 +4,7 @@ import { boxBlur } from "./webgl-box-blur.ts";
 import type { WebglBounds } from "./webgl-bounds.ts";
 import { paintRisingParticles } from "../../pixel-generators.ts";
 import { cssColor, type Canvas2dBackend } from "./canvas2d.ts";
-import type { Rgba } from "../evaluate/types.ts";
+import type { Bounds, Rgba } from "../evaluate/types.ts";
 import type { RenderEffect } from "./graph.ts";
 import type { WebglDevice, WebglSurface } from "./webgl-device.ts";
 import { blendShader } from "./webgl-blend.ts";
@@ -39,6 +39,7 @@ export class WebglEffects {
     draw: (ctx: CanvasRenderingContext2D) => void,
     shader = blendShader("normal"),
     opacity = 1,
+    region?: Bounds | null,
   ) {
     const pixels = this.raster.createSurface(dst.width, dst.height);
     const source = this.device.surface(dst.width, dst.height);
@@ -50,7 +51,7 @@ export class WebglEffects {
         pixels.ctx.restore();
       }
       this.device.upload(source, pixels.canvas);
-      this.replace(dst, shader, [source, dst], { opacity });
+      this.replace(dst, shader, [source, dst], { opacity }, region);
     } finally {
       this.raster.releaseSurface(pixels);
       this.device.release(source);
@@ -62,9 +63,10 @@ export class WebglEffects {
     shader: string,
     inputs: WebglSurface[],
     uniforms: Parameters<WebglDevice["pass"]>[3] = {},
+    region?: Bounds | null,
   ) {
     if (dst.screen) {
-      this.device.pass(shader, dst, inputs, uniforms);
+      this.device.pass(shader, dst, inputs, uniforms, false, region);
       return;
     }
     const output = this.device.surface(
@@ -74,7 +76,7 @@ export class WebglEffects {
       dst.opaque,
     );
     try {
-      this.device.pass(shader, output, inputs, uniforms);
+      this.device.pass(shader, output, inputs, uniforms, false, region);
       this.device.swap(dst, output);
     } finally {
       this.device.release(output);
@@ -88,6 +90,7 @@ export class WebglEffects {
     const region = this.bounds.region(dst);
     if (region === null) return;
     this.bounds.blur(dst, kernel.radius);
+    const outputRegion = this.bounds.region(dst);
     if (boxBlur(this.device, dst, kernel, region)) return;
     // Match the raster Gaussian's integer reciprocal division after each axis.
     // Floating normalization accumulates visible errors in chained filters.
@@ -122,18 +125,32 @@ export class WebglEffects {
         uint factor=uint(factorParts.x)+(uint(factorParts.y)<<16);
         pixel=vec4(multiplyHigh(sum.r,factor),multiplyHigh(sum.g,factor),multiplyHigh(sum.b,factor),multiplyHigh(sum.a,factor))/255.0;
       }`;
-      this.device.pass(shader, scratch, [dst, source], {
-        halfDivisor: Math.floor((kernel.divisor + 1) / 2),
-        factorParts: [factor & 65535, factor >>> 16],
-        radius: kernel.radius,
-        direction: [1, 0],
-      });
-      this.device.pass(shader, dst, [scratch, source], {
-        halfDivisor: Math.floor((kernel.divisor + 1) / 2),
-        factorParts: [factor & 65535, factor >>> 16],
-        radius: kernel.radius,
-        direction: [0, 1],
-      });
+      this.device.pass(
+        shader,
+        scratch,
+        [dst, source],
+        {
+          halfDivisor: Math.floor((kernel.divisor + 1) / 2),
+          factorParts: [factor & 65535, factor >>> 16],
+          radius: kernel.radius,
+          direction: [1, 0],
+        },
+        false,
+        outputRegion,
+      );
+      this.device.pass(
+        shader,
+        dst,
+        [scratch, source],
+        {
+          halfDivisor: Math.floor((kernel.divisor + 1) / 2),
+          factorParts: [factor & 65535, factor >>> 16],
+          radius: kernel.radius,
+          direction: [0, 1],
+        },
+        false,
+        outputRegion,
+      );
     } finally {
       this.device.release(source);
       this.device.release(scratch);
@@ -277,6 +294,7 @@ export class WebglEffects {
             pixel=bytes(vec4(light.rgb*dst.a+dst.rgb*(1.0-light.a),dst.a));
           }`,
             p.strength as number,
+            this.bounds.region(dst),
           );
           break;
         }
@@ -285,6 +303,7 @@ export class WebglEffects {
           break;
         case "blur.directional": {
           if (!p.length) break;
+          this.bounds.blur(dst, Math.ceil((p.length as number) / 2) + 2);
           this.replace(
             dst,
             `${SAMPLE}
@@ -316,11 +335,13 @@ ${FLOAT32_RATIONAL_SUM}
               ],
               samples: p.samples as number,
             },
+            this.bounds.region(dst),
           );
           break;
         }
         case "distort.sine": {
           if (!p.amount) break;
+          this.bounds.blur(dst, Math.ceil(Math.abs(p.amount as number)) + 2);
           // Offsets are scalar control data, computed with the same Math.sin as
           // authored motion. SwiftShader's approximate sin can cross a 1/16-pixel
           // sampling boundary even when the source double is on the other side.
@@ -342,6 +363,8 @@ ${FLOAT32_RATIONAL_SUM}
               pixel=bilinear(gl_FragCoord.xy-pixelTranslation(vec2(shift,0.0)));
             }`,
               [dst, offsets],
+              {},
+              this.bounds.region(dst),
             );
           } finally {
             this.device.release(offsets);
@@ -353,6 +376,10 @@ ${FLOAT32_RATIONAL_SUM}
           // Canvas filters the opacity-scaled input; scaling the blurred result
           // changes byte rounding and can accumulate through a matte or effect stack.
           const glow = this.device.surface(dst.width, dst.height);
+          const inputRegion = this.bounds.region(dst);
+          this.bounds.clear(glow, null);
+          if (inputRegion === undefined) this.bounds.full(glow);
+          else this.bounds.include(glow, inputRegion);
           try {
             this.device.pass(
               `uniform float threshold; uniform float opacity;
@@ -370,12 +397,22 @@ ${FLOAT32_RATIONAL_SUM}
                 threshold: p.threshold as number,
                 opacity: p.intensity as number,
               },
+              false,
+              inputRegion,
             );
             this.blur(glow, p.radius as number);
-            this.replace(dst, blendShader("screen"), [glow, dst], {
-              opacity: 1,
-            });
+            this.bounds.include(dst, this.bounds.snapshot(glow));
+            this.replace(
+              dst,
+              blendShader("screen"),
+              [glow, dst],
+              {
+                opacity: 1,
+              },
+              this.bounds.region(dst),
+            );
           } finally {
+            this.bounds.release(glow);
             this.device.release(glow);
           }
           break;
@@ -385,7 +422,16 @@ ${FLOAT32_RATIONAL_SUM}
             `comp-webgl-effect: ${effect.effect} is not implemented`,
           );
       }
-      if (effect.effect !== "blur.gaussian") this.bounds.full(dst);
+      if (
+        ![
+          "blur.gaussian",
+          "blur.directional",
+          "distort.sine",
+          "light.glow",
+          "light.sweep",
+        ].includes(effect.effect)
+      )
+        this.bounds.full(dst);
     }
   }
 }

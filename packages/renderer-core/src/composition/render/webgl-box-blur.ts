@@ -68,7 +68,6 @@ export function boxBlur(
     return false;
   const buffers: WebglSurface[] = [];
   const scratch = device.surface(outWidth, outHeight);
-  const gl = device.gl;
   try {
     for (let i = 0; i < 3; i++)
       buffers.push(device.surface(width, height, true));
@@ -99,41 +98,54 @@ export function boxBlur(
             (buffer) => buffer !== base && buffer !== current,
           )!;
           const initial = current === input;
-          gl.enable(gl.SCISSOR_TEST);
-          gl.scissor(0, 0, extent[0]!, extent[1]!);
-          device.pass(SUM, next, [current, base], {
-            direction,
-            count,
-            extra: Number(bit),
-            baseScale,
-            baseOffset,
-            baseSize,
-            sumScale: initial ? 255 : 1,
-            sumOffset: initial ? baseOffset : [0, 0],
-            sumSize: initial ? [input.width, input.height] : extent,
-          });
+          device.pass(
+            SUM,
+            next,
+            [current, base],
+            {
+              direction,
+              count,
+              extra: Number(bit),
+              baseScale,
+              baseOffset,
+              baseSize,
+              sumScale: initial ? 255 : 1,
+              sumOffset: initial ? baseOffset : [0, 0],
+              sumSize: initial ? [input.width, input.height] : extent,
+            },
+            false,
+            { left: 0, top: 0, right: extent[0]!, bottom: extent[1]! },
+          );
           current = next;
           count = count * 2 + Number(bit);
         }
       }
-      gl.disable(gl.SCISSOR_TEST);
-      if (axis === 1 && painted) {
-        device.clear(dst);
-        gl.enable(gl.SCISSOR_TEST);
-        gl.scissor(region.left, region.top, outWidth, outHeight);
-      }
-      device.pass(DIVIDE, output, [current], {
-        offset: [
-          direction[0] * padding - (axis === 1 ? region.left : 0),
-          direction[1] * padding - (axis === 1 ? region.top : 0),
-        ],
-        halfDivisor: Math.floor((kernel.divisor + 1) / 2),
-        factorParts: [factor & 65535, factor >>> 16],
-      });
+      if (axis === 1 && painted) device.clear(dst);
+      device.pass(
+        DIVIDE,
+        output,
+        [current],
+        {
+          offset: [
+            direction[0] * padding - (axis === 1 ? region.left : 0),
+            direction[1] * padding - (axis === 1 ? region.top : 0),
+          ],
+          halfDivisor: Math.floor((kernel.divisor + 1) / 2),
+          factorParts: [factor & 65535, factor >>> 16],
+        },
+        false,
+        axis === 1 && painted
+          ? {
+              left: region.left,
+              top: region.top,
+              right: region.left + outWidth,
+              bottom: region.top + outHeight,
+            }
+          : undefined,
+      );
     }
     return true;
   } finally {
-    gl.disable(gl.SCISSOR_TEST);
     buffers.forEach((buffer) => device.release(buffer));
     device.release(scratch);
   }

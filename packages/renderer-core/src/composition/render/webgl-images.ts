@@ -113,13 +113,6 @@ export class WebglImages {
     gl.enable(gl.BLEND);
     gl.blendEquation(gl.FUNC_ADD);
     gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
-    gl.enable(gl.SCISSOR_TEST);
-    gl.scissor(
-      left,
-      dst.screen ? dst.height - bottom : top,
-      right - left,
-      bottom - top,
-    );
     try {
       this.device.pass(
         `uniform vec2 origin; void main() {
@@ -129,9 +122,9 @@ export class WebglImages {
         [surface],
         { origin: [left, top] },
         true,
+        { left, top, right, bottom },
       );
     } finally {
-      gl.disable(gl.SCISSOR_TEST);
       gl.disable(gl.BLEND);
     }
     return true;

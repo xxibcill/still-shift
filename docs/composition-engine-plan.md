@@ -2204,6 +2204,23 @@ comparisons; the full `pnpm check`.
   limit. Bounded effect passes, reduced framebuffer transfers, remaining family
   parity/timing checks and final local/frozen-baseline verification are still required.
 
+### CE4b bounded GPU filter passes (2026-10-03)
+
+- **Version:** `composition-webgl2-0.8.0` clips directional blur, sine displacement,
+  glow and sweep passes to conservative painted extents. Displacements and kernels
+  expand those extents before filtering. Glow carries its input bounds through
+  thresholding and blur; alpha-preserving sweep keeps the existing extent. Unknown
+  or opaque inputs remain conservative. Gaussian fallback passes use the same
+  bounded output region. Device-owned scissor scopes prevent one pass's clipping
+  from leaking into another.
+- **Verification:** native GPU parity, exact framebuffer readback, all 4,096
+  arithmetic cases, the 204-frame export/Lab suite and local fast checks pass.
+  All **576 flow/effect/matte frames** satisfy both the pixel and timing gates:
+  maximum channel delta **2**, with ratios **0.2748×**, **0.3397×** and **0.3408×**.
+  Their previous ratios were 2.4108–2.5248×; effect semantics are unchanged.
+- **Remaining:** ordinary moving scenes still need framebuffer-transfer work;
+  full family parity/timing and final local/frozen-baseline verification remain open.
+
 **Completion record:** CE4a and CE4b are in progress; CE4c–CE4d have not started.
 
 ---

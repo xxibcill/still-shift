@@ -139,13 +139,6 @@ export class WebglVectors {
     gl.enable(gl.BLEND);
     gl.blendEquation(gl.FUNC_ADD);
     gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
-    gl.enable(gl.SCISSOR_TEST);
-    gl.scissor(
-      rect.left,
-      dst.screen ? dst.height - rect.bottom : rect.top,
-      rect.right - rect.left,
-      rect.bottom - rect.top,
-    );
     try {
       this.device.pass(
         `uniform vec2 origin; void main() {pixel=texelFetch(source,ivec2(gl_FragCoord.xy-origin),0);}`,
@@ -153,9 +146,9 @@ export class WebglVectors {
         [surface],
         { origin: [rect.left, rect.top] },
         true,
+        rect,
       );
     } finally {
-      gl.disable(gl.SCISSOR_TEST);
       gl.disable(gl.BLEND);
       if (!retained) this.device.release(surface);
     }

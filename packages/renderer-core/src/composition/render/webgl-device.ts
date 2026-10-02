@@ -1,3 +1,4 @@
+import type { Bounds } from "../evaluate/types.ts";
 /** GPU-owned, premultiplied RGBA pixels. Texture row zero is the image's top row. */
 export type WebglSurface = {
   readonly width: number;
@@ -235,7 +236,9 @@ export class WebglDevice {
     inputs: readonly WebglSurface[],
     uniforms: Record<string, UniformValue> = {},
     blended = false,
+    clip?: Bounds | null,
   ) {
+    if (clip === null) return;
     const gl = this.gl;
     if (target?.screen) {
       // Keep every shader in top-left image coordinates while the canvas's
@@ -338,7 +341,20 @@ export class WebglDevice {
       else if (value.length === 9) gl.uniformMatrix3fv(location, false, value);
       else throw new Error(`comp-webgl-uniform: unsupported ${name}`);
     }
-    gl.drawArrays(gl.TRIANGLES, 0, 3);
+    if (clip) {
+      gl.enable(gl.SCISSOR_TEST);
+      gl.scissor(
+        clip.left,
+        target?.screen ? target.height - clip.bottom : clip.top,
+        clip.right - clip.left,
+        clip.bottom - clip.top,
+      );
+    }
+    try {
+      gl.drawArrays(gl.TRIANGLES, 0, 3);
+    } finally {
+      if (clip) gl.disable(gl.SCISSOR_TEST);
+    }
     if (target?.screen) this.dirtyScreens.add(target);
     this.passes++;
   }
