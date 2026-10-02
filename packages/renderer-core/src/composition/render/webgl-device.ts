@@ -463,6 +463,7 @@ export class WebglDevice {
     y: number,
     width: number,
     height: number,
+    rowOrder: "top-down" | "native" = "top-down",
   ) {
     const gl = this.gl;
     const pixels = new Uint8Array(width * height * 4);
@@ -480,7 +481,7 @@ export class WebglDevice {
       pixels,
     );
     gl.bindFramebuffer(gl.FRAMEBUFFER, null);
-    if (surface.screen) {
+    if (surface.screen && rowOrder === "top-down") {
       const stride = width * 4,
         row = new Uint8Array(stride);
       for (let top = 0, bottom = height - 1; top < bottom; top++, bottom--) {

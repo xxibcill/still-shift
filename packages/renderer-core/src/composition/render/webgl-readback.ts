@@ -10,6 +10,7 @@ export class WebglReadback {
     private readonly readFull: () => Uint8ClampedArray,
     private readonly readRegion: (region: Bounds) => Uint8Array,
     private readonly limit = 64 * 1024 * 1024,
+    private readonly regionRows: "top-down" | "bottom-up" = "top-down",
   ) {}
 
   changed(region?: Bounds | null) {
@@ -50,11 +51,16 @@ export class WebglReadback {
       const rect = this.pending,
         pixels = this.readRegion(rect),
         stride = (rect.right - rect.left) * 4;
-      for (let row = 0; row < rect.bottom - rect.top; row++)
+      for (let row = 0; row < rect.bottom - rect.top; row++) {
+        const sourceRow =
+          this.regionRows === "bottom-up"
+            ? rect.bottom - rect.top - row - 1
+            : row;
         this.pixels.set(
-          pixels.subarray(row * stride, (row + 1) * stride),
+          pixels.subarray(sourceRow * stride, (sourceRow + 1) * stride),
           ((rect.top + row) * this.width + rect.left) * 4,
         );
+      }
     }
     this.pending = null;
     // Callers own their returned bytes, including across later incremental updates.

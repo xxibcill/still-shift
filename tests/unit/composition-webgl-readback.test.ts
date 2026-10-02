@@ -63,6 +63,26 @@ describe("incremental GPU readback", () => {
     expect(reads()).toBe(2);
     expect(regions).toEqual([]);
   });
+  it("patches native bottom-up rows without reversing the temporary buffer", () => {
+    const native = new Uint8Array([30, 31, 32, 255, 20, 21, 22, 255]);
+    const cache = new WebglReadback(
+      3,
+      4,
+      () => new Uint8ClampedArray(48),
+      () => native,
+      undefined,
+      "bottom-up",
+    );
+    const first = cache.read();
+    cache.changed({ left: 1, top: 1, right: 2, bottom: 3 });
+    const result = cache.read();
+    expect([...result.slice(16, 20)]).toEqual([20, 21, 22, 255]);
+    expect([...result.slice(28, 32)]).toEqual([30, 31, 32, 255]);
+    expect([...native]).toEqual([30, 31, 32, 255, 20, 21, 22, 255]);
+    expect(first.every((value) => value === 0)).toBe(true);
+    result.fill(99);
+    expect(cache.read()[16]).toBe(20);
+  });
   it("retains no framebuffer above its byte budget", () => {
     const { cache, framebuffer, reads } = setup(4);
     cache.read();

@@ -2488,6 +2488,25 @@ comparisons; the full `pnpm check`.
   multi-state vector cache prototype did not improve first-pass measurements
   (story bracket **3.8447×**, Thai **1.4609× / 1.8893×**) and was discarded.
 
+### CE4b single-pass incremental readback (2026-10-03)
+
+- **Version:** `composition-webgl2-0.24.0` reads changed screen regions in native
+  row order and reverses their row selection while patching the retained frame.
+  This removes the intermediate in-place flip without changing ownership of
+  returned arrays or the default top-down device read API.
+- **Verification:** all **20 typography cases / 3,367 frames** pass pixels;
+  **13 pass both gates**, including semantic text at **1.2381×**. Seven timing
+  failures remain. Story bracket remains within pixel limits at **3.4000×**
+  timing. Native GPU checks, **1,248 unit tests**, fast checks and **204 export/Lab
+  frames** pass. A regression covers bottom-up partial updates, buffer ownership
+  and preservation of the native temporary bytes.
+- **Remaining:** family timing gates, full family exports, final full local and
+  CE0 baseline verification. The native axis-aligned image sampler remains an
+  uncommitted diagnostic prototype: striped-image probes confirm rare 1/16
+  coordinate-boundary differences. Arithmetic and scanline variants have not
+  resolved them. Direct GPU-flipped readback and disjoint-damage prototypes were
+  slower and were discarded.
+
 **Completion record:** CE4a and CE4b are in progress; CE4c–CE4d have not started.
 
 ---
