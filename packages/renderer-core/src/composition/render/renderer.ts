@@ -202,6 +202,10 @@ export function createCompositionPreview(
   if (kind === "webgl2") {
     const backend = createWebgl2Backend(canvas, {
       ...backendOptions,
+      singleImage: (content) =>
+        content.type === "provider"
+          ? drawProvider.singleImage(content)
+          : text.singleImage(content),
       contentKey: (content) =>
         content.type === "provider"
           ? drawProvider.contentKey(content)

@@ -62,6 +62,13 @@ try {
     ).checkProviderPaintBatches();
   });
   console.log("WebGL provider paint batches:", batches);
+  const singleImage = await page.evaluate(async () => {
+    const url = "/tests/helpers/composition-webgl-vector-paints.ts";
+    return (
+      (await import(url)) as typeof VectorPaints
+    ).checkSingleImageProvider();
+  });
+  console.log("WebGL single image provider:", singleImage);
   const results = await page.evaluate(async () => {
     const url = "/tests/helpers/composition-webgl-reference.ts";
     const { checkWebglFrames } = (await import(url)) as typeof Checks;

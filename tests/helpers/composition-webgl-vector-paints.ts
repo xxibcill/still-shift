@@ -6,6 +6,83 @@ import { createCompositionPreview } from "../../packages/renderer-core/src/compo
 import { preparedProvider } from "../../packages/renderer-core/src/composition/render/providers.ts";
 import type { Composition } from "../../packages/scene-contract/src/index.ts";
 
+/** Single-image preparation must preserve the paint even if its source later changes. */
+export function checkSingleImageProvider() {
+  const composition: Composition = {
+    schemaVersion: "composition-1",
+    id: "single-image-provider",
+    width: 96,
+    height: 64,
+    fps: 30,
+    frameCount: 3,
+    background: "#f2ede3",
+    assets: [],
+    layers: [
+      {
+        id: "image",
+        type: "provider",
+        provider: "test.image@1.0.0",
+        params: {},
+      },
+    ],
+  };
+  const make = (backend: "canvas2d" | "webgl2") =>
+    createCompositionPreview(
+      document.createElement("canvas"),
+      composition,
+      { images: new Map(), fonts: new Map() },
+      {
+        backend,
+        providers: [
+          {
+            id: "test.image@1.0.0",
+            prepare: () => {
+              const source = document.createElement("canvas");
+              source.width = 32;
+              source.height = 24;
+              const paint = source.getContext("2d")!;
+              return preparedProvider(
+                (ctx, time) => {
+                  paint.clearRect(0, 0, 32, 24);
+                  paint.fillStyle = time === 1 ? "#477d659a" : "#b739636d";
+                  paint.fillRect(1.25, 2.5, 24, 18);
+                  ctx.drawImage(source, 10.25 + time, 8.5);
+                  paint.clearRect(0, 0, 32, 24);
+                },
+                {
+                  singleImage: true,
+                  bounds: { left: 8, top: 6, right: 48, bottom: 36 },
+                },
+              );
+            },
+          },
+        ],
+      },
+    );
+  const gpu = make("webgl2"),
+    reference = make("canvas2d");
+  let maxDelta = 0;
+  try {
+    for (const frame of [0, 1, 2, 0]) {
+      gpu.renderFrame(frame);
+      reference.renderFrame(frame);
+      const actual = gpu.readPixels(),
+        expected = reference.readPixels();
+      for (let index = 0; index < actual.length; index++)
+        maxDelta = Math.max(
+          maxDelta,
+          Math.abs(actual[index]! - expected[index]!),
+        );
+    }
+    if (maxDelta > 1)
+      throw new Error(`Single image provider differs by ${maxDelta}`);
+    return { frames: 4, maxDelta };
+  } finally {
+    gpu.dispose();
+    reference.dispose();
+  }
+}
+
 /** More than one sampler batch must preserve every intermediate rounded result. */
 export function checkProviderPaintBatches() {
   const composition: Composition = {

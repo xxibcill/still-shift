@@ -36,6 +36,9 @@ export class WebglVectors {
     private readonly contentBounds?: (
       content: ProviderContent | TextContent,
     ) => Bounds | undefined,
+    private readonly singleImage?: (
+      content: ProviderContent | TextContent,
+    ) => boolean,
   ) {}
 
   private forget(id: string) {
@@ -101,9 +104,13 @@ export class WebglVectors {
 
   private paint(dst: WebglSurface, ops: VectorDraw[], rect: Bounds) {
     const pixels = this.raster.createSurface(dst.width, dst.height);
-    const recording = this.paintOver.hasBackdrop(dst)
-      ? recordVectorPaints(pixels.ctx, rect)
-      : undefined;
+    const content = ops.length === 1 ? ops[0]!.content : undefined;
+    const singleImage =
+      content && content.type !== "solid" && this.singleImage?.(content);
+    const recording =
+      this.paintOver.hasBackdrop(dst) && !singleImage
+        ? recordVectorPaints(pixels.ctx, rect)
+        : undefined;
     const painting = recording ? { ...pixels, ctx: recording.context } : pixels;
     const parts: RasterPart[] = [];
     const upload = (
@@ -171,7 +178,7 @@ export class WebglVectors {
         upload(
           pixels.canvas,
           rect,
-          ops.every((op) => !op.paintBlur),
+          !singleImage && ops.every((op) => !op.paintBlur),
         );
       else
         for (const group of groups) {

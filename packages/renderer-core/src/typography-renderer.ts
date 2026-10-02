@@ -71,6 +71,25 @@ export type PreparedTypography = {
   maskLayer: HTMLCanvasElement;
   transitionLayer: HTMLCanvasElement;
 };
+
+/** These runs paint one composed glyph image, with no surrounding primitive paints. */
+export function isSingleImageTypography(
+  node: TextNode,
+  prepared: PreparedTypography,
+) {
+  return (
+    !node.container &&
+    !node.decorations?.length &&
+    !node.transition &&
+    !node.transitions?.length &&
+    !prepared.corrections.get(node.id)?.length &&
+    !prepared.scene.textAnimators?.some(
+      (animator) =>
+        animator.node === node.id &&
+        (animator.from.blur !== undefined || animator.to?.blur !== undefined),
+    )
+  );
+}
 const surface = (width: number, height: number) => {
   if (width * height > 32_000_000 || width > 16384 || height > 16384)
     throw new Error("text-raster-budget: text layer exceeds 32 megapixels");

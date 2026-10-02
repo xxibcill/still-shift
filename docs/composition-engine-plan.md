@@ -2462,6 +2462,32 @@ comparisons; the full `pnpm check`.
   typed-pixel uploads were slower both with separate and fused alpha conversion;
   neither prototype was adopted. Remaining work is unchanged.
 
+### CE4b commerce audit completion and single-image typography (2026-10-03)
+
+- **Commerce audit:** the remaining **29 atom cases / 6,960 frames** all pass
+  pixels; **14 pass both gates** at `composition-webgl2-0.22.0`. Together, the
+  split diagnostic runs cover **126 cases / 27,960 frames**. The four initial
+  pixel failures passed their 0.20.0 reruns; counting that directional-blur
+  timing pass gives **51 cases passing both gates** across the recorded runs.
+  These mixed-version diagnostic runs exclude exports and do not replace the
+  required final full acceptance run.
+- **Version:** `composition-webgl2-0.23.0` lets prepared content declare a single
+  source-over image paint. Native and rich numeric typography opt in only when
+  preparation excludes containers, decorations, transitions, corrections and
+  multiple blur runs. Such content skips paint recording and mutable-canvas
+  snapshots; other providers retain the existing replay path and rounding.
+- **Verification:** all **20 typography cases / 3,367 frames** pass pixels;
+  **12 pass both gates**. Native Thai passes at **1.1798×**, selectors improves
+  to **1.0372×**, semantic text to **1.2827×**, and vertical text to **1.2626×**.
+  Eight timing failures remain. The single-image mutable-source/backward-seek
+  regression, native GPU checks, all **1,247 unit tests**, fast checks and **204
+  export/Lab frames** pass. A transient local helper-module fetch failure passed
+  when the native suite was rerun alone.
+- **Remaining:** typography/component/commerce timing, full family exports,
+  final full local verification and CE0 baseline verification. A bounded
+  multi-state vector cache prototype did not improve first-pass measurements
+  (story bracket **3.8447×**, Thai **1.4609× / 1.8893×**) and was discarded.
+
 **Completion record:** CE4a and CE4b are in progress; CE4c–CE4d have not started.
 
 ---

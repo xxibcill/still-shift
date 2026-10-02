@@ -24,10 +24,12 @@ export type CanvasProviderDrawer = DrawProvider & {
   visualKey?: (time: number, state?: number, sourceTime?: number) => string;
   /** Conservative local painted bounds across all states and clocks. */
   bounds?: Bounds | undefined;
+  /** The drawer emits at most one source-over drawImage paint, including its filter. */
+  singleImage?: boolean;
 };
 export function preparedProvider(
   draw: DrawProvider,
-  metadata: Pick<CanvasProviderDrawer, "visualKey" | "bounds">,
+  metadata: Pick<CanvasProviderDrawer, "visualKey" | "bounds" | "singleImage">,
 ): CanvasProviderDrawer {
   return Object.assign(draw, metadata);
 }
@@ -130,6 +132,9 @@ export function prepareCompositionProviders(
     draw(ctx, content.time, content.state, content.sourceTime);
   };
   return Object.assign(draw, {
+    singleImage(content: ProviderContent): boolean {
+      return drawers.get(content.key)?.singleImage === true;
+    },
     contentKey(content: ProviderContent): string | undefined {
       const key = drawers.get(content.key)?.visualKey;
       if (!key) return undefined;
