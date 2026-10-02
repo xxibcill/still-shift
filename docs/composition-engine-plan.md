@@ -1387,6 +1387,23 @@ comparisons; the full `pnpm check`.
   production passage rendering still uses the family path. The composition-only
   story feature decision and remaining CE4a acceptance criteria stay open.
 
+### CE4a camera coverage review fix (2026-10-02)
+
+Image camera cover declarations now survive JSON export in `metadata.storyCameraCover`.
+Composition preparation checks the sampled source pixels at every integer frame,
+including crops, image states and camera motion, and reports `comp-camera-coverage`
+with the cover layer and frame on failure. This uses native composition evaluation
+and the shared legacy alpha threshold. Rectangle coverage remains checked during
+story compilation. Versions: adapter `story-composition-0.2.1`, renderer
+`composition-canvas-1.2.1`.
+
+Local verification on Node 22.23.1 / pnpm 10.29.3: `pnpm check:fast` passes all
+1,072 unit tests plus schema, boundary, formatting, lint and type checks. The
+adapter browser suite rejects transparent persisted covers, retains exact parity
+for all 192 Access Constraint frames, and exports two byte-identical MP4s. The
+fixture suite passes all 20 items / 4,678 frames. Calibration Pan's initial timing
+was 1.262×; the unchanged rerun passes at 1.211×. No baseline or threshold changed.
+
 **Completion record:** CE4a is in progress; CE4b–CE4d have not started.
 
 ---

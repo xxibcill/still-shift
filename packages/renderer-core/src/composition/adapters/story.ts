@@ -18,7 +18,7 @@ import {
 } from "../../passage-diagnostics.ts";
 import { compileStoryPathGeometry } from "./story-path.ts";
 
-export const STORY_ADAPTER_VERSION = "story-composition-0.2.0";
+export const STORY_ADAPTER_VERSION = "story-composition-0.2.1";
 type Samples = ReturnType<typeof evaluatePreparedNode>[];
 function params(value: unknown, path: string, node?: string) {
   const result = ProviderLayerSchema.shape.params.safeParse(
@@ -367,6 +367,14 @@ export function storyToComposition(
         adapter: STORY_ADAPTER_VERSION,
         title: scene.title,
         provenance: scene.provenance ?? "",
+        ...(scene.camera?.cover?.length
+          ? {
+              storyCameraCover: scene.camera.cover.filter(
+                (id) =>
+                  scene.nodes.find((node) => node.id === id)?.type === "image",
+              ),
+            }
+          : {}),
         ...(scene.review ? { review: scene.review } : {}),
       },
       "metadata",
