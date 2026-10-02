@@ -162,5 +162,39 @@ export function checkVectorPaintReplay() {
       "Destination-dependent local paint must use raster fallback",
     );
   unsupported.dispose();
-  return { groups: 4, mutableSources: 3, fallbacks: 1 };
+
+  const curves = recordVectorPaints(canvas().getContext("2d")!, bounds);
+  const curve = curves.context;
+  curve.beginPath();
+  curve.moveTo(8, 8);
+  curve.save();
+  curve.translate(12, 15);
+  curve.rotate(0.2);
+  curve.bezierCurveTo(0, 20, 20, -10, 30, 10);
+  curve.ellipse(15, 10, 12, 6, 0.4, 0, Math.PI * 2);
+  curve.restore();
+  curve.quadraticCurveTo(40, 40, 8, 8);
+  curve.closePath();
+  curve.fill();
+  curve.stroke();
+  const curvedGroups = curves.groups();
+  if (curvedGroups?.length !== 2)
+    throw new Error("Overlapping curved paints must retain separate bounds");
+  for (const group of curvedGroups) {
+    const context = canvas().getContext("2d")!;
+    replayVectorPaints(context, group);
+    const pixels = context.getImageData(0, 0, 96, 64).data;
+    for (let y = 0; y < 64; y++)
+      for (let x = 0; x < 96; x++)
+        if (
+          pixels[(y * 96 + x) * 4 + 3] &&
+          (x < group.bounds.left ||
+            x >= group.bounds.right ||
+            y < group.bounds.top ||
+            y >= group.bounds.bottom)
+        )
+          throw new Error(`Paint bounds exclude curved coverage at ${x},${y}`);
+  }
+  curves.dispose();
+  return { groups: 4, mutableSources: 3, fallbacks: 1, curvedBounds: 2 };
 }

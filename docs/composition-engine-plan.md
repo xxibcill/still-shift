@@ -2322,6 +2322,23 @@ comparisons; the full `pnpm check`.
 - **Remaining:** provider preparation and uploads, other family timing gates,
   remaining parity checks and final full verification.
 
+### CE4b bounded local paint paths (2026-10-03)
+
+- **Version:** `composition-webgl2-0.15.0` tracks Canvas path control hulls in
+  device coordinates, including transform changes within a path, curves and
+  ellipses. Each prepared paint uses its own conservative extent instead of the
+  provider's complete timeline extent. Unknown tangent arcs and opaque Path2D
+  objects retain the provider fallback; stroke/filter/shadow padding remains.
+- **Verification:** all **48 story-component cases / 9,216 frames** now pass the
+  pixel tiers (maximum delta 2), closing the nine earlier pixel-failing cases.
+  Curved-path coverage regressions, native GPU parity, 4,096 arithmetic cases,
+  1,236 unit tests and all 204 export/Lab frames pass. The targeted morph run
+  improves from **6.6098×** to **5.2811×**, with unchanged pixels.
+- **Remaining:** **43 of 48 cases still fail timing**. The three flow-effect and
+  two sweep cases pass both gates. Primitive blur is **1.2993×**, its matte
+  **1.4207×**, and stack **1.5890×** in the full matrix. Commerce/typography GPU
+  matrices, all outstanding performance gates and final full verification remain.
+
 **Completion record:** CE4a and CE4b are in progress; CE4c–CE4d have not started.
 
 ---

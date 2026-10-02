@@ -1,5 +1,6 @@
 import type { Bounds } from "../evaluate/types.ts";
 import { boundsOverlap, unionBounds } from "./webgl-vector-regions.ts";
+import { CanvasPathBounds } from "./webgl-path-bounds.ts";
 
 type Command =
   | { method: string; args: unknown[] }
@@ -39,12 +40,14 @@ export function recordVectorPaints(
   let supported = true;
   const snapshots: HTMLCanvasElement[] = [];
   let snapshotBytes = 0;
+  const path = new CanvasPathBounds();
   const context = new Proxy(ctx, {
     get(target, property) {
       const value = Reflect.get(target, property, target);
       if (typeof value !== "function") return value;
       return (...args: unknown[]) => {
         const name = String(property);
+        path.record(target, name, args);
         if (
           [
             "getImageData",
@@ -101,7 +104,7 @@ export function recordVectorPaints(
             marks.push({
               command: commands.length,
               primitive: name !== "drawImage" && target.filter === "none",
-              bounds: paintBounds(target, name, args, fallback),
+              bounds: paintBounds(target, name, args, fallback, path.bounds),
             });
           }
           commands.push({
@@ -199,10 +202,14 @@ function paintBounds(
   method: string,
   args: unknown[],
   fallback: Bounds,
+  path?: Bounds,
 ): Bounds {
   let box: Bounds | undefined;
+  const deviceSpace =
+    (method === "fill" || method === "stroke") && !(args[0] instanceof Path2D);
   const numbers = args as number[];
-  if (method === "fillRect" || method === "strokeRect") {
+  if (deviceSpace) box = path;
+  else if (method === "fillRect" || method === "strokeRect") {
     const [x, y, width, height] = numbers as [number, number, number, number];
     box = {
       left: Math.min(x, x + width),
@@ -254,7 +261,9 @@ function paintBounds(
     [box.right, box.top],
     [box.right, box.bottom],
     [box.left, box.bottom],
-  ].map(([x, y]) => matrix.transformPoint({ x: x!, y: y! }));
+  ].map(([x, y]) =>
+    deviceSpace ? { x: x!, y: y! } : matrix.transformPoint({ x: x!, y: y! }),
+  );
   const scale = Math.max(
     1,
     Math.hypot(matrix.a, matrix.b),
