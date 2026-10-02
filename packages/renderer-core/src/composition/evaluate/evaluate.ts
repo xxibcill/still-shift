@@ -50,7 +50,7 @@ import type {
   PropertyValue,
 } from "./types.ts";
 
-export const COMPOSITION_EVALUATOR_VERSION = "composition-evaluator-15";
+export const COMPOSITION_EVALUATOR_VERSION = "composition-evaluator-16";
 const order = ["action", "response", "current", "carrier"] as const;
 type Context = {
   scope: CompositionScope;
@@ -323,11 +323,18 @@ class Evaluation {
       });
     const scope = this.compiled.scopes.get(host.comp)!;
     const sourceTime = yield* this.clock(ctx, host);
+    const route = [...ctx.route, host.id];
     const next = context(
       scope,
-      Math.max(0, Math.min(scope.frameCount - 1, sourceTime)),
+      Math.max(
+        0,
+        Math.min(
+          scope.frameCount - 1,
+          this.options.scopeTimes?.[route.join("/")] ?? sourceTime,
+        ),
+      ),
       scope.fps ?? this.compiled.comp.fps,
-      [...ctx.route, host.id],
+      route,
     );
     ctx.children.set(host.id, next);
     return next;
@@ -639,7 +646,13 @@ class Evaluation {
 }
 
 function session(comp: Composition, time: number, options: EvaluationOptions) {
-  if (!Number.isFinite(time) || Math.abs(time) > COMPOSITION_LIMITS.maxKeyFrame)
+  if (
+    [time, ...Object.values(options.scopeTimes ?? {})].some(
+      (value) =>
+        !Number.isFinite(value) ||
+        Math.abs(value) > COMPOSITION_LIMITS.maxKeyFrame,
+    )
+  )
     passageError(
       "comp-evaluation-time",
       `Evaluation time must be finite and within ±${COMPOSITION_LIMITS.maxKeyFrame} frames`,

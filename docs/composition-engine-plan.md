@@ -1870,6 +1870,34 @@ comparisons; the full `pnpm check`.
   integration, WebGL2 acceptance and final full local verification. The active
   goal continues after this slice's commit.
 
+### CE4b temporal-echo follow-up (2026-10-02)
+
+- **Delivered:** native `time.echo@1.0.0` samples bounded content history before
+  the current pixel stack and matte. Historical opacity, clipping, visibility and
+  precomp clocks are retained. Nested history suppresses additional echoes, and
+  the evaluated-history cache holds at most 16 entries per frame. Native authors
+  may provide keyed revision identities to skip unchanged content.
+- **Adapter:** source descendant poses compile to revision keys, preserving the
+  legacy skip rule even when animation returns to an earlier pose. Single-image
+  wrappers gate history when current source opacity reaches zero. No family
+  evaluator runs during composition rendering.
+- **Versions:** commerce adapter `commerce-composition-0.15.0`, evaluator
+  `composition-evaluator-16`, Canvas renderer `composition-canvas-1.16.0`.
+- **Verification:** `pnpm check:fast` passes **1,203 unit tests**. Four commerce
+  cases / **960 frames** match exactly, including returning poses, inverted matte,
+  translucent overlapping children, active windows, zero decay and glow. Worst
+  paired median render/readback ratio is **1.0655×**. The updated image opacity
+  case also passes **240 exact frames**, at **0.9025×**. Native checks retain the
+  existing **800 exact effect frames / 30 adjustment cases** and add **70 echo
+  frames** within one channel value, including clipped groups, precomps, collapsed
+  transforms, remapped clocks and masks. Five native fixtures each export 60 frames
+  twice with identical bytes. Three commerce cases each pass repeat CLI exports,
+  relocated assets and overwrite protection, including the final opacity case.
+- **Coverage:** **104 of 105** commerce/reusable CE0 entries have Canvas coverage.
+- **Remaining:** motion blur, animated primitive blur, shared story-effect
+  integration, WebGL2 acceptance and final full local verification. The active
+  goal continues after this slice's commit.
+
 **Completion record:** CE4a and CE4b are in progress; CE4c–CE4d have not started.
 
 ---

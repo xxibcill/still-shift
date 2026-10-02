@@ -1,4 +1,5 @@
 import type * as PixelTests from "../helpers/composition-pixel-reference.ts";
+import type * as EchoTests from "../helpers/composition-echo-reference.ts";
 import { mkdtemp, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { renderComposition } from "@still-shift/animation-engine";
@@ -442,6 +443,9 @@ try {
           maxDelta,
         });
       }
+    const echoUrl = "/tests/helpers/composition-echo-reference.ts";
+    const { checkEchoFrames } = (await import(echoUrl)) as typeof EchoTests;
+    result.push(...checkEchoFrames());
     return result;
   });
   for (const result of results)
@@ -460,6 +464,7 @@ try {
     "pixel-stack",
     "generators",
     "light-sweep",
+    "echo",
   ]) {
     const compositionPath = resolve(
       `benchmarks/fixtures/composition/ce6/${fixture}.json`,

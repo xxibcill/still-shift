@@ -217,6 +217,7 @@ describe("CE4b commerce adapter first slice", () => {
     "atoms/overshoot",
     "atoms/path",
     "atoms/shadow",
+    "atoms/echo",
   ])(
     "preserves every integer-frame matrix and opacity for %s, including reverse seeks",
     (name) => {
@@ -253,19 +254,19 @@ describe("CE4b commerce adapter first slice", () => {
     },
   );
 
-  it.each([
-    ["atoms/echo", "effects[0]"],
-    ["atoms/motion-blur", "effects[0]"],
-  ])("rejects unsupported %s with a source path", (name, path) => {
-    expect.assertions(1);
-    try {
-      commerceToComposition(fixture(name!));
-    } catch (error) {
-      expect(passageDiagnostics(error)).toContainEqual(
-        expect.objectContaining({ code: "comp-adapter-unsupported", path }),
-      );
-    }
-  });
+  it.each([["atoms/motion-blur", "effects[0]"]])(
+    "rejects unsupported %s with a source path",
+    (name, path) => {
+      expect.assertions(1);
+      try {
+        commerceToComposition(fixture(name!));
+      } catch (error) {
+        expect(passageDiagnostics(error)).toContainEqual(
+          expect.objectContaining({ code: "comp-adapter-unsupported", path }),
+        );
+      }
+    },
+  );
 
   it("rejects oversized baking before allocating frame samples", () => {
     const input = fixture("atoms/float");

@@ -998,3 +998,32 @@ Every parameter accepts scalar keys and drivers. The commerce adapter compiles i
 cosine phase to `progress` keys, retains source dimensions and normalized regions,
 and names the original target as the coordinate layer when an opacity/matte wrapper
 owns the effect stack. Source region and protected-artwork validation still applies.
+
+### Temporal echo (CE6 dependency slice)
+
+`time.echo` version `1.0.0` samples earlier content in the containing scope's frame
+clock, oldest first, then paints the current content. Each sample retains its
+historical transform, visibility, state and per-child opacity, multiplied by
+`decay` raised to its sample index. Times before zero hold at zero. The current
+pixel effect stack runs on the combined history, followed by current masks,
+matte and blend. Echo is a content-history stage regardless of its array position.
+Other echo instances are suppressed inside historical samples, keeping nested
+history bounded. There is one echo per drawable layer or group; null and adjustment
+layers do not have a source history and reject it.
+
+| Parameter        | Default | Range / meaning                                         |
+| ---------------- | ------- | ------------------------------------------------------- |
+| `spacing`        | 1       | 1–120 scope frames between samples                      |
+| `count`          | 3       | 1–8 integer historical samples                          |
+| `decay`          | 0.5     | 0–1; exponential sample opacity                         |
+| `skipUnchanged`  | 0       | 0 or 1; skip samples with the current declared revision |
+| `sourceRevision` | 0       | 0–1,000,000 integer content identity, animatable        |
+
+Precomp history advances its local clock independently of the current instance
+transform and external driver sources, including remapped or stretched instances.
+Frame-scoped evaluated history is bounded to 16 entries; no rendered frame cache
+or family evaluator is involved. The commerce adapter bakes revision identities
+from complete descendant poses, preserving its unchanged-pose skip rule. Native
+authors can leave `skipUnchanged` disabled, or key revisions for content whose
+identity they can fully describe. Active history includes sampled opacity before
+pixel effects, as do the commerce wrapper groups.

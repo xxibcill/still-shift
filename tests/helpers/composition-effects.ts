@@ -5,6 +5,113 @@ import {
 import { commerceMaskVariants } from "./composition-commerce-masks.ts";
 
 export function commerceEffectVariants(id: string, source: CommerceScene) {
+  if (id === "commerce/atom-echo") {
+    const returning = structuredClone(source);
+    returning.events = [];
+    returning.motionModel = "curves-1";
+    returning.signals = [
+      {
+        id: "returning",
+        keys: [
+          { frame: 0, value: -600 },
+          { frame: 33, value: 240 },
+          { frame: 60, value: 240 },
+          { frame: 93, value: -600 },
+        ],
+      },
+    ];
+    returning.drivers = [{ target: "product.x", signal: "returning" }];
+    returning.nodes.find((node) => node.id === "product")!.opacity = 0.6;
+    returning.nodes.push(
+      PreparedNodeSchema.parse({
+        id: "badge",
+        parent: "product",
+        type: "rect",
+        x: 100,
+        y: 120,
+        width: 220,
+        height: 100,
+        fill: "#cf704a",
+        opacity: 0.6,
+        radius: 12,
+      }),
+    );
+    returning.nodes.push(
+      PreparedNodeSchema.parse({
+        id: "echoMask",
+        type: "rect",
+        x: 280,
+        y: 400,
+        width: 300,
+        height: 480,
+        fill: "#ffffff",
+        opacity: 0.65,
+        radius: 20,
+      }),
+    );
+    returning.mattes = [
+      {
+        target: "product",
+        mask: "echoMask",
+        invert: true,
+        space: "canvas",
+        order: "after-effects",
+      },
+    ];
+    returning.effects = [
+      { type: "echo", target: "product", spacing: 15, count: 8, decay: 0.65 },
+    ];
+    const image = structuredClone(source);
+    const root = image.nodes.find((node) => node.id === "product")!;
+    const art = image.nodes.find((node) => node.id === "product-art")!;
+    if (art.type !== "image") throw new Error("Expected image");
+    const replacement: Record<string, unknown> = {
+      ...root,
+      type: "image",
+      states: art.states,
+      fit: art.fit,
+      opacity: 0.65,
+      rotation: 11,
+    };
+    delete replacement.clip;
+    image.nodes = [PreparedNodeSchema.parse(replacement)];
+    image.events.push({
+      node: "product",
+      property: "opacity",
+      start: 15,
+      end: 20,
+      to: 0,
+      easing: "linear",
+    });
+    image.events.push({
+      node: "product",
+      property: "opacity",
+      start: 24,
+      end: 28,
+      to: 0.65,
+      easing: "linear",
+    });
+    image.effects = [
+      {
+        type: "glow",
+        target: "product",
+        radius: 5,
+        intensity: 0.4,
+        threshold: 0.1,
+      },
+      { ...source.effects![0]!, active: { start: 10, end: 90 } },
+    ];
+    const zero = structuredClone(source);
+    zero.effects = [
+      { type: "echo", target: "product", spacing: 3, count: 5, decay: 0 },
+    ];
+    zero.nodes.find((node) => node.id === "product")!.opacity = 0.55;
+    return [
+      { id: `${id}/returning-matte`, scene: returning },
+      { id: `${id}/image-active-stack`, scene: image },
+      { id: `${id}/zero-decay`, scene: zero },
+    ];
+  }
   if (id === "commerce/atom-light-sweep") {
     const rotated = structuredClone(source);
     const product = rotated.nodes.find((node) => node.id === "product")!;

@@ -181,7 +181,9 @@ export function createCompositionPreview(
       const tree = evaluateComp(composition, frame, {
         textBounds: text.bounds,
       });
-      const graph = buildRenderGraph(composition, tree);
+      const graph = buildRenderGraph(composition, tree, {
+        textBounds: text.bounds,
+      });
       executeGraph(backend, graph, target);
       return { diagnostics: tree.diagnostics, culled: graph.culled };
     },

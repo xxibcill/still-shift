@@ -1,5 +1,6 @@
 import { compositionEffectDefinition } from "@still-shift/scene-contract";
 import type { EvaluatedEffect } from "../evaluate/effects.ts";
+import { evaluateComp } from "../evaluate/evaluate.ts";
 import type {
   BezierPath,
   Composition,
@@ -14,6 +15,7 @@ import type {
   EvaluatedLayer,
   EvaluatedLayerTree,
   Rgba,
+  EvaluationOptions,
 } from "../evaluate/types.ts";
 import { cameraMatrix } from "../evaluate/camera.ts";
 import { projectBounds } from "../evaluate/geometry.ts";
@@ -191,8 +193,14 @@ function boundsMiss(bounds: Bounds, matrix: Matrix, frame: Frame) {
 
 class GraphBuilder {
   readonly culled: string[] = [];
-  private readonly cameras = new Map<number, Matrix>();
-  constructor(readonly comp: Composition) {}
+  private readonly cameras = new Map<string, Matrix>();
+  private readonly history = new Map<string, Scope>();
+  constructor(
+    readonly comp: Composition,
+    readonly time: number,
+    readonly options: EvaluationOptions,
+    readonly historical = false,
+  ) {}
 
   private precomp(id: string): CompositionScope {
     return this.comp.precomps!.find((p) => p.id === id)!;
@@ -224,6 +232,10 @@ class GraphBuilder {
     def: CompositionScope,
     frame: Frame,
   ): RenderOp[] {
+    return this.scopeLayers(this.scope(tree, def), frame);
+  }
+
+  private scope(tree: EvaluatedLayerTree, def: CompositionScope): Scope {
     const scope: Scope = {
       tree,
       def,
@@ -262,7 +274,7 @@ class GraphBuilder {
           }
         }
       }
-    return this.scopeLayers(scope, frame);
+    return scope;
   }
 
   private scopeLayers(scope: Scope, frame: Frame, owner?: string): RenderOp[] {
@@ -323,10 +335,11 @@ class GraphBuilder {
   }
 
   private camera(time: number, depth: number): Matrix {
-    let matrix = this.cameras.get(depth);
+    const key = `${time}:${depth}`;
+    let matrix = this.cameras.get(key);
     if (!matrix) {
       matrix = cameraMatrix(this.comp, time, depth);
-      this.cameras.set(depth, matrix);
+      this.cameras.set(key, matrix);
     }
     return matrix;
   }
@@ -460,6 +473,67 @@ class GraphBuilder {
     }
   }
 
+  /** Historical input is painted before current input and this frame's pixel stack/matte. */
+  private echoOps(
+    scope: Scope,
+    state: EvaluatedLayer,
+    frame: Frame,
+    echo: EvaluatedEffect,
+  ): RenderOp[] {
+    const { count, spacing, decay, skipUnchanged, sourceRevision } =
+      echo.params as Record<string, number>;
+    if (!decay) return [];
+    const ops: RenderOp[] = [];
+    const builder = new GraphBuilder(this.comp, this.time, this.options, true);
+    const route = frame.prefix.split("/").filter(Boolean);
+    for (let i = count!; i >= 1; i--) {
+      const time = Math.max(0, scope.tree.time - i * spacing!);
+      const key = `${frame.prefix}:${time}`;
+      let sample = this.history.get(key);
+      if (!sample) {
+        let tree = evaluateComp(this.comp, route.length ? this.time : time, {
+          ...this.options,
+          ...(route.length
+            ? {
+                scopeTimes: {
+                  ...this.options.scopeTimes,
+                  [route.join("/")]: time,
+                },
+              }
+            : {}),
+        });
+        for (const id of route) {
+          const nested = tree.layers.find((layer) => layer.id === id)?.precomp;
+          if (!nested) return ops;
+          tree = nested;
+        }
+        sample = this.scope(tree, scope.def);
+        if (this.history.size >= 16)
+          this.history.delete(this.history.keys().next().value!);
+        this.history.set(key, sample);
+      }
+      const prior = sample.byId.get(state.id)!;
+      if (
+        (!prior.visible && !sample.matteSources.has(state.id)) ||
+        time < (prior.layer.inPoint ?? 0) ||
+        time >= (prior.layer.outPoint ?? scope.def.frameCount) ||
+        (skipUnchanged &&
+          prior.effects.find((effect) => effect.id === echo.id)?.params
+            .sourceRevision === sourceRevision)
+      )
+        continue;
+      ops.push(
+        ...builder.layerOps(
+          sample,
+          prior,
+          { ...frame, opacity: frame.opacity * decay! ** i, cull: false },
+          { raw: true, blend: "normal", cull: false },
+        ),
+      );
+    }
+    return ops;
+  }
+
   layerOps(
     scope: Scope,
     state: EvaluatedLayer,
@@ -468,6 +542,7 @@ class GraphBuilder {
       blend?: CompositionBlendMode;
       seen?: Set<string>;
       cull?: boolean;
+      raw?: boolean;
     } = {},
   ): RenderOp[] {
     const key = frame.prefix + state.id,
@@ -489,9 +564,15 @@ class GraphBuilder {
       return [];
     }
     const clips = this.groupClips(scope, state, frame);
-    const masks = this.masks(state, matrix, transforms);
-    const effects: RenderEffect[] = state.effects
-      .filter((effect) => effect.enabled)
+    const masks = options.raw ? [] : this.masks(state, matrix, transforms);
+    const echo =
+      !options.raw && !this.historical
+        ? state.effects.find(
+            (effect) => effect.enabled && effect.effect === "time.echo",
+          )
+        : undefined;
+    const effects: RenderEffect[] = (options.raw ? [] : state.effects)
+      .filter((effect) => effect.enabled && effect.effect !== "time.echo")
       .map((effect) => {
         if (!compositionEffectDefinition(effect.effect)!.usesLayerSpace)
           return effect;
@@ -505,7 +586,30 @@ class GraphBuilder {
         };
       });
     const seen = options.seen ?? new Set([layer.id]);
-    const matte = this.matte(scope, state, frame, seen);
+    const matte = options.raw ? null : this.matte(scope, state, frame, seen);
+    if (echo) {
+      return [
+        {
+          kind: "isolate",
+          layer: key,
+          ops: [
+            ...this.echoOps(scope, state, frame, echo),
+            ...this.layerOps(scope, state, frame, {
+              ...options,
+              raw: true,
+              blend: "normal",
+              cull: false,
+            }),
+          ],
+          effects,
+          masks,
+          matte,
+          opacity: 1,
+          blend,
+          clips: [],
+        },
+      ];
+    }
     if (layer.type === "adjustment") {
       if (blend === "normal" && !effects.length) return [];
       return [
@@ -609,8 +713,9 @@ class GraphBuilder {
 export function buildRenderGraph(
   comp: Composition,
   tree: EvaluatedLayerTree,
+  options: EvaluationOptions = {},
 ): RenderGraph {
-  const builder = new GraphBuilder(comp);
+  const builder = new GraphBuilder(comp, tree.time, options);
   return {
     root: builder.surface(tree, comp, ""),
     culled: builder.culled,

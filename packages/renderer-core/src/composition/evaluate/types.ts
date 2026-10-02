@@ -69,6 +69,8 @@ export type EvaluatedLayerTree = {
 };
 
 export type EvaluationOptions = {
+  /** Internal scope-clock overrides for temporal content sampling, keyed by instance route. */
+  scopeTimes?: Readonly<Record<string, number>>;
   /** Include guide layers for inspection; the default matches export. */
   includeGuides?: boolean;
   /** Measured local text bounds, keyed by root layer id or precomp-id/layer-id.

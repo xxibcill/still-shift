@@ -1,13 +1,44 @@
 import type {
   CompositionLayer,
-  CommerceScene,
   CommerceEffect,
 } from "@still-shift/scene-contract";
 import { effectProgress, effectPhase } from "../../commerce-effect-motion.ts";
 import { baked } from "./prepared.ts";
+import type { CommerceRenderScene } from "../../commerce-scene.ts";
+import { evaluatePreparedNodeAtTime } from "../../prepared-scene.ts";
 
-function effectParameters(scene: CommerceScene, effect: CommerceEffect) {
+/** Equal source poses share an identity even when an animation returns to a prior pose. */
+function echoRevisions(scene: CommerceRenderScene, target: string) {
+  const descendants = new Set([target]);
+  for (let i = 0; i < scene.nodes.length; i++)
+    for (const node of scene.nodes)
+      if (node.parent && descendants.has(node.parent)) descendants.add(node.id);
+  const nodes = scene.nodes.filter((node) => descendants.has(node.id));
+  const identities = new Map<string, number>();
+  return baked(
+    Array.from({ length: scene.frameCount }, (_, frame) => {
+      const pose = JSON.stringify(
+        nodes.map((node) => evaluatePreparedNodeAtTime(scene, node, frame)),
+      );
+      if (!identities.has(pose)) identities.set(pose, identities.size);
+      return identities.get(pose)!;
+    }),
+  );
+}
+
+function effectParameters(scene: CommerceRenderScene, effect: CommerceEffect) {
   switch (effect.type) {
+    case "echo":
+      return {
+        effect: "time.echo",
+        params: {
+          spacing: effect.spacing,
+          count: effect.count,
+          decay: effect.decay,
+          skipUnchanged: 1,
+          sourceRevision: echoRevisions(scene, effect.target),
+        },
+      };
     case "light-sweep": {
       const node = scene.nodes.find((node) => node.id === effect.target)!;
       return {
@@ -132,7 +163,7 @@ function effectParameters(scene: CommerceScene, effect: CommerceEffect) {
 
 /** Family effects see already-painted root opacity, then the root's matte. */
 export function compileCommerceEffects(
-  scene: CommerceScene,
+  scene: CommerceRenderScene,
   layers: CompositionLayer[],
 ) {
   const owners = new Map<string, CompositionLayer>();
@@ -180,6 +211,14 @@ export function compileCommerceEffects(
         layers.splice(layers.indexOf(target), 0, owner);
       }
       owners.set(effect.target, owner);
+    }
+    if (effect.type === "echo" && owner.id !== effect.target) {
+      const source = scene.nodes.find((node) => node.id === effect.target)!;
+      owner.transform!.opacity = baked(
+        Array.from({ length: scene.frameCount }, (_, frame) =>
+          evaluatePreparedNodeAtTime(scene, source, frame).opacity > 0 ? 1 : 0,
+        ),
+      );
     }
     owner.effects ??= [];
     owner.effects.push(instance);

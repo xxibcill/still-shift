@@ -73,6 +73,7 @@ const accepted = new Set(
       "grain",
       "effects-studio",
       "light-sweep",
+      "echo",
       "introduction",
       "layout",
       "matte",
@@ -396,6 +397,7 @@ try {
           "commerce/atom-grain",
           "commerce/atom-effects-studio",
           "commerce/atom-light-sweep/glow-first",
+          "commerce/atom-echo/image-active-stack",
           "commerce/atom-displacement/pixel-stack",
           "commerce/atom-matte/shared-group-source/focus-matte",
         ].includes(item.id)

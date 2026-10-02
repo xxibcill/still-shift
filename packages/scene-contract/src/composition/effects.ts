@@ -60,6 +60,17 @@ function defineEffect(
 }
 
 const definitions: Readonly<Record<string, CompositionEffectDefinition>> = {
+  "time.echo": defineEffect(
+    {
+      spacing: { default: 1, min: 1, max: 120 },
+      count: { default: 3, min: 1, max: 8, integer: true },
+      decay: { default: 0.5, min: 0, max: 1 },
+      skipUnchanged: { default: 0, min: 0, max: 1, integer: true },
+      sourceRevision: { default: 0, min: 0, max: 1000000, integer: true },
+    },
+    {},
+    { generatesContent: true },
+  ),
   "light.sweep": defineEffect(
     {
       width: { default: 100, min: 0.01, max: 1000000 },
