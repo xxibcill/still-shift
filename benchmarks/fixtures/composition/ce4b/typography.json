@@ -1,0 +1,56 @@
+{
+  "schemaVersion": "composition-1",
+  "id": "typography-container",
+  "width": 600,
+  "height": 240,
+  "fps": 30,
+  "frameCount": 60,
+  "background": "#f4f1e8",
+  "assets": [
+    {
+      "id": "body",
+      "path": "../../../../assets/story-motion/fonts/plex-sans-semibold.ttf",
+      "sha256": "sha256:a20caf8286023a6a7a85e40b1d2a4ae9fc3e3b1f9eda8f4c542dd4986af67bb1",
+      "weight": "600",
+      "type": "font"
+    }
+  ],
+  "layers": [
+    {
+      "id": "caption",
+      "type": "text",
+      "text": "A mistaken label",
+      "fontAsset": "body",
+      "fontSize": 32,
+      "color": "#292827",
+      "rasterize": "source-colors",
+      "spans": [
+        {
+          "id": "claim",
+          "start": 2,
+          "end": 10
+        }
+      ],
+      "container": {
+        "kind": "speech",
+        "padding": 14,
+        "radius": 12,
+        "fill": "#e7dfc9",
+        "stroke": "#65543c",
+        "strokeWidth": 2
+      },
+      "corrections": [
+        {
+          "span": "claim",
+          "replacement": "corrected",
+          "start": 10,
+          "end": 30,
+          "color": "#a4362f"
+        }
+      ],
+      "transform": {
+        "position": [60, 100]
+      }
+    }
+  ]
+}

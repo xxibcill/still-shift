@@ -1,7 +1,6 @@
 import {
   COMPOSITION_LIMITS,
   StorySceneSchema,
-  CompositionMarkerSchema,
   validateComposition,
   type Composition,
   type CompositionLayer,
@@ -12,8 +11,23 @@ import { evaluatePreparedNode } from "../../prepared-scene.ts";
 import { passageError, PassageError } from "../../passage-diagnostics.ts";
 import { compileStoryPathGeometry } from "./story-path.ts";
 import { params, preparedBaseLayer, preparedNodeLayer } from "./prepared.ts";
+import { prepareComponentTextFits } from "../../component-text-fit.ts";
+import { loadPreparedFonts } from "../../prepared-fonts.ts";
 import { componentCapabilities } from "../../component-capabilities.ts";
 import { validateComponentAnnotations } from "../../component-annotations.ts";
+import {
+  requiresCompositionTextLayout,
+  type CompositionTextLayout,
+} from "./layout.ts";
+import {
+  prepareTypography,
+  resolveTypographyNodes,
+} from "../../typography-renderer.ts";
+import { loadTextAnimationFonts } from "../../typography-axes.ts";
+import { validateTypographySafeArea } from "../../typography-safe-area.ts";
+import { resolveTextEvents } from "../../typography-events.ts";
+import { compileAdapterMarkers } from "./markers.ts";
+import { typographyLayer } from "./typography.ts";
 import { componentTextLayer } from "./component-text.ts";
 import { compileAttachedPathGeometry } from "./commerce-path.ts";
 
@@ -30,7 +44,12 @@ function cameraLayer(
     : {};
 }
 
-export const STORY_ADAPTER_VERSION = "story-composition-0.3.0";
+export type StoryCompositionOptions = {
+  id?: string;
+  textLayout?: CompositionTextLayout;
+};
+
+export const STORY_ADAPTER_VERSION = "story-composition-0.4.0";
 function checkSupported(scene: StoryScene) {
   const unsupported = (path: string, feature: string): never =>
     passageError(
@@ -46,8 +65,17 @@ function checkSupported(scene: StoryScene) {
     );
   for (const field of ["spatialPaths", "pathMorphs"] as const)
     if (scene[field]?.length) unsupported(field, field);
-  if (scene.typography) unsupported("typography", "Typography scenes");
   if (scene.effects?.length) unsupported("effects", "Pixel effects");
+  if (scene.typography) {
+    const numeric = scene.componentData?.bindings.findIndex(
+      (binding) => binding.kind === "text",
+    );
+    if (numeric !== undefined && numeric >= 0)
+      unsupported(
+        `componentData.bindings[${numeric}]`,
+        "Typographic numeric bindings",
+      );
+  }
   scene.nodes.forEach((node, i) => {
     const path = `nodes[${i}]`;
     if (
@@ -55,7 +83,7 @@ function checkSupported(scene: StoryScene) {
       scene.nodes.find((n) => n.id === node.parent)?.type !== "group"
     )
       unsupported(`${path}.parent`, "Parenting to drawable nodes");
-    if (node.type === "text") {
+    if (node.type === "text" && !scene.typography) {
       for (const field of [
         "style",
         "spans",
@@ -78,11 +106,23 @@ function checkSupported(scene: StoryScene) {
 /** Compile a story recipe to data. Rendering never invokes the family scene evaluator. */
 export function storyToComposition(
   source: StoryScene,
-  options: { id?: string } = {},
+  options: StoryCompositionOptions = {},
 ): Composition {
   const input = StorySceneSchema.parse(source);
   checkSupported(input);
-  const scene = compileStoryScene(input);
+  let scene = resolveTypographyNodes(compileStoryScene(input));
+  if (requiresCompositionTextLayout(input) && !options.textLayout)
+    passageError(
+      "comp-adapter-layout-required",
+      "Shaped text fitting requires pinned-font measurement; use prepareStoryComposition or supply textLayout",
+      { path: "componentData.textFits" },
+    );
+  if (options.textLayout)
+    scene = prepareComponentTextFits(
+      scene,
+      options.textLayout.context,
+      options.textLayout.fonts,
+    );
   validateComponentAnnotations(scene);
   const components = componentCapabilities(scene.componentData);
   const layers: CompositionLayer[] = [];
@@ -110,13 +150,15 @@ export function storyToComposition(
           ? compileAttachedPathGeometry(scene, node)
           : undefined;
       let layer: CompositionLayer = {
-        ...preparedNodeLayer(scene, node, samples, {
-          ...(scene.componentData ? { nativeSolids: false } : {}),
-          geometry:
-            node.type === "path"
-              ? compileStoryPathGeometry(scene, node)
-              : undefined,
-        }),
+        ...(node.type === "text" && scene.typography
+          ? typographyLayer(scene, node, samples)
+          : preparedNodeLayer(scene, node, samples, {
+              ...(scene.componentData ? { nativeSolids: false } : {}),
+              geometry:
+                node.type === "path"
+                  ? compileStoryPathGeometry(scene, node)
+                  : undefined,
+            })),
         ...cameraLayer(scene, node),
       };
       const visibility = components.visibility.find(
@@ -227,35 +269,19 @@ export function storyToComposition(
       mode: mask.invert ? "alpha-inverted" : "alpha",
     };
   }
-  const markers = new Map<
-    string,
-    NonNullable<Composition["markers"]>[number]
-  >();
-  const markerIds = new Set(
-    scene.motionEvents.flatMap(({ window }) =>
-      window.cue &&
-      CompositionMarkerSchema.shape.id.safeParse(window.cue).success
-        ? [window.cue]
-        : [],
-    ),
-  );
-  for (const event of scene.motionEvents) {
-    const { cue, start, end } = event.window;
-    if (!cue || markers.has(cue)) continue;
-    let id = cue;
-    if (!CompositionMarkerSchema.shape.id.safeParse(cue).success) {
-      let suffix = 1;
-      do id = `cue-${suffix++}`;
-      while (markerIds.has(id));
-      markerIds.add(id);
-    }
-    markers.set(cue, {
-      id,
-      label: cue.slice(0, 200),
-      frame: start,
-      duration: end - start,
-    });
-  }
+  const { markers, cueIds } = compileAdapterMarkers([
+    ...scene.motionEvents.map((event) => event.window),
+    ...(scene.typography
+      ? [
+          ...resolveTextEvents(scene).map((event) => ({
+            cue: event.id,
+            start: event.start,
+            end: event.end,
+          })),
+          ...(scene.textAnimators ?? []),
+        ]
+      : []),
+  ]);
   const composition: Composition = {
     schemaVersion: "composition-1",
     id: options.id ?? "story-adapter",
@@ -269,7 +295,21 @@ export function storyToComposition(
       ...(scene.fonts ?? []).map((a) => ({ ...a, type: "font" as const })),
     ],
     layers: layers.reverse(),
-    markers: [...markers.values()],
+    ...(scene.typography
+      ? {
+          ...(scene.textStyles ? { textStyles: scene.textStyles } : {}),
+          ...(scene.textAnimators
+            ? {
+                textAnimators: scene.textAnimators.map((animator) => ({
+                  ...animator,
+                  ...(animator.cue ? { cue: cueIds.get(animator.cue)! } : {}),
+                })),
+              }
+            : {}),
+          ...(scene.signals ? { signals: scene.signals } : {}),
+        }
+      : {}),
+    markers,
     ...(scene.camera
       ? {
           camera2d: Object.fromEntries(
@@ -293,4 +333,33 @@ export function storyToComposition(
   const validation = validateComposition(composition);
   if (!validation.ok) throw new PassageError(validation.diagnostics);
   return validation.composition;
+}
+
+/** Browser preparation measures shaped component fits using verified fonts. */
+export async function prepareStoryComposition(
+  source: StoryScene,
+  assetUrl: (id: string) => string,
+  options: Pick<StoryCompositionOptions, "id"> = {},
+): Promise<Composition> {
+  const input = StorySceneSchema.parse(source);
+  const fonts = await loadPreparedFonts(input, assetUrl);
+  const canvas = document.createElement("canvas");
+  try {
+    const context = canvas.getContext("2d")!;
+    if (input.typography) {
+      const scene = prepareComponentTextFits(
+        resolveTypographyNodes(compileStoryScene(input)),
+        context,
+        fonts,
+      );
+      await loadTextAnimationFonts(scene, fonts);
+      validateTypographySafeArea(scene, prepareTypography(scene, fonts));
+    }
+    return storyToComposition(input, {
+      ...options,
+      textLayout: { context, fonts },
+    });
+  } finally {
+    canvas.width = canvas.height = 0;
+  }
 }

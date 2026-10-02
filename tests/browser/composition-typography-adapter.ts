@@ -3,18 +3,23 @@ import { readFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 import { createServer } from "vite";
 import { launchRenderBrowser } from "@still-shift/execution-runtime";
-import { readStoryPassage } from "@still-shift/animation-engine";
 import {
   StorySceneSchema,
+  CommerceSceneSchema,
   type Composition,
 } from "@still-shift/scene-contract";
 import {
   compileStoryScene,
-  storyToComposition,
+  compileCommerceScene,
+  passageDiagnostics,
 } from "@still-shift/renderer-core";
-import type * as Render from "../../packages/renderer-core/src/index.ts";
+import {
+  compileCommerceComposition,
+  compileStoryComposition,
+} from "@still-shift/animation-engine";
+import { typographyVariants } from "../helpers/composition-typography.ts";
 import { assertAdapterExport } from "../helpers/composition-adapter-exports.ts";
-import { storyComponentVariants } from "../helpers/composition-story-components.ts";
+import type * as Render from "../../packages/renderer-core/src/index.ts";
 import { assertCompositionAdapterState } from "../helpers/composition-adapter-state.ts";
 
 const root = resolve(import.meta.dirname, "../..");
@@ -33,22 +38,12 @@ const inventory = JSON.parse(
   }[];
 };
 const only = process.argv.indexOf("--only");
-const componentsOnly = process.argv.includes("--components");
-const isComponent = (id: string) =>
-  id.startsWith("component/story-") || id.startsWith("component/passage-");
 const selected = inventory.fixtures.filter(
   (f) =>
-    (["story", "story-passage"].includes(f.family) || isComponent(f.id)) &&
-    (!componentsOnly || isComponent(f.id)) &&
+    f.family === "typography" &&
     (only < 0 || f.id.includes(process.argv[only + 1]!)),
 );
-assert.ok(selected.length, "No story fixtures selected");
-if (only < 0)
-  assert.equal(
-    selected.filter((f) => isComponent(f.id)).length,
-    23,
-    "Missing CE0 story component entry",
-  );
+assert.ok(selected.length, "No typography fixtures selected");
 const server = await createServer({
   root,
   configFile: false,
@@ -62,27 +57,35 @@ let totalFrames = 0,
 try {
   for (const entry of selected) {
     const sourcePath = resolve(root, entry.path);
-    const inputs =
-      entry.kind === "passage"
-        ? (await readStoryPassage(sourcePath)).beats.map((beat) => ({
-            id: `${entry.id}/${beat.id}`,
-            scene: beat.scene,
-          }))
-        : [
-            {
-              id: entry.id,
-              scene: JSON.parse(await readFile(sourcePath, "utf8")),
-            },
-          ];
-    const cases = inputs.flatMap((item) => [
-      item,
-      ...storyComponentVariants(item.id, StorySceneSchema.parse(item.scene)),
-    ]);
-    for (const item of cases) {
-      const input = StorySceneSchema.parse(item.scene);
-      const composition = storyToComposition(input),
-        scene = compileStoryScene(input);
-      assertCompositionAdapterState(scene, composition);
+    const json = JSON.parse(await readFile(sourcePath, "utf8"));
+    const source =
+      json.schemaVersion === "commerce-scene-1"
+        ? CommerceSceneSchema.parse(json)
+        : StorySceneSchema.parse(json);
+    const inputs = [
+      { id: entry.id, scene: source },
+      ...typographyVariants(source).map((item) => ({
+        ...item,
+        id: `${entry.id}/${item.id}`,
+      })),
+    ];
+    for (const item of inputs) {
+      const input =
+        item.scene.schemaVersion === "commerce-scene-1"
+          ? CommerceSceneSchema.parse(item.scene)
+          : StorySceneSchema.parse(item.scene);
+      const composition =
+        input.schemaVersion === "commerce-scene-1"
+          ? await compileCommerceComposition(input, dirname(sourcePath))
+          : await compileStoryComposition(input, dirname(sourcePath));
+      const scene =
+        input.schemaVersion === "commerce-scene-1"
+          ? compileCommerceScene(input)
+          : compileStoryScene(input);
+      // Fitting changes panel geometry; its evaluated states are checked after
+      // browser font preparation by the per-frame pixel comparison below.
+      if (!item.id.includes("fit"))
+        assertCompositionAdapterState(scene, composition);
       const urls = Object.fromEntries(
         composition.assets.map((a) => [
           a.id,
@@ -95,7 +98,7 @@ try {
       const report = await page.evaluate(
         async ({ sceneJson, compositionJson, urls, tier, profile }) => {
           const scene = JSON.parse(sceneJson) as ReturnType<
-            typeof Render.compileStoryScene
+            typeof Render.compileStoryScene | typeof Render.compileCommerceScene
           >;
           const composition = JSON.parse(compositionJson) as Composition;
           const moduleUrl = "/packages/renderer-core/src/index.ts";
@@ -232,20 +235,32 @@ try {
       totalItems++;
       if (
         only < 0 &&
-        ([
-          "component/story-text-fit",
-          "component/story-value",
-          "component/story-mask",
-          "component/story-leader/flow-target-inverted",
-          "component/story-state/blended-container",
-        ].includes(item.id) ||
-          (entry.id.startsWith("component/passage-") && item === cases[0]))
+        [
+          "typography/semantic",
+          "typography/variable-thai",
+          "typography/editorial/component-fit",
+          "typography/commerce/panel-fit",
+        ].includes(item.id)
       )
         await assertAdapterExport(input, dirname(sourcePath), item.id);
     }
+    if (
+      entry.id === "typography/editorial" &&
+      source.schemaVersion === "story-scene-1"
+    ) {
+      const outside = structuredClone(source);
+      outside.nodes.find((node) => node.id === "headline")!.x = -500;
+      await assert.rejects(
+        compileStoryComposition(outside, dirname(sourcePath)),
+        (error) =>
+          passageDiagnostics(error).some(
+            (d) => d.code === "text-outside-safe-area",
+          ),
+      );
+    }
   }
   console.log(
-    `CE4 story/component parity: ${totalItems} items, ${totalFrames} frames`,
+    `CE4b typography parity: ${totalItems} items, ${totalFrames} frames`,
   );
 } finally {
   await browser.close();

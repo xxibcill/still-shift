@@ -7,6 +7,14 @@ import {
   type CompositionLayer,
 } from "@still-shift/scene-contract";
 import { compileCommerceScene } from "../../commerce-scene.ts";
+import {
+  requiresCompositionTextLayout,
+  type CompositionTextLayout,
+} from "./layout.ts";
+import { resolveTypographyNodes } from "../../typography-renderer.ts";
+import { resolveTextEvents } from "../../typography-events.ts";
+import { compileAdapterMarkers } from "./markers.ts";
+import { typographyLayer } from "./typography.ts";
 import { componentTextLayer } from "./component-text.ts";
 import { componentCapabilities } from "../../component-capabilities.ts";
 import { validateAttachedPaths } from "../../commerce-geometry.ts";
@@ -17,17 +25,14 @@ import { params, preparedNodeLayer } from "./prepared.ts";
 import { compileAttachedPathGeometry } from "./commerce-path.ts";
 import { prepareCommerceTextFits } from "../../commerce-layout.ts";
 import { prepareComponentTextFits } from "../../component-text-fit.ts";
-import { loadPreparedFonts, type LoadedFont } from "../../prepared-fonts.ts";
+import { loadPreparedFonts } from "../../prepared-fonts.ts";
 
-export const COMMERCE_ADAPTER_VERSION = "commerce-composition-0.6.0";
+export const COMMERCE_ADAPTER_VERSION = "commerce-composition-0.7.0";
 
 export type CommerceCompositionOptions = {
   id?: string;
   /** Pinned-font context used before geometry is baked; required for backing panels. */
-  textLayout?: {
-    context: CanvasRenderingContext2D;
-    fonts: Map<string, LoadedFont>;
-  };
+  textLayout?: CompositionTextLayout;
 };
 
 function unsupported(path: string, feature: string): never {
@@ -47,7 +52,6 @@ function checkSupported(scene: CommerceScene) {
     );
   for (const field of ["spatialPaths", "pathMorphs"] as const)
     if (scene[field]?.length) unsupported(field, field);
-  if (scene.typography) unsupported("typography", "Typography scenes");
   scene.effects?.forEach((effect, index) => {
     if (!["drift", "parallax", "overshoot"].includes(effect.type))
       unsupported(
@@ -55,6 +59,16 @@ function checkSupported(scene: CommerceScene) {
         `${effect.type} effects (pending CE6/CE7)`,
       );
   });
+  if (scene.typography) {
+    const numeric = scene.componentData?.bindings.findIndex(
+      (binding) => binding.kind === "text",
+    );
+    if (numeric !== undefined && numeric >= 0)
+      unsupported(
+        `componentData.bindings[${numeric}]`,
+        "Typographic numeric bindings",
+      );
+  }
   scene.nodes.forEach((node, index) => {
     const path = `nodes[${index}]`;
     if (
@@ -62,7 +76,7 @@ function checkSupported(scene: CommerceScene) {
       scene.nodes.find((parent) => parent.id === node.parent)?.type !== "group"
     )
       unsupported(`${path}.parent`, "Parenting to drawable nodes");
-    if (node.type !== "text") return;
+    if (node.type !== "text" || scene.typography) return;
     for (const field of [
       "style",
       "spans",
@@ -88,7 +102,7 @@ export function commerceToComposition(
 ): Composition {
   const input = CommerceSceneSchema.parse(source);
   checkSupported(input);
-  let scene = compileCommerceScene(input);
+  let scene = resolveTypographyNodes(compileCommerceScene(input));
   const panel = input.textFits?.findIndex((fit) => fit.panel);
   if (panel !== undefined && panel >= 0 && !options.textLayout)
     passageError(
@@ -97,6 +111,12 @@ export function commerceToComposition(
       {
         path: `textFits[${panel}].panel`,
       },
+    );
+  if (requiresCompositionTextLayout(input) && !options.textLayout)
+    passageError(
+      "comp-adapter-layout-required",
+      "Shaped text fitting requires pinned-font measurement; use prepareCommerceComposition or supply textLayout",
+      { path: input.textFits?.length ? "textFits" : "componentData.textFits" },
     );
   if (options.textLayout) {
     const { context, fonts } = options.textLayout;
@@ -133,9 +153,10 @@ export function commerceToComposition(
             `Motion ${property}`,
           );
       // Keep path-based rectangle rasterization and parent transform concatenation.
-      let layer = preparedNodeLayer(scene, node, samples, {
-        nativeSolids: false,
-      });
+      let layer =
+        node.type === "text" && scene.typography
+          ? typographyLayer(scene, node, samples)
+          : preparedNodeLayer(scene, node, samples, { nativeSolids: false });
       const gate = visibility.get(node.id);
       if (gate) {
         layer.inPoint = gate.start;
@@ -182,6 +203,18 @@ export function commerceToComposition(
       mode: mask.invert ? "alpha-inverted" : "alpha",
     };
   }
+  const { markers, cueIds } = compileAdapterMarkers(
+    scene.typography
+      ? [
+          ...resolveTextEvents(scene).map((event) => ({
+            cue: event.id,
+            start: event.start,
+            end: event.end,
+          })),
+          ...(scene.textAnimators ?? []),
+        ]
+      : [],
+  );
   const composition: Composition = {
     schemaVersion: "composition-1",
     id: options.id ?? "commerce-adapter",
@@ -195,6 +228,21 @@ export function commerceToComposition(
       ...scene.fonts.map((font) => ({ ...font, type: "font" as const })),
     ],
     layers: layers.reverse(),
+    ...(markers.length ? { markers } : {}),
+    ...(scene.typography
+      ? {
+          ...(scene.textStyles ? { textStyles: scene.textStyles } : {}),
+          ...(scene.textAnimators
+            ? {
+                textAnimators: scene.textAnimators.map((animator) => ({
+                  ...animator,
+                  ...(animator.cue ? { cue: cueIds.get(animator.cue)! } : {}),
+                })),
+              }
+            : {}),
+          ...(scene.signals ? { signals: scene.signals } : {}),
+        }
+      : {}),
     metadata: params(
       {
         adapter: COMMERCE_ADAPTER_VERSION,

@@ -16,9 +16,15 @@ import { loadTextAnimationFonts } from "../../typography-axes.ts";
 import {
   drawTypography,
   prepareTypography,
+  typographyContainerContent,
   type PreparedTypography,
 } from "../../typography-renderer.ts";
 import { resolvedTextStyle, type TextNode } from "../../typography-style.ts";
+import {
+  drawTextContainer,
+  textContainerContent,
+  textContainerBounds,
+} from "../../text-container.ts";
 import { drawStoryText } from "../../story-text.ts";
 import { passageError } from "../../passage-diagnostics.ts";
 import { rgba } from "../evaluate/sample.ts";
@@ -79,6 +85,7 @@ function textNode(comp: Composition, layer: TextLayer): TextNode {
     origin: [0, 0],
     text: layer.text,
     ...(layer.states ? { states: layer.states } : {}),
+    ...(layer.container ? { container: layer.container } : {}),
     fontSize: layer.fontSize,
     color: initialColor(layer),
     weight: layer.weight ?? "normal",
@@ -147,7 +154,19 @@ function typographyScene(
     ),
     typography: "type-1",
     textStyles: comp.textStyles ?? {},
-    textEvents: [],
+    textEvents: textLayers(scope)
+      .filter((layer) => ids.has(layer.id))
+      .flatMap((layer) =>
+        (layer.corrections ?? []).map((correction) => ({
+          verb: "correct" as const,
+          node: layer.id,
+          at: correction.start,
+          duration: correction.end - correction.start,
+          replacement: correction.replacement,
+          ...(correction.span ? { span: correction.span } : {}),
+          ...(correction.color ? { color: correction.color } : {}),
+        })),
+      ),
     textAnimators: (scope.textAnimators ?? []).filter((a) =>
       ids.has(a.node),
     ) as TextAnimator[],
@@ -233,6 +252,20 @@ function compositionTextFrames(
   return collectCompositionTextFrames(comp, bounds);
 }
 
+function rectBounds(rect: {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+}): Bounds {
+  return {
+    left: rect.x,
+    top: rect.y,
+    right: rect.x + rect.width,
+    bottom: rect.y + rect.height,
+  };
+}
+
 function union(boxes: Bounds[]): Bounds {
   return {
     left: Math.min(...boxes.map((b) => b.left)),
@@ -282,6 +315,16 @@ export function prepareCompositionText(
       ? prepareTypography(scene, fonts, {
           strokeCoverage: true,
           colorCoverage: true,
+          sourceColorNodes: new Set(
+            typed
+              .filter(
+                ({ layer }) =>
+                  layer.rasterize === "source-colors" &&
+                  typeof layer.color === "string" &&
+                  rgba(initialColor(layer))[3] === 1,
+              )
+              .map(({ node }) => node.id),
+          ),
         })
       : undefined;
     for (const { layer, node } of nodes) {
@@ -292,7 +335,32 @@ export function prepareCompositionText(
         const measured = new Map(
           [...rasters].map(([text, raster]) => [
             text,
-            animatedTextBounds(node, raster, prepared.scene),
+            union([
+              animatedTextBounds(node, raster, prepared.scene),
+              ...(node.container
+                ? [
+                    rectBounds(
+                      textContainerBounds(
+                        typographyContainerContent(node, raster.layout),
+                        node.container,
+                      ),
+                    ),
+                  ]
+                : []),
+              ...(prepared.corrections.get(node.id) ?? []).map((correction) => {
+                const box = animatedTextBounds(
+                  correction.node,
+                  correction.raster,
+                  { ...prepared.scene, textAnimators: [] },
+                );
+                return {
+                  left: box.left + correction.x,
+                  right: box.right + correction.x,
+                  top: box.top + correction.y,
+                  bottom: box.bottom + correction.y + node.fontSize * 0.15,
+                };
+              }),
+            ]),
           ]),
         );
         const perState = texts.map((text) => measured.get(text)!);
@@ -334,6 +402,22 @@ export function prepareCompositionText(
             bottom: m.actualBoundingBoxDescent + 10,
           };
         });
+        if (node.container)
+          bounds[key] = bounds[key]!.map((box, i) =>
+            union([
+              box,
+              rectBounds(
+                textContainerBounds(
+                  textContainerContent(
+                    node,
+                    texts[i]!,
+                    (text) => ctx.measureText(text).width,
+                  ),
+                  node.container!,
+                ),
+              ),
+            ]),
+          );
         ctx.restore();
         entries.set(key, { kind: "system", node });
       }
@@ -364,6 +448,8 @@ export function prepareCompositionText(
     ctx.font = `${node.weight} ${node.fontSize}px ${node.font}`;
     ctx.textAlign = node.align;
     ctx.textBaseline = "top";
+    if (node.container && content.reveal > 0)
+      drawTextContainer(ctx, node, text);
     drawStoryText(ctx, node, text, content.reveal);
   };
   return { bounds, draw };

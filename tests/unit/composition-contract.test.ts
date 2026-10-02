@@ -606,6 +606,14 @@ describe("composition-1 fixtures", () => {
     ) as Composition;
     expect(validateComposition(textStates).ok).toBe(true);
     allLayers.push(...textStates.layers);
+    const typography = JSON.parse(
+      readFileSync(
+        resolve(root, "benchmarks/fixtures/composition/ce4b/typography.json"),
+        "utf8",
+      ),
+    ) as Composition;
+    expect(validateComposition(typography).ok).toBe(true);
+    allLayers.push(...typography.layers);
     for (const option of layers.CompositionLayerSchema.options) {
       const type = option.shape.type.value;
       if (UNAVAILABLE_LAYER_TYPES[type]) continue;

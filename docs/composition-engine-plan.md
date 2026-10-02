@@ -1286,6 +1286,8 @@ General rules for all adapters:
       transforms with exact skew and moving-anchor matrix compensation.
 - [x] Compile reusable components in story contexts and resolved passage beats,
       including camera-aware annotations, masked flows and measured/numeric text.
+- [x] Compile rich typography to native text, including containers, corrections,
+      font-dependent fits and narration-linked cues.
 - [ ] Map commerce layout, product layers, shadows, floating, detail windows, paths,
       text fits, component state/travel/pin/values/visibility/masks.
 - [ ] Commerce effects become CE6 registry effects; parity requires CE6.
@@ -1653,6 +1655,39 @@ comparisons; the full `pnpm check`.
   each component passage. Relocated assets, pinned fonts and overwrite protection pass.
 - **Remaining:** rich typography, spatial paths/morphs and animated appearance,
   plus the CE6/CE7 dependencies and both-backend acceptance. The active goal continues.
+
+### CE4b native-typography follow-up (2026-10-02)
+
+- **Delivered:** commerce and story typography compiles to native text layers,
+  preserving styles, spans, axes, selectors, decorations, transitions, signals and
+  text animators. Narration-linked text events resolve into cue markers and native
+  correction annotations. Native text also supports caption, speech and thought
+  containers with conservative bounds for culling and corrections.
+- **Rasterization:** `rasterize: "source-colors"` preserves the source renderer's
+  static opaque glyph-run boundaries. Animated or translucent layer colors use
+  coverage rasters, retaining the existing native color/alpha/stroke behavior.
+  The default native raster mode remains coverage. The legacy renderer version
+  and CE0 pixel/performance thresholds are unchanged.
+- **Font-dependent layout:** commerce and reusable story fits use verified pinned
+  fonts before baking geometry. `compileStoryComposition` and CLI JSON export
+  perform font measurement and story typography safe-area validation. The synchronous
+  adapters require an explicit layout context for rich fits. Fitted styles stay
+  local to each node so shared style roles remain unchanged.
+- **Versions:** commerce adapter `commerce-composition-0.7.0`, story adapter
+  `story-composition-0.4.0`, Canvas renderer `composition-canvas-1.8.0`;
+  evaluator remains `composition-evaluator-11`.
+- **Verification:** all eight CE0 typography fixtures plus five derived container
+  and fit cases pass: **13 cases / 2,187 frames**. Eleven cases are pixel-exact;
+  semantic/vertical correction cases stay within the existing `near` tier
+  (maximum channel delta 2). Native color, stroke, alpha, backward seek, Lab and
+  export regression checks pass in both text raster modes. `pnpm check:fast`
+  passes with **1,177 unit tests**. The worst render/readback ratio is **1.2140×**
+  (variable Thai), below the unchanged 1.25× gate. Four CLI export pairs
+  (semantic corrections, variable Thai, story component fit and commerce backing
+  panel) are byte-identical; relocated assets, fonts and overwrite protection pass.
+- **Remaining:** numeric bindings combined with rich typography, spatial paths,
+  morphs, animated appearance, CE6/CE7 dependencies and both-backend acceptance.
+  The active goal continues after this slice's commit.
 
 **Completion record:** CE4a and CE4b are in progress; CE4c–CE4d have not started.
 

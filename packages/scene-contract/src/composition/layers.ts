@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { PoseAnchorSchema } from "../character-actions.ts";
+import { TextContainerSchema } from "../story-acting.ts";
 import { PoseRegistrationSchema } from "../story-acting.ts";
 import { compositionTypographyFields } from "./typography.ts";
 import {
@@ -15,6 +16,7 @@ import {
   COMPOSITION_LIMITS,
   compFrame,
   compositionId,
+  compositionColor,
   finite,
   keyFrame,
   label,
@@ -195,6 +197,27 @@ export const TextLayerSchema = z
   .object({
     ...layerBase,
     type: z.literal("text"),
+    /** Preserve static opaque run colours; animated/translucent colours use coverage. */
+    rasterize: z.enum(["coverage", "source-colors"]).optional(),
+    container: TextContainerSchema.optional(),
+    corrections: z
+      .array(
+        z
+          .object({
+            replacement: z.string().min(1).max(L.maxTextLength),
+            span: compositionId.optional(),
+            start: compFrame,
+            end: compFrame,
+            color: compositionColor.optional(),
+          })
+          .strict()
+          .refine((correction) => correction.end > correction.start, {
+            message: "Correction end must follow its start",
+            params: { diagnosticCode: "comp-schema-range" },
+          }),
+      )
+      .max(100)
+      .optional(),
     text: z.string().min(1).max(L.maxTextLength),
     /** Alternative texts selected by `state`, as in story text states. */
     states: z

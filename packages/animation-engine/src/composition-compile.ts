@@ -4,9 +4,11 @@ import { createServer } from "vite";
 import type { Browser } from "playwright";
 import {
   commerceToComposition,
+  storyToComposition,
+  requiresCompositionTextLayout,
   PassageError,
 } from "@still-shift/renderer-core";
-import type { CommerceScene } from "@still-shift/scene-contract";
+import type { CommerceScene, StoryScene } from "@still-shift/scene-contract";
 import { launchRenderBrowser } from "@still-shift/execution-runtime/render-browser";
 import {
   defaultBrowserProjectRoot,
@@ -20,11 +22,30 @@ export async function compileCommerceComposition(
   assetDirectory: string,
   runtime: BrowserRuntimeOptions = {},
 ) {
-  if (!scene.textFits?.some((fit) => fit.panel))
-    return commerceToComposition(scene);
+  return compileFamilyComposition(scene, assetDirectory, runtime);
+}
+export async function compileStoryComposition(
+  scene: StoryScene,
+  assetDirectory: string,
+  runtime: BrowserRuntimeOptions = {},
+) {
+  return compileFamilyComposition(scene, assetDirectory, runtime);
+}
+async function compileFamilyComposition(
+  scene: CommerceScene | StoryScene,
+  assetDirectory: string,
+  runtime: BrowserRuntimeOptions,
+) {
+  if (
+    !requiresCompositionTextLayout(scene) &&
+    !(scene.schemaVersion === "story-scene-1" && scene.typography)
+  )
+    return scene.schemaVersion === "commerce-scene-1"
+      ? commerceToComposition(scene)
+      : storyToComposition(scene);
   const fontUrls = Object.fromEntries(
     await Promise.all(
-      scene.fonts.map(async (font) => [
+      (scene.fonts ?? []).map(async (font) => [
         font.id,
         `data:application/octet-stream;base64,${(await readFile(resolve(assetDirectory, font.path))).toString("base64")}`,
       ]),
@@ -49,10 +70,12 @@ export async function compileCommerceComposition(
     browser = await launchRenderBrowser();
     const page = await browser.newPage();
     await page.goto(runtimeBrowserUrl(baseUrl, "composition-compile"));
-    await page.waitForFunction(() => Boolean(window.compileStillShiftCommerce));
+    await page.waitForFunction(() =>
+      Boolean(window.compileStillShiftComposition),
+    );
     const result = await page.evaluate(
       ({ scene, fontUrls }) =>
-        window.compileStillShiftCommerce!(scene, fontUrls),
+        window.compileStillShiftComposition!(scene, fontUrls),
       { scene, fontUrls },
     );
     if (result.diagnostics) throw new PassageError(result.diagnostics);

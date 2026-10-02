@@ -355,6 +355,7 @@ function checkText(
         ["transition", layer.transition],
         ["transitions", layer.transitions],
         ["textBox", layer.textBox],
+        ["corrections", layer.corrections],
       ] as const
     ).find(([, value]) => value !== undefined);
     if (feature)
@@ -431,6 +432,15 @@ function checkText(
         "comp-text-span-missing",
         [...path, "decorations", i, "span"],
         `no span "${decoration.span}"`,
+      );
+  });
+
+  layer.corrections?.forEach((correction, i) => {
+    if (correction.span && !spanIds.has(correction.span))
+      fail(
+        "comp-text-span-missing",
+        [...path, "corrections", i, "span"],
+        `no span "${correction.span}"`,
       );
   });
 

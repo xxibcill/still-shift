@@ -1,5 +1,8 @@
 export type { AnimationEngine } from "./animation-engine.ts";
-export { compileCommerceComposition } from "./composition-compile.ts";
+export {
+  compileCommerceComposition,
+  compileStoryComposition,
+} from "./composition-compile.ts";
 export {
   PreparedAnimationEngine,
   loadPreparedScene,

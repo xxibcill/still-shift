@@ -2,17 +2,17 @@ import assert from "node:assert/strict";
 import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join, relative, resolve } from "node:path";
-import type { StoryScene } from "@still-shift/scene-contract";
+import type { CommerceScene, StoryScene } from "@still-shift/scene-contract";
 import { renderComposition } from "@still-shift/animation-engine";
 import { runCli } from "../../tools/still-shift-cli/src/cli.ts";
 
-/** Verify that resolved component scenes remain portable through CLI JSON and export. */
-export async function assertStoryComponentExport(
-  source: StoryScene,
+/** Verify that compiled adapter scenes remain portable through CLI JSON and export. */
+export async function assertAdapterExport(
+  source: CommerceScene | StoryScene,
   sourceDirectory: string,
   id: string,
 ) {
-  const directory = await mkdtemp(join(tmpdir(), "still-shift-ce4b-story-"));
+  const directory = await mkdtemp(join(tmpdir(), "still-shift-ce4b-export-"));
   try {
     const scene = structuredClone(source);
     for (const asset of [...scene.assets, ...(scene.fonts ?? [])])

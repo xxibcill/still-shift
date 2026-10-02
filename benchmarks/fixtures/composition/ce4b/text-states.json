@@ -17,15 +17,25 @@
       "stateFrom": 0,
       "stateMix": {
         "keys": [
-          { "frame": 0, "value": 0 },
-          { "frame": 24, "value": 1 }
+          {
+            "frame": 0,
+            "value": 0
+          },
+          {
+            "frame": 24,
+            "value": 1
+          }
         ]
       },
       "fontSize": 24,
       "color": "#223344",
       "font": "sans-serif",
       "align": "left",
-      "transform": { "position": [10, 20], "opacity": 0.7 }
+      "transform": {
+        "position": [10, 20],
+        "opacity": 0.7
+      },
+      "rasterize": "source-colors"
     },
     {
       "id": "provider",
@@ -36,11 +46,20 @@
       "stateFrom": 0,
       "stateMix": {
         "keys": [
-          { "frame": 0, "value": 0 },
-          { "frame": 24, "value": 1 }
+          {
+            "frame": 0,
+            "value": 0
+          },
+          {
+            "frame": 24,
+            "value": 1
+          }
         ]
       },
-      "transform": { "position": [110, 20], "opacity": 0.7 },
+      "transform": {
+        "position": [110, 20],
+        "opacity": 0.7
+      },
       "params": {
         "node": {
           "id": "provider",
@@ -52,7 +71,12 @@
           "font": "sans-serif",
           "align": "left"
         },
-        "samples": [{ "reveal": 1, "state": 0 }]
+        "samples": [
+          {
+            "reveal": 1,
+            "state": 0
+          }
+        ]
       }
     }
   ]

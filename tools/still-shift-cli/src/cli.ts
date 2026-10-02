@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 import { readFile, writeFile } from "node:fs/promises";
 import { dirname, resolve, relative } from "node:path";
-import { storyToComposition } from "@still-shift/renderer-core";
 import { CommerceSceneSchema } from "@still-shift/scene-contract";
 import { prepareCommerceFile } from "../../../packages/animation-engine/src/commerce-preparation.ts";
 import { pathToFileURL } from "node:url";
@@ -26,6 +25,7 @@ import {
   importNarrationFile,
   renderComposition,
   compileCommerceComposition,
+  compileStoryComposition,
 } from "@still-shift/animation-engine";
 import {
   AnimationEngineError,
@@ -411,7 +411,10 @@ export const runCli = async (
               CommerceSceneSchema.parse(scene),
               dirname(scenePath),
             )
-          : storyToComposition(StorySceneSchema.parse(scene));
+          : await compileStoryComposition(
+              StorySceneSchema.parse(scene),
+              dirname(scenePath),
+            );
       const output = values.get("output");
       if (!output) io.stdout(`${JSON.stringify(composition, null, 2)}\n`);
       else {

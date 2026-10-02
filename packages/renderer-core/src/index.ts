@@ -63,6 +63,8 @@ export * from "./composition/evaluate/index.ts";
 export * from "./composition/render/index.ts";
 export {
   storyToComposition,
+  prepareStoryComposition,
+  type StoryCompositionOptions,
   STORY_ADAPTER_VERSION,
 } from "./composition/adapters/story.ts";
 export { STORY_CONTENT_PROVIDERS } from "./composition/adapters/story-providers.ts";
@@ -108,3 +110,5 @@ export * from "./typography-axes.ts";
 export * from "./typography-visibility.ts";
 
 export * from "./typography-review.ts";
+
+export { requiresCompositionTextLayout } from "./composition/adapters/layout.ts";

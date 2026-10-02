@@ -47,6 +47,8 @@ export type TextRaster = {
   variants: Map<string, TextRaster>;
   /** Opaque glyph coverage; authored fill colour and alpha apply only when drawing. */
   colorCoverage?: boolean;
+  /** Original per-cluster colours when drawing directly coloured glyphs. */
+  sourceColors?: readonly string[];
   /** Composition outlines cache opaque coverage, independent of animated colour. */
   strokeCoverage?: boolean;
 };
@@ -137,13 +139,19 @@ export function rasterizeText(
     strokes: new Map(),
     fonts,
     variants: new Map(),
-    ...(colorCoverage ? { colorCoverage: true } : {}),
+    ...(colorCoverage
+      ? { colorCoverage: true }
+      : { sourceColors: layout.clusters.map((_, i) => clusterColor(i)) }),
   };
 }
 export function prepareTypography(
   scene: (StoryRenderScene | CommerceRenderScene) & TextAnimationContext,
   fonts: Map<string, LoadedFont>,
-  options: { strokeCoverage?: boolean; colorCoverage?: boolean } = {},
+  options: {
+    strokeCoverage?: boolean;
+    colorCoverage?: boolean;
+    sourceColorNodes?: ReadonlySet<string>;
+  } = {},
 ): PreparedTypography {
   const nodes = new Map<string, Map<string, TextRaster>>(),
     pairs = new Map<string, [number, number][]>(),
@@ -156,13 +164,15 @@ export function prepareTypography(
       throw new Error("text-raster-budget: scene exceeds 128 megapixels");
     return canvas;
   };
-  const reserveRaster = (raster: TextRaster) => {
+  const reserveRaster = (raster: TextRaster, sourceColor = false) => {
     reserveCanvas(raster.canvas);
-    if (options.strokeCoverage) raster.strokeCoverage = true;
+    if (options.strokeCoverage && !sourceColor) raster.strokeCoverage = true;
     return raster;
   };
   for (const node of scene.nodes) {
     if (node.type !== "text") continue;
+    const sourceColor = options.sourceColorNodes?.has(node.id) ?? false;
+    const colorCoverage = options.colorCoverage && !sourceColor;
     const values = typographyTextValues(scene, node);
     const layouts = new Map(
       [...values].map((text) => [
@@ -179,7 +189,8 @@ export function prepareTypography(
       rasters.set(
         text,
         reserveRaster(
-          rasterizeText(node, layout, fonts, options.colorCoverage),
+          rasterizeText(node, layout, fonts, colorCoverage),
+          sourceColor,
         ),
       );
     }
@@ -197,7 +208,8 @@ export function prepareTypography(
         raster.variants.set(
           key,
           reserveRaster(
-            rasterizeText(node, layout, fonts, options.colorCoverage),
+            rasterizeText(node, layout, fonts, colorCoverage),
+            sourceColor,
           ),
         );
       }
@@ -492,7 +504,9 @@ function drawCluster(
     pose.fill ===
       (raster.colorCoverage
         ? "#ffffff"
-        : (node.spans?.[cluster.spanIndex]?.color ?? node.color))
+        : (raster.sourceColors?.[index] ??
+          node.spans?.[cluster.spanIndex]?.color ??
+          node.color))
       ? raster.canvas
       : coloredRaster(raster, pose.fill),
   );
