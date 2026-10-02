@@ -1284,6 +1284,8 @@ General rules for all adapters:
       and annotation anchors; perform measurement automatically during JSON export.
 - [x] Preserve text state ramps, containers and legacy text animators; bake motion-craft
       transforms with exact skew and moving-anchor matrix compensation.
+- [x] Compile reusable components in story contexts and resolved passage beats,
+      including camera-aware annotations, masked flows and measured/numeric text.
 - [ ] Map commerce layout, product layers, shadows, floating, detail windows, paths,
       text fits, component state/travel/pin/values/visibility/masks.
 - [ ] Commerce effects become CE6 registry effects; parity requires CE6.
@@ -1623,6 +1625,34 @@ comparisons; the full `pnpm check`.
 - **Remaining:** rich typography, spatial paths/morphs and animated appearance,
   reusable story contexts/passages, and the CE6/CE7 dependencies. The user's goal
   remains active and work continues after this slice's commit.
+
+### CE4b reusable-story follow-up (2026-10-02)
+
+- **Delivered:** the story adapter shares component text and annotation compilation
+  with commerce, including numeric values, fitted text, containers/state ramps,
+  travel, pins, visibility and alpha masks. Motion-craft transforms bake to native
+  keys. All resolved passage beats retain parameter/cue binding before compilation.
+  Family renderers remain the default pending CE4d.
+- **Flows:** `component.flow@1.0.0` draws story flows on baked annotation vertices.
+  A path with flows is grouped before applying its root matte, preserving the camera,
+  visibility and independent flow opacity. Transparent paths still bake the geometry
+  their visible flows need. Existing source-ownership validation remains in force.
+- **Versions:** story adapter `story-composition-0.3.0`; commerce adapter, evaluator,
+  Canvas renderer and existing provider versions are unchanged.
+- **Coverage:** all **20 story contexts and ten beats from three component passages**
+  pass, plus four derived cases for annotated flows, normal/inverted mattes and text
+  containers with state ramps: **34 cases / 6,528 pixel-exact frames**. Reverse state
+  checks and backward seeks pass. The existing story render/readback method and
+  1.25× gate are unchanged; worst ratio is **1.1270×** (story visibility).
+  Together with the commerce/isolated runs, all **63 reusable-component CE0 entries**
+  now pass on Canvas. `pnpm check:fast` passes with **1,167 unit tests**. The existing
+  CE4a regression set also passes: 14 story scenes / 3,264 frames and six passage
+  beats / 1,414 frames, all within their unchanged pixel and timing tiers.
+- **CLI exports:** eight pairs are byte-identical: story text-fit, value, mask,
+  masked annotation flow, blended text container, and the first resolved beat from
+  each component passage. Relocated assets, pinned fonts and overwrite protection pass.
+- **Remaining:** rich typography, spatial paths/morphs and animated appearance,
+  plus the CE6/CE7 dependencies and both-backend acceptance. The active goal continues.
 
 **Completion record:** CE4a and CE4b are in progress; CE4c–CE4d have not started.
 

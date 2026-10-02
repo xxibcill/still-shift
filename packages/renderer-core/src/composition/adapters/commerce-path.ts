@@ -5,9 +5,11 @@ import {
   type PreparedNode,
   type PreparedPath,
 } from "@still-shift/scene-contract";
+import type { StoryRenderScene } from "../../story-scene.ts";
 import type { CommerceRenderScene } from "../../commerce-scene.ts";
 import { evaluateAttachedPath } from "../../commerce-geometry.ts";
 import { evaluateComponentAnnotation } from "../../component-annotations.ts";
+import { componentVisible } from "../../component-visibility.ts";
 import { evaluatePreparedNode } from "../../prepared-scene.ts";
 
 export const CommercePathGeometrySchema = z
@@ -20,13 +22,21 @@ export const CommercePathGeometrySchema = z
   .strict();
 
 function visible(
-  scene: CommerceRenderScene,
+  scene: CommerceRenderScene | StoryRenderScene,
   node: PreparedNode,
   frame: number,
 ) {
+  const hasFlow =
+    scene.schemaVersion === "story-scene-1" &&
+    scene.flows?.some((flow) => flow.path === node.id);
   let current: PreparedNode | undefined = node;
   while (current) {
-    if (evaluatePreparedNode(scene, current, frame).opacity <= 0) return false;
+    if (!componentVisible(scene, current.id, frame)) return false;
+    if (
+      !(hasFlow && current === node) &&
+      evaluatePreparedNode(scene, current, frame).opacity <= 0
+    )
+      return false;
     const parentId: string | undefined = current.parent;
     current = parentId
       ? scene.nodes.find((node) => node.id === parentId)
@@ -36,12 +46,15 @@ function visible(
 }
 
 /** Bake local vertices after legacy validation; hidden paths never need an inverse transform. */
-export function compileCommercePathGeometry(
-  scene: CommerceRenderScene,
+export function compileAttachedPathGeometry(
+  scene: CommerceRenderScene | StoryRenderScene,
   node: PreparedPath,
 ) {
   if (
-    !scene.attachments?.some((attachment) => attachment.path === node.id) &&
+    !(
+      scene.schemaVersion === "commerce-scene-1" &&
+      scene.attachments?.some((attachment) => attachment.path === node.id)
+    ) &&
     !scene.componentData?.annotations.some(
       (annotation) => annotation.path === node.id,
     )
@@ -51,7 +64,9 @@ export function compileCommercePathGeometry(
     visible(scene, node, frame)
       ? evaluateComponentAnnotation(
           scene,
-          evaluateAttachedPath(scene, node, frame),
+          scene.schemaVersion === "commerce-scene-1"
+            ? evaluateAttachedPath(scene, node, frame)
+            : node,
           frame,
         ).points
       : node.points,

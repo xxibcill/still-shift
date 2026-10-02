@@ -17,14 +17,20 @@ import type {
 import {
   StoryTextParamsSchema,
   StoryPathParamsSchema,
+  StoryFlowParamsSchema,
 } from "./story-providers.ts";
 import { CommercePathGeometrySchema } from "./commerce-path.ts";
 import { TextAnimatorSchema } from "../../../../scene-contract/src/motion-craft.ts";
 import { drawTextContainer } from "../../text-container.ts";
 import { drawAnimatedText } from "../../motion-text.ts";
+import { compileStoryFlows, drawStoryFlow } from "../../story-flows.ts";
 import { drawStoryText } from "../../story-text.ts";
 
 const CommercePathParamsSchema = StoryPathParamsSchema.extend({
+  geometry: CommercePathGeometrySchema,
+});
+
+const ComponentFlowParamsSchema = StoryFlowParamsSchema.extend({
   geometry: CommercePathGeometrySchema,
 });
 
@@ -272,6 +278,34 @@ const TEXT_CONTENT_PROVIDERS: readonly CanvasContentProvider[] = (
 
 export const COMMERCE_CONTENT_PROVIDERS: readonly CanvasContentProvider[] = [
   ...TEXT_CONTENT_PROVIDERS,
+  {
+    id: "component.flow@1.0.0",
+    prepare(layer, _resources, path) {
+      const parsed = ComponentFlowParamsSchema.safeParse(layer.params);
+      if (!parsed.success)
+        passageError("comp-provider-params", parsed.error.issues[0]!.message, {
+          path: `${path}.params`,
+        });
+      const { node, geometry, samples } = parsed.data;
+      const paths = geometry.points.map((points) => ({ ...node, points }));
+      const flow = compileStoryFlows([parsed.data.flow], samples.length)[0]!;
+      return (ctx, time) => {
+        const frame = Math.max(
+          0,
+          Math.min(samples.length - 1, Math.floor(time)),
+        );
+        drawStoryFlow(
+          ctx,
+          flow,
+          paths[Math.min(frame, paths.length - 1)]!,
+          samples[frame]!,
+          frame,
+          samples.length,
+        );
+      };
+    },
+  },
+
   {
     id: "commerce.path@1.0.0",
     prepare(layer, _resources, path) {

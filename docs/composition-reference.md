@@ -318,10 +318,18 @@ The text provider keeps the original direct text
 drawing for adapter parity; authored composition typography continues using native
 `text` layers. Adapter transforms and provider samples are baked at integer frames,
 held between frames and outside their source range. Image state changes use discrete
-keys. This slice rejects motion-craft,
-typography, components, effects, non-group drawable
-parents, text containers and `textBox`, and scenes longer than 2,000 frames. These
-are CE4a follow-ups; fractional motion-blur sampling is not supported by this slice.
+keys. Motion-craft transforms, signals, drivers and constraints also bake to keys.
+Reusable story components use the same measured/numeric text, containers, state ramps,
+annotations, travel, pins, visibility and alpha mattes as commerce. `commerce.text@1.*`
+and `commerce.path@1.0.0` retain their versioned names when reused in story compositions.
+`component.flow@1.0.0` draws flows on baked annotation vertices. A masked path and
+its flows compile inside one camera-aware group, preserving visible flows even when
+the path itself is transparent. Resolved passage beats compile independently after
+parameter and cue binding; passage handoffs remain in the passage engine.
+
+Rich typography, pixel effects, spatial paths/morphs and animated blur/stroke/trim
+still return explicit unsupported-feature diagnostics, as do scenes longer than
+2,000 frames. Fractional motion-blur sampling remains a CE7 dependency.
 
 Attached connectors use `story.path@1.1.0` and `story.flow@1.1.0`. Their payloads store
 integer-frame endpoint pairs and the authored bend. A shared geometry primitive

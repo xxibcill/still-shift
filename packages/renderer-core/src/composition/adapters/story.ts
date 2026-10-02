@@ -12,6 +12,10 @@ import { evaluatePreparedNode } from "../../prepared-scene.ts";
 import { passageError, PassageError } from "../../passage-diagnostics.ts";
 import { compileStoryPathGeometry } from "./story-path.ts";
 import { params, preparedBaseLayer, preparedNodeLayer } from "./prepared.ts";
+import { componentCapabilities } from "../../component-capabilities.ts";
+import { validateComponentAnnotations } from "../../component-annotations.ts";
+import { componentTextLayer } from "./component-text.ts";
+import { compileAttachedPathGeometry } from "./commerce-path.ts";
 
 function cameraLayer(
   scene: StoryRenderScene,
@@ -26,7 +30,7 @@ function cameraLayer(
     : {};
 }
 
-export const STORY_ADAPTER_VERSION = "story-composition-0.2.0";
+export const STORY_ADAPTER_VERSION = "story-composition-0.3.0";
 function checkSupported(scene: StoryScene) {
   const unsupported = (path: string, feature: string): never =>
     passageError(
@@ -40,12 +44,10 @@ function checkSupported(scene: StoryScene) {
       `The first story adapter bakes at most ${COMPOSITION_LIMITS.maxKeys} frames`,
       { path: "frameCount" },
     );
-  if (scene.motionModel) unsupported("motionModel", "Motion-craft scenes");
+  for (const field of ["spatialPaths", "pathMorphs"] as const)
+    if (scene[field]?.length) unsupported(field, field);
   if (scene.typography) unsupported("typography", "Typography scenes");
-  if (scene.componentData) unsupported("componentData", "Reusable components");
   if (scene.effects?.length) unsupported("effects", "Pixel effects");
-  if (scene.textAnimators?.length)
-    unsupported("textAnimators", "Text animators");
   scene.nodes.forEach((node, i) => {
     const path = `nodes[${i}]`;
     if (
@@ -55,8 +57,6 @@ function checkSupported(scene: StoryScene) {
       unsupported(`${path}.parent`, "Parenting to drawable nodes");
     if (node.type === "text") {
       for (const field of [
-        "container",
-        "textBox",
         "style",
         "spans",
         "decorations",
@@ -83,6 +83,8 @@ export function storyToComposition(
   const input = StorySceneSchema.parse(source);
   checkSupported(input);
   const scene = compileStoryScene(input);
+  validateComponentAnnotations(scene);
+  const components = componentCapabilities(scene.componentData);
   const layers: CompositionLayer[] = [];
   const ids = new Set(scene.nodes.map((n) => n.id));
   const visit = (parent: string | undefined) => {
@@ -90,15 +92,58 @@ export function storyToComposition(
       const samples = Array.from({ length: scene.frameCount }, (_, frame) =>
         evaluatePreparedNode(scene, node, frame),
       );
-      layers.push({
+      for (const property of [
+        "blur",
+        "strokeWidth",
+        "trimStart",
+        "trimEnd",
+        "trimOffset",
+      ] as const)
+        if (samples.some((sample) => sample[property] !== undefined))
+          passageError(
+            "comp-adapter-unsupported",
+            `Motion ${property} is not supported by the story adapter`,
+            { path: `nodes[${scene.nodes.indexOf(node)}].${property}` },
+          );
+      const componentGeometry =
+        node.type === "path"
+          ? compileAttachedPathGeometry(scene, node)
+          : undefined;
+      let layer: CompositionLayer = {
         ...preparedNodeLayer(scene, node, samples, {
+          ...(scene.componentData ? { nativeSolids: false } : {}),
           geometry:
             node.type === "path"
               ? compileStoryPathGeometry(scene, node)
               : undefined,
         }),
         ...cameraLayer(scene, node),
-      });
+      };
+      const visibility = components.visibility.find(
+        (gate) => gate.target === node.id,
+      );
+      if (visibility) {
+        layer.inPoint = visibility.window.start;
+        layer.outPoint = visibility.window.end;
+      }
+      if (
+        node.type === "text" &&
+        layer.type === "provider" &&
+        (node.textBox ||
+          node.container ||
+          scene.textAnimators?.some((animator) => animator.node === node.id) ||
+          samples.some((s) => s.stateFrom !== undefined))
+      )
+        layer = componentTextLayer(scene, node, layer, false, samples);
+      if (componentGeometry && layer.type === "provider") {
+        layer.provider = "commerce.path@1.0.0";
+        layer.params = params(
+          { ...layer.params, geometry: componentGeometry },
+          `nodes[${scene.nodes.indexOf(node)}]`,
+          node.id,
+        );
+      }
+      layers.push(layer);
       if (node.type === "path") {
         for (const flow of (scene.flows ?? []).filter(
           (f) => f.path === node.id,
@@ -115,12 +160,26 @@ export function storyToComposition(
             ...base,
             id,
             type: "provider",
-            provider: geometry ? "story.flow@1.1.0" : "story.flow@1.0.0",
+            provider: componentGeometry
+              ? "component.flow@1.0.0"
+              : geometry
+                ? "story.flow@1.1.0"
+                : "story.flow@1.0.0",
+            ...(visibility
+              ? {
+                  inPoint: visibility.window.start,
+                  outPoint: visibility.window.end,
+                }
+              : {}),
             transform: { ...base.transform, opacity: 1 },
             params: params(
               {
                 node,
-                ...(geometry ? { geometry } : {}),
+                ...(componentGeometry
+                  ? { geometry: componentGeometry }
+                  : geometry
+                    ? { geometry }
+                    : {}),
                 flow,
                 // Flow playback uses sample count as its source clock, including the settled tail.
                 samples: samples.map(({ reveal, gap }) => ({ reveal, gap })),
@@ -135,6 +194,39 @@ export function storyToComposition(
     }
   };
   visit(undefined);
+  // A legacy path's flow belongs to the same masked root, even at zero path opacity.
+  const roots = new Map<string, string>();
+  for (const id of new Set(components.masks.map((mask) => mask.target))) {
+    const node = scene.nodes.find((node) => node.id === id)!;
+    if (node.type !== "path" || !scene.flows?.some((flow) => flow.path === id))
+      continue;
+    let groupId = `${id}-content`;
+    while (ids.has(groupId)) groupId += "-group";
+    ids.add(groupId);
+    roots.set(id, groupId);
+    const children = layers.filter((layer) => layer.source?.id === id);
+    const first = layers.indexOf(children[0]!);
+    for (const child of children) {
+      child.parent = groupId;
+      delete child.cameraDepth;
+    }
+    layers.splice(first, 0, {
+      id: groupId,
+      type: "group",
+      size: [scene.width, scene.height],
+      transform: { anchor: [0, 0] },
+      ...cameraLayer(scene, node),
+    });
+  }
+  for (const mask of components.masks) {
+    const target = layers.find(
+      (layer) => layer.id === (roots.get(mask.target) ?? mask.target),
+    )!;
+    target.trackMatte = {
+      layer: roots.get(mask.mask) ?? mask.mask,
+      mode: mask.invert ? "alpha-inverted" : "alpha",
+    };
+  }
   const markers = new Map<
     string,
     NonNullable<Composition["markers"]>[number]

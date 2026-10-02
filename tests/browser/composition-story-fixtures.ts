@@ -13,6 +13,8 @@ import {
   storyToComposition,
 } from "@still-shift/renderer-core";
 import type * as Render from "../../packages/renderer-core/src/index.ts";
+import { assertStoryComponentExport } from "../helpers/composition-story-exports.ts";
+import { storyComponentVariants } from "../helpers/composition-story-components.ts";
 import { assertCompositionAdapterState } from "../helpers/composition-adapter-state.ts";
 
 const root = resolve(import.meta.dirname, "../..");
@@ -31,12 +33,22 @@ const inventory = JSON.parse(
   }[];
 };
 const only = process.argv.indexOf("--only");
+const componentsOnly = process.argv.includes("--components");
+const isComponent = (id: string) =>
+  id.startsWith("component/story-") || id.startsWith("component/passage-");
 const selected = inventory.fixtures.filter(
   (f) =>
-    ["story", "story-passage"].includes(f.family) &&
+    (["story", "story-passage"].includes(f.family) || isComponent(f.id)) &&
+    (!componentsOnly || isComponent(f.id)) &&
     (only < 0 || f.id.includes(process.argv[only + 1]!)),
 );
 assert.ok(selected.length, "No story fixtures selected");
+if (only < 0)
+  assert.equal(
+    selected.filter((f) => isComponent(f.id)).length,
+    23,
+    "Missing CE0 story component entry",
+  );
 const server = await createServer({
   root,
   configFile: false,
@@ -62,7 +74,11 @@ try {
               scene: JSON.parse(await readFile(sourcePath, "utf8")),
             },
           ];
-    for (const item of inputs) {
+    const cases = inputs.flatMap((item) => [
+      item,
+      ...storyComponentVariants(item.id, StorySceneSchema.parse(item.scene)),
+    ]);
+    for (const item of cases) {
       const input = StorySceneSchema.parse(item.scene);
       const composition = storyToComposition(input),
         scene = compileStoryScene(input);
@@ -214,9 +230,23 @@ try {
       );
       totalFrames += input.frameCount;
       totalItems++;
+      if (
+        only < 0 &&
+        ([
+          "component/story-text-fit",
+          "component/story-value",
+          "component/story-mask",
+          "component/story-leader/flow-target-inverted",
+          "component/story-state/blended-container",
+        ].includes(item.id) ||
+          (entry.id.startsWith("component/passage-") && item === cases[0]))
+      )
+        await assertStoryComponentExport(input, dirname(sourcePath), item.id);
     }
   }
-  console.log(`CE4a story parity: ${totalItems} items, ${totalFrames} frames`);
+  console.log(
+    `CE4 story/component parity: ${totalItems} items, ${totalFrames} frames`,
+  );
 } finally {
   await browser.close();
   await server.close();

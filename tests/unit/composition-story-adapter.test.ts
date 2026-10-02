@@ -159,7 +159,7 @@ describe("CE4a story adapter first slice", () => {
       JSON.parse(
         readFileSync(
           new URL(
-            "../../benchmarks/fixtures/motion-craft/buffer-press.json",
+            "../../benchmarks/fixtures/typography/editorial.json",
             import.meta.url,
           ),
           "utf8",
@@ -173,7 +173,7 @@ describe("CE4a story adapter first slice", () => {
       expect(passageDiagnostics(error)).toContainEqual(
         expect.objectContaining({
           code: "comp-adapter-unsupported",
-          path: "motionModel",
+          path: "typography",
         }),
       );
     }

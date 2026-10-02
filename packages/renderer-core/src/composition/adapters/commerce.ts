@@ -5,24 +5,16 @@ import {
   type CommerceScene,
   type Composition,
   type CompositionLayer,
-  type PreparedNode,
 } from "@still-shift/scene-contract";
 import { compileCommerceScene } from "../../commerce-scene.ts";
+import { componentTextLayer } from "./component-text.ts";
 import { componentCapabilities } from "../../component-capabilities.ts";
-import { componentText } from "../../component-values.ts";
 import { validateAttachedPaths } from "../../commerce-geometry.ts";
 import { validateComponentAnnotations } from "../../component-annotations.ts";
 import { evaluatePreparedNode } from "../../prepared-scene.ts";
 import { passageError, PassageError } from "../../passage-diagnostics.ts";
-import {
-  params,
-  preparedNodeLayer,
-  trimSettledSamples,
-  baked,
-  bakedState,
-  type Samples,
-} from "./prepared.ts";
-import { compileCommercePathGeometry } from "./commerce-path.ts";
+import { params, preparedNodeLayer } from "./prepared.ts";
+import { compileAttachedPathGeometry } from "./commerce-path.ts";
 import { prepareCommerceTextFits } from "../../commerce-layout.ts";
 import { prepareComponentTextFits } from "../../component-text-fit.ts";
 import { loadPreparedFonts, type LoadedFont } from "../../prepared-fonts.ts";
@@ -87,81 +79,6 @@ function checkSupported(scene: CommerceScene) {
       if (node[field] !== undefined)
         unsupported(`${path}.${field}`, `Text ${field}`);
   });
-}
-
-function measuredTextLayer(
-  scene: CommerceScene,
-  node: Extract<PreparedNode, { type: "text" }>,
-  layer: Extract<CompositionLayer, { type: "provider" }>,
-  layoutResolved: boolean,
-  samples: Samples,
-) {
-  const components = componentCapabilities(scene.componentData);
-  const fit = [...(scene.textFits ?? []), ...components.textFits].find(
-    (fit) => fit.target === node.id,
-  );
-  const binding = components.bindings.find(
-    (binding) => binding.kind === "text" && binding.target === node.id,
-  );
-  const numeric =
-    binding?.kind === "text"
-      ? {
-          value: components.values.find((value) => value.id === binding.value)!,
-          format: binding.format,
-          samples: trimSettledSamples(
-            Array.from({ length: scene.frameCount }, (_, frame) => ({
-              text: componentText(scene, node, frame)!,
-            })),
-          ).map((sample) => sample.text),
-        }
-      : undefined;
-  const animator = scene.textAnimators?.find(
-    (animator) => animator.node === node.id,
-  );
-  const blends = samples.some((s) => s.stateFrom !== undefined);
-  const extended = !!node.container || !!animator || blends;
-  const blendWindows = components.states.flatMap((s) =>
-    s.target === node.id
-      ? s.cuts.flatMap((c) => (c.ramp ? [[c.frame, c.frame + c.ramp]] : []))
-      : [],
-  );
-  return {
-    ...layer,
-    provider: extended
-      ? "commerce.text@1.2.0"
-      : fit || numeric
-        ? "commerce.text@1.1.0"
-        : "commerce.text@1.0.0",
-    ...(extended
-      ? { state: bakedState(samples.map((s) => Math.round(s.state))) }
-      : {}),
-    ...(blends
-      ? {
-          stateFrom: bakedState(
-            samples.map((s) => Math.round(s.stateFrom ?? s.state)),
-          ),
-          stateMix: baked(samples.map((s) => s.stateMix ?? 1)),
-        }
-      : {}),
-    params: params(
-      {
-        ...layer.params,
-        ...(fit
-          ? {
-              fit: {
-                minSize: layoutResolved ? node.fontSize : fit.minSize,
-                maxSize: layoutResolved ? node.fontSize : fit.maxSize,
-              },
-            }
-          : {}),
-        ...(numeric ? { numeric } : {}),
-        ...(animator ? { animator } : {}),
-        ...(blendWindows.length ? { blendWindows } : {}),
-      },
-      `nodes[${scene.nodes.indexOf(node)}]`,
-      node.id,
-    ),
-  };
 }
 
 /** Compile once to bounded data; rendering never calls the commerce evaluator. */
@@ -232,7 +149,7 @@ export function commerceToComposition(
           scene.textAnimators?.some((a) => a.node === node.id) ||
           samples.some((s) => s.stateFrom !== undefined))
       )
-        layer = measuredTextLayer(
+        layer = componentTextLayer(
           scene,
           node,
           layer,
@@ -240,7 +157,7 @@ export function commerceToComposition(
           samples,
         );
       if (node.type === "path" && layer.type === "provider") {
-        const geometry = compileCommercePathGeometry(scene, node);
+        const geometry = compileAttachedPathGeometry(scene, node);
         if (geometry) {
           layer.provider = "commerce.path@1.0.0";
           layer.params = params(
