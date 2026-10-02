@@ -54,3 +54,13 @@ export {
   type ProviderLayer,
   type ProviderResources,
 } from "./providers.ts";
+export {
+  createWebgl2Backend,
+  COMPOSITION_WEBGL_RENDERER_VERSION,
+  type Webgl2Backend,
+} from "./webgl2.ts";
+export {
+  compositionRendererVersion,
+  type CompositionBackend,
+  type CompositionRendererVersion,
+} from "./renderer.ts";

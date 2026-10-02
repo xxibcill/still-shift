@@ -42,16 +42,18 @@ const MODES: Record<CompositionBlendMode, string> = {
   add: "s",
 };
 
-export function blendShader(mode: CompositionBlendMode) {
+export function blendShader(mode: CompositionBlendMode, primitive = false) {
   return `${FUNCTIONS}
 uniform float opacity;
 void main() {
-  vec4 src = bytes(texture(source, uv) * opacity), dst = texture(backdrop, uv);
+  vec4 src = floor(floor(texture(source, uv) * 255.0 + 0.5) * (floor(opacity * 255.0 + 0.5) + 1.0) / 256.0) / 255.0, dst = texture(backdrop, uv);
   ${
     mode === "add"
       ? "pixel = min(vec4(1.0), src + dst);"
       : mode === "normal"
-        ? "pixel = bytes(src + dst * (1.0 - src.a));"
+        ? primitive
+          ? "pixel = (floor(src*255.0+0.5)+floor(floor(dst*255.0+0.5)*(256.0-floor(src.a*255.0+0.5))/256.0))/255.0;"
+          : "pixel = bytes(src + dst * (1.0-src.a));"
         : `
   vec3 s = src.a > 0.0 ? src.rgb / src.a : vec3(0.0);
   vec3 b = dst.a > 0.0 ? dst.rgb / dst.a : vec3(0.0);

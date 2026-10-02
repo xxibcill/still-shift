@@ -1118,3 +1118,22 @@ compilation does not relax integer authored keys or source validation.
 Typography stroke preparation visits the actual visible fractional numeric labels
 at each rounded glyph pose, including echo history. It retains the 128 MP preparation
 budget. Rendering uses the same prepared glyph path as ordinary integer playback.
+
+### Optional GPU composition preview
+
+`createCompositionPreview(canvas, composition, resources, { backend: "webgl2" })`
+selects `composition-webgl2-0.2.0`; omitting the option retains Canvas 2D. Both
+previews expose `backend`, `rendererVersion`, and `readPixels()` in top-row-first
+unpremultiplied RGBA. Scene wrappers include the selected renderer version in
+their identity.
+
+WebGL owns composition surfaces, blends, transforms, masks/mattes, exposure
+accumulation and pixel-effect passes. Prepared vector/text/image content retains
+the reference rasterizer; consecutive vector fills are rasterized as one batch
+to preserve antialiasing. This is not a full-frame Canvas wrapper. GPU idle surface
+storage is capped at 128 MiB, with at most 16 surfaces per dimensions/type key.
+Unsupported WebGL2 or floating accumulation capabilities fail explicitly.
+
+The native backend suite compares 57 focused cases and 612 fixture frames on the
+pinned software browser at the existing near tier. Family acceptance, measured
+performance, export and Lab selection are tracked separately in the plan.

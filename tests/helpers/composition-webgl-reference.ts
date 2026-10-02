@@ -44,7 +44,13 @@ export function checkWebglFrames() {
   canvas.height = HEIGHT;
   const gpu = createWebgl2Backend(canvas, options),
     reference = createCanvas2dBackend(options);
-  const expected = reference.createSurface(WIDTH, HEIGHT);
+  const referenceCanvas = document.createElement("canvas");
+  referenceCanvas.width = WIDTH;
+  referenceCanvas.height = HEIGHT;
+  const expected = reference.wrap(
+    referenceCanvas,
+    referenceCanvas.getContext("2d", { alpha: false })!,
+  );
   const results: {
     id: string;
     maxDelta: number;
@@ -74,6 +80,33 @@ export function checkWebglFrames() {
     });
   };
   try {
+    check("surface/blur-clipped", (backend, dst) => {
+      const surface = backend.createSurface(40, 40);
+      try {
+        backend.fillRect(
+          surface,
+          I,
+          40,
+          40,
+          [0.9, 0.6, 0.2, 1],
+          1,
+          "normal",
+          [],
+        );
+        backend.composite(
+          surface,
+          dst,
+          "normal",
+          0.8,
+          [1, 0, 0, 1, 20, 12],
+          [{ matrix: [1, 0, 0, 1, 26, 18], width: 28, height: 25 }],
+          undefined,
+          4,
+        );
+      } finally {
+        backend.releaseSurface(surface);
+      }
+    });
     const modes: CompositionBlendMode[] = [
       "normal",
       "multiply",
@@ -173,40 +206,41 @@ export function checkWebglFrames() {
         backend.releaseSurface(matte);
       });
     for (const mode of ["add", "subtract", "intersect", "difference"] as const)
-      check(`mask/${mode}`, (backend, dst) => {
-        const source = backend.createSurface(WIDTH, HEIGHT);
-        backend.fillRect(
-          source,
-          I,
-          WIDTH,
-          HEIGHT,
-          [0.8, 0.4, 0.2, 0.9],
-          1,
-          "normal",
-          [],
-        );
-        backend.applyMask(source, [
-          {
-            id: "mask",
-            mode,
-            path: {
-              vertices: [
-                [12, 8],
-                [74, 13],
-                [65, 52],
-              ],
-              closed: true,
+      for (const feather of [0, 7])
+        check(`mask/${mode}/${feather}`, (backend, dst) => {
+          const source = backend.createSurface(WIDTH, HEIGHT);
+          backend.fillRect(
+            source,
+            I,
+            WIDTH,
+            HEIGHT,
+            [0.8, 0.4, 0.2, 0.9],
+            1,
+            "normal",
+            [],
+          );
+          backend.applyMask(source, [
+            {
+              id: "mask",
+              mode,
+              path: {
+                vertices: [
+                  [12, 8],
+                  [74, 13],
+                  [65, 52],
+                ],
+                closed: true,
+              },
+              inverted: true,
+              feather,
+              expansion: 2,
+              opacity: 0.7,
+              matrix: I,
             },
-            inverted: true,
-            feather: 0,
-            expansion: 2,
-            opacity: 0.7,
-            matrix: I,
-          },
-        ]);
-        backend.composite(source, dst, "normal", 1, I, []);
-        backend.releaseSurface(source);
-      });
+          ]);
+          backend.composite(source, dst, "normal", 1, I, []);
+          backend.releaseSurface(source);
+        });
     check("surface/transform", (backend, dst) => {
       const surface = backend.createSurface(32, 24);
       backend.fillRect(
@@ -272,6 +306,121 @@ export function checkWebglFrames() {
           );
         }),
       );
+    for (const radius of [0, 0.5, 1, 1.9, 2, 2.5, 4, 7, 12, 24])
+      check(`effect/gaussian/${radius}`, (backend, dst) => {
+        backend.clear(dst, null);
+        backend.fillRect(
+          dst,
+          [1, 0, 0, 1, 21, 16],
+          40,
+          32,
+          [0.9, 0.3, 0.7, 0.8],
+          1,
+          "normal",
+          [],
+        );
+        backend.applyEffects(dst, [
+          {
+            id: "blur",
+            effect: "blur.gaussian",
+            enabled: true,
+            params: { radius },
+          },
+        ]);
+        const background = backend.createSurface(WIDTH, HEIGHT);
+        backend.clear(background, [0.2, 0.4, 0.7, 1]);
+        backend.composite(dst, background, "normal", 1, I, []);
+        backend.clear(dst, null);
+        backend.composite(background, dst, "normal", 1, I, []);
+        backend.releaseSurface(background);
+      });
+    for (const effect of [
+      {
+        effect: "blur.directional",
+        params: { length: 12, angle: 0, samples: 5 },
+      },
+      {
+        effect: "blur.directional",
+        params: { length: 8, angle: 37, samples: 8 },
+      },
+      {
+        effect: "distort.sine",
+        params: { amount: 5, wavelength: 24, phase: 0.7 },
+      },
+      {
+        effect: "light.glow",
+        params: { radius: 4, intensity: 0.7, threshold: 0.3 },
+      },
+      {
+        effect: "light.radial",
+        params: {
+          x: 35,
+          y: 23,
+          radius: 38,
+          strength: 0.65,
+          color: [1, 0.7, 0.2, 1] as [number, number, number, number],
+        },
+      },
+      {
+        effect: "particles.rise",
+        params: {
+          progress: 0.31,
+          count: 18,
+          radius: 4,
+          opacity: 0.7,
+          seed: 812,
+          color: [1, 0.7, 0.2, 1] as [number, number, number, number],
+        },
+      },
+      {
+        effect: "stylize.grain",
+        params: { amount: 0.25, seed: 938, evolution: 4.7 },
+      },
+      {
+        effect: "stylize.grain",
+        params: { amount: 0.7, seed: 4294967295, evolution: 19.3 },
+      },
+      {
+        effect: "light.sweep",
+        params: {
+          width: 70,
+          height: 42,
+          left: 0.1,
+          top: 0.2,
+          regionWidth: 0.7,
+          regionHeight: 0.6,
+          band: 0.2,
+          progress: 0.44,
+          strength: 0.65,
+        },
+        placement: {
+          matrix: [1, 0.1, -0.08, 1, 13, 10] as Matrix,
+          transforms: [[1, 0.1, -0.08, 1, 13, 10] as Matrix],
+        },
+      },
+    ])
+      check(
+        `effect/${effect.effect}/${JSON.stringify(effect.params)}`,
+        (backend, dst) => {
+          const layer = backend.createSurface(WIDTH, HEIGHT);
+          backend.clear(layer, [0.17, 0.36, 0.62, 1]);
+          backend.fillRect(
+            layer,
+            [1, 0, 0, 1, 21.3, 16.4],
+            40,
+            32,
+            [0.9, 0.3, 0.7, 0.8],
+            1,
+            "normal",
+            [],
+          );
+          backend.applyEffects(layer, [
+            { ...effect, id: "effect", enabled: true },
+          ]);
+          backend.composite(layer, dst, "normal", 1, I, []);
+          backend.releaseSurface(layer);
+        },
+      );
     const allocated = gpu.allocated;
     for (let i = 0; i < 100; i++) {
       const surface = gpu.createSurface(WIDTH, HEIGHT);
@@ -284,4 +433,82 @@ export function checkWebglFrames() {
     gpu.dispose();
     reference.dispose();
   }
+}
+
+export async function checkCompositionBackends(paths: string[]) {
+  const { createCompositionPreview, loadCompositionResources } = await import(
+    "../../packages/renderer-core/src/composition/render/renderer.ts"
+  );
+  const { compareFrames } = await import(
+    "../../packages/renderer-core/src/frame-tolerance.ts"
+  );
+  const result: {
+    id: string;
+    frames: number;
+    maxDelta: number;
+    psnr: number;
+    ssim: number;
+    worst: unknown;
+  }[] = [];
+  for (const path of paths) {
+    const composition = await (await fetch(path)).json();
+    const resources = await loadCompositionResources(composition, (id) => {
+      const asset = composition.assets.find((a: { id: string }) => a.id === id);
+      return new URL(asset.path, new URL(path, location.href)).href;
+    });
+    const canvas = document.createElement("canvas"),
+      webgl = document.createElement("canvas");
+    const reference = createCompositionPreview(canvas, composition, resources),
+      gpu = createCompositionPreview(webgl, composition, resources, {
+        backend: "webgl2",
+      });
+    let maxDelta = 0,
+      psnr = 999,
+      ssim = 1;
+    let worst: unknown = null;
+    try {
+      for (let frame = 0; frame < composition.frameCount; frame++) {
+        reference.renderFrame(frame);
+        gpu.renderFrame(frame);
+        const expected = reference.readPixels(),
+          actual = gpu.readPixels();
+        const metrics = compareFrames(
+          expected,
+          actual,
+          composition.width,
+          composition.height,
+        );
+        if (metrics.maxChannelDelta > maxDelta) {
+          const offset = expected.findIndex(
+            (value, index) =>
+              index % 4 !== 3 &&
+              Math.abs(value - actual[index]!) === metrics.maxChannelDelta,
+          );
+          const pixel = offset - (offset % 4);
+          worst = {
+            frame,
+            x: (pixel / 4) % composition.width,
+            y: Math.floor(pixel / 4 / composition.width),
+            expected: Array.from(expected.slice(pixel, pixel + 4)),
+            actual: Array.from(actual.slice(pixel, pixel + 4)),
+          };
+        }
+        maxDelta = Math.max(maxDelta, metrics.maxChannelDelta);
+        psnr = Math.min(psnr, metrics.psnr);
+        ssim = Math.min(ssim, metrics.ssim);
+      }
+    } finally {
+      reference.dispose();
+      gpu.dispose();
+    }
+    result.push({
+      id: path,
+      frames: composition.frameCount,
+      maxDelta,
+      psnr,
+      ssim,
+      worst,
+    });
+  }
+  return result;
 }

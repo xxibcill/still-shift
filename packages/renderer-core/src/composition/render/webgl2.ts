@@ -1,3 +1,4 @@
+import { WebglEffects } from "./webgl-effects.ts";
 import type { CompositionBlendMode } from "@still-shift/scene-contract";
 import type { Matrix } from "../../node-transform.ts";
 import type { RenderBackend } from "./backend.ts";
@@ -11,21 +12,21 @@ import { WebglDevice, type WebglSurface } from "./webgl-device.ts";
 import { blendShader } from "./webgl-blend.ts";
 
 export const COMPOSITION_WEBGL_RENDERER_VERSION =
-  "composition-webgl2-0.1.0" as const;
+  "composition-webgl2-0.2.0" as const;
 const IDENTITY: Matrix = [1, 0, 0, 1, 0, 0];
 const COPY =
-  "uniform float opacity; void main() { pixel = bytes(texture(source, uv) * opacity); }";
+  "uniform float opacity; void main() { pixel = floor(floor(texture(source, uv) * 255.0 + 0.5) * (floor(opacity * 255.0 + 0.5) + 1.0) / 256.0) / 255.0; }";
 const TRANSFORM = `uniform mat3 inverseTransform;
 uniform vec2 size;
-uniform vec2 destinationSize;
+vec4 colorAt(vec2 point) { return floor(texture(source,point)*255.0+0.5); }
 void main() {
-  vec2 point = (inverseTransform * vec3(uv * destinationSize, 1.0)).xy;
+  vec2 point = (inverseTransform * vec3(gl_FragCoord.xy, 1.0)).xy;
   vec2 base = floor(point - 0.5), weight = floor(fract(point - 0.5) * 16.0) / 16.0;
   vec2 lo = clamp(base + 0.5, vec2(0.5), size-0.5);
   vec2 hi = clamp(base + 1.5, vec2(0.5), size-0.5);
-  vec4 top = mix(texture(source, lo/size), texture(source, vec2(hi.x,lo.y)/size), weight.x);
-  vec4 bottom = mix(texture(source, vec2(lo.x,hi.y)/size), texture(source, hi/size), weight.x);
-  vec4 sampled = floor(mix(top,bottom,weight.y)*255.0) / 255.0;
+  vec4 top = mix(colorAt(lo/size), colorAt(vec2(hi.x,lo.y)/size), weight.x);
+  vec4 bottom = mix(colorAt(vec2(lo.x,hi.y)/size), colorAt(hi/size), weight.x);
+  vec4 sampled = floor(mix(top,bottom,weight.y)) / 255.0;
   pixel = bytes(sampled * texture(coverage, uv).a);
 }`;
 
@@ -37,15 +38,16 @@ export type Webgl2Backend = RenderBackend<WebglSurface> & {
   dispose(): void;
 };
 
-/** Rasterize individual vector/text/image draws; compose GPU surfaces in shaders. */
+/** Rasterize vector batches and prepared content; compose GPU surfaces in shaders. */
 export function createWebgl2Backend(
   canvas: HTMLCanvasElement,
   options: Canvas2dBackendOptions,
 ): Webgl2Backend {
   const device = new WebglDevice(canvas);
   const raster = createCanvas2dBackend(options);
-  const target = device.surface(canvas.width, canvas.height);
+  const target = device.surface(canvas.width, canvas.height, false, true);
   const gl = device.gl;
+  const effects = new WebglEffects(device, raster);
 
   function replace(
     dst: WebglSurface,
@@ -53,7 +55,7 @@ export function createWebgl2Backend(
     inputs: WebglSurface[],
     uniforms: Parameters<WebglDevice["pass"]>[3] = {},
   ) {
-    const output = device.surface(dst.width, dst.height);
+    const output = device.surface(dst.width, dst.height, false, dst.opaque);
     try {
       device.pass(shader, output, inputs, uniforms);
       device.swap(dst, output);
@@ -67,8 +69,11 @@ export function createWebgl2Backend(
     dst: WebglSurface,
     mode: CompositionBlendMode,
     opacity: number,
+    primitive = false,
   ) {
-    if (mode === "normal" || mode === "add") {
+    if (primitive && mode === "normal") {
+      replace(dst, blendShader(mode, true), [src, dst], { opacity });
+    } else if (mode === "normal" || mode === "add") {
       gl.enable(gl.BLEND);
       gl.blendEquation(gl.FUNC_ADD);
       gl.blendFunc(gl.ONE, mode === "add" ? gl.ONE : gl.ONE_MINUS_SRC_ALPHA);
@@ -84,13 +89,14 @@ export function createWebgl2Backend(
     dst: WebglSurface,
     mode: CompositionBlendMode,
     paint: (surface: CanvasSurface) => void,
+    primitive = false,
   ) {
     const pixels = raster.createSurface(dst.width, dst.height);
     const source = device.surface(dst.width, dst.height);
     try {
       paint(pixels);
       device.upload(source, pixels.canvas);
-      blend(source, dst, mode, 1);
+      blend(source, dst, mode, 1, primitive);
     } finally {
       raster.releaseSurface(pixels);
       device.release(source);
@@ -150,7 +156,6 @@ export function createWebgl2Backend(
           1,
         ],
         size: [src.width, src.height],
-        destinationSize: [dst.width, dst.height],
       });
       return output;
     } finally {
@@ -183,20 +188,29 @@ export function createWebgl2Backend(
       transforms,
       paintBlur,
     ) {
-      draw(dst, mode, (pixels) =>
-        raster.fillRect(
-          pixels,
-          matrix,
-          width,
-          height,
-          color,
-          opacity,
-          "normal",
-          clips,
-          transforms,
-          paintBlur,
-        ),
+      draw(
+        dst,
+        mode,
+        (pixels) =>
+          raster.fillRect(
+            pixels,
+            matrix,
+            width,
+            height,
+            color,
+            opacity,
+            "normal",
+            clips,
+            transforms,
+            paintBlur,
+          ),
+        !paintBlur,
       );
+    },
+    // Keep a vector batch together: raster coverage rounds each overlapping fill.
+    // Splitting it into separately quantized uploads changes repeated AA edges.
+    fillRects(dst, ops) {
+      draw(dst, "normal", (pixels) => raster.fillRects!(pixels, ops));
     },
     drawImage(
       dst,
@@ -268,10 +282,41 @@ export function createWebgl2Backend(
       );
     },
     composite(src, dst, mode, opacity, matrix, clips, transforms, paintBlur) {
-      if (paintBlur)
-        throw new Error(
-          "comp-webgl-effect: surface drawing blur is not implemented",
-        );
+      if (paintBlur) {
+        const source = placed(src, dst, matrix, [], transforms);
+        try {
+          effects.blur(source, paintBlur);
+          if (clips.length) {
+            const pixels = raster.createSurface(dst.width, dst.height);
+            const coverage = device.surface(dst.width, dst.height);
+            try {
+              raster.fillRect(
+                pixels,
+                IDENTITY,
+                dst.width,
+                dst.height,
+                [1, 1, 1, 1],
+                1,
+                "normal",
+                clips,
+              );
+              device.upload(coverage, pixels.canvas);
+              replace(
+                source,
+                "void main() {pixel=bytes(texture(source,uv)*texture(backdrop,uv).a);}",
+                [source, coverage],
+              );
+            } finally {
+              raster.releaseSurface(pixels);
+              device.release(coverage);
+            }
+          }
+          blend(source, dst, mode, opacity);
+        } finally {
+          device.release(source);
+        }
+        return;
+      }
       if (
         src.width === dst.width &&
         src.height === dst.height &&
@@ -288,25 +333,53 @@ export function createWebgl2Backend(
         }
       }
     },
-    applyEffects(_target, effects) {
-      if (effects.some((effect) => effect.enabled))
-        throw new Error(
-          "comp-webgl-effect: pixel effect kernels are not implemented",
-        );
-    },
+    applyEffects: (target, stack) => effects.apply(target, stack),
     applyMask(dst, masks) {
+      const combined = device.surface(dst.width, dst.height);
       const coverage = device.surface(dst.width, dst.height);
       const pixels = raster.createSurface(dst.width, dst.height);
       try {
-        raster.clear(pixels, [1, 1, 1, 1]);
-        raster.applyMask(pixels, masks);
-        device.upload(coverage, pixels.canvas);
+        if (masks[0]?.mode === "subtract" || masks[0]?.mode === "intersect")
+          device.clear(combined, [1, 1, 1, 1]);
+        for (const mask of masks) {
+          raster.clear(pixels, [1, 1, 1, 1]);
+          raster.applyMask(pixels, [
+            { ...mask, mode: "intersect", opacity: 1, feather: 0 },
+          ]);
+          device.upload(coverage, pixels.canvas);
+          if (mask.feather > 0)
+            effects.blur(
+              coverage,
+              (mask.feather / 2) *
+                Math.sqrt(
+                  Math.abs(
+                    mask.matrix[0] * mask.matrix[3] -
+                      mask.matrix[1] * mask.matrix[2],
+                  ),
+                ),
+            );
+          const formula =
+            mask.mode === "add"
+              ? "s+d*(1.0-s.a)"
+              : mask.mode === "subtract"
+                ? "d*(1.0-s.a)"
+                : mask.mode === "intersect"
+                  ? "d*s.a"
+                  : "s*(1.0-d.a)+d*(1.0-s.a)";
+          replace(
+            combined,
+            `uniform float opacity; void main() {vec4 s=bytes(texture(source,uv)*opacity),d=texture(backdrop,uv);pixel=bytes(${formula});}`,
+            [coverage, combined],
+            { opacity: mask.opacity },
+          );
+        }
         replace(
           dst,
-          "void main() { pixel = bytes(texture(source,uv) * texture(backdrop,uv).a); }",
-          [dst, coverage],
+          "void main() { pixel=bytes(texture(source,uv)*texture(backdrop,uv).a); }",
+          [dst, combined],
         );
       } finally {
+        device.release(combined);
         device.release(coverage);
         raster.releaseSurface(pixels);
       }
@@ -328,7 +401,7 @@ export function createWebgl2Backend(
       replace(
         dst,
         `uniform float opacity;
-      void main() { float a = texture(coverage,uv).a * opacity;
+      void main() { float a = floor(floor(texture(coverage,uv).a * 255.0 + 0.5) * (floor(opacity * 255.0 + 0.5) + 1.0) / 256.0) / 255.0;
         pixel = bytes(texture(source,uv)*a) + bytes(texture(backdrop,uv)*(1.0-a));
       }`,
         [src, dst, coverage],

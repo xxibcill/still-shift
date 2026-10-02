@@ -2035,6 +2035,34 @@ comparisons; the full `pnpm check`.
   pooling is bounded across repeated acquisitions. Pixel-effect kernels and preview/export selection remain the next
   slice; unsupported pixel effects fail explicitly in this internal backend.
 
+### CE4b WebGL2 effects and preview (2026-10-02)
+
+- **Delivered:** `composition-webgl2-0.2.0` adds Gaussian/directional blur, glow,
+  sinusoidal displacement, radial light, particles, grain, light sweep, feathered
+  masks and primitive-surface blur to GPU composition. Gaussian passes preserve
+  the reference's integer normalization; displacement uses a scalar row-offset
+  texture; radial gradients retain source-alpha clipping and ordered dithering.
+  Native echo and exposure use the shared graph and fixed-order GPU accumulation.
+- **Raster boundary:** prepared content and vector coverage use Canvas rasterizers.
+  Consecutive vector fills stay in one rasterized batch so repeated antialiased
+  edges retain their original rounding. Surface transforms, compositing, masks,
+  mattes and pixel filtering execute in WebGL; there is no full-frame Canvas
+  renderer upload. GPU idle surfaces are bounded to 128 MiB and 16 per size/type.
+- **Preview API:** `createCompositionPreview` accepts `backend: "webgl2"` and exposes
+  backend/version metadata and backend-neutral pixel readback. Canvas remains the
+  default. A blurred precomp applies its outer clip after the filter, with a
+  dedicated regression case.
+- **Verification:** the pinned-browser WebGL suite passes **57 focused cases** and
+  **11 native fixture groups / 612 frames**, all at the unchanged `near` threshold
+  (maximum delta ≤ **2**, PSNR ≥ **52.3277 dB**). Gaussian, light sweep, echo,
+  primitive blur and indexed exposure are exact across their native timelines.
+  `pnpm check:fast` passes **1,220 unit tests**; the existing Canvas composition
+  suite passes, including Lab preview, repeat export and PNG/raw transport parity.
+- **Remaining:** export/CLI/Lab backend selection, the complete family matrix on
+  WebGL, measured performance and final local verification. This delivers the
+  CE4b-required effects path; broader CE6 features and its acceleration target
+  are not marked complete.
+
 **Completion record:** CE4a and CE4b are in progress; CE4c–CE4d have not started.
 
 ---

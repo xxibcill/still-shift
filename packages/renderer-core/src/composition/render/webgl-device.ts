@@ -3,6 +3,7 @@ export type WebglSurface = {
   readonly width: number;
   readonly height: number;
   readonly floating: boolean;
+  readonly opaque: boolean;
   texture: WebGLTexture;
   framebuffer: WebGLFramebuffer;
 };
@@ -40,6 +41,7 @@ export class WebglDevice {
   private readonly pool = new Map<string, WebglSurface[]>();
   private readonly vao: WebGLVertexArrayObject;
   passes = 0;
+  private pooledBytes = 0;
 
   constructor(readonly canvas: HTMLCanvasElement) {
     const gl = canvas.getContext("webgl2", {
@@ -65,9 +67,17 @@ export class WebglDevice {
     return this.surfaces.size;
   }
 
-  surface(width: number, height: number, floating = false): WebglSurface {
-    const cached = this.pool.get(`${width}x${height}/${floating}`)?.pop();
+  surface(
+    width: number,
+    height: number,
+    floating = false,
+    opaque = false,
+  ): WebglSurface {
+    const cached = this.pool
+      .get(`${width}x${height}/${floating}/${opaque}`)
+      ?.pop();
     if (cached) {
+      this.pooledBytes -= width * height * (floating ? 16 : 4);
       this.clear(cached);
       return cached;
     }
@@ -116,16 +126,18 @@ export class WebglDevice {
       gl.deleteFramebuffer(framebuffer);
       throw new Error("comp-webgl-framebuffer: incomplete render surface");
     }
-    const surface = { width, height, floating, texture, framebuffer };
+    const surface = { width, height, floating, opaque, texture, framebuffer };
     this.surfaces.add(surface);
     this.clear(surface);
     return surface;
   }
 
   release(surface: WebglSurface) {
-    const key = `${surface.width}x${surface.height}/${surface.floating}`;
+    const key = `${surface.width}x${surface.height}/${surface.floating}/${surface.opaque}`;
     const list = this.pool.get(key) ?? [];
-    if (list.length < 16) {
+    const bytes = surface.width * surface.height * (surface.floating ? 16 : 4);
+    if (list.length < 16 && this.pooledBytes + bytes <= 128 * 1024 * 1024) {
+      this.pooledBytes += bytes;
       list.push(surface);
       this.pool.set(key, list);
     } else {
@@ -139,7 +151,12 @@ export class WebglDevice {
     const gl = this.gl,
       a = color[3]!;
     gl.bindFramebuffer(gl.FRAMEBUFFER, surface.framebuffer);
-    gl.clearColor(color[0]! * a, color[1]! * a, color[2]! * a, a);
+    gl.clearColor(
+      color[0]! * a,
+      color[1]! * a,
+      color[2]! * a,
+      surface.opaque ? 1 : a,
+    );
     gl.clear(gl.COLOR_BUFFER_BIT);
   }
 
@@ -147,6 +164,24 @@ export class WebglDevice {
     const gl = this.gl;
     gl.bindTexture(gl.TEXTURE_2D, surface.texture);
     gl.texSubImage2D(gl.TEXTURE_2D, 0, 0, 0, gl.RGBA, gl.UNSIGNED_BYTE, canvas);
+  }
+
+  uploadFloats(surface: WebglSurface, pixels: Float32Array<ArrayBuffer>) {
+    const gl = this.gl;
+    gl.bindTexture(gl.TEXTURE_2D, surface.texture);
+    gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, false);
+    gl.texSubImage2D(
+      gl.TEXTURE_2D,
+      0,
+      0,
+      0,
+      surface.width,
+      surface.height,
+      gl.RGBA,
+      gl.FLOAT,
+      pixels,
+    );
+    gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, true);
   }
 
   /** Fixed-size triangles cover every destination pixel exactly once. */
@@ -157,6 +192,10 @@ export class WebglDevice {
     uniforms: Record<string, UniformValue> = {},
   ) {
     const gl = this.gl;
+    if (target?.opaque && !gl.isEnabled(gl.BLEND))
+      body =
+        body.replace("void main()", "void shade()") +
+        "\nvoid main() { shade(); pixel.a = 1.0; }";
     let program = this.programs.get(body);
     if (!program) {
       const compile = (type: number, source: string) => {
@@ -194,6 +233,11 @@ export class WebglDevice {
           info.name,
           gl.getUniformLocation(handle, info.name)!,
         );
+      }
+      if (this.programs.size >= 64) {
+        const oldest = this.programs.keys().next().value!;
+        gl.deleteProgram(this.programs.get(oldest)!.handle);
+        this.programs.delete(oldest);
       }
       this.programs.set(body, program);
     }
@@ -279,6 +323,7 @@ export class WebglDevice {
     for (const program of this.programs.values())
       gl.deleteProgram(program.handle);
     gl.deleteVertexArray(this.vao);
+    this.pooledBytes = 0;
     this.surfaces.clear();
     this.pool.clear();
     this.programs.clear();
