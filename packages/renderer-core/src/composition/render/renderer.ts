@@ -8,14 +8,9 @@ import {
   type PassageDiagnostic,
 } from "../../passage-diagnostics.ts";
 import type { LoadedFont } from "../../prepared-fonts.ts";
-import {
-  compositionExposureFrames,
-  evaluateCompositionExposure,
-} from "../evaluate/exposure.ts";
 import type { Bounds } from "../evaluate/types.ts";
-import { executeGraph } from "./backend.ts";
 import { createCanvas2dBackend } from "./canvas2d.ts";
-import { buildRenderGraph } from "./graph.ts";
+import { renderCompositionExposure } from "./exposure.ts";
 import { loadCompositionFonts, prepareCompositionText } from "./text.ts";
 import { COMPOSITION_RENDERER_VERSION } from "./version.ts";
 import {
@@ -123,6 +118,8 @@ export type CompositionFrameReport = {
   diagnostics: PassageDiagnostic[];
   /** Layer keys skipped because their bounds miss their surface. */
   culled: string[];
+  /** Actual complete-frame renders; identical exposure graphs collapse to one. */
+  samples: number;
 };
 
 export type CompositionPreview = {
@@ -181,25 +178,9 @@ export function createCompositionPreview(
         frame >= composition.frameCount
       )
         throw new Error("Frame index outside composition timeline");
-      const samples = evaluateCompositionExposure(composition, frame, {
+      return renderCompositionExposure(backend, target, composition, frame, {
         textBounds: text.bounds,
       });
-      const diagnostics: PassageDiagnostic[] = [];
-      const culled = new Set<string>();
-      backend.accumulateExposure(
-        target,
-        compositionExposureFrames(composition, frame).length,
-        (index) => {
-          const tree = samples.next().value!;
-          const graph = buildRenderGraph(composition, tree, {
-            textBounds: text.bounds,
-          });
-          executeGraph(backend, graph, target);
-          if (index === 0) diagnostics.push(...tree.diagnostics);
-          graph.culled.forEach((key) => culled.add(key));
-        },
-      );
-      return { diagnostics, culled: [...culled] };
     },
     dispose() {
       backend.dispose();

@@ -16,6 +16,7 @@ export type CanvasProviderDrawer = (
   ctx: CanvasRenderingContext2D,
   time: number,
   state?: number,
+  sourceTime?: number,
 ) => void;
 export type CanvasContentProvider = {
   /** Versioned id, exactly as stored in the composition contract. */
@@ -113,6 +114,6 @@ export function prepareCompositionProviders(
         "Provider layer was not prepared",
         { path: content.key },
       );
-    draw(ctx, content.time, content.state);
+    draw(ctx, content.time, content.state, content.sourceTime);
   };
 }

@@ -614,6 +614,14 @@ describe("composition-1 fixtures", () => {
     ) as Composition;
     expect(validateComposition(typography).ok).toBe(true);
     allLayers.push(...typography.layers);
+    const indexed = JSON.parse(
+      readFileSync(
+        resolve(root, "benchmarks/fixtures/composition/ce7/indexed.json"),
+        "utf8",
+      ),
+    ) as Composition;
+    expect(validateComposition(indexed).ok).toBe(true);
+    allLayers.push(...indexed.layers);
     for (const option of layers.CompositionLayerSchema.options) {
       const type = option.shape.type.value;
       if (UNAVAILABLE_LAYER_TYPES[type]) continue;

@@ -127,6 +127,12 @@ const layerBase = {
       params: { diagnosticCode: "comp-schema-range" },
     })
     .optional(),
+  /** Baked samples: map layer-local time to an integer key/provider sample index. */
+  sampleTimes: z
+    .array(finite.min(-L.maxKeyFrame).max(L.maxKeyFrame))
+    .min(1)
+    .max(L.maxKeys)
+    .optional(),
   parent: compositionId.optional(),
   enabled: z.boolean().optional(),
   solo: z.boolean().optional(),

@@ -33,6 +33,8 @@ export type EvaluatedLayer = {
   id: string;
   layer: CompositionLayer;
   time: number;
+  /** Integer index into a layer's explicitly baked sample clock, when present. */
+  sampleIndex?: number;
   visible: boolean;
   /** Content visibility also excludes nulls, groups and matte sources. */
   drawable: boolean;

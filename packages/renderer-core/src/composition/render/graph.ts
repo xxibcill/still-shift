@@ -84,6 +84,8 @@ export type ProviderContent = {
   key: string;
   layer: Extract<CompositionLayer, { type: "provider" }>;
   time: number;
+  /** Authored source time for a provider with an explicit indexed sample clock. */
+  sourceTime?: number;
   state?: number;
   stateFrom?: number;
   stateMix?: number;
@@ -437,7 +439,10 @@ class GraphBuilder {
           type: "provider",
           key: frame.prefix ? `${scope.def.id}/${layer.id}` : layer.id,
           layer,
-          time: state.time,
+          time: state.sampleIndex ?? state.time,
+          ...(state.sampleIndex === undefined
+            ? {}
+            : { sourceTime: state.time }),
           ...(layer.state !== undefined || layer.stateFrom !== undefined
             ? { state: state.state! }
             : {}),

@@ -17,6 +17,7 @@ export function sampleEffects(
   layer: CompositionLayer,
   time: number,
   fps: number,
+  keyTime = time,
 ): EvaluatedEffect[] {
   return (layer.effects ?? []).map((effect) => {
     const definition = compositionEffectDefinition(effect.effect)!;
@@ -32,8 +33,8 @@ export function sampleEffects(
         Object.entries(definition.properties).map(([name, property]) => [
           name,
           property.type === "color"
-            ? color(effect.params?.[name] ?? property.default, time, fps)
-            : scalar(effect.params?.[name], time, fps, property.default),
+            ? color(effect.params?.[name] ?? property.default, keyTime, fps)
+            : scalar(effect.params?.[name], keyTime, fps, property.default),
         ]),
       ),
     };

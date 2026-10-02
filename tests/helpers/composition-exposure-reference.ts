@@ -131,7 +131,9 @@ export function checkExposureFrames() {
     let maxDelta = 0;
     const frames = [0, 1, 5, 9, 10, 19, 6, 10, 0];
     for (const frame of frames) {
-      preview.renderFrame(frame);
+      const report = preview.renderFrame(frame);
+      if (kind === "stationary" && report.samples !== 1)
+        throw new Error("Identical solid exposures must render once");
       const total = new Float32Array(128 * 96 * 4);
       for (let index = 0; index < 8; index++) {
         let t = Math.max(
@@ -267,6 +269,109 @@ export function measureExposureFrames() {
     results.push({ samples, width: 1920, height: 1080, medianMs: timings[2]! });
     preview.dispose();
     canvas.width = canvas.height = 0;
+  }
+  return results;
+}
+
+export function checkSampleClockFrames() {
+  const results = [];
+  for (const stationary of [false, true]) {
+    const times = stationary
+      ? [0]
+      : [
+          ...new Set(
+            Array.from({ length: 10 }, (_, frame) => [
+              Math.max(0, frame - 0.25),
+              Math.min(9, frame + 0.25),
+            ]).flat(),
+          ),
+        ].sort((a, b) => a - b);
+    const seen: [number, number | undefined][] = [];
+    const comp: Composition = {
+      schemaVersion: "composition-1",
+      id: "indexed",
+      width: 128,
+      height: 96,
+      fps: 30,
+      frameCount: 10,
+      assets: [],
+      background: "#26313b",
+      motionBlur: {
+        enabled: true,
+        shutterAngle: 360,
+        shutterPhase: 0,
+        samples: 2,
+      },
+      layers: [
+        {
+          id: "provider",
+          type: "provider",
+          provider: "test.clock@1.0.0",
+          params: {},
+          sampleTimes: times,
+          motionBlur: true,
+        },
+      ],
+    };
+    const actual = document.createElement("canvas"),
+      reference = document.createElement("canvas");
+    reference.width = 128;
+    reference.height = 96;
+    const ctx = reference.getContext("2d", { alpha: false })!;
+    const preview = createCompositionPreview(
+      actual,
+      comp,
+      { images: new Map(), fonts: new Map() },
+      {
+        providers: [
+          {
+            id: "test.clock@1.0.0",
+            prepare: () => (context, index, _state, sourceTime) => {
+              seen.push([index, sourceTime]);
+              if (sourceTime !== times[index])
+                throw new Error(
+                  "Provider source clock differs from sample table",
+                );
+              context.fillStyle = "#e98d67";
+              context.fillRect(5 + 4 * sourceTime!, 30, 25, 28);
+            },
+          },
+        ],
+      },
+    );
+    let maxDelta = 0;
+    const frames = [0, 5, 9, 2, 5];
+    for (const frame of frames) {
+      seen.length = 0;
+      const report = preview.renderFrame(frame);
+      if (stationary && (report.samples !== 1 || seen.length !== 1))
+        throw new Error("Identical sampled provider graphs must render once");
+      const sum = new Float32Array(128 * 96 * 4);
+      for (const time of stationary
+        ? [0, 0]
+        : [Math.max(0, frame - 0.25), Math.min(9, frame + 0.25)]) {
+        ctx.fillStyle = "#26313b";
+        ctx.fillRect(0, 0, 128, 96);
+        ctx.fillStyle = "#e98d67";
+        ctx.fillRect(5 + 4 * time, 30, 25, 28);
+        ctx.getImageData(0, 0, 128, 96).data.forEach((value, index) => {
+          sum[index] = sum[index]! + value;
+        });
+      }
+      const pixels = actual.getContext("2d")!.getImageData(0, 0, 128, 96).data;
+      pixels.forEach((value, index) => {
+        maxDelta = Math.max(
+          maxDelta,
+          Math.abs(value - Math.round(sum[index]! / 2)),
+        );
+      });
+    }
+    preview.dispose();
+    results.push({
+      id: `sample-clock/${stationary ? "stationary" : "moving"}`,
+      frames: frames.length,
+      maxDelta,
+    });
   }
   return results;
 }

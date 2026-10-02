@@ -1079,3 +1079,24 @@ glyph preparation includes exposure and echo samples within the existing budget.
 `comp-motion-blur-range` diagnoses reversed/out-of-range intervals and unordered,
 duplicate or out-of-range cut entries. The family motion-blur compiler is a
 separate follow-up; the native renderer never invokes a family evaluator.
+
+### Indexed sample clocks
+
+A layer may supply `sampleTimes`: 1–2,000 strictly increasing, finite times within
+±216,000 layer frames. The latest sample at or before the local clock is selected;
+times outside the table hold an endpoint. Animated properties retain integer key
+indices, evaluated at that selected index. The content clock is the corresponding
+source time. Visibility and effect activation retain the ordinary layer clock;
+effect parameter values, transforms, masks, states and colors use the sample index.
+Drivers and constraints still apply after these base properties are sampled.
+`comp-sample-time-order` identifies duplicate or descending sample times.
+
+Providers receive the selected index as their `time` argument and its source time
+as an optional fourth argument. Providers with procedural animation can use that
+source clock while indexing their baked data separately. Ordinary layers without
+`sampleTimes` retain their existing clocks. This permits bounded exposure baking
+without fractional authored keys or a source-family evaluator during rendering.
+
+Exposure rendering compares complete draw graphs using exact equality. When all
+samples have identical operations, it renders once; moving samples retain the
+fixed-order accumulation. The frame report's `samples` counts actual draws.

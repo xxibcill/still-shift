@@ -1980,6 +1980,21 @@ comparisons; the full `pnpm check`.
   local verification. This slice does not mark the broader CE7 time-control
   milestone complete. The active goal continues after the commit.
 
+### CE4b indexed exposure clocks (2026-10-02)
+
+- **Delivered:** evaluator `composition-evaluator-19` and Canvas renderer
+  `composition-canvas-1.20.0` support bounded layer `sampleTimes` tables. Integer
+  property keys index exact source samples; providers receive both clocks.
+  Activation windows retain source timing. All existing key, payload and time
+  limits remain in force. Exact equality of complete exposure graphs permits one
+  draw for proven stationary content, with bounded lookahead and no frame cache.
+- **Verification:** `pnpm check:fast` passes **1,216 unit tests**. The native exposure
+  suite passes **100 exact frames**, including indexed provider source clocks,
+  repeated/backward seeks, and single-draw stationary solids/providers. Both
+  60-frame native fixtures export twice with identical bytes.
+- **Remaining:** family exposure compilation, WebGL2 acceptance and final full
+  local verification. The active goal continues after the commit.
+
 **Completion record:** CE4a and CE4b are in progress; CE4c–CE4d have not started.
 
 ---

@@ -99,6 +99,14 @@ function checkLayer(
 ) {
   const inPoint = layer.inPoint ?? 0,
     outPoint = layer.outPoint ?? scope.frameCount;
+  layer.sampleTimes?.forEach((time, index) => {
+    if (index && time <= layer.sampleTimes![index - 1]!)
+      fail(
+        "comp-sample-time-order",
+        [...path, "sampleTimes", index],
+        "sample times must increase strictly",
+      );
+  });
   if (inPoint >= outPoint)
     fail(
       "comp-layer-time",

@@ -1,0 +1,44 @@
+{
+  "schemaVersion": "composition-1",
+  "id": "indexed-exposure",
+  "width": 320,
+  "height": 180,
+  "fps": 30,
+  "frameCount": 60,
+  "background": "#26313b",
+  "assets": [],
+  "motionBlur": {
+    "enabled": true,
+    "shutterAngle": 360,
+    "shutterPhase": 0,
+    "samples": 2
+  },
+  "layers": [
+    {
+      "id": "sampled",
+      "type": "solid",
+      "size": [50, 50],
+      "color": "#e98d67",
+      "motionBlur": true,
+      "sampleTimes": [0, 14.75, 15.25, 29.75, 30.25, 44.75, 45.25, 59],
+      "transform": {
+        "anchor": [0, 0],
+        "position": {
+          "x": {
+            "keys": [
+              { "frame": 0, "value": 20, "interpolation": "hold" },
+              { "frame": 1, "value": 70, "interpolation": "hold" },
+              { "frame": 2, "value": 90, "interpolation": "hold" },
+              { "frame": 3, "value": 130, "interpolation": "hold" },
+              { "frame": 4, "value": 150, "interpolation": "hold" },
+              { "frame": 5, "value": 200, "interpolation": "hold" },
+              { "frame": 6, "value": 220, "interpolation": "hold" },
+              { "frame": 7, "value": 250, "interpolation": "hold" }
+            ]
+          },
+          "y": 60
+        }
+      }
+    }
+  ]
+}

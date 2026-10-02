@@ -1,4 +1,5 @@
 export { COMPOSITION_RENDERER_VERSION } from "./version.ts";
+export { renderCompositionExposure } from "./exposure.ts";
 export {
   buildRenderGraph,
   type AdjustOp,

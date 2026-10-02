@@ -23,6 +23,7 @@ export const COMPOSITION_DIAGNOSTICS = {
   "comp-limit": "An array, string or record exceeds its size limit.",
   // Keys and animated values
   "comp-key-order": "Key frames are not strictly increasing.",
+  "comp-sample-time-order": "Baked sample times are not strictly increasing.",
   "comp-motion-blur-range":
     "The exposure interval or cut list is outside the composition or not increasing.",
   "comp-key-smooth": "A smooth key is the first or last key.",

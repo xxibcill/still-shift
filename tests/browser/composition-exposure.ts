@@ -21,8 +21,10 @@ try {
   await page.goto(server.resolvedUrls!.local[0]!);
   const results = await page.evaluate(async () => {
     const url = "/tests/helpers/composition-exposure-reference.ts";
-    const { checkExposureFrames } = (await import(url)) as typeof ExposureTests;
-    return checkExposureFrames();
+    const { checkExposureFrames, checkSampleClockFrames } = (await import(
+      url
+    )) as typeof ExposureTests;
+    return [...checkExposureFrames(), ...checkSampleClockFrames()];
   });
   for (const result of results)
     console.log("Native motion blur:", JSON.stringify(result));
@@ -45,22 +47,24 @@ try {
 
 const output = await mkdtemp(join(tmpdir(), "still-shift-exposure-"));
 try {
-  const compositionPath = resolve(
-    "benchmarks/fixtures/composition/ce7/exposure.json",
-  );
-  const first = await renderComposition({
-    compositionPath,
-    outputPath: join(output, "first.mp4"),
-  });
-  const second = await renderComposition({
-    compositionPath,
-    outputPath: join(output, "second.mp4"),
-  });
-  assert.equal(first.checksums.output, second.checksums.output);
-  assert.deepEqual(first.systemFontLayers, []);
-  console.log(
-    `Native motion blur export: ${first.frameCount} frames, two byte-identical MP4s`,
-  );
+  for (const fixture of ["exposure", "indexed"]) {
+    const compositionPath = resolve(
+      `benchmarks/fixtures/composition/ce7/${fixture}.json`,
+    );
+    const first = await renderComposition({
+      compositionPath,
+      outputPath: join(output, `${fixture}-first.mp4`),
+    });
+    const second = await renderComposition({
+      compositionPath,
+      outputPath: join(output, `${fixture}-second.mp4`),
+    });
+    assert.equal(first.checksums.output, second.checksums.output);
+    assert.deepEqual(first.systemFontLayers, []);
+    console.log(
+      `Native ${fixture} export: ${first.frameCount} frames, two byte-identical MP4s`,
+    );
+  }
 } finally {
   await rm(output, { recursive: true, force: true });
 }

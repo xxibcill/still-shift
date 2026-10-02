@@ -24,6 +24,7 @@ import {
 } from "./compile.ts";
 import { applyConstraints } from "./constraints.ts";
 import { cameraMatrix, sampleCamera } from "./camera.ts";
+import { compositionSampleIndex } from "./sample-clock.ts";
 import {
   identity,
   layerSize,
@@ -50,7 +51,7 @@ import type {
   PropertyValue,
 } from "./types.ts";
 
-export const COMPOSITION_EVALUATOR_VERSION = "composition-evaluator-18";
+export const COMPOSITION_EVALUATOR_VERSION = "composition-evaluator-19";
 const order = ["action", "response", "current", "carrier"] as const;
 type Context = {
   scope: CompositionScope;
@@ -144,7 +145,11 @@ function baseState(
   ctx: Context,
   layer: CompositionLayer,
 ): EvaluatedLayer {
-  const time = localTime(layer, ctx.time),
+  const sourceTime = localTime(layer, ctx.time),
+    sampleIndex = layer.sampleTimes
+      ? compositionSampleIndex(layer.sampleTimes, sourceTime)
+      : undefined,
+    time = sampleIndex ?? sourceTime,
     fps = ctx.fps,
     t = layer.transform;
   const size = layerSize(comp, ctx.scope, layer);
@@ -164,7 +169,9 @@ function baseState(
   const state: EvaluatedLayer = {
     id: layer.id,
     layer,
-    time,
+    time:
+      sampleIndex === undefined ? sourceTime : layer.sampleTimes![sampleIndex]!,
+    ...(sampleIndex === undefined ? {} : { sampleIndex }),
     visible,
     drawable: false,
     transform: {
@@ -182,7 +189,7 @@ function baseState(
     screenMatrix: identity(),
     opacity: 1,
     bounds: null,
-    effects: sampleEffects(layer, time, fps),
+    effects: sampleEffects(layer, sourceTime, fps, time),
     masks: (layer.masks ?? []).map((m) => ({
       ...m,
       path: samplePath(m.path, time, fps),
@@ -222,7 +229,7 @@ function baseState(
     state.timeRemap =
       layer.timeRemap !== undefined
         ? scalar(layer.timeRemap, time, fps)
-        : (time * (nested.fps ?? comp.fps)) / fps;
+        : (state.time * (nested.fps ?? comp.fps)) / fps;
   }
   return state;
 }
