@@ -883,3 +883,56 @@ export async function checkWebglDamageRecovery() {
     reference.dispose();
   }
 }
+
+export async function checkWebglPrimitiveRounding() {
+  const { createCompositionPreview } = await import(
+    "../../packages/renderer-core/src/composition/render/renderer.ts"
+  );
+  const colors = ["#e5e0d43d", "#46654066", "#ba74392a"];
+  const composition: Composition = {
+    schemaVersion: "composition-1",
+    id: "primitive-rounding",
+    width: 96,
+    height: 64,
+    fps: 30,
+    frameCount: 1,
+    background: "#f2ede3",
+    assets: [],
+    layers: Array.from({ length: 12 }, (_, index) => ({
+      id: `overlap-${index}`,
+      type: "solid" as const,
+      size: [56, 36] as [number, number],
+      color: colors[index % colors.length]!,
+      transform: {
+        anchor: [0, 0] as [number, number],
+        position: [8, 8] as [number, number],
+      },
+    })),
+  };
+  const resources = { images: new Map(), fonts: new Map() };
+  const canvas = document.createElement("canvas");
+  const gpu = createCompositionPreview(canvas, composition, resources, {
+    backend: "webgl2",
+  });
+  const reference = createCompositionPreview(
+    document.createElement("canvas"),
+    composition,
+    resources,
+  );
+  try {
+    gpu.renderFrame(0);
+    reference.renderFrame(0);
+    const actual = gpu.readPixels(),
+      expected = reference.readPixels();
+    assertFullGpuReadback(canvas, actual);
+    let maxDelta = 0;
+    for (let i = 0; i < actual.length; i++)
+      maxDelta = Math.max(maxDelta, Math.abs(actual[i]! - expected[i]!));
+    if (maxDelta > 1)
+      throw new Error(`Overlapping primitive rounding differs by ${maxDelta}`);
+    return maxDelta;
+  } finally {
+    gpu.dispose();
+    reference.dispose();
+  }
+}

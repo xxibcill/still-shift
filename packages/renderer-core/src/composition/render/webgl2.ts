@@ -1,3 +1,4 @@
+import { WebglPaint } from "./webgl-paint.ts";
 import { WebglDamage } from "./webgl-damage.ts";
 import { WebglReadback } from "./webgl-readback.ts";
 import { WebglVisualKey, type PreparedContentKey } from "./webgl-visual-key.ts";
@@ -21,7 +22,7 @@ import { WebglDevice, type WebglSurface } from "./webgl-device.ts";
 import { blendShader } from "./webgl-blend.ts";
 
 export const COMPOSITION_WEBGL_RENDERER_VERSION =
-  "composition-webgl2-0.10.0" as const;
+  "composition-webgl2-0.11.0" as const;
 const IDENTITY: Matrix = [1, 0, 0, 1, 0, 0];
 const COPY =
   "uniform float opacity; void main() { pixel = floor(floor(texture(source, uv) * 255.0 + 0.5) * (floor(opacity * 255.0 + 0.5) + 1.0) / 256.0) / 255.0; }";
@@ -87,7 +88,13 @@ export function createWebgl2Backend(
     readback.changed(region);
     if (!renderingFrame) damage.reset();
   };
-  const vectors = new WebglVectors(device, raster, keys, options.contentBounds);
+  const vectors = new WebglVectors(
+    device,
+    raster,
+    keys,
+    new WebglPaint(device, bounds),
+    options.contentBounds,
+  );
   const isolates = new WebglIsolates(keys, (surface) => {
     bounds.release(surface);
     device.release(surface);

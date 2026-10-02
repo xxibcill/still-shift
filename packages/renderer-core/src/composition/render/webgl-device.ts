@@ -54,6 +54,10 @@ export class WebglDevice {
     this.frameClip = region;
   }
 
+  drawRegion(surface: WebglSurface, clip: Bounds): Bounds | null {
+    return (surface.screen ? this.screenRegion(clip) : clip) ?? null;
+  }
+
   private screenRegion(clip?: Bounds | null): Bounds | null | undefined {
     const frame = this.frameClip;
     if (frame === null || clip === null) return null;
@@ -420,6 +424,32 @@ export class WebglDevice {
       second.framebuffer,
       first.framebuffer,
     ];
+  }
+
+  copyRegion(surface: WebglSurface, rect: Bounds) {
+    const width = rect.right - rect.left,
+      height = rect.bottom - rect.top;
+    const output = this.surface(width, height);
+    const gl = this.gl;
+    gl.bindFramebuffer(
+      gl.READ_FRAMEBUFFER,
+      surface.screen ? null : surface.framebuffer,
+    );
+    gl.bindFramebuffer(gl.DRAW_FRAMEBUFFER, output.framebuffer);
+    gl.blitFramebuffer(
+      rect.left,
+      surface.screen ? surface.height - rect.top : rect.top,
+      rect.right,
+      surface.screen ? surface.height - rect.bottom : rect.bottom,
+      0,
+      0,
+      width,
+      height,
+      gl.COLOR_BUFFER_BIT,
+      gl.NEAREST,
+    );
+    gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+    return output;
   }
 
   read(surface: WebglSurface) {

@@ -1,4 +1,9 @@
-import { vectorRegions, unionBounds } from "./webgl-vector-regions.ts";
+import type { WebglPaint } from "./webgl-paint.ts";
+import {
+  vectorRegions,
+  boundsOverlap,
+  unionBounds,
+} from "./webgl-vector-regions.ts";
 import type { Canvas2dBackend } from "./canvas2d.ts";
 import type { Bounds } from "../evaluate/types.ts";
 import type { ProviderContent, TextContent } from "./graph.ts";
@@ -8,7 +13,7 @@ import type { WebglVisualKey } from "./webgl-visual-key.ts";
 
 type Raster = { key: string; surface: WebglSurface; rect: Bounds };
 
-/** Prepare adjacent vector content once, preserving coverage rounding within a batch. */
+/** Cache local vector coverage; retain per-primitive rounding where artwork overlaps. */
 export class WebglVectors {
   private readonly cached = new Map<string, Raster>();
   private bytes = 0;
@@ -17,6 +22,7 @@ export class WebglVectors {
     private readonly device: WebglDevice,
     private readonly raster: Canvas2dBackend,
     private readonly keys: WebglVisualKey,
+    private readonly paintOver: WebglPaint,
     private readonly contentBounds?: (
       content: ProviderContent | TextContent,
     ) => Bounds | undefined,
@@ -111,16 +117,30 @@ export class WebglVectors {
   }
 
   draw(dst: WebglSurface, ops: VectorDraw[]): Bounds | null {
+    const boxes = ops.map((op) => this.extent([op], dst));
+    const backdrop = this.paintOver.hasBackdrop(dst);
     let painted: Bounds | null = null;
-    for (const region of vectorRegions(
-      ops.map((op) => this.extent([op], dst)),
-    )) {
+    const draw = (indices: number[], region: Bounds) => {
       const bounds = this.drawBatch(
         dst,
-        region.indices.map((index) => ops[index]!),
-        region.bounds,
+        indices.map((index) => ops[index]!),
+        region,
       );
       if (bounds) painted = painted ? unionBounds(painted, bounds) : bounds;
+    };
+    for (const region of vectorRegions(boxes)) {
+      const overlap =
+        backdrop &&
+        region.indices.some((index, position) =>
+          region.indices
+            .slice(position + 1)
+            .some((other) => boundsOverlap(boxes[index]!, boxes[other]!)),
+        );
+      // Rounding source-over is not associative. Overlapping primitives must
+      // reach the actual GPU backdrop individually, in their original order.
+      if (overlap)
+        for (const index of region.indices) draw([index], boxes[index]!);
+      else draw(region.indices, region.bounds);
     }
     return painted;
   }
@@ -155,21 +175,9 @@ export class WebglVectors {
       this.cached.set(id, entry);
     }
     const { surface, rect } = entry;
-    const gl = this.device.gl;
-    gl.enable(gl.BLEND);
-    gl.blendEquation(gl.FUNC_ADD);
-    gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
     try {
-      this.device.pass(
-        `uniform vec2 origin; void main() {pixel=texelFetch(source,ivec2(gl_FragCoord.xy-origin),0);}`,
-        dst,
-        [surface],
-        { origin: [rect.left, rect.top] },
-        true,
-        rect,
-      );
+      this.paintOver.draw(surface, dst, rect);
     } finally {
-      gl.disable(gl.BLEND);
       if (!retained) this.device.release(surface);
     }
     return rect;

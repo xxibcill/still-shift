@@ -2256,6 +2256,24 @@ comparisons; the full `pnpm check`.
   passes all 300 frames with maximum delta 1 and paired median **1.1749×**.
   Full CE4b acceptance and final local/frozen-baseline verification remain open.
 
+### CE4b primitive source-over rounding (2026-10-03)
+
+- **Version:** `composition-webgl2-0.11.0` composites prepared vectors with integer
+  source-over rounding in GPU shaders. Overlapping primitives reach an existing
+  backdrop individually, in source order. Empty transparent surfaces retain their
+  original batched preparation, preserving echo antialiasing. Canvas framebuffer
+  snapshots are restricted to the painted region; transparent intermediates copy
+  only their conservative occupied extent through the compositing shader.
+- **Verification:** native GPU parity, exact full-framebuffer checks, all 4,096
+  arithmetic cases, 204 export/Lab frames and 1,236 unit tests pass. A new twelve
+  overlapping translucent primitive regression is pixel-exact. All 192 detail-
+  sequence frames now pass the pixel tier (maximum delta 2); spatial-morph's 192
+  frames improve from delta 3 to **1**. Bracket improves to delta **1** with timing
+  **3.2128×**. Detail-sequence timing remains **3.9251×**.
+- **Remaining:** plain morph retains two delta-3 frames; unknown provider bounds
+  cause large snapshot costs (morph **9.7052×**). Primitive-blur parity, remaining
+  family gates and final local/frozen-baseline checks are still required.
+
 **Completion record:** CE4a and CE4b are in progress; CE4c–CE4d have not started.
 
 ---

@@ -8,7 +8,7 @@ export const unionBounds = (a: Bounds, b: Bounds): Bounds => ({
   right: Math.max(a.right, b.right),
   bottom: Math.max(a.bottom, b.bottom),
 });
-const overlaps = (a: Bounds, b: Bounds) =>
+export const boundsOverlap = (a: Bounds, b: Bounds) =>
   a.left <= b.right &&
   b.left <= a.right &&
   a.top <= b.bottom &&
@@ -27,7 +27,7 @@ export function vectorRegions(boxes: Bounds[]): Region[] {
     // A merged rectangle can reach an earlier region that neither original box touched.
     for (let i = 0; i < regions.length; ) {
       const other = regions[i]!;
-      if (!overlaps(next.bounds, other.bounds)) {
+      if (!boundsOverlap(next.bounds, other.bounds)) {
         i++;
         continue;
       }
