@@ -2020,6 +2020,21 @@ comparisons; the full `pnpm check`.
   the **63 reusable combinations**, now have Canvas adapter coverage. WebGL2
   acceptance and final full local verification remain; the goal continues.
 
+### CE4b WebGL2 surface foundation (2026-10-02)
+
+- **Delivered:** an independent WebGL2 backend with pooled RGBA8 textures/FBOs,
+  premultiplied compositing, all 17 blend modes, transformed surfaces, shader luma
+  mattes, masked/adjustment coverage and fixed-order RGBA32F exposure accumulation.
+  Individual primitives use the prepared Canvas rasterizers; complete composition
+  surfaces and their blending remain GPU-owned. No complete-frame Canvas renderer
+  is wrapped or uploaded. Canvas remains the default runtime.
+- **Verification:** `pnpm test:browser:composition-webgl` compares blend, overlap,
+  image, matte, mask, affine surface, adjustment and 2/8/32/64-sample exposure cases
+  against Canvas on pinned SwiftShader: **33 cases**, maximum delta ≤ **2** and
+  PSNR ≥ **52.3277 dB**. `pnpm check:fast` passes **1,220 unit tests**. Surface
+  pooling is bounded across repeated acquisitions. Pixel-effect kernels and preview/export selection remain the next
+  slice; unsupported pixel effects fail explicitly in this internal backend.
+
 **Completion record:** CE4a and CE4b are in progress; CE4c–CE4d have not started.
 
 ---
