@@ -17,7 +17,7 @@ import { passageError, PassageError } from "../../passage-diagnostics.ts";
 import { params, preparedNodeLayer, trimSettledSamples } from "./prepared.ts";
 import { compileCommercePathGeometry } from "./commerce-path.ts";
 
-export const COMMERCE_ADAPTER_VERSION = "commerce-composition-0.3.0";
+export const COMMERCE_ADAPTER_VERSION = "commerce-composition-0.4.0";
 
 function unsupported(path: string, feature: string): never {
   return passageError(
@@ -36,7 +36,7 @@ function checkSupported(scene: CommerceScene) {
     );
   if (scene.motionModel) unsupported("motionModel", "Motion-craft scenes");
   if (scene.typography) unsupported("typography", "Typography scenes");
-  for (const field of ["textAnimators", "mattes"] as const)
+  for (const field of ["textAnimators"] as const)
     if (scene[field]?.length) unsupported(field, field);
   scene.textFits?.forEach((fit, index) => {
     if (fit.panel)
@@ -50,7 +50,6 @@ function checkSupported(scene: CommerceScene) {
       );
   });
   const components = componentCapabilities(scene.componentData);
-  if (components.masks.length) unsupported("componentData.masks", "masks");
   scene.nodes.forEach((node, index) => {
     const path = `nodes[${index}]`;
     if (
@@ -173,6 +172,16 @@ export function commerceToComposition(
     }
   };
   visit(undefined);
+  for (const mask of [
+    ...(scene.mattes ?? []),
+    ...componentCapabilities(scene.componentData).masks,
+  ]) {
+    const target = layers.find((layer) => layer.id === mask.target)!;
+    target.trackMatte = {
+      layer: mask.mask,
+      mode: mask.invert ? "alpha-inverted" : "alpha",
+    };
+  }
   const composition: Composition = {
     schemaVersion: "composition-1",
     id: options.id ?? "commerce-adapter",

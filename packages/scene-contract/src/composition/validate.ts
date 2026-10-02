@@ -508,11 +508,34 @@ function checkParents(
         `parent chains may be at most ${L.maxParentDepth} deep`,
       );
   });
+  const sources = new Set(
+    scope.layers.flatMap((layer) =>
+      layer.trackMatte ? [layer.trackMatte.layer] : [],
+    ),
+  );
+  const children = new Map<string, string[]>();
+  for (const layer of scope.layers) {
+    if (sources.has(layer.id)) continue;
+    const visited = new Set<string>();
+    for (
+      let parent = layer.parent;
+      parent && !visited.has(parent);
+      parent = byId.get(parent)?.parent
+    ) {
+      visited.add(parent);
+      if (byId.get(parent)?.type !== "group") continue;
+      const siblings = children.get(parent) ?? [];
+      siblings.push(layer.id);
+      children.set(parent, siblings);
+      break;
+    }
+  }
   scope.layers.forEach((layer, i) => {
-    const seen = new Set([layer.id]);
-    let matte = layer.trackMatte?.layer;
-    while (matte && byId.has(matte)) {
-      if (seen.has(matte)) {
+    const seen = new Set<string>();
+    const pending = layer.trackMatte ? [layer.trackMatte.layer] : [];
+    while (pending.length) {
+      const id = pending.pop()!;
+      if (id === layer.id) {
         fail(
           "comp-matte-cycle",
           [...base, "layers", i, "trackMatte"],
@@ -520,8 +543,11 @@ function checkParents(
         );
         return;
       }
-      seen.add(matte);
-      matte = byId.get(matte)!.trackMatte?.layer;
+      if (seen.has(id)) continue;
+      seen.add(id);
+      const matte = byId.get(id)?.trackMatte?.layer;
+      if (matte) pending.push(matte);
+      pending.push(...(children.get(id) ?? []));
     }
   });
 }

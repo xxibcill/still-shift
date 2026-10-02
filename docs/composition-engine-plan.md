@@ -1278,6 +1278,8 @@ General rules for all adapters:
       numeric text through a versioned measured-text provider.
 - [x] Bake commerce attached paths and component annotations, retaining crop and
       protected-region validation.
+- [x] Translate native mattes and reusable-component masks to alpha track mattes,
+      including grouped targets and grouped sources.
 
 - [ ] Map commerce layout, product layers, shadows, floating, detail windows, paths,
       text fits, component state/travel/pin/values/visibility/masks.
@@ -1527,6 +1529,37 @@ comparisons; the full `pnpm check`.
   drawable parents, reusable story contexts and passages. Full effects/two-backend
   acceptance still requires CE6; motion blur requires CE7. Family defaults remain
   unchanged, and CE4b remains in progress.
+
+### CE4b masks and mattes follow-up (2026-10-02)
+
+- **Delivered:** native commerce mattes and reusable-component masks compile to
+  alpha/inverted-alpha track mattes. The shared render graph isolates grouped
+  targets after drawing their children with inherited per-child opacity; grouped
+  sources contribute their complete alpha subtree without appearing in the outer
+  scope. Sources can be shared, and their visibility windows still apply.
+- **Graph correctness:** group bounds do not cull overflowing descendants; disabled
+  or non-soloed group matte sources retain their enabled children. Validation
+  rejects matte feedback through descendants, while allowing a hidden descendant
+  to provide its group's matte.
+- **Versions:** commerce adapter `commerce-composition-0.4.0`, evaluator
+  `composition-evaluator-10`, Canvas renderer `composition-canvas-1.6.0`.
+- **Coverage:** the native matte atom plus commerce/isolated mask and detail-sequence
+  fixtures join the adapter suite. Two derived cases cover overlapping translucent
+  children, inversion, shared grouped sources, rotation, clipping and visibility.
+  All **72 cases / 15,336 frames are pixel-exact** (65 CE0 fixtures and seven derived
+  variants), with reverse state checks, backward seeks and the unchanged 1.25×
+  render/readback gate (worst median **1.2254×**, Text atom). All 36 preparation
+  checks pass. Text-fit, value, leader, attachment, matte and mask fixtures
+  each produce two byte-identical MP4s after JSON relocation; pinned assets and
+  overwrite protection pass.
+- **Slice verification:** `pnpm check:fast` (**1,130 unit tests**), composition evaluator/browser tests
+  and the expanded commerce adapter suite. The full `pnpm check` and baseline
+  matrix will run again for final CE4b acceptance. Legacy renderer versions,
+  baselines, timing methods and tolerances are unchanged.
+- **Remaining:** fitted panels, drawable parents, typography/text animation,
+  motion-craft, remaining reusable contexts/passages and CE6/CE7 dependencies.
+  The user's full-CE4b goal remains active; each verified slice is committed
+  separately on `codex/composition-ce4b`.
 
 **Completion record:** CE4a and CE4b are in progress; CE4c–CE4d have not started.
 

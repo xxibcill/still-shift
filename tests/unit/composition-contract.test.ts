@@ -74,6 +74,44 @@ const expectDiagnostic = (
     }),
   );
 
+describe("group matte dependencies", () => {
+  it("rejects alpha feedback through a group's descendants", () => {
+    const doc = minimalComposition();
+    doc.layers = [
+      { id: "group", type: "group", size: [100, 100] },
+      {
+        id: "child",
+        type: "solid",
+        parent: "group",
+        size: [20, 20],
+        color: "#ffffff",
+        trackMatte: { layer: "group", mode: "alpha" },
+      },
+    ];
+    expectDiagnostic(errors(doc), "comp-matte-cycle", "layers[1].trackMatte");
+  });
+
+  it("allows a group to use a hidden descendant as its matte", () => {
+    const doc = minimalComposition();
+    doc.layers = [
+      {
+        id: "group",
+        type: "group",
+        size: [100, 100],
+        trackMatte: { layer: "child", mode: "alpha" },
+      },
+      {
+        id: "child",
+        type: "solid",
+        parent: "group",
+        size: [20, 20],
+        color: "#ffffff",
+      },
+    ];
+    expect(validateComposition(doc).ok).toBe(true);
+  });
+});
+
 describe("composition-1 text style references", () => {
   it.each(["constructor", "toString"])(
     "rejects undeclared inherited style %s on layers and spans",

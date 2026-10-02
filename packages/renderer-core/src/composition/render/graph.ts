@@ -155,6 +155,10 @@ type Scope = {
   tree: EvaluatedLayerTree;
   def: CompositionScope;
   byId: Map<string, EvaluatedLayer>;
+  matteSources: Set<string>;
+  containers: Set<string>;
+  /** Nearest group whose children must paint together, rather than in the outer scope. */
+  owners: Map<string, string>;
 };
 
 const IDENTITY: Matrix = [1, 0, 0, 1, 0, 0];
@@ -209,12 +213,55 @@ class GraphBuilder {
       tree,
       def,
       byId: new Map(tree.layers.map((s) => [s.id, s])),
+      matteSources: new Set(
+        def.layers.flatMap((layer) =>
+          layer.trackMatte ? [layer.trackMatte.layer] : [],
+        ),
+      ),
+      owners: new Map(),
+      containers: new Set(),
     };
+    const containers = (scope.containers = new Set(
+      def.layers
+        .filter(
+          (layer) =>
+            layer.type === "group" &&
+            (scope.matteSources.has(layer.id) ||
+              layer.trackMatte ||
+              layer.masks?.length ||
+              (layer.blendMode && layer.blendMode !== "normal")),
+        )
+        .map((layer) => layer.id),
+    ));
+    if (containers.size)
+      for (const layer of def.layers) {
+        for (
+          let parent = layer.parent;
+          parent;
+          parent = scope.byId.get(parent)!.layer.parent
+        ) {
+          if (containers.has(parent)) {
+            scope.owners.set(layer.id, parent);
+            break;
+          }
+        }
+      }
+    return this.scopeLayers(scope, frame);
+  }
+
+  private scopeLayers(scope: Scope, frame: Frame, owner?: string): RenderOp[] {
     const ops: RenderOp[] = [];
     // layers[0] is the top layer, so paint from the end of the list.
-    for (let i = tree.layers.length - 1; i >= 0; i--) {
-      const state = tree.layers[i]!;
-      if (state.drawable) ops.push(...this.layerOps(scope, state, frame));
+    for (let i = scope.tree.layers.length - 1; i >= 0; i--) {
+      const state = scope.tree.layers[i]!;
+      if (scope.owners.get(state.id) !== owner) continue;
+      if (
+        state.drawable ||
+        (state.visible &&
+          scope.containers.has(state.id) &&
+          !scope.matteSources.has(state.id))
+      )
+        ops.push(...this.layerOps(scope, state, frame));
     }
     return ops;
   }
@@ -407,6 +454,7 @@ class GraphBuilder {
     if (opacity <= 0) return [];
     if (
       options.cull !== false &&
+      layer.type !== "group" &&
       !(layer.type === "precomp" && layer.collapseTransforms) &&
       state.bounds &&
       boundsMiss(state.bounds, frame.matrix, frame)
@@ -438,7 +486,23 @@ class GraphBuilder {
     }
     const isolated = blend !== "normal" || masks.length > 0 || matte !== null;
     let ops: RenderOp[];
-    if (layer.type === "precomp" && layer.collapseTransforms) {
+    if (layer.type === "group") {
+      // Group opacity is already inherited by each child, including overlapping ones.
+      ops = this.scopeLayers(scope, frame, layer.id);
+      if (!isolated) return ops;
+      return [
+        {
+          kind: "isolate",
+          layer: key,
+          ops,
+          masks,
+          matte,
+          opacity: 1,
+          blend,
+          clips: [],
+        },
+      ];
+    } else if (layer.type === "precomp" && layer.collapseTransforms) {
       // Collapsed layers keep their own blend modes and land in this surface.
       ops = state.precomp
         ? this.scopeOps(state.precomp, this.precomp(layer.comp), {

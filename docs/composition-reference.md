@@ -173,7 +173,8 @@ the Canvas 2D backend is the reference and CE6 adds WebGL2 behind the same inter
   non-`normal` blend mode, a mask, or a track matte. Isolated content draws at full
   opacity into a scope-sized surface; masks, then the matte, multiply it, and the
   layer's opacity and blend mode apply when it composites back.
-- Nulls, groups, invisible layers and matte sources do not draw. Layers with zero
+- Nulls and groups have no paint of their own; invisible layers and matte sources
+  do not draw in the outer scope. Layers with zero
   effective opacity are skipped. Layers whose screen bounds miss their surface are
   culled and listed in `renderFrame(...).culled`; text bounds come from the text
   module below.
@@ -231,6 +232,11 @@ and rounds sharp concave corners. Open paths close with their last segment.
   `background` is not drawn. With a mask, matte or blend mode on the host, the
   collapsed layers render together into one isolated surface first.
 - A `group` with `clip: true` clips every descendant to its `size` box.
+  A mask, track matte or non-normal blend isolates its descendants together while
+  preserving group opacity on each child. Group matte sources contribute their
+  whole subtree, hidden from the outer scope; their enable/solo switches do not
+  hide the matte, but their in/out window still applies. Validation rejects matte
+  feedback through group descendants.
 - An `adjustment` layer re-composites what is below it in its scope within its `size`
   box (default: the scope size), masks and matte: with coverage `k = opacity ×
 region`, the result is `below·(1 − k) + adjusted·k`. Until effects arrive (CE6),
@@ -358,6 +364,10 @@ checks run before baking. Hidden paths retain placeholder geometry without
 evaluating invisible transforms; settled geometry holds its final sample. The
 provider draws the baked points with the existing stroke/reveal implementation.
 
+Native commerce mattes and component masks become alpha or inverted-alpha track
+mattes. Group targets composite their children before masking; group sources
+preserve overlapping alpha and can be shared by multiple targets.
+
 Commerce events, drift, parallax and overshoot are baked at integer frames, along
 with component state/travel/pin/value/visibility behavior. Image state
 ramps retain their state and blend keys. Registration, claims and other source
@@ -365,7 +375,7 @@ metadata remain in `metadata.commerce`. Like the story slice, this compiler acce
 at most 2,000 frames, holds between integer samples, and bounds provider payloads
 to 64 KiB. Rendering never calls the commerce evaluator.
 
-Pixel effects, motion blur, masks/mattes, fitted panel
+Pixel effects, motion blur, fitted panel
 geometry, blended text states, typography, motion-craft and parenting
 to drawable nodes currently return `comp-adapter-unsupported` with a source path.
 Effects parity requires CE6, and full CE4b fixture acceptance remains open. Existing

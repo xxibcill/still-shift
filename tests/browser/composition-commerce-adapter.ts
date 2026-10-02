@@ -19,6 +19,7 @@ import { assertCompositionAdapterState } from "../helpers/composition-adapter-st
 import { commerceTextVariants } from "../helpers/composition-commerce-text.ts";
 import type * as CommerceTextTests from "../helpers/composition-commerce-text.ts";
 import { commerceGeometryVariants } from "../helpers/composition-commerce-geometry.ts";
+import { commerceMaskVariants } from "../helpers/composition-commerce-masks.ts";
 
 const root = resolve(import.meta.dirname, "../..");
 const inventory = JSON.parse(
@@ -54,6 +55,7 @@ const accepted = new Set(
       "fade",
       "float",
       "introduction",
+      "matte",
       "overshoot",
       "panel",
       "parallax",
@@ -71,9 +73,11 @@ const accepted = new Set(
 for (const context of ["commerce", "isolated"])
   for (const name of [
     "bracket",
+    "detail-sequence",
     "instances",
     "layout",
     "leader",
+    "mask",
     "outline",
     "pin",
     "sequence",
@@ -116,6 +120,7 @@ try {
       { id: entry.id, scene: source },
       ...commerceTextVariants(entry.id, source),
       ...commerceGeometryVariants(entry.id, source),
+      ...commerceMaskVariants(entry.id, source),
     ];
     for (const item of inputs) {
       const input = CommerceSceneSchema.parse(item.scene);
@@ -326,13 +331,20 @@ try {
     `CE4b commerce parity: ${totalItems} items, ${totalFrames} frames`,
   );
   if (only < 0)
-    for (const name of ["text-fit", "value", "leader", "attachment"]) {
+    for (const name of [
+      "text-fit",
+      "value",
+      "leader",
+      "attachment",
+      "matte",
+      "mask",
+    ]) {
       const directory = await mkdtemp(join(tmpdir(), "still-shift-ce4b-"));
       try {
         const sourcePath = resolve(
           root,
-          name === "attachment"
-            ? "benchmarks/fixtures/ecommerce-motion/atoms/attachment.json"
+          name === "attachment" || name === "matte"
+            ? `benchmarks/fixtures/ecommerce-motion/atoms/${name}.json`
             : `benchmarks/fixtures/reusable-components/commerce-${name}.json`,
         );
         const compositionPath = join(directory, "composition.json");
