@@ -1955,6 +1955,31 @@ comparisons; the full `pnpm check`.
 - **Remaining:** motion blur, WebGL2 acceptance and final full local verification.
   The active goal continues after this slice's commit.
 
+### CE4b native exposure dependency (2026-10-02)
+
+- **Delivered:** evaluator `composition-evaluator-18` and Canvas renderer
+  `composition-canvas-1.19.0` implement deterministic native motion blur, with
+  0–720 degree shutters, phase, 2–64 samples and per-layer opt-in. Groups/precomps
+  pass their switch to descendants; child opt-out holds the complete pose.
+  Full opaque frames accumulate in fixed order, preserving moving transparency.
+  Visibility, content, activation and explicit shot cuts clamp exposures; nested
+  clocks clamp independently. One Float32 buffer bounds accumulation memory.
+- **Verification:** `pnpm check:fast` passes **1,213 unit tests**, including
+  analytic velocity/shutter span and scoped sampling. **90 native reference frames
+  match exactly**, covering occlusion, opt-out, stationary content, phase, cuts,
+  clipped groups, precomps, collapse, frozen clocks and echo. The 60-frame native
+  fixture exports twice with identical bytes. The full native composition browser
+  suite passes, including fractional animated glyph/echo cache preparation and
+  backward seeks, transport parity and failure cleanup.
+- **Cost:** pinned software Chromium, 1920×1080, warmed median render + readback
+  over five frames: disabled **0.9 ms**, 2 samples **30.2 ms**, 8 **100.3 ms**,
+  16 **190.8 ms**, 32 **364.1 ms**, 64 **734.7 ms**. The optional
+  `pnpm test:browser:composition-exposure --profile` repeats these measurements.
+  These are reference-backend costs, not a real-time performance claim.
+- **Remaining:** family exposure compilation, WebGL2 acceptance and final full
+  local verification. This slice does not mark the broader CE7 time-control
+  milestone complete. The active goal continues after the commit.
+
 **Completion record:** CE4a and CE4b are in progress; CE4c–CE4d have not started.
 
 ---
@@ -2068,7 +2093,7 @@ tests, backend parity suite, repeated-export determinism test.
 **Outcome:** Motion reads as filmed rather than stepped, and time can be manipulated as
 in AE.
 
-- [ ] Composition-level motion blur (shutter angle 0–720, phase, 2–64 samples) with
+- [x] Composition-level motion blur (shutter angle 0–720, phase, 2–64 samples) with
       per-layer opt-in, evaluated by deterministic subframe sampling of the evaluator
       and accumulation on the backend.
 - [ ] Adaptive sample count by screen-space velocity (cap by setting) — optional, must

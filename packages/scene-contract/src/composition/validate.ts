@@ -121,7 +121,6 @@ function checkLayer(
   const missingType = UNAVAILABLE_LAYER_TYPES[layer.type];
   if (missingType) unavailable(["type"], `${layer.type} layers`, missingType);
   if (layer.threeD) unavailable(["threeD"], "3D layers", "CE8");
-  if (layer.motionBlur) unavailable(["motionBlur"], "motion blur", "CE7");
   layer.effects?.forEach((effect, index) => {
     const at = [...path, "effects", index];
     const definition = compositionEffectDefinition(effect.effect);
@@ -997,12 +996,29 @@ export function validateCompositionSemantics(
         );
     });
   }
-  if (comp.motionBlur?.enabled)
-    fail(
-      "comp-feature-unavailable",
-      ["motionBlur"],
-      "motion blur is not available until CE7",
-    );
+  if (comp.motionBlur) {
+    const blur = comp.motionBlur;
+    if (
+      (blur.inPoint ?? 0) >= (blur.outPoint ?? comp.frameCount) ||
+      (blur.outPoint ?? comp.frameCount) > comp.frameCount
+    )
+      fail(
+        "comp-motion-blur-range",
+        ["motionBlur"],
+        "motion blur requires an increasing interval inside the composition",
+      );
+    blur.cuts?.forEach((cut, index) => {
+      if (
+        cut >= comp.frameCount ||
+        (index > 0 && cut <= blur.cuts![index - 1]!)
+      )
+        fail(
+          "comp-motion-blur-range",
+          ["motionBlur", "cuts", index],
+          "exposure cuts must increase strictly inside the composition",
+        );
+    });
+  }
   if (comp.colorSpace === "linear-srgb")
     fail(
       "comp-feature-unavailable",

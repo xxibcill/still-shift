@@ -177,6 +177,9 @@ describe("render graph", () => {
         applyEffects: () => {},
         lerp: () => {},
         readPixels: () => new Uint8ClampedArray(),
+        accumulateExposure: () => {
+          throw new Error("No exposure in this graph test");
+        },
         ...(batching
           ? {
               fillRects: (_dst: Surface, ops: SolidDraw[]) => {

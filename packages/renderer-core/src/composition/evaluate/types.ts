@@ -54,6 +54,8 @@ export type EvaluatedLayer = {
   text?: string;
   timeRemap?: number;
   precomp?: EvaluatedLayerTree;
+  /** The unmixed scope used by this layer's exposure sample. */
+  exposure?: { tree: EvaluatedLayerTree; rootTime: number };
 };
 
 export type EvaluatedLayerTree = {

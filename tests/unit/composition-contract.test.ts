@@ -1120,9 +1120,9 @@ const invalid: Mutation[] = [
     "expressions",
   ],
   [
-    "motion blur",
-    (d) => set(d.motionBlur!, { enabled: true }),
-    "comp-feature-unavailable",
+    "motion blur interval",
+    (d) => set(d.motionBlur!, { enabled: true, inPoint: 10, outPoint: 5 }),
+    "comp-motion-blur-range",
     "motionBlur",
   ],
   [

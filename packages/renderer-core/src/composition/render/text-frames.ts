@@ -2,7 +2,7 @@ import type {
   Composition,
   CompositionScope,
 } from "@still-shift/scene-contract";
-import { evaluateComp } from "../evaluate/evaluate.ts";
+import { evaluateCompositionExposure } from "../evaluate/exposure.ts";
 import type { Bounds, EvaluatedLayerTree } from "../evaluate/types.ts";
 import { buildRenderGraph, type RenderOp } from "./graph.ts";
 
@@ -68,12 +68,15 @@ export function collectCompositionTextFrames(
     }
   };
   for (let frame = 0; frame < comp.frameCount; frame++) {
-    const tree = evaluateComp(comp, frame, { textBounds });
-    visit(tree, comp, "");
-    if (hasHistory)
-      visitOps(
-        buildRenderGraph(comp, tree, { textBounds, cull: false }).root.ops,
-      );
+    for (const tree of evaluateCompositionExposure(comp, frame, {
+      textBounds,
+    })) {
+      visit(tree, comp, "");
+      if (hasHistory)
+        visitOps(
+          buildRenderGraph(comp, tree, { textBounds, cull: false }).root.ops,
+        );
+    }
   }
   return Object.fromEntries(
     [...samples].map(([key, frames]) => [

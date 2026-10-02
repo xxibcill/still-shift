@@ -1,0 +1,199 @@
+import { describe, expect, it } from "vitest";
+import {
+  validateComposition,
+  type Composition,
+} from "@still-shift/scene-contract";
+import {
+  compositionExposureFrames,
+  evaluateCompositionExposure,
+} from "../../packages/renderer-core/src/composition/evaluate/exposure.ts";
+import {
+  buildRenderGraph,
+  type DrawOp,
+} from "../../packages/renderer-core/src/composition/render/graph.ts";
+
+const fixture = (): Composition => ({
+  schemaVersion: "composition-1",
+  id: "exposure",
+  width: 160,
+  height: 100,
+  fps: 30,
+  frameCount: 30,
+  assets: [],
+  motionBlur: { enabled: true, shutterAngle: 360, shutterPhase: 0, samples: 4 },
+  layers: [
+    {
+      id: "moving",
+      type: "solid",
+      size: [10, 10],
+      color: "#ffffff",
+      motionBlur: true,
+      transform: {
+        anchor: [0, 0],
+        position: {
+          x: {
+            keys: [
+              { frame: 0, value: 0 },
+              { frame: 29, value: 116, interpolation: "linear" },
+            ],
+          },
+          y: 10,
+        },
+      },
+    },
+  ],
+});
+const samples = (comp: Composition, frame = 10) => [
+  ...evaluateCompositionExposure(structuredClone(comp), frame),
+];
+
+describe("composition exposure sampling", () => {
+  it("spans velocity times shutter width with midpoint endpoints", () => {
+    for (const angle of [0, 90, 180, 360, 720]) {
+      const comp = fixture();
+      comp.motionBlur!.shutterAngle = angle;
+      const x = samples(comp).map((tree) => tree.layers[0]!.screenMatrix[4]);
+      expect(Math.max(...x) - Math.min(...x)).toBeCloseTo(
+        (((4 * angle) / 360) * 3) / 4,
+        10,
+      );
+    }
+  });
+  it("uses bounded midpoint samples, phase and shot boundaries", () => {
+    const comp = fixture();
+    expect(validateComposition(comp).ok).toBe(true);
+    expect(compositionExposureFrames(comp, 10)).toEqual([
+      9.625, 9.875, 10.125, 10.375,
+    ]);
+    expect(compositionExposureFrames(comp, 0)).toEqual([0, 0, 0.125, 0.375]);
+    expect(compositionExposureFrames(comp, 29)).toEqual([
+      28.625, 28.875, 29, 29,
+    ]);
+    comp.motionBlur!.shutterPhase = 90;
+    expect(compositionExposureFrames(comp, 10)).toEqual([
+      9.875, 10.125, 10.375, 10.625,
+    ]);
+    comp.motionBlur!.cuts = [10];
+    expect(compositionExposureFrames(structuredClone(comp), 10)[0]).toBe(10);
+    comp.motionBlur!.inPoint = 10;
+    comp.motionBlur!.outPoint = 20;
+    expect(compositionExposureFrames(comp, 9)).toEqual([9]);
+    comp.motionBlur!.cuts = [10, 10];
+    expect(validateComposition(comp).ok).toBe(false);
+    comp.motionBlur!.cuts = [30];
+    expect(validateComposition(comp).ok).toBe(false);
+  });
+  it("samples complete constrained poses while freezing opted-out children", () => {
+    const comp = fixture();
+    comp.layers[0]!.parent = "parent";
+    comp.layers.push({
+      id: "parent",
+      type: "null",
+      transform: {
+        rotation: {
+          keys: [
+            { frame: 0, value: 0 },
+            { frame: 29, value: 87, interpolation: "linear" },
+          ],
+        },
+      },
+    });
+    comp.layers.unshift({
+      ...structuredClone(comp.layers[0]!),
+      id: "frozen",
+      motionBlur: false,
+    });
+    const exposure = samples(comp);
+    expect(
+      new Set(
+        exposure.map((tree) => JSON.stringify(tree.layers[0]!.screenMatrix)),
+      ).size,
+    ).toBe(1);
+    expect(
+      new Set(
+        exposure.map((tree) => JSON.stringify(tree.layers[1]!.screenMatrix)),
+      ).size,
+    ).toBe(4);
+    for (const tree of exposure) {
+      const ops = buildRenderGraph(comp, tree).root.ops as DrawOp[];
+      expect(ops.find((op) => op.layer === "frozen")!.transforms[0]).toEqual(
+        exposure[0]!.layers[0]!.exposure!.tree.layers[2]!.localMatrix,
+      );
+    }
+    expect(samples(comp)).toEqual(exposure);
+  });
+  it("inherits through groups and precomps and clamps remapped scope cuts", () => {
+    const comp = fixture(),
+      child = comp.layers[0]!;
+    delete child.motionBlur;
+    comp.precomps = [
+      {
+        id: "nested",
+        width: 160,
+        height: 100,
+        frameCount: 30,
+        layers: [child],
+      },
+    ];
+    child.inPoint = 10;
+    comp.layers = [
+      {
+        id: "host",
+        type: "precomp",
+        comp: "nested",
+        motionBlur: true,
+        transform: { anchor: [0, 0] },
+      },
+    ];
+    const trees = samples(comp);
+    expect(
+      trees.map((tree) => tree.layers[0]!.precomp!.layers[0]!.time),
+    ).toEqual([10, 10, 10.125, 10.375]);
+    child.motionBlur = false;
+    expect(
+      samples(comp).map((tree) => tree.layers[0]!.precomp!.layers[0]!.time),
+    ).toEqual([10, 10, 10, 10]);
+    comp.layers[0]!.motionBlur = false;
+    child.motionBlur = true;
+    expect(samples(comp)[3]!.layers[0]!.precomp!.layers[0]!.time).toBe(10.375);
+    comp.layers[0] = {
+      id: "group",
+      type: "group",
+      size: [160, 100],
+      motionBlur: true,
+    };
+    child.parent = "group";
+    delete child.motionBlur;
+    delete child.inPoint;
+    comp.layers.unshift(child);
+    delete comp.precomps;
+    expect(samples(comp)[0]!.layers[0]!.time).toBe(9.625);
+  });
+  it("clamps content, visibility and effect switches without treating transform keys as cuts", () => {
+    const comp = fixture();
+    comp.layers.push({
+      id: "states",
+      type: "text",
+      fontSize: 20,
+      color: "#ffffff",
+      text: "A",
+      states: ["A", "B"],
+      state: {
+        keys: [
+          { frame: 0, value: 0 },
+          { frame: 10, value: 1 },
+        ],
+      },
+      startFrame: 2,
+      stretch: 2,
+    });
+    expect(compositionExposureFrames(comp, 22)[0]).toBe(22);
+    comp.layers[0]!.effects = [
+      { id: "blur", effect: "blur.gaussian", inPoint: 10, outPoint: 11 },
+    ];
+    expect(compositionExposureFrames(structuredClone(comp), 10)[0]).toBe(10);
+    expect(compositionExposureFrames(structuredClone(comp), 11)[0]).toBe(11);
+    comp.layers[0]!.motionBlur = false;
+    expect(compositionExposureFrames(comp, 10)).toEqual([10]);
+  });
+});

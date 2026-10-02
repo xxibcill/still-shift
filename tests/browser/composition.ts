@@ -685,6 +685,46 @@ try {
     "echo prepares historical animated glyphs through frozen precomp clocks",
   );
 
+  const exposureText = structuredClone(echoText);
+  exposureText.motionBlur = {
+    enabled: true,
+    shutterAngle: 720,
+    shutterPhase: 0,
+    samples: 4,
+  };
+  exposureText.layers[0]!.motionBlur = true;
+  const exposureFrames = await render(
+    page,
+    exposureText,
+    [5, 0, 5],
+    assetUrls(exposureText),
+  );
+  const sum = new Float32Array(exposureFrames.frames[0]!.length);
+  for (const time of [4.25, 4.75, 5.25, 5.75]) {
+    const reference = structuredClone(echoText);
+    const host = reference.layers[0]!;
+    if (host.type !== "precomp") throw new Error("Expected precomp");
+    host.timeRemap = time;
+    const sampled = await render(page, reference, [0], assetUrls(reference));
+    sampled.frames[0]!.forEach((value, index) => {
+      sum[index] = sum[index]! + value;
+    });
+  }
+  const averaged = Uint8Array.from(sum, (value) => Math.round(value / 4));
+  assert.deepEqual(
+    exposureFrames.frames[0],
+    averaged,
+    "Exposure prepares fractional animated stroke and echo samples",
+  );
+  assert.deepEqual(
+    exposureFrames.frames[2],
+    averaged,
+    "Exposure glyphs support backward seeks",
+  );
+  results.push(
+    "motion blur prepares subframe animated glyphs and echo history",
+  );
+
   for (const rasterize of ["coverage", "source-colors"] as const) {
     const strokeLayer = strokeText.layers[0]!;
     if (strokeLayer.type !== "text") throw new Error("Expected text");

@@ -472,7 +472,7 @@ structure only; use `validateComposition` for the full rules.
 | `background`                     | colour or `null`                                   | `null` or absent: transparent.                                                                                        |
 | `format`                         | `landscape` or `vertical`                          | When set, `width` and `height` must match it.                                                                         |
 | `colorSpace`                     | `srgb` or `linear-srgb`                            | `linear-srgb` arrives in CE6.                                                                                         |
-| `motionBlur`                     | `{ enabled, shutterAngle, shutterPhase, samples }` | Enabling it arrives in CE7.                                                                                           |
+| `motionBlur`                     | `{ enabled, shutterAngle, shutterPhase, samples }` | Optional `inPoint`, `outPoint` and ordered `cuts`; see exposure sampling below.                                       |
 | `assets`                         | [asset](#assets)[]                                 | Required (may be empty).                                                                                              |
 | `layers`                         | [layer](#layers)[]                                 | Required (may be empty).                                                                                              |
 | `markers`                        | [marker](#markers)[]                               |                                                                                                                       |
@@ -587,7 +587,7 @@ actual time-dependent values stay in range; reduce the deltas or separate their 
 | `masks`                               | See [masks](#masks).                                                                                                           |
 | `effects`                             | `{ id, effect, enabled?, space?, inPoint?, outPoint?, params? }[]`. Ordered registry effects; active intervals use layer time. |
 | `cameraDepth`                         | 0–2, unparented root layers only; see [2D camera](#2d-camera).                                                                 |
-| `threeD`, `motionBlur`                | Arrive in CE8 and CE7; `false` is allowed.                                                                                     |
+| `threeD`, `motionBlur`                | `threeD` arrives in CE8; `motionBlur` opts into exposure sampling (groups and precomps pass it to descendants).                |
 | `qualification`, `source`, `metadata` | Evidence and provenance carried through from story scenes and adapters.                                                        |
 
 ### Layer types
@@ -749,7 +749,6 @@ Features that are in the contract but not yet implemented fail with
 | ------------------------------------------------------------ | --------- |
 | Shape layers, follow-path constraints, stroke properties     | CE5       |
 | Effects, `linear-srgb` compositing, `blur`                   | CE6       |
-| Motion blur (composition and layer)                          | CE7       |
 | 3D layers, camera layers, 3D rotation, auto-orient to camera | CE8       |
 | Expressions, auto-orient along a path                        | CE9       |
 | Video, image-sequence and audio layers and assets            | CE13      |
@@ -1056,3 +1055,27 @@ state crossfade surfaces receive the filter when composited. Masks, mattes and
 pixel-stack ordering are unchanged. A positive drawing blur prevents inappropriate
 culling of artwork that can blur into view. Commerce and story adapters bake their
 motion-craft `blur` samples into this entry, including child zero/inheritance.
+
+### Exposure sampling (CE7 dependency slice)
+
+Composition `motionBlur` enables fixed-order midpoint samples across a shutter of
+0–720 degrees, shifted by `shutterPhase` (−360–360 degrees), with 2–64 samples.
+A layer opts in with `motionBlur: true`. Groups and precomp instances pass their
+setting to descendants; an explicit child setting overrides inheritance. Ordinary
+parenting carries transforms without inheriting the blur switch. Opted-out layers
+hold their complete evaluated pose, including ancestor transforms and opacity.
+
+The backend averages complete opaque sample frames in display sRGB, preserving
+moving overlaps and transparency. Canvas uses one reusable Float32 accumulation
+buffer and rounds once after the fixed-order sum. It retains no rendered history.
+Integer output frames remain authoritative; exposure evaluates the existing native
+curves at fractional times. A stationary scene averages to the same pixels.
+
+Optional `inPoint`/`outPoint` delimit the exposure effect. Ordered `cuts` declare
+shot boundaries. Samples clamp to the current interval and composition endpoints;
+layer visibility, discrete content changes and effect activation also create cuts.
+Nested precomp clocks clamp at their own cuts, including remapped clocks. Animated
+glyph preparation includes exposure and echo samples within the existing budget.
+`comp-motion-blur-range` diagnoses reversed/out-of-range intervals and unordered,
+duplicate or out-of-range cut entries. The family motion-blur compiler is a
+separate follow-up; the native renderer never invokes a family evaluator.

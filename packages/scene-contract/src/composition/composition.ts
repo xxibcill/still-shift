@@ -200,6 +200,9 @@ const compositionShape = z
         shutterAngle: finite.min(0).max(720),
         shutterPhase: finite.min(-360).max(360),
         samples: finite.int().min(2).max(64),
+        inPoint: compFrame.optional(),
+        outPoint: compFrame.optional(),
+        cuts: z.array(compFrame).max(L.maxKeys).optional(),
       })
       .strict()
       .optional(),

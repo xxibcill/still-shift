@@ -100,6 +100,12 @@ export interface RenderBackend<S extends Surface = Surface> {
   lerp(dst: S, src: S, coverage: S, opacity: number): void;
   /** Unpremultiplied RGBA bytes, top row first. */
   readPixels(surface: S): Uint8ClampedArray;
+  /** Average complete exposure samples in fixed order, using bounded scratch space. */
+  accumulateExposure(
+    target: S,
+    count: number,
+    draw: (index: number) => void,
+  ): void;
 }
 
 const IDENTITY: Matrix = [1, 0, 0, 1, 0, 0];

@@ -201,6 +201,7 @@ class GraphBuilder {
   readonly culled: string[] = [];
   private readonly cameras = new Map<string, Matrix>();
   private readonly history = new Map<string, Scope>();
+  private readonly exposures = new WeakMap<EvaluatedLayerTree, Scope>();
   constructor(
     readonly comp: Composition,
     readonly time: number,
@@ -301,7 +302,19 @@ class GraphBuilder {
     return ops;
   }
 
+  private exposureScope(scope: Scope, state: EvaluatedLayer): Scope {
+    const tree = state.exposure?.tree;
+    if (!tree) return scope;
+    let sample = this.exposures.get(tree);
+    if (!sample) {
+      sample = this.scope(tree, scope.def);
+      this.exposures.set(tree, sample);
+    }
+    return sample;
+  }
+
   private groupClips(scope: Scope, state: EvaluatedLayer, frame: Frame) {
+    scope = this.exposureScope(scope, state);
     const clips: ClipRect[] = [];
     for (
       let parent = state.layer.parent;
@@ -325,6 +338,7 @@ class GraphBuilder {
     state: EvaluatedLayer,
     frame: Frame,
   ): Matrix[] {
+    scope = this.exposureScope(scope, state);
     const local: Matrix[] = [];
     let root = state;
     for (;;) {
@@ -385,7 +399,7 @@ class GraphBuilder {
     const matte = state.layer.trackMatte;
     if (!matte) return null;
     const source = scope.byId.get(matte.layer)!;
-    const t = scope.tree.time,
+    const t = source.exposure?.tree.time ?? scope.tree.time,
       layer = source.layer;
     const active =
       t >= 0 &&
@@ -482,6 +496,7 @@ class GraphBuilder {
 
   /** A positive paint blur overrides inherited group blur; zero retains it. */
   private paintBlur(scope: Scope, state: EvaluatedLayer, frame: Frame): number {
+    scope = this.exposureScope(scope, state);
     for (
       let current: EvaluatedLayer | undefined = state;
       current;
@@ -510,14 +525,16 @@ class GraphBuilder {
       echo.params as Record<string, number>;
     if (!decay) return [];
     const ops: RenderOp[] = [];
-    const builder = new GraphBuilder(this.comp, this.time, this.options, true);
+    const rootTime = state.exposure?.rootTime ?? this.time;
+    const scopeTime = state.exposure?.tree.time ?? scope.tree.time;
+    const builder = new GraphBuilder(this.comp, rootTime, this.options, true);
     const route = frame.prefix.split("/").filter(Boolean);
     for (let i = count!; i >= 1; i--) {
-      const time = Math.max(0, scope.tree.time - i * spacing!);
-      const key = `${frame.prefix}:${time}`;
+      const time = Math.max(0, scopeTime - i * spacing!);
+      const key = `${frame.prefix}:${rootTime}:${time}`;
       let sample = this.history.get(key);
       if (!sample) {
-        let tree = evaluateComp(this.comp, route.length ? this.time : time, {
+        let tree = evaluateComp(this.comp, route.length ? rootTime : time, {
           ...this.options,
           ...(route.length
             ? {

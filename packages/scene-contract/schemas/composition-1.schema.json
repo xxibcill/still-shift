@@ -24,7 +24,14 @@
         "enabled": { "type": "boolean" },
         "shutterAngle": { "type": "number", "minimum": 0, "maximum": 720 },
         "shutterPhase": { "type": "number", "minimum": -360, "maximum": 360 },
-        "samples": { "type": "integer", "minimum": 2, "maximum": 64 }
+        "samples": { "type": "integer", "minimum": 2, "maximum": 64 },
+        "inPoint": { "$ref": "#/$defs/__schema10" },
+        "outPoint": { "$ref": "#/$defs/__schema10" },
+        "cuts": {
+          "maxItems": 2000,
+          "type": "array",
+          "items": { "$ref": "#/$defs/__schema10" }
+        }
       },
       "required": ["enabled", "shutterAngle", "shutterPhase", "samples"],
       "additionalProperties": false

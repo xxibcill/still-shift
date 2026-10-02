@@ -134,6 +134,7 @@ export function createCanvas2dBackend(
   const pool = new Map<string, CanvasSurface[]>();
   const rasters = new Map<string, HTMLCanvasElement>();
   let allocated = 0;
+  let accumulation: Float32Array | undefined;
 
   const reset = (ctx: CanvasRenderingContext2D) => {
     ctx.resetTransform();
@@ -511,7 +512,28 @@ export function createCanvas2dBackend(
     readPixels(surface) {
       return surface.ctx.getImageData(0, 0, surface.width, surface.height).data;
     },
+    accumulateExposure(target, count, draw) {
+      if (count === 1) {
+        draw(0);
+        return;
+      }
+      const length = target.width * target.height * 4;
+      if (accumulation?.length !== length)
+        accumulation = new Float32Array(length);
+      else accumulation.fill(0);
+      let pixels: ImageData | undefined;
+      for (let sample = 0; sample < count; sample++) {
+        draw(sample);
+        pixels = target.ctx.getImageData(0, 0, target.width, target.height);
+        for (let index = 0; index < length; index++)
+          accumulation[index] = accumulation[index]! + pixels.data[index]!;
+      }
+      for (let index = 0; index < length; index++)
+        pixels!.data[index] = Math.round(accumulation[index]! / count);
+      target.ctx.putImageData(pixels!, 0, 0);
+    },
     dispose() {
+      accumulation = undefined;
       pool.clear();
       rasters.clear();
       allocated = 0;

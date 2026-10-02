@@ -1,4 +1,8 @@
 export {
+  compositionExposureFrames,
+  evaluateCompositionExposure,
+} from "./exposure.ts";
+export {
   evaluateComp,
   evaluateProperty,
   COMPOSITION_EVALUATOR_VERSION,

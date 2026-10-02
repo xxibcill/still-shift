@@ -8,7 +8,10 @@ import {
   type PassageDiagnostic,
 } from "../../passage-diagnostics.ts";
 import type { LoadedFont } from "../../prepared-fonts.ts";
-import { evaluateComp } from "../evaluate/evaluate.ts";
+import {
+  compositionExposureFrames,
+  evaluateCompositionExposure,
+} from "../evaluate/exposure.ts";
 import type { Bounds } from "../evaluate/types.ts";
 import { executeGraph } from "./backend.ts";
 import { createCanvas2dBackend } from "./canvas2d.ts";
@@ -178,14 +181,25 @@ export function createCompositionPreview(
         frame >= composition.frameCount
       )
         throw new Error("Frame index outside composition timeline");
-      const tree = evaluateComp(composition, frame, {
+      const samples = evaluateCompositionExposure(composition, frame, {
         textBounds: text.bounds,
       });
-      const graph = buildRenderGraph(composition, tree, {
-        textBounds: text.bounds,
-      });
-      executeGraph(backend, graph, target);
-      return { diagnostics: tree.diagnostics, culled: graph.culled };
+      const diagnostics: PassageDiagnostic[] = [];
+      const culled = new Set<string>();
+      backend.accumulateExposure(
+        target,
+        compositionExposureFrames(composition, frame).length,
+        (index) => {
+          const tree = samples.next().value!;
+          const graph = buildRenderGraph(composition, tree, {
+            textBounds: text.bounds,
+          });
+          executeGraph(backend, graph, target);
+          if (index === 0) diagnostics.push(...tree.diagnostics);
+          graph.culled.forEach((key) => culled.add(key));
+        },
+      );
+      return { diagnostics, culled: [...culled] };
     },
     dispose() {
       backend.dispose();
