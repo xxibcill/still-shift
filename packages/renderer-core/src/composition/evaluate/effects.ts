@@ -44,7 +44,12 @@ export function clampEffects(effects: EvaluatedEffect[]) {
     ))
       effect.params[name] = Math.max(
         property.min,
-        Math.min(property.max, effect.params[name]!),
+        Math.min(
+          property.max,
+          property.integer
+            ? Math.round(effect.params[name]!)
+            : effect.params[name]!,
+        ),
       );
 }
 
@@ -55,8 +60,14 @@ export function effectBounds(
 ): Bounds {
   let margin = 0;
   for (const effect of effects)
-    if (effect.enabled && effect.effect === "blur.gaussian")
-      margin += effect.params.radius! > 0 ? 3 * effect.params.radius! + 2 : 0;
+    if (effect.enabled) {
+      if (effect.effect === "blur.gaussian" || effect.effect === "light.glow")
+        margin += effect.params.radius! > 0 ? 3 * effect.params.radius! + 2 : 0;
+      else if (effect.effect === "blur.directional")
+        margin += effect.params.length! / 2 + 1;
+      else if (effect.effect === "distort.sine")
+        margin += Math.abs(effect.params.amount!) + 1;
+    }
   return margin
     ? {
         left: bounds.left - margin,

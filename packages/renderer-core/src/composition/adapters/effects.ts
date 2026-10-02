@@ -1,9 +1,63 @@
 import type {
   CompositionLayer,
   CommerceScene,
+  CommerceEffect,
 } from "@still-shift/scene-contract";
-import { effectProgress } from "../../commerce-effect-motion.ts";
+import { effectProgress, effectPhase } from "../../commerce-effect-motion.ts";
 import { baked } from "./prepared.ts";
+
+function effectParameters(scene: CommerceScene, effect: CommerceEffect) {
+  switch (effect.type) {
+    case "directional-blur":
+      return {
+        effect: "blur.directional",
+        params: {
+          length: effect.length,
+          angle: effect.angle,
+          samples: effect.samples,
+        },
+      };
+    case "glow":
+      return {
+        effect: "light.glow",
+        params: {
+          radius: effect.radius,
+          intensity: effect.intensity,
+          threshold: effect.threshold,
+        },
+      };
+    case "displacement":
+      return {
+        effect: "distort.sine",
+        params: {
+          amount: effect.amount,
+          wavelength: effect.wavelength,
+          phase: baked(
+            Array.from({ length: scene.frameCount }, (_, frame) =>
+              effectPhase(effect, frame),
+            ),
+          ),
+        },
+      };
+    case "focus-blur":
+      return {
+        effect: "blur.gaussian",
+        params: {
+          radius: baked(
+            Array.from({ length: scene.frameCount }, (_, frame) => {
+              const p = effectProgress(effect, frame),
+                smooth = p * p * (3 - 2 * p);
+              return (
+                effect.radius + (effect.endRadius - effect.radius) * smooth
+              );
+            }),
+          ),
+        },
+      };
+    default:
+      return null;
+  }
+}
 
 /** Family effects see already-painted root opacity, then the root's matte. */
 export function compileCommerceEffects(
@@ -14,7 +68,8 @@ export function compileCommerceEffects(
   const ids = new Set(layers.map((layer) => layer.id));
   let serial = 0;
   for (const effect of scene.effects ?? []) {
-    if (effect.type !== "focus-blur") continue;
+    const compiled = effectParameters(scene, effect);
+    if (!compiled || !("target" in effect)) continue;
     let owner = owners.get(effect.target);
     if (!owner) {
       const target = layers.find((layer) => layer.id === effect.target)!;
@@ -41,19 +96,10 @@ export function compileCommerceEffects(
     owner.effects ??= [];
     owner.effects.push({
       id: `effect${scene.effects!.indexOf(effect)}`,
-      effect: "blur.gaussian",
+      ...compiled,
       ...(effect.active
         ? { inPoint: effect.active.start, outPoint: effect.active.end }
         : {}),
-      params: {
-        radius: baked(
-          Array.from({ length: scene.frameCount }, (_, frame) => {
-            const p = effectProgress(effect, frame);
-            const smooth = p * p * (3 - 2 * p);
-            return effect.radius + (effect.endRadius - effect.radius) * smooth;
-          }),
-        ),
-      },
     });
   }
 }

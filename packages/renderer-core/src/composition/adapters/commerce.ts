@@ -35,7 +35,7 @@ import { prepareCommerceTextFits } from "../../commerce-layout.ts";
 import { prepareComponentTextFits } from "../../component-text-fit.ts";
 import { loadPreparedFonts } from "../../prepared-fonts.ts";
 
-export const COMMERCE_ADAPTER_VERSION = "commerce-composition-0.11.0";
+export const COMMERCE_ADAPTER_VERSION = "commerce-composition-0.12.0";
 
 export type CommerceCompositionOptions = {
   id?: string;
@@ -66,6 +66,9 @@ function checkSupported(scene: CommerceScene) {
         "overshoot",
         "height-shadow",
         "focus-blur",
+        "directional-blur",
+        "glow",
+        "displacement",
       ].includes(effect.type)
     )
       unsupported(

@@ -11,6 +11,54 @@ export function commerceEffectVariants(id: string, source: CommerceScene) {
     }
     return [{ id: `${id}/active-opacity`, scene: gated }];
   }
+  if (id === "commerce/atom-displacement") {
+    const stack = structuredClone(source);
+    const target = stack.effects!.find((e) => e.type === "displacement")!;
+    if (target.type !== "displacement")
+      throw new Error("Expected displacement");
+    stack.nodes.find((n) => n.id === target.target)!.opacity = 0.65;
+    stack.effects = [
+      {
+        type: "directional-blur",
+        target: target.target,
+        length: 15,
+        angle: 37,
+        samples: 4,
+        active: { start: 30, end: 140 },
+      },
+      {
+        type: "glow",
+        target: target.target,
+        radius: 6,
+        intensity: 0.6,
+        threshold: 0.2,
+        active: { start: 15, end: 180 },
+      },
+      {
+        type: "displacement",
+        target: target.target,
+        start: 0,
+        end: 239,
+        cycles: 2,
+        amount: 6,
+        wavelength: 80,
+      },
+      {
+        type: "focus-blur",
+        target: target.target,
+        start: 0,
+        end: 90,
+        radius: 4,
+        endRadius: 0,
+      },
+    ];
+    const reverse = structuredClone(stack);
+    reverse.effects!.reverse();
+    return [
+      { id: `${id}/pixel-stack`, scene: stack },
+      { id: `${id}/pixel-reversed`, scene: reverse },
+    ];
+  }
   if (id !== "commerce/atom-matte") return [];
   return commerceMaskVariants(id, source).map(({ id, scene }) => {
     scene.effects = [

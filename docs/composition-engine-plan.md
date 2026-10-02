@@ -1794,6 +1794,32 @@ comparisons; the full `pnpm check`.
   blur, WebGL2 parity and final full local verification. This is a CE6 dependency
   slice, not CE6 completion. The active goal continues after its commit.
 
+### CE4b directional-blur, glow and displacement follow-up (2026-10-02)
+
+- **Delivered:** native `blur.directional`, `light.glow` and `distort.sine` registry
+  entries, version `1.0.0`, with validated animatable parameters, bounds expansion,
+  fixed-order premultiplied accumulation and bounded integer sample counts.
+  Commerce treatments compile in authored order, including active intervals and
+  opacity before filtering. The Canvas kernels are shared low-level pixel routines;
+  no composition rendering calls a family evaluator or renderer.
+- **Versions:** commerce adapter `commerce-composition-0.12.0`, evaluator
+  `composition-evaluator-13`, Canvas renderer `composition-canvas-1.13.0`.
+  Legacy versions and CE0 baselines remain unchanged.
+- **Verification:** `pnpm check:fast` passes **1,197 unit tests**. Five commerce
+  cases / **1,200 frames** match exactly, including forward and reversed mixed
+  stacks. Worst paired median render/readback ratio is **1.0297×**. Extracted
+  legacy kernels also pass their frozen CE0 checks: **3 entries / 720 frames**.
+  The expanded native suite passes **400 exact frames** over every implemented
+  drawable type, masks, precomps, activation and backward seeks; **10 adjustment
+  cases** match independent equations within one channel value. Both saved native
+  fixtures export 60 frames twice with identical bytes. Directional blur, glow,
+  displacement and a mixed stack each pass two byte-identical CLI MP4 exports,
+  relocated assets and overwrite protection.
+- **Coverage:** **98 of 105** commerce/reusable CE0 entries have Canvas coverage.
+- **Remaining:** background lighting, particles, grain, light sweep, echo, motion
+  blur, animated primitive blur, WebGL2 acceptance and final full verification.
+  The active goal continues after this slice's commit.
+
 **Completion record:** CE4a and CE4b are in progress; CE4c–CE4d have not started.
 
 ---

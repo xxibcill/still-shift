@@ -50,6 +50,84 @@ const fixture = (): Composition => ({
 });
 
 describe("composition effect stack", () => {
+  it("samples registered pixel parameters, rounds sample counts and preserves instance order", () => {
+    const comp = fixture();
+    comp.layers[0]!.effects = [
+      {
+        id: "direction",
+        effect: "blur.directional",
+        params: {
+          length: 20,
+          samples: {
+            keys: [
+              { frame: 0, value: 2 },
+              { frame: 10, value: 5, interpolation: "linear" },
+            ],
+          },
+        },
+      },
+      { id: "glow", effect: "light.glow", params: { radius: 5 } },
+      {
+        id: "wave",
+        effect: "distort.sine",
+        params: {
+          amount: -10,
+          phase: {
+            keys: [
+              { frame: 0, value: 0 },
+              { frame: 10, value: 4, interpolation: "linear" },
+            ],
+          },
+        },
+      },
+    ];
+    expect(validateComposition(comp).ok).toBe(true);
+    const before = structuredClone(comp);
+    for (const frame of [10, 5, 0, 8]) {
+      const effects = evaluateComp(comp, frame).layers[0]!.effects;
+      expect(effects.map((e) => e.id)).toEqual(["direction", "glow", "wave"]);
+      expect(effects[0]!.params.samples).toBe(Math.round(2 + (frame / 10) * 3));
+      expect(effects[1]!.params).toEqual({
+        radius: 5,
+        threshold: 0,
+        intensity: 1,
+      });
+      expect(evaluateProperty(comp, "box.effects[wave].phase", frame)).toBe(
+        (frame / 10) * 4,
+      );
+    }
+    expect(comp).toEqual(before);
+    const invalid = structuredClone(comp);
+    invalid.layers[0]!.effects![0]!.params!.samples = 2.5;
+    expect(validateComposition(invalid).ok).toBe(false);
+  });
+
+  it.each(["directional-blur", "glow", "displacement"])(
+    "compiles %s into an ordered native stack",
+    (id) => {
+      const source = CommerceSceneSchema.parse(
+        JSON.parse(
+          readFileSync(
+            `benchmarks/fixtures/ecommerce-motion/atoms/${id}.json`,
+            "utf8",
+          ),
+        ),
+      );
+      const comp = commerceToComposition(source);
+      assertCompositionAdapterState(compileCommerceScene(source), comp);
+      const layer = comp.layers.find((l) => l.effects?.length)!;
+      expect(layer.type).toBe("group");
+      expect(layer.effects![0]!.effect).toBe(
+        {
+          "directional-blur": "blur.directional",
+          glow: "light.glow",
+          displacement: "distort.sine",
+        }[id],
+      );
+      expect(layer.effects).toHaveLength(1);
+    },
+  );
+
   it("validates registered parameters, key order, stack ids and active intervals", () => {
     expect(validateComposition(fixture()).ok).toBe(true);
     for (const update of [

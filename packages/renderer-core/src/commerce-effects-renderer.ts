@@ -1,3 +1,4 @@
+import { glow, directionalBlur, sineDisplacement } from "./pixel-effects.ts";
 import type { CinematicRenderScene } from "./cinematic-scene.ts";
 import { storyCameraTransform } from "./story-camera.ts";
 import { componentMasks, compositeRootMask } from "./component-mask.ts";
@@ -154,6 +155,11 @@ export function createCommerceEffectsRenderer(
   const sample = surface(scene.width, scene.height),
     accumulation = surface(scene.width, scene.height);
   const grain = surface(128, 128);
+  const pixelContext = {
+    createSurface: () => scratch,
+    releaseSurface: () => {},
+    clear,
+  };
   const blur = effects.find(
     (effect): effect is EffectOf<"motion-blur"> =>
       effect.type === "motion-blur",
@@ -221,93 +227,6 @@ export function createCommerceEffectsRenderer(
     layer.ctx.drawImage(scratch.canvas, 0, 0);
     layer.ctx.restore();
   }
-  function glow(effect: EffectOf<"glow">) {
-    if (!effect.intensity || !effect.radius) return;
-    clear(scratch);
-    const pixels = layer.ctx.getImageData(0, 0, scene.width, scene.height);
-    for (let i = 0; i < pixels.data.length; i += 4) {
-      const luminance =
-        (0.2126 * pixels.data[i]! +
-          0.7152 * pixels.data[i + 1]! +
-          0.0722 * pixels.data[i + 2]!) /
-        255;
-      pixels.data[i + 3] = Math.round(
-        pixels.data[i + 3]! *
-          Math.max(
-            0,
-            (luminance - effect.threshold) /
-              Math.max(0.001, 1 - effect.threshold),
-          ),
-      );
-    }
-    scratch.ctx.putImageData(pixels, 0, 0);
-    layer.ctx.save();
-    layer.ctx.globalCompositeOperation = "screen";
-    layer.ctx.globalAlpha = effect.intensity;
-    layer.ctx.filter = `blur(${effect.radius}px)`;
-    layer.ctx.drawImage(scratch.canvas, 0, 0);
-    layer.ctx.restore();
-  }
-  function directional(effect: EffectOf<"directional-blur">) {
-    if (effect.length === 0) return;
-    const sum = new Float32Array(scene.width * scene.height * 4);
-    for (let i = 0; i < effect.samples; i++) {
-      clear(scratch);
-      const distance = ((i + 0.5) / effect.samples - 0.5) * effect.length;
-      scratch.ctx.drawImage(
-        layer.canvas,
-        Math.cos((effect.angle * Math.PI) / 180) * distance,
-        Math.sin((effect.angle * Math.PI) / 180) * distance,
-      );
-      const pixels = scratch.ctx.getImageData(
-        0,
-        0,
-        scene.width,
-        scene.height,
-      ).data;
-      for (let offset = 0; offset < pixels.length; offset += 4) {
-        const alpha = pixels[offset + 3]! / 255;
-        sum[offset] = sum[offset]! + pixels[offset]! * alpha;
-        sum[offset + 1] = sum[offset + 1]! + pixels[offset + 1]! * alpha;
-        sum[offset + 2] = sum[offset + 2]! + pixels[offset + 2]! * alpha;
-        sum[offset + 3] = sum[offset + 3]! + alpha;
-      }
-    }
-    const output = layer.ctx.createImageData(scene.width, scene.height);
-    for (let offset = 0; offset < sum.length; offset += 4) {
-      const alpha = sum[offset + 3]!;
-      if (alpha === 0) continue;
-      output.data[offset] = Math.round(sum[offset]! / alpha);
-      output.data[offset + 1] = Math.round(sum[offset + 1]! / alpha);
-      output.data[offset + 2] = Math.round(sum[offset + 2]! / alpha);
-      output.data[offset + 3] = Math.round((alpha * 255) / effect.samples);
-    }
-    clear(layer);
-    layer.ctx.putImageData(output, 0, 0);
-  }
-
-  function displace(effect: EffectOf<"displacement">, frame: number) {
-    if (effect.amount === 0) return;
-    clear(scratch);
-    const phase = effectPhase(effect, frame);
-    for (let y = 0; y < scene.height; y++) {
-      const shift =
-        Math.sin((y / effect.wavelength) * Math.PI * 2 + phase) * effect.amount;
-      scratch.ctx.drawImage(
-        layer.canvas,
-        0,
-        y,
-        scene.width,
-        1,
-        shift,
-        y,
-        scene.width,
-        1,
-      );
-    }
-    clear(layer);
-    layer.ctx.drawImage(scratch.canvas, 0, 0);
-  }
   function drawRoot(
     ctx: CanvasRenderingContext2D,
     node: PreparedNode,
@@ -360,16 +279,19 @@ export function createCommerceEffectsRenderer(
     for (const effect of treatments) {
       switch (effect.type) {
         case "directional-blur":
-          directional(effect);
+          directionalBlur(pixelContext, layer, effect);
           break;
         case "glow":
-          glow(effect);
+          glow(pixelContext, layer, effect);
           break;
         case "light-sweep":
           lightSweep(effect, node, frame);
           break;
         case "displacement":
-          displace(effect, frame);
+          sineDisplacement(pixelContext, layer, {
+            ...effect,
+            phase: effectPhase(effect, frame),
+          });
           break;
         case "focus-blur": {
           const p = smooth(effectProgress(effect, frame));

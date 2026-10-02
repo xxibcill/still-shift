@@ -926,3 +926,24 @@ parameters, duplicate instance ids and invalid intervals produce diagnostics.
 Commerce focus blur compiles to this stack. A group preserves the source's order:
 paint node opacity, apply blur, then apply its matte. Authored effect activation and
 radius progression are retained. No family evaluator runs during composition rendering.
+
+### Directional blur, glow and sine displacement (CE6 dependency slice)
+
+The Canvas effect registry also provides these version `1.0.0` entries. All values
+are animatable scalars in the containing surface's pixel space.
+
+| Effect             | Parameters (default; accepted range)                                                                               |
+| ------------------ | ------------------------------------------------------------------------------------------------------------------ |
+| `blur.directional` | `length` (0; 0–1,000 pixels), `angle` (0; −36,000–36,000 degrees), `samples` (8; 2–64 integer samples)             |
+| `light.glow`       | `radius` (0; 0–1,000 pixels), `intensity` (1; 0–1), `threshold` (0; 0–1)                                           |
+| `distort.sine`     | `amount` (0; −1,000–1,000 pixels), `wavelength` (100; 1–100,000 pixels), `phase` (0; −1,000,000–1,000,000 radians) |
+
+Directional blur averages premultiplied samples in fixed order with Float32
+accumulation. Authored sample counts must be integers; interpolation and driver
+results round to the nearest integer after evaluation and clamp to the range.
+Glow thresholds Rec. 709 luminance, blurs that coverage, then screens it over the
+source. Sine displacement shifts each horizontal row. These kernels share the
+legacy pixel primitives while keeping the native evaluator and graph independent
+of family scenes. Stack order, layer time, activation, masks and adjustments use
+the same rules as Gaussian blur. `distort.sine` is the commerce wave displacement;
+general displacement maps remain part of the broader CE6 work.

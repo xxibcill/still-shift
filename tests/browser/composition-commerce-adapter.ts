@@ -65,6 +65,9 @@ const accepted = new Set(
       "float",
       "height-shadow",
       "focus-blur",
+      "directional-blur",
+      "glow",
+      "displacement",
       "introduction",
       "layout",
       "matte",
@@ -381,6 +384,9 @@ try {
           "commerce/atom-path/appearance-brush",
           "commerce/atom-height-shadow",
           "commerce/atom-focus-blur",
+          "commerce/atom-directional-blur",
+          "commerce/atom-glow",
+          "commerce/atom-displacement/pixel-stack",
           "commerce/atom-matte/shared-group-source/focus-matte",
         ].includes(item.id)
       )

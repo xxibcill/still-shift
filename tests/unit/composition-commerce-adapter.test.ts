@@ -254,7 +254,7 @@ describe("CE4b commerce adapter first slice", () => {
   );
 
   it.each([
-    ["atoms/glow", "effects[0]"],
+    ["atoms/echo", "effects[0]"],
     ["atoms/motion-blur", "effects[0]"],
   ])("rejects unsupported %s with a source path", (name, path) => {
     expect.assertions(1);
