@@ -2,7 +2,13 @@ import type { Matrix } from "../../node-transform.ts";
 import type { Rgba } from "../evaluate/types.ts";
 import type { WebglDevice, WebglSurface } from "./webgl-device.ts";
 
-type Rect = { left: number; top: number; right: number; bottom: number };
+export type WebglRect = {
+  left: number;
+  top: number;
+  right: number;
+  bottom: number;
+};
+type Rect = WebglRect;
 /** Conservative painted bounds allow readback to omit an unchanged clear color. */
 export class WebglBounds {
   private readonly bounds = new WeakMap<WebglSurface, Rect | null>();
@@ -40,6 +46,20 @@ export class WebglBounds {
   }
   snapshot(surface: WebglSurface) {
     return this.bounds.get(surface) ?? null;
+  }
+  region(surface: WebglSurface) {
+    return surface.opaque ? undefined : this.bounds.get(surface);
+  }
+  blur(surface: WebglSurface, radius: number) {
+    const rect = this.region(surface);
+    if (rect === undefined) this.full(surface);
+    else if (rect)
+      this.include(surface, {
+        left: rect.left - radius,
+        top: rect.top - radius,
+        right: rect.right + radius,
+        bottom: rect.bottom + radius,
+      });
   }
   clearColor(surface: WebglSurface) {
     return surface === this.root ? this.background : undefined;
@@ -91,13 +111,17 @@ export class WebglBounds {
     );
   }
   composite(source: WebglSurface, dst: WebglSurface, matrix: Matrix) {
+    if (source.opaque) {
+      this.draw(dst, matrix, source.width, source.height);
+      return;
+    }
     if (!this.bounds.has(source)) {
       this.full(dst);
       return;
     }
     this.transform(dst, this.snapshot(source), matrix);
   }
-  private transform(surface: WebglSurface, rect: Rect | null, matrix: Matrix) {
+  transform(surface: WebglSurface, rect: Rect | null, matrix: Matrix) {
     if (!rect) return;
     const points = [
       [rect.left, rect.top],

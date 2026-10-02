@@ -377,7 +377,7 @@ export function checkWebglFrames() {
           );
         }),
       );
-    for (const radius of [0, 0.5, 1, 1.9, 2, 2.5, 4, 7, 12, 24])
+    for (const radius of [0, 0.5, 1, 1.9, 2, 2.5, 4, 7, 12, 21.2, 21.7, 24])
       check(`effect/gaussian/${radius}`, (backend, dst) => {
         backend.clear(dst, null);
         backend.fillRect(

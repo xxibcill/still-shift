@@ -14,7 +14,7 @@ import { WebglDevice, type WebglSurface } from "./webgl-device.ts";
 import { blendShader } from "./webgl-blend.ts";
 
 export const COMPOSITION_WEBGL_RENDERER_VERSION =
-  "composition-webgl2-0.3.0" as const;
+  "composition-webgl2-0.4.0" as const;
 const IDENTITY: Matrix = [1, 0, 0, 1, 0, 0];
 const COPY =
   "uniform float opacity; void main() { pixel = floor(floor(texture(source, uv) * 255.0 + 0.5) * (floor(opacity * 255.0 + 0.5) + 1.0) / 256.0) / 255.0; }";
@@ -50,7 +50,7 @@ export function createWebgl2Backend(
   const target = device.surface(canvas.width, canvas.height, false, true);
   const gl = device.gl;
   const bounds = new WebglBounds(target);
-  const effects = new WebglEffects(device, raster);
+  const effects = new WebglEffects(device, raster, bounds);
   const images = new WebglImages(device, raster);
 
   function replace(
@@ -295,7 +295,14 @@ export function createWebgl2Backend(
       transforms,
       paintBlur,
     ) {
-      bounds.full(dst);
+      const rect = content.layer.bounds;
+      if (paintBlur || !rect) bounds.full(dst);
+      else
+        bounds.transform(
+          dst,
+          { left: rect[0], top: rect[1], right: rect[2], bottom: rect[3] },
+          matrix,
+        );
       draw(dst, mode, (pixels) =>
         raster.drawProvider(
           pixels,
@@ -364,7 +371,6 @@ export function createWebgl2Backend(
       }
     },
     applyEffects: (target, stack) => {
-      if (stack.some((effect) => effect.enabled)) bounds.full(target);
       effects.apply(target, stack);
     },
     applyMask(dst, masks) {

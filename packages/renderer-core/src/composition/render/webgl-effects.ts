@@ -1,3 +1,5 @@
+import { boxBlur } from "./webgl-box-blur.ts";
+import type { WebglBounds } from "./webgl-bounds.ts";
 import { paintRisingParticles } from "../../pixel-generators.ts";
 import { cssColor, type Canvas2dBackend } from "./canvas2d.ts";
 import type { Rgba } from "../evaluate/types.ts";
@@ -5,7 +7,12 @@ import type { RenderEffect } from "./graph.ts";
 import type { WebglDevice, WebglSurface } from "./webgl-device.ts";
 import { blendShader } from "./webgl-blend.ts";
 
-type Kernel = { radius: number; weights: number[]; divisor: number };
+type Kernel = {
+  radius: number;
+  weights: number[];
+  divisor: number;
+  lengths: number[];
+};
 /** Three centered box filters for Skia's raster Gaussian approximation. */
 function blurKernel(sigma: number): Kernel {
   const width = Math.max(
@@ -37,7 +44,7 @@ function blurKernel(sigma: number): Kernel {
     }
     return count;
   });
-  return { radius: (length - 1) / 2, weights, divisor };
+  return { radius: (length - 1) / 2, weights, divisor, lengths };
 }
 
 const SAMPLE = `
@@ -62,6 +69,7 @@ export class WebglEffects {
   constructor(
     private readonly device: WebglDevice,
     private readonly raster: Canvas2dBackend,
+    private readonly bounds: WebglBounds,
   ) {}
 
   private paint(
@@ -111,6 +119,10 @@ export class WebglEffects {
     if (sigma <= 0.03) return;
     const kernel = blurKernel(sigma);
     if (kernel.divisor === 1) return;
+    const region = this.bounds.region(dst);
+    if (region === null) return;
+    this.bounds.blur(dst, kernel.radius);
+    if (boxBlur(this.device, dst, kernel, region)) return;
     // Match the raster Gaussian's integer reciprocal division after each axis.
     // Floating normalization accumulates visible errors in chained filters.
     const factor = Math.round(4294967296 / kernel.divisor);
@@ -395,6 +407,7 @@ export class WebglEffects {
             `comp-webgl-effect: ${effect.effect} is not implemented`,
           );
       }
+      if (effect.effect !== "blur.gaussian") this.bounds.full(dst);
     }
   }
 }

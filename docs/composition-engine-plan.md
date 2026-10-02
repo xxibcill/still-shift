@@ -2125,6 +2125,25 @@ comparisons; the full `pnpm check`.
 - **Remaining:** further software-GPU performance work, full family acceptance,
   and final local/frozen-baseline verification. CE4b is not complete.
 
+### CE4b exact GPU blur optimization (2026-10-02)
+
+- **Version:** `composition-webgl2-0.4.0` computes the raster Gaussian's three box
+  sums in logarithmic GPU passes. Integer-valued RGBA32F intermediates remain
+  below 2²⁴; larger kernels retain the existing integer convolution. The original
+  reciprocal division and per-axis byte rounding are unchanged. Working buffers
+  are limited to 128 MiB and clipped to known painted bounds, with padding for
+  the complete convolution support. Declared provider bounds are honored;
+  unknown bounds remain conservative. Opaque source copies include their background.
+- **Verification:** **68 focused GPU cases** and **612 native fixture frames** pass,
+  including both sides of the fast algorithm's precision limit. Gaussian, echo
+  and primitive-blur native timelines remain exact. The **204-frame** export/Lab
+  suite and **1,220 unit tests** pass.
+- **Measured limit:** all **240 Focus Blur frames** remain exact. Its paired median
+  improves from **13.2874×** to **8.5215×** reference time, still above **1.25×**.
+  Bounding alone does not resolve that fixture's cost: providers without declared
+  bounds and repeated effect work remain expensive. Full family acceptance and
+  final local/frozen-baseline verification remain open.
+
 **Completion record:** CE4a and CE4b are in progress; CE4c–CE4d have not started.
 
 ---
