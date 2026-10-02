@@ -1689,6 +1689,30 @@ comparisons; the full `pnpm check`.
   morphs, animated appearance, CE6/CE7 dependencies and both-backend acceptance.
   The active goal continues after this slice's commit.
 
+### CE4b rich-numeric-text follow-up (2026-10-02)
+
+- **Delivered:** `component.typography@1.0.0` compiles formatted numeric bindings
+  with rich text styles, spans, decorations, containers, text animators and variable
+  font axes. It shapes the full declared endpoint range before rendering, preserving
+  overflow checks and the existing 10,000-value / 128-megapixel raster limits. Baked
+  formatted samples retain legacy rounding, separators, prefixes and suffixes.
+- **Resources:** providers may prepare font variants asynchronously from their
+  declared, verified font assets. Each provider and precomp gets an isolated font
+  map; variants do not become available to unrelated providers. Rendering uses
+  local glyph content and compiled samples without invoking a family renderer or
+  scene evaluator. The provider JSON and frame/key limits remain unchanged.
+- **Versions:** commerce adapter `commerce-composition-0.8.0`, story adapter
+  `story-composition-0.5.0`, Canvas renderer `composition-canvas-1.9.0`;
+  evaluator remains `composition-evaluator-11`.
+- **Verification:** `pnpm check:fast` passes with **1,181 unit tests**, including
+  declared-font isolation and reverse-order formatted-value checks. The complete
+  typography adapter suite passes **16 cases / 2,681 frames**; all three numeric
+  cases are pixel-exact, including variable Thai axes. Worst render/readback ratio
+  is **1.2115×**, below the unchanged 1.25× gate. Seven repeat MP4 pairs are
+  byte-identical, with asset relocation, pinned fonts and overwrite protection intact.
+- **Remaining:** spatial paths, morphs, animated appearance, CE6/CE7 dependencies
+  and both-backend acceptance. The active goal continues after this slice's commit.
+
 **Completion record:** CE4a and CE4b are in progress; CE4c–CE4d have not started.
 
 ---

@@ -17,10 +17,18 @@ import { loadCompositionFonts, prepareCompositionText } from "./text.ts";
 import { COMPOSITION_RENDERER_VERSION } from "./version.ts";
 import {
   prepareCompositionProviders,
+  loadProviderFonts,
   type CanvasContentProvider,
 } from "./providers.ts";
 import { STORY_CONTENT_PROVIDERS } from "../adapters/story-providers.ts";
 import { COMMERCE_CONTENT_PROVIDERS } from "../adapters/commerce-providers.ts";
+import { NUMERIC_TYPOGRAPHY_PROVIDER } from "../adapters/numeric-typography.ts";
+
+const BUILTIN_PROVIDERS = [
+  ...STORY_CONTENT_PROVIDERS,
+  ...COMMERCE_CONTENT_PROVIDERS,
+  NUMERIC_TYPOGRAPHY_PROVIDER,
+];
 
 /** A validated composition wrapped with the export runtime's canvas and timeline. */
 export type CompositionScene = {
@@ -50,12 +58,14 @@ export function compositionScene(composition: Composition): CompositionScene {
 export type CompositionResources = {
   images: Map<string, CanvasImageSource>;
   fonts: Map<string, LoadedFont>;
+  providerFonts?: ReadonlyMap<string, ReadonlyMap<string, LoadedFont>>;
 };
 
 /** Fetch, verify (SHA-256 and pixel size) and decode every image and font asset. */
 export async function loadCompositionResources(
   composition: Composition,
   assetUrl: (id: string) => string,
+  options: { providers?: readonly CanvasContentProvider[] } = {},
 ): Promise<CompositionResources> {
   const images = new Map<string, CanvasImageSource>();
   await Promise.all(
@@ -87,9 +97,14 @@ export async function loadCompositionResources(
       images.set(asset.id, image);
     }),
   );
+  const fonts = await loadCompositionFonts(composition, assetUrl);
   return {
     images,
-    fonts: await loadCompositionFonts(composition, assetUrl),
+    fonts,
+    providerFonts: await loadProviderFonts(composition, fonts, [
+      ...BUILTIN_PROVIDERS,
+      ...(options.providers ?? []),
+    ]),
   };
 }
 
@@ -129,8 +144,7 @@ export function createCompositionPreview(
   if (!ctx) throw new Error("Canvas 2D is unavailable");
   const text = prepareCompositionText(composition, resources.fonts, ctx);
   const drawProvider = prepareCompositionProviders(composition, resources, [
-    ...STORY_CONTENT_PROVIDERS,
-    ...COMMERCE_CONTENT_PROVIDERS,
+    ...BUILTIN_PROVIDERS,
     ...(options.providers ?? []),
   ]);
   const backend = createCanvas2dBackend({

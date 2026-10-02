@@ -17,7 +17,10 @@ import {
   compileCommerceComposition,
   compileStoryComposition,
 } from "@still-shift/animation-engine";
-import { typographyVariants } from "../helpers/composition-typography.ts";
+import {
+  numericTypographyVariants,
+  typographyVariants,
+} from "../helpers/composition-typography.ts";
 import { assertAdapterExport } from "../helpers/composition-adapter-exports.ts";
 import type * as Render from "../../packages/renderer-core/src/index.ts";
 import { assertCompositionAdapterState } from "../helpers/composition-adapter-state.ts";
@@ -65,6 +68,10 @@ try {
     const inputs = [
       { id: entry.id, scene: source },
       ...typographyVariants(source).map((item) => ({
+        ...item,
+        id: `${entry.id}/${item.id}`,
+      })),
+      ...numericTypographyVariants(source).map((item) => ({
         ...item,
         id: `${entry.id}/${item.id}`,
       })),
@@ -236,6 +243,9 @@ try {
       if (
         only < 0 &&
         [
+          "typography/editorial/numeric",
+          "typography/commerce/numeric",
+          "typography/variable-thai/numeric",
           "typography/semantic",
           "typography/variable-thai",
           "typography/editorial/component-fit",

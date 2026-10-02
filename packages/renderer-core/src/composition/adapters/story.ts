@@ -28,6 +28,7 @@ import { validateTypographySafeArea } from "../../typography-safe-area.ts";
 import { resolveTextEvents } from "../../typography-events.ts";
 import { compileAdapterMarkers } from "./markers.ts";
 import { typographyLayer } from "./typography.ts";
+import { numericTypographyLayer } from "./numeric-typography.ts";
 import { componentTextLayer } from "./component-text.ts";
 import { compileAttachedPathGeometry } from "./commerce-path.ts";
 
@@ -49,7 +50,7 @@ export type StoryCompositionOptions = {
   textLayout?: CompositionTextLayout;
 };
 
-export const STORY_ADAPTER_VERSION = "story-composition-0.4.0";
+export const STORY_ADAPTER_VERSION = "story-composition-0.5.0";
 function checkSupported(scene: StoryScene) {
   const unsupported = (path: string, feature: string): never =>
     passageError(
@@ -66,16 +67,6 @@ function checkSupported(scene: StoryScene) {
   for (const field of ["spatialPaths", "pathMorphs"] as const)
     if (scene[field]?.length) unsupported(field, field);
   if (scene.effects?.length) unsupported("effects", "Pixel effects");
-  if (scene.typography) {
-    const numeric = scene.componentData?.bindings.findIndex(
-      (binding) => binding.kind === "text",
-    );
-    if (numeric !== undefined && numeric >= 0)
-      unsupported(
-        `componentData.bindings[${numeric}]`,
-        "Typographic numeric bindings",
-      );
-  }
   scene.nodes.forEach((node, i) => {
     const path = `nodes[${i}]`;
     if (
@@ -151,7 +142,8 @@ export function storyToComposition(
           : undefined;
       let layer: CompositionLayer = {
         ...(node.type === "text" && scene.typography
-          ? typographyLayer(scene, node, samples)
+          ? (numericTypographyLayer(scene, node, samples) ??
+            typographyLayer(scene, node, samples))
           : preparedNodeLayer(scene, node, samples, {
               ...(scene.componentData ? { nativeSolids: false } : {}),
               geometry:
@@ -171,6 +163,7 @@ export function storyToComposition(
       if (
         node.type === "text" &&
         layer.type === "provider" &&
+        !scene.typography &&
         (node.textBox ||
           node.container ||
           scene.textAnimators?.some((animator) => animator.node === node.id) ||
@@ -300,10 +293,17 @@ export function storyToComposition(
           ...(scene.textStyles ? { textStyles: scene.textStyles } : {}),
           ...(scene.textAnimators
             ? {
-                textAnimators: scene.textAnimators.map((animator) => ({
-                  ...animator,
-                  ...(animator.cue ? { cue: cueIds.get(animator.cue)! } : {}),
-                })),
+                textAnimators: scene.textAnimators
+                  .filter((animator) =>
+                    layers.some(
+                      (layer) =>
+                        layer.id === animator.node && layer.type === "text",
+                    ),
+                  )
+                  .map((animator) => ({
+                    ...animator,
+                    ...(animator.cue ? { cue: cueIds.get(animator.cue)! } : {}),
+                  })),
               }
             : {}),
           ...(scene.signals ? { signals: scene.signals } : {}),

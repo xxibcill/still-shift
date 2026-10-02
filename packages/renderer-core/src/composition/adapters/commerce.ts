@@ -15,6 +15,7 @@ import { resolveTypographyNodes } from "../../typography-renderer.ts";
 import { resolveTextEvents } from "../../typography-events.ts";
 import { compileAdapterMarkers } from "./markers.ts";
 import { typographyLayer } from "./typography.ts";
+import { numericTypographyLayer } from "./numeric-typography.ts";
 import { componentTextLayer } from "./component-text.ts";
 import { componentCapabilities } from "../../component-capabilities.ts";
 import { validateAttachedPaths } from "../../commerce-geometry.ts";
@@ -27,7 +28,7 @@ import { prepareCommerceTextFits } from "../../commerce-layout.ts";
 import { prepareComponentTextFits } from "../../component-text-fit.ts";
 import { loadPreparedFonts } from "../../prepared-fonts.ts";
 
-export const COMMERCE_ADAPTER_VERSION = "commerce-composition-0.7.0";
+export const COMMERCE_ADAPTER_VERSION = "commerce-composition-0.8.0";
 
 export type CommerceCompositionOptions = {
   id?: string;
@@ -59,16 +60,6 @@ function checkSupported(scene: CommerceScene) {
         `${effect.type} effects (pending CE6/CE7)`,
       );
   });
-  if (scene.typography) {
-    const numeric = scene.componentData?.bindings.findIndex(
-      (binding) => binding.kind === "text",
-    );
-    if (numeric !== undefined && numeric >= 0)
-      unsupported(
-        `componentData.bindings[${numeric}]`,
-        "Typographic numeric bindings",
-      );
-  }
   scene.nodes.forEach((node, index) => {
     const path = `nodes[${index}]`;
     if (
@@ -155,7 +146,8 @@ export function commerceToComposition(
       // Keep path-based rectangle rasterization and parent transform concatenation.
       let layer =
         node.type === "text" && scene.typography
-          ? typographyLayer(scene, node, samples)
+          ? (numericTypographyLayer(scene, node, samples) ??
+            typographyLayer(scene, node, samples))
           : preparedNodeLayer(scene, node, samples, { nativeSolids: false });
       const gate = visibility.get(node.id);
       if (gate) {
@@ -165,6 +157,7 @@ export function commerceToComposition(
       if (
         node.type === "text" &&
         layer.type === "provider" &&
+        !scene.typography &&
         (node.textBox ||
           node.container ||
           scene.textAnimators?.some((a) => a.node === node.id) ||
@@ -234,10 +227,17 @@ export function commerceToComposition(
           ...(scene.textStyles ? { textStyles: scene.textStyles } : {}),
           ...(scene.textAnimators
             ? {
-                textAnimators: scene.textAnimators.map((animator) => ({
-                  ...animator,
-                  ...(animator.cue ? { cue: cueIds.get(animator.cue)! } : {}),
-                })),
+                textAnimators: scene.textAnimators
+                  .filter((animator) =>
+                    layers.some(
+                      (layer) =>
+                        layer.id === animator.node && layer.type === "text",
+                    ),
+                  )
+                  .map((animator) => ({
+                    ...animator,
+                    ...(animator.cue ? { cue: cueIds.get(animator.cue)! } : {}),
+                  })),
               }
             : {}),
           ...(scene.signals ? { signals: scene.signals } : {}),

@@ -10,6 +10,7 @@ export type ProviderLayer = Extract<CompositionLayer, { type: "provider" }>;
 export type ProviderResources = {
   images: ReadonlyMap<string, CanvasImageSource>;
   fonts: ReadonlyMap<string, LoadedFont>;
+  providerFonts?: ReadonlyMap<string, ReadonlyMap<string, LoadedFont>>;
 };
 export type CanvasProviderDrawer = (
   ctx: CanvasRenderingContext2D,
@@ -19,6 +20,12 @@ export type CanvasProviderDrawer = (
 export type CanvasContentProvider = {
   /** Versioned id, exactly as stored in the composition contract. */
   id: string;
+  /** Prepare style/axis variants from this layer's verified, declared fonts only. */
+  loadFonts?(
+    layer: ProviderLayer,
+    fonts: Map<string, LoadedFont>,
+    path: string,
+  ): Promise<void>;
   /** Validate and prepare once; the drawer receives layer-local time, including precomp clocks. */
   prepare(
     layer: ProviderLayer,
@@ -26,6 +33,33 @@ export type CanvasContentProvider = {
     path: string,
   ): CanvasProviderDrawer;
 };
+
+/** Each provider receives an isolated font map; variants never leak into other layers. */
+export async function loadProviderFonts(
+  composition: Composition,
+  fonts: ReadonlyMap<string, LoadedFont>,
+  providers: readonly CanvasContentProvider[],
+) {
+  const prepared = new Map<string, Map<string, LoadedFont>>();
+  for (const [index, scope] of [
+    composition,
+    ...(composition.precomps ?? []),
+  ].entries()) {
+    for (const [i, layer] of scope.layers.entries()) {
+      if (layer.type !== "provider") continue;
+      const provider = providers.find(
+        (provider) => provider.id === layer.provider,
+      );
+      if (!provider?.loadFonts) continue;
+      const declared = new Set(layer.assets ?? []);
+      const scoped = new Map([...fonts].filter(([id]) => declared.has(id)));
+      const path = `${index ? `precomps[${index - 1}].` : ""}layers[${i}]`;
+      await provider.loadFonts(layer, scoped, path);
+      prepared.set(`${index ? `${scope.id}/` : ""}${layer.id}`, scoped);
+    }
+  }
+  return prepared;
+}
 
 export function prepareCompositionProviders(
   composition: Composition,
@@ -58,17 +92,17 @@ export function prepareCompositionProviders(
           { path: `${path}.provider` },
         );
       const declared = new Set(layer.assets ?? []);
+      const key = `${index ? `${scope.id}/` : ""}${layer.id}`;
       // Limit the provider's resource view to its declared dependencies.
       const available: ProviderResources = {
         images: new Map(
           [...resources.images].filter(([id]) => declared.has(id)),
         ),
-        fonts: new Map([...resources.fonts].filter(([id]) => declared.has(id))),
+        fonts:
+          resources.providerFonts?.get(key) ??
+          new Map([...resources.fonts].filter(([id]) => declared.has(id))),
       };
-      drawers.set(
-        `${index ? `${scope.id}/` : ""}${layer.id}`,
-        provider.prepare(layer, available, path),
-      );
+      drawers.set(key, provider.prepare(layer, available, path));
     });
   }
   return (ctx, content) => {
