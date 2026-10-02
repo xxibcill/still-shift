@@ -12,7 +12,12 @@ import type {
   RenderOp,
   SurfaceNode,
   TextContent,
+  ProviderContent,
+  DrawOp,
+  SolidContent,
 } from "./graph.ts";
+
+export type SolidDraw = DrawOp & { content: SolidContent };
 
 /** A premultiplied RGBA render target owned by a backend. */
 export type Surface = { readonly width: number; readonly height: number };
@@ -28,6 +33,8 @@ export interface RenderBackend<S extends Surface = Surface> {
   releaseSurface(surface: S): void;
   /** Clear to transparent, then fill with `background` when given. */
   clear(surface: S, background: Rgba | null): void;
+  /** Optional batch for consecutive normal solid fills without clips. */
+  fillRects?(dst: S, ops: SolidDraw[]): void;
   fillRect(
     dst: S,
     matrix: Matrix,
@@ -37,6 +44,7 @@ export interface RenderBackend<S extends Surface = Surface> {
     opacity: number,
     blend: CompositionBlendMode,
     clips: ClipRect[],
+    transforms?: Matrix[],
   ): void;
   drawImage(
     dst: S,
@@ -45,6 +53,7 @@ export interface RenderBackend<S extends Surface = Surface> {
     opacity: number,
     blend: CompositionBlendMode,
     clips: ClipRect[],
+    transforms?: Matrix[],
   ): void;
   drawText(
     dst: S,
@@ -53,6 +62,16 @@ export interface RenderBackend<S extends Surface = Surface> {
     opacity: number,
     blend: CompositionBlendMode,
     clips: ClipRect[],
+    transforms?: Matrix[],
+  ): void;
+  drawProvider(
+    dst: S,
+    content: ProviderContent,
+    matrix: Matrix,
+    opacity: number,
+    blend: CompositionBlendMode,
+    clips: ClipRect[],
+    transforms?: Matrix[],
   ): void;
   /** Draw `src` (its pixel grid placed by `matrix`) onto `dst`. */
   composite(
@@ -62,6 +81,7 @@ export interface RenderBackend<S extends Surface = Surface> {
     opacity: number,
     matrix: Matrix,
     clips: ClipRect[],
+    transforms?: Matrix[],
   ): void;
   /** Multiply `target` by the combined coverage of `masks`. */
   applyMask(target: S, masks: MaskOp[]): void;
@@ -85,12 +105,12 @@ export function executeGraph<S extends Surface>(
   const surface = (node: SurfaceNode, into?: S): S => {
     const dst = into ?? backend.createSurface(node.width, node.height);
     backend.clear(dst, node.background);
-    for (const op of node.ops) run(op, dst);
+    runOps(node.ops, dst);
     return dst;
   };
   const isolated = (ops: RenderOp[], like: S) => {
     const tmp = backend.createSurface(like.width, like.height);
-    for (const op of ops) run(op, tmp);
+    runOps(ops, tmp);
     return tmp;
   };
   const mask = (
@@ -108,7 +128,7 @@ export function executeGraph<S extends Surface>(
   const run = (op: RenderOp, dst: S): void => {
     switch (op.kind) {
       case "draw": {
-        const { content: c, matrix, opacity, blend, clips } = op;
+        const { content: c, matrix, opacity, blend, clips, transforms } = op;
         if (c.type === "solid")
           backend.fillRect(
             dst,
@@ -119,14 +139,33 @@ export function executeGraph<S extends Surface>(
             opacity,
             blend,
             clips,
+            transforms,
           );
         else if (c.type === "image")
-          backend.drawImage(dst, c, matrix, opacity, blend, clips);
+          backend.drawImage(dst, c, matrix, opacity, blend, clips, transforms);
         else if (c.type === "text")
-          backend.drawText(dst, c, matrix, opacity, blend, clips);
+          backend.drawText(dst, c, matrix, opacity, blend, clips, transforms);
+        else if (c.type === "provider")
+          backend.drawProvider(
+            dst,
+            c,
+            matrix,
+            opacity,
+            blend,
+            clips,
+            transforms,
+          );
         else {
           const nested = surface(c.surface);
-          backend.composite(nested, dst, blend, opacity, matrix, clips);
+          backend.composite(
+            nested,
+            dst,
+            blend,
+            opacity,
+            matrix,
+            clips,
+            transforms,
+          );
           backend.releaseSurface(nested);
         }
         return;
@@ -154,6 +193,7 @@ export function executeGraph<S extends Surface>(
           1,
           "normal",
           op.clips,
+          op.transforms,
         );
         mask(coverage, op.masks, op.matte);
         backend.lerp(dst, src, coverage, op.opacity);
@@ -161,6 +201,27 @@ export function executeGraph<S extends Surface>(
         backend.releaseSurface(src);
         return;
       }
+    }
+  };
+  const batchable = (op: RenderOp): op is SolidDraw =>
+    op.kind === "draw" &&
+    op.content.type === "solid" &&
+    op.blend === "normal" &&
+    op.clips.length === 0;
+  const runOps = (ops: RenderOp[], dst: S) => {
+    for (let index = 0; index < ops.length; index++) {
+      const op = ops[index]!;
+      if (backend.fillRects && batchable(op)) {
+        const batch = [op];
+        while (index + 1 < ops.length) {
+          const next = ops[index + 1]!;
+          if (!batchable(next)) break;
+          batch.push(next);
+          index++;
+        }
+        if (batch.length > 1) backend.fillRects(dst, batch);
+        else run(op, dst);
+      } else run(op, dst);
     }
   };
   surface(graph.root, target);

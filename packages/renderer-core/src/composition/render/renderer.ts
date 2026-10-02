@@ -15,6 +15,12 @@ import { createCanvas2dBackend } from "./canvas2d.ts";
 import { buildRenderGraph } from "./graph.ts";
 import { loadCompositionFonts, prepareCompositionText } from "./text.ts";
 import { COMPOSITION_RENDERER_VERSION } from "./version.ts";
+import {
+  prepareCompositionProviders,
+  type CanvasContentProvider,
+} from "./providers.ts";
+import { STORY_CONTENT_PROVIDERS } from "../adapters/story-providers.ts";
+import { validateStoryCompositionCoverage } from "../adapters/story-coverage.ts";
 
 /** A validated composition wrapped with the export runtime's canvas and timeline. */
 export type CompositionScene = {
@@ -112,6 +118,7 @@ export function createCompositionPreview(
   resources: CompositionResources,
   options: {
     createCanvas?: (width: number, height: number) => HTMLCanvasElement;
+    providers?: readonly CanvasContentProvider[];
   } = {},
 ): CompositionPreview {
   const validation = validateComposition(composition);
@@ -120,7 +127,27 @@ export function createCompositionPreview(
   canvas.height = composition.height;
   const ctx = canvas.getContext("2d", { alpha: false });
   if (!ctx) throw new Error("Canvas 2D is unavailable");
+  validateStoryCompositionCoverage(composition, (id) => {
+    const asset = composition.assets.find((asset) => asset.id === id)!;
+    if (asset.type !== "image")
+      throw new Error(`Cover asset is not an image: ${id}`);
+    const image = resources.images.get(id);
+    if (!image) throw new Error(`Cover image was not loaded: ${id}`);
+    const probe = options.createCanvas
+      ? options.createCanvas(asset.width, asset.height)
+      : document.createElement("canvas");
+    probe.width = asset.width;
+    probe.height = asset.height;
+    const context = probe.getContext("2d", { willReadFrequently: true });
+    if (!context) throw new Error("Canvas 2D is unavailable");
+    context.drawImage(image, 0, 0);
+    return context.getImageData(0, 0, probe.width, probe.height);
+  });
   const text = prepareCompositionText(composition, resources.fonts, ctx);
+  const drawProvider = prepareCompositionProviders(composition, resources, [
+    ...STORY_CONTENT_PROVIDERS,
+    ...(options.providers ?? []),
+  ]);
   const backend = createCanvas2dBackend({
     images: {
       images: resources.images,
@@ -131,6 +158,7 @@ export function createCompositionPreview(
       ),
     },
     drawText: text.draw,
+    drawProvider,
     ...(options.createCanvas ? { createCanvas: options.createCanvas } : {}),
   });
   const target = backend.wrap(canvas, ctx);

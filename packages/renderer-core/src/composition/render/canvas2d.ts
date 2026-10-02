@@ -6,7 +6,13 @@ import type {
 import { imagePlacement, type Matrix } from "../../node-transform.ts";
 import type { Rgba } from "../evaluate/types.ts";
 import type { RenderBackend } from "./backend.ts";
-import type { ClipRect, ImageContent, TextContent } from "./graph.ts";
+import type {
+  ClipRect,
+  ImageContent,
+  TextContent,
+  ProviderContent,
+} from "./graph.ts";
+import { passageError } from "../../passage-diagnostics.ts";
 import { COMPOSITION_RENDERER_VERSION } from "./version.ts";
 
 export type CanvasSurface = {
@@ -93,6 +99,10 @@ const matrixScale = (m: Matrix) =>
 export type Canvas2dBackendOptions = {
   images: CanvasImageResources;
   drawText: CanvasTextDrawer;
+  drawProvider?: (
+    ctx: CanvasRenderingContext2D,
+    content: ProviderContent,
+  ) => void;
   /** Defaults to `document.createElement("canvas")`. */
   createCanvas?: (width: number, height: number) => HTMLCanvasElement;
   /** Surfaces kept per size between frames. */
@@ -130,9 +140,21 @@ export function createCanvas2dBackend(
     ctx.globalCompositeOperation = "source-over";
     ctx.filter = "none";
   };
+  const transform = (
+    ctx: CanvasRenderingContext2D,
+    matrix: Matrix,
+    chain?: Matrix[],
+  ) => {
+    if (!chain) {
+      ctx.setTransform(...matrix);
+      return;
+    }
+    ctx.resetTransform();
+    for (const local of chain) ctx.transform(...local);
+  };
   const clip = (ctx: CanvasRenderingContext2D, clips: ClipRect[]) => {
     for (const c of clips) {
-      ctx.setTransform(...c.matrix);
+      transform(ctx, c.matrix, c.transforms);
       ctx.beginPath();
       ctx.rect(0, 0, c.width, c.height);
       ctx.clip();
@@ -144,12 +166,13 @@ export function createCanvas2dBackend(
     opacity: number,
     blend: CompositionBlendMode,
     clips: ClipRect[],
+    transforms?: Matrix[],
   ) => {
     const ctx = s.ctx;
     ctx.save();
-    reset(ctx);
     clip(ctx, clips);
-    ctx.setTransform(...matrix);
+    transform(ctx, matrix, transforms);
+    ctx.filter = "none";
     ctx.globalAlpha = opacity;
     ctx.globalCompositeOperation = COMPOSITE[blend];
     return ctx;
@@ -198,10 +221,37 @@ export function createCanvas2dBackend(
       ctx.fillRect(0, 0, width, height);
       ctx.restore();
     },
-    drawImage(dst, content, matrix, opacity, blend, clips) {
-      if (content.stateFrom === undefined || content.stateMix === undefined) {
-        const ctx = begin(dst, matrix, opacity, blend, clips);
-        drawSource(ctx, content, content.state);
+    fillRects(dst, ops) {
+      const ctx = begin(dst, [1, 0, 0, 1, 0, 0], 1, "normal", []);
+      try {
+        for (const op of ops) {
+          ctx.setTransform(...op.matrix);
+          ctx.globalAlpha = op.opacity;
+          ctx.fillStyle = cssColor(op.content.color);
+          ctx.fillRect(0, 0, op.content.width, op.content.height);
+        }
+      } finally {
+        ctx.restore();
+      }
+    },
+    drawImage(dst, content, matrix, opacity, blend, clips, transforms) {
+      // Settled states draw directly: a screen-sized intermediate resamples pixels
+      // and pays the crossfade cost even when no state transition is visible.
+      if (
+        content.stateFrom === undefined ||
+        content.stateMix === undefined ||
+        content.stateMix === 0 ||
+        content.stateMix === 1 ||
+        content.stateFrom === content.state
+      ) {
+        const ctx = begin(dst, matrix, opacity, blend, clips, transforms);
+        drawSource(
+          ctx,
+          content,
+          content.stateMix === 0 && content.stateFrom !== undefined
+            ? content.stateFrom
+            : content.state,
+        );
         ctx.restore();
         return;
       }
@@ -209,7 +259,7 @@ export function createCanvas2dBackend(
       // the incoming one added at mix, then composited as one layer.
       const tmp = backend.createSurface(dst.width, dst.height);
       const ctx = tmp.ctx;
-      ctx.setTransform(...matrix);
+      transform(ctx, matrix, transforms);
       ctx.globalAlpha = 1 - content.stateMix;
       drawSource(ctx, content, content.stateFrom);
       ctx.globalCompositeOperation = "lighter";
@@ -218,13 +268,27 @@ export function createCanvas2dBackend(
       backend.composite(tmp, dst, blend, opacity, [1, 0, 0, 1, 0, 0], clips);
       backend.releaseSurface(tmp);
     },
-    drawText(dst, content, matrix, opacity, blend, clips) {
-      const ctx = begin(dst, matrix, opacity, blend, clips);
+    drawText(dst, content, matrix, opacity, blend, clips, transforms) {
+      const ctx = begin(dst, matrix, opacity, blend, clips, transforms);
       options.drawText(ctx, content);
       ctx.restore();
     },
-    composite(src, dst, blend, opacity, matrix, clips) {
-      const ctx = begin(dst, matrix, opacity, blend, clips);
+    drawProvider(dst, content, matrix, opacity, blend, clips, transforms) {
+      if (!options.drawProvider)
+        passageError(
+          "comp-provider-unavailable",
+          `Provider ${content.layer.provider} was not prepared`,
+          { path: content.key },
+        );
+      const ctx = begin(dst, matrix, opacity, blend, clips, transforms);
+      try {
+        options.drawProvider(ctx, content);
+      } finally {
+        ctx.restore();
+      }
+    },
+    composite(src, dst, blend, opacity, matrix, clips, transforms) {
+      const ctx = begin(dst, matrix, opacity, blend, clips, transforms);
       ctx.drawImage(src.canvas, 0, 0);
       ctx.restore();
     },
@@ -241,7 +305,7 @@ export function createCanvas2dBackend(
       for (const mask of masks) {
         reset(cctx);
         cctx.clearRect(0, 0, target.width, target.height);
-        cctx.setTransform(...mask.matrix);
+        transform(cctx, mask.matrix, mask.transforms);
         const path = bezierPath2D(mask.path);
         cctx.fillStyle = "#000000";
         cctx.strokeStyle = "#000000";

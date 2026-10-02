@@ -1,6 +1,7 @@
 #!/usr/bin/env node
-import { readFile } from "node:fs/promises";
-import { dirname, resolve } from "node:path";
+import { readFile, writeFile } from "node:fs/promises";
+import { dirname, resolve, relative } from "node:path";
+import { storyToComposition } from "@still-shift/renderer-core";
 import { prepareCommerceFile } from "../../../packages/animation-engine/src/commerce-preparation.ts";
 import { pathToFileURL } from "node:url";
 import { readStoryPassage } from "../../../packages/animation-engine/src/story-passage-io.ts";
@@ -63,6 +64,7 @@ Usage:
   pnpm still-shift sfx generate --provider elevenlabs --id <slug> --prompt <text> --duration <seconds> --output-dir <new-directory> [--prompt-influence 0.3] [--loop true|false]
   pnpm still-shift prepare-commerce --brief <brief.json> --output <prepared.json>
   pnpm --silent still-shift comp render --input <composition.json> --output <path.mp4>
+  pnpm --silent still-shift comp export-json --scene <story.json> [--output <composition.json>]
   pnpm --silent still-shift batch --manifest <jsonl> --output-dir <path> [--format landscape|vertical] [--concurrency 1|2]
 
 The default adapter writes a validated 1080p H.264 MP4 and scene manifest.
@@ -387,6 +389,40 @@ export const runCli = async (
       return status === "passed" ? 0 : 1;
     } catch (error) {
       if (error instanceof AnimationEngineError) return writeFailure(error, io);
+      io.stderr(
+        `${JSON.stringify({ status: "failed", diagnostics: passageDiagnostics(error) })}\n`,
+      );
+      return 1;
+    }
+  }
+  if (args[0] === "comp" && args[1] === "export-json") {
+    try {
+      const values = parseNamedArguments(args.slice(2), ["scene", "output"]);
+      const scenePath = resolve(requireArgument(values, "scene"));
+      const scene = StorySceneSchema.parse(
+        JSON.parse(await readFile(scenePath, "utf8")),
+      );
+      const composition = storyToComposition(scene);
+      const output = values.get("output");
+      if (!output) io.stdout(`${JSON.stringify(composition, null, 2)}\n`);
+      else {
+        const outputPath = resolve(output);
+        composition.assets = composition.assets.map((asset) => ({
+          ...asset,
+          path: relative(
+            dirname(outputPath),
+            resolve(dirname(scenePath), asset.path),
+          ),
+        }));
+        await writeFile(
+          outputPath,
+          `${JSON.stringify(composition, null, 2)}\n`,
+          { flag: "wx" },
+        );
+        io.stdout(`${JSON.stringify({ status: "compiled", outputPath })}\n`);
+      }
+      return 0;
+    } catch (error) {
       io.stderr(
         `${JSON.stringify({ status: "failed", diagnostics: passageDiagnostics(error) })}\n`,
       );

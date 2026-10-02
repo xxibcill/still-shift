@@ -8,6 +8,7 @@ export default tseslint.config(
       ".pnpm-store/**",
       "apps/**/dist/**",
       ".venv/**",
+      ".claude/worktrees/**",
       "benchmarks/gallery/**",
       "benchmarks/results/**",
     ],

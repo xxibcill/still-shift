@@ -30,6 +30,8 @@ function systemFontLayers(composition: Composition): string[] {
   );
   return [composition, ...(composition.precomps ?? [])].flatMap((scope) =>
     scope.layers.flatMap((layer) => {
+      if (layer.type === "provider" && layer.usesSystemFonts)
+        return [scope === composition ? layer.id : `${scope.id}/${layer.id}`];
       if (layer.type !== "text") return [];
       const style = layer.style
         ? composition.textStyles?.[layer.style]

@@ -146,12 +146,18 @@ hardware GPU the Lab labels its preview approximate: previews stay within the
 `pnpm composition:hardware-preview`). `renderComposition` (animation engine) and
 `comp render` resolve asset paths relative to the composition file and write the MP4,
 a scene manifest and a result manifest. The manifest records
-`COMPOSITION_RENDERER_VERSION` (`composition-canvas-1.0.5`) and
+`COMPOSITION_RENDERER_VERSION` (`composition-canvas-1.1.0`) and
 `COMPOSITION_EVALUATOR_VERSION`, so both participate in cache identity.
 
 MP4 export requires even composition width and height for H.264's `yuv420p` format;
 `renderComposition` rejects odd dimensions before encoding. Odd dimensions remain
 valid for preview.
+
+The graph carries both the combined matrix for geometry and the camera/parent/local
+transform sequence for drawing. Canvas concatenates that sequence in order: passing
+only the combined matrix rounds its translation differently at the Canvas API
+boundary, which can change edge pixels despite identical evaluated geometry. Settled
+image states draw directly; only active crossfades allocate a blend surface.
 
 The output canvas is opaque: a transparent or absent `background` renders over black
 until alpha output formats arrive (CE15). Internal surfaces keep premultiplied alpha.
@@ -272,6 +278,69 @@ changing the contract.
   culling and constraints. The bounds include additive animator offsets, tracking,
   leading, group pivots, font-axis variants, blur, strokes and decorations, plus the
   union of all states while transitions can show another text.
+
+### Content providers (CE4a)
+
+A `provider` layer stores inspectable JSON for content that a family adapter cannot
+yet express with native primitives. Its `provider` id includes a version, for example
+`story.path@1.0.0`. `params` is a JSON object bounded to 64 KiB and 64 container
+levels, as other opaque composition payloads are. `assets` declares the asset ids
+the provider may read. References are validated, and preparation gives the provider
+only those decoded images and fonts. `usesSystemFonts: true` produces the existing
+`comp-text-system-font` warning and includes the layer in export manifests.
+
+Optional `bounds: [left, top, right, bottom]` is a conservative rectangle in layer
+space with positive width and height. Omitting it disables bounds culling for that
+content. The anchor defaults to `[0, 0]`. All ordinary layer transforms, parenting,
+group clips, opacity, masks, mattes, blend modes and precomp clocks still apply.
+
+The Canvas registry prepares each definition once and draws only local content at
+layer-local time. It does not evaluate a family scene. `createCompositionPreview`
+accepts additional `CanvasContentProvider` definitions through `options.providers`;
+duplicate ids fail. Export supports the built-in registry. Unknown ids and invalid
+provider payloads fail during preparation with a JSON path, rather than being skipped.
+Structural composition validation does not execute provider code.
+
+The story adapter registers `story.path@1.0.0` (uniform, ink and brush paths),
+`story.flow@1.0.0` (path flows), `story.rect@1.0.0` (rounded, stroked or revealing
+rectangles), and `story.text@1.0.0` (plain legacy text, including states, reveals and
+`textLayout`). Plain, fully revealed rectangles become native solids. Consecutive
+normal solids without clips can share a Canvas batch while preserving paint order.
+The text provider keeps the original direct text
+drawing for adapter parity; authored composition typography continues using native
+`text` layers. Adapter transforms and provider samples are baked at integer frames,
+held between frames and outside their source range. Image state changes use discrete
+keys. This slice rejects motion-craft,
+typography, components, effects, non-group drawable
+parents, text containers and `textBox`, and scenes longer than 2,000 frames. These
+are CE4a follow-ups; fractional motion-blur sampling is not supported by this slice.
+
+Attached connectors use `story.path@1.1.0` and `story.flow@1.1.0`. Their payloads store
+integer-frame endpoint pairs and the authored bend. A shared geometry primitive
+reconstructs the curve without evaluating the source scene at render time. Endpoints
+already include camera projection, so these layers use camera depth zero. Existing
+1.0.0 provider payloads remain supported.
+
+Image `camera.cover` declarations persist as `metadata.storyCameraCover`. During
+composition preparation, every integer frame's image crop, state and camera transform
+are checked against the decoded source alpha using the same transparent-pixel threshold
+as the legacy renderer. Invalid coverage fails with `comp-camera-coverage`, identifying
+the cover layer and frame. Rectangle coverage remains checked during compilation.
+
+Repeated trailing samples are omitted for paths, rectangles, connector endpoints
+and plain text; the providers hold
+the final sample without changing earlier frame indices. Flow samples retain their
+full source clock. Payloads still exceeding 64 KiB report the source node and path.
+
+Cue windows become markers. Cues that already satisfy the marker ID contract retain
+their IDs; other cues receive deterministic `cue-N` IDs that avoid authored IDs.
+Marker labels keep the cue text, truncated to the label contract's 200 characters.
+
+```ts
+import { storyToComposition } from "@still-shift/renderer-core";
+
+const composition = storyToComposition(storyScene, { id: "access-constraint" });
+```
 
 ## Validating
 
@@ -452,6 +521,7 @@ actual time-dependent values stay in range; reduce the deltas or separate their 
 | `solid`                      | `size` `[w, h]`; `color` (animatable).                                                                                                                                                                                                                                                                                                                                          | CE1       |
 | `image`                      | `size`; `fit` (`contain` default, `cover`, `stretch`); `sources` (`{ asset, crop?, pose?, registration?, anchors? }[]`); `state` (discrete index into `sources`); `stateFrom` + `stateMix` (crossfade); `rasterize` (`draw` default, `natural-size`).                                                                                                                           | CE1       |
 | `text`                       | `text`; `states` + `state`; `fontSize`; `size` (the `textBox` wrap box); `color` (animatable); `weight`, `font`, `fontAsset`, `style`, `align`, `textRole`, `textLayout`, `textBox`, `revealMode`, `reveal` (animatable 0–1) and the story typography fields (`spans`, `locale`, `anchor`, `wrap`, `orphanFraction`, `decorations`, `transition(s)`, `feather`, `lineOverlap`). | CE1       |
+| `provider`                   | Versioned `provider` id; bounded `params`; declared `assets`; optional `bounds` and `usesSystemFonts`. See [content providers](#content-providers-ce4a).                                                                                                                                                                                                                        | CE4a      |
 | `null`                       | No content; a transform for parenting.                                                                                                                                                                                                                                                                                                                                          | CE1       |
 | `group`                      | `size`; `clip`. Children (layers parented to it) multiply its opacity and, with `clip`, are clipped to its bounds. Opacity applies per child, unlike a precomp. Produced by family adapters (parity note 1).                                                                                                                                                                    | CE1       |
 | `precomp`                    | `comp` (precomp id); `collapseTransforms`; `timeRemap` (animatable precomp frame).                                                                                                                                                                                                                                                                                              | CE1       |
@@ -724,6 +794,14 @@ retain their original bounds.
 | `comp-path-type`            | A driver or periodic motion targets a non-scalar property.                                                                                                 |
 | `comp-path-readonly`        | A read-only path (`comp.camera.*`) is used as a target.                                                                                                    |
 | `comp-feature-unavailable`  | A contract feature whose milestone has not landed; see [availability](#feature-availability).                                                              |
+| `comp-provider-bounds`      | Provider bounds have non-positive width or height.                                                                                                         |
+| `comp-provider-unavailable` | Provider preparation cannot find the exact versioned id.                                                                                                   |
+| `comp-provider-duplicate`   | The renderer registry contains the same versioned id twice.                                                                                                |
+| `comp-provider-params`      | A built-in provider payload is invalid; reported during preparation.                                                                                       |
+| `comp-provider-asset`       | A provider uses an undeclared, missing or incompatible asset.                                                                                              |
+| `comp-camera-coverage`      | A persisted story image cover leaves the viewport uncovered or samples transparent pixels.                                                                 |
+| `comp-adapter-unsupported`  | A story feature is outside the current adapter slice; the path identifies it.                                                                              |
+| `comp-adapter-limit`        | Baking the story would exceed the 2,000-key limit.                                                                                                         |
 
 ### Warnings
 

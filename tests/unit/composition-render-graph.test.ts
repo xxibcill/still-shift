@@ -6,6 +6,12 @@ import type {
 } from "@still-shift/scene-contract";
 import { evaluateComp } from "../../packages/renderer-core/src/composition/evaluate/index.ts";
 import {
+  executeGraph,
+  type RenderBackend,
+  type Surface,
+  type SolidDraw,
+} from "../../packages/renderer-core/src/composition/render/backend.ts";
+import {
   buildRenderGraph,
   type DrawOp,
   type IsolateOp,
@@ -58,6 +64,85 @@ const summary = (ops: RenderOp[]): unknown[] =>
   );
 
 describe("render graph", () => {
+  it.each([true, false])(
+    "preserves paint order and isolation when solid batching is %s",
+    (batching) => {
+      const calls: string[] = [];
+      const backend: RenderBackend = {
+        version: "test",
+        createSurface: (width, height) => ({ width, height }),
+        releaseSurface: () => {},
+        clear: () => {},
+        fillRect: (_dst, _matrix, width) => {
+          calls.push(`fill:${width}`);
+        },
+        drawImage: () => {},
+        drawText: () => {},
+        drawProvider: () => {},
+        composite: () => {
+          calls.push("composite");
+        },
+        applyMask: () => {
+          calls.push("mask");
+        },
+        applyMatte: () => {},
+        lerp: () => {},
+        readPixels: () => new Uint8ClampedArray(),
+        ...(batching
+          ? {
+              fillRects: (_dst: Surface, ops: SolidDraw[]) => {
+                calls.push(
+                  `batch:${ops.map((op) => op.content.width).join(",")}`,
+                );
+              },
+            }
+          : {}),
+      };
+      const doc = comp([
+        solid("top", { size: [7, 10] }),
+        solid("masked", {
+          size: [6, 10],
+          masks: [
+            {
+              id: "mask",
+              mode: "add",
+              path: {
+                closed: true,
+                vertices: [
+                  [0, 0],
+                  [10, 0],
+                  [10, 10],
+                ],
+              },
+            },
+          ],
+        }),
+        solid("blend", { size: [5, 10], blendMode: "multiply" }),
+        solid("clipped", { size: [4, 10], parent: "clip" }),
+        {
+          id: "clip",
+          type: "group",
+          clip: true,
+          size: [200, 100],
+          transform: { anchor: [0, 0] },
+        },
+        solid("c", { size: [3, 10] }),
+        solid("b", { size: [2, 10] }),
+        solid("a", { size: [1, 10] }),
+      ]);
+      executeGraph(backend, graph(doc), { width: 200, height: 100 });
+      expect(calls).toEqual([
+        ...(batching ? ["batch:1,2,3"] : ["fill:1", "fill:2", "fill:3"]),
+        "fill:4",
+        "fill:5",
+        "composite",
+        "fill:6",
+        "mask",
+        "composite",
+        "fill:7",
+      ]);
+    },
+  );
   it("paints the first slice bottom to top with isolation only where needed", () => {
     const doc = JSON.parse(
       readFileSync(
@@ -358,7 +443,12 @@ describe("render graph", () => {
     ]);
     const [op] = graph(doc).root.ops as DrawOp[];
     expect(op!.clips).toEqual([
-      { matrix: [1, 0, 0, 1, 45, 30], width: 30, height: 20 },
+      {
+        matrix: [1, 0, 0, 1, 45, 30],
+        transforms: [[1, 0, 0, 1, 45, 30]],
+        width: 30,
+        height: 20,
+      },
     ]);
   });
 

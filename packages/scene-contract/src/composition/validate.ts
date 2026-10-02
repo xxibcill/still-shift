@@ -144,6 +144,21 @@ function checkLayer(
 
   duplicates(fail, layer.masks, [...path, "masks"], "mask");
   duplicates(fail, layer.effects, [...path, "effects"], "effect");
+  if (layer.type === "provider") {
+    layer.assets?.forEach((id, i) => {
+      if (!assets.has(id))
+        fail("comp-asset-missing", [...path, "assets", i], `no asset "${id}"`);
+    });
+    if (
+      layer.bounds &&
+      (layer.bounds[0] >= layer.bounds[2] || layer.bounds[1] >= layer.bounds[3])
+    )
+      fail(
+        "comp-provider-bounds",
+        [...path, "bounds"],
+        "provider bounds must have positive width and height",
+      );
+  }
   layer.masks?.forEach((mask, i) => {
     if (values(mask.path).some((p) => !p.closed))
       fail(
@@ -913,6 +928,12 @@ export function compositionWarnings(comp: Composition): CompositionWarning[] {
     const base = scopeBase(comp, scope);
     scope.layers.forEach((layer, i) => {
       if (layer.type === "precomp") used.add(layer.comp);
+      if (layer.type === "provider" && layer.usesSystemFonts)
+        warnings.push({
+          code: "comp-text-system-font",
+          path: [...base, "layers", i, "usesSystemFonts"],
+          message: `Provider "${layer.id}" uses generic browser fonts, which can differ between machines and browser versions`,
+        });
       if ((layer.inPoint ?? 0) >= scope.frameCount)
         warnings.push({
           code: "comp-layer-never-visible",

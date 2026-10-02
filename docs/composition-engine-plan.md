@@ -1,7 +1,7 @@
 # Programmable composition engine — implementation plan
 
-- **Updated:** 2026-10-01
-- **Status:** CE0, CE1 and CE2 complete (2026-10-01); CE3 in progress. Q1 and Q3 decided
+- **Updated:** 2026-10-02
+- **Status:** CE0–CE3 complete (2026-10-01); CE4a in progress (2026-10-02). Q1 and Q3 decided
   2026-09-30; Q2, Q4 and Q8 decided 2026-10-01; Q5–Q7 open.
 - **Baseline:** `6772717` — `Merge pull request #22 from xxibcill/codex/still-shift-plan-completion`
 - **Tracker owner:** unassigned. Record the owner and branch per milestone in the [tracker](#milestone-tracker).
@@ -355,27 +355,27 @@ sign and for time remap. It does not change the layer's composition-time visibil
 
 ## Milestone tracker
 
-| ID   | Deliverable                                     | Phase | Depends on                | Owner                  | Branch                  | Status | Completion evidence                                             |
-| ---- | ----------------------------------------------- | ----- | ------------------------- | ---------------------- | ----------------------- | ------ | --------------------------------------------------------------- |
-| CE0  | Baseline, parity harness and feature matrix     | A     | —                         | xxibcill (Claude Code) | `codex/composition-ce0` | `[x]`  | [CE0 record](#ce0--baseline-parity-harness-and-feature-matrix)  |
-| CE1  | `composition-1` contract and property paths     | A     | CE0                       | xxibcill (Claude Code) | `codex/composition-ce1` | `[x]`  | [CE1 record](#ce1--composition-1-contract-and-property-paths)   |
-| CE2  | Pure composition evaluator                      | A     | CE1                       | Codex                  | `codex/composition-ce2` | `[x]`  | [CE2 record](#ce2--pure-composition-evaluator)                  |
-| CE3  | Render graph and Canvas 2D reference backend    | A     | CE2                       | xxibcill (Claude Code) | `codex/composition-ce3` | `[~]`  | Implementation started from `codex/composition-ce2` (`273d2c1`) |
-| CE4a | Story adapter with visual parity                | A     | CE3                       |                        |                         | `[ ]`  |                                                                 |
-| CE4b | Commerce and reusable-component adapter         | A     | CE3, CE6 (effects parity) |                        |                         | `[ ]`  |                                                                 |
-| CE4c | Cinematic adapter                               | A     | CE3, CE8                  |                        |                         | `[ ]`  |                                                                 |
-| CE4d | Legacy illustrated adapter and old-path removal | A     | CE4a–CE4c                 |                        |                         | `[ ]`  |                                                                 |
-| CE5  | Shape layers                                    | B     | CE3                       |                        |                         | `[ ]`  |                                                                 |
-| CE6  | WebGL2 backend and effect registry              | B     | CE3                       |                        |                         | `[ ]`  |                                                                 |
-| CE7  | Motion blur and time controls                   | B     | CE3                       |                        |                         | `[ ]`  |                                                                 |
-| CE8  | 2.5D layers and unified camera                  | B     | CE3, CE6, CE9             |                        |                         | `[ ]`  |                                                                 |
-| CE9  | Expressions and motion behaviours               | C     | CE2                       |                        |                         | `[ ]`  |                                                                 |
-| CE10 | TypeScript builder API and CLI                  | C     | CE3, CE4a, CE9, CE12      |                        |                         | `[ ]`  |                                                                 |
-| CE11 | Lab composition inspector and graph editor      | C     | CE3, CE10                 |                        |                         | `[ ]`  |                                                                 |
-| CE12 | Motion linting                                  | C     | CE2                       |                        |                         | `[ ]`  |                                                                 |
-| CE13 | Video, image-sequence and audio layers          | D     | CE3, CE7                  |                        |                         | `[ ]`  |                                                                 |
-| CE14 | Mesh warp and puppet pins                       | D     | CE6                       |                        |                         | `[ ]`  |                                                                 |
-| CE15 | Output formats, caching and parallel rendering  | D     | CE3                       |                        |                         | `[ ]`  |                                                                 |
+| ID   | Deliverable                                     | Phase | Depends on                | Owner                  | Branch                  | Status | Completion evidence                                                                |
+| ---- | ----------------------------------------------- | ----- | ------------------------- | ---------------------- | ----------------------- | ------ | ---------------------------------------------------------------------------------- |
+| CE0  | Baseline, parity harness and feature matrix     | A     | —                         | xxibcill (Claude Code) | `codex/composition-ce0` | `[x]`  | [CE0 record](#ce0--baseline-parity-harness-and-feature-matrix)                     |
+| CE1  | `composition-1` contract and property paths     | A     | CE0                       | xxibcill (Claude Code) | `codex/composition-ce1` | `[x]`  | [CE1 record](#ce1--composition-1-contract-and-property-paths)                      |
+| CE2  | Pure composition evaluator                      | A     | CE1                       | Codex                  | `codex/composition-ce2` | `[x]`  | [CE2 record](#ce2--pure-composition-evaluator)                                     |
+| CE3  | Render graph and Canvas 2D reference backend    | A     | CE2                       | xxibcill (Claude Code) | `codex/composition-ce3` | `[x]`  | [CE3 record](#ce3--render-graph-and-canvas-2d-reference-backend); merged in PR #28 |
+| CE4a | Story adapter with visual parity                | A     | CE3                       | Codex                  | `codex/composition-ce4` | `[~]`  | [CE4a start record](#ce4a-start-record-2026-10-02)                                 |
+| CE4b | Commerce and reusable-component adapter         | A     | CE3, CE6 (effects parity) |                        |                         | `[ ]`  |                                                                                    |
+| CE4c | Cinematic adapter                               | A     | CE3, CE8                  |                        |                         | `[ ]`  |                                                                                    |
+| CE4d | Legacy illustrated adapter and old-path removal | A     | CE4a–CE4c                 |                        |                         | `[ ]`  |                                                                                    |
+| CE5  | Shape layers                                    | B     | CE3                       |                        |                         | `[ ]`  |                                                                                    |
+| CE6  | WebGL2 backend and effect registry              | B     | CE3                       |                        |                         | `[ ]`  |                                                                                    |
+| CE7  | Motion blur and time controls                   | B     | CE3                       |                        |                         | `[ ]`  |                                                                                    |
+| CE8  | 2.5D layers and unified camera                  | B     | CE3, CE6, CE9             |                        |                         | `[ ]`  |                                                                                    |
+| CE9  | Expressions and motion behaviours               | C     | CE2                       |                        |                         | `[ ]`  |                                                                                    |
+| CE10 | TypeScript builder API and CLI                  | C     | CE3, CE4a, CE9, CE12      |                        |                         | `[ ]`  |                                                                                    |
+| CE11 | Lab composition inspector and graph editor      | C     | CE3, CE10                 |                        |                         | `[ ]`  |                                                                                    |
+| CE12 | Motion linting                                  | C     | CE2                       |                        |                         | `[ ]`  |                                                                                    |
+| CE13 | Video, image-sequence and audio layers          | D     | CE3, CE7                  |                        |                         | `[ ]`  |                                                                                    |
+| CE14 | Mesh warp and puppet pins                       | D     | CE6                       |                        |                         | `[ ]`  |                                                                                    |
+| CE15 | Output formats, caching and parallel rendering  | D     | CE3                       |                        |                         | `[ ]`  |                                                                                    |
 
 ### Phases and parallel work
 
@@ -426,7 +426,7 @@ through the story adapter with recorded parity.
       [`first-slice.json`](../benchmarks/fixtures/composition/ce1/first-slice.json).
 - [x] CE2 evaluator covering those features.
 - [x] CE3 Canvas 2D backend covering those features, wired into export.
-- [ ] CE4a adapter for `benchmarks/fixtures/story-motion-continuous/access-constraint.json`
+- [x] CE4a adapter for `benchmarks/fixtures/story-motion-continuous/access-constraint.json`
       with the parity result recorded.
 - [ ] CE9 expressions and baking, and CE12 linting, as prerequisites for the CE10 CLI.
 - [ ] CE10 builder and CLI, including `comp render`, after CE4a, CE9 and CE12.
@@ -1250,7 +1250,7 @@ General rules for all adapters:
 
 ### CE4a — Story
 
-- [ ] Add content providers to the contract as a layer type with a versioned provider
+- [x] Add content providers to the contract as a layer type with a versioned provider
       id, with schema, reference and diagnostics as in CE1.
 - [ ] Decide how a family scene uses a composition-only feature (Q2 freezes the
       family's visual vocabulary): a passage beat that is a `composition-1` file, a
@@ -1308,7 +1308,103 @@ Lab preview and export agree; render time is no worse than 1.25× the CE0 baseli
 **Verification:** Family browser tests re-run on the composition path; baseline
 comparisons; the full `pnpm check`.
 
-**Completion record:** _to be filled in per part._
+### CE4a start record (2026-10-02)
+
+- **Owner / branch:** Codex, `codex/composition-ce4`, created from `main` at `b2df4f1`
+  (CE3 merged in PR #28). The stale CE3 tracker status was reconciled with its
+  completed checklist, completion record and merged implementation.
+- **Delivered slice:** versioned provider layers with bounded JSON, declared asset
+  dependencies, conservative bounds, runtime diagnostics and Canvas registration.
+  `storyToComposition` runs the story compiler and emits native images and clipped
+  groups, plus `story.path@1.0.0`, `story.flow@1.0.0` and `story.text@1.0.0` providers.
+  Recipes become integer-frame keys; camera keys, tangents, ease flags and jolts
+  retain their existing contract. Cue windows become composition markers.
+- **Inspection:** `pnpm still-shift comp export-json --scene <story.json> --output <composition.json>` rebases asset paths and refuses overwrite. `comp render`
+  exports that file through the existing composition runtime.
+- **Versions:** adapter `story-composition-0.1.0`, evaluator `composition-evaluator-9`,
+  renderer `composition-canvas-1.1.0`.
+- **Verification:** on Node 22.23.1 and pnpm 10.29.3:
+  - `pnpm test:browser:composition-story-adapter`: all 192 Access Constraint frames
+    match exactly (maximum channel delta 0). Adapter unit tests also match every
+    node's evaluated matrix and inherited opacity in reverse frame order. Random
+    backward seeks and provider alpha-matte isolation pass. Render plus readback
+    costs 860.6 ms versus the legacy path's 819.6 ms (**1.05×**, below the 1.25× gate).
+  - `comp export-json` preserves assets after relocation and refuses overwrite;
+    two 192-frame `comp render` exports are byte-identical.
+  - Schema, package boundaries, formatting, lint, types, unit, runtime, integration,
+    depth, golden, every legacy browser group, the composition evaluator and
+    `test:browser:composition` pass. The aggregate `pnpm check` run was resumed after
+    repairing a missing link for the CLI's already-declared workspace dependency;
+    the lateral-camera browser group passed on retry after a playback wait timeout.
+    No timeout, performance threshold or baseline was changed.
+  - `pnpm test:browser:composition-baselines`: **176 items, 36,061 frames in 264.85 s,
+    all exact** against the stored `darwin-arm64` baseline. No legacy renderer
+    version changed and no baseline was regenerated.
+- **Remaining at this checkpoint:** motion-craft and typography translation, text containers,
+  rectangles, drawable parents, attached paths, camera alpha coverage, full acting
+  and component fixtures, passage beat compilation, qualification metadata,
+  continuous-quality measurements,
+  and all-family fixture parity. This first slice bakes at most 2,000 frames and holds
+  samples between integer frames. Unsupported inputs return a path and diagnostic;
+  they do not switch to the legacy renderer. Existing family defaults remain in place.
+- **Composition-only story features:** still undecided; this slice adds no such story
+  feature, so the plan's first-real-case decision remains a follow-up.
+- **Later adapter parts:** CE4b needs CE6 for effects, CE4c needs CE8 for 2.5D cameras,
+  and CE4d needs all three family adapters. They remain planned.
+
+### CE4a story-content follow-up (2026-10-02)
+
+- **Delivered:** all 14 ordinary story fixtures and six passage beats in the CE0
+  inventory now compile through the adapter. Attached paths and flows use versioned
+  `story.path@1.1.0` / `story.flow@1.1.0` providers with baked endpoints and a shared
+  bend primitive. Rectangles use native solids when plain and fully revealed, or
+  `story.rect@1.0.0` for rounding, strokes and reveals. Image state changes use the
+  discrete-key contract. Existing 1.0.0 path/flow payloads remain supported.
+- **Performance:** consecutive normal solids without clips share a Canvas batch.
+  Camera samples are reused per depth within a frame, matte lookups use sets, and
+  bounds projection avoids temporary point arrays. Raster providers and images
+  retain the legacy transform concatenation order; native solids use the combined
+  matrix. Masks, mattes, blends and clipped content retain their graph boundaries.
+- **Versions:** adapter `story-composition-0.2.0`, evaluator `composition-evaluator-9`,
+  renderer `composition-canvas-1.2.0`.
+- **Verification:** `pnpm test:browser:composition-story-fixtures` checks all 4,678
+  integer frames, every source node's matrix and inherited opacity, discrete image
+  states, backward seeks, assigned CE0 pixel tiers and the 1.25× render/readback
+  gate. All 20 items pass: 18 match exactly; Dated System Break and Calibration Pan
+  have a maximum channel delta of 1 (minimum PSNR 80.96 dB), within their assigned
+  near tier. The slowest item is Calibration Pan at **1.22×** legacy time. The
+  command is included in `pnpm check`. Access Constraint also remains pixel-exact
+  at **1.03×**, with two byte-identical 192-frame MP4 exports.
+  - The full local `pnpm check` passes on Node 22.23.1 / pnpm 10.29.3, including
+    composition rendering, legacy family suites, typography and CE0 baselines:
+    **176 items, 36,061 frames, all exact in 281.35 s**. No baseline or threshold
+    changed. The evaluator's mask-feather overshoot regression also passes with
+    the targeted evaluator suite, type check and lint after the fast-path fix.
+    GitHub Actions remain disabled.
+- **Remaining:** motion-craft, typography, text containers, drawable parents, acting
+  and component fixtures, camera alpha coverage, qualification metadata and
+  continuous-quality measurements. Passage beats are covered as adapter inputs;
+  production passage rendering still uses the family path. The composition-only
+  story feature decision and remaining CE4a acceptance criteria stay open.
+
+### CE4a camera coverage review fix (2026-10-02)
+
+Image camera cover declarations now survive JSON export in `metadata.storyCameraCover`.
+Composition preparation checks the sampled source pixels at every integer frame,
+including crops, image states and camera motion, and reports `comp-camera-coverage`
+with the cover layer and frame on failure. This uses native composition evaluation
+and the shared legacy alpha threshold. Rectangle coverage remains checked during
+story compilation. Versions: adapter `story-composition-0.2.1`, renderer
+`composition-canvas-1.2.1`.
+
+Local verification on Node 22.23.1 / pnpm 10.29.3: `pnpm check:fast` passes all
+1,072 unit tests plus schema, boundary, formatting, lint and type checks. The
+adapter browser suite rejects transparent persisted covers, retains exact parity
+for all 192 Access Constraint frames, and exports two byte-identical MP4s. The
+fixture suite passes all 20 items / 4,678 frames. Calibration Pan's initial timing
+was 1.262×; the unchanged rerun passes at 1.211×. No baseline or threshold changed.
+
+**Completion record:** CE4a is in progress; CE4b–CE4d have not started.
 
 ---
 
@@ -1940,6 +2036,8 @@ A milestone is complete when **all** of the following hold:
 | 2026-10-01 | CE3: export/preview identity is proven by encoding the preview's frames with the export's encoder arguments and requiring identical decoded frames                                                                                                                                                                                                                                                                                                                                                                                  | H.264 at CRF 18 costs 38–41 dB against raw frames on fine line art, so tolerances against raw frames cannot separate codec loss from renderer differences                                                                                       |                            |
 | 2026-10-01 | CE3: text without a pinned font warns (`comp-text-system-font`) and is listed in render results; CE10 makes it an error for authored compositions, keeping the warning for adapter output (`source.family`)                                                                                                                                                                                                                                                                                                                         | Determinism (invariant 3) cannot hold with system fonts; adapted legacy scenes still need the generic path for visual parity until CE4d decides whether to pin their fonts                                                                      |                            |
 | 2026-10-01 | CE3: close the acceptance's Lab clause with a minimal composition page and a hardware-preview measurement now, rather than in CE11; the feathered mask is a recorded GPU exception until the CE6 blur                                                                                                                                                                                                                                                                                                                               | The page is the seed of the CE11 inspector; measuring now records the preview guarantee for every CE3 feature                                                                                                                                   |                            |
+| 2026-10-02 | CE4a first slice uses versioned provider ids with bounded JSON and declared asset dependencies. Plain legacy story text uses `story.text@1.0.0`, while authored composition typography keeps native text layers.                                                                                                                                                                                                                                                                                                                    | Preserves direct story text drawing without calling a family scene renderer from the graph; providers are migration seams for later native shapes and text.                                                                                     | `codex/composition-ce4`    |
+| 2026-10-02 | The render graph retains camera and parent transform sequences alongside combined matrices; Canvas concatenates them in order. Settled images draw directly without crossfade surfaces.                                                                                                                                                                                                                                                                                                                                             | Live story parity exposed Canvas API rounding of combined translations and extra image resampling through redundant surfaces. Evaluated state remains pure and unchanged; renderer output has a new version.                                    | `codex/composition-ce4`    |
 
 ## Open questions for the owner
 
@@ -1993,23 +2091,24 @@ with general primitives; the "Target" column names that later form.
 
 ### Scene structure and nodes
 
-| Feature                                                    | Today                                                                | `composition-1` form                                                          | Milestone          |
-| ---------------------------------------------------------- | -------------------------------------------------------------------- | ----------------------------------------------------------------------------- | ------------------ |
-| Scene size, fps, duration, background                      | `PreparedSceneFieldsSchema`, `frameCount`                            | Composition `width`, `height`, `fps`, `frameCount`, `background`              | CE1                |
-| Format variants (landscape/vertical, commerce profiles)    | `formats`, `format`, cinematic vertical fixtures, commerce `profile` | One composition per resolved variant; the adapter selects the variant         | CE4                |
-| Image node, `fit`, `crop`                                  | `prepared.ts` image                                                  | Image layer with `fit` and source `crop`                                      | CE1–CE3            |
-| Image states and state switch                              | `states[]`, `state` track, component state cuts                      | Image layer `sources[]` plus hold-keyed `state` property                      | CE1–CE3            |
-| State crossfade (`stateFrom`/`stateMix`)                   | Renderer blends with `lighter` on a scratch canvas                   | Image layer `stateMix` property rendered by the same two-pass blend           | CE3                |
-| Pose registration and anchors per state                    | `registration`, `anchors` on image states                            | Per-source registration offset and named anchor points on the image layer     | CE1                |
-| SVG pre-rasterisation (`motionGrammar: "v2"`)              | Assets rasterised once at natural size                               | Image source option `rasterize: "natural-size"`                               | CE1, CE3           |
-| Rect node (`fill`, `stroke`, `radius`)                     | `prepared.ts` rect                                                   | Solid layer when unstroked and square; otherwise shape layer `rect`           | CE3 (interim), CE5 |
-| Path node: uniform, `ink`, `brush` line styles             | `ink-path.ts`, `brush-path.ts`                                       | Interim content provider `story-path`; target shape path with stroke styles   | CE4a, CE5          |
-| Path `endArrow`, `gap`, `pinch`, `reveal`                  | Path drawing in `illustrated-renderer.ts`                            | Interim provider; target stroke end cap, trim paths and width profile         | CE4a, CE5          |
-| Text node, fonts, `textBox`, `textLayout`, `align`, states | `typography-renderer.ts`, `text-layout.ts`                           | Text layer whose content is drawn by the existing typography renderer         | CE3                |
-| Group node with `clip`                                     | `group` with optional clip                                           | Group layer (see parity note 1) with a rectangular mask when clipped          | CE1, CE3           |
-| `parent` hierarchy                                         | `parent` on every node                                               | Layer `parent`, plus opacity inheritance option (parity note 1)               | CE1–CE2            |
-| `initialState`                                             | Story `initialState`                                                 | Initial property values                                                       | CE1                |
-| Text containers (caption, speech, thought, tail side)      | `story-acting.ts`, `text-container.ts`                               | Interim content provider `text-container`; target shape layer plus text layer | CE4a, CE5          |
+| Feature                                                    | Today                                                                | `composition-1` form                                                                    | Milestone          |
+| ---------------------------------------------------------- | -------------------------------------------------------------------- | --------------------------------------------------------------------------------------- | ------------------ |
+| Scene size, fps, duration, background                      | `PreparedSceneFieldsSchema`, `frameCount`                            | Composition `width`, `height`, `fps`, `frameCount`, `background`                        | CE1                |
+| Format variants (landscape/vertical, commerce profiles)    | `formats`, `format`, cinematic vertical fixtures, commerce `profile` | One composition per resolved variant; the adapter selects the variant                   | CE4                |
+| Image node, `fit`, `crop`                                  | `prepared.ts` image                                                  | Image layer with `fit` and source `crop`                                                | CE1–CE3            |
+| Image states and state switch                              | `states[]`, `state` track, component state cuts                      | Image layer `sources[]` plus hold-keyed `state` property                                | CE1–CE3            |
+| State crossfade (`stateFrom`/`stateMix`)                   | Renderer blends with `lighter` on a scratch canvas                   | Image layer `stateMix` property rendered by the same two-pass blend                     | CE3                |
+| Pose registration and anchors per state                    | `registration`, `anchors` on image states                            | Per-source registration offset and named anchor points on the image layer               | CE1                |
+| SVG pre-rasterisation (`motionGrammar: "v2"`)              | Assets rasterised once at natural size                               | Image source option `rasterize: "natural-size"`                                         | CE1, CE3           |
+| Rect node (`fill`, `stroke`, `radius`)                     | `prepared.ts` rect                                                   | Native solid when plain and fully revealed; interim `story.rect@1.0.0`, then CE5 shapes | CE3 (interim), CE5 |
+| Path node: uniform, `ink`, `brush` line styles             | `ink-path.ts`, `brush-path.ts`                                       | Interim content provider `story.path@1.0.0`; target shape path with stroke styles       | CE4a, CE5          |
+| Path `endArrow`, `gap`, `pinch`, `reveal`                  | Path drawing in `illustrated-renderer.ts`                            | Interim provider; target stroke end cap, trim paths and width profile                   | CE4a, CE5          |
+| Text node, fonts, `textBox`, `textLayout`, `align`, states | `typography-renderer.ts`, `text-layout.ts`                           | Text layer whose content is drawn by the existing typography renderer                   | CE3                |
+| Group node with `clip`                                     | `group` with optional clip                                           | Group layer (see parity note 1) with a rectangular mask when clipped                    | CE1, CE3           |
+| `parent` hierarchy                                         | `parent` on every node                                               | Layer `parent`, plus opacity inheritance option (parity note 1)                         | CE1–CE2            |
+| `initialState`                                             | Story `initialState`                                                 | Initial property values                                                                 | CE1                |
+| Plain legacy text, states, reveal and textLayout           | `story-text.ts`                                                      | Interim content provider `story.text@1.0.0`; target native text after parity            | CE4a               |
+| Text containers (caption, speech, thought, tail side)      | `story-acting.ts`, `text-container.ts`                               | Interim content provider `text-container`; target shape layer plus text layer           | CE4a, CE5          |
 
 ### Timing and animation
 
@@ -2053,16 +2152,16 @@ with general primitives; the "Target" column names that later form.
 
 ### Story-only rendering
 
-| Feature                                                       | Today                      | `composition-1` form                                                                 | Milestone    |
-| ------------------------------------------------------------- | -------------------------- | ------------------------------------------------------------------------------------ | ------------ |
-| Story camera keys (`x`, `y`, `zoom`), ease flags, tangents    | `story-camera.ts`          | Composition 2D camera with per-layer depth factor (parity note 3); later CE8 camera  | CE1–CE2, CE8 |
-| Camera `depth` per root and `cover` list                      | `StoryCameraSchema`        | Layer depth factor; `cover` as coverage-required layers                              | CE1, CE8     |
-| Camera jolts                                                  | `jolts`                    | Evaluated in the 2D camera step; later `camera-shake` behaviour                      | CE2, CE9     |
-| Flows (dots/dashes along a path, speed, colour states, pinch) | `story-flows.ts`           | Interim provider `story-flow`; target shape repeater along trimmed path              | CE4a, CE5    |
-| Connectors (anchor-to-anchor paths with bend)                 | `connectors`               | Compiled path geometry per frame via interim provider; target expression-driven path | CE4a, CE9    |
-| Safe zones, `safeInset`, review metadata, focal events        | `story.ts`                 | Composition metadata; checked by lint                                                | CE1, CE12    |
-| Semantic checks (`stable-anchors`, `clearance`)               | `motion-craft.ts` `checks` | Lint rules                                                                           | CE12         |
-| Shared effects (`effects-1`)                                  | `shared-effects.ts`        | Effect registry                                                                      | CE6          |
+| Feature                                                       | Today                      | `composition-1` form                                                                       | Milestone    |
+| ------------------------------------------------------------- | -------------------------- | ------------------------------------------------------------------------------------------ | ------------ |
+| Story camera keys (`x`, `y`, `zoom`), ease flags, tangents    | `story-camera.ts`          | Composition 2D camera with per-layer depth factor (parity note 3); later CE8 camera        | CE1–CE2, CE8 |
+| Camera `depth` per root and `cover` list                      | `StoryCameraSchema`        | Layer depth factor; `cover` as coverage-required layers                                    | CE1, CE8     |
+| Camera jolts                                                  | `jolts`                    | Evaluated in the 2D camera step; later `camera-shake` behaviour                            | CE2, CE9     |
+| Flows (dots/dashes along a path, speed, colour states, pinch) | `story-flows.ts`           | Interim provider `story.flow@1.0.0`; target shape repeater along trimmed path              | CE4a, CE5    |
+| Connectors (anchor-to-anchor paths with bend)                 | `connectors`               | Baked endpoints via `story.path@1.1.0` / `story.flow@1.1.0`; target expression-driven path | CE4a, CE9    |
+| Safe zones, `safeInset`, review metadata, focal events        | `story.ts`                 | Composition metadata; checked by lint                                                      | CE1, CE12    |
+| Semantic checks (`stable-anchors`, `clearance`)               | `motion-craft.ts` `checks` | Lint rules                                                                                 | CE12         |
+| Shared effects (`effects-1`)                                  | `shared-effects.ts`        | Effect registry                                                                            | CE6          |
 
 ### Commerce-only rendering
 

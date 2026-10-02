@@ -57,7 +57,23 @@ output checksum and timing metrics, and writes `out.mp4.scene.json` and
 adjustment layers and typography text render today; effects, shapes, motion blur and
 3D layers arrive in later milestones. Transparent backgrounds show black in MP4.
 
-To preview, run `pnpm lab` and open
+To try the CE4a story adapter, compile
+the Access Constraint fixture and render the resulting composition:
+
+```bash
+pnpm --silent still-shift comp export-json --scene benchmarks/fixtures/story-motion-continuous/access-constraint.json --output access.composition.json
+pnpm --silent still-shift comp render --input access.composition.json --output access.mp4
+```
+
+`export-json` rebases asset paths to the saved file and refuses to overwrite an
+existing output. Without `--output`, it prints composition JSON with paths relative
+to the source story file. The adapter currently supports images, clipped groups,
+plain text, rectangles, attached paths, flows and the 2D story camera, with integer-frame motion baked
+from the recipe. Unsupported features produce `comp-adapter-unsupported`; see
+[content providers](./composition-reference.md#content-providers-ce4a) for limits.
+CE4a remains in progress; existing story workflows keep their current renderer.
+
+For the Lab preview, run `pnpm lab` and open
 [`/composition.html`](http://127.0.0.1:4173/composition.html): play or scrub the
 fixtures in `benchmarks/fixtures/composition/` and read their warnings. On a normal
 browser with a graphics card the preview is labelled approximate; the exported MP4 is
