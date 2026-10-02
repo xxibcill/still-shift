@@ -73,6 +73,19 @@ from the recipe. Unsupported features produce `comp-adapter-unsupported`; see
 [content providers](./composition-reference.md#content-providers-ce4a) for limits.
 CE4a remains in progress; existing story workflows keep their current renderer.
 
+The CE4b commerce adapter uses the same commands:
+
+```bash
+pnpm --silent still-shift comp export-json --scene benchmarks/fixtures/ecommerce-motion/h01-landscape.json --output hero.composition.json
+pnpm --silent still-shift comp render --input hero.composition.json --output hero.mp4
+```
+
+This initial slice supports prepared product imagery, groups, simple shapes, paths,
+pinned measured text and integer-frame commerce/component motion. Pixel effects,
+attached paths, text fitting and the remaining component features return explicit
+unsupported-feature diagnostics. See the [commerce adapter reference](./composition-reference.md#commerce-adapter-ce4b-in-progress)
+for the current limits. CE4b remains in progress.
+
 For the Lab preview, run `pnpm lab` and open
 [`/composition.html`](http://127.0.0.1:4173/composition.html): play or scrub the
 fixtures in `benchmarks/fixtures/composition/` and read their warnings. On a normal

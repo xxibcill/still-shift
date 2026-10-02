@@ -1,16 +1,18 @@
 import assert from "node:assert/strict";
-import { readFile } from "node:fs/promises";
-import { dirname, resolve } from "node:path";
+import { mkdtemp, readFile, rm } from "node:fs/promises";
+import { tmpdir } from "node:os";
+import { renderComposition } from "@still-shift/animation-engine";
+import { runCli } from "../../tools/still-shift-cli/src/cli.ts";
+import { dirname, resolve, join } from "node:path";
 import { createServer } from "vite";
 import { launchRenderBrowser } from "@still-shift/execution-runtime";
-import { readStoryPassage } from "@still-shift/animation-engine";
 import {
-  StorySceneSchema,
+  CommerceSceneSchema,
   type Composition,
 } from "@still-shift/scene-contract";
 import {
-  compileStoryScene,
-  storyToComposition,
+  compileCommerceScene,
+  commerceToComposition,
 } from "@still-shift/renderer-core";
 import type * as Render from "../../packages/renderer-core/src/index.ts";
 import { assertCompositionAdapterState } from "../helpers/composition-adapter-state.ts";
@@ -31,12 +33,57 @@ const inventory = JSON.parse(
   }[];
 };
 const only = process.argv.indexOf("--only");
+const accepted = new Set(
+  [
+    "a01-landscape",
+    "a01-feed",
+    "h01-landscape",
+    "h01-portrait",
+    "h03-thai",
+    "h04-square",
+    "vertical-h01-portrait",
+    ...[
+      "background",
+      "callout",
+      "detail",
+      "drift",
+      "fade",
+      "float",
+      "introduction",
+      "overshoot",
+      "panel",
+      "parallax",
+      "path",
+      "product",
+      "rotate",
+      "scale",
+      "shadow",
+      "studio",
+      "text",
+      "translate",
+    ].map((id) => `atom-${id}`),
+  ].map((id) => `commerce/${id}`),
+);
+for (const context of ["commerce", "isolated"])
+  for (const name of [
+    "instances",
+    "layout",
+    "pin",
+    "sequence",
+    "stagger",
+    "state",
+    "transform",
+    "travel",
+    "visibility",
+  ])
+    accepted.add(`component/${context}-${name}`);
 const selected = inventory.fixtures.filter(
   (f) =>
-    ["story", "story-passage"].includes(f.family) &&
-    (only < 0 || f.id.includes(process.argv[only + 1]!)),
+    accepted.has(f.id) && (only < 0 || f.id.includes(process.argv[only + 1]!)),
 );
-assert.ok(selected.length, "No story fixtures selected");
+assert.ok(selected.length, "No commerce fixtures selected");
+if (only < 0)
+  assert.equal(selected.length, accepted.size, "Missing CE0 commerce fixture");
 const server = await createServer({
   root,
   configFile: false,
@@ -50,22 +97,13 @@ let totalFrames = 0,
 try {
   for (const entry of selected) {
     const sourcePath = resolve(root, entry.path);
-    const inputs =
-      entry.kind === "passage"
-        ? (await readStoryPassage(sourcePath)).beats.map((beat) => ({
-            id: `${entry.id}/${beat.id}`,
-            scene: beat.scene,
-          }))
-        : [
-            {
-              id: entry.id,
-              scene: JSON.parse(await readFile(sourcePath, "utf8")),
-            },
-          ];
+    const inputs = [
+      { id: entry.id, scene: JSON.parse(await readFile(sourcePath, "utf8")) },
+    ];
     for (const item of inputs) {
-      const input = StorySceneSchema.parse(item.scene);
-      const composition = storyToComposition(input),
-        scene = compileStoryScene(input);
+      const input = CommerceSceneSchema.parse(item.scene);
+      const composition = commerceToComposition(input),
+        scene = compileCommerceScene(input);
       assertCompositionAdapterState(scene, composition);
       const urls = Object.fromEntries(
         composition.assets.map((a) => [
@@ -79,7 +117,7 @@ try {
       const report = await page.evaluate(
         async ({ sceneJson, compositionJson, urls, tier, profile }) => {
           const scene = JSON.parse(sceneJson) as ReturnType<
-            typeof Render.compileStoryScene
+            typeof Render.compileCommerceScene
           >;
           const composition = JSON.parse(compositionJson) as Composition;
           const moduleUrl = "/packages/renderer-core/src/index.ts";
@@ -110,6 +148,7 @@ try {
             legacyRenderMs = 0,
             compositionRenderMs = 0;
           const failures: { frame: number; delta: number; psnr: number }[] = [];
+          const renderTimings: { frame: number; milliseconds: number }[] = [];
           legacy.renderFrame(0);
           preview.renderFrame(0);
           for (let frame = 0; frame < composition.frameCount; frame++) {
@@ -125,7 +164,9 @@ try {
             legacyMs += performance.now() - at;
             at = performance.now();
             const result = preview.renderFrame(frame);
-            compositionRenderMs += performance.now() - at;
+            const renderMs = performance.now() - at;
+            compositionRenderMs += renderMs;
+            if (profile) renderTimings.push({ frame, milliseconds: renderMs });
             const actual = ctx.getImageData(
               0,
               0,
@@ -176,13 +217,42 @@ try {
               evaluationMs += evaluated - at;
               graphMs += performance.now() - evaluated;
             }
+          // Pixel comparison allocates full-frame buffers and analysis data. Measure
+          // render + readback separately once every frame is warm, alternating order
+          // so one backend does not always inherit the other's allocation pressure.
+          const benchmark = (
+            render: (frame: number) => unknown,
+            context: CanvasRenderingContext2D,
+          ) => {
+            const start = performance.now();
+            for (let frame = 0; frame < composition.frameCount; frame++) {
+              render(frame);
+              context.getImageData(0, 0, canvas.width, canvas.height);
+            }
+            return performance.now() - start;
+          };
+          const timings = Array.from({ length: 3 }, (_, pass) => {
+            let legacyMs: number, compositionMs: number;
+            if (pass % 2 === 0) {
+              legacyMs = benchmark(legacy.renderFrame, oldCtx);
+              compositionMs = benchmark(preview.renderFrame, ctx);
+            } else {
+              compositionMs = benchmark(preview.renderFrame, ctx);
+              legacyMs = benchmark(legacy.renderFrame, oldCtx);
+            }
+            return { legacyMs, compositionMs, ratio: compositionMs / legacyMs };
+          });
+          const ratio = timings
+            .map((timing) => timing.ratio)
+            .sort((a, b) => a - b)[1]!;
           preview.dispose();
           legacy.dispose();
           return {
             maxDelta,
             minPsnr,
             failures,
-            ratio: compositionMs / legacyMs,
+            ratio,
+            timings,
             ...(profile
               ? {
                   legacyMs,
@@ -191,6 +261,9 @@ try {
                   compositionRenderMs,
                   evaluationMs,
                   graphMs,
+                  slowFrames: renderTimings
+                    .sort((a, b) => b.milliseconds - a.milliseconds)
+                    .slice(0, 5),
                 }
               : {}),
           };
@@ -216,7 +289,73 @@ try {
       totalItems++;
     }
   }
-  console.log(`CE4a story parity: ${totalItems} items, ${totalFrames} frames`);
+  console.log(
+    `CE4b commerce parity: ${totalItems} items, ${totalFrames} frames`,
+  );
+  if (only < 0) {
+    const directory = await mkdtemp(join(tmpdir(), "still-shift-ce4b-"));
+    try {
+      const sourcePath = resolve(
+        root,
+        "benchmarks/fixtures/ecommerce-motion/h01-landscape.json",
+      );
+      const compositionPath = join(directory, "hero.json");
+      let errors = "";
+      assert.equal(
+        await runCli(
+          [
+            "comp",
+            "export-json",
+            "--scene",
+            sourcePath,
+            "--output",
+            compositionPath,
+          ],
+          {
+            stdout: () => {},
+            stderr: (text) => {
+              errors += text;
+            },
+          },
+        ),
+        0,
+        errors,
+      );
+      const composition = JSON.parse(
+        await readFile(compositionPath, "utf8"),
+      ) as Composition;
+      const first = await renderComposition({
+        compositionPath,
+        outputPath: join(directory, "first.mp4"),
+      });
+      const second = await renderComposition({
+        compositionPath,
+        outputPath: join(directory, "second.mp4"),
+      });
+      assert.equal(first.frameCount, composition.frameCount);
+      assert.equal(first.checksums.output, second.checksums.output);
+      assert.deepEqual(first.systemFontLayers, []);
+      assert.equal(
+        await runCli(
+          [
+            "comp",
+            "export-json",
+            "--scene",
+            sourcePath,
+            "--output",
+            compositionPath,
+          ],
+          { stdout: () => {}, stderr: () => {} },
+        ),
+        1,
+      );
+      console.log(
+        `CE4b export: ${first.frameCount} frames, two byte-identical MP4s; relocated assets and overwrite protection pass`,
+      );
+    } finally {
+      await rm(directory, { recursive: true, force: true });
+    }
+  }
 } finally {
   await browser.close();
   await server.close();

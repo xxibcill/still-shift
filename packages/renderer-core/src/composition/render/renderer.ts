@@ -20,6 +20,7 @@ import {
   type CanvasContentProvider,
 } from "./providers.ts";
 import { STORY_CONTENT_PROVIDERS } from "../adapters/story-providers.ts";
+import { COMMERCE_CONTENT_PROVIDERS } from "../adapters/commerce-providers.ts";
 
 /** A validated composition wrapped with the export runtime's canvas and timeline. */
 export type CompositionScene = {
@@ -129,6 +130,7 @@ export function createCompositionPreview(
   const text = prepareCompositionText(composition, resources.fonts, ctx);
   const drawProvider = prepareCompositionProviders(composition, resources, [
     ...STORY_CONTENT_PROVIDERS,
+    ...COMMERCE_CONTENT_PROVIDERS,
     ...(options.providers ?? []),
   ]);
   const backend = createCanvas2dBackend({

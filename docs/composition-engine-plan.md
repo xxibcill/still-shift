@@ -1,7 +1,7 @@
 # Programmable composition engine — implementation plan
 
 - **Updated:** 2026-10-02
-- **Status:** CE0–CE3 complete (2026-10-01); CE4a in progress (2026-10-02). Q1 and Q3 decided
+- **Status:** CE0–CE3 complete (2026-10-01); CE4a and CE4b in progress (2026-10-02). Q1 and Q3 decided
   2026-09-30; Q2, Q4 and Q8 decided 2026-10-01; Q5–Q7 open.
 - **Baseline:** `6772717` — `Merge pull request #22 from xxibcill/codex/still-shift-plan-completion`
 - **Tracker owner:** unassigned. Record the owner and branch per milestone in the [tracker](#milestone-tracker).
@@ -355,27 +355,27 @@ sign and for time remap. It does not change the layer's composition-time visibil
 
 ## Milestone tracker
 
-| ID   | Deliverable                                     | Phase | Depends on                | Owner                  | Branch                  | Status | Completion evidence                                                                |
-| ---- | ----------------------------------------------- | ----- | ------------------------- | ---------------------- | ----------------------- | ------ | ---------------------------------------------------------------------------------- |
-| CE0  | Baseline, parity harness and feature matrix     | A     | —                         | xxibcill (Claude Code) | `codex/composition-ce0` | `[x]`  | [CE0 record](#ce0--baseline-parity-harness-and-feature-matrix)                     |
-| CE1  | `composition-1` contract and property paths     | A     | CE0                       | xxibcill (Claude Code) | `codex/composition-ce1` | `[x]`  | [CE1 record](#ce1--composition-1-contract-and-property-paths)                      |
-| CE2  | Pure composition evaluator                      | A     | CE1                       | Codex                  | `codex/composition-ce2` | `[x]`  | [CE2 record](#ce2--pure-composition-evaluator)                                     |
-| CE3  | Render graph and Canvas 2D reference backend    | A     | CE2                       | xxibcill (Claude Code) | `codex/composition-ce3` | `[x]`  | [CE3 record](#ce3--render-graph-and-canvas-2d-reference-backend); merged in PR #28 |
-| CE4a | Story adapter with visual parity                | A     | CE3                       | Codex                  | `codex/composition-ce4` | `[~]`  | [CE4a start record](#ce4a-start-record-2026-10-02)                                 |
-| CE4b | Commerce and reusable-component adapter         | A     | CE3, CE6 (effects parity) |                        |                         | `[ ]`  |                                                                                    |
-| CE4c | Cinematic adapter                               | A     | CE3, CE8                  |                        |                         | `[ ]`  |                                                                                    |
-| CE4d | Legacy illustrated adapter and old-path removal | A     | CE4a–CE4c                 |                        |                         | `[ ]`  |                                                                                    |
-| CE5  | Shape layers                                    | B     | CE3                       |                        |                         | `[ ]`  |                                                                                    |
-| CE6  | WebGL2 backend and effect registry              | B     | CE3                       |                        |                         | `[ ]`  |                                                                                    |
-| CE7  | Motion blur and time controls                   | B     | CE3                       |                        |                         | `[ ]`  |                                                                                    |
-| CE8  | 2.5D layers and unified camera                  | B     | CE3, CE6, CE9             |                        |                         | `[ ]`  |                                                                                    |
-| CE9  | Expressions and motion behaviours               | C     | CE2                       |                        |                         | `[ ]`  |                                                                                    |
-| CE10 | TypeScript builder API and CLI                  | C     | CE3, CE4a, CE9, CE12      |                        |                         | `[ ]`  |                                                                                    |
-| CE11 | Lab composition inspector and graph editor      | C     | CE3, CE10                 |                        |                         | `[ ]`  |                                                                                    |
-| CE12 | Motion linting                                  | C     | CE2                       |                        |                         | `[ ]`  |                                                                                    |
-| CE13 | Video, image-sequence and audio layers          | D     | CE3, CE7                  |                        |                         | `[ ]`  |                                                                                    |
-| CE14 | Mesh warp and puppet pins                       | D     | CE6                       |                        |                         | `[ ]`  |                                                                                    |
-| CE15 | Output formats, caching and parallel rendering  | D     | CE3                       |                        |                         | `[ ]`  |                                                                                    |
+| ID   | Deliverable                                     | Phase | Depends on                | Owner                  | Branch                   | Status | Completion evidence                                                                |
+| ---- | ----------------------------------------------- | ----- | ------------------------- | ---------------------- | ------------------------ | ------ | ---------------------------------------------------------------------------------- |
+| CE0  | Baseline, parity harness and feature matrix     | A     | —                         | xxibcill (Claude Code) | `codex/composition-ce0`  | `[x]`  | [CE0 record](#ce0--baseline-parity-harness-and-feature-matrix)                     |
+| CE1  | `composition-1` contract and property paths     | A     | CE0                       | xxibcill (Claude Code) | `codex/composition-ce1`  | `[x]`  | [CE1 record](#ce1--composition-1-contract-and-property-paths)                      |
+| CE2  | Pure composition evaluator                      | A     | CE1                       | Codex                  | `codex/composition-ce2`  | `[x]`  | [CE2 record](#ce2--pure-composition-evaluator)                                     |
+| CE3  | Render graph and Canvas 2D reference backend    | A     | CE2                       | xxibcill (Claude Code) | `codex/composition-ce3`  | `[x]`  | [CE3 record](#ce3--render-graph-and-canvas-2d-reference-backend); merged in PR #28 |
+| CE4a | Story adapter with visual parity                | A     | CE3                       | Codex                  | `codex/composition-ce4`  | `[~]`  | [CE4a start record](#ce4a-start-record-2026-10-02)                                 |
+| CE4b | Commerce and reusable-component adapter         | A     | CE3, CE6 (effects parity) | Codex                  | `codex/composition-ce4b` | `[~]`  | [CE4b start record](#ce4b-start-record-2026-10-02)                                 |
+| CE4c | Cinematic adapter                               | A     | CE3, CE8                  |                        |                          | `[ ]`  |                                                                                    |
+| CE4d | Legacy illustrated adapter and old-path removal | A     | CE4a–CE4c                 |                        |                          | `[ ]`  |                                                                                    |
+| CE5  | Shape layers                                    | B     | CE3                       |                        |                          | `[ ]`  |                                                                                    |
+| CE6  | WebGL2 backend and effect registry              | B     | CE3                       |                        |                          | `[ ]`  |                                                                                    |
+| CE7  | Motion blur and time controls                   | B     | CE3                       |                        |                          | `[ ]`  |                                                                                    |
+| CE8  | 2.5D layers and unified camera                  | B     | CE3, CE6, CE9             |                        |                          | `[ ]`  |                                                                                    |
+| CE9  | Expressions and motion behaviours               | C     | CE2                       |                        |                          | `[ ]`  |                                                                                    |
+| CE10 | TypeScript builder API and CLI                  | C     | CE3, CE4a, CE9, CE12      |                        |                          | `[ ]`  |                                                                                    |
+| CE11 | Lab composition inspector and graph editor      | C     | CE3, CE10                 |                        |                          | `[ ]`  |                                                                                    |
+| CE12 | Motion linting                                  | C     | CE2                       |                        |                          | `[ ]`  |                                                                                    |
+| CE13 | Video, image-sequence and audio layers          | D     | CE3, CE7                  |                        |                          | `[ ]`  |                                                                                    |
+| CE14 | Mesh warp and puppet pins                       | D     | CE6                       |                        |                          | `[ ]`  |                                                                                    |
+| CE15 | Output formats, caching and parallel rendering  | D     | CE3                       |                        |                          | `[ ]`  |                                                                                    |
 
 ### Phases and parallel work
 
@@ -1271,6 +1271,10 @@ General rules for all adapters:
 
 ### CE4b — Commerce and reusable components
 
+- [x] Start the CE3-compatible compiler slice with explicit unsupported-feature
+      diagnostics, JSON export and Canvas parity coverage; retain CE6 as the effects
+      parity completion gate.
+
 - [ ] Map commerce layout, product layers, shadows, floating, detail windows, paths,
       text fits, component state/travel/pin/values/visibility/masks.
 - [ ] Commerce effects become CE6 registry effects; parity requires CE6.
@@ -1387,7 +1391,60 @@ comparisons; the full `pnpm check`.
   production passage rendering still uses the family path. The composition-only
   story feature decision and remaining CE4a acceptance criteria stay open.
 
-**Completion record:** CE4a is in progress; CE4b–CE4d have not started.
+### CE4b start record (2026-10-02)
+
+- **Owner / branch:** Codex, `codex/composition-ce4b`, created from
+  `codex/composition-ce4` at `173dab8`. This starts the adapter work independent of
+  CE6; full effects parity and both-backend acceptance still require CE6.
+- **Delivered slice:** `commerceToComposition` runs the commerce compiler and emits
+  native images and groups, sharing the prepared-node translation with the
+  story adapter. Rectangles and paths reuse the existing local-content
+  providers. `commerce.text@1.0.0` prepares pinned measured text with the existing
+  commerce layout code. Layout/product/shadow/floating/detail-window assets retain
+  their prepared geometry, crops, clips and transforms.
+- **Motion and components:** integer-frame events, drift, parallax and overshoot
+  become baked transform keys. Component state, travel, pins, property-value bindings
+  and visibility use the existing compiler/evaluator before baking. Image state
+  blends retain the outgoing state and blend weight. Source metadata, including
+  registration and claim sources, is preserved. The slice is limited to 2,000 frames
+  and holds samples between integer frames.
+- **Inspection:** `comp export-json --scene <commerce.json>` selects the commerce
+  adapter, rebases asset paths when saving, and refuses overwrite. `comp render`
+  and the composition Lab use the same registered providers.
+- **Versions:** adapter `commerce-composition-0.1.0`, Canvas renderer
+  `composition-canvas-1.3.0`; evaluator and legacy renderer versions unchanged.
+  Opaque surface backgrounds skip a redundant clear before the full-canvas fill;
+  transparent surfaces retain clearing. Commerce rectangles keep the existing
+  path-based fill and parent transform sequence, preserving subpixel edge parity.
+- **Adapter verification:** on Node 22.23.1 / pnpm 10.29.3,
+  `pnpm test:browser:composition-commerce-adapter` passes **43 fixtures, 9,528
+  frames, all pixel-exact**: 25 CE0 commerce fixtures and 18 commerce/isolated
+  reusable-component fixtures. Every source node's matrix, opacity, visibility and
+  image state is checked in reverse frame order; backward render seeks match.
+  Relocated JSON loads its pinned assets, overwrite protection holds, and two
+  240-frame H01 MP4 exports are byte-identical with no system fonts.
+- **Timing method:** three warmed full-timeline render/readback passes, alternating
+  backend order, measured separately from pixel comparison; the median paired
+  ratio is checked against the unchanged 1.25× gate. Worst result: Commerce Stagger,
+  **1.2253×**. The earlier combined comparison/timing loop intermittently attributed
+  large single-frame runtime pauses to composition rendering (Isolated Sequence
+  reached 1.36×); the separate timing phase removes comparison work from the
+  benchmark. This is steady-state rendering evidence; preparation is not timed.
+- **Local matrix:** the full `pnpm check` passed toolchain, schema, boundaries,
+  formatting, lint, types, **1,090 unit / 46 runtime / 111 integration tests**, depth,
+  golden, legacy browser suites, typography, composition rendering and CE4a parity
+  before stopping at the original commerce timing check. After revising the timing
+  harness, `pnpm check:fast` and the complete commerce adapter group passed again.
+  The remaining `pnpm test:browser:composition-baselines` passed: **176 items,
+  36,061 frames, exact in 278.62 s** against `darwin-arm64`. No baseline or tolerance
+  was changed; all verification ran locally.
+- **Remaining:** pixel effects (CE6), motion blur (CE7), attached paths, annotations,
+  text fitting, formatted numeric text, masks/mattes, typography, motion-craft and
+  drawable parents; reusable story contexts and passages; all-family/two-backend
+  parity. Unsupported inputs return `comp-adapter-unsupported` with a source path.
+  Family defaults remain on their existing renderers.
+
+**Completion record:** CE4a and CE4b are in progress; CE4c–CE4d have not started.
 
 ---
 
@@ -2091,6 +2148,7 @@ with general primitives; the "Target" column names that later form.
 | `parent` hierarchy                                         | `parent` on every node                                               | Layer `parent`, plus opacity inheritance option (parity note 1)                         | CE1–CE2            |
 | `initialState`                                             | Story `initialState`                                                 | Initial property values                                                                 | CE1                |
 | Plain legacy text, states, reveal and textLayout           | `story-text.ts`                                                      | Interim content provider `story.text@1.0.0`; target native text after parity            | CE4a               |
+| Commerce measured text (`textBox`)                         | `text-layout.ts`, `component-values.ts`                              | Interim provider `commerce.text@1.0.0`; target native text after parity                 | CE4b               |
 | Text containers (caption, speech, thought, tail side)      | `story-acting.ts`, `text-container.ts`                               | Interim content provider `text-container`; target shape layer plus text layer           | CE4a, CE5          |
 
 ### Timing and animation

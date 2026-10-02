@@ -336,6 +336,37 @@ import { storyToComposition } from "@still-shift/renderer-core";
 const composition = storyToComposition(storyScene, { id: "access-constraint" });
 ```
 
+### Commerce adapter (CE4b, in progress)
+
+`commerceToComposition(scene, { id? })` compiles `commerce-scene-1` through the
+existing commerce compiler. `comp export-json --scene <commerce.json>` exposes the
+same translation. Images (including prepared shadows and crops), clipped groups,
+rectangles, paths and plain text are supported. Pinned measured
+text uses `commerce.text@1.0.0`, which shares commerce's font layout and draws local
+content through the composition graph. Rectangles, paths and unmeasured text reuse
+the existing `story.*` providers; those providers do not evaluate a story scene.
+
+Commerce events, drift, parallax and overshoot are baked at integer frames, along
+with component state/travel/pin/property-value/visibility behavior. Image state
+ramps retain their state and blend keys. Registration, claims and other source
+metadata remain in `metadata.commerce`. Like the story slice, this compiler accepts
+at most 2,000 frames, holds between integer samples, and bounds provider payloads
+to 64 KiB. Rendering never calls the commerce evaluator.
+
+Pixel effects, motion blur, attached paths, annotations, masks/mattes, text fitting,
+formatted numeric text, blended text states, typography, motion-craft and parenting
+to drawable nodes currently return `comp-adapter-unsupported` with a source path.
+Effects parity requires CE6, and full CE4b fixture acceptance remains open. Existing
+commerce commands retain their current renderer.
+
+```ts
+import { commerceToComposition } from "@still-shift/renderer-core";
+
+const composition = commerceToComposition(commerceScene, {
+  id: "product-hero",
+});
+```
+
 ## Validating
 
 ```ts

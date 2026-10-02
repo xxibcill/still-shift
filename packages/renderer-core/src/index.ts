@@ -53,6 +53,7 @@ export * from "./component-sequence.ts";
 
 export { loadPreparedFonts } from "./prepared-fonts.ts";
 export { compileStoryScene } from "./story-scene.ts";
+export { compileCommerceScene } from "./commerce-scene.ts";
 export { validateStoryTextLayout } from "./story-text-layout.ts";
 export { prepareComponentTextFits } from "./component-text-fit.ts";
 
@@ -64,6 +65,11 @@ export {
   STORY_ADAPTER_VERSION,
 } from "./composition/adapters/story.ts";
 export { STORY_CONTENT_PROVIDERS } from "./composition/adapters/story-providers.ts";
+export {
+  commerceToComposition,
+  COMMERCE_ADAPTER_VERSION,
+} from "./composition/adapters/commerce.ts";
+export { COMMERCE_CONTENT_PROVIDERS } from "./composition/adapters/commerce-providers.ts";
 export * from "./motion-craft.ts";
 export * from "./motion-appearance.ts";
 export * from "./motion-inspector.ts";

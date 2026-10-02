@@ -1,7 +1,11 @@
 #!/usr/bin/env node
 import { readFile, writeFile } from "node:fs/promises";
 import { dirname, resolve, relative } from "node:path";
-import { storyToComposition } from "@still-shift/renderer-core";
+import {
+  storyToComposition,
+  commerceToComposition,
+} from "@still-shift/renderer-core";
+import { CommerceSceneSchema } from "@still-shift/scene-contract";
 import { prepareCommerceFile } from "../../../packages/animation-engine/src/commerce-preparation.ts";
 import { pathToFileURL } from "node:url";
 import { readStoryPassage } from "../../../packages/animation-engine/src/story-passage-io.ts";
@@ -64,7 +68,7 @@ Usage:
   pnpm still-shift sfx generate --provider elevenlabs --id <slug> --prompt <text> --duration <seconds> --output-dir <new-directory> [--prompt-influence 0.3] [--loop true|false]
   pnpm still-shift prepare-commerce --brief <brief.json> --output <prepared.json>
   pnpm --silent still-shift comp render --input <composition.json> --output <path.mp4>
-  pnpm --silent still-shift comp export-json --scene <story.json> [--output <composition.json>]
+  pnpm --silent still-shift comp export-json --scene <story-or-commerce.json> [--output <composition.json>]
   pnpm --silent still-shift batch --manifest <jsonl> --output-dir <path> [--format landscape|vertical] [--concurrency 1|2]
 
 The default adapter writes a validated 1080p H.264 MP4 and scene manifest.
@@ -399,10 +403,14 @@ export const runCli = async (
     try {
       const values = parseNamedArguments(args.slice(2), ["scene", "output"]);
       const scenePath = resolve(requireArgument(values, "scene"));
-      const scene = StorySceneSchema.parse(
-        JSON.parse(await readFile(scenePath, "utf8")),
-      );
-      const composition = storyToComposition(scene);
+      const scene: unknown = JSON.parse(await readFile(scenePath, "utf8"));
+      const composition =
+        scene &&
+        typeof scene === "object" &&
+        "schemaVersion" in scene &&
+        scene.schemaVersion === "commerce-scene-1"
+          ? commerceToComposition(CommerceSceneSchema.parse(scene))
+          : storyToComposition(StorySceneSchema.parse(scene));
       const output = values.get("output");
       if (!output) io.stdout(`${JSON.stringify(composition, null, 2)}\n`);
       else {

@@ -209,7 +209,10 @@ export function createCanvas2dBackend(
     clear(surface, background) {
       const ctx = surface.ctx;
       reset(ctx);
-      ctx.clearRect(0, 0, surface.width, surface.height);
+      // An opaque background replaces every pixel after reset; clearing first
+      // adds a full-surface write without changing the result.
+      if (!background || background[3] < 1)
+        ctx.clearRect(0, 0, surface.width, surface.height);
       if (background) {
         ctx.fillStyle = cssColor(background);
         ctx.fillRect(0, 0, surface.width, surface.height);
