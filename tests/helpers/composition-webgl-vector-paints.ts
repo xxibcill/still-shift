@@ -14,7 +14,7 @@ export function checkProviderPaintBatches() {
     width: 96,
     height: 64,
     fps: 30,
-    frameCount: 3,
+    frameCount: 4,
     background: "#f2ede3",
     assets: [],
     layers: Array.from({ length: 3 }, (_, index) => ({
@@ -38,6 +38,7 @@ export function checkProviderPaintBatches() {
             prepare: () =>
               preparedProvider(
                 (ctx, time) => {
+                  if (time === 3) return;
                   ctx.save();
                   ctx.translate(time, 0);
                   ctx.beginPath();
@@ -59,7 +60,7 @@ export function checkProviderPaintBatches() {
     reference = make("canvas2d");
   let maxDelta = 0;
   try {
-    for (const frame of [0, 1, 2, 0]) {
+    for (const frame of [0, 1, 2, 3, 0]) {
       gpu.renderFrame(frame);
       reference.renderFrame(frame);
       const actual = gpu.readPixels(),
@@ -72,7 +73,7 @@ export function checkProviderPaintBatches() {
     }
     if (maxDelta > 1)
       throw new Error(`Provider paint batches differ by ${maxDelta}`);
-    return { providers: 3, paints: 105, frames: 4, maxDelta };
+    return { providers: 3, paints: 105, frames: 5, maxDelta };
   } finally {
     gpu.dispose();
     reference.dispose();
@@ -151,6 +152,16 @@ export function checkVectorPaintReplay() {
     throw new Error("Disjoint paints with different rounding were combined");
   modes.dispose();
 
+  const empty = recordVectorPaints(canvas().getContext("2d")!, bounds);
+  empty.context.save();
+  empty.context.beginPath();
+  empty.context.rect(0, 0, 20, 20);
+  empty.context.clip();
+  empty.context.restore();
+  if (empty.groups()?.length !== 0)
+    throw new Error("Unpainted paths and state must not require a texture");
+  empty.dispose();
+
   const unsupported = recordVectorPaints(canvas().getContext("2d")!, bounds);
   unsupported.context.fillRect(0, 0, 20, 20);
   unsupported.context.globalCompositeOperation = "destination-out";
@@ -210,5 +221,6 @@ export function checkVectorPaintReplay() {
     fallbacks: 1,
     curvedBounds: 2,
     singleBounds: 1,
+    empty: 1,
   };
 }

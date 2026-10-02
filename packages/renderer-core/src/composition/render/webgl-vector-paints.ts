@@ -135,7 +135,7 @@ export function recordVectorPaints(
       for (const canvas of snapshots) canvas.width = canvas.height = 0;
     },
     groups(): VectorPaintGroup[] | undefined {
-      if (!supported || !marks.length || marks.length > 64) return undefined;
+      if (!supported || marks.length > 64) return undefined;
       const groups: { marks: Paint[]; bounds: Bounds }[] = [];
       for (const mark of marks) {
         const previous = groups.at(-1);

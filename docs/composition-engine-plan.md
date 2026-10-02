@@ -2441,6 +2441,27 @@ comparisons; the full `pnpm check`.
   failures, the rest of the commerce GPU audit, complete family exports and
   final full verification. No acceptance gate or baseline has changed.
 
+### CE4b reusable-component GPU audit and empty coverage (2026-10-03)
+
+- **Audit:** all **49 commerce/isolated reusable-component cases / 9,408 frames**
+  pass the existing pixel gate at `composition-webgl2-0.21.0`; **15 pass both
+  gates**. This includes primitive blur, matte, stacked blur, exposure and numeric
+  rounding variants. The other **34 cases fail timing**, so this diagnostic run
+  (exports skipped) does not establish full acceptance.
+- **Version:** `composition-webgl2-0.22.0` distinguishes a supported empty paint
+  recording from an unsupported recording. A provider that only changes Canvas
+  state or constructs an unpainted path no longer uploads a transparent texture.
+  Unsupported drawing operations still use the original raster fallback.
+- **Verification:** the empty-recording check and provider disappearance/backward
+  seek regression pass; 105 overlapping paints across three providers remain
+  exact over five rendered frames. Native GPU checks, all **1,247 unit tests**,
+  fast checks and **204 export/Lab frames** pass. Story bracket pixels remain at
+  maximum difference **1**; timing is **3.6069×**, with no measured improvement.
+- **Experiments:** skipping clears before full texture transfers did not improve
+  the bracket A/B result (**3.4763× versus 3.4769×**) and was discarded. Bounded
+  typed-pixel uploads were slower both with separate and fused alpha conversion;
+  neither prototype was adopted. Remaining work is unchanged.
+
 **Completion record:** CE4a and CE4b are in progress; CE4c–CE4d have not started.
 
 ---
