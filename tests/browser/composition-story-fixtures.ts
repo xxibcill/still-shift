@@ -1,3 +1,4 @@
+import { CompositionAcceptance } from "../helpers/composition-acceptance.ts";
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
@@ -37,6 +38,7 @@ const inventory = JSON.parse(
   }[];
 };
 const backend = process.argv.includes("--webgl") ? "webgl2" : "canvas2d";
+const acceptance = new CompositionAcceptance();
 const only = process.argv.indexOf("--only");
 const variant = process.argv.indexOf("--variant");
 const componentsOnly = process.argv.includes("--components");
@@ -238,14 +240,11 @@ try {
         `${backend} ${item.id}: ${input.frameCount} frames ${JSON.stringify(report)}`,
       );
       await page.close();
-      assert.deepEqual(report.failures, [], `${item.id} pixel parity`);
-      assert.ok(
-        report.ratio <= 1.25,
-        `${item.id} render + readback ratio ${report.ratio} exceeds 1.25`,
-      );
+      acceptance.check(item.id, report);
       totalFrames += input.frameCount;
       totalItems++;
       if (
+        !acceptance.skipExports &&
         (only < 0 || process.argv.includes("--exports")) &&
         [
           "component/story-leader/spatial-morph",
@@ -257,6 +256,7 @@ try {
       )
         await assertAdapterExport(input, dirname(sourcePath), item.id, backend);
       if (
+        !acceptance.skipExports &&
         only < 0 &&
         ([
           "component/story-text-fit",
@@ -273,6 +273,7 @@ try {
   console.log(
     `CE4 story/component parity: ${totalItems} items, ${totalFrames} frames`,
   );
+  acceptance.finish();
 } finally {
   await browser.close();
   await server.close();

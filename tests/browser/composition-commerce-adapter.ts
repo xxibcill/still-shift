@@ -1,3 +1,4 @@
+import { CompositionAcceptance } from "../helpers/composition-acceptance.ts";
 import { commerceEffectVariants } from "../helpers/composition-effects.ts";
 import { commerceExposureVariants } from "../helpers/composition-commerce-exposure.ts";
 import assert from "node:assert/strict";
@@ -46,6 +47,7 @@ const inventory = JSON.parse(
   }[];
 };
 const backend = process.argv.includes("--webgl") ? "webgl2" : "canvas2d";
+const acceptance = new CompositionAcceptance();
 const only = process.argv.indexOf("--only");
 const variant = process.argv.indexOf("--variant");
 const accepted = new Set(
@@ -411,14 +413,11 @@ try {
         `${backend} ${item.id}: ${input.frameCount} frames ${JSON.stringify(metrics)}`,
       );
       await page.close();
-      assert.deepEqual(report.failures, [], `${item.id} pixel parity`);
-      assert.ok(
-        report.ratio <= 1.25,
-        `${item.id} render + readback ratio ${report.ratio} exceeds 1.25`,
-      );
+      acceptance.check(item.id, report);
       totalFrames += input.frameCount;
       totalItems++;
       if (
+        !acceptance.skipExports &&
         (only < 0 || process.argv.includes("--exports")) &&
         [
           "commerce/atom-path/morph",
@@ -513,7 +512,7 @@ try {
       await rm(directory, { recursive: true, force: true });
     }
   }
-  if (only < 0)
+  if (only < 0 && !acceptance.skipExports)
     for (const name of [
       "text-fit",
       "value",
@@ -608,6 +607,7 @@ try {
         await rm(directory, { recursive: true, force: true });
       }
     }
+  acceptance.finish();
 } finally {
   await browser.close();
   await server.close();
