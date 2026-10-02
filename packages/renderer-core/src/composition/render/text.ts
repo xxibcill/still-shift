@@ -16,7 +16,6 @@ import { loadTextAnimationFonts } from "../../typography-axes.ts";
 import {
   drawTypography,
   prepareTypography,
-  typographyContainerContent,
   type PreparedTypography,
 } from "../../typography-renderer.ts";
 import { resolvedTextStyle, type TextNode } from "../../typography-style.ts";
@@ -36,7 +35,7 @@ import {
   animatedTextNodes,
   type CompositionTextFrames,
 } from "./text-frames.ts";
-import { animatedTextBounds } from "./text-bounds.ts";
+import { preparedTextBounds } from "./text-bounds.ts";
 
 type TextLayer = Extract<CompositionLayer, { type: "text" }>;
 type TypographyScene = Parameters<typeof prepareTypography>[0];
@@ -333,38 +332,7 @@ export function prepareCompositionText(
       const key = prefix + layer.id;
       const texts = layer.states ?? [layer.text];
       if (prepared && pinned(comp, node)) {
-        const rasters = prepared.nodes.get(node.id)!;
-        const measured = new Map(
-          [...rasters].map(([text, raster]) => [
-            text,
-            union([
-              animatedTextBounds(node, raster, prepared.scene),
-              ...(node.container
-                ? [
-                    rectBounds(
-                      textContainerBounds(
-                        typographyContainerContent(node, raster.layout),
-                        node.container,
-                      ),
-                    ),
-                  ]
-                : []),
-              ...(prepared.corrections.get(node.id) ?? []).map((correction) => {
-                const box = animatedTextBounds(
-                  correction.node,
-                  correction.raster,
-                  { ...prepared.scene, textAnimators: [] },
-                );
-                return {
-                  left: box.left + correction.x,
-                  right: box.right + correction.x,
-                  top: box.top + correction.y,
-                  bottom: box.bottom + correction.y + node.fontSize * 0.15,
-                };
-              }),
-            ]),
-          ]),
-        );
+        const measured = preparedTextBounds(node, prepared);
         const perState = texts.map((text) => measured.get(text)!);
         // Transitions and counts show other texts in between: use their union.
         const transitions = layer.transition ?? layer.transitions?.length;

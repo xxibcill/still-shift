@@ -11,6 +11,8 @@ import type {
   PreparedTypography,
   TextRaster,
 } from "../../typography-renderer.ts";
+import { typographyContainerContent } from "../../typography-renderer.ts";
+import { textContainerBounds } from "../../text-container.ts";
 import type { TextNode } from "../../typography-style.ts";
 import type { GlyphCluster } from "../../shaped-text.ts";
 import type { Matrix } from "../../node-transform.ts";
@@ -27,6 +29,48 @@ const pad = (box: Bounds, by: number): Bounds => ({
   right: box.right + by,
   bottom: box.bottom + by,
 });
+
+/** Shared measured coverage for native text and prepared rich-text providers. */
+export function preparedTextBounds(
+  node: TextNode,
+  prepared: PreparedTypography,
+) {
+  const corrections = (prepared.corrections.get(node.id) ?? []).map(
+    (correction) => {
+      const box = animatedTextBounds(correction.node, correction.raster, {
+        ...prepared.scene,
+        textAnimators: [],
+      });
+      return {
+        left: box.left + correction.x,
+        right: box.right + correction.x,
+        top: box.top + correction.y,
+        bottom: box.bottom + correction.y + node.fontSize * 0.15,
+      };
+    },
+  );
+  return new Map(
+    [...prepared.nodes.get(node.id)!].map(([text, raster]) => {
+      const boxes = [
+        animatedTextBounds(node, raster, prepared.scene),
+        ...corrections,
+      ];
+      if (node.container) {
+        const rect = textContainerBounds(
+          typographyContainerContent(node, raster.layout),
+          node.container,
+        );
+        boxes.push({
+          left: rect.x,
+          top: rect.y,
+          right: rect.x + rect.width,
+          bottom: rect.y + rect.height,
+        });
+      }
+      return [text, union(boxes)] as const;
+    }),
+  );
+}
 
 function layoutBounds(raster: TextRaster): Bounds {
   const boxes = raster.layout.lines.map((line) => ({

@@ -2353,6 +2353,22 @@ comparisons; the full `pnpm check`.
   and cross-provider batching were tested and discarded because their added work
   outweighed their savings. Broader family acceptance and final checks remain.
 
+### CE4b rich-text provider metadata (2026-10-03)
+
+- **Version:** `composition-webgl2-0.17.0` shares native text's prepared glyph,
+  container and correction bounds with numeric/rich-text providers. Their visual
+  keys include displayed values, reveal/state, appearance and the source clock
+  when text animation needs it. Provider serialization and Canvas drawing stay
+  unchanged; GPU damage and coverage caches can now use this metadata.
+- **Verification:** all **20 typography cases / 3,367 frames** pass pixel parity,
+  with six passing both gates. Thai numeric improves from **5.3441×** to
+  **3.1119×**, commerce numeric from **2.5950×** to **1.5140×**, and editorial
+  numeric from **2.6036×** to **2.3673×**. Native GPU parity, arithmetic,
+  1,236 unit tests and 204 export/Lab frames pass.
+- **Remaining:** typography still has 14 timing failures; completed finite text
+  animation continues to invalidate coverage. Commerce GPU acceptance and final
+  full verification remain open alongside the component performance gates.
+
 **Completion record:** CE4a and CE4b are in progress; CE4c–CE4d have not started.
 
 ---

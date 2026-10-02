@@ -40,7 +40,14 @@ import type {
   CanvasContentProvider,
   ProviderLayer,
 } from "../render/providers.ts";
-import { AppearanceSchema, paintNode, type Appearance } from "./appearance.ts";
+import { preparedProvider } from "../render/providers.ts";
+import { preparedTextBounds } from "../render/text-bounds.ts";
+import {
+  AppearanceSchema,
+  appearanceAt,
+  paintNode,
+  type Appearance,
+} from "./appearance.ts";
 
 export const NumericTypographyParamsSchema = StoryTextParamsSchema.extend({
   fps: z.number().positive().max(240),
@@ -177,27 +184,68 @@ function typographyProvider(id: string): CanvasContentProvider {
         textScene(data),
         new Map(resources.fonts),
       );
-      return (ctx, time, state, sourceTime) => {
-        const frame = Math.max(
+      const measured = [...preparedTextBounds(data.node, prepared).values()];
+      const bounds = {
+        left: Math.min(...measured.map((box) => box.left)),
+        top: Math.min(...measured.map((box) => box.top)),
+        right: Math.max(...measured.map((box) => box.right)),
+        bottom: Math.max(...measured.map((box) => box.bottom)),
+      };
+      if (data.node.transition || data.node.transitions?.length) {
+        bounds.left -= data.node.fontSize;
+        bounds.top -= data.node.fontSize;
+        bounds.right += data.node.fontSize;
+        bounds.bottom += data.node.fontSize;
+      }
+      const timed = !!(
+        data.node.transition ||
+        data.node.transitions?.length ||
+        data.node.decorations?.length ||
+        data.textAnimators.length ||
+        data.textEvents.length
+      );
+      const frameAt = (time: number, sourceTime?: number) =>
+        Math.max(
           0,
           sourceTime === undefined
             ? Math.min(data.frameCount - 1, Math.floor(time))
             : Math.floor(time),
         );
-        const text = data.numeric
+      const textAt = (frame: number) =>
+        data.numeric
           ? data.numeric.samples[
               Math.min(frame, data.numeric.samples.length - 1)
             ]!
           : data.node.text;
-        const sample = data.samples[Math.min(frame, data.samples.length - 1)]!;
-        drawTypography(
-          ctx,
-          { ...paintNode(data.node, data.appearance, frame), text },
-          { ...sample, state: state ?? sample.state },
-          prepared,
-          sourceTime ?? frame,
-        );
-      };
+      return preparedProvider(
+        (ctx, time, state, sourceTime) => {
+          const frame = frameAt(time, sourceTime);
+          const text = textAt(frame);
+          const sample =
+            data.samples[Math.min(frame, data.samples.length - 1)]!;
+          drawTypography(
+            ctx,
+            { ...paintNode(data.node, data.appearance, frame), text },
+            { ...sample, state: state ?? sample.state },
+            prepared,
+            sourceTime ?? frame,
+          );
+        },
+        {
+          bounds,
+          visualKey(time, state, sourceTime) {
+            const frame = frameAt(time, sourceTime);
+            const sample =
+              data.samples[Math.min(frame, data.samples.length - 1)]!;
+            return JSON.stringify([
+              textAt(frame),
+              { ...sample, state: state ?? sample.state },
+              appearanceAt(data.appearance, frame),
+              timed ? (sourceTime ?? frame) : 0,
+            ]);
+          },
+        },
+      );
     },
   };
 }
