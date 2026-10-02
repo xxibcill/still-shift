@@ -47,6 +47,29 @@ export class WebglDevice {
   passes = 0;
   private pooledBytes = 0;
 
+  private frameClip: Bounds | null | undefined;
+  onScreenChange: ((region?: Bounds) => void) | undefined;
+
+  setFrameClip(region?: Bounds | null) {
+    this.frameClip = region;
+  }
+
+  private screenRegion(clip?: Bounds | null): Bounds | null | undefined {
+    const frame = this.frameClip;
+    if (frame === null || clip === null) return null;
+    if (!frame) return clip;
+    if (!clip) return frame;
+    const result = {
+      left: Math.max(frame.left, clip.left),
+      top: Math.max(frame.top, clip.top),
+      right: Math.min(frame.right, clip.right),
+      bottom: Math.min(frame.bottom, clip.bottom),
+    };
+    return result.right <= result.left || result.bottom <= result.top
+      ? null
+      : result;
+  }
+
   constructor(readonly canvas: HTMLCanvasElement) {
     const gl = canvas.getContext("webgl2", {
       alpha: false,
@@ -161,6 +184,8 @@ export class WebglDevice {
   }
 
   clear(surface: WebglSurface, color: readonly number[] = [0, 0, 0, 0]) {
+    const clip = surface.screen ? this.screenRegion() : undefined;
+    if (clip === null) return;
     const gl = this.gl,
       a = color[3]!;
     gl.bindFramebuffer(
@@ -173,8 +198,24 @@ export class WebglDevice {
       color[2]! * a,
       surface.opaque ? 1 : a,
     );
-    gl.clear(gl.COLOR_BUFFER_BIT);
-    if (surface.screen) this.dirtyScreens.add(surface);
+    if (clip) {
+      gl.enable(gl.SCISSOR_TEST);
+      gl.scissor(
+        clip.left,
+        surface.height - clip.bottom,
+        clip.right - clip.left,
+        clip.bottom - clip.top,
+      );
+    }
+    try {
+      gl.clear(gl.COLOR_BUFFER_BIT);
+    } finally {
+      if (clip) gl.disable(gl.SCISSOR_TEST);
+    }
+    if (surface.screen) {
+      this.dirtyScreens.add(surface);
+      this.onScreenChange?.(clip);
+    }
   }
 
   upload(surface: WebglSurface, canvas: HTMLCanvasElement) {
@@ -238,6 +279,7 @@ export class WebglDevice {
     blended = false,
     clip?: Bounds | null,
   ) {
+    if (target?.screen) clip = this.screenRegion(clip);
     if (clip === null) return;
     const gl = this.gl;
     if (target?.screen) {
@@ -355,7 +397,10 @@ export class WebglDevice {
     } finally {
       if (clip) gl.disable(gl.SCISSOR_TEST);
     }
-    if (target?.screen) this.dirtyScreens.add(target);
+    if (target?.screen) {
+      this.dirtyScreens.add(target);
+      this.onScreenChange?.(clip);
+    }
     this.passes++;
   }
 
@@ -437,6 +482,8 @@ export class WebglDevice {
   }
 
   dispose() {
+    this.frameClip = undefined;
+    this.onScreenChange = undefined;
     const gl = this.gl;
     for (const surface of this.surfaces) {
       gl.deleteTexture(surface.texture);

@@ -31,6 +31,11 @@ try {
     return ((await import(url)) as typeof Checks).checkWebglProviderReuse();
   });
   console.log("WebGL provider reuse:", providerReuse);
+  const damage = await page.evaluate(async () => {
+    const url = "/tests/helpers/composition-webgl-reference.ts";
+    return ((await import(url)) as typeof Checks).checkWebglDamageRecovery();
+  });
+  console.log("WebGL partial redraw and recovery:", damage);
   const results = await page.evaluate(async () => {
     const url = "/tests/helpers/composition-webgl-reference.ts";
     const { checkWebglFrames } = (await import(url)) as typeof Checks;

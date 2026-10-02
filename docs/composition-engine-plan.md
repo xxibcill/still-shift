@@ -2221,6 +2221,24 @@ comparisons; the full `pnpm check`.
 - **Remaining:** ordinary moving scenes still need framebuffer-transfer work;
   full family parity/timing and final local/frozen-baseline verification remain open.
 
+### CE4b incremental framebuffer and readback (2026-10-03)
+
+- **Version:** `composition-webgl2-0.9.0` repaints the conservative union of old
+  and new bounds for changed root draws. Ordering, membership, unknown bounds,
+  isolates, adjustments and moving exposures request a complete repaint. All GPU
+  passes intersect the retained frame's damage region; prepared content and
+  compositing semantics remain unchanged.
+- **Readback:** one bounded GPU-produced byte buffer accumulates changed regions
+  across draws, including when callers skip reads. Returned arrays remain
+  independently mutable. Failed draws invalidate both graph and damage reuse
+  before the next render; direct backend writes also invalidate retained damage.
+- **Verification:** 1,233 unit tests, native GPU parity and full-framebuffer
+  readback, all 4,096 arithmetic cases and all 204 export/Lab frames pass. Eight
+  new native checks cover delayed reads, backward seeks and failed-provider
+  recovery. Bracket's 192 frames retain maximum channel delta 2; its **3.4180×**
+  timing ratio still exceeds the unchanged 1.25× limit. Further performance work
+  and full family/frozen-baseline acceptance remain required.
+
 **Completion record:** CE4a and CE4b are in progress; CE4c–CE4d have not started.
 
 ---

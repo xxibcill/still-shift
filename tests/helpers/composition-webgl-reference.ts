@@ -750,3 +750,136 @@ export async function checkWebglProviderReuse() {
     reference.dispose();
   }
 }
+
+/** Partial redraws must survive seeks, delayed readback, caller writes and failed draws. */
+export async function checkWebglDamageRecovery() {
+  const { createCompositionPreview } = await import(
+    "../../packages/renderer-core/src/composition/render/renderer.ts"
+  );
+  const { preparedProvider } = await import(
+    "../../packages/renderer-core/src/composition/render/providers.ts"
+  );
+  const composition: Composition = {
+    schemaVersion: "composition-1",
+    id: "damage-recovery",
+    width: 96,
+    height: 64,
+    fps: 30,
+    frameCount: 6,
+    background: "#26313b",
+    assets: [],
+    layers: [
+      {
+        id: "back",
+        type: "solid",
+        size: [70, 45],
+        color: "#6b7091",
+        transform: { anchor: [0, 0], position: [10, 8] },
+      },
+      {
+        id: "moving",
+        type: "provider",
+        provider: "test.damage@1.0.0",
+        params: {},
+        transform: {
+          anchor: [0, 0],
+          position: {
+            x: {
+              keys: [4, 18, 32, 46, 60, 74].map((value, frame) => ({
+                frame,
+                value,
+                interpolation: "linear" as const,
+              })),
+            },
+            y: 12,
+          },
+        },
+      },
+      {
+        id: "front",
+        type: "solid",
+        size: [12, 36],
+        color: "#aa754baa",
+        transform: { anchor: [0, 0], position: [35, 5] },
+      },
+    ],
+  };
+  let fail = false;
+  const resources = { images: new Map(), fonts: new Map() };
+  const canvas = document.createElement("canvas");
+  const make = (backend: "webgl2" | "canvas2d") =>
+    createCompositionPreview(
+      backend === "webgl2" ? canvas : document.createElement("canvas"),
+      composition,
+      resources,
+      {
+        backend,
+        providers: [
+          {
+            id: "test.damage@1.0.0",
+            prepare: () =>
+              preparedProvider(
+                (ctx, time) => {
+                  if (backend === "webgl2" && fail && time === 1)
+                    throw new Error("intentional draw failure");
+                  ctx.fillStyle = "#bfe173";
+                  ctx.fillRect(0, 0, 14, 14);
+                },
+                {
+                  visualKey: (time) => String(time),
+                  bounds: { left: 0, top: 0, right: 14, bottom: 14 },
+                },
+              ),
+          },
+        ],
+      },
+    );
+  const gpu = make("webgl2"),
+    reference = make("canvas2d");
+  let checks = 0;
+  const check = (frame: number) => {
+    reference.renderFrame(frame);
+    const actual = gpu.readPixels(),
+      expected = reference.readPixels();
+    assertFullGpuReadback(canvas, actual);
+    if (actual.some((v, i) => Math.abs(v - expected[i]!) > 2))
+      throw new Error(`Partial GPU redraw differs at ${frame}`);
+    checks++;
+    return actual;
+  };
+  try {
+    gpu.renderFrame(0);
+    const held = check(0),
+      snapshot = held.slice();
+    for (const frame of [1, 2, 3]) gpu.renderFrame(frame);
+    check(3);
+    if (held.some((v, i) => v !== snapshot[i]))
+      throw new Error("Later redraw mutated prior readback");
+    for (const frame of [5, 2, 4, 0]) {
+      gpu.renderFrame(frame);
+      check(frame);
+    }
+    fail = true;
+    let failed = false;
+    try {
+      gpu.renderFrame(1);
+    } catch (error) {
+      if (
+        !(error instanceof Error) ||
+        error.message !== "intentional draw failure"
+      )
+        throw error;
+      failed = true;
+    }
+    if (!failed) throw new Error("Expected failing provider to be drawn");
+    gpu.renderFrame(0);
+    check(0);
+    fail = false;
+    gpu.renderFrame(1);
+    check(1);
+    return checks;
+  } finally {
+    gpu.dispose();
+    reference.dispose();
+  }
+}

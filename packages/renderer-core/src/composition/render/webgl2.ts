@@ -1,3 +1,5 @@
+import { WebglDamage } from "./webgl-damage.ts";
+import { WebglReadback } from "./webgl-readback.ts";
 import { WebglVisualKey, type PreparedContentKey } from "./webgl-visual-key.ts";
 import { WebglIsolates } from "./webgl-isolates.ts";
 import { WebglVectors } from "./webgl-vectors.ts";
@@ -19,7 +21,7 @@ import { WebglDevice, type WebglSurface } from "./webgl-device.ts";
 import { blendShader } from "./webgl-blend.ts";
 
 export const COMPOSITION_WEBGL_RENDERER_VERSION =
-  "composition-webgl2-0.8.0" as const;
+  "composition-webgl2-0.9.0" as const;
 const IDENTITY: Matrix = [1, 0, 0, 1, 0, 0];
 const COPY =
   "uniform float opacity; void main() { pixel = floor(floor(texture(source, uv) * 255.0 + 0.5) * (floor(opacity * 255.0 + 0.5) + 1.0) / 256.0) / 255.0; }";
@@ -65,11 +67,48 @@ export function createWebgl2Backend(
   const effects = new WebglEffects(device, raster, bounds);
   const images = new WebglImages(device, raster);
   const keys = new WebglVisualKey(options.contentKey);
+  const damage = new WebglDamage(keys, options.contentBounds);
+  const readback = new WebglReadback(
+    target.width,
+    target.height,
+    () => readSurface(target),
+    (rect) =>
+      device.readRegion(
+        target,
+        rect.left,
+        rect.top,
+        rect.right - rect.left,
+        rect.bottom - rect.top,
+      ),
+  );
+  let renderingFrame = false,
+    exposure = false;
+  device.onScreenChange = (region) => {
+    readback.changed(region);
+    if (!renderingFrame) damage.reset();
+  };
   const vectors = new WebglVectors(device, raster, keys, options.contentBounds);
   const isolates = new WebglIsolates(keys, (surface) => {
     bounds.release(surface);
     device.release(surface);
   });
+
+  function readSurface(surface: WebglSurface) {
+    const region = bounds.read(device, surface);
+    if (region) return region;
+    const pixels = device.read(surface);
+    if (surface.opaque) return new Uint8ClampedArray(pixels.buffer);
+    const result = new Uint8ClampedArray(pixels.length);
+    for (let i = 0; i < pixels.length; i += 4) {
+      const a = pixels[i + 3]!;
+      for (let channel = 0; channel < 3; channel++)
+        result[i + channel] = a
+          ? Math.round((pixels[i + channel]! * 255) / a)
+          : 0;
+      result[i + 3] = a;
+    }
+    return result;
+  }
 
   function replace(
     dst: WebglSurface,
@@ -193,6 +232,15 @@ export function createWebgl2Backend(
   const backend: Webgl2Backend = {
     version: COMPOSITION_WEBGL_RENDERER_VERSION,
     frameKey: (root) => keys.of(root),
+    beginFrame(root) {
+      renderingFrame = true;
+      device.setFrameClip(exposure ? undefined : damage.next(root));
+    },
+    endFrame(completed) {
+      renderingFrame = false;
+      device.setFrameClip();
+      if (!completed) damage.reset();
+    },
     renderIsolate: (op, like, draw) => isolates.render(op, like, draw),
     drawVectors: (dst, ops) => bounds.include(dst, vectors.draw(dst, ops)),
     target,
@@ -473,32 +521,22 @@ export function createWebgl2Backend(
         { opacity },
       );
     },
-    readPixels(surface) {
-      const region = bounds.read(device, surface);
-      if (region) return region;
-      const pixels = device.read(surface);
-      if (surface.opaque) return new Uint8ClampedArray(pixels.buffer);
-      const result = new Uint8ClampedArray(pixels.length);
-      for (let i = 0; i < pixels.length; i += 4) {
-        const a = pixels[i + 3]!;
-        for (let channel = 0; channel < 3; channel++)
-          result[i + channel] = a
-            ? Math.round((pixels[i + channel]! * 255) / a)
-            : 0;
-        result[i + 3] = a;
-      }
-      return result;
-    },
+    readPixels: (surface) =>
+      surface === target ? readback.read() : readSurface(surface),
     accumulateExposure(dst, count, render) {
       if (count === 1) {
         render(0);
         return;
       }
+      damage.reset();
+      device.setFrameClip();
       let painted: ReturnType<WebglBounds["snapshot"]> = null;
       let background: number | undefined;
       const sum = device.surface(dst.width, dst.height, true);
-      const next = device.surface(dst.width, dst.height, true);
+      let next: WebglSurface | undefined;
       try {
+        next = device.surface(dst.width, dst.height, true);
+        exposure = true;
         for (let i = 0; i < count; i++) {
           render(i);
           if (i === 0) background = bounds.clearColor(dst);
@@ -520,11 +558,16 @@ export function createWebgl2Backend(
         );
       } finally {
         device.release(sum);
-        device.release(next);
+        if (next) device.release(next);
+        exposure = false;
+        damage.reset();
+        device.setFrameClip();
       }
     },
     present: () => device.present(target),
     dispose() {
+      damage.reset();
+      readback.dispose();
       isolates.dispose();
       vectors.dispose();
       raster.dispose();

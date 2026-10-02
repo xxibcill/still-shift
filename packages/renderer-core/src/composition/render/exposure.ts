@@ -73,7 +73,14 @@ export function renderCompositionExposure<S extends Surface>(
       (firstKey === undefined
         ? equal(cache.root, first.graph.root)
         : cache.key === firstKey);
-    if (!reused) executeGraph(backend, first.graph, target);
+    if (!reused) {
+      // A failed draw can partially overwrite the previous framebuffer.
+      if (cache) {
+        cache.root = undefined;
+        cache.key = undefined;
+      }
+      executeGraph(backend, first.graph, target);
+    }
     if (cache) {
       cache.root = first.graph.root;
       cache.key = firstKey;

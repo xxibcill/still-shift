@@ -221,26 +221,13 @@ export function createCompositionPreview(
     target: S,
     present: () => void,
   ): CompositionPreview {
-    // Retain only the previous stationary graph and one bounded readback. Moving
-    // exposures invalidate the graph, and caller-owned pixel arrays stay mutable.
+    // The GPU backend retains bounded readback bytes; graph reuse skips identical draws.
     const cache: CompositionFrameCache | undefined =
       kind === "webgl2" ? {} : undefined;
-    let pixels: Uint8ClampedArray | undefined;
-    let reusePixels = false;
-    const readPixels = () => {
-      if (
-        !cache ||
-        !reusePixels ||
-        target.width * target.height * 4 > 64 * 1024 * 1024
-      )
-        return backend.readPixels(target);
-      pixels ??= backend.readPixels(target);
-      return pixels.slice();
-    };
     return {
       backend: kind,
       rendererVersion: backend.version,
-      readPixels,
+      readPixels: () => backend.readPixels(target),
       textBounds: text.bounds,
       renderFrame(frame) {
         if (
@@ -259,16 +246,14 @@ export function createCompositionPreview(
           },
           cache,
         );
-        reusePixels = report.samples === 0;
-        if (report.samples > 0) {
-          pixels = undefined;
-          present();
-        }
+        if (report.samples > 0) present();
         return report;
       },
       dispose() {
-        pixels = undefined;
-        if (cache) cache.root = undefined;
+        if (cache) {
+          cache.root = undefined;
+          cache.key = undefined;
+        }
         backend.dispose();
         canvas.width = composition.width;
       },

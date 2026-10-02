@@ -34,6 +34,9 @@ export type Surface = { readonly width: number; readonly height: number };
  */
 export interface RenderBackend<S extends Surface = Surface> {
   readonly version: string;
+  /** Optional retained-frame lifecycle; effects and exposure may request a full repaint. */
+  beginFrame?(root: SurfaceNode): void;
+  endFrame?(completed: boolean): void;
   /** Optional canonical pixel identity for retained backend content. */
   frameKey?(root: SurfaceNode): string;
   /** Cache an immutable isolate; the caller releases the returned surface normally. */
@@ -326,5 +329,12 @@ export function executeGraph<S extends Surface>(
       } else run(op, dst);
     }
   };
-  surface(graph.root, target);
+  let completed = false;
+  try {
+    backend.beginFrame?.(graph.root);
+    surface(graph.root, target);
+    completed = true;
+  } finally {
+    backend.endFrame?.(completed);
+  }
 }
