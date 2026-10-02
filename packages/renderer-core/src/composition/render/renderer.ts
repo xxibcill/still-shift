@@ -22,14 +22,20 @@ import {
 } from "./providers.ts";
 import { STORY_CONTENT_PROVIDERS } from "../adapters/story-providers.ts";
 import { COMMERCE_CONTENT_PROVIDERS } from "../adapters/commerce-providers.ts";
+import { APPEARANCE_PROVIDERS } from "../adapters/appearance-providers.ts";
 import { MOTION_PATH_PROVIDERS } from "../adapters/motion-path.ts";
-import { NUMERIC_TYPOGRAPHY_PROVIDER } from "../adapters/numeric-typography.ts";
+import {
+  NUMERIC_TYPOGRAPHY_PROVIDER,
+  RICH_TYPOGRAPHY_PROVIDER,
+} from "../adapters/numeric-typography.ts";
 
 const BUILTIN_PROVIDERS = [
   ...STORY_CONTENT_PROVIDERS,
   ...COMMERCE_CONTENT_PROVIDERS,
   NUMERIC_TYPOGRAPHY_PROVIDER,
+  RICH_TYPOGRAPHY_PROVIDER,
   ...MOTION_PATH_PROVIDERS,
+  ...APPEARANCE_PROVIDERS,
 ];
 
 /** A validated composition wrapped with the export runtime's canvas and timeline. */

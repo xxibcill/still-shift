@@ -32,12 +32,15 @@ import {
   params,
   preparedBaseLayer,
   trimSettledSamples,
+  bakedState,
+  baked,
   type Samples,
 } from "./prepared.ts";
 import type {
   CanvasContentProvider,
   ProviderLayer,
 } from "../render/providers.ts";
+import { AppearanceSchema, paintNode, type Appearance } from "./appearance.ts";
 
 export const NumericTypographyParamsSchema = StoryTextParamsSchema.extend({
   fps: z.number().positive().max(240),
@@ -57,21 +60,40 @@ export const NumericTypographyParamsSchema = StoryTextParamsSchema.extend({
   signals: z.array(SignalSchema).max(100),
   textEvents: z.array(TextEventSchema).max(100),
 }).strict();
-type Params = z.infer<typeof NumericTypographyParamsSchema>;
+export const RichTypographyParamsSchema = NumericTypographyParamsSchema.extend({
+  numeric: NumericTypographyParamsSchema.shape.numeric.optional(),
+  appearance: AppearanceSchema.optional(),
+});
+type Params = z.infer<typeof RichTypographyParamsSchema>;
 
 function parse(layer: ProviderLayer, path: string): Params {
-  const parsed = NumericTypographyParamsSchema.safeParse(layer.params);
+  const parsed = (
+    layer.provider === "component.typography@1.0.0"
+      ? NumericTypographyParamsSchema
+      : RichTypographyParamsSchema
+  ).safeParse(layer.params);
   if (!parsed.success)
     passageError("comp-provider-params", parsed.error.issues[0]!.message, {
       path: `${path}.params`,
     });
   const value = parsed.data;
+  for (const state of [layer.state, layer.stateFrom])
+    for (const index of typeof state === "number"
+      ? [state]
+      : (state?.keys.map((key) => key.value) ?? []))
+      if (index >= (value.node.states?.length ?? 1))
+        passageError(
+          "comp-provider-params",
+          "Text state has no corresponding content",
+          { path: `${path}.state` },
+        );
   if (
     !value.node.fontAsset ||
-    !value.node.textBox ||
-    value.node.states ||
-    value.node.textLayout ||
-    value.samples.some((sample) => sample.state !== 0) ||
+    (value.numeric &&
+      (!value.node.textBox || value.node.states || value.node.textLayout)) ||
+    value.samples.some(
+      (sample) => sample.state >= (value.node.states?.length ?? 1),
+    ) ||
     value.textAnimators.some((animator) => animator.node !== value.node.id) ||
     value.textEvents.some(
       (event) =>
@@ -110,75 +132,124 @@ function textScene(data: Params): Parameters<typeof prepareTypography>[0] {
     animationFrames: {
       [data.node.id]: Array.from({ length: data.frameCount }, (_, i) => i),
     },
-    componentData: {
-      schemaVersion: "scene-components-1",
-      annotations: [],
-      values: [data.numeric.value],
-      bindings: [
-        {
-          kind: "text",
-          target: data.node.id,
-          value: data.numeric.value.id,
-          format: data.numeric.format,
-        },
-      ],
-    },
+    ...(data.numeric
+      ? {
+          componentData: {
+            schemaVersion: "scene-components-1",
+            annotations: [],
+            values: [data.numeric.value],
+            bindings: [
+              {
+                kind: "text",
+                target: data.node.id,
+                value: data.numeric.value.id,
+                format: data.numeric.format,
+              },
+            ],
+          },
+        }
+      : {}),
   } as unknown as Parameters<typeof prepareTypography>[0];
 }
 
 /** Formatted component values stay bounded data; only local glyph drawing runs per frame. */
-export const NUMERIC_TYPOGRAPHY_PROVIDER: CanvasContentProvider = {
-  id: "component.typography@1.0.0",
-  async loadFonts(layer, fonts, path) {
-    const data = parse(layer, path);
-    for (const span of [undefined, ...(data.node.spans ?? [])])
-      await loadTextStyleFont(
-        resolvedTextStyle(data.node, data.textStyles, span?.style),
-        fonts,
+function typographyProvider(id: string): CanvasContentProvider {
+  return {
+    id,
+    async loadFonts(layer, fonts, path) {
+      const data = parse(layer, path);
+      for (const span of [undefined, ...(data.node.spans ?? [])])
+        await loadTextStyleFont(
+          resolvedTextStyle(data.node, data.textStyles, span?.style),
+          fonts,
+        );
+      await loadTextAnimationFonts(textScene(data), fonts);
+    },
+    prepare(layer, resources, path) {
+      const data = parse(layer, path);
+      if (!resources.fonts.has(data.node.fontAsset!))
+        passageError(
+          "comp-provider-asset",
+          "Numeric typography requires its declared pinned font",
+          { path: `${path}.assets` },
+        );
+      const prepared = prepareTypography(
+        textScene(data),
+        new Map(resources.fonts),
       );
-    await loadTextAnimationFonts(textScene(data), fonts);
-  },
-  prepare(layer, resources, path) {
-    const data = parse(layer, path);
-    if (!resources.fonts.has(data.node.fontAsset!))
-      passageError(
-        "comp-provider-asset",
-        "Numeric typography requires its declared pinned font",
-        { path: `${path}.assets` },
-      );
-    const prepared = prepareTypography(
-      textScene(data),
-      new Map(resources.fonts),
-    );
-    return (ctx, time) => {
-      const frame = Math.max(
-        0,
-        Math.min(data.frameCount - 1, Math.floor(time)),
-      );
-      const text =
-        data.numeric.samples[Math.min(frame, data.numeric.samples.length - 1)]!;
-      const sample = data.samples[Math.min(frame, data.samples.length - 1)]!;
-      drawTypography(ctx, { ...data.node, text }, sample, prepared, frame);
-    };
-  },
-};
+      return (ctx, time, state) => {
+        const frame = Math.max(
+          0,
+          Math.min(data.frameCount - 1, Math.floor(time)),
+        );
+        const text = data.numeric
+          ? data.numeric.samples[
+              Math.min(frame, data.numeric.samples.length - 1)
+            ]!
+          : data.node.text;
+        const sample = data.samples[Math.min(frame, data.samples.length - 1)]!;
+        drawTypography(
+          ctx,
+          { ...paintNode(data.node, data.appearance, frame), text },
+          { ...sample, state: state ?? sample.state },
+          prepared,
+          frame,
+        );
+      };
+    },
+  };
+}
+export const NUMERIC_TYPOGRAPHY_PROVIDER = typographyProvider(
+  "component.typography@1.0.0",
+);
+export const RICH_TYPOGRAPHY_PROVIDER = typographyProvider(
+  "component.typography@1.1.0",
+);
 
-export function numericTypographyLayer(
+export function componentTypographyLayer(
   scene: CommerceScene | StoryScene,
   node: Extract<PreparedNode, { type: "text" }>,
   samples: Samples,
+  appearance?: Appearance,
 ): ProviderLayer | undefined {
   const binding = scene.componentData?.bindings.find(
     (b) => b.kind === "text" && b.target === node.id,
   );
-  if (binding?.kind !== "text") return undefined;
-  const value = scene.componentData!.values.find(
-    (v) => v.id === binding.value,
-  )!;
+  if (binding?.kind !== "text" && !appearance) return undefined;
+  const numeric =
+    binding?.kind === "text"
+      ? {
+          value: scene.componentData!.values.find(
+            (v) => v.id === binding.value,
+          )!,
+          format: binding.format,
+          samples: trimSettledSamples(
+            Array.from({ length: scene.frameCount }, (_, frame) => ({
+              text: componentText(scene, node, frame)!,
+            })),
+          ).map((sample) => sample.text),
+        }
+      : undefined;
+  const blends = samples.some((sample) => sample.stateFrom !== undefined);
   return {
     ...preparedBaseLayer(scene, node, samples),
     type: "provider",
-    provider: NUMERIC_TYPOGRAPHY_PROVIDER.id,
+    provider: appearance
+      ? RICH_TYPOGRAPHY_PROVIDER.id
+      : NUMERIC_TYPOGRAPHY_PROVIDER.id,
+    ...(appearance
+      ? { state: bakedState(samples.map((sample) => Math.round(sample.state))) }
+      : {}),
+    ...(blends
+      ? {
+          stateFrom: bakedState(
+            samples.map((sample) =>
+              Math.round(sample.stateFrom ?? sample.state),
+            ),
+          ),
+          stateMix: baked(samples.map((sample) => sample.stateMix ?? 1)),
+        }
+      : {}),
     assets: (scene.fonts ?? []).map((font) => font.id),
     params: params(
       {
@@ -188,15 +259,8 @@ export function numericTypographyLayer(
         samples: trimSettledSamples(
           samples.map(({ state, reveal }) => ({ state, reveal })),
         ),
-        numeric: {
-          value,
-          format: binding.format,
-          samples: trimSettledSamples(
-            Array.from({ length: scene.frameCount }, (_, frame) => ({
-              text: componentText(scene, node, frame)!,
-            })),
-          ).map((sample) => sample.text),
-        },
+        ...(numeric ? { numeric } : {}),
+        ...(appearance ? { appearance } : {}),
         textStyles: scene.textStyles ?? {},
         textAnimators: (scene.textAnimators ?? []).filter(
           (animator) => animator.node === node.id,

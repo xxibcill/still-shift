@@ -24,6 +24,7 @@ import { commerceLayoutVariants } from "../helpers/composition-commerce-layout.t
 import { commerceTextStateVariants } from "../helpers/composition-commerce-text-states.ts";
 import { motionPathVariants } from "../helpers/composition-motion-path.ts";
 import { assertAdapterExport } from "../helpers/composition-adapter-exports.ts";
+import { appearanceVariants } from "../helpers/composition-appearance.ts";
 import type * as TextStateTests from "../helpers/composition-commerce-text-states.ts";
 
 const root = resolve(import.meta.dirname, "../..");
@@ -61,6 +62,7 @@ const accepted = new Set(
       "drift",
       "fade",
       "float",
+      "height-shadow",
       "introduction",
       "layout",
       "matte",
@@ -134,6 +136,7 @@ try {
       ...commerceLayoutVariants(entry.id, source),
       ...commerceTextStateVariants(entry.id, source),
       ...motionPathVariants(entry.id, source),
+      ...appearanceVariants(entry.id, source),
     ];
     for (const item of inputs) {
       if (variant >= 0 && !item.id.includes(process.argv[variant + 1]!))
@@ -370,7 +373,11 @@ try {
       totalItems++;
       if (
         (only < 0 || process.argv.includes("--exports")) &&
-        item.id === "commerce/atom-path/morph"
+        [
+          "commerce/atom-path/morph",
+          "commerce/atom-path/appearance-brush",
+          "commerce/atom-height-shadow",
+        ].includes(item.id)
       )
         await assertAdapterExport(input, dirname(sourcePath), item.id);
     }

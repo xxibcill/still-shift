@@ -16,6 +16,7 @@ import type * as Render from "../../packages/renderer-core/src/index.ts";
 import { assertAdapterExport } from "../helpers/composition-adapter-exports.ts";
 import { storyComponentVariants } from "../helpers/composition-story-components.ts";
 import { motionPathVariants } from "../helpers/composition-motion-path.ts";
+import { appearanceVariants } from "../helpers/composition-appearance.ts";
 import { assertCompositionAdapterState } from "../helpers/composition-adapter-state.ts";
 
 const root = resolve(import.meta.dirname, "../..");
@@ -79,6 +80,7 @@ try {
       item,
       ...storyComponentVariants(item.id, StorySceneSchema.parse(item.scene)),
       ...motionPathVariants(item.id, StorySceneSchema.parse(item.scene)),
+      ...appearanceVariants(item.id, StorySceneSchema.parse(item.scene)),
     ]);
     for (const item of cases) {
       const input = StorySceneSchema.parse(item.scene);
@@ -234,7 +236,10 @@ try {
       totalItems++;
       if (
         (only < 0 || process.argv.includes("--exports")) &&
-        item.id === "component/story-leader/spatial-morph"
+        [
+          "component/story-leader/spatial-morph",
+          "component/story-state/appearance-uniform",
+        ].includes(item.id)
       )
         await assertAdapterExport(input, dirname(sourcePath), item.id);
       if (

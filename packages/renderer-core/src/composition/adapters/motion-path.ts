@@ -20,6 +20,12 @@ import {
 import { CommercePathGeometrySchema } from "./commerce-path.ts";
 import { StoryPathGeometrySchema, sampleStoryPath } from "./story-path.ts";
 import { params } from "./prepared.ts";
+import {
+  AppearanceSchema,
+  appearanceAt,
+  paintNode,
+  type Appearance,
+} from "./appearance.ts";
 import type {
   CanvasContentProvider,
   ProviderLayer,
@@ -40,6 +46,9 @@ const fields = {
 };
 export const MotionPathParamsSchema = StoryPathParamsSchema.extend(fields);
 export const MotionFlowParamsSchema = StoryFlowParamsSchema.extend(fields);
+export const PaintedPathParamsSchema = MotionPathParamsSchema.extend({
+  appearance: AppearanceSchema,
+});
 type PathParams = z.infer<typeof MotionPathParamsSchema>;
 
 function parse<
@@ -141,6 +150,37 @@ export const MOTION_PATH_PROVIDERS: readonly CanvasContentProvider[] = [
       };
     },
   },
+  {
+    id: "component.path@1.1.0",
+    prepare(layer, _resources, path) {
+      const data = parse(PaintedPathParamsSchema, layer, path);
+      return (ctx, time) => {
+        const frame = Math.max(
+          0,
+          Math.min(data.motion.frameCount - 1, Math.floor(time)),
+        );
+        const paint = appearanceAt(data.appearance, frame);
+        drawPreparedPath(
+          ctx,
+          paintNode(
+            sampleCompositionMotionPath(data, frame),
+            data.appearance,
+            frame,
+          ),
+          {
+            ...data.samples[Math.min(frame, data.samples.length - 1)]!,
+            ...(paint.trimStart !== undefined
+              ? { trimStart: paint.trimStart }
+              : {}),
+            ...(paint.trimEnd !== undefined ? { trimEnd: paint.trimEnd } : {}),
+            ...(paint.trimOffset !== undefined
+              ? { trimOffset: paint.trimOffset }
+              : {}),
+          },
+        );
+      };
+    },
+  },
 ];
 
 /** Keep authored cubic segments and morph keys compact instead of baking thousands of vertices. */
@@ -148,17 +188,23 @@ export function withMotionPath(
   scene: CommerceScene | StoryScene,
   node: PreparedPath,
   layer: ProviderLayer,
+  appearance?: Appearance,
 ): ProviderLayer {
   const spatial = scene.spatialPaths?.find((path) => path.node === node.id);
   const morph = scene.pathMorphs?.find((path) => path.node === node.id);
-  if (!spatial && !morph) return layer;
+  if (!spatial && !morph && !appearance) return layer;
   return {
     ...layer,
     provider:
-      "flow" in layer.params ? "component.flow@1.1.0" : "component.path@1.0.0",
+      "flow" in layer.params
+        ? "component.flow@1.1.0"
+        : appearance
+          ? "component.path@1.1.0"
+          : "component.path@1.0.0",
     params: params(
       {
         ...layer.params,
+        ...(appearance ? { appearance } : {}),
         motion: {
           fps: scene.fps,
           frameCount: scene.frameCount,

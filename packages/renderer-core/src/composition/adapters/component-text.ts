@@ -6,6 +6,7 @@ import type {
 } from "@still-shift/scene-contract";
 import { componentCapabilities } from "../../component-capabilities.ts";
 import { componentText } from "../../component-values.ts";
+import type { Appearance } from "./appearance.ts";
 import {
   params,
   trimSettledSamples,
@@ -21,6 +22,7 @@ export function componentTextLayer(
   layer: Extract<CompositionLayer, { type: "provider" }>,
   layoutResolved: boolean,
   samples: Samples,
+  appearance?: Appearance,
 ) {
   const components = componentCapabilities(scene.componentData);
   const fit = [
@@ -46,7 +48,7 @@ export function componentTextLayer(
     (animator) => animator.node === node.id,
   );
   const blends = samples.some((s) => s.stateFrom !== undefined);
-  const extended = !!node.container || !!animator || blends;
+  const extended = !!node.container || !!animator || blends || !!appearance;
   const blendWindows = components.states.flatMap((s) =>
     s.target === node.id
       ? s.cuts.flatMap((c) => (c.ramp ? [[c.frame, c.frame + c.ramp]] : []))
@@ -54,11 +56,13 @@ export function componentTextLayer(
   );
   return {
     ...layer,
-    provider: extended
-      ? "commerce.text@1.2.0"
-      : fit || numeric
-        ? "commerce.text@1.1.0"
-        : "commerce.text@1.0.0",
+    provider: appearance
+      ? "commerce.text@1.3.0"
+      : extended
+        ? "commerce.text@1.2.0"
+        : fit || numeric
+          ? "commerce.text@1.1.0"
+          : "commerce.text@1.0.0",
     ...(extended
       ? { state: bakedState(samples.map((s) => Math.round(s.state))) }
       : {}),
@@ -73,6 +77,7 @@ export function componentTextLayer(
     params: params(
       {
         ...layer.params,
+        ...(appearance ? { appearance } : {}),
         ...(fit
           ? {
               fit: {

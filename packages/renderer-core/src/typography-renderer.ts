@@ -47,8 +47,6 @@ export type TextRaster = {
   variants: Map<string, TextRaster>;
   /** Opaque glyph coverage; authored fill colour and alpha apply only when drawing. */
   colorCoverage?: boolean;
-  /** Original per-cluster colours when drawing directly coloured glyphs. */
-  sourceColors?: readonly string[];
   /** Composition outlines cache opaque coverage, independent of animated colour. */
   strokeCoverage?: boolean;
 };
@@ -139,9 +137,7 @@ export function rasterizeText(
     strokes: new Map(),
     fonts,
     variants: new Map(),
-    ...(colorCoverage
-      ? { colorCoverage: true }
-      : { sourceColors: layout.clusters.map((_, i) => clusterColor(i)) }),
+    ...(colorCoverage ? { colorCoverage: true } : {}),
   };
 }
 export function prepareTypography(
@@ -504,9 +500,7 @@ function drawCluster(
     pose.fill ===
       (raster.colorCoverage
         ? "#ffffff"
-        : (raster.sourceColors?.[index] ??
-          node.spans?.[cluster.spanIndex]?.color ??
-          node.color))
+        : (node.spans?.[cluster.spanIndex]?.color ?? node.color))
       ? raster.canvas
       : coloredRaster(raster, pose.fill),
   );

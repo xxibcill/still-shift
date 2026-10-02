@@ -11,12 +11,17 @@ import {
   requiresCompositionTextLayout,
   type CompositionTextLayout,
 } from "./layout.ts";
-import { resolveTypographyNodes } from "../../typography-renderer.ts";
+import {
+  resolveTypographyNodes,
+  prepareTypography,
+} from "../../typography-renderer.ts";
+import { loadTextAnimationFonts } from "../../typography-axes.ts";
 import { resolveTextEvents } from "../../typography-events.ts";
 import { compileAdapterMarkers } from "./markers.ts";
 import { typographyLayer } from "./typography.ts";
-import { numericTypographyLayer } from "./numeric-typography.ts";
+import { componentTypographyLayer } from "./numeric-typography.ts";
 import { withMotionPath } from "./motion-path.ts";
+import { compileAppearance } from "./appearance.ts";
 import { componentTextLayer } from "./component-text.ts";
 import { componentCapabilities } from "../../component-capabilities.ts";
 import { validateAttachedPaths } from "../../commerce-geometry.ts";
@@ -29,7 +34,7 @@ import { prepareCommerceTextFits } from "../../commerce-layout.ts";
 import { prepareComponentTextFits } from "../../component-text-fit.ts";
 import { loadPreparedFonts } from "../../prepared-fonts.ts";
 
-export const COMMERCE_ADAPTER_VERSION = "commerce-composition-0.9.0";
+export const COMMERCE_ADAPTER_VERSION = "commerce-composition-0.10.0";
 
 export type CommerceCompositionOptions = {
   id?: string;
@@ -53,7 +58,9 @@ function checkSupported(scene: CommerceScene) {
       { path: "frameCount" },
     );
   scene.effects?.forEach((effect, index) => {
-    if (!["drift", "parallax", "overshoot"].includes(effect.type))
+    if (
+      !["drift", "parallax", "overshoot", "height-shadow"].includes(effect.type)
+    )
       unsupported(
         `effects[${index}]`,
         `${effect.type} effects (pending CE6/CE7)`,
@@ -130,22 +137,17 @@ export function commerceToComposition(
       const samples = Array.from({ length: scene.frameCount }, (_, frame) =>
         evaluatePreparedNode(scene, node, frame),
       );
-      for (const property of [
-        "blur",
-        "strokeWidth",
-        "trimStart",
-        "trimEnd",
-        "trimOffset",
-      ] as const)
+      for (const property of ["blur"] as const)
         if (samples.some((sample) => sample[property] !== undefined))
           unsupported(
             `nodes[${scene.nodes.indexOf(node)}].${property}`,
             `Motion ${property}`,
           );
+      const appearance = compileAppearance(scene, node, samples);
       // Keep path-based rectangle rasterization and parent transform concatenation.
       let layer =
         node.type === "text" && scene.typography
-          ? (numericTypographyLayer(scene, node, samples) ??
+          ? (componentTypographyLayer(scene, node, samples, appearance) ??
             typographyLayer(scene, node, samples))
           : preparedNodeLayer(scene, node, samples, { nativeSolids: false });
       const gate = visibility.get(node.id);
@@ -157,7 +159,8 @@ export function commerceToComposition(
         node.type === "text" &&
         layer.type === "provider" &&
         !scene.typography &&
-        (node.textBox ||
+        (appearance ||
+          node.textBox ||
           node.container ||
           scene.textAnimators?.some((a) => a.node === node.id) ||
           samples.some((s) => s.stateFrom !== undefined))
@@ -168,6 +171,7 @@ export function commerceToComposition(
           layer,
           !!options.textLayout,
           samples,
+          appearance,
         );
       if (node.type === "path" && layer.type === "provider") {
         const geometry = compileAttachedPathGeometry(scene, node);
@@ -181,7 +185,15 @@ export function commerceToComposition(
         }
       }
       if (node.type === "path" && layer.type === "provider")
-        layer = withMotionPath(scene, node, layer);
+        layer = withMotionPath(scene, node, layer, appearance);
+      if (node.type === "rect" && layer.type === "provider" && appearance) {
+        layer.provider = "component.rect@1.0.0";
+        layer.params = params(
+          { ...layer.params, appearance },
+          `nodes[${scene.nodes.indexOf(node)}]`,
+          node.id,
+        );
+      }
       layers.push(layer);
       visit(node.id);
     }
@@ -269,9 +281,25 @@ export async function prepareCommerceComposition(
   const fonts = await loadPreparedFonts(input, assetUrl);
   const canvas = document.createElement("canvas");
   try {
+    const context = canvas.getContext("2d")!;
+    if (input.typography) {
+      const scene = prepareComponentTextFits(
+        prepareCommerceTextFits(
+          resolveTypographyNodes(compileCommerceScene(input)),
+          context,
+          fonts,
+        ),
+        context,
+        fonts,
+      );
+      await loadTextAnimationFonts(scene, fonts);
+      // Preserve source-wide typography overflow and raster budgets before its
+      // text is distributed among independent native layers and providers.
+      prepareTypography(scene, fonts);
+    }
     return commerceToComposition(input, {
       ...options,
-      textLayout: { context: canvas.getContext("2d")!, fonts },
+      textLayout: { context, fonts },
     });
   } finally {
     canvas.width = canvas.height = 0;

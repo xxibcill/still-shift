@@ -36,10 +36,7 @@ async function compileFamilyComposition(
   assetDirectory: string,
   runtime: BrowserRuntimeOptions,
 ) {
-  if (
-    !requiresCompositionTextLayout(scene) &&
-    !(scene.schemaVersion === "story-scene-1" && scene.typography)
-  )
+  if (!requiresCompositionTextLayout(scene) && !scene.typography)
     return scene.schemaVersion === "commerce-scene-1"
       ? commerceToComposition(scene)
       : storyToComposition(scene);

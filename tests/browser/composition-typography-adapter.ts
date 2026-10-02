@@ -22,6 +22,7 @@ import {
   typographyVariants,
 } from "../helpers/composition-typography.ts";
 import { assertAdapterExport } from "../helpers/composition-adapter-exports.ts";
+import { appearanceVariants } from "../helpers/composition-appearance.ts";
 import type * as Render from "../../packages/renderer-core/src/index.ts";
 import { assertCompositionAdapterState } from "../helpers/composition-adapter-state.ts";
 
@@ -75,6 +76,7 @@ try {
         ...item,
         id: `${entry.id}/${item.id}`,
       })),
+      ...appearanceVariants(entry.id, source),
     ];
     for (const item of inputs) {
       const input =
@@ -244,6 +246,7 @@ try {
         only < 0 &&
         [
           "typography/editorial/numeric",
+          "typography/editorial/appearance-uniform",
           "typography/commerce/numeric",
           "typography/variable-thai/numeric",
           "typography/semantic",

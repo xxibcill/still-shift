@@ -25,6 +25,7 @@ import { drawTextContainer } from "../../text-container.ts";
 import { drawAnimatedText } from "../../motion-text.ts";
 import { compileStoryFlows, drawStoryFlow } from "../../story-flows.ts";
 import { drawStoryText } from "../../story-text.ts";
+import { AppearanceSchema, paintNode } from "./appearance.ts";
 
 const CommercePathParamsSchema = StoryPathParamsSchema.extend({
   geometry: CommercePathGeometrySchema,
@@ -72,7 +73,12 @@ const CommerceAnimatedTextParamsSchema = CommerceTextParamsSchema.extend({
     .max(100)
     .optional(),
 });
-type TextParams = z.infer<typeof CommerceAnimatedTextParamsSchema>;
+const PaintedTextParamsSchema = CommerceAnimatedTextParamsSchema.extend({
+  appearance: AppearanceSchema,
+});
+type TextParams = z.infer<typeof CommerceAnimatedTextParamsSchema> & {
+  appearance?: z.infer<typeof AppearanceSchema>;
+};
 
 function validateText(
   { node, samples, fit, numeric, animator }: TextParams,
@@ -188,12 +194,14 @@ function prepareText(
         path: `${path}.params.numeric.samples`,
       },
     );
+  const preparedNode = node;
   return (
     ctx: CanvasRenderingContext2D,
     time: number,
     contentState?: number,
   ) => {
     const frame = Math.max(0, Math.floor(time));
+    const node = paintNode(preparedNode, params.appearance, frame);
     const state = samples[Math.min(samples.length - 1, frame)]!;
     const text = numeric
       ? numeric.samples[Math.min(numeric.samples.length - 1, frame)]!
@@ -244,6 +252,7 @@ const TEXT_CONTENT_PROVIDERS: readonly CanvasContentProvider[] = (
     ["commerce.text@1.0.0", StoryTextParamsSchema],
     ["commerce.text@1.1.0", CommerceTextParamsSchema],
     ["commerce.text@1.2.0", CommerceAnimatedTextParamsSchema],
+    ["commerce.text@1.3.0", PaintedTextParamsSchema],
   ] as const
 ).map(([id, schema]) => ({
   id,
@@ -253,7 +262,8 @@ const TEXT_CONTENT_PROVIDERS: readonly CanvasContentProvider[] = (
       passageError("comp-provider-params", parsed.error.issues[0]!.message, {
         path: `${path}.params`,
       });
-    const extended = id === "commerce.text@1.2.0";
+    const extended =
+      id === "commerce.text@1.2.0" || id === "commerce.text@1.3.0";
     if (extended) {
       if (!parsed.data.node.fontAsset && !layer.usesSystemFonts)
         passageError(

@@ -1737,6 +1737,35 @@ comparisons; the full `pnpm check`.
 - **Remaining:** animated appearance, CE6/CE7 dependencies and both-backend
   acceptance. The active goal continues after this slice's commit.
 
+### CE4b animated-appearance follow-up (2026-10-02)
+
+- **Delivered:** animated Oklab paints, path and rectangle stroke widths, path trim
+  start/end/offset, text paints during component state ramps, rich typography paint
+  animation and height-shadow transforms. Native geometry and baked state remain
+  inspectable; versioned providers retain the source rasterization and brush texture
+  width. Prepared draw closures are immutable and support backward seeks.
+- **Typography:** canonical asynchronous compilation checks the whole source scene's
+  font-dependent layout and raster budgets before splitting native text/providers.
+  Legacy colored-glyph behavior is preserved; native animated or translucent text
+  uses coverage rasters while static opaque text may retain source run colors.
+- **Versions:** commerce adapter `commerce-composition-0.10.0`, story adapter
+  `story-composition-0.7.0`, Canvas renderer `composition-canvas-1.11.0`;
+  evaluator remains `composition-evaluator-11`.
+- **Verification:** `pnpm check:fast` passes with **1,189 unit tests**. Focused
+  appearance parity passes **21 cases / 4,067 pixel-exact frames**, including
+  eight new cases / 1,735 frames. Worst render/readback ratio is **1.1372×**.
+  Source-wide commerce typography preparation passes another **5 cases / 960 exact
+  frames**, worst **1.0738×**. The native renderer browser suite passes, including
+  text coverage/color, state blends, font variants, preview parity and deterministic
+  exports. Four new CLI cases (brush appearance, height shadow, story state paints
+  and rich text paints) each produce two byte-identical MP4s with relocated assets
+  and overwrite protection verified.
+- **Coverage:** **94 of 105** commerce/reusable-component CE0 entries now have Canvas
+  adapter coverage. The remaining 11 depend on pixel effects or motion blur.
+- **Remaining:** animated primitive blur, the required CE6/CE7 dependencies,
+  both-backend acceptance and final full local verification. The active goal
+  continues after this slice's commit.
+
 **Completion record:** CE4a and CE4b are in progress; CE4c–CE4d have not started.
 
 ---

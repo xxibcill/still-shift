@@ -28,8 +28,9 @@ import { validateTypographySafeArea } from "../../typography-safe-area.ts";
 import { resolveTextEvents } from "../../typography-events.ts";
 import { compileAdapterMarkers } from "./markers.ts";
 import { typographyLayer } from "./typography.ts";
-import { numericTypographyLayer } from "./numeric-typography.ts";
+import { componentTypographyLayer } from "./numeric-typography.ts";
 import { withMotionPath } from "./motion-path.ts";
+import { compileAppearance } from "./appearance.ts";
 import { componentTextLayer } from "./component-text.ts";
 import { compileAttachedPathGeometry } from "./commerce-path.ts";
 
@@ -51,7 +52,7 @@ export type StoryCompositionOptions = {
   textLayout?: CompositionTextLayout;
 };
 
-export const STORY_ADAPTER_VERSION = "story-composition-0.6.0";
+export const STORY_ADAPTER_VERSION = "story-composition-0.7.0";
 function checkSupported(scene: StoryScene) {
   const unsupported = (path: string, feature: string): never =>
     passageError(
@@ -122,29 +123,26 @@ export function storyToComposition(
       const samples = Array.from({ length: scene.frameCount }, (_, frame) =>
         evaluatePreparedNode(scene, node, frame),
       );
-      for (const property of [
-        "blur",
-        "strokeWidth",
-        "trimStart",
-        "trimEnd",
-        "trimOffset",
-      ] as const)
+      for (const property of ["blur"] as const)
         if (samples.some((sample) => sample[property] !== undefined))
           passageError(
             "comp-adapter-unsupported",
             `Motion ${property} is not supported by the story adapter`,
             { path: `nodes[${scene.nodes.indexOf(node)}].${property}` },
           );
+      const appearance = compileAppearance(scene, node, samples);
       const componentGeometry =
         node.type === "path"
           ? compileAttachedPathGeometry(scene, node)
           : undefined;
       let layer: CompositionLayer = {
         ...(node.type === "text" && scene.typography
-          ? (numericTypographyLayer(scene, node, samples) ??
+          ? (componentTypographyLayer(scene, node, samples, appearance) ??
             typographyLayer(scene, node, samples))
           : preparedNodeLayer(scene, node, samples, {
-              ...(scene.componentData ? { nativeSolids: false } : {}),
+              ...(scene.componentData || appearance
+                ? { nativeSolids: false }
+                : {}),
               geometry:
                 node.type === "path"
                   ? compileStoryPathGeometry(scene, node)
@@ -163,12 +161,20 @@ export function storyToComposition(
         node.type === "text" &&
         layer.type === "provider" &&
         !scene.typography &&
-        (node.textBox ||
+        (appearance ||
+          node.textBox ||
           node.container ||
           scene.textAnimators?.some((animator) => animator.node === node.id) ||
           samples.some((s) => s.stateFrom !== undefined))
       )
-        layer = componentTextLayer(scene, node, layer, false, samples);
+        layer = componentTextLayer(
+          scene,
+          node,
+          layer,
+          false,
+          samples,
+          appearance,
+        );
       if (componentGeometry && layer.type === "provider") {
         layer.provider = "commerce.path@1.0.0";
         layer.params = params(
@@ -178,7 +184,15 @@ export function storyToComposition(
         );
       }
       if (node.type === "path" && layer.type === "provider")
-        layer = withMotionPath(scene, node, layer);
+        layer = withMotionPath(scene, node, layer, appearance);
+      if (node.type === "rect" && layer.type === "provider" && appearance) {
+        layer.provider = "component.rect@1.0.0";
+        layer.params = params(
+          { ...layer.params, appearance },
+          `nodes[${scene.nodes.indexOf(node)}]`,
+          node.id,
+        );
+      }
       layers.push(layer);
       if (node.type === "path") {
         for (const flow of (scene.flows ?? []).filter(
