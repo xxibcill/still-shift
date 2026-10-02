@@ -1142,3 +1142,9 @@ backend and includes it in the displayed export command. Export uses pinned
 SwiftShader; hardware previews are labeled approximate. Both scene and result
 manifests report the selected renderer version. Canvas remains the default.
 Family acceptance and measured performance are tracked separately in the plan.
+
+GPU previews retain only the previous stationary graph. Identical graphs reuse the
+presented framebuffer; moving exposures invalidate that cache. Frame reports count
+actual executed samples (`0` for reuse). Pixel readback caches one frame only when
+it fits within 64 MiB and returns independent arrays. The Canvas default retains
+its existing execution behavior.

@@ -36,6 +36,7 @@ const inventory = JSON.parse(
     tier: "near";
   }[];
 };
+const backend = process.argv.includes("--webgl") ? "webgl2" : "canvas2d";
 const only = process.argv.indexOf("--only");
 const variant = process.argv.indexOf("--variant");
 const componentsOnly = process.argv.includes("--components");
@@ -106,7 +107,14 @@ try {
       await page.addInitScript("window.__name = (fn) => fn;");
       await page.goto(server.resolvedUrls!.local[0]!);
       const report = await page.evaluate(
-        async ({ sceneJson, compositionJson, urls, tier, profile }) => {
+        async ({
+          sceneJson,
+          compositionJson,
+          urls,
+          tier,
+          profile,
+          backend,
+        }) => {
           const scene = JSON.parse(sceneJson) as ReturnType<
             typeof Render.compileStoryScene
           >;
@@ -124,13 +132,15 @@ try {
             canvas,
             composition,
             await m.loadCompositionResources(composition, (id) => urls[id]!),
+            { backend: backend as Render.CompositionBackend },
           );
-          const oldCtx = legacyCanvas.getContext("2d")!,
-            ctx = canvas.getContext("2d")!;
+          const oldCtx = legacyCanvas.getContext("2d")!;
           const hashes = new Map<number, string>();
-          const hash = async (bytes: Uint8ClampedArray<ArrayBuffer>) =>
+          const hash = async (bytes: Uint8ClampedArray) =>
             Array.from(
-              new Uint8Array(await crypto.subtle.digest("SHA-256", bytes)),
+              new Uint8Array(
+                await crypto.subtle.digest("SHA-256", new Uint8Array(bytes)),
+              ),
             ).join(",");
           let maxDelta = 0,
             minPsnr = Infinity,
@@ -155,12 +165,7 @@ try {
             at = performance.now();
             const result = preview.renderFrame(frame);
             compositionRenderMs += performance.now() - at;
-            const actual = ctx.getImageData(
-              0,
-              0,
-              canvas.width,
-              canvas.height,
-            ).data;
+            const actual = preview.readPixels();
             compositionMs += performance.now() - at;
             if (result.diagnostics.some((d) => d.severity === "error"))
               throw new Error(JSON.stringify(result.diagnostics));
@@ -187,11 +192,7 @@ try {
           }
           for (const [frame, expected] of [...hashes].reverse()) {
             preview.renderFrame(frame);
-            if (
-              (await hash(
-                ctx.getImageData(0, 0, canvas.width, canvas.height).data,
-              )) !== expected
-            )
+            if ((await hash(preview.readPixels())) !== expected)
               throw new Error(`Backward seek differs at ${frame}`);
           }
           let evaluationMs = 0,
@@ -230,10 +231,11 @@ try {
           urls,
           tier: entry.tier,
           profile: process.argv.includes("--profile"),
+          backend,
         },
       );
       console.log(
-        `${item.id}: ${input.frameCount} frames ${JSON.stringify(report)}`,
+        `${backend} ${item.id}: ${input.frameCount} frames ${JSON.stringify(report)}`,
       );
       await page.close();
       assert.deepEqual(report.failures, [], `${item.id} pixel parity`);
@@ -253,7 +255,7 @@ try {
           "component/story-leader/effects-flow-target-inverted",
         ].includes(item.id)
       )
-        await assertAdapterExport(input, dirname(sourcePath), item.id);
+        await assertAdapterExport(input, dirname(sourcePath), item.id, backend);
       if (
         only < 0 &&
         ([
@@ -265,7 +267,7 @@ try {
         ].includes(item.id) ||
           (entry.id.startsWith("component/passage-") && item === cases[0]))
       )
-        await assertAdapterExport(input, dirname(sourcePath), item.id);
+        await assertAdapterExport(input, dirname(sourcePath), item.id, backend);
     }
   }
   console.log(

@@ -2082,6 +2082,27 @@ comparisons; the full `pnpm check`.
 - **Remaining:** full commerce/reusable WebGL pixel and performance acceptance,
   followed by the complete local check and frozen baseline matrix.
 
+### CE4b WebGL2 stationary-frame reuse (2026-10-02)
+
+- **Delivered:** optional WebGL execution reuse retains only the immediately
+  preceding stationary render graph. Equality checks include transforms, content,
+  masks, effects and clocks; moving exposure samples invalidate it. Diagnostics
+  are reevaluated, and a reused frame reports zero executed samples. Readback
+  retains at most one frame up to 64 MiB and returns independent mutable arrays;
+  opaque GPU surfaces avoid unnecessary unpremultiplication.
+- **Acceptance harness:** commerce, story-component and typography suites accept
+  `--webgl`, using backend-neutral readback and the same existing pixel/timing
+  gates. Portable adapter exports use the selected backend as well.
+- **Measured:** the 1080×1350 product fixture remains exact over **240 frames** and
+  improves from **4.1646×** reference time to **0.3032×**. Its translation variant
+  is also exact over **240 frames**, at **1.0267×**. Measurements use the unchanged
+  three warmed, alternating paired passes and median ≤1.25× rule, without profiling.
+- **Verification:** native parity and export suites pass; a new real-GPU regression
+  checks stationary reuse, moving-exposure invalidation, reverse seeking and
+  caller mutation of returned pixels. `pnpm check:fast` passes **1,220 unit tests**.
+- **Remaining:** full family parity and performance, including continuously
+  animated content, and final full local/frozen-baseline verification.
+
 **Completion record:** CE4a and CE4b are in progress; CE4c–CE4d have not started.
 
 ---

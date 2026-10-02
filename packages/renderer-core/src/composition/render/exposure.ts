@@ -4,7 +4,11 @@ import {
   evaluateCompositionExposure,
 } from "../evaluate/exposure.ts";
 import type { PassageDiagnostic } from "../../passage-diagnostics.ts";
-import { buildRenderGraph, type RenderGraphOptions } from "./graph.ts";
+import {
+  buildRenderGraph,
+  type RenderGraphOptions,
+  type SurfaceNode,
+} from "./graph.ts";
 import { executeGraph, type RenderBackend, type Surface } from "./backend.ts";
 
 /** Definitions are immutable shared references; only per-sample draw values differ. */
@@ -28,6 +32,9 @@ function equal(a: unknown, b: unknown): boolean {
   );
 }
 
+/** Only the immediately preceding stationary graph is retained. */
+export type CompositionFrameCache = { root?: SurfaceNode | undefined };
+
 /** Average moving exposures; a proven identical graph needs only one draw. */
 export function renderCompositionExposure<S extends Surface>(
   backend: RenderBackend<S>,
@@ -35,6 +42,7 @@ export function renderCompositionExposure<S extends Surface>(
   comp: Composition,
   frame: number,
   options: RenderGraphOptions = {},
+  cache?: CompositionFrameCache,
 ) {
   const graphs = function* () {
     for (const tree of evaluateCompositionExposure(comp, frame, options))
@@ -52,13 +60,17 @@ export function renderCompositionExposure<S extends Surface>(
       break;
     }
   if (stationary) {
-    executeGraph(backend, first.graph, target);
+    const reused =
+      cache?.root !== undefined && equal(cache.root, first.graph.root);
+    if (!reused) executeGraph(backend, first.graph, target);
+    if (cache) cache.root = first.graph.root;
     return {
       diagnostics: first.diagnostics,
       culled: first.graph.culled,
-      samples: 1,
+      samples: reused ? 0 : 1,
     };
   }
+  if (cache) cache.root = undefined;
   const samples = compositionExposureFrames(comp, frame).length;
   const rendered = graphs();
   const diagnostics: PassageDiagnostic[] = [];

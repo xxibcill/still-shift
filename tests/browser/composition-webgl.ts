@@ -15,6 +15,11 @@ try {
   const page = await browser.newPage();
   await page.addInitScript("window.__name = (fn) => fn;");
   await page.goto(server.resolvedUrls!.local[0]!);
+  const reuse = await page.evaluate(async () => {
+    const url = "/tests/helpers/composition-webgl-reference.ts";
+    return ((await import(url)) as typeof Checks).checkWebglFrameReuse();
+  });
+  console.log("WebGL frame reuse:", reuse);
   const results = await page.evaluate(async () => {
     const url = "/tests/helpers/composition-webgl-reference.ts";
     const { checkWebglFrames } = (await import(url)) as typeof Checks;

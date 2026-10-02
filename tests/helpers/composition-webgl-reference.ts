@@ -7,7 +7,10 @@ import type {
   RenderBackend,
   Surface,
 } from "../../packages/renderer-core/src/composition/render/backend.ts";
-import type { CompositionBlendMode } from "../../packages/scene-contract/src/index.ts";
+import type {
+  Composition,
+  CompositionBlendMode,
+} from "../../packages/scene-contract/src/index.ts";
 import type { Matrix } from "../../packages/renderer-core/src/node-transform.ts";
 const I: Matrix = [1, 0, 0, 1, 0, 0];
 const WIDTH = 96,
@@ -511,4 +514,83 @@ export async function checkCompositionBackends(paths: string[]) {
     });
   }
   return result;
+}
+
+export async function checkWebglFrameReuse() {
+  const { createCompositionPreview } = await import(
+    "../../packages/renderer-core/src/composition/render/renderer.ts"
+  );
+  const composition: Composition = {
+    schemaVersion: "composition-1",
+    id: "frame-reuse",
+    width: 96,
+    height: 64,
+    fps: 30,
+    frameCount: 6,
+    background: "#26313b",
+    assets: [],
+    motionBlur: {
+      enabled: true,
+      shutterAngle: 360,
+      shutterPhase: 0,
+      samples: 4,
+      inPoint: 2,
+      outPoint: 4,
+    },
+    layers: [
+      {
+        id: "box",
+        type: "solid" as const,
+        size: [20, 20] as [number, number],
+        color: "#bfe173",
+        motionBlur: true,
+        transform: {
+          anchor: [0, 0] as [number, number],
+          position: {
+            x: {
+              keys: [10, 10, 20, 30, 40, 40].map((value, frame) => ({
+                frame,
+                value,
+                interpolation: "linear" as const,
+              })),
+            },
+            y: 10,
+          },
+        },
+      },
+    ],
+  };
+  const resources = { images: new Map(), fonts: new Map() };
+  const gpu = createCompositionPreview(
+    document.createElement("canvas"),
+    composition,
+    resources,
+    { backend: "webgl2" },
+  );
+  const reference = createCompositionPreview(
+    document.createElement("canvas"),
+    composition,
+    resources,
+  );
+  const samples: number[] = [];
+  try {
+    for (const frame of [0, 1, 2, 3, 4, 5, 0, 1]) {
+      samples.push(gpu.renderFrame(frame).samples);
+      reference.renderFrame(frame);
+      const actual = gpu.readPixels(),
+        expected = reference.readPixels();
+      if (actual.some((v, i) => Math.abs(v - expected[i]!) > 2))
+        throw new Error(`Cached GPU frame ${frame} differs`);
+      const before = actual[0]!;
+      actual[0] = before ^ 255;
+      if (gpu.readPixels()[0] !== before)
+        throw new Error("Caller mutation changed the cached readback");
+    }
+    if (samples.join(",") !== "1,0,4,4,1,0,1,0")
+      throw new Error(`Unexpected cache invalidation: ${samples}`);
+    return samples;
+  } finally {
+    gpu.dispose();
+    reference.dispose();
+  }
 }

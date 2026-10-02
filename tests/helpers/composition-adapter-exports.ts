@@ -4,6 +4,7 @@ import { tmpdir } from "node:os";
 import { join, relative, resolve } from "node:path";
 import type { CommerceScene, StoryScene } from "@still-shift/scene-contract";
 import { renderComposition } from "@still-shift/animation-engine";
+import type { CompositionBackend } from "@still-shift/renderer-core";
 import { runCli } from "../../tools/still-shift-cli/src/cli.ts";
 
 /** Verify that compiled adapter scenes remain portable through CLI JSON and export. */
@@ -11,6 +12,7 @@ export async function assertAdapterExport(
   source: CommerceScene | StoryScene,
   sourceDirectory: string,
   id: string,
+  backend: CompositionBackend = "canvas2d",
 ) {
   const directory = await mkdtemp(join(tmpdir(), "still-shift-ce4b-export-"));
   try {
@@ -43,10 +45,12 @@ export async function assertAdapterExport(
     assert.equal(exported.schemaVersion, "composition-1");
     const first = await renderComposition({
       compositionPath,
+      backend,
       outputPath: join(directory, "first.mp4"),
     });
     const second = await renderComposition({
       compositionPath,
+      backend,
       outputPath: join(directory, "second.mp4"),
     });
     assert.equal(first.frameCount, scene.frameCount);
@@ -54,7 +58,7 @@ export async function assertAdapterExport(
     assert.deepEqual(first.systemFontLayers, []);
     assert.equal(await runCli(args, { stdout: () => {}, stderr: () => {} }), 1);
     console.log(
-      `CE4b ${id} export: ${scene.frameCount} frames, two byte-identical MP4s; relocated assets and overwrite protection pass`,
+      `CE4b ${backend} ${id} export: ${scene.frameCount} frames, two byte-identical MP4s; relocated assets and overwrite protection pass`,
     );
   } finally {
     await rm(directory, { recursive: true, force: true });

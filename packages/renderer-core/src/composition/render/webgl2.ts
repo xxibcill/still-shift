@@ -409,8 +409,9 @@ export function createWebgl2Backend(
       );
     },
     readPixels(surface) {
-      const pixels = device.read(surface),
-        result = new Uint8ClampedArray(pixels.length);
+      const pixels = device.read(surface);
+      if (surface.opaque) return new Uint8ClampedArray(pixels.buffer);
+      const result = new Uint8ClampedArray(pixels.length);
       for (let i = 0; i < pixels.length; i += 4) {
         const a = pixels[i + 3]!;
         for (let channel = 0; channel < 3; channel++)

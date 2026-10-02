@@ -15,7 +15,10 @@ import {
 import type { LoadedFont } from "../../prepared-fonts.ts";
 import type { Bounds } from "../evaluate/types.ts";
 import { createCanvas2dBackend } from "./canvas2d.ts";
-import { renderCompositionExposure } from "./exposure.ts";
+import {
+  renderCompositionExposure,
+  type CompositionFrameCache,
+} from "./exposure.ts";
 import { loadCompositionFonts, prepareCompositionText } from "./text.ts";
 import { COMPOSITION_RENDERER_VERSION } from "./version.ts";
 import {
@@ -138,7 +141,7 @@ export type CompositionFrameReport = {
   diagnostics: PassageDiagnostic[];
   /** Layer keys skipped because their bounds miss their surface. */
   culled: string[];
-  /** Actual complete-frame renders; identical exposure graphs collapse to one. */
+  /** Actual complete-frame renders; zero when an identical GPU frame is reused. */
   samples: number;
 };
 
@@ -208,10 +211,21 @@ export function createCompositionPreview(
     target: S,
     present: () => void,
   ): CompositionPreview {
+    // Retain only the previous stationary graph and one bounded readback. Moving
+    // exposures invalidate the graph, and caller-owned pixel arrays stay mutable.
+    const cache: CompositionFrameCache | undefined =
+      kind === "webgl2" ? {} : undefined;
+    let pixels: Uint8ClampedArray | undefined;
+    const readPixels = () => {
+      if (!cache || target.width * target.height * 4 > 64 * 1024 * 1024)
+        return backend.readPixels(target);
+      pixels ??= backend.readPixels(target);
+      return pixels.slice();
+    };
     return {
       backend: kind,
       rendererVersion: backend.version,
-      readPixels: () => backend.readPixels(target),
+      readPixels,
       textBounds: text.bounds,
       renderFrame(frame) {
         if (
@@ -228,11 +242,17 @@ export function createCompositionPreview(
           {
             textBounds: text.bounds,
           },
+          cache,
         );
-        present();
+        if (report.samples > 0) {
+          pixels = undefined;
+          present();
+        }
         return report;
       },
       dispose() {
+        pixels = undefined;
+        if (cache) cache.root = undefined;
         backend.dispose();
         canvas.width = composition.width;
       },

@@ -45,6 +45,7 @@ const inventory = JSON.parse(
     tier: "near";
   }[];
 };
+const backend = process.argv.includes("--webgl") ? "webgl2" : "canvas2d";
 const only = process.argv.indexOf("--only");
 const variant = process.argv.indexOf("--variant");
 const accepted = new Set(
@@ -176,7 +177,14 @@ try {
       await page.addInitScript("window.__name = (fn) => fn;");
       await page.goto(server.resolvedUrls!.local[0]!);
       const report = await page.evaluate(
-        async ({ sceneJson, compositionJson, urls, tier, profile }) => {
+        async ({
+          sceneJson,
+          compositionJson,
+          urls,
+          tier,
+          profile,
+          backend,
+        }) => {
           const scene = JSON.parse(sceneJson) as ReturnType<
             typeof Render.compileCommerceScene
           >;
@@ -198,6 +206,7 @@ try {
             canvas,
             composition,
             resources,
+            { backend: backend as Render.CompositionBackend },
           );
           const testModule = "/tests/helpers/composition-commerce-text.ts";
           const { assertCommerceTextPreparation } = (await import(
@@ -211,8 +220,7 @@ try {
           const preparationChecks =
             assertCommerceTextPreparation(composition, resources) +
             assertCommerceTextStatePreparation(composition, resources);
-          const oldCtx = legacyCanvas.getContext("2d")!,
-            ctx = canvas.getContext("2d")!;
+          const oldCtx = legacyCanvas.getContext("2d")!;
           const measurement = document.createElement("canvas");
           const preparedNodes = scene.textFits?.some((fit) => fit.panel)
             ? m.prepareComponentTextFits(
@@ -227,9 +235,11 @@ try {
             : null;
           measurement.width = measurement.height = 0;
           const hashes = new Map<number, string>();
-          const hash = async (bytes: Uint8ClampedArray<ArrayBuffer>) =>
+          const hash = async (bytes: Uint8ClampedArray) =>
             Array.from(
-              new Uint8Array(await crypto.subtle.digest("SHA-256", bytes)),
+              new Uint8Array(
+                await crypto.subtle.digest("SHA-256", new Uint8Array(bytes)),
+              ),
             ).join(",");
           let maxDelta = 0,
             minPsnr = Infinity,
@@ -257,12 +267,7 @@ try {
             const renderMs = performance.now() - at;
             compositionRenderMs += renderMs;
             if (profile) renderTimings.push({ frame, milliseconds: renderMs });
-            const actual = ctx.getImageData(
-              0,
-              0,
-              canvas.width,
-              canvas.height,
-            ).data;
+            const actual = preview.readPixels();
             compositionMs += performance.now() - at;
             if (result.diagnostics.some((d) => d.severity === "error"))
               throw new Error(JSON.stringify(result.diagnostics));
@@ -289,11 +294,7 @@ try {
           }
           for (const [frame, expected] of [...hashes].reverse()) {
             preview.renderFrame(frame);
-            if (
-              (await hash(
-                ctx.getImageData(0, 0, canvas.width, canvas.height).data,
-              )) !== expected
-            )
+            if ((await hash(preview.readPixels())) !== expected)
               throw new Error(`Backward seek differs at ${frame}`);
           }
           let evaluationMs = 0,
@@ -313,24 +314,34 @@ try {
           // rather than charging a whole timeline's runtime pauses to one backend.
           const benchmark = (
             render: (frame: number) => unknown,
-            context: CanvasRenderingContext2D,
+            read: () => unknown,
             frame: number,
           ) => {
             const start = performance.now();
             render(frame);
-            context.getImageData(0, 0, canvas.width, canvas.height);
+            read();
             return performance.now() - start;
           };
+          const readLegacy = () =>
+            oldCtx.getImageData(0, 0, canvas.width, canvas.height);
           const timings = Array.from({ length: 3 }, (_, pass) => {
             let legacyMs = 0,
               compositionMs = 0;
             for (let frame = 0; frame < composition.frameCount; frame++) {
               if ((frame + pass) % 2 === 0) {
-                legacyMs += benchmark(legacy.renderFrame, oldCtx, frame);
-                compositionMs += benchmark(preview.renderFrame, ctx, frame);
+                legacyMs += benchmark(legacy.renderFrame, readLegacy, frame);
+                compositionMs += benchmark(
+                  preview.renderFrame,
+                  preview.readPixels,
+                  frame,
+                );
               } else {
-                compositionMs += benchmark(preview.renderFrame, ctx, frame);
-                legacyMs += benchmark(legacy.renderFrame, oldCtx, frame);
+                compositionMs += benchmark(
+                  preview.renderFrame,
+                  preview.readPixels,
+                  frame,
+                );
+                legacyMs += benchmark(legacy.renderFrame, readLegacy, frame);
               }
             }
             return { legacyMs, compositionMs, ratio: compositionMs / legacyMs };
@@ -369,6 +380,7 @@ try {
           urls,
           tier: entry.tier,
           profile: process.argv.includes("--profile"),
+          backend,
         },
       );
       const { preparedNodes, ...metrics } = report;
@@ -378,7 +390,7 @@ try {
           composition,
         );
       console.log(
-        `${item.id}: ${input.frameCount} frames ${JSON.stringify(metrics)}`,
+        `${backend} ${item.id}: ${input.frameCount} frames ${JSON.stringify(metrics)}`,
       );
       await page.close();
       assert.deepEqual(report.failures, [], `${item.id} pixel parity`);
@@ -415,7 +427,7 @@ try {
           "commerce/atom-matte/shared-group-source/focus-matte",
         ].includes(item.id)
       )
-        await assertAdapterExport(input, dirname(sourcePath), item.id);
+        await assertAdapterExport(input, dirname(sourcePath), item.id, backend);
     }
   }
   console.log(
@@ -546,10 +558,12 @@ try {
         ) as Composition;
         const first = await renderComposition({
           compositionPath,
+          backend,
           outputPath: join(directory, "first.mp4"),
         });
         const second = await renderComposition({
           compositionPath,
+          backend,
           outputPath: join(directory, "second.mp4"),
         });
         assert.equal(first.frameCount, composition.frameCount);
