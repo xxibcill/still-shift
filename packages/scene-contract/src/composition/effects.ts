@@ -73,8 +73,8 @@ const definitions: Readonly<Record<string, CompositionEffectDefinition>> = {
   ),
   "light.sweep": defineEffect(
     {
-      width: { default: 100, min: 0.01, max: 1000000 },
-      height: { default: 100, min: 0.01, max: 1000000 },
+      width: { default: 100, min: 0, max: 1000000 },
+      height: { default: 100, min: 0, max: 1000000 },
       left: { default: 0, min: 0, max: 1 },
       top: { default: 0, min: 0, max: 1 },
       regionWidth: { default: 1, min: 0.001, max: 1 },

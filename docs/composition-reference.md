@@ -987,7 +987,7 @@ remain part of the coordinate chain.
 
 | Parameter                     | Default | Range / meaning                                            |
 | ----------------------------- | ------- | ---------------------------------------------------------- |
-| `width`, `height`             | 100     | 0.01–1,000,000; local rectangle dimensions                 |
+| `width`, `height`             | 100     | 0–1,000,000; local rectangle dimensions (zero is empty)    |
 | `left`, `top`                 | 0       | 0–1; region origin as fractions of that rectangle          |
 | `regionWidth`, `regionHeight` | 1       | 0.001–1; fractional region dimensions                      |
 | `band`                        | 0.1     | 0.001–1; sweep half-width as a fraction of rectangle width |
@@ -998,6 +998,13 @@ Every parameter accepts scalar keys and drivers. The commerce adapter compiles i
 cosine phase to `progress` keys, retains source dimensions and normalized regions,
 and names the original target as the coordinate layer when an opacity/matte wrapper
 owns the effect stack. Source region and protected-artwork validation still applies.
+
+The story adapter also compiles focus blur, directional blur, glow, grain and
+light sweep. Opacity wrappers retain each root's camera depth. Path flows share
+their path's treatment and matte, including flows on a path with zero opacity;
+screen-space grain is independent of the story camera. Shared-effect opt-in,
+root-target validation and component annotation ownership rules still apply.
+Motion blur is handled by the separate CE7 dependency.
 
 ### Temporal echo (CE6 dependency slice)
 

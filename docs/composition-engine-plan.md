@@ -1898,6 +1898,25 @@ comparisons; the full `pnpm check`.
   integration, WebGL2 acceptance and final full local verification. The active
   goal continues after this slice's commit.
 
+### CE4b shared-story-effects follow-up (2026-10-02)
+
+- **Delivered:** story adapter `story-composition-0.8.0` compiles shared focus blur,
+  directional blur, glow, grain and light sweep through the same native registry.
+  Opacity wrappers retain camera depth; path flows share their path's effects and
+  matte even when path opacity is zero. Grain stays in screen coordinates. Empty
+  light-sweep rectangles are valid no-ops, matching zero-size legacy paths.
+- **Validation:** existing shared-effect opt-in, root-target requirements and
+  annotation/mask ownership restrictions remain enforced. Free paths exercise
+  flow treatments; effect-owned annotations remain invalid source scenes.
+- **Verification:** `pnpm check:fast` passes **1,205 unit tests**. Six story cases /
+  **1,152 frames** match exactly: group focus/grain, transformed image sweep with
+  camera depth, text state ramps and containers, and unmasked/normal/inverted
+  path-flow mattes. Worst render/readback ratio is **1.0055×**. Four cases each
+  export **192 frames** twice with identical MP4 bytes; relocated assets and
+  overwrite protection pass.
+- **Remaining:** motion blur, animated primitive blur, WebGL2 acceptance and final
+  full local verification. The active goal continues after this slice's commit.
+
 **Completion record:** CE4a and CE4b are in progress; CE4c–CE4d have not started.
 
 ---

@@ -33,6 +33,7 @@ import { withMotionPath } from "./motion-path.ts";
 import { compileAppearance } from "./appearance.ts";
 import { componentTextLayer } from "./component-text.ts";
 import { compileAttachedPathGeometry } from "./commerce-path.ts";
+import { compileFamilyEffects } from "./effects.ts";
 
 function cameraLayer(
   scene: StoryRenderScene,
@@ -52,7 +53,7 @@ export type StoryCompositionOptions = {
   textLayout?: CompositionTextLayout;
 };
 
-export const STORY_ADAPTER_VERSION = "story-composition-0.7.0";
+export const STORY_ADAPTER_VERSION = "story-composition-0.8.0";
 function checkSupported(scene: StoryScene) {
   const unsupported = (path: string, feature: string): never =>
     passageError(
@@ -66,7 +67,8 @@ function checkSupported(scene: StoryScene) {
       `The first story adapter bakes at most ${COMPOSITION_LIMITS.maxKeys} frames`,
       { path: "frameCount" },
     );
-  if (scene.effects?.length) unsupported("effects", "Pixel effects");
+  if (scene.effects?.some((effect) => effect.type === "motion-blur"))
+    unsupported("effects", "Motion blur");
   scene.nodes.forEach((node, i) => {
     const path = `nodes[${i}]`;
     if (
@@ -246,9 +248,14 @@ export function storyToComposition(
     }
   };
   visit(undefined);
-  // A legacy path's flow belongs to the same masked root, even at zero path opacity.
+  // A legacy path's flow shares its root's treatments, even at zero path opacity.
   const roots = new Map<string, string>();
-  for (const id of new Set(components.masks.map((mask) => mask.target))) {
+  for (const id of new Set([
+    ...components.masks.map((mask) => mask.target),
+    ...(scene.effects ?? []).flatMap((effect) =>
+      "target" in effect ? [effect.target] : [],
+    ),
+  ])) {
     const node = scene.nodes.find((node) => node.id === id)!;
     if (node.type !== "path" || !scene.flows?.some((flow) => flow.path === id))
       continue;
@@ -279,6 +286,7 @@ export function storyToComposition(
       mode: mask.invert ? "alpha-inverted" : "alpha",
     };
   }
+  compileFamilyEffects(scene, layers, roots);
   const { markers, cueIds } = compileAdapterMarkers([
     ...scene.motionEvents.map((event) => event.window),
     ...(scene.typography

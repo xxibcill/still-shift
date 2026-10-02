@@ -1,4 +1,4 @@
-import { compileCommerceEffects } from "./effects.ts";
+import { compileFamilyEffects } from "./effects.ts";
 import {
   COMPOSITION_LIMITS,
   CommerceSceneSchema,
@@ -224,7 +224,7 @@ export function commerceToComposition(
       mode: mask.invert ? "alpha-inverted" : "alpha",
     };
   }
-  compileCommerceEffects(scene, layers);
+  compileFamilyEffects(scene, layers);
   const { markers, cueIds } = compileAdapterMarkers(
     scene.typography
       ? [

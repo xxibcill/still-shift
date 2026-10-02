@@ -5,10 +5,13 @@ import type {
 import { effectProgress, effectPhase } from "../../commerce-effect-motion.ts";
 import { baked } from "./prepared.ts";
 import type { CommerceRenderScene } from "../../commerce-scene.ts";
+import type { StoryRenderScene } from "../../story-scene.ts";
 import { evaluatePreparedNodeAtTime } from "../../prepared-scene.ts";
 
+type EffectScene = CommerceRenderScene | StoryRenderScene;
+
 /** Equal source poses share an identity even when an animation returns to a prior pose. */
-function echoRevisions(scene: CommerceRenderScene, target: string) {
+function echoRevisions(scene: EffectScene, target: string) {
   const descendants = new Set([target]);
   for (let i = 0; i < scene.nodes.length; i++)
     for (const node of scene.nodes)
@@ -26,7 +29,7 @@ function echoRevisions(scene: CommerceRenderScene, target: string) {
   );
 }
 
-function effectParameters(scene: CommerceRenderScene, effect: CommerceEffect) {
+function effectParameters(scene: EffectScene, effect: CommerceEffect) {
   switch (effect.type) {
     case "echo":
       return {
@@ -162,9 +165,10 @@ function effectParameters(scene: CommerceRenderScene, effect: CommerceEffect) {
 }
 
 /** Family effects see already-painted root opacity, then the root's matte. */
-export function compileCommerceEffects(
-  scene: CommerceRenderScene,
+export function compileFamilyEffects(
+  scene: EffectScene,
   layers: CompositionLayer[],
+  roots: ReadonlyMap<string, string> = new Map(),
 ) {
   const owners = new Map<string, CompositionLayer>();
   const ids = new Set(layers.map((layer) => layer.id));
@@ -195,7 +199,9 @@ export function compileCommerceEffects(
     }
     let owner = owners.get(effect.target);
     if (!owner) {
-      const target = layers.find((layer) => layer.id === effect.target)!;
+      const target = layers.find(
+        (layer) => layer.id === (roots.get(effect.target) ?? effect.target),
+      )!;
       if (target.type === "group") owner = target;
       else {
         const id = freshId();
@@ -204,9 +210,13 @@ export function compileCommerceEffects(
           type: "group",
           size: [scene.width, scene.height],
           transform: { anchor: [0, 0] },
+          ...(target.cameraDepth !== undefined
+            ? { cameraDepth: target.cameraDepth }
+            : {}),
           ...(target.trackMatte ? { trackMatte: target.trackMatte } : {}),
         };
         delete target.trackMatte;
+        delete target.cameraDepth;
         target.parent = id;
         layers.splice(layers.indexOf(target), 0, owner);
       }
@@ -230,6 +240,7 @@ export function compileCommerceEffects(
     type: "adjustment",
     size: [scene.width, scene.height],
     transform: { anchor: [0, 0] },
+    ...(scene.schemaVersion === "story-scene-1" ? { cameraDepth: 0 } : {}),
     effects,
   });
   if (environment.length) layers.unshift(adjustment(environment));
