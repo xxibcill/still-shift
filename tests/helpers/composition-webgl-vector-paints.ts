@@ -2,6 +2,84 @@ import {
   recordVectorPaints,
   replayVectorPaints,
 } from "../../packages/renderer-core/src/composition/render/webgl-vector-paints.ts";
+import { createCompositionPreview } from "../../packages/renderer-core/src/composition/render/renderer.ts";
+import { preparedProvider } from "../../packages/renderer-core/src/composition/render/providers.ts";
+import type { Composition } from "../../packages/scene-contract/src/index.ts";
+
+/** More than one sampler batch must preserve every intermediate rounded result. */
+export function checkProviderPaintBatches() {
+  const composition: Composition = {
+    schemaVersion: "composition-1",
+    id: "provider-paint-batches",
+    width: 96,
+    height: 64,
+    fps: 30,
+    frameCount: 3,
+    background: "#f2ede3",
+    assets: [],
+    layers: [
+      {
+        id: "marks",
+        type: "provider",
+        provider: "test.paints@1.0.0",
+        params: {},
+      },
+    ],
+  };
+  const colors = ["#e5e0d43d", "#46654066", "#ba74392a"];
+  const make = (backend: "canvas2d" | "webgl2") =>
+    createCompositionPreview(
+      document.createElement("canvas"),
+      composition,
+      { images: new Map(), fonts: new Map() },
+      {
+        backend,
+        providers: [
+          {
+            id: "test.paints@1.0.0",
+            prepare: () =>
+              preparedProvider(
+                (ctx, time) => {
+                  ctx.save();
+                  ctx.translate(time, 0);
+                  ctx.beginPath();
+                  ctx.rect(0, 0, 80, 60);
+                  ctx.clip();
+                  for (let index = 0; index < 35; index++) {
+                    ctx.fillStyle = colors[index % colors.length]!;
+                    ctx.fillRect(8 + (index % 4), 8 + (index % 3), 56, 36);
+                  }
+                  ctx.restore();
+                },
+                { bounds: { left: 0, top: 0, right: 96, bottom: 64 } },
+              ),
+          },
+        ],
+      },
+    );
+  const gpu = make("webgl2"),
+    reference = make("canvas2d");
+  let maxDelta = 0;
+  try {
+    for (const frame of [0, 1, 2, 0]) {
+      gpu.renderFrame(frame);
+      reference.renderFrame(frame);
+      const actual = gpu.readPixels(),
+        expected = reference.readPixels();
+      for (let index = 0; index < actual.length; index++)
+        maxDelta = Math.max(
+          maxDelta,
+          Math.abs(actual[index]! - expected[index]!),
+        );
+    }
+    if (maxDelta > 1)
+      throw new Error(`Provider paint batches differ by ${maxDelta}`);
+    return { paints: 35, frames: 4, maxDelta };
+  } finally {
+    gpu.dispose();
+    reference.dispose();
+  }
+}
 
 /** Exercise mutable sources, clipping and state independently of renderer caching. */
 export function checkVectorPaintReplay() {

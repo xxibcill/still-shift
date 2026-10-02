@@ -2308,6 +2308,20 @@ comparisons; the full `pnpm check`.
   operations increases preparation and GPU pass costs; the performance gates,
   remaining family checks and final full verification remain open.
 
+### CE4b batched provider compositing (2026-10-03)
+
+- **Version:** `composition-webgl2-0.14.0` composites up to 15 prepared local
+  paints in one GPU pass, using one backdrop snapshot and preserving each paint's
+  intermediate rounding. Larger providers use consecutive batches within WebGL2's
+  guaranteed 16 fragment samplers. Partial redraw clipping remains active.
+- **Verification:** a 35-paint provider spanning three batches is pixel-exact
+  across four renders including backward seeking. Native parity, arithmetic,
+  all 1,236 unit tests and 204 export/Lab frames pass. Morph retains delta 2 while
+  timing improves from **9.0005×** to **6.6098×**; spatial-morph retains delta 1
+  at **4.3131×**. Both still fail the unchanged 1.25× gate.
+- **Remaining:** provider preparation and uploads, other family timing gates,
+  remaining parity checks and final full verification.
+
 **Completion record:** CE4a and CE4b are in progress; CE4c–CE4d have not started.
 
 ---

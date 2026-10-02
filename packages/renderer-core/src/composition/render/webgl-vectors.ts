@@ -250,8 +250,7 @@ export class WebglVectors {
       this.cached.set(id, entry);
     }
     try {
-      for (const { surface, rect, primitive } of entry.parts)
-        this.paintOver.draw(surface, dst, rect, primitive);
+      this.paintOver.drawMany(entry.parts, dst);
     } finally {
       if (!retained)
         for (const part of entry.parts) this.device.release(part.surface);

@@ -30,6 +30,9 @@ uniform sampler2D coverage;
 vec4 bytes(vec4 value) { return floor(clamp(value, 0.0, 1.0) * 255.0 + 0.5) / 255.0; }
 `;
 
+export const inputSampler = (index: number) =>
+  ["source", "backdrop", "coverage"][index] ?? `input${index}`;
+
 type UniformValue = number | readonly number[];
 type Program = {
   handle: WebGLProgram;
@@ -372,9 +375,7 @@ export class WebglDevice {
     for (let i = 0; i < inputs.length; i++) {
       gl.activeTexture(gl.TEXTURE0 + i);
       gl.bindTexture(gl.TEXTURE_2D, inputs[i]!.texture);
-      const location = program.uniforms.get(
-        ["source", "backdrop", "coverage"][i]!,
-      );
+      const location = program.uniforms.get(inputSampler(i));
       if (location) gl.uniform1i(location, i);
     }
     for (const [name, value] of Object.entries(uniforms)) {
