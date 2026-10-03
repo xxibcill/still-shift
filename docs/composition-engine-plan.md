@@ -1,7 +1,7 @@
 # Programmable composition engine — implementation plan
 
-- **Updated:** 2026-10-02
-- **Status:** CE0–CE3 complete (2026-10-01); CE4a and CE4b in progress (2026-10-03). Q1 and Q3 decided
+- **Updated:** 2026-10-03
+- **Status:** CE0–CE3 complete (2026-10-01); CE4b complete under the approved timing split (2026-10-03); CE4a in progress. Q1 and Q3 decided
   2026-09-30; Q2, Q4 and Q8 decided 2026-10-01; Q5–Q7 open.
 - **Baseline:** `6772717` — `Merge pull request #22 from xxibcill/codex/still-shift-plan-completion`
 - **Tracker owner:** unassigned. Record the owner and branch per milestone in the [tracker](#milestone-tracker).
@@ -362,7 +362,7 @@ sign and for time remap. It does not change the layer's composition-time visibil
 | CE2  | Pure composition evaluator                      | A     | CE1                  | Codex                  | `codex/composition-ce2`  | `[x]`  | [CE2 record](#ce2--pure-composition-evaluator)                                     |
 | CE3  | Render graph and Canvas 2D reference backend    | A     | CE2                  | xxibcill (Claude Code) | `codex/composition-ce3`  | `[x]`  | [CE3 record](#ce3--render-graph-and-canvas-2d-reference-backend); merged in PR #28 |
 | CE4a | Story adapter with visual parity                | A     | CE3                  | Codex                  | `codex/composition-ce4`  | `[~]`  | [CE4a start record](#ce4a-start-record-2026-10-02)                                 |
-| CE4b | Commerce and reusable-component adapter         | A     | CE3, CE6 slices      | Codex                  | `codex/composition-ce4b` | `[~]`  | [CE4b start record](#ce4b-start-record-2026-10-02)                                 |
+| CE4b | Commerce and reusable-component adapter         | A     | CE3, CE6 slices      | Codex                  | `codex/composition-ce4b` | `[x]`  | [CE4b completion record](#ce4b-completion-record-2026-10-03)                       |
 | CE4c | Cinematic adapter                               | A     | CE3, CE8             |                        |                          | `[ ]`  |                                                                                    |
 | CE4d | Legacy illustrated adapter and old-path removal | A     | CE4a–CE4c            |                        |                          | `[ ]`  |                                                                                    |
 | CE5  | Shape layers                                    | B     | CE3                  |                        |                          | `[ ]`  |                                                                                    |
@@ -1292,7 +1292,7 @@ General rules for all adapters:
       text fits, component state/travel/pin/values/visibility/masks.
 - [x] Commerce effects become CE6 registry effects; the required effect/backend
       dependency slices are delivered below. Broader CE6 effects remain separate.
-- [ ] Parity for all commerce fixtures and all 63 reusable-component combinations.
+- [x] Parity for all commerce fixtures and all 63 reusable-component combinations.
       Run these through both backends against their CE0 tiers using the delivered
       CE6 dependency slices, plus hardware-preview/export perceptual checks.
 
@@ -2733,7 +2733,7 @@ comparisons; the full `pnpm check`.
   **127 cases / 28,200 frames** now pass their assigned pixel tiers, state and
   reverse-seek checks, and existing timing assertions. The **30 required export
   pairs** pass, including the two pending inline exports and eight standalone
-  checks from the matrix tail. Source remains `3d313d3` / WebGL2 version 0.33.
+  checks from the matrix tail. These complete runs used `3d313d3` / WebGL2 version 0.33; the affected blur cases were rechecked after the correctness fix below.
 - **Canvas typography complete:** all **20 cases / 3,367 frames** pass their
   assigned pixel tiers, state/seek checks and existing timing assertions. All
   **10 required export pairs** are byte-identical, including numeric text and
@@ -2741,12 +2741,65 @@ comparisons; the full `pnpm check`.
 - **Frozen CE0 complete:** the unchanged `pnpm test:browser:composition-baselines`
   check passed all **176 items**. No stored baseline, timing target or pixel tier
   was regenerated or changed.
-- **Remaining:** complete
-  hardware preview/export plus Lab interaction checks. CE4b remains open until
-  these pass. The **117 GPU timing failures** and unchanged **1.25×** requirement
-  remain CE6 work. See [resumed verification results](./composition-ce4b-verification-results.json).
+- **Hardware verification complete:** the full matrices and Lab checks passed after
+  the primitive-blur correction below. The **117 recorded GPU timing failures** and
+  unchanged **1.25×** requirement remain CE6 work.
 
-**Completion record:** CE4a and CE4b are in progress; CE4c–CE4d have not started.
+### CE4b completion record (2026-10-03)
+
+- **Owner / branch:** Codex, `codex/composition-ce4b`, based on
+  `codex/composition-ce4`. CE4b is complete under the user-approved timing split;
+  CE4a, CE4c and CE4d retain their separate requirements.
+- **Correctness fix:** hardware Canvas primitive blur and its glyph preparation
+  produced **39.9017 dB** at editorial frame 70, below the unchanged **40 dB /
+  SSIM 0.99** preview tier. `cf28529` selects software glyph preparation for
+  compositions containing primitive blur, software Canvas rendering for those
+  Canvas previews, and separately pooled software primitive preparation for WebGL.
+  GPU composition and effects remain native. Canvas now matches this variant
+  exactly; WebGL's worst sampled PSNR is **62.7643 dB**. Renderer versions are
+  `composition-canvas-1.22.0` and `composition-webgl2-0.34.0`.
+- **Pinned coverage:** commerce **127 cases / 28,200 frames**, typography **20 /
+  3,367**, and reusable story/components **48 / 9,216** pass their assigned
+  pixel tiers, evaluated states, repeated frames and reverse seeks on both
+  backends. All **63 reusable-component combinations** are represented. The
+  completed Canvas story matrix additionally covers **20** ordinary story cases:
+  **68 / 13,894** in total. All **53 required MP4 pairs per backend** pass with
+  portable assets, pinned fonts and overwrite protection. After the fix, all
+  **10 changed cases / 2,023 frames per backend** and **eight export pairs** were
+  rechecked; their existing timing assertions also passed.
+- **Hardware preview:** verified Apple M5 Pro / ANGLE Metal against the pinned
+  SwiftShader profile for **195 cases per backend**. All **10,294 forward frame
+  comparisons** and **585 fresh reverse frames per backend** meet the existing
+  perceptual tier; evaluated states agree exactly. Retained WebGL previews have
+  exact reverse-seek hashes across seven sampled positions. Five initial commerce
+  byte changes across new hardware canvases were rerun directly against pinned
+  output and pass the required tier; the first-run diagnostics are preserved.
+  Completed results were reused, with only changed blur cases and those five
+  diagnostics rerun. No baseline or tolerance changed.
+- **Lab and export:** five hardware Lab fixtures cover echo, generators, exposure,
+  providers and primitive blur. Pixel comparison with pinned rendering, reverse
+  seeks, Canvas/WebGL switching, actual renderer labels and playback pass. Native
+  WebGL CLI, repeat-export, raw/PNG, encoded-preview and overwrite checks also pass.
+- **Local verification:** `pnpm check:fast` passes, including **1,255 unit tests**.
+  Native Canvas/WebGL, effect, export and both legacy typography groups pass after
+  the fix. The frozen CE0 check passed all **176 items**, with no regeneration;
+  legacy preparation defaults are unchanged. The original full `pnpm check`
+  stopped at a timing-only assertion; all remaining correctness groups were run
+  separately, preserving that failure and the complete recorded timing results.
+  This is the approved timing exception, not a claim that the original full
+  command exited successfully. Verification ran locally; no Actions were added.
+- **CE6 follow-up:** the unchanged **1.25×** target and **117 recorded 0.33 GPU
+  timing failures** remain CE6 work. Recheck timing on the current version during
+  CE6. This continuation introduced no performance experiment, Rust prototype or
+  renderer architecture change.
+- **Evidence:** [resumed verification and completion results](./composition-ce4b-verification-results.json)
+  preserve commands, environment fingerprints, raw comparisons, initial failures,
+  focused reruns, export results and reproducible harness snapshots. The permanent
+  regression runs within `pnpm test:browser:composition-webgl`; the focused hardware
+  command is `pnpm test:browser:composition-webgl-blur --hardware`.
+
+**Completion record:** CE4b is complete under the approved timing split. CE4a remains
+in progress; CE4c–CE4d have not started.
 
 ---
 
@@ -3312,7 +3365,9 @@ A milestone is complete when **all** of the following hold:
 2. Acceptance and Verification sections are satisfied and their commands and results
    are recorded in the milestone's completion record.
 3. `pnpm check` passes on the pinned toolchain ([verification tiers](./verification.md)).
-   New browser groups are added to `pnpm test`.
+   New browser groups are added to `pnpm test`. For the approved CE4b timing split,
+   preserve timing-only failures from the full command and run its remaining
+   groups separately; all correctness, build, lint and baseline checks must pass.
 4. CE0 baselines still pass, or intentional changes are documented with regenerated
    baselines and the reason.
 5. `docs/composition-reference.md` covers new schema fields, property paths, diagnostics
