@@ -58,3 +58,14 @@ export function writeProperty(
   const { object, key } = container(state, segments);
   (object as unknown as Record<string | number, number>)[key] = value;
 }
+
+/** Write an expression result: a number, or a vector/colour copied into place. */
+export function writeValue(
+  state: EvaluatedLayer,
+  segments: PropertyPathSegment[],
+  value: number | readonly number[],
+) {
+  const { object, key } = container(state, segments);
+  (object as unknown as Record<string | number, number | number[]>)[key] =
+    typeof value === "number" ? value : [...value];
+}

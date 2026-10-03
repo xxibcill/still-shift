@@ -29,21 +29,43 @@ export function rgba(hex: string): Rgba {
   return [...color];
 }
 
+type Handle = {
+  ease: number;
+  speed?: number | number[];
+  spatialSpeed?: number;
+};
+/** Pick one component of a grouped speed tuple (CE9); scalar speeds pass through. */
+function axisHandle(handle: unknown, axis: number | undefined) {
+  const h = handle as Handle | undefined;
+  if (!h || !Array.isArray(h.speed)) return h;
+  return {
+    ease: h.ease,
+    speed: axis === undefined ? undefined : h.speed[axis],
+  };
+}
+
 function numericCurve(
   owner: object,
   keys: Key[],
   id: string,
   read: (key: Key) => number,
+  axis?: number,
+  handles?: (key: Key, index: number) => Pick<CurveKey, "in" | "out">,
 ) {
   let channels = curves.get(owner);
   if (!channels) curves.set(owner, (channels = new Map()));
   let curve = channels.get(id);
   if (!curve) {
-    const numeric = keys.map(({ frame, value: _value, ...fields }, i) => ({
-      ...fields,
-      time: frame,
-      value: read(keys[i]!),
-    })) as CurveKey[];
+    const numeric = keys.map(({ frame, value: _value, ...fields }, i) => {
+      const key: Record<string, unknown> = {
+        ...fields,
+        time: frame,
+        value: read(keys[i]!),
+      };
+      for (const side of ["in", "out"] as const)
+        if (key[side] !== undefined) key[side] = axisHandle(key[side], axis);
+      return handles ? { ...key, ...handles(keys[i]!, i) } : key;
+    }) as CurveKey[];
     curve = {
       keys: numeric,
       tangents:
@@ -66,8 +88,10 @@ function channel(
   read: (key: Key) => number,
   time: number,
   fps: number,
+  axis?: number,
+  handles?: (key: Key, index: number) => Pick<CurveKey, "in" | "out">,
 ) {
-  const curve = numericCurve(owner, keys, id, read);
+  const curve = numericCurve(owner, keys, id, read, axis, handles);
   return sampleCurve(curve.keys, time, fps, curve.tangents);
 }
 
@@ -180,6 +204,25 @@ export function vector(
     const index = value.keys.findIndex((k, i) => i > 0 && k.frame > time) - 1;
     const a = value.keys[index]!,
       b = value.keys[index + 1]!;
+    // Spatial speed is arc pixels/frame; progress counts keys, so divide by arc length.
+    const progressHandles = (key: Key, i: number) => {
+      const handle = (side: "in" | "out", segment: number) => {
+        const h = key[side] as Handle | undefined;
+        if (!h) return undefined;
+        if (h.spatialSpeed === undefined) return { ease: h.ease };
+        const total =
+          segment < 0 || segment >= value.keys.length - 1
+            ? 0
+            : spatialTable(
+                value,
+                value.keys[segment]!,
+                value.keys[segment + 1]!,
+                segment,
+              ).total;
+        return { ease: h.ease, speed: total ? h.spatialSpeed / total : 0 };
+      };
+      return { in: handle("in", i - 1), out: handle("out", i) };
+    };
     const progress =
       channel(
         value,
@@ -188,6 +231,8 @@ export function vector(
         (k) => value.keys.indexOf(k),
         time,
         fps,
+        undefined,
+        progressHandles,
       ) - index;
     const table = spatialTable(value, a, b, index);
     const distance = Math.max(0, Math.min(1, progress)) * table.total;
@@ -211,6 +256,7 @@ export function vector(
       (k) => (k.value as Point)[axis]!,
       time,
       fps,
+      axis,
     ),
   ) as Point;
 }
@@ -230,6 +276,7 @@ export function color(value: unknown, time: number, fps: number): Rgba {
           (k) => rgba(k.value as string)[axis]!,
           time,
           fps,
+          axis,
         ),
       ),
     ),

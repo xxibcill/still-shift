@@ -27,9 +27,12 @@ import {
   compileCommerceComposition,
   compileStoryComposition,
 } from "@still-shift/animation-engine";
+import { bakeExpressions } from "../../../packages/renderer-core/src/composition/bake.ts";
 import {
   AnimationEngineError,
   AnimationIntensitySchema,
+  normalizeExpressions,
+  validateComposition,
   AnimationPresetSchema,
   ENGINE_VERSION,
   formatSize,
@@ -66,7 +69,9 @@ Usage:
   pnpm still-shift sfx generate --provider elevenlabs --id <slug> --prompt <text> --duration <seconds> --output-dir <new-directory> [--prompt-influence 0.3] [--loop true|false]
   pnpm still-shift prepare-commerce --brief <brief.json> --output <prepared.json>
   pnpm --silent still-shift comp render --input <composition.json> --output <path.mp4> [--backend canvas2d|webgl2]
-  pnpm --silent still-shift comp export-json --scene <story-or-commerce.json> [--output <composition.json>]
+  pnpm --silent still-shift comp export-json --scene <story-or-commerce.json> [--output <composition.json>] [--normalized true]
+  pnpm --silent still-shift comp normalize --input <composition.json> [--output <composition.json>]
+  pnpm --silent still-shift comp bake --input <composition.json> [--output <composition.json>]
   pnpm --silent still-shift batch --manifest <jsonl> --output-dir <path> [--format landscape|vertical] [--concurrency 1|2]
 
 The default adapter writes a validated 1080p H.264 MP4 and scene manifest.
@@ -397,9 +402,61 @@ export const runCli = async (
       return 1;
     }
   }
+  if (args[0] === "comp" && (args[1] === "bake" || args[1] === "normalize")) {
+    try {
+      const values = parseNamedArguments(args.slice(2), ["input", "output"]);
+      const input: unknown = JSON.parse(
+        await readFile(resolve(requireArgument(values, "input")), "utf8"),
+      );
+      const result =
+        args[1] === "bake"
+          ? bakeExpressions(input)
+          : (() => {
+              const validation = validateComposition(input);
+              return validation.ok
+                ? {
+                    ...validation,
+                    composition: normalizeExpressions(validation.composition),
+                    baked: undefined,
+                  }
+                : validation;
+            })();
+      if (!result.ok) {
+        io.stderr(
+          `${JSON.stringify({ status: "failed", diagnostics: result.diagnostics })}\n`,
+        );
+        return 1;
+      }
+      const text = `${JSON.stringify(result.composition, null, 2)}\n`;
+      const output = values.get("output");
+      if (!output) io.stdout(text);
+      else {
+        const outputPath = resolve(output);
+        await writeFile(outputPath, text, { flag: "wx" });
+        io.stdout(
+          `${JSON.stringify({
+            status: args[1] === "bake" ? "baked" : "normalized",
+            outputPath,
+            ...(result.baked ? { baked: result.baked } : {}),
+            diagnostics: result.diagnostics,
+          })}\n`,
+        );
+      }
+      return 0;
+    } catch (error) {
+      io.stderr(
+        `${JSON.stringify({ status: "failed", diagnostics: passageDiagnostics(error) })}\n`,
+      );
+      return 1;
+    }
+  }
   if (args[0] === "comp" && args[1] === "export-json") {
     try {
-      const values = parseNamedArguments(args.slice(2), ["scene", "output"]);
+      const values = parseNamedArguments(args.slice(2), [
+        "scene",
+        "output",
+        "normalized",
+      ]);
       const scenePath = resolve(requireArgument(values, "scene"));
       const scene: unknown = JSON.parse(await readFile(scenePath, "utf8"));
       const composition =
@@ -415,6 +472,18 @@ export const runCli = async (
               StorySceneSchema.parse(scene),
               dirname(scenePath),
             );
+      const normalized = values.get("normalized");
+      if (
+        normalized !== undefined &&
+        normalized !== "true" &&
+        normalized !== "false"
+      )
+        throw new AnimationEngineError(
+          "SCENE_INVALID",
+          "--normalized must be true or false",
+        );
+      if (normalized === "true")
+        Object.assign(composition, normalizeExpressions(composition));
       const output = values.get("output");
       if (!output) io.stdout(`${JSON.stringify(composition, null, 2)}\n`);
       else {

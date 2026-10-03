@@ -60,6 +60,7 @@ export { prepareCommerceTextFits } from "./commerce-layout.ts";
 
 export * from "./curve.ts";
 export * from "./composition/evaluate/index.ts";
+export * from "./composition/bake.ts";
 export * from "./composition/render/index.ts";
 export {
   storyToComposition,
