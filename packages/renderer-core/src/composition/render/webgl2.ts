@@ -8,6 +8,7 @@ import type { Bounds } from "../evaluate/types.ts";
 import type { ProviderContent, TextContent } from "./graph.ts";
 import { WebglBounds } from "./webgl-bounds.ts";
 import { WebglImages } from "./webgl-images.ts";
+import { WebglPngImages } from "./webgl-png-images.ts";
 import { WebglEffects } from "./webgl-effects.ts";
 import type { CompositionBlendMode } from "@still-shift/scene-contract";
 import type { Matrix } from "../../node-transform.ts";
@@ -22,7 +23,7 @@ import { WebglDevice, type WebglSurface } from "./webgl-device.ts";
 import { blendShader } from "./webgl-blend.ts";
 
 export const COMPOSITION_WEBGL_RENDERER_VERSION =
-  "composition-webgl2-0.32.0" as const;
+  "composition-webgl2-0.33.0" as const;
 const IDENTITY: Matrix = [1, 0, 0, 1, 0, 0];
 const COPY =
   "uniform float opacity; void main() { pixel = floor(floor(texture(source, uv) * 255.0 + 0.5) * (floor(opacity * 255.0 + 0.5) + 1.0) / 256.0) / 255.0; }";
@@ -73,6 +74,7 @@ export function createWebgl2Backend(
   const bounds = new WebglBounds(target);
   const effects = new WebglEffects(device, raster, bounds);
   const images = new WebglImages(device, raster);
+  const pngImages = new WebglPngImages(device, raster, options.images);
   const keys = new WebglVisualKey(options.contentKey);
   const damage = new WebglDamage(keys, options.contentBounds);
   const readback = new WebglReadback(
@@ -338,7 +340,8 @@ export function createWebgl2Backend(
       if (
         !paintBlur &&
         mode === "normal" &&
-        images.draw(dst, content, matrix, opacity, clips, transforms)
+        (pngImages.draw(dst, content, matrix, opacity, clips, transforms) ||
+          images.draw(dst, content, matrix, opacity, clips, transforms))
       )
         return;
       draw(dst, mode, (pixels) =>
@@ -589,6 +592,7 @@ export function createWebgl2Backend(
       readback.dispose();
       isolates.dispose();
       vectors.dispose();
+      pngImages.dispose();
       raster.dispose();
       device.dispose();
     },

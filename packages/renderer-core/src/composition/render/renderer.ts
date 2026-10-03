@@ -86,6 +86,8 @@ export function compositionScene(
 
 export type CompositionResources = {
   images: Map<string, CanvasImageSource>;
+  /** PNG signatures verified from asset bytes, independent of filenames and URLs. */
+  pngImages?: ReadonlySet<string>;
   fonts: Map<string, LoadedFont>;
   providerFonts?: ReadonlyMap<string, ReadonlyMap<string, LoadedFont>>;
 };
@@ -97,6 +99,7 @@ export async function loadCompositionResources(
   options: { providers?: readonly CanvasContentProvider[] } = {},
 ): Promise<CompositionResources> {
   const images = new Map<string, CanvasImageSource>();
+  const pngImages = new Set<string>();
   await Promise.all(
     composition.assets.map(async (asset) => {
       if (asset.type !== "image") return;
@@ -124,11 +127,19 @@ export async function loadCompositionResources(
       )
         throw new Error(`Dimensions differ for ${asset.id}`);
       images.set(asset.id, image);
+      const signature = new Uint8Array(bytes, 0, Math.min(8, bytes.byteLength));
+      if (
+        [137, 80, 78, 71, 13, 10, 26, 10].every(
+          (value, i) => signature[i] === value,
+        )
+      )
+        pngImages.add(asset.id);
     }),
   );
   const fonts = await loadCompositionFonts(composition, assetUrl);
   return {
     images,
+    pngImages,
     fonts,
     providerFonts: await loadProviderFonts(composition, fonts, [
       ...BUILTIN_PROVIDERS,
@@ -189,6 +200,7 @@ export function createCompositionPreview(
   const backendOptions = {
     images: {
       images: resources.images,
+      ...(resources.pngImages ? { pngImages: resources.pngImages } : {}),
       sizes: new Map(
         composition.assets.flatMap((a) =>
           a.type === "image" ? [[a.id, [a.width, a.height] as const]] : [],

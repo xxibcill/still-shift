@@ -2661,6 +2661,30 @@ comparisons; the full `pnpm check`.
   minimum PSNR **97.26 dB**). Paired timing improves from roughly **3.27–3.28×**
   to **2.99–3.05×**. Broader image sampling checks are required before adoption.
 
+### CE4b PNG mip sampling (2026-10-03)
+
+- **Version:** `composition-webgl2-0.33.0` samples verified PNG mip sources on
+  WebGL2 for conservative, axis-aligned downscales. Transparent borders,
+  dimensions, mip boundaries and transform constraints determine eligibility;
+  other images retain the existing path. Source textures have a **128 MiB**
+  cache budget. Sampling depends on current inputs, with no movement-history
+  fallback, and skips coordinate preparation outside current damage.
+- **Verification:** fast checks, **1,255 unit tests**, native GPU checks and
+  **204 export/Lab frames** pass. Synthetic PNG coverage includes **106 frames**
+  with nested transforms, containment, opacity, fallback boundaries and
+  byte-identical repeats/reverse seeks. Sampled sprites are exact; opaque
+  fallback images remain near. Final paired Commerce Stagger timings are
+  **620.5 / 623.4 ms**, versus **675.3 / 680.4 ms** with sampling disabled,
+  approximately **8%** faster. All focused pixels are near (max difference **1**,
+  minimum PSNR **97.44 dB**) and seeks are exact. The ratios remain
+  **3.1009× / 3.1613×**; the unchanged **1.25×** gate still fails. Metal timing
+  overlaps baseline variation, so no repeatable hardware gain is claimed.
+- **Remaining:** complete selected-candidate family audits, outstanding timing
+  gates and final local/CE0 verification. The bounded feasibility report is
+  [composition-ce4b-feasibility.md](./composition-ce4b-feasibility.md). It records
+  both actual renderer profiles and the rejected readback-buffer experiment;
+  it does not revise milestone acceptance.
+
 **Completion record:** CE4a and CE4b are in progress; CE4c–CE4d have not started.
 
 ---

@@ -28,6 +28,8 @@ export type CanvasImageResources = {
   images: ReadonlyMap<string, CanvasImageSource>;
   /** Natural pixel size by asset id, from the composition's asset list. */
   sizes: ReadonlyMap<string, readonly [number, number]>;
+  /** Immutable decoded PNG assets verified by the resource loader. */
+  pngImages?: ReadonlySet<string>;
 };
 
 /** Draws a text layer's content in layer space; `ctx` already carries the transform. */
