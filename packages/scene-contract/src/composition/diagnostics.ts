@@ -117,6 +117,8 @@ export const COMPOSITION_DIAGNOSTICS = {
   "comp-provider-params": "A provider payload fails its registered schema.",
   "comp-provider-asset":
     "A provider uses an undeclared, missing or incompatible asset.",
+  "comp-camera-coverage":
+    "A persisted story image cover leaves the viewport uncovered or samples transparent pixels.",
   "comp-adapter-unsupported":
     "A family feature is not supported by the current adapter slice.",
   "comp-adapter-limit":

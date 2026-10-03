@@ -27,6 +27,7 @@ import {
   type CanvasContentProvider,
 } from "./providers.ts";
 import { STORY_CONTENT_PROVIDERS } from "../adapters/story-providers.ts";
+import { validateStoryCompositionCoverage } from "../adapters/story-coverage.ts";
 import { COMMERCE_CONTENT_PROVIDERS } from "../adapters/commerce-providers.ts";
 import { APPEARANCE_PROVIDERS } from "../adapters/appearance-providers.ts";
 import { MOTION_PATH_PROVIDERS } from "../adapters/motion-path.ts";
@@ -197,6 +198,22 @@ export function createCompositionPreview(
     ...(softwareRaster ? { willReadFrequently: true } : {}),
   });
   if (!ctx) throw new Error("Canvas 2D is unavailable");
+  validateStoryCompositionCoverage(composition, (id) => {
+    const asset = composition.assets.find((asset) => asset.id === id)!;
+    if (asset.type !== "image")
+      throw new Error(`Cover asset is not an image: ${id}`);
+    const image = resources.images.get(id);
+    if (!image) throw new Error(`Cover image was not loaded: ${id}`);
+    const probe = options.createCanvas
+      ? options.createCanvas(asset.width, asset.height)
+      : document.createElement("canvas");
+    probe.width = asset.width;
+    probe.height = asset.height;
+    const context = probe.getContext("2d", { willReadFrequently: true });
+    if (!context) throw new Error("Canvas 2D is unavailable");
+    context.drawImage(image, 0, 0);
+    return context.getImageData(0, 0, probe.width, probe.height);
+  });
   const text = prepareCompositionText(composition, resources.fonts, ctx);
   const drawProvider = prepareCompositionProviders(composition, resources, [
     ...BUILTIN_PROVIDERS,

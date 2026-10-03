@@ -1415,6 +1415,23 @@ comparisons; the full `pnpm check`.
   production passage rendering still uses the family path. The composition-only
   story feature decision and remaining CE4a acceptance criteria stay open.
 
+### CE4a camera coverage review fix (2026-10-02)
+
+Image camera cover declarations now survive JSON export in `metadata.storyCameraCover`.
+Composition preparation checks the sampled source pixels at every integer frame,
+including crops, image states and camera motion, and reports `comp-camera-coverage`
+with the cover layer and frame on failure. This uses native composition evaluation
+and the shared legacy alpha threshold. Rectangle coverage remains checked during
+story compilation. Versions: adapter `story-composition-0.2.1`, renderer
+`composition-canvas-1.2.1`.
+
+Local verification on Node 22.23.1 / pnpm 10.29.3: `pnpm check:fast` passes all
+1,072 unit tests plus schema, boundary, formatting, lint and type checks. The
+adapter browser suite rejects transparent persisted covers, retains exact parity
+for all 192 Access Constraint frames, and exports two byte-identical MP4s. The
+fixture suite passes all 20 items / 4,678 frames. Calibration Pan's initial timing
+was 1.262×; the unchanged rerun passes at 1.211×. No baseline or threshold changed.
+
 ### CE4b start record (2026-10-02)
 
 - **Owner / branch:** Codex, `codex/composition-ce4b`, created from
@@ -2797,6 +2814,30 @@ comparisons; the full `pnpm check`.
   focused reruns, export results and reproducible harness snapshots. The permanent
   regression runs within `pnpm test:browser:composition-webgl`; the focused hardware
   command is `pnpm test:browser:composition-webgl-blur --hardware`.
+
+### CE4b PR integration verification (2026-10-03)
+
+- Merged the current `codex/composition-ce4` base at `0f1150e`, preserving its
+  persisted story camera alpha-coverage validation alongside all CE4b adapters,
+  providers and both render backends. Resolved the documentation, adapter,
+  renderer and version conflicts without changing acceptance thresholds.
+  Versions are now `story-composition-0.9.1` and `composition-canvas-1.22.1`;
+  WebGL remains `composition-webgl2-0.34.0`.
+- `pnpm check:fast` passes **1,264 tests / 122 files**, plus schema, boundaries,
+  formatting, lint and type checks. `pnpm test:browser:composition-story-adapter`
+  passes persisted transparent-cover rejection, all **192 exact frames**, reverse
+  seeks, sampled 2,000-frame evaluation and two byte-identical MP4 exports.
+  Render/readback ratio is **1.0209×**.
+- The additional ordinary-story diagnostic
+  `pnpm test:browser:composition-story-fixtures --only continuous-access-constraint --webgl`
+  passes evaluated state, all **192 exact frames** and reverse seeks, then exits
+  nonzero at the unchanged timing assertion (**2.9334×**). This ordinary story
+  case is outside the **195-case CE4b core matrix**; its timing is retained for
+  follow-up while CE4a remains open. The original **117 recorded CE4b GPU timing
+  failures** and unchanged **1.25×** requirement remain assigned to CE6.
+- GitHub Actions remain disabled. The raw CE4b completion evidence above retains
+  its original production revision and renderer fingerprints; these focused
+  integration checks verify the newly merged camera-coverage change.
 
 **Completion record:** CE4b is complete under the approved timing split. CE4a remains
 in progress; CE4c–CE4d have not started.

@@ -142,6 +142,41 @@ try {
         )
           throw new Error(`Backward seek differs at ${frame}`);
       }
+      const coverId = scene.camera!.cover![0]!;
+      const cover = composition.layers.find((layer) => layer.id === coverId)!;
+      if (cover.type !== "image")
+        throw new Error("Expected image camera cover");
+      const assetId = cover.sources[0]!.asset;
+      const asset = composition.assets.find((asset) => asset.id === assetId)!;
+      if (asset.type !== "image") throw new Error("Expected cover image asset");
+      const transparent = document.createElement("canvas");
+      transparent.width = asset.width;
+      transparent.height = asset.height;
+      const uncoveredResources = {
+        ...resources,
+        images: new Map(resources.images),
+      };
+      uncoveredResources.images.set(assetId, transparent);
+      const persisted = JSON.parse(JSON.stringify(composition)) as Composition;
+      try {
+        m.createCompositionPreview(
+          document.createElement("canvas"),
+          persisted,
+          uncoveredResources,
+        );
+        throw new Error("Expected transparent cover rejection");
+      } catch (error) {
+        const diagnostics = m.passageDiagnostics(error);
+        if (
+          !diagnostics.some(
+            (diagnostic) =>
+              diagnostic.code === "comp-camera-coverage" &&
+              diagnostic.node === coverId &&
+              diagnostic.frame === 0,
+          )
+        )
+          throw error;
+      }
       // A provider passes through the same mask/isolation operations as native layers.
       const masked = structuredClone(composition);
       const text = masked.layers.find((l) => l.id === "title")!;

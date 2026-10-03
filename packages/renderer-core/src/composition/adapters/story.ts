@@ -53,7 +53,7 @@ export type StoryCompositionOptions = {
   textLayout?: CompositionTextLayout;
 };
 
-export const STORY_ADAPTER_VERSION = "story-composition-0.9.0";
+export const STORY_ADAPTER_VERSION = "story-composition-0.9.1";
 function checkSupported(scene: StoryScene) {
   const unsupported = (path: string, feature: string): never =>
     passageError(
@@ -343,6 +343,14 @@ export function storyToComposition(
         adapter: STORY_ADAPTER_VERSION,
         title: scene.title,
         provenance: scene.provenance ?? "",
+        ...(scene.camera?.cover?.length
+          ? {
+              storyCameraCover: scene.camera.cover.filter(
+                (id) =>
+                  scene.nodes.find((node) => node.id === id)?.type === "image",
+              ),
+            }
+          : {}),
         ...(scene.review ? { review: scene.review } : {}),
       },
       "metadata",

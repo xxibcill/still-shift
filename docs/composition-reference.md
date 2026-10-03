@@ -339,6 +339,12 @@ reconstructs the curve without evaluating the source scene at render time. Endpo
 already include camera projection, so these layers use camera depth zero. Existing
 1.0.0 provider payloads remain supported.
 
+Image `camera.cover` declarations persist as `metadata.storyCameraCover`. During
+composition preparation, every integer frame's image crop, state and camera transform
+are checked against the decoded source alpha using the same transparent-pixel threshold
+as the legacy renderer. Invalid coverage fails with `comp-camera-coverage`, identifying
+the cover layer and frame. Rectangle coverage remains checked during compilation.
+
 Repeated trailing samples are omitted for paths, rectangles, connector endpoints
 and plain text; the providers hold
 the final sample without changing earlier frame indices. Flow samples retain their
@@ -875,6 +881,7 @@ retain their original bounds.
 | `comp-provider-duplicate`      | The renderer registry contains the same versioned id twice.                                                                                                |
 | `comp-provider-params`         | A built-in provider payload is invalid; reported during preparation.                                                                                       |
 | `comp-provider-asset`          | A provider uses an undeclared, missing or incompatible asset.                                                                                              |
+| `comp-camera-coverage`         | A persisted story image cover leaves the viewport uncovered or samples transparent pixels.                                                                 |
 | `comp-adapter-unsupported`     | A story feature is outside the current adapter slice; the path identifies it.                                                                              |
 | `comp-adapter-limit`           | Baking the story would exceed the 2,000-key limit.                                                                                                         |
 | `comp-adapter-layout-required` | A fitted backing panel requires a pinned-font measurement context; browser preparation and CLI JSON export supply it.                                      |

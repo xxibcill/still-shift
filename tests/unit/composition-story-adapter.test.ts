@@ -55,6 +55,20 @@ describe("CE4a story adapter first slice", () => {
     );
   });
 
+  it("preserves image camera cover declarations through JSON serialization", () => {
+    const scene = fixture();
+    const composition = JSON.parse(JSON.stringify(storyToComposition(scene)));
+    expect(composition.metadata.storyCameraCover).toEqual(scene.camera!.cover);
+  });
+
+  it("compiles cameras with an empty cover list", () => {
+    const scene = fixture();
+    scene.camera!.cover = [];
+    const composition = storyToComposition(scene);
+    expect(validateComposition(composition).ok).toBe(true);
+    expect(composition.camera2d?.keys).toEqual(scene.camera!.keys);
+  });
+
   it("preserves every node matrix and inherited opacity at every integer frame, including reverse seeks", () => {
     const scene = compileStoryScene(fixture());
     const composition = storyToComposition(fixture());

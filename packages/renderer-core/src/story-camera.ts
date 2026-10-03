@@ -1,3 +1,4 @@
+import { prepareAlphaCoverage, type AlphaPixels } from "./alpha-coverage.ts";
 import type { StoryScene } from "../../scene-contract/src/story.ts";
 import type { PreparedImage } from "../../scene-contract/src/prepared.ts";
 import type { StoryRenderScene } from "./story-scene.ts";
@@ -70,7 +71,6 @@ export function projectStoryPoint(
 }
 
 type Bounds = { left: number; top: number; right: number; bottom: number };
-type AlphaPixels = Pick<ImageData, "width" | "height" | "data">;
 
 function imageDrawBounds(
   scene: StoryRenderScene,
@@ -154,39 +154,15 @@ export function validateStoryCameraCoverage(scene: StoryRenderScene) {
   }
 }
 
-function alphaPrefix(pixels: AlphaPixels) {
-  const stride = pixels.width + 1;
-  const counts = new Uint32Array(stride * (pixels.height + 1));
-  for (let y = 0; y < pixels.height; y++) {
-    let transparentInRow = 0;
-    for (let x = 0; x < pixels.width; x++) {
-      if (pixels.data[(y * pixels.width + x) * 4 + 3]! < 254)
-        transparentInRow++;
-      counts[(y + 1) * stride + x + 1] =
-        counts[y * stride + x + 1]! + transparentInRow;
-    }
-  }
-  return (left: number, top: number, right: number, bottom: number) => {
-    const x0 = Math.max(0, Math.floor(left));
-    const y0 = Math.max(0, Math.floor(top));
-    const x1 = Math.min(pixels.width, Math.ceil(right));
-    const y1 = Math.min(pixels.height, Math.ceil(bottom));
-    return (
-      counts[y1 * stride + x1]! -
-        counts[y0 * stride + x1]! -
-        counts[y1 * stride + x0]! +
-        counts[y0 * stride + x0]! >
-      0
-    );
-  };
-}
-
 /** Check the actual source pixels sampled by each declared image cover. */
 export function validateStoryCameraAlphaCoverage(
   scene: StoryRenderScene,
   readPixels: (assetId: string) => AlphaPixels,
 ) {
-  const hasTransparency = new Map<string, ReturnType<typeof alphaPrefix>>();
+  const hasTransparency = new Map<
+    string,
+    ReturnType<typeof prepareAlphaCoverage>
+  >();
   for (const id of scene.camera?.cover ?? []) {
     const node = scene.nodes.find((item) => item.id === id)!;
     if (node.type !== "image") continue;
@@ -196,7 +172,7 @@ export function validateStoryCameraAlphaCoverage(
       if (!variant) throw new Error(`Missing state ${state.state} on ${id}`);
       let transparent = hasTransparency.get(variant.asset);
       if (!transparent) {
-        transparent = alphaPrefix(readPixels(variant.asset));
+        transparent = prepareAlphaCoverage(readPixels(variant.asset));
         hasTransparency.set(variant.asset, transparent);
       }
       const asset = scene.assets.find((item) => item.id === variant.asset)!;
