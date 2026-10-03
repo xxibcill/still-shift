@@ -25,7 +25,11 @@ function cutsFor(scope: CompositionScope): readonly ExposureCut[] {
     if ("state" in layer || "stateFrom" in layer)
       for (const state of [layer.state, layer.stateFrom])
         if (typeof state === "object")
-          for (const key of state.keys) {
+          for (let index = 1; index < state.keys.length; index++) {
+            const key = state.keys[index]!;
+            if (key.value === state.keys[index - 1]!.value) continue;
+            // Indexed clocks hold index zero before their first table sample.
+            if (layer.sampleTimes && key.frame <= 0) continue;
             const time = layer.sampleTimes
               ? layer.sampleTimes[key.frame]
               : key.frame;

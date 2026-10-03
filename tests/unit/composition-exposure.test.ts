@@ -197,6 +197,127 @@ describe("composition exposure sampling", () => {
     comp.layers[0]!.motionBlur = false;
     expect(compositionExposureFrames(comp, 10)).toEqual([10]);
   });
+  it("does not cut first or repeated state keys in forward, reversed and nested clocks", () => {
+    for (const channel of ["state", "stateFrom"] as const)
+      for (const sampleTimes of [undefined, [0, 10, 20]])
+        for (const reversed of [false, true])
+          for (const nested of [false, true])
+            for (const firstOnly of [false, true]) {
+              const comp = fixture();
+              const frame = sampleTimes ? 1 : 10;
+              const keyed = {
+                keys: firstOnly
+                  ? [{ frame, value: 0 }]
+                  : [
+                      { frame: 0, value: 0 },
+                      { frame, value: 0 },
+                    ],
+              };
+              const stationary: CompositionLayer = {
+                id: "stationary",
+                type: "text",
+                text: "A",
+                states: ["A", "B"],
+                fontSize: 20,
+                color: "#ffffff",
+                ...(sampleTimes ? { sampleTimes } : {}),
+                ...(reversed ? { stretch: -1, startFrame: 20 } : {}),
+                state: channel === "state" ? keyed : 1,
+                ...(channel === "stateFrom"
+                  ? { stateFrom: keyed, stateMix: 0.5 }
+                  : {}),
+              };
+              comp.layers.push(stationary);
+              if (nested) {
+                comp.precomps = [
+                  {
+                    id: "nested",
+                    width: comp.width,
+                    height: comp.height,
+                    frameCount: comp.frameCount,
+                    layers: comp.layers,
+                  },
+                ];
+                comp.layers = [
+                  {
+                    id: "host",
+                    type: "precomp",
+                    comp: "nested",
+                    motionBlur: true,
+                  },
+                ];
+              }
+              expect(validateComposition(comp).ok).toBe(true);
+              const expected = samples(fixture()).map(
+                (tree) => tree.layers[0]!.screenMatrix[4],
+              );
+              expect(
+                samples(comp).map(
+                  (tree) =>
+                    (tree.layers[0]!.precomp?.layers[0] ?? tree.layers[0]!)
+                      .screenMatrix[4],
+                ),
+              ).toEqual(expected);
+            }
+  });
+  it("holds indexed endpoint content without an artificial cut from preceding negative keys", () => {
+    for (const channel of ["state", "stateFrom"] as const)
+      for (const nested of [false, true])
+        for (const reversed of [false, true]) {
+          const comp = fixture();
+          const keyed = {
+            keys: [
+              { frame: -1, value: 0 },
+              { frame: 0, value: 1 },
+            ],
+          };
+          comp.layers.push({
+            id: "stationary",
+            type: "text",
+            text: "A",
+            states: ["A", "B"],
+            fontSize: 20,
+            color: "#ffffff",
+            sampleTimes: [10, 20],
+            ...(reversed ? { stretch: -1, startFrame: 20 } : {}),
+            state: channel === "state" ? keyed : 0,
+            ...(channel === "stateFrom"
+              ? { stateFrom: keyed, stateMix: 0.5 }
+              : {}),
+          });
+          if (nested) {
+            comp.precomps = [
+              {
+                id: "nested",
+                width: comp.width,
+                height: comp.height,
+                frameCount: comp.frameCount,
+                layers: comp.layers,
+              },
+            ];
+            comp.layers = [
+              { id: "host", type: "precomp", comp: "nested", motionBlur: true },
+            ];
+          }
+          expect(validateComposition(comp).ok).toBe(true);
+          const trees = samples(comp);
+          expect(
+            trees.map(
+              (tree) =>
+                (tree.layers[0]!.precomp?.layers[1] ?? tree.layers[1]!)[
+                  channel
+                ],
+            ),
+          ).toEqual([1, 1, 1, 1]);
+          expect(
+            trees.map(
+              (tree) =>
+                (tree.layers[0]!.precomp?.layers[0] ?? tree.layers[0]!)
+                  .screenMatrix[4],
+            ),
+          ).toEqual([38.5, 39.5, 40.5, 41.5]);
+        }
+  });
   it("clamps outgoing content switches with ordinary and indexed sample clocks", () => {
     for (const sampleTimes of [undefined, [0, 10, 20]])
       for (const nested of [false, true])
