@@ -3057,6 +3057,42 @@ tests, backend parity suite, repeated-export determinism test.
   complete per-case matrix rows with the 0.33 and partial 0.34 values. GitHub
   Actions remain disabled; all verification ran locally.
 
+### CE6 performance research follow-up (2026-10-03)
+
+- **Scope:** the measurement and compatible-optimization items proposed in the
+  two dated performance research notes, checked on the pinned profile at
+  1920×1080 after slice 1. Diagnostics only; no acceptance, fixture or renderer
+  change resulted. Raw values are in the evidence file under `researchFollowUp`.
+- **Timing extensions:** neither `EXT_disjoint_timer_query_webgl2` nor
+  `KHR_parallel_shader_compile` is exposed on pinned SwiftShader, so device-time
+  attribution is unavailable there; the 1×1 barrier remains a diagnostic only.
+- **Explicit export framebuffer (rejected):** an RGBA8 framebuffer with or
+  without `preserveDrawingBuffer` matches the current `alpha:false` default
+  buffer within variation (pass plus full read 2.17–2.29 ms vs 2.30 ms).
+- **Backdrop copies (rejected):** the existing flipped blit is the cheapest copy
+  out of the default buffer (~2.0 ms full frame, 0.15 ms at 400²).
+  `copyTexSubImage2D` into RGBA8 copies nothing from an `alpha:false` buffer;
+  into RGB8 it is exact but 2× slower.
+- **Fixed-function primitive blend (not attempted):** Canvas primitive
+  source-over, `s + ⌊d·(256−a)/256⌋`, needs a negative source bias that clamps
+  to zero for `s = 0` (black text). An exact two-pass reverse-subtract form
+  exists in float32, but has a ~7.7×10⁻⁶ margin unsafe for fp16 blending and
+  costs two GL blend passes (~4.5 ms per full frame) against the current blit
+  plus shader (~4.7 ms).
+- **PBO and fence readback (rejected):** identical bytes, but
+  `getBufferSubData` makes a synchronous 1080p read ~17× slower on SwiftShader
+  (26.5–29.8 ms vs 1.5 ms). Cross-frame pipelining would also change the
+  per-frame work boundary used by the gate.
+- **SVG instance attribution:** `story-instances` (house.svg) takes 1,067 ms
+  against legacy 232 ms (gate 290 ms): `readPixels` 637 ms, uploads including
+  the Skia raster flush 190 ms, owned-byte copies 137 ms, all other JavaScript
+  under ~60 ms. Upload plus copy alone exceed the budget, so SVG or image raster
+  reuse cannot close this case; brackets show the same pattern.
+- **Assessment:** the stage the research asked to identify is the GPU-process
+  boundary itself (uploads, exact blits/blends and readback), with no cheaper
+  compatible mechanism on the pinned profile. The owner decision in slice 1
+  stands; the requirement remains **open**.
+
 **Completion record:** _to be filled in._
 
 ---

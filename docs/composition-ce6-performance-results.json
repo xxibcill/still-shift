@@ -5238,5 +5238,80 @@
     "storyAdapter": "pnpm test:browser:composition-story-adapter passed: 192 exact frames, ratio 1.0223, two byte-identical MP4s",
     "frozenCe0": "pnpm test:browser:composition-baselines passed: 176 items, 36,061 frames, no regeneration (exit 0)"
   },
-  "harness": "Scratch harnesses remain under /private/tmp/ce6-performance (not production code)."
+  "harness": "Scratch harnesses remain under /private/tmp/ce6-performance (not production code).",
+  "researchFollowUp": {
+    "note": "Measurements directed by the untracked research notes composition-renderer-performance-research-1/-2 (2026-10-03). Pinned profile (Chromium 151.0.7922.34, SwiftShader), 1920x1080, scratch microbenchmarks under /private/tmp/ce6-performance (micro-fb.mts, micro-copy.mts, micro-pbo.mts, prof.mts). No production change resulted; diagnostics only, not acceptance.",
+    "extensions": {
+      "EXT_disjoint_timer_query_webgl2": false,
+      "KHR_parallel_shader_compile": false,
+      "consequence": "Device-time attribution unavailable on the pinned profile; 1x1 readPixels barrier remains the only attribution tool."
+    },
+    "explicitExportFramebuffer": {
+      "msPerFullFrame": {
+        "defaultAlphaFalsePreserve": {
+          "pass": 1.19,
+          "passRead": 2.3,
+          "passHalfRead": 2.0
+        },
+        "rgba8Fbo": {
+          "pass": 1.32,
+          "passRead": 2.17,
+          "passHalfRead": 2.1
+        },
+        "rgba8FboNoPreserve": {
+          "pass": 1.22,
+          "passRead": 2.29,
+          "passHalfRead": 2.04
+        }
+      },
+      "result": "rejected: within variation"
+    },
+    "backdropCopyFromScreen": {
+      "msPerCall": {
+        "1920x1080": {
+          "flippedBlit": [1.975, 1.91, 2.0, 2.07],
+          "blit": [1.905, 1.91, 2.05, 1.99],
+          "copyTexSubImage2DRgb8": [4.145, 4.175]
+        },
+        "400x400": {
+          "flippedBlit": [0.148, 0.149],
+          "blit": [0.151, 0.147],
+          "copyTexSubImage2DRgb8": [0.359, 0.442]
+        }
+      },
+      "note": "copyTexSubImage2D into RGBA8 from the alpha:false default framebuffer silently copies nothing (all bytes differ from the blit); into RGB8 it is exact but 2x slower. The current flipped blit is already the cheapest copy.",
+      "result": "rejected"
+    },
+    "fixedFunctionPrimitiveBlend": {
+      "analysis": "Primitive source-over s+floor(d*(256-a)/256) cannot be one fixed-function pass: the floor needs a negative source bias, clamped to zero for s=0 (black text). Two passes (reverse-subtract with bias 0.5-1/512 then add) are exact in float32 but need ~7.7e-6 absolute margin, unsafe for fp16 blending, and cost two GL blend passes (~2.25 ms each per full frame) against blit plus exact shader (~4.7 ms).",
+      "result": "not attempted: no expected gain"
+    },
+    "pboFenceReadback": {
+      "msPerFrame1080pSynchronous": {
+        "directReadPixels": [1.58, 1.49],
+        "pboGetBufferSubData": [26.737, 26.537],
+        "pboFenceYieldGetBufferSubData": [29.793, 29.74]
+      },
+      "bytesEqual": true,
+      "result": "rejected: ~17x slower on SwiftShader"
+    },
+    "storyInstancesAttribution": {
+      "fixture": "benchmarks/fixtures/reusable-components/story-instances.json (house.svg instances, 192 frames)",
+      "warmPassMs": {
+        "composition": 1066.7,
+        "legacy": 232.1,
+        "gateMs": 290.1
+      },
+      "compositionCpuSelfMs": {
+        "readPixels": 636.6,
+        "texSubImage2DIncludingSkiaRasterFlush": 189.9,
+        "ownedByteCopy": 136.5,
+        "program": 55.3,
+        "allJavaScriptOther": "<~60"
+      },
+      "uploadsPerFrame": 5.4,
+      "imageRasterUploads384x256PerFrame": 2,
+      "conclusion": "Upload plus owned-byte copy alone (327 ms) exceed the 290 ms budget before any GPU composition; SVG/image raster reuse cannot close the case."
+    }
+  }
 }
