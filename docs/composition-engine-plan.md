@@ -2722,6 +2722,23 @@ comparisons; the full `pnpm check`.
   checks. See [the final report](./composition-ce4b-feasibility.md) and
   [results, pending IDs and resume commands](./composition-ce4b-feasibility-results.json).
 
+### CE4b resumed correctness verification (2026-10-03)
+
+- **Authorization:** after the three-hour feasibility phase ended, the user
+  authorized completing the remaining correctness checks under the approved
+  split. Performance experiments and renderer architecture changes remain on
+  hold pending external research.
+- **Canvas commerce complete:** resumed the saved **34** pending cases using
+  existing selectors, without repeating completed expensive atom checks. All
+  **127 cases / 28,200 frames** now pass their assigned pixel tiers, state and
+  reverse-seek checks, and existing timing assertions. The **30 required export
+  pairs** pass, including the two pending inline exports and eight standalone
+  checks from the matrix tail. Source remains `3d313d3` / WebGL2 version 0.33.
+- **Remaining:** Canvas typography, unchanged frozen CE0 baselines and complete
+  hardware preview/export plus Lab interaction checks. CE4b remains open until
+  these pass. The **117 GPU timing failures** and unchanged **1.25×** requirement
+  remain CE6 work. See [resumed verification results](./composition-ce4b-verification-results.json).
+
 **Completion record:** CE4a and CE4b are in progress; CE4c–CE4d have not started.
 
 ---
