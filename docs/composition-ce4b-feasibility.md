@@ -192,9 +192,37 @@ from **1.4953×** to **1.2807×** and also remains a failure. Earlier slices con
 to changes across the complete audits; the isolated paired PNG experiment is
 used for attributing its approximately 8% moving-image improvement.
 
-The full `pnpm check`, including frozen CE0 verification, is the remaining local
-check. It is bounded by the feasibility deadline; unfinished verification will
-be reported as pending rather than passed.
+### Final local verification
+
+The full `pnpm check` stopped at **05:12:59 UTC** on the Canvas commerce background
+timing assertion (**1.2599×**, exact pixels). Before that stop, toolchain, schema,
+boundaries, formatting, lint, build, **1,255 unit tests**, **46 runtime tests**,
+**111 integration tests**, depth, legacy browser/export groups, native composition
+and WebGL checks, WebGL export/Lab checks, exposure/effects, the story adapter and
+the full **68-case / 13,894-frame** Canvas story matrix passed.
+
+The remaining local commands run sequentially with `--keep-going` for family
+tests, followed by the unchanged frozen CE0 check. This collects every pixel and
+timing result without weakening assertions. The Canvas background follow-up
+measures **1.0246×**, again with exact pixels; both results are retained as timing
+variation. The original full command remains recorded as failed.
+
+Full Canvas commerce/typography coverage, frozen CE0 verification and complete
+hardware preview/export perceptual and Lab interaction coverage remain required
+before CE4b closes. Prepared hardware comparison harnesses are saved in the
+results file; they have not been executed. Verification is bounded by the
+**05:46:52 UTC** decision deadline. Its final completed/pending coverage is recorded
+in `localVerification` in the results file.
+
+The deadline stopped verification at **05:46:52.009 UTC**. The Canvas commerce
+follow-up completed **93 cases / 21,672 frames**, all within their pixel and timing
+gates, plus **20 of 30 required export pairs**. The remaining **34 cases** and
+**10 export pairs** are listed in the results, along with commands to resume those
+matrix cases without repeating completed atoms. The eight standalone export
+checks at the end of the commerce suite also remain pending; subset commands
+do not run that tail. Canvas typography and frozen CE0 checks
+were not started. The prepared hardware preview and Lab harnesses were not run.
+All benchmark processes from this phase were stopped. CE4b remains **open**.
 
 ### Approved scope decision (2026-10-03)
 
@@ -225,7 +253,7 @@ benchmark assertions are preserved in CE6. Combined family commands continue to
 exit nonzero for these timing failures; this does not indicate a pixel failure.
 
 CE4b is **not complete** while final verification remains open. Complete
-selected-candidate GPU family audits have finished. Full local checks are in
-progress; hardware preview/export perceptual coverage remains a separate
-correctness requirement. Unfinished verification will be reported accurately
-at the three-hour feasibility deadline.
+selected-candidate GPU family audits have finished. The three-hour feasibility
+phase ended with the approved scope decision and the partial local verification
+above. Remaining Canvas, frozen CE0 and hardware preview/export checks are
+correctness requirements; the timing split does not waive them.
