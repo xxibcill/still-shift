@@ -329,9 +329,12 @@ its flows compile inside one camera-aware group, preserving visible flows even w
 the path itself is transparent. Resolved passage beats compile independently after
 parameter and cue binding; passage handoffs remain in the passage engine.
 
-Rich typography, pixel effects, spatial paths/morphs and animated blur/stroke/trim
-still return explicit unsupported-feature diagnostics, as do scenes longer than
-2,000 frames. Fractional motion-blur sampling remains a CE7 dependency.
+Rich typography uses the versioned `component.typography@1.*` providers. Pixel
+effects compile into native effect controls; spatial paths, path morphs and animated
+stroke/trim use `component.path@1.*` and `component.flow@1.1.0`. Primitive blur and
+animated paint preserve their source semantics. Story source motion blur remains
+unsupported and depends on the remaining CE7 exposure work. Scenes longer than
+2,000 frames also return explicit unsupported-feature diagnostics.
 
 Attached connectors use `story.path@1.1.0` and `story.flow@1.1.0`. Their payloads store
 integer-frame endpoint pairs and the authored bend. A shared geometry primitive
@@ -360,7 +363,7 @@ import { storyToComposition } from "@still-shift/renderer-core";
 const composition = storyToComposition(storyScene, { id: "access-constraint" });
 ```
 
-### Commerce adapter (CE4b, in progress)
+### Commerce adapter (CE4b)
 
 `commerceToComposition(scene, { id? })` compiles `commerce-scene-1` through the
 existing commerce compiler. `comp export-json --scene <commerce.json>` exposes the
@@ -411,11 +414,16 @@ to 64 KiB. Rendering never calls the commerce evaluator.
 Motion-craft transforms, signals, drivers, constraints and periodic motion bake
 into native transform keys, including both skew axes and compensated moving
 anchors. Pixel effects, motion blur, rich typography, spatial paths, path morphs
-and animated blur/stroke/trim channels still return `comp-adapter-unsupported`
-with a source path.
-Legacy commerce parents must be groups, as required by its source schema.
-Effects parity requires CE6, and full CE4b fixture acceptance remains open. Existing
-commerce commands retain their current renderer.
+and animated blur/stroke/trim channels are supported through native composition
+controls and versioned component providers. Legacy commerce parents must be groups,
+as required by its source schema.
+
+CE4b is complete under the approved milestone split, including evaluated-state,
+assigned pixel-tier, seeking and portable export parity. CE6-P retains the unchanged
+1.25× render/readback timing target and the recorded GPU timing failures, deferred
+to a future version under the approved performance split. Existing commerce commands retain their family renderer.
+Use `comp export-json` followed by `comp render --backend canvas2d` or
+`comp render --backend webgl2` for explicit composition rendering.
 
 ```ts
 import { commerceToComposition } from "@still-shift/renderer-core";

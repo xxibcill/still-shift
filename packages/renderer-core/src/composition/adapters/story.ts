@@ -53,7 +53,7 @@ export type StoryCompositionOptions = {
   textLayout?: CompositionTextLayout;
 };
 
-export const STORY_ADAPTER_VERSION = "story-composition-0.9.1";
+export const STORY_ADAPTER_VERSION = "story-composition-0.9.2";
 function checkSupported(scene: StoryScene) {
   const unsupported = (path: string, feature: string): never =>
     passageError(
@@ -227,6 +227,7 @@ export function storyToComposition(
                       ? { geometry }
                       : {}),
                   flow,
+                  interpolateColors: !!scene.motionModel,
                   // Flow playback uses sample count as its source clock, including the settled tail.
                   samples: samples.map(({ reveal, gap }) => ({ reveal, gap })),
                 },

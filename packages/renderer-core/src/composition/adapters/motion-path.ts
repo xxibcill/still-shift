@@ -196,6 +196,7 @@ export const MOTION_PATH_PROVIDERS: readonly CanvasContentProvider[] = [
             data.samples[Math.min(frame, data.samples.length - 1)]!,
             sourceTime ?? frame,
             data.motion.frameCount,
+            data.interpolateColors,
           );
         },
         {

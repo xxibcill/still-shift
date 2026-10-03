@@ -186,6 +186,7 @@ function typographyProvider(id: string): CanvasContentProvider {
       const prepared = prepareTypography(
         textScene(data),
         new Map(resources.fonts),
+        { softwareRaster: !!resources.softwareRaster },
       );
       const measured = [...preparedTextBounds(data.node, prepared).values()];
       const bounds = {

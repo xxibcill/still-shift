@@ -79,7 +79,7 @@ import type {
   PropertyValue,
 } from "./types.ts";
 
-export const COMPOSITION_EVALUATOR_VERSION = "composition-evaluator-20";
+export const COMPOSITION_EVALUATOR_VERSION = "composition-evaluator-22";
 const order = ["action", "response", "current", "carrier"] as const;
 /** Keyed and motion-craft values of one layer, before constraints (CE9 expression stage). */
 type Stage = {

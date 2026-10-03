@@ -43,20 +43,30 @@ still hold before relying on them.
 
 ## Current state
 
-_Last updated 2026-10-04 by Codex for CE9 closeout._
+_Last updated 2026-10-04 by Codex for PR #32 conflict resolution._
+
+- **PR #32 conflict resolution (2026-10-04):** merged `main` at `3413780` into
+  PR head `a0708ba`, retaining CE9 expressions and main correctness fixes.
+  Both browser suites remain in `pnpm test`; evaluator is `22`, WebGL is `0.36.1`.
+  Fast checks (1,404 unit tests), affected browser/export checks, hardware
+  typography and all 176 frozen baselines pass. Review/merge remains pending.
+  See [resolution evidence](./pr-32-conflict-resolution-results.json).
 
 - **CE9 expressions and motion behaviours (`[x]`, 2026-10-04):** complete on
   `codex/composition-ce9` (from `codex/composition-ce6-performance` at `6034de3`),
   with all required local verification passing and four logical local commits
-  (see the closeout entry). Pushing or opening a PR needs owner approval; target `main`.
+  (see the closeout entry). [PR #32](https://github.com/xxibcill/still-shift/pull/32)
+  targets `main` and is ready for review. The conflict-resolution merge incorporates
+  `main` at `3413780`; local correctness and frozen-baseline checks pass.
+  Delivery is recorded in the entry below.
   One checklist item, runtime
   re-expression of signals/drivers/periodic motion, moved to follow-up **CE9-F1**
   with a recorded reason. Do not merge PR #30 as part of this work.
 - **Documentation delivery (CE6):** `c7afacc` commits `AGENTS.md`, this log,
   `docs/composition-engine-plan.md` and `docs/verification.md` on
   `codex/composition-ce6-performance`. [PR #31](https://github.com/xxibcill/still-shift/pull/31)
-  targets `main` and remains a draft until the pending 0.36 correctness audit
-  is recorded.
+  targets `main`; separate conflict-resolution merge `c2b5e39` has been pushed.
+  Local audit record `205f413` remains outside PR #31 and this CE9 branch.
 - **CE6-P performance (`[d]`, owner approved 2026-10-03):** WebGL's **1.25×**
   render/readback gate and CE6's **2×** speed target are deferred to an
   unscheduled future version. No further tuning or rendering architecture
@@ -65,10 +75,10 @@ _Last updated 2026-10-04 by Codex for CE9 closeout._
   typography); all pixel, seek and export checks pass. The original 117
   failing cases are not claimed resolved.
   - `ecf9bc6` (renderer `composition-webgl2-0.36.0`) was committed at the
-    owner's request **before** its full family matrices finished. Record the
-    0.36 matrix results in the plan and evidence JSON, or report any pixel, seek
-    or export failure, before treating 0.36 as validated. CE9 did not rerun
-    those strict WebGL audits.
+    owner's request **before** its full family matrices finished. Local CE6
+    audit record `205f413` is separate and remains undelivered. It does not
+    validate the combined WebGL `0.36.1` tree. This conflict-resolution session
+    reruns focused correctness/export checks, not the strict family audits.
   - **Rendering-path decision deferred:** effect-free cases are bounded by the
     GPU-process boundary on pinned SwiftShader. Retain the measurements and
     rejected experiments for the future version.
@@ -90,6 +100,21 @@ _Last updated 2026-10-04 by Codex for CE9 closeout._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-04 — Resolve PR #32 merge conflicts
+
+- **Agent / branch:** Codex in an isolated checkout of PR head `a0708ba`.
+- **Done:** merged `main` at `3413780`; kept both aggregate browser suites,
+  advanced evaluator to `22` and WebGL to `0.36.1`, and retained both branches'
+  functional changes. Adapter documentation retains the approved CE6-P deferral.
+- **Results:** `pnpm check:fast` (1,404 tests), toolchain, evaluator, expressions,
+  WebGL, exposure, typography (software/hardware) and WebGL-export checks pass.
+  Frozen CE0 checks pass: 176 items / 36,061 frames; no baseline regeneration.
+- **Open / next:** update PR #32 with this merge; review/merge remains separate.
+  Full runtime/integration and strict WebGL family matrices were not rerun.
+  Local audit `205f413` remains separate; CE6-P stays deferred; Actions disabled.
+- **Records:** [resolution evidence](./pr-32-conflict-resolution-results.json),
+  [PR #32](https://github.com/xxibcill/still-shift/pull/32).
 
 ### 2026-10-04 — CE9 closeout and local commits
 
