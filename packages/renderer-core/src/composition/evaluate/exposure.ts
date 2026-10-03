@@ -1,18 +1,54 @@
 import {
   COMPOSITION_LIMITS,
+  isResolvedProperty,
+  resolvePropertyPath,
   type Composition,
   type CompositionLayer,
   type CompositionScope,
 } from "@still-shift/scene-contract";
 import { evaluateComp } from "./evaluate.ts";
+import { scalar } from "./sample.ts";
 import type { EvaluatedLayerTree, EvaluationOptions } from "./types.ts";
 
 type ExposureCut = { time: number; inclusive: "before" | "after" };
-const scopeCuts = new WeakMap<CompositionScope, readonly ExposureCut[]>();
+const scopeCuts = new WeakMap<
+  Composition,
+  {
+    scopes: WeakMap<CompositionScope, Map<string, readonly ExposureCut[]>>;
+    drivenMixes: Set<string>;
+  }
+>();
 
 /** Visibility and content switches are cuts; continuous transform keys are not. */
-function cutsFor(scope: CompositionScope): readonly ExposureCut[] {
-  const cached = scopeCuts.get(scope);
+function cutsFor(
+  comp: Composition,
+  scope: CompositionScope,
+  route = "",
+): readonly ExposureCut[] {
+  let cache = scopeCuts.get(comp);
+  if (!cache) {
+    const targets = [
+      ...(comp.drivers ?? []).map((driver) => driver.target),
+      ...(comp.periodic ?? []).map(
+        (motion) => motion.target ?? `${motion.node}.${motion.property}`,
+      ),
+      ...Object.keys(comp.expressions ?? {}),
+    ];
+    cache = {
+      scopes: new WeakMap(),
+      drivenMixes: new Set(
+        targets
+          .filter((target) => target.endsWith(".stateMix"))
+          .map((target) => resolvePropertyPath(comp, target))
+          .filter(isResolvedProperty)
+          .map((property) => [...property.scope, property.layer!.id].join("/")),
+      ),
+    };
+    scopeCuts.set(comp, cache);
+  }
+  let routes = cache.scopes.get(scope);
+  if (!routes) cache.scopes.set(scope, (routes = new Map()));
+  const cached = routes.get(route);
   if (cached) return cached;
   const forward = new Set([0, scope.frameCount]);
   const reversed = new Set<number>();
@@ -23,18 +59,28 @@ function cutsFor(scope: CompositionScope): readonly ExposureCut[] {
     const global = (time: number) =>
       time * (layer.stretch ?? 1) + (layer.startFrame ?? 0);
     if ("state" in layer || "stateFrom" in layer)
-      for (const state of [layer.state, layer.stateFrom])
+      for (const channel of ["state", "stateFrom"] as const) {
+        const state = layer[channel];
         if (typeof state === "object")
           for (let index = 1; index < state.keys.length; index++) {
             const key = state.keys[index]!;
             if (key.value === state.keys[index - 1]!.value) continue;
             // Indexed clocks hold index zero before their first table sample.
             if (layer.sampleTimes && key.frame <= 0) continue;
+            // Resetting an invisible outgoing state does not interrupt a fade.
+            // Keep cuts conservatively when a procedural modifier can reveal it.
+            if (
+              channel === "stateFrom" &&
+              !cache.drivenMixes.has(route + layer.id) &&
+              scalar(layer.stateMix, key.frame, scope.fps ?? comp.fps, 1) >= 1
+            )
+              continue;
             const time = layer.sampleTimes
               ? layer.sampleTimes[key.frame]
               : key.frame;
             if (time !== undefined) layerCuts.add(global(time));
           }
+      }
     for (const effect of layer.effects ?? []) {
       if (effect.inPoint !== undefined) layerCuts.add(global(effect.inPoint));
       if (effect.outPoint !== undefined) layerCuts.add(global(effect.outPoint));
@@ -44,7 +90,7 @@ function cutsFor(scope: CompositionScope): readonly ExposureCut[] {
     ...[...forward].map((time) => ({ time, inclusive: "after" as const })),
     ...[...reversed].map((time) => ({ time, inclusive: "before" as const })),
   ];
-  scopeCuts.set(scope, cuts);
+  routes.set(route, cuts);
   return cuts;
 }
 
@@ -85,7 +131,7 @@ export function compositionExposureFrames(
   )
     return [frame];
   const cuts: ExposureCut[] = [
-    ...cutsFor(comp),
+    ...cutsFor(comp, comp),
     ...[
       ...(blur.cuts ?? []),
       blur.inPoint ?? 0,
@@ -136,7 +182,7 @@ function sampleWithScopeCuts(
         const clamped = withinCut(
           b.precomp.time,
           a.precomp.time,
-          cutsFor(scope),
+          cutsFor(comp, scope, key + "/"),
         );
         if (clamped !== b.precomp.time) {
           scopeTimes[key] = clamped;

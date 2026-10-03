@@ -15,6 +15,8 @@ import {
   type Matrix,
 } from "../../packages/renderer-core/src/node-transform.ts";
 import { commerceExposureVariants } from "../helpers/composition-commerce-exposure.ts";
+import { sourceExposureTimeline } from "../../packages/renderer-core/src/commerce-exposure.ts";
+import { exposureFrames } from "../../packages/renderer-core/src/commerce-effect-motion.ts";
 import { passageDiagnostics } from "../../packages/renderer-core/src/passage-diagnostics.ts";
 
 const fixture = () =>
@@ -61,6 +63,55 @@ describe("commerce shutter compilation", () => {
           scene.nodes.forEach((node) => visit(node.id));
         });
       }
+    }
+  });
+  it("preserves state-ramp completion exposure and primitive blur on backward seeks", () => {
+    const input = CommerceSceneSchema.parse(
+      JSON.parse(
+        readFileSync(
+          resolve(
+            "benchmarks/fixtures/reusable-components/commerce-state.json",
+          ),
+          "utf8",
+        ),
+      ),
+    );
+    const source = commerceExposureVariants(
+      "component/commerce-state",
+      input,
+    )[0]!.scene;
+    const scene = compileCommerceScene(CommerceSceneSchema.parse(source));
+    const comp = commerceToComposition(source);
+    const { blur, cuts } = sourceExposureTimeline(scene);
+    expect(comp.motionBlur!.cuts).toEqual([0, 72]);
+    for (const frame of [71, 72, 74, 75, 76, 75, 72, 71]) {
+      const lower = Math.max(...cuts.filter((cut) => cut <= frame));
+      const upper = Math.min(...cuts.filter((cut) => cut > frame));
+      const times = exposureFrames(
+        frame,
+        scene.frameCount,
+        blur!.shutterAngle,
+        blur!.samples,
+      ).map((time) => Math.max(lower, Math.min(upper - 1e-7, time)));
+      expect(compositionExposureFrames(comp, frame)).toEqual(times);
+      [...evaluateCompositionExposure(comp, frame)].forEach((tree, index) => {
+        for (const id of ["behavior__caption", "behavior__inset"]) {
+          const node = scene.nodes.find((node) => node.id === id)!;
+          const pose = evaluatePreparedNodeAtTime(scene, node, times[index]!);
+          const actual = tree.layers.find((layer) => layer.id === id)!;
+          expect(actual.state).toBe(pose.state);
+          expect(actual.stateMix).toBeCloseTo(pose.stateMix ?? 1, 10);
+          if ((pose.stateMix ?? 1) < 1)
+            expect(actual.stateFrom).toBe(pose.stateFrom);
+          const drawingBlur = actual.effects.find(
+            (effect) => effect.effect === "blur.primitive",
+          );
+          expect(drawingBlur?.params.radius ?? 0).toBeCloseTo(
+            pose.blur ?? 0,
+            10,
+          );
+        }
+      });
     }
   });
   it("keeps the source and native resource bounds intact", () => {
