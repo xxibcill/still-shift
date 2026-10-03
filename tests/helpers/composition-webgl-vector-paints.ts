@@ -89,6 +89,86 @@ export function checkSingleImageProvider(stable = false) {
   }
 }
 
+/** Opt-in preparation bounds must not change the canvas contract for custom drawers. */
+export function checkBoundedProviderCanvas(bounded: boolean) {
+  const composition: Composition = {
+    schemaVersion: "composition-1",
+    id: "bounded-provider",
+    width: 640,
+    height: 480,
+    fps: 30,
+    frameCount: 2,
+    background: "#f2ede3",
+    assets: [],
+    layers: [
+      {
+        id: "local",
+        type: "provider",
+        provider: "test.bounded@1.0.0",
+        params: {},
+      },
+    ],
+  };
+  const observed: number[][] = [];
+  const make = (backend: "canvas2d" | "webgl2") =>
+    createCompositionPreview(
+      document.createElement("canvas"),
+      composition,
+      { images: new Map(), fonts: new Map() },
+      {
+        backend,
+        providers: [
+          {
+            id: "test.bounded@1.0.0",
+            prepare: () =>
+              preparedProvider(
+                (ctx, time) => {
+                  if (backend === "webgl2")
+                    observed.push([ctx.canvas.width, ctx.canvas.height]);
+                  ctx.fillStyle =
+                    !bounded && ctx.canvas.width !== 640
+                      ? "#ff0000"
+                      : "#477d65";
+                  ctx.fillRect(12.25 + time, 14.5, 30, 20);
+                },
+                {
+                  boundedCanvas: bounded,
+                  bounds: { left: 12, top: 14, right: 44, bottom: 35 },
+                },
+              ),
+          },
+        ],
+      },
+    );
+  const gpu = make("webgl2"),
+    reference = make("canvas2d");
+  let maxDelta = 0;
+  try {
+    for (const frame of [0, 1, 0]) {
+      gpu.renderFrame(frame);
+      reference.renderFrame(frame);
+      const actual = gpu.readPixels(),
+        expected = reference.readPixels();
+      for (let i = 0; i < actual.length; i++)
+        maxDelta = Math.max(maxDelta, Math.abs(actual[i]! - expected[i]!));
+    }
+    const expected = bounded ? [256, 256] : [640, 480];
+    if (
+      !observed.length ||
+      observed.some(([w, h]) => w !== expected[0] || h !== expected[1])
+    )
+      throw new Error(
+        `Provider canvas contract differs: ${JSON.stringify(observed)}`,
+      );
+    if (maxDelta > 1)
+      throw new Error(`Bounded provider differs by ${maxDelta}`);
+    return { maxDelta, dimensions: expected, frames: 3 };
+  } finally {
+    gpu.dispose();
+    reference.dispose();
+  }
+}
+
 /** More than one sampler batch must preserve every intermediate rounded result. */
 export function checkProviderPaintBatches() {
   const composition: Composition = {

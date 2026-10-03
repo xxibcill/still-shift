@@ -168,6 +168,7 @@ export const MOTION_PATH_PROVIDERS: readonly CanvasContentProvider[] = [
           );
         },
         {
+          boundedCanvas: true,
           bounds: data.samples.some((sample) => sample.pulse > 0)
             ? undefined
             : motionPathBounds(data, Math.max(1, data.node.lineWidth) * 3),
@@ -198,6 +199,7 @@ export const MOTION_PATH_PROVIDERS: readonly CanvasContentProvider[] = [
           );
         },
         {
+          boundedCanvas: true,
           bounds: motionPathBounds(
             data,
             Math.hypot(flow.size, Math.min(2, flow.size)),
@@ -241,6 +243,7 @@ export const MOTION_PATH_PROVIDERS: readonly CanvasContentProvider[] = [
           );
         },
         {
+          boundedCanvas: true,
           bounds: data.samples.some((sample) => sample.pulse > 0)
             ? undefined
             : motionPathBounds(

@@ -234,6 +234,7 @@ function typographyProvider(id: string): CanvasContentProvider {
           );
         },
         {
+          boundedCanvas: true,
           bounds,
           singleImage: isSingleImageTypography(data.node, prepared),
           stableImages: hasStableTypographyImage(data.node, prepared),

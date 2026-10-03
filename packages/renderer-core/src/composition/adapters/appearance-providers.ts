@@ -30,6 +30,7 @@ export const APPEARANCE_PROVIDERS: readonly CanvasContentProvider[] = [
           );
         },
         {
+          boundedCanvas: true,
           bounds: (() => {
             const stroke =
               Math.max(

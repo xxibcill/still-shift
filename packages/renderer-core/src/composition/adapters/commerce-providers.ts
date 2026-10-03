@@ -259,6 +259,7 @@ function prepareText(
     params.animator
       ? {}
       : {
+          boundedCanvas: true,
           bounds: preparedTextBounds(preparedNode, font, layouts),
           visualKey(time, contentState) {
             const frame = Math.max(0, Math.floor(time));
@@ -344,6 +345,7 @@ export const COMMERCE_CONTENT_PROVIDERS: readonly CanvasContentProvider[] = [
           );
         },
         {
+          boundedCanvas: true,
           bounds: pointBounds(
             geometry.points.flat(),
             Math.hypot(flow.size, Math.min(2, flow.size)),
@@ -373,6 +375,7 @@ export const COMMERCE_CONTENT_PROVIDERS: readonly CanvasContentProvider[] = [
           );
         },
         {
+          boundedCanvas: true,
           bounds: samples.some((s) => s.pulse > 0)
             ? undefined
             : pointBounds(

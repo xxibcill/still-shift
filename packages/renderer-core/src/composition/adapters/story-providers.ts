@@ -90,6 +90,7 @@ export const STORY_CONTENT_PROVIDERS: readonly CanvasContentProvider[] = [
             sample(params.samples, time).reveal,
           ),
         {
+          boundedCanvas: true,
           visualKey: (time) => JSON.stringify(sample(params.samples, time)),
           bounds: {
             left: -stroke,
@@ -113,6 +114,7 @@ export const STORY_CONTENT_PROVIDERS: readonly CanvasContentProvider[] = [
             sample(params.samples, time),
           ),
         {
+          boundedCanvas: true,
           visualKey: (time) =>
             JSON.stringify([
               sampleStoryPath(params.node, params.geometry, time).points,
@@ -152,6 +154,7 @@ export const STORY_CONTENT_PROVIDERS: readonly CanvasContentProvider[] = [
           );
         },
         {
+          boundedCanvas: true,
           bounds: pointBounds(
             params.geometry.endpoints.flatMap(
               (_, frame) =>
@@ -171,6 +174,7 @@ export const STORY_CONTENT_PROVIDERS: readonly CanvasContentProvider[] = [
         (ctx, time) =>
           drawPreparedPath(ctx, params.node, sample(params.samples, time)),
         {
+          boundedCanvas: true,
           visualKey: (time) => JSON.stringify(sample(params.samples, time)),
           bounds: params.samples.some((s) => s.pulse > 0)
             ? undefined
@@ -204,6 +208,7 @@ export const STORY_CONTENT_PROVIDERS: readonly CanvasContentProvider[] = [
           );
         },
         {
+          boundedCanvas: true,
           bounds: pointBounds(
             params.node.points,
             Math.hypot(flow.size, Math.min(2, flow.size)),
@@ -269,6 +274,7 @@ export const STORY_CONTENT_PROVIDERS: readonly CanvasContentProvider[] = [
           );
         },
         {
+          boundedCanvas: true,
           visualKey: (time) => JSON.stringify(sample(samples, time)),
           bounds: preparedTextBounds(node, font),
         },

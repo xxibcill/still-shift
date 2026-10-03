@@ -42,6 +42,9 @@ export class WebglVectors {
     private readonly stableImages?: (
       content: ProviderContent | TextContent,
     ) => boolean,
+    private readonly boundedCanvas?: (
+      content: ProviderContent | TextContent,
+    ) => boolean,
   ) {}
 
   private forget(id: string) {
@@ -106,13 +109,15 @@ export class WebglVectors {
   }
 
   private paint(dst: WebglSurface, ops: VectorDraw[], rect: Bounds) {
-    // Custom drawers can inspect their canvas dimensions. Only native solids
-    // can use smaller preparation canvases without an additional contract.
-    const solid = ops.every(({ content }) => content.type === "solid");
-    const rasterWidth = solid
+    // Custom drawers retain full dimensions unless they explicitly opt in.
+    const bounded = ops.every(
+      ({ content }) =>
+        content.type === "solid" || this.boundedCanvas?.(content),
+    );
+    const rasterWidth = bounded
       ? Math.min(dst.width, Math.ceil((rect.right + 63) / 256) * 256)
       : dst.width;
-    const rasterHeight = solid
+    const rasterHeight = bounded
       ? Math.min(dst.height, Math.ceil((rect.bottom + 63) / 256) * 256)
       : dst.height;
     const pixels = this.raster.createSurface(rasterWidth, rasterHeight);

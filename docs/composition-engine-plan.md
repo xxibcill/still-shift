@@ -2601,6 +2601,28 @@ comparisons; the full `pnpm check`.
   final full local/CE0 verification. OffscreenCanvas and read-frequent contexts
   showed no consistent transfer improvement and were not adopted.
 
+### CE4b bounded provider preparation (2026-10-03)
+
+- **Version:** `composition-webgl2-0.30.0` lets local providers explicitly opt
+  into smaller preparation canvases. Built-in bounded providers and native text
+  opt in; custom drawers retain the full canvas dimensions by default. Device
+  origins and the existing memory limits remain unchanged.
+- **Verification:** fast checks, **1,251 unit tests**, native GPU checks and
+  **204 export/Lab frames** pass. The provider contract checks both default and
+  opted-in canvas dimensions across forward/backward rendering. Commerce covers
+  **127 cases / 28,200 frames**, all passing pixels; **52** pass both gates and
+  all **30 export pairs** pass. Typography covers **20 cases / 3,367 frames**,
+  all passing pixels; **17** pass both gates and all **10 export pairs** pass.
+  Containers (**1.4004×**), uniform appearance (**1.6181×**) and Thai numeric
+  text (**1.5374×**) remain over the typography timing budget.
+  All **48 story-component cases / 9,216 frames** pass pixels, **eight** pass
+  both gates, and all **13 required export pairs** pass. Bracket is **3.2085×**.
+  Family commands correctly exit nonzero for their remaining timing failures.
+- **Remaining:** family timing gates and final full local/CE0 verification.
+  A direct PNG sampling prototype
+  failed parity, and Canvas-based GPU readback more than doubled the measured
+  bracket cost; neither was adopted.
+
 **Completion record:** CE4a and CE4b are in progress; CE4c–CE4d have not started.
 
 ---

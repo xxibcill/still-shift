@@ -69,12 +69,13 @@ try {
   console.log("WebGL provider paint batches:", batches);
   const singleImage = await page.evaluate(async () => {
     const url = "/tests/helpers/composition-webgl-vector-paints.ts";
-    const { checkSingleImageProvider } = (await import(
-      url
-    )) as typeof VectorPaints;
+    const { checkSingleImageProvider, checkBoundedProviderCanvas } =
+      (await import(url)) as typeof VectorPaints;
     return {
       mutable: checkSingleImageProvider(),
       stable: checkSingleImageProvider(true),
+      fullCanvas: checkBoundedProviderCanvas(false),
+      boundedCanvas: checkBoundedProviderCanvas(true),
     };
   });
   console.log("WebGL single image provider:", singleImage);

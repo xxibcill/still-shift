@@ -28,12 +28,14 @@ export type CanvasProviderDrawer = DrawProvider & {
   singleImage?: boolean;
   /** Image sources remain unchanged until the next content draw, even after this drawer returns. */
   stableImages?: boolean;
+  /** Drawing depends on local content, not the preparation canvas dimensions. */
+  boundedCanvas?: boolean;
 };
 export function preparedProvider(
   draw: DrawProvider,
   metadata: Pick<
     CanvasProviderDrawer,
-    "visualKey" | "bounds" | "singleImage" | "stableImages"
+    "visualKey" | "bounds" | "singleImage" | "stableImages" | "boundedCanvas"
   >,
 ): CanvasProviderDrawer {
   return Object.assign(draw, metadata);
@@ -137,6 +139,9 @@ export function prepareCompositionProviders(
     draw(ctx, content.time, content.state, content.sourceTime);
   };
   return Object.assign(draw, {
+    boundedCanvas(content: ProviderContent): boolean {
+      return drawers.get(content.key)?.boundedCanvas === true;
+    },
     singleImage(content: ProviderContent): boolean {
       return drawers.get(content.key)?.singleImage === true;
     },
