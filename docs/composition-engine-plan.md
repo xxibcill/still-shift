@@ -1322,6 +1322,15 @@ General rules for all adapters:
 **Acceptance (each part):** All fixtures in that family meet their tolerance tiers;
 Lab preview and export agree; render time is no worse than 1.25× the CE0 baseline.
 
+**CE4b scope decision (user approved, 2026-10-03):** CE4b retains adapter coverage,
+assigned pixel tiers, evaluated-state and seek determinism, repeated exports,
+Lab/export agreement and full local verification. CE6 now owns CE4b's unchanged
+**1.25×** render/readback requirement and the **117** timing failures in the final
+0.33 WebGL2 family audits. This changes milestone ownership, not the target,
+baselines, pixel tolerances or benchmark assertions. The other CE4 parts retain
+their acceptance above. See [the feasibility decision](./composition-ce4b-feasibility.md)
+and [its measured results](./composition-ce4b-feasibility-results.json).
+
 **Verification:** Family browser tests re-run on the composition path; baseline
 comparisons; the full `pnpm check`.
 
@@ -2779,12 +2788,24 @@ type EffectDefinition<P> = {
       Family-fixture comparisons belong to CE4b/CE4c after their adapters are available.
 - [ ] Preview parity suite: on a machine with a hardware GPU, native-composition
       preview frames match export within each fixture's tier.
+- [ ] Close the CE4b performance requirement transferred by the user's
+      2026-10-03 scope decision: retain the **1.25×** legacy render/readback target
+      and resolve all **117** recorded failing cases (74 commerce, 40 story/passage
+      components, 3 typography). Re-run complete selected-candidate family matrices
+      using their existing timing methods; preserve their failing assertions.
+      Record preview and export budgets separately by renderer profile, resolution
+      and warm/cold method. Prioritize measured effect execution, repeated-instance
+      preparation/uploads and typography preparation. Evidence and reproducible
+      diagnostics: [feasibility report](./composition-ce4b-feasibility.md) and
+      [results](./composition-ce4b-feasibility-results.json).
 
 **Acceptance:** Every effect is usable on every implemented drawable layer type,
 including adjustment layers and precomps, demonstrated by native-composition
 fixtures. The WebGL2 backend renders that shared fixture set at least 2× faster than
-Canvas 2D at 1920×1080 (record numbers). Commerce demo parity is verified in CE4b;
-CE6 completion does not require any family adapter.
+Canvas 2D at 1920×1080 (record numbers). Commerce demo visual parity is verified in
+CE4b. The user-approved CE4b timing requirement also requires the already
+implemented commerce, reusable-component and typography adapters to meet the
+unchanged **1.25×** gate. Other CE6 features do not require future family adapters.
 
 **Verification:** Per-effect pixel tests at several parameter values, bounds expansion
 tests, backend parity suite, repeated-export determinism test.
@@ -3319,6 +3340,7 @@ A milestone is complete when **all** of the following hold:
 | 2026-10-01 | CE3: close the acceptance's Lab clause with a minimal composition page and a hardware-preview measurement now, rather than in CE11; the feathered mask is a recorded GPU exception until the CE6 blur                                                                                                                                                                                                                                                                                                                               | The page is the seed of the CE11 inspector; measuring now records the preview guarantee for every CE3 feature                                                                                                                                   |                            |
 | 2026-10-02 | CE4a first slice uses versioned provider ids with bounded JSON and declared asset dependencies. Plain legacy story text uses `story.text@1.0.0`, while authored composition typography keeps native text layers.                                                                                                                                                                                                                                                                                                                    | Preserves direct story text drawing without calling a family scene renderer from the graph; providers are migration seams for later native shapes and text.                                                                                     | `codex/composition-ce4`    |
 | 2026-10-02 | The render graph retains camera and parent transform sequences alongside combined matrices; Canvas concatenates them in order. Settled images draw directly without crossfade surfaces.                                                                                                                                                                                                                                                                                                                                             | Live story parity exposed Canvas API rounding of combined translations and extra image resampling through redundant surfaces. Evaluated state remains pure and unchanged; renderer output has a new version.                                    | `codex/composition-ce4`    |
+| 2026-10-03 | User-approved CE4b/CE6 split: CE4b retains adapter, pixel, state, seek, export, Lab and local-verification requirements; CE6 owns the unchanged 1.25× timing target and 117 recorded failing cases                                                                                                                                                                                                                                                                                                                                  | Two bounded feasibility experiments and complete 0.33 WebGL2 family audits establish visual correctness but do not provide a credible route to all timing gates in this phase; preserve baseline, tolerances and benchmark assertions           |                            |
 
 ## Open questions for the owner
 

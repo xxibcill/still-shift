@@ -82,6 +82,64 @@ It does not replace full family acceptance. Its hardware comparison is against
 legacy in Metal, not against pinned export; failures of the near diagnostic
 alone do not establish failure of the hardware preview perceptual tier.
 
+### Representative results
+
+The software column records baseline ratios; the Metal column records the final
+PNG candidate. These warmed diagnostics do not replace the existing cold story
+and typography family timing procedures. Values remain compared with **1.25×**.
+
+| Case                  | Pinned baseline render/readback | Final Metal render/readback | Metal preview median call, composition / legacy |
+| --------------------- | ------------------------------- | --------------------------- | ----------------------------------------------- |
+| moving-stagger        | 3.175–3.291×                    | 2.402–2.512×                | 0.80 / 0.10 ms                                  |
+| repeated-instances    | 4.768–4.806×                    | 1.800–1.801×                | 0.90 / 0.10 ms                                  |
+| bracket               | 2.758–2.774×                    | 1.455–1.466×                | 0.60 / 0.10 ms                                  |
+| mask-matte            | 2.170–2.180×                    | 0.660–0.662×                | 1.40 / 3.60 ms                                  |
+| typography-containers | 1.170–1.179×                    | 0.359–0.363×                | 6.40 / 23.00 ms                                 |
+| expensive-glow        | 3.026–3.051×                    | 0.438–0.443×                | 0.40 / 12.50 ms                                 |
+
+The final software PNG comparison for moving-stagger is reported below. Metal
+baseline/candidate bookends overlap, so a hardware speedup is not established.
+Every final sampled seek is stable in both profiles. All software diagnostics
+meet near; Metal near diagnostics are looser (maximum differences **2–54**),
+which is not a substitute for measuring Metal against pinned export at the
+perceptual tier. Simple Metal preview calls are short; typography has longer
+tails. RAF/CPU timings alone do not guarantee GPU completion or Lab interaction
+quality. Hardware render/readback targets do not all pass, so the complete
+hardware acceptance matrix is not triggered by this experiment.
+
+Measured device-call profiles are complemented by the one-pixel barrier below.
+The barrier uses matching resource/legacy preparation and complete-sequence
+warmup. For **60 sampled frames**, medians are:
+
+| Case                  | Pinned call / queue drain / subsequent read | Metal call / queue drain / subsequent read |
+| --------------------- | ------------------------------------------- | ------------------------------------------ |
+| moving-stagger        | 70.1 / 85.3 / 65.0 ms                       | 26.4 / 58.8 / 83.9 ms                      |
+| repeated-instances    | 83.9 / 167.2 / 84.9 ms                      | 27.1 / 86.1 / 112.2 ms                     |
+| bracket               | 57.5 / 74.0 / 61.2 ms                       | 19.2 / 68.0 / 75.7 ms                      |
+| mask-matte            | 129.5 / 413.7 / 49.1 ms                     | 30.2 / 62.6 / 65.7 ms                      |
+| typography-containers | 203.9 / 150.1 / 50.2 ms                     | 404.0 / 43.1 / 62.8 ms                     |
+| expensive-glow        | 88.5 / 2469.5 / 108.3 ms                    | 13.3 / 112.5 / 120.1 ms                    |
+
+Glow's software queue drain (**2,469.5 ms**) is much larger than its subsequent
+frame read (**108.3 ms**). This supports prioritizing effect execution rather
+than treating the whole measured readback stage as buffer allocation. Evaluation
+and graph construction are small in the ordinary cases (roughly **0.5–2 ms per
+60 frames**). Typography also has substantial preparation cost; software uploads
+and repeated-instance rendering remain separate targets. None of these measurements
+provides a credible route to closing every current gate with the two experiments.
+
+Detailed timings, fingerprints, preview intervals, profiles and a reconstructable
+harness snapshot are saved in
+[composition-ce4b-feasibility-results.json](./composition-ce4b-feasibility-results.json).
+To rerun the final diagnostics, materialize `harnessSnapshot`, replace
+`{{REPOSITORY_ROOT}}` with the absolute repository directory and `{{HARNESS_ROOT}}`
+with a directory under `/private/tmp`, use the retained commit and locked
+toolchain, then run from the repository root `node --import tsx run.mts
+--profile pinned` or `--profile hardware`. Run profiles alone; do not overlap
+benchmarks with builds, tests or another browser profile. Historical rejected
+production iterations are recorded as measurements, not reproduced by checking
+out the retained implementation.
+
 ### Experiment one: constrained PNG sampling
 
 The starting static-placement fallback is rejected: the first Metal run changed
@@ -113,6 +171,61 @@ ratios (**1.1752× / 1.1634×**) overlap baseline drift (**1.1946× / 1.1602×**
 All focused pixels and seeks pass, but the mixed performance result does not
 justify retention. No production scratch-buffer change is retained.
 
-### Decision
+### Complete selected-candidate software audits
 
-Pending; acceptance has not changed.
+The original family procedures and **1.25×** gate remain in force. All three
+commands use WebGL2 with `--keep-going`, complete every case and required export,
+and exit nonzero for timing failures only. No pixel or seek failure is present.
+
+| Family                                  | Cases / frames | Pixels pass | Pixels and timing pass | Export pairs pass |
+| --------------------------------------- | -------------- | ----------- | ---------------------- | ----------------- |
+| Commerce + commerce/isolated components | 127 / 28,200   | 127         | 53                     | 30                |
+| Story/passage components                | 48 / 9,216     | 48          | 8                      | 13                |
+| Typography                              | 20 / 3,367     | 20          | 17                     | 10                |
+
+All **63 CE0 reusable-component combinations** are represented by commerce,
+isolated, story and passage cases plus their regression variants. Commerce's
+fitted-panel failure diagnostics also pass without writing invalid output.
+The commerce stagger case measures **2.9730×**, compared with **3.3484×** in the
+previous complete 0.30 audit; it still fails the gate. Component State improves
+from **1.4953×** to **1.2807×** and also remains a failure. Earlier slices contribute
+to changes across the complete audits; the isolated paired PNG experiment is
+used for attributing its approximately 8% moving-image improvement.
+
+The full `pnpm check`, including frozen CE0 verification, is the remaining local
+check. It is bounded by the feasibility deadline; unfinished verification will
+be reported as pending rather than passed.
+
+### Approved scope decision (2026-10-03)
+
+The two experiments do not provide a credible route to completing all existing
+performance gates within this phase. Retain the verified PNG mip sampler and
+stop further optimization experiments. Keep the established hybrid rendering
+policy: hardware preview, with pinned software exports and exact cache identity.
+Hardware preview still needs its own complete perceptual-parity/interaction
+validation; responsive sampled calls alone are insufficient.
+
+The user approved the following **formal scope revision** on 2026-10-03:
+
+1. CE4b closes adapter/feature coverage, assigned CE0 pixel tiers, evaluated
+   state, deterministic seeks, repeated exports and Lab/export agreement, with
+   complete local verification. Those requirements and tiers remain unchanged.
+2. CE6 owns the outstanding **1.25×** render/readback target and recorded per-case
+   performance failures. Preserve the target rather than silently passing slow
+   cases. Record separate preview and export budgets by profile, resolution and
+   warm/cold method so optimization can target the relevant path.
+3. Prioritize expensive effect execution (glow/convolution), repeated-instance
+   preparation/uploads and typography preparation from the measured stages.
+   Use small measured experiments with correctness gates, followed by complete
+   family acceptance for the selected implementation.
+
+The approval changes milestone ownership of the timing requirement only. The
+**1.25×** target, all **117 failing cases**, baselines, pixel tiers and existing
+benchmark assertions are preserved in CE6. Combined family commands continue to
+exit nonzero for these timing failures; this does not indicate a pixel failure.
+
+CE4b is **not complete** while final verification remains open. Complete
+selected-candidate GPU family audits have finished. Full local checks are in
+progress; hardware preview/export perceptual coverage remains a separate
+correctness requirement. Unfinished verification will be reported accurately
+at the three-hour feasibility deadline.
