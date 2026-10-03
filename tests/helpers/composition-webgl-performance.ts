@@ -5,6 +5,7 @@ import {
   type WebglSurface,
 } from "../../packages/renderer-core/src/composition/render/webgl-device.ts";
 import { WebglEffects } from "../../packages/renderer-core/src/composition/render/webgl-effects.ts";
+import type { Rgba } from "../../packages/renderer-core/src/composition/evaluate/types.ts";
 
 /**
  * The original per-pixel generator with an exact backdrop fetch. Linear
@@ -501,4 +502,227 @@ export function checkWebglBoundedLightSweep() {
     raster.dispose();
   }
   return checked;
+}
+
+const RADIAL = `uniform vec2 center; uniform float radius; uniform float strength; uniform vec4 color;
+vec4 radial() {
+  float a=clamp(1.0-distance(gl_FragCoord.xy,center)/radius,0.0,1.0)*color.a*strength;
+  vec4 result=vec4(color.rgb*a,a);
+  uint x=uint(gl_FragCoord.x), y=uint(gl_FragCoord.y)^x;
+  uint matrix=((y&1u)<<5)|((x&1u)<<4)|((y&2u)<<2)|((x&2u)<<1)|((y&4u)>>1)|((x&4u)>>2);
+  float dither=(float(matrix)/64.0-63.0/128.0)/255.0;
+  result.rgb=clamp(result.rgb+dither,vec3(0.0),vec3(result.a));
+  return result;
+}`;
+/** The 0.35 full-frame light with linear backdrop sampling. */
+const RADIAL_SAMPLED = `${RADIAL} void main() {
+  vec4 result=radial();
+  pixel=bytes(result+texture(source,uv)*(1.0-result.a));
+}`;
+/** The same formula with the stored backdrop bytes. */
+const RADIAL_EXACT = `${RADIAL} void main() {
+  vec4 result=radial();
+  pixel=bytes(result+texelFetch(source,ivec2(gl_FragCoord.xy),0)*(1.0-result.a));
+}`;
+
+/**
+ * Radial light bounded to its radius must leave every other pixel unchanged,
+ * and on a freshly cleared screen must equal the formula with exact backdrop
+ * bytes, without snapshotting the screen.
+ */
+export function checkWebglBoundedRadialLight() {
+  const results: string[] = [];
+  const raster = createCanvas2dBackend({
+    images: { images: new Map(), sizes: new Map() },
+    drawText: () => {},
+  });
+  for (const [width, height] of [
+    [1080, 1350],
+    [333, 211],
+  ] as const) {
+    const canvas = document.createElement("canvas");
+    canvas.width = width;
+    canvas.height = height;
+    const device = new WebglDevice(canvas);
+    const screen = device.surface(width, height, false, true, true);
+    const effects = new WebglEffects(device, raster, new WebglBounds(screen));
+    const read = (surface: WebglSurface) =>
+      device.readRegion(surface, 0, 0, width, height);
+    const source = device.surface(width, height);
+    device.upload(source, content(width, height, width ^ height));
+    try {
+      for (const [x, y, radius, strength, color] of [
+        [440, 420, 700, 0.3, [1, 249 / 255, 232 / 255, 1]],
+        [280.003, 420, 700, 0.3, [1, 249 / 255, 232 / 255, 1]],
+        [width / 2 + 0.37, height / 3, 90.5, 1, [0.2, 0.9, 0.5, 0.8]],
+        [-40, height + 25, 120, 0.7, [1, 1, 1, 1]],
+        [width * 3, height * 3, 50, 1, [1, 0, 0, 1]],
+      ] as const) {
+        const params = {
+          x,
+          y,
+          radius,
+          strength,
+          color: [...color] as Rgba,
+        };
+        const uniforms = {
+          center: [x, y],
+          radius,
+          strength,
+          color: color.map((v) => Math.round(v * 255) / 255),
+        };
+        const light = [
+          { id: "light", effect: "light.radial", enabled: true, params },
+        ];
+        for (const clip of [
+          undefined,
+          { left: 17, top: 9, right: width - 31, bottom: height - 5 },
+        ]) {
+          // Exact byte clear colors use the solid path; others snapshot.
+          for (const clear of [
+            [242 / 255, 237 / 255, 227 / 255, 1],
+            [0, 0, 0, 1],
+            [1, 1, 1, 1],
+            [0.5, 0.25, 0.123, 1],
+          ]) {
+            device.setFrameClip();
+            device.pass(COPY, screen, [source]);
+            device.setFrameClip(clip);
+            device.clear(screen, clear);
+            device.pass(RADIAL_EXACT, screen, [screen], uniforms);
+            const expected = read(screen);
+            device.setFrameClip();
+            device.pass(COPY, screen, [source]);
+            device.setFrameClip(clip);
+            device.clear(screen, clear);
+            effects.apply(screen, light);
+            const actual = read(screen);
+            const differing = expected.findIndex((v, i) => v !== actual[i]);
+            // Inexact clears keep the sampled snapshot path; compare its formula.
+            const exactClear = clear.every(
+              (v) => Math.abs(v * 255 - Math.round(v * 255)) < 1e-6,
+            );
+            if (exactClear && differing >= 0)
+              throw new Error(
+                `radial light on cleared screen ${width}x${height} ${JSON.stringify(params)} differs at byte ${differing}: ${expected[differing]} != ${actual[differing]}`,
+              );
+            if (!exactClear) {
+              device.setFrameClip();
+              device.pass(COPY, screen, [source]);
+              device.setFrameClip(clip);
+              device.clear(screen, clear);
+              device.pass(RADIAL_SAMPLED, screen, [screen], uniforms);
+              const sampled = read(screen);
+              const index = sampled.findIndex((v, i) => v !== actual[i]);
+              if (index >= 0)
+                throw new Error(
+                  `radial light snapshot ${width}x${height} ${JSON.stringify(params)} differs at byte ${index}: ${sampled[index]} != ${actual[index]}`,
+                );
+            }
+            results.push(`${width}x${height}/${x}/${!!clip}/${clear}`);
+          }
+          // Drawn backdrops keep the 0.35 sampled shader within the radius.
+          for (const target of ["screen", "layer"] as const) {
+            const surface =
+              target === "screen" ? screen : device.surface(width, height);
+            device.setFrameClip(target === "screen" ? clip : undefined);
+            device.pass(COPY, surface, [source]);
+            if (target === "screen")
+              device.pass(RADIAL_SAMPLED, screen, [screen], uniforms);
+            else {
+              const output = device.surface(width, height);
+              device.pass(RADIAL_SAMPLED, output, [surface], uniforms);
+              device.swap(surface, output);
+              device.release(output);
+            }
+            const expected = read(surface);
+            device.pass(COPY, surface, [source]);
+            effects.apply(surface, light);
+            const actual = read(surface);
+            const differing = expected.findIndex((v, i) => v !== actual[i]);
+            if (differing >= 0)
+              throw new Error(
+                `bounded radial light ${target} ${width}x${height} ${JSON.stringify(params)} differs at byte ${differing}: ${expected[differing]} != ${actual[differing]}`,
+              );
+            if (surface !== screen) device.release(surface);
+            results.push(`${target}/${width}x${height}/${x}/${!!clip}`);
+          }
+        }
+      }
+    } finally {
+      device.setFrameClip();
+      device.release(source);
+      device.dispose();
+    }
+  }
+  raster.dispose();
+  return results.length;
+}
+
+/**
+ * Identity composites draw only inside the source's conservative painted
+ * bounds. Render each fixture again with full-target composites and require
+ * identical bytes, including reverse seeks.
+ */
+export async function checkWebglBoundedComposites(paths: string[]) {
+  const { createCompositionPreview, loadCompositionResources } = await import(
+    "../../packages/renderer-core/src/composition/render/renderer.ts"
+  );
+  const composite = (body: string, blended: boolean) =>
+    blended &&
+    body.startsWith(
+      "uniform float opacity; void main() { pixel = floor(floor(texture(source, uv)",
+    );
+  const original = WebglDevice.prototype.pass;
+  const results: { id: string; frames: number; clipped: number }[] = [];
+  for (const path of paths) {
+    const composition = await (await fetch(path)).json();
+    const resources = await loadCompositionResources(composition, (id) => {
+      const asset = composition.assets.find((a: { id: string }) => a.id === id);
+      return new URL(asset.path, new URL(path, location.href)).href;
+    });
+    const bounded = createCompositionPreview(
+        document.createElement("canvas"),
+        composition,
+        resources,
+        { backend: "webgl2" },
+      ),
+      full = createCompositionPreview(
+        document.createElement("canvas"),
+        composition,
+        resources,
+        { backend: "webgl2" },
+      );
+    let clipped = 0,
+      unclip = false;
+    WebglDevice.prototype.pass = function (body, target, inputs, ...rest) {
+      if (composite(body, rest[1] ?? false)) {
+        if (unclip) rest[2] = undefined;
+        else if (rest[2]) clipped++;
+      }
+      return original.call(this, body, target, inputs, ...rest);
+    };
+    try {
+      const frames = [...Array(composition.frameCount).keys()];
+      for (const frame of [...frames, ...frames.reverse()]) {
+        unclip = false;
+        bounded.renderFrame(frame);
+        const expected = bounded.readPixels();
+        unclip = true;
+        full.renderFrame(frame);
+        const actual = full.readPixels();
+        const differing = expected.findIndex((v, i) => v !== actual[i]);
+        if (differing >= 0)
+          throw new Error(
+            `bounded composite ${path} frame ${frame} differs at byte ${differing}: ${expected[differing]} != ${actual[differing]}`,
+          );
+      }
+    } finally {
+      WebglDevice.prototype.pass = original;
+      bounded.dispose();
+      full.dispose();
+    }
+    results.push({ id: path, frames: composition.frameCount * 2, clipped });
+  }
+  return results;
 }

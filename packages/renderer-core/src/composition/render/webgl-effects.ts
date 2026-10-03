@@ -279,27 +279,71 @@ export class WebglEffects {
         case "light.radial": {
           // Skia dithers the premultiplied gradient before source-over and clips
           // its RGB to source alpha. Preserve that order at the radial boundary.
-          this.replace(
-            dst,
-            `uniform vec2 center; uniform float radius; uniform float strength; uniform vec4 color;
-          void main() {
+          const center = [p.x as number, p.y as number],
+            radius = p.radius as number;
+          const uniforms = {
+            center,
+            radius,
+            strength: p.strength as number,
+            color: (p.color as Rgba).map(
+              (value) => Math.round(value * 255) / 255,
+            ),
+          };
+          const light = `uniform vec2 center; uniform float radius; uniform float strength; uniform vec4 color;
+          vec4 radial() {
             float a=clamp(1.0-distance(gl_FragCoord.xy,center)/radius,0.0,1.0)*color.a*strength;
             vec4 result=vec4(color.rgb*a,a);
             uint x=uint(gl_FragCoord.x), y=uint(gl_FragCoord.y)^x;
             uint matrix=((y&1u)<<5)|((x&1u)<<4)|((y&2u)<<2)|((x&2u)<<1)|((y&4u)>>1)|((x&4u)>>2);
             float dither=(float(matrix)/64.0-63.0/128.0)/255.0;
             result.rgb=clamp(result.rgb+dither,vec3(0.0),vec3(result.a));
-            pixel=bytes(result+texture(source,uv)*(1.0-a));
+            return result;
+          }`;
+          // Pixels at or beyond the radius keep their stored bytes exactly.
+          const reach = {
+            left: Math.max(0, Math.floor(center[0]! - radius) - 1),
+            top: Math.max(0, Math.floor(center[1]! - radius) - 1),
+            right: Math.min(dst.width, Math.ceil(center[0]! + radius) + 1),
+            bottom: Math.min(dst.height, Math.ceil(center[1]! + radius) + 1),
+          };
+          const lit = !dst.screen
+            ? undefined
+            : reach.right <= reach.left || reach.bottom <= reach.top
+              ? null
+              : this.device.drawRegion(dst, reach);
+          if (lit === null) break;
+          const solid = lit ? this.device.solidColor(dst, lit) : undefined;
+          if (solid) {
+            // A freshly cleared opaque screen needs no snapshot: fetch its
+            // stored bytes from one texel, converted as any backdrop texel.
+            const backdrop = this.device.surface(1, 1);
+            try {
+              this.device.uploadBytes(backdrop, new Uint8Array(solid));
+              this.device.pass(
+                `${light} void main() {
+                vec4 result=radial();
+                pixel=bytes(result+texelFetch(source,ivec2(0),0)*(1.0-result.a));
+              }`,
+                dst,
+                [backdrop],
+                uniforms,
+                false,
+                lit,
+              );
+            } finally {
+              this.device.release(backdrop);
+            }
+            break;
+          }
+          this.replace(
+            dst,
+            `${light} void main() {
+            vec4 result=radial();
+            pixel=bytes(result+texture(source,uv)*(1.0-result.a));
           }`,
             [dst],
-            {
-              center: [p.x as number, p.y as number],
-              radius: p.radius as number,
-              strength: p.strength as number,
-              color: (p.color as Rgba).map(
-                (value) => Math.round(value * 255) / 255,
-              ),
-            },
+            uniforms,
+            lit,
           );
           break;
         }

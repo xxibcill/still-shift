@@ -47,6 +47,10 @@ export class WebglDevice {
   private readonly pool = new Map<string, WebglSurface[]>();
   private readonly vao: WebGLVertexArrayObject;
   private readonly dirtyScreens = new Set<WebglSurface>();
+  /** Exact opaque bytes of the latest screen clear while nothing has drawn over it. */
+  private solid:
+    | { surface: WebglSurface; color: number[]; region: Bounds }
+    | undefined;
   passes = 0;
   private pooledBytes = 0;
 
@@ -220,6 +224,25 @@ export class WebglDevice {
       if (clip) gl.disable(gl.SCISSOR_TEST);
     }
     if (surface.screen) {
+      // Opaque screens store whole channel values; only exact byte colors are
+      // known without reading the framebuffer back.
+      const bytes = color
+        .slice(0, 3)
+        .map((value) => value * a * 255)
+        .concat(255);
+      this.solid =
+        surface.opaque && bytes.every((v) => Math.abs(v - Math.round(v)) < 1e-6)
+          ? {
+              surface,
+              color: bytes.map(Math.round),
+              region: clip ?? {
+                left: 0,
+                top: 0,
+                right: surface.width,
+                bottom: surface.height,
+              },
+            }
+          : undefined;
       this.dirtyScreens.add(surface);
       this.onScreenChange?.(clip);
     }
@@ -301,6 +324,25 @@ export class WebglDevice {
     gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, true);
   }
 
+  /** Upload premultiplied bytes as stored, without browser conversion. */
+  uploadBytes(surface: WebglSurface, pixels: Uint8Array<ArrayBuffer>) {
+    const gl = this.gl;
+    gl.bindTexture(gl.TEXTURE_2D, surface.texture);
+    gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, false);
+    gl.texSubImage2D(
+      gl.TEXTURE_2D,
+      0,
+      0,
+      0,
+      surface.width,
+      surface.height,
+      gl.RGBA,
+      gl.UNSIGNED_BYTE,
+      pixels,
+    );
+    gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, true);
+  }
+
   /** Fixed-size triangles cover every destination pixel exactly once. */
   pass(
     body: string,
@@ -312,6 +354,7 @@ export class WebglDevice {
   ) {
     if (target?.screen) clip = this.screenRegion(clip);
     if (clip === null) return;
+    if (target?.screen) this.solid = undefined;
     const gl = this.gl;
     if (target?.screen) {
       // Keep every shader in top-left image coordinates while the canvas's
@@ -433,6 +476,21 @@ export class WebglDevice {
     this.passes++;
   }
 
+  /** Byte color covering `region` of a screen cleared without later draws. */
+  solidColor(surface: WebglSurface, region: Bounds) {
+    const solid = this.solid;
+    if (
+      !solid ||
+      solid.surface !== surface ||
+      region.left < solid.region.left ||
+      region.top < solid.region.top ||
+      region.right > solid.region.right ||
+      region.bottom > solid.region.bottom
+    )
+      return undefined;
+    return solid.color;
+  }
+
   swap(first: WebglSurface, second: WebglSurface) {
     if (first.screen || second.screen)
       throw new Error("comp-webgl-screen: canvas surfaces cannot be exchanged");
@@ -519,6 +577,7 @@ export class WebglDevice {
 
   present(surface: WebglSurface) {
     if (surface.screen) return;
+    this.solid = undefined;
     const gl = this.gl;
     gl.bindFramebuffer(gl.READ_FRAMEBUFFER, surface.framebuffer);
     gl.bindFramebuffer(gl.DRAW_FRAMEBUFFER, null);
@@ -553,6 +612,7 @@ export class WebglDevice {
     this.pool.clear();
     this.programs.clear();
     this.dirtyScreens.clear();
+    this.solid = undefined;
   }
 
   private resolveScreen(surface: WebglSurface) {

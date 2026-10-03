@@ -23,7 +23,7 @@ import { WebglDevice, type WebglSurface } from "./webgl-device.ts";
 import { blendShader } from "./webgl-blend.ts";
 
 export const COMPOSITION_WEBGL_RENDERER_VERSION =
-  "composition-webgl2-0.35.0" as const;
+  "composition-webgl2-0.36.0" as const;
 const IDENTITY: Matrix = [1, 0, 0, 1, 0, 0];
 const COPY =
   "uniform float opacity; void main() { pixel = floor(floor(texture(source, uv) * 255.0 + 0.5) * (floor(opacity * 255.0 + 0.5) + 1.0) / 256.0) / 255.0; }";
@@ -156,6 +156,7 @@ export function createWebgl2Backend(
     mode: CompositionBlendMode,
     opacity: number,
     primitive = false,
+    painted?: Bounds,
   ) {
     if (primitive && mode === "normal") {
       replace(dst, blendShader(mode, true), [src, dst], { opacity });
@@ -164,7 +165,9 @@ export function createWebgl2Backend(
       gl.blendEquation(gl.FUNC_ADD);
       gl.blendFunc(gl.ONE, mode === "add" ? gl.ONE : gl.ONE_MINUS_SRC_ALPHA);
       try {
-        device.pass(COPY, dst, [src], { opacity }, true);
+        // Transparent source texels leave fixed-function source-over and
+        // additive results equal to the stored destination bytes.
+        device.pass(COPY, dst, [src], { opacity }, true, painted);
       } finally {
         gl.disable(gl.BLEND);
       }
@@ -473,9 +476,12 @@ export function createWebgl2Backend(
         src.height === dst.height &&
         !clips.length &&
         matrix.every((v, i) => v === IDENTITY[i])
-      )
-        blend(src, dst, mode, opacity);
-      else {
+      ) {
+        // Conservative painted bounds: nothing outside them is drawn.
+        const painted = bounds.region(src);
+        if (painted === null && (mode === "normal" || mode === "add")) return;
+        blend(src, dst, mode, opacity, false, painted ?? undefined);
+      } else {
         const source = placed(src, dst, matrix, clips, transforms);
         try {
           blend(source, dst, mode, opacity);

@@ -35,6 +35,15 @@ try {
       boxBlurSteps: (await checks.checkWebglBoxBlurSteps()).length,
       boundedParticles: await checks.checkWebglBoundedParticles(),
       boundedLightSweep: checks.checkWebglBoundedLightSweep(),
+      boundedRadialLight: checks.checkWebglBoundedRadialLight(),
+      boundedComposites: await checks.checkWebglBoundedComposites(
+        [
+          "ce6/light-sweep",
+          "ce6/echo",
+          "ce6/pixel-stack",
+          "ce6/generators",
+        ].map((path) => `/benchmarks/fixtures/composition/${path}.json`),
+      ),
     };
   });
   console.log("WebGL exact effect work reduction:", workReduction);
