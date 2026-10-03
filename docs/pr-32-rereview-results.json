@@ -1,0 +1,120 @@
+{
+  "date": "2026-10-04",
+  "pullRequest": "https://github.com/xxibcill/still-shift/pull/32",
+  "head": "e81a146670e01df5fd1372e5077c6fe98b3b3b88",
+  "base": "5a6705c04ff3339c99fa89d798d6feb1bd1c7938",
+  "checkout": "/private/tmp/still-shift-pr32-fixes",
+  "scope": "Full current PR diff, with separate standards and spec reviews; three historical findings verified fixed.",
+  "standards": {
+    "findings": [],
+    "sources": [
+      "AGENTS.md",
+      "docs/verification.md",
+      "docs/composition-engine-plan.md",
+      "docs/composition-reference.md"
+    ]
+  },
+  "spec": {
+    "findings": [
+      {
+        "priority": "P2",
+        "title": "Keep canonical expression output within the parser's length limit",
+        "file": "packages/scene-contract/src/composition/expression-ast.ts",
+        "line": 141,
+        "requirement": "CE9 checklist: parse(print(ast)) must equal ast.",
+        "requirementFile": "docs/composition-engine-plan.md",
+        "requirementLine": 3302,
+        "reproducer": "const source = Array(250).fill('123456').join('+'); const parsed = parseExpression(source, isExpressionFunction); const printed = printExpression(parsed.ast); parseExpression(printed, isExpressionFunction);",
+        "compositionValid": true,
+        "sourceLength": 1749,
+        "astNodes": 499,
+        "printedLength": 2247,
+        "actual": {
+          "code": "comp-expression-limit",
+          "column": 2001,
+          "message": "expressions are limited to 2000 characters"
+        },
+        "impact": "Accepted expressions can fail validation after canonical printing, breaking the public printer's round-trip guarantee.",
+        "status": "open; independently reproduced by parent and spec reviewer on Node 22.23.1"
+      }
+    ]
+  },
+  "verification": {
+    "node": "22.23.1",
+    "pnpm": "10.29.3",
+    "checks": [
+      {
+        "command": "pnpm check:fast",
+        "exitCode": 0,
+        "unitFiles": 127,
+        "unitTests": 1412,
+        "log": "/private/tmp/pr32-rereview-fast.log"
+      },
+      {
+        "command": "pnpm toolchain:check",
+        "exitCode": 0,
+        "log": "/private/tmp/pr32-rereview-toolchain.log"
+      },
+      {
+        "command": "pnpm test:browser:composition-expressions",
+        "exitCode": 0,
+        "fixtures": 3,
+        "framesPerBackend": 190,
+        "result": "Expression/baked pixels and random seeks match on both backends; repeated and baked MP4 exports byte-identical on Canvas2D and WebGL2.",
+        "log": "/private/tmp/pr32-rereview-browser.log"
+      },
+      {
+        "command": "pnpm test:browser:composition-evaluator",
+        "exitCode": 0,
+        "fixtures": 5,
+        "framesPerFixture": 9,
+        "maximumNumericError": 5.684341886080802e-14,
+        "log": "/private/tmp/pr32-rereview-evaluator.log"
+      },
+      {
+        "command": "pnpm test:runtime",
+        "exitCode": 0,
+        "files": 9,
+        "tests": 46,
+        "log": "/private/tmp/pr32-rereview-runtime.log"
+      },
+      {
+        "command": "pnpm test:integration",
+        "exitCode": 1,
+        "filesPassed": 30,
+        "filesFailed": 1,
+        "testsPassed": 108,
+        "testsFailed": 3,
+        "failure": "Three 5-second timeouts in depth-worker-protocol.test.ts; this file and its Python implementation are unchanged by the PR. All five tests passed immediately on targeted rerun without code or timeout changes. Initial suite exit remains recorded as failed.",
+        "log": "/private/tmp/pr32-rereview-integration.log"
+      },
+      {
+        "command": "pnpm exec vitest run tests/integration/depth-worker-protocol.test.ts --maxWorkers=2 --no-file-parallelism",
+        "exitCode": 0,
+        "files": 1,
+        "tests": 5,
+        "durationSeconds": 1.03,
+        "log": "/private/tmp/pr32-rereview-depth-retry.log"
+      }
+    ],
+    "findingLog": "/private/tmp/pr32-printer-repro.log",
+    "sandbox": "Initial browser runs could not bind localhost or launch Chromium, and the toolchain check could not read uv's existing cache. Permission-enabled retries passed; these were environment failures, not application findings.",
+    "notRerun": [
+      "Full pnpm check/check:all",
+      "Frozen CE0 baseline matrix",
+      "Strict WebGL family matrices",
+      "Hardware GPU audits"
+    ],
+    "priorSameHeadEvidence": "docs/pr-32-fix-results.json records passing frozen CE0 176 items / 36,061 frames at this exact head.",
+    "policy": "All checks local; no Actions workflows, baseline regeneration or performance experiments. CE6-P and CE9-F1 deferrals unchanged."
+  },
+  "delivery": {
+    "headUnchangedAtFinalMetadataCheck": true,
+    "mergeable": true,
+    "codeEdits": false,
+    "gitHubReviewPosted": false,
+    "committedOrPushed": false,
+    "primaryCheckout": "Original a0708ba checkout and its pre-existing work retained; only this review record and dev-log updated.",
+    "documentationVerification": "Targeted Prettier and git diff --check pass."
+  }
+}

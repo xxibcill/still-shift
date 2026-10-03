@@ -43,18 +43,26 @@ still hold before relying on them.
 
 ## Current state
 
-- **PR #32 review fixes (2026-10-04):** inline review posted on `75e46f2`;
-  one P1 bake boundary defect and two P2 built-in contract defects are being
-  fixed in separate commits. Integrated main `5a6705c` (PR #31 merged); only
-  the development log conflicted, and both branches' records are retained.
-  All three fixes are implemented. Fast checks pass (1,412 tests), expanded
-  expression pixel/export and evaluator browser checks pass; all 176 frozen
-  baseline items / 36,061 frames pass without regeneration. Three separate
-  finding commits are prepared for the authorized final push to PR #32.
+- **PR #32 printer fix (2026-10-04):** re-review of delivered `e81a146` found
+  one remaining P2 print/parse length defect and no standards findings.
+  Posted the inline finding, added compact canonical output with equivalent
+  decimal/exponent spellings, and covered eight length/precision/grammar cases.
+  Fast checks pass (1,420 tests), along with expression pixel/seek/repeated and
+  baked export checks on both backends and evaluator browser parity. One finding
+  commit contains the code, tests and records, followed by one final push.
+  Owner review/merge remains pending.
+  [Printer fix evidence](./pr-32-printer-fix-results.json).
+  [Re-review evidence](./pr-32-rereview-results.json).
+
+- **PR #32 earlier fixes delivered (2026-10-04):** inline review posted on
+  `75e46f2`; `c3fc70f`, `e693334` and `e81a146` fixed lazy `if`, distance
+  dimensions and auto-orient bake parity. Main `5a6705c` (merged PR #31) was
+  integrated separately. Remote head was verified as `e81a146`, mergeable.
+  All 176 frozen baseline items / 36,061 frames passed without regeneration.
   [Fix evidence](./pr-32-fix-results.json).
   [Review evidence](./pr-32-review-results.json).
 
-_Last updated 2026-10-04 by Codex for PR #32 review fixes._
+_Last updated 2026-10-04 by Codex for the PR #32 printer fix._
 
 - **PR #32 conflict resolution (2026-10-04):** merged `main` at `3413780` into
   PR head `a0708ba` and pushed merge `05033c8`, retaining CE9 expressions and
@@ -112,6 +120,22 @@ _Last updated 2026-10-04 by Codex for PR #32 review fixes._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-04 — Fix the remaining PR #32 printer finding
+
+- **Agent / branch:** Codex on isolated `codex/pr32-review-fixes`, from `e81a146`;
+  primary checkout and its existing local work retained.
+- **Done:** posted one inline P2 comment; canonical printing retains readable
+  output when it fits and uses compact output otherwise, preserving parsed values.
+- **Results:** four original regressions fail before the fix; all eight final
+  boundary cases pass with the full fast checks (1,420 tests). Expression
+  pixels/seeks/repeated and baked MP4s on both backends and evaluator browser
+  parity pass; no baselines regenerated or performance experiments performed.
+- **Delivery:** one finding per commit; one final push follows the completed fix.
+  Owner review/merge remains pending; CE6-P and CE9-F1 remain deferred.
+- **Records:** [printer fix evidence](./pr-32-printer-fix-results.json),
+  [re-review evidence](./pr-32-rereview-results.json),
+  [inline finding](https://github.com/xxibcill/still-shift/pull/32#discussion_r4174572779).
 
 ### 2026-10-04 — Fix PR #32 auto-orient bake parity
 

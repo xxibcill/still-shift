@@ -108,37 +108,55 @@ export function expressionNodeCount(ast: ExpressionAst): number {
 
 /** Print canonical source text. `parseExpression(printExpression(ast))` returns `ast`. */
 export function printExpression(ast: ExpressionAst, minimum = 1): string {
+  const readable = printNode(ast, minimum, false);
+  return readable.length <= EXPRESSION_LIMITS.maxLength
+    ? readable
+    : printNode(ast, minimum, true);
+}
+
+/** Keep numeric spelling as short as accepted decimal or exponent literals. */
+function compactNumber(value: number): string {
+  const decimal = String(value).replace(/^0\./, ".").replace("e+", "e");
+  const exponential = value.toExponential().replace("e+", "e");
+  return exponential.length < decimal.length ? exponential : decimal;
+}
+
+function printNode(
+  ast: ExpressionAst,
+  minimum: number,
+  compact: boolean,
+): string {
+  const print = (node: ExpressionAst, precedence = 1) =>
+    printNode(node, precedence, compact);
   const wrap = (text: string, precedence: number) =>
     precedence < minimum ? `(${text})` : text;
-  if ("num" in ast)
-    return ast.num < 0 || Object.is(ast.num, -0)
-      ? wrap(`-${String(-ast.num)}`, UNARY)
-      : String(ast.num);
+  if ("num" in ast) {
+    const negative = ast.num < 0 || Object.is(ast.num, -0);
+    const absolute = negative ? -ast.num : ast.num;
+    const text = compact ? compactNumber(absolute) : String(absolute);
+    return negative ? wrap(`-${text}`, UNARY) : text;
+  }
   if ("bool" in ast) return String(ast.bool);
   if ("str" in ast)
     return `'${ast.str.replaceAll("\\", "\\\\").replaceAll("'", "\\'")}'`;
   if ("color" in ast) return ast.color;
   if ("vec" in ast)
-    return `[${ast.vec.map((item) => printExpression(item)).join(", ")}]`;
+    return `[${ast.vec.map((item) => print(item)).join(compact ? "," : ", ")}]`;
   if ("id" in ast) return ast.id;
   if ("call" in ast)
-    return `${ast.call}(${ast.args.map((arg) => printExpression(arg)).join(", ")})`;
-  if ("member" in ast)
-    return `${printExpression(ast.of, POSTFIX)}.${ast.member}`;
+    return `${ast.call}(${ast.args.map((arg) => print(arg)).join(compact ? "," : ", ")})`;
+  if ("member" in ast) return `${print(ast.of, POSTFIX)}.${ast.member}`;
   const [a, b, c] = ast.args;
   if (ast.op === "neg" || ast.op === "!")
-    return wrap(
-      `${ast.op === "neg" ? "-" : "!"}${printExpression(a!, UNARY)}`,
-      UNARY,
-    );
+    return wrap(`${ast.op === "neg" ? "-" : "!"}${print(a!, UNARY)}`, UNARY);
   if (ast.op === "?:")
     return wrap(
-      `${printExpression(a!, 2)} ? ${printExpression(b!, 1)} : ${printExpression(c!, 1)}`,
+      `${print(a!, 2)}${compact ? "?" : " ? "}${print(b!)}${compact ? ":" : " : "}${print(c!)}`,
       1,
     );
   const precedence = PRECEDENCE[ast.op];
   return wrap(
-    `${printExpression(a!, precedence)} ${ast.op} ${printExpression(b!, precedence + 1)}`,
+    `${print(a!, precedence)}${compact ? ast.op : ` ${ast.op} `}${print(b!, precedence + 1)}`,
     precedence,
   );
 }

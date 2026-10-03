@@ -1,0 +1,78 @@
+{
+  "date": "2026-10-04",
+  "pullRequest": "https://github.com/xxibcill/still-shift/pull/32",
+  "startingHead": "e81a146670e01df5fd1372e5077c6fe98b3b3b88",
+  "review": "https://github.com/xxibcill/still-shift/pull/32#pullrequestreview-5402439262",
+  "inlineFinding": "https://github.com/xxibcill/still-shift/pull/32#discussion_r4174572779",
+  "finding": {
+    "priority": "P2",
+    "title": "Preserve the printer's round-trip guarantee",
+    "status": "fixed",
+    "implementation": "Print readable canonical text when it fits the existing 2,000-character limit; otherwise print compact text with equivalent shorter decimal/exponent number literals. Preserve precedence, AST values and canonical idempotence. Parser limits are unchanged.",
+    "regressions": 8,
+    "coverage": [
+      "Original 499-node arithmetic whitespace expansion",
+      "Scientific notation expanded to decimal",
+      "Decimal input at 1,999 characters",
+      "Precision-sensitive number literals",
+      "Vector elements",
+      "Function arguments",
+      "Ternary and unary operators",
+      "Vector member access"
+    ],
+    "red": "The initial four regression cases failed before the fix; 79 pre-existing syntax tests passed.",
+    "green": "All eight boundary cases pass within the unchanged source limit, reparse to equal ASTs, and print identically on a second round trip."
+  },
+  "verification": {
+    "node": "22.23.1",
+    "pnpm": "10.29.3",
+    "checks": [
+      {
+        "command": "pnpm check:fast",
+        "exitCode": 0,
+        "unitFiles": 127,
+        "unitTests": 1420,
+        "syntaxTests": 87,
+        "log": "/private/tmp/pr32-printer-fast.log"
+      },
+      {
+        "command": "pnpm test:browser:composition-expressions",
+        "exitCode": 0,
+        "fixtures": 3,
+        "framesPerBackend": 190,
+        "result": "Expression/baked pixels and random seeks match on Canvas2D/WebGL2; repeated and baked MP4 exports are byte-identical on both backends.",
+        "log": "/private/tmp/pr32-printer-browser.log"
+      },
+      {
+        "command": "pnpm test:browser:composition-evaluator",
+        "exitCode": 0,
+        "fixtures": 5,
+        "framesPerFixture": 9,
+        "maximumNumericError": 5.684341886080802e-14,
+        "log": "/private/tmp/pr32-printer-evaluator.log"
+      },
+      {
+        "command": "Targeted changed-document formatting and git diff --check",
+        "exitCode": 0
+      }
+    ],
+    "redLog": "/private/tmp/pr32-printer-red.log",
+    "initialGreenLog": "/private/tmp/pr32-printer-green.log",
+    "notRerun": [
+      "Full runtime/integration suites after this printer-only fix",
+      "Frozen CE0 baseline matrix",
+      "Strict WebGL family matrices",
+      "Hardware GPU audits",
+      "Full pnpm check/check:all"
+    ],
+    "priorEvidence": "docs/pr-32-rereview-results.json retains preceding-head runtime/integration and toolchain results; docs/pr-32-fix-results.json retains frozen baseline results.",
+    "policy": "All checks local; no Actions workflows, baseline regeneration or performance experiments. CE6-P and CE9-F1 deferrals unchanged."
+  },
+  "delivery": {
+    "targetBranch": "codex/composition-ce9",
+    "localBranch": "codex/pr32-review-fixes",
+    "strategy": "One finding commit containing code, regressions and documentation; one final fast-forward push after verification.",
+    "checkpoint": "Pre-push verification complete; delivery confirmation is recorded in the primary checkout's development log after the push.",
+    "originalCheckoutRetained": "Primary checkout stays at a0708ba with existing local work preserved."
+  }
+}

@@ -136,6 +136,26 @@ describe("expression parser", () => {
 });
 
 describe("expression printer", () => {
+  it.each([
+    Array(250).fill("123456").join("+"),
+    Array(250).fill("1e20").join("+"),
+    Array(250).fill(".000001").join("+"),
+    Array(85).fill("1.2345678901234567e20").join("+"),
+    `[${Array(125).fill("1e20").join("+")},${Array(125).fill("1e20").join("+")}]`,
+    `if(true,${Array(246).fill("123456").join("+")},0)`,
+    `true?${Array(248).fill("123456").join("+")}:-1`,
+    `[${Array(124).fill("123456").join("+")},${Array(124).fill("123456").join("+")}].x`,
+  ])(
+    "round-trips accepted expressions near the length limit (%#)",
+    (source) => {
+      const tree = ast(source);
+      const printed = printExpression(tree);
+      expect(printed.length).toBeLessThanOrEqual(EXPRESSION_LIMITS.maxLength);
+      expect(ast(printed)).toEqual(tree);
+      expect(printExpression(ast(printed))).toBe(printed);
+    },
+  );
+
   it("prints canonical text that parses back to the same AST", () => {
     for (const source of [
       "ref('hero.transform.position') + [12, 18]",

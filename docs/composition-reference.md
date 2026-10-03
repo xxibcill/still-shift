@@ -763,6 +763,10 @@ nodes are `{ bool }`, `{ str }`, `{ color: "#RRGGBBAA" }` (uppercase), `{ vec: [
 - Limits: 2,000 characters, 500 AST nodes and 64 nesting levels. Source diagnostics
   carry the JSON path of `source` and a 1-based `column`.
 
+The canonical printer keeps readable spacing when the result fits the source limit.
+For longer output, it uses compact spacing and shorter equivalent number literals
+so accepted expressions still parse back to the same AST within 2,000 characters.
+
 Types are scalar, vec2, vec3, colour and boolean. The result must have the
 property's type (`comp-expression-type`); there is no implicit conversion.
 
