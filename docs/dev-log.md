@@ -45,10 +45,11 @@ still hold before relying on them.
 
 _Last updated 2026-10-03 by Codex._
 
-- **Documentation delivery:** the owner requested committing `AGENTS.md`, this
-  log, `docs/composition-engine-plan.md` and `docs/verification.md`, and creating
-  a PR for `codex/composition-ce6-performance`. Submission is in flight; the PR
-  will remain a draft until the pending 0.36 correctness audit is recorded.
+- **Documentation delivery:** `c7afacc` commits `AGENTS.md`, this log,
+  `docs/composition-engine-plan.md` and `docs/verification.md` on
+  `codex/composition-ce6-performance`. [PR #31](https://github.com/xxibcill/still-shift/pull/31)
+  targets `main` and remains a draft until the pending 0.36 correctness audit
+  is recorded. Only the three excluded research/review files remain untracked.
 - **CE6-P performance (`[d]`, owner approved 2026-10-03):** WebGL's **1.25×**
   render/readback gate and CE6's **2×** speed target are deferred to an
   unscheduled future version. No further tuning or rendering architecture
@@ -86,15 +87,16 @@ _Last updated 2026-10-03 by Codex._
 - **Agent / branch:** Codex on `codex/composition-ce6-performance` from `ecf9bc6`.
 - **Scope:** owner-requested commit and PR delivery, retaining the three excluded
   untracked research/review files.
-- **Done:** prepared the performance deferral, verification policy and development
-  log for commit; refreshed GitHub evidence and selected `main` as the PR base.
+- **Done:** `c7afacc` commits the performance deferral, verification policy and
+  development log; pushed the branch and created draft PR #31 against `main`.
 - **Results:** pinned toolchain, schema, boundaries, lint, build and all 1,266 unit
   tests pass. Changed-document Prettier and `git diff --check` pass. Full TypeScript
   formatting fails only on excluded `docs/pr-30-review-plan.json`.
-- **Open / next:** create a draft PR; 0.36 full family correctness evidence remains
-  pending, and deferred performance targets are not claimed passing.
+- **Open / next:** PR #31 awaits the 0.36 full family correctness evidence;
+  deferred performance targets are not claimed passing.
 - **Records:** [CE6-P](./composition-engine-plan.md#ce6-p--deferred-webgl-performance-acceptance),
   [performance evidence](./composition-ce6-performance-results.json),
+  [PR #31](https://github.com/xxibcill/still-shift/pull/31),
   [merged CE4b PR #30](https://github.com/xxibcill/still-shift/pull/30).
 
 ### 2026-10-03 — Uncommitted work inventory
