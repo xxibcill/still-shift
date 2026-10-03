@@ -1,5 +1,5 @@
 import { FLOAT32_RATIONAL_SUM } from "./webgl-float-sum.ts";
-import { blurKernel } from "./webgl-blur-kernel.ts";
+import { blurKernel, blurKernelLength } from "./webgl-blur-kernel.ts";
 import { boxBlur } from "./webgl-box-blur.ts";
 import type { WebglBounds } from "./webgl-bounds.ts";
 import { paintRisingParticles } from "../../pixel-generators.ts";
@@ -117,8 +117,45 @@ export class WebglEffects {
     }
   }
 
+  /** Large transformed feathers retain raster Gaussian semantics with bounded surfaces. */
+  private rasterBlur(dst: WebglSurface, sigma: number) {
+    const input = this.raster.createSurface(dst.width, dst.height, "software");
+    const output = this.raster.createSurface(dst.width, dst.height, "software");
+    const source = this.device.surface(dst.width, dst.height);
+    try {
+      const image = input.ctx.createImageData(dst.width, dst.height);
+      const pixels = this.device.read(dst);
+      for (let i = 0; i < pixels.length; i += 4) {
+        const alpha = pixels[i + 3]!;
+        for (let channel = 0; channel < 3; channel++)
+          image.data[i + channel] = alpha
+            ? Math.round((pixels[i + channel]! * 255) / alpha)
+            : 0;
+        image.data[i + 3] = alpha;
+      }
+      input.ctx.putImageData(image, 0, 0);
+      output.ctx.filter = `blur(${sigma}px)`;
+      output.ctx.drawImage(input.canvas, 0, 0);
+      this.device.upload(source, output.canvas);
+      this.replace(dst, "void main() { pixel=texture(source,uv); }", [source]);
+      this.bounds.full(dst);
+    } finally {
+      this.raster.releaseSurface(input);
+      this.raster.releaseSurface(output);
+      this.device.release(source);
+    }
+  }
+
   blur(dst: WebglSurface, sigma: number) {
-    if (sigma <= 0.03) return;
+    if (sigma <= 0.03 || this.bounds.region(dst) === null) return;
+    const maximum = this.device.gl.getParameter(
+      this.device.gl.MAX_TEXTURE_SIZE,
+    ) as number;
+    const length = blurKernelLength(sigma);
+    if (!Number.isFinite(length) || length > Math.min(maximum, 8192)) {
+      this.rasterBlur(dst, sigma);
+      return;
+    }
     const kernel = blurKernel(sigma);
     if (kernel.divisor === 1) return;
     const region = this.bounds.region(dst);
