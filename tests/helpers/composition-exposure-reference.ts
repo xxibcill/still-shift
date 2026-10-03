@@ -212,6 +212,109 @@ export function checkExposureFrames() {
   return results;
 }
 
+export function checkReversedContentCutFrames() {
+  const width = 96,
+    height = 64;
+  const colors = ["#ff0000", "#00ff00", "#0000ff"];
+  const images = new Map(
+    colors.map((color, i) => {
+      const canvas = document.createElement("canvas");
+      canvas.width = width;
+      canvas.height = height;
+      const ctx = canvas.getContext("2d")!;
+      ctx.fillStyle = color;
+      ctx.fillRect(0, 0, width, height);
+      return [`image${i}`, canvas] as const;
+    }),
+  );
+  const results = [];
+  for (const backend of ["canvas2d", "webgl2"] as const)
+    for (const channel of ["state", "stateFrom"] as const)
+      for (const sampleTimes of [undefined, [0, 10, 20]]) {
+        const keyed = {
+          keys: [
+            { frame: 0, value: 0 },
+            { frame: sampleTimes ? 1 : 10, value: 2 },
+          ],
+        };
+        const comp: Composition = {
+          schemaVersion: "composition-1",
+          id: "reversed-cut",
+          width,
+          height,
+          fps: 30,
+          frameCount: 30,
+          assets: colors.map((_, i) => ({
+            id: `image${i}`,
+            type: "image",
+            width,
+            height,
+            path: `image${i}.png`,
+            sha256: `sha256:${"0".repeat(64)}`,
+          })),
+          motionBlur: {
+            enabled: true,
+            shutterAngle: 360,
+            shutterPhase: 0,
+            samples: 4,
+          },
+          layers: [
+            {
+              id: "image",
+              type: "image",
+              size: [width, height],
+              sources: colors.map((_, i) => ({ asset: `image${i}` })),
+              transform: { anchor: [0, 0] },
+              motionBlur: true,
+              startFrame: 20,
+              stretch: -1,
+              ...(sampleTimes ? { sampleTimes } : {}),
+              state: channel === "state" ? keyed : 1,
+              ...(channel === "stateFrom"
+                ? { stateFrom: keyed, stateMix: 0.5 }
+                : {}),
+            },
+          ],
+        };
+        const resources = { images, fonts: new Map() };
+        const preview = createCompositionPreview(
+          document.createElement("canvas"),
+          comp,
+          resources,
+          { backend },
+        );
+        const reference = createCompositionPreview(
+          document.createElement("canvas"),
+          { ...comp, motionBlur: { ...comp.motionBlur!, enabled: false } },
+          resources,
+        );
+        const frames = [9, 10, 11, 10, 9];
+        let maxDelta = 0;
+        try {
+          for (const frame of frames) {
+            preview.renderFrame(frame);
+            reference.renderFrame(frame);
+            const actual = preview.readPixels(),
+              expected = reference.readPixels();
+            for (let i = 0; i < actual.length; i++)
+              maxDelta = Math.max(
+                maxDelta,
+                Math.abs(actual[i]! - expected[i]!),
+              );
+          }
+        } finally {
+          preview.dispose();
+          reference.dispose();
+        }
+        results.push({
+          id: `exposure/reversed-cut/${backend}/${channel}/${sampleTimes ? "indexed" : "ordinary"}`,
+          frames: frames.length,
+          maxDelta,
+        });
+      }
+  return results;
+}
+
 export function measureExposureFrames() {
   const results = [];
   for (const samples of [1, 2, 8, 16, 32, 64]) {

@@ -7,16 +7,19 @@ import {
 import { evaluateComp } from "./evaluate.ts";
 import type { EvaluatedLayerTree, EvaluationOptions } from "./types.ts";
 
-const scopeCuts = new WeakMap<CompositionScope, readonly number[]>();
+type ExposureCut = { time: number; inclusive: "before" | "after" };
+const scopeCuts = new WeakMap<CompositionScope, readonly ExposureCut[]>();
 
 /** Visibility and content switches are cuts; continuous transform keys are not. */
-function cutsFor(scope: CompositionScope): readonly number[] {
+function cutsFor(scope: CompositionScope): readonly ExposureCut[] {
   const cached = scopeCuts.get(scope);
   if (cached) return cached;
-  const cuts = new Set([0, scope.frameCount]);
+  const forward = new Set([0, scope.frameCount]);
+  const reversed = new Set<number>();
   for (const layer of scope.layers) {
-    cuts.add(layer.inPoint ?? 0);
-    cuts.add(layer.outPoint ?? scope.frameCount);
+    forward.add(layer.inPoint ?? 0);
+    forward.add(layer.outPoint ?? scope.frameCount);
+    const layerCuts = (layer.stretch ?? 1) < 0 ? reversed : forward;
     const global = (time: number) =>
       time * (layer.stretch ?? 1) + (layer.startFrame ?? 0);
     if ("state" in layer || "stateFrom" in layer)
@@ -26,29 +29,39 @@ function cutsFor(scope: CompositionScope): readonly number[] {
             const time = layer.sampleTimes
               ? layer.sampleTimes[key.frame]
               : key.frame;
-            if (time !== undefined) cuts.add(global(time));
+            if (time !== undefined) layerCuts.add(global(time));
           }
     for (const effect of layer.effects ?? []) {
-      if (effect.inPoint !== undefined) cuts.add(global(effect.inPoint));
-      if (effect.outPoint !== undefined) cuts.add(global(effect.outPoint));
+      if (effect.inPoint !== undefined) layerCuts.add(global(effect.inPoint));
+      if (effect.outPoint !== undefined) layerCuts.add(global(effect.outPoint));
     }
   }
-  const sorted = [...cuts].sort((a, b) => a - b);
-  scopeCuts.set(scope, sorted);
-  return sorted;
+  const cuts: ExposureCut[] = [
+    ...[...forward].map((time) => ({ time, inclusive: "after" as const })),
+    ...[...reversed].map((time) => ({ time, inclusive: "before" as const })),
+  ];
+  scopeCuts.set(scope, cuts);
+  return cuts;
 }
 
-function withinCut(time: number, frame: number, cuts: readonly number[]) {
+function withinCut(time: number, frame: number, cuts: readonly ExposureCut[]) {
   let lower = 0,
     upper = Infinity;
   for (const cut of cuts) {
-    if (cut <= frame) lower = Math.max(lower, cut);
-    else {
-      upper = cut;
-      break;
-    }
+    const before =
+      frame < cut.time || (frame === cut.time && cut.inclusive === "before");
+    if (before)
+      upper = Math.min(
+        upper,
+        cut.time - (cut.inclusive === "after" ? 1e-7 : 0),
+      );
+    else
+      lower = Math.max(
+        lower,
+        cut.time + (cut.inclusive === "before" ? 1e-7 : 0),
+      );
   }
-  return Math.max(lower, Math.min(upper - 1e-7, time));
+  return Math.max(lower, Math.min(upper, time));
 }
 
 /** Fixed-order midpoint quadrature, centered on the frame before shutter phase. */
@@ -67,14 +80,14 @@ export function compositionExposureFrames(
     )
   )
     return [frame];
-  const cuts = [
-    ...new Set([
-      ...cutsFor(comp),
+  const cuts: ExposureCut[] = [
+    ...cutsFor(comp),
+    ...[
       ...(blur.cuts ?? []),
       blur.inPoint ?? 0,
       blur.outPoint ?? comp.frameCount,
-    ]),
-  ].sort((a, b) => a - b);
+    ].map((time) => ({ time, inclusive: "after" as const })),
+  ];
   return Array.from({ length: blur.samples }, (_, index) =>
     withinCut(
       Math.max(

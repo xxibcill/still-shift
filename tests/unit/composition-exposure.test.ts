@@ -247,4 +247,103 @@ describe("composition exposure sampling", () => {
             ).toEqual(Array(4).fill(frame < 22 ? 0 : 2));
         }
   });
+  it("retains the authoritative state at reversed content boundaries", () => {
+    for (const channel of ["state", "stateFrom"] as const)
+      for (const sampleTimes of [undefined, [0, 10, 20]])
+        for (const nested of [false, true]) {
+          const comp = fixture();
+          const keyed = {
+            keys: [
+              { frame: 0, value: 0 },
+              { frame: sampleTimes ? 1 : 10, value: 1 },
+            ],
+          };
+          const layer: CompositionLayer = {
+            id: "reverse",
+            type: "text",
+            text: "A",
+            states: ["A", "B", "C"],
+            fontSize: 20,
+            color: "#ffffff",
+            motionBlur: true,
+            startFrame: 20,
+            stretch: -1,
+            ...(sampleTimes ? { sampleTimes } : {}),
+            state: channel === "state" ? keyed : 2,
+            ...(channel === "stateFrom"
+              ? { stateFrom: keyed, stateMix: 0.5 }
+              : {}),
+          };
+          comp.layers = [layer];
+          if (nested) {
+            comp.precomps = [
+              {
+                id: "nested",
+                width: comp.width,
+                height: comp.height,
+                frameCount: comp.frameCount,
+                layers: [layer],
+              },
+            ];
+            comp.layers = [
+              { id: "host", type: "precomp", comp: "nested", motionBlur: true },
+            ];
+          }
+          expect(validateComposition(comp).ok).toBe(true);
+          for (const frame of [9, 10, 11, 10, 9])
+            expect(
+              samples(comp, frame).map((tree) => {
+                const host = tree.layers[0]!;
+                return (host.precomp?.layers[0] ?? host)[channel];
+              }),
+            ).toEqual(Array(4).fill(frame <= 10 ? 1 : 0));
+        }
+  });
+  it("retains reversed effect activation at inclusive and exclusive boundaries", () => {
+    const comp = fixture();
+    Object.assign(comp.layers[0]!, {
+      startFrame: 20,
+      stretch: -1,
+      effects: [
+        {
+          id: "blur",
+          effect: "blur.gaussian",
+          params: { radius: 3 },
+          inPoint: 10,
+          outPoint: 20,
+        },
+      ],
+    });
+    expect(validateComposition(comp).ok).toBe(true);
+    for (const frame of [0, 1, 9, 10, 11, 10, 0])
+      expect(
+        samples(comp, frame).map((tree) => tree.layers[0]!.effects[0]!.enabled),
+      ).toEqual(Array(4).fill(frame > 0 && frame <= 10));
+  });
+  it("holds both states where forward and reversed cuts share a boundary", () => {
+    const comp = fixture();
+    const layer: CompositionLayer = {
+      id: "forward",
+      type: "text",
+      text: "A",
+      states: ["A", "B"],
+      fontSize: 20,
+      color: "#ffffff",
+      motionBlur: true,
+      state: {
+        keys: [
+          { frame: 0, value: 0 },
+          { frame: 10, value: 1 },
+        ],
+      },
+    };
+    comp.layers = [
+      layer,
+      { ...structuredClone(layer), id: "reverse", startFrame: 20, stretch: -1 },
+    ];
+    expect(validateComposition(comp).ok).toBe(true);
+    expect(
+      samples(comp).map((tree) => tree.layers.map((state) => state.state)),
+    ).toEqual(Array.from({ length: 4 }, () => [1, 1]));
+  });
 });
