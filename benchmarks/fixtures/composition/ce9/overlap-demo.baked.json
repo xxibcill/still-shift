@@ -1,0 +1,3427 @@
+{
+  "schemaVersion": "composition-1",
+  "id": "ce9-overlap-demo",
+  "name": "CE9 acceptance: a keyed leader with overlapping followers, bounce and squash",
+  "width": 480,
+  "height": 270,
+  "frameCount": 90,
+  "background": "#101418",
+  "layers": [
+    {
+      "id": "lead",
+      "transform": {
+        "position": {
+          "keys": [
+            {
+              "frame": 0,
+              "value": [70, 140],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 1,
+              "value": [78.18181818181819, 137.27272727272728],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 2,
+              "value": [86.36363636363636, 134.54545454545453],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 3,
+              "value": [94.54545454545455, 131.8181818181818],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 4,
+              "value": [102.72727272727272, 129.0909090909091],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 5,
+              "value": [110.9090909090909, 126.36363636363636],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 6,
+              "value": [119.0909090909091, 123.63636363636364],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 7,
+              "value": [127.27272727272728, 120.9090909090909],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 8,
+              "value": [135.45454545454544, 118.18181818181819],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 9,
+              "value": [143.63636363636363, 115.45454545454545],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 10,
+              "value": [151.8181818181818, 112.72727272727272],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 11,
+              "value": [160, 110],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 12,
+              "value": [168.1818181818182, 107.27272727272728],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 13,
+              "value": [176.36363636363637, 104.54545454545455],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 14,
+              "value": [184.54545454545456, 101.81818181818181],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 15,
+              "value": [192.72727272727272, 99.0909090909091],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 16,
+              "value": [200.9090909090909, 96.36363636363636],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 17,
+              "value": [209.0909090909091, 93.63636363636364],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 18,
+              "value": [217.27272727272728, 90.9090909090909],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 19,
+              "value": [225.45454545454547, 88.18181818181819],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 20,
+              "value": [233.63636363636363, 85.45454545454545],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 21,
+              "value": [241.8181818181818, 82.72727272727272],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 22,
+              "value": [250, 80],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 23,
+              "value": [256.8549712166366, 77.71500959445446],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 24,
+              "value": [258.7833036415579, 77.0722321194807],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 25,
+              "value": [256.95540651171757, 77.68153116276082],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 26,
+              "value": [253.40407796409488, 78.86530734530172],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 27,
+              "value": [250, 80],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 28,
+              "value": [247.86533986329758, 80.7115533789008],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 29,
+              "value": [247.26485092939805, 80.91171635686732],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 30,
+              "value": [250, 80],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 31,
+              "value": [256.6666666666667, 83.75],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 32,
+              "value": [263.3333333333333, 87.5],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 33,
+              "value": [270, 91.25],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 34,
+              "value": [276.6666666666667, 95],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 35,
+              "value": [283.3333333333333, 98.75],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 36,
+              "value": [290, 102.5],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 37,
+              "value": [296.6666666666667, 106.25],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 38,
+              "value": [303.3333333333333, 110],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 39,
+              "value": [310, 113.75],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 40,
+              "value": [316.6666666666667, 117.5],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 41,
+              "value": [323.3333333333333, 121.25],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 42,
+              "value": [330, 125],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 43,
+              "value": [336.66666666666663, 128.75],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 44,
+              "value": [343.33333333333337, 132.5],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 45,
+              "value": [350, 136.25],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 46,
+              "value": [356.66666666666663, 140],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 47,
+              "value": [363.33333333333337, 143.75],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 48,
+              "value": [370, 147.5],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 49,
+              "value": [376.66666666666663, 151.25],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 50,
+              "value": [383.33333333333337, 155],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 51,
+              "value": [390, 158.75],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 52,
+              "value": [396.66666666666663, 162.5],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 53,
+              "value": [403.33333333333337, 166.25],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 54,
+              "value": [410, 170],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 55,
+              "value": [415.5855321024447, 173.14186180762505],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 56,
+              "value": [417.1567659301583, 174.02568083571393],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 57,
+              "value": [415.6673682688069, 173.1878946512038],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 58,
+              "value": [412.77369315592915, 171.5602024002101],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 59,
+              "value": [410, 170],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 60,
+              "value": [408.26064729602024, 169.0216141040114],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 61,
+              "value": [407.77136001654657, 168.74639000930748],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 62,
+              "value": [410, 170],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 63,
+              "value": [402.5, 171.25],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 64,
+              "value": [395, 172.5],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 65,
+              "value": [387.5, 173.75],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 66,
+              "value": [380, 175],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 67,
+              "value": [372.5, 176.25],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 68,
+              "value": [365, 177.5],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 69,
+              "value": [357.5, 178.75],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 70,
+              "value": [350, 180],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 71,
+              "value": [342.5, 181.25],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 72,
+              "value": [335, 182.5],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 73,
+              "value": [327.5, 183.75],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 74,
+              "value": [320, 185],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 75,
+              "value": [312.5, 186.25],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 76,
+              "value": [305, 187.5],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 77,
+              "value": [297.5, 188.75],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 78,
+              "value": [290, 190],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 79,
+              "value": [282.5, 191.25],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 80,
+              "value": [275, 192.5],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 81,
+              "value": [267.5, 193.75],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 82,
+              "value": [260, 195],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 83,
+              "value": [252.5, 196.25],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 84,
+              "value": [245, 197.5],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 85,
+              "value": [237.5, 198.75],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 86,
+              "value": [230, 200],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 87,
+              "value": [223.71627638475042, 201.04728726920834],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 88,
+              "value": [221.94863832857277, 201.34189361190465],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 89,
+              "value": [223.6242106975929, 201.06263155040128],
+              "interpolation": "linear"
+            }
+          ]
+        },
+        "scale": {
+          "keys": [
+            {
+              "frame": 0,
+              "value": [1.0616280063757508, 0.9419495284547548],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 1,
+              "value": [1.1223737454961185, 0.8909688096436841],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 2,
+              "value": [1.1223737454961185, 0.8909688096436841],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 3,
+              "value": [1.122373745496119, 0.8909688096436839],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 4,
+              "value": [1.1223737454961187, 0.890968809643684],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 5,
+              "value": [1.122373745496119, 0.8909688096436839],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 6,
+              "value": [1.122373745496119, 0.8909688096436839],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 7,
+              "value": [1.1223737454961187, 0.8909688096436841],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 8,
+              "value": [1.1223737454961187, 0.8909688096436841],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 9,
+              "value": [1.1223737454961187, 0.890968809643684],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 10,
+              "value": [1.122373745496119, 0.8909688096436839],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 11,
+              "value": [1.1223737454961191, 0.8909688096436837],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 12,
+              "value": [1.122373745496119, 0.8909688096436839],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 13,
+              "value": [1.1223737454961187, 0.890968809643684],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 14,
+              "value": [1.1223737454961187, 0.8909688096436841],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 15,
+              "value": [1.1223737454961187, 0.8909688096436841],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 16,
+              "value": [1.122373745496119, 0.8909688096436839],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 18,
+              "value": [1.122373745496119, 0.8909688096436839],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 19,
+              "value": [1.1223737454961187, 0.8909688096436841],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 20,
+              "value": [1.1223737454961185, 0.8909688096436842],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 21,
+              "value": [1.122373745496119, 0.8909688096436839],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 22,
+              "value": [1.1125794607029884, 0.8988122065170477],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 23,
+              "value": [1.0661228412454957, 0.937978215373148],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 24,
+              "value": [1.0007621776953015, 0.9992384027771146],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 25,
+              "value": [1.0406212499377918, 0.9609644239532682],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 26,
+              "value": [1.0524483779473264, 0.9501653676832865],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 27,
+              "value": [1.0418197003916676, 0.959858984835912],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 28,
+              "value": [1.0207050096459829, 0.9797149916476219],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 29,
+              "value": [1.0161683854215753, 0.9840888718311507],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 30,
+              "value": [1.0730973964134276, 0.9318818621145311],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 31,
+              "value": [1.0692786738638866, 0.9352098984509388],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 32,
+              "value": [1.0692786738638866, 0.9352098984509388],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 33,
+              "value": [1.0692786738638873, 0.9352098984509383],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 34,
+              "value": [1.0692786738638866, 0.9352098984509388],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 35,
+              "value": [1.0692786738638866, 0.9352098984509388],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 36,
+              "value": [1.0692786738638873, 0.9352098984509383],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 37,
+              "value": [1.0692786738638866, 0.9352098984509388],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 38,
+              "value": [1.0692786738638866, 0.9352098984509388],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 39,
+              "value": [1.0692786738638873, 0.9352098984509383],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 40,
+              "value": [1.0692786738638866, 0.9352098984509388],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 42,
+              "value": [1.0692786738638866, 0.9352098984509388],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 43,
+              "value": [1.0692786738638873, 0.9352098984509383],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 44,
+              "value": [1.0692786738638873, 0.9352098984509383],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 45,
+              "value": [1.0692786738638862, 0.9352098984509394],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 46,
+              "value": [1.0692786738638873, 0.9352098984509383],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 47,
+              "value": [1.0692786738638873, 0.9352098984509383],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 48,
+              "value": [1.0692786738638862, 0.9352098984509394],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 49,
+              "value": [1.0692786738638873, 0.9352098984509383],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 50,
+              "value": [1.0692786738638873, 0.9352098984509383],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 51,
+              "value": [1.0692786738638862, 0.9352098984509394],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 52,
+              "value": [1.0692786738638873, 0.9352098984509383],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 53,
+              "value": [1.0692786738638873, 0.9352098984509383],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 54,
+              "value": [1.063817027143993, 0.940011274950805],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 55,
+              "value": [1.0377183554028286, 0.9636526084303609],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 56,
+              "value": [1.0004387354414273, 0.9995614569629456],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 57,
+              "value": [1.0232529313400396, 0.977275480355001],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 58,
+              "value": [1.029974196304718, 0.9708981094747249],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 59,
+              "value": [1.0239349930732269, 0.9766244993723785],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 60,
+              "value": [1.0118851230854184, 0.988254473937537],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 61,
+              "value": [1.0092869025861584, 0.990798550380113],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 62,
+              "value": [1.0328742270589732, 0.9681720908531333],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 63,
+              "value": [1.1290068508583442, 0.8857342178568138],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 85,
+              "value": [1.1290068508583442, 0.8857342178568138],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 86,
+              "value": [1.118579008908726, 0.8939913873187998],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 87,
+              "value": [1.0693563361765013, 0.9351419785620892],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 88,
+              "value": [1.000794596016043, 0.9992060348654899],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 89,
+              "value": [1.042507876133449, 0.9592253669189472],
+              "interpolation": "linear"
+            }
+          ]
+        }
+      },
+      "type": "solid",
+      "size": [40, 40],
+      "color": "#f2b544"
+    },
+    {
+      "id": "f1",
+      "transform": {
+        "position": {
+          "keys": [
+            {
+              "frame": 0,
+              "value": [70, 140],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 3,
+              "value": [70, 140],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 4,
+              "value": [70.25915086289558, 139.9136163790348],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 5,
+              "value": [71.83173356553442, 139.38942214482188],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 6,
+              "value": [75.40038568104279, 138.19987143965238],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 7,
+              "value": [81.07520263925136, 136.3082657869162],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 8,
+              "value": [88.56929193851619, 133.81023602049459],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 9,
+              "value": [97.38251797358899, 130.87249400880364],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 10,
+              "value": [106.95928376561312, 127.68023874479559],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 11,
+              "value": [116.80222258275091, 124.39925913908303],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 12,
+              "value": [126.53735387838731, 121.1542153738709],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 13,
+              "value": [135.93605423367322, 118.02131525544223],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 14,
+              "value": [144.90475126146598, 115.03174957951134],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 15,
+              "value": [153.4550567844655, 112.18164773851151],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 16,
+              "value": [161.66607886354262, 109.44464037881914],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 17,
+              "value": [169.64800260903073, 106.78399913032308],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 18,
+              "value": [177.5127274460471, 104.16242418465094],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 19,
+              "value": [185.35417900151452, 101.54860699949515],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 20,
+              "value": [193.23837314436287, 98.92054228521238],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 21,
+              "value": [201.20161826814723, 96.2661272439509],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 22,
+              "value": [209.25440019776215, 93.58186660074594],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 23,
+              "value": [217.38835739896217, 90.87054753367926],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 24,
+              "value": [225.58410649482755, 88.13863116839082],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 25,
+              "value": [233.81829328641504, 85.39390223786165],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 26,
+              "value": [242.0269017198716, 82.65769942670946],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 27,
+              "value": [249.8655790344065, 80.04480698853115],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 28,
+              "value": [256.45851884151665, 77.84716038616108],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 29,
+              "value": [260.8328347331082, 76.38905508896391],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 30,
+              "value": [262.4373957887941, 75.85420140373526],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 31,
+              "value": [261.3936324753323, 76.20212250822254],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 32,
+              "value": [258.4302020203373, 77.18993265988757],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 33,
+              "value": [254.66838632663433, 78.44387122445522],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 34,
+              "value": [251.5272294326768, 79.68008765538801],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 35,
+              "value": [250.36952617352756, 81.21387704169109],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 36,
+              "value": [251.8579489668528, 83.32263186773616],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 37,
+              "value": [255.97841194787628, 86.09141028954417],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 38,
+              "value": [262.2722051229441, 89.46370182154664],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 39,
+              "value": [270.0652463927757, 93.29913237757415],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 40,
+              "value": [278.6562863415151, 97.4259002644564],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 41,
+              "value": [287.44586460613067, 101.68077859061259],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 42,
+              "value": [296.00411145174087, 105.93407455385983],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 43,
+              "value": [304.08657713462276, 110.10039041890263],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 44,
+              "value": [311.6130285149745, 114.13816849913414],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 45,
+              "value": [318.6254042324437, 118.04190516179682],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 46,
+              "value": [325.2391820880407, 121.83085180777601],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 47,
+              "value": [331.5986986312273, 125.53732458291114],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 48,
+              "value": [337.8427082780809, 129.19675168814013],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 49,
+              "value": [344.0825866806323, 132.8405678158947],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 50,
+              "value": [350.3926078400921, 136.4922024750366],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 51,
+              "value": [356.80985659632995, 140.16579693831227],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 52,
+              "value": [363.3405206575821, 143.8669426412095],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 53,
+              "value": [369.96932227500156, 147.59462876282214],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 54,
+              "value": [376.6694133895779, 151.34365598750708],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 55,
+              "value": [383.4108873842117, 155.10694606401944],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 56,
+              "value": [390.16692370896067, 158.87738819033473],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 57,
+              "value": [396.9173197535699, 162.64906419152135],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 58,
+              "value": [403.6154499827076, 166.39859200483937],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 59,
+              "value": [409.98975273829006, 169.9738591929833],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 60,
+              "value": [415.33639251606286, 172.97803412150307],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 61,
+              "value": [418.87126455189576, 174.9682576352851],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 62,
+              "value": [420.15167444374276, 175.6934426077055],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 63,
+              "value": [419.28037112514687, 175.2094882834666],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 64,
+              "value": [416.8525337409881, 173.8497250699404],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 65,
+              "value": [413.78145842035764, 172.12696319025372],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 66,
+              "value": [410.8123206921062, 170.63317511645897],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 67,
+              "value": [407.38719337477306, 169.75921334457246],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 68,
+              "value": [402.96510351903834, 169.65732884946578],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 69,
+              "value": [397.3589398113443, 170.29626249875548],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 70,
+              "value": [390.6472806000714, 171.52887581705147],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 71,
+              "value": [383.07078737691677, 173.15660986805074],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 72,
+              "value": [374.9360932631264, 174.9808429846338],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 73,
+              "value": [366.54105276812123, 176.83682556472525],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 74,
+              "value": [358.12686479856524, 178.61031206715677],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 75,
+              "value": [349.85612137449715, 180.23992391467306],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 76,
+              "value": [341.81172949299105, 181.70968356888113],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 77,
+              "value": [334.0098047277982, 183.03633098683633],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 78,
+              "value": [326.41959227984853, 184.2553592483302],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 79,
+              "value": [318.9846285701143, 185.40858847388301],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 80,
+              "value": [311.6411090467012, 186.53487753443926],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 81,
+              "value": [304.3312743742027, 187.66449433514293],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 82,
+              "value": [297.0112204265786, 188.81686399294142],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 83,
+              "value": [289.6536914409418, 190.000932750272],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 84,
+              "value": [282.2470824091761, 191.21719756363132],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 85,
+              "value": [274.79210783693003, 192.4604894046185],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 86,
+              "value": [267.29749782370993, 193.72277918931962],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 87,
+              "value": [259.77578651436323, 194.99551955850336],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 88,
+              "value": [252.2398806635755, 196.27128022102062],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 89,
+              "value": [244.70072939779072, 197.54463743857275],
+              "interpolation": "linear"
+            }
+          ]
+        },
+        "scale": {
+          "keys": [
+            {
+              "frame": 0,
+              "value": [1, 1],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 2,
+              "value": [1, 1],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 3,
+              "value": [1.0019663336912943, 0.9980375251890448],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 4,
+              "value": [1.0138778888683049, 0.9863120706934486],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 5,
+              "value": [1.038832532628209, 0.9626190637965831],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 6,
+              "value": [1.0695584101093352, 0.9349653002099955],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 7,
+              "value": [1.0987547715148016, 0.9101211898459808],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 8,
+              "value": [1.1219584401326388, 0.8912986116328687],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 9,
+              "value": [1.1372904877580585, 0.879282831223974],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 10,
+              "value": [1.1448518372503182, 0.873475472950089],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 11,
+              "value": [1.146013632065002, 0.8725899692816915],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 12,
+              "value": [1.1427538804825903, 0.8750790673996184],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 13,
+              "value": [1.1371244323684615, 0.8794112337531509],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 14,
+              "value": [1.1308848481492457, 0.8842633285223993],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 15,
+              "value": [1.12530518690363, 0.888647818954414],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 16,
+              "value": [1.1211149730659065, 0.8919691771356028],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 17,
+              "value": [1.1185600870006298, 0.8940065103533745],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 18,
+              "value": [1.1175233058381182, 0.8948359240257829],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 19,
+              "value": [1.1176670170265401, 0.894720864770991],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 20,
+              "value": [1.1185659221120063, 0.894001846678703],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 21,
+              "value": [1.1198098969693475, 0.8930087175567916],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 22,
+              "value": [1.1210691945997457, 0.8920056003831495],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 23,
+              "value": [1.122123553345219, 0.8911674628153465],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 24,
+              "value": [1.1228625820066966, 0.8905809277328257],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 25,
+              "value": [1.1229573897051028, 0.8905057388353869],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 26,
+              "value": [1.1200405105210942, 0.8928248492858122],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 27,
+              "value": [1.1081051504050097, 0.9024414331388158],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 28,
+              "value": [1.082403704901065, 0.9238697128179203],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 29,
+              "value": [1.045124771077052, 0.9568235560711581],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 30,
+              "value": [1.0042538960601612, 0.995764122920658],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 31,
+              "value": [1.0302985698447829, 0.9705924372491875],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 32,
+              "value": [1.0507234117195372, 0.9517252483824198],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 33,
+              "value": [1.0504591269252204, 0.9519646927406701],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 34,
+              "value": [1.0187686336554154, 0.981577138286961],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 35,
+              "value": [0.9686441664381737, 1.032370848499636],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 36,
+              "value": [1.009029147701742, 0.9910516482875569],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 37,
+              "value": [1.0512604495553617, 0.9512390582399989],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 38,
+              "value": [1.0810077706902124, 0.9250627304570718],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 39,
+              "value": [1.0983488249982936, 0.9104575679785096],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 40,
+              "value": [1.1048444326509002, 0.9051048006828052],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 41,
+              "value": [1.1031328766947328, 0.9065091079474078],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 42,
+              "value": [1.096266478747285, 0.9121869722247736],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 43,
+              "value": [1.087119571463867, 0.9198620154114642],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 44,
+              "value": [1.0779950880788438, 0.9276480116269886],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 45,
+              "value": [1.0704377405252479, 0.9341972560770464],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 46,
+              "value": [1.0652203088083074, 0.9387729390164639],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 47,
+              "value": [1.0624578664963167, 0.9412137944798837],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 48,
+              "value": [1.0617999132918479, 0.941797025486419],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 49,
+              "value": [1.0626464971617207, 0.94104671936618],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 50,
+              "value": [1.0643397034430007, 0.9395496538982149],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 51,
+              "value": [1.066300239381091, 0.937822165903692],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 52,
+              "value": [1.0681015741754265, 0.9362405450736266],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 53,
+              "value": [1.0694906267321753, 0.9350245574900421],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 54,
+              "value": [1.0703711116007593, 0.9342554083924051],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 55,
+              "value": [1.070766043735695, 0.9339108256657018],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 56,
+              "value": [1.070773105518661, 0.9339046664938603],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 57,
+              "value": [1.0703502404339935, 0.9342736257942367],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 58,
+              "value": [1.0682835635727768, 0.9360810501058272],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 59,
+              "value": [1.0612766596191419, 0.9422613707144638],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 60,
+              "value": [1.046636199175833, 0.9554418247595904],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 61,
+              "value": [1.0254432139859517, 0.975188080979099],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 62,
+              "value": [1.0020666167710053, 0.9979376453257522],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 63,
+              "value": [1.017682568616213, 0.9826246718166188],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 64,
+              "value": [1.029213573666375, 0.9716156350694957],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 65,
+              "value": [1.0339212369624746, 0.9671916624305631],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 66,
+              "value": [1.0462313431570598, 0.9558115483163082],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 67,
+              "value": [1.06892828284712, 0.9355164570409461],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 68,
+              "value": [1.0898441027961185, 0.9175624269878477],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 69,
+              "value": [1.1068114318185887, 0.903496269781847],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 70,
+              "value": [1.120453649794423, 0.8924956424422166],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 71,
+              "value": [1.130606165535423, 0.8844812901992521],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 72,
+              "value": [1.1370717656688252, 0.8794519661754158],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 73,
+              "value": [1.140059595444732, 0.8771471280936894],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 74,
+              "value": [1.1401952013378813, 0.877042807079543],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 75,
+              "value": [1.1383623015157733, 0.8784549511771967],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 76,
+              "value": [1.1355061881454198, 0.8806645093086308],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 77,
+              "value": [1.1324600979484345, 0.8830333199479616],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 78,
+              "value": [1.12982808833711, 0.8850904047462724],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 79,
+              "value": [1.1279406481066365, 0.8865714713611944],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 80,
+              "value": [1.1268792846375275, 0.8874064983115388],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 81,
+              "value": [1.1265463850845256, 0.887668730946191],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 82,
+              "value": [1.1267481448513417, 0.8875097816397433],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 83,
+              "value": [1.127265440493388, 0.8871025084937532],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 84,
+              "value": [1.127901802464507, 0.8866020054360788],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 85,
+              "value": [1.1285087932813067, 0.8861251289787043],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 86,
+              "value": [1.1289938654056706, 0.8857444053876056],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 87,
+              "value": [1.1293163919405256, 0.8854914416691333],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 88,
+              "value": [1.129476780231454, 0.88536569985536],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 89,
+              "value": [1.1291724661700273, 0.8856043075437716],
+              "interpolation": "linear"
+            }
+          ]
+        }
+      },
+      "type": "solid",
+      "size": [32, 32],
+      "color": "#e8794a"
+    },
+    {
+      "id": "f2",
+      "transform": {
+        "position": {
+          "keys": [
+            {
+              "frame": 0,
+              "value": [70, 140],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 6,
+              "value": [70, 140],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 7,
+              "value": [70.25915086289558, 139.9136163790348],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 8,
+              "value": [71.83173356553442, 139.38942214482188],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 9,
+              "value": [75.40038568104279, 138.19987143965238],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 10,
+              "value": [81.07520263925136, 136.3082657869162],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 11,
+              "value": [88.56929193851619, 133.81023602049459],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 12,
+              "value": [97.38251797358899, 130.87249400880364],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 13,
+              "value": [106.95928376561312, 127.68023874479559],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 14,
+              "value": [116.80222258275091, 124.39925913908303],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 15,
+              "value": [126.53735387838731, 121.1542153738709],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 16,
+              "value": [135.93605423367322, 118.02131525544223],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 17,
+              "value": [144.90475126146598, 115.03174957951134],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 18,
+              "value": [153.4550567844655, 112.18164773851151],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 19,
+              "value": [161.66607886354262, 109.44464037881914],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 20,
+              "value": [169.64800260903073, 106.78399913032308],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 21,
+              "value": [177.5127274460471, 104.16242418465094],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 22,
+              "value": [185.35417900151452, 101.54860699949515],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 23,
+              "value": [193.23837314436287, 98.92054228521238],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 24,
+              "value": [201.20161826814723, 96.2661272439509],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 25,
+              "value": [209.25440019776215, 93.58186660074594],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 26,
+              "value": [217.38835739896217, 90.87054753367926],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 27,
+              "value": [225.58410649482755, 88.13863116839082],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 28,
+              "value": [233.81829328641504, 85.39390223786165],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 29,
+              "value": [242.0269017198716, 82.65769942670946],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 30,
+              "value": [249.8655790344065, 80.04480698853115],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 31,
+              "value": [256.45851884151665, 77.84716038616108],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 32,
+              "value": [260.8328347331082, 76.38905508896391],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 33,
+              "value": [262.4373957887941, 75.85420140373526],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 34,
+              "value": [261.3936324753323, 76.20212250822254],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 35,
+              "value": [258.4302020203373, 77.18993265988757],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 36,
+              "value": [254.66838632663433, 78.44387122445522],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 37,
+              "value": [251.5272294326768, 79.68008765538801],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 38,
+              "value": [250.36952617352756, 81.21387704169109],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 39,
+              "value": [251.8579489668528, 83.32263186773616],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 40,
+              "value": [255.97841194787628, 86.09141028954417],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 41,
+              "value": [262.2722051229441, 89.46370182154664],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 42,
+              "value": [270.0652463927757, 93.29913237757415],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 43,
+              "value": [278.6562863415151, 97.4259002644564],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 44,
+              "value": [287.44586460613067, 101.68077859061259],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 45,
+              "value": [296.00411145174087, 105.93407455385983],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 46,
+              "value": [304.08657713462276, 110.10039041890263],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 47,
+              "value": [311.6130285149745, 114.13816849913414],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 48,
+              "value": [318.6254042324437, 118.04190516179682],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 49,
+              "value": [325.2391820880407, 121.83085180777601],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 50,
+              "value": [331.5986986312273, 125.53732458291114],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 51,
+              "value": [337.8427082780809, 129.19675168814013],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 52,
+              "value": [344.0825866806323, 132.8405678158947],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 53,
+              "value": [350.3926078400921, 136.4922024750366],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 54,
+              "value": [356.80985659632995, 140.16579693831227],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 55,
+              "value": [363.3405206575821, 143.8669426412095],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 56,
+              "value": [369.96932227500156, 147.59462876282214],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 57,
+              "value": [376.6694133895779, 151.34365598750708],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 58,
+              "value": [383.4108873842117, 155.10694606401944],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 59,
+              "value": [390.16692370896067, 158.87738819033473],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 60,
+              "value": [396.9173197535699, 162.64906419152135],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 61,
+              "value": [403.6154499827076, 166.39859200483937],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 62,
+              "value": [409.98975273829006, 169.9738591929833],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 63,
+              "value": [415.33639251606286, 172.97803412150307],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 64,
+              "value": [418.87126455189576, 174.9682576352851],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 65,
+              "value": [420.15167444374276, 175.6934426077055],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 66,
+              "value": [419.28037112514687, 175.2094882834666],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 67,
+              "value": [416.8525337409881, 173.8497250699404],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 68,
+              "value": [413.78145842035764, 172.12696319025372],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 69,
+              "value": [410.8123206921062, 170.63317511645897],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 70,
+              "value": [407.38719337477306, 169.75921334457246],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 71,
+              "value": [402.96510351903834, 169.65732884946578],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 72,
+              "value": [397.3589398113443, 170.29626249875548],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 73,
+              "value": [390.6472806000714, 171.52887581705147],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 74,
+              "value": [383.07078737691677, 173.15660986805074],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 75,
+              "value": [374.9360932631264, 174.9808429846338],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 76,
+              "value": [366.54105276812123, 176.83682556472525],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 77,
+              "value": [358.12686479856524, 178.61031206715677],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 78,
+              "value": [349.85612137449715, 180.23992391467306],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 79,
+              "value": [341.81172949299105, 181.70968356888113],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 80,
+              "value": [334.0098047277982, 183.03633098683633],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 81,
+              "value": [326.41959227984853, 184.2553592483302],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 82,
+              "value": [318.9846285701143, 185.40858847388301],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 83,
+              "value": [311.6411090467012, 186.53487753443926],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 84,
+              "value": [304.3312743742027, 187.66449433514293],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 85,
+              "value": [297.0112204265786, 188.81686399294142],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 86,
+              "value": [289.6536914409418, 190.000932750272],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 87,
+              "value": [282.2470824091761, 191.21719756363132],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 88,
+              "value": [274.79210783693003, 192.4604894046185],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 89,
+              "value": [267.29749782370993, 193.72277918931962],
+              "interpolation": "linear"
+            }
+          ]
+        },
+        "scale": {
+          "keys": [
+            {
+              "frame": 0,
+              "value": [1, 1],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 5,
+              "value": [1, 1],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 6,
+              "value": [1.0019663336912943, 0.9980375251890448],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 7,
+              "value": [1.0138778888683049, 0.9863120706934486],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 8,
+              "value": [1.038832532628209, 0.9626190637965831],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 9,
+              "value": [1.0695584101093352, 0.9349653002099955],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 10,
+              "value": [1.0987547715148016, 0.9101211898459808],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 11,
+              "value": [1.1219584401326388, 0.8912986116328687],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 12,
+              "value": [1.1372904877580585, 0.879282831223974],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 13,
+              "value": [1.1448518372503182, 0.873475472950089],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 14,
+              "value": [1.146013632065002, 0.8725899692816915],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 15,
+              "value": [1.1427538804825903, 0.8750790673996184],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 16,
+              "value": [1.1371244323684615, 0.8794112337531509],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 17,
+              "value": [1.1308848481492457, 0.8842633285223993],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 18,
+              "value": [1.12530518690363, 0.888647818954414],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 19,
+              "value": [1.1211149730659065, 0.8919691771356028],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 20,
+              "value": [1.1185600870006298, 0.8940065103533745],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 21,
+              "value": [1.1175233058381182, 0.8948359240257829],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 22,
+              "value": [1.1176670170265401, 0.894720864770991],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 23,
+              "value": [1.1185659221120063, 0.894001846678703],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 24,
+              "value": [1.1198098969693475, 0.8930087175567916],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 25,
+              "value": [1.1210691945997457, 0.8920056003831495],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 26,
+              "value": [1.122123553345219, 0.8911674628153465],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 27,
+              "value": [1.1228625820066966, 0.8905809277328257],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 28,
+              "value": [1.1229573897051028, 0.8905057388353869],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 29,
+              "value": [1.1200405105210942, 0.8928248492858122],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 30,
+              "value": [1.1081051504050097, 0.9024414331388158],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 31,
+              "value": [1.082403704901065, 0.9238697128179203],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 32,
+              "value": [1.045124771077052, 0.9568235560711581],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 33,
+              "value": [1.0042538960601612, 0.995764122920658],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 34,
+              "value": [1.0302985698447829, 0.9705924372491875],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 35,
+              "value": [1.0507234117195372, 0.9517252483824198],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 36,
+              "value": [1.0504591269252204, 0.9519646927406701],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 37,
+              "value": [1.0187686336554154, 0.981577138286961],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 38,
+              "value": [0.9686441664381737, 1.032370848499636],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 39,
+              "value": [1.009029147701742, 0.9910516482875569],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 40,
+              "value": [1.0512604495553617, 0.9512390582399989],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 41,
+              "value": [1.0810077706902124, 0.9250627304570718],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 42,
+              "value": [1.0983488249982936, 0.9104575679785096],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 43,
+              "value": [1.1048444326509002, 0.9051048006828052],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 44,
+              "value": [1.1031328766947328, 0.9065091079474078],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 45,
+              "value": [1.096266478747285, 0.9121869722247736],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 46,
+              "value": [1.087119571463867, 0.9198620154114642],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 47,
+              "value": [1.0779950880788438, 0.9276480116269886],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 48,
+              "value": [1.0704377405252479, 0.9341972560770464],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 49,
+              "value": [1.0652203088083074, 0.9387729390164639],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 50,
+              "value": [1.0624578664963167, 0.9412137944798837],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 51,
+              "value": [1.0617999132918479, 0.941797025486419],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 52,
+              "value": [1.0626464971617207, 0.94104671936618],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 53,
+              "value": [1.0643397034430007, 0.9395496538982149],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 54,
+              "value": [1.066300239381091, 0.937822165903692],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 55,
+              "value": [1.0681015741754265, 0.9362405450736266],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 56,
+              "value": [1.0694906267321753, 0.9350245574900421],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 57,
+              "value": [1.0703711116007593, 0.9342554083924051],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 58,
+              "value": [1.070766043735695, 0.9339108256657018],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 59,
+              "value": [1.070773105518661, 0.9339046664938603],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 60,
+              "value": [1.0703502404339935, 0.9342736257942367],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 61,
+              "value": [1.0682835635727768, 0.9360810501058272],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 62,
+              "value": [1.0612766596191419, 0.9422613707144638],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 63,
+              "value": [1.046636199175833, 0.9554418247595904],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 64,
+              "value": [1.0254432139859517, 0.975188080979099],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 65,
+              "value": [1.0020666167710053, 0.9979376453257522],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 66,
+              "value": [1.017682568616213, 0.9826246718166188],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 67,
+              "value": [1.029213573666375, 0.9716156350694957],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 68,
+              "value": [1.0339212369624746, 0.9671916624305631],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 69,
+              "value": [1.0462313431570598, 0.9558115483163082],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 70,
+              "value": [1.06892828284712, 0.9355164570409461],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 71,
+              "value": [1.0898441027961185, 0.9175624269878477],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 72,
+              "value": [1.1068114318185887, 0.903496269781847],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 73,
+              "value": [1.120453649794423, 0.8924956424422166],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 74,
+              "value": [1.130606165535423, 0.8844812901992521],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 75,
+              "value": [1.1370717656688252, 0.8794519661754158],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 76,
+              "value": [1.140059595444732, 0.8771471280936894],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 77,
+              "value": [1.1401952013378813, 0.877042807079543],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 78,
+              "value": [1.1383623015157733, 0.8784549511771967],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 79,
+              "value": [1.1355061881454198, 0.8806645093086308],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 80,
+              "value": [1.1324600979484345, 0.8830333199479616],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 81,
+              "value": [1.12982808833711, 0.8850904047462724],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 82,
+              "value": [1.1279406481066365, 0.8865714713611944],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 83,
+              "value": [1.1268792846375275, 0.8874064983115388],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 84,
+              "value": [1.1265463850845256, 0.887668730946191],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 85,
+              "value": [1.1267481448513417, 0.8875097816397433],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 86,
+              "value": [1.127265440493388, 0.8871025084937532],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 87,
+              "value": [1.127901802464507, 0.8866020054360788],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 88,
+              "value": [1.1285087932813067, 0.8861251289787043],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 89,
+              "value": [1.1289938654056706, 0.8857444053876056],
+              "interpolation": "linear"
+            }
+          ]
+        }
+      },
+      "type": "solid",
+      "size": [26, 26],
+      "color": "#c94f6d"
+    },
+    {
+      "id": "f3",
+      "transform": {
+        "position": {
+          "keys": [
+            {
+              "frame": 0,
+              "value": [70, 140],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 9,
+              "value": [70, 140],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 10,
+              "value": [70.25915086289558, 139.9136163790348],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 11,
+              "value": [71.83173356553442, 139.38942214482188],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 12,
+              "value": [75.40038568104279, 138.19987143965238],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 13,
+              "value": [81.07520263925136, 136.3082657869162],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 14,
+              "value": [88.56929193851619, 133.81023602049459],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 15,
+              "value": [97.38251797358899, 130.87249400880364],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 16,
+              "value": [106.95928376561312, 127.68023874479559],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 17,
+              "value": [116.80222258275091, 124.39925913908303],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 18,
+              "value": [126.53735387838731, 121.1542153738709],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 19,
+              "value": [135.93605423367322, 118.02131525544223],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 20,
+              "value": [144.90475126146598, 115.03174957951134],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 21,
+              "value": [153.4550567844655, 112.18164773851151],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 22,
+              "value": [161.66607886354262, 109.44464037881914],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 23,
+              "value": [169.64800260903073, 106.78399913032308],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 24,
+              "value": [177.5127274460471, 104.16242418465094],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 25,
+              "value": [185.35417900151452, 101.54860699949515],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 26,
+              "value": [193.23837314436287, 98.92054228521238],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 27,
+              "value": [201.20161826814723, 96.2661272439509],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 28,
+              "value": [209.25440019776215, 93.58186660074594],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 29,
+              "value": [217.38835739896217, 90.87054753367926],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 30,
+              "value": [225.58410649482755, 88.13863116839082],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 31,
+              "value": [233.81829328641504, 85.39390223786165],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 32,
+              "value": [242.0269017198716, 82.65769942670946],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 33,
+              "value": [249.8655790344065, 80.04480698853115],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 34,
+              "value": [256.45851884151665, 77.84716038616108],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 35,
+              "value": [260.8328347331082, 76.38905508896391],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 36,
+              "value": [262.4373957887941, 75.85420140373526],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 37,
+              "value": [261.3936324753323, 76.20212250822254],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 38,
+              "value": [258.4302020203373, 77.18993265988757],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 39,
+              "value": [254.66838632663433, 78.44387122445522],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 40,
+              "value": [251.5272294326768, 79.68008765538801],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 41,
+              "value": [250.36952617352756, 81.21387704169109],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 42,
+              "value": [251.8579489668528, 83.32263186773616],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 43,
+              "value": [255.97841194787628, 86.09141028954417],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 44,
+              "value": [262.2722051229441, 89.46370182154664],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 45,
+              "value": [270.0652463927757, 93.29913237757415],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 46,
+              "value": [278.6562863415151, 97.4259002644564],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 47,
+              "value": [287.44586460613067, 101.68077859061259],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 48,
+              "value": [296.00411145174087, 105.93407455385983],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 49,
+              "value": [304.08657713462276, 110.10039041890263],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 50,
+              "value": [311.6130285149745, 114.13816849913414],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 51,
+              "value": [318.6254042324437, 118.04190516179682],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 52,
+              "value": [325.2391820880407, 121.83085180777601],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 53,
+              "value": [331.5986986312273, 125.53732458291114],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 54,
+              "value": [337.8427082780809, 129.19675168814013],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 55,
+              "value": [344.0825866806323, 132.8405678158947],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 56,
+              "value": [350.3926078400921, 136.4922024750366],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 57,
+              "value": [356.80985659632995, 140.16579693831227],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 58,
+              "value": [363.3405206575821, 143.8669426412095],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 59,
+              "value": [369.96932227500156, 147.59462876282214],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 60,
+              "value": [376.6694133895779, 151.34365598750708],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 61,
+              "value": [383.4108873842117, 155.10694606401944],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 62,
+              "value": [390.16692370896067, 158.87738819033473],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 63,
+              "value": [396.9173197535699, 162.64906419152135],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 64,
+              "value": [403.6154499827076, 166.39859200483937],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 65,
+              "value": [409.98975273829006, 169.9738591929833],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 66,
+              "value": [415.33639251606286, 172.97803412150307],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 67,
+              "value": [418.87126455189576, 174.9682576352851],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 68,
+              "value": [420.15167444374276, 175.6934426077055],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 69,
+              "value": [419.28037112514687, 175.2094882834666],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 70,
+              "value": [416.8525337409881, 173.8497250699404],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 71,
+              "value": [413.78145842035764, 172.12696319025372],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 72,
+              "value": [410.8123206921062, 170.63317511645897],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 73,
+              "value": [407.38719337477306, 169.75921334457246],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 74,
+              "value": [402.96510351903834, 169.65732884946578],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 75,
+              "value": [397.3589398113443, 170.29626249875548],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 76,
+              "value": [390.6472806000714, 171.52887581705147],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 77,
+              "value": [383.07078737691677, 173.15660986805074],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 78,
+              "value": [374.9360932631264, 174.9808429846338],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 79,
+              "value": [366.54105276812123, 176.83682556472525],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 80,
+              "value": [358.12686479856524, 178.61031206715677],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 81,
+              "value": [349.85612137449715, 180.23992391467306],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 82,
+              "value": [341.81172949299105, 181.70968356888113],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 83,
+              "value": [334.0098047277982, 183.03633098683633],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 84,
+              "value": [326.41959227984853, 184.2553592483302],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 85,
+              "value": [318.9846285701143, 185.40858847388301],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 86,
+              "value": [311.6411090467012, 186.53487753443926],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 87,
+              "value": [304.3312743742027, 187.66449433514293],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 88,
+              "value": [297.0112204265786, 188.81686399294142],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 89,
+              "value": [289.6536914409418, 190.000932750272],
+              "interpolation": "linear"
+            }
+          ]
+        },
+        "scale": {
+          "keys": [
+            {
+              "frame": 0,
+              "value": [1, 1],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 8,
+              "value": [1, 1],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 9,
+              "value": [1.0019663336912943, 0.9980375251890448],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 10,
+              "value": [1.0138778888683049, 0.9863120706934486],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 11,
+              "value": [1.038832532628209, 0.9626190637965831],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 12,
+              "value": [1.0695584101093352, 0.9349653002099955],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 13,
+              "value": [1.0987547715148016, 0.9101211898459808],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 14,
+              "value": [1.1219584401326388, 0.8912986116328687],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 15,
+              "value": [1.1372904877580585, 0.879282831223974],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 16,
+              "value": [1.1448518372503182, 0.873475472950089],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 17,
+              "value": [1.146013632065002, 0.8725899692816915],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 18,
+              "value": [1.1427538804825903, 0.8750790673996184],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 19,
+              "value": [1.1371244323684615, 0.8794112337531509],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 20,
+              "value": [1.1308848481492457, 0.8842633285223993],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 21,
+              "value": [1.12530518690363, 0.888647818954414],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 22,
+              "value": [1.1211149730659065, 0.8919691771356028],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 23,
+              "value": [1.1185600870006298, 0.8940065103533745],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 24,
+              "value": [1.1175233058381182, 0.8948359240257829],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 25,
+              "value": [1.1176670170265401, 0.894720864770991],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 26,
+              "value": [1.1185659221120063, 0.894001846678703],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 27,
+              "value": [1.1198098969693475, 0.8930087175567916],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 28,
+              "value": [1.1210691945997457, 0.8920056003831495],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 29,
+              "value": [1.122123553345219, 0.8911674628153465],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 30,
+              "value": [1.1228625820066966, 0.8905809277328257],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 31,
+              "value": [1.1229573897051028, 0.8905057388353869],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 32,
+              "value": [1.1200405105210942, 0.8928248492858122],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 33,
+              "value": [1.1081051504050097, 0.9024414331388158],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 34,
+              "value": [1.082403704901065, 0.9238697128179203],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 35,
+              "value": [1.045124771077052, 0.9568235560711581],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 36,
+              "value": [1.0042538960601612, 0.995764122920658],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 37,
+              "value": [1.0302985698447829, 0.9705924372491875],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 38,
+              "value": [1.0507234117195372, 0.9517252483824198],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 39,
+              "value": [1.0504591269252204, 0.9519646927406701],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 40,
+              "value": [1.0187686336554154, 0.981577138286961],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 41,
+              "value": [0.9686441664381737, 1.032370848499636],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 42,
+              "value": [1.009029147701742, 0.9910516482875569],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 43,
+              "value": [1.0512604495553617, 0.9512390582399989],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 44,
+              "value": [1.0810077706902124, 0.9250627304570718],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 45,
+              "value": [1.0983488249982936, 0.9104575679785096],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 46,
+              "value": [1.1048444326509002, 0.9051048006828052],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 47,
+              "value": [1.1031328766947328, 0.9065091079474078],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 48,
+              "value": [1.096266478747285, 0.9121869722247736],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 49,
+              "value": [1.087119571463867, 0.9198620154114642],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 50,
+              "value": [1.0779950880788438, 0.9276480116269886],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 51,
+              "value": [1.0704377405252479, 0.9341972560770464],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 52,
+              "value": [1.0652203088083074, 0.9387729390164639],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 53,
+              "value": [1.0624578664963167, 0.9412137944798837],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 54,
+              "value": [1.0617999132918479, 0.941797025486419],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 55,
+              "value": [1.0626464971617207, 0.94104671936618],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 56,
+              "value": [1.0643397034430007, 0.9395496538982149],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 57,
+              "value": [1.066300239381091, 0.937822165903692],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 58,
+              "value": [1.0681015741754265, 0.9362405450736266],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 59,
+              "value": [1.0694906267321753, 0.9350245574900421],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 60,
+              "value": [1.0703711116007593, 0.9342554083924051],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 61,
+              "value": [1.070766043735695, 0.9339108256657018],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 62,
+              "value": [1.070773105518661, 0.9339046664938603],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 63,
+              "value": [1.0703502404339935, 0.9342736257942367],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 64,
+              "value": [1.0682835635727768, 0.9360810501058272],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 65,
+              "value": [1.0612766596191419, 0.9422613707144638],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 66,
+              "value": [1.046636199175833, 0.9554418247595904],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 67,
+              "value": [1.0254432139859517, 0.975188080979099],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 68,
+              "value": [1.0020666167710053, 0.9979376453257522],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 69,
+              "value": [1.017682568616213, 0.9826246718166188],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 70,
+              "value": [1.029213573666375, 0.9716156350694957],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 71,
+              "value": [1.0339212369624746, 0.9671916624305631],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 72,
+              "value": [1.0462313431570598, 0.9558115483163082],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 73,
+              "value": [1.06892828284712, 0.9355164570409461],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 74,
+              "value": [1.0898441027961185, 0.9175624269878477],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 75,
+              "value": [1.1068114318185887, 0.903496269781847],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 76,
+              "value": [1.120453649794423, 0.8924956424422166],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 77,
+              "value": [1.130606165535423, 0.8844812901992521],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 78,
+              "value": [1.1370717656688252, 0.8794519661754158],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 79,
+              "value": [1.140059595444732, 0.8771471280936894],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 80,
+              "value": [1.1401952013378813, 0.877042807079543],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 81,
+              "value": [1.1383623015157733, 0.8784549511771967],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 82,
+              "value": [1.1355061881454198, 0.8806645093086308],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 83,
+              "value": [1.1324600979484345, 0.8830333199479616],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 84,
+              "value": [1.12982808833711, 0.8850904047462724],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 85,
+              "value": [1.1279406481066365, 0.8865714713611944],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 86,
+              "value": [1.1268792846375275, 0.8874064983115388],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 87,
+              "value": [1.1265463850845256, 0.887668730946191],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 88,
+              "value": [1.1267481448513417, 0.8875097816397433],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 89,
+              "value": [1.127265440493388, 0.8871025084937532],
+              "interpolation": "linear"
+            }
+          ]
+        }
+      },
+      "type": "solid",
+      "size": [20, 20],
+      "color": "#7b5ea7"
+    }
+  ],
+  "fps": 30,
+  "assets": []
+}
