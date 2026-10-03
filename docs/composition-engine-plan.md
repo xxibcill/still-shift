@@ -2734,7 +2734,11 @@ comparisons; the full `pnpm check`.
   reverse-seek checks, and existing timing assertions. The **30 required export
   pairs** pass, including the two pending inline exports and eight standalone
   checks from the matrix tail. Source remains `3d313d3` / WebGL2 version 0.33.
-- **Remaining:** Canvas typography, unchanged frozen CE0 baselines and complete
+- **Canvas typography complete:** all **20 cases / 3,367 frames** pass their
+  assigned pixel tiers, state/seek checks and existing timing assertions. All
+  **10 required export pairs** are byte-identical, including numeric text and
+  native/numeric motion blur. No production code or tolerance changed.
+- **Remaining:** unchanged frozen CE0 baselines and complete
   hardware preview/export plus Lab interaction checks. CE4b remains open until
   these pass. The **117 GPU timing failures** and unchanged **1.25×** requirement
   remain CE6 work. See [resumed verification results](./composition-ce4b-verification-results.json).

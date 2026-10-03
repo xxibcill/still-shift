@@ -5122,14 +5122,26 @@
       "finishedAt": "2026-10-03T06:13:27.738Z",
       "code": 0,
       "signal": null
+    },
+    {
+      "id": "canvas-typography-final",
+      "command": [
+        "pnpm",
+        "test:browser:composition-typography-adapter",
+        "--keep-going"
+      ],
+      "startedAt": "2026-10-03T06:13:27.739Z",
+      "finishedAt": "2026-10-03T06:16:25.677Z",
+      "code": 0,
+      "signal": null
     }
   ],
   "canvasTypography": {
-    "cases": 16,
-    "frames": 2599,
+    "cases": 20,
+    "frames": 3367,
     "pixelFailures": [],
     "timingFailures": [],
-    "exportPairs": 8,
+    "exportPairs": 10,
     "exportResults": [
       "CE4b canvas2d typography/editorial/component-fit export: 151 frames, two byte-identical MP4s; relocated assets and overwrite protection pass",
       "CE4b canvas2d typography/editorial/numeric export: 151 frames, two byte-identical MP4s; relocated assets and overwrite protection pass",
@@ -5138,7 +5150,9 @@
       "CE4b canvas2d typography/semantic export: 181 frames, two byte-identical MP4s; relocated assets and overwrite protection pass",
       "CE4b canvas2d typography/variable-thai export: 151 frames, two byte-identical MP4s; relocated assets and overwrite protection pass",
       "CE4b canvas2d typography/variable-thai/numeric export: 151 frames, two byte-identical MP4s; relocated assets and overwrite protection pass",
-      "CE4b canvas2d typography/commerce/panel-fit export: 192 frames, two byte-identical MP4s; relocated assets and overwrite protection pass"
+      "CE4b canvas2d typography/commerce/panel-fit export: 192 frames, two byte-identical MP4s; relocated assets and overwrite protection pass",
+      "CE4b canvas2d typography/commerce/numeric export: 192 frames, two byte-identical MP4s; relocated assets and overwrite protection pass",
+      "CE4b canvas2d typography/commerce/motion-blur-numeric export: 192 frames, two byte-identical MP4s; relocated assets and overwrite protection pass"
     ],
     "items": [
       {
@@ -5299,6 +5313,46 @@
           "minPsnr": null,
           "failures": [],
           "ratio": 1.0123199386598525
+        }
+      },
+      {
+        "id": "typography/commerce/component-fit",
+        "frames": 192,
+        "metrics": {
+          "maxDelta": 0,
+          "minPsnr": null,
+          "failures": [],
+          "ratio": 1.0537634400033276
+        }
+      },
+      {
+        "id": "typography/commerce/numeric",
+        "frames": 192,
+        "metrics": {
+          "maxDelta": 0,
+          "minPsnr": null,
+          "failures": [],
+          "ratio": 0.9351902415910217
+        }
+      },
+      {
+        "id": "typography/commerce/motion-blur-native",
+        "frames": 192,
+        "metrics": {
+          "maxDelta": 0,
+          "minPsnr": null,
+          "failures": [],
+          "ratio": 0.8322562516548849
+        }
+      },
+      {
+        "id": "typography/commerce/motion-blur-numeric",
+        "frames": 192,
+        "metrics": {
+          "maxDelta": 0,
+          "minPsnr": null,
+          "failures": [],
+          "ratio": 0.7789811101533042
         }
       }
     ]
