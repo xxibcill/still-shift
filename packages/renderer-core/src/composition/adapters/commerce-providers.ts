@@ -342,6 +342,7 @@ export const COMMERCE_CONTENT_PROVIDERS: readonly CanvasContentProvider[] = [
             samples[frame]!,
             frame,
             samples.length,
+            parsed.data.interpolateColors,
           );
         },
         {

@@ -33,6 +33,7 @@ export const StoryFlowParamsSchema = z
   .object({
     node: pathNode,
     flow: StoryFlowSchema,
+    interpolateColors: z.boolean().optional(),
     samples: frames(z.object({ reveal: unit, gap: unit }).strict()),
   })
   .strict();
@@ -151,6 +152,7 @@ export const STORY_CONTENT_PROVIDERS: readonly CanvasContentProvider[] = [
             sample(params.samples, frame),
             frame,
             params.samples.length,
+            params.interpolateColors,
           );
         },
         {
@@ -205,6 +207,7 @@ export const STORY_CONTENT_PROVIDERS: readonly CanvasContentProvider[] = [
             sample(params.samples, frame),
             frame,
             params.samples.length,
+            params.interpolateColors,
           );
         },
         {
