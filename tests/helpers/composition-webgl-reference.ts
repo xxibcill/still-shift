@@ -752,7 +752,9 @@ export async function checkWebglProviderReuse() {
 }
 
 /** Partial redraws must survive seeks, delayed readback, caller writes and failed draws. */
-export async function checkWebglDamageRecovery() {
+export async function checkWebglDamageRecovery(
+  matte?: "alpha" | "alpha-inverted",
+) {
   const { createCompositionPreview } = await import(
     "../../packages/renderer-core/src/composition/render/renderer.ts"
   );
@@ -804,6 +806,61 @@ export async function checkWebglDamageRecovery() {
       },
     ],
   };
+  if (matte) {
+    const moving = composition.layers[1]!;
+    composition.layers.splice(
+      1,
+      1,
+      { ...moving, parent: "inner" },
+      {
+        id: "inner",
+        type: "group",
+        parent: "outer",
+        size: [96, 64],
+        transform: { anchor: [0, 0], opacity: 0.75 },
+        masks: [
+          {
+            id: "window",
+            mode: "add",
+            path: {
+              closed: true,
+              vertices: [
+                [2, 4],
+                [89, 4],
+                [89, 55],
+                [2, 55],
+              ],
+            },
+          },
+        ],
+      },
+      {
+        id: "outer",
+        type: "group",
+        size: [96, 64],
+        transform: { anchor: [0, 0], opacity: 0.8 },
+        trackMatte: { layer: "matte", mode: matte },
+      },
+      {
+        id: "matte",
+        type: "solid",
+        size: [52, 60],
+        color: "#ffffff99",
+        transform: {
+          anchor: [0, 0],
+          position: {
+            x: {
+              keys: [
+                { frame: 0, value: -20 },
+                { frame: 5, value: 65 },
+              ],
+            },
+            y: 0,
+          },
+        },
+      },
+    );
+  }
   let fail = false;
   const resources = { images: new Map(), fonts: new Map() };
   const canvas = document.createElement("canvas");

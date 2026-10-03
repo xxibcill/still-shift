@@ -2623,6 +2623,26 @@ comparisons; the full `pnpm check`.
   failed parity, and Canvas-based GPU readback more than doubled the measured
   bracket cost; neither was adopted.
 
+### CE4b bounded group repainting (2026-10-03)
+
+- **Version:** `composition-webgl2-0.31.0` tracks the union of child coverage
+  through normal isolated groups without effects. Masks and mattes retain the
+  destination bounds while their complete state participates in invalidation.
+  Unknown coverage, effects, adjustment layers and non-normal group blending
+  retain the full-repaint fallback.
+- **Verification:** fast checks, **1,255 unit tests**, native GPU checks and
+  **204 export/Lab frames** pass. New regressions cover nested group motion,
+  opacity, changing inverted mattes outside destination coverage, empty groups,
+  ordering and unsupported bounds. Browser checks compare raw GPU pixels through
+  nested masks, normal/inverted mattes, delayed reads, backward seeks, caller
+  mutation and failed-draw recovery.
+  All **five commerce matte cases / 1,200 frames** and **five story mask/matte
+  cases / 960 frames** pass pixels, with **three required export pairs** passing.
+  Commerce matte improves from **2.5730× to 2.1264×**, inverted overlap from
+  **1.7912× to 1.5064×**, and shared group sources from **1.6043× to 1.4217×**.
+- **Remaining:** family timing gates and final full local/CE0 verification.
+  These targeted family commands still exit nonzero for remaining timing failures.
+
 **Completion record:** CE4a and CE4b are in progress; CE4c–CE4d have not started.
 
 ---

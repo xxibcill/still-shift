@@ -40,7 +40,12 @@ try {
   console.log("WebGL provider reuse:", providerReuse);
   const damage = await page.evaluate(async () => {
     const url = "/tests/helpers/composition-webgl-reference.ts";
-    return ((await import(url)) as typeof Checks).checkWebglDamageRecovery();
+    const { checkWebglDamageRecovery } = (await import(url)) as typeof Checks;
+    return {
+      direct: await checkWebglDamageRecovery(),
+      masked: await checkWebglDamageRecovery("alpha"),
+      inverted: await checkWebglDamageRecovery("alpha-inverted"),
+    };
   });
   console.log("WebGL partial redraw and recovery:", damage);
   const rounding = await page.evaluate(async () => {

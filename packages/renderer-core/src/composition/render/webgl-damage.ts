@@ -1,11 +1,12 @@
 import type { Bounds } from "../evaluate/types.ts";
 import type {
-  DrawOp,
+  RenderOp,
   ProviderContent,
   SurfaceNode,
   TextContent,
 } from "./graph.ts";
 import type { WebglVisualKey } from "./webgl-visual-key.ts";
+import { unionBounds } from "./webgl-vector-regions.ts";
 
 type Frame = {
   header: string;
@@ -26,7 +27,20 @@ export class WebglDamage {
     this.previous = undefined;
   }
 
-  private bounds(op: DrawOp): Bounds | undefined {
+  private bounds(op: RenderOp): Bounds | undefined {
+    if (op.kind === "adjust") return undefined;
+    if (op.kind === "isolate") {
+      if (op.effects.length || op.blend !== "normal") return undefined;
+      let bounds: Bounds | undefined;
+      for (const child of op.ops) {
+        const box = this.bounds(child);
+        if (!box) return undefined;
+        bounds = bounds ? unionBounds(bounds, box) : box;
+      }
+      // Masks and mattes only remove destination coverage. Their full state
+      // remains in the visual key, including changes beyond these bounds.
+      return bounds ?? { left: 0, top: 0, right: 0, bottom: 0 };
+    }
     if (op.paintBlur) return undefined;
     const c = op.content;
     const box =
@@ -61,16 +75,17 @@ export class WebglDamage {
   /** undefined means the full framebuffer; null means every pixel is unchanged. */
   next(root: SurfaceNode): Bounds | null | undefined {
     const prior = this.previous;
-    if (root.ops.some((op) => op.kind !== "draw")) {
+    const bounds = root.ops.map((op) => this.bounds(op));
+    if (root.ops.some((op, i) => op.kind !== "draw" && !bounds[i])) {
       this.reset();
       return undefined;
     }
     const frame: Frame = {
       header: this.keys.of([root.id, root.width, root.height, root.background]),
-      layers: (root.ops as DrawOp[]).map((op) => ({
+      layers: root.ops.map((op, i) => ({
         id: op.layer,
         key: this.keys.of(op),
-        bounds: this.bounds(op),
+        bounds: bounds[i],
       })),
     };
     this.previous = frame;
