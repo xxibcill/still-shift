@@ -215,10 +215,11 @@ export function createCompositionPreview(
     return context.getImageData(0, 0, probe.width, probe.height);
   });
   const text = prepareCompositionText(composition, resources.fonts, ctx);
-  const drawProvider = prepareCompositionProviders(composition, resources, [
-    ...BUILTIN_PROVIDERS,
-    ...(options.providers ?? []),
-  ]);
+  const drawProvider = prepareCompositionProviders(
+    composition,
+    { ...resources, softwareRaster: requiresSoftwareFilters(composition) },
+    [...BUILTIN_PROVIDERS, ...(options.providers ?? [])],
+  );
   const backendOptions = {
     softwareRaster,
     images: {
