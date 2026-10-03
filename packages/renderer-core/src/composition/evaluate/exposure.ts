@@ -19,13 +19,15 @@ function cutsFor(scope: CompositionScope): readonly number[] {
     cuts.add(layer.outPoint ?? scope.frameCount);
     const global = (time: number) =>
       time * (layer.stretch ?? 1) + (layer.startFrame ?? 0);
-    if ("state" in layer && typeof layer.state === "object")
-      for (const key of layer.state.keys) {
-        const time = layer.sampleTimes
-          ? layer.sampleTimes[key.frame]
-          : key.frame;
-        if (time !== undefined) cuts.add(global(time));
-      }
+    if ("state" in layer || "stateFrom" in layer)
+      for (const state of [layer.state, layer.stateFrom])
+        if (typeof state === "object")
+          for (const key of state.keys) {
+            const time = layer.sampleTimes
+              ? layer.sampleTimes[key.frame]
+              : key.frame;
+            if (time !== undefined) cuts.add(global(time));
+          }
     for (const effect of layer.effects ?? []) {
       if (effect.inPoint !== undefined) cuts.add(global(effect.inPoint));
       if (effect.outPoint !== undefined) cuts.add(global(effect.outPoint));

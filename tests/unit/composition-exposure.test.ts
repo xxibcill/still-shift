@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import {
   validateComposition,
   type Composition,
+  type CompositionLayer,
 } from "@still-shift/scene-contract";
 import {
   compositionExposureFrames,
@@ -195,5 +196,55 @@ describe("composition exposure sampling", () => {
     expect(compositionExposureFrames(structuredClone(comp), 11)[0]).toBe(11);
     comp.layers[0]!.motionBlur = false;
     expect(compositionExposureFrames(comp, 10)).toEqual([10]);
+  });
+  it("clamps outgoing content switches with ordinary and indexed sample clocks", () => {
+    for (const sampleTimes of [undefined, [0, 10, 20]])
+      for (const nested of [false, true])
+        for (const state of [undefined, 1]) {
+          const comp = fixture();
+          const layer: CompositionLayer = {
+            id: "crossfade",
+            type: "text",
+            text: "A",
+            states: ["A", "B", "C"],
+            fontSize: 20,
+            color: "#ffffff",
+            motionBlur: true,
+            startFrame: 2,
+            stretch: 2,
+            ...(sampleTimes ? { sampleTimes } : {}),
+            ...(state !== undefined ? { state } : {}),
+            stateFrom: {
+              keys: [
+                { frame: 0, value: 0 },
+                { frame: sampleTimes ? 1 : 10, value: 2 },
+              ],
+            },
+            stateMix: 0.5,
+          };
+          comp.layers = [layer];
+          if (nested) {
+            comp.precomps = [
+              {
+                id: "nested",
+                width: comp.width,
+                height: comp.height,
+                frameCount: comp.frameCount,
+                layers: [layer],
+              },
+            ];
+            comp.layers = [
+              { id: "host", type: "precomp", comp: "nested", motionBlur: true },
+            ];
+          }
+          expect(validateComposition(comp).ok).toBe(true);
+          for (const frame of [21, 22, 23, 22, 21])
+            expect(
+              samples(comp, frame).map((tree) => {
+                const host = tree.layers[0]!;
+                return (host.precomp?.layers[0] ?? host).stateFrom;
+              }),
+            ).toEqual(Array(4).fill(frame < 22 ? 0 : 2));
+        }
   });
 });
