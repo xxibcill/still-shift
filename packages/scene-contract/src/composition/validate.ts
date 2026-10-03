@@ -9,6 +9,7 @@ import type {
 } from "./composition.ts";
 import { isKeyed } from "./keys.ts";
 import { checkMotionDependencies } from "./dependencies.ts";
+import { compileExpressions } from "./expressions.ts";
 import { UNAVAILABLE_LAYER_TYPES, type CompositionLayer } from "./layers.ts";
 import { COMPOSITION_PATH_ROOT } from "./property-path.ts";
 import {
@@ -196,8 +197,6 @@ function checkLayer(
   for (const field of ["rotationX", "rotationY", "orientation"] as const)
     if (layer.transform?.[field] !== undefined)
       unavailable(["transform", field], `transform.${field}`, "CE8");
-  if (layer.transform?.autoOrient === "path")
-    unavailable(["transform", "autoOrient"], "auto-orient along a path", "CE9");
   if (layer.transform?.autoOrient === "camera")
     unavailable(
       ["transform", "autoOrient"],
@@ -858,24 +857,6 @@ function checkMotion(
         `no marker "${motion.cue}"`,
       );
   });
-  const expressions = Object.keys(comp.expressions ?? {});
-  if (expressions.length)
-    fail(
-      "comp-feature-unavailable",
-      ["expressions"],
-      "expressions are not available until CE9",
-    );
-  for (const key of expressions) {
-    const resolved = resolvePropertyPath(comp, key);
-    if (!isResolvedProperty(resolved))
-      fail(resolved.code, ["expressions", key], resolved.message);
-    else if (resolved.readOnly)
-      fail(
-        "comp-path-readonly",
-        ["expressions", key],
-        `"${key}" can be read but not driven`,
-      );
-  }
 }
 
 /** Cross-field rules that the structural schema cannot express. */
@@ -978,7 +959,7 @@ export function validateCompositionSemantics(
     );
   checkPrecompGraph(comp, fail);
   checkMotion(comp, fail, signals, new Set(comp.markers?.map((m) => m.id)));
-  checkMotionDependencies(comp, fail);
+  checkMotionDependencies(comp, fail, compileExpressions(comp, fail));
 
   if (comp.camera2d) {
     comp.camera2d.keys.forEach((key, i) => {

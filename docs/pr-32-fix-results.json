@@ -1,0 +1,110 @@
+{
+  "date": "2026-10-04",
+  "review": "https://github.com/xxibcill/still-shift/pull/32#pullrequestreview-5402128438",
+  "originalHead": "75e46f2c580b4d487349bf322fb6a846245237a3",
+  "integrationCommit": "f80a52a",
+  "fixes": [
+    {
+      "finding": "Evaluate only the selected if branch",
+      "status": "fixed",
+      "evaluatorVersion": "composition-evaluator-23",
+      "regression": "Inactive invalid time reads skipped on either branch; selected invalid read still throws.",
+      "red": "One expected failing regression before fix.",
+      "verification": "pnpm exec vitest run tests/unit/composition-expressions.test.ts: 33 tests pass.",
+      "commit": "c3fc70f"
+    },
+    {
+      "finding": "Require matching vector dimensions for distance arguments",
+      "status": "fixed",
+      "regression": "Both vec2/vec3 argument orders fail validation; matching vec3 distance remains accepted.",
+      "red": "Two expected failing validation regressions before fix.",
+      "verification": "Syntax and expression evaluator unit suites: 112 tests pass.",
+      "commit": "e693334"
+    },
+    {
+      "finding": "Preserve auto-orient boundary samples when baking",
+      "status": "fixed",
+      "implementation": "Bake direct auto-oriented position targets over 64 extra root frames on each side using the shared evaluator heading search bound. Retain the transform switch and verify all retained root/nested orientations at output frames. Refuse held-clock or indirect-history cases that cannot retain parity.",
+      "red": "Three boundary/rest/held-precomp regressions failed before fix.",
+      "verification": "All 13 bake tests pass, including indirect-reader refusal. Expanded browser fixture passes 40 exact expression/bake pixel and random-seek comparisons on each backend.",
+      "commit": "This final finding commit"
+    }
+  ],
+  "inlineComments": [
+    {
+      "finding": "if",
+      "id": 4174337517,
+      "url": "https://github.com/xxibcill/still-shift/pull/32#discussion_r4174337517"
+    },
+    {
+      "finding": "length",
+      "id": 4174337519,
+      "url": "https://github.com/xxibcill/still-shift/pull/32#discussion_r4174337519"
+    },
+    {
+      "finding": "bake",
+      "id": 4174337527,
+      "url": "https://github.com/xxibcill/still-shift/pull/32#discussion_r4174337527"
+    }
+  ],
+  "verification": {
+    "node": "22.23.1",
+    "pnpm": "10.29.3",
+    "checks": [
+      {
+        "command": "pnpm check:fast",
+        "exitCode": 0,
+        "unitFiles": 127,
+        "unitTests": 1412
+      },
+      {
+        "command": "pnpm build (after expanded browser test)",
+        "exitCode": 0
+      },
+      {
+        "command": "pnpm test:browser:composition-expressions",
+        "exitCode": 0,
+        "fixtures": 3,
+        "framesPerBackend": 190,
+        "summary": "All expression/bake pixels and shuffled seeks match on Canvas2D/WebGL2; repeated and baked demo MP4s byte-identical on both backends."
+      },
+      {
+        "command": "pnpm test:browser:composition-evaluator",
+        "exitCode": 0,
+        "fixtures": 5,
+        "framesPerFixture": 9,
+        "maximumNumericError": 5.684341886080802e-14
+      },
+      {
+        "command": "pnpm test:browser:composition-baselines",
+        "exitCode": 0,
+        "items": 176,
+        "frames": 36061,
+        "seconds": 270.67,
+        "regenerated": false
+      },
+      {
+        "command": "Changed TypeScript ESLint and Prettier",
+        "exitCode": 0
+      },
+      {
+        "command": "git diff --check and final changed-document formatting",
+        "exitCode": 0
+      }
+    ],
+    "notRerun": [
+      "Full runtime/integration suites",
+      "Strict WebGL family matrices",
+      "Hardware GPU audits",
+      "Full pnpm check/check:all"
+    ],
+    "policy": "All verification local. No performance experiments or baseline regeneration; CE6-P and CE9-F1 deferrals unchanged."
+  },
+  "delivery": {
+    "mainIntegrated": "5a6705c04ff3339c99fa89d798d6feb1bd1c7938",
+    "remoteHeadConfirmedBeforePush": "75e46f2c580b4d487349bf322fb6a846245237a3",
+    "targetBranch": "codex/composition-ce9",
+    "strategy": "One final fast-forward push after all three finding commits; separate prior documentation-only merge commit.",
+    "readyForFinalPush": true
+  }
+}

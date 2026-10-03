@@ -9,6 +9,8 @@ const cases = [
     field: "expression AST",
     path: 'expressions["node.x"].ast',
     offset: 0,
+    // A bounded AST then has to match its parsed source.
+    next: "comp-expression-mismatch",
     input: (payload: unknown) => ({
       expressions: { "node.x": { source: "value", ast: payload } },
     }),
@@ -91,7 +93,9 @@ for (const entry of cases) {
       ).toMatchObject({
         ok: false,
         diagnostics: [
-          expect.objectContaining({ code: "comp-feature-unavailable" }),
+          expect.objectContaining({
+            code: "next" in entry ? entry.next : "comp-feature-unavailable",
+          }),
         ],
       });
     });
@@ -102,7 +106,9 @@ for (const entry of cases) {
       ).toMatchObject({
         ok: false,
         diagnostics: [
-          expect.objectContaining({ code: "comp-feature-unavailable" }),
+          expect.objectContaining({
+            code: "next" in entry ? entry.next : "comp-feature-unavailable",
+          }),
         ],
       });
       expect(
@@ -124,7 +130,9 @@ for (const entry of cases) {
       ).toMatchObject({
         ok: false,
         diagnostics: [
-          expect.objectContaining({ code: "comp-feature-unavailable" }),
+          expect.objectContaining({
+            code: "next" in entry ? entry.next : "comp-feature-unavailable",
+          }),
         ],
       });
       payload.text += "x";

@@ -43,19 +43,50 @@ still hold before relying on them.
 
 ## Current state
 
-_Last updated 2026-10-04 by Codex for PR #31 conflict resolution._
+- **PR #32 printer fix (2026-10-04):** re-review of delivered `e81a146` found
+  one remaining P2 print/parse length defect and no standards findings.
+  Posted the inline finding, added compact canonical output with equivalent
+  decimal/exponent spellings, and covered eight length/precision/grammar cases.
+  Fast checks pass (1,420 tests), along with expression pixel/seek/repeated and
+  baked export checks on both backends and evaluator browser parity. One finding
+  commit contains the code, tests and records, followed by one final push.
+  Owner review/merge remains pending.
+  [Printer fix evidence](./pr-32-printer-fix-results.json).
+  [Re-review evidence](./pr-32-rereview-results.json).
 
-- **PR #31 conflict resolution (2026-10-04):** merged `main` at `3413780`
-  into the PR head `6034de3` on `codex/pr31-conflict-resolution`; renderer
-  `0.36.1` retains both main correctness fixes and CE6 optimizations. All
-  targeted checks pass; see the entry and evidence below. This branch is prepared
-  for delivery to `codex/composition-ce6-performance`.
-- **Documentation delivery:** `c7afacc` commits `AGENTS.md`, this log,
+- **PR #32 earlier fixes delivered (2026-10-04):** inline review posted on
+  `75e46f2`; `c3fc70f`, `e693334` and `e81a146` fixed lazy `if`, distance
+  dimensions and auto-orient bake parity. Main `5a6705c` (merged PR #31) was
+  integrated separately. Remote head was verified as `e81a146`, mergeable.
+  All 176 frozen baseline items / 36,061 frames passed without regeneration.
+  [Fix evidence](./pr-32-fix-results.json).
+  [Review evidence](./pr-32-review-results.json).
+
+_Last updated 2026-10-04 by Codex for the PR #32 printer fix._
+
+- **PR #32 conflict resolution (2026-10-04):** merged `main` at `3413780` into
+  PR head `a0708ba` and pushed merge `05033c8`, retaining CE9 expressions and
+  main correctness fixes. GitHub confirms `MERGEABLE` / `CLEAN`.
+  Both browser suites remain in `pnpm test`; evaluator is `22`, WebGL is `0.36.1`.
+  Fast checks (1,404 unit tests), affected browser/export checks, hardware
+  typography and all 176 frozen baselines pass. Review/merge remains pending.
+  See [resolution evidence](./pr-32-conflict-resolution-results.json).
+
+- **CE9 expressions and motion behaviours (`[x]`, 2026-10-04):** complete on
+  `codex/composition-ce9` (from `codex/composition-ce6-performance` at `6034de3`),
+  with all required local verification passing and four logical local commits
+  (see the closeout entry). [PR #32](https://github.com/xxibcill/still-shift/pull/32)
+  targets `main` and is ready for review. The conflict-resolution merge incorporates
+  `main` at `3413780` and was pushed as `05033c8`; local correctness and
+  frozen-baseline checks pass. GitHub confirms `MERGEABLE` / `CLEAN`.
+  One checklist item, runtime
+  re-expression of signals/drivers/periodic motion, moved to follow-up **CE9-F1**
+  with a recorded reason. Do not merge PR #30 as part of this work.
+- **Documentation delivery (CE6):** `c7afacc` commits `AGENTS.md`, this log,
   `docs/composition-engine-plan.md` and `docs/verification.md` on
   `codex/composition-ce6-performance`. [PR #31](https://github.com/xxibcill/still-shift/pull/31)
-  targets `main` and is ready for review. Local commit `205f413` records the
-  0.36.0 family audit but is not in the PR; it does not validate the combined
-  0.36.1 tree. Full-family verification of that tree remains separate work.
+  targets `main`; separate conflict-resolution merge `c2b5e39` has been pushed.
+  Local audit record `205f413` remains outside PR #31 and this CE9 branch.
 - **CE6-P performance (`[d]`, owner approved 2026-10-03):** WebGL's **1.25×**
   render/readback gate and CE6's **2×** speed target are deferred to an
   unscheduled future version. No further tuning or rendering architecture
@@ -64,28 +95,163 @@ _Last updated 2026-10-04 by Codex for PR #31 conflict resolution._
   typography); all pixel, seek and export checks pass. The original 117
   failing cases are not claimed resolved.
   - `ecf9bc6` (renderer `composition-webgl2-0.36.0`) was committed at the
-    owner's request **before** its full family matrices finished. Local commit
-    `205f413` subsequently records passing 0.36.0 pixel, state, seek and export
-    checks with 71 / 40 / 4 deferred timing failures; that evidence remains
-    separate from this conflict-resolution branch.
+    owner's request **before** its full family matrices finished. Local CE6
+    audit record `205f413` is separate and remains undelivered. It does not
+    validate the combined WebGL `0.36.1` tree. This conflict-resolution session
+    reruns focused correctness/export checks, not the strict family audits.
   - **Rendering-path decision deferred:** effect-free cases are bounded by the
-    GPU-process boundary on pinned SwiftShader. The owner chose feature progress
-    before selecting a CPU/GPU hybrid or revising future performance acceptance.
-    Retain the measurements and rejected experiments for the future version.
-- **Feature priority:** CE4a and CE6 features remain incomplete. CE9 expressions
-  and motion behaviours are the recommended next milestone (CE2 is complete),
-  followed by CE12 linting and CE10's builder/CLI once CE4a is complete. CE5 shape
-  layers and CE7 time controls are also ready. No new milestone was started by
-  this scope update. CE8/CE14 still need their CE6 features, but not CE6-P.
+    GPU-process boundary on pinned SwiftShader. Retain the measurements and
+    rejected experiments for the future version.
+- **Feature priority:** CE4a and CE6 features remain incomplete. CE12 linting is
+  ready next; CE10's builder/CLI follows once CE4a and CE12 are complete. CE5
+  shape layers and CE7 time controls are also ready. CE8 needs CE6 features and
+  CE9; CE14 needs CE6 features; neither needs CE6-P.
 - **Untracked files to leave alone:** `docs/composition-renderer-performance-research-1.md`
   and `-2.md` (intentionally untracked research notes) and
   `docs/pr-30-review-plan.json` (origin unknown; it fails the Prettier check, so
-  run `check:fast` steps individually if it is still present).
-- **PR base:** GitHub confirms CE4a PR #29 and CE4b PR #30 are already merged
-  into `main` (verified 2026-10-03). Target `main` for this CE6 PR; the earlier
-  `codex/composition-ce4` base recommendation is superseded.
+  run `pnpm check`'s steps individually and check formatting of changed files).
+- **PR base:** CE4a PR #29 and CE4b PR #30 are merged into `main` (verified
+  2026-10-03); target `main`.
+- **Toolchain gotchas:** run with the pinned Node 22.23.1
+  (`~/.nvm/versions/node/v22.23.1/bin` first on `PATH`). The shell default is Node
+  24, whose V8 differs in the last ULP of `**`/`exp`, so CE9 baked fixtures must be
+  regenerated on Node 22. Code loaded by the Lab Vite config (`scene-contract`)
+  must not use TypeScript constructor parameter properties: Node's strip-only mode
+  rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-04 — Fix the remaining PR #32 printer finding
+
+- **Agent / branch:** Codex on isolated `codex/pr32-review-fixes`, from `e81a146`;
+  primary checkout and its existing local work retained.
+- **Done:** posted one inline P2 comment; canonical printing retains readable
+  output when it fits and uses compact output otherwise, preserving parsed values.
+- **Results:** four original regressions fail before the fix; all eight final
+  boundary cases pass with the full fast checks (1,420 tests). Expression
+  pixels/seeks/repeated and baked MP4s on both backends and evaluator browser
+  parity pass; no baselines regenerated or performance experiments performed.
+- **Delivery:** one finding per commit; one final push follows the completed fix.
+  Owner review/merge remains pending; CE6-P and CE9-F1 remain deferred.
+- **Records:** [printer fix evidence](./pr-32-printer-fix-results.json),
+  [re-review evidence](./pr-32-rereview-results.json),
+  [inline finding](https://github.com/xxibcill/still-shift/pull/32#discussion_r4174572779).
+
+### 2026-10-04 — Fix PR #32 auto-orient bake parity
+
+- **Agent / branch:** Codex on isolated `codex/pr32-review-fixes` after `e693334`.
+- **Done:** preserve 64-frame boundary position history for retained path
+  auto-orient; check output orientations recursively and refuse incompatible
+  held-clock or indirect-history bakes. Switch semantics remain intact.
+- **Results:** three regressions fail before the fix; all 13 bake tests and
+  fast checks (1,412 tests) pass. The new 40-frame browser case is pixel/seek
+  exact on both backends; repeated/baked MP4s and evaluator parity also pass.
+- **Results (final):** all 176 frozen items / 36,061 frames pass in 270.67 s;
+  no baselines regenerated. Formatting, lint, types and whitespace pass.
+- **Delivery:** this is the third finding commit, following `c3fc70f` and
+  `e693334`; all are delivered together by the authorized final push to PR #32.
+  Main `5a6705c` is integrated. Full runtime/integration and hardware checks
+  were not rerun; CE6-P and CE9-F1 remain deferred.
+- **Records:** [fix evidence](./pr-32-fix-results.json), [review](./pr-32-review-results.json).
+
+### 2026-10-04 — Fix PR #32 distance dimensions
+
+- **Agent / branch:** Codex on isolated `codex/pr32-review-fixes` after `c3fc70f`.
+- **Done:** two-point `length` rejects mixed vec2/vec3 dimensions with a type
+  diagnostic before rendering. Matching vector dimensions remain supported.
+- **Results:** both argument-order regressions fail before the fix; syntax and
+  expression evaluator suites pass afterward (112 tests).
+- **Open / next:** auto-orient bake parity remains; final checks and one push
+  follow the third finding commit. No interim push.
+- **Records:** [fix evidence](./pr-32-fix-results.json), [review](./pr-32-review-results.json).
+
+### 2026-10-04 — Fix PR #32 lazy conditional
+
+- **Agent / branch:** Codex on isolated `codex/pr32-review-fixes` after `f80a52a`.
+- **Done:** `if` evaluates its condition and selected branch only; evaluator `23`
+  invalidates cached exports built with the previous semantics.
+- **Results:** regression fails before the fix; all 33 expression tests pass after.
+  Both branch directions skip invalid reads; selected invalid reads still fail.
+- **Open / next:** distance dimensions and auto-orient bake parity remain; final
+  verification and push follow the third fix. No interim push.
+- **Records:** [fix evidence](./pr-32-fix-results.json), [review](./pr-32-review-results.json).
+
+### 2026-10-04 — Integrate main before PR #32 review fixes
+
+- **Agent / branch:** Codex on isolated `codex/pr32-review-fixes`, from `75e46f2`.
+- **Done:** merged main `5a6705c`; resolved only `docs/dev-log.md`, retaining
+  CE9 and PR #31 records. Posted the three inline findings before editing code.
+- **Results:** whitespace and changed-document formatting pass; no production
+  source changes in this integration slice. Local review checks remain recorded.
+- **Open / next:** fix each finding in its own commit and push once at the end.
+  CE6-P and CE9-F1 remain deferred; Actions disabled.
+- **Records:** [review evidence](./pr-32-review-results.json),
+  [inline review](https://github.com/xxibcill/still-shift/pull/32#pullrequestreview-5402128438).
+
+### 2026-10-04 — Resolve PR #32 merge conflicts
+
+- **Agent / branch:** Codex in an isolated checkout of PR head `a0708ba`.
+- **Done:** pushed merge `05033c8` with `main` at `3413780`; kept both browser suites,
+  advanced evaluator to `22` and WebGL to `0.36.1`, and retained both branches'
+  functional changes. Adapter documentation retains the approved CE6-P deferral.
+- **Results:** `pnpm check:fast` (1,404 tests), toolchain, evaluator, expressions,
+  WebGL, exposure, typography (software/hardware) and WebGL-export checks pass.
+  Frozen CE0 checks pass: 176 items / 36,061 frames; no baseline regeneration.
+- **Open / next:** GitHub confirms `MERGEABLE` / `CLEAN`; review/merge remains separate.
+  Full runtime/integration and strict WebGL family matrices were not rerun.
+  Local audit `205f413` remains separate; CE6-P stays deferred; Actions disabled.
+- **Records:** [resolution evidence](./pr-32-conflict-resolution-results.json),
+  [PR #32](https://github.com/xxibcill/still-shift/pull/32).
+
+### 2026-10-04 — CE9 closeout and local commits
+
+- **Agent / branch:** Codex on `codex/composition-ce9`, continuing the uncommitted
+  implementation at `6034de3`.
+- **Scope:** finish the three remaining browser groups, record verification and
+  commit contract, evaluator/CLI, tests/fixtures and documentation separately.
+- **Done:** `b0b619e` — contract/validation; `66412a0` —
+  evaluator/bake/CLI; `38d3a66` — tests/fixtures. This documentation and
+  evidence commit closes CE9; the three excluded untracked files are unchanged.
+- **Results:** the three remaining browser commands pass on Node 22.23.1:
+  commerce 127 cases / 28,200 frames / 30 export pairs; typography 20 cases /
+  3,367 frames / 10 export pairs; frozen CE0 176 items / 36,061 frames. All 39
+  changed/new files pass Prettier after two documentation fixes; `git diff --check`
+  passes. The sandbox localhost failure was resolved by the authorized retry.
+- **Open / next:** CE9 is complete. Owner approval is needed before pushing or
+  opening a PR; CE9-F1 remains a reasoned follow-up. CE12 is ready next. Strict
+  0.36 WebGL family audits remain separate CE6 work; CE6-P timing is deferred.
+- **Records:** [CE9 completion record](./composition-engine-plan.md#ce9--expressions-and-motion-behaviours),
+  [verification results](./composition-ce9-verification-results.json).
+
+### 2026-10-03 — CE9 expressions and motion behaviours
+
+- **Agent / branch:** Claude Code on `codex/composition-ce9` (from `6034de3`; the
+  CE6-P deferral docs were already committed in `c7afacc`).
+- **Scope:** CE9 checklist and acceptance; no performance tuning (CE6-P deferred).
+- **Done (committed in closeout):** expression text → canonical AST (parser with columns,
+  printer, 45 registered built-ins, type checker); property-level dependency graph merged with
+  drivers, constraints, parents and auto-orient; lazy expression stage in
+  `composition-evaluator-20`; eight behaviours; grouped speed tuples and
+  `spatialSpeed`; path auto-orient; `comp bake`, `comp normalize`, normalized JSON
+  export; reference, user guide and plan record. Acceptance demo:
+  `benchmarks/fixtures/composition/ce9/overlap-demo.json` and its bake.
+- **Results:** pinned toolchain, schema, boundaries, lint, build, 1,384 unit tests,
+  46 runtime tests and all integration suites pass. Browser groups through story
+  fixtures pass, including evaluator and expressions: Node/Chromium error
+  ≤ 5.7e-14; baked pixels, random seeks and repeated/baked MP4 exports agree.
+  The 200-layer evaluator measures 0.435 ms/frame (2 ms budget). The closeout entry
+  records the passing commerce, typography, CE0 and changed-file formatting checks.
+- **Rejected / do not repeat:** routing drivers/periodic motion through the
+  expression evaluator at runtime (would change legacy float order; CE9-F1);
+  chained follower springs reading each other (exponential cost; followers read
+  the leader with cumulative delay instead); always copying the stage before
+  constraints (0.42 → 0.71 ms/frame; now only when expressions or auto-orient read
+  stages, 0.435 ms/frame).
+- **Open / next:** local delivery is recorded in the closeout entry; owner review
+  precedes pushing or a PR. CE9-F1 when CE11 needs lowered motion craft; CE12 next.
+- **Records:** [CE9 completion record](./composition-engine-plan.md#ce9--expressions-and-motion-behaviours),
+  [decision log](./composition-engine-plan.md#decision-log),
+  [expression reference](./composition-reference.md#expressions-ce9).
 
 ### 2026-10-04 — Resolve PR #31 against main
 

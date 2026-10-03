@@ -30,6 +30,7 @@ export const COMPOSITION_LIMITS = {
   maxTextAnimators: 200,
   maxExpressions: 2_000,
   maxExpressionLength: 2_000,
+  maxBehaviours: 200,
   maxPropertyPathLength: 512,
   maxMetadataBytes: 65_536,
   maxMetadataDepth: 64,
@@ -210,14 +211,19 @@ export type IssueReporter = (
   code: string,
   path: (string | number)[],
   message: string,
+  /** 1-based character column inside an expression source string. */
+  column?: number,
 ) => void;
 
 export const reporter =
   (ctx: z.RefinementCtx, base: (string | number)[] = []): IssueReporter =>
-  (code, path, message) =>
+  (code, path, message, column) =>
     ctx.addIssue({
       code: "custom",
       path: [...base, ...path],
       message: `${code}: ${message}`,
-      params: { diagnosticCode: code },
+      params: {
+        diagnosticCode: code,
+        ...(column === undefined ? {} : { column }),
+      },
     });

@@ -1,0 +1,226 @@
+{
+  "version": "pr-review-1",
+  "date": "2026-10-04",
+  "pullRequest": "https://github.com/xxibcill/still-shift/pull/32",
+  "baseCommit": "34137807140dab0b1ce673abf8a0b8553b2d7c5e",
+  "headCommit": "75e46f2c580b4d487349bf322fb6a846245237a3",
+  "diffCommand": "git diff 3413780...75e46f2",
+  "changedFiles": 51,
+  "standards": {
+    "sources": [
+      "AGENTS.md",
+      "docs/verification.md",
+      "docs/composition-reference.md",
+      "packages/scene-contract/src/composition/expression-check.ts"
+    ],
+    "findings": [
+      {
+        "priority": 2,
+        "title": "Evaluate only the selected if branch",
+        "file": "packages/renderer-core/src/composition/evaluate/evaluate.ts",
+        "startLine": 1054,
+        "endLine": 1055,
+        "contract": "expression-check.ts:203: if(condition, a, b), equivalent to condition ? a : b.",
+        "problem": "Every argument is evaluated at line 982 before branch selection. At frame 0, if(frame < 10, 1, valueAtTime(10000)) validates but throws comp-evaluation-time; equivalent ternary returns 1.",
+        "fix": "Dispatch if before eager argument evaluation, evaluate condition and only the selected branch."
+      },
+      {
+        "priority": 2,
+        "title": "Require matching vector dimensions for distance arguments",
+        "file": "packages/scene-contract/src/composition/expression-check.ts",
+        "startLine": 187,
+        "endLine": 189,
+        "contract": "docs/composition-reference.md:766-767 distinguishes vec2 and vec3 and states there is no implicit conversion; built-in registry promises distance between two points.",
+        "problem": "Two length arguments independently accept either vector type. length([0,0],[0,0,10]) validates and returns 0; reversing arguments validates but throws comp-expression-value.",
+        "fix": "Reject unequal dimensions with comp-expression-type."
+      }
+    ],
+    "architectureSmells": []
+  },
+  "spec": {
+    "sources": [
+      "docs/composition-engine-plan.md: CE9",
+      "docs/composition-reference.md: Baking"
+    ],
+    "findings": [
+      {
+        "priority": 1,
+        "title": "Preserve auto-orient boundary samples when baking",
+        "file": "packages/renderer-core/src/composition/bake.ts",
+        "startLine": 168,
+        "endLine": 173,
+        "contract": "docs/composition-reference.md:851-852: The result evaluates identically at every integer frame; :863-864: auto-orient reads the baked position identically.",
+        "problem": "Bake samples only frames 0 through frameCount-1, retains transform.autoOrient, and its heading reader samples outside the baked range. A valid position expression [frame, frame * frame] changes frame 0 rotation from 0 degrees to 45 degrees after an apparently successful bake with no diagnostics.",
+        "fix": "Preserve the boundary history/future samples needed by auto-orient or reject cases where bake cannot retain parity."
+      }
+    ]
+  },
+  "reproductions": {
+    "environment": "Pinned Node 22.23.1; exact PR source snapshot",
+    "results": [
+      {
+        "case": "path-auto-orient-bake",
+        "ok": true,
+        "diagnostics": [],
+        "samples": [
+          {
+            "frame": 0,
+            "original": 0,
+            "baked": 45
+          },
+          {
+            "frame": 1,
+            "original": 63.43494882292201,
+            "baked": 63.43494882292201
+          },
+          {
+            "frame": 38,
+            "original": 89.24615166692924,
+            "baked": 89.24615166692924
+          },
+          {
+            "frame": 39,
+            "original": 89.2654789657452,
+            "baked": 89.2559407971113
+          }
+        ]
+      },
+      {
+        "case": "length([0, 0], [0, 0, 10])",
+        "valid": true,
+        "diagnostics": [],
+        "value": 0
+      },
+      {
+        "case": "length([0, 0, 10], [0, 0])",
+        "valid": true,
+        "diagnostics": [],
+        "error": "Expression for \"a.transform.rotation\" produced a non-finite value"
+      },
+      {
+        "case": "if(frame < 10, 1, valueAtTime(10000))",
+        "valid": true,
+        "diagnostics": [],
+        "error": "Expression time must be finite and within \u00b1216000 frames"
+      },
+      {
+        "case": "frame < 10 ? 1 : valueAtTime(10000)",
+        "valid": true,
+        "diagnostics": [],
+        "value": 1
+      }
+    ],
+    "bakeInput": {
+      "schemaVersion": "composition-1",
+      "id": "main",
+      "width": 200,
+      "height": 200,
+      "fps": 30,
+      "frameCount": 40,
+      "assets": [],
+      "layers": [
+        {
+          "id": "a",
+          "type": "solid",
+          "size": [10, 10],
+          "color": "#808080",
+          "transform": {
+            "autoOrient": "path"
+          }
+        }
+      ],
+      "expressions": {
+        "a.transform.position": {
+          "source": "[frame, frame * frame]"
+        }
+      }
+    }
+  },
+  "verification": {
+    "environment": {
+      "node": "22.23.1",
+      "pnpm": "10.29.3",
+      "snapshot": "/private/tmp/still-shift-pr32-review",
+      "method": "Exported exact PR tree with git archive; external dependency symlinks reused installed packages and workspace links point to snapshot packages."
+    },
+    "checks": [
+      {
+        "command": "pnpm toolchain:check",
+        "exitCode": 0
+      },
+      {
+        "command": "pnpm schema:check",
+        "exitCode": 0
+      },
+      {
+        "command": "pnpm check:boundaries",
+        "exitCode": 0
+      },
+      {
+        "command": "pnpm format:check:ts",
+        "exitCode": 0
+      },
+      {
+        "command": "pnpm lint:ts",
+        "exitCode": 0
+      },
+      {
+        "command": "pnpm build",
+        "exitCode": 0
+      },
+      {
+        "command": "pnpm test:unit",
+        "exitCode": 0,
+        "filesPassed": 127,
+        "testsPassed": 1404
+      },
+      {
+        "command": "pnpm test:browser:composition-expressions",
+        "exitCode": 0,
+        "summary": "Two fixtures, 150 frames each backend: all expression/bake pixels and shuffled seeks equal. Four byte-identical MP4 comparisons across Canvas2D and WebGL2 (repeat and baked comparisons per backend)."
+      },
+      {
+        "command": "pnpm test:browser:composition-evaluator",
+        "exitCode": 0,
+        "summary": "Five fixtures x nine frames; maximum Node/browser numeric error 5.684341886080802e-14; timing, visibility and reverse seeks exact."
+      },
+      {
+        "command": "pnpm test:browser:composition-webgl",
+        "exitCode": 0,
+        "summary": "Effect optimization regressions, native fixtures, provider paints, image reuse, fallback and bounded composite checks pass."
+      },
+      {
+        "command": "git diff 3413780...75e46f2 --check",
+        "exitCode": 0
+      }
+    ],
+    "aggregateNote": "Initial pnpm check:fast passed schema/boundaries/format/lint/build but failed six unit suites because the isolated snapshot lacked package-level external dependency links. After completing links, all 127 unit files and 1404 tests passed. Aggregate was not rerun; constituent fast steps passed.",
+    "setupFailures": [
+      "Initial missing three dependency in snapshot fixed by package-level links.",
+      "Toolchain initially failed on sandboxed uv cache; existing Python environment and authorized retry passed. Shared editable Python package restored to original checkout by a passing root toolchain check.",
+      "Initial browser localhost binding EPERM; authorized localhost/Chromium retry passed."
+    ],
+    "notRerun": [
+      "Full runtime and integration suites",
+      "Full pnpm check/check:all",
+      "Strict WebGL family timing/correctness matrices",
+      "Hardware GPU audit",
+      "Frozen CE0 baseline suite"
+    ]
+  },
+  "readiness": {
+    "remoteHeadRechecked": true,
+    "draft": false,
+    "currentMainTip": "5a6705c04ff3339c99fa89d798d6feb1bd1c7938",
+    "currentMainChange": "PR #31 merged after the prior conflict-resolution snapshot; inherited CE6 changes now delivered to main.",
+    "githubMergeable": "CONFLICTING",
+    "githubMergeStateStatus": "DIRTY",
+    "note": "GitHub baseRefOid still reports 3413780. Direct main ref API confirms newer 5a6705c; review diff uses pinned merge-base 3413780. No conflict resolution performed in this review.",
+    "next": "Address all three reproduced findings and resolve conflicts with current main before merge.",
+    "acceptedDeferrals": [
+      "CE6-P performance acceptance remains deferred.",
+      "CE9-F1 runtime expression sugar remains deferred."
+    ]
+  },
+  "mutations": "Only local review evidence and dev-log updated. No production source edits, commits, pushes, merge or GitHub review comments."
+}

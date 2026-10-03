@@ -91,7 +91,52 @@ JSON export measures pinned fonts before resizing fitted backing panels. The ada
 also support pixel effects, motion blur, rich typography, spatial paths and morphs,
 and animated blur, stroke and trim. See the [commerce adapter reference](./composition-reference.md#commerce-adapter-ce4b)
 for provider details and input limits. CE4b is complete under the approved milestone
-split; CE6 retains the unchanged 1.25× render/readback timing target.
+split; CE6-P retains the unchanged 1.25× render/readback timing target, deferred
+to a future version.
+
+### Expressions and behaviours
+
+A composition can describe relationships and procedural motion instead of keys. An
+expression is short text stored under a property path; behaviours are one-line
+motion-design intents that compile to expressions:
+
+```json
+{
+  "expressions": {
+    "shadow.transform.position": {
+      "source": "ref('hero.transform.position') + [12, 18]"
+    }
+  },
+  "behaviours": [
+    {
+      "type": "follow-through",
+      "leader": "hero.transform.position",
+      "followers": ["trail-1", "trail-2"]
+    },
+    { "type": "squash-stretch", "layer": "hero" }
+  ]
+}
+```
+
+Expressions are checked when the composition loads. Errors give the JSON path and
+the character column. They cannot run arbitrary code and read only seeded random
+values, so previews, seeks and exports stay reproducible. The
+[expression reference](./composition-reference.md#expressions-ce9) lists the grammar,
+built-ins (`wiggle`, `loopOut`, `spring`, `valueAtTime`, …) and behaviours
+(follow-through, inertial bounce, squash and stretch, anticipation, auto-orient,
+constant speed, camera shake and stagger). The
+[overlap demo](../benchmarks/fixtures/composition/ce9/overlap-demo.json) has three
+layers following a keyed leader without keys of their own.
+
+To inspect the expression results as keys, or to hand the composition to a tool that
+cannot evaluate expressions:
+
+```bash
+pnpm --silent still-shift comp bake --input composition.json --output baked.json
+```
+
+The baked file renders the same pixels at every frame. `comp normalize` adds each
+expression's canonical AST, which `export-json --normalized true` also writes.
 
 For the Lab preview, run `pnpm lab` and open
 [`/composition.html`](http://127.0.0.1:4173/composition.html): play or scrub the

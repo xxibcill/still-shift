@@ -1,5 +1,9 @@
 import {
+  compileExpressions,
+  segmentKey,
   validateComposition,
+  type CompiledExpression,
+  type PropertyPathSegment,
   resolvePropertyPath,
   isResolvedProperty,
   parsePropertyPath,
@@ -19,6 +23,15 @@ export type PeriodicBinding = {
   motion: CompositionPeriodic;
   path: PropertyPath;
 };
+export type ExpressionBinding = {
+  expression: CompiledExpression;
+  path: PropertyPath;
+  segments: PropertyPathSegment[];
+  /** Canonical segments after the layer; unique per layer (overlaps are invalid). */
+  key: string;
+  /** A precomp `timeRemap` expression runs in the instance clock, not the layer stage. */
+  clock: boolean;
+};
 export type CompiledComposition = {
   comp: Composition;
   scopes: Map<string, CompositionScope>;
@@ -26,7 +39,13 @@ export type CompiledComposition = {
   signals: Map<string, Signal>;
   drivers: Map<string, DriverBinding[]>;
   periodic: Map<string, PeriodicBinding[]>;
+  expressions: Map<string, ExpressionBinding[]>;
+  /** Expressions or path auto-orient may read layers' pre-constraint stage values. */
+  stageReads: boolean;
   paths: Map<string, PropertyPath>;
+  /** Static per-scope selections, so time-shifted evaluations stay cheap. */
+  solo: Map<CompositionScope, Set<string> | null>;
+  mattes: Map<CompositionScope, Set<string>>;
 };
 const compiled = new WeakMap<Composition, CompiledComposition>();
 export const layerKey = (scope: readonly string[], id: string) =>
@@ -63,7 +82,11 @@ export function compileComposition(comp: Composition): CompiledComposition {
     signals: new Map((comp.signals ?? []).map((signal) => [signal.id, signal])),
     drivers: new Map(),
     periodic: new Map(),
+    expressions: new Map(),
+    stageReads: false,
     paths: new Map(),
+    solo: new Map(),
+    mattes: new Map(),
   };
   const bind = <T extends { path: PropertyPath }>(
     map: Map<string, T[]>,
@@ -87,6 +110,22 @@ export function compileComposition(comp: Composition): CompiledComposition {
         motion.target ?? `${motion.node}.${motion.property}`,
       ),
     });
+  for (const expression of compileExpressions(comp)) {
+    const path = expression.target.path;
+    const layer = expression.target.resolved.layer!;
+    bind(result.expressions, {
+      expression,
+      path,
+      segments: path.segments,
+      key: segmentKey(path.segments),
+      clock: layer.type === "precomp" && path.segments[0]!.name === "timeRemap",
+    });
+  }
+  result.stageReads =
+    result.expressions.size > 0 ||
+    scopes.some((scope) =>
+      scope.layers.some((layer) => layer.transform?.autoOrient === "path"),
+    );
   compiled.set(comp, result);
   return result;
 }

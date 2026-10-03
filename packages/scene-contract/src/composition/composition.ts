@@ -31,6 +31,7 @@ import {
   size2,
 } from "./primitives.ts";
 import { validateCompositionSemantics } from "./validate.ts";
+import { CompositionBehaviourSchema } from "./behaviours.ts";
 
 const L = COMPOSITION_LIMITS;
 const frame = compFrame;
@@ -218,6 +219,11 @@ const compositionShape = z
         message: `at most ${L.maxExpressions} expressions`,
         params: { diagnosticCode: "comp-limit" },
       })
+      .optional(),
+    /** CE9 motion behaviours; each compiles to expressions. */
+    behaviours: z
+      .array(CompositionBehaviourSchema)
+      .max(L.maxBehaviours)
       .optional(),
     camera2d: Camera2dSchema.optional(),
     metadata: metadata.optional(),

@@ -1117,15 +1117,32 @@ const invalid: Mutation[] = [
     "comp-feature-unavailable",
   ],
   [
-    "expressions",
+    "expression type",
     (d) =>
       set(d, {
         expressions: {
-          "house.transform.rotation": { source: "wiggle(2, 6, 7)" },
+          "house.transform.rotation": {
+            source: "ref('house.transform.position')",
+          },
         },
       }),
-    "comp-feature-unavailable",
-    "expressions",
+    "comp-expression-type",
+    'expressions["house.transform.rotation"].source',
+  ],
+  [
+    "behaviour cycle",
+    (d) =>
+      set(d, {
+        behaviours: [
+          {
+            type: "follow-through",
+            leader: "house.transform.position",
+            followers: ["house"],
+          },
+        ],
+      }),
+    "comp-expression-cycle",
+    "behaviours[0]",
   ],
   [
     "motion blur interval",

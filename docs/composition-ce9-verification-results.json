@@ -1,0 +1,4948 @@
+{
+  "version": "composition-ce9-verification-1",
+  "date": "2026-10-04",
+  "startedDate": "2026-10-03",
+  "branch": "codex/composition-ce9",
+  "implementationBase": "6034de3",
+  "environment": {
+    "node": "22.23.1",
+    "pnpm": "10.29.3",
+    "platform": "darwin-arm64",
+    "browserProfile": "chromium-software-2",
+    "baselineFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba"
+  },
+  "priorVerification": {
+    "provenance": "Passed commands and measurements from the owner-provided continuation handoff; not rerun during closeout.",
+    "commands": [
+      "pnpm toolchain:check",
+      "pnpm schema:check",
+      "pnpm check:boundaries",
+      "pnpm lint",
+      "pnpm build",
+      "pnpm test:unit",
+      "pnpm test:runtime",
+      "pnpm test:integration"
+    ],
+    "status": "passed",
+    "unitTests": 1384,
+    "runtimeTests": 46,
+    "integration": "all suites passed after removal of strip-only-incompatible constructor parameter properties",
+    "browserCommands": [
+      "pnpm test:browser:depth",
+      "pnpm test:browser:vertical-image",
+      "pnpm test:browser:export",
+      "pnpm test:golden",
+      "pnpm test:browser:cli",
+      "pnpm test:browser:batch",
+      "pnpm test:browser:illustrated",
+      "pnpm test:browser:illustrated:vertical",
+      "pnpm test:browser:cinematic",
+      "pnpm test:browser:cinematic:vertical",
+      "pnpm test:browser:threshold",
+      "pnpm test:browser:dolly",
+      "pnpm test:browser:lateral",
+      "pnpm test:browser:reveal",
+      "pnpm test:browser:story",
+      "pnpm test:browser:story:activity",
+      "pnpm test:browser:story:continuous",
+      "pnpm test:browser:passage:authoring",
+      "pnpm test:browser:lab-session",
+      "pnpm test:browser:commerce",
+      "pnpm test:browser:commerce-components",
+      "pnpm test:browser:commerce-effects",
+      "pnpm test:browser:commerce-spatial",
+      "pnpm test:browser:reusable-components",
+      "pnpm test:browser:reusable-package",
+      "pnpm test:browser:reusable-behavior-package",
+      "pnpm test:browser:reusable-timing-package",
+      "pnpm test:browser:typography",
+      "pnpm test:browser:typography:fixtures",
+      "pnpm test:browser:composition-evaluator",
+      "pnpm test:browser:composition-expressions",
+      "pnpm test:browser:composition",
+      "pnpm test:browser:composition-webgl",
+      "pnpm test:browser:composition-webgl-export",
+      "pnpm test:browser:composition-exposure",
+      "pnpm test:browser:composition-effects",
+      "pnpm test:browser:composition-story-adapter",
+      "pnpm test:browser:composition-story-fixtures"
+    ],
+    "acceptance": {
+      "maximumNodeChromiumEvaluatorError": 5.7e-14,
+      "expressionBakedPixels": "identical on canvas2d and webgl2",
+      "randomSeeks": "match forward evaluation",
+      "exports": "repeated and baked demo MP4s byte-identical on both backends",
+      "evaluator200LayerMillisecondsPerFrame": 0.435,
+      "evaluatorBaselineMillisecondsPerFrame": 0.415,
+      "evaluatorBudgetMillisecondsPerFrame": 2
+    }
+  },
+  "closeout": {
+    "browserCommand": "pnpm test:browser:composition-commerce-adapter && pnpm test:browser:composition-typography-adapter && pnpm test:browser:composition-baselines",
+    "exitCode": 0,
+    "initialSandboxAttempt": {
+      "exitCode": 1,
+      "classification": "environment permission",
+      "error": "listen EPERM on 127.0.0.1:5173 before verification; authorized local-server/Chromium retry passed"
+    },
+    "suites": [
+      {
+        "command": "pnpm test:browser:composition-commerce-adapter",
+        "exitCode": 0,
+        "cases": [
+          {
+            "backend": "canvas2d",
+            "id": "commerce/a01-landscape",
+            "frames": 300,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 1.0583124156189883,
+            "timings": [
+              {
+                "legacyMs": 517.8999999761581,
+                "compositionMs": 548.1000000238419,
+                "ratio": 1.0583124156189883
+              },
+              {
+                "legacyMs": 578.4999995827675,
+                "compositionMs": 564.8000004291534,
+                "ratio": 0.9763180654045032
+              },
+              {
+                "legacyMs": 494.50000005960464,
+                "compositionMs": 562.9999998807907,
+                "ratio": 1.138523760996824
+              }
+            ],
+            "preparationChecks": 0
+          },
+          {
+            "backend": "canvas2d",
+            "id": "commerce/a01-feed",
+            "frames": 300,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 1.0286664946082307,
+            "timings": [
+              {
+                "legacyMs": 328.8000000715256,
+                "compositionMs": 366.9000000357628,
+                "ratio": 1.1158759122747843
+              },
+              {
+                "legacyMs": 392.79999965429306,
+                "compositionMs": 391.80000030994415,
+                "ratio": 0.9974541768196817
+              },
+              {
+                "legacyMs": 390.7000002861023,
+                "compositionMs": 401.89999973773956,
+                "ratio": 1.0286664946082307
+              }
+            ],
+            "preparationChecks": 0
+          },
+          {
+            "backend": "canvas2d",
+            "id": "commerce/h01-landscape",
+            "frames": 240,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 1.086100297459416,
+            "timings": [
+              {
+                "legacyMs": 385.59999990463257,
+                "compositionMs": 387.5000001192093,
+                "ratio": 1.0049273864498098
+              },
+              {
+                "legacyMs": 404.2999999523163,
+                "compositionMs": 449.89999997615814,
+                "ratio": 1.112787534081672
+              },
+              {
+                "legacyMs": 436.7000000476837,
+                "compositionMs": 474.2999999523163,
+                "ratio": 1.086100297459416
+              }
+            ],
+            "preparationChecks": 0
+          },
+          {
+            "backend": "canvas2d",
+            "id": "commerce/h01-portrait",
+            "frames": 240,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 1.053731344100175,
+            "timings": [
+              {
+                "legacyMs": 401.9999998807907,
+                "compositionMs": 423.6000002026558,
+                "ratio": 1.053731344100175
+              },
+              {
+                "legacyMs": 453.39999997615814,
+                "compositionMs": 449.6000000834465,
+                "ratio": 0.9916188798127229
+              },
+              {
+                "legacyMs": 466.9000001549721,
+                "compositionMs": 495.5999998450279,
+                "ratio": 1.0614692646830794
+              }
+            ],
+            "preparationChecks": 0
+          },
+          {
+            "backend": "canvas2d",
+            "id": "commerce/h03-thai",
+            "frames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 1.0759178577567852,
+            "timings": [
+              {
+                "legacyMs": 321.4000002145767,
+                "compositionMs": 345.7999997138977,
+                "ratio": 1.0759178577567852
+              },
+              {
+                "legacyMs": 383.5,
+                "compositionMs": 390.89999997615814,
+                "ratio": 1.01929595821684
+              },
+              {
+                "legacyMs": 357.00000005960464,
+                "compositionMs": 384.4999998807907,
+                "ratio": 1.0770308118111895
+              }
+            ],
+            "preparationChecks": 0
+          },
+          {
+            "backend": "canvas2d",
+            "id": "commerce/h04-square",
+            "frames": 240,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 1.054162928862031,
+            "timings": [
+              {
+                "legacyMs": 203.5999995470047,
+                "compositionMs": 207.10000044107437,
+                "ratio": 1.0171905741741498
+              },
+              {
+                "legacyMs": 201.30000007152557,
+                "compositionMs": 227.39999997615814,
+                "ratio": 1.1296572274980565
+              },
+              {
+                "legacyMs": 223.4000008702278,
+                "compositionMs": 235.49999922513962,
+                "ratio": 1.054162928862031
+              }
+            ],
+            "preparationChecks": 0
+          },
+          {
+            "backend": "canvas2d",
+            "id": "commerce/vertical-h01-portrait",
+            "frames": 240,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 1.0247452680874265,
+            "timings": [
+              {
+                "legacyMs": 412.20000022649765,
+                "compositionMs": 422.39999973773956,
+                "ratio": 1.0247452680874265
+              },
+              {
+                "legacyMs": 396.2000000476837,
+                "compositionMs": 419.2999999523163,
+                "ratio": 1.0583038866780727
+              },
+              {
+                "legacyMs": 438.80000054836273,
+                "compositionMs": 445.1999995112419,
+                "ratio": 1.0145852300703764
+              }
+            ],
+            "preparationChecks": 0
+          },
+          {
+            "backend": "canvas2d",
+            "id": "commerce/atom-anchor",
+            "frames": 240,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 0.9823193935226754,
+            "timings": [
+              {
+                "legacyMs": 525.9999995231628,
+                "compositionMs": 516.7000005245209,
+                "ratio": 0.9823193935226754
+              },
+              {
+                "legacyMs": 566.8000000715256,
+                "compositionMs": 553.0999999642372,
+                "ratio": 0.975829216468667
+              },
+              {
+                "legacyMs": 559.7000002861023,
+                "compositionMs": 619.8999997377396,
+                "ratio": 1.1075576191189294
+              }
+            ],
+            "preparationChecks": 0
+          },
+          {
+            "backend": "canvas2d",
+            "id": "commerce/atom-attachment",
+            "frames": 240,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 1.0721997300053174,
+            "timings": [
+              {
+                "legacyMs": 296.4000000357628,
+                "compositionMs": 317.80000001192093,
+                "ratio": 1.0721997300053174
+              },
+              {
+                "legacyMs": 323.19999998807907,
+                "compositionMs": 371.1000000834465,
+                "ratio": 1.1482054458450934
+              },
+              {
+                "legacyMs": 360.59999990463257,
+                "compositionMs": 362.5,
+                "ratio": 1.005268996383444
+              }
+            ],
+            "preparationChecks": 0
+          },
+          {
+            "backend": "canvas2d",
+            "id": "commerce/atom-attachment/nested-crop-brush",
+            "frames": 240,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 1.0039340574082278,
+            "timings": [
+              {
+                "legacyMs": 534.6999996900558,
+                "compositionMs": 529.2000002861023,
+                "ratio": 0.9897138593470326
+              },
+              {
+                "legacyMs": 533.8000001311302,
+                "compositionMs": 535.8999999761581,
+                "ratio": 1.0039340574082278
+              },
+              {
+                "legacyMs": 526.0999998450279,
+                "compositionMs": 539.0000001192093,
+                "ratio": 1.024520053750202
+              }
+            ],
+            "preparationChecks": 0
+          },
+          {
+            "backend": "canvas2d",
+            "id": "commerce/atom-background-light",
+            "frames": 240,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 1.0173024383727516,
+            "timings": [
+              {
+                "legacyMs": 954.2000000476837,
+                "compositionMs": 998.4999999403954,
+                "ratio": 1.0464263256031208
+              },
+              {
+                "legacyMs": 988.3000000715256,
+                "compositionMs": 1005.3999999165535,
+                "ratio": 1.0173024383727516
+              },
+              {
+                "legacyMs": 988.6999996900558,
+                "compositionMs": 1005.4000003933907,
+                "ratio": 1.0168908675114494
+              }
+            ],
+            "preparationChecks": 0
+          },
+          {
+            "backend": "canvas2d",
+            "id": "commerce/atom-background",
+            "frames": 240,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 1.1431116409877515,
+            "timings": [
+              {
+                "legacyMs": 168.39999985694885,
+                "compositionMs": 192.50000017881393,
+                "ratio": 1.1431116409877515
+              },
+              {
+                "legacyMs": 160.00000047683716,
+                "compositionMs": 185.89999949932098,
+                "ratio": 1.1618749934080987
+              },
+              {
+                "legacyMs": 164.89999949932098,
+                "compositionMs": 172.20000052452087,
+                "ratio": 1.0442692604449035
+              }
+            ],
+            "preparationChecks": 0
+          },
+          {
+            "backend": "canvas2d",
+            "id": "commerce/atom-callout",
+            "frames": 240,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 1.1006672474038106,
+            "timings": [
+              {
+                "legacyMs": 315.40000051259995,
+                "compositionMs": 338.7999994158745,
+                "ratio": 1.074191499255688
+              },
+              {
+                "legacyMs": 320.6999997496605,
+                "compositionMs": 356.00000035762787,
+                "ratio": 1.1100717200982932
+              },
+              {
+                "legacyMs": 344.6999998688698,
+                "compositionMs": 379.4000000357628,
+                "ratio": 1.1006672474038106
+              }
+            ],
+            "preparationChecks": 0
+          },
+          {
+            "backend": "canvas2d",
+            "id": "commerce/atom-detail",
+            "frames": 240,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 1.1445301339405085,
+            "timings": [
+              {
+                "legacyMs": 340.79999977350235,
+                "compositionMs": 335.9000001549721,
+                "ratio": 0.9856220668374799
+              },
+              {
+                "legacyMs": 350.1000000834465,
+                "compositionMs": 400.69999998807907,
+                "ratio": 1.1445301339405085
+              },
+              {
+                "legacyMs": 357.6000000834465,
+                "compositionMs": 423.0999999642372,
+                "ratio": 1.1831655477223328
+              }
+            ],
+            "preparationChecks": 0
+          },
+          {
+            "backend": "canvas2d",
+            "id": "commerce/atom-directional-blur",
+            "frames": 240,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 1.0010487277493354,
+            "timings": [
+              {
+                "legacyMs": 26708.39999973774,
+                "compositionMs": 26736.60000014305,
+                "ratio": 1.0010558476136941
+              },
+              {
+                "legacyMs": 27557.199999809265,
+                "compositionMs": 27586.10000014305,
+                "ratio": 1.0010487277493354
+              },
+              {
+                "legacyMs": 27063.49999988079,
+                "compositionMs": 27077.40000027418,
+                "ratio": 1.0005136069020435
+              }
+            ],
+            "preparationChecks": 0
+          },
+          {
+            "backend": "canvas2d",
+            "id": "commerce/atom-displacement",
+            "frames": 240,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 1.005587013723772,
+            "timings": [
+              {
+                "legacyMs": 1324.500000178814,
+                "compositionMs": 1331.8999998569489,
+                "ratio": 1.005587013723772
+              },
+              {
+                "legacyMs": 1376.500000178814,
+                "compositionMs": 1391.599999845028,
+                "ratio": 1.0109698508276443
+              },
+              {
+                "legacyMs": 1383.8999998569489,
+                "compositionMs": 1371.8000001907349,
+                "ratio": 0.9912565939248033
+              }
+            ],
+            "preparationChecks": 0
+          },
+          {
+            "backend": "canvas2d",
+            "id": "commerce/atom-displacement/pixel-stack",
+            "frames": 240,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 1.0097462378658013,
+            "timings": [
+              {
+                "legacyMs": 7223.300000011921,
+                "compositionMs": 7293.699999988079,
+                "ratio": 1.0097462378658013
+              },
+              {
+                "legacyMs": 7223.500000119209,
+                "compositionMs": 7293.999999821186,
+                "ratio": 1.0097598116841993
+              },
+              {
+                "legacyMs": 7428.300000071526,
+                "compositionMs": 7429.100000202656,
+                "ratio": 1.0001076962603992
+              }
+            ],
+            "preparationChecks": 0
+          },
+          {
+            "backend": "canvas2d",
+            "id": "commerce/atom-displacement/pixel-reversed",
+            "frames": 240,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 1.0025563870032472,
+            "timings": [
+              {
+                "legacyMs": 7580.200000166893,
+                "compositionMs": 7552.3999999165535,
+                "ratio": 0.996332550559388
+              },
+              {
+                "legacyMs": 7597.200000226498,
+                "compositionMs": 7637.299999773502,
+                "ratio": 1.0052782603519466
+              },
+              {
+                "legacyMs": 7510.599999964237,
+                "compositionMs": 7529.800000190735,
+                "ratio": 1.0025563870032472
+              }
+            ],
+            "preparationChecks": 0
+          },
+          {
+            "backend": "canvas2d",
+            "id": "commerce/atom-drift",
+            "frames": 240,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 0.9603209015904646,
+            "timings": [
+              {
+                "legacyMs": 461.20000010728836,
+                "compositionMs": 442.8999999165535,
+                "ratio": 0.9603209015904646
+              },
+              {
+                "legacyMs": 459.2000000476837,
+                "compositionMs": 473.09999990463257,
+                "ratio": 1.0302700345285398
+              },
+              {
+                "legacyMs": 506.79999977350235,
+                "compositionMs": 462.400000333786,
+                "ratio": 0.9123914769937659
+              }
+            ],
+            "preparationChecks": 0
+          },
+          {
+            "backend": "canvas2d",
+            "id": "commerce/atom-echo",
+            "frames": 240,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 1.0000000004568281,
+            "timings": [
+              {
+                "legacyMs": 521.8999998569489,
+                "compositionMs": 521.9000000953674,
+                "ratio": 1.0000000004568281
+              },
+              {
+                "legacyMs": 497.60000014305115,
+                "compositionMs": 527.9999998211861,
+                "ratio": 1.0610932469240262
+              },
+              {
+                "legacyMs": 533.0999998450279,
+                "compositionMs": 503.3000001311302,
+                "ratio": 0.9441005445084214
+              }
+            ],
+            "preparationChecks": 0
+          },
+          {
+            "backend": "canvas2d",
+            "id": "commerce/atom-echo/returning-matte",
+            "frames": 240,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 0.9921527045387768,
+            "timings": [
+              {
+                "legacyMs": 939.3000000715256,
+                "compositionMs": 960.6999998092651,
+                "ratio": 1.0227829231726924
+              },
+              {
+                "legacyMs": 942.9999998211861,
+                "compositionMs": 935.6000002026558,
+                "ratio": 0.9921527045387768
+              },
+              {
+                "legacyMs": 950.299999833107,
+                "compositionMs": 939.5000001788139,
+                "ratio": 0.9886351682035255
+              }
+            ],
+            "preparationChecks": 0
+          },
+          {
+            "backend": "canvas2d",
+            "id": "commerce/atom-echo/image-active-stack",
+            "frames": 240,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 0.8441954037458118,
+            "timings": [
+              {
+                "legacyMs": 4068.4999998807907,
+                "compositionMs": 3725.100000023842,
+                "ratio": 0.9155954283232123
+              },
+              {
+                "legacyMs": 4399.099999606609,
+                "compositionMs": 3713.7000002861023,
+                "ratio": 0.8441954037458118
+              },
+              {
+                "legacyMs": 4365.0999994874,
+                "compositionMs": 3652.000000536442,
+                "ratio": 0.8366360452143826
+              }
+            ],
+            "preparationChecks": 0
+          },
+          {
+            "backend": "canvas2d",
+            "id": "commerce/atom-echo/zero-decay",
+            "frames": 240,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 1.088805795599952,
+            "timings": [
+              {
+                "legacyMs": 415.39999955892563,
+                "compositionMs": 473.600000500679,
+                "ratio": 1.1401059244187544
+              },
+              {
+                "legacyMs": 427.69999998807907,
+                "compositionMs": 435.60000002384186,
+                "ratio": 1.0184708908954476
+              },
+              {
+                "legacyMs": 427.9000000357628,
+                "compositionMs": 465.89999997615814,
+                "ratio": 1.088805795599952
+              }
+            ],
+            "preparationChecks": 0
+          },
+          {
+            "backend": "canvas2d",
+            "id": "commerce/atom-effects-studio",
+            "frames": 240,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 0.989486281375646,
+            "timings": [
+              {
+                "legacyMs": 1151.7999997735023,
+                "compositionMs": 1196.3000001311302,
+                "ratio": 1.0386351800367934
+              },
+              {
+                "legacyMs": 1192.200000345707,
+                "compositionMs": 1169.0999996066093,
+                "ratio": 0.9806240557520557
+              },
+              {
+                "legacyMs": 1169.8999997377396,
+                "compositionMs": 1157.600000321865,
+                "ratio": 0.989486281375646
+              }
+            ],
+            "preparationChecks": 0
+          },
+          {
+            "backend": "canvas2d",
+            "id": "commerce/atom-fade",
+            "frames": 240,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 1.0740621975232092,
+            "timings": [
+              {
+                "legacyMs": 303.2999999523163,
+                "compositionMs": 331.3000001311302,
+                "ratio": 1.092317837729034
+              },
+              {
+                "legacyMs": 275.50000017881393,
+                "compositionMs": 280.3999997973442,
+                "ratio": 1.017785842523956
+              },
+              {
+                "legacyMs": 311.90000027418137,
+                "compositionMs": 334.9999997019768,
+                "ratio": 1.0740621975232092
+              }
+            ],
+            "preparationChecks": 0
+          },
+          {
+            "backend": "canvas2d",
+            "id": "commerce/atom-float",
+            "frames": 240,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 1.020785219437233,
+            "timings": [
+              {
+                "legacyMs": 320.09999960660934,
+                "compositionMs": 345.00000047683716,
+                "ratio": 1.077788194004464
+              },
+              {
+                "legacyMs": 303.10000002384186,
+                "compositionMs": 309.4000000357628,
+                "ratio": 1.020785219437233
+              },
+              {
+                "legacyMs": 329.60000014305115,
+                "compositionMs": 331.19999980926514,
+                "ratio": 1.0048543679172317
+              }
+            ],
+            "preparationChecks": 0
+          },
+          {
+            "backend": "canvas2d",
+            "id": "commerce/atom-focus-blur",
+            "frames": 240,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 1.018722551661545,
+            "timings": [
+              {
+                "legacyMs": 2688.7000004649162,
+                "compositionMs": 2720.3999995589256,
+                "ratio": 1.0117900840884175
+              },
+              {
+                "legacyMs": 2615.2999998927116,
+                "compositionMs": 2685.900000154972,
+                "ratio": 1.0269949911158018
+              },
+              {
+                "legacyMs": 2595.800000190735,
+                "compositionMs": 2644.399999797344,
+                "ratio": 1.018722551661545
+              }
+            ],
+            "preparationChecks": 0
+          },
+          {
+            "backend": "canvas2d",
+            "id": "commerce/atom-focus-blur/active-opacity",
+            "frames": 240,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 1.0119386892849052,
+            "timings": [
+              {
+                "legacyMs": 1298.2999999523163,
+                "compositionMs": 1313.8000002503395,
+                "ratio": 1.0119386892849052
+              },
+              {
+                "legacyMs": 1286.599999845028,
+                "compositionMs": 1289.7000002861023,
+                "ratio": 1.0024094516100168
+              },
+              {
+                "legacyMs": 1264.6999999284744,
+                "compositionMs": 1304.1000000834465,
+                "ratio": 1.0311536333970115
+              }
+            ],
+            "preparationChecks": 0
+          },
+          {
+            "backend": "canvas2d",
+            "id": "commerce/atom-glow",
+            "frames": 240,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 0.8936141636806691,
+            "timings": [
+              {
+                "legacyMs": 3722.2999992370605,
+                "compositionMs": 3326.3000007867813,
+                "ratio": 0.8936141636806691
+              },
+              {
+                "legacyMs": 3696.8000000715256,
+                "compositionMs": 3304.7999998927116,
+                "ratio": 0.8939623457662763
+              },
+              {
+                "legacyMs": 3808.0999994874,
+                "compositionMs": 3298.6000004410744,
+                "ratio": 0.8662062448163367
+              }
+            ],
+            "preparationChecks": 0
+          },
+          {
+            "backend": "canvas2d",
+            "id": "commerce/atom-grain",
+            "frames": 240,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 1.0193888298152776,
+            "timings": [
+              {
+                "legacyMs": 474.5000001192093,
+                "compositionMs": 483.6999998688698,
+                "ratio": 1.0193888298152776
+              },
+              {
+                "legacyMs": 476.9000000357628,
+                "compositionMs": 493.3999999165535,
+                "ratio": 1.0345984480594534
+              },
+              {
+                "legacyMs": 473.80000019073486,
+                "compositionMs": 482.4999997615814,
+                "ratio": 1.0183621772210727
+              }
+            ],
+            "preparationChecks": 0
+          },
+          {
+            "backend": "canvas2d",
+            "id": "commerce/atom-height-shadow",
+            "frames": 240,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 1.0530035335668748,
+            "timings": [
+              {
+                "legacyMs": 311.30000001192093,
+                "compositionMs": 327.80000001192093,
+                "ratio": 1.0530035335668748
+              },
+              {
+                "legacyMs": 339.70000010728836,
+                "compositionMs": 329.80000001192093,
+                "ratio": 0.9708566379386497
+              },
+              {
+                "legacyMs": 342.0999999642372,
+                "compositionMs": 366,
+                "ratio": 1.0698626133828157
+              }
+            ],
+            "preparationChecks": 0
+          },
+          {
+            "backend": "canvas2d",
+            "id": "commerce/atom-introduction",
+            "frames": 240,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 1.0406557386277089,
+            "timings": [
+              {
+                "legacyMs": 304.99999982118607,
+                "compositionMs": 317.40000009536743,
+                "ratio": 1.0406557386277089
+              },
+              {
+                "legacyMs": 298.3999996781349,
+                "compositionMs": 310.30000030994415,
+                "ratio": 1.0398793587287032
+              },
+              {
+                "legacyMs": 337.3000000715256,
+                "compositionMs": 375.7999999523163,
+                "ratio": 1.1141417132304379
+              }
+            ],
+            "preparationChecks": 0
+          },
+          {
+            "backend": "canvas2d",
+            "id": "commerce/atom-layout",
+            "frames": 240,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 1.0407709461747332,
+            "timings": [
+              {
+                "legacyMs": 276.20000010728836,
+                "compositionMs": 282.3999999165535,
+                "ratio": 1.0224475011109948
+              },
+              {
+                "legacyMs": 269.79999935626984,
+                "compositionMs": 280.8000006079674,
+                "ratio": 1.0407709461747332
+              },
+              {
+                "legacyMs": 279.6999995112419,
+                "compositionMs": 297.00000047683716,
+                "ratio": 1.0618519878291952
+              }
+            ],
+            "preparationChecks": 4
+          },
+          {
+            "backend": "canvas2d",
+            "id": "commerce/atom-layout/transformed-annotation",
+            "frames": 240,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 1.093792628762348,
+            "timings": [
+              {
+                "legacyMs": 272.7000008225441,
+                "compositionMs": 295.3999991416931,
+                "ratio": 1.083241651084265
+              },
+              {
+                "legacyMs": 273.3999999165535,
+                "compositionMs": 309.70000010728836,
+                "ratio": 1.1327724952516982
+              },
+              {
+                "legacyMs": 293.2000005841255,
+                "compositionMs": 320.6999993920326,
+                "ratio": 1.093792628762348
+              }
+            ],
+            "preparationChecks": 4
+          },
+          {
+            "backend": "canvas2d",
+            "id": "commerce/atom-layout/multiple-states",
+            "frames": 240,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 1.0664883448749654,
+            "timings": [
+              {
+                "legacyMs": 261.7000000476837,
+                "compositionMs": 279.09999990463257,
+                "ratio": 1.0664883448749654
+              },
+              {
+                "legacyMs": 259.20000034570694,
+                "compositionMs": 297.8999996781349,
+                "ratio": 1.1493055527809106
+              },
+              {
+                "legacyMs": 274.5000004172325,
+                "compositionMs": 270.79999953508377,
+                "ratio": 0.9865209439835161
+              }
+            ],
+            "preparationChecks": 4
+          },
+          {
+            "backend": "canvas2d",
+            "id": "commerce/atom-light-sweep",
+            "frames": 240,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 1.0058422587159497,
+            "timings": [
+              {
+                "legacyMs": 1039.4999999403954,
+                "compositionMs": 1049.6000000238419,
+                "ratio": 1.0097162097970425
+              },
+              {
+                "legacyMs": 1027.0000001192093,
+                "compositionMs": 1032.999999821186,
+                "ratio": 1.0058422587159497
+              },
+              {
+                "legacyMs": 1061.299999833107,
+                "compositionMs": 1055.0000001192093,
+                "ratio": 0.9940638841845959
+              }
+            ],
+            "preparationChecks": 0
+          },
+          {
+            "backend": "canvas2d",
+            "id": "commerce/atom-light-sweep/rotated-skew",
+            "frames": 240,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 0.9932036055811109,
+            "timings": [
+              {
+                "legacyMs": 1397.8000000715256,
+                "compositionMs": 1388.2999999523163,
+                "ratio": 0.9932036055811109
+              },
+              {
+                "legacyMs": 1433.9000003933907,
+                "compositionMs": 1408.4999995827675,
+                "ratio": 0.9822860723874366
+              },
+              {
+                "legacyMs": 1429.0999997854233,
+                "compositionMs": 1424.7000002264977,
+                "ratio": 0.9969211394866795
+              }
+            ],
+            "preparationChecks": 0
+          },
+          {
+            "backend": "canvas2d",
+            "id": "commerce/atom-light-sweep/image-matte",
+            "frames": 240,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 1.0023847374010344,
+            "timings": [
+              {
+                "legacyMs": 1761.8000002503395,
+                "compositionMs": 1759.9999997019768,
+                "ratio": 0.9989783173185907
+              },
+              {
+                "legacyMs": 1761.2000002264977,
+                "compositionMs": 1765.3999997377396,
+                "ratio": 1.0023847374010344
+              },
+              {
+                "legacyMs": 1748.6000002026558,
+                "compositionMs": 1753.999999821186,
+                "ratio": 1.003088184615066
+              }
+            ],
+            "preparationChecks": 0
+          },
+          {
+            "backend": "canvas2d",
+            "id": "commerce/atom-light-sweep/glow-first",
+            "frames": 240,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 0.8822312032880968,
+            "timings": [
+              {
+                "legacyMs": 5050.9999995827675,
+                "compositionMs": 4756.300000488758,
+                "ratio": 0.9416551179730048
+              },
+              {
+                "legacyMs": 5121.8999999165535,
+                "compositionMs": 4518.700000047684,
+                "ratio": 0.8822312032880968
+              },
+              {
+                "legacyMs": 5124.299999952316,
+                "compositionMs": 4475.400000095367,
+                "ratio": 0.8733680698118792
+              }
+            ],
+            "preparationChecks": 0
+          },
+          {
+            "backend": "canvas2d",
+            "id": "commerce/atom-matte",
+            "frames": 240,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 1.0006578952299603,
+            "timings": [
+              {
+                "legacyMs": 1053.1000000238419,
+                "compositionMs": 1069.300000011921,
+                "ratio": 1.015383154484581
+              },
+              {
+                "legacyMs": 1063.9999997615814,
+                "compositionMs": 1064.7000002861023,
+                "ratio": 1.0006578952299603
+              },
+              {
+                "legacyMs": 1077.599999845028,
+                "compositionMs": 1058.7000001072884,
+                "ratio": 0.9824610247397386
+              }
+            ],
+            "preparationChecks": 0
+          },
+          {
+            "backend": "canvas2d",
+            "id": "commerce/atom-matte/inverted-overlap",
+            "frames": 240,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 1.0159467219305385,
+            "timings": [
+              {
+                "legacyMs": 1650.9000000357628,
+                "compositionMs": 1668.2999998927116,
+                "ratio": 1.0105397055282404
+              },
+              {
+                "legacyMs": 1636.7000001072884,
+                "compositionMs": 1662.7999998927116,
+                "ratio": 1.0159467219305385
+              },
+              {
+                "legacyMs": 1644.9999999403954,
+                "compositionMs": 1674.5,
+                "ratio": 1.0179331307359718
+              }
+            ],
+            "preparationChecks": 0
+          },
+          {
+            "backend": "canvas2d",
+            "id": "commerce/atom-matte/shared-group-source",
+            "frames": 240,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 1.005782226836872,
+            "timings": [
+              {
+                "legacyMs": 2754.400000333786,
+                "compositionMs": 2790.299999654293,
+                "ratio": 1.0130336912997955
+              },
+              {
+                "legacyMs": 2767.1000000834465,
+                "compositionMs": 2783.099999964237,
+                "ratio": 1.005782226836872
+              },
+              {
+                "legacyMs": 2771.699999988079,
+                "compositionMs": 2780.300000011921,
+                "ratio": 1.0031027889107331
+              }
+            ],
+            "preparationChecks": 0
+          },
+          {
+            "backend": "canvas2d",
+            "id": "commerce/atom-matte/inverted-overlap/focus-matte",
+            "frames": 240,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 1.0115291767452326,
+            "timings": [
+              {
+                "legacyMs": 2393.399999678135,
+                "compositionMs": 2436.000000298023,
+                "ratio": 1.0177989473659301
+              },
+              {
+                "legacyMs": 2402.599999964237,
+                "compositionMs": 2430.300000011921,
+                "ratio": 1.0115291767452326
+              },
+              {
+                "legacyMs": 2401.2999997735023,
+                "compositionMs": 2415.7000001072884,
+                "ratio": 1.0059967518990314
+              }
+            ],
+            "preparationChecks": 0
+          },
+          {
+            "backend": "canvas2d",
+            "id": "commerce/atom-matte/shared-group-source/focus-matte",
+            "frames": 240,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 1.0103290962502804,
+            "timings": [
+              {
+                "legacyMs": 3485.3000004291534,
+                "compositionMs": 3521.2999995946884,
+                "ratio": 1.0103290962502804
+              },
+              {
+                "legacyMs": 3488.700000345707,
+                "compositionMs": 3521.899999678135,
+                "ratio": 1.0095164385957915
+              },
+              {
+                "legacyMs": 3472.500000536442,
+                "compositionMs": 3513.299999475479,
+                "ratio": 1.0117494597358487
+              }
+            ],
+            "preparationChecks": 0
+          },
+          {
+            "backend": "canvas2d",
+            "id": "commerce/atom-motion-blur",
+            "frames": 240,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 0.9401627971084122,
+            "timings": [
+              {
+                "legacyMs": 4828.099999666214,
+                "compositionMs": 4539.200000405312,
+                "ratio": 0.9401627971084122
+              },
+              {
+                "legacyMs": 4831.599999904633,
+                "compositionMs": 4423.099999964237,
+                "ratio": 0.9154524381264056
+              },
+              {
+                "legacyMs": 4900.799999535084,
+                "compositionMs": 4682.600000441074,
+                "ratio": 0.9554766570529895
+              }
+            ],
+            "preparationChecks": 0
+          },
+          {
+            "backend": "canvas2d",
+            "id": "commerce/atom-motion-blur/wide-32",
+            "frames": 240,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 0.8283102891821366,
+            "timings": [
+              {
+                "legacyMs": 9812.099999725819,
+                "compositionMs": 8073.200000286102,
+                "ratio": 0.8227800369453728
+              },
+              {
+                "legacyMs": 9857.900000154972,
+                "compositionMs": 8165.399999856949,
+                "ratio": 0.8283102891821366
+              },
+              {
+                "legacyMs": 9732.299999952316,
+                "compositionMs": 8425.600000023842,
+                "ratio": 0.8657357459249225
+              }
+            ],
+            "preparationChecks": 0
+          },
+          {
+            "backend": "canvas2d",
+            "id": "commerce/atom-motion-blur/zero",
+            "frames": 240,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 0.983797003756835,
+            "timings": [
+              {
+                "legacyMs": 316.4999997019768,
+                "compositionMs": 299.70000034570694,
+                "ratio": 0.9469194332635417
+              },
+              {
+                "legacyMs": 327.10000002384186,
+                "compositionMs": 321.7999999523163,
+                "ratio": 0.983797003756835
+              },
+              {
+                "legacyMs": 313,
+                "compositionMs": 362.8000000715256,
+                "ratio": 1.1591054315384204
+              }
+            ],
+            "preparationChecks": 0
+          },
+          {
+            "backend": "canvas2d",
+            "id": "commerce/atom-motion-blur/active-cuts",
+            "frames": 240,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 0.7567545476023435,
+            "timings": [
+              {
+                "legacyMs": 2484.9000002145767,
+                "compositionMs": 1849.2999997735023,
+                "ratio": 0.7442150588006805
+              },
+              {
+                "legacyMs": 2454.400000154972,
+                "compositionMs": 1871.8999997973442,
+                "ratio": 0.762671121120906
+              },
+              {
+                "legacyMs": 2446.4999995827675,
+                "compositionMs": 1851.4000003933907,
+                "ratio": 0.7567545476023435
+              }
+            ],
+            "preparationChecks": 0
+          },
+          {
+            "backend": "canvas2d",
+            "id": "commerce/atom-motion-blur/overlap-echo-matte",
+            "frames": 240,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 0.9257229122897023,
+            "timings": [
+              {
+                "legacyMs": 25434.49999946356,
+                "compositionMs": 23264.70000040531,
+                "ratio": 0.914690676085474
+              },
+              {
+                "legacyMs": 25253.99999976158,
+                "compositionMs": 23440.200000226498,
+                "ratio": 0.9281777144392094
+              },
+              {
+                "legacyMs": 25303.89999985695,
+                "compositionMs": 23424.400000154972,
+                "ratio": 0.9257229122897023
+              }
+            ],
+            "preparationChecks": 0
+          },
+          {
+            "backend": "canvas2d",
+            "id": "commerce/atom-overshoot",
+            "frames": 240,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 1.0887425549107221,
+            "timings": [
+              {
+                "legacyMs": 311.5000002980232,
+                "compositionMs": 339.79999977350235,
+                "ratio": 1.0908507205406213
+              },
+              {
+                "legacyMs": 318.8999996185303,
+                "compositionMs": 347.20000034570694,
+                "ratio": 1.0887425549107221
+              },
+              {
+                "legacyMs": 340.19999998807907,
+                "compositionMs": 335.7999999523163,
+                "ratio": 0.9870664314052999
+              }
+            ],
+            "preparationChecks": 0
+          },
+          {
+            "backend": "canvas2d",
+            "id": "commerce/atom-panel",
+            "frames": 240,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 1.1753926745327345,
+            "timings": [
+              {
+                "legacyMs": 152.79999965429306,
+                "compositionMs": 179.60000026226044,
+                "ratio": 1.1753926745327345
+              },
+              {
+                "legacyMs": 147.90000027418137,
+                "compositionMs": 187.99999982118607,
+                "ratio": 1.2711291377462213
+              },
+              {
+                "legacyMs": 167.59999990463257,
+                "compositionMs": 156.20000004768372,
+                "ratio": 0.9319809077360641
+              }
+            ],
+            "preparationChecks": 0
+          },
+          {
+            "backend": "canvas2d",
+            "id": "commerce/atom-panel/appearance-uniform",
+            "frames": 240,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 1.0768348590518901,
+            "timings": [
+              {
+                "legacyMs": 213.8999999165535,
+                "compositionMs": 219.5000001192093,
+                "ratio": 1.0261804591156636
+              },
+              {
+                "legacyMs": 152.5000001192093,
+                "compositionMs": 186.9999998807907,
+                "ratio": 1.2262295064564772
+              },
+              {
+                "legacyMs": 174.40000027418137,
+                "compositionMs": 187.7999997138977,
+                "ratio": 1.0768348590518901
+              }
+            ],
+            "preparationChecks": 0
+          },
+          {
+            "backend": "canvas2d",
+            "id": "commerce/atom-parallax",
+            "frames": 240,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 0.9947528289704292,
+            "timings": [
+              {
+                "legacyMs": 365.0999998450279,
+                "compositionMs": 380.0000001192093,
+                "ratio": 1.0408107375527413
+              },
+              {
+                "legacyMs": 362.1000003814697,
+                "compositionMs": 360.1999997496605,
+                "ratio": 0.9947528289704292
+              },
+              {
+                "legacyMs": 401.20000034570694,
+                "compositionMs": 357.8999996781349,
+                "ratio": 0.8920737770930679
+              }
+            ],
+            "preparationChecks": 0
+          },
+          {
+            "backend": "canvas2d",
+            "id": "commerce/atom-particles",
+            "frames": 240,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 1.0709388185047568,
+            "timings": [
+              {
+                "legacyMs": 364.99999994039536,
+                "compositionMs": 339.6000000834465,
+                "ratio": 0.9304109592846667
+              },
+              {
+                "legacyMs": 340.6000003814697,
+                "compositionMs": 393.79999977350235,
+                "ratio": 1.1561949481281533
+              },
+              {
+                "legacyMs": 379.19999998807907,
+                "compositionMs": 406.0999999642372,
+                "ratio": 1.0709388185047568
+              }
+            ],
+            "preparationChecks": 0
+          },
+          {
+            "backend": "canvas2d",
+            "id": "commerce/atom-particles/environment-stack",
+            "frames": 240,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 1.0077484572407294,
+            "timings": [
+              {
+                "legacyMs": 890.4999994039536,
+                "compositionMs": 897.4000005722046,
+                "ratio": 1.0077484572407294
+              },
+              {
+                "legacyMs": 919.2999998927116,
+                "compositionMs": 919.6000002026558,
+                "ratio": 1.0003263355922758
+              },
+              {
+                "legacyMs": 905.3000000715256,
+                "compositionMs": 924.1999998688698,
+                "ratio": 1.020877057103558
+              }
+            ],
+            "preparationChecks": 0
+          },
+          {
+            "backend": "canvas2d",
+            "id": "commerce/atom-particles/environment-reversed",
+            "frames": 240,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 1.0107538801199876,
+            "timings": [
+              {
+                "legacyMs": 902.0000000596046,
+                "compositionMs": 911.6999999284744,
+                "ratio": 1.0107538801199876
+              },
+              {
+                "legacyMs": 916.0000002980232,
+                "compositionMs": 934.3999997377396,
+                "ratio": 1.0200873356263427
+              },
+              {
+                "legacyMs": 920.2000009417534,
+                "compositionMs": 914.799998998642,
+                "ratio": 0.9941317083921051
+              }
+            ],
+            "preparationChecks": 0
+          },
+          {
+            "backend": "canvas2d",
+            "id": "commerce/atom-path",
+            "frames": 240,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 1.2177275389536697,
+            "timings": [
+              {
+                "legacyMs": 147.0999999642372,
+                "compositionMs": 171.10000002384186,
+                "ratio": 1.1631543172361625
+              },
+              {
+                "legacyMs": 168.10000032186508,
+                "compositionMs": 204.69999969005585,
+                "ratio": 1.2177275389536697
+              },
+              {
+                "legacyMs": 172.69999980926514,
+                "compositionMs": 213.90000021457672,
+                "ratio": 1.238563986397302
+              }
+            ],
+            "preparationChecks": 0
+          },
+          {
+            "backend": "canvas2d",
+            "id": "commerce/atom-path/spatial",
+            "frames": 240,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 0.9978712047307149,
+            "timings": [
+              {
+                "legacyMs": 155.30000007152557,
+                "compositionMs": 173.09999990463257,
+                "ratio": 1.1146168694456469
+              },
+              {
+                "legacyMs": 187.900000333786,
+                "compositionMs": 187.49999970197678,
+                "ratio": 0.9978712047307149
+              },
+              {
+                "legacyMs": 195.60000032186508,
+                "compositionMs": 166.49999964237213,
+                "ratio": 0.8512269906359503
+              }
+            ],
+            "preparationChecks": 0
+          },
+          {
+            "backend": "canvas2d",
+            "id": "commerce/atom-path/morph",
+            "frames": 240,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 1.1032090211029228,
+            "timings": [
+              {
+                "legacyMs": 234.59999978542328,
+                "compositionMs": 259.40000027418137,
+                "ratio": 1.1057118521374314
+              },
+              {
+                "legacyMs": 243.29999953508377,
+                "compositionMs": 243.70000040531158,
+                "ratio": 1.001644064410161
+              },
+              {
+                "legacyMs": 230.59999984502792,
+                "compositionMs": 254.40000009536743,
+                "ratio": 1.1032090211029228
+              }
+            ],
+            "preparationChecks": 0
+          },
+          {
+            "backend": "canvas2d",
+            "id": "commerce/atom-path/spatial-morph",
+            "frames": 240,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 1.1497395837562483,
+            "timings": [
+              {
+                "legacyMs": 161.8000002503395,
+                "compositionMs": 199.6999997496605,
+                "ratio": 1.2342397987681182
+              },
+              {
+                "legacyMs": 153.5999999642372,
+                "compositionMs": 176.60000002384186,
+                "ratio": 1.1497395837562483
+              },
+              {
+                "legacyMs": 177.9000000357628,
+                "compositionMs": 149.9999998807907,
+                "ratio": 0.8431703195651298
+              }
+            ],
+            "preparationChecks": 0
+          },
+          {
+            "backend": "canvas2d",
+            "id": "commerce/atom-path/appearance-uniform",
+            "frames": 240,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 1.0494599213815818,
+            "timings": [
+              {
+                "legacyMs": 131.89999997615814,
+                "compositionMs": 151.20000004768372,
+                "ratio": 1.146322972517166
+              },
+              {
+                "legacyMs": 149.90000015497208,
+                "compositionMs": 152.799999833107,
+                "ratio": 1.0193462286533475
+              },
+              {
+                "legacyMs": 175.8999999165535,
+                "compositionMs": 184.6000000834465,
+                "ratio": 1.0494599213815818
+              }
+            ],
+            "preparationChecks": 0
+          },
+          {
+            "backend": "canvas2d",
+            "id": "commerce/atom-path/appearance-ink",
+            "frames": 240,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 1.0519159496085446,
+            "timings": [
+              {
+                "legacyMs": 148.79999995231628,
+                "compositionMs": 159.20000010728836,
+                "ratio": 1.069892474182156
+              },
+              {
+                "legacyMs": 161.7999997138977,
+                "compositionMs": 170.20000034570694,
+                "ratio": 1.0519159496085446
+              },
+              {
+                "legacyMs": 190.9999998807907,
+                "compositionMs": 195.5000001192093,
+                "ratio": 1.0235602106870532
+              }
+            ],
+            "preparationChecks": 0
+          },
+          {
+            "backend": "canvas2d",
+            "id": "commerce/atom-path/appearance-brush",
+            "frames": 240,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 0.9784585903737152,
+            "timings": [
+              {
+                "legacyMs": 208.90000027418137,
+                "compositionMs": 204.3999997973442,
+                "ratio": 0.9784585903737152
+              },
+              {
+                "legacyMs": 193.79999995231628,
+                "compositionMs": 197.50000005960464,
+                "ratio": 1.019091847823523
+              },
+              {
+                "legacyMs": 214.79999995231628,
+                "compositionMs": 186,
+                "ratio": 0.8659217879017242
+              }
+            ],
+            "preparationChecks": 0
+          },
+          {
+            "backend": "canvas2d",
+            "id": "commerce/atom-path/primitive-blur-uniform",
+            "frames": 240,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 1.0028372809100794,
+            "timings": [
+              {
+                "legacyMs": 1420.000000178814,
+                "compositionMs": 1400.299999833107,
+                "ratio": 0.9861267603216717
+              },
+              {
+                "legacyMs": 1409.8000007271767,
+                "compositionMs": 1413.7999993562698,
+                "ratio": 1.0028372809100794
+              },
+              {
+                "legacyMs": 1438.0999995470047,
+                "compositionMs": 1460.100000500679,
+                "ratio": 1.0152979632574954
+              }
+            ],
+            "preparationChecks": 0
+          },
+          {
+            "backend": "canvas2d",
+            "id": "commerce/atom-path/primitive-blur-ink",
+            "frames": 240,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 1.0115008218039896,
+            "timings": [
+              {
+                "legacyMs": 1394.0999999046326,
+                "compositionMs": 1410.700000166893,
+                "ratio": 1.0119073239103336
+              },
+              {
+                "legacyMs": 1399.8999997973442,
+                "compositionMs": 1416.0000002384186,
+                "ratio": 1.0115008218039896
+              },
+              {
+                "legacyMs": 1432.3000001311302,
+                "compositionMs": 1412.2999998927116,
+                "ratio": 0.986036444713686
+              }
+            ],
+            "preparationChecks": 0
+          },
+          {
+            "backend": "canvas2d",
+            "id": "commerce/atom-path/primitive-blur-brush",
+            "frames": 240,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 1.0051992425070395,
+            "timings": [
+              {
+                "legacyMs": 2693.600000202656,
+                "compositionMs": 2690.699999809265,
+                "ratio": 0.9989233737774085
+              },
+              {
+                "legacyMs": 2743.30000013113,
+                "compositionMs": 2759.3999999165535,
+                "ratio": 1.005868844014382
+              },
+              {
+                "legacyMs": 2692.69999986887,
+                "compositionMs": 2706.700000166893,
+                "ratio": 1.0051992425070395
+              }
+            ],
+            "preparationChecks": 0
+          },
+          {
+            "backend": "canvas2d",
+            "id": "commerce/atom-path/motion-blur",
+            "frames": 240,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 0.8036868403395121,
+            "timings": [
+              {
+                "legacyMs": 5864.099999725819,
+                "compositionMs": 4712.900000214577,
+                "ratio": 0.8036868403395121
+              },
+              {
+                "legacyMs": 5868.100000441074,
+                "compositionMs": 4717.4999995827675,
+                "ratio": 0.8039229050677694
+              },
+              {
+                "legacyMs": 5870.10000038147,
+                "compositionMs": 4714.399999678135,
+                "ratio": 0.80312090072942
+              }
+            ],
+            "preparationChecks": 0
+          },
+          {
+            "backend": "canvas2d",
+            "id": "commerce/atom-product",
+            "frames": 240,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 1.1090798288281658,
+            "timings": [
+              {
+                "legacyMs": 322.100000500679,
+                "compositionMs": 310.79999953508377,
+                "ratio": 0.9649177244705672
+              },
+              {
+                "legacyMs": 307.1000000834465,
+                "compositionMs": 359.8999999165535,
+                "ratio": 1.1719309665215238
+              },
+              {
+                "legacyMs": 328.20000010728836,
+                "compositionMs": 363.99999994039536,
+                "ratio": 1.1090798288281658
+              }
+            ],
+            "preparationChecks": 0
+          },
+          {
+            "backend": "canvas2d",
+            "id": "commerce/atom-rotate",
+            "frames": 240,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 1.0368271963845466,
+            "timings": [
+              {
+                "legacyMs": 481.1000000834465,
+                "compositionMs": 532.7999999523163,
+                "ratio": 1.1074620658073218
+              },
+              {
+                "legacyMs": 486.4000004529953,
+                "compositionMs": 493.99999952316284,
+                "ratio": 1.015624998073786
+              },
+              {
+                "legacyMs": 529.4999997615814,
+                "compositionMs": 549.0000002384186,
+                "ratio": 1.0368271963845466
+              }
+            ],
+            "preparationChecks": 0
+          },
+          {
+            "backend": "canvas2d",
+            "id": "commerce/atom-scale",
+            "frames": 240,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 0.9914529892432349,
+            "timings": [
+              {
+                "legacyMs": 327.6000003814697,
+                "compositionMs": 324.79999965429306,
+                "ratio": 0.9914529892432349
+              },
+              {
+                "legacyMs": 315.19999998807907,
+                "compositionMs": 347.2000000476837,
+                "ratio": 1.1015228428325345
+              },
+              {
+                "legacyMs": 350.8000002503395,
+                "compositionMs": 342.1999997496605,
+                "ratio": 0.9754846052037005
+              }
+            ],
+            "preparationChecks": 0
+          },
+          {
+            "backend": "canvas2d",
+            "id": "commerce/atom-sequence",
+            "frames": 240,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 1.0959124555769,
+            "timings": [
+              {
+                "legacyMs": 296.49999994039536,
+                "compositionMs": 326.40000009536743,
+                "ratio": 1.1008431708633484
+              },
+              {
+                "legacyMs": 312.6999997496605,
+                "compositionMs": 336.8000001311302,
+                "ratio": 1.0770706760497715
+              },
+              {
+                "legacyMs": 310.7000000476837,
+                "compositionMs": 340.5,
+                "ratio": 1.0959124555769
+              }
+            ],
+            "preparationChecks": 0
+          },
+          {
+            "backend": "canvas2d",
+            "id": "commerce/atom-shadow",
+            "frames": 240,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 1.1203931191510046,
+            "timings": [
+              {
+                "legacyMs": 125.49999982118607,
+                "compositionMs": 148.30000019073486,
+                "ratio": 1.1816733099763705
+              },
+              {
+                "legacyMs": 182.39999973773956,
+                "compositionMs": 195.7000002861023,
+                "ratio": 1.0729166697778831
+              },
+              {
+                "legacyMs": 203.5000001192093,
+                "compositionMs": 227.9999998807907,
+                "ratio": 1.1203931191510046
+              }
+            ],
+            "preparationChecks": 0
+          },
+          {
+            "backend": "canvas2d",
+            "id": "commerce/atom-studio",
+            "frames": 240,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 1.0698205533639327,
+            "timings": [
+              {
+                "legacyMs": 306.50000017881393,
+                "compositionMs": 327.8999997973442,
+                "ratio": 1.0698205533639327
+              },
+              {
+                "legacyMs": 373.5000004172325,
+                "compositionMs": 344.4999994635582,
+                "ratio": 0.92235608856418
+              },
+              {
+                "legacyMs": 340.09999990463257,
+                "compositionMs": 378.5,
+                "ratio": 1.1129079685567045
+              }
+            ],
+            "preparationChecks": 0
+          },
+          {
+            "backend": "canvas2d",
+            "id": "commerce/atom-text",
+            "frames": 240,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 0.9561068674106005,
+            "timings": [
+              {
+                "legacyMs": 150.19999980926514,
+                "compositionMs": 132.30000019073486,
+                "ratio": 0.880825568300526
+              },
+              {
+                "legacyMs": 174.69999980926514,
+                "compositionMs": 178.700000166893,
+                "ratio": 1.0228963958900688
+              },
+              {
+                "legacyMs": 157.20000022649765,
+                "compositionMs": 150.29999977350235,
+                "ratio": 0.9561068674106005
+              }
+            ],
+            "preparationChecks": 0
+          },
+          {
+            "backend": "canvas2d",
+            "id": "commerce/atom-text/measured-states",
+            "frames": 240,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 1.0884645320752446,
+            "timings": [
+              {
+                "legacyMs": 234.1000000834465,
+                "compositionMs": 258.5999998450279,
+                "ratio": 1.1046561288032817
+              },
+              {
+                "legacyMs": 256.600000500679,
+                "compositionMs": 279.2999994754791,
+                "ratio": 1.0884645320752446
+              },
+              {
+                "legacyMs": 296.40000027418137,
+                "compositionMs": 302.39999973773956,
+                "ratio": 1.0202429131511739
+              }
+            ],
+            "preparationChecks": 4
+          },
+          {
+            "backend": "canvas2d",
+            "id": "commerce/atom-text/speech-states",
+            "frames": 240,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 1.0991966476605637,
+            "timings": [
+              {
+                "legacyMs": 234.39999973773956,
+                "compositionMs": 270.400000333786,
+                "ratio": 1.1535836204621388
+              },
+              {
+                "legacyMs": 259.09999990463257,
+                "compositionMs": 269.9000000357628,
+                "ratio": 1.0416827484951965
+              },
+              {
+                "legacyMs": 286.29999989271164,
+                "compositionMs": 314.70000010728836,
+                "ratio": 1.0991966476605637
+              }
+            ],
+            "preparationChecks": 4
+          },
+          {
+            "backend": "canvas2d",
+            "id": "commerce/atom-text/animated-states",
+            "frames": 240,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 1.0298613570345676,
+            "timings": [
+              {
+                "legacyMs": 262.8999999165535,
+                "compositionMs": 259.90000009536743,
+                "ratio": 0.9885888177172374
+              },
+              {
+                "legacyMs": 267.29999977350235,
+                "compositionMs": 289.30000019073486,
+                "ratio": 1.082304528379627
+              },
+              {
+                "legacyMs": 281.3000001311302,
+                "compositionMs": 289.6999998688698,
+                "ratio": 1.0298613570345676
+              }
+            ],
+            "preparationChecks": 4
+          },
+          {
+            "backend": "canvas2d",
+            "id": "commerce/atom-translate",
+            "frames": 240,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 1.0367577758317486,
+            "timings": [
+              {
+                "legacyMs": 300.5999998450279,
+                "compositionMs": 334.40000009536743,
+                "ratio": 1.1124417839912337
+              },
+              {
+                "legacyMs": 318.30000001192093,
+                "compositionMs": 330.00000005960464,
+                "ratio": 1.0367577758317486
+              },
+              {
+                "legacyMs": 330.30000030994415,
+                "compositionMs": 331.1999997496605,
+                "ratio": 1.002724793941483
+              }
+            ],
+            "preparationChecks": 0
+          },
+          {
+            "backend": "canvas2d",
+            "id": "component/commerce-bracket",
+            "frames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 1.0861222671780704,
+            "timings": [
+              {
+                "legacyMs": 197.80000001192093,
+                "compositionMs": 222.69999998807907,
+                "ratio": 1.1258847319244565
+              },
+              {
+                "legacyMs": 233.1000000834465,
+                "compositionMs": 218.69999992847443,
+                "ratio": 0.9382239375812224
+              },
+              {
+                "legacyMs": 224.0999999642372,
+                "compositionMs": 243.4000000357628,
+                "ratio": 1.0861222671780704
+              }
+            ],
+            "preparationChecks": 0
+          },
+          {
+            "backend": "canvas2d",
+            "id": "component/commerce-detail-sequence",
+            "frames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 1.0503355697496084,
+            "timings": [
+              {
+                "legacyMs": 596.0000002384186,
+                "compositionMs": 625.9999998211861,
+                "ratio": 1.0503355697496084
+              },
+              {
+                "legacyMs": 619.8999998569489,
+                "compositionMs": 653.9000000953674,
+                "ratio": 1.0548475564546937
+              },
+              {
+                "legacyMs": 660.5999998450279,
+                "compositionMs": 638.7000002264977,
+                "ratio": 0.9668483202790374
+              }
+            ],
+            "preparationChecks": 4
+          },
+          {
+            "backend": "canvas2d",
+            "id": "component/commerce-instances",
+            "frames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 1.1000393847491283,
+            "timings": [
+              {
+                "legacyMs": 205.40000009536743,
+                "compositionMs": 244.59999990463257,
+                "ratio": 1.1908471265387757
+              },
+              {
+                "legacyMs": 257.8999997973442,
+                "compositionMs": 260.20000010728836,
+                "ratio": 1.0089181865519639
+              },
+              {
+                "legacyMs": 253.90000009536743,
+                "compositionMs": 279.29999989271164,
+                "ratio": 1.1000393847491283
+              }
+            ],
+            "preparationChecks": 0
+          },
+          {
+            "backend": "canvas2d",
+            "id": "component/commerce-layout",
+            "frames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 1.0935530759905214,
+            "timings": [
+              {
+                "legacyMs": 206.30000019073486,
+                "compositionMs": 225.59999978542328,
+                "ratio": 1.0935530759905214
+              },
+              {
+                "legacyMs": 218.39999997615814,
+                "compositionMs": 251.5999999642372,
+                "ratio": 1.1520146519766639
+              },
+              {
+                "legacyMs": 217.99999964237213,
+                "compositionMs": 228.40000039339066,
+                "ratio": 1.04770642554165
+              }
+            ],
+            "preparationChecks": 0
+          },
+          {
+            "backend": "canvas2d",
+            "id": "component/commerce-leader",
+            "frames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 1.0671742031793776,
+            "timings": [
+              {
+                "legacyMs": 190.5999994277954,
+                "compositionMs": 218.80000054836273,
+                "ratio": 1.1479538363338258
+              },
+              {
+                "legacyMs": 223.30000019073486,
+                "compositionMs": 238.29999977350235,
+                "ratio": 1.0671742031793776
+              },
+              {
+                "legacyMs": 239.80000007152557,
+                "compositionMs": 238.3999999165535,
+                "ratio": 0.9941618008567369
+              }
+            ],
+            "preparationChecks": 0
+          },
+          {
+            "backend": "canvas2d",
+            "id": "component/commerce-leader/source-crop-ink",
+            "frames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 1.0167938937289087,
+            "timings": [
+              {
+                "legacyMs": 261.9999998807907,
+                "compositionMs": 266.4000000357628,
+                "ratio": 1.0167938937289087
+              },
+              {
+                "legacyMs": 238.29999995231628,
+                "compositionMs": 253.80000001192093,
+                "ratio": 1.065044062369728
+              },
+              {
+                "legacyMs": 246.99999970197678,
+                "compositionMs": 249.40000027418137,
+                "ratio": 1.009716601518625
+              }
+            ],
+            "preparationChecks": 0
+          },
+          {
+            "backend": "canvas2d",
+            "id": "component/commerce-mask",
+            "frames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 1.0073365646336938,
+            "timings": [
+              {
+                "legacyMs": 746.3999997973442,
+                "compositionMs": 758.5000002384186,
+                "ratio": 1.0162111474334936
+              },
+              {
+                "legacyMs": 764.7999999523163,
+                "compositionMs": 764.4000000953674,
+                "ratio": 0.99947698763471
+              },
+              {
+                "legacyMs": 763.3000000715256,
+                "compositionMs": 768.8999998569489,
+                "ratio": 1.0073365646336938
+              }
+            ],
+            "preparationChecks": 0
+          },
+          {
+            "backend": "canvas2d",
+            "id": "component/commerce-outline",
+            "frames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 1.0811258312525514,
+            "timings": [
+              {
+                "legacyMs": 217.3000002503395,
+                "compositionMs": 201.59999978542328,
+                "ratio": 0.9277496527987615
+              },
+              {
+                "legacyMs": 243.29999965429306,
+                "compositionMs": 267.3000002503395,
+                "ratio": 1.0986436524050482
+              },
+              {
+                "legacyMs": 241.59999960660934,
+                "compositionMs": 261.2000004053116,
+                "ratio": 1.0811258312525514
+              }
+            ],
+            "preparationChecks": 0
+          },
+          {
+            "backend": "canvas2d",
+            "id": "component/commerce-pin",
+            "frames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 1.0779932577743594,
+            "timings": [
+              {
+                "legacyMs": 206.69999986886978,
+                "compositionMs": 233.00000023841858,
+                "ratio": 1.1272375442004523
+              },
+              {
+                "legacyMs": 238.49999970197678,
+                "compositionMs": 232.40000027418137,
+                "ratio": 0.9744234824510783
+              },
+              {
+                "legacyMs": 237.1999996304512,
+                "compositionMs": 255.70000034570694,
+                "ratio": 1.0779932577743594
+              }
+            ],
+            "preparationChecks": 0
+          },
+          {
+            "backend": "canvas2d",
+            "id": "component/commerce-sequence",
+            "frames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 1.199113084840554,
+            "timings": [
+              {
+                "legacyMs": 203.80000019073486,
+                "compositionMs": 229.7999997138977,
+                "ratio": 1.1275760524967107
+              },
+              {
+                "legacyMs": 230.99999982118607,
+                "compositionMs": 296.10000026226044,
+                "ratio": 1.2818181839457463
+              },
+              {
+                "legacyMs": 225.49999970197678,
+                "compositionMs": 270.40000027418137,
+                "ratio": 1.199113084840554
+              }
+            ],
+            "preparationChecks": 0
+          },
+          {
+            "backend": "canvas2d",
+            "id": "component/commerce-stagger",
+            "frames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 1.033106135323616,
+            "timings": [
+              {
+                "legacyMs": 205.39999985694885,
+                "compositionMs": 212.20000004768372,
+                "ratio": 1.033106135323616
+              },
+              {
+                "legacyMs": 240.7999992966652,
+                "compositionMs": 242.60000067949295,
+                "ratio": 1.007475088820952
+              },
+              {
+                "legacyMs": 208.60000002384186,
+                "compositionMs": 239.29999995231628,
+                "ratio": 1.147171619966278
+              }
+            ],
+            "preparationChecks": 0
+          },
+          {
+            "backend": "canvas2d",
+            "id": "component/commerce-state",
+            "frames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 1.0267234677477384,
+            "timings": [
+              {
+                "legacyMs": 213.99999970197678,
+                "compositionMs": 233.00000017881393,
+                "ratio": 1.088785049080828
+              },
+              {
+                "legacyMs": 243.49999982118607,
+                "compositionMs": 240.00000023841858,
+                "ratio": 0.9856262850704817
+              },
+              {
+                "legacyMs": 258.2000002861023,
+                "compositionMs": 265.099999666214,
+                "ratio": 1.0267234677477384
+              }
+            ],
+            "preparationChecks": 0
+          },
+          {
+            "backend": "canvas2d",
+            "id": "component/commerce-state/primitive-blur",
+            "frames": 192,
+            "maxDelta": 1,
+            "minPsnr": 99.07956595442053,
+            "failures": [],
+            "ratio": 1.0013665406191303,
+            "timings": [
+              {
+                "legacyMs": 8013.800000190735,
+                "compositionMs": 8048.899999797344,
+                "ratio": 1.0043799445463792
+              },
+              {
+                "legacyMs": 8122.700000286102,
+                "compositionMs": 8133.799999773502,
+                "ratio": 1.0013665406191303
+              },
+              {
+                "legacyMs": 8128.69999986887,
+                "compositionMs": 8128.000000178814,
+                "ratio": 0.9999138854072525
+              }
+            ],
+            "preparationChecks": 4
+          },
+          {
+            "backend": "canvas2d",
+            "id": "component/commerce-state/primitive-blur-matte",
+            "frames": 192,
+            "maxDelta": 1,
+            "minPsnr": 103.28172998825244,
+            "failures": [],
+            "ratio": 1.0009814702725803,
+            "timings": [
+              {
+                "legacyMs": 8456.700000166893,
+                "compositionMs": 8464.999999821186,
+                "ratio": 1.0009814702725803
+              },
+              {
+                "legacyMs": 8479.100000143051,
+                "compositionMs": 8547.799999892712,
+                "ratio": 1.008102274975941
+              },
+              {
+                "legacyMs": 8610.099999964237,
+                "compositionMs": 8616.800000011921,
+                "ratio": 1.0007781558922326
+              }
+            ],
+            "preparationChecks": 4
+          },
+          {
+            "backend": "canvas2d",
+            "id": "component/commerce-state/primitive-blur-stack",
+            "frames": 192,
+            "maxDelta": 1,
+            "minPsnr": 103.28172998825244,
+            "failures": [],
+            "ratio": 1.000950173361942,
+            "timings": [
+              {
+                "legacyMs": 9577.19999986887,
+                "compositionMs": 9586.300000190735,
+                "ratio": 1.000950173361942
+              },
+              {
+                "legacyMs": 9678.399999976158,
+                "compositionMs": 9680.30000013113,
+                "ratio": 1.0001963134562506
+              },
+              {
+                "legacyMs": 9724.5,
+                "compositionMs": 9739.700000047684,
+                "ratio": 1.0015630623731486
+              }
+            ],
+            "preparationChecks": 4
+          },
+          {
+            "backend": "canvas2d",
+            "id": "component/commerce-state/motion-blur",
+            "frames": 192,
+            "maxDelta": 1,
+            "minPsnr": 101.59768568435852,
+            "failures": [],
+            "ratio": 0.9767469633020351,
+            "timings": [
+              {
+                "legacyMs": 22361.599999427795,
+                "compositionMs": 22162.00000053644,
+                "ratio": 0.9910739840218741
+              },
+              {
+                "legacyMs": 23451.599999845028,
+                "compositionMs": 22578.700000166893,
+                "ratio": 0.9627786590388757
+              },
+              {
+                "legacyMs": 23446.399999797344,
+                "compositionMs": 22901.200000166893,
+                "ratio": 0.9767469633020351
+              }
+            ],
+            "preparationChecks": 4
+          },
+          {
+            "backend": "canvas2d",
+            "id": "component/commerce-supply-sequence",
+            "frames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 1.033348701939554,
+            "timings": [
+              {
+                "legacyMs": 637.0999999642372,
+                "compositionMs": 657.8000000715256,
+                "ratio": 1.0324909748994668
+              },
+              {
+                "legacyMs": 642.1000003218651,
+                "compositionMs": 668.9999995827675,
+                "ratio": 1.0418937848425762
+              },
+              {
+                "legacyMs": 650.6999998092651,
+                "compositionMs": 672.4000001549721,
+                "ratio": 1.033348701939554
+              }
+            ],
+            "preparationChecks": 4
+          },
+          {
+            "backend": "canvas2d",
+            "id": "component/commerce-supply",
+            "frames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 0.9919552271907764,
+            "timings": [
+              {
+                "legacyMs": 267.40000009536743,
+                "compositionMs": 265.09999990463257,
+                "ratio": 0.9913986529920921
+              },
+              {
+                "legacyMs": 285.90000027418137,
+                "compositionMs": 283.59999972581863,
+                "ratio": 0.9919552271907764
+              },
+              {
+                "legacyMs": 284.4999997615814,
+                "compositionMs": 307.90000027418137,
+                "ratio": 1.0822495625033735
+              }
+            ],
+            "preparationChecks": 0
+          },
+          {
+            "backend": "canvas2d",
+            "id": "component/commerce-text-fit",
+            "frames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 1.1126760590575417,
+            "timings": [
+              {
+                "legacyMs": 216.0999999642372,
+                "compositionMs": 247.6000000834465,
+                "ratio": 1.1457658497196774
+              },
+              {
+                "legacyMs": 260.10000002384186,
+                "compositionMs": 252.69999986886978,
+                "ratio": 0.9715494034821462
+              },
+              {
+                "legacyMs": 262.69999969005585,
+                "compositionMs": 292.3000003695488,
+                "ratio": 1.1126760590575417
+              }
+            ],
+            "preparationChecks": 4
+          },
+          {
+            "backend": "canvas2d",
+            "id": "component/commerce-text-fit/native-thai",
+            "frames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 1.0444779495340772,
+            "timings": [
+              {
+                "legacyMs": 219.0000001192093,
+                "compositionMs": 229.09999990463257,
+                "ratio": 1.0461187204562807
+              },
+              {
+                "legacyMs": 265.30000001192093,
+                "compositionMs": 277.10000002384186,
+                "ratio": 1.0444779495340772
+              },
+              {
+                "legacyMs": 250.90000009536743,
+                "compositionMs": 251.9999998807907,
+                "ratio": 1.0043842159625556
+              }
+            ],
+            "preparationChecks": 4
+          },
+          {
+            "backend": "canvas2d",
+            "id": "component/commerce-tour",
+            "frames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 1.0522298106701875,
+            "timings": [
+              {
+                "legacyMs": 248.90000009536743,
+                "compositionMs": 261.89999997615814,
+                "ratio": 1.0522298106701875
+              },
+              {
+                "legacyMs": 282.1999997496605,
+                "compositionMs": 295.10000026226044,
+                "ratio": 1.0457122626649311
+              },
+              {
+                "legacyMs": 281.19999998807907,
+                "compositionMs": 338.6999998688698,
+                "ratio": 1.2044807961707977
+              }
+            ],
+            "preparationChecks": 0
+          },
+          {
+            "backend": "canvas2d",
+            "id": "component/commerce-transform",
+            "frames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 1.0471353097191602,
+            "timings": [
+              {
+                "legacyMs": 246.1000000834465,
+                "compositionMs": 257.69999980926514,
+                "ratio": 1.0471353097191602
+              },
+              {
+                "legacyMs": 290.0999999642372,
+                "compositionMs": 261.1000000834465,
+                "ratio": 0.9000344712707143
+              },
+              {
+                "legacyMs": 270.9000002145767,
+                "compositionMs": 290.09999972581863,
+                "ratio": 1.0708748597121958
+              }
+            ],
+            "preparationChecks": 0
+          },
+          {
+            "backend": "canvas2d",
+            "id": "component/commerce-travel",
+            "frames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 1.0695379102232454,
+            "timings": [
+              {
+                "legacyMs": 222.89999985694885,
+                "compositionMs": 238.4000000357628,
+                "ratio": 1.0695379102232454
+              },
+              {
+                "legacyMs": 250.49999976158142,
+                "compositionMs": 263.9000002145767,
+                "ratio": 1.0534930158313334
+              },
+              {
+                "legacyMs": 252.90000009536743,
+                "compositionMs": 295.5999999642372,
+                "ratio": 1.1688414387218973
+              }
+            ],
+            "preparationChecks": 0
+          },
+          {
+            "backend": "canvas2d",
+            "id": "component/commerce-underline",
+            "frames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 1.0625771947479083,
+            "timings": [
+              {
+                "legacyMs": 209.09999978542328,
+                "compositionMs": 226.400000333786,
+                "ratio": 1.082735535945078
+              },
+              {
+                "legacyMs": 242.89999967813492,
+                "compositionMs": 258.10000026226044,
+                "ratio": 1.0625771947479083
+              },
+              {
+                "legacyMs": 305.0999999642372,
+                "compositionMs": 253.89999997615814,
+                "ratio": 0.8321861684887559
+              }
+            ],
+            "preparationChecks": 0
+          },
+          {
+            "backend": "canvas2d",
+            "id": "component/commerce-value",
+            "frames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 1.0524395771477015,
+            "timings": [
+              {
+                "legacyMs": 219.30000030994415,
+                "compositionMs": 230.79999959468842,
+                "ratio": 1.0524395771477015
+              },
+              {
+                "legacyMs": 229.200000166893,
+                "compositionMs": 245.69999986886978,
+                "ratio": 1.0719895274431162
+              },
+              {
+                "legacyMs": 244.90000015497208,
+                "compositionMs": 254.69999980926514,
+                "ratio": 1.0400163317602762
+              }
+            ],
+            "preparationChecks": 4
+          },
+          {
+            "backend": "canvas2d",
+            "id": "component/commerce-value/half-away-from-zero",
+            "frames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 1.129870129237159,
+            "timings": [
+              {
+                "legacyMs": 207.90000009536743,
+                "compositionMs": 234.89999997615814,
+                "ratio": 1.129870129237159
+              },
+              {
+                "legacyMs": 221.39999985694885,
+                "compositionMs": 251.70000010728836,
+                "ratio": 1.136856369782823
+              },
+              {
+                "legacyMs": 252.80000013113022,
+                "compositionMs": 262.99999982118607,
+                "ratio": 1.0403481000188488
+              }
+            ],
+            "preparationChecks": 4
+          },
+          {
+            "backend": "canvas2d",
+            "id": "component/commerce-value/truncate",
+            "frames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 1.1441199090142655,
+            "timings": [
+              {
+                "legacyMs": 199.90000009536743,
+                "compositionMs": 244.69999992847443,
+                "ratio": 1.224112055086213
+              },
+              {
+                "legacyMs": 250.599999666214,
+                "compositionMs": 257.40000027418137,
+                "ratio": 1.0271348787590766
+              },
+              {
+                "legacyMs": 260.19999980926514,
+                "compositionMs": 297.70000010728836,
+                "ratio": 1.1441199090142655
+              }
+            ],
+            "preparationChecks": 4
+          },
+          {
+            "backend": "canvas2d",
+            "id": "component/commerce-value/motion-blur",
+            "frames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 0.7884025364538618,
+            "timings": [
+              {
+                "legacyMs": 6869.099999964237,
+                "compositionMs": 5349.700000047684,
+                "ratio": 0.7788065394411984
+              },
+              {
+                "legacyMs": 6844.5999994874,
+                "compositionMs": 5396.300000607967,
+                "ratio": 0.7884025364538618
+              },
+              {
+                "legacyMs": 6819.000000238419,
+                "compositionMs": 5453.199999809265,
+                "ratio": 0.7997067018065113
+              }
+            ],
+            "preparationChecks": 4
+          },
+          {
+            "backend": "canvas2d",
+            "id": "component/commerce-visibility",
+            "frames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 1.0452538631864563,
+            "timings": [
+              {
+                "legacyMs": 200.3000004887581,
+                "compositionMs": 244.99999952316284,
+                "ratio": 1.22316524675652
+              },
+              {
+                "legacyMs": 264.5,
+                "compositionMs": 269.60000002384186,
+                "ratio": 1.0192816636062074
+              },
+              {
+                "legacyMs": 271.7999999523163,
+                "compositionMs": 284.0999999642372,
+                "ratio": 1.0452538631864563
+              }
+            ],
+            "preparationChecks": 0
+          },
+          {
+            "backend": "canvas2d",
+            "id": "component/isolated-bracket",
+            "frames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 1.2033468527871065,
+            "timings": [
+              {
+                "legacyMs": 197.2000002861023,
+                "compositionMs": 237.2999997138977,
+                "ratio": 1.2033468527871065
+              },
+              {
+                "legacyMs": 237.30000001192093,
+                "compositionMs": 298.1000000834465,
+                "ratio": 1.2562157609290823
+              },
+              {
+                "legacyMs": 266.299999833107,
+                "compositionMs": 304.9000001549721,
+                "ratio": 1.1449493065942775
+              }
+            ],
+            "preparationChecks": 0
+          },
+          {
+            "backend": "canvas2d",
+            "id": "component/isolated-detail-sequence",
+            "frames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 1.0321815720189305,
+            "timings": [
+              {
+                "legacyMs": 575.5999998450279,
+                "compositionMs": 580.8000001907349,
+                "ratio": 1.0090340520276355
+              },
+              {
+                "legacyMs": 590.3000002503395,
+                "compositionMs": 612.3999997973442,
+                "ratio": 1.0374385897639036
+              },
+              {
+                "legacyMs": 590.3999999761581,
+                "compositionMs": 609.4000000953674,
+                "ratio": 1.0321815720189305
+              }
+            ],
+            "preparationChecks": 4
+          },
+          {
+            "backend": "canvas2d",
+            "id": "component/isolated-instances",
+            "frames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 1.0437128964926419,
+            "timings": [
+              {
+                "legacyMs": 151.70000040531158,
+                "compositionMs": 186.5999995470047,
+                "ratio": 1.2300593213477087
+              },
+              {
+                "legacyMs": 185.30000013113022,
+                "compositionMs": 193.39999985694885,
+                "ratio": 1.0437128964926419
+              },
+              {
+                "legacyMs": 210.5999999642372,
+                "compositionMs": 216.30000001192093,
+                "ratio": 1.0270655272965417
+              }
+            ],
+            "preparationChecks": 0
+          },
+          {
+            "backend": "canvas2d",
+            "id": "component/isolated-layout",
+            "frames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 0.9495562815183518,
+            "timings": [
+              {
+                "legacyMs": 182.200000166893,
+                "compositionMs": 185.49999976158142,
+                "ratio": 1.0181119626326325
+              },
+              {
+                "legacyMs": 214.1000000834465,
+                "compositionMs": 203.29999995231628,
+                "ratio": 0.9495562815183518
+              },
+              {
+                "legacyMs": 231.5,
+                "compositionMs": 217.60000002384186,
+                "ratio": 0.9399568035587121
+              }
+            ],
+            "preparationChecks": 0
+          },
+          {
+            "backend": "canvas2d",
+            "id": "component/isolated-leader",
+            "frames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 1.0130792209257573,
+            "timings": [
+              {
+                "legacyMs": 228.89999997615814,
+                "compositionMs": 222.20000004768372,
+                "ratio": 0.9707295765435898
+              },
+              {
+                "legacyMs": 267.60000026226044,
+                "compositionMs": 271.0999997854233,
+                "ratio": 1.0130792209257573
+              },
+              {
+                "legacyMs": 247.69999986886978,
+                "compositionMs": 256.9000002145767,
+                "ratio": 1.0371417050891294
+              }
+            ],
+            "preparationChecks": 0
+          },
+          {
+            "backend": "canvas2d",
+            "id": "component/isolated-mask",
+            "frames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 1.0005450340819497,
+            "timings": [
+              {
+                "legacyMs": 708.2000003457069,
+                "compositionMs": 724.6999997496605,
+                "ratio": 1.0232985023946612
+              },
+              {
+                "legacyMs": 733.8999997377396,
+                "compositionMs": 734.3000002503395,
+                "ratio": 1.0005450340819497
+              },
+              {
+                "legacyMs": 729.6999999880791,
+                "compositionMs": 727.9000000357628,
+                "ratio": 0.9975332329007185
+              }
+            ],
+            "preparationChecks": 0
+          },
+          {
+            "backend": "canvas2d",
+            "id": "component/isolated-outline",
+            "frames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 1.0099999952522607,
+            "timings": [
+              {
+                "legacyMs": 231.20000004768372,
+                "compositionMs": 213.79999995231628,
+                "ratio": 0.9247404840320987
+              },
+              {
+                "legacyMs": 260.0000006556511,
+                "compositionMs": 262.5999994277954,
+                "ratio": 1.0099999952522607
+              },
+              {
+                "legacyMs": 265.6999995112419,
+                "compositionMs": 275.100000500679,
+                "ratio": 1.0353782499312327
+              }
+            ],
+            "preparationChecks": 0
+          },
+          {
+            "backend": "canvas2d",
+            "id": "component/isolated-pin",
+            "frames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 1.1213640976034227,
+            "timings": [
+              {
+                "legacyMs": 168.80000019073486,
+                "compositionMs": 214.79999989271164,
+                "ratio": 1.2725118462677683
+              },
+              {
+                "legacyMs": 199.39999949932098,
+                "compositionMs": 223.60000050067902,
+                "ratio": 1.1213640976034227
+              },
+              {
+                "legacyMs": 208.50000071525574,
+                "compositionMs": 229.7999992966652,
+                "ratio": 1.1021582662270513
+              }
+            ],
+            "preparationChecks": 0
+          },
+          {
+            "backend": "canvas2d",
+            "id": "component/isolated-sequence",
+            "frames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 1.0981175123870879,
+            "timings": [
+              {
+                "legacyMs": 156.60000014305115,
+                "compositionMs": 189.59999984502792,
+                "ratio": 1.2107279672530773
+              },
+              {
+                "legacyMs": 175.30000007152557,
+                "compositionMs": 192.5,
+                "ratio": 1.0981175123870879
+              },
+              {
+                "legacyMs": 224.49999994039536,
+                "compositionMs": 219.90000009536743,
+                "ratio": 0.9795100229565736
+              }
+            ],
+            "preparationChecks": 0
+          },
+          {
+            "backend": "canvas2d",
+            "id": "component/isolated-stagger",
+            "frames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 1.0460750865051145,
+            "timings": [
+              {
+                "legacyMs": 175.79999989271164,
+                "compositionMs": 183.90000009536743,
+                "ratio": 1.0460750865051145
+              },
+              {
+                "legacyMs": 243.80000007152557,
+                "compositionMs": 252.8999999165535,
+                "ratio": 1.0373256761376464
+              },
+              {
+                "legacyMs": 217.69999992847443,
+                "compositionMs": 240.19999998807907,
+                "ratio": 1.1033532387092193
+              }
+            ],
+            "preparationChecks": 0
+          },
+          {
+            "backend": "canvas2d",
+            "id": "component/isolated-state",
+            "frames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 1.09457700655931,
+            "timings": [
+              {
+                "legacyMs": 216.09999978542328,
+                "compositionMs": 212.40000009536743,
+                "ratio": 0.9828782985019446
+              },
+              {
+                "legacyMs": 230.5,
+                "compositionMs": 252.30000001192093,
+                "ratio": 1.09457700655931
+              },
+              {
+                "legacyMs": 209.299999833107,
+                "compositionMs": 244.700000166893,
+                "ratio": 1.1691352143431126
+              }
+            ],
+            "preparationChecks": 0
+          },
+          {
+            "backend": "canvas2d",
+            "id": "component/isolated-supply-sequence",
+            "frames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 1.032451726974348,
+            "timings": [
+              {
+                "legacyMs": 579.2000002861023,
+                "compositionMs": 596.9999997615814,
+                "ratio": 1.030732043278119
+              },
+              {
+                "legacyMs": 628.1000000834465,
+                "compositionMs": 651.299999833107,
+                "ratio": 1.0369367931007456
+              },
+              {
+                "legacyMs": 616.3000003099442,
+                "compositionMs": 636.2999996542931,
+                "ratio": 1.032451726974348
+              }
+            ],
+            "preparationChecks": 4
+          },
+          {
+            "backend": "canvas2d",
+            "id": "component/isolated-supply",
+            "frames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 1.0220216626961973,
+            "timings": [
+              {
+                "legacyMs": 194.09999990463257,
+                "compositionMs": 218.10000014305115,
+                "ratio": 1.1236476056167466
+              },
+              {
+                "legacyMs": 264.5000001192093,
+                "compositionMs": 240.799999833107,
+                "ratio": 0.9103969743840424
+              },
+              {
+                "legacyMs": 276.9999997019768,
+                "compositionMs": 283.10000026226044,
+                "ratio": 1.0220216626961973
+              }
+            ],
+            "preparationChecks": 0
+          },
+          {
+            "backend": "canvas2d",
+            "id": "component/isolated-text-fit",
+            "frames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 1.0676328520325091,
+            "timings": [
+              {
+                "legacyMs": 165.59999984502792,
+                "compositionMs": 176.80000013113022,
+                "ratio": 1.0676328520325091
+              },
+              {
+                "legacyMs": 178.29999995231628,
+                "compositionMs": 213.20000004768372,
+                "ratio": 1.1957375216191863
+              },
+              {
+                "legacyMs": 267.0000002980232,
+                "compositionMs": 210.89999973773956,
+                "ratio": 0.7898876385855232
+              }
+            ],
+            "preparationChecks": 4
+          },
+          {
+            "backend": "canvas2d",
+            "id": "component/isolated-tour",
+            "frames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 0.9814680261765069,
+            "timings": [
+              {
+                "legacyMs": 208.20000022649765,
+                "compositionMs": 227.99999976158142,
+                "ratio": 1.0951008622168283
+              },
+              {
+                "legacyMs": 275.1999996304512,
+                "compositionMs": 270.10000044107437,
+                "ratio": 0.9814680261765069
+              },
+              {
+                "legacyMs": 245.0000001192093,
+                "compositionMs": 235.3999997973442,
+                "ratio": 0.9608163252359427
+              }
+            ],
+            "preparationChecks": 0
+          },
+          {
+            "backend": "canvas2d",
+            "id": "component/isolated-transform",
+            "frames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 1.0182407802245785,
+            "timings": [
+              {
+                "legacyMs": 198.09999978542328,
+                "compositionMs": 218.50000017881393,
+                "ratio": 1.1029782958883765
+              },
+              {
+                "legacyMs": 246.6999997496605,
+                "compositionMs": 251.20000022649765,
+                "ratio": 1.0182407802245785
+              },
+              {
+                "legacyMs": 276.3999996185303,
+                "compositionMs": 265.80000042915344,
+                "ratio": 0.9616497858031611
+              }
+            ],
+            "preparationChecks": 0
+          },
+          {
+            "backend": "canvas2d",
+            "id": "component/isolated-travel",
+            "frames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 1.1623376645764034,
+            "timings": [
+              {
+                "legacyMs": 154.4000000357628,
+                "compositionMs": 184.0999999642372,
+                "ratio": 1.1923575124455648
+              },
+              {
+                "legacyMs": 199.79999995231628,
+                "compositionMs": 217.19999998807907,
+                "ratio": 1.0870870872868639
+              },
+              {
+                "legacyMs": 200.19999980926514,
+                "compositionMs": 232.70000022649765,
+                "ratio": 1.1623376645764034
+              }
+            ],
+            "preparationChecks": 0
+          },
+          {
+            "backend": "canvas2d",
+            "id": "component/isolated-underline",
+            "frames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 0.9954921107923613,
+            "timings": [
+              {
+                "legacyMs": 212.09999984502792,
+                "compositionMs": 195.30000019073486,
+                "ratio": 0.9207920807799713
+              },
+              {
+                "legacyMs": 191.50000023841858,
+                "compositionMs": 228.79999977350235,
+                "ratio": 1.1947780652148567
+              },
+              {
+                "legacyMs": 266.2000000476837,
+                "compositionMs": 264.99999994039536,
+                "ratio": 0.9954921107923613
+              }
+            ],
+            "preparationChecks": 0
+          },
+          {
+            "backend": "canvas2d",
+            "id": "component/isolated-value",
+            "frames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 1.2121026922421998,
+            "timings": [
+              {
+                "legacyMs": 137.90000051259995,
+                "compositionMs": 168.5999994277954,
+                "ratio": 1.2226250819512534
+              },
+              {
+                "legacyMs": 163.59999978542328,
+                "compositionMs": 198.30000019073486,
+                "ratio": 1.2121026922421998
+              },
+              {
+                "legacyMs": 206.7999997138977,
+                "compositionMs": 196.80000030994415,
+                "ratio": 0.9516441033956079
+              }
+            ],
+            "preparationChecks": 4
+          },
+          {
+            "backend": "canvas2d",
+            "id": "component/isolated-visibility",
+            "frames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 1.1594415874605863,
+            "timings": [
+              {
+                "legacyMs": 136.0999999642372,
+                "compositionMs": 157.80000001192093,
+                "ratio": 1.1594415874605863
+              },
+              {
+                "legacyMs": 146.0000001192093,
+                "compositionMs": 191.69999992847443,
+                "ratio": 1.3130136970681574
+              },
+              {
+                "legacyMs": 187.80000007152557,
+                "compositionMs": 187.29999989271164,
+                "ratio": 0.9973375922331017
+              }
+            ],
+            "preparationChecks": 0
+          }
+        ],
+        "exports": [
+          "CE4b canvas2d commerce/atom-background-light export: 240 frames, two byte-identical MP4s; relocated assets and overwrite protection pass",
+          "CE4b canvas2d commerce/atom-directional-blur export: 240 frames, two byte-identical MP4s; relocated assets and overwrite protection pass",
+          "CE4b canvas2d commerce/atom-displacement/pixel-stack export: 240 frames, two byte-identical MP4s; relocated assets and overwrite protection pass",
+          "CE4b canvas2d commerce/atom-echo/image-active-stack export: 240 frames, two byte-identical MP4s; relocated assets and overwrite protection pass",
+          "CE4b canvas2d commerce/atom-effects-studio export: 240 frames, two byte-identical MP4s; relocated assets and overwrite protection pass",
+          "CE4b canvas2d commerce/atom-focus-blur export: 240 frames, two byte-identical MP4s; relocated assets and overwrite protection pass",
+          "CE4b canvas2d commerce/atom-glow export: 240 frames, two byte-identical MP4s; relocated assets and overwrite protection pass",
+          "CE4b canvas2d commerce/atom-grain export: 240 frames, two byte-identical MP4s; relocated assets and overwrite protection pass",
+          "CE4b canvas2d commerce/atom-height-shadow export: 240 frames, two byte-identical MP4s; relocated assets and overwrite protection pass",
+          "CE4b canvas2d commerce/atom-light-sweep/glow-first export: 240 frames, two byte-identical MP4s; relocated assets and overwrite protection pass",
+          "CE4b canvas2d commerce/atom-matte/shared-group-source/focus-matte export: 240 frames, two byte-identical MP4s; relocated assets and overwrite protection pass",
+          "CE4b canvas2d commerce/atom-motion-blur export: 240 frames, two byte-identical MP4s; relocated assets and overwrite protection pass",
+          "CE4b canvas2d commerce/atom-motion-blur/active-cuts export: 240 frames, two byte-identical MP4s; relocated assets and overwrite protection pass",
+          "CE4b canvas2d commerce/atom-motion-blur/overlap-echo-matte export: 240 frames, two byte-identical MP4s; relocated assets and overwrite protection pass",
+          "CE4b canvas2d commerce/atom-particles/environment-stack export: 240 frames, two byte-identical MP4s; relocated assets and overwrite protection pass",
+          "CE4b canvas2d commerce/atom-path/morph export: 240 frames, two byte-identical MP4s; relocated assets and overwrite protection pass",
+          "CE4b canvas2d commerce/atom-path/appearance-brush export: 240 frames, two byte-identical MP4s; relocated assets and overwrite protection pass",
+          "CE4b canvas2d commerce/atom-path/primitive-blur-brush export: 240 frames, two byte-identical MP4s; relocated assets and overwrite protection pass",
+          "CE4b canvas2d commerce/atom-path/motion-blur export: 240 frames, two byte-identical MP4s; relocated assets and overwrite protection pass",
+          "CE4b canvas2d component/commerce-state/primitive-blur-stack export: 192 frames, two byte-identical MP4s; relocated assets and overwrite protection pass",
+          "CE4b canvas2d component/commerce-state/motion-blur export: 192 frames, two byte-identical MP4s; relocated assets and overwrite protection pass",
+          "CE4b canvas2d component/commerce-value/motion-blur export: 192 frames, two byte-identical MP4s; relocated assets and overwrite protection pass",
+          "CE4b text-fit export: 192 frames, two byte-identical MP4s; relocated assets and overwrite protection pass",
+          "CE4b value export: 192 frames, two byte-identical MP4s; relocated assets and overwrite protection pass",
+          "CE4b leader export: 192 frames, two byte-identical MP4s; relocated assets and overwrite protection pass",
+          "CE4b attachment export: 240 frames, two byte-identical MP4s; relocated assets and overwrite protection pass",
+          "CE4b matte export: 240 frames, two byte-identical MP4s; relocated assets and overwrite protection pass",
+          "CE4b mask export: 192 frames, two byte-identical MP4s; relocated assets and overwrite protection pass",
+          "CE4b layout export: 240 frames, two byte-identical MP4s; relocated assets and overwrite protection pass",
+          "CE4b animated-text export: 240 frames, two byte-identical MP4s; relocated assets and overwrite protection pass"
+        ],
+        "summaries": [
+          "CE4b commerce parity: 127 items, 28200 frames",
+          "CE4b fitted-panel export: bad font and impossible fit return diagnostics without writing output"
+        ],
+        "summary": {
+          "cases": 127,
+          "frames": 28200,
+          "exportPairs": 30,
+          "pixelFailures": 0,
+          "timingFailures": 0,
+          "maximumChannelDelta": 1,
+          "minimumPsnr": 99.07956595442053,
+          "maximumMedianTimingRatio": 1.2177275389536697
+        }
+      },
+      {
+        "command": "pnpm test:browser:composition-typography-adapter",
+        "exitCode": 0,
+        "cases": [
+          {
+            "backend": "canvas2d",
+            "id": "typography/editorial",
+            "frames": 151,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 0.9898161618238158
+          },
+          {
+            "backend": "canvas2d",
+            "id": "typography/editorial/containers",
+            "frames": 151,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 0.9736937812149729
+          },
+          {
+            "backend": "canvas2d",
+            "id": "typography/editorial/component-fit",
+            "frames": 151,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 0.9990391206809932
+          },
+          {
+            "backend": "canvas2d",
+            "id": "typography/editorial/numeric",
+            "frames": 151,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 0.7777506705415111
+          },
+          {
+            "backend": "canvas2d",
+            "id": "typography/editorial/appearance-uniform",
+            "frames": 151,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 0.7699495885849417
+          },
+          {
+            "backend": "canvas2d",
+            "id": "typography/editorial/primitive-blur-text",
+            "frames": 151,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 0.9909026257279606
+          },
+          {
+            "backend": "canvas2d",
+            "id": "typography/glyph-performance",
+            "frames": 151,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 1.0168634054207546
+          },
+          {
+            "backend": "canvas2d",
+            "id": "typography/selectors",
+            "frames": 151,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 1.0014139823052917
+          },
+          {
+            "backend": "canvas2d",
+            "id": "typography/semantic",
+            "frames": 181,
+            "maxDelta": 2,
+            "minPsnr": 85.45474120690878,
+            "failures": [],
+            "ratio": 0.9446308718053164
+          },
+          {
+            "backend": "canvas2d",
+            "id": "typography/transitions",
+            "frames": 151,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 0.9758705373357544
+          },
+          {
+            "backend": "canvas2d",
+            "id": "typography/variable-thai",
+            "frames": 151,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 1.1868978794270055
+          },
+          {
+            "backend": "canvas2d",
+            "id": "typography/variable-thai/numeric",
+            "frames": 151,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 1.0606683789731701
+          },
+          {
+            "backend": "canvas2d",
+            "id": "typography/vertical",
+            "frames": 181,
+            "maxDelta": 2,
+            "minPsnr": 85.45474120690878,
+            "failures": [],
+            "ratio": 0.9626532874810254
+          },
+          {
+            "backend": "canvas2d",
+            "id": "typography/commerce",
+            "frames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 1.0223654280248453
+          },
+          {
+            "backend": "canvas2d",
+            "id": "typography/commerce/native-fit",
+            "frames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 1.0622364983107278
+          },
+          {
+            "backend": "canvas2d",
+            "id": "typography/commerce/panel-fit",
+            "frames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 1.0231454010497258
+          },
+          {
+            "backend": "canvas2d",
+            "id": "typography/commerce/component-fit",
+            "frames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 1.0088803084630027
+          },
+          {
+            "backend": "canvas2d",
+            "id": "typography/commerce/numeric",
+            "frames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 0.9340314141747204
+          },
+          {
+            "backend": "canvas2d",
+            "id": "typography/commerce/motion-blur-native",
+            "frames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 0.7835015940145686
+          },
+          {
+            "backend": "canvas2d",
+            "id": "typography/commerce/motion-blur-numeric",
+            "frames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "ratio": 0.7768792188253458
+          }
+        ],
+        "exports": [
+          "CE4b canvas2d typography/editorial/component-fit export: 151 frames, two byte-identical MP4s; relocated assets and overwrite protection pass",
+          "CE4b canvas2d typography/editorial/numeric export: 151 frames, two byte-identical MP4s; relocated assets and overwrite protection pass",
+          "CE4b canvas2d typography/editorial/appearance-uniform export: 151 frames, two byte-identical MP4s; relocated assets and overwrite protection pass",
+          "CE4b canvas2d typography/editorial/primitive-blur-text export: 151 frames, two byte-identical MP4s; relocated assets and overwrite protection pass",
+          "CE4b canvas2d typography/semantic export: 181 frames, two byte-identical MP4s; relocated assets and overwrite protection pass",
+          "CE4b canvas2d typography/variable-thai export: 151 frames, two byte-identical MP4s; relocated assets and overwrite protection pass",
+          "CE4b canvas2d typography/variable-thai/numeric export: 151 frames, two byte-identical MP4s; relocated assets and overwrite protection pass",
+          "CE4b canvas2d typography/commerce/panel-fit export: 192 frames, two byte-identical MP4s; relocated assets and overwrite protection pass",
+          "CE4b canvas2d typography/commerce/numeric export: 192 frames, two byte-identical MP4s; relocated assets and overwrite protection pass",
+          "CE4b canvas2d typography/commerce/motion-blur-numeric export: 192 frames, two byte-identical MP4s; relocated assets and overwrite protection pass"
+        ],
+        "summaries": ["CE4b typography parity: 20 items, 3367 frames"],
+        "summary": {
+          "cases": 20,
+          "frames": 3367,
+          "exportPairs": 10,
+          "pixelFailures": 0,
+          "timingFailures": 0,
+          "maximumChannelDelta": 2,
+          "minimumPsnr": 85.45474120690878,
+          "maximumMedianTimingRatio": 1.1868978794270055
+        }
+      },
+      {
+        "command": "pnpm test:browser:composition-baselines",
+        "exitCode": 0,
+        "cases": [
+          {
+            "id": "story/continuous-unequal-margins",
+            "frames": 192,
+            "milliseconds": 1859,
+            "result": "ok"
+          },
+          {
+            "id": "story/continuous-access-constraint",
+            "frames": 192,
+            "milliseconds": 1440,
+            "result": "ok"
+          },
+          {
+            "id": "story/continuous-relationship-build",
+            "frames": 192,
+            "milliseconds": 2314,
+            "result": "ok"
+          },
+          {
+            "id": "story/continuous-evidence-boundary",
+            "frames": 192,
+            "milliseconds": 1004,
+            "result": "ok"
+          },
+          {
+            "id": "story/continuous-dated-system-break",
+            "frames": 192,
+            "milliseconds": 1404,
+            "result": "ok"
+          },
+          {
+            "id": "story/continuous-category-swap",
+            "frames": 192,
+            "milliseconds": 2028,
+            "result": "ok"
+          },
+          {
+            "id": "story/continuous-motif-resolve",
+            "frames": 192,
+            "milliseconds": 2342,
+            "result": "ok"
+          },
+          {
+            "id": "story/v013-unequal-margins",
+            "frames": 192,
+            "milliseconds": 1934,
+            "result": "ok"
+          },
+          {
+            "id": "story/v013-access-constraint",
+            "frames": 192,
+            "milliseconds": 2158,
+            "result": "ok"
+          },
+          {
+            "id": "story/buffer-press-unequal-margins",
+            "frames": 192,
+            "milliseconds": 1567,
+            "result": "ok"
+          },
+          {
+            "id": "story/v2-unequal-margins",
+            "frames": 192,
+            "milliseconds": 1746,
+            "result": "ok"
+          },
+          {
+            "id": "story/calibration-pan",
+            "frames": 192,
+            "milliseconds": 881,
+            "result": "ok"
+          },
+          {
+            "id": "story/template-resource-network",
+            "frames": 648,
+            "milliseconds": 8336,
+            "result": "ok"
+          },
+          {
+            "id": "story/template-unequal-access",
+            "frames": 312,
+            "milliseconds": 3378,
+            "result": "ok"
+          },
+          {
+            "id": "passage/comparison-access/unequal-margins",
+            "frames": 334,
+            "milliseconds": 3284,
+            "result": "ok"
+          },
+          {
+            "id": "passage/comparison-access/unequal-access",
+            "frames": 312,
+            "milliseconds": 3488,
+            "result": "ok"
+          },
+          {
+            "id": "passage/linked-comparison/compare",
+            "frames": 192,
+            "milliseconds": 1936,
+            "result": "ok"
+          },
+          {
+            "id": "passage/linked-comparison/continue",
+            "frames": 192,
+            "milliseconds": 1960,
+            "result": "ok"
+          },
+          {
+            "id": "passage/linked-comparison/reset",
+            "frames": 192,
+            "milliseconds": 1925,
+            "result": "ok"
+          },
+          {
+            "id": "passage/linked-network-vertical/network",
+            "frames": 192,
+            "milliseconds": 2384,
+            "result": "ok"
+          },
+          {
+            "id": "acting/illustrated-sequence/detail",
+            "frames": 192,
+            "milliseconds": 1058,
+            "result": "ok"
+          },
+          {
+            "id": "acting/illustrated-sequence/action",
+            "frames": 240,
+            "milliseconds": 1621,
+            "result": "ok"
+          },
+          {
+            "id": "acting/illustrated-sequence/consequence",
+            "frames": 288,
+            "milliseconds": 1637,
+            "result": "ok"
+          },
+          {
+            "id": "acting/parcel-actions/wrong-door",
+            "frames": 204,
+            "milliseconds": 2110,
+            "result": "ok"
+          },
+          {
+            "id": "acting/parcel-actions/knock",
+            "frames": 276,
+            "milliseconds": 2964,
+            "result": "ok"
+          },
+          {
+            "id": "acting/parcel-actions/handover",
+            "frames": 384,
+            "milliseconds": 4048,
+            "result": "ok"
+          },
+          {
+            "id": "acting/parcel-image-model/wrong-door",
+            "frames": 204,
+            "milliseconds": 2124,
+            "result": "ok"
+          },
+          {
+            "id": "acting/parcel-image-model/knock",
+            "frames": 276,
+            "milliseconds": 3051,
+            "result": "ok"
+          },
+          {
+            "id": "acting/parcel-image-model/handover",
+            "frames": 384,
+            "milliseconds": 3859,
+            "result": "ok"
+          },
+          {
+            "id": "motion-craft/buffer-press",
+            "frames": 192,
+            "milliseconds": 1608,
+            "result": "ok"
+          },
+          {
+            "id": "motion-craft/buffer-press-accelerate",
+            "frames": 192,
+            "milliseconds": 1575,
+            "result": "ok"
+          },
+          {
+            "id": "motion-craft/supply-ramps",
+            "frames": 192,
+            "milliseconds": 1329,
+            "result": "ok"
+          },
+          {
+            "id": "motion-craft/gallery",
+            "frames": 61,
+            "milliseconds": 20075,
+            "result": "ok"
+          },
+          {
+            "id": "motion-craft/intent-presets",
+            "frames": 61,
+            "milliseconds": 271,
+            "result": "ok"
+          },
+          {
+            "id": "typography/editorial",
+            "frames": 151,
+            "milliseconds": 1269,
+            "result": "ok"
+          },
+          {
+            "id": "typography/glyph-performance",
+            "frames": 151,
+            "milliseconds": 710,
+            "result": "ok"
+          },
+          {
+            "id": "typography/selectors",
+            "frames": 151,
+            "milliseconds": 1124,
+            "result": "ok"
+          },
+          {
+            "id": "typography/semantic",
+            "frames": 181,
+            "milliseconds": 1082,
+            "result": "ok"
+          },
+          {
+            "id": "typography/transitions",
+            "frames": 151,
+            "milliseconds": 1169,
+            "result": "ok"
+          },
+          {
+            "id": "typography/variable-thai",
+            "frames": 151,
+            "milliseconds": 838,
+            "result": "ok"
+          },
+          {
+            "id": "typography/vertical",
+            "frames": 181,
+            "milliseconds": 1163,
+            "result": "ok"
+          },
+          {
+            "id": "typography/commerce",
+            "frames": 192,
+            "milliseconds": 1144,
+            "result": "ok"
+          },
+          {
+            "id": "commerce/a01-landscape",
+            "frames": 300,
+            "milliseconds": 1476,
+            "result": "ok"
+          },
+          {
+            "id": "commerce/a01-feed",
+            "frames": 300,
+            "milliseconds": 1041,
+            "result": "ok"
+          },
+          {
+            "id": "commerce/h01-landscape",
+            "frames": 240,
+            "milliseconds": 1136,
+            "result": "ok"
+          },
+          {
+            "id": "commerce/h01-portrait",
+            "frames": 240,
+            "milliseconds": 1182,
+            "result": "ok"
+          },
+          {
+            "id": "commerce/h03-thai",
+            "frames": 192,
+            "milliseconds": 956,
+            "result": "ok"
+          },
+          {
+            "id": "commerce/h04-square",
+            "frames": 240,
+            "milliseconds": 637,
+            "result": "ok"
+          },
+          {
+            "id": "commerce/vertical-h01-portrait",
+            "frames": 240,
+            "milliseconds": 1154,
+            "result": "ok"
+          },
+          {
+            "id": "commerce/atom-anchor",
+            "frames": 240,
+            "milliseconds": 1120,
+            "result": "ok"
+          },
+          {
+            "id": "commerce/atom-attachment",
+            "frames": 240,
+            "milliseconds": 877,
+            "result": "ok"
+          },
+          {
+            "id": "commerce/atom-background-light",
+            "frames": 240,
+            "milliseconds": 1548,
+            "result": "ok"
+          },
+          {
+            "id": "commerce/atom-background",
+            "frames": 240,
+            "milliseconds": 663,
+            "result": "ok"
+          },
+          {
+            "id": "commerce/atom-callout",
+            "frames": 240,
+            "milliseconds": 835,
+            "result": "ok"
+          },
+          {
+            "id": "commerce/atom-detail",
+            "frames": 240,
+            "milliseconds": 861,
+            "result": "ok"
+          },
+          {
+            "id": "commerce/atom-directional-blur",
+            "frames": 240,
+            "milliseconds": 27695,
+            "result": "ok"
+          },
+          {
+            "id": "commerce/atom-displacement",
+            "frames": 240,
+            "milliseconds": 1887,
+            "result": "ok"
+          },
+          {
+            "id": "commerce/atom-drift",
+            "frames": 240,
+            "milliseconds": 1016,
+            "result": "ok"
+          },
+          {
+            "id": "commerce/atom-echo",
+            "frames": 240,
+            "milliseconds": 1078,
+            "result": "ok"
+          },
+          {
+            "id": "commerce/atom-effects-studio",
+            "frames": 240,
+            "milliseconds": 1647,
+            "result": "ok"
+          },
+          {
+            "id": "commerce/atom-fade",
+            "frames": 240,
+            "milliseconds": 807,
+            "result": "ok"
+          },
+          {
+            "id": "commerce/atom-float",
+            "frames": 240,
+            "milliseconds": 846,
+            "result": "ok"
+          },
+          {
+            "id": "commerce/atom-focus-blur",
+            "frames": 240,
+            "milliseconds": 3216,
+            "result": "ok"
+          },
+          {
+            "id": "commerce/atom-glow",
+            "frames": 240,
+            "milliseconds": 3703,
+            "result": "ok"
+          },
+          {
+            "id": "commerce/atom-grain",
+            "frames": 240,
+            "milliseconds": 1054,
+            "result": "ok"
+          },
+          {
+            "id": "commerce/atom-height-shadow",
+            "frames": 240,
+            "milliseconds": 856,
+            "result": "ok"
+          },
+          {
+            "id": "commerce/atom-introduction",
+            "frames": 240,
+            "milliseconds": 837,
+            "result": "ok"
+          },
+          {
+            "id": "commerce/atom-layout",
+            "frames": 240,
+            "milliseconds": 792,
+            "result": "ok"
+          },
+          {
+            "id": "commerce/atom-light-sweep",
+            "frames": 240,
+            "milliseconds": 1586,
+            "result": "ok"
+          },
+          {
+            "id": "commerce/atom-matte",
+            "frames": 240,
+            "milliseconds": 1581,
+            "result": "ok"
+          },
+          {
+            "id": "commerce/atom-motion-blur",
+            "frames": 240,
+            "milliseconds": 5664,
+            "result": "ok"
+          },
+          {
+            "id": "commerce/atom-overshoot",
+            "frames": 240,
+            "milliseconds": 857,
+            "result": "ok"
+          },
+          {
+            "id": "commerce/atom-panel",
+            "frames": 240,
+            "milliseconds": 688,
+            "result": "ok"
+          },
+          {
+            "id": "commerce/atom-parallax",
+            "frames": 240,
+            "milliseconds": 893,
+            "result": "ok"
+          },
+          {
+            "id": "commerce/atom-particles",
+            "frames": 240,
+            "milliseconds": 868,
+            "result": "ok"
+          },
+          {
+            "id": "commerce/atom-path",
+            "frames": 240,
+            "milliseconds": 666,
+            "result": "ok"
+          },
+          {
+            "id": "commerce/atom-product",
+            "frames": 240,
+            "milliseconds": 925,
+            "result": "ok"
+          },
+          {
+            "id": "commerce/atom-rotate",
+            "frames": 240,
+            "milliseconds": 1088,
+            "result": "ok"
+          },
+          {
+            "id": "commerce/atom-scale",
+            "frames": 240,
+            "milliseconds": 898,
+            "result": "ok"
+          },
+          {
+            "id": "commerce/atom-sequence",
+            "frames": 240,
+            "milliseconds": 899,
+            "result": "ok"
+          },
+          {
+            "id": "commerce/atom-shadow",
+            "frames": 240,
+            "milliseconds": 660,
+            "result": "ok"
+          },
+          {
+            "id": "commerce/atom-studio",
+            "frames": 240,
+            "milliseconds": 869,
+            "result": "ok"
+          },
+          {
+            "id": "commerce/atom-text",
+            "frames": 240,
+            "milliseconds": 662,
+            "result": "ok"
+          },
+          {
+            "id": "commerce/atom-translate",
+            "frames": 240,
+            "milliseconds": 853,
+            "result": "ok"
+          },
+          {
+            "id": "component/commerce-bracket",
+            "frames": 192,
+            "milliseconds": 854,
+            "result": "ok"
+          },
+          {
+            "id": "component/commerce-detail-sequence",
+            "frames": 192,
+            "milliseconds": 1259,
+            "result": "ok"
+          },
+          {
+            "id": "component/commerce-instances",
+            "frames": 192,
+            "milliseconds": 826,
+            "result": "ok"
+          },
+          {
+            "id": "component/commerce-layout",
+            "frames": 192,
+            "milliseconds": 821,
+            "result": "ok"
+          },
+          {
+            "id": "component/commerce-leader",
+            "frames": 192,
+            "milliseconds": 809,
+            "result": "ok"
+          },
+          {
+            "id": "component/commerce-mask",
+            "frames": 192,
+            "milliseconds": 1370,
+            "result": "ok"
+          },
+          {
+            "id": "component/commerce-outline",
+            "frames": 192,
+            "milliseconds": 821,
+            "result": "ok"
+          },
+          {
+            "id": "component/commerce-pin",
+            "frames": 192,
+            "milliseconds": 893,
+            "result": "ok"
+          },
+          {
+            "id": "component/commerce-sequence",
+            "frames": 192,
+            "milliseconds": 842,
+            "result": "ok"
+          },
+          {
+            "id": "component/commerce-stagger",
+            "frames": 192,
+            "milliseconds": 804,
+            "result": "ok"
+          },
+          {
+            "id": "component/commerce-state",
+            "frames": 192,
+            "milliseconds": 864,
+            "result": "ok"
+          },
+          {
+            "id": "component/commerce-supply-sequence",
+            "frames": 192,
+            "milliseconds": 1287,
+            "result": "ok"
+          },
+          {
+            "id": "component/commerce-supply",
+            "frames": 192,
+            "milliseconds": 881,
+            "result": "ok"
+          },
+          {
+            "id": "component/commerce-text-fit",
+            "frames": 192,
+            "milliseconds": 833,
+            "result": "ok"
+          },
+          {
+            "id": "component/commerce-tour",
+            "frames": 192,
+            "milliseconds": 876,
+            "result": "ok"
+          },
+          {
+            "id": "component/commerce-transform",
+            "frames": 192,
+            "milliseconds": 872,
+            "result": "ok"
+          },
+          {
+            "id": "component/commerce-travel",
+            "frames": 192,
+            "milliseconds": 836,
+            "result": "ok"
+          },
+          {
+            "id": "component/commerce-underline",
+            "frames": 192,
+            "milliseconds": 825,
+            "result": "ok"
+          },
+          {
+            "id": "component/commerce-value",
+            "frames": 192,
+            "milliseconds": 850,
+            "result": "ok"
+          },
+          {
+            "id": "component/commerce-visibility",
+            "frames": 192,
+            "milliseconds": 833,
+            "result": "ok"
+          },
+          {
+            "id": "component/isolated-bracket",
+            "frames": 192,
+            "milliseconds": 813,
+            "result": "ok"
+          },
+          {
+            "id": "component/isolated-detail-sequence",
+            "frames": 192,
+            "milliseconds": 1178,
+            "result": "ok"
+          },
+          {
+            "id": "component/isolated-instances",
+            "frames": 192,
+            "milliseconds": 742,
+            "result": "ok"
+          },
+          {
+            "id": "component/isolated-layout",
+            "frames": 192,
+            "milliseconds": 742,
+            "result": "ok"
+          },
+          {
+            "id": "component/isolated-leader",
+            "frames": 192,
+            "milliseconds": 799,
+            "result": "ok"
+          },
+          {
+            "id": "component/isolated-mask",
+            "frames": 192,
+            "milliseconds": 1283,
+            "result": "ok"
+          },
+          {
+            "id": "component/isolated-outline",
+            "frames": 192,
+            "milliseconds": 787,
+            "result": "ok"
+          },
+          {
+            "id": "component/isolated-pin",
+            "frames": 192,
+            "milliseconds": 747,
+            "result": "ok"
+          },
+          {
+            "id": "component/isolated-sequence",
+            "frames": 192,
+            "milliseconds": 778,
+            "result": "ok"
+          },
+          {
+            "id": "component/isolated-stagger",
+            "frames": 192,
+            "milliseconds": 732,
+            "result": "ok"
+          },
+          {
+            "id": "component/isolated-state",
+            "frames": 192,
+            "milliseconds": 754,
+            "result": "ok"
+          },
+          {
+            "id": "component/isolated-supply-sequence",
+            "frames": 192,
+            "milliseconds": 1150,
+            "result": "ok"
+          },
+          {
+            "id": "component/isolated-supply",
+            "frames": 192,
+            "milliseconds": 780,
+            "result": "ok"
+          },
+          {
+            "id": "component/isolated-text-fit",
+            "frames": 192,
+            "milliseconds": 735,
+            "result": "ok"
+          },
+          {
+            "id": "component/isolated-tour",
+            "frames": 192,
+            "milliseconds": 772,
+            "result": "ok"
+          },
+          {
+            "id": "component/isolated-transform",
+            "frames": 192,
+            "milliseconds": 763,
+            "result": "ok"
+          },
+          {
+            "id": "component/isolated-travel",
+            "frames": 192,
+            "milliseconds": 749,
+            "result": "ok"
+          },
+          {
+            "id": "component/isolated-underline",
+            "frames": 192,
+            "milliseconds": 778,
+            "result": "ok"
+          },
+          {
+            "id": "component/isolated-value",
+            "frames": 192,
+            "milliseconds": 734,
+            "result": "ok"
+          },
+          {
+            "id": "component/isolated-visibility",
+            "frames": 192,
+            "milliseconds": 739,
+            "result": "ok"
+          },
+          {
+            "id": "component/story-bracket",
+            "frames": 192,
+            "milliseconds": 833,
+            "result": "ok"
+          },
+          {
+            "id": "component/story-detail-sequence",
+            "frames": 192,
+            "milliseconds": 1282,
+            "result": "ok"
+          },
+          {
+            "id": "component/story-instances",
+            "frames": 192,
+            "milliseconds": 813,
+            "result": "ok"
+          },
+          {
+            "id": "component/story-layout",
+            "frames": 192,
+            "milliseconds": 807,
+            "result": "ok"
+          },
+          {
+            "id": "component/story-leader",
+            "frames": 192,
+            "milliseconds": 871,
+            "result": "ok"
+          },
+          {
+            "id": "component/story-mask",
+            "frames": 192,
+            "milliseconds": 1386,
+            "result": "ok"
+          },
+          {
+            "id": "component/story-outline",
+            "frames": 192,
+            "milliseconds": 823,
+            "result": "ok"
+          },
+          {
+            "id": "component/story-pin",
+            "frames": 192,
+            "milliseconds": 798,
+            "result": "ok"
+          },
+          {
+            "id": "component/story-sequence",
+            "frames": 192,
+            "milliseconds": 798,
+            "result": "ok"
+          },
+          {
+            "id": "component/story-stagger",
+            "frames": 192,
+            "milliseconds": 809,
+            "result": "ok"
+          },
+          {
+            "id": "component/story-state",
+            "frames": 192,
+            "milliseconds": 804,
+            "result": "ok"
+          },
+          {
+            "id": "component/story-supply-sequence",
+            "frames": 192,
+            "milliseconds": 1269,
+            "result": "ok"
+          },
+          {
+            "id": "component/story-supply",
+            "frames": 192,
+            "milliseconds": 865,
+            "result": "ok"
+          },
+          {
+            "id": "component/story-text-fit",
+            "frames": 192,
+            "milliseconds": 813,
+            "result": "ok"
+          },
+          {
+            "id": "component/story-tour",
+            "frames": 192,
+            "milliseconds": 868,
+            "result": "ok"
+          },
+          {
+            "id": "component/story-transform",
+            "frames": 192,
+            "milliseconds": 881,
+            "result": "ok"
+          },
+          {
+            "id": "component/story-travel",
+            "frames": 192,
+            "milliseconds": 832,
+            "result": "ok"
+          },
+          {
+            "id": "component/story-underline",
+            "frames": 192,
+            "milliseconds": 812,
+            "result": "ok"
+          },
+          {
+            "id": "component/story-value",
+            "frames": 192,
+            "milliseconds": 829,
+            "result": "ok"
+          },
+          {
+            "id": "component/story-visibility",
+            "frames": 192,
+            "milliseconds": 806,
+            "result": "ok"
+          },
+          {
+            "id": "component/passage-components/instances",
+            "frames": 192,
+            "milliseconds": 796,
+            "result": "ok"
+          },
+          {
+            "id": "component/passage-components/leader",
+            "frames": 192,
+            "milliseconds": 853,
+            "result": "ok"
+          },
+          {
+            "id": "component/passage-components/value",
+            "frames": 192,
+            "milliseconds": 830,
+            "result": "ok"
+          },
+          {
+            "id": "component/passage-behaviors/transform",
+            "frames": 192,
+            "milliseconds": 864,
+            "result": "ok"
+          },
+          {
+            "id": "component/passage-behaviors/state",
+            "frames": 192,
+            "milliseconds": 818,
+            "result": "ok"
+          },
+          {
+            "id": "component/passage-behaviors/travel",
+            "frames": 192,
+            "milliseconds": 866,
+            "result": "ok"
+          },
+          {
+            "id": "component/passage-behaviors/supply",
+            "frames": 192,
+            "milliseconds": 864,
+            "result": "ok"
+          },
+          {
+            "id": "component/passage-timing/visibility",
+            "frames": 192,
+            "milliseconds": 795,
+            "result": "ok"
+          },
+          {
+            "id": "component/passage-timing/text-fit",
+            "frames": 192,
+            "milliseconds": 849,
+            "result": "ok"
+          },
+          {
+            "id": "component/passage-timing/supply-sequence",
+            "frames": 192,
+            "milliseconds": 1265,
+            "result": "ok"
+          },
+          {
+            "id": "cinematic/threshold-push",
+            "frames": 168,
+            "milliseconds": 2199,
+            "result": "ok"
+          },
+          {
+            "id": "cinematic/threshold-push-alternate",
+            "frames": 168,
+            "milliseconds": 2222,
+            "result": "ok"
+          },
+          {
+            "id": "cinematic/lateral-track",
+            "frames": 168,
+            "milliseconds": 2146,
+            "result": "ok"
+          },
+          {
+            "id": "cinematic/lateral-track-alternate",
+            "frames": 168,
+            "milliseconds": 2068,
+            "result": "ok"
+          },
+          {
+            "id": "cinematic/foreground-reveal",
+            "frames": 168,
+            "milliseconds": 2244,
+            "result": "ok"
+          },
+          {
+            "id": "cinematic/foreground-reveal-alternate",
+            "frames": 168,
+            "milliseconds": 2262,
+            "result": "ok"
+          },
+          {
+            "id": "cinematic/rising-vista",
+            "frames": 96,
+            "milliseconds": 1354,
+            "result": "ok"
+          },
+          {
+            "id": "cinematic/detail-to-world",
+            "frames": 96,
+            "milliseconds": 1186,
+            "result": "ok"
+          },
+          {
+            "id": "cinematic/curved-approach",
+            "frames": 96,
+            "milliseconds": 1305,
+            "result": "ok"
+          },
+          {
+            "id": "cinematic/dolly-zoom-tension",
+            "frames": 168,
+            "milliseconds": 1595,
+            "result": "ok"
+          },
+          {
+            "id": "cinematic/dolly-zoom-tension-alternate",
+            "frames": 168,
+            "milliseconds": 1530,
+            "result": "ok"
+          },
+          {
+            "id": "cinematic/layered-parallax",
+            "frames": 168,
+            "milliseconds": 1510,
+            "result": "ok"
+          },
+          {
+            "id": "cinematic/layered-parallax-alternate",
+            "frames": 168,
+            "milliseconds": 1512,
+            "result": "ok"
+          },
+          {
+            "id": "cinematic/focus-handoff",
+            "frames": 96,
+            "milliseconds": 2518,
+            "result": "ok"
+          },
+          {
+            "id": "cinematic/vertical-rising-vista",
+            "frames": 96,
+            "milliseconds": 1391,
+            "result": "ok"
+          },
+          {
+            "id": "legacy/chronicle-reveal",
+            "frames": 168,
+            "milliseconds": 1181,
+            "result": "ok"
+          },
+          {
+            "id": "legacy/resource-flow",
+            "frames": 168,
+            "milliseconds": 788,
+            "result": "ok"
+          },
+          {
+            "id": "legacy/access-pressure",
+            "frames": 168,
+            "milliseconds": 843,
+            "result": "ok"
+          },
+          {
+            "id": "legacy/comparison-build",
+            "frames": 168,
+            "milliseconds": 912,
+            "result": "ok"
+          },
+          {
+            "id": "legacy/pose-prop-change",
+            "frames": 168,
+            "milliseconds": 825,
+            "result": "ok"
+          },
+          {
+            "id": "legacy/crisis-fracture",
+            "frames": 168,
+            "milliseconds": 819,
+            "result": "ok"
+          },
+          {
+            "id": "legacy/vertical-chronicle-reveal",
+            "frames": 168,
+            "milliseconds": 1021,
+            "result": "ok"
+          }
+        ],
+        "exports": [],
+        "summaries": ["176 items, 36061 frames in 276.82s"],
+        "summary": {
+          "cases": 176,
+          "frames": 36061,
+          "exportPairs": 0,
+          "baselineFailures": 0,
+          "baselineRegenerated": false,
+          "elapsedSeconds": 276.82
+        }
+      }
+    ],
+    "formatting": {
+      "command": "pnpm exec prettier --check <changed and new files, excluding the three owner-designated files>",
+      "status": "passed",
+      "initialCheck": {
+        "exitCode": 1,
+        "files": [
+          "docs/composition-ce9-verification-results.json",
+          "docs/dev-log.md"
+        ],
+        "resolution": "Prettier-only fixes to the new evidence file and edited development log"
+      },
+      "exitCode": 0,
+      "changedFiles": [
+        "benchmarks/fixtures/composition/ce1/every-field.json",
+        "benchmarks/fixtures/composition/ce9/built-ins.json",
+        "benchmarks/fixtures/composition/ce9/overlap-demo.baked.json",
+        "benchmarks/fixtures/composition/ce9/overlap-demo.json",
+        "docs/composition-ce9-verification-results.json",
+        "docs/composition-engine-plan.md",
+        "docs/composition-reference.md",
+        "docs/dev-log.md",
+        "docs/user-guide.md",
+        "package.json",
+        "packages/renderer-core/src/composition/bake.ts",
+        "packages/renderer-core/src/composition/evaluate/compile.ts",
+        "packages/renderer-core/src/composition/evaluate/evaluate.ts",
+        "packages/renderer-core/src/composition/evaluate/expression-keys.ts",
+        "packages/renderer-core/src/composition/evaluate/expression-math.ts",
+        "packages/renderer-core/src/composition/evaluate/index.ts",
+        "packages/renderer-core/src/composition/evaluate/properties.ts",
+        "packages/renderer-core/src/composition/evaluate/sample.ts",
+        "packages/renderer-core/src/index.ts",
+        "packages/scene-contract/schemas/composition-1.schema.json",
+        "packages/scene-contract/src/composition/behaviours.ts",
+        "packages/scene-contract/src/composition/composition.ts",
+        "packages/scene-contract/src/composition/dependencies.ts",
+        "packages/scene-contract/src/composition/diagnostics.ts",
+        "packages/scene-contract/src/composition/expression-ast.ts",
+        "packages/scene-contract/src/composition/expression-check.ts",
+        "packages/scene-contract/src/composition/expressions.ts",
+        "packages/scene-contract/src/composition/index.ts",
+        "packages/scene-contract/src/composition/keys.ts",
+        "packages/scene-contract/src/composition/primitives.ts",
+        "packages/scene-contract/src/composition/validate.ts",
+        "tests/browser/composition-evaluator.ts",
+        "tests/browser/composition-expressions.ts",
+        "tests/unit/composition-bake.test.ts",
+        "tests/unit/composition-contract.test.ts",
+        "tests/unit/composition-expression-syntax.test.ts",
+        "tests/unit/composition-expressions.test.ts",
+        "tests/unit/composition-json-bounds.test.ts",
+        "tools/still-shift-cli/src/cli.ts"
+      ]
+    },
+    "whitespace": {
+      "command": "git diff --check",
+      "status": "passed",
+      "exitCode": 0
+    }
+  },
+  "limitations": [
+    "CE9-F1 runtime lowering of signals, drivers and periodic motion remains a reasoned follow-up to preserve legacy float ordering.",
+    "Discrete and bezier-path expression/bake targets, 3D values (CE8) and Lab editing (CE11) are outside CE9.",
+    "Spring/follow-through integration starts at frame 0; evaluation cost grows with frame number.",
+    "Baking requires integer layer times; colours round to 8-bit channels with a warning.",
+    "Strict WebGL 0.36 family audits were not rerun. Their outstanding correctness evidence remains separate CE6 work.",
+    "WebGL 1.25x family timing and CE6 2x speed targets remain deferred performance (CE6-P); no tuning or resolution claim."
+  ],
+  "excludedFiles": [
+    "docs/composition-renderer-performance-research-1.md",
+    "docs/composition-renderer-performance-research-2.md",
+    "docs/pr-30-review-plan.json"
+  ],
+  "notes": [
+    "Case-level timing uses the median of three paired passes; assertions and tolerances are unchanged.",
+    "A null case minPsnr represents infinite PSNR for identical pixels.",
+    "The unrelated concurrent audio-research dev-log entry is preserved in the working tree and excluded from CE9 commits."
+  ],
+  "codeRevision": "38d3a667de667943330dda49959508dccf45a958",
+  "codeCommits": [
+    {
+      "sha": "b0b619e93289b2ff90bc6a10c0dd5ba2f39503c1",
+      "short": "b0b619e",
+      "subject": "feat(scene-contract): add expression and behaviour validation"
+    },
+    {
+      "sha": "66412a03c526c94d27a47907a48822505fe8e005",
+      "short": "66412a0",
+      "subject": "feat(composition): evaluate expressions and add bake CLI"
+    },
+    {
+      "sha": "38d3a667de667943330dda49959508dccf45a958",
+      "short": "38d3a66",
+      "subject": "test(composition): cover CE9 expressions and baking"
+    }
+  ]
+}

@@ -1,0 +1,78 @@
+{
+  "schemaVersion": "composition-1",
+  "id": "ce9-overlap-demo",
+  "name": "CE9 acceptance: a keyed leader with overlapping followers, bounce and squash",
+  "width": 480,
+  "height": 270,
+  "fps": 30,
+  "frameCount": 90,
+  "background": "#101418",
+  "assets": [],
+  "layers": [
+    {
+      "id": "lead",
+      "type": "solid",
+      "size": [40, 40],
+      "color": "#f2b544",
+      "transform": {
+        "position": {
+          "keys": [
+            { "frame": 0, "value": [70, 140] },
+            { "frame": 22, "value": [250, 80], "interpolation": "linear" },
+            { "frame": 30, "value": [250, 80] },
+            { "frame": 54, "value": [410, 170], "interpolation": "linear" },
+            { "frame": 62, "value": [410, 170] },
+            { "frame": 86, "value": [230, 200], "interpolation": "linear" }
+          ]
+        }
+      }
+    },
+    {
+      "id": "f1",
+      "type": "solid",
+      "size": [32, 32],
+      "color": "#e8794a",
+      "transform": { "position": [70, 140] }
+    },
+    {
+      "id": "f2",
+      "type": "solid",
+      "size": [26, 26],
+      "color": "#c94f6d",
+      "transform": { "position": [70, 140] }
+    },
+    {
+      "id": "f3",
+      "type": "solid",
+      "size": [20, 20],
+      "color": "#7b5ea7",
+      "transform": { "position": [70, 140] }
+    }
+  ],
+  "behaviours": [
+    {
+      "type": "inertial-bounce",
+      "target": "lead.transform.position",
+      "amplitude": 0.06,
+      "frequency": 3,
+      "decay": 7
+    },
+    {
+      "type": "follow-through",
+      "leader": "lead.transform.position",
+      "followers": ["f1", "f2", "f3"],
+      "delayFrames": 3,
+      "frequency": 2.2,
+      "damping": 0.45
+    },
+    {
+      "type": "squash-stretch",
+      "layer": "lead",
+      "amount": 0.0006,
+      "limit": 1.4
+    },
+    { "type": "squash-stretch", "layer": "f1", "amount": 0.0006, "limit": 1.4 },
+    { "type": "squash-stretch", "layer": "f2", "amount": 0.0006, "limit": 1.4 },
+    { "type": "squash-stretch", "layer": "f3", "amount": 0.0006, "limit": 1.4 }
+  ]
+}

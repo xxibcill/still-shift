@@ -1,0 +1,267 @@
+{
+  "schemaVersion": "composition-1",
+  "id": "ce9-built-ins",
+  "name": "CE9 expression built-ins, behaviours and precomp-instance reads",
+  "width": 320,
+  "height": 180,
+  "fps": 30,
+  "frameCount": 60,
+  "background": "#0d1117",
+  "assets": [],
+  "signals": [
+    {
+      "id": "beat",
+      "keys": [
+        {
+          "frame": 0,
+          "value": 0
+        },
+        {
+          "frame": 59,
+          "value": 1
+        }
+      ],
+      "add": [
+        {
+          "pulse": {
+            "at": 30,
+            "half": 6,
+            "depth": 0.5
+          }
+        }
+      ]
+    }
+  ],
+  "precomps": [
+    {
+      "id": "clip",
+      "width": 100,
+      "height": 100,
+      "frameCount": 30,
+      "layers": [
+        {
+          "id": "hero",
+          "type": "solid",
+          "size": [30, 30],
+          "color": "#58a6ff",
+          "transform": {
+            "position": [50, 50],
+            "opacity": {
+              "keys": [
+                {
+                  "frame": 0,
+                  "value": 0.2
+                },
+                {
+                  "frame": 29,
+                  "value": 1,
+                  "interpolation": "linear"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "layers": [
+    {
+      "id": "intro",
+      "type": "precomp",
+      "comp": "clip",
+      "transform": {
+        "position": [60, 60]
+      }
+    },
+    {
+      "id": "outro",
+      "type": "precomp",
+      "comp": "clip",
+      "startFrame": 29,
+      "stretch": -1,
+      "transform": {
+        "position": [260, 60]
+      }
+    },
+    {
+      "id": "path",
+      "type": "solid",
+      "size": [16, 16],
+      "color": "#3fb950",
+      "transform": {
+        "autoOrient": "path",
+        "position": {
+          "keys": [
+            {
+              "frame": 0,
+              "value": [30, 150],
+              "spatialOut": [60, -80]
+            },
+            {
+              "frame": 20,
+              "value": [160, 90],
+              "spatialIn": [-40, 0]
+            },
+            {
+              "frame": 50,
+              "value": [290, 150],
+              "spatialIn": [0, -60]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "loop",
+      "type": "solid",
+      "size": [12, 12],
+      "color": "#d29922",
+      "transform": {
+        "position": [160, 30],
+        "rotation": {
+          "keys": [
+            {
+              "frame": 0,
+              "value": 0
+            },
+            {
+              "frame": 10,
+              "value": 45,
+              "interpolation": "linear"
+            },
+            {
+              "frame": 20,
+              "value": 0,
+              "interpolation": "linear"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "probe",
+      "type": "solid",
+      "size": [10, 10],
+      "color": "#ffffff",
+      "transform": {
+        "position": [160, 160]
+      }
+    },
+    {
+      "id": "rig",
+      "type": "null",
+      "transform": {
+        "position": [0, 0]
+      }
+    },
+    {
+      "id": "s1",
+      "type": "solid",
+      "size": [8, 8],
+      "color": "#f778ba",
+      "parent": "rig",
+      "transform": {
+        "position": [20, 100],
+        "opacity": {
+          "keys": [
+            {
+              "frame": 0,
+              "value": 0
+            },
+            {
+              "frame": 12,
+              "value": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "s2",
+      "type": "solid",
+      "size": [8, 8],
+      "color": "#f778ba",
+      "parent": "rig",
+      "transform": {
+        "position": [32, 100],
+        "opacity": {
+          "keys": [
+            {
+              "frame": 0,
+              "value": 0
+            },
+            {
+              "frame": 12,
+              "value": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "s3",
+      "type": "solid",
+      "size": [8, 8],
+      "color": "#f778ba",
+      "parent": "rig",
+      "transform": {
+        "position": [44, 100],
+        "opacity": {
+          "keys": [
+            {
+              "frame": 0,
+              "value": 0
+            },
+            {
+              "frame": 12,
+              "value": 1
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "expressions": {
+    "intro/hero.transform.rotation": {
+      "source": "ref('intro/hero.transform.opacity') * 360"
+    },
+    "outro/hero.transform.scale": {
+      "source": "[1, 1] * (0.5 + ref('intro/hero.transform.opacity') / 2)"
+    },
+    "loop.transform.rotation": {
+      "source": "loopOut('pingpong')"
+    },
+    "loop.transform.scale": {
+      "source": "[1, 1] + [noise(3, time * 2), random(4, floor(frame / 10))] * 0.3"
+    },
+    "probe.transform.position": {
+      "source": "value + [linear(signal('beat'), 0, 1, -100, 100), ease(frame, 0, 59, 0, -40)]"
+    },
+    "probe.color": {
+      "source": "mix(#ff0000, #00ff88, clamp(ref('outro/hero.transform.opacity'), 0, 1))"
+    },
+    "probe.transform.rotation": {
+      "source": "lookAt(ref('probe.transform.position'), ref('path.transform.position')) + valueAtTime('loop.transform.rotation', time - 0.25)"
+    }
+  },
+  "behaviours": [
+    {
+      "type": "camera-shake",
+      "target": "rig.transform.position",
+      "startFrame": 30,
+      "amplitude": 6,
+      "seed": 11
+    },
+    {
+      "type": "stagger",
+      "layers": ["s1", "s2", "s3"],
+      "properties": ["transform.opacity"],
+      "offsetFrames": 4,
+      "order": "center-out"
+    },
+    {
+      "type": "constant-speed",
+      "target": "path.transform.position"
+    }
+  ]
+}

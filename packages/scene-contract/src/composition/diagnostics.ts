@@ -98,6 +98,25 @@ export const COMPOSITION_DIAGNOSTICS = {
   "comp-motion-cycle":
     "Driver, constraint or parent dependencies form a cycle.",
   "comp-periodic": "Invalid periodic motion window, generator or target form.",
+  // Expressions and behaviours (CE9); source diagnostics carry a 1-based `column`
+  "comp-expression-syntax":
+    "Expression text does not match the grammar (including unknown identifiers).",
+  "comp-expression-unknown-function":
+    "An expression calls a function that is not a registered built-in.",
+  "comp-expression-type":
+    "An expression's types do not fit an operator, built-in or its target property.",
+  "comp-expression-limit":
+    "An expression exceeds 2,000 characters, 500 AST nodes, 64 nesting levels or a literal argument bound.",
+  "comp-expression-mismatch":
+    "An expression's `ast` differs from the AST parsed from its `source`.",
+  "comp-expression-cycle":
+    "Expression reads form a dependency cycle, alone or with drivers, constraints or parents.",
+  "comp-expression-overlap":
+    "Two expressions or behaviours target the same property or one of its components.",
+  "comp-key-speed-dimension":
+    "A grouped temporal speed tuple does not match its value's dimensions.",
+  "comp-key-speed-spatial":
+    "A component speed tuple on spatial keys, or `spatialSpeed` on keys without spatial tangents.",
   // Property paths
   "comp-path-syntax": "A property path does not match the grammar.",
   "comp-path-scope":
@@ -152,6 +171,8 @@ export type CompositionDiagnostic = {
   severity: "error" | "warning";
   message: string;
   path: string;
+  /** 1-based character column for expression source diagnostics. */
+  column?: number;
 };
 
 export function formatJsonPath(path: readonly PropertyKey[]) {
@@ -226,11 +247,13 @@ export function compositionIssueDiagnostics(
       issue.code === "unrecognized_keys"
         ? `unknown field${issue.keys.length > 1 ? "s" : ""} ${issue.keys.map((k) => `"${k}"`).join(", ")}`
         : stripCode(issue.message, code);
+    const column = (issue as { params?: { column?: number } }).params?.column;
     return {
       code,
       severity: "error",
       message,
       path: formatJsonPath(issue.path),
+      ...(column === undefined ? {} : { column }),
     };
   });
 }

@@ -5,6 +5,9 @@ export {
 export {
   evaluateComp,
   evaluateProperty,
+  evaluateStageProperty,
+  evaluateStageProperties,
+  type StageSample,
   COMPOSITION_EVALUATOR_VERSION,
 } from "./evaluate.ts";
 export type {
