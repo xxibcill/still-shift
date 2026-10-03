@@ -40,6 +40,27 @@ vec4 translated(vec2 offset) {
 }
 `;
 
+// Sine displacement never changes the source row. Preserve the same bitmap
+// spans and byte rounding without fetching a second pair of vertical samples.
+const HORIZONTAL_SAMPLE = `
+vec4 translatedX(float shift) {
+  float integral=floor(shift+0.5);
+  if(abs(shift-integral)<1.0/256.0) shift=integral;
+  float start=max(0.0,floor(shift+0.5));
+  float x=floor(gl_FragCoord.x);
+  float span=start+floor((x-start)/127.0)*127.0;
+  float initial=(span+0.5)-shift-0.5;
+  int base=int(floor(initial)+x-span);
+  ivec2 size=textureSize(source,0);
+  float position=gl_FragCoord.x-shift;
+  if(position<=0.0 || position>float(size.x)) return vec4(0.0);
+  int y=int(gl_FragCoord.y);
+  vec4 first=floor(texelFetch(source,ivec2(clamp(base,0,size.x-1),y),0)*255.0+0.5);
+  vec4 last=floor(texelFetch(source,ivec2(clamp(base+1,0,size.x-1),y),0)*255.0+0.5);
+  return floor(mix(first,last,floor(fract(initial)*16.0)/16.0))/255.0;
+}
+`;
+
 export class WebglEffects {
   constructor(
     private readonly device: WebglDevice,
@@ -370,10 +391,10 @@ ${FLOAT32_RATIONAL_SUM}
             this.device.uploadFloats(offsets, values);
             this.replace(
               dst,
-              `${SAMPLE}
+              `${HORIZONTAL_SAMPLE}
             void main() {
               float shift=texelFetch(backdrop,ivec2(0,int(gl_FragCoord.y)),0).r;
-              pixel=translated(vec2(shift,0.0));
+              pixel=translatedX(shift);
             }`,
               [dst, offsets],
               {},

@@ -2643,6 +2643,24 @@ comparisons; the full `pnpm check`.
 - **Remaining:** family timing gates and final full local/CE0 verification.
   These targeted family commands still exit nonzero for remaining timing failures.
 
+### CE4b horizontal displacement sampling (2026-10-03)
+
+- **Version:** `composition-webgl2-0.32.0` samples only the unchanged source row
+  for sine displacement, preserving fixed-step bitmap spans, quantized filtering
+  and per-pixel byte rounding. Exact half-pixel clipping now matches Canvas at
+  both edges.
+- **Verification:** fast checks and **1,255 unit tests** pass. Native GPU checks
+  pass, including **13 exact sine sampling cases** around snapping, positive and
+  negative half-pixel shifts, bitmap-span boundaries and offscreen displacement.
+  **204 export/Lab frames** pass. Both commerce displacement cases / **480 frames**
+  pass their pixel tiers and the stacked-effect repeat export passes. Base
+  displacement improves from **2.2362× to 2.0647×**; the pixel stack is **2.3685×**.
+- **Remaining:** family timing gates and final full local/CE0 verification.
+  Direct PNG sampling now matches the browser's mip levels in a prototype:
+  all **192 stagger frames plus four seeks** pass (maximum difference **1**,
+  minimum PSNR **97.26 dB**). Paired timing improves from roughly **3.27–3.28×**
+  to **2.99–3.05×**. Broader image sampling checks are required before adoption.
+
 **Completion record:** CE4a and CE4b are in progress; CE4c–CE4d have not started.
 
 ---

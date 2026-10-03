@@ -37,6 +37,15 @@ export function checkWebglEffectSampling() {
       enabled: true,
       params: { length: 22, angle, samples: 16 },
     })),
+    ...[
+      0.0038, 0.004, 0.4999, 0.5, -0.5, -0.4999, 1.0038, 1.004, 127.0625,
+      -127.0625, 1100, -1100,
+    ].map((amount) => ({
+      id: `sine/boundary/${amount}`,
+      effect: "distort.sine",
+      enabled: true,
+      params: { amount, wavelength: 340, phase: Math.PI / 2 },
+    })),
     {
       id: "sine/spans",
       effect: "distort.sine",
