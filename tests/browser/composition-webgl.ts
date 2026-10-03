@@ -8,6 +8,7 @@ import type * as VectorPaints from "../helpers/composition-webgl-vector-paints.t
 import type * as Sampling from "../helpers/composition-webgl-sampling.ts";
 import type * as Png from "../helpers/composition-webgl-png.ts";
 import type * as Blur from "../helpers/composition-webgl-blur.ts";
+import type * as Performance from "../helpers/composition-webgl-performance.ts";
 const server = await createServer({
   root: resolve(import.meta.dirname, "../.."),
   configFile: false,
@@ -25,6 +26,27 @@ try {
     return ((await import(url)) as typeof Blur).checkWebglPrimitiveBlur();
   });
   console.log("WebGL primitive blur raster parity:", blur);
+  const workReduction = await page.evaluate(async () => {
+    const url = "/tests/helpers/composition-webgl-performance.ts";
+    const checks = (await import(url)) as typeof Performance;
+    return {
+      grainTile: checks.checkWebglGrainTile(),
+      grainBlending: checks.checkWebglGrainBlending(),
+      boxBlurSteps: (await checks.checkWebglBoxBlurSteps()).length,
+      boundedParticles: await checks.checkWebglBoundedParticles(),
+      boundedLightSweep: checks.checkWebglBoundedLightSweep(),
+      boundedRadialLight: checks.checkWebglBoundedRadialLight(),
+      boundedComposites: await checks.checkWebglBoundedComposites(
+        [
+          "ce6/light-sweep",
+          "ce6/echo",
+          "ce6/pixel-stack",
+          "ce6/generators",
+        ].map((path) => `/benchmarks/fixtures/composition/${path}.json`),
+      ),
+    };
+  });
+  console.log("WebGL exact effect work reduction:", workReduction);
   const sums = await page.evaluate(async () => {
     const url = "/tests/helpers/composition-webgl-float-sum.ts";
     return ((await import(url)) as typeof Rational).checkWebglFloatSum();

@@ -1,0 +1,5317 @@
+{
+  "version": "ce6-performance-slice-1",
+  "date": "2026-10-03",
+  "branch": "codex/composition-ce6-performance",
+  "startingCommit": "da9fcf2c9981b86ecb856d49be6e72985dd25500",
+  "rendererVersions": {
+    "before": "composition-webgl2-0.34.0",
+    "after": "composition-webgl2-0.35.0",
+    "canvas": "composition-canvas-1.22.1",
+    "story": "story-composition-0.9.1"
+  },
+  "candidatePatchSha256": "5796d31ed7e267daea48cd244c11b415c3449ed5b6ccd91d97b1a721e854daac",
+  "candidatePatchNote": "git diff HEAD at matrix start; the new files tests/helpers/composition-webgl-performance.ts and tests/unit/composition-webgl-box-steps.test.ts were identical to the committed versions.",
+  "acceptanceChanged": false,
+  "baselineChanged": false,
+  "timingGate": 1.25,
+  "githubActions": "disabled; all verification ran locally",
+  "node": "v22.23.1",
+  "environments": {
+    "renderBrowserProfile": "chromium-software-2",
+    "pinned": {
+      "browserVersion": "151.0.7922.34",
+      "profile": "chromium-software-2",
+      "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+      "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+      "platform": "darwin",
+      "arch": "arm64"
+    },
+    "hardware": {
+      "browserVersion": "151.0.7922.34",
+      "profile": "hardware",
+      "webglRenderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M5 Pro, Unspecified Version)",
+      "rasterFingerprint": "sha256:1635aedc2b987dcd5c74dce4b4098aff37754174c33461d6f626c9dcad69e4a9",
+      "platform": "darwin",
+      "arch": "arm64"
+    }
+  },
+  "scope": "Focused CE6 performance slice for the transferred CE4b 1.25x requirement. The broader CE6 effect catalogue remains open.",
+  "handoff": {
+    "partialAudit": "Interrupted 0.34 commerce audit: 33 cases / 7,992 frames, 0 pixel failures, 16 timing failures, 9 export pairs. Superseded by the complete 0.35 matrix rather than resumed.",
+    "processStateAtStart": "No benchmark processes running; baseline-rest.mjs was not executed."
+  },
+  "profiles": {
+    "method": "Scratch harness under /private/tmp/ce6-performance (prof.mts, prof-helper.mjs): warm two full sequences, then a renderer CPU profile (100 us sampling) of a composition-only and a legacy-only pass, device-call counts/areas, a Chrome trace of GPU-process tasks, and (diagnostic only) a 1x1 readPixels barrier around each device call. gl.finish() does not synchronize in Chrome.",
+    "float": {
+      "perFrame": {
+        "canvasUploadMs": 1.13,
+        "ofWhichSkiaRasterFlushMs": 0.72,
+        "readPixelsMs": 1.23,
+        "readbackCopyMs": 0.43
+      },
+      "legacyFrameMs": 1.4,
+      "warmPassMs": {
+        "composition": 696,
+        "legacy": 337
+      }
+    },
+    "storyStaggerCold": {
+      "compositionMs": 1455,
+      "legacyMs": 260,
+      "readPixelsMs": 855,
+      "texSubImage2DMs": 207,
+      "readbackCopyMs": 143,
+      "checkFramebufferStatusMs": 59,
+      "gpuProcessMsPerFrameWarm": 3.6,
+      "frames": 192
+    },
+    "glowBarrier": {
+      "sumPassMsEachInSitu": 2.85,
+      "sumPassesPerFrame": 12,
+      "note": "Barrier attribution after regrouping, before specialization; overstates small operations."
+    },
+    "microbenchmarksPinned1920x1080MsPerCallIncludingSync": {
+      "readPixels": 1.007,
+      "canvasUploadUnchanged": 0.833,
+      "copyPass": 1.433,
+      "exactRoundingBlendPass": 2.787,
+      "glBlendPass": 2.253,
+      "blit": 1.947,
+      "getImageData": 1.583
+    },
+    "sumPassCostModel": {
+      "region": "770x845 of 896x1024 RGBA32F",
+      "unrolledMs": "0.38 + 0.107 per fetch",
+      "uniformLoopMs": "0.30 + 0.155 per fetch",
+      "perFetchUniformSelect": "+35-55%",
+      "inactiveUniformBranches": "~0.2 ms per pass (three branches)"
+    },
+    "uploadVariants640x768DirtyCanvasMs": {
+      "default": 0.972,
+      "willReadFrequently": 0.898,
+      "offscreen": 0.9,
+      "offscreenWillRead": 0.902,
+      "transferToImageBitmap": 1.005,
+      "rasterFlushOnly": 0.733
+    },
+    "resolveScreenFullCopiesPerFrame": {
+      "particles": 1,
+      "background-light": 1,
+      "glow": 0
+    }
+  },
+  "experiments": [
+    {
+      "id": "grain-tile-blend",
+      "retained": true,
+      "exactness": "checkWebglGrainTile (30 cases, screen/offscreen, odd sizes) and checkWebglGrainBlending (262,144 combinations, texture and canvas framebuffers) on pinned and Metal; pinned output differs from 0.34 only where the old linear backdrop sample was inexact",
+      "ab": [
+        {
+          "case": "commerce/atom-grain",
+          "baseline": {
+            "0.34": [2130.1, 2083]
+          },
+          "candidate": {
+            "tile only": [1803.9, 1791.5],
+            "tile + blending": [1296.2, 1292.7]
+          },
+          "unit": "composition ms per warm pass; legacy 494-515"
+        }
+      ]
+    },
+    {
+      "id": "box-blur-specialized-mixed-radix",
+      "retained": true,
+      "exactness": "checkWebglBoxBlurSteps against an independent separable integer convolution on pinned and Metal; unit test for plans 2..1024",
+      "ab": [
+        {
+          "case": "commerce/atom-glow",
+          "baseline": [10823.8, 10597.3],
+          "candidate": [7371.2, 7629.9],
+          "unit": "composition ms per warm 240-frame pass (legacy in parentheses)"
+        },
+        {
+          "case": "commerce/atom-focus-blur",
+          "baseline": [4928.5, 4450.9],
+          "candidate": [3881.8, 3898.7],
+          "unit": "composition ms per warm 240-frame pass (legacy in parentheses)"
+        }
+      ]
+    },
+    {
+      "id": "box-blur-regrouped-unspecialized",
+      "retained": false,
+      "reason": "no glow improvement",
+      "ab": [
+        {
+          "case": "commerce/atom-glow",
+          "baseline": [10555.3, 11014.3],
+          "candidate": [11073.2, 10842.1],
+          "unit": "composition ms per warm 240-frame pass (legacy in parentheses)"
+        },
+        {
+          "case": "commerce/atom-focus-blur",
+          "baseline": [4619.7, 4868.6],
+          "candidate": [4539.9, 4525.9],
+          "unit": "composition ms per warm 240-frame pass (legacy in parentheses)"
+        }
+      ]
+    },
+    {
+      "id": "bounded-particles",
+      "retained": true,
+      "exactness": "checkWebglBoundedParticles (10 cases incl. overlaps, large radii, edges) on pinned and Metal; mutation check fails as expected",
+      "ab": [
+        {
+          "case": "commerce/atom-particles",
+          "baseline": [1886.4, 1846.7],
+          "candidate": [1455.9, 1454.9],
+          "unit": "composition ms per warm 240-frame pass (legacy in parentheses)"
+        }
+      ]
+    },
+    {
+      "id": "bounded-light-sweep-upload",
+      "retained": true,
+      "note": "marginal",
+      "exactness": "checkWebglBoundedLightSweep (16 placements/progress values) against full upload on pinned and Metal; mutation check fails as expected",
+      "ab": [
+        {
+          "case": "commerce/atom-light-sweep",
+          "baseline": [1886.1, 1892.9],
+          "candidate": [1822.1, 1823.6],
+          "unit": "composition ms per warm 240-frame pass (legacy in parentheses)"
+        }
+      ]
+    },
+    {
+      "id": "framebuffer-status-once-per-format",
+      "retained": false,
+      "reason": "within variation; the wait moves to readPixels",
+      "ab": [
+        {
+          "case": "component/story-stagger cold",
+          "baseline": [1353.7, 1316.0],
+          "candidate": [1312.6, 1297.8],
+          "unit": "cold traversal composition ms"
+        },
+        {
+          "case": "component/story-instances cold",
+          "baseline": [1150.7, 1092.8],
+          "candidate": [1087.8, 1080.9],
+          "unit": "cold traversal composition ms"
+        },
+        {
+          "case": "component/story-layout cold",
+          "baseline": [1112.9, 1111.3],
+          "candidate": [1096.7, 1096.8],
+          "unit": "cold traversal composition ms"
+        }
+      ]
+    },
+    {
+      "id": "skip-clear-scratch-surfaces",
+      "retained": false,
+      "reason": "no gain; barrier profile overstated clears",
+      "ab": [
+        {
+          "case": "component/story-stagger warm",
+          "baseline": [1105.1, 1181.9],
+          "candidate": [1091.5, 1170.1],
+          "unit": "composition ms per warm 240-frame pass (legacy in parentheses)"
+        },
+        {
+          "case": "component/commerce-stagger warm",
+          "baseline": [563.9, 604.1],
+          "candidate": [594.6, 583.7],
+          "unit": "composition ms per warm 240-frame pass (legacy in parentheses)"
+        },
+        {
+          "case": "commerce/atom-displacement",
+          "baseline": [2781.7, 3020.2],
+          "candidate": [2942.4, 2976.7],
+          "unit": "composition ms per warm 240-frame pass (legacy in parentheses)"
+        },
+        {
+          "case": "commerce/atom-float",
+          "baseline": [635.9, 633.6],
+          "candidate": [650.3, 644.1],
+          "unit": "composition ms per warm 240-frame pass (legacy in parentheses)"
+        }
+      ]
+    },
+    {
+      "id": "clip-isolate-composites",
+      "retained": false,
+      "reason": "not implemented; measured potential ~27% of one full-frame composite pass in Displacement (~0.3 of 11.6 ms per frame)"
+    }
+  ],
+  "directAbOfUnchangedPaths": {
+    "note": "Bracketed HEAD (0.34) vs candidate (0.35) using the existing test commands",
+    "story/continuous-access-constraint": {
+      "0.34": [2.9898, 2.9742],
+      "0.35": [2.9204, 3.0191],
+      "matrixRun": 3.4521
+    },
+    "component/commerce-state": {
+      "0.34": [1.278, 1.2535],
+      "0.35": [1.2979, 1.2616]
+    },
+    "component/commerce-visibility": {
+      "0.34": [1.3953, 1.386],
+      "0.35": [1.36, 1.3474]
+    },
+    "invalidRunNote": "An earlier A/B script failed to swap files under zsh, so all four runs used 0.34 (diagnostic 2.920/3.022/2.938, commerce-state 1.338/1.302); it is retained only as 0.34 variation data and the candidate was restored and verified by patch hash."
+  },
+  "canvasBound": {
+    "source": "docs/composition-ce4b-verification-results.json canvasCommerce/canvasStory/canvasTypography items",
+    "failingWebglCases": 117,
+    "canvasRatioMax": 1.197,
+    "canvasRatioMedian": 1.021,
+    "canvasCasesOverGate": 0
+  },
+  "families": {
+    "commerce": {
+      "command": "pnpm test:browser:composition-commerce-adapter --webgl --keep-going",
+      "method": "Pixel traversal and reverse seeks, then three warm paired render/readback passes alternating backend order; median ratio.",
+      "cases": 127,
+      "frames": 28200,
+      "pixelFailures": [],
+      "timingFailures": [
+        "commerce/atom-anchor",
+        "commerce/atom-attachment",
+        "commerce/atom-attachment/nested-crop-brush",
+        "commerce/atom-background-light",
+        "commerce/atom-displacement",
+        "commerce/atom-displacement/pixel-stack",
+        "commerce/atom-displacement/pixel-reversed",
+        "commerce/atom-drift",
+        "commerce/atom-echo/returning-matte",
+        "commerce/atom-effects-studio",
+        "commerce/atom-float",
+        "commerce/atom-focus-blur",
+        "commerce/atom-focus-blur/active-opacity",
+        "commerce/atom-glow",
+        "commerce/atom-grain",
+        "commerce/atom-height-shadow",
+        "commerce/atom-layout/transformed-annotation",
+        "commerce/atom-light-sweep",
+        "commerce/atom-light-sweep/rotated-skew",
+        "commerce/atom-light-sweep/image-matte",
+        "commerce/atom-light-sweep/glow-first",
+        "commerce/atom-matte",
+        "commerce/atom-matte/inverted-overlap",
+        "commerce/atom-matte/shared-group-source",
+        "commerce/atom-matte/inverted-overlap/focus-matte",
+        "commerce/atom-matte/shared-group-source/focus-matte",
+        "commerce/atom-panel/appearance-uniform",
+        "commerce/atom-parallax",
+        "commerce/atom-particles",
+        "commerce/atom-particles/environment-stack",
+        "commerce/atom-particles/environment-reversed",
+        "commerce/atom-path/spatial",
+        "commerce/atom-path/morph",
+        "commerce/atom-path/spatial-morph",
+        "commerce/atom-path/appearance-uniform",
+        "commerce/atom-path/appearance-ink",
+        "commerce/atom-path/appearance-brush",
+        "commerce/atom-scale",
+        "commerce/atom-sequence",
+        "commerce/atom-studio",
+        "commerce/atom-text/animated-states",
+        "component/commerce-bracket",
+        "component/commerce-detail-sequence",
+        "component/commerce-instances",
+        "component/commerce-layout",
+        "component/commerce-leader",
+        "component/commerce-leader/source-crop-ink",
+        "component/commerce-outline",
+        "component/commerce-pin",
+        "component/commerce-sequence",
+        "component/commerce-stagger",
+        "component/commerce-state",
+        "component/commerce-supply-sequence",
+        "component/commerce-supply",
+        "component/commerce-text-fit",
+        "component/commerce-tour",
+        "component/commerce-transform",
+        "component/commerce-travel",
+        "component/commerce-underline",
+        "component/commerce-value",
+        "component/commerce-value/half-away-from-zero",
+        "component/commerce-value/truncate",
+        "component/commerce-visibility",
+        "component/isolated-bracket",
+        "component/isolated-detail-sequence",
+        "component/isolated-leader",
+        "component/isolated-outline",
+        "component/isolated-supply-sequence",
+        "component/isolated-supply",
+        "component/isolated-tour",
+        "component/isolated-transform",
+        "component/isolated-underline",
+        "component/isolated-value"
+      ],
+      "exportLines": [
+        "CE4b webgl2 commerce/atom-background-light export: 240 frames, two byte-identical MP4s; relocated assets and overwrite protection pass",
+        "CE4b webgl2 commerce/atom-directional-blur export: 240 frames, two byte-identical MP4s; relocated assets and overwrite protection pass",
+        "CE4b webgl2 commerce/atom-displacement/pixel-stack export: 240 frames, two byte-identical MP4s; relocated assets and overwrite protection pass",
+        "CE4b webgl2 commerce/atom-echo/image-active-stack export: 240 frames, two byte-identical MP4s; relocated assets and overwrite protection pass",
+        "CE4b webgl2 commerce/atom-effects-studio export: 240 frames, two byte-identical MP4s; relocated assets and overwrite protection pass",
+        "CE4b webgl2 commerce/atom-focus-blur export: 240 frames, two byte-identical MP4s; relocated assets and overwrite protection pass",
+        "CE4b webgl2 commerce/atom-glow export: 240 frames, two byte-identical MP4s; relocated assets and overwrite protection pass",
+        "CE4b webgl2 commerce/atom-grain export: 240 frames, two byte-identical MP4s; relocated assets and overwrite protection pass",
+        "CE4b webgl2 commerce/atom-height-shadow export: 240 frames, two byte-identical MP4s; relocated assets and overwrite protection pass",
+        "CE4b webgl2 commerce/atom-light-sweep/glow-first export: 240 frames, two byte-identical MP4s; relocated assets and overwrite protection pass",
+        "CE4b webgl2 commerce/atom-matte/shared-group-source/focus-matte export: 240 frames, two byte-identical MP4s; relocated assets and overwrite protection pass",
+        "CE4b webgl2 commerce/atom-motion-blur export: 240 frames, two byte-identical MP4s; relocated assets and overwrite protection pass",
+        "CE4b webgl2 commerce/atom-motion-blur/active-cuts export: 240 frames, two byte-identical MP4s; relocated assets and overwrite protection pass",
+        "CE4b webgl2 commerce/atom-motion-blur/overlap-echo-matte export: 240 frames, two byte-identical MP4s; relocated assets and overwrite protection pass",
+        "CE4b webgl2 commerce/atom-particles/environment-stack export: 240 frames, two byte-identical MP4s; relocated assets and overwrite protection pass",
+        "CE4b webgl2 commerce/atom-path/morph export: 240 frames, two byte-identical MP4s; relocated assets and overwrite protection pass",
+        "CE4b webgl2 commerce/atom-path/appearance-brush export: 240 frames, two byte-identical MP4s; relocated assets and overwrite protection pass",
+        "CE4b webgl2 commerce/atom-path/primitive-blur-brush export: 240 frames, two byte-identical MP4s; relocated assets and overwrite protection pass",
+        "CE4b webgl2 commerce/atom-path/motion-blur export: 240 frames, two byte-identical MP4s; relocated assets and overwrite protection pass",
+        "CE4b webgl2 component/commerce-state/primitive-blur-stack export: 192 frames, two byte-identical MP4s; relocated assets and overwrite protection pass",
+        "CE4b webgl2 component/commerce-state/motion-blur export: 192 frames, two byte-identical MP4s; relocated assets and overwrite protection pass",
+        "CE4b webgl2 component/commerce-value/motion-blur export: 192 frames, two byte-identical MP4s; relocated assets and overwrite protection pass",
+        "CE4b fitted-panel export: bad font and impossible fit return diagnostics without writing output",
+        "CE4b text-fit export: 192 frames, two byte-identical MP4s; relocated assets and overwrite protection pass",
+        "CE4b value export: 192 frames, two byte-identical MP4s; relocated assets and overwrite protection pass",
+        "CE4b leader export: 192 frames, two byte-identical MP4s; relocated assets and overwrite protection pass",
+        "CE4b attachment export: 240 frames, two byte-identical MP4s; relocated assets and overwrite protection pass",
+        "CE4b matte export: 240 frames, two byte-identical MP4s; relocated assets and overwrite protection pass",
+        "CE4b mask export: 192 frames, two byte-identical MP4s; relocated assets and overwrite protection pass",
+        "CE4b layout export: 240 frames, two byte-identical MP4s; relocated assets and overwrite protection pass",
+        "CE4b animated-text export: 240 frames, two byte-identical MP4s; relocated assets and overwrite protection pass"
+      ],
+      "exitCode": 1,
+      "exitReason": "timing assertions only",
+      "items": [
+        {
+          "id": "commerce/a01-landscape",
+          "frames": 300,
+          "maxDelta": 1,
+          "minPsnr": 106.06926599778072,
+          "pixelFailures": [],
+          "ratio": 1.099256668207541,
+          "timings": [
+            {
+              "legacyMs": 456.5999998450279,
+              "compositionMs": 509.1000000834465,
+              "ratio": 1.1149802896544838
+            },
+            {
+              "legacyMs": 463.50000047683716,
+              "compositionMs": 500.69999945163727,
+              "ratio": 1.0802588973819411
+            },
+            {
+              "legacyMs": 457.39999997615814,
+              "compositionMs": 502.80000001192093,
+              "ratio": 1.099256668207541
+            }
+          ],
+          "ratio033": 1.1130526324747936,
+          "ratio034Partial": 1.1182631444531115,
+          "timingPass": true
+        },
+        {
+          "id": "commerce/a01-feed",
+          "frames": 300,
+          "maxDelta": 0,
+          "minPsnr": null,
+          "pixelFailures": [],
+          "ratio": 1.0130796682403131,
+          "timings": [
+            {
+              "legacyMs": 336.3999997973442,
+              "compositionMs": 340.80000019073486,
+              "ratio": 1.0130796682403131
+            },
+            {
+              "legacyMs": 338.80000030994415,
+              "compositionMs": 343.8999996781349,
+              "ratio": 1.0150531268108771
+            },
+            {
+              "legacyMs": 336.30000030994415,
+              "compositionMs": 336.7999997138977,
+              "ratio": 1.0014867659931392
+            }
+          ],
+          "ratio033": 0.9918286853745235,
+          "ratio034Partial": 1.022609227117303,
+          "timingPass": true
+        },
+        {
+          "id": "commerce/h01-landscape",
+          "frames": 240,
+          "maxDelta": 0,
+          "minPsnr": null,
+          "pixelFailures": [],
+          "ratio": 0.7938741719097221,
+          "timings": [
+            {
+              "legacyMs": 366.10000002384186,
+              "compositionMs": 289.80000001192093,
+              "ratio": 0.7915869980689648
+            },
+            {
+              "legacyMs": 363.9000002145767,
+              "compositionMs": 295.1999997496605,
+              "ratio": 0.8112118702269671
+            },
+            {
+              "legacyMs": 362.4000000357628,
+              "compositionMs": 287.6999999284744,
+              "ratio": 0.7938741719097221
+            }
+          ],
+          "ratio033": 0.82074468104458,
+          "ratio034Partial": 0.8108108111418872,
+          "timingPass": true
+        },
+        {
+          "id": "commerce/h01-portrait",
+          "frames": 240,
+          "maxDelta": 0,
+          "minPsnr": null,
+          "pixelFailures": [],
+          "ratio": 0.757608115586278,
+          "timings": [
+            {
+              "legacyMs": 376.2999995946884,
+              "compositionMs": 286.6000003814697,
+              "ratio": 0.7616263637793402
+            },
+            {
+              "legacyMs": 377.700000166893,
+              "compositionMs": 283.0999997854233,
+              "ratio": 0.7495366684149612
+            },
+            {
+              "legacyMs": 374.5999999642372,
+              "compositionMs": 283.8000000715256,
+              "ratio": 0.757608115586278
+            }
+          ],
+          "ratio033": 0.7758940393915407,
+          "ratio034Partial": 0.7908942217779219,
+          "timingPass": true
+        },
+        {
+          "id": "commerce/h03-thai",
+          "frames": 192,
+          "maxDelta": 0,
+          "minPsnr": null,
+          "pixelFailures": [],
+          "ratio": 0.4537006303453896,
+          "timings": [
+            {
+              "legacyMs": 301.30000001192093,
+              "compositionMs": 136.69999992847443,
+              "ratio": 0.4537006303453896
+            },
+            {
+              "legacyMs": 307.1000000834465,
+              "compositionMs": 141.29999995231628,
+              "ratio": 0.46011071284246713
+            },
+            {
+              "legacyMs": 303.1000002026558,
+              "compositionMs": 136.69999980926514,
+              "ratio": 0.45100626762740387
+            }
+          ],
+          "ratio033": 0.4652624954864331,
+          "ratio034Partial": 0.4844934525883348,
+          "timingPass": true
+        },
+        {
+          "id": "commerce/h04-square",
+          "frames": 240,
+          "maxDelta": 0,
+          "minPsnr": null,
+          "pixelFailures": [],
+          "ratio": 0.8274336260896532,
+          "timings": [
+            {
+              "legacyMs": 203.40000027418137,
+              "compositionMs": 168.29999977350235,
+              "ratio": 0.8274336260896532
+            },
+            {
+              "legacyMs": 202.80000013113022,
+              "compositionMs": 170.39999985694885,
+              "ratio": 0.8402366851418561
+            },
+            {
+              "legacyMs": 204.200000166893,
+              "compositionMs": 166.3999997973442,
+              "ratio": 0.8148873636696631
+            }
+          ],
+          "ratio033": 0.8418294426305376,
+          "ratio034Partial": 0.8360493851827242,
+          "timingPass": true
+        },
+        {
+          "id": "commerce/vertical-h01-portrait",
+          "frames": 240,
+          "maxDelta": 0,
+          "minPsnr": null,
+          "pixelFailures": [],
+          "ratio": 0.7634379981674684,
+          "timings": [
+            {
+              "legacyMs": 375.80000019073486,
+              "compositionMs": 286.89999985694885,
+              "ratio": 0.7634379981674684
+            },
+            {
+              "legacyMs": 373.20000022649765,
+              "compositionMs": 284.5999997854233,
+              "ratio": 0.7625937824563171
+            },
+            {
+              "legacyMs": 372.79999989271164,
+              "compositionMs": 287.5,
+              "ratio": 0.7711909873464051
+            }
+          ],
+          "ratio033": 0.7733952054234247,
+          "ratio034Partial": 0.7754111637396806,
+          "timingPass": true
+        },
+        {
+          "id": "commerce/atom-anchor",
+          "frames": 240,
+          "maxDelta": 0,
+          "minPsnr": null,
+          "pixelFailures": [],
+          "ratio": 1.868876081175987,
+          "timings": [
+            {
+              "legacyMs": 550.9999999403954,
+              "compositionMs": 1034.5,
+              "ratio": 1.8774954629980172
+            },
+            {
+              "legacyMs": 555.1999998688698,
+              "compositionMs": 1037.6000000238419,
+              "ratio": 1.868876081175987
+            },
+            {
+              "legacyMs": 553.2000002861023,
+              "compositionMs": 1030.9999997615814,
+              "ratio": 1.8637020954959724
+            }
+          ],
+          "ratio033": 1.9219240144066383,
+          "ratio034Partial": 1.9059109619849033,
+          "timingPass": false
+        },
+        {
+          "id": "commerce/atom-attachment",
+          "frames": 240,
+          "maxDelta": 1,
+          "minPsnr": 100.56019130897491,
+          "pixelFailures": [],
+          "ratio": 2.358674462088724,
+          "timings": [
+            {
+              "legacyMs": 313.399999499321,
+              "compositionMs": 717.8000005483627,
+              "ratio": 2.29036375780185
+            },
+            {
+              "legacyMs": 307.80000019073486,
+              "compositionMs": 725.9999998807907,
+              "ratio": 2.358674462088724
+            },
+            {
+              "legacyMs": 301.70000010728836,
+              "compositionMs": 730.3999998569489,
+              "ratio": 2.4209479602161394
+            }
+          ],
+          "ratio033": 2.445828150378221,
+          "ratio034Partial": 2.387741505124783,
+          "timingPass": false
+        },
+        {
+          "id": "commerce/atom-attachment/nested-crop-brush",
+          "frames": 240,
+          "maxDelta": 2,
+          "minPsnr": 87.2317686390314,
+          "pixelFailures": [],
+          "ratio": 2.6101901930538083,
+          "timings": [
+            {
+              "legacyMs": 544.2000002264977,
+              "compositionMs": 1514.8999997973442,
+              "ratio": 2.783719219343694
+            },
+            {
+              "legacyMs": 573.1000000834465,
+              "compositionMs": 1495.8999998569489,
+              "ratio": 2.6101901930538083
+            },
+            {
+              "legacyMs": 582.3999999761581,
+              "compositionMs": 1493.6999999284744,
+              "ratio": 2.564732142839324
+            }
+          ],
+          "ratio033": 2.6915001683352338,
+          "ratio034Partial": 2.645803949852143,
+          "timingPass": false
+        },
+        {
+          "id": "commerce/atom-background-light",
+          "frames": 240,
+          "maxDelta": 1,
+          "minPsnr": 98.9765663880224,
+          "pixelFailures": [],
+          "ratio": 1.6632851721404833,
+          "timings": [
+            {
+              "legacyMs": 981.3000000119209,
+              "compositionMs": 1603.3999999761581,
+              "ratio": 1.6339549576650156
+            },
+            {
+              "legacyMs": 981.4000000953674,
+              "compositionMs": 1635.3999998569489,
+              "ratio": 1.6663949456878226
+            },
+            {
+              "legacyMs": 975.9000001549721,
+              "compositionMs": 1623.1999997496605,
+              "ratio": 1.6632851721404833
+            }
+          ],
+          "ratio033": 1.6816533033298648,
+          "ratio034Partial": 1.676473603644104,
+          "timingPass": false
+        },
+        {
+          "id": "commerce/atom-background",
+          "frames": 240,
+          "maxDelta": 0,
+          "minPsnr": null,
+          "pixelFailures": [],
+          "ratio": 0.6114519409023678,
+          "timings": [
+            {
+              "legacyMs": 146.70000022649765,
+              "compositionMs": 89.69999986886978,
+              "ratio": 0.6114519409023678
+            },
+            {
+              "legacyMs": 143.99999976158142,
+              "compositionMs": 91.80000019073486,
+              "ratio": 0.6375000023800466
+            },
+            {
+              "legacyMs": 156.49999994039536,
+              "compositionMs": 87.70000004768372,
+              "ratio": 0.5603833870995858
+            }
+          ],
+          "ratio033": 0.648173206400239,
+          "ratio034Partial": 0.6876240897403303,
+          "timingPass": true
+        },
+        {
+          "id": "commerce/atom-callout",
+          "frames": 240,
+          "maxDelta": 1,
+          "minPsnr": 111.52929143905547,
+          "pixelFailures": [],
+          "ratio": 0.3843939885426884,
+          "timings": [
+            {
+              "legacyMs": 308.30000001192093,
+              "compositionMs": 120.99999988079071,
+              "ratio": 0.39247486174541696
+            },
+            {
+              "legacyMs": 313.0000001192093,
+              "compositionMs": 118.69999980926514,
+              "ratio": 0.3792332260832492
+            },
+            {
+              "legacyMs": 312.6999998688698,
+              "compositionMs": 120.200000166893,
+              "ratio": 0.3843939885426884
+            }
+          ],
+          "ratio033": 0.3958587091018351,
+          "ratio034Partial": 0.39765319343331074,
+          "timingPass": true
+        },
+        {
+          "id": "commerce/atom-detail",
+          "frames": 240,
+          "maxDelta": 1,
+          "minPsnr": 96.27884336868702,
+          "pixelFailures": [],
+          "ratio": 0.3734100543140845,
+          "timings": [
+            {
+              "legacyMs": 331.10000002384186,
+              "compositionMs": 116.59999996423721,
+              "ratio": 0.35215946830516787
+            },
+            {
+              "legacyMs": 331.60000044107437,
+              "compositionMs": 126.39999955892563,
+              "ratio": 0.38118214532809397
+            },
+            {
+              "legacyMs": 330.2000000476837,
+              "compositionMs": 123.29999995231628,
+              "ratio": 0.3734100543140845
+            }
+          ],
+          "ratio033": 0.39825327635700986,
+          "ratio034Partial": 0.38309352408951314,
+          "timingPass": true
+        },
+        {
+          "id": "commerce/atom-directional-blur",
+          "frames": 240,
+          "maxDelta": 1,
+          "minPsnr": 83.13765460990896,
+          "pixelFailures": [],
+          "ratio": 0.09219267232781851,
+          "timings": [
+            {
+              "legacyMs": 26644.19999998808,
+              "compositionMs": 2456.400000035763,
+              "ratio": 0.09219267232781851
+            },
+            {
+              "legacyMs": 26782.600000202656,
+              "compositionMs": 2404.0999997854233,
+              "ratio": 0.08976350316127756
+            },
+            {
+              "legacyMs": 26497.09999972582,
+              "compositionMs": 2443.800000190735,
+              "ratio": 0.09222896091330833
+            }
+          ],
+          "ratio033": 0.09500924622350397,
+          "ratio034Partial": 0.09077397751626202,
+          "timingPass": true
+        },
+        {
+          "id": "commerce/atom-displacement",
+          "frames": 240,
+          "maxDelta": 0,
+          "minPsnr": null,
+          "pixelFailures": [],
+          "ratio": 2.058268301502184,
+          "timings": [
+            {
+              "legacyMs": 1352.9000000953674,
+              "compositionMs": 2754.899999856949,
+              "ratio": 2.036292408650124
+            },
+            {
+              "legacyMs": 1341.0999997854233,
+              "compositionMs": 2774.3000002503395,
+              "ratio": 2.068674968827253
+            },
+            {
+              "legacyMs": 1345.5000001192093,
+              "compositionMs": 2769.3999999165535,
+              "ratio": 2.058268301502184
+            }
+          ],
+          "ratio033": 2.064861504774125,
+          "ratio034Partial": 2.0450115318349247,
+          "timingPass": false
+        },
+        {
+          "id": "commerce/atom-displacement/pixel-stack",
+          "frames": 240,
+          "maxDelta": 2,
+          "minPsnr": 72.31398730404305,
+          "pixelFailures": [],
+          "ratio": 2.038399011929951,
+          "timings": [
+            {
+              "legacyMs": 7655.099999785423,
+              "compositionMs": 15653.200000226498,
+              "ratio": 2.0448067302406585
+            },
+            {
+              "legacyMs": 7779.600000023842,
+              "compositionMs": 15845.000000059605,
+              "ratio": 2.036737107307708
+            },
+            {
+              "legacyMs": 7935.100000143051,
+              "compositionMs": 16174.899999856949,
+              "ratio": 2.038399011929951
+            }
+          ],
+          "ratio033": 2.3239727705280186,
+          "ratio034Partial": 2.2895974588494012,
+          "timingPass": false
+        },
+        {
+          "id": "commerce/atom-displacement/pixel-reversed",
+          "frames": 240,
+          "maxDelta": 2,
+          "minPsnr": 79.38217722900164,
+          "pixelFailures": [],
+          "ratio": 2.152973040991247,
+          "timings": [
+            {
+              "legacyMs": 7938.000000178814,
+              "compositionMs": 17090.299999773502,
+              "ratio": 2.152973040991247
+            },
+            {
+              "legacyMs": 7935.099999606609,
+              "compositionMs": 17285.300000429153,
+              "ratio": 2.17833423665563
+            },
+            {
+              "legacyMs": 8091.000000238419,
+              "compositionMs": 17375.30000001192,
+              "ratio": 2.1474848596588703
+            }
+          ],
+          "ratio033": 2.4644828579232994,
+          "ratio034Partial": 2.4558134746187843,
+          "timingPass": false
+        },
+        {
+          "id": "commerce/atom-drift",
+          "frames": 240,
+          "maxDelta": 0,
+          "minPsnr": null,
+          "pixelFailures": [],
+          "ratio": 1.853864470612458,
+          "timings": [
+            {
+              "legacyMs": 461.900000333786,
+              "compositionMs": 856.2999995946884,
+              "ratio": 1.853864470612458
+            },
+            {
+              "legacyMs": 459.10000026226044,
+              "compositionMs": 858.2999997138977,
+              "ratio": 1.8695273344012082
+            },
+            {
+              "legacyMs": 456.3000000715256,
+              "compositionMs": 844.0999999642372,
+              "ratio": 1.8498794648957342
+            }
+          ],
+          "ratio033": 1.874972911206539,
+          "ratio034Partial": 1.854413104357003,
+          "timingPass": false
+        },
+        {
+          "id": "commerce/atom-echo",
+          "frames": 240,
+          "maxDelta": 0,
+          "minPsnr": null,
+          "pixelFailures": [],
+          "ratio": 0.9651096294248466,
+          "timings": [
+            {
+              "legacyMs": 530.8999996781349,
+              "compositionMs": 508.1000003218651,
+              "ratio": 0.957054060331338
+            },
+            {
+              "legacyMs": 524.4999997019768,
+              "compositionMs": 506.20000034570694,
+              "ratio": 0.9651096294248466
+            },
+            {
+              "legacyMs": 524.7000003457069,
+              "compositionMs": 507.69999957084656,
+              "ratio": 0.967600532182848
+            }
+          ],
+          "ratio033": 0.9833460953069535,
+          "ratio034Partial": 0.9772638181801093,
+          "timingPass": true
+        },
+        {
+          "id": "commerce/atom-echo/returning-matte",
+          "frames": 240,
+          "maxDelta": 2,
+          "minPsnr": 86.93536656146316,
+          "pixelFailures": [],
+          "ratio": 3.089860172893283,
+          "timings": [
+            {
+              "legacyMs": 1003.1000003814697,
+              "compositionMs": 3160.999999701977,
+              "ratio": 3.1512311818361853
+            },
+            {
+              "legacyMs": 1020.5999999046326,
+              "compositionMs": 3149.0000001192093,
+              "ratio": 3.0854399376969037
+            },
+            {
+              "legacyMs": 1022.7000002861023,
+              "compositionMs": 3159.999999701977,
+              "ratio": 3.089860172893283
+            }
+          ],
+          "ratio033": 3.118120279020959,
+          "ratio034Partial": 3.189102893602317,
+          "timingPass": false
+        },
+        {
+          "id": "commerce/atom-echo/image-active-stack",
+          "frames": 240,
+          "maxDelta": 2,
+          "minPsnr": 77.37454975796312,
+          "pixelFailures": [],
+          "ratio": 0.5071826790902532,
+          "timings": [
+            {
+              "legacyMs": 3390.099999666214,
+              "compositionMs": 1719.4000002145767,
+              "ratio": 0.5071826790902532
+            },
+            {
+              "legacyMs": 3381.6000000834465,
+              "compositionMs": 1734.3999999761581,
+              "ratio": 0.5128933049246981
+            },
+            {
+              "legacyMs": 3379.1000002622604,
+              "compositionMs": 1705.899999678135,
+              "ratio": 0.5048385663477659
+            }
+          ],
+          "ratio033": 0.611025946705719,
+          "ratio034Partial": 0.6124930086325204,
+          "timingPass": true
+        },
+        {
+          "id": "commerce/atom-echo/zero-decay",
+          "frames": 240,
+          "maxDelta": 0,
+          "minPsnr": null,
+          "pixelFailures": [],
+          "ratio": 0.5088743028341194,
+          "timings": [
+            {
+              "legacyMs": 411.2999994754791,
+              "compositionMs": 209.3000004887581,
+              "ratio": 0.5088743028341194
+            },
+            {
+              "legacyMs": 404.1999999284744,
+              "compositionMs": 205.20000022649765,
+              "ratio": 0.5076694712093246
+            },
+            {
+              "legacyMs": 410.09999990463257,
+              "compositionMs": 209.1000000834465,
+              "ratio": 0.5098756404098318
+            }
+          ],
+          "ratio033": 0.521342215209346,
+          "ratio034Partial": 0.5235966211311288,
+          "timingPass": true
+        },
+        {
+          "id": "commerce/atom-effects-studio",
+          "frames": 240,
+          "maxDelta": 1,
+          "minPsnr": 98.9765663880224,
+          "pixelFailures": [],
+          "ratio": 1.6099432770135615,
+          "timings": [
+            {
+              "legacyMs": 1193.8999999165535,
+              "compositionMs": 1925.5000000596046,
+              "ratio": 1.6127816401659985
+            },
+            {
+              "legacyMs": 1190.5,
+              "compositionMs": 1912.900000154972,
+              "ratio": 1.6068038640528954
+            },
+            {
+              "legacyMs": 1198.7999997735023,
+              "compositionMs": 1930.0000001192093,
+              "ratio": 1.6099432770135615
+            }
+          ],
+          "ratio033": 1.6295294309489474,
+          "ratio034Partial": 1.640745953387684,
+          "timingPass": false
+        },
+        {
+          "id": "commerce/atom-fade",
+          "frames": 240,
+          "maxDelta": 0,
+          "minPsnr": null,
+          "pixelFailures": [],
+          "ratio": 0.8141342759162155,
+          "timings": [
+            {
+              "legacyMs": 286.40000009536743,
+              "compositionMs": 233.59999990463257,
+              "ratio": 0.8156424574959736
+            },
+            {
+              "legacyMs": 282.99999994039536,
+              "compositionMs": 230.4000000357628,
+              "ratio": 0.8141342759162155
+            },
+            {
+              "legacyMs": 292.1999996304512,
+              "compositionMs": 230.8000003695488,
+              "ratio": 0.7898699543512809
+            }
+          ],
+          "ratio033": 0.8118574388719714,
+          "ratio034Partial": 0.8191186927077372,
+          "timingPass": true
+        },
+        {
+          "id": "commerce/atom-float",
+          "frames": 240,
+          "maxDelta": 0,
+          "minPsnr": null,
+          "pixelFailures": [],
+          "ratio": 2.0216476223918862,
+          "timings": [
+            {
+              "legacyMs": 319.69999980926514,
+              "compositionMs": 670.0000001192093,
+              "ratio": 2.0957147341849707
+            },
+            {
+              "legacyMs": 332.60000026226044,
+              "compositionMs": 672.3999997377396,
+              "ratio": 2.0216476223918862
+            },
+            {
+              "legacyMs": 332.60000026226044,
+              "compositionMs": 664.4999997615814,
+              "ratio": 1.9978953675213846
+            }
+          ],
+          "ratio033": 2.0511811022826096,
+          "ratio034Partial": 2.0966463432969733,
+          "timingPass": false
+        },
+        {
+          "id": "commerce/atom-focus-blur",
+          "frames": 240,
+          "maxDelta": 0,
+          "minPsnr": null,
+          "pixelFailures": [],
+          "ratio": 1.3934590918515581,
+          "timings": [
+            {
+              "legacyMs": 2684.0999997854233,
+              "compositionMs": 3703.4000002741814,
+              "ratio": 1.3797548528632482
+            },
+            {
+              "legacyMs": 2687.6999994516373,
+              "compositionMs": 3745.2000004053116,
+              "ratio": 1.3934590918515581
+            },
+            {
+              "legacyMs": 2695.099999964237,
+              "compositionMs": 3781.7000000476837,
+              "ratio": 1.403176134502566
+            }
+          ],
+          "ratio033": 1.6316646459449677,
+          "ratio034Partial": 1.6703124416753372,
+          "timingPass": false
+        },
+        {
+          "id": "commerce/atom-focus-blur/active-opacity",
+          "frames": 240,
+          "maxDelta": 1,
+          "minPsnr": 84.16532641628905,
+          "pixelFailures": [],
+          "ratio": 1.983496684983321,
+          "timings": [
+            {
+              "legacyMs": 1356.499999821186,
+              "compositionMs": 2703.100000202656,
+              "ratio": 1.992701806530762
+            },
+            {
+              "legacyMs": 1387.5999999642372,
+              "compositionMs": 2752.300000011921,
+              "ratio": 1.983496684983321
+            },
+            {
+              "legacyMs": 1370.2999998927116,
+              "compositionMs": 2705.3000002503395,
+              "ratio": 1.9742392180268207
+            }
+          ],
+          "ratio033": 2.3368799129159754,
+          "ratio034Partial": 2.406380130826555,
+          "timingPass": false
+        },
+        {
+          "id": "commerce/atom-glow",
+          "frames": 240,
+          "maxDelta": 2,
+          "minPsnr": 93.30107498602443,
+          "pixelFailures": [],
+          "ratio": 2.1912191163062755,
+          "timings": [
+            {
+              "legacyMs": 3412.5999997854233,
+              "compositionMs": 7593.200000226498,
+              "ratio": 2.2250483504377723
+            },
+            {
+              "legacyMs": 3448.399999797344,
+              "compositionMs": 7556.200000226498,
+              "ratio": 2.1912191163062755
+            },
+            {
+              "legacyMs": 3479.4999997615814,
+              "compositionMs": 7544.8000002503395,
+              "ratio": 2.168357522853087
+            }
+          ],
+          "ratio033": 2.9540250963958568,
+          "ratio034Partial": 3.05075844260769,
+          "timingPass": false
+        },
+        {
+          "id": "commerce/atom-grain",
+          "frames": 240,
+          "maxDelta": 0,
+          "minPsnr": null,
+          "pixelFailures": [],
+          "ratio": 2.4038350925709966,
+          "timings": [
+            {
+              "legacyMs": 522.4000002741814,
+              "compositionMs": 1276.6999997496605,
+              "ratio": 2.443912708804719
+            },
+            {
+              "legacyMs": 521.4999997615814,
+              "compositionMs": 1253.6000002026558,
+              "ratio": 2.4038350925709966
+            },
+            {
+              "legacyMs": 531.5000002384186,
+              "compositionMs": 1253.2999997138977,
+              "ratio": 2.358043272157472
+            }
+          ],
+          "ratio033": 3.8925529975522366,
+          "ratio034Partial": 3.813472452439268,
+          "timingPass": false
+        },
+        {
+          "id": "commerce/atom-height-shadow",
+          "frames": 240,
+          "maxDelta": 0,
+          "minPsnr": null,
+          "pixelFailures": [],
+          "ratio": 2.4490426105567593,
+          "timings": [
+            {
+              "legacyMs": 321.59999972581863,
+              "compositionMs": 805.8000002503395,
+              "ratio": 2.505597017839949
+            },
+            {
+              "legacyMs": 323.8000007867813,
+              "compositionMs": 792.9999992251396,
+              "ratio": 2.4490426105567593
+            },
+            {
+              "legacyMs": 334.7999994158745,
+              "compositionMs": 800.8000005483627,
+              "ratio": 2.391875752525443
+            }
+          ],
+          "ratio033": 2.3819716621531213,
+          "ratio034Partial": 2.419974792899033,
+          "timingPass": false
+        },
+        {
+          "id": "commerce/atom-introduction",
+          "frames": 240,
+          "maxDelta": 0,
+          "minPsnr": null,
+          "pixelFailures": [],
+          "ratio": 0.5970578823307081,
+          "timings": [
+            {
+              "legacyMs": 312.70000010728836,
+              "compositionMs": 186.69999986886978,
+              "ratio": 0.5970578823307081
+            },
+            {
+              "legacyMs": 310.0000002384186,
+              "compositionMs": 190.99999976158142,
+              "ratio": 0.6161290310151123
+            },
+            {
+              "legacyMs": 310.49999940395355,
+              "compositionMs": 184.10000056028366,
+              "ratio": 0.5929146567268545
+            }
+          ],
+          "ratio033": 0.605371248705267,
+          "ratio034Partial": 0.5999357326324899,
+          "timingPass": true
+        },
+        {
+          "id": "commerce/atom-layout",
+          "frames": 240,
+          "maxDelta": 1,
+          "minPsnr": 99.35445199691641,
+          "pixelFailures": [],
+          "ratio": 0.3428470757148478,
+          "timings": [
+            {
+              "legacyMs": 283.69999980926514,
+              "compositionMs": 101.1000000834465,
+              "ratio": 0.35636235513365255
+            },
+            {
+              "legacyMs": 291.5999998450279,
+              "compositionMs": 95.70000022649765,
+              "ratio": 0.32818930136268115
+            },
+            {
+              "legacyMs": 283.7999999523163,
+              "compositionMs": 97.30000007152557,
+              "ratio": 0.3428470757148478
+            }
+          ],
+          "ratio033": 0.3446447530182083,
+          "ratio034Partial": 0.3444959044990267,
+          "timingPass": true
+        },
+        {
+          "id": "commerce/atom-layout/transformed-annotation",
+          "frames": 240,
+          "maxDelta": 1,
+          "minPsnr": 85.66341839233793,
+          "pixelFailures": [],
+          "ratio": 3.235666546067301,
+          "timings": [
+            {
+              "legacyMs": 284.3000002503395,
+              "compositionMs": 919.8999998569489,
+              "ratio": 3.235666546067301
+            },
+            {
+              "legacyMs": 286.100000500679,
+              "compositionMs": 929.5999994874,
+              "ratio": 3.2492135542138656
+            },
+            {
+              "legacyMs": 298.3999997973442,
+              "compositionMs": 935.8000001311302,
+              "ratio": 3.1360589838025157
+            }
+          ],
+          "ratio033": 3.226726211156692,
+          "ratio034Partial": null,
+          "timingPass": false
+        },
+        {
+          "id": "commerce/atom-layout/multiple-states",
+          "frames": 240,
+          "maxDelta": 1,
+          "minPsnr": 99.35445199691641,
+          "pixelFailures": [],
+          "ratio": 0.3420384488065479,
+          "timings": [
+            {
+              "legacyMs": 275.6999997496605,
+              "compositionMs": 94.30000025033951,
+              "ratio": 0.3420384488065479
+            },
+            {
+              "legacyMs": 276.50000005960464,
+              "compositionMs": 96.99999988079071,
+              "ratio": 0.3508137427120455
+            },
+            {
+              "legacyMs": 279.5000002384186,
+              "compositionMs": 90.59999972581863,
+              "ratio": 0.3241502670788379
+            }
+          ],
+          "ratio033": 0.34191954934322055,
+          "ratio034Partial": null,
+          "timingPass": true
+        },
+        {
+          "id": "commerce/atom-light-sweep",
+          "frames": 240,
+          "maxDelta": 1,
+          "minPsnr": 72.73431856656119,
+          "pixelFailures": [],
+          "ratio": 1.7551020408106588,
+          "timings": [
+            {
+              "legacyMs": 1063.2999993562698,
+              "compositionMs": 1885.4000006318092,
+              "ratio": 1.7731590348662138
+            },
+            {
+              "legacyMs": 1073.1000000238419,
+              "compositionMs": 1883.4000000357628,
+              "ratio": 1.7551020408106588
+            },
+            {
+              "legacyMs": 1074.7999994754791,
+              "compositionMs": 1877.1000005602837,
+              "ratio": 1.7464644598775034
+            }
+          ],
+          "ratio033": 1.8413895879238829,
+          "ratio034Partial": null,
+          "timingPass": false
+        },
+        {
+          "id": "commerce/atom-light-sweep/rotated-skew",
+          "frames": 240,
+          "maxDelta": 1,
+          "minPsnr": 78.99227762893562,
+          "pixelFailures": [],
+          "ratio": 1.741019213830695,
+          "timings": [
+            {
+              "legacyMs": 1429.3000002503395,
+              "compositionMs": 2474.5999997258186,
+              "ratio": 1.7313370176256886
+            },
+            {
+              "legacyMs": 1436.4000004529953,
+              "compositionMs": 2500.7999995350838,
+              "ratio": 1.741019213830695
+            },
+            {
+              "legacyMs": 1425.9999999403954,
+              "compositionMs": 2493.0000001192093,
+              "ratio": 1.7482468444764467
+            }
+          ],
+          "ratio033": 1.7871105889874515,
+          "ratio034Partial": null,
+          "timingPass": false
+        },
+        {
+          "id": "commerce/atom-light-sweep/image-matte",
+          "frames": 240,
+          "maxDelta": 1,
+          "minPsnr": 80.7194209699466,
+          "pixelFailures": [],
+          "ratio": 1.8242005377002126,
+          "timings": [
+            {
+              "legacyMs": 1807.3999997377396,
+              "compositionMs": 3294.900000333786,
+              "ratio": 1.8230054226025718
+            },
+            {
+              "legacyMs": 1823.0999999046326,
+              "compositionMs": 3325.7000001072884,
+              "ratio": 1.8242005377002126
+            },
+            {
+              "legacyMs": 1826.099999845028,
+              "compositionMs": 3350.4000000953674,
+              "ratio": 1.8347297521382724
+            }
+          ],
+          "ratio033": 1.872671144300712,
+          "ratio034Partial": null,
+          "timingPass": false
+        },
+        {
+          "id": "commerce/atom-light-sweep/glow-first",
+          "frames": 240,
+          "maxDelta": 2,
+          "minPsnr": 79.80326212695688,
+          "pixelFailures": [],
+          "ratio": 2.308863535761705,
+          "timings": [
+            {
+              "legacyMs": 4719.999999701977,
+              "compositionMs": 10800.000000298023,
+              "ratio": 2.2881355934279535
+            },
+            {
+              "legacyMs": 4741.8999999165535,
+              "compositionMs": 10948.400000035763,
+              "ratio": 2.308863535761705
+            },
+            {
+              "legacyMs": 4731.200000107288,
+              "compositionMs": 11017.999999821186,
+              "ratio": 2.32879607701457
+            }
+          ],
+          "ratio033": 2.7123010249229758,
+          "ratio034Partial": null,
+          "timingPass": false
+        },
+        {
+          "id": "commerce/atom-matte",
+          "frames": 240,
+          "maxDelta": 1,
+          "minPsnr": 101.52929143905547,
+          "pixelFailures": [],
+          "ratio": 1.8215991849495912,
+          "timings": [
+            {
+              "legacyMs": 1265.2999997735023,
+              "compositionMs": 2331.0000002384186,
+              "ratio": 1.8422508501190895
+            },
+            {
+              "legacyMs": 1276.9000002741814,
+              "compositionMs": 2325.9999997615814,
+              "ratio": 1.8215991849495912
+            },
+            {
+              "legacyMs": 1286.7999992966652,
+              "compositionMs": 2328.5000007748604,
+              "ratio": 1.8095275116937861
+            }
+          ],
+          "ratio033": 2.2203944546676055,
+          "ratio034Partial": null,
+          "timingPass": false
+        },
+        {
+          "id": "commerce/atom-matte/inverted-overlap",
+          "frames": 240,
+          "maxDelta": 1,
+          "minPsnr": 100.2259537541054,
+          "pixelFailures": [],
+          "ratio": 1.5309344171413535,
+          "timings": [
+            {
+              "legacyMs": 1734.900000154972,
+              "compositionMs": 2604.899999797344,
+              "ratio": 1.5014698250992324
+            },
+            {
+              "legacyMs": 1722.9999997615814,
+              "compositionMs": 2637.800000369549,
+              "ratio": 1.5309344171413535
+            },
+            {
+              "legacyMs": 1716.8999998569489,
+              "compositionMs": 2636.9000000953674,
+              "ratio": 1.535849496368497
+            }
+          ],
+          "ratio033": 1.5401207934393948,
+          "ratio034Partial": null,
+          "timingPass": false
+        },
+        {
+          "id": "commerce/atom-matte/shared-group-source",
+          "frames": 240,
+          "maxDelta": 1,
+          "minPsnr": 100.06801108227309,
+          "pixelFailures": [],
+          "ratio": 1.4410172786293758,
+          "timings": [
+            {
+              "legacyMs": 2882.199999809265,
+              "compositionMs": 4153.300000190735,
+              "ratio": 1.4410172786293758
+            },
+            {
+              "legacyMs": 2873.600000143051,
+              "compositionMs": 4159.599999904633,
+              "ratio": 1.4475222716096752
+            },
+            {
+              "legacyMs": 2884.899999797344,
+              "compositionMs": 4131.200000107288,
+              "ratio": 1.4320080420109857
+            }
+          ],
+          "ratio033": 1.4689297044660814,
+          "ratio034Partial": null,
+          "timingPass": false
+        },
+        {
+          "id": "commerce/atom-matte/inverted-overlap/focus-matte",
+          "frames": 240,
+          "maxDelta": 1,
+          "minPsnr": 100.2259537541054,
+          "pixelFailures": [],
+          "ratio": 1.809165048775588,
+          "timings": [
+            {
+              "legacyMs": 2570.099999666214,
+              "compositionMs": 4655.700000464916,
+              "ratio": 1.8114859348155967
+            },
+            {
+              "legacyMs": 2574.9999998807907,
+              "compositionMs": 4658.60000038147,
+              "ratio": 1.809165048775588
+            },
+            {
+              "legacyMs": 2594.600000202656,
+              "compositionMs": 4677.499999761581,
+              "ratio": 1.8027827023033365
+            }
+          ],
+          "ratio033": 2.0679326024668327,
+          "ratio034Partial": null,
+          "timingPass": false
+        },
+        {
+          "id": "commerce/atom-matte/shared-group-source/focus-matte",
+          "frames": 240,
+          "maxDelta": 1,
+          "minPsnr": 100.73747897857922,
+          "pixelFailures": [],
+          "ratio": 1.5494958139511543,
+          "timings": [
+            {
+              "legacyMs": 3723.300000309944,
+              "compositionMs": 5827.599999666214,
+              "ratio": 1.5651706817020112
+            },
+            {
+              "legacyMs": 3739.6000000834465,
+              "compositionMs": 5777.099999845028,
+              "ratio": 1.5448443683057322
+            },
+            {
+              "legacyMs": 3738.7000001072884,
+              "compositionMs": 5793.099999785423,
+              "ratio": 1.5494958139511543
+            }
+          ],
+          "ratio033": 1.695020857547016,
+          "ratio034Partial": null,
+          "timingPass": false
+        },
+        {
+          "id": "commerce/atom-motion-blur",
+          "frames": 240,
+          "maxDelta": 0,
+          "minPsnr": null,
+          "pixelFailures": [],
+          "ratio": 0.5426132117586281,
+          "timings": [
+            {
+              "legacyMs": 5369.699999630451,
+              "compositionMs": 2924.7000002861023,
+              "ratio": 0.544667299939919
+            },
+            {
+              "legacyMs": 5352.800000071526,
+              "compositionMs": 2904.4999999403954,
+              "ratio": 0.5426132117586281
+            },
+            {
+              "legacyMs": 5312.299999773502,
+              "compositionMs": 2849.600000143051,
+              "ratio": 0.5364154886328988
+            }
+          ],
+          "ratio033": 0.5535434441809047,
+          "ratio034Partial": null,
+          "timingPass": true
+        },
+        {
+          "id": "commerce/atom-motion-blur/wide-32",
+          "frames": 240,
+          "maxDelta": 0,
+          "minPsnr": null,
+          "pixelFailures": [],
+          "ratio": 0.5831639872352649,
+          "timings": [
+            {
+              "legacyMs": 9181.299999773502,
+              "compositionMs": 5549.700000226498,
+              "ratio": 0.6044568852301314
+            },
+            {
+              "legacyMs": 9398.900000274181,
+              "compositionMs": 5481.099999785423,
+              "ratio": 0.5831639872352649
+            },
+            {
+              "legacyMs": 9646.80000025034,
+              "compositionMs": 5505.799999713898,
+              "ratio": 0.5707384831831301
+            }
+          ],
+          "ratio033": 0.5770910562992289,
+          "ratio034Partial": null,
+          "timingPass": true
+        },
+        {
+          "id": "commerce/atom-motion-blur/zero",
+          "frames": 240,
+          "maxDelta": 0,
+          "minPsnr": null,
+          "pixelFailures": [],
+          "ratio": 0.5611650492617093,
+          "timings": [
+            {
+              "legacyMs": 308.9999998807907,
+              "compositionMs": 173.40000015497208,
+              "ratio": 0.5611650492617093
+            },
+            {
+              "legacyMs": 307.2999997138977,
+              "compositionMs": 171.60000026226044,
+              "ratio": 0.5584119766417943
+            },
+            {
+              "legacyMs": 297.10000002384186,
+              "compositionMs": 172.69999998807907,
+              "ratio": 0.5812857622828008
+            }
+          ],
+          "ratio033": 0.5706789122796654,
+          "ratio034Partial": null,
+          "timingPass": true
+        },
+        {
+          "id": "commerce/atom-motion-blur/active-cuts",
+          "frames": 240,
+          "maxDelta": 1,
+          "minPsnr": 85.28131564944786,
+          "pixelFailures": [],
+          "ratio": 0.6540863737487186,
+          "timings": [
+            {
+              "legacyMs": 2506.599999964237,
+              "compositionMs": 1662.7999998927116,
+              "ratio": 0.6633687065811998
+            },
+            {
+              "legacyMs": 2625.7999998927116,
+              "compositionMs": 1717.5000001192093,
+              "ratio": 0.6540863737487186
+            },
+            {
+              "legacyMs": 2609.2000002861023,
+              "compositionMs": 1678.7999997735023,
+              "ratio": 0.6434156061587535
+            }
+          ],
+          "ratio033": 0.7740446373009447,
+          "ratio034Partial": null,
+          "timingPass": true
+        },
+        {
+          "id": "commerce/atom-motion-blur/overlap-echo-matte",
+          "frames": 240,
+          "maxDelta": 2,
+          "minPsnr": 86.49819707234178,
+          "pixelFailures": [],
+          "ratio": 0.2828272776832788,
+          "timings": [
+            {
+              "legacyMs": 22490.30000013113,
+              "compositionMs": 6441.800000071526,
+              "ratio": 0.2864257035270302
+            },
+            {
+              "legacyMs": 23025.499999821186,
+              "compositionMs": 6371.10000026226,
+              "ratio": 0.27669757444188997
+            },
+            {
+              "legacyMs": 23113.39999985695,
+              "compositionMs": 6537.099999964237,
+              "ratio": 0.2828272776832788
+            }
+          ],
+          "ratio033": 0.3255031800231458,
+          "ratio034Partial": null,
+          "timingPass": true
+        },
+        {
+          "id": "commerce/atom-overshoot",
+          "frames": 240,
+          "maxDelta": 0,
+          "minPsnr": null,
+          "pixelFailures": [],
+          "ratio": 0.811326861694533,
+          "timings": [
+            {
+              "legacyMs": 306.60000014305115,
+              "compositionMs": 253.09999984502792,
+              "ratio": 0.825505543793015
+            },
+            {
+              "legacyMs": 309.1000002026558,
+              "compositionMs": 250.3999997973442,
+              "ratio": 0.8100938195832222
+            },
+            {
+              "legacyMs": 308.9999998807907,
+              "compositionMs": 250.700000166893,
+              "ratio": 0.811326861694533
+            }
+          ],
+          "ratio033": 0.7959986870643082,
+          "ratio034Partial": null,
+          "timingPass": true
+        },
+        {
+          "id": "commerce/atom-panel",
+          "frames": 240,
+          "maxDelta": 1,
+          "minPsnr": 100.06801108227309,
+          "pixelFailures": [],
+          "ratio": 0.654061626082113,
+          "timings": [
+            {
+              "legacyMs": 136.49999982118607,
+              "compositionMs": 99.50000017881393,
+              "ratio": 0.7289377312026238
+            },
+            {
+              "legacyMs": 142.799999833107,
+              "compositionMs": 93.40000009536743,
+              "ratio": 0.654061626082113
+            },
+            {
+              "legacyMs": 143.30000007152557,
+              "compositionMs": 89.29999995231628,
+              "ratio": 0.6231681780023993
+            }
+          ],
+          "ratio033": 0.6517985630187181,
+          "ratio034Partial": null,
+          "timingPass": true
+        },
+        {
+          "id": "commerce/atom-panel/appearance-uniform",
+          "frames": 240,
+          "maxDelta": 1,
+          "minPsnr": 94.76235534280681,
+          "pixelFailures": [],
+          "ratio": 2.515590999553777,
+          "timings": [
+            {
+              "legacyMs": 137.900000333786,
+              "compositionMs": 346.8999996781349,
+              "ratio": 2.515590999553777
+            },
+            {
+              "legacyMs": 137.40000063180923,
+              "compositionMs": 349.2999992966652,
+              "ratio": 2.542212501386258
+            },
+            {
+              "legacyMs": 139.40000009536743,
+              "compositionMs": 343.49999982118607,
+              "ratio": 2.464131991292598
+            }
+          ],
+          "ratio033": 2.4713656406770363,
+          "ratio034Partial": null,
+          "timingPass": false
+        },
+        {
+          "id": "commerce/atom-parallax",
+          "frames": 240,
+          "maxDelta": 1,
+          "minPsnr": 83.9439572166826,
+          "pixelFailures": [],
+          "ratio": 4.182684222290838,
+          "timings": [
+            {
+              "legacyMs": 354.4000000357628,
+              "compositionMs": 1506.4999998807907,
+              "ratio": 4.250846500363343
+            },
+            {
+              "legacyMs": 379.5999995470047,
+              "compositionMs": 1485.0000003576279,
+              "ratio": 3.9120126504998716
+            },
+            {
+              "legacyMs": 356.9000002145767,
+              "compositionMs": 1492.799999833107,
+              "ratio": 4.182684222290838
+            }
+          ],
+          "ratio033": 4.182366458011387,
+          "ratio034Partial": null,
+          "timingPass": false
+        },
+        {
+          "id": "commerce/atom-particles",
+          "frames": 240,
+          "maxDelta": 2,
+          "minPsnr": 103.0783110389129,
+          "pixelFailures": [],
+          "ratio": 4.725460127933498,
+          "timings": [
+            {
+              "legacyMs": 330.5999994277954,
+              "compositionMs": 1549.5000005364418,
+              "ratio": 4.686932859099596
+            },
+            {
+              "legacyMs": 325.9999997019768,
+              "compositionMs": 1540.5000002980232,
+              "ratio": 4.725460127933498
+            },
+            {
+              "legacyMs": 328.6999998688698,
+              "compositionMs": 1566.8000001311302,
+              "ratio": 4.766656528007858
+            }
+          ],
+          "ratio033": 5.565318592196303,
+          "ratio034Partial": null,
+          "timingPass": false
+        },
+        {
+          "id": "commerce/atom-particles/environment-stack",
+          "frames": 240,
+          "maxDelta": 2,
+          "minPsnr": 97.5498913523351,
+          "pixelFailures": [],
+          "ratio": 2.3250481683308513,
+          "timings": [
+            {
+              "legacyMs": 968.8000005483627,
+              "compositionMs": 2324.1999993920326,
+              "ratio": 2.3990503696082603
+            },
+            {
+              "legacyMs": 1011.5,
+              "compositionMs": 2339.5000000596046,
+              "ratio": 2.3129016312996584
+            },
+            {
+              "legacyMs": 1038.0000003576279,
+              "compositionMs": 2413.3999995589256,
+              "ratio": 2.3250481683308513
+            }
+          ],
+          "ratio033": 3.340994962124778,
+          "ratio034Partial": null,
+          "timingPass": false
+        },
+        {
+          "id": "commerce/atom-particles/environment-reversed",
+          "frames": 240,
+          "maxDelta": 2,
+          "minPsnr": 97.5498913523351,
+          "pixelFailures": [],
+          "ratio": 2.3400793259699117,
+          "timings": [
+            {
+              "legacyMs": 983.2999996542931,
+              "compositionMs": 2301.0000004172325,
+              "ratio": 2.3400793259699117
+            },
+            {
+              "legacyMs": 971.4000005722046,
+              "compositionMs": 2293.2999994158745,
+              "ratio": 2.360819433873793
+            },
+            {
+              "legacyMs": 974.8999999761581,
+              "compositionMs": 2269.80000013113,
+              "ratio": 2.328238793913878
+            }
+          ],
+          "ratio033": 3.3347094666999855,
+          "ratio034Partial": null,
+          "timingPass": false
+        },
+        {
+          "id": "commerce/atom-path",
+          "frames": 240,
+          "maxDelta": 1,
+          "minPsnr": 83.31743261296701,
+          "pixelFailures": [],
+          "ratio": 1.0128307921735902,
+          "timings": [
+            {
+              "legacyMs": 127.70000004768372,
+              "compositionMs": 134.29999995231628,
+              "ratio": 1.051683632749946
+            },
+            {
+              "legacyMs": 127.00000011920929,
+              "compositionMs": 125.09999978542328,
+              "ratio": 0.9850393674645468
+            },
+            {
+              "legacyMs": 124.70000010728836,
+              "compositionMs": 126.29999989271164,
+              "ratio": 1.0128307921735902
+            }
+          ],
+          "ratio033": 1.0400982014520848,
+          "ratio034Partial": null,
+          "timingPass": true
+        },
+        {
+          "id": "commerce/atom-path/spatial",
+          "frames": 240,
+          "maxDelta": 2,
+          "minPsnr": 85.78897876177828,
+          "pixelFailures": [],
+          "ratio": 4.65571614978381,
+          "timings": [
+            {
+              "legacyMs": 155.59999960660934,
+              "compositionMs": 711.900000333786,
+              "ratio": 4.575192815768792
+            },
+            {
+              "legacyMs": 152.20000034570694,
+              "compositionMs": 708.5999996066093,
+              "ratio": 4.65571614978381
+            },
+            {
+              "legacyMs": 145.0000001192093,
+              "compositionMs": 710.9000000357628,
+              "ratio": 4.902758616905575
+            }
+          ],
+          "ratio033": 4.673720141867908,
+          "ratio034Partial": null,
+          "timingPass": false
+        },
+        {
+          "id": "commerce/atom-path/morph",
+          "frames": 240,
+          "maxDelta": 2,
+          "minPsnr": 87.07324940631949,
+          "pixelFailures": [],
+          "ratio": 3.272590365452471,
+          "timings": [
+            {
+              "legacyMs": 261.7999999523163,
+              "compositionMs": 900.4000000357628,
+              "ratio": 3.4392666165002286
+            },
+            {
+              "legacyMs": 265.59999972581863,
+              "compositionMs": 869.200000166893,
+              "ratio": 3.272590365452471
+            },
+            {
+              "legacyMs": 272.20000022649765,
+              "compositionMs": 879.5999999642372,
+              "ratio": 3.2314474622789198
+            }
+          ],
+          "ratio033": 3.3431603756366433,
+          "ratio034Partial": null,
+          "timingPass": false
+        },
+        {
+          "id": "commerce/atom-path/spatial-morph",
+          "frames": 240,
+          "maxDelta": 1,
+          "minPsnr": 83.2717856255752,
+          "pixelFailures": [],
+          "ratio": 3.610533159358097,
+          "timings": [
+            {
+              "legacyMs": 146.39999973773956,
+              "compositionMs": 568.3000001907349,
+              "ratio": 3.8818306093496275
+            },
+            {
+              "legacyMs": 153.80000001192093,
+              "compositionMs": 555.2999999523163,
+              "ratio": 3.610533159358097
+            },
+            {
+              "legacyMs": 156.19999969005585,
+              "compositionMs": 547.1000003218651,
+              "ratio": 3.5025608284728764
+            }
+          ],
+          "ratio033": 3.7122252741174013,
+          "ratio034Partial": null,
+          "timingPass": false
+        },
+        {
+          "id": "commerce/atom-path/appearance-uniform",
+          "frames": 240,
+          "maxDelta": 1,
+          "minPsnr": 83.21699450038483,
+          "pixelFailures": [],
+          "ratio": 3.9085411914215564,
+          "timings": [
+            {
+              "legacyMs": 132.30000007152557,
+              "compositionMs": 517.0999999046326,
+              "ratio": 3.9085411914215564
+            },
+            {
+              "legacyMs": 134.89999997615814,
+              "compositionMs": 513.1000000238419,
+              "ratio": 3.8035581921017476
+            },
+            {
+              "legacyMs": 128.50000023841858,
+              "compositionMs": 514.3999997973442,
+              "ratio": 4.003112831462473
+            }
+          ],
+          "ratio033": 3.869633096062194,
+          "ratio034Partial": null,
+          "timingPass": false
+        },
+        {
+          "id": "commerce/atom-path/appearance-ink",
+          "frames": 240,
+          "maxDelta": 1,
+          "minPsnr": 84.2457536188432,
+          "pixelFailures": [],
+          "ratio": 3.285060972469105,
+          "timings": [
+            {
+              "legacyMs": 131.1999995112419,
+              "compositionMs": 431.2000005245209,
+              "ratio": 3.2865853820950157
+            },
+            {
+              "legacyMs": 150.10000044107437,
+              "compositionMs": 407.79999953508377,
+              "ratio": 2.716855418632568
+            },
+            {
+              "legacyMs": 131.20000010728836,
+              "compositionMs": 430.99999994039536,
+              "ratio": 3.285060972469105
+            }
+          ],
+          "ratio033": 2.9541818283796704,
+          "ratio034Partial": null,
+          "timingPass": false
+        },
+        {
+          "id": "commerce/atom-path/appearance-brush",
+          "frames": 240,
+          "maxDelta": 2,
+          "minPsnr": 86.98084283897037,
+          "pixelFailures": [],
+          "ratio": 3.412236718631172,
+          "timings": [
+            {
+              "legacyMs": 199.39999961853027,
+              "compositionMs": 680.4000003933907,
+              "ratio": 3.412236718631172
+            },
+            {
+              "legacyMs": 204.49999952316284,
+              "compositionMs": 682.1000003814697,
+              "ratio": 3.3354523323811116
+            },
+            {
+              "legacyMs": 198.00000029802322,
+              "compositionMs": 680.5999997258186,
+              "ratio": 3.4373737308151586
+            }
+          ],
+          "ratio033": 3.351804770186923,
+          "ratio034Partial": null,
+          "timingPass": false
+        },
+        {
+          "id": "commerce/atom-path/primitive-blur-uniform",
+          "frames": 240,
+          "maxDelta": 1,
+          "minPsnr": 83.31743261296701,
+          "pixelFailures": [],
+          "ratio": 0.5037298784172127,
+          "timings": [
+            {
+              "legacyMs": 1585.5000005960464,
+              "compositionMs": 809.1999994516373,
+              "ratio": 0.5103752754004603
+            },
+            {
+              "legacyMs": 1508.9999997615814,
+              "compositionMs": 751.6000002622604,
+              "ratio": 0.49807819773426876
+            },
+            {
+              "legacyMs": 1528.1999998688698,
+              "compositionMs": 769.8000001311302,
+              "ratio": 0.5037298784172127
+            }
+          ],
+          "ratio033": 0.5192929508883029,
+          "ratio034Partial": null,
+          "timingPass": true
+        },
+        {
+          "id": "commerce/atom-path/primitive-blur-ink",
+          "frames": 240,
+          "maxDelta": 1,
+          "minPsnr": 84.64954523870992,
+          "pixelFailures": [],
+          "ratio": 0.4930265899737939,
+          "timings": [
+            {
+              "legacyMs": 1534.4000002145767,
+              "compositionMs": 756.4999997615814,
+              "ratio": 0.4930265899737939
+            },
+            {
+              "legacyMs": 1525.2999997735023,
+              "compositionMs": 751.5000002980232,
+              "ratio": 0.4926899628988503
+            },
+            {
+              "legacyMs": 1501.5000001192093,
+              "compositionMs": 757.299999833107,
+              "ratio": 0.5043623042111104
+            }
+          ],
+          "ratio033": 0.5199803352426353,
+          "ratio034Partial": null,
+          "timingPass": true
+        },
+        {
+          "id": "commerce/atom-path/primitive-blur-brush",
+          "frames": 240,
+          "maxDelta": 1,
+          "minPsnr": 89.59804545551086,
+          "pixelFailures": [],
+          "ratio": 0.4575679216212317,
+          "timings": [
+            {
+              "legacyMs": 2968.600000143051,
+              "compositionMs": 1344.4999997019768,
+              "ratio": 0.45290709413096675
+            },
+            {
+              "legacyMs": 2967.2000001072884,
+              "compositionMs": 1358.5999999046326,
+              "ratio": 0.4578727419302737
+            },
+            {
+              "legacyMs": 2977.6999999284744,
+              "compositionMs": 1362.500000178814,
+              "ratio": 0.4575679216212317
+            }
+          ],
+          "ratio033": 0.47586307253516485,
+          "ratio034Partial": null,
+          "timingPass": true
+        },
+        {
+          "id": "commerce/atom-path/motion-blur",
+          "frames": 240,
+          "maxDelta": 1,
+          "minPsnr": 83.39681843007943,
+          "pixelFailures": [],
+          "ratio": 0.6674800882439362,
+          "timings": [
+            {
+              "legacyMs": 5895.200000107288,
+              "compositionMs": 3966.7999999523163,
+              "ratio": 0.6728864160469744
+            },
+            {
+              "legacyMs": 5914.499999880791,
+              "compositionMs": 3934.100000143051,
+              "ratio": 0.6651618903072694
+            },
+            {
+              "legacyMs": 5900.999999642372,
+              "compositionMs": 3938.800000488758,
+              "ratio": 0.6674800882439362
+            }
+          ],
+          "ratio033": 0.6335724110951552,
+          "ratio034Partial": null,
+          "timingPass": true
+        },
+        {
+          "id": "commerce/atom-product",
+          "frames": 240,
+          "maxDelta": 0,
+          "minPsnr": null,
+          "pixelFailures": [],
+          "ratio": 0.3087226386168431,
+          "timings": [
+            {
+              "legacyMs": 303.80000019073486,
+              "compositionMs": 96.99999988079071,
+              "ratio": 0.3192890053320973
+            },
+            {
+              "legacyMs": 315.0999998450279,
+              "compositionMs": 93.70000010728836,
+              "ratio": 0.2973659160690948
+            },
+            {
+              "legacyMs": 306.10000026226044,
+              "compositionMs": 94.49999976158142,
+              "ratio": 0.3087226386168431
+            }
+          ],
+          "ratio033": 0.30159744277396766,
+          "ratio034Partial": null,
+          "timingPass": true
+        },
+        {
+          "id": "commerce/atom-rotate",
+          "frames": 240,
+          "maxDelta": 0,
+          "minPsnr": null,
+          "pixelFailures": [],
+          "ratio": 1.1915914773257918,
+          "timings": [
+            {
+              "legacyMs": 520.8999997377396,
+              "compositionMs": 620.7000002264977,
+              "ratio": 1.1915914773257918
+            },
+            {
+              "legacyMs": 524.3000001311302,
+              "compositionMs": 615.2999999523163,
+              "ratio": 1.1735647526195432
+            },
+            {
+              "legacyMs": 514.4999995827675,
+              "compositionMs": 622.1000003814697,
+              "ratio": 1.2091350843264532
+            }
+          ],
+          "ratio033": 1.1801801804333847,
+          "ratio034Partial": null,
+          "timingPass": true
+        },
+        {
+          "id": "commerce/atom-scale",
+          "frames": 240,
+          "maxDelta": 0,
+          "minPsnr": null,
+          "pixelFailures": [],
+          "ratio": 1.4555128590729423,
+          "timings": [
+            {
+              "legacyMs": 338.2999999523163,
+              "compositionMs": 492.4000001549721,
+              "ratio": 1.4555128590729423
+            },
+            {
+              "legacyMs": 348.19999945163727,
+              "compositionMs": 502.8000004887581,
+              "ratio": 1.443997706147595
+            },
+            {
+              "legacyMs": 340.9000002145767,
+              "compositionMs": 500.1999998688698,
+              "ratio": 1.4672924598240626
+            }
+          ],
+          "ratio033": 1.5276633305012057,
+          "ratio034Partial": null,
+          "timingPass": false
+        },
+        {
+          "id": "commerce/atom-sequence",
+          "frames": 240,
+          "maxDelta": 1,
+          "minPsnr": 100.56019130897491,
+          "pixelFailures": [],
+          "ratio": 2.3714195784199945,
+          "timings": [
+            {
+              "legacyMs": 320.3999997973442,
+              "compositionMs": 755.6000002026558,
+              "ratio": 2.3583021244712215
+            },
+            {
+              "legacyMs": 317.69999998807907,
+              "compositionMs": 753.4000000357628,
+              "ratio": 2.3714195784199945
+            },
+            {
+              "legacyMs": 315.70000046491623,
+              "compositionMs": 760.7999995350838,
+              "ratio": 2.409882795105132
+            }
+          ],
+          "ratio033": 2.4269557041893197,
+          "ratio034Partial": null,
+          "timingPass": false
+        },
+        {
+          "id": "commerce/atom-shadow",
+          "frames": 240,
+          "maxDelta": 0,
+          "minPsnr": null,
+          "pixelFailures": [],
+          "ratio": 0.7010542160864107,
+          "timings": [
+            {
+              "legacyMs": 134.1999996304512,
+              "compositionMs": 93.60000038146973,
+              "ratio": 0.6974664727214428
+            },
+            {
+              "legacyMs": 131.19999980926514,
+              "compositionMs": 92.30000013113022,
+              "ratio": 0.7035060995831811
+            },
+            {
+              "legacyMs": 132.80000001192093,
+              "compositionMs": 93.09999990463257,
+              "ratio": 0.7010542160864107
+            }
+          ],
+          "ratio033": 0.7071428559902979,
+          "ratio034Partial": null,
+          "timingPass": true
+        },
+        {
+          "id": "commerce/atom-studio",
+          "frames": 240,
+          "maxDelta": 0,
+          "minPsnr": null,
+          "pixelFailures": [],
+          "ratio": 2.1638149496146792,
+          "timings": [
+            {
+              "legacyMs": 315.6000006198883,
+              "compositionMs": 682.8999994397163,
+              "ratio": 2.1638149496146792
+            },
+            {
+              "legacyMs": 314.39999973773956,
+              "compositionMs": 685.5000004172325,
+              "ratio": 2.180343514596216
+            },
+            {
+              "legacyMs": 326.30000001192093,
+              "compositionMs": 687.0999999642372,
+              "ratio": 2.105730922277459
+            }
+          ],
+          "ratio033": 2.0969135805412575,
+          "ratio034Partial": null,
+          "timingPass": false
+        },
+        {
+          "id": "commerce/atom-text",
+          "frames": 240,
+          "maxDelta": 0,
+          "minPsnr": null,
+          "pixelFailures": [],
+          "ratio": 0.7195512857067691,
+          "timings": [
+            {
+              "legacyMs": 134.3999997973442,
+              "compositionMs": 91.00000023841858,
+              "ratio": 0.677083336128225
+            },
+            {
+              "legacyMs": 120.69999992847443,
+              "compositionMs": 97.00000011920929,
+              "ratio": 0.8036454032865823
+            },
+            {
+              "legacyMs": 124.7999997138977,
+              "compositionMs": 89.80000025033951,
+              "ratio": 0.7195512857067691
+            }
+          ],
+          "ratio033": 0.844950216017365,
+          "ratio034Partial": null,
+          "timingPass": true
+        },
+        {
+          "id": "commerce/atom-text/measured-states",
+          "frames": 240,
+          "maxDelta": 0,
+          "minPsnr": null,
+          "pixelFailures": [],
+          "ratio": 0.5205811108503818,
+          "timings": [
+            {
+              "legacyMs": 237.79999995231628,
+              "compositionMs": 134.30000001192093,
+              "ratio": 0.5647603029388175
+            },
+            {
+              "legacyMs": 247.8000004887581,
+              "compositionMs": 128.99999952316284,
+              "ratio": 0.5205811108503818
+            },
+            {
+              "legacyMs": 248.799999833107,
+              "compositionMs": 125.60000014305115,
+              "ratio": 0.5048231520389976
+            }
+          ],
+          "ratio033": 0.5270376179361337,
+          "ratio034Partial": null,
+          "timingPass": true
+        },
+        {
+          "id": "commerce/atom-text/speech-states",
+          "frames": 240,
+          "maxDelta": 0,
+          "minPsnr": null,
+          "pixelFailures": [],
+          "ratio": 0.5203155794928509,
+          "timings": [
+            {
+              "legacyMs": 253.90000015497208,
+              "compositionMs": 134.799999833107,
+              "ratio": 0.530917683146237
+            },
+            {
+              "legacyMs": 259,
+              "compositionMs": 129.5999999642372,
+              "ratio": 0.5003861002480201
+            },
+            {
+              "legacyMs": 253.5000004172325,
+              "compositionMs": 131.89999961853027,
+              "ratio": 0.5203155794928509
+            }
+          ],
+          "ratio033": 0.5115830142482094,
+          "ratio034Partial": null,
+          "timingPass": true
+        },
+        {
+          "id": "commerce/atom-text/animated-states",
+          "frames": 240,
+          "maxDelta": 0,
+          "minPsnr": null,
+          "pixelFailures": [],
+          "ratio": 4.534154531153213,
+          "timings": [
+            {
+              "legacyMs": 277.19999998807907,
+              "compositionMs": 1190.800000011921,
+              "ratio": 4.295815296043041
+            },
+            {
+              "legacyMs": 269.1999995112419,
+              "compositionMs": 1222.9000005722046,
+              "ratio": 4.542719178278214
+            },
+            {
+              "legacyMs": 267.9000002145767,
+              "compositionMs": 1214.6999998688698,
+              "ratio": 4.534154531153213
+            }
+          ],
+          "ratio033": 4.566730400215205,
+          "ratio034Partial": null,
+          "timingPass": false
+        },
+        {
+          "id": "commerce/atom-translate",
+          "frames": 240,
+          "maxDelta": 0,
+          "minPsnr": null,
+          "pixelFailures": [],
+          "ratio": 0.5683430033680658,
+          "timings": [
+            {
+              "legacyMs": 303.1000002026558,
+              "compositionMs": 173.1999997496605,
+              "ratio": 0.5714285702205779
+            },
+            {
+              "legacyMs": 310.20000022649765,
+              "compositionMs": 176.29999977350235,
+              "ratio": 0.5683430033680658
+            },
+            {
+              "legacyMs": 308.40000009536743,
+              "compositionMs": 173.29999989271164,
+              "ratio": 0.5619325546015616
+            }
+          ],
+          "ratio033": 0.5543758057770559,
+          "ratio034Partial": null,
+          "timingPass": true
+        },
+        {
+          "id": "component/commerce-bracket",
+          "frames": 192,
+          "maxDelta": 1,
+          "minPsnr": 97.26113007497281,
+          "pixelFailures": [],
+          "ratio": 2.4478844152830885,
+          "timings": [
+            {
+              "legacyMs": 193.80000007152557,
+              "compositionMs": 474.39999985694885,
+              "ratio": 2.4478844152830885
+            },
+            {
+              "legacyMs": 191.9000000357628,
+              "compositionMs": 484.0999999642372,
+              "ratio": 2.5226680556228223
+            },
+            {
+              "legacyMs": 197.80000007152557,
+              "compositionMs": 461.19999998807907,
+              "ratio": 2.3316481285202557
+            }
+          ],
+          "ratio033": 2.3972250806433846,
+          "ratio034Partial": null,
+          "timingPass": false
+        },
+        {
+          "id": "component/commerce-detail-sequence",
+          "frames": 192,
+          "maxDelta": 1,
+          "minPsnr": 92.9943056186486,
+          "pixelFailures": [],
+          "ratio": 1.5064429527150796,
+          "timings": [
+            {
+              "legacyMs": 723.6999997496605,
+              "compositionMs": 1115.8000004291534,
+              "ratio": 1.54179908914623
+            },
+            {
+              "legacyMs": 745.0000001192093,
+              "compositionMs": 1122.2999999523163,
+              "ratio": 1.5064429527150796
+            },
+            {
+              "legacyMs": 770.6999998688698,
+              "compositionMs": 1107.7000001072884,
+              "ratio": 1.4372648245695565
+            }
+          ],
+          "ratio033": 1.7198587261828129,
+          "ratio034Partial": null,
+          "timingPass": false
+        },
+        {
+          "id": "component/commerce-instances",
+          "frames": 192,
+          "maxDelta": 1,
+          "minPsnr": 97.26113007497281,
+          "pixelFailures": [],
+          "ratio": 2.1664969398107456,
+          "timings": [
+            {
+              "legacyMs": 195.99999982118607,
+              "compositionMs": 435.40000009536743,
+              "ratio": 2.2214285739417847
+            },
+            {
+              "legacyMs": 196.400000333786,
+              "compositionMs": 425.4999997019768,
+              "ratio": 2.1664969398107456
+            },
+            {
+              "legacyMs": 206.20000022649765,
+              "compositionMs": 420.9999997615814,
+              "ratio": 2.0417070771054293
+            }
+          ],
+          "ratio033": 2.134343429746135,
+          "ratio034Partial": null,
+          "timingPass": false
+        },
+        {
+          "id": "component/commerce-layout",
+          "frames": 192,
+          "maxDelta": 1,
+          "minPsnr": 97.26113007497281,
+          "pixelFailures": [],
+          "ratio": 2.048828129724825,
+          "timings": [
+            {
+              "legacyMs": 199.10000026226044,
+              "compositionMs": 416.8999996185303,
+              "ratio": 2.093922647259554
+            },
+            {
+              "legacyMs": 204.7999997138977,
+              "compositionMs": 419.6000003814697,
+              "ratio": 2.048828129724825
+            },
+            {
+              "legacyMs": 206.29999965429306,
+              "compositionMs": 411.80000030994415,
+              "ratio": 1.9961221570529202
+            }
+          ],
+          "ratio033": 2.1032934109522903,
+          "ratio034Partial": null,
+          "timingPass": false
+        },
+        {
+          "id": "component/commerce-leader",
+          "frames": 192,
+          "maxDelta": 1,
+          "minPsnr": 90.1921563475916,
+          "pixelFailures": [],
+          "ratio": 2.1727694671763804,
+          "timings": [
+            {
+              "legacyMs": 193.90000009536743,
+              "compositionMs": 421.29999989271164,
+              "ratio": 2.1727694671763804
+            },
+            {
+              "legacyMs": 191.29999989271164,
+              "compositionMs": 434.50000005960464,
+              "ratio": 2.2713016220767845
+            },
+            {
+              "legacyMs": 202.6999996304512,
+              "compositionMs": 426.6000003218651,
+              "ratio": 2.1045880665989793
+            }
+          ],
+          "ratio033": 2.1868076495467736,
+          "ratio034Partial": null,
+          "timingPass": false
+        },
+        {
+          "id": "component/commerce-leader/source-crop-ink",
+          "frames": 192,
+          "maxDelta": 2,
+          "minPsnr": 90.67850500985296,
+          "pixelFailures": [],
+          "ratio": 2.309891801957113,
+          "timings": [
+            {
+              "legacyMs": 233.2000002861023,
+              "compositionMs": 628.4999997615814,
+              "ratio": 2.695111487952418
+            },
+            {
+              "legacyMs": 258.8000004887581,
+              "compositionMs": 597.7999994754791,
+              "ratio": 2.309891801957113
+            },
+            {
+              "legacyMs": 264.09999990463257,
+              "compositionMs": 606.6000001430511,
+              "ratio": 2.2968572524123307
+            }
+          ],
+          "ratio033": 2.2996542471258064,
+          "ratio034Partial": null,
+          "timingPass": false
+        },
+        {
+          "id": "component/commerce-mask",
+          "frames": 192,
+          "maxDelta": 1,
+          "minPsnr": 100.0486660845011,
+          "pixelFailures": [],
+          "ratio": 0.7104917171232131,
+          "timings": [
+            {
+              "legacyMs": 755.299999833107,
+              "compositionMs": 510.3000002503395,
+              "ratio": 0.6756255797207689
+            },
+            {
+              "legacyMs": 761.9999999403954,
+              "compositionMs": 543.8000000715256,
+              "ratio": 0.7136482941129427
+            },
+            {
+              "legacyMs": 760.5999999046326,
+              "compositionMs": 540.3999999761581,
+              "ratio": 0.7104917171232131
+            }
+          ],
+          "ratio033": 0.6848156464847023,
+          "ratio034Partial": null,
+          "timingPass": true
+        },
+        {
+          "id": "component/commerce-outline",
+          "frames": 192,
+          "maxDelta": 1,
+          "minPsnr": 97.26113007497281,
+          "pixelFailures": [],
+          "ratio": 2.616927591325753,
+          "timings": [
+            {
+              "legacyMs": 196.2000002861023,
+              "compositionMs": 544.2999997735023,
+              "ratio": 2.774209984606496
+            },
+            {
+              "legacyMs": 204.40000009536743,
+              "compositionMs": 534.8999999165535,
+              "ratio": 2.616927591325753
+            },
+            {
+              "legacyMs": 205.29999989271164,
+              "compositionMs": 519.5,
+              "ratio": 2.5304432550973557
+            }
+          ],
+          "ratio033": 2.57475727655535,
+          "ratio034Partial": null,
+          "timingPass": false
+        },
+        {
+          "id": "component/commerce-pin",
+          "frames": 192,
+          "maxDelta": 1,
+          "minPsnr": 92.8886326481531,
+          "pixelFailures": [],
+          "ratio": 1.4929164628854619,
+          "timings": [
+            {
+              "legacyMs": 207.6000002026558,
+              "compositionMs": 307.39999973773956,
+              "ratio": 1.4807321745552053
+            },
+            {
+              "legacyMs": 205.4000000357628,
+              "compositionMs": 307.69999998807907,
+              "ratio": 1.4980525800121935
+            },
+            {
+              "legacyMs": 204.70000004768372,
+              "compositionMs": 305.60000002384186,
+              "ratio": 1.4929164628854619
+            }
+          ],
+          "ratio033": 1.4432742961766483,
+          "ratio034Partial": null,
+          "timingPass": false
+        },
+        {
+          "id": "component/commerce-sequence",
+          "frames": 192,
+          "maxDelta": 1,
+          "minPsnr": 97.68077509040816,
+          "pixelFailures": [],
+          "ratio": 1.450960568055432,
+          "timings": [
+            {
+              "legacyMs": 197.799999833107,
+              "compositionMs": 287.0000001192093,
+              "ratio": 1.450960568055432
+            },
+            {
+              "legacyMs": 195.59999984502792,
+              "compositionMs": 287.50000017881393,
+              "ratio": 1.4698364028967155
+            },
+            {
+              "legacyMs": 195.50000005960464,
+              "compositionMs": 273.09999990463257,
+              "ratio": 1.3969309453778465
+            }
+          ],
+          "ratio033": 1.3984693945624067,
+          "ratio034Partial": null,
+          "timingPass": false
+        },
+        {
+          "id": "component/commerce-stagger",
+          "frames": 192,
+          "maxDelta": 1,
+          "minPsnr": 97.26113007497281,
+          "pixelFailures": [],
+          "ratio": 3.045004948398542,
+          "timings": [
+            {
+              "legacyMs": 201.89999997615814,
+              "compositionMs": 635,
+              "ratio": 3.1451213475729842
+            },
+            {
+              "legacyMs": 202.19999986886978,
+              "compositionMs": 615.700000166893,
+              "ratio": 3.045004948398542
+            },
+            {
+              "legacyMs": 209.50000005960464,
+              "compositionMs": 624.6999999284744,
+              "ratio": 2.98186157398922
+            }
+          ],
+          "ratio033": 2.972986009069306,
+          "ratio034Partial": null,
+          "timingPass": false
+        },
+        {
+          "id": "component/commerce-state",
+          "frames": 192,
+          "maxDelta": 1,
+          "minPsnr": 95.4622875942446,
+          "pixelFailures": [],
+          "ratio": 1.4433518581502722,
+          "timings": [
+            {
+              "legacyMs": 222.1999997496605,
+              "compositionMs": 302.20000022649765,
+              "ratio": 1.360036006151973
+            },
+            {
+              "legacyMs": 230.19999980926514,
+              "compositionMs": 341.0000002384186,
+              "ratio": 1.481320593053684
+            },
+            {
+              "legacyMs": 233.90000015497208,
+              "compositionMs": 337.5999998450279,
+              "ratio": 1.4433518581502722
+            }
+          ],
+          "ratio033": 1.2807348071270062,
+          "ratio034Partial": null,
+          "timingPass": false
+        },
+        {
+          "id": "component/commerce-state/primitive-blur",
+          "frames": 192,
+          "maxDelta": 2,
+          "minPsnr": 84.2565482821861,
+          "pixelFailures": [],
+          "ratio": 0.6533393587816742,
+          "timings": [
+            {
+              "legacyMs": 8463.100000202656,
+              "compositionMs": 5530.8999999165535,
+              "ratio": 0.6535312119417367
+            },
+            {
+              "legacyMs": 8408.800000011921,
+              "compositionMs": 5493.80000013113,
+              "ratio": 0.6533393587816742
+            },
+            {
+              "legacyMs": 8455.299999833107,
+              "compositionMs": 5488.700000107288,
+              "ratio": 0.6491431410139943
+            }
+          ],
+          "ratio033": 0.6480998107844407,
+          "ratio034Partial": null,
+          "timingPass": true
+        },
+        {
+          "id": "component/commerce-state/primitive-blur-matte",
+          "frames": 192,
+          "maxDelta": 2,
+          "minPsnr": 91.9362683569682,
+          "pixelFailures": [],
+          "ratio": 0.7485075066027972,
+          "timings": [
+            {
+              "legacyMs": 8726.19999974966,
+              "compositionMs": 6490.60000026226,
+              "ratio": 0.7438060095400592
+            },
+            {
+              "legacyMs": 8770.50000011921,
+              "compositionMs": 6645.699999928474,
+              "ratio": 0.7577333105111619
+            },
+            {
+              "legacyMs": 8492.500000059605,
+              "compositionMs": 6356.69999986887,
+              "ratio": 0.7485075066027972
+            }
+          ],
+          "ratio033": 0.7465969900768993,
+          "ratio034Partial": null,
+          "timingPass": true
+        },
+        {
+          "id": "component/commerce-state/primitive-blur-stack",
+          "frames": 192,
+          "maxDelta": 2,
+          "minPsnr": 91.98686634466222,
+          "pixelFailures": [],
+          "ratio": 0.916341551290537,
+          "timings": [
+            {
+              "legacyMs": 9714.5,
+              "compositionMs": 8901.800000011921,
+              "ratio": 0.916341551290537
+            },
+            {
+              "legacyMs": 11432.300000011921,
+              "compositionMs": 10071.499999821186,
+              "ratio": 0.8809688339013745
+            },
+            {
+              "legacyMs": 10579.799999654293,
+              "compositionMs": 10198.300000309944,
+              "ratio": 0.9639407172766201
+            }
+          ],
+          "ratio033": 0.9778601452087968,
+          "ratio034Partial": null,
+          "timingPass": true
+        },
+        {
+          "id": "component/commerce-state/motion-blur",
+          "frames": 192,
+          "maxDelta": 2,
+          "minPsnr": 84.30256667109923,
+          "pixelFailures": [],
+          "ratio": 0.5662784909437036,
+          "timings": [
+            {
+              "legacyMs": 24890.799999833107,
+              "compositionMs": 13966.400000095367,
+              "ratio": 0.5611069150123343
+            },
+            {
+              "legacyMs": 23503.099999666214,
+              "compositionMs": 13309.300000309944,
+              "ratio": 0.5662784909437036
+            },
+            {
+              "legacyMs": 23698.500000298023,
+              "compositionMs": 13559.39999973774,
+              "ratio": 0.572162795095353
+            }
+          ],
+          "ratio033": 0.5818814722272228,
+          "ratio034Partial": null,
+          "timingPass": true
+        },
+        {
+          "id": "component/commerce-supply-sequence",
+          "frames": 192,
+          "maxDelta": 1,
+          "minPsnr": 92.9943056186486,
+          "pixelFailures": [],
+          "ratio": 2.200320046715252,
+          "timings": [
+            {
+              "legacyMs": 674.8999999761581,
+              "compositionMs": 1475.699999988079,
+              "ratio": 2.1865461550455034
+            },
+            {
+              "legacyMs": 687.3999999761581,
+              "compositionMs": 1512.5000000596046,
+              "ratio": 2.200320046715252
+            },
+            {
+              "legacyMs": 677.7000000476837,
+              "compositionMs": 1509.6999999284744,
+              "ratio": 2.2276818648697807
+            }
+          ],
+          "ratio033": 2.0841750836827733,
+          "ratio034Partial": null,
+          "timingPass": false
+        },
+        {
+          "id": "component/commerce-supply",
+          "frames": 192,
+          "maxDelta": 2,
+          "minPsnr": 85.79984971819043,
+          "pixelFailures": [],
+          "ratio": 2.9128978192204027,
+          "timings": [
+            {
+              "legacyMs": 267.20000010728836,
+              "compositionMs": 793.5999998450279,
+              "ratio": 2.9700598784669725
+            },
+            {
+              "legacyMs": 244.90000027418137,
+              "compositionMs": 687.8999997377396,
+              "ratio": 2.8089015882710946
+            },
+            {
+              "legacyMs": 238.80000019073486,
+              "compositionMs": 695.5999997854233,
+              "ratio": 2.9128978192204027
+            }
+          ],
+          "ratio033": 2.8190401276676154,
+          "ratio034Partial": null,
+          "timingPass": false
+        },
+        {
+          "id": "component/commerce-text-fit",
+          "frames": 192,
+          "maxDelta": 1,
+          "minPsnr": 97.68077509040816,
+          "pixelFailures": [],
+          "ratio": 1.2840000000596046,
+          "timings": [
+            {
+              "legacyMs": 200,
+              "compositionMs": 256.80000001192093,
+              "ratio": 1.2840000000596046
+            },
+            {
+              "legacyMs": 196.80000007152557,
+              "compositionMs": 256.9999998807907,
+              "ratio": 1.305894307862733
+            },
+            {
+              "legacyMs": 203.40000009536743,
+              "compositionMs": 246.79999989271164,
+              "ratio": 1.2133726636037139
+            }
+          ],
+          "ratio033": 1.3044747103443721,
+          "ratio034Partial": null,
+          "timingPass": false
+        },
+        {
+          "id": "component/commerce-text-fit/native-thai",
+          "frames": 192,
+          "maxDelta": 1,
+          "minPsnr": 97.49594103346803,
+          "pixelFailures": [],
+          "ratio": 1.2474526889391002,
+          "timings": [
+            {
+              "legacyMs": 206.10000038146973,
+              "compositionMs": 257.099999666214,
+              "ratio": 1.2474526889391002
+            },
+            {
+              "legacyMs": 195.49999994039536,
+              "compositionMs": 264.40000009536743,
+              "ratio": 1.3524296684193275
+            },
+            {
+              "legacyMs": 206.1000002026558,
+              "compositionMs": 253.79999977350235,
+              "ratio": 1.2314410457251028
+            }
+          ],
+          "ratio033": 1.2955974863950193,
+          "ratio034Partial": null,
+          "timingPass": true
+        },
+        {
+          "id": "component/commerce-tour",
+          "frames": 192,
+          "maxDelta": 2,
+          "minPsnr": 85.79984971819043,
+          "pixelFailures": [],
+          "ratio": 2.877716231564565,
+          "timings": [
+            {
+              "legacyMs": 238.49999976158142,
+              "compositionMs": 679.2000002861023,
+              "ratio": 2.8477987461847816
+            },
+            {
+              "legacyMs": 234.70000010728836,
+              "compositionMs": 675.3999998569489,
+              "ratio": 2.877716231564565
+            },
+            {
+              "legacyMs": 235.99999982118607,
+              "compositionMs": 696.7000002264977,
+              "ratio": 2.952118647264312
+            }
+          ],
+          "ratio033": 2.880000005623729,
+          "ratio034Partial": null,
+          "timingPass": false
+        },
+        {
+          "id": "component/commerce-transform",
+          "frames": 192,
+          "maxDelta": 1,
+          "minPsnr": 91.31255411453643,
+          "pixelFailures": [],
+          "ratio": 2.2175423409132726,
+          "timings": [
+            {
+              "legacyMs": 225.20000010728836,
+              "compositionMs": 531.4999998211861,
+              "ratio": 2.3601243320069814
+            },
+            {
+              "legacyMs": 238.80000030994415,
+              "compositionMs": 517.8999996781349,
+              "ratio": 2.168760464848996
+            },
+            {
+              "legacyMs": 230.29999965429306,
+              "compositionMs": 510.70000034570694,
+              "ratio": 2.2175423409132726
+            }
+          ],
+          "ratio033": 2.27712363458332,
+          "ratio034Partial": null,
+          "timingPass": false
+        },
+        {
+          "id": "component/commerce-travel",
+          "frames": 192,
+          "maxDelta": 1,
+          "minPsnr": 95.500217484416,
+          "pixelFailures": [],
+          "ratio": 1.5792270547982155,
+          "timings": [
+            {
+              "legacyMs": 208.70000004768372,
+              "compositionMs": 332.59999990463257,
+              "ratio": 1.5936751309470063
+            },
+            {
+              "legacyMs": 206.9999998807907,
+              "compositionMs": 326.9000001549721,
+              "ratio": 1.5792270547982155
+            },
+            {
+              "legacyMs": 214.49999982118607,
+              "compositionMs": 320.20000022649765,
+              "ratio": 1.492773895074249
+            }
+          ],
+          "ratio033": 1.5846511644455727,
+          "ratio034Partial": null,
+          "timingPass": false
+        },
+        {
+          "id": "component/commerce-underline",
+          "frames": 192,
+          "maxDelta": 1,
+          "minPsnr": 97.26113007497281,
+          "pixelFailures": [],
+          "ratio": 2.089870132802248,
+          "timings": [
+            {
+              "legacyMs": 192.3000002503395,
+              "compositionMs": 396.69999969005585,
+              "ratio": 2.0629225126033535
+            },
+            {
+              "legacyMs": 184.60000002384186,
+              "compositionMs": 400.8000000715256,
+              "ratio": 2.1711809318513575
+            },
+            {
+              "legacyMs": 192.49999982118607,
+              "compositionMs": 402.30000019073486,
+              "ratio": 2.089870132802248
+            }
+          ],
+          "ratio033": 2.1565762023620048,
+          "ratio034Partial": null,
+          "timingPass": false
+        },
+        {
+          "id": "component/commerce-value",
+          "frames": 192,
+          "maxDelta": 1,
+          "minPsnr": 97.26113007497281,
+          "pixelFailures": [],
+          "ratio": 2.426847659291963,
+          "timings": [
+            {
+              "legacyMs": 203.60000026226044,
+              "compositionMs": 493.39999973773956,
+              "ratio": 2.4233791704429426
+            },
+            {
+              "legacyMs": 198.90000015497208,
+              "compositionMs": 482.69999980926514,
+              "ratio": 2.426847659291963
+            },
+            {
+              "legacyMs": 193.0000001192093,
+              "compositionMs": 473.79999989271164,
+              "ratio": 2.454922277720529
+            }
+          ],
+          "ratio033": 2.4751131256527446,
+          "ratio034Partial": null,
+          "timingPass": false
+        },
+        {
+          "id": "component/commerce-value/half-away-from-zero",
+          "frames": 192,
+          "maxDelta": 1,
+          "minPsnr": 97.26113007497281,
+          "pixelFailures": [],
+          "ratio": 2.772843285676547,
+          "timings": [
+            {
+              "legacyMs": 195.90000009536743,
+              "compositionMs": 543.1999999284744,
+              "ratio": 2.772843285676547
+            },
+            {
+              "legacyMs": 194.19999980926514,
+              "compositionMs": 556.700000166893,
+              "ratio": 2.8666323414709565
+            },
+            {
+              "legacyMs": 192.19999957084656,
+              "compositionMs": 523.8000003695488,
+              "ratio": 2.725286168257621
+            }
+          ],
+          "ratio033": 2.794911733261037,
+          "ratio034Partial": null,
+          "timingPass": false
+        },
+        {
+          "id": "component/commerce-value/truncate",
+          "frames": 192,
+          "maxDelta": 1,
+          "minPsnr": 97.26113007497281,
+          "pixelFailures": [],
+          "ratio": 2.767466113934336,
+          "timings": [
+            {
+              "legacyMs": 195.50000017881393,
+              "compositionMs": 529.7999997735023,
+              "ratio": 2.7099744209151977
+            },
+            {
+              "legacyMs": 195.80000001192093,
+              "compositionMs": 548.5999999642372,
+              "ratio": 2.8018386104741406
+            },
+            {
+              "legacyMs": 191.799999833107,
+              "compositionMs": 530.8000001907349,
+              "ratio": 2.767466113934336
+            }
+          ],
+          "ratio033": 2.7262682088956676,
+          "ratio034Partial": null,
+          "timingPass": false
+        },
+        {
+          "id": "component/commerce-value/motion-blur",
+          "frames": 192,
+          "maxDelta": 1,
+          "minPsnr": 97.31865336386372,
+          "pixelFailures": [],
+          "ratio": 0.5010873146190248,
+          "timings": [
+            {
+              "legacyMs": 7650.000000178814,
+              "compositionMs": 3875.5999997258186,
+              "ratio": 0.5066143790372848
+            },
+            {
+              "legacyMs": 7587.500000298023,
+              "compositionMs": 3801.999999821186,
+              "ratio": 0.5010873146190248
+            },
+            {
+              "legacyMs": 7596.299999773502,
+              "compositionMs": 3703.4000002741814,
+              "ratio": 0.48752682231936667
+            }
+          ],
+          "ratio033": 0.5029619181884196,
+          "ratio034Partial": null,
+          "timingPass": true
+        },
+        {
+          "id": "component/commerce-visibility",
+          "frames": 192,
+          "maxDelta": 1,
+          "minPsnr": 97.68077509040816,
+          "pixelFailures": [],
+          "ratio": 1.4705591278879602,
+          "timings": [
+            {
+              "legacyMs": 202.1000000834465,
+              "compositionMs": 297.1999998688698,
+              "ratio": 1.4705591278879602
+            },
+            {
+              "legacyMs": 208.40000021457672,
+              "compositionMs": 304.69999980926514,
+              "ratio": 1.462092128097573
+            },
+            {
+              "legacyMs": 210.39999985694885,
+              "compositionMs": 318.20000010728836,
+              "ratio": 1.512357415986848
+            }
+          ],
+          "ratio033": 1.37473684235623,
+          "ratio034Partial": null,
+          "timingPass": false
+        },
+        {
+          "id": "component/isolated-bracket",
+          "frames": 192,
+          "maxDelta": 1,
+          "minPsnr": 97.26113007497281,
+          "pixelFailures": [],
+          "ratio": 2.4603735490365874,
+          "timings": [
+            {
+              "legacyMs": 200.70000004768372,
+              "compositionMs": 478.30000001192093,
+              "ratio": 2.3831589431902493
+            },
+            {
+              "legacyMs": 194.19999992847443,
+              "compositionMs": 485.50000005960464,
+              "ratio": 2.500000001227696
+            },
+            {
+              "legacyMs": 198.0999999642372,
+              "compositionMs": 487.39999997615814,
+              "ratio": 2.4603735490365874
+            }
+          ],
+          "ratio033": 2.527214511490823,
+          "ratio034Partial": null,
+          "timingPass": false
+        },
+        {
+          "id": "component/isolated-detail-sequence",
+          "frames": 192,
+          "maxDelta": 1,
+          "minPsnr": 93.19124869847846,
+          "pixelFailures": [],
+          "ratio": 1.4823187464660326,
+          "timings": [
+            {
+              "legacyMs": 616.0000005364418,
+              "compositionMs": 913.2999994754791,
+              "ratio": 1.4826298679872314
+            },
+            {
+              "legacyMs": 619.3000001311302,
+              "compositionMs": 917.9999998807907,
+              "ratio": 1.4823187464660326
+            },
+            {
+              "legacyMs": 626.299999833107,
+              "compositionMs": 925.1000002622604,
+              "ratio": 1.4770876584843942
+            }
+          ],
+          "ratio033": 1.4670244086892246,
+          "ratio034Partial": null,
+          "timingPass": false
+        },
+        {
+          "id": "component/isolated-instances",
+          "frames": 192,
+          "maxDelta": 0,
+          "minPsnr": null,
+          "pixelFailures": [],
+          "ratio": 1.0442244155186553,
+          "timings": [
+            {
+              "legacyMs": 156.59999972581863,
+              "compositionMs": 164.30000019073486,
+              "ratio": 1.0491698625695893
+            },
+            {
+              "legacyMs": 153.90000009536743,
+              "compositionMs": 156.19999992847443,
+              "ratio": 1.0149447682370485
+            },
+            {
+              "legacyMs": 151.5000005364418,
+              "compositionMs": 158.1999995112419,
+              "ratio": 1.0442244155186553
+            }
+          ],
+          "ratio033": 1.043258831137188,
+          "ratio034Partial": null,
+          "timingPass": true
+        },
+        {
+          "id": "component/isolated-layout",
+          "frames": 192,
+          "maxDelta": 0,
+          "minPsnr": null,
+          "pixelFailures": [],
+          "ratio": 0.9198738109580386,
+          "timings": [
+            {
+              "legacyMs": 169.29999995231628,
+              "compositionMs": 147.5000001192093,
+              "ratio": 0.8712344959288422
+            },
+            {
+              "legacyMs": 158.50000047683716,
+              "compositionMs": 145.79999947547913,
+              "ratio": 0.9198738109580386
+            },
+            {
+              "legacyMs": 155.40000015497208,
+              "compositionMs": 144.9999998807907,
+              "ratio": 0.933075931378314
+            }
+          ],
+          "ratio033": 0.9708078746016457,
+          "ratio034Partial": null,
+          "timingPass": true
+        },
+        {
+          "id": "component/isolated-leader",
+          "frames": 192,
+          "maxDelta": 1,
+          "minPsnr": 90.67850500985296,
+          "pixelFailures": [],
+          "ratio": 1.9173511334033735,
+          "timings": [
+            {
+              "legacyMs": 194.7999997138977,
+              "compositionMs": 373.5000002384186,
+              "ratio": 1.9173511334033735
+            },
+            {
+              "legacyMs": 190.59999984502792,
+              "compositionMs": 378.0000002384186,
+              "ratio": 1.9832109157699942
+            },
+            {
+              "legacyMs": 198.59999978542328,
+              "compositionMs": 371.2000002861023,
+              "ratio": 1.8690835885557107
+            }
+          ],
+          "ratio033": 1.9697950379452138,
+          "ratio034Partial": null,
+          "timingPass": false
+        },
+        {
+          "id": "component/isolated-mask",
+          "frames": 192,
+          "maxDelta": 1,
+          "minPsnr": 106.52684090338747,
+          "pixelFailures": [],
+          "ratio": 0.46324054176204954,
+          "timings": [
+            {
+              "legacyMs": 696.9999998211861,
+              "compositionMs": 321.5000001192093,
+              "ratio": 0.46126255409137656
+            },
+            {
+              "legacyMs": 682.8999998569489,
+              "compositionMs": 324.80000019073486,
+              "ratio": 0.4756186853987006
+            },
+            {
+              "legacyMs": 700.5000002980232,
+              "compositionMs": 324.49999964237213,
+              "ratio": 0.46324054176204954
+            }
+          ],
+          "ratio033": 0.4683998854643926,
+          "ratio034Partial": null,
+          "timingPass": true
+        },
+        {
+          "id": "component/isolated-outline",
+          "frames": 192,
+          "maxDelta": 1,
+          "minPsnr": 100.62858555427796,
+          "pixelFailures": [],
+          "ratio": 2.2340311285560865,
+          "timings": [
+            {
+              "legacyMs": 189.5999999642372,
+              "compositionMs": 422.89999997615814,
+              "ratio": 2.2304852323624815
+            },
+            {
+              "legacyMs": 187.200000166893,
+              "compositionMs": 419.0999998450279,
+              "ratio": 2.2387820484582845
+            },
+            {
+              "legacyMs": 186.3000002503395,
+              "compositionMs": 416.19999980926514,
+              "ratio": 2.2340311285560865
+            }
+          ],
+          "ratio033": 2.237675148794173,
+          "ratio034Partial": null,
+          "timingPass": false
+        },
+        {
+          "id": "component/isolated-pin",
+          "frames": 192,
+          "maxDelta": 1,
+          "minPsnr": 93.19124869847846,
+          "pixelFailures": [],
+          "ratio": 0.9478371435521491,
+          "timings": [
+            {
+              "legacyMs": 158.29999995231628,
+              "compositionMs": 153.30000013113022,
+              "ratio": 0.968414404152292
+            },
+            {
+              "legacyMs": 157.39999997615814,
+              "compositionMs": 148.19999998807907,
+              "ratio": 0.9415501906640875
+            },
+            {
+              "legacyMs": 157.20000052452087,
+              "compositionMs": 148.9999994635582,
+              "ratio": 0.9478371435521491
+            }
+          ],
+          "ratio033": 0.963008634555959,
+          "ratio034Partial": null,
+          "timingPass": true
+        },
+        {
+          "id": "component/isolated-sequence",
+          "frames": 192,
+          "maxDelta": 1,
+          "minPsnr": 100.75447682735816,
+          "pixelFailures": [],
+          "ratio": 0.8118811896185203,
+          "timings": [
+            {
+              "legacyMs": 156.59999984502792,
+              "compositionMs": 124.700000166893,
+              "ratio": 0.7962962981500428
+            },
+            {
+              "legacyMs": 153.90000009536743,
+              "compositionMs": 126.5,
+              "ratio": 0.8219623126810368
+            },
+            {
+              "legacyMs": 151.49999994039536,
+              "compositionMs": 123.00000017881393,
+              "ratio": 0.8118811896185203
+            }
+          ],
+          "ratio033": 0.8041237117876052,
+          "ratio034Partial": null,
+          "timingPass": true
+        },
+        {
+          "id": "component/isolated-stagger",
+          "frames": 192,
+          "maxDelta": 0,
+          "minPsnr": null,
+          "pixelFailures": [],
+          "ratio": 1.175603215823671,
+          "timings": [
+            {
+              "legacyMs": 147.1000000834465,
+              "compositionMs": 177.29999995231628,
+              "ratio": 1.2053025142878178
+            },
+            {
+              "legacyMs": 146.5000001192093,
+              "compositionMs": 171.79999995231628,
+              "ratio": 1.1726962444540614
+            },
+            {
+              "legacyMs": 149.20000004768372,
+              "compositionMs": 175.39999985694885,
+              "ratio": 1.175603215823671
+            }
+          ],
+          "ratio033": 1.1560000058380764,
+          "ratio034Partial": null,
+          "timingPass": true
+        },
+        {
+          "id": "component/isolated-state",
+          "frames": 192,
+          "maxDelta": 1,
+          "minPsnr": 97.03836612786128,
+          "pixelFailures": [],
+          "ratio": 0.6838905754293851,
+          "timings": [
+            {
+              "legacyMs": 160.89999955892563,
+              "compositionMs": 114.30000030994415,
+              "ratio": 0.7103791213379377
+            },
+            {
+              "legacyMs": 164.50000023841858,
+              "compositionMs": 112.49999982118607,
+              "ratio": 0.6838905754293851
+            },
+            {
+              "legacyMs": 167.89999985694885,
+              "compositionMs": 111.70000010728836,
+              "ratio": 0.6652769517716319
+            }
+          ],
+          "ratio033": 0.6758869532614403,
+          "ratio034Partial": null,
+          "timingPass": true
+        },
+        {
+          "id": "component/isolated-supply-sequence",
+          "frames": 192,
+          "maxDelta": 1,
+          "minPsnr": 93.19124869847846,
+          "pixelFailures": [],
+          "ratio": 1.8363540402360736,
+          "timings": [
+            {
+              "legacyMs": 563.9999996423721,
+              "compositionMs": 1032.700000345707,
+              "ratio": 1.8310283705683221
+            },
+            {
+              "legacyMs": 562.3999997973442,
+              "compositionMs": 1040.1000002622604,
+              "ratio": 1.8493954492123954
+            },
+            {
+              "legacyMs": 568.2999995946884,
+              "compositionMs": 1043.600000321865,
+              "ratio": 1.8363540402360736
+            }
+          ],
+          "ratio033": 1.841551149995868,
+          "ratio034Partial": null,
+          "timingPass": false
+        },
+        {
+          "id": "component/isolated-supply",
+          "frames": 192,
+          "maxDelta": 2,
+          "minPsnr": 85.86151111584515,
+          "pixelFailures": [],
+          "ratio": 2.726695944373115,
+          "timings": [
+            {
+              "legacyMs": 204.90000027418137,
+              "compositionMs": 558.6999997496605,
+              "ratio": 2.726695944373115
+            },
+            {
+              "legacyMs": 199.7999997138977,
+              "compositionMs": 551.2000002264977,
+              "ratio": 2.758758763842767
+            },
+            {
+              "legacyMs": 203.3999999165535,
+              "compositionMs": 551.4000000953674,
+              "ratio": 2.7109144558583274
+            }
+          ],
+          "ratio033": 2.8174483058211894,
+          "ratio034Partial": null,
+          "timingPass": false
+        },
+        {
+          "id": "component/isolated-text-fit",
+          "frames": 192,
+          "maxDelta": 1,
+          "minPsnr": 100.75447682735816,
+          "pixelFailures": [],
+          "ratio": 0.698501875609908,
+          "timings": [
+            {
+              "legacyMs": 157.4999995827675,
+              "compositionMs": 115.70000040531158,
+              "ratio": 0.7346031791226153
+            },
+            {
+              "legacyMs": 160.1999996304512,
+              "compositionMs": 111.90000021457672,
+              "ratio": 0.698501875609908
+            },
+            {
+              "legacyMs": 160.49999970197678,
+              "compositionMs": 109.50000023841858,
+              "ratio": 0.6822429934064974
+            }
+          ],
+          "ratio033": 0.6756249979038257,
+          "ratio034Partial": null,
+          "timingPass": true
+        },
+        {
+          "id": "component/isolated-tour",
+          "frames": 192,
+          "maxDelta": 2,
+          "minPsnr": 85.86151111584515,
+          "pixelFailures": [],
+          "ratio": 2.668786695501893,
+          "timings": [
+            {
+              "legacyMs": 205.59999978542328,
+              "compositionMs": 547.5000001192093,
+              "ratio": 2.6629377465496775
+            },
+            {
+              "legacyMs": 204.39999985694885,
+              "compositionMs": 545.5000001788139,
+              "ratio": 2.668786695501893
+            },
+            {
+              "legacyMs": 193.59999978542328,
+              "compositionMs": 554.0000001788139,
+              "ratio": 2.861570252029134
+            }
+          ],
+          "ratio033": 2.8453093821114064,
+          "ratio034Partial": null,
+          "timingPass": false
+        },
+        {
+          "id": "component/isolated-transform",
+          "frames": 192,
+          "maxDelta": 1,
+          "minPsnr": 91.46028757021524,
+          "pixelFailures": [],
+          "ratio": 1.9512459428694704,
+          "timings": [
+            {
+              "legacyMs": 189.299999833107,
+              "compositionMs": 365.50000017881393,
+              "ratio": 1.9307976782939809
+            },
+            {
+              "legacyMs": 182.99999970197678,
+              "compositionMs": 374.1000003218651,
+              "ratio": 2.0442623001699602
+            },
+            {
+              "legacyMs": 184.59999960660934,
+              "compositionMs": 360.2000002861023,
+              "ratio": 1.9512459428694704
+            }
+          ],
+          "ratio033": 2.0150884475385613,
+          "ratio034Partial": null,
+          "timingPass": false
+        },
+        {
+          "id": "component/isolated-travel",
+          "frames": 192,
+          "maxDelta": 1,
+          "minPsnr": 97.03836612786128,
+          "pixelFailures": [],
+          "ratio": 1.0762660192583489,
+          "timings": [
+            {
+              "legacyMs": 169.5000001192093,
+              "compositionMs": 188.10000002384186,
+              "ratio": 1.1097345126345204
+            },
+            {
+              "legacyMs": 166.1000000834465,
+              "compositionMs": 178.5,
+              "ratio": 1.0746538224583015
+            },
+            {
+              "legacyMs": 163.89999973773956,
+              "compositionMs": 176.40000027418137,
+              "ratio": 1.0762660192583489
+            }
+          ],
+          "ratio033": 1.1163351401776591,
+          "ratio034Partial": null,
+          "timingPass": true
+        },
+        {
+          "id": "component/isolated-underline",
+          "frames": 192,
+          "maxDelta": 1,
+          "minPsnr": 100.62858555427796,
+          "pixelFailures": [],
+          "ratio": 1.5595800481263482,
+          "timings": [
+            {
+              "legacyMs": 188.1000000834465,
+              "compositionMs": 295.0999999642372,
+              "ratio": 1.5688463574339313
+            },
+            {
+              "legacyMs": 194.19999986886978,
+              "compositionMs": 297.5000001192093,
+              "ratio": 1.5319258512878016
+            },
+            {
+              "legacyMs": 190.50000035762787,
+              "compositionMs": 297.09999972581863,
+              "ratio": 1.5595800481263482
+            }
+          ],
+          "ratio033": 1.6320850202366561,
+          "ratio034Partial": null,
+          "timingPass": false
+        },
+        {
+          "id": "component/isolated-value",
+          "frames": 192,
+          "maxDelta": 0,
+          "minPsnr": null,
+          "pixelFailures": [],
+          "ratio": 1.6077192958131428,
+          "timings": [
+            {
+              "legacyMs": 151.69999998807907,
+              "compositionMs": 234.69999998807907,
+              "ratio": 1.5471324983950054
+            },
+            {
+              "legacyMs": 142.5000001192093,
+              "compositionMs": 229.09999984502792,
+              "ratio": 1.6077192958131428
+            },
+            {
+              "legacyMs": 138.3999999165535,
+              "compositionMs": 236.40000009536743,
+              "ratio": 1.7080924872680765
+            }
+          ],
+          "ratio033": 1.5900747775925719,
+          "ratio034Partial": null,
+          "timingPass": false
+        },
+        {
+          "id": "component/isolated-visibility",
+          "frames": 192,
+          "maxDelta": 1,
+          "minPsnr": 100.75447682735816,
+          "pixelFailures": [],
+          "ratio": 0.7700348432055749,
+          "timings": [
+            {
+              "legacyMs": 153.29999995231628,
+              "compositionMs": 109.30000007152557,
+              "ratio": 0.7129810835324407
+            },
+            {
+              "legacyMs": 143.40000009536743,
+              "compositionMs": 110.69999980926514,
+              "ratio": 0.7719665253531707
+            },
+            {
+              "legacyMs": 143.5,
+              "compositionMs": 110.5,
+              "ratio": 0.7700348432055749
+            }
+          ],
+          "ratio033": 0.7848837215570467,
+          "ratio034Partial": null,
+          "timingPass": true
+        }
+      ]
+    },
+    "storyComponents": {
+      "command": "pnpm test:browser:composition-story-fixtures --webgl --components --keep-going --profile",
+      "method": "Frame-zero warmup, then timed first forward traversal; pixel analysis outside timed intervals.",
+      "cases": 48,
+      "frames": 9216,
+      "pixelFailures": [],
+      "timingFailures": [
+        "component/story-bracket",
+        "component/story-detail-sequence",
+        "component/story-instances",
+        "component/story-layout",
+        "component/story-leader",
+        "component/story-leader/flow",
+        "component/story-leader/flow-target-matte",
+        "component/story-leader/flow-target-inverted",
+        "component/story-leader/spatial",
+        "component/story-leader/morph",
+        "component/story-leader/spatial-morph",
+        "component/story-leader/appearance-uniform",
+        "component/story-mask",
+        "component/story-outline",
+        "component/story-pin",
+        "component/story-sequence",
+        "component/story-stagger",
+        "component/story-state",
+        "component/story-state/blended-container",
+        "component/story-state/appearance-uniform",
+        "component/story-state/effects-group-grain",
+        "component/story-supply-sequence",
+        "component/story-supply",
+        "component/story-text-fit",
+        "component/story-tour",
+        "component/story-transform",
+        "component/story-travel",
+        "component/story-underline",
+        "component/story-value",
+        "component/story-visibility",
+        "component/passage-components/instances",
+        "component/passage-components/leader",
+        "component/passage-components/value",
+        "component/passage-behaviors/transform",
+        "component/passage-behaviors/state",
+        "component/passage-behaviors/travel",
+        "component/passage-behaviors/supply",
+        "component/passage-timing/visibility",
+        "component/passage-timing/text-fit",
+        "component/passage-timing/supply-sequence"
+      ],
+      "exportLines": [
+        "CE4b webgl2 component/story-leader/flow-target-inverted export: 192 frames, two byte-identical MP4s; relocated assets and overwrite protection pass",
+        "CE4b webgl2 component/story-leader/spatial-morph export: 192 frames, two byte-identical MP4s; relocated assets and overwrite protection pass",
+        "CE4b webgl2 component/story-leader/effects-flow-target-inverted export: 192 frames, two byte-identical MP4s; relocated assets and overwrite protection pass",
+        "CE4b webgl2 component/story-mask export: 192 frames, two byte-identical MP4s; relocated assets and overwrite protection pass",
+        "CE4b webgl2 component/story-state/blended-container export: 192 frames, two byte-identical MP4s; relocated assets and overwrite protection pass",
+        "CE4b webgl2 component/story-state/appearance-uniform export: 192 frames, two byte-identical MP4s; relocated assets and overwrite protection pass",
+        "CE4b webgl2 component/story-state/effects-text-sweep export: 192 frames, two byte-identical MP4s; relocated assets and overwrite protection pass",
+        "CE4b webgl2 component/story-state/primitive-blur-stack export: 192 frames, two byte-identical MP4s; relocated assets and overwrite protection pass",
+        "CE4b webgl2 component/story-text-fit export: 192 frames, two byte-identical MP4s; relocated assets and overwrite protection pass",
+        "CE4b webgl2 component/story-value export: 192 frames, two byte-identical MP4s; relocated assets and overwrite protection pass",
+        "CE4b webgl2 component/passage-components/instances export: 192 frames, two byte-identical MP4s; relocated assets and overwrite protection pass",
+        "CE4b webgl2 component/passage-behaviors/transform export: 192 frames, two byte-identical MP4s; relocated assets and overwrite protection pass",
+        "CE4b webgl2 component/passage-timing/visibility export: 192 frames, two byte-identical MP4s; relocated assets and overwrite protection pass"
+      ],
+      "exitCode": 1,
+      "exitReason": "timing assertions only",
+      "items": [
+        {
+          "id": "component/story-bracket",
+          "frames": 192,
+          "maxDelta": 1,
+          "minPsnr": 105.65533914619847,
+          "pixelFailures": [],
+          "ratio": 3.0397463041931405,
+          "legacyMs": 236.49999970197678,
+          "compositionMs": 718.9000000357628,
+          "legacyRenderMs": 20.79999989271164,
+          "compositionRenderMs": 220.99999970197678,
+          "evaluationMs": 3.5,
+          "graphMs": 0.5999999642372131,
+          "ratio033": 3.085501863707621,
+          "ratio034Partial": null,
+          "timingPass": false
+        },
+        {
+          "id": "component/story-detail-sequence",
+          "frames": 192,
+          "maxDelta": 2,
+          "minPsnr": 90.80587322388227,
+          "pixelFailures": [],
+          "ratio": 3.1848445019537626,
+          "legacyMs": 684.9000002145767,
+          "compositionMs": 2181.3000000715256,
+          "legacyRenderMs": 406.1000002026558,
+          "compositionRenderMs": 366.0999998450279,
+          "evaluationMs": 9.500000178813934,
+          "graphMs": 2.4999998211860657,
+          "ratio033": 3.193984304954488,
+          "ratio034Partial": null,
+          "timingPass": false
+        },
+        {
+          "id": "component/story-instances",
+          "frames": 192,
+          "maxDelta": 0,
+          "minPsnr": null,
+          "pixelFailures": [],
+          "ratio": 5.019642851959762,
+          "legacyMs": 224.00000023841858,
+          "compositionMs": 1124.4000000357628,
+          "legacyRenderMs": 15.200000286102295,
+          "compositionRenderMs": 310.200000166893,
+          "evaluationMs": 6.300000190734863,
+          "graphMs": 1.1999998092651367,
+          "ratio033": 5.097061440749663,
+          "ratio034Partial": null,
+          "timingPass": false
+        },
+        {
+          "id": "component/story-layout",
+          "frames": 192,
+          "maxDelta": 0,
+          "minPsnr": null,
+          "pixelFailures": [],
+          "ratio": 5.068314595576564,
+          "legacyMs": 222.5000004172325,
+          "compositionMs": 1127.6999996304512,
+          "legacyRenderMs": 13.200000166893005,
+          "compositionRenderMs": 310.8999996781349,
+          "evaluationMs": 5.999999940395355,
+          "graphMs": 0.800000011920929,
+          "ratio033": 4.983920036375194,
+          "ratio034Partial": null,
+          "timingPass": false
+        },
+        {
+          "id": "component/story-leader",
+          "frames": 192,
+          "maxDelta": 1,
+          "minPsnr": 106.52684090338747,
+          "pixelFailures": [],
+          "ratio": 2.7518062054654053,
+          "legacyMs": 235.30000001192093,
+          "compositionMs": 647.5000001788139,
+          "legacyRenderMs": 17.50000023841858,
+          "compositionRenderMs": 226.20000052452087,
+          "evaluationMs": 3.199999988079071,
+          "graphMs": 1.7000000476837158,
+          "ratio033": 2.772173909955304,
+          "ratio034Partial": null,
+          "timingPass": false
+        },
+        {
+          "id": "component/story-leader/flow",
+          "frames": 192,
+          "maxDelta": 1,
+          "minPsnr": 110.0486660845011,
+          "pixelFailures": [],
+          "ratio": 3.104593921610608,
+          "legacyMs": 243.80000060796738,
+          "compositionMs": 756.8999999761581,
+          "legacyRenderMs": 16.10000056028366,
+          "compositionRenderMs": 229.1999996304512,
+          "evaluationMs": 3.9000000953674316,
+          "graphMs": 1.3999999165534973,
+          "ratio033": 3.067039100890012,
+          "ratio034Partial": null,
+          "timingPass": false
+        },
+        {
+          "id": "component/story-leader/flow-target-matte",
+          "frames": 192,
+          "maxDelta": 0,
+          "minPsnr": null,
+          "pixelFailures": [],
+          "ratio": 2.8882645883393874,
+          "legacyMs": 783.1000002026558,
+          "compositionMs": 2261.7999997138977,
+          "legacyRenderMs": 502.90000009536743,
+          "compositionRenderMs": 322.4999998807907,
+          "evaluationMs": 6.100000023841858,
+          "graphMs": 1.5,
+          "ratio033": 2.8812303808622506,
+          "ratio034Partial": null,
+          "timingPass": false
+        },
+        {
+          "id": "component/story-leader/flow-target-inverted",
+          "frames": 192,
+          "maxDelta": 0,
+          "minPsnr": null,
+          "pixelFailures": [],
+          "ratio": 3.55387284895302,
+          "legacyMs": 633.9000002145767,
+          "compositionMs": 2252.7999997138977,
+          "legacyRenderMs": 337.4999998807907,
+          "compositionRenderMs": 319.59999990463257,
+          "evaluationMs": 3.799999952316284,
+          "graphMs": 1.5,
+          "ratio033": 3.5657564370142327,
+          "ratio034Partial": null,
+          "timingPass": false
+        },
+        {
+          "id": "component/story-leader/spatial",
+          "frames": 192,
+          "maxDelta": 2,
+          "minPsnr": 87.23833241202382,
+          "pixelFailures": [],
+          "ratio": 4.471843513145816,
+          "legacyMs": 337.3999997973442,
+          "compositionMs": 1508.8000004291534,
+          "legacyRenderMs": 59.90000021457672,
+          "compositionRenderMs": 473.7000002861023,
+          "evaluationMs": 9,
+          "graphMs": 2.199999988079071,
+          "ratio033": 4.593174978459541,
+          "ratio034Partial": null,
+          "timingPass": false
+        },
+        {
+          "id": "component/story-leader/morph",
+          "frames": 192,
+          "maxDelta": 2,
+          "minPsnr": 88.62633616655395,
+          "pixelFailures": [],
+          "ratio": 4.194683134090667,
+          "legacyMs": 372.4000001549721,
+          "compositionMs": 1562.0999997854233,
+          "legacyRenderMs": 94.69999998807907,
+          "compositionRenderMs": 716.7000003457069,
+          "evaluationMs": 3.900000035762787,
+          "graphMs": 0.9999999403953552,
+          "ratio033": 4.187253242307146,
+          "ratio034Partial": null,
+          "timingPass": false
+        },
+        {
+          "id": "component/story-leader/spatial-morph",
+          "frames": 192,
+          "maxDelta": 1,
+          "minPsnr": 93.61413931963922,
+          "pixelFailures": [],
+          "ratio": 3.3943865733914915,
+          "legacyMs": 691.2000000476837,
+          "compositionMs": 2346.199999690056,
+          "legacyRenderMs": 372.3999996781349,
+          "compositionRenderMs": 343.59999948740005,
+          "evaluationMs": 4.799999892711639,
+          "graphMs": 0.9000000953674316,
+          "ratio033": 3.2691853591701503,
+          "ratio034Partial": null,
+          "timingPass": false
+        },
+        {
+          "id": "component/story-leader/appearance-uniform",
+          "frames": 192,
+          "maxDelta": 1,
+          "minPsnr": 100.0486660845011,
+          "pixelFailures": [],
+          "ratio": 2.9714814876690814,
+          "legacyMs": 269.99999964237213,
+          "compositionMs": 802.3000006079674,
+          "legacyRenderMs": 39.400000274181366,
+          "compositionRenderMs": 272.0000001192093,
+          "evaluationMs": 3.199999988079071,
+          "graphMs": 1.600000023841858,
+          "ratio033": 3.062180246912708,
+          "ratio034Partial": null,
+          "timingPass": false
+        },
+        {
+          "id": "component/story-leader/effects-flow",
+          "frames": 192,
+          "maxDelta": 2,
+          "minPsnr": 97.43603739657615,
+          "pixelFailures": [],
+          "ratio": 0.26479607891929874,
+          "legacyMs": 11119.500000059605,
+          "compositionMs": 2944.3999995589256,
+          "legacyRenderMs": 10807.699999213219,
+          "compositionRenderMs": 369.29999953508377,
+          "evaluationMs": 6.8000001311302185,
+          "graphMs": 1.9999999403953552,
+          "ratio033": 0.28726559511203326,
+          "ratio034Partial": null,
+          "timingPass": true
+        },
+        {
+          "id": "component/story-leader/effects-flow-target-matte",
+          "frames": 192,
+          "maxDelta": 2,
+          "minPsnr": 98.43498606215135,
+          "pixelFailures": [],
+          "ratio": 0.3444300083350337,
+          "legacyMs": 11622.100000202656,
+          "compositionMs": 4002.9999999403954,
+          "legacyRenderMs": 11324.999999821186,
+          "compositionRenderMs": 447.90000051259995,
+          "evaluationMs": 5.600000083446503,
+          "graphMs": 2.8999999165534973,
+          "ratio033": 0.36353481671168947,
+          "ratio034Partial": null,
+          "timingPass": true
+        },
+        {
+          "id": "component/story-leader/effects-flow-target-inverted",
+          "frames": 192,
+          "maxDelta": 1,
+          "minPsnr": 103.76477678399797,
+          "pixelFailures": [],
+          "ratio": 0.34982019893457494,
+          "legacyMs": 11429.300000190735,
+          "compositionMs": 3998.1999997496605,
+          "legacyRenderMs": 11129.099999725819,
+          "compositionRenderMs": 445.9000002145767,
+          "evaluationMs": 6.5,
+          "graphMs": 2,
+          "ratio033": 0.3676083619790479,
+          "ratio034Partial": null,
+          "timingPass": true
+        },
+        {
+          "id": "component/story-mask",
+          "frames": 192,
+          "maxDelta": 2,
+          "minPsnr": 90.55476601805196,
+          "pixelFailures": [],
+          "ratio": 2.6999093372351415,
+          "legacyMs": 882.4000002741814,
+          "compositionMs": 2382.3999999165535,
+          "legacyRenderMs": 572.3000001311302,
+          "compositionRenderMs": 354.30000001192093,
+          "evaluationMs": 4.299999952316284,
+          "graphMs": 1.5,
+          "ratio033": 2.7853947542750577,
+          "ratio034Partial": null,
+          "timingPass": false
+        },
+        {
+          "id": "component/story-outline",
+          "frames": 192,
+          "maxDelta": 1,
+          "minPsnr": 103.51654094674765,
+          "pixelFailures": [],
+          "ratio": 2.9139099281057304,
+          "legacyMs": 250.89999967813492,
+          "compositionMs": 731.1000000238419,
+          "legacyRenderMs": 21.999999463558197,
+          "compositionRenderMs": 225.9999998807907,
+          "evaluationMs": 5.000000298023224,
+          "graphMs": 1.599999725818634,
+          "ratio033": 3.1973094280446066,
+          "ratio034Partial": null,
+          "timingPass": false
+        },
+        {
+          "id": "component/story-pin",
+          "frames": 192,
+          "maxDelta": 2,
+          "minPsnr": 90.27143003161262,
+          "pixelFailures": [],
+          "ratio": 3.6296699382846223,
+          "legacyMs": 275.6999996304512,
+          "compositionMs": 1000.7000006437302,
+          "legacyRenderMs": 21.500000059604645,
+          "compositionRenderMs": 324.30000019073486,
+          "evaluationMs": 4.400000095367432,
+          "graphMs": 0.6999999284744263,
+          "ratio033": 3.7913613596693247,
+          "ratio034Partial": null,
+          "timingPass": false
+        },
+        {
+          "id": "component/story-sequence",
+          "frames": 192,
+          "maxDelta": 1,
+          "minPsnr": 98.43498606215135,
+          "pixelFailures": [],
+          "ratio": 3.403645843080229,
+          "legacyMs": 268.7999994158745,
+          "compositionMs": 914.9000006318092,
+          "legacyRenderMs": 21.899999976158142,
+          "compositionRenderMs": 309.4000000357628,
+          "evaluationMs": 7.799999952316284,
+          "graphMs": 2.5000000596046448,
+          "ratio033": 3.514274394872735,
+          "ratio034Partial": null,
+          "timingPass": false
+        },
+        {
+          "id": "component/story-stagger",
+          "frames": 192,
+          "maxDelta": 0,
+          "minPsnr": null,
+          "pixelFailures": [],
+          "ratio": 5.440355838090087,
+          "legacyMs": 247.30000019073486,
+          "compositionMs": 1345.3999997973442,
+          "legacyRenderMs": 16.699999809265137,
+          "compositionRenderMs": 399.49999964237213,
+          "evaluationMs": 8,
+          "graphMs": 1.5999999642372131,
+          "ratio033": 5.50988821632174,
+          "ratio034Partial": null,
+          "timingPass": false
+        },
+        {
+          "id": "component/story-state",
+          "frames": 192,
+          "maxDelta": 2,
+          "minPsnr": 89.55648585779927,
+          "pixelFailures": [],
+          "ratio": 4.088578964447226,
+          "legacyMs": 265.30000019073486,
+          "compositionMs": 1084.7000000476837,
+          "legacyRenderMs": 20.300000309944153,
+          "compositionRenderMs": 346.19999957084656,
+          "evaluationMs": 4.399999916553497,
+          "graphMs": 1.0000000596046448,
+          "ratio033": 4.183624807864451,
+          "ratio034Partial": null,
+          "timingPass": false
+        },
+        {
+          "id": "component/story-state/blended-container",
+          "frames": 192,
+          "maxDelta": 2,
+          "minPsnr": 66.00045715675462,
+          "pixelFailures": [],
+          "ratio": 4.282898716849463,
+          "legacyMs": 329.80000054836273,
+          "compositionMs": 1412.499999165535,
+          "legacyRenderMs": 36.299999952316284,
+          "compositionRenderMs": 494.2999988794327,
+          "evaluationMs": 4.800000011920929,
+          "graphMs": 0.8999999761581421,
+          "ratio033": 4.679456702307172,
+          "ratio034Partial": null,
+          "timingPass": false
+        },
+        {
+          "id": "component/story-state/appearance-uniform",
+          "frames": 192,
+          "maxDelta": 2,
+          "minPsnr": 89.35753757062989,
+          "pixelFailures": [],
+          "ratio": 3.9773877854964974,
+          "legacyMs": 296.299999833107,
+          "compositionMs": 1178.500000178814,
+          "legacyRenderMs": 44.999999821186066,
+          "compositionRenderMs": 374.8999997973442,
+          "evaluationMs": 4.599999964237213,
+          "graphMs": 1.4000000357627869,
+          "ratio033": 4.183614803310621,
+          "ratio034Partial": null,
+          "timingPass": false
+        },
+        {
+          "id": "component/story-state/effects-group-grain",
+          "frames": 192,
+          "maxDelta": 2,
+          "minPsnr": 89.71442852963159,
+          "pixelFailures": [],
+          "ratio": 1.661295891208849,
+          "legacyMs": 1737.8000001907349,
+          "compositionMs": 2887.0000000596046,
+          "legacyRenderMs": 1349.6000006198883,
+          "compositionRenderMs": 406.40000051259995,
+          "evaluationMs": 5.599999904632568,
+          "graphMs": 0.8000000715255737,
+          "ratio033": 1.9318620217390168,
+          "ratio034Partial": null,
+          "timingPass": false
+        },
+        {
+          "id": "component/story-state/effects-image-sweep",
+          "frames": 192,
+          "maxDelta": 2,
+          "minPsnr": 84.75307935428945,
+          "pixelFailures": [],
+          "ratio": 0.42291416327945236,
+          "legacyMs": 7656.400000631809,
+          "compositionMs": 3238,
+          "legacyRenderMs": 7348.600000798702,
+          "compositionRenderMs": 529.6999999284744,
+          "evaluationMs": 5.3000001311302185,
+          "graphMs": 1.5999999046325684,
+          "ratio033": 0.4476960662495081,
+          "ratio034Partial": null,
+          "timingPass": true
+        },
+        {
+          "id": "component/story-state/effects-text-sweep",
+          "frames": 192,
+          "maxDelta": 2,
+          "minPsnr": 80.69233405410682,
+          "pixelFailures": [],
+          "ratio": 0.8527209904229374,
+          "legacyMs": 4167.60000038147,
+          "compositionMs": 3553.800000011921,
+          "legacyRenderMs": 3854.399999797344,
+          "compositionRenderMs": 488.899999499321,
+          "evaluationMs": 4.900000035762787,
+          "graphMs": 1.699999988079071,
+          "ratio033": 0.9401569270825187,
+          "ratio034Partial": null,
+          "timingPass": true
+        },
+        {
+          "id": "component/story-state/primitive-blur",
+          "frames": 192,
+          "maxDelta": 2,
+          "minPsnr": 84.04983536376422,
+          "pixelFailures": [],
+          "ratio": 0.8519896048818244,
+          "legacyMs": 8388.600000083447,
+          "compositionMs": 7146.9999995827675,
+          "legacyRenderMs": 61.099999368190765,
+          "compositionRenderMs": 5597.39999961853,
+          "evaluationMs": 5.700000107288361,
+          "graphMs": 1.0999999642372131,
+          "ratio033": 0.8468339825880121,
+          "ratio034Partial": null,
+          "timingPass": true
+        },
+        {
+          "id": "component/story-state/primitive-blur-matte",
+          "frames": 192,
+          "maxDelta": 2,
+          "minPsnr": 86.41254628557965,
+          "pixelFailures": [],
+          "ratio": 0.9763843925070984,
+          "legacyMs": 8803.500000357628,
+          "compositionMs": 8595.599999785423,
+          "legacyRenderMs": 515.1000000834465,
+          "compositionRenderMs": 5604.199999690056,
+          "evaluationMs": 5.4999998807907104,
+          "graphMs": 1.3000000715255737,
+          "ratio033": 0.985648122351281,
+          "ratio034Partial": null,
+          "timingPass": true
+        },
+        {
+          "id": "component/story-state/primitive-blur-stack",
+          "frames": 192,
+          "maxDelta": 2,
+          "minPsnr": 86.41254628557965,
+          "pixelFailures": [],
+          "ratio": 1.1420221513184061,
+          "legacyMs": 10094.200000047684,
+          "compositionMs": 11527.799999892712,
+          "legacyRenderMs": 1674.7000002264977,
+          "compositionRenderMs": 6073.599999845028,
+          "evaluationMs": 6.700000107288361,
+          "graphMs": 0.49999988079071045,
+          "ratio033": 1.222151669971769,
+          "ratio034Partial": null,
+          "timingPass": true
+        },
+        {
+          "id": "component/story-supply-sequence",
+          "frames": 192,
+          "maxDelta": 2,
+          "minPsnr": 90.80587322388227,
+          "pixelFailures": [],
+          "ratio": 3.130667380540637,
+          "legacyMs": 747.6999998092651,
+          "compositionMs": 2340.799999833107,
+          "legacyRenderMs": 438.59999990463257,
+          "compositionRenderMs": 409.20000010728836,
+          "evaluationMs": 10.499999821186066,
+          "graphMs": 1.9000001549720764,
+          "ratio033": 3.151353626185997,
+          "ratio034Partial": null,
+          "timingPass": false
+        },
+        {
+          "id": "component/story-supply",
+          "frames": 192,
+          "maxDelta": 2,
+          "minPsnr": 83.57483638335489,
+          "pixelFailures": [],
+          "ratio": 4.46120822656809,
+          "legacyMs": 326.0999994277954,
+          "compositionMs": 1454.8000001311302,
+          "legacyRenderMs": 31.499999403953552,
+          "compositionRenderMs": 542.7000004053116,
+          "evaluationMs": 4.700000107288361,
+          "graphMs": 1.899999976158142,
+          "ratio033": 4.342087539622243,
+          "ratio034Partial": null,
+          "timingPass": false
+        },
+        {
+          "id": "component/story-text-fit",
+          "frames": 192,
+          "maxDelta": 2,
+          "minPsnr": 90.14749842382204,
+          "pixelFailures": [],
+          "ratio": 3.7762978134480254,
+          "legacyMs": 292.8000000715256,
+          "compositionMs": 1105.7000000476837,
+          "legacyRenderMs": 27.50000023841858,
+          "compositionRenderMs": 365.09999972581863,
+          "evaluationMs": 4.699999988079071,
+          "graphMs": 0.800000011920929,
+          "ratio033": 3.802290072785336,
+          "ratio034Partial": null,
+          "timingPass": false
+        },
+        {
+          "id": "component/story-tour",
+          "frames": 192,
+          "maxDelta": 2,
+          "minPsnr": 83.57483638335489,
+          "pixelFailures": [],
+          "ratio": 4.576827096584323,
+          "legacyMs": 280.49999982118607,
+          "compositionMs": 1283.7999997735023,
+          "legacyRenderMs": 25.100000083446503,
+          "compositionRenderMs": 461.3000001311302,
+          "evaluationMs": 4.999999821186066,
+          "graphMs": 1.1000001430511475,
+          "ratio033": 4.399526384598188,
+          "ratio034Partial": null,
+          "timingPass": false
+        },
+        {
+          "id": "component/story-transform",
+          "frames": 192,
+          "maxDelta": 2,
+          "minPsnr": 91.4753411201884,
+          "pixelFailures": [],
+          "ratio": 4.043526378058096,
+          "legacyMs": 271.0999998450279,
+          "compositionMs": 1096.2000004649162,
+          "legacyRenderMs": 18.40000057220459,
+          "compositionRenderMs": 378.6000003814697,
+          "evaluationMs": 4.599999964237213,
+          "graphMs": 1.100000023841858,
+          "ratio033": 3.9632508882897066,
+          "ratio034Partial": null,
+          "timingPass": false
+        },
+        {
+          "id": "component/story-travel",
+          "frames": 192,
+          "maxDelta": 2,
+          "minPsnr": 96.77507674063779,
+          "pixelFailures": [],
+          "ratio": 4.293487220631368,
+          "legacyMs": 242.6000000834465,
+          "compositionMs": 1041.6000000834465,
+          "legacyRenderMs": 18.4000004529953,
+          "compositionRenderMs": 336.00000017881393,
+          "evaluationMs": 4.29999977350235,
+          "graphMs": 1.4000002145767212,
+          "ratio033": 4.137824229177094,
+          "ratio034Partial": null,
+          "timingPass": false
+        },
+        {
+          "id": "component/story-underline",
+          "frames": 192,
+          "maxDelta": 1,
+          "minPsnr": 104.60798564099834,
+          "pixelFailures": [],
+          "ratio": 2.7496516520315573,
+          "legacyMs": 215.29999977350235,
+          "compositionMs": 592.0000000596046,
+          "legacyRenderMs": 15.599999606609344,
+          "compositionRenderMs": 197.20000022649765,
+          "evaluationMs": 3.4999999403953552,
+          "graphMs": 2.900000035762787,
+          "ratio033": 2.6686851131612355,
+          "ratio034Partial": null,
+          "timingPass": false
+        },
+        {
+          "id": "component/story-value",
+          "frames": 192,
+          "maxDelta": 0,
+          "minPsnr": null,
+          "pixelFailures": [],
+          "ratio": 3.7226179859174735,
+          "legacyMs": 224.60000002384186,
+          "compositionMs": 836.0999997258186,
+          "legacyRenderMs": 13.399999678134918,
+          "compositionRenderMs": 258.1999997496605,
+          "evaluationMs": 5.299999952316284,
+          "graphMs": 1.600000023841858,
+          "ratio033": 3.893789381690149,
+          "ratio034Partial": null,
+          "timingPass": false
+        },
+        {
+          "id": "component/story-visibility",
+          "frames": 192,
+          "maxDelta": 1,
+          "minPsnr": 98.90923256143273,
+          "pixelFailures": [],
+          "ratio": 3.024850436256462,
+          "legacyMs": 217.29999995231628,
+          "compositionMs": 657.2999996542931,
+          "legacyRenderMs": 14.599999964237213,
+          "compositionRenderMs": 210.9999995827675,
+          "evaluationMs": 4.200000047683716,
+          "graphMs": 0.8999999761581421,
+          "ratio033": 3.0013357124903264,
+          "ratio034Partial": null,
+          "timingPass": false
+        },
+        {
+          "id": "component/passage-components/instances",
+          "frames": 192,
+          "maxDelta": 0,
+          "minPsnr": null,
+          "pixelFailures": [],
+          "ratio": 5.022869969758404,
+          "legacyMs": 222.99999940395355,
+          "compositionMs": 1120.1000002622604,
+          "legacyRenderMs": 15.399999558925629,
+          "compositionRenderMs": 307.60000014305115,
+          "evaluationMs": 7.799999892711639,
+          "graphMs": 1.8000001311302185,
+          "ratio033": 5.06930253043459,
+          "ratio034Partial": null,
+          "timingPass": false
+        },
+        {
+          "id": "component/passage-components/leader",
+          "frames": 192,
+          "maxDelta": 1,
+          "minPsnr": 106.52684090338747,
+          "pixelFailures": [],
+          "ratio": 2.568938195515669,
+          "legacyMs": 252.3999999165535,
+          "compositionMs": 648.400000333786,
+          "legacyRenderMs": 19.90000009536743,
+          "compositionRenderMs": 236.79999989271164,
+          "evaluationMs": 2.8000000715255737,
+          "graphMs": 1.3999999165534973,
+          "ratio033": 2.6727659609378223,
+          "ratio034Partial": null,
+          "timingPass": false
+        },
+        {
+          "id": "component/passage-components/value",
+          "frames": 192,
+          "maxDelta": 0,
+          "minPsnr": null,
+          "pixelFailures": [],
+          "ratio": 3.4657534189499155,
+          "legacyMs": 248.20000040531158,
+          "compositionMs": 860.1999999880791,
+          "legacyRenderMs": 15.60000067949295,
+          "compositionRenderMs": 276.20000034570694,
+          "evaluationMs": 4.999999940395355,
+          "graphMs": 1.2000000476837158,
+          "ratio033": 3.7549783592616324,
+          "ratio034Partial": null,
+          "timingPass": false
+        },
+        {
+          "id": "component/passage-behaviors/transform",
+          "frames": 192,
+          "maxDelta": 2,
+          "minPsnr": 91.4753411201884,
+          "pixelFailures": [],
+          "ratio": 3.7450212217356067,
+          "legacyMs": 306.30000001192093,
+          "compositionMs": 1147.1000002622604,
+          "legacyRenderMs": 21.599999964237213,
+          "compositionRenderMs": 400.69999980926514,
+          "evaluationMs": 4.900000035762787,
+          "graphMs": 1.199999988079071,
+          "ratio033": 3.8828451954932293,
+          "ratio034Partial": null,
+          "timingPass": false
+        },
+        {
+          "id": "component/passage-behaviors/state",
+          "frames": 192,
+          "maxDelta": 2,
+          "minPsnr": 89.55648585779927,
+          "pixelFailures": [],
+          "ratio": 4.011658523720989,
+          "legacyMs": 265.89999973773956,
+          "compositionMs": 1066.7000004053116,
+          "legacyRenderMs": 24.500000417232513,
+          "compositionRenderMs": 340.00000035762787,
+          "evaluationMs": 4.700000047683716,
+          "graphMs": 1.199999988079071,
+          "ratio033": 4.109702971954016,
+          "ratio034Partial": null,
+          "timingPass": false
+        },
+        {
+          "id": "component/passage-behaviors/travel",
+          "frames": 192,
+          "maxDelta": 2,
+          "minPsnr": 96.77507674063779,
+          "pixelFailures": [],
+          "ratio": 3.9888689340528614,
+          "legacyMs": 278.50000047683716,
+          "compositionMs": 1110.9000000357628,
+          "legacyRenderMs": 23.800000429153442,
+          "compositionRenderMs": 361.10000002384186,
+          "evaluationMs": 4.5,
+          "graphMs": 1.0999999642372131,
+          "ratio033": 4.150877204637986,
+          "ratio034Partial": null,
+          "timingPass": false
+        },
+        {
+          "id": "component/passage-behaviors/supply",
+          "frames": 192,
+          "maxDelta": 2,
+          "minPsnr": 83.57483638335489,
+          "pixelFailures": [],
+          "ratio": 4.072362418029079,
+          "legacyMs": 328.90000009536743,
+          "compositionMs": 1339.399999678135,
+          "legacyRenderMs": 26.600000262260437,
+          "compositionRenderMs": 485.8000002503395,
+          "evaluationMs": 4.399999976158142,
+          "graphMs": 1.9000000357627869,
+          "ratio033": 4.37802420611886,
+          "ratio034Partial": null,
+          "timingPass": false
+        },
+        {
+          "id": "component/passage-timing/visibility",
+          "frames": 192,
+          "maxDelta": 1,
+          "minPsnr": 98.90923256143273,
+          "pixelFailures": [],
+          "ratio": 2.901992685253503,
+          "legacyMs": 245.89999955892563,
+          "compositionMs": 713.6000000238419,
+          "legacyRenderMs": 20.699999928474426,
+          "compositionRenderMs": 238.00000047683716,
+          "evaluationMs": 4.399999976158142,
+          "graphMs": 1.699999988079071,
+          "ratio033": 2.9716814155146922,
+          "ratio034Partial": null,
+          "timingPass": false
+        },
+        {
+          "id": "component/passage-timing/text-fit",
+          "frames": 192,
+          "maxDelta": 2,
+          "minPsnr": 90.14749842382204,
+          "pixelFailures": [],
+          "ratio": 3.670840786050914,
+          "legacyMs": 279.50000017881393,
+          "compositionMs": 1026.0000003576279,
+          "legacyRenderMs": 20.900000989437103,
+          "compositionRenderMs": 330.39999997615814,
+          "evaluationMs": 5.1000001430511475,
+          "graphMs": 1.8999998569488525,
+          "ratio033": 3.7409798660132774,
+          "ratio034Partial": null,
+          "timingPass": false
+        },
+        {
+          "id": "component/passage-timing/supply-sequence",
+          "frames": 192,
+          "maxDelta": 2,
+          "minPsnr": 90.80587322388227,
+          "pixelFailures": [],
+          "ratio": 2.9215017068911906,
+          "legacyMs": 791.0999998450279,
+          "compositionMs": 2311.19999986887,
+          "legacyRenderMs": 494.20000022649765,
+          "compositionRenderMs": 385.2999997138977,
+          "evaluationMs": 9.900000274181366,
+          "graphMs": 3.499999761581421,
+          "ratio033": 3.1357829775729384,
+          "ratio034Partial": null,
+          "timingPass": false
+        }
+      ]
+    },
+    "typography": {
+      "command": "pnpm test:browser:composition-typography-adapter --webgl --keep-going --profile",
+      "method": "Frame-zero warmup, then timed first forward traversal; pixel analysis outside timed intervals.",
+      "cases": 20,
+      "frames": 3367,
+      "pixelFailures": [],
+      "timingFailures": [
+        "typography/editorial/containers",
+        "typography/editorial/appearance-uniform",
+        "typography/variable-thai/numeric"
+      ],
+      "exportLines": [
+        "CE4b webgl2 typography/editorial/component-fit export: 151 frames, two byte-identical MP4s; relocated assets and overwrite protection pass",
+        "CE4b webgl2 typography/editorial/numeric export: 151 frames, two byte-identical MP4s; relocated assets and overwrite protection pass",
+        "CE4b webgl2 typography/editorial/appearance-uniform export: 151 frames, two byte-identical MP4s; relocated assets and overwrite protection pass",
+        "CE4b webgl2 typography/editorial/primitive-blur-text export: 151 frames, two byte-identical MP4s; relocated assets and overwrite protection pass",
+        "CE4b webgl2 typography/semantic export: 181 frames, two byte-identical MP4s; relocated assets and overwrite protection pass",
+        "CE4b webgl2 typography/variable-thai export: 151 frames, two byte-identical MP4s; relocated assets and overwrite protection pass",
+        "CE4b webgl2 typography/variable-thai/numeric export: 151 frames, two byte-identical MP4s; relocated assets and overwrite protection pass",
+        "CE4b webgl2 typography/commerce/panel-fit export: 192 frames, two byte-identical MP4s; relocated assets and overwrite protection pass",
+        "CE4b webgl2 typography/commerce/numeric export: 192 frames, two byte-identical MP4s; relocated assets and overwrite protection pass",
+        "CE4b webgl2 typography/commerce/motion-blur-numeric export: 192 frames, two byte-identical MP4s; relocated assets and overwrite protection pass"
+      ],
+      "exitCode": 1,
+      "exitReason": "timing assertions only",
+      "items": [
+        {
+          "id": "typography/editorial",
+          "frames": 151,
+          "maxDelta": 0,
+          "minPsnr": null,
+          "pixelFailures": [],
+          "ratio": 1.0428172161325375,
+          "legacyMs": 894.5000000596046,
+          "compositionMs": 932.7999998927116,
+          "legacyRenderMs": 652.8000000119209,
+          "compositionRenderMs": 474.8999996781349,
+          "evaluationMs": 0.3999999761581421,
+          "graphMs": 0.30000001192092896,
+          "ratio033": 1.0879502215026604,
+          "ratio034Partial": null,
+          "timingPass": true
+        },
+        {
+          "id": "typography/editorial/containers",
+          "frames": 151,
+          "maxDelta": 2,
+          "minPsnr": 65.64315652243762,
+          "pixelFailures": [],
+          "ratio": 1.3570760108555942,
+          "legacyMs": 961.7000001072884,
+          "compositionMs": 1305.0999997854233,
+          "legacyRenderMs": 651.5000001192093,
+          "compositionRenderMs": 560.7000000476837,
+          "evaluationMs": 0.5000000596046448,
+          "graphMs": 0.30000001192092896,
+          "ratio033": 1.3547208575801146,
+          "ratio034Partial": null,
+          "timingPass": false
+        },
+        {
+          "id": "typography/editorial/component-fit",
+          "frames": 151,
+          "maxDelta": 0,
+          "minPsnr": null,
+          "pixelFailures": [],
+          "ratio": 1.0514299446645805,
+          "legacyMs": 832.2000000476837,
+          "compositionMs": 875,
+          "legacyRenderMs": 620.8000001311302,
+          "compositionRenderMs": 442.2000000476837,
+          "evaluationMs": 0.5999999642372131,
+          "graphMs": 0.19999998807907104,
+          "ratio033": 1.112287847553142,
+          "ratio034Partial": null,
+          "timingPass": true
+        },
+        {
+          "id": "typography/editorial/numeric",
+          "frames": 151,
+          "maxDelta": 1,
+          "minPsnr": 101.01776621458166,
+          "pixelFailures": [],
+          "ratio": 1.1670924289469848,
+          "legacyMs": 861.2000002861023,
+          "compositionMs": 1005.1000001430511,
+          "legacyRenderMs": 658.0999999046326,
+          "compositionRenderMs": 498.80000001192093,
+          "evaluationMs": 0.40000009536743164,
+          "graphMs": 0.3999999165534973,
+          "ratio033": 1.2083333324537509,
+          "ratio034Partial": null,
+          "timingPass": true
+        },
+        {
+          "id": "typography/editorial/appearance-uniform",
+          "frames": 151,
+          "maxDelta": 0,
+          "minPsnr": null,
+          "pixelFailures": [],
+          "ratio": 1.4948299624148134,
+          "legacyMs": 870.4000002145767,
+          "compositionMs": 1301.0999996066093,
+          "legacyRenderMs": 635.2999994754791,
+          "compositionRenderMs": 612.6000002026558,
+          "evaluationMs": 0.6000000238418579,
+          "graphMs": 0.3999999761581421,
+          "ratio033": 1.6124686284619538,
+          "ratio034Partial": null,
+          "timingPass": false
+        },
+        {
+          "id": "typography/editorial/primitive-blur-text",
+          "frames": 151,
+          "maxDelta": 0,
+          "minPsnr": null,
+          "pixelFailures": [],
+          "ratio": 0.8192705498905888,
+          "legacyMs": 3674,
+          "compositionMs": 3010.000000298023,
+          "legacyRenderMs": 645.100000500679,
+          "compositionRenderMs": 2142.299999475479,
+          "evaluationMs": 0.7000000476837158,
+          "graphMs": 0.3999999761581421,
+          "ratio033": 0.8143117492529706,
+          "ratio034Partial": null,
+          "timingPass": true
+        },
+        {
+          "id": "typography/glyph-performance",
+          "frames": 151,
+          "maxDelta": 0,
+          "minPsnr": null,
+          "pixelFailures": [],
+          "ratio": 1.0070803858558242,
+          "legacyMs": 240.0999999642372,
+          "compositionMs": 241.80000060796738,
+          "legacyRenderMs": 83.70000046491623,
+          "compositionRenderMs": 79.40000051259995,
+          "evaluationMs": 0.19999992847442627,
+          "graphMs": 0.30000007152557373,
+          "ratio033": 1.0182724266434653,
+          "ratio034Partial": null,
+          "timingPass": true
+        },
+        {
+          "id": "typography/selectors",
+          "frames": 151,
+          "maxDelta": 0,
+          "minPsnr": null,
+          "pixelFailures": [],
+          "ratio": 0.8887955178325587,
+          "legacyMs": 714.0000000596046,
+          "compositionMs": 634.5999997854233,
+          "legacyRenderMs": 494.99999940395355,
+          "compositionRenderMs": 378.29999935626984,
+          "evaluationMs": 0.5999999642372131,
+          "graphMs": 0.20000004768371582,
+          "ratio033": 0.9103485688891721,
+          "ratio034Partial": null,
+          "timingPass": true
+        },
+        {
+          "id": "typography/semantic",
+          "frames": 181,
+          "maxDelta": 2,
+          "minPsnr": 85.45474120690878,
+          "pixelFailures": [],
+          "ratio": 1.0766820586176522,
+          "legacyMs": 606.4000001549721,
+          "compositionMs": 652.9000005126,
+          "legacyRenderMs": 317.9000002145767,
+          "compositionRenderMs": 272.10000014305115,
+          "evaluationMs": 1.300000011920929,
+          "graphMs": 0,
+          "ratio033": 1.158571427937217,
+          "ratio034Partial": null,
+          "timingPass": true
+        },
+        {
+          "id": "typography/transitions",
+          "frames": 151,
+          "maxDelta": 0,
+          "minPsnr": null,
+          "pixelFailures": [],
+          "ratio": 1.0272483230633411,
+          "legacyMs": 744.9999994635582,
+          "compositionMs": 765.3000001311302,
+          "legacyRenderMs": 518.6000001430511,
+          "compositionRenderMs": 487.90000009536743,
+          "evaluationMs": 0.7999999523162842,
+          "graphMs": 0.20000004768371582,
+          "ratio033": 1.079323597192457,
+          "ratio034Partial": null,
+          "timingPass": true
+        },
+        {
+          "id": "typography/variable-thai",
+          "frames": 151,
+          "maxDelta": 0,
+          "minPsnr": null,
+          "pixelFailures": [],
+          "ratio": 1.0680180156176986,
+          "legacyMs": 222.00000029802322,
+          "compositionMs": 237.09999978542328,
+          "legacyRenderMs": 68.50000017881393,
+          "compositionRenderMs": 73.49999970197678,
+          "evaluationMs": 0.7000000476837158,
+          "graphMs": 1,
+          "ratio033": 1.0127058828542637,
+          "ratio034Partial": null,
+          "timingPass": true
+        },
+        {
+          "id": "typography/variable-thai/numeric",
+          "frames": 151,
+          "maxDelta": 1,
+          "minPsnr": 101.01776621458166,
+          "pixelFailures": [],
+          "ratio": 1.4978123516128314,
+          "legacyMs": 205.69999980926514,
+          "compositionMs": 308.10000044107437,
+          "legacyRenderMs": 55.10000020265579,
+          "compositionRenderMs": 85.10000026226044,
+          "evaluationMs": 0.4999999403953552,
+          "graphMs": 0.10000002384185791,
+          "ratio033": 1.5780637965238553,
+          "ratio034Partial": null,
+          "timingPass": false
+        },
+        {
+          "id": "typography/vertical",
+          "frames": 181,
+          "maxDelta": 2,
+          "minPsnr": 85.45474120690878,
+          "pixelFailures": [],
+          "ratio": 1.1609052032120655,
+          "legacyMs": 561.1999998092651,
+          "compositionMs": 651.4999998211861,
+          "legacyRenderMs": 309.1999998688698,
+          "compositionRenderMs": 266.60000002384186,
+          "evaluationMs": 1.0999999642372131,
+          "graphMs": 0.20000004768371582,
+          "ratio033": 1.1981718445832685,
+          "ratio034Partial": null,
+          "timingPass": true
+        },
+        {
+          "id": "typography/commerce",
+          "frames": 192,
+          "maxDelta": 2,
+          "minPsnr": 75.54771532578508,
+          "pixelFailures": [],
+          "ratio": 0.4570877538565889,
+          "legacyMs": 518.4999997019768,
+          "compositionMs": 237.00000023841858,
+          "legacyRenderMs": 165.19999992847443,
+          "compositionRenderMs": 41.20000022649765,
+          "evaluationMs": 1.800000011920929,
+          "graphMs": 0.7000000476837158,
+          "ratio033": 0.4611254711324192,
+          "ratio034Partial": null,
+          "timingPass": true
+        },
+        {
+          "id": "typography/commerce/native-fit",
+          "frames": 192,
+          "maxDelta": 2,
+          "minPsnr": 75.52466762538668,
+          "pixelFailures": [],
+          "ratio": 0.595809523945763,
+          "legacyMs": 525,
+          "compositionMs": 312.8000000715256,
+          "legacyRenderMs": 168.1999996304512,
+          "compositionRenderMs": 57.90000003576279,
+          "evaluationMs": 2.099999964237213,
+          "graphMs": 0.30000001192092896,
+          "ratio033": 0.6046511625496037,
+          "ratio034Partial": null,
+          "timingPass": true
+        },
+        {
+          "id": "typography/commerce/panel-fit",
+          "frames": 192,
+          "maxDelta": 2,
+          "minPsnr": 75.49488731565133,
+          "pixelFailures": [],
+          "ratio": 0.626127820041843,
+          "legacyMs": 532,
+          "compositionMs": 333.10000026226044,
+          "legacyRenderMs": 170.9000004529953,
+          "compositionRenderMs": 58.30000078678131,
+          "evaluationMs": 2.5000000596046448,
+          "graphMs": 0.4999999403953552,
+          "ratio033": 0.6229258048594234,
+          "ratio034Partial": null,
+          "timingPass": true
+        },
+        {
+          "id": "typography/commerce/component-fit",
+          "frames": 192,
+          "maxDelta": 2,
+          "minPsnr": 75.52466762538668,
+          "pixelFailures": [],
+          "ratio": 0.5986582488725049,
+          "legacyMs": 506.7999994754791,
+          "compositionMs": 303.4000002145767,
+          "legacyRenderMs": 158.39999997615814,
+          "compositionRenderMs": 54.0000005364418,
+          "evaluationMs": 1.9999999403953552,
+          "graphMs": 0.5000000596046448,
+          "ratio033": 0.6325956484422922,
+          "ratio034Partial": null,
+          "timingPass": true
+        },
+        {
+          "id": "typography/commerce/numeric",
+          "frames": 192,
+          "maxDelta": 2,
+          "minPsnr": 75.53425597391657,
+          "pixelFailures": [],
+          "ratio": 0.7445149601605072,
+          "legacyMs": 551.4999996423721,
+          "compositionMs": 410.60000026226044,
+          "legacyRenderMs": 195.19999980926514,
+          "compositionRenderMs": 106.40000021457672,
+          "evaluationMs": 2.1000000834465027,
+          "graphMs": 0.4999999403953552,
+          "ratio033": 0.738995874329332,
+          "ratio034Partial": null,
+          "timingPass": true
+        },
+        {
+          "id": "typography/commerce/motion-blur-native",
+          "frames": 192,
+          "maxDelta": 2,
+          "minPsnr": 75.70776970032219,
+          "pixelFailures": [],
+          "ratio": 0.1367590027562674,
+          "legacyMs": 7220.000000119209,
+          "compositionMs": 987.3999999165535,
+          "legacyRenderMs": 7021.60000038147,
+          "compositionRenderMs": 98.79999995231628,
+          "evaluationMs": 2.6999999284744263,
+          "graphMs": 0.8000000715255737,
+          "ratio033": 0.13351897424414652,
+          "ratio034Partial": null,
+          "timingPass": true
+        },
+        {
+          "id": "typography/commerce/motion-blur-numeric",
+          "frames": 192,
+          "maxDelta": 2,
+          "minPsnr": 75.69380587692245,
+          "pixelFailures": [],
+          "ratio": 0.2704923446698064,
+          "legacyMs": 7569.89999973774,
+          "compositionMs": 2047.599999845028,
+          "legacyRenderMs": 7366.900000274181,
+          "compositionRenderMs": 239.29999965429306,
+          "evaluationMs": 2.900000035762787,
+          "graphMs": 0.5999999642372131,
+          "ratio033": 0.2821735232880482,
+          "ratio034Partial": null,
+          "timingPass": true
+        }
+      ]
+    },
+    "storyDiagnostic": {
+      "command": "pnpm test:browser:composition-story-fixtures --only continuous-access-constraint --webgl --profile",
+      "method": "Ordinary story diagnostic outside the 195-case core matrix.",
+      "cases": 1,
+      "frames": 192,
+      "pixelFailures": [],
+      "timingFailures": ["story/continuous-access-constraint"],
+      "exportLines": [],
+      "exitCode": 1,
+      "exitReason": "timing assertions only",
+      "items": [
+        {
+          "id": "story/continuous-access-constraint",
+          "frames": 192,
+          "maxDelta": 0,
+          "minPsnr": null,
+          "pixelFailures": [],
+          "ratio": 3.452137843728432,
+          "legacyMs": 940.1999997496605,
+          "compositionMs": 3245.699999809265,
+          "legacyRenderMs": 129.6999997496605,
+          "compositionRenderMs": 1305.4000002741814,
+          "evaluationMs": 9.100000143051147,
+          "graphMs": 3.0999998450279236,
+          "ratio033": null,
+          "ratio034Partial": null,
+          "timingPass": false
+        }
+      ]
+    }
+  },
+  "otherChecks": {
+    "checkFast": "pnpm check:fast passed",
+    "webgl": "pnpm test:browser:composition-webgl passed (exact effect work reduction: grainTile 30, grainBlending 262144, boxBlurSteps 32, boundedParticles 10, boundedLightSweep 16)",
+    "webglBlurHardware": "pnpm test:browser:composition-webgl-blur --hardware passed",
+    "effects": "pnpm test:browser:composition-effects passed (five native effect MP4 pairs)",
+    "webglExport": "pnpm test:browser:composition-webgl-export passed",
+    "storyAdapter": "pnpm test:browser:composition-story-adapter passed: 192 exact frames, ratio 1.0223, two byte-identical MP4s",
+    "frozenCe0": "pnpm test:browser:composition-baselines passed: 176 items, 36,061 frames, no regeneration (exit 0)"
+  },
+  "harness": "Scratch harnesses remain under /private/tmp/ce6-performance (not production code).",
+  "researchFollowUp": {
+    "note": "Measurements directed by the untracked research notes composition-renderer-performance-research-1/-2 (2026-10-03). Pinned profile (Chromium 151.0.7922.34, SwiftShader), 1920x1080, scratch microbenchmarks under /private/tmp/ce6-performance (micro-fb.mts, micro-copy.mts, micro-pbo.mts, prof.mts). No production change resulted; diagnostics only, not acceptance.",
+    "extensions": {
+      "EXT_disjoint_timer_query_webgl2": false,
+      "KHR_parallel_shader_compile": false,
+      "consequence": "Device-time attribution unavailable on the pinned profile; 1x1 readPixels barrier remains the only attribution tool."
+    },
+    "explicitExportFramebuffer": {
+      "msPerFullFrame": {
+        "defaultAlphaFalsePreserve": {
+          "pass": 1.19,
+          "passRead": 2.3,
+          "passHalfRead": 2.0
+        },
+        "rgba8Fbo": {
+          "pass": 1.32,
+          "passRead": 2.17,
+          "passHalfRead": 2.1
+        },
+        "rgba8FboNoPreserve": {
+          "pass": 1.22,
+          "passRead": 2.29,
+          "passHalfRead": 2.04
+        }
+      },
+      "result": "rejected: within variation"
+    },
+    "backdropCopyFromScreen": {
+      "msPerCall": {
+        "1920x1080": {
+          "flippedBlit": [1.975, 1.91, 2.0, 2.07],
+          "blit": [1.905, 1.91, 2.05, 1.99],
+          "copyTexSubImage2DRgb8": [4.145, 4.175]
+        },
+        "400x400": {
+          "flippedBlit": [0.148, 0.149],
+          "blit": [0.151, 0.147],
+          "copyTexSubImage2DRgb8": [0.359, 0.442]
+        }
+      },
+      "note": "copyTexSubImage2D into RGBA8 from the alpha:false default framebuffer silently copies nothing (all bytes differ from the blit); into RGB8 it is exact but 2x slower. The current flipped blit is already the cheapest copy.",
+      "result": "rejected"
+    },
+    "fixedFunctionPrimitiveBlend": {
+      "analysis": "Primitive source-over s+floor(d*(256-a)/256) cannot be one fixed-function pass: the floor needs a negative source bias, clamped to zero for s=0 (black text). Two passes (reverse-subtract with bias 0.5-1/512 then add) are exact in float32 but need ~7.7e-6 absolute margin, unsafe for fp16 blending, and cost two GL blend passes (~2.25 ms each per full frame) against blit plus exact shader (~4.7 ms).",
+      "result": "not attempted: no expected gain"
+    },
+    "pboFenceReadback": {
+      "msPerFrame1080pSynchronous": {
+        "directReadPixels": [1.58, 1.49],
+        "pboGetBufferSubData": [26.737, 26.537],
+        "pboFenceYieldGetBufferSubData": [29.793, 29.74]
+      },
+      "bytesEqual": true,
+      "result": "rejected: ~17x slower on SwiftShader"
+    },
+    "storyInstancesAttribution": {
+      "fixture": "benchmarks/fixtures/reusable-components/story-instances.json (house.svg instances, 192 frames)",
+      "warmPassMs": {
+        "composition": 1066.7,
+        "legacy": 232.1,
+        "gateMs": 290.1
+      },
+      "compositionCpuSelfMs": {
+        "readPixels": 636.6,
+        "texSubImage2DIncludingSkiaRasterFlush": 189.9,
+        "ownedByteCopy": 136.5,
+        "program": 55.3,
+        "allJavaScriptOther": "<~60"
+      },
+      "uploadsPerFrame": 5.4,
+      "imageRasterUploads384x256PerFrame": 2,
+      "conclusion": "Upload plus owned-byte copy alone (327 ms) exceed the 290 ms budget before any GPU composition; SVG/image raster reuse cannot close the case."
+    }
+  }
+}

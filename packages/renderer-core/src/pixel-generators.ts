@@ -30,38 +30,53 @@ export function paintRadialLight(
   ctx.fillRect(0, 0, width, height);
   ctx.restore();
 }
-export function paintRisingParticles(
-  ctx: CanvasRenderingContext2D,
-  effect: {
-    progress: number;
-    count: number;
-    radius: number;
-    opacity: number;
-    seed: number;
-    color: string;
-  },
+type RisingParticles = {
+  progress: number;
+  count: number;
+  radius: number;
+  opacity: number;
+  seed: number;
+  color: string;
+};
+
+/** Seeded particle geometry shared by painting and conservative bounds. */
+export function risingParticles(
+  effect: RisingParticles,
   width: number,
   height: number,
 ) {
   const random = seededRandom(effect.seed);
   const progress = effect.progress;
-  ctx.save();
-  ctx.fillStyle = effect.color;
+  const particles: { alpha: number; x: number; y: number; radius: number }[] =
+    [];
   for (let index = 0; index < effect.count; index++) {
     const x = random() * width,
       offset = random(),
       radius = effect.radius * (0.35 + random() * 0.65),
       sway = 10 + random() * 30;
     const phase = (offset + progress) % 1;
-    ctx.globalAlpha = effect.opacity * Math.sin(phase * Math.PI) ** 2;
-    ctx.beginPath();
-    ctx.arc(
-      x + Math.sin(phase * Math.PI * 2) * sway,
-      height * (1 - phase),
+    particles.push({
+      alpha: effect.opacity * Math.sin(phase * Math.PI) ** 2,
+      x: x + Math.sin(phase * Math.PI * 2) * sway,
+      y: height * (1 - phase),
       radius,
-      0,
-      Math.PI * 2,
-    );
+    });
+  }
+  return particles;
+}
+
+export function paintRisingParticles(
+  ctx: CanvasRenderingContext2D,
+  effect: RisingParticles,
+  width: number,
+  height: number,
+) {
+  ctx.save();
+  ctx.fillStyle = effect.color;
+  for (const particle of risingParticles(effect, width, height)) {
+    ctx.globalAlpha = particle.alpha;
+    ctx.beginPath();
+    ctx.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2);
     ctx.fill();
   }
   ctx.restore();

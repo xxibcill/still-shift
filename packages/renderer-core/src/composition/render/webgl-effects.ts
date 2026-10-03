@@ -2,7 +2,11 @@ import { FLOAT32_RATIONAL_SUM } from "./webgl-float-sum.ts";
 import { blurKernel, blurKernelLength } from "./webgl-blur-kernel.ts";
 import { boxBlur } from "./webgl-box-blur.ts";
 import type { WebglBounds } from "./webgl-bounds.ts";
-import { paintRisingParticles } from "../../pixel-generators.ts";
+import {
+  paintRisingParticles,
+  risingParticles,
+} from "../../pixel-generators.ts";
+import { WebglPaint } from "./webgl-paint.ts";
 import { cssColor, type Canvas2dBackend } from "./canvas2d.ts";
 import type { Bounds, Rgba } from "../evaluate/types.ts";
 import type { RenderEffect } from "./graph.ts";
@@ -62,18 +66,84 @@ vec4 translatedX(float shift) {
 `;
 
 export class WebglEffects {
+  private readonly paints: WebglPaint;
   constructor(
     private readonly device: WebglDevice,
     private readonly raster: Canvas2dBackend,
     private readonly bounds: WebglBounds,
-  ) {}
+  ) {
+    this.paints = new WebglPaint(device, bounds);
+  }
 
+  /**
+   * Transparent source pixels leave primitive source-over unchanged. Compose
+   * each disjoint particle neighborhood instead of uploading and blending the
+   * full canvas; merged rectangles keep every pixel composed at most once.
+   */
+  private particles(
+    dst: WebglSurface,
+    effect: Parameters<typeof paintRisingParticles>[1],
+  ) {
+    const rects: Bounds[] = [];
+    for (const particle of risingParticles(effect, dst.width, dst.height)) {
+      let rect = {
+        left: Math.max(0, Math.floor(particle.x - particle.radius) - 2),
+        top: Math.max(0, Math.floor(particle.y - particle.radius) - 2),
+        right: Math.min(dst.width, Math.ceil(particle.x + particle.radius) + 2),
+        bottom: Math.min(
+          dst.height,
+          Math.ceil(particle.y + particle.radius) + 2,
+        ),
+      };
+      if (rect.right <= rect.left || rect.bottom <= rect.top) continue;
+      for (let i = 0; i < rects.length; ) {
+        const other = rects[i]!;
+        if (
+          other.left < rect.right &&
+          rect.left < other.right &&
+          other.top < rect.bottom &&
+          rect.top < other.bottom
+        ) {
+          rect = {
+            left: Math.min(rect.left, other.left),
+            top: Math.min(rect.top, other.top),
+            right: Math.max(rect.right, other.right),
+            bottom: Math.max(rect.bottom, other.bottom),
+          };
+          rects.splice(i, 1);
+          i = 0;
+        } else i++;
+      }
+      rects.push(rect);
+    }
+    const pixels = this.raster.createSurface(dst.width, dst.height);
+    try {
+      paintRisingParticles(pixels.ctx, effect, dst.width, dst.height);
+      for (const rect of rects) {
+        const source = this.device.surface(
+          rect.right - rect.left,
+          rect.bottom - rect.top,
+        );
+        try {
+          this.device.uploadRegion(source, pixels.canvas, rect.left, rect.top);
+          this.paints.draw(source, dst, rect, true);
+        } finally {
+          this.device.release(source);
+        }
+      }
+    } finally {
+      this.raster.releaseSurface(pixels);
+    }
+  }
+
+  /** `painted` bounds every nonzero canvas pixel; the cleared source keeps the rest. */
   private paint(
     dst: WebglSurface,
     draw: (ctx: CanvasRenderingContext2D) => void,
     shader = blendShader("normal"),
     opacity = 1,
     region?: Bounds | null,
+    painted?: Bounds,
   ) {
     const pixels = this.raster.createSurface(dst.width, dst.height);
     const source = this.device.surface(dst.width, dst.height);
@@ -84,7 +154,17 @@ export class WebglEffects {
       } finally {
         pixels.ctx.restore();
       }
-      this.device.upload(source, pixels.canvas);
+      if (!painted) this.device.upload(source, pixels.canvas);
+      else {
+        const area = {
+          left: Math.max(0, painted.left),
+          top: Math.max(0, painted.top),
+          right: Math.min(dst.width, painted.right),
+          bottom: Math.min(dst.height, painted.bottom),
+        };
+        if (area.right > area.left && area.bottom > area.top)
+          this.device.uploadArea(source, pixels.canvas, area);
+      }
       this.replace(dst, shader, [source, dst], { opacity }, region);
     } finally {
       this.raster.releaseSurface(pixels);
@@ -236,58 +316,103 @@ export class WebglEffects {
         case "light.radial": {
           // Skia dithers the premultiplied gradient before source-over and clips
           // its RGB to source alpha. Preserve that order at the radial boundary.
-          this.replace(
-            dst,
-            `uniform vec2 center; uniform float radius; uniform float strength; uniform vec4 color;
-          void main() {
+          const center = [p.x as number, p.y as number],
+            radius = p.radius as number;
+          const uniforms = {
+            center,
+            radius,
+            strength: p.strength as number,
+            color: (p.color as Rgba).map(
+              (value) => Math.round(value * 255) / 255,
+            ),
+          };
+          const light = `uniform vec2 center; uniform float radius; uniform float strength; uniform vec4 color;
+          vec4 radial() {
             float a=clamp(1.0-distance(gl_FragCoord.xy,center)/radius,0.0,1.0)*color.a*strength;
             vec4 result=vec4(color.rgb*a,a);
             uint x=uint(gl_FragCoord.x), y=uint(gl_FragCoord.y)^x;
             uint matrix=((y&1u)<<5)|((x&1u)<<4)|((y&2u)<<2)|((x&2u)<<1)|((y&4u)>>1)|((x&4u)>>2);
             float dither=(float(matrix)/64.0-63.0/128.0)/255.0;
             result.rgb=clamp(result.rgb+dither,vec3(0.0),vec3(result.a));
-            pixel=bytes(result+texture(source,uv)*(1.0-a));
+            return result;
+          }`;
+          // Pixels at or beyond the radius keep their stored bytes exactly.
+          const reach = {
+            left: Math.max(0, Math.floor(center[0]! - radius) - 1),
+            top: Math.max(0, Math.floor(center[1]! - radius) - 1),
+            right: Math.min(dst.width, Math.ceil(center[0]! + radius) + 1),
+            bottom: Math.min(dst.height, Math.ceil(center[1]! + radius) + 1),
+          };
+          const lit = !dst.screen
+            ? undefined
+            : reach.right <= reach.left || reach.bottom <= reach.top
+              ? null
+              : this.device.drawRegion(dst, reach);
+          if (lit === null) break;
+          const solid = lit ? this.device.solidColor(dst, lit) : undefined;
+          if (solid) {
+            // A freshly cleared opaque screen needs no snapshot: fetch its
+            // stored bytes from one texel, converted as any backdrop texel.
+            const backdrop = this.device.surface(1, 1);
+            try {
+              this.device.uploadBytes(backdrop, new Uint8Array(solid));
+              this.device.pass(
+                `${light} void main() {
+                vec4 result=radial();
+                pixel=bytes(result+texelFetch(source,ivec2(0),0)*(1.0-result.a));
+              }`,
+                dst,
+                [backdrop],
+                uniforms,
+                false,
+                lit,
+              );
+            } finally {
+              this.device.release(backdrop);
+            }
+            break;
+          }
+          this.replace(
+            dst,
+            `${light} void main() {
+            vec4 result=radial();
+            pixel=bytes(result+texture(source,uv)*(1.0-result.a));
           }`,
             [dst],
-            {
-              center: [p.x as number, p.y as number],
-              radius: p.radius as number,
-              strength: p.strength as number,
-              color: (p.color as Rgba).map(
-                (value) => Math.round(value * 255) / 255,
-              ),
-            },
+            uniforms,
+            lit,
           );
           break;
         }
         case "particles.rise": {
-          this.paint(
-            dst,
-            (ctx) =>
-              paintRisingParticles(
-                ctx,
-                {
-                  progress: p.progress as number,
-                  count: p.count as number,
-                  radius: p.radius as number,
-                  opacity: p.opacity as number,
-                  seed: p.seed as number,
-                  color: cssColor(p.color as Rgba),
-                },
-                dst.width,
-                dst.height,
-              ),
-            blendShader("normal", true),
-          );
+          const particles = {
+            progress: p.progress as number,
+            count: p.count as number,
+            radius: p.radius as number,
+            opacity: p.opacity as number,
+            seed: p.seed as number,
+            color: cssColor(p.color as Rgba),
+          };
+          if (dst.screen) this.particles(dst, particles);
+          else
+            this.paint(
+              dst,
+              (ctx) =>
+                paintRisingParticles(ctx, particles, dst.width, dst.height),
+              blendShader("normal", true),
+            );
           break;
         }
         case "stylize.grain": {
           const seed =
             ((p.seed as number) + Math.floor(p.evolution as number) * 7919) >>>
             0;
-          this.replace(
-            dst,
-            `uniform vec2 seedParts; uniform float amount;
+          // The grain repeats every 128 pixels. Evaluate the generator once per
+          // tile texel, storing its exact byte alpha, instead of per frame pixel.
+          const tile = this.device.surface(128, 128);
+          try {
+            this.device.pass(
+              `uniform vec2 seedParts; uniform float amount;
           uint advance(uint state,uint count) {
             uint a=1664525u,c=1013904223u,m=1u,b=0u;
             for(int i=0;i<16;i++) {
@@ -297,20 +422,40 @@ export class WebglEffects {
             return state*m+b;
           }
           void main() {
-            uvec2 p=uvec2(gl_FragCoord.xy)%128u;
+            uvec2 p=uvec2(gl_FragCoord.xy);
             uint seed=uint(seedParts.x)+(uint(seedParts.y)<<16);
             uint value=advance(seed,(p.y*128u+p.x)*2u+1u);
-            float color=value<2147483648u?0.0:1.0;
             uint next=value*1664525u+1013904223u;
-            float a=floor(float(next)*(1.0/4294967296.0)*amount*255.0+0.5)/255.0;
-            pixel=bytes(vec4(vec3(color*a),a)+texture(source,uv)*(1.0-a));
+            pixel=vec4(value<2147483648u?0.0:1.0,0.0,0.0,floor(float(next)*(1.0/4294967296.0)*amount*255.0+0.5)/255.0);
           }`,
-            [dst],
-            {
-              seedParts: [seed & 65535, seed >>> 16],
-              amount: p.amount as number,
-            },
-          );
+              tile,
+              [],
+              {
+                seedParts: [seed & 65535, seed >>> 16],
+                amount: p.amount as number,
+              },
+            );
+            // Fixed-function source-over equals bytes(g + d·(1−a)) for every
+            // grain byte and backdrop byte, without copying the backdrop.
+            const gl = this.device.gl;
+            gl.enable(gl.BLEND);
+            gl.blendEquation(gl.FUNC_ADD);
+            gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
+            this.device.pass(
+              `void main() {
+            vec4 grain=texelFetch(source,ivec2(uvec2(gl_FragCoord.xy)%128u),0);
+            float a=floor(grain.a*255.0+0.5)/255.0;
+            pixel=vec4(vec3(grain.r*a),a);
+          }`,
+              dst,
+              [tile],
+              {},
+              true,
+            );
+          } finally {
+            this.device.gl.disable(this.device.gl.BLEND);
+            this.device.release(tile);
+          }
           break;
         }
         case "light.sweep": {
@@ -319,6 +464,34 @@ export class WebglEffects {
               "comp-effect-space: light.sweep requires layer coordinates",
             );
           const placement = effect.placement;
+          const width = p.width as number,
+            height = p.height as number,
+            left = p.left as number,
+            top = p.top as number;
+          const regionWidth = p.regionWidth as number,
+            regionHeight = p.regionHeight as number,
+            band = p.band as number;
+          // The light is clipped to this placed rectangle; upload only its
+          // device bounds, padded beyond antialiased clip coverage.
+          const world = new DOMMatrix();
+          for (const matrix of placement.transforms ?? [placement.matrix])
+            world.multiplySelf(new DOMMatrix(matrix));
+          const corners = [
+            [left * width, top * height],
+            [(left + regionWidth) * width, top * height],
+            [(left + regionWidth) * width, (top + regionHeight) * height],
+            [left * width, (top + regionHeight) * height],
+          ].map(([x, y]) => world.transformPoint({ x: x!, y: y! }));
+          const painted = corners.every(
+            (point) => Number.isFinite(point.x) && Number.isFinite(point.y),
+          )
+            ? {
+                left: Math.floor(Math.min(...corners.map((c) => c.x))) - 2,
+                top: Math.floor(Math.min(...corners.map((c) => c.y))) - 2,
+                right: Math.ceil(Math.max(...corners.map((c) => c.x))) + 2,
+                bottom: Math.ceil(Math.max(...corners.map((c) => c.y))) + 2,
+              }
+            : undefined;
           this.paint(
             dst,
             (ctx) => {
@@ -326,13 +499,6 @@ export class WebglEffects {
                 for (const matrix of placement.transforms)
                   ctx.transform(...matrix);
               else ctx.transform(...placement.matrix);
-              const width = p.width as number,
-                height = p.height as number,
-                left = p.left as number,
-                top = p.top as number;
-              const regionWidth = p.regionWidth as number,
-                regionHeight = p.regionHeight as number,
-                band = p.band as number;
               ctx.beginPath();
               ctx.rect(
                 left * width,
@@ -366,6 +532,7 @@ export class WebglEffects {
           }`,
             p.strength as number,
             this.bounds.region(dst),
+            painted,
           );
           break;
         }
