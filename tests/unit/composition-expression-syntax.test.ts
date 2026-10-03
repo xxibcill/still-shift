@@ -337,6 +337,7 @@ describe("expression type checker", () => {
     ["smooth(0.5, 9)", "vec2"],
     ["lookAt([0, 0], ref('a.pos'))", "scalar"],
     ["length(ref('a.pos'), [0, 0]) + length([3, 4, 12])", "scalar"],
+    ["length([0, 0, 0], [0, 0, 10])", "scalar"],
     ["normalize(value) * 10", "vec2"],
     ["if(time > 1, 1, 2) + step(1, time)", "scalar"],
     ["frame >= 10 && frame < 20 ? 1 : 0", "scalar"],
@@ -375,6 +376,8 @@ describe("expression type checker", () => {
     ["[1, 2, 3, 4]", "vec2", 1, "two or three"],
     ["[true, 1]", "vec2", 2, "must be numbers"],
     ["normalize(1)", "scalar", 11, "needs a vector"],
+    ["length([0, 0], [0, 0, 10])", "scalar", 1, "matching vector dimensions"],
+    ["length([0, 0, 10], [0, 0])", "scalar", 1, "matching vector dimensions"],
     ["lookAt(1, [0, 0])", "scalar", 8, "2D vector"],
     ["if(1, 2, 3)", "scalar", 4, "a boolean"],
   ] as const)("rejects %s with a column", (source, target, column, message) => {

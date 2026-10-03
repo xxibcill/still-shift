@@ -185,7 +185,14 @@ export const EXPRESSION_BUILTINS: Record<string, BuiltIn> = {
     summary: "Clockwise angle in degrees from `from` towards `to`.",
   },
   length: {
-    overloads: [sig(["vector"], "scalar"), sig(["vector", "vector"], "scalar")],
+    overloads: [
+      sig(["vector"], "scalar"),
+      sig(["vector", "vector"], (types) =>
+        types[0] === types[1]
+          ? "scalar"
+          : `length() needs matching vector dimensions (${types[0]} and ${types[1]})`,
+      ),
+    ],
     summary: "Vector length, or the distance between two points.",
   },
   normalize: {

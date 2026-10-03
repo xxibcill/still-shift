@@ -10,7 +10,15 @@
       "evaluatorVersion": "composition-evaluator-23",
       "regression": "Inactive invalid time reads skipped on either branch; selected invalid read still throws.",
       "red": "One expected failing regression before fix.",
-      "verification": "pnpm exec vitest run tests/unit/composition-expressions.test.ts: 33 tests pass."
+      "verification": "pnpm exec vitest run tests/unit/composition-expressions.test.ts: 33 tests pass.",
+      "commit": "c3fc70f"
+    },
+    {
+      "finding": "Require matching vector dimensions for distance arguments",
+      "status": "fixed",
+      "regression": "Both vec2/vec3 argument orders fail validation; matching vec3 distance remains accepted.",
+      "red": "Two expected failing validation regressions before fix.",
+      "verification": "Syntax and expression evaluator unit suites: 112 tests pass."
     }
   ]
 }

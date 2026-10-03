@@ -47,8 +47,8 @@ still hold before relying on them.
   one P1 bake boundary defect and two P2 built-in contract defects are being
   fixed in separate commits. Integrated main `5a6705c` (PR #31 merged); only
   the development log conflicted, and both branches' records are retained.
-  Lazy `if` is fixed (33 expression tests pass); vector-distance validation and
-  bake parity fixes remain. One final push to the existing PR branch is pending.
+  Lazy `if` and vector-distance validation are fixed (112 targeted tests pass);
+  bake parity remains. One final push to the existing PR branch is pending.
   [Review evidence](./pr-32-review-results.json).
 
 _Last updated 2026-10-04 by Codex for PR #32 review fixes._
@@ -109,6 +109,17 @@ _Last updated 2026-10-04 by Codex for PR #32 review fixes._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-04 — Fix PR #32 distance dimensions
+
+- **Agent / branch:** Codex on isolated `codex/pr32-review-fixes` after `c3fc70f`.
+- **Done:** two-point `length` rejects mixed vec2/vec3 dimensions with a type
+  diagnostic before rendering. Matching vector dimensions remain supported.
+- **Results:** both argument-order regressions fail before the fix; syntax and
+  expression evaluator suites pass afterward (112 tests).
+- **Open / next:** auto-orient bake parity remains; final checks and one push
+  follow the third finding commit. No interim push.
+- **Records:** [fix evidence](./pr-32-fix-results.json), [review](./pr-32-review-results.json).
 
 ### 2026-10-04 — Fix PR #32 lazy conditional
 
