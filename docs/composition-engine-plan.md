@@ -355,27 +355,27 @@ sign and for time remap. It does not change the layer's composition-time visibil
 
 ## Milestone tracker
 
-| ID   | Deliverable                                     | Phase | Depends on           | Owner                  | Branch                   | Status | Completion evidence                                                                |
-| ---- | ----------------------------------------------- | ----- | -------------------- | ---------------------- | ------------------------ | ------ | ---------------------------------------------------------------------------------- |
-| CE0  | Baseline, parity harness and feature matrix     | A     | —                    | xxibcill (Claude Code) | `codex/composition-ce0`  | `[x]`  | [CE0 record](#ce0--baseline-parity-harness-and-feature-matrix)                     |
-| CE1  | `composition-1` contract and property paths     | A     | CE0                  | xxibcill (Claude Code) | `codex/composition-ce1`  | `[x]`  | [CE1 record](#ce1--composition-1-contract-and-property-paths)                      |
-| CE2  | Pure composition evaluator                      | A     | CE1                  | Codex                  | `codex/composition-ce2`  | `[x]`  | [CE2 record](#ce2--pure-composition-evaluator)                                     |
-| CE3  | Render graph and Canvas 2D reference backend    | A     | CE2                  | xxibcill (Claude Code) | `codex/composition-ce3`  | `[x]`  | [CE3 record](#ce3--render-graph-and-canvas-2d-reference-backend); merged in PR #28 |
-| CE4a | Story adapter with visual parity                | A     | CE3                  | Codex                  | `codex/composition-ce4`  | `[~]`  | [CE4a start record](#ce4a-start-record-2026-10-02)                                 |
-| CE4b | Commerce and reusable-component adapter         | A     | CE3, CE6 slices      | Codex                  | `codex/composition-ce4b` | `[x]`  | [CE4b completion record](#ce4b-completion-record-2026-10-03)                       |
-| CE4c | Cinematic adapter                               | A     | CE3, CE8             |                        |                          | `[ ]`  |                                                                                    |
-| CE4d | Legacy illustrated adapter and old-path removal | A     | CE4a–CE4c            |                        |                          | `[ ]`  |                                                                                    |
-| CE5  | Shape layers                                    | B     | CE3                  |                        |                          | `[ ]`  |                                                                                    |
-| CE6  | WebGL2 backend and effect registry              | B     | CE3                  |                        |                          | `[ ]`  |                                                                                    |
-| CE7  | Motion blur and time controls                   | B     | CE3                  |                        |                          | `[ ]`  |                                                                                    |
-| CE8  | 2.5D layers and unified camera                  | B     | CE3, CE6, CE9        |                        |                          | `[ ]`  |                                                                                    |
-| CE9  | Expressions and motion behaviours               | C     | CE2                  |                        |                          | `[ ]`  |                                                                                    |
-| CE10 | TypeScript builder API and CLI                  | C     | CE3, CE4a, CE9, CE12 |                        |                          | `[ ]`  |                                                                                    |
-| CE11 | Lab composition inspector and graph editor      | C     | CE3, CE10            |                        |                          | `[ ]`  |                                                                                    |
-| CE12 | Motion linting                                  | C     | CE2                  |                        |                          | `[ ]`  |                                                                                    |
-| CE13 | Video, image-sequence and audio layers          | D     | CE3, CE7             |                        |                          | `[ ]`  |                                                                                    |
-| CE14 | Mesh warp and puppet pins                       | D     | CE6                  |                        |                          | `[ ]`  |                                                                                    |
-| CE15 | Output formats, caching and parallel rendering  | D     | CE3                  |                        |                          | `[ ]`  |                                                                                    |
+| ID   | Deliverable                                     | Phase | Depends on           | Owner                  | Branch                              | Status | Completion evidence                                                                |
+| ---- | ----------------------------------------------- | ----- | -------------------- | ---------------------- | ----------------------------------- | ------ | ---------------------------------------------------------------------------------- |
+| CE0  | Baseline, parity harness and feature matrix     | A     | —                    | xxibcill (Claude Code) | `codex/composition-ce0`             | `[x]`  | [CE0 record](#ce0--baseline-parity-harness-and-feature-matrix)                     |
+| CE1  | `composition-1` contract and property paths     | A     | CE0                  | xxibcill (Claude Code) | `codex/composition-ce1`             | `[x]`  | [CE1 record](#ce1--composition-1-contract-and-property-paths)                      |
+| CE2  | Pure composition evaluator                      | A     | CE1                  | Codex                  | `codex/composition-ce2`             | `[x]`  | [CE2 record](#ce2--pure-composition-evaluator)                                     |
+| CE3  | Render graph and Canvas 2D reference backend    | A     | CE2                  | xxibcill (Claude Code) | `codex/composition-ce3`             | `[x]`  | [CE3 record](#ce3--render-graph-and-canvas-2d-reference-backend); merged in PR #28 |
+| CE4a | Story adapter with visual parity                | A     | CE3                  | Codex                  | `codex/composition-ce4`             | `[~]`  | [CE4a start record](#ce4a-start-record-2026-10-02)                                 |
+| CE4b | Commerce and reusable-component adapter         | A     | CE3, CE6 slices      | Codex                  | `codex/composition-ce4b`            | `[x]`  | [CE4b completion record](#ce4b-completion-record-2026-10-03)                       |
+| CE4c | Cinematic adapter                               | A     | CE3, CE8             |                        |                                     | `[ ]`  |                                                                                    |
+| CE4d | Legacy illustrated adapter and old-path removal | A     | CE4a–CE4c            |                        |                                     | `[ ]`  |                                                                                    |
+| CE5  | Shape layers                                    | B     | CE3                  |                        |                                     | `[ ]`  |                                                                                    |
+| CE6  | WebGL2 backend and effect registry              | B     | CE3                  | xxibcill (Claude Code) | `codex/composition-ce6-performance` | `[~]`  | [CE6 performance slice 1](#ce6-performance-slice-1-exact-effect-work-2026-10-03)   |
+| CE7  | Motion blur and time controls                   | B     | CE3                  |                        |                                     | `[ ]`  |                                                                                    |
+| CE8  | 2.5D layers and unified camera                  | B     | CE3, CE6, CE9        |                        |                                     | `[ ]`  |                                                                                    |
+| CE9  | Expressions and motion behaviours               | C     | CE2                  |                        |                                     | `[ ]`  |                                                                                    |
+| CE10 | TypeScript builder API and CLI                  | C     | CE3, CE4a, CE9, CE12 |                        |                                     | `[ ]`  |                                                                                    |
+| CE11 | Lab composition inspector and graph editor      | C     | CE3, CE10            |                        |                                     | `[ ]`  |                                                                                    |
+| CE12 | Motion linting                                  | C     | CE2                  |                        |                                     | `[ ]`  |                                                                                    |
+| CE13 | Video, image-sequence and audio layers          | D     | CE3, CE7             |                        |                                     | `[ ]`  |                                                                                    |
+| CE14 | Mesh warp and puppet pins                       | D     | CE6                  |                        |                                     | `[ ]`  |                                                                                    |
+| CE15 | Output formats, caching and parallel rendering  | D     | CE3                  |                        |                                     | `[ ]`  |                                                                                    |
 
 ### Phases and parallel work
 
@@ -2955,6 +2955,107 @@ unchanged **1.25×** gate. Other CE6 features do not require future family adapt
 
 **Verification:** Per-effect pixel tests at several parameter values, bounds expansion
 tests, backend parity suite, repeated-export determinism test.
+
+### CE6 performance slice 1: exact effect work (2026-10-03)
+
+- **Scope:** the transferred CE4b timing requirement only, not the broader CE6
+  effect catalogue. Branch `codex/composition-ce6-performance` from `da9fcf2`
+  (includes CE4b). The **1.25×** gate, family timing methods, fixtures,
+  baselines, pixel tiers, state/seek checks and required exports are unchanged.
+  Profiling and A/B experiments ran serially on the pinned SwiftShader profile;
+  diagnostics never replace the family acceptance methods.
+- **Where the time goes (0.34, pinned):** ordinary frames are bounded by the
+  GPU-process boundary, not JavaScript. Commerce Float spends ~1.0 ms/frame on the
+  canvas-to-texture upload (of which ~0.72 ms is Skia flushing the scaled image
+  draw, the same work legacy does), ~1.2 ms in `readPixels` (SwiftShader
+  completing the upload, composite and read) and ~0.43 ms copying owned frame
+  bytes; legacy needs ~1.4 ms in total. Story Stagger's GPU process runs
+  ~3.6 ms/frame of exact-rounding work (backdrop blits plus blend shaders,
+  uploads and readback) against a ~1.35 ms legacy frame. Measured per call at
+  1920×1080: read 1.0 ms, canvas upload 0.83 ms, copy pass 1.43 ms, exact blend
+  2.79 ms, blit 1.95 ms; legacy `getImageData` 1.58 ms. Effect cases are instead
+  bounded by shader work: an RGBA32F sum pass costs ≈0.38 ms + 0.107 ms per
+  fetch at 0.65 Mpx, while per-fetch uniform selects add 35–55% and inactive
+  uniform branches ~0.2 ms because SwiftShader executes both sides.
+  `gl.finish()` does not synchronize in Chrome; attribution therefore uses a
+  1×1 `readPixels` barrier, which overstates small operations and is used only
+  to choose experiments.
+- **Retained, `composition-webgl2-0.35.0`:** four exact changes, each confirmed
+  by bracketed A/B runs (two baselines, two candidates; composition milliseconds
+  per warm 240-frame pass) and by permanent byte-level regressions on pinned
+  SwiftShader and Apple M5 Pro Metal.
+  1. **Grain:** evaluate the 128-pixel LCG tile once per frame and composite it
+     with fixed-function source-over. Exhaustive checks cover all 262,144
+     backdrop/alpha/color combinations on texture and canvas framebuffers.
+     The original shader read its backdrop with linear filtering, which is
+     marginally inexact at texel centers on SwiftShader; blending reads stored
+     bytes, so pinned output now matches the exact formula (a few ±1 channel
+     values differ from 0.34; Metal is unchanged). **2,083–2,130 → 1,292–1,296 ms.**
+  2. **Box blur:** mixed-radix box sums (`S(rc+e)`) planned from the measured
+     cost model, with each program specialized for its radix, extra fetches and
+     byte scaling. Integer sums stay exact below 2²⁴; the radius-16 kernel uses
+     6 sum passes instead of 12. Output equals an independent separable integer
+     convolution byte for byte. Glow **10,824/10,597 → 7,371/7,630 ms**; focus
+     blur **4,929/4,451 → 3,882/3,899 ms**.
+  3. **Particles:** on canvas targets, compose only merged particle
+     neighborhoods, using the existing region-bounded primitive paint. Transparent
+     source leaves primitive source-over unchanged, so output equals the
+     full-canvas blend byte for byte. **1,886/1,847 → 1,456/1,455 ms.**
+  4. **Light sweep:** upload only the placed clip rectangle into the cleared
+     full-size source; the shader is unchanged and output is byte-identical.
+     **1,886/1,893 → 1,822/1,824 ms** (~3.5%, marginal).
+- **Rejected after measurement:** checking framebuffer completeness once per
+  format (removes a GPU round trip per new surface; ≤3% on cold Story cases,
+  within variation); regrouped blur sums without specialization (no glow gain);
+  skipping clears on fully overwritten scratch surfaces (no gain in four cases,
+  despite the barrier profile); canvas upload variants (`willReadFrequently`,
+  OffscreenCanvas, transferred bitmaps: ≈0.90–1.0 ms vs 0.97 ms, dominated by
+  the raster flush). Clipping isolate composites to painted bounds was not
+  attempted: it would remove ~27% of one full-frame pass (~0.3 of 11.6 ms) in
+  Displacement. The rejected readback scratch-buffer experiment was not repeated.
+- **Complete pinned matrices on 0.35** (patch SHA-256 `5796d31e…`, existing
+  commands and methods; the interrupted partial 0.34 commerce audit of 33 cases
+  was superseded rather than resumed): commerce **127 cases / 28,200 frames**, story/components
+  **48 / 9,216**, typography **20 / 3,367**. All assigned pixel tiers, evaluated
+  states, repeated frames and reverse seeks pass; all **53 required MP4 pairs**
+  are byte-identical with portable assets and overwrite protection, and fitted-panel
+  failures still return diagnostics without output. Timing failures are
+  **73 / 40 / 3** (0.33 audit: 74 / 40 / 3). The one newly passing case,
+  `component/commerce-text-fit/native-thai` (1.296→1.247×), uses no changed path,
+  so it is run-to-run variation, not a closed failure: the **117** recorded
+  failures remain open. Effect cases improved: grain 3.89→2.40×, glow
+  2.95→2.19×, particles 5.57→4.73×, particle environments 3.34→2.33/2.34×,
+  focus blur 1.63→1.39×, active-opacity focus blur 2.34→1.98×, displacement
+  pixel stacks 2.32/2.46→2.04/2.15×, glow-first sweep 2.71→2.31×, matte
+  2.22→1.82×, Story grain group 1.93→1.66×. Transport-bound cases are unchanged
+  within variation.
+- **Other checks:** `pnpm check:fast` (now 1,266 tests / 123 files),
+  `pnpm test:browser:composition-webgl` with the new exactness regressions,
+  `pnpm test:browser:composition-webgl-blur --hardware`,
+  `pnpm test:browser:composition-effects` (five native effect MP4 pairs),
+  `pnpm test:browser:composition-webgl-export` and the story adapter (192 exact
+  frames, two MP4s, 1.022×) pass. The frozen CE0 check passes all **176 items /
+  36,061 frames** without regeneration, confirming that the shared particle
+  geometry refactor leaves legacy output unchanged. The ordinary-story diagnostic passes pixels
+  and seeks and fails timing: **3.452×** in the matrix sequence, while a direct
+  bracketed A/B measured **2.990/2.974×** (0.34) versus **2.920/3.019×** (0.35);
+  the matrix value is a run-level outlier, and the case stays open with CE4a.
+- **Assessment:** exact GPU composition on SwiftShader carries fixed upload,
+  blit/blend and readback costs that already exceed the remaining budget for
+  most effect-free cases. Under the same family methods, the Canvas 2D
+  composition backend measured **≤1.197× (median 1.02×)** for all 117 failing
+  WebGL cases in the CE4b verification record. Closing the gate therefore needs
+  an owner decision rather than further compatible tuning, for example: compose
+  effect-free spans on the CPU canvas for the pinned export profile and use
+  WebGL for GPU effects (output changes from current WebGL bytes, a full repaint
+  on each path switch, and hardware-preview implications to validate); or a
+  formal acceptance revision. Remaining compatible work (displacement, echo
+  matte, background light, height shadow, animated paths and text) is expected
+  to give partial gains. The CE6 performance requirement remains **open**.
+- **Evidence:** [CE6 performance results](./composition-ce6-performance-results.json)
+  record commands, environments, profiles, cost models, every A/B run and the
+  complete per-case matrix rows with the 0.33 and partial 0.34 values. GitHub
+  Actions remain disabled; all verification ran locally.
 
 **Completion record:** _to be filled in._
 

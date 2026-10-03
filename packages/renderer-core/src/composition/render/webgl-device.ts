@@ -259,6 +259,30 @@ export class WebglDevice {
     }
   }
 
+  /** Upload one canvas rectangle into the same rectangle of `surface`. */
+  uploadArea(surface: WebglSurface, canvas: HTMLCanvasElement, rect: Bounds) {
+    const gl = this.gl;
+    gl.bindTexture(gl.TEXTURE_2D, surface.texture);
+    gl.pixelStorei(gl.UNPACK_SKIP_PIXELS, rect.left);
+    gl.pixelStorei(gl.UNPACK_SKIP_ROWS, rect.top);
+    try {
+      gl.texSubImage2D(
+        gl.TEXTURE_2D,
+        0,
+        rect.left,
+        rect.top,
+        rect.right - rect.left,
+        rect.bottom - rect.top,
+        gl.RGBA,
+        gl.UNSIGNED_BYTE,
+        canvas,
+      );
+    } finally {
+      gl.pixelStorei(gl.UNPACK_SKIP_PIXELS, 0);
+      gl.pixelStorei(gl.UNPACK_SKIP_ROWS, 0);
+    }
+  }
+
   uploadFloats(surface: WebglSurface, pixels: Float32Array<ArrayBuffer>) {
     const gl = this.gl;
     gl.bindTexture(gl.TEXTURE_2D, surface.texture);

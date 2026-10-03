@@ -2,23 +2,96 @@ import type { WebglDevice, WebglSurface } from "./webgl-device.ts";
 import type { WebglRect } from "./webgl-bounds.ts";
 
 type BoxKernel = { radius: number; divisor: number; lengths: number[] };
-const SUM = `uniform vec2 direction; uniform float count; uniform float extra;
+// Pass costs measured on the pinned software renderer: a fixed cost per pass
+// plus one per texel fetch. Fewer, wider passes write fewer RGBA32F pixels.
+const PASS_COST = 0.38,
+  FETCH_COST = 0.107;
+const MAXIMUM_MULTIPLE = 8,
+  MAXIMUM_EXTRA = 3;
+
+const shaders = new Map<string, string>();
+/**
+ * S(rc+e)(p) = Σj<r S(c)(p−jc) + Σi<e x(p−rc−i): exact integer box sums.
+ * Specialize each program: software GPUs evaluate both sides of per-fetch
+ * selects and inactive uniform branches.
+ */
+function sumShader(
+  multiple: number,
+  extra: number,
+  sumBytes: boolean,
+  baseBytes: boolean,
+) {
+  const key = `${multiple}/${extra}/${sumBytes}/${baseBytes}`;
+  const cached = shaders.get(key);
+  if (cached) return cached;
+  const fetch = (sampler: string, bytes: boolean) =>
+    bytes
+      ? `floor(texelFetch(${sampler},p,0)*255.0+0.5)`
+      : `texelFetch(${sampler},p,0)`;
+  const terms = [
+    "sumAt(p+ivec2(sumOffset))",
+    ...Array.from(
+      { length: multiple - 1 },
+      (_, j) => `sumAt(p+ivec2(sumOffset-direction*(count*${j + 1}.0)))`,
+    ),
+    ...Array.from(
+      { length: extra },
+      (_, i) =>
+        `baseAt(p+ivec2(baseOffset-direction*(count*${multiple}.0+${i}.0)))`,
+    ),
+  ];
+  const shader = `uniform vec2 direction; uniform float count;
 uniform vec2 sumOffset; uniform vec2 baseOffset;
 uniform vec2 sumSize; uniform vec2 baseSize;
-uniform float sumScale; uniform float baseScale;
 vec4 sumAt(ivec2 p) {
   return any(lessThan(p,ivec2(0))) || any(greaterThanEqual(p,ivec2(sumSize)))
-    ? vec4(0.0) : (sumScale==1.0?texelFetch(source,p,0):floor(texelFetch(source,p,0)*255.0+0.5));
+    ? vec4(0.0) : ${fetch("source", sumBytes)};
 }
 vec4 baseAt(ivec2 p) {
   return any(lessThan(p,ivec2(0))) || any(greaterThanEqual(p,ivec2(baseSize)))
-    ? vec4(0.0) : (baseScale==1.0?texelFetch(backdrop,p,0):floor(texelFetch(backdrop,p,0)*255.0+0.5));
+    ? vec4(0.0) : ${fetch("backdrop", baseBytes)};
 }
 void main() {
   ivec2 p=ivec2(gl_FragCoord.xy);
-  pixel=sumAt(p+ivec2(sumOffset))+sumAt(p+ivec2(sumOffset-direction*count));
-  if(extra>0.0) pixel+=baseAt(p+ivec2(baseOffset-direction*(count*2.0)));
+  pixel=${terms.join("+")};
 }`;
+  shaders.set(key, shader);
+  return shader;
+}
+
+type Step = { multiple: number; extra: number };
+const plans = new Map<number, Step[]>();
+/** Cheapest exact sequence of steps from a one-pixel box to `length`. */
+export function boxSteps(length: number): Step[] {
+  const cached = plans.get(length);
+  if (cached) return cached;
+  const cost = new Float64Array(length + 1).fill(Infinity);
+  const from: { previous: number; step: Step }[] = [];
+  cost[1] = 0;
+  for (let count = 1; count < length; count++) {
+    if (cost[count] === Infinity) continue;
+    for (let multiple = 2; multiple <= MAXIMUM_MULTIPLE; multiple++)
+      for (
+        let extra = 0;
+        extra <= Math.min(multiple - 1, MAXIMUM_EXTRA);
+        extra++
+      ) {
+        const next = count * multiple + extra;
+        if (next > length) continue;
+        const total =
+          cost[count]! + PASS_COST + FETCH_COST * (multiple + extra);
+        if (total < cost[next]! - 1e-9) {
+          cost[next] = total;
+          from[next] = { previous: count, step: { multiple, extra } };
+        }
+      }
+  }
+  const steps: Step[] = [];
+  for (let count = length; count > 1; count = from[count]!.previous)
+    steps.unshift(from[count]!.step);
+  plans.set(length, steps);
+  return steps;
+}
 const DIVIDE = `uniform vec2 offset; uniform float halfDivisor; uniform vec2 factorParts;
 uint multiplyHigh(uint a, uint b) {
   uint a0=a&65535u,a1=a>>16,b0=b&65535u,b1=b>>16;
@@ -83,7 +156,6 @@ export function boxBlur(
       let current = input;
       for (const length of kernel.lengths) {
         const base = current;
-        const baseScale = base === input ? 255 : 1;
         const baseOffset =
           base === input
             ? [
@@ -93,23 +165,20 @@ export function boxBlur(
             : [0, 0];
         const baseSize = base === input ? [input.width, input.height] : extent;
         let count = 1;
-        for (const bit of length.toString(2).slice(1)) {
+        for (const { multiple, extra } of boxSteps(length)) {
           const next = buffers.find(
             (buffer) => buffer !== base && buffer !== current,
           )!;
           const initial = current === input;
           device.pass(
-            SUM,
+            sumShader(multiple, extra, initial, base === input),
             next,
             [current, base],
             {
               direction,
               count,
-              extra: Number(bit),
-              baseScale,
               baseOffset,
               baseSize,
-              sumScale: initial ? 255 : 1,
               sumOffset: initial ? baseOffset : [0, 0],
               sumSize: initial ? [input.width, input.height] : extent,
             },
@@ -117,7 +186,7 @@ export function boxBlur(
             { left: 0, top: 0, right: extent[0]!, bottom: extent[1]! },
           );
           current = next;
-          count = count * 2 + Number(bit);
+          count = count * multiple + extra;
         }
       }
       if (axis === 1 && painted) device.clear(dst);
