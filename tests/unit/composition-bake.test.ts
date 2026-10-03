@@ -230,6 +230,85 @@ describe("comp bake", () => {
     });
   });
 
+  it.each([
+    "[frame, frame * frame]",
+    "frame < -32 ? [frame + 32, frame + 32] : frame > 60 ? [frame - 60, 60 - frame] : [0, 0]",
+  ])(
+    "preserves auto-orient boundary and rest-direction samples for %s",
+    (source) => {
+      const doc = valid(
+        base({
+          layers: [solid("a", { transform: { autoOrient: "path" } })],
+          expressions: { "a.transform.position": { source } },
+        }),
+      );
+      const baked = bakeExpressions(doc);
+      expect(baked.ok).toBe(true);
+      if (!baked.ok) return;
+      expect(baked.diagnostics).toEqual([]);
+      expect(baked.composition.layers[0]!.transform!.autoOrient).toBe("path");
+      expectSameFrames(doc, baked.composition);
+    },
+  );
+
+  it("refuses auto-orient history that varies on a held precomp clock", () => {
+    const doc = valid(
+      base({
+        layers: [{ id: "intro", type: "precomp", comp: "clip" }],
+        precomps: [
+          {
+            id: "clip",
+            width: 100,
+            height: 100,
+            frameCount: 40,
+            layers: [solid("hero", { transform: { autoOrient: "path" } })],
+          },
+        ],
+        expressions: {
+          "intro/hero.transform.position": { source: "[frame, frame * frame]" },
+        },
+      }),
+    );
+    expect(bakeExpressions(doc)).toMatchObject({
+      ok: false,
+      diagnostics: [expect.objectContaining({ code: "comp-bake-time" })],
+    });
+  });
+
+  it("refuses an indirect auto-orient read whose boundary history was not baked", () => {
+    const doc = valid(
+      base({
+        layers: [
+          solid("lead"),
+          solid("a"),
+          solid("b", {
+            transform: { autoOrient: "path" },
+          }),
+        ],
+        drivers: [
+          {
+            target: "b.transform.position.x",
+            source: "lead.transform.rotation",
+          },
+          { target: "b.transform.position.y", source: "a.transform.rotation" },
+        ],
+        expressions: {
+          "lead.transform.rotation": { source: "frame" },
+          "a.transform.rotation": { source: "frame * frame" },
+        },
+      }),
+    );
+    expect(bakeExpressions(doc)).toMatchObject({
+      ok: false,
+      diagnostics: [
+        expect.objectContaining({
+          code: "comp-bake-auto-orient",
+          path: "b.transform.autoOrient",
+        }),
+      ],
+    });
+  });
+
   it("returns invalid input diagnostics and leaves expression-free input unchanged", () => {
     expect(bakeExpressions({})).toMatchObject({ ok: false });
     const plain = valid(base());

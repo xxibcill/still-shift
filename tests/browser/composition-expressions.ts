@@ -88,8 +88,40 @@ try {
   await page.goto(server.resolvedUrls!.local[0]!);
 
   const committed = await fixture("overlap-demo.baked");
-  for (const name of ["overlap-demo", "built-ins"]) {
-    const source = await fixture(name);
+  const cases: { name: string; source: Composition }[] = [
+    { name: "overlap-demo", source: await fixture("overlap-demo") },
+    { name: "built-ins", source: await fixture("built-ins") },
+    {
+      name: "auto-orient-boundaries",
+      source: {
+        schemaVersion: "composition-1",
+        id: "main",
+        width: 200,
+        height: 200,
+        fps: 30,
+        frameCount: 40,
+        assets: [],
+        layers: [
+          {
+            id: "a",
+            type: "solid",
+            size: [20, 10],
+            color: "#808080",
+            transform: { autoOrient: "path" },
+          },
+        ],
+        expressions: {
+          "a.transform.position": {
+            source: "[50 + frame, 40 + frame * frame / 40]",
+          },
+          "a.transform.rotation": {
+            source: "if(frame >= 0, 0, valueAtTime(10000))",
+          },
+        },
+      },
+    },
+  ];
+  for (const { name, source } of cases) {
     const baked = bakeExpressions(source);
     assert.ok(baked.ok, JSON.stringify(baked.diagnostics));
     if (name === "overlap-demo")

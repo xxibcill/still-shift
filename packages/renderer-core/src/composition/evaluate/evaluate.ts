@@ -80,6 +80,7 @@ import type {
 } from "./types.ts";
 
 export const COMPOSITION_EVALUATOR_VERSION = "composition-evaluator-23";
+export const AUTO_ORIENT_LOOKAROUND_FRAMES = 64;
 const order = ["action", "response", "current", "carrier"] as const;
 /** Keyed and motion-craft values of one layer, before constraints (CE9 expression stage). */
 type Stage = {
@@ -1140,9 +1141,17 @@ class Evaluation {
         : undefined;
     const here = yield* at(this.time);
     let angle = direction(yield* at(this.time + 1), yield* at(this.time - 1));
-    for (let k = 1; angle === undefined && k <= 64; k++)
+    for (
+      let k = 1;
+      angle === undefined && k <= AUTO_ORIENT_LOOKAROUND_FRAMES;
+      k++
+    )
       angle = direction(here, yield* at(this.time - k));
-    for (let k = 1; angle === undefined && k <= 64; k++)
+    for (
+      let k = 1;
+      angle === undefined && k <= AUTO_ORIENT_LOOKAROUND_FRAMES;
+      k++
+    )
       angle = direction(yield* at(this.time + k), here);
     return angle ?? 0;
   }

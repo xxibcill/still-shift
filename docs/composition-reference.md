@@ -853,15 +853,22 @@ every integer frame; `bakeExpressions` is the library form, and
 `evaluateStageProperty(comp, path, time)` returns the expression-stage value and
 layer time that bake and expression reads use.
 
-| Code                  | Severity | Meaning                                                                                                                                             |
-| --------------------- | -------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `comp-bake-time`      | error    | A property's layer time at an integer frame is not an integer (stretch other than ±1, fractional remap), or a held layer time has different values. |
-| `comp-bake-limit`     | error    | A property would need more than 2,000 keys.                                                                                                         |
-| `comp-bake-quantized` | warning  | Colour keys were rounded to 8-bit channels.                                                                                                         |
-| `comp-bake-history`   | warning  | A remaining delayed or lagged driver reads a baked property; values before frame 0 hold the first key.                                              |
+| Code                    | Severity | Meaning                                                                                                                                             |
+| ----------------------- | -------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `comp-bake-time`        | error    | A property's layer time at an integer frame is not an integer (stretch other than ±1, fractional remap), or a held layer time has different values. |
+| `comp-bake-limit`       | error    | A property would need more than 2,000 keys.                                                                                                         |
+| `comp-bake-quantized`   | warning  | Colour keys were rounded to 8-bit channels.                                                                                                         |
+| `comp-bake-history`     | warning  | A remaining delayed or lagged driver reads a baked property; values before frame 0 hold the first key.                                              |
+| `comp-bake-auto-orient` | error    | Retained path auto-orientation differs after baking because its position history cannot be preserved.                                               |
 
 Auto-orient (`transform.autoOrient`) is a transform switch, not an expression, and
-remains in baked output; it reads the baked position identically.
+remains in baked output. Position expressions on these layers also sample the 64
+root frames before and after the composition, preserving the heading reader's
+boundary chord and direction search during rests. These samples obey the same
+integer and repeated-layer-time requirements. Bake verifies retained auto-orient
+rotations at every output frame, including nested instances, and refuses a result
+that changes them (`comp-bake-auto-orient`), including indirect driver reads whose
+history was not preserved.
 
 ## Property paths
 

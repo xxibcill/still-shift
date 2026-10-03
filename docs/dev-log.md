@@ -47,8 +47,11 @@ still hold before relying on them.
   one P1 bake boundary defect and two P2 built-in contract defects are being
   fixed in separate commits. Integrated main `5a6705c` (PR #31 merged); only
   the development log conflicted, and both branches' records are retained.
-  Lazy `if` and vector-distance validation are fixed (112 targeted tests pass);
-  bake parity remains. One final push to the existing PR branch is pending.
+  All three fixes are implemented. Fast checks pass (1,412 tests), expanded
+  expression pixel/export and evaluator browser checks pass; all 176 frozen
+  baseline items / 36,061 frames pass without regeneration. Three separate
+  finding commits are prepared for the authorized final push to PR #32.
+  [Fix evidence](./pr-32-fix-results.json).
   [Review evidence](./pr-32-review-results.json).
 
 _Last updated 2026-10-04 by Codex for PR #32 review fixes._
@@ -109,6 +112,23 @@ _Last updated 2026-10-04 by Codex for PR #32 review fixes._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-04 — Fix PR #32 auto-orient bake parity
+
+- **Agent / branch:** Codex on isolated `codex/pr32-review-fixes` after `e693334`.
+- **Done:** preserve 64-frame boundary position history for retained path
+  auto-orient; check output orientations recursively and refuse incompatible
+  held-clock or indirect-history bakes. Switch semantics remain intact.
+- **Results:** three regressions fail before the fix; all 13 bake tests and
+  fast checks (1,412 tests) pass. The new 40-frame browser case is pixel/seek
+  exact on both backends; repeated/baked MP4s and evaluator parity also pass.
+- **Results (final):** all 176 frozen items / 36,061 frames pass in 270.67 s;
+  no baselines regenerated. Formatting, lint, types and whitespace pass.
+- **Delivery:** this is the third finding commit, following `c3fc70f` and
+  `e693334`; all are delivered together by the authorized final push to PR #32.
+  Main `5a6705c` is integrated. Full runtime/integration and hardware checks
+  were not rerun; CE6-P and CE9-F1 remain deferred.
+- **Records:** [fix evidence](./pr-32-fix-results.json), [review](./pr-32-review-results.json).
 
 ### 2026-10-04 — Fix PR #32 distance dimensions
 

@@ -23,7 +23,12 @@ import {
   type PropertyPath,
   type PropertyPathSegment,
 } from "@still-shift/scene-contract";
-import { evaluateStageProperties } from "./evaluate/index.ts";
+import { AUTO_ORIENT_LOOKAROUND_FRAMES } from "./evaluate/evaluate.ts";
+import {
+  evaluateComp,
+  evaluateStageProperties,
+  type EvaluatedLayerTree,
+} from "./evaluate/index.ts";
 
 export type BakedProperty = { path: string; keys: number };
 export type BakeResult =
@@ -41,6 +46,7 @@ type Group = {
   segments: PropertyPathSegment[];
   text: string;
   origin: string;
+  lookaround: boolean;
 };
 
 const COMPONENTS = new Set(["x", "y", "z", "r", "g", "b", "a"]);
@@ -76,6 +82,27 @@ const equal = (a: number | number[], b: number | number[]) =>
   Array.isArray(a)
     ? Array.isArray(b) && a.every((x, i) => x === b[i])
     : a === b;
+
+function autoOrientMismatch(
+  source: EvaluatedLayerTree,
+  baked: EvaluatedLayerTree,
+  route: string[] = [],
+): string | undefined {
+  for (const [i, layer] of source.layers.entries()) {
+    const output = baked.layers[i]!;
+    const path = [...route, layer.id];
+    if (
+      layer.layer.transform?.autoOrient === "path" &&
+      layer.transform.rotation !== output.transform.rotation
+    )
+      return `${path.join("/")}.transform.autoOrient`;
+    if (layer.precomp && output.precomp) {
+      const mismatch = autoOrientMismatch(layer.precomp, output.precomp, path);
+      if (mismatch) return mismatch;
+    }
+  }
+  return undefined;
+}
 
 /** Make every precomp along `route` referenced once, cloning shared definitions. */
 function uniqueScope(comp: Composition, route: readonly string[]) {
@@ -161,17 +188,28 @@ export function bakeExpressions(input: unknown): BakeResult {
         segments,
         text: `${node}.${segmentKey(segments)}`,
         origin: formatJsonPath(expression.entry.origin),
+        lookaround:
+          expression.target.resolved.layer?.transform?.autoOrient === "path" &&
+          segments[0]!.name === "transform" &&
+          segments[1]!.name === "position",
       });
   }
   const list = [...groups.values()];
   const samples = list.map(() => new Map<number, number | number[]>());
-  for (let frame = 0; frame < source.frameCount; frame++) {
+  const margin = list.some((group) => group.lookaround)
+    ? AUTO_ORIENT_LOOKAROUND_FRAMES
+    : 0;
+  for (let frame = -margin; frame < source.frameCount + margin; frame++) {
+    const indices = list.flatMap((group, i) =>
+      group.lookaround || (frame >= 0 && frame < source.frameCount) ? [i] : [],
+    );
     const values = evaluateStageProperties(
       source,
-      list.map((group) => group.text),
+      indices.map((i) => list[i]!.text),
       frame,
     );
-    for (const [i, sample] of values.entries()) {
+    for (const [at, sample] of values.entries()) {
+      const i = indices[at]!;
       const keyTime = sample.keyTime;
       const rounded = Math.round(keyTime);
       if (Math.abs(keyTime - rounded) > 1e-9)
@@ -303,6 +341,27 @@ export function bakeExpressions(input: unknown): BakeResult {
 
   const check = validateComposition(output);
   if (!check.ok) return check;
+  const hasAutoOrient = [source, ...(source.precomps ?? [])].some((scope) =>
+    scope.layers.some((layer) => layer.transform?.autoOrient === "path"),
+  );
+  if (hasAutoOrient)
+    for (let frame = 0; frame < source.frameCount; frame++) {
+      const mismatch = autoOrientMismatch(
+        evaluateComp(source, frame),
+        evaluateComp(check.composition, frame),
+      );
+      if (mismatch)
+        return {
+          ok: false,
+          diagnostics: [
+            error(
+              "comp-bake-auto-orient",
+              mismatch,
+              `Auto-orientation changes at frame ${frame}; its position history cannot be preserved by these keys`,
+            ),
+          ],
+        };
+    }
   return {
     ok: true,
     composition: check.composition,
