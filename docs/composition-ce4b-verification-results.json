@@ -5134,6 +5134,14 @@
       "finishedAt": "2026-10-03T06:16:25.677Z",
       "code": 0,
       "signal": null
+    },
+    {
+      "id": "frozen-ce0-final",
+      "command": ["pnpm", "test:browser:composition-baselines"],
+      "startedAt": "2026-10-03T06:16:25.679Z",
+      "finishedAt": "2026-10-03T06:21:04.377Z",
+      "code": 0,
+      "signal": null
     }
   ],
   "canvasTypography": {
@@ -5357,7 +5365,3606 @@
       }
     ]
   },
-  "hardwarePreview": {},
+  "hardwarePreview": {
+    "commerce-webgl2": {
+      "environments": {
+        "pinned": {
+          "profile": "chromium-software-2",
+          "browserVersion": "151.0.7922.34",
+          "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+          "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+          "platform": "darwin",
+          "arch": "arm64"
+        },
+        "hardware": {
+          "profile": "hardware",
+          "browserVersion": "151.0.7922.34",
+          "webglRenderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M5 Pro, Unspecified Version)",
+          "rasterFingerprint": "sha256:1635aedc2b987dcd5c74dce4b4098aff37754174c33461d6f626c9dcad69e4a9",
+          "platform": "darwin",
+          "arch": "arm64"
+        }
+      },
+      "results": [
+        {
+          "id": "commerce/a01-landscape",
+          "backend": "webgl2",
+          "width": 1920,
+          "height": 1080,
+          "authoredFrames": 300,
+          "method": "Every tenth frame plus early, midpoint and endpoint boundaries; fresh canvas per frame with cached resources. Hardware compared directly with pinned output of the same explicit backend at the existing perceptual tier. Lossless PNG transport verified by SHA-256 for every compared frame. Evaluated timing, visibility, transforms and state agree exactly; reverse fresh-render hashes at start/mid/end. WebGL2 also checks reverse seeks on one retained preview across seven sampled positions.",
+          "comparisons": [
+            {
+              "frame": 0,
+              "maxChannelDelta": 1,
+              "differingChannels": 902,
+              "psnr": 86.5172006223613,
+              "ssim": 0.9999999789872945
+            },
+            {
+              "frame": 1,
+              "maxChannelDelta": 1,
+              "differingChannels": 23550,
+              "psnr": 72.34935688313156,
+              "ssim": 0.999997363595186
+            },
+            {
+              "frame": 2,
+              "maxChannelDelta": 1,
+              "differingChannels": 6377,
+              "psnr": 78.02310182790818,
+              "ssim": 0.9999987711759809
+            },
+            {
+              "frame": 3,
+              "maxChannelDelta": 1,
+              "differingChannels": 5870,
+              "psnr": 78.38288498530457,
+              "ssim": 0.9999992271172039
+            },
+            {
+              "frame": 10,
+              "maxChannelDelta": 14,
+              "differingChannels": 76491,
+              "psnr": 62.44387579947474,
+              "ssim": 0.9999404022977972
+            },
+            {
+              "frame": 20,
+              "maxChannelDelta": 16,
+              "differingChannels": 110928,
+              "psnr": 62.05777746970157,
+              "ssim": 0.9998998251084437
+            },
+            {
+              "frame": 30,
+              "maxChannelDelta": 13,
+              "differingChannels": 114900,
+              "psnr": 61.47989756977016,
+              "ssim": 0.9998939018649255
+            },
+            {
+              "frame": 40,
+              "maxChannelDelta": 15,
+              "differingChannels": 110965,
+              "psnr": 61.55112542161633,
+              "ssim": 0.9998965032379971
+            },
+            {
+              "frame": 50,
+              "maxChannelDelta": 17,
+              "differingChannels": 113354,
+              "psnr": 61.295390594287575,
+              "ssim": 0.9998885248596152
+            },
+            {
+              "frame": 60,
+              "maxChannelDelta": 19,
+              "differingChannels": 116099,
+              "psnr": 60.63647205336764,
+              "ssim": 0.9998783990034017
+            },
+            {
+              "frame": 70,
+              "maxChannelDelta": 36,
+              "differingChannels": 119981,
+              "psnr": 60.509185539584166,
+              "ssim": 0.9998776378451344
+            },
+            {
+              "frame": 80,
+              "maxChannelDelta": 25,
+              "differingChannels": 120332,
+              "psnr": 60.52121373893689,
+              "ssim": 0.9998782281945084
+            },
+            {
+              "frame": 90,
+              "maxChannelDelta": 25,
+              "differingChannels": 120003,
+              "psnr": 60.51187841192247,
+              "ssim": 0.9998777525256063
+            },
+            {
+              "frame": 100,
+              "maxChannelDelta": 25,
+              "differingChannels": 120003,
+              "psnr": 60.51187841192247,
+              "ssim": 0.9998777525256063
+            },
+            {
+              "frame": 110,
+              "maxChannelDelta": 25,
+              "differingChannels": 120003,
+              "psnr": 60.51187841192247,
+              "ssim": 0.9998777525256063
+            },
+            {
+              "frame": 120,
+              "maxChannelDelta": 25,
+              "differingChannels": 120003,
+              "psnr": 60.51187841192247,
+              "ssim": 0.9998777525256063
+            },
+            {
+              "frame": 130,
+              "maxChannelDelta": 25,
+              "differingChannels": 120003,
+              "psnr": 60.51187841192247,
+              "ssim": 0.9998777525256063
+            },
+            {
+              "frame": 140,
+              "maxChannelDelta": 27,
+              "differingChannels": 120881,
+              "psnr": 60.44777730786028,
+              "ssim": 0.9998769065210179
+            },
+            {
+              "frame": 150,
+              "maxChannelDelta": 41,
+              "differingChannels": 123378,
+              "psnr": 60.33913352425433,
+              "ssim": 0.9998742349656145
+            },
+            {
+              "frame": 160,
+              "maxChannelDelta": 36,
+              "differingChannels": 123271,
+              "psnr": 60.40581043960841,
+              "ssim": 0.9998773991538285
+            },
+            {
+              "frame": 170,
+              "maxChannelDelta": 36,
+              "differingChannels": 123271,
+              "psnr": 60.40581043960841,
+              "ssim": 0.9998773991538285
+            },
+            {
+              "frame": 180,
+              "maxChannelDelta": 36,
+              "differingChannels": 123271,
+              "psnr": 60.40581043960841,
+              "ssim": 0.9998773991538285
+            },
+            {
+              "frame": 190,
+              "maxChannelDelta": 36,
+              "differingChannels": 123271,
+              "psnr": 60.40581043960841,
+              "ssim": 0.9998773991538285
+            },
+            {
+              "frame": 200,
+              "maxChannelDelta": 36,
+              "differingChannels": 123271,
+              "psnr": 60.40581043960841,
+              "ssim": 0.9998773991538285
+            },
+            {
+              "frame": 210,
+              "maxChannelDelta": 36,
+              "differingChannels": 123271,
+              "psnr": 60.40581043960841,
+              "ssim": 0.9998773991538285
+            },
+            {
+              "frame": 220,
+              "maxChannelDelta": 19,
+              "differingChannels": 128388,
+              "psnr": 60.472653067466105,
+              "ssim": 0.9998752836509484
+            },
+            {
+              "frame": 230,
+              "maxChannelDelta": 19,
+              "differingChannels": 123297,
+              "psnr": 60.54468891104909,
+              "ssim": 0.9998725407026897
+            },
+            {
+              "frame": 240,
+              "maxChannelDelta": 19,
+              "differingChannels": 117847,
+              "psnr": 60.61479690210913,
+              "ssim": 0.9998783433836611
+            },
+            {
+              "frame": 250,
+              "maxChannelDelta": 19,
+              "differingChannels": 117847,
+              "psnr": 60.61479690210913,
+              "ssim": 0.9998783433836611
+            },
+            {
+              "frame": 260,
+              "maxChannelDelta": 19,
+              "differingChannels": 117847,
+              "psnr": 60.61479690210913,
+              "ssim": 0.9998783433836611
+            },
+            {
+              "frame": 270,
+              "maxChannelDelta": 19,
+              "differingChannels": 117847,
+              "psnr": 60.61479690210913,
+              "ssim": 0.9998783433836611
+            },
+            {
+              "frame": 280,
+              "maxChannelDelta": 19,
+              "differingChannels": 117847,
+              "psnr": 60.61479690210913,
+              "ssim": 0.9998783433836611
+            },
+            {
+              "frame": 290,
+              "maxChannelDelta": 19,
+              "differingChannels": 117847,
+              "psnr": 60.61479690210913,
+              "ssim": 0.9998783433836611
+            },
+            {
+              "frame": 298,
+              "maxChannelDelta": 19,
+              "differingChannels": 117847,
+              "psnr": 60.61479690210913,
+              "ssim": 0.9998783433836611
+            },
+            {
+              "frame": 299,
+              "maxChannelDelta": 19,
+              "differingChannels": 117847,
+              "psnr": 60.61479690210913,
+              "ssim": 0.9998783433836611
+            }
+          ],
+          "failures": [],
+          "seekFailures": [],
+          "sameInstanceSeekFailures": [],
+          "stateFailures": [],
+          "maxDelta": 41,
+          "minPsnr": 60.33913352425433,
+          "minSsim": 0.9998725407026897
+        },
+        {
+          "id": "commerce/a01-feed",
+          "backend": "webgl2",
+          "width": 1080,
+          "height": 1350,
+          "authoredFrames": 300,
+          "method": "Every tenth frame plus early, midpoint and endpoint boundaries; fresh canvas per frame with cached resources. Hardware compared directly with pinned output of the same explicit backend at the existing perceptual tier. Lossless PNG transport verified by SHA-256 for every compared frame. Evaluated timing, visibility, transforms and state agree exactly; reverse fresh-render hashes at start/mid/end. WebGL2 also checks reverse seeks on one retained preview across seven sampled positions.",
+          "comparisons": [
+            {
+              "frame": 0,
+              "maxChannelDelta": 1,
+              "differingChannels": 902,
+              "psnr": 84.98752602027587,
+              "ssim": 0.9999999700443871
+            },
+            {
+              "frame": 1,
+              "maxChannelDelta": 1,
+              "differingChannels": 14863,
+              "psnr": 72.81852661777033,
+              "ssim": 0.9999971087862691
+            },
+            {
+              "frame": 2,
+              "maxChannelDelta": 1,
+              "differingChannels": 5315,
+              "psnr": 77.28455870710212,
+              "ssim": 0.9999983014925073
+            },
+            {
+              "frame": 3,
+              "maxChannelDelta": 1,
+              "differingChannels": 4978,
+              "psnr": 77.56904247296954,
+              "ssim": 0.9999986745955884
+            },
+            {
+              "frame": 10,
+              "maxChannelDelta": 12,
+              "differingChannels": 41057,
+              "psnr": 64.04667448191104,
+              "ssim": 0.999967979903575
+            },
+            {
+              "frame": 20,
+              "maxChannelDelta": 13,
+              "differingChannels": 84835,
+              "psnr": 60.50195377868463,
+              "ssim": 0.9998825204789006
+            },
+            {
+              "frame": 30,
+              "maxChannelDelta": 12,
+              "differingChannels": 83764,
+              "psnr": 59.8335609623787,
+              "ssim": 0.9998984112159185
+            },
+            {
+              "frame": 40,
+              "maxChannelDelta": 14,
+              "differingChannels": 82213,
+              "psnr": 61.93253476891124,
+              "ssim": 0.9999011472281871
+            },
+            {
+              "frame": 50,
+              "maxChannelDelta": 13,
+              "differingChannels": 84421,
+              "psnr": 60.715530281360365,
+              "ssim": 0.9998941134999989
+            },
+            {
+              "frame": 60,
+              "maxChannelDelta": 12,
+              "differingChannels": 84946,
+              "psnr": 60.26400005030324,
+              "ssim": 0.9998911026316786
+            },
+            {
+              "frame": 70,
+              "maxChannelDelta": 35,
+              "differingChannels": 86891,
+              "psnr": 60.09258710435387,
+              "ssim": 0.9998883191869086
+            },
+            {
+              "frame": 80,
+              "maxChannelDelta": 35,
+              "differingChannels": 87284,
+              "psnr": 60.1021282838023,
+              "ssim": 0.9998888449312158
+            },
+            {
+              "frame": 90,
+              "maxChannelDelta": 35,
+              "differingChannels": 86851,
+              "psnr": 60.10158116871837,
+              "ssim": 0.9998886416108629
+            },
+            {
+              "frame": 100,
+              "maxChannelDelta": 35,
+              "differingChannels": 86851,
+              "psnr": 60.10158116871837,
+              "ssim": 0.9998886416108629
+            },
+            {
+              "frame": 110,
+              "maxChannelDelta": 35,
+              "differingChannels": 86851,
+              "psnr": 60.10158116871837,
+              "ssim": 0.9998886416108629
+            },
+            {
+              "frame": 120,
+              "maxChannelDelta": 35,
+              "differingChannels": 86851,
+              "psnr": 60.10158116871837,
+              "ssim": 0.9998886416108629
+            },
+            {
+              "frame": 130,
+              "maxChannelDelta": 35,
+              "differingChannels": 86851,
+              "psnr": 60.10158116871837,
+              "ssim": 0.9998886416108629
+            },
+            {
+              "frame": 140,
+              "maxChannelDelta": 36,
+              "differingChannels": 87332,
+              "psnr": 59.97865005215801,
+              "ssim": 0.9998879605742436
+            },
+            {
+              "frame": 150,
+              "maxChannelDelta": 37,
+              "differingChannels": 88870,
+              "psnr": 59.913620108950255,
+              "ssim": 0.999886990809952
+            },
+            {
+              "frame": 160,
+              "maxChannelDelta": 62,
+              "differingChannels": 88800,
+              "psnr": 59.81502559305869,
+              "ssim": 0.9998870045456302
+            },
+            {
+              "frame": 170,
+              "maxChannelDelta": 62,
+              "differingChannels": 88800,
+              "psnr": 59.81502559305869,
+              "ssim": 0.9998870045456302
+            },
+            {
+              "frame": 180,
+              "maxChannelDelta": 62,
+              "differingChannels": 88800,
+              "psnr": 59.81502559305869,
+              "ssim": 0.9998870045456302
+            },
+            {
+              "frame": 190,
+              "maxChannelDelta": 62,
+              "differingChannels": 88800,
+              "psnr": 59.81502559305869,
+              "ssim": 0.9998870045456302
+            },
+            {
+              "frame": 200,
+              "maxChannelDelta": 62,
+              "differingChannels": 88800,
+              "psnr": 59.81502559305869,
+              "ssim": 0.9998870045456302
+            },
+            {
+              "frame": 210,
+              "maxChannelDelta": 62,
+              "differingChannels": 88800,
+              "psnr": 59.81502559305869,
+              "ssim": 0.9998870045456302
+            },
+            {
+              "frame": 220,
+              "maxChannelDelta": 19,
+              "differingChannels": 92366,
+              "psnr": 60.10627296462475,
+              "ssim": 0.9998872901019521
+            },
+            {
+              "frame": 230,
+              "maxChannelDelta": 12,
+              "differingChannels": 91643,
+              "psnr": 60.151257765234966,
+              "ssim": 0.9998786420748452
+            },
+            {
+              "frame": 240,
+              "maxChannelDelta": 12,
+              "differingChannels": 86694,
+              "psnr": 60.23572832892547,
+              "ssim": 0.9998910174932487
+            },
+            {
+              "frame": 250,
+              "maxChannelDelta": 12,
+              "differingChannels": 86694,
+              "psnr": 60.23572832892547,
+              "ssim": 0.9998910174932487
+            },
+            {
+              "frame": 260,
+              "maxChannelDelta": 12,
+              "differingChannels": 86694,
+              "psnr": 60.23572832892547,
+              "ssim": 0.9998910174932487
+            },
+            {
+              "frame": 270,
+              "maxChannelDelta": 12,
+              "differingChannels": 86694,
+              "psnr": 60.23572832892547,
+              "ssim": 0.9998910174932487
+            },
+            {
+              "frame": 280,
+              "maxChannelDelta": 12,
+              "differingChannels": 86694,
+              "psnr": 60.23572832892547,
+              "ssim": 0.9998910174932487
+            },
+            {
+              "frame": 290,
+              "maxChannelDelta": 12,
+              "differingChannels": 86694,
+              "psnr": 60.23572832892547,
+              "ssim": 0.9998910174932487
+            },
+            {
+              "frame": 298,
+              "maxChannelDelta": 12,
+              "differingChannels": 86694,
+              "psnr": 60.23572832892547,
+              "ssim": 0.9998910174932487
+            },
+            {
+              "frame": 299,
+              "maxChannelDelta": 12,
+              "differingChannels": 86694,
+              "psnr": 60.23572832892547,
+              "ssim": 0.9998910174932487
+            }
+          ],
+          "failures": [],
+          "seekFailures": [],
+          "sameInstanceSeekFailures": [],
+          "stateFailures": [],
+          "maxDelta": 62,
+          "minPsnr": 59.81502559305869,
+          "minSsim": 0.9998786420748452
+        },
+        {
+          "id": "commerce/h01-landscape",
+          "backend": "webgl2",
+          "width": 1920,
+          "height": 1080,
+          "authoredFrames": 240,
+          "method": "Every tenth frame plus early, midpoint and endpoint boundaries; fresh canvas per frame with cached resources. Hardware compared directly with pinned output of the same explicit backend at the existing perceptual tier. Lossless PNG transport verified by SHA-256 for every compared frame. Evaluated timing, visibility, transforms and state agree exactly; reverse fresh-render hashes at start/mid/end. WebGL2 also checks reverse seeks on one retained preview across seven sampled positions.",
+          "comparisons": [
+            {
+              "frame": 0,
+              "maxChannelDelta": 1,
+              "differingChannels": 902,
+              "psnr": 86.5172006223613,
+              "ssim": 0.9999999789872945
+            },
+            {
+              "frame": 1,
+              "maxChannelDelta": 1,
+              "differingChannels": 23550,
+              "psnr": 72.34935688313156,
+              "ssim": 0.999997363595186
+            },
+            {
+              "frame": 2,
+              "maxChannelDelta": 1,
+              "differingChannels": 6377,
+              "psnr": 78.02310182790818,
+              "ssim": 0.9999987711759809
+            },
+            {
+              "frame": 3,
+              "maxChannelDelta": 1,
+              "differingChannels": 5870,
+              "psnr": 78.38288498530457,
+              "ssim": 0.9999992271172039
+            },
+            {
+              "frame": 10,
+              "maxChannelDelta": 16,
+              "differingChannels": 105966,
+              "psnr": 61.68854397769807,
+              "ssim": 0.9999211625758315
+            },
+            {
+              "frame": 20,
+              "maxChannelDelta": 13,
+              "differingChannels": 113274,
+              "psnr": 61.25564244340789,
+              "ssim": 0.9998921127815789
+            },
+            {
+              "frame": 30,
+              "maxChannelDelta": 15,
+              "differingChannels": 110807,
+              "psnr": 61.47158790473036,
+              "ssim": 0.9998967182507713
+            },
+            {
+              "frame": 40,
+              "maxChannelDelta": 16,
+              "differingChannels": 113790,
+              "psnr": 61.106100991558144,
+              "ssim": 0.9998923265406049
+            },
+            {
+              "frame": 50,
+              "maxChannelDelta": 19,
+              "differingChannels": 116099,
+              "psnr": 60.63647205336764,
+              "ssim": 0.9998783990034017
+            },
+            {
+              "frame": 60,
+              "maxChannelDelta": 19,
+              "differingChannels": 116099,
+              "psnr": 60.63647205336764,
+              "ssim": 0.9998783990034017
+            },
+            {
+              "frame": 70,
+              "maxChannelDelta": 19,
+              "differingChannels": 116099,
+              "psnr": 60.63647205336764,
+              "ssim": 0.9998783990034017
+            },
+            {
+              "frame": 80,
+              "maxChannelDelta": 19,
+              "differingChannels": 116099,
+              "psnr": 60.63647205336764,
+              "ssim": 0.9998783990034017
+            },
+            {
+              "frame": 90,
+              "maxChannelDelta": 19,
+              "differingChannels": 116099,
+              "psnr": 60.63647205336764,
+              "ssim": 0.9998783990034017
+            },
+            {
+              "frame": 100,
+              "maxChannelDelta": 19,
+              "differingChannels": 116099,
+              "psnr": 60.63647205336764,
+              "ssim": 0.9998783990034017
+            },
+            {
+              "frame": 110,
+              "maxChannelDelta": 19,
+              "differingChannels": 116099,
+              "psnr": 60.63647205336764,
+              "ssim": 0.9998783990034017
+            },
+            {
+              "frame": 120,
+              "maxChannelDelta": 19,
+              "differingChannels": 116099,
+              "psnr": 60.63647205336764,
+              "ssim": 0.9998783990034017
+            },
+            {
+              "frame": 130,
+              "maxChannelDelta": 19,
+              "differingChannels": 116099,
+              "psnr": 60.63647205336764,
+              "ssim": 0.9998783990034017
+            },
+            {
+              "frame": 140,
+              "maxChannelDelta": 19,
+              "differingChannels": 116099,
+              "psnr": 60.63647205336764,
+              "ssim": 0.9998783990034017
+            },
+            {
+              "frame": 150,
+              "maxChannelDelta": 19,
+              "differingChannels": 116099,
+              "psnr": 60.63647205336764,
+              "ssim": 0.9998783990034017
+            },
+            {
+              "frame": 160,
+              "maxChannelDelta": 19,
+              "differingChannels": 118817,
+              "psnr": 60.60152045485165,
+              "ssim": 0.999878119430987
+            },
+            {
+              "frame": 170,
+              "maxChannelDelta": 19,
+              "differingChannels": 118087,
+              "psnr": 60.608456194996194,
+              "ssim": 0.9998783229260013
+            },
+            {
+              "frame": 180,
+              "maxChannelDelta": 19,
+              "differingChannels": 117847,
+              "psnr": 60.61479690210913,
+              "ssim": 0.9998783433836611
+            },
+            {
+              "frame": 190,
+              "maxChannelDelta": 19,
+              "differingChannels": 117847,
+              "psnr": 60.61479690210913,
+              "ssim": 0.9998783433836611
+            },
+            {
+              "frame": 200,
+              "maxChannelDelta": 19,
+              "differingChannels": 117847,
+              "psnr": 60.61479690210913,
+              "ssim": 0.9998783433836611
+            },
+            {
+              "frame": 210,
+              "maxChannelDelta": 19,
+              "differingChannels": 117847,
+              "psnr": 60.61479690210913,
+              "ssim": 0.9998783433836611
+            },
+            {
+              "frame": 220,
+              "maxChannelDelta": 19,
+              "differingChannels": 117847,
+              "psnr": 60.61479690210913,
+              "ssim": 0.9998783433836611
+            },
+            {
+              "frame": 230,
+              "maxChannelDelta": 19,
+              "differingChannels": 117847,
+              "psnr": 60.61479690210913,
+              "ssim": 0.9998783433836611
+            },
+            {
+              "frame": 238,
+              "maxChannelDelta": 19,
+              "differingChannels": 117847,
+              "psnr": 60.61479690210913,
+              "ssim": 0.9998783433836611
+            },
+            {
+              "frame": 239,
+              "maxChannelDelta": 19,
+              "differingChannels": 117847,
+              "psnr": 60.61479690210913,
+              "ssim": 0.9998783433836611
+            }
+          ],
+          "failures": [],
+          "seekFailures": [],
+          "sameInstanceSeekFailures": [],
+          "stateFailures": [],
+          "maxDelta": 19,
+          "minPsnr": 60.60152045485165,
+          "minSsim": 0.999878119430987
+        },
+        {
+          "id": "commerce/h01-portrait",
+          "backend": "webgl2",
+          "width": 1080,
+          "height": 1920,
+          "authoredFrames": 240,
+          "method": "Every tenth frame plus early, midpoint and endpoint boundaries; fresh canvas per frame with cached resources. Hardware compared directly with pinned output of the same explicit backend at the existing perceptual tier. Lossless PNG transport verified by SHA-256 for every compared frame. Evaluated timing, visibility, transforms and state agree exactly; reverse fresh-render hashes at start/mid/end. WebGL2 also checks reverse seeks on one retained preview across seven sampled positions.",
+          "comparisons": [
+            {
+              "frame": 0,
+              "maxChannelDelta": 1,
+              "differingChannels": 902,
+              "psnr": 86.5172006223613,
+              "ssim": 0.9999999789872945
+            },
+            {
+              "frame": 1,
+              "maxChannelDelta": 1,
+              "differingChannels": 18981,
+              "psnr": 73.28607510599261,
+              "ssim": 0.9999978433938573
+            },
+            {
+              "frame": 2,
+              "maxChannelDelta": 1,
+              "differingChannels": 5689,
+              "psnr": 78.518906660103,
+              "ssim": 0.9999987481736283
+            },
+            {
+              "frame": 3,
+              "maxChannelDelta": 1,
+              "differingChannels": 5481,
+              "psnr": 78.68066797705872,
+              "ssim": 0.9999991868859738
+            },
+            {
+              "frame": 10,
+              "maxChannelDelta": 13,
+              "differingChannels": 113382,
+              "psnr": 58.60736261730433,
+              "ssim": 0.9999099050946981
+            },
+            {
+              "frame": 20,
+              "maxChannelDelta": 3,
+              "differingChannels": 119668,
+              "psnr": 64.85816711534072,
+              "ssim": 0.9998963744493183
+            },
+            {
+              "frame": 30,
+              "maxChannelDelta": 4,
+              "differingChannels": 118633,
+              "psnr": 64.51754592600558,
+              "ssim": 0.9998968334442477
+            },
+            {
+              "frame": 40,
+              "maxChannelDelta": 11,
+              "differingChannels": 124613,
+              "psnr": 59.88996772846705,
+              "ssim": 0.9998837986273468
+            },
+            {
+              "frame": 50,
+              "maxChannelDelta": 1,
+              "differingChannels": 121086,
+              "psnr": 65.23832666991963,
+              "ssim": 0.999896786963232
+            },
+            {
+              "frame": 60,
+              "maxChannelDelta": 1,
+              "differingChannels": 121086,
+              "psnr": 65.23832666991963,
+              "ssim": 0.999896786963232
+            },
+            {
+              "frame": 70,
+              "maxChannelDelta": 1,
+              "differingChannels": 121086,
+              "psnr": 65.23832666991963,
+              "ssim": 0.999896786963232
+            },
+            {
+              "frame": 80,
+              "maxChannelDelta": 1,
+              "differingChannels": 121086,
+              "psnr": 65.23832666991963,
+              "ssim": 0.999896786963232
+            },
+            {
+              "frame": 90,
+              "maxChannelDelta": 1,
+              "differingChannels": 121086,
+              "psnr": 65.23832666991963,
+              "ssim": 0.999896786963232
+            },
+            {
+              "frame": 100,
+              "maxChannelDelta": 1,
+              "differingChannels": 121086,
+              "psnr": 65.23832666991963,
+              "ssim": 0.999896786963232
+            },
+            {
+              "frame": 110,
+              "maxChannelDelta": 1,
+              "differingChannels": 121086,
+              "psnr": 65.23832666991963,
+              "ssim": 0.999896786963232
+            },
+            {
+              "frame": 120,
+              "maxChannelDelta": 1,
+              "differingChannels": 121086,
+              "psnr": 65.23832666991963,
+              "ssim": 0.999896786963232
+            },
+            {
+              "frame": 130,
+              "maxChannelDelta": 1,
+              "differingChannels": 121086,
+              "psnr": 65.23832666991963,
+              "ssim": 0.999896786963232
+            },
+            {
+              "frame": 140,
+              "maxChannelDelta": 1,
+              "differingChannels": 121086,
+              "psnr": 65.23832666991963,
+              "ssim": 0.999896786963232
+            },
+            {
+              "frame": 150,
+              "maxChannelDelta": 1,
+              "differingChannels": 121086,
+              "psnr": 65.23832666991963,
+              "ssim": 0.999896786963232
+            },
+            {
+              "frame": 160,
+              "maxChannelDelta": 2,
+              "differingChannels": 123804,
+              "psnr": 65.13823747733055,
+              "ssim": 0.9998965564996135
+            },
+            {
+              "frame": 170,
+              "maxChannelDelta": 2,
+              "differingChannels": 123074,
+              "psnr": 65.1579800857323,
+              "ssim": 0.9998966930688777
+            },
+            {
+              "frame": 180,
+              "maxChannelDelta": 1,
+              "differingChannels": 122834,
+              "psnr": 65.17608005215537,
+              "ssim": 0.9998967279610007
+            },
+            {
+              "frame": 190,
+              "maxChannelDelta": 1,
+              "differingChannels": 122834,
+              "psnr": 65.17608005215537,
+              "ssim": 0.9998967279610007
+            },
+            {
+              "frame": 200,
+              "maxChannelDelta": 1,
+              "differingChannels": 122834,
+              "psnr": 65.17608005215537,
+              "ssim": 0.9998967279610007
+            },
+            {
+              "frame": 210,
+              "maxChannelDelta": 1,
+              "differingChannels": 122834,
+              "psnr": 65.17608005215537,
+              "ssim": 0.9998967279610007
+            },
+            {
+              "frame": 220,
+              "maxChannelDelta": 1,
+              "differingChannels": 122834,
+              "psnr": 65.17608005215537,
+              "ssim": 0.9998967279610007
+            },
+            {
+              "frame": 230,
+              "maxChannelDelta": 1,
+              "differingChannels": 122834,
+              "psnr": 65.17608005215537,
+              "ssim": 0.9998967279610007
+            },
+            {
+              "frame": 238,
+              "maxChannelDelta": 1,
+              "differingChannels": 122834,
+              "psnr": 65.17608005215537,
+              "ssim": 0.9998967279610007
+            },
+            {
+              "frame": 239,
+              "maxChannelDelta": 1,
+              "differingChannels": 122834,
+              "psnr": 65.17608005215537,
+              "ssim": 0.9998967279610007
+            }
+          ],
+          "failures": [],
+          "seekFailures": [],
+          "sameInstanceSeekFailures": [],
+          "stateFailures": [],
+          "maxDelta": 13,
+          "minPsnr": 58.60736261730433,
+          "minSsim": 0.9998837986273468
+        },
+        {
+          "id": "commerce/h03-thai",
+          "backend": "webgl2",
+          "width": 1080,
+          "height": 1920,
+          "authoredFrames": 192,
+          "method": "Every tenth frame plus early, midpoint and endpoint boundaries; fresh canvas per frame with cached resources. Hardware compared directly with pinned output of the same explicit backend at the existing perceptual tier. Lossless PNG transport verified by SHA-256 for every compared frame. Evaluated timing, visibility, transforms and state agree exactly; reverse fresh-render hashes at start/mid/end. WebGL2 also checks reverse seeks on one retained preview across seven sampled positions.",
+          "comparisons": [
+            {
+              "frame": 0,
+              "maxChannelDelta": 1,
+              "differingChannels": 118474,
+              "psnr": 65.33303548127796,
+              "ssim": 0.9998976495270523
+            },
+            {
+              "frame": 1,
+              "maxChannelDelta": 1,
+              "differingChannels": 122667,
+              "psnr": 65.18198855677771,
+              "ssim": 0.9998958297937957
+            },
+            {
+              "frame": 2,
+              "maxChannelDelta": 1,
+              "differingChannels": 122480,
+              "psnr": 65.18861422087868,
+              "ssim": 0.9998968594952035
+            },
+            {
+              "frame": 3,
+              "maxChannelDelta": 1,
+              "differingChannels": 122180,
+              "psnr": 65.19926478982082,
+              "ssim": 0.9998972558341922
+            },
+            {
+              "frame": 10,
+              "maxChannelDelta": 2,
+              "differingChannels": 123022,
+              "psnr": 65.118793563291,
+              "ssim": 0.9998974039636683
+            },
+            {
+              "frame": 20,
+              "maxChannelDelta": 1,
+              "differingChannels": 121736,
+              "psnr": 65.21507572169423,
+              "ssim": 0.9998974500577814
+            },
+            {
+              "frame": 30,
+              "maxChannelDelta": 1,
+              "differingChannels": 121736,
+              "psnr": 65.21507572169423,
+              "ssim": 0.9998974500577814
+            },
+            {
+              "frame": 40,
+              "maxChannelDelta": 1,
+              "differingChannels": 121736,
+              "psnr": 65.21507572169423,
+              "ssim": 0.9998974500577814
+            },
+            {
+              "frame": 50,
+              "maxChannelDelta": 1,
+              "differingChannels": 121736,
+              "psnr": 65.21507572169423,
+              "ssim": 0.9998974500577814
+            },
+            {
+              "frame": 60,
+              "maxChannelDelta": 1,
+              "differingChannels": 121736,
+              "psnr": 65.21507572169423,
+              "ssim": 0.9998974500577814
+            },
+            {
+              "frame": 70,
+              "maxChannelDelta": 1,
+              "differingChannels": 121736,
+              "psnr": 65.21507572169423,
+              "ssim": 0.9998974500577814
+            },
+            {
+              "frame": 80,
+              "maxChannelDelta": 1,
+              "differingChannels": 121736,
+              "psnr": 65.21507572169423,
+              "ssim": 0.9998974500577814
+            },
+            {
+              "frame": 90,
+              "maxChannelDelta": 1,
+              "differingChannels": 121736,
+              "psnr": 65.21507572169423,
+              "ssim": 0.9998974500577814
+            },
+            {
+              "frame": 96,
+              "maxChannelDelta": 1,
+              "differingChannels": 121736,
+              "psnr": 65.21507572169423,
+              "ssim": 0.9998974500577814
+            },
+            {
+              "frame": 100,
+              "maxChannelDelta": 1,
+              "differingChannels": 121736,
+              "psnr": 65.21507572169423,
+              "ssim": 0.9998974500577814
+            },
+            {
+              "frame": 110,
+              "maxChannelDelta": 1,
+              "differingChannels": 121736,
+              "psnr": 65.21507572169423,
+              "ssim": 0.9998974500577814
+            },
+            {
+              "frame": 120,
+              "maxChannelDelta": 1,
+              "differingChannels": 121736,
+              "psnr": 65.21507572169423,
+              "ssim": 0.9998974500577814
+            },
+            {
+              "frame": 130,
+              "maxChannelDelta": 2,
+              "differingChannels": 123543,
+              "psnr": 65.14855426582167,
+              "ssim": 0.9998973621805014
+            },
+            {
+              "frame": 140,
+              "maxChannelDelta": 2,
+              "differingChannels": 122851,
+              "psnr": 65.17314647765365,
+              "ssim": 0.9998974303777498
+            },
+            {
+              "frame": 150,
+              "maxChannelDelta": 1,
+              "differingChannels": 123136,
+              "psnr": 65.1654155809239,
+              "ssim": 0.9998974152165087
+            },
+            {
+              "frame": 160,
+              "maxChannelDelta": 1,
+              "differingChannels": 123136,
+              "psnr": 65.1654155809239,
+              "ssim": 0.9998974152165087
+            },
+            {
+              "frame": 170,
+              "maxChannelDelta": 1,
+              "differingChannels": 123136,
+              "psnr": 65.1654155809239,
+              "ssim": 0.9998974152165087
+            },
+            {
+              "frame": 180,
+              "maxChannelDelta": 1,
+              "differingChannels": 123136,
+              "psnr": 65.1654155809239,
+              "ssim": 0.9998974152165087
+            },
+            {
+              "frame": 190,
+              "maxChannelDelta": 1,
+              "differingChannels": 123136,
+              "psnr": 65.1654155809239,
+              "ssim": 0.9998974152165087
+            },
+            {
+              "frame": 191,
+              "maxChannelDelta": 1,
+              "differingChannels": 123136,
+              "psnr": 65.1654155809239,
+              "ssim": 0.9998974152165087
+            }
+          ],
+          "failures": [],
+          "seekFailures": [],
+          "sameInstanceSeekFailures": [],
+          "stateFailures": [],
+          "maxDelta": 2,
+          "minPsnr": 65.118793563291,
+          "minSsim": 0.9998958297937957
+        },
+        {
+          "id": "commerce/h04-square",
+          "backend": "webgl2",
+          "width": 1080,
+          "height": 1080,
+          "authoredFrames": 240,
+          "method": "Every tenth frame plus early, midpoint and endpoint boundaries; fresh canvas per frame with cached resources. Hardware compared directly with pinned output of the same explicit backend at the existing perceptual tier. Lossless PNG transport verified by SHA-256 for every compared frame. Evaluated timing, visibility, transforms and state agree exactly; reverse fresh-render hashes at start/mid/end. WebGL2 also checks reverse seeks on one retained preview across seven sampled positions.",
+          "comparisons": [
+            {
+              "frame": 0,
+              "maxChannelDelta": 12,
+              "differingChannels": 58251,
+              "psnr": 59.89121357267219,
+              "ssim": 0.9998303026032122
+            },
+            {
+              "frame": 1,
+              "maxChannelDelta": 12,
+              "differingChannels": 68822,
+              "psnr": 59.69876501768607,
+              "ssim": 0.9998277447112925
+            },
+            {
+              "frame": 2,
+              "maxChannelDelta": 12,
+              "differingChannels": 61847,
+              "psnr": 59.82478566154469,
+              "ssim": 0.9998289112804393
+            },
+            {
+              "frame": 3,
+              "maxChannelDelta": 12,
+              "differingChannels": 61710,
+              "psnr": 59.827297894588426,
+              "ssim": 0.9998293210156268
+            },
+            {
+              "frame": 10,
+              "maxChannelDelta": 12,
+              "differingChannels": 69678,
+              "psnr": 59.676686068498405,
+              "ssim": 0.9998298415096882
+            },
+            {
+              "frame": 20,
+              "maxChannelDelta": 12,
+              "differingChannels": 61405,
+              "psnr": 59.83289604665167,
+              "ssim": 0.9998300456805937
+            },
+            {
+              "frame": 30,
+              "maxChannelDelta": 12,
+              "differingChannels": 61405,
+              "psnr": 59.83289604665167,
+              "ssim": 0.9998300456805937
+            },
+            {
+              "frame": 40,
+              "maxChannelDelta": 12,
+              "differingChannels": 61405,
+              "psnr": 59.83289604665167,
+              "ssim": 0.9998300456805937
+            },
+            {
+              "frame": 50,
+              "maxChannelDelta": 12,
+              "differingChannels": 61405,
+              "psnr": 59.83289604665167,
+              "ssim": 0.9998300456805937
+            },
+            {
+              "frame": 60,
+              "maxChannelDelta": 36,
+              "differingChannels": 65128,
+              "psnr": 59.60436611435364,
+              "ssim": 0.9998285598751149
+            },
+            {
+              "frame": 70,
+              "maxChannelDelta": 36,
+              "differingChannels": 63368,
+              "psnr": 59.64603679760752,
+              "ssim": 0.9998290317144181
+            },
+            {
+              "frame": 80,
+              "maxChannelDelta": 36,
+              "differingChannels": 63379,
+              "psnr": 59.64584327938172,
+              "ssim": 0.9998290314384809
+            },
+            {
+              "frame": 90,
+              "maxChannelDelta": 36,
+              "differingChannels": 63379,
+              "psnr": 59.64584327938172,
+              "ssim": 0.9998290314384809
+            },
+            {
+              "frame": 100,
+              "maxChannelDelta": 36,
+              "differingChannels": 63379,
+              "psnr": 59.64584327938172,
+              "ssim": 0.9998290314384809
+            },
+            {
+              "frame": 110,
+              "maxChannelDelta": 36,
+              "differingChannels": 63379,
+              "psnr": 59.64584327938172,
+              "ssim": 0.9998290314384809
+            },
+            {
+              "frame": 120,
+              "maxChannelDelta": 43,
+              "differingChannels": 65777,
+              "psnr": 59.39974541743872,
+              "ssim": 0.9998274433393585
+            },
+            {
+              "frame": 130,
+              "maxChannelDelta": 52,
+              "differingChannels": 65799,
+              "psnr": 59.379429818095495,
+              "ssim": 0.999826789186937
+            },
+            {
+              "frame": 140,
+              "maxChannelDelta": 52,
+              "differingChannels": 65799,
+              "psnr": 59.379429818095495,
+              "ssim": 0.999826789186937
+            },
+            {
+              "frame": 150,
+              "maxChannelDelta": 52,
+              "differingChannels": 65799,
+              "psnr": 59.379429818095495,
+              "ssim": 0.999826789186937
+            },
+            {
+              "frame": 160,
+              "maxChannelDelta": 52,
+              "differingChannels": 65799,
+              "psnr": 59.379429818095495,
+              "ssim": 0.999826789186937
+            },
+            {
+              "frame": 170,
+              "maxChannelDelta": 40,
+              "differingChannels": 66964,
+              "psnr": 59.500357378845045,
+              "ssim": 0.9998257387746332
+            },
+            {
+              "frame": 180,
+              "maxChannelDelta": 12,
+              "differingChannels": 68677,
+              "psnr": 59.69239447914795,
+              "ssim": 0.9998223455605856
+            },
+            {
+              "frame": 190,
+              "maxChannelDelta": 12,
+              "differingChannels": 62569,
+              "psnr": 59.81156996687972,
+              "ssim": 0.9998300003611783
+            },
+            {
+              "frame": 200,
+              "maxChannelDelta": 12,
+              "differingChannels": 62682,
+              "psnr": 59.809505217314474,
+              "ssim": 0.9998299967954328
+            },
+            {
+              "frame": 210,
+              "maxChannelDelta": 12,
+              "differingChannels": 62682,
+              "psnr": 59.809505217314474,
+              "ssim": 0.9998299967954328
+            },
+            {
+              "frame": 220,
+              "maxChannelDelta": 12,
+              "differingChannels": 62682,
+              "psnr": 59.809505217314474,
+              "ssim": 0.9998299967954328
+            },
+            {
+              "frame": 230,
+              "maxChannelDelta": 12,
+              "differingChannels": 62682,
+              "psnr": 59.809505217314474,
+              "ssim": 0.9998299967954328
+            },
+            {
+              "frame": 238,
+              "maxChannelDelta": 12,
+              "differingChannels": 62682,
+              "psnr": 59.809505217314474,
+              "ssim": 0.9998299967954328
+            },
+            {
+              "frame": 239,
+              "maxChannelDelta": 12,
+              "differingChannels": 62682,
+              "psnr": 59.809505217314474,
+              "ssim": 0.9998299967954328
+            }
+          ],
+          "failures": [],
+          "seekFailures": [],
+          "sameInstanceSeekFailures": [],
+          "stateFailures": [],
+          "maxDelta": 52,
+          "minPsnr": 59.379429818095495,
+          "minSsim": 0.9998223455605856
+        },
+        {
+          "id": "commerce/vertical-h01-portrait",
+          "backend": "webgl2",
+          "width": 1080,
+          "height": 1920,
+          "authoredFrames": 240,
+          "method": "Every tenth frame plus early, midpoint and endpoint boundaries; fresh canvas per frame with cached resources. Hardware compared directly with pinned output of the same explicit backend at the existing perceptual tier. Lossless PNG transport verified by SHA-256 for every compared frame. Evaluated timing, visibility, transforms and state agree exactly; reverse fresh-render hashes at start/mid/end. WebGL2 also checks reverse seeks on one retained preview across seven sampled positions.",
+          "comparisons": [
+            {
+              "frame": 0,
+              "maxChannelDelta": 1,
+              "differingChannels": 902,
+              "psnr": 86.5172006223613,
+              "ssim": 0.9999999789872945
+            },
+            {
+              "frame": 1,
+              "maxChannelDelta": 1,
+              "differingChannels": 18981,
+              "psnr": 73.28607510599261,
+              "ssim": 0.9999978433938573
+            },
+            {
+              "frame": 2,
+              "maxChannelDelta": 1,
+              "differingChannels": 5689,
+              "psnr": 78.518906660103,
+              "ssim": 0.9999987481736283
+            },
+            {
+              "frame": 3,
+              "maxChannelDelta": 1,
+              "differingChannels": 5481,
+              "psnr": 78.68066797705872,
+              "ssim": 0.9999991868859738
+            },
+            {
+              "frame": 10,
+              "maxChannelDelta": 13,
+              "differingChannels": 113382,
+              "psnr": 58.60736261730433,
+              "ssim": 0.9999099050946981
+            },
+            {
+              "frame": 20,
+              "maxChannelDelta": 3,
+              "differingChannels": 119668,
+              "psnr": 64.85816711534072,
+              "ssim": 0.9998963744493183
+            },
+            {
+              "frame": 30,
+              "maxChannelDelta": 4,
+              "differingChannels": 118633,
+              "psnr": 64.51754592600558,
+              "ssim": 0.9998968334442477
+            },
+            {
+              "frame": 40,
+              "maxChannelDelta": 11,
+              "differingChannels": 124613,
+              "psnr": 59.88996772846705,
+              "ssim": 0.9998837986273468
+            },
+            {
+              "frame": 50,
+              "maxChannelDelta": 1,
+              "differingChannels": 121086,
+              "psnr": 65.23832666991963,
+              "ssim": 0.999896786963232
+            },
+            {
+              "frame": 60,
+              "maxChannelDelta": 1,
+              "differingChannels": 121086,
+              "psnr": 65.23832666991963,
+              "ssim": 0.999896786963232
+            },
+            {
+              "frame": 70,
+              "maxChannelDelta": 1,
+              "differingChannels": 121086,
+              "psnr": 65.23832666991963,
+              "ssim": 0.999896786963232
+            },
+            {
+              "frame": 80,
+              "maxChannelDelta": 1,
+              "differingChannels": 121086,
+              "psnr": 65.23832666991963,
+              "ssim": 0.999896786963232
+            },
+            {
+              "frame": 90,
+              "maxChannelDelta": 1,
+              "differingChannels": 121086,
+              "psnr": 65.23832666991963,
+              "ssim": 0.999896786963232
+            },
+            {
+              "frame": 100,
+              "maxChannelDelta": 1,
+              "differingChannels": 121086,
+              "psnr": 65.23832666991963,
+              "ssim": 0.999896786963232
+            },
+            {
+              "frame": 110,
+              "maxChannelDelta": 1,
+              "differingChannels": 121086,
+              "psnr": 65.23832666991963,
+              "ssim": 0.999896786963232
+            },
+            {
+              "frame": 120,
+              "maxChannelDelta": 1,
+              "differingChannels": 121086,
+              "psnr": 65.23832666991963,
+              "ssim": 0.999896786963232
+            },
+            {
+              "frame": 130,
+              "maxChannelDelta": 1,
+              "differingChannels": 121086,
+              "psnr": 65.23832666991963,
+              "ssim": 0.999896786963232
+            },
+            {
+              "frame": 140,
+              "maxChannelDelta": 1,
+              "differingChannels": 121086,
+              "psnr": 65.23832666991963,
+              "ssim": 0.999896786963232
+            },
+            {
+              "frame": 150,
+              "maxChannelDelta": 1,
+              "differingChannels": 121086,
+              "psnr": 65.23832666991963,
+              "ssim": 0.999896786963232
+            },
+            {
+              "frame": 160,
+              "maxChannelDelta": 2,
+              "differingChannels": 123804,
+              "psnr": 65.13823747733055,
+              "ssim": 0.9998965564996135
+            },
+            {
+              "frame": 170,
+              "maxChannelDelta": 2,
+              "differingChannels": 123074,
+              "psnr": 65.1579800857323,
+              "ssim": 0.9998966930688777
+            },
+            {
+              "frame": 180,
+              "maxChannelDelta": 1,
+              "differingChannels": 122834,
+              "psnr": 65.17608005215537,
+              "ssim": 0.9998967279610007
+            },
+            {
+              "frame": 190,
+              "maxChannelDelta": 1,
+              "differingChannels": 122834,
+              "psnr": 65.17608005215537,
+              "ssim": 0.9998967279610007
+            },
+            {
+              "frame": 200,
+              "maxChannelDelta": 1,
+              "differingChannels": 122834,
+              "psnr": 65.17608005215537,
+              "ssim": 0.9998967279610007
+            },
+            {
+              "frame": 210,
+              "maxChannelDelta": 1,
+              "differingChannels": 122834,
+              "psnr": 65.17608005215537,
+              "ssim": 0.9998967279610007
+            },
+            {
+              "frame": 220,
+              "maxChannelDelta": 1,
+              "differingChannels": 122834,
+              "psnr": 65.17608005215537,
+              "ssim": 0.9998967279610007
+            },
+            {
+              "frame": 230,
+              "maxChannelDelta": 1,
+              "differingChannels": 122834,
+              "psnr": 65.17608005215537,
+              "ssim": 0.9998967279610007
+            },
+            {
+              "frame": 238,
+              "maxChannelDelta": 1,
+              "differingChannels": 122834,
+              "psnr": 65.17608005215537,
+              "ssim": 0.9998967279610007
+            },
+            {
+              "frame": 239,
+              "maxChannelDelta": 1,
+              "differingChannels": 122834,
+              "psnr": 65.17608005215537,
+              "ssim": 0.9998967279610007
+            }
+          ],
+          "failures": [],
+          "seekFailures": [],
+          "sameInstanceSeekFailures": [],
+          "stateFailures": [],
+          "maxDelta": 13,
+          "minPsnr": 58.60736261730433,
+          "minSsim": 0.9998837986273468
+        },
+        {
+          "id": "commerce/atom-anchor",
+          "backend": "webgl2",
+          "width": 1080,
+          "height": 1350,
+          "authoredFrames": 240,
+          "method": "Every tenth frame plus early, midpoint and endpoint boundaries; fresh canvas per frame with cached resources. Hardware compared directly with pinned output of the same explicit backend at the existing perceptual tier. Lossless PNG transport verified by SHA-256 for every compared frame. Evaluated timing, visibility, transforms and state agree exactly; reverse fresh-render hashes at start/mid/end. WebGL2 also checks reverse seeks on one retained preview across seven sampled positions.",
+          "comparisons": [
+            {
+              "frame": 0,
+              "maxChannelDelta": 12,
+              "differingChannels": 236979,
+              "psnr": 58.63707088815916,
+              "ssim": 0.9998568398797686
+            },
+            {
+              "frame": 1,
+              "maxChannelDelta": 13,
+              "differingChannels": 236320,
+              "psnr": 58.55038473362468,
+              "ssim": 0.9998559199378955
+            },
+            {
+              "frame": 2,
+              "maxChannelDelta": 11,
+              "differingChannels": 235753,
+              "psnr": 58.67562021010056,
+              "ssim": 0.9998586191736117
+            },
+            {
+              "frame": 3,
+              "maxChannelDelta": 14,
+              "differingChannels": 234864,
+              "psnr": 58.40232510824435,
+              "ssim": 0.9998576711850529
+            },
+            {
+              "frame": 10,
+              "maxChannelDelta": 13,
+              "differingChannels": 236920,
+              "psnr": 58.35353620116539,
+              "ssim": 0.9998581747788556
+            },
+            {
+              "frame": 20,
+              "maxChannelDelta": 14,
+              "differingChannels": 238176,
+              "psnr": 58.303460214742564,
+              "ssim": 0.9998558129356288
+            },
+            {
+              "frame": 30,
+              "maxChannelDelta": 15,
+              "differingChannels": 241231,
+              "psnr": 58.15694575807057,
+              "ssim": 0.9998518648332365
+            },
+            {
+              "frame": 40,
+              "maxChannelDelta": 13,
+              "differingChannels": 241593,
+              "psnr": 58.442836411567626,
+              "ssim": 0.9998524868373715
+            },
+            {
+              "frame": 50,
+              "maxChannelDelta": 14,
+              "differingChannels": 245401,
+              "psnr": 58.154938443507746,
+              "ssim": 0.9998502223499938
+            },
+            {
+              "frame": 60,
+              "maxChannelDelta": 12,
+              "differingChannels": 248320,
+              "psnr": 58.194949689758786,
+              "ssim": 0.9998493413200406
+            },
+            {
+              "frame": 70,
+              "maxChannelDelta": 13,
+              "differingChannels": 252399,
+              "psnr": 58.11431309940184,
+              "ssim": 0.9998446466278075
+            },
+            {
+              "frame": 80,
+              "maxChannelDelta": 13,
+              "differingChannels": 256902,
+              "psnr": 57.98936019486063,
+              "ssim": 0.9998392225797974
+            },
+            {
+              "frame": 90,
+              "maxChannelDelta": 14,
+              "differingChannels": 260167,
+              "psnr": 57.978034189178594,
+              "ssim": 0.99983808741873
+            },
+            {
+              "frame": 100,
+              "maxChannelDelta": 12,
+              "differingChannels": 263228,
+              "psnr": 57.878494379216676,
+              "ssim": 0.9998368355869697
+            },
+            {
+              "frame": 110,
+              "maxChannelDelta": 13,
+              "differingChannels": 266573,
+              "psnr": 57.905541250922596,
+              "ssim": 0.9998359662237398
+            },
+            {
+              "frame": 120,
+              "maxChannelDelta": 13,
+              "differingChannels": 269034,
+              "psnr": 57.957358970618564,
+              "ssim": 0.9998345959454141
+            },
+            {
+              "frame": 130,
+              "maxChannelDelta": 14,
+              "differingChannels": 271325,
+              "psnr": 57.774941661604736,
+              "ssim": 0.9998285303147564
+            },
+            {
+              "frame": 140,
+              "maxChannelDelta": 14,
+              "differingChannels": 273884,
+              "psnr": 57.653978389281264,
+              "ssim": 0.9998259827386439
+            },
+            {
+              "frame": 150,
+              "maxChannelDelta": 15,
+              "differingChannels": 274555,
+              "psnr": 57.729360089735366,
+              "ssim": 0.9998277108730173
+            },
+            {
+              "frame": 160,
+              "maxChannelDelta": 13,
+              "differingChannels": 274604,
+              "psnr": 57.77856572440108,
+              "ssim": 0.9998267680152795
+            },
+            {
+              "frame": 170,
+              "maxChannelDelta": 14,
+              "differingChannels": 274641,
+              "psnr": 57.66989681603527,
+              "ssim": 0.9998257950489366
+            },
+            {
+              "frame": 180,
+              "maxChannelDelta": 14,
+              "differingChannels": 274716,
+              "psnr": 57.7545168631419,
+              "ssim": 0.9998279578269892
+            },
+            {
+              "frame": 190,
+              "maxChannelDelta": 13,
+              "differingChannels": 275065,
+              "psnr": 57.725134699983485,
+              "ssim": 0.9998269006138314
+            },
+            {
+              "frame": 200,
+              "maxChannelDelta": 13,
+              "differingChannels": 273735,
+              "psnr": 57.856627004875435,
+              "ssim": 0.9998283046449674
+            },
+            {
+              "frame": 210,
+              "maxChannelDelta": 14,
+              "differingChannels": 275997,
+              "psnr": 57.65891879926707,
+              "ssim": 0.9998251666440376
+            },
+            {
+              "frame": 220,
+              "maxChannelDelta": 12,
+              "differingChannels": 273684,
+              "psnr": 57.96249467603191,
+              "ssim": 0.9998297157120924
+            },
+            {
+              "frame": 230,
+              "maxChannelDelta": 13,
+              "differingChannels": 276053,
+              "psnr": 57.62528406398721,
+              "ssim": 0.9998254015917879
+            },
+            {
+              "frame": 238,
+              "maxChannelDelta": 14,
+              "differingChannels": 274831,
+              "psnr": 57.76142389357294,
+              "ssim": 0.9998281778855683
+            },
+            {
+              "frame": 239,
+              "maxChannelDelta": 13,
+              "differingChannels": 275450,
+              "psnr": 57.660433203068195,
+              "ssim": 0.9998262961849121
+            }
+          ],
+          "failures": [],
+          "seekFailures": [],
+          "sameInstanceSeekFailures": [],
+          "stateFailures": [],
+          "maxDelta": 15,
+          "minPsnr": 57.62528406398721,
+          "minSsim": 0.9998251666440376
+        },
+        {
+          "id": "commerce/atom-attachment",
+          "backend": "webgl2",
+          "width": 1080,
+          "height": 1350,
+          "authoredFrames": 240,
+          "method": "Every tenth frame plus early, midpoint and endpoint boundaries; fresh canvas per frame with cached resources. Hardware compared directly with pinned output of the same explicit backend at the existing perceptual tier. Lossless PNG transport verified by SHA-256 for every compared frame. Evaluated timing, visibility, transforms and state agree exactly; reverse fresh-render hashes at start/mid/end. WebGL2 also checks reverse seeks on one retained preview across seven sampled positions.",
+          "comparisons": [
+            {
+              "frame": 0,
+              "maxChannelDelta": 41,
+              "differingChannels": 236304,
+              "psnr": 57.104289932678654,
+              "ssim": 0.9998412808645596
+            },
+            {
+              "frame": 1,
+              "maxChannelDelta": 39,
+              "differingChannels": 236179,
+              "psnr": 57.15760672006339,
+              "ssim": 0.9998404083683773
+            },
+            {
+              "frame": 2,
+              "maxChannelDelta": 39,
+              "differingChannels": 236081,
+              "psnr": 57.14221494074165,
+              "ssim": 0.9998412181605018
+            },
+            {
+              "frame": 3,
+              "maxChannelDelta": 39,
+              "differingChannels": 237314,
+              "psnr": 57.07854511130617,
+              "ssim": 0.9998394608410737
+            },
+            {
+              "frame": 10,
+              "maxChannelDelta": 41,
+              "differingChannels": 236925,
+              "psnr": 57.06205624337346,
+              "ssim": 0.9998398285205422
+            },
+            {
+              "frame": 20,
+              "maxChannelDelta": 40,
+              "differingChannels": 235921,
+              "psnr": 56.86160844567371,
+              "ssim": 0.9998374892871774
+            },
+            {
+              "frame": 30,
+              "maxChannelDelta": 37,
+              "differingChannels": 236605,
+              "psnr": 57.24558630846502,
+              "ssim": 0.9998422758647025
+            },
+            {
+              "frame": 40,
+              "maxChannelDelta": 33,
+              "differingChannels": 237022,
+              "psnr": 57.407845619183355,
+              "ssim": 0.9998435093481144
+            },
+            {
+              "frame": 50,
+              "maxChannelDelta": 32,
+              "differingChannels": 235963,
+              "psnr": 57.25496594606689,
+              "ssim": 0.9998429413133413
+            },
+            {
+              "frame": 60,
+              "maxChannelDelta": 37,
+              "differingChannels": 236436,
+              "psnr": 57.3154653329556,
+              "ssim": 0.9998467567584601
+            },
+            {
+              "frame": 70,
+              "maxChannelDelta": 32,
+              "differingChannels": 235963,
+              "psnr": 57.25496594606689,
+              "ssim": 0.9998429413133413
+            },
+            {
+              "frame": 80,
+              "maxChannelDelta": 33,
+              "differingChannels": 237022,
+              "psnr": 57.407845619183355,
+              "ssim": 0.9998435093481144
+            },
+            {
+              "frame": 90,
+              "maxChannelDelta": 37,
+              "differingChannels": 236605,
+              "psnr": 57.24558630846502,
+              "ssim": 0.9998422758647025
+            },
+            {
+              "frame": 100,
+              "maxChannelDelta": 40,
+              "differingChannels": 235921,
+              "psnr": 56.86160844567371,
+              "ssim": 0.9998374892871774
+            },
+            {
+              "frame": 110,
+              "maxChannelDelta": 41,
+              "differingChannels": 236925,
+              "psnr": 57.06205624337346,
+              "ssim": 0.9998398285205422
+            },
+            {
+              "frame": 120,
+              "maxChannelDelta": 41,
+              "differingChannels": 236304,
+              "psnr": 57.104289932678654,
+              "ssim": 0.9998412808645596
+            },
+            {
+              "frame": 130,
+              "maxChannelDelta": 39,
+              "differingChannels": 236753,
+              "psnr": 57.174271904130016,
+              "ssim": 0.9998423208849284
+            },
+            {
+              "frame": 140,
+              "maxChannelDelta": 41,
+              "differingChannels": 237461,
+              "psnr": 57.01829989654743,
+              "ssim": 0.9998362574824707
+            },
+            {
+              "frame": 150,
+              "maxChannelDelta": 38,
+              "differingChannels": 237162,
+              "psnr": 56.90357462948127,
+              "ssim": 0.9998372449655861
+            },
+            {
+              "frame": 160,
+              "maxChannelDelta": 33,
+              "differingChannels": 235717,
+              "psnr": 57.394567024523234,
+              "ssim": 0.9998459205261456
+            },
+            {
+              "frame": 170,
+              "maxChannelDelta": 31,
+              "differingChannels": 236789,
+              "psnr": 57.65043899372791,
+              "ssim": 0.9998441701221549
+            },
+            {
+              "frame": 180,
+              "maxChannelDelta": 37,
+              "differingChannels": 237780,
+              "psnr": 57.05172044442054,
+              "ssim": 0.9998424414519749
+            },
+            {
+              "frame": 190,
+              "maxChannelDelta": 34,
+              "differingChannels": 236529,
+              "psnr": 57.484965654615856,
+              "ssim": 0.9998468273682468
+            },
+            {
+              "frame": 200,
+              "maxChannelDelta": 38,
+              "differingChannels": 237892,
+              "psnr": 57.237964578406746,
+              "ssim": 0.9998431472143788
+            },
+            {
+              "frame": 210,
+              "maxChannelDelta": 38,
+              "differingChannels": 236647,
+              "psnr": 57.110385019587085,
+              "ssim": 0.9998418170572508
+            },
+            {
+              "frame": 220,
+              "maxChannelDelta": 41,
+              "differingChannels": 236638,
+              "psnr": 56.99691859335896,
+              "ssim": 0.9998409667174534
+            },
+            {
+              "frame": 230,
+              "maxChannelDelta": 39,
+              "differingChannels": 237018,
+              "psnr": 57.075592738028575,
+              "ssim": 0.9998399039134968
+            },
+            {
+              "frame": 238,
+              "maxChannelDelta": 39,
+              "differingChannels": 236179,
+              "psnr": 57.15760672006339,
+              "ssim": 0.9998404083683773
+            },
+            {
+              "frame": 239,
+              "maxChannelDelta": 41,
+              "differingChannels": 236304,
+              "psnr": 57.104289932678654,
+              "ssim": 0.9998412808645596
+            }
+          ],
+          "failures": [],
+          "seekFailures": [],
+          "sameInstanceSeekFailures": [],
+          "stateFailures": [],
+          "maxDelta": 41,
+          "minPsnr": 56.86160844567371,
+          "minSsim": 0.9998362574824707
+        },
+        {
+          "id": "commerce/atom-attachment/nested-crop-brush",
+          "backend": "webgl2",
+          "width": 1080,
+          "height": 1350,
+          "authoredFrames": 240,
+          "method": "Every tenth frame plus early, midpoint and endpoint boundaries; fresh canvas per frame with cached resources. Hardware compared directly with pinned output of the same explicit backend at the existing perceptual tier. Lossless PNG transport verified by SHA-256 for every compared frame. Evaluated timing, visibility, transforms and state agree exactly; reverse fresh-render hashes at start/mid/end. WebGL2 also checks reverse seeks on one retained preview across seven sampled positions.",
+          "comparisons": [
+            {
+              "frame": 0,
+              "maxChannelDelta": 23,
+              "differingChannels": 210245,
+              "psnr": 57.646778132796555,
+              "ssim": 0.9998412030884792
+            },
+            {
+              "frame": 1,
+              "maxChannelDelta": 24,
+              "differingChannels": 210510,
+              "psnr": 57.900557162476176,
+              "ssim": 0.9998446011443636
+            },
+            {
+              "frame": 2,
+              "maxChannelDelta": 21,
+              "differingChannels": 210589,
+              "psnr": 58.85451169828443,
+              "ssim": 0.9998523403409484
+            },
+            {
+              "frame": 3,
+              "maxChannelDelta": 22,
+              "differingChannels": 210327,
+              "psnr": 58.195282234977306,
+              "ssim": 0.9998496430554941
+            },
+            {
+              "frame": 10,
+              "maxChannelDelta": 16,
+              "differingChannels": 210555,
+              "psnr": 59.17766971756886,
+              "ssim": 0.9998564540704038
+            },
+            {
+              "frame": 20,
+              "maxChannelDelta": 36,
+              "differingChannels": 211355,
+              "psnr": 59.25179944814055,
+              "ssim": 0.9998554790584069
+            },
+            {
+              "frame": 30,
+              "maxChannelDelta": 49,
+              "differingChannels": 210711,
+              "psnr": 58.89702712290397,
+              "ssim": 0.9998498194730716
+            },
+            {
+              "frame": 40,
+              "maxChannelDelta": 81,
+              "differingChannels": 211290,
+              "psnr": 58.02790682416646,
+              "ssim": 0.9998421733275815
+            },
+            {
+              "frame": 50,
+              "maxChannelDelta": 73,
+              "differingChannels": 210460,
+              "psnr": 57.847445673978314,
+              "ssim": 0.9998455668862783
+            },
+            {
+              "frame": 60,
+              "maxChannelDelta": 70,
+              "differingChannels": 210382,
+              "psnr": 58.28666242591078,
+              "ssim": 0.9998508332646587
+            },
+            {
+              "frame": 70,
+              "maxChannelDelta": 52,
+              "differingChannels": 211659,
+              "psnr": 56.26372773543473,
+              "ssim": 0.9998254137182502
+            },
+            {
+              "frame": 80,
+              "maxChannelDelta": 57,
+              "differingChannels": 211221,
+              "psnr": 56.77249240729121,
+              "ssim": 0.999828862747866
+            },
+            {
+              "frame": 90,
+              "maxChannelDelta": 79,
+              "differingChannels": 211441,
+              "psnr": 57.341846674408494,
+              "ssim": 0.9998362893609539
+            },
+            {
+              "frame": 100,
+              "maxChannelDelta": 80,
+              "differingChannels": 212047,
+              "psnr": 56.30372764743407,
+              "ssim": 0.9998212976519965
+            },
+            {
+              "frame": 110,
+              "maxChannelDelta": 95,
+              "differingChannels": 211654,
+              "psnr": 57.40485397360786,
+              "ssim": 0.999835166968956
+            },
+            {
+              "frame": 120,
+              "maxChannelDelta": 114,
+              "differingChannels": 211294,
+              "psnr": 56.50964561595711,
+              "ssim": 0.9998225759689107
+            },
+            {
+              "frame": 130,
+              "maxChannelDelta": 109,
+              "differingChannels": 210919,
+              "psnr": 55.98820536824608,
+              "ssim": 0.9998189723101729
+            },
+            {
+              "frame": 140,
+              "maxChannelDelta": 103,
+              "differingChannels": 211257,
+              "psnr": 56.31430170198251,
+              "ssim": 0.9998215026273325
+            },
+            {
+              "frame": 150,
+              "maxChannelDelta": 61,
+              "differingChannels": 211031,
+              "psnr": 57.9115127249311,
+              "ssim": 0.999841974413229
+            },
+            {
+              "frame": 160,
+              "maxChannelDelta": 59,
+              "differingChannels": 211836,
+              "psnr": 57.79937098269812,
+              "ssim": 0.9998406410361952
+            },
+            {
+              "frame": 170,
+              "maxChannelDelta": 45,
+              "differingChannels": 211577,
+              "psnr": 57.92620746771679,
+              "ssim": 0.9998413794831358
+            },
+            {
+              "frame": 180,
+              "maxChannelDelta": 51,
+              "differingChannels": 210400,
+              "psnr": 57.81665431268736,
+              "ssim": 0.9998413225514452
+            },
+            {
+              "frame": 190,
+              "maxChannelDelta": 47,
+              "differingChannels": 211519,
+              "psnr": 57.59288143426243,
+              "ssim": 0.9998391300302576
+            },
+            {
+              "frame": 200,
+              "maxChannelDelta": 67,
+              "differingChannels": 210830,
+              "psnr": 57.85168008331955,
+              "ssim": 0.999841821090303
+            },
+            {
+              "frame": 210,
+              "maxChannelDelta": 45,
+              "differingChannels": 211291,
+              "psnr": 56.572578666214504,
+              "ssim": 0.9998279594993648
+            },
+            {
+              "frame": 220,
+              "maxChannelDelta": 60,
+              "differingChannels": 210705,
+              "psnr": 57.740354491056294,
+              "ssim": 0.9998414858652203
+            },
+            {
+              "frame": 230,
+              "maxChannelDelta": 60,
+              "differingChannels": 211504,
+              "psnr": 57.703916203730266,
+              "ssim": 0.999840811465245
+            },
+            {
+              "frame": 238,
+              "maxChannelDelta": 93,
+              "differingChannels": 210694,
+              "psnr": 56.06337131585604,
+              "ssim": 0.9998234156897514
+            },
+            {
+              "frame": 239,
+              "maxChannelDelta": 78,
+              "differingChannels": 211551,
+              "psnr": 57.40499678624246,
+              "ssim": 0.9998391201760991
+            }
+          ],
+          "failures": [],
+          "seekFailures": [],
+          "sameInstanceSeekFailures": [],
+          "stateFailures": [],
+          "maxDelta": 114,
+          "minPsnr": 55.98820536824608,
+          "minSsim": 0.9998189723101729
+        },
+        {
+          "id": "commerce/atom-background-light",
+          "backend": "webgl2",
+          "width": 1080,
+          "height": 1350,
+          "authoredFrames": 240,
+          "method": "Every tenth frame plus early, midpoint and endpoint boundaries; fresh canvas per frame with cached resources. Hardware compared directly with pinned output of the same explicit backend at the existing perceptual tier. Lossless PNG transport verified by SHA-256 for every compared frame. Evaluated timing, visibility, transforms and state agree exactly; reverse fresh-render hashes at start/mid/end. WebGL2 also checks reverse seeks on one retained preview across seven sampled positions.",
+          "comparisons": [
+            {
+              "frame": 0,
+              "maxChannelDelta": 12,
+              "differingChannels": 252040,
+              "psnr": 58.48169419766965,
+              "ssim": 0.9998220021147406
+            },
+            {
+              "frame": 1,
+              "maxChannelDelta": 13,
+              "differingChannels": 251911,
+              "psnr": 58.494803617516276,
+              "ssim": 0.9998209327053681
+            },
+            {
+              "frame": 2,
+              "maxChannelDelta": 12,
+              "differingChannels": 251797,
+              "psnr": 58.40311789901364,
+              "ssim": 0.9998206076601189
+            },
+            {
+              "frame": 3,
+              "maxChannelDelta": 15,
+              "differingChannels": 253051,
+              "psnr": 58.27758425968728,
+              "ssim": 0.9998184384886911
+            },
+            {
+              "frame": 10,
+              "maxChannelDelta": 12,
+              "differingChannels": 252674,
+              "psnr": 58.35325401972443,
+              "ssim": 0.9998193327292745
+            },
+            {
+              "frame": 20,
+              "maxChannelDelta": 13,
+              "differingChannels": 251613,
+              "psnr": 58.19738894621865,
+              "ssim": 0.9998184461758325
+            },
+            {
+              "frame": 30,
+              "maxChannelDelta": 12,
+              "differingChannels": 252222,
+              "psnr": 58.459200882544906,
+              "ssim": 0.9998204277731328
+            },
+            {
+              "frame": 40,
+              "maxChannelDelta": 12,
+              "differingChannels": 252660,
+              "psnr": 58.35326447056196,
+              "ssim": 0.9998193823624622
+            },
+            {
+              "frame": 50,
+              "maxChannelDelta": 13,
+              "differingChannels": 251614,
+              "psnr": 58.19743935852785,
+              "ssim": 0.9998183501185947
+            },
+            {
+              "frame": 60,
+              "maxChannelDelta": 12,
+              "differingChannels": 252043,
+              "psnr": 58.4816834331649,
+              "ssim": 0.9998223882296503
+            },
+            {
+              "frame": 70,
+              "maxChannelDelta": 13,
+              "differingChannels": 251701,
+              "psnr": 58.19675380125581,
+              "ssim": 0.999818364391609
+            },
+            {
+              "frame": 80,
+              "maxChannelDelta": 12,
+              "differingChannels": 252753,
+              "psnr": 58.35317041392953,
+              "ssim": 0.9998193856476014
+            },
+            {
+              "frame": 90,
+              "maxChannelDelta": 12,
+              "differingChannels": 252351,
+              "psnr": 58.45881537890284,
+              "ssim": 0.9998204167975897
+            },
+            {
+              "frame": 100,
+              "maxChannelDelta": 13,
+              "differingChannels": 251726,
+              "psnr": 58.196229624587154,
+              "ssim": 0.9998183745837558
+            },
+            {
+              "frame": 110,
+              "maxChannelDelta": 12,
+              "differingChannels": 252718,
+              "psnr": 58.35326447056196,
+              "ssim": 0.999819397941846
+            },
+            {
+              "frame": 120,
+              "maxChannelDelta": 12,
+              "differingChannels": 252051,
+              "psnr": 58.48154349703123,
+              "ssim": 0.9998219821456328
+            },
+            {
+              "frame": 130,
+              "maxChannelDelta": 12,
+              "differingChannels": 252518,
+              "psnr": 58.42170002180234,
+              "ssim": 0.9998210291884435
+            },
+            {
+              "frame": 140,
+              "maxChannelDelta": 14,
+              "differingChannels": 253133,
+              "psnr": 58.30541334249075,
+              "ssim": 0.9998179515720838
+            },
+            {
+              "frame": 150,
+              "maxChannelDelta": 12,
+              "differingChannels": 252854,
+              "psnr": 58.45270543412867,
+              "ssim": 0.9998196081079546
+            },
+            {
+              "frame": 160,
+              "maxChannelDelta": 13,
+              "differingChannels": 251360,
+              "psnr": 58.31616609327105,
+              "ssim": 0.999821486951919
+            },
+            {
+              "frame": 170,
+              "maxChannelDelta": 13,
+              "differingChannels": 252383,
+              "psnr": 58.52324965518393,
+              "ssim": 0.9998202958474756
+            },
+            {
+              "frame": 180,
+              "maxChannelDelta": 14,
+              "differingChannels": 253407,
+              "psnr": 58.16004343638951,
+              "ssim": 0.9998181430935861
+            },
+            {
+              "frame": 190,
+              "maxChannelDelta": 14,
+              "differingChannels": 252253,
+              "psnr": 58.45481244748068,
+              "ssim": 0.9998220347611523
+            },
+            {
+              "frame": 200,
+              "maxChannelDelta": 13,
+              "differingChannels": 253666,
+              "psnr": 58.34312853237877,
+              "ssim": 0.9998193022917271
+            },
+            {
+              "frame": 210,
+              "maxChannelDelta": 13,
+              "differingChannels": 252444,
+              "psnr": 58.23804946112816,
+              "ssim": 0.9998196220056882
+            },
+            {
+              "frame": 220,
+              "maxChannelDelta": 13,
+              "differingChannels": 252418,
+              "psnr": 58.37390160022398,
+              "ssim": 0.9998207778379165
+            },
+            {
+              "frame": 230,
+              "maxChannelDelta": 12,
+              "differingChannels": 252820,
+              "psnr": 58.293542796803735,
+              "ssim": 0.9998181458463766
+            },
+            {
+              "frame": 238,
+              "maxChannelDelta": 13,
+              "differingChannels": 251940,
+              "psnr": 58.49469564825374,
+              "ssim": 0.9998209464810602
+            },
+            {
+              "frame": 239,
+              "maxChannelDelta": 12,
+              "differingChannels": 252040,
+              "psnr": 58.48169419766965,
+              "ssim": 0.9998220021147406
+            }
+          ],
+          "failures": [],
+          "seekFailures": [],
+          "sameInstanceSeekFailures": [],
+          "stateFailures": [],
+          "maxDelta": 15,
+          "minPsnr": 58.16004343638951,
+          "minSsim": 0.9998179515720838
+        },
+        {
+          "id": "commerce/atom-background",
+          "backend": "webgl2",
+          "width": 1080,
+          "height": 1350,
+          "authoredFrames": 240,
+          "method": "Every tenth frame plus early, midpoint and endpoint boundaries; fresh canvas per frame with cached resources. Hardware compared directly with pinned output of the same explicit backend at the existing perceptual tier. Lossless PNG transport verified by SHA-256 for every compared frame. Evaluated timing, visibility, transforms and state agree exactly; reverse fresh-render hashes at start/mid/end. WebGL2 also checks reverse seeks on one retained preview across seven sampled positions.",
+          "comparisons": [
+            {
+              "frame": 0,
+              "maxChannelDelta": 0,
+              "differingChannels": 0,
+              "psnr": 999,
+              "ssim": 1
+            },
+            {
+              "frame": 1,
+              "maxChannelDelta": 0,
+              "differingChannels": 0,
+              "psnr": 999,
+              "ssim": 1
+            },
+            {
+              "frame": 2,
+              "maxChannelDelta": 0,
+              "differingChannels": 0,
+              "psnr": 999,
+              "ssim": 1
+            },
+            {
+              "frame": 3,
+              "maxChannelDelta": 0,
+              "differingChannels": 0,
+              "psnr": 999,
+              "ssim": 1
+            },
+            {
+              "frame": 10,
+              "maxChannelDelta": 0,
+              "differingChannels": 0,
+              "psnr": 999,
+              "ssim": 1
+            },
+            {
+              "frame": 20,
+              "maxChannelDelta": 0,
+              "differingChannels": 0,
+              "psnr": 999,
+              "ssim": 1
+            },
+            {
+              "frame": 30,
+              "maxChannelDelta": 0,
+              "differingChannels": 0,
+              "psnr": 999,
+              "ssim": 1
+            },
+            {
+              "frame": 40,
+              "maxChannelDelta": 0,
+              "differingChannels": 0,
+              "psnr": 999,
+              "ssim": 1
+            },
+            {
+              "frame": 50,
+              "maxChannelDelta": 0,
+              "differingChannels": 0,
+              "psnr": 999,
+              "ssim": 1
+            },
+            {
+              "frame": 60,
+              "maxChannelDelta": 0,
+              "differingChannels": 0,
+              "psnr": 999,
+              "ssim": 1
+            },
+            {
+              "frame": 70,
+              "maxChannelDelta": 0,
+              "differingChannels": 0,
+              "psnr": 999,
+              "ssim": 1
+            },
+            {
+              "frame": 80,
+              "maxChannelDelta": 0,
+              "differingChannels": 0,
+              "psnr": 999,
+              "ssim": 1
+            },
+            {
+              "frame": 90,
+              "maxChannelDelta": 0,
+              "differingChannels": 0,
+              "psnr": 999,
+              "ssim": 1
+            },
+            {
+              "frame": 100,
+              "maxChannelDelta": 0,
+              "differingChannels": 0,
+              "psnr": 999,
+              "ssim": 1
+            },
+            {
+              "frame": 110,
+              "maxChannelDelta": 0,
+              "differingChannels": 0,
+              "psnr": 999,
+              "ssim": 1
+            },
+            {
+              "frame": 120,
+              "maxChannelDelta": 0,
+              "differingChannels": 0,
+              "psnr": 999,
+              "ssim": 1
+            },
+            {
+              "frame": 130,
+              "maxChannelDelta": 0,
+              "differingChannels": 0,
+              "psnr": 999,
+              "ssim": 1
+            },
+            {
+              "frame": 140,
+              "maxChannelDelta": 0,
+              "differingChannels": 0,
+              "psnr": 999,
+              "ssim": 1
+            },
+            {
+              "frame": 150,
+              "maxChannelDelta": 0,
+              "differingChannels": 0,
+              "psnr": 999,
+              "ssim": 1
+            },
+            {
+              "frame": 160,
+              "maxChannelDelta": 0,
+              "differingChannels": 0,
+              "psnr": 999,
+              "ssim": 1
+            },
+            {
+              "frame": 170,
+              "maxChannelDelta": 0,
+              "differingChannels": 0,
+              "psnr": 999,
+              "ssim": 1
+            },
+            {
+              "frame": 180,
+              "maxChannelDelta": 0,
+              "differingChannels": 0,
+              "psnr": 999,
+              "ssim": 1
+            },
+            {
+              "frame": 190,
+              "maxChannelDelta": 0,
+              "differingChannels": 0,
+              "psnr": 999,
+              "ssim": 1
+            },
+            {
+              "frame": 200,
+              "maxChannelDelta": 0,
+              "differingChannels": 0,
+              "psnr": 999,
+              "ssim": 1
+            },
+            {
+              "frame": 210,
+              "maxChannelDelta": 0,
+              "differingChannels": 0,
+              "psnr": 999,
+              "ssim": 1
+            },
+            {
+              "frame": 220,
+              "maxChannelDelta": 0,
+              "differingChannels": 0,
+              "psnr": 999,
+              "ssim": 1
+            },
+            {
+              "frame": 230,
+              "maxChannelDelta": 0,
+              "differingChannels": 0,
+              "psnr": 999,
+              "ssim": 1
+            },
+            {
+              "frame": 238,
+              "maxChannelDelta": 0,
+              "differingChannels": 0,
+              "psnr": 999,
+              "ssim": 1
+            },
+            {
+              "frame": 239,
+              "maxChannelDelta": 0,
+              "differingChannels": 0,
+              "psnr": 999,
+              "ssim": 1
+            }
+          ],
+          "failures": [],
+          "seekFailures": [],
+          "sameInstanceSeekFailures": [],
+          "stateFailures": [],
+          "maxDelta": 0,
+          "minPsnr": 999,
+          "minSsim": 1
+        },
+        {
+          "id": "commerce/atom-callout",
+          "backend": "webgl2",
+          "width": 1080,
+          "height": 1350,
+          "authoredFrames": 240,
+          "method": "Every tenth frame plus early, midpoint and endpoint boundaries; fresh canvas per frame with cached resources. Hardware compared directly with pinned output of the same explicit backend at the existing perceptual tier. Lossless PNG transport verified by SHA-256 for every compared frame. Evaluated timing, visibility, transforms and state agree exactly; reverse fresh-render hashes at start/mid/end. WebGL2 also checks reverse seeks on one retained preview across seven sampled positions.",
+          "comparisons": [
+            {
+              "frame": 0,
+              "maxChannelDelta": 12,
+              "differingChannels": 234319,
+              "psnr": 58.69015358833667,
+              "ssim": 0.9998571498926613
+            },
+            {
+              "frame": 1,
+              "maxChannelDelta": 12,
+              "differingChannels": 234319,
+              "psnr": 58.69015358833667,
+              "ssim": 0.9998571498926613
+            },
+            {
+              "frame": 2,
+              "maxChannelDelta": 12,
+              "differingChannels": 234319,
+              "psnr": 58.69015358833667,
+              "ssim": 0.9998571498926613
+            },
+            {
+              "frame": 3,
+              "maxChannelDelta": 12,
+              "differingChannels": 234319,
+              "psnr": 58.69015358833667,
+              "ssim": 0.9998571498926613
+            },
+            {
+              "frame": 10,
+              "maxChannelDelta": 12,
+              "differingChannels": 234319,
+              "psnr": 58.69015358833667,
+              "ssim": 0.9998571498926613
+            },
+            {
+              "frame": 20,
+              "maxChannelDelta": 12,
+              "differingChannels": 234319,
+              "psnr": 58.69015358833667,
+              "ssim": 0.9998571498926613
+            },
+            {
+              "frame": 30,
+              "maxChannelDelta": 12,
+              "differingChannels": 234319,
+              "psnr": 58.69015358833667,
+              "ssim": 0.9998571498926613
+            },
+            {
+              "frame": 40,
+              "maxChannelDelta": 35,
+              "differingChannels": 236847,
+              "psnr": 57.93790228941819,
+              "ssim": 0.9998517325485323
+            },
+            {
+              "frame": 50,
+              "maxChannelDelta": 35,
+              "differingChannels": 237143,
+              "psnr": 57.612549530875484,
+              "ssim": 0.9998492711495471
+            },
+            {
+              "frame": 60,
+              "maxChannelDelta": 40,
+              "differingChannels": 236655,
+              "psnr": 57.49859264762143,
+              "ssim": 0.9998480522309531
+            },
+            {
+              "frame": 70,
+              "maxChannelDelta": 40,
+              "differingChannels": 236655,
+              "psnr": 57.49859264762143,
+              "ssim": 0.9998480522309531
+            },
+            {
+              "frame": 80,
+              "maxChannelDelta": 40,
+              "differingChannels": 236655,
+              "psnr": 57.49859264762143,
+              "ssim": 0.9998480522309531
+            },
+            {
+              "frame": 90,
+              "maxChannelDelta": 40,
+              "differingChannels": 236655,
+              "psnr": 57.49859264762143,
+              "ssim": 0.9998480522309531
+            },
+            {
+              "frame": 100,
+              "maxChannelDelta": 40,
+              "differingChannels": 236655,
+              "psnr": 57.49859264762143,
+              "ssim": 0.9998480522309531
+            },
+            {
+              "frame": 110,
+              "maxChannelDelta": 40,
+              "differingChannels": 236655,
+              "psnr": 57.49859264762143,
+              "ssim": 0.9998480522309531
+            },
+            {
+              "frame": 120,
+              "maxChannelDelta": 40,
+              "differingChannels": 236655,
+              "psnr": 57.49859264762143,
+              "ssim": 0.9998480522309531
+            },
+            {
+              "frame": 130,
+              "maxChannelDelta": 40,
+              "differingChannels": 236655,
+              "psnr": 57.49859264762143,
+              "ssim": 0.9998480522309531
+            },
+            {
+              "frame": 140,
+              "maxChannelDelta": 40,
+              "differingChannels": 236655,
+              "psnr": 57.49859264762143,
+              "ssim": 0.9998480522309531
+            },
+            {
+              "frame": 150,
+              "maxChannelDelta": 40,
+              "differingChannels": 236655,
+              "psnr": 57.49859264762143,
+              "ssim": 0.9998480522309531
+            },
+            {
+              "frame": 160,
+              "maxChannelDelta": 40,
+              "differingChannels": 236655,
+              "psnr": 57.49859264762143,
+              "ssim": 0.9998480522309531
+            },
+            {
+              "frame": 170,
+              "maxChannelDelta": 40,
+              "differingChannels": 236655,
+              "psnr": 57.49859264762143,
+              "ssim": 0.9998480522309531
+            },
+            {
+              "frame": 180,
+              "maxChannelDelta": 40,
+              "differingChannels": 236655,
+              "psnr": 57.49859264762143,
+              "ssim": 0.9998480522309531
+            },
+            {
+              "frame": 190,
+              "maxChannelDelta": 40,
+              "differingChannels": 236655,
+              "psnr": 57.49859264762143,
+              "ssim": 0.9998480522309531
+            },
+            {
+              "frame": 200,
+              "maxChannelDelta": 40,
+              "differingChannels": 236655,
+              "psnr": 57.49859264762143,
+              "ssim": 0.9998480522309531
+            },
+            {
+              "frame": 210,
+              "maxChannelDelta": 40,
+              "differingChannels": 236655,
+              "psnr": 57.49859264762143,
+              "ssim": 0.9998480522309531
+            },
+            {
+              "frame": 220,
+              "maxChannelDelta": 40,
+              "differingChannels": 236655,
+              "psnr": 57.49859264762143,
+              "ssim": 0.9998480522309531
+            },
+            {
+              "frame": 230,
+              "maxChannelDelta": 40,
+              "differingChannels": 236655,
+              "psnr": 57.49859264762143,
+              "ssim": 0.9998480522309531
+            },
+            {
+              "frame": 238,
+              "maxChannelDelta": 40,
+              "differingChannels": 236655,
+              "psnr": 57.49859264762143,
+              "ssim": 0.9998480522309531
+            },
+            {
+              "frame": 239,
+              "maxChannelDelta": 40,
+              "differingChannels": 236655,
+              "psnr": 57.49859264762143,
+              "ssim": 0.9998480522309531
+            }
+          ],
+          "failures": [],
+          "seekFailures": [],
+          "sameInstanceSeekFailures": [],
+          "stateFailures": [],
+          "maxDelta": 40,
+          "minPsnr": 57.49859264762143,
+          "minSsim": 0.9998480522309531
+        },
+        {
+          "id": "commerce/atom-detail",
+          "backend": "webgl2",
+          "width": 1080,
+          "height": 1350,
+          "authoredFrames": 240,
+          "method": "Every tenth frame plus early, midpoint and endpoint boundaries; fresh canvas per frame with cached resources. Hardware compared directly with pinned output of the same explicit backend at the existing perceptual tier. Lossless PNG transport verified by SHA-256 for every compared frame. Evaluated timing, visibility, transforms and state agree exactly; reverse fresh-render hashes at start/mid/end. WebGL2 also checks reverse seeks on one retained preview across seven sampled positions.",
+          "comparisons": [
+            {
+              "frame": 0,
+              "maxChannelDelta": 12,
+              "differingChannels": 236249,
+              "psnr": 58.659071572517725,
+              "ssim": 0.9998558683324076
+            },
+            {
+              "frame": 1,
+              "maxChannelDelta": 12,
+              "differingChannels": 258356,
+              "psnr": 58.417041729262,
+              "ssim": 0.999822901319706
+            },
+            {
+              "frame": 2,
+              "maxChannelDelta": 12,
+              "differingChannels": 264332,
+              "psnr": 58.34153357271112,
+              "ssim": 0.9998183880072707
+            },
+            {
+              "frame": 3,
+              "maxChannelDelta": 12,
+              "differingChannels": 326323,
+              "psnr": 57.19188903798955,
+              "ssim": 0.9998034384890242
+            },
+            {
+              "frame": 10,
+              "maxChannelDelta": 12,
+              "differingChannels": 278033,
+              "psnr": 58.187529473463265,
+              "ssim": 0.9998206382274766
+            },
+            {
+              "frame": 20,
+              "maxChannelDelta": 12,
+              "differingChannels": 319294,
+              "psnr": 57.47625480921231,
+              "ssim": 0.9998272938695066
+            },
+            {
+              "frame": 30,
+              "maxChannelDelta": 12,
+              "differingChannels": 288219,
+              "psnr": 58.06285758779354,
+              "ssim": 0.9998306567741608
+            },
+            {
+              "frame": 40,
+              "maxChannelDelta": 12,
+              "differingChannels": 288219,
+              "psnr": 58.06285758779354,
+              "ssim": 0.9998306567741608
+            },
+            {
+              "frame": 50,
+              "maxChannelDelta": 12,
+              "differingChannels": 288219,
+              "psnr": 58.06285758779354,
+              "ssim": 0.9998306567741608
+            },
+            {
+              "frame": 60,
+              "maxChannelDelta": 12,
+              "differingChannels": 288219,
+              "psnr": 58.06285758779354,
+              "ssim": 0.9998306567741608
+            },
+            {
+              "frame": 70,
+              "maxChannelDelta": 12,
+              "differingChannels": 288219,
+              "psnr": 58.06285758779354,
+              "ssim": 0.9998306567741608
+            },
+            {
+              "frame": 80,
+              "maxChannelDelta": 12,
+              "differingChannels": 288219,
+              "psnr": 58.06285758779354,
+              "ssim": 0.9998306567741608
+            },
+            {
+              "frame": 90,
+              "maxChannelDelta": 12,
+              "differingChannels": 288219,
+              "psnr": 58.06285758779354,
+              "ssim": 0.9998306567741608
+            },
+            {
+              "frame": 100,
+              "maxChannelDelta": 12,
+              "differingChannels": 288219,
+              "psnr": 58.06285758779354,
+              "ssim": 0.9998306567741608
+            },
+            {
+              "frame": 110,
+              "maxChannelDelta": 12,
+              "differingChannels": 288219,
+              "psnr": 58.06285758779354,
+              "ssim": 0.9998306567741608
+            },
+            {
+              "frame": 120,
+              "maxChannelDelta": 12,
+              "differingChannels": 288219,
+              "psnr": 58.06285758779354,
+              "ssim": 0.9998306567741608
+            },
+            {
+              "frame": 130,
+              "maxChannelDelta": 12,
+              "differingChannels": 288219,
+              "psnr": 58.06285758779354,
+              "ssim": 0.9998306567741608
+            },
+            {
+              "frame": 140,
+              "maxChannelDelta": 12,
+              "differingChannels": 288219,
+              "psnr": 58.06285758779354,
+              "ssim": 0.9998306567741608
+            },
+            {
+              "frame": 150,
+              "maxChannelDelta": 12,
+              "differingChannels": 288219,
+              "psnr": 58.06285758779354,
+              "ssim": 0.9998306567741608
+            },
+            {
+              "frame": 160,
+              "maxChannelDelta": 12,
+              "differingChannels": 288219,
+              "psnr": 58.06285758779354,
+              "ssim": 0.9998306567741608
+            },
+            {
+              "frame": 170,
+              "maxChannelDelta": 12,
+              "differingChannels": 288219,
+              "psnr": 58.06285758779354,
+              "ssim": 0.9998306567741608
+            },
+            {
+              "frame": 180,
+              "maxChannelDelta": 12,
+              "differingChannels": 288219,
+              "psnr": 58.06285758779354,
+              "ssim": 0.9998306567741608
+            },
+            {
+              "frame": 190,
+              "maxChannelDelta": 12,
+              "differingChannels": 288219,
+              "psnr": 58.06285758779354,
+              "ssim": 0.9998306567741608
+            },
+            {
+              "frame": 200,
+              "maxChannelDelta": 12,
+              "differingChannels": 288219,
+              "psnr": 58.06285758779354,
+              "ssim": 0.9998306567741608
+            },
+            {
+              "frame": 210,
+              "maxChannelDelta": 12,
+              "differingChannels": 288219,
+              "psnr": 58.06285758779354,
+              "ssim": 0.9998306567741608
+            },
+            {
+              "frame": 220,
+              "maxChannelDelta": 12,
+              "differingChannels": 288219,
+              "psnr": 58.06285758779354,
+              "ssim": 0.9998306567741608
+            },
+            {
+              "frame": 230,
+              "maxChannelDelta": 12,
+              "differingChannels": 288219,
+              "psnr": 58.06285758779354,
+              "ssim": 0.9998306567741608
+            },
+            {
+              "frame": 238,
+              "maxChannelDelta": 12,
+              "differingChannels": 288219,
+              "psnr": 58.06285758779354,
+              "ssim": 0.9998306567741608
+            },
+            {
+              "frame": 239,
+              "maxChannelDelta": 12,
+              "differingChannels": 288219,
+              "psnr": 58.06285758779354,
+              "ssim": 0.9998306567741608
+            }
+          ],
+          "failures": [],
+          "seekFailures": [],
+          "sameInstanceSeekFailures": [],
+          "stateFailures": [],
+          "maxDelta": 12,
+          "minPsnr": 57.19188903798955,
+          "minSsim": 0.9998034384890242
+        },
+        {
+          "id": "commerce/atom-directional-blur",
+          "backend": "webgl2",
+          "width": 1080,
+          "height": 1350,
+          "authoredFrames": 240,
+          "method": "Every tenth frame plus early, midpoint and endpoint boundaries; fresh canvas per frame with cached resources. Hardware compared directly with pinned output of the same explicit backend at the existing perceptual tier. Lossless PNG transport verified by SHA-256 for every compared frame. Evaluated timing, visibility, transforms and state agree exactly; reverse fresh-render hashes at start/mid/end. WebGL2 also checks reverse seeks on one retained preview across seven sampled positions.",
+          "comparisons": [
+            {
+              "frame": 0,
+              "maxChannelDelta": 0,
+              "differingChannels": 0,
+              "psnr": 999,
+              "ssim": 1
+            },
+            {
+              "frame": 1,
+              "maxChannelDelta": 0,
+              "differingChannels": 0,
+              "psnr": 999,
+              "ssim": 1
+            },
+            {
+              "frame": 2,
+              "maxChannelDelta": 0,
+              "differingChannels": 0,
+              "psnr": 999,
+              "ssim": 1
+            },
+            {
+              "frame": 3,
+              "maxChannelDelta": 6,
+              "differingChannels": 24161,
+              "psnr": 70.31418542246803,
+              "ssim": 0.9999906629442223
+            },
+            {
+              "frame": 10,
+              "maxChannelDelta": 9,
+              "differingChannels": 213159,
+              "psnr": 60.37183872095114,
+              "ssim": 0.9998689568980661
+            },
+            {
+              "frame": 20,
+              "maxChannelDelta": 8,
+              "differingChannels": 216068,
+              "psnr": 60.32488482588867,
+              "ssim": 0.9998688777372231
+            },
+            {
+              "frame": 30,
+              "maxChannelDelta": 9,
+              "differingChannels": 214307,
+              "psnr": 60.362632986553834,
+              "ssim": 0.9998674806717444
+            },
+            {
+              "frame": 40,
+              "maxChannelDelta": 8,
+              "differingChannels": 212912,
+              "psnr": 60.37849761243017,
+              "ssim": 0.9998701248084264
+            },
+            {
+              "frame": 50,
+              "maxChannelDelta": 8,
+              "differingChannels": 212912,
+              "psnr": 60.37849761243017,
+              "ssim": 0.9998701248084264
+            },
+            {
+              "frame": 60,
+              "maxChannelDelta": 8,
+              "differingChannels": 212912,
+              "psnr": 60.37849761243017,
+              "ssim": 0.9998701248084264
+            },
+            {
+              "frame": 70,
+              "maxChannelDelta": 8,
+              "differingChannels": 212912,
+              "psnr": 60.37849761243017,
+              "ssim": 0.9998701248084264
+            },
+            {
+              "frame": 80,
+              "maxChannelDelta": 8,
+              "differingChannels": 212912,
+              "psnr": 60.37849761243017,
+              "ssim": 0.9998701248084264
+            },
+            {
+              "frame": 90,
+              "maxChannelDelta": 8,
+              "differingChannels": 212912,
+              "psnr": 60.37849761243017,
+              "ssim": 0.9998701248084264
+            },
+            {
+              "frame": 100,
+              "maxChannelDelta": 8,
+              "differingChannels": 212912,
+              "psnr": 60.37849761243017,
+              "ssim": 0.9998701248084264
+            },
+            {
+              "frame": 110,
+              "maxChannelDelta": 8,
+              "differingChannels": 212912,
+              "psnr": 60.37849761243017,
+              "ssim": 0.9998701248084264
+            },
+            {
+              "frame": 120,
+              "maxChannelDelta": 8,
+              "differingChannels": 212912,
+              "psnr": 60.37849761243017,
+              "ssim": 0.9998701248084264
+            },
+            {
+              "frame": 130,
+              "maxChannelDelta": 8,
+              "differingChannels": 212912,
+              "psnr": 60.37849761243017,
+              "ssim": 0.9998701248084264
+            },
+            {
+              "frame": 140,
+              "maxChannelDelta": 8,
+              "differingChannels": 212912,
+              "psnr": 60.37849761243017,
+              "ssim": 0.9998701248084264
+            },
+            {
+              "frame": 150,
+              "maxChannelDelta": 8,
+              "differingChannels": 212912,
+              "psnr": 60.37849761243017,
+              "ssim": 0.9998701248084264
+            },
+            {
+              "frame": 160,
+              "maxChannelDelta": 8,
+              "differingChannels": 212912,
+              "psnr": 60.37849761243017,
+              "ssim": 0.9998701248084264
+            },
+            {
+              "frame": 170,
+              "maxChannelDelta": 8,
+              "differingChannels": 212912,
+              "psnr": 60.37849761243017,
+              "ssim": 0.9998701248084264
+            },
+            {
+              "frame": 180,
+              "maxChannelDelta": 8,
+              "differingChannels": 212912,
+              "psnr": 60.37849761243017,
+              "ssim": 0.9998701248084264
+            },
+            {
+              "frame": 190,
+              "maxChannelDelta": 8,
+              "differingChannels": 212912,
+              "psnr": 60.37849761243017,
+              "ssim": 0.9998701248084264
+            },
+            {
+              "frame": 200,
+              "maxChannelDelta": 8,
+              "differingChannels": 212912,
+              "psnr": 60.37849761243017,
+              "ssim": 0.9998701248084264
+            },
+            {
+              "frame": 210,
+              "maxChannelDelta": 8,
+              "differingChannels": 212912,
+              "psnr": 60.37849761243017,
+              "ssim": 0.9998701248084264
+            },
+            {
+              "frame": 220,
+              "maxChannelDelta": 8,
+              "differingChannels": 212912,
+              "psnr": 60.37849761243017,
+              "ssim": 0.9998701248084264
+            },
+            {
+              "frame": 230,
+              "maxChannelDelta": 8,
+              "differingChannels": 212912,
+              "psnr": 60.37849761243017,
+              "ssim": 0.9998701248084264
+            },
+            {
+              "frame": 238,
+              "maxChannelDelta": 8,
+              "differingChannels": 212912,
+              "psnr": 60.37849761243017,
+              "ssim": 0.9998701248084264
+            },
+            {
+              "frame": 239,
+              "maxChannelDelta": 8,
+              "differingChannels": 212912,
+              "psnr": 60.37849761243017,
+              "ssim": 0.9998701248084264
+            }
+          ],
+          "failures": [],
+          "seekFailures": [],
+          "sameInstanceSeekFailures": [],
+          "stateFailures": [],
+          "maxDelta": 9,
+          "minPsnr": 60.32488482588867,
+          "minSsim": 0.9998674806717444
+        },
+        {
+          "id": "commerce/atom-displacement",
+          "backend": "webgl2",
+          "width": 1080,
+          "height": 1350,
+          "authoredFrames": 240,
+          "method": "Every tenth frame plus early, midpoint and endpoint boundaries; fresh canvas per frame with cached resources. Hardware compared directly with pinned output of the same explicit backend at the existing perceptual tier. Lossless PNG transport verified by SHA-256 for every compared frame. Evaluated timing, visibility, transforms and state agree exactly; reverse fresh-render hashes at start/mid/end. WebGL2 also checks reverse seeks on one retained preview across seven sampled positions.",
+          "comparisons": [
+            {
+              "frame": 0,
+              "maxChannelDelta": 15,
+              "differingChannels": 257070,
+              "psnr": 57.951267007110516,
+              "ssim": 0.9997902098650935
+            },
+            {
+              "frame": 1,
+              "maxChannelDelta": 14,
+              "differingChannels": 256877,
+              "psnr": 57.952696278147215,
+              "ssim": 0.9997892711383283
+            },
+            {
+              "frame": 2,
+              "maxChannelDelta": 15,
+              "differingChannels": 256721,
+              "psnr": 57.87977806685666,
+              "ssim": 0.9997882519986826
+            },
+            {
+              "frame": 3,
+              "maxChannelDelta": 16,
+              "differingChannels": 258004,
+              "psnr": 57.77446599912218,
+              "ssim": 0.9997882834637248
+            },
+            {
+              "frame": 10,
+              "maxChannelDelta": 15,
+              "differingChannels": 257665,
+              "psnr": 57.847055013483015,
+              "ssim": 0.9997892659438338
+            },
+            {
+              "frame": 20,
+              "maxChannelDelta": 15,
+              "differingChannels": 256743,
+              "psnr": 57.696354239219836,
+              "ssim": 0.9997862948270622
+            },
+            {
+              "frame": 30,
+              "maxChannelDelta": 16,
+              "differingChannels": 257333,
+              "psnr": 57.928879419504696,
+              "ssim": 0.9997879157907239
+            },
+            {
+              "frame": 40,
+              "maxChannelDelta": 15,
+              "differingChannels": 257672,
+              "psnr": 57.82893726259697,
+              "ssim": 0.9997870821601392
+            },
+            {
+              "frame": 50,
+              "maxChannelDelta": 14,
+              "differingChannels": 256766,
+              "psnr": 57.70711219021937,
+              "ssim": 0.9997864559696852
+            },
+            {
+              "frame": 60,
+              "maxChannelDelta": 15,
+              "differingChannels": 257152,
+              "psnr": 57.94956202568689,
+              "ssim": 0.9997901997210652
+            },
+            {
+              "frame": 70,
+              "maxChannelDelta": 15,
+              "differingChannels": 256699,
+              "psnr": 57.7061666534716,
+              "ssim": 0.999786216267448
+            },
+            {
+              "frame": 80,
+              "maxChannelDelta": 15,
+              "differingChannels": 257737,
+              "psnr": 57.83410870441976,
+              "ssim": 0.9997884352824429
+            },
+            {
+              "frame": 90,
+              "maxChannelDelta": 16,
+              "differingChannels": 257339,
+              "psnr": 57.92707898764292,
+              "ssim": 0.9997889623350275
+            },
+            {
+              "frame": 100,
+              "maxChannelDelta": 15,
+              "differingChannels": 256629,
+              "psnr": 57.6992390003532,
+              "ssim": 0.9997863997152356
+            },
+            {
+              "frame": 110,
+              "maxChannelDelta": 14,
+              "differingChannels": 257658,
+              "psnr": 57.84126433897796,
+              "ssim": 0.9997883187033187
+            },
+            {
+              "frame": 120,
+              "maxChannelDelta": 16,
+              "differingChannels": 257054,
+              "psnr": 57.9583131033061,
+              "ssim": 0.9997905036632789
+            },
+            {
+              "frame": 130,
+              "maxChannelDelta": 16,
+              "differingChannels": 257477,
+              "psnr": 57.918192006923526,
+              "ssim": 0.999789701896973
+            },
+            {
+              "frame": 140,
+              "maxChannelDelta": 15,
+              "differingChannels": 258107,
+              "psnr": 57.80346667243046,
+              "ssim": 0.9997863885935716
+            },
+            {
+              "frame": 150,
+              "maxChannelDelta": 15,
+              "differingChannels": 257707,
+              "psnr": 57.916244790480114,
+              "ssim": 0.9997874244298944
+            },
+            {
+              "frame": 160,
+              "maxChannelDelta": 15,
+              "differingChannels": 256441,
+              "psnr": 57.81351515918497,
+              "ssim": 0.999789419169446
+            },
+            {
+              "frame": 170,
+              "maxChannelDelta": 16,
+              "differingChannels": 257552,
+              "psnr": 57.986170568705916,
+              "ssim": 0.9997872904664378
+            },
+            {
+              "frame": 180,
+              "maxChannelDelta": 15,
+              "differingChannels": 258619,
+              "psnr": 57.65939978795289,
+              "ssim": 0.9997867940668
+            },
+            {
+              "frame": 190,
+              "maxChannelDelta": 16,
+              "differingChannels": 257175,
+              "psnr": 57.932501495581235,
+              "ssim": 0.99978853589148
+            },
+            {
+              "frame": 200,
+              "maxChannelDelta": 16,
+              "differingChannels": 258689,
+              "psnr": 57.822856190135575,
+              "ssim": 0.9997874511684945
+            },
+            {
+              "frame": 210,
+              "maxChannelDelta": 15,
+              "differingChannels": 257283,
+              "psnr": 57.71001312056385,
+              "ssim": 0.9997869304180641
+            },
+            {
+              "frame": 220,
+              "maxChannelDelta": 14,
+              "differingChannels": 257239,
+              "psnr": 57.876789628988135,
+              "ssim": 0.9997903095475236
+            },
+            {
+              "frame": 230,
+              "maxChannelDelta": 16,
+              "differingChannels": 257620,
+              "psnr": 57.77947221282497,
+              "ssim": 0.9997861051657614
+            },
+            {
+              "frame": 238,
+              "maxChannelDelta": 15,
+              "differingChannels": 256857,
+              "psnr": 57.94613503823352,
+              "ssim": 0.9997897300143832
+            },
+            {
+              "frame": 239,
+              "maxChannelDelta": 15,
+              "differingChannels": 257070,
+              "psnr": 57.951267007110516,
+              "ssim": 0.9997902098650935
+            }
+          ],
+          "failures": [],
+          "seekFailures": [],
+          "sameInstanceSeekFailures": [],
+          "stateFailures": [],
+          "maxDelta": 16,
+          "minPsnr": 57.65939978795289,
+          "minSsim": 0.9997861051657614
+        }
+      ]
+    }
+  },
   "hardwareLab": {},
   "ce4bComplete": false,
   "harnessSnapshot": {

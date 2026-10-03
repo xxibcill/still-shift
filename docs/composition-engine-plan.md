@@ -2738,7 +2738,10 @@ comparisons; the full `pnpm check`.
   assigned pixel tiers, state/seek checks and existing timing assertions. All
   **10 required export pairs** are byte-identical, including numeric text and
   native/numeric motion blur. No production code or tolerance changed.
-- **Remaining:** unchanged frozen CE0 baselines and complete
+- **Frozen CE0 complete:** the unchanged `pnpm test:browser:composition-baselines`
+  check passed all **176 items**. No stored baseline, timing target or pixel tier
+  was regenerated or changed.
+- **Remaining:** complete
   hardware preview/export plus Lab interaction checks. CE4b remains open until
   these pass. The **117 GPU timing failures** and unchanged **1.25×** requirement
   remain CE6 work. See [resumed verification results](./composition-ce4b-verification-results.json).
