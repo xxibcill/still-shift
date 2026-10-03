@@ -120,7 +120,13 @@ export class WebglVectors {
     const rasterHeight = bounded
       ? Math.min(dst.height, Math.ceil((rect.bottom + 63) / 256) * 256)
       : dst.height;
-    const pixels = this.raster.createSurface(rasterWidth, rasterHeight);
+    // Hardware Canvas blur differs from the pinned CPU filter at small radii.
+    const rasterMode = ops.some((op) => op.paintBlur) ? "software" : undefined;
+    const pixels = this.raster.createSurface(
+      rasterWidth,
+      rasterHeight,
+      rasterMode,
+    );
     // draw() separates overlapping coverage before batching paints over a backdrop.
     const imageOnly = ops.every(
       ({ content }) => content.type !== "solid" && this.singleImage?.(content),
@@ -214,7 +220,11 @@ export class WebglVectors {
             upload(pixels.canvas, group.bounds, group.primitive);
             continue;
           }
-          const scratch = this.raster.createSurface(rasterWidth, rasterHeight);
+          const scratch = this.raster.createSurface(
+            rasterWidth,
+            rasterHeight,
+            rasterMode,
+          );
           try {
             replayVectorPaints(scratch.ctx, group);
             upload(scratch.canvas, group.bounds, group.primitive);

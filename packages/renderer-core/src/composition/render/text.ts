@@ -30,7 +30,11 @@ import { drawStoryText } from "../../story-text.ts";
 import { passageError } from "../../passage-diagnostics.ts";
 import { rgba } from "../evaluate/sample.ts";
 import type { Bounds } from "../evaluate/types.ts";
-import { cssColor, type CanvasTextDrawer } from "./canvas2d.ts";
+import {
+  cssColor,
+  requiresSoftwareFilters,
+  type CanvasTextDrawer,
+} from "./canvas2d.ts";
 import type { TextContent } from "./graph.ts";
 import {
   collectCompositionTextFrames,
@@ -326,6 +330,7 @@ export function prepareCompositionText(
     );
     const prepared = typed.length
       ? prepareTypography(scene, fonts, {
+          softwareRaster: requiresSoftwareFilters(comp),
           strokeCoverage: true,
           colorCoverage: true,
           sourceColorNodes: new Set(

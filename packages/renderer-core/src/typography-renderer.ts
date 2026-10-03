@@ -46,6 +46,7 @@ export type TextRaster = {
   strokes: Map<string, HTMLCanvasElement>;
   fonts: Map<string, LoadedFont>;
   variants: Map<string, TextRaster>;
+  softwareRaster?: boolean;
   /** Opaque glyph coverage; authored fill colour and alpha apply only when drawing. */
   colorCoverage?: boolean;
   /** Composition outlines cache opaque coverage, independent of animated colour. */
@@ -100,12 +101,13 @@ export function hasStableTypographyImage(
     )
   );
 }
-const surface = (width: number, height: number) => {
+const surface = (width: number, height: number, softwareRaster = false) => {
   if (width * height > 32_000_000 || width > 16384 || height > 16384)
     throw new Error("text-raster-budget: text layer exceeds 32 megapixels");
   const canvas = document.createElement("canvas");
   canvas.width = Math.max(1, Math.ceil(width));
   canvas.height = Math.max(1, Math.ceil(height));
+  if (softwareRaster) canvas.getContext("2d", { willReadFrequently: true });
   return canvas;
 };
 export function rasterizeText(
@@ -113,6 +115,7 @@ export function rasterizeText(
   layout: ShapedLayout,
   fonts: Map<string, LoadedFont>,
   colorCoverage = false,
+  softwareRaster = false,
 ): TextRaster {
   const pad = Math.ceil(
     Math.max(
@@ -127,6 +130,7 @@ export function rasterizeText(
   const canvas = surface(
       right - left + pad,
       layout.top + layout.height - top + pad,
+      softwareRaster,
     ),
     ctx = canvas.getContext("2d")!;
   ctx.translate(-left, -top);
@@ -167,6 +171,7 @@ export function rasterizeText(
     strokes: new Map(),
     fonts,
     variants: new Map(),
+    ...(softwareRaster ? { softwareRaster: true } : {}),
     ...(colorCoverage ? { colorCoverage: true } : {}),
   };
 }
@@ -177,6 +182,7 @@ export function prepareTypography(
     strokeCoverage?: boolean;
     colorCoverage?: boolean;
     sourceColorNodes?: ReadonlySet<string>;
+    softwareRaster?: boolean;
   } = {},
 ): PreparedTypography {
   const nodes = new Map<string, Map<string, TextRaster>>(),
@@ -220,7 +226,13 @@ export function prepareTypography(
       rasters.set(
         text,
         reserveRaster(
-          rasterizeText(node, layout, fonts, colorCoverage),
+          rasterizeText(
+            node,
+            layout,
+            fonts,
+            colorCoverage,
+            options.softwareRaster,
+          ),
           sourceColor,
         ),
       );
@@ -239,7 +251,13 @@ export function prepareTypography(
         raster.variants.set(
           key,
           reserveRaster(
-            rasterizeText(node, layout, fonts, colorCoverage),
+            rasterizeText(
+              node,
+              layout,
+              fonts,
+              colorCoverage,
+              options.softwareRaster,
+            ),
             sourceColor,
           ),
         );
@@ -343,7 +361,9 @@ export function prepareTypography(
     const layout = shapeText(ctx, replacement, replacement.text, fonts, {
       correction,
     });
-    const raster = reserveRaster(rasterizeText(replacement, layout, fonts));
+    const raster = reserveRaster(
+      rasterizeText(replacement, layout, fonts, false, options.softwareRaster),
+    );
     const entries = corrections.get(node.id) ?? [];
     entries.push({
       node: replacement,
@@ -364,9 +384,9 @@ export function prepareTypography(
     pairs,
     slideLimits,
     scene,
-    layer: surface(1, 1),
-    maskLayer: surface(1, 1),
-    transitionLayer: surface(1, 1),
+    layer: surface(1, 1, options.softwareRaster),
+    maskLayer: surface(1, 1, options.softwareRaster),
+    transitionLayer: surface(1, 1, options.softwareRaster),
   };
 }
 /** Container content box in node space, matching the legacy text-box and text-layout limits. */
@@ -422,7 +442,11 @@ function coloredRaster(
 ) {
   let canvas = raster.colors.get(key);
   if (!canvas) {
-    canvas = surface(raster.canvas.width, raster.canvas.height);
+    canvas = surface(
+      raster.canvas.width,
+      raster.canvas.height,
+      raster.softwareRaster,
+    );
     const ctx = canvas.getContext("2d")!;
     ctx.drawImage(source, 0, 0);
     ctx.globalCompositeOperation = "source-in";
@@ -435,7 +459,11 @@ function coloredRaster(
   return canvas;
 }
 function renderStrokedRaster(raster: TextRaster, width: number, color: string) {
-  const canvas = surface(raster.canvas.width, raster.canvas.height);
+  const canvas = surface(
+    raster.canvas.width,
+    raster.canvas.height,
+    raster.softwareRaster,
+  );
   const ctx = canvas.getContext("2d")!;
   ctx.translate(-raster.left, -raster.top);
   ctx.strokeStyle = color;

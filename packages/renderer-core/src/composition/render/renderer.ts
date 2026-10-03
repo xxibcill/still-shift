@@ -14,7 +14,7 @@ import {
 } from "../../passage-diagnostics.ts";
 import type { LoadedFont } from "../../prepared-fonts.ts";
 import type { Bounds } from "../evaluate/types.ts";
-import { createCanvas2dBackend } from "./canvas2d.ts";
+import { createCanvas2dBackend, requiresSoftwareFilters } from "./canvas2d.ts";
 import {
   renderCompositionExposure,
   type CompositionFrameCache,
@@ -190,7 +190,12 @@ export function createCompositionPreview(
   compositionRendererVersion(kind);
   const measurementCanvas =
     kind === "webgl2" ? document.createElement("canvas") : canvas;
-  const ctx = measurementCanvas.getContext("2d", { alpha: false });
+  const softwareRaster =
+    kind === "canvas2d" && requiresSoftwareFilters(composition);
+  const ctx = measurementCanvas.getContext("2d", {
+    alpha: false,
+    ...(softwareRaster ? { willReadFrequently: true } : {}),
+  });
   if (!ctx) throw new Error("Canvas 2D is unavailable");
   const text = prepareCompositionText(composition, resources.fonts, ctx);
   const drawProvider = prepareCompositionProviders(composition, resources, [
@@ -198,6 +203,7 @@ export function createCompositionPreview(
     ...(options.providers ?? []),
   ]);
   const backendOptions = {
+    softwareRaster,
     images: {
       images: resources.images,
       ...(resources.pngImages ? { pngImages: resources.pngImages } : {}),

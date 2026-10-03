@@ -109,6 +109,7 @@
     "test:browser:composition-effects": "node --import tsx tests/browser/composition-effects.ts",
     "test:browser:composition-exposure": "node --import tsx tests/browser/composition-exposure.ts",
     "test:browser:composition-webgl": "node --import tsx tests/browser/composition-webgl.ts",
+    "test:browser:composition-webgl-blur": "node --import tsx tests/browser/composition-webgl-blur.ts",
     "test:browser:composition-webgl-export": "node --import tsx tests/browser/composition-webgl-export.ts"
   },
   "devDependencies": {

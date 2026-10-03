@@ -23,7 +23,7 @@ import { WebglDevice, type WebglSurface } from "./webgl-device.ts";
 import { blendShader } from "./webgl-blend.ts";
 
 export const COMPOSITION_WEBGL_RENDERER_VERSION =
-  "composition-webgl2-0.33.0" as const;
+  "composition-webgl2-0.34.0" as const;
 const IDENTITY: Matrix = [1, 0, 0, 1, 0, 0];
 const COPY =
   "uniform float opacity; void main() { pixel = floor(floor(texture(source, uv) * 255.0 + 0.5) * (floor(opacity * 255.0 + 0.5) + 1.0) / 256.0) / 255.0; }";
@@ -176,8 +176,13 @@ export function createWebgl2Backend(
     mode: CompositionBlendMode,
     paint: (surface: CanvasSurface) => void,
     primitive = false,
+    paintBlur = 0,
   ) {
-    const pixels = raster.createSurface(dst.width, dst.height);
+    const pixels = raster.createSurface(
+      dst.width,
+      dst.height,
+      paintBlur ? "software" : undefined,
+    );
     const source = device.surface(dst.width, dst.height);
     try {
       paint(pixels);
@@ -316,6 +321,7 @@ export function createWebgl2Backend(
             paintBlur,
           ),
         !paintBlur,
+        paintBlur,
       );
     },
     // Keep a vector batch together: raster coverage rounds each overlapping fill.
@@ -344,17 +350,22 @@ export function createWebgl2Backend(
           images.draw(dst, content, matrix, opacity, clips, transforms))
       )
         return;
-      draw(dst, mode, (pixels) =>
-        raster.drawImage(
-          pixels,
-          content,
-          matrix,
-          opacity,
-          "normal",
-          clips,
-          transforms,
-          paintBlur,
-        ),
+      draw(
+        dst,
+        mode,
+        (pixels) =>
+          raster.drawImage(
+            pixels,
+            content,
+            matrix,
+            opacity,
+            "normal",
+            clips,
+            transforms,
+            paintBlur,
+          ),
+        false,
+        paintBlur,
       );
     },
     drawText(
@@ -370,17 +381,22 @@ export function createWebgl2Backend(
       const rect = options.contentBounds?.(content);
       if (paintBlur || !rect) bounds.full(dst);
       else bounds.transform(dst, rect, matrix);
-      draw(dst, mode, (pixels) =>
-        raster.drawText(
-          pixels,
-          content,
-          matrix,
-          opacity,
-          "normal",
-          clips,
-          transforms,
-          paintBlur,
-        ),
+      draw(
+        dst,
+        mode,
+        (pixels) =>
+          raster.drawText(
+            pixels,
+            content,
+            matrix,
+            opacity,
+            "normal",
+            clips,
+            transforms,
+            paintBlur,
+          ),
+        false,
+        paintBlur,
       );
     },
     drawProvider(
@@ -396,17 +412,22 @@ export function createWebgl2Backend(
       const rect = options.contentBounds?.(content);
       if (paintBlur || !rect) bounds.full(dst);
       else bounds.transform(dst, rect, matrix);
-      draw(dst, mode, (pixels) =>
-        raster.drawProvider(
-          pixels,
-          content,
-          matrix,
-          opacity,
-          "normal",
-          clips,
-          transforms,
-          paintBlur,
-        ),
+      draw(
+        dst,
+        mode,
+        (pixels) =>
+          raster.drawProvider(
+            pixels,
+            content,
+            matrix,
+            opacity,
+            "normal",
+            clips,
+            transforms,
+            paintBlur,
+          ),
+        false,
+        paintBlur,
       );
     },
     composite(src, dst, mode, opacity, matrix, clips, transforms, paintBlur) {

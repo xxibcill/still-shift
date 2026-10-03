@@ -3,6 +3,7 @@ import type {
   BezierPath,
   CompositionBlendMode,
   TrackMatte,
+  Composition,
 } from "@still-shift/scene-contract";
 import { imagePlacement, type Matrix } from "../../node-transform.ts";
 import type { Rgba } from "../evaluate/types.ts";
@@ -21,6 +22,7 @@ export type CanvasSurface = {
   readonly height: number;
   readonly canvas: HTMLCanvasElement;
   readonly ctx: CanvasRenderingContext2D;
+  readonly rasterMode?: "software";
 };
 
 export type CanvasImageResources = {
@@ -31,6 +33,15 @@ export type CanvasImageResources = {
   /** Immutable decoded PNG assets verified by the resource loader. */
   pngImages?: ReadonlySet<string>;
 };
+
+/** CPU glyph preparation and Canvas filters must use the same raster path. */
+export function requiresSoftwareFilters(composition: Composition): boolean {
+  return [composition, ...(composition.precomps ?? [])].some((scope) =>
+    scope.layers.some((layer) =>
+      layer.effects?.some((effect) => effect.effect === "blur.primitive"),
+    ),
+  );
+}
 
 /** Draws a text layer's content in layer space; `ctx` already carries the transform. */
 export type CanvasTextDrawer = (
@@ -112,9 +123,17 @@ export type Canvas2dBackendOptions = {
   poolLimit?: number;
   /** Maximum bytes retained by idle preparation surfaces across all sizes. */
   poolByteLimit?: number;
+  /** Keep primitive Canvas filters consistent with the pinned CPU raster. */
+  softwareRaster?: boolean;
 };
 
 export type Canvas2dBackend = RenderBackend<CanvasSurface> & {
+  /** Software filter preparation has its own pool; ordinary surfaces stay unchanged. */
+  createSurface(
+    width: number,
+    height: number,
+    rasterMode?: "software",
+  ): CanvasSurface;
   /** Wrap an existing canvas, such as the preview or export canvas. */
   wrap(canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D): CanvasSurface;
   /** Pooled surfaces currently allocated (in use and idle). */
@@ -193,10 +212,22 @@ export function createCanvas2dBackend(
       return allocated;
     },
     wrap(canvas, ctx) {
-      return { width: canvas.width, height: canvas.height, canvas, ctx };
+      return {
+        width: canvas.width,
+        height: canvas.height,
+        canvas,
+        ctx,
+        ...(options.softwareRaster ? { rasterMode: "software" as const } : {}),
+      };
     },
-    createSurface(width, height) {
-      const key = `${width}x${height}`;
+    createSurface(
+      width,
+      height,
+      rasterMode: "software" | undefined = options.softwareRaster
+        ? "software"
+        : undefined,
+    ) {
+      const key = `${width}x${height}:${rasterMode ?? "default"}`;
       const list = pool.get(key);
       const surface = list?.pop();
       if (!list?.length) pool.delete(key);
@@ -208,11 +239,19 @@ export function createCanvas2dBackend(
       }
       allocated += 1;
       const canvas = make(width, height);
-      const ctx = canvas.getContext("2d", { willReadFrequently: false })!;
-      return { width, height, canvas, ctx };
+      const ctx = canvas.getContext("2d", {
+        willReadFrequently: rasterMode === "software",
+      })!;
+      return {
+        width,
+        height,
+        canvas,
+        ctx,
+        ...(rasterMode ? { rasterMode } : {}),
+      };
     },
     releaseSurface(surface) {
-      const key = `${surface.width}x${surface.height}`;
+      const key = `${surface.width}x${surface.height}:${surface.rasterMode ?? "default"}`;
       const bytes = surface.width * surface.height * 4;
       if (bytes > byteLimit || (pool.get(key)?.length ?? 0) >= limit) {
         allocated -= 1;
@@ -322,7 +361,7 @@ export function createCanvas2dBackend(
       }
       // Crossfade as the legacy renderer does: the outgoing state at 1 − mix,
       // the incoming one added at mix, then composited as one layer.
-      const tmp = backend.createSurface(dst.width, dst.height);
+      const tmp = backend.createSurface(dst.width, dst.height, dst.rasterMode);
       const ctx = tmp.ctx;
       transform(ctx, matrix, transforms);
       ctx.globalAlpha = 1 - content.stateMix;
@@ -597,7 +636,7 @@ export function createCanvas2dBackend(
       }
       return;
     }
-    const tmp = backend.createSurface(dst.width, dst.height);
+    const tmp = backend.createSurface(dst.width, dst.height, dst.rasterMode);
     try {
       const ctx = tmp.ctx;
       transform(ctx, matrix, transforms);

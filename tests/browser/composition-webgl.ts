@@ -7,6 +7,7 @@ import type * as Checks from "../helpers/composition-webgl-reference.ts";
 import type * as VectorPaints from "../helpers/composition-webgl-vector-paints.ts";
 import type * as Sampling from "../helpers/composition-webgl-sampling.ts";
 import type * as Png from "../helpers/composition-webgl-png.ts";
+import type * as Blur from "../helpers/composition-webgl-blur.ts";
 const server = await createServer({
   root: resolve(import.meta.dirname, "../.."),
   configFile: false,
@@ -19,6 +20,11 @@ try {
   const page = await browser.newPage();
   await page.addInitScript("window.__name = (fn) => fn;");
   await page.goto(server.resolvedUrls!.local[0]!);
+  const blur = await page.evaluate(async () => {
+    const url = "/tests/helpers/composition-webgl-blur.ts";
+    return ((await import(url)) as typeof Blur).checkWebglPrimitiveBlur();
+  });
+  console.log("WebGL primitive blur raster parity:", blur);
   const sums = await page.evaluate(async () => {
     const url = "/tests/helpers/composition-webgl-float-sum.ts";
     return ((await import(url)) as typeof Rational).checkWebglFloatSum();
