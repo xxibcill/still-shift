@@ -43,7 +43,14 @@ still hold before relying on them.
 
 ## Current state
 
-_Last updated 2026-10-04 by Codex for PR #32 conflict resolution._
+- **PR #32 review fixes (2026-10-04):** inline review posted on `75e46f2`;
+  one P1 bake boundary defect and two P2 built-in contract defects are being
+  fixed in separate commits. Integrated main `5a6705c` (PR #31 merged); only
+  the development log conflicted, and both branches' records are retained.
+  Fix verification and one final push to the existing PR branch are pending.
+  [Review evidence](./pr-32-review-results.json).
+
+_Last updated 2026-10-04 by Codex for PR #32 review fixes._
 
 - **PR #32 conflict resolution (2026-10-04):** merged `main` at `3413780` into
   PR head `a0708ba` and pushed merge `05033c8`, retaining CE9 expressions and
@@ -101,6 +108,18 @@ _Last updated 2026-10-04 by Codex for PR #32 conflict resolution._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-04 — Integrate main before PR #32 review fixes
+
+- **Agent / branch:** Codex on isolated `codex/pr32-review-fixes`, from `75e46f2`.
+- **Done:** merged main `5a6705c`; resolved only `docs/dev-log.md`, retaining
+  CE9 and PR #31 records. Posted the three inline findings before editing code.
+- **Results:** whitespace and changed-document formatting pass; no production
+  source changes in this integration slice. Local review checks remain recorded.
+- **Open / next:** fix each finding in its own commit and push once at the end.
+  CE6-P and CE9-F1 remain deferred; Actions disabled.
+- **Records:** [review evidence](./pr-32-review-results.json),
+  [inline review](https://github.com/xxibcill/still-shift/pull/32#pullrequestreview-5402128438).
 
 ### 2026-10-04 — Resolve PR #32 merge conflicts
 
@@ -166,6 +185,21 @@ _Last updated 2026-10-04 by Codex for PR #32 conflict resolution._
 - **Records:** [CE9 completion record](./composition-engine-plan.md#ce9--expressions-and-motion-behaviours),
   [decision log](./composition-engine-plan.md#decision-log),
   [expression reference](./composition-reference.md#expressions-ce9).
+
+### 2026-10-04 — Resolve PR #31 against main
+
+- **Agent / branch:** Codex on `codex/pr31-conflict-resolution`, from PR head
+  `6034de3`, in an isolated managed worktree.
+- **Scope:** merge `main` at `3413780`; the sole conflict was the WebGL renderer
+  version. Chose `0.36.1`, preserving both branches' fixes and optimizations.
+- **Results:** `pnpm check:fast` (1,286 tests), WebGL, exposure, provider-typography
+  and WebGL-export browser checks pass on Node 22.23.1. Formatting and whitespace
+  checks pass; no unmerged paths or conflict markers remain.
+- **Open / next:** publish the merge to PR #31. Full family matrices, hardware
+  and frozen CE0 checks were not rerun; CE6-P remains deferred. Local audit
+  commit `205f413` remains separate.
+- **Records:** [conflict-resolution evidence](./pr-31-conflict-resolution-results.json),
+  [PR #31](https://github.com/xxibcill/still-shift/pull/31).
 
 ### 2026-10-03 — Commit documentation and prepare CE6 PR
 
