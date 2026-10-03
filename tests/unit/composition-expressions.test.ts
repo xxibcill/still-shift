@@ -321,6 +321,23 @@ describe("expression validation", () => {
 });
 
 describe("expression evaluation", () => {
+  it("evaluates only the selected if branch, like the ternary operator", () => {
+    const c = comp(
+      expressions({
+        "a.transform.rotation": "if(frame < 10, 1, valueAtTime(10000))",
+        "b.transform.position": "if(frame >= 10, valueAtTime(10000), [2, 3])",
+      }),
+    );
+    expect(value(c, "a.transform.rotation", 0)).toBe(1);
+    expect(value(c, "b.transform.position", 0)).toEqual([2, 3]);
+    expect(thrown(() => value(c, "a.transform.rotation", 10))).toMatchObject({
+      code: "comp-evaluation-time",
+    });
+    expect(thrown(() => value(c, "b.transform.position", 10))).toMatchObject({
+      code: "comp-evaluation-time",
+    });
+  });
+
   it("evaluates identifiers and arithmetic in the root clock", () => {
     const c = comp(
       expressions({

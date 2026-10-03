@@ -47,7 +47,8 @@ still hold before relying on them.
   one P1 bake boundary defect and two P2 built-in contract defects are being
   fixed in separate commits. Integrated main `5a6705c` (PR #31 merged); only
   the development log conflicted, and both branches' records are retained.
-  Fix verification and one final push to the existing PR branch are pending.
+  Lazy `if` is fixed (33 expression tests pass); vector-distance validation and
+  bake parity fixes remain. One final push to the existing PR branch is pending.
   [Review evidence](./pr-32-review-results.json).
 
 _Last updated 2026-10-04 by Codex for PR #32 review fixes._
@@ -108,6 +109,17 @@ _Last updated 2026-10-04 by Codex for PR #32 review fixes._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-04 — Fix PR #32 lazy conditional
+
+- **Agent / branch:** Codex on isolated `codex/pr32-review-fixes` after `f80a52a`.
+- **Done:** `if` evaluates its condition and selected branch only; evaluator `23`
+  invalidates cached exports built with the previous semantics.
+- **Results:** regression fails before the fix; all 33 expression tests pass after.
+  Both branch directions skip invalid reads; selected invalid reads still fail.
+- **Open / next:** distance dimensions and auto-orient bake parity remain; final
+  verification and push follow the third fix. No interim push.
+- **Records:** [fix evidence](./pr-32-fix-results.json), [review](./pr-32-review-results.json).
 
 ### 2026-10-04 — Integrate main before PR #32 review fixes
 

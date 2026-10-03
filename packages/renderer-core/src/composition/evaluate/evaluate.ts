@@ -79,7 +79,7 @@ import type {
   PropertyValue,
 } from "./types.ts";
 
-export const COMPOSITION_EVALUATOR_VERSION = "composition-evaluator-22";
+export const COMPOSITION_EVALUATOR_VERSION = "composition-evaluator-23";
 const order = ["action", "response", "current", "carrier"] as const;
 /** Keyed and motion-craft values of one layer, before constraints (CE9 expression stage). */
 type Stage = {
@@ -926,6 +926,10 @@ class Evaluation {
         frame: this.time,
       });
     switch (node.call) {
+      case "if":
+        return (yield* this.expr(node.args[0]!, env))
+          ? yield* this.expr(node.args[1]!, env)
+          : yield* this.expr(node.args[2]!, env);
       case "ref":
         return yield* this.readPath(pathOf(node.args[0]!), this.time);
       case "valueAtTime":
@@ -1051,8 +1055,6 @@ class Evaluation {
       }
       case "step":
         return n[1]! < n[0]! ? 0 : 1;
-      case "if":
-        return args[0] ? args[1]! : args[2]!;
       case "abs":
         return map(args[0]!, Math.abs);
       case "floor":

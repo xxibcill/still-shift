@@ -1,0 +1,16 @@
+{
+  "date": "2026-10-04",
+  "review": "https://github.com/xxibcill/still-shift/pull/32#pullrequestreview-5402128438",
+  "originalHead": "75e46f2c580b4d487349bf322fb6a846245237a3",
+  "integrationCommit": "f80a52a",
+  "fixes": [
+    {
+      "finding": "Evaluate only the selected if branch",
+      "status": "fixed",
+      "evaluatorVersion": "composition-evaluator-23",
+      "regression": "Inactive invalid time reads skipped on either branch; selected invalid read still throws.",
+      "red": "One expected failing regression before fix.",
+      "verification": "pnpm exec vitest run tests/unit/composition-expressions.test.ts: 33 tests pass."
+    }
+  ]
+}
