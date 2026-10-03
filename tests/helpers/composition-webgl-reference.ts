@@ -993,3 +993,103 @@ export async function checkWebglPrimitiveRounding() {
     reference.dispose();
   }
 }
+
+/** Legal layer scale can grow feather kernels beyond texture and shader limits. */
+export async function checkWebglScaledFeather() {
+  const { createCompositionPreview } = await import(
+    "../../packages/renderer-core/src/composition/render/renderer.ts"
+  );
+  const { validateComposition } = await import(
+    "../../packages/scene-contract/src/index.ts"
+  );
+  const { compareFrames } = await import(
+    "../../packages/renderer-core/src/frame-tolerance.ts"
+  );
+  const results = [];
+  for (const scale of [3, 10, 1000])
+    for (const mode of ["add", "subtract"] as const) {
+      const composition: Composition = {
+        schemaVersion: "composition-1",
+        id: "scaled-feather",
+        width: 128,
+        height: 128,
+        fps: 30,
+        frameCount: 2,
+        assets: [],
+        layers: [
+          {
+            id: "box",
+            type: "solid",
+            size: [16, 16],
+            color: "#df573b",
+            transform: { scale: [scale, scale] },
+            masks: [
+              {
+                id: "feather",
+                mode,
+                feather: 1000,
+                opacity: 0.7,
+                path: {
+                  vertices: [
+                    [0, 0],
+                    [16, 0],
+                    [16, 16],
+                    [0, 16],
+                  ],
+                  inTangents: [
+                    [0, 0],
+                    [0, 0],
+                    [0, 0],
+                    [0, 0],
+                  ],
+                  outTangents: [
+                    [0, 0],
+                    [0, 0],
+                    [0, 0],
+                    [0, 0],
+                  ],
+                  closed: true,
+                },
+              },
+            ],
+          },
+        ],
+      };
+      if (!validateComposition(composition).ok)
+        throw new Error("Invalid feather regression");
+      const resources = { images: new Map(), fonts: new Map() };
+      const reference = createCompositionPreview(
+        document.createElement("canvas"),
+        composition,
+        resources,
+      );
+      const gpu = createCompositionPreview(
+        document.createElement("canvas"),
+        composition,
+        resources,
+        { backend: "webgl2" },
+      );
+      try {
+        for (const frame of [1, 0, 1]) {
+          reference.renderFrame(frame);
+          gpu.renderFrame(frame);
+          const metrics = compareFrames(
+            reference.readPixels(),
+            gpu.readPixels(),
+            composition.width,
+            composition.height,
+          );
+          results.push({
+            id: `mask/scale-${scale}/${mode}/${frame}`,
+            maxDelta: metrics.maxChannelDelta,
+            psnr: metrics.psnr,
+            passes: 1,
+          });
+        }
+      } finally {
+        reference.dispose();
+        gpu.dispose();
+      }
+    }
+  return results;
+}

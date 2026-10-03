@@ -9,7 +9,13 @@ import type { Samples } from "./prepared.ts";
 const values = <T extends z.ZodType>(value: T) =>
   z.array(value).min(1).max(COMPOSITION_LIMITS.maxKeys);
 const color = values(z.string().regex(/^#[\da-fA-F]{6}$/));
-const finite = values(z.number().finite());
+const finite = values(
+  z
+    .number()
+    .finite()
+    .min(-COMPOSITION_LIMITS.maxCoordinate)
+    .max(COMPOSITION_LIMITS.maxCoordinate),
+);
 export const AppearanceSchema = z
   .object({
     fill: color.optional(),

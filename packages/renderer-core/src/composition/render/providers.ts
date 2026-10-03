@@ -10,6 +10,8 @@ import type { Bounds } from "../evaluate/types.ts";
 export type ProviderLayer = Extract<CompositionLayer, { type: "provider" }>;
 export type ProviderResources = {
   images: ReadonlyMap<string, CanvasImageSource>;
+  /** Match prepared glyphs to the composition primitive-filter raster policy. */
+  softwareRaster?: boolean;
   fonts: ReadonlyMap<string, LoadedFont>;
   providerFonts?: ReadonlyMap<string, ReadonlyMap<string, LoadedFont>>;
 };
@@ -118,6 +120,7 @@ export function prepareCompositionProviders(
       const key = `${index ? `${scope.id}/` : ""}${layer.id}`;
       // Limit the provider's resource view to its declared dependencies.
       const available: ProviderResources = {
+        ...(resources.softwareRaster ? { softwareRaster: true } : {}),
         images: new Map(
           [...resources.images].filter(([id]) => declared.has(id)),
         ),

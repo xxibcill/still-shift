@@ -51,7 +51,7 @@ import type {
   PropertyValue,
 } from "./types.ts";
 
-export const COMPOSITION_EVALUATOR_VERSION = "composition-evaluator-19";
+export const COMPOSITION_EVALUATOR_VERSION = "composition-evaluator-21";
 const order = ["action", "response", "current", "carrier"] as const;
 type Context = {
   scope: CompositionScope;

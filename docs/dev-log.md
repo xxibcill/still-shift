@@ -43,13 +43,19 @@ still hold before relying on them.
 
 ## Current state
 
-_Last updated 2026-10-03 by Codex._
+_Last updated 2026-10-04 by Codex for PR #31 conflict resolution._
 
+- **PR #31 conflict resolution (2026-10-04):** merged `main` at `3413780`
+  into the PR head `6034de3` on `codex/pr31-conflict-resolution`; renderer
+  `0.36.1` retains both main correctness fixes and CE6 optimizations. All
+  targeted checks pass; see the entry and evidence below. This branch is prepared
+  for delivery to `codex/composition-ce6-performance`.
 - **Documentation delivery:** `c7afacc` commits `AGENTS.md`, this log,
   `docs/composition-engine-plan.md` and `docs/verification.md` on
   `codex/composition-ce6-performance`. [PR #31](https://github.com/xxibcill/still-shift/pull/31)
-  targets `main` and remains a draft until the pending 0.36 correctness audit
-  is recorded. Only the three excluded research/review files remain untracked.
+  targets `main` and is ready for review. Local commit `205f413` records the
+  0.36.0 family audit but is not in the PR; it does not validate the combined
+  0.36.1 tree. Full-family verification of that tree remains separate work.
 - **CE6-P performance (`[d]`, owner approved 2026-10-03):** WebGL's **1.25×**
   render/readback gate and CE6's **2×** speed target are deferred to an
   unscheduled future version. No further tuning or rendering architecture
@@ -58,11 +64,10 @@ _Last updated 2026-10-03 by Codex._
   typography); all pixel, seek and export checks pass. The original 117
   failing cases are not claimed resolved.
   - `ecf9bc6` (renderer `composition-webgl2-0.36.0`) was committed at the
-    owner's request **before** its full family matrices finished. The 0.36
-    matrices were running from `/private/tmp/ce6-performance/matrix-036/`
-    (patch SHA-256 `6c664b46…`). Record their results in the plan and the
-    evidence JSON, or report any pixel, seek or export failure, before treating
-    0.36 as validated.
+    owner's request **before** its full family matrices finished. Local commit
+    `205f413` subsequently records passing 0.36.0 pixel, state, seek and export
+    checks with 71 / 40 / 4 deferred timing failures; that evidence remains
+    separate from this conflict-resolution branch.
   - **Rendering-path decision deferred:** effect-free cases are bounded by the
     GPU-process boundary on pinned SwiftShader. The owner chose feature progress
     before selecting a CPU/GPU hybrid or revising future performance acceptance.
@@ -81,6 +86,21 @@ _Last updated 2026-10-03 by Codex._
   `codex/composition-ce4` base recommendation is superseded.
 
 ## Entries
+
+### 2026-10-04 — Resolve PR #31 against main
+
+- **Agent / branch:** Codex on `codex/pr31-conflict-resolution`, from PR head
+  `6034de3`, in an isolated managed worktree.
+- **Scope:** merge `main` at `3413780`; the sole conflict was the WebGL renderer
+  version. Chose `0.36.1`, preserving both branches' fixes and optimizations.
+- **Results:** `pnpm check:fast` (1,286 tests), WebGL, exposure, provider-typography
+  and WebGL-export browser checks pass on Node 22.23.1. Formatting and whitespace
+  checks pass; no unmerged paths or conflict markers remain.
+- **Open / next:** publish the merge to PR #31. Full family matrices, hardware
+  and frozen CE0 checks were not rerun; CE6-P remains deferred. Local audit
+  commit `205f413` remains separate.
+- **Records:** [conflict-resolution evidence](./pr-31-conflict-resolution-results.json),
+  [PR #31](https://github.com/xxibcill/still-shift/pull/31).
 
 ### 2026-10-03 — Commit documentation and prepare CE6 PR
 

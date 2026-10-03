@@ -4,14 +4,23 @@ export type GaussianKernel = {
   divisor: number;
   lengths: number[];
 };
+function boxLengths(sigma: number) {
+  const width = gaussianBoxWidth(sigma);
+  return width < 255
+    ? [width, width, width + (width % 2 === 0 ? 1 : 0)]
+    : [Math.floor((width * 3) / 2), Math.floor((width * 3) / 2)];
+}
+
+/** Inspect storage requirements before allocating weights for transformed masks. */
+export function blurKernelLength(sigma: number) {
+  const lengths = boxLengths(sigma);
+  return lengths.reduce((a, b) => a + b, 0) - lengths.length + 1;
+}
+
 /** Three centered box filters for Skia's raster Gaussian approximation. */
 export function blurKernel(sigma: number): GaussianKernel {
-  const width = gaussianBoxWidth(sigma);
-  const lengths =
-    width < 255
-      ? [width, width, width + (width % 2 === 0 ? 1 : 0)]
-      : [Math.floor((width * 3) / 2), Math.floor((width * 3) / 2)];
-  const length = lengths.reduce((a, b) => a + b, 0) - lengths.length + 1;
+  const lengths = boxLengths(sigma);
+  const length = blurKernelLength(sigma);
   const divisor = lengths.reduce((a, b) => a * b, 1);
   const weights = Array.from({ length }, (_, position) => {
     let count = 0;

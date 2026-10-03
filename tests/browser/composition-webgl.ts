@@ -118,6 +118,11 @@ try {
     };
   });
   console.log("WebGL single image provider:", singleImage);
+  const feather = await page.evaluate(async () => {
+    const url = "/tests/helpers/composition-webgl-reference.ts";
+    return ((await import(url)) as typeof Checks).checkWebglScaledFeather();
+  });
+  console.log("WebGL scaled feather parity:", feather);
   const results = await page.evaluate(async () => {
     const url = "/tests/helpers/composition-webgl-reference.ts";
     const { checkWebglFrames } = (await import(url)) as typeof Checks;
@@ -126,7 +131,7 @@ try {
   for (const result of results)
     console.log("WebGL composition:", JSON.stringify(result));
   const failures: string[] = [];
-  for (const result of results) {
+  for (const result of [...results, ...feather]) {
     if (result.maxDelta > 2 || result.psnr < 50 || result.passes <= 0)
       failures.push(
         `${result.id} delta ${result.maxDelta} PSNR ${result.psnr} passes ${result.passes}`,

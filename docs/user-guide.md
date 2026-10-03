@@ -87,10 +87,11 @@ component annotations, alpha masks and mattes,
 pinned measured text, text fitting, formatted numeric labels and integer-frame
 commerce/component motion, including text state crossfades, caption containers
 and text animation. Text fitting selects one size for all text states;
-JSON export measures pinned fonts before resizing fitted backing panels. Pixel effects,
-motion blur, rich typography and spatial/path appearance extensions return explicit
-unsupported-feature diagnostics. See the [commerce adapter reference](./composition-reference.md#commerce-adapter-ce4b-in-progress)
-for the current limits. CE4b remains in progress.
+JSON export measures pinned fonts before resizing fitted backing panels. The adapters
+also support pixel effects, motion blur, rich typography, spatial paths and morphs,
+and animated blur, stroke and trim. See the [commerce adapter reference](./composition-reference.md#commerce-adapter-ce4b)
+for provider details and input limits. CE4b is complete under the approved milestone
+split; CE6 retains the unchanged 1.25× render/readback timing target.
 
 For the Lab preview, run `pnpm lab` and open
 [`/composition.html`](http://127.0.0.1:4173/composition.html): play or scrub the

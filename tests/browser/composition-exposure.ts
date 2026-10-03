@@ -21,10 +21,16 @@ try {
   await page.goto(server.resolvedUrls!.local[0]!);
   const results = await page.evaluate(async () => {
     const url = "/tests/helpers/composition-exposure-reference.ts";
-    const { checkExposureFrames, checkSampleClockFrames } = (await import(
-      url
-    )) as typeof ExposureTests;
-    return [...checkExposureFrames(), ...checkSampleClockFrames()];
+    const {
+      checkExposureFrames,
+      checkSampleClockFrames,
+      checkReversedContentCutFrames,
+    } = (await import(url)) as typeof ExposureTests;
+    return [
+      ...checkExposureFrames(),
+      ...checkSampleClockFrames(),
+      ...checkReversedContentCutFrames(),
+    ];
   });
   for (const result of results)
     console.log("Native motion blur:", JSON.stringify(result));

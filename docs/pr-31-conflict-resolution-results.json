@@ -1,0 +1,57 @@
+{
+  "version": "pr-conflict-resolution-1",
+  "date": "2026-10-04",
+  "pullRequest": "https://github.com/xxibcill/still-shift/pull/31",
+  "originalHead": "6034de3467c8eeeab5677c637659e1a00df9066e",
+  "mergedBase": "34137807140dab0b1ce673abf8a0b8553b2d7c5e",
+  "resolution": {
+    "file": "packages/renderer-core/src/composition/render/webgl2.ts",
+    "conflict": "Renderer 0.36.0 on the PR versus 0.34.7 on main.",
+    "resolvedVersion": "composition-webgl2-0.36.1",
+    "behavior": "Preserves main exposure, provider typography and scaled-mask fixes together with all CE6 effect optimizations."
+  },
+  "verification": {
+    "node": "22.23.1",
+    "pnpm": "10.29.3",
+    "checks": [
+      {
+        "command": "pnpm check:fast",
+        "exitCode": 0,
+        "testFiles": 124,
+        "unitTests": 1286
+      },
+      {
+        "command": "pnpm test:browser:composition-webgl",
+        "exitCode": 0,
+        "coverage": "Both CE6 exact-effect regressions and main scaled-feather regressions; native composition parity."
+      },
+      {
+        "command": "pnpm test:browser:composition-exposure",
+        "exitCode": 0
+      },
+      {
+        "command": "pnpm test:browser:composition-provider-typography",
+        "exitCode": 0
+      },
+      {
+        "command": "pnpm test:browser:composition-webgl-export",
+        "exitCode": 0
+      },
+      {
+        "command": "git diff --cached --check",
+        "exitCode": 0
+      }
+    ],
+    "notRerun": [
+      "Full WebGL family matrices",
+      "Hardware GPU audit",
+      "Frozen CE0 baseline suite",
+      "Full pnpm check"
+    ]
+  },
+  "existingAudit": {
+    "commit": "205f413748993b6ddd02d6cbe288af2ccaaae1a6",
+    "status": "Existing local CE6 documentation commit remains separate; no claim its 0.36.0 audit validates this combined 0.36.1 tree."
+  },
+  "scope": "Conflict resolution only; performance acceptance remains deferred under CE6-P. GitHub Actions remain disabled."
+}
