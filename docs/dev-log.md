@@ -46,7 +46,8 @@ still hold before relying on them.
 _Last updated 2026-10-04 by Codex for PR #32 conflict resolution._
 
 - **PR #32 conflict resolution (2026-10-04):** merged `main` at `3413780` into
-  PR head `a0708ba`, retaining CE9 expressions and main correctness fixes.
+  PR head `a0708ba` and pushed merge `05033c8`, retaining CE9 expressions and
+  main correctness fixes. GitHub confirms `MERGEABLE` / `CLEAN`.
   Both browser suites remain in `pnpm test`; evaluator is `22`, WebGL is `0.36.1`.
   Fast checks (1,404 unit tests), affected browser/export checks, hardware
   typography and all 176 frozen baselines pass. Review/merge remains pending.
@@ -57,8 +58,8 @@ _Last updated 2026-10-04 by Codex for PR #32 conflict resolution._
   with all required local verification passing and four logical local commits
   (see the closeout entry). [PR #32](https://github.com/xxibcill/still-shift/pull/32)
   targets `main` and is ready for review. The conflict-resolution merge incorporates
-  `main` at `3413780`; local correctness and frozen-baseline checks pass.
-  Delivery is recorded in the entry below.
+  `main` at `3413780` and was pushed as `05033c8`; local correctness and
+  frozen-baseline checks pass. GitHub confirms `MERGEABLE` / `CLEAN`.
   One checklist item, runtime
   re-expression of signals/drivers/periodic motion, moved to follow-up **CE9-F1**
   with a recorded reason. Do not merge PR #30 as part of this work.
@@ -104,13 +105,13 @@ _Last updated 2026-10-04 by Codex for PR #32 conflict resolution._
 ### 2026-10-04 — Resolve PR #32 merge conflicts
 
 - **Agent / branch:** Codex in an isolated checkout of PR head `a0708ba`.
-- **Done:** merged `main` at `3413780`; kept both aggregate browser suites,
+- **Done:** pushed merge `05033c8` with `main` at `3413780`; kept both browser suites,
   advanced evaluator to `22` and WebGL to `0.36.1`, and retained both branches'
   functional changes. Adapter documentation retains the approved CE6-P deferral.
 - **Results:** `pnpm check:fast` (1,404 tests), toolchain, evaluator, expressions,
   WebGL, exposure, typography (software/hardware) and WebGL-export checks pass.
   Frozen CE0 checks pass: 176 items / 36,061 frames; no baseline regeneration.
-- **Open / next:** update PR #32 with this merge; review/merge remains separate.
+- **Open / next:** GitHub confirms `MERGEABLE` / `CLEAN`; review/merge remains separate.
   Full runtime/integration and strict WebGL family matrices were not rerun.
   Local audit `205f413` remains separate; CE6-P stays deferred; Actions disabled.
 - **Records:** [resolution evidence](./pr-32-conflict-resolution-results.json),

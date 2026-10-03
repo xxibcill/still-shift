@@ -115,5 +115,13 @@
     "ce6AuditRecord": "205f413 remains separate and undelivered."
   },
   "githubActionsEnabled": false,
-  "primaryCheckout": "Existing dirty files and untracked research/review material preserved; resolution performed in an isolated managed worktree."
+  "primaryCheckout": "Existing dirty files and untracked research/review material preserved; resolution performed in an isolated managed worktree.",
+  "delivery": {
+    "mergeCommit": "05033c88004298378a71a953201c416a16706549",
+    "status": "pushed",
+    "mergeable": "MERGEABLE",
+    "mergeStateStatus": "CLEAN",
+    "isDraft": false,
+    "note": "GitHub state verified after pushing the merge commit; this documentation-only commit records that confirmation."
+  }
 }
