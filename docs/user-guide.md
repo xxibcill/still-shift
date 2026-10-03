@@ -69,9 +69,29 @@ pnpm --silent still-shift comp render --input access.composition.json --output a
 existing output. Without `--output`, it prints composition JSON with paths relative
 to the source story file. The adapter currently supports images, clipped groups,
 plain text, rectangles, attached paths, flows and the 2D story camera, with integer-frame motion baked
-from the recipe. Unsupported features produce `comp-adapter-unsupported`; see
+from the recipe. Reusable story components also support measured and numeric text,
+text containers and state ramps, annotations, travel, pins, visibility and alpha masks.
+Each resolved component passage beat can compile through the same adapter. Unsupported features produce `comp-adapter-unsupported`; see
 [content providers](./composition-reference.md#content-providers-ce4a) for limits.
 CE4a remains in progress; existing story workflows keep their current renderer.
+
+The CE4b commerce adapter uses the same commands:
+
+```bash
+pnpm --silent still-shift comp export-json --scene benchmarks/fixtures/ecommerce-motion/h01-landscape.json --output hero.composition.json
+pnpm --silent still-shift comp render --input hero.composition.json --output hero.mp4
+```
+
+This slice supports prepared product imagery, groups, simple shapes, attached paths,
+component annotations, alpha masks and mattes,
+pinned measured text, text fitting, formatted numeric labels and integer-frame
+commerce/component motion, including text state crossfades, caption containers
+and text animation. Text fitting selects one size for all text states;
+JSON export measures pinned fonts before resizing fitted backing panels. The adapters
+also support pixel effects, motion blur, rich typography, spatial paths and morphs,
+and animated blur, stroke and trim. See the [commerce adapter reference](./composition-reference.md#commerce-adapter-ce4b)
+for provider details and input limits. CE4b is complete under the approved milestone
+split; CE6 retains the unchanged 1.25× render/readback timing target.
 
 For the Lab preview, run `pnpm lab` and open
 [`/composition.html`](http://127.0.0.1:4173/composition.html): play or scrub the

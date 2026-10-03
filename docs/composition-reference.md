@@ -70,10 +70,12 @@ across root, precomp and historical dependency reads.
 The 2D camera uses the existing story camera curves and jolts. It changes screen
 matrices and bounds; world matrices remain in composition coordinates.
 
-An image without an authored crossfade evaluates `stateFrom` to its sampled `state`
+An image or text layer without an authored crossfade evaluates `stateFrom` to its sampled `state`
 and `stateMix` to `1`, displaying the current source at full mix. Property reads,
 drivers and periodic motion use these finite defaults even when the optional fields
 are absent from the input. Authored `stateFrom` and `stateMix` still take precedence.
+Provider state paths become available only after `state` or `stateFrom` is declared;
+existing providers can continue to control their content through their own parameters.
 
 Each instance of a reused precomp gets its own clock and memoised state. Property
 paths traverse named precomp layer instances, following each host's `comp` source
@@ -94,7 +96,7 @@ Grouped vector/colour `speed` remains rejected. A future explicit velocity tuple
 match the property's dimensions and units; spatial speed needs a distinct scalar
 in arc-length pixels per frame. These authoring extensions are deferred to CE9.
 
-Bounds are geometric axis-aligned screen bounds before masks and effects; solids and
+Bounds are geometric axis-aligned screen bounds before masks, expanded conservatively for supported effects; solids and
 image placement boxes are exact. Supply measured text bounds without invoking font
 measurement inside evaluation:
 
@@ -135,6 +137,7 @@ const { diagnostics, culled } = preview.renderFrame(42);
 
 ```bash
 pnpm --silent still-shift comp render --input first-slice.json --output out.mp4
+pnpm --silent still-shift comp render --input first-slice.json --output gpu.mp4 --backend webgl2
 ```
 
 `loadCompositionResources` fetches every image and font, checks its SHA-256 and pixel
@@ -173,7 +176,8 @@ the Canvas 2D backend is the reference and CE6 adds WebGL2 behind the same inter
   non-`normal` blend mode, a mask, or a track matte. Isolated content draws at full
   opacity into a scope-sized surface; masks, then the matte, multiply it, and the
   layer's opacity and blend mode apply when it composites back.
-- Nulls, groups, invisible layers and matte sources do not draw. Layers with zero
+- Nulls and groups have no paint of their own; invisible layers and matte sources
+  do not draw in the outer scope. Layers with zero
   effective opacity are skipped. Layers whose screen bounds miss their surface are
   culled and listed in `renderFrame(...).culled`; text bounds come from the text
   module below.
@@ -231,10 +235,16 @@ and rounds sharp concave corners. Open paths close with their last segment.
   `background` is not drawn. With a mask, matte or blend mode on the host, the
   collapsed layers render together into one isolated surface first.
 - A `group` with `clip: true` clips every descendant to its `size` box.
+  A mask, track matte or non-normal blend isolates its descendants together while
+  preserving group opacity on each child. Group matte sources contribute their
+  whole subtree, hidden from the outer scope; their enable/solo switches do not
+  hide the matte, but their in/out window still applies. Validation rejects matte
+  feedback through group descendants.
 - An `adjustment` layer re-composites what is below it in its scope within its `size`
   box (default: the scope size), masks and matte: with coverage `k = opacity ×
-region`, the result is `below·(1 − k) + adjusted·k`. Until effects arrive (CE6),
-  `adjusted` is the content below blended onto itself with the layer's blend mode;
+region`, the result is `below·(1 − k) + adjusted·k`. The effect stack processes
+  the backdrop, then its filtered result blends onto the original backdrop using
+  the layer's blend mode to produce `adjusted`;
   a `normal` adjustment layer without effects changes nothing and is skipped.
 
 ### Text
@@ -310,10 +320,21 @@ The text provider keeps the original direct text
 drawing for adapter parity; authored composition typography continues using native
 `text` layers. Adapter transforms and provider samples are baked at integer frames,
 held between frames and outside their source range. Image state changes use discrete
-keys. This slice rejects motion-craft,
-typography, components, effects, non-group drawable
-parents, text containers and `textBox`, and scenes longer than 2,000 frames. These
-are CE4a follow-ups; fractional motion-blur sampling is not supported by this slice.
+keys. Motion-craft transforms, signals, drivers and constraints also bake to keys.
+Reusable story components use the same measured/numeric text, containers, state ramps,
+annotations, travel, pins, visibility and alpha mattes as commerce. `commerce.text@1.*`
+and `commerce.path@1.0.0` retain their versioned names when reused in story compositions.
+`component.flow@1.0.0` draws flows on baked annotation vertices. A masked path and
+its flows compile inside one camera-aware group, preserving visible flows even when
+the path itself is transparent. Resolved passage beats compile independently after
+parameter and cue binding; passage handoffs remain in the passage engine.
+
+Rich typography uses the versioned `component.typography@1.*` providers. Pixel
+effects compile into native effect controls; spatial paths, path morphs and animated
+stroke/trim use `component.path@1.*` and `component.flow@1.1.0`. Primitive blur and
+animated paint preserve their source semantics. Story source motion blur remains
+unsupported and depends on the remaining CE7 exposure work. Scenes longer than
+2,000 frames also return explicit unsupported-feature diagnostics.
 
 Attached connectors use `story.path@1.1.0` and `story.flow@1.1.0`. Their payloads store
 integer-frame endpoint pairs and the authored bend. A shared geometry primitive
@@ -340,6 +361,76 @@ Marker labels keep the cue text, truncated to the label contract's 200 character
 import { storyToComposition } from "@still-shift/renderer-core";
 
 const composition = storyToComposition(storyScene, { id: "access-constraint" });
+```
+
+### Commerce adapter (CE4b)
+
+`commerceToComposition(scene, { id? })` compiles `commerce-scene-1` through the
+existing commerce compiler. `comp export-json --scene <commerce.json>` exposes the
+same translation. Images (including prepared shadows and crops), clipped groups,
+rectangles, paths and plain text are supported. Pinned measured
+text uses `commerce.text@1.0.0`, which shares commerce's font layout and draws local
+content through the composition graph. `commerce.text@1.1.0` adds native and component
+text fits, plus formatted numeric text. Fits choose
+one stable font size across all supplied states after pinned fonts load. Numeric
+labels are baked at integer frames; preparation validates the entire formatted
+value range for overflow, including values absent from those frames. Existing
+1.0.0 payloads remain supported. Rectangles, plain paths and unmeasured text reuse
+the existing `story.*` providers; those providers do not evaluate a story scene.
+
+`commerce.text@1.2.0` adds caption/speech/thought containers and legacy text
+animators. Component text ramps become native `state`, `stateFrom` and `stateMix`
+channels. The backend combines outgoing and incoming content before applying layer
+opacity, clipping and mattes, including the first frame of a ramp. The provider
+disables the text animator during a state ramp, preserving legacy behavior.
+
+Fits that resize backing panels require font measurement before geometry is baked.
+In a browser, use `await prepareCommerceComposition(scene, assetUrl)` or supply
+`commerceToComposition(scene, { textLayout: { context, fonts } })` with loaded pinned
+fonts. `comp export-json` performs that preparation automatically in the pinned
+browser. The exported composition contains resolved panel geometry and a fixed
+fitted font size; rendering needs no family layout evaluation. Calling the
+synchronous compiler without measurement for a fitted panel reports
+`comp-adapter-layout-required`.
+
+Attached paths and component annotations use `commerce.path@1.0.0`. The adapter
+resolves local vertices at each integer frame, retaining source crops, endpoint
+offsets and parent transforms. The existing crop, protected-region and ownership
+checks run before baking. Hidden paths retain placeholder geometry without
+evaluating invisible transforms; settled geometry holds its final sample. The
+provider draws the baked points with the existing stroke/reveal implementation.
+
+Native commerce mattes and component masks become alpha or inverted-alpha track
+mattes. Group targets composite their children before masking; group sources
+preserve overlapping alpha and can be shared by multiple targets.
+
+Commerce events, drift, parallax and overshoot are baked at integer frames, along
+with component state/travel/pin/value/visibility behavior. Image state
+ramps retain their state and blend keys. Registration, claims and other source
+metadata remain in `metadata.commerce`. Like the story slice, this compiler accepts
+at most 2,000 frames, holds between integer samples, and bounds provider payloads
+to 64 KiB. Rendering never calls the commerce evaluator.
+
+Motion-craft transforms, signals, drivers, constraints and periodic motion bake
+into native transform keys, including both skew axes and compensated moving
+anchors. Pixel effects, motion blur, rich typography, spatial paths, path morphs
+and animated blur/stroke/trim channels are supported through native composition
+controls and versioned component providers. Legacy commerce parents must be groups,
+as required by its source schema.
+
+CE4b is complete under the approved milestone split, including evaluated-state,
+assigned pixel-tier, seeking and portable export parity. CE6 owns the unchanged
+1.25× render/readback timing target and the recorded GPU timing failures; it must
+retime the current backend. Existing commerce commands retain their family renderer.
+Use `comp export-json` followed by `comp render --backend canvas2d` or
+`comp render --backend webgl2` for explicit composition rendering.
+
+```ts
+import { commerceToComposition } from "@still-shift/renderer-core";
+
+const composition = commerceToComposition(commerceScene, {
+  id: "product-hero",
+});
 ```
 
 ## Validating
@@ -396,7 +487,7 @@ structure only; use `validateComposition` for the full rules.
 | `background`                     | colour or `null`                                   | `null` or absent: transparent.                                                                                        |
 | `format`                         | `landscape` or `vertical`                          | When set, `width` and `height` must match it.                                                                         |
 | `colorSpace`                     | `srgb` or `linear-srgb`                            | `linear-srgb` arrives in CE6.                                                                                         |
-| `motionBlur`                     | `{ enabled, shutterAngle, shutterPhase, samples }` | Enabling it arrives in CE7.                                                                                           |
+| `motionBlur`                     | `{ enabled, shutterAngle, shutterPhase, samples }` | Optional `inPoint`, `outPoint` and ordered `cuts`; see exposure sampling below.                                       |
 | `assets`                         | [asset](#assets)[]                                 | Required (may be empty).                                                                                              |
 | `layers`                         | [layer](#layers)[]                                 | Required (may be empty).                                                                                              |
 | `markers`                        | [marker](#markers)[]                               |                                                                                                                       |
@@ -496,40 +587,40 @@ actual time-dependent values stay in range; reduce the deltas or separate their 
 
 ### Fields on every layer
 
-| Field                                 | Notes                                                                                                              |
-| ------------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
-| `id`, `type`                          | Required. `type` selects the fields below.                                                                         |
-| `name`                                | Display name.                                                                                                      |
-| `inPoint`, `outPoint`                 | Composition frames, `[in, out)`. Default `0` and the scope's `frameCount`.                                         |
-| `startFrame`, `stretch`               | Layer time 0 and time stretch. Defaults `0` and `1`.                                                               |
-| `parent`                              | Layer id in the same scope. Position, rotation, scale and skew inherit; opacity does not.                          |
-| `enabled`, `solo`, `guide`            | Visibility switches; guides never render in export.                                                                |
-| `transform`                           | See [transform](#transform).                                                                                       |
-| `constraintReference`                 | Animatable layer-space vector, defaulting to the transform anchor. Constraints can move it without moving artwork. |
-| `blendMode`                           | See [blend modes](#blend-modes). Default `normal`.                                                                 |
-| `trackMatte`                          | `{ layer, mode }`; see [track mattes](#track-mattes).                                                              |
-| `masks`                               | See [masks](#masks).                                                                                               |
-| `effects`                             | `{ id, effect, enabled?, params? }[]`. Effects arrive in CE6; an empty list is allowed.                            |
-| `cameraDepth`                         | 0–2, unparented root layers only; see [2D camera](#2d-camera).                                                     |
-| `threeD`, `motionBlur`                | Arrive in CE8 and CE7; `false` is allowed.                                                                         |
-| `qualification`, `source`, `metadata` | Evidence and provenance carried through from story scenes and adapters.                                            |
+| Field                                 | Notes                                                                                                                          |
+| ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| `id`, `type`                          | Required. `type` selects the fields below.                                                                                     |
+| `name`                                | Display name.                                                                                                                  |
+| `inPoint`, `outPoint`                 | Composition frames, `[in, out)`. Default `0` and the scope's `frameCount`.                                                     |
+| `startFrame`, `stretch`               | Layer time 0 and time stretch. Defaults `0` and `1`.                                                                           |
+| `parent`                              | Layer id in the same scope. Position, rotation, scale and skew inherit; opacity does not.                                      |
+| `enabled`, `solo`, `guide`            | Visibility switches; guides never render in export.                                                                            |
+| `transform`                           | See [transform](#transform).                                                                                                   |
+| `constraintReference`                 | Animatable layer-space vector, defaulting to the transform anchor. Constraints can move it without moving artwork.             |
+| `blendMode`                           | See [blend modes](#blend-modes). Default `normal`.                                                                             |
+| `trackMatte`                          | `{ layer, mode }`; see [track mattes](#track-mattes).                                                                          |
+| `masks`                               | See [masks](#masks).                                                                                                           |
+| `effects`                             | `{ id, effect, enabled?, space?, inPoint?, outPoint?, params? }[]`. Ordered registry effects; active intervals use layer time. |
+| `cameraDepth`                         | 0–2, unparented root layers only; see [2D camera](#2d-camera).                                                                 |
+| `threeD`, `motionBlur`                | `threeD` arrives in CE8; `motionBlur` opts into exposure sampling (groups and precomps pass it to descendants).                |
+| `qualification`, `source`, `metadata` | Evidence and provenance carried through from story scenes and adapters.                                                        |
 
 ### Layer types
 
-| `type`                       | Fields                                                                                                                                                                                                                                                                                                                                                                          | Available |
-| ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- |
-| `solid`                      | `size` `[w, h]`; `color` (animatable).                                                                                                                                                                                                                                                                                                                                          | CE1       |
-| `image`                      | `size`; `fit` (`contain` default, `cover`, `stretch`); `sources` (`{ asset, crop?, pose?, registration?, anchors? }[]`); `state` (discrete index into `sources`); `stateFrom` + `stateMix` (crossfade); `rasterize` (`draw` default, `natural-size`).                                                                                                                           | CE1       |
-| `text`                       | `text`; `states` + `state`; `fontSize`; `size` (the `textBox` wrap box); `color` (animatable); `weight`, `font`, `fontAsset`, `style`, `align`, `textRole`, `textLayout`, `textBox`, `revealMode`, `reveal` (animatable 0–1) and the story typography fields (`spans`, `locale`, `anchor`, `wrap`, `orphanFraction`, `decorations`, `transition(s)`, `feather`, `lineOverlap`). | CE1       |
-| `provider`                   | Versioned `provider` id; bounded `params`; declared `assets`; optional `bounds` and `usesSystemFonts`. See [content providers](#content-providers-ce4a).                                                                                                                                                                                                                        | CE4a      |
-| `null`                       | No content; a transform for parenting.                                                                                                                                                                                                                                                                                                                                          | CE1       |
-| `group`                      | `size`; `clip`. Children (layers parented to it) multiply its opacity and, with `clip`, are clipped to its bounds. Opacity applies per child, unlike a precomp. Produced by family adapters (parity note 1).                                                                                                                                                                    | CE1       |
-| `precomp`                    | `comp` (precomp id); `collapseTransforms`; `timeRemap` (animatable precomp frame).                                                                                                                                                                                                                                                                                              | CE1       |
-| `adjustment`                 | `size` (default: composition size). Applies its effects to the layers below.                                                                                                                                                                                                                                                                                                    | CE1       |
-| `shape`                      | `contents`.                                                                                                                                                                                                                                                                                                                                                                     | CE5       |
-| `camera`                     | —                                                                                                                                                                                                                                                                                                                                                                               | CE8       |
-| `light`                      | —                                                                                                                                                                                                                                                                                                                                                                               | Q6        |
-| `video`, `sequence`, `audio` | `asset`; `timeRemap`.                                                                                                                                                                                                                                                                                                                                                           | CE13      |
+| `type`                       | Fields                                                                                                                                                                                                                                                                                                                                                                                                                     | Available |
+| ---------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- |
+| `solid`                      | `size` `[w, h]`; `color` (animatable).                                                                                                                                                                                                                                                                                                                                                                                     | CE1       |
+| `image`                      | `size`; `fit` (`contain` default, `cover`, `stretch`); `sources` (`{ asset, crop?, pose?, registration?, anchors? }[]`); `state` (discrete index into `sources`); `stateFrom` + `stateMix` (crossfade); `rasterize` (`draw` default, `natural-size`).                                                                                                                                                                      | CE1       |
+| `text`                       | `text`; `states` + `state`; paired `stateFrom`/`stateMix` (crossfade); `fontSize`; `size` (the `textBox` wrap box); `color` (animatable); `weight`, `font`, `fontAsset`, `style`, `align`, `textRole`, `textLayout`, `textBox`, `revealMode`, `reveal` (animatable 0–1) and the story typography fields (`spans`, `locale`, `anchor`, `wrap`, `orphanFraction`, `decorations`, `transition(s)`, `feather`, `lineOverlap`). | CE1       |
+| `provider`                   | Versioned `provider` id; bounded `params`; declared `assets`; optional `bounds`, `usesSystemFonts`, `state`, and paired `stateFrom`/`stateMix`. Content state bounds are checked by the provider. See [content providers](#content-providers-ce4a).                                                                                                                                                                        | CE4a      |
+| `null`                       | No content; a transform for parenting.                                                                                                                                                                                                                                                                                                                                                                                     | CE1       |
+| `group`                      | `size`; `clip`. Children (layers parented to it) multiply its opacity and, with `clip`, are clipped to its bounds. Opacity applies per child, unlike a precomp. Produced by family adapters (parity note 1).                                                                                                                                                                                                               | CE1       |
+| `precomp`                    | `comp` (precomp id); `collapseTransforms`; `timeRemap` (animatable precomp frame).                                                                                                                                                                                                                                                                                                                                         | CE1       |
+| `adjustment`                 | `size` (default: composition size). Applies its effects to the layers below.                                                                                                                                                                                                                                                                                                                                               | CE1       |
+| `shape`                      | `contents`.                                                                                                                                                                                                                                                                                                                                                                                                                | CE5       |
+| `camera`                     | —                                                                                                                                                                                                                                                                                                                                                                                                                          | CE8       |
+| `light`                      | —                                                                                                                                                                                                                                                                                                                                                                                                                          | Q6        |
+| `video`, `sequence`, `audio` | `asset`; `timeRemap`.                                                                                                                                                                                                                                                                                                                                                                                                      | CE13      |
 
 Layers of an unavailable type validate structurally and then fail with
 `comp-feature-unavailable`, so agents learn which milestone provides them.
@@ -628,13 +719,13 @@ segment  := name | name "[" id "]"
 | `transform.<vector>.x\|y\|z`                         | scalar                             | all                             |
 | `transform.rotation`, `.skewX`, `.skewY`, `.opacity` | scalar                             | all                             |
 | `color`                                              | colour; `.r\|g\|b\|a` scalar       | solid, text                     |
-| `state`                                              | discrete                           | image, text                     |
-| `stateFrom` / `stateMix`                             | discrete / scalar                  | image                           |
+| `state`                                              | discrete                           | image, text, provider           |
+| `stateFrom` / `stateMix`                             | discrete / scalar                  | image, text, provider           |
 | `reveal`                                             | scalar                             | text                            |
 | `timeRemap`                                          | scalar                             | precomp, video, sequence, audio |
 | `masks[id].path`                                     | path                               | all                             |
 | `masks[id].feather`, `.expansion`, `.opacity`        | scalar                             | all                             |
-| `effects[id].<param>`                                | CE6                                | all                             |
+| `effects[id].<param>`                                | scalar (registered parameter)      | all                             |
 | `contents[...]`                                      | CE5                                | shape                           |
 
 Drivers and periodic motion target scalars. Legacy `node.property` targets remain valid
@@ -673,7 +764,6 @@ Features that are in the contract but not yet implemented fail with
 | ------------------------------------------------------------ | --------- |
 | Shape layers, follow-path constraints, stroke properties     | CE5       |
 | Effects, `linear-srgb` compositing, `blur`                   | CE6       |
-| Motion blur (composition and layer)                          | CE7       |
 | 3D layers, camera layers, 3D rotation, auto-orient to camera | CE8       |
 | Expressions, auto-orient along a path                        | CE9       |
 | Video, image-sequence and audio layers and assets            | CE13      |
@@ -723,85 +813,86 @@ retain their original bounds.
 
 ### Errors
 
-| Code                        | Meaning                                                                                                                                                    |
-| --------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `comp-schema-version`       | `schemaVersion` is not `composition-1`.                                                                                                                    |
-| `comp-schema-type`          | A value has the wrong JSON type.                                                                                                                           |
-| `comp-schema-unknown-key`   | An object has a field the contract does not define.                                                                                                        |
-| `comp-schema-value`         | A value is not one of the allowed literals or enum members.                                                                                                |
-| `comp-schema-format`        | A string does not match its format (id, colour, hash).                                                                                                     |
-| `comp-schema-range`         | A number is outside its range (including `stretch: 0`).                                                                                                    |
-| `comp-schema-union`         | A value matches none of the allowed forms, for example an unknown layer `type`.                                                                            |
-| `comp-schema`               | Any other structural error.                                                                                                                                |
-| `comp-limit`                | An array, string or record exceeds its size limit.                                                                                                         |
-| `comp-key-order`            | Key frames are not strictly increasing (keys and `camera2d.keys`).                                                                                         |
-| `comp-key-smooth`           | A smooth key is the first or last key.                                                                                                                     |
-| `comp-key-bezier`           | `interpolation: "bezier"` without `bezier` handles.                                                                                                        |
-| `comp-key-speed-vector`     | A temporal handle `speed` on a vector or colour property.                                                                                                  |
-| `comp-path-tangents`        | A path's tangent count differs from its vertex count.                                                                                                      |
-| `comp-path-vertex-count`    | Keys of one path property have different vertex counts.                                                                                                    |
-| `comp-vector-dimension`     | A three-component vector on a layer without `threeD`.                                                                                                      |
-| `comp-duplicate-id`         | An id is used twice in its namespace (layers and markers per scope; assets, precomps, signals, masks and effects per layer; pose names per image).         |
-| `comp-reserved-id`          | A layer or precomp uses the reserved id `comp`.                                                                                                            |
-| `comp-layer-time`           | `inPoint` is not before `outPoint`.                                                                                                                        |
-| `comp-layer-limit`          | More than 2,000 layers across the composition and its precomps.                                                                                            |
-| `comp-parent-missing`       | `parent` names no layer in the same scope.                                                                                                                 |
-| `comp-parent-cycle`         | A parent chain loops.                                                                                                                                      |
-| `comp-parent-depth`         | A parent chain is deeper than 32.                                                                                                                          |
-| `comp-matte-missing`        | `trackMatte.layer` names no layer in the same scope.                                                                                                       |
-| `comp-matte-self`           | A layer is its own track matte.                                                                                                                            |
-| `comp-matte-cycle`          | Track mattes reference each other in a loop.                                                                                                               |
-| `comp-mask-open`            | A mask path is not closed.                                                                                                                                 |
-| `comp-precomp-missing`      | A precomp layer references an unknown precomp.                                                                                                             |
-| `comp-precomp-cycle`        | A precomp contains itself directly or indirectly.                                                                                                          |
-| `comp-precomp-depth`        | Precomps nest deeper than 8.                                                                                                                               |
-| `comp-asset-missing`        | A layer or text style references an unknown asset.                                                                                                         |
-| `comp-asset-type`           | A layer or text style references an asset of the wrong type.                                                                                               |
-| `comp-crop-bounds`          | An image crop extends beyond its asset.                                                                                                                    |
-| `comp-image-registration`   | Pose registration on an image whose `fit` is not `contain`.                                                                                                |
-| `comp-state-range`          | A `state` or `stateFrom` value has no matching source or text state.                                                                                       |
-| `comp-state-mix`            | Only one of `stateFrom` and `stateMix` is set.                                                                                                             |
-| `comp-text-style-missing`   | A text layer uses an unknown text style.                                                                                                                   |
-| `comp-text-font`            | A text size above 180 without a pinned font (`fontAsset` or `style`).                                                                                      |
-| `comp-text-pinned-font`     | Spans, decorations, transitions, a text animator or `textBox` on a text layer without a pinned base font; the typography renderer shapes with its metrics. |
-| `comp-text-box-size`        | A `textBox` text layer without `size`.                                                                                                                     |
-| `comp-text-span-range`      | A span ends after the text or one of its states, or overlaps another span.                                                                                 |
-| `comp-text-span-missing`    | A decoration or text animator names a span the text layer does not have.                                                                                   |
-| `comp-text-font-axis`       | A variable-font axis value (style, span or blended animator) is outside the pinned font's range, or the font is not variable.                              |
-| `comp-text-locale`          | A text layer's locale is not recognised.                                                                                                                   |
-| `comp-text-transition`      | `transition` and `transitions` together, overlapping windows, a missing from/to state, or a count without numeric states and tabular figures.              |
-| `comp-marker-frame`         | A marker lies at or after `frameCount`.                                                                                                                    |
-| `comp-marker-duration`      | A marker's `duration` runs past `frameCount`.                                                                                                              |
-| `comp-marker-missing`       | A `cue` names no marker in the same scope.                                                                                                                 |
-| `comp-signal-missing`       | A driver, constraint, text animator or text selector names an unknown signal.                                                                              |
-| `comp-constraint-target`    | A constraint names no layer in the same scope.                                                                                                             |
-| `comp-text-animator-target` | A text animator's `node` is not a text layer in the same scope.                                                                                            |
-| `comp-camera-depth`         | `cameraDepth` on a parented layer or inside a precomp.                                                                                                     |
-| `comp-camera-jolt`          | A camera jolt starts at or after `frameCount`.                                                                                                             |
-| `comp-camera-key-range`     | A `camera2d` key lies at or after `frameCount`.                                                                                                            |
-| `comp-format-size`          | `format` disagrees with `width` and `height`.                                                                                                              |
-| `comp-metadata-size`        | Metadata serialises to more than 64 KiB.                                                                                                                   |
-| `comp-json-size`            | An expression AST, effect parameter object or shape contents payload serialises to more than 64 KiB.                                                       |
-| `comp-json-depth`           | An opaque JSON payload nests more than 64 container levels below its root; checked before recursive JSON parsing.                                          |
-| `comp-metadata-depth`       | Metadata nests more than 64 container levels below its root; checked before recursive JSON parsing.                                                        |
-| `comp-driver-source`        | A driver has none or several of `signal`, `source` and `sum`.                                                                                              |
-| `comp-motion-cycle`         | Driver, constraint or parent dependencies form a cycle, including precomp-scoped dependencies.                                                             |
-| `comp-periodic`             | Invalid periodic window or generator, or both / neither of `target` and `node` + `property`.                                                               |
-| `comp-path-syntax`          | A property path does not match the grammar.                                                                                                                |
-| `comp-path-scope`           | A path prefix does not name a precomp layer instance at that level.                                                                                        |
-| `comp-path-layer`           | A path names no layer in its scope.                                                                                                                        |
-| `comp-path-property`        | A path names no property of its layer (including unknown mask and effect ids).                                                                             |
-| `comp-path-type`            | A driver or periodic motion targets a non-scalar property.                                                                                                 |
-| `comp-path-readonly`        | A read-only path (`comp.camera.*`) is used as a target.                                                                                                    |
-| `comp-feature-unavailable`  | A contract feature whose milestone has not landed; see [availability](#feature-availability).                                                              |
-| `comp-provider-bounds`      | Provider bounds have non-positive width or height.                                                                                                         |
-| `comp-provider-unavailable` | Provider preparation cannot find the exact versioned id.                                                                                                   |
-| `comp-provider-duplicate`   | The renderer registry contains the same versioned id twice.                                                                                                |
-| `comp-provider-params`      | A built-in provider payload is invalid; reported during preparation.                                                                                       |
-| `comp-provider-asset`       | A provider uses an undeclared, missing or incompatible asset.                                                                                              |
-| `comp-camera-coverage`      | A persisted story image cover leaves the viewport uncovered or samples transparent pixels.                                                                 |
-| `comp-adapter-unsupported`  | A story feature is outside the current adapter slice; the path identifies it.                                                                              |
-| `comp-adapter-limit`        | Baking the story would exceed the 2,000-key limit.                                                                                                         |
+| Code                           | Meaning                                                                                                                                                    |
+| ------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `comp-schema-version`          | `schemaVersion` is not `composition-1`.                                                                                                                    |
+| `comp-schema-type`             | A value has the wrong JSON type.                                                                                                                           |
+| `comp-schema-unknown-key`      | An object has a field the contract does not define.                                                                                                        |
+| `comp-schema-value`            | A value is not one of the allowed literals or enum members.                                                                                                |
+| `comp-schema-format`           | A string does not match its format (id, colour, hash).                                                                                                     |
+| `comp-schema-range`            | A number is outside its range (including `stretch: 0`).                                                                                                    |
+| `comp-schema-union`            | A value matches none of the allowed forms, for example an unknown layer `type`.                                                                            |
+| `comp-schema`                  | Any other structural error.                                                                                                                                |
+| `comp-limit`                   | An array, string or record exceeds its size limit.                                                                                                         |
+| `comp-key-order`               | Key frames are not strictly increasing (keys and `camera2d.keys`).                                                                                         |
+| `comp-key-smooth`              | A smooth key is the first or last key.                                                                                                                     |
+| `comp-key-bezier`              | `interpolation: "bezier"` without `bezier` handles.                                                                                                        |
+| `comp-key-speed-vector`        | A temporal handle `speed` on a vector or colour property.                                                                                                  |
+| `comp-path-tangents`           | A path's tangent count differs from its vertex count.                                                                                                      |
+| `comp-path-vertex-count`       | Keys of one path property have different vertex counts.                                                                                                    |
+| `comp-vector-dimension`        | A three-component vector on a layer without `threeD`.                                                                                                      |
+| `comp-duplicate-id`            | An id is used twice in its namespace (layers and markers per scope; assets, precomps, signals, masks and effects per layer; pose names per image).         |
+| `comp-reserved-id`             | A layer or precomp uses the reserved id `comp`.                                                                                                            |
+| `comp-layer-time`              | `inPoint` is not before `outPoint`.                                                                                                                        |
+| `comp-layer-limit`             | More than 2,000 layers across the composition and its precomps.                                                                                            |
+| `comp-parent-missing`          | `parent` names no layer in the same scope.                                                                                                                 |
+| `comp-parent-cycle`            | A parent chain loops.                                                                                                                                      |
+| `comp-parent-depth`            | A parent chain is deeper than 32.                                                                                                                          |
+| `comp-matte-missing`           | `trackMatte.layer` names no layer in the same scope.                                                                                                       |
+| `comp-matte-self`              | A layer is its own track matte.                                                                                                                            |
+| `comp-matte-cycle`             | Track mattes reference each other in a loop.                                                                                                               |
+| `comp-mask-open`               | A mask path is not closed.                                                                                                                                 |
+| `comp-precomp-missing`         | A precomp layer references an unknown precomp.                                                                                                             |
+| `comp-precomp-cycle`           | A precomp contains itself directly or indirectly.                                                                                                          |
+| `comp-precomp-depth`           | Precomps nest deeper than 8.                                                                                                                               |
+| `comp-asset-missing`           | A layer or text style references an unknown asset.                                                                                                         |
+| `comp-asset-type`              | A layer or text style references an asset of the wrong type.                                                                                               |
+| `comp-crop-bounds`             | An image crop extends beyond its asset.                                                                                                                    |
+| `comp-image-registration`      | Pose registration on an image whose `fit` is not `contain`.                                                                                                |
+| `comp-state-range`             | A `state` or `stateFrom` value has no matching source or text state.                                                                                       |
+| `comp-state-mix`               | Only one of `stateFrom` and `stateMix` is set.                                                                                                             |
+| `comp-text-style-missing`      | A text layer uses an unknown text style.                                                                                                                   |
+| `comp-text-font`               | A text size above 180 without a pinned font (`fontAsset` or `style`).                                                                                      |
+| `comp-text-pinned-font`        | Spans, decorations, transitions, a text animator or `textBox` on a text layer without a pinned base font; the typography renderer shapes with its metrics. |
+| `comp-text-box-size`           | A `textBox` text layer without `size`.                                                                                                                     |
+| `comp-text-span-range`         | A span ends after the text or one of its states, or overlaps another span.                                                                                 |
+| `comp-text-span-missing`       | A decoration or text animator names a span the text layer does not have.                                                                                   |
+| `comp-text-font-axis`          | A variable-font axis value (style, span or blended animator) is outside the pinned font's range, or the font is not variable.                              |
+| `comp-text-locale`             | A text layer's locale is not recognised.                                                                                                                   |
+| `comp-text-transition`         | `transition` and `transitions` together, overlapping windows, a missing from/to state, or a count without numeric states and tabular figures.              |
+| `comp-marker-frame`            | A marker lies at or after `frameCount`.                                                                                                                    |
+| `comp-marker-duration`         | A marker's `duration` runs past `frameCount`.                                                                                                              |
+| `comp-marker-missing`          | A `cue` names no marker in the same scope.                                                                                                                 |
+| `comp-signal-missing`          | A driver, constraint, text animator or text selector names an unknown signal.                                                                              |
+| `comp-constraint-target`       | A constraint names no layer in the same scope.                                                                                                             |
+| `comp-text-animator-target`    | A text animator's `node` is not a text layer in the same scope.                                                                                            |
+| `comp-camera-depth`            | `cameraDepth` on a parented layer or inside a precomp.                                                                                                     |
+| `comp-camera-jolt`             | A camera jolt starts at or after `frameCount`.                                                                                                             |
+| `comp-camera-key-range`        | A `camera2d` key lies at or after `frameCount`.                                                                                                            |
+| `comp-format-size`             | `format` disagrees with `width` and `height`.                                                                                                              |
+| `comp-metadata-size`           | Metadata serialises to more than 64 KiB.                                                                                                                   |
+| `comp-json-size`               | An expression AST, effect parameter object or shape contents payload serialises to more than 64 KiB.                                                       |
+| `comp-json-depth`              | An opaque JSON payload nests more than 64 container levels below its root; checked before recursive JSON parsing.                                          |
+| `comp-metadata-depth`          | Metadata nests more than 64 container levels below its root; checked before recursive JSON parsing.                                                        |
+| `comp-driver-source`           | A driver has none or several of `signal`, `source` and `sum`.                                                                                              |
+| `comp-motion-cycle`            | Driver, constraint or parent dependencies form a cycle, including precomp-scoped dependencies.                                                             |
+| `comp-periodic`                | Invalid periodic window or generator, or both / neither of `target` and `node` + `property`.                                                               |
+| `comp-path-syntax`             | A property path does not match the grammar.                                                                                                                |
+| `comp-path-scope`              | A path prefix does not name a precomp layer instance at that level.                                                                                        |
+| `comp-path-layer`              | A path names no layer in its scope.                                                                                                                        |
+| `comp-path-property`           | A path names no property of its layer (including unknown mask and effect ids).                                                                             |
+| `comp-path-type`               | A driver or periodic motion targets a non-scalar property.                                                                                                 |
+| `comp-path-readonly`           | A read-only path (`comp.camera.*`) is used as a target.                                                                                                    |
+| `comp-feature-unavailable`     | A contract feature whose milestone has not landed; see [availability](#feature-availability).                                                              |
+| `comp-provider-bounds`         | Provider bounds have non-positive width or height.                                                                                                         |
+| `comp-provider-unavailable`    | Provider preparation cannot find the exact versioned id.                                                                                                   |
+| `comp-provider-duplicate`      | The renderer registry contains the same versioned id twice.                                                                                                |
+| `comp-provider-params`         | A built-in provider payload is invalid; reported during preparation.                                                                                       |
+| `comp-provider-asset`          | A provider uses an undeclared, missing or incompatible asset.                                                                                              |
+| `comp-camera-coverage`         | A persisted story image cover leaves the viewport uncovered or samples transparent pixels.                                                                 |
+| `comp-adapter-unsupported`     | A story feature is outside the current adapter slice; the path identifies it.                                                                              |
+| `comp-adapter-limit`           | Baking the story would exceed the 2,000-key limit.                                                                                                         |
+| `comp-adapter-layout-required` | A fitted backing panel requires a pinned-font measurement context; browser preparation and CLI JSON export supply it.                                      |
 
 ### Warnings
 
@@ -824,3 +915,251 @@ message and path shape as contract validation.
 | `comp-evaluation-limit`    | A call exceeds 20,000 evaluated layer instances.                                                                  |
 | `comp-constraint-singular` | A constraint needs the inverse of a collapsed parent or a noncollapsed contact edge.                              |
 | `comp-text-layout-missing` | Text bounds were not supplied: a warning for inspection, an error when required by a bounds-dependent constraint. |
+
+### Gaussian effect stack (CE6 dependency slice)
+
+`blur.gaussian` version `1.0.0` is available on the Canvas reference backend.
+Its `radius` parameter is an animatable scalar from 0 to 1,000 (default 0), in
+pixels of the composition surface containing the layer. It uses the Canvas
+Gaussian filter. The WebGL2 implementation and remaining registry entries are
+still in progress; this slice does not complete CE6.
+
+Pixel effects apply in array order to isolated layer pixels, then masks and track mattes,
+then final layer opacity and blend. Group children retain their inherited per-child
+opacity before the group stack. Adjustment stacks process the existing backdrop,
+blend the filtered result with that backdrop, and interpolate through the adjustment
+region/masks/opacity. Gaussian bounds expand by three radii plus two pixels per pass;
+ancestor effects prevent child bounds culling. Surfaces remain clipped to their
+composition dimensions, including isolated precomp surfaces.
+
+`enabled: false` disables an effect. Optional `inPoint` (inclusive) and `outPoint`
+(exclusive) gate it in layer time without resetting its parameter clock. Parameter
+paths such as `hero.effects[soft].radius` support drivers and motion curves. Final
+values clamp to the registered range after drivers; malformed keys, unknown
+parameters, duplicate instance ids and invalid intervals produce diagnostics.
+
+Commerce focus blur compiles to this stack. A group preserves the source's order:
+paint node opacity, apply blur, then apply its matte. Authored effect activation and
+radius progression are retained. No family evaluator runs during composition rendering.
+
+### Directional blur, glow and sine displacement (CE6 dependency slice)
+
+The Canvas effect registry also provides these version `1.0.0` entries. All values
+are animatable scalars in the containing surface's pixel space.
+
+| Effect             | Parameters (default; accepted range)                                                                               |
+| ------------------ | ------------------------------------------------------------------------------------------------------------------ |
+| `blur.directional` | `length` (0; 0–1,000 pixels), `angle` (0; −36,000–36,000 degrees), `samples` (8; 2–64 integer samples)             |
+| `light.glow`       | `radius` (0; 0–1,000 pixels), `intensity` (1; 0–1), `threshold` (0; 0–1)                                           |
+| `distort.sine`     | `amount` (0; −1,000–1,000 pixels), `wavelength` (100; 1–100,000 pixels), `phase` (0; −1,000,000–1,000,000 radians) |
+
+Directional blur averages premultiplied samples in fixed order with Float32
+accumulation. Authored sample counts must be integers; interpolation and driver
+results round to the nearest integer after evaluation and clamp to the range.
+Glow thresholds Rec. 709 luminance, blurs that coverage, then screens it over the
+source. Sine displacement shifts each horizontal row. These kernels share the
+legacy pixel primitives while keeping the native evaluator and graph independent
+of family scenes. Stack order, layer time, activation, masks and adjustments use
+the same rules as Gaussian blur. `distort.sine` is the commerce wave displacement;
+general displacement maps remain part of the broader CE6 work.
+
+### Light, particles and grain (CE6 dependency slice)
+
+`light.radial`, `particles.rise` and `stylize.grain`, version `1.0.0`, generate
+pixels over their input on the Canvas reference backend. They share source pixel
+primitives with the family renderer. Their parameters use the same layer clocks,
+activation, property paths and bounds rules; generating effects disable input-bounds
+culling because their output may extend beyond the original artwork.
+
+| Effect           | Parameters (default; accepted range)                                                                                                                                   |
+| ---------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `light.radial`   | `x`, `y` (0; ±1,000,000 pixels), `radius` (100; 0.01–10,000), `strength` (1; 0–1), `color` (white)                                                                     |
+| `particles.rise` | `count` (20; 1–100 integer), `radius` (2; 0.01–100 pixels), `opacity` (0.5; 0–1), `seed` (1; 0–2,147,483,647 integer), `progress` (0; 0–1,000 cycles), `color` (white) |
+| `stylize.grain`  | `amount` (0; 0–1), `seed` (1; 0–2,147,483,647 integer), `evolution` (0; ±216,000 frames)                                                                               |
+
+Colors accept ordinary composition color keys; components such as
+`layer.effects[lamp].color.r` accept scalar drivers. Their evaluated channels clamp
+to 0–1. Particle positions use a seeded integer generator; grain regenerates a
+128×128 repeating tile using `seed + floor(evolution) × 7919`. Random access and
+backward seeks produce the same pixels.
+
+The commerce adapter places background light and particles in an adjustment stack
+behind the artwork, retaining their relative authored order. Grain runs after the
+artwork and uses time relative to its active interval. Full-coverage normal
+adjustments containing only effects that preserve opaque input can paint the
+backdrop directly. Alpha-changing stacks retain an RGBA intermediate, including
+when the final output canvas is opaque.
+
+### Light sweep and effect coordinates (CE6 dependency slice)
+
+`light.sweep` version `1.0.0` paints a white sweep in layer coordinates, intersects
+it with the processed input alpha, then applies `source-atop` with `strength`.
+It uses the owner's evaluated transform by default. Set an effect instance's
+`space` to a layer id in the same scope to use that layer's coordinates; its
+visibility and opacity are not borrowed. Missing coordinate layers and `space` on
+surface-coordinate effects are rejected. Parent, camera and precomp transforms
+remain part of the coordinate chain.
+
+| Parameter                     | Default | Range / meaning                                            |
+| ----------------------------- | ------- | ---------------------------------------------------------- |
+| `width`, `height`             | 100     | 0–1,000,000; local rectangle dimensions (zero is empty)    |
+| `left`, `top`                 | 0       | 0–1; region origin as fractions of that rectangle          |
+| `regionWidth`, `regionHeight` | 1       | 0.001–1; fractional region dimensions                      |
+| `band`                        | 0.1     | 0.001–1; sweep half-width as a fraction of rectangle width |
+| `progress`                    | 0       | 0–1; band passage across the region                        |
+| `strength`                    | 0.5     | 0–1; source-atop blend amount                              |
+
+Every parameter accepts scalar keys and drivers. The commerce adapter compiles its
+cosine phase to `progress` keys, retains source dimensions and normalized regions,
+and names the original target as the coordinate layer when an opacity/matte wrapper
+owns the effect stack. Source region and protected-artwork validation still applies.
+
+The story adapter also compiles focus blur, directional blur, glow, grain and
+light sweep. Opacity wrappers retain each root's camera depth. Path flows share
+their path's treatment and matte, including flows on a path with zero opacity;
+screen-space grain is independent of the story camera. Shared-effect opt-in,
+root-target validation and component annotation ownership rules still apply.
+Motion blur is handled by the separate CE7 dependency.
+
+### Temporal echo (CE6 dependency slice)
+
+`time.echo` version `1.0.0` samples earlier content in the containing scope's frame
+clock, oldest first, then paints the current content. Each sample retains its
+historical transform, visibility, state and per-child opacity, multiplied by
+`decay` raised to its sample index. Times before zero hold at zero. The current
+pixel effect stack runs on the combined history, followed by current masks,
+matte and blend. Echo is a content-history stage regardless of its array position.
+Other echo instances are suppressed inside historical samples, keeping nested
+history bounded. There is one echo per drawable layer or group; null and adjustment
+layers do not have a source history and reject it.
+
+| Parameter        | Default | Range / meaning                                         |
+| ---------------- | ------- | ------------------------------------------------------- |
+| `spacing`        | 1       | 1–120 scope frames between samples                      |
+| `count`          | 3       | 1–8 integer historical samples                          |
+| `decay`          | 0.5     | 0–1; exponential sample opacity                         |
+| `skipUnchanged`  | 0       | 0 or 1; skip samples with the current declared revision |
+| `sourceRevision` | 0       | 0–1,000,000 integer content identity, animatable        |
+
+Precomp history advances its local clock independently of the current instance
+transform and external driver sources, including remapped or stretched instances.
+Frame-scoped evaluated history is bounded to 16 entries; no rendered frame cache
+or family evaluator is involved. The commerce adapter bakes revision identities
+from complete descendant poses, preserving its unchanged-pose skip rule. Native
+authors can leave `skipUnchanged` disabled, or key revisions for content whose
+identity they can fully describe. Active history includes sampled opacity before
+pixel effects, as do the commerce wrapper groups.
+
+Animated text preparation visits echo history as well as ordinary playback.
+Frozen/remapped precomps and disabled matte sources therefore prepare every
+required glyph/stroke frame, including offscreen samples before final text bounds
+are known. The existing glyph preparation memory budget still applies.
+
+### Primitive blur (CE4b drawing parity)
+
+`blur.primitive@1.0.0` filters each content drawing operation, with an animatable
+`radius` (default 0; 0–1,000 surface pixels). It runs during painting before the
+ordinary pixel effect stack. A positive radius overrides the nearest inherited
+group radius; zero retains that inherited radius. Null parenting does not inherit
+paint effects. One primitive blur may be attached to a drawable layer or group;
+adjustment and null layers reject it.
+
+Group children retain separate overlapping filtered draws. Non-collapsed precomps
+filter their flattened surface; collapsed precomps carry the drawing filter to
+their contents. Providers and text containers retain their individual draw calls;
+state crossfade surfaces receive the filter when composited. Masks, mattes and
+pixel-stack ordering are unchanged. A positive drawing blur prevents inappropriate
+culling of artwork that can blur into view. Commerce and story adapters bake their
+motion-craft `blur` samples into this entry, including child zero/inheritance.
+
+### Exposure sampling (CE7 dependency slice)
+
+Composition `motionBlur` enables fixed-order midpoint samples across a shutter of
+0–720 degrees, shifted by `shutterPhase` (−360–360 degrees), with 2–64 samples.
+A layer opts in with `motionBlur: true`. Groups and precomp instances pass their
+setting to descendants; an explicit child setting overrides inheritance. Ordinary
+parenting carries transforms without inheriting the blur switch. Opted-out layers
+hold their complete evaluated pose, including ancestor transforms and opacity.
+
+The backend averages complete opaque sample frames in display sRGB, preserving
+moving overlaps and transparency. Canvas uses one reusable Float32 accumulation
+buffer and rounds once after the fixed-order sum. It retains no rendered history.
+Integer output frames remain authoritative; exposure evaluates the existing native
+curves at fractional times. A stationary scene averages to the same pixels.
+
+Optional `inPoint`/`outPoint` delimit the exposure effect. Ordered `cuts` declare
+shot boundaries. Samples clamp to the current interval and composition endpoints;
+layer visibility, discrete content changes and effect activation also create cuts.
+Nested precomp clocks clamp at their own cuts, including remapped clocks. Animated
+glyph preparation includes exposure and echo samples within the existing budget.
+`comp-motion-blur-range` diagnoses reversed/out-of-range intervals and unordered,
+duplicate or out-of-range cut entries. Commerce compiles its source shutter schedule to indexed sample clocks; the native
+renderer never invokes a family evaluator.
+
+### Indexed sample clocks
+
+A layer may supply `sampleTimes`: 1–2,000 strictly increasing, finite times within
+±216,000 layer frames. The latest sample at or before the local clock is selected;
+times outside the table hold an endpoint. Animated properties retain integer key
+indices, evaluated at that selected index. The content clock is the corresponding
+source time. Visibility and effect activation retain the ordinary layer clock;
+effect parameter values, transforms, masks, states and colors use the sample index.
+Drivers and constraints still apply after these base properties are sampled.
+`comp-sample-time-order` identifies duplicate or descending sample times.
+
+Providers receive the selected index as their `time` argument and its source time
+as an optional fourth argument. Providers with procedural animation can use that
+source clock while indexing their baked data separately. Ordinary layers without
+`sampleTimes` retain their existing clocks. This permits bounded exposure baking
+without fractional authored keys or a source-family evaluator during rendering.
+
+Exposure rendering compares complete draw graphs using exact equality. When all
+samples have identical operations, it renders once; moving samples retain the
+fixed-order accumulation. The frame report's `samples` counts actual draws.
+
+### Commerce exposure compilation
+
+A commerce `motion-blur` effect becomes native composition exposure settings and
+per-layer opt-in. The compiler samples integer output frames, exact shutter times,
+source state/visibility/effect cuts and raw echo history. Baked transforms, appearance,
+text states, geometry and pixel parameters share `sampleTimes`; procedural providers
+receive the original time separately. A zero-angle shutter retains ordinary clocks.
+
+Safe, exactly equal consecutive source poses can share a retained sample. Scenes
+with procedural text, numeric bindings, attachments, masks or time-varying pixel
+effects keep every required time. More than 2,000 retained samples fails with
+`comp-adapter-limit`; provider payloads still have their 64 KiB bound. Exposure
+compilation does not relax integer authored keys or source validation.
+
+Typography stroke preparation visits the actual visible fractional numeric labels
+at each rounded glyph pose, including echo history. It retains the 128 MP preparation
+budget. Rendering uses the same prepared glyph path as ordinary integer playback.
+
+### Optional GPU composition preview
+
+`createCompositionPreview(canvas, composition, resources, { backend: "webgl2" })`
+selects `composition-webgl2-0.2.0`; omitting the option retains Canvas 2D. Both
+previews expose `backend`, `rendererVersion`, and `readPixels()` in top-row-first
+unpremultiplied RGBA. Scene wrappers include the selected renderer version in
+their identity.
+
+WebGL owns composition surfaces, blends, transforms, masks/mattes, exposure
+accumulation and pixel-effect passes. Prepared vector/text/image content retains
+the reference rasterizer; consecutive vector fills are rasterized as one batch
+to preserve antialiasing. This is not a full-frame Canvas wrapper. GPU idle surface
+storage is capped at 128 MiB, with at most 16 surfaces per dimensions/type key.
+Unsupported WebGL2 or floating accumulation capabilities fail explicitly.
+
+The native backend suite compares 57 focused cases and 612 fixture frames on the
+pinned software browser at the existing near tier. The CLI accepts `comp render --backend webgl2`; engine callers pass
+`backend: "webgl2"` to `renderComposition`. The Lab renderer selector uses the same
+backend and includes it in the displayed export command. Export uses pinned
+SwiftShader; hardware previews are labeled approximate. Both scene and result
+manifests report the selected renderer version. Canvas remains the default.
+Family acceptance and measured performance are tracked separately in the plan.
+
+GPU previews retain only the previous stationary graph. Identical graphs reuse the
+presented framebuffer; moving exposures invalidate that cache. Frame reports count
+actual executed samples (`0` for reuse). Pixel readback caches one frame only when
+it fits within 64 MiB and returns independent arrays. The Canvas default retains
+its existing execution behavior.

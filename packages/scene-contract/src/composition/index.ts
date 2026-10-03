@@ -18,3 +18,4 @@ export * from "./composition.ts";
 export * from "./resolve.ts";
 export { compositionWarnings, type CompositionWarning } from "./validate.ts";
 export * from "./diagnostics.ts";
+export * from "./effects.ts";

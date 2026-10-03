@@ -1,3 +1,6 @@
+import { compositionEffectDefinition } from "@still-shift/scene-contract";
+import type { EvaluatedEffect } from "../evaluate/effects.ts";
+import { evaluateComp } from "../evaluate/evaluate.ts";
 import type {
   BezierPath,
   Composition,
@@ -12,9 +15,14 @@ import type {
   EvaluatedLayer,
   EvaluatedLayerTree,
   Rgba,
+  EvaluationOptions,
 } from "../evaluate/types.ts";
 import { cameraMatrix } from "../evaluate/camera.ts";
 import { projectBounds } from "../evaluate/geometry.ts";
+
+export type RenderEffect = EvaluatedEffect & {
+  placement?: { matrix: Matrix; transforms: Matrix[] };
+};
 
 type TextLayer = Extract<CompositionLayer, { type: "text" }>;
 type ImageLayer = Extract<CompositionLayer, { type: "image" }>;
@@ -64,6 +72,8 @@ export type TextContent = {
   layer: TextLayer;
   /** Layer time: text transitions, decorations and animators are sampled here. */
   time: number;
+  stateFrom?: number;
+  stateMix?: number;
   state: number;
   reveal: number;
   color: Rgba;
@@ -74,6 +84,11 @@ export type ProviderContent = {
   key: string;
   layer: Extract<CompositionLayer, { type: "provider" }>;
   time: number;
+  /** Authored source time for a provider with an explicit indexed sample clock. */
+  sourceTime?: number;
+  state?: number;
+  stateFrom?: number;
+  stateMix?: number;
 };
 export type LayerContent =
   | SolidContent
@@ -93,12 +108,14 @@ export type DrawOp = {
   opacity: number;
   blend: CompositionBlendMode;
   clips: ClipRect[];
+  paintBlur?: number;
 };
 /** Render `ops` into a scope-sized surface, apply masks and matte, then composite. */
 export type IsolateOp = {
   kind: "isolate";
   layer: string;
   ops: RenderOp[];
+  effects: RenderEffect[];
   masks: MaskOp[];
   matte: MatteOp | null;
   opacity: number;
@@ -113,6 +130,7 @@ export type AdjustOp = {
   transforms: Matrix[];
   width: number;
   height: number;
+  effects: RenderEffect[];
   masks: MaskOp[];
   matte: MatteOp | null;
   opacity: number;
@@ -141,6 +159,10 @@ export type RenderGraph = {
   /** Layer keys skipped because their bounds miss the surface they draw into. */
   culled: string[];
 };
+export type RenderGraphOptions = EvaluationOptions & {
+  /** Preparation must discover offscreen glyph samples before final bounds exist. */
+  cull?: boolean;
+};
 
 type Frame = {
   matrix: Matrix;
@@ -150,11 +172,18 @@ type Frame = {
   viewport: { width: number; height: number };
   /** Key prefix for layers of this scope (`""` at the root). */
   prefix: string;
+  /** An ancestor effect may pull offscreen content into view. */
+  cull?: boolean;
+  paintBlur?: number;
 };
 type Scope = {
   tree: EvaluatedLayerTree;
   def: CompositionScope;
   byId: Map<string, EvaluatedLayer>;
+  matteSources: Set<string>;
+  containers: Set<string>;
+  /** Nearest group whose children must paint together, rather than in the outer scope. */
+  owners: Map<string, string>;
 };
 
 const IDENTITY: Matrix = [1, 0, 0, 1, 0, 0];
@@ -172,8 +201,15 @@ function boundsMiss(bounds: Bounds, matrix: Matrix, frame: Frame) {
 
 class GraphBuilder {
   readonly culled: string[] = [];
-  private readonly cameras = new Map<number, Matrix>();
-  constructor(readonly comp: Composition) {}
+  private readonly cameras = new Map<string, Matrix>();
+  private readonly history = new Map<string, Scope>();
+  private readonly exposures = new WeakMap<EvaluatedLayerTree, Scope>();
+  constructor(
+    readonly comp: Composition,
+    readonly time: number,
+    readonly options: RenderGraphOptions,
+    readonly historical = false,
+  ) {}
 
   private precomp(id: string): CompositionScope {
     return this.comp.precomps!.find((p) => p.id === id)!;
@@ -196,6 +232,7 @@ class GraphBuilder {
         clips: [],
         viewport: { width: tree.width, height: tree.height },
         prefix,
+        ...(this.options.cull === false ? { cull: false } : {}),
       }),
     };
   }
@@ -205,21 +242,81 @@ class GraphBuilder {
     def: CompositionScope,
     frame: Frame,
   ): RenderOp[] {
+    return this.scopeLayers(this.scope(tree, def), frame);
+  }
+
+  private scope(tree: EvaluatedLayerTree, def: CompositionScope): Scope {
     const scope: Scope = {
       tree,
       def,
       byId: new Map(tree.layers.map((s) => [s.id, s])),
+      matteSources: new Set(
+        def.layers.flatMap((layer) =>
+          layer.trackMatte ? [layer.trackMatte.layer] : [],
+        ),
+      ),
+      owners: new Map(),
+      containers: new Set(),
     };
+    const containers = (scope.containers = new Set(
+      def.layers
+        .filter(
+          (layer) =>
+            layer.type === "group" &&
+            (scope.matteSources.has(layer.id) ||
+              layer.trackMatte ||
+              layer.masks?.length ||
+              layer.effects?.length ||
+              (layer.blendMode && layer.blendMode !== "normal")),
+        )
+        .map((layer) => layer.id),
+    ));
+    if (containers.size)
+      for (const layer of def.layers) {
+        for (
+          let parent = layer.parent;
+          parent;
+          parent = scope.byId.get(parent)!.layer.parent
+        ) {
+          if (containers.has(parent)) {
+            scope.owners.set(layer.id, parent);
+            break;
+          }
+        }
+      }
+    return scope;
+  }
+
+  private scopeLayers(scope: Scope, frame: Frame, owner?: string): RenderOp[] {
     const ops: RenderOp[] = [];
     // layers[0] is the top layer, so paint from the end of the list.
-    for (let i = tree.layers.length - 1; i >= 0; i--) {
-      const state = tree.layers[i]!;
-      if (state.drawable) ops.push(...this.layerOps(scope, state, frame));
+    for (let i = scope.tree.layers.length - 1; i >= 0; i--) {
+      const state = scope.tree.layers[i]!;
+      if (scope.owners.get(state.id) !== owner) continue;
+      if (
+        state.drawable ||
+        (state.visible &&
+          scope.containers.has(state.id) &&
+          !scope.matteSources.has(state.id))
+      )
+        ops.push(...this.layerOps(scope, state, frame));
     }
     return ops;
   }
 
+  private exposureScope(scope: Scope, state: EvaluatedLayer): Scope {
+    const tree = state.exposure?.tree;
+    if (!tree) return scope;
+    let sample = this.exposures.get(tree);
+    if (!sample) {
+      sample = this.scope(tree, scope.def);
+      this.exposures.set(tree, sample);
+    }
+    return sample;
+  }
+
   private groupClips(scope: Scope, state: EvaluatedLayer, frame: Frame) {
+    scope = this.exposureScope(scope, state);
     const clips: ClipRect[] = [];
     for (
       let parent = state.layer.parent;
@@ -243,6 +340,7 @@ class GraphBuilder {
     state: EvaluatedLayer,
     frame: Frame,
   ): Matrix[] {
+    scope = this.exposureScope(scope, state);
     const local: Matrix[] = [];
     let root = state;
     for (;;) {
@@ -260,10 +358,11 @@ class GraphBuilder {
   }
 
   private camera(time: number, depth: number): Matrix {
-    let matrix = this.cameras.get(depth);
+    const key = `${time}:${depth}`;
+    let matrix = this.cameras.get(key);
     if (!matrix) {
       matrix = cameraMatrix(this.comp, time, depth);
-      this.cameras.set(depth, matrix);
+      this.cameras.set(key, matrix);
     }
     return matrix;
   }
@@ -302,7 +401,7 @@ class GraphBuilder {
     const matte = state.layer.trackMatte;
     if (!matte) return null;
     const source = scope.byId.get(matte.layer)!;
-    const t = scope.tree.time,
+    const t = source.exposure?.tree.time ?? scope.tree.time,
       layer = source.layer;
     const active =
       t >= 0 &&
@@ -340,7 +439,16 @@ class GraphBuilder {
           type: "provider",
           key: frame.prefix ? `${scope.def.id}/${layer.id}` : layer.id,
           layer,
-          time: state.time,
+          time: state.sampleIndex ?? state.time,
+          ...(state.sampleIndex === undefined
+            ? {}
+            : { sourceTime: state.time }),
+          ...(layer.state !== undefined || layer.stateFrom !== undefined
+            ? { state: state.state! }
+            : {}),
+          ...(layer.stateFrom !== undefined || state.stateMix !== 1
+            ? { stateFrom: state.stateFrom!, stateMix: state.stateMix! }
+            : {}),
         };
       case "solid":
         return {
@@ -371,6 +479,9 @@ class GraphBuilder {
           state: state.state ?? 0,
           reveal: state.reveal ?? 1,
           color: state.color!,
+          ...(layer.stateFrom !== undefined || state.stateMix !== 1
+            ? { stateFrom: state.stateFrom!, stateMix: state.stateMix! }
+            : {}),
         };
       case "precomp":
         return state.precomp
@@ -388,6 +499,89 @@ class GraphBuilder {
     }
   }
 
+  /** A positive paint blur overrides inherited group blur; zero retains it. */
+  private paintBlur(scope: Scope, state: EvaluatedLayer, frame: Frame): number {
+    scope = this.exposureScope(scope, state);
+    for (
+      let current: EvaluatedLayer | undefined = state;
+      current;
+      current = current.layer.parent
+        ? scope.byId.get(current.layer.parent)
+        : undefined
+    ) {
+      if (current !== state && current.layer.type !== "group") continue;
+      const blur = current.effects.find(
+        (effect) => effect.enabled && effect.effect === "blur.primitive",
+      );
+      if (blur && (blur.params.radius as number) > 0)
+        return blur.params.radius as number;
+    }
+    return frame.paintBlur ?? 0;
+  }
+
+  /** Historical input is painted before current input and this frame's pixel stack/matte. */
+  private echoOps(
+    scope: Scope,
+    state: EvaluatedLayer,
+    frame: Frame,
+    echo: EvaluatedEffect,
+  ): RenderOp[] {
+    const { count, spacing, decay, skipUnchanged, sourceRevision } =
+      echo.params as Record<string, number>;
+    if (!decay) return [];
+    const ops: RenderOp[] = [];
+    const rootTime = state.exposure?.rootTime ?? this.time;
+    const scopeTime = state.exposure?.tree.time ?? scope.tree.time;
+    const builder = new GraphBuilder(this.comp, rootTime, this.options, true);
+    const route = frame.prefix.split("/").filter(Boolean);
+    for (let i = count!; i >= 1; i--) {
+      const time = Math.max(0, scopeTime - i * spacing!);
+      const key = `${frame.prefix}:${rootTime}:${time}`;
+      let sample = this.history.get(key);
+      if (!sample) {
+        let tree = evaluateComp(this.comp, route.length ? rootTime : time, {
+          ...this.options,
+          ...(route.length
+            ? {
+                scopeTimes: {
+                  ...this.options.scopeTimes,
+                  [route.join("/")]: time,
+                },
+              }
+            : {}),
+        });
+        for (const id of route) {
+          const nested = tree.layers.find((layer) => layer.id === id)?.precomp;
+          if (!nested) return ops;
+          tree = nested;
+        }
+        sample = this.scope(tree, scope.def);
+        if (this.history.size >= 16)
+          this.history.delete(this.history.keys().next().value!);
+        this.history.set(key, sample);
+      }
+      const prior = sample.byId.get(state.id)!;
+      if (
+        (!prior.visible && !sample.matteSources.has(state.id)) ||
+        time < (prior.layer.inPoint ?? 0) ||
+        time >= (prior.layer.outPoint ?? scope.def.frameCount) ||
+        (skipUnchanged &&
+          prior.effects.find((effect) => effect.id === echo.id)?.params
+            .sourceRevision === sourceRevision)
+      )
+        continue;
+      ops.push(
+        ...builder.layerOps(
+          sample,
+          prior,
+          { ...frame, opacity: frame.opacity * decay! ** i, cull: false },
+          { raw: true, blend: "normal", cull: false },
+        ),
+      );
+    }
+    return ops;
+  }
+
   layerOps(
     scope: Scope,
     state: EvaluatedLayer,
@@ -396,10 +590,12 @@ class GraphBuilder {
       blend?: CompositionBlendMode;
       seen?: Set<string>;
       cull?: boolean;
+      raw?: boolean;
     } = {},
   ): RenderOp[] {
     const key = frame.prefix + state.id,
       layer = state.layer;
+    const paintBlur = this.paintBlur(scope, state, frame);
     const matrix = multiplyMatrix(frame.matrix, state.screenMatrix);
     const transforms = this.transforms(scope, state, frame);
     const opacity = frame.opacity * state.opacity;
@@ -407,6 +603,9 @@ class GraphBuilder {
     if (opacity <= 0) return [];
     if (
       options.cull !== false &&
+      frame.cull !== false &&
+      !paintBlur &&
+      layer.type !== "group" &&
       !(layer.type === "precomp" && layer.collapseTransforms) &&
       state.bounds &&
       boundsMiss(state.bounds, frame.matrix, frame)
@@ -415,11 +614,58 @@ class GraphBuilder {
       return [];
     }
     const clips = this.groupClips(scope, state, frame);
-    const masks = this.masks(state, matrix, transforms);
+    const masks = options.raw ? [] : this.masks(state, matrix, transforms);
+    const echo =
+      !options.raw && !this.historical
+        ? state.effects.find(
+            (effect) => effect.enabled && effect.effect === "time.echo",
+          )
+        : undefined;
+    const effects: RenderEffect[] = (options.raw ? [] : state.effects)
+      .filter(
+        (effect) =>
+          effect.enabled &&
+          !["time.echo", "blur.primitive"].includes(effect.effect),
+      )
+      .map((effect) => {
+        if (!compositionEffectDefinition(effect.effect)!.usesLayerSpace)
+          return effect;
+        const source = effect.space ? scope.byId.get(effect.space)! : state;
+        return {
+          ...effect,
+          placement: {
+            matrix: multiplyMatrix(frame.matrix, source.screenMatrix),
+            transforms: this.transforms(scope, source, frame),
+          },
+        };
+      });
     const seen = options.seen ?? new Set([layer.id]);
-    const matte = this.matte(scope, state, frame, seen);
+    const matte = options.raw ? null : this.matte(scope, state, frame, seen);
+    if (echo) {
+      return [
+        {
+          kind: "isolate",
+          layer: key,
+          ops: [
+            ...this.echoOps(scope, state, frame, echo),
+            ...this.layerOps(scope, state, frame, {
+              ...options,
+              raw: true,
+              blend: "normal",
+              cull: false,
+            }),
+          ],
+          effects,
+          masks,
+          matte,
+          opacity: 1,
+          blend,
+          clips: [],
+        },
+      ];
+    }
     if (layer.type === "adjustment") {
-      if (blend === "normal" && !layer.effects?.length) return [];
+      if (blend === "normal" && !effects.length) return [];
       return [
         {
           kind: "adjust",
@@ -428,6 +674,7 @@ class GraphBuilder {
           transforms,
           width: layer.size?.[0] ?? scope.tree.width,
           height: layer.size?.[1] ?? scope.tree.height,
+          effects,
           masks,
           matte,
           opacity,
@@ -436,9 +683,34 @@ class GraphBuilder {
         },
       ];
     }
-    const isolated = blend !== "normal" || masks.length > 0 || matte !== null;
+    const isolated =
+      blend !== "normal" ||
+      masks.length > 0 ||
+      matte !== null ||
+      effects.length > 0;
     let ops: RenderOp[];
-    if (layer.type === "precomp" && layer.collapseTransforms) {
+    if (layer.type === "group") {
+      // Group opacity is already inherited by each child, including overlapping ones.
+      ops = this.scopeLayers(
+        scope,
+        effects.length ? { ...frame, cull: false } : frame,
+        layer.id,
+      );
+      if (!isolated) return ops;
+      return [
+        {
+          kind: "isolate",
+          layer: key,
+          ops,
+          effects,
+          masks,
+          matte,
+          opacity: 1,
+          blend,
+          clips: [],
+        },
+      ];
+    } else if (layer.type === "precomp" && layer.collapseTransforms) {
       // Collapsed layers keep their own blend modes and land in this surface.
       ops = state.precomp
         ? this.scopeOps(state.precomp, this.precomp(layer.comp), {
@@ -448,6 +720,8 @@ class GraphBuilder {
             clips: isolated ? [] : clips,
             viewport: frame.viewport,
             prefix: `${key}/`,
+            ...(paintBlur ? { paintBlur } : {}),
+            ...(effects.length || frame.cull === false ? { cull: false } : {}),
           })
         : [];
       if (!isolated) return ops;
@@ -464,6 +738,7 @@ class GraphBuilder {
           opacity: isolated ? 1 : opacity,
           blend: "normal",
           clips: isolated ? [] : clips,
+          ...(paintBlur ? { paintBlur } : {}),
         },
       ];
       if (!isolated) return ops;
@@ -473,6 +748,7 @@ class GraphBuilder {
         kind: "isolate",
         layer: key,
         ops,
+        effects,
         masks,
         matte,
         opacity:
@@ -493,8 +769,9 @@ class GraphBuilder {
 export function buildRenderGraph(
   comp: Composition,
   tree: EvaluatedLayerTree,
+  options: RenderGraphOptions = {},
 ): RenderGraph {
-  const builder = new GraphBuilder(comp);
+  const builder = new GraphBuilder(comp, tree.time, options);
   return {
     root: builder.surface(tree, comp, ""),
     culled: builder.culled,

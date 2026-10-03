@@ -8,11 +8,13 @@ import {
   type Matrix,
 } from "../../packages/renderer-core/src/node-transform.ts";
 import { storyCameraTransform } from "../../packages/renderer-core/src/story-camera.ts";
+import { componentVisible } from "../../packages/renderer-core/src/component-visibility.ts";
+import type { CommerceRenderScene } from "../../packages/renderer-core/src/commerce-scene.ts";
 import type { StoryRenderScene } from "../../packages/renderer-core/src/story-scene.ts";
 
 /** Compare every source node in reverse frame order, independently of pixel parity. */
-export function assertStoryCompositionState(
-  scene: StoryRenderScene,
+export function assertCompositionAdapterState(
+  scene: StoryRenderScene | CommerceRenderScene,
   composition: Composition,
 ) {
   const nodes = new Map(scene.nodes.map((node) => [node.id, node]));
@@ -23,14 +25,22 @@ export function assertStoryCompositionState(
       [],
     );
     const actual = new Map(tree.layers.map((layer) => [layer.id, layer]));
-    const expected = new Map<string, { matrix: Matrix; opacity: number }>();
-    const visit = (id: string): { matrix: Matrix; opacity: number } => {
+    type Expected = { matrix: Matrix; opacity: number; visible: boolean };
+    const expected = new Map<string, Expected>();
+    const visit = (id: string): Expected => {
       const cached = expected.get(id);
       if (cached) return cached;
       const node = nodes.get(id)!;
       const state = evaluatePreparedNode(scene, node, frame);
       const parent = node.parent ? visit(node.parent) : undefined;
-      const camera = storyCameraTransform(scene, id, frame);
+      const camera =
+        scene.schemaVersion === "story-scene-1"
+          ? storyCameraTransform(scene, id, frame)
+          : { scale: 1, x: 0, y: 0 };
+      const gate =
+        scene.schemaVersion === "commerce-scene-1"
+          ? scene.visibility?.find((gate) => gate.target === id)
+          : undefined;
       const result = {
         matrix: multiplyMatrix(
           parent?.matrix ?? [
@@ -43,10 +53,17 @@ export function assertStoryCompositionState(
           ],
           nodeMatrix(node, state),
         ),
-        opacity: (parent?.opacity ?? 1) * state.opacity,
+        opacity: componentVisible(scene, id, frame)
+          ? (parent?.opacity ?? 1) * state.opacity
+          : 0,
+        visible:
+          (parent?.visible ?? true) &&
+          componentVisible(scene, id, frame) &&
+          (!gate || (frame >= gate.start && frame < gate.end)),
       };
       const layer = actual.get(id)!;
       const location = `${id} at frame ${frame}`;
+      assert.equal(layer.visible, result.visible, `${location}: visibility`);
       result.matrix.forEach((value, axis) =>
         assert.ok(
           Math.abs(layer.screenMatrix[axis]! - value) <= 0.001,

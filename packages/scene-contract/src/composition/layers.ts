@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { PoseAnchorSchema } from "../character-actions.ts";
+import { TextContainerSchema } from "../story-acting.ts";
 import { PoseRegistrationSchema } from "../story-acting.ts";
 import { compositionTypographyFields } from "./typography.ts";
 import {
@@ -15,6 +16,7 @@ import {
   COMPOSITION_LIMITS,
   compFrame,
   compositionId,
+  compositionColor,
   finite,
   keyFrame,
   label,
@@ -65,7 +67,7 @@ export const MaskSchema = z
   })
   .strict();
 
-/** Registry effects arrive in CE6; until then a non-empty stack is rejected. */
+/** Registry effects sampled in layer time; pixel stacks retain array order. */
 export const EffectInstanceSchema = z
   .object({
     id: compositionId,
@@ -74,6 +76,10 @@ export const EffectInstanceSchema = z
       .regex(/^[a-z][\w.-]*$/)
       .max(64),
     enabled: z.boolean().optional(),
+    /** Coordinate layer for effects that use layer space; defaults to the owner. */
+    space: compositionId.optional(),
+    inPoint: keyFrame.optional(),
+    outPoint: keyFrame.optional(),
     params: boundedJson(z.record(compositionId, z.json())).optional(),
   })
   .strict();
@@ -120,6 +126,12 @@ const layerBase = {
       message: "stretch cannot be 0",
       params: { diagnosticCode: "comp-schema-range" },
     })
+    .optional(),
+  /** Baked samples: map layer-local time to an integer key/provider sample index. */
+  sampleTimes: z
+    .array(finite.min(-L.maxKeyFrame).max(L.maxKeyFrame))
+    .min(1)
+    .max(L.maxKeys)
     .optional(),
   parent: compositionId.optional(),
   enabled: z.boolean().optional(),
@@ -195,6 +207,27 @@ export const TextLayerSchema = z
   .object({
     ...layerBase,
     type: z.literal("text"),
+    /** Preserve static opaque run colours; animated/translucent colours use coverage. */
+    rasterize: z.enum(["coverage", "source-colors"]).optional(),
+    container: TextContainerSchema.optional(),
+    corrections: z
+      .array(
+        z
+          .object({
+            replacement: z.string().min(1).max(L.maxTextLength),
+            span: compositionId.optional(),
+            start: compFrame,
+            end: compFrame,
+            color: compositionColor.optional(),
+          })
+          .strict()
+          .refine((correction) => correction.end > correction.start, {
+            message: "Correction end must follow its start",
+            params: { diagnosticCode: "comp-schema-range" },
+          }),
+      )
+      .max(100)
+      .optional(),
     text: z.string().min(1).max(L.maxTextLength),
     /** Alternative texts selected by `state`, as in story text states. */
     states: z
@@ -204,6 +237,8 @@ export const TextLayerSchema = z
       .optional(),
     state: AnimatableDiscreteSchema.optional(),
     fontSize: finite.min(1).max(2000),
+    stateFrom: AnimatableDiscreteSchema.optional(),
+    stateMix: animatableScalar(unit).optional(),
     /** Wrap box `[width, height]` for `textBox` layouts, in layer pixels (CE3). */
     size: size2.optional(),
     color: AnimatableColorSchema,
@@ -249,6 +284,10 @@ export const ProviderLayerSchema = z
       .max(128)
       .regex(/^[a-z][a-z0-9.-]*@\d+\.\d+\.\d+$/),
     params: boundedJson(z.record(z.string().max(128), z.json())),
+    /** Optional discrete content states; the backend composites crossfades. */
+    state: AnimatableDiscreteSchema.optional(),
+    stateFrom: AnimatableDiscreteSchema.optional(),
+    stateMix: animatableScalar(unit).optional(),
     /** Assets the provider may consume; checked against the composition asset namespace. */
     assets: z.array(compositionId).max(L.maxAssets).optional(),
     /** Provider text that intentionally depends on the browser's generic fonts. */

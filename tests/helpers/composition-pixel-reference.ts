@@ -1,0 +1,262 @@
+import type { CompositionLayer } from "@still-shift/scene-contract";
+
+export const pixelStacks: Record<
+  string,
+  NonNullable<CompositionLayer["effects"]>
+> = {
+  sweep: [
+    {
+      id: "sweep",
+      effect: "light.sweep",
+      params: {
+        width: 50,
+        height: 45,
+        left: 0.1,
+        top: 0.1,
+        regionWidth: 0.8,
+        regionHeight: 0.8,
+        band: 0.2,
+        progress: 0.6,
+        strength: 0.7,
+      },
+    },
+  ],
+  radial: [
+    {
+      id: "lamp",
+      effect: "light.radial",
+      params: { x: 64, y: 48, radius: 48, color: "#ddbb88", strength: 0.7 },
+    },
+  ],
+  particles: [
+    {
+      id: "dust",
+      effect: "particles.rise",
+      params: {
+        count: 40,
+        radius: 3,
+        color: "#ddbb88",
+        opacity: 0.65,
+        seed: 17,
+        progress: 0.6,
+      },
+    },
+  ],
+  grain: [
+    {
+      id: "grain",
+      effect: "stylize.grain",
+      params: { amount: 0.15, seed: 3, evolution: 11 },
+    },
+  ],
+  directional: [
+    {
+      id: "direction",
+      effect: "blur.directional",
+      params: { length: 16, angle: 30, samples: 6 },
+    },
+  ],
+  glow: [
+    {
+      id: "glow",
+      effect: "light.glow",
+      params: { radius: 3, intensity: 0.6, threshold: 0.2 },
+    },
+  ],
+  displacement: [
+    {
+      id: "waves",
+      effect: "distort.sine",
+      params: { amount: 5, wavelength: 30, phase: 0.8 },
+    },
+  ],
+};
+pixelStacks.ordered = [
+  ...pixelStacks.directional!,
+  ...pixelStacks.glow!,
+  ...pixelStacks.displacement!,
+];
+pixelStacks.sweepStack = [...pixelStacks.glow!, ...pixelStacks.sweep!];
+
+/** Reference equations, independent of native graph/effect evaluation and kernels. */
+export function pixelReference(
+  source: HTMLCanvasElement,
+  effect: NonNullable<CompositionLayer["effects"]>[number],
+  placement: [number, number, number, number, number, number] = [
+    1, 0, 0, 1, 0, 0,
+  ],
+) {
+  const { width, height } = source;
+  const surface = () => {
+    const c = document.createElement("canvas");
+    c.width = width;
+    c.height = height;
+    return c;
+  };
+  const canvas = surface(),
+    ctx = canvas.getContext("2d")!;
+  const p = effect.params as Record<string, number>;
+  let state = p.seed! >>> 0;
+  const random = () => {
+    state = (Math.imul(state, 1664525) + 1013904223) >>> 0;
+    return state / 4294967296;
+  };
+  if (effect.effect === "light.sweep") {
+    const light = surface(),
+      lc = light.getContext("2d")!;
+    lc.save();
+    lc.transform(...placement);
+    lc.beginPath();
+    lc.rect(
+      p.left! * p.width!,
+      p.top! * p.height!,
+      p.regionWidth! * p.width!,
+      p.regionHeight! * p.height!,
+    );
+    lc.clip();
+    const center =
+      (p.left! - p.band! + (p.regionWidth! + p.band! * 2) * p.progress!) *
+      p.width!;
+    const radius = p.band! * p.width!;
+    const gradient = lc.createLinearGradient(
+      center - radius,
+      0,
+      center + radius,
+      0,
+    );
+    gradient.addColorStop(0, "#ffffff00");
+    gradient.addColorStop(0.5, "#ffffff");
+    gradient.addColorStop(1, "#ffffff00");
+    lc.fillStyle = gradient;
+    lc.fillRect(0, 0, p.width!, p.height!);
+    lc.restore();
+    lc.globalCompositeOperation = "destination-in";
+    lc.drawImage(source, 0, 0);
+    ctx.drawImage(source, 0, 0);
+    ctx.globalCompositeOperation = "source-atop";
+    ctx.globalAlpha = p.strength!;
+    ctx.drawImage(light, 0, 0);
+  } else if (effect.effect === "light.radial") {
+    ctx.drawImage(source, 0, 0);
+    const gradient = ctx.createRadialGradient(
+      p.x!,
+      p.y!,
+      0,
+      p.x!,
+      p.y!,
+      p.radius!,
+    );
+    gradient.addColorStop(0, effect.params!.color as string);
+    gradient.addColorStop(
+      1,
+      `${(effect.params!.color as string).slice(0, 7)}00`,
+    );
+    ctx.globalAlpha = p.strength!;
+    ctx.fillStyle = gradient;
+    ctx.fillRect(0, 0, width, height);
+  } else if (effect.effect === "particles.rise") {
+    ctx.drawImage(source, 0, 0);
+    ctx.fillStyle = effect.params!.color as string;
+    for (let n = 0; n < p.count!; n++) {
+      const x = random() * width,
+        offset = random(),
+        radius = p.radius! * (0.35 + random() * 0.65),
+        sway = 10 + random() * 30;
+      const phase = (offset + p.progress!) % 1;
+      ctx.globalAlpha = p.opacity! * Math.sin(phase * Math.PI) ** 2;
+      ctx.beginPath();
+      ctx.arc(
+        x + Math.sin(phase * Math.PI * 2) * sway,
+        height * (1 - phase),
+        radius,
+        0,
+        Math.PI * 2,
+      );
+      ctx.fill();
+    }
+  } else if (effect.effect === "stylize.grain") {
+    state = (p.seed! + Math.floor(p.evolution!) * 7919) >>> 0;
+    ctx.drawImage(source, 0, 0);
+    const tile = document.createElement("canvas");
+    tile.width = tile.height = 128;
+    const tc = tile.getContext("2d")!,
+      pixels = tc.createImageData(128, 128);
+    for (let i = 0; i < pixels.data.length; i += 4) {
+      const value = random() < 0.5 ? 0 : 255;
+      pixels.data[i] = pixels.data[i + 1] = pixels.data[i + 2] = value;
+      pixels.data[i + 3] = Math.round(random() * p.amount! * 255);
+    }
+    tc.putImageData(pixels, 0, 0);
+    ctx.fillStyle = ctx.createPattern(tile, "repeat")!;
+    ctx.fillRect(0, 0, width, height);
+  } else if (effect.effect === "distort.sine") {
+    for (let y = 0; y < height; y++)
+      ctx.drawImage(
+        source,
+        0,
+        y,
+        width,
+        1,
+        Math.sin((y / p.wavelength!) * Math.PI * 2 + p.phase!) * p.amount!,
+        y,
+        width,
+        1,
+      );
+  } else if (effect.effect === "light.glow") {
+    const bright = surface(),
+      bc = bright.getContext("2d")!;
+    const pixels = source.getContext("2d")!.getImageData(0, 0, width, height);
+    for (let i = 0; i < pixels.data.length; i += 4) {
+      const luma =
+        (pixels.data[i]! * 0.2126 +
+          pixels.data[i + 1]! * 0.7152 +
+          pixels.data[i + 2]! * 0.0722) /
+        255;
+      pixels.data[i + 3] = Math.round(
+        pixels.data[i + 3]! *
+          Math.max(
+            0,
+            (luma - p.threshold!) / Math.max(0.001, 1 - p.threshold!),
+          ),
+      );
+    }
+    bc.putImageData(pixels, 0, 0);
+    ctx.drawImage(source, 0, 0);
+    ctx.globalCompositeOperation = "screen";
+    ctx.globalAlpha = p.intensity!;
+    ctx.filter = `blur(${p.radius}px)`;
+    ctx.drawImage(bright, 0, 0);
+  } else if (effect.effect === "blur.directional") {
+    const shifted = surface(),
+      sc = shifted.getContext("2d")!;
+    const sum = new Float32Array(width * height * 4);
+    for (let n = 0; n < p.samples!; n++) {
+      sc.clearRect(0, 0, width, height);
+      const distance = ((n + 0.5) / p.samples! - 0.5) * p.length!;
+      sc.drawImage(
+        source,
+        Math.cos((p.angle! * Math.PI) / 180) * distance,
+        Math.sin((p.angle! * Math.PI) / 180) * distance,
+      );
+      const bytes = sc.getImageData(0, 0, width, height).data;
+      for (let i = 0; i < bytes.length; i += 4) {
+        const a = bytes[i + 3]! / 255;
+        for (let c = 0; c < 3; c++)
+          sum[i + c] = sum[i + c]! + bytes[i + c]! * a;
+        sum[i + 3] = sum[i + 3]! + a;
+      }
+    }
+    const pixels = ctx.createImageData(width, height);
+    for (let i = 0; i < sum.length; i += 4)
+      if (sum[i + 3]) {
+        for (let c = 0; c < 3; c++)
+          pixels.data[i + c] = Math.round(sum[i + c]! / sum[i + 3]!);
+        pixels.data[i + 3] = Math.round((sum[i + 3]! * 255) / p.samples!);
+      }
+    ctx.putImageData(pixels, 0, 0);
+  } else throw new Error(`Missing pixel reference: ${effect.effect}`);
+  ctx.globalAlpha = 1;
+  ctx.globalCompositeOperation = "source-over";
+  ctx.filter = "none";
+  return canvas;
+}

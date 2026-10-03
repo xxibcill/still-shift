@@ -1,3 +1,4 @@
+import { pointBounds, preparedTextBounds } from "./provider-bounds.ts";
 import { z } from "zod";
 import {
   COMPOSITION_LIMITS,
@@ -9,9 +10,10 @@ import { drawPreparedRect } from "../../prepared-rect-renderer.ts";
 import { compileStoryFlows, drawStoryFlow } from "../../story-flows.ts";
 import { drawStoryText } from "../../story-text.ts";
 import { passageError } from "../../passage-diagnostics.ts";
-import type {
-  CanvasContentProvider,
-  ProviderLayer,
+import {
+  preparedProvider,
+  type CanvasContentProvider,
+  type ProviderLayer,
 } from "../render/providers.ts";
 import { StoryPathGeometrySchema, sampleStoryPath } from "./story-path.ts";
 
@@ -31,6 +33,7 @@ export const StoryFlowParamsSchema = z
   .object({
     node: pathNode,
     flow: StoryFlowSchema,
+    interpolateColors: z.boolean().optional(),
     samples: frames(z.object({ reveal: unit, gap: unit }).strict()),
   })
   .strict();
@@ -77,20 +80,58 @@ export const STORY_CONTENT_PROVIDERS: readonly CanvasContentProvider[] = [
     id: "story.rect@1.0.0",
     prepare(layer, _resources, path) {
       const params = parse(StoryRectParamsSchema, layer, path);
-      return (ctx, time) =>
-        drawPreparedRect(ctx, params.node, sample(params.samples, time).reveal);
+      const stroke = params.node.stroke
+        ? Math.max(1, Math.abs(params.node.lineWidth)) / 2
+        : 0;
+      return preparedProvider(
+        (ctx, time) =>
+          drawPreparedRect(
+            ctx,
+            params.node,
+            sample(params.samples, time).reveal,
+          ),
+        {
+          boundedCanvas: true,
+          visualKey: (time) => JSON.stringify(sample(params.samples, time)),
+          bounds: {
+            left: -stroke,
+            top: -stroke,
+            right: params.node.width + stroke,
+            bottom: params.node.height + stroke,
+          },
+        },
+      );
     },
   },
   {
     id: "story.path@1.1.0",
     prepare(layer, _resources, path) {
       const params = parse(StoryAttachedPathParamsSchema, layer, path);
-      return (ctx, time) =>
-        drawPreparedPath(
-          ctx,
-          sampleStoryPath(params.node, params.geometry, time),
-          sample(params.samples, time),
-        );
+      return preparedProvider(
+        (ctx, time) =>
+          drawPreparedPath(
+            ctx,
+            sampleStoryPath(params.node, params.geometry, time),
+            sample(params.samples, time),
+          ),
+        {
+          boundedCanvas: true,
+          visualKey: (time) =>
+            JSON.stringify([
+              sampleStoryPath(params.node, params.geometry, time).points,
+              sample(params.samples, time),
+            ]),
+          bounds: params.samples.some((s) => s.pulse > 0)
+            ? undefined
+            : pointBounds(
+                params.geometry.endpoints.flatMap(
+                  (_, frame) =>
+                    sampleStoryPath(params.node, params.geometry, frame).points,
+                ),
+                Math.max(1, params.node.lineWidth) * 3,
+              ),
+        },
+      );
     },
   },
   {
@@ -98,28 +139,53 @@ export const STORY_CONTENT_PROVIDERS: readonly CanvasContentProvider[] = [
     prepare(layer, _resources, path) {
       const params = parse(StoryAttachedFlowParamsSchema, layer, path);
       const flow = compileStoryFlows([params.flow], params.samples.length)[0]!;
-      return (ctx, time) => {
-        const frame = Math.max(
-          0,
-          Math.min(params.samples.length - 1, Math.floor(time)),
-        );
-        drawStoryFlow(
-          ctx,
-          flow,
-          sampleStoryPath(params.node, params.geometry, frame),
-          sample(params.samples, frame),
-          frame,
-          params.samples.length,
-        );
-      };
+      return preparedProvider(
+        (ctx, time) => {
+          const frame = Math.max(
+            0,
+            Math.min(params.samples.length - 1, Math.floor(time)),
+          );
+          drawStoryFlow(
+            ctx,
+            flow,
+            sampleStoryPath(params.node, params.geometry, frame),
+            sample(params.samples, frame),
+            frame,
+            params.samples.length,
+            params.interpolateColors,
+          );
+        },
+        {
+          boundedCanvas: true,
+          bounds: pointBounds(
+            params.geometry.endpoints.flatMap(
+              (_, frame) =>
+                sampleStoryPath(params.node, params.geometry, frame).points,
+            ),
+            Math.hypot(flow.size, Math.min(2, flow.size)),
+          ),
+        },
+      );
     },
   },
   {
     id: "story.path@1.0.0",
     prepare(layer, _resources, path) {
       const params = parse(StoryPathParamsSchema, layer, path);
-      return (ctx, time) =>
-        drawPreparedPath(ctx, params.node, sample(params.samples, time));
+      return preparedProvider(
+        (ctx, time) =>
+          drawPreparedPath(ctx, params.node, sample(params.samples, time)),
+        {
+          boundedCanvas: true,
+          visualKey: (time) => JSON.stringify(sample(params.samples, time)),
+          bounds: params.samples.some((s) => s.pulse > 0)
+            ? undefined
+            : pointBounds(
+                params.node.points,
+                Math.max(1, params.node.lineWidth) * 3,
+              ),
+        },
+      );
     },
   },
   {
@@ -127,21 +193,31 @@ export const STORY_CONTENT_PROVIDERS: readonly CanvasContentProvider[] = [
     prepare(layer, _resources, path) {
       const params = parse(StoryFlowParamsSchema, layer, path);
       const flow = compileStoryFlows([params.flow], params.samples.length)[0]!;
-      return (ctx, time) => {
-        // Baked adapter content has one exact sample per integer source frame.
-        const frame = Math.max(
-          0,
-          Math.min(params.samples.length - 1, Math.floor(time)),
-        );
-        drawStoryFlow(
-          ctx,
-          flow,
-          params.node,
-          sample(params.samples, frame),
-          frame,
-          params.samples.length,
-        );
-      };
+      return preparedProvider(
+        (ctx, time) => {
+          // Baked adapter content has one exact sample per integer source frame.
+          const frame = Math.max(
+            0,
+            Math.min(params.samples.length - 1, Math.floor(time)),
+          );
+          drawStoryFlow(
+            ctx,
+            flow,
+            params.node,
+            sample(params.samples, frame),
+            frame,
+            params.samples.length,
+            params.interpolateColors,
+          );
+        },
+        {
+          boundedCanvas: true,
+          bounds: pointBounds(
+            params.node.points,
+            Math.hypot(flow.size, Math.min(2, flow.size)),
+          ),
+        },
+      );
     },
   },
   {
@@ -184,21 +260,28 @@ export const STORY_CONTENT_PROVIDERS: readonly CanvasContentProvider[] = [
             "Text sample has no corresponding state",
             { path: `${path}.params.samples` },
           );
-      return (ctx, time) => {
-        const state = sample(samples, time);
-        ctx.fillStyle = node.color;
-        ctx.font = font
-          ? `${font.weight} ${node.fontSize}px "${font.family}"`
-          : `${node.weight} ${node.fontSize}px ${node.font}`;
-        ctx.textAlign = node.align;
-        ctx.textBaseline = "top";
-        drawStoryText(
-          ctx,
-          node,
-          node.states?.[state.state] ?? node.text,
-          state.reveal,
-        );
-      };
+      return preparedProvider(
+        (ctx, time) => {
+          const state = sample(samples, time);
+          ctx.fillStyle = node.color;
+          ctx.font = font
+            ? `${font.weight} ${node.fontSize}px "${font.family}"`
+            : `${node.weight} ${node.fontSize}px ${node.font}`;
+          ctx.textAlign = node.align;
+          ctx.textBaseline = "top";
+          drawStoryText(
+            ctx,
+            node,
+            node.states?.[state.state] ?? node.text,
+            state.reveal,
+          );
+        },
+        {
+          boundedCanvas: true,
+          visualKey: (time) => JSON.stringify(sample(samples, time)),
+          bounds: preparedTextBounds(node, font),
+        },
+      );
     },
   },
 ];

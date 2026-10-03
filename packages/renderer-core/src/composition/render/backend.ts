@@ -1,3 +1,5 @@
+import { compositionEffectDefinition } from "@still-shift/scene-contract";
+import type { RenderEffect } from "./graph.ts";
 import type {
   CompositionBlendMode,
   TrackMatte,
@@ -15,9 +17,13 @@ import type {
   ProviderContent,
   DrawOp,
   SolidContent,
+  IsolateOp,
 } from "./graph.ts";
 
 export type SolidDraw = DrawOp & { content: SolidContent };
+export type VectorDraw = DrawOp & {
+  content: Exclude<DrawOp["content"], { type: "image" | "surface" }>;
+};
 
 /** A premultiplied RGBA render target owned by a backend. */
 export type Surface = { readonly width: number; readonly height: number };
@@ -28,6 +34,13 @@ export type Surface = { readonly width: number; readonly height: number };
  */
 export interface RenderBackend<S extends Surface = Surface> {
   readonly version: string;
+  /** Optional retained-frame lifecycle; effects and exposure may request a full repaint. */
+  beginFrame?(root: SurfaceNode): void;
+  endFrame?(completed: boolean): void;
+  /** Optional canonical pixel identity for retained backend content. */
+  frameKey?(root: SurfaceNode): string;
+  /** Cache an immutable isolate; the caller releases the returned surface normally. */
+  renderIsolate?(op: IsolateOp, like: S, draw: () => S): S;
   /** A cleared, transparent surface, usually from a pool. */
   createSurface(width: number, height: number): S;
   releaseSurface(surface: S): void;
@@ -35,6 +48,8 @@ export interface RenderBackend<S extends Surface = Surface> {
   clear(surface: S, background: Rgba | null): void;
   /** Optional batch for consecutive normal solid fills without clips. */
   fillRects?(dst: S, ops: SolidDraw[]): void;
+  /** Prepare adjacent vectors/text together; effects and compositing boundaries stay explicit. */
+  drawVectors?(dst: S, ops: VectorDraw[]): void;
   fillRect(
     dst: S,
     matrix: Matrix,
@@ -45,6 +60,7 @@ export interface RenderBackend<S extends Surface = Surface> {
     blend: CompositionBlendMode,
     clips: ClipRect[],
     transforms?: Matrix[],
+    paintBlur?: number,
   ): void;
   drawImage(
     dst: S,
@@ -54,6 +70,7 @@ export interface RenderBackend<S extends Surface = Surface> {
     blend: CompositionBlendMode,
     clips: ClipRect[],
     transforms?: Matrix[],
+    paintBlur?: number,
   ): void;
   drawText(
     dst: S,
@@ -63,6 +80,7 @@ export interface RenderBackend<S extends Surface = Surface> {
     blend: CompositionBlendMode,
     clips: ClipRect[],
     transforms?: Matrix[],
+    paintBlur?: number,
   ): void;
   drawProvider(
     dst: S,
@@ -72,6 +90,7 @@ export interface RenderBackend<S extends Surface = Surface> {
     blend: CompositionBlendMode,
     clips: ClipRect[],
     transforms?: Matrix[],
+    paintBlur?: number,
   ): void;
   /** Draw `src` (its pixel grid placed by `matrix`) onto `dst`. */
   composite(
@@ -82,7 +101,10 @@ export interface RenderBackend<S extends Surface = Surface> {
     matrix: Matrix,
     clips: ClipRect[],
     transforms?: Matrix[],
+    paintBlur?: number,
   ): void;
+  /** Apply the ordered effect stack in surface pixel space, before masks/mattes. */
+  applyEffects(target: S, effects: RenderEffect[]): void;
   /** Multiply `target` by the combined coverage of `masks`. */
   applyMask(target: S, masks: MaskOp[]): void;
   /** Multiply `target` by the matte value of `matte`. */
@@ -91,6 +113,12 @@ export interface RenderBackend<S extends Surface = Surface> {
   lerp(dst: S, src: S, coverage: S, opacity: number): void;
   /** Unpremultiplied RGBA bytes, top row first. */
   readPixels(surface: S): Uint8ClampedArray;
+  /** Average complete exposure samples in fixed order, using bounded scratch space. */
+  accumulateExposure(
+    target: S,
+    count: number,
+    draw: (index: number) => void,
+  ): void;
 }
 
 const IDENTITY: Matrix = [1, 0, 0, 1, 0, 0];
@@ -128,7 +156,15 @@ export function executeGraph<S extends Surface>(
   const run = (op: RenderOp, dst: S): void => {
     switch (op.kind) {
       case "draw": {
-        const { content: c, matrix, opacity, blend, clips, transforms } = op;
+        const {
+          content: c,
+          matrix,
+          opacity,
+          blend,
+          clips,
+          transforms,
+          paintBlur,
+        } = op;
         if (c.type === "solid")
           backend.fillRect(
             dst,
@@ -140,11 +176,30 @@ export function executeGraph<S extends Surface>(
             blend,
             clips,
             transforms,
+            paintBlur,
           );
         else if (c.type === "image")
-          backend.drawImage(dst, c, matrix, opacity, blend, clips, transforms);
+          backend.drawImage(
+            dst,
+            c,
+            matrix,
+            opacity,
+            blend,
+            clips,
+            transforms,
+            paintBlur,
+          );
         else if (c.type === "text")
-          backend.drawText(dst, c, matrix, opacity, blend, clips, transforms);
+          backend.drawText(
+            dst,
+            c,
+            matrix,
+            opacity,
+            blend,
+            clips,
+            transforms,
+            paintBlur,
+          );
         else if (c.type === "provider")
           backend.drawProvider(
             dst,
@@ -154,6 +209,7 @@ export function executeGraph<S extends Surface>(
             blend,
             clips,
             transforms,
+            paintBlur,
           );
         else {
           const nested = surface(c.surface);
@@ -165,24 +221,57 @@ export function executeGraph<S extends Surface>(
             matrix,
             clips,
             transforms,
+            paintBlur,
           );
           backend.releaseSurface(nested);
         }
         return;
       }
       case "isolate": {
-        const tmp = isolated(op.ops, dst);
-        mask(tmp, op.masks, op.matte);
+        const draw = () => {
+          const tmp = isolated(op.ops, dst);
+          if (op.effects.length) backend.applyEffects(tmp, op.effects);
+          mask(tmp, op.masks, op.matte);
+          return tmp;
+        };
+        const tmp = backend.renderIsolate?.(op, dst, draw) ?? draw();
         backend.composite(tmp, dst, op.blend, op.opacity, IDENTITY, op.clips);
         backend.releaseSurface(tmp);
         return;
       }
       case "adjust": {
-        // Effects (CE6) will process `src` here; blend modes already apply.
+        // Unit coverage replaces the complete backdrop. Generators can paint it
+        // directly, preserving rasterization and avoiding copies. Alpha-changing
+        // kernels still need an RGBA intermediate when the target is opaque.
+        if (
+          op.effects.every(
+            (effect) =>
+              compositionEffectDefinition(effect.effect)!.preservesOpaque,
+          ) &&
+          op.blend === "normal" &&
+          op.opacity === 1 &&
+          !op.clips.length &&
+          !op.masks.length &&
+          !op.matte &&
+          op.width === dst.width &&
+          op.height === dst.height &&
+          op.matrix.every((value, i) => value === IDENTITY[i])
+        ) {
+          backend.applyEffects(dst, op.effects);
+          return;
+        }
+        // Process the backdrop before blending it and applying adjustment coverage.
         const src = backend.createSurface(dst.width, dst.height);
         backend.composite(dst, src, "normal", 1, IDENTITY, []);
-        if (op.blend !== "normal")
-          backend.composite(dst, src, op.blend, 1, IDENTITY, []);
+        if (op.effects.length) backend.applyEffects(src, op.effects);
+        if (op.blend !== "normal") {
+          const blended = backend.createSurface(dst.width, dst.height);
+          backend.composite(dst, blended, "normal", 1, IDENTITY, []);
+          backend.composite(src, blended, op.blend, 1, IDENTITY, []);
+          backend.clear(src, null);
+          backend.composite(blended, src, "normal", 1, IDENTITY, []);
+          backend.releaseSurface(blended);
+        }
         const coverage = backend.createSurface(dst.width, dst.height);
         backend.fillRect(
           coverage,
@@ -207,11 +296,26 @@ export function executeGraph<S extends Surface>(
     op.kind === "draw" &&
     op.content.type === "solid" &&
     op.blend === "normal" &&
-    op.clips.length === 0;
+    op.clips.length === 0 &&
+    !op.paintBlur;
+  const vector = (op: RenderOp): op is VectorDraw =>
+    op.kind === "draw" &&
+    op.content.type !== "image" &&
+    op.content.type !== "surface" &&
+    op.blend === "normal";
   const runOps = (ops: RenderOp[], dst: S) => {
     for (let index = 0; index < ops.length; index++) {
       const op = ops[index]!;
-      if (backend.fillRects && batchable(op)) {
+      if (backend.drawVectors && vector(op)) {
+        const batch = [op];
+        while (index + 1 < ops.length) {
+          const next = ops[index + 1]!;
+          if (!vector(next)) break;
+          batch.push(next);
+          index++;
+        }
+        backend.drawVectors(dst, batch);
+      } else if (backend.fillRects && batchable(op)) {
         const batch = [op];
         while (index + 1 < ops.length) {
           const next = ops[index + 1]!;
@@ -224,5 +328,12 @@ export function executeGraph<S extends Surface>(
       } else run(op, dst);
     }
   };
-  surface(graph.root, target);
+  let completed = false;
+  try {
+    backend.beginFrame?.(graph.root);
+    surface(graph.root, target);
+    completed = true;
+  } finally {
+    backend.endFrame?.(completed);
+  }
 }

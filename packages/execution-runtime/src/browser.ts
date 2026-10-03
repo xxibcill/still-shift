@@ -13,9 +13,9 @@ export const defaultBrowserProjectRoot = searchForWorkspaceRoot(
 /** Serve package-owned browser assets without assuming an application directory layout. */
 export function runtimeBrowserUrl(
   baseUrl: string,
-  page: "export" | "passage-text",
+  page: "export" | "passage-text" | "composition-compile",
 ): string {
-  const filename = page === "export" ? "index.html" : "passage-text.html";
+  const filename = page === "export" ? "index.html" : `${page}.html`;
   const path = fileURLToPath(new URL(`../${filename}`, import.meta.url));
   return new URL(`/@fs/${path}`, baseUrl).href;
 }

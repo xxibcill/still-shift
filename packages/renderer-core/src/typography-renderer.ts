@@ -33,6 +33,7 @@ import { drawTextContainerShape } from "./text-container.ts";
 import type { Rect } from "./text-container-layout.ts";
 import { typographyTextValues } from "./typography-text-values.ts";
 import { textVisibility } from "./typography-visibility.ts";
+import { sourceExposureTimeline } from "./commerce-exposure.ts";
 import type { StoryRenderScene } from "./story-scene.ts";
 import type { CommerceRenderScene } from "./commerce-scene.ts";
 
@@ -45,6 +46,7 @@ export type TextRaster = {
   strokes: Map<string, HTMLCanvasElement>;
   fonts: Map<string, LoadedFont>;
   variants: Map<string, TextRaster>;
+  softwareRaster?: boolean;
   /** Opaque glyph coverage; authored fill colour and alpha apply only when drawing. */
   colorCoverage?: boolean;
   /** Composition outlines cache opaque coverage, independent of animated colour. */
@@ -70,12 +72,42 @@ export type PreparedTypography = {
   maskLayer: HTMLCanvasElement;
   transitionLayer: HTMLCanvasElement;
 };
-const surface = (width: number, height: number) => {
+
+/** These runs paint one composed glyph image, with no surrounding primitive paints. */
+export function isSingleImageTypography(
+  node: TextNode,
+  prepared: PreparedTypography,
+) {
+  return (
+    !node.container &&
+    !node.decorations?.length &&
+    hasStableTypographyImage(node, prepared)
+  );
+}
+
+/** The composed glyph source stays unchanged until the next typography draw. */
+export function hasStableTypographyImage(
+  node: TextNode,
+  prepared: PreparedTypography,
+) {
+  return (
+    !node.transition &&
+    !node.transitions?.length &&
+    !prepared.corrections.get(node.id)?.length &&
+    !prepared.scene.textAnimators?.some(
+      (animator) =>
+        animator.node === node.id &&
+        (animator.from.blur !== undefined || animator.to?.blur !== undefined),
+    )
+  );
+}
+const surface = (width: number, height: number, softwareRaster = false) => {
   if (width * height > 32_000_000 || width > 16384 || height > 16384)
     throw new Error("text-raster-budget: text layer exceeds 32 megapixels");
   const canvas = document.createElement("canvas");
   canvas.width = Math.max(1, Math.ceil(width));
   canvas.height = Math.max(1, Math.ceil(height));
+  if (softwareRaster) canvas.getContext("2d", { willReadFrequently: true });
   return canvas;
 };
 export function rasterizeText(
@@ -83,6 +115,7 @@ export function rasterizeText(
   layout: ShapedLayout,
   fonts: Map<string, LoadedFont>,
   colorCoverage = false,
+  softwareRaster = false,
 ): TextRaster {
   const pad = Math.ceil(
     Math.max(
@@ -97,6 +130,7 @@ export function rasterizeText(
   const canvas = surface(
       right - left + pad,
       layout.top + layout.height - top + pad,
+      softwareRaster,
     ),
     ctx = canvas.getContext("2d")!;
   ctx.translate(-left, -top);
@@ -137,18 +171,29 @@ export function rasterizeText(
     strokes: new Map(),
     fonts,
     variants: new Map(),
+    ...(softwareRaster ? { softwareRaster: true } : {}),
     ...(colorCoverage ? { colorCoverage: true } : {}),
   };
 }
 export function prepareTypography(
   scene: (StoryRenderScene | CommerceRenderScene) & TextAnimationContext,
   fonts: Map<string, LoadedFont>,
-  options: { strokeCoverage?: boolean; colorCoverage?: boolean } = {},
+  options: {
+    strokeCoverage?: boolean;
+    colorCoverage?: boolean;
+    sourceColorNodes?: ReadonlySet<string>;
+    softwareRaster?: boolean;
+  } = {},
 ): PreparedTypography {
   const nodes = new Map<string, Map<string, TextRaster>>(),
     pairs = new Map<string, [number, number][]>(),
     slideLimits = new Map<string, number>();
   const ctx = surface(1, 1).getContext("2d")!;
+  const exposureTimes = scene.effects?.some(
+    (effect) => effect.type === "motion-blur" && effect.shutterAngle > 0,
+  )
+    ? sourceExposureTimeline(scene).times
+    : undefined;
   let pixels = 0;
   const reserveCanvas = (canvas: HTMLCanvasElement) => {
     pixels += canvas.width * canvas.height;
@@ -156,13 +201,15 @@ export function prepareTypography(
       throw new Error("text-raster-budget: scene exceeds 128 megapixels");
     return canvas;
   };
-  const reserveRaster = (raster: TextRaster) => {
+  const reserveRaster = (raster: TextRaster, sourceColor = false) => {
     reserveCanvas(raster.canvas);
-    if (options.strokeCoverage) raster.strokeCoverage = true;
+    if (options.strokeCoverage && !sourceColor) raster.strokeCoverage = true;
     return raster;
   };
   for (const node of scene.nodes) {
     if (node.type !== "text") continue;
+    const sourceColor = options.sourceColorNodes?.has(node.id) ?? false;
+    const colorCoverage = options.colorCoverage && !sourceColor;
     const values = typographyTextValues(scene, node);
     const layouts = new Map(
       [...values].map((text) => [
@@ -179,7 +226,14 @@ export function prepareTypography(
       rasters.set(
         text,
         reserveRaster(
-          rasterizeText(node, layout, fonts, options.colorCoverage),
+          rasterizeText(
+            node,
+            layout,
+            fonts,
+            colorCoverage,
+            options.softwareRaster,
+          ),
+          sourceColor,
         ),
       );
     }
@@ -197,7 +251,14 @@ export function prepareTypography(
         raster.variants.set(
           key,
           reserveRaster(
-            rasterizeText(node, layout, fonts, options.colorCoverage),
+            rasterizeText(
+              node,
+              layout,
+              fonts,
+              colorCoverage,
+              options.softwareRaster,
+            ),
+            sourceColor,
           ),
         );
       }
@@ -220,7 +281,7 @@ export function prepareTypography(
             frame,
             texts: [...rasters.keys()],
           }))
-        : textVisibility(scene, node, layoutsByText);
+        : textVisibility(scene, node, layoutsByText, exposureTimes);
       for (const { frame, texts } of visibility) {
         for (const text of new Set([...staticValues, ...texts])) {
           const raster = rasters.get(text);
@@ -230,7 +291,7 @@ export function prepareTypography(
             node,
             raster.layout,
             scene.textAnimators ?? [],
-            frame,
+            Math.round(frame),
             scene,
           );
           for (const pose of poses) {
@@ -300,7 +361,9 @@ export function prepareTypography(
     const layout = shapeText(ctx, replacement, replacement.text, fonts, {
       correction,
     });
-    const raster = reserveRaster(rasterizeText(replacement, layout, fonts));
+    const raster = reserveRaster(
+      rasterizeText(replacement, layout, fonts, false, options.softwareRaster),
+    );
     const entries = corrections.get(node.id) ?? [];
     entries.push({
       node: replacement,
@@ -321,9 +384,9 @@ export function prepareTypography(
     pairs,
     slideLimits,
     scene,
-    layer: surface(1, 1),
-    maskLayer: surface(1, 1),
-    transitionLayer: surface(1, 1),
+    layer: surface(1, 1, options.softwareRaster),
+    maskLayer: surface(1, 1, options.softwareRaster),
+    transitionLayer: surface(1, 1, options.softwareRaster),
   };
 }
 /** Container content box in node space, matching the legacy text-box and text-layout limits. */
@@ -379,7 +442,11 @@ function coloredRaster(
 ) {
   let canvas = raster.colors.get(key);
   if (!canvas) {
-    canvas = surface(raster.canvas.width, raster.canvas.height);
+    canvas = surface(
+      raster.canvas.width,
+      raster.canvas.height,
+      raster.softwareRaster,
+    );
     const ctx = canvas.getContext("2d")!;
     ctx.drawImage(source, 0, 0);
     ctx.globalCompositeOperation = "source-in";
@@ -392,7 +459,11 @@ function coloredRaster(
   return canvas;
 }
 function renderStrokedRaster(raster: TextRaster, width: number, color: string) {
-  const canvas = surface(raster.canvas.width, raster.canvas.height);
+  const canvas = surface(
+    raster.canvas.width,
+    raster.canvas.height,
+    raster.softwareRaster,
+  );
   const ctx = canvas.getContext("2d")!;
   ctx.translate(-raster.left, -raster.top);
   ctx.strokeStyle = color;

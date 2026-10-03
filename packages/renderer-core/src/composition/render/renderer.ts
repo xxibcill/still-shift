@@ -1,4 +1,9 @@
 import {
+  createWebgl2Backend,
+  COMPOSITION_WEBGL_RENDERER_VERSION,
+} from "./webgl2.ts";
+import type { RenderBackend, Surface } from "./backend.ts";
+import {
   validateComposition,
   type Composition,
 } from "@still-shift/scene-contract";
@@ -8,35 +13,68 @@ import {
   type PassageDiagnostic,
 } from "../../passage-diagnostics.ts";
 import type { LoadedFont } from "../../prepared-fonts.ts";
-import { evaluateComp } from "../evaluate/evaluate.ts";
 import type { Bounds } from "../evaluate/types.ts";
-import { executeGraph } from "./backend.ts";
-import { createCanvas2dBackend } from "./canvas2d.ts";
-import { buildRenderGraph } from "./graph.ts";
+import { createCanvas2dBackend, requiresSoftwareFilters } from "./canvas2d.ts";
+import {
+  renderCompositionExposure,
+  type CompositionFrameCache,
+} from "./exposure.ts";
 import { loadCompositionFonts, prepareCompositionText } from "./text.ts";
 import { COMPOSITION_RENDERER_VERSION } from "./version.ts";
 import {
   prepareCompositionProviders,
+  loadProviderFonts,
   type CanvasContentProvider,
 } from "./providers.ts";
 import { STORY_CONTENT_PROVIDERS } from "../adapters/story-providers.ts";
 import { validateStoryCompositionCoverage } from "../adapters/story-coverage.ts";
+import { COMMERCE_CONTENT_PROVIDERS } from "../adapters/commerce-providers.ts";
+import { APPEARANCE_PROVIDERS } from "../adapters/appearance-providers.ts";
+import { MOTION_PATH_PROVIDERS } from "../adapters/motion-path.ts";
+import {
+  NUMERIC_TYPOGRAPHY_PROVIDER,
+  RICH_TYPOGRAPHY_PROVIDER,
+} from "../adapters/numeric-typography.ts";
+
+const BUILTIN_PROVIDERS = [
+  ...STORY_CONTENT_PROVIDERS,
+  ...COMMERCE_CONTENT_PROVIDERS,
+  NUMERIC_TYPOGRAPHY_PROVIDER,
+  RICH_TYPOGRAPHY_PROVIDER,
+  ...MOTION_PATH_PROVIDERS,
+  ...APPEARANCE_PROVIDERS,
+];
+
+export type CompositionBackend = "canvas2d" | "webgl2";
+export type CompositionRendererVersion =
+  | typeof COMPOSITION_RENDERER_VERSION
+  | typeof COMPOSITION_WEBGL_RENDERER_VERSION;
+export function compositionRendererVersion(backend: CompositionBackend) {
+  if (backend === "webgl2") return COMPOSITION_WEBGL_RENDERER_VERSION;
+  if (backend === "canvas2d") return COMPOSITION_RENDERER_VERSION;
+  throw new Error(`comp-backend-unsupported: ${String(backend)}`);
+}
 
 /** A validated composition wrapped with the export runtime's canvas and timeline. */
 export type CompositionScene = {
   schemaVersion: "composition-scene-1";
-  rendererVersion: typeof COMPOSITION_RENDERER_VERSION;
+  rendererVersion: CompositionRendererVersion;
+  backend?: CompositionBackend;
   composition: Composition;
   canvas: { width: number; height: number };
   timeline: { fps: number; frameCount: number; durationMs: number };
 };
 
-export function compositionScene(composition: Composition): CompositionScene {
+export function compositionScene(
+  composition: Composition,
+  backend: CompositionBackend = "canvas2d",
+): CompositionScene {
   const result = validateComposition(composition);
   if (!result.ok) throw new PassageError(result.diagnostics);
   return {
     schemaVersion: "composition-scene-1",
-    rendererVersion: COMPOSITION_RENDERER_VERSION,
+    rendererVersion: compositionRendererVersion(backend),
+    ...(backend === "webgl2" ? { backend } : {}),
     composition: result.composition,
     canvas: { width: composition.width, height: composition.height },
     timeline: {
@@ -49,15 +87,20 @@ export function compositionScene(composition: Composition): CompositionScene {
 
 export type CompositionResources = {
   images: Map<string, CanvasImageSource>;
+  /** PNG signatures verified from asset bytes, independent of filenames and URLs. */
+  pngImages?: ReadonlySet<string>;
   fonts: Map<string, LoadedFont>;
+  providerFonts?: ReadonlyMap<string, ReadonlyMap<string, LoadedFont>>;
 };
 
 /** Fetch, verify (SHA-256 and pixel size) and decode every image and font asset. */
 export async function loadCompositionResources(
   composition: Composition,
   assetUrl: (id: string) => string,
+  options: { providers?: readonly CanvasContentProvider[] } = {},
 ): Promise<CompositionResources> {
   const images = new Map<string, CanvasImageSource>();
+  const pngImages = new Set<string>();
   await Promise.all(
     composition.assets.map(async (asset) => {
       if (asset.type !== "image") return;
@@ -85,11 +128,24 @@ export async function loadCompositionResources(
       )
         throw new Error(`Dimensions differ for ${asset.id}`);
       images.set(asset.id, image);
+      const signature = new Uint8Array(bytes, 0, Math.min(8, bytes.byteLength));
+      if (
+        [137, 80, 78, 71, 13, 10, 26, 10].every(
+          (value, i) => signature[i] === value,
+        )
+      )
+        pngImages.add(asset.id);
     }),
   );
+  const fonts = await loadCompositionFonts(composition, assetUrl);
   return {
     images,
-    fonts: await loadCompositionFonts(composition, assetUrl),
+    pngImages,
+    fonts,
+    providerFonts: await loadProviderFonts(composition, fonts, [
+      ...BUILTIN_PROVIDERS,
+      ...(options.providers ?? []),
+    ]),
   };
 }
 
@@ -97,9 +153,14 @@ export type CompositionFrameReport = {
   diagnostics: PassageDiagnostic[];
   /** Layer keys skipped because their bounds miss their surface. */
   culled: string[];
+  /** Actual complete-frame renders; zero when an identical GPU frame is reused. */
+  samples: number;
 };
 
 export type CompositionPreview = {
+  readonly backend: CompositionBackend;
+  readonly rendererVersion: string;
+  readPixels(): Uint8ClampedArray;
   /** Measured local text bounds per state, as supplied to the evaluator. */
   textBounds: Record<string, Bounds[]>;
   renderFrame(frame: number): CompositionFrameReport;
@@ -107,8 +168,8 @@ export type CompositionPreview = {
 };
 
 /**
- * Render a composition into `canvas` with the Canvas 2D reference backend. Lab
- * preview and export both use this, so they share evaluator and backend code.
+ * Render with the selected backend (Canvas 2D by default). Preview and export
+ * share the evaluator, graph, prepared content and exposure sampling.
  * The canvas is opaque: transparent backgrounds show black until alpha output
  * formats arrive (CE15).
  */
@@ -117,6 +178,7 @@ export function createCompositionPreview(
   composition: Composition,
   resources: CompositionResources,
   options: {
+    backend?: CompositionBackend;
     createCanvas?: (width: number, height: number) => HTMLCanvasElement;
     providers?: readonly CanvasContentProvider[];
   } = {},
@@ -125,7 +187,16 @@ export function createCompositionPreview(
   if (!validation.ok) throw new PassageError(validation.diagnostics);
   canvas.width = composition.width;
   canvas.height = composition.height;
-  const ctx = canvas.getContext("2d", { alpha: false });
+  const kind = options.backend ?? "canvas2d";
+  compositionRendererVersion(kind);
+  const measurementCanvas =
+    kind === "webgl2" ? document.createElement("canvas") : canvas;
+  const softwareRaster =
+    kind === "canvas2d" && requiresSoftwareFilters(composition);
+  const ctx = measurementCanvas.getContext("2d", {
+    alpha: false,
+    ...(softwareRaster ? { willReadFrequently: true } : {}),
+  });
   if (!ctx) throw new Error("Canvas 2D is unavailable");
   validateStoryCompositionCoverage(composition, (id) => {
     const asset = composition.assets.find((asset) => asset.id === id)!;
@@ -144,13 +215,16 @@ export function createCompositionPreview(
     return context.getImageData(0, 0, probe.width, probe.height);
   });
   const text = prepareCompositionText(composition, resources.fonts, ctx);
-  const drawProvider = prepareCompositionProviders(composition, resources, [
-    ...STORY_CONTENT_PROVIDERS,
-    ...(options.providers ?? []),
-  ]);
-  const backend = createCanvas2dBackend({
+  const drawProvider = prepareCompositionProviders(
+    composition,
+    { ...resources, softwareRaster: requiresSoftwareFilters(composition) },
+    [...BUILTIN_PROVIDERS, ...(options.providers ?? [])],
+  );
+  const backendOptions = {
+    softwareRaster,
     images: {
       images: resources.images,
+      ...(resources.pngImages ? { pngImages: resources.pngImages } : {}),
       sizes: new Map(
         composition.assets.flatMap((a) =>
           a.type === "image" ? [[a.id, [a.width, a.height] as const]] : [],
@@ -160,27 +234,75 @@ export function createCompositionPreview(
     drawText: text.draw,
     drawProvider,
     ...(options.createCanvas ? { createCanvas: options.createCanvas } : {}),
-  });
-  const target = backend.wrap(canvas, ctx);
-  return {
-    textBounds: text.bounds,
-    renderFrame(frame) {
-      if (
-        !Number.isInteger(frame) ||
-        frame < 0 ||
-        frame >= composition.frameCount
-      )
-        throw new Error("Frame index outside composition timeline");
-      const tree = evaluateComp(composition, frame, {
-        textBounds: text.bounds,
-      });
-      const graph = buildRenderGraph(composition, tree);
-      executeGraph(backend, graph, target);
-      return { diagnostics: tree.diagnostics, culled: graph.culled };
-    },
-    dispose() {
-      backend.dispose();
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-    },
   };
+  if (kind === "webgl2") {
+    const backend = createWebgl2Backend(canvas, {
+      ...backendOptions,
+      boundedCanvas: (content) =>
+        content.type === "text" || drawProvider.boundedCanvas(content),
+      singleImage: (content) =>
+        content.type === "provider"
+          ? drawProvider.singleImage(content)
+          : text.singleImage(content),
+      stableImages: (content) =>
+        content.type === "provider"
+          ? drawProvider.stableImages(content)
+          : text.stableImages(content),
+      contentKey: (content) =>
+        content.type === "provider"
+          ? drawProvider.contentKey(content)
+          : text.contentKey(content),
+      contentBounds: (content) =>
+        content.type === "provider"
+          ? drawProvider.contentBounds(content)
+          : text.contentBounds(content),
+    });
+    return preview(backend, backend.target, () => backend.present());
+  }
+  const backend = createCanvas2dBackend(backendOptions);
+  return preview(backend, backend.wrap(canvas, ctx), () => {});
+
+  function preview<S extends Surface>(
+    backend: RenderBackend<S> & { dispose(): void },
+    target: S,
+    present: () => void,
+  ): CompositionPreview {
+    // The GPU backend retains bounded readback bytes; graph reuse skips identical draws.
+    const cache: CompositionFrameCache | undefined =
+      kind === "webgl2" ? {} : undefined;
+    return {
+      backend: kind,
+      rendererVersion: backend.version,
+      readPixels: () => backend.readPixels(target),
+      textBounds: text.bounds,
+      renderFrame(frame) {
+        if (
+          !Number.isInteger(frame) ||
+          frame < 0 ||
+          frame >= composition.frameCount
+        )
+          throw new Error("Frame index outside composition timeline");
+        const report = renderCompositionExposure(
+          backend,
+          target,
+          composition,
+          frame,
+          {
+            textBounds: text.bounds,
+          },
+          cache,
+        );
+        if (report.samples > 0) present();
+        return report;
+      },
+      dispose() {
+        if (cache) {
+          cache.root = undefined;
+          cache.key = undefined;
+        }
+        backend.dispose();
+        canvas.width = composition.width;
+      },
+    };
+  }
 }

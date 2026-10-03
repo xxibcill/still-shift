@@ -5,7 +5,11 @@ import {
 } from "@still-shift/scene-contract";
 import { evaluateComp } from "../../packages/renderer-core/src/composition/evaluate/index.ts";
 import { buildRenderGraph } from "../../packages/renderer-core/src/composition/render/graph.ts";
-import { prepareCompositionProviders } from "../../packages/renderer-core/src/composition/render/providers.ts";
+import {
+  prepareCompositionProviders,
+  loadProviderFonts,
+  preparedProvider,
+} from "../../packages/renderer-core/src/composition/render/providers.ts";
 import { passageDiagnostics } from "../../packages/renderer-core/src/passage-diagnostics.ts";
 import { STORY_CONTENT_PROVIDERS } from "../../packages/renderer-core/src/composition/adapters/story-providers.ts";
 
@@ -28,6 +32,107 @@ const fixture = (): Composition => ({
   ],
 });
 describe("composition content providers", () => {
+  it("retains both transition states and the source clock in prepared visual keys", () => {
+    const comp = fixture();
+    const layer = comp.layers[0]!;
+    if (layer.type !== "provider") throw new Error("Expected provider");
+    const prepared = prepareCompositionProviders(
+      comp,
+      { images: new Map(), fonts: new Map() },
+      [
+        {
+          id: layer.provider,
+          prepare: () =>
+            preparedProvider(() => {}, {
+              visualKey: (time, state, sourceTime) =>
+                JSON.stringify([Math.floor(time), state, sourceTime]),
+              bounds: { left: -2, top: -3, right: 10, bottom: 20 },
+            }),
+        },
+      ],
+    );
+    const content = {
+      type: "provider" as const,
+      key: "mark",
+      layer,
+      time: 1.1,
+      state: 1,
+      stateFrom: 0,
+      sourceTime: 4,
+    };
+    expect(prepared.contentKey(content)).toBe(
+      prepared.contentKey({ ...content, time: 1.2 }),
+    );
+    expect(prepared.contentKey(content)).not.toBe(
+      prepared.contentKey({ ...content, stateFrom: 2 }),
+    );
+    expect(prepared.contentKey(content)).not.toBe(
+      prepared.contentKey({ ...content, sourceTime: 5 }),
+    );
+    expect(prepared.contentBounds(content)).toEqual({
+      left: -2,
+      top: -3,
+      right: 10,
+      bottom: 20,
+    });
+    const unknown = prepareCompositionProviders(
+      comp,
+      { images: new Map(), fonts: new Map() },
+      [{ id: layer.provider, prepare: () => () => {} }],
+    );
+    expect(unknown.contentKey(content)).toBeUndefined();
+    expect(unknown.contentBounds(content)).toBeUndefined();
+  });
+  it("keeps asynchronously prepared font variants local to each provider and scope", async () => {
+    const doc = fixture();
+    const layer = doc.layers[0]!;
+    if (layer.type !== "provider") throw new Error("Expected provider");
+    layer.assets = ["allowed"];
+    doc.precomps = [
+      {
+        id: "nested",
+        frameCount: 24,
+        width: 100,
+        height: 100,
+        layers: [structuredClone(layer)],
+      },
+    ];
+    const fonts = new Map([
+      ["allowed", { family: "Allowed", weight: "400" }],
+      ["hidden", { family: "Hidden", weight: "400" }],
+    ]);
+    const seen: string[][] = [];
+    const provider = {
+      id: layer.provider,
+      async loadFonts(_layer: unknown, local: typeof fonts) {
+        seen.push([...local.keys()]);
+        local.set("variant", { family: "Variant", weight: "600" });
+      },
+      prepare(
+        _layer: unknown,
+        resources: { fonts: ReadonlyMap<string, unknown> },
+      ) {
+        seen.push([...resources.fonts.keys()]);
+        return () => {};
+      },
+    };
+    const providerFonts = await loadProviderFonts(doc, fonts, [provider]);
+    prepareCompositionProviders(
+      doc,
+      { images: new Map(), fonts, providerFonts },
+      [provider],
+    );
+    expect(seen).toEqual([
+      ["allowed"],
+      ["allowed"],
+      ["allowed", "variant"],
+      ["allowed", "variant"],
+    ]);
+    expect([...fonts.keys()]).toEqual(["allowed", "hidden"]);
+    expect(providerFonts.get("mark")).not.toBe(
+      providerFonts.get("nested/mark"),
+    );
+  });
   it("requires a versioned provider id and bounds JSON payloads", () => {
     const doc = fixture();
     expect(validateComposition(doc).ok).toBe(true);

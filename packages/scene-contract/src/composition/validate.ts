@@ -1,3 +1,4 @@
+import { compositionEffectDefinition } from "./effects.ts";
 import type { z } from "zod";
 import { formatSize } from "../output-format.ts";
 import { tabularFigures, type TextStyle } from "../typography.ts";
@@ -98,6 +99,14 @@ function checkLayer(
 ) {
   const inPoint = layer.inPoint ?? 0,
     outPoint = layer.outPoint ?? scope.frameCount;
+  layer.sampleTimes?.forEach((time, index) => {
+    if (index && time <= layer.sampleTimes![index - 1]!)
+      fail(
+        "comp-sample-time-order",
+        [...path, "sampleTimes", index],
+        "sample times must increase strictly",
+      );
+  });
   if (inPoint >= outPoint)
     fail(
       "comp-layer-time",
@@ -120,8 +129,70 @@ function checkLayer(
   const missingType = UNAVAILABLE_LAYER_TYPES[layer.type];
   if (missingType) unavailable(["type"], `${layer.type} layers`, missingType);
   if (layer.threeD) unavailable(["threeD"], "3D layers", "CE8");
-  if (layer.motionBlur) unavailable(["motionBlur"], "motion blur", "CE7");
-  if (layer.effects?.length) unavailable(["effects"], "effects", "CE6");
+  layer.effects?.forEach((effect, index) => {
+    const at = [...path, "effects", index];
+    const definition = compositionEffectDefinition(effect.effect);
+    if (!definition) {
+      fail(
+        "comp-feature-unavailable",
+        [...at, "effect"],
+        `Unknown or unavailable effect "${effect.effect}"`,
+      );
+      return;
+    }
+    if (
+      effect.effect === "time.echo" &&
+      (layer.type === "adjustment" ||
+        layer.type === "null" ||
+        layer
+          .effects!.slice(0, index)
+          .some((prior) => prior.effect === "time.echo"))
+    )
+      fail(
+        "comp-effect-history",
+        at,
+        "One echo is allowed per drawable layer or group; adjustment backdrops have no source history",
+      );
+    if (
+      effect.effect === "blur.primitive" &&
+      (layer.type === "adjustment" ||
+        layer.type === "null" ||
+        layer
+          .effects!.slice(0, index)
+          .some((prior) => prior.effect === "blur.primitive"))
+    )
+      fail(
+        "comp-effect-paint",
+        at,
+        "One primitive blur is allowed per drawable layer or group",
+      );
+    if (
+      effect.space &&
+      (!definition.usesLayerSpace ||
+        !scope.layers.some((layer) => layer.id === effect.space))
+    )
+      fail(
+        "comp-effect-space",
+        [...at, "space"],
+        definition.usesLayerSpace
+          ? `No coordinate layer "${effect.space}" in this scope`
+          : "This effect uses surface coordinates",
+      );
+    if ((effect.inPoint ?? -Infinity) >= (effect.outPoint ?? Infinity))
+      fail("comp-effect-time", at, "Effect inPoint must precede outPoint");
+    const parsed = definition.params.safeParse(effect.params ?? {});
+    if (!parsed.success)
+      for (const issue of parsed.error.issues)
+        fail(
+          "comp-effect-params",
+          [
+            ...at,
+            "params",
+            ...issue.path.map((p) => (typeof p === "symbol" ? String(p) : p)),
+          ],
+          issue.message,
+        );
+  });
   for (const field of ["rotationX", "rotationY", "orientation"] as const)
     if (layer.transform?.[field] !== undefined)
       unavailable(["transform", field], `transform.${field}`, "CE8");
@@ -213,6 +284,17 @@ function checkLayer(
       );
   };
 
+  if (
+    (layer.type === "image" ||
+      layer.type === "text" ||
+      layer.type === "provider") &&
+    (layer.stateFrom === undefined) !== (layer.stateMix === undefined)
+  )
+    fail(
+      "comp-state-mix",
+      [...path, layer.stateFrom === undefined ? "stateMix" : "stateFrom"],
+      "stateFrom and stateMix must be set together",
+    );
   switch (layer.type) {
     case "image": {
       layer.sources.forEach((source, i) => {
@@ -244,12 +326,6 @@ function checkLayer(
         );
       stateRange("state", layer.sources.length, "sources");
       stateRange("stateFrom", layer.sources.length, "sources");
-      if ((layer.stateFrom === undefined) !== (layer.stateMix === undefined))
-        fail(
-          "comp-state-mix",
-          [...path, layer.stateFrom === undefined ? "stateMix" : "stateFrom"],
-          "stateFrom and stateMix must be set together",
-        );
       break;
     }
     case "text":
@@ -261,6 +337,7 @@ function checkLayer(
           `no text style "${layer.style}"`,
         );
       stateRange("state", layer.states?.length ?? 1, "text states");
+      stateRange("stateFrom", layer.states?.length ?? 1, "text states");
       checkText(comp, layer, path, fail, assets);
       break;
     case "precomp":
@@ -349,6 +426,7 @@ function checkText(
         ["transition", layer.transition],
         ["transitions", layer.transitions],
         ["textBox", layer.textBox],
+        ["corrections", layer.corrections],
       ] as const
     ).find(([, value]) => value !== undefined);
     if (feature)
@@ -425,6 +503,15 @@ function checkText(
         "comp-text-span-missing",
         [...path, "decorations", i, "span"],
         `no span "${decoration.span}"`,
+      );
+  });
+
+  layer.corrections?.forEach((correction, i) => {
+    if (correction.span && !spanIds.has(correction.span))
+      fail(
+        "comp-text-span-missing",
+        [...path, "corrections", i, "span"],
+        `no span "${correction.span}"`,
       );
   });
 
@@ -508,11 +595,34 @@ function checkParents(
         `parent chains may be at most ${L.maxParentDepth} deep`,
       );
   });
+  const sources = new Set(
+    scope.layers.flatMap((layer) =>
+      layer.trackMatte ? [layer.trackMatte.layer] : [],
+    ),
+  );
+  const children = new Map<string, string[]>();
+  for (const layer of scope.layers) {
+    if (sources.has(layer.id)) continue;
+    const visited = new Set<string>();
+    for (
+      let parent = layer.parent;
+      parent && !visited.has(parent);
+      parent = byId.get(parent)?.parent
+    ) {
+      visited.add(parent);
+      if (byId.get(parent)?.type !== "group") continue;
+      const siblings = children.get(parent) ?? [];
+      siblings.push(layer.id);
+      children.set(parent, siblings);
+      break;
+    }
+  }
   scope.layers.forEach((layer, i) => {
-    const seen = new Set([layer.id]);
-    let matte = layer.trackMatte?.layer;
-    while (matte && byId.has(matte)) {
-      if (seen.has(matte)) {
+    const seen = new Set<string>();
+    const pending = layer.trackMatte ? [layer.trackMatte.layer] : [];
+    while (pending.length) {
+      const id = pending.pop()!;
+      if (id === layer.id) {
         fail(
           "comp-matte-cycle",
           [...base, "layers", i, "trackMatte"],
@@ -520,8 +630,11 @@ function checkParents(
         );
         return;
       }
-      seen.add(matte);
-      matte = byId.get(matte)!.trackMatte?.layer;
+      if (seen.has(id)) continue;
+      seen.add(id);
+      const matte = byId.get(id)?.trackMatte?.layer;
+      if (matte) pending.push(matte);
+      pending.push(...(children.get(id) ?? []));
     }
   });
 }
@@ -891,12 +1004,29 @@ export function validateCompositionSemantics(
         );
     });
   }
-  if (comp.motionBlur?.enabled)
-    fail(
-      "comp-feature-unavailable",
-      ["motionBlur"],
-      "motion blur is not available until CE7",
-    );
+  if (comp.motionBlur) {
+    const blur = comp.motionBlur;
+    if (
+      (blur.inPoint ?? 0) >= (blur.outPoint ?? comp.frameCount) ||
+      (blur.outPoint ?? comp.frameCount) > comp.frameCount
+    )
+      fail(
+        "comp-motion-blur-range",
+        ["motionBlur"],
+        "motion blur requires an increasing interval inside the composition",
+      );
+    blur.cuts?.forEach((cut, index) => {
+      if (
+        cut >= comp.frameCount ||
+        (index > 0 && cut <= blur.cuts![index - 1]!)
+      )
+        fail(
+          "comp-motion-blur-range",
+          ["motionBlur", "cuts", index],
+          "exposure cuts must increase strictly inside the composition",
+        );
+    });
+  }
   if (comp.colorSpace === "linear-srgb")
     fail(
       "comp-feature-unavailable",

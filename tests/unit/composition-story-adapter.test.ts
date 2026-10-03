@@ -169,17 +169,10 @@ describe("CE4a story adapter first slice", () => {
   });
 
   it("rejects unsupported features with a path instead of dropping them", () => {
-    const scene = StorySceneSchema.parse(
-      JSON.parse(
-        readFileSync(
-          new URL(
-            "../../benchmarks/fixtures/motion-craft/buffer-press.json",
-            import.meta.url,
-          ),
-          "utf8",
-        ),
-      ),
-    );
+    const scene = fixture();
+    scene.motionModel = "curves-1";
+    scene.effectsVersion = "effects-1";
+    scene.effects = [{ type: "motion-blur", shutterAngle: 180, samples: 8 }];
     try {
       storyToComposition(scene);
       throw new Error("expected rejection");
@@ -187,7 +180,7 @@ describe("CE4a story adapter first slice", () => {
       expect(passageDiagnostics(error)).toContainEqual(
         expect.objectContaining({
           code: "comp-adapter-unsupported",
-          path: "motionModel",
+          path: "effects",
         }),
       );
     }

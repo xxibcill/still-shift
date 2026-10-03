@@ -1,0 +1,59 @@
+{
+  "schemaVersion": "composition-1",
+  "id": "exposure",
+  "width": 320,
+  "height": 180,
+  "fps": 30,
+  "frameCount": 60,
+  "background": "#20323b",
+  "motionBlur": {
+    "enabled": true,
+    "shutterAngle": 360,
+    "shutterPhase": 0,
+    "samples": 8,
+    "cuts": [30]
+  },
+  "assets": [],
+  "layers": [
+    {
+      "id": "front",
+      "type": "solid",
+      "size": [64, 54],
+      "color": "#dd8757",
+      "motionBlur": true,
+      "transform": {
+        "anchor": [0, 0],
+        "position": {
+          "x": {
+            "keys": [
+              { "frame": 0, "value": 285 },
+              { "frame": 59, "value": -20, "interpolation": "linear" }
+            ]
+          },
+          "y": 50
+        },
+        "opacity": 0.7
+      }
+    },
+    {
+      "id": "back",
+      "type": "solid",
+      "size": [54, 64],
+      "color": "#64b5ab",
+      "motionBlur": true,
+      "transform": {
+        "anchor": [0, 0],
+        "position": {
+          "x": {
+            "keys": [
+              { "frame": 0, "value": -20 },
+              { "frame": 59, "value": 285, "interpolation": "linear" }
+            ]
+          },
+          "y": 75
+        },
+        "opacity": 0.7
+      }
+    }
+  ]
+}

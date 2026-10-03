@@ -15,6 +15,15 @@ function container(state: EvaluatedLayer, segments: PropertyPathSegment[]) {
       };
     return { object: state.transform, key };
   }
+  if (head!.name === "effects") {
+    const params = state.effects.find((e) => e.id === head!.index)!.params;
+    if (component)
+      return {
+        object: params[next!.name] as number[],
+        key: colorAxis[component.name as keyof typeof colorAxis],
+      };
+    return { object: params, key: next!.name };
+  }
   if (head!.name === "masks")
     return {
       object: state.masks.find((m) => m.id === head!.index)!,

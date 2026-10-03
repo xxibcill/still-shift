@@ -15,22 +15,34 @@ import { loadPreparedFonts, type LoadedFont } from "../../prepared-fonts.ts";
 import { loadTextAnimationFonts } from "../../typography-axes.ts";
 import {
   drawTypography,
+  isSingleImageTypography,
+  hasStableTypographyImage,
   prepareTypography,
   type PreparedTypography,
 } from "../../typography-renderer.ts";
 import { resolvedTextStyle, type TextNode } from "../../typography-style.ts";
+import {
+  drawTextContainer,
+  textContainerContent,
+  textContainerBounds,
+} from "../../text-container.ts";
 import { drawStoryText } from "../../story-text.ts";
 import { passageError } from "../../passage-diagnostics.ts";
 import { rgba } from "../evaluate/sample.ts";
 import type { Bounds } from "../evaluate/types.ts";
-import { cssColor, type CanvasTextDrawer } from "./canvas2d.ts";
+import {
+  cssColor,
+  requiresSoftwareFilters,
+  type CanvasTextDrawer,
+} from "./canvas2d.ts";
 import type { TextContent } from "./graph.ts";
 import {
   collectCompositionTextFrames,
   animatedTextNodes,
   type CompositionTextFrames,
 } from "./text-frames.ts";
-import { animatedTextBounds } from "./text-bounds.ts";
+import { preparedTextBounds } from "./text-bounds.ts";
+import { typographyClock } from "./text-clock.ts";
 
 type TextLayer = Extract<CompositionLayer, { type: "text" }>;
 type TypographyScene = Parameters<typeof prepareTypography>[0];
@@ -39,10 +51,21 @@ export type CompositionText = {
   /** Local bounds per text state, for `EvaluationOptions.textBounds`. */
   bounds: Record<string, Bounds[]>;
   draw: CanvasTextDrawer;
+  contentKey(content: TextContent): string | undefined;
+  contentBounds(content: TextContent): Bounds | undefined;
+  singleImage(content: TextContent): boolean;
+  stableImages(content: TextContent): boolean;
 };
 
 type Entry =
-  | { kind: "typography"; node: TextNode; prepared: PreparedTypography }
+  | {
+      kind: "typography";
+      node: TextNode;
+      prepared: PreparedTypography;
+      clock: (frame: number) => number;
+      singleImage: boolean;
+      stableImages: boolean;
+    }
   | { kind: "system"; node: TextNode };
 
 const scopes = (comp: Composition): [CompositionScope, string][] => [
@@ -79,6 +102,7 @@ function textNode(comp: Composition, layer: TextLayer): TextNode {
     origin: [0, 0],
     text: layer.text,
     ...(layer.states ? { states: layer.states } : {}),
+    ...(layer.container ? { container: layer.container } : {}),
     fontSize: layer.fontSize,
     color: initialColor(layer),
     weight: layer.weight ?? "normal",
@@ -147,7 +171,19 @@ function typographyScene(
     ),
     typography: "type-1",
     textStyles: comp.textStyles ?? {},
-    textEvents: [],
+    textEvents: textLayers(scope)
+      .filter((layer) => ids.has(layer.id))
+      .flatMap((layer) =>
+        (layer.corrections ?? []).map((correction) => ({
+          verb: "correct" as const,
+          node: layer.id,
+          at: correction.start,
+          duration: correction.end - correction.start,
+          replacement: correction.replacement,
+          ...(correction.span ? { span: correction.span } : {}),
+          ...(correction.color ? { color: correction.color } : {}),
+        })),
+      ),
     textAnimators: (scope.textAnimators ?? []).filter((a) =>
       ids.has(a.node),
     ) as TextAnimator[],
@@ -233,6 +269,20 @@ function compositionTextFrames(
   return collectCompositionTextFrames(comp, bounds);
 }
 
+function rectBounds(rect: {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+}): Bounds {
+  return {
+    left: rect.x,
+    top: rect.y,
+    right: rect.x + rect.width,
+    bottom: rect.y + rect.height,
+  };
+}
+
 function union(boxes: Bounds[]): Bounds {
   return {
     left: Math.min(...boxes.map((b) => b.left)),
@@ -280,21 +330,26 @@ export function prepareCompositionText(
     );
     const prepared = typed.length
       ? prepareTypography(scene, fonts, {
+          softwareRaster: requiresSoftwareFilters(comp),
           strokeCoverage: true,
           colorCoverage: true,
+          sourceColorNodes: new Set(
+            typed
+              .filter(
+                ({ layer }) =>
+                  layer.rasterize === "source-colors" &&
+                  typeof layer.color === "string" &&
+                  rgba(initialColor(layer))[3] === 1,
+              )
+              .map(({ node }) => node.id),
+          ),
         })
       : undefined;
     for (const { layer, node } of nodes) {
       const key = prefix + layer.id;
       const texts = layer.states ?? [layer.text];
       if (prepared && pinned(comp, node)) {
-        const rasters = prepared.nodes.get(node.id)!;
-        const measured = new Map(
-          [...rasters].map(([text, raster]) => [
-            text,
-            animatedTextBounds(node, raster, prepared.scene),
-          ]),
-        );
+        const measured = preparedTextBounds(node, prepared);
         const perState = texts.map((text) => measured.get(text)!);
         // Transitions and counts show other texts in between: use their union.
         const transitions = layer.transition ?? layer.transitions?.length;
@@ -302,7 +357,19 @@ export function prepareCompositionText(
           ? pad(union([...measured.values()]), node.fontSize)
           : undefined;
         bounds[key] = perState.map((box) => all ?? box);
-        entries.set(key, { kind: "typography", node, prepared });
+        entries.set(key, {
+          kind: "typography",
+          node,
+          prepared,
+          singleImage: isSingleImageTypography(node, prepared),
+          stableImages: hasStableTypographyImage(node, prepared),
+          clock: typographyClock(
+            node,
+            prepared.scene.textAnimators ?? [],
+            prepared.corrections.get(node.id) ?? [],
+            prepared.scene.signals ?? [],
+          ),
+        });
       } else {
         const ctx = measureContext;
         ctx.save();
@@ -334,6 +401,22 @@ export function prepareCompositionText(
             bottom: m.actualBoundingBoxDescent + 10,
           };
         });
+        if (node.container)
+          bounds[key] = bounds[key]!.map((box, i) =>
+            union([
+              box,
+              rectBounds(
+                textContainerBounds(
+                  textContainerContent(
+                    node,
+                    texts[i]!,
+                    (text) => ctx.measureText(text).width,
+                  ),
+                  node.container!,
+                ),
+              ),
+            ]),
+          );
         ctx.restore();
         entries.set(key, { kind: "system", node });
       }
@@ -364,7 +447,36 @@ export function prepareCompositionText(
     ctx.font = `${node.weight} ${node.fontSize}px ${node.font}`;
     ctx.textAlign = node.align;
     ctx.textBaseline = "top";
+    if (node.container && content.reveal > 0)
+      drawTextContainer(ctx, node, text);
     drawStoryText(ctx, node, text, content.reveal);
   };
-  return { bounds, draw };
+  return {
+    bounds,
+    draw,
+    singleImage(content) {
+      const entry = entries.get(content.key);
+      return entry?.kind === "typography" && entry.singleImage;
+    },
+    stableImages(content) {
+      const entry = entries.get(content.key);
+      return entry?.kind === "typography" && entry.stableImages;
+    },
+    contentKey(content) {
+      const entry = entries.get(content.key);
+      if (!entry) return undefined;
+      if (entry.kind === "system") return "static";
+      return String(entry.clock(content.time));
+    },
+    contentBounds(content) {
+      const states = bounds[content.key];
+      if (!states) return undefined;
+      return union([
+        states[content.state]!,
+        ...(content.stateFrom === undefined
+          ? []
+          : [states[content.stateFrom]!]),
+      ]);
+    },
+  };
 }

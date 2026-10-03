@@ -23,6 +23,9 @@ export const COMPOSITION_DIAGNOSTICS = {
   "comp-limit": "An array, string or record exceeds its size limit.",
   // Keys and animated values
   "comp-key-order": "Key frames are not strictly increasing.",
+  "comp-sample-time-order": "Baked sample times are not strictly increasing.",
+  "comp-motion-blur-range":
+    "The exposure interval or cut list is outside the composition or not increasing.",
   "comp-key-smooth": "A smooth key is the first or last key.",
   "comp-key-bezier": '`interpolation: "bezier"` without `bezier` handles.',
   "comp-key-speed-vector":
@@ -120,6 +123,8 @@ export const COMPOSITION_DIAGNOSTICS = {
     "A family feature is not supported by the current adapter slice.",
   "comp-adapter-limit":
     "Baking an adapter scene would exceed composition limits.",
+  "comp-adapter-layout-required":
+    "Font-dependent geometry needs a pinned-font measurement context before compilation.",
 } as const;
 
 /** Advisory codes; they never make a composition invalid. */

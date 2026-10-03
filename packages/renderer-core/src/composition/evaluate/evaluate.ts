@@ -1,3 +1,4 @@
+import { sampleEffects, clampEffects, effectBounds } from "./effects.ts";
 import {
   COMPOSITION_LIMITS,
   SIZED_LAYER_TYPES,
@@ -23,6 +24,7 @@ import {
 } from "./compile.ts";
 import { applyConstraints } from "./constraints.ts";
 import { cameraMatrix, sampleCamera } from "./camera.ts";
+import { compositionSampleIndex } from "./sample-clock.ts";
 import {
   identity,
   layerSize,
@@ -49,7 +51,7 @@ import type {
   PropertyValue,
 } from "./types.ts";
 
-export const COMPOSITION_EVALUATOR_VERSION = "composition-evaluator-9";
+export const COMPOSITION_EVALUATOR_VERSION = "composition-evaluator-21";
 const order = ["action", "response", "current", "carrier"] as const;
 type Context = {
   scope: CompositionScope;
@@ -79,6 +81,11 @@ type SignalCache = Map<Signal, Map<number, number>>;
 function selectSoloLayers(scope: CompositionScope): Set<string> | null {
   if (!scope.layers.some((layer) => layer.solo)) return null;
   const layers = new Map(scope.layers.map((layer) => [layer.id, layer]));
+  const mattes = new Set(
+    scope.layers.flatMap((layer) =>
+      layer.trackMatte ? [layer.trackMatte.layer] : [],
+    ),
+  );
   const selected = new Set<string>();
   for (const layer of scope.layers) {
     const groups: CompositionLayer[] = [];
@@ -87,7 +94,11 @@ function selectSoloLayers(scope: CompositionScope): Set<string> | null {
       if (parent.type === "group") groups.push(parent);
       id = parent.parent;
     }
-    if (!layer.solo && !groups.some((group) => group.solo)) continue;
+    if (
+      !layer.solo &&
+      !groups.some((group) => group.solo || mattes.has(group.id))
+    )
+      continue;
     selected.add(layer.id);
     for (const group of groups) selected.add(group.id);
   }
@@ -134,7 +145,11 @@ function baseState(
   ctx: Context,
   layer: CompositionLayer,
 ): EvaluatedLayer {
-  const time = localTime(layer, ctx.time),
+  const sourceTime = localTime(layer, ctx.time),
+    sampleIndex = layer.sampleTimes
+      ? compositionSampleIndex(layer.sampleTimes, sourceTime)
+      : undefined,
+    time = sampleIndex ?? sourceTime,
     fps = ctx.fps,
     t = layer.transform;
   const size = layerSize(comp, ctx.scope, layer);
@@ -154,7 +169,9 @@ function baseState(
   const state: EvaluatedLayer = {
     id: layer.id,
     layer,
-    time,
+    time:
+      sampleIndex === undefined ? sourceTime : layer.sampleTimes![sampleIndex]!,
+    ...(sampleIndex === undefined ? {} : { sampleIndex }),
     visible,
     drawable: false,
     transform: {
@@ -172,6 +189,7 @@ function baseState(
     screenMatrix: identity(),
     opacity: 1,
     bounds: null,
+    effects: sampleEffects(layer, sourceTime, fps, time),
     masks: (layer.masks ?? []).map((m) => ({
       ...m,
       path: samplePath(m.path, time, fps),
@@ -182,11 +200,25 @@ function baseState(
   };
   if (layer.type === "solid" || layer.type === "text")
     state.color = color(layer.color, time, fps);
-  if (layer.type === "image" || layer.type === "text")
-    state.state = discrete(layer.state, time);
-  if (layer.type === "image") {
-    state.stateFrom = discrete(layer.stateFrom, time, state.state!);
-    state.stateMix = unit(scalar(layer.stateMix, time, fps, 1));
+  if (
+    layer.type === "image" ||
+    layer.type === "text" ||
+    layer.type === "provider"
+  )
+    state.state = layer.state === undefined ? 0 : discrete(layer.state, time);
+  if (
+    layer.type === "image" ||
+    layer.type === "text" ||
+    layer.type === "provider"
+  ) {
+    state.stateFrom =
+      layer.stateFrom === undefined
+        ? state.state!
+        : discrete(layer.stateFrom, time, state.state!);
+    state.stateMix =
+      layer.stateMix === undefined
+        ? 1
+        : unit(scalar(layer.stateMix, time, fps, 1));
   }
   if (layer.type === "text") {
     state.text = layer.states?.[state.state!] ?? layer.text;
@@ -197,7 +229,7 @@ function baseState(
     state.timeRemap =
       layer.timeRemap !== undefined
         ? scalar(layer.timeRemap, time, fps)
-        : (time * (nested.fps ?? comp.fps)) / fps;
+        : (state.time * (nested.fps ?? comp.fps)) / fps;
   }
   return state;
 }
@@ -298,11 +330,18 @@ class Evaluation {
       });
     const scope = this.compiled.scopes.get(host.comp)!;
     const sourceTime = yield* this.clock(ctx, host);
+    const route = [...ctx.route, host.id];
     const next = context(
       scope,
-      Math.max(0, Math.min(scope.frameCount - 1, sourceTime)),
+      Math.max(
+        0,
+        Math.min(
+          scope.frameCount - 1,
+          this.options.scopeTimes?.[route.join("/")] ?? sourceTime,
+        ),
+      ),
       scope.fps ?? this.compiled.comp.fps,
-      [...ctx.route, host.id],
+      route,
     );
     ctx.children.set(host.id, next);
     return next;
@@ -392,6 +431,7 @@ class Evaluation {
       comp = this.compiled.comp;
     if (
       !state.masks.length &&
+      !state.effects.length &&
       !this.compiled.periodic.has(key) &&
       !this.compiled.drivers.has(key)
     )
@@ -451,6 +491,7 @@ class Evaluation {
       }
     }
     state.transform.opacity = unit(state.transform.opacity);
+    clampEffects(state.effects);
     if (state.color) state.color = state.color.map(unit) as typeof state.color;
     if (state.reveal !== undefined) state.reveal = unit(state.reveal);
     if (state.stateMix !== undefined) state.stateMix = unit(state.stateMix);
@@ -549,12 +590,20 @@ class Evaluation {
       state,
       this.options,
     );
-    state.bounds = local ? projectBounds(local, state.screenMatrix) : null;
+    state.bounds = local
+      ? effectBounds(projectBounds(local, state.screenMatrix), state.effects)
+      : null;
     state.visible &&= !layer.guide || this.options.includeGuides === true;
     // Group visibility gates descendants; ordinary null parenting only carries transforms.
+    // A matte's enable/solo switches do not hide its alpha-producing children.
+    const parentVisible =
+      parent && ctx.matteLayers.has(parent.id)
+        ? ctx.time >= (parent.layer.inPoint ?? 0) &&
+          ctx.time < (parent.layer.outPoint ?? ctx.scope.frameCount)
+        : parent?.visible;
     const groupVisible = parent
       ? (ctx.groupVisible.get(parent.id) ?? true) &&
-        (parent.layer.type !== "group" || parent.visible)
+        (parent.layer.type !== "group" || parentVisible === true)
       : true;
     ctx.groupVisible.set(layer.id, groupVisible);
     state.visible &&= groupVisible;
@@ -604,7 +653,13 @@ class Evaluation {
 }
 
 function session(comp: Composition, time: number, options: EvaluationOptions) {
-  if (!Number.isFinite(time) || Math.abs(time) > COMPOSITION_LIMITS.maxKeyFrame)
+  if (
+    [time, ...Object.values(options.scopeTimes ?? {})].some(
+      (value) =>
+        !Number.isFinite(value) ||
+        Math.abs(value) > COMPOSITION_LIMITS.maxKeyFrame,
+    )
+  )
     passageError(
       "comp-evaluation-time",
       `Evaluation time must be finite and within ±${COMPOSITION_LIMITS.maxKeyFrame} frames`,

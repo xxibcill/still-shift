@@ -1,4 +1,5 @@
 export { COMPOSITION_RENDERER_VERSION } from "./version.ts";
+export { renderCompositionExposure } from "./exposure.ts";
 export {
   buildRenderGraph,
   type AdjustOp,
@@ -10,7 +11,9 @@ export {
   type MaskOp,
   type MatteOp,
   type RenderGraph,
+  type RenderGraphOptions,
   type RenderOp,
+  type RenderEffect,
   type SolidContent,
   type SurfaceContent,
   type SurfaceNode,
@@ -51,3 +54,13 @@ export {
   type ProviderLayer,
   type ProviderResources,
 } from "./providers.ts";
+export {
+  createWebgl2Backend,
+  COMPOSITION_WEBGL_RENDERER_VERSION,
+  type Webgl2Backend,
+} from "./webgl2.ts";
+export {
+  compositionRendererVersion,
+  type CompositionBackend,
+  type CompositionRendererVersion,
+} from "./renderer.ts";

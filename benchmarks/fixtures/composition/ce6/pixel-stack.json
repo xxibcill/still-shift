@@ -1,0 +1,177 @@
+{
+  "schemaVersion": "composition-1",
+  "id": "pixel-effect-stack",
+  "width": 320,
+  "height": 240,
+  "fps": 30,
+  "frameCount": 60,
+  "background": "#26313b",
+  "assets": [],
+  "layers": [
+    {
+      "id": "adjust",
+      "type": "adjustment",
+      "size": [110, 180],
+      "transform": {
+        "anchor": [0, 0],
+        "position": [190, 25],
+        "opacity": 0.65
+      },
+      "blendMode": "screen",
+      "effects": [
+        {
+          "id": "soft",
+          "effect": "light.glow",
+          "params": {
+            "radius": 4,
+            "threshold": 0.2,
+            "intensity": 0.7
+          }
+        }
+      ]
+    },
+    {
+      "id": "front",
+      "type": "solid",
+      "parent": "pair",
+      "size": [100, 100],
+      "color": "#e6bd66",
+      "transform": {
+        "position": [125, 100],
+        "opacity": 0.8
+      }
+    },
+    {
+      "id": "back",
+      "type": "solid",
+      "parent": "pair",
+      "size": [100, 100],
+      "color": "#b55561",
+      "transform": {
+        "position": [85, 135]
+      }
+    },
+    {
+      "id": "pair",
+      "type": "group",
+      "size": [320, 240],
+      "transform": {
+        "anchor": [0, 0],
+        "opacity": 0.75
+      },
+      "effects": [
+        {
+          "id": "direction",
+          "effect": "blur.directional",
+          "params": {
+            "length": {
+              "keys": [
+                {
+                  "frame": 0,
+                  "value": 0
+                },
+                {
+                  "frame": 30,
+                  "value": 16
+                },
+                {
+                  "frame": 59,
+                  "value": 0
+                }
+              ]
+            },
+            "samples": 6,
+            "angle": 30
+          }
+        },
+        {
+          "id": "glow",
+          "effect": "light.glow",
+          "params": {
+            "radius": 4,
+            "threshold": 0.1,
+            "intensity": 0.6
+          }
+        },
+        {
+          "id": "waves",
+          "effect": "distort.sine",
+          "params": {
+            "amount": 3,
+            "wavelength": 40,
+            "phase": {
+              "keys": [
+                {
+                  "frame": 0,
+                  "value": 0
+                },
+                {
+                  "frame": 59,
+                  "value": 6.28
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "inset",
+      "type": "precomp",
+      "comp": "nested",
+      "transform": {
+        "anchor": [0, 0],
+        "position": [185, 55]
+      },
+      "effects": [
+        {
+          "id": "second",
+          "effect": "blur.gaussian",
+          "params": {
+            "radius": 2
+          }
+        }
+      ]
+    }
+  ],
+  "precomps": [
+    {
+      "id": "nested",
+      "width": 100,
+      "height": 140,
+      "frameCount": 60,
+      "layers": [
+        {
+          "id": "shape",
+          "type": "solid",
+          "size": [60, 80],
+          "color": "#46a4a0",
+          "transform": {
+            "position": [50, 70],
+            "rotation": {
+              "keys": [
+                {
+                  "frame": 0,
+                  "value": -20
+                },
+                {
+                  "frame": 59,
+                  "value": 20
+                }
+              ]
+            }
+          },
+          "effects": [
+            {
+              "id": "local",
+              "effect": "blur.gaussian",
+              "params": {
+                "radius": 1
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

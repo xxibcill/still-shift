@@ -64,6 +64,94 @@ const summary = (ops: RenderOp[]): unknown[] =>
   );
 
 describe("render graph", () => {
+  it("mattes an overlapping group once and hides the complete matte subtree", () => {
+    const doc = comp([
+      solid("front", { parent: "target", transform: { opacity: 0.8 } }),
+      solid("back", { parent: "target" }),
+      {
+        id: "target",
+        type: "group",
+        size: [200, 100],
+        transform: { anchor: [0, 0], opacity: 0.5 },
+        trackMatte: { layer: "matte", mode: "alpha-inverted" },
+      },
+      solid("matte-child", { parent: "matte" }),
+      {
+        id: "matte",
+        type: "group",
+        size: [200, 100],
+        transform: { anchor: [0, 0], opacity: 0.6 },
+      },
+      solid("background"),
+    ]);
+    const result = graph(doc);
+    expect(summary(result.root.ops)).toEqual([
+      { draw: "background", content: "solid" },
+      {
+        isolate: "target",
+        blend: "normal",
+        ops: [
+          { draw: "back", content: "solid" },
+          { draw: "front", content: "solid" },
+        ],
+        matte: "alpha-inverted",
+        matteOps: [{ draw: "matte-child", content: "solid" }],
+      },
+    ]);
+    const target = result.root.ops[1] as IsolateOp;
+    expect(target.opacity).toBe(1);
+    expect(target.ops.map((op) => (op as DrawOp).opacity)).toEqual([0.5, 0.4]);
+    expect((target.matte!.ops[0] as DrawOp).opacity).toBe(0.6);
+  });
+
+  it("does not cull masked groups with children overflowing their bounds", () => {
+    const doc = comp([
+      solid("child", { parent: "group", transform: { position: [-300, 0] } }),
+      {
+        id: "group",
+        type: "group",
+        size: [10, 10],
+        transform: { position: [350, 30] },
+        trackMatte: { layer: "matte", mode: "alpha" },
+      },
+      solid("matte", { size: [200, 100] }),
+    ]);
+    const result = graph(doc);
+    expect(result.culled).toEqual([]);
+    expect(result.root.ops[0]?.kind).toBe("isolate");
+  });
+
+  it.each([false, true])(
+    "uses disabled group matte children and its window when the target is solo=%s",
+    (solo) => {
+      const doc = comp([
+        solid("target", {
+          solo,
+          trackMatte: { layer: "matte", mode: "alpha" },
+        }),
+        solid("child", { parent: "matte" }),
+        {
+          id: "matte",
+          type: "group",
+          size: [200, 100],
+          transform: { anchor: [0, 0] },
+          enabled: false,
+          inPoint: 5,
+          outPoint: 20,
+        },
+      ]);
+      expect((graph(doc, 10).root.ops[0] as IsolateOp).matte?.ops).toHaveLength(
+        1,
+      );
+      expect((graph(doc, 4).root.ops[0] as IsolateOp).matte?.ops).toHaveLength(
+        0,
+      );
+      expect((graph(doc, 20).root.ops[0] as IsolateOp).matte?.ops).toHaveLength(
+        0,
+      );
+    },
+  );
+
   it.each([true, false])(
     "preserves paint order and isolation when solid batching is %s",
     (batching) => {
@@ -86,8 +174,12 @@ describe("render graph", () => {
           calls.push("mask");
         },
         applyMatte: () => {},
+        applyEffects: () => {},
         lerp: () => {},
         readPixels: () => new Uint8ClampedArray(),
+        accumulateExposure: () => {
+          throw new Error("No exposure in this graph test");
+        },
         ...(batching
           ? {
               fillRects: (_dst: Surface, ops: SolidDraw[]) => {

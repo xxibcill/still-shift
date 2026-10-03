@@ -5,6 +5,7 @@ import {
 import {
   createCompositionPreview,
   loadCompositionResources,
+  type CompositionBackend,
   type CompositionPreview,
 } from "../../../packages/renderer-core/src/composition/render/index.ts";
 import { passageDiagnostics } from "../../../packages/renderer-core/src/passage-diagnostics.ts";
@@ -13,19 +14,22 @@ type Fixture = { path: string; id: string; name: string };
 const el = <T extends HTMLElement>(id: string) =>
   document.getElementById(id) as T;
 const select = el<HTMLSelectElement>("scene"),
+  backendSelect = el<HTMLSelectElement>("backend"),
   slider = el<HTMLInputElement>("frame"),
   play = el<HTMLButtonElement>("play"),
-  canvas = el<HTMLCanvasElement>("preview"),
   status = el("status"),
   error = el("error"),
   list = el("diagnostics");
+let canvas = el<HTMLCanvasElement>("preview");
 
 /**
  * GPU determinism policy, rule 4: say which renderer the preview uses and label
  * hardware previews as approximate; export always renders on SwiftShader.
  */
-function describeRenderer() {
-  const gl = document.createElement("canvas").getContext("webgl2");
+function describeRenderer(backend: CompositionBackend) {
+  const probe =
+    backend === "webgl2" ? canvas : document.createElement("canvas");
+  const gl = probe.getContext("webgl2");
   const info = gl?.getExtension("WEBGL_debug_renderer_info");
   const name = gl
     ? String(
@@ -38,9 +42,11 @@ function describeRenderer() {
   const software = name.includes("SwiftShader");
   badge.dataset.kind = software ? "software" : "hardware";
   badge.title = name;
+  const label = backend === "webgl2" ? "WebGL2" : "Canvas 2D";
   badge.textContent = software
-    ? "Software renderer · matches export"
-    : "Hardware GPU · approximate preview; export is exact";
+    ? `${label} · software preview matches export`
+    : `${label} · hardware preview is approximate; export is reproducible`;
+  if (probe !== canvas) gl?.getExtension("WEBGL_lose_context")?.loseContext();
 }
 
 let comp: Composition | undefined;
@@ -104,6 +110,7 @@ slider.oninput = () => {
 
 async function load(path: string) {
   const run = ++generation;
+  const backend = backendSelect.value as CompositionBackend;
   stop();
   preview?.dispose();
   preview = undefined;
@@ -112,6 +119,7 @@ async function load(path: string) {
   error.textContent = "";
   status.textContent = `Loading ${path}…`;
   delete status.dataset.ready;
+  delete status.dataset.backend;
   try {
     const query = `scene=${encodeURIComponent(path)}`;
     const response = await fetch(`/composition/scene?${query}`);
@@ -132,14 +140,20 @@ async function load(path: string) {
     warnings = result.diagnostics.map(
       (d) => `${d.code} ${d.path}: ${d.message}`,
     );
-    preview = createCompositionPreview(canvas, comp, resources);
+    // A canvas cannot change between 2D and WebGL contexts after creation.
+    const nextCanvas = canvas.cloneNode(false) as HTMLCanvasElement;
+    canvas.replaceWith(nextCanvas);
+    canvas = nextCanvas;
+    preview = createCompositionPreview(canvas, comp, resources, { backend });
+    describeRenderer(backend);
     slider.max = String(comp.frameCount - 1);
     el("command").textContent =
-      `pnpm --silent still-shift comp render --input benchmarks/fixtures/composition/${path} --output ${comp.id}.mp4`;
+      `pnpm --silent still-shift comp render --input benchmarks/fixtures/composition/${path} --output ${comp.id}.mp4 --backend ${backend}`;
     show(0);
     play.disabled = false;
     status.textContent = `Ready: ${comp.name ?? comp.id} · ${comp.width} × ${comp.height} · ${comp.fps} fps`;
     status.dataset.ready = path;
+    status.dataset.backend = backend;
   } catch (cause) {
     if (run !== generation) return;
     const diagnostics = passageDiagnostics(cause);
@@ -151,7 +165,6 @@ async function load(path: string) {
   }
 }
 
-describeRenderer();
 const fixtures = (await (
   await fetch("/composition/fixtures")
 ).json()) as Fixture[];
@@ -163,11 +176,17 @@ select.replaceChildren(
     }),
   ),
 );
-const requested = new URLSearchParams(location.search).get("scene");
+const query = new URLSearchParams(location.search);
+const requested = query.get("scene");
+backendSelect.value = query.get("backend") === "webgl2" ? "webgl2" : "canvas2d";
 select.value =
   fixtures.find((f) => f.path === requested)?.path ?? fixtures[0]?.path ?? "";
-select.onchange = () => {
-  history.replaceState(null, "", `?scene=${encodeURIComponent(select.value)}`);
+select.onchange = backendSelect.onchange = () => {
+  const query = new URLSearchParams({
+    scene: select.value,
+    backend: backendSelect.value,
+  });
+  history.replaceState(null, "", `?${query}`);
   void load(select.value);
 };
 if (select.value) void load(select.value);

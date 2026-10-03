@@ -1,3 +1,4 @@
+import { CompositionAcceptance } from "../helpers/composition-acceptance.ts";
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
@@ -13,7 +14,13 @@ import {
   storyToComposition,
 } from "@still-shift/renderer-core";
 import type * as Render from "../../packages/renderer-core/src/index.ts";
-import { assertStoryCompositionState } from "../helpers/story-composition-state.ts";
+import { assertAdapterExport } from "../helpers/composition-adapter-exports.ts";
+import { storyComponentVariants } from "../helpers/composition-story-components.ts";
+import { motionPathVariants } from "../helpers/composition-motion-path.ts";
+import { appearanceVariants } from "../helpers/composition-appearance.ts";
+import { storyEffectVariants } from "../helpers/composition-story-effects.ts";
+import { primitiveBlurVariants } from "../helpers/composition-primitive-blur.ts";
+import { assertCompositionAdapterState } from "../helpers/composition-adapter-state.ts";
 
 const root = resolve(import.meta.dirname, "../..");
 const inventory = JSON.parse(
@@ -30,13 +37,26 @@ const inventory = JSON.parse(
     tier: "near";
   }[];
 };
+const backend = process.argv.includes("--webgl") ? "webgl2" : "canvas2d";
+const acceptance = new CompositionAcceptance();
 const only = process.argv.indexOf("--only");
+const variant = process.argv.indexOf("--variant");
+const componentsOnly = process.argv.includes("--components");
+const isComponent = (id: string) =>
+  id.startsWith("component/story-") || id.startsWith("component/passage-");
 const selected = inventory.fixtures.filter(
   (f) =>
-    ["story", "story-passage"].includes(f.family) &&
+    (["story", "story-passage"].includes(f.family) || isComponent(f.id)) &&
+    (!componentsOnly || isComponent(f.id)) &&
     (only < 0 || f.id.includes(process.argv[only + 1]!)),
 );
 assert.ok(selected.length, "No story fixtures selected");
+if (only < 0)
+  assert.equal(
+    selected.filter((f) => isComponent(f.id)).length,
+    23,
+    "Missing CE0 story component entry",
+  );
 const server = await createServer({
   root,
   configFile: false,
@@ -62,11 +82,23 @@ try {
               scene: JSON.parse(await readFile(sourcePath, "utf8")),
             },
           ];
-    for (const item of inputs) {
+    const cases = inputs
+      .flatMap((item) => [
+        item,
+        ...storyComponentVariants(item.id, StorySceneSchema.parse(item.scene)),
+        ...motionPathVariants(item.id, StorySceneSchema.parse(item.scene)),
+        ...appearanceVariants(item.id, StorySceneSchema.parse(item.scene)),
+        ...storyEffectVariants(item.id, StorySceneSchema.parse(item.scene)),
+        ...primitiveBlurVariants(item.id, StorySceneSchema.parse(item.scene)),
+      ])
+      .filter(
+        (item) => variant < 0 || item.id.includes(process.argv[variant + 1]!),
+      );
+    for (const item of cases) {
       const input = StorySceneSchema.parse(item.scene);
       const composition = storyToComposition(input),
         scene = compileStoryScene(input);
-      assertStoryCompositionState(scene, composition);
+      assertCompositionAdapterState(scene, composition);
       const urls = Object.fromEntries(
         composition.assets.map((a) => [
           a.id,
@@ -77,7 +109,14 @@ try {
       await page.addInitScript("window.__name = (fn) => fn;");
       await page.goto(server.resolvedUrls!.local[0]!);
       const report = await page.evaluate(
-        async ({ sceneJson, compositionJson, urls, tier, profile }) => {
+        async ({
+          sceneJson,
+          compositionJson,
+          urls,
+          tier,
+          profile,
+          backend,
+        }) => {
           const scene = JSON.parse(sceneJson) as ReturnType<
             typeof Render.compileStoryScene
           >;
@@ -95,13 +134,15 @@ try {
             canvas,
             composition,
             await m.loadCompositionResources(composition, (id) => urls[id]!),
+            { backend: backend as Render.CompositionBackend },
           );
-          const oldCtx = legacyCanvas.getContext("2d")!,
-            ctx = canvas.getContext("2d")!;
+          const oldCtx = legacyCanvas.getContext("2d")!;
           const hashes = new Map<number, string>();
-          const hash = async (bytes: Uint8ClampedArray<ArrayBuffer>) =>
+          const hash = async (bytes: Uint8ClampedArray) =>
             Array.from(
-              new Uint8Array(await crypto.subtle.digest("SHA-256", bytes)),
+              new Uint8Array(
+                await crypto.subtle.digest("SHA-256", new Uint8Array(bytes)),
+              ),
             ).join(",");
           let maxDelta = 0,
             minPsnr = Infinity,
@@ -126,12 +167,7 @@ try {
             at = performance.now();
             const result = preview.renderFrame(frame);
             compositionRenderMs += performance.now() - at;
-            const actual = ctx.getImageData(
-              0,
-              0,
-              canvas.width,
-              canvas.height,
-            ).data;
+            const actual = preview.readPixels();
             compositionMs += performance.now() - at;
             if (result.diagnostics.some((d) => d.severity === "error"))
               throw new Error(JSON.stringify(result.diagnostics));
@@ -158,11 +194,7 @@ try {
           }
           for (const [frame, expected] of [...hashes].reverse()) {
             preview.renderFrame(frame);
-            if (
-              (await hash(
-                ctx.getImageData(0, 0, canvas.width, canvas.height).data,
-              )) !== expected
-            )
+            if ((await hash(preview.readPixels())) !== expected)
               throw new Error(`Backward seek differs at ${frame}`);
           }
           let evaluationMs = 0,
@@ -201,22 +233,47 @@ try {
           urls,
           tier: entry.tier,
           profile: process.argv.includes("--profile"),
+          backend,
         },
       );
       console.log(
-        `${item.id}: ${input.frameCount} frames ${JSON.stringify(report)}`,
+        `${backend} ${item.id}: ${input.frameCount} frames ${JSON.stringify(report)}`,
       );
       await page.close();
-      assert.deepEqual(report.failures, [], `${item.id} pixel parity`);
-      assert.ok(
-        report.ratio <= 1.25,
-        `${item.id} render + readback ratio ${report.ratio} exceeds 1.25`,
-      );
+      acceptance.check(item.id, report);
       totalFrames += input.frameCount;
       totalItems++;
+      if (
+        !acceptance.skipExports &&
+        (only < 0 || process.argv.includes("--exports")) &&
+        [
+          "component/story-leader/spatial-morph",
+          "component/story-state/appearance-uniform",
+          "component/story-state/primitive-blur-stack",
+          "component/story-state/effects-text-sweep",
+          "component/story-leader/effects-flow-target-inverted",
+        ].includes(item.id)
+      )
+        await assertAdapterExport(input, dirname(sourcePath), item.id, backend);
+      if (
+        !acceptance.skipExports &&
+        only < 0 &&
+        ([
+          "component/story-text-fit",
+          "component/story-value",
+          "component/story-mask",
+          "component/story-leader/flow-target-inverted",
+          "component/story-state/blended-container",
+        ].includes(item.id) ||
+          (entry.id.startsWith("component/passage-") && item === cases[0]))
+      )
+        await assertAdapterExport(input, dirname(sourcePath), item.id, backend);
     }
   }
-  console.log(`CE4a story parity: ${totalItems} items, ${totalFrames} frames`);
+  console.log(
+    `CE4 story/component parity: ${totalItems} items, ${totalFrames} frames`,
+  );
+  acceptance.finish();
 } finally {
   await browser.close();
   await server.close();

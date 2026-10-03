@@ -1,7 +1,7 @@
 # Programmable composition engine — implementation plan
 
-- **Updated:** 2026-10-02
-- **Status:** CE0–CE3 complete (2026-10-01); CE4a in progress (2026-10-02). Q1 and Q3 decided
+- **Updated:** 2026-10-03
+- **Status:** CE0–CE3 complete (2026-10-01); CE4b complete under the approved timing split (2026-10-03); CE4a in progress. Q1 and Q3 decided
   2026-09-30; Q2, Q4 and Q8 decided 2026-10-01; Q5–Q7 open.
 - **Baseline:** `6772717` — `Merge pull request #22 from xxibcill/codex/still-shift-plan-completion`
 - **Tracker owner:** unassigned. Record the owner and branch per milestone in the [tracker](#milestone-tracker).
@@ -355,27 +355,27 @@ sign and for time remap. It does not change the layer's composition-time visibil
 
 ## Milestone tracker
 
-| ID   | Deliverable                                     | Phase | Depends on                | Owner                  | Branch                  | Status | Completion evidence                                                                |
-| ---- | ----------------------------------------------- | ----- | ------------------------- | ---------------------- | ----------------------- | ------ | ---------------------------------------------------------------------------------- |
-| CE0  | Baseline, parity harness and feature matrix     | A     | —                         | xxibcill (Claude Code) | `codex/composition-ce0` | `[x]`  | [CE0 record](#ce0--baseline-parity-harness-and-feature-matrix)                     |
-| CE1  | `composition-1` contract and property paths     | A     | CE0                       | xxibcill (Claude Code) | `codex/composition-ce1` | `[x]`  | [CE1 record](#ce1--composition-1-contract-and-property-paths)                      |
-| CE2  | Pure composition evaluator                      | A     | CE1                       | Codex                  | `codex/composition-ce2` | `[x]`  | [CE2 record](#ce2--pure-composition-evaluator)                                     |
-| CE3  | Render graph and Canvas 2D reference backend    | A     | CE2                       | xxibcill (Claude Code) | `codex/composition-ce3` | `[x]`  | [CE3 record](#ce3--render-graph-and-canvas-2d-reference-backend); merged in PR #28 |
-| CE4a | Story adapter with visual parity                | A     | CE3                       | Codex                  | `codex/composition-ce4` | `[~]`  | [CE4a start record](#ce4a-start-record-2026-10-02)                                 |
-| CE4b | Commerce and reusable-component adapter         | A     | CE3, CE6 (effects parity) |                        |                         | `[ ]`  |                                                                                    |
-| CE4c | Cinematic adapter                               | A     | CE3, CE8                  |                        |                         | `[ ]`  |                                                                                    |
-| CE4d | Legacy illustrated adapter and old-path removal | A     | CE4a–CE4c                 |                        |                         | `[ ]`  |                                                                                    |
-| CE5  | Shape layers                                    | B     | CE3                       |                        |                         | `[ ]`  |                                                                                    |
-| CE6  | WebGL2 backend and effect registry              | B     | CE3                       |                        |                         | `[ ]`  |                                                                                    |
-| CE7  | Motion blur and time controls                   | B     | CE3                       |                        |                         | `[ ]`  |                                                                                    |
-| CE8  | 2.5D layers and unified camera                  | B     | CE3, CE6, CE9             |                        |                         | `[ ]`  |                                                                                    |
-| CE9  | Expressions and motion behaviours               | C     | CE2                       |                        |                         | `[ ]`  |                                                                                    |
-| CE10 | TypeScript builder API and CLI                  | C     | CE3, CE4a, CE9, CE12      |                        |                         | `[ ]`  |                                                                                    |
-| CE11 | Lab composition inspector and graph editor      | C     | CE3, CE10                 |                        |                         | `[ ]`  |                                                                                    |
-| CE12 | Motion linting                                  | C     | CE2                       |                        |                         | `[ ]`  |                                                                                    |
-| CE13 | Video, image-sequence and audio layers          | D     | CE3, CE7                  |                        |                         | `[ ]`  |                                                                                    |
-| CE14 | Mesh warp and puppet pins                       | D     | CE6                       |                        |                         | `[ ]`  |                                                                                    |
-| CE15 | Output formats, caching and parallel rendering  | D     | CE3                       |                        |                         | `[ ]`  |                                                                                    |
+| ID   | Deliverable                                     | Phase | Depends on           | Owner                  | Branch                   | Status | Completion evidence                                                                |
+| ---- | ----------------------------------------------- | ----- | -------------------- | ---------------------- | ------------------------ | ------ | ---------------------------------------------------------------------------------- |
+| CE0  | Baseline, parity harness and feature matrix     | A     | —                    | xxibcill (Claude Code) | `codex/composition-ce0`  | `[x]`  | [CE0 record](#ce0--baseline-parity-harness-and-feature-matrix)                     |
+| CE1  | `composition-1` contract and property paths     | A     | CE0                  | xxibcill (Claude Code) | `codex/composition-ce1`  | `[x]`  | [CE1 record](#ce1--composition-1-contract-and-property-paths)                      |
+| CE2  | Pure composition evaluator                      | A     | CE1                  | Codex                  | `codex/composition-ce2`  | `[x]`  | [CE2 record](#ce2--pure-composition-evaluator)                                     |
+| CE3  | Render graph and Canvas 2D reference backend    | A     | CE2                  | xxibcill (Claude Code) | `codex/composition-ce3`  | `[x]`  | [CE3 record](#ce3--render-graph-and-canvas-2d-reference-backend); merged in PR #28 |
+| CE4a | Story adapter with visual parity                | A     | CE3                  | Codex                  | `codex/composition-ce4`  | `[~]`  | [CE4a start record](#ce4a-start-record-2026-10-02)                                 |
+| CE4b | Commerce and reusable-component adapter         | A     | CE3, CE6 slices      | Codex                  | `codex/composition-ce4b` | `[x]`  | [CE4b completion record](#ce4b-completion-record-2026-10-03)                       |
+| CE4c | Cinematic adapter                               | A     | CE3, CE8             |                        |                          | `[ ]`  |                                                                                    |
+| CE4d | Legacy illustrated adapter and old-path removal | A     | CE4a–CE4c            |                        |                          | `[ ]`  |                                                                                    |
+| CE5  | Shape layers                                    | B     | CE3                  |                        |                          | `[ ]`  |                                                                                    |
+| CE6  | WebGL2 backend and effect registry              | B     | CE3                  |                        |                          | `[ ]`  |                                                                                    |
+| CE7  | Motion blur and time controls                   | B     | CE3                  |                        |                          | `[ ]`  |                                                                                    |
+| CE8  | 2.5D layers and unified camera                  | B     | CE3, CE6, CE9        |                        |                          | `[ ]`  |                                                                                    |
+| CE9  | Expressions and motion behaviours               | C     | CE2                  |                        |                          | `[ ]`  |                                                                                    |
+| CE10 | TypeScript builder API and CLI                  | C     | CE3, CE4a, CE9, CE12 |                        |                          | `[ ]`  |                                                                                    |
+| CE11 | Lab composition inspector and graph editor      | C     | CE3, CE10            |                        |                          | `[ ]`  |                                                                                    |
+| CE12 | Motion linting                                  | C     | CE2                  |                        |                          | `[ ]`  |                                                                                    |
+| CE13 | Video, image-sequence and audio layers          | D     | CE3, CE7             |                        |                          | `[ ]`  |                                                                                    |
+| CE14 | Mesh warp and puppet pins                       | D     | CE6                  |                        |                          | `[ ]`  |                                                                                    |
+| CE15 | Output formats, caching and parallel rendering  | D     | CE3                  |                        |                          | `[ ]`  |                                                                                    |
 
 ### Phases and parallel work
 
@@ -1271,11 +1271,30 @@ General rules for all adapters:
 
 ### CE4b — Commerce and reusable components
 
-- [ ] Map commerce layout, product layers, shadows, floating, detail windows, paths,
+- [x] Start the CE3-compatible compiler slice with explicit unsupported-feature
+      diagnostics, JSON export and Canvas parity coverage; retain CE6 as the effects
+      parity completion gate.
+- [x] Add native/component text fitting without panel resizing and formatted
+      numeric text through a versioned measured-text provider.
+- [x] Bake commerce attached paths and component annotations, retaining crop and
+      protected-region validation.
+- [x] Translate native mattes and reusable-component masks to alpha track mattes,
+      including grouped targets and grouped sources.
+- [x] Resolve fitted backing-panel geometry with pinned fonts before baking transforms
+      and annotation anchors; perform measurement automatically during JSON export.
+- [x] Preserve text state ramps, containers and legacy text animators; bake motion-craft
+      transforms with exact skew and moving-anchor matrix compensation.
+- [x] Compile reusable components in story contexts and resolved passage beats,
+      including camera-aware annotations, masked flows and measured/numeric text.
+- [x] Compile rich typography to native text, including containers, corrections,
+      font-dependent fits and narration-linked cues.
+- [x] Map commerce layout, product layers, shadows, floating, detail windows, paths,
       text fits, component state/travel/pin/values/visibility/masks.
-- [ ] Commerce effects become CE6 registry effects; parity requires CE6.
-- [ ] Parity for all commerce fixtures and all 63 reusable-component combinations.
-      Run these through both backends against their CE0 tiers after CE6 is complete.
+- [x] Commerce effects become CE6 registry effects; the required effect/backend
+      dependency slices are delivered below. Broader CE6 effects remain separate.
+- [x] Parity for all commerce fixtures and all 63 reusable-component combinations.
+      Run these through both backends against their CE0 tiers using the delivered
+      CE6 dependency slices, plus hardware-preview/export perceptual checks.
 
 ### CE4c — Cinematic
 
@@ -1304,6 +1323,15 @@ General rules for all adapters:
 
 **Acceptance (each part):** All fixtures in that family meet their tolerance tiers;
 Lab preview and export agree; render time is no worse than 1.25× the CE0 baseline.
+
+**CE4b scope decision (user approved, 2026-10-03):** CE4b retains adapter coverage,
+assigned pixel tiers, evaluated-state and seek determinism, repeated exports,
+Lab/export agreement and full local verification. CE6 now owns CE4b's unchanged
+**1.25×** render/readback requirement and the **117** timing failures in the final
+0.33 WebGL2 family audits. This changes milestone ownership, not the target,
+baselines, pixel tolerances or benchmark assertions. The other CE4 parts retain
+their acceptance above. See [the feasibility decision](./composition-ce4b-feasibility.md)
+and [its measured results](./composition-ce4b-feasibility-results.json).
 
 **Verification:** Family browser tests re-run on the composition path; baseline
 comparisons; the full `pnpm check`.
@@ -1404,7 +1432,1415 @@ for all 192 Access Constraint frames, and exports two byte-identical MP4s. The
 fixture suite passes all 20 items / 4,678 frames. Calibration Pan's initial timing
 was 1.262×; the unchanged rerun passes at 1.211×. No baseline or threshold changed.
 
-**Completion record:** CE4a is in progress; CE4b–CE4d have not started.
+### CE4b start record (2026-10-02)
+
+- **Owner / branch:** Codex, `codex/composition-ce4b`, created from
+  `codex/composition-ce4` at `173dab8`. This starts the adapter work independent of
+  CE6; full effects parity and both-backend acceptance still require CE6.
+- **Delivered slice:** `commerceToComposition` runs the commerce compiler and emits
+  native images and groups, sharing the prepared-node translation with the
+  story adapter. Rectangles and paths reuse the existing local-content
+  providers. `commerce.text@1.0.0` prepares pinned measured text with the existing
+  commerce layout code. Layout/product/shadow/floating/detail-window assets retain
+  their prepared geometry, crops, clips and transforms.
+- **Motion and components:** integer-frame events, drift, parallax and overshoot
+  become baked transform keys. Component state, travel, pins, property-value bindings
+  and visibility use the existing compiler/evaluator before baking. Image state
+  blends retain the outgoing state and blend weight. Source metadata, including
+  registration and claim sources, is preserved. The slice is limited to 2,000 frames
+  and holds samples between integer frames.
+- **Inspection:** `comp export-json --scene <commerce.json>` selects the commerce
+  adapter, rebases asset paths when saving, and refuses overwrite. `comp render`
+  and the composition Lab use the same registered providers.
+- **Versions:** adapter `commerce-composition-0.1.0`, Canvas renderer
+  `composition-canvas-1.3.0`; evaluator and legacy renderer versions unchanged.
+  Opaque surface backgrounds skip a redundant clear before the full-canvas fill;
+  transparent surfaces retain clearing. Commerce rectangles keep the existing
+  path-based fill and parent transform sequence, preserving subpixel edge parity.
+- **Adapter verification:** on Node 22.23.1 / pnpm 10.29.3,
+  `pnpm test:browser:composition-commerce-adapter` passes **43 fixtures, 9,528
+  frames, all pixel-exact**: 25 CE0 commerce fixtures and 18 commerce/isolated
+  reusable-component fixtures. Every source node's matrix, opacity, visibility and
+  image state is checked in reverse frame order; backward render seeks match.
+  Relocated JSON loads its pinned assets, overwrite protection holds, and two
+  240-frame H01 MP4 exports are byte-identical with no system fonts.
+- **Timing method:** three warmed full-timeline render/readback passes, alternating
+  backend order, measured separately from pixel comparison; the median paired
+  ratio is checked against the unchanged 1.25× gate. Worst result: Commerce Stagger,
+  **1.2253×**. The earlier combined comparison/timing loop intermittently attributed
+  large single-frame runtime pauses to composition rendering (Isolated Sequence
+  reached 1.36×); the separate timing phase removes comparison work from the
+  benchmark. This is steady-state rendering evidence; preparation is not timed.
+- **Local matrix:** the full `pnpm check` passed toolchain, schema, boundaries,
+  formatting, lint, types, **1,090 unit / 46 runtime / 111 integration tests**, depth,
+  golden, legacy browser suites, typography, composition rendering and CE4a parity
+  before stopping at the original commerce timing check. After revising the timing
+  harness, `pnpm check:fast` and the complete commerce adapter group passed again.
+  The remaining `pnpm test:browser:composition-baselines` passed: **176 items,
+  36,061 frames, exact in 278.62 s** against `darwin-arm64`. No baseline or tolerance
+  was changed; all verification ran locally.
+- **Remaining:** pixel effects (CE6), motion blur (CE7), attached paths, annotations,
+  text fitting, formatted numeric text, masks/mattes, typography, motion-craft and
+  drawable parents; reusable story contexts and passages; all-family/two-backend
+  parity. Unsupported inputs return `comp-adapter-unsupported` with a source path.
+  Family defaults remain on their existing renderers.
+
+### CE4b measured-text follow-up (2026-10-02)
+
+- **Delivered:** `commerce.text@1.1.0` prepares native and reusable-component text
+  fits with the existing pinned-font fitter. One font size covers every supplied
+  state. Numeric bindings become bounded integer-frame label samples, preserving
+  decimal/group separators, prefixes/suffixes and both rounding modes. Preparation
+  checks every possible formatted value for overflow, including unsampled values.
+  Original `commerce.text@1.0.0` payloads remain supported.
+- **Versions:** adapter `commerce-composition-0.2.0`, Canvas renderer
+  `composition-canvas-1.4.0`; evaluator and legacy renderer versions unchanged.
+- **Coverage:** commerce/isolated text-fit and value fixtures join the CE0 adapter
+  selection. Additional variants exercise native Thai fitting, right/center
+  alignment, transformed numeric children and signed grouped decimals. Preparation
+  tests cover unavailable fonts, malformed payloads, impossible fits and overflow.
+  CLI export tests now round-trip both fitted text and numeric labels through
+  relocated JSON and repeated MP4 exports.
+- **Adapter verification:** **50 cases, 10,872 integer frames, all pixel-exact**
+  (47 CE0 fixtures plus three derived variants), with reverse state checks and
+  backward render seeks. All cases meet the unchanged 1.25× render/readback gate;
+  worst median: Commerce Instances, **1.1783×**. All 28 preparation checks pass.
+  Text-fit and value fixtures each produce two byte-identical 192-frame MP4s with
+  relocated assets, no system-font layers and overwrite protection.
+- **Local regression matrix:** on Node 22.23.1 / pnpm 10.29.3, schema, boundaries,
+  formatting, lint, types, **1,096 unit / 46 runtime / 111 integration / 14 depth
+  tests**, legacy browser suites, composition rendering and CE4a parity pass.
+  The aggregate `pnpm check` stopped at the unchanged typography glyph timing test
+  (1.51× against its 1.50× limit); that suite passed on retry at **1.4176×**, followed
+  by every remaining composition suite. CE0 baseline verification passed:
+  **176 items, 36,061 frames, all exact in 265.51 s** against `darwin-arm64`.
+  No baseline or tolerance changed. All verification ran locally.
+- **Timing method:** the three warmed render/readback passes now pair each frame
+  and alternate backend order per frame and pass. Whole-timeline ordering produced
+  isolated-value ratios of 1.36× and 1.33× while the interleaved pixel-comparison
+  phase measured 1.07×. Frame pairing limits order bias; the median ratio and 1.25×
+  acceptance threshold remain unchanged. Preparation remains outside timing.
+- **Remaining:** fits that resize backing panels change node geometry and still
+  return a diagnostic at `textFits[index].panel`. Attached paths, annotations,
+  masks/mattes, typography, motion-craft, drawable parents, story contexts and
+  passages remain open. Full effects/two-backend acceptance still requires CE6;
+  motion blur requires CE7. Family defaults remain unchanged.
+
+### CE4b attached-geometry follow-up (2026-10-02)
+
+- **Delivered:** `commerce.path@1.0.0` draws attached paths and component
+  annotations from bounded integer-frame local vertices. Baking uses the existing
+  geometry evaluators, preserving source crops, offsets and ancestor transforms.
+  Crop, protected-region and ownership validation run before export; hidden paths
+  avoid invisible inverse transforms, and settled geometry holds its last sample.
+  The provider retains the shared uniform/ink/brush stroke and reveal behavior.
+- **Versions:** adapter `commerce-composition-0.3.0`, Canvas renderer
+  `composition-canvas-1.5.0`; evaluator and legacy renderer versions unchanged.
+- **Coverage:** the CE0 attachment fixture and commerce/isolated leader, outline,
+  underline, bracket, tour and supply fixtures join the adapter suite. Derived
+  cases exercise both attached endpoints, cropped source anchors, offsets, nested
+  animated parents, rotated annotation paths, brush/ink strokes and arrows.
+  Unit checks cover every baked vertex, backward/fractional local-time sampling,
+  invalid geometry, protected regions, cropping, conflicting ownership, hidden
+  paths, settled tails and payload limits. CLI coverage adds attachment and leader
+  exports with relocated assets and repeated MP4 renders.
+- **Adapter verification:** **65 cases, 13,848 integer frames, all pixel-exact**
+  (60 CE0 fixtures plus five derived variants), including reverse state checks and
+  backward render seeks. All cases meet the unchanged 1.25× render/readback gate;
+  worst median: the existing Panel atom, **1.2444×**. All 28 preparation checks
+  pass. Text-fit, value and leader fixtures each produce two byte-identical
+  192-frame MP4s; the attachment fixture produces two identical 240-frame MP4s.
+  Relocated assets, no system-font layers and overwrite protection pass.
+- **Local regression matrix:** on Node 22.23.1 / pnpm 10.29.3, `pnpm check:fast`
+  passes. The full `pnpm check` passes schema, boundaries, formatting, lint, types,
+  **1,119 unit / 46 runtime / 111 integration / 14 depth tests**, legacy browser
+  suites, typography, composition rendering and CE4a parity before stopping on the
+  unchanged Text atom's timing gate (**1.2682×** against 1.25×, with exact pixels).
+  The complete commerce group passes unchanged on retry; that case measures
+  **1.1301×**. No timing method, threshold or baseline was changed.
+  The remaining CE0 baseline check passes: **176 items, 36,061 frames in 281.09 s**
+  against `darwin-arm64`. All verification ran locally.
+- **Remaining:** fitted backing panels, masks/mattes, typography, motion-craft,
+  drawable parents, reusable story contexts and passages. Full effects/two-backend
+  acceptance still requires CE6; motion blur requires CE7. Family defaults remain
+  unchanged, and CE4b remains in progress.
+
+### CE4b masks and mattes follow-up (2026-10-02)
+
+- **Delivered:** native commerce mattes and reusable-component masks compile to
+  alpha/inverted-alpha track mattes. The shared render graph isolates grouped
+  targets after drawing their children with inherited per-child opacity; grouped
+  sources contribute their complete alpha subtree without appearing in the outer
+  scope. Sources can be shared, and their visibility windows still apply.
+- **Graph correctness:** group bounds do not cull overflowing descendants; disabled
+  or non-soloed group matte sources retain their enabled children. Validation
+  rejects matte feedback through descendants, while allowing a hidden descendant
+  to provide its group's matte.
+- **Versions:** commerce adapter `commerce-composition-0.4.0`, evaluator
+  `composition-evaluator-10`, Canvas renderer `composition-canvas-1.6.0`.
+- **Coverage:** the native matte atom plus commerce/isolated mask and detail-sequence
+  fixtures join the adapter suite. Two derived cases cover overlapping translucent
+  children, inversion, shared grouped sources, rotation, clipping and visibility.
+  All **72 cases / 15,336 frames are pixel-exact** (65 CE0 fixtures and seven derived
+  variants), with reverse state checks, backward seeks and the unchanged 1.25×
+  render/readback gate (worst median **1.2254×**, Text atom). All 36 preparation
+  checks pass. Text-fit, value, leader, attachment, matte and mask fixtures
+  each produce two byte-identical MP4s after JSON relocation; pinned assets and
+  overwrite protection pass.
+- **Slice verification:** `pnpm check:fast` (**1,130 unit tests**), composition evaluator/browser tests
+  and the expanded commerce adapter suite. The full `pnpm check` and baseline
+  matrix will run again for final CE4b acceptance. Legacy renderer versions,
+  baselines, timing methods and tolerances are unchanged.
+- **Remaining:** fitted panels, drawable parents, typography/text animation,
+  motion-craft, remaining reusable contexts/passages and CE6/CE7 dependencies.
+  The user's full-CE4b goal remains active; each verified slice is committed
+  separately on `codex/composition-ce4b`.
+
+### CE4b fitted-panel follow-up (2026-10-02)
+
+- **Delivered:** `prepareCommerceComposition` resolves native backing-panel bounds
+  with verified pinned fonts before baking node transforms and annotation anchors.
+  The synchronous compiler accepts an explicit text-layout context and returns
+  `comp-adapter-layout-required` when a panel needs measurement. CLI JSON export
+  performs preparation in pinned Chromium through the package-owned runtime page.
+  Exported text retains the measured size; rendering consumes ordinary composition
+  data. Event tracks retain their original pre-layout initial values.
+- **Versions:** commerce adapter `commerce-composition-0.5.0`; evaluator, Canvas
+  renderer and legacy versions unchanged.
+- **Coverage:** the layout atom and derived transformed/annotated and multiple-state
+  layouts pass all 720 frames exactly. The expanded commerce run passes **75 cases /
+  16,056 frames**, all pixel-exact, with **48 preparation checks** and the unchanged
+  1.25× timing gate (worst median **1.2197×**, isolated visibility). Invalid font
+  checksums and impossible minimum-size fits produce diagnostics without creating
+  an output file. The anchor, sequence and commerce/isolated supply-sequence fixtures
+  also pass separately and join the acceptance list for existing geometry/state
+  support: **79 cases / 16,920 frames in total** (70 CE0 fixtures and nine variants),
+  with **56 preparation checks**. Seven pairs of MP4 exports (text-fit, value,
+  leader, attachment, matte, mask and layout) are byte-identical and preserve
+  relocated assets, pinned fonts and overwrite protection. `pnpm check:fast`
+  passes, including **1,137 unit tests**. All checks ran locally with the pinned
+  toolchain; thresholds, timing methods and baselines are unchanged.
+- **Scope correction:** the earlier remaining-work lists mentioned drawable parents.
+  The legacy prepared-scene validator requires group parents, so drawable parenting
+  is not a CE4b migration requirement. Native compositions already support it.
+- **Remaining:** typography/text animation, motion-craft, reusable story contexts
+  and passages, and the CE6/CE7 dependencies needed for full acceptance. The active
+  goal continues on the same branch, with a commit after each verified slice.
+
+### CE4b text-state and transform follow-up (2026-10-02)
+
+- **Delivered:** native text and provider content can blend outgoing/incoming states
+  before opacity, clipping and mattes. Provider state paths are available only when
+  native state control is declared, preserving existing provider-owned playback.
+  `commerce.text@1.2.0` adds caption/speech/thought containers and legacy text
+  animators, including animator suppression during component state ramps. Existing
+  provider versions remain supported.
+- **Transforms:** motion-craft transforms, signals, drivers, constraints and periodic
+  motion bake to native keys. Both skew axes and moving anchors retain the legacy
+  matrix calculation order. Canvas state isolation also preserves the legacy matrix
+  transfer to its blend surface; a same-state ramp under skew exposed that precision
+  requirement. Tests cover exact matrices, nested clipping/opacity, text containers,
+  overlapping animation/ramp windows, repeated states and backward seeking.
+- **Versions:** commerce adapter `commerce-composition-0.6.0`, evaluator
+  `composition-evaluator-11`, Canvas renderer `composition-canvas-1.7.0`.
+- **Verification:** all **82 cases / 17,640 frames** are pixel-exact (70 CE0 fixtures
+  and 12 derived variants), with reverse state checks, backward seeks and **68
+  preparation checks**. The unchanged three-pass median render/readback gate passes
+  at a worst ratio of **1.2119×** (Panel atom). `pnpm check:fast` passes, including
+  **1,144 unit tests**. Native composition and Node/browser evaluator checks pass.
+  Eight MP4 pairs (text-fit, value, leader, attachment, matte, mask, layout and animated
+  text) are byte-identical after JSON relocation, with pinned assets and overwrite
+  protection intact. Invalid pinned fonts and impossible fitted panels still fail
+  without writing output. Timing methods, tolerances and CE0 baselines are unchanged.
+- **Remaining:** rich typography, spatial paths/morphs and animated appearance,
+  reusable story contexts/passages, and the CE6/CE7 dependencies. The user's goal
+  remains active and work continues after this slice's commit.
+
+### CE4b reusable-story follow-up (2026-10-02)
+
+- **Delivered:** the story adapter shares component text and annotation compilation
+  with commerce, including numeric values, fitted text, containers/state ramps,
+  travel, pins, visibility and alpha masks. Motion-craft transforms bake to native
+  keys. All resolved passage beats retain parameter/cue binding before compilation.
+  Family renderers remain the default pending CE4d.
+- **Flows:** `component.flow@1.0.0` draws story flows on baked annotation vertices.
+  A path with flows is grouped before applying its root matte, preserving the camera,
+  visibility and independent flow opacity. Transparent paths still bake the geometry
+  their visible flows need. Existing source-ownership validation remains in force.
+- **Versions:** story adapter `story-composition-0.3.0`; commerce adapter, evaluator,
+  Canvas renderer and existing provider versions are unchanged.
+- **Coverage:** all **20 story contexts and ten beats from three component passages**
+  pass, plus four derived cases for annotated flows, normal/inverted mattes and text
+  containers with state ramps: **34 cases / 6,528 pixel-exact frames**. Reverse state
+  checks and backward seeks pass. The existing story render/readback method and
+  1.25× gate are unchanged; worst ratio is **1.1270×** (story visibility).
+  Together with the commerce/isolated runs, all **63 reusable-component CE0 entries**
+  now pass on Canvas. `pnpm check:fast` passes with **1,167 unit tests**. The existing
+  CE4a regression set also passes: 14 story scenes / 3,264 frames and six passage
+  beats / 1,414 frames, all within their unchanged pixel and timing tiers.
+- **CLI exports:** eight pairs are byte-identical: story text-fit, value, mask,
+  masked annotation flow, blended text container, and the first resolved beat from
+  each component passage. Relocated assets, pinned fonts and overwrite protection pass.
+- **Remaining:** rich typography, spatial paths/morphs and animated appearance,
+  plus the CE6/CE7 dependencies and both-backend acceptance. The active goal continues.
+
+### CE4b native-typography follow-up (2026-10-02)
+
+- **Delivered:** commerce and story typography compiles to native text layers,
+  preserving styles, spans, axes, selectors, decorations, transitions, signals and
+  text animators. Narration-linked text events resolve into cue markers and native
+  correction annotations. Native text also supports caption, speech and thought
+  containers with conservative bounds for culling and corrections.
+- **Rasterization:** `rasterize: "source-colors"` preserves the source renderer's
+  static opaque glyph-run boundaries. Animated or translucent layer colors use
+  coverage rasters, retaining the existing native color/alpha/stroke behavior.
+  The default native raster mode remains coverage. The legacy renderer version
+  and CE0 pixel/performance thresholds are unchanged.
+- **Font-dependent layout:** commerce and reusable story fits use verified pinned
+  fonts before baking geometry. `compileStoryComposition` and CLI JSON export
+  perform font measurement and story typography safe-area validation. The synchronous
+  adapters require an explicit layout context for rich fits. Fitted styles stay
+  local to each node so shared style roles remain unchanged.
+- **Versions:** commerce adapter `commerce-composition-0.7.0`, story adapter
+  `story-composition-0.4.0`, Canvas renderer `composition-canvas-1.8.0`;
+  evaluator remains `composition-evaluator-11`.
+- **Verification:** all eight CE0 typography fixtures plus five derived container
+  and fit cases pass: **13 cases / 2,187 frames**. Eleven cases are pixel-exact;
+  semantic/vertical correction cases stay within the existing `near` tier
+  (maximum channel delta 2). Native color, stroke, alpha, backward seek, Lab and
+  export regression checks pass in both text raster modes. `pnpm check:fast`
+  passes with **1,177 unit tests**. The worst render/readback ratio is **1.2140×**
+  (variable Thai), below the unchanged 1.25× gate. Four CLI export pairs
+  (semantic corrections, variable Thai, story component fit and commerce backing
+  panel) are byte-identical; relocated assets, fonts and overwrite protection pass.
+- **Remaining:** numeric bindings combined with rich typography, spatial paths,
+  morphs, animated appearance, CE6/CE7 dependencies and both-backend acceptance.
+  The active goal continues after this slice's commit.
+
+### CE4b rich-numeric-text follow-up (2026-10-02)
+
+- **Delivered:** `component.typography@1.0.0` compiles formatted numeric bindings
+  with rich text styles, spans, decorations, containers, text animators and variable
+  font axes. It shapes the full declared endpoint range before rendering, preserving
+  overflow checks and the existing 10,000-value / 128-megapixel raster limits. Baked
+  formatted samples retain legacy rounding, separators, prefixes and suffixes.
+- **Resources:** providers may prepare font variants asynchronously from their
+  declared, verified font assets. Each provider and precomp gets an isolated font
+  map; variants do not become available to unrelated providers. Rendering uses
+  local glyph content and compiled samples without invoking a family renderer or
+  scene evaluator. The provider JSON and frame/key limits remain unchanged.
+- **Versions:** commerce adapter `commerce-composition-0.8.0`, story adapter
+  `story-composition-0.5.0`, Canvas renderer `composition-canvas-1.9.0`;
+  evaluator remains `composition-evaluator-11`.
+- **Verification:** `pnpm check:fast` passes with **1,181 unit tests**, including
+  declared-font isolation and reverse-order formatted-value checks. The complete
+  typography adapter suite passes **16 cases / 2,681 frames**; all three numeric
+  cases are pixel-exact, including variable Thai axes. Worst render/readback ratio
+  is **1.2115×**, below the unchanged 1.25× gate. Seven repeat MP4 pairs are
+  byte-identical, with asset relocation, pinned fonts and overwrite protection intact.
+- **Remaining:** spatial paths, morphs, animated appearance, CE6/CE7 dependencies
+  and both-backend acceptance. The active goal continues after this slice's commit.
+
+### CE4b spatial-path and morph follow-up (2026-10-02)
+
+- **Delivered:** `component.path@1.0.0` and `component.flow@1.1.0` retain authored
+  cubic segments and eased morph keys as bounded data. They use the same local
+  geometry primitive as the legacy renderer, preserving segment sampling and
+  morph precedence without baking thousands of vertices per frame. Existing
+  attachments and annotations resolve before motion geometry, as in the source.
+- **Composition:** path-following constraints bake to native transforms; story flows
+  follow the deformed path and retain their own opacity, camera, visibility and
+  group-matte behavior. Provider preparation validates path ownership, segment
+  joins and morph timing. Frame, key and provider-payload limits remain unchanged.
+- **Versions:** commerce adapter `commerce-composition-0.9.0`, story adapter
+  `story-composition-0.6.0`, Canvas renderer `composition-canvas-1.10.0`;
+  evaluator remains `composition-evaluator-11`.
+- **Verification:** `pnpm check:fast` passes with **1,183 unit tests**. Focused
+  commerce/story parity passes **11 cases / 2,304 pixel-exact frames**, including
+  six new spatial/morph cases, brush/ink paths, path followers, masked flows and
+  zero-opacity path strokes. Reverse geometry/state checks and backward seeks pass.
+  Worst render/readback ratio is **1.1903×**, below the unchanged 1.25× gate.
+  Brush morph and masked story-flow CLI exports each produce two byte-identical
+  MP4s; relocated assets and overwrite protection pass.
+- **Remaining:** animated appearance, CE6/CE7 dependencies and both-backend
+  acceptance. The active goal continues after this slice's commit.
+
+### CE4b animated-appearance follow-up (2026-10-02)
+
+- **Delivered:** animated Oklab paints, path and rectangle stroke widths, path trim
+  start/end/offset, text paints during component state ramps, rich typography paint
+  animation and height-shadow transforms. Native geometry and baked state remain
+  inspectable; versioned providers retain the source rasterization and brush texture
+  width. Prepared draw closures are immutable and support backward seeks.
+- **Typography:** canonical asynchronous compilation checks the whole source scene's
+  font-dependent layout and raster budgets before splitting native text/providers.
+  Legacy colored-glyph behavior is preserved; native animated or translucent text
+  uses coverage rasters while static opaque text may retain source run colors.
+- **Versions:** commerce adapter `commerce-composition-0.10.0`, story adapter
+  `story-composition-0.7.0`, Canvas renderer `composition-canvas-1.11.0`;
+  evaluator remains `composition-evaluator-11`.
+- **Verification:** `pnpm check:fast` passes with **1,189 unit tests**. Focused
+  appearance parity passes **21 cases / 4,067 pixel-exact frames**, including
+  eight new cases / 1,735 frames. Worst render/readback ratio is **1.1372×**.
+  Source-wide commerce typography preparation passes another **5 cases / 960 exact
+  frames**, worst **1.0738×**. The native renderer browser suite passes, including
+  text coverage/color, state blends, font variants, preview parity and deterministic
+  exports. Four new CLI cases (brush appearance, height shadow, story state paints
+  and rich text paints) each produce two byte-identical MP4s with relocated assets
+  and overwrite protection verified.
+- **Coverage:** **94 of 105** commerce/reusable-component CE0 entries now have Canvas
+  adapter coverage. The remaining 11 depend on pixel effects or motion blur.
+- **Remaining:** animated primitive blur, the required CE6/CE7 dependencies,
+  both-backend acceptance and final full local verification. The active goal
+  continues after this slice's commit.
+
+### CE4b effect-stack and focus-blur follow-up (2026-10-02)
+
+- **Delivered:** the first required CE6 dependency: a validated effect registry and
+  native `blur.gaussian` Canvas kernel. Effect parameters use layer clocks, accept
+  property-path drivers, clamp after motion, and support explicit active intervals.
+  The graph applies ordered effects before masks/mattes; adjustment effects process
+  and blend the backdrop before coverage interpolation. Bounds account for blur,
+  and ancestor effects prevent incorrect child culling.
+- **Adapter:** focus blur compiles to native effects around already-painted root
+  opacity, preserving grouped artwork and source matte order. Effect radii are
+  inspectable keys; rendering does not call the commerce evaluator.
+- **Versions:** commerce adapter `commerce-composition-0.11.0`, evaluator
+  `composition-evaluator-12`, Canvas renderer `composition-canvas-1.12.0`.
+- **Verification:** `pnpm check:fast` passes **1,193 unit tests**. Four commerce
+  cases / **960 frames** match exactly, including active intervals, opacity,
+  overlapping groups, inverted mattes and shared matte sources. Worst paired
+  median render/readback ratio is **1.0102×**. The existing native renderer suite
+  passes. New native checks cover all implemented drawable types, stacked effects,
+  masks, precomps, collapsed precomps, offscreen bounds and backward seeks:
+  **80 exact frames**, plus two adjustment cases within **one channel value** of
+  independent blend equations. A saved native Gaussian fixture exports 60 frames
+  twice with identical bytes. Focus blur and a shared-matte variant each export
+  two byte-identical MP4s through relocated CLI JSON.
+- **Coverage:** **95 of 105** commerce/reusable CE0 entries have Canvas coverage.
+- **Remaining:** the other commerce pixel effects, animated primitive blur, motion
+  blur, WebGL2 parity and final full local verification. This is a CE6 dependency
+  slice, not CE6 completion. The active goal continues after its commit.
+
+### CE4b directional-blur, glow and displacement follow-up (2026-10-02)
+
+- **Delivered:** native `blur.directional`, `light.glow` and `distort.sine` registry
+  entries, version `1.0.0`, with validated animatable parameters, bounds expansion,
+  fixed-order premultiplied accumulation and bounded integer sample counts.
+  Commerce treatments compile in authored order, including active intervals and
+  opacity before filtering. The Canvas kernels are shared low-level pixel routines;
+  no composition rendering calls a family evaluator or renderer.
+- **Versions:** commerce adapter `commerce-composition-0.12.0`, evaluator
+  `composition-evaluator-13`, Canvas renderer `composition-canvas-1.13.0`.
+  Legacy versions and CE0 baselines remain unchanged.
+- **Verification:** `pnpm check:fast` passes **1,197 unit tests**. Five commerce
+  cases / **1,200 frames** match exactly, including forward and reversed mixed
+  stacks. Worst paired median render/readback ratio is **1.0297×**. Extracted
+  legacy kernels also pass their frozen CE0 checks: **3 entries / 720 frames**.
+  The expanded native suite passes **400 exact frames** over every implemented
+  drawable type, masks, precomps, activation and backward seeks; **10 adjustment
+  cases** match independent equations within one channel value. Both saved native
+  fixtures export 60 frames twice with identical bytes. Directional blur, glow,
+  displacement and a mixed stack each pass two byte-identical CLI MP4 exports,
+  relocated assets and overwrite protection.
+- **Coverage:** **98 of 105** commerce/reusable CE0 entries have Canvas coverage.
+- **Remaining:** background lighting, particles, grain, light sweep, echo, motion
+  blur, animated primitive blur, WebGL2 acceptance and final full verification.
+  The active goal continues after this slice's commit.
+
+### CE4b light, particle and grain follow-up (2026-10-02)
+
+- **Delivered:** native `light.radial`, `particles.rise` and `stylize.grain` registry
+  entries, version `1.0.0`. Registry colors now accept color keys and scalar channel
+  drivers. Seeded generators retain random-access determinism, and generated
+  pixels prevent inappropriate culling based on the input artwork's bounds.
+- **Adapter:** background light and particles compile to a rear adjustment stack
+  in authored order; grain compiles to a final adjustment with evolution relative
+  to its active window. Full-coverage normal generator stacks paint the backdrop
+  directly. Effects that can change opaque input to transparent still use an RGBA
+  intermediate, preserving multi-pass alpha and edge behavior.
+- **Versions:** commerce adapter `commerce-composition-0.13.0`, evaluator
+  `composition-evaluator-14`, Canvas renderer `composition-canvas-1.14.0`.
+- **Verification:** `pnpm check:fast` passes **1,198 unit tests**. Six commerce
+  cases / **1,440 frames** match exactly, including combined/reversed environment
+  stacks, active windows and grain clocks. Worst paired median render/readback
+  ratio is **1.0519×**. The extracted legacy generators pass the frozen CE0 checks:
+  **4 entries / 960 frames**. Native tests pass **640 exact frames** across every
+  drawable type and **24 adjustment cases** within one channel value, including
+  full coverage and alpha-changing stacks. Three saved native fixtures each
+  export 60 frames twice with identical bytes. Background light, combined particles,
+  grain and effects-studio each produce two byte-identical CLI MP4s, with asset
+  relocation and overwrite protection verified.
+- **Coverage:** **102 of 105** commerce/reusable CE0 entries have Canvas coverage.
+- **Remaining:** light sweep, echo, motion blur, animated primitive blur, shared
+  story-effect integration, WebGL2 acceptance and final full local verification.
+  The active goal continues after this slice's commit.
+
+### CE4b light-sweep follow-up (2026-10-02)
+
+- **Delivered:** native `light.sweep@1.0.0`, with animated band progress and a
+  validated optional coordinate-layer reference. Effects can retain source-local
+  coordinates when a group owns the processed image; camera, parent, rotation and
+  skew transforms are preserved. The shared low-level primitive also retains the
+  frozen legacy renderer's operation order.
+- **Versions:** commerce adapter `commerce-composition-0.14.0`, evaluator
+  `composition-evaluator-15`, Canvas renderer `composition-canvas-1.15.0`.
+- **Verification:** `pnpm check:fast` passes **1,199 unit tests**. Four commerce
+  cases / **960 frames** match exactly, including transformed groups, a single
+  image, inverted matte and glow-before-sweep. Worst paired median render/readback
+  ratio is **1.0165×**. The frozen CE0 sweep fixture passes all **240 frames**.
+  Native effects pass **800 exact frames** and **30 adjustment cases** within one
+  channel value. Four saved native fixtures each export 60 frames twice with
+  identical bytes. Three commerce cases each produce two byte-identical CLI MP4s,
+  with relocated assets and overwrite protection verified.
+- **Coverage:** **103 of 105** commerce/reusable CE0 entries have Canvas coverage.
+- **Remaining:** echo, motion blur, animated primitive blur, shared story-effect
+  integration, WebGL2 acceptance and final full local verification. The active
+  goal continues after this slice's commit.
+
+### CE4b temporal-echo follow-up (2026-10-02)
+
+- **Delivered:** native `time.echo@1.0.0` samples bounded content history before
+  the current pixel stack and matte. Historical opacity, clipping, visibility and
+  precomp clocks are retained. Nested history suppresses additional echoes, and
+  the evaluated-history cache holds at most 16 entries per frame. Native authors
+  may provide keyed revision identities to skip unchanged content.
+- **Adapter:** source descendant poses compile to revision keys, preserving the
+  legacy skip rule even when animation returns to an earlier pose. Single-image
+  wrappers gate history when current source opacity reaches zero. No family
+  evaluator runs during composition rendering.
+- **Versions:** commerce adapter `commerce-composition-0.15.0`, evaluator
+  `composition-evaluator-16`, Canvas renderer `composition-canvas-1.16.0`.
+- **Verification:** `pnpm check:fast` passes **1,203 unit tests**. Four commerce
+  cases / **960 frames** match exactly, including returning poses, inverted matte,
+  translucent overlapping children, active windows, zero decay and glow. Worst
+  paired median render/readback ratio is **1.0655×**. The updated image opacity
+  case also passes **240 exact frames**, at **0.9025×**. Native checks retain the
+  existing **800 exact effect frames / 30 adjustment cases** and add **70 echo
+  frames** within one channel value, including clipped groups, precomps, collapsed
+  transforms, remapped clocks and masks. Five native fixtures each export 60 frames
+  twice with identical bytes. Three commerce cases each pass repeat CLI exports,
+  relocated assets and overwrite protection, including the final opacity case.
+- **Coverage:** **104 of 105** commerce/reusable CE0 entries have Canvas coverage.
+- **Remaining:** motion blur, animated primitive blur, shared story-effect
+  integration, WebGL2 acceptance and final full local verification. The active
+  goal continues after this slice's commit.
+
+### CE4b shared-story-effects follow-up (2026-10-02)
+
+- **Delivered:** story adapter `story-composition-0.8.0` compiles shared focus blur,
+  directional blur, glow, grain and light sweep through the same native registry.
+  Opacity wrappers retain camera depth; path flows share their path's effects and
+  matte even when path opacity is zero. Grain stays in screen coordinates. Empty
+  light-sweep rectangles are valid no-ops, matching zero-size legacy paths.
+- **Validation:** existing shared-effect opt-in, root-target requirements and
+  annotation/mask ownership restrictions remain enforced. Free paths exercise
+  flow treatments; effect-owned annotations remain invalid source scenes.
+- **Verification:** `pnpm check:fast` passes **1,205 unit tests**. Six story cases /
+  **1,152 frames** match exactly: group focus/grain, transformed image sweep with
+  camera depth, text state ramps and containers, and unmasked/normal/inverted
+  path-flow mattes. Worst render/readback ratio is **1.0055×**. Four cases each
+  export **192 frames** twice with identical MP4 bytes; relocated assets and
+  overwrite protection pass.
+- **Remaining:** motion blur, animated primitive blur, WebGL2 acceptance and final
+  full local verification. The active goal continues after this slice's commit.
+
+### CE4b temporal-text preparation follow-up (2026-10-02)
+
+- **Delivered:** Canvas renderer `composition-canvas-1.17.0` prepares animated
+  glyph frames reached only through echo history. Preparation inspects the native
+  graph with culling disabled until final glyph bounds exist, covering frozen
+  precomp clocks, offscreen text and disabled matte sources within the existing
+  memory budget.
+- **Verification:** `pnpm check:fast` passes **1,206 unit tests**. The full native
+  composition browser suite passes, including a frozen precomp whose animated
+  stroke echoes match the equivalent running precomp frame byte for byte on
+  repeated and backward seeks. Existing preview/export, transport, deterministic
+  export and failure-cleanup checks also pass.
+- **Remaining:** motion blur, animated primitive blur, WebGL2 acceptance and final
+  full local verification. The active goal continues after this slice's commit.
+
+### CE4b primitive-blur follow-up (2026-10-02)
+
+- **Delivered:** native `blur.primitive@1.0.0` runs during content drawing before
+  surface effects. Positive child radii override group blur; zero retains it.
+  Overlapping primitives, clipped groups, state crossfades, providers, text
+  containers, ordinary precomps and collapsed precomps preserve their drawing
+  semantics. Blur prevents inappropriate offscreen culling. Both adapters compile
+  motion-craft blur through this entry.
+- **Versions:** commerce `commerce-composition-0.16.0`, story
+  `story-composition-0.9.0`, evaluator `composition-evaluator-17`, Canvas renderer
+  `composition-canvas-1.18.0`.
+- **Verification:** `pnpm check:fast` passes **1,208 unit tests**. Ten family cases /
+  **2,023 frames** pass their unchanged tiers, including group inheritance and
+  overrides, state ramps, text containers, mattes, combined surface blur, all three
+  path styles and rich typography. Path styles and rich typography match exactly;
+  commerce/story component cases differ by at most two channel values, with PSNR
+  at least **98.90 dB**. Worst render/readback ratio is **1.0057×**. The native
+  suite adds **64 exact primitive-blur frames** while retaining earlier effect
+  references. Six native fixtures each export 60 frames twice with identical bytes.
+  Four family cases pass repeat CLI exports, asset relocation and overwrite checks.
+- **Remaining:** motion blur, WebGL2 acceptance and final full local verification.
+  The active goal continues after this slice's commit.
+
+### CE4b native exposure dependency (2026-10-02)
+
+- **Delivered:** evaluator `composition-evaluator-18` and Canvas renderer
+  `composition-canvas-1.19.0` implement deterministic native motion blur, with
+  0–720 degree shutters, phase, 2–64 samples and per-layer opt-in. Groups/precomps
+  pass their switch to descendants; child opt-out holds the complete pose.
+  Full opaque frames accumulate in fixed order, preserving moving transparency.
+  Visibility, content, activation and explicit shot cuts clamp exposures; nested
+  clocks clamp independently. One Float32 buffer bounds accumulation memory.
+- **Verification:** `pnpm check:fast` passes **1,213 unit tests**, including
+  analytic velocity/shutter span and scoped sampling. **90 native reference frames
+  match exactly**, covering occlusion, opt-out, stationary content, phase, cuts,
+  clipped groups, precomps, collapse, frozen clocks and echo. The 60-frame native
+  fixture exports twice with identical bytes. The full native composition browser
+  suite passes, including fractional animated glyph/echo cache preparation and
+  backward seeks, transport parity and failure cleanup.
+- **Cost:** pinned software Chromium, 1920×1080, warmed median render + readback
+  over five frames: disabled **0.9 ms**, 2 samples **30.2 ms**, 8 **100.3 ms**,
+  16 **190.8 ms**, 32 **364.1 ms**, 64 **734.7 ms**. The optional
+  `pnpm test:browser:composition-exposure --profile` repeats these measurements.
+  These are reference-backend costs, not a real-time performance claim.
+- **Remaining:** family exposure compilation, WebGL2 acceptance and final full
+  local verification. This slice does not mark the broader CE7 time-control
+  milestone complete. The active goal continues after the commit.
+
+### CE4b indexed exposure clocks (2026-10-02)
+
+- **Delivered:** evaluator `composition-evaluator-19` and Canvas renderer
+  `composition-canvas-1.20.0` support bounded layer `sampleTimes` tables. Integer
+  property keys index exact source samples; providers receive both clocks.
+  Activation windows retain source timing. All existing key, payload and time
+  limits remain in force. Exact equality of complete exposure graphs permits one
+  draw for proven stationary content, with bounded lookahead and no frame cache.
+- **Verification:** `pnpm check:fast` passes **1,216 unit tests**. The native exposure
+  suite passes **100 exact frames**, including indexed provider source clocks,
+  repeated/backward seeks, and single-draw stationary solids/providers. Both
+  60-frame native fixtures export twice with identical bytes.
+- **Remaining:** family exposure compilation, WebGL2 acceptance and final full
+  local verification. The active goal continues after the commit.
+
+### CE4b commerce exposure compilation (2026-10-02)
+
+- **Delivered:** commerce `commerce-composition-0.17.0` compiles source shutter
+  samples, state/visibility/effect cuts and echo history to bounded indexed clocks.
+  Native text, paths, numeric providers and effect parameters retain their source
+  timestamps. Exact source-pose equality can compact safe stationary samples;
+  2,000-key/table and 64 KiB provider limits remain unchanged. Canvas renderer is
+  `composition-canvas-1.21.0`; evaluator remains `composition-evaluator-19`.
+- **Text preparation:** fractional numeric labels are paired with the rounded glyph
+  pose used by drawing. Preparation includes shutter and echo times within the
+  existing 128 MP budget, fixing missing stroked glyphs without changing the legacy
+  paint loop or renderer version.
+- **Verification:** `pnpm check:fast` passes **1,220 unit tests**. Ten exposure cases /
+  **2,208 frames** pass unchanged tiers and warmed median timing gates: nine match
+  exactly; component state has maximum delta **1**, PSNR ≥ **101.5977 dB**. The
+  largest time ratio is **1.0369×**. Cases cover zero and 360°/32-sample shutters,
+  active effect and visibility cuts, overlapping transparency/echo/matte, primitive
+  blur, spatial paths/morphs, numeric values and native/rich numeric typography.
+  Six representative cases pass relocated-asset CLI export, overwrite protection
+  and two byte-identical MP4s each. Frozen typography and motion-blur baselines
+  pass **432 frames**, with no baseline changes.
+- **Coverage:** all **105/105 commerce/reusable CE0 entries**, including every one of
+  the **63 reusable combinations**, now have Canvas adapter coverage. WebGL2
+  acceptance and final full local verification remain; the goal continues.
+
+### CE4b WebGL2 surface foundation (2026-10-02)
+
+- **Delivered:** an independent WebGL2 backend with pooled RGBA8 textures/FBOs,
+  premultiplied compositing, all 17 blend modes, transformed surfaces, shader luma
+  mattes, masked/adjustment coverage and fixed-order RGBA32F exposure accumulation.
+  Individual primitives use the prepared Canvas rasterizers; complete composition
+  surfaces and their blending remain GPU-owned. No complete-frame Canvas renderer
+  is wrapped or uploaded. Canvas remains the default runtime.
+- **Verification:** `pnpm test:browser:composition-webgl` compares blend, overlap,
+  image, matte, mask, affine surface, adjustment and 2/8/32/64-sample exposure cases
+  against Canvas on pinned SwiftShader: **33 cases**, maximum delta ≤ **2** and
+  PSNR ≥ **52.3277 dB**. `pnpm check:fast` passes **1,220 unit tests**. Surface
+  pooling is bounded across repeated acquisitions. Pixel-effect kernels and preview/export selection remain the next
+  slice; unsupported pixel effects fail explicitly in this internal backend.
+
+### CE4b WebGL2 effects and preview (2026-10-02)
+
+- **Delivered:** `composition-webgl2-0.2.0` adds Gaussian/directional blur, glow,
+  sinusoidal displacement, radial light, particles, grain, light sweep, feathered
+  masks and primitive-surface blur to GPU composition. Gaussian passes preserve
+  the reference's integer normalization; displacement uses a scalar row-offset
+  texture; radial gradients retain source-alpha clipping and ordered dithering.
+  Native echo and exposure use the shared graph and fixed-order GPU accumulation.
+- **Raster boundary:** prepared content and vector coverage use Canvas rasterizers.
+  Consecutive vector fills stay in one rasterized batch so repeated antialiased
+  edges retain their original rounding. Surface transforms, compositing, masks,
+  mattes and pixel filtering execute in WebGL; there is no full-frame Canvas
+  renderer upload. GPU idle surfaces are bounded to 128 MiB and 16 per size/type.
+- **Preview API:** `createCompositionPreview` accepts `backend: "webgl2"` and exposes
+  backend/version metadata and backend-neutral pixel readback. Canvas remains the
+  default. A blurred precomp applies its outer clip after the filter, with a
+  dedicated regression case.
+- **Verification:** the pinned-browser WebGL suite passes **57 focused cases** and
+  **11 native fixture groups / 612 frames**, all at the unchanged `near` threshold
+  (maximum delta ≤ **2**, PSNR ≥ **52.3277 dB**). Gaussian, light sweep, echo,
+  primitive blur and indexed exposure are exact across their native timelines.
+  `pnpm check:fast` passes **1,220 unit tests**; the existing Canvas composition
+  suite passes, including Lab preview, repeat export and PNG/raw transport parity.
+- **Remaining:** export/CLI/Lab backend selection, the complete family matrix on
+  WebGL, measured performance and final local verification. This delivers the
+  CE4b-required effects path; broader CE6 features and its acceleration target
+  are not marked complete.
+
+### CE4b WebGL2 export and Lab selection (2026-10-02)
+
+- **Delivered:** `comp render --backend canvas2d|webgl2`, matching engine request
+  selection and backend-specific scene/result renderer identity. Canvas remains
+  the default. WebGL export captures the presented framebuffer on pinned
+  SwiftShader; PNG and raw RGBA retain the same orientation and pixels.
+- **Lab:** the composition page offers both renderers, replaces its canvas when
+  switching context type, retains selection in the URL, labels the active backend
+  and hardware/software status, and shows the matching export command.
+- **Verification:** `pnpm test:browser:composition-webgl-export` passes four native
+  fixtures / **204 frames** (echo, generators, exposure and providers). CLI export,
+  repeated PNG export, raw export and a separately encoded preview produce
+  identical MP4 bytes. Lab frames agree before/after switching through Canvas;
+  renderer metadata, invalid backend diagnostics and overwrite protection pass.
+  `pnpm check:fast` passes **1,220 unit tests**. The existing Canvas composition
+  suite also passes, including default Lab preview and repeat/transport exports.
+- **Remaining:** full commerce/reusable WebGL pixel and performance acceptance,
+  followed by the complete local check and frozen baseline matrix.
+
+### CE4b WebGL2 stationary-frame reuse (2026-10-02)
+
+- **Delivered:** optional WebGL execution reuse retains only the immediately
+  preceding stationary render graph. Equality checks include transforms, content,
+  masks, effects and clocks; moving exposure samples invalidate it. Diagnostics
+  are reevaluated, and a reused frame reports zero executed samples. Readback
+  retains at most one frame up to 64 MiB and returns independent mutable arrays;
+  opaque GPU surfaces avoid unnecessary unpremultiplication.
+- **Acceptance harness:** commerce, story-component and typography suites accept
+  `--webgl`, using backend-neutral readback and the same existing pixel/timing
+  gates. Portable adapter exports use the selected backend as well.
+- **Measured:** the 1080×1350 product fixture remains exact over **240 frames** and
+  improves from **4.1646×** reference time to **0.3032×**. Its translation variant
+  is also exact over **240 frames**, at **1.0267×**. Measurements use the unchanged
+  three warmed, alternating paired passes and median ≤1.25× rule, without profiling.
+- **Verification:** native parity and export suites pass; a new real-GPU regression
+  checks stationary reuse, moving-exposure invalidation, reverse seeking and
+  caller mutation of returned pixels. `pnpm check:fast` passes **1,220 unit tests**.
+- **Remaining:** full family parity and performance, including continuously
+  animated content, and final full local/frozen-baseline verification.
+
+### CE4b bounded GPU image work (2026-10-02)
+
+- **Version:** `composition-webgl2-0.3.0` bounds image uploads, compositing,
+  presentation and readback to conservative painted regions. Image rasterization
+  retains the reference sampler's global coordinates; each image's latest prepared
+  texture can be reused when its content, transform, clips and opacity are unchanged.
+  The texture cache is capped at 128 MiB, separate from the 128 MiB idle surface pool.
+  Effects, opaque masks/mattes and changing exposure backgrounds conservatively
+  retain full-surface bounds. Changing frames avoid an unnecessary readback copy.
+- **Verification:** the expanded **66 focused GPU cases** and **11 native fixture
+  groups / 612 frames** pass their unchanged pixel tiers. Readback is also compared
+  byte-for-byte with the complete GPU framebuffer, covering image cache invalidation,
+  fractional clear colors, exposure backgrounds, reverse seeks and caller mutation.
+  The **204-frame** export/Lab suite and **1,220 unit tests** pass.
+- **Performance remains open:** continuously animated Drift is pixel-exact for all
+  **240 frames** and improves from **5.2101×** to **2.6641×** reference time. This
+  still fails the unchanged **1.25×** acceptance limit. A direct GPU image-sampling
+  experiment produced channel differences up to 12 and was discarded; neither the
+  pixel tier nor timing threshold was relaxed.
+- **Remaining:** further software-GPU performance work, full family acceptance,
+  and final local/frozen-baseline verification. CE4b is not complete.
+
+### CE4b exact GPU blur optimization (2026-10-02)
+
+- **Version:** `composition-webgl2-0.4.0` computes the raster Gaussian's three box
+  sums in logarithmic GPU passes. Integer-valued RGBA32F intermediates remain
+  below 2²⁴; larger kernels retain the existing integer convolution. The original
+  reciprocal division and per-axis byte rounding are unchanged. Working buffers
+  are limited to 128 MiB and clipped to known painted bounds, with padding for
+  the complete convolution support. Declared provider bounds are honored;
+  unknown bounds remain conservative. Opaque source copies include their background.
+- **Verification:** **68 focused GPU cases** and **612 native fixture frames** pass,
+  including both sides of the fast algorithm's precision limit. Gaussian, echo
+  and primitive-blur native timelines remain exact. The **204-frame** export/Lab
+  suite and **1,220 unit tests** pass.
+- **Measured limit:** all **240 Focus Blur frames** remain exact. Its paired median
+  improves from **13.2874×** to **8.5215×** reference time, still above **1.25×**.
+  Bounding alone does not resolve that fixture's cost: providers without declared
+  bounds and repeated effect work remain expensive. Full family acceptance and
+  final local/frozen-baseline verification remain open.
+
+### CE4b direct GPU presentation (2026-10-02)
+
+- **Version:** `composition-webgl2-0.5.0` renders the root directly to the canvas
+  framebuffer, avoiding the final presentation copy. Shaders retain top-left
+  image coordinates; screen readback reverses the physical framebuffer rows.
+  Effects that sample the backdrop get a GPU-only texture snapshot, refreshed
+  only after the canvas changes. Screen surfaces cannot be swapped with pooled
+  textures. Explicit blend state avoids a per-pass state query.
+- **Verification:** all **68 focused GPU cases / 612 native frames**, the
+  **204-frame** export/Lab suite and **1,220 unit tests** pass. This covers backdrop
+  effects, masks, exposure, byte-exact framebuffer readback, raw/PNG capture,
+  repeat encoded exports and switching between preview backends.
+- **Measured limit:** Drift remains exact for **240 frames** and improves from
+  **2.6641×** to **2.1703×** reference time. It still exceeds **1.25×**. Cropped
+  byte-array and extra bitmap-copy upload experiments were slower and discarded.
+  Full family acceptance, further performance work and final verification remain open.
+
+### CE4b explicit content and isolate reuse (2026-10-03)
+
+- **Version:** `composition-webgl2-0.6.0` retains the latest immutable isolate per
+  layer within a 128 MiB cache. Nested renders cannot evict borrowed surfaces or
+  exceed the retention budget. Outer opacity, blend and clips remain compositing
+  operations. Providers can explicitly identify identical local pixels; unknown
+  providers retain both clocks. Prepared static text, sampled paths, rectangles,
+  appearance and numeric text supply safe keys. State transitions remain part of
+  the identity. Gaussian radii share a key only when their exact integer kernels
+  match. Root frame reuse uses the same identity rules.
+- **Verification:** 68 focused GPU cases, 612 native frames, a provider-cache
+  regression covering opacity/content changes and backward seeks, the 204-frame
+  export/Lab suite and 1,226 unit tests pass. Framebuffer readback stays exact.
+- **Measured limit:** the story bracket's pixel tier passes, but its render/readback
+  ratio remains **16.3029×**, versus **18.4706×** in the preceding diagnostic run.
+  This comparison identifies remaining cost; it does not satisfy the unchanged
+  **1.25×** acceptance gate. Vector batching, provider extents, full family acceptance
+  and final local/frozen-baseline verification remain open.
+
+### CE4b bounded vector preparation and effect rounding (2026-10-03)
+
+- **Version:** `composition-webgl2-0.7.0` prepares adjacent vector/text operations
+  as a single raster batch and composites its bounded texture on the GPU. Image,
+  surface, effect and isolation boundaries stay explicit. The latest batch per
+  layer sequence is retained within 128 MiB. Rectangle strokes, path geometry,
+  flow tokens, measured text, word reveals and text containers supply conservative
+  preparation bounds. Unknown content, animated glyphs and path shadows retain
+  the full surface. Rasterization keeps global coordinates to preserve precision.
+- **Effect corrections:** directional blur now reproduces the reference's per-step
+  Float32 stores, double-product ties and final byte rounding. Two-word integer
+  comparisons correct software-GPU division errors; 42 byte-product exceptions
+  are generated as shader constants. Glow applies opacity before Gaussian blur,
+  matching the reference's filtered draw order.
+- **Verification:** 4,096 GPU arithmetic cases include every double-product tie
+  exception. All 68 focused GPU cases, 612 native frames, 204 export/Lab frames
+  and local fast checks pass. All 576 frames across the flow/effect/matte variants
+  now satisfy the pixel tier (maximum channel delta 2), including backward seeks.
+- **Performance remains open:** bracket improves from 16.3029× to **3.8721×**;
+  commerce A01 landscape measures **1.5805×**. Their pixel tiers pass. Corrected
+  flow variants measure **2.4108–2.5248×**. These remain above the unchanged 1.25×
+  limit. Bounded effect passes, reduced framebuffer transfers, remaining family
+  parity/timing checks and final local/frozen-baseline verification are still required.
+
+### CE4b bounded GPU filter passes (2026-10-03)
+
+- **Version:** `composition-webgl2-0.8.0` clips directional blur, sine displacement,
+  glow and sweep passes to conservative painted extents. Displacements and kernels
+  expand those extents before filtering. Glow carries its input bounds through
+  thresholding and blur; alpha-preserving sweep keeps the existing extent. Unknown
+  or opaque inputs remain conservative. Gaussian fallback passes use the same
+  bounded output region. Device-owned scissor scopes prevent one pass's clipping
+  from leaking into another.
+- **Verification:** native GPU parity, exact framebuffer readback, all 4,096
+  arithmetic cases, the 204-frame export/Lab suite and local fast checks pass.
+  All **576 flow/effect/matte frames** satisfy both the pixel and timing gates:
+  maximum channel delta **2**, with ratios **0.2748×**, **0.3397×** and **0.3408×**.
+  Their previous ratios were 2.4108–2.5248×; effect semantics are unchanged.
+- **Remaining:** ordinary moving scenes still need framebuffer-transfer work;
+  full family parity/timing and final local/frozen-baseline verification remain open.
+
+### CE4b incremental framebuffer and readback (2026-10-03)
+
+- **Version:** `composition-webgl2-0.9.0` repaints the conservative union of old
+  and new bounds for changed root draws. Ordering, membership, unknown bounds,
+  isolates, adjustments and moving exposures request a complete repaint. All GPU
+  passes intersect the retained frame's damage region; prepared content and
+  compositing semantics remain unchanged.
+- **Readback:** one bounded GPU-produced byte buffer accumulates changed regions
+  across draws, including when callers skip reads. Returned arrays remain
+  independently mutable. Failed draws invalidate both graph and damage reuse
+  before the next render; direct backend writes also invalidate retained damage.
+- **Verification:** 1,233 unit tests, native GPU parity and full-framebuffer
+  readback, all 4,096 arithmetic cases and all 204 export/Lab frames pass. Eight
+  new native checks cover delayed reads, backward seeks and failed-provider
+  recovery. Bracket's 192 frames retain maximum channel delta 2; its **3.4180×**
+  timing ratio still exceeds the unchanged 1.25× limit. Further performance work
+  and full family/frozen-baseline acceptance remain required.
+
+### CE4b disconnected vector batches (2026-10-03)
+
+- **Version:** `composition-webgl2-0.10.0` partitions vector batches into disjoint
+  conservative rectangles, retaining source order wherever coverage overlaps.
+  Dense batches stay together; the partition count and raster cache remain bounded.
+  This avoids uploading and shading large empty gaps between separate artwork.
+- **Verification:** all 1,236 unit tests, native GPU parity and exact framebuffer
+  checks, 4,096 arithmetic cases and 204 export/Lab frames pass. Bracket retains
+  maximum channel delta 2 and measures **3.2152×**, compared with **3.6483×** in
+  the immediately preceding component matrix. It still misses the 1.25× gate.
+- **Acceptance audit:** the preceding 0.9.0 component matrix completed **48 cases /
+  9,216 frames**. Five cases pass both gates; nine have pixel failures (detail and
+  supply sequences, spatial/morph leaders, and primitive-blur variants); the
+  remaining cases miss timing only. A separate 0.9.0 commerce A01 landscape check
+  passes all 300 frames with maximum delta 1 and paired median **1.1749×**.
+  Full CE4b acceptance and final local/frozen-baseline verification remain open.
+
+### CE4b primitive source-over rounding (2026-10-03)
+
+- **Version:** `composition-webgl2-0.11.0` composites prepared vectors with integer
+  source-over rounding in GPU shaders. Overlapping primitives reach an existing
+  backdrop individually, in source order. Empty transparent surfaces retain their
+  original batched preparation, preserving echo antialiasing. Canvas framebuffer
+  snapshots are restricted to the painted region; transparent intermediates copy
+  only their conservative occupied extent through the compositing shader.
+- **Verification:** native GPU parity, exact full-framebuffer checks, all 4,096
+  arithmetic cases, 204 export/Lab frames and 1,236 unit tests pass. A new twelve
+  overlapping translucent primitive regression is pixel-exact. All 192 detail-
+  sequence frames now pass the pixel tier (maximum delta 2); spatial-morph's 192
+  frames improve from delta 3 to **1**. Bracket improves to delta **1** with timing
+  **3.2128×**. Detail-sequence timing remains **3.9251×**.
+- **Remaining:** plain morph retains two delta-3 frames; unknown provider bounds
+  cause large snapshot costs (morph **9.7052×**). Primitive-blur parity, remaining
+  family gates and final local/frozen-baseline checks are still required.
+
+### CE4b bounded motion-path providers (2026-10-03)
+
+- **Version:** `composition-webgl2-0.12.0` bounds spatial paths, morphs, attached
+  paths and their flow tokens using conservative control-point hulls and stroke
+  extents. Morph precedence matches the drawer; painted paths include the maximum
+  authored width. Overshooting easings and device-space shadows retain the full
+  conservative fallback. Provider pixels and adapter output are unchanged.
+- **Verification:** quarter-frame geometry containment, overshoot/shadow fallback,
+  1,236 unit tests, native GPU parity, all 4,096 arithmetic cases and all 204
+  export/Lab frames pass. Morph's 192-frame pixels remain unchanged and timing
+  improves from **9.7052×** to **4.9241×**. Spatial-morph retains delta **1** and
+  improves from **4.9815×** to **4.2628×**. Both still miss the 1.25× gate.
+- **Remaining:** the two brush-morph outliers and blurred-caption outliers come
+  from multiple Canvas paint operations flattened inside a single provider.
+  Their compositing parity, remaining performance gates and final full verification
+  are still open.
+
+### CE4b provider paint boundaries (2026-10-03)
+
+- **Version:** `composition-webgl2-0.13.0` preserves overlapping local paint
+  operations inside providers before compositing them against a GPU backdrop.
+  Filtered primitives and images retain their distinct source-over rounding.
+  Recording preserves transform/clip stacks and snapshots mutable paths, matrices
+  and source canvases. Unsupported paint operations and bounded recording/cache
+  limits use the existing local raster fallback.
+- **Verification:** morph and spatial-morph pass all 384 pixel comparisons (maximum
+  delta 2 and 1); all three primitive-blur variants pass 576 frames at delta 2.
+  Native GPU checks, 4,096 arithmetic cases, replay regressions for mutable sources
+  and clipping, 1,236 unit tests and the 204-frame export/Lab suite pass.
+- **Remaining:** timing still fails: morph **9.0005×**, spatial-morph **4.2604×**,
+  primitive blur **1.3763×**, matte **1.5296×**, stack **1.6630×**. Splitting paint
+  operations increases preparation and GPU pass costs; the performance gates,
+  remaining family checks and final full verification remain open.
+
+### CE4b batched provider compositing (2026-10-03)
+
+- **Version:** `composition-webgl2-0.14.0` composites up to 15 prepared local
+  paints in one GPU pass, using one backdrop snapshot and preserving each paint's
+  intermediate rounding. Larger providers use consecutive batches within WebGL2's
+  guaranteed 16 fragment samplers. Partial redraw clipping remains active.
+- **Verification:** a 35-paint provider spanning three batches is pixel-exact
+  across four renders including backward seeking. Native parity, arithmetic,
+  all 1,236 unit tests and 204 export/Lab frames pass. Morph retains delta 2 while
+  timing improves from **9.0005×** to **6.6098×**; spatial-morph retains delta 1
+  at **4.3131×**. Both still fail the unchanged 1.25× gate.
+- **Remaining:** provider preparation and uploads, other family timing gates,
+  remaining parity checks and final full verification.
+
+### CE4b bounded local paint paths (2026-10-03)
+
+- **Version:** `composition-webgl2-0.15.0` tracks Canvas path control hulls in
+  device coordinates, including transform changes within a path, curves and
+  ellipses. Each prepared paint uses its own conservative extent instead of the
+  provider's complete timeline extent. Unknown tangent arcs and opaque Path2D
+  objects retain the provider fallback; stroke/filter/shadow padding remains.
+- **Verification:** all **48 story-component cases / 9,216 frames** now pass the
+  pixel tiers (maximum delta 2), closing the nine earlier pixel-failing cases.
+  Curved-path coverage regressions, native GPU parity, 4,096 arithmetic cases,
+  1,236 unit tests and all 204 export/Lab frames pass. The targeted morph run
+  improves from **6.6098×** to **5.2811×**, with unchanged pixels.
+- **Remaining:** **43 of 48 cases still fail timing**. The three flow-effect and
+  two sweep cases pass both gates. Primitive blur is **1.2993×**, its matte
+  **1.4207×**, and stack **1.5890×** in the full matrix. Commerce/typography GPU
+  matrices, all outstanding performance gates and final full verification remain.
+
+### CE4b actual single-group coverage (2026-10-03)
+
+- **Version:** `composition-webgl2-0.16.0` uploads the actual coverage of a single
+  recorded paint group directly from its original local raster. A provider no
+  longer needs multiple overlapping paints to benefit from recorded path bounds.
+- **Verification:** spatial-leader retains delta 2 across 192 frames and improves
+  from **6.9307×** in the preceding full matrix to **5.4180×**. Spatial-morph
+  retains delta 1 at **4.3177×**; bracket retains delta 1 at **3.6480×**. Native
+  checks include exact rounding across 105 paints in three providers and direct
+  single-group bounds. All 1,236 unit tests and 204 export/Lab frames pass.
+- **Remaining:** performance still exceeds the 1.25× gate. Packed texture uploads
+  and cross-provider batching were tested and discarded because their added work
+  outweighed their savings. Broader family acceptance and final checks remain.
+
+### CE4b rich-text provider metadata (2026-10-03)
+
+- **Version:** `composition-webgl2-0.17.0` shares native text's prepared glyph,
+  container and correction bounds with numeric/rich-text providers. Their visual
+  keys include displayed values, reveal/state, appearance and the source clock
+  when text animation needs it. Provider serialization and Canvas drawing stay
+  unchanged; GPU damage and coverage caches can now use this metadata.
+- **Verification:** all **20 typography cases / 3,367 frames** pass pixel parity,
+  with six passing both gates. Thai numeric improves from **5.3441×** to
+  **3.1119×**, commerce numeric from **2.5950×** to **1.5140×**, and editorial
+  numeric from **2.6036×** to **2.3673×**. Native GPU parity, arithmetic,
+  1,236 unit tests and 204 export/Lab frames pass.
+- **Remaining:** typography still has 14 timing failures; completed finite text
+  animation continues to invalidate coverage. Commerce GPU acceptance and final
+  full verification remain open alongside the component performance gates.
+
+### CE4b settled typography clocks (2026-10-03)
+
+- **Version:** `composition-webgl2-0.18.0` stops invalidating native and provider
+  glyph coverage after finite text animation, transitions, decoration curves,
+  layer weights and corrections settle. Fractional clocks and backward seeks
+  remain distinct while active; signals and animated selectors remain live.
+- **Verification:** all **20 cases / 3,367 typography frames** retain pixel
+  parity. **Nine cases now pass both gates**, up from six: commerce numeric
+  improves from **1.5140×** to **0.8171×**; editorial primitive blur passes at
+  **1.1015×**, and glyph performance at **1.2442×**. Editorial is **1.6090×**,
+  Thai text **1.3311×**, Thai numeric **1.6830×**. Four clock regressions,
+  all 1,240 unit tests, native GPU checks and 204 export/Lab frames pass.
+- **Remaining:** 11 typography timing failures, component timing failures,
+  commerce GPU acceptance and final full verification. Idle gaps before and
+  between finite text effects still offer coverage reuse opportunities.
+
+### CE4b idle typography windows (2026-10-03)
+
+- **Version:** `composition-webgl2-0.19.0` merges finite typography activity
+  windows and reuses coverage before, between and after them. Active fractional
+  frames remain distinct, overlapping windows stay live, and every idle phase has
+  its own stable key for backward seeking. Signal/selector fallbacks remain.
+- **Verification:** all **20 cases / 3,367 frames** retain pixel parity;
+  **10 now pass both gates**. Transitions pass at **1.1640×**, glyph performance
+  improves to **1.1838×**, and editorial primitive blur is **1.0662×**. Editorial
+  improves to **1.3954×**, selectors to **1.3130×**, and Thai text to **1.2851×**.
+  Six clock regressions, 1,242 unit tests, native GPU checks and 204 export/Lab
+  frames pass.
+- **Remaining:** 10 typography timing failures (1.2851–1.9627×), component
+  timing failures, full commerce GPU acceptance and final full verification.
+
+### CE4b commerce GPU audit and translated sampling (2026-10-03)
+
+- **Audit:** the diagnostic commerce run at `composition-webgl2-0.19.0`
+  completed **48 cases / 11,592 frames** before being stopped to address confirmed
+  failures. **21 cases passed both gates**, including all seven commerce demos
+  and four motion-blur variants. Pixel failures were directional blur (maximum
+  difference 8), displacement (3), and its two stacked variants (4). This was a
+  partial audit with exports skipped, not full commerce acceptance.
+- **Version:** `composition-webgl2-0.20.0` clips translated image rectangles at
+  pixel centers and clamps filtering to source edges. It also initializes
+  fixed-step coordinates per 127-pixel bitmap span, matching the pinned Canvas
+  renderer's float32 mapping instead of rounding each destination coordinate
+  independently. Both corrections apply to GPU directional blur and sine
+  displacement; effect arithmetic and the pixel/timing gates are unchanged.
+- **Displacement verification:** all **720 frames** pass pixels. The base case is
+  exact; both stacked variants have maximum difference **2**. Timing remains
+  over budget at **2.2747× / 2.3556× / 2.4462×**, respectively.
+- **Directional verification:** all **240 frames** pass both gates, reducing
+  maximum difference from **8 to 1** with a paired median time of **0.0943×**.
+- **Regression verification:** four new 1080-pixel-wide sampling cases cover
+  horizontal, vertical and angled clipped translations plus fractional sine
+  coordinates beyond the first span. They pass at maximum difference **1 / 1 /
+  1 / 0**. Native GPU checks, all **1,242 unit tests**, fast checks and **204
+  export/Lab frames** pass.
+
+### CE4b finite signal typography reuse (2026-10-03)
+
+- **Version:** `composition-webgl2-0.21.0` includes finite signal and selector
+  curves in typography activity windows. Constant plateaus and held-key gaps
+  reuse coverage, while destination start gates, temporal handles, fractional
+  frames and backward seeks retain their correct state. Missing signals and
+  signals with additive pulse/oscillation/noise continue using live clocks.
+- **Verification:** all **20 cases / 3,367 frames** pass pixels; **11 pass both
+  gates**. Selectors now passes at **1.1636×**, down from **1.3130×**. Semantic
+  text improves from **1.5150× to 1.3570×** and vertical text from **1.5199× to
+  1.3650×**, but both remain over budget. Eleven clock regressions, all **1,247
+  unit tests**, fast checks, native GPU checks and **204 export/Lab frames** pass.
+- **Remaining:** nine typography timing failures, component/commerce timing
+  failures, the rest of the commerce GPU audit, complete family exports and
+  final full verification. No acceptance gate or baseline has changed.
+
+### CE4b reusable-component GPU audit and empty coverage (2026-10-03)
+
+- **Audit:** all **49 commerce/isolated reusable-component cases / 9,408 frames**
+  pass the existing pixel gate at `composition-webgl2-0.21.0`; **15 pass both
+  gates**. This includes primitive blur, matte, stacked blur, exposure and numeric
+  rounding variants. The other **34 cases fail timing**, so this diagnostic run
+  (exports skipped) does not establish full acceptance.
+- **Version:** `composition-webgl2-0.22.0` distinguishes a supported empty paint
+  recording from an unsupported recording. A provider that only changes Canvas
+  state or constructs an unpainted path no longer uploads a transparent texture.
+  Unsupported drawing operations still use the original raster fallback.
+- **Verification:** the empty-recording check and provider disappearance/backward
+  seek regression pass; 105 overlapping paints across three providers remain
+  exact over five rendered frames. Native GPU checks, all **1,247 unit tests**,
+  fast checks and **204 export/Lab frames** pass. Story bracket pixels remain at
+  maximum difference **1**; timing is **3.6069×**, with no measured improvement.
+- **Experiments:** skipping clears before full texture transfers did not improve
+  the bracket A/B result (**3.4763× versus 3.4769×**) and was discarded. Bounded
+  typed-pixel uploads were slower both with separate and fused alpha conversion;
+  neither prototype was adopted. Remaining work is unchanged.
+
+### CE4b commerce audit completion and single-image typography (2026-10-03)
+
+- **Commerce audit:** the remaining **29 atom cases / 6,960 frames** all pass
+  pixels; **14 pass both gates** at `composition-webgl2-0.22.0`. Together, the
+  split diagnostic runs cover **126 cases / 27,960 frames**. The four initial
+  pixel failures passed their 0.20.0 reruns; counting that directional-blur
+  timing pass gives **51 cases passing both gates** across the recorded runs.
+  These mixed-version diagnostic runs exclude exports and do not replace the
+  required final full acceptance run.
+- **Version:** `composition-webgl2-0.23.0` lets prepared content declare a single
+  source-over image paint. Native and rich numeric typography opt in only when
+  preparation excludes containers, decorations, transitions, corrections and
+  multiple blur runs. Such content skips paint recording and mutable-canvas
+  snapshots; other providers retain the existing replay path and rounding.
+- **Verification:** all **20 typography cases / 3,367 frames** pass pixels;
+  **12 pass both gates**. Native Thai passes at **1.1798×**, selectors improves
+  to **1.0372×**, semantic text to **1.2827×**, and vertical text to **1.2626×**.
+  Eight timing failures remain. The single-image mutable-source/backward-seek
+  regression, native GPU checks, all **1,247 unit tests**, fast checks and **204
+  export/Lab frames** pass. A transient local helper-module fetch failure passed
+  when the native suite was rerun alone.
+- **Remaining:** typography/component/commerce timing, full family exports,
+  final full local verification and CE0 baseline verification. A bounded
+  multi-state vector cache prototype did not improve first-pass measurements
+  (story bracket **3.8447×**, Thai **1.4609× / 1.8893×**) and was discarded.
+
+### CE4b single-pass incremental readback (2026-10-03)
+
+- **Version:** `composition-webgl2-0.24.0` reads changed screen regions in native
+  row order and reverses their row selection while patching the retained frame.
+  This removes the intermediate in-place flip without changing ownership of
+  returned arrays or the default top-down device read API.
+- **Verification:** all **20 typography cases / 3,367 frames** pass pixels;
+  **13 pass both gates**, including semantic text at **1.2381×**. Seven timing
+  failures remain. Story bracket remains within pixel limits at **3.4000×**
+  timing. Native GPU checks, **1,248 unit tests**, fast checks and **204 export/Lab
+  frames** pass. A regression covers bottom-up partial updates, buffer ownership
+  and preservation of the native temporary bytes.
+- **Remaining:** family timing gates, full family exports, final full local and
+  CE0 baseline verification. The native axis-aligned image sampler remains an
+  uncommitted diagnostic prototype: striped-image probes confirm rare 1/16
+  coordinate-boundary differences. Arithmetic and scanline variants have not
+  resolved them. Direct GPU-flipped readback and disjoint-damage prototypes were
+  slower and were discarded.
+
+### CE4b direct image-paint blending (2026-10-03)
+
+- **Version:** `composition-webgl2-0.25.0` blends individual prepared image
+  paints directly into non-floating GPU targets with premultiplied source-over,
+  matching the existing image-layer path. It avoids backdrop copies and temporary
+  surfaces for those paints. Primitive integer rounding, floating targets and
+  multi-paint batches retain their existing paths.
+- **Verification:** all **20 typography cases / 3,367 frames** pass pixels;
+  **14 pass both gates**. Editorial passes at **1.2154×** and component-fit at
+  **1.2258×**; selectors improves to **0.9477×**. Six timing failures remain,
+  including semantic **1.2520×** and vertical **1.2509×**, which are still failures
+  despite their small margin. Native GPU checks, all **1,248 unit tests**, fast
+  checks and **204 export/Lab frames** pass.
+- **Remaining:** family timing gates, full family exports and final full local/CE0
+  verification. A separate single-image paint-bound measurement prototype added
+  overhead without improving the matrix and was discarded.
+
+### CE4b disjoint image-paint batches (2026-10-03)
+
+- **Version:** `composition-webgl2-0.26.0` skips paint recording when every
+  content item in a batch is a known single image. Overlapping content is already
+  separated before batching over a backdrop, so the combined image preserves
+  source-over rounding without mutable-canvas snapshots.
+- **Verification:** all **20 typography cases / 3,367 frames** pass pixels;
+  **16 pass both gates**. Semantic passes at **1.2424×**, vertical at **1.2462×**,
+  and native Thai at **1.0408×**. The four remaining timing failures are containers
+  (**1.5391×**), editorial numeric (**1.3722×**), appearance-uniform (**1.8415×**)
+  and numeric Thai (**1.7147×**). Native GPU checks, all **1,248 unit tests**, fast
+  checks and **204 export/Lab frames** pass. The expanded image-provider regression
+  covers three disjoint mutable sources, transparent and absent paints, and
+  backward seeking across five frames.
+- **Remaining:** timing margins are narrow for semantic and vertical text;
+  family timing gates, full exports and final local/CE0 verification remain open.
+
+### CE4b stable glyph-image replay (2026-10-03)
+
+- **Version:** `composition-webgl2-0.27.0` lets prepared drawers declare image
+  sources stable until the next content draw. A single eligible content draw
+  borrows those sources during immediate paint replay instead of snapshotting
+  them. Native/rich typography opts in only without transitions, corrections or
+  multiple blur runs; containers and decorations may still surround the glyph
+  image. Multi-content batches and state crossfades keep snapshots.
+- **Verification:** all **20 typography cases / 3,367 frames** pass pixels;
+  **15 pass both gates** in this run. Containers improves to **1.4282×**,
+  editorial numeric to **1.2716×**, uniform appearance to **1.6355×**, and numeric
+  Thai to **1.5609×**. Vertical text measures **1.2548×**, so the timing margin
+  remains unresolved. Native GPU checks, all **1,248 unit tests**, fast checks and
+  **204 export/Lab frames** pass, including mutable-source fallback and borrowed
+  source replay with overlapping primitive/image paints and backward seeking.
+- **Remaining:** family timing gates, complete family exports and final full
+  local/CE0 verification.
+
+### CE4b first paint-group reuse (2026-10-03)
+
+- **Version:** `composition-webgl2-0.28.0` retains the first local paint group
+  and records later overlapping groups without rasterizing them twice. Reads,
+  canvas access and unsupported operations flush deferred work before falling
+  back. Mutable image snapshots and Canvas state restoration remain intact.
+- **Verification:** all **20 typography cases / 3,367 frames**, **48 story
+  component cases / 9,216 frames** and **49 commerce component cases / 9,408
+  frames** pass pixels. Respectively **16**, **5** and **14** cases pass both
+  gates. Typography containers measures **1.4348×**, uniform appearance
+  **1.6323×**, semantic text **1.2562×** and numeric Thai **1.5716×**; these four
+  remain over budget. Family runs used `--skip-exports` for diagnostics.
+  Native checks, all **1,248 unit tests**, fast checks and **204 export/Lab
+  frames** pass. Eleven exact deferred-paint cases cover destination reads,
+  early canvas aliases, self-draws, resets, gradients, limits and source mutation.
+- **Remaining:** family timing gates, complete family exports and final full
+  local/CE0 verification. Cropped ImageBitmap staging increased measured upload
+  cost and was discarded.
+
+### CE4b origin-preserving preparation bounds (2026-10-03)
+
+- **Version:** `composition-webgl2-0.29.0` drops unused trailing rows and columns
+  from image and native-solid preparation canvases while retaining their device
+  origin. Custom text/provider drawers keep full canvas dimensions. Preparation
+  sizes use 256-pixel buckets and the GPU backend caps idle Canvas surfaces at
+  128 MiB across sizes; active surfaces are never evicted.
+- **Verification:** fast checks, **1,251 unit tests**, native GPU checks and
+  **204 export/Lab frames** pass. The full story run covers **68 cases / 13,894
+  frames**: all **48 reusable-component cases / 9,216 frames** pass pixels, five
+  pass both gates, and all **13 required component export pairs** pass repeated
+  MP4, asset-relocation and overwrite checks. Bracket timing is **3.2869×**,
+  compared with **3.5165×** in the preceding component audit.
+- **Broader audit:** nine non-component CE4a story/passage cases exceed their
+  pixel tier (maximum difference 3). Full-size preparation reproduces both
+  representative failures: v013 Unequal Margins frame 0 and continuous Evidence
+  Boundary frame 112. These remain CE4a acceptance work; CE4b component pixels
+  pass. The full story command correctly exits nonzero for these and timing
+  failures. No tier or timing budget changed.
+- **Remaining:** CE4b family timing gates, commerce/typography family exports and
+  final full local/CE0 verification. OffscreenCanvas and read-frequent contexts
+  showed no consistent transfer improvement and were not adopted.
+
+### CE4b bounded provider preparation (2026-10-03)
+
+- **Version:** `composition-webgl2-0.30.0` lets local providers explicitly opt
+  into smaller preparation canvases. Built-in bounded providers and native text
+  opt in; custom drawers retain the full canvas dimensions by default. Device
+  origins and the existing memory limits remain unchanged.
+- **Verification:** fast checks, **1,251 unit tests**, native GPU checks and
+  **204 export/Lab frames** pass. The provider contract checks both default and
+  opted-in canvas dimensions across forward/backward rendering. Commerce covers
+  **127 cases / 28,200 frames**, all passing pixels; **52** pass both gates and
+  all **30 export pairs** pass. Typography covers **20 cases / 3,367 frames**,
+  all passing pixels; **17** pass both gates and all **10 export pairs** pass.
+  Containers (**1.4004×**), uniform appearance (**1.6181×**) and Thai numeric
+  text (**1.5374×**) remain over the typography timing budget.
+  All **48 story-component cases / 9,216 frames** pass pixels, **eight** pass
+  both gates, and all **13 required export pairs** pass. Bracket is **3.2085×**.
+  Family commands correctly exit nonzero for their remaining timing failures.
+- **Remaining:** family timing gates and final full local/CE0 verification.
+  A direct PNG sampling prototype
+  failed parity, and Canvas-based GPU readback more than doubled the measured
+  bracket cost; neither was adopted.
+
+### CE4b bounded group repainting (2026-10-03)
+
+- **Version:** `composition-webgl2-0.31.0` tracks the union of child coverage
+  through normal isolated groups without effects. Masks and mattes retain the
+  destination bounds while their complete state participates in invalidation.
+  Unknown coverage, effects, adjustment layers and non-normal group blending
+  retain the full-repaint fallback.
+- **Verification:** fast checks, **1,255 unit tests**, native GPU checks and
+  **204 export/Lab frames** pass. New regressions cover nested group motion,
+  opacity, changing inverted mattes outside destination coverage, empty groups,
+  ordering and unsupported bounds. Browser checks compare raw GPU pixels through
+  nested masks, normal/inverted mattes, delayed reads, backward seeks, caller
+  mutation and failed-draw recovery.
+  All **five commerce matte cases / 1,200 frames** and **five story mask/matte
+  cases / 960 frames** pass pixels, with **three required export pairs** passing.
+  Commerce matte improves from **2.5730× to 2.1264×**, inverted overlap from
+  **1.7912× to 1.5064×**, and shared group sources from **1.6043× to 1.4217×**.
+- **Remaining:** family timing gates and final full local/CE0 verification.
+  These targeted family commands still exit nonzero for remaining timing failures.
+
+### CE4b horizontal displacement sampling (2026-10-03)
+
+- **Version:** `composition-webgl2-0.32.0` samples only the unchanged source row
+  for sine displacement, preserving fixed-step bitmap spans, quantized filtering
+  and per-pixel byte rounding. Exact half-pixel clipping now matches Canvas at
+  both edges.
+- **Verification:** fast checks and **1,255 unit tests** pass. Native GPU checks
+  pass, including **13 exact sine sampling cases** around snapping, positive and
+  negative half-pixel shifts, bitmap-span boundaries and offscreen displacement.
+  **204 export/Lab frames** pass. Both commerce displacement cases / **480 frames**
+  pass their pixel tiers and the stacked-effect repeat export passes. Base
+  displacement improves from **2.2362× to 2.0647×**; the pixel stack is **2.3685×**.
+- **Remaining:** family timing gates and final full local/CE0 verification.
+  Direct PNG sampling now matches the browser's mip levels in a prototype:
+  all **192 stagger frames plus four seeks** pass (maximum difference **1**,
+  minimum PSNR **97.26 dB**). Paired timing improves from roughly **3.27–3.28×**
+  to **2.99–3.05×**. Broader image sampling checks are required before adoption.
+
+### CE4b PNG mip sampling (2026-10-03)
+
+- **Version:** `composition-webgl2-0.33.0` samples verified PNG mip sources on
+  WebGL2 for conservative, axis-aligned downscales. Transparent borders,
+  dimensions, mip boundaries and transform constraints determine eligibility;
+  other images retain the existing path. Source textures have a **128 MiB**
+  cache budget. Sampling depends on current inputs, with no movement-history
+  fallback, and skips coordinate preparation outside current damage.
+- **Verification:** fast checks, **1,255 unit tests**, native GPU checks and
+  **204 export/Lab frames** pass. Synthetic PNG coverage includes **106 frames**
+  with nested transforms, containment, opacity, fallback boundaries and
+  byte-identical repeats/reverse seeks. Sampled sprites are exact; opaque
+  fallback images remain near. Final paired Commerce Stagger timings are
+  **620.5 / 623.4 ms**, versus **675.3 / 680.4 ms** with sampling disabled,
+  approximately **8%** faster. All focused pixels are near (max difference **1**,
+  minimum PSNR **97.44 dB**) and seeks are exact. The ratios remain
+  **3.1009× / 3.1613×**; the unchanged **1.25×** gate still fails. Metal timing
+  overlaps baseline variation, so no repeatable hardware gain is claimed.
+- **Remaining:** complete selected-candidate family audits, outstanding timing
+  gates and final local/CE0 verification. The bounded feasibility report is
+  [composition-ce4b-feasibility.md](./composition-ce4b-feasibility.md). It records
+  both actual renderer profiles and the rejected readback-buffer experiment;
+  it does not revise milestone acceptance.
+
+### CE4b feasibility decision and final verification (2026-10-03)
+
+- **Approved scope:** the user transferred CE4b's unchanged **1.25×** timing
+  requirement and **117** recorded GPU timing failures to CE6. Adapter coverage,
+  assigned pixel tiers, evaluated state, seeks, repeated exports, Lab agreement
+  and full local verification remain CE4b requirements. The target, baselines,
+  tolerances and benchmark assertions are unchanged.
+- **Selected candidate:** `composition-webgl2-0.33.0`, committed as `3d313d3`.
+  Complete pinned WebGL2 audits pass all **195 cases / 40,783 frames**, all seeks
+  and **53 export pairs**. The audits cover all **63** CE0 reusable-component
+  combinations and their regression variants. **78** cases pass both pixel and
+  timing gates; **117** fail timing only.
+- **Local verification:** full `pnpm check` stopped on the Canvas background
+  timing assertion (**1.2599×**, exact pixels) after fast/runtime/integration,
+  legacy browser groups, native WebGL/export/Lab/effect checks and the full
+  **68-case / 13,894-frame** Canvas story matrix passed. The follow-up background
+  result is **1.0246×**, exact; both measurements remain recorded. The complete
+  follow-up was stopped at the user's three-hour feasibility deadline, after
+  **93 Canvas commerce cases / 21,672 frames** and **20 export pairs** passed.
+- **Remaining correctness:** **34 Canvas commerce cases / 10 export pairs**,
+  Canvas typography, frozen CE0 verification and complete hardware
+  preview/export perceptual plus Lab interaction validation. Prepared hardware
+  harnesses have not run. CE4b stays open; its timing split does not waive these
+  checks. See [the final report](./composition-ce4b-feasibility.md) and
+  [results, pending IDs and resume commands](./composition-ce4b-feasibility-results.json).
+
+### CE4b resumed correctness verification (2026-10-03)
+
+- **Authorization:** after the three-hour feasibility phase ended, the user
+  authorized completing the remaining correctness checks under the approved
+  split. Performance experiments and renderer architecture changes remain on
+  hold pending external research.
+- **Canvas commerce complete:** resumed the saved **34** pending cases using
+  existing selectors, without repeating completed expensive atom checks. All
+  **127 cases / 28,200 frames** now pass their assigned pixel tiers, state and
+  reverse-seek checks, and existing timing assertions. The **30 required export
+  pairs** pass, including the two pending inline exports and eight standalone
+  checks from the matrix tail. These complete runs used `3d313d3` / WebGL2 version 0.33; the affected blur cases were rechecked after the correctness fix below.
+- **Canvas typography complete:** all **20 cases / 3,367 frames** pass their
+  assigned pixel tiers, state/seek checks and existing timing assertions. All
+  **10 required export pairs** are byte-identical, including numeric text and
+  native/numeric motion blur. No production code or tolerance changed.
+- **Frozen CE0 complete:** the unchanged `pnpm test:browser:composition-baselines`
+  check passed all **176 items**. No stored baseline, timing target or pixel tier
+  was regenerated or changed.
+- **Hardware verification complete:** the full matrices and Lab checks passed after
+  the primitive-blur correction below. The **117 recorded GPU timing failures** and
+  unchanged **1.25×** requirement remain CE6 work.
+
+### CE4b completion record (2026-10-03)
+
+- **Owner / branch:** Codex, `codex/composition-ce4b`, based on
+  `codex/composition-ce4`. CE4b is complete under the user-approved timing split;
+  CE4a, CE4c and CE4d retain their separate requirements.
+- **Correctness fix:** hardware Canvas primitive blur and its glyph preparation
+  produced **39.9017 dB** at editorial frame 70, below the unchanged **40 dB /
+  SSIM 0.99** preview tier. `cf28529` selects software glyph preparation for
+  compositions containing primitive blur, software Canvas rendering for those
+  Canvas previews, and separately pooled software primitive preparation for WebGL.
+  GPU composition and effects remain native. Canvas now matches this variant
+  exactly; WebGL's worst sampled PSNR is **62.7643 dB**. Renderer versions are
+  `composition-canvas-1.22.0` and `composition-webgl2-0.34.0`.
+- **Pinned coverage:** commerce **127 cases / 28,200 frames**, typography **20 /
+  3,367**, and reusable story/components **48 / 9,216** pass their assigned
+  pixel tiers, evaluated states, repeated frames and reverse seeks on both
+  backends. All **63 reusable-component combinations** are represented. The
+  completed Canvas story matrix additionally covers **20** ordinary story cases:
+  **68 / 13,894** in total. All **53 required MP4 pairs per backend** pass with
+  portable assets, pinned fonts and overwrite protection. After the fix, all
+  **10 changed cases / 2,023 frames per backend** and **eight export pairs** were
+  rechecked; their existing timing assertions also passed.
+- **Hardware preview:** verified Apple M5 Pro / ANGLE Metal against the pinned
+  SwiftShader profile for **195 cases per backend**. All **10,294 forward frame
+  comparisons** and **585 fresh reverse frames per backend** meet the existing
+  perceptual tier; evaluated states agree exactly. Retained WebGL previews have
+  exact reverse-seek hashes across seven sampled positions. Five initial commerce
+  byte changes across new hardware canvases were rerun directly against pinned
+  output and pass the required tier; the first-run diagnostics are preserved.
+  Completed results were reused, with only changed blur cases and those five
+  diagnostics rerun. No baseline or tolerance changed.
+- **Lab and export:** five hardware Lab fixtures cover echo, generators, exposure,
+  providers and primitive blur. Pixel comparison with pinned rendering, reverse
+  seeks, Canvas/WebGL switching, actual renderer labels and playback pass. Native
+  WebGL CLI, repeat-export, raw/PNG, encoded-preview and overwrite checks also pass.
+- **Local verification:** `pnpm check:fast` passes, including **1,255 unit tests**.
+  Native Canvas/WebGL, effect, export and both legacy typography groups pass after
+  the fix. The frozen CE0 check passed all **176 items**, with no regeneration;
+  legacy preparation defaults are unchanged. The original full `pnpm check`
+  stopped at a timing-only assertion; all remaining correctness groups were run
+  separately, preserving that failure and the complete recorded timing results.
+  This is the approved timing exception, not a claim that the original full
+  command exited successfully. Verification ran locally; no Actions were added.
+- **CE6 follow-up:** the unchanged **1.25×** target and **117 recorded 0.33 GPU
+  timing failures** remain CE6 work. Recheck timing on the current version during
+  CE6. This continuation introduced no performance experiment, Rust prototype or
+  renderer architecture change.
+- **Evidence:** [resumed verification and completion results](./composition-ce4b-verification-results.json)
+  preserve commands, environment fingerprints, raw comparisons, initial failures,
+  focused reruns, export results and reproducible harness snapshots. The permanent
+  regression runs within `pnpm test:browser:composition-webgl`; the focused hardware
+  command is `pnpm test:browser:composition-webgl-blur --hardware`.
+
+### CE4b PR integration verification (2026-10-03)
+
+- Merged the current `codex/composition-ce4` base at `0f1150e`, preserving its
+  persisted story camera alpha-coverage validation alongside all CE4b adapters,
+  providers and both render backends. Resolved the documentation, adapter,
+  renderer and version conflicts without changing acceptance thresholds.
+  Versions are now `story-composition-0.9.1` and `composition-canvas-1.22.1`;
+  WebGL remains `composition-webgl2-0.34.0`.
+- `pnpm check:fast` passes **1,264 tests / 122 files**, plus schema, boundaries,
+  formatting, lint and type checks. `pnpm test:browser:composition-story-adapter`
+  passes persisted transparent-cover rejection, all **192 exact frames**, reverse
+  seeks, sampled 2,000-frame evaluation and two byte-identical MP4 exports.
+  Render/readback ratio is **1.0209×**.
+- The additional ordinary-story diagnostic
+  `pnpm test:browser:composition-story-fixtures --only continuous-access-constraint --webgl`
+  passes evaluated state, all **192 exact frames** and reverse seeks, then exits
+  nonzero at the unchanged timing assertion (**2.9334×**). This ordinary story
+  case is outside the **195-case CE4b core matrix**; its timing is retained for
+  follow-up while CE4a remains open. The original **117 recorded CE4b GPU timing
+  failures** and unchanged **1.25×** requirement remain assigned to CE6.
+- GitHub Actions remain disabled. The raw CE4b completion evidence above retains
+  its original production revision and renderer fingerprints; these focused
+  integration checks verify the newly merged camera-coverage change.
+
+**Completion record:** CE4b is complete under the approved timing split. CE4a remains
+in progress; CE4c–CE4d have not started.
 
 ---
 
@@ -1498,12 +2934,24 @@ type EffectDefinition<P> = {
       Family-fixture comparisons belong to CE4b/CE4c after their adapters are available.
 - [ ] Preview parity suite: on a machine with a hardware GPU, native-composition
       preview frames match export within each fixture's tier.
+- [ ] Close the CE4b performance requirement transferred by the user's
+      2026-10-03 scope decision: retain the **1.25×** legacy render/readback target
+      and resolve all **117** recorded failing cases (74 commerce, 40 story/passage
+      components, 3 typography). Re-run complete selected-candidate family matrices
+      using their existing timing methods; preserve their failing assertions.
+      Record preview and export budgets separately by renderer profile, resolution
+      and warm/cold method. Prioritize measured effect execution, repeated-instance
+      preparation/uploads and typography preparation. Evidence and reproducible
+      diagnostics: [feasibility report](./composition-ce4b-feasibility.md) and
+      [results](./composition-ce4b-feasibility-results.json).
 
 **Acceptance:** Every effect is usable on every implemented drawable layer type,
 including adjustment layers and precomps, demonstrated by native-composition
 fixtures. The WebGL2 backend renders that shared fixture set at least 2× faster than
-Canvas 2D at 1920×1080 (record numbers). Commerce demo parity is verified in CE4b;
-CE6 completion does not require any family adapter.
+Canvas 2D at 1920×1080 (record numbers). Commerce demo visual parity is verified in
+CE4b. The user-approved CE4b timing requirement also requires the already
+implemented commerce, reusable-component and typography adapters to meet the
+unchanged **1.25×** gate. Other CE6 features do not require future family adapters.
 
 **Verification:** Per-effect pixel tests at several parameter values, bounds expansion
 tests, backend parity suite, repeated-export determinism test.
@@ -1517,7 +2965,7 @@ tests, backend parity suite, repeated-export determinism test.
 **Outcome:** Motion reads as filmed rather than stepped, and time can be manipulated as
 in AE.
 
-- [ ] Composition-level motion blur (shutter angle 0–720, phase, 2–64 samples) with
+- [x] Composition-level motion blur (shutter angle 0–720, phase, 2–64 samples) with
       per-layer opt-in, evaluated by deterministic subframe sampling of the evaluator
       and accumulation on the backend.
 - [ ] Adaptive sample count by screen-space velocity (cap by setting) — optional, must
@@ -1958,7 +3406,9 @@ A milestone is complete when **all** of the following hold:
 2. Acceptance and Verification sections are satisfied and their commands and results
    are recorded in the milestone's completion record.
 3. `pnpm check` passes on the pinned toolchain ([verification tiers](./verification.md)).
-   New browser groups are added to `pnpm test`.
+   New browser groups are added to `pnpm test`. For the approved CE4b timing split,
+   preserve timing-only failures from the full command and run its remaining
+   groups separately; all correctness, build, lint and baseline checks must pass.
 4. CE0 baselines still pass, or intentional changes are documented with regenerated
    baselines and the reason.
 5. `docs/composition-reference.md` covers new schema fields, property paths, diagnostics
@@ -2038,6 +3488,7 @@ A milestone is complete when **all** of the following hold:
 | 2026-10-01 | CE3: close the acceptance's Lab clause with a minimal composition page and a hardware-preview measurement now, rather than in CE11; the feathered mask is a recorded GPU exception until the CE6 blur                                                                                                                                                                                                                                                                                                                               | The page is the seed of the CE11 inspector; measuring now records the preview guarantee for every CE3 feature                                                                                                                                   |                            |
 | 2026-10-02 | CE4a first slice uses versioned provider ids with bounded JSON and declared asset dependencies. Plain legacy story text uses `story.text@1.0.0`, while authored composition typography keeps native text layers.                                                                                                                                                                                                                                                                                                                    | Preserves direct story text drawing without calling a family scene renderer from the graph; providers are migration seams for later native shapes and text.                                                                                     | `codex/composition-ce4`    |
 | 2026-10-02 | The render graph retains camera and parent transform sequences alongside combined matrices; Canvas concatenates them in order. Settled images draw directly without crossfade surfaces.                                                                                                                                                                                                                                                                                                                                             | Live story parity exposed Canvas API rounding of combined translations and extra image resampling through redundant surfaces. Evaluated state remains pure and unchanged; renderer output has a new version.                                    | `codex/composition-ce4`    |
+| 2026-10-03 | User-approved CE4b/CE6 split: CE4b retains adapter, pixel, state, seek, export, Lab and local-verification requirements; CE6 owns the unchanged 1.25× timing target and 117 recorded failing cases                                                                                                                                                                                                                                                                                                                                  | Two bounded feasibility experiments and complete 0.33 WebGL2 family audits establish visual correctness but do not provide a credible route to all timing gates in this phase; preserve baseline, tolerances and benchmark assertions           |                            |
 
 ## Open questions for the owner
 
@@ -2108,6 +3559,7 @@ with general primitives; the "Target" column names that later form.
 | `parent` hierarchy                                         | `parent` on every node                                               | Layer `parent`, plus opacity inheritance option (parity note 1)                         | CE1–CE2            |
 | `initialState`                                             | Story `initialState`                                                 | Initial property values                                                                 | CE1                |
 | Plain legacy text, states, reveal and textLayout           | `story-text.ts`                                                      | Interim content provider `story.text@1.0.0`; target native text after parity            | CE4a               |
+| Commerce measured text (`textBox`)                         | `text-layout.ts`, `component-values.ts`                              | Interim provider `commerce.text@1.0.0`; target native text after parity                 | CE4b               |
 | Text containers (caption, speech, thought, tail side)      | `story-acting.ts`, `text-container.ts`                               | Interim content provider `text-container`; target shape layer plus text layer           | CE4a, CE5          |
 
 ### Timing and animation
@@ -2137,18 +3589,18 @@ with general primitives; the "Target" column names that later form.
 
 ### Components (`scene-components-1..3`)
 
-| Feature                                           | Today                                                  | `composition-1` form                                                        | Milestone        |
-| ------------------------------------------------- | ------------------------------------------------------ | --------------------------------------------------------------------------- | ---------------- |
-| Values and numeric text bindings (formatting)     | `component-values.ts`                                  | Interim provider for formatted text; target expression bound to text source | CE4a/b, CE9      |
-| Property bindings                                 | `component-values.ts`                                  | Driver / expression                                                         | CE2, CE9         |
-| State schedules (cuts, ramp)                      | `component-state.ts`                                   | `state` keys with hold interpolation; ramp as `stateMix` keys               | CE1–CE3          |
-| Travels along paths                               | `component-travel.ts`                                  | `follow-path` constraint with keyed progress                                | CE2              |
-| Visibility windows                                | `component-visibility.ts`                              | Layer in/out points; multiple windows as hold-keyed opacity                 | CE1              |
-| Pins                                              | `component-pin.ts`                                     | `attach` constraint                                                         | CE2              |
-| Text fits                                         | `component-text-fit.ts`                                | Text layer fit option resolved at compile with measured fonts               | CE3              |
-| Masks (`invert`)                                  | `component-mask.ts`                                    | Track matte (`alpha` / `alpha-inverted`)                                    | CE3              |
-| Annotations (anchored leaders, protected regions) | `component-annotations.ts`                             | Interim provider; target shape path with expression-driven vertices         | CE4a/b, CE5, CE9 |
-| Relationships and instances                       | `component-relationships.ts`, `component-instances.ts` | Compiled                                                                    | CE4a/b           |
+| Feature                                           | Today                                                  | `composition-1` form                                                                 | Milestone        |
+| ------------------------------------------------- | ------------------------------------------------------ | ------------------------------------------------------------------------------------ | ---------------- |
+| Values and numeric text bindings (formatting)     | `component-values.ts`                                  | Interim provider for formatted text; target expression bound to text source          | CE4a/b, CE9      |
+| Property bindings                                 | `component-values.ts`                                  | Driver / expression                                                                  | CE2, CE9         |
+| State schedules (cuts, ramp)                      | `component-state.ts`                                   | `state` keys with hold interpolation; ramp as `stateMix` keys                        | CE1–CE3          |
+| Travels along paths                               | `component-travel.ts`                                  | `follow-path` constraint with keyed progress                                         | CE2              |
+| Visibility windows                                | `component-visibility.ts`                              | Layer in/out points; multiple windows as hold-keyed opacity                          | CE1              |
+| Pins                                              | `component-pin.ts`                                     | `attach` constraint                                                                  | CE2              |
+| Text fits                                         | `component-text-fit.ts`                                | Text layer fit option resolved at compile with measured fonts                        | CE3              |
+| Masks (`invert`)                                  | `component-mask.ts`                                    | Track matte (`alpha` / `alpha-inverted`)                                             | CE3              |
+| Annotations (anchored leaders, protected regions) | `component-annotations.ts`                             | Commerce: `commerce.path@1.0.0` baked vertices; target expression-driven shape paths | CE4a/b, CE5, CE9 |
+| Relationships and instances                       | `component-relationships.ts`, `component-instances.ts` | Compiled                                                                             | CE4a/b           |
 
 ### Story-only rendering
 
@@ -2165,16 +3617,16 @@ with general primitives; the "Target" column names that later form.
 
 ### Commerce-only rendering
 
-| Feature                                                                                                                         | Today                                                 | `composition-1` form                                                 | Milestone |
-| ------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------- | -------------------------------------------------------------------- | --------- |
-| Effects: directional blur, focus blur, glow, grain, light sweep, background light, displacement, echo, particles, height shadow | `commerce-effects.ts`, `commerce-effects-renderer.ts` | Effect registry entries                                              | CE6       |
-| Effect: motion blur (shutter angle, samples)                                                                                    | `commerce-effects.ts`                                 | Composition/layer motion blur                                        | CE7       |
-| Effects: overshoot, drift, parallax                                                                                             | `commerce-effect-motion.ts`                           | Behaviours or compiled keys, not pixel effects                       | CE9       |
-| Geometry (anchors, protected regions) and attachments                                                                           | `commerce-spatial.ts`, `commerce-geometry.ts`         | Asset anchors; attached paths as interim provider, later expressions | CE4b, CE9 |
-| Mattes (`invert`, `order: after-effects`)                                                                                       | `commerce-spatial.ts`                                 | Track mattes                                                         | CE3       |
-| Visibility windows, text fits                                                                                                   | `commerce-spatial.ts`                                 | In/out points; text fit option                                       | CE1, CE3  |
-| Layout, product preparation, shadow textures, floating hand                                                                     | `commerce-*.ts`, `animation-engine/commerce-*.ts`     | Compiled; generated shadows are prepared files referenced as assets  | CE4b      |
-| Registration, claims and source metadata                                                                                        | `metadata`                                            | Composition metadata passthrough                                     | CE1       |
+| Feature                                                                                                                         | Today                                                 | `composition-1` form                                                       | Milestone |
+| ------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------- | -------------------------------------------------------------------------- | --------- |
+| Effects: directional blur, focus blur, glow, grain, light sweep, background light, displacement, echo, particles, height shadow | `commerce-effects.ts`, `commerce-effects-renderer.ts` | Effect registry entries                                                    | CE6       |
+| Effect: motion blur (shutter angle, samples)                                                                                    | `commerce-effects.ts`                                 | Composition/layer motion blur                                              | CE7       |
+| Effects: overshoot, drift, parallax                                                                                             | `commerce-effect-motion.ts`                           | Behaviours or compiled keys, not pixel effects                             | CE9       |
+| Geometry (anchors, protected regions) and attachments                                                                           | `commerce-spatial.ts`, `commerce-geometry.ts`         | Asset anchors; baked vertices via `commerce.path@1.0.0`, later expressions | CE4b, CE9 |
+| Mattes (`invert`, `order: after-effects`)                                                                                       | `commerce-spatial.ts`                                 | Track mattes                                                               | CE3       |
+| Visibility windows, text fits                                                                                                   | `commerce-spatial.ts`                                 | In/out points; text fit option                                             | CE1, CE3  |
+| Layout, product preparation, shadow textures, floating hand                                                                     | `commerce-*.ts`, `animation-engine/commerce-*.ts`     | Compiled; generated shadows are prepared files referenced as assets        | CE4b      |
+| Registration, claims and source metadata                                                                                        | `metadata`                                            | Composition metadata passthrough                                           | CE1       |
 
 ### Cinematic-only rendering
 
@@ -2232,9 +3684,13 @@ with general primitives; the "Target" column names that later form.
    static `origin`. Animated `anchorX`/`anchorY` leave the matrix unchanged; they only
    move the reference point that attach and follow constraints use. In `composition-1`
    (as in AE), the anchor is the pivot and moving it moves the artwork. Adapters
-   therefore emit `position = [x + width·originX, y + height·originY]` and a static
-   anchor `[width·originX, height·originY]`. Animated legacy anchors must not become
-   `transform.anchor` keys; CE2 needs a separate constraint reference point for them.
+   preserve that visual transform. Static anchors use
+   `position = [x + width·originX, y + height·originY]` and
+   `anchor = [width·originX, height·originY]`. CE4b retains moving anchor keys with
+   compensated position keys calculated before the legacy matrix's final anchor
+   subtraction; copying animated anchors without that compensation is incorrect.
+   This also preserves the legacy floating-point calculation order. Native
+   `constraintReference` remains available for independently moving reference points.
 
 **Resolutions (CE1, 2026-10-01).** Note 1: `group` layer type. Note 2: legacy tracks are
 baked to one key per integer frame in CE4d; no fractional key frames. Note 3: `camera2d`

@@ -1,7 +1,9 @@
+import { applyCanvasEffects } from "./effects.ts";
 import type {
   BezierPath,
   CompositionBlendMode,
   TrackMatte,
+  Composition,
 } from "@still-shift/scene-contract";
 import { imagePlacement, type Matrix } from "../../node-transform.ts";
 import type { Rgba } from "../evaluate/types.ts";
@@ -20,6 +22,7 @@ export type CanvasSurface = {
   readonly height: number;
   readonly canvas: HTMLCanvasElement;
   readonly ctx: CanvasRenderingContext2D;
+  readonly rasterMode?: "software";
 };
 
 export type CanvasImageResources = {
@@ -27,7 +30,18 @@ export type CanvasImageResources = {
   images: ReadonlyMap<string, CanvasImageSource>;
   /** Natural pixel size by asset id, from the composition's asset list. */
   sizes: ReadonlyMap<string, readonly [number, number]>;
+  /** Immutable decoded PNG assets verified by the resource loader. */
+  pngImages?: ReadonlySet<string>;
 };
+
+/** CPU glyph preparation and Canvas filters must use the same raster path. */
+export function requiresSoftwareFilters(composition: Composition): boolean {
+  return [composition, ...(composition.precomps ?? [])].some((scope) =>
+    scope.layers.some((layer) =>
+      layer.effects?.some((effect) => effect.effect === "blur.primitive"),
+    ),
+  );
+}
 
 /** Draws a text layer's content in layer space; `ctx` already carries the transform. */
 export type CanvasTextDrawer = (
@@ -107,9 +121,19 @@ export type Canvas2dBackendOptions = {
   createCanvas?: (width: number, height: number) => HTMLCanvasElement;
   /** Surfaces kept per size between frames. */
   poolLimit?: number;
+  /** Maximum bytes retained by idle preparation surfaces across all sizes. */
+  poolByteLimit?: number;
+  /** Keep primitive Canvas filters consistent with the pinned CPU raster. */
+  softwareRaster?: boolean;
 };
 
 export type Canvas2dBackend = RenderBackend<CanvasSurface> & {
+  /** Software filter preparation has its own pool; ordinary surfaces stay unchanged. */
+  createSurface(
+    width: number,
+    height: number,
+    rasterMode?: "software",
+  ): CanvasSurface;
   /** Wrap an existing canvas, such as the preview or export canvas. */
   wrap(canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D): CanvasSurface;
   /** Pooled surfaces currently allocated (in use and idle). */
@@ -131,8 +155,11 @@ export function createCanvas2dBackend(
     });
   const limit = options.poolLimit ?? 16;
   const pool = new Map<string, CanvasSurface[]>();
+  let pooledBytes = 0;
+  const byteLimit = options.poolByteLimit ?? Infinity;
   const rasters = new Map<string, HTMLCanvasElement>();
   let allocated = 0;
+  let accumulation: Float32Array | undefined;
 
   const reset = (ctx: CanvasRenderingContext2D) => {
     ctx.resetTransform();
@@ -167,12 +194,13 @@ export function createCanvas2dBackend(
     blend: CompositionBlendMode,
     clips: ClipRect[],
     transforms?: Matrix[],
+    paintBlur = 0,
   ) => {
     const ctx = s.ctx;
     ctx.save();
     clip(ctx, clips);
     transform(ctx, matrix, transforms);
-    ctx.filter = "none";
+    ctx.filter = paintBlur > 0 ? `blur(${paintBlur}px)` : "none";
     ctx.globalAlpha = opacity;
     ctx.globalCompositeOperation = COMPOSITE[blend];
     return ctx;
@@ -184,39 +212,98 @@ export function createCanvas2dBackend(
       return allocated;
     },
     wrap(canvas, ctx) {
-      return { width: canvas.width, height: canvas.height, canvas, ctx };
+      return {
+        width: canvas.width,
+        height: canvas.height,
+        canvas,
+        ctx,
+        ...(options.softwareRaster ? { rasterMode: "software" as const } : {}),
+      };
     },
-    createSurface(width, height) {
-      const surface = pool.get(`${width}x${height}`)?.pop();
+    createSurface(
+      width,
+      height,
+      rasterMode: "software" | undefined = options.softwareRaster
+        ? "software"
+        : undefined,
+    ) {
+      const key = `${width}x${height}:${rasterMode ?? "default"}`;
+      const list = pool.get(key);
+      const surface = list?.pop();
+      if (!list?.length) pool.delete(key);
       if (surface) {
+        pooledBytes -= width * height * 4;
         reset(surface.ctx);
         surface.ctx.clearRect(0, 0, width, height);
         return surface;
       }
       allocated += 1;
       const canvas = make(width, height);
-      const ctx = canvas.getContext("2d", { willReadFrequently: false })!;
-      return { width, height, canvas, ctx };
+      const ctx = canvas.getContext("2d", {
+        willReadFrequently: rasterMode === "software",
+      })!;
+      return {
+        width,
+        height,
+        canvas,
+        ctx,
+        ...(rasterMode ? { rasterMode } : {}),
+      };
     },
     releaseSurface(surface) {
-      const key = `${surface.width}x${surface.height}`;
+      const key = `${surface.width}x${surface.height}:${surface.rasterMode ?? "default"}`;
+      const bytes = surface.width * surface.height * 4;
+      if (bytes > byteLimit || (pool.get(key)?.length ?? 0) >= limit) {
+        allocated -= 1;
+        return;
+      }
+      while (pooledBytes + bytes > byteLimit && pool.size) {
+        const oldestKey = pool.keys().next().value!;
+        const oldest = pool.get(oldestKey)!;
+        const evicted = oldest.shift()!;
+        pooledBytes -= evicted.width * evicted.height * 4;
+        evicted.canvas.width = evicted.canvas.height = 0;
+        allocated -= 1;
+        if (!oldest.length) pool.delete(oldestKey);
+      }
       const list = pool.get(key) ?? [];
-      if (list.length < limit) {
-        list.push(surface);
-        pool.set(key, list);
-      } else allocated -= 1;
+      list.push(surface);
+      pool.set(key, list);
+      pooledBytes += bytes;
     },
     clear(surface, background) {
       const ctx = surface.ctx;
       reset(ctx);
-      ctx.clearRect(0, 0, surface.width, surface.height);
+      // An opaque background replaces every pixel after reset; clearing first
+      // adds a full-surface write without changing the result.
+      if (!background || background[3] < 1)
+        ctx.clearRect(0, 0, surface.width, surface.height);
       if (background) {
         ctx.fillStyle = cssColor(background);
         ctx.fillRect(0, 0, surface.width, surface.height);
       }
     },
-    fillRect(dst, matrix, width, height, color, opacity, blend, clips) {
-      const ctx = begin(dst, matrix, opacity, blend, clips);
+    fillRect(
+      dst,
+      matrix,
+      width,
+      height,
+      color,
+      opacity,
+      blend,
+      clips,
+      transforms,
+      paintBlur,
+    ) {
+      const ctx = begin(
+        dst,
+        matrix,
+        opacity,
+        blend,
+        clips,
+        transforms,
+        paintBlur,
+      );
       ctx.fillStyle = cssColor(color);
       ctx.fillRect(0, 0, width, height);
       ctx.restore();
@@ -234,7 +321,16 @@ export function createCanvas2dBackend(
         ctx.restore();
       }
     },
-    drawImage(dst, content, matrix, opacity, blend, clips, transforms) {
+    drawImage(
+      dst,
+      content,
+      matrix,
+      opacity,
+      blend,
+      clips,
+      transforms,
+      paintBlur,
+    ) {
       // Settled states draw directly: a screen-sized intermediate resamples pixels
       // and pays the crossfade cost even when no state transition is visible.
       if (
@@ -244,7 +340,15 @@ export function createCanvas2dBackend(
         content.stateMix === 1 ||
         content.stateFrom === content.state
       ) {
-        const ctx = begin(dst, matrix, opacity, blend, clips, transforms);
+        const ctx = begin(
+          dst,
+          matrix,
+          opacity,
+          blend,
+          clips,
+          transforms,
+          paintBlur,
+        );
         drawSource(
           ctx,
           content,
@@ -257,7 +361,7 @@ export function createCanvas2dBackend(
       }
       // Crossfade as the legacy renderer does: the outgoing state at 1 − mix,
       // the incoming one added at mix, then composited as one layer.
-      const tmp = backend.createSurface(dst.width, dst.height);
+      const tmp = backend.createSurface(dst.width, dst.height, dst.rasterMode);
       const ctx = tmp.ctx;
       transform(ctx, matrix, transforms);
       ctx.globalAlpha = 1 - content.stateMix;
@@ -265,32 +369,126 @@ export function createCanvas2dBackend(
       ctx.globalCompositeOperation = "lighter";
       ctx.globalAlpha = content.stateMix;
       drawSource(ctx, content, content.state);
-      backend.composite(tmp, dst, blend, opacity, [1, 0, 0, 1, 0, 0], clips);
+      backend.composite(
+        tmp,
+        dst,
+        blend,
+        opacity,
+        [1, 0, 0, 1, 0, 0],
+        clips,
+        undefined,
+        paintBlur,
+      );
       backend.releaseSurface(tmp);
     },
-    drawText(dst, content, matrix, opacity, blend, clips, transforms) {
-      const ctx = begin(dst, matrix, opacity, blend, clips, transforms);
-      options.drawText(ctx, content);
-      ctx.restore();
+    drawText(
+      dst,
+      content,
+      matrix,
+      opacity,
+      blend,
+      clips,
+      transforms,
+      paintBlur,
+    ) {
+      if (content.stateFrom === undefined) {
+        const ctx = begin(
+          dst,
+          matrix,
+          opacity,
+          blend,
+          clips,
+          transforms,
+          paintBlur,
+        );
+        try {
+          options.drawText(ctx, content);
+        } finally {
+          ctx.restore();
+        }
+        return;
+      }
+      drawStateContent(
+        dst,
+        content,
+        {
+          matrix,
+          opacity,
+          blend,
+          clips,
+          ...(transforms ? { transforms } : {}),
+          ...(paintBlur ? { paintBlur } : {}),
+        },
+        (ctx, state) =>
+          options.drawText(ctx, { ...content, state: state ?? content.state }),
+      );
     },
-    drawProvider(dst, content, matrix, opacity, blend, clips, transforms) {
+    drawProvider(
+      dst,
+      content,
+      matrix,
+      opacity,
+      blend,
+      clips,
+      transforms,
+      paintBlur,
+    ) {
       if (!options.drawProvider)
         passageError(
           "comp-provider-unavailable",
           `Provider ${content.layer.provider} was not prepared`,
           { path: content.key },
         );
-      const ctx = begin(dst, matrix, opacity, blend, clips, transforms);
-      try {
-        options.drawProvider(ctx, content);
-      } finally {
-        ctx.restore();
+      if (content.stateFrom === undefined) {
+        const ctx = begin(
+          dst,
+          matrix,
+          opacity,
+          blend,
+          clips,
+          transforms,
+          paintBlur,
+        );
+        try {
+          options.drawProvider(ctx, content);
+        } finally {
+          ctx.restore();
+        }
+        return;
       }
+      drawStateContent(
+        dst,
+        content,
+        {
+          matrix,
+          opacity,
+          blend,
+          clips,
+          ...(transforms ? { transforms } : {}),
+          ...(paintBlur ? { paintBlur } : {}),
+        },
+        (ctx, state) =>
+          options.drawProvider!(ctx, {
+            ...content,
+            ...(state !== undefined ? { state } : {}),
+          }),
+      );
     },
-    composite(src, dst, blend, opacity, matrix, clips, transforms) {
-      const ctx = begin(dst, matrix, opacity, blend, clips, transforms);
+    composite(src, dst, blend, opacity, matrix, clips, transforms, paintBlur) {
+      const ctx = begin(
+        dst,
+        matrix,
+        opacity,
+        blend,
+        clips,
+        transforms,
+        paintBlur,
+      );
       ctx.drawImage(src.canvas, 0, 0);
       ctx.restore();
+    },
+    applyEffects(target, effects) {
+      applyCanvasEffects(backend, target, effects);
     },
     applyMask(target, masks) {
       const combined = backend.createSurface(target.width, target.height);
@@ -376,12 +574,93 @@ export function createCanvas2dBackend(
     readPixels(surface) {
       return surface.ctx.getImageData(0, 0, surface.width, surface.height).data;
     },
+    accumulateExposure(target, count, draw) {
+      if (count === 1) {
+        draw(0);
+        return;
+      }
+      const length = target.width * target.height * 4;
+      if (accumulation?.length !== length)
+        accumulation = new Float32Array(length);
+      else accumulation.fill(0);
+      let pixels: ImageData | undefined;
+      for (let sample = 0; sample < count; sample++) {
+        draw(sample);
+        pixels = target.ctx.getImageData(0, 0, target.width, target.height);
+        for (let index = 0; index < length; index++)
+          accumulation[index] = accumulation[index]! + pixels.data[index]!;
+      }
+      for (let index = 0; index < length; index++)
+        pixels!.data[index] = Math.round(accumulation[index]! / count);
+      target.ctx.putImageData(pixels!, 0, 0);
+    },
     dispose() {
+      accumulation = undefined;
       pool.clear();
+      pooledBytes = 0;
       rasters.clear();
       allocated = 0;
     },
   };
+
+  /** Blend local content on a full surface so opacity, masks and clipping apply once. */
+  function drawStateContent(
+    dst: CanvasSurface,
+    content: TextContent | ProviderContent,
+    placement: {
+      matrix: Matrix;
+      opacity: number;
+      blend: CompositionBlendMode;
+      clips: ClipRect[];
+      transforms?: Matrix[];
+      paintBlur?: number;
+    },
+    draw: (ctx: CanvasRenderingContext2D, state?: number) => void,
+  ) {
+    const { matrix, opacity, blend, clips, transforms, paintBlur } = placement;
+    const mix = content.stateMix ?? 1;
+    if (content.stateFrom === undefined || mix === 1) {
+      const ctx = begin(
+        dst,
+        matrix,
+        opacity,
+        blend,
+        clips,
+        transforms,
+        paintBlur,
+      );
+      try {
+        draw(ctx, content.state);
+      } finally {
+        ctx.restore();
+      }
+      return;
+    }
+    const tmp = backend.createSurface(dst.width, dst.height, dst.rasterMode);
+    try {
+      const ctx = tmp.ctx;
+      transform(ctx, matrix, transforms);
+      // Match the Canvas matrix transfer used when legacy content is isolated.
+      ctx.setTransform(ctx.getTransform());
+      ctx.globalAlpha = 1 - mix;
+      draw(ctx, content.stateFrom);
+      ctx.globalCompositeOperation = "lighter";
+      ctx.globalAlpha = mix;
+      draw(ctx, content.state);
+      backend.composite(
+        tmp,
+        dst,
+        blend,
+        opacity,
+        [1, 0, 0, 1, 0, 0],
+        clips,
+        undefined,
+        paintBlur,
+      );
+    } finally {
+      backend.releaseSurface(tmp);
+    }
+  }
 
   /** Matte value = CSS Masking luminance of the premultiplied colour. */
   function lumaToAlpha(matte: CanvasSurface, mode: TrackMatte["mode"]) {

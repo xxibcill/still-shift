@@ -74,6 +74,44 @@ const expectDiagnostic = (
     }),
   );
 
+describe("group matte dependencies", () => {
+  it("rejects alpha feedback through a group's descendants", () => {
+    const doc = minimalComposition();
+    doc.layers = [
+      { id: "group", type: "group", size: [100, 100] },
+      {
+        id: "child",
+        type: "solid",
+        parent: "group",
+        size: [20, 20],
+        color: "#ffffff",
+        trackMatte: { layer: "group", mode: "alpha" },
+      },
+    ];
+    expectDiagnostic(errors(doc), "comp-matte-cycle", "layers[1].trackMatte");
+  });
+
+  it("allows a group to use a hidden descendant as its matte", () => {
+    const doc = minimalComposition();
+    doc.layers = [
+      {
+        id: "group",
+        type: "group",
+        size: [100, 100],
+        trackMatte: { layer: "child", mode: "alpha" },
+      },
+      {
+        id: "child",
+        type: "solid",
+        parent: "group",
+        size: [20, 20],
+        color: "#ffffff",
+      },
+    ];
+    expect(validateComposition(doc).ok).toBe(true);
+  });
+});
+
 describe("composition-1 text style references", () => {
   it.each(["constructor", "toString"])(
     "rejects undeclared inherited style %s on layers and spans",
@@ -560,6 +598,30 @@ describe("composition-1 fixtures", () => {
     ) as Composition;
     expect(validateComposition(providers).ok).toBe(true);
     allLayers.push(...providers.layers);
+    const textStates = JSON.parse(
+      readFileSync(
+        resolve(root, "benchmarks/fixtures/composition/ce4b/text-states.json"),
+        "utf8",
+      ),
+    ) as Composition;
+    expect(validateComposition(textStates).ok).toBe(true);
+    allLayers.push(...textStates.layers);
+    const typography = JSON.parse(
+      readFileSync(
+        resolve(root, "benchmarks/fixtures/composition/ce4b/typography.json"),
+        "utf8",
+      ),
+    ) as Composition;
+    expect(validateComposition(typography).ok).toBe(true);
+    allLayers.push(...typography.layers);
+    const indexed = JSON.parse(
+      readFileSync(
+        resolve(root, "benchmarks/fixtures/composition/ce7/indexed.json"),
+        "utf8",
+      ),
+    ) as Composition;
+    expect(validateComposition(indexed).ok).toBe(true);
+    allLayers.push(...indexed.layers);
     for (const option of layers.CompositionLayerSchema.options) {
       const type = option.shape.type.value;
       if (UNAVAILABLE_LAYER_TYPES[type]) continue;
@@ -1051,7 +1113,7 @@ const invalid: Mutation[] = [
   ],
   [
     "effects",
-    (d) => set(house(d), { effects: [{ id: "glow", effect: "light.glow" }] }),
+    (d) => set(house(d), { effects: [{ id: "zoom", effect: "blur.zoom" }] }),
     "comp-feature-unavailable",
   ],
   [
@@ -1066,9 +1128,9 @@ const invalid: Mutation[] = [
     "expressions",
   ],
   [
-    "motion blur",
-    (d) => set(d.motionBlur!, { enabled: true }),
-    "comp-feature-unavailable",
+    "motion blur interval",
+    (d) => set(d.motionBlur!, { enabled: true, inPoint: 10, outPoint: 5 }),
+    "comp-motion-blur-range",
     "motionBlur",
   ],
   [

@@ -1,3 +1,4 @@
+import type { EvaluatedEffect } from "./effects.ts";
 import type {
   BezierPath,
   CompositionLayer,
@@ -32,6 +33,8 @@ export type EvaluatedLayer = {
   id: string;
   layer: CompositionLayer;
   time: number;
+  /** Integer index into a layer's explicitly baked sample clock, when present. */
+  sampleIndex?: number;
   visible: boolean;
   /** Content visibility also excludes nulls, groups and matte sources. */
   drawable: boolean;
@@ -44,6 +47,7 @@ export type EvaluatedLayer = {
   opacity: number;
   bounds: Bounds | null;
   masks: EvaluatedMask[];
+  effects: EvaluatedEffect[];
   color?: Rgba;
   state?: number;
   stateFrom?: number;
@@ -52,6 +56,8 @@ export type EvaluatedLayer = {
   text?: string;
   timeRemap?: number;
   precomp?: EvaluatedLayerTree;
+  /** The unmixed scope used by this layer's exposure sample. */
+  exposure?: { tree: EvaluatedLayerTree; rootTime: number };
 };
 
 export type EvaluatedLayerTree = {
@@ -67,6 +73,8 @@ export type EvaluatedLayerTree = {
 };
 
 export type EvaluationOptions = {
+  /** Internal scope-clock overrides for temporal content sampling, keyed by instance route. */
+  scopeTimes?: Readonly<Record<string, number>>;
   /** Include guide layers for inspection; the default matches export. */
   includeGuides?: boolean;
   /** Measured local text bounds, keyed by root layer id or precomp-id/layer-id.

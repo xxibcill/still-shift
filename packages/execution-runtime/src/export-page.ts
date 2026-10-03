@@ -165,15 +165,21 @@ const exportComposition = async (
     canvas,
     scene.composition,
     resources,
+    { backend: scene.backend ?? "canvas2d" },
   );
+  const gl = preview.backend === "webgl2" ? canvas.getContext("webgl2") : null;
+  const info = gl?.getExtension("WEBGL_debug_renderer_info");
+  const renderer = gl
+    ? String(gl.getParameter(info ? info.UNMASKED_RENDERER_WEBGL : gl.RENDERER))
+    : "Canvas2D";
   return renderFrames(
     scene.timeline.frameCount,
     (frame) => preview.renderFrame(frame),
     () => preview.dispose(),
     canvas,
-    null,
+    gl,
     transport,
-    `Canvas2D ${scene.rendererVersion}`,
+    `${renderer} ${preview.rendererVersion}`,
   );
 };
 

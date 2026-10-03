@@ -2,7 +2,7 @@ import type { CommerceRenderScene } from "./commerce-scene.ts";
 import type { StoryRenderScene } from "./story-scene.ts";
 import type { ShapedLayout } from "./shaped-text.ts";
 import type { TextNode } from "./typography-style.ts";
-import { evaluatePreparedNode } from "./prepared-scene.ts";
+import { evaluatePreparedNodeAtTime } from "./prepared-scene.ts";
 import { componentText } from "./component-values.ts";
 import {
   activeTextTransition,
@@ -49,19 +49,21 @@ export function textVisibility(
   scene: VisibilityScene,
   node: TextNode,
   layouts?: ReadonlyMap<string, ShapedLayout>,
+  sampleTimes?: readonly number[],
 ): TextFrameVisibility[] {
   const frames: TextFrameVisibility[] = [];
   const boundText = (frame: number) =>
     frame < 0 || frame >= scene.frameCount
       ? undefined
       : componentText(scene, node, frame);
-  for (let frame = 0; frame < scene.frameCount; frame++) {
-    const evaluated = evaluatePreparedNode(scene, node, frame);
+  for (const frame of sampleTimes ??
+    Array.from({ length: scene.frameCount }, (_, frame) => frame)) {
+    const evaluated = evaluatePreparedNodeAtTime(scene, node, frame);
     let opacity = evaluated.opacity;
     let parent = node.parent;
     while (parent) {
       const ancestor = scene.nodes.find((n) => n.id === parent)!;
-      opacity *= evaluatePreparedNode(scene, ancestor, frame).opacity;
+      opacity *= evaluatePreparedNodeAtTime(scene, ancestor, frame).opacity;
       parent = ancestor.parent;
     }
     // Mirror the renderer: component data replaces the text, and a state blend also draws stateFrom.

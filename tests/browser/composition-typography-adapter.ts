@@ -1,0 +1,294 @@
+import { CompositionAcceptance } from "../helpers/composition-acceptance.ts";
+import assert from "node:assert/strict";
+import { readFile } from "node:fs/promises";
+import { dirname, resolve } from "node:path";
+import { createServer } from "vite";
+import { launchRenderBrowser } from "@still-shift/execution-runtime";
+import {
+  StorySceneSchema,
+  CommerceSceneSchema,
+  type Composition,
+} from "@still-shift/scene-contract";
+import {
+  compileStoryScene,
+  compileCommerceScene,
+  passageDiagnostics,
+} from "@still-shift/renderer-core";
+import {
+  compileCommerceComposition,
+  compileStoryComposition,
+} from "@still-shift/animation-engine";
+import {
+  numericTypographyVariants,
+  typographyVariants,
+} from "../helpers/composition-typography.ts";
+import { assertAdapterExport } from "../helpers/composition-adapter-exports.ts";
+import { appearanceVariants } from "../helpers/composition-appearance.ts";
+import { primitiveBlurVariants } from "../helpers/composition-primitive-blur.ts";
+import { commerceExposureVariants } from "../helpers/composition-commerce-exposure.ts";
+import type * as Render from "../../packages/renderer-core/src/index.ts";
+import { assertCompositionAdapterState } from "../helpers/composition-adapter-state.ts";
+
+const root = resolve(import.meta.dirname, "../..");
+const inventory = JSON.parse(
+  await readFile(
+    resolve(root, "tests/visual/composition-baselines/fixtures.json"),
+    "utf8",
+  ),
+) as {
+  fixtures: {
+    id: string;
+    path: string;
+    family: string;
+    kind: string;
+    tier: "near";
+  }[];
+};
+const backend = process.argv.includes("--webgl") ? "webgl2" : "canvas2d";
+const acceptance = new CompositionAcceptance();
+const only = process.argv.indexOf("--only");
+const variant = process.argv.indexOf("--variant");
+const selected = inventory.fixtures.filter(
+  (f) =>
+    f.family === "typography" &&
+    (only < 0 || f.id.includes(process.argv[only + 1]!)),
+);
+assert.ok(selected.length, "No typography fixtures selected");
+const server = await createServer({
+  root,
+  configFile: false,
+  server: { host: "127.0.0.1", port: 0 },
+  logLevel: "error",
+});
+await server.listen();
+const browser = await launchRenderBrowser();
+let totalFrames = 0,
+  totalItems = 0;
+try {
+  for (const entry of selected) {
+    const sourcePath = resolve(root, entry.path);
+    const json = JSON.parse(await readFile(sourcePath, "utf8"));
+    const source =
+      json.schemaVersion === "commerce-scene-1"
+        ? CommerceSceneSchema.parse(json)
+        : StorySceneSchema.parse(json);
+    const inputs = [
+      { id: entry.id, scene: source },
+      ...typographyVariants(source).map((item) => ({
+        ...item,
+        id: `${entry.id}/${item.id}`,
+      })),
+      ...numericTypographyVariants(source).map((item) => ({
+        ...item,
+        id: `${entry.id}/${item.id}`,
+      })),
+      ...appearanceVariants(entry.id, source),
+      ...primitiveBlurVariants(entry.id, source),
+      ...(source.schemaVersion === "commerce-scene-1"
+        ? commerceExposureVariants(entry.id, source)
+        : []),
+    ].filter(
+      (item) => variant < 0 || item.id.includes(process.argv[variant + 1]!),
+    );
+    for (const item of inputs) {
+      const input =
+        item.scene.schemaVersion === "commerce-scene-1"
+          ? CommerceSceneSchema.parse(item.scene)
+          : StorySceneSchema.parse(item.scene);
+      const composition =
+        input.schemaVersion === "commerce-scene-1"
+          ? await compileCommerceComposition(input, dirname(sourcePath))
+          : await compileStoryComposition(input, dirname(sourcePath));
+      const scene =
+        input.schemaVersion === "commerce-scene-1"
+          ? compileCommerceScene(input)
+          : compileStoryScene(input);
+      // Fitting changes panel geometry; its evaluated states are checked after
+      // browser font preparation by the per-frame pixel comparison below.
+      if (!item.id.includes("fit"))
+        assertCompositionAdapterState(scene, composition);
+      const urls = Object.fromEntries(
+        composition.assets.map((a) => [
+          a.id,
+          `/@fs${resolve(dirname(sourcePath), a.path)}`,
+        ]),
+      );
+      const page = await browser.newPage();
+      await page.addInitScript("window.__name = (fn) => fn;");
+      await page.goto(server.resolvedUrls!.local[0]!);
+      const report = await page.evaluate(
+        async ({
+          sceneJson,
+          compositionJson,
+          urls,
+          tier,
+          profile,
+          backend,
+        }) => {
+          const scene = JSON.parse(sceneJson) as ReturnType<
+            typeof Render.compileStoryScene | typeof Render.compileCommerceScene
+          >;
+          const composition = JSON.parse(compositionJson) as Composition;
+          const moduleUrl = "/packages/renderer-core/src/index.ts";
+          const m = (await import(moduleUrl)) as typeof Render;
+          const legacyCanvas = document.createElement("canvas"),
+            canvas = document.createElement("canvas");
+          const legacy = m.createIllustratedPreview(
+            legacyCanvas,
+            scene,
+            await m.loadIllustratedImages(scene, (id) => urls[id]!),
+          );
+          const preview = m.createCompositionPreview(
+            canvas,
+            composition,
+            await m.loadCompositionResources(composition, (id) => urls[id]!),
+            { backend: backend as Render.CompositionBackend },
+          );
+          const oldCtx = legacyCanvas.getContext("2d")!;
+          const hashes = new Map<number, string>();
+          const hash = async (bytes: Uint8ClampedArray) =>
+            Array.from(
+              new Uint8Array(
+                await crypto.subtle.digest("SHA-256", new Uint8Array(bytes)),
+              ),
+            ).join(",");
+          let maxDelta = 0,
+            minPsnr = Infinity,
+            legacyMs = 0,
+            compositionMs = 0,
+            legacyRenderMs = 0,
+            compositionRenderMs = 0;
+          const failures: { frame: number; delta: number; psnr: number }[] = [];
+          legacy.renderFrame(0);
+          preview.renderFrame(0);
+          for (let frame = 0; frame < composition.frameCount; frame++) {
+            let at = performance.now();
+            legacy.renderFrame(frame);
+            legacyRenderMs += performance.now() - at;
+            const expected = oldCtx.getImageData(
+              0,
+              0,
+              canvas.width,
+              canvas.height,
+            ).data;
+            legacyMs += performance.now() - at;
+            at = performance.now();
+            const result = preview.renderFrame(frame);
+            compositionRenderMs += performance.now() - at;
+            const actual = preview.readPixels();
+            compositionMs += performance.now() - at;
+            if (result.diagnostics.some((d) => d.severity === "error"))
+              throw new Error(JSON.stringify(result.diagnostics));
+            const comparison = m.compareFrames(
+              expected,
+              actual,
+              canvas.width,
+              canvas.height,
+            );
+            maxDelta = Math.max(maxDelta, comparison.maxChannelDelta);
+            minPsnr = Math.min(minPsnr, comparison.psnr);
+            if (!m.meetsTier(comparison, tier) && failures.length < 5)
+              failures.push({
+                frame,
+                delta: comparison.maxChannelDelta,
+                psnr: comparison.psnr,
+              });
+            if (
+              frame === 0 ||
+              frame === Math.floor(composition.frameCount / 2) ||
+              frame === composition.frameCount - 1
+            )
+              hashes.set(frame, await hash(actual));
+          }
+          for (const [frame, expected] of [...hashes].reverse()) {
+            preview.renderFrame(frame);
+            if ((await hash(preview.readPixels())) !== expected)
+              throw new Error(`Backward seek differs at ${frame}`);
+          }
+          let evaluationMs = 0,
+            graphMs = 0;
+          if (profile)
+            for (let frame = 0; frame < composition.frameCount; frame++) {
+              const at = performance.now();
+              const tree = m.evaluateComp(composition, frame);
+              const evaluated = performance.now();
+              m.buildRenderGraph(composition, tree);
+              evaluationMs += evaluated - at;
+              graphMs += performance.now() - evaluated;
+            }
+          preview.dispose();
+          legacy.dispose();
+          return {
+            maxDelta,
+            minPsnr,
+            failures,
+            ratio: compositionMs / legacyMs,
+            ...(profile
+              ? {
+                  legacyMs,
+                  compositionMs,
+                  legacyRenderMs,
+                  compositionRenderMs,
+                  evaluationMs,
+                  graphMs,
+                }
+              : {}),
+          };
+        },
+        {
+          sceneJson: JSON.stringify(scene),
+          compositionJson: JSON.stringify(composition),
+          urls,
+          tier: entry.tier,
+          profile: process.argv.includes("--profile"),
+          backend,
+        },
+      );
+      console.log(
+        `${backend} ${item.id}: ${input.frameCount} frames ${JSON.stringify(report)}`,
+      );
+      await page.close();
+      acceptance.check(item.id, report);
+      totalFrames += input.frameCount;
+      totalItems++;
+      if (
+        !acceptance.skipExports &&
+        only < 0 &&
+        [
+          "typography/editorial/numeric",
+          "typography/editorial/appearance-uniform",
+          "typography/editorial/primitive-blur-text",
+          "typography/commerce/numeric",
+          "typography/commerce/motion-blur-numeric",
+          "typography/variable-thai/numeric",
+          "typography/semantic",
+          "typography/variable-thai",
+          "typography/editorial/component-fit",
+          "typography/commerce/panel-fit",
+        ].includes(item.id)
+      )
+        await assertAdapterExport(input, dirname(sourcePath), item.id, backend);
+    }
+    if (
+      entry.id === "typography/editorial" &&
+      source.schemaVersion === "story-scene-1"
+    ) {
+      const outside = structuredClone(source);
+      outside.nodes.find((node) => node.id === "headline")!.x = -500;
+      await assert.rejects(
+        compileStoryComposition(outside, dirname(sourcePath)),
+        (error) =>
+          passageDiagnostics(error).some(
+            (d) => d.code === "text-outside-safe-area",
+          ),
+      );
+    }
+  }
+  console.log(
+    `CE4b typography parity: ${totalItems} items, ${totalFrames} frames`,
+  );
+  acceptance.finish();
+} finally {
+  await browser.close();
+  await server.close();
+}
