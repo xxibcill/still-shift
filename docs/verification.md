@@ -81,6 +81,30 @@ four and a half minutes on an Apple M5 Pro. See the
 
 ## Verification policy
 
+### Deferred WebGL performance
+
+The owner deferred WebGL performance acceptance to a future version on
+2026-10-03; see [CE6-P in the composition plan](./composition-engine-plan.md#ce6-p--deferred-webgl-performance-acceptance).
+The WebGL **1.25×** family render/readback gate and CE6's **2×** speed target
+remain recorded future requirements. They do not block current feature work.
+Canvas adapter timing requirements retain their existing scope.
+
+Continue to run correctness, build, lint, schema, boundary and baseline checks
+locally. Pixel parity, evaluated state, reverse seeks, repeated exports and
+hardware-preview agreement remain mandatory. The benchmark assertions and
+baseline data are unchanged. For an explicit strict WebGL audit, pass `--webgl
+--keep-going` to the existing commerce, story-fixture or typography-adapter
+browser commands; this records every timing failure while continuing the
+remaining cases and required exports.
+
+If such a command exits nonzero solely for the deferred timing target, retain
+its output and label that result **deferred performance**. Do not report the
+strict command as passing. Run any remaining correctness groups separately;
+pixel, state, seek, export and other failures still require fixes. Further
+performance experiments wait for an explicit owner request to resume CE6-P.
+
+### Local verification remains required
+
 GitHub Actions are prohibited in this project; see [AGENTS.md](../AGENTS.md).
 Run the verification tiers locally with the pinned toolchain and locked dependencies.
 Use `pnpm check:fast`, `pnpm check:runtime`, and `pnpm check:all` for the fast,
