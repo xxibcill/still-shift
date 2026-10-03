@@ -92,6 +92,50 @@ motion blur, rich typography and spatial/path appearance extensions return expli
 unsupported-feature diagnostics. See the [commerce adapter reference](./composition-reference.md#commerce-adapter-ce4b-in-progress)
 for the current limits. CE4b remains in progress.
 
+### Expressions and behaviours
+
+A composition can describe relationships and procedural motion instead of keys. An
+expression is short text stored under a property path; behaviours are one-line
+motion-design intents that compile to expressions:
+
+```json
+{
+  "expressions": {
+    "shadow.transform.position": {
+      "source": "ref('hero.transform.position') + [12, 18]"
+    }
+  },
+  "behaviours": [
+    {
+      "type": "follow-through",
+      "leader": "hero.transform.position",
+      "followers": ["trail-1", "trail-2"]
+    },
+    { "type": "squash-stretch", "layer": "hero" }
+  ]
+}
+```
+
+Expressions are checked when the composition loads. Errors give the JSON path and
+the character column. They cannot run arbitrary code and read only seeded random
+values, so previews, seeks and exports stay reproducible. The
+[expression reference](./composition-reference.md#expressions-ce9) lists the grammar,
+built-ins (`wiggle`, `loopOut`, `spring`, `valueAtTime`, …) and behaviours
+(follow-through, inertial bounce, squash and stretch, anticipation, auto-orient,
+constant speed, camera shake and stagger). The
+[overlap demo](../benchmarks/fixtures/composition/ce9/overlap-demo.json) has three
+layers following a keyed leader without keys of their own.
+
+To inspect the expression results as keys, or to hand the composition to a tool that
+cannot evaluate expressions:
+
+```bash
+pnpm --silent still-shift comp bake --input composition.json --output baked.json
+```
+
+The baked file renders the same pixels at every frame. `comp normalize` adds each
+expression's canonical AST, which `export-json --normalized true` also writes.
+
 For the Lab preview, run `pnpm lab` and open
 [`/composition.html`](http://127.0.0.1:4173/composition.html): play or scrub the
 fixtures in `benchmarks/fixtures/composition/` and read their warnings. On a normal

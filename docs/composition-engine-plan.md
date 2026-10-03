@@ -1,7 +1,7 @@
 # Programmable composition engine — implementation plan
 
-- **Updated:** 2026-10-03
-- **Status:** CE0–CE3 complete (2026-10-01); CE4b complete under the approved timing split (2026-10-03); CE4a and CE6 feature work incomplete. WebGL performance acceptance is deferred to a future version (CE6-P, user approved 2026-10-03). Q1 and Q3 decided
+- **Updated:** 2026-10-04
+- **Status:** CE0–CE3 complete (2026-10-01); CE9 complete (2026-10-04); CE4b complete under the approved timing split (2026-10-03); CE4a and CE6 feature work incomplete. WebGL performance acceptance is deferred to a future version (CE6-P, user approved 2026-10-03). Q1 and Q3 decided
   2026-09-30; Q2, Q4 and Q8 decided 2026-10-01; Q5–Q7 open.
 - **Baseline:** `6772717` — `Merge pull request #22 from xxibcill/codex/still-shift-plan-completion`
 - **Tracker owner:** unassigned. Record the owner and branch per milestone in the [tracker](#milestone-tracker).
@@ -370,7 +370,7 @@ sign and for time remap. It does not change the layer's composition-time visibil
 | CE6-P | WebGL performance acceptance                    | Future | CE6                  |                        |                                     | `[d]`  | [Performance deferral](#ce6-p--deferred-webgl-performance-acceptance)              |
 | CE7   | Motion blur and time controls                   | B      | CE3                  |                        |                                     | `[ ]`  |                                                                                    |
 | CE8   | 2.5D layers and unified camera                  | B      | CE3, CE6, CE9        |                        |                                     | `[ ]`  |                                                                                    |
-| CE9   | Expressions and motion behaviours               | C      | CE2                  |                        |                                     | `[ ]`  |                                                                                    |
+| CE9   | Expressions and motion behaviours               | C      | CE2                  | xxibcill (Claude Code) | `codex/composition-ce9`             | `[x]`  | [CE9 record](#ce9--expressions-and-motion-behaviours)                              |
 | CE10  | TypeScript builder API and CLI                  | C      | CE3, CE4a, CE9, CE12 |                        |                                     | `[ ]`  |                                                                                    |
 | CE11  | Lab composition inspector and graph editor      | C      | CE3, CE10            |                        |                                     | `[ ]`  |                                                                                    |
 | CE12  | Motion linting                                  | C      | CE2                  |                        |                                     | `[ ]`  |                                                                                    |
@@ -431,11 +431,11 @@ does not mark them complete. CE8 and CE14 still require their actual CE6 feature
 dependencies, but do not wait for CE6-P. Other existing performance requirements,
 including the Canvas adapter gate, retain their current scope.
 
-**Recommended next milestone:** CE9 expressions and motion behaviours, whose CE2
-dependency is complete and which unlocks CE10's builder API. CE5 shape layers,
-CE7 time controls and CE12 motion linting are also ready to start. Complete CE4a's
-remaining story feature/parity work before CE10's final acceptance. This priority
-does not start or mark any new milestone in progress.
+**Recommended next milestone:** CE12 motion linting, whose CE2 dependency is
+complete. CE9 expressions and baking are complete; CE10's builder API still needs
+CE12 and CE4a's remaining story feature/parity work. CE5 shape layers and CE7 time
+controls are also ready to start. This priority does not start or mark any new
+milestone in progress.
 
 ## First implementation slice
 
@@ -452,7 +452,8 @@ through the story adapter with recorded parity.
 - [x] CE3 Canvas 2D backend covering those features, wired into export.
 - [x] CE4a adapter for `benchmarks/fixtures/story-motion-continuous/access-constraint.json`
       with the parity result recorded.
-- [ ] CE9 expressions and baking, and CE12 linting, as prerequisites for the CE10 CLI.
+- [x] CE9 expressions and baking as prerequisites for the CE10 CLI.
+- [ ] CE12 linting as a prerequisite for the CE10 CLI.
 - [ ] CE10 builder and CLI, including `comp render`, after CE4a, CE9 and CE12.
 - [ ] Record commands, results and limitations here before marking the slice complete.
 
@@ -3294,21 +3295,21 @@ built-ins cannot express, add a built-in; do not add an escape hatch to arbitrar
 
 ### Checklist
 
-- [ ] Text syntax parser producing the AST, with diagnostics carrying the JSON path
+- [x] Text syntax parser producing the AST, with diagnostics carrying the JSON path
       and a 1-based character column (`comp-expression-syntax`,
       `comp-expression-unknown-function`, `comp-expression-type`, `comp-expression-limit`).
-- [ ] AST schema, type checker (scalar/vector/colour/bool) and evaluator.
-- [ ] Printer from AST back to canonical text, so normalised output and the Lab show a
+- [x] AST schema, type checker (scalar/vector/colour/bool) and evaluator.
+- [x] Printer from AST back to canonical text, so normalised output and the Lab show a
       consistent form; `parse(print(ast))` must equal `ast`.
-- [ ] When both `source` and `ast` are present in an input, validate that they agree
+- [x] When both `source` and `ast` are present in an input, validate that they agree
       (`comp-expression-mismatch`).
-- [ ] Built-ins: `time`, `frame`, `value`, `index`, `layerCount`, `ref(path)`,
+- [x] Built-ins: `time`, `frame`, `value`, `index`, `layerCount`, `ref(path)`,
       `valueAtTime(path, t)`, `velocityAtTime(path, t)`, arithmetic and vector ops,
       `clamp`, `mix`, `linear`, `ease`, `easeIn`, `easeOut`,
       `wiggle(freq, amp, seed, octaves)`, `noise(seed, t)`, `random(seed, index)`,
       `loopIn`/`loopOut` with modes `cycle`, `pingpong`, `offset` and `continue`,
       `smooth(width, samples)`, `lookAt`, `length`, `normalize`, `step`, `if`.
-- [ ] Dependency graph across properties with cycle detection (`comp-expression-cycle`).
+- [x] Dependency graph across properties with cycle detection (`comp-expression-cycle`).
       Include every `ref`, `valueAtTime` and `velocityAtTime` path alongside driver
       and constraint dependencies. Reject every dependency cycle, including self
       references and cycles whose reads request earlier times; changing time does
@@ -3316,13 +3317,16 @@ built-ins cannot express, add a built-in; do not add an escape hatch to arbitrar
       acyclic graph. `value` reads the property's keyed value without re-entering
       its expression. Recursive feedback needs a separate finite-history design
       before it can be supported.
-- [ ] Enable grouped temporal velocity tuples with dimensions/units matching the
+- [x] Enable grouped temporal velocity tuples with dimensions/units matching the
       property, plus a distinct spatial speed in arc-length pixels/frame; extend
       schema, sampler and documentation together (CE2 follow-up). Keep scalar
       `speed` unchanged.
 - [ ] Re-express signals, drivers and periodic motion as expression sugar internally;
-      their schemas remain valid.
-- [ ] Behaviours (compile to expressions/drivers, each with parameters and tests):
+      their schemas remain valid. **Moved to follow-up CE9-F1** (see the completion
+      record): CE9 joins them to the expression dependency graph, exposes `signal(id)`
+      and folds them into baked keys, but runtime evaluation stays on the CE2
+      motion-craft path to keep legacy parity exact.
+- [x] Behaviours (compile to expressions/drivers, each with parameters and tests):
   - `follow-through` / `overlap` chain: child lags parent motion with spring response
     to parent acceleration (Duik-style).
   - `inertial-bounce` after a keyed stop.
@@ -3332,7 +3336,7 @@ built-ins cannot express, add a built-in; do not add an escape hatch to arbitrar
   - `constant-speed` (roving keys) over a spatial path.
   - `camera-shake` (seeded, decaying).
   - `stagger(layers, offsetFrames, order: forward | reverse | center-out | seeded)`.
-- [ ] Bake command: `pnpm still-shift comp bake` converts expressions to keys for
+- [x] Bake command: `pnpm still-shift comp bake` converts expressions to keys for
       inspection and for consumers that cannot evaluate expressions.
 
 **Acceptance:** A demo composition where three layers follow a keyed leader with
@@ -3349,7 +3353,109 @@ different start frames, reverse stretch, remap and source frame rates, including
 seek order and nested instance paths. A fuzz test with a fixed seed confirms that
 arbitrary input either parses to a valid AST or returns a diagnostic, never throws.
 
-**Completion record:** _to be filled in._
+**Completion record (2026-10-03).** Owner: xxibcill (Claude Code) on
+`codex/composition-ce9`, branched from `codex/composition-ce6-performance` at
+`6034de3` (the CE6-P deferral documents were already committed in `c7afacc`).
+
+- **Contract (`@still-shift/scene-contract`):** `expression-ast.ts` (tokenizer,
+  recursive-descent parser with 1-based columns, canonical printer, node/nesting/length
+  limits, never-throw contract), `expression-check.ts` (built-in registry
+  `EXPRESSION_BUILTINS`, overloads and type checker, read collection), `behaviours.ts`
+  (eight behaviour schemas and their expression compiler), `expressions.ts` (entries
+  from `expressions` and `behaviours`, target resolution, overlap and AST-mismatch
+  checks, `normalizeExpressions`). `dependencies.ts` adds property-level expression
+  nodes to the CE1 motion graph. `keys.ts` enables grouped speed tuples and
+  `spatialSpeed`. `transform.autoOrient: "path"` is now available. New stable codes:
+  `comp-expression-mismatch`, `-cycle`, `-overlap`, `comp-key-speed-dimension`,
+  `comp-key-speed-spatial` (validation); `comp-expression-value` (evaluation);
+  `comp-bake-*` (bake).
+- **Evaluator (`composition-evaluator-20`):** a lazy, memoised per-property
+  expression stage between motion craft and constraints. Requests stay on the
+  explicit work stack; time-shifted reads share one bounded session history (1,024
+  times) and a 4,000,000-step limit. `evaluateStageProperty(ies)` expose the stage.
+  Pure kernels live in `expression-math.ts` (seeded hash/noise/wiggle, easing,
+  squash, exact damped-spring steps) and `expression-keys.ts` (loops, inertia,
+  anticipation, roving).
+- **Authoring:** `bakeExpressions` and `pnpm --silent still-shift comp bake`,
+  `comp normalize`, and `comp export-json --normalized true`.
+- **Acceptance:** [`ce9/overlap-demo.json`](../benchmarks/fixtures/composition/ce9/overlap-demo.json)
+  has three followers with no keys following a keyed leader with overlap
+  (follow-through), an inertial bounce and squash/stretch on all four layers. Its bake,
+  [`overlap-demo.baked.json`](../benchmarks/fixtures/composition/ce9/overlap-demo.baked.json),
+  evaluates identically at all 90 frames in Node. Canvas 2D and WebGL2 render
+  pixel-identical frames for the expression and baked versions. Their MP4 exports are
+  byte-identical, as are repeated exports.
+  [`ce9/built-ins.json`](../benchmarks/fixtures/composition/ce9/built-ins.json) covers
+  precomp-instance reads (repeated and reversed instances), clock-dependent targets,
+  loops, noise/random, signals, colour mixing, `lookAt`, `valueAtTime`, path
+  auto-orient, constant speed, camera shake and centre-out stagger. It passes the same
+  bake and pixel checks.
+- **Tests:** unit — `composition-expression-syntax` (76: parser, columns, limits,
+  printer round trip over 2,000 random ASTs, 5,000-input fixed-seed fuzz, type
+  checker), `composition-expressions` (32: validation, same-time/self/self-delayed/
+  mutually delayed and mixed expression/driver/constraint/auto-orient cycles,
+  allowed earlier-time reads, every built-in, stage semantics, random seeks,
+  repeated/reversed/stretched/remapped/60 fps/nested instance reads, clock
+  expressions, behaviours and stagger orders), `composition-bake` (9: exact demo bake,
+  folded motion craft, cloned shared precomps, refusal and CLI). Browser —
+  `test:browser:composition-evaluator` now includes both CE9 fixtures
+  (Node/Chromium numeric error ≤ 5.7e-14, previously ≤ 1.1e-16 without
+  transcendental built-ins). The new `test:browser:composition-expressions` group
+  is part of `pnpm test`.
+- **Performance:** the CE2 200-layer evaluator benchmark (no expressions) measured
+  0.415 ms/frame before and 0.435 ms/frame after (budget 2 ms). Expression-free
+  compositions skip the stage copy and expression bookkeeping. `spring` and
+  follow-through integrate from frame 0, so per-frame cost grows with the frame
+  number, like driver `lag`. The demo bakes 90 frames in about 1.4 s.
+- **Toolchain note:** V8 versions differ in the last ULP of `**`/`exp`. Generate baked
+  fixtures with the pinned Node 22.23.1 (an initial Node 24 bake differed by 1 ULP and
+  was regenerated). Chromium agrees within the existing 1e-9 evaluator tolerance; the
+  pixel and export checks above are exact.
+- **Follow-ups:** **CE9-F1** — lower signals, drivers and periodic motion to expression
+  ASTs at runtime. The CE2 path applies stacked writers in ordered motion layers with
+  blend modes, weights and exact `lag` history. Rerouting it would change
+  floating-point order for every adapted story and commerce fixture (invariant 5),
+  while expressions allow one writer per property. Do this only with proven
+  numerical parity, after CE11 gives the inspector a use for the lowered form.
+  Expression and bake support for discrete and bezier-path targets, `vec3`/3D values
+  (CE8) and Lab editing (CE11) are out of scope.
+- **Local commits (2026-10-04):** `b0b619e` — contract/validation;
+  `66412a0` — evaluator, bake and CLI; `38d3a66` —
+  tests/fixtures and browser-script registration. The following documentation
+  commit records completion and the retained verification evidence. No push or PR
+  creation is authorized yet; request owner approval before either (PR base: `main`).
+- **Verification (pinned Node 22.23.1 / pnpm 10.29.3):** the interrupted
+  implementation run passed `pnpm toolchain:check`, `pnpm schema:check`,
+  `pnpm check:boundaries`, `pnpm lint`, `pnpm build`, `pnpm test:unit`
+  (**1,384 tests**), `pnpm test:runtime` (**46 tests**) and
+  `pnpm test:integration` (all suites, after removing the strip-only-incompatible
+  constructor parameter properties). It passed every preceding browser group in
+  `pnpm test` through `pnpm test:browser:composition-story-fixtures`, including
+  `pnpm test:browser:composition-evaluator` and the new
+  `pnpm test:browser:composition-expressions`. These results and the numeric,
+  pixel, seek, bake, export and evaluator-budget measurements above are retained
+  from that run; the closeout continuation does not repeat completed groups.
+- **Closeout continuation (2026-10-03–04, Codex):**
+  `pnpm test:browser:composition-commerce-adapter && pnpm test:browser:composition-typography-adapter && pnpm test:browser:composition-baselines`
+  passed sequentially on the same pinned toolchain. Commerce: **127 cases /
+  28,200 frames**, all assigned pixel tiers, evaluated states, reverse seeks and
+  **30 byte-identical MP4 pairs** pass; maximum channel delta **1**, minimum PSNR
+  **99.08 dB**, maximum median timing ratio **1.2177×**. Typography: **20 cases /
+  3,367 frames**, state/seek checks and **10 byte-identical MP4 pairs** pass;
+  maximum delta **2**, minimum PSNR **85.45 dB**, maximum ratio **1.1869×**.
+  Frozen CE0: **176 items / 36,061 frames** match, with no baseline regeneration.
+  The first sandbox launch failed before verification with `listen EPERM` on
+  localhost; the authorized server/Chromium retry exited **0**. Prettier passes
+  all **39 changed/new files**, excluding the three owner-designated untracked
+  research/review files; its initial two documentation warnings were fixed.
+  `git diff --check` passes. The full-repository formatter is not claimed passing.
+  [Verification results](./composition-ce9-verification-results.json) retain
+  per-case pixel and paired timing measurements, export outcomes, baseline
+  results, the prior handoff's commands and the environment restriction.
+- **CE6-P limitation:** CE9 does not resume WebGL performance tuning or run the
+  outstanding strict 0.36 WebGL family audits. Their correctness evidence remains
+  separate CE6 work; the 1.25× WebGL gate and 2× speed target remain **deferred
+  performance**, with no claim that their recorded failures are resolved.
 
 ---
 
@@ -3694,6 +3800,13 @@ A milestone is complete when **all** of the following hold:
 | 2026-10-02 | The render graph retains camera and parent transform sequences alongside combined matrices; Canvas concatenates them in order. Settled images draw directly without crossfade surfaces.                                                                                                                                                                                                                                                                                                                                             | Live story parity exposed Canvas API rounding of combined translations and extra image resampling through redundant surfaces. Evaluated state remains pure and unchanged; renderer output has a new version.                                    | `codex/composition-ce4`     |
 | 2026-10-03 | User-approved CE4b/CE6 split: CE4b retains adapter, pixel, state, seek, export, Lab and local-verification requirements; CE6 owns the unchanged 1.25× timing target and 117 recorded failing cases                                                                                                                                                                                                                                                                                                                                  | Two bounded feasibility experiments and complete 0.33 WebGL2 family audits establish visual correctness but do not provide a credible route to all timing gates in this phase; preserve baseline, tolerances and benchmark assertions           |                             |
 | 2026-10-03 | User-approved future-version deferral: move WebGL's 1.25× family timing gate and CE6's 2× Canvas speed target to CE6-P; prioritize feature work and resume performance only on an explicit owner request                                                                                                                                                                                                                                                                                                                            | Supersedes immediate CE6 timing closure after extended tuning; preserve measurements and strict benchmark assertions while keeping all correctness requirements mandatory                                                                       | CE4b/CE6 timing split above |
+| 2026-10-03 | CE9: expressions use the root composition's clock (`time`, `frame`, `fps`, time arguments in seconds) and root-relative property paths, including precomp instance paths                                                                                                                                                                                                                                                                                                                                                            | One clock makes `valueAtTime`, velocity and spring consistent across instances; instance paths already carry each precomp mapping. Expressions on held precomp clocks that use `time` keep changing, so bake refuses them                       |                             |
+| 2026-10-03 | CE9: expression reads return the expression stage (keys, motion craft, expressions; no constraints or parents), evaluated lazily per property; drivers keep reading full layer state; `autoOrient: "path"` applies after expressions and is invisible to reads                                                                                                                                                                                                                                                                      | Matches AE layer-space reads and the plan's order (expressions before constraints); per-property laziness makes acyclic earlier-time reads finite                                                                                               |                             |
+| 2026-10-03 | CE9: expression dependencies are property nodes (`L#segments`) joined to the layer-level driver/constraint/parent graph through a stage node (`L@stage`); edges ignore time, and one property may have one expression                                                                                                                                                                                                                                                                                                               | Rejects self, delayed and mixed cycles before rendering while allowing same-layer reads of other properties; overlap makes the writer of each value unique                                                                                      |                             |
+| 2026-10-03 | CE9: `velocityAtTime` uses ±1 frame central differences, seconds snap to integer frames, and follow-through compiles each follower against the leader with cumulative delay; `spring` integrates exactly over piecewise-linear frame intervals from frame 0                                                                                                                                                                                                                                                                         | Keeps integer-frame evaluation on integer frames (invariant 1) and keeps chain cost linear instead of exponential in chain length                                                                                                               |                             |
+| 2026-10-03 | CE9: bake writes linear keys at integer layer frames for whole properties, removes motion craft folded into them, clones shared precomp sources and refuses non-integer layer times; colours round to 8 bits with a warning                                                                                                                                                                                                                                                                                                         | Exact equality at every integer frame without fractional keys or per-instance state on shared definitions                                                                                                                                       |                             |
+| 2026-10-03 | CE9: grouped speed is a per-dimension tuple on joint vector/colour keys; spatial keys use `spatialSpeed` in arc pixels/frame, converted by segment arc length; scalar speed on vectors stays rejected                                                                                                                                                                                                                                                                                                                               | Implements the CE2 units decision without changing scalar `speed`                                                                                                                                                                               |                             |
+| 2026-10-03 | CE9: runtime re-expression of signals, drivers and periodic motion moves to follow-up CE9-F1                                                                                                                                                                                                                                                                                                                                                                                                                                        | Rerouting stacked, weighted, lagged motion craft would change legacy floating-point results; CE9 covers them in the dependency graph and bake instead                                                                                           |                             |
 
 ## Open questions for the owner
 
