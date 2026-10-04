@@ -111,10 +111,15 @@ a 120-second worker budget (library override at most 600 seconds).
 ## Ducking
 
 `peak-window-attack-hold-release-1` uses the peak absolute sample across both
-channels in each nonoverlapping `windowSamples` window of the **raw narration
-track**. It includes narration placement/source trims but precedes clip gain,
-track gain, mute/solo and DSP. Muting narration therefore leaves the explicitly
-authored detector intact. The detector never rewrites narration samples.
+channels in each nonoverlapping `windowSamples` window of the narration track's
+**pre-fader sum**: narration placement, source trims, clip gain, fades and
+automation are included; track gain, mute/solo and DSP are not. Ducking therefore
+follows what each narration clip says, including fade-ins and automated dips,
+while riding, muting or soloing the narration track to audition the mix leaves
+the BGM ducked exactly as in the final mix. `thresholdDb` is measured after clip
+gain. The detector never rewrites narration samples. This is `soundtrack-dsp-2`;
+`soundtrack-dsp-1` read the raw source before clip gain, fades and automation,
+which differs only for narration clips with non-unity gain, fades or automation.
 
 Windows at or above `thresholdDb` activate fixed `attenuationDb` reduction. Optional
 `lookaheadSamples` advances that activity; `holdSamples` extends it after speech.

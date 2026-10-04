@@ -107,7 +107,7 @@ def verify(base):
     evidence["integration"] = {
         "schemaVersion": "soundtrack-project-1",
         "workerProtocol": "soundtrack-worker-1",
-        "dspVersion": "soundtrack-dsp-1",
+        "dspVersion": "soundtrack-dsp-2",
         "results": str(base),
         "commands": json.loads((base / "commands.json").read_text()),
         "runs": {

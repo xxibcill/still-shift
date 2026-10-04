@@ -509,3 +509,74 @@ it("reused sounds decode once per span and match per-clip decoding sample for sa
     renderSoundtrackProject(reuse, join(root, "reuse-short")),
   ).rejects.toMatchObject({ code: "source-range", context: { clip: "hit-1" } });
 }, 20000);
+
+it("ducking follows narration clip gain and automation but not track mute (pre-fader sidechain)", async () => {
+  const speech = join(root, "sidechain-speech.wav");
+  await runProcess("ffmpeg", [
+    "-v",
+    "error",
+    "-f",
+    "lavfi",
+    "-i",
+    "aevalsrc='if(between(n,100,199),0.8,0)':s=48000:d=0.02",
+    "-c:a",
+    "pcm_f32le",
+    speech,
+  ]);
+  const p = structuredClone(project);
+  p.assets[0]!.path = speech;
+  p.assets[0]!.sha256 = await soundtrackChecksum(speech);
+  p.clips[0]!.sourceEndSample = 960;
+  p.ducking = {
+    method: "peak-window-attack-hold-release-1",
+    sourceTrack: "voice",
+    targetTracks: ["music"],
+    thresholdDb: -20,
+    attenuationDb: -6,
+    windowSamples: 1,
+    attackSamples: 4,
+    releaseSamples: 8,
+    holdSamples: 3,
+    lookaheadSamples: 2,
+  };
+  const music = async (
+    name: string,
+    change: (q: SoundtrackProject) => void,
+  ) => {
+    const q = structuredClone(p);
+    change(q);
+    const file = join(root, name + ".json");
+    await writeFile(file, JSON.stringify(q));
+    await renderSoundtrackProject(file, join(root, name), { stems: true });
+    return pcm(audio(name, "music"));
+  };
+  const floor = 0.1 * 10 ** (-6 / 20);
+  // 0.8 at −20 dB clip gain is 0.08, below the 0.1 (−20 dBFS) threshold.
+  const quiet = await music("sidechain-gain", (q) => {
+    q.clips[0]!.gainDb = -20;
+  });
+  expect(quiet[150 * 2]).toBe(Math.fround(0.1));
+  // Automation holds the voice at 0.05 until sample 150, so ducking starts there
+  // (minus the 2-sample lookahead), not at the raw onset at 100.
+  const automated = await music("sidechain-automation", (q) => {
+    q.clips[0]!.automation = {
+      interpolation: "hold",
+      points: [
+        { sample: 0, gain: 0.05 },
+        { sample: 150, gain: 1 },
+      ],
+    };
+  });
+  expect(automated[120 * 2]).toBe(Math.fround(0.1));
+  expect(automated[147 * 2]).toBe(Math.fround(0.1));
+  expect(automated[149 * 2]).toBeLessThan(0.1);
+  expect(automated[190 * 2]).toBeCloseTo(floor, 7);
+  // Muting narration to audition the mix keeps the final-mix ducking.
+  const muted = await music("sidechain-mute", (q) => {
+    q.tracks[0]!.mute = true;
+  });
+  expect(muted[150 * 2]).toBeCloseTo(floor, 7);
+  expect(await pcm(audio("sidechain-mute", "voice"))).toEqual(
+    new Float32Array(144000 * 2),
+  );
+}, 20000);

@@ -275,9 +275,12 @@ def render(request):
     detector = np.zeros((2, length), np.float32) if project.get("ducking") else None
     for clip, audio in clip_sources(project["clips"], assets, length, np):
         start, end = clip["startSample"], clip["startSample"] + audio.shape[1]
+        shaped = audio * clip_envelope(clip, np)[None, :]
+        # Pre-fader sidechain: the detector hears clip gain, fades and automation,
+        # but not track gain, mute/solo or DSP.
         if detector is not None and clip["track"] == project["ducking"]["sourceTrack"]:
-            detector[:, start:end] += audio
-        buffers[clip["track"]][:, start:end] += audio * clip_envelope(clip, np)[None, :]
+            detector[:, start:end] += shaped
+        buffers[clip["track"]][:, start:end] += shaped
     duck = duck_envelope(detector, project["ducking"], np) if detector is not None else None
     engine, graph, outputs = daw.RenderEngine(48000, 512), [], {}
     solo = any(t["solo"] and not t["mute"] for t in project["tracks"])
@@ -371,7 +374,7 @@ def render(request):
         "latencySamples": 0,
         "latencyProbes": latency,
         "tailPolicy": project["tailPolicy"],
-        "dspVersion": "soundtrack-dsp-1",
+        "dspVersion": "soundtrack-dsp-2",
         "ducking": project.get("ducking"),
         "wallSeconds": time.perf_counter() - started,
         "peakResidentBytes": resource.getrusage(resource.RUSAGE_SELF).ru_maxrss,
