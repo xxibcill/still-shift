@@ -46,8 +46,8 @@ still hold before relying on them.
 - **PR #33 review fixes (2026-10-05):** Claude Code pushed per-request undo,
   anchor-preserving moves, no-op retime, worker decode reuse, Lab render pruning
   and pre-fader ducking (`soundtrack-dsp-2`) onto `codex/composition-ce16`.
-  Non-browser gates and the soundtrack browser group pass on Node 22.23.1; the
-  other browser groups were not rerun. Owner review/merge pending.
+  Full `pnpm check` passes on Node 22.23.1 (commerce-adapter timing gate
+  needed a rerun under lower machine load). Owner review/merge pending.
 
 - **CE16 isolated implementation (`[x]`, 2026-10-05):** Codex on
   `codex/composition-ce16`, worktree
@@ -175,8 +175,13 @@ _Last updated 2026-10-05 by Codex for isolated CE16 PR publication._
   sidechain, hearing narration clip gain/fades/automation but not track
   gain/mute/solo/DSP; DSP version `soundtrack-dsp-2`. CE16 fixture outputs stay
   bit-identical (unity narration clip); render identities change with the
-  version. Gates rerun: 128 integration tests and the soundtrack browser group
-  pass. Recorded CE16 evidence JSON still describes the `dsp-1` runs.
+  version. Recorded CE16 evidence JSON still describes the `dsp-1` runs.
+- **Full `pnpm check` on `6ed279e` (Node 22.23.1):** all 47 test steps pass,
+  including all browser groups and 176 frozen baseline items / 36,061 frames.
+  `composition-commerce-adapter` missed its 1.25× timing gate twice on
+  `commerce/atom-text` (1.26×, 1.29×; pixels exact) while another session loaded
+  the machine; the untouched `e7f3175` passed at 1.16×, and the branch then
+  passed the whole group at 1.19× (worst item 1.22×). Treat as load noise.
 - **Open / next:** PR #33 review/merge still pending after PR #32.
 - **Records:** [soundtrack guide](./soundtrack-project.md),
   [PR #33](https://github.com/xxibcill/still-shift/pull/33).
