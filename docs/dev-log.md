@@ -51,8 +51,10 @@ still hold before relying on them.
   Corrected command-only gates pass (1,436 unit / 46 runtime / 19 audio integration /
   14 depth; focused 35). Preview lifecycle, held automation and duplicate anchors
   repaired. Earlier broad tier indirectly launched headless browsers; that policy
-  breach is recorded, not erased. Owner closure choice remains pending because
-  full repository gates drive a browser.
+  breach is recorded, not erased. Closure is blocked on the owner decision because
+  full repository gates drive a browser. Three consecutive impasse audits found no
+  changed state or remaining authorized implementation work; the goal is blocked
+  pending that decision, not complete.
   [Completion audit](./composition-ce16-completion-audit.md).
   All reload PCM and unaffected edited stems are exact; narration unchanged.
   Dependency/license evidence retained; distribution packaging remains pending.
@@ -148,8 +150,9 @@ _Last updated 2026-10-04 by Codex for the isolated CE16 completion audit._
 - **Rejected / repaired:** direct Playwright-import filtering missed indirect
   headless-browser launches. Earlier broad checks violated zero browser driving;
   retained honestly, replaced with three audited audio-only suites. No CUA used.
-- **Open / next:** owner resolution of full check/rendered baseline closure remains
-  pending; `[~]`. Listening/AV QA and binary distribution decision unperformed/pending.
+- **Open / next:** closure blocked after three consecutive impasse audits; owner
+  resolution of full check/rendered baseline conflict remains pending; `[~]`.
+  Listening/AV QA and binary distribution decision unperformed/pending.
 - **Records:** [requirement audit](./composition-ce16-completion-audit.md),
   [evidence](./composition-ce16-verification-results.json).
 
