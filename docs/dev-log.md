@@ -44,10 +44,10 @@ still hold before relying on them.
 ## Current state
 
 - **PR #33 review fixes (2026-10-05):** Claude Code pushed per-request undo,
-  anchor-preserving moves, no-op retime, worker decode reuse and Lab render
-  pruning onto `codex/composition-ce16`. Non-browser gates and the soundtrack
-  browser group pass on Node 22.23.1. Pending owner decision: whether the
-  ducking detector should follow narration clip gain/fades/automation.
+  anchor-preserving moves, no-op retime, worker decode reuse, Lab render pruning
+  and pre-fader ducking (`soundtrack-dsp-2`) onto `codex/composition-ce16`.
+  Non-browser gates and the soundtrack browser group pass on Node 22.23.1; the
+  other browser groups were not rerun. Owner review/merge pending.
 
 - **CE16 isolated implementation (`[x]`, 2026-10-05):** Codex on
   `codex/composition-ce16`, worktree
@@ -171,9 +171,13 @@ _Last updated 2026-10-05 by Codex for isolated CE16 PR publication._
   the new reuse test. The other 41 browser groups and baselines were not run.
 - **Rejected / do not repeat:** Node 24 fails the CE9 bake test by one ULP and
   depth tests time out without `uv sync`; both are environment, not regressions.
-- **Open / next:** owner decision on the ducking detector, which ignores the
-  narration clip's gain, fades and automation (changes DSP output and evidence
-  hashes). PR #33 review/merge still pending after PR #32.
+- **Ducking (owner chose option B):** the detector is now a pre-fader
+  sidechain, hearing narration clip gain/fades/automation but not track
+  gain/mute/solo/DSP; DSP version `soundtrack-dsp-2`. CE16 fixture outputs stay
+  bit-identical (unity narration clip); render identities change with the
+  version. Gates rerun: 128 integration tests and the soundtrack browser group
+  pass. Recorded CE16 evidence JSON still describes the `dsp-1` runs.
+- **Open / next:** PR #33 review/merge still pending after PR #32.
 - **Records:** [soundtrack guide](./soundtrack-project.md),
   [PR #33](https://github.com/xxibcill/still-shift/pull/33).
 
