@@ -412,7 +412,7 @@ function velocityValues(sample: CompositionQualitySample) {
     sample.opacity * 100,
     (sample.state.reveal ?? 1) * 100,
     ...(sample.state.color ?? []).map((n) => n * 100),
-    ...numericValues(sample.state.effects),
+    ...numericValues(sample.effects),
     ...numericValues(sample.state.masks),
   ];
 }

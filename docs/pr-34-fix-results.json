@@ -27,21 +27,36 @@
         "40 focused unit/integration tests passed",
         "pnpm build passed",
         "ESLint for changed TypeScript passed"
-      ]
+      ],
+      "commit": "b91eb24"
     },
     {
       "id": "inactive-effect-motion",
-      "status": "pending"
+      "status": "fixed",
+      "comment": "https://github.com/xxibcill/still-shift/pull/34#discussion_r4179012934",
+      "change": "Motion signatures and velocity evidence use only enabled effects within their active timeline window; evaluated state and rendering remain unchanged.",
+      "regressions": {
+        "before": {
+          "failed": 4,
+          "passed": 29
+        },
+        "after": {
+          "failed": 0,
+          "passed": 44
+        }
+      },
+      "checks": [
+        "44 focused unit/integration tests passed",
+        "pnpm build passed",
+        "ESLint for changed TypeScript passed",
+        "pnpm test:browser:composition-quality passed, including the new rendered inactive-effect regression"
+      ]
     },
     {
       "id": "parent-driven-timing",
       "status": "pending"
     }
   ],
-  "pending": [
-    "Inactive effect signatures",
-    "Parent-driven timing",
-    "Final local verification and one push"
-  ],
+  "pending": ["Parent-driven timing", "Final local verification and one push"],
   "preservation": "Original checkout and unrelated local edits remain untouched. GitHub Actions are prohibited."
 }

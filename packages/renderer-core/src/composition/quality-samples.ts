@@ -17,6 +17,7 @@ export type CompositionQualitySample = {
   id: string;
   path: string;
   state: EvaluatedLayer;
+  effects: EvaluatedLayer["effects"];
   matrix: Matrix;
   bounds: Bounds | null;
   clippedBounds: Bounds | null;
@@ -150,10 +151,12 @@ export function compositionQualityFrame(
               comp.signals ?? [],
             )(state.time)
           : undefined;
+      const effects = state.effects.filter((effect) => effect.enabled);
       const sample: CompositionQualitySample = {
         id,
         path: `${sourcePath ? sourcePath + "." : ""}layers.${index}`,
         state,
+        effects,
         matrix,
         bounds,
         clippedBounds,
@@ -178,7 +181,7 @@ export function compositionQualityFrame(
           state.reveal,
           text?.text,
           state.masks,
-          state.effects,
+          effects,
           content,
           clock,
         ]),

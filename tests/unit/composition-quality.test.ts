@@ -376,3 +376,72 @@ it.each([
     );
   },
 );
+
+it.each([{ enabled: false }, { inPoint: 90 }, { outPoint: 0 }])(
+  "ignores inactive effects when checking stillness and velocity: %j",
+  (activation) => {
+    const input = composition([
+      solid("subject", {
+        effects: [
+          {
+            id: "sweep",
+            effect: "light.sweep",
+            ...activation,
+            params: {
+              progress: {
+                keys: [
+                  { frame: 0, value: 0 },
+                  { frame: 20, value: 0.1, interpolation: "linear" },
+                  { frame: 89, value: 1, interpolation: "linear" },
+                ],
+              },
+            },
+          },
+        ],
+      }),
+    ]);
+    const report = analyzeCompositionQuality(input);
+    expect(report.status).toBe("failed");
+    expect(report.diagnostics).toContainEqual(
+      expect.objectContaining({ code: "frozen-run", frames: [1, 89] }),
+    );
+    expect(report.diagnostics.map((d) => d.code)).not.toContain(
+      "velocity-discontinuity",
+    );
+  },
+);
+
+it("counts effect motion only inside its active window", () => {
+  const input = composition([
+    solid("subject", {
+      effects: [
+        {
+          id: "sweep",
+          effect: "light.sweep",
+          inPoint: 20,
+          outPoint: 70,
+          params: {
+            progress: {
+              keys: [
+                { frame: 0, value: 0 },
+                { frame: 89, value: 1, interpolation: "linear" },
+              ],
+            },
+          },
+        },
+      ],
+    }),
+  ]);
+  expect(
+    analyzeCompositionQuality(input)
+      .diagnostics.filter((d) => d.code === "frozen-run")
+      .map((d) => d.frames),
+  ).toEqual([
+    [1, 19],
+    [71, 89],
+  ]);
+  const active = structuredClone(input);
+  delete active.layers[0]!.effects![0]!.inPoint;
+  delete active.layers[0]!.effects![0]!.outPoint;
+  expect(codes(active)).not.toContain("frozen-run");
+});

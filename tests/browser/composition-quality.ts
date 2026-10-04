@@ -145,6 +145,54 @@ try {
       );
     }
   }
+  const inactiveEffect = composition([
+    solid("still-subject", {
+      effects: [
+        {
+          id: "disabled-sweep",
+          effect: "light.sweep",
+          enabled: false,
+          params: {
+            progress: {
+              keys: [
+                { frame: 0, value: 0 },
+                { frame: 89, value: 1, interpolation: "linear" },
+              ],
+            },
+          },
+        },
+      ],
+    }),
+  ]);
+  const inactiveReport = await page.evaluate(
+    async ({ json, moduleUrl }) => {
+      const renderer = (await import(moduleUrl)) as typeof Renderer;
+      const comp = JSON.parse(json) as Composition;
+      const preview = renderer.createCompositionPreview(
+        document.createElement("canvas"),
+        comp,
+        await renderer.loadCompositionResources(comp, () => {
+          throw new Error("No assets expected");
+        }),
+      );
+      try {
+        return await renderer.analyzeRenderedCompositionQuality(comp, preview);
+      } finally {
+        preview.dispose();
+      }
+    },
+    {
+      json: JSON.stringify(inactiveEffect),
+      moduleUrl: `/@fs/${root}/packages/renderer-core/src/index.ts`,
+    },
+  );
+  assert.equal(inactiveReport.status, "failed");
+  for (const code of ["frozen-run", "frozen-pixels"])
+    assert.ok(
+      inactiveReport.diagnostics.some((d) => d.code === code),
+      `Disabled effect must not hide ${code}`,
+    );
+
   const cliPixels = await lintCompositionFile(
     resolve(root, "benchmarks/fixtures/composition/ce12/stillness-fail.json"),
     {},

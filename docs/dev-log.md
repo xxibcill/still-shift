@@ -44,11 +44,11 @@ still hold before relying on them.
 ## Current state
 
 - **PR #34 review fixes (2026-10-05):** all three inline findings posted on
-  `0987396`; structured policy diagnostics fixed in the isolated PR checkout.
-  Nine regressions failed before the fix; all 40 focused tests, build and changed-file
-  ESLint now pass. Inactive-effect motion and parent-driven timing remain in flight;
-  one final push follows all three finding commits. No blocker or owner decision.
-  [Fix evidence](./pr-34-fix-results.json).
+  `0987396`; structured policy diagnostics committed in `b91eb24`; inactive-effect
+  state/velocity motion is fixed and its rendered regression passes. All 44 focused
+  tests, build, changed-file ESLint and the CE12 browser group pass. Parent-driven
+  timing remains in flight; one final push follows the third finding commit.
+  No blocker or owner decision. [Fix evidence](./pr-34-fix-results.json).
 
 - **CE12 motion linting (`[x]`, 2026-10-05):** complete on
   `codex/composition-ce12`, implementation `a365f26` from delivered CE9 `dee9e7b`.
@@ -139,6 +139,18 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-05 — PR #34 inactive-effect motion evidence
+
+- **Agent / branch:** Codex on `codex/pr34-review-fixes`.
+- **Done:** second finding fixed by excluding inactive effects from state signatures
+  and velocity inputs, preserving evaluation and rendered output.
+- **Results:** all four new regressions failed before the fix; 44 focused tests,
+  build, changed-file ESLint and the CE12 browser group now pass, including rendered
+  static content with disabled animated effects.
+- **Open / next:** parent-driven timing is the final finding; verify then push once.
+- **Records:** [Fix evidence](./pr-34-fix-results.json),
+  [CE12 plan](./composition-engine-plan.md#ce12--motion-linting).
 
 ### 2026-10-05 — PR #34 structured policy diagnostics
 
