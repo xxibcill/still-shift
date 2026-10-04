@@ -6,13 +6,21 @@ import {
   createIllustratedPreview,
   loadIllustratedImages,
 } from "../../../packages/renderer-core/src/illustrated-renderer.ts";
+import {
+  prepareStoryComposition,
+  createCompositionPreview,
+  loadCompositionResources,
+  type CompositionBackend,
+} from "../../../packages/renderer-core/src/index.ts";
 import { storyCameraTransform } from "../../../packages/renderer-core/src/story-camera.ts";
 import { nodeMatrix } from "../../../packages/renderer-core/src/node-transform.ts";
 import { drawFormatGuides } from "./format-guides.ts";
 
 export type ReadyBeat = {
   scene: ReturnType<typeof compileStoryScene>;
-  preview: ReturnType<typeof createIllustratedPreview>;
+  preview:
+    | ReturnType<typeof createIllustratedPreview>
+    | ReturnType<typeof createCompositionPreview>;
   canvas: HTMLCanvasElement;
   images: Awaited<ReturnType<typeof loadIllustratedImages>>;
 };
@@ -29,6 +37,13 @@ type OverlayOptions = {
 const assetUrl = (path: string) =>
   "/passage-api/asset?path=" + encodeURIComponent(path);
 export async function preparePreviews(passage: CompiledStoryPassage) {
+  const parameters = new URLSearchParams(location.search);
+  const renderer = parameters.get("renderer") ?? "legacy";
+  const backend = parameters.get("backend") ?? "canvas2d";
+  if (!["legacy", "composition"].includes(renderer))
+    throw new Error("Unknown passage renderer");
+  if (!["canvas2d", "webgl2"].includes(backend))
+    throw new Error("Unknown composition backend");
   const prepared: ReadyBeat[] = [];
   for (const beat of passage.beats) {
     const scene = compileStoryScene(beat.scene);
@@ -41,9 +56,30 @@ export async function preparePreviews(passage: CompiledStoryPassage) {
     const target = document.createElement("canvas");
     target.width = scene.width;
     target.height = scene.height;
+    const composition =
+      renderer === "composition"
+        ? await prepareStoryComposition(beat.scene, (id) =>
+            assetUrl(
+              [...beat.scene.assets, ...(beat.scene.fonts ?? [])].find(
+                (asset) => asset.id === id,
+              )!.path,
+            ),
+          )
+        : undefined;
     prepared.push({
       scene,
-      preview: createIllustratedPreview(target, scene, images),
+      preview: composition
+        ? createCompositionPreview(
+            target,
+            composition,
+            await loadCompositionResources(composition, (id) =>
+              assetUrl(
+                composition.assets.find((asset) => asset.id === id)!.path,
+              ),
+            ),
+            { backend: backend as CompositionBackend },
+          )
+        : createIllustratedPreview(target, scene, images),
       canvas: target,
       images,
     });

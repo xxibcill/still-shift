@@ -5,6 +5,9 @@ import {
 import { isStoryTransition } from "../../renderer-core/src/story-transition.ts";
 import { passageError } from "../../renderer-core/src/passage-diagnostics.ts";
 import { cachedStoryTransition } from "./story-transition-render.ts";
+import { compileStoryComposition } from "./composition-compile.ts";
+import { renderComposition } from "./composition-render.ts";
+import type { CompositionBackend } from "@still-shift/renderer-core";
 import { randomUUID } from "node:crypto";
 import {
   cachedPassageBeat,
@@ -124,6 +127,8 @@ async function assembleStoryPassage(
   };
   const started = performance.now();
   const { plan } = passage;
+  const renderer = options.renderer ?? "legacy";
+  const backend = options.backend ?? "canvas2d";
   const size = {
     width: passage.beats[0]!.scene.width,
     height: passage.beats[0]!.scene.height,
@@ -152,15 +157,32 @@ async function assembleStoryPassage(
     });
     const clip = await cachedPassageBeat({
       cacheDirectory: options.cacheDirectory,
-      key: passageBeatKey(beat.scene, options.runtime),
+      key: passageBeatKey(beat.scene, options.runtime, renderer, backend),
       output: join(options.sceneDirectory, beat.id + ".mp4"),
       signal: options.signal,
-      render: (outputPath) =>
-        new PreparedAnimationEngine().animate({
-          scenePath: join(options.sceneDirectory, beat.id + ".json"),
+      render: async (outputPath) => {
+        if (renderer === "legacy")
+          return new PreparedAnimationEngine().animate({
+            scenePath: join(options.sceneDirectory, beat.id + ".json"),
+            outputPath,
+            signal: options.signal,
+          });
+        options.signal?.throwIfAborted();
+        const composition = await compileStoryComposition(
+          beat.scene,
+          options.sceneDirectory,
+        );
+        options.signal?.throwIfAborted();
+        const compositionPath = outputPath + ".composition.json";
+        // Prepared passage assets are absolute; the cached composition is independently inspectable.
+        await writePassageJson(compositionPath, composition);
+        return renderComposition({
+          compositionPath,
           outputPath,
+          backend,
           signal: options.signal,
-        }),
+        });
+      },
       verify: (path) =>
         verifyVideo(
           path,
@@ -389,6 +411,8 @@ async function assembleStoryPassage(
   const report = {
     status: "local passage candidate",
     planSha256: passage.inputs.plan.sha256,
+    renderer,
+    ...(renderer === "composition" ? { backend } : {}),
     fps: plan.fps,
     frameCount,
     sourceStartFrame,
@@ -423,6 +447,8 @@ async function assembleStoryPassage(
 }
 
 export type PassageRenderOptions = {
+  renderer?: "legacy" | "composition";
+  backend?: CompositionBackend;
   soundEffects?: boolean;
   cacheDirectory?: string;
   resume?: boolean;
@@ -486,10 +512,16 @@ export async function renderStoryPassage(
     output,
     {
       plan: passage.inputs.plan.sha256,
-      scenes: passage.beats.map((b) => passageBeatKey(b.scene, runtime)),
+      scenes: passage.beats.map((b) =>
+        passageBeatKey(b.scene, runtime, options.renderer, options.backend),
+      ),
       narration: narration ? passage.plan.narration?.sha256 : null,
       audio: passage.audio,
       soundEffects: options.soundEffects !== false,
+      renderer: options.renderer ?? "legacy",
+      ...(options.renderer === "composition"
+        ? { backend: options.backend ?? "canvas2d" }
+        : {}),
       range,
       runtime: jobRuntime,
     },

@@ -22,6 +22,12 @@ import { constants } from "node:fs";
 import { join, resolve, dirname } from "node:path";
 import type { StoryScene } from "../../scene-contract/src/story.ts";
 import { AnimationEngineError } from "../../scene-contract/src/errors.ts";
+import {
+  STORY_ADAPTER_VERSION,
+  COMPOSITION_EVALUATOR_VERSION,
+  compositionRendererVersion,
+  type CompositionBackend,
+} from "@still-shift/renderer-core";
 import { compileStoryScene } from "../../renderer-core/src/story-scene.ts";
 
 const CACHE_LOCK_WAIT_MS = 30 * 60_000;
@@ -43,7 +49,12 @@ export function stableJson(value: unknown): string {
     );
   return JSON.stringify(value);
 }
-export function passageBeatKey(scene: StoryScene, runtime: string) {
+export function passageBeatKey(
+  scene: StoryScene,
+  runtime: string,
+  renderer: "legacy" | "composition" = "legacy",
+  backend: CompositionBackend = "canvas2d",
+) {
   const normalized = structuredClone(scene);
   delete normalized.episodeStartFrame;
   if (normalized.format === "landscape") delete normalized.format;
@@ -53,7 +64,14 @@ export function passageBeatKey(scene: StoryScene, runtime: string) {
     stableJson({
       version: "passage-cache-1",
       scene: normalized,
-      renderer: compileStoryScene(scene).rendererVersion,
+      renderer:
+        renderer === "composition"
+          ? {
+              adapter: STORY_ADAPTER_VERSION,
+              evaluator: COMPOSITION_EVALUATOR_VERSION,
+              backend: compositionRendererVersion(backend),
+            }
+          : compileStoryScene(scene).rendererVersion,
       runtime,
       encoder: "libx264:veryfast:crf18:yuv420p:png_pipe",
     }),
@@ -109,6 +127,8 @@ export async function passageRenderRuntime(
     await visit(directory);
   files.push(
     "packages/animation-engine/src/prepared-animation-engine.ts",
+    "packages/animation-engine/src/composition-compile.ts",
+    "packages/animation-engine/src/composition-render.ts",
     "toolchain.json",
     "pnpm-lock.yaml",
   );

@@ -1435,3 +1435,19 @@ Where a family adapter is unavailable (CE4a coverage, CE4c/CE4d), the report rec
 pixel-only coverage and the reason. It never treats unsupported state rules as passed.
 The acceptance command measures the existing v013 review MP4 and a fresh continuous
 prototype export; other craft findings remain in its report.
+
+### Story exposure and passage compilation (CE4a continuation)
+
+The story adapter compiles `motion-blur` to the shared composition shutter and a
+bounded `sampleTimes` clock on every layer. Transform, paint and connector values
+sample fractional source time. Flow providers retain the authored source frame
+count and source time, independently of their sample-table index. More than 2,000
+reachable samples returns `comp-adapter-limit`; samples are never truncated.
+This is CE4a's required CE7 exposure slice, not completion of all CE7 controls.
+
+`renderStoryPassage` accepts `renderer: "composition"` and an optional `backend`
+(`"canvas2d"` by default, or `"webgl2"`). It compiles each resolved story beat to
+`composition-1`; passage handoffs and audio assembly remain in the passage engine.
+Renderer, evaluator, adapter and backend identities separate cached beat clips.
+Changing the renderer or backend requires a fresh render request/output directory.
+The cache retains each compiled `.composition.json` beside its encoded beat.

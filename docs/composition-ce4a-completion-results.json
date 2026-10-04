@@ -15,19 +15,71 @@
       "name": "Story shutter exposure prerequisite from CE7",
       "changes": "Share bounded family exposure compilation; bake fractional transform, appearance and connector samples; retain authored flow source time; mark complete layer stacks for exposure.",
       "verification": [
-        { "command": "pnpm build", "status": "passed" },
+        {
+          "command": "pnpm build",
+          "status": "passed"
+        },
         {
           "command": "pnpm exec vitest run tests/unit/composition-story-adapter.test.ts tests/unit/composition-story-content.test.ts tests/unit/composition-story-effects.test.ts tests/unit/composition-commerce-adapter.test.ts tests/unit/composition-exposure.test.ts --maxWorkers=2",
           "status": "passed",
           "tests": 71
+        },
+        {
+          "command": "pnpm test:browser:composition-story-fixtures --only continuous-access-constraint --variant motion-blur --exports",
+          "status": "passed",
+          "frames": 192,
+          "maxChannelDelta": 0,
+          "ratio": 0.8897388004450808,
+          "repeatExports": "byte-identical"
+        },
+        {
+          "command": "pnpm test:browser:composition-story-fixtures --only continuous-access-constraint --variant motion-blur --webgl --exports",
+          "status": "failed-deferred-timing",
+          "frames": 192,
+          "maxChannelDelta": 0,
+          "ratio": 1.3902522054054811,
+          "exports": "Not reached on this strict run; repeat with --keep-going."
         }
       ],
-      "limits": "At most 2,000 distinct exposure samples; compiler reports comp-adapter-limit rather than truncating. CE7 remains incomplete."
+      "limits": "At most 2,000 distinct exposure samples; compiler reports comp-adapter-limit rather than truncating. CE7 remains incomplete.",
+      "referenceCorrection": "Compile source in the browser instead of JSON serializing compiled Float64Arrays: their lost length corrupted fractional flow interpolation in the old test reference. Original integer-frame baselines remain unchanged."
+    },
+    {
+      "name": "Composition passage export and preview",
+      "changes": "Optional composition renderer/backend for passage CLI and Lab; each beat compiles to composition-1; handoffs stay in the passage engine. Cache and resume identity include renderer/backend. Cached compositions remain inspectable beside encoded beat clips.",
+      "verification": [
+        {
+          "command": "pnpm build",
+          "status": "passed"
+        },
+        {
+          "command": "pnpm exec vitest run tests/runtime/passage-cache.test.ts tests/runtime/passage-publication.test.ts tests/unit/passage-runtime-identity.test.ts --maxWorkers=2",
+          "status": "passed",
+          "tests": 18,
+          "sandboxRetry": "Initial sandbox blocked process identity ps; authorized local retry passes."
+        },
+        {
+          "command": "pnpm test:browser:passage:authoring --composition",
+          "status": "passed",
+          "frameCount": 576,
+          "comparisons": 9,
+          "assertions": [
+            "cache reuse",
+            "isolated edit",
+            "range export",
+            "cancellation/resume",
+            "narration",
+            "workspace relocation",
+            "Lab preview/export frame agreement",
+            "browser editing/recovery/playback/phone layout"
+          ],
+          "artifacts": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-authoring-Y227ZZ"
+        }
+      ]
     }
   ],
   "pending": [
-    "Story exposure browser parity and seeks",
-    "Passage composition path",
+    "Composition-only passage beat authoring choice (CE4a/Q2)",
     "Full story and typography correctness acceptance",
     "Canvas timing gate",
     "Full pnpm check and CE0 frozen baselines",

@@ -658,3 +658,15 @@ aligned with this checkout. If you move the checkout, update the link.
 For contributors: when a user-visible feature changes, update this guide with
 its entry point, required inputs, availability and limits. Keep detailed contracts
 in the linked implementation references; check catalog counts against source.
+
+### Render and inspect passages through compositions
+
+Use `pnpm story:passage --plan <plan.json> --output-dir <fresh-directory> --silent
+--renderer composition` to compile each story beat to `composition-1` before export.
+Add `--backend webgl2` for the WebGL2 backend; Canvas 2D is the default. Narration,
+sound cues, frame ranges, cancellation/resume and passage handoffs use the existing
+passage pipeline. Choose a fresh output directory when changing renderer/backend.
+
+For the matching Lab preview, open `passage.html?renderer=composition` (or add
+`&backend=webgl2`). Beat seeking and editing retain their existing controls. The
+compiled beat composition is retained in the passage cache for inspection.

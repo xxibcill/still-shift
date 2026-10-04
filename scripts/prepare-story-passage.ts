@@ -29,6 +29,8 @@ const { values } = parseArgs({
     beat: { type: "string" },
     "compare-with": { type: "string" },
     format: { type: "string" },
+    renderer: { type: "string", default: "legacy" },
+    backend: { type: "string", default: "canvas2d" },
   },
   strict: true,
 });
@@ -64,6 +66,12 @@ try {
   const format = values.format
     ? OutputFormatSchema.parse(values.format)
     : undefined;
+  if (!["legacy", "composition"].includes(values.renderer!))
+    throw new Error("--renderer must be legacy or composition");
+  if (!["canvas2d", "webgl2"].includes(values.backend!))
+    throw new Error("--backend must be canvas2d or webgl2");
+  if (values.renderer === "legacy" && values.backend !== "canvas2d")
+    throw new Error("--backend webgl2 requires --renderer composition");
   const passage = await readStoryPassage(
     values.plan,
     format ? { format } : undefined,
@@ -95,6 +103,8 @@ try {
   let report: Awaited<ReturnType<typeof renderStoryPassage>> | undefined;
   if (!values["prepare-only"])
     report = await renderStoryPassage(output, passage, narration, {
+      renderer: values.renderer as "legacy" | "composition",
+      backend: values.backend as "canvas2d" | "webgl2",
       soundEffects: !values.silent && !values["without-sound-effects"],
       resume: values.resume,
       signal: controller.signal,

@@ -361,7 +361,7 @@ sign and for time remap. It does not change the layer's composition-time visibil
 | CE1   | `composition-1` contract and property paths     | A      | CE0                  | xxibcill (Claude Code) | `codex/composition-ce1`             | `[x]`  | [CE1 record](#ce1--composition-1-contract-and-property-paths)                      |
 | CE2   | Pure composition evaluator                      | A      | CE1                  | Codex                  | `codex/composition-ce2`             | `[x]`  | [CE2 record](#ce2--pure-composition-evaluator)                                     |
 | CE3   | Render graph and Canvas 2D reference backend    | A      | CE2                  | xxibcill (Claude Code) | `codex/composition-ce3`             | `[x]`  | [CE3 record](#ce3--render-graph-and-canvas-2d-reference-backend); merged in PR #28 |
-| CE4a  | Story adapter with visual parity                | A      | CE3                  | Codex                  | `codex/composition-ce4`             | `[~]`  | [CE4a start record](#ce4a-start-record-2026-10-02)                                 |
+| CE4a  | Story adapter with visual parity                | A      | CE3                  | Codex                  | `codex/composition-ce4a-completion`             | `[~]`  | [CE4a start record](#ce4a-start-record-2026-10-02)                                 |
 | CE4b  | Commerce and reusable-component adapter         | A      | CE3, CE6 slices      | Codex                  | `codex/composition-ce4b`            | `[x]`  | [CE4b completion record](#ce4b-completion-record-2026-10-03)                       |
 | CE4c  | Cinematic adapter                               | A      | CE3, CE8             |                        |                                     | `[ ]`  |                                                                                    |
 | CE4d  | Legacy illustrated adapter and old-path removal | A      | CE4a–CE4c            |                        |                                     | `[ ]`  |                                                                                    |
@@ -1366,6 +1366,21 @@ and results that applied when they were written.
 
 **Verification:** Family browser tests re-run on the composition path; baseline
 comparisons; the full `pnpm check`.
+
+### CE4a continuation (2026-10-05)
+
+- **Owner / branch:** Codex on `codex/composition-ce4a-completion`, from CE12 `0987396`.
+- **Reconciliation:** existing story schema validation already requires group parents
+  and typography opt-in; the adapter's old duplicate refusals are not missing vocabulary.
+  CE4b delivered native typography, reusable components, masks and family effects.
+- **CE7 prerequisite:** story shutter compilation now shares the bounded family exposure
+  clock, samples fractional transforms/paint/connectors and preserves flow source time.
+  CE7 remains in progress at its later sequence position; no broader time-control closure.
+- **Passages:** opt-in composition beat compilation is wired to export and Lab preview;
+  renderer/backend-specific cache identities preserve handoffs, narration and recovery.
+- **Evidence:** [continuation results](./composition-ce4a-completion-results.json).
+  Full family acceptance, native composition-only beat authoring and full local
+  verification remain before milestone completion/PR and CE10.
 
 ### CE4a start record (2026-10-02)
 

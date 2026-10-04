@@ -18,6 +18,17 @@ export function storyEffectVariants(id: string, source: StoryScene) {
     width: 0.15,
     strength: 0.7,
   });
+  if (id === "story/continuous-access-constraint") {
+    const scene = enable(structuredClone(source), [
+      {
+        type: "motion-blur",
+        shutterAngle: 180,
+        samples: 4,
+        active: { start: 40, end: 80 },
+      },
+    ]);
+    return [{ id: `${id}/motion-blur`, scene }];
+  }
   if (id === "component/story-state") {
     const grouped = structuredClone(source);
     grouped.nodes.find((node) => node.id === "house-art-a")!.opacity = 0.6;
