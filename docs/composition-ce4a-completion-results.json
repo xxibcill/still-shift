@@ -181,16 +181,22 @@
     },
     {
       "name": "Companion-map dictionary key regression",
-      "changes": "Use a null-prototype native picture map so __proto__ is rejected as an unknown beat instead of being omitted. Add a structured comp-passage-beat assertion to the native browser group.",
+      "changes": "Check raw companion-map beat IDs before schema parsing and use a null-prototype picture map. Unknown __proto__ input now returns comp-passage-beat instead of being discarded by the schema.",
       "verification": [
         {
           "command": "targeted loadPassageCompositions unknown __proto__ key regression",
-          "status": "passed",
-          "sandboxRetry": "Local passage font validation needs a localhost browser; default sandbox denied its listen and the authorized retry passes."
+          "status": "failed-first-fix",
+          "sandboxRetry": "Local passage font validation needs a localhost browser; default sandbox denied its listen and the authorized retry passes.",
+          "reason": "The null-prototype destination alone was insufficient: Zod had already discarded __proto__. The initial checkpoint recorded the result prematurely; this record corrects it."
         },
         {
           "command": "pnpm build; targeted eslint and formatting",
           "status": "passed"
+        },
+        {
+          "command": "targeted loadPassageCompositions raw unknown __proto__ key regression",
+          "status": "passed",
+          "result": "Unknown __proto__ beat rejects with comp-passage-beat"
         }
       ],
       "integration": "Overlay the tracked repair on the existing acceptance snapshot before its native-passage/composition groups execute; recheck static gates. Prior completed groups do not exercise this loader key case."

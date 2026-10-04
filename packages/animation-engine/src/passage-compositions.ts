@@ -24,9 +24,22 @@ export async function loadPassageCompositions(
 ) {
   const sourcePath = resolve(path);
   await allowPath?.(sourcePath);
-  const parsed = PassageCompositionReferencesSchema.safeParse(
-    await readReferenceJson(sourcePath),
-  );
+  const input = await readReferenceJson(sourcePath);
+  if (input && typeof input === "object" && !Array.isArray(input)) {
+    const ids = Object.keys(input);
+    if (ids.length > 400)
+      passageError("comp-passage-limit", "At most 400 native beat references", {
+        path: sourcePath,
+      });
+    // Check raw keys before parsing: record schemas deliberately discard __proto__.
+    for (const id of ids)
+      if (!passage.beats.some((beat) => beat.id === id))
+        passageError("comp-passage-beat", `Unknown beat ${id}`, {
+          beat: id,
+          path: sourcePath,
+        });
+  }
+  const parsed = PassageCompositionReferencesSchema.safeParse(input);
   if (!parsed.success)
     passageError("comp-passage-reference", parsed.error.issues[0]!.message, {
       path: "compositions",

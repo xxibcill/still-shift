@@ -159,7 +159,9 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   Split source loading from rendering after the full gate exposed a Node strip-only
   Lab import failure; all five affected suites / 25 tests pass after repair. The narrow
   public validation export also passes Lab and binding checks (25 tests). Unknown
-  `__proto__` companion-map keys now fail explicitly; the targeted regression passes.
+  `__proto__` map keys now fail before parsing; the targeted regression passes.
+  The first destination-only fix failed because parsing discarded the key; corrected
+  its prematurely recorded result in the evidence file.
 - **Open / next:** full verification, WebGL correctness record and milestone PR;
   CE7 remains incomplete, CE6-P remains deferred. Pre-existing local documentation retained.
 - **Records:** [CE4a continuation evidence](./composition-ce4a-completion-results.json).
