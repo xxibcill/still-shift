@@ -1,0 +1,552 @@
+{
+  "date": "2026-10-05",
+  "version": "composition-ce12-verification-1",
+  "completedAtUtc": "2026-10-04T18:43:34.205901+00:00",
+  "branch": "codex/composition-ce12",
+  "implementationCommit": "a4586feaf2549d66847236a1c9e1a8d857562bcf",
+  "snapshotContentAudit": {
+    "commit": "a4586feaf2549d66847236a1c9e1a8d857562bcf",
+    "trackedFiles": 1429,
+    "mismatches": []
+  },
+  "powerDiagnosis": {
+    "date": "2026-10-04",
+    "source": "Filtered local pmset power-event timestamps; device identifiers omitted",
+    "events": [
+      {
+        "time": "2026-10-04 15:00:04 +0700",
+        "event": "display-off"
+      },
+      {
+        "time": "2026-10-04 15:00:09 +0700",
+        "event": "system-sleep",
+        "reason": "Clamshell Sleep"
+      },
+      {
+        "time": "2026-10-04 15:16:08 +0700",
+        "event": "system-sleep",
+        "reason": "Sleep Service Back to Sleep"
+      },
+      {
+        "time": "2026-10-04 15:16:32 +0700",
+        "event": "system-sleep",
+        "reason": "Maintenance Sleep"
+      },
+      {
+        "time": "2026-10-04 15:16:50 +0700",
+        "event": "system-sleep",
+        "reason": "Maintenance Sleep"
+      },
+      {
+        "time": "2026-10-04 15:26:46 +0700",
+        "event": "display-on"
+      },
+      {
+        "time": "2026-10-04 15:40:54 +0700",
+        "event": "display-off"
+      },
+      {
+        "time": "2026-10-04 15:40:59 +0700",
+        "event": "system-sleep",
+        "reason": "Clamshell Sleep"
+      },
+      {
+        "time": "2026-10-04 15:41:34 +0700",
+        "event": "system-sleep",
+        "reason": "Maintenance Sleep"
+      },
+      {
+        "time": "2026-10-04 15:56:58 +0700",
+        "event": "system-sleep",
+        "reason": "Sleep Service Back to Sleep"
+      },
+      {
+        "time": "2026-10-04 16:13:50 +0700",
+        "event": "system-sleep",
+        "reason": "Sleep Service Back to Sleep"
+      },
+      {
+        "time": "2026-10-04 16:21:59 +0700",
+        "event": "display-on"
+      },
+      {
+        "time": "2026-10-04 16:52:34 +0700",
+        "event": "display-off"
+      },
+      {
+        "time": "2026-10-04 16:52:39 +0700",
+        "event": "system-sleep",
+        "reason": "Clamshell Sleep"
+      },
+      {
+        "time": "2026-10-04 16:55:55 +0700",
+        "event": "system-sleep",
+        "reason": "Maintenance Sleep"
+      },
+      {
+        "time": "2026-10-04 17:12:18 +0700",
+        "event": "system-sleep",
+        "reason": "Sleep Service Back to Sleep"
+      },
+      {
+        "time": "2026-10-04 17:28:47 +0700",
+        "event": "system-sleep",
+        "reason": "Sleep Service Back to Sleep"
+      },
+      {
+        "time": "2026-10-04 17:45:22 +0700",
+        "event": "system-sleep",
+        "reason": "Sleep Service Back to Sleep"
+      },
+      {
+        "time": "2026-10-04 18:01:09 +0700",
+        "event": "system-sleep",
+        "reason": "Sleep Service Back to Sleep"
+      },
+      {
+        "time": "2026-10-04 18:12:04 +0700",
+        "event": "system-sleep",
+        "reason": "Maintenance Sleep"
+      },
+      {
+        "time": "2026-10-04 18:27:59 +0700",
+        "event": "system-sleep",
+        "reason": "Sleep Service Back to Sleep"
+      },
+      {
+        "time": "2026-10-04 18:44:18 +0700",
+        "event": "system-sleep",
+        "reason": "Sleep Service Back to Sleep"
+      },
+      {
+        "time": "2026-10-04 18:53:42 +0700",
+        "event": "system-sleep",
+        "reason": "Maintenance Sleep"
+      },
+      {
+        "time": "2026-10-04 21:47:23 +0700",
+        "event": "display-off"
+      },
+      {
+        "time": "2026-10-04 21:47:28 +0700",
+        "event": "system-sleep",
+        "reason": "Clamshell Sleep"
+      },
+      {
+        "time": "2026-10-04 21:52:57 +0700",
+        "event": "system-sleep",
+        "reason": "Maintenance Sleep"
+      },
+      {
+        "time": "2026-10-04 22:09:07 +0700",
+        "event": "system-sleep",
+        "reason": "Sleep Service Back to Sleep"
+      },
+      {
+        "time": "2026-10-04 22:24:22 +0700",
+        "event": "system-sleep",
+        "reason": "Sleep Service Back to Sleep"
+      },
+      {
+        "time": "2026-10-04 22:24:38 +0700",
+        "event": "system-sleep",
+        "reason": "Maintenance Sleep"
+      },
+      {
+        "time": "2026-10-04 22:39:53 +0700",
+        "event": "system-sleep",
+        "reason": "Sleep Service Back to Sleep"
+      },
+      {
+        "time": "2026-10-04 22:55:09 +0700",
+        "event": "system-sleep",
+        "reason": "Sleep Service Back to Sleep"
+      },
+      {
+        "time": "2026-10-04 22:55:25 +0700",
+        "event": "system-sleep",
+        "reason": "Maintenance Sleep"
+      }
+    ]
+  },
+  "baseCommit": "dee9e7b",
+  "workspaceRuntimeRestoration": {
+    "command": "uv sync --frozen --offline",
+    "exitCode": 0,
+    "verificationCommand": ".venv/bin/python import still_shift_depth",
+    "importPath": "/Users/jjae/Documents/playground/still-shift/services/depth-worker/src/still_shift_depth/__init__.py",
+    "primaryCheckoutRestored": true,
+    "wrapperCheckNote": "The un-escalated uv run --no-sync wrapper could not read its external cache under the filesystem sandbox. Direct .venv Python import verified the restored primary package path."
+  },
+  "scope": "CE12 only; CE6-P and CE9-F1 remain deferred; GitHub Actions prohibited.",
+  "toolchain": {
+    "node": "22.23.1",
+    "pnpm": "10.29.3",
+    "python": "3.12.11",
+    "playwright": "1.62.1",
+    "chromiumRevision": "1234",
+    "ffmpeg": "8.0.1"
+  },
+  "fullGate": {
+    "command": "pnpm check",
+    "wrapper": "caffeinate -di (display and system idle sleep inhibited for verification only)",
+    "exitCode": 0,
+    "workingDirectory": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ce12-port-check-547_96sa",
+    "isolation": "Clean git archive of the implementation commit; package-local dependency links and root @still-shift links resolve workspace code inside the snapshot. External pinned pnpm store reused. Acceptance thresholds and timeouts retained.",
+    "unit": {
+      "files": 129,
+      "tests": 1451
+    },
+    "runtime": {
+      "files": 9,
+      "tests": 46
+    },
+    "integration": {
+      "files": 32,
+      "tests": 116
+    },
+    "executedScripts": [
+      "check",
+      "toolchain:check",
+      "schema:check",
+      "check:boundaries",
+      "format:check",
+      "lint",
+      "build",
+      "test",
+      "test:unit",
+      "test:runtime",
+      "test:integration",
+      "test:depth",
+      "test:browser:depth",
+      "test:browser:vertical-image",
+      "test:browser:export",
+      "test:golden",
+      "test:browser:cli",
+      "test:browser:batch",
+      "test:browser:illustrated",
+      "test:browser:illustrated:vertical",
+      "test:browser:cinematic",
+      "test:browser:cinematic:vertical",
+      "test:browser:threshold",
+      "test:browser:dolly",
+      "test:browser:lateral",
+      "test:browser:reveal",
+      "test:browser:story",
+      "test:browser:story:activity",
+      "test:browser:story:continuous",
+      "test:browser:passage:authoring",
+      "test:browser:lab-session",
+      "test:browser:commerce",
+      "test:browser:commerce-components",
+      "test:browser:commerce-effects",
+      "test:browser:commerce-spatial",
+      "test:browser:reusable-components",
+      "test:browser:reusable-package",
+      "test:browser:reusable-behavior-package",
+      "test:browser:reusable-timing-package",
+      "test:browser:typography",
+      "test:browser:typography:fixtures",
+      "test:browser:composition-evaluator",
+      "test:browser:composition-expressions",
+      "test:browser:composition-quality",
+      "test:browser:composition",
+      "test:browser:composition-webgl",
+      "test:browser:composition-webgl-export",
+      "test:browser:composition-exposure",
+      "test:browser:composition-effects",
+      "test:browser:composition-story-adapter",
+      "test:browser:composition-story-fixtures",
+      "test:browser:composition-commerce-adapter",
+      "test:browser:composition-typography-adapter",
+      "test:browser:composition-provider-typography",
+      "test:browser:composition-baselines"
+    ],
+    "finalBaselines": {
+      "items": 176,
+      "frames": 36061,
+      "seconds": 256.38
+    },
+    "log": "benchmarks/results/composition-ce12/verification-2026-10-05/ce12-full-check-port-final.log"
+  },
+  "timingRepair": {
+    "commit": "65b9451",
+    "minimumMillisecondsPerRendererSample": 500,
+    "samples": 3,
+    "unchangedLimit": 1.25,
+    "helperTests": 5,
+    "targetRatio": 1.0645866726678397,
+    "runtimePausesIncluded": true,
+    "renderOutputChanged": false,
+    "fullGateTargetRatio": 1.0759517893553892,
+    "fullGateCommerceItems": 127,
+    "fullGateCommerceFrames": 28200
+  },
+  "labPortRepair": {
+    "commit": "a4586fe",
+    "strictPort": false,
+    "occupiedDefaultPortRetry": "pass",
+    "testAssertionsChanged": false
+  },
+  "targeted": {
+    "unitRuleTests": 26,
+    "cliTests": 5,
+    "passFailFixtures": 14,
+    "nodeChromiumReportParity": "pass",
+    "canvasAndWebglPixelStillness": "pass",
+    "labMarkerSeekAndRenderedCheck": "pass"
+  },
+  "stillnessAcceptance": {
+    "command": "pnpm composition:lint-acceptance --output docs/composition-ce12-stillness-results.json",
+    "result": "pass",
+    "framesEach": 192,
+    "fps": 24,
+    "oldLongestFrozenComparisons": 79,
+    "continuousLongestFrozenComparisons": 0,
+    "continuousFrozenEvaluatedState": false,
+    "report": "docs/composition-ce12-stillness-results.json",
+    "otherCraftFindingsRetained": true
+  },
+  "corpus": {
+    "command": "pnpm composition:lint-corpus --output docs/composition-ce12-lint-results.json",
+    "result": "pass",
+    "items": 176,
+    "frames": 36061,
+    "stateAndReferencePixels": 153,
+    "pixelOnly": 23,
+    "unexpectedFailures": 0,
+    "stateReportsWithExistingCraftErrors": 84,
+    "diagnosticCounts": {
+      "outside-safe-area": 244,
+      "velocity-discontinuity": 1031,
+      "co-start": 1,
+      "reading-time": 337,
+      "frozen-pixels": 165,
+      "off-canvas": 43,
+      "frozen-run": 124,
+      "opacity-pop": 400,
+      "easing-monotony": 1,
+      "comp-text-layout-missing": 3172
+    },
+    "report": "docs/composition-ce12-lint-results.json",
+    "sourceChecksum": "25c2465f27c57121ef1623ee48477d9ee52757a06b0e7b20a8458b3e206b4a79"
+  },
+  "standaloneBaselineRetry": {
+    "command": "pnpm test:browser:composition-baselines",
+    "exitCode": 0,
+    "items": 176,
+    "frames": 36061,
+    "seconds": 265.71
+  },
+  "failedAttempts": [
+    {
+      "check": "format:check in the dirty primary checkout",
+      "result": "nonzero",
+      "reason": "Local plan/table and existing review/cleanup documents failed formatting; unrelated work preserved. Full gate run on a clean committed snapshot instead."
+    },
+    {
+      "check": "first standalone baseline run",
+      "result": "interrupted after 34 passing items",
+      "reason": "Browser context destroyed while analyser source was still changing; suspected Vite reload. Fresh code-stable rerun passed all items."
+    },
+    {
+      "check": "initial clean snapshot pnpm check",
+      "result": "nonzero at formatting",
+      "reason": "Extra blank line in the staged start log entry; fixed before final implementation commit."
+    },
+    {
+      "check": "snapshot pnpm check with only root dependency link",
+      "result": "nonzero at unit tests",
+      "reason": "Missing package-local three dependency; package links added."
+    },
+    {
+      "check": "snapshot pnpm check with original-checkout workspace links",
+      "result": "nonzero at integration; 106 passed, five failed, five skipped",
+      "reason": "Cancellation subprocess mocks were bypassed by cross-checkout workspace imports; fixed snapshot links. One Lab reload lost its runtime, and three wall-time timeout failures passed unchanged on retry; timeout cause unconfirmed."
+    },
+    {
+      "check": "correctly isolated pnpm check before final retry",
+      "result": "nonzero at lateral-track playback; all unit/runtime/integration and earlier browser groups passed",
+      "reason": "30-second wait for the Lab scrubber to advance timed out. Lateral-track passed unchanged on immediate retry; final full gate inhibits idle system sleep. Cause unconfirmed."
+    },
+    {
+      "check": "pnpm check with system-idle-only sleep guard",
+      "result": "nonzero at passage-authoring playback; all preceding groups passed",
+      "reason": "Browser scrubber did not advance. Local power-event logs confirm deep sleep during this verification period. Passage-authoring passed unchanged on targeted retry; final full gate inhibits both display and system idle sleep."
+    },
+    {
+      "check": "awake full pnpm check before sampling repair",
+      "result": "nonzero at Canvas component/isolated-value timing, exact pixels",
+      "reason": "Median ratio 1.263943 exceeded unchanged 1.25 limit. Profile retry was 1.081, exact unprofiled retry 1.203 (individual ratios 0.983 to 1.385). Strengthened observation duration to 500 ms per renderer/sample; sustained slowdown remains a failing test, original gates retained."
+    },
+    {
+      "check": "full pnpm check after sampling repair",
+      "result": "nonzero at echo image-stack export page.goto after all preceding groups passed",
+      "reason": "Local power events confirm clamshell sleep at 21:47:28 followed by deep sleep; timeout log written at 22:24:20 within the confirmed sleep period. Unchanged echo-stack parity and repeated-export retry passed awake. Idle inhibition cannot override manual lid close."
+    },
+    {
+      "check": "awake full pnpm check after sampling repair",
+      "result": "nonzero starting CE12 browser group after typography, evaluator and expression checks passed",
+      "reason": "Lab Vite configuration inherited strictPort=true; port 0 selected the default 5173 which was occupied by another local server. Commit a4586fe overrides strictPort=false in the CE12 harness. The browser group passed with the default port occupied; user server retained."
+    },
+    {
+      "check": "targeted integration retry before workspace link fix",
+      "result": "16 passed, two cancellation failures",
+      "reason": "Confirmed cancellation mock mismatch; all 116 integration tests passed in the final correctly isolated full gate."
+    }
+  ],
+  "limitations": [
+    "23 CE0 items have only reference-pixel evidence until future adapters exist.",
+    "Corpus reference hashes detect exact pixel equality and are verified against fresh pinned renders; they are distinct from grayscale delta >4 / minimum 200 changed pixels measured by rendered lint and actual acceptance.",
+    "Native text bounds are unmeasured in state-only corpus lint; rendered lint loads pinned assets and measures them.",
+    "Coverage checks use geometry; arbitrary masks/mattes are conservative and image alpha depends on the existing renderer validation gate.",
+    "Existing craft errors remain findings for authors; source acceptance fixtures were not rewritten or waived."
+  ],
+  "renderOutputChanged": false,
+  "baselinesRegenerated": false,
+  "remoteMutations": false,
+  "reportChecksums": {
+    "docs/composition-ce12-lint-results.json": "412ad1db3915477e3ea10ba42395b97c0d49a6167dda06706ef755d055d6e39d",
+    "docs/composition-ce12-stillness-results.json": "2739b6c30850eeaee20a88573609da664cf1aa803c2f711119df1bdd5eb3380b"
+  },
+  "retainedAcceptanceArtifacts": [
+    {
+      "path": "benchmarks/results/composition-ce12/acceptance-2026-10-04/continuous.json",
+      "sha256": "11f1232f6d2eb165d336264af865483d160fc3f5e7230944132633b93dcc835e",
+      "bytes": 275380
+    },
+    {
+      "path": "benchmarks/results/composition-ce12/acceptance-2026-10-04/continuous.mp4",
+      "sha256": "5ebd5dca399ea9f149611e60edea3ad01710aa56d0999abf7a227710b3395b38",
+      "bytes": 1079077
+    },
+    {
+      "path": "benchmarks/results/composition-ce12/acceptance-2026-10-04/continuous.mp4.result.json",
+      "sha256": "51cf4050f3e20437760f03a5c033992c9068319e9038b3a5c8dced345af13648",
+      "bytes": 2958
+    },
+    {
+      "path": "benchmarks/results/composition-ce12/acceptance-2026-10-04/continuous.mp4.scene.json",
+      "sha256": "a44cc7837ed261717f5a98d6b2dd813e70b179707c483cf593a400075d18f7ef",
+      "bytes": 828451
+    }
+  ],
+  "retainedVerificationLogs": [
+    {
+      "path": "benchmarks/results/composition-ce12/verification-2026-10-05/ce12-baselines-retry.log",
+      "sha256": "e2aa7f0c37a26377cb9508f788c8196868d2e936b9da4e853a5a8718bc60b334"
+    },
+    {
+      "path": "benchmarks/results/composition-ce12/verification-2026-10-05/ce12-browser-format.log",
+      "sha256": "9868e3c3e8459f0fdf1066970b323d8370ffe802bb3dc486581fd8449406a12c"
+    },
+    {
+      "path": "benchmarks/results/composition-ce12/verification-2026-10-05/ce12-corpus-format.log",
+      "sha256": "0c2c1cf5f23387a793d23a059dd086c85cab7b8c39ff698cf35a0ea82e8036cf"
+    },
+    {
+      "path": "benchmarks/results/composition-ce12/verification-2026-10-05/ce12-doc-format.log",
+      "sha256": "b522ea6b4eabab83a3f4dd04a2794ea54f833578cf2329d501c2dd73b463c10e"
+    },
+    {
+      "path": "benchmarks/results/composition-ce12/verification-2026-10-05/ce12-echo-export-retry.log",
+      "sha256": "7bebb53fcd627407a0362ba039851b35544ba5a084d2a4655bb0cd54b7f1bda0"
+    },
+    {
+      "path": "benchmarks/results/composition-ce12/verification-2026-10-05/ce12-evidence-format.log",
+      "sha256": "3b92a532b91fe8b5b0474cf39048a0a29b3917b312b175ccd628352d0538c0ce"
+    },
+    {
+      "path": "benchmarks/results/composition-ce12/verification-2026-10-05/ce12-format.log",
+      "sha256": "e103ee6207822bb4f989537744a1a229979b4981c2e1087ac92feb753f11b713"
+    },
+    {
+      "path": "benchmarks/results/composition-ce12/verification-2026-10-05/ce12-format2.log",
+      "sha256": "214777665ed03522aed25287273e3a24a3c1fa1b3e0e89e590c3bb2b4fed92f8"
+    },
+    {
+      "path": "benchmarks/results/composition-ce12/verification-2026-10-05/ce12-format3.log",
+      "sha256": "9868e3c3e8459f0fdf1066970b323d8370ffe802bb3dc486581fd8449406a12c"
+    },
+    {
+      "path": "benchmarks/results/composition-ce12/verification-2026-10-05/ce12-format4.log",
+      "sha256": "c70f13b89dd02db7e0386d979a4f57b0ce651249c5fea62cdd08e31c87f5ada2"
+    },
+    {
+      "path": "benchmarks/results/composition-ce12/verification-2026-10-05/ce12-format5.log",
+      "sha256": "79649c36d5dd9eed3a9cbce20c85c809ee424e286e4e826d8d3a1e0201bbcb2e"
+    },
+    {
+      "path": "benchmarks/results/composition-ce12/verification-2026-10-05/ce12-full-check-awake-final.log",
+      "sha256": "d89caa3f0d40c29cb652c2e370b5dcf981bce736887af0076fe45ffb1876eb4a"
+    },
+    {
+      "path": "benchmarks/results/composition-ce12/verification-2026-10-05/ce12-full-check-complete.log",
+      "sha256": "d48d3ff1106cfaacfd4a75ce72fc4590dddde7e97b6cb4cb140ac8fe9b87341e"
+    },
+    {
+      "path": "benchmarks/results/composition-ce12/verification-2026-10-05/ce12-full-check-final-awake.log",
+      "sha256": "fbf2a467d277661377e780e5628a4e6019411ee6c897c250043198025029f916"
+    },
+    {
+      "path": "benchmarks/results/composition-ce12/verification-2026-10-05/ce12-full-check-final.log",
+      "sha256": "bd41be3b4fbce7dd878a1a71cad7f0517db36f127bb703788698abb499ec6d90"
+    },
+    {
+      "path": "benchmarks/results/composition-ce12/verification-2026-10-05/ce12-full-check-isolated.log",
+      "sha256": "9c00246bda3d56e6dacb9ebd02a7bffd8337005b913d457c7bef42ac41fa985a"
+    },
+    {
+      "path": "benchmarks/results/composition-ce12/verification-2026-10-05/ce12-full-check-port-final.log",
+      "sha256": "8211bc9e0f9d5f37fcb20d3ef09cf84ad67affeca69203af9273b472a21c1c47"
+    },
+    {
+      "path": "benchmarks/results/composition-ce12/verification-2026-10-05/ce12-full-check-retry.log",
+      "sha256": "50fb03b9624d9491ade0aaed697bbdc9cf88e28a6eba6e820a7dd902ed728b1c"
+    },
+    {
+      "path": "benchmarks/results/composition-ce12/verification-2026-10-05/ce12-full-check-stabilized.log",
+      "sha256": "0ae44bb62a4454059ec3469ada9a2293a2403e177b51a8a729a0ecf4e9154548"
+    },
+    {
+      "path": "benchmarks/results/composition-ce12/verification-2026-10-05/ce12-full-check.log",
+      "sha256": "077d9921e35711fdacefc03476ef3529fa02db784e527585c2e232db51e645b3"
+    },
+    {
+      "path": "benchmarks/results/composition-ce12/verification-2026-10-05/ce12-full-format.log",
+      "sha256": "941c0c8c8984e56a4eeab87434dc9b3df927df826561995aa012c9c02635558c"
+    },
+    {
+      "path": "benchmarks/results/composition-ce12/verification-2026-10-05/ce12-integration-retry.log",
+      "sha256": "c72a27ef350a63efadbac14fa8eec53a9c6c222afd9e2f085c5580552170db98"
+    },
+    {
+      "path": "benchmarks/results/composition-ce12/verification-2026-10-05/ce12-isolated-value-exact-retry.log",
+      "sha256": "eb316290e3b9085fe5a5611c489d2664f3c7117bb890f65b902dfcb854018e20"
+    },
+    {
+      "path": "benchmarks/results/composition-ce12/verification-2026-10-05/ce12-isolated-value-retry.log",
+      "sha256": "87a9ca954d8169b3671977229abd9a72f4c3b9c23a9bcc48e1612d9bcab2c871"
+    },
+    {
+      "path": "benchmarks/results/composition-ce12/verification-2026-10-05/ce12-isolated-value-stable.log",
+      "sha256": "541707c55efa08025ff83240a056f6dc4c56a74a9efda78b8d0daed9b4fdb25b"
+    },
+    {
+      "path": "benchmarks/results/composition-ce12/verification-2026-10-05/ce12-lateral-retry.log",
+      "sha256": "4748925de32c477fc6717a8c2008238f71701eed42aaea2876bba6d850781e84"
+    },
+    {
+      "path": "benchmarks/results/composition-ce12/verification-2026-10-05/ce12-passage-authoring-retry.log",
+      "sha256": "4ca8bcbe559de974090eea0d47400b52dd180e59f71681ff2e8e9ca455bcaf88"
+    },
+    {
+      "path": "benchmarks/results/composition-ce12/verification-2026-10-05/ce12-quality-port-retry.log",
+      "sha256": "e9537e1fb77dad37636961ca78a50dfeb3d0f180c473e8990a6a6f2b48cead0b"
+    },
+    {
+      "path": "benchmarks/results/composition-ce12/verification-2026-10-05/ce12-runtime-restore.log",
+      "sha256": "89e79d241095dd191e0c94941f9abfb902db2d506af3bc7e350b0327d1035599"
+    }
+  ]
+}

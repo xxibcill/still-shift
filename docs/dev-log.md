@@ -43,15 +43,15 @@ still hold before relying on them.
 
 ## Current state
 
-- **CE12 motion linting (`[~]`, 2026-10-04):** implementation `a365f26` on
-  `codex/composition-ce12` from delivered CE9 `dee9e7b`. Rules, CLI and timeline
-  pass targeted checks; acceptance is v013 79 frozen comparisons versus zero in
-  the fresh continuous prototype. Full verification remains in flight under an
-  active completion goal. Corrected snapshot dependency links and diagnosed
-  closed-lid sleep interruptions. A Canvas timing outlier (1.264 vs unchanged
-  1.25 limit) led to longer paired observations; the target now passes at 1.065.
-  Prior local work retained; CE6-P remains deferred.
-  [Start record](./composition-engine-plan.md#ce12-start-record-2026-10-04).
+- **CE12 motion linting (`[x]`, 2026-10-05):** complete on
+  `codex/composition-ce12`, implementation `a365f26` from delivered CE9 `dee9e7b`.
+  Rules, CLI lint and Lab timeline are delivered. Full `pnpm check` and all 176
+  frozen baselines / 36,061 frames pass in a clean tracked snapshot. Stillness
+  acceptance is 79 frozen comparisons in v013 versus zero in the fresh continuous
+  prototype. Corpus lint covers 153 state reports and 23 pixel-only items with
+  explicit limits and no unexpected failures; existing craft errors remain visible.
+  Prior local work retained; CE6-P and CE9-F1 remain deferred. CE10 still needs CE4a.
+  [Completion record](./composition-engine-plan.md#ce12-completion-record-2026-10-05).
 
 - **PR #32 printer fix (2026-10-04):** re-review of delivered `e81a146` found
   one remaining P2 print/parse length defect and no standards findings.
@@ -72,7 +72,7 @@ still hold before relying on them.
   [Fix evidence](./pr-32-fix-results.json).
   [Review evidence](./pr-32-review-results.json).
 
-_Last updated 2026-10-04 by Codex for the PR #32 printer fix._
+_Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
 
 - **PR #32 conflict resolution (2026-10-04):** merged `main` at `3413780` into
   PR head `a0708ba` and pushed merge `05033c8`, retaining CE9 expressions and
@@ -113,7 +113,7 @@ _Last updated 2026-10-04 by Codex for the PR #32 printer fix._
     GPU-process boundary on pinned SwiftShader. Retain the measurements and
     rejected experiments for the future version.
 - **Feature priority:** CE4a and CE6 features remain incomplete. CE12 linting is
-  ready next; CE10's builder/CLI follows once CE4a and CE12 are complete. CE5
+  complete; CE10's builder/CLI still needs CE4a feature/parity acceptance. CE5
   shape layers and CE7 time controls are also ready. CE8 needs CE6 features and
   CE9; CE14 needs CE6 features; neither needs CE6-P.
 - **Untracked files to leave alone:** `docs/composition-renderer-performance-research-1.md`
@@ -131,23 +131,21 @@ _Last updated 2026-10-04 by Codex for the PR #32 printer fix._
 
 ## Entries
 
-### 2026-10-04 — Implement CE12 motion linting
+### 2026-10-05 — Complete CE12 motion linting
 
-- **Agent / branch:** Codex on `codex/composition-ce12` from `dee9e7b`.
-- **Scope:** CE12 rules, CLI, timeline, acceptance and required local verification.
-- **Done:** implementation `a365f26`; paired Canvas timing now observes at least
-  500 ms per renderer/sample over equal complete timelines, retaining runtime
-  pauses, the median of three samples and unchanged 1.25 limit.
-- **Results:** 26 rule / five CLI tests, browser parity, 79-vs-zero stillness and
-  176-item corpus lint pass. Five timing helper tests, target Canvas ratio 1.065,
-  build and changed-file lint pass. Lab server retries now select an available port;
-  the CE12 browser group passes with the default port occupied. Full gate not yet passing.
-- **Rejected / do not repeat:** cross-checkout dependency links bypass mocks;
-  closed-lid sleep interrupted browser playback. A short-sample Canvas timing
-  failure is retained, not covered by the WebGL deferral.
-- **Open / next:** active goal through full `pnpm check`, fresh baselines and
-  evidence/tracker/log closeout; no assertion or timing threshold waivers.
-- **Records:** [CE12 start](./composition-engine-plan.md#ce12-start-record-2026-10-04).
+- **Agent / branch:** Codex on new `codex/composition-ce12` from `dee9e7b`.
+- **Scope / done:** `a365f26` delivers rules, CLI lint, timeline and harnesses;
+  `65b9451` strengthens timing observations; `a4586fe` fixes Lab port selection.
+  Commits remain local; prior work retained.
+- **Results:** full `pnpm check` passes (1,451 unit, 46 runtime, 116 integration;
+  all browser groups and 176 baselines / 36,061 frames). Stillness is 79 vs zero;
+  corpus has 153 state and 23 pixel-only reports with no unexpected failures.
+- **Rejected / do not repeat:** snapshot workspace links must stay inside it;
+  sleep interruptions and failed attempts are recorded. Timing limits remain unchanged.
+- **Open / next:** CE4a gates CE10; CE6-P and CE9-F1 remain deferred.
+- **Records:** [Completion](./composition-engine-plan.md#ce12-completion-record-2026-10-05),
+  [verification](./composition-ce12-verification-results.json),
+  [corpus](./composition-ce12-lint-results.json), [stillness](./composition-ce12-stillness-results.json).
 
 ### 2026-10-04 — Fix the remaining PR #32 printer finding
 

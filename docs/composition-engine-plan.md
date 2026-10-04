@@ -1,7 +1,7 @@
 # Programmable composition engine — implementation plan
 
-- **Updated:** 2026-10-04
-- **Status:** CE0–CE3 complete (2026-10-01); CE9 complete (2026-10-04); CE4b complete under the approved timing split (2026-10-03); CE4a and CE6 feature work incomplete. WebGL performance acceptance is deferred to a future version (CE6-P, user approved 2026-10-03). Q1 and Q3 decided
+- **Updated:** 2026-10-05
+- **Status:** CE0–CE3 complete (2026-10-01); CE9 complete (2026-10-04); CE12 complete (2026-10-05); CE4b complete under the approved timing split (2026-10-03); CE4a and CE6 feature work incomplete. WebGL performance acceptance is deferred to a future version (CE6-P, user approved 2026-10-03). Q1 and Q3 decided
   2026-09-30; Q2, Q4 and Q8 decided 2026-10-01; Q5–Q7 open.
 - **Baseline:** `6772717` — `Merge pull request #22 from xxibcill/codex/still-shift-plan-completion`
 - **Tracker owner:** unassigned. Record the owner and branch per milestone in the [tracker](#milestone-tracker).
@@ -373,7 +373,7 @@ sign and for time remap. It does not change the layer's composition-time visibil
 | CE9   | Expressions and motion behaviours               | C      | CE2                  | xxibcill (Claude Code) | `codex/composition-ce9`             | `[x]`  | [CE9 record](#ce9--expressions-and-motion-behaviours)                              |
 | CE10  | TypeScript builder API and CLI                  | C      | CE3, CE4a, CE9, CE12 |                        |                                     | `[ ]`  |                                                                                    |
 | CE11  | Lab composition inspector and graph editor      | C      | CE3, CE10            |                        |                                     | `[ ]`  |                                                                                    |
-| CE12  | Motion linting                                  | C      | CE2                  | Codex                  | `codex/composition-ce12`            | `[~]`  | [CE12 start record](#ce12-start-record-2026-10-04)                                 |
+| CE12  | Motion linting                                  | C      | CE2                  | Codex                  | `codex/composition-ce12`            | `[x]`  | [CE12 completion record](#ce12-completion-record-2026-10-05)                       |
 | CE13  | Video, image-sequence and audio layers          | D      | CE3, CE7             |                        |                                     | `[ ]`  |                                                                                    |
 | CE14  | Mesh warp and puppet pins                       | D      | CE6                  |                        |                                     | `[ ]`  |                                                                                    |
 | CE15  | Output formats, caching and parallel rendering  | D      | CE3                  |                        |                                     | `[ ]`  |                                                                                    |
@@ -431,11 +431,10 @@ does not mark them complete. CE8 and CE14 still require their actual CE6 feature
 dependencies, but do not wait for CE6-P. Other existing performance requirements,
 including the Canvas adapter gate, retain their current scope.
 
-**Recommended next milestone:** CE12 motion linting, whose CE2 dependency is
-complete. CE9 expressions and baking are complete; CE10's builder API still needs
-CE12 and CE4a's remaining story feature/parity work. CE5 shape layers and CE7 time
-controls are also ready to start. This priority does not start or mark any new
-milestone in progress.
+**Recommended next milestone:** finish CE4a's remaining story feature/parity
+work to unblock CE10. CE9 expressions and baking and CE12 motion linting are
+complete. CE5 shape layers and CE7 time controls are also ready to start. This
+priority does not start or mark any new milestone in progress.
 
 ## First implementation slice
 
@@ -453,7 +452,7 @@ through the story adapter with recorded parity.
 - [x] CE4a adapter for `benchmarks/fixtures/story-motion-continuous/access-constraint.json`
       with the parity result recorded.
 - [x] CE9 expressions and baking as prerequisites for the CE10 CLI.
-- [ ] CE12 linting as a prerequisite for the CE10 CLI.
+- [x] CE12 linting as a prerequisite for the CE10 CLI.
 - [ ] CE10 builder and CLI, including `comp render`, after CE4a, CE9 and CE12.
 - [ ] Record commands, results and limitations here before marking the slice complete.
 
@@ -3598,17 +3597,17 @@ Extend the existing analysers ([`story-quality.ts`](../packages/renderer-core/sr
 [`typography-quality.ts`](../packages/renderer-core/src/typography-quality.ts)) to
 compositions rather than creating a new analyser.
 
-- [ ] **Stillness:** frozen-pixel runs and frozen-evaluated-state runs per shot, using
+- [x] **Stillness:** frozen-pixel runs and frozen-evaluated-state runs per shot, using
       the owner's continuous-motion requirement as the default threshold (configurable).
-- [ ] **Velocity discontinuity:** jumps in first derivative at key joins and handoffs
+- [x] **Velocity discontinuity:** jumps in first derivative at key joins and handoffs
       (reuse camera boundary-velocity logic).
-- [ ] **Easing monotony:** share of linear or identical easing across moving properties.
-- [ ] **Co-start:** many layers starting on the same frame with identical easing
+- [x] **Easing monotony:** share of linear or identical easing across moving properties.
+- [x] **Co-start:** many layers starting on the same frame with identical easing
       (missing overlap).
-- [ ] **Reading time:** on-screen time for text vs words, by role.
-- [ ] **Framing:** off-canvas, safe-area and coverage violations over time.
-- [ ] **Scale/opacity pops:** abrupt single-frame changes not marked as intentional cuts.
-- [ ] Report as structured diagnostics with severity and frame ranges; `comp lint`
+- [x] **Reading time:** on-screen time for text vs words, by role.
+- [x] **Framing:** off-canvas, safe-area and coverage violations over time.
+- [x] **Scale/opacity pops:** abrupt single-frame changes not marked as intentional cuts.
+- [x] Report as structured diagnostics with severity and frame ranges; `comp lint`
       exits non-zero on errors; the Lab shows findings on the timeline.
 
 **Acceptance:** Every lint rule has a passing and a failing fixture. The v013 Unequal
@@ -3625,9 +3624,71 @@ recorded.
 - **Scope:** extend the existing quality analysers to compositions, add structured
   frame-range diagnostics, `comp lint`, Lab timeline findings and local rule/corpus
   acceptance evidence. CE6-P performance work remains deferred.
-- **Status:** in progress; completion gates have not yet run.
+- **Status:** completed; see the dated completion record below.
 
-**Completion record:** _to be filled in._
+### CE12 completion record (2026-10-05)
+
+- **Owner / branch:** Codex on `codex/composition-ce12`, from delivered CE9
+  `dee9e7b`. Implementation `a365f26`, timing fix `65b9451` and browser-port fix `a4586fe`; existing
+  local work preserved.
+- **Delivered:** the existing story, continuous-motion and typography analysers
+  now evaluate compositions. Eleven diagnostic codes cover both stillness
+  measurements, velocity joins, easing, overlap, reading time, framing and
+  scale/opacity pops. Policy validates thresholds, role reading rates, shot
+  partitions, declared cuts and severity overrides. Reports retain measured
+  coverage and limitations rather than treating missing evidence as a pass.
+- **Authoring:** `pnpm still-shift comp lint --input <composition.json>` emits
+  JSON and exits nonzero for errors; `--pixels true` adds full rendered grayscale
+  motion and measured text bounds. Lab findings seek their frame ranges on the
+  timeline; rendered motion checks show progress and cancel on fixture changes.
+- **Rule acceptance:** 14 pass/fail fixtures, 26 unit tests and five CLI tests;
+  Node/Chromium reports agree, Canvas/WebGL detect occluded stillness independently
+  of changing state, and the Lab marker/seek/pixel flow passes. Fractional stretched
+  joins, rotated cover footprints, hidden/matte motion and consecutive reading
+  windows are covered.
+- **Stillness acceptance:** `pnpm composition:lint-acceptance --output <new.json>`
+  flags the existing v013 Unequal Margins review render (79 frozen comparisons)
+  and finds zero pixel/state frozen runs in a freshly rendered continuous prototype.
+  Both are 192 frames at 24 fps; defaults remain grayscale delta greater than 4,
+  at least 200 changed pixels and a maximum six frozen comparisons. Other craft
+  findings are retained. [Stillness results](./composition-ce12-stillness-results.json).
+- **Corpus verification:** `pnpm composition:lint-corpus --output <new.json>`
+  covers all 176 CE0 items / 36,061 frames: 153 state plus reference-pixel reports
+  and 23 pixel-only reports (15 cinematic, seven legacy and one unsupported
+  motion-craft case). No unexpected analysis failures; 84 state reports retain
+  existing craft errors. [Corpus results](./composition-ce12-lint-results.json).
+- **Local verification:** `pnpm check` passes on the pinned toolchain in a clean
+  tracked snapshot with workspace links resolving inside it. This includes
+  1,451 unit tests, 46 runtime tests, 116 integration tests, the new browser group
+  and all browser/export groups in `pnpm test`, ending with all 176 frozen baselines /
+  36,061 frames. An earlier standalone baseline check also passed. Failed setup
+  attempts and their retries are recorded in [verification results](./composition-ce12-verification-results.json).
+- **Timing verification repair:** the original Canvas gate failed once at 1.264
+  against its unchanged 1.25 limit, with exact pixels. Short 127–204 ms observations
+  varied between 0.98 and 1.39 on unchanged retries. Paired observations now repeat
+  equal complete timelines until both renderer samples reach 500 ms, alternate
+  order and retain the median of three samples, runtime pauses and the 1.25 limit.
+  Five helper tests prove fair frame coverage, render/readback inclusion, bounded
+  clocks and rejection of a sustained 1.30 slowdown. The target passes at 1.065 on retry and 1.076 in the full gate
+  (127 commerce cases / 28,200 frames).
+  This changes test sampling only; no renderer optimization or gate waiver.
+- **Browser harness repair:** the CE12 Lab test overrides inherited strict-port
+  behavior so an occupied development-server port does not abort verification.
+  Its timeline, Node/browser parity and Canvas/WebGL motion assertions pass
+  with the default port occupied; existing local servers remain running.
+- **Limits:** corpus pixel evidence uses stored exact full-frame hash prefixes,
+  separately checked against fresh pinned renders; it is not the 200-pixel energy
+  measurement used by actual stillness acceptance and rendered lint. Native text
+  bounds are unmeasured in state-only corpus runs. The 23 pixel-only items need
+  future adapters before state lint applies. Coverage geometry is conservative
+  for arbitrary masks/mattes; image alpha retains the renderer's validation gate.
+  Existing craft findings are authoring follow-ups, not waived acceptance checks.
+- **Documentation / output:** composition reference, CLI reference and user guide
+  describe policy, diagnostic fields, command and timeline flow. No output or
+  baseline changes; renderer versions unchanged. CE6-P and CE9-F1 remain deferred.
+
+**Completion record:** CE12 is complete; CE10 still needs CE4a's remaining story
+feature and parity acceptance. No push or PR was requested.
 
 ---
 

@@ -1,0 +1,464 @@
+{
+  "date": "2026-10-04",
+  "version": "composition-ce12-stillness-acceptance-1",
+  "directory": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ce12-acceptance-26aPBY",
+  "baselineVideo": "/Users/jjae/Documents/playground/still-shift/docs/review/story-motion-v013/unequal-margins.mp4",
+  "continuousVideo": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ce12-acceptance-26aPBY/continuous.mp4",
+  "thresholds": {
+    "grayscaleDelta": 4,
+    "minimumChangedPixels": 200,
+    "maxFrozenFrames": 6
+  },
+  "old": {
+    "frameCount": 192,
+    "energy": {
+      "version": "story-motion-energy-1",
+      "width": 1920,
+      "height": 1080,
+      "fps": 24,
+      "frameCount": 192,
+      "pixelThreshold": 4,
+      "minimumChangedPixels": 200,
+      "comparisonCount": 191,
+      "changedPixels": [
+        0, 431, 173, 140, 132, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 56, 36, 46, 46, 2187, 2142, 2675, 2729, 4520,
+        4628, 5105, 5651, 6819, 7082, 7851, 8213, 8756, 9085, 9769, 10220,
+        10826, 11629, 12302, 12620, 12719, 12220, 11486, 10663, 9979, 9705,
+        8962, 8619, 8177, 7756, 11688, 11295, 9788, 9483, 8918, 8729, 6510,
+        6174, 5666, 5761, 3180, 3337, 4034, 4355, 3665, 3685, 3677, 3745, 3293,
+        3427, 3343, 3507, 448, 1039, 262, 1281, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+      ],
+      "movingShare": 0.29842931937172773,
+      "longestFrozenRun": 79,
+      "longestFrozenInterval": [113, 191],
+      "medianChangedPixels": 0,
+      "peakChangedPixels": 12719,
+      "peakFrame": 77,
+      "peakToMedian": null,
+      "gates": {
+        "frozenRun": {
+          "measured": 79,
+          "limit": 6,
+          "pass": false
+        },
+        "movingShare": {
+          "measured": 0.29842931937172773,
+          "limit": 0.97,
+          "pass": false
+        },
+        "peakContrast": {
+          "measured": null,
+          "limit": 2.5,
+          "pass": true
+        }
+      },
+      "sparkline": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 600 64\" role=\"img\" aria-label=\"Changed pixels by frame\"><polyline fill=\"none\" stroke=\"#8B3F36\" stroke-width=\"1.5\" points=\"0.00,58.00 3.14,56.17 6.28,57.27 9.42,57.41 12.57,57.44 15.71,58.00 18.85,58.00 21.99,58.00 25.13,58.00 28.27,58.00 31.41,58.00 34.55,58.00 37.70,58.00 40.84,58.00 43.98,58.00 47.12,58.00 50.26,58.00 53.40,58.00 56.54,58.00 59.69,58.00 62.83,58.00 65.97,58.00 69.11,58.00 72.25,58.00 75.39,58.00 78.53,58.00 81.68,58.00 84.82,58.00 87.96,58.00 91.10,58.00 94.24,58.00 97.38,58.00 100.52,58.00 103.66,58.00 106.81,58.00 109.95,58.00 113.09,58.00 116.23,58.00 119.37,58.00 122.51,58.00 125.65,58.00 128.80,58.00 131.94,58.00 135.08,58.00 138.22,58.00 141.36,58.00 144.50,58.00 147.64,58.00 150.79,58.00 153.93,58.00 157.07,58.00 160.21,58.00 163.35,58.00 166.49,57.76 169.63,57.85 172.77,57.80 175.92,57.80 179.06,48.71 182.20,48.91 185.34,46.64 188.48,46.41 191.62,38.81 194.76,38.35 197.91,36.33 201.05,34.01 204.19,29.05 207.33,27.93 210.47,24.67 213.61,23.13 216.75,20.83 219.90,19.43 223.04,16.52 226.18,14.61 229.32,12.04 232.46,8.63 235.60,5.77 238.74,4.42 241.88,4.00 245.03,6.12 248.17,9.23 251.31,12.73 254.45,15.63 257.59,16.80 260.73,19.95 263.87,21.41 267.02,23.28 270.16,25.07 273.30,8.38 276.44,10.05 279.58,16.44 282.72,17.74 285.86,20.14 289.01,20.94 292.15,30.36 295.29,31.79 298.43,33.94 301.57,33.54 304.71,44.50 307.85,43.83 310.99,40.87 314.14,39.51 317.28,42.44 320.42,42.35 323.56,42.39 326.70,42.10 329.84,44.02 332.98,43.45 336.13,43.81 339.27,43.11 342.41,56.10 345.55,53.59 348.69,56.89 351.83,52.56 354.97,58.00 358.12,58.00 361.26,58.00 364.40,58.00 367.54,58.00 370.68,58.00 373.82,58.00 376.96,58.00 380.10,58.00 383.25,58.00 386.39,58.00 389.53,58.00 392.67,58.00 395.81,58.00 398.95,58.00 402.09,58.00 405.24,58.00 408.38,58.00 411.52,58.00 414.66,58.00 417.80,58.00 420.94,58.00 424.08,58.00 427.23,58.00 430.37,58.00 433.51,58.00 436.65,58.00 439.79,58.00 442.93,58.00 446.07,58.00 449.21,58.00 452.36,58.00 455.50,58.00 458.64,58.00 461.78,58.00 464.92,58.00 468.06,58.00 471.20,58.00 474.35,58.00 477.49,58.00 480.63,58.00 483.77,58.00 486.91,58.00 490.05,58.00 493.19,58.00 496.34,58.00 499.48,58.00 502.62,58.00 505.76,58.00 508.90,58.00 512.04,58.00 515.18,58.00 518.32,58.00 521.47,58.00 524.61,58.00 527.75,58.00 530.89,58.00 534.03,58.00 537.17,58.00 540.31,58.00 543.46,58.00 546.60,58.00 549.74,58.00 552.88,58.00 556.02,58.00 559.16,58.00 562.30,58.00 565.45,58.00 568.59,58.00 571.73,58.00 574.87,58.00 578.01,58.00 581.15,58.00 584.29,58.00 587.43,58.00 590.58,58.00 593.72,58.00 596.86,58.00 600.00,58.00\"/></svg>"
+    },
+    "lint": {
+      "version": "composition-motion-lint-1",
+      "composition": "story-adapter",
+      "frameCount": 192,
+      "fps": 24,
+      "status": "failed",
+      "measured": {
+        "evaluatedState": true,
+        "pixels": true,
+        "pixelMethod": "grayscale-energy",
+        "textBounds": false
+      },
+      "diagnostics": [
+        {
+          "code": "outside-safe-area",
+          "severity": "warning",
+          "nodes": ["ground"],
+          "node": "ground",
+          "path": "layers.10",
+          "frames": [0, 191],
+          "measured": 1,
+          "message": "Layer leaves the 5.0% safe inset.",
+          "shot": "story-adapter"
+        },
+        {
+          "code": "outside-safe-area",
+          "severity": "warning",
+          "nodes": ["paper"],
+          "node": "paper",
+          "path": "layers.11",
+          "frames": [0, 191],
+          "measured": 1,
+          "message": "Layer leaves the 5.0% safe inset.",
+          "shot": "story-adapter"
+        },
+        {
+          "frames": [1, 48],
+          "measured": 48,
+          "code": "frozen-run",
+          "severity": "error",
+          "nodes": [],
+          "shot": "story-adapter",
+          "path": "layers",
+          "message": "48 unchanged evaluated-state comparisons exceed the 6-frame limit."
+        },
+        {
+          "frames": [2, 56],
+          "measured": 55,
+          "code": "frozen-pixels",
+          "severity": "error",
+          "nodes": [],
+          "shot": "story-adapter",
+          "path": "layers",
+          "message": "55 unchanged pixel comparisons exceed the 6-frame limit."
+        },
+        {
+          "code": "velocity-discontinuity",
+          "severity": "warning",
+          "nodes": ["pressure-b"],
+          "node": "pressure-b",
+          "path": "layers.3.transform",
+          "frames": [49, 104],
+          "measured": 5708.87080565461,
+          "message": "Velocity changes abruptly at this join or handoff.",
+          "shot": "story-adapter"
+        },
+        {
+          "code": "velocity-discontinuity",
+          "severity": "warning",
+          "nodes": ["pressure-a"],
+          "node": "pressure-a",
+          "path": "layers.4.transform",
+          "frames": [50, 103],
+          "measured": 5552.9982712296905,
+          "message": "Velocity changes abruptly at this join or handoff.",
+          "shot": "story-adapter"
+        },
+        {
+          "code": "velocity-discontinuity",
+          "severity": "warning",
+          "nodes": ["room"],
+          "node": "room",
+          "path": "layers.2.transform",
+          "frames": [88, 106],
+          "measured": 6224.489795918419,
+          "message": "Velocity changes abruptly at this join or handoff.",
+          "shot": "story-adapter"
+        },
+        {
+          "code": "velocity-discontinuity",
+          "severity": "warning",
+          "nodes": ["strained"],
+          "node": "strained",
+          "path": "layers.1.transform",
+          "frames": [100, 120],
+          "measured": 5986.842105263161,
+          "message": "Velocity changes abruptly at this join or handoff.",
+          "shot": "story-adapter"
+        },
+        {
+          "frames": [113, 191],
+          "measured": 79,
+          "code": "frozen-pixels",
+          "severity": "error",
+          "nodes": [],
+          "shot": "story-adapter",
+          "path": "layers",
+          "message": "79 unchanged pixel comparisons exceed the 6-frame limit."
+        },
+        {
+          "frames": [121, 191],
+          "measured": 71,
+          "code": "frozen-run",
+          "severity": "error",
+          "nodes": [],
+          "shot": "story-adapter",
+          "path": "layers",
+          "message": "71 unchanged evaluated-state comparisons exceed the 6-frame limit."
+        }
+      ],
+      "limitations": [
+        "Coverage lint measures geometry; image alpha and arbitrary mask coverage require the renderer's asset coverage validation."
+      ]
+    }
+  },
+  "continuous": {
+    "frameCount": 192,
+    "energy": {
+      "version": "story-motion-energy-1",
+      "width": 1920,
+      "height": 1080,
+      "fps": 24,
+      "frameCount": 192,
+      "pixelThreshold": 4,
+      "minimumChangedPixels": 200,
+      "comparisonCount": 191,
+      "changedPixels": [
+        0, 8315, 9737, 8163, 9021, 105069, 111206, 103290, 97972, 100045,
+        102239, 108329, 65578, 64666, 57552, 37100, 34058, 37035, 30105, 26428,
+        27184, 23867, 24172, 24083, 25520, 23742, 24052, 24909, 25780, 124577,
+        122915, 108873, 122091, 116586, 124674, 113435, 110461, 85221, 98451,
+        68128, 63721, 57092, 60786, 53280, 52714, 51305, 52337, 48712, 48572,
+        47119, 47136, 46227, 46075, 44781, 45834, 43482, 43228, 43872, 43750,
+        43843, 44105, 42680, 43213, 45835, 44784, 57865, 56539, 54200, 51403,
+        49338, 50081, 51185, 51445, 51566, 52426, 53403, 53690, 54772, 57654,
+        66054, 68428, 137460, 136561, 121183, 114213, 76826, 53952, 55699,
+        56052, 55894, 55457, 54964, 53000, 52140, 51969, 49081, 48585, 46865,
+        48178, 50370, 51174, 46919, 47733, 47030, 45790, 45736, 45656, 44283,
+        45166, 43978, 44367, 44256, 44384, 44548, 44462, 44107, 44261, 44395,
+        45210, 44311, 43680, 44001, 44109, 45931, 45208, 43961, 44997, 44353,
+        44881, 43825, 45695, 44633, 44409, 44257, 44874, 44686, 44800, 45104,
+        44871, 44734, 44579, 47072, 49019, 49928, 48929, 49055, 45743, 45555,
+        50363, 44783, 45875, 45115, 45170, 45093, 45995, 46033, 45765, 46975,
+        46583, 47254, 45772, 45362, 45870, 46757, 44993, 44034, 44440, 43992,
+        43633, 43096, 43711, 44393, 44123, 44646, 44974, 46712, 46797, 49012,
+        50164, 55855, 56754, 58441, 59118, 56891, 55673, 49503, 48646, 36530,
+        35027, 20723, 19875, 1608
+      ],
+      "movingShare": 1,
+      "longestFrozenRun": 0,
+      "longestFrozenInterval": null,
+      "medianChangedPixels": 46033,
+      "peakChangedPixels": 137460,
+      "peakFrame": 81,
+      "peakToMedian": 2.9861186540090805,
+      "gates": {
+        "frozenRun": {
+          "measured": 0,
+          "limit": 6,
+          "pass": true
+        },
+        "movingShare": {
+          "measured": 1,
+          "limit": 0.97,
+          "pass": true
+        },
+        "peakContrast": {
+          "measured": 2.9861186540090805,
+          "limit": 2.5,
+          "pass": true
+        }
+      },
+      "sparkline": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 600 64\" role=\"img\" aria-label=\"Changed pixels by frame\"><polyline fill=\"none\" stroke=\"#8B3F36\" stroke-width=\"1.5\" points=\"0.00,58.00 3.14,54.73 6.28,54.17 9.42,54.79 12.57,54.46 15.71,16.72 18.85,14.31 21.99,17.42 25.13,19.51 28.27,18.70 31.41,17.84 34.55,15.44 37.70,32.24 40.84,32.60 43.98,35.39 47.12,43.43 50.26,44.62 53.40,43.45 56.54,46.17 59.69,47.62 62.83,47.32 65.97,48.62 69.11,48.50 72.25,48.54 75.39,47.97 78.53,48.67 81.68,48.55 84.82,48.21 87.96,47.87 91.10,9.06 94.24,9.71 97.38,15.23 100.52,10.04 103.66,12.20 106.81,9.02 109.95,13.44 113.09,14.61 116.23,24.52 119.37,19.32 122.51,31.24 125.65,32.97 128.80,35.57 131.94,34.12 135.08,37.07 138.22,37.29 141.36,37.85 144.50,37.44 147.64,38.86 150.79,38.92 153.93,39.49 157.07,39.48 160.21,39.84 163.35,39.90 166.49,40.41 169.63,39.99 172.77,40.92 175.92,41.02 179.06,40.77 182.20,40.81 185.34,40.78 188.48,40.67 191.62,41.23 194.76,41.02 197.91,39.99 201.05,40.41 204.19,35.27 207.33,35.79 210.47,36.71 213.61,37.81 216.75,38.62 219.90,38.33 223.04,37.89 226.18,37.79 229.32,37.74 232.46,37.40 235.60,37.02 238.74,36.91 241.88,36.48 245.03,35.35 248.17,32.05 251.31,31.12 254.45,4.00 257.59,4.35 260.73,10.39 263.87,13.13 267.02,27.82 270.16,36.81 273.30,36.12 276.44,35.98 279.58,36.04 282.72,36.21 285.86,36.41 289.01,37.18 292.15,37.52 295.29,37.58 298.43,38.72 301.57,38.91 304.71,39.59 307.85,39.07 310.99,38.21 314.14,37.90 317.28,39.57 320.42,39.25 323.56,39.52 326.70,40.01 329.84,40.03 332.98,40.06 336.13,40.60 339.27,40.26 342.41,40.72 345.55,40.57 348.69,40.61 351.83,40.56 354.97,40.50 358.12,40.53 361.26,40.67 364.40,40.61 367.54,40.56 370.68,40.24 373.82,40.59 376.96,40.84 380.10,40.71 383.25,40.67 386.39,39.96 389.53,40.24 392.67,40.73 395.81,40.32 398.95,40.58 402.09,40.37 405.24,40.78 408.38,40.05 411.52,40.47 414.66,40.55 417.80,40.61 420.94,40.37 424.08,40.45 427.23,40.40 430.37,40.28 433.51,40.37 436.65,40.43 439.79,40.49 442.93,39.51 446.07,38.74 449.21,38.39 452.36,38.78 455.50,38.73 458.64,40.03 461.78,40.10 464.92,38.22 468.06,40.41 471.20,39.98 474.35,40.28 477.49,40.26 480.63,40.29 483.77,39.93 486.91,39.92 490.05,40.02 493.19,39.55 496.34,39.70 499.48,39.44 502.62,40.02 505.76,40.18 508.90,39.98 512.04,39.63 515.18,40.32 518.32,40.70 521.47,40.54 524.61,40.72 527.75,40.86 530.89,41.07 534.03,40.83 537.17,40.56 540.31,40.67 543.46,40.46 546.60,40.33 549.74,39.65 552.88,39.62 556.02,38.75 559.16,38.29 562.30,36.06 565.45,35.70 568.59,35.04 571.73,34.78 574.87,35.65 578.01,36.13 581.15,38.55 584.29,38.89 587.43,43.65 590.58,44.24 593.72,49.86 596.86,50.19 600.00,57.37\"/></svg>"
+    },
+    "lint": {
+      "version": "composition-motion-lint-1",
+      "composition": "story-adapter",
+      "frameCount": 192,
+      "fps": 24,
+      "status": "passed",
+      "measured": {
+        "evaluatedState": true,
+        "pixels": true,
+        "pixelMethod": "grayscale-energy",
+        "textBounds": false
+      },
+      "diagnostics": [
+        {
+          "code": "outside-safe-area",
+          "severity": "warning",
+          "nodes": ["ground"],
+          "node": "ground",
+          "path": "layers.18",
+          "frames": [0, 191],
+          "measured": 1,
+          "message": "Layer leaves the 5.0% safe inset.",
+          "shot": "story-adapter"
+        },
+        {
+          "code": "velocity-discontinuity",
+          "severity": "warning",
+          "nodes": ["reference"],
+          "node": "reference",
+          "path": "layers.17.transform",
+          "frames": [1, 18],
+          "measured": 5950.981762907647,
+          "message": "Velocity changes abruptly at this join or handoff.",
+          "shot": "story-adapter"
+        },
+        {
+          "code": "velocity-discontinuity",
+          "severity": "warning",
+          "nodes": ["house-a-art"],
+          "node": "house-a-art",
+          "path": "layers.10.transform",
+          "frames": [6, 42],
+          "measured": 5782.475617821369,
+          "message": "Velocity changes abruptly at this join or handoff.",
+          "shot": "story-adapter"
+        },
+        {
+          "code": "velocity-discontinuity",
+          "severity": "warning",
+          "nodes": ["house-a-shadow"],
+          "node": "house-a-shadow",
+          "path": "layers.11.transform",
+          "frames": [6, 42],
+          "measured": 5308.299319986659,
+          "message": "Velocity changes abruptly at this join or handoff.",
+          "shot": "story-adapter"
+        },
+        {
+          "code": "velocity-discontinuity",
+          "severity": "warning",
+          "nodes": ["question"],
+          "node": "question",
+          "path": "layers.16.transform",
+          "frames": [9, 30],
+          "measured": 5781.21549742541,
+          "message": "Velocity changes abruptly at this join or handoff.",
+          "shot": "story-adapter"
+        },
+        {
+          "code": "velocity-discontinuity",
+          "severity": "warning",
+          "nodes": ["house-b-art"],
+          "node": "house-b-art",
+          "path": "layers.7.transform",
+          "frames": [30, 76],
+          "measured": 5647.756150941031,
+          "message": "Velocity changes abruptly at this join or handoff.",
+          "shot": "story-adapter"
+        },
+        {
+          "code": "velocity-discontinuity",
+          "severity": "warning",
+          "nodes": ["house-b-shadow"],
+          "node": "house-b-shadow",
+          "path": "layers.8.transform",
+          "frames": [30, 76],
+          "measured": 5203.116910901683,
+          "message": "Velocity changes abruptly at this join or handoff.",
+          "shot": "story-adapter"
+        },
+        {
+          "code": "velocity-discontinuity",
+          "severity": "warning",
+          "nodes": ["margin-b"],
+          "node": "margin-b",
+          "path": "layers.13.transform",
+          "frames": [49, 104],
+          "measured": 9485.830296672693,
+          "message": "Velocity changes abruptly at this join or handoff.",
+          "shot": "story-adapter"
+        },
+        {
+          "code": "velocity-discontinuity",
+          "severity": "warning",
+          "nodes": ["margin-a"],
+          "node": "margin-a",
+          "path": "layers.14.transform",
+          "frames": [49, 92],
+          "measured": 10675.155795918254,
+          "message": "Velocity changes abruptly at this join or handoff.",
+          "shot": "story-adapter"
+        },
+        {
+          "code": "velocity-discontinuity",
+          "severity": "warning",
+          "nodes": ["pressure-b"],
+          "node": "pressure-b",
+          "path": "layers.5.transform",
+          "frames": [49, 104],
+          "measured": 5188.607275873294,
+          "message": "Velocity changes abruptly at this join or handoff.",
+          "shot": "story-adapter"
+        },
+        {
+          "code": "velocity-discontinuity",
+          "severity": "warning",
+          "nodes": ["pressure-a"],
+          "node": "pressure-a",
+          "path": "layers.6.transform",
+          "frames": [50, 103],
+          "measured": 11339.185844023163,
+          "message": "Velocity changes abruptly at this join or handoff.",
+          "shot": "story-adapter"
+        },
+        {
+          "code": "velocity-discontinuity",
+          "severity": "warning",
+          "nodes": ["house-b-art"],
+          "node": "house-b-art",
+          "path": "layers.7.transform",
+          "frames": [78, 116],
+          "measured": 15299.48637837974,
+          "message": "Velocity changes abruptly at this join or handoff.",
+          "shot": "story-adapter"
+        },
+        {
+          "code": "velocity-discontinuity",
+          "severity": "warning",
+          "nodes": ["house-b-shadow"],
+          "node": "house-b-shadow",
+          "path": "layers.8.transform",
+          "frames": [78, 116],
+          "measured": 15299.48637837974,
+          "message": "Velocity changes abruptly at this join or handoff.",
+          "shot": "story-adapter"
+        },
+        {
+          "code": "velocity-discontinuity",
+          "severity": "warning",
+          "nodes": ["house-a-art"],
+          "node": "house-a-art",
+          "path": "layers.10.transform",
+          "frames": [81, 88],
+          "measured": 6270.604772005343,
+          "message": "Velocity changes abruptly at this join or handoff.",
+          "shot": "story-adapter"
+        },
+        {
+          "code": "velocity-discontinuity",
+          "severity": "warning",
+          "nodes": ["room"],
+          "node": "room",
+          "path": "layers.4.transform",
+          "frames": [88, 106],
+          "measured": 6733.300053405451,
+          "message": "Velocity changes abruptly at this join or handoff.",
+          "shot": "story-adapter"
+        },
+        {
+          "code": "velocity-discontinuity",
+          "severity": "warning",
+          "nodes": ["strained"],
+          "node": "strained",
+          "path": "layers.3.transform",
+          "frames": [100, 120],
+          "measured": 6732.695553114297,
+          "message": "Velocity changes abruptly at this join or handoff.",
+          "shot": "story-adapter"
+        },
+        {
+          "code": "velocity-discontinuity",
+          "severity": "warning",
+          "nodes": ["qualifier"],
+          "node": "qualifier",
+          "path": "layers.2.transform",
+          "frames": [141, 164],
+          "measured": 5717.051007956945,
+          "message": "Velocity changes abruptly at this join or handoff.",
+          "shot": "story-adapter"
+        },
+        {
+          "code": "velocity-discontinuity",
+          "severity": "warning",
+          "nodes": ["pressure-b"],
+          "node": "pressure-b",
+          "path": "layers.5.transform",
+          "frames": [151, 190],
+          "measured": 2656.892701174911,
+          "message": "Velocity changes abruptly at this join or handoff.",
+          "shot": "story-adapter"
+        }
+      ],
+      "limitations": [
+        "Coverage lint measures geometry; image alpha and arbitrary mask coverage require the renderer's asset coverage validation."
+      ]
+    }
+  },
+  "note": "Stillness acceptance only; other craft warnings/errors are retained, not waived. No creative approval or source fixture changes."
+}
