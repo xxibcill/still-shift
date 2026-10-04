@@ -184,9 +184,10 @@ describe("CE16 offline lifecycle", () => {
     const effect = await pcm(audio("edited", "effect"));
     expect(effect[31200 * 2]).toBeCloseTo(0.8 * 10 ** (-6 / 20), 7);
     expect(effect[26400 * 2]).toBe(0);
-    await saveSoundtrackEdits(path, 1, [{ type: "undo" }, { type: "undo" }]);
+    // The two-operation request is one undo step.
+    await saveSoundtrackEdits(path, 1, [{ type: "undo" }]);
     expect((await readSoundtrackProject(path)).clips).toEqual(project.clips);
-    await saveSoundtrackEdits(path, 2, [{ type: "redo" }, { type: "redo" }]);
+    await saveSoundtrackEdits(path, 2, [{ type: "redo" }]);
     expect((await readSoundtrackProject(path)).clips).toEqual(edit.clips);
   }, 10000);
   it("relocates a hash-verified portable package and history without changing PCM", async () => {

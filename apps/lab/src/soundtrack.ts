@@ -70,6 +70,14 @@ function clipFields() {
     clip.anchor?.offsetSamples ?? 0,
   );
   el<HTMLInputElement>("offset").disabled = !clip.anchor;
+  el<HTMLInputElement>("start").oninput = () => {
+    if (clip.anchor)
+      el<HTMLInputElement>("offset").value = String(
+        clip.anchor.offsetSamples +
+          Number(el<HTMLInputElement>("start").value) -
+          clip.startSample,
+      );
+  };
   el<HTMLTextAreaElement>("automation").value = JSON.stringify(
     clip.automation,
     null,
@@ -215,16 +223,13 @@ clipSelect.onchange = clipFields;
 el<HTMLFormElement>("clip-edit").onsubmit = (e) => {
   e.preventDefault();
   void task(async () => {
-    const id = clipSelect.value,
-      clip = project!.clips.find((c) => c.id === id)!;
+    const id = clipSelect.value;
+    // One request, one undo step; anchored offsets are derived by the edit API.
     await edit([
       {
         type: "move",
         clip: id,
         startSample: Number(el<HTMLInputElement>("start").value),
-        ...(clip.anchor
-          ? { offsetSamples: Number(el<HTMLInputElement>("offset").value) }
-          : {}),
       },
       {
         type: "gain",

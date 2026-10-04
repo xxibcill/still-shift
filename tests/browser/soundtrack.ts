@@ -171,6 +171,7 @@ try {
     ],
   };
   await page.locator("#automation").fill(JSON.stringify(automation));
+  const original = (await readSoundtrackProject(projectPath)).clips[2]!;
   await change(() => page.locator("#clip-edit button").click());
   const edited = (await readSoundtrackProject(projectPath)).clips[2]!;
   assert.equal(edited.startSample, 120000);
@@ -185,16 +186,16 @@ try {
       .getAttribute("points"))!.split(" ").length,
     6,
   );
+  // One Apply is one undo step: move, gain, trim and automation revert together.
   await change(() => page.locator("#undo").click());
-  assert.equal(
-    (await readSoundtrackProject(projectPath)).clips[2]!.automation.points
-      .length,
-    0,
+  assert.deepEqual(
+    (await readSoundtrackProject(projectPath)).clips[2]!,
+    original,
   );
   await change(() => page.locator("#redo").click());
   assert.deepEqual(
-    (await readSoundtrackProject(projectPath)).clips[2]!.automation,
-    automation,
+    (await readSoundtrackProject(projectPath)).clips[2]!,
+    edited,
   );
   for (const kind of ["mute", "solo"])
     for (const checked of [true, false]) {

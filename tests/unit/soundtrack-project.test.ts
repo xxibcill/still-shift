@@ -7,6 +7,8 @@ import {
 import {
   editSoundtrackProject,
   resolveSoundtrackAnchors,
+  retimeSoundtrackAnchors,
+  soundtrackState,
 } from "../../packages/renderer-core/src/soundtrack-edits.ts";
 export function fixture(): SoundtrackProject {
   return {
@@ -129,13 +131,15 @@ describe("soundtrack contract and transactions", () => {
     ]);
     expect(input).toEqual(fixture());
     expect(p.revision).toBe(1);
-    expect(p.history.undo).toHaveLength(6);
+    // One request is one undoable action.
+    expect(p.history.undo).toEqual([soundtrackState(input)]);
+    const edited = soundtrackState(p);
     p = editSoundtrackProject(JSON.parse(JSON.stringify(p)), [
       { type: "undo" },
     ]);
-    expect(p.clips[0]!.automation.points).toEqual([]);
+    expect(soundtrackState(p)).toEqual(soundtrackState(input));
     p = editSoundtrackProject(p, [{ type: "redo" }]);
-    expect(p.clips[0]!.automation.interpolation).toBe("hold");
+    expect(soundtrackState(p)).toEqual(edited);
     expect(() =>
       editSoundtrackProject(input, [
         { type: "gain", target: "missing", gainDb: 0 },
@@ -167,13 +171,82 @@ describe("soundtrack contract and transactions", () => {
     expect(retimed.clips[0]!.startSample).toBe(4010);
     expect(retimed.clips[0]!.sourceEndSample).toBe(4800);
     expect(p.clips[0]!.startSample).toBe(2010);
+    // A move keeps the anchor point and derives the offset that follows it.
+    const moved = editSoundtrackProject(p, [
+      { type: "move", clip: "speech", startSample: 100 },
+    ]);
+    expect(moved.clips[0]!.anchor!.offsetSamples).toBe(-1900);
+    timing.beats[0]!.cues[0]!.frame = 1;
+    expect(resolveSoundtrackAnchors(moved, timing)).toEqual(moved);
     expect(() =>
       editSoundtrackProject(p, [
-        { type: "move", clip: "speech", startSample: 100 },
+        { type: "move", clip: "speech", startSample: 100, offsetSamples: 10 },
       ]),
-    ).toThrow(/offsetSamples/);
+    ).toThrow(/anchor point/);
     timing.beats[0]!.cues = [];
     expect(() => resolveSoundtrackAnchors(p, timing)).toThrow(/Missing/);
+  });
+  it("validates a request's final state, skips no-op history and commits before undo", () => {
+    const input = fixture();
+    // Moving past the end is valid once the same request shortens the clip.
+    const p = editSoundtrackProject(input, [
+      { type: "move", clip: "speech", startSample: 45600 },
+      {
+        type: "trim",
+        clip: "speech",
+        sourceStartSample: 0,
+        sourceEndSample: 2400,
+      },
+    ]);
+    expect(p.clips[0]!).toMatchObject({
+      startSample: 45600,
+      sourceEndSample: 2400,
+    });
+    expect(p.history.undo).toHaveLength(1);
+    expect(() =>
+      editSoundtrackProject(input, [
+        { type: "move", clip: "speech", startSample: 45600 },
+      ]),
+    ).toThrow(/fit/);
+    const unchanged = editSoundtrackProject(p, [
+      { type: "gain", target: "speech", kind: "clip", gainDb: 0 },
+    ]);
+    expect(unchanged.revision).toBe(2);
+    expect(unchanged.history).toEqual(p.history);
+    const undone = editSoundtrackProject(p, [
+      { type: "gain", target: "speech", kind: "clip", gainDb: -3 },
+      { type: "undo" },
+    ]);
+    expect(soundtrackState(undone)).toEqual(soundtrackState(p));
+    expect(undone.history.redo).toHaveLength(1);
+    expect(() =>
+      editSoundtrackProject(input, [
+        { type: "move", clip: "speech", startSample: 10, offsetSamples: 0 },
+      ]),
+    ).toThrow(/only to anchored/);
+  });
+  it("retimes anchors as one undoable action and reports agreement as a no-op", () => {
+    const p = fixture();
+    p.clips[0]!.anchor = {
+      beat: "beat",
+      reference: { type: "cue", id: "cue" },
+      offsetSamples: 0,
+    };
+    p.clips[0]!.startSample = 2000;
+    const timing = {
+      fps: 24,
+      frameCount: 24,
+      beats: [
+        { id: "beat", start: 0, cues: [{ id: "cue", frame: 1 }], events: [] },
+      ],
+    };
+    expect(retimeSoundtrackAnchors(p, timing)).toEqual(p);
+    timing.beats[0]!.cues[0]!.frame = 3;
+    const retimed = retimeSoundtrackAnchors(p, timing);
+    expect(retimed.revision).toBe(1);
+    expect(retimed.clips[0]!.startSample).toBe(6000);
+    expect(retimed.history.undo).toEqual([soundtrackState(p)]);
+    expect(p.clips[0]!.startSample).toBe(2000);
   });
   it("only ducks an explicit narration detector into BGM targets", () => {
     const p = fixture();

@@ -59,6 +59,12 @@ export function soundtrackState(project: SoundtrackProject): SoundtrackState {
     ),
   );
 }
+const sameState = (a: SoundtrackState, b: SoundtrackState) =>
+  JSON.stringify(a) === JSON.stringify(b);
+/**
+ * One request is one undoable action: every operation between history commands
+ * shares a single undo entry, and only the resulting state must be valid.
+ */
 export function editSoundtrackProject(
   input: SoundtrackProject,
   operations: unknown,
@@ -73,8 +79,20 @@ export function editSoundtrackProject(
     soundtrackFail("edit-schema", "Invalid soundtrack operations", {
       issues: parsed.error.issues,
     });
+  let before: SoundtrackState | undefined;
+  const commit = () => {
+    if (!before) return;
+    project = validateSoundtrackProject(project);
+    if (!sameState(before, soundtrackState(project)))
+      project.history = {
+        undo: [...project.history.undo, before].slice(-20),
+        redo: [],
+      };
+    before = undefined;
+  };
   for (const operation of parsed.data) {
     if (operation.type === "undo" || operation.type === "redo") {
+      commit();
       const from = operation.type,
         to = from === "undo" ? "redo" : "undo";
       const state = project.history[from].pop();
@@ -89,71 +107,87 @@ export function editSoundtrackProject(
         revision: project.revision,
         history: project.history,
       };
-    } else {
-      const before = soundtrackState(project);
-      const clip =
-        "clip" in operation
-          ? project.clips.find((c) => c.id === operation.clip)
-          : undefined;
-      const track =
-        "track" in operation
-          ? project.tracks.find((t) => t.id === operation.track)
-          : undefined;
-      if (("clip" in operation && !clip) || ("track" in operation && !track))
-        soundtrackFail("edit-reference", "Unknown edit target", { operation });
-      switch (operation.type) {
-        case "gain": {
-          const groups = {
-            clip: project.clips,
-            track: project.tracks,
-            bus: project.buses,
-            master: [project.master],
-          };
-          const target = (
-            operation.kind
-              ? groups[operation.kind]
-              : Object.values(groups).flat()
-          ).filter((t) => t.id === operation.target);
-          if (target.length !== 1)
-            soundtrackFail(
-              "edit-reference",
-              "Gain target must identify exactly one clip or routing node",
-            );
-          target[0]!.gainDb = operation.gainDb;
-          break;
-        }
-        case "mute":
-          track!.mute = operation.value;
-          break;
-        case "solo":
-          track!.solo = operation.value;
-          break;
-        case "move":
-          if (clip!.anchor && operation.offsetSamples === undefined)
+      continue;
+    }
+    before ??= soundtrackState(project);
+    const clip =
+      "clip" in operation
+        ? project.clips.find((c) => c.id === operation.clip)
+        : undefined;
+    const track =
+      "track" in operation
+        ? project.tracks.find((t) => t.id === operation.track)
+        : undefined;
+    if (("clip" in operation && !clip) || ("track" in operation && !track))
+      soundtrackFail("edit-reference", "Unknown edit target", { operation });
+    switch (operation.type) {
+      case "gain": {
+        const groups = {
+          clip: project.clips,
+          track: project.tracks,
+          bus: project.buses,
+          master: [project.master],
+        };
+        const target = (
+          operation.kind ? groups[operation.kind] : Object.values(groups).flat()
+        ).filter((t) => t.id === operation.target);
+        if (target.length !== 1)
+          soundtrackFail(
+            "edit-reference",
+            "Gain target must identify exactly one clip or routing node",
+          );
+        target[0]!.gainDb = operation.gainDb;
+        break;
+      }
+      case "mute":
+        track!.mute = operation.value;
+        break;
+      case "solo":
+        track!.solo = operation.value;
+        break;
+      case "move": {
+        // An anchored clip keeps its anchor point; the offset follows the move.
+        const anchor = clip!.anchor;
+        if (anchor) {
+          const offset =
+            operation.startSample - (clip!.startSample - anchor.offsetSamples);
+          if (
+            operation.offsetSamples !== undefined &&
+            operation.offsetSamples !== offset
+          )
             soundtrackFail(
               "anchor-conflict",
-              "Moving an anchored clip requires its new offsetSamples",
+              "offsetSamples must keep the clip's anchor point; omit it to derive the offset, or retime the project",
+              {
+                clip: clip!.id,
+                expected: offset,
+                actual: operation.offsetSamples,
+              },
             );
-          clip!.startSample = operation.startSample;
-          if (clip!.anchor)
-            clip!.anchor.offsetSamples = operation.offsetSamples!;
-          break;
-        case "trim":
-          clip!.sourceStartSample = operation.sourceStartSample;
-          clip!.sourceEndSample = operation.sourceEndSample;
-          break;
-        case "automation":
-          clip!.automation = operation.automation;
-          break;
+          anchor.offsetSamples = offset;
+        } else if (operation.offsetSamples !== undefined)
+          soundtrackFail(
+            "anchor-conflict",
+            "offsetSamples applies only to anchored clips",
+            { clip: clip!.id },
+          );
+        clip!.startSample = operation.startSample;
+        break;
       }
-      project.history = {
-        undo: [...project.history.undo, before].slice(-20),
-        redo: [],
-      };
+      case "trim":
+        clip!.sourceStartSample = operation.sourceStartSample;
+        clip!.sourceEndSample = operation.sourceEndSample;
+        break;
+      case "automation":
+        clip!.automation = operation.automation;
+        break;
     }
-    project = validateSoundtrackProject(project);
   }
-  return { ...project, revision: input.revision + 1 };
+  commit();
+  return {
+    ...validateSoundtrackProject(project),
+    revision: input.revision + 1,
+  };
 }
 export type SoundtrackTiming = {
   fps: number;
@@ -221,6 +255,28 @@ export function resolveSoundtrackAnchors(
     clip.startSample = resolved;
   }
   return validateSoundtrackProject(project);
+}
+
+/**
+ * Saves picture-driven anchor positions as one undoable action. Returns the
+ * validated input unchanged (same revision) when every anchor already agrees.
+ */
+export function retimeSoundtrackAnchors(
+  input: SoundtrackProject,
+  timing: SoundtrackTiming,
+) {
+  const project = validateSoundtrackProject(input),
+    resolved = resolveSoundtrackAnchors(project, timing, true),
+    before = soundtrackState(project);
+  if (sameState(before, soundtrackState(resolved))) return project;
+  return validateSoundtrackProject({
+    ...resolved,
+    revision: project.revision + 1,
+    history: {
+      undo: [...project.history.undo, before].slice(-20),
+      redo: [],
+    },
+  });
 }
 
 export function validateSoundtrackNarration(

@@ -19,7 +19,7 @@ import {
 } from "@still-shift/scene-contract";
 import {
   editSoundtrackProject,
-  resolveSoundtrackAnchors,
+  retimeSoundtrackAnchors,
   type SoundtrackTiming,
 } from "@still-shift/renderer-core/soundtrack";
 
@@ -66,6 +66,7 @@ export async function verifySoundtrackSources(
   }
   return paths;
 }
+/** `change` may return its argument unchanged to report a no-op without saving. */
 export async function updateSoundtrackProject(
   path: string,
   expectedRevision: number,
@@ -82,7 +83,9 @@ export async function updateSoundtrackProject(
         "Reload the saved project before retrying this edit",
         { expected: expectedRevision, actual: previous.revision },
       );
-    const next = validateSoundtrackProject(change(previous));
+    const changed = change(previous);
+    if (changed === previous) return previous;
+    const next = validateSoundtrackProject(changed);
     if (next.revision !== previous.revision + 1)
       soundtrackFail(
         "revision-step",
@@ -112,18 +115,8 @@ export const retimeSoundtrackProject = (
   timing: SoundtrackTiming,
 ) =>
   updateSoundtrackProject(path, revision, (project) => {
-    const resolved = resolveSoundtrackAnchors(project, timing, true);
-    return editSoundtrackProject(
-      project,
-      resolved.clips
-        .filter((c) => c.anchor)
-        .map((c) => ({
-          type: "move",
-          clip: c.id,
-          startSample: c.startSample,
-          offsetSamples: c.anchor!.offsetSamples,
-        })),
-    );
+    const next = retimeSoundtrackAnchors(project, timing);
+    return next.revision === project.revision ? project : next;
   });
 /** New portable copy only; hashes and authored clips survive relocation. */
 export async function packageSoundtrackProject(

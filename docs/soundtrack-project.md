@@ -124,14 +124,21 @@ mix recommendations.
 `edit --revision N --operations edits.json` applies a validated batch under the
 shared artifact lock, checks the current revision and atomically renames the new
 JSON. An invalid operation leaves the original file unchanged. A save increments
-revision exactly once; history records each authored operation, capped at 20.
-Undo/redo changes state and increments revision; it never rolls revision back.
+revision exactly once. Each request is one undoable action: its operations share
+one history entry (capped at 20), and only the request's final state must be valid,
+so a move and a shortening trim can be submitted together. A request that changes
+nothing adds no history entry. `undo`/`redo` inside a request first commit the
+operations before them. Undo/redo changes state and increments revision; it never
+rolls revision back.
 CLI and HTTP edits call the same `saveSoundtrackEdits` API.
 
 Operations are `gain` (target and gainDb; optional kind `clip|track|bus|master` to
 resolve same-name clip/node ambiguity), `mute`, `solo`, `move`, `trim`,
 `automation`, `undo` and `redo`. The latter two need only `type`.
-Moving an anchored clip also requires its new `offsetSamples`.
+Moving an anchored clip keeps its anchor point, so its `offsetSamples` follows
+the move; omit `offsetSamples`, or pass the matching value. A different value, or
+an offset on an unanchored clip, fails with `anchor-conflict`. Use `retime` to
+follow a changed picture; it saves only when an anchor moved, as one undo step.
 Trims preserve placement and reject fades/automation that no longer fit.
 
 ```json
