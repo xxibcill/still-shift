@@ -140,7 +140,7 @@ _Last updated 2026-10-04 by Codex for the isolated CE16 completion audit._
 ### 2026-10-04 — Audit CE16 completion and correct browser verification selection
 
 - **Agent / branch:** Codex on isolated `codex/composition-ce16`, after `733b24d`.
-- **Done:** guard cleared/superseded preview attachments and immutable snapshots;
+- **Done:** `31764f4` guards cleared/superseded preview attachments and immutable snapshots;
   model held automation steps; reject duplicate beat anchors; correct CLI example
   and generated measurement evidence. Added six preview harness regressions.
 - **Results:** corrected tier passes 1,436 unit, 46 runtime, 19 audio integration
