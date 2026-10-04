@@ -5,15 +5,13 @@ import {
   validateComposition,
   type Composition,
 } from "@still-shift/scene-contract";
-import {
-  passageError,
-  validatePassageCompositions,
-} from "@still-shift/renderer-core";
+import { passageError } from "../../renderer-core/src/passage-diagnostics.ts";
+import { validatePassageCompositions } from "../../renderer-core/src/passage-compositions.ts";
 export {
   validatePassageCompositions,
   type PassageCompositions,
-} from "@still-shift/renderer-core";
-import { loadComposition } from "./composition-render.ts";
+} from "../../renderer-core/src/passage-compositions.ts";
+import { readCompositionSource } from "./composition-source.ts";
 import type { PreparedPassage } from "./story-passage-io.ts";
 
 /** A companion map assigns native composition files without extending frozen family schemas. */
@@ -43,7 +41,7 @@ export async function loadPassageCompositions(
       });
     for (const asset of result.composition.assets)
       await allowPath?.(resolve(dirname(file), asset.path));
-    const loaded = await loadComposition(file).catch((error) =>
+    const loaded = await readCompositionSource(file).catch((error) =>
       passageError(
         "comp-passage-reference",
         `Cannot prepare ${file}: ${error.message}`,

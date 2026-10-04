@@ -156,6 +156,23 @@
         "An assertion initially matched a diagnostic code against the human Error.message. Corrected to assert PassageError.diagnostics[0].code; the loader already returned the expected structured diagnostic."
       ],
       "log": "benchmarks/results/ce4a-native-mixed-passage-retry.log"
+    },
+    {
+      "name": "Lab native source import repair",
+      "changes": "Separate readCompositionSource file/asset validation from loadComposition renderer preparation. Native loader uses narrow relative modules; runtime cache identity includes source loader.",
+      "verification": [
+        {
+          "command": "pnpm exec vitest run tests/integration/narration-import-lab.test.ts tests/integration/passage-audio-lab.test.ts tests/integration/passage-lab.test.ts tests/integration/sfx-lab.test.ts tests/integration/story-acting-lab.test.ts --maxWorkers=2 --no-file-parallelism",
+          "status": "passed",
+          "suites": 5,
+          "tests": 25
+        },
+        {
+          "command": "pnpm build; targeted eslint",
+          "status": "passed"
+        }
+      ],
+      "log": "/private/tmp/ce4a-lab-loader-repair.log"
     }
   ],
   "pending": [
@@ -186,6 +203,17 @@
       "command": "pnpm check (format-corrected snapshot)",
       "status": "interrupted",
       "reason": "Current plan requires mixed story-precomp/native acceptance and explicit bindings; stopped before completing tests to implement that coverage."
+    },
+    {
+      "command": "pnpm check (clean snapshot bd6a09d)",
+      "status": "failed-integration",
+      "passed": {
+        "unit": 1464,
+        "runtime": 46,
+        "integration": 91
+      },
+      "skippedIntegration": 25,
+      "reason": "Five Lab suites hit Node strip-only parameter-property syntax when the new native loader pulled the renderer public entrypoint into Vite configuration loading."
     }
   ]
 }

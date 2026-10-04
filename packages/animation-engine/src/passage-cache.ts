@@ -153,6 +153,7 @@ export async function passageRenderRuntime(
     "packages/animation-engine/src/prepared-animation-engine.ts",
     "packages/animation-engine/src/composition-compile.ts",
     "packages/animation-engine/src/composition-render.ts",
+    "packages/animation-engine/src/composition-source.ts",
     "toolchain.json",
     "pnpm-lock.yaml",
   );
