@@ -151,7 +151,9 @@ _Last updated 2026-10-04 by Codex for the isolated CE16 completion audit._
   Full gate passes 1,436 unit, 46 runtime, 125 integration and 14 depth tests so far.
 - **In flight:** remaining full `pnpm check` browser groups and frozen CE0 baselines.
 - **Failures:** retained loader/alias failures, fixture corrections and one visual
-  timeout. Timed-out case passes alone; final gate is running serially.
+  timeouts. Both timed-out cases pass unchanged alone. Verifier now independently
+  checks current original/packaged whole-file hashes; all match. Final gate runs
+  serially on frozen files, with no parallel edits or tests.
 - **Constraints:** no GitHub Actions, provider calls, purchases, source changes or
   primary checkout/CE12 edits. Earlier headless-browser breach stays recorded.
 - **Records:** [CE16 audit](./composition-ce16-completion-audit.md),

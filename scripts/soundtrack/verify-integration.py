@@ -1,6 +1,7 @@
 """Independently inspect retained CE16-B PCM, not encoded WAV hashes."""
 
 import argparse
+import hashlib
 import json
 import subprocess
 from pathlib import Path
@@ -24,6 +25,28 @@ def verify(base):
         name: json.loads((base / name / "render.json").read_text())
         for name in ["initial", "reloaded", "edited", "relocated"]
     }
+    current_source_hashes = {}
+    for run in reports:
+        project_path = base / run / "project.json"
+        saved_project = json.loads(project_path.read_text())
+        current_source_hashes[run] = {}
+        resolved_assets = {
+            asset["id"]: asset for asset in reports[run]["identityInputs"]["project"]["assets"]
+        }
+        for asset in saved_project["assets"]:
+            resolved_asset = resolved_assets[asset["id"]]
+            assert resolved_asset["sha256"] == asset["sha256"]
+            path = Path(resolved_asset["path"])
+            assert path.is_absolute(), "Manifest must record resolved source paths"
+            digest = hashlib.sha256()
+            with path.open("rb") as source_file:
+                while chunk := source_file.read(1024 * 1024):
+                    digest.update(chunk)
+            actual = "sha256:" + digest.hexdigest()
+            assert actual == asset["sha256"], (
+                f"Current source checksum differs: {run}/{asset['id']}"
+            )
+            current_source_hashes[run][asset["id"]] = actual
     names = ["narration", "bgm", "sfx-pouch", "sfx-roots", "music-bus", "sfx-bus", "master"]
     audio = {}
     for run, report in reports.items():
@@ -78,7 +101,7 @@ def verify(base):
     evidence_path = Path("docs/composition-ce16-verification-results.json")
     evidence = json.loads(evidence_path.read_text())
     evidence["milestone"] = "CE16"
-    evidence["ce16Integration"] = "implemented; command-only verification recorded"
+    evidence["ce16Integration"] = "implemented; command/audio verification recorded"
     if "backendProofLimitations" not in evidence:
         evidence["backendProofLimitations"] = evidence.pop("limitations", [])
     evidence["integration"] = {
@@ -95,6 +118,7 @@ def verify(base):
             }
             for name, report in reports.items()
         },
+        "currentSourceHashes": current_source_hashes,
         "outputSizesBytes": {
             run: {
                 name: (base / run / "audio" / reports[run]["files"][name]["file"]).stat().st_size

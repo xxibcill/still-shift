@@ -2,7 +2,7 @@
   "date": "2026-10-04",
   "milestone": "CE16",
   "technicalLifecycle": "passed",
-  "ce16Integration": "implemented; command-only verification recorded",
+  "ce16Integration": "implemented; command/audio verification recorded",
   "branch": "codex/composition-ce16",
   "base": "dee9e7b4c35256e298d8168b635aacd934a4a4ae",
   "worktree": "/Users/jjae/.codex/worktrees/composition-ce16/still-shift",
@@ -684,6 +684,14 @@
         "log": "benchmarks/results/composition-ce16/ce16-browser-focused-final.log",
         "diagnostic": "Test assumed temporary pre-encode WAVs survive passage publication; staging is correctly cleaned.",
         "resolution": "Compare actual mux delivery decode to independent canonical render plus matching AAC encoding; full/range outputs match exactly."
+      },
+      {
+        "stage": "full check cinematic playback",
+        "command": "pnpm check",
+        "exitCode": 1,
+        "log": "benchmarks/results/composition-ce16/ce16-full-check-final.log",
+        "diagnostic": "Existing dolly cinematic test timed out waiting for playback scrub to advance.",
+        "resolution": "Unchanged pnpm test:browser:dolly passes alone (23 frame comparisons); final full run will use frozen files with no parallel work."
       }
     ],
     "unperformed": [
@@ -738,7 +746,8 @@
     "retainedLifecycleRecheck": {
       "command": "STILL_SHIFT_SOUNDTRACK_RESULTS=benchmarks/results/composition-ce16/integration-final pnpm soundtrack:verify --verify-only",
       "exitCode": 0,
-      "result": "Exact decoded reload, relocation, unchanged narration, unaffected stems and unity reconstruction; output sizes generated automatically."
+      "result": "All current whole-file original/packaged source hashes match; exact decoded reload, relocation, unchanged narration, unaffected stems and unity reconstruction.",
+      "log": "benchmarks/results/composition-ce16/ce16-current-source-and-pcm.log"
     },
     "completionAudit": "docs/composition-ce16-completion-audit.md",
     "browserPolicy": {
@@ -809,7 +818,18 @@
     },
     "fullRepository": {
       "command": "PATH=/Users/jjae/.nvm/versions/node/v22.23.1/bin:$PATH UV_NO_SYNC=1 UV_CACHE_DIR=/private/tmp/still-shift-ce16-uv-cache pnpm check",
-      "status": "rerun pending after fixes; not passed yet"
+      "status": "Running; not yet complete",
+      "log": "benchmarks/results/composition-ce16/ce16-full-check-frozen.log"
+    },
+    "dollyRecheck": {
+      "command": "pnpm test:browser:dolly",
+      "exitCode": 0,
+      "log": "benchmarks/results/composition-ce16/ce16-dolly-diagnostic.log",
+      "comparisons": 23
+    },
+    "sourceVerifierCorrection": {
+      "diagnostic": "New current-source check initially resolved packaged paths relative to render snapshot, which is not the authoring project directory.",
+      "resolution": "Use and validate manifest identityInputs resolved source paths; all current hashes match."
     }
   },
   "backendProofLimitations": [
@@ -1224,6 +1244,32 @@
         "output": "/Users/jjae/.codex/worktrees/composition-ce16/still-shift/benchmarks/results/composition-ce16/integration-final/relocated"
       }
     },
+    "currentSourceHashes": {
+      "initial": {
+        "narration-source": "sha256:0a80738d189e94b9cce7c298d2aa5bf7732fbe949f6416777b747d0e208647ae",
+        "bgm-source": "sha256:27e3048461d5eb179856b2c6f15c57eb0823fb2f9696806079e3ec16704c53ce",
+        "sfx-pouch-source": "sha256:0b01365da4a880c12943e508458a6cd0bdef9b64f86df3dadee945fdd39753da",
+        "sfx-roots-source": "sha256:6868cbfe2a63dd83bfda1427b1ad2b257a4ee275913bee9349fb49b1cf7aa484"
+      },
+      "reloaded": {
+        "narration-source": "sha256:0a80738d189e94b9cce7c298d2aa5bf7732fbe949f6416777b747d0e208647ae",
+        "bgm-source": "sha256:27e3048461d5eb179856b2c6f15c57eb0823fb2f9696806079e3ec16704c53ce",
+        "sfx-pouch-source": "sha256:0b01365da4a880c12943e508458a6cd0bdef9b64f86df3dadee945fdd39753da",
+        "sfx-roots-source": "sha256:6868cbfe2a63dd83bfda1427b1ad2b257a4ee275913bee9349fb49b1cf7aa484"
+      },
+      "edited": {
+        "narration-source": "sha256:0a80738d189e94b9cce7c298d2aa5bf7732fbe949f6416777b747d0e208647ae",
+        "bgm-source": "sha256:27e3048461d5eb179856b2c6f15c57eb0823fb2f9696806079e3ec16704c53ce",
+        "sfx-pouch-source": "sha256:0b01365da4a880c12943e508458a6cd0bdef9b64f86df3dadee945fdd39753da",
+        "sfx-roots-source": "sha256:6868cbfe2a63dd83bfda1427b1ad2b257a4ee275913bee9349fb49b1cf7aa484"
+      },
+      "relocated": {
+        "narration-source": "sha256:0a80738d189e94b9cce7c298d2aa5bf7732fbe949f6416777b747d0e208647ae",
+        "bgm-source": "sha256:27e3048461d5eb179856b2c6f15c57eb0823fb2f9696806079e3ec16704c53ce",
+        "sfx-pouch-source": "sha256:0b01365da4a880c12943e508458a6cd0bdef9b64f86df3dadee945fdd39753da",
+        "sfx-roots-source": "sha256:6868cbfe2a63dd83bfda1427b1ad2b257a4ee275913bee9349fb49b1cf7aa484"
+      }
+    },
     "outputSizesBytes": {
       "initial": {
         "narration": 23040058,
@@ -1417,10 +1463,11 @@
     "measurementMethod": "CLI monotonic wall time includes preflight, calibration and worker. Worker wallSeconds starts after calibration. RUSAGE_SELF peak includes worker/calibration but excludes FFmpeg children; no speed advantage claimed."
   },
   "limitations": [
-    "Full pnpm check and frozen browser baselines still pending after owner authorized a one-time automated verification exception.",
-    "No listening or human audiovisual QA. Authorized headless-browser decode/playback/UI/export checks pass; earlier unapproved indirect browser use remains documented.",
+    "Full repository gate is not confirmed passed. This verifier checks only the audio lifecycle.",
+    "No listening or human audiovisual QA performed; automated technical checks are separate.",
+    "Earlier unapproved indirect headless-browser use remains recorded. The owner later authorized automated browser verification for the completion pass only.",
     "Local opt-in pinned Python runtime only; GPL/transitive distribution decision remains pending. No backend dependency binaries bundled.",
     "Only causal built-in high/low-pass DSP is accepted, with per-path onset probes. External plugins and nonzero latency compensation are unsupported.",
-    "No drag handles or native browser DSP parity claimed; explicit numeric/JSON edits share the same atomic API."
+    "No drag handles or native browser DSP path adopted; explicit numeric/JSON edits share the same atomic API and preview uses rendered audio."
   ]
 }
