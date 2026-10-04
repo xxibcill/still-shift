@@ -1379,8 +1379,13 @@ comparisons; the full `pnpm check`.
 - **Passages:** opt-in composition beat compilation is wired to export and Lab preview;
   renderer/backend-specific cache identities preserve handoffs, narration and recovery.
 - **Evidence:** [continuation results](./composition-ce4a-completion-results.json).
-  Full family acceptance, native composition-only beat authoring and full local
-  verification remain before milestone completion/PR and CE10.
+  Native companion-map pictures now pass standalone encoded-beat identity and Lab
+  pixel/seek checks; 69 Canvas family cases / 14,086 frames meet pixel/state/timing
+  gates. Full local verification and WebGL correctness closeout remain before PR/CE10.
+- **CE4a/Q2 decision:** companion beat maps select native `composition-1` picture
+  files without extending the frozen story scene vocabulary. The narrative template
+  remains the cue/evidence authority. Native frames/dimensions/fps match the resolved
+  beat exactly; implicit camera/subject carry is rejected at its boundaries.
 
 ### CE4a start record (2026-10-02)
 

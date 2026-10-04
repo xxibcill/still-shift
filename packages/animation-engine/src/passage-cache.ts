@@ -20,6 +20,8 @@ import {
 } from "node:fs/promises";
 import { constants } from "node:fs";
 import { join, resolve, dirname } from "node:path";
+import type { Composition } from "@still-shift/scene-contract";
+import { validateComposition } from "@still-shift/scene-contract";
 import type { StoryScene } from "../../scene-contract/src/story.ts";
 import { AnimationEngineError } from "../../scene-contract/src/errors.ts";
 import {
@@ -72,6 +74,28 @@ export function passageBeatKey(
               backend: compositionRendererVersion(backend),
             }
           : compileStoryScene(scene).rendererVersion,
+      runtime,
+      encoder: "libx264:veryfast:crf18:yuv420p:png_pipe",
+    }),
+  );
+}
+
+/** Native picture identity is portable across asset relocation and separate from family clips. */
+export function passageCompositionKey(
+  composition: Composition,
+  runtime: string,
+  backend: CompositionBackend = "canvas2d",
+) {
+  const result = validateComposition(composition);
+  if (!result.ok) throw new Error("Invalid native passage composition");
+  const normalized = structuredClone(result.composition);
+  for (const asset of normalized.assets) asset.path = asset.sha256;
+  return passageHash(
+    stableJson({
+      version: "composition-passage-cache-1",
+      composition: normalized,
+      renderer: compositionRendererVersion(backend),
+      evaluator: COMPOSITION_EVALUATOR_VERSION,
       runtime,
       encoder: "libx264:veryfast:crf18:yuv420p:png_pipe",
     }),

@@ -39,6 +39,15 @@
           "maxChannelDelta": 0,
           "ratio": 1.3902522054054811,
           "exports": "Not reached on this strict run; repeat with --keep-going."
+        },
+        {
+          "command": "pnpm test:browser:composition-story-fixtures --only continuous-access-constraint --variant motion-blur --webgl --exports --keep-going",
+          "status": "failed-deferred-timing",
+          "frames": 192,
+          "maxChannelDelta": 0,
+          "ratio": 1.3326573090601932,
+          "repeatExports": "byte-identical",
+          "seeks": "passed"
         }
       ],
       "limits": "At most 2,000 distinct exposure samples; compiler reports comp-adapter-limit rather than truncating. CE7 remains incomplete.",
@@ -76,14 +85,59 @@
           "artifacts": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-authoring-Y227ZZ"
         }
       ]
+    },
+    {
+      "name": "Native picture beat companion map (CE4a/Q2)",
+      "changes": "CLI --composition-beats <map.json>, public load/validate APIs, renderer-core pure validation, native picture cache/provenance and matching Lab companion-map loading. Retains frozen family schemas and existing narrative plan.",
+      "verification": [
+        {
+          "command": "pnpm test:browser:composition-native-passage",
+          "status": "passed",
+          "frames": 192,
+          "checks": [
+            "cached native encoded clip equals standalone composition export",
+            "repeated assembled decoded frames agree",
+            "cache reuse",
+            "relocated map",
+            "Lab difference blend exact pixels",
+            "backward seeks"
+          ]
+        },
+        {
+          "command": "pnpm exec vitest run tests/unit/passage-compositions.test.ts --maxWorkers=2",
+          "status": "passed",
+          "tests": 9
+        },
+        {
+          "command": "pnpm build && pnpm check:boundaries && pnpm schema:check",
+          "status": "passed"
+        }
+      ],
+      "limits": [
+        "Native picture must match final dimensions/fps/source frame count, including any outgoing handoff tail.",
+        "Native boundary transforms are authored in the picture: reject implicit camera/subject carry.",
+        "Narrative template remains the authority for cue/evidence metadata; its visual edits and story quality report describe that template, not the native file. Native files use composition lint and inspector.",
+        "A companion map and its composition/assets are separately portable inputs; the existing story workspace packager does not absorb them."
+      ],
+      "rejectedTest": "Assembled decoded frames cannot equal the original clip exactly because passage assembly re-encodes using its existing libx264 fast path. Verify exact encoded native beat identity and independently deterministic assemblies instead."
     }
   ],
   "pending": [
-    "Composition-only passage beat authoring choice (CE4a/Q2)",
-    "Full story and typography correctness acceptance",
-    "Canvas timing gate",
     "Full pnpm check and CE0 frozen baselines",
-    "Milestone PR"
+    "Full WebGL story correctness record (timing deferred)",
+    "CE4a tracker/checklist reconciliation and milestone PR"
   ],
-  "githubActionsEnabled": false
+  "githubActionsEnabled": false,
+  "familyAcceptance": {
+    "command": "pnpm test:browser:composition-story-fixtures --keep-going",
+    "status": "passed",
+    "cases": 69,
+    "frames": 14086,
+    "pixelFailures": 0,
+    "stateFailures": 0,
+    "seekFailures": 0,
+    "timingFailures": 0,
+    "maxRatio": null,
+    "log": "benchmarks/results/ce4a-story-canvas-matrix.log"
+  }
 }

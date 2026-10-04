@@ -1451,3 +1451,26 @@ This is CE4a's required CE7 exposure slice, not completion of all CE7 controls.
 Renderer, evaluator, adapter and backend identities separate cached beat clips.
 Changing the renderer or backend requires a fresh render request/output directory.
 The cache retains each compiled `.composition.json` beside its encoded beat.
+
+### Native passage picture files (CE4a/Q2)
+
+`PassageCompositionReferencesSchema` validates a companion JSON object mapping up to
+400 beat IDs (1–200 characters) to composition file paths (1–1,024 characters).
+`loadPassageCompositions(mapPath, passage)` resolves each path relative to that map,
+validates the composition and its assets, and returns normalized compositions with
+absolute asset paths. `validatePassageCompositions` is the shared pure validator.
+
+Supply this object as `renderStoryPassage(..., { renderer: "composition",
+compositions })`. Overrides replace the beat's picture; its template remains the
+narrative/cue/evidence authority. Native dimensions, fps and final source frame count
+must match exactly, including outgoing transition tail frames. Native boundary
+transforms must be authored explicitly; implicit camera/subject carry is rejected.
+Native composition motion is inspected and linted as composition data; the surrogate
+template's story motion report does not measure that native picture.
+
+Diagnostics: `comp-passage-reference` (invalid map/file), `comp-passage-limit`
+(over 400 overrides), `comp-passage-beat` (unknown ID), `comp-passage-timing`
+(dimensions/fps/duration mismatch), `comp-passage-handoff` (implicit carry) and
+`comp-passage-renderer` (native pictures require the composition path). Native
+composition schema diagnostics retain their codes and gain the beat ID.
+The API checks map, picture and asset paths against the Lab workspace boundary.

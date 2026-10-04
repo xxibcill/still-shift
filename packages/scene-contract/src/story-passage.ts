@@ -103,3 +103,11 @@ export const StoryPassagePlanSchema = z
 
 export type StoryPassagePlan = z.infer<typeof StoryPassagePlanSchema>;
 export type StoryBeat = StoryPassagePlan["beats"][number];
+
+/** Companion picture files keep native composition vocabulary outside story schemas. */
+export const PassageCompositionReferencesSchema = z
+  .record(z.string().min(1).max(200), z.string().min(1).max(1024))
+  .refine(
+    (value) => Object.keys(value).length <= 400,
+    "At most 400 beat references",
+  );

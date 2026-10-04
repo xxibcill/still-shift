@@ -33,3 +33,9 @@ export { SfxGenerationError } from "./elevenlabs-sfx.ts";
 export { importNarrationFile } from "./narration-import.ts";
 
 export { lintCompositionFile } from "./composition-lint.ts";
+
+export {
+  loadPassageCompositions,
+  validatePassageCompositions,
+  type PassageCompositions,
+} from "./passage-compositions.ts";

@@ -5,6 +5,10 @@ import {
 import { isStoryTransition } from "../../renderer-core/src/story-transition.ts";
 import { passageError } from "../../renderer-core/src/passage-diagnostics.ts";
 import { cachedStoryTransition } from "./story-transition-render.ts";
+import {
+  validatePassageCompositions,
+  type PassageCompositions,
+} from "./passage-compositions.ts";
 import { compileStoryComposition } from "./composition-compile.ts";
 import { renderComposition } from "./composition-render.ts";
 import type { CompositionBackend } from "@still-shift/renderer-core";
@@ -12,6 +16,7 @@ import { randomUUID } from "node:crypto";
 import {
   cachedPassageBeat,
   passageBeatKey,
+  passageCompositionKey,
   passageJobRuntimeIdentity,
   passageRenderRuntime,
 } from "./passage-cache.ts";
@@ -157,7 +162,13 @@ async function assembleStoryPassage(
     });
     const clip = await cachedPassageBeat({
       cacheDirectory: options.cacheDirectory,
-      key: passageBeatKey(beat.scene, options.runtime, renderer, backend),
+      key: options.compositions?.[beat.id]
+        ? passageCompositionKey(
+            options.compositions[beat.id]!,
+            options.runtime,
+            backend,
+          )
+        : passageBeatKey(beat.scene, options.runtime, renderer, backend),
       output: join(options.sceneDirectory, beat.id + ".mp4"),
       signal: options.signal,
       render: async (outputPath) => {
@@ -168,10 +179,9 @@ async function assembleStoryPassage(
             signal: options.signal,
           });
         options.signal?.throwIfAborted();
-        const composition = await compileStoryComposition(
-          beat.scene,
-          options.sceneDirectory,
-        );
+        const composition =
+          options.compositions?.[beat.id] ??
+          (await compileStoryComposition(beat.scene, options.sceneDirectory));
         options.signal?.throwIfAborted();
         const compositionPath = outputPath + ".composition.json";
         // Prepared passage assets are absolute; the cached composition is independently inspectable.
@@ -413,6 +423,13 @@ async function assembleStoryPassage(
     planSha256: passage.inputs.plan.sha256,
     renderer,
     ...(renderer === "composition" ? { backend } : {}),
+    pictureSources: selected.map((beat) => ({
+      beat: beat.id,
+      authority: options.compositions?.[beat.id]
+        ? "native-composition"
+        : "story-template",
+      composition: options.compositions?.[beat.id]?.id ?? null,
+    })),
     fps: plan.fps,
     frameCount,
     sourceStartFrame,
@@ -447,6 +464,7 @@ async function assembleStoryPassage(
 }
 
 export type PassageRenderOptions = {
+  compositions?: PassageCompositions;
   renderer?: "legacy" | "composition";
   backend?: CompositionBackend;
   soundEffects?: boolean;
@@ -469,6 +487,17 @@ export async function renderStoryPassage(
   options: PassageRenderOptions = {},
 ) {
   options.signal?.throwIfAborted();
+  const compositions = validatePassageCompositions(
+    passage,
+    options.compositions,
+  );
+  if (Object.keys(compositions).length && options.renderer !== "composition")
+    passageError(
+      "comp-passage-renderer",
+      "Native beat files require renderer composition",
+      { path: "renderer" },
+    );
+  options = { ...options, compositions };
   const first = passage.beats[0]?.scene;
   if (!first)
     passageError("empty-passage", "A passage needs at least one beat");
@@ -513,7 +542,9 @@ export async function renderStoryPassage(
     {
       plan: passage.inputs.plan.sha256,
       scenes: passage.beats.map((b) =>
-        passageBeatKey(b.scene, runtime, options.renderer, options.backend),
+        compositions[b.id]
+          ? passageCompositionKey(compositions[b.id]!, runtime, options.backend)
+          : passageBeatKey(b.scene, runtime, options.renderer, options.backend),
       ),
       narration: narration ? passage.plan.narration?.sha256 : null,
       audio: passage.audio,

@@ -5,6 +5,7 @@ import {
   readStoryPassage,
   writePreparedPassage,
 } from "../packages/animation-engine/src/story-passage-io.ts";
+import { loadPassageCompositions } from "../packages/animation-engine/src/passage-compositions.ts";
 import { passageGallery } from "./story-motion/passage-gallery.ts";
 import {
   renderStoryPassage,
@@ -31,6 +32,7 @@ const { values } = parseArgs({
     format: { type: "string" },
     renderer: { type: "string", default: "legacy" },
     backend: { type: "string", default: "canvas2d" },
+    "composition-beats": { type: "string" },
   },
   strict: true,
 });
@@ -103,6 +105,14 @@ try {
   let report: Awaited<ReturnType<typeof renderStoryPassage>> | undefined;
   if (!values["prepare-only"])
     report = await renderStoryPassage(output, passage, narration, {
+      ...(values["composition-beats"]
+        ? {
+            compositions: await loadPassageCompositions(
+              values["composition-beats"],
+              passage,
+            ),
+          }
+        : {}),
       renderer: values.renderer as "legacy" | "composition",
       backend: values.backend as "canvas2d" | "webgl2",
       soundEffects: !values.silent && !values["without-sound-effects"],

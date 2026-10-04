@@ -670,3 +670,20 @@ passage pipeline. Choose a fresh output directory when changing renderer/backend
 For the matching Lab preview, open `passage.html?renderer=composition` (or add
 `&backend=webgl2`). Beat seeking and editing retain their existing controls. The
 compiled beat composition is retained in the passage cache for inspection.
+
+### Use a native composition as a passage beat's picture
+
+Create a companion JSON map, for example `{ "reset": "native-beat.json" }`, then
+add `--composition-beats <map.json>` to `story:passage --renderer composition`.
+Paths are relative to the map. The picture file must match the resolved beat's size,
+frame rate and final source duration. Write native camera/subject continuity into
+that file; implicit story carry at a native boundary is rejected. The story template
+continues to hold narrative and cue metadata, while the native file owns its visuals.
+Retain the companion map, picture files and their assets alongside the story workspace;
+the existing workspace packager exports the story plan/templates separately.
+
+For matching passage preview, use
+`passage.html?renderer=composition&composition-beats=<workspace-map-path>`.
+Native layers appear in the state inspector; edit their motion in the composition
+file or composition inspector. Saved Lab workspaces retain the loaded native data.
+The acceptance example is `benchmarks/fixtures/composition/ce4a/native-beats.json`.

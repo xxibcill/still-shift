@@ -46,8 +46,10 @@ still hold before relying on them.
 - **CE4a continuation (`[~]`, 2026-10-05):** active on
   `codex/composition-ce4a-completion` from CE12 `0987396`. Story shutter exposure
   prerequisite and optional passage composition export/Lab path implemented; focused
-  unit/runtime and 576-frame passage browser checks pass. Native composition beat
-  authoring, full family acceptance and full verification remain before CE10.
+  unit/runtime and 576-frame passage browser checks pass. Native companion-map
+  pictures pass standalone encoded-beat/Lab parity; full Canvas family matrix passes
+  (69 cases / 14,086 frames). Full local verification and WebGL correctness closeout
+  remain before the milestone PR and CE10.
   [Evidence](./composition-ce4a-completion-results.json).
 
 - **CE12 motion linting (`[x]`, 2026-10-05):** complete on
@@ -148,7 +150,9 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
 - **Results:** build, 71 adapter/exposure tests and 18 cache/publication tests pass.
   Canvas shutter frames are exact with repeat MP4 identity. The 576-frame composition
   passage suite passes nine Lab/export comparisons, cache, edit, range, cancellation,
-  narration and relocation checks. WebGL shutter pixels pass; 1.39× timing is deferred.
+  narration and relocation checks. Native picture maps pass exact cached-beat and
+  Lab parity; all 69 Canvas family cases / 14,086 frames pass. WebGL shutter pixels,
+  seeks and repeat MP4s pass; 1.33–1.39× timing is deferred. Full verification next.
 - **Open / next:** passage composition integration, full story acceptance and milestone PR;
   CE7 remains incomplete, CE6-P remains deferred. Pre-existing local documentation retained.
 - **Records:** [CE4a continuation evidence](./composition-ce4a-completion-results.json).

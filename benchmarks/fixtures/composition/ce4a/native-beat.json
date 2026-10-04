@@ -1,0 +1,38 @@
+{
+  "schemaVersion": "composition-1",
+  "id": "native-passage-beat",
+  "width": 1920,
+  "height": 1080,
+  "fps": 24,
+  "frameCount": 192,
+  "background": "#ffffff",
+  "assets": [],
+  "layers": [
+    {
+      "id": "difference-panel",
+      "type": "solid",
+      "size": [200, 200],
+      "color": "#3cb450",
+      "blendMode": "difference",
+      "transform": { "anchor": [0, 0], "position": [500, 400] }
+    },
+    {
+      "id": "moving-panel",
+      "type": "solid",
+      "size": [600, 200],
+      "color": "#e0283c",
+      "transform": {
+        "anchor": [0, 0],
+        "position": {
+          "x": {
+            "keys": [
+              { "frame": 0, "value": 300, "interpolation": "linear" },
+              { "frame": 191, "value": 350 }
+            ]
+          },
+          "y": 400
+        }
+      }
+    }
+  ]
+}

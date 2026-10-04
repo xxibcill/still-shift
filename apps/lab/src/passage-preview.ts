@@ -1,3 +1,4 @@
+import type { Composition } from "@still-shift/scene-contract";
 import { evaluateStoryPath } from "../../../packages/renderer-core/src/story-geometry.ts";
 import type { CompiledStoryPassage } from "../../../packages/renderer-core/src/story-passage.ts";
 import { compileStoryScene } from "../../../packages/renderer-core/src/story-scene.ts";
@@ -11,12 +12,16 @@ import {
   createCompositionPreview,
   loadCompositionResources,
   type CompositionBackend,
+  validatePassageCompositions,
+  type PassageCompositions,
+  evaluateComp,
 } from "../../../packages/renderer-core/src/index.ts";
 import { storyCameraTransform } from "../../../packages/renderer-core/src/story-camera.ts";
 import { nodeMatrix } from "../../../packages/renderer-core/src/node-transform.ts";
 import { drawFormatGuides } from "./format-guides.ts";
 
 export type ReadyBeat = {
+  nativeComposition?: Composition;
   scene: ReturnType<typeof compileStoryScene>;
   preview:
     | ReturnType<typeof createIllustratedPreview>
@@ -36,7 +41,11 @@ type OverlayOptions = {
 
 const assetUrl = (path: string) =>
   "/passage-api/asset?path=" + encodeURIComponent(path);
-export async function preparePreviews(passage: CompiledStoryPassage) {
+export async function preparePreviews(
+  passage: CompiledStoryPassage,
+  overrides: PassageCompositions = {},
+) {
+  const native = validatePassageCompositions(passage, overrides);
   const parameters = new URLSearchParams(location.search);
   const renderer = parameters.get("renderer") ?? "legacy";
   const backend = parameters.get("backend") ?? "canvas2d";
@@ -44,6 +53,8 @@ export async function preparePreviews(passage: CompiledStoryPassage) {
     throw new Error("Unknown passage renderer");
   if (!["canvas2d", "webgl2"].includes(backend))
     throw new Error("Unknown composition backend");
+  if (Object.keys(native).length && renderer !== "composition")
+    throw new Error("Native beat files require renderer=composition");
   const prepared: ReadyBeat[] = [];
   for (const beat of passage.beats) {
     const scene = compileStoryScene(beat.scene);
@@ -57,7 +68,8 @@ export async function preparePreviews(passage: CompiledStoryPassage) {
     target.width = scene.width;
     target.height = scene.height;
     const composition =
-      renderer === "composition"
+      native[beat.id] ??
+      (renderer === "composition"
         ? await prepareStoryComposition(beat.scene, (id) =>
             assetUrl(
               [...beat.scene.assets, ...(beat.scene.fonts ?? [])].find(
@@ -65,8 +77,9 @@ export async function preparePreviews(passage: CompiledStoryPassage) {
               )!.path,
             ),
           )
-        : undefined;
+        : undefined);
     prepared.push({
+      ...(native[beat.id] ? { nativeComposition: native[beat.id] } : {}),
       scene,
       preview: composition
         ? createCompositionPreview(
@@ -91,12 +104,28 @@ export function drawOverlays(
   scene: ReadyBeat["scene"],
   localFrame: number,
   options: OverlayOptions,
+  native?: Composition,
 ) {
   const ctx = overlay.getContext("2d")!;
   drawFormatGuides(overlay, scene, options.showSafe);
   const bounds = options.showBounds,
     diagnostics = options.showDiagnostics;
   if (!bounds && !diagnostics) return;
+  if (native) {
+    for (const layer of evaluateComp(native, localFrame).layers) {
+      if (!layer.visible || !layer.bounds) continue;
+      ctx.strokeStyle =
+        layer.id === options.selectedNode ? "#f8c35e" : "#7cacb8";
+      ctx.lineWidth = 2;
+      ctx.strokeRect(
+        layer.bounds.left,
+        layer.bounds.top,
+        layer.bounds.right - layer.bounds.left,
+        layer.bounds.bottom - layer.bounds.top,
+      );
+    }
+    return;
+  }
   const targets = new Set(
     options.diagnostics
       .filter((d) => d.beat === options.selectedBeat && "node" in d)
