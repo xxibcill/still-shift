@@ -16,6 +16,7 @@ import { typographyClock } from "./render/text-clock.ts";
 export type CompositionQualitySample = {
   id: string;
   path: string;
+  ancestors: string[];
   state: EvaluatedLayer;
   effects: EvaluatedLayer["effects"];
   matrix: Matrix;
@@ -99,6 +100,7 @@ export function compositionQualityFrame(
     parentOpacity: number,
     clip: Bounds,
     sourcePath: string,
+    scopeAncestors: readonly string[],
   ) => {
     const byId = new Map(scope.layers.map((s) => [s.id, s]));
     scope.layers.forEach((state, index) => {
@@ -107,8 +109,10 @@ export function compositionQualityFrame(
       const matrix = multiplyMatrix(base, state.screenMatrix);
       const bounds = state.bounds ? projectBounds(state.bounds, base) : null;
       let clipping = clip;
+      const ancestors = [...scopeAncestors];
       let parent = layer.parent ? byId.get(layer.parent) : undefined;
       while (parent) {
+        ancestors.push(route + parent.id);
         if (parent.layer.type === "group" && parent.layer.clip && parent.bounds)
           clipping = intersectBounds(
             clipping,
@@ -155,6 +159,7 @@ export function compositionQualityFrame(
       const sample: CompositionQualitySample = {
         id,
         path: `${sourcePath ? sourcePath + "." : ""}layers.${index}`,
+        ancestors,
         state,
         effects,
         matrix,
@@ -199,11 +204,12 @@ export function compositionQualityFrame(
           opacity,
           clippedBounds ?? clipping,
           `precomps.${childIndex}`,
+          [id, ...ancestors],
         );
       }
     });
   };
-  visit(tree, "", identity(), 1, viewport, "");
+  visit(tree, "", identity(), 1, viewport, "", []);
   for (const sample of layers.values()) {
     const matteId = sample.state.layer.trackMatte?.layer;
     if (matteId) {
@@ -225,6 +231,33 @@ export function compositionQualityFrame(
     ]),
   };
 }
+/** Only ancestors of visible instances contribute inherited motion evidence. */
+export function contributingMotionLayers(frame: CompositionQualityFrame) {
+  const sources = new Map<string, CompositionQualitySample>();
+  for (const sample of frame.layers.values()) {
+    if (!sample.onScreen) continue;
+    sources.set(sample.id, sample);
+    for (const id of sample.ancestors) {
+      const ancestor = frame.layers.get(id);
+      if (ancestor) sources.set(id, ancestor);
+    }
+  }
+  return sources;
+}
+
+export function qualityTrackContributes(
+  sample: CompositionQualitySample,
+  path: string,
+) {
+  if (!sample.onScreen)
+    return (
+      path.startsWith("transform.") &&
+      (path !== "transform.opacity" || sample.state.layer.type === "group")
+    );
+  const effect = /^effects\.(\d+)\./.exec(path);
+  return !effect || sample.state.effects[Number(effect[1])]?.enabled === true;
+}
+
 export function sampleCompositionQuality(
   comp: Composition,
   options: EvaluationOptions = {},

@@ -43,12 +43,15 @@ still hold before relying on them.
 
 ## Current state
 
-- **PR #34 review fixes (2026-10-05):** all three inline findings posted on
-  `0987396`; structured policy diagnostics committed in `b91eb24`; inactive-effect
-  state/velocity motion is fixed and its rendered regression passes. All 44 focused
-  tests, build, changed-file ESLint and the CE12 browser group pass. Parent-driven
-  timing remains in flight; one final push follows the third finding commit.
-  No blocker or owner decision. [Fix evidence](./pr-34-fix-results.json).
+- **PR #34 review fixes verified (2026-10-05):** all three inline findings posted
+  on `0987396` and fixed in separate commits: structured policy diagnostics
+  (`b91eb24`), inactive-effect motion (`9eba6a2`), and parent-driven timing with
+  instance identity and fractional joins. Fast checks pass with 1,468 unit tests;
+  all 11 CLI tests and the expanded CE12 browser suite pass. Corpus lint covers
+  all 176 items / 36,061 frames, with zero unexpected failures and identical
+  reports/reference checksums. Delivery uses one final push; owner review/merge
+  remains pending. No renderer/version or baseline changes; original local work
+  retained. [Fix evidence](./pr-34-fix-results.json).
 
 - **CE12 motion linting (`[x]`, 2026-10-05):** complete on
   `codex/composition-ce12`, implementation `a365f26` from delivered CE9 `dee9e7b`.
@@ -81,7 +84,7 @@ still hold before relying on them.
   [Fix evidence](./pr-32-fix-results.json).
   [Review evidence](./pr-32-review-results.json).
 
-_Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
+_Last updated 2026-10-05 by Codex for PR #34 review fixes; prior work retained._
 
 - **PR #32 conflict resolution (2026-10-04):** merged `main` at `3413780` into
   PR head `a0708ba` and pushed merge `05033c8`, retaining CE9 expressions and
@@ -139,6 +142,21 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-05 — PR #34 parent-driven timing and final verification
+
+- **Agent / branch:** Codex on `codex/pr34-review-fixes`, from reviewed `0987396`.
+- **Done:** final finding fixed by collecting contributing ancestors, preserving
+  instance identity, counting shared tracks once and inspecting fractional
+  forward/reverse joins. Null opacity stays excluded; group opacity contributes.
+- **Results:** six regressions failed before the fix; all 43 quality tests,
+  11 CLI tests, fast checks (1,468 unit tests) and expanded CE12 browser checks pass.
+  Corpus lint covers 176 items / 36,061 frames with identical reports and no
+  unexpected failure. Source checksums are recorded; renderer/baselines unchanged.
+- **Open / next:** one final push delivers all three finding commits; owner review
+  and merge remain pending. A sandbox Vite-temp write failure passed on retry.
+- **Records:** [Fix evidence](./pr-34-fix-results.json),
+  [CE12 plan](./composition-engine-plan.md#ce12--motion-linting).
 
 ### 2026-10-05 — PR #34 inactive-effect motion evidence
 

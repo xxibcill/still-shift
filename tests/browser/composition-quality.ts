@@ -145,6 +145,55 @@ try {
       );
     }
   }
+  for (const type of ["null", "group"] as const) {
+    const inherited = composition([]);
+    for (let i = 0; i < 4; i++) {
+      const id = `parent-${i}`;
+      const transform = {
+        anchor: [0, 0] as [number, number],
+        position: {
+          keys: [
+            { frame: 0, value: [0, 0] as [number, number] },
+            {
+              frame: 89,
+              value: [200, 0] as [number, number],
+              interpolation: "linear" as const,
+            },
+          ],
+        },
+      };
+      inherited.layers.push(
+        type === "group"
+          ? { id, type, size: [640, 360], transform }
+          : { id, type, transform },
+        solid(`child-${i}`, { parent: id }),
+      );
+    }
+    const node = analyzeCompositionQuality(inherited);
+    const rendered = await page.evaluate(
+      async ({ json, moduleUrl }) => {
+        const renderer = (await import(moduleUrl)) as typeof Renderer;
+        return renderer.analyzeCompositionQuality(
+          JSON.parse(json) as Composition,
+        );
+      },
+      {
+        json: JSON.stringify(inherited),
+        moduleUrl: `/@fs/${root}/packages/renderer-core/src/index.ts`,
+      },
+    );
+    assert.deepEqual(
+      rendered,
+      node,
+      `${type}: inherited timing Node/browser parity`,
+    );
+    for (const code of ["easing-monotony", "co-start"])
+      assert.ok(
+        rendered.diagnostics.some((d) => d.code === code),
+        `${type} parents must contribute ${code}`,
+      );
+  }
+
   const inactiveEffect = composition([
     solid("still-subject", {
       effects: [
@@ -201,7 +250,7 @@ try {
   assert.equal(cliPixels.measured.pixels, true);
   assert.ok(cliPixels.diagnostics.some((d) => d.code === "frozen-pixels"));
   console.log(
-    "14 fixtures have Node/browser parity; independent meaningful pixel motion checks pass on Canvas2D and WebGL2; file lint uses pinned browser.",
+    "14 fixtures and inherited timing have Node/browser parity; independent meaningful pixel motion checks pass on Canvas2D and WebGL2; file lint uses pinned browser.",
   );
 } finally {
   await browser.close();

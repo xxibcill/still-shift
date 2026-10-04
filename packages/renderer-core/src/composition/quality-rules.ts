@@ -8,6 +8,8 @@ import {
 } from "./quality-policy.ts";
 import {
   compositionQualityFrame,
+  contributingMotionLayers,
+  qualityTrackContributes,
   layerQualityTracks,
   numericValues,
   type CompositionQualityFrame,
@@ -255,11 +257,13 @@ export function compositionTimingFindings(
     end: number;
     easing: string;
     path: string;
+    property: string;
   }[] = [];
+  const contributingFrames = frames.map(contributingMotionLayers);
   const instances = new Map<string, CompositionQualitySample>();
-  for (const frame of frames)
-    for (const sample of frame.layers.values())
-      if (sample.onScreen && !instances.has(sample.id))
+  for (const frame of contributingFrames)
+    for (const sample of frame.values())
+      if (!instances.has(sample.id) || sample.onScreen)
         instances.set(sample.id, sample);
   for (const sample of instances.values()) {
     for (const track of layerQualityTracks(sample.state.layer)) {
@@ -273,11 +277,12 @@ export function compositionTimingFindings(
           b.interpolation === "hold"
         )
           continue;
-        const visible = frames
-          .map((frame, at) => ({ sample: frame.layers.get(sample.id), at }))
+        const visible = contributingFrames
+          .map((frame, at) => ({ sample: frame.get(sample.id), at }))
           .filter(
             ({ sample: s }) =>
-              s?.onScreen &&
+              s &&
+              qualityTrackContributes(s, track.path) &&
               s.state.time >= Number(a.frame) &&
               s.state.time <= Number(b.frame),
           );
@@ -294,6 +299,7 @@ export function compositionTimingFindings(
           end: visible.at(-1)!.at,
           easing: easingSignature(a, b),
           path: `${sample.path}.${track.path}`,
+          property: `${sample.id}:${track.path}`,
         });
       }
     }
@@ -302,7 +308,7 @@ export function compositionTimingFindings(
     const moving = segments.filter(
       (s) => s.start < shot.end && s.end >= shot.start,
     );
-    const properties = new Set(moving.map((s) => s.path));
+    const properties = new Set(moving.map((s) => s.property));
     if (properties.size >= policy.minimumMovingProperties) {
       const counts = new Map<string, number>();
       for (const segment of moving) {
@@ -358,22 +364,18 @@ function joinFrames(
     Array.from({ length: Math.max(0, frames.length - 2) }, (_, i) => i + 1),
   );
   const keyTimes = new Map<string, number[]>();
+  let previous = contributingMotionLayers(frames[0]!);
   for (let frame = 1; frame < frames.length; frame++) {
-    for (const current of frames[frame]!.layers.values()) {
-      const before = frames[frame - 1]!.layers.get(current.id);
-      if (
-        !before ||
-        !current.onScreen ||
-        !before.onScreen ||
-        before.state.time === current.state.time
-      )
-        continue;
+    const contributing = contributingMotionLayers(frames[frame]!);
+    for (const current of contributing.values()) {
+      const before = previous.get(current.id);
+      if (!before || before.state.time === current.state.time) continue;
       let keys = keyTimes.get(current.id);
       if (!keys) {
         keys = [
           ...new Set(
-            layerQualityTracks(current.state.layer).flatMap((t) =>
-              t.keys.map((key) => Number(key.frame)),
+            layerQualityTracks(current.state.layer).flatMap((track) =>
+              track.keys.map((key) => Number(key.frame)),
             ),
           ),
         ];
@@ -401,6 +403,7 @@ function joinFrames(
         joins.add((lo + hi) / 2);
       }
     }
+    previous = contributing;
   }
   return [...joins].sort((a, b) => a - b);
 }

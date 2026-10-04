@@ -1,3 +1,4 @@
+import type { CompositionLayer } from "@still-shift/scene-contract";
 import { describe, expect, it } from "vitest";
 import { PassageError } from "../../packages/renderer-core/src/passage-diagnostics.ts";
 import { analyzeCompositionQuality } from "../../packages/renderer-core/src/story-quality.ts";
@@ -444,4 +445,186 @@ it("counts effect motion only inside its active window", () => {
   delete active.layers[0]!.effects![0]!.inPoint;
   delete active.layers[0]!.effects![0]!.outPoint;
   expect(codes(active)).not.toContain("frozen-run");
+});
+
+function parentDrivenScene(type: "null" | "group") {
+  const layers: CompositionLayer[] = [];
+  for (let i = 0; i < 4; i++) {
+    const id = `parent-${i}`;
+    const transform = {
+      anchor: [0, 0] as [number, number],
+      position: {
+        keys: [
+          { frame: 0, value: [0, 0] as [number, number] },
+          {
+            frame: 89,
+            value: [200, 0] as [number, number],
+            interpolation: "linear" as const,
+          },
+        ],
+      },
+    };
+    layers.push(
+      type === "group"
+        ? { id, type, size: [640, 360], transform }
+        : { id, type, transform },
+      solid(`child-${i}`, { parent: id }),
+    );
+  }
+  return composition(layers);
+}
+
+it.each(["null", "group"] as const)(
+  "checks timing on contributing %s parents",
+  (type) => {
+    const report = analyzeCompositionQuality(parentDrivenScene(type));
+    for (const code of ["easing-monotony", "co-start"])
+      expect(report.diagnostics).toContainEqual(
+        expect.objectContaining({
+          code,
+          nodes: ["parent-0", "parent-1", "parent-2", "parent-3"],
+        }),
+      );
+  },
+);
+
+it("does not count parent tracks without on-screen descendants", () => {
+  const input = parentDrivenScene("null");
+  for (const layer of input.layers)
+    if (layer.type === "solid") layer.enabled = false;
+  expect(codes(input)).not.toContain("easing-monotony");
+  expect(codes(input)).not.toContain("co-start");
+});
+
+it("counts a shared parent property once rather than once per descendant", () => {
+  const input = parentDrivenScene("null");
+  input.layers = [
+    input.layers[0]!,
+    ...Array.from({ length: 4 }, (_, i) =>
+      solid(`child-${i}`, { parent: "parent-0" }),
+    ),
+  ];
+  expect(codes(input)).not.toContain("easing-monotony");
+  expect(codes(input)).not.toContain("co-start");
+});
+
+it("keeps independent parent tracks in repeated precomp instances", () => {
+  const inner = parentDrivenScene("null");
+  const input = composition(
+    [
+      {
+        id: "one",
+        type: "precomp",
+        comp: "inner",
+        transform: { anchor: [0, 0] },
+      },
+      {
+        id: "two",
+        type: "precomp",
+        comp: "inner",
+        transform: { anchor: [0, 0] },
+      },
+    ],
+    {
+      precomps: [
+        {
+          id: "inner",
+          width: 640,
+          height: 360,
+          frameCount: 90,
+          layers: inner.layers.slice(0, 4),
+        },
+      ],
+    },
+  );
+  const report = analyzeCompositionQuality(input);
+  for (const code of ["easing-monotony", "co-start"])
+    expect(report.diagnostics).toContainEqual(
+      expect.objectContaining({
+        code,
+        nodes: ["one/parent-0", "one/parent-1", "two/parent-0", "two/parent-1"],
+      }),
+    );
+});
+
+it.each([1.025, -1.025])(
+  "finds fractional inherited key joins at stretch %s",
+  (stretch) => {
+    const input = composition(
+      [
+        {
+          id: "parent",
+          type: "null",
+          stretch,
+          ...(stretch < 0 ? { startFrame: 41 } : {}),
+          transform: {
+            position: {
+              keys: [
+                { frame: 0, value: [0, 0] },
+                { frame: 20, value: [20, 0], interpolation: "linear" },
+                { frame: 40, value: [220, 0], interpolation: "linear" },
+              ],
+            },
+          },
+        },
+        solid("child", { parent: "parent" }),
+      ],
+      { frameCount: 42 },
+    );
+    expect(analyzeCompositionQuality(input).diagnostics).toContainEqual(
+      expect.objectContaining({
+        code: "velocity-discontinuity",
+        nodes: ["child"],
+        frames: [20, 21],
+      }),
+    );
+  },
+);
+
+it.each(["null", "group"] as const)(
+  "counts parent opacity only when inherited from %s",
+  (type) => {
+    const input = parentDrivenScene(type);
+    for (const layer of input.layers)
+      if (layer.type === type)
+        layer.transform = {
+          anchor: [0, 0],
+          opacity: {
+            keys: [
+              { frame: 0, value: 1 },
+              { frame: 89, value: 0.5, interpolation: "linear" },
+            ],
+          },
+        };
+    const report = codes(input);
+    if (type === "group") {
+      expect(report).toContain("easing-monotony");
+      expect(report).toContain("co-start");
+    } else {
+      expect(report).not.toContain("easing-monotony");
+      expect(report).not.toContain("co-start");
+      expect(report).toContain("frozen-run");
+    }
+  },
+);
+
+it("recognizes staggered varied easing on parents", () => {
+  const input = parentDrivenScene("null");
+  input.layers.forEach((layer, i) => {
+    if (layer.type === "null")
+      layer.transform = {
+        position: {
+          keys: [
+            { frame: i * 3, value: [0, 0] },
+            {
+              frame: 89,
+              value: [200, 0],
+              easing: i % 4 ? "linear" : "smoothstep",
+            },
+          ],
+        },
+      };
+  });
+  expect(codes(input)).not.toContain("easing-monotony");
+  expect(codes(input)).not.toContain("co-start");
 });
