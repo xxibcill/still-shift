@@ -178,6 +178,22 @@
         }
       ],
       "log": "/private/tmp/ce4a-lab-loader-repair.log"
+    },
+    {
+      "name": "Companion-map dictionary key regression",
+      "changes": "Use a null-prototype native picture map so __proto__ is rejected as an unknown beat instead of being omitted. Add a structured comp-passage-beat assertion to the native browser group.",
+      "verification": [
+        {
+          "command": "targeted loadPassageCompositions unknown __proto__ key regression",
+          "status": "passed",
+          "sandboxRetry": "Local passage font validation needs a localhost browser; default sandbox denied its listen and the authorized retry passes."
+        },
+        {
+          "command": "pnpm build; targeted eslint and formatting",
+          "status": "passed"
+        }
+      ],
+      "integration": "Overlay the tracked repair on the existing acceptance snapshot before its native-passage/composition groups execute; recheck static gates. Prior completed groups do not exercise this loader key case."
     }
   ],
   "pending": [

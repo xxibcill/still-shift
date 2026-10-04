@@ -157,6 +157,16 @@ try {
     loadPassageCompositions(join(root, "missing.json"), passage),
     referenceFailure,
   );
+  await writeFile(
+    join(root, "unknown-beat.json"),
+    JSON.stringify({ ["__proto__"]: "native.json" }),
+  );
+  await assert.rejects(
+    loadPassageCompositions(join(root, "unknown-beat.json"), passage),
+    (error: unknown) =>
+      error instanceof PassageError &&
+      error.diagnostics[0]?.code === "comp-passage-beat",
+  );
   const incompatible = { ...relocated, fps: 30 };
   await writeFile(join(root, "native.json"), JSON.stringify(incompatible));
   await assert.rejects(

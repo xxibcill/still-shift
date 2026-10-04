@@ -31,7 +31,7 @@ export async function loadPassageCompositions(
     passageError("comp-passage-reference", parsed.error.issues[0]!.message, {
       path: "compositions",
     });
-  const compositions: Record<string, Composition> = {};
+  const compositions: Record<string, Composition> = Object.create(null);
   for (const [id, reference] of Object.entries(parsed.data)) {
     const file = resolve(dirname(sourcePath), reference);
     await allowPath?.(file);
