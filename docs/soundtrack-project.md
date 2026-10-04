@@ -187,7 +187,8 @@ its relocated `project.json` when rendering. No automatic episode migration occu
 ## Optional layer view and preview
 
 Run `pnpm lab`; open `/soundtrack.html` via **Soundtrack layers**. Load a saved
-project inside the checkout. Tracks show overlapping clip bounds, processed-stem
+project inside the checkout. Tracks show overlapping clip bounds, stepped hold or linear automation with
+extended endpoint gains, processed-stem
 waveforms after rendering, and authored automation. Set track mute/solo/gain or
 edit a clip's numeric placement, trim, gain and automation JSON; Save writes the
 same file as the CLI. Undo/redo uses persisted project history. Numeric edits are
@@ -201,7 +202,10 @@ In `/passage.html`, **Saved soundtrack (optional)** attaches a rendered full mix
 the passage's existing Web Audio clock. **Use passage audio** restores the legacy
 scheduler. The temporary legacy Sound effects checkbox does not change a rendered
 full mix; use project mute/solo and render again. A picture edit causing an anchor
-conflict requires explicit soundtrack retiming and reattachment. Rendered mixes
+conflict requires explicit soundtrack retiming and reattachment. Clearing or
+replacing an attachment cancels pending decodes; earlier requests cannot restore
+a superseded soundtrack. Playback uses an immutable validated project snapshot
+and integer sample boundaries on the shared passage clock. Rendered mixes
 avoid claiming browser/DawDreamer DSP parity.
 
 The view is a read-only projection of the shared contract, backed by the same HTTP
@@ -219,13 +223,15 @@ Sources: [engine package](https://www.npmjs.com/package/@waveform-playlist/engin
 
 `pnpm test:soundtrack` runs the shared model, offline PCM, persistence/HTTP and old
 passage-audio regressions without GUI interaction. `pnpm check:soundtrack` runs
-fast checks, runtime tests, command integration, depth tests and soundtrack Python
+fast checks, runtime tests, three audited audio-only integration suites, depth tests and soundtrack Python
 checks. These tests are also discovered by the existing unit/integration tiers.
 `pnpm soundtrack:verify` creates fresh 60-second CLI lifecycle artifacts and updates
 [evidence](./composition-ce16-verification-results.json); it refuses existing results.
 Set `STILL_SHIFT_SOUNDTRACK_RESULTS` for a new location, or add `--verify-only` to
 check retained results. Full `pnpm check` and frozen browser baselines remain
 unperformed under CE16's prohibition on browser driving. No baseline was regenerated.
+The [completion audit](./composition-ce16-completion-audit.md) records the earlier
+indirect headless-browser verification breach and corrected test selection.
 
 The backend is local and opt-in. DawDreamer 0.9.0 is GPLv3 and includes native
 component obligations; NumPy/SciPy carry BSD and bundled native-library notices.

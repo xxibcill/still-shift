@@ -192,13 +192,14 @@ export function resolveSoundtrackAnchors(
   for (const clip of project.clips) {
     if (!clip.anchor) continue;
     const anchor = clip.anchor,
-      beat = timing.beats.find((b) => b.id === anchor.beat);
+      matchingBeats = timing.beats.filter((b) => b.id === anchor.beat),
+      beat = matchingBeats[0];
     const ref = anchor.reference;
     const matches =
       ref.type === "cue"
         ? beat?.cues.filter((c) => c.id === ref.id)
         : beat?.events.filter((e) => e.id === ref.id);
-    if (!beat || matches?.length !== 1)
+    if (!beat || matchingBeats.length !== 1 || matches?.length !== 1)
       soundtrackFail(
         "anchor-reference",
         "Missing or ambiguous beat/cue/event",

@@ -48,8 +48,12 @@ still hold before relying on them.
   `/Users/jjae/.codex/worktrees/composition-ce16/still-shift`, from `dee9e7b`.
   CE16-A technical lifecycle passed; CE16-B schema, shared edits/CLI, worker,
   ducking, optional layer view and passage integration implemented.
-  Command-only gates pass; owner closure choice pending because the full
-  repository gates drive a browser.
+  Corrected command-only gates pass (1,436 unit / 46 runtime / 19 audio integration /
+  14 depth; focused 35). Preview lifecycle, held automation and duplicate anchors
+  repaired. Earlier broad tier indirectly launched headless browsers; that policy
+  breach is recorded, not erased. Owner closure choice remains pending because
+  full repository gates drive a browser.
+  [Completion audit](./composition-ce16-completion-audit.md).
   All reload PCM and unaffected edited stems are exact; narration unchanged.
   Dependency/license evidence retained; distribution packaging remains pending.
   Original checkout and parallel CE12 work untouched.
@@ -74,7 +78,7 @@ still hold before relying on them.
   [Fix evidence](./pr-32-fix-results.json).
   [Review evidence](./pr-32-review-results.json).
 
-_Last updated 2026-10-04 by Codex for the isolated CE16 integration._
+_Last updated 2026-10-04 by Codex for the isolated CE16 completion audit._
 
 - **PR #32 conflict resolution (2026-10-04):** merged `main` at `3413780` into
   PR head `a0708ba` and pushed merge `05033c8`, retaining CE9 expressions and
@@ -132,6 +136,22 @@ _Last updated 2026-10-04 by Codex for the isolated CE16 integration._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-04 — Audit CE16 completion and correct browser verification selection
+
+- **Agent / branch:** Codex on isolated `codex/composition-ce16`, after `733b24d`.
+- **Done:** guard cleared/superseded preview attachments and immutable snapshots;
+  model held automation steps; reject duplicate beat anchors; correct CLI example
+  and generated measurement evidence. Added six preview harness regressions.
+- **Results:** corrected tier passes 1,436 unit, 46 runtime, 19 audio integration
+  and 14 depth tests; focused group 35; retained 60-second decoded lifecycle exact.
+- **Rejected / repaired:** direct Playwright-import filtering missed indirect
+  headless-browser launches. Earlier broad checks violated zero browser driving;
+  retained honestly, replaced with three audited audio-only suites. No CUA used.
+- **Open / next:** owner resolution of full check/rendered baseline closure remains
+  pending; `[~]`. Listening/AV QA and binary distribution decision unperformed/pending.
+- **Records:** [requirement audit](./composition-ce16-completion-audit.md),
+  [evidence](./composition-ce16-verification-results.json).
 
 ### 2026-10-04 — Continue CE16 into the shared project and passage integration
 

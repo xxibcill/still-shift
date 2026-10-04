@@ -1,24 +1,16 @@
 import process from "node:process";
-// CE16's command-only tier: exclude suites that directly drive a browser.
-import { readFileSync, readdirSync } from "node:fs";
 import { spawnSync } from "node:child_process";
-const files = readdirSync("tests/integration").filter(
-  (name) =>
-    name.endsWith(".test.ts") &&
-    !/from ["']playwright["']/.test(
-      readFileSync("tests/integration/" + name, "utf8"),
-    ),
-);
+
+// Audited audio-only entry points. A direct-import filter misses browser work
+// launched through renderer libraries and child-process scripts.
+const files = [
+  "tests/integration/soundtrack.test.ts",
+  "tests/integration/soundtrack-api.test.ts",
+  "tests/integration/passage-audio.test.ts",
+];
 const result = spawnSync(
   "pnpm",
-  [
-    "exec",
-    "vitest",
-    "run",
-    ...files.map((file) => "tests/integration/" + file),
-    "--maxWorkers=2",
-    "--no-file-parallelism",
-  ],
+  ["exec", "vitest", "run", ...files, "--no-file-parallelism"],
   { stdio: "inherit" },
 );
 process.exitCode = result.status ?? 1;

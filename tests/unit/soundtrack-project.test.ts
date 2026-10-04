@@ -207,7 +207,9 @@ it("timeline projects overlaps, waveforms and absolute automation without a seco
   expect(model.tracks[0]!.clips[0]!.widthPercent).toBe(10);
   expect(model.tracks[0]!.clips[1]!.leftPercent).toBe(5);
   expect(model.tracks[0]!.clips[1]!.automation).toEqual([
+    { sample: 2400, gain: 0.5 },
     { sample: 2600, gain: 0.5 },
+    { sample: 7200, gain: 0.5 },
   ]);
   expect(model.tracks[0]!.peaks).toEqual([0, 0.5, 1]);
   expect(p.revision).toBe(0);
@@ -226,4 +228,41 @@ it("gain scope resolves clip/track name collisions and reserves output names", (
   expect(edited.tracks[0]!.gainDb).toBe(0);
   p.tracks[1]!.id = "mix";
   expect(() => validateSoundtrackProject(p)).toThrow(/reserved/);
+});
+
+it("timeline automation draws hold steps and extends endpoint gains across the clip", () => {
+  const p = fixture();
+  p.clips[0]!.automation = {
+    interpolation: "hold",
+    points: [
+      { sample: 100, gain: 0.25 },
+      { sample: 2400, gain: 0.5 },
+    ],
+  };
+  expect(soundtrackTimelineModel(p).tracks[0]!.clips[0]!.automation).toEqual([
+    { sample: 0, gain: 0.25 },
+    { sample: 100, gain: 0.25 },
+    { sample: 2400, gain: 0.25 },
+    { sample: 2400, gain: 0.5 },
+    { sample: 4800, gain: 0.5 },
+  ]);
+});
+
+it("rejects ambiguous beat identities before resolving an anchored clip", () => {
+  const p = fixture();
+  p.clips[0]!.anchor = {
+    beat: "beat",
+    reference: { type: "cue", id: "cue" },
+    offsetSamples: 0,
+  };
+  p.clips[0]!.startSample = 2000;
+  const timing = {
+    fps: 24,
+    frameCount: 24,
+    beats: [
+      { id: "beat", start: 0, cues: [{ id: "cue", frame: 1 }], events: [] },
+      { id: "beat", start: 1, cues: [{ id: "cue", frame: 1 }], events: [] },
+    ],
+  };
+  expect(() => resolveSoundtrackAnchors(p, timing)).toThrow(/ambiguous/);
 });

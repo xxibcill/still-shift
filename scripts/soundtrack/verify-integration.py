@@ -95,6 +95,13 @@ def verify(base):
             }
             for name, report in reports.items()
         },
+        "outputSizesBytes": {
+            run: {
+                name: (base / run / "audio" / reports[run]["files"][name]["file"]).stat().st_size
+                for name in names
+            }
+            for run in reports
+        },
         "reloadPCM": reload,
         "editedPCM": edited,
         "relocatedPCM": relocated,
@@ -117,9 +124,9 @@ def verify(base):
             "endering evaluates complete DSP/ducking schedule before cropping."
         ),
         "measurementMethod": (
-            "Node monotonic wall time includes each CLI process; worker RUSAGE"
-            "_SELF peak excludes FFmpeg children and per-path calibration. No "
-            "speed advantage claimed."
+            "CLI monotonic wall time includes preflight, calibration and worker. "
+            "Worker wallSeconds starts after calibration. RUSAGE_SELF peak includes "
+            "worker/calibration but excludes FFmpeg children; no speed advantage claimed."
         ),
     }
     evidence["limitations"] = [
@@ -128,7 +135,11 @@ def verify(base):
             "its browser driving. Command/library/API verification is separate"
             " from those repository gates."
         ),
-        "No listening, audiovisual QA or GUI/browser verification performed.",
+        (
+            "No listening, audiovisual QA or visible GUI inspection performed. "
+            "Earlier broad integration tier indirectly launched headless browsers; "
+            "this policy breach is recorded and subsequent selection is audio-only."
+        ),
         (
             "Local opt-in pinned Python runtime only; GPL/transitive distribut"
             "ion decision remains pending. No backend dependency binaries bund"

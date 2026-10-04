@@ -128,8 +128,10 @@ weaken assertions to work around sandbox restrictions.
 CE16 explicitly prohibits browser/desktop driving. Run `pnpm check:soundtrack`:
 fast schema/boundary/format/lint/build/unit checks, runtime tests, command integration,
 depth tests and Python soundtrack checks. `pnpm test:integration:command` selects
-integration suites without direct Playwright imports; it does not replace or remove
-any existing verification group. `pnpm test:soundtrack` focuses on model/PCM/API and
+an explicit allowlist of the three audited audio-only integration suites; it does
+not replace or remove any existing verification group. Direct-import filtering was
+rejected because other suites launch headless browsers indirectly through renderer
+libraries or child processes. `pnpm test:soundtrack` focuses on model/PCM/API and
 legacy passage audio. `pnpm soundtrack:verify` retains the measured 60-second CLI
 lifecycle, or checks it with `--verify-only`. Full `pnpm check`, visual UI suites
 and frozen browser baselines are not claimed passed by this tier. The

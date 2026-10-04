@@ -3720,7 +3720,8 @@ project. Automated production works without opening the editor.
 **Status:** `[~]` in progress (2026-10-04), Codex on `codex/composition-ce16`
 in an isolated worktree from `dee9e7b`. CE16-A lifecycle passed;
 CE16-B features and command-only verification are implemented. Full repository
-browser/baseline closure remains pending under the zero-Computer-Use constraint. Original checkout/CE12 work preserved.
+browser/baseline closure remains pending under the zero-Computer-Use constraint. Original checkout/CE12 work preserved. The [completion audit](./composition-ce16-completion-audit.md)
+records an earlier indirect headless-browser verification breach and the corrected audio-only tier.
 
 **Research handoff:** [CLI and Embedded Audio Engines for Still Shift](</Users/jjae/Documents/obsidian/ai-business/history-offstage/04 Research/Completed Studies/2026-10-03 - CLI and Embedded Audio Engines for Still Shift.md>)
 (2026-10-03, documentary research only). Proposed roles:
@@ -3853,12 +3854,12 @@ pass.
       render, cancellation/recovery and relocation, plus optional owner-facing
       editor usage and licensing/packaging choices.
 
-**Planned command surface (to implement, not working commands today):**
+**Implemented command surface:**
 
 ```sh
 pnpm still-shift soundtrack validate --project <project.json>
 pnpm still-shift soundtrack inspect --project <project.json> --json
-pnpm still-shift soundtrack edit --project <project.json> --operations <edits.json>
+pnpm still-shift soundtrack edit --project <project.json> --revision <number> --operations <edits.json>
 pnpm still-shift soundtrack render --project <project.json> --output-dir <fresh-dir> --stems
 ```
 
@@ -3910,10 +3911,11 @@ unperformed unless they actually occurred, and never claim them from ffprobe/PCM
   `pnpm soundtrack:proof` performs three renders in a fresh results location;
   existing results are protected. See [prototype guide](./composition-ce16-backend-proof.md).
 - **Status:** CE16 remains `[~]`. This is the isolated backend proof, not completed
-  CE16-B integration. Shared project schema, worker protocol, ducking, timeline,
-  passage integration and distribution packaging remain pending. Dependencies are
+  CE16-B integration at the time of that proof; see the subsequent implementation
+  record below. Distribution packaging remains pending. Dependencies are
   not bundled or adopted into the production runtime. No listening or audiovisual
-  QA performed; zero Computer Use.
+  QA performed; command-only backend proof. Later integration verification policy
+  correction is documented in the completion audit.
 
 ### CE16 shared project implementation record (2026-10-04)
 
@@ -3932,12 +3934,14 @@ unperformed unless they actually occurred, and never claim them from ffprobe/PCM
   four unrelated stems; narration unchanged and unity buses reconstruct exactly.
   Measured commands, worker memory and comparisons are in
   [evidence](./composition-ce16-verification-results.json).
-- **Verification:** toolchain + command-only gates pass: 1,428 unit, 46 runtime,
-  94 command integration and 14 depth tests; focused final group 27 tests.
+- **Verification:** toolchain + command-only gates pass: 1,436 unit, 46 runtime,
+  19 audio-only integration and 14 depth tests; focused final group 35 tests.
   Commands/failures/remedies are recorded in evidence. Full `pnpm check`
   and browser baselines remain unperformed because CE16 prohibits browser driving;
   this tier does not certify those gates. No listening, audiovisual QA or GUI
-  inspection. No baseline regeneration. GPL/transitive distribution decision
+  inspection. Earlier broad integration runs did launch headless browsers indirectly;
+  the corrected tier and historical policy breach are recorded in the
+  [completion audit](./composition-ce16-completion-audit.md). No baseline regeneration. GPL/transitive distribution decision
   remains pending; runtime is local opt-in and no backend binaries are bundled.
 - **Guide:** [setup, contract, commands, recovery, preview and licensing](./soundtrack-project.md).
 

@@ -872,9 +872,11 @@ const requestedPlan = new URLSearchParams(location.search).get("plan");
 if (requestedPlan) el<HTMLInputElement>("plan-path").value = requestedPlan;
 await loadPath();
 
+let soundtrackRequest = 0;
 el("soundtrack-load").onclick = async () => {
   if (!editor) return;
   stop();
+  const request = ++soundtrackRequest;
   const owner = editor,
     path = el<HTMLInputElement>("soundtrack-project").value;
   try {
@@ -901,20 +903,22 @@ el("soundtrack-load").onclick = async () => {
     );
     if (!response.ok) throw new Error("Saved revision changed; render again");
     const bytes = await response.arrayBuffer();
-    if (editor !== owner) return;
-    await audio.setSoundtrack(
+    if (editor !== owner || request !== soundtrackRequest) return;
+    const attached = await audio.setSoundtrack(
       packet.project,
       bytes,
       result.manifest.files.master.sha256,
       owner.passage,
     );
+    if (!attached || editor !== owner || request !== soundtrackRequest) return;
     el("soundtrack-status").textContent =
       "Rendered soundtrack revision " + packet.project.revision + " · full mix";
   } catch (error) {
-    errors(error);
+    if (editor === owner && request === soundtrackRequest) errors(error);
   }
 };
 el("soundtrack-clear").onclick = () => {
+  soundtrackRequest++;
   stop();
   audio.clearSoundtrack();
   el("soundtrack-status").textContent = "Passage audio";

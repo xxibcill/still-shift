@@ -579,26 +579,13 @@
       "exitCode": 0,
       "log": "benchmarks/results/composition-ce16/ce16-b-toolchain.log"
     },
-    "commandOnlyTier": {
-      "command": "pnpm check:soundtrack",
-      "exitCode": 0,
-      "unitFiles": 128,
-      "unitTests": 1428,
-      "runtimeFiles": 9,
-      "runtimeTests": 46,
-      "commandIntegrationFiles": 26,
-      "commandIntegrationTests": 94,
-      "depthTests": 14,
-      "pythonLintAndFormat": "passed",
-      "log": "benchmarks/results/composition-ce16/ce16-b-command-check-final.log"
-    },
     "focusedFinal": {
       "command": "pnpm test:soundtrack",
       "exitCode": 0,
-      "files": 4,
-      "tests": 27,
-      "log": "benchmarks/results/composition-ce16/ce16-b-focused-final.log",
-      "newCoverageSinceCommandTier": "Independent exact ducking lookahead/attack/hold/release boundaries and rejection of soundtrack revision changes during passage picture rendering"
+      "files": 5,
+      "tests": 35,
+      "log": "benchmarks/results/composition-ce16/ce16-completion-audit-focused.log",
+      "scope": "Audio/model/HTTP plus six Web Audio harness cases. No actual native browser decoding/playback claim."
     },
     "lifecycle": {
       "command": "STILL_SHIFT_SOUNDTRACK_RESULTS=benchmarks/results/composition-ce16/integration-final pnpm soundtrack:verify",
@@ -634,6 +621,21 @@
         "stage": "final passage adapter review",
         "diagnostic": "Gallery labeled the opt-in audio mode silent; export could consume a revision different from its job identity after a concurrent edit",
         "resolution": "Added soundtrack mode and captured-revision guard; focused regression passes"
+      },
+      {
+        "stage": "completion audit preview regressions",
+        "diagnostic": "Cleared/superseded decodes could reattach; held automation display interpolated incorrectly; duplicate beat IDs accepted first match",
+        "resolution": "Generation/request guards, immutable snapshots, sample scheduling, held-step projection and unique beat-reference validation; regressions pass."
+      },
+      {
+        "stage": "draft frame-rate test",
+        "diagnostic": "41 fps outside existing 24/30 fps passage contract",
+        "resolution": "Use supported 30 fps case; no passage frame-rate expansion."
+      },
+      {
+        "stage": "command-only tier policy audit",
+        "diagnostic": "Indirect headless browser work admitted by direct-import filter",
+        "resolution": "Explicit audio-only allowlist and historical evidence correction; earlier use is not erased."
       }
     ],
     "unperformed": [
@@ -655,8 +657,47 @@
     "finalFastTier": {
       "command": "pnpm check:fast",
       "exitCode": 0,
+      "unitTests": 1436,
+      "log": "benchmarks/results/composition-ce16/ce16-completion-audit-command-only.log"
+    },
+    "historicalBroadTier": {
+      "command": "pnpm check:soundtrack",
+      "exitCode": 0,
+      "unitFiles": 128,
       "unitTests": 1428,
-      "log": "benchmarks/results/composition-ce16/ce16-b-fast-final.log"
+      "runtimeFiles": 9,
+      "runtimeTests": 46,
+      "commandIntegrationFiles": 26,
+      "commandIntegrationTests": 94,
+      "depthTests": 14,
+      "pythonLintAndFormat": "passed",
+      "log": "benchmarks/results/composition-ce16/ce16-b-command-check-final.log",
+      "policyStatus": "Not compliant with zero browser driving: direct-import filter admitted transitive headless browser work. Retained historical result only."
+    },
+    "commandOnlyTier": {
+      "command": "PATH=/Users/jjae/.nvm/versions/node/v22.23.1/bin:$PATH UV_NO_SYNC=1 UV_CACHE_DIR=/private/tmp/still-shift-ce16-uv-cache pnpm check:soundtrack",
+      "exitCode": 0,
+      "unitFiles": 129,
+      "unitTests": 1436,
+      "runtimeFiles": 9,
+      "runtimeTests": 46,
+      "commandIntegrationFiles": 3,
+      "commandIntegrationTests": 19,
+      "depthTests": 14,
+      "pythonLintAndFormat": "passed",
+      "log": "benchmarks/results/composition-ce16/ce16-completion-audit-command-only.log",
+      "selection": "Explicit audited audio-only allowlist; no picture renderer invocation"
+    },
+    "retainedLifecycleRecheck": {
+      "command": "STILL_SHIFT_SOUNDTRACK_RESULTS=benchmarks/results/composition-ce16/integration-final pnpm soundtrack:verify --verify-only",
+      "exitCode": 0,
+      "result": "Exact decoded reload, relocation, unchanged narration, unaffected stems and unity reconstruction; output sizes generated automatically."
+    },
+    "completionAudit": "docs/composition-ce16-completion-audit.md",
+    "browserPolicy": {
+      "status": "Historical breach recorded; corrected subsequent verification selection",
+      "diagnostic": "Direct Playwright import filtering missed transitive headless-browser launches through renderer libraries and child scripts.",
+      "resolution": "Replaced with three audited audio-only integration suites. No CUA/desktop/visible GUI inspection, but cumulative zero browser driving cannot be claimed."
     }
   },
   "backendProofLimitations": [
@@ -1071,6 +1112,44 @@
         "output": "/Users/jjae/.codex/worktrees/composition-ce16/still-shift/benchmarks/results/composition-ce16/integration-final/relocated"
       }
     },
+    "outputSizesBytes": {
+      "initial": {
+        "narration": 23040058,
+        "bgm": 23040058,
+        "sfx-pouch": 23040058,
+        "sfx-roots": 23040058,
+        "music-bus": 23040058,
+        "sfx-bus": 23040058,
+        "master": 23040058
+      },
+      "reloaded": {
+        "narration": 23040058,
+        "bgm": 23040058,
+        "sfx-pouch": 23040058,
+        "sfx-roots": 23040058,
+        "music-bus": 23040058,
+        "sfx-bus": 23040058,
+        "master": 23040058
+      },
+      "edited": {
+        "narration": 23040058,
+        "bgm": 23040058,
+        "sfx-pouch": 23040058,
+        "sfx-roots": 23040058,
+        "music-bus": 23040058,
+        "sfx-bus": 23040058,
+        "master": 23040058
+      },
+      "relocated": {
+        "narration": 23040058,
+        "bgm": 23040058,
+        "sfx-pouch": 23040058,
+        "sfx-roots": 23040058,
+        "music-bus": 23040058,
+        "sfx-bus": 23040058,
+        "master": 23040058
+      }
+    },
     "reloadPCM": {
       "narration": {
         "maxSampleError": 0.0,
@@ -1223,49 +1302,11 @@
       "decision": "Vanilla TypeScript view; shared project is sole authority. Engine collision rules and snapshot history differ from allowed overlaps and persisted project history. No additional npm audio libraries installed."
     },
     "preview": "Hash-checked rendered full mix; API response bytes exact. Range rendering evaluates complete DSP/ducking schedule before cropping.",
-    "measurementMethod": "Node monotonic wall time includes each CLI process; worker RUSAGE_SELF peak excludes FFmpeg children and per-path calibration. No speed advantage claimed.",
-    "outputSizesBytes": {
-      "initial": {
-        "narration": 23040058,
-        "bgm": 23040058,
-        "sfx-pouch": 23040058,
-        "sfx-roots": 23040058,
-        "music-bus": 23040058,
-        "sfx-bus": 23040058,
-        "master": 23040058
-      },
-      "reloaded": {
-        "narration": 23040058,
-        "bgm": 23040058,
-        "sfx-pouch": 23040058,
-        "sfx-roots": 23040058,
-        "music-bus": 23040058,
-        "sfx-bus": 23040058,
-        "master": 23040058
-      },
-      "edited": {
-        "narration": 23040058,
-        "bgm": 23040058,
-        "sfx-pouch": 23040058,
-        "sfx-roots": 23040058,
-        "music-bus": 23040058,
-        "sfx-bus": 23040058,
-        "master": 23040058
-      },
-      "relocated": {
-        "narration": 23040058,
-        "bgm": 23040058,
-        "sfx-pouch": 23040058,
-        "sfx-roots": 23040058,
-        "music-bus": 23040058,
-        "sfx-bus": 23040058,
-        "master": 23040058
-      }
-    }
+    "measurementMethod": "CLI monotonic wall time includes preflight, calibration and worker. Worker wallSeconds starts after calibration. RUSAGE_SELF peak includes worker/calibration but excludes FFmpeg children; no speed advantage claimed."
   },
   "limitations": [
     "Full pnpm check and frozen browser baselines not run: CE16 prohibits browser driving. Command/library/API verification is separate from those repository gates.",
-    "No listening, audiovisual QA or GUI/browser verification performed.",
+    "No listening, audiovisual QA or visible GUI inspection performed. Earlier broad integration tier indirectly launched headless browsers; this policy breach is recorded and subsequent selection is audio-only.",
     "Local opt-in pinned Python runtime only; GPL/transitive distribution decision remains pending. No backend dependency binaries bundled.",
     "Only causal built-in high/low-pass DSP is accepted, with per-path onset probes. External plugins and nonzero latency compensation are unsupported.",
     "No drag handles or native browser DSP parity claimed; explicit numeric/JSON edits share the same atomic API."

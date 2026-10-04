@@ -1,5 +1,6 @@
 import {
   resolveSoundtrackAnchors,
+  frameToSoundtrackSample,
   validateSoundtrackNarration,
 } from "../../../packages/renderer-core/src/soundtrack-edits.ts";
 import type { SoundtrackProject } from "../../../packages/scene-contract/src/soundtrack-project.ts";
@@ -22,8 +23,13 @@ export class PassageAudioPlayer {
     sha256: string,
     passage: CompiledStoryPassage,
   ) {
-    resolveSoundtrackAnchors(project, { ...passage, fps: passage.plan.fps });
-    validateSoundtrackNarration(project, {
+    this.stop();
+    const ticket = this.generation;
+    const snapshot = resolveSoundtrackAnchors(project, {
+      ...passage,
+      fps: passage.plan.fps,
+    });
+    validateSoundtrackNarration(snapshot, {
       fps: passage.plan.fps,
       sourceStartFrame: passage.plan.sourceStartFrame,
       endFrameExclusive: passage.endFrameExclusive,
@@ -33,15 +39,17 @@ export class PassageAudioPlayer {
     });
     if ("sha256:" + (await sha256Hex(bytes)) !== sha256)
       throw new Error("Rendered soundtrack checksum differs");
+    if (ticket !== this.generation) return false;
     const buffer = await this.getContext().decodeAudioData(bytes);
+    if (ticket !== this.generation) return false;
     if (
       buffer.sampleRate !== 48000 ||
       buffer.numberOfChannels !== 2 ||
-      buffer.length !== project.durationSamples
+      buffer.length !== snapshot.durationSamples
     )
       throw new Error("Soundtrack preview must be full-length 48 kHz stereo");
-    this.stop();
-    this.soundtrack = { project, buffer };
+    this.soundtrack = { project: snapshot, buffer };
+    return true;
   }
 
   private cache = new Map<string, AudioBuffer>();
@@ -124,6 +132,8 @@ export class PassageAudioPlayer {
     frame: number,
     soundEffects: boolean,
   ) {
+    if (!Number.isInteger(frame) || frame < 0 || frame >= passage.frameCount)
+      throw new Error("Playback must start at a frame inside the passage");
     this.stop();
     const ticket = this.generation;
     const context = this.getContext();
@@ -154,10 +164,12 @@ export class PassageAudioPlayer {
       const source = context.createBufferSource();
       source.buffer = this.soundtrack.buffer;
       source.connect(context.destination);
+      const startSample = frameToSoundtrackSample(frame, this.fps);
+      const endSample = frameToSoundtrackSample(passage.frameCount, this.fps);
       source.start(
         this.started,
-        frame / this.fps,
-        (passage.frameCount - frame) / this.fps,
+        startSample / 48000,
+        (endSample - startSample) / 48000,
       );
       this.playback = {
         stop: () => {
