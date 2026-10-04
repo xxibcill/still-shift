@@ -82,6 +82,12 @@ is recorded separately. Nonzero onset latency and external plugins are rejected;
 no unsupported compensation is implied. Block size is 512. Tails continue inside
 the project and are cut at its declared end.
 
+Sources are probed once per asset. An asset used by several clips decodes its
+covering source span once and is sliced per clip, while all cached spans fit in
+one project-length stereo buffer; otherwise each clip decodes its own span.
+Resampling precedes trimming, so both paths give identical samples, and clips are
+still summed in authored order.
+
 `--stems` exports post-track-processing stems and post-bus-gain stems; master gain
 applies to the mix only. Unity master/direct buses reconstruct the mix in graph
 summation order. Nonunity bus/master gains must be included when reconstructing

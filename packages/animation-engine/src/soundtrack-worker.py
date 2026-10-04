@@ -33,7 +33,7 @@ def command(args):
     return result.stdout
 
 
-def decode(asset, clip, np):
+def probe_channels(asset, clip):
     metadata = json.loads(
         command(
             [
@@ -58,7 +58,11 @@ def decode(asset, clip, np):
             asset=asset["id"],
             clip=clip["id"],
         )
-    channels = streams[0]["channels"]
+    return streams[0]["channels"]
+
+
+def decode_span(asset, channels, start, end, np):
+    """Resample the whole stream, then trim, so any span yields identical samples."""
     channel_filter = "pan=stereo|c0=c0|c1=c0" if channels == 1 else "aformat=channel_layouts=stereo"
     data = command(
         [
@@ -70,7 +74,7 @@ def decode(asset, clip, np):
             "-map",
             "0:a:0",
             "-af",
-            f"aresample=48000,{channel_filter},atrim=start_sample={clip['sourceStartSample']}:end_sample={clip['sourceEndSample']},asetpts=PTS-STARTPTS",
+            f"aresample=48000,{channel_filter},atrim=start_sample={start}:end_sample={end},asetpts=PTS-STARTPTS",
             "-ar",
             "48000",
             "-c:a",
@@ -80,18 +84,50 @@ def decode(asset, clip, np):
             "pipe:1",
         ]
     )
-    audio = np.frombuffer(data, dtype="<f4").reshape(-1, 2).T.copy()
-    if (
-        audio.shape[1] != clip["sourceEndSample"] - clip["sourceStartSample"]
-        or not np.isfinite(audio).all()
-    ):
-        raise WorkerError(
-            "source-range",
-            "Source does not cover the end-exclusive trim; shorten the interval",
-            asset=asset["id"],
-            clip=clip["id"],
-        )
-    return audio
+    return np.frombuffer(data, dtype="<f4").reshape(-1, 2).T
+
+
+def clip_sources(clips, assets, budget_frames, np):
+    """Yield (clip, audio) in authored order, decoding each reused asset once.
+
+    A reused asset's covering span is decoded once and sliced per clip while the
+    cached spans fit in budget_frames; otherwise each clip decodes its own span.
+    Slices equal per-clip decodes sample for sample, and authored order keeps
+    floating-point mix accumulation unchanged.
+    """
+    uses, spans = {}, {}
+    for clip in clips:
+        key, span = clip["asset"], (clip["sourceStartSample"], clip["sourceEndSample"])
+        uses[key] = uses.get(key, 0) + 1
+        previous = spans.get(key, span)
+        spans[key] = (min(previous[0], span[0]), max(previous[1], span[1]))
+    channels, cache, cached_frames = {}, {}, 0
+    for clip in clips:
+        key, asset = clip["asset"], assets[clip["asset"]]
+        if key not in channels:
+            channels[key] = probe_channels(asset, clip)
+        first, last = spans[key]
+        if key not in cache and uses[key] > 1 and cached_frames + last - first <= budget_frames:
+            cache[key] = (first, decode_span(asset, channels[key], first, last, np))
+            cached_frames += last - first
+        start, end = clip["sourceStartSample"], clip["sourceEndSample"]
+        if key in cache:
+            offset, span_audio = cache[key]
+            audio = span_audio[:, start - offset : end - offset]
+        else:
+            audio = decode_span(asset, channels[key], start, end, np)
+        if audio.shape[1] != end - start or not np.isfinite(audio).all():
+            raise WorkerError(
+                "source-range",
+                "Source does not cover the end-exclusive trim; shorten the interval",
+                asset=asset["id"],
+                clip=clip["id"],
+            )
+        uses[key] -= 1
+        if not uses[key] and key in cache:
+            cached_frames -= last - first
+            del cache[key]
+        yield clip, audio
 
 
 def clip_envelope(clip, np):
@@ -237,8 +273,7 @@ def render(request):
     output.mkdir(exist_ok=False)
     buffers = {t["id"]: np.zeros((2, length), np.float32) for t in project["tracks"]}
     detector = np.zeros((2, length), np.float32) if project.get("ducking") else None
-    for clip in project["clips"]:
-        audio = decode(assets[clip["asset"]], clip, np)
+    for clip, audio in clip_sources(project["clips"], assets, length, np):
         start, end = clip["startSample"], clip["startSample"] + audio.shape[1]
         if detector is not None and clip["track"] == project["ducking"]["sourceTrack"]:
             detector[:, start:end] += audio

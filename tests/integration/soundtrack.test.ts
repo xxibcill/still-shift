@@ -449,3 +449,63 @@ it("duck lookahead, attack, hold and release have exact sample boundaries and ne
   expect(voice[199 * 2]).toBeCloseTo(0.8, 7);
   expect(voice[200 * 2]).toBe(0);
 }, 10000);
+
+it("reused sounds decode once per span and match per-clip decoding sample for sample", async () => {
+  // A distinct value per source sample makes any slicing error visible.
+  await runProcess("ffmpeg", [
+    "-v",
+    "error",
+    "-f",
+    "lavfi",
+    "-i",
+    "aevalsrc='(n+1)/262144':s=48000:d=3",
+    "-c:a",
+    "pcm_f32le",
+    join(root, "ramp.wav"),
+  ]);
+  const sha256 = await soundtrackChecksum(join(root, "ramp.wav"));
+  // "near" spans 7,200 samples and is cached; "far" spans 124,800 samples,
+  // beyond the 48,000-sample budget, and decodes per clip.
+  const placements = [
+    ["near", 0, 4800, 0],
+    ["near", 2400, 7200, 12000],
+    ["far", 0, 4800, 24000],
+    ["far", 120000, 124800, 36000],
+  ] as const;
+  const p: SoundtrackProject = {
+    ...structuredClone(project),
+    durationSamples: 48000,
+    assets: ["near", "far"].map((id) => ({ id, path: "ramp.wav", sha256 })),
+    tracks: [{ ...project.tracks[2]!, output: "master" }],
+    buses: [],
+    clips: placements.map(([asset, start, end, at], i) => ({
+      id: "hit-" + i,
+      asset,
+      track: "effect",
+      sourceStartSample: start,
+      sourceEndSample: end,
+      startSample: at,
+      gainDb: 0,
+      fadeInSamples: 0,
+      fadeOutSamples: 0,
+      automation: { interpolation: "linear" as const, points: [] },
+    })),
+  };
+  delete p.ducking;
+  const reuse = join(root, "reuse.json");
+  await writeFile(reuse, JSON.stringify(p));
+  await renderSoundtrackProject(reuse, join(root, "reuse"), { stems: true });
+  const source = await pcm(join(root, "ramp.wav")),
+    effect = await pcm(audio("reuse", "effect"));
+  for (const [, start, end, at] of placements)
+    for (let i = 0; i < end - start; i++)
+      for (const channel of [0, 1])
+        expect(effect[(at + i) * 2 + channel]).toBe(source[start + i]);
+  // A reused span that runs past the source names the first uncovered clip.
+  p.clips[1]!.sourceEndSample = 144001;
+  p.clips[1]!.sourceStartSample = 139201;
+  await writeFile(reuse, JSON.stringify(p));
+  await expect(
+    renderSoundtrackProject(reuse, join(root, "reuse-short")),
+  ).rejects.toMatchObject({ code: "source-range", context: { clip: "hit-1" } });
+}, 20000);
