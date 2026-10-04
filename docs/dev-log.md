@@ -43,12 +43,11 @@ still hold before relying on them.
 
 ## Current state
 
-- **PR #33 review fixes (2026-10-05, local only):** Claude Code on
-  `claude/ce16-sfx-improvements` (worktree `.claude/worktrees/ce16-improve`)
-  adds per-request undo, anchor-preserving moves, no-op retime and worker decode
-  reuse on top of `e7f3175`. Non-browser gates pass on Node 22.23.1. Pending
-  owner decisions: push onto PR #33, run the soundtrack browser group, and the
-  ducking-detector and Lab render-retention questions in the latest entry.
+- **PR #33 review fixes (2026-10-05):** Claude Code pushed per-request undo,
+  anchor-preserving moves, no-op retime, worker decode reuse and Lab render
+  pruning onto `codex/composition-ce16`. Non-browser gates and the soundtrack
+  browser group pass on Node 22.23.1. Pending owner decision: whether the
+  ducking detector should follow narration clip gain/fades/automation.
 
 - **CE16 isolated implementation (`[x]`, 2026-10-05):** Codex on
   `codex/composition-ce16`, worktree
@@ -149,31 +148,32 @@ _Last updated 2026-10-05 by Codex for isolated CE16 PR publication._
 
 ## Entries
 
-### 2026-10-05 — PR #33 review: SFX edit transactions and decode reuse
+### 2026-10-05 — PR #33 review: SFX edit transactions, decode reuse, Lab pruning
 
 - **Agent / branch:** Claude Code on `claude/ce16-sfx-improvements`, from PR #33
-  head `e7f3175`; not pushed, pending owner decision.
-- **Scope:** review-driven fixes to the CE16 soundtrack engine.
+  head `e7f3175`; pushed to `codex/composition-ce16` at the owner's request.
+- **Scope:** review-driven fixes to the CE16 soundtrack engine and Lab API.
 - **Done:** one edit request is one undo entry, and only its final state is
   validated (no-op requests add no history). An anchored `move` keeps its anchor
   point and derives `offsetSamples`; conflicting or unanchored offsets fail with
   `anchor-conflict`, and the Lab offset field is read-only. `retime` saves only
   when an anchor moved (it no longer fails with `edit-schema` when none did).
   The worker probes each asset once and decodes a reused asset's span once
-  within one project-length buffer, else per clip.
-- **Results:** on Node 22.23.1: 1,438 unit, 46 runtime, 126 integration and
-  14 depth tests; schema, boundaries, format, lint, build and ruff pass. A
-  124-clip SFX project rendered bit-identically on all 7 outputs, with worker
-  time cut from 4.3 s to 0.56 s; CE16 fixture mix hash unchanged. A slicing
-  mutation fails the new reuse test. Browser groups not run (owner browser
-  policy); `tests/browser/soundtrack.ts` assertions were updated for one-step
-  Apply undo but are unverified.
+  within one project-length buffer, else per clip. Lab renders are grouped per
+  project; a render keeps only the newest, a Lab edit removes all, and a pruned
+  preview answers `revision-conflict`.
+- **Results:** on Node 22.23.1: toolchain, schema, boundaries, format, lint,
+  build and ruff pass; 1,438 unit, 46 runtime, 127 integration and 14 depth
+  tests pass. `test:browser:soundtrack` passes (owner-approved run; its single
+  400 console line also appears on unmodified `e7f3175`). A 124-clip SFX
+  project rendered bit-identically on all 7 outputs, with worker time cut from
+  4.3 s to 0.56 s; CE16 fixture mix hash unchanged. A slicing mutation fails
+  the new reuse test. The other 41 browser groups and baselines were not run.
 - **Rejected / do not repeat:** Node 24 fails the CE9 bake test by one ULP and
   depth tests time out without `uv sync`; both are environment, not regressions.
-- **Open / next:** owner decides whether to push onto PR #33 and whether to
-  allow the soundtrack browser group. Not changed (DSP output): the ducking
-  detector ignores narration clip gain/fades/automation, and Lab renders
-  write all stems to a new directory per click without pruning.
+- **Open / next:** owner decision on the ducking detector, which ignores the
+  narration clip's gain, fades and automation (changes DSP output and evidence
+  hashes). PR #33 review/merge still pending after PR #32.
 - **Records:** [soundtrack guide](./soundtrack-project.md),
   [PR #33](https://github.com/xxibcill/still-shift/pull/33).
 
