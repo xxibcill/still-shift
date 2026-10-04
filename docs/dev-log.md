@@ -56,7 +56,11 @@ still hold before relying on them.
   production stays command/API/file-based. Earlier browser-policy breach retained.
   No technical closure blockers. Human listening/AV QA unperformed; future backend
   binary distribution needs a packaging decision. No dependency binaries bundled.
-  Original checkout and parallel CE12 work untouched; commits remain local.
+  Original checkout and parallel CE12 work untouched.
+  [PR #33](https://github.com/xxibcill/still-shift/pull/33) is published against
+  `codex/composition-ce9` to keep CE16 isolated; merge dependency
+  [PR #32](https://github.com/xxibcill/still-shift/pull/32) first, then retarget to
+  `main`. Owner review/merge is pending.
   [Completion audit](./composition-ce16-completion-audit.md),
   [CE16 scope](./composition-engine-plan.md#ce16--programmable-soundtrack-project-and-timeline).
 
@@ -79,7 +83,7 @@ still hold before relying on them.
   [Fix evidence](./pr-32-fix-results.json).
   [Review evidence](./pr-32-review-results.json).
 
-_Last updated 2026-10-05 by Codex for isolated CE16 technical closure._
+_Last updated 2026-10-05 by Codex for isolated CE16 PR publication._
 
 - **PR #32 conflict resolution (2026-10-04):** merged `main` at `3413780` into
   PR head `a0708ba` and pushed merge `05033c8`, retaining CE9 expressions and
@@ -137,6 +141,18 @@ _Last updated 2026-10-05 by Codex for isolated CE16 technical closure._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-05 — Publish isolated CE16 as PR #33
+
+- **Agent / branch:** Codex on `codex/composition-ce16`, after `361dfe1`.
+- **Done:** published and attached [PR #33](https://github.com/xxibcill/still-shift/pull/33).
+- **Base:** `codex/composition-ce9` at `dee9e7b`; stacking excludes CE9 changes
+  from this PR. Merge [#32](https://github.com/xxibcill/still-shift/pull/32) first,
+  then retarget CE16 to `main`. Primary checkout and CE12 work remain untouched.
+- **Verification:** retained full local gate and all 176 frozen baselines pass;
+  no implementation changes for publication. Repository Actions confirmed disabled.
+- **Open / next:** owner review/merge pending; existing technical/creative limits
+  remain in the [completion audit](./composition-ce16-completion-audit.md).
 
 ### 2026-10-05 — Complete isolated CE16 technical verification
 
