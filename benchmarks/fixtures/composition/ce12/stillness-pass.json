@@ -1,0 +1,32 @@
+{
+  "schemaVersion": "composition-1",
+  "id": "ce12-stillness-pass",
+  "width": 640,
+  "height": 360,
+  "fps": 30,
+  "frameCount": 51,
+  "assets": [],
+  "layers": [
+    {
+      "id": "subject",
+      "type": "solid",
+      "size": [40, 40],
+      "color": "#efad55",
+      "transform": {
+        "position": {
+          "keys": [
+            {
+              "frame": 0,
+              "value": [80, 80]
+            },
+            {
+              "frame": 50,
+              "value": [200, 80],
+              "easing": "smoothstep"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

@@ -43,6 +43,12 @@ still hold before relying on them.
 
 ## Current state
 
+- **CE12 motion linting (`[~]`, 2026-10-04):** started on new branch
+  `codex/composition-ce12` from delivered CE9 `dee9e7b`, preserving all prior
+  local documents/research. Implementing composition quality rules, CLI lint,
+  timeline findings and local acceptance evidence. CE6-P remains deferred.
+  [Start record](./composition-engine-plan.md#ce12-start-record-2026-10-04).
+
 - **PR #32 printer fix (2026-10-04):** re-review of delivered `e81a146` found
   one remaining P2 print/parse length defect and no standards findings.
   Posted the inline finding, added compact canonical output with equivalent
@@ -120,6 +126,15 @@ _Last updated 2026-10-04 by Codex for the PR #32 printer fix._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-04 — Start CE12 motion linting
+
+- **Agent / branch:** Codex on new `codex/composition-ce12` from `dee9e7b`.
+- **Scope:** owner-authorized CE12 implementation and local verification.
+- **Done:** branch created; delivered CE9 correctness fixes integrated by fast-forward;
+  prior local documents and research backed up and restored. No remote mutations.
+- **Open / next:** rule fixtures/tests, CLI, Lab timeline, CE0 lint report and checks.
+- **Records:** [CE12 start](./composition-engine-plan.md#ce12-start-record-2026-10-04).
 
 ### 2026-10-04 — Fix the remaining PR #32 printer finding
 

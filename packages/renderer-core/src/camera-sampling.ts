@@ -76,3 +76,15 @@ export function cameraProjection(
     y: cy - scale * (cy + (camera.y - cy) * depth),
   };
 }
+
+/** One-sided derivatives at a join; callers select property-specific normalization. */
+export function boundaryVelocityJump(
+  before: readonly number[],
+  at: readonly number[],
+  after: readonly number[],
+  step: number,
+) {
+  return Math.hypot(
+    ...at.map((value, i) => (after[i]! - value - (value - before[i]!)) / step),
+  );
+}

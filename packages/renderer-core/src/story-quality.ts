@@ -1,3 +1,18 @@
+import type { Composition } from "@still-shift/scene-contract";
+import { analyzeCompositionStillness } from "./story-continuous-quality.ts";
+import { analyzeCompositionTypography } from "./typography-quality.ts";
+import { sampleCompositionQuality } from "./composition/quality-samples.ts";
+import {
+  compositionFramingFindings,
+  compositionPopFindings,
+  compositionTimingFindings,
+  compositionVelocityFindings,
+} from "./composition/quality-rules.ts";
+import {
+  resolveCompositionQualityPolicy,
+  type CompositionQualityPolicy,
+  type MotionLintDiagnostic,
+} from "./composition/quality-policy.ts";
 import {
   analyzeTypography,
   type TypeQualityCode,
@@ -301,5 +316,102 @@ export function analyzeStoryQuality(
       ? Math.min(...[...minimumSizes.values()].map((v) => v.size))
       : null,
     diagnostics,
+  };
+}
+
+export {
+  CompositionQualityPolicySchema,
+  MOTION_LINT_CODES,
+  type CompositionQualityPolicy,
+  type MotionLintDiagnostic,
+  type MotionLintCode,
+} from "./composition/quality-policy.ts";
+
+/** Advisory composition craft report. Evaluation, contracts and rendered output never depend on lint. */
+export function analyzeCompositionQuality(
+  comp: Composition,
+  policy: CompositionQualityPolicy = {},
+) {
+  const resolved = resolveCompositionQualityPolicy(comp, policy);
+  const frames = sampleCompositionQuality(comp, resolved.evaluation);
+  const diagnostics: MotionLintDiagnostic[] = [
+    ...analyzeCompositionStillness(
+      frames.map((f) => f.signature),
+      resolved,
+    ),
+    ...analyzeCompositionTypography(frames, comp.fps, resolved),
+    ...compositionFramingFindings(comp, frames, resolved),
+    ...compositionPopFindings(frames, resolved),
+    ...compositionTimingFindings(comp, frames, resolved),
+    ...compositionVelocityFindings(comp, frames, resolved),
+  ];
+  frames.forEach((frame, at) =>
+    frame.diagnostics.forEach((d) =>
+      diagnostics.push({
+        ...d,
+        frames: [at, at],
+        nodes: d.node ? [d.node] : [],
+        measured: 1,
+      }),
+    ),
+  );
+  const unmeasuredText = [comp, ...(comp.precomps ?? [])].flatMap((scope) =>
+    scope.layers.flatMap((layer) => {
+      if (layer.type !== "text") return [];
+      const key = scope === comp ? layer.id : `${scope.id}/${layer.id}`;
+      return resolved.evaluation.textBounds?.[key]?.length ? [] : [key];
+    }),
+  );
+  const opaqueProviders = [comp, ...(comp.precomps ?? [])].flatMap((scope) =>
+    scope.layers
+      .filter(
+        (layer) =>
+          layer.type === "provider" &&
+          !layer.provider.startsWith("story.") &&
+          !layer.provider.startsWith("component.") &&
+          !layer.provider.startsWith("commerce."),
+      )
+      .map((layer) => layer.id),
+  );
+  const limitations = [
+    ...(!resolved.pixelHashes
+      ? [
+          "Pixels were not measured; state motion does not prove visible pixel motion.",
+        ]
+      : []),
+    ...(unmeasuredText.length
+      ? [
+          `Text bounds were not measured for ${unmeasuredText.join(", ")}; framing is incomplete for those layers.`,
+        ]
+      : []),
+    ...(opaqueProviders.length
+      ? [
+          `Opaque provider content cannot be inferred from state: ${opaqueProviders.join(", ")}. Use rendered pixel checks.`,
+        ]
+      : []),
+    "Coverage lint measures geometry; image alpha and arbitrary mask coverage require the renderer's asset coverage validation.",
+  ];
+  diagnostics.sort(
+    (a, b) =>
+      a.frames[0] - b.frames[0] ||
+      a.code.localeCompare(b.code) ||
+      (a.path ?? "").localeCompare(b.path ?? ""),
+  );
+  return {
+    version: "composition-motion-lint-1" as const,
+    composition: comp.id,
+    frameCount: comp.frameCount,
+    fps: comp.fps,
+    status: diagnostics.some((d) => d.severity === "error")
+      ? ("failed" as const)
+      : ("passed" as const),
+    measured: {
+      evaluatedState: true,
+      pixels: !!resolved.pixelHashes,
+      pixelMethod: resolved.pixelMethod,
+      textBounds: !!resolved.evaluation.textBounds,
+    },
+    diagnostics,
+    limitations,
   };
 }

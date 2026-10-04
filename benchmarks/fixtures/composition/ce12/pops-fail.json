@@ -1,0 +1,45 @@
+{
+  "schemaVersion": "composition-1",
+  "id": "ce12-pops-fail",
+  "width": 640,
+  "height": 360,
+  "fps": 30,
+  "frameCount": 90,
+  "assets": [],
+  "layers": [
+    {
+      "id": "subject",
+      "type": "solid",
+      "size": [40, 40],
+      "color": "#efad55",
+      "transform": {
+        "opacity": {
+          "keys": [
+            {
+              "frame": 0,
+              "value": 1
+            },
+            {
+              "frame": 20,
+              "value": 0.1,
+              "interpolation": "hold"
+            }
+          ]
+        },
+        "scale": {
+          "keys": [
+            {
+              "frame": 0,
+              "value": [1, 1]
+            },
+            {
+              "frame": 20,
+              "value": [2, 2],
+              "interpolation": "hold"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

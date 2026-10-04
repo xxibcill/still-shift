@@ -1,0 +1,74 @@
+{
+  "schemaVersion": "composition-1",
+  "id": "ce12-coStart-fail",
+  "width": 640,
+  "height": 360,
+  "fps": 30,
+  "frameCount": 90,
+  "assets": [],
+  "layers": [
+    {
+      "id": "layer-0",
+      "type": "solid",
+      "size": [40, 40],
+      "color": "#efad55",
+      "transform": {
+        "position": {
+          "keys": [
+            {
+              "frame": 0,
+              "value": [80, 80]
+            },
+            {
+              "frame": 50,
+              "value": [200, 80],
+              "easing": "smoothstep"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "layer-1",
+      "type": "solid",
+      "size": [40, 40],
+      "color": "#efad55",
+      "transform": {
+        "position": {
+          "keys": [
+            {
+              "frame": 0,
+              "value": [80, 80]
+            },
+            {
+              "frame": 50,
+              "value": [200, 80],
+              "easing": "smoothstep"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "layer-2",
+      "type": "solid",
+      "size": [40, 40],
+      "color": "#efad55",
+      "transform": {
+        "position": {
+          "keys": [
+            {
+              "frame": 0,
+              "value": [80, 80]
+            },
+            {
+              "frame": 50,
+              "value": [200, 80],
+              "easing": "smoothstep"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

@@ -1,3 +1,8 @@
+import type { CompositionQualityFrame } from "./composition/quality-samples.ts";
+import type {
+  ResolvedCompositionQualityPolicy,
+  MotionLintDiagnostic,
+} from "./composition/quality-policy.ts";
 import type { CommerceRenderScene } from "./commerce-scene.ts";
 import type { StoryRenderScene } from "./story-scene.ts";
 import type { StoryScene } from "../../scene-contract/src/story.ts";
@@ -526,6 +531,126 @@ export function analyzePassageTypography(scenes: StoryScene[]) {
       seen.set(node.textRole, signature);
     }
     offset += scene.frameCount;
+  }
+  return diagnostics;
+}
+
+/** Composition text uses the same settled-window principle, with word budgets per semantic role. */
+export function analyzeCompositionTypography(
+  frames: readonly CompositionQualityFrame[],
+  fps: number,
+  policy: ResolvedCompositionQualityPolicy,
+) {
+  const diagnostics: MotionLintDiagnostic[] = [];
+  const defaults = {
+    heading: { wordsPerSecond: 3, minimumSeconds: 1 },
+    label: { wordsPerSecond: 3, minimumSeconds: 0.5 },
+    qualification: { wordsPerSecond: 2.5, minimumSeconds: 2 },
+    body: { wordsPerSecond: 3, minimumSeconds: 1 },
+  };
+  for (const shot of policy.shots) {
+    const active = new Map<
+      string,
+      {
+        text: string;
+        role: keyof typeof defaults;
+        start: number;
+        end: number;
+        settled: number;
+        longest: number;
+        path: string;
+      }
+    >();
+    const finish = (id: string) => {
+      const window = active.get(id);
+      if (!window) return;
+      const words = [
+        ...new Intl.Segmenter(undefined, { granularity: "word" }).segment(
+          window.text,
+        ),
+      ].filter((s) => s.isWordLike).length;
+      const settings = policy.reading?.[window.role] ?? defaults[window.role];
+      const required = Math.ceil(
+        Math.max(settings.minimumSeconds, words / settings.wordsPerSecond) *
+          fps,
+      );
+      if (window.longest < required)
+        diagnostics.push({
+          code: "reading-time",
+          severity: policy.severities?.["reading-time"] ?? "error",
+          nodes: [id],
+          node: id,
+          path: window.path + ".text",
+          shot: shot.id,
+          frames: [window.start, window.end],
+          measured: window.longest / fps,
+          message: `${window.role} text (${words} words) has ${(window.longest / fps).toFixed(2)} s of consecutive readable time; needs ${(required / fps).toFixed(2)} s.`,
+        });
+      active.delete(id);
+    };
+    for (let frame = shot.start; frame < shot.end; frame++) {
+      const current = frames[frame]!;
+      for (const id of [...active.keys()]) {
+        const sample = current.layers.get(id);
+        if (
+          policy.cuts.has(frame) ||
+          !sample?.onScreen ||
+          sample.text !== active.get(id)!.text
+        )
+          finish(id);
+      }
+      for (const sample of current.layers.values()) {
+        if (!sample.onScreen || !sample.text) continue;
+        const before =
+          frame > shot.start
+            ? frames[frame - 1]!.layers.get(sample.id)
+            : undefined;
+        const speed = before
+          ? Math.max(
+              ...[
+                [0, 0],
+                [100, 0],
+                [0, 100],
+                [100, 100],
+              ].map(([x, y]) =>
+                Math.hypot(
+                  (sample.matrix[0] - before.matrix[0]) * x! +
+                    (sample.matrix[2] - before.matrix[2]) * y! +
+                    sample.matrix[4] -
+                    before.matrix[4],
+                  (sample.matrix[1] - before.matrix[1]) * x! +
+                    (sample.matrix[3] - before.matrix[3]) * y! +
+                    sample.matrix[5] -
+                    before.matrix[5],
+                ),
+              ),
+            ) * fps
+          : 0;
+        const readable =
+          sample.opacity >= policy.readingOpacity &&
+          (sample.state.reveal ?? 1) >= policy.readingReveal &&
+          (sample.state.stateMix ?? 1) >= 0.95 &&
+          speed <= policy.readingVelocity &&
+          (!before || before.textClock === sample.textClock);
+        let window = active.get(sample.id);
+        if (!window) {
+          window = {
+            text: sample.text,
+            role: sample.role ?? "body",
+            start: frame,
+            end: frame,
+            settled: 0,
+            longest: 0,
+            path: sample.path,
+          };
+          active.set(sample.id, window);
+        }
+        window.end = frame;
+        window.settled = readable ? window.settled + 1 : 0;
+        window.longest = Math.max(window.longest, window.settled);
+      }
+    }
+    for (const id of [...active.keys()]) finish(id);
   }
   return diagnostics;
 }

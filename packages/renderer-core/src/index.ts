@@ -113,3 +113,13 @@ export * from "./typography-visibility.ts";
 export * from "./typography-review.ts";
 
 export { requiresCompositionTextLayout } from "./composition/adapters/layout.ts";
+
+export {
+  analyzeCompositionQuality,
+  CompositionQualityPolicySchema,
+  MOTION_LINT_CODES,
+  type CompositionQualityPolicy,
+  type MotionLintDiagnostic,
+  type MotionLintCode,
+} from "./story-quality.ts";
+export { analyzeRenderedCompositionQuality } from "./composition/quality-render.ts";

@@ -373,7 +373,7 @@ sign and for time remap. It does not change the layer's composition-time visibil
 | CE9   | Expressions and motion behaviours               | C      | CE2                  | xxibcill (Claude Code) | `codex/composition-ce9`             | `[x]`  | [CE9 record](#ce9--expressions-and-motion-behaviours)                              |
 | CE10  | TypeScript builder API and CLI                  | C      | CE3, CE4a, CE9, CE12 |                        |                                     | `[ ]`  |                                                                                    |
 | CE11  | Lab composition inspector and graph editor      | C      | CE3, CE10            |                        |                                     | `[ ]`  |                                                                                    |
-| CE12  | Motion linting                                  | C      | CE2                  |                        |                                     | `[ ]`  |                                                                                    |
+| CE12  | Motion linting                                  | C      | CE2                  | Codex                  | `codex/composition-ce12`            | `[~]`  | [CE12 start record](#ce12-start-record-2026-10-04)                                 |
 | CE13  | Video, image-sequence and audio layers          | D      | CE3, CE7             |                        |                                     | `[ ]`  |                                                                                    |
 | CE14  | Mesh warp and puppet pins                       | D      | CE6                  |                        |                                     | `[ ]`  |                                                                                    |
 | CE15  | Output formats, caching and parallel rendering  | D      | CE3                  |                        |                                     | `[ ]`  |                                                                                    |
@@ -3616,6 +3616,16 @@ Margins render is flagged for stillness and the continuous prototype is not.
 
 **Verification:** Rule unit tests and a lint run across all CE0 fixtures with results
 recorded.
+
+### CE12 start record (2026-10-04)
+
+- **Owner / branch:** Codex on `codex/composition-ce12`, based on delivered CE9
+  head `dee9e7b` (including main `5a6705c`). Existing local documents and
+  untracked research files preserved.
+- **Scope:** extend the existing quality analysers to compositions, add structured
+  frame-range diagnostics, `comp lint`, Lab timeline findings and local rule/corpus
+  acceptance evidence. CE6-P performance work remains deferred.
+- **Status:** in progress; completion gates have not yet run.
 
 **Completion record:** _to be filled in._
 

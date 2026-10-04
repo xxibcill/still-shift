@@ -149,6 +149,26 @@ See the [composition reference](./composition-reference.md#rendering-a-compositi
 for the rendering rules. The full Lab composition inspector and `comp` CLI follow in
 CE11 and CE10; existing scene workflows remain available for producing videos.
 
+### Check composition motion before delivery
+
+```sh
+pnpm --silent still-shift comp lint --input composition.json
+pnpm --silent still-shift comp lint --input composition.json --pixels true
+```
+
+The report flags frozen motion, abrupt velocity changes, repetitive easing,
+simultaneous starts, insufficient text reading time, framing problems and scale/
+opacity pops. Errors exit 1; warnings remain advisory. The first command checks
+state without rendering. `--pixels true` measures every frame with the pinned
+renderer and reports visible pixel motion separately. Read the report's limitations
+when pixels or text bounds are unmeasured.
+
+In the Lab composition page, findings appear as frame ranges and timeline markers.
+Click a finding to seek to it, or choose **Check rendered motion** to add pixel
+measurements. A policy file can adjust thresholds, reading budgets by text role,
+shot boundaries, severity and intentional cuts; see the
+[motion lint reference](./composition-reference.md#motion-linting-ce12).
+
 ## Start the Lab
 
 Follow the [installation instructions](../README.md#install) and the versions in

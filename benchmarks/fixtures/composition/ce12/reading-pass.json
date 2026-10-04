@@ -1,0 +1,19 @@
+{
+  "schemaVersion": "composition-1",
+  "id": "ce12-reading-pass",
+  "width": 640,
+  "height": 360,
+  "fps": 30,
+  "frameCount": 150,
+  "assets": [],
+  "layers": [
+    {
+      "id": "words",
+      "type": "text",
+      "text": "A reader needs time to understand all these words",
+      "fontSize": 24,
+      "color": "#ffffff",
+      "textRole": "body"
+    }
+  ]
+}
