@@ -204,12 +204,33 @@
     {
       "name": "Mixed native passage both-backend verification",
       "changes": "Add --webgl to the mixed passage browser suite and the aggregate local gate; rendering, narration, standalone export and Lab use the selected backend. Runtime implementation remains at verified 8153549.",
-      "verification": [],
-      "status": "pending"
+      "verification": [
+        {
+          "command": "pnpm build; targeted eslint and prettier",
+          "status": "passed"
+        },
+        {
+          "command": "pnpm test:browser:composition-native-passage:webgl",
+          "status": "passed",
+          "commit": "894d313",
+          "backend": "webgl2",
+          "frames": 576,
+          "checks": [
+            "standalone encoded clip identity",
+            "deterministic assembled frames",
+            "narration with picture cache reuse",
+            "isolated cache edit",
+            "asset relocation",
+            "input diagnostics including raw __proto__ key",
+            "Lab exact native pixels and forward/backward seeks"
+          ],
+          "log": "benchmarks/results/ce4a-native-passage-webgl.log"
+        }
+      ],
+      "status": "passed"
     }
   ],
   "pending": [
-    "Native mixed passage WebGL acceptance and added static gates",
     "Full WebGL story correctness record (timing deferred)",
     "CE4a tracker/checklist reconciliation and milestone PR"
   ],
@@ -223,8 +244,10 @@
     "stateFailures": 0,
     "seekFailures": 0,
     "timingFailures": 0,
-    "maxRatio": null,
-    "log": "benchmarks/results/ce4a-story-canvas-matrix.log"
+    "maxRatio": 1.190755684741614,
+    "log": "benchmarks/results/ce4a-story-canvas-matrix.log",
+    "worstTimingCase": "story/calibration-pan",
+    "maxChannelDelta": 2
   },
   "verificationAttempts": [
     {
@@ -280,5 +303,671 @@
       },
       "log": "/private/tmp/ce4a-check-8153549.log"
     }
-  ]
+  ],
+  "continuousQuality": {
+    "status": "passed",
+    "baseline": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ce12-port-check-547_96sa",
+    "method": "Exact analyzeStoryQuality continuous-policy results compared against the verified CE12 source snapshot; original fixtures and quality thresholds retained",
+    "cases": 14,
+    "records": [
+      {
+        "id": "story/continuous-unequal-margins",
+        "frameCount": 192,
+        "continuous": {
+          "longestFrozenRun": 0,
+          "longestSemanticGap": 44,
+          "maxTextVelocity": 18.50597614752071,
+          "maxPanPixelsPerFrame": 0.6214895239665936,
+          "maxZoomPerFrame": 0.00022587133023699302,
+          "diagnostics": []
+        },
+        "diagnostics": 3,
+        "sha256": "782a822b3eafc750a1ed29e97683da15f2f92662371da2920c1901877ecc38c0"
+      },
+      {
+        "id": "story/continuous-access-constraint",
+        "frameCount": 192,
+        "continuous": {
+          "longestFrozenRun": 0,
+          "longestSemanticGap": 36,
+          "maxTextVelocity": 0,
+          "maxPanPixelsPerFrame": 0.4464226124653546,
+          "maxZoomPerFrame": 0.0001513830759396484,
+          "diagnostics": []
+        },
+        "diagnostics": 3,
+        "sha256": "ffc8d67c8ec1b98bbf343802ab27cd20b59a8285686614c5bc125b0019ea12ae"
+      },
+      {
+        "id": "story/continuous-relationship-build",
+        "frameCount": 192,
+        "continuous": {
+          "longestFrozenRun": 0,
+          "longestSemanticGap": 36,
+          "maxTextVelocity": 4.459569999488638,
+          "maxPanPixelsPerFrame": 0.6244249832977166,
+          "maxZoomPerFrame": 0.0002610391056663275,
+          "diagnostics": []
+        },
+        "diagnostics": 5,
+        "sha256": "754da914d44467a3ebeb10b443c27b1d1b6fd707c959996bcdb51e0d66162ef6"
+      },
+      {
+        "id": "story/continuous-evidence-boundary",
+        "frameCount": 192,
+        "continuous": {
+          "longestFrozenRun": 0,
+          "longestSemanticGap": 22,
+          "maxTextVelocity": 10.84282916607269,
+          "maxPanPixelsPerFrame": 1.350433978145873,
+          "maxZoomPerFrame": 0.0006496786932903564,
+          "diagnostics": []
+        },
+        "diagnostics": 11,
+        "sha256": "b922170b3d1e8f3716df857fc8df3610769f275e91ae28e32953d9f1e514758b"
+      },
+      {
+        "id": "story/continuous-dated-system-break",
+        "frameCount": 192,
+        "continuous": {
+          "longestFrozenRun": 0,
+          "longestSemanticGap": 30,
+          "maxTextVelocity": 9.57748713866746,
+          "maxPanPixelsPerFrame": 0.9086538832200936,
+          "maxZoomPerFrame": 0.00044642857142851433,
+          "diagnostics": []
+        },
+        "diagnostics": 3,
+        "sha256": "f0bb81d2bdbf01585e05ae3f647e06d17a06d593ef708da68a8790f4ad63b22d"
+      },
+      {
+        "id": "story/continuous-category-swap",
+        "frameCount": 192,
+        "continuous": {
+          "longestFrozenRun": 0,
+          "longestSemanticGap": 36,
+          "maxTextVelocity": 0,
+          "maxPanPixelsPerFrame": 0.6190661148757356,
+          "maxZoomPerFrame": 0.000263937655066826,
+          "diagnostics": []
+        },
+        "diagnostics": 3,
+        "sha256": "5e93b5946c3b4570a52b4ef93aa7ce1b64d10b608ee9cc402c61981847f0384d"
+      },
+      {
+        "id": "story/continuous-motif-resolve",
+        "frameCount": 192,
+        "continuous": {
+          "longestFrozenRun": 0,
+          "longestSemanticGap": 29,
+          "maxTextVelocity": 11.109266659164055,
+          "maxPanPixelsPerFrame": 0.5459314956658913,
+          "maxZoomPerFrame": 0.0002741465816979982,
+          "diagnostics": []
+        },
+        "diagnostics": 5,
+        "sha256": "ad46b76b3b109543a650ffd30cb8d3d580cb91407c97aabeadcd305095bbb729"
+      },
+      {
+        "id": "story/v013-unequal-margins",
+        "frameCount": 192,
+        "continuous": {
+          "longestFrozenRun": 71,
+          "longestSemanticGap": 104,
+          "maxTextVelocity": 0,
+          "maxPanPixelsPerFrame": 0,
+          "maxZoomPerFrame": 0,
+          "diagnostics": [
+            {
+              "code": "frozen-run",
+              "nodes": [],
+              "frames": [121, 191],
+              "measured": 71,
+              "message": "71 frames have no compiled motion; the hard limit is 6."
+            },
+            {
+              "code": "semantic-gap",
+              "nodes": [],
+              "frames": [0, 104],
+              "measured": 104,
+              "message": "104 frames between action/response ends; the hard limit is 48."
+            },
+            {
+              "code": "semantic-gap",
+              "nodes": [],
+              "frames": [120, 191],
+              "measured": 71,
+              "message": "71 frames between action/response ends; the hard limit is 48."
+            }
+          ]
+        },
+        "diagnostics": 6,
+        "sha256": "b5687dd683ee508fddad673e0c4510f114dbef9fb0bb16a04184b195585392e0"
+      },
+      {
+        "id": "story/v013-access-constraint",
+        "frameCount": 192,
+        "continuous": {
+          "longestFrozenRun": 77,
+          "longestSemanticGap": 77,
+          "maxTextVelocity": 0,
+          "maxPanPixelsPerFrame": 0,
+          "maxZoomPerFrame": 0,
+          "diagnostics": [
+            {
+              "code": "frozen-run",
+              "nodes": [],
+              "frames": [115, 191],
+              "measured": 77,
+              "message": "77 frames have no compiled motion; the hard limit is 6."
+            },
+            {
+              "code": "semantic-gap",
+              "nodes": [],
+              "frames": [40, 114],
+              "measured": 74,
+              "message": "74 frames between action/response ends; the hard limit is 48."
+            },
+            {
+              "code": "semantic-gap",
+              "nodes": [],
+              "frames": [114, 191],
+              "measured": 77,
+              "message": "77 frames between action/response ends; the hard limit is 48."
+            },
+            {
+              "code": "label-in-motion-envelope",
+              "nodes": ["aperture-label", "side-b"],
+              "frames": [0, 0],
+              "measured": 1,
+              "message": "aperture-label intersects the full motion envelope of side-b; review optical clearance."
+            }
+          ]
+        },
+        "diagnostics": 7,
+        "sha256": "ec97f5b18771598ac9c3026702fb9e25397b6d73c90b47f65ef1e081b5757c46"
+      },
+      {
+        "id": "story/buffer-press-unequal-margins",
+        "frameCount": 192,
+        "continuous": {
+          "longestFrozenRun": 0,
+          "longestSemanticGap": 28,
+          "maxTextVelocity": 11.565754448051266,
+          "maxPanPixelsPerFrame": 0.4594447972901102,
+          "maxZoomPerFrame": 5.765374331567763e-5,
+          "diagnostics": []
+        },
+        "diagnostics": 3,
+        "sha256": "0980e16d1b762a2bb30c19c5da722d90302f154a1e6b168d4f17724370cf48b7"
+      },
+      {
+        "id": "story/v2-unequal-margins",
+        "frameCount": 192,
+        "continuous": {
+          "longestFrozenRun": 0,
+          "longestSemanticGap": 44,
+          "maxTextVelocity": 18.50597614752071,
+          "maxPanPixelsPerFrame": 0.6214895239665936,
+          "maxZoomPerFrame": 0.00022587133023699302,
+          "diagnostics": []
+        },
+        "diagnostics": 3,
+        "sha256": "782a822b3eafc750a1ed29e97683da15f2f92662371da2920c1901877ecc38c0"
+      },
+      {
+        "id": "story/calibration-pan",
+        "frameCount": 192,
+        "continuous": {
+          "longestFrozenRun": 0,
+          "longestSemanticGap": 190,
+          "maxTextVelocity": 0,
+          "maxPanPixelsPerFrame": 0,
+          "maxZoomPerFrame": 0,
+          "diagnostics": [
+            {
+              "code": "semantic-gap",
+              "nodes": [],
+              "frames": [0, 190],
+              "measured": 190,
+              "message": "190 frames between action/response ends; the hard limit is 48."
+            }
+          ]
+        },
+        "diagnostics": 1,
+        "sha256": "d1885b17ddc1048b51396134492ad1ab131c07f64af83c2f76283d22c44a1793"
+      },
+      {
+        "id": "story/template-resource-network",
+        "frameCount": 648,
+        "continuous": {
+          "longestFrozenRun": 163,
+          "longestSemanticGap": 187,
+          "maxTextVelocity": 0,
+          "maxPanPixelsPerFrame": 0,
+          "maxZoomPerFrame": 0,
+          "diagnostics": [
+            {
+              "code": "frozen-run",
+              "nodes": [],
+              "frames": [99, 261],
+              "measured": 163,
+              "message": "163 frames have no compiled motion; the hard limit is 6."
+            },
+            {
+              "code": "semantic-gap",
+              "nodes": [],
+              "frames": [0, 92],
+              "measured": 92,
+              "message": "92 frames between action/response ends; the hard limit is 48."
+            },
+            {
+              "code": "semantic-gap",
+              "nodes": [],
+              "frames": [98, 285],
+              "measured": 187,
+              "message": "187 frames between action/response ends; the hard limit is 48."
+            },
+            {
+              "code": "semantic-gap",
+              "nodes": [],
+              "frames": [285, 401],
+              "measured": 116,
+              "message": "116 frames between action/response ends; the hard limit is 48."
+            },
+            {
+              "code": "semantic-gap",
+              "nodes": [],
+              "frames": [517, 581],
+              "measured": 64,
+              "message": "64 frames between action/response ends; the hard limit is 48."
+            },
+            {
+              "code": "semantic-gap",
+              "nodes": [],
+              "frames": [587, 647],
+              "measured": 60,
+              "message": "60 frames between action/response ends; the hard limit is 48."
+            }
+          ]
+        },
+        "diagnostics": 13,
+        "sha256": "3141269df540e4f69d7d294e71363e9c9ed2dba0af49c6704f7a2e33c12f0c62"
+      },
+      {
+        "id": "story/template-unequal-access",
+        "frameCount": 312,
+        "continuous": {
+          "longestFrozenRun": 166,
+          "longestSemanticGap": 166,
+          "maxTextVelocity": 0,
+          "maxPanPixelsPerFrame": 0,
+          "maxZoomPerFrame": 0,
+          "diagnostics": [
+            {
+              "code": "frozen-run",
+              "nodes": [],
+              "frames": [146, 311],
+              "measured": 166,
+              "message": "166 frames have no compiled motion; the hard limit is 6."
+            },
+            {
+              "code": "semantic-gap",
+              "nodes": [],
+              "frames": [40, 145],
+              "measured": 105,
+              "message": "105 frames between action/response ends; the hard limit is 48."
+            },
+            {
+              "code": "semantic-gap",
+              "nodes": [],
+              "frames": [145, 311],
+              "measured": 166,
+              "message": "166 frames between action/response ends; the hard limit is 48."
+            }
+          ]
+        },
+        "diagnostics": 6,
+        "sha256": "9cf4d5f8afbc6917a5724d05ae7ee83acd1f24582b01e07f8d122786e7132f9f"
+      }
+    ]
+  },
+  "webglImageRoundingRepair": {
+    "status": "focused-passed-matrix-pending",
+    "rendererVersion": "composition-webgl2-0.36.2",
+    "problem": "Bounded image uploads used fixed-function WebGL source-over rather than the Canvas-compatible integer blend path. Overlapping SVG antialiased edges accumulated a three-byte difference.",
+    "change": "Reuse WebglPaint for bounded image compositing and share the paint instance with vector rendering; cached raster content and damage regions stay intact.",
+    "initialMatrix": {
+      "command": "pnpm test:browser:composition-story-fixtures --webgl --keep-going",
+      "status": "failed-pixels-and-deferred-timing",
+      "items": 69,
+      "frames": 14086,
+      "pixelFailures": [
+        {
+          "id": "story/continuous-evidence-boundary",
+          "frames": 192,
+          "maxDelta": 3,
+          "minPsnr": 82.59206382744034,
+          "failures": [
+            {
+              "frame": 112,
+              "delta": 3,
+              "psnr": 87.89361230218292
+            },
+            {
+              "frame": 119,
+              "delta": 3,
+              "psnr": 87.68077509040816
+            },
+            {
+              "frame": 138,
+              "delta": 3,
+              "psnr": 86.60965896200503
+            },
+            {
+              "frame": 144,
+              "delta": 3,
+              "psnr": 83.74438733425086
+            }
+          ],
+          "ratio": 4.431508677755161
+        },
+        {
+          "id": "story/v013-unequal-margins",
+          "frames": 192,
+          "maxDelta": 3,
+          "minPsnr": 56.31054745377511,
+          "failures": [
+            {
+              "frame": 0,
+              "delta": 3,
+              "psnr": 56.310754056145875
+            },
+            {
+              "frame": 1,
+              "delta": 3,
+              "psnr": 56.310754056145875
+            },
+            {
+              "frame": 2,
+              "delta": 3,
+              "psnr": 56.310754056145875
+            },
+            {
+              "frame": 3,
+              "delta": 3,
+              "psnr": 56.310754056145875
+            },
+            {
+              "frame": 4,
+              "delta": 3,
+              "psnr": 56.310754056145875
+            }
+          ],
+          "ratio": 0.4111454237028081
+        },
+        {
+          "id": "story/v013-access-constraint",
+          "frames": 192,
+          "maxDelta": 3,
+          "minPsnr": 57.14408488136613,
+          "failures": [
+            {
+              "frame": 0,
+              "delta": 3,
+              "psnr": 57.39072720518014
+            },
+            {
+              "frame": 1,
+              "delta": 3,
+              "psnr": 57.39072720518014
+            },
+            {
+              "frame": 2,
+              "delta": 3,
+              "psnr": 57.39072720518014
+            },
+            {
+              "frame": 3,
+              "delta": 3,
+              "psnr": 57.39072720518014
+            },
+            {
+              "frame": 4,
+              "delta": 3,
+              "psnr": 57.39072720518014
+            }
+          ],
+          "ratio": 0.34874641619414953
+        },
+        {
+          "id": "story/template-unequal-access",
+          "frames": 312,
+          "maxDelta": 3,
+          "minPsnr": 56.34382201368609,
+          "failures": [
+            {
+              "frame": 0,
+              "delta": 3,
+              "psnr": 56.407383882789844
+            },
+            {
+              "frame": 1,
+              "delta": 3,
+              "psnr": 56.407491859311904
+            },
+            {
+              "frame": 2,
+              "delta": 3,
+              "psnr": 56.4079754392785
+            },
+            {
+              "frame": 3,
+              "delta": 3,
+              "psnr": 56.407900316527765
+            },
+            {
+              "frame": 4,
+              "delta": 3,
+              "psnr": 56.40787214583124
+            }
+          ],
+          "ratio": 0.24982849325138595
+        },
+        {
+          "id": "passage/comparison-access/unequal-margins",
+          "frames": 334,
+          "maxDelta": 3,
+          "minPsnr": 56.310754056145875,
+          "failures": [
+            {
+              "frame": 0,
+              "delta": 3,
+              "psnr": 56.310754056145875
+            },
+            {
+              "frame": 1,
+              "delta": 3,
+              "psnr": 56.310754056145875
+            },
+            {
+              "frame": 2,
+              "delta": 3,
+              "psnr": 56.310754056145875
+            },
+            {
+              "frame": 3,
+              "delta": 3,
+              "psnr": 56.310754056145875
+            },
+            {
+              "frame": 4,
+              "delta": 3,
+              "psnr": 56.310754056145875
+            }
+          ],
+          "ratio": 0.45249429942072705
+        },
+        {
+          "id": "passage/comparison-access/unequal-access",
+          "frames": 312,
+          "maxDelta": 3,
+          "minPsnr": 56.34382201368609,
+          "failures": [
+            {
+              "frame": 0,
+              "delta": 3,
+              "psnr": 56.407383882789844
+            },
+            {
+              "frame": 1,
+              "delta": 3,
+              "psnr": 56.407491859311904
+            },
+            {
+              "frame": 2,
+              "delta": 3,
+              "psnr": 56.4079754392785
+            },
+            {
+              "frame": 3,
+              "delta": 3,
+              "psnr": 56.407900316527765
+            },
+            {
+              "frame": 4,
+              "delta": 3,
+              "psnr": 56.40787214583124
+            }
+          ],
+          "ratio": 0.25182204722886375
+        },
+        {
+          "id": "passage/linked-comparison/compare",
+          "frames": 192,
+          "maxDelta": 3,
+          "minPsnr": 56.31054745377511,
+          "failures": [
+            {
+              "frame": 0,
+              "delta": 3,
+              "psnr": 56.310754056145875
+            },
+            {
+              "frame": 1,
+              "delta": 3,
+              "psnr": 56.310754056145875
+            },
+            {
+              "frame": 2,
+              "delta": 3,
+              "psnr": 56.310754056145875
+            },
+            {
+              "frame": 3,
+              "delta": 3,
+              "psnr": 56.310754056145875
+            },
+            {
+              "frame": 4,
+              "delta": 3,
+              "psnr": 56.310754056145875
+            }
+          ],
+          "ratio": 0.41327563340511075
+        },
+        {
+          "id": "passage/linked-comparison/continue",
+          "frames": 192,
+          "maxDelta": 3,
+          "minPsnr": 56.31054745377511,
+          "failures": [
+            {
+              "frame": 0,
+              "delta": 3,
+              "psnr": 56.310754056145875
+            },
+            {
+              "frame": 1,
+              "delta": 3,
+              "psnr": 56.310754056145875
+            },
+            {
+              "frame": 2,
+              "delta": 3,
+              "psnr": 56.310754056145875
+            },
+            {
+              "frame": 3,
+              "delta": 3,
+              "psnr": 56.310754056145875
+            },
+            {
+              "frame": 4,
+              "delta": 3,
+              "psnr": 56.310754056145875
+            }
+          ],
+          "ratio": 0.4132196462975729
+        },
+        {
+          "id": "passage/linked-comparison/reset",
+          "frames": 192,
+          "maxDelta": 3,
+          "minPsnr": 56.31054745377511,
+          "failures": [
+            {
+              "frame": 0,
+              "delta": 3,
+              "psnr": 56.310754056145875
+            },
+            {
+              "frame": 1,
+              "delta": 3,
+              "psnr": 56.310754056145875
+            },
+            {
+              "frame": 2,
+              "delta": 3,
+              "psnr": 56.310754056145875
+            },
+            {
+              "frame": 3,
+              "delta": 3,
+              "psnr": 56.310754056145875
+            },
+            {
+              "frame": 4,
+              "delta": 3,
+              "psnr": 56.310754056145875
+            }
+          ],
+          "ratio": 0.40722690310320386
+        }
+      ],
+      "timingFailures": 51,
+      "log": "benchmarks/results/ce4a-story-webgl-matrix.log"
+    },
+    "focusedVerification": [
+      {
+        "command": "pnpm test:browser:composition-webgl (existing checks before adding the new regression)",
+        "status": "passed"
+      },
+      {
+        "command": "New checkWebglStoryImageRounding browser helper",
+        "status": "passed",
+        "frames": 12,
+        "maxChannelDelta": 2,
+        "includesBackwardSeeks": true
+      },
+      {
+        "command": "pnpm build and targeted eslint",
+        "status": "passed"
+      }
+    ],
+    "pending": [
+      "Full story/component WebGL matrix, all frames and repeat exports",
+      "Updated WebGL aggregate browser suite and mixed native passage acceptance"
+    ]
+  }
 }
