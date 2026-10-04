@@ -43,6 +43,13 @@ still hold before relying on them.
 
 ## Current state
 
+- **PR #33 review fixes (2026-10-05, local only):** Claude Code on
+  `claude/ce16-sfx-improvements` (worktree `.claude/worktrees/ce16-improve`)
+  adds per-request undo, anchor-preserving moves, no-op retime and worker decode
+  reuse on top of `e7f3175`. Non-browser gates pass on Node 22.23.1. Pending
+  owner decisions: push onto PR #33, run the soundtrack browser group, and the
+  ducking-detector and Lab render-retention questions in the latest entry.
+
 - **CE16 isolated implementation (`[x]`, 2026-10-05):** Codex on
   `codex/composition-ce16`, worktree
   `/Users/jjae/.codex/worktrees/composition-ce16/still-shift`, from `dee9e7b`.
@@ -141,6 +148,34 @@ _Last updated 2026-10-05 by Codex for isolated CE16 PR publication._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-05 — PR #33 review: SFX edit transactions and decode reuse
+
+- **Agent / branch:** Claude Code on `claude/ce16-sfx-improvements`, from PR #33
+  head `e7f3175`; not pushed, pending owner decision.
+- **Scope:** review-driven fixes to the CE16 soundtrack engine.
+- **Done:** one edit request is one undo entry, and only its final state is
+  validated (no-op requests add no history). An anchored `move` keeps its anchor
+  point and derives `offsetSamples`; conflicting or unanchored offsets fail with
+  `anchor-conflict`, and the Lab offset field is read-only. `retime` saves only
+  when an anchor moved (it no longer fails with `edit-schema` when none did).
+  The worker probes each asset once and decodes a reused asset's span once
+  within one project-length buffer, else per clip.
+- **Results:** on Node 22.23.1: 1,438 unit, 46 runtime, 126 integration and
+  14 depth tests; schema, boundaries, format, lint, build and ruff pass. A
+  124-clip SFX project rendered bit-identically on all 7 outputs, with worker
+  time cut from 4.3 s to 0.56 s; CE16 fixture mix hash unchanged. A slicing
+  mutation fails the new reuse test. Browser groups not run (owner browser
+  policy); `tests/browser/soundtrack.ts` assertions were updated for one-step
+  Apply undo but are unverified.
+- **Rejected / do not repeat:** Node 24 fails the CE9 bake test by one ULP and
+  depth tests time out without `uv sync`; both are environment, not regressions.
+- **Open / next:** owner decides whether to push onto PR #33 and whether to
+  allow the soundtrack browser group. Not changed (DSP output): the ducking
+  detector ignores narration clip gain/fades/automation, and Lab renders
+  write all stems to a new directory per click without pruning.
+- **Records:** [soundtrack guide](./soundtrack-project.md),
+  [PR #33](https://github.com/xxibcill/still-shift/pull/33).
 
 ### 2026-10-05 — Publish isolated CE16 as PR #33
 
