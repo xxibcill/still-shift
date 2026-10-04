@@ -43,6 +43,12 @@ still hold before relying on them.
 
 ## Current state
 
+- **CE4a continuation (`[~]`, 2026-10-05):** active on
+  `codex/composition-ce4a-completion` from CE12 `0987396`. Story shutter exposure
+  prerequisite implemented; focused unit/build checks pass. Passage composition path,
+  browser parity, Canvas timing and full verification remain before CE10.
+  [Evidence](./composition-ce4a-completion-results.json).
+
 - **CE12 motion linting (`[x]`, 2026-10-05):** complete on
   `codex/composition-ce12`, implementation `a365f26` from delivered CE9 `dee9e7b`.
   Rules, CLI lint and Lab timeline are delivered. Full `pnpm check` and all 176
@@ -132,6 +138,16 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-05 — Resume CE4a in the approved milestone sequence
+
+- **Agent / branch:** Codex on `codex/composition-ce4a-completion`, from CE12 `0987396`.
+- **Done:** audited delivered adapters; shared CE7 exposure compilation now bakes story
+  shutter samples, appearances and connector endpoints while preserving flow source time.
+- **Results:** build and five focused unit suites pass (71 tests); browser acceptance pending.
+- **Open / next:** passage composition integration, full story acceptance and milestone PR;
+  CE7 remains incomplete, CE6-P remains deferred. Pre-existing local documentation retained.
+- **Records:** [CE4a continuation evidence](./composition-ce4a-completion-results.json).
 
 ### 2026-10-05 — Complete CE12 motion linting
 

@@ -2,6 +2,7 @@ import {
   COMPOSITION_LIMITS,
   type Composition,
 } from "@still-shift/scene-contract";
+import type { StoryRenderScene } from "../../story-scene.ts";
 import type { CommerceRenderScene } from "../../commerce-scene.ts";
 import { sourceExposureTimeline } from "../../commerce-exposure.ts";
 import { componentCapabilities } from "../../component-capabilities.ts";
@@ -9,7 +10,9 @@ import { evaluatePreparedNodeAtTime } from "../../prepared-scene.ts";
 import { passageError } from "../../passage-diagnostics.ts";
 
 /** Compile every reachable shutter/history time once; rendering uses only native data. */
-export function compileCommerceExposure(scene: CommerceRenderScene):
+export function compileFamilyExposure(
+  scene: CommerceRenderScene | StoryRenderScene,
+):
   | {
       times: number[];
       motionBlur: NonNullable<Composition["motionBlur"]>;
@@ -20,6 +23,7 @@ export function compileCommerceExposure(scene: CommerceRenderScene):
   const { cuts, times } = sourceExposureTimeline(scene);
   const components = componentCapabilities(scene.componentData);
   const canHold =
+    scene.schemaVersion === "commerce-scene-1" &&
     !scene.motionModel &&
     !scene.mattes?.length &&
     !components.masks.length &&
@@ -69,3 +73,5 @@ export function compileCommerceExposure(scene: CommerceRenderScene):
     },
   };
 }
+
+export const compileCommerceExposure = compileFamilyExposure;

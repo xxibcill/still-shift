@@ -270,7 +270,7 @@ export function withMotionPath(
 ): ProviderLayer {
   const spatial = scene.spatialPaths?.find((path) => path.node === node.id);
   const morph = scene.pathMorphs?.find((path) => path.node === node.id);
-  if (!spatial && !morph && !appearance) return layer;
+  if (!spatial && !morph && !appearance && !layer.sampleTimes) return layer;
   return {
     ...layer,
     provider:

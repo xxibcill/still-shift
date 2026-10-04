@@ -1,0 +1,37 @@
+{
+  "milestone": "CE4a",
+  "status": "in-progress",
+  "date": "2026-10-05",
+  "branch": "codex/composition-ce4a-completion",
+  "base": "0987396",
+  "scope": "Complete CE4a before CE10 in the owner-approved execution sequence",
+  "audit": {
+    "parenting": "Story validation already requires group parents; no new family vocabulary is needed.",
+    "text": "Typography fields require type-1 through schema semantic validation; native shaped text is already delivered by CE4b.",
+    "delivered": "Images/states, clipped groups, path/flow providers, motion craft baking, native typography, camera, markers, effects and reusable component beat compilation exist."
+  },
+  "slices": [
+    {
+      "name": "Story shutter exposure prerequisite from CE7",
+      "changes": "Share bounded family exposure compilation; bake fractional transform, appearance and connector samples; retain authored flow source time; mark complete layer stacks for exposure.",
+      "verification": [
+        { "command": "pnpm build", "status": "passed" },
+        {
+          "command": "pnpm exec vitest run tests/unit/composition-story-adapter.test.ts tests/unit/composition-story-content.test.ts tests/unit/composition-story-effects.test.ts tests/unit/composition-commerce-adapter.test.ts tests/unit/composition-exposure.test.ts --maxWorkers=2",
+          "status": "passed",
+          "tests": 71
+        }
+      ],
+      "limits": "At most 2,000 distinct exposure samples; compiler reports comp-adapter-limit rather than truncating. CE7 remains incomplete."
+    }
+  ],
+  "pending": [
+    "Story exposure browser parity and seeks",
+    "Passage composition path",
+    "Full story and typography correctness acceptance",
+    "Canvas timing gate",
+    "Full pnpm check and CE0 frozen baselines",
+    "Milestone PR"
+  ],
+  "githubActionsEnabled": false
+}

@@ -13,7 +13,10 @@ import {
 } from "../../packages/renderer-core/src/composition/adapters/story-providers.ts";
 import { evaluateComp } from "../../packages/renderer-core/src/composition/evaluate/index.ts";
 import { compileStoryScene } from "../../packages/renderer-core/src/story-scene.ts";
-import { evaluatePreparedNode } from "../../packages/renderer-core/src/prepared-scene.ts";
+import {
+  evaluatePreparedNode,
+  evaluatePreparedNodeAtTime,
+} from "../../packages/renderer-core/src/prepared-scene.ts";
 import {
   multiplyMatrix,
   nodeMatrix,
@@ -168,22 +171,80 @@ describe("CE4a story adapter first slice", () => {
     );
   });
 
-  it("rejects unsupported features with a path instead of dropping them", () => {
-    const scene = fixture();
-    scene.motionModel = "curves-1";
-    scene.effectsVersion = "effects-1";
-    scene.effects = [{ type: "motion-blur", shutterAngle: 180, samples: 8 }];
-    try {
-      storyToComposition(scene);
-      throw new Error("expected rejection");
-    } catch (error) {
-      expect(passageDiagnostics(error)).toContainEqual(
-        expect.objectContaining({
-          code: "comp-adapter-unsupported",
-          path: "effects",
-        }),
+  it("retains schema refusal of typography fields without typography opt-in", () => {
+    const input = fixture();
+    const node = input.nodes.find((node) => node.type === "text")!;
+    Object.assign(node, { locale: "th", anchor: "baseline" });
+    expect(() => storyToComposition(input)).toThrow(/typography-opt-in/);
+  });
+
+  it("compiles story motion blur using bounded fractional source samples", () => {
+    const input = fixture();
+    input.motionModel = "curves-1";
+    input.effectsVersion = "effects-1";
+    input.effects = [
+      {
+        type: "motion-blur",
+        shutterAngle: 180,
+        samples: 4,
+        active: { start: 40, end: 80 },
+      },
+    ];
+    const scene = compileStoryScene(input);
+    const comp = storyToComposition(input);
+    expect(comp.motionBlur).toMatchObject({
+      enabled: true,
+      shutterAngle: 180,
+      samples: 4,
+      inPoint: 40,
+      outPoint: 80,
+    });
+    expect(validateComposition(comp).ok).toBe(true);
+    for (const layer of comp.layers) {
+      expect(layer.motionBlur).toBe(true);
+      expect(layer.sampleTimes?.length).toBeLessThanOrEqual(
+        COMPOSITION_LIMITS.maxKeys,
       );
     }
+    const times = comp.layers[0]!.sampleTimes!;
+    expect(times.some((time) => time % 1 !== 0)).toBe(true);
+    for (const time of [...times].reverse()) {
+      const states = new Map(
+        evaluateComp(comp, time).layers.map((layer) => [layer.id, layer]),
+      );
+      for (const node of scene.nodes) {
+        const expected = evaluatePreparedNodeAtTime(scene, node, time);
+        expect(states.get(node.id)!.transform.opacity).toBeCloseTo(
+          expected.opacity,
+          10,
+        );
+        const expectedMatrix = nodeMatrix(node, expected);
+        states
+          .get(node.id)!
+          .localMatrix.forEach((value, index) =>
+            expect(value).toBeCloseTo(expectedMatrix[index]!, 10),
+          );
+      }
+    }
+    expect(
+      comp.layers
+        .filter((layer) => layer.type === "provider" && "flow" in layer.params)
+        .every(
+          (layer) =>
+            layer.type === "provider" &&
+            layer.provider === "component.flow@1.1.0",
+        ),
+    ).toBe(true);
+  });
+
+  it("does not add an exposure clock for a zero-angle shutter", () => {
+    const input = fixture();
+    input.motionModel = "curves-1";
+    input.effectsVersion = "effects-1";
+    input.effects = [{ type: "motion-blur", shutterAngle: 0, samples: 4 }];
+    const comp = storyToComposition(input);
+    expect(comp.motionBlur).toBeUndefined();
+    expect(comp.layers.every((layer) => !layer.sampleTimes)).toBe(true);
   });
 
   it.each([1500, COMPOSITION_LIMITS.maxKeys])(
