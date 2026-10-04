@@ -52,6 +52,8 @@ still hold before relying on them.
   explicit limits and no unexpected failures; existing craft errors remain visible.
   Prior local work retained; CE6-P and CE9-F1 remain deferred. CE10 still needs CE4a.
   [Completion record](./composition-engine-plan.md#ce12-completion-record-2026-10-05).
+  [PR #34](https://github.com/xxibcill/still-shift/pull/34) is open and mergeable, based on CE9 while PR #32
+  awaits merge. Owner review and merge remain pending.
 
 - **PR #32 printer fix (2026-10-04):** re-review of delivered `e81a146` found
   one remaining P2 print/parse length defect and no standards findings.
@@ -136,13 +138,14 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
 - **Agent / branch:** Codex on new `codex/composition-ce12` from `dee9e7b`.
 - **Scope / done:** `a365f26` delivers rules, CLI lint, timeline and harnesses;
   `65b9451` strengthens timing observations; `a4586fe` fixes Lab port selection.
-  Commits remain local; prior work retained.
+  Published in [PR #34](https://github.com/xxibcill/still-shift/pull/34); prior work retained.
 - **Results:** full `pnpm check` passes (1,451 unit, 46 runtime, 116 integration;
   all browser groups and 176 baselines / 36,061 frames). Stillness is 79 vs zero;
   corpus has 153 state and 23 pixel-only reports with no unexpected failures.
 - **Rejected / do not repeat:** snapshot workspace links must stay inside it;
   sleep interruptions and failed attempts are recorded. Timing limits remain unchanged.
-- **Open / next:** CE4a gates CE10; CE6-P and CE9-F1 remain deferred.
+- **Open / next:** owner review/merge; CE9 PR #32 is the parent. CE4a gates CE10;
+  CE6-P and CE9-F1 remain deferred.
 - **Records:** [Completion](./composition-engine-plan.md#ce12-completion-record-2026-10-05),
   [verification](./composition-ce12-verification-results.json),
   [corpus](./composition-ce12-lint-results.json), [stillness](./composition-ce12-stillness-results.json).
