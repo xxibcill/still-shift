@@ -1,10 +1,25 @@
-# CE16 completion audit — 2026-10-04
+# CE16 completion audit — 2026-10-05
 
-CE16's feature implementation is present on isolated `codex/composition-ce16`,
-from `dee9e7b`. It remains `[~]` while the full repository gate and frozen rendered
-baselines are running. The owner explicitly authorized automated browser verification
-for this completion pass on 2026-10-04; routine production stays command/API/file-based.
-This resolves the verification-policy conflict and does not waive required checks.
+CE16 is technically complete (`[x]`) on isolated `codex/composition-ce16`, from
+`dee9e7b`. Full local `pnpm check` passed on committed implementation `974dfdf`,
+including 42 browser groups and all 176 frozen baseline items / 36,061 frames,
+without regeneration. The owner authorized automated browser verification for this
+completion pass on 2026-10-04; routine production stays command/API/file-based.
+The earlier unapproved browser-policy breach remains recorded below.
+
+The full gate passed 1,436 unit, 46 runtime, 125 integration and 14 Python depth
+tests, plus schema, package boundaries, format, lint, build, toolchain and browser
+checks. The real CE16 browser group passed again within that gate: all 384,000
+stereo float32 samples/channel decoded exactly, editor edits persisted through
+shared APIs, playback/seek/clear worked, and full/range passage mux audio matched
+independently encoded canonical renders. AAC itself is not claimed lossless.
+A final command-only recheck independently confirmed current source hashes,
+exact reload/relocation PCM, unchanged narration and unaffected stems.
+
+The worktree was clean and frozen during the full run. These closing documentation
+updates are the only subsequent changes. No listening, human audiovisual QA or
+visible GUI inspection was performed. Local opt-in runtime packaging is documented;
+redistributing GPL/transitive backend binaries remains a future owner decision.
 
 ## Requirement evidence
 
@@ -72,17 +87,16 @@ work remain untouched.
 
 ## Definition of done audit
 
-| Plan item                               | Status                                                                                                                     |
-| --------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
-| 1: checklist accounted for              | Feature checklist ticked; supported scope and unperformed GUI/visual export evidence stated above.                         |
-| 2: acceptance and verification recorded | Scoped command/audio acceptance passed. Actual listening/audiovisual QA unperformed and not claimed.                       |
-| 3: full `pnpm check`                    | Pending. The corrected audio tier does not satisfy the full browser-containing command.                                    |
-| 4: CE0 rendered baselines               | Pending. Inventory/provenance/timing tests pass; no full pixel baseline rerun or regeneration.                             |
-| 5: reference/user documentation         | Updated with contract fields, diagnostics, commands and owner-facing controls.                                             |
-| 6: output versions                      | New schema `soundtrack-project-1`, worker `soundtrack-worker-1`, DSP `soundtrack-dsp-1`; legacy output behavior preserved. |
-| 7: tracker `[x]` and evidence           | Pending full repository and frozen-baseline success under the authorized exception. Tracker remains `[~]`.                 |
+| Plan item                               | Status                                                                                                                                            |
+| --------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1: checklist accounted for              | Passed: all A/B items accounted for; supported controls and unperformed human review stated above.                                                |
+| 2: acceptance and verification recorded | Passed: command/audio lifecycle, real browser preview/editor and full/range picture/mux verification recorded. Human creative review unperformed. |
+| 3: full `pnpm check`                    | Passed locally on `974dfdf`; exit 0. Full command and log checksum retained in evidence.                                                          |
+| 4: CE0 rendered baselines               | Passed: 176 items / 36,061 frames in 286.8 seconds on pinned SwiftShader; tracked references unchanged from base, no regeneration.                |
+| 5: reference/user documentation         | Updated with contract fields, diagnostics, commands and owner-facing controls.                                                                    |
+| 6: output versions                      | New schema `soundtrack-project-1`, worker `soundtrack-worker-1`, DSP `soundtrack-dsp-1`; legacy output behavior preserved.                        |
+| 7: tracker `[x]` and evidence           | Passed: owner, isolated branch, `[x]` and linked completion evidence recorded.                                                                    |
 
-The owner decision is resolved: automated browser verification is authorized for
-this completion pass only. Full `pnpm check` and frozen baseline success remain
-required before `[x]`. The earlier browser-policy breach stays recorded separately.
-No listening or human audiovisual acceptance is implied by automated checks.
+The owner's one-time verification exception resolved the policy conflict; all
+required technical gates now pass. The earlier browser-policy breach stays recorded
+separately. No listening or human audiovisual acceptance is implied by these checks.

@@ -215,7 +215,8 @@ edit/render API. Evaluated candidates: `@waveform-playlist/engine` 13.6.0 and `c
 collision-constrained clips and separate snapshot history. Its component package
 name is `@dawcore/components`, not the nonexistent `@waveform-playlist/web-component`.
 We retained a small vanilla TypeScript view to support project overlaps and one
-persisted history. No candidate package or native/browser playout was adopted.
+persisted history. No candidate package’s playout or DSP engine was adopted;
+native playback uses the rendered mix.
 Sources: [engine package](https://www.npmjs.com/package/@waveform-playlist/engine/v/13.6.0),
 [components package](https://www.npmjs.com/package/@dawcore/components/v/0.0.37).
 

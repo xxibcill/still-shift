@@ -2,7 +2,7 @@
   "date": "2026-10-04",
   "milestone": "CE16",
   "technicalLifecycle": "passed",
-  "ce16Integration": "implemented; command/audio verification recorded",
+  "ce16Integration": "complete; full local repository gate, frozen baselines and audio lifecycle passed",
   "branch": "codex/composition-ce16",
   "base": "dee9e7b4c35256e298d8168b635aacd934a4a4ae",
   "worktree": "/Users/jjae/.codex/worktrees/composition-ce16/still-shift",
@@ -659,7 +659,7 @@
         "exitCode": 1,
         "log": "benchmarks/results/composition-ce16/ce16-full-check-browser-authorized-complete.log",
         "diagnostic": "story-acting.test.ts timed out waiting 30 seconds for passage-text browser runtime while a separate focused browser job was also running.",
-        "resolution": "Serial isolated recheck and full gate rerun required; cause not yet established."
+        "resolution": "Unchanged isolated recheck passed all three story-acting tests, and the frozen serial full pnpm check passed. Original timeout cause remains unestablished."
       },
       {
         "stage": "new browser test URL assertion",
@@ -691,18 +691,16 @@
         "exitCode": 1,
         "log": "benchmarks/results/composition-ce16/ce16-full-check-final.log",
         "diagnostic": "Existing dolly cinematic test timed out waiting for playback scrub to advance.",
-        "resolution": "Unchanged pnpm test:browser:dolly passes alone (23 frame comparisons); final full run will use frozen files with no parallel work."
+        "resolution": "Unchanged standalone dolly recheck passed 23 comparisons; frozen serial full pnpm check also passed dolly and all remaining gates."
       }
     ],
     "unperformed": [
-      "Full pnpm check success",
-      "Full frozen browser-rendered composition baseline rerun",
       "Listening",
       "Human audiovisual QA",
       "Visible GUI inspection"
     ],
     "baselinePolicy": "No baseline regeneration; visual rendering algorithms and fixtures unchanged",
-    "milestoneClosure": "Owner conflict resolved by one-time automated browser exception; full pnpm check and frozen baseline pass still required.",
+    "milestoneClosure": "All CE16 technical acceptance and repository Definition-of-done gates passed under the one-time browser verification authorization. Creative listening/audiovisual acceptance remains unperformed.",
     "baselineInventoryTests": {
       "command": "pnpm exec vitest run tests/unit/composition-baseline-inventory.test.ts tests/unit/composition-baseline-regeneration.test.ts tests/unit/composition-baseline-timings.test.ts --no-file-parallelism",
       "exitCode": 0,
@@ -747,7 +745,9 @@
       "command": "STILL_SHIFT_SOUNDTRACK_RESULTS=benchmarks/results/composition-ce16/integration-final pnpm soundtrack:verify --verify-only",
       "exitCode": 0,
       "result": "All current whole-file original/packaged source hashes match; exact decoded reload, relocation, unchanged narration, unaffected stems and unity reconstruction.",
-      "log": "benchmarks/results/composition-ce16/ce16-current-source-and-pcm.log"
+      "log": "benchmarks/results/composition-ce16/ce16-closeout-source-and-pcm.log",
+      "date": "2026-10-05",
+      "logSha256": "sha256:acdee24075e3095bafe0b381e602728ff388a0ae93df00978028df873b9f6cd3"
     },
     "completionAudit": "docs/composition-ce16-completion-audit.md",
     "browserPolicy": {
@@ -818,8 +818,132 @@
     },
     "fullRepository": {
       "command": "PATH=/Users/jjae/.nvm/versions/node/v22.23.1/bin:$PATH UV_NO_SYNC=1 UV_CACHE_DIR=/private/tmp/still-shift-ce16-uv-cache pnpm check",
-      "status": "Running; not yet complete",
-      "log": "benchmarks/results/composition-ce16/ce16-full-check-frozen.log"
+      "status": "passed",
+      "log": "benchmarks/results/composition-ce16/ce16-full-check-frozen.log",
+      "exitCode": 0,
+      "date": "2026-10-05",
+      "verifiedCommit": "974dfdfaf89aac0a74049760f6c7fd120b72b693",
+      "unitFiles": 129,
+      "unitTests": 1436,
+      "runtimeFiles": 9,
+      "runtimeTests": 46,
+      "integrationFiles": 33,
+      "integrationTests": 125,
+      "depthTests": 14,
+      "browserGroups": [
+        "test:browser:soundtrack",
+        "test:browser:depth",
+        "test:browser:vertical-image",
+        "test:browser:export",
+        "test:browser:cli",
+        "test:browser:batch",
+        "test:browser:illustrated",
+        "test:browser:illustrated:vertical",
+        "test:browser:cinematic",
+        "test:browser:cinematic:vertical",
+        "test:browser:threshold",
+        "test:browser:dolly",
+        "test:browser:lateral",
+        "test:browser:reveal",
+        "test:browser:story",
+        "test:browser:story:activity",
+        "test:browser:story:continuous",
+        "test:browser:passage:authoring",
+        "test:browser:lab-session",
+        "test:browser:commerce",
+        "test:browser:commerce-components",
+        "test:browser:commerce-effects",
+        "test:browser:commerce-spatial",
+        "test:browser:reusable-components",
+        "test:browser:reusable-package",
+        "test:browser:reusable-behavior-package",
+        "test:browser:reusable-timing-package",
+        "test:browser:typography",
+        "test:browser:typography:fixtures",
+        "test:browser:composition-evaluator",
+        "test:browser:composition-expressions",
+        "test:browser:composition",
+        "test:browser:composition-webgl",
+        "test:browser:composition-webgl-export",
+        "test:browser:composition-exposure",
+        "test:browser:composition-effects",
+        "test:browser:composition-story-adapter",
+        "test:browser:composition-story-fixtures",
+        "test:browser:composition-commerce-adapter",
+        "test:browser:composition-typography-adapter",
+        "test:browser:composition-provider-typography",
+        "test:browser:composition-baselines"
+      ],
+      "logSha256": "sha256:a899959438bd80ecd2aa4b37dc33e1d2d9c60c1836b900638896537f65f3588c",
+      "workingTreeDuringRun": "Frozen and clean; no concurrent edits or additional browser jobs",
+      "soundtrackBrowser": {
+        "resultsPath": "benchmarks/results/composition-ce16/browser-RGq3lR/results.json",
+        "resultsSha256": "sha256:6e437b314c8013a56d23260065bb336ffd2c312b5aae3f0d21e18a7b561e15e7",
+        "results": {
+          "root": "/Users/jjae/.codex/worktrees/composition-ce16/still-shift/benchmarks/results/composition-ce16/browser-RGq3lR",
+          "browserVerification": "owner-authorized one-time pass",
+          "nativeDecode": {
+            "sampleRate": 48000,
+            "channels": 2,
+            "samplesPerChannel": 384000,
+            "differingSamples": 0,
+            "maxSampleError": 0
+          },
+          "editor": {
+            "savedRevision": 10,
+            "edits": [
+              "move",
+              "gain",
+              "trim",
+              "hold automation",
+              "mute",
+              "solo",
+              "undo",
+              "redo"
+            ],
+            "staleEditRejected": true,
+            "previewInvalidated": true
+          },
+          "passagePreview": {
+            "savedRevision": 10,
+            "starts": [
+              {
+                "args": [0.050666666666666665, 2.5, 5.5],
+                "length": 384000,
+                "rate": 48000,
+                "channels": 2
+              }
+            ],
+            "clearReturnsToLegacy": true
+          },
+          "passageExport": {
+            "fullFrames": 192,
+            "rangeFrames": 24,
+            "rangePCMExact": true,
+            "deliveryDecodeMatchesIndependentEncode": {
+              "full": "SHA256=4ef9f3d20444786a460ef93a8ba682a83f80158ef73000d29a249a7a5de3dc9f",
+              "range": "SHA256=4ac2a054b6cd54d66adac6e807b8e1ba3a6d0f2895421ec37607d9be38a5bc68"
+            },
+            "revision": 10
+          },
+          "ok": true
+        }
+      },
+      "familyAdapterChecks": {
+        "canvasStory": {
+          "items": 68,
+          "frames": 13894
+        },
+        "canvasCommerce": {
+          "items": 127,
+          "frames": 28200
+        },
+        "canvasTypography": {
+          "items": 20,
+          "frames": 3367
+        },
+        "scope": "Existing acceptance tolerances; predefined full gate only. Deferred CE6-P WebGL performance matrices were not resumed."
+      }
     },
     "dollyRecheck": {
       "command": "pnpm test:browser:dolly",
@@ -829,7 +953,29 @@
     },
     "sourceVerifierCorrection": {
       "diagnostic": "New current-source check initially resolved packaged paths relative to render snapshot, which is not the authoring project directory.",
-      "resolution": "Use and validate manifest identityInputs resolved source paths; all current hashes match."
+      "resolution": "Use and validate manifest identityInputs resolved source paths; all current hashes match.",
+      "command": "STILL_SHIFT_SOUNDTRACK_RESULTS=benchmarks/results/composition-ce16/integration-final pnpm soundtrack:verify --verify-only",
+      "initialExitCode": 1,
+      "stage": "current-source hash verification",
+      "failedArtifact": "benchmarks/results/composition-ce16/integration-final/relocated/project.json",
+      "retainedDiagnostic": "Tool transcript: FileNotFoundError resolving relocated/assets relative to render snapshot; no separate initial failure log."
+    },
+    "renderedBaselines": {
+      "command": "pnpm test:browser:composition-baselines (within pnpm check)",
+      "exitCode": 0,
+      "items": 176,
+      "frames": 36061,
+      "elapsedSeconds": 286.8,
+      "renderer": "ANGLE Vulkan SwiftShader",
+      "fingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+      "platform": "darwin-arm64",
+      "regenerated": false,
+      "trackedReferencesUnchangedFromBase": true,
+      "referenceHashes": {
+        "tests/visual/composition-baselines/fixtures.json": "sha256:47d05d3894efd55efef2e19bad69d04db226f32c393afe0f87d911d25bec5216",
+        "tests/visual/composition-baselines/darwin-arm64.json": "sha256:25c2465f27c57121ef1623ee48477d9ee52757a06b0e7b20a8458b3e206b4a79"
+      },
+      "log": "benchmarks/results/composition-ce16/ce16-full-check-frozen.log"
     }
   },
   "backendProofLimitations": [
@@ -1463,11 +1609,12 @@
     "measurementMethod": "CLI monotonic wall time includes preflight, calibration and worker. Worker wallSeconds starts after calibration. RUSAGE_SELF peak includes worker/calibration but excludes FFmpeg children; no speed advantage claimed."
   },
   "limitations": [
-    "Full repository gate is not confirmed passed. This verifier checks only the audio lifecycle.",
     "No listening or human audiovisual QA performed; automated technical checks are separate.",
     "Earlier unapproved indirect headless-browser use remains recorded. The owner later authorized automated browser verification for the completion pass only.",
     "Local opt-in pinned Python runtime only; GPL/transitive distribution decision remains pending. No backend dependency binaries bundled.",
     "Only causal built-in high/low-pass DSP is accepted, with per-path onset probes. External plugins and nonzero latency compensation are unsupported.",
     "No drag handles or native browser DSP path adopted; explicit numeric/JSON edits share the same atomic API and preview uses rendered audio."
-  ]
+  ],
+  "completionDate": "2026-10-05",
+  "milestoneStatus": "complete"
 }

@@ -43,22 +43,21 @@ still hold before relying on them.
 
 ## Current state
 
-- **CE16 isolated implementation (`[~]`, 2026-10-04):** Codex on
+- **CE16 isolated implementation (`[x]`, 2026-10-05):** Codex on
   `codex/composition-ce16`, worktree
   `/Users/jjae/.codex/worktrees/composition-ce16/still-shift`, from `dee9e7b`.
-  CE16-A technical lifecycle passed; CE16-B schema, shared edits/CLI, worker,
-  ducking, optional layer view and passage integration implemented.
-  Corrected command-only gates pass (1,436 unit / 46 runtime / 19 audio integration /
-  14 depth; focused 35). Preview lifecycle, held automation and duplicate anchors
-  repaired. Earlier broad tier indirectly launched headless browsers; that policy
-  breach is recorded, not erased. Owner authorized automated browser verification
-  for this completion pass only (2026-10-04). Full repository checks, frozen browser
-  baselines and focused real-browser soundtrack verification are now in flight.
-  Production soundtrack operations remain command/API/file-based.
-  [Completion audit](./composition-ce16-completion-audit.md).
-  All reload PCM and unaffected edited stems are exact; narration unchanged.
-  Dependency/license evidence retained; distribution packaging remains pending.
-  Original checkout and parallel CE12 work untouched.
+  Backend lifecycle, shared project/CLI/API, worker, ducking, optional timeline
+  and passage integration technically complete. Full local `pnpm check` passes:
+  1,436 unit / 46 runtime / 125 integration / 14 depth; 42 browser groups.
+  All 176 frozen baseline items / 36,061 frames pass without regeneration.
+  Native float32 decoding exact; editor, playback and full/range mux verified.
+  Final current source hashes and reload/relocation/unaffected stems/narration exact.
+  Owner allowed automated browser checks for this completion pass only; routine
+  production stays command/API/file-based. Earlier browser-policy breach retained.
+  No technical closure blockers. Human listening/AV QA unperformed; future backend
+  binary distribution needs a packaging decision. No dependency binaries bundled.
+  Original checkout and parallel CE12 work untouched; commits remain local.
+  [Completion audit](./composition-ce16-completion-audit.md),
   [CE16 scope](./composition-engine-plan.md#ce16--programmable-soundtrack-project-and-timeline).
 
 - **PR #32 printer fix (2026-10-04):** re-review of delivered `e81a146` found
@@ -80,7 +79,7 @@ still hold before relying on them.
   [Fix evidence](./pr-32-fix-results.json).
   [Review evidence](./pr-32-review-results.json).
 
-_Last updated 2026-10-04 by Codex for the isolated CE16 completion audit._
+_Last updated 2026-10-05 by Codex for isolated CE16 technical closure._
 
 - **PR #32 conflict resolution (2026-10-04):** merged `main` at `3413780` into
   PR head `a0708ba` and pushed merge `05033c8`, retaining CE9 expressions and
@@ -138,6 +137,24 @@ _Last updated 2026-10-04 by Codex for the isolated CE16 completion audit._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-05 — Complete isolated CE16 technical verification
+
+- **Agent / branch:** Codex on isolated `codex/composition-ce16`, from `dee9e7b`.
+- **Done:** `6e0e74d` fixes narrow module loading and adds real browser verification;
+  `974dfdf` strengthens current source checks. Closing records mark CE16 `[x]`.
+- **Results:** full local `pnpm check` exit 0 on frozen `974dfdf`: 1,436 unit,
+  46 runtime, 125 integration, 14 depth tests and 42 browser groups. All 176 frozen
+  baselines / 36,061 frames pass without regeneration; native stereo decode exact,
+  editor/playback/full/range mux pass. Final source/PCM recheck also passes.
+- **Rejected / do not repeat:** broad command-only import filtering admitted
+  browsers; use the explicit audio allowlist. Retained loader/alias/test-fixture
+  failures are resolved; unchanged timeout cases also pass in the final full gate.
+- **Open / limits:** no technical blockers; listening/human AV QA unperformed.
+  Future binary distribution needs packaging review. Owner browser exception was
+  for this completion pass only; production requires no GUI. No Actions or CE12 edits.
+- **Records:** [audit](./composition-ce16-completion-audit.md),
+  [results](./composition-ce16-verification-results.json), [guide](./soundtrack-project.md).
 
 ### 2026-10-04 — Verify CE16 under the owner’s one-time browser exception
 

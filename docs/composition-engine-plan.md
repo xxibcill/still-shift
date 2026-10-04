@@ -380,7 +380,7 @@ sign and for time remap. It does not change the layer's composition-time visibil
 | CE13  | Video, image-sequence and audio layers          | D      | CE3, CE7             |                        |                                     | `[ ]`  |                                                                                    |
 | CE14  | Mesh warp and puppet pins                       | D      | CE6                  |                        |                                     | `[ ]`  |                                                                                    |
 | CE15  | Output formats, caching and parallel rendering  | D      | CE3                  |                        |                                     | `[ ]`  |                                                                                    |
-| CE16  | Programmable soundtrack project and timeline    | D      | CE3; CE16-A          | Codex                  | `codex/composition-ce16`            | `[~]`  | [CE16 scope and gates](#ce16--programmable-soundtrack-project-and-timeline)        |
+| CE16  | Programmable soundtrack project and timeline    | D      | CE3; CE16-A          | Codex                  | `codex/composition-ce16`            | `[x]`  | [CE16 scope and gates](#ce16--programmable-soundtrack-project-and-timeline)        |
 
 ### Phases and parallel work
 
@@ -3717,12 +3717,14 @@ verify narration, sound cues, SFX, ambience and BGM through CLIs, APIs, librarie
 files. An optional embedded timeline lets the owner inspect and edit the same saved
 project. Automated production works without opening the editor.
 
-**Status:** `[~]` in progress (2026-10-04), Codex on `codex/composition-ce16`
-in an isolated worktree from `dee9e7b`. CE16-A lifecycle passed;
-CE16-B features and command-only verification are implemented. Full repository
-browser/baseline closure is being verified under the owner-authorized one-time
-headless-browser exception. Original checkout/CE12 work preserved. The [completion audit](./composition-ce16-completion-audit.md)
-records an earlier indirect headless-browser verification breach and the corrected audio-only tier.
+**Status:** `[x]` technically complete (2026-10-05), Codex on isolated
+`codex/composition-ce16` from `dee9e7b`. CE16-A lifecycle and CE16-B integration
+passed, including full local `pnpm check`, real browser audio/editor/export checks
+and 176 frozen baseline items / 36,061 frames without regeneration. The owner
+allowed automated headless-browser verification for this completion pass only.
+Production remains command/API/file-based. Original checkout/CE12 work preserved.
+The [completion audit](./composition-ce16-completion-audit.md) records exact scope,
+unperformed creative review and the earlier browser-policy breach.
 
 **Research handoff:** [CLI and Embedded Audio Engines for Still Shift](</Users/jjae/Documents/obsidian/ai-business/history-offstage/04 Research/Completed Studies/2026-10-03 - CLI and Embedded Audio Engines for Still Shift.md>)
 (2026-10-03, documentary research only). Proposed roles:
@@ -3915,14 +3917,14 @@ unperformed unless they actually occurred, and never claim them from ffprobe/PCM
 - **Commands:** `pnpm soundtrack:proof --verify-only` checks retained decoded outputs.
   `pnpm soundtrack:proof` performs three renders in a fresh results location;
   existing results are protected. See [prototype guide](./composition-ce16-backend-proof.md).
-- **Status:** CE16 remains `[~]`. This is the isolated backend proof, not completed
-  CE16-B integration at the time of that proof; see the subsequent implementation
+- **Historical status:** CE16 was `[~]` at this isolated backend proof, before
+  CE16-B integration; see the subsequent implementation
   record below. Distribution packaging remains pending. Dependencies are
   not bundled or adopted into the production runtime. No listening or audiovisual
   QA performed; command-only backend proof. Later integration verification policy
   correction is documented in the completion audit.
 
-### CE16 shared project implementation record (2026-10-04)
+### CE16 shared project implementation and closure record (2026-10-05)
 
 - **Owner / branch:** Codex on the same isolated `codex/composition-ce16` worktree.
 - **Implemented:** bounded `soundtrack-project-1`, shared validated edits with
@@ -3939,21 +3941,29 @@ unperformed unless they actually occurred, and never claim them from ffprobe/PCM
   four unrelated stems; narration unchanged and unity buses reconstruct exactly.
   Measured commands, worker memory and comparisons are in
   [evidence](./composition-ce16-verification-results.json).
-- **Verification:** toolchain + command-only gates pass: 1,436 unit, 46 runtime,
-  19 audio-only integration and 14 depth tests; focused final group 35 tests.
-  Commands/failures/remedies are recorded in evidence. Full `pnpm check`
-  and browser baselines are being verified under the owner-authorized one-time
-  browser exception; this command-only tier does not certify those gates. No listening, audiovisual QA or GUI
-  inspection. Earlier broad integration runs did launch headless browsers indirectly;
-  the corrected tier and historical policy breach are recorded in the
-  [completion audit](./composition-ce16-completion-audit.md). No baseline regeneration. GPL/transitive distribution decision
-  remains pending; runtime is local opt-in and no backend binaries are bundled.
+- **Verification:** full local `pnpm check` passes on implementation `974dfdf`:
+  1,436 unit, 46 runtime, 125 integration, 14 depth tests and 42 browser groups.
+  All 176 frozen baseline items / 36,061 frames pass without regeneration.
+  Focused audio group: 35 tests. Corrected command-only tier: three audio integration
+  suites / 19 tests. Real browser decoding has zero differing float32 samples;
+  playback/seek/clear, editor persistence and 192-frame full / 24-frame range picture
+  exports pass. Delivery decodes match independently encoded canonical renders.
+  Final source-hash/reload/relocation/stem/narration recheck passes.
+  Commands, log hashes and earlier failures/remedies are retained in evidence.
+  No listening, human audiovisual QA or visible GUI inspection performed.
+  Earlier unapproved indirect browser work remains recorded in the
+  [completion audit](./composition-ce16-completion-audit.md); later browser checks
+  used the owner's one-time authorization. Deferred CE6-P performance work stays
+  deferred. GPL/transitive distribution decision remains pending; runtime is local
+  opt-in and no backend binaries are bundled.
 - **Guide:** [setup, contract, commands, recovery, preview and licensing](./soundtrack-project.md).
 
-**Completion record:** _CE16-A and CE16-B feature slices implemented and technically
-verified through commands/libraries/files/APIs. Tracker remains `[~]` until the full
-repository Definition-of-done verification is resolved; no full-check/baseline pass
-or creative acceptance is claimed._
+**Completion record:** _CE16-A and CE16-B technical acceptance and all repository
+Definition-of-done gates passed on the isolated branch. Tracker `[x]`;
+[completion audit](./composition-ce16-completion-audit.md) and
+[verification results](./composition-ce16-verification-results.json) retain commands,
+versions, source hashes, measurements, failures and limitations. Production requires
+no editor; creative listening/audiovisual acceptance remains unperformed._
 
 ---
 
