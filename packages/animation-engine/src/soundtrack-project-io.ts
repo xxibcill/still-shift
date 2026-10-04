@@ -21,7 +21,7 @@ import {
   editSoundtrackProject,
   resolveSoundtrackAnchors,
   type SoundtrackTiming,
-} from "@still-shift/renderer-core";
+} from "@still-shift/renderer-core/soundtrack";
 
 export async function soundtrackChecksum(path: string) {
   const hash = createHash("sha256");

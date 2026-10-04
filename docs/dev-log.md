@@ -51,10 +51,10 @@ still hold before relying on them.
   Corrected command-only gates pass (1,436 unit / 46 runtime / 19 audio integration /
   14 depth; focused 35). Preview lifecycle, held automation and duplicate anchors
   repaired. Earlier broad tier indirectly launched headless browsers; that policy
-  breach is recorded, not erased. Closure is blocked on the owner decision because
-  full repository gates drive a browser. Three consecutive impasse audits found no
-  changed state or remaining authorized implementation work; the goal is blocked
-  pending that decision, not complete.
+  breach is recorded, not erased. Owner authorized automated browser verification
+  for this completion pass only (2026-10-04). Full repository checks, frozen browser
+  baselines and focused real-browser soundtrack verification are now in flight.
+  Production soundtrack operations remain command/API/file-based.
   [Completion audit](./composition-ce16-completion-audit.md).
   All reload PCM and unaffected edited stems are exact; narration unchanged.
   Dependency/license evidence retained; distribution packaging remains pending.
@@ -138,6 +138,24 @@ _Last updated 2026-10-04 by Codex for the isolated CE16 completion audit._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-04 — Verify CE16 under the owner’s one-time browser exception
+
+- **Agent / branch:** Codex on isolated `codex/composition-ce16`, after `07bf912`.
+- **Authorization:** owner explicitly allowed automated browser verification for
+  this checking pass. Routine production remains command/API/file-based.
+- **Done:** narrow soundtrack module entry fixes strip-only Vite loading; new
+  local browser group covers shared edits, exact 384,000-sample stereo native decode,
+  playback/seek/clear and 192-frame/full + 24-frame/range passage mux audio.
+- **Results:** focused browser checks, all 35 audio tests and Python checks pass.
+  Full gate passes 1,436 unit, 46 runtime, 125 integration and 14 depth tests so far.
+- **In flight:** remaining full `pnpm check` browser groups and frozen CE0 baselines.
+- **Failures:** retained loader/alias failures, fixture corrections and one visual
+  timeout. Timed-out case passes alone; final gate is running serially.
+- **Constraints:** no GitHub Actions, provider calls, purchases, source changes or
+  primary checkout/CE12 edits. Earlier headless-browser breach stays recorded.
+- **Records:** [CE16 audit](./composition-ce16-completion-audit.md),
+  [results](./composition-ce16-verification-results.json).
 
 ### 2026-10-04 — Audit CE16 completion and correct browser verification selection
 

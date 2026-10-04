@@ -125,7 +125,9 @@ weaken assertions to work around sandbox restrictions.
 
 ## CE16 command-only verification
 
-CE16 explicitly prohibits browser/desktop driving. Run `pnpm check:soundtrack`:
+Routine CE16 operations prohibit browser/desktop driving. The owner authorized
+automated browser verification for the completion pass only (2026-10-04).
+Run `pnpm check:soundtrack` for the command-only tier:
 fast schema/boundary/format/lint/build/unit checks, runtime tests, command integration,
 depth tests and Python soundtrack checks. `pnpm test:integration:command` selects
 an explicit allowlist of the three audited audio-only integration suites; it does
@@ -134,6 +136,8 @@ rejected because other suites launch headless browsers indirectly through render
 libraries or child processes. `pnpm test:soundtrack` focuses on model/PCM/API and
 legacy passage audio. `pnpm soundtrack:verify` retains the measured 60-second CLI
 lifecycle, or checks it with `--verify-only`. Full `pnpm check`, visual UI suites
-and frozen browser baselines are not claimed passed by this tier. The
+and frozen browser baselines are separate gates. `pnpm test:browser:soundtrack`,
+registered in `pnpm test`, checks real editor persistence, native decoding, playback/seek/clear
+and passage mux delivery against independent audio renders under that exception. The
 [CE16 evidence](./composition-ce16-verification-results.json) separates technical
 checks from unperformed listening, audiovisual QA and GUI inspection.

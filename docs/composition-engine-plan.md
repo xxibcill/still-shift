@@ -3720,7 +3720,8 @@ project. Automated production works without opening the editor.
 **Status:** `[~]` in progress (2026-10-04), Codex on `codex/composition-ce16`
 in an isolated worktree from `dee9e7b`. CE16-A lifecycle passed;
 CE16-B features and command-only verification are implemented. Full repository
-browser/baseline closure remains pending under the zero-Computer-Use constraint. Original checkout/CE12 work preserved. The [completion audit](./composition-ce16-completion-audit.md)
+browser/baseline closure is being verified under the owner-authorized one-time
+headless-browser exception. Original checkout/CE12 work preserved. The [completion audit](./composition-ce16-completion-audit.md)
 records an earlier indirect headless-browser verification breach and the corrected audio-only tier.
 
 **Research handoff:** [CLI and Embedded Audio Engines for Still Shift](</Users/jjae/Documents/obsidian/ai-business/history-offstage/04 Research/Completed Studies/2026-10-03 - CLI and Embedded Audio Engines for Still Shift.md>)
@@ -3749,8 +3750,12 @@ DSP chains and automatic ducking are new work; see [audio guide](./passage-audio
 
 ### Non-negotiable constraints
 
-- **ZERO Computer Use** throughout setup, editing, recovery, saving, exporting and
-  verification. No desktop/browser driving, GUI scripting, activation-dialog
+- **ZERO Computer Use** throughout setup, editing, recovery, saving and exporting.
+  **Owner exception (2026-10-04):** automated headless-browser verification is
+  authorized for this CE16 completion pass only. It is not a production workflow
+  dependency. The earlier unapproved indirect headless-browser use stays recorded.
+  Outside this verification exception, no desktop/browser driving, GUI scripting,
+  activation-dialog
   workaround or routine dialog handoff to the owner. Use command, API, library and
   file interfaces, including for testing the optional editor's model and persistence.
 - Read `AGENTS.md`, the development log and current audio implementation before
@@ -3937,8 +3942,8 @@ unperformed unless they actually occurred, and never claim them from ffprobe/PCM
 - **Verification:** toolchain + command-only gates pass: 1,436 unit, 46 runtime,
   19 audio-only integration and 14 depth tests; focused final group 35 tests.
   Commands/failures/remedies are recorded in evidence. Full `pnpm check`
-  and browser baselines remain unperformed because CE16 prohibits browser driving;
-  this tier does not certify those gates. No listening, audiovisual QA or GUI
+  and browser baselines are being verified under the owner-authorized one-time
+  browser exception; this command-only tier does not certify those gates. No listening, audiovisual QA or GUI
   inspection. Earlier broad integration runs did launch headless browsers indirectly;
   the corrected tier and historical policy breach are recorded in the
   [completion audit](./composition-ce16-completion-audit.md). No baseline regeneration. GPL/transitive distribution decision

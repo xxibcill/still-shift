@@ -7,7 +7,7 @@ import {
   frameToSoundtrackSample,
   resolveSoundtrackAnchors,
   validateSoundtrackNarration,
-} from "@still-shift/renderer-core";
+} from "@still-shift/renderer-core/soundtrack";
 import { dirname, join } from "node:path";
 import { runProcess } from "@still-shift/execution-runtime/subprocess";
 import { renderSoundtrackProject } from "./soundtrack-render.ts";

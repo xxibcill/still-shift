@@ -1,4 +1,4 @@
-import { soundtrackState } from "@still-shift/renderer-core";
+import { soundtrackState } from "@still-shift/renderer-core/soundtrack";
 import { spawn } from "node:child_process";
 import { createHash, randomUUID } from "node:crypto";
 import {

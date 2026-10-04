@@ -129,32 +129,34 @@ def verify(base):
             "worker/calibration but excludes FFmpeg children; no speed advantage claimed."
         ),
     }
-    evidence["limitations"] = [
+    limitations = [
+        "No listening or human audiovisual QA performed; automated technical checks are separate.",
         (
-            "Full pnpm check and frozen browser baselines not run: CE16 prohib"
-            "its browser driving. Command/library/API verification is separate"
-            " from those repository gates."
+            "Earlier unapproved indirect headless-browser use remains recorded. "
+            "The owner later authorized automated browser verification "
+            "for the completion pass only."
         ),
         (
-            "No listening, audiovisual QA or visible GUI inspection performed. "
-            "Earlier broad integration tier indirectly launched headless browsers; "
-            "this policy breach is recorded and subsequent selection is audio-only."
+            "Local opt-in pinned Python runtime only; GPL/transitive distribution "
+            "decision remains pending. No backend dependency binaries bundled."
         ),
         (
-            "Local opt-in pinned Python runtime only; GPL/transitive distribut"
-            "ion decision remains pending. No backend dependency binaries bund"
-            "led."
+            "Only causal built-in high/low-pass DSP is accepted, with per-path "
+            "onset probes. External plugins and nonzero latency compensation are unsupported."
         ),
         (
-            "Only causal built-in high/low-pass DSP is accepted, with per-path"
-            " onset probes. External plugins and nonzero latency compensation "
-            "are unsupported."
-        ),
-        (
-            "No drag handles or native browser DSP parity claimed; explicit nu"
-            "meric/JSON edits share the same atomic API."
+            "No drag handles or native browser DSP path adopted; explicit "
+            "numeric/JSON edits share the same atomic API and preview uses rendered audio."
         ),
     ]
+    verification = evidence.get("verification", {})
+    if verification.get("fullRepository", {}).get("exitCode") != 0:
+        limitations.insert(
+            0,
+            "Full repository gate is not confirmed passed. "
+            "This verifier checks only the audio lifecycle.",
+        )
+    evidence["limitations"] = limitations
     evidence_path.write_text(json.dumps(evidence, indent=2) + "\n")
     print(
         json.dumps(

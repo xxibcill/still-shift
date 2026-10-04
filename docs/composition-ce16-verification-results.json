@@ -636,18 +636,65 @@
         "stage": "command-only tier policy audit",
         "diagnostic": "Indirect headless browser work admitted by direct-import filter",
         "resolution": "Explicit audio-only allowlist and historical evidence correction; earlier use is not erased."
+      },
+      {
+        "stage": "authorized full pnpm check integration",
+        "command": "pnpm check",
+        "exitCode": 1,
+        "log": "benchmarks/results/composition-ce16/ce16-full-check-browser-authorized.log",
+        "diagnostic": "Five Lab integration suites fail plain-Node Vite config load: ERR_UNSUPPORTED_TYPESCRIPT_SYNTAX in renderer-core/cinematic-scene.ts parameter property.",
+        "resolution": "Added renderer-core/soundtrack subpath and narrow imports for audio IO/render/adapter; exact plain-Node Vite path passes."
+      },
+      {
+        "stage": "full check after narrow imports",
+        "command": "pnpm check",
+        "exitCode": 1,
+        "log": "benchmarks/results/composition-ce16/ce16-full-check-browser-authorized-final.log",
+        "diagnostic": "Vitest root alias incorrectly handled new soundtrack subpath; four unit suites could not resolve it.",
+        "resolution": "Added specific alias before broad package alias; all 35 focused audio tests pass."
+      },
+      {
+        "stage": "authorized full check visual integration",
+        "command": "pnpm check",
+        "exitCode": 1,
+        "log": "benchmarks/results/composition-ce16/ce16-full-check-browser-authorized-complete.log",
+        "diagnostic": "story-acting.test.ts timed out waiting 30 seconds for passage-text browser runtime while a separate focused browser job was also running.",
+        "resolution": "Serial isolated recheck and full gate rerun required; cause not yet established."
+      },
+      {
+        "stage": "new browser test URL assertion",
+        "command": "pnpm test:browser:soundtrack",
+        "exitCode": 1,
+        "log": "benchmarks/results/composition-ce16/ce16-browser-focused.log",
+        "diagnostic": "Test concatenated origin ending slash with absolute path, received SPA HTML 200 instead of stale-audio 409.",
+        "resolution": "Resolve URL with new URL(); real stale-audio rejection passes."
+      },
+      {
+        "stage": "new browser test narration identity",
+        "command": "pnpm test:browser:soundtrack",
+        "exitCode": 1,
+        "log": "benchmarks/results/composition-ce16/ce16-browser-focused-diagnostic.log",
+        "diagnostic": "Synthetic fixture omitted its authorized passage narration hash; existing guard correctly rejected attachment.",
+        "resolution": "Declare fixture hash, retain guard. Native attachment passes."
+      },
+      {
+        "stage": "new browser test temporary mix assumption",
+        "command": "pnpm test:browser:soundtrack",
+        "exitCode": 1,
+        "log": "benchmarks/results/composition-ce16/ce16-browser-focused-final.log",
+        "diagnostic": "Test assumed temporary pre-encode WAVs survive passage publication; staging is correctly cleaned.",
+        "resolution": "Compare actual mux delivery decode to independent canonical render plus matching AAC encoding; full/range outputs match exactly."
       }
     ],
     "unperformed": [
-      "Full pnpm check",
-      "GUI-driving Playwright integration/browser groups",
-      "Frozen browser-rendered composition baseline rerun",
+      "Full pnpm check success",
+      "Full frozen browser-rendered composition baseline rerun",
       "Listening",
-      "Audiovisual QA",
-      "GUI visual inspection"
+      "Human audiovisual QA",
+      "Visible GUI inspection"
     ],
     "baselinePolicy": "No baseline regeneration; visual rendering algorithms and fixtures unchanged",
-    "milestoneClosure": "Pending owner resolution of full-check/browser-baseline requirement versus zero browser driving",
+    "milestoneClosure": "Owner conflict resolved by one-time automated browser exception; full pnpm check and frozen baseline pass still required.",
     "baselineInventoryTests": {
       "command": "pnpm exec vitest run tests/unit/composition-baseline-inventory.test.ts tests/unit/composition-baseline-regeneration.test.ts tests/unit/composition-baseline-timings.test.ts --no-file-parallelism",
       "exitCode": 0,
@@ -698,6 +745,71 @@
       "status": "Historical breach recorded; corrected subsequent verification selection",
       "diagnostic": "Direct Playwright import filtering missed transitive headless-browser launches through renderer libraries and child scripts.",
       "resolution": "Replaced with three audited audio-only integration suites. No CUA/desktop/visible GUI inspection, but cumulative zero browser driving cannot be claimed."
+    },
+    "browserAuthorization": {
+      "date": "2026-10-04",
+      "userInstruction": "Allow automated browser verification.",
+      "scope": "This CE16 checking pass only. Normal create/edit/save/recover/render/export remains command/API/file-based; no production GUI dependency.",
+      "historicalBreach": "Earlier unapproved indirect headless-browser runs remain recorded."
+    },
+    "focusedBrowser": {
+      "command": "pnpm test:browser:soundtrack",
+      "exitCode": 0,
+      "log": "benchmarks/results/composition-ce16/ce16-browser-verified.log",
+      "results": {
+        "root": "/Users/jjae/.codex/worktrees/composition-ce16/still-shift/benchmarks/results/composition-ce16/browser-EfAf6k",
+        "browserVerification": "owner-authorized one-time pass",
+        "nativeDecode": {
+          "sampleRate": 48000,
+          "channels": 2,
+          "samplesPerChannel": 384000,
+          "differingSamples": 0,
+          "maxSampleError": 0
+        },
+        "editor": {
+          "savedRevision": 10,
+          "edits": [
+            "move",
+            "gain",
+            "trim",
+            "hold automation",
+            "mute",
+            "solo",
+            "undo",
+            "redo"
+          ],
+          "staleEditRejected": true,
+          "previewInvalidated": true
+        },
+        "passagePreview": {
+          "savedRevision": 10,
+          "starts": [
+            {
+              "args": [0.04533333333333334, 2.5, 5.5],
+              "length": 384000,
+              "rate": 48000,
+              "channels": 2
+            }
+          ],
+          "clearReturnsToLegacy": true
+        },
+        "passageExport": {
+          "fullFrames": 192,
+          "rangeFrames": 24,
+          "rangePCMExact": true,
+          "deliveryDecodeMatchesIndependentEncode": {
+            "full": "SHA256=4ef9f3d20444786a460ef93a8ba682a83f80158ef73000d29a249a7a5de3dc9f",
+            "range": "SHA256=4ac2a054b6cd54d66adac6e807b8e1ba3a6d0f2895421ec37607d9be38a5bc68"
+          },
+          "revision": 10
+        },
+        "ok": true
+      },
+      "scope": "Real optional editor and native decoder/playback, passage attachment/seek/clear and full/range picture/mux exports. AAC comparison is to independently encoded canonical audio, not a claim of lossless AAC."
+    },
+    "fullRepository": {
+      "command": "PATH=/Users/jjae/.nvm/versions/node/v22.23.1/bin:$PATH UV_NO_SYNC=1 UV_CACHE_DIR=/private/tmp/still-shift-ce16-uv-cache pnpm check",
+      "status": "rerun pending after fixes; not passed yet"
     }
   },
   "backendProofLimitations": [
@@ -1305,8 +1417,8 @@
     "measurementMethod": "CLI monotonic wall time includes preflight, calibration and worker. Worker wallSeconds starts after calibration. RUSAGE_SELF peak includes worker/calibration but excludes FFmpeg children; no speed advantage claimed."
   },
   "limitations": [
-    "Full pnpm check and frozen browser baselines not run: CE16 prohibits browser driving. Command/library/API verification is separate from those repository gates.",
-    "No listening, audiovisual QA or visible GUI inspection performed. Earlier broad integration tier indirectly launched headless browsers; this policy breach is recorded and subsequent selection is audio-only.",
+    "Full pnpm check and frozen browser baselines still pending after owner authorized a one-time automated verification exception.",
+    "No listening or human audiovisual QA. Authorized headless-browser decode/playback/UI/export checks pass; earlier unapproved indirect browser use remains documented.",
     "Local opt-in pinned Python runtime only; GPL/transitive distribution decision remains pending. No backend dependency binaries bundled.",
     "Only causal built-in high/low-pass DSP is accepted, with per-path onset probes. External plugins and nonzero latency compensation are unsupported.",
     "No drag handles or native browser DSP parity claimed; explicit numeric/JSON edits share the same atomic API."

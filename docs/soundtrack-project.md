@@ -228,8 +228,10 @@ checks. These tests are also discovered by the existing unit/integration tiers.
 `pnpm soundtrack:verify` creates fresh 60-second CLI lifecycle artifacts and updates
 [evidence](./composition-ce16-verification-results.json); it refuses existing results.
 Set `STILL_SHIFT_SOUNDTRACK_RESULTS` for a new location, or add `--verify-only` to
-check retained results. Full `pnpm check` and frozen browser baselines remain
-unperformed under CE16's prohibition on browser driving. No baseline was regenerated.
+check retained results. Full `pnpm check` includes the separate `pnpm test:browser:soundtrack` group and
+frozen browser baselines. The owner authorized these automated browser checks
+for the CE16 completion pass on 2026-10-04. Routine production and the command-only
+tier continue without browser driving; consult the evidence for full-gate status. No baseline was regenerated.
 The [completion audit](./composition-ce16-completion-audit.md) records the earlier
 indirect headless-browser verification breach and corrected test selection.
 
