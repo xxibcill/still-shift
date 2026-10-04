@@ -199,11 +199,17 @@
           "result": "Unknown __proto__ beat rejects with comp-passage-beat"
         }
       ],
-      "integration": "Overlay the tracked repair on the existing acceptance snapshot before its native-passage/composition groups execute; recheck static gates. Prior completed groups do not exercise this loader key case."
+      "integration": "The overlaid run imported the old loader before mutation and failed. A fresh immutable 8153549 run passes the regression inside the complete pnpm check."
+    },
+    {
+      "name": "Mixed native passage both-backend verification",
+      "changes": "Add --webgl to the mixed passage browser suite and the aggregate local gate; rendering, narration, standalone export and Lab use the selected backend. Runtime implementation remains at verified 8153549.",
+      "verification": [],
+      "status": "pending"
     }
   ],
   "pending": [
-    "Full pnpm check and CE0 frozen baselines",
+    "Native mixed passage WebGL acceptance and added static gates",
     "Full WebGL story correctness record (timing deferred)",
     "CE4a tracker/checklist reconciliation and milestone PR"
   ],
@@ -253,6 +259,26 @@
       },
       "browserPassed": ["depth", "vertical-image", "export", "golden"],
       "reason": "Narrow loader repair used new private cross-package imports; replaced with a public renderer-core/passage-compositions export to honor plan boundaries before final closeout."
+    },
+    {
+      "command": "pnpm check (overlaid snapshot 08f9088)",
+      "status": "failed-native-map-regression",
+      "reason": "The repair overlay occurred after the child imported the old loader. The immutable fresh 8153549 run below verifies the raw-key repair; no mixed-snapshot result is accepted."
+    },
+    {
+      "command": "pnpm check (immutable tracked snapshot 8153549)",
+      "status": "passed",
+      "commit": "8153549",
+      "unit": 1464,
+      "runtime": 46,
+      "integration": 116,
+      "depth": 14,
+      "frozenBaselines": {
+        "items": 176,
+        "frames": 36061,
+        "status": "passed"
+      },
+      "log": "/private/tmp/ce4a-check-8153549.log"
     }
   ]
 }

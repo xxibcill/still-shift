@@ -50,8 +50,9 @@ still hold before relying on them.
   pictures pass standalone encoded-beat/Lab parity; full Canvas family matrix passes
   (69 cases / 14,086 frames). Explicit native cue/event/subject mappings and a
   576-frame mixed passage with an adapted story precomp, native overlay, narration,
-  cache edits, relocation and input diagnostics pass. Full verification and WebGL
-  correctness closeout remain before the milestone PR and CE10.
+  cache edits, relocation and input diagnostics pass. Full `pnpm check` at `8153549`
+  passes, including 176 frozen items / 36,061 frames. Native mixed-passage WebGL
+  verification and story WebGL correctness closeout remain before PR/CE10.
   [Evidence](./composition-ce4a-completion-results.json).
 
 - **CE12 motion linting (`[x]`, 2026-10-05):** complete on
@@ -162,7 +163,12 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   `__proto__` map keys now fail before parsing; the targeted regression passes.
   The first destination-only fix failed because parsing discarded the key; corrected
   its prematurely recorded result in the evidence file.
-- **Open / next:** full verification, WebGL correctness record and milestone PR;
+- **Done:** immutable `8153549` passes full `pnpm check`: 1,464 unit, 46 runtime,
+  116 integration and 14 depth tests, browser gates and 176 frozen items / 36,061
+  frames. The prior overlaid snapshot imported the old loader and failed; only the
+  fresh immutable result is accepted. Native mixed-passage WebGL coverage is added
+  to the aggregate gate; its acceptance run is pending, static checks pass.
+- **Open / next:** native-passage WebGL acceptance, story WebGL record and milestone PR;
   CE7 remains incomplete, CE6-P remains deferred. Pre-existing local documentation retained.
 - **Records:** [CE4a continuation evidence](./composition-ce4a-completion-results.json).
 

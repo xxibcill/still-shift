@@ -17,6 +17,7 @@ import { PassageError } from "@still-shift/renderer-core";
 import { runProcess } from "@still-shift/execution-runtime/subprocess";
 
 const root = await mkdtemp(join(tmpdir(), "still-shift-native-beat-"));
+const backend = process.argv.includes("--webgl") ? "webgl2" : "canvas2d";
 const picture = resolve(
   "benchmarks/fixtures/composition/ce4a/native-beat.json",
 );
@@ -40,6 +41,7 @@ try {
     await writePreparedPassage(output, passage);
     return renderStoryPassage(output, passage, undefined, {
       renderer: "composition",
+      backend,
       compositions: pictures,
       cacheDirectory,
     });
@@ -50,6 +52,7 @@ try {
   assert.ok(first.cache.every((clip) => !clip.reused));
   assert.ok(second.cache.every((clip) => clip.reused));
   const native = await renderComposition({
+    backend,
     compositionPath: picture,
     outputPath: join(root, "native.mp4"),
   });
@@ -139,7 +142,7 @@ try {
     narratedOutput,
     narratedPassage,
     narration,
-    { renderer: "composition", compositions, cacheDirectory },
+    { renderer: "composition", backend, compositions, cacheDirectory },
   );
   assert.equal(narrated.frameCount, 576);
   assert.ok(narrated.cache.every((clip) => clip.reused));
@@ -192,7 +195,7 @@ try {
     page.on("pageerror", (error) => errors.push(error.message));
     await page.goto(
       server.resolvedUrls!.local[0]! +
-        "passage.html?renderer=composition&plan=benchmarks/fixtures/story-authoring/linked-comparison.json&composition-beats=benchmarks/fixtures/composition/ce4a/native-beats.json",
+        `passage.html?renderer=composition&backend=${backend}&plan=benchmarks/fixtures/story-authoring/linked-comparison.json&composition-beats=benchmarks/fixtures/composition/ce4a/native-beats.json`,
     );
     await page.waitForFunction(
       () =>
@@ -232,7 +235,7 @@ try {
     await server.close();
   }
   console.log(
-    "Mixed composition passage: 576 frames, adapted story precomp with native overlay, cue mappings, narration, standalone encoded-beat identity, isolated cache edits, relocated assets, invalid-input diagnostics and Lab pixel/seek checks pass.",
+    `Mixed composition passage (${backend}): 576 frames, adapted story precomp with native overlay, cue mappings, narration, standalone encoded-beat identity, isolated cache edits, relocated assets, invalid-input diagnostics and Lab pixel/seek checks pass.`,
   );
 } finally {
   await rm(root, { recursive: true, force: true });
