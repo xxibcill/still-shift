@@ -28,7 +28,7 @@ These pure functions run in Node and browsers. They validate once per compositio
 object, compile curves into identity-keyed weak caches and memoise dependencies within
 each evaluation. Treat the composition and its nested objects as immutable: replace
 the composition object after an edit. Returned states are fresh on every call.
-`COMPOSITION_EVALUATOR_VERSION` is `composition-evaluator-20`.
+`COMPOSITION_EVALUATOR_VERSION` is `composition-evaluator-23`.
 
 `evaluateComp` returns an `EvaluatedLayerTree`: scope id, time, dimensions, fps,
 floating-point RGBA background, ordered `layers` and structured `diagnostics`.
@@ -1486,3 +1486,6 @@ the passage's qualification. Legacy action/pose/prop tracks and implicit carry a
 unsupported at native boundaries and fail explicitly; author that motion in the
 composition. The fixture `ce4a/native-beat.json` embeds an adapted story as a precomp
 with a native difference-blend overlay and preserves its assets and cue mappings.
+
+`@still-shift/renderer-core/passage-compositions` is the narrow public entrypoint for
+passage picture validation and diagnostics; it does not import renderer backends.

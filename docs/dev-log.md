@@ -157,7 +157,8 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   seeks and repeat MP4s pass; 1.33–1.39× timing is deferred. Full verification next.
 - **Done:** native narrative bindings and mixed story-precomp acceptance now pass.
   Split source loading from rendering after the full gate exposed a Node strip-only
-  Lab import failure; all five affected suites / 25 tests pass after repair.
+  Lab import failure; all five affected suites / 25 tests pass after repair. The narrow
+  public validation export also passes Lab and binding checks (25 tests).
 - **Open / next:** full verification, WebGL correctness record and milestone PR;
   CE7 remains incomplete, CE6-P remains deferred. Pre-existing local documentation retained.
 - **Records:** [CE4a continuation evidence](./composition-ce4a-completion-results.json).

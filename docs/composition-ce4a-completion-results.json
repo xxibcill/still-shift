@@ -159,7 +159,7 @@
     },
     {
       "name": "Lab native source import repair",
-      "changes": "Separate readCompositionSource file/asset validation from loadComposition renderer preparation. Native loader uses narrow relative modules; runtime cache identity includes source loader.",
+      "changes": "Separate readCompositionSource file/asset validation from loadComposition renderer preparation. Native loader uses narrow relative modules; runtime cache identity includes source loader. Public renderer-core/passage-compositions subpath keeps the new import across packages public; PassageError uses an explicit field for Node strip-only loading.",
       "verification": [
         {
           "command": "pnpm exec vitest run tests/integration/narration-import-lab.test.ts tests/integration/passage-audio-lab.test.ts tests/integration/passage-lab.test.ts tests/integration/sfx-lab.test.ts tests/integration/story-acting-lab.test.ts --maxWorkers=2 --no-file-parallelism",
@@ -170,6 +170,11 @@
         {
           "command": "pnpm build; targeted eslint",
           "status": "passed"
+        },
+        {
+          "command": "pnpm exec vitest run tests/integration/passage-lab.test.ts tests/unit/passage-compositions.test.ts --maxWorkers=2 --no-file-parallelism",
+          "status": "passed",
+          "tests": 25
         }
       ],
       "log": "/private/tmp/ce4a-lab-loader-repair.log"
@@ -214,6 +219,18 @@
       },
       "skippedIntegration": 25,
       "reason": "Five Lab suites hit Node strip-only parameter-property syntax when the new native loader pulled the renderer public entrypoint into Vite configuration loading."
+    },
+    {
+      "command": "pnpm check (clean snapshot 5009097)",
+      "status": "interrupted",
+      "passed": {
+        "unit": 1464,
+        "runtime": 46,
+        "integration": 116,
+        "depth": 14
+      },
+      "browserPassed": ["depth", "vertical-image", "export", "golden"],
+      "reason": "Narrow loader repair used new private cross-package imports; replaced with a public renderer-core/passage-compositions export to honor plan boundaries before final closeout."
     }
   ]
 }

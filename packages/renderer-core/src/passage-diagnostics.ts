@@ -11,9 +11,11 @@ export type PassageDiagnostic = {
   path?: string;
 };
 export class PassageError extends Error {
-  constructor(readonly diagnostics: PassageDiagnostic[]) {
+  readonly diagnostics: PassageDiagnostic[];
+  constructor(diagnostics: PassageDiagnostic[]) {
     super(diagnostics.map((d) => d.message).join("\n"));
     this.name = "PassageError";
+    this.diagnostics = diagnostics;
   }
 }
 export function passageError(

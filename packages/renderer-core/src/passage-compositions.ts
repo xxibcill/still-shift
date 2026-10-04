@@ -6,6 +6,7 @@ import {
   type Composition,
 } from "@still-shift/scene-contract";
 import { passageError, PassageError } from "./passage-diagnostics.ts";
+export { passageError, PassageError } from "./passage-diagnostics.ts";
 import type { CompiledStoryPassage } from "./story-passage.ts";
 
 export type PassageCompositions = Readonly<Record<string, Composition>>;

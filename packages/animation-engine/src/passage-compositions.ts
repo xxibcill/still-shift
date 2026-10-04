@@ -5,12 +5,14 @@ import {
   validateComposition,
   type Composition,
 } from "@still-shift/scene-contract";
-import { passageError } from "../../renderer-core/src/passage-diagnostics.ts";
-import { validatePassageCompositions } from "../../renderer-core/src/passage-compositions.ts";
+import {
+  passageError,
+  validatePassageCompositions,
+} from "@still-shift/renderer-core/passage-compositions";
 export {
   validatePassageCompositions,
   type PassageCompositions,
-} from "../../renderer-core/src/passage-compositions.ts";
+} from "@still-shift/renderer-core/passage-compositions";
 import { readCompositionSource } from "./composition-source.ts";
 import type { PreparedPassage } from "./story-passage-io.ts";
 
