@@ -43,6 +43,13 @@ still hold before relying on them.
 
 ## Current state
 
+- **PR #34 review fixes (2026-10-05):** all three inline findings posted on
+  `0987396`; structured policy diagnostics fixed in the isolated PR checkout.
+  Nine regressions failed before the fix; all 40 focused tests, build and changed-file
+  ESLint now pass. Inactive-effect motion and parent-driven timing remain in flight;
+  one final push follows all three finding commits. No blocker or owner decision.
+  [Fix evidence](./pr-34-fix-results.json).
+
 - **CE12 motion linting (`[x]`, 2026-10-05):** complete on
   `codex/composition-ce12`, implementation `a365f26` from delivered CE9 `dee9e7b`.
   Rules, CLI lint and Lab timeline are delivered. Full `pnpm check` and all 176
@@ -132,6 +139,18 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-05 — PR #34 structured policy diagnostics
+
+- **Agent / branch:** Codex on `codex/pr34-review-fixes`, from PR head `0987396`.
+- **Done:** first finding fixed with stable cut, shot and pixel-evidence codes/paths;
+  posted all three inline comments on the reviewed PR diff.
+- **Results:** nine regressions reproduced the failures; 40 focused tests, build
+  and changed-file ESLint pass on Node 22.23.1 / pnpm 10.29.3.
+- **Open / next:** fix inactive-effect motion and parent-driven timing, one finding
+  per commit, then verify and push once. Original local work retained.
+- **Records:** [Fix evidence](./pr-34-fix-results.json),
+  [CE12 plan](./composition-engine-plan.md#ce12--motion-linting).
 
 ### 2026-10-05 — Complete CE12 motion linting
 

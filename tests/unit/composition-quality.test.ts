@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { PassageError } from "../../packages/renderer-core/src/passage-diagnostics.ts";
 import { analyzeCompositionQuality } from "../../packages/renderer-core/src/story-quality.ts";
 import {
   composition,
@@ -343,3 +344,35 @@ it("checks rotated cover footprints instead of accepting their axis-aligned boun
     }).diagnostics.map((d) => d.code),
   ).toContain("coverage");
 });
+
+it.each([
+  [{ pixelHashes: ["one"] }, "pixelHashes"],
+  [{ pixelChangedCounts: [-1] }, "pixelChangedCounts"],
+  [
+    {
+      pixelHashes: Array(90).fill("same"),
+      pixelChangedCounts: Array(90).fill(0),
+    },
+    "pixelChangedCounts",
+  ],
+])(
+  "preserves structured diagnostics for invalid pixel evidence %j",
+  (policy, path) => {
+    expect(() =>
+      analyzeCompositionQuality(fixtures.stillness.fail, policy),
+    ).toThrow(PassageError);
+    expect(() =>
+      analyzeCompositionQuality(fixtures.stillness.fail, policy),
+    ).toThrow(
+      expect.objectContaining({
+        diagnostics: [
+          expect.objectContaining({
+            code: "comp-lint-pixel-evidence",
+            path,
+            severity: "error",
+          }),
+        ],
+      }),
+    );
+  },
+);

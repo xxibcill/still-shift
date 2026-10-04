@@ -79,3 +79,56 @@ it("preserves semantic composition diagnostic codes and JSON paths", async () =>
     ),
   ).toBe(true);
 });
+
+it.each([
+  [{ intentionalCuts: [90] }, "comp-lint-cut-range", "intentionalCuts.0"],
+  [
+    { shots: [{ id: "a", start: 0, end: 91 }] },
+    "comp-lint-shot-range",
+    "shots.0.end",
+  ],
+  [
+    { shots: [{ id: "a", start: 1, end: 90 }] },
+    "comp-lint-shot-partition",
+    "shots.0.start",
+  ],
+  [
+    { shots: [{ id: "a", start: 0, end: 20 }] },
+    "comp-lint-shot-partition",
+    "shots.0.end",
+  ],
+  [
+    {
+      shots: [
+        { id: "a", start: 0, end: 40 },
+        { id: "a", start: 40, end: 90 },
+      ],
+    },
+    "comp-lint-shot-id",
+    "shots.1.id",
+  ],
+  [
+    { shots: [{ id: "a", start: 0, end: 0 }] },
+    "comp-lint-shot-range",
+    "shots.0.end",
+  ],
+])(
+  "preserves the diagnostic code and path for invalid policy %j",
+  async (settings, code, path) => {
+    const dir = await mkdtemp(join(tmpdir(), "ce12-policy-error-"));
+    directories.push(dir);
+    const policy = join(dir, "policy.json");
+    await writeFile(policy, JSON.stringify(settings));
+    const result = await invoke(fixtures.stillness.fail, ["--policy", policy]);
+    expect(result.exit).toBe(1);
+    expect(result.stdout).toBe("");
+    expect(JSON.parse(result.stderr).diagnostics).toEqual([
+      expect.objectContaining({
+        code,
+        severity: "error",
+        path,
+        message: expect.any(String),
+      }),
+    ]);
+  },
+);
