@@ -1,6 +1,6 @@
-import { readFile, realpath } from "node:fs/promises";
+import { lstat, readFile, readdir, realpath, rm } from "node:fs/promises";
 import { resolve, relative, join, extname } from "node:path";
-import { randomUUID } from "node:crypto";
+import { createHash, randomUUID } from "node:crypto";
 import type { Plugin } from "vite";
 import { z } from "zod";
 import { SoundtrackError } from "../../packages/scene-contract/src/soundtrack-project.ts";
@@ -27,9 +27,35 @@ const requestSchema = z
     passage: z.string().optional(),
   })
   .strict();
+const rendersRoot = "benchmarks/results/soundtrack-api";
+const publishedRender =
+  /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
 export const soundtrackApi = (
   workspace = resolve(import.meta.dirname, "../.."),
 ): Plugin => {
+  /** Lab previews are grouped by the real path of the project they render. */
+  const rendersFor = (project: string) =>
+    resolve(
+      workspace,
+      rendersRoot,
+      createHash("sha256").update(project).digest("hex").slice(0, 16),
+    );
+  /**
+   * The preview endpoint serves only the current saved revision, so renders of
+   * earlier revisions are dead weight. Only published renders are removed;
+   * in-progress stages and locks belong to their render.
+   */
+  const pruneRenders = async (project: string, keep?: string) => {
+    const directory = rendersFor(project);
+    const names = await readdir(directory).catch(() => [] as string[]);
+    await Promise.all(
+      names
+        .filter((name) => publishedRender.test(name) && name !== keep)
+        .map((name) =>
+          rm(join(directory, name), { recursive: true, force: true }),
+        ),
+    );
+  };
   const file = async (path: string) => {
     const actual = await realpath(resolve(workspace, path));
     const rel = relative(await realpath(workspace), actual);
@@ -69,8 +95,22 @@ export const soundtrackApi = (
               await file(url.searchParams.get("project") ?? ""),
             );
             const output = url.searchParams.get("output") ?? "";
-            const actual = await file(output),
-              allowed = await file("benchmarks/results/soundtrack-api");
+            const actual = await file(output).catch(async (error: unknown) => {
+                const requested = resolve(workspace, output);
+                if (
+                  requested.startsWith(resolve(workspace, rendersRoot) + "/") &&
+                  !(await lstat(requested).then(
+                    () => true,
+                    () => false,
+                  ))
+                )
+                  throw new SoundtrackError(
+                    "revision-conflict",
+                    "This preview was superseded; render the saved revision",
+                  );
+                throw error;
+              }),
+              allowed = await file(rendersRoot);
             if (!actual.startsWith(allowed + "/"))
               throw new Error("Unknown soundtrack render");
             const manifest = await readSoundtrackRender(actual);
@@ -124,15 +164,13 @@ export const soundtrackApi = (
           if (url.pathname.endsWith("/edit")) {
             if (body.operations === undefined)
               throw new Error("Missing operations");
-            response.end(
-              JSON.stringify({
-                project: await saveSoundtrackEdits(
-                  path,
-                  body.revision,
-                  body.operations,
-                ),
-              }),
+            const saved = await saveSoundtrackEdits(
+              path,
+              body.revision,
+              body.operations,
             );
+            await pruneRenders(path);
+            response.end(JSON.stringify({ project: saved }));
             return;
           }
           if (body.operations !== undefined)
@@ -158,16 +196,14 @@ export const soundtrackApi = (
             if (!response.writableFinished)
               controller.abort(new Error("Preview request disconnected"));
           });
-          const output = resolve(
-            workspace,
-            "benchmarks/results/soundtrack-api",
-            randomUUID(),
-          );
+          const id = randomUUID(),
+            output = join(rendersFor(path), id);
           const manifest = await renderSoundtrackProject(path, output, {
             stems: true,
             expectedRevision: body.revision,
             signal: controller.signal,
           });
+          await pruneRenders(path, id);
           response.end(
             JSON.stringify({ manifest, output: relative(workspace, output) }),
           );

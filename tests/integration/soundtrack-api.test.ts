@@ -5,9 +5,10 @@ import {
   mkdir,
   symlink,
   rm,
+  readdir,
 } from "node:fs/promises";
 import { tmpdir } from "node:os";
-import { join } from "node:path";
+import { dirname, join } from "node:path";
 import { beforeAll, afterAll, expect, it } from "vitest";
 import { createServer, type ViteDevServer } from "vite";
 import { soundtrackApi } from "../../apps/lab/soundtrack-api.ts";
@@ -204,3 +205,42 @@ it("blocks cross-origin writes, traversal, symlinks and malformed bodies", async
     ).status,
   ).toBe(400);
 });
+it("keeps only the newest preview per project and drops all of them after an edit", async () => {
+  const render = async () => {
+    const response = await post("render", {
+      project: "project.json",
+      revision: 3,
+    });
+    expect(response.status).toBe(200);
+    return (await response.json()).output as string;
+  };
+  const audio = (output: string) =>
+    fetch(
+      origin +
+        "/soundtrack-api/audio?project=project.json&output=" +
+        encodeURIComponent(output),
+    );
+  const first = await render(),
+    directory = join(root, dirname(first));
+  // Another render's unpublished stage and lock are never pruned.
+  const stage =
+    "01234567-89ab-cdef-0123-456789abcdef.89abcdef-0123-4567-89ab-cdef01234567.tmp";
+  await mkdir(join(directory, stage));
+  await writeFile(join(directory, "other.lock"), "{}");
+  const second = await render();
+  expect((await readdir(directory)).sort()).toEqual(
+    [second.split("/").at(-1)!, stage, "other.lock"].sort(),
+  );
+  expect((await audio(first)).status).toBe(409);
+  expect((await audio(second)).status).toBe(200);
+  const edited = await post("edit", {
+    project: "project.json",
+    revision: 3,
+    operations: [{ type: "mute", track: "effect", value: false }],
+  });
+  expect(edited.status).toBe(200);
+  expect((await readdir(directory)).sort()).toEqual(
+    [stage, "other.lock"].sort(),
+  );
+  expect((await audio(second)).status).toBe(409);
+}, 20000);

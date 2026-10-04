@@ -211,6 +211,12 @@ mixing engine are not provided. Author those settings in JSON and validate them.
 **Render this revision** generates a fresh checked mix/stems and waveform data.
 Play/seek/download use that saved revision's rendered mix. An edit invalidates
 preview until re-rendered; stale or different-project preview requests fail.
+Lab renders live in `benchmarks/results/soundtrack-api/<project-key>/`, keyed by
+the project's real path. A successful render keeps only that project's newest
+render, and a successful Lab edit removes all of them, because previews of earlier
+revisions can never be served again. A pruned preview answers `revision-conflict`.
+Unpublished render stages and locks are left to their render. CLI and library
+render outputs are never pruned.
 In `/passage.html`, **Saved soundtrack (optional)** attaches a rendered full mix to
 the passage's existing Web Audio clock. **Use passage audio** restores the legacy
 scheduler. The temporary legacy Sound effects checkbox does not change a rendered
