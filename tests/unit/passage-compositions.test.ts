@@ -103,6 +103,66 @@ describe("native composition passage beats", () => {
     input.layers[0]!.blendMode = "screen";
     expect(passageCompositionKey(input, "runtime")).not.toBe(key);
   });
+
+  it("requires explicit cue/event timing and focal subject mappings", () => {
+    const story = passage();
+    const beat = story.beats[0]!;
+    beat.cues = [
+      {
+        id: "voice",
+        phrase: "voice",
+        frame: 8,
+        events: ["event"],
+        localFrame: 8,
+        masterFrame: 8,
+        windows: [{ cue: "event", start: 8, end: 18 }],
+      },
+    ];
+    beat.focus = ["actor"];
+    const input = composition();
+    expect(() => validatePassageCompositions(story, { beat: input })).toThrow(
+      /Cue voice/,
+    );
+    input.markers = [
+      { id: "voice", frame: 8 },
+      { id: "event", frame: 8, duration: 10 },
+    ];
+    input.metadata = {
+      passage: {
+        cueMarkers: { voice: "voice" },
+        eventMarkers: { event: "event" },
+        subjectLayers: { actor: "panel" },
+      },
+    };
+    expect(validatePassageCompositions(story, { beat: input }).beat).toEqual(
+      input,
+    );
+    input.markers[1]!.duration = 9;
+    expect(() => validatePassageCompositions(story, { beat: input })).toThrow(
+      /Event event/,
+    );
+    input.markers[1]!.duration = 10;
+    input.layers = [];
+    expect(() => validatePassageCompositions(story, { beat: input })).toThrow(
+      /Subject actor/,
+    );
+  });
+  it("rejects unknown narrative bindings and unsupported legacy acting", () => {
+    const story = passage(),
+      input = composition();
+    input.metadata = { passage: { cueMarkers: { missing: "none" } } };
+    expect(() => validatePassageCompositions(story, { beat: input })).toThrow(
+      /Unknown narrative cue/,
+    );
+    input.metadata = {};
+    Object.assign(story.beats[0]!, {
+      poseTracks: { actor: { initial: "pose" } },
+    });
+    expect(() => validatePassageCompositions(story, { beat: input })).toThrow(
+      /legacy acting tracks/,
+    );
+  });
+
   it("does not treat inherited object names as overrides", () => {
     const story = passage();
     story.beats[0]!.id = "constructor";

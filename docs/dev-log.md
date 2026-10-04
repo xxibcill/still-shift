@@ -48,8 +48,10 @@ still hold before relying on them.
   prerequisite and optional passage composition export/Lab path implemented; focused
   unit/runtime and 576-frame passage browser checks pass. Native companion-map
   pictures pass standalone encoded-beat/Lab parity; full Canvas family matrix passes
-  (69 cases / 14,086 frames). Full local verification and WebGL correctness closeout
-  remain before the milestone PR and CE10.
+  (69 cases / 14,086 frames). Explicit native cue/event/subject mappings and a
+  576-frame mixed passage with an adapted story precomp, native overlay, narration,
+  cache edits, relocation and input diagnostics pass. Full verification and WebGL
+  correctness closeout remain before the milestone PR and CE10.
   [Evidence](./composition-ce4a-completion-results.json).
 
 - **CE12 motion linting (`[x]`, 2026-10-05):** complete on
@@ -153,7 +155,8 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   narration and relocation checks. Native picture maps pass exact cached-beat and
   Lab parity; all 69 Canvas family cases / 14,086 frames pass. WebGL shutter pixels,
   seeks and repeat MP4s pass; 1.33–1.39× timing is deferred. Full verification next.
-- **Open / next:** passage composition integration, full story acceptance and milestone PR;
+- **Done:** native narrative bindings and mixed story-precomp acceptance now pass.
+- **Open / next:** full verification, WebGL correctness record and milestone PR;
   CE7 remains incomplete, CE6-P remains deferred. Pre-existing local documentation retained.
 - **Records:** [CE4a continuation evidence](./composition-ce4a-completion-results.json).
 

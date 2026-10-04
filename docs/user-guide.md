@@ -687,3 +687,25 @@ For matching passage preview, use
 Native layers appear in the state inspector; edit their motion in the composition
 file or composition inspector. Saved Lab workspaces retain the loaded native data.
 The acceptance example is `benchmarks/fixtures/composition/ce4a/native-beats.json`.
+
+Map narrative authority explicitly in the native picture:
+
+```json
+{
+  "metadata": {
+    "passage": {
+      "cueMarkers": { "strain": "strain" },
+      "eventMarkers": { "shared-strain": "shared-strain" },
+      "subjectLayers": {
+        "house-a": "story-content/house-a",
+        "house-b": "story-content/house-b"
+      }
+    }
+  }
+}
+```
+
+Root markers must match the narration cue frames and linked event windows. Layer
+paths may point into an adapted story precomp; share its assets with the containing
+composition. The native beat fixture demonstrates this with a new blend overlay.
+Missing mappings and unsupported legacy acting tracks return a diagnostic.

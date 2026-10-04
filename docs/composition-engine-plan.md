@@ -1378,6 +1378,10 @@ comparisons; the full `pnpm check`.
   CE7 remains in progress at its later sequence position; no broader time-control closure.
 - **Passages:** opt-in composition beat compilation is wired to export and Lab preview;
   renderer/backend-specific cache identities preserve handoffs, narration and recovery.
+- **Bindings:** native cue/event markers and precomp-instance subject paths are
+  validated; missing targets and unsupported acting return diagnostics. A 576-frame
+  mixed passage passes with an adapted story precomp, native overlay, narration,
+  cache edits, relocated assets and Lab seeks. Full verification is next.
 - **Evidence:** [continuation results](./composition-ce4a-completion-results.json).
   Native companion-map pictures now pass standalone encoded-beat identity and Lab
   pixel/seek checks; 69 Canvas family cases / 14,086 frames meet pixel/state/timing

@@ -1474,3 +1474,15 @@ Diagnostics: `comp-passage-reference` (invalid map/file), `comp-passage-limit`
 `comp-passage-renderer` (native pictures require the composition path). Native
 composition schema diagnostics retain their codes and gain the beat ID.
 The API checks map, picture and asset paths against the Lab workspace boundary.
+
+Native pictures declare `metadata.passage` with three explicit maps:
+`cueMarkers` maps each narrative cue ID to a root marker at its cue frame;
+`eventMarkers` maps each narration-linked event ID to a root marker with its exact
+start and duration; `subjectLayers` maps focal subjects and any evidence node to a
+native layer ID or precomp instance path (for example `story-content/house-a`).
+Missing targets, unknown narrative IDs and mismatched timing return
+`comp-passage-binding`. A mapped evidence qualification must be native text matching
+the passage's qualification. Legacy action/pose/prop tracks and implicit carry are
+unsupported at native boundaries and fail explicitly; author that motion in the
+composition. The fixture `ce4a/native-beat.json` embeds an adapted story as a precomp
+with a native difference-blend overlay and preserves its assets and cue mappings.

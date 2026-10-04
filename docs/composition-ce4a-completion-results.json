@@ -120,6 +120,42 @@
         "A companion map and its composition/assets are separately portable inputs; the existing story workspace packager does not absorb them."
       ],
       "rejectedTest": "Assembled decoded frames cannot equal the original clip exactly because passage assembly re-encodes using its existing libx264 fast path. Verify exact encoded native beat identity and independently deterministic assemblies instead."
+    },
+    {
+      "name": "Native narrative bindings and mixed passage acceptance",
+      "changes": "Explicit metadata.passage cueMarkers/eventMarkers/subjectLayers; validate exact narration-linked windows and resolved precomp-instance targets. Reject unsupported legacy acting and bad references/assets with structured diagnostics. Native picture fixture contains a baked adapted-story precomp and native difference-blend overlay.",
+      "verification": [
+        {
+          "command": "pnpm test:browser:composition-native-passage",
+          "status": "passed",
+          "frames": 576,
+          "checks": [
+            "mixed story/native passage",
+            "adapted story precomp plus native overlay",
+            "native cached clip byte-identical to standalone export",
+            "repeated decoded assembly identity",
+            "narration stream with unchanged picture cache",
+            "cue and event mappings",
+            "isolated picture edit invalidates only its clip",
+            "relocated composition/assets reuse cache",
+            "missing file, incompatible fps and asset checksum diagnostics",
+            "Lab native pixels and forward/backward seeks"
+          ]
+        },
+        {
+          "command": "pnpm exec vitest run tests/unit/passage-compositions.test.ts --maxWorkers=2",
+          "status": "passed",
+          "tests": 11
+        },
+        {
+          "command": "pnpm build; pnpm check:boundaries; targeted eslint",
+          "status": "passed"
+        }
+      ],
+      "rejectedTests": [
+        "An assertion initially matched a diagnostic code against the human Error.message. Corrected to assert PassageError.diagnostics[0].code; the loader already returned the expected structured diagnostic."
+      ],
+      "log": "benchmarks/results/ce4a-native-mixed-passage-retry.log"
     }
   ],
   "pending": [
@@ -139,5 +175,17 @@
     "timingFailures": 0,
     "maxRatio": null,
     "log": "benchmarks/results/ce4a-story-canvas-matrix.log"
-  }
+  },
+  "verificationAttempts": [
+    {
+      "command": "pnpm check (clean snapshot c4be533)",
+      "status": "failed-format",
+      "reason": "Own CE4a tracker row spacing; repaired in c64d3a8."
+    },
+    {
+      "command": "pnpm check (format-corrected snapshot)",
+      "status": "interrupted",
+      "reason": "Current plan requires mixed story-precomp/native acceptance and explicit bindings; stopped before completing tests to implement that coverage."
+    }
+  ]
 }

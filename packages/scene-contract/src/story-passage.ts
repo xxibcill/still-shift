@@ -111,3 +111,12 @@ export const PassageCompositionReferencesSchema = z
     (value) => Object.keys(value).length <= 400,
     "At most 400 beat references",
   );
+
+/** Native pictures explicitly map narrative authority into their visual graph. */
+export const PassageCompositionBindingsSchema = z
+  .object({
+    cueMarkers: z.record(text, text).default({}),
+    eventMarkers: z.record(text, text).default({}),
+    subjectLayers: z.record(text, text).default({}),
+  })
+  .strict();

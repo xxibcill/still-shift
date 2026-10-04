@@ -25,7 +25,7 @@ export async function loadPassageCompositions(
   const sourcePath = resolve(path);
   await allowPath?.(sourcePath);
   const parsed = PassageCompositionReferencesSchema.safeParse(
-    JSON.parse(await readFile(sourcePath, "utf8")),
+    await readReferenceJson(sourcePath),
   );
   if (!parsed.success)
     passageError("comp-passage-reference", parsed.error.issues[0]!.message, {
@@ -35,9 +35,7 @@ export async function loadPassageCompositions(
   for (const [id, reference] of Object.entries(parsed.data)) {
     const file = resolve(dirname(sourcePath), reference);
     await allowPath?.(file);
-    const result = validateComposition(
-      JSON.parse(await readFile(file, "utf8")),
-    );
+    const result = validateComposition(await readReferenceJson(file, id));
     if (!result.ok)
       passageError("comp-passage-reference", result.diagnostics[0]!.message, {
         beat: id,
@@ -45,7 +43,13 @@ export async function loadPassageCompositions(
       });
     for (const asset of result.composition.assets)
       await allowPath?.(resolve(dirname(file), asset.path));
-    const loaded = await loadComposition(file);
+    const loaded = await loadComposition(file).catch((error) =>
+      passageError(
+        "comp-passage-reference",
+        `Cannot prepare ${file}: ${error.message}`,
+        { beat: id, path: file },
+      ),
+    );
     compositions[id] = {
       ...loaded.composition,
       assets: loaded.composition.assets.map((asset) => ({
@@ -55,4 +59,22 @@ export async function loadPassageCompositions(
     };
   }
   return validatePassageCompositions(passage, compositions);
+}
+
+async function readReferenceJson(
+  path: string,
+  beat?: string,
+): Promise<unknown> {
+  try {
+    return JSON.parse(await readFile(path, "utf8"));
+  } catch {
+    return passageError(
+      "comp-passage-reference",
+      `Cannot read valid JSON from ${path}`,
+      {
+        path,
+        ...(beat ? { beat } : {}),
+      },
+    );
+  }
 }
