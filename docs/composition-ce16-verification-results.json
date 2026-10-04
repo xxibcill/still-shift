@@ -1,8 +1,8 @@
 {
   "date": "2026-10-04",
-  "milestone": "CE16-A",
+  "milestone": "CE16",
   "technicalLifecycle": "passed",
-  "ce16Integration": "not started",
+  "ce16Integration": "implemented; command-only verification recorded",
   "branch": "codex/composition-ce16",
   "base": "dee9e7b4c35256e298d8168b635aacd934a4a4ae",
   "worktree": "/Users/jjae/.codex/worktrees/composition-ce16/still-shift",
@@ -569,7 +569,97 @@
     "upstreamSource": "https://github.com/DBraun/DawDreamer/blob/main/README.md#license",
     "packaging": "Trial runtime is local and isolated; no dependency binary distributed or production backend adopted. GPL and native/transitive obligations require a documented packaging decision before distribution. Subprocess use is not a licensing exemption."
   },
-  "limitations": [
+  "computerUse": "none",
+  "listening": "not performed",
+  "audiovisualQA": "not performed",
+  "verification": {
+    "date": "2026-10-04",
+    "toolchain": {
+      "command": "UV_NO_SYNC=1 UV_CACHE_DIR=/private/tmp/still-shift-ce16-uv-cache pnpm toolchain:check",
+      "exitCode": 0,
+      "log": "benchmarks/results/composition-ce16/ce16-b-toolchain.log"
+    },
+    "commandOnlyTier": {
+      "command": "pnpm check:soundtrack",
+      "exitCode": 0,
+      "unitFiles": 128,
+      "unitTests": 1428,
+      "runtimeFiles": 9,
+      "runtimeTests": 46,
+      "commandIntegrationFiles": 26,
+      "commandIntegrationTests": 94,
+      "depthTests": 14,
+      "pythonLintAndFormat": "passed",
+      "log": "benchmarks/results/composition-ce16/ce16-b-command-check-final.log"
+    },
+    "focusedFinal": {
+      "command": "pnpm test:soundtrack",
+      "exitCode": 0,
+      "files": 4,
+      "tests": 27,
+      "log": "benchmarks/results/composition-ce16/ce16-b-focused-final.log",
+      "newCoverageSinceCommandTier": "Independent exact ducking lookahead/attack/hold/release boundaries and rejection of soundtrack revision changes during passage picture rendering"
+    },
+    "lifecycle": {
+      "command": "STILL_SHIFT_SOUNDTRACK_RESULTS=benchmarks/results/composition-ce16/integration-final pnpm soundtrack:verify",
+      "exitCode": 0
+    },
+    "setupRecovery": {
+      "command": "pnpm soundtrack:setup",
+      "exitCode": 0,
+      "result": "Existing Python runtime reused; exact three packages audited without replacement"
+    },
+    "failedAttempts": [
+      {
+        "stage": "package boundaries",
+        "diagnostic": "animation-engine missing declared zod dependency",
+        "resolution": "Declared exact existing zod 4.1.5 and updated lockfile"
+      },
+      {
+        "stage": "format/lint",
+        "diagnostic": "Generated evidence and lockfile formatting, new JS globals/destructuring lint, long Python evidence strings",
+        "resolution": "Explicit Node imports, schema projection, formatter and line wrapping; checks pass"
+      },
+      {
+        "stage": "strengthened cancellation/recovery test",
+        "diagnostic": "Missing lstat/mkdir imports in test harness",
+        "resolution": "Fixed imports; actual running-worker cancellation and recovery tests pass"
+      },
+      {
+        "stage": "sandboxed toolchain read",
+        "diagnostic": "UV default cache write denied in sandbox",
+        "resolution": "Verified with private UV cache and no-sync; no primary environment changes"
+      },
+      {
+        "stage": "final passage adapter review",
+        "diagnostic": "Gallery labeled the opt-in audio mode silent; export could consume a revision different from its job identity after a concurrent edit",
+        "resolution": "Added soundtrack mode and captured-revision guard; focused regression passes"
+      }
+    ],
+    "unperformed": [
+      "Full pnpm check",
+      "GUI-driving Playwright integration/browser groups",
+      "Frozen browser-rendered composition baseline rerun",
+      "Listening",
+      "Audiovisual QA",
+      "GUI visual inspection"
+    ],
+    "baselinePolicy": "No baseline regeneration; visual rendering algorithms and fixtures unchanged",
+    "milestoneClosure": "Pending owner resolution of full-check/browser-baseline requirement versus zero browser driving",
+    "baselineInventoryTests": {
+      "command": "pnpm exec vitest run tests/unit/composition-baseline-inventory.test.ts tests/unit/composition-baseline-regeneration.test.ts tests/unit/composition-baseline-timings.test.ts --no-file-parallelism",
+      "exitCode": 0,
+      "tests": 26,
+      "scope": "Inventory/provenance/timing logic only; no rendered baseline parity claim"
+    },
+    "finalFastTier": {
+      "command": "pnpm check:fast",
+      "exitCode": 0,
+      "unitTests": 1428,
+      "log": "benchmarks/results/composition-ce16/ce16-b-fast-final.log"
+    }
+  },
+  "backendProofLimitations": [
     "Readable ce16-backend-proof-1 is a prototype format, not soundtrack-project-1.",
     "Full worker protocol, shared edits, ducking, timeline and passage integration are not implemented.",
     "Fixture uses existing local episode source paths; portable project relocation remains CE16-B work.",
@@ -577,40 +667,607 @@
     "Initial install used a cold download cache without peak-memory profiling; measured fresh hash-locked setup downloaded all three wheels again.",
     "No speed comparison or advantage is claimed."
   ],
-  "computerUse": "none",
-  "listening": "not performed",
-  "audiovisualQA": "not performed",
-  "verification": {
-    "fastCheck": {
-      "command": "pnpm check:fast",
-      "exitCode": 0,
-      "unitFiles": 127,
-      "unitTests": 1420,
-      "log": "benchmarks/results/composition-ce16/check-fast-isolated.log"
-    },
-    "proof": {
-      "command": "pnpm soundtrack:proof --verify-only",
-      "exitCode": 0
-    },
-    "python": [
-      "ruff check --no-cache scripts/soundtrack/proof-worker.py scripts/soundtrack/verify-proof.py",
-      "ruff format --check --no-cache scripts/soundtrack/proof-worker.py scripts/soundtrack/verify-proof.py"
+  "integration": {
+    "schemaVersion": "soundtrack-project-1",
+    "workerProtocol": "soundtrack-worker-1",
+    "dspVersion": "soundtrack-dsp-1",
+    "results": "/Users/jjae/.codex/worktrees/composition-ce16/still-shift/benchmarks/results/composition-ce16/integration-final",
+    "commands": [
+      {
+        "command": [
+          "/Users/jjae/.nvm/versions/node/v22.23.1/bin/node",
+          "--import",
+          "tsx",
+          "tools/still-shift-cli/src/cli.ts",
+          "soundtrack",
+          "validate",
+          "--project",
+          "benchmarks/fixtures/composition/ce16/project.json"
+        ],
+        "equivalentCommand": "pnpm still-shift soundtrack validate --project benchmarks/fixtures/composition/ce16/project.json",
+        "exitCode": 0,
+        "wallSeconds": 0.904589042
+      },
+      {
+        "command": [
+          "/Users/jjae/.nvm/versions/node/v22.23.1/bin/node",
+          "--import",
+          "tsx",
+          "tools/still-shift-cli/src/cli.ts",
+          "soundtrack",
+          "render",
+          "--project",
+          "benchmarks/fixtures/composition/ce16/project.json",
+          "--output-dir",
+          "/Users/jjae/.codex/worktrees/composition-ce16/still-shift/benchmarks/results/composition-ce16/integration-final/initial",
+          "--stems"
+        ],
+        "equivalentCommand": "pnpm still-shift soundtrack render --project benchmarks/fixtures/composition/ce16/project.json --output-dir /Users/jjae/.codex/worktrees/composition-ce16/still-shift/benchmarks/results/composition-ce16/integration-final/initial --stems",
+        "exitCode": 0,
+        "wallSeconds": 1.994019459
+      },
+      {
+        "command": [
+          "/Users/jjae/.nvm/versions/node/v22.23.1/bin/node",
+          "--import",
+          "tsx",
+          "tools/still-shift-cli/src/cli.ts",
+          "soundtrack",
+          "render",
+          "--project",
+          "benchmarks/fixtures/composition/ce16/project.json",
+          "--output-dir",
+          "/Users/jjae/.codex/worktrees/composition-ce16/still-shift/benchmarks/results/composition-ce16/integration-final/reloaded",
+          "--stems"
+        ],
+        "equivalentCommand": "pnpm still-shift soundtrack render --project benchmarks/fixtures/composition/ce16/project.json --output-dir /Users/jjae/.codex/worktrees/composition-ce16/still-shift/benchmarks/results/composition-ce16/integration-final/reloaded --stems",
+        "exitCode": 0,
+        "wallSeconds": 2.1165702909999995
+      },
+      {
+        "command": [
+          "/Users/jjae/.nvm/versions/node/v22.23.1/bin/node",
+          "--import",
+          "tsx",
+          "tools/still-shift-cli/src/cli.ts",
+          "soundtrack",
+          "edit",
+          "--project",
+          "/Users/jjae/.codex/worktrees/composition-ce16/still-shift/benchmarks/results/composition-ce16/integration-final/edited-project.json",
+          "--revision",
+          "0",
+          "--operations",
+          "benchmarks/fixtures/composition/ce16/edits.json"
+        ],
+        "equivalentCommand": "pnpm still-shift soundtrack edit --project /Users/jjae/.codex/worktrees/composition-ce16/still-shift/benchmarks/results/composition-ce16/integration-final/edited-project.json --revision 0 --operations benchmarks/fixtures/composition/ce16/edits.json",
+        "exitCode": 0,
+        "wallSeconds": 0.967957625
+      },
+      {
+        "command": [
+          "/Users/jjae/.nvm/versions/node/v22.23.1/bin/node",
+          "--import",
+          "tsx",
+          "tools/still-shift-cli/src/cli.ts",
+          "soundtrack",
+          "render",
+          "--project",
+          "/Users/jjae/.codex/worktrees/composition-ce16/still-shift/benchmarks/results/composition-ce16/integration-final/edited-project.json",
+          "--output-dir",
+          "/Users/jjae/.codex/worktrees/composition-ce16/still-shift/benchmarks/results/composition-ce16/integration-final/edited",
+          "--stems"
+        ],
+        "equivalentCommand": "pnpm still-shift soundtrack render --project /Users/jjae/.codex/worktrees/composition-ce16/still-shift/benchmarks/results/composition-ce16/integration-final/edited-project.json --output-dir /Users/jjae/.codex/worktrees/composition-ce16/still-shift/benchmarks/results/composition-ce16/integration-final/edited --stems",
+        "exitCode": 0,
+        "wallSeconds": 2.0107086250000004
+      },
+      {
+        "command": [
+          "/Users/jjae/.nvm/versions/node/v22.23.1/bin/node",
+          "--import",
+          "tsx",
+          "tools/still-shift-cli/src/cli.ts",
+          "soundtrack",
+          "package",
+          "--project",
+          "/Users/jjae/.codex/worktrees/composition-ce16/still-shift/benchmarks/results/composition-ce16/integration-final/edited-project.json",
+          "--output-dir",
+          "/Users/jjae/.codex/worktrees/composition-ce16/still-shift/benchmarks/results/composition-ce16/integration-final/portable"
+        ],
+        "equivalentCommand": "pnpm still-shift soundtrack package --project /Users/jjae/.codex/worktrees/composition-ce16/still-shift/benchmarks/results/composition-ce16/integration-final/edited-project.json --output-dir /Users/jjae/.codex/worktrees/composition-ce16/still-shift/benchmarks/results/composition-ce16/integration-final/portable",
+        "exitCode": 0,
+        "wallSeconds": 1.0178483749999996
+      },
+      {
+        "command": [
+          "/Users/jjae/.nvm/versions/node/v22.23.1/bin/node",
+          "--import",
+          "tsx",
+          "tools/still-shift-cli/src/cli.ts",
+          "soundtrack",
+          "render",
+          "--project",
+          "/Users/jjae/.codex/worktrees/composition-ce16/still-shift/benchmarks/results/composition-ce16/integration-final/portable/project.json",
+          "--output-dir",
+          "/Users/jjae/.codex/worktrees/composition-ce16/still-shift/benchmarks/results/composition-ce16/integration-final/relocated",
+          "--stems"
+        ],
+        "equivalentCommand": "pnpm still-shift soundtrack render --project /Users/jjae/.codex/worktrees/composition-ce16/still-shift/benchmarks/results/composition-ce16/integration-final/portable/project.json --output-dir /Users/jjae/.codex/worktrees/composition-ce16/still-shift/benchmarks/results/composition-ce16/integration-final/relocated --stems",
+        "exitCode": 0,
+        "wallSeconds": 1.9830092080000012
+      }
     ],
-    "initialEnvironmentFailure": {
-      "command": "pnpm check:fast",
-      "exitCode": 1,
-      "failedFiles": 6,
-      "passedFiles": 121,
-      "passedTests": 1392,
-      "cause": "Shared root node_modules symlink omitted package-local three dependency. Replaced only isolated worktree symlink with offline frozen-lockfile installation; clean rerun passes.",
-      "log": "benchmarks/results/composition-ce16/check-fast.log"
+    "runs": {
+      "initial": {
+        "protocol": "soundtrack-worker-1",
+        "ok": true,
+        "revision": 0,
+        "sampleRate": 48000,
+        "channels": 2,
+        "range": {
+          "start": 0,
+          "end": 2880000
+        },
+        "blockSize": 512,
+        "stemTap": "post clip gain/fades/automation, ducking and track DSP; pre bus/master gain",
+        "normalization": "none",
+        "latencySamples": 0,
+        "latencyProbes": [
+          {
+            "track": "bgm",
+            "impulseSample": 1024,
+            "onsetSample": 1024,
+            "peakSample": 1026,
+            "lastAbove1eMinus10": 3080,
+            "compensationSamples": 0
+          },
+          {
+            "track": "sfx-pouch",
+            "impulseSample": 1024,
+            "onsetSample": 1024,
+            "peakSample": 1026,
+            "lastAbove1eMinus10": 3080,
+            "compensationSamples": 0
+          },
+          {
+            "track": "sfx-roots",
+            "impulseSample": 1024,
+            "onsetSample": 1024,
+            "peakSample": 1026,
+            "lastAbove1eMinus10": 3080,
+            "compensationSamples": 0
+          }
+        ],
+        "tailPolicy": "retain-to-project-end",
+        "dspVersion": "soundtrack-dsp-1",
+        "ducking": {
+          "method": "peak-window-attack-hold-release-1",
+          "sourceTrack": "narration",
+          "targetTracks": ["bgm"],
+          "thresholdDb": -32,
+          "attenuationDb": -12,
+          "windowSamples": 480,
+          "attackSamples": 2400,
+          "releaseSamples": 12000,
+          "holdSamples": 4800,
+          "lookaheadSamples": 2400
+        },
+        "wallSeconds": 0.6704328329651617,
+        "peakResidentBytes": 757415936,
+        "runtime": {
+          "python": "3.12.11",
+          "platform": "macOS-26.6.2-arm64-arm-64bit",
+          "packages": {
+            "dawdreamer": "0.9.0",
+            "numpy": "2.3.3",
+            "scipy": "1.16.2"
+          }
+        },
+        "identity": "8b8be8530ccfe743269956fb192ffd745c039e8aa1a8cd5bc28f190f9f015761",
+        "output": "/Users/jjae/.codex/worktrees/composition-ce16/still-shift/benchmarks/results/composition-ce16/integration-final/initial"
+      },
+      "reloaded": {
+        "protocol": "soundtrack-worker-1",
+        "ok": true,
+        "revision": 0,
+        "sampleRate": 48000,
+        "channels": 2,
+        "range": {
+          "start": 0,
+          "end": 2880000
+        },
+        "blockSize": 512,
+        "stemTap": "post clip gain/fades/automation, ducking and track DSP; pre bus/master gain",
+        "normalization": "none",
+        "latencySamples": 0,
+        "latencyProbes": [
+          {
+            "track": "bgm",
+            "impulseSample": 1024,
+            "onsetSample": 1024,
+            "peakSample": 1026,
+            "lastAbove1eMinus10": 3080,
+            "compensationSamples": 0
+          },
+          {
+            "track": "sfx-pouch",
+            "impulseSample": 1024,
+            "onsetSample": 1024,
+            "peakSample": 1026,
+            "lastAbove1eMinus10": 3080,
+            "compensationSamples": 0
+          },
+          {
+            "track": "sfx-roots",
+            "impulseSample": 1024,
+            "onsetSample": 1024,
+            "peakSample": 1026,
+            "lastAbove1eMinus10": 3080,
+            "compensationSamples": 0
+          }
+        ],
+        "tailPolicy": "retain-to-project-end",
+        "dspVersion": "soundtrack-dsp-1",
+        "ducking": {
+          "method": "peak-window-attack-hold-release-1",
+          "sourceTrack": "narration",
+          "targetTracks": ["bgm"],
+          "thresholdDb": -32,
+          "attenuationDb": -12,
+          "windowSamples": 480,
+          "attackSamples": 2400,
+          "releaseSamples": 12000,
+          "holdSamples": 4800,
+          "lookaheadSamples": 2400
+        },
+        "wallSeconds": 0.6623319169739261,
+        "peakResidentBytes": 757235712,
+        "runtime": {
+          "python": "3.12.11",
+          "platform": "macOS-26.6.2-arm64-arm-64bit",
+          "packages": {
+            "dawdreamer": "0.9.0",
+            "numpy": "2.3.3",
+            "scipy": "1.16.2"
+          }
+        },
+        "identity": "8b8be8530ccfe743269956fb192ffd745c039e8aa1a8cd5bc28f190f9f015761",
+        "output": "/Users/jjae/.codex/worktrees/composition-ce16/still-shift/benchmarks/results/composition-ce16/integration-final/reloaded"
+      },
+      "edited": {
+        "protocol": "soundtrack-worker-1",
+        "ok": true,
+        "revision": 1,
+        "sampleRate": 48000,
+        "channels": 2,
+        "range": {
+          "start": 0,
+          "end": 2880000
+        },
+        "blockSize": 512,
+        "stemTap": "post clip gain/fades/automation, ducking and track DSP; pre bus/master gain",
+        "normalization": "none",
+        "latencySamples": 0,
+        "latencyProbes": [
+          {
+            "track": "bgm",
+            "impulseSample": 1024,
+            "onsetSample": 1024,
+            "peakSample": 1026,
+            "lastAbove1eMinus10": 3080,
+            "compensationSamples": 0
+          },
+          {
+            "track": "sfx-pouch",
+            "impulseSample": 1024,
+            "onsetSample": 1024,
+            "peakSample": 1026,
+            "lastAbove1eMinus10": 3080,
+            "compensationSamples": 0
+          },
+          {
+            "track": "sfx-roots",
+            "impulseSample": 1024,
+            "onsetSample": 1024,
+            "peakSample": 1026,
+            "lastAbove1eMinus10": 3080,
+            "compensationSamples": 0
+          }
+        ],
+        "tailPolicy": "retain-to-project-end",
+        "dspVersion": "soundtrack-dsp-1",
+        "ducking": {
+          "method": "peak-window-attack-hold-release-1",
+          "sourceTrack": "narration",
+          "targetTracks": ["bgm"],
+          "thresholdDb": -32,
+          "attenuationDb": -12,
+          "windowSamples": 480,
+          "attackSamples": 2400,
+          "releaseSamples": 12000,
+          "holdSamples": 4800,
+          "lookaheadSamples": 2400
+        },
+        "wallSeconds": 0.6930127909872681,
+        "peakResidentBytes": 757465088,
+        "runtime": {
+          "python": "3.12.11",
+          "platform": "macOS-26.6.2-arm64-arm-64bit",
+          "packages": {
+            "dawdreamer": "0.9.0",
+            "numpy": "2.3.3",
+            "scipy": "1.16.2"
+          }
+        },
+        "identity": "b94459294da62240d14e7590240776a60d55df2c2a351499687296f5698009d5",
+        "output": "/Users/jjae/.codex/worktrees/composition-ce16/still-shift/benchmarks/results/composition-ce16/integration-final/edited"
+      },
+      "relocated": {
+        "protocol": "soundtrack-worker-1",
+        "ok": true,
+        "revision": 1,
+        "sampleRate": 48000,
+        "channels": 2,
+        "range": {
+          "start": 0,
+          "end": 2880000
+        },
+        "blockSize": 512,
+        "stemTap": "post clip gain/fades/automation, ducking and track DSP; pre bus/master gain",
+        "normalization": "none",
+        "latencySamples": 0,
+        "latencyProbes": [
+          {
+            "track": "bgm",
+            "impulseSample": 1024,
+            "onsetSample": 1024,
+            "peakSample": 1026,
+            "lastAbove1eMinus10": 3080,
+            "compensationSamples": 0
+          },
+          {
+            "track": "sfx-pouch",
+            "impulseSample": 1024,
+            "onsetSample": 1024,
+            "peakSample": 1026,
+            "lastAbove1eMinus10": 3080,
+            "compensationSamples": 0
+          },
+          {
+            "track": "sfx-roots",
+            "impulseSample": 1024,
+            "onsetSample": 1024,
+            "peakSample": 1026,
+            "lastAbove1eMinus10": 3080,
+            "compensationSamples": 0
+          }
+        ],
+        "tailPolicy": "retain-to-project-end",
+        "dspVersion": "soundtrack-dsp-1",
+        "ducking": {
+          "method": "peak-window-attack-hold-release-1",
+          "sourceTrack": "narration",
+          "targetTracks": ["bgm"],
+          "thresholdDb": -32,
+          "attenuationDb": -12,
+          "windowSamples": 480,
+          "attackSamples": 2400,
+          "releaseSamples": 12000,
+          "holdSamples": 4800,
+          "lookaheadSamples": 2400
+        },
+        "wallSeconds": 0.6472230000072159,
+        "peakResidentBytes": 757170176,
+        "runtime": {
+          "python": "3.12.11",
+          "platform": "macOS-26.6.2-arm64-arm-64bit",
+          "packages": {
+            "dawdreamer": "0.9.0",
+            "numpy": "2.3.3",
+            "scipy": "1.16.2"
+          }
+        },
+        "identity": "1e32e711cf1222eee34c094d5a3aa5e16aed5685227762d020fa35bf1197b3c5",
+        "output": "/Users/jjae/.codex/worktrees/composition-ce16/still-shift/benchmarks/results/composition-ce16/integration-final/relocated"
+      }
     },
-    "notRun": [
-      "Full pnpm check/check:all",
-      "Runtime/integration/browser groups",
-      "Frozen baseline matrices",
-      "Listening",
-      "Audiovisual QA"
-    ]
-  }
+    "reloadPCM": {
+      "narration": {
+        "maxSampleError": 0.0,
+        "differingSamples": 0,
+        "samplesPerChannel": 2880000,
+        "channels": 2
+      },
+      "bgm": {
+        "maxSampleError": 0.0,
+        "differingSamples": 0,
+        "samplesPerChannel": 2880000,
+        "channels": 2
+      },
+      "sfx-pouch": {
+        "maxSampleError": 0.0,
+        "differingSamples": 0,
+        "samplesPerChannel": 2880000,
+        "channels": 2
+      },
+      "sfx-roots": {
+        "maxSampleError": 0.0,
+        "differingSamples": 0,
+        "samplesPerChannel": 2880000,
+        "channels": 2
+      },
+      "music-bus": {
+        "maxSampleError": 0.0,
+        "differingSamples": 0,
+        "samplesPerChannel": 2880000,
+        "channels": 2
+      },
+      "sfx-bus": {
+        "maxSampleError": 0.0,
+        "differingSamples": 0,
+        "samplesPerChannel": 2880000,
+        "channels": 2
+      },
+      "master": {
+        "maxSampleError": 0.0,
+        "differingSamples": 0,
+        "samplesPerChannel": 2880000,
+        "channels": 2
+      }
+    },
+    "editedPCM": {
+      "narration": {
+        "maxSampleError": 0.0,
+        "differingSamples": 0,
+        "samplesPerChannel": 2880000,
+        "channels": 2
+      },
+      "bgm": {
+        "maxSampleError": 0.0,
+        "differingSamples": 0,
+        "samplesPerChannel": 2880000,
+        "channels": 2
+      },
+      "sfx-pouch": {
+        "maxSampleError": 0.09154027700424194,
+        "differingSamples": 2876084,
+        "samplesPerChannel": 2880000,
+        "channels": 2
+      },
+      "sfx-roots": {
+        "maxSampleError": 0.0,
+        "differingSamples": 0,
+        "samplesPerChannel": 2880000,
+        "channels": 2
+      },
+      "music-bus": {
+        "maxSampleError": 0.0,
+        "differingSamples": 0,
+        "samplesPerChannel": 2880000,
+        "channels": 2
+      },
+      "sfx-bus": {
+        "maxSampleError": 0.09154027700424194,
+        "differingSamples": 2844960,
+        "samplesPerChannel": 2880000,
+        "channels": 2
+      },
+      "master": {
+        "maxSampleError": 0.09154026955366135,
+        "differingSamples": 61180,
+        "samplesPerChannel": 2880000,
+        "channels": 2
+      }
+    },
+    "relocatedPCM": {
+      "narration": {
+        "maxSampleError": 0.0,
+        "differingSamples": 0,
+        "samplesPerChannel": 2880000,
+        "channels": 2
+      },
+      "bgm": {
+        "maxSampleError": 0.0,
+        "differingSamples": 0,
+        "samplesPerChannel": 2880000,
+        "channels": 2
+      },
+      "sfx-pouch": {
+        "maxSampleError": 0.0,
+        "differingSamples": 0,
+        "samplesPerChannel": 2880000,
+        "channels": 2
+      },
+      "sfx-roots": {
+        "maxSampleError": 0.0,
+        "differingSamples": 0,
+        "samplesPerChannel": 2880000,
+        "channels": 2
+      },
+      "music-bus": {
+        "maxSampleError": 0.0,
+        "differingSamples": 0,
+        "samplesPerChannel": 2880000,
+        "channels": 2
+      },
+      "sfx-bus": {
+        "maxSampleError": 0.0,
+        "differingSamples": 0,
+        "samplesPerChannel": 2880000,
+        "channels": 2
+      },
+      "master": {
+        "maxSampleError": 0.0,
+        "differingSamples": 0,
+        "samplesPerChannel": 2880000,
+        "channels": 2
+      }
+    },
+    "narrationPCM": {
+      "maxSampleError": 0.0,
+      "differingSamples": 0,
+      "samplesPerChannel": 2880000,
+      "channels": 2
+    },
+    "reconstructionPCM": {
+      "maxSampleError": 0.0,
+      "differingSamples": 0,
+      "samplesPerChannel": 2880000,
+      "channels": 2
+    },
+    "waveformPlaylistEvaluation": {
+      "engine": "13.6.0 MIT",
+      "core": "12.6.1 MIT",
+      "browser": "16.0.0 MIT, React/Tone peers",
+      "components": "@dawcore/components 0.0.37 MIT, Lit/native audio peers",
+      "decision": "Vanilla TypeScript view; shared project is sole authority. Engine collision rules and snapshot history differ from allowed overlaps and persisted project history. No additional npm audio libraries installed."
+    },
+    "preview": "Hash-checked rendered full mix; API response bytes exact. Range rendering evaluates complete DSP/ducking schedule before cropping.",
+    "measurementMethod": "Node monotonic wall time includes each CLI process; worker RUSAGE_SELF peak excludes FFmpeg children and per-path calibration. No speed advantage claimed.",
+    "outputSizesBytes": {
+      "initial": {
+        "narration": 23040058,
+        "bgm": 23040058,
+        "sfx-pouch": 23040058,
+        "sfx-roots": 23040058,
+        "music-bus": 23040058,
+        "sfx-bus": 23040058,
+        "master": 23040058
+      },
+      "reloaded": {
+        "narration": 23040058,
+        "bgm": 23040058,
+        "sfx-pouch": 23040058,
+        "sfx-roots": 23040058,
+        "music-bus": 23040058,
+        "sfx-bus": 23040058,
+        "master": 23040058
+      },
+      "edited": {
+        "narration": 23040058,
+        "bgm": 23040058,
+        "sfx-pouch": 23040058,
+        "sfx-roots": 23040058,
+        "music-bus": 23040058,
+        "sfx-bus": 23040058,
+        "master": 23040058
+      },
+      "relocated": {
+        "narration": 23040058,
+        "bgm": 23040058,
+        "sfx-pouch": 23040058,
+        "sfx-roots": 23040058,
+        "music-bus": 23040058,
+        "sfx-bus": 23040058,
+        "master": 23040058
+      }
+    }
+  },
+  "limitations": [
+    "Full pnpm check and frozen browser baselines not run: CE16 prohibits browser driving. Command/library/API verification is separate from those repository gates.",
+    "No listening, audiovisual QA or GUI/browser verification performed.",
+    "Local opt-in pinned Python runtime only; GPL/transitive distribution decision remains pending. No backend dependency binaries bundled.",
+    "Only causal built-in high/low-pass DSP is accepted, with per-path onset probes. External plugins and nonzero latency compensation are unsupported.",
+    "No drag handles or native browser DSP parity claimed; explicit numeric/JSON edits share the same atomic API."
+  ]
 }

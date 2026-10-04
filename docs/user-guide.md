@@ -638,3 +638,18 @@ aligned with this checkout. If you move the checkout, update the link.
 For contributors: when a user-visible feature changes, update this guide with
 its entry point, required inputs, availability and limits. Keep detailed contracts
 in the linked implementation references; check catalog counts against source.
+
+## Saved soundtrack layers
+
+CE16's optional [soundtrack guide](./soundtrack-project.md) adds named tracks,
+BGM ducking, filtering, automation and command-only save/render/relocation.
+Run `pnpm soundtrack:setup`, then use `pnpm still-shift soundtrack` commands.
+In the Lab, **Soundtrack layers** opens the shared saved project, numerical clip
+edits and rendered waveforms. Edits write the project file with revision checks.
+**Render this revision** enables mix preview/download. In the passage workbench,
+**Saved soundtrack (optional)** attaches that checked full mix to picture;
+**Use passage audio** restores linked passage sounds. The CLI exports with
+`pnpm story:passage --plan <plan> --soundtrack <project> --output-dir <fresh-dir>`.
+Existing audio workflows stay available. Source media and narration remain
+unchanged; no provider call is required. Technical tests pass independently of
+listening, audiovisual QA and visual inspection, which remain unperformed.

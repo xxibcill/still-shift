@@ -31,3 +31,9 @@ export { writeStoryWorkspace } from "./story-workspace.ts";
 export { generateSfx, type GeneratedSfx } from "./sfx-generation.ts";
 export { SfxGenerationError } from "./elevenlabs-sfx.ts";
 export { importNarrationFile } from "./narration-import.ts";
+
+export * from "./soundtrack-project-io.ts";
+
+export * from "./soundtrack-render.ts";
+
+export * from "./soundtrack-passage.ts";

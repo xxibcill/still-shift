@@ -3718,8 +3718,9 @@ files. An optional embedded timeline lets the owner inspect and edit the same sa
 project. Automated production works without opening the editor.
 
 **Status:** `[~]` in progress (2026-10-04), Codex on `codex/composition-ce16`
-in an isolated worktree from `dee9e7b`. CE16-A lifecycle proof is underway;
-CE16-B integration remains gated. Original checkout/CE12 work preserved.
+in an isolated worktree from `dee9e7b`. CE16-A lifecycle passed;
+CE16-B features and command-only verification are implemented. Full repository
+browser/baseline closure remains pending under the zero-Computer-Use constraint. Original checkout/CE12 work preserved.
 
 **Research handoff:** [CLI and Embedded Audio Engines for Still Shift](</Users/jjae/Documents/obsidian/ai-business/history-offstage/04 Research/Completed Studies/2026-10-03 - CLI and Embedded Audio Engines for Still Shift.md>)
 (2026-10-03, documentary research only). Proposed roles:
@@ -3768,33 +3769,33 @@ DSP chains and automatic ducking are new work; see [audio guide](./passage-audio
 
 ### CE16-A — Prove the backend before integration
 
-- [ ] Create an isolated **60-second** fixture with existing narration, **one BGM
+- [x] Create an isolated **60-second** fixture with existing narration, **one BGM
       interval and two SFX cues**, using new project/output paths. Record source
       hashes, trims and cue positions. Do not invent a longer narration take to fill
       the container; use existing speech within its natural duration.
-- [ ] Resolve and pin DawDreamer and all Python dependencies in a command-created
+- [x] Resolve and pin DawDreamer and all Python dependencies in a command-created
       isolated environment. Record Python, OS/architecture, FFmpeg/ffprobe and
       installed package versions/licenses. Install and run exclusively by commands;
       start with built-in processors and avoid plugins requiring activation dialogs.
-- [ ] Demonstrate source trimming, integer-sample placement, explicit gain
+- [x] Demonstrate source trimming, integer-sample placement, explicit gain
       envelopes/interpolation, at least one built-in DSP chain, named track/bus
       routing, and aligned **48 kHz stereo mix and stems**. All outputs span exactly
       2,880,000 samples per channel; report whether stems are pre/post processing
       and how master processing affects reconstruction of the mix.
-- [ ] Account for processor latency and effect tails: use an impulse/alignment
+- [x] Account for processor latency and effect tails: use an impulse/alignment
       probe, declare the render block size, measure path delays and document any
       compensation. DawDreamer does not automatically compensate external-plugin
       latency. Reject unsupported latency rather than allowing silent cue drift.
-- [ ] Save a readable versioned project, reload in a **new process**, re-render and
+- [x] Save a readable versioned project, reload in a **new process**, re-render and
       compare decoded PCM against the first output. Engine snapshots may be caches;
       the saved project must reconstruct the graph without an in-memory session.
-- [ ] Move one SFX cue and change its gain using commands, save/reload and render.
+- [x] Move one SFX cue and change its gain using commands, save/reload and render.
       Verify the intended edit and decoded equality of unaffected layer stems and
       source hashes. Record expected master/bus changes separately.
-- [ ] Measure wall time and peak memory for setup, initial render, fresh-process
+- [x] Measure wall time and peak memory for setup, initial render, fresh-process
       reload/render and edit/render, with host, block size, output sizes and commands.
       Record measurement method; do not claim a speed advantage without comparison.
-- [ ] Save lifecycle results and decoded comparisons, including maximum sample
+- [x] Save lifecycle results and decoded comparisons, including maximum sample
       error, differing-sample count, channel/rate/length and sample-position checks.
       Require exact decoded repeat/reload equality on the pinned local runtime;
       diagnose any mismatch before calling the gate passed.
@@ -3808,47 +3809,47 @@ pass.
 
 ### CE16-B — Shared project, worker, CLI and optional timeline
 
-- [ ] Introduce one bounded, explicitly versioned audio-project contract (proposed
+- [x] Introduce one bounded, explicitly versioned audio-project contract (proposed
       `soundtrack-project-1`) carrying asset paths/SHA-256 hashes, named tracks and
       roles, source intervals, integer sample positions, cue/event anchors and
       sample offsets, gains, fades, automation points/interpolation, routing and
       processing settings. Define sample-rate conversion and end-exclusive intervals.
-- [ ] Preserve `passage-audio-1` plans and behavior through a compatible adapter or
+- [x] Preserve `passage-audio-1` plans and behavior through a compatible adapter or
       an explicitly versioned opt-in schema. Keep original anchors alongside resolved
       sample positions; reject missing/conflicting references. Retiming picture
       cues/events recomputes positions deterministically while source trims and
       authored durations remain fixed. No migration on load or export.
-- [ ] Define a structured Node/TypeScript → Python worker protocol with JSON
+- [x] Define a structured Node/TypeScript → Python worker protocol with JSON
       requests/results, stable diagnostics, asset/clip/processor context, nonzero
       failures and actionable remedies. Separate stdout JSON from stderr logs;
       bound resources and support cancellation, missing-runtime errors and recovery.
-- [ ] Provide CLI validation, project inspection, editing, mix render and named stem
+- [x] Provide CLI validation, project inspection, editing, mix render and named stem
       render. Implement shared edit operations for gains, mute/solo, trims, moves,
       automation and undo/redo where supported; CLI and visible edits write the same
       saved project through the same validation/persistence API. Use atomic saves
       and revision checks so stale edits cannot overwrite newer work.
-- [ ] Retain FFmpeg/ffprobe delivery and measurement. Declare channel conversion,
+- [x] Retain FFmpeg/ffprobe delivery and measurement. Declare channel conversion,
       normalization, stem tap points, bus/master processing, latency compensation and
       tail/range rules in project/results. Cache identity includes the project,
       source hashes, backend/DSP versions, toolchain and render settings.
-- [ ] Implement **narration-aware BGM ducking** with explicit detector/source,
+- [x] Implement **narration-aware BGM ducking** with explicit detector/source,
       threshold, attenuation/ratio, attack, release, hold and lookahead parameters
       as applicable. Persist defaults and the resulting automation or deterministic
       derivation. Test speech, pauses and boundaries; leave narration samples and
       timing unchanged. Do not silently duck SFX/ambience or legacy projects.
-- [ ] Evaluate pinned Waveform Playlist packages against the vanilla TypeScript Lab.
+- [x] Evaluate pinned Waveform Playlist packages against the vanilla TypeScript Lab.
       Add an optional embedded layer timeline with clips, waveforms, overlaps and
       automation; mute/solo, gain, trimming, movement and undo/redo where supported.
       Document unsupported component controls and implement needed shared operations
       directly. The component model is an adapter, not a second project authority.
-- [ ] Preview and export consume the same saved project/revision. Prove timing and
+- [x] Preview and export consume the same saved project/revision. Prove timing and
       decoded-audio agreement for any native/browser DSP path; use **rendered-stem
       preview** when that DSP cannot match. Seeking/range preview must preserve
       envelopes, ducking and effect state, with no provider call or GUI prerequisite.
-- [ ] Connect the project to passage preview/export and later CE13/CE11 media/inspector
+- [x] Connect the project to passage preview/export and later CE13/CE11 media/inspector
       interfaces without making the backend wait for those milestones. Preserve
       existing narration-only, sound-only, silent, range and portable-package behavior.
-- [ ] Document command-only environment setup, edit/save/reload, inspect/validate,
+- [x] Document command-only environment setup, edit/save/reload, inspect/validate,
       render, cancellation/recovery and relocation, plus optional owner-facing
       editor usage and licensing/packaging choices.
 
@@ -3914,8 +3915,36 @@ unperformed unless they actually occurred, and never claim them from ffprobe/PCM
   not bundled or adopted into the production runtime. No listening or audiovisual
   QA performed; zero Computer Use.
 
-**Completion record:** _CE16-A technical lifecycle evidence recorded above; complete
-milestone closure still requires CE16-B and its full verification._
+### CE16 shared project implementation record (2026-10-04)
+
+- **Owner / branch:** Codex on the same isolated `codex/composition-ce16` worktree.
+- **Implemented:** bounded `soundtrack-project-1`, shared validated edits with
+  atomic revision saves and persisted undo/redo, structured cancellable Python
+  protocol, CLI inspect/validate/edit/retime/render/package, calibrated causal
+  filters and explicit narration-aware BGM ducking. Backend/DSP version is
+  `soundtrack-dsp-1`; old passage-audio output behavior is preserved.
+- **Integration:** optional vanilla TypeScript layer view with overlaps, rendered
+  waveforms, automation and shared edit API; exact rendered-mix preview and explicit
+  passage export adapter. Waveform Playlist's published versions were evaluated;
+  its collision/history rules were not adopted as a second authority.
+- **Lifecycle:** seven 60-second 48 kHz stereo outputs, all 2,880,000 samples/channel;
+  fresh-process reload and portable relocation exact; moved/lowered cue preserves
+  four unrelated stems; narration unchanged and unity buses reconstruct exactly.
+  Measured commands, worker memory and comparisons are in
+  [evidence](./composition-ce16-verification-results.json).
+- **Verification:** toolchain + command-only gates pass: 1,428 unit, 46 runtime,
+  94 command integration and 14 depth tests; focused final group 27 tests.
+  Commands/failures/remedies are recorded in evidence. Full `pnpm check`
+  and browser baselines remain unperformed because CE16 prohibits browser driving;
+  this tier does not certify those gates. No listening, audiovisual QA or GUI
+  inspection. No baseline regeneration. GPL/transitive distribution decision
+  remains pending; runtime is local opt-in and no backend binaries are bundled.
+- **Guide:** [setup, contract, commands, recovery, preview and licensing](./soundtrack-project.md).
+
+**Completion record:** _CE16-A and CE16-B feature slices implemented and technically
+verified through commands/libraries/files/APIs. Tracker remains `[~]` until the full
+repository Definition-of-done verification is resolved; no full-check/baseline pass
+or creative acceptance is claimed._
 
 ---
 

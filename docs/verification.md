@@ -122,3 +122,16 @@ an environment that permits those operations. Permission failures are not eviden
 of an application regression. Use a writable `UV_CACHE_DIR` if the environment
 restricts access to the user's default uv cache. Do not disable recovery checks or
 weaken assertions to work around sandbox restrictions.
+
+## CE16 command-only verification
+
+CE16 explicitly prohibits browser/desktop driving. Run `pnpm check:soundtrack`:
+fast schema/boundary/format/lint/build/unit checks, runtime tests, command integration,
+depth tests and Python soundtrack checks. `pnpm test:integration:command` selects
+integration suites without direct Playwright imports; it does not replace or remove
+any existing verification group. `pnpm test:soundtrack` focuses on model/PCM/API and
+legacy passage audio. `pnpm soundtrack:verify` retains the measured 60-second CLI
+lifecycle, or checks it with `--verify-only`. Full `pnpm check`, visual UI suites
+and frozen browser baselines are not claimed passed by this tier. The
+[CE16 evidence](./composition-ce16-verification-results.json) separates technical
+checks from unperformed listening, audiovisual QA and GUI inspection.

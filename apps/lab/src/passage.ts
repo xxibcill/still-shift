@@ -552,6 +552,8 @@ async function loadPacket(
   frame = 0;
   beatSelect.value = "0";
   audio.setNarration();
+  audio.clearSoundtrack();
+  el("soundtrack-status").textContent = "Passage audio";
   narrationRequest++;
   el<HTMLInputElement>("narration").value = "";
   installPreviews(ready);
@@ -869,3 +871,51 @@ window.passageLab = {
 const requestedPlan = new URLSearchParams(location.search).get("plan");
 if (requestedPlan) el<HTMLInputElement>("plan-path").value = requestedPlan;
 await loadPath();
+
+el("soundtrack-load").onclick = async () => {
+  if (!editor) return;
+  stop();
+  const owner = editor,
+    path = el<HTMLInputElement>("soundtrack-project").value;
+  try {
+    const loaded = await fetch(
+      "/soundtrack-api/project?path=" + encodeURIComponent(path),
+    );
+    const packet = await loaded.json();
+    if (!loaded.ok) throw new Error(packet.error?.message);
+    const rendering = await fetch("/soundtrack-api/render", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        project: path,
+        revision: packet.project.revision,
+      }),
+    });
+    const result = await rendering.json();
+    if (!rendering.ok) throw new Error(result.error?.message);
+    const response = await fetch(
+      "/soundtrack-api/audio?project=" +
+        encodeURIComponent(path) +
+        "&output=" +
+        encodeURIComponent(result.output),
+    );
+    if (!response.ok) throw new Error("Saved revision changed; render again");
+    const bytes = await response.arrayBuffer();
+    if (editor !== owner) return;
+    await audio.setSoundtrack(
+      packet.project,
+      bytes,
+      result.manifest.files.master.sha256,
+      owner.passage,
+    );
+    el("soundtrack-status").textContent =
+      "Rendered soundtrack revision " + packet.project.revision + " · full mix";
+  } catch (error) {
+    errors(error);
+  }
+};
+el("soundtrack-clear").onclick = () => {
+  stop();
+  audio.clearSoundtrack();
+  el("soundtrack-status").textContent = "Passage audio";
+};

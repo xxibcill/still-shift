@@ -46,7 +46,10 @@ still hold before relying on them.
 - **CE16 isolated implementation (`[~]`, 2026-10-04):** Codex on
   `codex/composition-ce16`, worktree
   `/Users/jjae/.codex/worktrees/composition-ce16/still-shift`, from `dee9e7b`.
-  CE16-A technical lifecycle passed; CE16-B integration remains unstarted.
+  CE16-A technical lifecycle passed; CE16-B schema, shared edits/CLI, worker,
+  ducking, optional layer view and passage integration implemented.
+  Command-only gates pass; owner closure choice pending because the full
+  repository gates drive a browser.
   All reload PCM and unaffected edited stems are exact; narration unchanged.
   Dependency/license evidence retained; distribution packaging remains pending.
   Original checkout and parallel CE12 work untouched.
@@ -71,7 +74,7 @@ still hold before relying on them.
   [Fix evidence](./pr-32-fix-results.json).
   [Review evidence](./pr-32-review-results.json).
 
-_Last updated 2026-10-04 by Codex for the isolated CE16 backend proof._
+_Last updated 2026-10-04 by Codex for the isolated CE16 integration._
 
 - **PR #32 conflict resolution (2026-10-04):** merged `main` at `3413780` into
   PR head `a0708ba` and pushed merge `05033c8`, retaining CE9 expressions and
@@ -129,6 +132,26 @@ _Last updated 2026-10-04 by Codex for the isolated CE16 backend proof._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-04 — Continue CE16 into the shared project and passage integration
+
+- **Agent / branch:** Codex on isolated `codex/composition-ce16`, after `0ad92e9`.
+- **Done:** shared project contract, atomic revision edits/history, bounded worker,
+  CLI lifecycle, explicit BGM ducking, optional layer view and passage adapter.
+- **Results:** full 60-second CLI reload/portable relocation exact; narration and
+  unrelated edited stems unchanged; mix reconstructed exactly. Local model/PCM/API
+  checks preserve legacy passage audio. 1,428 unit, 46 runtime, 94 command integration and 14 depth tests pass;
+  focused final audio/API group passes 27 tests.
+- **Rejected / repaired:** boundary check found undeclared `zod`; declared exact
+  existing version. Formatting of generated evidence/lockfile corrected. Final review fixed
+  soundtrack gallery mode and revision drift during picture export.
+- **Open / next:** owner closure decision requested; full `pnpm check`/browser
+  baselines unperformed under CE16's
+  browser-driving prohibition, so milestone remains `[~]`. Distribution packaging
+  decision pending; listening, audiovisual QA and GUI inspection unperformed.
+- **Records:** [guide](./soundtrack-project.md),
+  [milestone](./composition-engine-plan.md#ce16--programmable-soundtrack-project-and-timeline),
+  [technical evidence](./composition-ce16-verification-results.json).
 
 ### 2026-10-04 — Isolate CE16 and verify its backend lifecycle
 

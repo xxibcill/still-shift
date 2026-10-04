@@ -113,7 +113,13 @@
     "test:browser:composition-webgl": "node --import tsx tests/browser/composition-webgl.ts",
     "test:browser:composition-webgl-blur": "node --import tsx tests/browser/composition-webgl-blur.ts",
     "test:browser:composition-webgl-export": "node --import tsx tests/browser/composition-webgl-export.ts",
-    "soundtrack:proof": "node scripts/soundtrack/proof.mjs"
+    "soundtrack:proof": "node scripts/soundtrack/proof.mjs",
+    "soundtrack:setup": "node scripts/soundtrack/setup.mjs",
+    "test:soundtrack": "vitest run tests/unit/soundtrack-project.test.ts tests/integration/soundtrack.test.ts tests/integration/soundtrack-api.test.ts tests/integration/passage-audio.test.ts --no-file-parallelism",
+    "test:integration:command": "node scripts/soundtrack/check-integration.mjs",
+    "check:soundtrack": "pnpm check:fast && pnpm test:runtime && pnpm test:integration:command && pnpm test:depth && pnpm soundtrack:lint",
+    "soundtrack:lint": "uv run --no-sync ruff check scripts/soundtrack packages/animation-engine/src/soundtrack-worker.py && uv run --no-sync ruff format --check scripts/soundtrack packages/animation-engine/src/soundtrack-worker.py",
+    "soundtrack:verify": "node scripts/soundtrack/integration-proof.mjs"
   },
   "devDependencies": {
     "@eslint/js": "9.39.5",

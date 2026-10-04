@@ -1,9 +1,49 @@
+import {
+  resolveSoundtrackAnchors,
+  validateSoundtrackNarration,
+} from "../../../packages/renderer-core/src/soundtrack-edits.ts";
+import type { SoundtrackProject } from "../../../packages/scene-contract/src/soundtrack-project.ts";
 import type { CompiledStoryPassage } from "../../../packages/renderer-core/src/story-passage.ts";
 import { schedulePassageAudio } from "../../../packages/renderer-core/src/passage-audio-playback.ts";
 import { sha256Hex } from "../../../packages/renderer-core/src/browser-checksum.ts";
 
 export class PassageAudioPlayer {
   private context?: AudioContext;
+  private soundtrack:
+    | { project: SoundtrackProject; buffer: AudioBuffer }
+    | undefined;
+  clearSoundtrack() {
+    this.stop();
+    this.soundtrack = undefined;
+  }
+  async setSoundtrack(
+    project: SoundtrackProject,
+    bytes: ArrayBuffer,
+    sha256: string,
+    passage: CompiledStoryPassage,
+  ) {
+    resolveSoundtrackAnchors(project, { ...passage, fps: passage.plan.fps });
+    validateSoundtrackNarration(project, {
+      fps: passage.plan.fps,
+      sourceStartFrame: passage.plan.sourceStartFrame,
+      endFrameExclusive: passage.endFrameExclusive,
+      ...(passage.plan.narration
+        ? { sha256: passage.plan.narration.sha256 }
+        : {}),
+    });
+    if ("sha256:" + (await sha256Hex(bytes)) !== sha256)
+      throw new Error("Rendered soundtrack checksum differs");
+    const buffer = await this.getContext().decodeAudioData(bytes);
+    if (
+      buffer.sampleRate !== 48000 ||
+      buffer.numberOfChannels !== 2 ||
+      buffer.length !== project.durationSamples
+    )
+      throw new Error("Soundtrack preview must be full-length 48 kHz stereo");
+    this.stop();
+    this.soundtrack = { project, buffer };
+  }
+
   private cache = new Map<string, AudioBuffer>();
   private voice: { sha256: string; buffer: AudioBuffer } | undefined;
   private playback: ReturnType<typeof schedulePassageAudio> | undefined;
@@ -98,6 +138,39 @@ export class PassageAudioPlayer {
         this.cache.get(asset.sha256)!,
       ]),
     );
+    if (this.soundtrack) {
+      resolveSoundtrackAnchors(this.soundtrack.project, {
+        ...passage,
+        fps: passage.plan.fps,
+      });
+      validateSoundtrackNarration(this.soundtrack.project, {
+        fps: passage.plan.fps,
+        sourceStartFrame: passage.plan.sourceStartFrame,
+        endFrameExclusive: passage.endFrameExclusive,
+        ...(passage.plan.narration
+          ? { sha256: passage.plan.narration.sha256 }
+          : {}),
+      });
+      const source = context.createBufferSource();
+      source.buffer = this.soundtrack.buffer;
+      source.connect(context.destination);
+      source.start(
+        this.started,
+        frame / this.fps,
+        (passage.frameCount - frame) / this.fps,
+      );
+      this.playback = {
+        stop: () => {
+          try {
+            source.stop();
+          } catch {
+            /* Already stopped. */
+          }
+          source.disconnect();
+        },
+      };
+      return true;
+    }
     this.playback = schedulePassageAudio(
       context,
       passage,

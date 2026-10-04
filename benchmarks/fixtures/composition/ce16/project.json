@@ -1,0 +1,214 @@
+{
+  "schemaVersion": "soundtrack-project-1",
+  "revision": 0,
+  "history": {
+    "undo": [],
+    "redo": []
+  },
+  "sampleRate": 48000,
+  "channels": 2,
+  "durationSamples": 2880000,
+  "channelConversion": "mono-duplicate-stereo-preserve",
+  "normalization": "none",
+  "tailPolicy": "retain-to-project-end",
+  "assets": [
+    {
+      "id": "narration-source",
+      "path": "/Users/jjae/Documents/obsidian/ai-business/history-offstage/06 Episodes/S01E02 - Rent Day/sound/mix-v001/stems/narration-derived48k.flac",
+      "sha256": "sha256:0a80738d189e94b9cce7c298d2aa5bf7732fbe949f6416777b747d0e208647ae"
+    },
+    {
+      "id": "bgm-source",
+      "path": "/Users/jjae/Documents/obsidian/ai-business/history-offstage/06 Episodes/S01E02 - Rent Day/sound/assets-v001/ES-M01-FULL.wav",
+      "sha256": "sha256:27e3048461d5eb179856b2c6f15c57eb0823fb2f9696806079e3ec16704c53ce"
+    },
+    {
+      "id": "sfx-pouch-source",
+      "path": "/Users/jjae/Documents/obsidian/ai-business/history-offstage/06 Episodes/S01E02 - Rent Day/sound/assets-v001/ES-F07-FULL.wav",
+      "sha256": "sha256:0b01365da4a880c12943e508458a6cd0bdef9b64f86df3dadee945fdd39753da"
+    },
+    {
+      "id": "sfx-roots-source",
+      "path": "/Users/jjae/Documents/obsidian/ai-business/history-offstage/06 Episodes/S01E02 - Rent Day/sound/assets-v001/ES-F05-FULL.wav",
+      "sha256": "sha256:6868cbfe2a63dd83bfda1427b1ad2b257a4ee275913bee9349fb49b1cf7aa484"
+    }
+  ],
+  "clips": [
+    {
+      "id": "narration-clip",
+      "asset": "narration-source",
+      "track": "narration",
+      "sourceStartSample": 0,
+      "sourceEndSample": 2880000,
+      "startSample": 0,
+      "gainDb": 0,
+      "fadeInSamples": 0,
+      "fadeOutSamples": 0,
+      "automation": {
+        "interpolation": "linear",
+        "points": []
+      }
+    },
+    {
+      "id": "bgm-clip",
+      "asset": "bgm-source",
+      "track": "bgm",
+      "sourceStartSample": 192000,
+      "sourceEndSample": 956640,
+      "startSample": 24000,
+      "gainDb": -18.843005891738272,
+      "fadeInSamples": 57600,
+      "fadeOutSamples": 96000,
+      "automation": {
+        "interpolation": "linear",
+        "points": [
+          {
+            "sample": 288000,
+            "gain": 1
+          },
+          {
+            "sample": 300000,
+            "gain": 0.5
+          },
+          {
+            "sample": 372000,
+            "gain": 0.5
+          },
+          {
+            "sample": 384000,
+            "gain": 1
+          }
+        ]
+      }
+    },
+    {
+      "id": "sfx-pouch-clip",
+      "asset": "sfx-pouch-source",
+      "track": "sfx-pouch",
+      "sourceStartSample": 9600,
+      "sourceEndSample": 33600,
+      "startSample": 42240,
+      "gainDb": -15.122200631740892,
+      "fadeInSamples": 240,
+      "fadeOutSamples": 2880,
+      "automation": {
+        "interpolation": "linear",
+        "points": []
+      }
+    },
+    {
+      "id": "sfx-roots-clip",
+      "asset": "sfx-roots-source",
+      "track": "sfx-roots",
+      "sourceStartSample": 14400,
+      "sourceEndSample": 38400,
+      "startSample": 565760,
+      "gainDb": -8.137125789171519,
+      "fadeInSamples": 240,
+      "fadeOutSamples": 2880,
+      "automation": {
+        "interpolation": "linear",
+        "points": []
+      }
+    }
+  ],
+  "tracks": [
+    {
+      "id": "narration",
+      "role": "narration",
+      "output": "master",
+      "gainDb": 0,
+      "mute": false,
+      "solo": false,
+      "processors": []
+    },
+    {
+      "id": "bgm",
+      "role": "bgm",
+      "output": "music-bus",
+      "gainDb": 0,
+      "mute": false,
+      "solo": false,
+      "processors": [
+        {
+          "type": "highpass",
+          "frequencyHz": 100,
+          "q": 0.707107
+        },
+        {
+          "type": "lowpass",
+          "frequencyHz": 5500,
+          "q": 0.707107
+        }
+      ]
+    },
+    {
+      "id": "sfx-pouch",
+      "role": "sfx",
+      "output": "sfx-bus",
+      "gainDb": 0,
+      "mute": false,
+      "solo": false,
+      "processors": [
+        {
+          "type": "highpass",
+          "frequencyHz": 100,
+          "q": 0.707107
+        },
+        {
+          "type": "lowpass",
+          "frequencyHz": 5500,
+          "q": 0.707107
+        }
+      ]
+    },
+    {
+      "id": "sfx-roots",
+      "role": "sfx",
+      "output": "sfx-bus",
+      "gainDb": 0,
+      "mute": false,
+      "solo": false,
+      "processors": [
+        {
+          "type": "highpass",
+          "frequencyHz": 100,
+          "q": 0.707107
+        },
+        {
+          "type": "lowpass",
+          "frequencyHz": 5500,
+          "q": 0.707107
+        }
+      ]
+    }
+  ],
+  "buses": [
+    {
+      "id": "music-bus",
+      "output": "master",
+      "gainDb": 0
+    },
+    {
+      "id": "sfx-bus",
+      "output": "master",
+      "gainDb": 0
+    }
+  ],
+  "master": {
+    "id": "master",
+    "gainDb": 0
+  },
+  "ducking": {
+    "method": "peak-window-attack-hold-release-1",
+    "sourceTrack": "narration",
+    "targetTracks": ["bgm"],
+    "thresholdDb": -32,
+    "attenuationDb": -12,
+    "windowSamples": 480,
+    "attackSamples": 2400,
+    "releaseSamples": 12000,
+    "holdSamples": 4800,
+    "lookaheadSamples": 2400
+  }
+}

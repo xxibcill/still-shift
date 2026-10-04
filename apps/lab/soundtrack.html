@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Still Shift · Soundtrack</title>
+    <link rel="stylesheet" href="/src/soundtrack.css" />
+  </head>
+  <body>
+    <main>
+      <header>
+        <p>Still Shift / Soundtrack</p>
+        <h1>Sound layers</h1>
+        <a href="/passage.html">Passage preview</a>
+      </header>
+      <form id="load">
+        <label
+          >Saved project path<input
+            id="path"
+            value="benchmarks/fixtures/composition/ce16/project.json"
+            required /></label
+        ><button>Load</button>
+      </form>
+      <p id="status" role="status">
+        Load a saved project to inspect its clips.
+      </p>
+      <p id="error" role="alert"></p>
+      <section class="toolbar" aria-label="Soundtrack actions">
+        <button id="undo" disabled>Undo</button
+        ><button id="redo" disabled>Redo</button
+        ><button id="render" disabled>Render this revision</button
+        ><a id="download" hidden>Download mix</a>
+      </section>
+      <audio id="preview" controls hidden></audio>
+      <p>
+        Preview uses the rendered mix. Seeking preserves the full filter and
+        ducking history.
+      </p>
+      <section id="timeline" aria-label="Sound layers and waveforms"></section>
+      <form id="clip-edit" hidden>
+        <h2>Clip</h2>
+        <label>Clip<select id="clip"></select></label>
+        <label
+          >Start sample<input
+            id="start"
+            type="number"
+            step="1"
+            min="0"
+            required /></label
+        ><label
+          >Anchor offset samples<input id="offset" type="number" step="1"
+        /></label>
+        <label
+          >Gain (dB)<input
+            id="gain"
+            type="number"
+            min="-120"
+            max="12"
+            step="0.1"
+            required
+        /></label>
+        <label
+          >Source start sample<input
+            id="source-start"
+            type="number"
+            min="0"
+            step="1"
+            required /></label
+        ><label
+          >Source end sample (exclusive)<input
+            id="source-end"
+            type="number"
+            min="1"
+            step="1"
+            required
+        /></label>
+        <label
+          >Automation JSON<textarea
+            id="automation"
+            rows="4"
+            required
+          ></textarea></label
+        ><button>Save clip edits</button>
+      </form>
+      <p>
+        All positions use 48 kHz integer samples. Source intervals are
+        end-exclusive. Saved edits invalidate preview until that revision is
+        rendered. Use the CLI to retime anchors or create a portable package.
+      </p>
+    </main>
+    <script type="module" src="/src/soundtrack.ts"></script>
+  </body>
+</html>

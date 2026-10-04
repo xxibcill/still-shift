@@ -113,3 +113,5 @@ export * from "./typography-visibility.ts";
 export * from "./typography-review.ts";
 
 export { requiresCompositionTextLayout } from "./composition/adapters/layout.ts";
+
+export * from "./soundtrack-edits.ts";

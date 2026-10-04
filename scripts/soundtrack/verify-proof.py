@@ -179,6 +179,15 @@ def verify(root):
         "listening": "not performed",
         "audiovisualQA": "not performed",
     }
+    previous_path = Path("docs/composition-ce16-verification-results.json")
+    previous = json.loads(previous_path.read_text()) if previous_path.exists() else {}
+    if "integration" in previous:
+        evidence["milestone"] = previous["milestone"]
+        evidence["ce16Integration"] = previous["ce16Integration"]
+        evidence["backendProofLimitations"] = evidence.pop("limitations")
+        for key in ["integration", "verification", "limitations"]:
+            if key in previous:
+                evidence[key] = previous[key]
     Path("docs/composition-ce16-verification-results.json").write_text(
         json.dumps(evidence, indent=2) + "\n"
     )

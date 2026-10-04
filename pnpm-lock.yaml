@@ -67,6 +67,9 @@ importers:
       vite:
         specifier: 7.3.6
         version: 7.3.6(@types/node@22.20.1)(tsx@4.20.5)
+      zod:
+        specifier: 4.1.5
+        version: 4.1.5
 
   packages/execution-runtime:
     dependencies:
@@ -110,12 +113,12 @@ importers:
       "@still-shift/animation-engine":
         specifier: workspace:*
         version: link:../../packages/animation-engine
-      "@still-shift/renderer-core":
-        specifier: workspace:*
-        version: link:../../packages/renderer-core
       "@still-shift/execution-runtime":
         specifier: workspace:*
         version: link:../../packages/execution-runtime
+      "@still-shift/renderer-core":
+        specifier: workspace:*
+        version: link:../../packages/renderer-core
       "@still-shift/scene-contract":
         specifier: workspace:*
         version: link:../../packages/scene-contract
