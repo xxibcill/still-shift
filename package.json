@@ -112,7 +112,8 @@
     "test:browser:composition-exposure": "node --import tsx tests/browser/composition-exposure.ts",
     "test:browser:composition-webgl": "node --import tsx tests/browser/composition-webgl.ts",
     "test:browser:composition-webgl-blur": "node --import tsx tests/browser/composition-webgl-blur.ts",
-    "test:browser:composition-webgl-export": "node --import tsx tests/browser/composition-webgl-export.ts"
+    "test:browser:composition-webgl-export": "node --import tsx tests/browser/composition-webgl-export.ts",
+    "soundtrack:proof": "node scripts/soundtrack/proof.mjs"
   },
   "devDependencies": {
     "@eslint/js": "9.39.5",

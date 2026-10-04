@@ -1,0 +1,616 @@
+{
+  "date": "2026-10-04",
+  "milestone": "CE16-A",
+  "technicalLifecycle": "passed",
+  "ce16Integration": "not started",
+  "branch": "codex/composition-ce16",
+  "base": "dee9e7b4c35256e298d8168b635aacd934a4a4ae",
+  "worktree": "/Users/jjae/.codex/worktrees/composition-ce16/still-shift",
+  "sampleRate": 48000,
+  "channels": 2,
+  "durationSeconds": 60,
+  "samplesPerChannel": 2880000,
+  "blockSize": 512,
+  "runs": {
+    "initial": {
+      "ok": true,
+      "project": "benchmarks/fixtures/composition/ce16/backend-proof.json",
+      "projectSha256": "sha256:f587926f6225abed8955b5a9714139ee4bc46d663c6a3c1d38cf5167c2c85e19",
+      "sampleRate": 48000,
+      "blockSize": 512,
+      "durationSamples": 2880000,
+      "sourceHashes": {
+        "narration": "sha256:0a80738d189e94b9cce7c298d2aa5bf7732fbe949f6416777b747d0e208647ae",
+        "bgm": "sha256:27e3048461d5eb179856b2c6f15c57eb0823fb2f9696806079e3ec16704c53ce",
+        "sfx-pouch": "sha256:0b01365da4a880c12943e508458a6cd0bdef9b64f86df3dadee945fdd39753da",
+        "sfx-roots": "sha256:6868cbfe2a63dd83bfda1427b1ad2b257a4ee275913bee9349fb49b1cf7aa484"
+      },
+      "placement": [
+        {
+          "id": "narration",
+          "startSample": 0,
+          "endSampleExclusive": 2880000
+        },
+        {
+          "id": "bgm",
+          "startSample": 24000,
+          "endSampleExclusive": 788640
+        },
+        {
+          "id": "sfx-pouch",
+          "startSample": 42240,
+          "endSampleExclusive": 66240
+        },
+        {
+          "id": "sfx-roots",
+          "startSample": 565760,
+          "endSampleExclusive": 589760
+        }
+      ],
+      "files": {
+        "narration": {
+          "samplesPerChannel": 2880000,
+          "channels": 2,
+          "bytes": 23040058
+        },
+        "bgm": {
+          "samplesPerChannel": 2880000,
+          "channels": 2,
+          "bytes": 23040058
+        },
+        "sfx-pouch": {
+          "samplesPerChannel": 2880000,
+          "channels": 2,
+          "bytes": 23040058
+        },
+        "sfx-roots": {
+          "samplesPerChannel": 2880000,
+          "channels": 2,
+          "bytes": 23040058
+        },
+        "music-bus": {
+          "samplesPerChannel": 2880000,
+          "channels": 2,
+          "bytes": 23040058
+        },
+        "sfx-bus": {
+          "samplesPerChannel": 2880000,
+          "channels": 2,
+          "bytes": 23040058
+        },
+        "mix": {
+          "samplesPerChannel": 2880000,
+          "channels": 2,
+          "bytes": 23040058
+        }
+      },
+      "stemTap": "Post clip gain/envelopes and per-track filters, pre bus/master; buses also exported.",
+      "masterProcessing": "Unity summation; no normalization, limiter or master DSP.",
+      "narrationDecodedExact": true,
+      "reconstructionMaxSampleError": 0.0,
+      "latency": {
+        "inputImpulseSample": 1024,
+        "firstOutputSample": 1024,
+        "peakOutputSample": 1026,
+        "lastOutputAbove1eMinus10": 3080,
+        "onsetLatencySamples": 0,
+        "compensationSamples": 0,
+        "tailPolicy": "Retain tails within the project; truncate at its declared end.",
+        "externalPlugins": "Unsupported; no automatic compensation claimed."
+      },
+      "wallSeconds": 0.45913783402647823,
+      "peakResidentBytes": 751108096,
+      "host": {
+        "system": "Darwin",
+        "release": "25.6.0",
+        "architecture": "arm64",
+        "python": "3.12.11"
+      },
+      "packages": {
+        "dawdreamer": "0.9.0",
+        "numpy": "2.3.3",
+        "scipy": "1.16.2"
+      }
+    },
+    "reloaded": {
+      "ok": true,
+      "project": "benchmarks/fixtures/composition/ce16/backend-proof.json",
+      "projectSha256": "sha256:f587926f6225abed8955b5a9714139ee4bc46d663c6a3c1d38cf5167c2c85e19",
+      "sampleRate": 48000,
+      "blockSize": 512,
+      "durationSamples": 2880000,
+      "sourceHashes": {
+        "narration": "sha256:0a80738d189e94b9cce7c298d2aa5bf7732fbe949f6416777b747d0e208647ae",
+        "bgm": "sha256:27e3048461d5eb179856b2c6f15c57eb0823fb2f9696806079e3ec16704c53ce",
+        "sfx-pouch": "sha256:0b01365da4a880c12943e508458a6cd0bdef9b64f86df3dadee945fdd39753da",
+        "sfx-roots": "sha256:6868cbfe2a63dd83bfda1427b1ad2b257a4ee275913bee9349fb49b1cf7aa484"
+      },
+      "placement": [
+        {
+          "id": "narration",
+          "startSample": 0,
+          "endSampleExclusive": 2880000
+        },
+        {
+          "id": "bgm",
+          "startSample": 24000,
+          "endSampleExclusive": 788640
+        },
+        {
+          "id": "sfx-pouch",
+          "startSample": 42240,
+          "endSampleExclusive": 66240
+        },
+        {
+          "id": "sfx-roots",
+          "startSample": 565760,
+          "endSampleExclusive": 589760
+        }
+      ],
+      "files": {
+        "narration": {
+          "samplesPerChannel": 2880000,
+          "channels": 2,
+          "bytes": 23040058
+        },
+        "bgm": {
+          "samplesPerChannel": 2880000,
+          "channels": 2,
+          "bytes": 23040058
+        },
+        "sfx-pouch": {
+          "samplesPerChannel": 2880000,
+          "channels": 2,
+          "bytes": 23040058
+        },
+        "sfx-roots": {
+          "samplesPerChannel": 2880000,
+          "channels": 2,
+          "bytes": 23040058
+        },
+        "music-bus": {
+          "samplesPerChannel": 2880000,
+          "channels": 2,
+          "bytes": 23040058
+        },
+        "sfx-bus": {
+          "samplesPerChannel": 2880000,
+          "channels": 2,
+          "bytes": 23040058
+        },
+        "mix": {
+          "samplesPerChannel": 2880000,
+          "channels": 2,
+          "bytes": 23040058
+        }
+      },
+      "stemTap": "Post clip gain/envelopes and per-track filters, pre bus/master; buses also exported.",
+      "masterProcessing": "Unity summation; no normalization, limiter or master DSP.",
+      "narrationDecodedExact": true,
+      "reconstructionMaxSampleError": 0.0,
+      "latency": {
+        "inputImpulseSample": 1024,
+        "firstOutputSample": 1024,
+        "peakOutputSample": 1026,
+        "lastOutputAbove1eMinus10": 3080,
+        "onsetLatencySamples": 0,
+        "compensationSamples": 0,
+        "tailPolicy": "Retain tails within the project; truncate at its declared end.",
+        "externalPlugins": "Unsupported; no automatic compensation claimed."
+      },
+      "wallSeconds": 0.4294688339577988,
+      "peakResidentBytes": 748945408,
+      "host": {
+        "system": "Darwin",
+        "release": "25.6.0",
+        "architecture": "arm64",
+        "python": "3.12.11"
+      },
+      "packages": {
+        "dawdreamer": "0.9.0",
+        "numpy": "2.3.3",
+        "scipy": "1.16.2"
+      }
+    },
+    "edited": {
+      "ok": true,
+      "project": "benchmarks/fixtures/composition/ce16/backend-proof.edited.json",
+      "projectSha256": "sha256:1844d2124115e94cf424570b941fa319007b4ad27ac2c91d82fe18d09d77f612",
+      "sampleRate": 48000,
+      "blockSize": 512,
+      "durationSamples": 2880000,
+      "sourceHashes": {
+        "narration": "sha256:0a80738d189e94b9cce7c298d2aa5bf7732fbe949f6416777b747d0e208647ae",
+        "bgm": "sha256:27e3048461d5eb179856b2c6f15c57eb0823fb2f9696806079e3ec16704c53ce",
+        "sfx-pouch": "sha256:0b01365da4a880c12943e508458a6cd0bdef9b64f86df3dadee945fdd39753da",
+        "sfx-roots": "sha256:6868cbfe2a63dd83bfda1427b1ad2b257a4ee275913bee9349fb49b1cf7aa484"
+      },
+      "placement": [
+        {
+          "id": "narration",
+          "startSample": 0,
+          "endSampleExclusive": 2880000
+        },
+        {
+          "id": "bgm",
+          "startSample": 24000,
+          "endSampleExclusive": 788640
+        },
+        {
+          "id": "sfx-pouch",
+          "startSample": 47040,
+          "endSampleExclusive": 71040
+        },
+        {
+          "id": "sfx-roots",
+          "startSample": 565760,
+          "endSampleExclusive": 589760
+        }
+      ],
+      "files": {
+        "narration": {
+          "samplesPerChannel": 2880000,
+          "channels": 2,
+          "bytes": 23040058
+        },
+        "bgm": {
+          "samplesPerChannel": 2880000,
+          "channels": 2,
+          "bytes": 23040058
+        },
+        "sfx-pouch": {
+          "samplesPerChannel": 2880000,
+          "channels": 2,
+          "bytes": 23040058
+        },
+        "sfx-roots": {
+          "samplesPerChannel": 2880000,
+          "channels": 2,
+          "bytes": 23040058
+        },
+        "music-bus": {
+          "samplesPerChannel": 2880000,
+          "channels": 2,
+          "bytes": 23040058
+        },
+        "sfx-bus": {
+          "samplesPerChannel": 2880000,
+          "channels": 2,
+          "bytes": 23040058
+        },
+        "mix": {
+          "samplesPerChannel": 2880000,
+          "channels": 2,
+          "bytes": 23040058
+        }
+      },
+      "stemTap": "Post clip gain/envelopes and per-track filters, pre bus/master; buses also exported.",
+      "masterProcessing": "Unity summation; no normalization, limiter or master DSP.",
+      "narrationDecodedExact": true,
+      "reconstructionMaxSampleError": 0.0,
+      "latency": {
+        "inputImpulseSample": 1024,
+        "firstOutputSample": 1024,
+        "peakOutputSample": 1026,
+        "lastOutputAbove1eMinus10": 3080,
+        "onsetLatencySamples": 0,
+        "compensationSamples": 0,
+        "tailPolicy": "Retain tails within the project; truncate at its declared end.",
+        "externalPlugins": "Unsupported; no automatic compensation claimed."
+      },
+      "wallSeconds": 0.4449830829980783,
+      "peakResidentBytes": 748683264,
+      "host": {
+        "system": "Darwin",
+        "release": "25.6.0",
+        "architecture": "arm64",
+        "python": "3.12.11"
+      },
+      "packages": {
+        "dawdreamer": "0.9.0",
+        "numpy": "2.3.3",
+        "scipy": "1.16.2"
+      }
+    }
+  },
+  "checksumRejection": {
+    "expectedExitCode": 1,
+    "actualExitCode": 1,
+    "stdout": {
+      "ok": false,
+      "stage": "ce16-a-render",
+      "error": "source-checksum: narration"
+    }
+  },
+  "projectSnapshots": {
+    "initial": "benchmarks/results/composition-ce16/initial/project.json",
+    "reloaded": "benchmarks/results/composition-ce16/reloaded/project.json",
+    "edited": "benchmarks/results/composition-ce16/edited/project.json"
+  },
+  "decodedComparisons": {
+    "reloaded": {
+      "narration": {
+        "sampleRate": 48000,
+        "channels": 2,
+        "samplesPerChannel": 2880000,
+        "maximumSampleError": 0.0,
+        "differingSamples": 0,
+        "exact": true
+      },
+      "bgm": {
+        "sampleRate": 48000,
+        "channels": 2,
+        "samplesPerChannel": 2880000,
+        "maximumSampleError": 0.0,
+        "differingSamples": 0,
+        "exact": true
+      },
+      "sfx-pouch": {
+        "sampleRate": 48000,
+        "channels": 2,
+        "samplesPerChannel": 2880000,
+        "maximumSampleError": 0.0,
+        "differingSamples": 0,
+        "exact": true
+      },
+      "sfx-roots": {
+        "sampleRate": 48000,
+        "channels": 2,
+        "samplesPerChannel": 2880000,
+        "maximumSampleError": 0.0,
+        "differingSamples": 0,
+        "exact": true
+      },
+      "music-bus": {
+        "sampleRate": 48000,
+        "channels": 2,
+        "samplesPerChannel": 2880000,
+        "maximumSampleError": 0.0,
+        "differingSamples": 0,
+        "exact": true
+      },
+      "sfx-bus": {
+        "sampleRate": 48000,
+        "channels": 2,
+        "samplesPerChannel": 2880000,
+        "maximumSampleError": 0.0,
+        "differingSamples": 0,
+        "exact": true
+      },
+      "mix": {
+        "sampleRate": 48000,
+        "channels": 2,
+        "samplesPerChannel": 2880000,
+        "maximumSampleError": 0.0,
+        "differingSamples": 0,
+        "exact": true
+      }
+    },
+    "edited": {
+      "narration": {
+        "sampleRate": 48000,
+        "channels": 2,
+        "samplesPerChannel": 2880000,
+        "maximumSampleError": 0.0,
+        "differingSamples": 0,
+        "exact": true
+      },
+      "bgm": {
+        "sampleRate": 48000,
+        "channels": 2,
+        "samplesPerChannel": 2880000,
+        "maximumSampleError": 0.0,
+        "differingSamples": 0,
+        "exact": true
+      },
+      "sfx-pouch": {
+        "sampleRate": 48000,
+        "channels": 2,
+        "samplesPerChannel": 2880000,
+        "maximumSampleError": 0.09154027421027422,
+        "differingSamples": 2876084,
+        "exact": false
+      },
+      "sfx-roots": {
+        "sampleRate": 48000,
+        "channels": 2,
+        "samplesPerChannel": 2880000,
+        "maximumSampleError": 0.0,
+        "differingSamples": 0,
+        "exact": true
+      },
+      "music-bus": {
+        "sampleRate": 48000,
+        "channels": 2,
+        "samplesPerChannel": 2880000,
+        "maximumSampleError": 0.0,
+        "differingSamples": 0,
+        "exact": true
+      },
+      "sfx-bus": {
+        "sampleRate": 48000,
+        "channels": 2,
+        "samplesPerChannel": 2880000,
+        "maximumSampleError": 0.09154027421027422,
+        "differingSamples": 2844960,
+        "exact": false
+      },
+      "mix": {
+        "sampleRate": 48000,
+        "channels": 2,
+        "samplesPerChannel": 2880000,
+        "maximumSampleError": 0.09154027153272182,
+        "differingSamples": 61167,
+        "exact": false
+      }
+    }
+  },
+  "setup": {
+    "setup-venv": {
+      "wallSeconds": 0.03,
+      "peakResidentBytes": 19939328,
+      "log": "benchmarks/results/composition-ce16/setup-venv.stderr.log",
+      "method": "macOS /usr/bin/time -l; reused uv cache directory; install downloaded the three wheels"
+    },
+    "setup-install": {
+      "wallSeconds": 17.53,
+      "peakResidentBytes": 58441728,
+      "log": "benchmarks/results/composition-ce16/setup-install.stderr.log",
+      "method": "macOS /usr/bin/time -l; reused uv cache directory; install downloaded the three wheels"
+    }
+  },
+  "dependencies": [
+    {
+      "name": "numpy",
+      "version": "2.3.3",
+      "licenseExpression": null,
+      "licenseFirstLine": ["Copyright (c) 2005-2025, NumPy Developers."],
+      "runtimeRequirements": [],
+      "licenseFiles": [
+        {
+          "file": "benchmarks/results/composition-ce16/licenses/numpy/LICENSE.txt",
+          "bundledNames": [
+            "lapack-lite",
+            "dragon4",
+            "libdivide",
+            "Meson",
+            "spin",
+            "tempita",
+            "OpenBLAS",
+            "LAPACK",
+            "GCC runtime library",
+            "libquadmath"
+          ],
+          "bundledLicenses": [
+            "BSD-3-Clause",
+            "MIT",
+            "Zlib",
+            "Apache 2.0",
+            "BSD-3",
+            "MIT",
+            "BSD-3-Clause",
+            "BSD-3-Clause-Open-MPI",
+            "GPL-3.0-or-later WITH GCC-exception-3.1",
+            "LGPL-2.1-or-later"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "dawdreamer",
+      "version": "0.9.0",
+      "licenseExpression": null,
+      "licenseFirstLine": [],
+      "runtimeRequirements": [],
+      "licenseFiles": [
+        {
+          "file": "benchmarks/results/composition-ce16/licenses/dawdreamer/LICENSE",
+          "bundledNames": [],
+          "bundledLicenses": []
+        }
+      ]
+    },
+    {
+      "name": "scipy",
+      "version": "1.16.2",
+      "licenseExpression": null,
+      "licenseFirstLine": [
+        "Copyright (c) 2001-2002 Enthought, Inc. 2003, SciPy Developers."
+      ],
+      "runtimeRequirements": ["numpy<2.6,>=1.25.2"],
+      "licenseFiles": [
+        {
+          "file": "benchmarks/results/composition-ce16/licenses/scipy/LICENSE.txt",
+          "bundledNames": [
+            "OpenBLAS",
+            "LAPACK",
+            "GCC runtime library",
+            "libquadmath"
+          ],
+          "bundledLicenses": [
+            "BSD-3-Clause",
+            "BSD-3-Clause-Open-MPI",
+            "GPL-3.0-or-later WITH GCC-exception-3.1",
+            "LGPL-2.1-or-later"
+          ]
+        }
+      ]
+    }
+  ],
+  "toolchain": {
+    "ffmpeg": "ffmpeg version 8.0.1 Copyright (c) 2000-2025 the FFmpeg developers",
+    "ffprobe": "ffprobe version 8.0.1 Copyright (c) 2007-2025 the FFmpeg developers",
+    "uv": "uv 0.7.12 (dc3fd4647 2025-06-06)",
+    "python": "3.12.11"
+  },
+  "sourceConversion": "Decode with FFmpeg aresample=48000, then end-exclusive sample trim. Stereo inputs retained; no time stretching. Only SFX are resampled from 96 kHz.",
+  "cueEdit": {
+    "id": "sfx-pouch",
+    "moveSamples": 4800,
+    "gainChangeDb": -3
+  },
+  "commandSurface": {
+    "setup": "UV_CACHE_DIR=/private/tmp/still-shift-ce16-uv-cache uv venv --python 3.12.11 benchmarks/results/composition-ce16/runtime && uv pip sync --python benchmarks/results/composition-ce16/runtime/bin/python --require-hashes scripts/soundtrack/requirements.txt",
+    "initial": "benchmarks/results/composition-ce16/runtime/bin/python scripts/soundtrack/proof-worker.py --project benchmarks/fixtures/composition/ce16/backend-proof.json --output-dir benchmarks/results/composition-ce16/initial",
+    "reload": "benchmarks/results/composition-ce16/runtime/bin/python scripts/soundtrack/proof-worker.py --project benchmarks/fixtures/composition/ce16/backend-proof.json --output-dir benchmarks/results/composition-ce16/reloaded",
+    "edit": "benchmarks/results/composition-ce16/runtime/bin/python scripts/soundtrack/proof-worker.py --project benchmarks/fixtures/composition/ce16/backend-proof.edited.json --output-dir benchmarks/results/composition-ce16/edited",
+    "verify": "pnpm soundtrack:proof --verify-only"
+  },
+  "licensing": {
+    "dawdreamer": "GPLv3, installed 0.9.0 wheel LICENSE retained locally.",
+    "upstreamNativeComponents": [
+      "JUCE",
+      "nanobind",
+      "libsamplerate",
+      "Rubber Band",
+      "Steinberg VST2/3",
+      "FAUST"
+    ],
+    "upstreamSource": "https://github.com/DBraun/DawDreamer/blob/main/README.md#license",
+    "packaging": "Trial runtime is local and isolated; no dependency binary distributed or production backend adopted. GPL and native/transitive obligations require a documented packaging decision before distribution. Subprocess use is not a licensing exemption."
+  },
+  "limitations": [
+    "Readable ce16-backend-proof-1 is a prototype format, not soundtrack-project-1.",
+    "Full worker protocol, shared edits, ducking, timeline and passage integration are not implemented.",
+    "Fixture uses existing local episode source paths; portable project relocation remains CE16-B work.",
+    "Per-process peak resident memory excludes separate FFmpeg child processes; /usr/bin/time -l records are retained for measured runs.",
+    "Initial install used a cold download cache without peak-memory profiling; measured fresh hash-locked setup downloaded all three wheels again.",
+    "No speed comparison or advantage is claimed."
+  ],
+  "computerUse": "none",
+  "listening": "not performed",
+  "audiovisualQA": "not performed",
+  "verification": {
+    "fastCheck": {
+      "command": "pnpm check:fast",
+      "exitCode": 0,
+      "unitFiles": 127,
+      "unitTests": 1420,
+      "log": "benchmarks/results/composition-ce16/check-fast-isolated.log"
+    },
+    "proof": {
+      "command": "pnpm soundtrack:proof --verify-only",
+      "exitCode": 0
+    },
+    "python": [
+      "ruff check --no-cache scripts/soundtrack/proof-worker.py scripts/soundtrack/verify-proof.py",
+      "ruff format --check --no-cache scripts/soundtrack/proof-worker.py scripts/soundtrack/verify-proof.py"
+    ],
+    "initialEnvironmentFailure": {
+      "command": "pnpm check:fast",
+      "exitCode": 1,
+      "failedFiles": 6,
+      "passedFiles": 121,
+      "passedTests": 1392,
+      "cause": "Shared root node_modules symlink omitted package-local three dependency. Replaced only isolated worktree symlink with offline frozen-lockfile installation; clean rerun passes.",
+      "log": "benchmarks/results/composition-ce16/check-fast.log"
+    },
+    "notRun": [
+      "Full pnpm check/check:all",
+      "Runtime/integration/browser groups",
+      "Frozen baseline matrices",
+      "Listening",
+      "Audiovisual QA"
+    ]
+  }
+}

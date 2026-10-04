@@ -43,6 +43,15 @@ still hold before relying on them.
 
 ## Current state
 
+- **CE16 isolated implementation (`[~]`, 2026-10-04):** Codex on
+  `codex/composition-ce16`, worktree
+  `/Users/jjae/.codex/worktrees/composition-ce16/still-shift`, from `dee9e7b`.
+  CE16-A technical lifecycle passed; CE16-B integration remains unstarted.
+  All reload PCM and unaffected edited stems are exact; narration unchanged.
+  Dependency/license evidence retained; distribution packaging remains pending.
+  Original checkout and parallel CE12 work untouched.
+  [CE16 scope](./composition-engine-plan.md#ce16--programmable-soundtrack-project-and-timeline).
+
 - **PR #32 printer fix (2026-10-04):** re-review of delivered `e81a146` found
   one remaining P2 print/parse length defect and no standards findings.
   Posted the inline finding, added compact canonical output with equivalent
@@ -62,7 +71,7 @@ still hold before relying on them.
   [Fix evidence](./pr-32-fix-results.json).
   [Review evidence](./pr-32-review-results.json).
 
-_Last updated 2026-10-04 by Codex for the PR #32 printer fix._
+_Last updated 2026-10-04 by Codex for the isolated CE16 backend proof._
 
 - **PR #32 conflict resolution (2026-10-04):** merged `main` at `3413780` into
   PR head `a0708ba` and pushed merge `05033c8`, retaining CE9 expressions and
@@ -120,6 +129,24 @@ _Last updated 2026-10-04 by Codex for the PR #32 printer fix._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-04 — Isolate CE16 and verify its backend lifecycle
+
+- **Agent / branch:** Codex on `codex/composition-ce16`, from delivered CE9 `dee9e7b`.
+- **Scope:** owner requested isolated CE16 implementation, alongside separate CE12 work.
+- **Done:** created and attached managed worktree; reused development dependencies;
+  started isolated pinned DawDreamer environment setup.
+- **Results:** seven 60-second mix/stem/bus outputs per run, exact fresh-process
+  reload and unaffected-stem comparisons; narration source PCM exact. Gain/move
+  edits and checksum rejection verified; built-in DSP onset delay is zero.
+  Fast checks pass (1,420 tests); Python lint/format checks pass.
+- **Environment:** initial fast run failed on six files because the dependency
+  symlink lacked package-local `three`; isolated offline install resolves it.
+  Full runtime/browser/baseline groups were not rerun.
+- **Open / next:** CE16-B integration and packaging remain pending. No listening
+  or audiovisual QA performed. Zero Computer Use; raw assets preserved.
+- **Records:** [CE16](./composition-engine-plan.md#ce16--programmable-soundtrack-project-and-timeline),
+  [backend proof evidence](./composition-ce16-verification-results.json).
 
 ### 2026-10-04 — Fix the remaining PR #32 printer finding
 
