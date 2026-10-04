@@ -15,6 +15,10 @@ export async function checkWebglStoryImageRounding() {
   const reports = [];
   for (const { path, frames } of [
     {
+      path: "story-motion-continuous/unequal-margins.json",
+      frames: [0, 112],
+    },
+    {
       path: "story-motion-continuous/evidence-boundary.json",
       frames: [112, 119, 138, 144],
     },

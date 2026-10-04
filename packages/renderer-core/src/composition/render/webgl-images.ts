@@ -116,8 +116,14 @@ export class WebglImages {
     this.cached.delete(content.sources);
     this.cached.set(content.sources, entry);
     const { surface, left, top, right, bottom } = entry;
-    // Keep Canvas's integer source-over rounding at overlapping image edges.
-    this.paint.draw(surface, dst, { left, top, right, bottom });
+    // Direct vector drawing and antialiased clips use Canvas primitive rounding.
+    // Already-rasterized images retain bitmap source-over blending.
+    this.paint.draw(
+      surface,
+      dst,
+      { left, top, right, bottom },
+      content.rasterize === "draw" || clips.length > 0,
+    );
     return true;
   }
 }

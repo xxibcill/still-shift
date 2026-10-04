@@ -173,7 +173,9 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
 - **Done:** mixed native-passage WebGL acceptance passes all 576 frames. The
   complete WebGL matrix exposed nine pixel failures at SVG edges; reuse of the
   integer image blend path repairs all inspected frames (12 forward/backward checks).
-  Existing WebGL browser checks, build and targeted lint pass; renderer is `0.36.2`.
+  Existing WebGL browser checks, build and targeted lint pass. The all-image
+  integer experiment reduced bitmap precision; narrowed it to vector/clip coverage
+  (`0.36.3`), preserving ordinary image precision. Focused repaired frames pass.
 - **Open / next:** repaired WebGL matrix, final acceptance and milestone PR;
   CE7 remains incomplete, CE6-P remains deferred. Pre-existing local documentation retained.
 - **Records:** [CE4a continuation evidence](./composition-ce4a-completion-results.json).

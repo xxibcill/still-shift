@@ -634,9 +634,9 @@
   },
   "webglImageRoundingRepair": {
     "status": "focused-passed-matrix-pending",
-    "rendererVersion": "composition-webgl2-0.36.2",
+    "rendererVersion": "composition-webgl2-0.36.3",
     "problem": "Bounded image uploads used fixed-function WebGL source-over rather than the Canvas-compatible integer blend path. Overlapping SVG antialiased edges accumulated a three-byte difference.",
-    "change": "Reuse WebglPaint for bounded image compositing and share the paint instance with vector rendering; cached raster content and damage regions stay intact.",
+    "change": "Reuse WebglPaint integer compositing for direct vector drawing and clipped image coverage. Keep the existing bitmap blend path for un-clipped natural-size images; share the paint instance with vector rendering.",
     "initialMatrix": {
       "command": "pnpm test:browser:composition-story-fixtures --webgl --keep-going",
       "status": "failed-pixels-and-deferred-timing",
@@ -968,6 +968,7 @@
     "pending": [
       "Full story/component WebGL matrix, all frames and repeat exports",
       "Updated WebGL aggregate browser suite and mixed native passage acceptance"
-    ]
+    ],
+    "rejectedExperiment": "Applying integer rounding to every image reduced natural-size image precision. Stopped the partial matrix after three cases; narrowed the rule, preserving exact frame 0 and a one-byte maximum at frame 112 in continuous Unequal Margins."
   }
 }
