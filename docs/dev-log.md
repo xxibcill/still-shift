@@ -140,7 +140,8 @@ _Last updated 2026-10-04 by Codex for the PR #32 printer fix._
   pauses, the median of three samples and unchanged 1.25 limit.
 - **Results:** 26 rule / five CLI tests, browser parity, 79-vs-zero stillness and
   176-item corpus lint pass. Five timing helper tests, target Canvas ratio 1.065,
-  build and changed-file lint pass. Full gate not yet passing.
+  build and changed-file lint pass. Lab server retries now select an available port;
+  the CE12 browser group passes with the default port occupied. Full gate not yet passing.
 - **Rejected / do not repeat:** cross-checkout dependency links bypass mocks;
   closed-lid sleep interrupted browser playback. A short-sample Canvas timing
   failure is retained, not covered by the WebGL deferral.

@@ -16,7 +16,7 @@ const root = resolve(import.meta.dirname, "../..");
 const server = await createServer({
   configFile: resolve(root, "apps/lab/vite.config.ts"),
   logLevel: "silent",
-  server: { host: "127.0.0.1", port: 0 },
+  server: { host: "127.0.0.1", port: 0, strictPort: false },
 });
 await server.listen();
 const browser = await launchRenderBrowser();
