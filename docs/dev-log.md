@@ -136,8 +136,9 @@ _Last updated 2026-10-04 by Codex for the isolated CE16 integration._
 ### 2026-10-04 — Continue CE16 into the shared project and passage integration
 
 - **Agent / branch:** Codex on isolated `codex/composition-ce16`, after `0ad92e9`.
-- **Done:** shared project contract, atomic revision edits/history, bounded worker,
-  CLI lifecycle, explicit BGM ducking, optional layer view and passage adapter.
+- **Done:** `15b02eb` commits the shared project contract, atomic revision
+  edits/history, bounded worker, CLI lifecycle, explicit BGM ducking, optional
+  layer view and passage adapter. Worktree is clean after the documentation record.
 - **Results:** full 60-second CLI reload/portable relocation exact; narration and
   unrelated edited stems unchanged; mix reconstructed exactly. Local model/PCM/API
   checks preserve legacy passage audio. 1,428 unit, 46 runtime, 94 command integration and 14 depth tests pass;
