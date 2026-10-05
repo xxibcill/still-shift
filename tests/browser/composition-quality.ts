@@ -61,6 +61,36 @@ try {
     "Lab timeline markers seek correctly; rendered pixel findings displayed.",
   );
 
+  const oversized = "ce12/oversized-lint.json";
+  await page.route("**/composition/fixtures", async (route) => {
+    const response = await route.fetch();
+    await route.fulfill({
+      response,
+      json: [
+        ...((await response.json()) as unknown[]),
+        { path: oversized, id: "oversized", name: "oversized" },
+      ],
+    });
+  });
+  await page.route(
+    `**/composition/scene?scene=${encodeURIComponent(oversized)}`,
+    (route) => route.fulfill({ json: qualityCapacityComposition() }),
+  );
+  await page.goto(base + `composition.html?scene=${oversized}`);
+  await page.waitForFunction(
+    (path) => document.getElementById("status")?.dataset.ready === path,
+    oversized,
+  );
+  assert.equal(await page.locator("#error").innerText(), "");
+  assert.match(
+    await page.locator("#lint-summary").innerText(),
+    /^Motion checks unavailable: comp-lint-limit/,
+  );
+  assert.equal(await page.locator("#play").isDisabled(), false);
+  assert.equal(await page.locator("#lint").isDisabled(), true);
+  await page.unrouteAll();
+  console.log("Lab previews compositions whose motion lint cannot run.");
+
   for (const [name, pair] of Object.entries(fixtures)) {
     for (const [outcome, comp] of Object.entries(pair)) {
       const nodeReport = analyzeCompositionQuality(comp);
