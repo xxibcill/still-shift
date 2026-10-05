@@ -1,0 +1,64 @@
+{
+  "milestone": "CE11",
+  "status": "in-progress",
+  "date": "2026-10-05",
+  "branch": "codex/composition-ce11",
+  "base": "afb4045",
+  "slices": [
+    {
+      "name": "Shared-session composition renderer ownership",
+      "status": "checkpoint",
+      "changes": [
+        "Register caller-owned renderers and presentation callbacks without converting native canvases to Canvas2D proxies.",
+        "Optional valid-preview retention after failed loads, explicit commit result, frame callbacks and public pause.",
+        "Fieldset export locks cover dynamically added inspector controls; legacy preview registration and default failure behavior remain."
+      ],
+      "verification": [
+        {
+          "command": "pnpm build / changed-file eslint / pnpm check:boundaries / owned-file prettier",
+          "status": "passed"
+        },
+        {
+          "command": "pnpm test:browser:composition-session",
+          "status": "passed",
+          "log": "/private/tmp/ce11-session-browser.log",
+          "checks": [
+            "Renderer identity preserved",
+            "Invalid staged frame retains valid pixels, frame and usable controls",
+            "Stale candidates disposed and cannot replace newest preview",
+            "Shorter composition clamps frame",
+            "Ready precedes frame callbacks",
+            "Dynamic fieldset children inherit export lock",
+            "Clear disposes active renderer once"
+          ]
+        },
+        {
+          "command": "pnpm test:browser:lab-session",
+          "status": "passed",
+          "log": "/private/tmp/ce11-session-legacy.log",
+          "checks": [
+            "Commerce, component and reusable workbench stale/error/export/playback regression coverage",
+            "Failed source retry",
+            "Depth Lab format and guide overlays"
+          ]
+        }
+      ],
+      "sourceSha256": "ea1ee9c6b313074149e019a294d698ca19b548d112af448d944babfcc13b340a",
+      "testHarnessRepairs": [
+        "Use ES2023-compatible deferred promises rather than widening the project target.",
+        "Use the existing tsx naming shim for serialized Playwright callbacks and a type-only module import."
+      ],
+      "pending": [
+        "Composition page adoption of shared session",
+        "Lossless history, layers, graph handles, overlays and save/export acceptance"
+      ]
+    }
+  ],
+  "conditionalFollowThrough": {
+    "CE8": "Real 3D camera-frustum inspector overlay when camera layers are implemented.",
+    "CE13": "Real source-backed audio waveform when audio layers are implemented."
+  },
+  "pending": [
+    "Complete CE11 features and local milestone acceptance; open and attach PR"
+  ]
+}

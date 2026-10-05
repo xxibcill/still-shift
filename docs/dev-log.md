@@ -43,6 +43,13 @@ still hold before relying on them.
 
 ## Current state
 
+- **CE11 in progress (2026-10-05):** `codex/composition-ce11` from CE10 `afb4045`.
+  Shared-session renderer registration, frame callbacks and valid-preview recovery
+  pass new lifecycle browser checks and existing workbench regressions. Composition
+  page adoption, native editing/history, layers, graphs, overlays and save/export
+  acceptance remain. Existing Lab design is the default pending optional steering.
+  [Evidence](./composition-ce11-results.json).
+
 - **CE10 complete (2026-10-05):** `codex/composition-ce10` from CE4a `869a793`;
   runtime `e501fed`. Typed authoring, CLI/watch, presets, eight examples and generated
   guidance pass the full local check: 1,499 unit, 46 runtime, 134 integration and
@@ -50,7 +57,7 @@ still hold before relying on them.
   The 197-line builder has exact 192-frame Canvas/WebGL parity and identical exports;
   a fresh skill-only source validates without repairs and renders correctly. Initial
   trial/gate failures are retained. [PR #36](https://github.com/xxibcill/still-shift/pull/36)
-  is open and attached; owner review/merge remain. CE11 is next on a new branch.
+  is open and attached; owner review/merge remain. CE11 is now in progress.
   [Evidence](./composition-ce10-results.json).
 
 - **CE4a complete (2026-10-05):** `codex/composition-ce4a-completion`, implementation
@@ -150,6 +157,21 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-05 — Start CE11 shared-session renderer support
+
+- **Agent / branch:** Codex on `codex/composition-ce11`, from CE10 `afb4045` /
+  [PR #36](https://github.com/xxibcill/still-shift/pull/36).
+- **Done:** generic renderer/presentation ownership, optional valid-preview retention,
+  frame callbacks, commit result and fieldset export locks in the shared session.
+  Preserve legacy session defaults; record the existing Lab tone as an implementation
+  default while the optional design question remains unanswered.
+- **Results:** build, lint, boundaries and formatting pass. New browser lifecycle
+  coverage and all existing shared-session workbench regressions pass.
+- **Next:** move the composition page to this session; implement native document
+  history, layers, graph editing, overlays and lossless save/export acceptance.
+  Real camera-frustum/audio waveform follow-through belongs to CE8/CE13 availability.
+- **Records:** [CE11 evidence](./composition-ce11-results.json).
 
 ### 2026-10-05 — Complete CE10 typed authoring and CLI
 

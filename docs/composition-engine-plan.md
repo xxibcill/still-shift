@@ -372,7 +372,7 @@ sign and for time remap. It does not change the layer's composition-time visibil
 | CE8   | 2.5D layers and unified camera                  | B      | CE3, CE6, CE9        |                        |                                     | `[ ]`  |                                                                                    |
 | CE9   | Expressions and motion behaviours               | C      | CE2                  | xxibcill (Claude Code) | `codex/composition-ce9`             | `[x]`  | [CE9 record](#ce9--expressions-and-motion-behaviours)                              |
 | CE10  | TypeScript builder API and CLI                  | C      | CE3, CE4a, CE9, CE12 | Codex                  | `codex/composition-ce10`            | `[x]`  | [evidence](./composition-ce10-results.json)                                        |
-| CE11  | Lab composition inspector and graph editor      | C      | CE3, CE10            |                        |                                     | `[ ]`  |                                                                                    |
+| CE11  | Lab composition inspector and graph editor      | C      | CE3, CE10            | Codex                  | `codex/composition-ce11`            | `[~]`  | [evidence](./composition-ce11-results.json)                                        |
 | CE12  | Motion linting                                  | C      | CE2                  | Codex                  | `codex/composition-ce12`            | `[x]`  | [CE12 completion record](#ce12-completion-record-2026-10-05)                       |
 | CE13  | Video, image-sequence and audio layers          | D      | CE3, CE7             |                        |                                     | `[ ]`  |                                                                                    |
 | CE14  | Mesh warp and puppet pins                       | D      | CE6                  |                        |                                     | `[ ]`  |                                                                                    |
@@ -3287,6 +3287,8 @@ and cinematic cameras.
 - [ ] Optional lights (point, spot, ambient) are **not** in this milestone; record them
       as a follow-up if needed.
 
+- [ ] Complete CE11's camera-frustum inspector overlay using real evaluated cameras.
+
 **Acceptance:** Native-composition test scenes demonstrate correct perspective and
 parallax from z depth, depth sorting, depth of field, camera shake and affine 2D
 story-style camera paths. Test true perspective on WebGL2 and affine moves on both
@@ -3693,6 +3695,16 @@ result, saves, and the exported MP4 matches the Lab preview.
 **Verification:** Browser tests for editing, undo/redo, save/reload, hot reload and
 preview/export parity.
 
+**Implementation record (2026-10-05):** Codex on `codex/composition-ce11`, from
+CE10 `afb4045` / [PR #36](https://github.com/xxibcill/still-shift/pull/36). The shared
+preview session now owns arbitrary renderers and native presentation callbacks,
+with opt-in valid-preview recovery, frame callbacks, commit results and dynamic
+fieldset export locks. New lifecycle browser checks and existing workbench session
+regressions pass. Composition-page integration and the remaining inspector features
+are in flight. Audio waveforms and 3D frusta are conditional on CE13/CE8; their real
+inspector integration is tracked under those milestones. No unavailable data is
+claimed as verified. [Evidence](./composition-ce11-results.json).
+
 **Completion record:** _to be filled in._
 
 ---
@@ -3819,6 +3831,8 @@ image sequences and sound with stills and graphics.
 - [ ] Colour handling: detect source colour metadata and convert to the composition
       space; reject unsupported inputs with a diagnostic.
 - [ ] Limits: maximum duration, resolution and total decoded-cache size, configurable.
+
+- [ ] Complete CE11's audio waveform lane using decoded native audio source data.
 
 **Acceptance:** A composition combining a video clip with time remap, a still with
 motion and a lower-third shape layer exports with correct sync (± 0 frames) and
