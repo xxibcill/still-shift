@@ -3662,7 +3662,9 @@ timeline-algebra unit tests, CLI integration tests.
 - **Limits:** richer native shapes remain CE5, 3D remains CE8 and media remains CE13.
   Interim drawOn uses story.path providers. WebGL performance remains deferred to
   CE6-P; no renderer output changed. GitHub Actions remain disabled.
-- **Next:** create and attach the milestone PR, then begin CE11 on its own branch.
+- **PR / next:** [PR #36](https://github.com/xxibcill/still-shift/pull/36) is open and
+  attached, stacked on CE4a. Begin CE11 on its own branch; owner review and merges
+  remain pending.
 
 ---
 

@@ -483,7 +483,7 @@
       ]
     }
   ],
-  "pending": ["Create and attach milestone PR, then start CE11"],
+  "pending": ["Owner PR review and merge"],
   "runtimeHead": "e501fed",
   "verification": {
     "command": "pnpm check",
@@ -541,5 +541,14 @@
       "The third full run at acac044 exposed the missing-file canonical-parent compatibility assertion. All repairs are covered by the passing full run at e501fed."
     ],
     "actionsEnabled": false
-  }
+  },
+  "pullRequest": {
+    "number": 36,
+    "url": "https://github.com/xxibcill/still-shift/pull/36",
+    "state": "OPEN",
+    "base": "codex/composition-ce4a-completion",
+    "head": "codex/composition-ce10",
+    "attached": true
+  },
+  "nextMilestone": "CE11"
 }

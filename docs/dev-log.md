@@ -49,7 +49,8 @@ still hold before relying on them.
   14 depth tests, all browser suites and 176 frozen baselines / 36,061 frames.
   The 197-line builder has exact 192-frame Canvas/WebGL parity and identical exports;
   a fresh skill-only source validates without repairs and renders correctly. Initial
-  trial/gate failures are retained. Publish its PR, then start CE11 on a new branch.
+  trial/gate failures are retained. [PR #36](https://github.com/xxibcill/still-shift/pull/36)
+  is open and attached; owner review/merge remain. CE11 is next on a new branch.
   [Evidence](./composition-ce10-results.json).
 
 - **CE4a complete (2026-10-05):** `codex/composition-ce4a-completion`, implementation
@@ -165,7 +166,8 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
 - **Retained failures:** full checks exposed render exit-code, aliased asset-path and
   missing-parent identity regressions; focused repairs and the full rerun pass. Initial skill guidance failures
   stay recorded. Owner local changes preserved; Actions remain disabled.
-- **Next:** publish and attach the milestone PR, then start CE11 on a new branch.
+- **PR / next:** [PR #36](https://github.com/xxibcill/still-shift/pull/36) is open and
+  attached, stacked on CE4a. Start CE11 on its own branch; no PRs were merged.
 - **Evidence:** [CE10 results](./composition-ce10-results.json),
   [skill trials](./composition-ce10-skill-trials.json).
 
