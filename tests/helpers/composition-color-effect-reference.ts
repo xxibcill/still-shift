@@ -531,3 +531,9 @@ export function checkColorCurveByteRounding() {
     },
   ]);
 }
+
+export function checkGradientRampRendering() {
+  return checkNativeEffectRendering({
+    "color.gradient-ramp": variants["color.gradient-ramp"]!,
+  });
+}

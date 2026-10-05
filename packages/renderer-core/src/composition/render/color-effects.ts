@@ -1,3 +1,10 @@
+import {
+  gradientControls,
+  gradientRank,
+  gradientUniforms,
+  gradientColorTable,
+  GRADIENT_RANK_SHADER,
+} from "./gradient-controls.ts";
 import { compositionEffectDefinition } from "@still-shift/scene-contract";
 import type { Rgba } from "../evaluate/types.ts";
 import type { RenderEffect } from "./graph.ts";
@@ -190,7 +197,7 @@ const fragments: Readonly<Record<string, string>> = {
   "color.exposure": `result=pow(clamp(rgb*exp2(exposure)+offset,0.0,1.0),vec3(1.0/gamma));`,
   "color.brightness-contrast": `float factor=contrast>=0.0?1.0/max(0.001,1.0-contrast):1.0+contrast;result=(rgb-0.5)*factor+0.5+brightness;`,
   "color.fill": `result=mix(rgb,color.rgb,amount*color.a);`,
-  "color.gradient-ramp": `vec2 delta=end-start;float length2=dot(delta,delta);float t=length2==0.0?0.0:clamp(dot(gl_FragCoord.xy-start,delta)/length2,0.0,1.0);vec4 ramp=mix(startColor,endColor,t);result=mix(rgb,ramp.rgb,amount*ramp.a);`,
+  "color.gradient-ramp": `int rank=gradientRank(gl_FragCoord.xy);vec4 ramp=texelFetch(backdrop,ivec2(rank&255,rank>>8),0);result=mix(rgb,ramp.rgb,amount*ramp.a);`,
   "color.invert": `result=mix(rgb,1.0-rgb,amount);`,
   "color.posterize": `result=floor(rgb*(levels-1.0)+0.5)/(levels-1.0);`,
 };
@@ -209,7 +216,7 @@ export function colorEffectKernel(
         `uniform ${property.type === "scalar" ? "float" : property.type === "vec2" ? "vec2" : "vec4"} ${key};`,
     )
     .join("\n");
-  const shader = `${declarations}\n${id === "color.hue-saturation" ? HSL : ""}\nvoid main(){
+  const shader = `${id === "color.gradient-ramp" ? GRADIENT_RANK_SHADER : ""}\n${declarations}\n${id === "color.hue-saturation" ? HSL : ""}\nvoid main(){
     vec4 sourcePixel=texelFetch(source,ivec2(gl_FragCoord.xy),0);
     vec4 stored=floor(sourcePixel*255.0+0.5);
     vec3 rgb=stored.a>0.0?floor(stored.rgb*255.0/stored.a+0.5)/255.0:vec3(0.0), result;
@@ -227,7 +234,14 @@ export function colorEffectKernel(
           ([name]) => definition.properties[name]!.type !== "curve",
         ),
       ) as Record<string, number | readonly number[]>;
-      if (id === "color.curves") {
+      if (id === "color.gradient-ramp") {
+        const transfer = context.createSurface(256, 256);
+        context.uploadBytes(transfer, gradientColorTable(params));
+        context.pass(shader, output, [input, transfer], {
+          ...uniforms,
+          ...gradientUniforms(gradientControls(params)),
+        });
+      } else if (id === "color.curves") {
         // A 256-entry transfer is control data; all image pixels are transformed on the GPU.
         const bytes = new Uint8Array(256 * 4);
         for (let value = 0; value < 256; value++) {
@@ -250,21 +264,32 @@ export function colorEffectKernel(
     renderCanvas(context, input, params: RenderEffect["params"]) {
       const output = context.createSurface(input.width, input.height);
       const image = input.ctx.getImageData(0, 0, input.width, input.height);
+      const gradient =
+          id === "color.gradient-ramp" ? gradientControls(params) : undefined,
+        table = gradient ? gradientColorTable(params) : undefined;
       for (let y = 0; y < input.height; y++)
         for (let x = 0; x < input.width; x++) {
           const i = (y * input.width + x) * 4;
-          const result = colorEffectPixel(
-            id,
-            [
-              colorEffectChannel(image.data[i]!, image.data[i + 3]!),
-              colorEffectChannel(image.data[i + 1]!, image.data[i + 3]!),
-              colorEffectChannel(image.data[i + 2]!, image.data[i + 3]!),
-              image.data[i + 3]! / 255,
-            ],
-            params,
-            x + 0.5,
-            y + 0.5,
-          );
+          const source: Rgba = [
+            colorEffectChannel(image.data[i]!, image.data[i + 3]!),
+            colorEffectChannel(image.data[i + 1]!, image.data[i + 3]!),
+            colorEffectChannel(image.data[i + 2]!, image.data[i + 3]!),
+            image.data[i + 3]! / 255,
+          ];
+          let result: Rgba;
+          if (gradient && table) {
+            const index = gradientRank(gradient, x + 0.5, y + 0.5) * 4,
+              strength = ((params.amount as number) * table[index + 3]!) / 255;
+            result = [0, 1, 2]
+              .map((c) =>
+                unit(
+                  source[c]! +
+                    (table[index + c]! / 255 - source[c]!) * strength,
+                ),
+              )
+              .concat(source[3]) as Rgba;
+          } else
+            result = colorEffectPixel(id, source, params, x + 0.5, y + 0.5);
           for (let channel = 0; channel < 4; channel++)
             image.data[i + channel] = Math.round(result[channel]! * 255);
         }

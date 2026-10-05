@@ -244,3 +244,23 @@ isolated source images. Graph construction permits at most 10,000 source visits
 and 64 dependency levels, with `comp-effect-budget` on overflow. Staged source
 surfaces and callback snapshots are released on success or failure. Scratch
 ownership and size budgets still apply to input copies.
+
+### Displacement maps and gradient wipes
+
+`distort.displacement-map` and `transition.gradient-wipe` require the `map`
+input slot. Channel selectors 0–3 choose straight RGBA; 4 chooses encoded-sRGB
+luma with byte weights 54/183/19. Half-up unpremultiplication is explicit.
+Displacement uses signed amounts on the 1/16-pixel grid, a byte midpoint and
+map alpha as strength. Its signed quotient is corrected using exact integer
+products on the GPU. Transparent maps and neutral amounts preserve the source.
+Gradient wipe interpolates uncovered map pixels toward rank 1, supports inversion
+and a soft band, and multiplies all premultiplied channels by quantized coverage.
+Progress zero preserves the source and one clears it.
+
+Gradient-ramp 1.1.0 projects pixels to canonical 16-bit ranks. Power-of-two
+coefficient precision adapts to long gradients; gradients shorter than 1/256
+pixel use an oriented midpoint step, and coincident endpoints use the start
+color. Both backends use the same bounded straight-color control table. GPU
+projection and image processing remain on the GPU; uploaded tables contain
+controls, not image pixels. This policy prevents tiny projection differences
+from being amplified by a downstream displacement map.

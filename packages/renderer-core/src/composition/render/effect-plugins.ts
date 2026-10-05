@@ -1,3 +1,4 @@
+import { mapEffectKernel } from "./map-effects.ts";
 import { shadowEffectKernel } from "./shadow-effects.ts";
 import { radialDistortionKernel } from "./radial-distortion.ts";
 import { stylizeEffectKernel } from "./stylize-effects.ts";
@@ -82,7 +83,8 @@ export const compositionEffectPlugin = (id: string) =>
   noiseEffectKernel(id) ??
   stylizeEffectKernel(id) ??
   radialDistortionKernel(id) ??
-  shadowEffectKernel(id);
+  shadowEffectKernel(id) ??
+  mapEffectKernel(id);
 
 /** A callback owns at most 32 surfaces and 128 MiB (or four full-size frames). */
 class EffectSurfaces<S extends { width: number; height: number }> {

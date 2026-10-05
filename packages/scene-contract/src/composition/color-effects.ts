@@ -26,9 +26,12 @@ const point = (x: number, y: number): EffectProperty => ({
   min: -1000000,
   max: 1000000,
 });
-const effect = (properties: Record<string, EffectProperty>) =>
+const effect = (
+  properties: Record<string, EffectProperty>,
+  version = "1.0.0",
+) =>
   defineCompositionEffect({
-    version: "1.0.0",
+    version,
     properties,
     preservesOpaque: true,
   });
@@ -73,13 +76,16 @@ export const COLOR_EFFECT_DEFINITIONS: Readonly<
     contrast: scalar(0, -1, 1),
   }),
   "color.fill": effect({ color: color("#ffffff"), amount: scalar(1, 0, 1) }),
-  "color.gradient-ramp": effect({
-    start: point(0, 0),
-    end: point(100, 0),
-    startColor: color("#000000"),
-    endColor: color("#ffffff"),
-    amount: scalar(1, 0, 1),
-  }),
+  "color.gradient-ramp": effect(
+    {
+      start: point(0, 0),
+      end: point(100, 0),
+      startColor: color("#000000"),
+      endColor: color("#ffffff"),
+      amount: scalar(1, 0, 1),
+    },
+    "1.1.0",
+  ),
   "color.invert": effect({ amount: scalar(1, 0, 1) }),
   "color.posterize": effect({ levels: scalar(8, 2, 256, true) }),
 };

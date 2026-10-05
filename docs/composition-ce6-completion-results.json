@@ -1024,11 +1024,922 @@
       ],
       "pending": [
         "Map/wipe native kernels, adjustment history, linear-light and complete milestone acceptance"
+      ],
+      "implementation": "6b3d34d"
+    },
+    {
+      "name": "Native displacement map, gradient wipe and deterministic gradient controls",
+      "status": "focused-verification-passed",
+      "versions": {
+        "evaluator": 41,
+        "canvas": "composition-canvas-1.36.0",
+        "webgl": "composition-webgl2-0.50.0",
+        "gradientRamp": "1.1.0"
+      },
+      "verification": {
+        "focusedTests": 80,
+        "focusedFiles": 8,
+        "build": "passed",
+        "lint": "passed",
+        "schema": "passed",
+        "boundaries": "passed",
+        "nativeMatrix": {
+          "profile": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+          "cases": 54,
+          "frames": 648,
+          "rows": [
+            {
+              "effect": "distort.displacement-map",
+              "kind": "solid",
+              "variant": 0,
+              "frames": 12,
+              "maxDelta": 0,
+              "psnr": 999
+            },
+            {
+              "effect": "distort.displacement-map",
+              "kind": "solid",
+              "variant": 1,
+              "frames": 12,
+              "maxDelta": 0,
+              "psnr": 999
+            },
+            {
+              "effect": "distort.displacement-map",
+              "kind": "solid",
+              "variant": 2,
+              "frames": 12,
+              "maxDelta": 0,
+              "psnr": 999
+            },
+            {
+              "effect": "distort.displacement-map",
+              "kind": "image",
+              "variant": 0,
+              "frames": 12,
+              "maxDelta": 0,
+              "psnr": 999
+            },
+            {
+              "effect": "distort.displacement-map",
+              "kind": "image",
+              "variant": 1,
+              "frames": 12,
+              "maxDelta": 0,
+              "psnr": 999
+            },
+            {
+              "effect": "distort.displacement-map",
+              "kind": "image",
+              "variant": 2,
+              "frames": 12,
+              "maxDelta": 0,
+              "psnr": 999
+            },
+            {
+              "effect": "distort.displacement-map",
+              "kind": "text",
+              "variant": 0,
+              "frames": 12,
+              "maxDelta": 0,
+              "psnr": 999
+            },
+            {
+              "effect": "distort.displacement-map",
+              "kind": "text",
+              "variant": 1,
+              "frames": 12,
+              "maxDelta": 0,
+              "psnr": 999
+            },
+            {
+              "effect": "distort.displacement-map",
+              "kind": "text",
+              "variant": 2,
+              "frames": 12,
+              "maxDelta": 0,
+              "psnr": 999
+            },
+            {
+              "effect": "distort.displacement-map",
+              "kind": "shape",
+              "variant": 0,
+              "frames": 12,
+              "maxDelta": 0,
+              "psnr": 999
+            },
+            {
+              "effect": "distort.displacement-map",
+              "kind": "shape",
+              "variant": 1,
+              "frames": 12,
+              "maxDelta": 0,
+              "psnr": 999
+            },
+            {
+              "effect": "distort.displacement-map",
+              "kind": "shape",
+              "variant": 2,
+              "frames": 12,
+              "maxDelta": 0,
+              "psnr": 999
+            },
+            {
+              "effect": "distort.displacement-map",
+              "kind": "provider",
+              "variant": 0,
+              "frames": 12,
+              "maxDelta": 0,
+              "psnr": 999
+            },
+            {
+              "effect": "distort.displacement-map",
+              "kind": "provider",
+              "variant": 1,
+              "frames": 12,
+              "maxDelta": 0,
+              "psnr": 999
+            },
+            {
+              "effect": "distort.displacement-map",
+              "kind": "provider",
+              "variant": 2,
+              "frames": 12,
+              "maxDelta": 0,
+              "psnr": 999
+            },
+            {
+              "effect": "distort.displacement-map",
+              "kind": "group",
+              "variant": 0,
+              "frames": 12,
+              "maxDelta": 0,
+              "psnr": 999
+            },
+            {
+              "effect": "distort.displacement-map",
+              "kind": "group",
+              "variant": 1,
+              "frames": 12,
+              "maxDelta": 0,
+              "psnr": 999
+            },
+            {
+              "effect": "distort.displacement-map",
+              "kind": "group",
+              "variant": 2,
+              "frames": 12,
+              "maxDelta": 0,
+              "psnr": 999
+            },
+            {
+              "effect": "distort.displacement-map",
+              "kind": "precomp",
+              "variant": 0,
+              "frames": 12,
+              "maxDelta": 0,
+              "psnr": 999
+            },
+            {
+              "effect": "distort.displacement-map",
+              "kind": "precomp",
+              "variant": 1,
+              "frames": 12,
+              "maxDelta": 0,
+              "psnr": 999
+            },
+            {
+              "effect": "distort.displacement-map",
+              "kind": "precomp",
+              "variant": 2,
+              "frames": 12,
+              "maxDelta": 0,
+              "psnr": 999
+            },
+            {
+              "effect": "distort.displacement-map",
+              "kind": "collapsed",
+              "variant": 0,
+              "frames": 12,
+              "maxDelta": 0,
+              "psnr": 999
+            },
+            {
+              "effect": "distort.displacement-map",
+              "kind": "collapsed",
+              "variant": 1,
+              "frames": 12,
+              "maxDelta": 0,
+              "psnr": 999
+            },
+            {
+              "effect": "distort.displacement-map",
+              "kind": "collapsed",
+              "variant": 2,
+              "frames": 12,
+              "maxDelta": 0,
+              "psnr": 999
+            },
+            {
+              "effect": "distort.displacement-map",
+              "kind": "adjustment",
+              "variant": 0,
+              "frames": 12,
+              "maxDelta": 0,
+              "psnr": 999
+            },
+            {
+              "effect": "distort.displacement-map",
+              "kind": "adjustment",
+              "variant": 1,
+              "frames": 12,
+              "maxDelta": 0,
+              "psnr": 999
+            },
+            {
+              "effect": "distort.displacement-map",
+              "kind": "adjustment",
+              "variant": 2,
+              "frames": 12,
+              "maxDelta": 0,
+              "psnr": 999
+            },
+            {
+              "effect": "transition.gradient-wipe",
+              "kind": "solid",
+              "variant": 0,
+              "frames": 12,
+              "maxDelta": 0,
+              "psnr": 999
+            },
+            {
+              "effect": "transition.gradient-wipe",
+              "kind": "solid",
+              "variant": 1,
+              "frames": 12,
+              "maxDelta": 1,
+              "psnr": 71.5151067527978
+            },
+            {
+              "effect": "transition.gradient-wipe",
+              "kind": "solid",
+              "variant": 2,
+              "frames": 12,
+              "maxDelta": 0,
+              "psnr": 999
+            },
+            {
+              "effect": "transition.gradient-wipe",
+              "kind": "image",
+              "variant": 0,
+              "frames": 12,
+              "maxDelta": 0,
+              "psnr": 999
+            },
+            {
+              "effect": "transition.gradient-wipe",
+              "kind": "image",
+              "variant": 1,
+              "frames": 12,
+              "maxDelta": 1,
+              "psnr": 72.04880267826377
+            },
+            {
+              "effect": "transition.gradient-wipe",
+              "kind": "image",
+              "variant": 2,
+              "frames": 12,
+              "maxDelta": 0,
+              "psnr": 999
+            },
+            {
+              "effect": "transition.gradient-wipe",
+              "kind": "text",
+              "variant": 0,
+              "frames": 12,
+              "maxDelta": 0,
+              "psnr": 999
+            },
+            {
+              "effect": "transition.gradient-wipe",
+              "kind": "text",
+              "variant": 1,
+              "frames": 12,
+              "maxDelta": 1,
+              "psnr": 84.1484723533826
+            },
+            {
+              "effect": "transition.gradient-wipe",
+              "kind": "text",
+              "variant": 2,
+              "frames": 12,
+              "maxDelta": 0,
+              "psnr": 999
+            },
+            {
+              "effect": "transition.gradient-wipe",
+              "kind": "shape",
+              "variant": 0,
+              "frames": 12,
+              "maxDelta": 0,
+              "psnr": 999
+            },
+            {
+              "effect": "transition.gradient-wipe",
+              "kind": "shape",
+              "variant": 1,
+              "frames": 12,
+              "maxDelta": 1,
+              "psnr": 71.46968992248922
+            },
+            {
+              "effect": "transition.gradient-wipe",
+              "kind": "shape",
+              "variant": 2,
+              "frames": 12,
+              "maxDelta": 0,
+              "psnr": 999
+            },
+            {
+              "effect": "transition.gradient-wipe",
+              "kind": "provider",
+              "variant": 0,
+              "frames": 12,
+              "maxDelta": 0,
+              "psnr": 999
+            },
+            {
+              "effect": "transition.gradient-wipe",
+              "kind": "provider",
+              "variant": 1,
+              "frames": 12,
+              "maxDelta": 1,
+              "psnr": 76.749604850499
+            },
+            {
+              "effect": "transition.gradient-wipe",
+              "kind": "provider",
+              "variant": 2,
+              "frames": 12,
+              "maxDelta": 0,
+              "psnr": 999
+            },
+            {
+              "effect": "transition.gradient-wipe",
+              "kind": "group",
+              "variant": 0,
+              "frames": 12,
+              "maxDelta": 0,
+              "psnr": 999
+            },
+            {
+              "effect": "transition.gradient-wipe",
+              "kind": "group",
+              "variant": 1,
+              "frames": 12,
+              "maxDelta": 1,
+              "psnr": 71.90598197722288
+            },
+            {
+              "effect": "transition.gradient-wipe",
+              "kind": "group",
+              "variant": 2,
+              "frames": 12,
+              "maxDelta": 0,
+              "psnr": 999
+            },
+            {
+              "effect": "transition.gradient-wipe",
+              "kind": "precomp",
+              "variant": 0,
+              "frames": 12,
+              "maxDelta": 0,
+              "psnr": 999
+            },
+            {
+              "effect": "transition.gradient-wipe",
+              "kind": "precomp",
+              "variant": 1,
+              "frames": 12,
+              "maxDelta": 1,
+              "psnr": 71.5151067527978
+            },
+            {
+              "effect": "transition.gradient-wipe",
+              "kind": "precomp",
+              "variant": 2,
+              "frames": 12,
+              "maxDelta": 0,
+              "psnr": 999
+            },
+            {
+              "effect": "transition.gradient-wipe",
+              "kind": "collapsed",
+              "variant": 0,
+              "frames": 12,
+              "maxDelta": 0,
+              "psnr": 999
+            },
+            {
+              "effect": "transition.gradient-wipe",
+              "kind": "collapsed",
+              "variant": 1,
+              "frames": 12,
+              "maxDelta": 1,
+              "psnr": 71.5151067527978
+            },
+            {
+              "effect": "transition.gradient-wipe",
+              "kind": "collapsed",
+              "variant": 2,
+              "frames": 12,
+              "maxDelta": 0,
+              "psnr": 999
+            },
+            {
+              "effect": "transition.gradient-wipe",
+              "kind": "adjustment",
+              "variant": 0,
+              "frames": 12,
+              "maxDelta": 0,
+              "psnr": 999
+            },
+            {
+              "effect": "transition.gradient-wipe",
+              "kind": "adjustment",
+              "variant": 1,
+              "frames": 12,
+              "maxDelta": 1,
+              "psnr": 78.20707727646395
+            },
+            {
+              "effect": "transition.gradient-wipe",
+              "kind": "adjustment",
+              "variant": 2,
+              "frames": 12,
+              "maxDelta": 0,
+              "psnr": 999
+            }
+          ]
+        },
+        "codeProofs": {
+          "profile": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+          "ranks": {
+            "rankPoints": 114688,
+            "virtualFrame": [8192, 8192],
+            "rows": [
+              {
+                "case": 0,
+                "backend": "canvas2d",
+                "maxDelta": 0
+              },
+              {
+                "case": 0,
+                "backend": "webgl2",
+                "maxDelta": 0
+              },
+              {
+                "case": 1,
+                "backend": "canvas2d",
+                "maxDelta": 0
+              },
+              {
+                "case": 1,
+                "backend": "webgl2",
+                "maxDelta": 0
+              },
+              {
+                "case": 2,
+                "backend": "canvas2d",
+                "maxDelta": 0
+              },
+              {
+                "case": 2,
+                "backend": "webgl2",
+                "maxDelta": 0
+              },
+              {
+                "case": 3,
+                "backend": "canvas2d",
+                "maxDelta": 0
+              },
+              {
+                "case": 3,
+                "backend": "webgl2",
+                "maxDelta": 0
+              },
+              {
+                "case": 4,
+                "backend": "canvas2d",
+                "maxDelta": 0
+              },
+              {
+                "case": 4,
+                "backend": "webgl2",
+                "maxDelta": 0
+              },
+              {
+                "case": 5,
+                "backend": "canvas2d",
+                "maxDelta": 0
+              },
+              {
+                "case": 5,
+                "backend": "webgl2",
+                "maxDelta": 0
+              },
+              {
+                "case": 6,
+                "backend": "canvas2d",
+                "maxDelta": 0
+              },
+              {
+                "case": 6,
+                "backend": "webgl2",
+                "maxDelta": 0
+              }
+            ]
+          },
+          "quotients": {
+            "valueAlphaPairs": 65536,
+            "cases": 6,
+            "quotients": 393216,
+            "rows": [
+              {
+                "midpoint": 0,
+                "amount": 16000,
+                "backend": "canvas2d",
+                "maxDelta": 0
+              },
+              {
+                "midpoint": 0,
+                "amount": 16000,
+                "backend": "webgl2",
+                "maxDelta": 0
+              },
+              {
+                "midpoint": 0,
+                "amount": -16000,
+                "backend": "canvas2d",
+                "maxDelta": 0
+              },
+              {
+                "midpoint": 0,
+                "amount": -16000,
+                "backend": "webgl2",
+                "maxDelta": 0
+              },
+              {
+                "midpoint": 128,
+                "amount": 16000,
+                "backend": "canvas2d",
+                "maxDelta": 0
+              },
+              {
+                "midpoint": 128,
+                "amount": 16000,
+                "backend": "webgl2",
+                "maxDelta": 0
+              },
+              {
+                "midpoint": 128,
+                "amount": -16000,
+                "backend": "canvas2d",
+                "maxDelta": 0
+              },
+              {
+                "midpoint": 128,
+                "amount": -16000,
+                "backend": "webgl2",
+                "maxDelta": 0
+              },
+              {
+                "midpoint": 255,
+                "amount": 16000,
+                "backend": "canvas2d",
+                "maxDelta": 0
+              },
+              {
+                "midpoint": 255,
+                "amount": 16000,
+                "backend": "webgl2",
+                "maxDelta": 0
+              },
+              {
+                "midpoint": 255,
+                "amount": -16000,
+                "backend": "canvas2d",
+                "maxDelta": 0
+              },
+              {
+                "midpoint": 255,
+                "amount": -16000,
+                "backend": "webgl2",
+                "maxDelta": 0
+              }
+            ]
+          },
+          "gradientMatrix": {
+            "cases": 27,
+            "frames": 324,
+            "rows": [
+              {
+                "effect": "color.gradient-ramp",
+                "kind": "solid",
+                "variant": 0,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "effect": "color.gradient-ramp",
+                "kind": "solid",
+                "variant": 1,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "effect": "color.gradient-ramp",
+                "kind": "solid",
+                "variant": 2,
+                "frames": 12,
+                "maxDelta": 1,
+                "psnr": 72.91349815274144
+              },
+              {
+                "effect": "color.gradient-ramp",
+                "kind": "image",
+                "variant": 0,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "effect": "color.gradient-ramp",
+                "kind": "image",
+                "variant": 1,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "effect": "color.gradient-ramp",
+                "kind": "image",
+                "variant": 2,
+                "frames": 12,
+                "maxDelta": 1,
+                "psnr": 73.19825006194714
+              },
+              {
+                "effect": "color.gradient-ramp",
+                "kind": "text",
+                "variant": 0,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "effect": "color.gradient-ramp",
+                "kind": "text",
+                "variant": 1,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "effect": "color.gradient-ramp",
+                "kind": "text",
+                "variant": 2,
+                "frames": 12,
+                "maxDelta": 1,
+                "psnr": 88.71527329815379
+              },
+              {
+                "effect": "color.gradient-ramp",
+                "kind": "shape",
+                "variant": 0,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "effect": "color.gradient-ramp",
+                "kind": "shape",
+                "variant": 1,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "effect": "color.gradient-ramp",
+                "kind": "shape",
+                "variant": 2,
+                "frames": 12,
+                "maxDelta": 1,
+                "psnr": 74.98234756221909
+              },
+              {
+                "effect": "color.gradient-ramp",
+                "kind": "provider",
+                "variant": 0,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "effect": "color.gradient-ramp",
+                "kind": "provider",
+                "variant": 1,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "effect": "color.gradient-ramp",
+                "kind": "provider",
+                "variant": 2,
+                "frames": 12,
+                "maxDelta": 1,
+                "psnr": 87.89857283364059
+              },
+              {
+                "effect": "color.gradient-ramp",
+                "kind": "group",
+                "variant": 0,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "effect": "color.gradient-ramp",
+                "kind": "group",
+                "variant": 1,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "effect": "color.gradient-ramp",
+                "kind": "group",
+                "variant": 2,
+                "frames": 12,
+                "maxDelta": 1,
+                "psnr": 71.66903531924078
+              },
+              {
+                "effect": "color.gradient-ramp",
+                "kind": "precomp",
+                "variant": 0,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "effect": "color.gradient-ramp",
+                "kind": "precomp",
+                "variant": 1,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "effect": "color.gradient-ramp",
+                "kind": "precomp",
+                "variant": 2,
+                "frames": 12,
+                "maxDelta": 1,
+                "psnr": 72.91349815274144
+              },
+              {
+                "effect": "color.gradient-ramp",
+                "kind": "collapsed",
+                "variant": 0,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "effect": "color.gradient-ramp",
+                "kind": "collapsed",
+                "variant": 1,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "effect": "color.gradient-ramp",
+                "kind": "collapsed",
+                "variant": 2,
+                "frames": 12,
+                "maxDelta": 1,
+                "psnr": 72.91349815274144
+              },
+              {
+                "effect": "color.gradient-ramp",
+                "kind": "adjustment",
+                "variant": 0,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "effect": "color.gradient-ramp",
+                "kind": "adjustment",
+                "variant": 1,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "effect": "color.gradient-ramp",
+                "kind": "adjustment",
+                "variant": 2,
+                "frames": 12,
+                "maxDelta": 1,
+                "psnr": 74.7119779939636
+              }
+            ]
+          }
+        },
+        "independentOracles": {
+          "profile": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+          "stagedMaps": {
+            "cases": 2,
+            "frames": 24,
+            "rows": [
+              {
+                "effect": "test.map-bytes",
+                "kind": "image",
+                "variant": 0,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "effect": "test.map-bytes",
+                "kind": "image",
+                "variant": 1,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              }
+            ]
+          },
+          "pixelOracles": [
+            {
+              "effect": "distort.displacement-map",
+              "backend": "canvas2d",
+              "pixels": [
+                [112, 80, 143, 255],
+                [217, 80, 38, 255],
+                [0, 0, 0, 255]
+              ]
+            },
+            {
+              "effect": "distort.displacement-map",
+              "backend": "webgl2",
+              "pixels": [
+                [112, 80, 143, 255],
+                [217, 80, 38, 255],
+                [0, 0, 0, 255]
+              ]
+            },
+            {
+              "effect": "transition.gradient-wipe",
+              "backend": "canvas2d",
+              "pixels": [
+                [0, 0, 0, 255],
+                [255, 255, 255, 255]
+              ]
+            },
+            {
+              "effect": "transition.gradient-wipe",
+              "backend": "webgl2",
+              "pixels": [
+                [0, 0, 0, 255],
+                [255, 255, 255, 255]
+              ]
+            }
+          ]
+        },
+        "snapshot": "/private/tmp/still-shift-ce6-map-6b3d34d",
+        "raw": [
+          "benchmarks/results/composition-ce6-completion/ce6-map-native-acceptance.json",
+          "benchmarks/results/composition-ce6-completion/ce6-map-code-acceptance.json",
+          "benchmarks/results/composition-ce6-completion/ce6-map-oracle-acceptance.json"
+        ]
+      },
+      "initialFailures": [
+        "Displacement amplified a one-byte staged gradient difference to five bytes; canonical 16-bit projection and color controls repair it without threshold changes",
+        "Fixed projection precision collapsed very long gradients; adaptive power-of-two coefficient precision replaces it"
+      ],
+      "pending": [
+        "Adjustment primitive-blur/echo history, linear-light and complete milestone acceptance"
       ]
     }
   ],
   "pending": [
-    "Native displacement map and gradient wipe using delivered scoped inputs",
     "Real adjustment primitive-blur/echo history",
     "Real optional linear-light composition",
     "Complete native hardware, stored hashes, independent/repeated exports and serial 1080p per-effect costs",

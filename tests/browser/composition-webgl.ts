@@ -1,3 +1,6 @@
+import type * as GradientRankChecks from "../helpers/composition-gradient-rank-reference.ts";
+import type * as MapQuotientChecks from "../helpers/composition-map-quotient-reference.ts";
+import type * as MapChecks from "../helpers/composition-map-effect-reference.ts";
 import type * as InputChecks from "../helpers/composition-effect-input-reference.ts";
 import type * as ShadowChecks from "../helpers/composition-shadow-effect-reference.ts";
 import type * as RadialChecks from "../helpers/composition-radial-distortion-reference.ts";
@@ -89,6 +92,39 @@ try {
     ).checkWarpEffectRendering();
   });
   console.log("WebGL native warps:", JSON.stringify(warps));
+  const gradientRanks = await page.evaluate(async () => {
+    const url = "/tests/helpers/composition-gradient-rank-reference.ts";
+    return (
+      (await import(url)) as typeof GradientRankChecks
+    ).checkGradientRankCodes();
+  });
+  console.log("WebGL gradient ranks:", JSON.stringify(gradientRanks));
+  const mapQuotients = await page.evaluate(async () => {
+    const url = "/tests/helpers/composition-map-quotient-reference.ts";
+    return (
+      (await import(url)) as typeof MapQuotientChecks
+    ).checkMapDisplacementCodes();
+  });
+  console.log("WebGL map quotients:", JSON.stringify(mapQuotients));
+  const maps = await page.evaluate(async () => {
+    const url = "/tests/helpers/composition-map-effect-reference.ts";
+    return await (
+      (await import(url)) as typeof MapChecks
+    ).checkMapEffectRendering();
+  });
+  console.log("WebGL map effects:", JSON.stringify(maps));
+  const stagedMaps = await page.evaluate(async () => {
+    const url = "/tests/helpers/composition-map-effect-reference.ts";
+    return await (
+      (await import(url)) as typeof MapChecks
+    ).checkStagedMapBytes();
+  });
+  console.log("WebGL staged map bytes:", JSON.stringify(stagedMaps));
+  const mapOracles = await page.evaluate(async () => {
+    const url = "/tests/helpers/composition-map-effect-reference.ts";
+    return ((await import(url)) as typeof MapChecks).checkMapPixelOracles();
+  });
+  console.log("WebGL independent map pixels:", JSON.stringify(mapOracles));
   const effectInputs = await page.evaluate(async () => {
     const url = "/tests/helpers/composition-effect-input-reference.ts";
     return await (

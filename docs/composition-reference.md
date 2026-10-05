@@ -768,6 +768,14 @@ Identifiers: `time`, `frame`, `value`, `index`, `layerCount`, `fps`. Components:
 | `light.inner-shadow`           | `blur`           | scalar | `8`             | 0–128                                        |
 | `light.inner-shadow`           | `opacity`        | scalar | `1`             | 0–1                                          |
 | `light.inner-shadow`           | `color`          | color  | `#000000`       | colour                                       |
+| `distort.displacement-map`     | `amount`         | vec2   | `[0,0]`         | -1000–1000 per axis                          |
+| `distort.displacement-map`     | `channelX`       | scalar | `0`             | 0–4 (integer)                                |
+| `distort.displacement-map`     | `channelY`       | scalar | `1`             | 0–4 (integer)                                |
+| `distort.displacement-map`     | `midpoint`       | scalar | `0.5`           | 0–1                                          |
+| `transition.gradient-wipe`     | `progress`       | scalar | `0`             | 0–1                                          |
+| `transition.gradient-wipe`     | `softness`       | scalar | `0`             | 0–1                                          |
+| `transition.gradient-wipe`     | `channel`        | scalar | `4`             | 0–4 (integer)                                |
+| `transition.gradient-wipe`     | `invert`         | scalar | `0`             | 0–1 (integer)                                |
 | `blur.primitive`               | `radius`         | scalar | `0`             | 0–1000                                       |
 | `time.echo`                    | `spacing`        | scalar | `1`             | 1–120                                        |
 | `time.echo`                    | `count`          | scalar | `3`             | 1–8 (integer)                                |

@@ -3240,6 +3240,17 @@ source visibility and six remapped clock oracles pass exactly. Remaining map/
 wipe kernels, adjustment history/linear-light and complete hardware/hash/export/
 cost/full-gate acceptance remain. [Evidence](./composition-ce6-completion-results.json).
 
+### CE6 native map/wipe checkpoint (2026-10-06)
+
+Displacement and gradient wipe consume scoped map snapshots on both backends.
+54 cases / 648 frames / 756 seeks pass with maximum delta 1, alongside 80 focused
+unit tests and build/lint/schema/boundaries. Canonical gradient-ramp 1.1.0 controls
+repair the initial amplified one-byte difference. All 114,688 projection ranks,
+393,216 signed quotients per backend, staged map bytes and independent pixels
+are exact; 27 gradient cases pass. No threshold or baseline changed. Adjustment
+history, linear-light and complete milestone acceptance remain.
+[Evidence](./composition-ce6-completion-results.json).
+
 ### CE6 performance slice 1: exact effect work (2026-10-03)
 
 - **Scope:** the transferred CE4b timing requirement only, not the broader CE6

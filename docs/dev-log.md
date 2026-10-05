@@ -44,14 +44,14 @@ still hold before relying on them.
 ## Current state
 
 - **CE6 in progress (2026-10-06):** `codex/composition-ce6-completion` from
-  CE7 `817cc9f`. Checkpoints through `41a7433` deliver paired plugins, color/
-  curves, transitions, blur, warps, fields, stylize and shadows. Scoped inputs
-  now pass 162 focused tests, build/lint/schema/boundaries and 17 cases /
-  204 frames / 238 seeks exactly. Hidden group/precomp mask/visibility and
-  scope-local remapped clock oracles pass. Native map/wipe kernels, adjustment
-  history, linear-light and complete hardware/hash/export/cost/full-gate
-  acceptance remain. No owner decision is pending.
-  [Evidence](./composition-ce6-completion-results.json).
+  CE7 `817cc9f`. Checkpoints through `6b3d34d` deliver the effect catalogue and
+  scoped inputs; native map/wipe kernels now pass 80 focused tests plus build/
+  lint/schema/boundaries, 54 cases / 648 frames / 756 seeks (maximum delta 1).
+  Gradient rank, signed quotient and staged map byte proofs are exact. A
+  gradient precision repair replaces the initially amplified pixel difference;
+  no threshold or frozen baseline changed. Adjustment history, linear-light
+  and complete hardware/hash/export/cost/full-gate acceptance remain.
+  No owner decision is pending. [Evidence](./composition-ce6-completion-results.json).
 
 - **CE7 complete (2026-10-06):** `codex/composition-ce7`, code `0e48388`.
   Local holds/posterization, source loops, freeze remap, deterministic adaptive
@@ -187,6 +187,21 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-06 — CE6 native map/wipe checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce6-completion`.
+- **Done:** GPU/Canvas displacement and gradient wipe use owned scoped maps;
+  gradient-ramp 1.1.0 uses canonical projection and geometry/color controls.
+- **Results:** 80 focused tests and build/lint/schema/boundaries; 54 cases /
+  648 frames / 756 seeks, maximum delta 1. All 114,688 gradient ranks and
+  393,216 signed quotients per backend are exact. Staged map bytes and
+  independent displacement/wipe pixels pass; 27 gradient cases also pass.
+- **Repaired / rejected:** one-byte gradient mismatch amplified by displacement;
+  fixed projection precision collapsed long gradients. Adaptive precision fixes
+  both, with no threshold or frozen baseline changes.
+- **Next:** adjustment history, linear-light and complete CE6 acceptance/PR.
+- **Records:** [CE6 evidence](./composition-ce6-completion-results.json).
 
 ### 2026-10-06 — CE6 scoped layer input checkpoint
 
