@@ -1,23 +1,36 @@
-import { BuilderError } from "./source.ts";
+import type { Composition } from "@still-shift/scene-contract";
 import {
+  canonicalProperty,
+  propertyJsonPath,
   readProperty,
   writeProperty,
-  type Animation,
-  type Value,
-  type AnimationKey,
-} from "./properties.ts";
+} from "./property-access.ts";
+import type { SourceTrack } from "./source-map.ts";
+import { BuilderError } from "./source.ts";
+import { type Animation, type Value, type AnimationKey } from "./properties.ts";
 import type { Scheduled } from "./timeline.ts";
 const overlaps = (a: string, b: string) =>
   a === b || a.startsWith(`${b}.`) || b.startsWith(`${a}.`);
 export function applyAnimations(
   clips: Scheduled<Animation>[],
   layers: ReadonlyMap<string, Record<string, unknown>>,
-  frameCount: number,
-): void {
+  composition: Composition,
+): SourceTrack[] {
+  const sources: SourceTrack[] = [];
   const placed: Scheduled<Animation>[] = [];
   const tracks = new Map<string, AnimationKey<Value>[]>();
   for (const clip of clips) {
-    const { value: animation, start, end } = clip;
+    const { start, end } = clip;
+    const animation = {
+      ...clip.value,
+      property: canonicalProperty(
+        composition,
+        clip.value.owner.id,
+        clip.value.property,
+        clip.value.location,
+      ),
+    };
+    const normalized = { ...clip, value: animation };
     const object = layers.get(animation.owner.id);
     if (!object)
       throw new BuilderError(
@@ -25,10 +38,10 @@ export function applyAnimations(
         `Layer ${animation.owner.id} was not added`,
         animation.location,
       );
-    if (end > frameCount)
+    if (end > composition.frameCount)
       throw new BuilderError(
         "comp-builder-duration",
-        `Animation ends at ${end}, beyond ${frameCount}`,
+        `Animation ends at ${end}, beyond ${composition.frameCount}`,
         animation.location,
       );
     if (animation.mode !== "keys" && end <= start)
@@ -62,14 +75,20 @@ export function applyAnimations(
         `${animation.owner.id}.${animation.property} overlaps ${conflict.value.location.file}:${conflict.value.location.line}`,
         animation.location,
       );
-    placed.push(clip);
+    placed.push(normalized);
     const target = `${animation.owner.id}.${animation.property}`;
     const keys = tracks.get(target) ?? [];
+    const first = keys.length;
     const initial =
-      keys.at(-1)?.value ?? readProperty(object, animation.property);
+      keys.at(-1)?.value ??
+      animation.from ??
+      readProperty(object, animation.property);
     if (
       initial === undefined ||
-      (typeof initial === "object" && !Array.isArray(initial))
+      initial === null ||
+      (typeof initial === "object" &&
+        !Array.isArray(initial) &&
+        !("vertices" in initial))
     )
       throw new BuilderError(
         "comp-builder-property",
@@ -141,9 +160,18 @@ export function applyAnimations(
       });
     }
     tracks.set(target, keys);
+    if (keys.length > first)
+      sources.push({
+        layer: animation.owner.id,
+        property: propertyJsonPath(object, animation.property),
+        first,
+        last: keys.length - 1,
+        location: animation.location,
+      });
   }
   for (const [target, keys] of tracks) {
     const [id, ...parts] = target.split(".");
     writeProperty(layers.get(id!)!, parts.join("."), { keys });
   }
+  return sources;
 }

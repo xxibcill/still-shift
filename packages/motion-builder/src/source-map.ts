@@ -1,9 +1,19 @@
 import type { Composition } from "@still-shift/scene-contract";
 import type { SourceLocation } from "./source.ts";
+export type SourceTrack = {
+  precomp?: string;
+  layer: string;
+  property: string;
+  first: number;
+  last: number;
+  location: SourceLocation;
+};
 export type BuilderSources = {
   version: "motion-builder-1";
   files: string[];
   sites: [number, number, number][];
+  paths?: string[];
+  tracks?: [number, number, number, number, number, number][];
   nodes: {
     comp: number;
     layers: number[];
@@ -23,13 +33,13 @@ export type BuilderSources = {
 export function encodeSources(
   comp: Composition,
   locations: ReadonlyMap<string, SourceLocation>,
+  tracks: readonly SourceTrack[] = [],
 ): BuilderSources {
   const files: string[] = [],
     sites: [number, number, number][] = [];
   const fileIds = new Map<string, number>(),
     siteIds = new Map<string, number>();
-  const at = (key: string) => {
-    const site = locations.get(key) ?? locations.get("comp")!;
+  const siteIndex = (site: SourceLocation) => {
     let file = fileIds.get(site.file);
     if (file === undefined) {
       file = files.length;
@@ -45,7 +55,31 @@ export function encodeSources(
     }
     return id;
   };
+  const at = (key: string) =>
+    siteIndex(locations.get(key) ?? locations.get("comp")!);
+  const paths: string[] = [];
+  const encoded: NonNullable<BuilderSources["tracks"]> = tracks.map((track) => {
+    const scope =
+      track.precomp === undefined
+        ? -1
+        : (comp.precomps ?? []).findIndex((p) => p.id === track.precomp);
+    const layers = scope < 0 ? comp.layers : comp.precomps![scope]!.layers;
+    let path = paths.indexOf(track.property);
+    if (path < 0) {
+      path = paths.length;
+      paths.push(track.property);
+    }
+    return [
+      scope,
+      layers.findIndex((layer) => layer.id === track.layer),
+      path,
+      track.first,
+      track.last,
+      siteIndex(track.location),
+    ];
+  });
   return {
+    ...(encoded.length ? { paths, tracks: encoded } : {}),
     version: "motion-builder-1",
     files,
     sites,
@@ -118,6 +152,22 @@ export function builderSource(
       .find((item) => path.includes(item.key));
     if (entry) id = value.nodes.expressions?.[entry.index] ?? id;
   }
+  const keyed =
+    /^(?:precomps\[(\d+)\]\.)?layers\[(\d+)\]\.(.+)\.keys\[(\d+)\]/.exec(path);
+  if (keyed) {
+    const scope = keyed[1] === undefined ? -1 : Number(keyed[1]);
+    const index = Number(keyed[2]),
+      key = Number(keyed[4]);
+    const track = value.tracks?.find(
+      (row) =>
+        row[0] === scope &&
+        row[1] === index &&
+        value.paths?.[row[2]] === keyed[3] &&
+        row[3] <= key &&
+        row[4] >= key,
+    );
+    if (track) id = track[5];
+  }
   const site = value.sites[id];
   if (!site) return undefined;
   const file = value.files[site[0]];
@@ -126,4 +176,31 @@ export function builderSource(
     Number.isInteger(site[2])
     ? { file, line: site[1], column: site[2] }
     : undefined;
+}
+
+export function inheritedTracks(
+  comp: Composition,
+  precomp: string,
+): SourceTrack[] {
+  const value = comp.metadata?.builder as unknown as BuilderSources | undefined;
+  if (value?.version !== "motion-builder-1" || !value.tracks || !value.paths)
+    return [];
+  return value.tracks.flatMap(([scope, layer, path, first, last, site]) => {
+    const definition = scope < 0 ? comp : comp.precomps?.[scope];
+    const id = definition?.layers[layer]?.id,
+      property = value.paths?.[path],
+      row = value.sites[site];
+    const file = row && value.files[row[0]];
+    if (!definition || !id || !property || !row || !file) return [];
+    return [
+      {
+        precomp: scope < 0 ? precomp : definition.id,
+        layer: id,
+        property,
+        first,
+        last,
+        location: { file, line: row[1], column: row[2] },
+      },
+    ];
+  });
 }

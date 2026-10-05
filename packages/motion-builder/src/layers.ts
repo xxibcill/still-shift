@@ -9,7 +9,12 @@ import type {
   Precomp,
   CompositionTransform,
 } from "@still-shift/scene-contract";
-import { Property, type Motion, type Easing } from "./properties.ts";
+import {
+  Property,
+  type Motion,
+  type Easing,
+  type Value,
+} from "./properties.ts";
 import type { Duration } from "./timeline.ts";
 import { sourceLocation, type SourceLocation, BuilderError } from "./source.ts";
 export type Kind = CompositionLayer["type"];
@@ -110,7 +115,7 @@ export class Layer<K extends Kind = Kind> {
   path(property: string): string {
     return `${this.id}.${property}`;
   }
-  property<V extends number | string | number[]>(path: string): Property<V> {
+  property<V extends Value>(path: string): Property<V> {
     return new Property<V>(this, path);
   }
   get x(): Property<number> {

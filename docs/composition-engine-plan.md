@@ -3635,7 +3635,8 @@ timeline-algebra unit tests, CLI integration tests.
 CE4a `869a793` / [PR #35](https://github.com/xxibcill/still-shift/pull/35). The first
 checkpoint promotes typed native layer/property construction, timeline algebra,
 expression/instance helpers, compact source metadata and Node asset helpers.
-Source-key mapping, property selectors, presets, CLI/watch, generated references,
+Native mask/effect/path selectors and nested key call sites now pass 27 focused
+tests. Remaining source metadata, presets, CLI/watch, generated references,
 examples and acceptance remain in progress. See [CE10 evidence](./composition-ce10-results.json).
 
 **Completion record:** _to be filled in._

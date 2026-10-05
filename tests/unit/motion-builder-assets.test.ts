@@ -118,3 +118,17 @@ it("hashes font assets and validates weights and variable-axis bounds", async ()
     }),
   ).rejects.toMatchObject({ code: "comp-builder-asset" });
 });
+
+it("infers SVG viewport aspect ratio from a single dimension without reading data-width", async () => {
+  const root = await directory();
+  const inputs = [
+    ["width", '<svg width="400" viewBox="0 0 200 100"/>', 400, 200],
+    ["height", '<svg height="400" viewBox="0 0 200 100"/>', 800, 400],
+    ["data", '<svg data-width="900" viewBox="0 0 200 100"/>', 200, 100],
+  ] as const;
+  for (const [id, bytes, width, height] of inputs) {
+    const file = join(root, `${id}.svg`);
+    await writeFile(file, bytes);
+    expect(await imageAsset(id, file)).toMatchObject({ width, height });
+  }
+});

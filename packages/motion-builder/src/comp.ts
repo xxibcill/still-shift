@@ -1,4 +1,9 @@
-import { encodeSources, builderSource } from "./source-map.ts";
+import {
+  encodeSources,
+  builderSource,
+  inheritedTracks,
+  type SourceTrack,
+} from "./source-map.ts";
 import {
   validateComposition,
   compositionWarnings,
@@ -43,6 +48,7 @@ export class CompositionBuilder {
     location: SourceLocation;
   }[] = [];
   private readonly timelines: Motion[] = [];
+  private readonly tracks: SourceTrack[] = [];
   private readonly sites = new Map<string, SourceLocation>();
   constructor(options: CompOptions) {
     const {
@@ -219,7 +225,11 @@ export class CompositionBuilder {
         "comp-builder-precomp",
         `Conflicting precomp ${id}`,
       );
-    if (!previous) precomps.push(nested);
+    if (!previous) {
+      precomps.push(nested);
+      if ("schemaVersion" in source)
+        this.tracks.push(...inheritedTracks(source, id));
+    }
     if ("assets" in source)
       source.assets.forEach((asset, index) => {
         this.asset(asset);
@@ -229,7 +239,20 @@ export class CompositionBuilder {
         );
       });
     if ("precomps" in source)
-      source.precomps?.forEach((child) => this.define(child));
+      source.precomps?.forEach((child, index) => {
+        this.define(child);
+        this.sites.set(
+          `precomp:${child.id}`,
+          builderSource(source, `precomps[${index}]`) ?? sourceLocation(),
+        );
+        child.layers.forEach((layer, layerIndex) =>
+          this.sites.set(
+            `precomp:${child.id}.layer:${layer.id}`,
+            builderSource(source, `precomps[${index}].layers[${layerIndex}]`) ??
+              sourceLocation(),
+          ),
+        );
+      });
     const site = sourceLocation();
     this.sites.set(
       `precomp:${id}`,
@@ -348,12 +371,12 @@ export class CompositionBuilder {
           clip.value.location,
         );
     }
-    applyAnimations(
+    const animatedTracks = applyAnimations(
       scheduled.filter(
         (clip): clip is Scheduled<Animation> => !("behaviour" in clip.value),
       ),
       layers,
-      this.composition.frameCount,
+      this.composition,
     );
     for (const clip of scheduled) {
       if (!("behaviour" in clip.value)) continue;
@@ -385,7 +408,12 @@ export class CompositionBuilder {
     this.composition.metadata = {
       ...this.composition.metadata,
       builder: JSON.parse(
-        JSON.stringify(encodeSources(this.composition, this.sites)),
+        JSON.stringify(
+          encodeSources(this.composition, this.sites, [
+            ...this.tracks,
+            ...animatedTracks,
+          ]),
+        ),
       ),
     };
     const parsed = validateComposition(this.composition);
@@ -398,11 +426,7 @@ export class CompositionBuilder {
       );
     }
     for (const warning of compositionWarnings(parsed.composition)) {
-      if (
-        warning.code !== "comp-text-system-font" ||
-        warning.path.at(-1) !== "fontAsset"
-      )
-        continue;
+      if (warning.code !== "comp-text-system-font") continue;
       const scope =
         warning.path[0] === "precomps"
           ? parsed.composition.precomps![Number(warning.path[1])]!

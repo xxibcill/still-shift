@@ -31,10 +31,39 @@
         "Promoted tests initially widened fps to number and supplied an invalid camera descriptor; corrected test types and descriptor without relaxing the contract.",
         "Timeline cycle regression initially called the fluent static opacity setter as an animation property; corrected to the alpha property."
       ]
+    },
+    {
+      "name": "Native property selectors and key source sites",
+      "status": "checkpoint",
+      "changes": [
+        "Canonical alias resolution and named mask/effect selectors with native defaults",
+        "Path morph keys and temporal/spatial key fields",
+        "Compact key-range source maps inherited through reused/nested precomps",
+        "Native behaviour cue gating and strict provider system-font enforcement"
+      ],
+      "verification": [
+        {
+          "command": "pnpm exec vitest run tests/unit/motion-builder*.test.ts --maxWorkers=2",
+          "status": "passed",
+          "tests": 27
+        },
+        {
+          "command": "pnpm build",
+          "status": "passed"
+        },
+        {
+          "command": "pnpm exec eslint packages/motion-builder tests/unit/motion-builder*.test.ts",
+          "status": "passed"
+        }
+      ],
+      "limits": [
+        "Whole-color keyframes are supported; color-component keys report a located diagnostic and require expressions/drivers.",
+        "Whole-vector and component animation tracks cannot be mixed; errors preserve authored intent instead of approximating it."
+      ]
     }
   ],
   "pending": [
-    "Property/key call sites and native selectors",
+    "Complete source metadata for nested non-layer nodes and duration errors",
     "Story intent presets",
     "JSON/TypeScript CLI and watch preview",
     "Generated reference, skill and eight examples",
