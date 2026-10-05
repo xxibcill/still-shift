@@ -10,12 +10,15 @@ import { join, resolve } from "node:path";
 import { spawn } from "node:child_process";
 import { tmpdir } from "node:os";
 import { expect, it } from "vitest";
+import { createServer } from "vite";
+import { compositionApi } from "../../apps/lab/composition-api.ts";
 import { loadProgram } from "../../tools/still-shift-cli/src/composition/program.ts";
 import {
   saveCompositionDocument,
   sourceHash,
 } from "../../tools/still-shift-cli/src/composition/save.ts";
 import { createProgramPreview } from "../../tools/still-shift-cli/src/composition/preview.ts";
+import { validateComposition } from "../../packages/scene-contract/src/index.ts";
 import type { Composition } from "../../packages/scene-contract/src/index.ts";
 const source: Composition = {
   schemaVersion: "composition-1",
@@ -305,6 +308,100 @@ it("guards one source across separate Node processes", async () => {
     );
   } finally {
     children.forEach((child) => child.kill());
+    await rm(root, { recursive: true, force: true });
+  }
+});
+
+it("retains native validation diagnostics across source save and both export APIs", async () => {
+  const root = await mkdtemp(join(tmpdir(), "composition-save-diagnostics-")),
+    input = join(root, "source.json");
+  await writeFile(input, JSON.stringify(source));
+  const app = await createProgramPreview(input);
+  const fixtureServer = await createServer({
+    configFile: false,
+    logLevel: "silent",
+    plugins: [compositionApi()],
+    server: { host: "127.0.0.1", port: 0 },
+  });
+  await fixtureServer.listen();
+  const invalid = structuredClone(source);
+  invalid.width = 0;
+  invalid.layers[0]!.transform!.opacity = 2;
+  const expected = validateComposition(invalid);
+  expect(expected.ok).toBe(false);
+  try {
+    const snapshot = app.snapshot()!;
+    for (const route of [
+      "/composition/program-save",
+      "/composition/program-export",
+      "/composition/export?scene=ce2/timing.json",
+    ]) {
+      const fixture = route.includes("?scene=");
+      const response = await fetch(
+        new URL(
+          route,
+          fixture ? fixtureServer.resolvedUrls!.local[0]! : app.url,
+        ),
+        {
+          method: "POST",
+          headers: { "x-still-shift-composition": "1" },
+          body: JSON.stringify(
+            fixture
+              ? { document: invalid, backend: "canvas2d" }
+              : route.endsWith("save")
+                ? {
+                    document: invalid,
+                    revision: snapshot.revision,
+                    sourceSha256: snapshot.sourceSha256,
+                  }
+                : {
+                    document: invalid,
+                    revision: snapshot.revision,
+                    backend: "canvas2d",
+                  },
+          ),
+        },
+      );
+      expect(response.status).toBe(422);
+      expect(response.headers.get("content-type")).toContain(
+        "application/json",
+      );
+      expect(await response.json()).toEqual({
+        diagnostics: expected.diagnostics,
+      });
+    }
+    const unpinned = structuredClone(source);
+    unpinned.layers.push({
+      id: "text",
+      type: "text",
+      text: "Unpinned",
+      fontSize: 12,
+      color: "#ffffff",
+    });
+    const response = await fetch(
+      new URL("/composition/program-save", app.url),
+      {
+        method: "POST",
+        headers: { "x-still-shift-composition": "1" },
+        body: JSON.stringify({
+          document: unpinned,
+          revision: snapshot.revision,
+          sourceSha256: snapshot.sourceSha256,
+        }),
+      },
+    );
+    expect(response.status).toBe(422);
+    expect((await response.json()).diagnostics).toMatchObject([
+      {
+        code: "comp-text-system-font",
+        severity: "error",
+        path: "layers[1].fontAsset",
+      },
+    ]);
+    expect(JSON.parse(await readFile(input, "utf8"))).toEqual(source);
+  } finally {
+    await app.close();
+    await fixtureServer.close();
     await rm(root, { recursive: true, force: true });
   }
 });

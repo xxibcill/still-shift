@@ -44,8 +44,8 @@ still hold before relying on them.
 ## Current state
 
 - **PR #37 review fixes (2026-10-05):** on `codex/composition-ce11`, reviewed
-  `a0c56df`. Seven inline comments posted; 2/7 findings fixed in separate
-  commits. Pending: R3, R4, R5, R6, R7.
+  `a0c56df`. Seven inline comments posted; 3/7 findings fixed in separate
+  commits. Pending: R4, R5, R6, R7.
   Final push is held until all fixes and verification are complete. No Actions.
   [Fix evidence](./pr-37-fix-results.json).
 
@@ -164,6 +164,14 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-05 — PR #37 R3: Preserve structured validation diagnostics
+
+- **Agent / branch:** Codex on `codex/composition-ce11`.
+- **Done:** Retain native validation and font diagnostics through the shared passage-diagnostics error model; save and both export APIs return JSON envelopes, and the Lab displays their property paths.
+- **Results:** Red: save flattened two native range errors into one generic filename diagnostic. Green: all 7 save/API tests pass; invalid documents return the exact native diagnostics from save and both export endpoints. TypeScript build passes.
+- **Next:** R4, R5, R6, R7.
+- **Records:** [Fix evidence](./pr-37-fix-results.json), [inline finding](https://github.com/xxibcill/still-shift/pull/37#discussion_r4183168142).
 
 ### 2026-10-05 — PR #37 R2: Restore focus after keyboard handle edits
 

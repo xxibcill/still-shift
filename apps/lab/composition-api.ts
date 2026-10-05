@@ -5,6 +5,7 @@ import { exportCompositionDraft } from "../../tools/still-shift-cli/src/composit
 import {
   CompositionSaveError,
   readEditRequest,
+  sendCompositionEditError,
 } from "../../tools/still-shift-cli/src/composition/save.ts";
 import type { Composition } from "../../packages/scene-contract/src/index.ts";
 import type { Plugin } from "vite";
@@ -174,6 +175,10 @@ export const compositionApi = (): Plugin => {
             return send(response, 404, "Unknown composition asset");
           send(response, 200, await readFile(path), types[extname(path)]);
         })().catch((error: unknown) => {
+          if (url.pathname === "/composition/export") {
+            sendCompositionEditError(response, error);
+            return;
+          }
           if (!response.headersSent && !response.destroyed)
             send(
               response,

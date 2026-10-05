@@ -41,7 +41,9 @@
       "title": "[P2] Preserve structured validation diagnostics",
       "body": "This collapses native validateComposition diagnostics into one string. The save API then substitutes a generic code and the source filename for the original codes and JSON paths, and omits severity; both export APIs return plain text. Preserve the original diagnostic objects and return the structured envelope required by docs/composition-engine-plan.md engineering invariant 7.",
       "commentUrl": "https://github.com/xxibcill/still-shift/pull/37#discussion_r4183168142",
-      "status": "pending"
+      "status": "fixed",
+      "change": "Retain native validation and font diagnostics through the shared passage-diagnostics error model; save and both export APIs return JSON envelopes, and the Lab displays their property paths.",
+      "validation": "Red: save flattened two native range errors into one generic filename diagnostic. Green: all 7 save/API tests pass; invalid documents return the exact native diagnostics from save and both export endpoints. TypeScript build passes."
     },
     {
       "id": "R4",

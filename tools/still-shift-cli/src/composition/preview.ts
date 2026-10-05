@@ -17,6 +17,7 @@ import {
   readEditRequest,
   saveCompositionDocument,
   sourceHash,
+  sendCompositionEditError,
 } from "./save.ts";
 export type ProgramSnapshot = {
   revision: number;
@@ -281,12 +282,7 @@ export async function createProgramPreview(
                 exporting = false;
               }
             } catch (error) {
-              if (response.headersSent || response.destroyed) return;
-              response.statusCode =
-                error instanceof CompositionSaveError ? error.status : 500;
-              response.end(
-                error instanceof Error ? error.message : String(error),
-              );
+              sendCompositionEditError(response, error, input);
             }
           })();
           return;
@@ -354,24 +350,7 @@ export async function createProgramPreview(
                 }),
               );
             } catch (error) {
-              response.statusCode =
-                error instanceof CompositionSaveError ? error.status : 500;
-              response.setHeader("Content-Type", "application/json");
-              response.end(
-                JSON.stringify({
-                  diagnostics: [
-                    {
-                      code:
-                        error instanceof CompositionSaveError
-                          ? error.code
-                          : "comp-edit-save",
-                      path: input,
-                      message:
-                        error instanceof Error ? error.message : String(error),
-                    },
-                  ],
-                }),
-              );
+              sendCompositionEditError(response, error, input);
             } finally {
               savingHash = undefined;
             }

@@ -10,22 +10,52 @@ import {
 } from "node:fs/promises";
 import { basename, dirname, join } from "node:path";
 import { acquireArtifactLock } from "@still-shift/execution-runtime";
+import { PassageError, passageDiagnostics } from "@still-shift/renderer-core";
 import { authoredFontDiagnostics } from "@still-shift/motion";
 import {
   AnimationEngineError,
   validateComposition,
   type Composition,
+  type CompositionDiagnostic,
 } from "@still-shift/scene-contract";
-import type { IncomingMessage } from "node:http";
+import type { IncomingMessage, ServerResponse } from "node:http";
 
-export class CompositionSaveError extends Error {
+export class CompositionSaveError extends PassageError {
   readonly status: number;
   readonly code: string;
-  constructor(status: number, code: string, message: string) {
-    super(message);
+  constructor(
+    status: number,
+    code: string,
+    message: string,
+    diagnostics?: CompositionDiagnostic[],
+  ) {
+    super(
+      diagnostics ?? [{ code, severity: "error", message, path: "document" }],
+    );
+    this.name = "CompositionSaveError";
+    this.message = message;
     this.status = status;
     this.code = code;
   }
+}
+export function sendCompositionEditError(
+  response: ServerResponse,
+  error: unknown,
+  fallbackPath = "document",
+) {
+  if (response.headersSent || response.destroyed) return;
+  response.statusCode =
+    error instanceof CompositionSaveError ? error.status : 500;
+  response.setHeader("Content-Type", "application/json");
+  response.setHeader("Cache-Control", "no-store");
+  response.end(
+    JSON.stringify({
+      diagnostics: passageDiagnostics(error).map((d) => ({
+        ...d,
+        path: d.path ?? fallbackPath,
+      })),
+    }),
+  );
 }
 export function sourceHash(bytes: Buffer) {
   return createHash("sha256").update(bytes).digest("hex");
@@ -78,6 +108,7 @@ export function editableDocument(
       result.diagnostics
         .map((d) => `${d.code} ${d.path}: ${d.message}`)
         .join("\n"),
+      result.diagnostics,
     );
   if (
     JSON.stringify((value as Composition).assets) !==
@@ -94,6 +125,7 @@ export function editableDocument(
       422,
       "comp-edit-font",
       fonts.map((d) => `${d.code}: ${d.message}`).join("\n"),
+      fonts,
     );
   return structuredClone(value) as Composition;
 }
