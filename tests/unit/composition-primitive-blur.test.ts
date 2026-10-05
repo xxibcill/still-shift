@@ -81,6 +81,6 @@ describe("primitive drawing blur", () => {
         effects: [{ id: "blur", effect: "blur.primitive" }],
       },
     ];
-    expect(validateComposition(comp).ok).toBe(false);
+    expect(validateComposition(comp).ok).toBe(true);
   });
 });

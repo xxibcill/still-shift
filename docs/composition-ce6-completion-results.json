@@ -1936,11 +1936,567 @@
       ],
       "pending": [
         "Adjustment primitive-blur/echo history, linear-light and complete milestone acceptance"
+      ],
+      "implementation": "3bf38dc"
+    },
+    {
+      "name": "Adjustment backdrop history and primitive blur, offscreen precomp repair",
+      "status": "focused-verification-passed",
+      "versions": {
+        "evaluator": 42,
+        "canvas": "composition-canvas-1.37.0",
+        "webgl": "composition-webgl2-0.51.0"
+      },
+      "features": [
+        "Oldest-first scoped upstream historical capture including upstream effects, masks and mattes",
+        "Bounded 256 backdrop captures/16 replay levels with explicit diagnostics",
+        "Primitive blur becomes Gaussian at its adjustment stack position; drawable paint arithmetic unchanged",
+        "Historical glyph preparation and scratch cleanup",
+        "GPU finite-support input padding before viewport clipping repairs offscreen blurred precomps"
+      ],
+      "verification": {
+        "focusedTests": 54,
+        "focusedFiles": 8,
+        "build": "passed",
+        "lint": "passed",
+        "schema": "passed",
+        "boundaries": "passed",
+        "nativeMatrix": {
+          "profile": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+          "cases": 54,
+          "frames": 648,
+          "rows": [
+            {
+              "effect": "time.echo",
+              "kind": "solid",
+              "variant": 0,
+              "frames": 12,
+              "maxDelta": 0,
+              "psnr": 999
+            },
+            {
+              "effect": "time.echo",
+              "kind": "solid",
+              "variant": 1,
+              "frames": 12,
+              "maxDelta": 0,
+              "psnr": 999
+            },
+            {
+              "effect": "time.echo",
+              "kind": "solid",
+              "variant": 2,
+              "frames": 12,
+              "maxDelta": 0,
+              "psnr": 999
+            },
+            {
+              "effect": "time.echo",
+              "kind": "image",
+              "variant": 0,
+              "frames": 12,
+              "maxDelta": 1,
+              "psnr": 65.3818430684509
+            },
+            {
+              "effect": "time.echo",
+              "kind": "image",
+              "variant": 1,
+              "frames": 12,
+              "maxDelta": 2,
+              "psnr": 59.418618159958825
+            },
+            {
+              "effect": "time.echo",
+              "kind": "image",
+              "variant": 2,
+              "frames": 12,
+              "maxDelta": 1,
+              "psnr": 63.94605796636096
+            },
+            {
+              "effect": "time.echo",
+              "kind": "text",
+              "variant": 0,
+              "frames": 12,
+              "maxDelta": 0,
+              "psnr": 999
+            },
+            {
+              "effect": "time.echo",
+              "kind": "text",
+              "variant": 1,
+              "frames": 12,
+              "maxDelta": 0,
+              "psnr": 999
+            },
+            {
+              "effect": "time.echo",
+              "kind": "text",
+              "variant": 2,
+              "frames": 12,
+              "maxDelta": 0,
+              "psnr": 999
+            },
+            {
+              "effect": "time.echo",
+              "kind": "shape",
+              "variant": 0,
+              "frames": 12,
+              "maxDelta": 0,
+              "psnr": 999
+            },
+            {
+              "effect": "time.echo",
+              "kind": "shape",
+              "variant": 1,
+              "frames": 12,
+              "maxDelta": 0,
+              "psnr": 999
+            },
+            {
+              "effect": "time.echo",
+              "kind": "shape",
+              "variant": 2,
+              "frames": 12,
+              "maxDelta": 0,
+              "psnr": 999
+            },
+            {
+              "effect": "time.echo",
+              "kind": "provider",
+              "variant": 0,
+              "frames": 12,
+              "maxDelta": 0,
+              "psnr": 999
+            },
+            {
+              "effect": "time.echo",
+              "kind": "provider",
+              "variant": 1,
+              "frames": 12,
+              "maxDelta": 0,
+              "psnr": 999
+            },
+            {
+              "effect": "time.echo",
+              "kind": "provider",
+              "variant": 2,
+              "frames": 12,
+              "maxDelta": 0,
+              "psnr": 999
+            },
+            {
+              "effect": "time.echo",
+              "kind": "group",
+              "variant": 0,
+              "frames": 12,
+              "maxDelta": 0,
+              "psnr": 999
+            },
+            {
+              "effect": "time.echo",
+              "kind": "group",
+              "variant": 1,
+              "frames": 12,
+              "maxDelta": 0,
+              "psnr": 999
+            },
+            {
+              "effect": "time.echo",
+              "kind": "group",
+              "variant": 2,
+              "frames": 12,
+              "maxDelta": 0,
+              "psnr": 999
+            },
+            {
+              "effect": "time.echo",
+              "kind": "precomp",
+              "variant": 0,
+              "frames": 12,
+              "maxDelta": 1,
+              "psnr": 85.27745353730447
+            },
+            {
+              "effect": "time.echo",
+              "kind": "precomp",
+              "variant": 1,
+              "frames": 12,
+              "maxDelta": 1,
+              "psnr": 64.50377448446291
+            },
+            {
+              "effect": "time.echo",
+              "kind": "precomp",
+              "variant": 2,
+              "frames": 12,
+              "maxDelta": 0,
+              "psnr": 999
+            },
+            {
+              "effect": "time.echo",
+              "kind": "collapsed",
+              "variant": 0,
+              "frames": 12,
+              "maxDelta": 0,
+              "psnr": 999
+            },
+            {
+              "effect": "time.echo",
+              "kind": "collapsed",
+              "variant": 1,
+              "frames": 12,
+              "maxDelta": 0,
+              "psnr": 999
+            },
+            {
+              "effect": "time.echo",
+              "kind": "collapsed",
+              "variant": 2,
+              "frames": 12,
+              "maxDelta": 0,
+              "psnr": 999
+            },
+            {
+              "effect": "time.echo",
+              "kind": "adjustment",
+              "variant": 0,
+              "frames": 12,
+              "maxDelta": 1,
+              "psnr": 83.84535321069421
+            },
+            {
+              "effect": "time.echo",
+              "kind": "adjustment",
+              "variant": 1,
+              "frames": 12,
+              "maxDelta": 1,
+              "psnr": 83.84535321069421
+            },
+            {
+              "effect": "time.echo",
+              "kind": "adjustment",
+              "variant": 2,
+              "frames": 12,
+              "maxDelta": 1,
+              "psnr": 83.84535321069421
+            },
+            {
+              "effect": "blur.primitive",
+              "kind": "solid",
+              "variant": 0,
+              "frames": 12,
+              "maxDelta": 0,
+              "psnr": 999
+            },
+            {
+              "effect": "blur.primitive",
+              "kind": "solid",
+              "variant": 1,
+              "frames": 12,
+              "maxDelta": 0,
+              "psnr": 999
+            },
+            {
+              "effect": "blur.primitive",
+              "kind": "solid",
+              "variant": 2,
+              "frames": 12,
+              "maxDelta": 0,
+              "psnr": 999
+            },
+            {
+              "effect": "blur.primitive",
+              "kind": "image",
+              "variant": 0,
+              "frames": 12,
+              "maxDelta": 1,
+              "psnr": 63.516540946747654
+            },
+            {
+              "effect": "blur.primitive",
+              "kind": "image",
+              "variant": 1,
+              "frames": 12,
+              "maxDelta": 0,
+              "psnr": 999
+            },
+            {
+              "effect": "blur.primitive",
+              "kind": "image",
+              "variant": 2,
+              "frames": 12,
+              "maxDelta": 0,
+              "psnr": 999
+            },
+            {
+              "effect": "blur.primitive",
+              "kind": "text",
+              "variant": 0,
+              "frames": 12,
+              "maxDelta": 0,
+              "psnr": 999
+            },
+            {
+              "effect": "blur.primitive",
+              "kind": "text",
+              "variant": 1,
+              "frames": 12,
+              "maxDelta": 0,
+              "psnr": 999
+            },
+            {
+              "effect": "blur.primitive",
+              "kind": "text",
+              "variant": 2,
+              "frames": 12,
+              "maxDelta": 0,
+              "psnr": 999
+            },
+            {
+              "effect": "blur.primitive",
+              "kind": "shape",
+              "variant": 0,
+              "frames": 12,
+              "maxDelta": 0,
+              "psnr": 999
+            },
+            {
+              "effect": "blur.primitive",
+              "kind": "shape",
+              "variant": 1,
+              "frames": 12,
+              "maxDelta": 0,
+              "psnr": 999
+            },
+            {
+              "effect": "blur.primitive",
+              "kind": "shape",
+              "variant": 2,
+              "frames": 12,
+              "maxDelta": 0,
+              "psnr": 999
+            },
+            {
+              "effect": "blur.primitive",
+              "kind": "provider",
+              "variant": 0,
+              "frames": 12,
+              "maxDelta": 0,
+              "psnr": 999
+            },
+            {
+              "effect": "blur.primitive",
+              "kind": "provider",
+              "variant": 1,
+              "frames": 12,
+              "maxDelta": 0,
+              "psnr": 999
+            },
+            {
+              "effect": "blur.primitive",
+              "kind": "provider",
+              "variant": 2,
+              "frames": 12,
+              "maxDelta": 0,
+              "psnr": 999
+            },
+            {
+              "effect": "blur.primitive",
+              "kind": "group",
+              "variant": 0,
+              "frames": 12,
+              "maxDelta": 0,
+              "psnr": 999
+            },
+            {
+              "effect": "blur.primitive",
+              "kind": "group",
+              "variant": 1,
+              "frames": 12,
+              "maxDelta": 0,
+              "psnr": 999
+            },
+            {
+              "effect": "blur.primitive",
+              "kind": "group",
+              "variant": 2,
+              "frames": 12,
+              "maxDelta": 0,
+              "psnr": 999
+            },
+            {
+              "effect": "blur.primitive",
+              "kind": "precomp",
+              "variant": 0,
+              "frames": 12,
+              "maxDelta": 0,
+              "psnr": 999
+            },
+            {
+              "effect": "blur.primitive",
+              "kind": "precomp",
+              "variant": 1,
+              "frames": 12,
+              "maxDelta": 0,
+              "psnr": 999
+            },
+            {
+              "effect": "blur.primitive",
+              "kind": "precomp",
+              "variant": 2,
+              "frames": 12,
+              "maxDelta": 0,
+              "psnr": 999
+            },
+            {
+              "effect": "blur.primitive",
+              "kind": "collapsed",
+              "variant": 0,
+              "frames": 12,
+              "maxDelta": 0,
+              "psnr": 999
+            },
+            {
+              "effect": "blur.primitive",
+              "kind": "collapsed",
+              "variant": 1,
+              "frames": 12,
+              "maxDelta": 0,
+              "psnr": 999
+            },
+            {
+              "effect": "blur.primitive",
+              "kind": "collapsed",
+              "variant": 2,
+              "frames": 12,
+              "maxDelta": 0,
+              "psnr": 999
+            },
+            {
+              "effect": "blur.primitive",
+              "kind": "adjustment",
+              "variant": 0,
+              "frames": 12,
+              "maxDelta": 0,
+              "psnr": 999
+            },
+            {
+              "effect": "blur.primitive",
+              "kind": "adjustment",
+              "variant": 1,
+              "frames": 12,
+              "maxDelta": 0,
+              "psnr": 999
+            },
+            {
+              "effect": "blur.primitive",
+              "kind": "adjustment",
+              "variant": 2,
+              "frames": 12,
+              "maxDelta": 0,
+              "psnr": 999
+            }
+          ]
+        },
+        "independentEchoPixels": {
+          "profile": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+          "oracles": [
+            {
+              "backend": "canvas2d",
+              "pixels": [
+                [64, 64, 64, 255],
+                [128, 128, 128, 255],
+                [255, 255, 255, 255],
+                [0, 0, 0, 255]
+              ]
+            },
+            {
+              "backend": "webgl2",
+              "pixels": [
+                [64, 64, 64, 255],
+                [128, 128, 128, 255],
+                [255, 255, 255, 255],
+                [0, 0, 0, 255]
+              ]
+            }
+          ]
+        },
+        "offscreenPrecomps": {
+          "profile": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+          "cases": 6,
+          "frames": 72,
+          "rows": [
+            {
+              "effect": "blur.primitive",
+              "kind": "precomp",
+              "variant": 0,
+              "frames": 12,
+              "maxDelta": 0,
+              "psnr": 999
+            },
+            {
+              "effect": "blur.primitive",
+              "kind": "precomp",
+              "variant": 1,
+              "frames": 12,
+              "maxDelta": 0,
+              "psnr": 999
+            },
+            {
+              "effect": "blur.primitive",
+              "kind": "precomp",
+              "variant": 2,
+              "frames": 12,
+              "maxDelta": 0,
+              "psnr": 999
+            },
+            {
+              "effect": "blur.primitive",
+              "kind": "collapsed",
+              "variant": 0,
+              "frames": 12,
+              "maxDelta": 0,
+              "psnr": 999
+            },
+            {
+              "effect": "blur.primitive",
+              "kind": "collapsed",
+              "variant": 1,
+              "frames": 12,
+              "maxDelta": 0,
+              "psnr": 999
+            },
+            {
+              "effect": "blur.primitive",
+              "kind": "collapsed",
+              "variant": 2,
+              "frames": 12,
+              "maxDelta": 0,
+              "psnr": 999
+            }
+          ]
+        },
+        "snapshot": "/private/tmp/still-shift-ce6-adjust-r2-3bf38dc",
+        "raw": [
+          "benchmarks/results/composition-ce6-completion/ce6-adjust-native-acceptance.json",
+          "benchmarks/results/composition-ce6-completion/ce6-adjust-pixel-acceptance.json",
+          "benchmarks/results/composition-ce6-completion/ce6-adjust-offscreen-acceptance.json"
+        ]
+      },
+      "initialFailures": [
+        "Snapshot directory rename broke absolute local package links; rebuilt an isolated snapshot",
+        "Test expected an empty unchanged adjustment, but graph correctly removes it",
+        "Independent precomp oracle omitted anchor zero; fixed fixture",
+        "Animated offscreen precomp blur clipped input before filtering, maximum delta 21; GPU capture padding repairs the original six-case matrix exactly"
+      ],
+      "pending": [
+        "Real optional linear-light, broader offscreen affine regression and complete milestone acceptance"
       ]
     }
   ],
   "pending": [
-    "Real adjustment primitive-blur/echo history",
     "Real optional linear-light composition",
     "Complete native hardware, stored hashes, independent/repeated exports and serial 1080p per-effect costs",
     "Final-code complete pnpm check, milestone completion record and PR creation/attachment"

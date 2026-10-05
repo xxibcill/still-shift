@@ -277,9 +277,14 @@ export function executeGraph<S extends Surface>(
       case "isolate": {
         const draw = () => {
           const tmp = isolated(op.ops, dst);
-          if (op.effects.length) effectStack(tmp, op.effects);
-          mask(tmp, op.masks, op.matte);
-          return tmp;
+          try {
+            if (op.effects.length) effectStack(tmp, op.effects);
+            mask(tmp, op.masks, op.matte);
+            return tmp;
+          } catch (error) {
+            backend.releaseSurface(tmp);
+            throw error;
+          }
         };
         const tmp = backend.renderIsolate?.(op, dst, draw) ?? draw();
         backend.composite(tmp, dst, op.blend, op.opacity, IDENTITY, op.clips);
@@ -291,6 +296,7 @@ export function executeGraph<S extends Surface>(
         // directly, preserving rasterization and avoiding copies. Alpha-changing
         // kernels still need an RGBA intermediate when the target is opaque.
         if (
+          !op.history?.length &&
           op.effects.every(
             (effect) =>
               compositionEffectDefinition(effect.effect)!.preservesOpaque,
@@ -309,32 +315,58 @@ export function executeGraph<S extends Surface>(
         }
         // Process the backdrop before blending it and applying adjustment coverage.
         const src = backend.createSurface(dst.width, dst.height);
-        backend.composite(dst, src, "normal", 1, IDENTITY, []);
-        if (op.effects.length) effectStack(src, op.effects);
-        if (op.blend !== "normal") {
-          const blended = backend.createSurface(dst.width, dst.height);
-          backend.composite(dst, blended, "normal", 1, IDENTITY, []);
-          backend.composite(src, blended, op.blend, 1, IDENTITY, []);
-          backend.clear(src, null);
-          backend.composite(blended, src, "normal", 1, IDENTITY, []);
-          backend.releaseSurface(blended);
+        try {
+          for (const sample of op.history ?? []) {
+            const prior = backend.createSurface(dst.width, dst.height);
+            try {
+              backend.clear(prior, sample.background);
+              runOps(sample.ops, prior);
+              backend.composite(
+                prior,
+                src,
+                "normal",
+                sample.opacity,
+                IDENTITY,
+                [],
+              );
+            } finally {
+              backend.releaseSurface(prior);
+            }
+          }
+          backend.composite(dst, src, "normal", 1, IDENTITY, []);
+          if (op.effects.length) effectStack(src, op.effects);
+          if (op.blend !== "normal") {
+            const blended = backend.createSurface(dst.width, dst.height);
+            try {
+              backend.composite(dst, blended, "normal", 1, IDENTITY, []);
+              backend.composite(src, blended, op.blend, 1, IDENTITY, []);
+              backend.clear(src, null);
+              backend.composite(blended, src, "normal", 1, IDENTITY, []);
+            } finally {
+              backend.releaseSurface(blended);
+            }
+          }
+          const coverage = backend.createSurface(dst.width, dst.height);
+          try {
+            backend.fillRect(
+              coverage,
+              op.matrix,
+              op.width,
+              op.height,
+              WHITE,
+              1,
+              "normal",
+              op.clips,
+              op.transforms,
+            );
+            mask(coverage, op.masks, op.matte);
+            backend.lerp(dst, src, coverage, op.opacity);
+          } finally {
+            backend.releaseSurface(coverage);
+          }
+        } finally {
+          backend.releaseSurface(src);
         }
-        const coverage = backend.createSurface(dst.width, dst.height);
-        backend.fillRect(
-          coverage,
-          op.matrix,
-          op.width,
-          op.height,
-          WHITE,
-          1,
-          "normal",
-          op.clips,
-          op.transforms,
-        );
-        mask(coverage, op.masks, op.matte);
-        backend.lerp(dst, src, coverage, op.opacity);
-        backend.releaseSurface(coverage);
-        backend.releaseSurface(src);
         return;
       }
     }

@@ -150,8 +150,7 @@ function checkLayer(
     }
     if (
       effect.effect === "time.echo" &&
-      (layer.type === "adjustment" ||
-        layer.type === "null" ||
+      (layer.type === "null" ||
         layer
           .effects!.slice(0, index)
           .some((prior) => prior.effect === "time.echo"))
@@ -159,12 +158,11 @@ function checkLayer(
       fail(
         "comp-effect-history",
         at,
-        "One echo is allowed per drawable layer or group; adjustment backdrops have no source history",
+        "One echo is allowed per drawable layer, group or adjustment",
       );
     if (
       effect.effect === "blur.primitive" &&
-      (layer.type === "adjustment" ||
-        layer.type === "null" ||
+      (layer.type === "null" ||
         layer
           .effects!.slice(0, index)
           .some((prior) => prior.effect === "blur.primitive"))
@@ -172,7 +170,7 @@ function checkLayer(
       fail(
         "comp-effect-paint",
         at,
-        "One primitive blur is allowed per drawable layer or group",
+        "One primitive blur is allowed per drawable layer, group or adjustment",
       );
     if (
       effect.space &&

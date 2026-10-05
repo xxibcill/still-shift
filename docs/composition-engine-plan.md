@@ -3251,6 +3251,19 @@ are exact; 27 gradient cases pass. No threshold or baseline changed. Adjustment
 history, linear-light and complete milestone acceptance remain.
 [Evidence](./composition-ce6-completion-results.json).
 
+### CE6 adjustment backdrop history checkpoint (2026-10-06)
+
+Adjustments replay their upstream paint at historical scoped clocks, including
+upstream echoes/effects/masks/mattes, bounded to 256 captures and 16 replay levels.
+Primitive blur filters their captured backdrop at its stack position; drawable
+paint semantics remain unchanged. Historical glyph preparation and failure cleanup
+are included. 54 focused tests and build/lint/schema/boundaries pass; 54 cases /
+648 frames / 756 seeks meet delta 2/PSNR 50. Independent echo pixels are exact.
+A discovered offscreen precomp blur defect (delta 21) is repaired by GPU capture
+padding: six cases / 72 frames / 84 seeks now match exactly. Broader affine
+regressions, linear-light and complete milestone acceptance remain.
+[Evidence](./composition-ce6-completion-results.json).
+
 ### CE6 performance slice 1: exact effect work (2026-10-03)
 
 - **Scope:** the transferred CE4b timing requirement only, not the broader CE6

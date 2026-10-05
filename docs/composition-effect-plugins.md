@@ -264,3 +264,19 @@ color. Both backends use the same bounded straight-color control table. GPU
 projection and image processing remain on the GPU; uploaded tables contain
 controls, not image pixels. This policy prevents tiny projection differences
 from being amplified by a downstream displacement map.
+
+### Adjustment history and paint blur
+
+Adjustment `time.echo` captures the upstream paint prefix at oldest-first
+historical scope clocks, then paints the current backdrop over those samples.
+Upstream effects, mattes, masks and echoes participate. Composition or isolated
+surface backgrounds belong to those captures; opaque current input naturally
+covers older samples. Declared source revisions can skip unchanged history.
+At most 256 captures and 16 replay levels are allowed per graph, with
+`comp-effect-budget` on overflow. Historical animated glyphs are prepared too.
+
+On adjustments, `blur.primitive` filters the backdrop as a Gaussian at its stack
+position. Drawable-layer primitive blur retains its per-draw semantics. GPU
+precomp filtering captures offscreen input within the finite kernel support
+before clipping output to the viewport. Padded targets must fit the GPU texture
+limit and a bounded surface-memory budget; overflow has an explicit diagnostic.

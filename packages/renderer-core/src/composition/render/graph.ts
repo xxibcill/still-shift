@@ -130,6 +130,8 @@ export type IsolateOp = {
 /** Re-composite everything below within a layer-space region (adjustment layer). */
 export type AdjustOp = {
   kind: "adjust";
+  /** Oldest-first upstream backdrop snapshots, before the current input. */
+  history?: BackdropSample[];
   layer: string;
   matrix: Matrix;
   transforms: Matrix[];
@@ -142,6 +144,39 @@ export type AdjustOp = {
   blend: CompositionBlendMode;
   clips: ClipRect[];
 };
+export type BackdropSample = {
+  ops: RenderOp[];
+  background: Rgba | null;
+  opacity: number;
+};
+type HistoryBudget = { captures: number; depth: number };
+
+/** Find the destination prefix at an adjustment, respecting isolated surfaces. */
+function backdropAt(
+  node: SurfaceNode,
+  key: string,
+): Omit<BackdropSample, "opacity"> | undefined {
+  const visit = (
+    ops: RenderOp[],
+    background: Rgba | null,
+  ): Omit<BackdropSample, "opacity"> | undefined => {
+    for (let i = 0; i < ops.length; i++) {
+      const op = ops[i]!;
+      if (op.kind === "adjust" && op.layer === key)
+        return { ops: ops.slice(0, i), background };
+      const nested =
+        op.kind === "isolate"
+          ? visit(op.ops, null)
+          : op.kind === "draw" && op.content.type === "surface"
+            ? backdropAt(op.content.surface, key)
+            : undefined;
+      if (nested) return nested;
+    }
+    return undefined;
+  };
+  return visit(node.ops, node.background);
+}
+
 export type MatteOp = {
   mode: TrackMatte["mode"];
   layer: string;
@@ -210,12 +245,18 @@ class GraphBuilder {
   private readonly cameras = new Map<string, Matrix>();
   private readonly history = new Map<string, Scope>();
   private readonly exposures = new WeakMap<EvaluatedLayerTree, Scope>();
+  private reachedHistoryTarget = false;
+  private readonly historyBudget: HistoryBudget;
   constructor(
     readonly comp: Composition,
     readonly time: number,
     readonly options: RenderGraphOptions,
     readonly historical = false,
-  ) {}
+    readonly historyTarget?: string,
+    budget?: HistoryBudget,
+  ) {
+    this.historyBudget = budget ?? { captures: 0, depth: 0 };
+  }
 
   private precomp(id: string): CompositionScope {
     return this.comp.precomps!.find((p) => p.id === id)!;
@@ -384,6 +425,7 @@ class GraphBuilder {
     const ops: RenderOp[] = [];
     // layers[0] is the top layer, so paint from the end of the list.
     for (let i = scope.tree.layers.length - 1; i >= 0; i--) {
+      if (this.reachedHistoryTarget) break;
       const state = scope.tree.layers[i]!;
       if (scope.owners.get(state.id) !== owner) continue;
       if (
@@ -685,6 +727,70 @@ class GraphBuilder {
     return ops;
   }
 
+  private adjustmentHistory(
+    scope: Scope,
+    state: EvaluatedLayer,
+    frame: Frame,
+    echo: EvaluatedEffect,
+  ): BackdropSample[] {
+    const { count, spacing, decay, skipUnchanged, sourceRevision } =
+      echo.params as Record<string, number>;
+    if (!decay) return [];
+    const rootTime = state.exposure?.rootTime ?? this.time;
+    const scopeTime = state.exposure?.tree.time ?? scope.tree.time;
+    const route = frame.prefix.split("/").filter(Boolean);
+    const key = frame.prefix + state.id;
+    const samples: BackdropSample[] = [];
+    for (let i = count!; i >= 1; i--) {
+      if (++this.historyBudget.captures > 256 || this.historyBudget.depth >= 16)
+        throw Error(
+          "comp-effect-budget: adjustment history exceeds 256 captures or 16 replay levels",
+        );
+      const time = Math.max(0, scopeTime - i * spacing!);
+      const root = evaluateComp(this.comp, route.length ? rootTime : time, {
+        ...this.options,
+        ...(route.length
+          ? {
+              scopeTimes: {
+                ...this.options.scopeTimes,
+                [route.join("/")]: time,
+              },
+            }
+          : {}),
+      });
+      let local = root;
+      for (const id of route) {
+        const next = local.layers.find((layer) => layer.id === id)?.precomp;
+        if (!next) return samples;
+        local = next;
+      }
+      const prior = local.layers.find((layer) => layer.id === state.id);
+      if (
+        !prior?.visible ||
+        (skipUnchanged &&
+          prior.effects.find((effect) => effect.id === echo.id)?.params
+            .sourceRevision === sourceRevision)
+      )
+        continue;
+      this.historyBudget.depth++;
+      try {
+        const builder = new GraphBuilder(
+          this.comp,
+          root.time,
+          this.options,
+          false,
+          key,
+          this.historyBudget,
+        );
+        const backdrop = backdropAt(builder.surface(root, this.comp, ""), key);
+        if (backdrop) samples.push({ ...backdrop, opacity: decay! ** i });
+      } finally {
+        this.historyBudget.depth--;
+      }
+    }
+    return samples;
+  }
+
   layerOps(
     scope: Scope,
     state: EvaluatedLayer,
@@ -729,9 +835,16 @@ class GraphBuilder {
       .filter(
         (effect) =>
           effect.enabled &&
-          !["time.echo", "blur.primitive"].includes(effect.effect),
+          effect.effect !== "time.echo" &&
+          (layer.type === "adjustment" || effect.effect !== "blur.primitive"),
       )
       .map((original) => {
+        if (layer.type === "adjustment" && original.effect === "blur.primitive")
+          original = {
+            ...original,
+            effect: "blur.gaussian",
+            version: compositionEffectDefinition("blur.gaussian")!.version,
+          };
         const effect = this.effectInputs(
           this.exposureScope(scope, state),
           original,
@@ -750,7 +863,7 @@ class GraphBuilder {
         };
       });
     const matte = options.raw ? null : this.matte(scope, state, frame, seen);
-    if (echo) {
+    if (echo && layer.type !== "adjustment") {
       return [
         {
           kind: "isolate",
@@ -774,10 +887,18 @@ class GraphBuilder {
       ];
     }
     if (layer.type === "adjustment") {
-      if (blend === "normal" && !effects.length) return [];
+      const target = key === this.historyTarget;
+      if (target) this.reachedHistoryTarget = true;
+      const history =
+        echo && !target
+          ? this.adjustmentHistory(scope, state, frame, echo)
+          : [];
+      if (!target && blend === "normal" && !effects.length && !history.length)
+        return [];
       return [
         {
           kind: "adjust",
+          ...(history.length ? { history } : {}),
           layer: key,
           matrix,
           transforms,

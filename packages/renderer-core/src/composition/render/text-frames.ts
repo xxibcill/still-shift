@@ -38,6 +38,11 @@ export function collectCompositionTextFrames(
           visitOps(op.content.surface.ops);
       } else {
         if (op.kind === "isolate") visitOps(op.ops);
+        if (op.kind === "adjust")
+          for (const sample of op.history ?? []) visitOps(sample.ops);
+        for (const effect of op.effects)
+          for (const input of Object.values(effect.layerInputs ?? {}))
+            visitOps(input);
         if (op.matte) visitOps(op.matte.ops);
       }
     }

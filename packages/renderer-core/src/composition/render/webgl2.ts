@@ -1,3 +1,4 @@
+import { blurPadding } from "./webgl-blur-padding.ts";
 import { blurKernelLength } from "./webgl-blur-kernel.ts";
 import { WebglPaint } from "./webgl-paint.ts";
 import { WebglDamage } from "./webgl-damage.ts";
@@ -24,7 +25,7 @@ import { WebglDevice, type WebglSurface } from "./webgl-device.ts";
 import { blendShader } from "./webgl-blend.ts";
 
 export const COMPOSITION_WEBGL_RENDERER_VERSION =
-  "composition-webgl2-0.50.0" as const;
+  "composition-webgl2-0.51.0" as const;
 const IDENTITY: Matrix = [1, 0, 0, 1, 0, 0];
 const COPY =
   "uniform float opacity; void main() { pixel = floor(floor(texture(source, uv) * 255.0 + 0.5) * (floor(opacity * 255.0 + 0.5) + 1.0) / 256.0) / 255.0; }";
@@ -202,7 +203,7 @@ export function createWebgl2Backend(
 
   function placed(
     src: WebglSurface,
-    dst: WebglSurface,
+    dst: Pick<WebglSurface, "width" | "height">,
     matrix: Matrix,
     clips: ClipRect[],
     transforms?: Matrix[],
@@ -258,6 +259,75 @@ export function createWebgl2Backend(
     } finally {
       device.release(coverage);
       raster.releaseSurface(pixels);
+    }
+  }
+
+  function blurredPlacement(
+    src: WebglSurface,
+    dst: WebglSurface,
+    matrix: Matrix,
+    transforms: Matrix[] | undefined,
+    sigma: number,
+  ) {
+    const transform = new DOMMatrix();
+    if (transforms)
+      for (const local of transforms)
+        transform.multiplySelf(new DOMMatrix(local));
+    else transform.multiplySelf(new DOMMatrix(matrix));
+    const corners = [
+      [0, 0],
+      [src.width, 0],
+      [0, src.height],
+      [src.width, src.height],
+    ].map(([x, y]) => transform.transformPoint(new DOMPoint(x, y)));
+    const padding = blurPadding(
+      dst.width,
+      dst.height,
+      {
+        left: Math.min(...corners.map((p) => p.x)),
+        top: Math.min(...corners.map((p) => p.y)),
+        right: Math.max(...corners.map((p) => p.x)),
+        bottom: Math.max(...corners.map((p) => p.y)),
+      },
+      Math.ceil((blurKernelLength(sigma) - 1) / 2) + 1,
+      gl.getParameter(gl.MAX_TEXTURE_SIZE) as number,
+    );
+    const shift: Matrix = [1, 0, 0, 1, padding.left, padding.top];
+    const chain = [shift, ...(transforms ?? [matrix])];
+    const shifted: Matrix = [
+      matrix[0],
+      matrix[1],
+      matrix[2],
+      matrix[3],
+      matrix[4] + padding.left,
+      matrix[5] + padding.top,
+    ];
+    const padded = padding.width !== dst.width || padding.height !== dst.height;
+    const source = padded
+      ? placed(src, padding, shifted, [], chain)
+      : placed(src, dst, matrix, [], transforms);
+    let transferred = false;
+    try {
+      effects.blur(source, sigma);
+      if (!padded) {
+        transferred = true;
+        return source;
+      }
+      const output = device.surface(dst.width, dst.height);
+      try {
+        device.pass(
+          "uniform vec2 offset; void main(){pixel=texelFetch(source,ivec2(gl_FragCoord.xy)+ivec2(offset),0);}",
+          output,
+          [source],
+          { offset: [padding.left, padding.top] },
+        );
+        return output;
+      } catch (error) {
+        device.release(output);
+        throw error;
+      }
+    } finally {
+      if (!transferred) device.release(source);
     }
   }
 
@@ -472,9 +542,14 @@ export function createWebgl2Backend(
       if (paintBlur) bounds.full(dst);
       else bounds.composite(src, dst, matrix);
       if (paintBlur) {
-        const source = placed(src, dst, matrix, [], transforms);
+        const source = blurredPlacement(
+          src,
+          dst,
+          matrix,
+          transforms,
+          paintBlur,
+        );
         try {
-          effects.blur(source, paintBlur);
           if (clips.length) {
             const pixels = raster.createSurface(dst.width, dst.height);
             const coverage = device.surface(dst.width, dst.height);

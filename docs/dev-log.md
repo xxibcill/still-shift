@@ -44,14 +44,13 @@ still hold before relying on them.
 ## Current state
 
 - **CE6 in progress (2026-10-06):** `codex/composition-ce6-completion` from
-  CE7 `817cc9f`. Checkpoints through `6b3d34d` deliver the effect catalogue and
-  scoped inputs; native map/wipe kernels now pass 80 focused tests plus build/
-  lint/schema/boundaries, 54 cases / 648 frames / 756 seeks (maximum delta 1).
-  Gradient rank, signed quotient and staged map byte proofs are exact. A
-  gradient precision repair replaces the initially amplified pixel difference;
-  no threshold or frozen baseline changed. Adjustment history, linear-light
-  and complete hardware/hash/export/cost/full-gate acceptance remain.
-  No owner decision is pending. [Evidence](./composition-ce6-completion-results.json).
+  CE7 `817cc9f`. Checkpoints through `3bf38dc` deliver the effect catalogue and
+  scoped maps. Adjustment history/primitive blur now pass 54 focused tests plus
+  build/lint/schema/boundaries and 54 cases / 648 frames / 756 seeks (delta 2).
+  Independent echo pixels are exact. GPU input padding repairs offscreen precomp
+  blur: six cases / 72 frames / 84 seeks are exact. Linear-light, broader affine
+  blur regressions and complete hardware/hash/export/cost/full-gate acceptance
+  remain. No owner decision is pending. [Evidence](./composition-ce6-completion-results.json).
 
 - **CE7 complete (2026-10-06):** `codex/composition-ce7`, code `0e48388`.
   Local holds/posterization, source loops, freeze remap, deterministic adaptive
@@ -187,6 +186,20 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-06 — CE6 adjustment backdrop history checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce6-completion`.
+- **Done:** scoped upstream history, bounded replay, adjustment primitive blur,
+  historical glyph preparation/cleanup and GPU offscreen blur input padding.
+- **Results:** 54 focused tests and build/lint/schema/boundaries; 54 native
+  cases / 648 frames / 756 seeks meet delta 2/PSNR 50. Independent echo pixels
+  are exact; six animated offscreen precomp cases / 72 frames / 84 seeks are exact.
+- **Repaired:** initial snapshot links and oracle anchor; offscreen blur clipped
+  input before filtering (delta 21), repaired with finite GPU capture padding.
+  No threshold or frozen baseline changed.
+- **Next:** linear-light, broader affine regressions and complete CE6 acceptance/PR.
+- **Records:** [CE6 evidence](./composition-ce6-completion-results.json).
 
 ### 2026-10-06 — CE6 native map/wipe checkpoint
 

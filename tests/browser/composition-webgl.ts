@@ -1,3 +1,4 @@
+import type * as AdjustmentChecks from "../helpers/composition-adjustment-history-reference.ts";
 import type * as GradientRankChecks from "../helpers/composition-gradient-rank-reference.ts";
 import type * as MapQuotientChecks from "../helpers/composition-map-quotient-reference.ts";
 import type * as MapChecks from "../helpers/composition-map-effect-reference.ts";
@@ -36,6 +37,16 @@ try {
   const page = await browser.newPage();
   await page.addInitScript("window.__name = (fn) => fn;");
   await page.goto(server.resolvedUrls!.local[0]!);
+  const adjustment = await page.evaluate(async () => {
+    const url = "/tests/helpers/composition-adjustment-history-reference.ts";
+    const checks = (await import(url)) as typeof AdjustmentChecks;
+    return {
+      matrix: await checks.checkAdjustmentEffectRendering(),
+      pixels: await checks.checkAdjustmentHistoryPixels(),
+      offscreen: await checks.checkOffscreenPrecompBlur(),
+    };
+  });
+  console.log("WebGL adjustment blur/history:", JSON.stringify(adjustment));
   const plugins = await page.evaluate(async () => {
     const url = "/tests/helpers/composition-effect-plugin-reference.ts";
     return (
