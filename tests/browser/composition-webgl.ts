@@ -25,7 +25,11 @@ try {
   await page.goto(server.resolvedUrls!.local[0]!);
   const exposure = await page.evaluate(async () => {
     const url = "/tests/helpers/composition-webgl-exposure.ts";
-    return ((await import(url)) as typeof Exposure).checkWebglExposureFusion();
+    const checks = (await import(url)) as typeof Exposure;
+    return {
+      fusion: checks.checkWebglExposureFusion(),
+      bounded: checks.checkWebglBoundedExposure(),
+    };
   });
   console.log("WebGL final exposure sum/resolve exactness:", exposure);
   const blur = await page.evaluate(async () => {

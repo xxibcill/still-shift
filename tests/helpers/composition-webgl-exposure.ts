@@ -3,6 +3,7 @@ import {
   WebglDevice,
   type WebglSurface,
 } from "../../packages/renderer-core/src/composition/render/webgl-device.ts";
+import type { Bounds } from "../../packages/renderer-core/src/composition/evaluate/types.ts";
 
 /** Retained pre-fusion algorithm for byte-level A/B, independent of the candidate. */
 function originalExposure(
@@ -123,6 +124,145 @@ export function checkWebglExposureFusion() {
     } finally {
       device.dispose();
     }
+  }
+  return cases;
+}
+
+/** Bounded GPU snapshots and signed sums equal the original full-frame accumulation. */
+export function checkWebglBoundedExposure() {
+  const canvas = document.createElement("canvas");
+  canvas.width = 37;
+  canvas.height = 29;
+  const device = new WebglDevice(canvas);
+  const dst = device.surface(37, 29, false, true, true);
+  const source = device.surface(37, 29);
+  let cases = 0;
+  let copiedArea = 0;
+  const copy = device.copyRegion.bind(device);
+  device.copyRegion = (surface, rect) => {
+    copiedArea += (rect.right - rect.left) * (rect.bottom - rect.top);
+    return copy(surface, rect);
+  };
+  try {
+    for (const kind of [
+      "bounded",
+      "changing-background",
+      "unknown",
+      "full",
+      "empty",
+      "white",
+    ])
+      for (let count = 2; count <= 64; count++) {
+        const samples = Array.from({ length: count }, (_, i) => {
+          const background =
+            kind === "white"
+              ? [255, 255, 255, 255]
+              : kind === "changing-background" && i >= Math.floor(count / 2)
+                ? [71, 53, 97, 255]
+                : [37, 41, 47, 255];
+          const painted: Bounds | null =
+            kind === "empty" || i % 5 === 0
+              ? null
+              : kind === "full"
+                ? { left: 0, top: 0, right: 37, bottom: 29 }
+                : {
+                    left: 1 + (i % 7),
+                    top: 3 + (i % 9),
+                    right: 19 + (i % 7),
+                    bottom: 19 + (i % 9),
+                  };
+          const pixels = new Uint8Array(37 * 29 * 4);
+          for (let y = 0; y < 29; y++)
+            for (let x = 0; x < 37; x++) {
+              const offset = (y * 37 + x) * 4;
+              pixels.set(background, offset);
+              if (
+                painted &&
+                x >= painted.left &&
+                x < painted.right &&
+                y >= painted.top &&
+                y < painted.bottom
+              ) {
+                for (let c = 0; c < 3; c++)
+                  pixels[offset + c] =
+                    kind === "white"
+                      ? i % 2
+                      : (offset * 13 + i * 23 + c * 71) % 256;
+              }
+            }
+          return {
+            pixels,
+            painted,
+            background: new Uint32Array(new Uint8Array(background).buffer)[0]!,
+          };
+        });
+        const render = (i: number) => {
+          const sample = samples[i]!;
+          device.uploadBytes(source, sample.pixels);
+          device.pass(
+            "void main() { pixel=texelFetch(source,ivec2(gl_FragCoord.xy),0); }",
+            dst,
+            [source],
+          );
+          return {
+            painted: sample.painted,
+            background:
+              (kind === "unknown" && i === 1) ||
+              (kind === "unknown-first" && i === 0)
+                ? undefined
+                : sample.background,
+          };
+        };
+        originalExposure(device, dst, count, render);
+        const expected = device.read(dst);
+        copiedArea = 0;
+        accumulateWebglExposure(device, dst, count, render);
+        const actual = device.read(dst);
+        for (let byte = 0; byte < actual.length; byte++) {
+          let sum = 0;
+          for (const sample of samples) sum += sample.pixels[byte]!;
+          const average = Math.floor(sum / count + 0.5);
+          if (actual[byte] !== expected[byte] || actual[byte] !== average)
+            throw new Error(
+              `bounded exposure ${kind}/${count} byte ${byte}: ${actual[byte]} != original ${expected[byte]} / independent ${average}`,
+            );
+        }
+        if (
+          (kind === "bounded" || kind === "white") &&
+          copiedArea >= 37 * 29 * count
+        )
+          throw new Error(
+            `bounded exposure ${kind}/${count} did not reduce snapshot area`,
+          );
+        if (kind === "empty" && copiedArea !== 0)
+          throw new Error("Empty exposure copied pixels");
+        if (count === 4)
+          for (const failAt of [0, 1, 3]) {
+            try {
+              accumulateWebglExposure(device, dst, count, (i) => {
+                if (i === failAt) throw new Error("bounded sample failure");
+                return render(i);
+              });
+              throw new Error("Missing bounded sample failure");
+            } catch (error) {
+              if (
+                !(error instanceof Error) ||
+                error.message !== "bounded sample failure"
+              )
+                throw error;
+            }
+            accumulateWebglExposure(device, dst, count, render);
+            const recovered = device.read(dst);
+            if (recovered.some((v, i) => v !== expected[i]))
+              throw new Error(
+                `bounded exposure ${kind}: stale pooled sum after sample failure ${failAt}`,
+              );
+            cases++;
+          }
+        cases++;
+      }
+  } finally {
+    device.dispose();
   }
   return cases;
 }

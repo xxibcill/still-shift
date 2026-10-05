@@ -5,7 +5,7 @@
   "updatedDate": "2026-10-06",
   "branch": "codex/composition-ce6p-compatible",
   "base": "0e4838852855f6dc8cf91bba763a402dfd716f88",
-  "scope": "Current WebGL approach only; candidate final shutter sum/resolve fusion. Main feature lane untouched.",
+  "scope": "Current WebGL approach only: independent candidates for final shutter sum/resolve fusion and bounded GPU exposure snapshots/sums. Main feature lane untouched.",
   "acceptanceChanged": false,
   "baselineChanged": false,
   "gpuPolicyChanged": false,
@@ -612,7 +612,7 @@
   },
   "versions": {
     "baseline": "composition-webgl2-0.38.1",
-    "candidate": "composition-webgl2-0.39.0"
+    "candidate": "composition-webgl2-0.40.0"
   },
   "checkpoints": [
     {
@@ -670,7 +670,7 @@
     }
   },
   "pending": [
-    "Pinned/hardware 201-case exact byte regression",
+    "Pinned/hardware fusion and bounded exact byte regressions",
     "Serial bracketed original CE7 1080p render/readback and separate preview budgets",
     "Exposure/WebGL/export/hardware regressions",
     "Required selected-candidate family timing audits",
@@ -682,5 +682,38 @@
     "enabled": false,
     "command": "gh api repos/xxibcill/still-shift/actions/permissions",
     "date": "2026-10-06"
+  },
+  "candidates": [
+    {
+      "id": "final-exposure-fusion",
+      "renderer": "composition-webgl2-0.39.0",
+      "ref": "706be71",
+      "status": "build/review passed; runtime and performance pending"
+    },
+    {
+      "id": "bounded-exposure-snapshot-sum",
+      "renderer": "composition-webgl2-0.40.0",
+      "status": "build passed; review/runtime/performance pending"
+    }
+  ],
+  "rejectedDrafts": [
+    {
+      "id": "divide-signed-differences-first",
+      "stage": "analytic, not benchmarked",
+      "reason": "GPU reciprocal division plus background cancellation can move half-byte ties; candidate restores original nonnegative integer numerator before division"
+    }
+  ],
+  "retainedAudit036": {
+    "auditRecordCommit": "205f413",
+    "runtimeCommit": "ecf9bc6",
+    "renderer": "composition-webgl2-0.36.0",
+    "cases": 195,
+    "pixelFailures": 0,
+    "timingFailures": {
+      "commerce": 71,
+      "storyComponents": 40,
+      "typography": 4
+    },
+    "status": "historical audit only; does not verify the combined 0.38.1/0.39.0/0.40.0 trees"
   }
 }

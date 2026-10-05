@@ -45,8 +45,9 @@ still hold before relying on them.
 
 - **CE6-P resumed (2026-10-05):** owner authorized a parallel compatibility-preserving
   WebGL optimization lane on `codex/composition-ce6p-compatible` from `0e48388`.
-  Current candidate: fuse the final shutter sample sum with averaging, subject to
-  exact regressions and serial A/B measurement. Candidate builds; runtime
+  Candidates: final shutter sum/average fusion and bounded GPU exposure snapshots/
+  sums, subject to exact regressions and independent serial A/B measurements.
+  Candidates build; runtime
   correctness and timings wait for the main gate to release the machine. The main checkout/chat is untouched.
   All 117 original failures, 1.25× family and 2× native targets remain open.
   [Plan](./composition-ce6p-plan.md).
@@ -125,7 +126,7 @@ still hold before relying on them.
   [Fix evidence](./pr-32-fix-results.json).
   [Review evidence](./pr-32-review-results.json).
 
-_Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
+_Last updated 2026-10-06 by Codex for CE6-P; prior work retained._
 
 - **PR #32 conflict resolution (2026-10-04):** merged `main` at `3413780` into
   PR head `a0708ba` and pushed merge `05033c8`, retaining CE9 expressions and
@@ -188,10 +189,13 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
 ### 2026-10-06 — CE6-P exposure fusion candidate checkpoint
 
 - **Agent / branch:** Codex on `codex/composition-ce6p-compatible`.
-- **Done:** final shutter addition/average fusion, independent byte-average and
+- **Done:** final shutter addition/average fusion, bounded GPU snapshots/sums,
+  independent byte-average and
   retained-original GPU regressions, isolated serial A/B harness and preview budgets.
 - **Results:** pinned toolchain/import preflight, TypeScript build and changed-file
   lint pass. Browser regressions and timings have not run; main CE7 gate is active.
+- **Rejected draft:** dividing signed exposure differences before adding the
+  background can move half-byte ties; restore the integer numerator before division.
 - **Retained attempt:** sandbox offline install lacked a package; normal locked
   install succeeded. No acceptance or baseline was changed.
 - **Review:** no renderer defect found by independent Standards/Spec axes. Fixed

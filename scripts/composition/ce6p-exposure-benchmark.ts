@@ -26,13 +26,34 @@ const profile = process.argv.includes("--hardware") ? "hardware" : "pinned";
 const output = resolve(
   option("--output", "benchmarks/results/composition-ce6p/exposure-ab.json"),
 );
+const candidateRef = option("--candidate-ref", "");
+const kernelPath =
+  "packages/renderer-core/src/composition/render/webgl-exposure.ts";
 const rendererPath = "packages/renderer-core/src/composition/render/webgl2.ts";
 const baseline = execFileSync(
   "git",
   ["show", `${baselineRef}:${rendererPath}`],
   { cwd: root, encoding: "utf8" },
 );
-const candidate = await readFile(join(root, rendererPath), "utf8");
+const refSource = (ref: string, path: string, optional = false) => {
+  try {
+    return execFileSync("git", ["show", `${ref}:${path}`], {
+      cwd: root,
+      encoding: "utf8",
+      stdio: ["ignore", "pipe", "pipe"],
+    });
+  } catch (error) {
+    if (optional) return undefined;
+    throw error;
+  }
+};
+const baselineKernel = refSource(baselineRef, kernelPath, true);
+const candidate = candidateRef
+  ? refSource(candidateRef, rendererPath)!
+  : await readFile(join(root, rendererPath), "utf8");
+const candidateKernel = candidateRef
+  ? refSource(candidateRef, kernelPath, true)
+  : await readFile(join(root, kernelPath), "utf8");
 const digest = (source: string) =>
   createHash("sha256").update(source).digest("hex");
 const runs: unknown[] = [];
@@ -85,18 +106,18 @@ for (const variant of [
       cacheDir: cache,
       configFile: false,
       logLevel: "error",
-      plugins:
-        variant === "baseline"
-          ? [
-              {
-                name: "ce6p-original-renderer",
-                enforce: "pre",
-                load(id) {
-                  if (id === join(root, rendererPath)) return baseline;
-                },
-              },
-            ]
-          : [],
+      plugins: [
+        {
+          name: "ce6p-selected-renderer",
+          enforce: "pre",
+          load(id) {
+            if (id === join(root, rendererPath))
+              return variant === "baseline" ? baseline : candidate;
+            if (id === join(root, kernelPath))
+              return variant === "baseline" ? baselineKernel : candidateKernel;
+          },
+        },
+      ],
       server: { host: "127.0.0.1", port: 0 },
     });
     await server.listen();
@@ -139,17 +160,13 @@ for (const variant of [
       JSON.stringify(
         {
           baselineRef,
+          candidateRef: candidateRef || "working-tree",
+          baselineKernelSha256: baselineKernel ? digest(baselineKernel) : null,
           baselineSourceSha256: digest(baseline),
           candidateSourceSha256: digest(candidate),
-          candidateKernelSha256: digest(
-            await readFile(
-              join(
-                root,
-                "packages/renderer-core/src/composition/render/webgl-exposure.ts",
-              ),
-              "utf8",
-            ),
-          ),
+          candidateKernelSha256: candidateKernel
+            ? digest(candidateKernel)
+            : null,
           method:
             "Serial baseline/candidate/candidate/baseline sessions, independent Vite optimizer caches; original CE7 export-cost method; separate RAF preview diagnostic; startup/end workload checks and 2-second overlap polling (invalid runs retained and rejected)",
           runs,

@@ -67,3 +67,29 @@ every two seconds until timing ends. Detected overlap or inspection failure is
 retained as invalid timing and rejected. This is best-effort detection: very short
 workloads can start and finish between polls. Do not use a contaminated run as
 performance evidence; rerun the complete serial bracket once the machine is quiet.
+
+## Slice 2 candidate: bounded exposure snapshots and sums (2026-10-06)
+
+For an opaque screen whose clear bytes and conservative painted bounds are known,
+accumulate signed byte differences from the first background only within the
+growing union of painted bounds. Use the existing GPU `copyRegion` blit to snapshot
+that region instead of resolving the entire screen texture. Restore the exact
+nonnegative integer byte sum before the final division. Empty regions perform no
+accumulation draw; changed/unknown later backgrounds expand the union to the full
+screen. Unknown initial backgrounds and texture targets retain the fused full-frame
+path. Public bytes, backend selection and GPU policy are unchanged.
+
+An initial algebraic draft divided signed differences before adding the background.
+That form can move half-byte ties through cancellation with approximate GPU
+division, so it was rejected analytically before browser execution. The candidate
+restores the original integer numerator, avoiding that change in rounding.
+
+Regression coverage adds all counts 2–64 for moving/empty/full regions, white
+background ties, changed backgrounds, unknown first/later metadata and exception
+recovery against both the retained original algorithm and an independent average.
+Runtime correctness and performance remain unverified at this checkpoint.
+
+The A/B harness can load both renderer and kernel from pinned refs without changing
+files. Measure slice 1 separately with `--candidate-ref 706be71` against `0e48388`,
+then slice 2 with `--baseline-ref 706be71` against the working tree. Keep each
+four-session bracket and its source fingerprints separately.

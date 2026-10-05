@@ -34,7 +34,11 @@ try {
     "WebGL final exposure sum/resolve exactness:",
     await page.evaluate(async () => {
       const url = "/tests/helpers/composition-webgl-exposure.ts";
-      return ((await import(url)) as typeof Checks).checkWebglExposureFusion();
+      const checks = (await import(url)) as typeof Checks;
+      return {
+        fusion: checks.checkWebglExposureFusion(),
+        bounded: checks.checkWebglBoundedExposure(),
+      };
     }),
   );
 } finally {
