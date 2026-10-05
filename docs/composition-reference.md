@@ -723,6 +723,14 @@ Identifiers: `time`, `frame`, `value`, `index`, `layerCount`, `fps`. Components:
 | `blur.zoom`                  | `samples`        | scalar | `16`            | 2–64 (integer)                               |
 | `blur.lens`                  | `radius`         | scalar | `0`             | 0–1000                                       |
 | `blur.lens`                  | `samples`        | scalar | `16`            | 2–64 (integer)                               |
+| `distort.transform`          | `offset`         | vec2   | `[0,0]`         | -1000000–1000000 per axis                    |
+| `distort.transform`          | `anchor`         | vec2   | `[0.5,0.5]`     | 0–1 per axis                                 |
+| `distort.transform`          | `scale`          | vec2   | `[1,1]`         | -10–10 per axis                              |
+| `distort.transform`          | `rotation`       | scalar | `0`             | -36000–36000                                 |
+| `distort.corner-pin`         | `topLeft`        | vec2   | `[0,0]`         | -10–10 per axis                              |
+| `distort.corner-pin`         | `topRight`       | vec2   | `[1,0]`         | -10–10 per axis                              |
+| `distort.corner-pin`         | `bottomRight`    | vec2   | `[1,1]`         | -10–10 per axis                              |
+| `distort.corner-pin`         | `bottomLeft`     | vec2   | `[0,1]`         | -10–10 per axis                              |
 | `blur.primitive`             | `radius`         | scalar | `0`             | 0–1000                                       |
 | `time.echo`                  | `spacing`        | scalar | `1`             | 1–120                                        |
 | `time.echo`                  | `count`          | scalar | `3`             | 1–8 (integer)                                |
@@ -929,6 +937,7 @@ Schema validation yields stable codes with JSON paths; builder input also yields
 | `comp-effect-registration`         | Effect registration requires a unique ID, valid definition and GPU callback.                             |
 | `comp-effect-surface`              | Effect scratch textures and output must belong to the current callback and meet size/budget constraints. |
 | `comp-effect-version`              | Registered effect versions differ from the captured export snapshot.                                     |
+| `comp-effect-params`               | Check evaluated effect controls and their cross-parameter invariants.                                    |
 | `comp-effect-curve`                | Evaluated color curve points must be bounded, ordered and span the input domain.                         |
 | `comp-effect-bounds`               | An effect bounds callback failed or returned a non-finite/reversed rectangle.                            |
 | `comp-key-order`                   | Key frames are not strictly increasing.                                                                  |

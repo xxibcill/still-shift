@@ -1,3 +1,4 @@
+import { warpEffectKernel } from "./warp-effects.ts";
 import { sampledBlurKernel } from "./sampled-blur.ts";
 import { transitionEffectKernel } from "./transition-effects.ts";
 import { colorEffectKernel } from "./color-effects.ts";
@@ -71,7 +72,8 @@ export const compositionEffectPlugin = (id: string) =>
   plugins.get(id) ??
   colorEffectKernel(id) ??
   transitionEffectKernel(id) ??
-  sampledBlurKernel(id);
+  sampledBlurKernel(id) ??
+  warpEffectKernel(id);
 
 /** A callback owns at most 32 surfaces and 128 MiB (or four full-size frames). */
 class EffectSurfaces<S extends { width: number; height: number }> {

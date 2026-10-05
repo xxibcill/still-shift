@@ -3167,6 +3167,19 @@ hardware/hash/export/cost/full-gate acceptance remain. Existing Gaussian and
 directional arithmetic, thresholds and frozen baselines are unchanged.
 [Evidence](./composition-ce6-completion-results.json).
 
+### CE6 transform and corner-pin checkpoint (2026-10-06)
+
+Native transform and convex projective corner pin run on actual GPU textures,
+with Canvas byte references. Affine control precision and mixed-radix sampling
+retain small-scale cancellation; projective mapping uses explicit float32 steps.
+Final cross-parameter validation runs after drivers/expressions on immutable
+snapshots and reports the owning layer/path/root frame. 143 focused tests and
+build/lint/schema/boundaries pass. All 63 native cases / 756 frames / 882 seeks
+are exact, including the independent four-color cancellation oracle. Remaining
+distortion/stylize/shadows/dependencies, linear-light and complete hardware/hash/
+export/cost/full-gate acceptance remain. No threshold or frozen baseline changed.
+[Evidence](./composition-ce6-completion-results.json).
+
 ### CE6 performance slice 1: exact effect work (2026-10-03)
 
 - **Scope:** the transferred CE4b timing requirement only, not the broader CE6

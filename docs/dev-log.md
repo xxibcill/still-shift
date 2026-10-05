@@ -44,14 +44,15 @@ still hold before relying on them.
 ## Current state
 
 - **CE6 in progress (2026-10-06):** `codex/composition-ce6-completion` from
-  CE7 `817cc9f`. Checkpoints through `ed77a6e` deliver typed/paired plugins,
-  ten color kernels/curves and four native coverage transitions. Native radial,
-  zoom and lens blur now pass 62 focused tests, build/lint/schema/boundaries,
-  81 cases / 972 frames and 27 upper-limit cases / 324 frames at 64 samples.
-  Pixels and all 1,512 seeks pass. Earlier color/transition acceptance is recorded.
-  Remaining spatial/catalogue/dependency effects, linear-light and complete
-  hardware/hash/export/cost/full-gate acceptance remain. No owner decision is
-  pending. [Evidence](./composition-ce6-completion-results.json).
+  CE7 `817cc9f`. Checkpoints through `e98a376` deliver typed/paired plugins,
+  ten color kernels/curves, four transitions and radial/zoom/lens blur.
+  Transform and projective corner pin now pass 143 focused tests, build/lint/
+  schema/boundaries and 63 cases / 756 frames / 882 seeks with exact backend
+  pixels. An independent minimum-scale four-color cancellation oracle is exact.
+  Final parameter validation is pure and includes owner/root-frame diagnostics.
+  Remaining distortion/stylize/shadow/dependency effects, linear-light and
+  complete hardware/hash/export/cost/full-gate acceptance remain. No owner
+  decision is pending. [Evidence](./composition-ce6-completion-results.json).
 
 - **CE7 complete (2026-10-06):** `codex/composition-ce7`, code `0e48388`.
   Local holds/posterization, source loops, freeze remap, deterministic adaptive
@@ -187,6 +188,21 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-06 — CE6 transform and corner-pin checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce6-completion`.
+- **Done:** native GPU/Canvas warps, high-resolution affine controls with exact
+  cancellation, float32 homography, final immutable parameter validation/diagnostics.
+- **Results:** 143 focused tests plus build/lint/schema/boundaries; 63 native
+  cases / 756 frames / 882 seeks are exact. Independent four-color cancellation
+  oracle is exact. Complete milestone gate remains pending.
+- **Repaired:** new cancellation expectations assumed unquantized controls;
+  exact 1080p and native pixel oracles now exercise the documented arithmetic.
+- **Next:** remaining distortion/stylize/shadows and scoped inputs, then
+  linear-light and complete hardware/hash/export/cost/full-gate acceptance.
+- **Records:** [CE6 evidence](./composition-ce6-completion-results.json),
+  [warp conventions](./composition-effect-plugins.md#native-geometric-warps).
 
 ### 2026-10-06 — CE6 sampled blur checkpoint
 

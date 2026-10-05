@@ -307,6 +307,61 @@
       "pending": [
         "Complete hardware/hash/export/cost/full-gate acceptance follows the complete catalogue",
         "Depth-of-field parameter integration is conditional on CE8"
+      ],
+      "implementation": "e98a376"
+    },
+    {
+      "name": "Native transform and projective corner pin",
+      "status": "focused-verification-passed",
+      "effects": ["distort.transform", "distort.corner-pin"],
+      "features": [
+        "Actual GPU inverse image warps and Canvas premultiplied byte reference",
+        "High-resolution affine controls with exact mixed-radix cancellation before sample-grid quantization",
+        "Float32 inverse projective homography for convex ordered corners",
+        "Pure final parameter validation after expressions, immutable callback snapshots, owner/root-frame diagnostics",
+        "Negative scales, conservative bounds, transparent padding and independent four-color cancellation oracle"
+      ],
+      "versions": {
+        "evaluator": 35,
+        "canvas": "composition-canvas-1.30.0",
+        "webgl": "composition-webgl2-0.44.0"
+      },
+      "verification": {
+        "focusedTests": 143,
+        "focusedFiles": 7,
+        "unitLog": "benchmarks/results/composition-ce6-completion/ce6-warp-focused-r4.log",
+        "build": "benchmarks/results/composition-ce6-completion/ce6-warp-build-final-r2.log",
+        "schema": "benchmarks/results/composition-ce6-completion/ce6-warp-schema-check.log",
+        "boundaries": "benchmarks/results/composition-ce6-completion/ce6-warp-boundaries.log",
+        "lint": "benchmarks/results/composition-ce6-completion/ce6-warp-lint-final.log",
+        "nativeMatrix": {
+          "cases": 63,
+          "frames": 756,
+          "backends": 2,
+          "randomSeeks": 882,
+          "maxDelta": 0,
+          "minPsnr": 999,
+          "cancellationOracle": [
+            {
+              "backend": "canvas2d",
+              "pixel": [128, 128, 128, 255]
+            },
+            {
+              "backend": "webgl2",
+              "pixel": [128, 128, 128, 255]
+            }
+          ],
+          "raw": "benchmarks/results/composition-ce6-completion/ce6-warp-native-acceptance.json",
+          "snapshot": "/private/tmp/still-shift-ce6-warp-r2-e98a376"
+        }
+      },
+      "initialFailures": [
+        "Test-first warp API absent",
+        "Cancellation unit oracles assumed exact anchor compensation despite documented coefficient/translation quantization; replaced with exact 1080p controls",
+        "Review raised transform control precision to 1/65536 coefficients and 1/131072 translation; mixed-radix GPU sampling preserves cancellation"
+      ],
+      "pending": [
+        "Complete hardware/hash/export/cost/full-gate acceptance follows the complete catalogue"
       ]
     }
   ],

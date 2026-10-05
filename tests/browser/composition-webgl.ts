@@ -1,3 +1,4 @@
+import type * as WarpChecks from "../helpers/composition-warp-effect-reference.ts";
 import type * as SampledBlurChecks from "../helpers/composition-sampled-blur-reference.ts";
 import type * as TransitionChecks from "../helpers/composition-transition-effect-reference.ts";
 import type * as ColorChecks from "../helpers/composition-color-effect-reference.ts";
@@ -75,6 +76,13 @@ try {
     ).checkSampledBlurLimits();
   });
   console.log("WebGL sampled blur limits:", JSON.stringify(sampledBlurLimits));
+  const warps = await page.evaluate(async () => {
+    const url = "/tests/helpers/composition-warp-effect-reference.ts";
+    return (
+      (await import(url)) as typeof WarpChecks
+    ).checkWarpEffectRendering();
+  });
+  console.log("WebGL native warps:", JSON.stringify(warps));
   const blur = await page.evaluate(async () => {
     const url = "/tests/helpers/composition-webgl-blur.ts";
     return ((await import(url)) as typeof Blur).checkWebglPrimitiveBlur();

@@ -46,6 +46,8 @@ export type CompositionEffectDefinition = {
     bounds: EffectRect,
     params: EffectParameters,
   ) => EffectRect | null;
+  /** Pure cross-parameter invariants, checked after drivers and expressions. */
+  validateParams?: (params: EffectParameters) => void;
   generatesContent?: boolean;
   preservesOpaque?: boolean;
   usesLayerSpace?: boolean;
@@ -85,6 +87,13 @@ export function defineCompositionEffect(
   )
     throw Error(
       "comp-effect-definition: a bounded semantic version is required",
+    );
+  if (
+    definition.validateParams !== undefined &&
+    typeof definition.validateParams !== "function"
+  )
+    throw Error(
+      "comp-effect-definition: parameter validation must be callable",
     );
   const properties = Object.fromEntries(
     Object.entries(definition.properties).map(([name, property]) => {

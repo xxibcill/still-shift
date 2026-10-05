@@ -64,7 +64,9 @@ keys. Paths such as `box.effects[grade].curve[p1].y` address point components.
 Drivers and expressions can target supported components. Pure
 `expandBounds` callbacks receive the evaluated parameters and surface bounds;
 return a finite ordered rectangle, or `null` when input bounds do not constrain
-the output. Failures include the owning layer and root frame.
+the output. `validateParams` checks pure cross-parameter invariants after drivers
+and expressions, using an immutable snapshot; it must synchronously return no
+value. Failures include the owning layer and root frame.
 
 Effect versions enter evaluated graph identity and captured export metadata.
 Change the semantic version when changing kernel behavior. Compiled validation
@@ -146,3 +148,26 @@ shaders sample actual image textures; control preparation does not read image
 pixels. Canvas reconstructs premultiplied input bytes for the same reference.
 Lens bounds expand by radius plus one interpolation pixel when radius is
 nonzero. Radial/zoom bounds conservatively cover the full target.
+
+## Native geometric warps
+
+`distort.transform` applies pixel `offset`, normalized `anchor`, nonuniform
+`scale` and degree `rotation` to the captured surface. Negative scale mirrors
+artwork; each scale magnitude must remain at least 1/256. Inverse coefficients
+use 1/65,536 steps and translations use 1/131,072 pixel steps. GPU base-1024
+arithmetic retains cancellation before flooring the source sampling grid to
+1/16 pixel. Canvas evaluates the same control transform and byte sampler.
+
+`distort.corner-pin` maps the surface rectangle to normalized `topLeft`,
+`topRight`, `bottomRight` and `bottomLeft` points using an inverse projective
+homography. The ordered quadrilateral must stay convex and noncollapsed; either
+orientation is supported. Adjacent edge cross products must have magnitude
+at least 0.000001. Host-prepared coefficients and intermediate mapping steps use
+float32 on both adapters. Near-zero projective denominators give transparent
+padding; out-of-image samples also have transparent padding.
+
+Both effects use the premultiplied bilinear byte sampler, run before masks/mattes
+and conservatively mark output bounds as unconstrained by source bounds.
+Invalid enabled controls fail after final expressions with `comp-effect-params`,
+including their owning layer, property path and root frame. Disabled effects
+do not execute their cross-parameter validator.

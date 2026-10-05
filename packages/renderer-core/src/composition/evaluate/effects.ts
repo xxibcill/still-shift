@@ -83,15 +83,47 @@ export function clampEffects(effects: EvaluatedEffect[]) {
     }
 }
 
-/** Validate cross-point invariants after the complete driver/expression stage. */
-export function validateEffectCurves(
+function validationParameters(
+  params: EvaluatedEffect["params"],
+): EvaluatedEffect["params"] {
+  const snapshot = structuredClone(params);
+  for (const value of Object.values(snapshot))
+    if (Array.isArray(value)) {
+      for (const point of value) if (Array.isArray(point)) Object.freeze(point);
+      Object.freeze(value);
+    }
+  return Object.freeze(snapshot);
+}
+/** Validate final cross-parameter invariants without allowing callbacks to mutate the result. */
+export function validateEffectParameters(
   effects: EvaluatedEffect[],
   location: Pick<PassageDiagnostic, "node" | "path" | "frame">,
 ) {
-  for (const effect of effects)
-    for (const [name, property] of Object.entries(
-      compositionEffectDefinition(effect.effect)!.properties,
-    )) {
+  for (const effect of effects) {
+    const definition = compositionEffectDefinition(effect.effect)!;
+    try {
+      if (effect.enabled && definition.validateParams) {
+        const result = definition.validateParams(
+          validationParameters(effect.params),
+        ) as unknown;
+        if (result !== undefined)
+          throw Error(
+            "Effect parameter validation must be synchronous and return no value",
+          );
+      }
+    } catch (error) {
+      passageError(
+        "comp-effect-params",
+        error instanceof Error
+          ? error.message
+          : "Invalid evaluated effect parameters",
+        {
+          ...location,
+          path: `${location.path ?? "layer"}.effects[${effect.id}]`,
+        },
+      );
+    }
+    for (const [name, property] of Object.entries(definition.properties)) {
       if (property.type !== "curve") continue;
       const issue = effectCurveIssue(effect.params[name] as Point[]);
       if (issue)
@@ -100,6 +132,7 @@ export function validateEffectCurves(
           path: `${location.path ?? "layer"}.effects[${effect.id}].${name}`,
         });
     }
+  }
 }
 
 /** Kernels operate in the current composition surface's pixel space. */
