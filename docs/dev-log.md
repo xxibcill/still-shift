@@ -195,7 +195,8 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
 - **Retained attempt:** sandbox offline install lacked a package; normal locked
   install succeeded. No acceptance or baseline was changed.
 - **Next:** review candidate, then exactness/A/B after competing workloads end.
-- **Records:** [slice plan](./composition-ce6p-plan.md).
+- **Records:** [slice plan](./composition-ce6p-plan.md),
+  [retained evidence](./composition-ce6p-performance-results.json).
 
 ### 2026-10-05 — CE6-P parallel optimization lane resumed
 

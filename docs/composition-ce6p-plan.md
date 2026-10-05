@@ -51,3 +51,13 @@ effect on ordinary one-sample cases or on the original 117 failures.
    PR with the remaining performance targets.
 
 Resumable verification or runner redesign is separate work.
+
+## Candidate review (2026-10-06)
+
+Two independent code-review skill axes inspected the candidate against `0e48388`.
+No renderer correctness or documented-standards defect was identified analytically.
+Three findings were repaired before runtime verification: protect Vite/cache cleanup
+when browser launch fails, preserve the old CE6-P heading anchor, and report cold
+preview initialization/first submission/next RAF separately from warmed calls.
+Preview submission and RAF costs do not guarantee GPU completion. Runtime evidence
+is still required.

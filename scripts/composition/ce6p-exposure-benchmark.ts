@@ -3,12 +3,13 @@ import { createHash } from "node:crypto";
 import { mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { dirname, join, resolve } from "node:path";
-import { createServer } from "vite";
+import { createServer, type ViteDevServer } from "vite";
 import {
   assertPinnedRenderEnvironment,
   launchRenderBrowser,
   probeRenderEnvironment,
 } from "@still-shift/execution-runtime";
+import type { Browser } from "playwright";
 import type * as ExportCost from "../../tests/helpers/composition-exposure-reference.ts";
 import type * as PreviewCost from "../../tests/helpers/composition-ce6p-preview-cost.ts";
 
@@ -57,28 +58,30 @@ for (const variant of [
       `Competing test workloads; benchmark not started:\n${competing.join("\n")}`,
     );
   const cache = await mkdtemp(join(tmpdir(), "ce6p-ab-vite-"));
-  const server = await createServer({
-    root,
-    cacheDir: cache,
-    configFile: false,
-    logLevel: "error",
-    plugins:
-      variant === "baseline"
-        ? [
-            {
-              name: "ce6p-original-renderer",
-              enforce: "pre",
-              load(id) {
-                if (id === join(root, rendererPath)) return baseline;
-              },
-            },
-          ]
-        : [],
-    server: { host: "127.0.0.1", port: 0 },
-  });
-  await server.listen();
-  const browser = await launchRenderBrowser({ profile });
+  let server: ViteDevServer | undefined;
+  let browser: Browser | undefined;
   try {
+    server = await createServer({
+      root,
+      cacheDir: cache,
+      configFile: false,
+      logLevel: "error",
+      plugins:
+        variant === "baseline"
+          ? [
+              {
+                name: "ce6p-original-renderer",
+                enforce: "pre",
+                load(id) {
+                  if (id === join(root, rendererPath)) return baseline;
+                },
+              },
+            ]
+          : [],
+      server: { host: "127.0.0.1", port: 0 },
+    });
+    await server.listen();
+    browser = await launchRenderBrowser({ profile });
     const page = await browser.newPage();
     await page.addInitScript("window.__name = (fn) => fn;");
     await page.goto(server.resolvedUrls!.local[0]!);
@@ -134,8 +137,10 @@ for (const variant of [
       `${variant} ${rendererVersion}: retained run ${runs.length} at ${output}`,
     );
   } finally {
-    await browser.close();
-    await server.close();
-    await rm(cache, { recursive: true, force: true });
+    try {
+      await Promise.all([browser?.close(), server?.close()]);
+    } finally {
+      await rm(cache, { recursive: true, force: true });
+    }
   }
 }

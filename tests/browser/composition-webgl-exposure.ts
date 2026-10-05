@@ -1,26 +1,29 @@
 import { mkdtemp, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
-import { createServer } from "vite";
+import { createServer, type ViteDevServer } from "vite";
 import {
   assertPinnedRenderEnvironment,
   launchRenderBrowser,
   probeRenderEnvironment,
 } from "@still-shift/execution-runtime";
+import type { Browser } from "playwright";
 import type * as Checks from "../helpers/composition-webgl-exposure.ts";
 
 const profile = process.argv.includes("--hardware") ? "hardware" : "pinned";
 const cache = await mkdtemp(join(tmpdir(), "ce6p-exposure-vite-"));
-const server = await createServer({
-  root: resolve(import.meta.dirname, "../.."),
-  cacheDir: cache,
-  configFile: false,
-  logLevel: "error",
-  server: { host: "127.0.0.1", port: 0 },
-});
-await server.listen();
-const browser = await launchRenderBrowser({ profile });
+let server: ViteDevServer | undefined;
+let browser: Browser | undefined;
 try {
+  server = await createServer({
+    root: resolve(import.meta.dirname, "../.."),
+    cacheDir: cache,
+    configFile: false,
+    logLevel: "error",
+    server: { host: "127.0.0.1", port: 0 },
+  });
+  await server.listen();
+  browser = await launchRenderBrowser({ profile });
   const page = await browser.newPage();
   await page.addInitScript("window.__name = (fn) => fn;");
   await page.goto(server.resolvedUrls!.local[0]!);
@@ -35,7 +38,9 @@ try {
     }),
   );
 } finally {
-  await browser.close();
-  await server.close();
-  await rm(cache, { recursive: true, force: true });
+  try {
+    await Promise.all([browser?.close(), server?.close()]);
+  } finally {
+    await rm(cache, { recursive: true, force: true });
+  }
 }

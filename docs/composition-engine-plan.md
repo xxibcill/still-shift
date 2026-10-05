@@ -1,7 +1,7 @@
 # Programmable composition engine — implementation plan
 
 - **Updated:** 2026-10-05
-- **Status:** CE0–CE3 complete (2026-10-01); CE9 complete (2026-10-04); CE12 complete (2026-10-05); CE4b complete under the approved timing split (2026-10-03); CE4a complete (2026-10-05); CE6 feature work incomplete. WebGL performance acceptance is deferred to a future version (CE6-P, user approved 2026-10-03). Q1 and Q3 decided
+- **Status:** CE0–CE3 complete (2026-10-01); CE9 complete (2026-10-04); CE12 complete (2026-10-05); CE4b complete under the approved timing split (2026-10-03); CE4a complete (2026-10-05); CE6 feature work incomplete. CE6-P WebGL performance work resumed in an isolated parallel lane (owner request 2026-10-05); its acceptance remains incomplete. Q1 and Q3 decided
   2026-09-30; Q2, Q4 and Q8 decided 2026-10-01; Q5–Q7 open.
 - **Baseline:** `6772717` — `Merge pull request #22 from xxibcill/codex/still-shift-plan-completion`
 - **Tracker owner:** unassigned. Record the owner and branch per milestone in the [tracker](#milestone-tracker).
@@ -3229,6 +3229,8 @@ tests, backend parity suite, repeated-export determinism test.
   boundary itself (uploads, exact blits/blends and readback), with no cheaper
   compatible mechanism on the pinned profile. The owner decision in slice 1
   stands; the requirement remains **open**.
+
+<a id="ce6-p--deferred-webgl-performance-acceptance"></a>
 
 ### CE6-P — Resumed WebGL performance acceptance
 

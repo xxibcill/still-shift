@@ -52,6 +52,9 @@ export async function measureExposurePreview() {
         { images: new Map(), fonts: new Map() },
         { backend },
       );
+      const coldInitializationMs = performance.now() - start;
+      let coldCallMs = 0,
+        coldNextRafIntervalMs = 0;
       const calls: number[] = [],
         intervals: number[] = [];
       let previous: number | undefined;
@@ -61,11 +64,15 @@ export async function measureExposurePreview() {
             requestAnimationFrame(() => resolve()),
           );
           const now = performance.now();
+          if (frame === 21 && previous !== undefined)
+            coldNextRafIntervalMs = now - previous;
           if (frame >= 24 && previous !== undefined)
             intervals.push(now - previous);
           previous = now;
           preview.renderFrame(frame);
-          if (frame >= 24) calls.push(performance.now() - now);
+          const callMs = performance.now() - now;
+          if (frame === 20) coldCallMs = callMs;
+          if (frame >= 24) calls.push(callMs);
         }
         // Complete pending work after the preview window; excluded from call/RAF budgets.
         const drain = performance.now();
@@ -77,6 +84,9 @@ export async function measureExposurePreview() {
           samples,
           width: comp.width,
           height: comp.height,
+          coldInitializationMs,
+          coldCallMs,
+          coldNextRafIntervalMs,
           warmFrames: 4,
           measuredFrames: 11,
           callMs: calls,
