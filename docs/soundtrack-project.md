@@ -60,7 +60,7 @@ loading does not introduce gain or ducking defaults.
 | `tracks`                                           | Named narration/BGM/SFX/ambience roles, destination, gain, mute/solo and built-in processors                                                |
 | `clips`                                            | Asset/track, source start/end, project placement, gain, fades with optional curves, automation and optional `pan`; integer sample positions |
 | `clips[].anchor`                                   | Original beat and cue/event reference, plus signed sample offset; retained alongside resolved `startSample`                                 |
-| `buses`, `master`                                  | Named acyclic routing graph; outputs reference a bus or master; explicit gain                                                               |
+| `buses`, `master`                                  | Named acyclic routing graph; outputs reference a bus or master; explicit gain; optional `master.limiter`                                    |
 | `ducking`                                          | Optional explicit narration detector and BGM targets with all detector/ramp settings                                                        |
 | `normalization`, `channelConversion`, `tailPolicy` | `none`, `mono-duplicate-stereo-preserve`, `retain-to-project-end`                                                                           |
 
@@ -167,10 +167,10 @@ exact authored integer length; narration intervals and placements are unchanged.
 versions, runtime, path calibration and a cache identity. Each output also reports
 headroom from its written samples: `peakDbfs` (the largest absolute sample in either
 channel, in dB relative to full scale; `null` for silence) and
-`samplesAboveFullScale` (sample positions where either channel exceeds 1.0). With no
-limiter or normalization, a hot mix keeps its overs in the Float32 WAV, but integer
-delivery formats clip them; a nonzero master count means lowering gains before
-delivery. The report changes no PCM and does not change the DSP version. Identity includes the
+`samplesAboveFullScale` (sample positions where either channel exceeds 1.0). Without
+`master.limiter`, a hot mix keeps its overs in the Float32 WAV, but integer delivery
+formats clip them; a nonzero master count means lowering gains or adding the limiter
+before delivery. The report changes no PCM and does not change the DSP version. Identity includes the
 authored state, source identities, worker bytes, backend, toolchain and render
 settings. History/revision do not change PCM identity; the manifest still records
 the saved revision. Relocated paths conservatively change identity even when PCM
@@ -182,6 +182,24 @@ space, within the 1.5 GB working-memory estimate above. Sources must be regular 
 Worker stdout is bounded at 2 MB, stderr retains its last 32 KB, and rendering has
 a 120-second worker budget (library override at most 600 seconds).
 
+## Master limiter
+
+Optional `master.limiter` (`ceilingDb` −24…0, `lookaheadSamples` 0…4,800,
+`releaseSamples` 0…480,000) is a lookahead peak limiter on the mix only, after
+master gain; stems and the ducking detector are unaffected. Each sample needs gain
+`ceiling / max(|L|, |R|)` when it exceeds the float32 ceiling and 1 otherwise. The
+gain falls linearly (full scale over `lookaheadSamples`) to meet every need before
+it arrives, so reduction starts at most that many samples early, and recovers
+linearly (full scale over `releaseSamples`). Zero lookahead or release steps
+instantly. Wherever no need is within reach the gain is exactly 1, so those samples
+keep their bits; limited samples are clamped to the float32 ceiling against
+rounding. No mix sample exceeds the ceiling. The full mix is limited before any
+range crop. `render.json` records the settings with `maxReductionDb` and
+`limitedSamples`, and the headroom report describes the limited mix. Absent means
+unlimited and bit-identical to earlier versions. The limiter's sound (attack and
+release shape, distortion on dense material) is an authoring choice to confirm by
+listening. Set or remove it with the `limiter` edit (`null` removes it).
+
 ## Ducking
 
 `peak-window-attack-hold-release-1` uses the peak absolute sample across both
@@ -192,7 +210,9 @@ a console's pre-fader send. Ducking therefore
 follows what each narration clip says, including fade-ins and automated dips,
 while riding, muting or soloing the narration track to audition the mix leaves
 the BGM ducked exactly as in the final mix. `thresholdDb` is measured after clip
-gain. The detector never rewrites narration samples. This is `soundtrack-dsp-5`, which adds optional
+gain. The detector never rewrites narration samples. This is `soundtrack-dsp-6`, which adds the optional
+master limiter; projects without one render identically to version 5. Version 5
+added optional
 equal-power fade curves; projects without them render identically to version 4.
 Version 4 added clip pan after the detector tap; projects without pan render
 identically to version 3.
@@ -233,7 +253,7 @@ resolve same-name clip/node ambiguity), `mute`, `solo`, `move`, `trim`,
 unpanned clip adds no history), `fade` (clip with any of `fadeInSamples`,
 `fadeOutSamples`, `fadeInCurve` and `fadeOutCurve`; a `linear` curve removes the
 field), `add-clip`, `remove-clip`, `add-asset`, `remove-asset`, `add-track`,
-`remove-track`, `add-bus`, `remove-bus`, `route`, `processors`, `ducking`, `tile`,
+`remove-track`, `add-bus`, `remove-bus`, `route`, `processors`, `ducking`, `limiter`, `tile`,
 `undo` and `redo`. The latter two need only `type`.
 
 Routing and DSP edits use the contract's own shapes. `add-track` and `add-bus` take
@@ -356,7 +376,8 @@ Save writes the same file as the CLI. Undo/redo uses persisted project history.
 An empty or invalid number field is rejected without saving instead of being read
 as zero. After rendering, the status line shows the mix peak and warns when
 samples exceed 0 dBFS. Each track row also sets its output and a filters JSON
-array; **Mix graph** edits ducking JSON (empty removes it) and adds empty tracks
+array; **Mix graph** edits ducking and master-limiter JSON (empty removes either)
+and adds empty tracks
 and buses. Unchanged controls add no history, and every control saves through the
 same validated edit. Drag handles, removing tracks or buses, tiling and an
 independent browser mixing engine are not provided; use a CLI/API edit for

@@ -4,6 +4,7 @@ import {
   SoundtrackBusSchema,
   SoundtrackClipSchema,
   SoundtrackDuckingSchema,
+  SoundtrackLimiterSchema,
   SoundtrackProcessorsSchema,
   SoundtrackTrackSchema,
   SoundtrackFadeCurveSchema,
@@ -97,6 +98,12 @@ export const SoundtrackEditSchema = z.discriminatedUnion("type", [
     .object({
       type: z.literal("ducking"),
       ducking: SoundtrackDuckingSchema.nullable(),
+    })
+    .strict(),
+  z
+    .object({
+      type: z.literal("limiter"),
+      limiter: SoundtrackLimiterSchema.nullable(),
     })
     .strict(),
   z
@@ -374,6 +381,10 @@ export function editSoundtrackProject(
       }
       case "processors":
         track!.processors = operation.processors;
+        break;
+      case "limiter":
+        if (operation.limiter) project.master.limiter = operation.limiter;
+        else delete project.master.limiter;
         break;
       case "tile":
         tileClip(

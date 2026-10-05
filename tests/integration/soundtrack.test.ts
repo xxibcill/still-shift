@@ -251,7 +251,7 @@ describe("CE16 offline lifecycle", () => {
       expect(await pcm(audio("pan-centre", name))).toEqual(
         await pcm(audio("pan-none", name)),
       );
-    expect(centred.dspVersion).toBe("soundtrack-dsp-5");
+    expect(centred.dspVersion).toBe("soundtrack-dsp-6");
     // Moving narration in the stereo field leaves the ducking envelope unchanged.
     expect(await pcm(audio("pan-sides", "duck-envelope"))).toEqual(
       await pcm(audio("pan-none", "duck-envelope")),
@@ -920,9 +920,9 @@ it.each(["silence", "delayed speech"])(
       expect(music[24479 * 2]).toBeCloseTo(0.1 * 10 ** (-12 / 20), 7);
       expect(music.at(-1)).toBeCloseTo(0.1 * 10 ** (-12 / 20), 7);
     }
-    expect(rendered.dspVersion).toBe("soundtrack-dsp-5");
+    expect(rendered.dspVersion).toBe("soundtrack-dsp-6");
     expect((rendered.identityInputs as { dsp: string }).dsp).toBe(
-      "soundtrack-dsp-5",
+      "soundtrack-dsp-6",
     );
   },
   10000,
@@ -1048,7 +1048,7 @@ it("equal-power fades follow a quarter-sine gain; absent and linear curves stay 
     file,
     join(root, "curve-absent"),
   );
-  expect(absent.dspVersion).toBe("soundtrack-dsp-5");
+  expect(absent.dspVersion).toBe("soundtrack-dsp-6");
   const linear = await pcm(audio("curve-absent"));
   Object.assign(p.clips[0]!, {
     fadeInCurve: "linear",
@@ -1279,3 +1279,110 @@ it("tiled beds render their equal-power joins sample for sample", async () => {
   expect(music[20000 * 2]).toBe(Math.fround(0.1));
   expect(music[143999 * 2 + 1]).toBe(Math.fround(0.1));
 }, 20000);
+
+it("an opt-in master limiter holds the ceiling and leaves samples out of reach bit-identical", async () => {
+  const dir = join(root, "limiter");
+  await mkdir(dir, { recursive: true });
+  // 0.2 everywhere except a 0.9 burst at 1.0-1.2 s; +6 dB track gain makes the
+  // burst about 1.8 (over full scale) and the rest about 0.4 (under -1 dBFS).
+  await runProcess("ffmpeg", [
+    "-v",
+    "error",
+    "-f",
+    "lavfi",
+    "-i",
+    "aevalsrc='if(between(t,1,1.2),0.9,0.2)*sin(2*PI*200*t)':s=48000:d=3",
+    "-c:a",
+    "pcm_f32le",
+    join(dir, "hot.wav"),
+  ]);
+  const p: SoundtrackProject = {
+    ...structuredClone(project),
+    assets: [
+      {
+        id: "hot",
+        path: "hot.wav",
+        sha256: await soundtrackChecksum(join(dir, "hot.wav")),
+      },
+    ],
+    tracks: [{ ...project.tracks[2]!, output: "master", gainDb: 6 }],
+    buses: [],
+    clips: [
+      {
+        id: "hot-clip",
+        asset: "hot",
+        track: "effect",
+        sourceStartSample: 0,
+        sourceEndSample: 144000,
+        startSample: 0,
+        gainDb: 0,
+        fadeInSamples: 0,
+        fadeOutSamples: 0,
+        automation: { interpolation: "linear", points: [] },
+      },
+    ],
+  };
+  delete p.ducking;
+  const file = join(dir, "project.json");
+  await writeFile(file, JSON.stringify(p));
+  const open = await renderSoundtrackProject(file, join(dir, "open"), {
+    stems: true,
+  });
+  expect(open.files.master!.samplesAboveFullScale).toBeGreaterThan(0);
+  const limiter = {
+    ceilingDb: -1,
+    lookaheadSamples: 480,
+    releaseSamples: 4800,
+  };
+  await saveSoundtrackEdits(file, 0, [{ type: "limiter", limiter }]);
+  const limited = await renderSoundtrackProject(file, join(dir, "limited"), {
+    stems: true,
+  });
+  expect(limited.dspVersion).toBe("soundtrack-dsp-6");
+  const before = await pcm(join(dir, "open/audio/mix.wav"));
+  const after = await pcm(join(dir, "limited/audio/mix.wav"));
+  const ceiling = Math.fround(10 ** (-1 / 20));
+  expect(after.every((v) => Math.abs(v) <= ceiling)).toBe(true);
+  expect(limited.files.master!.samplesAboveFullScale).toBe(0);
+  expect(limited.files.master!.peakDbfs).toBeLessThanOrEqual(-1 + 1e-6);
+  // Stems stay unlimited.
+  expect(await pcm(join(dir, "limited/audio/effect.wav"))).toEqual(
+    await pcm(join(dir, "open/audio/effect.wav")),
+  );
+  // Frames whose lookahead window holds no over and whose release has finished
+  // are untouched; the over spans about 48000-57600.
+  let firstOver = -1;
+  for (let i = 0; i < before.length; i += 2)
+    if (Math.max(Math.abs(before[i]!), Math.abs(before[i + 1]!)) > ceiling) {
+      firstOver = i / 2;
+      break;
+    }
+  expect(firstOver).toBeGreaterThan(47000);
+  expect(after.subarray(0, (firstOver - 480) * 2)).toEqual(
+    before.subarray(0, (firstOver - 480) * 2),
+  );
+  expect(after.subarray(70000 * 2)).toEqual(before.subarray(70000 * 2));
+  expect(after[(firstOver - 481) * 2]).toBe(before[(firstOver - 481) * 2]);
+  // Release: gain recovers at 1 / 4800 per sample once the burst has passed.
+  const gainAt = (frame: number) => after[frame * 2]! / before[frame * 2]!;
+  const recovering = [57700, 57800, 57900].map(gainAt);
+  expect(recovering[1]! - recovering[0]!).toBeCloseTo(100 / 4800, 4);
+  expect(recovering[2]! - recovering[1]!).toBeCloseTo(100 / 4800, 4);
+  const report = limited.limiter as {
+    maxReductionDb: number;
+    limitedSamples: number;
+  };
+  expect(report).toMatchObject(limiter);
+  expect(report.maxReductionDb).toBeCloseTo(
+    20 *
+      Math.log10(
+        ceiling / before.reduce((m, v) => Math.max(m, Math.abs(v)), 0),
+      ),
+    3,
+  );
+  expect(report.limitedSamples).toBeGreaterThan(9600);
+  // Removing the limiter restores the unlimited mix exactly.
+  await saveSoundtrackEdits(file, 1, [{ type: "limiter", limiter: null }]);
+  await renderSoundtrackProject(file, join(dir, "reopened"));
+  expect(await pcm(join(dir, "reopened/audio/mix.wav"))).toEqual(before);
+}, 30000);

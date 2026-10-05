@@ -80,6 +80,13 @@ export const SoundtrackDuckingSchema = z
     lookaheadSamples: sample.max(48000),
   })
   .strict();
+export const SoundtrackLimiterSchema = z
+  .object({
+    ceilingDb: z.number().min(-24).max(0),
+    lookaheadSamples: sample.max(4800),
+    releaseSamples: sample.max(480000),
+  })
+  .strict();
 export const SoundtrackStateSchema = z
   .object({
     sampleRate: z.literal(48000),
@@ -102,7 +109,14 @@ export const SoundtrackStateSchema = z
     clips: z.array(SoundtrackClipSchema).max(128),
     tracks: z.array(SoundtrackTrackSchema).max(16),
     buses: z.array(SoundtrackBusSchema).max(8),
-    master: z.object({ id: z.literal("master"), gainDb: gain }).strict(),
+    master: z
+      .object({
+        id: z.literal("master"),
+        gainDb: gain,
+        /** Optional lookahead peak limiter on the mix only; absent leaves it unlimited. */
+        limiter: SoundtrackLimiterSchema.optional(),
+      })
+      .strict(),
     ducking: SoundtrackDuckingSchema.optional(),
   })
   .strict();

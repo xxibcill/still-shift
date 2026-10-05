@@ -248,7 +248,25 @@
       "type": "object",
       "properties": {
         "id": { "type": "string", "const": "master" },
-        "gainDb": { "$ref": "#/$defs/__schema10" }
+        "gainDb": { "$ref": "#/$defs/__schema10" },
+        "limiter": {
+          "type": "object",
+          "properties": {
+            "ceilingDb": { "type": "number", "minimum": -24, "maximum": 0 },
+            "lookaheadSamples": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 4800
+            },
+            "releaseSamples": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 480000
+            }
+          },
+          "required": ["ceilingDb", "lookaheadSamples", "releaseSamples"],
+          "additionalProperties": false
+        }
       },
       "required": ["id", "gainDb"],
       "additionalProperties": false

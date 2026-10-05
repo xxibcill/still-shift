@@ -2,6 +2,7 @@ import {
   soundtrackAddCueOperations,
   soundtrackAddNodeOperation,
   soundtrackDuckingOperation,
+  soundtrackLimiterOperation,
   soundtrackTrackOperations,
   soundtrackHeadroom,
   soundtrackNumberField,
@@ -1000,4 +1001,51 @@ it("Lab mix controls build only changed routing, filter, ducking and node reques
   expect(() =>
     soundtrackAddNodeOperation("track", { id: " ", output: "master" }),
   ).toThrow(/nothing was saved/);
+});
+
+it("the master limiter is optional, bounded and set or removed by one edit", () => {
+  const p = fixture();
+  const limiter = {
+    ceilingDb: -1,
+    lookaheadSamples: 480,
+    releaseSamples: 4800,
+  };
+  const limited = editSoundtrackProject(p, [{ type: "limiter", limiter }]);
+  expect(limited.master).toEqual({ id: "master", gainDb: 0, limiter });
+  expect(limited.history.undo).toHaveLength(1);
+  const removed = editSoundtrackProject(limited, [
+    { type: "limiter", limiter: null },
+  ]);
+  expect(soundtrackState(removed)).toEqual(soundtrackState(p));
+  for (const bad of [
+    { ...limiter, ceilingDb: 0.5 },
+    { ...limiter, ceilingDb: -25 },
+    { ...limiter, lookaheadSamples: 4801 },
+    { ...limiter, releaseSamples: -1 },
+    { ...limiter, lookaheadSamples: 1.5 },
+    { ...limiter, knee: 2 },
+  ])
+    expect(() =>
+      editSoundtrackProject(p, [{ type: "limiter", limiter: bad } as never]),
+    ).toThrow(expect.objectContaining({ code: "edit-schema" }));
+  expect(() =>
+    validateSoundtrackProject({
+      ...p,
+      master: { ...p.master, limiter: { ...limiter, ceilingDb: 1 } },
+    }),
+  ).toThrow(/Invalid soundtrack/);
+});
+
+it("Lab limiter editor sets or removes the limiter", () => {
+  const set = soundtrackLimiterOperation(
+    '{"ceilingDb":-1,"lookaheadSamples":480,"releaseSamples":4800}',
+  );
+  expect(
+    editSoundtrackProject(fixture(), [set]).master.limiter?.ceilingDb,
+  ).toBe(-1);
+  expect(soundtrackLimiterOperation(" ")).toEqual({
+    type: "limiter",
+    limiter: null,
+  });
+  expect(() => soundtrackLimiterOperation("{")).toThrow(/nothing was saved/);
 });

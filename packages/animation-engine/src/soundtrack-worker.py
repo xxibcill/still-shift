@@ -403,6 +403,63 @@ def duck_envelope(detector, settings, np):
     return envelope
 
 
+def limit_mix(mix, settings, np):
+    """Lookahead peak limiter applied to the mix in place, chunk by chunk.
+
+    Each sample needs gain ceiling / max(|L|, |R|) when it exceeds the ceiling
+    and 1 otherwise. The gain falls linearly (full scale over lookaheadSamples)
+    to meet every need before it arrives, recovers linearly (full scale over
+    releaseSamples) afterwards, and is exactly 1 wherever no need is in reach, so
+    those samples keep their bits. Limited samples are clamped to the float32
+    ceiling against rounding. Returns (lowest gain, samples with gain below 1).
+    """
+    from scipy.ndimage import minimum_filter1d
+
+    length, ahead = mix.shape[1], settings["lookaheadSamples"]
+    release = settings["releaseSamples"]
+    ceiling = np.float32(10 ** (settings["ceilingDb"] / 20))
+    size = ahead + 1
+
+    def forward_min(values):
+        return minimum_filter1d(values, size, origin=-(size // 2), mode="nearest")
+
+    carry, lowest, limited = 1.0, 1.0, 0
+    for at in range(0, length, CHUNK):
+        stop, end = min(length, at + CHUNK), min(length, at + CHUNK + ahead)
+        count = stop - at
+        peak = np.max(np.abs(mix[:, at:end]), axis=0).astype(np.float64)
+        need = np.ones(count + ahead)
+        loud = peak > ceiling
+        need[: peak.size][loud] = np.float64(ceiling) / peak[loud]
+        if ahead:
+            # min over k in [0, ahead] of need[n + k] + k / ahead, via one filter.
+            offsets = np.arange(need.size) / ahead
+            attack = (forward_min(need + offsets) - offsets)[:count]
+            attack = np.where(forward_min(need)[:count] >= 1, 1.0, np.minimum(attack, 1.0))
+        else:
+            attack = need[:count]
+        if release:
+            # gain[n] = min(attack[n], gain[n - 1] + 1 / release), vectorized.
+            steps = np.arange(count) / release
+            gain = np.minimum(
+                np.minimum.accumulate(attack - steps) + steps,
+                carry + steps + 1 / release,
+            )
+            gain = np.minimum(np.minimum(gain, attack), 1.0)
+        else:
+            gain = attack
+        carry = float(gain[-1])
+        reduced = np.flatnonzero(gain < 1)
+        if reduced.size:
+            lowest = min(lowest, float(gain[reduced].min()))
+            limited += int(reduced.size)
+            columns = at + reduced
+            mix[:, columns] = np.clip(
+                (mix[:, columns] * gain[reduced]).astype(np.float32), -ceiling, ceiling
+            )
+    return lowest, limited
+
+
 def juce_equal(a, b, np):
     """JUCE 8 approximatelyEqual for float, as AudioBuffer gain shortcuts use it."""
     a, b = np.float32(a), np.float32(b)
@@ -855,6 +912,15 @@ def render(request):
                 processed.tofile(spilled[track["id"]])
                 del processed
         master = node_output(project["master"], spilled)
+        limiter = project["master"].get("limiter")
+        if limiter:
+            # The mix only, after master gain; stems stay unlimited.
+            lowest, limited = limit_mix(master, limiter, np)
+            limiter = {
+                **limiter,
+                "maxReductionDb": 20 * math.log10(lowest),
+                "limitedSamples": limited,
+            }
         publish("master", master)
         del master
     # Every clip has been mixed; release the decode pool.
@@ -881,8 +947,9 @@ def render(request):
         "latencySamples": 0,
         "latencyProbes": latency,
         "tailPolicy": project["tailPolicy"],
-        "dspVersion": "soundtrack-dsp-5",
+        "dspVersion": "soundtrack-dsp-6",
         "ducking": project.get("ducking"),
+        "limiter": limiter,
         "wallSeconds": time.perf_counter() - started,
         "peakResidentBytes": resource.getrusage(resource.RUSAGE_SELF).ru_maxrss,
         "runtime": {
