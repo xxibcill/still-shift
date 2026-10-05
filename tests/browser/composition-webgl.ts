@@ -1,3 +1,4 @@
+import type * as SampledBlurChecks from "../helpers/composition-sampled-blur-reference.ts";
 import type * as TransitionChecks from "../helpers/composition-transition-effect-reference.ts";
 import type * as ColorChecks from "../helpers/composition-color-effect-reference.ts";
 import type * as PluginChecks from "../helpers/composition-effect-plugin-reference.ts";
@@ -60,6 +61,20 @@ try {
     ).checkTransitionEffectRendering();
   });
   console.log("WebGL native transitions:", JSON.stringify(transitions));
+  const sampledBlur = await page.evaluate(async () => {
+    const url = "/tests/helpers/composition-sampled-blur-reference.ts";
+    return (
+      (await import(url)) as typeof SampledBlurChecks
+    ).checkSampledBlurRendering();
+  });
+  console.log("WebGL sampled blur:", JSON.stringify(sampledBlur));
+  const sampledBlurLimits = await page.evaluate(async () => {
+    const url = "/tests/helpers/composition-sampled-blur-reference.ts";
+    return (
+      (await import(url)) as typeof SampledBlurChecks
+    ).checkSampledBlurLimits();
+  });
+  console.log("WebGL sampled blur limits:", JSON.stringify(sampledBlurLimits));
   const blur = await page.evaluate(async () => {
     const url = "/tests/helpers/composition-webgl-blur.ts";
     return ((await import(url)) as typeof Blur).checkWebglPrimitiveBlur();

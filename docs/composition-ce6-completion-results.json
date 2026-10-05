@@ -17,7 +17,7 @@
       ],
       "versions": {
         "evaluator": 30,
-        "canvas": "composition-canvas2d-1.25.0",
+        "canvas": "composition-canvas-1.25.0",
         "webgl": "composition-webgl2-0.39.0"
       },
       "verification": {
@@ -103,7 +103,7 @@
       ],
       "versions": {
         "evaluator": 31,
-        "canvas": "composition-canvas2d-1.26.0",
+        "canvas": "composition-canvas-1.26.0",
         "webgl": "composition-webgl2-0.40.0"
       },
       "verification": {
@@ -158,7 +158,7 @@
       ],
       "versions": {
         "evaluator": 32,
-        "canvas": "composition-canvas2d-1.27.0",
+        "canvas": "composition-canvas-1.27.0",
         "webgl": "composition-webgl2-0.41.0"
       },
       "verification": {
@@ -247,6 +247,66 @@
       "pending": [
         "Gradient wipe requires the pending scoped layer-input stages",
         "Complete hardware/hash/export/cost/full-gate acceptance follows the complete catalogue"
+      ],
+      "implementation": "ed77a6e"
+    },
+    {
+      "name": "Native sampled radial, zoom and lens blur",
+      "status": "focused-verification-passed",
+      "effects": ["blur.radial", "blur.zoom", "blur.lens"],
+      "features": [
+        "Actual GPU image sampling and independent Canvas premultiplied byte reference",
+        "Bounded 2\u201364 fixed-order samples; quantized affine/disk control transforms",
+        "Transparent-padded 1/16 bilinear sampling and explicit byte-rounding",
+        "Neutral controls and conservative lens/full-surface bounds",
+        "Reusable lens aperture kernel for conditional CE8 focus integration"
+      ],
+      "versions": {
+        "evaluator": 34,
+        "canvas": "composition-canvas-1.29.0",
+        "webgl": "composition-webgl2-0.43.0"
+      },
+      "verification": {
+        "focusedTests": 62,
+        "focusedFiles": 6,
+        "unitLog": "benchmarks/results/composition-ce6-completion/ce6-sampled-blur-focused-r3.log",
+        "build": "benchmarks/results/composition-ce6-completion/ce6-sampled-blur-build-r3.log",
+        "schema": "benchmarks/results/composition-ce6-completion/ce6-sampled-blur-schema-check.log",
+        "boundaries": "benchmarks/results/composition-ce6-completion/ce6-sampled-blur-boundaries.log",
+        "lint": "benchmarks/results/composition-ce6-completion/ce6-sampled-blur-lint-r3.log",
+        "nativeMatrix": {
+          "cases": 81,
+          "frames": 972,
+          "backends": 2,
+          "randomSeeks": 1134,
+          "maxDelta": 0,
+          "minPsnr": 999,
+          "raw": "benchmarks/results/composition-ce6-completion/ce6-sampled-blur-native-acceptance.json",
+          "snapshot": "/private/tmp/still-shift-ce6-sampled-blur-r3-ed77a6e"
+        },
+        "upperLimits": {
+          "cases": 27,
+          "frames": 324,
+          "randomSeeks": 378,
+          "samples": 64,
+          "maxDelta": 0,
+          "minPsnr": 999,
+          "raw": "benchmarks/results/composition-ce6-completion/ce6-sampled-blur-limits.json"
+        },
+        "correctedAdjustmentFixtures": {
+          "colorCases": 30,
+          "transitionCases": 12,
+          "maxDelta": 0,
+          "raw": "benchmarks/results/composition-ce6-completion/ce6-corrected-adjustment-acceptance.json"
+        }
+      },
+      "initialFailures": [
+        "Test-first sampled blur API absent",
+        "Shared adjustment fixture painted below the artwork; corrected ordering and reverified all affected color/transition and blur cases"
+      ],
+      "pending": [
+        "Complete hardware/hash/export/cost/full-gate acceptance follows the complete catalogue",
+        "Depth-of-field parameter integration is conditional on CE8"
       ]
     }
   ],

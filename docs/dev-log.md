@@ -44,12 +44,11 @@ still hold before relying on them.
 ## Current state
 
 - **CE6 in progress (2026-10-06):** `codex/composition-ce6-completion` from
-  CE7 `817cc9f`. Checkpoints `90d8c10`, `38a2856`, `7bde3b6` and `cea8b65`
-  deliver typed/paired plugins and ten color kernels with animated curves.
-  Four native transitions now pass 76 focused tests, build/lint/schema/boundaries
-  and 108 cases / 1,296 frames / 1,512 seeks. Max backend delta 1, minimum
-  PSNR 64.43 dB; 16 direct coverage oracles pass. Curves/color remain verified
-  across 270 cases / 3,240 frames and exhaustive byte pairs.
+  CE7 `817cc9f`. Checkpoints through `ed77a6e` deliver typed/paired plugins,
+  ten color kernels/curves and four native coverage transitions. Native radial,
+  zoom and lens blur now pass 62 focused tests, build/lint/schema/boundaries,
+  81 cases / 972 frames and 27 upper-limit cases / 324 frames at 64 samples.
+  Pixels and all 1,512 seeks pass. Earlier color/transition acceptance is recorded.
   Remaining spatial/catalogue/dependency effects, linear-light and complete
   hardware/hash/export/cost/full-gate acceptance remain. No owner decision is
   pending. [Evidence](./composition-ce6-completion-results.json).
@@ -188,6 +187,20 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-06 — CE6 sampled blur checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce6-completion`.
+- **Done:** radial, zoom and reusable lens aperture kernels; real GPU samples,
+  Canvas premultiplied reference, fixed sums/quantized controls, neutral/bounds tests.
+- **Results:** 62 focused tests plus build/lint/schema/boundaries; 81 native
+  cases / 972 frames and 27 maximum-control cases / 324 frames at 64 samples.
+  Pixels and 1,512 seeks pass. Complete milestone gate remains pending.
+- **Next:** spatial and remaining catalogue effects, scoped inputs/gradient
+  wipe, linear-light and complete hardware/hash/export/cost/full-gate acceptance.
+  CE8 supplies focus-driven lens controls later.
+- **Records:** [CE6 evidence](./composition-ce6-completion-results.json),
+  [sampling conventions](./composition-effect-plugins.md#native-sampled-blur).
 
 ### 2026-10-06 — CE6 native transition checkpoint
 

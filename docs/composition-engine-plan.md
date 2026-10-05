@@ -3154,6 +3154,19 @@ scoped-input dependencies; remaining spatial/catalogue, linear-light and complet
 hardware/hash/export/cost/full-gate acceptance remain. Existing thresholds and
 frozen baselines are unchanged. [Evidence](./composition-ce6-completion-results.json).
 
+### CE6 sampled blur checkpoint (2026-10-06)
+
+Radial, zoom and lens aperture blur use bounded 2–64 fixed-order samples,
+quantized affine/disk controls and transparent-padded premultiplied interpolation.
+GPU kernels sample actual textures; Canvas is the byte reference. Native tests
+pass 81 cases / 972 frames and 27 upper-control cases / 324 frames at 64 samples,
+including 1,512 seeks. 62 focused tests and build/lint/schema/boundaries pass.
+Neutral/bounds and independent interpolation oracles pass. CE8 will supply focus
+integration; remaining spatial/catalogue/dependencies, linear-light and complete
+hardware/hash/export/cost/full-gate acceptance remain. Existing Gaussian and
+directional arithmetic, thresholds and frozen baselines are unchanged.
+[Evidence](./composition-ce6-completion-results.json).
+
 ### CE6 performance slice 1: exact effect work (2026-10-03)
 
 - **Scope:** the transferred CE4b timing requirement only, not the broader CE6

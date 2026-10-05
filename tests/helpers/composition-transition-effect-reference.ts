@@ -5,29 +5,40 @@ const animation = {
     { frame: 11, value: 1 },
   ],
 };
-export async function checkTransitionEffectRendering() {
-  const matrix = await checkNativeEffectRendering({
-    "transition.linear-wipe": [
-      {},
-      { progress: 0.45, angle: 35, softness: 0.3 },
-      { progress: animation, angle: -90 },
-    ],
-    "transition.radial-wipe": [
-      {},
-      { progress: 0.6, angle: -35, softness: 0.25, center: [0.2, 0.6] },
-      { progress: animation, angle: 90 },
-    ],
-    "transition.venetian-blinds": [
-      {},
-      { progress: 0.35, angle: 23, softness: 0.3, width: 11 },
-      { progress: animation, angle: 90, width: 8 },
-    ],
-    "transition.block-dissolve": [
-      {},
-      { progress: 0.55, softness: 0.2, width: 7, height: 11, seed: 2147483647 },
-      { progress: animation, width: 8, height: 8, seed: 99 },
-    ],
-  });
+export async function checkTransitionEffectRendering(
+  selectedKinds?: Parameters<typeof checkNativeEffectRendering>[1],
+) {
+  const matrix = await checkNativeEffectRendering(
+    {
+      "transition.linear-wipe": [
+        {},
+        { progress: 0.45, angle: 35, softness: 0.3 },
+        { progress: animation, angle: -90 },
+      ],
+      "transition.radial-wipe": [
+        {},
+        { progress: 0.6, angle: -35, softness: 0.25, center: [0.2, 0.6] },
+        { progress: animation, angle: 90 },
+      ],
+      "transition.venetian-blinds": [
+        {},
+        { progress: 0.35, angle: 23, softness: 0.3, width: 11 },
+        { progress: animation, angle: 90, width: 8 },
+      ],
+      "transition.block-dissolve": [
+        {},
+        {
+          progress: 0.55,
+          softness: 0.2,
+          width: 7,
+          height: 11,
+          seed: 2147483647,
+        },
+        { progress: animation, width: 8, height: 8, seed: 99 },
+      ],
+    },
+    selectedKinds,
+  );
   return { ...matrix, coverageOracles: checkTransitionCoverageOracles() };
 }
 

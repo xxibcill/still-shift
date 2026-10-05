@@ -280,14 +280,18 @@ function fixture(
     root = { id: "art", type: "adjustment", transform: { opacity: 0.65 } };
   }
   root.effects = [{ id: "correction", effect, params }];
-  comp.layers.push(root);
+  if (kind === "adjustment") comp.layers.unshift(root);
+  else comp.layers.push(root);
   return comp;
 }
-export async function checkColorEffectRendering() {
-  return checkNativeEffectRendering(variants);
+export async function checkColorEffectRendering(
+  selectedKinds?: readonly (typeof kinds)[number][],
+) {
+  return checkNativeEffectRendering(variants, selectedKinds);
 }
 export async function checkNativeEffectRendering(
   variants: Readonly<Record<string, EffectParams[]>>,
+  selectedKinds: readonly (typeof kinds)[number][] = kinds,
 ) {
   const tile = document.createElement("canvas");
   tile.width = 48;
@@ -321,7 +325,7 @@ export async function checkNativeEffectRendering(
     psnr: number;
   }[] = [];
   for (const [effect, values] of Object.entries(variants))
-    for (const kind of kinds)
+    for (const kind of selectedKinds)
       for (const [variant, params] of values.entries()) {
         const comp = fixture(kind, effect, params);
         const previews = (["canvas2d", "webgl2"] as const).map((backend) =>

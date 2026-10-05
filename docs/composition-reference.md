@@ -715,6 +715,14 @@ Identifiers: `time`, `frame`, `value`, `index`, `layerCount`, `fps`. Components:
 | `transition.block-dissolve`  | `width`          | scalar | `16`            | 1–8192                                       |
 | `transition.block-dissolve`  | `height`         | scalar | `16`            | 1–8192                                       |
 | `transition.block-dissolve`  | `seed`           | scalar | `1`             | 0–2147483647 (integer)                       |
+| `blur.radial`                | `angle`          | scalar | `0`             | -180–180                                     |
+| `blur.radial`                | `center`         | vec2   | `[0.5,0.5]`     | 0–1 per axis                                 |
+| `blur.radial`                | `samples`        | scalar | `16`            | 2–64 (integer)                               |
+| `blur.zoom`                  | `amount`         | scalar | `0`             | -1–1                                         |
+| `blur.zoom`                  | `center`         | vec2   | `[0.5,0.5]`     | 0–1 per axis                                 |
+| `blur.zoom`                  | `samples`        | scalar | `16`            | 2–64 (integer)                               |
+| `blur.lens`                  | `radius`         | scalar | `0`             | 0–1000                                       |
+| `blur.lens`                  | `samples`        | scalar | `16`            | 2–64 (integer)                               |
 | `blur.primitive`             | `radius`         | scalar | `0`             | 0–1000                                       |
 | `time.echo`                  | `spacing`        | scalar | `1`             | 1–120                                        |
 | `time.echo`                  | `count`          | scalar | `3`             | 1–8 (integer)                                |

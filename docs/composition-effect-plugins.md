@@ -128,3 +128,21 @@ preserve all supported integer seed bits in shader uniforms.
 All four kernels run as actual GPU passes, with pure Canvas coverage references.
 They apply to isolated drawable layers, groups, precomps and captured adjustment
 backdrops. Gradient wipe follows the remaining scoped-input dependency work.
+
+## Native sampled blur
+
+`blur.radial` averages centered angular samples about normalized `center`.
+`blur.zoom` averages centered scale samples; `amount` ranges from −1 to 1.
+`blur.lens` averages circular aperture samples using a fixed golden-angle disk
+sequence and authored pixel `radius`. This aperture kernel is reusable by CE8
+focus integration. All three accept 2–64 samples and preserve exact neutral
+controls. Image edges have transparent padding.
+
+Sample transforms are prepared once from controls: affine coefficients use
+1/256 steps and translation/lens offsets use 1/16 pixel steps. Both adapters
+interpolate stored premultiplied bytes with 1/16 bilinear weights, round each
+sample to bytes, sum in ascending sample order, then round the average. GPU
+shaders sample actual image textures; control preparation does not read image
+pixels. Canvas reconstructs premultiplied input bytes for the same reference.
+Lens bounds expand by radius plus one interpolation pixel when radius is
+nonzero. Radial/zoom bounds conservatively cover the full target.
