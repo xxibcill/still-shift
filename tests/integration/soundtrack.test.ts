@@ -1,4 +1,11 @@
-import { afterAll, beforeAll, describe, expect, it } from "vitest";
+import {
+  afterAll,
+  beforeAll,
+  describe,
+  expect,
+  it,
+  onTestFinished,
+} from "vitest";
 import {
   mkdtemp,
   readFile,
@@ -11,7 +18,11 @@ import {
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { runProcess } from "@still-shift/execution-runtime/subprocess";
-import { type SoundtrackProject } from "@still-shift/scene-contract";
+import {
+  soundtrackWorkingBytes,
+  type SoundtrackProject,
+} from "@still-shift/scene-contract";
+import { soundtrackPython } from "../../packages/animation-engine/src/soundtrack-render.ts";
 import {
   renderSoundtrackProject,
   soundtrackChecksum,
@@ -583,10 +594,14 @@ it("reused sounds share one decode pass and match per-clip decoding sample for s
     join(root, "ramp.wav"),
   ]);
   const sha256 = await soundtrackChecksum(join(root, "ramp.wav"));
-  // The worker keeps at most a 48,000-sample project of decoded clip samples.
-  // "near" and "far" clips total 9,600 samples, so each asset streams in one
-  // pass, even though "far" covers 124,800 source samples. "wide" clips total
-  // 60,000 samples, beyond the budget, so each decodes alone.
+  // Lower the decode budget to 12,000 samples of held clips. "near" and "far"
+  // clips total 9,600 samples, so each asset decodes in one pass, even though
+  // "far" covers 124,800 source samples. Each 30,000-sample "wide" clip exceeds
+  // the budget and streams straight into its track.
+  process.env.STILL_SHIFT_SOUNDTRACK_DECODE_FRAMES = "12000";
+  onTestFinished(() => {
+    delete process.env.STILL_SHIFT_SOUNDTRACK_DECODE_FRAMES;
+  });
   const placements = [
     ["near", 0, 4800, 0, "effect"],
     ["near", 2400, 7200, 12000, "effect"],
@@ -638,9 +653,10 @@ it("reused sounds share one decode pass and match per-clip decoding sample for s
     for (let i = 0; i < end - start; i++)
       for (const channel of [0, 1])
         expect(stems[track]![(at + i) * 2 + channel]).toBe(source[start + i]);
-  // Decoding runs ahead in parallel, but a failure is reported at the first
-  // affected clip in authored order, even when a later pass fails first. The
-  // last clip's source is unreadable, so its probe fails inside the pool.
+  // Tracks render one at a time. Within a track, decoding runs ahead in
+  // parallel, but a failure is reported at the first affected clip in authored
+  // order, even when a later pass fails first. "hit-broken" has an unreadable
+  // source, so its probe fails inside the pool.
   await writeFile(join(root, "broken.wav"), "not audio");
   const broken = {
     id: "broken",
@@ -649,8 +665,10 @@ it("reused sounds share one decode pass and match per-clip decoding sample for s
   };
   for (const [clips, withBroken, code, first] of [
     [[1, 3], true, "source-range", "hit-1"],
+    [[1], true, "source-range", "hit-1"],
     [[3], false, "source-range", "hit-3"],
-    [[5], true, "source-range", "hit-5"],
+    // A clip longer than a quarter of the project streams straight from FFmpeg.
+    [[5], false, "source-range", "hit-5"],
     [[], true, "media-decode", undefined],
   ] as const) {
     const variant = structuredClone(p);
@@ -662,10 +680,13 @@ it("reused sounds share one decode pass and match per-clip decoding sample for s
     }
     if (withBroken) {
       variant.assets.push(broken);
-      variant.clips.push({
+      // Short and authored right after "near", so its failing decode runs in
+      // parallel with the pass that holds hit-1.
+      variant.clips.splice(2, 0, {
         ...variant.clips[0]!,
         id: "hit-broken",
         asset: "broken",
+        sourceEndSample: 100,
       });
     }
     await writeFile(reuse, JSON.stringify(variant));
@@ -1064,3 +1085,121 @@ it("equal-power fades follow a quarter-sine gain; absent and linear curves stay 
   expect(mixed.subarray(0, 2880 * 2)).toEqual(power.subarray(0, 2880 * 2));
   expect(mixed.subarray(2880 * 2)).toEqual(linear.subarray(2880 * 2));
 }, 20000);
+
+it("worker and contract agree on the working-memory estimate", async () => {
+  const states = [];
+  for (let seed = 0; seed < 40; seed++) {
+    const p = structuredClone(project);
+    const buses = seed % 9;
+    p.buses = Array.from({ length: buses }, (_, i) => ({
+      id: "b" + i,
+      // Alternate nesting and flat buses, always reaching master.
+      output: i + 1 < buses && (seed + i) % 3 ? "b" + (i + 1) : "master",
+      gainDb: 0,
+    }));
+    p.tracks = p.tracks.map((track, i) => ({
+      ...track,
+      output: buses ? "b" + ((seed + i) % buses) : "master",
+      processors:
+        (seed + i) % 4 === 0
+          ? [{ type: "lowpass" as const, frequencyHz: 4000, q: 0.7 }]
+          : [],
+    }));
+    if (seed % 2) delete p.ducking;
+    p.durationSamples = 48000 * (1 + seed * 7);
+    states.push(p);
+  }
+  const script = [
+    "import importlib.util, json, sys",
+    "spec = importlib.util.spec_from_file_location('w', sys.argv[1])",
+    "w = importlib.util.module_from_spec(spec); spec.loader.exec_module(w)",
+    "print(json.dumps([w.working_bytes(p) for p in json.load(sys.stdin)]))",
+  ].join("\n");
+  const input = join(root, "working-bytes.json");
+  await writeFile(input, JSON.stringify(states));
+  const { stdout } = await runProcess("sh", [
+    "-c",
+    '"$0" -c "$1" "$2" < "$3"',
+    soundtrackPython(),
+    script,
+    join(
+      import.meta.dirname,
+      "../../packages/animation-engine/src/soundtrack-worker.py",
+    ),
+    input,
+  ]);
+  expect(JSON.parse(stdout)).toEqual(
+    states.map((state) => soundtrackWorkingBytes(state)),
+  );
+});
+
+it("renders a ten-minute ducked, filtered and bussed project within its estimate", async () => {
+  const tenMinutes = 28_800_000;
+  const dir = join(root, "ten-minutes");
+  await mkdir(dir, { recursive: true });
+  for (const [name, expression] of [
+    ["speech", "if(lt(mod(t,10),6),0.4*sin(2*PI*220*t),0)"],
+    ["bed", "0.1*sin(2*PI*55*t)"],
+  ] as const)
+    await runProcess("ffmpeg", [
+      "-v",
+      "error",
+      "-f",
+      "lavfi",
+      "-i",
+      `aevalsrc='${expression}':s=48000:d=600`,
+      "-c:a",
+      "pcm_s16le",
+      join(dir, name + ".wav"),
+    ]);
+  const p = structuredClone(project);
+  p.durationSamples = tenMinutes;
+  p.assets = await Promise.all(
+    ["speech", "bed"].map(async (id) => ({
+      id,
+      path: id + ".wav",
+      sha256: await soundtrackChecksum(join(dir, id + ".wav")),
+    })),
+  );
+  p.tracks = [
+    { ...project.tracks[0]!, output: "dialogue-bus" },
+    {
+      ...project.tracks[1]!,
+      output: "music-bus",
+      processors: [{ type: "highpass", frequencyHz: 40, q: 0.7 }],
+    },
+  ];
+  p.buses = [
+    { id: "dialogue-bus", output: "master", gainDb: 0 },
+    { id: "music-bus", output: "master", gainDb: -3 },
+  ];
+  p.clips = ["speech", "bed"].map((id, i) => ({
+    id: id + "-clip",
+    asset: id,
+    track: p.tracks[i]!.id,
+    sourceStartSample: 0,
+    sourceEndSample: tenMinutes,
+    startSample: 0,
+    gainDb: 0,
+    fadeInSamples: 0,
+    fadeOutSamples: 48000,
+    automation: { interpolation: "linear" as const, points: [] },
+  }));
+  expect(soundtrackWorkingBytes(p)).toBeLessThanOrEqual(1_500_000_000);
+  const file = join(dir, "project.json");
+  await writeFile(file, JSON.stringify(p));
+  const rendered = await renderSoundtrackProject(file, join(dir, "render"), {
+    stems: true,
+  });
+  expect(rendered.files.master!.samplesPerChannel).toBe(tenMinutes);
+  expect(Object.keys(rendered.files)).toEqual([
+    "voice",
+    "music",
+    "dialogue-bus",
+    "music-bus",
+    "master",
+  ]);
+  // macOS reports peak resident bytes; elsewhere the unit is smaller.
+  if (process.platform === "darwin")
+    expect(rendered.peakResidentBytes).toBeLessThan(1_500_000_000);
+}, 120000);

@@ -267,15 +267,36 @@ function validateState(state: SoundtrackState) {
       "Only explicit BGM tracks can be ducked",
     );
   }
-  // Four full-length stereo float buffers per processing node plus temporary decode.
-  const nodesCount =
-    state.tracks.length +
-    state.buses.length +
-    1 +
-    state.tracks.reduce((sum, t) => sum + t.processors.length, 0);
   check(
-    state.durationSamples * 8 * (nodesCount * 4 + 8) <= 1_500_000_000,
+    soundtrackWorkingBytes(state) <= 1_500_000_000,
     "resource-budget",
-    "Project exceeds the 1.5 GB working-buffer estimate; shorten or split it",
+    "Project exceeds the 1.5 GB working-buffer estimate; shorten it, split it or flatten nested buses",
   );
+}
+
+/**
+ * Peak worker memory estimate, mirrored by soundtrack-worker.py. Units are
+ * project-length stereo float32 buffers (8 bytes per sample frame):
+ * - routing depth: the accumulators alive along one bus path to master;
+ * - +1 for the track being mixed;
+ * - or 3 while DawDreamer filters one track (input copy, recording, result),
+ *   which happens before any accumulator exists;
+ * - +0.5 for a ducking envelope.
+ * Fixed: 200 MB for the interpreter and chunk temporaries, and 128 MB for
+ * decoded clips (a 64 MB decode budget plus the clip being mixed).
+ * Requires a routing graph already checked to reach master without cycles.
+ */
+export function soundtrackWorkingBytes(state: SoundtrackState) {
+  const outputs = new Map(state.buses.map((bus) => [bus.id, bus.output]));
+  const depth = (bus: string) => {
+    let nodes = 1;
+    for (let at = bus; at !== "master"; at = outputs.get(at)!) nodes++;
+    return nodes;
+  };
+  const routingDepth = Math.max(1, ...state.buses.map((bus) => depth(bus.id)));
+  const filtered = state.tracks.some((track) => track.processors.length > 0);
+  // Half-buffer units keep the estimate in integers.
+  const halves =
+    (state.ducking ? 1 : 0) + Math.max(filtered ? 6 : 0, 2 * routingDepth + 2);
+  return state.durationSamples * 4 * halves + 328_000_000;
 }

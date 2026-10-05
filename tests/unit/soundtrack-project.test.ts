@@ -5,6 +5,7 @@ import {
 } from "../../apps/lab/src/soundtrack-timeline-model.ts";
 import { describe, expect, it } from "vitest";
 import {
+  soundtrackWorkingBytes,
   validateSoundtrackProject,
   type SoundtrackProject,
 } from "@still-shift/scene-contract";
@@ -107,8 +108,43 @@ describe("soundtrack contract and transactions", () => {
       Object.assign(p.clips[0]!, patch);
       expect(() => validateSoundtrackProject(p)).toThrow();
     }
+  });
+  it("budgets worker memory by bus depth so ten-minute projects fit", () => {
+    const tenMinutes = 28_800_000;
     const p = fixture();
-    p.durationSamples = 28_800_000;
+    p.durationSamples = tenMinutes;
+    // Two tracks through one bus: depth 2 + 1 track = 6 half-buffers + 328 MB.
+    expect(soundtrackWorkingBytes(p)).toBe(tenMinutes * 4 * 6 + 328_000_000);
+    expect(validateSoundtrackProject(p).durationSamples).toBe(tenMinutes);
+    // Filters and ducking with one bus level still fit at ten minutes.
+    p.tracks[1]!.processors = [{ type: "highpass", frequencyHz: 80, q: 0.7 }];
+    p.ducking = {
+      method: "peak-window-attack-hold-release-1",
+      sourceTrack: "voice",
+      targetTracks: ["music"],
+      thresholdDb: -30,
+      attenuationDb: -12,
+      windowSamples: 480,
+      attackSamples: 480,
+      releaseSamples: 4800,
+      holdSamples: 2400,
+      lookaheadSamples: 0,
+    };
+    expect(validateSoundtrackProject(p).durationSamples).toBe(tenMinutes);
+    // Each nested bus level adds one buffer; depth 4 with ducking does not fit.
+    p.buses = [
+      { id: "bus", output: "group", gainDb: 0 },
+      { id: "group", output: "stage", gainDb: 0 },
+      { id: "stage", output: "master", gainDb: 0 },
+    ];
+    expect(() => validateSoundtrackProject(p)).toThrow(/working-buffer/);
+    // Its longest fitting duration is the largest within 1.5 GB.
+    const halves = 1 + 2 * 4 + 2;
+    const longest = Math.floor((1_500_000_000 - 328_000_000) / (4 * halves));
+    p.durationSamples = longest;
+    expect(soundtrackWorkingBytes(p)).toBeLessThanOrEqual(1_500_000_000);
+    expect(validateSoundtrackProject(p).durationSamples).toBe(longest);
+    p.durationSamples = longest + 1;
     expect(() => validateSoundtrackProject(p)).toThrow(/working-buffer/);
   });
   it("supports gain, move, trim, automation, mute/solo and persisted undo/redo without mutating input", () => {
