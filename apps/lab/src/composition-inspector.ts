@@ -255,7 +255,12 @@ export function createCompositionInspector(options: {
   }
   function graph(index = keyIndex) {
     const area = element("curve-controls"),
-      chart = element("curve-graph");
+      chart = element("curve-graph"),
+      code = element<HTMLTextAreaElement>("edited-keys"),
+      copy = element<HTMLButtonElement>("copy-keys");
+    code.value = "";
+    copy.disabled = true;
+    copy.onclick = null;
     area.replaceChildren();
     chart.replaceChildren();
     element("resolved-graph").replaceChildren();
@@ -280,6 +285,16 @@ export function createCompositionInspector(options: {
     element("curve-title").textContent = current.label;
     element("curve-clock").textContent =
       `Authored local key frames · ${current.fps} fps · speed in units/frame${current.spatial ? " · spatial path" : ""}. Resolved expressions, constraints and motion additions are visible in the preview.`;
+    code.value = editedKeysCode(current);
+    copy.disabled = false;
+    copy.onclick = () => {
+      void navigator.clipboard
+        .writeText(code.value)
+        .then(() => {
+          message.textContent = "Edited keys copied as code.";
+        })
+        .catch(report);
+    };
     const points = trackGraph(current),
       all = points.flatMap((p) => [...p.value, ...p.speed]);
     if (!all.length) {
@@ -574,16 +589,6 @@ export function createCompositionInspector(options: {
           }),
         );
       }
-    const code = element<HTMLTextAreaElement>("edited-keys");
-    code.value = editedKeysCode(current);
-    element<HTMLButtonElement>("copy-keys").onclick = () => {
-      void navigator.clipboard
-        .writeText(code.value)
-        .then(() => {
-          message.textContent = "Edited keys copied as code.";
-        })
-        .catch(report);
-    };
   }
   function refresh(next: CompositionDocument) {
     history = next;

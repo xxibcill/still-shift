@@ -65,7 +65,9 @@
       "title": "[P2] Clear stale copied code when selecting path keys",
       "body": "This early return runs before updating the edited-key code field and copy action. After selecting a keyed mask path following rotation, the title names masks[cutout].path but Copy edited keys still copies transform.rotation and its keys. The no-track branch has the same stale state. Update or clear the code field and disable copying where no valid snippet is available before returning.",
       "commentUrl": "https://github.com/xxibcill/still-shift/pull/37#discussion_r4183168163",
-      "status": "pending"
+      "status": "fixed",
+      "change": "Reset copy state on every graph selection, populate native path-key snippets before the numeric-graph early return, and disable copying when the source has no tracks.",
+      "validation": "Red: selecting masks[cutout].path retained transform.position code. Green: inspector acceptance passes path snippet selection and empty-source copy disabling alongside editing, watch, phone and MP4 parity checks."
     },
     {
       "id": "R6",

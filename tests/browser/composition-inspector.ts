@@ -369,6 +369,72 @@ try {
     "Source unchanged",
   );
   assert.equal(await page.locator("#save-document").isDisabled(), true);
+  const pathSource = structuredClone(saved);
+  pathSource.name = "Path copy selection";
+  pathSource.layers[0]!.masks = [
+    {
+      id: "cutout",
+      mode: "add",
+      path: {
+        keys: [
+          {
+            frame: 0,
+            value: {
+              closed: true,
+              vertices: [
+                [0, 0],
+                [8, 0],
+                [8, 8],
+                [0, 8],
+              ],
+            },
+          },
+          {
+            frame: 7,
+            value: {
+              closed: true,
+              vertices: [
+                [0, 0],
+                [8, 0],
+                [8, 8],
+                [0, 8],
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ];
+  await writeFile(
+    builderInput,
+    `export default ${JSON.stringify(pathSource)};`,
+  );
+  await page.waitForFunction(() =>
+    document
+      .getElementById("status")!
+      .textContent!.includes("Path copy selection"),
+  );
+  await page
+    .getByRole("button", {
+      name: "root / box · masks[cutout].path",
+      exact: true,
+    })
+    .click();
+  const copiedPath = await page.locator("#edited-keys").inputValue();
+  assert.match(copiedPath, /masks\[cutout\].path/);
+  assert.doesNotMatch(copiedPath, /transform.position/);
+  assert.equal(await page.locator("#copy-keys").isDisabled(), false);
+  const unkeyed = structuredClone(saved);
+  unkeyed.name = "Unkeyed copy reset";
+  unkeyed.layers[0]!.transform!.position = [4, 20];
+  await writeFile(builderInput, `export default ${JSON.stringify(unkeyed)};`);
+  await page.waitForFunction(() =>
+    document
+      .getElementById("status")!
+      .textContent!.includes("Unkeyed copy reset"),
+  );
+  assert.equal(await page.locator("#edited-keys").inputValue(), "");
+  assert.equal(await page.locator("#copy-keys").isDisabled(), true);
   assert.deepEqual(errors, []);
   console.log(
     JSON.stringify({

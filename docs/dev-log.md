@@ -44,8 +44,8 @@ still hold before relying on them.
 ## Current state
 
 - **PR #37 review fixes (2026-10-05):** on `codex/composition-ce11`, reviewed
-  `a0c56df`. Seven inline comments posted; 4/7 findings fixed in separate
-  commits. Pending: R5, R6, R7.
+  `a0c56df`. Seven inline comments posted; 5/7 findings fixed in separate
+  commits. Pending: R6, R7.
   Final push is held until all fixes and verification are complete. No Actions.
   [Fix evidence](./pr-37-fix-results.json).
 
@@ -164,6 +164,14 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-05 — PR #37 R5: Clear stale copied code when selecting path keys
+
+- **Agent / branch:** Codex on `codex/composition-ce11`.
+- **Done:** Reset copy state on every graph selection, populate native path-key snippets before the numeric-graph early return, and disable copying when the source has no tracks.
+- **Results:** Red: selecting masks[cutout].path retained transform.position code. Green: inspector acceptance passes path snippet selection and empty-source copy disabling alongside editing, watch, phone and MP4 parity checks.
+- **Next:** R6, R7.
+- **Records:** [Fix evidence](./pr-37-fix-results.json), [inline finding](https://github.com/xxibcill/still-shift/pull/37#discussion_r4183168163).
 
 ### 2026-10-05 — PR #37 R4: Preserve the opposite side when editing a handle
 
