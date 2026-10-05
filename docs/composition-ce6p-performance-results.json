@@ -693,6 +693,11 @@
       "status": "rejected-invalid",
       "reason": "competing workload detected during first baseline timing; no performance conclusion",
       "record": "benchmarks/results/composition-ce6p/invalid-02-bounded-ab.json"
+    },
+    {
+      "command": "changed-file formatting/eslint; pnpm build after diagnostic provenance repair",
+      "status": "passed",
+      "runtimeChanged": false
     }
   ],
   "review": {
@@ -716,6 +721,12 @@
       "regressionCasesPerProfile": 852,
       "fractionalClearCases": 189,
       "resolution": "Fractional/unknown first clear falls back to full-frame accumulation; later uncertainty expands full screen; averages compared with actual GPU sample bytes"
+    },
+    "measurementProvenance": {
+      "finding": "A/B injected renderer/kernel but shared current WebglBounds, so historical baseline incurred exact-clear metadata calculation absent from declared refs",
+      "resolution": "Inject renderer/kernel/bounds consistently from each ref; snapshot/fingerprint shared workload helpers and working-tree revision/status",
+      "scope": "diagnostic harness only; runtime unchanged; full gate continues",
+      "status": "formatting/lint/build passed; both axes clean on read-only repair review"
     }
   },
   "pending": [
@@ -828,7 +839,8 @@
         "42981 node (vitest 14)     ",
         "43015 node /Users/jjae/.nvm/versions/node/v24.16.0/bin/pnpm exec prettier --write /private/tmp/ce7-pr-dev-log.md"
       ],
-      "conclusion": "Rejected; no performance claim. Raw local result retained under ignored benchmarks/results."
+      "conclusion": "Rejected; no performance claim. Raw local result retained under ignored benchmarks/results.",
+      "sourceSelectionLimitation": "Shared current bounds implementation; mixed revisions cannot substantiate full ref-to-ref costs. Already rejected for overlap; no gain claim."
     },
     {
       "record": "invalid-02-bounded-ab.json",
@@ -845,7 +857,8 @@
       },
       "timingValid": false,
       "overlap": ["44715 node (vitest)     ", "44723 node (vitest 1)     "],
-      "conclusion": "Rejected; no performance claim. Raw local result retained under ignored benchmarks/results."
+      "conclusion": "Rejected; no performance claim. Raw local result retained under ignored benchmarks/results.",
+      "sourceSelectionLimitation": "Shared current bounds implementation; mixed revisions cannot substantiate full ref-to-ref costs. Already rejected for overlap; no gain claim."
     },
     {
       "record": "invalid-03-fusion-ab.json",
@@ -864,7 +877,8 @@
         "52015 node /Users/jjae/.nvm/versions/node/v24.16.0/bin/pnpm --silent test:browser:composition-native-passage",
         "52036 node --import tsx tests/browser/composition-native-passage.ts"
       ],
-      "conclusion": "Rejected; no performance claim. Raw local result retained under ignored benchmarks/results."
+      "conclusion": "Rejected; no performance claim. Raw local result retained under ignored benchmarks/results.",
+      "sourceSelectionLimitation": "Shared current bounds implementation; mixed revisions cannot substantiate full ref-to-ref costs. Already rejected for overlap; no gain claim."
     }
   ],
   "integrationBase": "817cc9f (CE7 delivered docs-only closeout; runtime still 0e48388)",
@@ -1191,6 +1205,21 @@
       "1600 unit tests",
       "46 runtime tests"
     ],
-    "wholeGatePassed": false
+    "wholeGatePassed": false,
+    "sourceScopeNote": "Renderer/runtime remains reviewed7a797a9. Benchmark diagnostic provenance was repaired after early gate lint/build; separate focused formatting/lint/build validate that script. No runtime change or gate interruption."
+  },
+  "familyAuditMethods": {
+    "commerce": {
+      "command": "pnpm test:browser:composition-commerce-adapter --webgl --keep-going",
+      "method": "Current unchanged paired complete timelines, 3 alternating passes, minimum500ms per backend/pass, max64 cycles; median ratio; complete pixels/reverse seeks/state and required exports"
+    },
+    "storyComponents": {
+      "command": "pnpm test:browser:composition-story-fixtures --webgl --components --keep-going --profile",
+      "method": "Current unchanged frame-zero warmup then timed first forward traversal; pixels outside timing; complete components/state/backward seeks and required exports"
+    },
+    "typography": {
+      "command": "pnpm test:browser:composition-typography-adapter --webgl --keep-going --profile",
+      "method": "Current unchanged frame-zero warmup then timed first forward traversal; pixels outside timing; complete typography/state/backward seeks and required exports"
+    }
   }
 }

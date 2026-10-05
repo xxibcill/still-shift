@@ -98,7 +98,15 @@ seeks, repeated/independent exports and 12 hardware comparisons. Three
 initial timing attempts were rejected for competing main-lane verification; no
 performance conclusion is drawn from them.
 
-The A/B harness can load both renderer and kernel from pinned refs without changing
+Measurement review found that selecting renderer/kernel alone loaded current
+bounds for historical baselines, adding exact-clear metadata work absent from those
+refs. All three already-invalid attempts retain that mixed-revision limitation.
+The repaired harness pins renderer, kernel and bounds together, snapshots shared
+workload helpers, and fingerprints each source and the working-tree revision.
+This is a diagnostic-only repair; the reviewed renderer is unchanged and the live
+full gate continues. Separate lint/build checks validate the repaired script.
+
+The A/B harness loads renderer, kernel and bounds from pinned refs without changing
 files. Measure slice 1 separately with `--candidate-ref 706be71` against `0e48388`,
 then slice 2 with `--baseline-ref 706be71` against the working tree. Keep each
 four-session bracket and its source fingerprints separately.

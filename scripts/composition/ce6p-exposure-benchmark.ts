@@ -30,6 +30,12 @@ const candidateRef = option("--candidate-ref", "");
 const kernelPath =
   "packages/renderer-core/src/composition/render/webgl-exposure.ts";
 const rendererPath = "packages/renderer-core/src/composition/render/webgl2.ts";
+const boundsPath =
+  "packages/renderer-core/src/composition/render/webgl-bounds.ts";
+const helperPaths = [
+  "tests/helpers/composition-exposure-reference.ts",
+  "tests/helpers/composition-ce6p-preview-cost.ts",
+];
 const baseline = execFileSync(
   "git",
   ["show", `${baselineRef}:${rendererPath}`],
@@ -45,12 +51,30 @@ const refSource = (ref: string, path: string, optional = false) => {
   return execFileSync("git", ["show", `${ref}:${path}`], options);
 };
 const baselineKernel = refSource(baselineRef, kernelPath, true);
+const baselineBounds = refSource(baselineRef, boundsPath)!;
 const candidate = candidateRef
   ? refSource(candidateRef, rendererPath)!
   : await readFile(join(root, rendererPath), "utf8");
 const candidateKernel = candidateRef
   ? refSource(candidateRef, kernelPath, true)
   : await readFile(join(root, kernelPath), "utf8");
+const candidateBounds = candidateRef
+  ? refSource(candidateRef, boundsPath)!
+  : await readFile(join(root, boundsPath), "utf8");
+const sharedHelpers = await Promise.all(
+  helperPaths.map(async (path) => ({
+    path,
+    source: await readFile(join(root, path), "utf8"),
+  })),
+);
+const workingTreeRef = execFileSync("git", ["rev-parse", "HEAD"], {
+  cwd: root,
+  encoding: "utf8",
+}).trim();
+const workingTreeChanges = execFileSync("git", ["status", "--short"], {
+  cwd: root,
+  encoding: "utf8",
+}).trim();
 const digest = (source: string) =>
   createHash("sha256").update(source).digest("hex");
 const runs: unknown[] = [];
@@ -112,6 +136,10 @@ for (const variant of [
               return variant === "baseline" ? baseline : candidate;
             if (id === join(root, kernelPath))
               return variant === "baseline" ? baselineKernel : candidateKernel;
+            if (id === join(root, boundsPath))
+              return variant === "baseline" ? baselineBounds : candidateBounds;
+            return sharedHelpers.find(({ path }) => id === join(root, path))
+              ?.source;
           },
         },
       ],
@@ -158,6 +186,13 @@ for (const variant of [
         {
           baselineRef,
           candidateRef: candidateRef || "working-tree",
+          workingTreeRef,
+          workingTreeChanges,
+          sharedHelperSha256: Object.fromEntries(
+            sharedHelpers.map(({ path, source }) => [path, digest(source)]),
+          ),
+          baselineBoundsSha256: digest(baselineBounds),
+          candidateBoundsSha256: digest(candidateBounds),
           baselineKernelSha256: baselineKernel ? digest(baselineKernel) : null,
           baselineSourceSha256: digest(baseline),
           candidateSourceSha256: digest(candidate),
@@ -165,7 +200,7 @@ for (const variant of [
             ? digest(candidateKernel)
             : null,
           method:
-            "Serial baseline/candidate/candidate/baseline sessions, independent Vite optimizer caches; original CE7 export-cost method; separate RAF preview diagnostic; startup/end workload checks and 2-second overlap polling (invalid runs retained and rejected)",
+            "Serial baseline/candidate/candidate/baseline sessions, independent Vite optimizer caches; renderer/kernel/bounds selected consistently from refs; snapshotted shared workload helpers; original CE7 export-cost method; separate RAF preview diagnostic; startup/end workload checks and 2-second overlap polling (invalid runs retained and rejected)",
           runs,
         },
         null,

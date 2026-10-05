@@ -208,7 +208,9 @@ _Last updated 2026-10-06 by Codex for CE6-P; prior work retained._
 - **Review:** both axes clean after repair. Rounded clear metadata could differ
   from GPU bytes; bounded accumulation now requires exact clear channels and has
   189 fractional-clear regressions. Fixed launch cleanup, old anchor, cold budgets
-  and workload guard. Invalid timings are retained; Actions remain disabled.
+  and workload guard. Measurement review also repaired mixed-revision bounds
+  loading and added workload fingerprints. Runtime stays fixed during the gate.
+  Invalid timings are retained; Actions remain disabled.
 - **Next:** full gate on reviewed code; serial A/B and family matrices after a
   sustained quiet window.
 - **Records:** [slice plan](./composition-ce6p-plan.md),
