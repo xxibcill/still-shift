@@ -826,6 +826,13 @@ property's type (`comp-expression-type`); there is no implicit conversion.
 | `heading(path)`                                                                                                                                                   | Clockwise direction of travel of a 2D property: the ±1 frame chord, else the last direction within 64 frames, else the first within the next 64.                                                                                                   |
 | `squash(velocity, amount, limit, aligned = false)`                                                                                                                | Area-preserving scale `[sx, sy]`: stretch `s = 1 + min(limit − 1, amount·speed)` along the travel direction and `1/s` across it (axis-weighted unless `aligned`).                                                                                  |
 
+`rove()` and `constant-speed` support joint position keys and separated `x`/`y`
+keys. Separate dimensions follow their independently eased trajectory over the
+union of axis key times; a fixed dimension stays fixed. Spring trajectories use
+sampling density based on their frequency and scope frame rate. Resolving a
+separated path is limited to 512,001 points; a path needing more fails with
+`comp-expression-value` instead of returning an undersampled trajectory.
+
 Own-key built-ins (`loopIn`, `loopOut`, `inertia`, `anticipate`, `rove`) read the
 property's authored keys in layer time and never re-enter its expression.
 `EXPRESSION_BUILTINS` exports each signature and summary.

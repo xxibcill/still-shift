@@ -43,14 +43,15 @@ still hold before relying on them.
 
 ## Current state
 
-- **PR #32 second follow-up fixes (2026-10-05):** four P2 findings are posted
-  inline. Timed primitive-blur history (`6876407`) and normalized AST bounds
-  (`4f7d8be`) are committed. Periodic reference writers now follow root-clock
-  windows, retain shifted dependencies and preserve unrelated vector components
-  during echo sampling. Separate-axis constant speed passes its 51 focused tests,
-  including spring/fps sampling and bounded work. Combined local verification,
-  the fourth finding commit and one final push remain. CE6-P and CE9-F1 remain
-  deferred. [Evidence](./pr-32-second-followup-fix-results.json).
+- **PR #32 second follow-up fixes (2026-10-05):** all four P2 findings are posted
+  inline and fixed in four finding slices: timed primitive blur (`6876407`),
+  normalized AST bounds (`4f7d8be`), periodic reference dependencies (`32e31ac`),
+  and separate-axis constant speed (final finding commit, evaluator `25`). Fast
+  checks pass 1,487 unit tests, runtime 46 and integration 111. Both expression
+  browser backends, repeated/baked exports, evaluator parity and all 176 frozen
+  items / 36,061 frames pass without regeneration. Delivery uses four finding
+  commits and one final push to PR #32; owner review/merge remains pending.
+  CE6-P and CE9-F1 remain deferred. [Evidence](./pr-32-second-followup-fix-results.json).
 
 - **PR #32 follow-up fixes (2026-10-05):** both P2 findings are posted inline.
   Implicit anchor/reference reads, cycle validation and nested echo bake parity
@@ -138,6 +139,25 @@ _Last updated 2026-10-05 by Codex for the PR #32 follow-up fixes._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-05 — Fix PR #32 separate-axis constant speed
+
+- **Agent / branch:** Codex on isolated `codex/pr32-review-fixes`, after `32e31ac`.
+- **Done:** build constant-speed paths from independently eased axis samples,
+  preserve motion offsets and native joint-path arithmetic, cache by source/fps,
+  and bound spring sampling work. Evaluator version is `25`; a new browser
+  fixture covers separate-axis source/baked pixel and seek parity.
+- **Results:** 13 new expression cases pass, including a dense spring reference
+  at three frame rates. Fast checks pass 1,487 unit tests; runtime 46 and
+  integration 111 pass. Both expression browser backends, repeated/baked exports
+  and Node/browser evaluator parity pass. All 176 frozen items / 36,061 frames
+  pass without regeneration.
+- **Rejected:** fixed 128 samples per interval alias spring oscillations;
+  128/256 per natural period miss the 0.05 px reference tolerance. Use 512 per
+  period and report a clear error above the 512,001-point bound.
+- **Delivery:** four finding commits and one final push to PR #32. Owner
+  review/merge remains pending; deferred performance/runtime work stays deferred.
+- **Records:** [Second follow-up evidence](./pr-32-second-followup-fix-results.json).
 
 ### 2026-10-05 — Fix PR #32 periodic reference dependencies
 

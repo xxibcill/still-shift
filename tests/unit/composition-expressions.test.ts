@@ -11,6 +11,12 @@ import {
   evaluateStageProperty,
 } from "../../packages/renderer-core/src/composition/evaluate/index.ts";
 import { PassageError } from "../../packages/renderer-core/src/passage-diagnostics.ts";
+import { bakeExpressions } from "../../packages/renderer-core/src/composition/bake.ts";
+import { buildRenderGraph } from "../../packages/renderer-core/src/composition/render/graph.ts";
+import {
+  ownCurve,
+  rove,
+} from "../../packages/renderer-core/src/composition/evaluate/expression-keys.ts";
 
 type Doc = Record<string, unknown> & { layers: Record<string, unknown>[] };
 const solid = (id: string, extra: object = {}) => ({
@@ -867,6 +873,439 @@ describe("expression evaluation", () => {
     const p = value(c, "lead.transform.position", 30) as number[];
     expect(p[0]).toBeCloseTo(100, 9);
     expect(p[1]).toBeCloseTo(50, 9);
+  });
+
+  it("roves separate dimensions along the same L-shaped path as joint keys", () => {
+    const c = comp({
+      layers: [
+        solid("lead", {
+          transform: {
+            position: {
+              x: {
+                keys: [
+                  { frame: 0, value: 0 },
+                  { frame: 5, value: 100, interpolation: "linear" },
+                  { frame: 40, value: 100, interpolation: "linear" },
+                ],
+              },
+              y: {
+                keys: [
+                  { frame: 0, value: 0 },
+                  { frame: 5, value: 0, interpolation: "linear" },
+                  { frame: 40, value: 100, interpolation: "linear" },
+                ],
+              },
+            },
+          },
+        }),
+      ],
+      behaviours: [
+        { type: "constant-speed", target: "lead.transform.position" },
+      ],
+    });
+    const expected = [
+      [0, [0, 0]],
+      [5, [25, 0]],
+      [20, [100, 0]],
+      [30, [100, 50]],
+      [40, [100, 100]],
+    ] as const;
+    for (const [frame, point] of expected) {
+      const position = value(c, "lead.transform.position", frame) as number[];
+      position.forEach((axis, i) => expect(axis).toBeCloseTo(point[i]!, 9));
+    }
+  });
+
+  it("roves the union of separate key times and removes stationary intervals", () => {
+    const c = comp({
+      layers: [
+        solid("lead", {
+          transform: {
+            position: {
+              x: {
+                keys: [
+                  { frame: 0, value: 0 },
+                  { frame: 10, value: 100, interpolation: "linear" },
+                  { frame: 40, value: 100, interpolation: "linear" },
+                ],
+              },
+              y: {
+                keys: [
+                  { frame: 0, value: 0 },
+                  { frame: 30, value: 0, interpolation: "linear" },
+                  { frame: 40, value: 100, interpolation: "linear" },
+                ],
+              },
+            },
+          },
+        }),
+      ],
+      behaviours: [
+        { type: "constant-speed", target: "lead.transform.position" },
+      ],
+    });
+    expect(value(c, "lead.transform.position", 10)).toEqual([50, 0]);
+    expect(value(c, "lead.transform.position", 20)).toEqual([100, 0]);
+    expect(value(c, "lead.transform.position", 30)).toEqual([100, 50]);
+  });
+
+  it("roves one keyed dimension while keeping its fixed dimension", () => {
+    const c = comp({
+      layers: [
+        solid("lead", {
+          transform: {
+            position: {
+              x: {
+                keys: [
+                  { frame: 5, value: 0 },
+                  { frame: 10, value: 100, easing: "smoothstep" },
+                  { frame: 45, value: 100, interpolation: "linear" },
+                ],
+              },
+              y: 17,
+            },
+          },
+        }),
+      ],
+      behaviours: [
+        { type: "constant-speed", target: "lead.transform.position" },
+      ],
+    });
+    expect(value(c, "lead.transform.position", 0)).toEqual([0, 17]);
+    expect(value(c, "lead.transform.position", 15)).toEqual([25, 17]);
+    expect(value(c, "lead.transform.position", 25)).toEqual([50, 17]);
+    expect(value(c, "lead.transform.position", 50)).toEqual([100, 17]);
+  });
+
+  it("keeps separate easing's curved trajectory while making travel speed constant", () => {
+    const c = comp({
+      layers: [
+        solid("lead", {
+          transform: {
+            position: {
+              x: {
+                keys: [
+                  { frame: 0, value: 0 },
+                  { frame: 40, value: 240, interpolation: "linear" },
+                ],
+              },
+              y: {
+                keys: [
+                  { frame: 0, value: 0 },
+                  { frame: 40, value: 100, easing: "smoothstep" },
+                ],
+              },
+            },
+          },
+        }),
+      ],
+      behaviours: [
+        { type: "constant-speed", target: "lead.transform.position" },
+      ],
+    });
+    const points = Array.from(
+      { length: 41 },
+      (_, frame) => value(c, "lead.transform.position", frame) as number[],
+    );
+    const distances = points
+      .slice(1)
+      .map((point, i) =>
+        Math.hypot(point[0]! - points[i]![0]!, point[1]! - points[i]![1]!),
+      );
+    expect(Math.max(...distances) / Math.min(...distances)).toBeLessThan(1.002);
+    for (const [x, y] of points) {
+      const progress = x! / 240;
+      const onCurve = 100 * progress ** 2 * (3 - 2 * progress);
+      expect(Math.abs(y! - onCurve)).toBeLessThan(0.01);
+    }
+  });
+
+  it("resolves separate spring oscillations and caches their trajectories per fps", () => {
+    const c = comp({
+      frameCount: 1_201,
+      layers: [
+        solid("lead", {
+          transform: {
+            position: {
+              x: {
+                keys: [
+                  { frame: 0, value: 0 },
+                  { frame: 1_200, value: 100, interpolation: "linear" },
+                ],
+              },
+              y: {
+                keys: [
+                  { frame: 0, value: 0 },
+                  {
+                    frame: 1_200,
+                    value: 100,
+                    easing: {
+                      spring: { stiffness: 1_000, damping: 0.1, mass: 0.1 },
+                    },
+                  },
+                ],
+              },
+            },
+          },
+        }),
+      ],
+    });
+    const path = [{ name: "transform" }, { name: "position" }];
+    // Independent 480,000-sample arc integrations; repeat fps values on one source.
+    const samples = [
+      [30, [7.01114, 116.50947]],
+      [60, [13.91923, 108.41116]],
+      [30, [7.01114, 116.50947]],
+      [24, [5.61412, 111.23629]],
+      [60, [13.91923, 108.41116]],
+    ] as const;
+    for (const [fps, expected] of samples) {
+      const curve = ownCurve(c.layers[0]!, path, fps)!;
+      const position = rove(curve, 900, curve.sample(900)) as number[];
+      position.forEach((axis, i) =>
+        expect(Math.abs(axis - expected[i]!)).toBeLessThan(0.05),
+      );
+    }
+  });
+
+  it("bounds work needed to resolve a separate spring trajectory", () => {
+    const c = comp({
+      frameCount: 10_001,
+      layers: [
+        solid("lead", {
+          transform: {
+            position: {
+              x: {
+                keys: [
+                  { frame: 0, value: 0 },
+                  { frame: 10_000, value: 100, interpolation: "linear" },
+                ],
+              },
+              y: {
+                keys: [
+                  { frame: 0, value: 0 },
+                  {
+                    frame: 10_000,
+                    value: 100,
+                    easing: {
+                      spring: { stiffness: 1_000, damping: 0.1, mass: 0.1 },
+                    },
+                  },
+                ],
+              },
+            },
+          },
+        }),
+      ],
+      behaviours: [
+        { type: "constant-speed", target: "lead.transform.position" },
+      ],
+    });
+    expect(thrown(() => value(c, "lead.transform.position", 0))).toMatchObject({
+      code: "comp-expression-value",
+      message: expect.stringContaining("rove()"),
+    });
+  });
+
+  it.each([
+    { interpolation: "linear" },
+    { interpolation: "hold" },
+    { bezier: [0.3, 0, 0.7, 1] },
+    { in: { ease: 1 / 3, speed: 0 } },
+  ])(
+    "ignores overridden spring easing when sizing roving work (%j)",
+    (curveFields) => {
+      const c = comp({
+        frameCount: 10_001,
+        layers: [
+          solid("lead", {
+            transform: {
+              position: {
+                x: 0,
+                y: {
+                  keys: [
+                    { frame: 0, value: 0 },
+                    {
+                      frame: 10_000,
+                      value: 100,
+                      easing: {
+                        spring: { stiffness: 1_000, damping: 0.1, mass: 0.1 },
+                      },
+                      ...curveFields,
+                    },
+                  ],
+                },
+              },
+            },
+          }),
+        ],
+        behaviours: [
+          { type: "constant-speed", target: "lead.transform.position" },
+        ],
+      });
+      expect(value(c, "lead.transform.position", 5_000)).toEqual([0, 50]);
+    },
+  );
+
+  it("does not spend spring work on a constant keyed axis", () => {
+    const c = comp({
+      frameCount: 10_001,
+      layers: [
+        solid("lead", {
+          transform: {
+            position: {
+              x: {
+                keys: [
+                  { frame: 0, value: 0 },
+                  { frame: 10_000, value: 100, interpolation: "linear" },
+                ],
+              },
+              y: {
+                keys: [
+                  { frame: 0, value: 17 },
+                  {
+                    frame: 10_000,
+                    value: 17,
+                    easing: {
+                      spring: { stiffness: 1_000, damping: 0.1, mass: 0.1 },
+                    },
+                  },
+                ],
+              },
+            },
+          },
+        }),
+      ],
+      behaviours: [
+        { type: "constant-speed", target: "lead.transform.position" },
+      ],
+    });
+    expect(value(c, "lead.transform.position", 5_000)).toEqual([50, 17]);
+  });
+
+  it("roves separate dimensions in reversed, stretched and remapped precomp clocks", () => {
+    const c = comp({
+      frameCount: 41,
+      layers: [
+        { id: "forward", type: "precomp", comp: "clip" },
+        {
+          id: "reverse",
+          type: "precomp",
+          comp: "clip",
+          startFrame: 40,
+          stretch: -1,
+        },
+        { id: "slow", type: "precomp", comp: "clip", stretch: 2 },
+        { id: "remapped", type: "precomp", comp: "clip", timeRemap: 30 },
+      ],
+      precomps: [
+        {
+          id: "clip",
+          width: 100,
+          height: 100,
+          frameCount: 41,
+          layers: [
+            solid("hero", {
+              transform: {
+                position: {
+                  x: {
+                    keys: [
+                      { frame: 0, value: 0 },
+                      { frame: 5, value: 100, interpolation: "linear" },
+                      { frame: 40, value: 100, interpolation: "linear" },
+                    ],
+                  },
+                  y: {
+                    keys: [
+                      { frame: 0, value: 0 },
+                      { frame: 5, value: 0, interpolation: "linear" },
+                      { frame: 40, value: 100, interpolation: "linear" },
+                    ],
+                  },
+                },
+              },
+            }),
+          ],
+        },
+      ],
+      behaviours: ["forward", "reverse", "slow", "remapped"].map((id) => ({
+        type: "constant-speed",
+        target: `${id}/hero.transform.position`,
+      })),
+    });
+    for (const [id, expected] of [
+      ["forward", [50, 0]],
+      ["reverse", [100, 50]],
+      ["slow", [25, 0]],
+      ["remapped", [100, 50]],
+    ] as const) {
+      const position = value(
+        c,
+        `${id}/hero.transform.position`,
+        10,
+      ) as number[];
+      position.forEach((axis, i) => expect(axis).toBeCloseTo(expected[i]!, 9));
+    }
+    const forward = Array.from({ length: 41 }, (_, frame) =>
+      evaluateComp(c, frame),
+    );
+    for (const frame of [40, 3, 22, 0, 17, 3, 40])
+      expect(evaluateComp(c, frame)).toEqual(forward[frame]);
+  });
+
+  it("bakes separate-dimension roving with motion offsets without changing render state", () => {
+    const c = comp({
+      layers: [
+        solid("lead", {
+          transform: {
+            position: {
+              x: {
+                keys: [
+                  { frame: 0, value: 0 },
+                  { frame: 5, value: 100, interpolation: "linear" },
+                  { frame: 40, value: 100, interpolation: "linear" },
+                ],
+              },
+              y: {
+                keys: [
+                  { frame: 0, value: 0 },
+                  { frame: 5, value: 0, interpolation: "linear" },
+                  { frame: 40, value: 100, interpolation: "linear" },
+                ],
+              },
+            },
+          },
+        }),
+      ],
+      behaviours: [
+        { type: "constant-speed", target: "lead.transform.position" },
+      ],
+      signals: [
+        {
+          id: "offset",
+          keys: [
+            { frame: 0, value: 5 },
+            { frame: 59, value: 5 },
+          ],
+        },
+      ],
+      drivers: [
+        { target: "lead.transform.position.x", signal: "offset", blend: "add" },
+      ],
+    });
+    const position = value(c, "lead.transform.position", 5) as number[];
+    expect(position[0]).toBeCloseTo(30, 9);
+    const baked = bakeExpressions(c);
+    expect(baked.ok).toBe(true);
+    if (!baked.ok) return;
+    expect(baked.diagnostics).toEqual([]);
+    for (let frame = 0; frame < c.frameCount; frame++)
+      expect(
+        buildRenderGraph(
+          baked.composition,
+          evaluateComp(baked.composition, frame),
+        ),
+      ).toEqual(buildRenderGraph(c, evaluateComp(c, frame)));
   });
 
   it("heading, auto-orient and squash", () => {

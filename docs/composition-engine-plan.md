@@ -3467,8 +3467,12 @@ reference dependencies now respect root-clock windows and the exact axes read,
 retain anchor dependencies for shifted reads, and preserve unrelated components
 when historical samples precede ordinary samples. Separate-axis constant speed
 passes 51 expression tests, including spring sampling at three frame rates and
-an explicit work bound. Combined verification and delivery remain: four finding
-commits followed by one final push. [Evidence](./pr-32-second-followup-fix-results.json).
+an explicit 512,001-point work bound; evaluator version is `25`. Combined local
+verification passes fast checks (1,487 unit tests), runtime (46), integration
+(111), both expression browser backends and repeated/baked exports, evaluator
+parity, and all 176 frozen items / 36,061 frames without regeneration. Delivery
+uses four finding commits and one final push to PR #32; owner review/merge remains
+pending. [Evidence](./pr-32-second-followup-fix-results.json).
 
 ---
 
