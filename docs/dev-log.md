@@ -43,6 +43,15 @@ still hold before relying on them.
 
 ## Current state
 
+- **CE8-L-F preparation (2026-10-06):** isolated branch
+  `codex/composition-ce8lf-prototype` from CE7 `0e48388`. Candidate flat-alpha
+  shadow specification and CPU/geometry oracle pass 7 analytic tests, typecheck
+  and focused lint. Shader/reference probes and review are in flight. CE8/CE8-L
+  and owner policy/budget decisions precede production integration; advanced
+  surface shading remains deferred. Primary checkout is untouched.
+  [Specification](./composition-ce8lf-cast-shadow-spec.md),
+  [evidence](./composition-ce8lf-results.json).
+
 - **CE7 in progress (2026-10-05):** `codex/composition-ce7` from CE5 `edb958a`.
   Clock controls/loops/adaptive sampling pass 266 focused tests; native 96-frame
   acceptance passes both backends, reverse/random seeks, independent/repeated
@@ -175,6 +184,19 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-06 — CE8-L-F candidate specification and CPU oracle
+
+- **Agent / branch:** Codex on `codex/composition-ce8lf-prototype`, CE7 `0e48388`.
+- **Scope:** resumed bounded cast-shadow preparation only; no production changes.
+- **Done:** explicit alpha inputs, scopes, sample tables, ray/projection math,
+  opacity/linear boundary and preliminary quality/work/memory budgets.
+- **Results:** 7 analytic tests, build and focused lint pass. Initial one-texel
+  edge expectations repaired to match specified transparent-border filtering.
+- **Next:** small isolated shader/reference fixtures, preparation review and draft
+  PR; production assets/hardware/export/full milestone gates await prerequisites.
+- **Records:** [candidate](./composition-ce8lf-cast-shadow-spec.md),
+  [evidence](./composition-ce8lf-results.json).
 
 ### 2026-10-05 — CE7 native acceptance and serial sample costs
 

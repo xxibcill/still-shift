@@ -3350,6 +3350,20 @@ DOF blur amount vs focus distance, coverage-check regression tests.
 
 ---
 
+### CE8-L-F cast-shadow preparation (2026-10-06)
+
+Owner resumed **bounded inter-layer cast shadows** for independent design and
+prototypes, from CE7 `0e48388` on `codex/composition-ce8lf-prototype`. Production
+integration follows delivered CE8 and CE8-L. The main lane's CE8-L plan scopes
+ambient/point/spot lights on flat opted-in planes; this base has neither milestone.
+This preparation does not mark CE8, CE8-L or CE8-L-F complete, enable the reserved
+light contract, or resume realistic surface shading. See the
+[candidate specification](./composition-ce8lf-cast-shadow-spec.md) and
+[preparation evidence](./composition-ce8lf-results.json) for explicit alpha assets,
+candidate flags, geometry, bounded budgets, fixtures and integration decisions.
+
+---
+
 ## CE9 — Expressions and motion behaviours
 
 **Outcome:** Authors describe relationships and procedural motion instead of keying

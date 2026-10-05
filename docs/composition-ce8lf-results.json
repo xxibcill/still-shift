@@ -1,0 +1,26 @@
+{
+  "schemaVersion": "ce8lf-preparation-evidence-1",
+  "date": "2026-10-05",
+  "base": "0e4838852855f6dc8cf91bba763a402dfd716f88",
+  "branch": "codex/composition-ce8lf-prototype",
+  "status": "in-progress-preparation-only",
+  "productionMilestoneComplete": false,
+  "checks": {
+    "analyticTests": "7 passed",
+    "typecheck": "pnpm build passed",
+    "focusedLint": "passed"
+  },
+  "attempts": [
+    "Initial toolchain preflight failed at sandboxed shared uv cache; isolated environment to follow.",
+    "Offline install lacked balanced-match; pinned install then populated this worktree's dependencies.",
+    "Test-first import failure before candidate modules existed was expected.",
+    "Two analytic expectations initially assumed opaque one-texel edges; corrected to the specified transparent-border bilinear rule and centered the offscreen blocker."
+  ],
+  "pending": [
+    "isolated shader/reference verification",
+    "final focused regressions and preparation review",
+    "draft PR",
+    "CE8 and CE8-L production prerequisites",
+    "owner budget/policy selection and eventual native hardware/export/full local acceptance"
+  ]
+}
