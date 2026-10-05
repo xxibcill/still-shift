@@ -79,12 +79,36 @@
           "Replaced an invalid zero-length layer lifetime with a valid one-frame lifetime",
           "Set group fixture anchors to the origin so the tested matte content is actually on canvas"
         ]
-      }
+      },
+      "commit": "b4f695f55e2c40705e9b5e3e04b91a16d2903c16"
     },
     {
       "id": "single-frame-pops",
       "comment": "https://github.com/xxibcill/still-shift/pull/34#discussion_r4180742895",
-      "status": "pending"
+      "status": "fixed",
+      "verification": {
+        "before": {
+          "failed": 4,
+          "passed": 59
+        },
+        "after": {
+          "qualityTests": 64,
+          "cliTests": 12,
+          "failed": 0
+        },
+        "checks": [
+          "76 focused quality/CLI tests",
+          "pnpm build",
+          "ESLint for changed TypeScript"
+        ],
+        "coverage": [
+          "Early/interior/final one-frame excursions",
+          "Both transitions declared as cuts",
+          "Only one transition declared as a cut",
+          "Fast and slow multi-frame peaks remain exempt",
+          "CLI nonzero exit for undeclared pulses"
+        ]
+      }
     },
     {
       "id": "clipped-coverage",
@@ -97,7 +121,6 @@
   ],
   "preservation": "Original checkout and unrelated edits retained; GitHub Actions remain disabled.",
   "pending": [
-    "one-frame scale and opacity pulses",
     "clipped viewport coverage",
     "Final local verification and single push",
     "Owner review and merge"

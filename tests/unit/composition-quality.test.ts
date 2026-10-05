@@ -854,3 +854,94 @@ it.each([1, 1.025, -1.025])(
     );
   },
 );
+
+function pulseScene(at = 20) {
+  return composition([
+    solid("pulse", {
+      transform: {
+        position: {
+          keys: [
+            { frame: 0, value: [80, 80] },
+            { frame: 89, value: [169, 80], interpolation: "linear" },
+          ],
+        },
+        opacity: {
+          keys: [
+            { frame: 0, value: 1 },
+            { frame: at, value: 0.1, interpolation: "hold" },
+            { frame: at + 1, value: 1, interpolation: "hold" },
+          ],
+        },
+        scale: {
+          keys: [
+            { frame: 0, value: [1, 1] },
+            { frame: at, value: [2, 2], interpolation: "hold" },
+            { frame: at + 1, value: [1, 1], interpolation: "hold" },
+          ],
+        },
+      },
+    }),
+  ]);
+}
+
+it.each([1, 20, 88])(
+  "rejects isolated scale and opacity excursions at frame %s",
+  (at) => {
+    const report = analyzeCompositionQuality(pulseScene(at));
+    expect(report.status).toBe("failed");
+    for (const code of ["scale-pop", "opacity-pop"])
+      expect(report.diagnostics).toContainEqual(
+        expect.objectContaining({
+          code,
+          severity: "error",
+          frames: [at - 1, at + 1],
+        }),
+      );
+  },
+);
+
+it("waives declared pulse cuts but still catches undeclared return jumps", () => {
+  const input = pulseScene();
+  const complete = analyzeCompositionQuality(input, {
+    intentionalCuts: [20, 21],
+  });
+  expect(complete.diagnostics.map((d) => d.code)).not.toContain("scale-pop");
+  expect(complete.diagnostics.map((d) => d.code)).not.toContain("opacity-pop");
+  for (const cuts of [[20], [21]]) {
+    const report = analyzeCompositionQuality(input, { intentionalCuts: cuts });
+    for (const code of ["scale-pop", "opacity-pop"])
+      expect(report.diagnostics.map((d) => d.code)).toContain(code);
+  }
+});
+
+it.each([1, 10])(
+  "keeps multi-frame peaks out of isolated-pulse findings (%s frames per slope)",
+  (step) => {
+    const input = composition([
+      solid("peak", {
+        transform: {
+          opacity: {
+            keys: [
+              { frame: 0, value: 0 },
+              { frame: 1 * step, value: 0.5, interpolation: "linear" },
+              { frame: 2 * step, value: 1, interpolation: "linear" },
+              { frame: 3 * step, value: 0.5, interpolation: "linear" },
+              { frame: 4 * step, value: 0, interpolation: "linear" },
+            ],
+          },
+          scale: {
+            keys: [
+              { frame: 0, value: [1, 1] },
+              { frame: 1 * step, value: [1.4, 1.4], interpolation: "linear" },
+              { frame: 2 * step, value: [2, 2], interpolation: "linear" },
+              { frame: 3 * step, value: [1.4, 1.4], interpolation: "linear" },
+              { frame: 4 * step, value: [1, 1], interpolation: "linear" },
+            ],
+          },
+        },
+      }),
+    ]);
+    expect(codes(input)).not.toContain("scale-pop");
+    expect(codes(input)).not.toContain("opacity-pop");
+  },
+);

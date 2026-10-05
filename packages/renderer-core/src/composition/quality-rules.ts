@@ -194,7 +194,8 @@ export function compositionPopFindings(
       const before = frames[at - 1]!.layers.get(id);
       if (!before || !(before.visible || current.visible)) continue;
       const prior = frames[at - 2]?.layers.get(id),
-        next = frames[at + 1]?.layers.get(id);
+        next = frames[at + 1]?.layers.get(id),
+        after = frames[at + 2]?.layers.get(id);
       for (const [code, threshold, delta] of [
         [
           "opacity-pop",
@@ -205,15 +206,29 @@ export function compositionPopFindings(
         ["scale-pop", policy.scalePop, scaleDelta],
       ] as const) {
         const jump = delta(current, before);
-        const neighbours = Math.max(
-          prior ? delta(before, prior) : 0,
-          next ? delta(next, current) : 0,
-        );
-        if (jump > threshold && neighbours <= jump * policy.popNeighbourRatio)
+        const priorJump =
+          prior && !policy.cuts.has(at - 1) ? delta(before, prior) : 0;
+        const nextJump =
+          next && !policy.cuts.has(at + 1) ? delta(next, current) : 0;
+        const neighbours = Math.max(priorJump, nextJump);
+        const excursion =
+          next &&
+          !policy.cuts.has(at + 1) &&
+          nextJump > threshold &&
+          delta(next, before) <=
+            Math.min(jump, nextJump) * policy.popNeighbourRatio &&
+          priorJump <= jump * policy.popNeighbourRatio &&
+          (!after ||
+            policy.cuts.has(at + 2) ||
+            delta(after, next) <= nextJump * policy.popNeighbourRatio);
+        if (
+          jump > threshold &&
+          (neighbours <= jump * policy.popNeighbourRatio || excursion)
+        )
           add(
             code,
             current,
-            [at - 1, at],
+            [at - 1, excursion ? at + 1 : at],
             jump,
             "Abrupt single-frame change next to settled frames; smooth it or mark an intentional cut.",
             `${current.path}.transform.${code === "scale-pop" ? "scale" : "opacity"}`,

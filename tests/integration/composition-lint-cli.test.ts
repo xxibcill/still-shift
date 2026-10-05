@@ -3,7 +3,11 @@ import { join } from "node:path";
 import { tmpdir } from "node:os";
 import { afterEach, describe, expect, it } from "vitest";
 import { runCli } from "../../tools/still-shift-cli/src/cli.ts";
-import { fixtures } from "../../benchmarks/fixtures/composition/ce12/fixtures.ts";
+import {
+  fixtures,
+  composition,
+  solid,
+} from "../../benchmarks/fixtures/composition/ce12/fixtures.ts";
 const directories: string[] = [];
 afterEach(async () => {
   await Promise.all(
@@ -132,3 +136,41 @@ it.each([
     ]);
   },
 );
+
+it("returns nonzero for undeclared one-frame scale and opacity pulses", async () => {
+  const input = composition([
+    solid("pulse", {
+      transform: {
+        position: {
+          keys: [
+            { frame: 0, value: [80, 80] },
+            { frame: 89, value: [169, 80], interpolation: "linear" },
+          ],
+        },
+        opacity: {
+          keys: [
+            { frame: 0, value: 1 },
+            { frame: 20, value: 0.1, interpolation: "hold" },
+            { frame: 21, value: 1, interpolation: "hold" },
+          ],
+        },
+        scale: {
+          keys: [
+            { frame: 0, value: [1, 1] },
+            { frame: 20, value: [2, 2], interpolation: "hold" },
+            { frame: 21, value: [1, 1], interpolation: "hold" },
+          ],
+        },
+      },
+    }),
+  ]);
+  const result = await invoke(input);
+  expect(result.exit).toBe(1);
+  expect(result.stderr).toBe("");
+  const report = JSON.parse(result.stdout);
+  expect(report.status).toBe("failed");
+  for (const code of ["scale-pop", "opacity-pop"])
+    expect(report.diagnostics).toContainEqual(
+      expect.objectContaining({ code, severity: "error", frames: [19, 21] }),
+    );
+});
