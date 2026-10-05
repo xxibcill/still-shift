@@ -17,6 +17,7 @@ import type {
   ProviderContent,
   DrawOp,
   SolidContent,
+  ShapeContent,
   IsolateOp,
 } from "./graph.ts";
 
@@ -75,6 +76,16 @@ export interface RenderBackend<S extends Surface = Surface> {
   drawText(
     dst: S,
     content: TextContent,
+    matrix: Matrix,
+    opacity: number,
+    blend: CompositionBlendMode,
+    clips: ClipRect[],
+    transforms?: Matrix[],
+    paintBlur?: number,
+  ): void;
+  drawShape(
+    dst: S,
+    content: ShapeContent,
     matrix: Matrix,
     opacity: number,
     blend: CompositionBlendMode,
@@ -191,6 +202,17 @@ export function executeGraph<S extends Surface>(
           );
         else if (c.type === "text")
           backend.drawText(
+            dst,
+            c,
+            matrix,
+            opacity,
+            blend,
+            clips,
+            transforms,
+            paintBlur,
+          );
+        else if (c.type === "shape")
+          backend.drawShape(
             dst,
             c,
             matrix,

@@ -171,3 +171,23 @@ export function clampShapes(
     }
   }
 }
+
+/** Bound the pre-constraint history copy before allocating it. No opaque data is present. */
+export function cloneShapes(
+  contents: SampledShapeContent[],
+  budget: ShapeGeometryBudget,
+): SampledShapeContent[] {
+  const pending: unknown[] = [contents];
+  while (pending.length) {
+    const value = pending.pop();
+    if (Array.isArray(value)) {
+      budget.vertices(value.length);
+      pending.push(...value);
+    } else if (value && typeof value === "object") {
+      const values = Object.values(value);
+      budget.vertices(values.length);
+      pending.push(...values);
+    }
+  }
+  return structuredClone(contents);
+}

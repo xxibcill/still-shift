@@ -1,3 +1,6 @@
+import { ShapeGeometryBudget } from "../shapes/budget.ts";
+import { sampleShapes, clampShapes, cloneShapes } from "../shapes/sample.ts";
+import { compileShapes } from "../shapes/compile.ts";
 import { sampleEffects, clampEffects, effectBounds } from "./effects.ts";
 import {
   COMPOSITION_LIMITS,
@@ -79,7 +82,7 @@ import type {
   PropertyValue,
 } from "./types.ts";
 
-export const COMPOSITION_EVALUATOR_VERSION = "composition-evaluator-24";
+export const COMPOSITION_EVALUATOR_VERSION = "composition-evaluator-25";
 export const AUTO_ORIENT_LOOKAROUND_FRAMES = 64;
 const order = ["action", "response", "current", "carrier"] as const;
 /** Keyed and motion-craft values of one layer, before constraints (CE9 expression stage). */
@@ -125,6 +128,7 @@ type SignalCache = Map<Signal, Map<number, number>>;
 type Session = {
   history: Map<number, Evaluation>;
   signals: SignalCache;
+  shapes: ShapeGeometryBudget;
   /** Work bound shared by every time-shifted evaluation in one call. */
   steps: number;
 };
@@ -232,6 +236,7 @@ function baseState(
   comp: Composition,
   ctx: Context,
   layer: CompositionLayer,
+  budget: ShapeGeometryBudget,
 ): EvaluatedLayer {
   const sourceTime = localTime(layer, ctx.time),
     sampleIndex = layer.sampleTimes
@@ -286,6 +291,8 @@ function baseState(
       opacity: unit(scalar(m.opacity, time, fps, 1)),
     })),
   };
+  if (layer.type === "shape")
+    state.contents = sampleShapes(layer.contents, time, fps, budget);
   if (layer.type === "solid" || layer.type === "text")
     state.color = color(layer.color, time, fps);
   if (
@@ -333,12 +340,19 @@ class Evaluation {
     private readonly session: Session = {
       history: new Map(),
       signals: new Map(),
+      shapes: new ShapeGeometryBudget({ frame: time }),
       steps: 0,
     },
   ) {
     this.root = context(compiled, compiled.comp, time, compiled.comp.fps);
   }
 
+  private shapeBudget(ctx: Context, layer: CompositionLayer) {
+    return this.session.shapes.located({
+      node: layer.id,
+      path: this.bindings(ctx, layer.id),
+    });
+  }
   private bindings(ctx: Context, id: string) {
     return layerKey(ctx.route, id);
   }
@@ -504,7 +518,12 @@ class Evaluation {
     ctx: Context,
     host: CompositionLayer,
   ): Task<EvaluatedLayer> {
-    const state = baseState(this.compiled.comp, ctx, host);
+    const state = baseState(
+      this.compiled.comp,
+      ctx,
+      host,
+      this.shapeBudget(ctx, host),
+    );
     yield* this.motion(ctx, state, true);
     return state;
   }
@@ -608,6 +627,8 @@ class Evaluation {
   private normalize(ctx: Context, state: EvaluatedLayer) {
     state.transform.opacity = unit(state.transform.opacity);
     clampEffects(state.effects);
+    if (state.contents)
+      clampShapes(state.contents, this.shapeBudget(ctx, state.layer));
     if (state.color) state.color = state.color.map(unit) as typeof state.color;
     if (state.reveal !== undefined) state.reveal = unit(state.reveal);
     if (state.stateMix !== undefined) state.stateMix = unit(state.stateMix);
@@ -707,7 +728,12 @@ class Evaluation {
         },
       );
     ctx.stageActive.add(layer.id);
-    const state = baseState(this.compiled.comp, ctx, layer);
+    const state = baseState(
+      this.compiled.comp,
+      ctx,
+      layer,
+      this.shapeBudget(ctx, layer),
+    );
     yield* this.motion(ctx, state);
     const stage: Stage = { state };
     ctx.stageActive.delete(layer.id);
@@ -755,7 +781,12 @@ class Evaluation {
     const stage = yield* this.stage(ctx, layer);
     if (stage.constrained && !stage.sealed) {
       // Without expressions the stage is keys plus motion craft; rebuild it.
-      const fresh = baseState(this.compiled.comp, ctx, layer);
+      const fresh = baseState(
+        this.compiled.comp,
+        ctx,
+        layer,
+        this.shapeBudget(ctx, layer),
+      );
       yield* this.motion(ctx, fresh);
       return copy(readProperty(fresh, segments));
     }
@@ -1188,8 +1219,15 @@ class Evaluation {
         if (!binding.clock) yield* this.applied(ctx, layer, binding);
     if (layer.type === "precomp")
       state.timeRemap = yield* this.clock(ctx, layer);
+    if (state.contents)
+      state.shapes = compileShapes(
+        state.contents,
+        state.time / ctx.fps,
+        this.shapeBudget(ctx, layer),
+      );
     // Only compositions with stage readers pay for the pre-constraint copy.
-    if (this.compiled.stageReads) stage.sealed = sealStage(state);
+    if (this.compiled.stageReads)
+      stage.sealed = sealStage(state, this.shapeBudget(ctx, layer));
     else stage.constrained = true;
     // AE auto-orient: added after expressions, invisible to rotation reads.
     if (layer.transform?.autoOrient === "path")
@@ -1211,7 +1249,9 @@ class Evaluation {
             ? constraint.surface
             : "toward" in constraint
               ? constraint.toward
-              : undefined;
+              : "path" in constraint
+                ? constraint.path
+                : undefined;
       if (reference) yield* this.layerState(ctx, this.layer(ctx, reference));
     }
     applyConstraints(state, {
@@ -1221,6 +1261,8 @@ class Evaluation {
       fps: ctx.fps,
       options: this.options,
       parentMatrix,
+      budget: this.shapeBudget(ctx, layer),
+      signal: (id) => this.signalAt(id, this.time),
       other: (id) => ctx.states.get(id)!,
     });
     state.localMatrix = transformMatrix(state.transform);
@@ -1327,7 +1369,10 @@ function checkFrame(frame: number, path: Pick<PropertyPath, "layer">) {
 }
 
 /** Copy the values expression reads may observe; constraints mutate the live state. */
-function sealStage(state: EvaluatedLayer): EvaluatedLayer {
+function sealStage(
+  state: EvaluatedLayer,
+  budget: ShapeGeometryBudget,
+): EvaluatedLayer {
   return {
     ...state,
     transform: {
@@ -1338,6 +1383,9 @@ function sealStage(state: EvaluatedLayer): EvaluatedLayer {
     },
     constraintReference: [...state.constraintReference],
     ...(state.color ? { color: [...state.color] as typeof state.color } : {}),
+    ...(state.contents
+      ? { contents: cloneShapes(state.contents, budget) }
+      : {}),
   };
 }
 

@@ -1,3 +1,5 @@
+import type { ShapeGeometryBudget } from "../shapes/budget.ts";
+import { flattenBezier, arcLengths, pointAtLength } from "../shapes/path.ts";
 import type {
   Composition,
   CompositionScope,
@@ -27,6 +29,8 @@ type Context = {
   fps: number;
   options: EvaluationOptions;
   parentMatrix: Matrix;
+  budget: ShapeGeometryBudget;
+  signal: (id: string) => number;
   other: (id: string) => EvaluatedLayer;
 };
 
@@ -43,7 +47,7 @@ function inverse(matrix: Matrix, state: EvaluatedLayer): Matrix {
 }
 
 function rectangle(state: EvaluatedLayer, ctx: Context): Bounds {
-  if (state.layer.type === "text") {
+  if (state.layer.type === "text" || state.layer.type === "shape") {
     const bounds = localBounds(ctx.comp, ctx.scope, state, ctx.options);
     if (!bounds)
       passageError(
@@ -121,6 +125,65 @@ function applyConstraint(
       location[0] + (constraint.offset?.[0] ?? 0),
       location[1] + (constraint.offset?.[1] ?? 0),
     ]);
+  } else if (constraint.type === "follow-path") {
+    const source = other(constraint.path),
+      path = source.shapes?.paths[0];
+    if (!path)
+      passageError(
+        "comp-shape-follow-empty",
+        "Follow-path source has no contour",
+        {
+          node: state.id,
+          path: constraint.path,
+          ...ctx.budget.location,
+        },
+      );
+    const localPoints = flattenBezier(path, ctx.budget);
+    ctx.budget.vertices(localPoints.length);
+    const points = localPoints.map((point) =>
+      ctx.budget.point(transformPoint(source.worldMatrix, point)),
+    );
+    const lengths = arcLengths(points),
+      total = lengths.at(-1) ?? 0;
+    if (!total)
+      passageError(
+        "comp-shape-follow-empty",
+        "Follow-path source has zero arc length",
+        {
+          node: state.id,
+          path: constraint.path,
+          ...ctx.budget.location,
+        },
+      );
+    const distance = unit(ctx.signal(constraint.progress)) * total;
+    if (constraint.orient === "tangent") {
+      const inv = inverse(parentMatrix, state);
+      const before = transformPoint(
+        inv,
+        pointAtLength(points, lengths, Math.max(0, distance - total * 0.001)),
+      );
+      const after = transformPoint(
+        inv,
+        pointAtLength(
+          points,
+          lengths,
+          Math.min(total, distance + total * 0.001),
+        ),
+      );
+      const skewDirection = Math.atan2(
+        Math.tan((t.skewY * Math.PI) / 180) * t.scale[0],
+        t.scale[0],
+      );
+      set(
+        t,
+        "rotation",
+        ((Math.atan2(after[1] - before[1], after[0] - before[0]) -
+          skewDirection) *
+          180) /
+          Math.PI,
+      );
+    }
+    moveReference(pointAtLength(points, lengths, distance));
   } else if (constraint.type === "look-at") {
     const source = other(constraint.toward);
     const target = transformPoint(

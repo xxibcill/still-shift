@@ -1,3 +1,4 @@
+import type { SampledShapeContent, CompiledShapes } from "../shapes/types.ts";
 import type { EvaluatedEffect } from "./effects.ts";
 import type {
   BezierPath,
@@ -48,6 +49,8 @@ export type EvaluatedLayer = {
   bounds: Bounds | null;
   masks: EvaluatedMask[];
   effects: EvaluatedEffect[];
+  contents?: SampledShapeContent[];
+  shapes?: CompiledShapes;
   color?: Rgba;
   state?: number;
   stateFrom?: number;

@@ -78,6 +78,7 @@ export function localBounds(
 ): Bounds | null {
   const layer = state.layer;
   if (layer.type === "null") return null;
+  if (layer.type === "shape") return state.shapes?.bounds ?? null;
   if (layer.type === "provider") {
     const b = layer.bounds;
     return b ? { left: b[0], top: b[1], right: b[2], bottom: b[3] } : null;

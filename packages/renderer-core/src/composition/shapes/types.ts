@@ -72,11 +72,13 @@ export type ShapePaint = Extract<
   SampledShapeContent,
   { type: "fill" | "stroke" | "gradient-fill" | "gradient-stroke" }
 >;
+export type ShapeNib = { wash: Point[]; body: Point[]; cuts: Point[][] };
 export type ShapeDraw = {
   paint: ShapePaint;
   paths: {
     id: string;
     path: BezierPath;
+    nibs?: ShapeNib[];
     source?: { points: Point[]; span: [number, number] };
   }[];
   matrix: Matrix;

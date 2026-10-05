@@ -622,6 +622,14 @@ describe("composition-1 fixtures", () => {
     ) as Composition;
     expect(validateComposition(indexed).ok).toBe(true);
     allLayers.push(...indexed.layers);
+    const shapes = JSON.parse(
+      readFileSync(
+        resolve(root, "benchmarks/fixtures/composition/ce5/core.json"),
+        "utf8",
+      ),
+    ) as Composition;
+    expect(validateComposition(shapes).ok).toBe(true);
+    allLayers.push(...shapes.layers);
     for (const option of layers.CompositionLayerSchema.options) {
       const type = option.shape.type.value;
       if (UNAVAILABLE_LAYER_TYPES[type]) continue;
@@ -1100,11 +1108,6 @@ const invalid: Mutation[] = [
     (d) => set(d.drivers![1]!, { target: "shadow.blur" }),
     "comp-feature-unavailable",
     "drivers[1].target",
-  ],
-  [
-    "shape layer",
-    (d) => d.layers.push({ id: "shape", type: "shape", contents: [] } as never),
-    "comp-feature-unavailable",
   ],
   [
     "3D layer",

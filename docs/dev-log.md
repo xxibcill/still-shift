@@ -44,12 +44,13 @@ still hold before relying on them.
 ## Current state
 
 - **CE5 in progress (2026-10-05):** `codex/composition-ce5` from CE11 `a0c56df`.
-  Contracts, cubic/primitives/morph math, all nine operator kernels and typed shape
-  sampling/paint compilation pass build/lint and all 1,556 unit tests. Group paint
-  transforms and repeat/trim binding provenance have analytic regressions. Native
-  evaluator/session budgets, both backends, authoring and browser/baseline/export
-  acceptance follow; shape availability is still gated. No owner decision is
-  pending. [Evidence](./composition-ce5-results.json).
+  Native shapes now evaluate/render on Canvas/WebGL, with shared geometry work,
+  ID-based properties and follow-path/shape bounds. All 1,562 unit tests and static
+  checks pass. Native browser probe covers 22 cases / 154 frames at the unchanged
+  near tier (max Δ2; min PSNR 58.24 dB); connector/nibs and reverse seeks are exact.
+  Exploratory cross-backend exact failures are retained. Bake/builder/inspector,
+  complete reference fixtures/baselines, MP4 and full-gate verification remain.
+  No owner decision is pending. [Evidence](./composition-ce5-results.json).
 
 - **CE11 complete (2026-10-05):** `codex/composition-ce11`, runtime `5f36268`.
   Native inspector, graph/handle edits, overlays, lossless history, guarded source
@@ -166,6 +167,21 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-05 — Connect CE5 native shape evaluation and rendering
+
+- **Agent / branch:** Codex on `codex/composition-ce5`, after `822ad9a`.
+- **Done:** native shape properties/drivers/expressions, shared evaluation budget,
+  constraint bounds/follow-path, Canvas/WebGL shape dispatch, gradients/dashes and
+  ink/brush geometry with retained reveal coordinates; availability/versions updated.
+- **Results:** all 1,562 unit tests and build/lint/schema/boundaries/format pass.
+  Browser: 22 cases / 154 sampled frames meet unchanged near tier (max Δ2,
+  minimum PSNR 58.24 dB); connector/nibs and both-backend reverse seeks are exact.
+- **Rejected:** exploratory exact cross-backend assertion fails at antialias/gradient
+  rounding. Measurements retained; no exact parity repair or full-gate pass claimed.
+- **Next:** bake/builder/inspector, complete reference/baselines and MP4 acceptance,
+  then full local gate and CE5 PR. Existing CE0 baselines have not been regenerated.
+- **Records:** [CE5 evidence](./composition-ce5-results.json).
 
 ### 2026-10-05 — Add CE5 typed sampling and paint compilation
 

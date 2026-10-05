@@ -150,7 +150,7 @@ it("validates aliases, missing selectors, unavailable properties and component k
         n.property<number>("contents[line].strokeWidth").from(0).to(1, 12),
       );
     }),
-  ).toThrow(/comp-feature-unavailable/);
+  ).toThrow(/comp-path-property/);
   expect(() =>
     comp(options, (c) => {
       const n = c.add(box());

@@ -708,11 +708,12 @@ function checkConstraints(
           `no layer "${id}" in this composition`,
         );
     if (constraint.type === "follow-path") {
-      fail(
-        "comp-feature-unavailable",
-        [...path, "path"],
-        "follow-path needs shape paths, available in CE5",
-      );
+      if (layers.get(constraint.path)?.type !== "shape")
+        fail(
+          "comp-constraint-path",
+          [...path, "path"],
+          "follow-path needs a native shape layer",
+        );
       if (!signals.has(constraint.progress))
         fail(
           "comp-signal-missing",

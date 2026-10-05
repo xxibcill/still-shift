@@ -27,6 +27,7 @@ export function brushStroke(
   end: number,
   pinch = 0,
   textureWidth?: number,
+  sampler?: (progress: number) => Point,
 ): BrushStroke {
   start = clamp(start);
   end = clamp(end);
@@ -36,10 +37,11 @@ export function brushStroke(
   for (const char of path.id) seed = (seed * 31 + char.charCodeAt(0)) >>> 0;
   const phase = (seed % 997) / 159;
 
+  const sample = sampler ?? ((progress: number) => pointOnPath(path, progress));
   const section = (t: number) => {
-    const p = pointOnPath(path, t);
-    const a = pointOnPath(path, Math.max(0, t - 1 / STEPS));
-    const b = pointOnPath(path, Math.min(1, t + 1 / STEPS));
+    const p = sample(t);
+    const a = sample(Math.max(0, t - 1 / STEPS));
+    const b = sample(Math.min(1, t + 1 / STEPS));
     const dx = b[0] - a[0],
       dy = b[1] - a[1];
     const length = Math.hypot(dx, dy);

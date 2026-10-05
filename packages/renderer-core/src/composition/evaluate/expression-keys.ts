@@ -6,6 +6,7 @@
  */
 import {
   compositionEffectDefinition,
+  locateShapeProperty,
   isKeyed,
   type CompositionLayer,
   type Keyed,
@@ -57,6 +58,21 @@ export function ownCurve(
   let kind: "scalar" | "vector" | "color" = "scalar";
   let axis: string | undefined;
   switch (head!.name) {
+    case "contents": {
+      if (layer.type !== "shape") return undefined;
+      const location = locateShapeProperty(layer.contents, segments);
+      if (!location || location.descriptor.type === "path") return undefined;
+      raw = location.owner[location.key];
+      kind =
+        location.descriptor.type === "vec2"
+          ? "vector"
+          : location.descriptor.type;
+      if (location.component !== undefined)
+        axis = (kind === "color" ? ["r", "g", "b", "a"] : ["x", "y"])[
+          location.component
+        ];
+      break;
+    }
     case "transform":
       raw =
         layer.transform?.[

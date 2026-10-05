@@ -1,3 +1,4 @@
+import { shapeNibs } from "./nib.ts";
 import type { BezierPath } from "@still-shift/scene-contract";
 import { multiplyMatrix, type Matrix } from "../../node-transform.ts";
 import type { Bounds } from "../evaluate/types.ts";
@@ -321,9 +322,18 @@ export function compileShapes(
         transformedGeometry(path, inverted, budget),
       );
       if (!painted.length) continue;
+      const stroke =
+        captured.paint.type === "stroke" ||
+        captured.paint.type === "gradient-stroke"
+          ? captured.paint
+          : undefined;
+      const drawable = painted.map((path) => {
+        const nibs = stroke ? shapeNibs(path, stroke, budget) : undefined;
+        return nibs ? { ...path, nibs } : path;
+      });
       const draw: ShapeDraw = {
         paint: captured.paint,
-        paths: painted,
+        paths: drawable,
         matrix: captured.matrix,
         opacity: captured.opacity * opacity,
       };

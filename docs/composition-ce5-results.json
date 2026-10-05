@@ -119,6 +119,48 @@
         "browserAndFullGate": "not run for this compiler checkpoint"
       },
       "logs": "benchmarks/results/composition-ce5-verification"
+    },
+    {
+      "name": "Native evaluator/session budget, constraints and Canvas/WebGL rendering",
+      "status": "checkpoint",
+      "changes": [
+        "Shape layers available through native evaluated contents and immutable draw descriptions; explicit property routes integrate drivers, expressions and own-key loop helpers. Nested instances and historical reads share bounded shape work per evaluation.",
+        "Pre-constraint shape history copies are bounded; cubic/stroke bounds feed culling and attach/contact/safe-area constraints. Follow-path uses the first compiled contour in world arc length and optional tangent orientation; empty/non-shape sources have stable diagnostics.",
+        "Native Canvas cubic traces preserve open strokes; fills/strokes/linear/radial gradients, caps/joins/dashes and brush/ink nibs are wired. Gradient equal-offset order stays authored; degenerate endpoints use the last stop.",
+        "WebGL vector coverage, graph dispatch, damage and visual keys include native shape geometry/paint state. Empty shapes generate no draw.",
+        "Nib geometry reuses existing helpers with optional cached arc-length samplers; legacy defaults retain their arithmetic. Trim/repeat retain source coordinates/declared brush IDs; native nib dashes are bounded.",
+        "Updated generated reference/skill and user guidance; native browser test is part of pnpm test and therefore pnpm check."
+      ],
+      "verification": {
+        "fullUnitTests": 1562,
+        "unitFiles": 141,
+        "newEvaluatorNibChecks": 7,
+        "build": "passed",
+        "changedFileLint": "passed",
+        "boundaries": "passed",
+        "schemaGenerationAndCheck": "passed",
+        "ownedFileFormatting": "passed",
+        "browserCases": 22,
+        "browserSampleFrames": 154,
+        "crossBackendTier": "unchanged near: maximum channel delta 2 and PSNR >=50 dB",
+        "measuredMaxChannelDelta": 2,
+        "minimumPsnrDb": 58.23621659265477,
+        "exactCases": ["native connector", "ink stroke", "brush stroke"],
+        "reverseSeeks": "exact on both Canvas/WebGL",
+        "fullGateAndFrozenBaselines": "not run for this runtime checkpoint"
+      },
+      "versions": {
+        "evaluator": "composition-evaluator-25",
+        "canvas": "composition-canvas-1.23.0",
+        "webgl": "composition-webgl2-0.37.0"
+      },
+      "failuresAndRepairs": [
+        "Initial unit gate failed two stale expectations: available-layer fixture coverage lacked shapes and a solid contents selector still expected unavailable. Added native fixture and corrected missing-property diagnostic.",
+        "Initial new evaluator tests used incorrect graph arguments/expression forms/constant signal keys and exact equality for cached arc-length floating arithmetic; corrected test inputs and bounded numeric equality.",
+        "Browser evaluate transport instantiated recursive Composition too deeply in TypeScript; serialize JSON across the browser boundary.",
+        "Exploratory exact cross-backend probe failed up to delta2 in gradients and delta1 in antialiasing; retained the measurements. Existing near-tier metrics pass at >=58.24dB; this is not reported as an exact parity repair. Connector/nib/seek exact assertions remain."
+      ],
+      "logs": "benchmarks/results/composition-ce5-verification"
     }
   ],
   "polygonLibrary": {
@@ -130,10 +172,9 @@
     "integrity": "sha512-WuRO1ZHzyYTVHY78r4wVWVydvQ+1lx9qZ+DeZa/8zhvrxIgCVzElJ6lwSMGtUUKFPefhvfJsHZ5C9RNkgisCOQ=="
   },
   "pending": [
-    "Frame-wide geometry budget, paint compiler and evaluator/property/driver integration",
-    "Follow-path constraints and bake/builder/inspector integration",
-    "Canvas/WebGL rendering and ink/brush source-coordinate reuse",
-    "Native reference fixtures, stored new baselines, sequence/export acceptance",
-    "Reference/user guide update, full pnpm check, milestone PR"
+    "Bake/builder/inspector native shape authoring integration",
+    "Complete native reference sheet and stored new baseline; morph/trim sequences and native connector legacy comparison",
+    "Independent native MP4 export/diagnostic acceptance",
+    "Full pnpm check and frozen CE0 baseline verification, milestone PR"
   ]
 }

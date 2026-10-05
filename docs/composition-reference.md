@@ -820,6 +820,22 @@ Schema validation yields stable codes with JSON paths; builder input also yields
 | `comp-path-property`               | A path names no property of its layer.                                                                |
 | `comp-path-type`                   | A driver or periodic motion targets a non-scalar property.                                            |
 | `comp-path-readonly`               | A path that can only be read is used as a target.                                                     |
+| `comp-shape-id`                    | Shape content or gradient stop IDs are not unique in their collection.                                |
+| `comp-shape-limit`                 | A native shape tree exceeds its content or nesting limits.                                            |
+| `comp-shape-value`                 | A sampled native shape value is not finite.                                                           |
+| `comp-shape-range`                 | A generated primitive has invalid dimensions or point counts.                                         |
+| `comp-shape-work-limit`            | Generated geometry or reference copies exceed the shared evaluation budget.                           |
+| `comp-shape-coordinate`            | Generated coordinates exceed their finite coordinate envelope.                                        |
+| `comp-shape-flatten-limit`         | Cubic flattening cannot meet its fixed tolerance within the depth limit.                              |
+| `comp-shape-polygon-limit`         | A polygon operation exceeds its input-vertex complexity limit.                                        |
+| `comp-shape-polygon-coordinate`    | Quantized polygon coordinates are not safe integers.                                                  |
+| `comp-shape-polygon`               | The pinned polygon library rejected an operation.                                                     |
+| `comp-shape-repeater-range`        | Repeater copies exceed their supported range.                                                         |
+| `comp-shape-repeater-scale`        | A repeated scale power is undefined or not finite.                                                    |
+| `comp-shape-repeater-transform`    | A repeated transform is not finite.                                                                   |
+| `comp-shape-dash-precision`        | Nib dash spacing is below the available coordinate precision.                                         |
+| `comp-shape-follow-empty`          | A follow-path source has no contour or zero arc length.                                               |
+| `comp-constraint-path`             | A follow-path source is not a native shape layer.                                                     |
 | `comp-feature-unavailable`         | A contract feature whose implementation milestone has not landed.                                     |
 | `comp-provider-bounds`             | Provider bounds have non-positive width or height.                                                    |
 | `comp-provider-unavailable`        | A versioned content provider is not registered in this renderer.                                      |

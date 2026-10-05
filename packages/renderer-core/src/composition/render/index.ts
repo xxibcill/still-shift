@@ -15,6 +15,7 @@ export {
   type RenderOp,
   type RenderEffect,
   type SolidContent,
+  type ShapeContent as NativeShapeContent,
   type SurfaceContent,
   type SurfaceNode,
   type TextContent,
@@ -64,3 +65,9 @@ export {
   type CompositionBackend,
   type CompositionRendererVersion,
 } from "./renderer.ts";
+
+export type {
+  ShapeDraw,
+  CompiledShapes,
+  SampledShapeContent,
+} from "../shapes/types.ts";
