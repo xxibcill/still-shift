@@ -445,6 +445,7 @@ export function createCompositionInspector(options: {
             fill: "#e6c989",
             tabindex: 0,
             role: "button",
+            "data-bezier-handle": i,
             "aria-label": `Bézier ${i ? "end" : "start"} handle; arrow keys move x, Shift arrow keys move y`,
           }),
         );
@@ -469,10 +470,16 @@ export function createCompositionInspector(options: {
             .map((v) => Number(v.toFixed(4)))
             .join(",");
         }
-        function apply() {
-          void submit("Drag segment Bézier handle", (d) =>
+        async function apply(focusedHandle?: number) {
+          const accepted = await submit("Drag segment Bézier handle", (d) =>
             editSegmentBezier(d, current, index, values),
           );
+          if (accepted && focusedHandle !== undefined)
+            area
+              .querySelector<SVGElement>(
+                `[data-bezier-handle="${focusedHandle}"]`,
+              )
+              ?.focus();
         }
         handles.forEach((handle, i) => {
           let dragging = false;
@@ -510,7 +517,7 @@ export function createCompositionInspector(options: {
           handle.addEventListener("pointerup", () => {
             if (dragging && !fieldset.disabled) {
               dragging = false;
-              apply();
+              void apply();
             }
           });
           handle.addEventListener("pointercancel", () => {
@@ -537,7 +544,7 @@ export function createCompositionInspector(options: {
               Math.min(keyboard.shiftKey ? 3 : 1, values[axis]! + delta),
             );
             redraw();
-            apply();
+            void apply(i);
           });
         });
         redraw();

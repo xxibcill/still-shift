@@ -29,7 +29,9 @@
       "title": "[P2] Restore focus after keyboard handle edits",
       "body": "Each arrow adjustment submits an accepted edit and rebuilds the graph, removing its focused SVG handle. In the browser, ArrowRight moved focus from the handle to BODY, and a second ArrowRight did not change the curve. Preserve or restore the selected handle focus after acceptance so repeated keyboard adjustment works, as required by the inspector keyboard-access standard in .impeccable.md.",
       "commentUrl": "https://github.com/xxibcill/still-shift/pull/37#discussion_r4183168138",
-      "status": "pending"
+      "status": "fixed",
+      "change": "Restore the selected SVG handle focus after accepted keyboard edits; pointer edits retain their existing behavior.",
+      "validation": "Red: the repeated-keyboard browser test lost focus after its first adjustment. Green: inspector acceptance passes with consecutive horizontal and Shift vertical edits, undo, save, phone layout and native MP4 parity."
     },
     {
       "id": "R3",

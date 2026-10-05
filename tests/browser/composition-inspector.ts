@@ -181,14 +181,32 @@ try {
       .getElementById("edit-message")!
       .textContent!.includes("Drag segment Bézier"),
   );
+  const focusedHandle = () =>
+    page.evaluate(() => document.activeElement?.getAttribute("aria-label"));
+  const startHandleLabel =
+    "Bézier start handle; arrow keys move x, Shift arrow keys move y";
+  assert.equal(await focusedHandle(), startHandleLabel);
+  for (const key of ["ArrowRight", "Shift+ArrowUp"]) {
+    const before = await page.locator("#edited-keys").inputValue();
+    await page.keyboard.press(key);
+    await page.waitForFunction(
+      (previous) =>
+        (document.getElementById("edited-keys") as HTMLTextAreaElement)
+          .value !== previous,
+      before,
+    );
+    assert.equal(await focusedHandle(), startHandleLabel);
+  }
   assert.match(await page.locator("#edited-keys").inputValue(), /"bezier"/);
   assert.doesNotMatch(await page.locator("#edited-keys").inputValue(), /"out"/);
-  await page.locator("#undo").click();
-  await page.waitForFunction(() =>
-    (
-      document.getElementById("edited-keys") as HTMLTextAreaElement
-    ).value.includes('"out"'),
-  );
+  for (let i = 0; i < 3; i++) {
+    await page.locator("#undo").click();
+    await page.waitForFunction(
+      () =>
+        !document.getElementById("inspector-edit")!.hasAttribute("disabled"),
+    );
+  }
+  assert.match(await page.locator("#edited-keys").inputValue(), /"out"/);
   assert.deepEqual(await pixels(), edited);
   await page.locator("#save-document").click();
   await page.waitForFunction(
