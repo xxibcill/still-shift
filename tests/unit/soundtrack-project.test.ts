@@ -444,3 +444,125 @@ it("preserves distinct mixed-case routing IDs and case-sensitive clip/asset IDs"
   p.clips.push({ ...p.clips[0]!, id: "SPEECH" });
   expect(validateSoundtrackProject(p)).toEqual(p);
 });
+
+it("adds and removes cue clips and assets as one undoable request", () => {
+  const input = fixture();
+  const hash = "sha256:" + "b".repeat(64);
+  const cue = {
+    id: "whoosh",
+    asset: "whoosh-source",
+    track: "music",
+    sourceStartSample: 0,
+    sourceEndSample: 2400,
+    startSample: 9600,
+    gainDb: -3,
+    fadeInSamples: 0,
+    fadeOutSamples: 480,
+    automation: { interpolation: "linear" as const, points: [] },
+    pan: 0.5,
+  };
+  const added = editSoundtrackProject(input, [
+    {
+      type: "add-asset",
+      id: "whoosh-source",
+      path: "whoosh.wav",
+      sha256: hash,
+    },
+    { type: "add-clip", ...cue },
+  ]);
+  expect(input).toEqual(fixture());
+  expect(added.assets.at(-1)).toEqual({
+    id: "whoosh-source",
+    path: "whoosh.wav",
+    sha256: hash,
+  });
+  // Appended, so existing clips keep their summation order.
+  expect(added.clips.map((c) => c.id)).toEqual(["speech", "whoosh"]);
+  expect(added.clips[1]).toEqual(cue);
+  expect(added.history.undo).toEqual([soundtrackState(input)]);
+
+  const removed = editSoundtrackProject(added, [
+    { type: "remove-clip", clip: "whoosh" },
+    { type: "remove-asset", asset: "whoosh-source" },
+  ]);
+  expect(soundtrackState(removed)).toEqual(soundtrackState(input));
+  expect(removed.history.undo).toHaveLength(2);
+  const restored = editSoundtrackProject(removed, [{ type: "undo" }]);
+  expect(soundtrackState(restored)).toEqual(soundtrackState(added));
+
+  for (const [operations, code] of [
+    [
+      [{ type: "add-clip", ...cue, id: "speech", asset: "tone" }],
+      "duplicate-id",
+    ],
+    [[{ type: "add-clip", ...cue }], "clip-reference"],
+    [
+      [{ type: "add-clip", ...cue, asset: "tone", track: "nope" }],
+      "edit-reference",
+    ],
+    [
+      [{ type: "add-clip", ...cue, asset: "tone", startSample: 46000 }],
+      "clip-range",
+    ],
+    [[{ type: "add-clip", ...cue, asset: "tone", gainDb: 13 }], "edit-schema"],
+    [[{ type: "add-clip", ...cue, asset: "tone", extra: 1 }], "edit-schema"],
+    [
+      [{ type: "add-asset", id: "tone", path: "x.wav", sha256: hash }],
+      "duplicate-id",
+    ],
+    [[{ type: "add-asset", id: "new", path: "x.wav" }], "asset-identity"],
+    [
+      [{ type: "add-asset", id: "new", path: "x.wav", sha256: "md5:1" }],
+      "project-schema",
+    ],
+    [[{ type: "remove-asset", asset: "tone" }], "asset-in-use"],
+    [[{ type: "remove-asset", asset: "missing" }], "edit-reference"],
+    [[{ type: "remove-clip", clip: "missing" }], "edit-reference"],
+  ] as const)
+    expect(() => editSoundtrackProject(input, operations)).toThrow(
+      expect.objectContaining({ code }),
+    );
+});
+
+it("fade edits set either length and must fit the clip", () => {
+  const p = fixture();
+  const faded = editSoundtrackProject(p, [
+    { type: "fade", clip: "speech", fadeInSamples: 480 },
+  ]);
+  expect(faded.clips[0]).toMatchObject({
+    fadeInSamples: 480,
+    fadeOutSamples: 0,
+  });
+  const both = editSoundtrackProject(faded, [
+    { type: "fade", clip: "speech", fadeOutSamples: 960 },
+  ]);
+  expect(both.clips[0]).toMatchObject({
+    fadeInSamples: 480,
+    fadeOutSamples: 960,
+  });
+  // A shortening trim and a fitting fade succeed together as one request.
+  const trimmed = editSoundtrackProject(both, [
+    {
+      type: "trim",
+      clip: "speech",
+      sourceStartSample: 0,
+      sourceEndSample: 1000,
+    },
+    { type: "fade", clip: "speech", fadeInSamples: 100, fadeOutSamples: 100 },
+  ]);
+  expect(trimmed.history.undo).toHaveLength(3);
+  expect(
+    editSoundtrackProject(p, [
+      { type: "fade", clip: "speech", fadeInSamples: 0 },
+    ]).history.undo,
+  ).toHaveLength(0);
+  for (const [operation, code] of [
+    [{ type: "fade", clip: "speech" }, "edit-schema"],
+    [{ type: "fade", clip: "speech", fadeInSamples: 4801 }, "clip-fades"],
+    [{ type: "fade", clip: "speech", fadeInSamples: -1 }, "project-schema"],
+    [{ type: "fade", clip: "speech", fadeOutSamples: 0.5 }, "edit-schema"],
+  ] as const)
+    expect(() => editSoundtrackProject(p, [operation])).toThrow(
+      expect.objectContaining({ code }),
+    );
+});

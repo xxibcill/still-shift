@@ -56,20 +56,7 @@ export async function verifySoundtrackSources(
   const paths = new Map<string, string>();
   for (const asset of project.assets) {
     const path = resolve(dirname(projectPath), asset.path);
-    const stat = await lstat(path).catch(() =>
-      soundtrackFail(
-        "source-missing",
-        "Restore or relocate the missing source",
-        { asset: asset.id, path },
-      ),
-    );
-    if (!stat.isFile() || stat.size > 1_000_000_000)
-      soundtrackFail(
-        "source-size",
-        "Sources must be regular files no larger than 1 GB",
-        { asset: asset.id },
-      );
-    if ((await soundtrackChecksum(path)) !== asset.sha256)
+    if ((await checkedSourceChecksum(path, asset.id)) !== asset.sha256)
       soundtrackFail(
         "source-checksum",
         "Restore source bytes or author a new asset identity",
@@ -78,6 +65,54 @@ export async function verifySoundtrackSources(
     paths.set(asset.id, path);
   }
   return paths;
+}
+async function checkedSourceChecksum(path: string, asset: string) {
+  const stat = await lstat(path).catch(() =>
+    soundtrackFail("source-missing", "Restore or relocate the missing source", {
+      asset,
+      path,
+    }),
+  );
+  if (!stat.isFile() || stat.size > 1_000_000_000)
+    soundtrackFail(
+      "source-size",
+      "Sources must be regular files no larger than 1 GB",
+      { asset },
+    );
+  return soundtrackChecksum(path);
+}
+/**
+ * Gives each `add-asset` operation the identity of its source, resolved like
+ * every asset path: relative to the project JSON. A supplied sha256 must match.
+ */
+async function identifyAddedAssets(projectPath: string, operations: unknown) {
+  if (!Array.isArray(operations)) return operations;
+  // Same base the renderer uses, so a symlinked project resolves identically.
+  const base = dirname(resolve(projectPath));
+  return Promise.all(
+    operations.map(async (operation: unknown) => {
+      if (
+        !operation ||
+        typeof operation !== "object" ||
+        !("type" in operation) ||
+        operation.type !== "add-asset" ||
+        !("id" in operation) ||
+        typeof operation.id !== "string" ||
+        !("path" in operation) ||
+        typeof operation.path !== "string"
+      )
+        return operation;
+      const path = resolve(base, operation.path),
+        sha256 = await checkedSourceChecksum(path, operation.id);
+      if ("sha256" in operation && operation.sha256 !== sha256)
+        soundtrackFail(
+          "source-checksum",
+          "add-asset sha256 does not match the source bytes",
+          { asset: operation.id, path },
+        );
+      return { ...operation, sha256 };
+    }),
+  );
 }
 /** `change` may return its argument unchanged to report a no-op without saving. */
 export async function updateSoundtrackProject(
@@ -114,14 +149,16 @@ export async function updateSoundtrackProject(
     await release();
   }
 }
-export const saveSoundtrackEdits = (
+export async function saveSoundtrackEdits(
   path: string,
   revision: number,
   operations: unknown,
-) =>
-  updateSoundtrackProject(path, revision, (project) =>
-    editSoundtrackProject(project, operations),
+) {
+  const identified = await identifyAddedAssets(path, operations);
+  return updateSoundtrackProject(path, revision, (project) =>
+    editSoundtrackProject(project, identified),
   );
+}
 export const retimeSoundtrackProject = (
   path: string,
   revision: number,

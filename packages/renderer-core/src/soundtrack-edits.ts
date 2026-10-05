@@ -1,6 +1,7 @@
 import { z } from "zod";
 import {
   SoundtrackAutomationSchema,
+  SoundtrackClipSchema,
   SoundtrackStateSchema,
   validateSoundtrackProject,
   soundtrackFail,
@@ -49,6 +50,27 @@ export const SoundtrackEditSchema = z.discriminatedUnion("type", [
   z
     .object({ type: z.literal("pan"), clip: identifier, pan: z.number() })
     .strict(),
+  z
+    .object({
+      type: z.literal("fade"),
+      clip: identifier,
+      fadeInSamples: z.number().int().optional(),
+      fadeOutSamples: z.number().int().optional(),
+    })
+    .strict(),
+  // A complete clip, appended so earlier clips keep their summation order.
+  SoundtrackClipSchema.extend({ type: z.literal("add-clip") }),
+  z.object({ type: z.literal("remove-clip"), clip: identifier }).strict(),
+  z
+    .object({
+      type: z.literal("add-asset"),
+      id: identifier,
+      path: z.string(),
+      // File-based saves hash the source; the pure edit requires the identity.
+      sha256: z.string().optional(),
+    })
+    .strict(),
+  z.object({ type: z.literal("remove-asset"), asset: identifier }).strict(),
   z.object({ type: z.literal("undo") }).strict(),
   z.object({ type: z.literal("redo") }).strict(),
 ]);
@@ -189,6 +211,72 @@ export function editSoundtrackProject(
         if (operation.pan === 0) delete clip!.pan;
         else clip!.pan = operation.pan;
         break;
+      case "fade":
+        if (
+          operation.fadeInSamples === undefined &&
+          operation.fadeOutSamples === undefined
+        )
+          soundtrackFail(
+            "edit-schema",
+            "fade needs fadeInSamples, fadeOutSamples or both",
+            { clip: clip!.id },
+          );
+        if (operation.fadeInSamples !== undefined)
+          clip!.fadeInSamples = operation.fadeInSamples;
+        if (operation.fadeOutSamples !== undefined)
+          clip!.fadeOutSamples = operation.fadeOutSamples;
+        break;
+      case "add-clip": {
+        const added = SoundtrackClipSchema.parse(
+          Object.fromEntries(
+            Object.entries(operation).filter(([key]) => key !== "type"),
+          ),
+        );
+        if (project.clips.some((c) => c.id === added.id))
+          soundtrackFail("duplicate-id", "A clip with this ID already exists", {
+            clip: added.id,
+          });
+        project.clips.push(added);
+        break;
+      }
+      case "remove-clip":
+        project.clips = project.clips.filter((c) => c !== clip);
+        break;
+      case "add-asset": {
+        if (project.assets.some((a) => a.id === operation.id))
+          soundtrackFail(
+            "duplicate-id",
+            "An asset with this ID already exists",
+            { asset: operation.id },
+          );
+        if (operation.sha256 === undefined)
+          soundtrackFail(
+            "asset-identity",
+            "add-asset needs sha256; file-based saves compute it from the source",
+            { asset: operation.id },
+          );
+        project.assets.push({
+          id: operation.id,
+          path: operation.path,
+          sha256: operation.sha256,
+        });
+        break;
+      }
+      case "remove-asset": {
+        const users = project.clips.filter((c) => c.asset === operation.asset);
+        if (!project.assets.some((a) => a.id === operation.asset))
+          soundtrackFail("edit-reference", "Unknown edit target", {
+            operation,
+          });
+        if (users.length)
+          soundtrackFail(
+            "asset-in-use",
+            "Remove or reassign the clips that use this asset first",
+            { asset: operation.asset, clips: users.map((c) => c.id) },
+          );
+        project.assets = project.assets.filter((a) => a.id !== operation.asset);
+        break;
+      }
     }
   }
   commit();

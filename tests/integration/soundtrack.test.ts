@@ -888,3 +888,75 @@ it("rejects colliding stem filenames before rendering and accepts a distinct mix
     rendered.files.master!.sha256,
   );
 }, 10000);
+
+it("file-backed edits hash an added cue source relative to the project and render it", async () => {
+  const dir = join(root, "cue-authoring");
+  await mkdir(join(dir, "sfx"), { recursive: true });
+  await writeFile(
+    join(dir, "sfx/pop.wav"),
+    await readFile(join(root, "effect.wav")),
+  );
+  const p = structuredClone(project);
+  delete p.ducking;
+  p.assets = p.assets.map((a) => ({ ...a, path: "../" + a.path }));
+  const file = join(dir, "project.json");
+  await writeFile(file, JSON.stringify(p));
+  const saved = await readFile(file);
+  // A stated identity must match the bytes; nothing is saved otherwise.
+  await expect(
+    saveSoundtrackEdits(file, 0, [
+      {
+        type: "add-asset",
+        id: "pop",
+        path: "sfx/pop.wav",
+        sha256: "sha256:" + "0".repeat(64),
+      },
+    ]),
+  ).rejects.toMatchObject({ code: "source-checksum" });
+  await expect(
+    saveSoundtrackEdits(file, 0, [
+      { type: "add-asset", id: "pop", path: "sfx/missing.wav" },
+    ]),
+  ).rejects.toMatchObject({ code: "source-missing" });
+  expect(await readFile(file)).toEqual(saved);
+  const edited = await saveSoundtrackEdits(file, 0, [
+    { type: "add-asset", id: "pop", path: "sfx/pop.wav" },
+    {
+      type: "add-clip",
+      id: "pop-cue",
+      asset: "pop",
+      track: "effect",
+      sourceStartSample: 0,
+      sourceEndSample: 4800,
+      startSample: 96000,
+      gainDb: -6,
+      fadeInSamples: 0,
+      fadeOutSamples: 0,
+      automation: { interpolation: "linear", points: [] },
+    },
+  ]);
+  expect(edited.revision).toBe(1);
+  expect(edited.assets.at(-1)).toEqual({
+    id: "pop",
+    path: "sfx/pop.wav",
+    sha256: await soundtrackChecksum(join(root, "effect.wav")),
+  });
+  const output = join(dir, "render");
+  await renderSoundtrackProject(file, output, { stems: true });
+  const effect = await pcm(join(output, "audio/effect.wav"));
+  // The original impulse at 24000 + 2400 is untouched; the cue adds 96000 + 2400.
+  expect(effect[26400 * 2]).toBe(Math.fround(0.8));
+  expect(effect[98400 * 2]).toBeCloseTo(0.8 * 10 ** (-6 / 20), 7);
+  expect(effect[98400 * 2 + 1]).toBeCloseTo(0.8 * 10 ** (-6 / 20), 7);
+  // Removing the cue in one request restores the previous effect stem exactly.
+  await saveSoundtrackEdits(file, 1, [
+    { type: "remove-clip", clip: "pop-cue" },
+    { type: "remove-asset", asset: "pop" },
+  ]);
+  await renderSoundtrackProject(file, join(dir, "removed"), { stems: true });
+  const restored = await pcm(join(dir, "removed/audio/effect.wav"));
+  expect(restored.subarray(0, 96000 * 2)).toEqual(
+    effect.subarray(0, 96000 * 2),
+  );
+  expect(restored.subarray(96000 * 2).every((v) => v === 0)).toBe(true);
+}, 20000);
