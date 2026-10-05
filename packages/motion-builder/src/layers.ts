@@ -16,7 +16,12 @@ import {
   type Value,
 } from "./properties.ts";
 import type { Duration } from "./timeline.ts";
-import { sourceLocation, type SourceLocation, BuilderError } from "./source.ts";
+import {
+  sourceLocation,
+  type SourceLocation,
+  BuilderError,
+  recordSource,
+} from "./source.ts";
 export type Kind = CompositionLayer["type"];
 type Native<K extends Kind> = Extract<CompositionLayer, { type: K }>;
 type Options<K extends Kind> = Omit<Native<K>, "type" | "id" | "transform">;
@@ -170,11 +175,14 @@ export class Layer<K extends Kind = Kind> {
         result.error.issues.map((issue) => issue.message).join("; "),
         site,
       );
-    return {
-      kind: "clip",
-      duration: 0,
-      value: { owner: this, behaviour: result.data, location: site },
-    };
+    return recordSource<Motion>(
+      {
+        kind: "clip",
+        duration: 0,
+        value: { owner: this, behaviour: result.data, location: site },
+      },
+      site,
+    );
   }
   moveTo(value: number[], duration: Duration, easing?: Easing): Motion {
     return this.position.to(value, duration, easing);

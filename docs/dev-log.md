@@ -47,7 +47,8 @@ still hold before relying on them.
   Typed authoring and CLI/watch preview are delivered; all 128 integration tests pass.
   Eight examples validate and the 197-line Unequal Margins program matches CE4a pixels
   across 192 frames on both backends, including seeks and TypeScript/JSON MP4 identity.
-  Presets, generated reference/skill, isolated trial and full milestone gates remain.
+  All story intent presets are ported; 1,498 unit tests pass. Generated reference/skill,
+  isolated trial and full milestone gates remain.
   [Evidence](./composition-ce10-results.json).
 
 - **CE4a complete (2026-10-05):** `codex/composition-ce4a-completion`, implementation
@@ -147,6 +148,20 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-05 — Port CE10 native intent presets
+
+- **Agent / branch:** Codex on `codex/composition-ce10`.
+- **Done:** all seven motion and eight text recipes as plain timeline functions;
+  share pure intent/text definitions with the existing story renderer. Native signals,
+  staged drivers, carriers, decorations, correction/retype/count and qualifier motion
+  retain story semantics. Repeated finish is stable and driver call sites are distinct.
+- **Results:** all 1,498 unit tests and eight example programs pass; build, lint and
+  boundaries pass. The pinned native text preset example renders through the real CLI.
+- **Rejected / repaired:** the legacy text bridge's 16 px minimum wrongly rejected
+  native 12 px text; use the native size contract. Zod refined objects require safeExtend.
+- **Open / next:** generated reference/skill, isolated agent trial, full local gates/PR.
+- **Records:** [CE10 evidence](./composition-ce10-results.json).
 
 ### 2026-10-05 — Prove CE10 builder examples and Unequal Margins parity
 

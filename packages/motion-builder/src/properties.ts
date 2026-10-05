@@ -3,6 +3,7 @@ import type {
   CompositionBehaviour,
   CompositionTransform,
 } from "@still-shift/scene-contract";
+import type { IntentCommand } from "./presets.ts";
 import { type Duration, type Timeline } from "./timeline.ts";
 import {
   BuilderError,
@@ -44,7 +45,7 @@ export type BehaviourCommand = {
   behaviour: CompositionBehaviour;
   location: SourceLocation;
 };
-export type Motion = Timeline<Animation | BehaviourCommand>;
+export type Motion = Timeline<Animation | BehaviourCommand | IntentCommand>;
 export type AnimationClip = Extract<Timeline<Animation>, { kind: "clip" }>;
 export class Property<V extends Value> {
   readonly owner: AnimatedOwner;

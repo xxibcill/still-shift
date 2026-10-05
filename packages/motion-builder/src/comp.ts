@@ -1,3 +1,5 @@
+import { applyIntents } from "./intent-lowering.ts";
+import type { IntentCommand } from "./presets.ts";
 import { authoredFontDiagnostics } from "./fonts.ts";
 import {
   encodeSources,
@@ -76,8 +78,8 @@ export class CompositionBuilder {
     this.sites.set("comp", site);
     for (const marker of this.composition.markers ?? [])
       this.sites.set(`marker:${marker.id}`, site);
-    for (const driver of this.composition.drivers ?? [])
-      this.sites.set(`driver:${driver.target}`, site);
+    for (const [index] of (this.composition.drivers ?? []).entries())
+      this.sites.set(`driver:${index}`, site);
     for (const [index] of (this.composition.behaviours ?? []).entries())
       this.sites.set(`behaviour:${index}`, site);
     for (const [index] of (this.composition.periodic ?? []).entries())
@@ -324,7 +326,10 @@ export class CompositionBuilder {
   }
   driver(driver: CompositionDriver): void {
     (this.composition.drivers ??= []).push(structuredClone(driver));
-    this.sites.set(`driver:${driver.target}`, sourceLocation());
+    this.sites.set(
+      `driver:${this.composition.drivers!.length - 1}`,
+      sourceLocation(),
+    );
   }
   behaviour(behaviour: CompositionBehaviour): void {
     (this.composition.behaviours ??= []).push(structuredClone(behaviour));
@@ -372,26 +377,18 @@ export class CompositionBuilder {
     this.sites.set(`textStyle:${id}`, sourceLocation());
   }
   finish(): Composition {
-    this.composition.layers = this.nodes.map((node) =>
-      structuredClone(node.draft),
-    );
+    const output = structuredClone(this.composition);
+    output.layers = this.nodes.map((node) => structuredClone(node.draft));
     const layers = new Map(
-      this.composition.layers.map((layer) => [
+      output.layers.map((layer) => [
         layer.id,
         layer as unknown as Record<string, unknown>,
       ]),
     );
     const markers = new Map(
-      (this.composition.markers ?? []).map((marker) => [
-        marker.id,
-        marker.frame,
-      ]),
+      (output.markers ?? []).map((marker) => [marker.id, marker.frame]),
     );
-    const scheduled = schedule(
-      par(...this.timelines),
-      this.composition.fps,
-      markers,
-    );
+    const scheduled = schedule(par(...this.timelines), output.fps, markers);
     for (const clip of scheduled) {
       if (!this.nodes.some((node) => node === clip.value.owner))
         throw new BuilderError(
@@ -402,14 +399,21 @@ export class CompositionBuilder {
     }
     const animatedTracks = applyAnimations(
       scheduled.filter(
-        (clip): clip is Scheduled<Animation> => !("behaviour" in clip.value),
+        (clip): clip is Scheduled<Animation> => "mode" in clip.value,
       ),
       layers,
-      this.composition,
+      output,
     );
+    for (const [key, site] of applyIntents(
+      output,
+      scheduled.filter(
+        (clip): clip is Scheduled<IntentCommand> => "intent" in clip.value,
+      ),
+    ))
+      this.sites.set(key, site);
     for (const clip of scheduled) {
       if (!("behaviour" in clip.value)) continue;
-      if (clip.start >= this.composition.frameCount)
+      if (clip.start >= output.frameCount)
         throw new BuilderError(
           "comp-builder-duration",
           "Behaviour starts after the composition ends",
@@ -421,37 +425,42 @@ export class CompositionBuilder {
           ...behaviour,
           startFrame: clip.start + behaviour.startFrame,
         };
-      for (const generated of behaviourExpressions(
-        behaviour,
-        this.composition.fps,
-      )) {
+      for (const generated of behaviourExpressions(behaviour, output.fps)) {
         const value = expression(
           clip.start
             ? `frame >= ${clip.start} ? (${generated.source}) : value`
             : generated.source,
         );
         value.location = clip.value.location;
-        this.expression(generated.target, value);
+        const sources = (output.expressions ??= {});
+        if (sources[generated.target])
+          throw new BuilderError(
+            "comp-builder-conflict",
+            `An expression already targets ${generated.target}`,
+            value.location,
+          );
+        sources[generated.target] = { source: value.source, ast: value.ast };
+        this.sites.set(`expression:${generated.target}`, value.location);
       }
     }
-    this.composition.metadata = {
-      ...this.composition.metadata,
+    output.metadata = {
+      ...output.metadata,
       builder: JSON.parse(
         JSON.stringify(
-          encodeSources(this.composition, this.sites, [
+          encodeSources(output, this.sites, [
             ...this.tracks,
             ...animatedTracks,
           ]),
         ),
       ),
     };
-    const parsed = validateComposition(this.composition);
+    const parsed = validateComposition(output);
     if (!parsed.ok) {
       const issue = parsed.diagnostics[0]!;
       throw new BuilderError(
         issue.code,
         `${issue.path}: ${issue.message}`,
-        builderSource(this.composition, issue.path),
+        builderSource(output, issue.path),
       );
     }
     const fontIssue = authoredFontDiagnostics(parsed.composition)[0];

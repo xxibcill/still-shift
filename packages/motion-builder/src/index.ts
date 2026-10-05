@@ -30,3 +30,9 @@ export { BuilderError, type SourceLocation } from "./source.ts";
 export { builderSource } from "./source-map.ts";
 
 export { authoredFontDiagnostics } from "./fonts.ts";
+
+export {
+  presets,
+  type MotionPresetOptions,
+  type TextPresetOptions,
+} from "./presets.ts";

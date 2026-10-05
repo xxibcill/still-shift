@@ -214,10 +214,73 @@
       "limits": [
         "The main authored choreography is 197 formatted lines. Shared helpers contain only static geometry, resource registration and the shared public easing sampler; no adapter output is an authoring input."
       ]
+    },
+    {
+      "name": "Native story intent presets",
+      "status": "checkpoint",
+      "motionRecipes": [
+        "settle",
+        "press",
+        "recoil",
+        "handoff",
+        "breathe",
+        "draw-on",
+        "land"
+      ],
+      "textRecipes": [
+        "reveal",
+        "emphasize",
+        "correct",
+        "qualify",
+        "retype",
+        "count",
+        "redact",
+        "release"
+      ],
+      "changes": [
+        "Shared pure story intent/text compilation definitions in scene-contract; renderer imports retain public API",
+        "Timeline recipes lower to staged native signals, drivers and periodic motion; interim drawOn preserves provider channels",
+        "Native text animators/decorations/corrections/transitions retain claim hierarchy, release weights and count validation",
+        "Repeated finish emits fresh equivalent compositions; driver and behaviour source sites preserved"
+      ],
+      "verification": [
+        {
+          "command": "pnpm test:unit",
+          "status": "passed",
+          "tests": 1498,
+          "log": "/private/tmp/ce10-presets-unit.log"
+        },
+        {
+          "command": "pnpm exec vitest run [builder, typography-events, motion-craft]",
+          "status": "passed",
+          "tests": 82
+        },
+        {
+          "command": "pnpm exec vitest run tests/integration/composition-examples.test.ts",
+          "status": "passed"
+        },
+        {
+          "command": "pnpm build / eslint changed files / pnpm check:boundaries",
+          "status": "passed"
+        },
+        {
+          "command": "pnpm still-shift comp render --input examples/composition/05-pinned-text.ts --output [temporary MP4]",
+          "status": "passed",
+          "frames": 72,
+          "fps": 24
+        }
+      ],
+      "repairs": [
+        "Used native font-size bounds rather than the legacy 16 px minimum.",
+        "Zod refined object bridge uses safeExtend; all native builder tests remain passing."
+      ],
+      "limits": [
+        "drawOn currently targets story.path providers; native shape operators remain CE5.",
+        "Text presets require static text content; authored transform keys and staged motion remain supported."
+      ]
     }
   ],
   "pending": [
-    "Story intent presets",
     "Generated reference and skill",
     "Isolated skill trial",
     "Full local milestone gates and PR"

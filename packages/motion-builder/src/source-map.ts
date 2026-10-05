@@ -119,7 +119,7 @@ export function encodeSources(
             }
           : {}),
       })),
-      drivers: (comp.drivers ?? []).map((d) => at(`driver:${d.target}`)),
+      drivers: (comp.drivers ?? []).map((_, i) => at(`driver:${i}`)),
       behaviours: (comp.behaviours ?? []).map((_, i) => at(`behaviour:${i}`)),
       periodic: (comp.periodic ?? []).map((_, i) => at(`periodic:${i}`)),
       signals: (comp.signals ?? []).map((n) => at(`signal:${n.id}`)),

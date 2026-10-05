@@ -49,3 +49,22 @@ export {
   cubicBezierProgress,
   springProgress,
 } from "./easing-sampler.ts";
+
+export {
+  STORY_MOTION_PRESETS,
+  TEXT_INTENT_PRESETS,
+  expandMotionIntents,
+} from "./intent-presets.ts";
+export {
+  ROLE_LEADING,
+  opticalTracking,
+  resolvedTextStyle,
+  type TextNode,
+} from "./typography-style.ts";
+export {
+  resolveNarrationWord,
+  resolveTextEvents,
+  compileTextEvents,
+  type TextEventScene,
+  type ResolvedTextEvent,
+} from "./typography-events.ts";

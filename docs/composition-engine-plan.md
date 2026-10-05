@@ -3606,7 +3606,7 @@ export default comp({ width: 1920, height: 1080, fps: 30, seconds: 8 }, (c) => {
       documented rule), with conflict detection on the same property.
 - [x] Asset registration computes SHA-256 and dimensions at build time (Node) or
       accepts precomputed hashes (browser).
-- [ ] Presets as plain functions (for example `presets.drawOn(path)`); port the story
+- [x] Presets as plain functions (for example `presets.drawOn(path)`); port the story
       intent presets.
 - [x] Expose CE1's instance-specific property paths through builder helpers for
       reused precomps, including explicit cross-instance driver sources and targets.
@@ -3642,8 +3642,9 @@ and complete nested/key source sites are delivered; all 128 integration tests pa
 Browser verification preserves valid pixels and frames through rebuild errors,
 clamps shortened duration, switches backends and proves TypeScript/JSON MP4 identity.
 Eight small programs validate. The 197-line Unequal Margins program matches all
-192 CE4a frames exactly on both backends, seeks and exports included. Presets,
-generated references, isolated trial and full gates remain in progress. See [CE10 evidence](./composition-ce10-results.json).
+192 CE4a frames exactly on both backends, seeks and exports included. Seven motion
+and eight text presets emit native composition fields; all 1,498 unit tests pass.
+Generated references, isolated trial and full gates remain in progress. See [CE10 evidence](./composition-ce10-results.json).
 
 **Completion record:** _to be filled in._
 

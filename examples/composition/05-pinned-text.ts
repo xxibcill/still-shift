@@ -1,4 +1,4 @@
-import { comp, text } from "@still-shift/motion";
+import { comp, text, presets, seq, at } from "@still-shift/motion";
 import { fontAsset } from "@still-shift/motion/node";
 const font = await fontAsset(
   "heading",
@@ -15,7 +15,13 @@ export default comp(
         color: "#233D4D",
       }).at(40, 150),
     );
-    c.timeline(title.reveal.from(0).to(1, 30));
+    c.timeline(
+      seq(
+        presets.text.reveal(title, 20),
+        presets.text.emphasize(title, 10),
+        at(48, presets.text.release(title, 10)),
+      ),
+    );
     c.marker("read", 30, { duration: 42, label: "Read the complete line" });
   },
 );
