@@ -3303,11 +3303,14 @@ controls above stay open until the CE7 milestone branch.
 **Implementation record (2026-10-05):** checkpoint slices deliver local
 posterization/holds, precomp loops/counts, single-key freeze, CE13 frame-pair handoff,
 optional deterministic adaptive sampling and controlled exposure cuts. One planned
-sample array drives accumulation and both graph passes. Key/source edges and complex
-content retain the configured cap; default fixed arithmetic remains unchanged.
-266 focused tests/build/lint/schema pass, including root clock semantics and safe
-instance overrides. Native browser/hardware/export acceptance, serial costs, full
-local gate and milestone PR remain pending. [Evidence](./composition-ce7-results.json).
+sample array drives accumulation and both graph passes; fixed arithmetic remains
+unchanged. Root procedural semantics and conservative adaptive fallback are explicit.
+266 focused tests pass. Both native fixtures (96 frames) pass analytic pixels,
+forward/reverse/random seeks, new CE7 stored hashes and independent/repeated exports
+on both backends. All 12 actual hardware comparisons pass unchanged thresholds;
+serial seven-count 1080p costs are recorded. Build/lint/schema/boundaries pass.
+Complete local gate/frozen CE0 and milestone PR remain pending.
+[Evidence](./composition-ce7-results.json).
 
 ---
 

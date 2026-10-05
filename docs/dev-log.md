@@ -43,12 +43,12 @@ still hold before relying on them.
 
 ## Current state
 
-- **CE7 in progress (2026-10-05):** `codex/composition-ce7` from completed CE5
-  `edb958a` / [PR #38](https://github.com/xxibcill/still-shift/pull/38).
-  Clock controls/loops and deterministic adaptive sampling/controlled cuts pass
-  266 focused tests/build/lint/schema. Root procedural semantics stay explicit;
-  scope overrides ignore inherited names. Native browser/hardware/export acceptance,
-  serial costs and complete local gate/PR remain. No owner decision is pending.
+- **CE7 in progress (2026-10-05):** `codex/composition-ce7` from CE5 `edb958a`.
+  Clock controls/loops/adaptive sampling pass 266 focused tests; native 96-frame
+  acceptance passes both backends, reverse/random seeks, independent/repeated
+  exports and 12 hardware comparisons. Separate new stored CE7 baselines and
+  serial seven-count 1080p costs are recorded. Build/lint/schema/boundaries pass.
+  Complete local gate/frozen CE0 and PR remain; no owner decision is pending.
   [Evidence](./composition-ce7-results.json).
 
 - **CE5 complete (2026-10-05):** `codex/composition-ce5`, runtime `4908cbe`.
@@ -175,6 +175,19 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-05 — CE7 native acceptance and serial sample costs
+
+- **Agent / branch:** Codex on `codex/composition-ce7`.
+- **Done:** independent clock/pixel oracle, forward/reverse/random seeking,
+  separate CE7 stored baselines, actual hardware acceptance and independent
+  preview/export encodes for both fixtures/backends.
+- **Results:** 96 native frames, 12 hardware comparisons and repeated exports
+  pass unchanged thresholds. Existing fixed-exposure oracles remain exact.
+  Serial 1080p costs for 1/2/4/8/16/32/64 samples are recorded for both backends.
+  Build/lint/schema/boundaries pass; initial cache-report assertion repair retained.
+- **Next:** complete local `pnpm check`/frozen CE0, then milestone PR and CE6 branch.
+- **Records:** [CE7 evidence](./composition-ce7-results.json).
 
 ### 2026-10-05 — CE7 adaptive sampling and controlled exposure cuts
 
