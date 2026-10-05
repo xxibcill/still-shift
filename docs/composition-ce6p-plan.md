@@ -92,7 +92,10 @@ clear bytes. The bounded path now requires exact integer premultiplied clear
 channels and an opaque screen; fractional clears use the full-frame path. Added
 189 moving-region cases against original accumulation and independent averages
 of actual GPU sample bytes. Both review axes are clean after repair.
-Runtime correctness and performance remain unverified at this checkpoint.
+All 852 kernel cases pass on pinned SwiftShader and Apple Metal, including the
+189 fractional-clear cases. Full composition regressions remain in flight. Two
+initial timing attempts were rejected for competing main-lane verification; no
+performance conclusion is drawn from them.
 
 The A/B harness can load both renderer and kernel from pinned refs without changing
 files. Measure slice 1 separately with `--candidate-ref 706be71` against `0e48388`,

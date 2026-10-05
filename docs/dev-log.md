@@ -47,8 +47,9 @@ still hold before relying on them.
   WebGL optimization lane on `codex/composition-ce6p-compatible` from `0e48388`.
   Candidates: final shutter sum/average fusion and bounded GPU exposure snapshots/
   sums, subject to exact regressions and independent serial A/B measurements.
-  Candidates build; runtime
-  correctness and timings wait for the main gate to release the machine. The main checkout/chat is untouched.
+  Candidates build and pass 852 exactness cases on each GPU profile. Focused
+  regression/export suites run; serial timings await a longer quiet window.
+  The main checkout/chat is untouched.
   All 117 original failures, 1.25× family and 2× native targets remain open.
   [Plan](./composition-ce6p-plan.md).
 
@@ -193,7 +194,9 @@ _Last updated 2026-10-06 by Codex for CE6-P; prior work retained._
   independent byte-average and
   retained-original GPU regressions, isolated serial A/B harness and preview budgets.
 - **Results:** pinned toolchain/import preflight, TypeScript build and changed-file
-  lint pass. Browser regressions and timings have not run; main CE7 gate is active.
+  lint pass; 852 exactness cases pass on pinned SwiftShader and Apple Metal.
+  Focused regressions/export acceptance run; two timing attempts were rejected
+  by overlap detection and retained without performance conclusions.
 - **Rejected draft:** dividing signed exposure differences before adding the
   background can move half-byte ties; restore the integer numerator before division.
 - **Retained attempt:** sandbox offline install lacked a package; normal locked
@@ -202,7 +205,7 @@ _Last updated 2026-10-06 by Codex for CE6-P; prior work retained._
   launch cleanup, preserved the CE6-P anchor, added cold preview budgets and a
   conservative package-manager workload guard before timing runs. Overlap polling
   retains invalid timings and rejects them; GitHub confirms Actions are disabled.
-- **Next:** queued exactness, then serial A/B after competing workloads end.
+- **Next:** serial A/B after a sustained quiet window, family matrices and full gate.
 - **Records:** [slice plan](./composition-ce6p-plan.md),
   [retained evidence](./composition-ce6p-performance-results.json).
 

@@ -659,6 +659,32 @@
     {
       "command": "changed-file eslint; pnpm build",
       "status": "passed"
+    },
+    {
+      "command": "tests/browser/composition-webgl-exposure.ts pinned and hardware",
+      "status": "passed",
+      "casesPerProfile": 852,
+      "breakdown": {
+        "fusion": 201,
+        "bounded": 462,
+        "fractionalClear": 189
+      },
+      "logs": [
+        "benchmarks/results/composition-ce6p/exact-pinned.log",
+        "benchmarks/results/composition-ce6p/exact-hardware.log"
+      ]
+    },
+    {
+      "command": "fusion A/B bracket attempt 1",
+      "status": "rejected-invalid",
+      "reason": "competing workload detected during first baseline timing; no performance conclusion",
+      "record": "benchmarks/results/composition-ce6p/invalid-01-fusion-ab.json"
+    },
+    {
+      "command": "bounded A/B bracket attempt 1",
+      "status": "rejected-invalid",
+      "reason": "competing workload detected during first baseline timing; no performance conclusion",
+      "record": "benchmarks/results/composition-ce6p/invalid-02-bounded-ab.json"
     }
   ],
   "review": {
@@ -685,14 +711,13 @@
     }
   },
   "pending": [
-    "Pinned/hardware fusion and bounded exact byte regressions",
     "Serial bracketed original CE7 1080p render/readback and separate preview budgets",
     "Exposure/WebGL/export/hardware regressions",
     "Required selected-candidate family timing audits",
     "Final review and full pnpm check",
     "Reviewable published attached PR"
   ],
-  "workloadCoordination": "Main full gate has reached frozen-baseline completion; exact runner waits for 30-second quiet window. Read-only coordination; no other-chat messages.",
+  "workloadCoordination": "Main CE7 complete and PR40 open; main CE6 feature lane active. Two timing attempts rejected for overlap. Correctness/export suites in flight; no messages to main chat.",
   "repositoryActionsVerified": {
     "enabled": false,
     "command": "gh api repos/xxibcill/still-shift/actions/permissions",
@@ -730,5 +755,90 @@
       "typography": 4
     },
     "status": "historical audit only; does not verify the combined 0.38.1/0.39.0/0.40.0 trees"
-  }
+  },
+  "exactnessProfiles": {
+    "pinned": {
+      "environment": {
+        "profile": "chromium-software-2",
+        "browserVersion": "151.0.7922.34",
+        "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+        "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+        "platform": "darwin",
+        "arch": "arm64"
+      },
+      "cases": 852,
+      "fusion": 201,
+      "bounded": 462,
+      "fractionalClear": 189,
+      "maxDelta": 0
+    },
+    "hardware": {
+      "environment": {
+        "profile": "hardware",
+        "browserVersion": "151.0.7922.34",
+        "webglRenderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M5 Pro, Unspecified Version)",
+        "rasterFingerprint": "sha256:1635aedc2b987dcd5c74dce4b4098aff37754174c33461d6f626c9dcad69e4a9",
+        "platform": "darwin",
+        "arch": "arm64"
+      },
+      "cases": 852,
+      "fusion": 201,
+      "bounded": 462,
+      "fractionalClear": 189,
+      "maxDelta": 0
+    }
+  },
+  "invalidTimingAttempts": [
+    {
+      "record": "invalid-01-fusion-ab.json",
+      "baselineRef": "0e4838852855f6dc8cf91bba763a402dfd716f88",
+      "candidateRef": "706be71",
+      "method": "Serial baseline/candidate/candidate/baseline sessions, independent Vite optimizer caches; original CE7 export-cost method; separate RAF preview diagnostic; startup/end workload checks and 2-second overlap polling (invalid runs retained and rejected)",
+      "environment": {
+        "profile": "chromium-software-2",
+        "browserVersion": "151.0.7922.34",
+        "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+        "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+        "platform": "darwin",
+        "arch": "arm64"
+      },
+      "timingValid": false,
+      "overlap": [
+        "42960 node (vitest)    ",
+        "42968 node (vitest 1)     ",
+        "42969 node (vitest 2)     ",
+        "42970 node (vitest 3)     ",
+        "42971 node (vitest 4)     ",
+        "42972 node (vitest 5)     ",
+        "42973 node (vitest 6)     ",
+        "42974 node (vitest 7)     ",
+        "42975 node (vitest 8)     ",
+        "42976 node (vitest 9)     ",
+        "42977 node (vitest 10)     ",
+        "42978 node (vitest 11)     ",
+        "42979 node (vitest 12)     ",
+        "42980 node (vitest 13)     ",
+        "42981 node (vitest 14)     ",
+        "43015 node /Users/jjae/.nvm/versions/node/v24.16.0/bin/pnpm exec prettier --write /private/tmp/ce7-pr-dev-log.md"
+      ],
+      "conclusion": "Rejected; no performance claim. Raw local result retained under ignored benchmarks/results."
+    },
+    {
+      "record": "invalid-02-bounded-ab.json",
+      "baselineRef": "706be71",
+      "candidateRef": "working-tree",
+      "method": "Serial baseline/candidate/candidate/baseline sessions, independent Vite optimizer caches; original CE7 export-cost method; separate RAF preview diagnostic; startup/end workload checks and 2-second overlap polling (invalid runs retained and rejected)",
+      "environment": {
+        "profile": "chromium-software-2",
+        "browserVersion": "151.0.7922.34",
+        "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+        "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+        "platform": "darwin",
+        "arch": "arm64"
+      },
+      "timingValid": false,
+      "overlap": ["44715 node (vitest)     ", "44723 node (vitest 1)     "],
+      "conclusion": "Rejected; no performance claim. Raw local result retained under ignored benchmarks/results."
+    }
+  ]
 }
