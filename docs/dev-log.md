@@ -44,15 +44,14 @@ still hold before relying on them.
 ## Current state
 
 - **CE5 in progress (2026-10-05):** `codex/composition-ce5` from CE11 `a0c56df`.
-  Native shapes, authoring/baking/inspector and complete reference/animation/MP4
-  acceptance pass. All 1,569 unit tests and static checks pass. Native 32-case probe
-  meets unchanged near tier; all 144 legacy connector/nib frames are exact. New CE5
-  baseline hashes/seek checks and independent MP4/transport parity pass. Ink winding
-  and export diagnostic transport repaired; failures retained. Full local gate,
-  frozen CE0 verification and milestone PR remain before CE7. Initial full gate
-  failed only a stale eight-example count; repaired to nine and restart required.
-  No owner decision
-  is pending. [Evidence](./composition-ce5-results.json).
+  Native shapes, authoring/baking/inspector and reference/animation/MP4 acceptance
+  pass; 1,569 unit tests and static checks pass. The 32-case probe meets unchanged
+  near tier, 144 legacy connector frames and actual 24-frame CE4a brush conversion
+  are exact. All 18 actual-hardware comparisons are now exact after CPU native
+  paint preparation repair. Stored native baselines and exports remain unchanged.
+  Initial inventory failure and superseded full gate/hardware failure are retained.
+  Complete local gate/frozen CE0 verification and milestone PR remain before CE7.
+  No owner decision is pending. [Evidence](./composition-ce5-results.json).
 
 - **CE11 complete (2026-10-05):** `codex/composition-ce11`, runtime `5f36268`.
   Native inspector, graph/handle edits, overlays, lossless history, guarded source
@@ -169,6 +168,20 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-05 — Repair CE5 hardware native paint preparation
+
+- **Agent / branch:** Codex on `codex/composition-ce5`.
+- **Done:** native cubic/nib paints use CPU preparation on hardware previews;
+  WebGL texture composition stays on GPU. Added 18 actual-hardware comparisons.
+- **Results:** all 18 are pixel-exact on Apple M5 Pro. Stored native baselines,
+  144 legacy connector frames, inspector and independent MP4/transport pass;
+  1,569 unit tests and static checks pass. Actual CE4a brush connector conversion
+  is exact for all 24 forward/reverse frames on both backends.
+- **Rejected:** hardware Canvas animation/95 had PSNR 39.82 dB before repair;
+  retained failure and superseded isolated full-gate logs. No baseline rewritten.
+- **Next:** restart complete local gate, frozen CE0 verification and CE5 PR.
+- **Records:** [CE5 evidence](./composition-ce5-results.json).
 
 ### 2026-10-05 — Repair CE5 full-gate example inventory
 

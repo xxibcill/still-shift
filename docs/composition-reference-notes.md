@@ -35,6 +35,11 @@ Stroke `style: ink | brush` reuses the established nib profiles and declared pat
 ID, retaining the original full path coordinates when trimmed. Plain strokes use
 native cubic traces. Brush cuts reveal the wash and backdrop.
 
+Native shape paints use CPU Canvas preparation in both pinned and hardware previews
+so cubic strokes and nib edges follow the same raster path. WebGL composites their
+prepared textures on the GPU. Hardware acceptance compares first, middle and last
+frames on both backends using the unchanged perceptual policy.
+
 Contents and operators are processed top to bottom; paints draw bottom to top.
 A paint binds upstream geometry, so subsequent operators update the geometry it
 paints. A parent operator also reaches a painted child group. A child paint keeps
@@ -90,7 +95,7 @@ These pure functions run in Node and browsers. They validate once per compositio
 object, compile curves into identity-keyed weak caches and memoise dependencies within
 each evaluation. Treat the composition and its nested objects as immutable: replace
 the composition object after an edit. Returned states are fresh on every call.
-`COMPOSITION_EVALUATOR_VERSION` is `composition-evaluator-23`.
+`COMPOSITION_EVALUATOR_VERSION` is `composition-evaluator-27`.
 
 `evaluateComp` returns an `EvaluatedLayerTree`: scope id, time, dimensions, fps,
 floating-point RGBA background, ordered `layers` and structured `diagnostics`.

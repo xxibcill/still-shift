@@ -35,11 +35,13 @@ export type CanvasImageResources = {
   pngImages?: ReadonlySet<string>;
 };
 
-/** CPU glyph preparation and Canvas filters must use the same raster path. */
+/** Native cubic/nib paints and Canvas filters use CPU preparation on hardware previews too. */
 export function requiresSoftwareFilters(composition: Composition): boolean {
   return [composition, ...(composition.precomps ?? [])].some((scope) =>
-    scope.layers.some((layer) =>
-      layer.effects?.some((effect) => effect.effect === "blur.primitive"),
+    scope.layers.some(
+      (layer) =>
+        layer.type === "shape" ||
+        layer.effects?.some((effect) => effect.effect === "blur.primitive"),
     ),
   );
 }

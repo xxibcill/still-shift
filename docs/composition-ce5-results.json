@@ -298,6 +298,227 @@
         "webgl": "composition-webgl2-0.37.2",
         "export": "chromium-ffmpeg-0.6.1"
       }
+    },
+    {
+      "name": "Hardware native paint preparation and actual story connector parity",
+      "status": "checkpoint",
+      "changes": [
+        "CPU Canvas preparation for native cubic/nib paints on hardware previews; WebGL retains GPU texture compositing. Legacy compositions without shape layers keep their existing preparation path.",
+        "Permanent first/middle/last hardware comparison for all three CE5 fixtures and both backends, using unchanged perceptual thresholds and a separate Vite cache.",
+        "Existing CE4a providers.json brush fixture converted in memory to native path/trim/brush content and verified across every forward/reverse frame."
+      ],
+      "verification": {
+        "fullUnitTests": 1569,
+        "unitFiles": 142,
+        "static": "build/lint/schema/boundaries/owned formatting passed",
+        "nativeAcceptance": "Stored native baseline exact; 32-case matrix unchanged near; 144 legacy frames exact; inspector and independent MP4/transport passed",
+        "hardwarePreview": {
+          "environments": [
+            {
+              "profile": "chromium-software-2",
+              "browserVersion": "151.0.7922.34",
+              "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+              "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+              "platform": "darwin",
+              "arch": "arm64"
+            },
+            {
+              "profile": "hardware",
+              "browserVersion": "151.0.7922.34",
+              "webglRenderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M5 Pro, Unspecified Version)",
+              "rasterFingerprint": "sha256:1635aedc2b987dcd5c74dce4b4098aff37754174c33461d6f626c9dcad69e4a9",
+              "platform": "darwin",
+              "arch": "arm64"
+            }
+          ],
+          "tier": "unchanged perceptual hardware policy",
+          "comparisons": 18,
+          "reports": [
+            {
+              "fixture": "reference-sheet",
+              "backend": "canvas2d",
+              "frame": 0,
+              "tier": "exact",
+              "maxDelta": 0,
+              "psnr": 999,
+              "ssim": 1
+            },
+            {
+              "fixture": "reference-sheet",
+              "backend": "canvas2d",
+              "frame": 24,
+              "tier": "exact",
+              "maxDelta": 0,
+              "psnr": 999,
+              "ssim": 1
+            },
+            {
+              "fixture": "reference-sheet",
+              "backend": "canvas2d",
+              "frame": 47,
+              "tier": "exact",
+              "maxDelta": 0,
+              "psnr": 999,
+              "ssim": 1
+            },
+            {
+              "fixture": "reference-sheet",
+              "backend": "webgl2",
+              "frame": 0,
+              "tier": "exact",
+              "maxDelta": 0,
+              "psnr": 999,
+              "ssim": 1
+            },
+            {
+              "fixture": "reference-sheet",
+              "backend": "webgl2",
+              "frame": 24,
+              "tier": "exact",
+              "maxDelta": 0,
+              "psnr": 999,
+              "ssim": 1
+            },
+            {
+              "fixture": "reference-sheet",
+              "backend": "webgl2",
+              "frame": 47,
+              "tier": "exact",
+              "maxDelta": 0,
+              "psnr": 999,
+              "ssim": 1
+            },
+            {
+              "fixture": "animation",
+              "backend": "canvas2d",
+              "frame": 0,
+              "tier": "exact",
+              "maxDelta": 0,
+              "psnr": 999,
+              "ssim": 1
+            },
+            {
+              "fixture": "animation",
+              "backend": "canvas2d",
+              "frame": 48,
+              "tier": "exact",
+              "maxDelta": 0,
+              "psnr": 999,
+              "ssim": 1
+            },
+            {
+              "fixture": "animation",
+              "backend": "canvas2d",
+              "frame": 95,
+              "tier": "exact",
+              "maxDelta": 0,
+              "psnr": 999,
+              "ssim": 1
+            },
+            {
+              "fixture": "animation",
+              "backend": "webgl2",
+              "frame": 0,
+              "tier": "exact",
+              "maxDelta": 0,
+              "psnr": 999,
+              "ssim": 1
+            },
+            {
+              "fixture": "animation",
+              "backend": "webgl2",
+              "frame": 48,
+              "tier": "exact",
+              "maxDelta": 0,
+              "psnr": 999,
+              "ssim": 1
+            },
+            {
+              "fixture": "animation",
+              "backend": "webgl2",
+              "frame": 95,
+              "tier": "exact",
+              "maxDelta": 0,
+              "psnr": 999,
+              "ssim": 1
+            },
+            {
+              "fixture": "core",
+              "backend": "canvas2d",
+              "frame": 0,
+              "tier": "exact",
+              "maxDelta": 0,
+              "psnr": 999,
+              "ssim": 1
+            },
+            {
+              "fixture": "core",
+              "backend": "canvas2d",
+              "frame": 24,
+              "tier": "exact",
+              "maxDelta": 0,
+              "psnr": 999,
+              "ssim": 1
+            },
+            {
+              "fixture": "core",
+              "backend": "canvas2d",
+              "frame": 47,
+              "tier": "exact",
+              "maxDelta": 0,
+              "psnr": 999,
+              "ssim": 1
+            },
+            {
+              "fixture": "core",
+              "backend": "webgl2",
+              "frame": 0,
+              "tier": "exact",
+              "maxDelta": 0,
+              "psnr": 999,
+              "ssim": 1
+            },
+            {
+              "fixture": "core",
+              "backend": "webgl2",
+              "frame": 24,
+              "tier": "exact",
+              "maxDelta": 0,
+              "psnr": 999,
+              "ssim": 1
+            },
+            {
+              "fixture": "core",
+              "backend": "webgl2",
+              "frame": 47,
+              "tier": "exact",
+              "maxDelta": 0,
+              "psnr": 999,
+              "ssim": 1
+            }
+          ]
+        },
+        "storyConnector": {
+          "source": "benchmarks/fixtures/composition/ce4a/providers.json",
+          "sourceSha256": "a9c5bc2efcfe6682f71768af2d94596bcb6c8a5f4cb247602c78ed60b1ddbdda",
+          "framesPerBackend": 24,
+          "reverseFramesPerBackend": 24,
+          "maxDelta": 0,
+          "record": "benchmarks/results/composition-ce5-verification/story-connector-native.json"
+        }
+      },
+      "failuresAndRepairs": [
+        "Initial hardware probe hit a dynamic module fetch failure; isolated Vite cache removed shared-cache contention without timeout changes.",
+        "Actual hardware Canvas animation frame 95 failed unchanged perceptual policy: max channel delta85, PSNR39.815597727883436dB, SSIM0.9971814882404676. Native CPU preparation repaired all18 comparisons to exact pixels; no baseline regeneration.",
+        "Stopped only the isolated cb19611 full-gate job after the new hardware finding. It had passed1569 unit/46 runtime/139 integration/14 depth and browser groups through story/continuous; it did not complete the frozen CE0 gate. Complete verification must restart."
+      ],
+      "versions": {
+        "evaluator": "composition-evaluator-27",
+        "canvas": "composition-canvas-1.23.3",
+        "webgl": "composition-webgl2-0.37.3",
+        "export": "chromium-ffmpeg-0.6.1"
+      },
+      "logs": "benchmarks/results/composition-ce5-verification"
     }
   ],
   "polygonLibrary": {
@@ -328,6 +549,22 @@
       ],
       "failure": "Composition example inventory still asserted eight after CE5 introduced ninth native example. Updated test and generated/user guidance to nine; full gate restart required.",
       "log": "benchmarks/results/composition-ce5-verification/ce5-full-df3374a-initial-failed.log"
+    },
+    {
+      "command": "pnpm check",
+      "snapshot": "/private/tmp/still-shift-ce5-check-cb19611",
+      "commit": "cb19611",
+      "status": "superseded",
+      "passed": [
+        "static checks",
+        "1569 unit",
+        "46 runtime",
+        "139 integration",
+        "14 depth",
+        "browser groups through story continuous"
+      ],
+      "reason": "Intentionally stopped own isolated gate after separate hardware acceptance exposed native Canvas stroke parity failure; repaired and complete gate restart required. Frozen CE0 gate had not completed.",
+      "log": "benchmarks/results/composition-ce5-verification/ce5-full-cb19611.log"
     }
   ]
 }

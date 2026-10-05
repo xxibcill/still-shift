@@ -124,8 +124,12 @@ export class WebglVectors {
     const rasterHeight = bounded
       ? Math.min(dst.height, Math.ceil((rect.bottom + 63) / 256) * 256)
       : dst.height;
-    // Hardware Canvas blur differs from the pinned CPU filter at small radii.
-    const rasterMode = ops.some((op) => op.paintBlur) ? "software" : undefined;
+    // Native cubic strokes and Canvas filters differ on the hardware raster path.
+    const rasterMode = ops.some(
+      (op) => op.paintBlur || op.content.type === "shape",
+    )
+      ? "software"
+      : undefined;
     const pixels = this.raster.createSurface(
       rasterWidth,
       rasterHeight,

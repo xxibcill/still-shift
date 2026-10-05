@@ -2983,7 +2983,12 @@ independent preview MP4s and PNG/raw transports. Overflow retains code/node/fram
 and publishes nothing; inspector edits/history/save pass. Initial failures are
 retained. Only full local gate/frozen CE0 verification and milestone closeout/PR
 remain in progress. Initial full gate failed only a stale eight-example inventory;
-updated to nine and full verification restart required.
+updated to nine. A separate actual-hardware probe then found Canvas cubic-stroke
+PSNR 39.82 dB; CPU native paint preparation repairs all 18 hardware comparisons to
+exact pixels. Stored native baselines and exports remain unchanged. The actual
+24-frame CE4a brush fixture converts to native shape content with exact forward/
+reverse pixels on both backends. The superseded isolated full gate is retained;
+complete verification restart remains required.
 [Evidence](./composition-ce5-results.json).
 
 **Completion record:** _to be filled in._

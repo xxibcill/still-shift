@@ -5,6 +5,10 @@ The platform JSON stores full RGBA SHA-256 values for every forward frame on bot
 Canvas and WebGL. The test compares every reverse seek to those same hashes,
 checks the unchanged near tier between backends, verifies legacy connector/nib
 appearance, rejects geometry-overflow exports and checks native inspector edits.
+It also checks first/middle/last native frames on actual hardware against the
+pinned renderer using the unchanged perceptual tier. CPU native paint preparation
+keeps these frames exact on the verified Apple M5 Pro; WebGL composition stays on
+the GPU.
 
 Run `pnpm test:browser:composition-shapes` to check. The explicit
 `--write-ce5-baseline` option writes only this directory's new native baseline.

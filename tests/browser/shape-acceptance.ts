@@ -22,6 +22,7 @@ import {
 } from "../../scripts/composition/shape-fixtures.ts";
 import type { Composition, PreparedPath } from "@still-shift/scene-contract";
 import type * as LegacyPath from "../../packages/renderer-core/src/prepared-path-renderer.ts";
+import { shapeHardwarePreview } from "./shape-hardware.ts";
 import type * as Render from "../../packages/renderer-core/src/index.ts";
 
 const digest = (bytes: Uint8Array | string) =>
@@ -253,6 +254,12 @@ export async function runShapeAcceptance(
     }
     const legacy = await compareLegacyConnectors(page);
     reports.push({ legacyConnectors: legacy });
+    const hardware = await shapeHardwarePreview(root, fixtures);
+    await writeFile(
+      join(proof, "native-hardware-preview.json"),
+      JSON.stringify(hardware, null, 2) + "\n",
+    );
+    reports.push({ hardwarePreview: hardware });
     const overflow: Composition = {
       ...shapeAnimation(),
       frameCount: 1,
