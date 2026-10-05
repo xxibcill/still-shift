@@ -3461,6 +3461,23 @@ arbitrary input either parses to a valid AST or returns a diagnostic, never thro
   separate CE6 work; the 1.25× WebGL gate and 2× speed target remain **deferred
   performance**, with no claim that their recorded failures are resolved.
 
+**PR #32 second follow-up fixes (2026-10-05).** Four P2 findings from current-head
+review are posted [inline](https://github.com/xxibcill/still-shift/pull/32#pullrequestreview-5411412767).
+Timed primitive-blur selection now respects historical scope/layer clocks and effect
+windows; four regressions and all 34 bake tests pass. Normalized AST JSON bounds
+now accept parser-valid output (nine regressions), retaining byte and metadata limits.
+The affected normalization/bounds/syntax/expression group passes 174 tests. Periodic
+reference dependencies now respect root-clock windows and the exact axes read,
+retain anchor dependencies for shifted reads, and preserve unrelated components
+when historical samples precede ordinary samples. Separate-axis constant speed
+passes 51 expression tests, including spring sampling at three frame rates and
+an explicit 512,001-point work bound; evaluator version is `25`. Combined local
+verification passes fast checks (1,487 unit tests), runtime (46), integration
+(111), both expression browser backends and repeated/baked exports, evaluator
+parity, and all 176 frozen items / 36,061 frames without regeneration. Delivery
+uses four finding commits and one final push to PR #32; owner review/merge remains
+pending. [Evidence](./pr-32-second-followup-fix-results.json).
+
 ---
 
 ## CE10 — TypeScript builder API and CLI

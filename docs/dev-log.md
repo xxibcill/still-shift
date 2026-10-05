@@ -43,6 +43,14 @@ still hold before relying on them.
 
 ## Current state
 
+- **PR #33 conflict resolution (2026-10-05):** isolated checkout from `039c1d5`
+  integrates `main` at `b32dcfa`. Only `docs/dev-log.md` conflicted; both CE16
+  and CE9 records are retained. Local `pnpm check:soundtrack` passes:
+  1,505 unit, 46 runtime, 34 audio integration and 14 depth tests, plus
+  static/Python gates. Merge delivered to `codex/composition-ce16`; owner
+  review/merge remains. Browser groups and baselines were not rerun.
+  [Evidence](./pr-33-conflict-resolution-results.json).
+
 - **PR #33 second review fixes (2026-10-05):** Codex on isolated
   `codex/pr33-review-fixes` from `b6cc3cd`. All three inline findings fixed:
   bounded UTF-8 project serialization, coordinated preview publication/pruning
@@ -73,12 +81,30 @@ still hold before relying on them.
   No technical closure blockers. Human listening/AV QA unperformed; future backend
   binary distribution needs a packaging decision. No dependency binaries bundled.
   Original checkout and parallel CE12 work untouched.
-  [PR #33](https://github.com/xxibcill/still-shift/pull/33) is published against
-  `codex/composition-ce9` to keep CE16 isolated; merge dependency
-  [PR #32](https://github.com/xxibcill/still-shift/pull/32) first, then retarget to
-  `main`. Owner review/merge is pending.
+  [PR #33](https://github.com/xxibcill/still-shift/pull/33) now targets `main`. Dependency
+  [PR #32](https://github.com/xxibcill/still-shift/pull/32) merged at `b32dcfa`;
+  its follow-up fixes are integrated here. Owner review/merge is pending.
   [Completion audit](./composition-ce16-completion-audit.md),
   [CE16 scope](./composition-engine-plan.md#ce16--programmable-soundtrack-project-and-timeline).
+
+- **PR #32 second follow-up fixes (2026-10-05):** all four P2 findings are posted
+  inline and fixed in four finding slices: timed primitive blur (`6876407`),
+  normalized AST bounds (`4f7d8be`), periodic reference dependencies (`32e31ac`),
+  and separate-axis constant speed (final finding commit, evaluator `25`). Fast
+  checks pass 1,487 unit tests, runtime 46 and integration 111. Both expression
+  browser backends, repeated/baked exports, evaluator parity and all 176 frozen
+  items / 36,061 frames pass without regeneration. Delivery uses four finding
+  commits and one final push to PR #32; merged into `main` at `b32dcfa`.
+  CE6-P and CE9-F1 remain deferred. [Evidence](./pr-32-second-followup-fix-results.json).
+
+- **PR #32 follow-up fixes (2026-10-05):** both P2 findings are posted inline.
+  Implicit anchor/reference reads, cycle validation and nested echo bake parity
+  are fixed. Five anchor and 17 bake regressions pass with all fast checks
+  (1,442 tests); runtime/integration, both expression browser backends, evaluator
+  parity and all 176 frozen items / 36,061 frames pass without regeneration.
+  Delivery uses two finding commits and one final push to PR #32, now
+  merged into `main` at `b32dcfa`; CE6-P and CE9-F1 remain deferred.
+  [Follow-up fix evidence](./pr-32-followup-fix-results.json).
 
 - **PR #32 printer fix (2026-10-04):** re-review of delivered `e81a146` found
   one remaining P2 print/parse length defect and no standards findings.
@@ -99,7 +125,7 @@ still hold before relying on them.
   [Fix evidence](./pr-32-fix-results.json).
   [Review evidence](./pr-32-review-results.json).
 
-_Last updated 2026-10-05 by Codex for isolated CE16 PR publication._
+_Last updated 2026-10-05 by Codex for PR #33 conflict resolution._
 
 - **PR #32 conflict resolution (2026-10-04):** merged `main` at `3413780` into
   PR head `a0708ba` and pushed merge `05033c8`, retaining CE9 expressions and
@@ -113,7 +139,7 @@ _Last updated 2026-10-05 by Codex for isolated CE16 PR publication._
   `codex/composition-ce9` (from `codex/composition-ce6-performance` at `6034de3`),
   with all required local verification passing and four logical local commits
   (see the closeout entry). [PR #32](https://github.com/xxibcill/still-shift/pull/32)
-  targets `main` and is ready for review. The conflict-resolution merge incorporates
+  merged into `main` at `b32dcfa` on 2026-10-05. The conflict-resolution merge incorporates
   `main` at `3413780` and was pushed as `05033c8`; local correctness and
   frozen-baseline checks pass. GitHub confirms `MERGEABLE` / `CLEAN`.
   One checklist item, runtime
@@ -157,6 +183,19 @@ _Last updated 2026-10-05 by Codex for isolated CE16 PR publication._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-05 — Resolve PR #33 against merged CE9
+
+- **Agent / branch:** Codex on isolated PR #33 checkout, from `039c1d5`.
+- **Scope:** merge `main` at `b32dcfa` after dependency PR #32 merged.
+- **Done:** retain both branches' development records; source and tests merge
+  automatically, preserving CE16 review fixes and CE9 follow-up fixes.
+- **Results:** pinned toolchain and `pnpm check:soundtrack` pass: 1,505 unit,
+  46 runtime, 34 audio integration and 14 depth tests, plus static/Python gates.
+  All 48 branch entry titles retained; Actions disabled. Browser/baseline groups
+  were not rerun. Formatting and whitespace checks pass.
+- **Delivery / next:** merge pushed to PR #33; owner review/merge pending.
+- **Records:** [conflict-resolution evidence](./pr-33-conflict-resolution-results.json).
 
 ### 2026-10-05 — Preserve PR #33 exact backend sample counts
 
@@ -268,6 +307,95 @@ _Last updated 2026-10-05 by Codex for isolated CE16 PR publication._
   for this completion pass only; production requires no GUI. No Actions or CE12 edits.
 - **Records:** [audit](./composition-ce16-completion-audit.md),
   [results](./composition-ce16-verification-results.json), [guide](./soundtrack-project.md).
+
+### 2026-10-05 — Fix PR #32 separate-axis constant speed
+
+- **Agent / branch:** Codex on isolated `codex/pr32-review-fixes`, after `32e31ac`.
+- **Done:** build constant-speed paths from independently eased axis samples,
+  preserve motion offsets and native joint-path arithmetic, cache by source/fps,
+  and bound spring sampling work. Evaluator version is `25`; a new browser
+  fixture covers separate-axis source/baked pixel and seek parity.
+- **Results:** 13 new expression cases pass, including a dense spring reference
+  at three frame rates. Fast checks pass 1,487 unit tests; runtime 46 and
+  integration 111 pass. Both expression browser backends, repeated/baked exports
+  and Node/browser evaluator parity pass. All 176 frozen items / 36,061 frames
+  pass without regeneration.
+- **Rejected:** fixed 128 samples per interval alias spring oscillations;
+  128/256 per natural period miss the 0.05 px reference tolerance. Use 512 per
+  period and report a clear error above the 512,001-point bound.
+- **Delivery:** four finding commits and one final push to PR #32. Owner
+  review/merge remains pending; deferred performance/runtime work stays deferred.
+- **Records:** [Second follow-up evidence](./pr-32-second-followup-fix-results.json).
+
+### 2026-10-05 — Fix PR #32 periodic reference dependencies
+
+- **Agent / branch:** Codex on isolated `codex/pr32-review-fixes`, after `4f7d8be`.
+- **Done:** use root-clock periodic windows and exact reference axes in echoed
+  dependency traversal; retain anchors for delayed/lagged and temporal reads.
+  Historical vector samples constrain only read components, preserving other axes
+  when ordinary samples arrive later under reversed clocks.
+- **Results:** all 53 bake/component-history tests pass. Three original cases and
+  two component-history acceptance cases failed before their fixes; 19 new cases
+  cover periodic windows, temporal readers and required-axis conflicts.
+- **Open / next:** combined correctness checks, the separate-axis roving finding
+  commit and one final push after all four commits.
+- **Records:** [Second follow-up evidence](./pr-32-second-followup-fix-results.json).
+
+### 2026-10-05 — Fix PR #32 normalized AST bounds
+
+- **Agent / branch:** Codex on isolated `codex/pr32-review-fixes`, after `6876407`.
+- **Done:** accept the serialized depth of parser-valid ASTs while retaining the
+  500-node source bound, 64 KiB payload limit and generic JSON/metadata depth 64.
+- **Results:** four new cases failed before the fix; all nine normalization cases
+  and the affected bounds/syntax/expression files pass (174 tests). CLI output
+  for 40/250 terms revalidates and evaluates correctly. Independent review passes.
+- **Open / next:** periodic reference writers and separate-axis roving, combined
+  local correctness gates and one final push after all four finding commits.
+- **Records:** [evidence](./pr-32-second-followup-fix-results.json),
+  [inline finding](https://github.com/xxibcill/still-shift/pull/32#discussion_r4181734013).
+
+### 2026-10-05 — Fix PR #32 timed primitive-blur history
+
+- **Agent / branch:** Codex on isolated `codex/pr32-review-fixes`, from `c4f7c8d`.
+- **Done:** posted all four findings inline; select the active blur at the historical
+  scope/layer clock and include inherited blur outside a nearer override's window.
+- **Results:** two regressions failed before the fix; all 34 bake tests pass,
+  including forward/reversed covering-window cases that must still bake exactly.
+- **Open / next:** normalized AST bounds, periodic references and separate-axis
+  roving; combined local correctness checks, then one final push after four commits.
+- **Records:** [evidence](./pr-32-second-followup-fix-results.json),
+  [inline finding](https://github.com/xxibcill/still-shift/pull/32#discussion_r4181734002).
+
+### 2026-10-05 — Fix PR #32 nested echo bake clocks
+
+- **Agent / branch:** Codex on isolated `codex/pr32-review-fixes`, after `5aeb64e`.
+- **Done:** sample render echo clocks and contributing property dependencies;
+  preserve compatible keys and refuse conflicting/fractional history with
+  `comp-bake-time`. Cover primitive blur and active unchanged-source revisions.
+- **Results:** 17 new bake cases; fast checks pass (1,442 tests), runtime 46 and
+  integration 111 tests pass. Both browser backends pass pixels/seeks/repeated and
+  baked MP4 parity; all 176 frozen items / 36,061 frames pass without regeneration.
+- **Rejected / do not repeat:** sampling all sibling properties over-rejected
+  compatible bakes; raw effect exclusion missed primitive blur/revision reads;
+  collecting overridden group blur also over-rejected. Regressions cover each.
+- **Delivery / next:** two finding commits, one final push to PR #32, then owner
+  review/merge. Full test pipeline and strict hardware matrices were not run.
+- **Records:** [follow-up fix evidence](./pr-32-followup-fix-results.json),
+  [inline finding](https://github.com/xxibcill/still-shift/pull/32#discussion_r4181138611).
+
+### 2026-10-05 — Fix PR #32 implicit anchor/reference dependencies
+
+- **Agent / branch:** Codex on isolated `codex/pr32-review-fixes`, from `dee9e7b`.
+- **Done:** posted both inline findings; resolve inherited reference axes through
+  anchor expressions and reject their self/indirect cycles before evaluation.
+- **Results:** three regressions failed before the fix. Five final cases cover
+  property/tree reads, order/seeks, authored/partial references, motion writers and
+  nested instances; all fast checks pass (1,425 tests). A one-key signal fixture
+  failed the existing schema and was corrected to two keys before rerunning.
+- **Open / next:** nested echo bake parity, then combined browser/runtime/baseline
+  correctness checks and one final push. CE6-P and CE9-F1 remain deferred.
+- **Records:** [follow-up fix evidence](./pr-32-followup-fix-results.json),
+  [inline review](https://github.com/xxibcill/still-shift/pull/32#pullrequestreview-5410494179).
 
 ### 2026-10-04 — Verify CE16 under the owner’s one-time browser exception
 
@@ -447,6 +575,21 @@ _Last updated 2026-10-05 by Codex for isolated CE16 PR publication._
 - **Records:** [CE9 completion record](./composition-engine-plan.md#ce9--expressions-and-motion-behaviours),
   [verification results](./composition-ce9-verification-results.json).
 
+### 2026-10-04 — Resolve PR #31 against main
+
+- **Agent / branch:** Codex on `codex/pr31-conflict-resolution`, from PR head
+  `6034de3`, in an isolated managed worktree.
+- **Scope:** merge `main` at `3413780`; the sole conflict was the WebGL renderer
+  version. Chose `0.36.1`, preserving both branches' fixes and optimizations.
+- **Results:** `pnpm check:fast` (1,286 tests), WebGL, exposure, provider-typography
+  and WebGL-export browser checks pass on Node 22.23.1. Formatting and whitespace
+  checks pass; no unmerged paths or conflict markers remain.
+- **Open / next:** publish the merge to PR #31. Full family matrices, hardware
+  and frozen CE0 checks were not rerun; CE6-P remains deferred. Local audit
+  commit `205f413` remains separate.
+- **Records:** [conflict-resolution evidence](./pr-31-conflict-resolution-results.json),
+  [PR #31](https://github.com/xxibcill/still-shift/pull/31).
+
 ### 2026-10-03 — CE9 expressions and motion behaviours
 
 - **Agent / branch:** Claude Code on `codex/composition-ce9` (from `6034de3`; the
@@ -476,21 +619,6 @@ _Last updated 2026-10-05 by Codex for isolated CE16 PR publication._
 - **Records:** [CE9 completion record](./composition-engine-plan.md#ce9--expressions-and-motion-behaviours),
   [decision log](./composition-engine-plan.md#decision-log),
   [expression reference](./composition-reference.md#expressions-ce9).
-
-### 2026-10-04 — Resolve PR #31 against main
-
-- **Agent / branch:** Codex on `codex/pr31-conflict-resolution`, from PR head
-  `6034de3`, in an isolated managed worktree.
-- **Scope:** merge `main` at `3413780`; the sole conflict was the WebGL renderer
-  version. Chose `0.36.1`, preserving both branches' fixes and optimizations.
-- **Results:** `pnpm check:fast` (1,286 tests), WebGL, exposure, provider-typography
-  and WebGL-export browser checks pass on Node 22.23.1. Formatting and whitespace
-  checks pass; no unmerged paths or conflict markers remain.
-- **Open / next:** publish the merge to PR #31. Full family matrices, hardware
-  and frozen CE0 checks were not rerun; CE6-P remains deferred. Local audit
-  commit `205f413` remains separate.
-- **Records:** [conflict-resolution evidence](./pr-31-conflict-resolution-results.json),
-  [PR #31](https://github.com/xxibcill/still-shift/pull/31).
 
 ### 2026-10-03 — Commit documentation and prepare CE6 PR
 
