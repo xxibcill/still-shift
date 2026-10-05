@@ -43,12 +43,16 @@ still hold before relying on them.
 
 ## Current state
 
-- **PR #33 follow-up fixes in progress (2026-10-05):** both P2 findings posted
-  inline from `0dc2782`; isolated `codex/pr33-followup-fixes`. Ducking now requires
-  observed narration activity before extending hold (`soundtrack-dsp-3`); both
-  new regressions failed before repair and all 22 lifecycle tests pass afterward.
-  Stem filename case collisions remain to fix in a separate commit, followed by
-  the command-only verification gate and one final push. Original checkout retained.
+- **PR #33 follow-up fixes (2026-10-05):** both P2 findings posted inline
+  and fixed on isolated `codex/pr33-followup-fixes` from `0dc2782`. `579553a`
+  gates ducking hold on detected activity (`soundtrack-dsp-3`); the second finding
+  slice rejects case-colliding/reserved stem IDs in active and history states.
+  All 63 focused tests and `pnpm check:soundtrack` pass: 1,513 unit, 46 runtime,
+  37 command-only audio integration and 14 depth tests, plus static/Python gates.
+  Delivery uses two finding commits and one final push; owner review/merge remains.
+  Browser workflow/baseline suites and listening were not rerun. The separate
+  toolchain check launched headless Chromium only to verify its version.
+  Original checkout retained; reused depth environment binding restored.
   [Evidence](./pr-33-followup-fix-results.json).
 
 - **PR #33 conflict resolution (2026-10-05):** isolated checkout from `039c1d5`
@@ -191,6 +195,21 @@ _Last updated 2026-10-05 by Codex for PR #33 follow-up fixes._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-05 — PR #33 portable stem filename fix and verification
+
+- **Agent / branch:** Codex on `codex/pr33-followup-fixes`; ducking fix `579553a`.
+- **Done:** reject case-insensitive track/bus filename collisions and reserved
+  names before rendering, including persisted undo/redo; preserve distinct names.
+- **Results:** eight regressions fail before repair; all 63 focused tests pass
+  afterward. Full `pnpm check:soundtrack`: 1,513 unit, 46 runtime, 37 audio
+  integration and 14 depth tests; static/Python checks pass.
+- **Limits:** no browser workflow/baseline suites or listening. Separate toolchain
+  check launched headless Chromium for version verification only. Shared Python
+  editable-package binding restored to the primary checkout after verification.
+- **Delivery:** second finding commit, then push both fixes together to PR #33.
+  GitHub Actions remain prohibited; owner review/merge remains pending.
+- **Records:** [fix evidence and inline comments](./pr-33-followup-fix-results.json).
 
 ### 2026-10-05 — PR #33 ducking hold fix
 

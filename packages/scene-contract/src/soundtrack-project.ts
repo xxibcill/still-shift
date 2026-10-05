@@ -170,12 +170,18 @@ function validateState(state: SoundtrackState) {
       "IDs must be unique within assets, clips and routing nodes",
     );
   }
+  const stemNames = [...state.tracks, ...state.buses].map((node) =>
+    node.id.toLowerCase(),
+  );
   check(
-    ![...state.tracks, ...state.buses].some((n) =>
-      ["mix", "duck-envelope"].includes(n.id),
-    ),
+    new Set(stemNames).size === stemNames.length,
+    "output-collision",
+    "Track and bus IDs must be unique ignoring case; rename the colliding stem",
+  );
+  check(
+    !stemNames.some((name) => ["mix", "duck-envelope"].includes(name)),
     "reserved-id",
-    "mix and duck-envelope are reserved output names",
+    "mix and duck-envelope are reserved output names ignoring case; rename the track or bus",
   );
   const nodes = new Map(
     [...state.tracks, ...state.buses].map((node) => [node.id, node]),

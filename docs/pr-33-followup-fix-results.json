@@ -22,13 +22,27 @@
           "path": "/private/tmp/pr33-followup-duck-green.log",
           "sha256": "5c96e40cdc62e2921ba23f873ff32d4bed96919de8dc193e7f95f9d83e3fb6da"
         }
-      ]
+      ],
+      "commit": "579553a"
     },
     {
       "id": "stem-case-collision",
       "priority": "P2",
       "comment": "https://github.com/xxibcill/still-shift/pull/33#discussion_r4182392315",
-      "status": "pending"
+      "status": "fixed",
+      "implementation": "Validate track/bus stem IDs for case-insensitive uniqueness and reserve mix/duck-envelope in every case, including undo/redo states. Keep distinct mixed-case IDs and asset/clip namespaces unchanged.",
+      "red": "Eight regressions fail before repair: reserved-name variants, track/track, track/bus and bus/bus collisions, saved undo/redo collisions, and the full-render Mix case (worker-output instead of reserved-id).",
+      "green": "All 63 focused soundtrack tests pass, including rejection before output publication and a successful mixed-case MusicBed render with distinct track/master PCM.",
+      "logs": [
+        {
+          "path": "/private/tmp/pr33-followup-stems-red.log",
+          "sha256": "8c3d9e1ae84c512ca097c106c0d835510bf56ac860d2b0a7ea0242361b2b0f5d"
+        },
+        {
+          "path": "/private/tmp/pr33-followup-stems-green.log",
+          "sha256": "69bf69f129831177ee81a7b2455c304281f40bdc05cab7eacb616a04df9d5d65"
+        }
+      ]
     }
   ],
   "verification": {
@@ -40,7 +54,43 @@
       "Browser matrix",
       "Frozen visual baselines",
       "Listening or human audiovisual QA"
-    ]
+    ],
+    "checks": [
+      {
+        "command": "pnpm test:soundtrack",
+        "exitCode": 0,
+        "tests": 63,
+        "log": "/private/tmp/pr33-followup-stems-green.log"
+      },
+      {
+        "command": "pnpm check:soundtrack",
+        "exitCode": 0,
+        "unitTests": 1513,
+        "runtimeTests": 46,
+        "commandAudioIntegrationTests": 37,
+        "depthTests": 14,
+        "staticChecks": [
+          "schema:check",
+          "check:boundaries",
+          "format:check:ts",
+          "lint:ts",
+          "build"
+        ],
+        "soundtrackPythonChecks": ["ruff check", "ruff format --check"],
+        "log": "/private/tmp/pr33-followup-final-check.log",
+        "logSha256": "4ef53e80199997797bfc8541e0dde2d69f1f7ba69ed546a91833e34c14793cba"
+      },
+      {
+        "command": "pnpm toolchain:check",
+        "exitCode": 0,
+        "scope": "Launched headless Chromium to verify its version; no browser workflow or baseline suite ran."
+      }
+    ],
+    "environment": {
+      "dependencies": "Frozen-lockfile offline pnpm install in isolated worktree.",
+      "depthAndRuff": "Reused primary checkout .venv through an ignored symlink; full soundtrack gate used UV_NO_SYNC=1.",
+      "cleanup": "The separate toolchain check resynchronized the editable depth package to the review checkout. Restored its original primary-checkout binding with uv sync --offline --frozen and verified still_shift_depth.__file__. The first cleanup attempt with the fresh temporary cache lacked hatchling; the existing default cache succeeded without network access."
+    }
   },
-  "delivery": "First finding ready for its own commit; second finding and final push remain."
+  "delivery": "Two finding commits, followed by one final push to codex/composition-ce16 after local verification. Owner review/merge remains pending."
 }

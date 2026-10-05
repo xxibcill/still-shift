@@ -339,3 +339,49 @@ it("rejects ambiguous beat identities before resolving an anchored clip", () => 
   };
   expect(() => resolveSoundtrackAnchors(p, timing)).toThrow(/ambiguous/);
 });
+
+it.each(["tracks", "buses"] as const)(
+  "rejects reserved stem names ignoring case in %s",
+  (kind) => {
+    for (const id of ["Mix", "MIX", "Duck-envelope", "DUCK-ENVELOPE"]) {
+      const p = fixture();
+      if (kind === "tracks") p.tracks.push({ ...p.tracks[0]!, id });
+      else p.buses.push({ id, output: "master", gainDb: 0 });
+      expect(() => validateSoundtrackProject(p)).toThrow(/reserved/);
+    }
+  },
+);
+
+it.each(["track-track", "track-bus", "bus-bus"])(
+  "rejects %s stem filenames that differ only in case",
+  (pair) => {
+    const p = fixture();
+    if (pair === "track-track") p.tracks.push({ ...p.tracks[0]!, id: "VOICE" });
+    else
+      p.buses.push({
+        id: pair === "track-bus" ? "VOICE" : "BUS",
+        output: "master",
+        gainDb: 0,
+      });
+    expect(() => validateSoundtrackProject(p)).toThrow(/unique ignoring case/);
+  },
+);
+
+it.each(["undo", "redo"] as const)(
+  "rejects case-colliding stem names in saved %s states",
+  (history) => {
+    const p = fixture();
+    const state = soundtrackState(p);
+    state.buses.push({ id: "VOICE", output: "master", gainDb: 0 });
+    p.history[history].push(state);
+    expect(() => validateSoundtrackProject(p)).toThrow(/unique ignoring case/);
+  },
+);
+
+it("preserves distinct mixed-case routing IDs and case-sensitive clip/asset IDs", () => {
+  const p = fixture();
+  p.tracks[1]!.id = "MusicBed";
+  p.assets.push({ ...p.assets[0]!, id: "TONE" });
+  p.clips.push({ ...p.clips[0]!, id: "SPEECH" });
+  expect(validateSoundtrackProject(p)).toEqual(p);
+});

@@ -91,9 +91,12 @@ still summed in authored order.
 `--stems` exports post-track-processing stems and post-bus-gain stems; master gain
 applies to the mix only. Unity master/direct buses reconstruct the mix in graph
 summation order. Nonunity bus/master gains must be included when reconstructing
-from track stems. `mix` and `duck-envelope` are reserved output names. Output files
-are Float32 WAVs; delivery encoding stays with FFmpeg. The full graph renders before
-any range crop, preserving filters, fades and ducking at the range boundary.
+from track stems. Track and bus IDs must be unique ignoring case, and `mix` and
+`duck-envelope` are reserved output names in any case, so stem filenames remain
+portable to case-insensitive filesystems. Validation applies to saved history as
+well; rename conflicting IDs and their references in an explicitly authored copy.
+Distinct mixed-case IDs are preserved. Output files are Float32 WAVs; delivery
+encoding stays with FFmpeg. The full graph renders before any range crop, preserving filters, fades and ducking at the range boundary.
 Integer sample counts convert to backend seconds rounded upward by one representable
 step, preventing truncation to one sample short. Full outputs must still match the
 exact authored integer length; narration intervals and placements are unchanged.

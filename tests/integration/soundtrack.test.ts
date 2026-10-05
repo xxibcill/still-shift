@@ -736,3 +736,36 @@ it.each(["silence", "delayed speech"])(
   },
   10000,
 );
+
+it("rejects colliding stem filenames before rendering and accepts a distinct mixed-case name", async () => {
+  const p = structuredClone(project);
+  delete p.ducking;
+  p.tracks = [{ ...p.tracks[1]!, id: "Mix", output: "master" }];
+  p.buses = [];
+  p.clips = [{ ...p.clips[1]!, track: "Mix" }];
+  p.master.gainDb = -6;
+  const file = join(root, "case-stems.json");
+  const output = join(root, "case-stems");
+  await writeFile(file, JSON.stringify(p));
+  await expect(
+    renderSoundtrackProject(file, output, { stems: true }),
+  ).rejects.toMatchObject({ code: "reserved-id" });
+  expect(
+    (await readdir(root)).filter(
+      (name) => name === "case-stems" || name.startsWith("case-stems."),
+    ),
+  ).toEqual(["case-stems.json"]);
+  p.tracks[0]!.id = "MusicBed";
+  p.clips[0]!.track = "MusicBed";
+  await writeFile(file, JSON.stringify(p));
+  const rendered = await renderSoundtrackProject(file, output, { stems: true });
+  expect(rendered.files.MusicBed!.file).toBe("MusicBed.wav");
+  expect(rendered.files.master!.file).toBe("mix.wav");
+  const stem = await pcm(join(output, "audio/MusicBed.wav"));
+  const mix = await pcm(join(output, "audio/mix.wav"));
+  expect(stem[0]).toBe(Math.fround(0.1));
+  expect(mix[0]).toBeCloseTo(0.1 * 10 ** (-6 / 20), 7);
+  expect(rendered.files.MusicBed!.sha256).not.toBe(
+    rendered.files.master!.sha256,
+  );
+}, 10000);
