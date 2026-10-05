@@ -43,6 +43,16 @@ still hold before relying on them.
 
 ## Current state
 
+- **PR #35 current-head fixes verified (2026-10-06):** three inline findings on
+  `282b112` are fixed one per commit: native event-anchored sounds require mapped
+  markers (`023d33a`), `--prepare-only` validates native beat maps (`d1673b1`), and
+  each render writes its current native composition (`e796802`). Fast checks pass
+  with 1,538 unit tests; 46 runtime, passage integration, both 576-frame native
+  passage backends and Lab authoring checks pass. Full `pnpm check` and baseline
+  matrices were not rerun; renderer output is unchanged. One final push delivers the
+  fixes; owner review/merge remains pending.
+  [Evidence](./pr-35-current-head-fix-results.json).
+
 - **PR #35 follow-up fixes verified (2026-10-05):** all three inline findings on
   `84d7924` are fixed separately: Lab diagnostics (`ea62b7b`), native handoff
   mappings/boundaries (`bff1305`) and first/reinstalled native inspection
@@ -193,6 +203,23 @@ _Last updated 2026-10-05 by Codex for PR #35 follow-up fixes; prior work retaine
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-06 — Fix PR #35 current-head review findings
+
+- **Agent / branch:** Claude Code on `codex/pr35-audio-binding-fixes` from `282b112`.
+- **Scope / done:** three findings posted inline and fixed one per commit. Native
+  beats bind event-anchored sounds to native markers instead of inheriting template
+  event timing; `story:passage` validates `--composition-beats` before any output,
+  including `--prepare-only`; every render writes the native composition it used to
+  `scenes/<beat>.composition.json`, including on cache reuse.
+- **Results:** `pnpm check:fast` (1,538 unit), 46 runtime, passage integration/CLI,
+  both 576-frame native passage backends and Lab authoring checks pass on Node
+  22.23.1. Each new regression failed before its fix.
+- **Rejected:** Node 24.16 runs fail one unrelated `comp bake` test on the
+  unmodified head; verification uses the pinned toolchain.
+- **Open / next:** owner review and merge; full gate and baseline matrices not rerun.
+- **Records:** [fix evidence](./pr-35-current-head-fix-results.json),
+  [review](https://github.com/xxibcill/still-shift/pull/35#pullrequestreview-5418458083).
 
 ### 2026-10-05 — Integrate CE12 base and verify PR #35 follow-up fixes
 
