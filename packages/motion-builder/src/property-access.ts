@@ -1,5 +1,9 @@
 import {
   compositionEffectDefinition,
+  locateShapeProperty,
+  parsePropertyPath,
+  isPropertyPathError,
+  type ShapeContent,
   isResolvedProperty,
   resolvePropertyPath,
   type Composition,
@@ -32,6 +36,13 @@ export function canonicalProperty(
 
 /** Translate public selector IDs to emitted array indices, including effect params. */
 export function propertyJsonPath(object: ObjectValue, path: string): string {
+  const native = nativeProperty(object, path);
+  if (native)
+    return native.jsonPath
+      .map((part, i) =>
+        typeof part === "number" ? `[${part}]` : `${i ? "." : ""}${part}`,
+      )
+      .join("");
   return path.replace(
     /^(masks|effects)\[([^\]]+)\]\./,
     (_match, collection: string, id: string) => {
@@ -42,6 +53,14 @@ export function propertyJsonPath(object: ObjectValue, path: string): string {
   );
 }
 
+function nativeProperty(object: ObjectValue, path: string) {
+  if (!path.startsWith("contents[") || !Array.isArray(object.contents))
+    return undefined;
+  const parsed = parsePropertyPath(`node.${path}`);
+  return isPropertyPathError(parsed)
+    ? undefined
+    : locateShapeProperty(object.contents as ShapeContent[], parsed.segments);
+}
 function parts(path: string): string[] {
   return path.replace(/\[(\d+)\]/g, ".$1").split(".");
 }
@@ -57,6 +76,13 @@ export function readProperty(object: ObjectValue, path: string): unknown {
     else value = asObject(value)?.[part];
   }
   if (value !== undefined) return value;
+  const native = nativeProperty(object, path);
+  if (native) {
+    const fallback = native.descriptor.default;
+    return native.component !== undefined && Array.isArray(fallback)
+      ? fallback[native.component]
+      : structuredClone(fallback);
+  }
   const effect = /^effects\[([^\]]+)\]\.([^.]+)$/.exec(path);
   if (effect) {
     const values = object.effects as ObjectValue[];
@@ -81,10 +107,21 @@ export function writeProperty(
   value: unknown,
 ): void {
   const names = parts(propertyJsonPath(object, path));
+  const native = nativeProperty(object, path);
   let parent: ObjectValue = object;
-  for (const part of names.slice(0, -1)) {
-    const old = parent[part];
-    if (Array.isArray(old) && ["masks", "effects"].includes(part)) {
+  for (const [index, part] of names.slice(0, -1).entries()) {
+    let old = parent[part];
+    if (
+      old === undefined &&
+      index === names.length - 2 &&
+      native?.component !== undefined &&
+      Array.isArray(native.descriptor.default)
+    )
+      old = structuredClone(native.descriptor.default);
+    if (
+      Array.isArray(old) &&
+      ["masks", "effects", "contents", "stops"].includes(part)
+    ) {
       parent = old as unknown as ObjectValue;
       continue;
     }

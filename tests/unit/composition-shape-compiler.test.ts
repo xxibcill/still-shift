@@ -185,6 +185,60 @@ describe("native shape paint compilation", () => {
       bottom: 11,
     });
   });
+  it("keeps parent operators connected to painted descendants through nested groups", () => {
+    const contents = [
+      {
+        id: "outer",
+        type: "group",
+        transform: { position: [20, 0] },
+        contents: [
+          {
+            id: "inner",
+            type: "group",
+            transform: { scale: [2, 1] },
+            contents: [
+              {
+                id: "path",
+                type: "path",
+                path: {
+                  closed: false,
+                  vertices: [
+                    [0, 0],
+                    [10, 0],
+                  ],
+                },
+              },
+              fill,
+            ],
+          },
+        ],
+      },
+      { id: "trim", type: "trim-paths", end: 0.5 },
+    ];
+    const compiled = compile(contents);
+    expect(compiled.draws).toHaveLength(1);
+    expect(compiled.draws[0]!.paths[0]!.path.vertices).toEqual([
+      [0, 0],
+      [5, 0],
+    ]);
+    expect(compiled.bounds).toEqual({ left: 20, top: 0, right: 30, bottom: 0 });
+    const repeated = compile([
+      ...contents,
+      { ...repeat, copies: 2, startOpacity: 1, endOpacity: 1 },
+    ]);
+    expect(repeated.draws).toHaveLength(2);
+    expect(repeated.draws.map((draw) => draw.paths[0]!.path.vertices)).toEqual([
+      [
+        [0, 0],
+        [5, 0],
+      ],
+      [
+        [0, 0],
+        [5, 0],
+      ],
+    ]);
+    expect(repeated.draws.map((draw) => draw.matrix[4])).toEqual([20, 25]);
+  });
   it("retains local gradients for painted copies and compound coordinates for later paint", () => {
     const painted = compile([rect, gradient, repeat]);
     expect(painted.draws).toHaveLength(3);

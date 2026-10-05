@@ -32,10 +32,28 @@ function uniqueSignal(comp: Composition, index: number) {
 }
 function drawOn(comp: Composition, clip: Scheduled<IntentCommand>) {
   const layer = comp.layers.find((node) => node.id === clip.value.owner.id)!;
+  if (layer.type === "shape") {
+    let id = "draw-on",
+      suffix = 1;
+    while (layer.contents.some((content) => content.id === id))
+      id = `draw-on-${suffix++}`;
+    layer.contents.push({
+      id,
+      type: "trim-paths",
+      mode: "simultaneous",
+      end: {
+        keys: [
+          { frame: clip.start, value: 0 },
+          { frame: clip.end, value: 1, easing: "in-out-cubic" },
+        ],
+      },
+    });
+    return;
+  }
   if (layer.type !== "provider" || layer.provider !== "story.path@1.0.0")
     throw new BuilderError(
       "comp-builder-preset",
-      "drawOn requires a story.path@1.0.0 provider until CE5 adds native shape operators",
+      "drawOn requires a native shape layer or story.path@1.0.0 provider",
       clip.value.location,
     );
   const samples = layer.params?.samples;

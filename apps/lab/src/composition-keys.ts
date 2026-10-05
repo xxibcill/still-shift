@@ -1,5 +1,7 @@
 import {
   compositionEffectDefinition,
+  shapeFields,
+  type ShapeContent,
   isKeyed,
   type Composition,
   resolvePropertyPath,
@@ -171,6 +173,74 @@ export function compositionTracks(document: Composition): KeyTrack[] {
           fps,
         );
     });
+    if (layer.type === "shape") {
+      const fields = (
+        value: Record<string, unknown>,
+        type: string,
+        at: JsonPath,
+        suffix: string,
+      ) => {
+        for (const [name, descriptor] of Object.entries(shapeFields(type))) {
+          const raw = value[name],
+            kind = descriptor.type === "vec2" ? "vector" : descriptor.type;
+          if (
+            kind === "vector" &&
+            raw &&
+            typeof raw === "object" &&
+            !Array.isArray(raw) &&
+            !isKeyed(raw)
+          ) {
+            for (const axis of ["x", "y"])
+              add(
+                (raw as Record<string, unknown>)[axis],
+                [...at, name, axis],
+                `${suffix}.${name}.${axis}`,
+                "scalar",
+                scope,
+                layer.id,
+                fps,
+              );
+          } else
+            add(
+              raw,
+              [...at, name],
+              `${suffix}.${name}`,
+              kind,
+              scope,
+              layer.id,
+              fps,
+            );
+        }
+      };
+      const visit = (contents: ShapeContent[], at: JsonPath, suffix: string) =>
+        contents.forEach((content, i) => {
+          const jsonPath: JsonPath = [...at, "contents", i],
+            property = `${suffix ? suffix + "." : ""}contents[${content.id}]`;
+          fields(content, content.type, jsonPath, property);
+          if (content.type === "group" || content.type === "repeater") {
+            fields(
+              content.transform ?? {},
+              content.type === "group" ? "transform" : "repeater-transform",
+              [...jsonPath, "transform"],
+              property + ".transform",
+            );
+            if (content.type === "group")
+              visit(content.contents, jsonPath, property);
+          } else if (
+            content.type === "gradient-fill" ||
+            content.type === "gradient-stroke"
+          )
+            content.stops.forEach((stop, j) =>
+              fields(
+                stop,
+                "stop",
+                [...jsonPath, "stops", j],
+                `${property}.stops[${stop.id}]`,
+              ),
+            );
+        });
+      visit(layer.contents, path, "");
+    }
     if (layer.type === "text")
       layer.decorations?.forEach((decoration, i) =>
         add(

@@ -28,7 +28,36 @@ import type {
   ShapePaint,
 } from "./types.ts";
 
-type Binding = { paths: GeometryPath[] };
+type Binding = { paths: GeometryPath[]; children?: Binding[] };
+function allBindings(roots: Binding[]): Binding[] {
+  const seen = new Set<Binding>(),
+    pending = [...roots];
+  while (pending.length) {
+    const binding = pending.pop()!;
+    if (seen.has(binding)) continue;
+    seen.add(binding);
+    if (binding.children) pending.push(...binding.children);
+  }
+  return [...seen];
+}
+function leafBindings(
+  roots: Binding[],
+  budget?: ShapeGeometryBudget,
+): Binding[] {
+  const leaves: Binding[] = [];
+  const visit = (binding: Binding) => {
+    budget?.vertices(1);
+    if (binding.children) binding.children.forEach(visit);
+    else leaves.push(binding);
+  };
+  roots.forEach(visit);
+  return [...new Set(leaves)];
+}
+function bindingPaths(binding: Binding): GeometryPath[] {
+  return binding.children
+    ? binding.children.flatMap(bindingPaths)
+    : binding.paths;
+}
 type Paint = {
   paint: ShapePaint;
   bindings: Binding[];
@@ -118,15 +147,13 @@ function repeat(
   );
   const originalBindings = group.bindings,
     originalPaints = group.paints;
-  const allBindings = [
-    ...new Set([
-      ...originalBindings,
-      ...originalPaints.flatMap((p) => p.bindings),
-    ]),
-  ];
+  const originals = allBindings([
+    ...originalBindings,
+    ...originalPaints.flatMap((p) => p.bindings),
+  ]);
   budget.vertices(
     copies.length *
-      (allBindings.length +
+      (originals.length +
         originalPaints.reduce(
           (sum, paint) => sum + paint.bindings.length + 1,
           0,
@@ -134,13 +161,17 @@ function repeat(
   );
   const generated = copies.map((copy) => {
     const map = new Map<Binding, Binding>();
-    for (const binding of allBindings)
-      map.set(binding, {
-        paths: binding.paths.map((path) => ({
+    for (const binding of originals) map.set(binding, { paths: [] });
+    for (const binding of originals) {
+      const cloned = map.get(binding)!;
+      if (binding.children)
+        cloned.children = binding.children.map((child) => map.get(child)!);
+      else
+        cloned.paths = binding.paths.map((path) => ({
           ...transformedGeometry(path, copy.matrix, budget),
           opacity: path.opacity * copy.opacity,
-        })),
-      });
+        }));
+    }
     return {
       bindings: originalBindings.map((binding) => map.get(binding)!),
       paints: originalPaints.map((paint) => ({
@@ -169,19 +200,15 @@ function groupContents(
       case "group": {
         const child = groupContents(content.contents, seconds, location),
           matrix = shapeMatrix(content.transform);
-        const all = [
-          ...new Set([
-            ...child.bindings,
-            ...child.paints.flatMap((p) => p.bindings),
-          ]),
-        ];
-        for (const binding of all)
+        const leaves = leafBindings([
+          ...child.bindings,
+          ...child.paints.flatMap((p) => p.bindings),
+        ]);
+        for (const binding of leaves)
           binding.paths = binding.paths.map((path) =>
             transformedGeometry(path, matrix, location),
           );
-        group.bindings.push({
-          paths: child.bindings.flatMap((binding) => binding.paths),
-        });
+        group.bindings.push({ paths: [], children: child.bindings });
         group.paints.push(
           ...child.paints.map((paint) => ({
             ...paint,
@@ -225,11 +252,14 @@ function groupContents(
         break;
       case "merge-paths": {
         const paths = mergePaths(
-          group.bindings.map((binding) => binding.paths.map((p) => p.path)),
+          group.bindings.map((binding) =>
+            bindingPaths(binding).map((p) => p.path),
+          ),
           content.mode,
           location,
         );
-        const first = group.bindings[0];
+        const leaves = leafBindings(group.bindings, location),
+          first = leaves[0];
         const source = first?.paths[0];
         if (first)
           first.paths = paths.map((path) => ({
@@ -237,24 +267,26 @@ function groupContents(
             opacity: source?.opacity ?? 1,
             path,
           }));
-        for (const binding of group.bindings.slice(1)) binding.paths = [];
+        for (const binding of leaves.slice(1)) binding.paths = [];
         break;
       }
       case "trim-paths": {
         // Individual trim needs one accumulated interval across all source bindings.
         if (content.mode === "individual") {
-          const flat = group.bindings.flatMap((binding) =>
-            binding.paths.map((path) => ({ ...path, owner: binding })),
+          const flat = leafBindings(group.bindings, location).flatMap(
+            (binding) =>
+              binding.paths.map((path) => ({ ...path, owner: binding })),
           );
           const output = trimGeometry(
             flat,
             { ...content, mode: "individual" },
             location,
           );
-          for (const binding of group.bindings) binding.paths = [];
+          for (const binding of leafBindings(group.bindings, location))
+            binding.paths = [];
           for (const { owner, ...path } of output) owner.paths.push(path);
         } else
-          for (const binding of group.bindings)
+          for (const binding of leafBindings(group.bindings, location))
             binding.paths = trimGeometry(
               binding.paths,
               { ...content, mode: "simultaneous" },
@@ -263,7 +295,7 @@ function groupContents(
         break;
       }
       case "offset-path":
-        for (const binding of group.bindings)
+        for (const binding of leafBindings(group.bindings, location))
           binding.paths = replaced(binding.paths, (paths) =>
             offsetPaths(
               paths,
@@ -275,7 +307,7 @@ function groupContents(
           );
         break;
       default:
-        for (const binding of group.bindings)
+        for (const binding of leafBindings(group.bindings, location))
           binding.paths = binding.paths.map((path) =>
             deform(path, content, seconds, location),
           );
@@ -308,7 +340,7 @@ export function compileShapes(
     if (!captured.opacity || !captured.paint.opacity) continue;
     const inverted = inverse(captured.matrix);
     if (!inverted) continue;
-    const paths = captured.bindings.flatMap((binding) => binding.paths);
+    const paths = captured.bindings.flatMap(bindingPaths);
     const runs: GeometryPath[][] = [];
     for (const path of paths) {
       const last = runs.at(-1);
@@ -370,8 +402,6 @@ export function compileShapes(
   return {
     draws,
     bounds,
-    paths: group.bindings.flatMap((binding) =>
-      binding.paths.map((p) => p.path),
-    ),
+    paths: group.bindings.flatMap(bindingPaths).map((p) => p.path),
   };
 }

@@ -136,6 +136,23 @@ for provider details and input limits. CE4b is complete under the approved miles
 split; CE6-P retains the unchanged 1.25× render/readback timing target, deferred
 to a future version.
 
+### Native vector shapes
+
+Use `shape.native(id, { contents })` for cubic paths, rectangles, ellipses and
+polystars, four paint types and nine path operators. The
+[native shape example](../examples/composition/09-native-shapes.ts) draws a brush
+connector and animates a gradient star. `presets.drawOn` appends a trim operator
+that also reaches paths inside painted groups. Animate nested fields by their
+stable IDs, for example `contents[diagram].contents[line].path` or
+`contents[paint].stops[edge].color`. The inspector exposes their keys and outlines;
+`comp bake` supports their expressions and separated vector axes.
+
+Paths use local coordinates. Supply a numeric anchor for native shapes when you
+need a particular pivot; their contents do not have one declared rectangular size.
+`shape.rect` retains the simple solid-layer convenience API. Native shape details,
+operator order, geometry limits and polygon-library licence are in the
+[generated reference](./composition-reference.md).
+
 ### Expressions and behaviours
 
 A composition can describe relationships and procedural motion instead of keys. An

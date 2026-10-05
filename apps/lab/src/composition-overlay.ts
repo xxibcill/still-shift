@@ -1,3 +1,4 @@
+import { pathCubics } from "../../../packages/renderer-core/src/composition/shapes/path.ts";
 import type { Composition } from "../../../packages/scene-contract/src/index.ts";
 import {
   evaluateComp,
@@ -138,6 +139,25 @@ export function createCompositionOverlay() {
         });
       }
       if (paths.checked && selected) {
+        for (const path of state.shapes?.paths ?? []) {
+          if (!path.vertices.length) continue;
+          const start = transformPoint(matrix, path.vertices[0]!);
+          let d = `M ${start.join(" ")}`;
+          for (const cubic of pathCubics(path))
+            d += ` C ${cubic
+              .slice(1)
+              .map((point) => transformPoint(matrix, point).join(" "))
+              .join(" ")}`;
+          if (path.closed) d += " Z";
+          add("path", {
+            d,
+            fill: "none",
+            stroke: "#c5b7dd",
+            "stroke-width": 1,
+            "data-overlay": "shape-path",
+            "data-layer": item.route,
+          });
+        }
         const raw = state.layer.transform?.position;
         if (isKeyed(raw)) {
           try {

@@ -161,6 +161,37 @@
         "Exploratory exact cross-backend probe failed up to delta2 in gradients and delta1 in antialiasing; retained the measurements. Existing near-tier metrics pass at >=58.24dB; this is not reported as an exact parity repair. Connector/nib/seek exact assertions remain."
       ],
       "logs": "benchmarks/results/composition-ce5-verification"
+    },
+    {
+      "name": "Native authoring, baking, inspector tracks and painted-group operators",
+      "status": "checkpoint",
+      "changes": [
+        "Builder ID selectors preserve contents/stops arrays; missing vector components initialize both axes from registry defaults, including optional group transforms. Color-component keys and whole/component conflicts remain rejected.",
+        "Native drawOn appends a unique trim after painted groups. Nested expressions bake into their correct vector/color roots.",
+        "Inspector discovers explicit native fields, separated axes and gradient stops while leaving metadata opaque; native cubic outlines use already-compiled geometry.",
+        "Painted group references stay shared through parent operators; repeater clones binding trees and nested paints together. Group binding visits reserve work.",
+        "Native builder example, user guidance and generated reference/skill updated."
+      ],
+      "verification": {
+        "fullUnitTests": 1568,
+        "unitFiles": 142,
+        "focusedAuthoringAndCompilerTests": 18,
+        "build": "passed",
+        "lint": "passed",
+        "schema": "passed",
+        "boundaries": "passed",
+        "nativeBrowserCases": 22,
+        "sampleFrames": 154,
+        "tier": "unchanged near; connector/nibs/reverse exact"
+      },
+      "failuresAndRepairs": [
+        "Initial authoring tests failed 3 cases because animating one optional vector axis omitted the other axis. Writer now initializes both default axes before splitting; all five authoring tests pass."
+      ],
+      "versions": {
+        "evaluator": "composition-evaluator-26",
+        "canvas": "composition-canvas-1.23.1",
+        "webgl": "composition-webgl2-0.37.1"
+      }
     }
   ],
   "polygonLibrary": {
@@ -172,7 +203,6 @@
     "integrity": "sha512-WuRO1ZHzyYTVHY78r4wVWVydvQ+1lx9qZ+DeZa/8zhvrxIgCVzElJ6lwSMGtUUKFPefhvfJsHZ5C9RNkgisCOQ=="
   },
   "pending": [
-    "Bake/builder/inspector native shape authoring integration",
     "Complete native reference sheet and stored new baseline; morph/trim sequences and native connector legacy comparison",
     "Independent native MP4 export/diagnostic acceptance",
     "Full pnpm check and frozen CE0 baseline verification, milestone PR"

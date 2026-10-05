@@ -44,13 +44,13 @@ still hold before relying on them.
 ## Current state
 
 - **CE5 in progress (2026-10-05):** `codex/composition-ce5` from CE11 `a0c56df`.
-  Native shapes now evaluate/render on Canvas/WebGL, with shared geometry work,
-  ID-based properties and follow-path/shape bounds. All 1,562 unit tests and static
-  checks pass. Native browser probe covers 22 cases / 154 frames at the unchanged
-  near tier (max Δ2; min PSNR 58.24 dB); connector/nibs and reverse seeks are exact.
-  Exploratory cross-backend exact failures are retained. Bake/builder/inspector,
-  complete reference fixtures/baselines, MP4 and full-gate verification remain.
-  No owner decision is pending. [Evidence](./composition-ce5-results.json).
+  Native shape geometry, painting, constraints, nested authoring/baking and inspector
+  tracks/outlines are delivered. All 1,568 unit tests, static checks and the 22-case
+  browser probe pass; optional vector defaults and painted-group operators repaired.
+  Complete reference fixtures/baselines, animated trim/morph, MP4/inspector acceptance,
+  full local gate and milestone PR remain. Prior exploratory exact backend failures
+  are retained; unchanged near tier passes. No owner decision is pending.
+  [Evidence](./composition-ce5-results.json).
 
 - **CE11 complete (2026-10-05):** `codex/composition-ce11`, runtime `5f36268`.
   Native inspector, graph/handle edits, overlays, lossless history, guarded source
@@ -167,6 +167,19 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-05 — Complete CE5 native authoring checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce5`, after `8c868dd`.
+- **Done:** nested builder selectors/defaults, native drawOn, expression baking,
+  inspector tracks/cubic overlays and a native example. Parent operators now update
+  painted child bindings; repeat copies retain nested paint references.
+- **Results:** 1,568 unit tests, static checks and the 22-case browser probe pass.
+- **Repaired:** optional vector animation omitted its other axis; both defaults now
+  survive component authoring. Five native authoring regressions pass.
+- **Next:** complete reference fixtures/baselines, animated sequences, independent
+  MP4/inspector acceptance and full local gate. CE5 remains in progress.
+- **Records:** [CE5 evidence](./composition-ce5-results.json).
 
 ### 2026-10-05 — Connect CE5 native shape evaluation and rendering
 

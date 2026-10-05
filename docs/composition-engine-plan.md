@@ -2973,15 +2973,13 @@ results on known polygons), pixel tests, animated trim/morph sequences.
 
 **Implementation record (2026-10-05):** Codex on `codex/composition-ce5`, from
 completed CE11 `a0c56df` / [PR #37](https://github.com/xxibcill/still-shift/pull/37).
-Typed shape trees, paint/operator schemas and the shared native property locator
-pass build, lint and 1,562 unit tests. The polygon library is pinned and licensed.
-Cubic math/primitives/morph alignment, all nine operators, paint compilation and
-native evaluator/session-budget integration are delivered. Native properties and
-shape constraints feed Canvas/WebGL drawing/culling; ink/brush preserve source
-coordinates. A 22-case / 154-frame browser probe passes the unchanged near tier
-(max Δ2; min PSNR 58.24 dB), with exact connector/nib/seek checks. Exploratory
-exact cross-backend failures are retained. Bake/builder/inspector, complete native
-reference/baseline/export acceptance and the full local gate remain in progress.
+Typed shape trees, all primitives/operators, native painting, bounds/constraints,
+ID-based authoring, expression baking and inspector tracks/outlines are delivered.
+All 1,568 unit tests and static checks pass. Painted-child group operator references
+and optional vector component defaults are repaired. The 22-case / 154-frame browser
+probe passes unchanged near tier with exact connector/nib/reverse checks. Complete
+reference fixtures/baselines, animated trim/morph, MP4/inspector acceptance and the
+full local gate remain in progress. Prior failures are retained.
 [Evidence](./composition-ce5-results.json).
 
 **Completion record:** _to be filled in._
