@@ -101,17 +101,49 @@ the project and are cut at its declared end.
 
 Sources are probed once per asset. An asset used by several clips decodes in one
 streamed FFmpeg pass that keeps only those clips' samples, so many short cues cut
-from one long library file cost one decode, not one per cue. Clips join a pass in
-authored order while their decoded samples, together with samples already decoded
-for later clips, fit in one project-length stereo buffer; a clip that fits no pass
-decodes alone. Resampling precedes trimming, so every path gives identical samples.
-Probes, decode passes and source hashing run on up to eight threads, decoding at
-most four project-length buffers ahead of the mix. Clips are still summed in
-authored order, and a failure is reported at the first affected clip in authored
-order. Sharing and parallelism change speed only: outputs are byte-identical to
+from one long library file cost one decode, not one per cue. One decode plan covers
+the whole render in track order, so passes are shared across tracks. Clips join a
+pass in that order while their decoded samples, together with samples already
+decoded for later clips, fit in a fixed 64 MB decode budget; a longer clip streams
+from FFmpeg straight into its track. Resampling precedes trimming, so every path
+gives identical samples. Probes, decode passes and source hashing run on up to
+eight threads, at most 64 MB of decoded clips ahead of the mix. Clips are still
+summed in authored order within each track. Tracks render one at a time: the
+ducking detector, then filtered tracks, then the rest in depth-first routing order.
+Within a track, a failure is reported at the first affected clip in authored order.
+Sharing and parallelism change speed only: outputs are byte-identical to
 sequential per-clip decoding. On a 15-core Mac, a 120-second, 128-cue stress
-project cut from long 44.1 kHz WAV/MP3 files rendered in about 2 s instead of
+project cut from long 44.1 kHz WAV/MP3 files rendered in about 1.5 s instead of
 about 20 s.
+
+### Working memory
+
+The worker keeps memory proportional to routing depth, not to the number of tracks
+and buses, so 10-minute projects fit. Only filter chains run in DawDreamer: each
+filtered track renders alone and is spilled as raw float32 to a temporary directory
+inside the render stage, which is removed afterwards. That directory needs one
+project-length stereo file per filtered track (230 MB at 10 minutes). The worker
+then reads the spills through memory maps, whose clean pages the system can
+reclaim. Track gains, ducking and bus/master sums run in NumPy and reproduce
+DawDreamer 0.9.0's add and playback processors exactly. This includes JUCE's
+single-rounding fused multiply-add for non-unity input gains, its treatment of
+gains within an ulp of 1 as unity, and preserved subnormals. A depth-first walk
+keeps only the accumulators on the current bus path alive. Clips are shaped in
+chunks, outputs stream to WAV byte-identical to SciPy's writer, and ducking uses
+intervals rather than per-sample index arrays. Outputs are byte-identical to the
+former single-graph render on 400 randomized projects. These cover filters, nested
+and empty buses, ducking, pan, fade curves, gains at and near unity, mute/solo,
+ranges and stems.
+
+Validation and the worker share one estimate, in project-length stereo float32
+buffers (8 bytes per sample frame). It is the routing depth (the number of nodes
+from the deepest bus to master; 1 without buses) plus 1 for the track being mixed,
+or 3 while DawDreamer filters a track, whichever is larger. Ducking adds 0.5. A
+fixed 328 MB covers the interpreter and the decode budget. The total must not
+exceed 1.5 GB. At 10 minutes this admits two nested bus levels with filters and
+ducking, or three levels without ducking. Deeper graphs get a proportionally
+shorter limit. Measured 10-minute macOS footprints stayed below the estimate,
+from 0.27 GB for one track to 1.01 GB for three nested buses (estimate 1.48 GB).
 
 `--stems` exports post-track-processing stems and post-bus-gain stems; master gain
 applies to the mix only. Unity master/direct buses reconstruct the mix in graph
@@ -140,8 +172,7 @@ is exact. No automatic cache reuse is introduced.
 
 Bounds: 8 MB project/request JSON, 100 assets, 128 clips, 16 tracks, 8 buses, four
 filters per track, 2,048 automation points per clip and 10 minutes of sample address
-space. The duration/node buffer estimate must be at most 1.5 GB; most dense projects
-reach that bound earlier. Sources must be regular files no larger than 1 GB each.
+space, within the 1.5 GB working-memory estimate above. Sources must be regular files no larger than 1 GB each.
 Worker stdout is bounded at 2 MB, stderr retains its last 32 KB, and rendering has
 a 120-second worker budget (library override at most 600 seconds).
 
