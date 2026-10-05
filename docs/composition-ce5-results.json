@@ -519,6 +519,104 @@
         "export": "chromium-ffmpeg-0.6.1"
       },
       "logs": "benchmarks/results/composition-ce5-verification"
+    },
+    {
+      "name": "Avoid unused shape-budget location allocation in ordinary compositions",
+      "status": "checkpoint",
+      "changes": [
+        "Compiled scope flag detects native shapes or follow-path diagnostics. Ordinary pictures reuse the shared empty geometry budget without creating unused located wrappers for every layer stage and constraint call.",
+        "Native shape/follow-path location and global work accounting use the existing path; numerical evaluation and output versions are unchanged."
+      ],
+      "verification": {
+        "focusedUnitTests": 126,
+        "files": 3,
+        "build": "passed",
+        "changedFileLint": "passed",
+        "serialBracketMethod": "Existing composition-story-fixtures --only component/story-visibility --profile, alternating A/B twice, pinned Canvas, 192 frames at1920x1080/24fps; no competing test workloads",
+        "brackets": [
+          {
+            "run": "A1",
+            "candidate": false,
+            "report": {
+              "maxDelta": 0,
+              "minPsnr": null,
+              "failures": [],
+              "ratio": 1.2287361863990869,
+              "legacyMs": 208.0999999642372,
+              "compositionMs": 255.70000034570694,
+              "legacyRenderMs": 8.000000059604645,
+              "compositionRenderMs": 63.80000048875809,
+              "evaluationMs": 5.400000095367432,
+              "graphMs": 0.8999999165534973
+            },
+            "log": "/Users/jjae/Documents/playground/still-shift/benchmarks/results/composition-ce5-verification/ce5-budget-A1.log"
+          },
+          {
+            "run": "B1",
+            "candidate": true,
+            "report": {
+              "maxDelta": 0,
+              "minPsnr": null,
+              "failures": [],
+              "ratio": 1.0564057716373787,
+              "legacyMs": 228.70000004768372,
+              "compositionMs": 241.60000002384186,
+              "legacyRenderMs": 12.199999928474426,
+              "compositionRenderMs": 45.200000405311584,
+              "evaluationMs": 4.199999988079071,
+              "graphMs": 1.600000023841858
+            },
+            "log": "/Users/jjae/Documents/playground/still-shift/benchmarks/results/composition-ce5-verification/ce5-budget-B1.log"
+          },
+          {
+            "run": "A2",
+            "candidate": false,
+            "report": {
+              "maxDelta": 0,
+              "minPsnr": null,
+              "failures": [],
+              "ratio": 1.1477218199418193,
+              "legacyMs": 208.5000001192093,
+              "compositionMs": 239.29999959468842,
+              "legacyRenderMs": 9.199999809265137,
+              "compositionRenderMs": 47.50000011920929,
+              "evaluationMs": 4.199999988079071,
+              "graphMs": 1.2000000476837158
+            },
+            "log": "/Users/jjae/Documents/playground/still-shift/benchmarks/results/composition-ce5-verification/ce5-budget-A2.log"
+          },
+          {
+            "run": "B2",
+            "candidate": true,
+            "report": {
+              "maxDelta": 0,
+              "minPsnr": null,
+              "failures": [],
+              "ratio": 1.0858895689783226,
+              "legacyMs": 211.90000027418137,
+              "compositionMs": 230.0999999642372,
+              "legacyRenderMs": 11.099999904632568,
+              "compositionRenderMs": 39.10000026226044,
+              "evaluationMs": 4.1999998688697815,
+              "graphMs": 1.0000001192092896
+            },
+            "log": "/Users/jjae/Documents/playground/still-shift/benchmarks/results/composition-ce5-verification/ce5-budget-B2.log"
+          }
+        ],
+        "completeStrictStoryMatrix": {
+          "cases": 69,
+          "maximumChannelDelta": 2,
+          "maximumRatio": 1.1625523943461569,
+          "threshold": 1.25,
+          "exports": "All required repeated exports/relocation/overwrite checks passed",
+          "log": "/Users/jjae/Documents/playground/still-shift/benchmarks/results/composition-ce5-verification/ce5-budget-story-matrix.log"
+        },
+        "fullGate": "pending fresh complete verification at checkpoint"
+      },
+      "failureAndRepairs": [
+        "Full pnpm check at8efe1ab failed only component/story-visibility timing1.2509398526493185 over unchanged1.25; pixels passed. Unchanged focused rerun passed1.221448465567854.",
+        "Measured unused-location guard: candidate composition time241.6/230.1ms versus paired baseline255.7/239.3ms, all pixel-exact. Evaluation-only microtiming was4.2/4.2ms versus5.4/4.2ms, so no broad evaluation speed claim. Complete strict matrix passes at retained threshold."
+      ]
     }
   ],
   "polygonLibrary": {
@@ -565,6 +663,29 @@
       ],
       "reason": "Intentionally stopped own isolated gate after separate hardware acceptance exposed native Canvas stroke parity failure; repaired and complete gate restart required. Frozen CE0 gate had not completed.",
       "log": "benchmarks/results/composition-ce5-verification/ce5-full-cb19611.log"
+    },
+    {
+      "command": "pnpm check",
+      "snapshot": "/private/tmp/still-shift-ce5-check-8efe1ab",
+      "commit": "8efe1ab",
+      "status": "failed",
+      "passed": [
+        "static checks",
+        "1569 unit",
+        "46 runtime",
+        "139 integration",
+        "14 depth",
+        "browser suites through native shape/hardware/export acceptance and Canvas/WebGL mixed native passages",
+        "story matrix cases before visibility timing assertion"
+      ],
+      "failure": {
+        "case": "component/story-visibility",
+        "ratio": 1.2509398526493185,
+        "threshold": 1.25,
+        "pixelFailures": []
+      },
+      "repair": "Remove unused shape-budget location allocation, measured serial A/B and complete unchanged strict story matrix. Full gate restart required; no complete gate success claimed.",
+      "log": "/Users/jjae/Documents/playground/still-shift/benchmarks/results/composition-ce5-verification/ce5-full-8efe1ab.log"
     }
   ]
 }

@@ -348,6 +348,7 @@ class Evaluation {
   }
 
   private shapeBudget(ctx: Context, layer: CompositionLayer) {
+    if (!this.compiled.shapeWork) return this.session.shapes;
     return this.session.shapes.located({
       node: layer.id,
       path: this.bindings(ctx, layer.id),

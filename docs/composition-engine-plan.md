@@ -2988,7 +2988,11 @@ PSNR 39.82 dB; CPU native paint preparation repairs all 18 hardware comparisons 
 exact pixels. Stored native baselines and exports remain unchanged. The actual
 24-frame CE4a brush fixture converts to native shape content with exact forward/
 reverse pixels on both backends. The superseded isolated full gate is retained;
-complete verification restart remains required.
+complete verification then failed only story-visibility Canvas timing
+1.25094× over unchanged 1.25× (exact pixels). Unchanged focused rerun passed
+1.22145×. A measured unused shape-location allocation guard passes the complete
+strict story matrix and all required exports; 126 focused tests/build/lint pass.
+Full verification/frozen CE0 and closeout remain pending.
 [Evidence](./composition-ce5-results.json).
 
 **Completion record:** _to be filled in._

@@ -44,13 +44,13 @@ still hold before relying on them.
 ## Current state
 
 - **CE5 in progress (2026-10-05):** `codex/composition-ce5` from CE11 `a0c56df`.
-  Native shapes, authoring/baking/inspector and reference/animation/MP4 acceptance
-  pass; 1,569 unit tests and static checks pass. The 32-case probe meets unchanged
-  near tier, 144 legacy connector frames and actual 24-frame CE4a brush conversion
-  are exact. All 18 actual-hardware comparisons are now exact after CPU native
-  paint preparation repair. Stored native baselines and exports remain unchanged.
-  Initial inventory failure and superseded full gate/hardware failure are retained.
-  Complete local gate/frozen CE0 verification and milestone PR remain before CE7.
+  Native shape/reference/hardware/inspector/export acceptance passes. Full gate
+  `8efe1ab` passed 1,569 unit, 46 runtime, 139 integration, 14 depth and browser
+  groups through mixed native passages, then failed one Canvas timing ratio
+  (story-visibility 1.25094× vs 1.25×; exact pixels). The measured unused-location
+  allocation guard passes 126 focused tests, static checks and the complete strict
+  story matrix/exports. Full local gate and frozen CE0/PR remain before CE7.
+  Failed attempts and repairs are retained; no baseline/threshold changed.
   No owner decision is pending. [Evidence](./composition-ce5-results.json).
 
 - **CE11 complete (2026-10-05):** `codex/composition-ce11`, runtime `5f36268`.
@@ -168,6 +168,20 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-05 — Remove unused CE5 shape-budget allocation
+
+- **Agent / branch:** Codex on `codex/composition-ce5`.
+- **Repaired:** ordinary compositions avoid unused shape-location wrappers;
+  native geometry and follow-path diagnostics retain shared accounting/locations.
+- **Results:** 126 focused evaluator/expression/shape tests, build and lint pass.
+  Serial A/B composition times improve in both paired runs with exact pixels;
+  the complete strict Canvas story matrix and required exports pass.
+- **Retained failure:** full gate at `8efe1ab` stopped on story-visibility timing
+  1.25094× over 1.25×, with exact pixels; unchanged focused rerun passed 1.22145×.
+  No threshold, baseline, output arithmetic or output version changed.
+- **Next:** checkpoint the measured guard and restart the complete local gate.
+- **Records:** [CE5 evidence](./composition-ce5-results.json).
 
 ### 2026-10-05 — Repair CE5 hardware native paint preparation
 
