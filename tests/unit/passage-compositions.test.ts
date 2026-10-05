@@ -33,6 +33,37 @@ const passage = () =>
     ],
   }) as unknown as Pick<PreparedPassage, "beats">;
 
+function evidencePicture() {
+  const story = passage();
+  const qualification = "Symbolic illustration";
+  story.beats[0]!.evidence = {
+    kind: "symbolic",
+    node: "qualifier",
+    qualification,
+  };
+  const layer: Extract<Composition["layers"][number], { type: "text" }> = {
+    id: "qualifier",
+    type: "text",
+    text: qualification,
+    fontSize: 32,
+    color: "#ffffff",
+    fontAsset: "font",
+  };
+  const input = composition();
+  input.assets = [
+    {
+      id: "font",
+      type: "font",
+      path: "font.woff2",
+      sha256: `sha256:${"0".repeat(64)}`,
+      weight: "400",
+    },
+  ];
+  input.layers = [layer];
+  input.metadata = { passage: { subjectLayers: { qualifier: "qualifier" } } };
+  return { story, input, layer, qualification };
+}
+
 describe("native composition passage beats", () => {
   it("validates native pictures without mutating their authority or surrogate story", () => {
     const input = composition(),
@@ -169,4 +200,79 @@ describe("native composition passage beats", () => {
     const result = validatePassageCompositions(story);
     expect(result.constructor).toBeUndefined();
   });
+
+  it("accepts evidence alternatives that preserve the qualification", () => {
+    const { story, input, layer, qualification } = evidencePicture();
+    layer.states = [qualification, qualification];
+    layer.state = {
+      keys: [
+        { frame: 0, value: 0 },
+        { frame: 96, value: 1 },
+      ],
+    };
+    layer.corrections = [{ start: 24, end: 48, replacement: qualification }];
+    expect(validatePassageCompositions(story, { beat: input }).beat).toEqual(
+      input,
+    );
+  });
+
+  it.each(["root", "precomp"])(
+    "rejects contradictory evidence states in a mapped %s layer",
+    (scope) => {
+      const { story, input, layer } = evidencePicture();
+      layer.states = ["Historically proven"];
+      if (scope === "precomp") {
+        input.precomps = [
+          {
+            id: "picture",
+            width: input.width,
+            height: input.height,
+            fps: input.fps,
+            frameCount: input.frameCount,
+            layers: [layer],
+          },
+        ];
+        input.layers = [{ id: "instance", type: "precomp", comp: "picture" }];
+        input.metadata = {
+          passage: { subjectLayers: { qualifier: "instance/qualifier" } },
+        };
+      }
+      expect(() => validatePassageCompositions(story, { beat: input })).toThrow(
+        /Evidence qualifier requires native text matching its qualification/,
+      );
+    },
+  );
+
+  it("rejects contradictory evidence even when selected later in the beat", () => {
+    const { story, input, layer, qualification } = evidencePicture();
+    layer.states = [qualification, "Historically proven"];
+    layer.state = {
+      keys: [
+        { frame: 0, value: 0 },
+        { frame: 96, value: 1 },
+      ],
+    };
+    expect(() => validatePassageCompositions(story, { beat: input })).toThrow(
+      /Evidence qualifier requires native text matching its qualification/,
+    );
+  });
+
+  it.each(["full", "span"])(
+    "rejects %s text corrections that can alter the evidence qualification",
+    (scope) => {
+      const { story, input, layer, qualification } = evidencePicture();
+      layer.corrections = [
+        {
+          start: 24,
+          end: 48,
+          replacement: scope === "span" ? qualification : "Historically proven",
+          ...(scope === "span" ? { span: "word" } : {}),
+        },
+      ];
+      if (scope === "span") layer.spans = [{ id: "word", start: 0, end: 8 }];
+      expect(() => validatePassageCompositions(story, { beat: input })).toThrow(
+        /Evidence qualifier requires native text matching its qualification/,
+      );
+    },
+  );
 });

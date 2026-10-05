@@ -115,16 +115,22 @@ function validateNarrativeBindings(
     const target = path
       ? resolvePropertyPath(composition, `${path}.opacity`)
       : undefined;
-    if (!target || !isResolvedProperty(target) || !target.layer)
+    const layer =
+      target && isResolvedProperty(target) ? target.layer : undefined;
+    if (!layer)
       fail(
         `Subject ${subject} requires a mapped native layer or precomp instance path`,
       );
     if (
       subject === beat.evidence?.node &&
-      target &&
-      isResolvedProperty(target) &&
-      (target.layer?.type !== "text" ||
-        target.layer.text !== beat.evidence.qualification)
+      (layer?.type !== "text" ||
+        layer.text !== beat.evidence.qualification ||
+        layer.states?.some((text) => text !== beat.evidence!.qualification) ||
+        layer.corrections?.some(
+          (correction) =>
+            correction.span !== undefined ||
+            correction.replacement !== beat.evidence!.qualification,
+        ))
     )
       fail(
         `Evidence ${subject} requires native text matching its qualification`,

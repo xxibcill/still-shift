@@ -1484,8 +1484,10 @@ start and duration; `subjectLayers` maps focal subjects and any evidence node to
 native layer ID or precomp instance path (for example `story-content/house-a`).
 Missing targets, unknown narrative IDs and mismatched timing return
 `comp-passage-binding`. A mapped evidence qualification must be native text matching
-the passage's qualification. Legacy action/pose/prop tracks and implicit carry are
-unsupported at native boundaries and fail explicitly; author that motion in the
+the passage's qualification. Every evidence text state and whole-layer correction
+must retain the same qualification; span corrections are unsupported on mapped
+evidence layers. Legacy action/pose/prop tracks and implicit carry are unsupported
+at native boundaries and fail explicitly; author that motion in the
 composition. The fixture `ce4a/native-beat.json` embeds an adapted story as a precomp
 with a native difference-blend overlay and preserves its assets and cue mappings.
 

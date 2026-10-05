@@ -7,6 +7,7 @@
   "findings": [
     {
       "id": "native-schema-diagnostics",
+      "commit": "6ce9993",
       "comment": "https://github.com/xxibcill/still-shift/pull/35#discussion_r4183175564",
       "status": "fixed-locally",
       "change": "Preserve every schema diagnostic's code, severity, message and JSON field path, with beat and sourcePath context; display those locations in Lab",
@@ -20,7 +21,15 @@
     {
       "id": "evidence-text-states",
       "comment": "https://github.com/xxibcill/still-shift/pull/35#discussion_r4183175570",
-      "status": "pending"
+      "status": "fixed-locally",
+      "change": "Require mapped evidence text, every state and whole-layer correction to retain the passage qualification; refuse span corrections on evidence layers",
+      "regressions": "Six checks cover matching alternatives, contradictory root/precomp states, a later state change, and full/span replacement text",
+      "verification": [
+        "18 native-passage unit/integration tests passed",
+        "pnpm build passed",
+        "Targeted ESLint, Prettier and git diff --check passed"
+      ],
+      "initialFailure": "The nested precomp regression initially used source instead of comp; corrected the test fixture and reran successfully"
     },
     {
       "id": "webgl-passage-contexts",

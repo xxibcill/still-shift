@@ -45,9 +45,10 @@ still hold before relying on them.
 
 - **PR #35 review fixes in progress (2026-10-05):** isolated
   `codex/pr35-review-fixes` from `869a793`. Three findings are posted inline.
-  Native schema diagnostics now retain field/beat/source context; 12 focused
-  checks, build and targeted lint pass. Evidence text states and bounded WebGL
-  passage previews follow. One commit per finding; one final push is pending.
+  `6ce9993` retains native diagnostics and field/beat/source context. Evidence
+  states/replacements now retain the plan's qualification; 18 focused checks,
+  build and targeted lint pass. Bounded WebGL previews follow. One commit per
+  finding; one final push is pending.
   [Evidence](./pr-35-fix-results.json).
 
 - **CE4a complete (2026-10-05):** `codex/composition-ce4a-completion`, implementation
@@ -147,6 +148,18 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-05 — Fix PR #35 native evidence text alternatives
+
+- **Agent / branch:** Codex on `codex/pr35-review-fixes`, after `6ce9993`.
+- **Done:** mapped evidence states and whole-layer corrections retain the passage
+  qualification; span corrections fail explicitly on mapped evidence layers.
+- **Results:** six regressions cover matching alternatives, root/precomp states,
+  delayed state changes and text replacements. All 18 focused checks, build,
+  targeted lint and formatting pass. Initial nested test-fixture repair is recorded.
+- **Open / next:** bound WebGL passage contexts, finish local verification and
+  push all three finding commits together. Owner merge remains pending.
+- **Records:** [fix evidence](./pr-35-fix-results.json).
 
 ### 2026-10-05 — Fix PR #35 native composition diagnostics
 
