@@ -28,11 +28,24 @@ export async function soundtrackChecksum(path: string) {
   for await (const chunk of createReadStream(path)) hash.update(chunk);
   return "sha256:" + hash.digest("hex");
 }
+const soundtrackProjectMaxBytes = 8_000_000;
+
+/** Every published project must fit the same UTF-8 byte limit as its reader. */
+export function serializeSoundtrackProject(project: SoundtrackProject) {
+  const serialized = JSON.stringify(project, null, 2) + "\n";
+  if (Buffer.byteLength(serialized, "utf8") > soundtrackProjectMaxBytes)
+    soundtrackFail(
+      "project-size",
+      "Saved project JSON exceeds 8 MB; shorten automation or author a copy with less history",
+    );
+  return serialized;
+}
+
 export async function readSoundtrackProject(path: string) {
   const file = await lstat(path);
   if (!file.isFile())
     soundtrackFail("project-file", "Use a regular project JSON file");
-  if (file.size > 8_000_000)
+  if (file.size > soundtrackProjectMaxBytes)
     soundtrackFail("project-size", "Project JSON exceeds 8 MB");
   return validateSoundtrackProject(JSON.parse(await readFile(path, "utf8")));
 }
@@ -91,7 +104,7 @@ export async function updateSoundtrackProject(
         "revision-step",
         "A save must advance the revision exactly once",
       );
-    await writeFile(temporary, JSON.stringify(next, null, 2) + "\n", {
+    await writeFile(temporary, serializeSoundtrackProject(next), {
       flag: "wx",
     });
     await rename(temporary, actual);
@@ -164,7 +177,7 @@ export async function packageSoundtrackProject(
     await verifySoundtrackSources(project, join(stage, "project.json"));
     await writeFile(
       join(stage, "project.json"),
-      JSON.stringify(project, null, 2) + "\n",
+      serializeSoundtrackProject(project),
       { flag: "wx" },
     );
     await rename(stage, target);

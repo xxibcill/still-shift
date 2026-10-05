@@ -580,3 +580,39 @@ it("ducking follows narration clip gain and automation but not track mute (pre-f
     new Float32Array(144000 * 2),
   );
 }, 20000);
+
+it("rejects oversized serialized edits without changing the saved project", async () => {
+  const dense = structuredClone(project);
+  dense.clips = Array.from({ length: 40 }, (_, index) => ({
+    ...dense.clips[0]!,
+    id: "dense-" + index,
+    automation: {
+      interpolation: "linear" as const,
+      points: Array.from({ length: 2048 }, (_, sample) => ({
+        sample,
+        gain: 0.12345678912345,
+      })),
+    },
+  }));
+  const file = join(root, "dense-project.json");
+  const original = Buffer.from(JSON.stringify(dense));
+  expect(original.byteLength).toBeLessThan(8_000_000);
+  await writeFile(file, original);
+  await expect(readSoundtrackProject(file)).resolves.toMatchObject({
+    revision: 0,
+  });
+  const failure = await saveSoundtrackEdits(file, 0, [
+    { type: "gain", target: "dense-0", kind: "clip", gainDb: -5 },
+  ]).then(
+    () => undefined,
+    (error: { code: string }) => error.code,
+  );
+  expect(failure).toBe("project-size");
+  expect((await readFile(file)).equals(original)).toBe(true);
+  expect((await readSoundtrackProject(file)).revision).toBe(0);
+  expect(
+    (await readdir(root)).filter((name) =>
+      name.startsWith("dense-project.json."),
+    ),
+  ).toEqual([]);
+});

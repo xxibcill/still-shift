@@ -43,6 +43,14 @@ still hold before relying on them.
 
 ## Current state
 
+- **PR #33 second review fixes (2026-10-05):** Codex on isolated
+  `codex/pr33-review-fixes` from `b6cc3cd`. Three inline findings posted.
+  Bounded UTF-8 project serialization now preserves the saved file on oversized
+  edits and guards package/render snapshots. Preview pruning concurrency and
+  exact backend sample duration remain in flight. One finding per local commit;
+  push only after all three fixes and local verification.
+  [Fix results](./pr-33-review-fix-results.json).
+
 - **PR #33 review fixes (2026-10-05):** Claude Code pushed per-request undo,
   anchor-preserving moves, no-op retime, worker decode reuse, Lab render pruning
   and pre-fader ducking (`soundtrack-dsp-2`) onto `codex/composition-ce16`.
@@ -147,6 +155,18 @@ _Last updated 2026-10-05 by Codex for isolated CE16 PR publication._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-05 — Bound PR #33 saved project bytes
+
+- **Agent / branch:** Codex on `codex/pr33-review-fixes`, from `b6cc3cd`.
+- **Scope:** P1 inline finding: successful edits could exceed the reader's 8 MB limit.
+- **Done:** share UTF-8 serialization bounds across atomic saves, packages and
+  rendered snapshots; oversized edits leave the original bytes and revision intact.
+- **Results:** regression failed before the fix; all 13 soundtrack lifecycle tests
+  pass after it, including reload, undo/redo, relocation, cancellation and PCM checks.
+- **Open / next:** fix concurrent preview pruning and backend duration rounding,
+  then run the final local gate and push the three finding commits together.
+- **Records:** [review/fix evidence](./pr-33-review-fix-results.json).
 
 ### 2026-10-05 — PR #33 review: SFX edit transactions, decode reuse, Lab pruning
 

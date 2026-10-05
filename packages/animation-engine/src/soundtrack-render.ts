@@ -22,6 +22,7 @@ import {
 } from "@still-shift/scene-contract";
 import {
   readSoundtrackProject,
+  serializeSoundtrackProject,
   verifySoundtrackSources,
   soundtrackChecksum,
 } from "./soundtrack-project-io.ts";
@@ -222,7 +223,7 @@ export async function renderSoundtrackProject(
     await writeFile(join(stage, "request.json"), JSON.stringify(request));
     await writeFile(
       join(stage, "project.json"),
-      JSON.stringify(saved, null, 2) + "\n",
+      serializeSoundtrackProject(saved),
     );
     const [ffmpeg, ffprobe] = await Promise.all([
       runProcess("ffmpeg", ["-version"], { signal: options.signal }),

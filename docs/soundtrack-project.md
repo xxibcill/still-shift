@@ -134,7 +134,9 @@ mix recommendations.
 
 `edit --revision N --operations edits.json` applies a validated batch under the
 shared artifact lock, checks the current revision and atomically renames the new
-JSON. An invalid operation leaves the original file unchanged. A save increments
+JSON. An invalid operation or a serialized next revision exceeding the 8 MB UTF-8 limit
+leaves the original file and revision unchanged. Project packaging and render snapshots
+use the same serialization bound. A save increments
 revision exactly once. Each request is one undoable action: its operations share
 one history entry (capped at 20), and only the request's final state must be valid,
 so a move and a shortening trim can be submitted together. A request that changes
