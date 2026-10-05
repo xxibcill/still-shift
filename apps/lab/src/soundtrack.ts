@@ -69,6 +69,7 @@ function clipFields() {
   if (!clip) return;
   el<HTMLInputElement>("start").value = String(clip.startSample);
   el<HTMLInputElement>("gain").value = String(clip.gainDb);
+  el<HTMLInputElement>("pan").value = String(clip.pan ?? 0);
   el<HTMLInputElement>("source-start").value = String(clip.sourceStartSample);
   el<HTMLInputElement>("source-end").value = String(clip.sourceEndSample);
   el<HTMLInputElement>("offset").value = String(
@@ -169,7 +170,9 @@ function view() {
       box.style.left = clip.leftPercent + "%";
       box.style.width = clip.widthPercent + "%";
       const text = document.createElement("span");
-      text.textContent = clip.id;
+      text.textContent = clip.pan
+        ? `${clip.id} · ${clip.pan < 0 ? "L" : "R"}${Math.round(Math.abs(clip.pan) * 100)}`
+        : clip.id;
       box.append(text);
       const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
       svg.classList.add("automation");
@@ -253,6 +256,11 @@ el<HTMLFormElement>("clip-edit").onsubmit = (e) => {
         type: "automation",
         clip: id,
         automation: JSON.parse(el<HTMLTextAreaElement>("automation").value),
+      },
+      {
+        type: "pan",
+        clip: id,
+        pan: field("pan", "Pan"),
       },
     ]);
   });
