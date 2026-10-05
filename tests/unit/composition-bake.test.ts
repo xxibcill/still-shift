@@ -78,6 +78,265 @@ function expectSameFrames(a: Composition, b: Composition) {
 }
 
 describe("comp bake", () => {
+  const referenceEcho = (extra: object = {}) =>
+    valid(
+      base({
+        layers: [
+          {
+            id: "p",
+            type: "precomp",
+            comp: "clip",
+            transform: { anchor: [0, 0] },
+          },
+        ],
+        precomps: [
+          {
+            id: "clip",
+            width: 200,
+            height: 200,
+            frameCount: 40,
+            layers: [
+              { id: "leader", type: "null" },
+              solid("hero", {
+                transform: { position: [100, 100] },
+                effects: [
+                  {
+                    id: "echo",
+                    effect: "time.echo",
+                    params: { count: 1, spacing: 1, decay: 0.5 },
+                  },
+                ],
+              }),
+            ],
+          },
+        ],
+        expressions: {
+          "p/leader.transform.anchor.x": { source: "frame * 10" },
+        },
+        drivers: [
+          {
+            target: "p/hero.transform.position.x",
+            source: "p/leader.constraintReference.x",
+          },
+        ],
+        periodic: [
+          {
+            target: "p/leader.constraintReference.x",
+            start: 0,
+            end: 39,
+            blend: "replace",
+            oscillate: { period: 10, amplitude: 0 },
+          },
+        ],
+        ...extra,
+      }),
+    );
+  const expectSameGraphs = (source: Composition, baked: Composition) => {
+    for (let frame = 0; frame < source.frameCount; frame++)
+      expect(
+        buildRenderGraph(baked, evaluateComp(baked, frame)),
+        `frame ${frame}`,
+      ).toEqual(buildRenderGraph(source, evaluateComp(source, frame)));
+  };
+
+  it("bakes an echoed reference overridden by active periodic motion", () => {
+    const doc = referenceEcho();
+    const baked = bakeExpressions(doc);
+    expect(baked.ok).toBe(true);
+    if (!baked.ok) return;
+    expect(baked.diagnostics).toEqual([]);
+    expectSameFrames(doc, baked.composition);
+    expectSameGraphs(doc, baked.composition);
+  });
+
+  it.each([
+    [5, 39],
+    [0, 5],
+  ])("requires anchor history outside periodic window %s–%s", (start, end) => {
+    const doc = referenceEcho();
+    Object.assign(doc.periodic![0]!, { start, end });
+    expect(bakeExpressions(doc)).toMatchObject({
+      ok: false,
+      diagnostics: [expect.objectContaining({ code: "comp-bake-time" })],
+    });
+  });
+
+  it("inherits only reference axes that are actually read", () => {
+    const doc = referenceEcho({
+      expressions: {
+        "p/leader.transform.anchor.y": { source: "frame * 10" },
+      },
+    });
+    const baked = bakeExpressions(doc);
+    expect(baked.ok).toBe(true);
+    if (!baked.ok) return;
+    expect(baked.diagnostics).toEqual([]);
+    expectSameGraphs(doc, baked.composition);
+  });
+
+  it.each([false, true])(
+    "requires the unoverridden reference axis under either read order (reverse=%s)",
+    (reverse) => {
+      const doc = referenceEcho({
+        expressions: {
+          "p/leader.transform.anchor.y": { source: "frame * 10" },
+        },
+        drivers: ["x", "y"].map((axis) => ({
+          target: `p/hero.transform.position.${axis}`,
+          source: `p/leader.constraintReference.${axis}`,
+        })),
+      });
+      if (reverse) doc.drivers!.reverse();
+      expect(bakeExpressions(doc)).toMatchObject({
+        ok: false,
+        diagnostics: [expect.objectContaining({ code: "comp-bake-time" })],
+      });
+    },
+  );
+
+  it("uses the root window for reversed nested instances and legacy motion", () => {
+    const doc = referenceEcho();
+    const clip = doc.precomps![0]!;
+    doc.precomps!.push({
+      id: "outer",
+      width: 200,
+      height: 200,
+      frameCount: 40,
+      layers: [
+        {
+          id: "inner",
+          type: "precomp",
+          comp: clip.id,
+          startFrame: 39,
+          stretch: -1,
+        },
+      ],
+    });
+    doc.layers = ["p", "q"].map((id) => ({
+      id,
+      type: "precomp",
+      comp: "outer",
+      outPoint: 11,
+      transform: { anchor: [0, 0] },
+    }));
+    doc.expressions = {
+      "p/inner/leader.transform.anchor.x": { source: "frame * 10" },
+    };
+    doc.drivers = ["p", "q"].map((id) => ({
+      target: `${id}/inner/hero.transform.position.x`,
+      source: `${id}/inner/leader.constraintReference.x`,
+    }));
+    doc.periodic = [
+      ...["p", "q"].map((id) => ({
+        target: `${id}/inner/leader.constraintReference.x`,
+        start: 0,
+        end: 10,
+        blend: "replace" as const,
+        oscillate: { period: 10, amplitude: 0 },
+      })),
+      {
+        node: "p",
+        property: "rotation",
+        start: 0,
+        end: 39,
+        oscillate: { period: 10, amplitude: 0 },
+      },
+    ];
+    const baked = bakeExpressions(valid(doc));
+    expect(baked.ok).toBe(true);
+    if (!baked.ok) return;
+    expect(baked.diagnostics).toEqual([]);
+    expectSameFrames(doc, baked.composition);
+    // Cloning a shared scope changes surface identity, while its drawing stays equal.
+    const drawing = (comp: Composition, frame: number) =>
+      JSON.parse(
+        JSON.stringify(
+          buildRenderGraph(comp, evaluateComp(comp, frame)),
+          (_key, value) =>
+            value?.type === "surface"
+              ? { ...value, surface: { ...value.surface, id: "scope" } }
+              : value,
+        ),
+      );
+    for (let frame = 0; frame < doc.frameCount; frame++)
+      expect(drawing(baked.composition, frame)).toEqual(drawing(doc, frame));
+  });
+
+  it.each([{ delay: 1 }, { lag: 1 }])(
+    "keeps anchor dependencies for a shifted reference read (%j)",
+    (map) => {
+      const doc = referenceEcho();
+      doc.drivers![0]!.map = map;
+      doc.periodic![0]!.start = 2;
+      const echo = doc.precomps![0]!.layers[1]!.effects![0]!;
+      echo.inPoint = 2;
+      echo.params!.spacing = 2;
+      expect(bakeExpressions(doc)).toMatchObject({
+        ok: false,
+        diagnostics: [expect.objectContaining({ code: "comp-bake-time" })],
+      });
+    },
+  );
+
+  it.each([
+    ["valueAtTime", "valueAtTime('p/leader.constraintReference.x', 1 / fps)"],
+    ["velocityAtTime", "velocityAtTime('p/leader.constraintReference.x', 0)"],
+    ["spring", "spring('p/leader.constraintReference.x', 3, 0.7)"],
+    ["heading", "heading('p/leader.constraintReference')"],
+  ])("keeps shifted implicit anchor dependencies for %s", (_name, source) => {
+    const doc = referenceEcho();
+    doc.layers.push({ id: "reader", type: "null" });
+    doc.expressions!["reader.transform.rotation"] = { source };
+    doc.drivers![0]!.source = "reader.transform.rotation";
+    doc.periodic![0]!.start = 2;
+    doc.precomps![0]!.layers[1]!.effects![0]!.inPoint = 2;
+    // Every temporal reader can visit root frame 1, before the writer starts.
+    expect(evaluateProperty(doc, "p/leader.constraintReference.x", 1)).toBe(10);
+    // Keep the conservative dependency: current-root activity cannot prove that
+    // a shifted read inherits no anchor at its own clock.
+    expect(bakeExpressions(doc)).toMatchObject({
+      ok: false,
+      diagnostics: [
+        expect.objectContaining({
+          code: "comp-bake-time",
+          path: 'expressions["p/leader.transform.anchor.x"]',
+        }),
+      ],
+    });
+  });
+
+  it.each(["valueAtTime(0)", "velocityAtTime(0)"])(
+    "does not shift an adjacent direct reference for own-property %s",
+    (ownRead) => {
+      const doc = referenceEcho();
+      doc.layers.push({
+        id: "reader",
+        type: "null",
+        transform: {
+          rotation: {
+            keys: [
+              { frame: 0, value: 0 },
+              { frame: 39, value: 39 },
+            ],
+          },
+        },
+      });
+      doc.expressions!["reader.transform.rotation"] = {
+        source: `${ownRead} + ref('p/leader.constraintReference.x')`,
+      };
+      doc.drivers!.push({
+        target: "p/hero.transform.position.y",
+        source: "reader.transform.rotation",
+      });
+      const baked = bakeExpressions(doc);
+      expect(baked.ok).toBe(true);
+      if (!baked.ok) return;
+      expect(baked.diagnostics).toEqual([]);
+      expectSameFrames(doc, baked.composition);
+      expectSameGraphs(doc, baked.composition);
+    },
+  );
+
   it("refuses root-clock expressions that conflict with nested echo history", () => {
     const doc = valid(
       base({

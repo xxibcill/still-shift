@@ -22,6 +22,7 @@ import {
   type CompositionLayer,
   type CompositionScope,
   type CompiledExpression,
+  type ExpressionAst,
   type PropertyPath,
   type PropertyPathSegment,
 } from "@still-shift/scene-contract";
@@ -59,8 +60,19 @@ type EchoClock = {
   options: EvaluationOptions;
   layers: { node: string; revision?: string }[];
 };
+type EchoProperty = { index: number; components?: number[] };
+type RequiredComponents = ReadonlyMap<number, ReadonlySet<number> | undefined>;
 
 const COMPONENTS = new Set(["x", "y", "z", "r", "g", "b", "a"]);
+const COMPONENT_INDEX: Record<string, number> = {
+  x: 0,
+  y: 1,
+  z: 2,
+  r: 0,
+  g: 1,
+  b: 2,
+  a: 3,
+};
 const ROOT_LENGTH: Record<string, number> = {
   transform: 2,
   masks: 2,
@@ -93,6 +105,28 @@ const equal = (a: number | number[], b: number | number[]) =>
   Array.isArray(a)
     ? Array.isArray(b) && a.every((x, i) => x === b[i])
     : a === b;
+
+/** These path readers can leave the current root clock. */
+function shiftedPropertyReads(ast: ExpressionAst): Set<string> {
+  const paths = new Set<string>();
+  const visit = (node: ExpressionAst) => {
+    if ("call" in node) {
+      if (
+        ["valueAtTime", "velocityAtTime", "spring", "heading"].includes(
+          node.call,
+        ) &&
+        node.args[0] &&
+        "str" in node.args[0]
+      )
+        paths.add(node.args[0].str);
+      node.args.forEach(visit);
+    } else if ("op" in node) node.args.forEach(visit);
+    else if ("vec" in node) node.vec.forEach(visit);
+    else if ("member" in node) visit(node.of);
+  };
+  visit(ast);
+  return paths;
+}
 
 /** Match the root/scope clocks used by the render graph's temporal echo samples. */
 function echoClocks(source: Composition, frame: number) {
@@ -152,7 +186,8 @@ function echoProperties(
   revision?: string,
 ) {
   const scopes = new Map(source.precomps?.map((scope) => [scope.id, scope]));
-  const needed = new Map<string, PropertyPath>();
+  const needed = new Map<string, { path: PropertyPath; shifted: boolean }>();
+  const neededRoots = new Map<string, Set<number> | undefined>();
   const keyOf = (path: PropertyPath) =>
     `${layerNodeOf(path)}#${segmentKey(propertyRoot(path.segments))}`;
   const resolve = (text: string) => {
@@ -189,15 +224,28 @@ function echoProperties(
     scopeTimes.set(key, time);
     return time;
   };
-  const add = (text: string) => {
+  const request = (path: PropertyPath, shifted: boolean) => {
+    const key = `${layerNodeOf(path)}#${segmentKey(path.segments)}#${shifted}`;
+    needed.set(key, { path, shifted });
+    const root = keyOf(path);
+    if (neededRoots.has(root) && neededRoots.get(root) === undefined) return;
+    if (path.segments.length === propertyRoot(path.segments).length) {
+      neededRoots.set(root, undefined);
+      return;
+    }
+    const components = neededRoots.get(root) ?? new Set<number>();
+    components.add(COMPONENT_INDEX[path.segments.at(-1)!.name]!);
+    neededRoots.set(root, components);
+  };
+  const add = (text: string, shifted = false) => {
     const path = resolve(text);
     if (!path || path.layer === "comp") return;
-    needed.set(keyOf(path), path);
+    request(path, shifted);
     path.scope.forEach((_, i) => {
       const clock = resolve(
         `${path.scope.slice(0, i + 1).join("/")}.timeRemap`,
       )!;
-      needed.set(keyOf(clock), clock);
+      request(clock, shifted);
     });
   };
   const transforms = new Set<string>();
@@ -213,11 +261,13 @@ function echoProperties(
     route: string[],
     layer: CompositionLayer,
     opacity: boolean,
+    shifted = false,
   ) => {
     const node = [...route, layer.id].join("/");
-    if (opacity) add(`${node}.transform.opacity`);
-    if (transforms.has(node)) return;
-    transforms.add(node);
+    if (opacity) add(`${node}.transform.opacity`, shifted);
+    const key = `${node}#${shifted}`;
+    if (transforms.has(key)) return;
+    transforms.add(key);
     for (const field of [
       "anchor",
       "position",
@@ -226,17 +276,17 @@ function echoProperties(
       "skewX",
       "skewY",
     ])
-      add(`${node}.transform.${field}`);
+      add(`${node}.transform.${field}`, shifted);
     const scope = scopeAt(route);
     if (layer.parent) {
       const parent = scope.layers.find(
         (candidate) => candidate.id === layer.parent,
       )!;
-      transform(route, parent, parent.type === "group");
+      transform(route, parent, parent.type === "group", shifted);
     }
     for (const constraint of scope.constraints ?? []) {
       if (constraint.target !== layer.id) continue;
-      add(`${node}.constraintReference`);
+      add(`${node}.constraintReference`, shifted);
       const reference =
         "anchor" in constraint
           ? constraint.anchor
@@ -252,6 +302,7 @@ function echoProperties(
           route,
           scope.layers.find((candidate) => candidate.id === reference)!,
           true,
+          shifted,
         );
     }
   };
@@ -339,18 +390,26 @@ function echoProperties(
     driver,
     path: resolve(driver.target)!,
   }));
-  const visited = new Set<string>();
-  for (const [key, path] of needed) {
-    if (visited.has(key)) continue;
-    visited.add(key);
-    for (const expression of expressions)
-      if (keyOf(expression.target.path) === key)
-        for (const read of expression.reads) add(read.resolved.path);
+  const periodic = (source.periodic ?? []).map((motion) => ({
+    motion,
+    path: resolve(motion.target ?? `${motion.node}.${motion.property}`)!,
+  }));
+  const overlaps = (a: PropertyPath, b: PropertyPath) =>
+    layerNodeOf(a) === layerNodeOf(b) &&
+    segmentsOverlap(a.segments, b.segments);
+  for (const { path, shifted } of needed.values()) {
+    for (const expression of expressions) {
+      if (!overlaps(expression.target.path, path)) continue;
+      const shiftedReads = shiftedPropertyReads(expression.ast);
+      for (const read of expression.reads)
+        add(read.resolved.path, shifted || shiftedReads.has(read.text));
+    }
     for (const { driver, path: target } of drivers) {
-      if (keyOf(target) !== key) continue;
+      if (!overlaps(target, path)) continue;
+      const shiftedRead = shifted || !!(driver.map?.delay || driver.map?.lag);
       for (const text of [driver.source, ...(driver.sum ?? [])]) {
         if (!text?.includes(".")) continue;
-        add(text);
+        add(text, shiftedRead);
         const read = resolve(text)!;
         if (read.segments[0]!.name === "transform")
           transform(
@@ -359,6 +418,7 @@ function echoProperties(
               (layer) => layer.id === read.layer,
             )!,
             true,
+            shiftedRead,
           );
       }
     }
@@ -368,6 +428,11 @@ function echoProperties(
     const writers = [
       ...expressions.map((expression) => expression.target.path),
       ...drivers.map(({ path }) => path),
+      ...periodic.flatMap(({ motion, path }) =>
+        !shifted && clock.frame >= motion.start && clock.frame <= motion.end
+          ? [path]
+          : [],
+      ),
     ].filter(
       (writer) =>
         layerNodeOf(writer) === layerNodeOf(path) &&
@@ -383,11 +448,14 @@ function echoProperties(
       path.segments,
       written,
     ))
-      add(`${layerNodeOf(path)}.${segmentKey(segments)}`);
+      add(`${layerNodeOf(path)}.${segmentKey(segments)}`, shifted);
   }
-  return groups.flatMap((group, i) =>
-    needed.has(keyOf(group.path)) ? [i] : [],
-  );
+  return groups.flatMap((group, index): EchoProperty[] => {
+    const key = keyOf(group.path);
+    if (!neededRoots.has(key)) return [];
+    const components = neededRoots.get(key);
+    return [{ index, ...(components ? { components: [...components] } : {}) }];
+  });
 }
 
 function autoOrientMismatch(
@@ -503,6 +571,9 @@ export function bakeExpressions(input: unknown): BakeResult {
   }
   const list = [...groups.values()];
   const samples = list.map(() => new Map<number, number | number[]>());
+  const sampledComponents = list.map(
+    () => new Map<number, Set<number> | undefined>(),
+  );
   const margin = list.some((group) => group.lookaround)
     ? AUTO_ORIENT_LOOKAROUND_FRAMES
     : 0;
@@ -510,6 +581,7 @@ export function bakeExpressions(input: unknown): BakeResult {
     indices: number[],
     values: StageSample[],
     frame: number,
+    required?: RequiredComponents,
   ): CompositionDiagnostic | undefined => {
     for (const [at, sample] of values.entries()) {
       const i = indices[at]!;
@@ -522,19 +594,46 @@ export function bakeExpressions(input: unknown): BakeResult {
           `"${list[i]!.text}" samples layer time ${keyTime} at frame ${frame}; keys need integer layer frames (stretch ±1, no fractional remap)`,
         );
       const previous = samples[i]!.get(rounded);
-      if (previous !== undefined && !equal(previous, sample.value))
+      const recorded = sampledComponents[i]!.get(rounded);
+      const components = Array.isArray(sample.value)
+        ? required?.get(i)
+        : undefined;
+      const conflict =
+        previous !== undefined &&
+        (Array.isArray(previous) && Array.isArray(sample.value)
+          ? sample.value.some(
+              (value, axis) =>
+                (!components || components.has(axis)) &&
+                (!recorded || recorded.has(axis)) &&
+                previous[axis] !== value,
+            )
+          : !equal(previous, sample.value));
+      if (conflict)
         return error(
           "comp-bake-time",
           list[i]!.origin,
           `"${list[i]!.text}" has different values at layer frame ${rounded} (a held or repeated layer time); it cannot be keyed`,
         );
-      samples[i]!.set(rounded, sample.value);
+      const value =
+        Array.isArray(previous) && Array.isArray(sample.value) && components
+          ? previous.map((value, axis) =>
+              components.has(axis) ? (sample.value as number[])[axis]! : value,
+            )
+          : sample.value;
+      samples[i]!.set(rounded, value);
+      sampledComponents[i]!.set(
+        rounded,
+        components && (previous === undefined || recorded)
+          ? new Set([...(recorded ?? []), ...components])
+          : undefined,
+      );
     }
   };
   const sampleAt = (
     indices: number[],
     frame: number,
     options: EvaluationOptions = {},
+    required?: RequiredComponents,
   ) =>
     recordSamples(
       indices,
@@ -545,6 +644,7 @@ export function bakeExpressions(input: unknown): BakeResult {
         options,
       ),
       frame,
+      required,
     );
   const hasEcho = [source, ...(source.precomps ?? [])].some((scope) =>
     scope.layers.some((layer) =>
@@ -560,7 +660,18 @@ export function bakeExpressions(input: unknown): BakeResult {
       ),
     ),
   );
-  const echoTargets = new Map<string, number[]>();
+  const periodicReference = source.periodic?.some((motion) => {
+    const target = resolvePropertyPath(
+      source,
+      motion.target ?? `${motion.node}.${motion.property}`,
+    );
+    return (
+      isResolvedProperty(target) &&
+      (parsePropertyPath(target.path) as PropertyPath).segments[0]!.name ===
+        "constraintReference"
+    );
+  });
+  const echoTargets = new Map<string, EchoProperty[]>();
   for (let frame = -margin; frame < source.frameCount + margin; frame++) {
     const indices = list.flatMap((group, i) =>
       group.lookaround || (frame >= 0 && frame < source.frameCount) ? [i] : [],
@@ -569,10 +680,11 @@ export function bakeExpressions(input: unknown): BakeResult {
     if (diagnostic) return { ok: false, diagnostics: [diagnostic] };
     if (hasEcho && frame >= 0 && frame < source.frameCount)
       for (const clock of echoClocks(source, frame)) {
-        const clockKey = timedBlur
-          ? JSON.stringify([clock.frame, clock.options.scopeTimes])
-          : "";
-        const indices = new Set<number>();
+        const clockKey =
+          timedBlur || periodicReference
+            ? JSON.stringify([clock.frame, clock.options.scopeTimes])
+            : "";
+        const required = new Map<number, Set<number> | undefined>();
         for (const { node, revision } of clock.layers) {
           const key = `${node}#${revision ?? ""}#${clockKey}`;
           let targets = echoTargets.get(key);
@@ -587,10 +699,25 @@ export function bakeExpressions(input: unknown): BakeResult {
             );
             echoTargets.set(key, targets);
           }
-          targets.forEach((i) => indices.add(i));
+          for (const { index, components } of targets) {
+            if (required.has(index) && required.get(index) === undefined)
+              continue;
+            if (!components) {
+              required.set(index, undefined);
+              continue;
+            }
+            const selected = required.get(index) ?? new Set<number>();
+            components.forEach((axis) => selected.add(axis));
+            required.set(index, selected);
+          }
         }
-        if (!indices.size) continue;
-        const diagnostic = sampleAt([...indices], clock.frame, clock.options);
+        if (!required.size) continue;
+        const diagnostic = sampleAt(
+          [...required.keys()],
+          clock.frame,
+          clock.options,
+          required,
+        );
         if (diagnostic) return { ok: false, diagnostics: [diagnostic] };
       }
   }

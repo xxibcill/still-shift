@@ -871,7 +871,10 @@ Historical samples cover the echoed content and its property dependencies,
 including primitive blur inherited from groups, selected by each effect’s active
 window at the historical layer clock, and `sourceRevision` when
 `skipUnchanged` is active. Unrelated siblings and current-clock echo parameters
-do not need historical keys.
+do not need historical keys. Active periodic writers of `constraintReference`
+replace inherited anchor dependencies only on the axes read at that root clock.
+Delayed, lagged and temporal expression reads retain those anchor dependencies,
+because their sampled root times can leave the writer’s active window.
 
 | Code                    | Severity | Meaning                                                                                                                                                 |
 | ----------------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |

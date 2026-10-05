@@ -44,12 +44,13 @@ still hold before relying on them.
 ## Current state
 
 - **PR #32 second follow-up fixes (2026-10-05):** four P2 findings are posted
-  inline. Timed primitive-blur history (`6876407`) and normalized AST bounds are
-  fixed; normalization/bounds/syntax/expression checks pass 174 tests and CLI
-  output revalidates correctly. Periodic reference writers and separate-axis
-  constant-speed delivery remain in progress. Four finding commits and one final
-  push are authorized; combined correctness verification remains. CE6-P and
-  CE9-F1 remain deferred. [Evidence](./pr-32-second-followup-fix-results.json).
+  inline. Timed primitive-blur history (`6876407`) and normalized AST bounds
+  (`4f7d8be`) are committed. Periodic reference writers now follow root-clock
+  windows, retain shifted dependencies and preserve unrelated vector components
+  during echo sampling. Separate-axis constant speed passes its 51 focused tests,
+  including spring/fps sampling and bounded work. Combined local verification,
+  the fourth finding commit and one final push remain. CE6-P and CE9-F1 remain
+  deferred. [Evidence](./pr-32-second-followup-fix-results.json).
 
 - **PR #32 follow-up fixes (2026-10-05):** both P2 findings are posted inline.
   Implicit anchor/reference reads, cycle validation and nested echo bake parity
@@ -137,6 +138,20 @@ _Last updated 2026-10-05 by Codex for the PR #32 follow-up fixes._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-05 — Fix PR #32 periodic reference dependencies
+
+- **Agent / branch:** Codex on isolated `codex/pr32-review-fixes`, after `4f7d8be`.
+- **Done:** use root-clock periodic windows and exact reference axes in echoed
+  dependency traversal; retain anchors for delayed/lagged and temporal reads.
+  Historical vector samples constrain only read components, preserving other axes
+  when ordinary samples arrive later under reversed clocks.
+- **Results:** all 53 bake/component-history tests pass. Three original cases and
+  two component-history acceptance cases failed before their fixes; 19 new cases
+  cover periodic windows, temporal readers and required-axis conflicts.
+- **Open / next:** combined correctness checks, the separate-axis roving finding
+  commit and one final push after all four commits.
+- **Records:** [Second follow-up evidence](./pr-32-second-followup-fix-results.json).
 
 ### 2026-10-05 — Fix PR #32 normalized AST bounds
 

@@ -3463,8 +3463,12 @@ Timed primitive-blur selection now respects historical scope/layer clocks and ef
 windows; four regressions and all 34 bake tests pass. Normalized AST JSON bounds
 now accept parser-valid output (nine regressions), retaining byte and metadata limits.
 The affected normalization/bounds/syntax/expression group passes 174 tests. Periodic
-reference-writer selection and separate-axis constant-speed delivery remain in progress. Delivery is four finding commits followed by one final push after
-combined verification. [Evidence](./pr-32-second-followup-fix-results.json).
+reference dependencies now respect root-clock windows and the exact axes read,
+retain anchor dependencies for shifted reads, and preserve unrelated components
+when historical samples precede ordinary samples. Separate-axis constant speed
+passes 51 expression tests, including spring sampling at three frame rates and
+an explicit work bound. Combined verification and delivery remain: four finding
+commits followed by one final push. [Evidence](./pr-32-second-followup-fix-results.json).
 
 ---
 
