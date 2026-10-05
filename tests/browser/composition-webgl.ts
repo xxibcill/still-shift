@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { resolve } from "node:path";
 import { createServer } from "vite";
 import { launchRenderBrowser } from "@still-shift/execution-runtime";
+import type * as Exposure from "../helpers/composition-webgl-exposure.ts";
 import type * as Rational from "../helpers/composition-webgl-float-sum.ts";
 import type * as Checks from "../helpers/composition-webgl-reference.ts";
 import type * as VectorPaints from "../helpers/composition-webgl-vector-paints.ts";
@@ -22,6 +23,11 @@ try {
   const page = await browser.newPage();
   await page.addInitScript("window.__name = (fn) => fn;");
   await page.goto(server.resolvedUrls!.local[0]!);
+  const exposure = await page.evaluate(async () => {
+    const url = "/tests/helpers/composition-webgl-exposure.ts";
+    return ((await import(url)) as typeof Exposure).checkWebglExposureFusion();
+  });
+  console.log("WebGL final exposure sum/resolve exactness:", exposure);
   const blur = await page.evaluate(async () => {
     const url = "/tests/helpers/composition-webgl-blur.ts";
     return ((await import(url)) as typeof Blur).checkWebglPrimitiveBlur();

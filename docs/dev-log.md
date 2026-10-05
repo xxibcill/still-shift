@@ -46,7 +46,8 @@ still hold before relying on them.
 - **CE6-P resumed (2026-10-05):** owner authorized a parallel compatibility-preserving
   WebGL optimization lane on `codex/composition-ce6p-compatible` from `0e48388`.
   Current candidate: fuse the final shutter sample sum with averaging, subject to
-  exact regressions and serial A/B measurement. The main checkout/chat is untouched.
+  exact regressions and serial A/B measurement. Candidate builds; runtime
+  correctness and timings wait for the main gate to release the machine. The main checkout/chat is untouched.
   All 117 original failures, 1.25× family and 2× native targets remain open.
   [Plan](./composition-ce6p-plan.md).
 
@@ -183,6 +184,18 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-06 — CE6-P exposure fusion candidate checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce6p-compatible`.
+- **Done:** final shutter addition/average fusion, independent byte-average and
+  retained-original GPU regressions, isolated serial A/B harness and preview budgets.
+- **Results:** pinned toolchain/import preflight, TypeScript build and changed-file
+  lint pass. Browser regressions and timings have not run; main CE7 gate is active.
+- **Retained attempt:** sandbox offline install lacked a package; normal locked
+  install succeeded. No acceptance or baseline was changed.
+- **Next:** review candidate, then exactness/A/B after competing workloads end.
+- **Records:** [slice plan](./composition-ce6p-plan.md).
 
 ### 2026-10-05 — CE6-P parallel optimization lane resumed
 

@@ -1,3 +1,4 @@
+import { accumulateWebglExposure } from "./webgl-exposure.ts";
 import { blurKernelLength } from "./webgl-blur-kernel.ts";
 import { WebglPaint } from "./webgl-paint.ts";
 import { WebglDamage } from "./webgl-damage.ts";
@@ -24,7 +25,7 @@ import { WebglDevice, type WebglSurface } from "./webgl-device.ts";
 import { blendShader } from "./webgl-blend.ts";
 
 export const COMPOSITION_WEBGL_RENDERER_VERSION =
-  "composition-webgl2-0.38.1" as const;
+  "composition-webgl2-0.39.0" as const;
 const IDENTITY: Matrix = [1, 0, 0, 1, 0, 0];
 const COPY =
   "uniform float opacity; void main() { pixel = floor(floor(texture(source, uv) * 255.0 + 0.5) * (floor(opacity * 255.0 + 0.5) + 1.0) / 256.0) / 255.0; }";
@@ -652,33 +653,16 @@ export function createWebgl2Backend(
       device.setFrameClip();
       let painted: ReturnType<WebglBounds["snapshot"]> = null;
       let background: number | undefined;
-      const sum = device.surface(dst.width, dst.height, true);
-      let next: WebglSurface | undefined;
       try {
-        next = device.surface(dst.width, dst.height, true);
         exposure = true;
-        for (let i = 0; i < count; i++) {
+        accumulateWebglExposure(device, dst, count, (i) => {
           render(i);
           if (i === 0) background = bounds.clearColor(dst);
           else if (background !== bounds.clearColor(dst)) bounds.full(dst);
           bounds.include(dst, painted);
           painted = bounds.snapshot(dst);
-          device.pass(
-            "void main() { pixel = texture(backdrop,uv) + floor(texture(source,uv)*255.0+0.5); }",
-            next,
-            [dst, sum],
-          );
-          device.swap(sum, next);
-        }
-        device.pass(
-          "uniform float count; void main() { pixel = floor(texture(source,uv)/count+0.5)/255.0; }",
-          dst,
-          [sum],
-          { count },
-        );
+        });
       } finally {
-        device.release(sum);
-        if (next) device.release(next);
         exposure = false;
         damage.reset();
         device.setFrameClip();
