@@ -328,18 +328,19 @@ its relocated `project.json` when rendering. No automatic episode migration occu
 ## Optional layer view and preview
 
 Run `pnpm lab`; open `/soundtrack.html` via **Soundtrack layers**. Load a saved
-project inside the checkout. Tracks show overlapping clip bounds, stepped hold or linear automation with
-extended endpoint gains, processed-stem
-waveforms after rendering, and authored automation. Set track mute/solo/gain or
-edit a clip's numeric placement, trim, gain, pan, fade lengths and curves and
-automation JSON,
-or remove the selected clip; Save writes the same file as the CLI. Undo/redo uses persisted project history. Numeric edits are
-supported; an empty or invalid number field is rejected without saving instead of
-being read as zero. After rendering, the status line shows the mix peak and warns
-when samples exceed 0 dBFS.
-Drag handles, adding clips or assets, DSP/ducking inspectors and an independent
-browser mixing engine are not provided. Add cues, tracks, buses, filters and
-ducking through a CLI/API edit.
+project inside the checkout. Tracks show overlapping clip bounds, stepped hold or
+linear automation with extended endpoint gains (gold), linear or equal-power fade
+shapes (blue) and processed-stem waveforms after rendering. Set track
+mute/solo/gain or edit a clip's numeric placement, trim, gain, pan, fade lengths
+and curves and automation JSON, or remove the selected clip. **Add cue** places a
+new clip on a track from an existing source, or registers a new source path
+(relative to the project; the server hashes it) in the same undoable request.
+Save writes the same file as the CLI. Undo/redo uses persisted project history.
+An empty or invalid number field is rejected without saving instead of being read
+as zero. After rendering, the status line shows the mix peak and warns when
+samples exceed 0 dBFS. Drag handles, track/bus/filter/ducking forms and an
+independent browser mixing engine are not provided; edit those through a CLI/API
+edit.
 
 **Render this revision** generates a fresh checked mix/stems and waveform data.
 Play/seek/download use that saved revision's rendered mix. An edit invalidates

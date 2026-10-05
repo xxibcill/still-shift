@@ -122,6 +122,51 @@
         ><button>Save clip edits</button>
         <button type="button" id="remove-clip">Remove clip</button>
       </form>
+      <form id="add-cue" hidden>
+        <h2>Add cue</h2>
+        <label>Cue ID<input id="cue-id" required /></label>
+        <label
+          >Asset ID<input id="cue-asset" list="cue-assets" required /></label
+        ><datalist id="cue-assets"></datalist>
+        <label
+          >New asset path (optional, relative to the project)<input
+            id="cue-asset-path"
+        /></label>
+        <label>Track<select id="cue-track"></select></label>
+        <label
+          >Source start sample<input
+            id="cue-source-start"
+            type="number"
+            min="0"
+            step="1"
+            value="0"
+            required /></label
+        ><label
+          >Source end sample (exclusive)<input
+            id="cue-source-end"
+            type="number"
+            min="1"
+            step="1"
+            required /></label
+        ><label
+          >Start sample<input
+            id="cue-start"
+            type="number"
+            min="0"
+            step="1"
+            required /></label
+        ><label
+          >Gain (dB)<input
+            id="cue-gain"
+            type="number"
+            min="-120"
+            max="12"
+            step="0.1"
+            value="0"
+            required
+        /></label>
+        <button>Add cue</button>
+      </form>
       <p>
         All positions use 48 kHz integer samples. Source intervals are
         end-exclusive. Saved edits invalidate preview until that revision is

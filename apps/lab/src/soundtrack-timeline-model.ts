@@ -3,6 +3,7 @@ import {
   type SoundtrackProject,
   type SoundtrackClip,
 } from "../../../packages/scene-contract/src/soundtrack-project.ts";
+import type { SoundtrackEdit } from "../../../packages/renderer-core/src/soundtrack-edits.ts";
 /** Draw the authored amplitude envelope, including held steps and extended endpoints. */
 function displayAutomation(clip: SoundtrackClip) {
   const length = clip.sourceEndSample - clip.sourceStartSample,
@@ -29,6 +30,42 @@ function displayAutomation(clip: SoundtrackClip) {
     display.push({ sample: clip.startSample + length, gain: last.gain });
   return display;
 }
+/**
+ * Fade gain shapes as absolute-sample polylines. Linear fades are straight ramps;
+ * equal-power fades follow sin(r·π/2), sampled in 16 segments for display.
+ */
+function displayFades(clip: SoundtrackClip) {
+  const length = clip.sourceEndSample - clip.sourceStartSample;
+  const shape = (
+    from: number,
+    span: number,
+    rising: boolean,
+    curve: string | undefined,
+  ) => {
+    const power = curve === "equal-power";
+    const steps = power ? 16 : 1;
+    return Array.from({ length: steps + 1 }, (_, step) => {
+      const ramp = rising ? step / steps : 1 - step / steps;
+      return {
+        sample: clip.startSample + from + Math.round((step / steps) * span),
+        gain: power ? Math.sin((ramp * Math.PI) / 2) : ramp,
+      };
+    });
+  };
+  const fades: { sample: number; gain: number }[][] = [];
+  if (clip.fadeInSamples)
+    fades.push(shape(0, clip.fadeInSamples, true, clip.fadeInCurve));
+  if (clip.fadeOutSamples)
+    fades.push(
+      shape(
+        length - clip.fadeOutSamples,
+        clip.fadeOutSamples,
+        false,
+        clip.fadeOutCurve,
+      ),
+    );
+  return fades;
+}
 /** Read-only projection. Every edit is sent to the shared revision-checked API. */
 export function soundtrackTimelineModel(
   input: SoundtrackProject,
@@ -53,6 +90,7 @@ export function soundtrackTimelineModel(
               project.durationSamples) *
             100,
           automation: displayAutomation(clip),
+          fades: displayFades(clip),
         })),
     })),
   };
@@ -80,4 +118,42 @@ export function soundtrackHeadroom(mix: SoundtrackRenderedOutput) {
   return mix.samplesAboveFullScale
     ? `mix exceeds 0 dBFS on ${mix.samplesAboveFullScale} samples (peak ${peak}); integer delivery clips them, so lower gains`
     : `mix peak ${peak}`;
+}
+
+/**
+ * One undoable request that places a cue: optionally registers a new source
+ * (the server hashes it relative to the project), then adds a clip with no fades
+ * or automation. Numbers come from soundtrackNumberField, so blanks never save 0.
+ */
+export function soundtrackAddCueOperations(fields: {
+  id: string;
+  asset: string;
+  assetPath: string;
+  track: string;
+  sourceStartSample: number;
+  sourceEndSample: number;
+  startSample: number;
+  gainDb: number;
+}): SoundtrackEdit[] {
+  const id = fields.id.trim(),
+    asset = fields.asset.trim(),
+    path = fields.assetPath.trim();
+  if (!id || !asset)
+    throw new Error("Cue and asset IDs are required; nothing was saved");
+  return [
+    ...(path ? [{ type: "add-asset" as const, id: asset, path }] : []),
+    {
+      type: "add-clip",
+      id,
+      asset,
+      track: fields.track,
+      sourceStartSample: fields.sourceStartSample,
+      sourceEndSample: fields.sourceEndSample,
+      startSample: fields.startSample,
+      gainDb: fields.gainDb,
+      fadeInSamples: 0,
+      fadeOutSamples: 0,
+      automation: { interpolation: "linear", points: [] },
+    },
+  ];
 }

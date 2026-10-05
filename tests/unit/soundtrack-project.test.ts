@@ -1,4 +1,5 @@
 import {
+  soundtrackAddCueOperations,
   soundtrackHeadroom,
   soundtrackNumberField,
   soundtrackTimelineModel,
@@ -752,4 +753,64 @@ it("edits routing, tracks, filters and ducking as undoable requests", () => {
       { type: "remove-track", track: "voice" },
     ]),
   ).toThrow(expect.objectContaining({ code: "track-in-use" }));
+});
+
+it("timeline draws linear and equal-power fade shapes in absolute samples", () => {
+  const p = fixture();
+  p.clips[0]!.startSample = 1000;
+  p.clips[0]!.fadeInSamples = 480;
+  p.clips[0]!.fadeOutSamples = 960;
+  p.clips[0]!.fadeOutCurve = "equal-power";
+  const [fadeIn, fadeOut] =
+    soundtrackTimelineModel(p).tracks[0]!.clips[0]!.fades;
+  expect(fadeIn).toEqual([
+    { sample: 1000, gain: 0 },
+    { sample: 1480, gain: 1 },
+  ]);
+  expect(fadeOut).toHaveLength(17);
+  expect(fadeOut![0]).toEqual({ sample: 1000 + 4800 - 960, gain: 1 });
+  expect(fadeOut!.at(-1)!.sample).toBe(1000 + 4800);
+  expect(fadeOut!.at(-1)!.gain).toBeCloseTo(0, 12);
+  // The midpoint of an equal-power fade sits at −3 dB, not −6 dB.
+  expect(fadeOut![8]!.sample).toBe(1000 + 4800 - 480);
+  expect(fadeOut![8]!.gain).toBeCloseTo(Math.SQRT1_2, 12);
+  p.clips[0]!.fadeInSamples = 0;
+  p.clips[0]!.fadeOutSamples = 0;
+  expect(soundtrackTimelineModel(p).tracks[0]!.clips[0]!.fades).toEqual([]);
+});
+
+it("Lab cue form builds one add-clip request, registering a new source when given", () => {
+  const fields = {
+    id: " whoosh ",
+    asset: "whoosh-src",
+    assetPath: " sfx/whoosh.wav ",
+    track: "music",
+    sourceStartSample: 0,
+    sourceEndSample: 2400,
+    startSample: 9600,
+    gainDb: -6,
+  };
+  const operations = soundtrackAddCueOperations(fields);
+  expect(operations[0]).toEqual({
+    type: "add-asset",
+    id: "whoosh-src",
+    path: "sfx/whoosh.wav",
+  });
+  expect(operations[1]).toMatchObject({ type: "add-clip", id: "whoosh" });
+  // The request is valid against the shared edit API once the asset is known.
+  const edited = editSoundtrackProject(fixture(), [
+    { ...operations[0]!, sha256: "sha256:" + "c".repeat(64) } as never,
+    operations[1]!,
+  ]);
+  expect(edited.clips.at(-1)).toMatchObject({
+    id: "whoosh",
+    startSample: 9600,
+  });
+  // Reusing an existing source sends only the clip.
+  expect(
+    soundtrackAddCueOperations({ ...fields, asset: "tone", assetPath: "" }),
+  ).toHaveLength(1);
+  expect(() => soundtrackAddCueOperations({ ...fields, id: "  " })).toThrow(
+    /nothing was saved/,
+  );
 });

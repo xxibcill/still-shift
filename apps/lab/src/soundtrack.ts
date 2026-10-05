@@ -1,6 +1,7 @@
 import type { SoundtrackProject } from "../../../packages/scene-contract/src/soundtrack-project.ts";
 import type { SoundtrackEdit } from "../../../packages/renderer-core/src/soundtrack-edits.ts";
 import {
+  soundtrackAddCueOperations,
   soundtrackHeadroom,
   soundtrackNumberField,
   soundtrackTimelineModel,
@@ -182,20 +183,28 @@ function view() {
       svg.classList.add("automation");
       svg.setAttribute("viewBox", "0 0 100 100");
       svg.setAttribute("preserveAspectRatio", "none");
-      const poly = document.createElementNS(svg.namespaceURI, "polyline");
-      poly.setAttribute("fill", "none");
-      poly.setAttribute("stroke", "#e8c977");
-      poly.setAttribute("stroke-width", "1");
-      poly.setAttribute(
-        "points",
-        clip.automation
-          .map(
-            (p) =>
-              `${((p.sample - clip.startSample) / (clip.sourceEndSample - clip.sourceStartSample)) * 100},${100 - Math.min(4, p.gain) * 25}`,
-          )
-          .join(" "),
-      );
-      svg.append(poly);
+      // Automation (gold) and fade shapes (blue) share one gain scale: 1 = 75%.
+      const line = (
+        points: { sample: number; gain: number }[],
+        stroke: string,
+      ) => {
+        const poly = document.createElementNS(svg.namespaceURI, "polyline");
+        poly.setAttribute("fill", "none");
+        poly.setAttribute("stroke", stroke);
+        poly.setAttribute("stroke-width", "1");
+        poly.setAttribute(
+          "points",
+          points
+            .map(
+              (p) =>
+                `${((p.sample - clip.startSample) / (clip.sourceEndSample - clip.sourceStartSample)) * 100},${100 - Math.min(4, p.gain) * 25}`,
+            )
+            .join(" "),
+        );
+        svg.append(poly);
+      };
+      line(clip.automation, "#e8c977");
+      for (const fade of clip.fades) line(fade, "#7fb3d5");
       box.append(svg);
       lane.append(box);
     }
@@ -213,6 +222,27 @@ function view() {
   if (project.clips.some((c) => c.id === selected)) clipSelect.value = selected;
   el("clip-edit").hidden = !project.clips.length;
   clipFields();
+  // The cue form offers existing sources and tracks; a new path registers a source.
+  el("add-cue").hidden = !project.tracks.length;
+  el("cue-assets").replaceChildren(
+    ...project.assets.map((asset) => {
+      const option = document.createElement("option");
+      option.value = asset.id;
+      return option;
+    }),
+  );
+  const cueTrack = el<HTMLSelectElement>("cue-track"),
+    chosenTrack = cueTrack.value;
+  cueTrack.replaceChildren(
+    ...project.tracks.map((track) => {
+      const option = document.createElement("option");
+      option.value = track.id;
+      option.textContent = track.id + " · " + track.role;
+      return option;
+    }),
+  );
+  if (project.tracks.some((t) => t.id === chosenTrack))
+    cueTrack.value = chosenTrack;
 }
 el<HTMLFormElement>("load").onsubmit = (e) => {
   e.preventDefault();
@@ -279,6 +309,27 @@ el<HTMLFormElement>("clip-edit").onsubmit = (e) => {
         pan: field("pan", "Pan"),
       },
     ]);
+  });
+};
+el<HTMLFormElement>("add-cue").onsubmit = (e) => {
+  e.preventDefault();
+  void task(async () => {
+    const field = (name: string, label: string) =>
+      soundtrackNumberField(el<HTMLInputElement>(name).value, label);
+    // Registering a source and placing its cue is one undoable request.
+    await edit(
+      soundtrackAddCueOperations({
+        id: el<HTMLInputElement>("cue-id").value,
+        asset: el<HTMLInputElement>("cue-asset").value,
+        assetPath: el<HTMLInputElement>("cue-asset-path").value,
+        track: el<HTMLSelectElement>("cue-track").value,
+        sourceStartSample: field("cue-source-start", "Cue source start"),
+        sourceEndSample: field("cue-source-end", "Cue source end"),
+        startSample: field("cue-start", "Cue start sample"),
+        gainDb: field("cue-gain", "Cue gain"),
+      }),
+    );
+    el<HTMLInputElement>("cue-asset-path").value = "";
   });
 };
 el("remove-clip").onclick = () =>

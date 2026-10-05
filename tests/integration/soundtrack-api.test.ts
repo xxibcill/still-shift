@@ -12,6 +12,7 @@ import { dirname, join } from "node:path";
 import { beforeAll, afterAll, expect, it } from "vitest";
 import { createServer, type ViteDevServer } from "vite";
 import { soundtrackApi } from "../../apps/lab/soundtrack-api.ts";
+import { soundtrackAddCueOperations } from "../../apps/lab/src/soundtrack-timeline-model.ts";
 import {
   saveSoundtrackEdits,
   soundtrackChecksum,
@@ -244,3 +245,57 @@ it("keeps only the newest preview per project and drops all of them after an edi
   );
   expect((await audio(second)).status).toBe(409);
 }, 20000);
+it("places a cue with a newly registered source through the Lab edit request", async () => {
+  await mkdir(join(root, "cues/sfx"), { recursive: true });
+  await writeFile(
+    join(root, "cues/sfx/pop.wav"),
+    await readFile(join(root, "source.wav")),
+  );
+  await writeFile(
+    join(root, "cues/project.json"),
+    JSON.stringify({
+      ...project,
+      assets: [{ ...project.assets[0]!, path: "../source.wav" }],
+    }),
+  );
+  const operations = soundtrackAddCueOperations({
+    id: "pop-cue",
+    asset: "pop",
+    assetPath: "sfx/pop.wav",
+    track: "effect",
+    sourceStartSample: 0,
+    sourceEndSample: 2400,
+    startSample: 1200,
+    gainDb: -6,
+  });
+  const before = await readFile(join(root, "cues/project.json"));
+  // A wrong stated identity is refused without touching the saved project.
+  const refused = await post("edit", {
+    project: "cues/project.json",
+    revision: 0,
+    operations: [
+      { ...operations[0]!, sha256: "sha256:" + "0".repeat(64) },
+      operations[1]!,
+    ],
+  });
+  expect(refused.status).not.toBe(200);
+  expect(await readFile(join(root, "cues/project.json"))).toEqual(before);
+  const placed = await post("edit", {
+    project: "cues/project.json",
+    revision: 0,
+    operations,
+  });
+  expect(placed.status).toBe(200);
+  const saved = (await placed.json()).project as SoundtrackProject;
+  expect(saved.revision).toBe(1);
+  expect(saved.assets.at(-1)).toEqual({
+    id: "pop",
+    path: "sfx/pop.wav",
+    sha256: await soundtrackChecksum(join(root, "cues/sfx/pop.wav")),
+  });
+  expect(saved.clips.at(-1)).toMatchObject({
+    id: "pop-cue",
+    startSample: 1200,
+  });
+  expect(saved.history.undo).toHaveLength(1);
+});
