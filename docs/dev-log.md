@@ -43,12 +43,15 @@ still hold before relying on them.
 
 ## Current state
 
-- **PR #35 review fixes in progress (2026-10-05):** isolated
+- **PR #35 review fixes (2026-10-05):** isolated
   `codex/pr35-review-fixes` from `869a793`. Three findings are posted inline.
-  `6ce9993` retains native diagnostics and field/beat/source context. Evidence
-  states/replacements now retain the plan's qualification; 18 focused checks,
-  build and targeted lint pass. Bounded WebGL previews follow. One commit per
-  finding; one final push is pending.
+  `6ce9993` retains native diagnostics and field/beat/source context; `c9c0971`
+  preserves evidence qualifications through states and corrections. WebGL previews
+  use two contexts per passage, four during replacement, and release them on
+  disposal or preparation failure. Fast, runtime, integration, Python, smoke and
+  affected passage checks pass, with one unchanged depth-protocol rerun recorded.
+  All 176 frozen baseline items / 36,061 frames match. Delivery uses one commit per
+  finding and one push after the final commit; owner review and merge remain pending.
   [Evidence](./pr-35-fix-results.json).
 
 - **CE4a complete (2026-10-05):** `codex/composition-ce4a-completion`, implementation
@@ -90,7 +93,7 @@ still hold before relying on them.
   [Fix evidence](./pr-32-fix-results.json).
   [Review evidence](./pr-32-review-results.json).
 
-_Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
+_Last updated 2026-10-05 by Codex for PR #35 fixes; prior work retained._
 
 - **PR #32 conflict resolution (2026-10-04):** merged `main` at `3413780` into
   PR head `a0708ba` and pushed merge `05033c8`, retaining CE9 expressions and
@@ -148,6 +151,21 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-05 — Fix PR #35 WebGL passage context budget
+
+- **Agent / branch:** Codex on `codex/pr35-review-fixes`, after `c9c0971`.
+- **Done:** two GPU preview slots serve independent beat picture canvases. Native
+  validation remains eager; disposal and failed preparation release GL contexts.
+- **Results:** 20 beats and eight overlapping edits preserve pixels and backward
+  seeks, peak at four live contexts and end at zero. Fast checks pass 1,470 unit
+  tests; 46 runtime, 117 integration, 14 Python, smoke, both mixed 576-frame passage
+  backends and authoring checks pass. All 176 frozen items / 36,061 frames match.
+- **Initial failures:** fresh-environment depth-protocol timeouts passed on one
+  unchanged targeted rerun; helper TypeScript inference was repaired. See evidence.
+- **Delivery:** one finding per commit; push all three together after this final
+  finding commit. Owner review and merge remain pending.
+- **Records:** [fix evidence](./pr-35-fix-results.json).
 
 ### 2026-10-05 — Fix PR #35 native evidence text alternatives
 

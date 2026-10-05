@@ -15,6 +15,7 @@ import {
 } from "@still-shift/animation-engine";
 import { PassageError } from "@still-shift/renderer-core";
 import { runProcess } from "@still-shift/execution-runtime/subprocess";
+import { assertBoundedPassagePreviews } from "../helpers/passage-composition-previews.ts";
 
 const root = await mkdtemp(join(tmpdir(), "still-shift-native-beat-"));
 const backend = process.argv.includes("--webgl") ? "webgl2" : "canvas2d";
@@ -230,6 +231,11 @@ try {
       );
     }
     assert.deepEqual(errors, []);
+    if (backend === "webgl2")
+      await assertBoundedPassagePreviews(
+        browser,
+        server.resolvedUrls!.local[0]!,
+      );
   } finally {
     await browser.close();
     await server.close();

@@ -670,6 +670,9 @@ passage pipeline. Choose a fresh output directory when changing renderer/backend
 For the matching Lab preview, open `passage.html?renderer=composition` (or add
 `&backend=webgl2`). Beat seeking and editing retain their existing controls. The
 compiled beat composition is retained in the passage cache for inspection.
+WebGL passage preview shares two renderers across the beats, retaining separate
+picture canvases for transitions. Long passages and edits do not allocate one GPU
+context per beat; replaced previews release their contexts.
 
 ### Use a native composition as a passage beat's picture
 

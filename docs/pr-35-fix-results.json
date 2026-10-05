@@ -9,7 +9,7 @@
       "id": "native-schema-diagnostics",
       "commit": "6ce9993",
       "comment": "https://github.com/xxibcill/still-shift/pull/35#discussion_r4183175564",
-      "status": "fixed-locally",
+      "status": "fixed",
       "change": "Preserve every schema diagnostic's code, severity, message and JSON field path, with beat and sourcePath context; display those locations in Lab",
       "regression": "A picture with invalid root and layer IDs retains both original diagnostics through the file loader",
       "verification": [
@@ -21,7 +21,7 @@
     {
       "id": "evidence-text-states",
       "comment": "https://github.com/xxibcill/still-shift/pull/35#discussion_r4183175570",
-      "status": "fixed-locally",
+      "status": "fixed",
       "change": "Require mapped evidence text, every state and whole-layer correction to retain the passage qualification; refuse span corrections on evidence layers",
       "regressions": "Six checks cover matching alternatives, contradictory root/precomp states, a later state change, and full/span replacement text",
       "verification": [
@@ -29,15 +29,110 @@
         "pnpm build passed",
         "Targeted ESLint, Prettier and git diff --check passed"
       ],
-      "initialFailure": "The nested precomp regression initially used source instead of comp; corrected the test fixture and reran successfully"
+      "initialFailure": "The nested precomp regression initially used source instead of comp; corrected the test fixture and reran successfully",
+      "commit": "c9c0971"
     },
     {
       "id": "webgl-passage-contexts",
       "comment": "https://github.com/xxibcill/still-shift/pull/35#discussion_r4183175575",
-      "status": "pending"
+      "status": "fixed",
+      "change": "Use a two-slot WebGL preview pool with separate beat picture canvases; retain eager validation and release GL contexts when disposing or abandoning a prepared passage",
+      "regression": "A 20-beat passage preserves all native pixels and reverse seeks across eight overlapping edits, adjacent-beat renders, a failed preparation and final disposal",
+      "metrics": {
+        "beats": 20,
+        "edits": 8,
+        "contextsCreated": 20,
+        "peakActive": 4,
+        "remaining": 0,
+        "contextLimitWarnings": 0
+      },
+      "verification": [
+        "pnpm check:fast passed, including TypeScript and ESLint",
+        "Final WebGL mixed passage acceptance and bounded-context regression passed"
+      ],
+      "commitMessage": "fix(lab): bound WebGL passage preview contexts"
     }
   ],
-  "finalVerification": "pending",
-  "push": "pending",
-  "githubActions": "No workflow or repository Actions setting changed"
+  "finalVerification": {
+    "fast": {
+      "command": "pnpm check:fast",
+      "status": "passed",
+      "unitFiles": 130,
+      "unitTests": 1470
+    },
+    "runtime": {
+      "command": "pnpm test:runtime (via pnpm check:runtime)",
+      "status": "passed",
+      "files": 9,
+      "tests": 46
+    },
+    "integration": {
+      "command": "pnpm test:integration (via pnpm check:runtime)",
+      "firstRun": {
+        "filesPassed": 32,
+        "filesFailed": 1,
+        "testsPassed": 114,
+        "testsFailed": 3
+      },
+      "followupCommand": "pnpm exec vitest run tests/integration/depth-worker-protocol.test.ts --maxWorkers=2 --no-file-parallelism",
+      "followup": {
+        "status": "passed",
+        "tests": 5,
+        "durationMs": 916
+      },
+      "finalCoverage": {
+        "files": 33,
+        "tests": 117,
+        "unresolvedFailures": 0
+      },
+      "limitation": "The aggregate check:runtime command stopped at three existing 5-second depth-protocol timeouts after a fresh worktree .venv install. Every test in that file passed unchanged on one targeted rerun after an import probe; the remaining gate groups ran separately. The aggregate command itself is not reported as passing."
+    },
+    "python": {
+      "command": "pnpm test:depth",
+      "status": "passed",
+      "tests": 14
+    },
+    "smoke": {
+      "command": "pnpm test:browser:smoke",
+      "status": "passed"
+    },
+    "canvasPassage": {
+      "command": "pnpm test:browser:composition-native-passage",
+      "status": "passed",
+      "frames": 576
+    },
+    "webglPassage": {
+      "command": "pnpm test:browser:composition-native-passage:webgl",
+      "status": "passed",
+      "frames": 576
+    },
+    "authoring": {
+      "command": "pnpm test:browser:composition-passage",
+      "status": "passed",
+      "frameComparisons": 9,
+      "coverage": "Encoded frame counts, isolated cache edits, range exports, cancellation/resume, audio reuse, browser editing/recovery/playback and phone layout"
+    },
+    "baselines": {
+      "command": "pnpm test:browser:composition-baselines",
+      "status": "passed",
+      "items": 176,
+      "frames": 36061,
+      "durationSeconds": 277.51,
+      "platform": "darwin-arm64",
+      "fingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+      "regenerated": false
+    },
+    "notRun": [
+      "Full pnpm check / check:all release gates",
+      "Strict WebGL timing matrices; owner-approved CE6-P deferral remains"
+    ]
+  },
+  "push": "One fast-forward push to the existing PR branch after the final finding commit",
+  "githubActions": "No workflow or repository Actions setting changed",
+  "targetBranch": "codex/composition-ce4a-completion",
+  "initialAttempts": [
+    "The WebGL helper initially failed TypeScript inference (never[] then Playwright deep serialization). Explicit composition types and a JSON payload removed the type errors; no assertions were weakened.",
+    "The first offline uv sync used an empty task cache and could not find locked packages. The existing uv cache completed the same locked offline installation.",
+    "The initial integration run had three depth-protocol timeouts; the unchanged five-test file passed on a single targeted rerun without increasing its timeout."
+  ]
 }
