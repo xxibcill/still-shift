@@ -101,7 +101,13 @@ Integer sample counts convert to backend seconds rounded upward by one represent
 step, preventing truncation to one sample short. Full outputs must still match the
 exact authored integer length; narration intervals and placements are unchanged.
 `render.json` records sample count, waveform peaks, hashes, revision, worker/DSP
-versions, runtime, path calibration and a cache identity. Identity includes the
+versions, runtime, path calibration and a cache identity. Each output also reports
+headroom from its written samples: `peakDbfs` (the largest absolute sample in either
+channel, in dB relative to full scale; `null` for silence) and
+`samplesAboveFullScale` (sample positions where either channel exceeds 1.0). With no
+limiter or normalization, a hot mix keeps its overs in the Float32 WAV, but integer
+delivery formats clip them; a nonzero master count means lowering gains before
+delivery. The report changes no PCM and does not change the DSP version. Identity includes the
 authored state, source identities, worker bytes, backend, toolchain and render
 settings. History/revision do not change PCM identity; the manifest still records
 the saved revision. Relocated paths conservatively change identity even when PCM
@@ -220,7 +226,10 @@ extended endpoint gains, processed-stem
 waveforms after rendering, and authored automation. Set track mute/solo/gain or
 edit a clip's numeric placement, trim, gain and automation JSON; Save writes the
 same file as the CLI. Undo/redo uses persisted project history. Numeric edits are
-supported; drag handles, fades/DSP/ducking inspectors and an independent browser
+supported; an empty or invalid number field is rejected without saving instead of
+being read as zero. After rendering, the status line shows the mix peak and warns
+when samples exceed 0 dBFS.
+Drag handles, fades/DSP/ducking inspectors and an independent browser
 mixing engine are not provided. Author those settings in JSON and validate them.
 
 **Render this revision** generates a fresh checked mix/stems and waveform data.

@@ -43,6 +43,14 @@ still hold before relying on them.
 
 ## Current state
 
+- **PR #33 headroom report and Lab field guard (2026-10-05):** Claude Code on
+  `claude/ce16-sfx-improvements` from PR head `3317633`. Every rendered output now
+  reports `peakDbfs` and `samplesAboveFullScale` from its written PCM; the Lab
+  status line shows the mix peak and warns about overs. Empty or invalid Lab
+  number fields are rejected instead of saved as 0. No PCM or DSP-version change.
+  `pnpm check:soundtrack` passes on Node 22.23.1. Committed locally; pushing to
+  PR #33 awaits owner approval. Browser workflow suites were not run.
+
 - **PR #33 follow-up fixes (2026-10-05):** both P2 findings posted inline
   and fixed on isolated `codex/pr33-followup-fixes` from `0dc2782`. `579553a`
   gates ducking hold on detected activity (`soundtrack-dsp-3`); the second finding
@@ -195,6 +203,30 @@ _Last updated 2026-10-05 by Codex for PR #33 follow-up fixes._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-05 — PR #33 mix headroom report and Lab number-field guard
+
+- **Agent / branch:** Claude Code on `claude/ce16-sfx-improvements` from `3317633`.
+- **Scope:** improvement pass on the CE16 soundtrack engine after review rounds.
+- **Done:** the worker reports `peakDbfs` (`null` when silent) and
+  `samplesAboveFullScale` per output, measured on the cropped PCM it writes;
+  the manifest schema requires both. The Lab shows the mix peak and an over warning,
+  and rejects empty/invalid number fields that `Number("")` silently saved as
+  0 dB or sample 0.
+- **Results:** the new integration test compares reported values with decoded file
+  samples (+6 dB master: exactly 1 over; muted stem: `null`) and fails on the
+  previous worker with a schema error. 2 new unit tests. `pnpm check:soundtrack` on
+  Node 22.23.1: 1,515 unit, 46 runtime, 38 audio integration, 14 depth; Python
+  lint/format pass.
+- **Rejected / do not repeat:** running the gate on Node 24.16.0 fails the CE9
+  bake test by 1 ULP. This toolchain mismatch is not a regression; use the pinned
+  22.23.1.
+- **Not changed:** fade-out ends at `1/fadeOutSamples` before the clip's exclusive
+  end, matching half-open fade-in semantics; this is not a defect. Browser workflow
+  suites, baselines and listening were not run.
+- **Open / next:** owner approval to push to PR #33. Owner decision pending on
+  whether clip pan, looping or a master limiter belong in a later contract
+  version; `soundtrack-project-1` has none of them.
 
 ### 2026-10-05 — PR #33 portable stem filename fix and verification
 
