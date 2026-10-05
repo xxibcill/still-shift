@@ -13,8 +13,9 @@ import {
   loadCompositionResources,
   type CompositionBackend,
   type CompositionPreview,
+  type CompositionFrameReport,
 } from "../../../packages/renderer-core/src/composition/render/index.ts";
-import { passageDiagnostics } from "../../../packages/renderer-core/src/passage-diagnostics.ts";
+import { createPreviewSession } from "./preview-session.ts";
 
 const programMode = new URLSearchParams(location.search).has("program");
 type ProgramResponse = {
@@ -109,13 +110,20 @@ function showLint(report: ReturnType<typeof analyzeCompositionQuality>) {
   );
 }
 
+type CompositionSnapshot = {
+  scene: Composition;
+  composition: Composition;
+  document: Composition;
+  preview: CompositionPreview;
+  report: CompositionFrameReport;
+  path: string;
+  backend: CompositionBackend;
+  warnings: string[];
+  program: ProgramResponse["snapshot"];
+};
 let comp: Composition | undefined;
 let preview: CompositionPreview | undefined;
-let warnings: string[] = [];
-let playing = false,
-  start = 0,
-  animation = 0,
-  generation = 0;
+let generation = 0;
 
 const listDiagnostics = (lines: string[]) =>
   list.replaceChildren(
@@ -123,62 +131,72 @@ const listDiagnostics = (lines: string[]) =>
       Object.assign(document.createElement("li"), { textContent: line }),
     ),
   );
-
-function show(frame: number) {
-  if (!comp || !preview) return;
-  const report = preview.renderFrame(frame);
-  for (const marker of el("lint-timeline").querySelectorAll<HTMLButtonElement>(
-    "button",
-  ))
-    marker.dataset.active = String(
-      frame >= Number(marker.dataset.start) &&
-        frame <= Number(marker.dataset.end),
+const session = createPreviewSession<CompositionSnapshot>({
+  controls: {
+    play,
+    scrub: slider,
+    export: lintButton,
+    downloads: [],
+    edit: programMode ? [backendSelect] : [select, backendSelect],
+  },
+  retainValidOnFailure: true,
+  disableWhileExporting: true,
+  status(message, failed) {
+    if (failed) showLoadError(message);
+    else status.textContent = message;
+  },
+  ready(snapshot) {
+    comp = snapshot.composition;
+    preview = snapshot.preview;
+    error.textContent = "";
+    describeRenderer(snapshot.backend);
+    const program = snapshot.program;
+    document.documentElement.dataset.sourceKind = program?.source ?? "json";
+    document.documentElement.dataset.readonly = String(
+      program?.source === "builder",
     );
-  slider.value = String(frame);
-  el("time").textContent =
-    `${(frame / comp.fps).toFixed(2)} s · ${frame + 1} / ${comp.frameCount}`;
-  listDiagnostics([
-    ...warnings,
-    ...report.diagnostics.map((d) => `${d.code} ${d.path ?? ""}: ${d.message}`),
-    ...(report.culled.length
-      ? [`Culled outside the frame: ${report.culled.join(", ")}`]
-      : []),
-  ]);
-}
-const stop = () => {
-  playing = false;
-  cancelAnimationFrame(animation);
-  play.textContent = "Play";
-};
-const tick = (now: number) => {
-  if (!playing || !comp) return;
-  const frame = Math.floor(((now - start) * comp.fps) / 1000);
-  if (frame >= comp.frameCount) {
-    show(comp.frameCount - 1);
-    stop();
-    return;
-  }
-  show(frame);
-  animation = requestAnimationFrame(tick);
-};
-play.onclick = () => {
-  if (playing || !comp) return stop();
-  const from =
-    Number(slider.value) >= comp.frameCount - 1 ? 0 : Number(slider.value);
-  start = performance.now() - (from / comp.fps) * 1000;
-  playing = true;
-  play.textContent = "Pause";
-  animation = requestAnimationFrame(tick);
-};
-slider.oninput = () => {
-  stop();
-  show(Number(slider.value));
-};
+    el("command").textContent =
+      `pnpm --silent still-shift comp render --input ${program ? JSON.stringify(program.input) : `benchmarks/fixtures/composition/${snapshot.path}`} --output ${comp.id}.mp4 --backend ${snapshot.backend}`;
+    showLint(
+      analyzeCompositionQuality(comp, {
+        evaluation: { textBounds: preview.textBounds },
+      }),
+    );
+    status.textContent = `Ready: ${comp.name ?? comp.id} · ${comp.width} × ${comp.height} · ${comp.fps} fps${program?.source === "builder" ? " · edit the source to change motion" : ""}`;
+    status.dataset.ready = snapshot.path;
+    status.dataset.backend = snapshot.backend;
+    if (program) status.dataset.revision = String(program.revision);
+    select.disabled = programMode;
+  },
+  frameChanged(frame, snapshot) {
+    for (const marker of el(
+      "lint-timeline",
+    ).querySelectorAll<HTMLButtonElement>("button"))
+      marker.dataset.active = String(
+        frame >= Number(marker.dataset.start) &&
+          frame <= Number(marker.dataset.end),
+      );
+    el("time").textContent =
+      `${(frame / snapshot.scene.fps).toFixed(2)} s · ${frame + 1} / ${snapshot.scene.frameCount}`;
+    listDiagnostics([
+      ...snapshot.warnings,
+      ...snapshot.report.diagnostics.map(
+        (d) => `${d.code} ${d.path ?? ""}: ${d.message}`,
+      ),
+      ...(snapshot.report.culled.length
+        ? [`Culled outside the frame: ${snapshot.report.culled.join(", ")}`]
+        : []),
+    ]);
+  },
+});
+const stop = () => session.pause();
+const show = (frame: number) => session.show(frame);
 
 function showLoadError(message: string) {
   error.textContent = message;
   if (preview) {
-    status.textContent = "Rebuild failed. Showing the last valid composition.";
+    status.textContent =
+      "Operation failed. Showing the last valid composition.";
     play.disabled = false;
     lintButton.disabled = false;
     slider.disabled = false;
@@ -188,15 +206,13 @@ function showLoadError(message: string) {
   }
 }
 async function load(path: string) {
-  const run = ++generation;
+  ++generation;
   const backend = backendSelect.value as CompositionBackend;
-  const retainedFrame = programMode ? Number(slider.value) : 0;
-  stop();
+  const retainedFrame = programMode ? session.frame : 0;
   lintAbort?.abort();
   error.textContent = "";
   status.textContent = `Loading ${path}…`;
-  let candidate: CompositionPreview | undefined;
-  try {
+  await session.load(async (ownership) => {
     const query = `scene=${encodeURIComponent(path)}`;
     const response = await fetch(
       programMode ? "/composition/program" : `/composition/scene?${query}`,
@@ -231,93 +247,76 @@ async function load(path: string) {
         program?.assets[id] ??
         `/composition/asset?${query}&id=${encodeURIComponent(id)}`,
     );
-    if (run !== generation) return;
     const nextCanvas = canvas.cloneNode(false) as HTMLCanvasElement;
-    candidate = createCompositionPreview(
+    const renderer = createCompositionPreview(
       nextCanvas,
       result.composition,
       resources,
       { backend },
     );
-    const frame = Math.min(retainedFrame, result.composition.frameCount - 1);
-    candidate.renderFrame(frame);
-    const report = analyzeCompositionQuality(result.composition, {
-      evaluation: { textBounds: candidate.textBounds },
-    });
-    if (run !== generation) return;
-    const previous = preview;
-    canvas.replaceWith(nextCanvas);
-    canvas = nextCanvas;
-    preview = candidate;
-    candidate = undefined;
-    comp = result.composition;
-    warnings = result.diagnostics.map(
-      (d) => `${d.code} ${d.path}: ${d.message}`,
+    const snapshot: CompositionSnapshot = {
+      scene: result.composition,
+      composition: result.composition,
+      document: structuredClone(value) as Composition,
+      preview: renderer,
+      report: { diagnostics: [], culled: [], samples: 0 },
+      path,
+      backend,
+      program,
+      warnings: result.diagnostics.map(
+        (d) => `${d.code} ${d.path}: ${d.message}`,
+      ),
+    };
+    ownership.renderer(
+      {
+        renderFrame(frame: number) {
+          return (snapshot.report = renderer.renderFrame(frame));
+        },
+        dispose() {
+          renderer.dispose();
+        },
+      },
+      () => {
+        if (canvas !== nextCanvas) {
+          canvas.replaceWith(nextCanvas);
+          canvas = nextCanvas;
+        }
+      },
     );
-    previous?.dispose();
-    describeRenderer(backend);
-    slider.max = String(comp.frameCount - 1);
-    document.documentElement.dataset.sourceKind = program?.source ?? "json";
-    document.documentElement.dataset.readonly = String(
-      program?.source === "builder",
-    );
-    el("command").textContent =
-      `pnpm --silent still-shift comp render --input ${program ? JSON.stringify(program.input) : `benchmarks/fixtures/composition/${path}`} --output ${comp.id}.mp4 --backend ${backend}`;
-    showLint(report);
-    show(frame);
-    lintButton.disabled = false;
-    play.disabled = false;
-    slider.disabled = false;
-    status.textContent = `Ready: ${comp.name ?? comp.id} · ${comp.width} × ${comp.height} · ${comp.fps} fps${program?.source === "builder" ? " · edit the source to change motion" : ""}`;
-    status.dataset.ready = path;
-    status.dataset.backend = backend;
-    if (program) status.dataset.revision = String(program.revision);
-  } catch (cause) {
-    if (run !== generation) return;
-    showLoadError(
-      passageDiagnostics(cause)
-        .map((d) => `${d.code}: ${d.message}`)
-        .join("\n"),
-    );
-  } finally {
-    candidate?.dispose();
-  }
+    return { snapshot, initialFrame: retainedFrame };
+  });
+  select.disabled = programMode;
 }
 
 lintButton.onclick = async () => {
-  if (!comp || !preview) return;
   const run = generation,
-    at = Number(slider.value);
-  stop();
-  play.disabled = true;
-  slider.disabled = true;
-  lintButton.disabled = true;
-  lintAbort = new AbortController();
-  try {
-    const report = await analyzeRenderedCompositionQuality(
-      comp,
-      preview,
-      {},
-      {
-        signal: lintAbort.signal,
-        onFrame: (frame) => {
-          el("lint-summary").textContent =
-            `Checking rendered frame ${frame + 1} / ${comp!.frameCount}…`;
+    at = session.frame;
+  await session.export(async (snapshot) => {
+    lintAbort = new AbortController();
+    try {
+      const report = await analyzeRenderedCompositionQuality(
+        snapshot.composition,
+        snapshot.preview,
+        {},
+        {
+          signal: lintAbort.signal,
+          onFrame: (frame) => {
+            el("lint-summary").textContent =
+              `Checking rendered frame ${frame + 1} / ${snapshot.scene.frameCount}…`;
+          },
         },
-      },
-    );
-    if (run === generation) showLint(report);
-  } catch (cause) {
-    if (run === generation)
-      el("lint-summary").textContent = `Motion check failed: ${String(cause)}`;
-  } finally {
-    if (run === generation) {
-      show(at);
-      play.disabled = false;
-      slider.disabled = false;
-      lintButton.disabled = false;
+      );
+      if (run === generation) showLint(report);
+    } catch (cause) {
+      if (run === generation)
+        el("lint-summary").textContent =
+          `Motion check failed: ${String(cause)}`;
+      throw cause;
+    } finally {
+      if (run === generation) show(at);
     }
-  }
+    return `Motion checks complete: ${snapshot.composition.name ?? snapshot.composition.id}`;
+  });
 };
 
 const query = new URLSearchParams(location.search);
@@ -344,11 +343,17 @@ if (programMode) {
       ++generation;
       stop();
       lintAbort?.abort();
-      showLoadError(
-        payload.diagnostics
-          .map((d) => `${d.code} ${d.path}: ${d.message}`)
-          .join("\n"),
-      );
+      void session
+        .load(async () => {
+          throw new Error(
+            payload.diagnostics
+              .map((d) => `${d.code} ${d.path}: ${d.message}`)
+              .join("\n"),
+          );
+        })
+        .finally(() => {
+          select.disabled = programMode;
+        });
     },
   );
   void load("program");

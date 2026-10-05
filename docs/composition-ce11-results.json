@@ -52,6 +52,63 @@
         "Composition page adoption of shared session",
         "Lossless history, layers, graph handles, overlays and save/export acceptance"
       ]
+    },
+    {
+      "name": "Composition page uses the shared preview session",
+      "status": "checkpoint",
+      "changes": [
+        "Replace manual frame/play/load lifecycle with shared transactional renderer ownership.",
+        "Present native Canvas/WebGL canvases directly and use frame callbacks for existing diagnostics and lint markers.",
+        "Preserve builder read-only ownership, watch frame retention, shorter-frame clamping and backend selection.",
+        "Keep raw fixture documents distinct from validated render compositions in the accepted snapshot; fixed-input JSON source preservation follows with save APIs."
+      ],
+      "sourceSha256": "ffedfe2bc2ff2838b371c9c185716d0d52f8d17d0842e9eeb9fc143b6661f72e",
+      "verification": [
+        {
+          "command": "pnpm build / changed-file eslint",
+          "status": "passed"
+        },
+        {
+          "command": "pnpm test:browser:composition-program",
+          "status": "passed",
+          "log": "/private/tmp/ce11-page-program.log",
+          "checks": [
+            "Helper reload",
+            "Invalid rebuild preserves pixels and frame 17",
+            "Shorter duration clamps to frame 7",
+            "Backend switch retains frame",
+            "No page reload",
+            "Read-only builder provenance",
+            "TypeScript/native JSON MP4 byte identity"
+          ]
+        },
+        {
+          "command": "pnpm test:browser:composition-quality",
+          "status": "passed",
+          "log": "/private/tmp/ce11-page-quality.log",
+          "fixtures": 14,
+          "checks": [
+            "Lint marker seeking and rendered findings",
+            "Node/browser state parity",
+            "Independent Canvas/WebGL pixel motion"
+          ]
+        },
+        {
+          "command": "pnpm test:browser:composition",
+          "status": "passed",
+          "log": "/private/tmp/ce11-page-render.log",
+          "checks": [
+            "Native Lab/export pixel agreement",
+            "Repeated MP4 identity and PNG/raw transports",
+            "Pinned typography and bounds regressions"
+          ]
+        }
+      ],
+      "pending": [
+        "Native document history and editing",
+        "Inspector layer stack/graph/overlays",
+        "Lossless save/export acceptance"
+      ]
     }
   ],
   "conditionalFollowThrough": {

@@ -3675,7 +3675,7 @@ timeline-algebra unit tests, CLI integration tests.
 **Outcome:** Code-authored motion can be seen, scrubbed and tuned visually, with edits
 written back to data.
 
-- [ ] `apps/lab/composition.html` using the shared
+- [x] `apps/lab/composition.html` using the shared
       [preview session](../apps/lab/src/preview-session.ts).
 - [ ] Layer stack with in/out bars, parenting, blend mode, matte and effect badges;
       solo/hide toggles (view-only unless saved).
@@ -3700,8 +3700,10 @@ CE10 `afb4045` / [PR #36](https://github.com/xxibcill/still-shift/pull/36). The 
 preview session now owns arbitrary renderers and native presentation callbacks,
 with opt-in valid-preview recovery, frame callbacks, commit results and dynamic
 fieldset export locks. New lifecycle browser checks and existing workbench session
-regressions pass. Composition-page integration and the remaining inspector features
-are in flight. Audio waveforms and 3D frusta are conditional on CE13/CE8; their real
+regressions pass. The composition page now uses that session, preserving native
+Canvas/WebGL contexts and watch/seek/lint behavior; focused program, quality and
+renderer browser gates pass. Native document editing and the remaining inspector
+features are in flight. Audio waveforms and 3D frusta are conditional on CE13/CE8; their real
 inspector integration is tracked under those milestones. No unavailable data is
 claimed as verified. [Evidence](./composition-ce11-results.json).
 

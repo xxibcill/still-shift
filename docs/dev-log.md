@@ -45,9 +45,9 @@ still hold before relying on them.
 
 - **CE11 in progress (2026-10-05):** `codex/composition-ce11` from CE10 `afb4045`.
   Shared-session renderer registration, frame callbacks and valid-preview recovery
-  pass new lifecycle browser checks and existing workbench regressions. Composition
-  page adoption, native editing/history, layers, graphs, overlays and save/export
-  acceptance remain. Existing Lab design is the default pending optional steering.
+  and composition-page adoption pass lifecycle, watch, quality and native renderer
+  browser checks. Native editing/history, layers, graphs, overlays and lossless
+  save/export acceptance remain. Existing Lab design is the default pending optional steering.
   [Evidence](./composition-ce11-results.json).
 
 - **CE10 complete (2026-10-05):** `codex/composition-ce10` from CE4a `869a793`;
@@ -157,6 +157,19 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-05 — Move composition preview into the shared session
+
+- **Agent / branch:** Codex on `codex/composition-ce11`, after `f436ef5`.
+- **Done:** the composition page uses shared transactional loads, playback and
+  renderer ownership; native Canvas/WebGL surfaces retain their original context.
+  Frame callbacks update diagnostics without rendering a duplicate frame.
+- **Results:** build/lint and composition-program, quality and renderer browser
+  gates pass. Watch errors preserve frame 17 and pixels, shortened duration clamps
+  to 7, backend switching keeps the frame and source/JSON exports remain identical.
+- **Next:** native lossless document history, layer/key/graph editing, overlays and
+  save/export acceptance. Fixed-input JSON source bytes still need save API support.
+- **Records:** [CE11 evidence](./composition-ce11-results.json).
 
 ### 2026-10-05 — Start CE11 shared-session renderer support
 
