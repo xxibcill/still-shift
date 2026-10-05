@@ -1,6 +1,6 @@
 {
   "milestone": "CE5",
-  "status": "in-progress",
+  "status": "complete",
   "date": "2026-10-05",
   "branch": "codex/composition-ce5",
   "base": "a0c56df",
@@ -627,9 +627,7 @@
     "upstream": "https://github.com/AngusJohnson/Clipper2",
     "integrity": "sha512-WuRO1ZHzyYTVHY78r4wVWVydvQ+1lx9qZ+DeZa/8zhvrxIgCVzElJ6lwSMGtUUKFPefhvfJsHZ5C9RNkgisCOQ=="
   },
-  "pending": [
-    "Full pnpm check and frozen CE0 baseline verification, milestone completion record and PR"
-  ],
+  "pending": [],
   "verificationAttempts": [
     {
       "command": "pnpm check",
@@ -686,6 +684,65 @@
       },
       "repair": "Remove unused shape-budget location allocation, measured serial A/B and complete unchanged strict story matrix. Full gate restart required; no complete gate success claimed.",
       "log": "/Users/jjae/Documents/playground/still-shift/benchmarks/results/composition-ce5-verification/ce5-full-8efe1ab.log"
+    },
+    {
+      "command": "pnpm check",
+      "commit": "4908cbe",
+      "status": "passed",
+      "log": "benchmarks/results/composition-ce5-verification/ce5-full-4908cbe.log"
     }
-  ]
+  ],
+  "runtimeCommit": "4908cbe",
+  "verification": {
+    "command": "pnpm check",
+    "status": "passed",
+    "runtimeCommit": "4908cbe",
+    "snapshot": "/private/tmp/still-shift-ce5-check-4908cbe",
+    "log": "benchmarks/results/composition-ce5-verification/ce5-full-4908cbe.log",
+    "toolchain": {
+      "node": "22.23.1",
+      "pnpm": "10.29.3",
+      "python": "3.12.11",
+      "playwright": "1.62.1",
+      "chromiumRevision": "1234",
+      "ffmpeg": "8.0.1"
+    },
+    "tests": {
+      "unit": 1569,
+      "runtime": 46,
+      "integration": 139,
+      "depth": 14
+    },
+    "browserSuites": "All groups in the full pnpm test chain, including native shape reference/animation, hardware, legacy nib, inspector and export acceptance",
+    "baselines": {
+      "items": 176,
+      "frames": 36061,
+      "regenerated": false
+    },
+    "environment": "Clean tracked snapshot with local Vite caches and warmed isolated Python environment; owner edits, processes and primary environment preserved.",
+    "strictCanvasStoryMatrix": {
+      "cases": 69,
+      "frames": 14086,
+      "maximumRatio": 1.1692931113003404,
+      "maximumChannelDelta": 2
+    },
+    "strictCanvasCommerceMatrix": {
+      "cases": 127,
+      "frames": 28200,
+      "maximumRatio": 1.1774898520382384,
+      "maximumChannelDelta": 1
+    },
+    "strictCanvasTypographyMatrix": {
+      "cases": 20,
+      "frames": 3367,
+      "maximumRatio": 1.1061797795207975,
+      "maximumChannelDelta": 2
+    }
+  },
+  "versions": {
+    "evaluator": "composition-evaluator-27",
+    "canvas": "composition-canvas-1.23.3",
+    "webgl": "composition-webgl2-0.37.3",
+    "export": "chromium-ffmpeg-0.6.1"
+  }
 }

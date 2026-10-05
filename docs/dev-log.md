@@ -43,15 +43,14 @@ still hold before relying on them.
 
 ## Current state
 
-- **CE5 in progress (2026-10-05):** `codex/composition-ce5` from CE11 `a0c56df`.
-  Native shape/reference/hardware/inspector/export acceptance passes. Full gate
-  `8efe1ab` passed 1,569 unit, 46 runtime, 139 integration, 14 depth and browser
-  groups through mixed native passages, then failed one Canvas timing ratio
-  (story-visibility 1.25094× vs 1.25×; exact pixels). The measured unused-location
-  allocation guard passes 126 focused tests, static checks and the complete strict
-  story matrix/exports. Full local gate and frozen CE0/PR remain before CE7.
-  Failed attempts and repairs are retained; no baseline/threshold changed.
-  No owner decision is pending. [Evidence](./composition-ce5-results.json).
+- **CE5 complete (2026-10-05):** `codex/composition-ce5`, runtime `4908cbe`.
+  Native shapes, authoring/baking/inspector, reference/animation/MP4 acceptance and
+  complete `pnpm check` pass: 1,569 unit, 46 runtime, 139 integration, 14 depth,
+  all browser groups and 176 frozen baselines / 36,061 frames. Native stored hashes
+  and reverse seeks pass; legacy connectors, actual CE4a brush conversion and all
+  18 Apple hardware comparisons are exact. Failed attempts/repairs are retained.
+  Publish its stacked PR, then begin CE7 on a new branch. No owner decision is
+  pending. [Evidence](./composition-ce5-results.json).
 
 - **CE11 complete (2026-10-05):** `codex/composition-ce11`, runtime `5f36268`.
   Native inspector, graph/handle edits, overlays, lossless history, guarded source
@@ -168,6 +167,21 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-05 — Complete CE5 native shapes and full local acceptance
+
+- **Agent / branch:** Codex on `codex/composition-ce5`; runtime `4908cbe`.
+- **Done:** bounded cubic shape trees, four paints, all nine ordered operators,
+  aligned morphs, native ink/brush, bounds/constraints, builder/baking/inspector.
+- **Results:** complete local `pnpm check` passes: 1,569 unit, 46 runtime,
+  139 integration and 14 depth tests, all browser groups and 176 frozen baselines /
+  36,061 frames. New reference/animation baselines and reverse seeks pass unchanged;
+  144 legacy connector frames and actual 24-frame CE4a brush conversion are exact.
+  All 18 Apple hardware comparisons are exact; independent MP4/transport pairs
+  and inspector acceptance pass. Initial failures/repairs remain recorded.
+- **Next:** publish CE5's stacked PR, then create CE7's branch. No owner decision
+  is pending. Existing CE0 baselines were not regenerated; Actions remain disabled.
+- **Records:** [CE5 evidence](./composition-ce5-results.json).
 
 ### 2026-10-05 — Remove unused CE5 shape-budget allocation
 

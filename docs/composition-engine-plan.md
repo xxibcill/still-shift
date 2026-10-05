@@ -365,7 +365,7 @@ sign and for time remap. It does not change the layer's composition-time visibil
 | CE4b  | Commerce and reusable-component adapter         | A      | CE3, CE6 slices      | Codex                  | `codex/composition-ce4b`            | `[x]`  | [CE4b completion record](#ce4b-completion-record-2026-10-03)                       |
 | CE4c  | Cinematic adapter                               | A      | CE3, CE8             |                        |                                     | `[ ]`  |                                                                                    |
 | CE4d  | Legacy illustrated adapter and old-path removal | A      | CE4a–CE4c            |                        |                                     | `[ ]`  |                                                                                    |
-| CE5   | Shape layers                                    | B      | CE3                  | Codex                  | `codex/composition-ce5`             | `[~]`  | [evidence](./composition-ce5-results.json)                                         |
+| CE5   | Shape layers                                    | B      | CE3                  | Codex                  | `codex/composition-ce5`             | `[x]`  | [evidence](./composition-ce5-results.json)                                         |
 | CE6   | WebGL2 backend and effect registry              | B      | CE3                  | xxibcill (Claude Code) | `codex/composition-ce6-performance` | `[~]`  | [CE6 performance slice 1](#ce6-performance-slice-1-exact-effect-work-2026-10-03)   |
 | CE6-P | WebGL performance acceptance                    | Future | CE6                  |                        |                                     | `[d]`  | [Performance deferral](#ce6-p--deferred-webgl-performance-acceptance)              |
 | CE7   | Motion blur and time controls                   | B      | CE3                  |                        |                                     | `[ ]`  |                                                                                    |
@@ -2947,22 +2947,22 @@ in progress; CE4c–CE4d have not started.
 **Outcome:** Vector graphics are authored and animated procedurally, like AE shape
 layers.
 
-- [ ] Shape contents tree: `group` (own transform), `rect` (size, roundness), `ellipse`,
+- [x] Shape contents tree: `group` (own transform), `rect` (size, roundness), `ellipse`,
       `polystar` (points, inner/outer radius and roundness), `path` (closed/open cubic
       bezier, up to 1,024 vertices).
-- [ ] Paint: `fill` (colour, opacity, fill rule), `stroke` (colour, width, cap, join,
+- [x] Paint: `fill` (colour, opacity, fill rule), `stroke` (colour, width, cap, join,
       miter limit, dashes with animatable offset), `gradient-fill` and
       `gradient-stroke` (linear/radial, animatable stops and endpoints).
-- [ ] Operators applied in AE order: `trim-paths` (start, end, offset,
+- [x] Operators applied in AE order: `trim-paths` (start, end, offset,
       simultaneous/individual), `repeater` (copies, offset, transform, start/end
       opacity), `merge-paths` (union/subtract/intersect/exclude; document the polygon
       clipping library and its licence), `offset-path`, `round-corners`,
       `wiggle-paths` (seeded), `zig-zag`, `pucker-bloat`, `twist`.
-- [ ] Path morphing between keyed bezier paths with vertex-count matching and
+- [x] Path morphing between keyed bezier paths with vertex-count matching and
       first-vertex alignment (extend the existing `PathMorphSchema`).
-- [ ] Migrate the `ink` and `brush` line styles ([`ink-path.ts`](../packages/renderer-core/src/ink-path.ts),
+- [x] Migrate the `ink` and `brush` line styles ([`ink-path.ts`](../packages/renderer-core/src/ink-path.ts),
       [`brush-path.ts`](../packages/renderer-core/src/brush-path.ts)) to stroke styles on shape paths.
-- [ ] Shape bounds for culling and diagnostics.
+- [x] Shape bounds for culling and diagnostics.
 
 **Acceptance:** A reference sheet of every primitive and operator renders to a stored
 baseline; story connector fixtures can be expressed with shapes instead of content
@@ -2971,31 +2971,45 @@ providers.
 **Verification:** Geometry unit tests (trim arithmetic, repeater transforms, boolean
 results on known polygons), pixel tests, animated trim/morph sequences.
 
-**Implementation record (2026-10-05):** Codex on `codex/composition-ce5`, from
-completed CE11 `a0c56df` / [PR #37](https://github.com/xxibcill/still-shift/pull/37).
-Native shapes, all primitives/paints/operators, bounds/constraints, nested
-ID-based authoring/baking and inspector tracks/outlines are delivered. All 1,569
-unit tests/static checks pass. A 31-cell reference sheet and three new CE5 baseline
-fixtures cover every native field family; full forward/reverse hashes match.
-The 32-case / 224-frame probe passes unchanged near tier; 144 legacy connector/nib
-frames are exact after repairing ink winding. Both backends produce byte-identical
-independent preview MP4s and PNG/raw transports. Overflow retains code/node/frame
-and publishes nothing; inspector edits/history/save pass. Initial failures are
-retained. Only full local gate/frozen CE0 verification and milestone closeout/PR
-remain in progress. Initial full gate failed only a stale eight-example inventory;
-updated to nine. A separate actual-hardware probe then found Canvas cubic-stroke
-PSNR 39.82 dB; CPU native paint preparation repairs all 18 hardware comparisons to
-exact pixels. Stored native baselines and exports remain unchanged. The actual
-24-frame CE4a brush fixture converts to native shape content with exact forward/
-reverse pixels on both backends. The superseded isolated full gate is retained;
-complete verification then failed only story-visibility Canvas timing
-1.25094× over unchanged 1.25× (exact pixels). Unchanged focused rerun passed
-1.22145×. A measured unused shape-location allocation guard passes the complete
-strict story matrix and all required exports; 126 focused tests/build/lint pass.
-Full verification/frozen CE0 and closeout remain pending.
-[Evidence](./composition-ce5-results.json).
+### CE5 completion record (2026-10-05)
 
-**Completion record:** _to be filled in._
+- **Owner / branch:** Codex on `codex/composition-ce5`, from completed CE11
+  `a0c56df` / [PR #37](https://github.com/xxibcill/still-shift/pull/37); runtime
+  `4908cbe`. Checkpoint commits cover contract/registry, cubic math/morphs,
+  operators, paint compilation, evaluation/rendering, authoring/inspection,
+  full native acceptance, example inventory, hardware preparation and unused geometry-location repairs.
+- **Delivered:** bounded ordered contents/groups; rect/ellipse/star/polygon/open
+  and closed cubic paths; solid/gradient fills and strokes; all nine operators;
+  matched-vertex/first-vertex morphing; native ink/brush nibs; shape culling and
+  attach/contact/safe-area/follow-path bounds. Shared ID locators drive nested
+  builder keys, drawOn, expression baking and inspector tracks/cubic outlines.
+- **Geometry policy:** pinned `clipper2-ts` 2.0.1-18 (Boost Software License 1.0),
+  1/1024-unit polygon quantization and 0.25-unit bounded curve flattening. Explicit
+  native deformation/open-offset choices and global work limits are documented;
+  no unpublished AE pixel parity is claimed. Overflow retains code/node/frame
+  through export and publishes no output.
+- **Acceptance:** 31-cell primitive/paint/operator reference and 96-frame
+  aligned-morph/trim/wiggle animation have new native full-frame hashes, sampled
+  PNGs and exact reverse seeks on both backends. The 32-case / 224-frame matrix
+  meets unchanged near tier (max delta 2, minimum PSNR 57.22 dB). All 144 legacy
+  plain/ink/brush frames and every 24-frame actual CE4a brush-fixture forward/
+  reverse comparison are exact. Inspector edits, undo/redo and source save pass.
+  Both 96-frame backend exports match independent preview encoding and PNG/raw
+  transports byte for byte.
+- **Hardware:** first/middle/last frames on both backends and all three fixtures
+  produce 18 exact comparisons on Apple M5 Pro Metal, under the unchanged
+  perceptual policy. Native paints use CPU Canvas preparation; WebGL composites
+  prepared textures on GPU. Initial Canvas hardware PSNR 39.82 dB failure and
+  superseded full-gate log remain retained; native baselines were not rewritten.
+  The later strict Canvas timing failure (1.25094× vs 1.25×) and measured
+  unused-location repair are retained; the full 69-case matrix passes at unchanged
+  thresholds before final verification.
+- **Local verification:** complete `pnpm check` at `4908cbe`, pinned Node 22.23.1 /
+  pnpm 10.29.3, passes 1,569 unit, 46 runtime, 139 integration and 14 depth tests,
+  all browser suites and 176 frozen CE0 baselines / 36,061 frames. Owner edits and
+  primary processes/environment are preserved. Initial failures are recorded in
+  [CE5 evidence](./composition-ce5-results.json). Actions remain disabled.
+- **PR / next:** publish the stacked CE5 PR, then start CE7 on a new branch.
 
 ---
 
