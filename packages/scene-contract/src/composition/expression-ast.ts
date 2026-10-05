@@ -57,9 +57,12 @@ export type ExpressionAst =
   | { op: ExpressionOperator; args: ExpressionAst[] }
   | { member: ExpressionComponent; of: ExpressionAst };
 
+const MAX_AST_NODES = 500;
 export const EXPRESSION_LIMITS = {
   maxLength: COMPOSITION_LIMITS.maxExpressionLength,
-  maxNodes: 500,
+  maxNodes: MAX_AST_NODES,
+  /** Node objects and intervening args/vec arrays, for serialised AST input. */
+  maxJsonDepth: 2 * (MAX_AST_NODES - 1),
   /** Nested parentheses, brackets, calls and unary operators. */
   maxNesting: 64,
 } as const;

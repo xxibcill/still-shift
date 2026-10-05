@@ -3460,9 +3460,10 @@ arbitrary input either parses to a valid AST or returns a diagnostic, never thro
 **PR #32 second follow-up fixes (2026-10-05).** Four P2 findings from current-head
 review are posted [inline](https://github.com/xxibcill/still-shift/pull/32#pullrequestreview-5411412767).
 Timed primitive-blur selection now respects historical scope/layer clocks and effect
-windows; four regressions and all 34 bake tests pass. Normalized AST bounds,
-periodic reference-writer selection and separate-axis constant-speed traversal are
-in progress. Delivery is four finding commits followed by one final push after
+windows; four regressions and all 34 bake tests pass. Normalized AST JSON bounds
+now accept parser-valid output (nine regressions), retaining byte and metadata limits.
+The affected normalization/bounds/syntax/expression group passes 174 tests. Periodic
+reference-writer selection and separate-axis constant-speed delivery remain in progress. Delivery is four finding commits followed by one final push after
 combined verification. [Evidence](./pr-32-second-followup-fix-results.json).
 
 ---

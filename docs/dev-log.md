@@ -44,10 +44,11 @@ still hold before relying on them.
 ## Current state
 
 - **PR #32 second follow-up fixes (2026-10-05):** four P2 findings are posted
-  inline. Timed primitive-blur dependency selection is fixed and passes all 34
-  bake tests. Normalized AST bounds, periodic reference writers and separate-axis
-  constant-speed traversal are in progress. Four finding commits and one final
-  push are authorized; combined verification and delivery remain. CE6-P and
+  inline. Timed primitive-blur history (`6876407`) and normalized AST bounds are
+  fixed; normalization/bounds/syntax/expression checks pass 174 tests and CLI
+  output revalidates correctly. Periodic reference writers and separate-axis
+  constant-speed delivery remain in progress. Four finding commits and one final
+  push are authorized; combined correctness verification remains. CE6-P and
   CE9-F1 remain deferred. [Evidence](./pr-32-second-followup-fix-results.json).
 
 - **PR #32 follow-up fixes (2026-10-05):** both P2 findings are posted inline.
@@ -136,6 +137,19 @@ _Last updated 2026-10-05 by Codex for the PR #32 follow-up fixes._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-05 — Fix PR #32 normalized AST bounds
+
+- **Agent / branch:** Codex on isolated `codex/pr32-review-fixes`, after `6876407`.
+- **Done:** accept the serialized depth of parser-valid ASTs while retaining the
+  500-node source bound, 64 KiB payload limit and generic JSON/metadata depth 64.
+- **Results:** four new cases failed before the fix; all nine normalization cases
+  and the affected bounds/syntax/expression files pass (174 tests). CLI output
+  for 40/250 terms revalidates and evaluates correctly. Independent review passes.
+- **Open / next:** periodic reference writers and separate-axis roving, combined
+  local correctness gates and one final push after all four finding commits.
+- **Records:** [evidence](./pr-32-second-followup-fix-results.json),
+  [inline finding](https://github.com/xxibcill/still-shift/pull/32#discussion_r4181734013).
 
 ### 2026-10-05 — Fix PR #32 timed primitive-blur history
 

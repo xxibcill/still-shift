@@ -738,7 +738,10 @@ components cannot both have one (`comp-expression-overlap`). Composition propert
 (`comp.camera.*`) are read-only.
 
 `ast` is optional on input. When present it must equal the AST parsed from `source`
-(`comp-expression-mismatch`). `pnpm still-shift comp normalize` and
+(`comp-expression-mismatch`). Serialized ASTs retain a 64 KiB byte bound and allow
+up to 998 JSON container levels, derived from the 500-node expression bound;
+operator argument arrays count as containers. Generic opaque payloads and metadata
+retain their separate 64-level depth bounds. `pnpm still-shift comp normalize` and
 `comp export-json --normalized true` write the canonical AST next to the source,
 for example `wiggle(2, 6, 7)` →
 `{ "call": "wiggle", "args": [{ "num": 2 }, { "num": 6 }, { "num": 7 }] }`. Other AST
@@ -963,34 +966,36 @@ Features that are in the contract but not yet implemented fail with
 
 ## Limits
 
-| Limit                                                     | Value                              |
-| --------------------------------------------------------- | ---------------------------------- |
-| Width, height                                             | 16–8,192                           |
-| `frameCount`                                              | 1–108,000                          |
-| Key frames                                                | ±216,000 (layer time)              |
-| Motion windows, periods, delays and imported curve frames | 0–216,000                          |
-| Noise and text-selector seeds                             | 0–2,147,483,647                    |
-| Keys per property                                         | 2,000                              |
-| Layers (root and all precomps)                            | 2,000                              |
-| Precomps / nesting depth                                  | 200 / 8                            |
-| Parent chain depth                                        | 32                                 |
-| Assets, markers                                           | 500 each                           |
-| Masks, effects per layer                                  | 32 each                            |
-| Path vertices                                             | 1,024                              |
-| Image sources, text states                                | 32, 12                             |
-| Text length                                               | 4,000 characters                   |
-| Signals, drivers, constraints, periodic, text animators   | 200, 500, 200, 200, 200            |
-| Expressions (authored plus compiled behaviours) / length  | 2,000 / 2,000 characters           |
-| Expression AST nodes / nesting levels                     | 500 / 64                           |
-| Behaviours                                                | 200                                |
-| Property path length                                      | 512 characters                     |
-| Metadata                                                  | 64 KiB per object                  |
-| Metadata nesting depth                                    | 64 container levels below its root |
-| Expression AST, effect parameters or shape contents       | 64 KiB per payload                 |
-| Opaque JSON nesting depth                                 | 64 container levels below its root |
-| Other numbers                                             | ±1,000,000                         |
+| Limit                                                     | Value                               |
+| --------------------------------------------------------- | ----------------------------------- |
+| Width, height                                             | 16–8,192                            |
+| `frameCount`                                              | 1–108,000                           |
+| Key frames                                                | ±216,000 (layer time)               |
+| Motion windows, periods, delays and imported curve frames | 0–216,000                           |
+| Noise and text-selector seeds                             | 0–2,147,483,647                     |
+| Keys per property                                         | 2,000                               |
+| Layers (root and all precomps)                            | 2,000                               |
+| Precomps / nesting depth                                  | 200 / 8                             |
+| Parent chain depth                                        | 32                                  |
+| Assets, markers                                           | 500 each                            |
+| Masks, effects per layer                                  | 32 each                             |
+| Path vertices                                             | 1,024                               |
+| Image sources, text states                                | 32, 12                              |
+| Text length                                               | 4,000 characters                    |
+| Signals, drivers, constraints, periodic, text animators   | 200, 500, 200, 200, 200             |
+| Expressions (authored plus compiled behaviours) / length  | 2,000 / 2,000 characters            |
+| Expression AST nodes / nesting levels                     | 500 / 64                            |
+| Behaviours                                                | 200                                 |
+| Property path length                                      | 512 characters                      |
+| Metadata                                                  | 64 KiB per object                   |
+| Metadata nesting depth                                    | 64 container levels below its root  |
+| Expression AST, effect parameters or shape contents       | 64 KiB per payload                  |
+| Expression AST JSON depth                                 | 998 container levels below its root |
+| Effect/shape opaque JSON nesting depth                    | 64 container levels below its root  |
+| Other numbers                                             | ±1,000,000                          |
 
-The same values are exported as `COMPOSITION_LIMITS`.
+The same values are exported as `COMPOSITION_LIMITS`; expression AST node, syntax
+nesting and JSON-depth bounds are exported as `EXPRESSION_LIMITS`.
 
 Composition-specific bounds also cover reused motion and typography fields: signal
 values, generator amplitudes, driver maps, temporal speeds, bezier handles, constraint
@@ -998,7 +1003,8 @@ offsets, text animation and font axes, and camera coordinates, zoom, tangents an
 These use the general numeric limit unless their field has a tighter range. Imported
 curves retain their existing 2–100 key limit and nonnegative frame convention. Metadata
 remains free-form JSON subject to its byte and nesting-depth limits. Expression ASTs,
-effect parameter objects and shape contents have the same byte and depth limits,
+effect parameter objects and shape contents share a byte limit; ASTs use their
+expression-specific JSON-depth bound and effects/shapes retain depth 64. Bounds are
 checked before recursive parsing even while those features are unavailable. Cyclic values
 are rejected as invalid JSON. Legacy story and commerce contracts
 retain their original bounds.
