@@ -93,7 +93,8 @@ channels and an opaque screen; fractional clears use the full-frame path. Added
 189 moving-region cases against original accumulation and independent averages
 of actual GPU sample bytes. Both review axes are clean after repair.
 All 852 kernel cases pass on pinned SwiftShader and Apple Metal, including the
-189 fractional-clear cases. Full composition regressions remain in flight. Two
+189 fractional-clear cases. Focused WebGL/exposure/export regressions pass, including stored hashes,
+seeks, repeated/independent exports and 12 hardware comparisons. Three
 initial timing attempts were rejected for competing main-lane verification; no
 performance conclusion is drawn from them.
 

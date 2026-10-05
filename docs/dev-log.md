@@ -48,7 +48,8 @@ still hold before relying on them.
   Candidates: final shutter sum/average fusion and bounded GPU exposure snapshots/
   sums, subject to exact regressions and independent serial A/B measurements.
   Candidates build and pass 852 exactness cases on each GPU profile. Focused
-  regression/export suites run; serial timings await a longer quiet window.
+  regression/export suites pass; full gate runs on reviewed code. Serial timings
+  await a longer quiet window.
   The main checkout/chat is untouched.
   All 117 original failures, 1.25× family and 2× native targets remain open.
   [Plan](./composition-ce6p-plan.md).
@@ -197,7 +198,8 @@ _Last updated 2026-10-06 by Codex for CE6-P; prior work retained._
   retained-original GPU regressions, isolated serial A/B harness and preview budgets.
 - **Results:** pinned toolchain/import preflight, TypeScript build and changed-file
   lint pass; 852 exactness cases pass on pinned SwiftShader and Apple Metal.
-  Focused regressions/export acceptance run; two timing attempts were rejected
+  Focused WebGL/exposure/export suites pass, including 12 hardware comparisons;
+  three timing attempts were rejected
   by overlap detection and retained without performance conclusions.
 - **Rejected draft:** dividing signed exposure differences before adding the
   background can move half-byte ties; restore the integer numerator before division.
@@ -207,7 +209,8 @@ _Last updated 2026-10-06 by Codex for CE6-P; prior work retained._
   launch cleanup, preserved the CE6-P anchor, added cold preview budgets and a
   conservative package-manager workload guard before timing runs. Overlap polling
   retains invalid timings and rejects them; GitHub confirms Actions are disabled.
-- **Next:** serial A/B after a sustained quiet window, family matrices and full gate.
+- **Next:** full gate on reviewed code; serial A/B and family matrices after a
+  sustained quiet window.
 - **Records:** [slice plan](./composition-ce6p-plan.md),
   [retained evidence](./composition-ce6p-performance-results.json).
 

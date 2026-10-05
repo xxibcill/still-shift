@@ -634,6 +634,14 @@
     {
       "commit": "00951b9",
       "purpose": "Buildable bounded exposure candidate before fractional-background review repair"
+    },
+    {
+      "commit": "7a797a9",
+      "purpose": "Exact-clear eligibility repair and 189 GPU fractional regressions"
+    },
+    {
+      "commit": "e1c0cb8",
+      "purpose": "Documentation-only merge of completed CE7 milestone; main checkout untouched"
     }
   ],
   "verification": [
@@ -712,12 +720,11 @@
   },
   "pending": [
     "Serial bracketed original CE7 1080p render/readback and separate preview budgets",
-    "Exposure/WebGL/export/hardware regressions",
     "Required selected-candidate family timing audits",
     "Final review and full pnpm check",
     "Reviewable published attached PR"
   ],
-  "workloadCoordination": "Main CE7 complete and PR40 open; main CE6 feature lane active. Two timing attempts rejected for overlap. Correctness/export suites in flight; no messages to main chat.",
+  "workloadCoordination": "Main CE6 feature lane active; three timing brackets rejected for competing workloads. Exact/focused/export checks pass. Full local gate next; no messages to main chat.",
   "repositoryActionsVerified": {
     "enabled": false,
     "command": "gh api repos/xxibcill/still-shift/actions/permissions",
@@ -839,6 +846,332 @@
       "timingValid": false,
       "overlap": ["44715 node (vitest)     ", "44723 node (vitest 1)     "],
       "conclusion": "Rejected; no performance claim. Raw local result retained under ignored benchmarks/results."
+    },
+    {
+      "record": "invalid-03-fusion-ab.json",
+      "baselineRef": "0e4838852855f6dc8cf91bba763a402dfd716f88",
+      "candidateRef": "706be71",
+      "environment": {
+        "profile": "chromium-software-2",
+        "browserVersion": "151.0.7922.34",
+        "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+        "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+        "platform": "darwin",
+        "arch": "arm64"
+      },
+      "timingValid": false,
+      "overlap": [
+        "52015 node /Users/jjae/.nvm/versions/node/v24.16.0/bin/pnpm --silent test:browser:composition-native-passage",
+        "52036 node --import tsx tests/browser/composition-native-passage.ts"
+      ],
+      "conclusion": "Rejected; no performance claim. Raw local result retained under ignored benchmarks/results."
     }
-  ]
+  ],
+  "integrationBase": "817cc9f (CE7 delivered docs-only closeout; runtime still 0e48388)",
+  "focusedRegression": {
+    "status": "passed",
+    "commands": [
+      "pnpm test:browser:composition-webgl",
+      "pnpm test:browser:composition-exposure",
+      "pnpm test:browser:composition-webgl-export"
+    ],
+    "timeControlAcceptance": {
+      "reports": [
+        {
+          "fixture": "time-controls",
+          "frames": 48,
+          "reverseFrames": 48,
+          "randomSeeks": 11,
+          "maxDelta": 0,
+          "oracleMaxDelta": 1,
+          "sampleCounts": {
+            "0": 8,
+            "1": 8,
+            "2": 8,
+            "3": 8,
+            "4": 8,
+            "5": 8,
+            "6": 8,
+            "7": 8,
+            "8": 8,
+            "9": 8,
+            "10": 8,
+            "11": 8,
+            "12": 8,
+            "13": 8,
+            "14": 8,
+            "15": 8,
+            "16": 8,
+            "17": 8,
+            "18": 8,
+            "19": 8,
+            "20": 8,
+            "21": 8,
+            "22": 8,
+            "23": 8,
+            "24": 8,
+            "25": 8,
+            "26": 8,
+            "27": 8,
+            "28": 8,
+            "29": 8,
+            "30": 8,
+            "31": 8,
+            "32": 8,
+            "33": 8,
+            "34": 8,
+            "35": 8,
+            "36": 8,
+            "37": 8,
+            "38": 8,
+            "39": 8,
+            "40": 8,
+            "41": 8,
+            "42": 8,
+            "43": 8,
+            "44": 8,
+            "45": 8,
+            "46": 8,
+            "47": 8
+          }
+        },
+        {
+          "fixture": "time-controls",
+          "backend": "canvas2d",
+          "frames": 48,
+          "repeatedMp4": "byte-identical",
+          "independentPreviewMp4": "byte-identical",
+          "rawPngTransport": "byte-identical"
+        },
+        {
+          "fixture": "time-controls",
+          "backend": "webgl2",
+          "frames": 48,
+          "repeatedMp4": "byte-identical",
+          "independentPreviewMp4": "byte-identical",
+          "rawPngTransport": "byte-identical"
+        },
+        {
+          "fixture": "adaptive",
+          "frames": 48,
+          "reverseFrames": 48,
+          "randomSeeks": 11,
+          "maxDelta": 0,
+          "oracleMaxDelta": 0,
+          "sampleCounts": {
+            "0": 16,
+            "1": 3,
+            "2": 3,
+            "3": 3,
+            "4": 3,
+            "5": 3,
+            "6": 3,
+            "7": 3,
+            "8": 3,
+            "9": 3,
+            "10": 3,
+            "11": 3,
+            "12": 3,
+            "13": 3,
+            "14": 3,
+            "15": 3,
+            "16": 3,
+            "17": 3,
+            "18": 3,
+            "19": 3,
+            "20": 3,
+            "21": 3,
+            "22": 3,
+            "23": 3,
+            "24": 3,
+            "25": 3,
+            "26": 3,
+            "27": 3,
+            "28": 3,
+            "29": 3,
+            "30": 3,
+            "31": 3,
+            "32": 3,
+            "33": 3,
+            "34": 3,
+            "35": 3,
+            "36": 3,
+            "37": 3,
+            "38": 3,
+            "39": 3,
+            "40": 3,
+            "41": 3,
+            "42": 3,
+            "43": 3,
+            "44": 3,
+            "45": 3,
+            "46": 3,
+            "47": 1
+          }
+        },
+        {
+          "fixture": "adaptive",
+          "backend": "canvas2d",
+          "frames": 48,
+          "repeatedMp4": "byte-identical",
+          "independentPreviewMp4": "byte-identical",
+          "rawPngTransport": "byte-identical"
+        },
+        {
+          "fixture": "adaptive",
+          "backend": "webgl2",
+          "frames": 48,
+          "repeatedMp4": "byte-identical",
+          "independentPreviewMp4": "byte-identical",
+          "rawPngTransport": "byte-identical"
+        }
+      ],
+      "hardware": {
+        "environments": [
+          {
+            "profile": "chromium-software-2",
+            "browserVersion": "151.0.7922.34",
+            "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+            "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+            "platform": "darwin",
+            "arch": "arm64"
+          },
+          {
+            "profile": "hardware",
+            "browserVersion": "151.0.7922.34",
+            "webglRenderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M5 Pro, Unspecified Version)",
+            "rasterFingerprint": "sha256:1635aedc2b987dcd5c74dce4b4098aff37754174c33461d6f626c9dcad69e4a9",
+            "platform": "darwin",
+            "arch": "arm64"
+          }
+        ],
+        "tier": "unchanged perceptual hardware policy",
+        "comparisons": 12,
+        "reports": [
+          {
+            "fixture": "time-controls",
+            "backend": "canvas2d",
+            "frame": 0,
+            "tier": "near",
+            "maxDelta": 1,
+            "psnr": 81.93291602579515,
+            "ssim": 0.9999996703088253
+          },
+          {
+            "fixture": "time-controls",
+            "backend": "canvas2d",
+            "frame": 24,
+            "tier": "near",
+            "maxDelta": 1,
+            "psnr": 81.93291602579515,
+            "ssim": 0.999999861996413
+          },
+          {
+            "fixture": "time-controls",
+            "backend": "canvas2d",
+            "frame": 47,
+            "tier": "near",
+            "maxDelta": 1,
+            "psnr": 84.94321598243496,
+            "ssim": 0.9999999004438144
+          },
+          {
+            "fixture": "time-controls",
+            "backend": "webgl2",
+            "frame": 0,
+            "tier": "near",
+            "maxDelta": 1,
+            "psnr": 81.93291602579515,
+            "ssim": 0.9999996703088253
+          },
+          {
+            "fixture": "time-controls",
+            "backend": "webgl2",
+            "frame": 24,
+            "tier": "near",
+            "maxDelta": 1,
+            "psnr": 81.93291602579515,
+            "ssim": 0.999999861996413
+          },
+          {
+            "fixture": "time-controls",
+            "backend": "webgl2",
+            "frame": 47,
+            "tier": "near",
+            "maxDelta": 1,
+            "psnr": 84.94321598243496,
+            "ssim": 0.9999999004438144
+          },
+          {
+            "fixture": "adaptive",
+            "backend": "canvas2d",
+            "frame": 0,
+            "tier": "exact",
+            "maxDelta": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "adaptive",
+            "backend": "canvas2d",
+            "frame": 24,
+            "tier": "exact",
+            "maxDelta": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "adaptive",
+            "backend": "canvas2d",
+            "frame": 47,
+            "tier": "exact",
+            "maxDelta": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "adaptive",
+            "backend": "webgl2",
+            "frame": 0,
+            "tier": "exact",
+            "maxDelta": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "adaptive",
+            "backend": "webgl2",
+            "frame": 24,
+            "tier": "near",
+            "maxDelta": 1,
+            "psnr": 87.95351593907478,
+            "ssim": 0.9999999930858892
+          },
+          {
+            "fixture": "adaptive",
+            "backend": "webgl2",
+            "frame": 47,
+            "tier": "exact",
+            "maxDelta": 0,
+            "psnr": 999,
+            "ssim": 1
+          }
+        ]
+      },
+      "baseline": "exact"
+    },
+    "webglExportFixtures": [
+      "ce6/echo 60 frames",
+      "ce6/generators 60 frames",
+      "ce7/exposure 60 frames",
+      "ce4a/providers 24 frames"
+    ],
+    "checks": [
+      "byte-identical CLI/repeat/raw-PNG/encoded-preview exports",
+      "Lab backend switching and overwrite protection",
+      "60-frame exposure and indexed repeated exports",
+      "Stored CE7 hashes unchanged",
+      "all native WebGL fixture tiers unchanged"
+    ]
+  }
 }
