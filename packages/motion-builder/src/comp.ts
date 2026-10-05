@@ -94,6 +94,12 @@ export class CompositionBuilder {
     assets.forEach((asset) => this.asset(asset));
   }
   add<K extends Kind>(node: Layer<K>): Layer<K> {
+    if (this.nodes.includes(node))
+      throw new BuilderError(
+        "comp-builder-id",
+        `Duplicate layer ${node.id}`,
+        node.location,
+      );
     if (node.autoId) {
       const base = node.id;
       let suffix = 1;

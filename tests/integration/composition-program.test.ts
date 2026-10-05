@@ -180,3 +180,20 @@ it("cancels a running rebuild and closes the child before cleaning temporary out
     clearTimeout(timer);
   }
 });
+
+it("rejects adding the same auto-ID text object twice without hanging the builder", async () => {
+  const root = await directory(),
+    input = join(root, "duplicate.ts");
+  await writeFile(
+    input,
+    `import {comp,text} from '@still-shift/motion';export default comp({width:64,height:64,fps:24,frames:24},c=>{const title=text('Hello');c.add(title);c.add(title);});`,
+  );
+  await expect(loadProgram(input, { timeoutMs: 2000 })).rejects.toMatchObject({
+    diagnostics: [
+      expect.objectContaining({
+        code: "comp-builder-id",
+        message: expect.stringContaining("Duplicate layer text"),
+      }),
+    ],
+  });
+});

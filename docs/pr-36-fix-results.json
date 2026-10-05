@@ -44,13 +44,27 @@
           "log": "/private/tmp/pr36-fix2-green.log"
         },
         "build": "passed"
-      }
+      },
+      "commit": "625b65f5495b252072f61990a314ac4227730ca2"
     },
     {
       "number": 3,
       "finding": "reject repeated auto-ID layer objects",
       "comment": "https://github.com/xxibcill/still-shift/pull/36#discussion_r4183180666",
-      "status": "pending"
+      "status": "fixed",
+      "verification": {
+        "red": {
+          "status": "failed-as-expected",
+          "newRegressions": 1,
+          "log": "/private/tmp/pr36-fix3-red.log"
+        },
+        "green": {
+          "status": "passed",
+          "command": "pnpm exec vitest run tests/integration/composition-program.test.ts tests/unit/motion-builder.test.ts --maxWorkers=2",
+          "log": "/private/tmp/pr36-fix3-green.log"
+        },
+        "build": "passed"
+      }
     },
     {
       "number": 4,
