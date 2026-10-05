@@ -1,3 +1,4 @@
+import { createServer as createPortProbe } from "node:net";
 import {
   mkdtemp,
   mkdir,
@@ -161,3 +162,48 @@ it("serves native JSON assets through a logical directory alias while watching c
     await (await fetch(base + session.snapshot()!.assets.art!)).text(),
   ).toBe(original);
 });
+
+async function freePort(): Promise<number> {
+  const probe = createPortProbe();
+  await new Promise<void>((yes, no) => {
+    probe.once("error", no);
+    probe.listen(0, "127.0.0.1", yes);
+  });
+  const address = probe.address();
+  if (!address || typeof address === "string") throw new Error("Missing port");
+  const port = address.port;
+  await new Promise<void>((yes, no) =>
+    probe.close((error) => (error ? no(error) : yes())),
+  );
+  return port;
+}
+it.each([
+  ["./missing.js", "missing.ts"],
+  ["./missing", "missing.ts"],
+  ["./missing.mjs", "missing.mts"],
+  ["./nested", "nested/index.ts"],
+])(
+  "recovers TypeScript resolution candidates for initially missing %s",
+  async (specifier, helperName) => {
+    const root = await directory(),
+      input = join(root, "program.ts"),
+      helper = join(root, helperName);
+    await writeFile(
+      input,
+      `import{comp}from'@still-shift/motion';import{count}from${JSON.stringify(specifier)};export default comp({width:64,height:64,fps:24,frames:count},()=>{});`,
+    );
+    const session = await createProgramPreview(input, {
+      watch: true,
+      port: await freePort(),
+    });
+    sessions.push(session);
+    expect(session.snapshot()).toBeUndefined();
+    await mkdir(join(root, helperName.includes("/") ? "nested" : "."), {
+      recursive: true,
+    });
+    await writeFile(helper, "export const count=24;");
+    await expect
+      .poll(() => session.snapshot()?.composition.frameCount, { timeout: 6000 })
+      .toBe(24);
+  },
+);

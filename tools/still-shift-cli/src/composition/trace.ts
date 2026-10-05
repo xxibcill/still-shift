@@ -1,3 +1,4 @@
+import { typescriptCandidates } from "./dependency-candidates.ts";
 import { appendFileSync } from "node:fs";
 import type { ResolveHook } from "node:module";
 import { fileURLToPath } from "node:url";
@@ -15,16 +16,27 @@ export const resolve: ResolveHook = async (specifier, context, nextResolve) => {
         ? "node.ts"
         : undefined;
   const requested = alias ? new URL(alias, motion).href : specifier;
+  let requestedPath: string | undefined;
   if (
     trace &&
     context.parentURL &&
     (requested.startsWith(".") || requested.startsWith("file:"))
   ) {
     const candidate = new URL(requested, context.parentURL);
-    if (candidate.protocol === "file:")
-      appendFileSync(trace, JSON.stringify(fileURLToPath(candidate)) + "\n");
+    if (candidate.protocol === "file:") {
+      requestedPath = fileURLToPath(candidate);
+      appendFileSync(trace, JSON.stringify(requestedPath) + "\n");
+    }
   }
-  const result = await nextResolve(requested, context);
+  let result: Awaited<ReturnType<typeof nextResolve>>;
+  try {
+    result = await nextResolve(requested, context);
+  } catch (error) {
+    if (trace && requestedPath)
+      for (const candidate of typescriptCandidates(requestedPath))
+        appendFileSync(trace, JSON.stringify(candidate) + "\n");
+    throw error;
+  }
   if (
     trace &&
     result.url.startsWith("file:") &&

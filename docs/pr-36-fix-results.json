@@ -86,13 +86,29 @@
         },
         "build": "passed",
         "rejectedExperiment": "Full Layer[] storage exposes invariant generic fluent methods; retain the structural node record and pending-anchor field."
-      }
+      },
+      "commit": "700e64f6aaa17dd9dd85135b112e52f96cfedf39"
     },
     {
       "number": 5,
       "finding": "watch missing TypeScript import candidates",
       "comment": "https://github.com/xxibcill/still-shift/pull/36#discussion_r4183180672",
-      "status": "pending"
+      "status": "fixed",
+      "verification": {
+        "red": {
+          "status": "failed-as-expected",
+          "newRegressions": 4,
+          "log": "/private/tmp/pr36-fix5-red.log"
+        },
+        "green": {
+          "status": "passed",
+          "tests": 4,
+          "command": "pnpm exec vitest run tests/integration/composition-preview.test.ts -t recovers_TypeScript_resolution_candidates --maxWorkers=1",
+          "log": "/private/tmp/pr36-fix5-green.log"
+        },
+        "build": "passed",
+        "rejectedExperiment": "nextResolve may return synchronously; use try/await/catch rather than Promise.catch on its union return."
+      }
     },
     {
       "number": 6,
