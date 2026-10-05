@@ -277,27 +277,35 @@ function validateState(state: SoundtrackState) {
 
 /**
  * Peak worker memory estimate, mirrored by soundtrack-worker.py. Units are
- * project-length stereo float32 buffers (8 bytes per sample frame):
- * - routing depth: the accumulators alive along one bus path to master;
- * - +1 for the track being mixed;
- * - or 3 while DawDreamer filters one track (input copy, recording, result),
- *   which happens before any accumulator exists;
- * - +0.5 for a ducking envelope.
- * Fixed: 200 MB for the interpreter and chunk temporaries, and 128 MB for
- * decoded clips (a 64 MB decode budget plus the clip being mixed).
+ * project-length stereo float32 buffers (8 bytes per sample frame), following
+ * the render: the ducking detector (1); DawDreamer filtering one track before
+ * any accumulator exists (3); then a depth-first walk where a routing node's
+ * accumulator exists once its first input is summed, a mixed track holds 1
+ * buffer, a spilled filtered track holds none (clean file pages) unless it seeds
+ * an accumulator, and a finished bus is 1 buffer until summed. Ducking keeps 0.5
+ * throughout. Fixed: 200 MB for the interpreter and chunk temporaries, and 128 MB
+ * for decoded clips (a 64 MB decode budget plus the clip being mixed).
  * Requires a routing graph already checked to reach master without cycles.
  */
 export function soundtrackWorkingBytes(state: SoundtrackState) {
-  const outputs = new Map(state.buses.map((bus) => [bus.id, bus.output]));
-  const depth = (bus: string) => {
-    let nodes = 1;
-    for (let at = bus; at !== "master"; at = outputs.get(at)!) nodes++;
-    return nodes;
+  const tracks = new Map(state.tracks.map((track) => [track.id, track]));
+  const nodes = [...state.tracks, ...state.buses];
+  let peak = state.tracks.some((track) => track.processors.length > 0) ? 3 : 1;
+  const visit = (node: string, alive: number) => {
+    const sources = nodes.filter((n) => n.output === node);
+    if (!sources.length) peak = Math.max(peak, alive + 1);
+    sources.forEach((source, index) => {
+      const own = index ? 1 : 0;
+      const track = tracks.get(source.id);
+      if (!track) {
+        visit(source.id, alive + own);
+        peak = Math.max(peak, alive + own + 1);
+      } else if (track.processors.length) peak = Math.max(peak, alive + 1);
+      else peak = Math.max(peak, alive + own + 1);
+    });
   };
-  const routingDepth = Math.max(1, ...state.buses.map((bus) => depth(bus.id)));
-  const filtered = state.tracks.some((track) => track.processors.length > 0);
+  visit("master", 0);
   // Half-buffer units keep the estimate in integers.
-  const halves =
-    (state.ducking ? 1 : 0) + Math.max(filtered ? 6 : 0, 2 * routingDepth + 2);
+  const halves = 2 * peak + (state.ducking ? 1 : 0);
   return state.durationSamples * 4 * halves + 328_000_000;
 }

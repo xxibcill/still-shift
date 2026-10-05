@@ -606,23 +606,39 @@ def decode_budget():
 def working_bytes(project):
     """Peak memory estimate; mirrors soundtrackWorkingBytes in the scene contract.
 
-    Units are project-length stereo float32 buffers: the routing depth (accumulators
-    alive along one bus path) plus 1 for the track being mixed, or 3 while
-    DawDreamer filters one track before any accumulator exists; 0.5 more for a
-    ducking envelope. Fixed: 200 MB for the interpreter and chunk temporaries and
-    128 MB for decoded clips (the 64 MB decode budget plus the clip being mixed).
+    Units are project-length stereo float32 buffers, following the render: the
+    ducking detector (1); DawDreamer filtering one track before any accumulator
+    exists (3); then a depth-first walk where a routing node's accumulator exists
+    once its first input is summed, a mixed track holds 1 buffer, a spilled
+    filtered track holds none (clean file pages) unless it seeds an accumulator,
+    and a finished bus is 1 buffer until summed. Ducking keeps 0.5 throughout.
+    Fixed: 200 MB for the interpreter and chunk temporaries and 128 MB for
+    decoded clips (the 64 MB decode budget plus the clip being mixed).
     """
-    outputs = {bus["id"]: bus["output"] for bus in project["buses"]}
-    routing_depth = 1
-    for bus in outputs:
-        nodes, at = 1, bus
+    tracks = {t["id"] for t in project["tracks"]}
+    nodes = project["tracks"] + project["buses"]
+    peak = 3 if any(t["processors"] for t in project["tracks"]) else 1
+
+    def visit(node_id, alive, depth):
+        nonlocal peak
+        sources = [n for n in nodes if n["output"] == node_id]
         # A cycle is reported as routing-cycle when the graph is resolved.
-        while at != "master" and nodes <= len(outputs) + 1:
-            at, nodes = outputs.get(at, "master"), nodes + 1
-        routing_depth = max(routing_depth, nodes)
-    filtered = any(track["processors"] for track in project["tracks"])
+        if depth > len(project["buses"]) or not sources:
+            peak = max(peak, alive + 1)
+            return
+        for index, source in enumerate(sources):
+            own = 1 if index else 0
+            if source["id"] not in tracks:
+                visit(source["id"], alive + own, depth + 1)
+                peak = max(peak, alive + own + 1)
+            elif source["processors"]:
+                peak = max(peak, alive + 1)
+            else:
+                peak = max(peak, alive + own + 1)
+
+    visit("master", 0, 0)
     # Half-buffer units keep the estimate in integers.
-    halves = (1 if project.get("ducking") else 0) + max(6 if filtered else 0, 2 * routing_depth + 2)
+    halves = 2 * peak + (1 if project.get("ducking") else 0)
     return project["durationSamples"] * 4 * halves + 328_000_000
 
 

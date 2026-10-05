@@ -136,14 +136,20 @@ and empty buses, ducking, pan, fade curves, gains at and near unity, mute/solo,
 ranges and stems.
 
 Validation and the worker share one estimate, in project-length stereo float32
-buffers (8 bytes per sample frame). It is the routing depth (the number of nodes
-from the deepest bus to master; 1 without buses) plus 1 for the track being mixed,
-or 3 while DawDreamer filters a track, whichever is larger. Ducking adds 0.5. A
-fixed 328 MB covers the interpreter and the decode budget. The total must not
-exceed 1.5 GB. At 10 minutes this admits two nested bus levels with filters and
-ducking, or three levels without ducking. Deeper graphs get a proportionally
-shorter limit. Measured 10-minute macOS footprints stayed below the estimate,
-from 0.27 GB for one track to 1.01 GB for three nested buses (estimate 1.48 GB).
+buffers (8 bytes per sample frame). It follows the render rather than counting
+nodes. The ducking detector holds 1, and DawDreamer filtering a track holds 3
+before any accumulator exists. During the depth-first walk, a routing node's
+accumulator exists once its first input is summed, a mixed track holds 1, and a
+finished bus holds 1 until summed. A spilled filtered track holds none unless it
+seeds an accumulator. The estimate is the largest of these, plus 0.5 for ducking
+and a fixed 328 MB for the interpreter and the decode budget, and must not exceed
+1.5 GB. Plain bus chains therefore cost nothing extra; accumulators only stack
+when each level sums a track before the bus beneath it. At 10 minutes, ordinary
+graphs (any bus depth where tracks feed one level each) fit with filters and
+ducking. A graph stacking five live buffers with ducking is limited to about 9.2
+minutes. Measured macOS footprints with the default allocator stayed at least
+0.24 GB below the estimate, from one track to stacked five-level graphs at that
+limit.
 
 `--stems` exports post-track-processing stems and post-bus-gain stems; master gain
 applies to the mix only. Unity master/direct buses reconstruct the mix in graph

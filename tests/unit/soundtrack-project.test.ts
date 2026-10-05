@@ -113,14 +113,14 @@ describe("soundtrack contract and transactions", () => {
       expect(() => validateSoundtrackProject(p)).toThrow();
     }
   });
-  it("budgets worker memory by bus depth so ten-minute projects fit", () => {
+  it("budgets worker memory by the render's live buffers so ten-minute projects fit", () => {
     const tenMinutes = 28_800_000;
     const p = fixture();
     p.durationSamples = tenMinutes;
-    // Two tracks through one bus: depth 2 + 1 track = 6 half-buffers + 328 MB.
-    expect(soundtrackWorkingBytes(p)).toBe(tenMinutes * 4 * 6 + 328_000_000);
+    // voice -> master, music -> bus -> master: at most 2 buffers live.
+    expect(soundtrackWorkingBytes(p)).toBe(tenMinutes * 4 * 4 + 328_000_000);
     expect(validateSoundtrackProject(p).durationSamples).toBe(tenMinutes);
-    // Filters and ducking with one bus level still fit at ten minutes.
+    // A filter render (3 buffers) plus ducking (0.5) still fits at ten minutes.
     p.tracks[1]!.processors = [{ type: "highpass", frequencyHz: 80, q: 0.7 }];
     p.ducking = {
       method: "peak-window-attack-hold-release-1",
@@ -134,22 +134,46 @@ describe("soundtrack contract and transactions", () => {
       holdSamples: 2400,
       lookaheadSamples: 0,
     };
+    expect(soundtrackWorkingBytes(p)).toBe(tenMinutes * 4 * 7 + 328_000_000);
     expect(validateSoundtrackProject(p).durationSamples).toBe(tenMinutes);
-    // Each nested bus level adds one buffer; depth 4 with ducking does not fit.
+    // A plain bus chain adds no live buffers: each bus has finished its single
+    // input before its parent needs an accumulator.
     p.buses = [
       { id: "bus", output: "group", gainDb: 0 },
       { id: "group", output: "stage", gainDb: 0 },
       { id: "stage", output: "master", gainDb: 0 },
     ];
-    expect(() => validateSoundtrackProject(p)).toThrow(/working-buffer/);
-    // Its longest fitting duration is the largest within 1.5 GB.
-    const halves = 1 + 2 * 4 + 2;
-    const longest = Math.floor((1_500_000_000 - 328_000_000) / (4 * halves));
-    p.durationSamples = longest;
-    expect(soundtrackWorkingBytes(p)).toBeLessThanOrEqual(1_500_000_000);
-    expect(validateSoundtrackProject(p).durationSamples).toBe(longest);
-    p.durationSamples = longest + 1;
-    expect(() => validateSoundtrackProject(p)).toThrow(/working-buffer/);
+    expect(soundtrackWorkingBytes(p)).toBe(tenMinutes * 4 * 7 + 328_000_000);
+    // Accumulators stack when every level sums a track before the bus below it:
+    // five live buffers with ducking exceed 1.5 GB at ten minutes.
+    const stacked = fixture();
+    delete stacked.ducking;
+    stacked.durationSamples = tenMinutes;
+    stacked.ducking = p.ducking;
+    stacked.buses = [1, 2, 3, 4, 5].map((level) => ({
+      id: "b" + level,
+      output: level === 5 ? "master" : "b" + (level + 1),
+      gainDb: 0,
+    }));
+    stacked.tracks = [
+      { ...stacked.tracks[0]!, output: "b5" },
+      { ...stacked.tracks[1]!, output: "b1" },
+      ...[2, 3, 4].map((level) => ({
+        ...stacked.tracks[1]!,
+        id: "sfx" + level,
+        role: "sfx" as const,
+        output: "b" + level,
+      })),
+    ];
+    expect(soundtrackWorkingBytes(stacked)).toBe(
+      tenMinutes * 4 * 11 + 328_000_000,
+    );
+    expect(() => validateSoundtrackProject(stacked)).toThrow(/working-buffer/);
+    const longest = Math.floor((1_500_000_000 - 328_000_000) / (4 * 11));
+    stacked.durationSamples = longest;
+    expect(validateSoundtrackProject(stacked).durationSamples).toBe(longest);
+    stacked.durationSamples = longest + 1;
+    expect(() => validateSoundtrackProject(stacked)).toThrow(/working-buffer/);
   });
   it("supports gain, move, trim, automation, mute/solo and persisted undo/redo without mutating input", () => {
     const input = fixture();
