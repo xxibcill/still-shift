@@ -338,6 +338,128 @@ try {
     staleEditRejected: true,
     previewInvalidated: true,
   };
+  // PR #33 authoring controls, each through the real UI and the saved file.
+  const current = () => readSoundtrackProject(projectPath);
+  await page.locator("#clip").selectOption("effect-clip");
+  await page.locator("#fade-out").fill("960");
+  await page.locator("#fade-out-curve").selectOption("equal-power");
+  await change(() => page.locator("#clip-edit button").click());
+  assert.deepEqual(
+    (({ fadeOutSamples, fadeOutCurve }) => ({ fadeOutSamples, fadeOutCurve }))(
+      (await current()).clips[2]!,
+    ),
+    { fadeOutSamples: 960, fadeOutCurve: "equal-power" },
+  );
+  // Automation plus one 17-point equal-power fade polyline.
+  const lines = page.locator(".track").nth(2).locator("polyline");
+  assert.equal(await lines.count(), 2);
+  assert.equal(
+    (await lines.nth(1).getAttribute("points"))!.split(" ").length,
+    17,
+  );
+  await writeFile(
+    join(root, "pop.wav"),
+    await readFile(join(root, "effect.wav")),
+  );
+  await page.locator("#cue-id").fill("pop");
+  await page.locator("#cue-asset").fill("pop-source");
+  await page.locator("#cue-asset-path").fill("pop.wav");
+  await page.locator("#cue-track").selectOption("effect");
+  await page.locator("#cue-source-end").fill("2400");
+  await page.locator("#cue-start").fill("200000");
+  await change(() => page.locator("#add-cue button").click());
+  assert.equal(await page.locator(".clip").count(), 4);
+  assert.deepEqual((await current()).assets.at(-1), {
+    id: "pop-source",
+    path: "pop.wav",
+    sha256: await soundtrackChecksum(join(root, "pop.wav")),
+  });
+  await page.locator("#clip").selectOption("pop");
+  await change(() => page.locator("#remove-clip").click());
+  assert.equal(
+    (await current()).clips.some((c) => c.id === "pop"),
+    false,
+  );
+  await page.locator("#bus-id").fill("fx");
+  await change(() => page.locator("#add-bus button").click());
+  await page.locator("#track-id").fill("amb");
+  await page.locator("#track-role").selectOption("ambience");
+  await page.locator("#track-output").selectOption("fx");
+  await change(() => page.locator("#add-track button").click());
+  assert.equal(await page.locator(".track").count(), 4);
+  await change(() =>
+    // A select's accessible name includes its chosen option, so locate it by label text.
+    page
+      .locator(".track")
+      .nth(2)
+      .locator("label", { hasText: "Output" })
+      .locator("select")
+      .selectOption("fx"),
+  );
+  await change(async () => {
+    const filters = page
+      .locator(".track")
+      .nth(1)
+      .locator("label", { hasText: "Filters JSON" })
+      .locator("input");
+    await filters.fill('[{"type":"highpass","frequencyHz":60,"q":0.7}]');
+    await filters.press("Tab");
+  });
+  const routed = await current();
+  assert.deepEqual(
+    routed.tracks.map((t) => [t.id, t.output, t.processors.length]),
+    [
+      ["voice", "master", 0],
+      ["music", "master", 1],
+      ["effect", "fx", 1],
+      ["amb", "fx", 0],
+    ],
+  );
+  await page
+    .locator("#ducking")
+    .fill(JSON.stringify({ ...routed.ducking, thresholdDb: -30 }));
+  await change(() => page.locator("#ducking-edit button").click());
+  assert.equal((await current()).ducking?.thresholdDb, -30);
+  const limiter = {
+    ceilingDb: -1,
+    lookaheadSamples: 480,
+    releaseSamples: 4800,
+  };
+  await page.locator("#limiter").fill(JSON.stringify(limiter));
+  await change(() => page.locator("#limiter-edit button").click());
+  assert.deepEqual((await current()).master.limiter, limiter);
+  // An invalid control is rejected in place without saving.
+  const before = await readFile(projectPath);
+  await page.locator("#limiter").fill('{"ceilingDb": 3}');
+  await page.locator("#limiter-edit button").click();
+  await page.waitForFunction(
+    () => !!document.querySelector("#error")!.textContent,
+  );
+  assert.deepEqual(await readFile(projectPath), before);
+  await page.locator("#render").click();
+  await page.waitForFunction(
+    () => document.querySelector("#status")?.textContent?.includes("mix peak"),
+    undefined,
+    { timeout: 120000 },
+  );
+  assert.deepEqual(errors, []);
+  evidence.authoringControls = {
+    savedRevision: revision,
+    controls: [
+      "fade length and equal-power curve",
+      "add cue with a new hashed source",
+      "remove clip",
+      "add bus",
+      "add track",
+      "track output",
+      "track filters",
+      "ducking JSON",
+      "master limiter JSON",
+      "invalid limiter rejected without saving",
+      "render headroom status",
+    ],
+    status: await page.locator("#status").innerText(),
+  };
   await page.screenshot({ path: join(root, "timeline.png"), fullPage: true });
 
   // Exercise the actual passage attachment, decoder, shared clock, seeking and clear.

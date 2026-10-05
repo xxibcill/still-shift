@@ -428,7 +428,9 @@ checks. These tests are also discovered by the existing unit/integration tiers.
 Set `STILL_SHIFT_SOUNDTRACK_RESULTS` for a new location, or add `--verify-only` to
 check retained results. Full `pnpm check` includes the separate `pnpm test:browser:soundtrack` group and
 frozen browser baselines. The owner authorized these automated browser checks
-for the CE16 completion pass on 2026-10-04. Routine production and the command-only
+for the CE16 completion pass on 2026-10-04, and one further run on 2026-10-05 for
+PR #33. That run's workflow also drives the fade, cue, routing, filter, ducking,
+limiter and add track/bus controls. Routine production and the command-only
 tier continue without browser driving; consult the evidence for full-gate status. No baseline was regenerated.
 The [completion audit](./composition-ce16-completion-audit.md) records the earlier
 indirect headless-browser verification breach and corrected test selection.
