@@ -52,17 +52,17 @@ checks structure; `validateSoundtrackProject` also checks references, IDs, routi
 intervals, automation, ducking roles and the memory estimate. All fields are explicit;
 loading does not introduce gain or ducking defaults.
 
-| Field                                              | Meaning                                                                                                                         |
-| -------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
-| `schemaVersion`, `revision`, `history`             | Versioned authority and monotonic save revision; up to 20 nonrecursive undo/redo states                                         |
-| `sampleRate`, `channels`                           | Fixed 48,000 Hz, stereo output                                                                                                  |
-| `assets`                                           | Named paths and `sha256:` identities; paths resolve relative to the JSON                                                        |
-| `tracks`                                           | Named narration/BGM/SFX/ambience roles, destination, gain, mute/solo and built-in processors                                    |
-| `clips`                                            | Asset/track, source start/end, project placement, gain, fades, automation and optional `pan`; all positions use integer samples |
-| `clips[].anchor`                                   | Original beat and cue/event reference, plus signed sample offset; retained alongside resolved `startSample`                     |
-| `buses`, `master`                                  | Named acyclic routing graph; outputs reference a bus or master; explicit gain                                                   |
-| `ducking`                                          | Optional explicit narration detector and BGM targets with all detector/ramp settings                                            |
-| `normalization`, `channelConversion`, `tailPolicy` | `none`, `mono-duplicate-stereo-preserve`, `retain-to-project-end`                                                               |
+| Field                                              | Meaning                                                                                                                                     |
+| -------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| `schemaVersion`, `revision`, `history`             | Versioned authority and monotonic save revision; up to 20 nonrecursive undo/redo states                                                     |
+| `sampleRate`, `channels`                           | Fixed 48,000 Hz, stereo output                                                                                                              |
+| `assets`                                           | Named paths and `sha256:` identities; paths resolve relative to the JSON                                                                    |
+| `tracks`                                           | Named narration/BGM/SFX/ambience roles, destination, gain, mute/solo and built-in processors                                                |
+| `clips`                                            | Asset/track, source start/end, project placement, gain, fades with optional curves, automation and optional `pan`; integer sample positions |
+| `clips[].anchor`                                   | Original beat and cue/event reference, plus signed sample offset; retained alongside resolved `startSample`                                 |
+| `buses`, `master`                                  | Named acyclic routing graph; outputs reference a bus or master; explicit gain                                                               |
+| `ducking`                                          | Optional explicit narration detector and BGM targets with all detector/ramp settings                                                        |
+| `normalization`, `channelConversion`, `tailPolicy` | `none`, `mono-duplicate-stereo-preserve`, `retain-to-project-end`                                                                           |
 
 Source intervals and render ranges are half-open: `[start, end)`. Resample sources
 to 48 kHz **before** trimming. Mono duplicates at unity into both channels; stereo
@@ -71,8 +71,16 @@ keeps its channels. More channels are rejected. Picture frames resolve with
 relative to the clip, strictly increasing and inside its source duration.
 Linear interpolation operates on amplitude gains; `hold` keeps the preceding
 point. The first/last point extends to the beginning/end of the clip. Fades are
-linear amplitude ramps; their combined length must fit. No rescaling of narration,
-source padding, looping, time stretching or automatic normalization occurs.
+linear amplitude ramps by default; their combined length must fit. No rescaling of
+narration, source padding, looping, time stretching or automatic normalization
+occurs.
+
+Optional `clips[].fadeInCurve` and `clips[].fadeOutCurve` choose each fade's shape
+independently: `linear` (the default when absent) or `equal-power`. For a linear
+ramp `r` running 0→1 across the fade, `equal-power` applies `sin(r·π/2)`: the fade
+midpoint is −3 dB instead of −6 dB, so a fade-out holds its body longer and then
+drops, which suits SFX tails and ambience. Gain is exactly 1 outside the fade,
+and an absent curve or `linear` renders bit-identically to earlier versions.
 
 Optional `clips[].pan` places a clip in the stereo field from `-1` (left) through
 `0` (centre) to `1` (right). It uses a constant-power sine/cosine law normalized to
@@ -139,8 +147,10 @@ a console's pre-fader send. Ducking therefore
 follows what each narration clip says, including fade-ins and automated dips,
 while riding, muting or soloing the narration track to audition the mix leaves
 the BGM ducked exactly as in the final mix. `thresholdDb` is measured after clip
-gain. The detector never rewrites narration samples. This is `soundtrack-dsp-4`, which adds clip pan
-after the detector tap; projects without pan render identically to version 3.
+gain. The detector never rewrites narration samples. This is `soundtrack-dsp-5`, which adds optional
+equal-power fade curves; projects without them render identically to version 4.
+Version 4 added clip pan after the detector tap; projects without pan render
+identically to version 3.
 Version 3 made hold require a detected active sample; version 2 used the same
 pre-fader detector but could start a long hold before any activity in a short
 project.
@@ -174,8 +184,9 @@ CLI and HTTP edits call the same `saveSoundtrackEdits` API.
 Operations are `gain` (target and gainDb; optional kind `clip|track|bus|master` to
 resolve same-name clip/node ambiguity), `mute`, `solo`, `move`, `trim`,
 `automation`, `pan` (clip and pan; `0` removes the field, so recentring an
-unpanned clip adds no history), `fade` (clip with `fadeInSamples`,
-`fadeOutSamples` or both), `add-clip`, `remove-clip`, `add-asset`, `remove-asset`,
+unpanned clip adds no history), `fade` (clip with any of `fadeInSamples`,
+`fadeOutSamples`, `fadeInCurve` and `fadeOutCurve`; a `linear` curve removes the
+field), `add-clip`, `remove-clip`, `add-asset`, `remove-asset`,
 `undo` and `redo`. The latter two need only `type`.
 
 `add-clip` takes every clip field from the contract table, flattened beside
@@ -270,7 +281,8 @@ Run `pnpm lab`; open `/soundtrack.html` via **Soundtrack layers**. Load a saved
 project inside the checkout. Tracks show overlapping clip bounds, stepped hold or linear automation with
 extended endpoint gains, processed-stem
 waveforms after rendering, and authored automation. Set track mute/solo/gain or
-edit a clip's numeric placement, trim, gain, pan, fade lengths and automation JSON,
+edit a clip's numeric placement, trim, gain, pan, fade lengths and curves and
+automation JSON,
 or remove the selected clip; Save writes the same file as the CLI. Undo/redo uses persisted project history. Numeric edits are
 supported; an empty or invalid number field is rejected without saving instead of
 being read as zero. After rendering, the status line shows the mix peak and warns

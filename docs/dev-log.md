@@ -43,13 +43,17 @@ still hold before relying on them.
 
 ## Current state
 
-- **PR #33 cue/asset/fade edits (2026-10-05):** Claude Code on
-  `claude/ce16-sfx-improvements` from `204053f`. The shared edit API gains
-  `add-clip`, `remove-clip`, `fade`, `add-asset` and `remove-asset` (`d6fa38b`);
-  the Lab clip form edits fades and removes clips (`e4194a6`). No PCM or DSP
-  version change. `pnpm check:soundtrack` passes on Node 22.23.1. Committed
-  locally; not yet pushed to PR #33 (awaiting owner go-ahead). Browser suites
-  and listening not run.
+- **PR #33 fade curves (2026-10-05):** Claude Code on
+  `claude/ce16-sfx-improvements` from `c41c58b`. Optional per-fade
+  `fadeInCurve`/`fadeOutCurve` (`linear` default, `equal-power` quarter-sine)
+  as `soundtrack-dsp-5` (`e1d6c49`); Lab clip form chooses curves (`d73d624`).
+  Absent/linear curves are bit-identical. `pnpm check:soundtrack` passes on
+  Node 22.23.1. Pushed to PR #33; owner review/merge remains. Browser suites and
+  listening not run.
+
+- **PR #33 cue/asset/fade edits (2026-10-05):** `add-clip`, `remove-clip`,
+  `fade`, `add-asset` and `remove-asset` (`d6fa38b`) plus Lab fade fields and
+  Remove clip (`e4194a6`) are pushed to PR #33 (`c41c58b`). No PCM change.
 
 - **PR #33 clip pan (2026-10-05):** Claude Code on `claude/ce16-sfx-improvements`.
   Headroom report and Lab field guard are pushed to PR #33 (`2cddbb2`). Optional
@@ -211,6 +215,27 @@ _Last updated 2026-10-05 by Codex for PR #33 follow-up fixes._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-05 — PR #33 equal-power fade curves
+
+- **Agent / branch:** Claude Code on `claude/ce16-sfx-improvements` from `c41c58b`
+  (cue/asset/fade edits pushed to PR #33 first, at the owner's request).
+- **Done:** `e1d6c49` adds optional `clips[].fadeInCurve`/`fadeOutCurve`:
+  `linear` (absent default) or `equal-power`, `sin(r·π/2)` over the linear ramp
+  `r`, −3 dB at the midpoint. Gain is pinned to exactly 1 where `r = 1`, so it
+  never depends on platform sine rounding. `fade` edits set curves; `linear`
+  removes the field. JSON Schema regenerated; `soundtrack-dsp-5`. `d73d624` adds
+  Lab curve selects.
+- **Results:** a new integration test checks quarter-sine sample gains at both
+  fades, exact unity between them, per-fade independence and bit-identical
+  absent vs explicit `linear` PCM. It fails on a worker that bumps only its
+  version string. `pnpm check:soundtrack`: 1,519 unit, 46 runtime, 41 audio
+  integration, 14 depth; Python lint/format pass.
+- **Not run:** browser suites, baselines and listening; Lab change is
+  type/lint-checked only.
+- **Open / next:** the Lab timeline does not draw fade shapes. Per-clip decoding
+  still resamples each source from its start; looping and a master limiter
+  remain out of contract scope.
 
 ### 2026-10-05 — PR #33 cue, asset and fade edit operations
 
