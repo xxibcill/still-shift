@@ -160,8 +160,8 @@ def duck_envelope(detector, settings, np):
     ahead = settings["lookaheadSamples"]
     if ahead:
         active = np.concatenate((active[ahead:], np.zeros(min(ahead, length), dtype=bool)))[:length]
-    last = np.maximum.accumulate(np.where(active, np.arange(length), -length - 1))
-    active |= np.arange(length) - last <= settings["holdSamples"]
+    last = np.maximum.accumulate(np.where(active, np.arange(length), -1))
+    active |= (last >= 0) & (np.arange(length) - last <= settings["holdSamples"])
     edges = np.r_[0, np.flatnonzero(active[1:] != active[:-1]) + 1, length]
     target = 10 ** (settings["attenuationDb"] / 20)
     envelope, value = np.ones(length, dtype=np.float32), 1.0
@@ -377,7 +377,7 @@ def render(request):
         "latencySamples": 0,
         "latencyProbes": latency,
         "tailPolicy": project["tailPolicy"],
-        "dspVersion": "soundtrack-dsp-2",
+        "dspVersion": "soundtrack-dsp-3",
         "ducking": project.get("ducking"),
         "wallSeconds": time.perf_counter() - started,
         "peakResidentBytes": resource.getrusage(resource.RUSAGE_SELF).ru_maxrss,

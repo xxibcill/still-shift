@@ -43,6 +43,14 @@ still hold before relying on them.
 
 ## Current state
 
+- **PR #33 follow-up fixes in progress (2026-10-05):** both P2 findings posted
+  inline from `0dc2782`; isolated `codex/pr33-followup-fixes`. Ducking now requires
+  observed narration activity before extending hold (`soundtrack-dsp-3`); both
+  new regressions failed before repair and all 22 lifecycle tests pass afterward.
+  Stem filename case collisions remain to fix in a separate commit, followed by
+  the command-only verification gate and one final push. Original checkout retained.
+  [Evidence](./pr-33-followup-fix-results.json).
+
 - **PR #33 conflict resolution (2026-10-05):** isolated checkout from `039c1d5`
   integrates `main` at `b32dcfa`. Only `docs/dev-log.md` conflicted; both CE16
   and CE9 records are retained. Local `pnpm check:soundtrack` passes:
@@ -125,7 +133,7 @@ still hold before relying on them.
   [Fix evidence](./pr-32-fix-results.json).
   [Review evidence](./pr-32-review-results.json).
 
-_Last updated 2026-10-05 by Codex for PR #33 conflict resolution._
+_Last updated 2026-10-05 by Codex for PR #33 follow-up fixes._
 
 - **PR #32 conflict resolution (2026-10-04):** merged `main` at `3413780` into
   PR head `a0708ba` and pushed merge `05033c8`, retaining CE9 expressions and
@@ -183,6 +191,17 @@ _Last updated 2026-10-05 by Codex for PR #33 conflict resolution._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-05 — PR #33 ducking hold fix
+
+- **Agent / branch:** Codex on `codex/pr33-followup-fixes` from `0dc2782`.
+- **Done:** posted both findings inline; hold begins only after detector activity.
+  Worker and render identity advance to `soundtrack-dsp-3`; guide updated.
+- **Results:** silent and delayed-speech long-hold regressions fail before repair;
+  all 22 soundtrack lifecycle tests pass after repair. Browser/listening not run.
+- **Next:** fix stem case collisions in the second finding commit, verify locally,
+  then push both commits together. GitHub Actions remain prohibited.
+- **Records:** [fix evidence](./pr-33-followup-fix-results.json).
 
 ### 2026-10-05 — Resolve PR #33 against merged CE9
 

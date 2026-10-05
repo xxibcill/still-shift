@@ -685,3 +685,54 @@ it("preserves narration, stems and range PCM at a rounded 30 fps duration", asyn
     expect(rangeSamples).toEqual(fullSamples.slice(start * 2));
   }
 }, 10000);
+
+it.each(["silence", "delayed speech"])(
+  "does not duck before %s with a hold longer than the project",
+  async (scenario) => {
+    const voice = join(root, `long-hold-${scenario}.wav`);
+    await runProcess("ffmpeg", [
+      "-v",
+      "error",
+      "-f",
+      "lavfi",
+      "-i",
+      scenario === "silence"
+        ? "aevalsrc=0:s=48000:d=1"
+        : "aevalsrc='if(between(n,24000,35999),0.8,0)':s=48000:d=1",
+      "-c:a",
+      "pcm_f32le",
+      voice,
+    ]);
+    const p = structuredClone(project);
+    p.durationSamples = 48000;
+    p.assets[0]!.path = voice;
+    p.assets[0]!.sha256 = await soundtrackChecksum(voice);
+    p.clips = p.clips.filter((clip) => clip.track !== "effect");
+    for (const clip of p.clips) clip.sourceEndSample = p.durationSamples;
+    p.ducking!.lookaheadSamples = 0;
+    p.ducking!.holdSamples = 96000;
+    const file = join(root, `long-hold-${scenario}.json`);
+    await writeFile(file, JSON.stringify(p));
+    const output = join(root, `long-hold-${scenario}`);
+    const rendered = await renderSoundtrackProject(file, output, {
+      stems: true,
+    });
+    const music = await pcm(join(output, "audio/music.wav"));
+    const speechStart = scenario === "silence" ? p.durationSamples : 24000;
+    expect(
+      music
+        .slice(0, speechStart * 2)
+        .every((sample) => sample === Math.fround(0.1)),
+    ).toBe(true);
+    if (scenario === "delayed speech") {
+      expect(music[24000 * 2]).toBeLessThan(Math.fround(0.1));
+      expect(music[24479 * 2]).toBeCloseTo(0.1 * 10 ** (-12 / 20), 7);
+      expect(music.at(-1)).toBeCloseTo(0.1 * 10 ** (-12 / 20), 7);
+    }
+    expect(rendered.dspVersion).toBe("soundtrack-dsp-3");
+    expect((rendered.identityInputs as { dsp: string }).dsp).toBe(
+      "soundtrack-dsp-3",
+    );
+  },
+  10000,
+);

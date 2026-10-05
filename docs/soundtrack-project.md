@@ -120,7 +120,9 @@ automation are included; track gain, mute/solo and DSP are not. Ducking therefor
 follows what each narration clip says, including fade-ins and automated dips,
 while riding, muting or soloing the narration track to audition the mix leaves
 the BGM ducked exactly as in the final mix. `thresholdDb` is measured after clip
-gain. The detector never rewrites narration samples. This is `soundtrack-dsp-2`;
+gain. The detector never rewrites narration samples. This is `soundtrack-dsp-3`;
+version 2 used the same pre-fader detector but could start a long hold before any
+activity in a short project. Hold now requires a detected active sample.
 `soundtrack-dsp-1` read the raw source before clip gain, fades and automation,
 which differs only for narration clips with non-unity gain, fades or automation.
 
