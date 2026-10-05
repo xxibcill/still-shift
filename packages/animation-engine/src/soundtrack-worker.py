@@ -131,14 +131,29 @@ def clip_sources(clips, assets, budget_frames, np):
         yield clip, audio
 
 
+def fade_shape(ramp, curve, np):
+    """Map a linear 0..1 fade ramp to its gain.
+
+    Absent and "linear" return the ramp itself, so linear fades stay bit-identical.
+    "equal-power" is sin(ramp * pi/2): -3 dB at the midpoint. Where the ramp is 1 the
+    gain is pinned to exactly 1, so samples outside the fade never depend on the
+    platform's sine rounding.
+    """
+    if curve != "equal-power":
+        return ramp
+    return np.where(ramp >= 1, 1.0, np.sin(ramp * (math.pi / 2)))
+
+
 def clip_envelope(clip, np):
     length = clip["sourceEndSample"] - clip["sourceStartSample"]
     samples = np.arange(length, dtype=np.float64)
     envelope = np.ones(length)
     if clip["fadeInSamples"]:
-        envelope *= np.minimum(1, samples / clip["fadeInSamples"])
+        ramp = np.minimum(1, samples / clip["fadeInSamples"])
+        envelope *= fade_shape(ramp, clip.get("fadeInCurve"), np)
     if clip["fadeOutSamples"]:
-        envelope *= np.minimum(1, (length - samples) / clip["fadeOutSamples"])
+        ramp = np.minimum(1, (length - samples) / clip["fadeOutSamples"])
+        envelope *= fade_shape(ramp, clip.get("fadeOutCurve"), np)
     points = clip["automation"]["points"]
     if points:
         positions, values = [p["sample"] for p in points], [p["gain"] for p in points]
@@ -400,7 +415,7 @@ def render(request):
         "latencySamples": 0,
         "latencyProbes": latency,
         "tailPolicy": project["tailPolicy"],
-        "dspVersion": "soundtrack-dsp-4",
+        "dspVersion": "soundtrack-dsp-5",
         "ducking": project.get("ducking"),
         "wallSeconds": time.perf_counter() - started,
         "peakResidentBytes": resource.getrusage(resource.RUSAGE_SELF).ru_maxrss,

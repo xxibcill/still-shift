@@ -239,7 +239,7 @@ describe("CE16 offline lifecycle", () => {
       expect(await pcm(audio("pan-centre", name))).toEqual(
         await pcm(audio("pan-none", name)),
       );
-    expect(centred.dspVersion).toBe("soundtrack-dsp-4");
+    expect(centred.dspVersion).toBe("soundtrack-dsp-5");
     // Moving narration in the stereo field leaves the ducking envelope unchanged.
     expect(await pcm(audio("pan-sides", "duck-envelope"))).toEqual(
       await pcm(audio("pan-none", "duck-envelope")),
@@ -848,9 +848,9 @@ it.each(["silence", "delayed speech"])(
       expect(music[24479 * 2]).toBeCloseTo(0.1 * 10 ** (-12 / 20), 7);
       expect(music.at(-1)).toBeCloseTo(0.1 * 10 ** (-12 / 20), 7);
     }
-    expect(rendered.dspVersion).toBe("soundtrack-dsp-4");
+    expect(rendered.dspVersion).toBe("soundtrack-dsp-5");
     expect((rendered.identityInputs as { dsp: string }).dsp).toBe(
-      "soundtrack-dsp-4",
+      "soundtrack-dsp-5",
     );
   },
   10000,
@@ -959,4 +959,58 @@ it("file-backed edits hash an added cue source relative to the project and rende
     effect.subarray(0, 96000 * 2),
   );
   expect(restored.subarray(96000 * 2).every((v) => v === 0)).toBe(true);
+}, 20000);
+
+it("equal-power fades follow a quarter-sine gain; absent and linear curves stay bit-identical", async () => {
+  const p = structuredClone(project);
+  delete p.ducking;
+  p.clips = p.clips.filter((c) => c.track === "music");
+  Object.assign(p.clips[0]!, {
+    sourceEndSample: 4800,
+    fadeInSamples: 960,
+    fadeOutSamples: 1920,
+  });
+  const file = join(root, "curves.json");
+  await writeFile(file, JSON.stringify(p));
+  const absent = await renderSoundtrackProject(
+    file,
+    join(root, "curve-absent"),
+  );
+  expect(absent.dspVersion).toBe("soundtrack-dsp-5");
+  const linear = await pcm(audio("curve-absent"));
+  Object.assign(p.clips[0]!, {
+    fadeInCurve: "linear",
+    fadeOutCurve: "linear",
+  });
+  await writeFile(file, JSON.stringify(p));
+  await renderSoundtrackProject(file, join(root, "curve-linear"));
+  expect(await pcm(audio("curve-linear"))).toEqual(linear);
+  Object.assign(p.clips[0]!, {
+    fadeInCurve: "equal-power",
+    fadeOutCurve: "equal-power",
+  });
+  await writeFile(file, JSON.stringify(p));
+  await renderSoundtrackProject(file, join(root, "curve-power"));
+  const power = await pcm(audio("curve-power"));
+  const gain = (ramp: number) => 0.1 * Math.sin((Math.PI / 2) * ramp);
+  expect(power[0]).toBe(0);
+  // Midpoints sit at −3 dB instead of the linear −6 dB.
+  expect(power[480 * 2]).toBeCloseTo(gain(0.5), 7);
+  expect(power[480 * 2]).toBeCloseTo(0.1 * Math.SQRT1_2, 7);
+  expect(linear[480 * 2]).toBeCloseTo(0.05, 7);
+  expect(power[120 * 2 + 1]).toBeCloseTo(gain(120 / 960), 7);
+  expect(power[(4800 - 960) * 2]).toBeCloseTo(gain(0.5), 7);
+  expect(power[4799 * 2]).toBeCloseTo(gain(1 / 1920), 7);
+  // Outside the fades both shapes are exact unity.
+  expect(power.subarray(960 * 2, 2880 * 2)).toEqual(
+    linear.subarray(960 * 2, 2880 * 2),
+  );
+  expect(power.subarray(4800 * 2).every((v) => v === 0)).toBe(true);
+  // A curve applies only to its own fade.
+  delete p.clips[0]!.fadeOutCurve;
+  await writeFile(file, JSON.stringify(p));
+  await renderSoundtrackProject(file, join(root, "curve-mixed"));
+  const mixed = await pcm(audio("curve-mixed"));
+  expect(mixed.subarray(0, 2880 * 2)).toEqual(power.subarray(0, 2880 * 2));
+  expect(mixed.subarray(2880 * 2)).toEqual(linear.subarray(2880 * 2));
 }, 20000);

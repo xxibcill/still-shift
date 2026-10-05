@@ -566,3 +566,37 @@ it("fade edits set either length and must fit the clip", () => {
       expect.objectContaining({ code }),
     );
 });
+
+it("fade curves are optional per fade and linear restores the absent field", () => {
+  const p = fixture();
+  expect(validateSoundtrackProject(p).clips[0]!.fadeInCurve).toBeUndefined();
+  const curved = editSoundtrackProject(p, [
+    { type: "fade", clip: "speech", fadeOutCurve: "equal-power" },
+  ]);
+  expect(curved.clips[0]!.fadeOutCurve).toBe("equal-power");
+  expect("fadeInCurve" in curved.clips[0]!).toBe(false);
+  expect(curved.history.undo).toHaveLength(1);
+  const restored = editSoundtrackProject(curved, [
+    { type: "fade", clip: "speech", fadeOutCurve: "linear" },
+  ]);
+  expect(soundtrackState(restored)).toEqual(soundtrackState(p));
+  // Choosing linear on a clip without a curve changes nothing.
+  expect(
+    editSoundtrackProject(p, [
+      { type: "fade", clip: "speech", fadeInCurve: "linear" },
+    ]).history.undo,
+  ).toHaveLength(0);
+  p.clips[0]!.fadeInCurve = "linear";
+  expect(validateSoundtrackProject(p).clips[0]!.fadeInCurve).toBe("linear");
+  expect(() =>
+    validateSoundtrackProject({
+      ...p,
+      clips: [{ ...p.clips[0]!, fadeInCurve: "exponential" }],
+    }),
+  ).toThrow(/Invalid soundtrack/);
+  expect(() =>
+    editSoundtrackProject(fixture(), [
+      { type: "fade", clip: "speech", fadeInCurve: "s-curve" },
+    ]),
+  ).toThrow(expect.objectContaining({ code: "edit-schema" }));
+});

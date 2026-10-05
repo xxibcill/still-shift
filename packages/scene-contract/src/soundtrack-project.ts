@@ -12,6 +12,8 @@ export const SoundtrackAutomationSchema = z
       .max(2048),
   })
   .strict();
+/** `equal-power` is a quarter-sine gain: −3 dB at the fade midpoint instead of −6 dB. */
+export const SoundtrackFadeCurveSchema = z.enum(["linear", "equal-power"]);
 export const SoundtrackClipSchema = z
   .object({
     id,
@@ -23,6 +25,9 @@ export const SoundtrackClipSchema = z
     gainDb: gain,
     fadeInSamples: sample,
     fadeOutSamples: sample,
+    /** Fade shape; absent means a linear amplitude ramp. */
+    fadeInCurve: SoundtrackFadeCurveSchema.optional(),
+    fadeOutCurve: SoundtrackFadeCurveSchema.optional(),
     automation: SoundtrackAutomationSchema,
     /** Constant-power stereo position; absent means centre (unity on both channels). */
     pan: z.number().min(-1).max(1).optional(),

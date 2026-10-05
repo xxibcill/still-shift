@@ -2,6 +2,7 @@ import { z } from "zod";
 import {
   SoundtrackAutomationSchema,
   SoundtrackClipSchema,
+  SoundtrackFadeCurveSchema,
   SoundtrackStateSchema,
   validateSoundtrackProject,
   soundtrackFail,
@@ -56,6 +57,8 @@ export const SoundtrackEditSchema = z.discriminatedUnion("type", [
       clip: identifier,
       fadeInSamples: z.number().int().optional(),
       fadeOutSamples: z.number().int().optional(),
+      fadeInCurve: SoundtrackFadeCurveSchema.optional(),
+      fadeOutCurve: SoundtrackFadeCurveSchema.optional(),
     })
     .strict(),
   // A complete clip, appended so earlier clips keep their summation order.
@@ -214,17 +217,23 @@ export function editSoundtrackProject(
       case "fade":
         if (
           operation.fadeInSamples === undefined &&
-          operation.fadeOutSamples === undefined
+          operation.fadeOutSamples === undefined &&
+          operation.fadeInCurve === undefined &&
+          operation.fadeOutCurve === undefined
         )
-          soundtrackFail(
-            "edit-schema",
-            "fade needs fadeInSamples, fadeOutSamples or both",
-            { clip: clip!.id },
-          );
+          soundtrackFail("edit-schema", "fade needs a fade length or curve", {
+            clip: clip!.id,
+          });
         if (operation.fadeInSamples !== undefined)
           clip!.fadeInSamples = operation.fadeInSamples;
         if (operation.fadeOutSamples !== undefined)
           clip!.fadeOutSamples = operation.fadeOutSamples;
+        // Linear is the absent field, so choosing it restores the default clip.
+        for (const key of ["fadeInCurve", "fadeOutCurve"] as const) {
+          const curve = operation[key];
+          if (curve === "linear") delete clip![key];
+          else if (curve) clip![key] = curve;
+        }
         break;
       case "add-clip": {
         const added = SoundtrackClipSchema.parse(

@@ -278,7 +278,7 @@ export async function renderSoundtrackProject(
       architecture: process.arch,
       platform: process.platform,
       backend: "dawdreamer-0.9.0",
-      dsp: "soundtrack-dsp-4",
+      dsp: "soundtrack-dsp-5",
       runtime: result.runtime,
       ffmpeg: ffmpeg.stdout.split("\n")[0],
       ffprobe: ffprobe.stdout.split("\n")[0],

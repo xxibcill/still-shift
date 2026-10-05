@@ -12,10 +12,10 @@
     "tailPolicy": { "$ref": "#/$defs/__schema5" },
     "assets": { "$ref": "#/$defs/__schema6" },
     "clips": { "$ref": "#/$defs/__schema8" },
-    "tracks": { "$ref": "#/$defs/__schema12" },
-    "buses": { "$ref": "#/$defs/__schema13" },
-    "master": { "$ref": "#/$defs/__schema14" },
-    "ducking": { "$ref": "#/$defs/__schema15" },
+    "tracks": { "$ref": "#/$defs/__schema13" },
+    "buses": { "$ref": "#/$defs/__schema14" },
+    "master": { "$ref": "#/$defs/__schema15" },
+    "ducking": { "$ref": "#/$defs/__schema16" },
     "schemaVersion": { "type": "string", "const": "soundtrack-project-1" },
     "revision": {
       "type": "integer",
@@ -28,12 +28,12 @@
         "undo": {
           "maxItems": 20,
           "type": "array",
-          "items": { "$ref": "#/$defs/__schema16" }
+          "items": { "$ref": "#/$defs/__schema17" }
         },
         "redo": {
           "maxItems": 20,
           "type": "array",
-          "items": { "$ref": "#/$defs/__schema16" }
+          "items": { "$ref": "#/$defs/__schema17" }
         }
       },
       "required": ["undo", "redo"],
@@ -104,6 +104,8 @@
           "gainDb": { "$ref": "#/$defs/__schema10" },
           "fadeInSamples": { "$ref": "#/$defs/__schema9" },
           "fadeOutSamples": { "$ref": "#/$defs/__schema9" },
+          "fadeInCurve": { "$ref": "#/$defs/__schema11" },
+          "fadeOutCurve": { "$ref": "#/$defs/__schema11" },
           "automation": {
             "type": "object",
             "properties": {
@@ -136,7 +138,7 @@
                     "type": "object",
                     "properties": {
                       "type": { "type": "string", "const": "cue" },
-                      "id": { "$ref": "#/$defs/__schema11" }
+                      "id": { "$ref": "#/$defs/__schema12" }
                     },
                     "required": ["type", "id"],
                     "additionalProperties": false
@@ -145,7 +147,7 @@
                     "type": "object",
                     "properties": {
                       "type": { "type": "string", "const": "event" },
-                      "id": { "$ref": "#/$defs/__schema11" },
+                      "id": { "$ref": "#/$defs/__schema12" },
                       "edge": { "type": "string", "enum": ["start", "end"] }
                     },
                     "required": ["type", "id", "edge"],
@@ -180,8 +182,9 @@
     },
     "__schema9": { "type": "integer", "minimum": 0, "maximum": 28800000 },
     "__schema10": { "type": "number", "minimum": -120, "maximum": 12 },
-    "__schema11": { "type": "string", "minLength": 1 },
-    "__schema12": {
+    "__schema11": { "type": "string", "enum": ["linear", "equal-power"] },
+    "__schema12": { "type": "string", "minLength": 1 },
+    "__schema13": {
       "maxItems": 16,
       "type": "array",
       "items": {
@@ -227,7 +230,7 @@
         "additionalProperties": false
       }
     },
-    "__schema13": {
+    "__schema14": {
       "maxItems": 8,
       "type": "array",
       "items": {
@@ -241,7 +244,7 @@
         "additionalProperties": false
       }
     },
-    "__schema14": {
+    "__schema15": {
       "type": "object",
       "properties": {
         "id": { "type": "string", "const": "master" },
@@ -250,7 +253,7 @@
       "required": ["id", "gainDb"],
       "additionalProperties": false
     },
-    "__schema15": {
+    "__schema16": {
       "type": "object",
       "properties": {
         "method": {
@@ -294,7 +297,7 @@
       ],
       "additionalProperties": false
     },
-    "__schema16": {
+    "__schema17": {
       "type": "object",
       "properties": {
         "sampleRate": { "$ref": "#/$defs/__schema0" },
@@ -305,10 +308,10 @@
         "tailPolicy": { "$ref": "#/$defs/__schema5" },
         "assets": { "$ref": "#/$defs/__schema6" },
         "clips": { "$ref": "#/$defs/__schema8" },
-        "tracks": { "$ref": "#/$defs/__schema12" },
-        "buses": { "$ref": "#/$defs/__schema13" },
-        "master": { "$ref": "#/$defs/__schema14" },
-        "ducking": { "$ref": "#/$defs/__schema15" }
+        "tracks": { "$ref": "#/$defs/__schema13" },
+        "buses": { "$ref": "#/$defs/__schema14" },
+        "master": { "$ref": "#/$defs/__schema15" },
+        "ducking": { "$ref": "#/$defs/__schema16" }
       },
       "required": [
         "sampleRate",
