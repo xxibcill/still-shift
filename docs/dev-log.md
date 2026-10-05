@@ -43,16 +43,21 @@ still hold before relying on them.
 
 ## Current state
 
-- **CE6 in progress (2026-10-06):** `codex/composition-ce6-completion` from
-  CE7 `817cc9f`; runtime through `4cd8a8d` delivers all feature/audit slices.
-  Six native scenes covering all 39 effects pass 384 forward/reverse hashes and
-  132 seek checks (software delta 1), repeated PNG/raw and independent MP4 encodes
-  on both backends, and 36 actual hardware comparisons under the existing
-  perceptual policy. All 78 serial 1080p cold/warm effect costs are recorded.
-  Full gate found one stale blur-alias contract expectation; it is repaired and
-  all 1,712 unit tests pass. Complete gate rerun, CE6 PR and CE8 follow.
-  CE6-P stays deferred.
-  No owner decision is pending. [Evidence](./composition-ce6-completion-results.json).
+- **CE6 complete (2026-10-06):** `codex/composition-ce6-completion` from
+  CE7 `817cc9f`; runtime `4cd8a8d`, final code/test checkpoint `f11a7b7`.
+  All 39 native effects, GPU filtering, scoped inputs/history and optional linear
+  blending are delivered. Complete `pnpm check` passes 1,712 unit, 46 runtime,
+  139 integration, 14 depth tests, all browser groups and 176 frozen baselines /
+  36,061 frames; all three full Canvas family matrices pass unchanged policy.
+  Native software/hash/seek/independent and repeated exports pass; 36 hardware
+  comparisons pass their perceptual policy, and all 78 serial 1080p costs are recorded.
+  CE6 PR publication and CE8 follow. CE6-P targets remain separate; no owner decision is pending.
+  [Evidence](./composition-ce6-completion-results.json).
+
+- **Verification quiet window (2026-10-06):** after this CE6 gate exits, hold
+  builds, formatters, tests, browser matrices and exports for the coordinated
+  CE6-P lane until its release message. Light source/prose review and CE6
+  publication can continue; neither checkout, policy nor baseline is changed.
 
 - **CE7 complete (2026-10-06):** `codex/composition-ce7`, code `0e48388`.
   Local holds/posterization, source loops, freeze remap, deterministic adaptive
@@ -188,6 +193,22 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-06 — CE6 complete local verification
+
+- **Agent / branch:** Codex on `codex/composition-ce6-completion`.
+- **Done:** complete 39-effect catalogue and all audit/acceptance slices; runtime
+  `4cd8a8d`, final code/test checkpoint `f11a7b7`, frequent checkpoints pushed.
+- **Results:** full `pnpm check`: 1,712 unit / 46 runtime / 139 integration /
+  14 depth tests, all browser groups and 176 frozen baselines / 36,061 frames.
+  All full Canvas family matrices pass unchanged pixel/timing assertions.
+- **Acceptance:** native hashes/seeks and independent/repeated exports pass;
+  36 actual hardware comparisons pass perceptual policy; 78 serial costs recorded.
+- **Retained:** two early full-gate failures and repairs; WebGL speed targets
+  remain deferred to CE6-P, with no threshold or frozen-baseline changes.
+- **Next:** publish/attach CE6 PR, then CE8 and the remaining approved sequence.
+  Further verification waits for the coordinated CE6-P quiet-window release.
+- **Records:** [CE6 evidence](./composition-ce6-completion-results.json).
 
 ### 2026-10-06 — CE6 blur-alias contract expectation repair
 

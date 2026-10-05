@@ -1,6 +1,6 @@
 {
   "milestone": "CE6",
-  "status": "in-progress",
+  "status": "complete",
   "branch": "codex/composition-ce6-completion",
   "base": "817cc9f",
   "started": "2026-10-06",
@@ -9620,10 +9620,7 @@
       "implementation": "e342738"
     }
   ],
-  "pending": [
-    "Complete final local pnpm check on final committed checkpoint",
-    "CE6 milestone PR and CE8 branch"
-  ],
+  "pending": [],
   "performanceDeferral": "CE6-P remains future-version; existing current assertions and frozen baselines unchanged",
   "githubActions": "prohibited/disabled",
   "fullGateAttempts": [
@@ -9650,6 +9647,824 @@
       "cause": "Contract invalid-variant table still expected unavailable for a missing primitive-blur alias",
       "repair": "Use the current comp-path-property diagnostic and accurate test description; all 1712 unit tests in 165 files pass after repair",
       "runtimeOrBrowserSuitesExecuted": 0
+    },
+    {
+      "checkpoint": "f11a7b7",
+      "command": "pnpm check",
+      "status": "passed",
+      "exitCode": 0,
+      "snapshot": "/private/tmp/still-shift-ce6-check-f11a7b7",
+      "unitTests": 1712,
+      "runtimeTests": 46,
+      "integrationTests": 139,
+      "depthTests": 14,
+      "browserGroups": "all required groups passed",
+      "frozenBaselines": 176,
+      "frozenFrames": 36061,
+      "regeneratedFrozenBaselines": false,
+      "canvasMatrices": {
+        "story": {
+          "cases": 69,
+          "frames": 14086,
+          "maxRatio": 1.2231204544754617,
+          "maxDelta": 2,
+          "tier": "existing Canvas pixel/timing policy"
+        },
+        "commerce": {
+          "cases": 127,
+          "frames": 28200,
+          "maxRatio": 1.1569632038257345,
+          "maxDelta": 1,
+          "tier": "existing Canvas pixel/timing policy"
+        },
+        "typography": {
+          "cases": 20,
+          "frames": 3367,
+          "maxRatio": 1.140759495023389,
+          "maxDelta": 2,
+          "tier": "existing Canvas pixel/timing policy"
+        }
+      },
+      "log": "benchmarks/results/composition-ce6-completion/ce6-full-f11a7b7.log",
+      "preflight": "Pinned tools, isolated optimizer/config caches, Python package, browser imports and both backend startup passed",
+      "nativeAcceptance": "All 39 effects in six native scenes, stored hashes, reverse/random seeks, perceptual hardware comparisons and independent/repeated exports passed; serial 1080p costs recorded",
+      "nativeCatalogueLog": "benchmarks/results/composition-ce6-completion/ce6-full-f11a7b7-native-acceptance.json",
+      "hardwareSummary": {
+        "comparisons": 36,
+        "maxDelta": 47,
+        "minPsnr": 53.38960252979594,
+        "minSsim": 0.999162608174115,
+        "tier": "unchanged perceptual hardware policy"
+      },
+      "rasterBoundary": "Native surface effects and Gaussian/feather image filtering run on GPU textures; prepared vectors/text/providers and existing per-draw primitive-blur compatibility use the established Canvas raster boundary"
     }
-  ]
+  ],
+  "completed": "2026-10-06",
+  "implementation": "f11a7b7",
+  "runtimeImplementation": "4cd8a8d",
+  "versions": {
+    "evaluator": "composition-evaluator-44",
+    "canvas": "composition-canvas-1.39.0",
+    "webgl": "composition-webgl2-0.54.0",
+    "export": "chromium-ffmpeg-0.6.1"
+  },
+  "fullVerification": {
+    "checkpoint": "f11a7b7",
+    "command": "pnpm check",
+    "status": "passed",
+    "exitCode": 0,
+    "snapshot": "/private/tmp/still-shift-ce6-check-f11a7b7",
+    "unitTests": 1712,
+    "runtimeTests": 46,
+    "integrationTests": 139,
+    "depthTests": 14,
+    "browserGroups": "all required groups passed",
+    "frozenBaselines": 176,
+    "frozenFrames": 36061,
+    "regeneratedFrozenBaselines": false,
+    "canvasMatrices": {
+      "story": {
+        "cases": 69,
+        "frames": 14086,
+        "maxRatio": 1.2231204544754617,
+        "maxDelta": 2,
+        "tier": "existing Canvas pixel/timing policy"
+      },
+      "commerce": {
+        "cases": 127,
+        "frames": 28200,
+        "maxRatio": 1.1569632038257345,
+        "maxDelta": 1,
+        "tier": "existing Canvas pixel/timing policy"
+      },
+      "typography": {
+        "cases": 20,
+        "frames": 3367,
+        "maxRatio": 1.140759495023389,
+        "maxDelta": 2,
+        "tier": "existing Canvas pixel/timing policy"
+      }
+    },
+    "log": "benchmarks/results/composition-ce6-completion/ce6-full-f11a7b7.log",
+    "preflight": "Pinned tools, isolated optimizer/config caches, Python package, browser imports and both backend startup passed",
+    "nativeAcceptance": "All 39 effects in six native scenes, stored hashes, reverse/random seeks, perceptual hardware comparisons and independent/repeated exports passed; serial 1080p costs recorded",
+    "nativeCatalogue": {
+      "environment": {
+        "profile": "chromium-software-2",
+        "browserVersion": "151.0.7922.34",
+        "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+        "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+        "platform": "darwin",
+        "arch": "arm64"
+      },
+      "reports": [
+        {
+          "fixture": "catalogue-color",
+          "frames": 32,
+          "reverseFrames": 32,
+          "randomSeeks": 11,
+          "maxDelta": 1,
+          "sampleCounts": {
+            "0": 1,
+            "1": 1,
+            "2": 1,
+            "3": 1,
+            "4": 1,
+            "5": 1,
+            "6": 1,
+            "7": 1,
+            "8": 1,
+            "9": 1,
+            "10": 1,
+            "11": 1,
+            "12": 1,
+            "13": 1,
+            "14": 1,
+            "15": 1,
+            "16": 1,
+            "17": 1,
+            "18": 1,
+            "19": 1,
+            "20": 1,
+            "21": 1,
+            "22": 1,
+            "23": 1,
+            "24": 1,
+            "25": 1,
+            "26": 1,
+            "27": 1,
+            "28": 1,
+            "29": 1,
+            "30": 1,
+            "31": 1
+          }
+        },
+        {
+          "fixture": "catalogue-color",
+          "backend": "canvas2d",
+          "frames": 32,
+          "repeatedMp4": "byte-identical",
+          "independentPreviewMp4": "byte-identical",
+          "rawPngTransport": "byte-identical"
+        },
+        {
+          "fixture": "catalogue-color",
+          "backend": "webgl2",
+          "frames": 32,
+          "repeatedMp4": "byte-identical",
+          "independentPreviewMp4": "byte-identical",
+          "rawPngTransport": "byte-identical"
+        },
+        {
+          "fixture": "catalogue-blur",
+          "frames": 32,
+          "reverseFrames": 32,
+          "randomSeeks": 11,
+          "maxDelta": 1,
+          "sampleCounts": {
+            "0": 1,
+            "1": 1,
+            "2": 1,
+            "3": 1,
+            "4": 1,
+            "5": 1,
+            "6": 1,
+            "7": 1,
+            "8": 1,
+            "9": 1,
+            "10": 1,
+            "11": 1,
+            "12": 1,
+            "13": 1,
+            "14": 1,
+            "15": 1,
+            "16": 1,
+            "17": 1,
+            "18": 1,
+            "19": 1,
+            "20": 1,
+            "21": 1,
+            "22": 1,
+            "23": 1,
+            "24": 1,
+            "25": 1,
+            "26": 1,
+            "27": 1,
+            "28": 1,
+            "29": 1,
+            "30": 1,
+            "31": 1
+          }
+        },
+        {
+          "fixture": "catalogue-blur",
+          "backend": "canvas2d",
+          "frames": 32,
+          "repeatedMp4": "byte-identical",
+          "independentPreviewMp4": "byte-identical",
+          "rawPngTransport": "byte-identical"
+        },
+        {
+          "fixture": "catalogue-blur",
+          "backend": "webgl2",
+          "frames": 32,
+          "repeatedMp4": "byte-identical",
+          "independentPreviewMp4": "byte-identical",
+          "rawPngTransport": "byte-identical"
+        },
+        {
+          "fixture": "catalogue-distortion",
+          "frames": 32,
+          "reverseFrames": 32,
+          "randomSeeks": 11,
+          "maxDelta": 0,
+          "sampleCounts": {
+            "0": 1,
+            "1": 1,
+            "2": 1,
+            "3": 1,
+            "4": 1,
+            "5": 1,
+            "6": 1,
+            "7": 1,
+            "8": 1,
+            "9": 1,
+            "10": 1,
+            "11": 1,
+            "12": 1,
+            "13": 1,
+            "14": 1,
+            "15": 1,
+            "16": 1,
+            "17": 1,
+            "18": 1,
+            "19": 1,
+            "20": 1,
+            "21": 1,
+            "22": 1,
+            "23": 1,
+            "24": 1,
+            "25": 1,
+            "26": 1,
+            "27": 1,
+            "28": 1,
+            "29": 1,
+            "30": 1,
+            "31": 1
+          }
+        },
+        {
+          "fixture": "catalogue-distortion",
+          "backend": "canvas2d",
+          "frames": 32,
+          "repeatedMp4": "byte-identical",
+          "independentPreviewMp4": "byte-identical",
+          "rawPngTransport": "byte-identical"
+        },
+        {
+          "fixture": "catalogue-distortion",
+          "backend": "webgl2",
+          "frames": 32,
+          "repeatedMp4": "byte-identical",
+          "independentPreviewMp4": "byte-identical",
+          "rawPngTransport": "byte-identical"
+        },
+        {
+          "fixture": "catalogue-stylize-light",
+          "frames": 32,
+          "reverseFrames": 32,
+          "randomSeeks": 11,
+          "maxDelta": 1,
+          "sampleCounts": {
+            "0": 1,
+            "1": 1,
+            "2": 1,
+            "3": 1,
+            "4": 1,
+            "5": 1,
+            "6": 1,
+            "7": 1,
+            "8": 1,
+            "9": 1,
+            "10": 1,
+            "11": 1,
+            "12": 1,
+            "13": 1,
+            "14": 1,
+            "15": 1,
+            "16": 1,
+            "17": 1,
+            "18": 1,
+            "19": 1,
+            "20": 1,
+            "21": 1,
+            "22": 1,
+            "23": 1,
+            "24": 1,
+            "25": 1,
+            "26": 1,
+            "27": 1,
+            "28": 1,
+            "29": 1,
+            "30": 1,
+            "31": 1
+          }
+        },
+        {
+          "fixture": "catalogue-stylize-light",
+          "backend": "canvas2d",
+          "frames": 32,
+          "repeatedMp4": "byte-identical",
+          "independentPreviewMp4": "byte-identical",
+          "rawPngTransport": "byte-identical"
+        },
+        {
+          "fixture": "catalogue-stylize-light",
+          "backend": "webgl2",
+          "frames": 32,
+          "repeatedMp4": "byte-identical",
+          "independentPreviewMp4": "byte-identical",
+          "rawPngTransport": "byte-identical"
+        },
+        {
+          "fixture": "catalogue-transition",
+          "frames": 32,
+          "reverseFrames": 32,
+          "randomSeeks": 11,
+          "maxDelta": 1,
+          "sampleCounts": {
+            "0": 1,
+            "1": 1,
+            "2": 1,
+            "3": 1,
+            "4": 1,
+            "5": 1,
+            "6": 1,
+            "7": 1,
+            "8": 1,
+            "9": 1,
+            "10": 1,
+            "11": 1,
+            "12": 1,
+            "13": 1,
+            "14": 1,
+            "15": 1,
+            "16": 1,
+            "17": 1,
+            "18": 1,
+            "19": 1,
+            "20": 1,
+            "21": 1,
+            "22": 1,
+            "23": 1,
+            "24": 1,
+            "25": 1,
+            "26": 1,
+            "27": 1,
+            "28": 1,
+            "29": 1,
+            "30": 1,
+            "31": 1
+          }
+        },
+        {
+          "fixture": "catalogue-transition",
+          "backend": "canvas2d",
+          "frames": 32,
+          "repeatedMp4": "byte-identical",
+          "independentPreviewMp4": "byte-identical",
+          "rawPngTransport": "byte-identical"
+        },
+        {
+          "fixture": "catalogue-transition",
+          "backend": "webgl2",
+          "frames": 32,
+          "repeatedMp4": "byte-identical",
+          "independentPreviewMp4": "byte-identical",
+          "rawPngTransport": "byte-identical"
+        },
+        {
+          "fixture": "catalogue-history-linear",
+          "frames": 32,
+          "reverseFrames": 32,
+          "randomSeeks": 11,
+          "maxDelta": 0,
+          "sampleCounts": {
+            "0": 1,
+            "1": 1,
+            "2": 1,
+            "3": 1,
+            "4": 1,
+            "5": 1,
+            "6": 1,
+            "7": 1,
+            "8": 1,
+            "9": 1,
+            "10": 1,
+            "11": 1,
+            "12": 1,
+            "13": 1,
+            "14": 1,
+            "15": 1,
+            "16": 1,
+            "17": 1,
+            "18": 1,
+            "19": 1,
+            "20": 1,
+            "21": 1,
+            "22": 1,
+            "23": 1,
+            "24": 1,
+            "25": 1,
+            "26": 1,
+            "27": 1,
+            "28": 1,
+            "29": 1,
+            "30": 1,
+            "31": 1
+          }
+        },
+        {
+          "fixture": "catalogue-history-linear",
+          "backend": "canvas2d",
+          "frames": 32,
+          "repeatedMp4": "byte-identical",
+          "independentPreviewMp4": "byte-identical",
+          "rawPngTransport": "byte-identical"
+        },
+        {
+          "fixture": "catalogue-history-linear",
+          "backend": "webgl2",
+          "frames": 32,
+          "repeatedMp4": "byte-identical",
+          "independentPreviewMp4": "byte-identical",
+          "rawPngTransport": "byte-identical"
+        }
+      ],
+      "hardware": {
+        "environments": [
+          {
+            "profile": "chromium-software-2",
+            "browserVersion": "151.0.7922.34",
+            "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+            "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+            "platform": "darwin",
+            "arch": "arm64"
+          },
+          {
+            "profile": "hardware",
+            "browserVersion": "151.0.7922.34",
+            "webglRenderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M5 Pro, Unspecified Version)",
+            "rasterFingerprint": "sha256:1635aedc2b987dcd5c74dce4b4098aff37754174c33461d6f626c9dcad69e4a9",
+            "platform": "darwin",
+            "arch": "arm64"
+          }
+        ],
+        "tier": "unchanged perceptual hardware policy",
+        "comparisons": 36,
+        "reports": [
+          {
+            "fixture": "catalogue-color",
+            "backend": "canvas2d",
+            "frame": 0,
+            "tier": "exact",
+            "maxDelta": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "catalogue-color",
+            "backend": "canvas2d",
+            "frame": 16,
+            "tier": "perceptual",
+            "maxDelta": 23,
+            "psnr": 56.7237159293575,
+            "ssim": 0.9999955063366466
+          },
+          {
+            "fixture": "catalogue-color",
+            "backend": "canvas2d",
+            "frame": 31,
+            "tier": "exact",
+            "maxDelta": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "catalogue-color",
+            "backend": "webgl2",
+            "frame": 0,
+            "tier": "exact",
+            "maxDelta": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "catalogue-color",
+            "backend": "webgl2",
+            "frame": 16,
+            "tier": "perceptual",
+            "maxDelta": 23,
+            "psnr": 56.7237159293575,
+            "ssim": 0.9999955064140807
+          },
+          {
+            "fixture": "catalogue-color",
+            "backend": "webgl2",
+            "frame": 31,
+            "tier": "exact",
+            "maxDelta": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "catalogue-blur",
+            "backend": "canvas2d",
+            "frame": 0,
+            "tier": "exact",
+            "maxDelta": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "catalogue-blur",
+            "backend": "canvas2d",
+            "frame": 16,
+            "tier": "exact",
+            "maxDelta": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "catalogue-blur",
+            "backend": "canvas2d",
+            "frame": 31,
+            "tier": "exact",
+            "maxDelta": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "catalogue-blur",
+            "backend": "webgl2",
+            "frame": 0,
+            "tier": "near",
+            "maxDelta": 1,
+            "psnr": 81.11104846392166,
+            "ssim": 0.9999983559362758
+          },
+          {
+            "fixture": "catalogue-blur",
+            "backend": "webgl2",
+            "frame": 16,
+            "tier": "perceptual",
+            "maxDelta": 27,
+            "psnr": 61.31703008919449,
+            "ssim": 0.9999369853232515
+          },
+          {
+            "fixture": "catalogue-blur",
+            "backend": "webgl2",
+            "frame": 31,
+            "tier": "near",
+            "maxDelta": 1,
+            "psnr": 80.96381589571459,
+            "ssim": 0.9999982594430651
+          },
+          {
+            "fixture": "catalogue-distortion",
+            "backend": "canvas2d",
+            "frame": 0,
+            "tier": "perceptual",
+            "maxDelta": 10,
+            "psnr": 58.53536603560896,
+            "ssim": 0.9999539875737717
+          },
+          {
+            "fixture": "catalogue-distortion",
+            "backend": "canvas2d",
+            "frame": 16,
+            "tier": "perceptual",
+            "maxDelta": 41,
+            "psnr": 53.38960252979594,
+            "ssim": 0.9998248427936197
+          },
+          {
+            "fixture": "catalogue-distortion",
+            "backend": "canvas2d",
+            "frame": 31,
+            "tier": "perceptual",
+            "maxDelta": 14,
+            "psnr": 57.32372888809585,
+            "ssim": 0.9999588620361762
+          },
+          {
+            "fixture": "catalogue-distortion",
+            "backend": "webgl2",
+            "frame": 0,
+            "tier": "near",
+            "maxDelta": 1,
+            "psnr": 79.30050167804934,
+            "ssim": 0.9999986591048137
+          },
+          {
+            "fixture": "catalogue-distortion",
+            "backend": "webgl2",
+            "frame": 16,
+            "tier": "perceptual",
+            "maxDelta": 41,
+            "psnr": 54.404112340364144,
+            "ssim": 0.9998516226604469
+          },
+          {
+            "fixture": "catalogue-distortion",
+            "backend": "webgl2",
+            "frame": 31,
+            "tier": "near",
+            "maxDelta": 1,
+            "psnr": 79.36680746703948,
+            "ssim": 0.999998932433649
+          },
+          {
+            "fixture": "catalogue-stylize-light",
+            "backend": "canvas2d",
+            "frame": 0,
+            "tier": "perceptual",
+            "maxDelta": 13,
+            "psnr": 54.60384320701817,
+            "ssim": 0.9991860127168489
+          },
+          {
+            "fixture": "catalogue-stylize-light",
+            "backend": "canvas2d",
+            "frame": 16,
+            "tier": "perceptual",
+            "maxDelta": 11,
+            "psnr": 54.30633874819264,
+            "ssim": 0.999162608174115
+          },
+          {
+            "fixture": "catalogue-stylize-light",
+            "backend": "canvas2d",
+            "frame": 31,
+            "tier": "perceptual",
+            "maxDelta": 12,
+            "psnr": 54.652084933510345,
+            "ssim": 0.999198100217195
+          },
+          {
+            "fixture": "catalogue-stylize-light",
+            "backend": "webgl2",
+            "frame": 0,
+            "tier": "perceptual",
+            "maxDelta": 12,
+            "psnr": 70.12003937061083,
+            "ssim": 0.9999802104111629
+          },
+          {
+            "fixture": "catalogue-stylize-light",
+            "backend": "webgl2",
+            "frame": 16,
+            "tier": "perceptual",
+            "maxDelta": 12,
+            "psnr": 64.2861742600398,
+            "ssim": 0.9999597238176869
+          },
+          {
+            "fixture": "catalogue-stylize-light",
+            "backend": "webgl2",
+            "frame": 31,
+            "tier": "perceptual",
+            "maxDelta": 11,
+            "psnr": 70.74274120007512,
+            "ssim": 0.9999824539650348
+          },
+          {
+            "fixture": "catalogue-transition",
+            "backend": "canvas2d",
+            "frame": 0,
+            "tier": "near",
+            "maxDelta": 1,
+            "psnr": 81.11104846392166,
+            "ssim": 0.9999989813288744
+          },
+          {
+            "fixture": "catalogue-transition",
+            "backend": "canvas2d",
+            "frame": 16,
+            "tier": "perceptual",
+            "maxDelta": 47,
+            "psnr": 56.168542650859195,
+            "ssim": 0.9997403880768468
+          },
+          {
+            "fixture": "catalogue-transition",
+            "backend": "canvas2d",
+            "frame": 31,
+            "tier": "near",
+            "maxDelta": 1,
+            "psnr": 95.73502844291122,
+            "ssim": 0.9999999240955437
+          },
+          {
+            "fixture": "catalogue-transition",
+            "backend": "webgl2",
+            "frame": 0,
+            "tier": "near",
+            "maxDelta": 1,
+            "psnr": 81.11104846392166,
+            "ssim": 0.9999989815695477
+          },
+          {
+            "fixture": "catalogue-transition",
+            "backend": "webgl2",
+            "frame": 16,
+            "tier": "perceptual",
+            "maxDelta": 47,
+            "psnr": 56.181037576518555,
+            "ssim": 0.9997424686582153
+          },
+          {
+            "fixture": "catalogue-transition",
+            "backend": "webgl2",
+            "frame": 31,
+            "tier": "near",
+            "maxDelta": 1,
+            "psnr": 94.48564107682822,
+            "ssim": 0.999999854622665
+          },
+          {
+            "fixture": "catalogue-history-linear",
+            "backend": "canvas2d",
+            "frame": 0,
+            "tier": "exact",
+            "maxDelta": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "catalogue-history-linear",
+            "backend": "canvas2d",
+            "frame": 16,
+            "tier": "perceptual",
+            "maxDelta": 9,
+            "psnr": 55.82838464681566,
+            "ssim": 0.9999476035943671
+          },
+          {
+            "fixture": "catalogue-history-linear",
+            "backend": "canvas2d",
+            "frame": 31,
+            "tier": "perceptual",
+            "maxDelta": 6,
+            "psnr": 60.58158951202741,
+            "ssim": 0.9999615941963063
+          },
+          {
+            "fixture": "catalogue-history-linear",
+            "backend": "webgl2",
+            "frame": 0,
+            "tier": "exact",
+            "maxDelta": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "catalogue-history-linear",
+            "backend": "webgl2",
+            "frame": 16,
+            "tier": "perceptual",
+            "maxDelta": 9,
+            "psnr": 55.82838464681566,
+            "ssim": 0.9999476035943671
+          },
+          {
+            "fixture": "catalogue-history-linear",
+            "backend": "webgl2",
+            "frame": 31,
+            "tier": "perceptual",
+            "maxDelta": 6,
+            "psnr": 60.58158951202741,
+            "ssim": 0.9999615941963063
+          }
+        ]
+      },
+      "baseline": "exact"
+    },
+    "nativeCatalogueLog": "benchmarks/results/composition-ce6-completion/ce6-full-f11a7b7-native-acceptance.json",
+    "hardwareSummary": {
+      "comparisons": 36,
+      "maxDelta": 47,
+      "minPsnr": 53.38960252979594,
+      "minSsim": 0.999162608174115,
+      "tier": "unchanged perceptual hardware policy"
+    },
+    "rasterBoundary": "Native surface effects and Gaussian/feather image filtering run on GPU textures; prepared vectors/text/providers and existing per-draw primitive-blur compatibility use the established Canvas raster boundary"
+  },
+  "delivery": {
+    "branch": "codex/composition-ce6-completion",
+    "base": "codex/composition-ce7",
+    "pullRequest": "pending creation after completion commit",
+    "next": "CE8 on a new branch, followed by CE8-L, CE4c, CE4d, CE13, CE15 and CE14"
+  }
 }

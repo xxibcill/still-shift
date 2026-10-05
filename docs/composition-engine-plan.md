@@ -366,7 +366,7 @@ sign and for time remap. It does not change the layer's composition-time visibil
 | CE4c  | Cinematic adapter                               | A      | CE3, CE8             |                        |                                     | `[ ]`  |                                                                                    |
 | CE4d  | Legacy illustrated adapter and old-path removal | A      | CE4a–CE4c            |                        |                                     | `[ ]`  |                                                                                    |
 | CE5   | Shape layers                                    | B      | CE3                  | Codex                  | `codex/composition-ce5`             | `[x]`  | [evidence](./composition-ce5-results.json)                                         |
-| CE6   | WebGL2 backend and effect registry              | B      | CE3                  | xxibcill (Claude Code) | `codex/composition-ce6-completion`  | `[~]`  | [CE6 performance slice 1](#ce6-performance-slice-1-exact-effect-work-2026-10-03)   |
+| CE6   | WebGL2 backend and effect registry              | B      | CE3                  | xxibcill (Claude Code) | `codex/composition-ce6-completion`  | `[x]`  | [CE6 completion](#ce6-completion-record-2026-10-06)                                |
 | CE6-P | WebGL performance acceptance                    | Future | CE6                  |                        |                                     | `[d]`  | [Performance deferral](#ce6-p--deferred-webgl-performance-acceptance)              |
 | CE7   | Motion blur and time controls                   | B      | CE3                  | Codex                  | `codex/composition-ce7`             | `[x]`  | [evidence](./composition-ce7-results.json)                                         |
 | CE8   | 2.5D layers and unified camera                  | B      | CE3, CE6, CE9        |                        |                                     | `[ ]`  |                                                                                    |
@@ -3034,12 +3034,12 @@ type EffectDefinition<P> = {
 
 ### Checklist
 
-- [ ] WebGL2 backend implementing the CE3 backend interface: texture per surface,
+- [x] WebGL2 backend implementing the CE3 backend interface: texture per surface,
       FBO pool, premultiplied alpha, all blend modes in shaders, luma mattes,
       feathered masks via distance field or blur.
-- [ ] Effect registry with the interface above; effects are addressable by property
+- [x] Effect registry with the interface above; effects are addressable by property
       path (`layer.effects[id].param`).
-- [ ] Initial effects (each with tests and a reference render):
+- [x] Initial effects (each with tests and a reference render):
   - Blur: gaussian (separable), directional, radial/zoom, camera lens blur (shared
     with CE8 depth of field).
   - Light: glow, drop shadow, inner shadow, light sweep, background light.
@@ -3051,24 +3051,24 @@ type EffectDefinition<P> = {
     chromatic aberration, echo.
   - Transitions: linear wipe, radial wipe, venetian blinds, block dissolve (seeded),
     gradient wipe.
-- [ ] Port every commerce effect (`motion-blur`, `directional-blur`, `overshoot`,
+- [x] Port every commerce effect (`motion-blur`, `directional-blur`, `overshoot`,
       `drift`, `height-shadow`, `focus-blur`, `parallax`, `light-sweep`, `glow`, `echo`,
       `grain`, `particles`, `background-light`, `displacement`). Motion-type commerce
       "effects" (overshoot, drift, parallax) become behaviours (CE9) or drivers, not
       pixel effects.
-- [ ] Optional linear-light compositing (`colorSpace: "linear-srgb"`).
-- [ ] Apply the [GPU determinism policy](#gpu-determinism-policy) to the WebGL2
+- [x] Optional linear-light compositing (`colorSpace: "linear-srgb"`).
+- [x] Apply the [GPU determinism policy](#gpu-determinism-policy) to the WebGL2
       backend: export and tests run on pinned SwiftShader; the Lab may use a hardware
       GPU and shows which renderer is active.
-- [ ] Avoid avoidable nondeterminism even on software rendering: fixed summation order
+- [x] Avoid avoidable nondeterminism even on software rendering: fixed summation order
       in multi-pass effects, no reliance on driver-specific precision qualifiers, seeded
       noise computed in shaders from integer hashes rather than `sin`-based tricks.
-- [ ] Record SwiftShader render cost per effect at 1920×1080 and representative
+- [x] Record SwiftShader render cost per effect at 1920×1080 and representative
       parameters, so heavy effects have visible budgets.
-- [ ] Backend parity suite: native `composition-1` fixtures covering the implemented
+- [x] Backend parity suite: native `composition-1` fixtures covering the implemented
       effects and layer features supported by both backends meet their recorded tiers.
       Family-fixture comparisons belong to CE4b/CE4c after their adapters are available.
-- [ ] Preview parity suite: on a machine with a hardware GPU, native-composition
+- [x] Preview parity suite: on a machine with a hardware GPU, native-composition
       preview frames match export within each fixture's tier.
 - [d] Moved to [CE6-P](#ce6-p--deferred-webgl-performance-acceptance): close the CE4b performance requirement transferred by the user's
   2026-10-03 scope decision: retain the **1.25×** legacy render/readback target
@@ -3092,6 +3092,33 @@ do not require future family adapters.
 
 **Verification:** Per-effect pixel tests at several parameter values, bounds expansion
 tests, backend parity suite, repeated-export determinism test.
+
+### CE6 completion record (2026-10-06)
+
+Complete on `codex/composition-ce6-completion`, runtime `4cd8a8d`, final code/test
+checkpoint `f11a7b7`. All 39 native effects, paired plugin callbacks, bounded
+animated controls/version identity, scoped inputs, captured adjustment history,
+GPU Gaussian/feather filtering and optional linear-light compositing are delivered.
+Linear blending uses quantized transfer boundaries; surfaces remain encoded
+premultiplied RGBA8 rather than persistent floating linear images.
+Existing per-draw primitive-blur compatibility retains CPU raster preparation;
+native surface filtering and transformed feather filtering run on GPU textures.
+
+The complete local `pnpm check` passes 1,712 unit, 46 runtime, 139 integration,
+14 depth tests, every required browser group and all 176 frozen baselines / 36,061
+frames without regeneration. Full Canvas matrices pass their existing pixel/timing
+policy: 69 story cases / 14,086 frames, 127 commerce / 28,200 frames and 20 typography
+cases / 3,367 frames. Full WebGL family matrices were not rerun; speed acceptance
+remains deferred to CE6-P.
+
+Six 32-frame native scenes cover every builtin. 384 forward hashes, 384 reverse
+checks and 132 random seeks meet software delta 1; 24 production exports and 12
+independent encodes agree. All 36 actual Apple GPU comparisons pass the unchanged
+perceptual policy (maximum delta 47, minimum PSNR 53.39 dB, SSIM 0.99916). The 78
+serial 1080p cold/warm cost rows are recorded. Earlier format/contract failures
+and rejected renderer experiments remain documented; no thresholds changed.
+Create the CE6 PR against CE7, then begin CE8 on a new branch.
+[Evidence](./composition-ce6-completion-results.json).
 
 ### CE6 current-version completion checkpoint (2026-10-06)
 
@@ -3481,8 +3508,8 @@ CE6 PR remain. [Evidence](./composition-ce6-completion-results.json).
   approach or explicitly revises acceptance. No CPU/GPU hybrid, default backend
   switch, GPU policy change or baseline regeneration is authorized by this deferral.
 
-**Completion record:** CE6 feature work remains incomplete; performance acceptance
-is deferred to CE6-P rather than completed.
+**Completion record:** CE6 feature work is complete; performance acceptance
+remains deferred to CE6-P.
 
 ---
 
