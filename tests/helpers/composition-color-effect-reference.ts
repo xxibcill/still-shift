@@ -8,6 +8,33 @@ type EffectParams = NonNullable<
   NonNullable<CompositionLayer["effects"]>[number]["params"]
 >;
 const variants: Readonly<Record<string, EffectParams[]>> = {
+  "color.curves": [
+    {},
+    {
+      curve: [
+        [0, 0],
+        [0.25, 0.6],
+        [0.75, 0.3],
+        [1, 1],
+      ],
+      amount: 0.8,
+    },
+    {
+      curve: [
+        [0, 0],
+        {
+          x: 0.5,
+          y: {
+            keys: [
+              { frame: 0, value: 0.1 },
+              { frame: 11, value: 0.9 },
+            ],
+          },
+        },
+        [1, 1],
+      ],
+    },
+  ],
   "color.levels": [
     {},
     {
@@ -353,7 +380,9 @@ export async function checkColorEffectRendering() {
 }
 
 /** All 32,895 valid nonzero-alpha premultiplied byte pairs cross real Canvas/GPU stages. */
-export function checkColorEffectByteRounding() {
+function byteEffectCases(
+  cases: { effect: string; label: string; params: EffectParams }[],
+) {
   const tile = document.createElement("canvas");
   tile.width = tile.height = 256;
   const context = tile.getContext("2d", { willReadFrequently: true })!;
@@ -371,8 +400,8 @@ export function checkColorEffectByteRounding() {
     images: new Map<string, CanvasImageSource>([["tile", tile]]),
     fonts: new Map(),
   };
-  const rows: { levels: number; maxDelta: number; psnr: number }[] = [];
-  for (const levels of [2, 3, 6, 10, 16, 256]) {
+  const rows: { label: string; maxDelta: number; psnr: number }[] = [];
+  for (const { effect, label, params } of cases) {
     const composition: Composition = {
       schemaVersion: "composition-1",
       id: "byte-rounding",
@@ -399,9 +428,7 @@ export function checkColorEffectByteRounding() {
           size: [256, 256],
           fit: "stretch",
           transform: { anchor: [0, 0] },
-          effects: [
-            { id: "quantize", effect: "color.posterize", params: { levels } },
-          ],
+          effects: [{ id: "quantize", effect, params }],
         },
       ],
     };
@@ -431,12 +458,65 @@ export function checkColorEffectByteRounding() {
           : 10 * Math.log10((255 * 255) / (squared / frames[0]!.length));
       if (maxDelta > 2 || psnr < 50)
         throw Error(
-          `Color byte-rounding at ${levels} levels: delta ${maxDelta}, PSNR ${psnr}`,
+          `Color byte-rounding ${label}: delta ${maxDelta}, PSNR ${psnr}`,
         );
-      rows.push({ levels, maxDelta, psnr });
+      rows.push({ label, maxDelta, psnr });
     } finally {
       for (const preview of previews) preview.dispose();
     }
   }
   return { pairs: 32895, rows };
+}
+
+export function checkColorEffectByteRounding() {
+  const result = byteEffectCases(
+    [2, 3, 6, 10, 16, 256].map((levels) => ({
+      effect: "color.posterize",
+      label: String(levels),
+      params: { levels },
+    })),
+  );
+  return {
+    pairs: result.pairs,
+    rows: result.rows.map(({ label, ...row }) => ({
+      levels: Number(label),
+      ...row,
+    })),
+  };
+}
+export function checkColorCurveByteRounding() {
+  return byteEffectCases([
+    { effect: "color.curves", label: "identity", params: {} },
+    {
+      effect: "color.curves",
+      label: "invert",
+      params: {
+        curve: [
+          [0, 1],
+          [1, 0],
+        ],
+      },
+    },
+    {
+      effect: "color.curves",
+      label: "tight-control-points",
+      params: {
+        curve: [
+          [0, 0],
+          [128 / 255 - 1e-12, 0.1],
+          [128 / 255, 0.9],
+          [128 / 255 + 1e-12, 0.1],
+          [1, 1],
+        ],
+      },
+    },
+    {
+      effect: "color.curves",
+      label: "sixteen-points",
+      params: {
+        curve: Array.from({ length: 16 }, (_, i) => [i / 15, i % 2]),
+        amount: 0.8,
+      },
+    },
+  ]);
 }

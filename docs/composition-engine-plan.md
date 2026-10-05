@@ -3119,13 +3119,28 @@ actual GPU shaders and Canvas reference equations. Native acceptance passes
 and three parameter sets per effect, including animation. The maximum backend
 delta is 1, minimum PSNR 64.97 dB and all 3,402 seeks are unchanged. All 32,895
 valid byte/alpha pairs are exact at six posterize level counts. An initial
-antialiased-text posterize failure (delta 10) exposed platform reciprocal rounding;
+antialiased-text posterize failure (delta 10) exposed platform unpremultiplication rounding;
 both adapters now use explicit premultiplied-byte reconstruction and half-up
 quantization. No threshold or frozen baseline changed. 150 focused tests,
 build/lint/schema/boundaries pass. Curves and the remaining catalogue/dependencies,
 linear-light composition and complete hardware/hash/export/cost/full-gate
 acceptance remain. [Evidence](./composition-ce6-completion-results.json) and
 [conventions](./composition-effect-plugins.md).
+
+### CE6 animated curves checkpoint (2026-10-06)
+
+Curves support 2–16 bounded ordered controls, fixed whole-key topology and
+individually animated points. Point paths, drivers/expressions, sibling-preserving
+builder edits/baking and inspector value/speed graphs pass focused checks.
+Ordering is checked after the final expression stage. The GPU transforms image
+pixels with a control-derived 256-entry table; Canvas evaluates the independent
+piecewise equation. Ten color effects pass 270 native cases / 3,240 frames and
+3,780 seeks, maximum delta 1 and minimum PSNR 64.97 dB. Exhaustive 32,895 byte/
+alpha pairs are exact for four curves, including tightly spaced and sixteen-point
+controls, and six posterize cases. 246 focused tests and build/lint/schema/
+boundaries pass. Remaining catalogue/dependencies, linear-light and complete
+hardware/hash/export/cost/full-gate acceptance remain; thresholds and frozen
+baselines are unchanged. [Evidence](./composition-ce6-completion-results.json).
 
 ### CE6 performance slice 1: exact effect work (2026-10-03)
 

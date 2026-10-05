@@ -261,6 +261,34 @@ export function vector(
   ) as Point;
 }
 
+/** Stable-topology color curve points, keyed together or with per-point numeric clocks. */
+export function effectCurve(
+  value: unknown,
+  time: number,
+  fps: number,
+  fallback: readonly (readonly [number, number])[],
+): Point[] {
+  if (Array.isArray(value))
+    return value.map((point, i) =>
+      vector(point, time, fps, [...(fallback[i] ?? [0, 0])]),
+    );
+  if (!isKeyed(value)) return fallback.map((point) => [...point]);
+  const first = value.keys[0]!.value as Point[];
+  return first.map(
+    (_, point) =>
+      [0, 1].map((axis) =>
+        channel(
+          value,
+          value.keys,
+          `curve${point}.${axis}`,
+          (key) => (key.value as Point[])[point]![axis]!,
+          time,
+          fps,
+        ),
+      ) as Point,
+  );
+}
+
 export function color(value: unknown, time: number, fps: number): Rgba {
   if (typeof value === "string") return rgba(value);
   const keyed = value as Keyed<string>;

@@ -27,6 +27,8 @@ export const COMPOSITION_DIAGNOSTICS = {
     "Effect scratch textures and output must belong to the current callback and meet size/budget constraints.",
   "comp-effect-version":
     "Registered effect versions differ from the captured export snapshot.",
+  "comp-effect-curve":
+    "Evaluated color curve points must be bounded, ordered and span the input domain.",
   "comp-effect-bounds":
     "An effect bounds callback failed or returned a non-finite/reversed rectangle.",
   // Keys and animated values

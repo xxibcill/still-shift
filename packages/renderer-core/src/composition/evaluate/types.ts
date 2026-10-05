@@ -15,7 +15,7 @@ export type Bounds = {
   right: number;
   bottom: number;
 };
-export type PropertyValue = number | Point | Rgba | BezierPath;
+export type PropertyValue = number | Point | Rgba | BezierPath | Point[];
 export type EvaluatedTransform = {
   anchor: Point;
   position: Point;

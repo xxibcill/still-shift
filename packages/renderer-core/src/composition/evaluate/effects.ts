@@ -1,8 +1,9 @@
 import {
   compositionEffectDefinition,
+  effectCurveIssue,
   type CompositionLayer,
 } from "@still-shift/scene-contract";
-import { scalar, vector, color, unit } from "./sample.ts";
+import { scalar, vector, color, unit, effectCurve } from "./sample.ts";
 import type { Bounds, Rgba } from "./types.ts";
 import type { Point } from "../../node-transform.ts";
 import {
@@ -17,7 +18,7 @@ export type EvaluatedEffect = {
   version?: string;
   enabled: boolean;
   space?: string;
-  params: Record<string, number | Rgba | Point>;
+  params: Record<string, number | Rgba | Point | Point[]>;
 };
 
 export function sampleEffects(
@@ -40,13 +41,15 @@ export function sampleEffects(
       params: Object.fromEntries(
         Object.entries(definition.properties).map(([name, property]) => [
           name,
-          property.type === "color"
-            ? color(effect.params?.[name] ?? property.default, keyTime, fps)
-            : property.type === "vec2"
-              ? vector(effect.params?.[name], keyTime, fps, [
-                  ...property.default,
-                ])
-              : scalar(effect.params?.[name], keyTime, fps, property.default),
+          property.type === "curve"
+            ? effectCurve(effect.params?.[name], keyTime, fps, property.default)
+            : property.type === "color"
+              ? color(effect.params?.[name] ?? property.default, keyTime, fps)
+              : property.type === "vec2"
+                ? vector(effect.params?.[name], keyTime, fps, [
+                    ...property.default,
+                  ])
+                : scalar(effect.params?.[name], keyTime, fps, property.default),
         ]),
       ),
     };
@@ -59,7 +62,12 @@ export function clampEffects(effects: EvaluatedEffect[]) {
     for (const [name, property] of Object.entries(
       compositionEffectDefinition(effect.effect)!.properties,
     )) {
-      if (property.type === "color")
+      if (property.type === "curve") {
+        const points = (effect.params[name] as Point[]).map(
+          (point) => point.map(unit) as Point,
+        );
+        effect.params[name] = points;
+      } else if (property.type === "color")
         effect.params[name] = (effect.params[name] as Rgba).map(unit) as Rgba;
       else if (property.type === "vec2")
         effect.params[name] = (effect.params[name] as Point).map((value) =>
@@ -72,6 +80,25 @@ export function clampEffects(effects: EvaluatedEffect[]) {
           Math.min(property.max, property.integer ? Math.round(value) : value),
         );
       }
+    }
+}
+
+/** Validate cross-point invariants after the complete driver/expression stage. */
+export function validateEffectCurves(
+  effects: EvaluatedEffect[],
+  location: Pick<PassageDiagnostic, "node" | "path" | "frame">,
+) {
+  for (const effect of effects)
+    for (const [name, property] of Object.entries(
+      compositionEffectDefinition(effect.effect)!.properties,
+    )) {
+      if (property.type !== "curve") continue;
+      const issue = effectCurveIssue(effect.params[name] as Point[]);
+      if (issue)
+        passageError("comp-effect-curve", issue, {
+          ...location,
+          path: `${location.path ?? "layer"}.effects[${effect.id}].${name}`,
+        });
     }
 }
 

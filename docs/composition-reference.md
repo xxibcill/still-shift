@@ -670,72 +670,74 @@ Identifiers: `time`, `frame`, `value`, `index`, `layerCount`, `fps`. Components:
 
 ## Generated effect registry
 
-| Effect                      | Property         | Type   | Default   | Range                     |
-| --------------------------- | ---------------- | ------ | --------- | ------------------------- |
-| `color.levels`              | `inputBlack`     | scalar | `0`       | 0–1                       |
-| `color.levels`              | `inputWhite`     | scalar | `1`       | 0–1                       |
-| `color.levels`              | `gamma`          | scalar | `1`       | 0.05–10                   |
-| `color.levels`              | `outputBlack`    | scalar | `0`       | 0–1                       |
-| `color.levels`              | `outputWhite`    | scalar | `1`       | 0–1                       |
-| `color.tint`                | `black`          | color  | `#000000` | colour                    |
-| `color.tint`                | `white`          | color  | `#ffffff` | colour                    |
-| `color.tint`                | `amount`         | scalar | `1`       | 0–1                       |
-| `color.hue-saturation`      | `hue`            | scalar | `0`       | -36000–36000              |
-| `color.hue-saturation`      | `saturation`     | scalar | `0`       | -100–100                  |
-| `color.hue-saturation`      | `lightness`      | scalar | `0`       | -100–100                  |
-| `color.exposure`            | `exposure`       | scalar | `0`       | -20–20                    |
-| `color.exposure`            | `offset`         | scalar | `0`       | -1–1                      |
-| `color.exposure`            | `gamma`          | scalar | `1`       | 0.05–10                   |
-| `color.brightness-contrast` | `brightness`     | scalar | `0`       | -1–1                      |
-| `color.brightness-contrast` | `contrast`       | scalar | `0`       | -1–1                      |
-| `color.fill`                | `color`          | color  | `#ffffff` | colour                    |
-| `color.fill`                | `amount`         | scalar | `1`       | 0–1                       |
-| `color.gradient-ramp`       | `start`          | vec2   | `[0,0]`   | -1000000–1000000 per axis |
-| `color.gradient-ramp`       | `end`            | vec2   | `[100,0]` | -1000000–1000000 per axis |
-| `color.gradient-ramp`       | `startColor`     | color  | `#000000` | colour                    |
-| `color.gradient-ramp`       | `endColor`       | color  | `#ffffff` | colour                    |
-| `color.gradient-ramp`       | `amount`         | scalar | `1`       | 0–1                       |
-| `color.invert`              | `amount`         | scalar | `1`       | 0–1                       |
-| `color.posterize`           | `levels`         | scalar | `8`       | 2–256 (integer)           |
-| `blur.primitive`            | `radius`         | scalar | `0`       | 0–1000                    |
-| `time.echo`                 | `spacing`        | scalar | `1`       | 1–120                     |
-| `time.echo`                 | `count`          | scalar | `3`       | 1–8 (integer)             |
-| `time.echo`                 | `decay`          | scalar | `0.5`     | 0–1                       |
-| `time.echo`                 | `skipUnchanged`  | scalar | `0`       | 0–1 (integer)             |
-| `time.echo`                 | `sourceRevision` | scalar | `0`       | 0–1000000 (integer)       |
-| `light.sweep`               | `width`          | scalar | `100`     | 0–1000000                 |
-| `light.sweep`               | `height`         | scalar | `100`     | 0–1000000                 |
-| `light.sweep`               | `left`           | scalar | `0`       | 0–1                       |
-| `light.sweep`               | `top`            | scalar | `0`       | 0–1                       |
-| `light.sweep`               | `regionWidth`    | scalar | `1`       | 0.001–1                   |
-| `light.sweep`               | `regionHeight`   | scalar | `1`       | 0.001–1                   |
-| `light.sweep`               | `band`           | scalar | `0.1`     | 0.001–1                   |
-| `light.sweep`               | `progress`       | scalar | `0`       | 0–1                       |
-| `light.sweep`               | `strength`       | scalar | `0.5`     | 0–1                       |
-| `light.radial`              | `x`              | scalar | `0`       | -1000000–1000000          |
-| `light.radial`              | `y`              | scalar | `0`       | -1000000–1000000          |
-| `light.radial`              | `radius`         | scalar | `100`     | 0.01–10000                |
-| `light.radial`              | `strength`       | scalar | `1`       | 0–1                       |
-| `light.radial`              | `color`          | color  | `#ffffff` | colour                    |
-| `particles.rise`            | `count`          | scalar | `20`      | 1–100 (integer)           |
-| `particles.rise`            | `radius`         | scalar | `2`       | 0.01–100                  |
-| `particles.rise`            | `opacity`        | scalar | `0.5`     | 0–1                       |
-| `particles.rise`            | `seed`           | scalar | `1`       | 0–2147483647 (integer)    |
-| `particles.rise`            | `progress`       | scalar | `0`       | 0–1000                    |
-| `particles.rise`            | `color`          | color  | `#ffffff` | colour                    |
-| `stylize.grain`             | `amount`         | scalar | `0`       | 0–1                       |
-| `stylize.grain`             | `seed`           | scalar | `1`       | 0–2147483647 (integer)    |
-| `stylize.grain`             | `evolution`      | scalar | `0`       | -216000–216000            |
-| `blur.gaussian`             | `radius`         | scalar | `0`       | 0–1000                    |
-| `blur.directional`          | `length`         | scalar | `0`       | 0–1000                    |
-| `blur.directional`          | `angle`          | scalar | `0`       | -36000–36000              |
-| `blur.directional`          | `samples`        | scalar | `8`       | 2–64 (integer)            |
-| `light.glow`                | `radius`         | scalar | `0`       | 0–1000                    |
-| `light.glow`                | `intensity`      | scalar | `1`       | 0–1                       |
-| `light.glow`                | `threshold`      | scalar | `0`       | 0–1                       |
-| `distort.sine`              | `amount`         | scalar | `0`       | -1000–1000                |
-| `distort.sine`              | `wavelength`     | scalar | `100`     | 1–100000                  |
-| `distort.sine`              | `phase`          | scalar | `0`       | -1000000–1000000          |
+| Effect                      | Property         | Type   | Default         | Range                                        |
+| --------------------------- | ---------------- | ------ | --------------- | -------------------------------------------- |
+| `color.curves`              | `curve`          | curve  | `[[0,0],[1,1]]` | 2–16 ordered points; x/y 0–1; endpoint x 0/1 |
+| `color.curves`              | `amount`         | scalar | `1`             | 0–1                                          |
+| `color.levels`              | `inputBlack`     | scalar | `0`             | 0–1                                          |
+| `color.levels`              | `inputWhite`     | scalar | `1`             | 0–1                                          |
+| `color.levels`              | `gamma`          | scalar | `1`             | 0.05–10                                      |
+| `color.levels`              | `outputBlack`    | scalar | `0`             | 0–1                                          |
+| `color.levels`              | `outputWhite`    | scalar | `1`             | 0–1                                          |
+| `color.tint`                | `black`          | color  | `#000000`       | colour                                       |
+| `color.tint`                | `white`          | color  | `#ffffff`       | colour                                       |
+| `color.tint`                | `amount`         | scalar | `1`             | 0–1                                          |
+| `color.hue-saturation`      | `hue`            | scalar | `0`             | -36000–36000                                 |
+| `color.hue-saturation`      | `saturation`     | scalar | `0`             | -100–100                                     |
+| `color.hue-saturation`      | `lightness`      | scalar | `0`             | -100–100                                     |
+| `color.exposure`            | `exposure`       | scalar | `0`             | -20–20                                       |
+| `color.exposure`            | `offset`         | scalar | `0`             | -1–1                                         |
+| `color.exposure`            | `gamma`          | scalar | `1`             | 0.05–10                                      |
+| `color.brightness-contrast` | `brightness`     | scalar | `0`             | -1–1                                         |
+| `color.brightness-contrast` | `contrast`       | scalar | `0`             | -1–1                                         |
+| `color.fill`                | `color`          | color  | `#ffffff`       | colour                                       |
+| `color.fill`                | `amount`         | scalar | `1`             | 0–1                                          |
+| `color.gradient-ramp`       | `start`          | vec2   | `[0,0]`         | -1000000–1000000 per axis                    |
+| `color.gradient-ramp`       | `end`            | vec2   | `[100,0]`       | -1000000–1000000 per axis                    |
+| `color.gradient-ramp`       | `startColor`     | color  | `#000000`       | colour                                       |
+| `color.gradient-ramp`       | `endColor`       | color  | `#ffffff`       | colour                                       |
+| `color.gradient-ramp`       | `amount`         | scalar | `1`             | 0–1                                          |
+| `color.invert`              | `amount`         | scalar | `1`             | 0–1                                          |
+| `color.posterize`           | `levels`         | scalar | `8`             | 2–256 (integer)                              |
+| `blur.primitive`            | `radius`         | scalar | `0`             | 0–1000                                       |
+| `time.echo`                 | `spacing`        | scalar | `1`             | 1–120                                        |
+| `time.echo`                 | `count`          | scalar | `3`             | 1–8 (integer)                                |
+| `time.echo`                 | `decay`          | scalar | `0.5`           | 0–1                                          |
+| `time.echo`                 | `skipUnchanged`  | scalar | `0`             | 0–1 (integer)                                |
+| `time.echo`                 | `sourceRevision` | scalar | `0`             | 0–1000000 (integer)                          |
+| `light.sweep`               | `width`          | scalar | `100`           | 0–1000000                                    |
+| `light.sweep`               | `height`         | scalar | `100`           | 0–1000000                                    |
+| `light.sweep`               | `left`           | scalar | `0`             | 0–1                                          |
+| `light.sweep`               | `top`            | scalar | `0`             | 0–1                                          |
+| `light.sweep`               | `regionWidth`    | scalar | `1`             | 0.001–1                                      |
+| `light.sweep`               | `regionHeight`   | scalar | `1`             | 0.001–1                                      |
+| `light.sweep`               | `band`           | scalar | `0.1`           | 0.001–1                                      |
+| `light.sweep`               | `progress`       | scalar | `0`             | 0–1                                          |
+| `light.sweep`               | `strength`       | scalar | `0.5`           | 0–1                                          |
+| `light.radial`              | `x`              | scalar | `0`             | -1000000–1000000                             |
+| `light.radial`              | `y`              | scalar | `0`             | -1000000–1000000                             |
+| `light.radial`              | `radius`         | scalar | `100`           | 0.01–10000                                   |
+| `light.radial`              | `strength`       | scalar | `1`             | 0–1                                          |
+| `light.radial`              | `color`          | color  | `#ffffff`       | colour                                       |
+| `particles.rise`            | `count`          | scalar | `20`            | 1–100 (integer)                              |
+| `particles.rise`            | `radius`         | scalar | `2`             | 0.01–100                                     |
+| `particles.rise`            | `opacity`        | scalar | `0.5`           | 0–1                                          |
+| `particles.rise`            | `seed`           | scalar | `1`             | 0–2147483647 (integer)                       |
+| `particles.rise`            | `progress`       | scalar | `0`             | 0–1000                                       |
+| `particles.rise`            | `color`          | color  | `#ffffff`       | colour                                       |
+| `stylize.grain`             | `amount`         | scalar | `0`             | 0–1                                          |
+| `stylize.grain`             | `seed`           | scalar | `1`             | 0–2147483647 (integer)                       |
+| `stylize.grain`             | `evolution`      | scalar | `0`             | -216000–216000                               |
+| `blur.gaussian`             | `radius`         | scalar | `0`             | 0–1000                                       |
+| `blur.directional`          | `length`         | scalar | `0`             | 0–1000                                       |
+| `blur.directional`          | `angle`          | scalar | `0`             | -36000–36000                                 |
+| `blur.directional`          | `samples`        | scalar | `8`             | 2–64 (integer)                               |
+| `light.glow`                | `radius`         | scalar | `0`             | 0–1000                                       |
+| `light.glow`                | `intensity`      | scalar | `1`             | 0–1                                          |
+| `light.glow`                | `threshold`      | scalar | `0`             | 0–1                                          |
+| `distort.sine`              | `amount`         | scalar | `0`             | -1000–1000                                   |
+| `distort.sine`              | `wavelength`     | scalar | `100`           | 1–100000                                     |
+| `distort.sine`              | `phase`          | scalar | `0`             | -1000000–1000000                             |
 
 Blend modes: `normal`, `multiply`, `screen`, `overlay`, `darken`, `lighten`, `color-dodge`, `color-burn`, `hard-light`, `soft-light`, `difference`, `exclusion`, `hue`, `saturation`, `color`, `luminosity`, `add`.
 
@@ -903,6 +905,7 @@ Schema validation yields stable codes with JSON paths; builder input also yields
 | `comp-effect-registration`         | Effect registration requires a unique ID, valid definition and GPU callback.                             |
 | `comp-effect-surface`              | Effect scratch textures and output must belong to the current callback and meet size/budget constraints. |
 | `comp-effect-version`              | Registered effect versions differ from the captured export snapshot.                                     |
+| `comp-effect-curve`                | Evaluated color curve points must be bounded, ordered and span the input domain.                         |
 | `comp-effect-bounds`               | An effect bounds callback failed or returned a non-finite/reversed rectangle.                            |
 | `comp-key-order`                   | Key frames are not strictly increasing.                                                                  |
 | `comp-sample-time-order`           | Baked sample times are not strictly increasing.                                                          |

@@ -12,6 +12,8 @@ type Parameters = RenderEffect["params"];
 export type GpuEffectContext = {
   createSurface(width: number, height: number): WebglSurface;
   releaseSurface(surface: WebglSurface): void;
+  /** Upload deterministic byte control data or premultiplied color bytes to an owned texture. */
+  uploadBytes(surface: WebglSurface, bytes: Uint8Array<ArrayBuffer>): void;
   /** Premultiplied top-left textures; source/backdrop/coverage/inputN sampler names. */
   pass(
     fragment: string,
@@ -141,6 +143,14 @@ export function renderGpuEffect(
     const context: GpuEffectContext = {
       createSurface: surfaces.create,
       releaseSurface: surfaces.remove,
+      uploadBytes(surface, bytes) {
+        surfaces.require(surface);
+        if (bytes.length !== surface.width * surface.height * 4)
+          throw Error(
+            "comp-effect-surface: uploaded bytes must match surface dimensions",
+          );
+        device.uploadBytes(surface, bytes);
+      },
       pass(fragment, output, inputs, uniforms) {
         surfaces.require(output);
         for (const source of inputs) {

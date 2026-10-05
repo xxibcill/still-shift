@@ -44,15 +44,16 @@ still hold before relying on them.
 ## Current state
 
 - **CE6 in progress (2026-10-06):** `codex/composition-ce6-completion` from
-  CE7 `817cc9f`. Checkpoints `90d8c10` and `38a2856` deliver typed effect
-  contracts and paired GPU/Canvas callbacks with bounded scratch ownership.
-  Nine new color corrections now pass 150 focused tests, build/lint/schema/
-  boundaries and 243 native cases / 2,916 frames across nine layer variants;
-  maximum backend delta 1, minimum PSNR 64.97 dB, 3,402 seeks unchanged. All
-  32,895 valid byte/alpha pairs are exact at six posterize level counts.
-  Remaining curves/catalogue/dependencies, linear-light composition and native
-  hardware/stored-hash/export/cost/full-gate acceptance remain. No owner decision
-  is pending. [Evidence](./composition-ce6-completion-results.json).
+  CE7 `817cc9f`. Checkpoints `90d8c10`, `38a2856` and `7bde3b6` deliver typed
+  contracts, paired GPU/Canvas plugins and nine native color corrections.
+  Curves now add bounded animated controls, point expressions/baking/inspector
+  tracks and an actual GPU transfer-table kernel. 246 focused tests and build/
+  lint/schema/boundaries pass. Ten color effects pass 270 native cases / 3,240
+  frames, maximum backend delta 1, minimum PSNR 64.97 dB and 3,780 seeks.
+  All 32,895 byte/alpha pairs are exact in four curve/six posterize cases.
+  Remaining catalogue/dependencies, linear-light composition and complete
+  hardware/hash/export/cost/full-gate acceptance remain. No owner decision is
+  pending. [Evidence](./composition-ce6-completion-results.json).
 
 - **CE7 complete (2026-10-06):** `codex/composition-ce7`, code `0e48388`.
   Local holds/posterization, source loops, freeze remap, deterministic adaptive
@@ -188,6 +189,23 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-06 — CE6 animated curves checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce6-completion`.
+- **Done:** bounded curves, stable topology, point/component animation,
+  drivers/expressions, lossless builder/baking and native inspector graphs;
+  GPU control transfer with owned uploads and Canvas piecewise reference.
+- **Results:** 246 focused tests plus build/lint/schema/boundaries. Ten color
+  effects pass 270 cases / 3,240 frames and 3,780 seeks; max delta 1, minimum
+  PSNR 64.97 dB. Exhaustive byte/alpha parity is exact in four curve and six
+  posterize cases. Full milestone gate remains pending.
+- **Repaired:** validate ordering after all drivers/expressions, including
+  layers without expressions; initial type/caller failures are retained.
+- **Next:** remaining catalogue/dependencies and linear-light composition,
+  then complete hardware/hash/export/cost/full-gate acceptance.
+- **Records:** [CE6 evidence](./composition-ce6-completion-results.json),
+  [effect conventions](./composition-effect-plugins.md).
 
 ### 2026-10-06 — CE6 native color correction checkpoint
 

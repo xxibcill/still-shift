@@ -1,5 +1,7 @@
 import {
   compositionEffectDefinition,
+  effectCurvePointIndex,
+  splitEffectCurve,
   locateShapeProperty,
   parsePropertyPath,
   isPropertyPathError,
@@ -43,7 +45,7 @@ export function propertyJsonPath(object: ObjectValue, path: string): string {
         typeof part === "number" ? `[${part}]` : `${i ? "." : ""}${part}`,
       )
       .join("");
-  return path.replace(
+  const emitted = path.replace(
     /^(masks|effects)\[([^\]]+)\]\./,
     (_match, collection: string, id: string) => {
       const values = object[collection] as ObjectValue[];
@@ -51,6 +53,10 @@ export function propertyJsonPath(object: ObjectValue, path: string): string {
       return `${collection}[${index}].${collection === "effects" ? "params." : ""}`;
     },
   );
+  const effect = effectProperty(object, path);
+  return effect?.descriptor.type === "curve" && effect.point !== undefined
+    ? emitted.replace(/\[p\d+\]/, `[${effect.point}]`)
+    : emitted;
 }
 
 function nativeProperty(object: ObjectValue, path: string) {
@@ -61,6 +67,28 @@ function nativeProperty(object: ObjectValue, path: string) {
     ? undefined
     : locateShapeProperty(object.contents as ShapeContent[], parsed.segments);
 }
+function effectProperty(object: ObjectValue, path: string) {
+  const match =
+    /^effects\[([^\]]+)\]\.([a-zA-Z][\w-]*)(?:\[(p\d+)\])?(?:\.([xy]))?$/.exec(
+      path,
+    );
+  if (!match) return undefined;
+  const entry = (object.effects as ObjectValue[]).find(
+    (effect) => effect.id === match[1],
+  );
+  const descriptor = compositionEffectDefinition(String(entry?.effect))
+    ?.properties[match[2]!];
+  return entry && descriptor
+    ? {
+        entry,
+        descriptor,
+        name: match[2]!,
+        point: effectCurvePointIndex(match[3]),
+        axis: match[4],
+      }
+    : undefined;
+}
+
 function parts(path: string): string[] {
   return path.replace(/\[(\d+)\]/g, ".$1").split(".");
 }
@@ -83,14 +111,15 @@ export function readProperty(object: ObjectValue, path: string): unknown {
       ? fallback[native.component]
       : structuredClone(fallback);
   }
-  const effect = /^effects\[([^\]]+)\]\.([^.]+)(?:\.([xy]))?$/.exec(path);
+  const effect = effectProperty(object, path);
   if (effect) {
-    const values = object.effects as ObjectValue[];
-    const entry = values.find((value) => value.id === effect[1]);
-    const fallback = compositionEffectDefinition(String(entry?.effect))
-      ?.properties[effect[2]!]?.default;
-    return effect[3] && Array.isArray(fallback)
-      ? fallback[effect[3] === "x" ? 0 : 1]
+    let fallback: unknown = effect.descriptor.default;
+    if (effect.descriptor.type === "curve" && effect.point !== undefined) {
+      const raw = asObject(effect.entry.params)?.[effect.name];
+      fallback = splitEffectCurve(raw, effect.descriptor.default)[effect.point];
+    }
+    return effect.axis && Array.isArray(fallback)
+      ? fallback[effect.axis === "x" ? 0 : 1]
       : structuredClone(fallback);
   }
   if (/^masks\[[^\]]+\]\.opacity$/.test(path)) return 1;
@@ -108,6 +137,15 @@ export function writeProperty(
   path: string,
   value: unknown,
 ): void {
+  const effect = effectProperty(object, path);
+  if (effect?.descriptor.type === "curve" && effect.point !== undefined) {
+    const params = asObject(effect.entry.params) ?? {};
+    params[effect.name] = splitEffectCurve(
+      params[effect.name],
+      effect.descriptor.default,
+    );
+    effect.entry.params = params;
+  }
   const names = parts(propertyJsonPath(object, path));
   const native = nativeProperty(object, path);
   const effectPoint = /^effects\[[^\]]+\]\.[^.]+\.[xy]$/.test(path)
@@ -131,7 +169,10 @@ export function writeProperty(
       old = structuredClone(effectPoint);
     if (
       Array.isArray(old) &&
-      ["masks", "effects", "contents", "stops"].includes(part)
+      (["masks", "effects", "contents", "stops"].includes(part) ||
+        (effect?.descriptor.type === "curve" &&
+          effect.point !== undefined &&
+          part === effect.name))
     ) {
       parent = old as unknown as ObjectValue;
       continue;

@@ -129,7 +129,14 @@
         },
         "byteRounding": {
           "pairs": 32895,
-          "levelCounts": [2, 3, 6, 10, 16, 256],
+          "levelCounts": [
+            2,
+            3,
+            6,
+            10,
+            16,
+            256
+          ],
           "maxDelta": 0,
           "raw": "benchmarks/results/composition-ce6-completion/ce6-color-byte-rounding.json"
         }
@@ -143,12 +150,63 @@
       ],
       "pending": [
         "Actual hardware, native stored hashes, independent/repeated exports, serial 1080p costs and final full gate follow the complete catalogue"
+      ],
+      "implementation": "7bde3b6"
+    },
+    {
+      "name": "Animated curve contracts and native correction",
+      "status": "focused-verification-passed",
+      "features": [
+        "Bounded 2\u201316 point curves with stable whole-key topology and individually animated points",
+        "Point/component paths, drivers and expressions with final ordering diagnostics",
+        "Builder edits and expression baking preserve sibling curves and keyed points",
+        "Inspector tracks and resolved value/speed graphs",
+        "Real GPU transfer-table shader with owned control-data upload and independent Canvas equations"
+      ],
+      "versions": {
+        "evaluator": 32,
+        "canvas": "composition-canvas2d-1.27.0",
+        "webgl": "composition-webgl2-0.41.0"
+      },
+      "verification": {
+        "focusedTests": 246,
+        "focusedFiles": 15,
+        "unitLog": "benchmarks/results/composition-ce6-completion/ce6-curves-focused-final.log",
+        "graphRegression": "benchmarks/results/composition-ce6-completion/ce6-curves-graph-focused-final.log",
+        "build": "benchmarks/results/composition-ce6-completion/ce6-curves-build-final.log",
+        "schema": "benchmarks/results/composition-ce6-completion/ce6-curves-schema-check.log",
+        "boundaries": "benchmarks/results/composition-ce6-completion/ce6-curves-boundaries.log",
+        "lint": "benchmarks/results/composition-ce6-completion/ce6-curves-lint.log",
+        "nativeMatrix": {
+          "cases": 270,
+          "frames": 3240,
+          "backends": 2,
+          "randomSeeks": 3780,
+          "maxDelta": 1,
+          "minPsnr": 64.97348052873686,
+          "raw": "benchmarks/results/composition-ce6-completion/ce6-curves-native-acceptance.json",
+          "snapshot": "/private/tmp/still-shift-ce6-curves-7bde3b6"
+        },
+        "byteRounding": {
+          "pairsPerCase": 32895,
+          "curveCases": 4,
+          "posterizeCases": 6,
+          "maxDelta": 0,
+          "raw": "benchmarks/results/composition-ce6-completion/ce6-curves-byte-rounding.json"
+        }
+      },
+      "initialFailures": [
+        "Test-first curve definition and kernel absent",
+        "Initial type/caller issues in new nested point values and baking fixed",
+        "Ordering validation during each expression rejected intermediate crossings; moved to final layer stage",
+        "First relocated ordering check missed layers without expressions; corrected final evaluation stage",
+        "New graph speed oracle assumed linear default easing; corrected to the existing smoothstep central-difference derivative"
       ]
     }
   ],
   "pending": [
-    "Remaining curves, blur/light/distortion/stylize/transition catalogue and scoped input dependency stages",
-    "Remaining native effect catalogue, curves, layer dependencies and adjustment temporal semantics",
+    "Remaining blur/light/distortion/stylize/transition catalogue and scoped input dependency stages",
+    "Remaining native effect catalogue, layer dependencies and adjustment temporal semantics",
     "Real optional linear-light compositing",
     "Native per-effect, drawable, seeking, stored hashes, actual hardware and independent/repeated export acceptance",
     "Serial pinned 1080p per-effect cost measurements",

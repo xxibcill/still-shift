@@ -1,7 +1,12 @@
 import { ShapeGeometryBudget } from "../shapes/budget.ts";
 import { sampleShapes, clampShapes, cloneShapes } from "../shapes/sample.ts";
 import { compileShapes } from "../shapes/compile.ts";
-import { sampleEffects, clampEffects, effectBounds } from "./effects.ts";
+import {
+  sampleEffects,
+  clampEffects,
+  effectBounds,
+  validateEffectCurves,
+} from "./effects.ts";
 import {
   COMPOSITION_LIMITS,
   SIZED_LAYER_TYPES,
@@ -87,7 +92,7 @@ import type {
   PropertyValue,
 } from "./types.ts";
 
-export const COMPOSITION_EVALUATOR_VERSION = "composition-evaluator-31";
+export const COMPOSITION_EVALUATOR_VERSION = "composition-evaluator-32";
 export const AUTO_ORIENT_LOOKAROUND_FRAMES = 64;
 const order = ["action", "response", "current", "carrier"] as const;
 /** Keyed and motion-craft values of one layer, before constraints (CE9 expression stage). */
@@ -161,7 +166,7 @@ type Numeric = number | number[];
 /** An expression-stage value with its layer time and key time (sample index if baked). */
 export type StageSample = { value: Numeric; time: number; keyTime: number };
 const copy = (value: PropertyValue | Numeric): Numeric =>
-  Array.isArray(value) ? [...value] : (value as Numeric);
+  Array.isArray(value) ? [...(value as number[])] : (value as Numeric);
 
 function selectSoloLayers(scope: CompositionScope): Set<string> | null {
   if (!scope.layers.some((layer) => layer.solo)) return null;
@@ -1227,6 +1232,11 @@ class Evaluation {
         state.time / ctx.fps,
         this.shapeBudget(ctx, layer),
       );
+    validateEffectCurves(state.effects, {
+      node: layer.id,
+      path: layerKey(ctx.route, layer.id),
+      frame: this.time,
+    });
     // Only compositions with stage readers pay for the pre-constraint copy.
     if (this.compiled.stageReads)
       stage.sealed = sealStage(state, this.shapeBudget(ctx, layer));

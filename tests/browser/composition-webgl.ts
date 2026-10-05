@@ -45,6 +45,13 @@ try {
     ).checkColorEffectByteRounding();
   });
   console.log("WebGL color-effect byte rounding:", JSON.stringify(colorBytes));
+  const curveBytes = await page.evaluate(async () => {
+    const url = "/tests/helpers/composition-color-effect-reference.ts";
+    return (
+      (await import(url)) as typeof ColorChecks
+    ).checkColorCurveByteRounding();
+  });
+  console.log("WebGL curve byte rounding:", JSON.stringify(curveBytes));
   const blur = await page.evaluate(async () => {
     const url = "/tests/helpers/composition-webgl-blur.ts";
     return ((await import(url)) as typeof Blur).checkWebglPrimitiveBlur();

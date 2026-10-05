@@ -1,3 +1,9 @@
+import {
+  EffectCurveSchema,
+  effectCurveIssue,
+  type EffectCurveProperty,
+} from "./effect-curves.ts";
+export * from "./effect-curves.ts";
 import { z } from "zod";
 import { animatable, animatableScalar, AnimatableColorSchema } from "./keys.ts";
 import { finite } from "./primitives.ts";
@@ -17,7 +23,11 @@ export type EffectPoint = {
   min: number;
   max: number;
 };
-export type EffectProperty = EffectScalar | EffectColor | EffectPoint;
+export type EffectProperty =
+  | EffectScalar
+  | EffectColor
+  | EffectPoint
+  | EffectCurveProperty;
 export type EffectRect = {
   left: number;
   top: number;
@@ -25,7 +35,7 @@ export type EffectRect = {
   bottom: number;
 };
 export type EffectParameters = Readonly<
-  Record<string, number | readonly number[]>
+  Record<string, number | readonly number[] | readonly (readonly number[])[]>
 >;
 export type CompositionEffectDefinition = {
   version: string;
@@ -43,6 +53,7 @@ export type CompositionEffectDefinition = {
 
 function propertySchema(property: EffectProperty): z.ZodType {
   if (property.type === "color") return AnimatableColorSchema;
+  if (property.type === "curve") return EffectCurveSchema;
   if (property.type !== "scalar" && property.type !== "vec2")
     throw Error("comp-effect-definition: unknown parameter type");
   if (
@@ -82,13 +93,32 @@ export function defineCompositionEffect(
         Object.hasOwn(Object.prototype, name)
       )
         throw Error("comp-effect-definition: invalid parameter identifier");
+      if (
+        property.type === "curve" &&
+        (!Array.isArray(property.default) || effectCurveIssue(property.default))
+      )
+        throw Error(
+          "comp-effect-definition: curve defaults must be static bounded ordered points",
+        );
       const value =
-        property.type === "vec2"
+        property.type === "curve"
           ? {
               ...property,
-              default: Object.freeze([...property.default] as [number, number]),
+              default: Object.freeze(
+                property.default.map((p) =>
+                  Object.freeze([...p] as [number, number]),
+                ),
+              ),
             }
-          : { ...property };
+          : property.type === "vec2"
+            ? {
+                ...property,
+                default: Object.freeze([...property.default] as [
+                  number,
+                  number,
+                ]),
+              }
+            : { ...property };
       return [name, Object.freeze(value)];
     }),
   );

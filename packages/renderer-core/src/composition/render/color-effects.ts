@@ -3,7 +3,9 @@ import type { Rgba } from "../evaluate/types.ts";
 import type { RenderEffect } from "./graph.ts";
 import type { CompositionEffectPlugin } from "./effect-plugins.ts";
 
-type Params = Readonly<Record<string, number | readonly number[]>>;
+type Params = Readonly<
+  Record<string, number | readonly number[] | readonly (readonly number[])[]>
+>;
 const unit = (v: number) => Math.max(0, Math.min(1, v));
 const mix = (a: number, b: number, t: number) => a + (b - a) * t;
 const n = (p: Params, key: string) => p[key] as number;
@@ -35,7 +37,7 @@ function hueSaturation(rgb: readonly number[], p: Params): number[] {
   );
 }
 /** Recover stored premultiplied bytes, then round straight channels with explicit half-up ties.
- * Canvas readback uses platform reciprocal rounding at half-byte boundaries.
+ * Canvas readback uses platform unpremultiplication rounding at half-byte boundaries.
  */
 export function colorEffectChannel(channel: number, alpha: number): number {
   return alpha
@@ -55,6 +57,26 @@ export function colorEffectPixel(
   const rgb = pixel.slice(0, 3);
   let output: number[];
   switch (id) {
+    case "color.curves": {
+      const points = p.curve as readonly (readonly number[])[];
+      output = rgb.map((value) => {
+        let mapped = points.at(-1)![1]!;
+        for (let i = 1; i < points.length; i++) {
+          const first = points[i - 1]!,
+            last = points[i]!;
+          if (value <= last[0]!) {
+            mapped = mix(
+              first[1]!,
+              last[1]!,
+              unit((value - first[0]!) / (last[0]! - first[0]!)),
+            );
+            break;
+          }
+        }
+        return mix(value, mapped, n(p, "amount"));
+      });
+      break;
+    }
     case "color.levels": {
       const black = n(p, "inputBlack"),
         span = n(p, "inputWhite") - black;
@@ -155,6 +177,10 @@ vec3 adjustHsl(vec3 rgb) {
   return clamp(abs(mod(h*6.0+vec3(0.0,4.0,2.0),6.0)-3.0)-1.0,0.0,1.0)*c+light-c*0.5;
 }`;
 const fragments: Readonly<Record<string, string>> = {
+  "color.curves": `result=vec3(
+    texelFetch(backdrop,ivec2(int(floor(rgb.r*255.0+0.5)),0),0).r,
+    texelFetch(backdrop,ivec2(int(floor(rgb.g*255.0+0.5)),0),0).r,
+    texelFetch(backdrop,ivec2(int(floor(rgb.b*255.0+0.5)),0),0).r);`,
   "color.levels": `float span=inputWhite-inputBlack; vec3 corrected;
     if(abs(span)<1e-7) corrected=step(vec3(inputBlack),rgb);
     else corrected=clamp((rgb-inputBlack)/span,0.0,1.0);
@@ -177,6 +203,7 @@ export function colorEffectKernel(
   if (kernel) return kernel;
   const definition = compositionEffectDefinition(id)!;
   const declarations = Object.entries(definition.properties)
+    .filter(([, property]) => property.type !== "curve")
     .map(
       ([key, property]) =>
         `uniform ${property.type === "scalar" ? "float" : property.type === "vec2" ? "vec2" : "vec4"} ${key};`,
@@ -195,7 +222,29 @@ export function colorEffectKernel(
     definition,
     renderGpu(context, input, params) {
       const output = context.createSurface(input.width, input.height);
-      context.pass(shader, output, [input], params);
+      const uniforms = Object.fromEntries(
+        Object.entries(params).filter(
+          ([name]) => definition.properties[name]!.type !== "curve",
+        ),
+      ) as Record<string, number | readonly number[]>;
+      if (id === "color.curves") {
+        // A 256-entry transfer is control data; all image pixels are transformed on the GPU.
+        const bytes = new Uint8Array(256 * 4);
+        for (let value = 0; value < 256; value++) {
+          const mapped = colorEffectPixel(
+            id,
+            [value / 255, value / 255, value / 255, 1],
+            params,
+            0,
+            0,
+          )[0];
+          bytes[value * 4] = Math.round(mapped * 255);
+          bytes[value * 4 + 3] = 255;
+        }
+        const transfer = context.createSurface(256, 1);
+        context.uploadBytes(transfer, bytes);
+        context.pass(shader, output, [input, transfer], uniforms);
+      } else context.pass(shader, output, [input], uniforms);
       return output;
     },
     renderCanvas(context, input, params: RenderEffect["params"]) {

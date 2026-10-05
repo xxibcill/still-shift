@@ -36,6 +36,16 @@ const effect = (properties: Record<string, EffectProperty>) =>
 export const COLOR_EFFECT_DEFINITIONS: Readonly<
   Record<string, CompositionEffectDefinition>
 > = {
+  "color.curves": effect({
+    curve: {
+      type: "curve",
+      default: [
+        [0, 0],
+        [1, 1],
+      ],
+    },
+    amount: scalar(1, 0, 1),
+  }),
   "color.levels": effect({
     inputBlack: scalar(0, 0, 1),
     inputWhite: scalar(1, 0, 1),

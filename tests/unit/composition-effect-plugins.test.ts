@@ -36,9 +36,10 @@ const effect = {
   params: { amount: 1 },
 };
 const fakeDevice = () => ({
-  surface: vi.fn(surface),
+  surface: vi.fn((width = 8, height = 8) => ({ ...surface(), width, height })),
   release: vi.fn(),
   pass: vi.fn(),
+  uploadBytes: vi.fn(),
 });
 it("installs and releases render callbacks with their validated definition", () => {
   const renderGpu = vi.fn((_context, input) => input);
@@ -218,5 +219,38 @@ it("reports a missing optional Canvas reference before allocating surfaces", () 
     expect(context.createSurface).not.toHaveBeenCalled();
   } finally {
     release();
+  }
+});
+
+it("uploads only correctly sized control data to owned GPU textures", () => {
+  for (const valid of [true, false]) {
+    const bytes = new Uint8Array(valid ? 64 : 63);
+    const release = registerCompositionEffect({
+      id: "test.invert",
+      definition,
+      renderGpu(context, input) {
+        const table = context.createSurface(4, 4);
+        context.uploadBytes(table, bytes);
+        return input;
+      },
+    });
+    const device = fakeDevice();
+    try {
+      const render = () =>
+        renderGpuEffect(device as unknown as WebglDevice, surface(), effect);
+      if (valid) {
+        expect(render()).toBe(true);
+        expect(device.uploadBytes).toHaveBeenCalledWith(
+          expect.objectContaining({ width: 4, height: 4 }),
+          bytes,
+        );
+      } else {
+        expect(render).toThrow(/uploaded bytes must match/);
+        expect(device.uploadBytes).not.toHaveBeenCalled();
+      }
+      expect(device.release).toHaveBeenCalledTimes(2);
+    } finally {
+      release();
+    }
   }
 });

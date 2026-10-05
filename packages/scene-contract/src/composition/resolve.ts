@@ -1,4 +1,8 @@
 import { locateShapeProperty } from "./shape-properties.ts";
+import {
+  effectCurvePointIndex,
+  effectCurvePointCount,
+} from "./effect-curves.ts";
 import { compositionEffectDefinition } from "./effects.ts";
 import type { Composition, CompositionScope } from "./composition.ts";
 import type { CompositionLayer } from "./layers.ts";
@@ -19,7 +23,8 @@ export type PropertyValueType =
   | "vec3"
   | "color"
   | "discrete"
-  | "path";
+  | "path"
+  | "curve";
 
 export type ResolvedProperty = {
   /** Canonical form: aliases expanded. */
@@ -158,13 +163,24 @@ function resolveSegments(
       if (!effect) return missing(text, "an effect on this layer");
       const definition = compositionEffectDefinition(effect.effect);
       if (!definition) return unavailable(text, "CE6");
-      if (
-        !next ||
-        indexed(next) ||
-        !Object.hasOwn(definition.properties, next.name)
-      )
+      if (!next || !Object.hasOwn(definition.properties, next.name))
         return missing(text, "an effect parameter");
-      const type = definition.properties[next.name]!.type;
+      const descriptor = definition.properties[next.name]!;
+      const type = descriptor.type;
+      if (type === "curve" && next.index !== undefined) {
+        const index = effectCurvePointIndex(next.index);
+        if (
+          index === undefined ||
+          index >=
+            effectCurvePointCount(
+              effect.params?.[next.name],
+              descriptor.default,
+            )
+        )
+          return missing(text, "a color curve control point");
+        return component("vec2", COMPONENTS.vec2, rest);
+      }
+      if (next.index !== undefined) return missing(text, "an effect parameter");
       return component(
         type,
         type === "color"

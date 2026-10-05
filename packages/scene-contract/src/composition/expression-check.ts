@@ -418,6 +418,11 @@ export function checkExpression(
     const path = literalString(node, "a property path");
     const resolved = env.resolve(path);
     if ("code" in resolved) return fail(resolved.code, node, resolved.message);
+    if (resolved.type === "curve")
+      typeError(
+        node,
+        `"${path}" is a color curve; expressions can read its control points`,
+      );
     if (resolved.type === "path")
       typeError(node, `"${path}" is a bezier path; expressions cannot read it`);
     reads.push({ path, column: columnOf(node) });
