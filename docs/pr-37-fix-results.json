@@ -77,7 +77,9 @@
       "title": "[P2] Discover separated constraint-reference channels",
       "body": "constraintReference is passed to add as one vector, so separated x/y animations are skipped. A valid solid layer with constraintReference: { x: { keys: [{ frame: 0, value: 0 }, { frame: 20, value: 20 }] }, y: 0 } produces zero tracks. Visit the separated channels as transform vectors do so these native property paths have the required key lanes and graphs.",
       "commentUrl": "https://github.com/xxibcill/still-shift/pull/37#discussion_r4183168168",
-      "status": "pending"
+      "status": "fixed",
+      "change": "Discover separated x/y channels through one native vector-track path, including constraintReference, with scalar lanes, resolved graphs, edits and code copies.",
+      "validation": "Red: valid separated constraintReference returned no tracks. Green: all 10 key tests and inspector acceptance pass, including native reference path sampling, handle edits, code copy and history. TypeScript build passes."
     },
     {
       "id": "R7",

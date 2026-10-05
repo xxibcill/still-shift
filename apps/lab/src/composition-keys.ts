@@ -57,6 +57,26 @@ export function compositionTracks(document: Composition): KeyTrack[] {
     fps: number,
     array = false,
   ) {
+    if (
+      kind === "vector" &&
+      raw &&
+      typeof raw === "object" &&
+      !Array.isArray(raw) &&
+      !isKeyed(raw)
+    ) {
+      for (const axis of ["x", "y"]) {
+        add(
+          (raw as Record<string, unknown>)[axis],
+          [...path, axis],
+          property ? `${property}.${axis}` : undefined,
+          "scalar",
+          scope,
+          owner,
+          fps,
+        );
+      }
+      return;
+    }
     const keys =
       array && Array.isArray(raw)
         ? (raw as Key[])
@@ -91,33 +111,15 @@ export function compositionTracks(document: Composition): KeyTrack[] {
       const kind = ["anchor", "position", "scale"].includes(name)
         ? "vector"
         : "scalar";
-      if (
-        kind === "vector" &&
-        raw &&
-        typeof raw === "object" &&
-        !Array.isArray(raw) &&
-        !isKeyed(raw)
-      ) {
-        for (const axis of ["x", "y"])
-          add(
-            (raw as Record<string, unknown>)[axis],
-            [...path, "transform", name, axis],
-            `transform.${name}.${axis}`,
-            "scalar",
-            scope,
-            layer.id,
-            fps,
-          );
-      } else
-        add(
-          raw,
-          [...path, "transform", name],
-          `transform.${name}`,
-          kind,
-          scope,
-          layer.id,
-          fps,
-        );
+      add(
+        raw,
+        [...path, "transform", name],
+        `transform.${name}`,
+        kind,
+        scope,
+        layer.id,
+        fps,
+      );
     }
     for (const name of [
       "color",

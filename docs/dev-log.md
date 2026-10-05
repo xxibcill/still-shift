@@ -44,8 +44,8 @@ still hold before relying on them.
 ## Current state
 
 - **PR #37 review fixes (2026-10-05):** on `codex/composition-ce11`, reviewed
-  `a0c56df`. Seven inline comments posted; 5/7 findings fixed in separate
-  commits. Pending: R6, R7.
+  `a0c56df`. Seven inline comments posted; 6/7 findings fixed in separate
+  commits. Pending: R7.
   Final push is held until all fixes and verification are complete. No Actions.
   [Fix evidence](./pr-37-fix-results.json).
 
@@ -164,6 +164,14 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-05 — PR #37 R6: Discover separated constraint-reference channels
+
+- **Agent / branch:** Codex on `codex/composition-ce11`.
+- **Done:** Discover separated x/y channels through one native vector-track path, including constraintReference, with scalar lanes, resolved graphs, edits and code copies.
+- **Results:** Red: valid separated constraintReference returned no tracks. Green: all 10 key tests and inspector acceptance pass, including native reference path sampling, handle edits, code copy and history. TypeScript build passes.
+- **Next:** R7.
+- **Records:** [Fix evidence](./pr-37-fix-results.json), [inline finding](https://github.com/xxibcill/still-shift/pull/37#discussion_r4183168168).
 
 ### 2026-10-05 — PR #37 R5: Clear stale copied code when selecting path keys
 

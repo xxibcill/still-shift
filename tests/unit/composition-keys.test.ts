@@ -263,3 +263,54 @@ it.each(["smooth", "interpolation"] as const)(
     );
   },
 );
+
+it("discovers separated constraint-reference channels with native paths, sampling and history", () => {
+  const document = source();
+  document.layers[0]!.constraintReference = {
+    x: {
+      keys: [
+        { frame: 0, value: 0 },
+        { frame: 23, value: 23 },
+      ],
+    },
+    y: {
+      keys: [
+        { frame: 0, value: 10 },
+        { frame: 23, value: 20 },
+      ],
+    },
+  };
+  const history = new CompositionDocument(document),
+    tracks = compositionTracks(history.document).filter((t) =>
+      t.property?.startsWith("constraintReference"),
+    );
+  expect(tracks.map((t) => t.property)).toEqual([
+    "constraintReference.x",
+    "constraintReference.y",
+  ]);
+  expect(tracks.map((t) => t.kind)).toEqual(["scalar", "scalar"]);
+  expect(sampleTrack(tracks[0]!, 23)).toEqual([23]);
+  expect(resolvedTrackRoutes(document, tracks[0]!)).toEqual([
+    { path: "box.constraintReference.x", fps: 24 },
+  ]);
+  expect(
+    resolvedGraph(document, "box.constraintReference.x").at(-1)!.value,
+  ).toEqual([23]);
+  expect(editedKeysCode(tracks[0]!)).toContain(
+    'layer.property("constraintReference.x").keys(',
+  );
+  history.commit(
+    history.propose("Reference out", (d) =>
+      editTemporalHandle(d, tracks[0]!, 0, "out", 0.6, 2),
+    )!,
+  );
+  const next = compositionTracks(history.document).find(
+    (t) => t.id === tracks[0]!.id,
+  )!;
+  expect(next.keys[0]!.out).toEqual({ ease: 0.6, speed: 2 });
+  expect(history.document.layers[0]!.constraintReference).toMatchObject({
+    y: document.layers[0]!.constraintReference.y,
+  });
+  history.commit(history.undo()!);
+  expect(history.document).toEqual(document);
+});

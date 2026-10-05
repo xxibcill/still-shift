@@ -424,6 +424,48 @@ try {
   assert.match(copiedPath, /masks\[cutout\].path/);
   assert.doesNotMatch(copiedPath, /transform.position/);
   assert.equal(await page.locator("#copy-keys").isDisabled(), false);
+  const referenceSource = structuredClone(pathSource);
+  referenceSource.name = "Separated reference lanes";
+  referenceSource.layers[0]!.constraintReference = {
+    x: {
+      keys: [
+        { frame: 0, value: 0 },
+        { frame: 7, value: 7 },
+      ],
+    },
+    y: 0,
+  };
+  await writeFile(
+    builderInput,
+    `export default ${JSON.stringify(referenceSource)};`,
+  );
+  await page.waitForFunction(() =>
+    document
+      .getElementById("status")!
+      .textContent!.includes("Separated reference lanes"),
+  );
+  await page
+    .getByRole("button", {
+      name: "root / box · constraintReference.x",
+      exact: true,
+    })
+    .click();
+  assert.match(
+    await page.locator("#edited-keys").inputValue(),
+    /constraintReference.x/,
+  );
+  await page.locator("#edit-key").selectOption("0");
+  await page.getByLabel("out ease", { exact: true }).fill("0.6");
+  await page.getByLabel("out speed", { exact: true }).fill("2");
+  await page
+    .getByRole("button", { name: "Apply out handle", exact: true })
+    .click();
+  await page.waitForFunction(
+    () =>
+      document.getElementById("document-state")!.textContent ===
+      "Unsaved motion edits",
+  );
+  assert.match(await page.locator("#edited-keys").inputValue(), /"ease": 0.6/);
   const unkeyed = structuredClone(saved);
   unkeyed.name = "Unkeyed copy reset";
   unkeyed.layers[0]!.transform!.position = [4, 20];
