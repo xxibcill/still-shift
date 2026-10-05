@@ -165,3 +165,19 @@ it("builder preview rejects save without modifying source", async () => {
     await rm(root, { recursive: true, force: true });
   }
 });
+
+it("default preview ports allow concurrent fixed-source sessions", async () => {
+  const root = await mkdtemp(join(tmpdir(), "composition-save-ports-")),
+    input = join(root, "source.json");
+  await writeFile(input, JSON.stringify(source));
+  const apps = await Promise.all([
+    createProgramPreview(input),
+    createProgramPreview(input),
+  ]);
+  try {
+    expect(new URL(apps[0]!.url).port).not.toBe(new URL(apps[1]!.url).port);
+  } finally {
+    await Promise.all(apps.map((app) => app.close()));
+    await rm(root, { recursive: true, force: true });
+  }
+});

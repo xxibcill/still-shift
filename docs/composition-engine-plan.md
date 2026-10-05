@@ -3707,7 +3707,9 @@ features are in flight. Lossless history, native curve sampling/handle edits and
 fixed-input JSON saves pass focused model/API gates; inspector wiring and native
 draft export are connected and pass desktop/phone acceptance, including relative
 assets, lossless save, external conflicts and exact CLI/MP4 byte identity. Final
-inspector review and full local milestone gates remain. Audio waveforms and 3D frusta are conditional on CE13/CE8; their real
+inspector review passes real copied-builder compilation, native instance/camera
+graphs and explicit visibility save/export semantics; full local milestone gates
+and the PR remain. Audio waveforms and 3D frusta are conditional on CE13/CE8; their real
 inspector integration is tracked under those milestones. No unavailable data is
 claimed as verified. [Evidence](./composition-ce11-results.json).
 

@@ -188,6 +188,64 @@
         "Finish inspector review and builder edited-key code acceptance",
         "Complete full local milestone gates and PR"
       ]
+    },
+    {
+      "name": "Inspector final review and acceptance",
+      "status": "checkpoint",
+      "changes": [
+        "Copied keys now execute inside the owning builder timeline; a fresh real builder compiles the exact accepted edited native curve.",
+        "Separate authored local and native resolved root-frame graphs, instance-route selection with inherited FPS and readable source bindings; real 2D camera graph remains source-controlled.",
+        "Save explicitly applies transient view visibility; MP4 includes the accepted view; failed visibility edits retain prior controls.",
+        "Native frame diagnostics jump to their root encounter frame; history limits and stale proposals are checked before swapping a valid preview.",
+        "Automatically allocate loopback preview ports; concurrent sessions do not collide with occupied Vite defaults."
+      ],
+      "verification": [
+        {
+          "command": "focused history/key/instance/camera/opaque-provider tests and real copied-builder compilation",
+          "status": "passed",
+          "tests": 12
+        },
+        {
+          "command": "pnpm test:browser:composition-inspector",
+          "status": "passed",
+          "log": "benchmarks/results/composition-ce11-verification/ce11-review-browser.log",
+          "checks": [
+            "Desktop and phone edits/save/export acceptance",
+            "Exact downloaded/CLI MP4 byte identity",
+            "Relative source assets and opaque metadata preserved",
+            "Visibility saves",
+            "Builder read-only draft/copy/watch replacement"
+          ]
+        },
+        {
+          "command": "composition-session / lab-session / fixed-source save integration",
+          "status": "passed",
+          "integrationTests": 4,
+          "checks": [
+            "Opt-in staged loading locks",
+            "Dynamic export locks",
+            "Existing lifecycle and depth-overlay regressions",
+            "Concurrent preview ports"
+          ]
+        },
+        {
+          "command": "pnpm build / changed-file lint / boundaries",
+          "status": "passed"
+        }
+      ],
+      "artifacts": {
+        "directory": "benchmarks/results/composition-ce11-verification",
+        "mp4Sha256": "494b2265594c01f17f403702afc556d0c01bda9cb11ba73ec6c2d5498b492503"
+      },
+      "repairs": [
+        "Initial multi-session acceptance hit occupied port 5173 because Vite treats config port zero as its default; automatic allocation now uses a real available loopback port.",
+        "Inherited-fps test originally used unsupported 48 fps; corrected to native 50 fps."
+      ],
+      "limitations": [
+        "Instance selector lists at most 128 routes within 4096 visited scopes. Unused definitions retain authored-only graphs.",
+        "Native waveform and 3D camera frustum remain tracked under CE13/CE8."
+      ],
+      "pending": ["Complete full local pnpm check and publish CE11 PR"]
     }
   ],
   "conditionalFollowThrough": {

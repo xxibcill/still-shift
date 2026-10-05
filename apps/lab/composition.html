@@ -122,6 +122,7 @@
         border-radius: 4px;
       }
       #lint-timeline button {
+        min-height: 0;
         position: absolute;
         height: 22px;
         padding: 0;
@@ -253,7 +254,20 @@
         border: 0;
         color: #e6c989;
       }
-      #curve-graph svg {
+      #source-motion {
+        white-space: pre-wrap;
+        overflow-wrap: anywhere;
+        font-size: 12px;
+      }
+      #resolved-value {
+        overflow-wrap: anywhere;
+        font-size: 13px;
+      }
+      #resolved-graph select {
+        max-width: 100%;
+      }
+      #curve-graph svg,
+      #resolved-graph svg {
         width: 100%;
         display: block;
         background: #292921;
@@ -384,6 +398,7 @@
         <div class="inspector-grid">
           <section aria-label="Layer stack">
             <h2>Layers</h2>
+            <button id="all-properties">All root properties</button>
             <div id="layer-stack"></div>
             <div class="controls">
               <button id="apply-visibility">Apply visibility</button
@@ -400,6 +415,18 @@
             <h3 id="curve-title">Authored curve</h3>
             <p id="curve-clock"></p>
             <div id="curve-graph"></div>
+            <details>
+              <summary>Resolved motion in root frames</summary>
+              <p>
+                Includes expressions, drivers, constraints and instance clocks.
+              </p>
+              <div id="resolved-graph"></div>
+              <output id="resolved-value"></output>
+            </details>
+            <details>
+              <summary>Source motion bindings</summary>
+              <pre id="source-motion"></pre>
+            </details>
             <div id="curve-controls"></div>
             <details>
               <summary>Edited keys as code</summary>

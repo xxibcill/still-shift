@@ -2,6 +2,7 @@ import { expect, it } from "vitest";
 import { CompositionDocument } from "../../apps/lab/src/composition-document.ts";
 import {
   compositionTracks,
+  resolvedTrackRoutes,
   editSegmentBezier,
   editSpatialTangent,
   editTemporalHandle,
@@ -9,6 +10,8 @@ import {
   sampleTrack,
   trackGraph,
 } from "../../apps/lab/src/composition-keys.ts";
+import { resolvedGraph } from "../../apps/lab/src/composition-graph.ts";
+import { sampleCameraMotion } from "../../packages/renderer-core/src/camera-sampling.ts";
 import type { Composition } from "../../packages/scene-contract/src/index.ts";
 const source = (): Composition => ({
   schemaVersion: "composition-1",
@@ -140,4 +143,73 @@ it("validation rejects wrong handle dimensions without corrupting the current gr
   expect(sampleTrack(compositionTracks(history.document)[0]!, 12)).toEqual(
     before,
   );
+});
+
+it("samples the native camera with Hermite easing and rejects property-style camera handles", () => {
+  const document = source();
+  document.camera2d = {
+    keys: [
+      { frame: 0, x: 20, y: 30, zoom: 1 },
+      { frame: 23, x: 40, y: 45, zoom: 2 },
+    ],
+    jolts: [{ frame: 10, dx: 3, dy: 4, decayFrames: 4 }],
+  };
+  const track = compositionTracks(document).find((t) => t.kind === "camera")!,
+    state = sampleCameraMotion(document.camera2d, 11);
+  expect(sampleTrack(track, 11)).toEqual([state.x, state.y, state.zoom]);
+  expect(() => editTemporalHandle(document, track, 0, "out", 0.5)).toThrow(
+    /no numeric/,
+  );
+});
+it("selects native instance routes with inherited fps and separates resolved root time from authored keys", () => {
+  const document = source();
+  document.precomps!.push({
+    id: "wrapper",
+    width: 64,
+    height: 64,
+    fps: 50,
+    frameCount: 24,
+    layers: [{ id: "inner", type: "precomp", comp: "nested" }],
+  });
+  document.layers.push(
+    { id: "fast", type: "precomp", comp: "wrapper" },
+    { id: "ordinary", type: "precomp", comp: "nested", startFrame: 4 },
+  );
+  document.expressions = {
+    "box.transform.position": { source: "value + [2, 3]" },
+  };
+  const tracks = compositionTracks(document),
+    nested = tracks.find((t) => t.scope === "nested")!;
+  expect(resolvedTrackRoutes(document, nested)).toEqual([
+    { path: "fast/inner/inside.transform.position.x", fps: 50 },
+    { path: "ordinary/inside.transform.position.x", fps: 24 },
+  ]);
+  expect(resolvedGraph(document, "box.transform.position")[0]!.value).toEqual([
+    2, 3,
+  ]);
+  expect(sampleTrack(tracks[0]!, 0)).toEqual([0, 0]);
+  expect(editedKeysCode(tracks[0]!)).toContain(
+    'c.timeline(layer.property("transform.position").keys(',
+  );
+});
+
+it("does not interpret provider parameters as native key properties", () => {
+  const document = source();
+  document.layers.push({
+    id: "opaque",
+    type: "provider",
+    provider: "opaque@1.0.0",
+    params: {
+      keys: [{ frame: 0, value: 7 }],
+      transform: { position: { keys: [{ frame: 0, value: [1, 2] }] } },
+    },
+  });
+  const history = new CompositionDocument(document);
+  expect(compositionTracks(history.document)).toHaveLength(2);
+  history.commit(
+    history.propose("Name", (d) => {
+      d.layers[0]!.name = "Changed";
+    })!,
+  );
+  expect(history.document.layers[1]).toEqual(document.layers[1]);
 });

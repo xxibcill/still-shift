@@ -2,6 +2,8 @@ import {
   compositionEffectDefinition,
   isKeyed,
   type Composition,
+  resolvePropertyPath,
+  isResolvedProperty,
   type Camera2d,
   type CompositionLayer,
   type Keyed,
@@ -374,5 +376,42 @@ export function editedKeysCode(track: KeyTrack) {
   const note = `// ${track.label}; authored local key frames, ${track.fps} fps.\n`;
   if (!track.property)
     return `${note}// Replace the native keys at ${JSON.stringify(track.path)}:\n${keys}`;
-  return `${note}// Use this layer handle in its owning composition at timeline zero:\nlayer.property(${JSON.stringify(track.property)}).keys(${keys});`;
+  return `${note}// Replace this property animation at timeline zero; c is the owning scope and layer is ${JSON.stringify(track.owner)}:\nc.timeline(layer.property(${JSON.stringify(track.property)}).keys(${keys}));`;
+}
+
+/** Routes distinguish reused definitions and carry the evaluator's inherited scope fps. */
+export function resolvedTrackRoutes(
+  document: Composition,
+  track: KeyTrack,
+): { path: string; fps: number }[] {
+  if (!track.property) return [];
+  const routes: { path: string; fps: number }[] = [];
+  let visited = 0;
+  const definitions = new Map((document.precomps ?? []).map((p) => [p.id, p]));
+  function visit(
+    scope: string,
+    layers: CompositionLayer[],
+    route: string[],
+    fps: number,
+  ) {
+    if (++visited > 4096 || routes.length >= 128) return;
+    if (scope === track.scope) {
+      const path = [...route, `${track.owner}.${track.property}`].join("/");
+      if (isResolvedProperty(resolvePropertyPath(document, path)))
+        routes.push({ path, fps });
+    }
+    for (const layer of layers)
+      if (layer.type === "precomp" && route.length < 16) {
+        const definition = definitions.get(layer.comp);
+        if (definition)
+          visit(
+            definition.id,
+            definition.layers,
+            [...route, layer.id],
+            definition.fps ?? fps,
+          );
+      }
+  }
+  visit("root", document.layers, [], document.fps);
+  return routes;
 }

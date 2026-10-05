@@ -137,6 +137,10 @@ let documentHistory: CompositionDocument | undefined;
 let pendingSave: string | undefined;
 let currentProgram: ProgramResponse["snapshot"];
 const inspector = createCompositionInspector({
+  evaluation() {
+    const bounds = session.snapshot?.preview.textBounds;
+    return bounds ? { textBounds: bounds } : {};
+  },
   async propose(proposal) {
     if (!documentHistory?.accepts(proposal)) return false;
     return load(select.value, {
@@ -167,12 +171,27 @@ const overlay = createCompositionOverlay();
 const saveButton = el<HTMLButtonElement>("save-document"),
   exportButton = el<HTMLButtonElement>("export-composition");
 
-const listDiagnostics = (lines: string[]) =>
+const listDiagnostics = (
+  lines: (string | { label: string; frame: number })[],
+) => {
   list.replaceChildren(
-    ...lines.map((line) =>
-      Object.assign(document.createElement("li"), { textContent: line }),
-    ),
+    ...lines.map((line) => {
+      const item = document.createElement("li");
+      if (typeof line === "string") item.textContent = line;
+      else {
+        const button = document.createElement("button");
+        button.textContent = `${line.label} · root frame ${line.frame}`;
+        button.onclick = () => {
+          stop();
+          show(line.frame);
+        };
+        item.append(button);
+      }
+      return item;
+    }),
   );
+};
+
 const session = createPreviewSession<CompositionSnapshot>({
   controls: {
     play,
@@ -225,7 +244,7 @@ const session = createPreviewSession<CompositionSnapshot>({
       program?.source === "builder"
         ? "Builder source is read-only. Tune a preview and copy edited keys into the owning builder layer; source reload replaces the preview draft."
         : programMode
-          ? "Save writes this preview’s JSON source. External edits require reload before saving."
+          ? "Save writes this preview’s JSON source. Save includes current view visibility. External edits require reload before saving."
           : "Download preserves native source fields. Place JSON beside the original fixture to retain relative asset paths.";
   },
   frameChanged(frame, snapshot) {
@@ -239,11 +258,15 @@ const session = createPreviewSession<CompositionSnapshot>({
     el("time").textContent =
       `${(frame / snapshot.scene.fps).toFixed(2)} s · ${frame + 1} / ${snapshot.scene.frameCount}`;
     overlay.draw(snapshot.composition, frame, snapshot.preview.textBounds);
+    inspector.frame(frame, snapshot.composition, {
+      textBounds: snapshot.preview.textBounds,
+    });
     listDiagnostics([
       ...snapshot.warnings,
-      ...snapshot.report.diagnostics.map(
-        (d) => `${d.code} ${d.path ?? ""}: ${d.message}`,
-      ),
+      ...snapshot.report.diagnostics.map((d) => ({
+        label: `${d.code} ${d.path ?? ""}: ${d.message}`,
+        frame,
+      })),
       ...(snapshot.report.culled.length
         ? [`Culled outside the frame: ${snapshot.report.culled.join(", ")}`]
         : []),
@@ -314,6 +337,12 @@ async function load(
           .map((d) => `${d.code} ${d.path}: ${d.message}`)
           .join("\n"),
       );
+    const nextHistory =
+      edit.preserveHistory && documentHistory
+        ? documentHistory
+        : new CompositionDocument(structuredClone(value) as Composition);
+    if (edit.proposal && !nextHistory.accepts(edit.proposal))
+      throw new Error("A newer document superseded this edit");
     const resources = await loadCompositionResources(
       result.composition,
       (id) =>
@@ -338,13 +367,10 @@ async function load(
       program,
       accept() {
         currentProgram = program;
-        if (edit.proposal) documentHistory!.commit(edit.proposal);
-        if (!edit.preserveHistory || !documentHistory) {
-          documentHistory = new CompositionDocument(
-            structuredClone(value) as Composition,
-          );
-          inspector.reset(documentHistory);
-        } else inspector.refresh(documentHistory);
+        if (edit.proposal) nextHistory.commit(edit.proposal);
+        documentHistory = nextHistory;
+        if (!edit.preserveHistory) inspector.reset(documentHistory);
+        else inspector.refresh(documentHistory);
       },
       warnings: result.diagnostics.map(
         (d) => `${d.code} ${d.path}: ${d.message}`,
@@ -416,7 +442,23 @@ function download(blob: Blob, name: string) {
 el<HTMLButtonElement>("reload-source").onclick = () => {
   void load(select.value);
 };
-saveButton.onclick = () => {
+saveButton.onclick = async () => {
+  if (documentHistory && currentProgram?.source !== "builder") {
+    const viewed = inspector.viewDocument();
+    const proposal = documentHistory.propose("Save view visibility", (draft) =>
+      Object.assign(draft, viewed),
+    );
+    if (
+      proposal &&
+      !(await load(select.value, {
+        document: proposal.document,
+        proposal,
+        preserveHistory: true,
+      }))
+    )
+      return;
+    inspector.appliedView();
+  }
   void session
     .export(async () => {
       if (!documentHistory || currentProgram?.source === "builder")
@@ -486,7 +528,7 @@ exportButton.onclick = () => {
           },
           body: JSON.stringify({
             revision: currentProgram?.revision,
-            document: documentHistory!.document,
+            document: snapshot.document,
             backend: snapshot.backend,
           }),
         },

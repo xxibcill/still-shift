@@ -48,7 +48,8 @@ still hold before relying on them.
   and composition-page adoption pass lifecycle, watch, quality and native renderer
   browser checks. Lossless history, native curve edits and fixed-source saves pass
   focused model/API gates. Inspector integration, overlays and desktop/phone native
-  save/export acceptance pass; final review and full local milestone gates remain. Existing Lab design is the default pending optional steering.
+  save/export acceptance and final builder/instance review pass. Full local
+  milestone gates and the CE11 PR remain. Existing Lab design is the default pending optional steering.
   [Evidence](./composition-ce11-results.json).
 
 - **CE10 complete (2026-10-05):** `codex/composition-ce10` from CE4a `869a793`;
@@ -158,6 +159,20 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-05 — Verify copied builder keys and resolved inspector motion
+
+- **Agent / branch:** Codex on `codex/composition-ce11`, after `f47fda5`.
+- **Done:** executable builder key copies, separate resolved/root and authored/local
+  graphs with instance FPS, native camera inspection, source bindings and diagnostic
+  jumps. Save applies transient visibility; native export includes the accepted view.
+  History checks precede preview swap. Automatic local ports avoid session collisions.
+- **Results:** 12 focused model/copied-builder tests and four save API tests pass;
+  full inspector desktop/phone acceptance and shared/legacy lifecycle checks pass.
+  MP4 downloads equal CLI bytes; screenshots and media evidence are retained.
+- **Next:** full local CE11 milestone gates, then its stacked PR before CE5.
+  Native audio and camera frusta remain with CE13/CE8; route selection is bounded.
+- **Records:** [CE11 evidence](./composition-ce11-results.json).
 
 ### 2026-10-05 — Connect native inspector edits, overlays and MP4 export
 

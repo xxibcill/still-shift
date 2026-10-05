@@ -48,6 +48,7 @@ try {
       },
       retainValidOnFailure: true,
       disableWhileExporting: true,
+      disableEditsWhileLoading: true,
       ready: (snapshot) => {
         ready = snapshot.name;
       },
@@ -123,7 +124,12 @@ try {
     };
     const gate = deferred<void>(),
       stale = load("stale", 8, false, gate.promise);
+    check(edit.disabled, "Staged loading must lock native inspector edits");
     check(await load("latest", 2), "Newest candidate must commit");
+    check(
+      !edit.disabled,
+      "Accepted native stage must release inspector edit lock",
+    );
     const latest = pixels();
     gate.resolve();
     check(!(await stale), "Late candidate must not commit");

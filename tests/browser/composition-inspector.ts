@@ -268,6 +268,63 @@ try {
   );
   assert.equal(await page.locator("#save-document").isVisible(), true);
   await page.screenshot({ path: join(root, "phone.png"), fullPage: true });
+  await page.setViewportSize({ width: 1280, height: 900 });
+  await page.screenshot({ path: join(root, "desktop.png"), fullPage: true });
+  await page
+    .locator('[data-layer="box"]')
+    .getByRole("button", { name: "Hide", exact: true })
+    .click();
+  await page.waitForFunction(() =>
+    document.getElementById("edit-message")!.textContent!.includes("view-only"),
+  );
+  await page.locator("#save-document").click();
+  await page.waitForFunction(
+    () =>
+      document.getElementById("status")!.textContent === "JSON source saved.",
+  );
+  assert.equal(
+    JSON.parse(await readFile(input, "utf8")).layers[0].enabled,
+    false,
+  );
+  await app.close();
+  const builderInput = join(root, "builder.ts"),
+    builderText = `export default ${JSON.stringify(saved)};`;
+  await writeFile(builderInput, builderText);
+  app = await createProgramPreview(builderInput, { watch: true });
+  await page.setViewportSize({ width: 1280, height: 900 });
+  await page.goto(app.url);
+  await page.waitForFunction(
+    () => document.documentElement.dataset.readonly === "true",
+  );
+  assert.equal(await page.locator("#save-document").isDisabled(), true);
+  await page.getByLabel("out ease", { exact: true }).fill("0.2");
+  await page.getByLabel("out speed", { exact: true }).fill("0,0");
+  await page
+    .getByRole("button", { name: "Apply out handle", exact: true })
+    .click();
+  await page.waitForFunction(
+    () =>
+      document.getElementById("document-state")!.textContent ===
+      "Unsaved motion edits",
+  );
+  assert.equal(await readFile(builderInput, "utf8"), builderText);
+  assert.match(
+    await page.locator("#edited-keys").inputValue(),
+    /c\.timeline\(layer\.property/,
+  );
+  assert.match(await page.locator("#edited-keys").inputValue(), /"ease": 0.2/);
+  await writeFile(
+    builderInput,
+    `export default ${JSON.stringify({ ...saved, name: "Builder changed" })};`,
+  );
+  await page.waitForFunction(() =>
+    document.getElementById("status")!.textContent!.includes("Builder changed"),
+  );
+  assert.equal(
+    await page.locator("#document-state").textContent(),
+    "Source unchanged",
+  );
+  assert.equal(await page.locator("#save-document").isDisabled(), true);
   assert.deepEqual(errors, []);
   console.log(
     JSON.stringify({
@@ -285,6 +342,8 @@ try {
         "decoded preview parity",
         "external conflict/reload",
         "phone layout",
+        "save applies view visibility",
+        "builder edited-key copy/read-only source/hot reload",
       ],
       root,
     }),

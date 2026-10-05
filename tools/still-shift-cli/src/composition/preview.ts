@@ -1,5 +1,6 @@
 import { createHash } from "node:crypto";
 import { readFile, realpath } from "node:fs/promises";
+import { createServer as createSocketServer } from "node:net";
 import { extname, resolve } from "node:path";
 import { createServer, type Plugin, type ViteDevServer } from "vite";
 import { readCompositionSource } from "@still-shift/animation-engine";
@@ -44,6 +45,24 @@ const types: Record<string, string> = {
   ".woff": "font/woff",
   ".woff2": "font/woff2",
 };
+async function availablePort() {
+  const socket = createSocketServer();
+  await new Promise<void>((resolve, reject) => {
+    socket.once("error", reject);
+    socket.listen(0, "127.0.0.1", resolve);
+  });
+  try {
+    const address = socket.address();
+    if (!address || typeof address === "string")
+      throw new Error("Cannot allocate local preview port");
+    return address.port;
+  } finally {
+    await new Promise<void>((resolve, reject) =>
+      socket.close((error) => (error ? reject(error) : resolve())),
+    );
+  }
+}
+
 export async function createProgramPreview(
   inputPath: string,
   options: { watch?: boolean; port?: number } = {},
@@ -400,8 +419,8 @@ export async function createProgramPreview(
     plugins: [plugin],
     server: {
       host: "127.0.0.1",
-      port: options.port ?? 0,
-      strictPort: true,
+      port: options.port || (await availablePort()),
+      strictPort: Boolean(options.port),
       fs: { allow: [root] },
     },
   });

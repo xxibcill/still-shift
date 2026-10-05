@@ -10,6 +10,7 @@ import {
 } from "./composition-document.ts";
 import {
   compositionTracks,
+  resolvedTrackRoutes,
   editedKeysCode,
   editSegmentBezier,
   editSpatialTangent,
@@ -17,6 +18,11 @@ import {
   trackGraph,
   type KeyTrack,
 } from "./composition-keys.ts";
+import { curveGraph, resolvedGraph } from "./composition-graph.ts";
+import {
+  evaluateProperty,
+  type EvaluationOptions,
+} from "../../../packages/renderer-core/src/composition/evaluate/index.ts";
 const element = <T extends HTMLElement>(id: string) =>
   document.getElementById(id) as T;
 const svgNS = "http://www.w3.org/2000/svg";
@@ -43,12 +49,14 @@ export function createCompositionInspector(options: {
   view: (document: Composition) => Promise<boolean>;
   seek: (frame: number) => void;
   selected: (selection: InspectorSelection | undefined) => void;
+  evaluation: () => EvaluationOptions;
 }) {
   let history: CompositionDocument | undefined,
     tracks: KeyTrack[] = [],
     selected: InspectorSelection | undefined,
     track: KeyTrack | undefined;
   let keyIndex = 0;
+  let rootPath: string | undefined;
   const visibility = new Map<string, { enabled?: boolean; solo?: boolean }>();
   const message = element("edit-message"),
     fieldset = element<HTMLFieldSetElement>("inspector-edit"),
@@ -63,12 +71,16 @@ export function createCompositionInspector(options: {
   ) {
     try {
       const proposal = history?.propose(label, change);
-      if (proposal && (await options.propose(proposal))) {
+      if (!proposal) return true;
+      if (await options.propose(proposal)) {
         message.textContent = label;
         refresh(history!);
+        return true;
       }
+      return false;
     } catch (error) {
       report(error);
+      return false;
     }
   }
   function viewDocument() {
@@ -95,7 +107,7 @@ export function createCompositionInspector(options: {
     ]) {
       const title = documentNode(
         "p",
-        `${entry.scope} · ${entry.value.fps ?? document.fps} fps`,
+        `${entry.scope} · ${entry.value.fps ?? document.fps} fps${entry.scope === "root" ? "" : " · shared definition; instance fps shown in graph"}`,
       );
       title.className = "scope-label";
       stack.append(title);
@@ -152,14 +164,16 @@ export function createCompositionInspector(options: {
                 ? "Unsolo"
                 : "Solo",
             () => {
+              const previous = visibility.get(key);
               visibility.set(key, { ...visibility.get(key), [mode]: !state });
               void options.view(viewDocument()).then((ok) => {
                 if (ok) {
                   layerRows();
                   message.textContent =
-                    "Visibility is view-only until applied.";
+                    "Visibility is view-only until applied or saved.";
                 } else {
-                  visibility.delete(key);
+                  if (previous) visibility.set(key, previous);
+                  else visibility.delete(key);
                   layerRows();
                 }
               });
@@ -244,7 +258,11 @@ export function createCompositionInspector(options: {
       chart = element("curve-graph");
     area.replaceChildren();
     chart.replaceChildren();
+    element("resolved-graph").replaceChildren();
     if (!track) {
+      rootPath = undefined;
+      element("curve-title").textContent = "Authored curve";
+      element("curve-clock").textContent = "";
       area.append(
         documentNode(
           "p",
@@ -253,7 +271,10 @@ export function createCompositionInspector(options: {
       );
       return;
     }
-    const current = track;
+    const routes = resolvedTrackRoutes(history!.document, track);
+    const route = routes.find((r) => r.path === rootPath) ?? routes[0];
+    rootPath = route?.path;
+    const current = { ...track, fps: route?.fps ?? track.fps };
     index = Math.min(index, current.keys.length - 1);
     keyIndex = index;
     element("curve-title").textContent = current.label;
@@ -270,54 +291,45 @@ export function createCompositionInspector(options: {
       );
       return;
     }
-    const graphSvg = svg("svg", {
-      viewBox: "0 0 640 260",
-      role: "img",
-      "aria-label": "Value and speed curves in authored local frames",
-    });
-    const colors = ["#afc5a1", "#e6c989", "#a9c6df", "#e8a4bd"],
-      start = points[0]!.frame,
-      duration = points.at(-1)!.frame - start || 1;
-    for (const [panel, field] of ["value", "speed"].entries()) {
-      const values = points.flatMap((p) =>
-          field === "value" ? p.value : p.speed,
-        ),
-        min = Math.min(...values),
-        max = Math.max(...values),
-        span = max - min || 1;
-      graphSvg.append(
-        svg("line", {
-          x1: 24,
-          x2: 620,
-          y1: 120 + panel * 125,
-          y2: 120 + panel * 125,
-          stroke: "#6d6b5b",
-        }),
+    chart.append(
+      curveGraph(points, "Authored value and speed curves in local key frames"),
+    );
+    const resolved = element("resolved-graph");
+    resolved.replaceChildren();
+    if (routes.length) {
+      const instance = document.createElement("select");
+      instance.setAttribute("aria-label", "Resolved property instance");
+      routes.forEach((r) =>
+        instance.add(new Option(`${r.path} · ${r.fps} fps`, r.path)),
       );
-      const label = svg("text", {
-        x: 24,
-        y: 18 + panel * 125,
-        fill: "#ccc4b0",
-        "font-size": 12,
-      });
-      label.textContent = `${field} · ${min.toFixed(2)} … ${max.toFixed(2)}`;
-      graphSvg.append(label);
-      for (let axis = 0; axis < points[0]!.value.length; axis++)
-        graphSvg.append(
-          svg("polyline", {
-            fill: "none",
-            stroke: colors[axis]!,
-            "stroke-width": 2,
-            points: points
-              .map(
-                (p) =>
-                  `${24 + ((p.frame - start) / duration) * 596},${115 + panel * 125 - (((field === "value" ? p.value : p.speed)[axis]! - min) / span) * 90}`,
-              )
-              .join(" "),
-          }),
+      instance.value = rootPath!;
+      instance.onchange = () => {
+        rootPath = instance.value;
+        graph();
+      };
+      resolved.append(instance);
+      try {
+        resolved.append(
+          curveGraph(
+            resolvedGraph(history!.document, rootPath!, options.evaluation()),
+            "Resolved value and speed curves in root composition frames",
+          ),
         );
-    }
-    chart.append(graphSvg);
+      } catch (error) {
+        resolved.append(
+          documentNode(
+            "p",
+            `Resolved graph unavailable: ${error instanceof Error ? error.message : error}`,
+          ),
+        );
+      }
+    } else
+      resolved.append(
+        documentNode(
+          "p",
+          "No native resolved property instance for this track; the authored curve remains available.",
+        ),
+      );
     const choose = document.createElement("select");
     choose.id = "edit-key";
     choose.setAttribute("aria-label", "Key to edit");
@@ -584,6 +596,19 @@ export function createCompositionInspector(options: {
     layerRows();
     keyLanes();
     graph();
+    element<HTMLPreElement>("source-motion").textContent = JSON.stringify(
+      {
+        expressions: history.document.expressions,
+        drivers: history.document.drivers,
+        periodic: history.document.periodic,
+        behaviours: history.document.behaviours,
+        signals: history.document.signals,
+        constraints: history.document.constraints,
+        textAnimators: history.document.textAnimators,
+      },
+      null,
+      2,
+    );
   }
   for (const [id, direction] of [
     ["undo", "undo"],
@@ -596,6 +621,14 @@ export function createCompositionInspector(options: {
           if (ok) refresh(history!);
         });
     };
+  element<HTMLButtonElement>("all-properties").onclick = () => {
+    selected = undefined;
+    track = undefined;
+    rootPath = undefined;
+    keyIndex = 0;
+    options.selected(undefined);
+    if (history) refresh(history);
+  };
   element<HTMLButtonElement>("apply-visibility").onclick = () => {
     void submit("Apply view visibility", (d) => {
       for (const [path, state] of visibility)
@@ -603,19 +636,49 @@ export function createCompositionInspector(options: {
           readJsonPath(d, JSON.parse(path)) as CompositionLayer,
           state,
         );
-    }).then(() => {
-      visibility.clear();
-      layerRows();
+    }).then((ok) => {
+      if (ok) {
+        visibility.clear();
+        layerRows();
+      }
     });
   };
   element<HTMLButtonElement>("reset-visibility").onclick = () => {
+    const previous = new Map(visibility);
     visibility.clear();
-    if (history) void options.view(history.document).then(() => layerRows());
+    if (history)
+      void options.view(history.document).then((ok) => {
+        if (!ok)
+          for (const [key, value] of previous) visibility.set(key, value);
+        layerRows();
+      });
   };
   return {
     fieldset,
     refresh,
     viewDocument,
+    appliedView() {
+      visibility.clear();
+      if (history) refresh(history);
+    },
+    frame(
+      frame: number,
+      composition: Composition,
+      evaluation: EvaluationOptions,
+    ) {
+      const output = element("resolved-value");
+      if (!rootPath) {
+        output.textContent =
+          "Select a native property instance to inspect its resolved value.";
+        return;
+      }
+      try {
+        output.textContent = `Root frame ${frame} · ${rootPath} = ${JSON.stringify(evaluateProperty(composition, rootPath, frame, evaluation))}`;
+      } catch (error) {
+        output.textContent =
+          error instanceof Error ? error.message : String(error);
+      }
+    },
     reset(next: CompositionDocument) {
       message.textContent = "";
       visibility.clear();
