@@ -1221,5 +1221,16 @@
       "command": "pnpm test:browser:composition-typography-adapter --webgl --keep-going --profile",
       "method": "Current unchanged frame-zero warmup then timed first forward traversal; pixels outside timing; complete typography/state/backward seeks and required exports"
     }
+  },
+  "queuedAb": {
+    "status": "live; waiting for full-gate success then three-minute quiet window",
+    "session": 71197,
+    "launcher": "/private/tmp/ce6p-ab-after-gate.mjs",
+    "outputs": [
+      "benchmarks/results/composition-ce6p/fusion-ref-ab.json",
+      "benchmarks/results/composition-ce6p/bounded-ref-ab.json",
+      "benchmarks/results/composition-ce6p/hardware-bounded-ref-ab.json"
+    ],
+    "failureHandling": "Stop at first failed bracket; retain invalid timing uniquely; never overwrite valid prior results"
   }
 }

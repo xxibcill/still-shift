@@ -49,7 +49,7 @@ still hold before relying on them.
   sums, subject to exact regressions and independent serial A/B measurements.
   Candidates build and pass 852 exactness cases on each GPU profile. Focused
   regression/export suites pass; full gate runs on reviewed code. Serial timings
-  await a longer quiet window.
+  are queued after gate success and a three-minute quiet window.
   The main checkout/chat is untouched.
   All 117 original failures, 1.25× family and 2× native targets remain open.
   [Plan](./composition-ce6p-plan.md).
@@ -211,8 +211,8 @@ _Last updated 2026-10-06 by Codex for CE6-P; prior work retained._
   and workload guard. Measurement review also repaired mixed-revision bounds
   loading and added workload fingerprints. Runtime stays fixed during the gate.
   Invalid timings are retained; Actions remain disabled.
-- **Next:** full gate on reviewed code; serial A/B and family matrices after a
-  sustained quiet window.
+- **Next:** full gate on reviewed code; corrected serial A/B is queued after its
+  success and a three-minute quiet window; strict family matrices follow.
 - **Records:** [slice plan](./composition-ce6p-plan.md),
   [retained evidence](./composition-ce6p-performance-results.json).
 
