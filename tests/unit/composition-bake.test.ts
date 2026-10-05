@@ -485,6 +485,77 @@ describe("comp bake", () => {
       ).toEqual(buildRenderGraph(doc, evaluateComp(doc, frame)));
   });
 
+  it.each([{ inPoint: 10 }, { outPoint: 10 }])(
+    "includes inherited blur when a timed override is inactive (%j)",
+    async (window) => {
+      const doc = await fixture("nested-echo");
+      const clip = doc.precomps![0]!;
+      const hero = clip.layers[0]!;
+      hero.parent = "carrier";
+      hero.effects!.push({
+        id: "ownBlur",
+        effect: "blur.primitive",
+        params: { radius: 5 },
+        ...window,
+      });
+      clip.layers.unshift({
+        id: "carrier",
+        type: "group",
+        size: [200, 200],
+        effects: [
+          { id: "blur", effect: "blur.primitive", params: { radius: 1 } },
+        ],
+      });
+      doc.expressions!["p/carrier.effects[blur].radius"] = {
+        source: "frame * 2",
+      };
+      expect(bakeExpressions(valid(doc))).toMatchObject({
+        ok: false,
+        diagnostics: [expect.objectContaining({ code: "comp-bake-time" })],
+      });
+    },
+  );
+
+  it.each([false, true])(
+    "keeps a timed positive blur that covers every echo sample (reverse=%s)",
+    async (reverse) => {
+      const doc = await fixture("nested-echo");
+      const clip = doc.precomps![0]!;
+      const hero = clip.layers[0]!;
+      hero.parent = "carrier";
+      hero.startFrame = reverse ? 39 : 0;
+      hero.stretch = reverse ? -1 : 1;
+      hero.effects!.push({
+        id: "ownBlur",
+        effect: "blur.primitive",
+        params: { radius: 5 },
+        inPoint: 0,
+        outPoint: 40,
+      });
+      clip.layers.unshift({
+        id: "carrier",
+        type: "group",
+        size: [200, 200],
+        effects: [
+          { id: "blur", effect: "blur.primitive", params: { radius: 1 } },
+        ],
+      });
+      doc.expressions!["p/carrier.effects[blur].radius"] = {
+        source: "frame * 2",
+      };
+      const baked = bakeExpressions(valid(doc));
+      expect(baked.ok).toBe(true);
+      if (!baked.ok) return;
+      for (let frame = 0; frame < doc.frameCount; frame++)
+        expect(
+          buildRenderGraph(
+            baked.composition,
+            evaluateComp(baked.composition, frame),
+          ),
+        ).toEqual(buildRenderGraph(doc, evaluateComp(doc, frame)));
+    },
+  );
+
   it("bakes the CE9 acceptance demo exactly and matches the committed file", async () => {
     const demo = await fixture("overlap-demo");
     const followers = demo.layers.slice(1);

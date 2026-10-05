@@ -43,6 +43,13 @@ still hold before relying on them.
 
 ## Current state
 
+- **PR #32 second follow-up fixes (2026-10-05):** four P2 findings are posted
+  inline. Timed primitive-blur dependency selection is fixed and passes all 34
+  bake tests. Normalized AST bounds, periodic reference writers and separate-axis
+  constant-speed traversal are in progress. Four finding commits and one final
+  push are authorized; combined verification and delivery remain. CE6-P and
+  CE9-F1 remain deferred. [Evidence](./pr-32-second-followup-fix-results.json).
+
 - **PR #32 follow-up fixes (2026-10-05):** both P2 findings are posted inline.
   Implicit anchor/reference reads, cycle validation and nested echo bake parity
   are fixed. Five anchor and 17 bake regressions pass with all fast checks
@@ -129,6 +136,18 @@ _Last updated 2026-10-05 by Codex for the PR #32 follow-up fixes._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-05 — Fix PR #32 timed primitive-blur history
+
+- **Agent / branch:** Codex on isolated `codex/pr32-review-fixes`, from `c4f7c8d`.
+- **Done:** posted all four findings inline; select the active blur at the historical
+  scope/layer clock and include inherited blur outside a nearer override's window.
+- **Results:** two regressions failed before the fix; all 34 bake tests pass,
+  including forward/reversed covering-window cases that must still bake exactly.
+- **Open / next:** normalized AST bounds, periodic references and separate-axis
+  roving; combined local correctness checks, then one final push after four commits.
+- **Records:** [evidence](./pr-32-second-followup-fix-results.json),
+  [inline finding](https://github.com/xxibcill/still-shift/pull/32#discussion_r4181734002).
 
 ### 2026-10-05 — Fix PR #32 nested echo bake clocks
 

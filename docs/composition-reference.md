@@ -865,7 +865,8 @@ scope clocks that retain the current root time. Compatible samples become keys;
 if one layer frame needs different values, or an echo sample needs a fractional
 layer frame, bake refuses the result with `comp-bake-time`.
 Historical samples cover the echoed content and its property dependencies,
-including primitive blur inherited from groups and `sourceRevision` when
+including primitive blur inherited from groups, selected by each effect’s active
+window at the historical layer clock, and `sourceRevision` when
 `skipUnchanged` is active. Unrelated siblings and current-clock echo parameters
 do not need historical keys.
 

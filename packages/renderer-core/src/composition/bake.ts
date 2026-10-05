@@ -28,6 +28,7 @@ import {
 import { AUTO_ORIENT_LOOKAROUND_FRAMES } from "./evaluate/evaluate.ts";
 import {
   evaluateComp,
+  evaluateProperty,
   evaluateStageProperties,
   type EvaluationOptions,
   type EvaluatedLayerTree,
@@ -51,6 +52,12 @@ type Group = {
   text: string;
   origin: string;
   lookaround: boolean;
+};
+
+type EchoClock = {
+  frame: number;
+  options: EvaluationOptions;
+  layers: { node: string; revision?: string }[];
 };
 
 const COMPONENTS = new Set(["x", "y", "z", "r", "g", "b", "a"]);
@@ -89,14 +96,7 @@ const equal = (a: number | number[], b: number | number[]) =>
 
 /** Match the root/scope clocks used by the render graph's temporal echo samples. */
 function echoClocks(source: Composition, frame: number) {
-  const clocks = new Map<
-    string,
-    {
-      frame: number;
-      options: EvaluationOptions;
-      layers: { node: string; revision?: string }[];
-    }
-  >();
+  const clocks = new Map<string, EchoClock>();
   const visit = (tree: EvaluatedLayerTree, route: string[]) => {
     const mattes = new Set(
       tree.layers.flatMap((layer) =>
@@ -147,6 +147,7 @@ function echoProperties(
   source: Composition,
   expressions: CompiledExpression[],
   groups: Group[],
+  clock: EchoClock,
   node: string,
   revision?: string,
 ) {
@@ -169,6 +170,24 @@ function echoProperties(
       )!;
     }
     return scope;
+  };
+  const scopeTimes = new Map<string, number>();
+  const scopeTime = (route: string[]) => {
+    if (!route.length) return clock.frame;
+    const key = route.join("/");
+    const cached = scopeTimes.get(key);
+    if (cached !== undefined) return cached;
+    const remap =
+      clock.options.scopeTimes?.[key] ??
+      (evaluateProperty(
+        source,
+        `${key}.timeRemap`,
+        clock.frame,
+        clock.options,
+      ) as number);
+    const time = Math.max(0, Math.min(scopeAt(route).frameCount - 1, remap));
+    scopeTimes.set(key, time);
+    return time;
   };
   const add = (text: string) => {
     const path = resolve(text);
@@ -254,9 +273,15 @@ function echoProperties(
         : undefined
     ) {
       if (current !== layer && current.type !== "group") continue;
+      if (!current.effects?.length) continue;
+      const time =
+        (scopeTime(route) - (current.startFrame ?? 0)) / (current.stretch ?? 1);
       const blur = current.effects?.find(
         (effect) =>
-          effect.enabled !== false && effect.effect === "blur.primitive",
+          effect.enabled !== false &&
+          effect.effect === "blur.primitive" &&
+          time >= (effect.inPoint ?? -Infinity) &&
+          time < (effect.outPoint ?? Infinity),
       );
       if (blur) {
         const text = `${[...route, current.id].join("/")}.effects[${blur.id}].radius`;
@@ -526,6 +551,15 @@ export function bakeExpressions(input: unknown): BakeResult {
       layer.effects?.some((effect) => effect.effect === "time.echo"),
     ),
   );
+  const timedBlur = [source, ...(source.precomps ?? [])].some((scope) =>
+    scope.layers.some((layer) =>
+      layer.effects?.some(
+        (effect) =>
+          effect.effect === "blur.primitive" &&
+          (effect.inPoint !== undefined || effect.outPoint !== undefined),
+      ),
+    ),
+  );
   const echoTargets = new Map<string, number[]>();
   for (let frame = -margin; frame < source.frameCount + margin; frame++) {
     const indices = list.flatMap((group, i) =>
@@ -535,12 +569,22 @@ export function bakeExpressions(input: unknown): BakeResult {
     if (diagnostic) return { ok: false, diagnostics: [diagnostic] };
     if (hasEcho && frame >= 0 && frame < source.frameCount)
       for (const clock of echoClocks(source, frame)) {
+        const clockKey = timedBlur
+          ? JSON.stringify([clock.frame, clock.options.scopeTimes])
+          : "";
         const indices = new Set<number>();
         for (const { node, revision } of clock.layers) {
-          const key = `${node}#${revision ?? ""}`;
+          const key = `${node}#${revision ?? ""}#${clockKey}`;
           let targets = echoTargets.get(key);
           if (!targets) {
-            targets = echoProperties(source, expressions, list, node, revision);
+            targets = echoProperties(
+              source,
+              expressions,
+              list,
+              clock,
+              node,
+              revision,
+            );
             echoTargets.set(key, targets);
           }
           targets.forEach((i) => indices.add(i));
