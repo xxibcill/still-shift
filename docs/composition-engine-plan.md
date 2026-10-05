@@ -3264,6 +3264,19 @@ padding: six cases / 72 frames / 84 seeks now match exactly. Broader affine
 regressions, linear-light and complete milestone acceptance remain.
 [Evidence](./composition-ce6-completion-results.json).
 
+### CE6 native catalogue and cost acceptance (2026-10-06)
+
+Six 32-frame native scenes cover all 39 builtins. 384 forward hashes, 384 reverse
+checks and 132 random seeks meet software delta 1. Repeated PNG/raw exports and
+independent preview MP4 encodes agree on both backends. 36 actual Apple GPU
+comparisons meet the unchanged perceptual hardware policy; maximum delta 47,
+minimum PSNR 53.39 and SSIM .99916 are recorded. Separate new hashes and 24 PNGs
+leave frozen baselines unchanged. All 78 serial 1080p cold/warm per-effect/backend
+costs are recorded; SwiftShader warm medians range 12.5–180.6 ms, with CE6-P speed
+acceptance deferred. Build/lint/schema/boundaries and stored-fixture coverage unit
+pass. Final full local `pnpm check`, CE6 PR and CE8 branch remain.
+[Evidence](./composition-ce6-completion-results.json).
+
 ### CE6 GPU Gaussian/feather completion (2026-10-06)
 
 Gaussian and transformed feather filtering now stay on GPU textures with the

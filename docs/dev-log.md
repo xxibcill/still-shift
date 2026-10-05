@@ -44,13 +44,13 @@ still hold before relying on them.
 ## Current state
 
 - **CE6 in progress (2026-10-06):** `codex/composition-ce6-completion` from
-  CE7 `817cc9f`. Checkpoints through `8fbf372` deliver catalogue/maps, linear-light,
-  adjustment/captured histories and native paths. GPU Gaussian rescaling removes
-  the oversized-feather image-filter fallback: 84 high-radius renders meet delta
-  2/PSNR 53, all 18 extreme-feather renders are exact, and the previous 68 WebGL
-  reference cases pass. Hardware/hash/export/serial-cost proof, complete full gate
-  and CE6 PR remain. No owner decision is pending.
-  [Evidence](./composition-ce6-completion-results.json).
+  CE7 `817cc9f`; runtime through `4cd8a8d` delivers all feature/audit slices.
+  Six native scenes covering all 39 effects pass 384 forward/reverse hashes and
+  132 seek checks (software delta 1), repeated PNG/raw and independent MP4 encodes
+  on both backends, and 36 actual hardware comparisons under the existing
+  perceptual policy. All 78 serial 1080p cold/warm effect costs are recorded.
+  Final complete `pnpm check` and CE6 PR remain before CE8. CE6-P stays deferred.
+  No owner decision is pending. [Evidence](./composition-ce6-completion-results.json).
 
 - **CE7 complete (2026-10-06):** `codex/composition-ce7`, code `0e48388`.
   Local holds/posterization, source loops, freeze remap, deterministic adaptive
@@ -186,6 +186,21 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-06 — CE6 native catalogue acceptance checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce6-completion`.
+- **Done:** six 32-frame native scenes cover all 39 effects; new stored hashes/
+  PNGs and permanent seeking/export/hardware checks; serial per-effect costs.
+- **Results:** build/lint/schema/boundaries and stored-fixture coverage unit pass.
+  384 forward hashes, 384 reverse checks and 132 seeks meet software delta 1.
+  All 24 production PNG/raw MP4 outputs and 12 independent preview encodes agree;
+  36 actual Apple GPU comparisons meet the unchanged perceptual policy (max
+  delta 47, minimum PSNR 53.39/SSIM .99916). Frozen baselines are unchanged.
+- **Costs:** 78 serial 1080p backend rows record cold/warm costs; SwiftShader warm
+  medians range 12.5–180.6 ms. CE6-P speed acceptance stays deferred.
+- **Next:** final complete `pnpm check`, CE6 PR, CE8 branch and remaining milestones.
+- **Records:** [CE6 evidence](./composition-ce6-completion-results.json).
 
 ### 2026-10-06 — CE6 GPU Gaussian and feather checkpoint
 

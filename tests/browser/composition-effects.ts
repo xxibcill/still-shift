@@ -1,6 +1,7 @@
 import type * as PixelTests from "../helpers/composition-pixel-reference.ts";
 import type * as EchoTests from "../helpers/composition-echo-reference.ts";
 import type * as PrimitiveTests from "../helpers/composition-primitive-reference.ts";
+import { runEffectCatalogueAcceptance } from "./effect-catalogue-acceptance.ts";
 import { mkdtemp, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { renderComposition } from "@still-shift/animation-engine";
@@ -26,6 +27,14 @@ try {
   const page = await browser.newPage();
   await page.addInitScript("window.__name = (fn) => fn;");
   await page.goto(server.resolvedUrls!.local[0]!);
+  await runEffectCatalogueAcceptance(
+    page,
+    resolve(import.meta.dirname, "../.."),
+    resolve(
+      import.meta.dirname,
+      "../../benchmarks/results/composition-ce6-completion",
+    ),
+  );
   const results = await page.evaluate(async () => {
     const url = "/packages/renderer-core/src/index.ts";
     const m = (await import(url)) as typeof Render;

@@ -291,3 +291,55 @@ Filtering remains on GPU-owned textures. Canvas rasterizes vector mask coverage
 and its prefilter opacity; it never filters or reads back the GPU image. Lower
 sigmas retain the existing image arithmetic. The earlier oversized-feather CPU
 image-filter fallback has been removed.
+
+### Recorded 1080p effect costs
+
+The serial pinned Chromium 151 / SwiftShader run uses 1920×1080 native colored
+stripes, complete synchronous readback, two warmups and five advancing frames.
+Cold time includes first-frame shader and preparation work. Warm entries are
+medians; cached staged map inputs are permitted. These are measured costs for the
+[representative controls](../benchmarks/fixtures/composition/ce6/catalogue.ts),
+not maximum-cost limits or CE6-P speed acceptance. The raw samples and environment
+are in `benchmarks/results/composition-ce6-completion/effect-cost.json`.
+
+| Effect                         | Canvas warm ms | SwiftShader cold ms | SwiftShader warm ms |
+| ------------------------------ | -------------: | ------------------: | ------------------: |
+| `blur.directional`             |           87.5 |               416.2 |               180.6 |
+| `blur.gaussian`                |           10.2 |               233.7 |                56.3 |
+| `blur.lens`                    |          687.6 |               365.5 |                60.1 |
+| `blur.primitive`               |           24.3 |                44.2 |                24.0 |
+| `blur.radial`                  |          518.9 |               243.7 |                44.8 |
+| `blur.zoom`                    |          485.8 |               236.6 |                43.5 |
+| `color.brightness-contrast`    |          208.3 |                80.1 |                16.4 |
+| `color.curves`                 |          180.4 |                98.5 |                18.7 |
+| `color.exposure`               |          310.6 |                87.2 |                17.6 |
+| `color.fill`                   |          239.9 |                85.8 |                16.6 |
+| `color.gradient-ramp`          |          175.3 |                96.6 |                18.1 |
+| `color.hue-saturation`         |          264.2 |                87.6 |                17.7 |
+| `color.invert`                 |          196.6 |                79.6 |                16.5 |
+| `color.levels`                 |          305.6 |                91.1 |                18.2 |
+| `color.posterize`              |          215.8 |                82.6 |                16.7 |
+| `color.tint`                   |          215.2 |                87.0 |                17.3 |
+| `distort.bulge`                |          112.4 |               116.5 |                22.7 |
+| `distort.corner-pin`           |           97.6 |                97.3 |                18.7 |
+| `distort.displacement-map`     |          318.1 |               172.9 |                26.5 |
+| `distort.ripple`               |          113.0 |               117.2 |                23.4 |
+| `distort.sine`                 |            6.4 |                68.4 |                14.0 |
+| `distort.transform`            |           62.9 |                99.7 |                19.6 |
+| `distort.turbulent`            |          600.1 |               127.9 |                26.9 |
+| `light.drop-shadow`            |          498.1 |               188.1 |                75.9 |
+| `light.glow`                   |           18.5 |               241.2 |                55.9 |
+| `light.inner-shadow`           |          414.7 |               186.6 |                75.8 |
+| `light.radial`                 |            5.5 |                78.7 |                14.4 |
+| `light.sweep`                  |            9.9 |                74.0 |                21.4 |
+| `particles.rise`               |            1.6 |                69.6 |                16.0 |
+| `stylize.chromatic-aberration` |          201.1 |               110.3 |                23.4 |
+| `stylize.fractal-noise`        |          424.3 |               103.0 |                20.2 |
+| `stylize.grain`                |            2.8 |                79.5 |                12.5 |
+| `stylize.vignette`             |          115.2 |                89.6 |                17.0 |
+| `time.echo`                    |            2.5 |                49.9 |                13.0 |
+| `transition.block-dissolve`    |           57.3 |                86.1 |                16.1 |
+| `transition.gradient-wipe`     |          257.3 |               162.2 |                23.3 |
+| `transition.linear-wipe`       |           68.3 |                89.8 |                16.8 |
+| `transition.radial-wipe`       |           67.0 |                88.7 |                17.2 |
+| `transition.venetian-blinds`   |          119.0 |                84.8 |                16.8 |
