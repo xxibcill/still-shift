@@ -1,3 +1,4 @@
+import { renderGpuEffect } from "./effect-plugins.ts";
 import { FLOAT32_RATIONAL_SUM } from "./webgl-float-sum.ts";
 import { blurKernel, blurKernelLength } from "./webgl-blur-kernel.ts";
 import { boxBlur } from "./webgl-box-blur.ts";
@@ -311,6 +312,10 @@ export class WebglEffects {
   apply(dst: WebglSurface, effects: RenderEffect[]) {
     for (const effect of effects) {
       if (!effect.enabled) continue;
+      if (renderGpuEffect(this.device, dst, effect)) {
+        this.bounds.full(dst);
+        continue;
+      }
       const p = effect.params;
       switch (effect.effect) {
         case "light.radial": {

@@ -1,3 +1,4 @@
+import { renderCanvasEffect } from "./effect-plugins.ts";
 import type { RenderEffect } from "./graph.ts";
 import {
   paintRadialLight,
@@ -120,6 +121,8 @@ export function applyCanvasEffects(
   stack: RenderEffect[],
 ) {
   for (const effect of stack) {
+    if (!effect.enabled) continue;
+    if (renderCanvasEffect(context, target, effect)) continue;
     const render = Object.hasOwn(effects, effect.effect)
       ? effects[effect.effect]
       : undefined;

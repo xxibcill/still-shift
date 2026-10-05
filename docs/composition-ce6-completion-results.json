@@ -40,11 +40,48 @@
         "New mandatory evaluated version broke hand-built backend probes; made probe metadata optional while sampling always stamps it",
         "Inspector assertion incorrectly included layer ID in the local property field; corrected expectation",
         "New edge regressions caught dropped point defaults, order-sensitive version comparison and incomplete bounds; implementations repaired"
+      ],
+      "implementation": "90d8c10"
+    },
+    {
+      "name": "Paired render plugin lifecycle",
+      "status": "focused-verification-passed",
+      "features": [
+        "Single registration pairs the validated scene descriptor with required GPU and optional Canvas callbacks",
+        "GPU callbacks use actual pooled textures and shader passes without CPU readback",
+        "Transactional output publication and bounded scratch resource ownership on both adapters",
+        "Reject sampled version mismatch, foreign/released textures, feedback and incorrectly sized output; cleanup on failures",
+        "Permanent native plugin browser test enters the existing WebGL gate"
+      ],
+      "verification": {
+        "focusedTests": 35,
+        "focusedFiles": 4,
+        "unitLog": "/private/tmp/ce6-plugins-focused-final.log",
+        "build": "/private/tmp/ce6-plugins-build-final.log",
+        "lint": "/private/tmp/ce6-plugins-lint-final.log",
+        "schema": "/private/tmp/ce6-plugins-schema-check.log",
+        "boundaries": "/private/tmp/ce6-plugins-boundaries.log",
+        "browser": "/private/tmp/ce6-plugins-browser-webgl-r2.log",
+        "snapshot": "/private/tmp/still-shift-ce6-plugins-r2-90d8c10",
+        "pluginFrames": 12,
+        "randomSeeks": 7,
+        "maxBackendDelta": 0,
+        "independentOracle": "half invert of opaque RGB yields neutral 128 within one byte",
+        "existingWebglRegressions": "passed within unchanged tiers"
+      },
+      "initialFailures": [
+        "Test-first registry import missing before implementation",
+        "Initial browser helper used a Node package alias unavailable in standalone Vite; corrected to repository-relative imports",
+        "Attempt to reuse snapshot hit existing private venv symlink; verification resumed in a fresh isolated r2 snapshot"
+      ],
+      "limitations": [
+        "Custom executable callbacks must be installed in each rendering host; documents capture versions but do not serialize functions",
+        "Remaining built-in effect catalogue, scoped input dependencies and linear-light compositing are pending"
       ]
     }
   ],
   "pending": [
-    "Paired GPU/Canvas runtime registration; descriptor registration alone is not a render plugin",
+    "Remaining built-in effect catalogue and scoped input dependency stages",
     "Remaining native effect catalogue, curves, layer dependencies and adjustment temporal semantics",
     "Real optional linear-light compositing",
     "Native per-effect, drawable, seeking, stored hashes, actual hardware and independent/repeated export acceptance",

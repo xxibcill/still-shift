@@ -21,6 +21,10 @@ export const COMPOSITION_DIAGNOSTICS = {
     "A value matches none of the allowed forms (for example an unknown layer `type`).",
   "comp-schema": "Any other structural error.",
   "comp-limit": "An array, string or record exceeds its size limit.",
+  "comp-effect-registration":
+    "Effect registration requires a unique ID, valid definition and GPU callback.",
+  "comp-effect-surface":
+    "Effect scratch textures and output must belong to the current callback and meet size/budget constraints.",
   "comp-effect-version":
     "Registered effect versions differ from the captured export snapshot.",
   "comp-effect-bounds":

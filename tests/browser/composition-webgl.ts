@@ -1,3 +1,4 @@
+import type * as PluginChecks from "../helpers/composition-effect-plugin-reference.ts";
 import assert from "node:assert/strict";
 import { resolve } from "node:path";
 import { createServer } from "vite";
@@ -22,6 +23,13 @@ try {
   const page = await browser.newPage();
   await page.addInitScript("window.__name = (fn) => fn;");
   await page.goto(server.resolvedUrls!.local[0]!);
+  const plugins = await page.evaluate(async () => {
+    const url = "/tests/helpers/composition-effect-plugin-reference.ts";
+    return (
+      (await import(url)) as typeof PluginChecks
+    ).checkEffectPluginRendering();
+  });
+  console.log("WebGL effect plugin registry:", plugins);
   const blur = await page.evaluate(async () => {
     const url = "/tests/helpers/composition-webgl-blur.ts";
     return ((await import(url)) as typeof Blur).checkWebglPrimitiveBlur();

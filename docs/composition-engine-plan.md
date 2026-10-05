@@ -3101,8 +3101,11 @@ points throughout evaluation, paths, drivers, the native inspector and builder,
 checked pure expansion and captured effect-version export identity. Registration
 changes invalidate compiled validation and evaluated versions enter graph keys.
 The ten existing kernels retain their definitions and arithmetic. Descriptor
-registration alone does not supply render callbacks; paired runtime registration,
-the remaining catalogue/dependencies, linear-light composition and the complete
+registration now pairs required GPU and optional Canvas callbacks with bounded
+scratch ownership, checked outputs and failure cleanup. Twelve plugin frames are
+exact across Canvas/SwiftShader, including an independent oracle and seven random
+seeks; 35 focused tests and the existing WebGL browser gate pass. The remaining
+catalogue/dependencies, linear-light composition and the complete
 native/hardware/export/cost/full-gate acceptance are still pending. Focused checks
 and failed attempts are recorded in [CE6 evidence](./composition-ce6-completion-results.json).
 CE6-P speed acceptance remains deferred; frozen baselines are unchanged.

@@ -47,10 +47,12 @@ still hold before relying on them.
   CE7 `817cc9f`. First slice adds typed effect definition registration, vec2
   sampling/paths/inspector/builder defaults, checked bounds and captured export
   versions. Focused 200 tests, build, schema, boundaries and lint pass; existing
-  effect/WebGL browser regressions are recorded in the evidence. Runtime plugin
-  callbacks, the remaining catalogue/dependencies, linear-light composition and
+  effect/WebGL browser regressions are recorded in the evidence. The remaining
+  catalogue/dependencies, linear-light composition and
   native/hardware/export/cost/full-gate acceptance remain. No owner decision is
-  pending. [Evidence](./composition-ce6-completion-results.json).
+  pending. Paired GPU/Canvas callbacks now pass 35 focused tests and the WebGL
+  browser gate, including exact 12-frame plugin parity and seven random seeks.
+  [Evidence](./composition-ce6-completion-results.json).
 
 - **CE7 complete (2026-10-06):** `codex/composition-ce7`, code `0e48388`.
   Local holds/posterization, source loops, freeze remap, deterministic adaptive
@@ -186,6 +188,19 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-06 — CE6 paired render callback checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce6-completion`.
+- **Done:** paired descriptor/GPU/Canvas registration, pooled shader stages,
+  bounded scratch ownership and transactional output with cleanup diagnostics.
+- **Results:** 35 focused tests, build/lint/schema/boundaries and the existing
+  WebGL browser gate pass. All 12 custom-plugin frames match Canvas exactly;
+  seven random seeks and an independent gray-value oracle pass.
+- **Repaired:** standalone browser helper package alias; initial failure retained.
+- **Next:** remaining built-in catalogue, layer dependencies and linear-light
+  composition, then complete native/hardware/export/cost/full-gate acceptance.
+- **Records:** [CE6 evidence](./composition-ce6-completion-results.json).
 
 ### 2026-10-06 — CE6 effect contract checkpoint
 

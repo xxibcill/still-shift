@@ -134,3 +134,9 @@ export {
   compositionEffectVersions,
   assertCompositionEffectVersions,
 } from "./composition/render/renderer.ts";
+
+export {
+  registerCompositionEffect,
+  type CompositionEffectPlugin,
+  type GpuEffectContext,
+} from "./composition/render/effect-plugins.ts";
