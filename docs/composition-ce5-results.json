@@ -744,5 +744,11 @@
     "canvas": "composition-canvas-1.23.3",
     "webgl": "composition-webgl2-0.37.3",
     "export": "chromium-ffmpeg-0.6.1"
+  },
+  "pullRequest": {
+    "url": "https://github.com/xxibcill/still-shift/pull/38",
+    "base": "codex/composition-ce11",
+    "head": "codex/composition-ce5",
+    "status": "open-and-attached"
   }
 }

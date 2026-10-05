@@ -3009,7 +3009,7 @@ results on known polygons), pixel tests, animated trim/morph sequences.
   all browser suites and 176 frozen CE0 baselines / 36,061 frames. Owner edits and
   primary processes/environment are preserved. Initial failures are recorded in
   [CE5 evidence](./composition-ce5-results.json). Actions remain disabled.
-- **PR / next:** publish the stacked CE5 PR, then start CE7 on a new branch.
+- **PR / next:** [PR #38](https://github.com/xxibcill/still-shift/pull/38) is open and attached, targeting CE11; start CE7 on a new branch.
 
 ---
 

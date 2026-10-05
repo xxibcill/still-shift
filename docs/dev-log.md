@@ -49,8 +49,8 @@ still hold before relying on them.
   all browser groups and 176 frozen baselines / 36,061 frames. Native stored hashes
   and reverse seeks pass; legacy connectors, actual CE4a brush conversion and all
   18 Apple hardware comparisons are exact. Failed attempts/repairs are retained.
-  Publish its stacked PR, then begin CE7 on a new branch. No owner decision is
-  pending. [Evidence](./composition-ce5-results.json).
+  [PR #38](https://github.com/xxibcill/still-shift/pull/38) is open and attached; begin CE7 on a new branch.
+  No owner decision is pending. [Evidence](./composition-ce5-results.json).
 
 - **CE11 complete (2026-10-05):** `codex/composition-ce11`, runtime `5f36268`.
   Native inspector, graph/handle edits, overlays, lossless history, guarded source
@@ -179,7 +179,7 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   144 legacy connector frames and actual 24-frame CE4a brush conversion are exact.
   All 18 Apple hardware comparisons are exact; independent MP4/transport pairs
   and inspector acceptance pass. Initial failures/repairs remain recorded.
-- **Next:** publish CE5's stacked PR, then create CE7's branch. No owner decision
+- **PR / next:** [PR #38](https://github.com/xxibcill/still-shift/pull/38) is open and attached; create CE7’s branch. No owner decision
   is pending. Existing CE0 baselines were not regenerated; Actions remain disabled.
 - **Records:** [CE5 evidence](./composition-ce5-results.json).
 
