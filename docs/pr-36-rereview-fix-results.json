@@ -4,7 +4,7 @@
   "reviewedHead": "f68f135bfdc0325378862e4c7c77d37f153ec35a",
   "branch": "codex/pr36-rereview-fixes",
   "policy": "One finding per commit; one push after the final fix commit. GitHub Actions remain disabled.",
-  "status": "fixes-in-progress",
+  "status": "all-three-findings-fixed-and-locally-verified",
   "findings": [
     {
       "number": 1,
@@ -40,6 +40,7 @@
       "finding": "attribute merged outgoing-handle errors to their authoring call",
       "comment": "https://github.com/xxibcill/still-shift/pull/36#discussion_r4183933400",
       "status": "fixed",
+      "commit": "63b6add",
       "verification": {
         "red": {
           "status": "failed-as-expected",
@@ -66,14 +67,117 @@
       "number": 3,
       "finding": "retain the image path on asset schema failures",
       "comment": "https://github.com/xxibcill/still-shift/pull/36#discussion_r4183933402",
-      "status": "pending"
+      "status": "fixed",
+      "commitSubject": "fix(motion): retain asset paths on schema failures",
+      "verification": {
+        "red": {
+          "status": "failed-as-expected",
+          "failedTests": 3,
+          "log": "/private/tmp/pr36-rereview-fix3-red.log"
+        },
+        "green": {
+          "status": "passed",
+          "tests": 29,
+          "command": "pnpm exec vitest run tests/unit/motion-builder-assets.test.ts tests/integration/composition-preview.test.ts tests/integration/composition-program.test.ts --maxWorkers=1 --no-file-parallelism",
+          "log": "/private/tmp/pr36-rereview-fix3-green.log"
+        },
+        "build": "passed",
+        "coverage": [
+          "image schema failures retain their absolute file dependency",
+          "font weight and variable-axis schema failures retain their dependency",
+          "an initially zero-width SVG repairs through watch without touching the source",
+          "read failures and unsupported-image failures retain their dependencies"
+        ]
+      }
     }
   ],
-  "verification": [],
+  "verification": [
+    {
+      "command": "pnpm check:fast",
+      "status": "passed",
+      "unitTests": 1524,
+      "testFiles": 134,
+      "covers": [
+        "schema",
+        "package boundaries",
+        "format",
+        "lint",
+        "build",
+        "unit tests"
+      ],
+      "log": "/private/tmp/pr36-rereview-final-fast.log"
+    },
+    {
+      "command": "pnpm test:runtime",
+      "status": "passed",
+      "tests": 46,
+      "log": "/private/tmp/pr36-rereview-final-runtime.log"
+    },
+    {
+      "command": "affected composition program, preview, CLI, examples and reference integration tests",
+      "status": "passed",
+      "tests": 31,
+      "logs": [
+        "/private/tmp/pr36-rereview-fix3-green.log",
+        "/private/tmp/pr36-rereview-final-cli.log"
+      ]
+    },
+    {
+      "command": "pnpm exec node --import tsx /private/tmp/pr36-rereview-watch-browser.mts",
+      "status": "passed",
+      "harness": "Unchanged tests/browser/composition-program.ts assertions with absolute imports and an available localhost port; existing port 5173 service preserved.",
+      "watch": {
+        "helperReload": true,
+        "invalidKeepsPixels": true,
+        "frameRetained": 17,
+        "shorterClamped": 7,
+        "backendSwitch": true,
+        "fullReload": false,
+        "readonlyBuilder": true
+      },
+      "exports": {
+        "frames": 8,
+        "fps": 24,
+        "typescriptJsonByteIdentical": true
+      },
+      "log": "/private/tmp/pr36-rereview-final-watch-browser.log"
+    },
+    {
+      "command": "pnpm test:browser:composition-builder",
+      "status": "passed",
+      "frames": 192,
+      "numericSamples": 42256,
+      "maxNumericDelta": 5.684341886080802e-14,
+      "pixels": [
+        {
+          "backend": "canvas2d",
+          "frames": 192,
+          "maxChannelDelta": 0,
+          "backwardSeeks": 7
+        },
+        {
+          "backend": "webgl2",
+          "frames": 192,
+          "maxChannelDelta": 0,
+          "backwardSeeks": 7
+        }
+      ],
+      "exports": {
+        "typescriptJsonByteIdentical": true,
+        "sha256": "5ebd5dca399ea9f149611e60edea3ad01710aa56d0999abf7a227710b3395b38"
+      },
+      "log": "/private/tmp/pr36-rereview-final-builder.log"
+    }
+  ],
+  "notRun": [
+    "Full pnpm check aggregate, unrelated integration/browser suites, depth tests and frozen baselines were not rerun for these focused fixes."
+  ],
   "delivery": {
     "reviewComments": 3,
     "targetBranch": "codex/composition-ce10",
-    "pushes": 0,
+    "findingCommits": 3,
+    "pushStrategy": "One push after the third finding commit",
+    "remoteHeadBeforePush": "f68f135bfdc0325378862e4c7c77d37f153ec35a",
     "actionsEnabled": false,
     "pendingOwnerDecision": "PR review and merge"
   }

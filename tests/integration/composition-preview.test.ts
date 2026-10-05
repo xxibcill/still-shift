@@ -135,6 +135,39 @@ it("recovers when an initially missing builder image asset is created", async ()
     .toBe("art");
 });
 
+it("recovers after repairing an initially schema-invalid builder image asset", async () => {
+  const root = await directory(),
+    input = join(root, "program.ts"),
+    art = join(root, "invalid.svg");
+  await writeFile(art, '<svg width="0" height="12"/>');
+  await writeFile(
+    input,
+    `import{comp,image}from'@still-shift/motion';import{imageAsset}from'@still-shift/motion/node';const asset=await imageAsset('art','./invalid.svg',{relativeTo:import.meta.url});export default comp({width:64,height:64,fps:24,frames:24},c=>c.add(image('drawing',asset)));`,
+  );
+  const session = await createProgramPreview(input, {
+    watch: true,
+    port: await freePort(),
+  });
+  sessions.push(session);
+  expect(session.snapshot()).toBeUndefined();
+  const base = new URL(session.url).origin;
+  expect(
+    (await (await fetch(base + "/composition/program")).json()).diagnostics,
+  ).toEqual([expect.objectContaining({ code: "comp-builder-asset" })]);
+  const repaired = '<svg width="8" height="12"/>';
+  await writeFile(art, repaired);
+  await expect
+    .poll(() => session.snapshot()?.composition.assets[0], { timeout: 6000 })
+    .toMatchObject({
+      id: "art",
+      width: 8,
+      height: 12,
+    });
+  expect(
+    await (await fetch(base + session.snapshot()!.assets.art!)).text(),
+  ).toBe(repaired);
+});
+
 it("serves native JSON assets through a logical directory alias while watching canonical paths", async () => {
   const root = await directory(),
     physical = join(root, "physical", "nested"),

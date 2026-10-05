@@ -43,13 +43,15 @@ still hold before relying on them.
 
 ## Current state
 
-- **PR #36 re-review fixes in progress (2026-10-05):** isolated
+- **PR #36 re-review fixes complete (2026-10-05):** isolated
   `codex/pr36-rereview-fixes` from `f68f135`; three findings posted inline.
   Delayed explicit `from` segments preserve preceding static state; merged outgoing
-  key fields retain their authoring calls through nested reuse. 46 focused tests
-  and build pass. Asset-schema watch recovery remains. One finding per commit,
-  one final push; no owner decision is
-  needed for the authorized fixes. [Evidence](./pr-36-rereview-fix-results.json).
+  key fields retain their authoring calls through nested reuse; asset-schema failures
+  retain dependencies and recover through watch. Fast checks pass (1,524 unit),
+  46 runtime and 31 affected integration tests pass, with exact 192-frame Canvas/WebGL
+  parity, backward seeks and byte-identical exports. Three finding commits, one final
+  push; review/merge remain owner decisions. No implementation blocker.
+  [Evidence](./pr-36-rereview-fix-results.json).
 
 - **PR #36 review fixes complete (2026-10-05):** `codex/composition-ce10`
   from `afb4045`; all six findings posted inline and repaired in six separate
@@ -167,6 +169,22 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-05 — PR #36 re-review fix 3: recover watched invalid assets
+
+- **Agent / branch:** Codex on `codex/pr36-rereview-fixes`; prior fixes `9314879`, `63b6add`.
+- **Done:** Asset-schema failures retain the image/font path; initially invalid SVGs
+  rebuild automatically after repair. One finding per commit, one final push.
+- **Results:** Three tests fail before repair; 29 focused tests and build pass.
+  Fast checks pass (1,524 unit), 46 runtime and 31 affected integration tests pass.
+  Browser watch retains pixels/frame state; all 192 Canvas/WebGL frames match the
+  reference exactly, including backward seeks, with byte-identical exports.
+- **Limits:** Watch harness uses an available port because 5173 is occupied. Full
+  unrelated integration/browser, depth and frozen-baseline suites were not rerun.
+- **Open / next:** Three findings fixed and verified; owner review/merge remain.
+  GitHub Actions remain disabled; original checkout and local work retained.
+- **Records:** [Evidence](./pr-36-rereview-fix-results.json),
+  [inline finding](https://github.com/xxibcill/still-shift/pull/36#discussion_r4183933402).
 
 ### 2026-10-05 — PR #36 re-review fix 2: attribute joined outgoing key fields
 
