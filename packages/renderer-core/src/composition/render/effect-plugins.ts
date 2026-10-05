@@ -1,3 +1,4 @@
+import { transitionEffectKernel } from "./transition-effects.ts";
 import { colorEffectKernel } from "./color-effects.ts";
 import {
   registerCompositionEffectDefinition,
@@ -66,7 +67,7 @@ export function registerCompositionEffect(
   };
 }
 export const compositionEffectPlugin = (id: string) =>
-  plugins.get(id) ?? colorEffectKernel(id);
+  plugins.get(id) ?? colorEffectKernel(id) ?? transitionEffectKernel(id);
 
 /** A callback owns at most 32 surfaces and 128 MiB (or four full-size frames). */
 class EffectSurfaces<S extends { width: number; height: number }> {

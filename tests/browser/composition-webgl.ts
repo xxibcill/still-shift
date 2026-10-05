@@ -1,3 +1,4 @@
+import type * as TransitionChecks from "../helpers/composition-transition-effect-reference.ts";
 import type * as ColorChecks from "../helpers/composition-color-effect-reference.ts";
 import type * as PluginChecks from "../helpers/composition-effect-plugin-reference.ts";
 import assert from "node:assert/strict";
@@ -52,6 +53,13 @@ try {
     ).checkColorCurveByteRounding();
   });
   console.log("WebGL curve byte rounding:", JSON.stringify(curveBytes));
+  const transitions = await page.evaluate(async () => {
+    const url = "/tests/helpers/composition-transition-effect-reference.ts";
+    return (
+      (await import(url)) as typeof TransitionChecks
+    ).checkTransitionEffectRendering();
+  });
+  console.log("WebGL native transitions:", JSON.stringify(transitions));
   const blur = await page.evaluate(async () => {
     const url = "/tests/helpers/composition-webgl-blur.ts";
     return ((await import(url)) as typeof Blur).checkWebglPrimitiveBlur();

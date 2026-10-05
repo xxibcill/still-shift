@@ -44,14 +44,13 @@ still hold before relying on them.
 ## Current state
 
 - **CE6 in progress (2026-10-06):** `codex/composition-ce6-completion` from
-  CE7 `817cc9f`. Checkpoints `90d8c10`, `38a2856` and `7bde3b6` deliver typed
-  contracts, paired GPU/Canvas plugins and nine native color corrections.
-  Curves now add bounded animated controls, point expressions/baking/inspector
-  tracks and an actual GPU transfer-table kernel. 246 focused tests and build/
-  lint/schema/boundaries pass. Ten color effects pass 270 native cases / 3,240
-  frames, maximum backend delta 1, minimum PSNR 64.97 dB and 3,780 seeks.
-  All 32,895 byte/alpha pairs are exact in four curve/six posterize cases.
-  Remaining catalogue/dependencies, linear-light composition and complete
+  CE7 `817cc9f`. Checkpoints `90d8c10`, `38a2856`, `7bde3b6` and `cea8b65`
+  deliver typed/paired plugins and ten color kernels with animated curves.
+  Four native transitions now pass 76 focused tests, build/lint/schema/boundaries
+  and 108 cases / 1,296 frames / 1,512 seeks. Max backend delta 1, minimum
+  PSNR 64.43 dB; 16 direct coverage oracles pass. Curves/color remain verified
+  across 270 cases / 3,240 frames and exhaustive byte pairs.
+  Remaining spatial/catalogue/dependency effects, linear-light and complete
   hardware/hash/export/cost/full-gate acceptance remain. No owner decision is
   pending. [Evidence](./composition-ce6-completion-results.json).
 
@@ -189,6 +188,21 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-06 — CE6 native transition checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce6-completion`.
+- **Done:** linear/radial wipes, venetian blinds and integer-seeded block
+  dissolve, with animated coverage, explicit direction/radial/rounding rules.
+- **Results:** 76 focused tests plus build/lint/schema/boundaries; 108 native
+  cases / 1,296 frames / 1,512 seeks, max delta 1 and minimum PSNR 64.43 dB.
+  Sixteen direct coverage oracles pass. Complete milestone gate remains pending.
+- **Repaired:** test expected transparent WebGL screen output; direct coverage
+  oracle now uses explicit black background. Radial center/full turns are defined.
+- **Next:** spatial and remaining catalogue effects, scoped inputs/gradient
+  wipe, linear-light and complete hardware/hash/export/cost/full-gate acceptance.
+- **Records:** [CE6 evidence](./composition-ce6-completion-results.json),
+  [transition conventions](./composition-effect-plugins.md#native-transitions).
 
 ### 2026-10-06 — CE6 animated curves checkpoint
 

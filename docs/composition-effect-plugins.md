@@ -104,3 +104,27 @@ spaced controls and sixteen-point curves.
 The remaining CE6 catalogue/dependency stages, linear-light composition
 and full milestone acceptance are tracked in
 [CE6 results](./composition-ce6-completion-results.json).
+
+## Native transitions
+
+`transition.linear-wipe`, `transition.radial-wipe`,
+`transition.venetian-blinds` and `transition.block-dissolve` remove source coverage
+with animated `progress`: zero preserves the input, one clears it. `softness`
+sets the transition band in normalized rank space; zero gives a hard boundary.
+The remaining fraction is rounded to an 8-bit coverage value before multiplying
+premultiplied channels. Masks and mattes follow the effect stack.
+
+Linear wipe projects pixel centers along the angle, normalized to the surface
+rectangle. Venetian blinds repeat that projection at the authored pixel width.
+Both use direction coefficients rounded to multiples of 1/256. Radial wipe
+starts on the positive x ray, advances clockwise in image coordinates and
+subtracts `angle`; `center` is normalized to surface dimensions. Angular rank
+uses 65,536 bins with a one-millionth-turn positive tie offset; the center point
+has angle zero. Full-turn angles are reduced before shader evaluation.
+Block dissolve assigns a fixed rank to each authored pixel-size block using an
+unsigned integer hash of block coordinates and seed. Sixteen-bit seed parts
+preserve all supported integer seed bits in shader uniforms.
+
+All four kernels run as actual GPU passes, with pure Canvas coverage references.
+They apply to isolated drawable layers, groups, precomps and captured adjustment
+backdrops. Gradient wipe follows the remaining scoped-input dependency work.

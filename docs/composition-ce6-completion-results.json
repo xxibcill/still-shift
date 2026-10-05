@@ -129,14 +129,7 @@
         },
         "byteRounding": {
           "pairs": 32895,
-          "levelCounts": [
-            2,
-            3,
-            6,
-            10,
-            16,
-            256
-          ],
+          "levelCounts": [2, 3, 6, 10, 16, 256],
           "maxDelta": 0,
           "raw": "benchmarks/results/composition-ce6-completion/ce6-color-byte-rounding.json"
         }
@@ -201,6 +194,59 @@
         "Ordering validation during each expression rejected intermediate crossings; moved to final layer stage",
         "First relocated ordering check missed layers without expressions; corrected final evaluation stage",
         "New graph speed oracle assumed linear default easing; corrected to the existing smoothstep central-difference derivative"
+      ],
+      "implementation": "cea8b65"
+    },
+    {
+      "name": "Native coverage transitions",
+      "status": "focused-verification-passed",
+      "effects": [
+        "transition.linear-wipe",
+        "transition.radial-wipe",
+        "transition.venetian-blinds",
+        "transition.block-dissolve"
+      ],
+      "features": [
+        "Animated bounded wipe/dissolve controls across drawable/group/precomp/adjustment layers",
+        "GPU coverage kernels and independent pure Canvas references",
+        "Integer-hash seeded blocks with split seed uniforms; quantized projection directions and explicit radial center/ties",
+        "Native pixel/seek regression and direct opaque-screen coverage oracles"
+      ],
+      "versions": {
+        "evaluator": 33,
+        "canvas": "composition-canvas-1.28.0",
+        "webgl": "composition-webgl2-0.42.0"
+      },
+      "verification": {
+        "focusedTests": 76,
+        "focusedFiles": 7,
+        "unitLog": "benchmarks/results/composition-ce6-completion/ce6-transitions-focused-final.log",
+        "build": "benchmarks/results/composition-ce6-completion/ce6-transitions-build-r3.log",
+        "schema": "benchmarks/results/composition-ce6-completion/ce6-transitions-schema-check.log",
+        "boundaries": "benchmarks/results/composition-ce6-completion/ce6-transitions-boundaries.log",
+        "lint": "benchmarks/results/composition-ce6-completion/ce6-transitions-lint.log",
+        "nativeMatrix": {
+          "cases": 108,
+          "frames": 1296,
+          "backends": 2,
+          "randomSeeks": 1512,
+          "maxDelta": 1,
+          "minPsnr": 64.43169075796116,
+          "coverageOracleCases": 16,
+          "maxCoverageOracleDelta": 0,
+          "raw": "benchmarks/results/composition-ce6-completion/ce6-transitions-native-acceptance.json",
+          "snapshot": "/private/tmp/still-shift-ce6-transitions-r3-cea8b65"
+        }
+      },
+      "initialFailures": [
+        "Test-first transition API absent",
+        "New test parameter type used generic readonly arrays incompatible with evaluated mutable tuple union; made pure reference parameters readonly",
+        "Direct oracle assumed a transparent WebGL screen; corrected it to an explicit black background and opaque-screen alpha expectation",
+        "Added explicit radial center handling and modulo full-turn angles during review"
+      ],
+      "pending": [
+        "Gradient wipe requires the pending scoped layer-input stages",
+        "Complete hardware/hash/export/cost/full-gate acceptance follows the complete catalogue"
       ]
     }
   ],

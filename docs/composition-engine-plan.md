@@ -3142,6 +3142,18 @@ boundaries pass. Remaining catalogue/dependencies, linear-light and complete
 hardware/hash/export/cost/full-gate acceptance remain; thresholds and frozen
 baselines are unchanged. [Evidence](./composition-ce6-completion-results.json).
 
+### CE6 native transition checkpoint (2026-10-06)
+
+Linear/radial wipes, venetian blinds and integer-seeded block dissolve have
+bounded animated controls, actual GPU kernels and pure Canvas coverage references.
+Native acceptance passes 108 cases / 1,296 frames / 1,512 seeks across nine layer
+variants, max delta 1 and minimum PSNR 64.43 dB; 16 direct coverage oracles pass.
+76 focused tests and build/lint/schema/boundaries pass. Radial center/full turns,
+quantized directions and coverage rounding are explicit. Gradient wipe follows
+scoped-input dependencies; remaining spatial/catalogue, linear-light and complete
+hardware/hash/export/cost/full-gate acceptance remain. Existing thresholds and
+frozen baselines are unchanged. [Evidence](./composition-ce6-completion-results.json).
+
 ### CE6 performance slice 1: exact effect work (2026-10-03)
 
 - **Scope:** the transferred CE4b timing requirement only, not the broader CE6

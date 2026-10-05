@@ -5,6 +5,7 @@ import {
   type EffectScalar,
 } from "./effect-definition.ts";
 import { COLOR_EFFECT_DEFINITIONS } from "./color-effects.ts";
+import { TRANSITION_EFFECT_DEFINITIONS } from "./transition-effects.ts";
 export * from "./effect-definition.ts";
 
 function defineEffect(
@@ -35,6 +36,7 @@ export const COMPOSITION_EFFECTS: Readonly<
   Record<string, CompositionEffectDefinition>
 > = {
   ...COLOR_EFFECT_DEFINITIONS,
+  ...TRANSITION_EFFECT_DEFINITIONS,
   "blur.primitive": defineEffect({ radius: { default: 0, min: 0, max: 1000 } }),
   "time.echo": defineEffect(
     {

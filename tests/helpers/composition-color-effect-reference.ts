@@ -284,6 +284,11 @@ function fixture(
   return comp;
 }
 export async function checkColorEffectRendering() {
+  return checkNativeEffectRendering(variants);
+}
+export async function checkNativeEffectRendering(
+  variants: Readonly<Record<string, EffectParams[]>>,
+) {
   const tile = document.createElement("canvas");
   tile.width = 48;
   tile.height = 32;
@@ -351,7 +356,7 @@ export async function checkColorEffectRendering() {
               : 10 * Math.log10((255 * 255) / (squared / channels));
           if (maximum > 2 || psnr < 50)
             throw Error(
-              `Color effect ${effect}/${kind}/${variant}: max delta ${maximum}, PSNR ${psnr}`,
+              `Native effect ${effect}/${kind}/${variant}: max delta ${maximum}, PSNR ${psnr}`,
             );
           for (const [index, preview] of previews.entries())
             for (const frame of [11, 0, 7, 2, 10, 1, 5]) {
