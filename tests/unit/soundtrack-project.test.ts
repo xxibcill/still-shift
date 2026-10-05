@@ -1,4 +1,8 @@
-import { soundtrackTimelineModel } from "../../apps/lab/src/soundtrack-timeline-model.ts";
+import {
+  soundtrackHeadroom,
+  soundtrackNumberField,
+  soundtrackTimelineModel,
+} from "../../apps/lab/src/soundtrack-timeline-model.ts";
 import { describe, expect, it } from "vitest";
 import {
   validateSoundtrackProject,
@@ -286,6 +290,28 @@ it("timeline projects overlaps, waveforms and absolute automation without a seco
   ]);
   expect(model.tracks[0]!.peaks).toEqual([0, 0.5, 1]);
   expect(p.revision).toBe(0);
+});
+
+it("Lab number fields reject cleared input instead of saving zero", () => {
+  expect(soundtrackNumberField("-6.5", "Gain")).toBe(-6.5);
+  expect(soundtrackNumberField("0", "Start")).toBe(0);
+  for (const value of ["", "  ", "abc", "Infinity"])
+    expect(() => soundtrackNumberField(value, "Gain")).toThrow(
+      "Gain needs a number; nothing was saved",
+    );
+});
+
+it("Lab headroom summary warns about overs and silent mixes", () => {
+  const output = { peaks: [], samplesAboveFullScale: 0 };
+  expect(soundtrackHeadroom({ ...output, peakDbfs: -3.04 })).toBe(
+    "mix peak -3.0 dBFS",
+  );
+  expect(soundtrackHeadroom({ ...output, peakDbfs: null })).toBe(
+    "rendered mix is silent",
+  );
+  expect(
+    soundtrackHeadroom({ ...output, peakDbfs: 4.33, samplesAboveFullScale: 2 }),
+  ).toMatch(/^mix exceeds 0 dBFS on 2 samples \(peak \+4\.3 dBFS\)/);
 });
 
 it("gain scope resolves clip/track name collisions and reserves output names", () => {

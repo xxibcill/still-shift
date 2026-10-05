@@ -57,3 +57,27 @@ export function soundtrackTimelineModel(
     })),
   };
 }
+
+/**
+ * An empty or partially typed number input reports "", which Number() reads as
+ * 0; reject it so a cleared field never saves 0 dB or sample 0.
+ */
+export function soundtrackNumberField(value: string, label: string) {
+  const number = Number(value);
+  if (value.trim() === "" || !Number.isFinite(number))
+    throw new Error(label + " needs a number; nothing was saved");
+  return number;
+}
+export type SoundtrackRenderedOutput = {
+  peaks: number[];
+  peakDbfs: number | null;
+  samplesAboveFullScale: number;
+};
+/** No limiter or normalization runs, so overs reach the rendered file unchanged. */
+export function soundtrackHeadroom(mix: SoundtrackRenderedOutput) {
+  if (mix.peakDbfs === null) return "rendered mix is silent";
+  const peak = `${mix.peakDbfs > 0 ? "+" : ""}${mix.peakDbfs.toFixed(1)} dBFS`;
+  return mix.samplesAboveFullScale
+    ? `mix exceeds 0 dBFS on ${mix.samplesAboveFullScale} samples (peak ${peak}); integer delivery clips them, so lower gains`
+    : `mix peak ${peak}`;
+}

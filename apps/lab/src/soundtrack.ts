@@ -1,6 +1,11 @@
 import type { SoundtrackProject } from "../../../packages/scene-contract/src/soundtrack-project.ts";
 import type { SoundtrackEdit } from "../../../packages/renderer-core/src/soundtrack-edits.ts";
-import { soundtrackTimelineModel } from "./soundtrack-timeline-model.ts";
+import {
+  soundtrackHeadroom,
+  soundtrackNumberField,
+  soundtrackTimelineModel,
+  type SoundtrackRenderedOutput,
+} from "./soundtrack-timeline-model.ts";
 const el = <T extends HTMLElement>(id: string) =>
   document.getElementById(id) as T;
 const path = el<HTMLInputElement>("path"),
@@ -84,16 +89,15 @@ function clipFields() {
     2,
   );
 }
-let waveforms: Record<string, { peaks: number[] }> = {},
+let waveforms: Record<string, SoundtrackRenderedOutput> = {},
   waveformRevision = -1;
 function view() {
   if (!project) return;
-  const model = soundtrackTimelineModel(
-    project,
-    waveformRevision === project.revision ? waveforms : {},
-  );
+  const rendered = waveformRevision === project.revision ? waveforms : {};
+  const model = soundtrackTimelineModel(project, rendered);
   el("status").textContent =
-    `Revision ${model.revision} · ${model.durationSeconds} seconds · 48 kHz stereo`;
+    `Revision ${model.revision} · ${model.durationSeconds} seconds · 48 kHz stereo` +
+    (rendered.master ? " · " + soundtrackHeadroom(rendered.master) : "");
   document
     .querySelectorAll<HTMLButtonElement>("button")
     .forEach((b) => (b.disabled = false));
@@ -135,7 +139,7 @@ function view() {
             type: "gain",
             target: track.id,
             kind: "track",
-            gainDb: Number(gain.value),
+            gainDb: soundtrackNumberField(gain.value, track.id + " gain"),
           },
         ]),
       );
@@ -224,24 +228,26 @@ el<HTMLFormElement>("clip-edit").onsubmit = (e) => {
   e.preventDefault();
   void task(async () => {
     const id = clipSelect.value;
+    const field = (name: string, label: string) =>
+      soundtrackNumberField(el<HTMLInputElement>(name).value, label);
     // One request, one undo step; anchored offsets are derived by the edit API.
     await edit([
       {
         type: "move",
         clip: id,
-        startSample: Number(el<HTMLInputElement>("start").value),
+        startSample: field("start", "Start sample"),
       },
       {
         type: "gain",
         target: id,
         kind: "clip",
-        gainDb: Number(el<HTMLInputElement>("gain").value),
+        gainDb: field("gain", "Clip gain"),
       },
       {
         type: "trim",
         clip: id,
-        sourceStartSample: Number(el<HTMLInputElement>("source-start").value),
-        sourceEndSample: Number(el<HTMLInputElement>("source-end").value),
+        sourceStartSample: field("source-start", "Source start sample"),
+        sourceEndSample: field("source-end", "Source end sample"),
       },
       {
         type: "automation",
