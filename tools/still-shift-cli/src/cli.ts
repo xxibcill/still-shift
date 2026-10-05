@@ -63,6 +63,7 @@ Usage:
   pnpm still-shift passage import-narration --plan <plan.json> --narration <audio.wav|mp3> --timing <words.json|captions.srt> --mode match|add --output <new-plan.json>
   pnpm still-shift sfx generate --provider elevenlabs --id <slug> --prompt <text> --duration <seconds> --output-dir <new-directory> [--prompt-influence 0.3] [--loop true|false]
   pnpm still-shift prepare-commerce --brief <brief.json> --output <prepared.json>
+  pnpm --silent still-shift comp preview --input <composition.json|program.ts> [--watch] [--port 4173]
   pnpm --silent still-shift comp validate --input <composition.json|program.ts>
   pnpm --silent still-shift comp export-json --input <composition.json|program.ts> [--output <composition.json>]
   pnpm --silent still-shift comp render --input <composition.json|program.ts> --output <path.mp4> [--backend canvas2d|webgl2]

@@ -234,3 +234,35 @@ it("retains deeply nested layer and key call sites through reused definitions", 
     builderSource(outer, "precomps[1].layers[0].transform.position.x.keys[1]"),
   ).toEqual(builderSource(leaf, "layers[0].transform.position.x.keys[1]"));
 });
+it("keeps nested marker and constraint call sites", () => {
+  const leaf = comp({ ...options, id: "leaf" }, (c) => {
+    c.add(box());
+    c.marker("cue", 12);
+    c.constraint({
+      type: "keep-in-safe-area",
+      target: "box",
+      inset: 0,
+    });
+  });
+  const parent = comp(options, (c) => c.add(precomp("host", leaf)));
+  expect(builderSource(parent, "precomps[0].markers[0]")).toEqual(
+    builderSource(leaf, "markers[0]"),
+  );
+  expect(builderSource(parent, "precomps[0].constraints[0]")).toEqual(
+    builderSource(leaf, "constraints[0]"),
+  );
+});
+it("locates invalid timeline clip duration at the property animation call", () => {
+  let location;
+  try {
+    comp(options, (c) => {
+      const n = c.add(box());
+      const motion = n.x.to(1, -1);
+      location = motion.value.location;
+      c.timeline(motion);
+    });
+    expect.fail();
+  } catch (error) {
+    expect(error).toMatchObject({ code: "comp-builder-time", location });
+  }
+});

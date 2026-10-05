@@ -9,6 +9,7 @@
     "@still-shift/scene-contract": "workspace:*",
     "@still-shift/execution-runtime": "workspace:*",
     "@still-shift/motion": "workspace:*",
-    "tsx": "4.20.5"
+    "tsx": "4.20.5",
+    "vite": "7.3.6"
   }
 }

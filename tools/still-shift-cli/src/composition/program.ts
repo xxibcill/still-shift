@@ -90,8 +90,14 @@ export async function loadProgram(
       let code: number | null;
       try {
         code = await new Promise<number | null>((yes, no) => {
-          child.on("error", no);
-          child.on("close", yes);
+          let failure: Error | undefined;
+          child.on("error", (error) => {
+            failure = error;
+          });
+          child.on("close", (code) => {
+            if (failure) no(failure);
+            else yes(code);
+          });
         });
       } finally {
         clearTimeout(timeout);
@@ -126,14 +132,27 @@ export async function loadProgram(
           );
         }),
       );
-      if (!result.ok)
-        programError(
-          String(result.diagnostic.code),
-          String(result.diagnostic.message),
-          typeof result.diagnostic.path === "string"
-            ? result.diagnostic.path
-            : input,
+      if (!result.ok) {
+        dependencies = Array.isArray(result.dependencies)
+          ? result.dependencies.filter(
+              (path: unknown): path is string => typeof path === "string",
+            )
+          : [];
+        throw new CompositionProgramError(
+          [
+            {
+              code: String(result.diagnostic.code),
+              severity: "error",
+              message: String(result.diagnostic.message),
+              path:
+                typeof result.diagnostic.path === "string"
+                  ? result.diagnostic.path
+                  : input,
+            },
+          ],
+          dependencies,
         );
+      }
       value = result.input;
       dependencies = [
         ...new Set([
@@ -150,6 +169,9 @@ export async function loadProgram(
       dependencies = [
         ...new Set([
           input,
+          ...(error instanceof CompositionProgramError
+            ? error.dependencies
+            : []),
           ...traced
             .split("\n")
             .filter(Boolean)

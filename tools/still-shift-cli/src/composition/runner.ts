@@ -30,6 +30,10 @@ try {
     output!,
     JSON.stringify({
       ok: false,
+      dependencies:
+        typeof error === "object" && error && "dependencies" in error
+          ? error.dependencies
+          : [],
       diagnostic: {
         code:
           typeof error === "object" && error && "code" in error

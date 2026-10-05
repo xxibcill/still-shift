@@ -103,14 +103,69 @@
         "Watch preview and TypeScript render browser acceptance",
         "Abort/cleanup and asset dependency recovery coverage"
       ]
+    },
+    {
+      "name": "Watch preview and complete call-site coverage",
+      "status": "checkpoint",
+      "changes": [
+        "Fixed-input preview server exposes only validated asset-ID snapshots and retains two immutable revisions",
+        "Fresh builds watch imported modules/data and asset files, recover missing imports/images, and cancel older children",
+        "Lab prepares previews on detached canvases and retains the last valid scene, controls and frame on error; valid shorter scenes clamp the frame",
+        "Builder previews expose read-only provenance for CE11; backend switches retain the current frame",
+        "Nested markers/constraints/text animators and invalid animation durations retain source sites",
+        "The browser watch/export gate is included in the existing local pnpm test chain"
+      ],
+      "verification": [
+        {
+          "command": "pnpm test:integration",
+          "status": "passed",
+          "tests": 128,
+          "log": "/private/tmp/ce10-integration-watch.log"
+        },
+        {
+          "command": "pnpm exec vitest run tests/unit/motion-builder*.test.ts tests/integration/composition-program*.test.ts tests/integration/composition-preview.test.ts --maxWorkers=2",
+          "status": "passed",
+          "tests": 39,
+          "note": "Before adding missing-image and cancellation regressions; both passed in the full integration run."
+        },
+        {
+          "command": "node --import tsx tests/browser/composition-program.ts",
+          "status": "passed",
+          "log": "/private/tmp/ce10-program-browser.log",
+          "watch": {
+            "invalidRetainsPixels": true,
+            "retainedFrame": 17,
+            "shorterClampedFrame": 7,
+            "noPageReload": true,
+            "backendSwitch": true,
+            "readonlyBuilder": true
+          },
+          "exports": {
+            "sources": ["typescript", "json"],
+            "frames": 8,
+            "fps": 24,
+            "byteIdentical": true
+          }
+        },
+        {
+          "command": "pnpm build",
+          "status": "passed"
+        },
+        {
+          "command": "pnpm exec eslint [changed CLI, Lab, builder and tests]",
+          "status": "passed"
+        },
+        {
+          "command": "pnpm check:boundaries",
+          "status": "passed"
+        }
+      ]
     }
   ],
   "pending": [
-    "Complete source metadata for nested non-layer nodes and duration errors",
     "Story intent presets",
-    "Watch preview and real TypeScript render acceptance",
-    "Generated reference, skill and eight examples",
-    "Unequal Margins parity and isolated skill trial",
+    "Generated reference, skill and at least eight examples",
+    "Unequal Margins pixel/export proof and isolated skill trial",
     "Full local milestone gates and PR"
   ]
 }

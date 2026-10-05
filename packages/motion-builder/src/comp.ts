@@ -245,6 +245,21 @@ export class CompositionBuilder {
           `precomp:${child.id}`,
           builderSource(source, `precomps[${index}]`) ?? sourceLocation(),
         );
+        for (const [category, nodes, label] of [
+          ["markers", child.markers ?? [], "marker"],
+          ["constraints", child.constraints ?? [], "constraint"],
+          ["textAnimators", child.textAnimators ?? [], "textAnimator"],
+        ] as const) {
+          nodes.forEach((node, nodeIndex) =>
+            this.sites.set(
+              `precomp:${child.id}.${label}:${category === "markers" && "id" in node ? node.id : nodeIndex}`,
+              builderSource(
+                source,
+                `precomps[${index}].${category}[${nodeIndex}]`,
+              ) ?? sourceLocation(),
+            ),
+          );
+        }
         child.layers.forEach((layer, layerIndex) =>
           this.sites.set(
             `precomp:${child.id}.layer:${layer.id}`,
@@ -258,6 +273,20 @@ export class CompositionBuilder {
       `precomp:${id}`,
       "schemaVersion" in source ? (builderSource(source) ?? site) : site,
     );
+    for (const [category, nodes, label] of [
+      ["markers", source.markers ?? [], "marker"],
+      ["constraints", source.constraints ?? [], "constraint"],
+      ["textAnimators", source.textAnimators ?? [], "textAnimator"],
+    ] as const) {
+      nodes.forEach((node, index) =>
+        this.sites.set(
+          `precomp:${id}.${label}:${category === "markers" && "id" in node ? node.id : index}`,
+          "schemaVersion" in source
+            ? (builderSource(source, `${category}[${index}]`) ?? site)
+            : site,
+        ),
+      );
+    }
     for (const [index, child] of layers.entries())
       this.sites.set(
         `precomp:${id}.layer:${child.id}`,

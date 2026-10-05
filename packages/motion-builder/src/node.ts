@@ -146,6 +146,7 @@ async function readAsset(path: string, site: SourceLocation) {
       "comp-builder-asset-file",
       `${path}: ${error instanceof Error ? error.message : String(error)}`,
       site,
+      [path],
     );
   }
 }
@@ -180,6 +181,7 @@ export async function imageAsset(
       "comp-builder-image",
       `${resolved}: ${error instanceof Error ? error.message : String(error)}`,
       site,
+      [resolved],
     );
   }
   return parseAsset(

@@ -4,7 +4,12 @@ import type {
   CompositionTransform,
 } from "@still-shift/scene-contract";
 import { type Duration, type Timeline } from "./timeline.ts";
-import { BuilderError, sourceLocation, type SourceLocation } from "./source.ts";
+import {
+  BuilderError,
+  sourceLocation,
+  recordSource,
+  type SourceLocation,
+} from "./source.ts";
 export type Value = number | string | number[] | BezierPath;
 type ScalarKeys = Extract<
   NonNullable<CompositionTransform["rotation"]>,
@@ -65,17 +70,21 @@ export class Property<V extends Value> {
         "comp-builder-keys",
         "at least one key is required",
       );
-    return {
-      kind: "clip",
-      duration: keys.at(-1)!.frame,
-      value: {
-        owner: this.owner,
-        property: this.path,
-        mode: "keys",
-        keys: structuredClone(keys),
-        location: sourceLocation(),
+    const site = sourceLocation();
+    return recordSource<AnimationClip>(
+      {
+        kind: "clip",
+        duration: keys.at(-1)!.frame,
+        value: {
+          owner: this.owner,
+          property: this.path,
+          mode: "keys",
+          keys: structuredClone(keys),
+          location: site,
+        },
       },
-    };
+      site,
+    );
   }
   private animate(
     mode: "to" | "by",
@@ -83,18 +92,22 @@ export class Property<V extends Value> {
     duration: Duration,
     easing?: Easing,
   ): AnimationClip {
-    return {
-      kind: "clip",
-      duration,
-      value: {
-        owner: this.owner,
-        property: this.path,
-        mode,
-        value,
-        ...(this.initial === undefined ? {} : { from: this.initial }),
-        ...(easing === undefined ? {} : { easing }),
-        location: sourceLocation(),
+    const site = sourceLocation();
+    return recordSource<AnimationClip>(
+      {
+        kind: "clip",
+        duration,
+        value: {
+          owner: this.owner,
+          property: this.path,
+          mode,
+          value,
+          ...(this.initial === undefined ? {} : { from: this.initial }),
+          ...(easing === undefined ? {} : { easing }),
+          location: site,
+        },
       },
-    };
+      site,
+    );
   }
 }

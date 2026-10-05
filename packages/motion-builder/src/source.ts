@@ -19,13 +19,20 @@ export function sourceLocation(): SourceLocation {
 export class BuilderError extends Error {
   readonly code: string;
   readonly location: SourceLocation;
-  constructor(code: string, message: string, location = sourceLocation()) {
+  readonly dependencies: string[];
+  constructor(
+    code: string,
+    message: string,
+    location = sourceLocation(),
+    dependencies: string[] = [],
+  ) {
     super(
       `${location.file}:${location.line}:${location.column}: ${code}: ${message}`,
     );
     this.name = "BuilderError";
     this.code = code;
     this.location = location;
+    this.dependencies = dependencies;
   }
 }
 

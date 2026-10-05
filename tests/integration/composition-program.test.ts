@@ -161,3 +161,22 @@ it("bounds console output and runtime and retains dependencies on failed reloads
   });
   expect(missing).toContain("missing.ts");
 });
+it("cancels a running rebuild and closes the child before cleaning temporary output", async () => {
+  const root = await directory(),
+    input = join(root, "entry.ts");
+  await writeFile(
+    input,
+    "setInterval(()=>{},10);await new Promise(()=>{});export default {};",
+  );
+  const controller = new AbortController(),
+    timer = setTimeout(() => controller.abort(), 500);
+  try {
+    await expect(
+      loadProgram(input, { signal: controller.signal }),
+    ).rejects.toMatchObject({
+      diagnostics: [expect.objectContaining({ code: "comp-program-aborted" })],
+    });
+  } finally {
+    clearTimeout(timer);
+  }
+});

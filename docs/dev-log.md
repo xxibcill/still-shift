@@ -45,9 +45,9 @@ still hold before relying on them.
 
 - **CE10 in progress (2026-10-05):** `codex/composition-ce10` from CE4a `869a793`.
   Typed authoring, native mask/effect/path keys and inherited key call sites
-  pass 27 focused tests. Fresh TypeScript loading and six CLI data/render commands
-  are delivered; all 1,491 unit tests and 26 focused CLI regressions pass. Watch,
-  presets, reference/examples and milestone acceptance remain open.
+  and fresh TypeScript CLI/watch preview are delivered. All 128 integration tests
+  pass; browser watch preserves valid frames/pixels and TypeScript/JSON MP4 identity.
+  Presets, reference/examples and milestone acceptance remain open.
   [Evidence](./composition-ce10-results.json).
 
 - **CE4a complete (2026-10-05):** `codex/composition-ce4a-completion`, implementation
@@ -147,6 +147,19 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-05 — Deliver CE10 watch preview checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce10`.
+- **Done:** immutable asset snapshots, imported-module/asset watching and recovery,
+  cancellable fresh builds, transactional Lab preview swaps and nested source sites.
+- **Results:** all 128 integration tests pass. Browser verification retains frame 17
+  and pixels on an invalid rebuild, updates without page reload, clamps to frame 7,
+  switches backend and exports byte-identical TypeScript/JSON MP4s (8 frames / 24 fps).
+- **Open / next:** presets, generated references/skill, eight examples, Unequal Margins
+  pixel/export acceptance, isolated skill trial and full milestone gates/PR.
+- **Records:** [CE10 evidence](./composition-ce10-results.json),
+  [plan](./composition-engine-plan.md#ce10--typescript-builder-api-and-cli).
 
 ### 2026-10-05 — Start CE10 typed authoring API
 

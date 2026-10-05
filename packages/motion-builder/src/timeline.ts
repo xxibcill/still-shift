@@ -3,6 +3,7 @@ import {
   sourceLocation,
   sourceOf,
   recordSource,
+  type SourceLocation,
 } from "./source.ts";
 export type Duration = number | { seconds: number };
 export type Timeline<T> =
@@ -51,7 +52,11 @@ export const after = <T>(
 ): Timeline<T> =>
   recordSource({ kind: "after", child, reference, offset }, sourceLocation());
 
-export function frames(duration: Duration, fps: number): number {
+export function frames(
+  duration: Duration,
+  fps: number,
+  site?: SourceLocation,
+): number {
   if (
     !Number.isFinite(fps) ||
     fps <= 0 ||
@@ -61,6 +66,7 @@ export function frames(duration: Duration, fps: number): number {
     throw new BuilderError(
       "comp-builder-time",
       "seconds and fps must be finite and nonnegative",
+      site,
     );
   const value =
     typeof duration === "number"
@@ -70,6 +76,7 @@ export function frames(duration: Duration, fps: number): number {
     throw new BuilderError(
       "comp-builder-time",
       "durations must be nonnegative integer frames or finite seconds",
+      site,
     );
   return value;
 }
@@ -114,7 +121,8 @@ export function schedule<T>(
           sourceOf(node),
         );
       if (node.kind === "at") {
-        if (typeof node.marker !== "string") return frames(node.marker, fps);
+        if (typeof node.marker !== "string")
+          return frames(node.marker, fps, sourceOf(node));
         const result = markers.get(node.marker.replace(/^cue:/, ""));
         if (result === undefined)
           throw new BuilderError(
@@ -125,12 +133,13 @@ export function schedule<T>(
         return result;
       }
       if (node.kind === "after")
-        return end(node.reference) + frames(node.offset, fps);
+        return end(node.reference) + frames(node.offset, fps, sourceOf(node));
       return origin();
     });
   const end = (node: Timeline<T>): number =>
     memo(node, ends, resolvingEnd, () => {
-      if (node.kind === "clip") return start(node) + frames(node.duration, fps);
+      if (node.kind === "clip")
+        return start(node) + frames(node.duration, fps, sourceOf(node));
       if ("child" in node) return end(node.child);
       return Math.max(start(node), ...node.children.map(end));
     });
@@ -147,7 +156,10 @@ export function schedule<T>(
       register(
         node.child,
         () =>
-          start(node) + (node.kind === "delay" ? frames(node.offset, fps) : 0),
+          start(node) +
+          (node.kind === "delay"
+            ? frames(node.offset, fps, sourceOf(node))
+            : 0),
       );
     else
       node.children.forEach((child, index) =>
@@ -159,7 +171,9 @@ export function schedule<T>(
             );
           return (
             start(node) +
-            (node.kind === "stagger" ? index * frames(node.offset, fps) : 0)
+            (node.kind === "stagger"
+              ? index * frames(node.offset, fps, sourceOf(node))
+              : 0)
           );
         }),
       );

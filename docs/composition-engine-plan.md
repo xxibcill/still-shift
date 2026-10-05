@@ -3597,28 +3597,28 @@ export default comp({ width: 1920, height: 1080, fps: 30, seconds: 8 }, (c) => {
 
 ### Checklist
 
-- [ ] New package `packages/motion-builder` (`@still-shift/motion`), browser- and
+- [x] New package `packages/motion-builder` (`@still-shift/motion`), browser- and
       Node-safe, depending only on `@still-shift/scene-contract`.
-- [ ] Constructors for every layer type, fluent transforms, property animation
+- [x] Constructors for every layer type, fluent transforms, property animation
       (`to`, `from`, `by`, `keys`), easing helpers mirroring `CurveEasingSchema`.
-- [ ] Timeline algebra: `seq`, `par`, `stagger`, `delay`, `after(ref, frames)`,
+- [x] Timeline algebra: `seq`, `par`, `stagger`, `delay`, `after(ref, frames)`,
       `at(markerOrCue)`, relative durations in frames or seconds (rounded by the
       documented rule), with conflict detection on the same property.
-- [ ] Asset registration computes SHA-256 and dimensions at build time (Node) or
+- [x] Asset registration computes SHA-256 and dimensions at build time (Node) or
       accepts precomputed hashes (browser).
 - [ ] Presets as plain functions (for example `presets.drawOn(path)`); port the story
       intent presets.
-- [ ] Expose CE1's instance-specific property paths through builder helpers for
+- [x] Expose CE1's instance-specific property paths through builder helpers for
       reused precomps, including explicit cross-instance driver sources and targets.
-- [ ] Source maps: every emitted node records the builder call site; diagnostics show
+- [x] Source maps: every emitted node records the builder call site; diagnostics show
       `file:line`.
-- [ ] CLI: `still-shift comp` subcommands `validate`, `render`, `preview --watch`,
+- [x] CLI: `still-shift comp` subcommands `validate`, `render`, `preview --watch`,
       `lint`, `bake` and `export-json`, accepting `.json` or `.ts` sources.
 - [ ] AI reference: generated `docs/composition-reference.md` (schema, property paths,
       diagnostics, built-ins, expression grammar) plus a compact
       `skills/compose-with-still-shift/SKILL.md` with examples; keep both generated from
       the schema and the built-in registry where possible.
-- [ ] Builder helpers for expressions (an `expr` tagged template such as `` expr`wiggle(2, 6, 7)` `` and `ref(path)`) that
+- [x] Builder helpers for expressions (an `expr` tagged template such as `` expr`wiggle(2, 6, 7)` `` and `ref(path)`) that
       emit the text syntax and validate it at build time with source locations.
 - [ ] Examples directory with at least eight small programs covering the milestones
       delivered so far.
@@ -3637,9 +3637,11 @@ checkpoint promotes typed native layer/property construction, timeline algebra,
 expression/instance helpers, compact source metadata and Node asset helpers.
 Native mask/effect/path selectors and nested key call sites now pass 27 focused
 tests. Fresh TypeScript loading and CLI validate/render/lint/bake/normalize/export
-commands now pass all 1,491 unit tests and 26 focused CLI regressions. Remaining
-source metadata, presets, watch preview, generated references,
-examples and acceptance remain in progress. See [CE10 evidence](./composition-ce10-results.json).
+commands pass all 1,491 unit tests and 26 focused CLI regressions. Watch preview
+and complete nested/key source sites are delivered; all 128 integration tests pass.
+Browser verification preserves valid pixels and frames through rebuild errors,
+clamps shortened duration, switches backends and proves TypeScript/JSON MP4 identity.
+Presets, generated references, examples and acceptance remain in progress. See [CE10 evidence](./composition-ce10-results.json).
 
 **Completion record:** _to be filled in._
 

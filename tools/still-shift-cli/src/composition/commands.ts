@@ -1,3 +1,4 @@
+import { createProgramPreview } from "./preview.ts";
 import { readFile, realpath } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 import {
@@ -59,6 +60,50 @@ export async function runCompositionCommand(
 ): Promise<number> {
   const command = args[0];
   try {
+    if (command === "preview") {
+      const normalized = args
+        .slice(1)
+        .flatMap((value, index, array) =>
+          value === "--watch" &&
+          (array[index + 1] === undefined || array[index + 1]!.startsWith("--"))
+            ? [value, "true"]
+            : [value],
+        );
+      const values = parseNamedArguments(normalized, [
+        "input",
+        "watch",
+        "port",
+      ]);
+      const portText = values.get("port"),
+        port = portText === undefined ? 0 : Number(portText);
+      if (!Number.isInteger(port) || port < 0 || port > 65535)
+        programError(
+          "comp-program-option",
+          "--port must be an integer from 0 to 65535",
+          "port",
+        );
+      const session = await createProgramPreview(
+        requireArgument(values, "input"),
+        { watch: booleanOption(values, "watch"), port },
+      );
+      io.stdout(
+        json({
+          status: "preview",
+          url: session.url,
+          watch: booleanOption(values, "watch"),
+        }),
+      );
+      await new Promise<void>((done) => {
+        const close = () => {
+          process.off("SIGINT", close);
+          process.off("SIGTERM", close);
+          void session.close().then(done);
+        };
+        process.once("SIGINT", close);
+        process.once("SIGTERM", close);
+      });
+      return 0;
+    }
     if (command === "export-json") {
       const values = parseNamedArguments(args.slice(1), [
         "input",

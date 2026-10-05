@@ -19,7 +19,13 @@ export type BuilderSources = {
     layers: number[];
     assets: number[];
     markers: number[];
-    precomps: { site: number; layers: number[] }[];
+    precomps: {
+      site: number;
+      layers: number[];
+      markers?: number[];
+      constraints?: number[];
+      textAnimators?: number[];
+    }[];
     drivers: number[];
     behaviours: number[];
     periodic: number[];
@@ -91,6 +97,27 @@ export function encodeSources(
       precomps: (comp.precomps ?? []).map((p) => ({
         site: at(`precomp:${p.id}`),
         layers: p.layers.map((l) => at(`precomp:${p.id}.layer:${l.id}`)),
+        ...(p.markers?.length
+          ? {
+              markers: p.markers.map((m) =>
+                at(`precomp:${p.id}.marker:${m.id}`),
+              ),
+            }
+          : {}),
+        ...(p.constraints?.length
+          ? {
+              constraints: p.constraints.map((_, i) =>
+                at(`precomp:${p.id}.constraint:${i}`),
+              ),
+            }
+          : {}),
+        ...(p.textAnimators?.length
+          ? {
+              textAnimators: p.textAnimators.map((_, i) =>
+                at(`precomp:${p.id}.textAnimator:${i}`),
+              ),
+            }
+          : {}),
       })),
       drivers: (comp.drivers ?? []).map((d) => at(`driver:${d.target}`)),
       behaviours: (comp.behaviours ?? []).map((_, i) => at(`behaviour:${i}`)),
@@ -152,6 +179,15 @@ export function builderSource(
       .find((item) => path.includes(item.key));
     if (entry) id = value.nodes.expressions?.[entry.index] ?? id;
   }
+  const nestedNode =
+    /^precomps\[(\d+)\]\.(markers|constraints|textAnimators)\[(\d+)\]/.exec(
+      path,
+    );
+  if (nestedNode)
+    id =
+      value.nodes.precomps?.[Number(nestedNode[1])]?.[
+        nestedNode[2] as "markers"
+      ]?.[Number(nestedNode[3])] ?? id;
   const keyed =
     /^(?:precomps\[(\d+)\]\.)?layers\[(\d+)\]\.(.+)\.keys\[(\d+)\]/.exec(path);
   if (keyed) {
