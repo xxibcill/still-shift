@@ -1,6 +1,6 @@
 {
   "milestone": "CE11",
-  "status": "in-progress",
+  "status": "complete",
   "date": "2026-10-05",
   "branch": "codex/composition-ce11",
   "base": "afb4045",
@@ -414,5 +414,35 @@
     "CE8": "Real 3D camera-frustum inspector overlay when camera layers are implemented.",
     "CE13": "Real source-backed audio waveform when audio layers are implemented."
   },
-  "pending": ["Complete full local pnpm check and open/attach CE11 PR"]
+  "pending": [],
+  "runtimeCommit": "5f36268",
+  "verification": {
+    "command": "pnpm check",
+    "status": "passed",
+    "runtimeCommit": "5f36268",
+    "snapshot": "/private/tmp/still-shift-ce11-check-5f36268",
+    "log": "benchmarks/results/composition-ce11-verification/ce11-full-5f36268.log",
+    "toolchain": {
+      "node": "22.23.1",
+      "pnpm": "10.29.3"
+    },
+    "tests": {
+      "unit": 1510,
+      "runtime": 46,
+      "integration": 139,
+      "depth": 14
+    },
+    "browserSuites": "All groups in the full pnpm test chain, including composition-session and composition-inspector",
+    "baselines": {
+      "items": 176,
+      "frames": 36061,
+      "regenerated": false
+    },
+    "environment": "Clean tracked snapshot preserves unrelated owner edits; reused warmed isolated Python environment, primary environment untouched; Vite optimizer/config caches are local to the verification checkout."
+  },
+  "followUps": {
+    "CE8": "Add real camera-frustum overlay when native cameras exist.",
+    "CE13": "Add real waveform lane when native audio layers exist.",
+    "CE9-F1": "Inspector uses evaluateProperty for resolved native bindings without runtime lowering; preserve legacy numerical parity and keep lowering as its tracked follow-up."
+  }
 }

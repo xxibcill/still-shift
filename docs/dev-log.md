@@ -43,20 +43,13 @@ still hold before relying on them.
 
 ## Current state
 
-- **CE11 in progress (2026-10-05):** `codex/composition-ce11` from CE10 `afb4045`.
-  Shared-session renderer registration, frame callbacks and valid-preview recovery
-  and composition-page adoption pass lifecycle, watch, quality and native renderer
-  browser checks. Lossless history, native curve edits and fixed-source saves pass
-  focused model/API gates. Inspector integration, overlays and desktop/phone native
-  save/export acceptance and final builder/instance review pass. Full local
-  milestone gates and the CE11 PR remain. The first full gate exposed Vite
-  import compatibility; its repair passes build/lint/boundaries and integration
-  rechecks pass all 25 affected tests. The second full check reaches typography
-  before a module-fetch failure; its unchanged focused rerun passes. Inspector
-  documentation is complete; source-mode preservation is repaired after a failing
-  regression. Transient hide/solo now survives curve edits and undo/redo after a reproduced
-  browser regression. Repeat the full gate with isolated snapshot Vite caches. Existing Lab design is the default pending optional steering.
-  [Evidence](./composition-ce11-results.json).
+- **CE11 complete (2026-10-05):** `codex/composition-ce11`, runtime `5f36268`.
+  Native inspector, graph/handle edits, overlays, lossless history, guarded source
+  saves and captured-asset exports pass desktop/phone and builder/watch acceptance.
+  Full `pnpm check` passes: 1,510 unit, 46 runtime, 139 integration and 14 depth
+  tests, all browser suites and 176 frozen baselines / 36,061 frames. Initial failures
+  and repairs are retained. Publish its stacked PR, then begin CE5; native camera
+  frusta and audio waveforms follow CE8/CE13. [Evidence](./composition-ce11-results.json).
 
 - **CE10 complete (2026-10-05):** `codex/composition-ce10` from CE4a `869a793`;
   runtime `e501fed`. Typed authoring, CLI/watch, presets, eight examples and generated
@@ -165,6 +158,20 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-05 — Complete CE11 inspector and full local acceptance
+
+- **Agent / branch:** Codex on `codex/composition-ce11`; runtime `5f36268`.
+- **Done:** native shared-session preview, layer/property/marker inspection,
+  authored and resolved graphs, temporal/spatial/Bézier edits, overlays, lossless
+  undo/redo, guarded JSON saves, executable builder-key copies and native draft export.
+- **Results:** complete local `pnpm check` passes: 1,510 unit, 46 runtime,
+  139 integration and 14 depth tests, all browser groups and 176 frozen baselines /
+  36,061 frames. Desktop/phone acceptance and byte-identical saved-source/MP4
+  exports pass. Initial failures and repairs remain recorded; no baseline regeneration.
+- **Next:** publish CE11's stacked PR, then create CE5's branch. Camera frusta and
+  waveforms follow native CE8/CE13; runtime motion lowering remains parity-gated.
+- **Records:** [CE11 evidence](./composition-ce11-results.json).
 
 ### 2026-10-05 — Retain inspector view visibility across motion edits
 
