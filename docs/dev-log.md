@@ -43,7 +43,16 @@ still hold before relying on them.
 
 ## Current state
 
-- **PR #34 additional fixes in flight (2026-10-05):** five findings on `7525540` are posted inline. Group modifiers (`5d3f0d3`), signed scale (`4c3fe31`), easing weights (`f9d644e`) and evaluated track motion are repaired. 127 focused quality/CLI tests, build and ESLint pass; group browser checks pass. Nested coverage remains, followed by final checks and one push. [Evidence](./pr-34-additional-fix-results.json).
+- **PR #34 additional fixes verified (2026-10-05):** all five findings on
+  `7525540` are posted inline and repaired one per commit: group paint modifiers
+  (`5d3f0d3`), signed scale (`88927ad`), property easing weights (`f7d90a2`),
+  evaluated track motion (`d6af44e`) and unavailable nested coverage. Fast checks
+  (1,544 unit), 46 runtime, 16 CLI and browser quality checks pass. Corpus lint
+  covers 176 items / 36,061 frames with zero unexpected failures; group paint
+  corrects frozen-state findings in two fixtures, with frozen pixels and baseline
+  hashes unchanged. Delivery uses one final push; owner review/merge and the
+  existing base-branch development-log conflict remain pending. Full render/export
+  checks were not rerun. [Evidence](./pr-34-additional-fix-results.json).
 
 - **PR #34 review fixes verified (2026-10-05):** all four inline findings on
   `8c717b3` are repaired one per commit: held-sample velocity artifacts
@@ -176,9 +185,18 @@ _Last updated 2026-10-05 by Codex for PR #34 review fixes; prior work retained._
 
 ## Entries
 
+### 2026-10-05 — PR #34 unavailable nested coverage and final verification
+
+- **Agent / branch:** Codex on `codex/composition-ce12`, after `d6af44e`.
+- **Done:** declared nested coverage now reports precisely the frames missing after host expiration or before activation; nonexistent declarations retain their own diagnostic. Five inline findings each have one commit, followed by one final push.
+- **Results:** six coverage regressions failed before repair. Final fast checks (1,544 unit), 46 runtime, 16 CLI and native browser checks pass; corpus lint covers 176 items / 36,061 frames with zero unexpected failures. Group paint removes false state freezes in two fixtures; frozen pixels and baseline checksum are unchanged.
+- **Rejected / do not repeat:** sandboxed runtime checks cannot run `ps`; outside-sandbox reruns pass. Concurrent corpus/browser checks hit one browser startup timeout; isolated corpus rerun passes. No harness or pixel threshold changes.
+- **Open / next:** owner review/merge and the existing base-branch `docs/dev-log.md` conflict. Full `pnpm check` render/export groups were not rerun.
+- **Records:** [Additional repair evidence](./pr-34-additional-fix-results.json); [CE12 repair record](./composition-engine-plan.md#ce12-pr-34-additional-lint-repairs-2026-10-05).
+
 ### 2026-10-05 — PR #34 evaluated track motion
 
-- **Agent / branch:** Codex on `codex/composition-ce12`, after `f9d644e`.
+- **Agent / branch:** Codex on `codex/composition-ce12`, after `f7d90a2`.
 - **Done:** timing lint compares each final evaluated property, so overridden rotation/effect keys cannot borrow unrelated motion.
 - **Results:** two regressions failed before repair with identical visible state across 90 frames; 127 focused quality/CLI tests, build and changed-file ESLint pass. A moving vector component remains counted.
 - **Open / next:** nested coverage, final checks and one final push.
@@ -186,7 +204,7 @@ _Last updated 2026-10-05 by Codex for PR #34 review fixes; prior work retained._
 
 ### 2026-10-05 — PR #34 easing weights
 
-- **Agent / branch:** Codex on `codex/composition-ce12`, after `4c3fe31`.
+- **Agent / branch:** Codex on `codex/composition-ce12`, after `88927ad`.
 - **Done:** each moving property contributes one easing vote, split across its distinct profiles. Redundant keys do not skew the share.
 - **Results:** two regressions failed before repair; 124 focused quality/CLI tests, build and changed-file ESLint pass. Minority key density no longer hides a genuine property majority.
 - **Open / next:** overridden tracks, nested coverage and final verification; one final push.
@@ -196,7 +214,7 @@ _Last updated 2026-10-05 by Codex for PR #34 review fixes; prior work retained._
 
 - **Agent / branch:** Codex on `codex/composition-ce12`, after `5d3f0d3`.
 - **Done:** signed scale survives null-parent and precomp inheritance, so abrupt reflections produce scale-pop findings.
-- **Results:** five regressions failed before repair; 121 focused quality/CLI tests, build and changed-file ESLint pass. Rotations, declared cuts and canceled reflections stay exempt.
+- **Results:** five regressions failed before repair; 121 focused quality/CLI tests, build and changed-file ESLint pass. Rotations, declared cuts and canceled reflections stay exempt. Final review found rotated-axis cancellation; an effective linear-matrix guard and eighth scale regression correct it in the same finding commit.
 - **Open / next:** easing weights, overridden tracks, nested coverage and final verification; one final push.
 - **Records:** [Additional repair evidence](./pr-34-additional-fix-results.json).
 

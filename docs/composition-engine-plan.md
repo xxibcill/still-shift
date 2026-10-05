@@ -3711,6 +3711,26 @@ hashes, renderer output and versions are unchanged. Full render/export checks we
 not rerun. Delivery uses one final push after the third finding commit; owner
 review/merge remains pending. [Follow-up evidence](./pr-34-followup-fix-results.json).
 
+### CE12 PR #34 additional lint repairs (2026-10-05)
+
+Five inline findings on `7525540` are repaired one per commit: contributing group
+paint modifiers, inherited signed scale, property-weighted easing shares, final
+evaluated track motion and unavailable declared nested coverage. Regressions cover
+hidden/offscreen groups, reflections canceled across rotated axes, dense redundant
+keys, expression overrides, precomp lifetime gaps and shot boundaries. Final
+Standards/Spec review found no remaining actionable findings.
+
+Fast checks (1,544 unit), 46 runtime, 16 CLI and the expanded browser quality suite
+pass. Corpus lint covers all 176 items / 36,061 frames with zero unexpected failures.
+Group paint corrects state freezes in `commerce/atom-matte` and
+`component/isolated-mask`; frozen-pixel results and the baseline checksum remain
+unchanged. The sandboxed runtime attempt and concurrent corpus/browser startup
+timeout are recorded; successful final runs use the required local capabilities
+and isolated corpus execution. Full `pnpm check` render/export groups were not
+rerun. Delivery uses one final push after the fifth finding commit; owner
+review/merge and the existing development-log merge conflict remain pending.
+[Additional repair evidence](./pr-34-additional-fix-results.json).
+
 ## CE13 — Video, image-sequence and audio layers
 
 **Outcome:** Compositions mix supplied video clips (including AI-generated ones),

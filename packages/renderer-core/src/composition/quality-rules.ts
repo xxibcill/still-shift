@@ -21,7 +21,7 @@ import {
 
 type Finding = (
   code: MotionLintCode,
-  sample: CompositionQualitySample,
+  sample: Pick<CompositionQualitySample, "id" | "path">,
   frames: [number, number],
   measured: number,
   message: string,
@@ -96,6 +96,22 @@ function coversViewport(
     );
   });
 }
+function coverageLayerReference(comp: Composition, id: string) {
+  let layers = comp.layers;
+  let prefix = "";
+  const route = id.split("/");
+  for (let i = 0; i < route.length; i++) {
+    const index = layers.findIndex((layer) => layer.id === route[i]);
+    if (index < 0) return undefined;
+    if (i === route.length - 1) return { id, path: `${prefix}layers.${index}` };
+    const layer = layers[index]!;
+    if (layer.type !== "precomp") return undefined;
+    const sourceIndex = comp.precomps!.findIndex((p) => p.id === layer.comp);
+    layers = comp.precomps![sourceIndex]!.layers;
+    prefix = `precomps.${sourceIndex}.`;
+  }
+  return undefined;
+}
 export function compositionFramingFindings(
   comp: Composition,
   frames: readonly CompositionQualityFrame[],
@@ -107,6 +123,9 @@ export function compositionFramingFindings(
       (Array.isArray(comp.metadata?.storyCameraCover)
         ? (comp.metadata.storyCameraCover as string[])
         : []),
+  );
+  const declarations = new Map(
+    [...coverage].map((id) => [id, coverageLayerReference(comp, id)]),
   );
   const inset = policy.safeAreaFraction;
   frames.forEach((frame, at) => {
@@ -145,7 +164,16 @@ export function compositionFramingFindings(
     for (const id of coverage) {
       const sample = frame.layers.get(id);
       if (!sample) {
-        if (at === 0)
+        const declaration = declarations.get(id);
+        if (declaration)
+          add(
+            "coverage",
+            declaration,
+            [at, at],
+            1,
+            "Declared coverage layer is unavailable on this frame.",
+          );
+        else if (at === 0)
           diagnostics.push({
             code: "coverage",
             severity: lintSeverity("coverage", policy),

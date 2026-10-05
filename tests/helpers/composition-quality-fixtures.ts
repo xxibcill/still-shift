@@ -138,3 +138,48 @@ export function groupEffectMotionComposition(): Composition {
     { frameCount: 41 },
   );
 }
+
+export function nestedCoverageComposition(
+  inPoint = 0,
+  outPoint = 30,
+): Composition {
+  return composition(
+    [
+      {
+        id: "host",
+        type: "precomp",
+        comp: "source",
+        inPoint,
+        outPoint,
+        transform: { anchor: [0, 0] },
+      },
+      solid("moving", {
+        transform: {
+          position: {
+            keys: [
+              { frame: 0, value: [100, 100] },
+              { frame: 29, value: [200, 100], interpolation: "linear" },
+            ],
+          },
+        },
+      }),
+    ],
+    {
+      frameCount: 30,
+      precomps: [
+        {
+          id: "source",
+          width: 640,
+          height: 360,
+          frameCount: 30,
+          layers: [
+            solid("bg", {
+              size: [640, 360],
+              transform: { anchor: [0, 0], position: [0, 0] },
+            }),
+          ],
+        },
+      ],
+    },
+  );
+}

@@ -26,13 +26,14 @@
       "id": "signed-scale-pops",
       "comment": "https://github.com/xxibcill/still-shift/pull/34#discussion_r4185973365",
       "status": "fixed",
-      "change": "Preserve evaluated scale-axis signs through ordinary parents and precomp hosts while retaining matrix magnitudes for inherited scaling.",
+      "change": "Preserve evaluated scale-axis signs through ordinary parents and precomp hosts while retaining matrix magnitudes for inherited scaling. Effective linear-matrix equality suppresses canceled reflections across rotated axes, including simultaneous translation.",
       "verification": {
         "before": "5 of 7 signed-scale regressions fail",
         "after": "121 focused quality/CLI tests, build and changed-file ESLint pass",
-        "controls": "x/y/both-axis reflections, null/precomp inheritance, intentional cuts, ordinary rotation and canceled parent/child reflections"
+        "controls": "x/y/both-axis reflections, null/precomp inheritance, intentional cuts, ordinary rotation and canceled parent/child reflections; rotated-axis cancellation with a position change",
+        "finalReviewRepair": "A parent X flip and 90-degree child Y flip cancel. The new regression first failed; the effective linear-matrix guard fixes it, and independent review confirms genuine reflection and size pops remain detected. Folded into the same finding commit before delivery."
       },
-      "commit": "4c3fe31"
+      "commit": "88927ad"
     },
     {
       "id": "property-easing-weight",
@@ -44,7 +45,7 @@
         "after": "124 focused quality/CLI tests, build and changed-file ESLint pass",
         "controls": "redundant linear subdivision, a genuine 75% property majority and mixed easing profiles"
       },
-      "commit": "f9d644e"
+      "commit": "f7d90a2"
     },
     {
       "id": "evaluated-track-motion",
@@ -55,12 +56,94 @@
         "before": "2 overridden-track regressions fail with false co-start findings despite identical visible state over all 90 frames",
         "after": "127 focused quality/CLI tests, build and changed-file ESLint pass",
         "controls": "rotation and active-effect overrides; a genuinely moving vector component still yields timing findings"
-      }
+      },
+      "commit": "d6af44e"
     },
     {
       "id": "missing-nested-coverage",
       "comment": "https://github.com/xxibcill/still-shift/pull/34#discussion_r4185973396",
-      "status": "pending"
+      "status": "fixed",
+      "change": "Resolve declared nested coverage routes separately from per-frame samples; report precisely the frames where a known layer is unavailable and preserve nonexistent-ID diagnostics.",
+      "verification": {
+        "before": "All 6 new nested-coverage unit regressions fail; missing frames after an expired host are silently accepted.",
+        "after": "6 coverage regressions and the new CLI test pass. Browser/Node reports agree; frame0 has opaque corner [239,173,85], frame15 is uncovered [0,0,0] and reports coverage15..29.",
+        "controls": "late start, early end, split unavailable intervals, multiple precomp instances, shot boundaries, hidden coverage and nonexistent declarations"
+      },
+      "commit": "fifth finding commit"
     }
-  ]
+  ],
+  "finalVerification": {
+    "head": "fifth finding commit; source fingerprint below",
+    "checks": {
+      "pnpm check:fast": "passed: schema, package boundaries, TypeScript formatting, ESLint, build and 1,544 unit tests across 134 files",
+      "pnpm toolchain:check": "passed: Node22.23.1, pnpm10.29.3, Python3.12.11, Playwright1.62.1/Chromium1234, FFmpeg8.0.1",
+      "pnpm test:runtime": "46 passed across 9 files on final code",
+      "composition lint CLI tests": "16 passed",
+      "pnpm test:browser:composition-quality": "passed on final code, including group effect and unavailable nested coverage pixel/state checks",
+      "pnpm composition:lint-corpus": "176 items / 36,061 frames, 153 state/reference-pixel and 23 pixel-only reports, zero unexpected failures"
+    },
+    "corpus": {
+      "reportSha256": "42566cf139ca67573285bc967c7d8e313ceedfaa72fdfe6ff4509954e876d64c",
+      "sourceChecksum": "25c2465f27c57121ef1623ee48477d9ee52757a06b0e7b20a8458b3e206b4a79",
+      "diagnosticsByCode": {
+        "co-start": 1,
+        "comp-text-layout-missing": 3172,
+        "easing-monotony": 1,
+        "frozen-pixels": 165,
+        "frozen-run": 122,
+        "off-canvas": 43,
+        "opacity-pop": 400,
+        "outside-safe-area": 244,
+        "reading-time": 339
+      },
+      "statuses": {
+        "passed": 70,
+        "failed": 83,
+        "pixel-only": 23
+      },
+      "comparison": "Against the prior post-7525540 evidence (reading-time339, velocity-discontinuity0), frozen-run124->122; group paint corrects state findings for commerce/atom-matte and component/isolated-mask. Other diagnostic counts and frozen-pixel results remain unchanged.",
+      "stateCorrections": [
+        {
+          "id": "commerce/atom-matte",
+          "beforeFrozenRanges": [[1, 239]],
+          "afterFrozenRanges": [],
+          "status": "failed -> passed"
+        },
+        {
+          "id": "component/isolated-mask",
+          "beforeFrozenRanges": [
+            [1, 23],
+            [25, 191]
+          ],
+          "afterFrozenRanges": [[36, 191]],
+          "status": "failed remains failed"
+        }
+      ],
+      "baselineEvidence": "Existing baseline checksum unchanged; no fresh full render/export or baseline regeneration."
+    },
+    "finalReview": "Standards and Spec review complete; rotated reflection cancellation repaired and re-reviewed with no further actionable findings.",
+    "setupFailures": [
+      {
+        "command": "pnpm test:runtime",
+        "reason": "Sandbox denied ps in existing process-lock checks; rerun outside sandbox passes all46."
+      },
+      {
+        "command": "pnpm composition:lint-corpus",
+        "reason": "Concurrent browser verification produced one compile-page startup timeout for acting/parcel-actions/handover; isolated full corpus rerun passes all176."
+      }
+    ],
+    "notRun": "Full pnpm check and unrelated render/export/browser groups; existing milestone gate remains historical evidence, not a pass on this final code.",
+    "pending": "Existing base-branch docs/dev-log.md merge conflict; owner review/merge.",
+    "sourceSha256": {
+      "packages/renderer-core/src/composition/quality-rules.ts": "07357ca2d6a062f0012b8412beca703fa663e3ec8625e09432243c865392ba36",
+      "packages/renderer-core/src/composition/quality-samples.ts": "b018d298a80625baf0cda2bb96908f30eb073ba194bcd5acd8fc384b3671c95a",
+      "tests/browser/composition-quality.ts": "61ea56c2015a6bc780778ef6440a10ac119f69220ed2e782bb453ccba2eb9f74",
+      "tests/helpers/composition-quality-fixtures.ts": "ad55be15c9ef5c1265f6b39101b5274e5e22e84ab7a04514a8d07f580c0d1a12",
+      "tests/integration/composition-lint-cli.test.ts": "12d22848ce43cf471c3ce2dc518680fc523ac1fc8f55a2665390b9e2af66ad01",
+      "tests/unit/composition-quality-coverage.test.ts": "90119b0ea3ae4b4f23351025de9a370fcfe2c109ee8c150fae1177f93e694251",
+      "tests/unit/composition-quality-paint.test.ts": "621094dd37ce26cad6e12bc28302e1caf7667a403c76ef9d2d43a0942795c95c",
+      "tests/unit/composition-quality-scale.test.ts": "ac896201b6ce59cec034488bdb9f32fc7b84feff652ef1676e7ed5a4a27342bd",
+      "tests/unit/composition-quality-timing.test.ts": "b1bab33ea28c731d8b185adbb834e1baa130b903c50080fafffd43e9a6bfa715"
+    }
+  }
 }
