@@ -60,12 +60,55 @@
         "Whole-color keyframes are supported; color-component keys report a located diagnostic and require expressions/drivers.",
         "Whole-vector and component animation tracks cannot be mixed; errors preserve authored intent instead of approximating it."
       ]
+    },
+    {
+      "name": "TypeScript source loading and CLI commands",
+      "status": "checkpoint",
+      "changes": [
+        "Fresh Node process with awaited default exports, typed dependency tracing and local builder aliases",
+        "Bounded timeout/console output, located program failures and failed dependency traces",
+        "JSON/TypeScript validate, render, lint, bake, normalize and export-json; retain --scene adapters",
+        "Portable asset paths with canonical filesystem aliases and non-overwriting output writes",
+        "Shared authored-font enforcement and public composition source loader"
+      ],
+      "verification": [
+        {
+          "command": "pnpm test:unit",
+          "status": "passed",
+          "tests": 1491
+        },
+        {
+          "command": "pnpm exec vitest run tests/integration/composition-program*.test.ts tests/integration/composition-lint-cli.test.ts tests/unit/composition-bake.test.ts --maxWorkers=2",
+          "status": "passed",
+          "tests": 26
+        },
+        {
+          "command": "pnpm build",
+          "status": "passed"
+        },
+        {
+          "command": "pnpm exec eslint tools/still-shift-cli/src packages/motion-builder/src packages/animation-engine/src/index.ts tests/integration/composition-program*.test.ts",
+          "status": "passed"
+        },
+        {
+          "command": "pnpm check:boundaries",
+          "status": "passed"
+        }
+      ],
+      "repairs": [
+        "Portable export initially treated macOS /var and /private/var aliases as different directories; canonicalized source and destination folders.",
+        "The first compiler trial expected the wrong native fps diagnostic code; retained comp-schema-union."
+      ],
+      "pending": [
+        "Watch preview and TypeScript render browser acceptance",
+        "Abort/cleanup and asset dependency recovery coverage"
+      ]
     }
   ],
   "pending": [
     "Complete source metadata for nested non-layer nodes and duration errors",
     "Story intent presets",
-    "JSON/TypeScript CLI and watch preview",
+    "Watch preview and real TypeScript render acceptance",
     "Generated reference, skill and eight examples",
     "Unequal Margins parity and isolated skill trial",
     "Full local milestone gates and PR"

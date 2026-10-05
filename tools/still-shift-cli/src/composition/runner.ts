@@ -1,0 +1,53 @@
+import { register } from "node:module";
+import { writeFile } from "node:fs/promises";
+import { pathToFileURL } from "node:url";
+const [input, output, trace] = process.argv.slice(2);
+register(new URL("./trace.ts", import.meta.url), {
+  parentURL: import.meta.url,
+  data: {
+    trace,
+    motion: new URL("../../../../packages/motion-builder/src/", import.meta.url)
+      .href,
+  },
+});
+try {
+  const module = await import(pathToFileURL(input!).href);
+  let result = await module.default;
+  if (
+    result &&
+    typeof result === "object" &&
+    !("schemaVersion" in result) &&
+    "default" in result
+  )
+    result = await result.default;
+  if (!result || typeof result !== "object")
+    throw new Error(
+      "comp-program-export: default export must be a composition",
+    );
+  await writeFile(output!, JSON.stringify({ ok: true, input: result }));
+} catch (error) {
+  await writeFile(
+    output!,
+    JSON.stringify({
+      ok: false,
+      diagnostic: {
+        code:
+          typeof error === "object" && error && "code" in error
+            ? error.code
+            : "comp-program-load",
+        message: error instanceof Error ? error.message : String(error),
+        path:
+          typeof error === "object" &&
+          error &&
+          "location" in error &&
+          error.location &&
+          typeof error.location === "object" &&
+          "file" in error.location &&
+          "line" in error.location
+            ? `${error.location.file}:${error.location.line}`
+            : input,
+      },
+    }),
+  );
+  process.exitCode = 1;
+}

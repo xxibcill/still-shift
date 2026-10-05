@@ -1,3 +1,4 @@
+import { authoredFontDiagnostics } from "./fonts.ts";
 import {
   encodeSources,
   builderSource,
@@ -6,7 +7,6 @@ import {
 } from "./source-map.ts";
 import {
   validateComposition,
-  compositionWarnings,
   behaviourExpressions,
   CompositionAssetSchema,
   type Composition,
@@ -425,25 +425,13 @@ export class CompositionBuilder {
         builderSource(this.composition, issue.path),
       );
     }
-    for (const warning of compositionWarnings(parsed.composition)) {
-      if (warning.code !== "comp-text-system-font") continue;
-      const scope =
-        warning.path[0] === "precomps"
-          ? parsed.composition.precomps![Number(warning.path[1])]!
-          : parsed.composition;
-      const index = Number(warning.path[warning.path.indexOf("layers") + 1]);
-      if (scope.layers[index]?.source?.family) continue;
-      const path = warning.path
-        .map((part, index) =>
-          typeof part === "number" ? `[${part}]` : `${index ? "." : ""}${part}`,
-        )
-        .join("");
+    const fontIssue = authoredFontDiagnostics(parsed.composition)[0];
+    if (fontIssue)
       throw new BuilderError(
-        warning.code,
-        warning.message,
-        builderSource(parsed.composition, path),
+        fontIssue.code,
+        fontIssue.message,
+        builderSource(parsed.composition, fontIssue.path),
       );
-    }
     return recordSource(parsed.composition, this.sites.get("comp")!);
   }
 }

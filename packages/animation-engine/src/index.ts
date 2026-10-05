@@ -39,3 +39,8 @@ export {
   validatePassageCompositions,
   type PassageCompositions,
 } from "./passage-compositions.ts";
+
+export {
+  readCompositionSource,
+  type CompositionSource,
+} from "./composition-source.ts";

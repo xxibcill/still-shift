@@ -28,3 +28,5 @@ export {
 export { BuilderError, type SourceLocation } from "./source.ts";
 
 export { builderSource } from "./source-map.ts";
+
+export { authoredFontDiagnostics } from "./fonts.ts";

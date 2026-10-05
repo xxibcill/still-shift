@@ -45,7 +45,9 @@ still hold before relying on them.
 
 - **CE10 in progress (2026-10-05):** `codex/composition-ce10` from CE4a `869a793`.
   Typed authoring, native mask/effect/path keys and inherited key call sites
-  pass 27 focused tests. CLI/watch, presets, reference/examples and acceptance remain open.
+  pass 27 focused tests. Fresh TypeScript loading and six CLI data/render commands
+  are delivered; all 1,491 unit tests and 26 focused CLI regressions pass. Watch,
+  presets, reference/examples and milestone acceptance remain open.
   [Evidence](./composition-ce10-results.json).
 
 - **CE4a complete (2026-10-05):** `codex/composition-ce4a-completion`, implementation
@@ -152,10 +154,12 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
 - **Done:** promote the native JSON builder, typed layers/properties, timeline algebra,
   expression/instance helpers, bounded source metadata and Node asset registration.
   Native mask/effect/path keys and nested key call sites pass 27 focused tests.
+  Fresh-process CLI loading handles helpers/assets and portable exports; 1,491 unit
+  tests and 26 CLI regressions pass. Canonical filesystem aliases fix portable paths.
 - **Results:** focused builder tests, TypeScript build, lint and package boundaries
   are recorded in [CE10 evidence](./composition-ce10-results.json).
 - **Open / next:** remaining source metadata and timeline error locations, presets,
-  CLI source loading/watch, generated reference/examples and milestone acceptance.
+  watch preview, generated reference/examples and milestone acceptance.
 - **Records:** [CE10](./composition-engine-plan.md#ce10--typescript-builder-api-and-cli).
 
 ### 2026-10-05 — Complete CE4a story and native passage integration

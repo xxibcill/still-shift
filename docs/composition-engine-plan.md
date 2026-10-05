@@ -3636,7 +3636,9 @@ CE4a `869a793` / [PR #35](https://github.com/xxibcill/still-shift/pull/35). The 
 checkpoint promotes typed native layer/property construction, timeline algebra,
 expression/instance helpers, compact source metadata and Node asset helpers.
 Native mask/effect/path selectors and nested key call sites now pass 27 focused
-tests. Remaining source metadata, presets, CLI/watch, generated references,
+tests. Fresh TypeScript loading and CLI validate/render/lint/bake/normalize/export
+commands now pass all 1,491 unit tests and 26 focused CLI regressions. Remaining
+source metadata, presets, watch preview, generated references,
 examples and acceptance remain in progress. See [CE10 evidence](./composition-ce10-results.json).
 
 **Completion record:** _to be filled in._
