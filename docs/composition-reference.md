@@ -1379,7 +1379,8 @@ The rules are `frozen-run`, `frozen-pixels`, `velocity-discontinuity`,
 six-frame frozen-run allowance (unchanged adjacent comparisons). Reading uses
 consecutive revealed, opaque, settled text frames, with separate word budgets for
 heading, label, qualification and body. Off-canvas/safe-area checks use conservative
-screen bounds. Geometry coverage checks designated `coverageLayers` or adapter
+screen bounds after group and precomp clipping; content clipped away entirely is not
+framed. Geometry coverage checks designated `coverageLayers` or adapter
 `metadata.storyCameraCover`; image transparency still needs asset coverage validation.
 
 Cuts reset stillness/reading windows and suppress pop/join findings. Declare them

@@ -103,8 +103,50 @@
           "pnpm build",
           "ESLint for changed TypeScript"
         ]
+      },
+      "commit": "04ac50a"
+    },
+    {
+      "id": "clipped-framing",
+      "comment": "https://github.com/xxibcill/still-shift/pull/34#discussion_r4185356026",
+      "status": "fixed",
+      "change": "Sample clipping tracks only groups and precomps; the viewport applies when deciding on-screen paint. Off-canvas and safe-area checks use the clipped painted region and skip content clipped away entirely, while clipped content outside the safe area or canvas is still reported.",
+      "verification": {
+        "before": {
+          "regressionFailures": 3,
+          "clippedCard": "outside-safe-area frames 0-29 for a photo cropped inside the safe area"
+        },
+        "after": {
+          "qualityTests": 93,
+          "cliTests": 15,
+          "failed": 0,
+          "controls": "clipped content at the canvas edge or off canvas still reported; ordinary precomp children measured by the source rectangle"
+        },
+        "corpus": {
+          "items": 176,
+          "frames": 36061,
+          "unexpectedFailures": 0,
+          "reports": "identical to the finding-1 corpus run"
+        },
+        "checks": [
+          "pnpm build",
+          "ESLint for changed TypeScript",
+          "pnpm test:browser:composition-quality",
+          "pnpm composition:lint-corpus"
+        ]
       }
     }
   ],
-  "toolchainNote": "Review-time 'before' timings were measured on Node 24.16.0; all 'after' results were re-run on the pinned Node 22.23.1 / pnpm 10.29.3 toolchain, with corpus reports identical across both."
+  "toolchainNote": "Review-time 'before' timings were measured on Node 24.16.0; all 'after' results were re-run on the pinned Node 22.23.1 / pnpm 10.29.3 toolchain, with corpus reports identical across both.",
+  "finalVerification": {
+    "head": "fourth review-fix commit",
+    "checks": {
+      "pnpm check:fast": "passed, 1,518 unit tests",
+      "pnpm test:runtime": "46 passed",
+      "composition lint CLI tests": "15 passed",
+      "pnpm test:browser:composition-quality": "passed",
+      "pnpm composition:lint-corpus": "176 items / 36,061 frames, zero unexpected failures; velocity-discontinuity 1,031 -> 0, every other code and status unchanged"
+    },
+    "notRun": "Full pnpm check (render/export browser groups and baselines); no renderer output or baseline changes."
+  }
 }

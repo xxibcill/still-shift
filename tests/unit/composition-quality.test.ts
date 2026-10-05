@@ -1261,3 +1261,67 @@ describe("frame-sampled velocity joins", () => {
     ).toContain("velocity-discontinuity");
   });
 });
+
+describe("framing of clipped content", () => {
+  const framing = (input: Parameters<typeof analyzeCompositionQuality>[0]) =>
+    analyzeCompositionQuality(input)
+      .diagnostics.filter((d) =>
+        ["off-canvas", "outside-safe-area"].includes(d.code),
+      )
+      .map((d) => [d.code, d.node]);
+  const card = (position: [number, number], photo: [number, number]) =>
+    composition([
+      {
+        id: "card",
+        type: "group",
+        size: [200, 120],
+        clip: true,
+        transform: { position },
+      },
+      solid("photo", {
+        parent: "card",
+        size: [640, 360],
+        transform: { position: photo },
+      }),
+    ]);
+
+  it("measures group-clipped content by its painted region", () => {
+    expect(framing(card([320, 180], [100, 60]))).toEqual([]);
+  });
+
+  it("ignores content clipped away entirely", () => {
+    expect(framing(card([320, 180], [2000, 60]))).toEqual([]);
+  });
+
+  it("still reports clipped content outside the safe area or canvas", () => {
+    expect(framing(card([40, 180], [100, 60]))).toContainEqual([
+      "outside-safe-area",
+      "photo",
+    ]);
+    expect(framing(card([-400, 180], [100, 60]))).toContainEqual([
+      "off-canvas",
+      "photo",
+    ]);
+  });
+
+  it("measures ordinary precomp children by the source rectangle", () => {
+    const input = composition([
+      {
+        id: "host",
+        type: "precomp",
+        comp: "inner",
+        transform: { position: [320, 180] },
+      },
+    ]);
+    input.precomps = [
+      {
+        id: "inner",
+        width: 200,
+        height: 120,
+        frameCount: input.frameCount,
+        layers: [solid("photo", { size: [640, 360] })],
+      },
+    ];
+    expect(framing(input)).toEqual([]);
+  });
+});

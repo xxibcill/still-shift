@@ -43,6 +43,16 @@ still hold before relying on them.
 
 ## Current state
 
+- **PR #34 review fixes verified (2026-10-05):** all four inline findings on
+  `8c717b3` are repaired one per commit: held-sample velocity artifacts
+  (`059f04a`), shared fractional join searches (`c81eafc`), advisory Lab lint
+  failures (`04ac50a`) and clipped framing bounds. Corpus velocity findings fall
+  from 1,031 held-sample artifacts to 0; all other corpus results are unchanged.
+  Fast checks (1,518 unit), 46 runtime, 15 CLI and the browser quality suite pass
+  on Node 22.23.1. The base branch has moved: `docs/dev-log.md` conflicts with
+  `codex/composition-ce9` and needs resolving before merge. Owner review/merge
+  pending. [Review evidence](./pr-34-review-fix-results.json).
+
 - **PR #34 follow-up fixes verified (2026-10-05):** all three inline findings on
   `a41f687` are repaired one per commit: provider reveal (`99605b4`), collapsed
   precomp paint (`498c771`) and structured lint capacity failures. Fast checks pass
@@ -163,6 +173,25 @@ _Last updated 2026-10-05 by Codex for PR #34 review fixes; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-05 — PR #34 review fixes: velocity samples, join cost, Lab, framing
+
+- **Agent / branch:** Claude Code on `codex/composition-ce12` (from `8c717b3`).
+- **Done:** `059f04a` measures join velocities a step away from the join, so
+  per-frame held keys are frame samples (held motion listed as unmeasured);
+  `c81eafc` shares fractional join searches per clock and charges them to the lint
+  budget; `04ac50a` keeps Lab previews working when lint fails; the final commit
+  frames clipped content by its painted region.
+- **Results:** each regression failed before its repair. Corpus velocity findings
+  1,031 -> 0 (median ratio ~5,600 = 1/(2 x step) showed they were artifacts);
+  80 stretched siblings lint in 2.9 s instead of 31.4 s. Fast checks (1,518 unit),
+  46 runtime, 15 CLI, browser quality and corpus lint pass; full `pnpm check` not run.
+- **Rejected / do not repeat:** integer-frame velocity differencing for held tracks
+  flags ordinary easing curvature at the 0.02 ratio; anchoring joins on one side of
+  the bisection bracket fails for reversed clocks.
+- **Open / next:** resolve the `docs/dev-log.md` conflict with the moved CE9 base;
+  speed changes inside held (baked) motion are not measured by velocity lint.
+- **Records:** [Review evidence](./pr-34-review-fix-results.json), review on PR #34.
 
 ### 2026-10-05 — PR #34 structured lint limits and final verification
 

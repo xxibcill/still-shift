@@ -10,6 +10,7 @@ import {
   assertCompositionQualityCapacity,
   compositionQualityFrame,
   contributingMotionLayers,
+  hasArea,
   qualityTrackContributes,
   layerQualityTracks,
   numericValues,
@@ -109,8 +110,9 @@ export function compositionFramingFindings(
   const inset = policy.safeAreaFraction;
   frames.forEach((frame, at) => {
     for (const sample of frame.layers.values()) {
-      const b = sample.bounds;
-      if (sample.visible && b && !coverage.has(sample.id)) {
+      // Framing measures the painted region after group and precomp clipping.
+      const b = sample.clippedBounds;
+      if (sample.visible && b && hasArea(b) && !coverage.has(sample.id)) {
         if (
           b.right <= 0 ||
           b.bottom <= 0 ||

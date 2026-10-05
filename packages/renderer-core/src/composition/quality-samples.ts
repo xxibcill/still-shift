@@ -25,6 +25,7 @@ export type CompositionQualitySample = {
   effects: EvaluatedLayer["effects"];
   matrix: Matrix;
   bounds: Bounds | null;
+  /** Bounds after group and precomp clipping; the viewport is not applied. */
   clippedBounds: Bounds | null;
   opacity: number;
   reveal: number;
@@ -168,7 +169,9 @@ export function compositionQualityFrame(
         opacity > 1e-8 &&
         Math.abs(determinant) > 1e-12 &&
         (state.reveal ?? 1) > 0;
-      const onScreen = visible && (!clippedBounds || hasArea(clippedBounds));
+      const onScreen =
+        visible &&
+        (!clippedBounds || hasArea(intersectBounds(clippedBounds, viewport)));
       const text =
         layer.type === "text"
           ? {
@@ -281,7 +284,15 @@ export function compositionQualityFrame(
       }
     });
   };
-  visit(tree, "", identity(), 1, viewport, "", [], true);
+  // Clipping tracks groups and precomps only; the viewport applies to onScreen,
+  // so framing can still see where clipped content sits relative to the canvas.
+  const unclipped = {
+    left: -Infinity,
+    top: -Infinity,
+    right: Infinity,
+    bottom: Infinity,
+  };
+  visit(tree, "", identity(), 1, unclipped, "", [], true);
   for (const sample of layers.values()) {
     const route = sample.id.slice(0, sample.id.lastIndexOf("/") + 1);
     const group = sample.ancestors.find(
