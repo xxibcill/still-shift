@@ -44,15 +44,15 @@ still hold before relying on them.
 ## Current state
 
 - **CE6 in progress (2026-10-06):** `codex/composition-ce6-completion` from
-  CE7 `817cc9f`. Checkpoints through `e98a376` deliver typed/paired plugins,
-  ten color kernels/curves, four transitions and radial/zoom/lens blur.
-  Transform and projective corner pin now pass 143 focused tests, build/lint/
-  schema/boundaries and 63 cases / 756 frames / 882 seeks with exact backend
-  pixels. An independent minimum-scale four-color cancellation oracle is exact.
-  Final parameter validation is pure and includes owner/root-frame diagnostics.
-  Remaining distortion/stylize/shadow/dependency effects, linear-light and
-  complete hardware/hash/export/cost/full-gate acceptance remain. No owner
-  decision is pending. [Evidence](./composition-ce6-completion-results.json).
+  CE7 `817cc9f`. Checkpoints through `095fe09` deliver typed/paired plugins,
+  ten color kernels/curves, transitions, sampled blur and geometric warps.
+  Seeded fractal fill/turbulent displacement now pass 68 focused tests, build/
+  lint/schema/boundaries and 54 cases / 648 frames / 756 seeks exactly.
+  Packed 16-bit fields are exact at 81,920 points; all 65,536 possible values
+  have exact quotients at seven signed/neutral amplitudes.
+  Remaining distortion/stylize/shadows/dependencies, adjustment history,
+  linear-light and complete hardware/hash/export/cost/full-gate acceptance
+  remain. No owner decision is pending. [Evidence](./composition-ce6-completion-results.json).
 
 - **CE7 complete (2026-10-06):** `codex/composition-ce7`, code `0e48388`.
   Local holds/posterization, source loops, freeze remap, deterministic adaptive
@@ -188,6 +188,21 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-06 — CE6 seeded native fields checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce6-completion`.
+- **Done:** actual GPU fractal fill/turbulent sampling, integer seeded fields,
+  bounded octaves/evolution, fixed sums and explicit signed quotient correction.
+- **Results:** 68 focused tests plus build/lint/schema/boundaries; 54 native
+  cases / 648 frames / 756 seeks are exact. Packed fields are exact at 81,920
+  points; 65,536 values at each of seven amplitudes have exact quotients.
+- **Repaired:** neutral CPU helper returned negative zero; result normalized.
+  Complete milestone gate remains pending; no pixel threshold changed.
+- **Next:** remaining distortion/stylize/shadows and scoped inputs/history,
+  then linear-light and complete hardware/hash/export/cost/full-gate acceptance.
+- **Records:** [CE6 evidence](./composition-ce6-completion-results.json),
+  [field conventions](./composition-effect-plugins.md#seeded-native-fields).
 
 ### 2026-10-06 — CE6 transform and corner-pin checkpoint
 

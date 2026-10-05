@@ -1,3 +1,5 @@
+import type * as QuotientChecks from "../helpers/composition-noise-quotient-reference.ts";
+import type * as NoiseChecks from "../helpers/composition-noise-effect-reference.ts";
 import type * as WarpChecks from "../helpers/composition-warp-effect-reference.ts";
 import type * as SampledBlurChecks from "../helpers/composition-sampled-blur-reference.ts";
 import type * as TransitionChecks from "../helpers/composition-transition-effect-reference.ts";
@@ -83,6 +85,25 @@ try {
     ).checkWarpEffectRendering();
   });
   console.log("WebGL native warps:", JSON.stringify(warps));
+  const noise = await page.evaluate(async () => {
+    const url = "/tests/helpers/composition-noise-effect-reference.ts";
+    return (
+      (await import(url)) as typeof NoiseChecks
+    ).checkNoiseEffectRendering();
+  });
+  console.log("WebGL native noise effects:", JSON.stringify(noise));
+  const noiseCodes = await page.evaluate(async () => {
+    const url = "/tests/helpers/composition-noise-effect-reference.ts";
+    return ((await import(url)) as typeof NoiseChecks).checkNoiseFieldCodes();
+  });
+  console.log("WebGL packed noise field:", JSON.stringify(noiseCodes));
+  const noiseQuotients = await page.evaluate(async () => {
+    const url = "/tests/helpers/composition-noise-quotient-reference.ts";
+    return (
+      (await import(url)) as typeof QuotientChecks
+    ).checkTurbulentQuotients();
+  });
+  console.log("WebGL turbulent quotient:", JSON.stringify(noiseQuotients));
   const blur = await page.evaluate(async () => {
     const url = "/tests/helpers/composition-webgl-blur.ts";
     return ((await import(url)) as typeof Blur).checkWebglPrimitiveBlur();

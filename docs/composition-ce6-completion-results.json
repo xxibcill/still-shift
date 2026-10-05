@@ -362,15 +362,119 @@
       ],
       "pending": [
         "Complete hardware/hash/export/cost/full-gate acceptance follows the complete catalogue"
+      ],
+      "implementation": "095fe09"
+    },
+    {
+      "name": "Seeded fractal fill and turbulent displacement",
+      "status": "focused-verification-passed",
+      "effects": ["stylize.fractal-noise", "distort.turbulent"],
+      "features": [
+        "Actual GPU integer fields/image sampling and independent Canvas reference",
+        "Bounded 1\u20138 octaves, fixed trilinear 16-bit rounding and ascending integer-weighted sums",
+        "Complete seed and signed evolution epoch bits captured through split controls",
+        "Corrected quotient estimates with exact integer comparisons avoid undefined signed arithmetic",
+        "Source-coverage-preserving colored fill and neutral/conservative displacement bounds"
+      ],
+      "versions": {
+        "evaluator": 36,
+        "canvas": "composition-canvas-1.31.0",
+        "webgl": "composition-webgl2-0.45.0"
+      },
+      "verification": {
+        "focusedTests": 68,
+        "focusedFiles": 7,
+        "unitLog": "benchmarks/results/composition-ce6-completion/ce6-noise-focused-final.log",
+        "build": "benchmarks/results/composition-ce6-completion/ce6-noise-build-final.log",
+        "schema": "benchmarks/results/composition-ce6-completion/ce6-noise-schema-check.log",
+        "boundaries": "benchmarks/results/composition-ce6-completion/ce6-noise-boundaries.log",
+        "lint": "benchmarks/results/composition-ce6-completion/ce6-noise-lint-final.log",
+        "nativeMatrix": {
+          "cases": 54,
+          "frames": 648,
+          "backends": 2,
+          "randomSeeks": 756,
+          "maxDelta": 0,
+          "minPsnr": 999,
+          "raw": "benchmarks/results/composition-ce6-completion/ce6-noise-native-acceptance.json",
+          "snapshot": "/private/tmp/still-shift-ce6-noise-r2-095fe09"
+        },
+        "packedField": {
+          "cases": 5,
+          "fieldPoints": 81920,
+          "rows": [
+            {
+              "case": 0,
+              "maxDelta": 0
+            },
+            {
+              "case": 1,
+              "maxDelta": 0
+            },
+            {
+              "case": 2,
+              "maxDelta": 0
+            },
+            {
+              "case": 3,
+              "maxDelta": 0
+            },
+            {
+              "case": 4,
+              "maxDelta": 0
+            }
+          ]
+        },
+        "exhaustiveQuotients": {
+          "valuesPerCase": 65536,
+          "cases": 7,
+          "rows": [
+            {
+              "amountFixed": 16000,
+              "maxDelta": 0
+            },
+            {
+              "amountFixed": -16000,
+              "maxDelta": 0
+            },
+            {
+              "amountFixed": 1000,
+              "maxDelta": 0
+            },
+            {
+              "amountFixed": -1000,
+              "maxDelta": 0
+            },
+            {
+              "amountFixed": 16,
+              "maxDelta": 0
+            },
+            {
+              "amountFixed": -16,
+              "maxDelta": 0
+            },
+            {
+              "amountFixed": 0,
+              "maxDelta": 0
+            }
+          ]
+        },
+        "rawCodes": "benchmarks/results/composition-ce6-completion/ce6-noise-code-acceptance.json"
+      },
+      "initialFailures": [
+        "Test-first native field API absent",
+        "Neutral CPU displacement returned negative zero; normalized its public integer result"
+      ],
+      "pending": [
+        "Complete hardware/hash/export/cost/full-gate acceptance follows the complete catalogue"
       ]
     }
   ],
   "pending": [
-    "Remaining blur/light/distortion/stylize/transition catalogue and scoped input dependency stages",
-    "Remaining native effect catalogue, layer dependencies and adjustment temporal semantics",
-    "Real optional linear-light compositing",
-    "Native per-effect, drawable, seeking, stored hashes, actual hardware and independent/repeated export acceptance",
-    "Serial pinned 1080p per-effect cost measurements",
+    "Remaining bulge/ripple, displacement map, drop/inner shadows, vignette/chromatic aberration and gradient wipe",
+    "Scoped layer-input dependency stages and real adjustment primitive-blur/echo history",
+    "Real optional linear-light composition",
+    "Complete native hardware, stored hashes, independent/repeated exports and serial 1080p per-effect costs",
     "Final-code complete pnpm check, milestone completion record and PR creation/attachment"
   ],
   "performanceDeferral": "CE6-P remains future-version; existing current assertions and frozen baselines unchanged",

@@ -3180,6 +3180,18 @@ distortion/stylize/shadows/dependencies, linear-light and complete hardware/hash
 export/cost/full-gate acceptance remain. No threshold or frozen baseline changed.
 [Evidence](./composition-ce6-completion-results.json).
 
+### CE6 seeded native fields checkpoint (2026-10-06)
+
+Fractal fill and turbulent displacement compute actual GPU integer fields and
+image samples, with Canvas references. Seed/epoch bits, fixed 16-bit trilinear
+rounding, 1–8 ordered octaves and signed displacement quotients are explicit.
+68 focused tests and build/lint/schema/boundaries pass. Native acceptance is
+exact for 54 cases / 648 frames / 756 seeks; packed fields are exact at 81,920
+points and 65,536 values have exact quotients at seven signed/neutral amplitudes.
+Remaining distortion/stylize/shadows/dependencies, adjustment history,
+linear-light and complete hardware/hash/export/cost/full-gate acceptance remain.
+No threshold or frozen baseline changed. [Evidence](./composition-ce6-completion-results.json).
+
 ### CE6 performance slice 1: exact effect work (2026-10-03)
 
 - **Scope:** the transferred CE4b timing requirement only, not the broader CE6

@@ -731,6 +731,20 @@ Identifiers: `time`, `frame`, `value`, `index`, `layerCount`, `fps`. Components:
 | `distort.corner-pin`         | `topRight`       | vec2   | `[1,0]`         | -10–10 per axis                              |
 | `distort.corner-pin`         | `bottomRight`    | vec2   | `[1,1]`         | -10–10 per axis                              |
 | `distort.corner-pin`         | `bottomLeft`     | vec2   | `[0,1]`         | -10–10 per axis                              |
+| `stylize.fractal-noise`      | `seed`           | scalar | `1`             | 0–2147483647 (integer)                       |
+| `stylize.fractal-noise`      | `scale`          | scalar | `64`            | 1–10000                                      |
+| `stylize.fractal-noise`      | `octaves`        | scalar | `4`             | 1–8 (integer)                                |
+| `stylize.fractal-noise`      | `evolution`      | scalar | `0`             | -216000–216000                               |
+| `stylize.fractal-noise`      | `amount`         | scalar | `1`             | 0–1                                          |
+| `stylize.fractal-noise`      | `contrast`       | scalar | `1`             | 0.1–8                                        |
+| `stylize.fractal-noise`      | `brightness`     | scalar | `0`             | -1–1                                         |
+| `stylize.fractal-noise`      | `dark`           | color  | `#000000`       | colour                                       |
+| `stylize.fractal-noise`      | `light`          | color  | `#ffffff`       | colour                                       |
+| `distort.turbulent`          | `seed`           | scalar | `1`             | 0–2147483647 (integer)                       |
+| `distort.turbulent`          | `scale`          | scalar | `64`            | 1–10000                                      |
+| `distort.turbulent`          | `octaves`        | scalar | `4`             | 1–8 (integer)                                |
+| `distort.turbulent`          | `evolution`      | scalar | `0`             | -216000–216000                               |
+| `distort.turbulent`          | `amount`         | scalar | `0`             | -1000–1000                                   |
 | `blur.primitive`             | `radius`         | scalar | `0`             | 0–1000                                       |
 | `time.echo`                  | `spacing`        | scalar | `1`             | 1–120                                        |
 | `time.echo`                  | `count`          | scalar | `3`             | 1–8 (integer)                                |

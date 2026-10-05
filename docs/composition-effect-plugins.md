@@ -171,3 +171,29 @@ and conservatively mark output bounds as unconstrained by source bounds.
 Invalid enabled controls fail after final expressions with `comp-effect-params`,
 including their owning layer, property path and root frame. Disabled effects
 do not execute their cross-parameter validator.
+
+## Seeded native fields
+
+`stylize.fractal-noise` blends a colored fractal fill with the captured input
+while preserving its coverage. `dark`/`light` color alpha and `amount` control
+the blend; `contrast` and `brightness` adjust the normalized field.
+`distort.turbulent` offsets source samples using two decorrelated fields, pixel
+`amount` and transparent-padded premultiplied sampling. Zero amount preserves
+the captured input exactly.
+
+Both effects share a 32-bit coordinate/seed hash, 1–8 octaves and animated
+`evolution`. Cell scale uses a reciprocal rounded to 1/1,048,576; pixel positions
+and fractional evolution use 1/256 lattice steps. Each trilinear interpolation
+rounds to an unsigned 16-bit field, and octaves sum in ascending order with
+powers-of-two weights before an exact rounded normalization. Seed and signed
+evolution epochs are uploaded as 16-bit parts, preserving their complete bits.
+
+Turbulent amplitudes use 1/16 pixel steps. Signed offsets floor the field product
+quotient to that sampling grid. The GPU corrects a floating quotient estimate
+with unsigned integer product comparisons and handles signs explicitly. This
+avoids relying on negative remainder or unspecified integer division rounding
+in [GLSL ES 3.00](https://registry.khronos.org/OpenGL/specs/es/3.0/GLSL_ES_Specification_3.00.pdf).
+GPU kernels compute the field and sample image textures without image readback;
+Canvas uses the independent integer reference. The permanent regression also
+compares packed 16-bit field values and every possible field value at positive,
+negative and neutral displacement amplitudes.
