@@ -366,7 +366,7 @@ sign and for time remap. It does not change the layer's composition-time visibil
 | CE4c  | Cinematic adapter                               | A      | CE3, CE8             |                        |                                     | `[ ]`  |                                                                                    |
 | CE4d  | Legacy illustrated adapter and old-path removal | A      | CE4a–CE4c            |                        |                                     | `[ ]`  |                                                                                    |
 | CE5   | Shape layers                                    | B      | CE3                  | Codex                  | `codex/composition-ce5`             | `[x]`  | [evidence](./composition-ce5-results.json)                                         |
-| CE6   | WebGL2 backend and effect registry              | B      | CE3                  | xxibcill (Claude Code) | `codex/composition-ce6-completion` | `[~]`  | [CE6 performance slice 1](#ce6-performance-slice-1-exact-effect-work-2026-10-03)   |
+| CE6   | WebGL2 backend and effect registry              | B      | CE3                  | xxibcill (Claude Code) | `codex/composition-ce6-completion`  | `[~]`  | [CE6 performance slice 1](#ce6-performance-slice-1-exact-effect-work-2026-10-03)   |
 | CE6-P | WebGL performance acceptance                    | Future | CE6                  |                        |                                     | `[d]`  | [Performance deferral](#ce6-p--deferred-webgl-performance-acceptance)              |
 | CE7   | Motion blur and time controls                   | B      | CE3                  | Codex                  | `codex/composition-ce7`             | `[x]`  | [evidence](./composition-ce7-results.json)                                         |
 | CE8   | 2.5D layers and unified camera                  | B      | CE3, CE6, CE9        |                        |                                     | `[ ]`  |                                                                                    |
@@ -3280,8 +3280,7 @@ pass. Final full local `pnpm check`, CE6 PR and CE8 branch remain.
 ### CE6 GPU Gaussian/feather completion (2026-10-06)
 
 Gaussian and transformed feather filtering now stay on GPU textures with the
-pinned raster domain's sigma-532 clamp and progressive centered rescaling above
-135. The oversized-feather CPU image-filter fallback is removed. 11 focused tests
+pinned raster domain's sigma-532 clamp and progressive centered rescaling above 135. The oversized-feather CPU image-filter fallback is removed. 11 focused tests
 and build/lint/schema/boundaries pass. 84 native renders/seeks across radii
 136–1,000 meet delta 2/PSNR 53; all 18 extreme-scale feathers are exact and the
 68 prior WebGL reference cases pass. Triangular-prefix/clamp-only experiments
