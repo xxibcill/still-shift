@@ -64,13 +64,29 @@
           "log": "/private/tmp/pr36-fix3-green.log"
         },
         "build": "passed"
-      }
+      },
+      "commit": "03a240bb00413aafe1aa1e708a2645f3c16df6ed"
     },
     {
       "number": 4,
       "finding": "resolve symbolic precomp anchors",
       "comment": "https://github.com/xxibcill/still-shift/pull/36#discussion_r4183180668",
-      "status": "pending"
+      "status": "fixed",
+      "verification": {
+        "red": {
+          "status": "failed-as-expected",
+          "newRegressions": 10,
+          "log": "/private/tmp/pr36-fix4-red.log"
+        },
+        "green": {
+          "status": "passed",
+          "tests": 37,
+          "command": "pnpm exec vitest run tests/unit/motion-builder.test.ts tests/unit/motion-builder-properties.test.ts --maxWorkers=2",
+          "log": "/private/tmp/pr36-fix4-green.log"
+        },
+        "build": "passed",
+        "rejectedExperiment": "Full Layer[] storage exposes invariant generic fluent methods; retain the structural node record and pending-anchor field."
+      }
     },
     {
       "number": 5,
