@@ -740,7 +740,7 @@
     "Required selected-candidate family timing audits",
     "Complete performance validation and select measured candidates before marking draft PR ready"
   ],
-  "workloadCoordination": "Fusion-only four-session bracket complete with no detected overlap. Remaining bounded bracket rejected for overlapping main stylize unit tests; launcher session 3547 terminal exit 1, failed output retained uniquely. No messages sent to main chat. Retry only remaining comparisons after competing workload is terminal.",
+  "workloadCoordination": "Valid fusion bracket retained and committed. Failed bounded predecessor 3547 terminal exit 1. Main stylize unit/build workload subsequently confirmed terminal (no competitors). Remaining-only launcher session 9449 live; unchanged four-session methods and contention rejection, two idle minutes before each bracket. Main chat remains read-only; no messages sent.",
   "repositoryActionsVerified": {
     "enabled": false,
     "command": "gh api repos/xxibcill/still-shift/actions/permissions",
@@ -1308,11 +1308,10 @@
     }
   },
   "queuedAb": {
-    "status": "terminal exit 1; fusion complete valid, first bounded baseline invalid; hardware not started",
-    "session": 3547,
-    "launcher": "/private/tmp/ce6p-ab-shorter-window.mjs",
+    "status": "live; remaining bounded pinned/hardware brackets only, after observed competing build terminal and two idle minutes",
+    "session": 9449,
+    "launcher": "/private/tmp/ce6p-ab-remaining.mjs",
     "outputs": [
-      "benchmarks/results/composition-ce6p/fusion-ref-ab.json",
       "benchmarks/results/composition-ce6p/bounded-ref-ab.json",
       "benchmarks/results/composition-ce6p/hardware-bounded-ref-ab.json"
     ],
@@ -1323,6 +1322,11 @@
       "pid": 9949,
       "status": "verified idle with no benchmark child; stopped intentionally; terminal exit 143",
       "reason": "Repeated main verification reset the ten-minute heuristic without timing starting; shorten pre-start delay only, retain benchmark workload/order and overlap rejection"
+    },
+    "failedPredecessor": {
+      "session": 3547,
+      "exitCode": 1,
+      "result": "valid fusion bracket saved; first bounded baseline overlapped main stylize unit tests; hardware not started"
     }
   },
   "pullRequest": {

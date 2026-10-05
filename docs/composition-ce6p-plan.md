@@ -161,3 +161,9 @@ baseline and is retained as the fifth invalid timing attempt. Session `3547` is
 terminal (exit 1); hardware comparison did not start. Retain the complete valid
 fusion bracket and retry only the remaining bounded/hardware comparisons after
 competing tests are terminal. Strict family audits remain pending.
+
+After confirming the competing unit/build verification terminal, launched only
+remaining bounded pinned/hardware brackets in session `9449`. Its two-minute
+pre-start wait and original four-session contention checks stay unchanged; it
+cannot overwrite the already complete fusion evidence. No other local test
+workload or family matrix is launched concurrently.

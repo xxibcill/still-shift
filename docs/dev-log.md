@@ -202,7 +202,8 @@ _Last updated 2026-10-06 by Codex for CE6-P; prior work retained._
 - **Rejected:** bounded first baseline overlapped main stylize unit tests;
   fifth invalid attempt retained; launcher `3547` terminal exit 1.
 - **Next:** preserve valid fusion data; retry only remaining bounded/hardware
-  comparisons after competing tests end, then strict WebGL family audits.
+  comparisons in live session `9449` after confirming main verification terminal,
+  then strict WebGL family audits.
   Draft PR #41 stays draft; original 117 failures and targets remain open.
 - **Records:** [raw bracket and analysis](./composition-ce6p-exposure-brackets.json),
   [evidence](./composition-ce6p-performance-results.json), [plan](./composition-ce6p-plan.md).
