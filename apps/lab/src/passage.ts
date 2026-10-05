@@ -34,6 +34,7 @@ import {
 } from "../../../packages/renderer-core/src/story-vertical.ts";
 import {
   passageDiagnostics,
+  PassageError,
   type PassageDiagnostic,
 } from "../../../packages/renderer-core/src/passage-diagnostics.ts";
 import { evaluatePreparedNode } from "../../../packages/renderer-core/src/prepared-scene.ts";
@@ -76,6 +77,7 @@ const errors = (error: unknown, failedEdit?: FailedEdit) => {
   host.replaceChildren();
   for (const diagnostic of passageDiagnostics(error)) {
     const label = [
+      diagnostic.code,
       diagnostic.beat,
       diagnostic.sourcePath,
       diagnostic.path,
@@ -609,12 +611,7 @@ async function loadPath() {
     );
     const packet = await response.json();
     if (request !== loadRequest) return;
-    if (!response.ok)
-      throw new Error(
-        packet.diagnostics
-          .map((d: { message: string }) => d.message)
-          .join("\n"),
-      );
+    if (!response.ok) throw new PassageError(packet.diagnostics);
     await loadPacket(packet, request);
   } catch (error) {
     if (request !== loadRequest) return;
@@ -686,12 +683,7 @@ openWorkspace.onchange = async () => {
       });
       const prepared = await response.json();
       if (request !== loadRequest) return;
-      if (!response.ok)
-        throw new Error(
-          prepared.diagnostics
-            .map((d: { message: string }) => d.message)
-            .join("\n"),
-        );
+      if (!response.ok) throw new PassageError(prepared.diagnostics);
       await loadPacket(prepared, request);
     }
   } catch (error) {

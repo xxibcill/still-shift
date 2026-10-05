@@ -1,0 +1,36 @@
+{
+  "date": "2026-10-05",
+  "pullRequest": "https://github.com/xxibcill/still-shift/pull/35",
+  "reviewHead": "84d7924b7545062ce305bce87656b5a36f59d1e3",
+  "branch": "codex/pr35-followup-fixes",
+  "delivery": "One commit per finding; one push after the final finding commit",
+  "findings": [
+    {
+      "id": "lab-native-diagnostics",
+      "comment": "https://github.com/xxibcill/still-shift/pull/35#discussion_r4183968004",
+      "status": "fixed locally",
+      "change": "Recognize the PassageError contract across separately bundled class identities, preserve HTTP diagnostic arrays on plan loads/imports, and show original codes with beat/source/field context in Lab",
+      "verification": [
+        "19 focused unit/integration tests passed, including the actual bundled Vite API and browser error display",
+        "TypeScript and targeted ESLint passed"
+      ],
+      "regressions": [
+        "Foreign PassageError constructor retains diagnostic code and context",
+        "Two invalid native IDs survive default Vite API transport and appear separately in Lab"
+      ],
+      "initialFailure": "The foreign-constructor regression reproduced invalid-scene fallback before the fix"
+    },
+    {
+      "id": "native-handoff-subjects",
+      "comment": "https://github.com/xxibcill/still-shift/pull/35#discussion_r4183968013",
+      "status": "pending"
+    },
+    {
+      "id": "native-inspector-initialization",
+      "comment": "https://github.com/xxibcill/still-shift/pull/35#discussion_r4183968018",
+      "status": "pending"
+    }
+  ],
+  "verification": {},
+  "approvalService": "Initial worktree branch/setup attempts were not executed because the automatic approval review model was at capacity; the later authorized retry succeeded."
+}

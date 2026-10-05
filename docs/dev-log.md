@@ -43,6 +43,14 @@ still hold before relying on them.
 
 ## Current state
 
+- **PR #35 follow-up fixes in progress (2026-10-05):** isolated
+  `codex/pr35-followup-fixes` from reviewed `84d7924`. All three findings are
+  posted inline. Lab native diagnostics now retain codes and field/beat/source
+  context across Vite and HTTP; 19 focused tests, type and lint checks pass.
+  Handoff-only subjects and initial native inspection remain. Commit each finding
+  separately, then push once after final verification. Existing CE12-base conflicts
+  remain; no owner decision is pending. [Evidence](./pr-35-followup-fix-results.json).
+
 - **PR #35 review fixes (2026-10-05):** isolated
   `codex/pr35-review-fixes` from `869a793`. Three findings are posted inline.
   `6ce9993` retains native diagnostics and field/beat/source context; `c9c0971`
@@ -151,6 +159,20 @@ _Last updated 2026-10-05 by Codex for PR #35 fixes; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-05 — Preserve PR #35 Lab native diagnostics end to end
+
+- **Agent / branch:** Codex on `codex/pr35-followup-fixes` from `84d7924`.
+- **Scope:** first follow-up finding, posted inline before implementation.
+- **Done:** retain the structured PassageError contract across Vite module identities
+  and HTTP responses; display codes and both source/field locations in Lab.
+- **Results:** 19 focused unit/integration tests, TypeScript and targeted ESLint pass.
+  The new test verifies the actual bundled API and both invalid fields in Chromium.
+- **Rejected:** the initial foreign-constructor test reproduced generic diagnostic
+  fallback; approval-service capacity failures executed no setup changes.
+- **Open / next:** native handoff targets and initial inspection; one final push.
+- **Records:** [fix evidence](./pr-35-followup-fix-results.json),
+  [inline finding](https://github.com/xxibcill/still-shift/pull/35#discussion_r4183968004).
 
 ### 2026-10-05 — Fix PR #35 WebGL passage context budget
 
