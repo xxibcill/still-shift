@@ -15,6 +15,20 @@ The isolated model is `flat-alpha-shadow-candidate-1`, under
 [`scripts/composition/cast-shadow-prototype`](../scripts/composition/cast-shadow-prototype/model.ts).
 It is an experiment contract, **not** an extension to `composition-1`.
 
+**Reviewable checkpoint (2026-10-06):** 96 frozen poses match CPU bytes exactly
+on pinned software; 288 forward/reverse/random draws, 96 independent software
+pixel/PNG repeats and 12 hardware comparisons pass. A separate maximum-input
+probe also matches on both profiles and repeated software. Nine analytic tests
+and focused static gates pass. No 1080p cost, native output or real export
+acceptance is claimed. [Runner instructions](../scripts/composition/cast-shadow-prototype/README.md).
+
+![Experimental visibility controls](./composition-ce8lf-gallery.png)
+
+The original one-texel controls expose border filtering. The last row uses opaque
+8² masks to distinguish hard from sampled soft shadows. Four samples produce
+separated lobes; 16 still show discrete bands. These observations are retained
+as quality limitations for owner review, not a claim of smooth production shadows.
+
 ## Asset inputs and authoring decisions
 
 | Candidate input   | Caster alpha input                                                    | Receiver surface  | Integration status                               |
@@ -43,8 +57,9 @@ of the spotlight cone by an emitter disk is implied.
 Groups, nulls, adjustments, providers, cameras, lights, ordinary 2D layers and
 media types outside this asset table are rejected if opted in. Initial casting
 requires normal layer blending; multiply/additive art does not define physical
-transmission. Effects, drop/inner/height shadows and blur do not change caster
-alpha. Motion blur and DOF are applied after per-sample shadow shading, never
+transmission. Host-layer effects, drop/inner/height shadows and blur do not change
+caster alpha; effects already rendered inside a flattened precomp are part of its
+source alpha. Motion blur and DOF are applied after per-sample shadow shading, never
 used as blurred caster geometry. This choice needs owner confirmation before
 production; effect-generated silhouettes are a future scope decision.
 
@@ -57,6 +72,10 @@ these vectors; use the inverse Gram matrix to recover UV, rather than assuming
 unit or orthogonal bases. Singular/nearly collinear bases produce a diagnostic;
 animated degeneracy must yield a deterministic empty caster/receiver with a
 diagnostic, never NaN. The prototype rejects degenerate input at preflight.
+
+The candidate ±1e6 coordinate bound does not prove ≤0.001-pixel GPU precision.
+Production needs receiver-relative rebasing and conditioning tests, or a tighter
+validated range. Small prototype coordinates establish no large-world guarantee.
 
 For receiver point R and emitter sample L, solve
 `t = dot(N, O-R) / dot(N, L-R)`, with ray `R+t*(L-R)`. A blocker requires
@@ -133,6 +152,12 @@ precomp instances. Do not resample all entities at one raw shutter time; CE7 can
 select different clocks per layer. Accumulate completed shaded samples using
 CE7's existing fixed order. Shadow disk count is orthogonal to shutter count.
 Static-graph reuse must include all shadow inputs and selected content clocks.
+
+Cache identity must retain the model/shader version, scoped light identity and
+selected pose/cone/range/shadow options, receiver/caster identities and stable order,
+world bases, flags, opacity, alpha raster hashes/resolution/filter convention,
+mask/matte inputs, colour space and selected instance/content clocks. Texture reuse
+can retain immutable source rasters, but not evaluated alpha/poses across clocks.
 
 Lights and blockers share an exact composition-instance scope. Internal precomp
 lights/shadows render inside that precomp; parent lights can shade its opted-in

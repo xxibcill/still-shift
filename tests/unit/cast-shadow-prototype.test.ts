@@ -12,7 +12,24 @@ import {
   plane,
 } from "../../scripts/composition/cast-shadow-prototype/fixtures.ts";
 
+import {
+  pose,
+  referencePixels,
+} from "../../scripts/composition/cast-shadow-prototype/reference.ts";
+
 describe("isolated cast-shadow candidate", () => {
+  it("is independent of pose seek order and input caster traversal", () => {
+    const scene = experiment();
+    scene.casters.push({ ...plane("other", 12), order: -1, opacity: 0.3 });
+    const pixels = Array.from({ length: 8 }, (_, frame) =>
+      referencePixels(pose(scene, frame), 8),
+    );
+    for (const frame of [7, 0, 6, 1, 5, 2, 4, 3]) {
+      const selected = pose(scene, frame);
+      selected.casters.reverse();
+      expect(referencePixels(selected, 8)).toEqual(pixels[frame]);
+    }
+  });
   it("has a hand-computed 2x point-light projection and half-open ray segment", () => {
     const receiver = plane("receiver", 20);
     expect(projectVertex([2, 3, 10], [0, 0, 0], receiver)).toEqual([4, 6, 20]);
@@ -109,7 +126,7 @@ describe("isolated cast-shadow candidate", () => {
       (s: Experiment) => {
         s.casters = Array.from({ length: 9 }, (_, i) => ({
           ...s.casters[0]!,
-          id: String(i),
+          id: `caster_${i}`,
         }));
       },
     ]) {
@@ -117,5 +134,21 @@ describe("isolated cast-shadow candidate", () => {
       mutate(scene);
       expect(() => validateExperiment(scene)).toThrow();
     }
+  });
+
+  it("enforces contact bias, zero-distance behavior and bounded scope identities", () => {
+    const scene = experiment();
+    scene.light.position = [0, 0, 20];
+    expect(directVisibility(scene, [0, 0, 20])).toBe(1);
+    scene.light.position = [0, 0, 0];
+    scene.casters[0]!.origin[2] = 19.9995;
+    expect(directVisibility(scene, [0, 0, 20])).toBe(1);
+    scene.casters[0]!.origin[2] = 19.998;
+    expect(directVisibility(scene, [0, 0, 20])).toBe(0);
+    scene.casters[0]!.id = "bad/id";
+    expect(() => validateExperiment(scene)).toThrow("identity");
+    scene.casters[0]!.id = "valid";
+    scene.casters[0]!.scope = "root//invalid";
+    expect(() => validateExperiment(scene)).toThrow("identity");
   });
 });

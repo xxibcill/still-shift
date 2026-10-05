@@ -45,8 +45,9 @@ still hold before relying on them.
 
 - **CE8-L-F preparation (2026-10-06):** isolated branch
   `codex/composition-ce8lf-prototype` from CE7 `0e48388`. Candidate flat-alpha
-  shadow specification and CPU/geometry oracle pass 7 analytic tests, typecheck
-  and focused lint. Shader/reference probes and review are in flight. CE8/CE8-L
+  shadow specification, CPU/geometry oracle and isolated shader pass 9 analytic
+  tests, 96 frozen poses, independent repeats and 12 hardware cases exactly.
+  Toolchain/static checks pass; draft PR is next. CE8/CE8-L
   and owner policy/budget decisions precede production integration; advanced
   surface shading remains deferred. Primary checkout is untouched.
   [Specification](./composition-ce8lf-cast-shadow-spec.md),
@@ -186,6 +187,12 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
 ## Entries
 
 ### 2026-10-06 — CE8-L-F candidate specification and CPU oracle
+
+- **Checkpoint update:** shader/reference/maximum-input probes and review complete;
+  96 poses, 288 seek draws, 96 independent PNG repeats and 12 actual hardware
+  comparisons are exact, plus max-input checks. Nine analytic tests and static
+  gates pass. Gallery records 4/16-sample banding; no production quality/timing or
+  full repository acceptance is claimed. Original references were retained.
 
 - **Agent / branch:** Codex on `codex/composition-ce8lf-prototype`, CE7 `0e48388`.
 - **Scope:** resumed bounded cast-shadow preparation only; no production changes.

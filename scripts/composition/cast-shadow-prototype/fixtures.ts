@@ -78,3 +78,44 @@ export function fixtures(): { id: string; scene: Experiment }[] {
     return { id, scene };
   });
 }
+
+/** Supplementary opaque-solid controls; original border-filter fixtures stay frozen. */
+export function solidFixtures(): { id: string; scene: Experiment }[] {
+  return ["solid-hard", "solid-soft-four", "solid-soft-sixteen"].map((id) => {
+    const scene = experiment();
+    scene.receiver = {
+      ...scene.receiver,
+      origin: [-24, -24, 20],
+      u: [48, 0, 0],
+      v: [0, 48, 0],
+    };
+    scene.casters[0]!.alpha = {
+      width: 8,
+      height: 8,
+      pixels: Array.from({ length: 64 }, () => 255),
+    };
+    if (id !== "solid-hard") {
+      scene.light.radius = 6;
+      scene.light.samples = id === "solid-soft-four" ? 4 : 16;
+    }
+    return { id, scene };
+  });
+}
+
+export function maximumInputFixture(): Experiment {
+  const scene = solidFixtures()[0]!.scene;
+  scene.light.radius = 12;
+  scene.light.samples = 16;
+  scene.casters = Array.from({ length: 8 }, (_, index) => ({
+    ...plane(`caster_${index}`, 2 + index * 2),
+    order: index,
+    origin: [-4 + index, -4, 2 + index * 2],
+    opacity: 0.5,
+    alpha: {
+      width: 64,
+      height: 64,
+      pixels: Array.from({ length: 4096 }, (_, i) => (i % 5 === 0 ? 0 : 128)),
+    },
+  }));
+  return scene;
+}

@@ -101,12 +101,13 @@ export function validateExperiment(scene: Experiment): void {
     fail("invalid light/version");
   if (scene.casters.length > LIMITS.casters) fail("caster limit exceeded");
   const ids = new Set<string>();
+  const identifier = (id: string) =>
+    /^[a-zA-Z][\w-]*$/.test(id) && id.length <= 128;
   for (const p of [scene.receiver, ...scene.casters]) {
     const key = `${p.scope}/${p.id}`;
     if (
-      !p.id ||
-      !p.scope ||
-      p.id.length > 128 ||
+      !identifier(p.id) ||
+      !p.scope.split("/").every(identifier) ||
       p.scope.length > 1024 ||
       ids.has(key)
     )
