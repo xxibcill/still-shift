@@ -123,3 +123,5 @@ export {
   type MotionLintCode,
 } from "./story-quality.ts";
 export { analyzeRenderedCompositionQuality } from "./composition/quality-render.ts";
+
+export * from "./soundtrack-edits.ts";

@@ -1,0 +1,52 @@
+{
+  "schemaVersion": "composition-1",
+  "id": "nested-echo",
+  "width": 200,
+  "height": 200,
+  "fps": 30,
+  "frameCount": 40,
+  "assets": [],
+  "layers": [
+    {
+      "id": "p",
+      "type": "precomp",
+      "comp": "clip",
+      "transform": { "position": [100, 100] }
+    }
+  ],
+  "precomps": [
+    {
+      "id": "clip",
+      "width": 200,
+      "height": 200,
+      "frameCount": 40,
+      "layers": [
+        {
+          "id": "hero",
+          "type": "solid",
+          "size": [20, 20],
+          "color": "#F0B040",
+          "transform": {
+            "anchor": [0, 0],
+            "position": {
+              "keys": [
+                { "frame": 0, "value": [20, 100] },
+                { "frame": 39, "value": [140, 100], "interpolation": "linear" }
+              ]
+            }
+          },
+          "effects": [
+            {
+              "id": "echo",
+              "effect": "time.echo",
+              "params": { "count": 3, "spacing": 2, "decay": 0.5 }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "expressions": {
+    "p/hero.transform.position": { "source": "value + [10, 0]" }
+  }
+}

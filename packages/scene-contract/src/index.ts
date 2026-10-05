@@ -43,3 +43,5 @@ export * from "./character-actions.ts";
 export * from "./typography.ts";
 
 export * from "./composition/index.ts";
+
+export * from "./soundtrack-project.ts";
