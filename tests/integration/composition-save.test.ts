@@ -1,4 +1,11 @@
-import { mkdtemp, readFile, rm, stat, writeFile } from "node:fs/promises";
+import {
+  chmod,
+  mkdtemp,
+  readFile,
+  rm,
+  stat,
+  writeFile,
+} from "node:fs/promises";
 import { join } from "node:path";
 import { tmpdir } from "node:os";
 import { expect, it } from "vitest";
@@ -41,6 +48,7 @@ it("keeps source bytes for no-op saves, raw fields for edited saves and rejects 
   const text = " \n" + JSON.stringify(source) + "\n\n";
   try {
     await writeFile(input, text, { mode: 0o640 });
+    await chmod(input, 0o666);
     const loaded = await loadProgram(input);
     expect(loaded.document).toEqual(source);
     expect(loaded.sourceSha256).toBe(sourceHash(Buffer.from(text)));
@@ -62,7 +70,7 @@ it("keeps source bytes for no-op saves, raw fields for edited saves and rejects 
       changed,
     );
     expect(JSON.parse(await readFile(input, "utf8"))).toEqual(changed);
-    expect((await stat(input)).mode & 0o777).toBe(0o640);
+    expect((await stat(input)).mode & 0o777).toBe(0o666);
     expect(changed.layers[0]).not.toHaveProperty("enabled");
     await writeFile(input, text);
     await expect(

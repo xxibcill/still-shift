@@ -330,6 +330,37 @@
       "pending": [
         "Run complete local pnpm check in a fresh tracked snapshot with isolated Vite caches."
       ]
+    },
+    {
+      "name": "Preserve source permissions despite process umask",
+      "status": "checkpoint",
+      "changes": [
+        "Explicitly restore the existing source permission bits on the temporary JSON file before atomic replacement."
+      ],
+      "verification": [
+        {
+          "command": "Save integration regression before fix",
+          "status": "failed",
+          "testsPassed": 3,
+          "testsFailed": 1,
+          "log": "benchmarks/results/composition-ce11-verification/ce11-save-mode-regression.log",
+          "failure": "Explicit source mode 0666 became 0644 through process umask."
+        },
+        {
+          "command": "Save integration regressions after fix",
+          "status": "passed",
+          "tests": 4,
+          "log": "benchmarks/results/composition-ce11-verification/ce11-save-mode-fixed.log"
+        },
+        {
+          "command": "Full pnpm check at 35ea938",
+          "status": "stopped",
+          "exitCode": 143,
+          "log": "benchmarks/results/composition-ce11-verification/ce11-full-35ea938.log",
+          "reason": "Stopped agent-owned gate during integration after reproducing the save mode defect. Unit/runtime and preceding static checks passed; not a successful full check."
+        }
+      ],
+      "pending": ["Run the full local check at the repaired checkpoint."]
     }
   ],
   "conditionalFollowThrough": {

@@ -1,5 +1,5 @@
 import { createHash, randomUUID } from "node:crypto";
-import { readFile, rename, rm, stat, writeFile } from "node:fs/promises";
+import { chmod, readFile, rename, rm, stat, writeFile } from "node:fs/promises";
 import { basename, dirname, join } from "node:path";
 import { authoredFontDiagnostics } from "@still-shift/motion";
 import {
@@ -119,6 +119,7 @@ export async function saveCompositionDocument(
       flag: "wx",
       mode: metadata.mode & 0o777,
     });
+    await chmod(temporary, metadata.mode & 0o777);
     if (sourceHash(await readFile(input)) !== expectedHash)
       throw new CompositionSaveError(
         409,

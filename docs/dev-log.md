@@ -53,7 +53,8 @@ still hold before relying on them.
   import compatibility; its repair passes build/lint/boundaries and integration
   rechecks pass all 25 affected tests. The second full check reaches typography
   before a module-fetch failure; its unchanged focused rerun passes. Inspector
-  documentation is complete; repeat the full gate with isolated snapshot Vite caches. Existing Lab design is the default pending optional steering.
+  documentation is complete; source-mode preservation is repaired after a failing
+  regression. Repeat the full gate at the repair with isolated snapshot Vite caches. Existing Lab design is the default pending optional steering.
   [Evidence](./composition-ce11-results.json).
 
 - **CE10 complete (2026-10-05):** `codex/composition-ce10` from CE4a `869a793`;
@@ -163,6 +164,18 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-05 — Preserve JSON source permissions on native save
+
+- **Agent / branch:** Codex on `codex/composition-ce11`, after `35ea938`.
+- **Done:** restore source permission bits on the temporary JSON file before
+  atomic replacement, avoiding process-umask changes to existing permissions.
+- **Results:** regression fails before the fix (`0666` becomes `0644`) and all
+  four save/API tests pass afterward. Changed lint passes; formatting corrected.
+- **Next:** the isolated full check at `35ea938` was stopped during integration
+  (exit 143) after reproducing this defect. Restart at the repaired checkpoint;
+  no full-check success is claimed. Owner's running Lab remains untouched.
+- **Records:** [CE11 evidence](./composition-ce11-results.json).
 
 ### 2026-10-05 — CE11 inspector guidance and verification isolation
 
