@@ -569,7 +569,7 @@ it("duck lookahead, attack, hold and release have exact sample boundaries and ne
   expect(voice[200 * 2]).toBe(0);
 }, 10000);
 
-it("reused sounds decode once per span and match per-clip decoding sample for sample", async () => {
+it("reused sounds share one decode pass and match per-clip decoding sample for sample", async () => {
   // A distinct value per source sample makes any slicing error visible.
   await runProcess("ffmpeg", [
     "-v",
@@ -583,24 +583,36 @@ it("reused sounds decode once per span and match per-clip decoding sample for sa
     join(root, "ramp.wav"),
   ]);
   const sha256 = await soundtrackChecksum(join(root, "ramp.wav"));
-  // "near" spans 7,200 samples and is cached; "far" spans 124,800 samples,
-  // beyond the 48,000-sample budget, and decodes per clip.
+  // The worker keeps at most a 48,000-sample project of decoded clip samples.
+  // "near" and "far" clips total 9,600 samples, so each asset streams in one
+  // pass, even though "far" covers 124,800 source samples. "wide" clips total
+  // 60,000 samples, beyond the budget, so each decodes alone.
   const placements = [
-    ["near", 0, 4800, 0],
-    ["near", 2400, 7200, 12000],
-    ["far", 0, 4800, 24000],
-    ["far", 120000, 124800, 36000],
+    ["near", 0, 4800, 0, "effect"],
+    ["near", 2400, 7200, 12000, "effect"],
+    ["far", 0, 4800, 24000, "effect"],
+    ["far", 120000, 124800, 36000, "effect"],
+    ["wide", 0, 30000, 0, "wide-a"],
+    ["wide", 100000, 130000, 18000, "wide-b"],
   ] as const;
   const p: SoundtrackProject = {
     ...structuredClone(project),
     durationSamples: 48000,
-    assets: ["near", "far"].map((id) => ({ id, path: "ramp.wav", sha256 })),
-    tracks: [{ ...project.tracks[2]!, output: "master" }],
+    assets: ["near", "far", "wide"].map((id) => ({
+      id,
+      path: "ramp.wav",
+      sha256,
+    })),
+    tracks: ["effect", "wide-a", "wide-b"].map((id) => ({
+      ...project.tracks[2]!,
+      id,
+      output: "master",
+    })),
     buses: [],
-    clips: placements.map(([asset, start, end, at], i) => ({
+    clips: placements.map(([asset, start, end, at, track], i) => ({
       id: "hit-" + i,
       asset,
-      track: "effect",
+      track,
       sourceStartSample: start,
       sourceEndSample: end,
       startSample: at,
@@ -614,20 +626,58 @@ it("reused sounds decode once per span and match per-clip decoding sample for sa
   const reuse = join(root, "reuse.json");
   await writeFile(reuse, JSON.stringify(p));
   await renderSoundtrackProject(reuse, join(root, "reuse"), { stems: true });
-  const source = await pcm(join(root, "ramp.wav")),
-    effect = await pcm(audio("reuse", "effect"));
-  for (const [, start, end, at] of placements)
+  const source = await pcm(join(root, "ramp.wav"));
+  const stems = Object.fromEntries(
+    await Promise.all(
+      ["effect", "wide-a", "wide-b"].map(
+        async (name) => [name, await pcm(audio("reuse", name))] as const,
+      ),
+    ),
+  );
+  for (const [, start, end, at, track] of placements)
     for (let i = 0; i < end - start; i++)
       for (const channel of [0, 1])
-        expect(effect[(at + i) * 2 + channel]).toBe(source[start + i]);
-  // A reused span that runs past the source names the first uncovered clip.
-  p.clips[1]!.sourceEndSample = 144001;
-  p.clips[1]!.sourceStartSample = 139201;
-  await writeFile(reuse, JSON.stringify(p));
-  await expect(
-    renderSoundtrackProject(reuse, join(root, "reuse-short")),
-  ).rejects.toMatchObject({ code: "source-range", context: { clip: "hit-1" } });
-}, 20000);
+        expect(stems[track]![(at + i) * 2 + channel]).toBe(source[start + i]);
+  // Decoding runs ahead in parallel, but a failure is reported at the first
+  // affected clip in authored order, even when a later pass fails first. The
+  // last clip's source is unreadable, so its probe fails inside the pool.
+  await writeFile(join(root, "broken.wav"), "not audio");
+  const broken = {
+    id: "broken",
+    path: "broken.wav",
+    sha256: await soundtrackChecksum(join(root, "broken.wav")),
+  };
+  for (const [clips, withBroken, code, first] of [
+    [[1, 3], true, "source-range", "hit-1"],
+    [[3], false, "source-range", "hit-3"],
+    [[5], true, "source-range", "hit-5"],
+    [[], true, "media-decode", undefined],
+  ] as const) {
+    const variant = structuredClone(p);
+    for (const index of clips) {
+      const clip = variant.clips[index]!,
+        length = clip.sourceEndSample - clip.sourceStartSample;
+      clip.sourceEndSample = 144001;
+      clip.sourceStartSample = 144001 - length;
+    }
+    if (withBroken) {
+      variant.assets.push(broken);
+      variant.clips.push({
+        ...variant.clips[0]!,
+        id: "hit-broken",
+        asset: "broken",
+      });
+    }
+    await writeFile(reuse, JSON.stringify(variant));
+    const failure = renderSoundtrackProject(
+      reuse,
+      join(root, "reuse-failure-" + code + "-" + clips.join("-")),
+    );
+    await expect(failure).rejects.toMatchObject({ code });
+    if (first)
+      await expect(failure).rejects.toMatchObject({ context: { clip: first } });
+  }
+}, 30000);
 
 it("ducking follows narration clip gain and automation but not track mute (pre-fader sidechain)", async () => {
   const speech = join(root, "sidechain-speech.wav");

@@ -3,11 +3,15 @@
 import hashlib
 import json
 import math
+import os
 import platform
 import resource
 import subprocess
 import sys
+import tempfile
 import time
+from collections import deque
+from concurrent.futures import ThreadPoolExecutor
 from importlib.metadata import version
 from pathlib import Path
 
@@ -62,73 +66,184 @@ def probe_channels(asset, clip):
     return streams[0]["channels"]
 
 
-def decode_span(asset, channels, start, end, np):
+def decode_command(asset, channels, start, end):
     """Resample the whole stream, then trim, so any span yields identical samples."""
     channel_filter = "pan=stereo|c0=c0|c1=c0" if channels == 1 else "aformat=channel_layouts=stereo"
-    data = command(
-        [
-            "ffmpeg",
-            "-v",
-            "error",
-            "-i",
-            asset["path"],
-            "-map",
-            "0:a:0",
-            "-af",
-            f"aresample=48000,{channel_filter},atrim=start_sample={start}:end_sample={end},asetpts=PTS-STARTPTS",
-            "-ar",
-            "48000",
-            "-c:a",
-            "pcm_f32le",
-            "-f",
-            "f32le",
-            "pipe:1",
-        ]
-    )
+    return [
+        "ffmpeg",
+        "-v",
+        "error",
+        "-i",
+        asset["path"],
+        "-map",
+        "0:a:0",
+        "-af",
+        f"aresample=48000,{channel_filter},atrim=start_sample={start}:end_sample={end},asetpts=PTS-STARTPTS",
+        "-ar",
+        "48000",
+        "-c:a",
+        "pcm_f32le",
+        "-f",
+        "f32le",
+        "pipe:1",
+    ]
+
+
+def decode_span(asset, channels, start, end, np):
+    data = command(decode_command(asset, channels, start, end))
     return np.frombuffer(data, dtype="<f4").reshape(-1, 2).T
 
 
-def clip_sources(clips, assets, budget_frames, np):
-    """Yield (clip, audio) in authored order, decoding each reused asset once.
+def stream_spans(asset, channels, spans, np, block_frames=1 << 16):
+    """Decode the union of spans in one pass, keeping only the spans' samples.
 
-    A reused asset's covering span is decoded once and sliced per clip while the
-    cached spans fit in budget_frames; otherwise each clip decodes its own span.
-    Slices equal per-clip decodes sample for sample, and authored order keeps
-    floating-point mix accumulation unchanged.
+    The pass is decode_span over the covering interval, so each returned span equals
+    its own decode_span call sample for sample, while memory holds only the spans.
+    A span the source does not fully cover comes back short; callers report it.
     """
-    uses, spans = {}, {}
-    for clip in clips:
-        key, span = clip["asset"], (clip["sourceStartSample"], clip["sourceEndSample"])
-        uses[key] = uses.get(key, 0) + 1
-        previous = spans.get(key, span)
-        spans[key] = (min(previous[0], span[0]), max(previous[1], span[1]))
-    channels, cache, cached_frames = {}, {}, 0
-    for clip in clips:
-        key, asset = clip["asset"], assets[clip["asset"]]
-        if key not in channels:
-            channels[key] = probe_channels(asset, clip)
-        first, last = spans[key]
-        if key not in cache and uses[key] > 1 and cached_frames + last - first <= budget_frames:
-            cache[key] = (first, decode_span(asset, channels[key], first, last, np))
-            cached_frames += last - first
-        start, end = clip["sourceStartSample"], clip["sourceEndSample"]
-        if key in cache:
-            offset, span_audio = cache[key]
-            audio = span_audio[:, start - offset : end - offset]
-        else:
-            audio = decode_span(asset, channels[key], start, end, np)
-        if audio.shape[1] != end - start or not np.isfinite(audio).all():
+    first, last = min(s for s, _ in spans), max(e for _, e in spans)
+    outputs = [np.empty((2, end - start), np.float32) for start, end in spans]
+    block = np.empty((block_frames, 2), "<f4")
+    view, position = memoryview(block).cast("B"), first
+    # stderr goes to a file so a noisy decoder can never block on a full pipe.
+    with tempfile.TemporaryFile() as errors:
+        process = subprocess.Popen(
+            decode_command(asset, channels, first, last), stdout=subprocess.PIPE, stderr=errors
+        )
+        with process.stdout:
+            while True:
+                filled = 0
+                while filled < len(view):
+                    read = process.stdout.readinto(view[filled:])
+                    if not read:
+                        break
+                    filled += read
+                frames = filled // 8
+                for output, (start, end) in zip(outputs, spans, strict=True):
+                    low, high = max(start, position), min(end, position + frames)
+                    if low < high:
+                        output[:, low - start : high - start] = block[
+                            low - position : high - position
+                        ].T
+                position += frames
+                if filled < len(view):
+                    break
+        if process.wait():
+            errors.seek(0)
             raise WorkerError(
-                "source-range",
-                "Source does not cover the end-exclusive trim; shorten the interval",
+                "media-decode",
+                "FFmpeg/probe failed; verify the source file",
+                stderr=errors.read().decode(errors="replace")[-2048:],
                 asset=asset["id"],
-                clip=clip["id"],
             )
-        uses[key] -= 1
-        if not uses[key] and key in cache:
-            cached_frames -= last - first
-            del cache[key]
-        yield clip, audio
+    return [
+        output[:, : max(0, min(end, position) - start)]
+        for output, (start, end) in zip(outputs, spans, strict=True)
+    ]
+
+
+def span_frames(clip):
+    return clip["sourceEndSample"] - clip["sourceStartSample"]
+
+
+def decode_jobs(clips, budget_frames):
+    """Group clips into (asset, clip indices) decode jobs, ordered by first clip.
+
+    This is the plan of a lazy authored-order pass: when a clip is first needed, its
+    asset's next clips join one streamed pass while their samples fit in
+    budget_frames beside samples already decoded for later clips; a clip that fits
+    nowhere decodes alone. The plan depends only on the project, never on timing.
+    """
+    remaining = {}
+    for index, clip in enumerate(clips):
+        remaining.setdefault(clip["asset"], []).append(index)
+    jobs, planned, streamed, retained = [], set(), set(), 0
+    for index, clip in enumerate(clips):
+        key = clip["asset"]
+        if index not in planned:
+            batch, frames = [], 0
+            for later in remaining[key]:
+                length = span_frames(clips[later])
+                if retained + frames + length > budget_frames:
+                    break
+                batch.append(later)
+                frames += length
+            if len(batch) > 1:
+                retained += frames
+                streamed.update(batch)
+            else:
+                batch = [index]
+            jobs.append((key, batch))
+            planned.update(batch)
+        remaining[key].pop(0)
+        if index in streamed:
+            retained -= span_frames(clip)
+    return jobs
+
+
+def clip_sources(clips, assets, budget_frames, np, workers=None, lookahead_buffers=4):
+    """Yield (clip, audio) in authored order while decoding ahead in parallel.
+
+    decode_jobs fixes which samples each FFmpeg pass produces, so results equal a
+    per-clip decode sample for sample regardless of scheduling. Jobs run on a thread
+    pool, at most lookahead_buffers project-length buffers ahead of the mix (always
+    at least the job the mix needs next). Clips are consumed in authored order, so
+    floating-point accumulation is unchanged, and a failure surfaces at the first
+    affected clip in authored order, as in a sequential pass.
+    """
+    workers = workers or min(8, os.cpu_count() or 1)
+    jobs, first_use = decode_jobs(clips, budget_frames), {}
+    for clip in clips:
+        first_use.setdefault(clip["asset"], clip)
+
+    def run(key, batch, probe):
+        asset, channels = assets[key], probe.result()
+        if len(batch) == 1:
+            clip = clips[batch[0]]
+            start, end = clip["sourceStartSample"], clip["sourceEndSample"]
+            return [decode_span(asset, channels, start, end, np)]
+        spans = [(clips[i]["sourceStartSample"], clips[i]["sourceEndSample"]) for i in batch]
+        return stream_spans(asset, channels, spans, np)
+
+    pool = ThreadPoolExecutor(workers)
+    try:
+        # Probes are queued first, so a job never waits on a probe behind it.
+        probes = {
+            key: pool.submit(probe_channels, assets[key], clip) for key, clip in first_use.items()
+        }
+        pending, ready, submitted, held = deque(), {}, 0, 0
+        for index, clip in enumerate(clips):
+            while submitted < len(jobs):
+                key, batch = jobs[submitted]
+                frames = sum(span_frames(clips[i]) for i in batch)
+                if pending and held + frames > lookahead_buffers * budget_frames:
+                    break
+                pending.append((batch, pool.submit(run, key, batch, probes[key])))
+                submitted, held = submitted + 1, held + frames
+            while index not in ready:
+                batch, future = pending.popleft()
+                ready.update(zip(batch, future.result(), strict=True))
+            audio = ready.pop(index)
+            held -= span_frames(clip)
+            if audio.shape[1] != span_frames(clip) or not np.isfinite(audio).all():
+                raise WorkerError(
+                    "source-range",
+                    "Source does not cover the end-exclusive trim; shorten the interval",
+                    asset=clip["asset"],
+                    clip=clip["id"],
+                )
+            yield clip, audio
+    finally:
+        pool.shutdown(cancel_futures=True)
+
+
+def verify_checksums(assets, message, workers=None):
+    """Hash every asset concurrently; report the first mismatch in authored order."""
+    with ThreadPoolExecutor(workers or min(8, os.cpu_count() or 1)) as pool:
+        sums = list(pool.map(checksum, [asset["path"] for asset in assets]))
+    for asset, digest in zip(assets, sums, strict=True):
+        if digest != asset["sha256"]:
+            raise WorkerError("source-checksum", message, asset=asset["id"])
 
 
 def fade_shape(ramp, curve, np):
@@ -293,13 +408,9 @@ def render(request):
     project, output = request["project"], Path(request["output"])
     length = project["durationSamples"]
     assets = {a["id"]: a for a in project["assets"]}
-    for asset in assets.values():
-        if checksum(asset["path"]) != asset["sha256"]:
-            raise WorkerError(
-                "source-checksum",
-                "Asset bytes changed; restore the source or author a new identity",
-                asset=asset["id"],
-            )
+    verify_checksums(
+        list(assets.values()), "Asset bytes changed; restore the source or author a new identity"
+    )
     output.mkdir(exist_ok=False)
     buffers = {t["id"]: np.zeros((2, length), np.float32) for t in project["tracks"]}
     detector = np.zeros((2, length), np.float32) if project.get("ducking") else None
@@ -392,13 +503,9 @@ def render(request):
         }
     if duck is not None:
         wavfile.write(output / "duck-envelope.wav", 48000, duck[begin:end])
-    for asset in assets.values():
-        if checksum(asset["path"]) != asset["sha256"]:
-            raise WorkerError(
-                "source-checksum",
-                "Asset changed during render; retry with stable sources",
-                asset=asset["id"],
-            )
+    verify_checksums(
+        list(assets.values()), "Asset changed during render; retry with stable sources"
+    )
     return {
         "protocol": "soundtrack-worker-1",
         "ok": True,
