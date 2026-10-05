@@ -44,8 +44,8 @@ still hold before relying on them.
 ## Current state
 
 - **PR #37 review fixes (2026-10-05):** on `codex/composition-ce11`, reviewed
-  `a0c56df`. Seven inline comments posted; 3/7 findings fixed in separate
-  commits. Pending: R4, R5, R6, R7.
+  `a0c56df`. Seven inline comments posted; 4/7 findings fixed in separate
+  commits. Pending: R5, R6, R7.
   Final push is held until all fixes and verification are complete. No Actions.
   [Fix evidence](./pr-37-fix-results.json).
 
@@ -164,6 +164,14 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-05 — PR #37 R4: Preserve the opposite side when editing a handle
+
+- **Agent / branch:** Codex on `codex/composition-ce11`.
+- **Done:** Keep shared smooth settings when replacing one temporal handle so the opposite segment retains its native motion.
+- **Results:** Red: both smooth encodings changed untouched incoming values (frame 5: 2.5 to 5). Green: 13 curve/history tests pass with exact incoming/outgoing preservation, edited-side changes and undo/redo round trips.
+- **Next:** R5, R6, R7.
+- **Records:** [Fix evidence](./pr-37-fix-results.json), [inline finding](https://github.com/xxibcill/still-shift/pull/37#discussion_r4183168155).
 
 ### 2026-10-05 — PR #37 R3: Preserve structured validation diagnostics
 

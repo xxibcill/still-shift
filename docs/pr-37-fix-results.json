@@ -51,9 +51,11 @@
       "start": 333,
       "line": 334,
       "title": "[P2] Preserve the opposite side when editing a handle",
-      "body": "Deleting the selected key smoothing settings changes both adjacent segments. For rotation keys (0,0), (10,10,smooth:true), (20,40), applying only an outgoing handle with ease 0.6 and speed 2 changes frame 5 from 2.5 to 5, even though frame 5 belongs to the incoming segment. The native sampler supports an explicit outgoing handle with smooth incoming motion. Preserve the opposite side when replacing one handle; also avoid changing neighboring segments during a selected-segment Bezier edit.",
+      "body": "Deleting the selected key smoothing settings changes both adjacent segments. For rotation keys (0,0), (10,10,smooth:true), (20,40), applying only an outgoing handle with ease 0.6 and speed 2 changes frame 5 from 2.5 to 5, even though frame 5 belongs to the incoming segment. The native sampler supports an explicit outgoing handle with smooth incoming motion. Preserve the opposite side when replacing one handle.",
       "commentUrl": "https://github.com/xxibcill/still-shift/pull/37#discussion_r4183168155",
-      "status": "pending"
+      "status": "fixed",
+      "change": "Keep shared smooth settings when replacing one temporal handle so the opposite segment retains its native motion.",
+      "validation": "Red: both smooth encodings changed untouched incoming values (frame 5: 2.5 to 5). Green: 13 curve/history tests pass with exact incoming/outgoing preservation, edited-side changes and undo/redo round trips."
     },
     {
       "id": "R5",

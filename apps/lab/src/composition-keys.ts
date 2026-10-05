@@ -330,8 +330,6 @@ export function editTemporalHandle(
         ? { spatialSpeed: speed as number }
         : { speed }),
   };
-  delete key.smooth;
-  if (key.interpolation === "smooth") delete key.interpolation;
 }
 /** Explicitly selecting Bézier replaces the higher-priority temporal handles for this segment. */
 export function editSegmentBezier(

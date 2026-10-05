@@ -213,3 +213,53 @@ it("does not interpret provider parameters as native key properties", () => {
   );
   expect(history.document.layers[1]).toEqual(document.layers[1]);
 });
+
+it.each(["smooth", "interpolation"] as const)(
+  "preserves the opposite segment when replacing a %s temporal handle",
+  (mode) => {
+    const document = source();
+    const keys = [
+      { frame: 0, value: 0 },
+      {
+        frame: 10,
+        value: 10,
+        ...(mode === "smooth"
+          ? { smooth: true }
+          : { interpolation: "smooth" as const }),
+      },
+      { frame: 20, value: 40 },
+    ];
+    document.layers[0]!.transform = { rotation: { keys } };
+    const track = compositionTracks(document).find(
+      (t) => t.property === "transform.rotation",
+    )!;
+    const beforeLeft = [1, 5, 9].map((frame) => sampleTrack(track, frame));
+    const beforeRight = [11, 15, 19].map((frame) => sampleTrack(track, frame));
+    const out = structuredClone(document);
+    editTemporalHandle(out, track, 1, "out", 0.6, 2);
+    const outTrack = compositionTracks(out)[0]!;
+    expect([1, 5, 9].map((frame) => sampleTrack(outTrack, frame))).toEqual(
+      beforeLeft,
+    );
+    expect(sampleTrack(outTrack, 15)).not.toEqual(beforeRight[1]);
+    const incoming = structuredClone(document);
+    editTemporalHandle(incoming, track, 1, "in", 0.6, 2);
+    const inTrack = compositionTracks(incoming)[0]!;
+    expect([11, 15, 19].map((frame) => sampleTrack(inTrack, frame))).toEqual(
+      beforeRight,
+    );
+    expect(sampleTrack(inTrack, 5)).not.toEqual(beforeLeft[1]);
+    const history = new CompositionDocument(document);
+    history.commit(
+      history.propose("out", (d) =>
+        editTemporalHandle(d, track, 1, "out", 0.6, 2),
+      )!,
+    );
+    history.commit(history.undo()!);
+    expect(history.document).toEqual(document);
+    history.commit(history.redo()!);
+    expect(sampleTrack(compositionTracks(history.document)[0]!, 5)).toEqual(
+      beforeLeft[1],
+    );
+  },
+);
