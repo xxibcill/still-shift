@@ -46,12 +46,40 @@
           "Staggered varied effect easing",
           "Forward/reverse fractional effect joins"
         ]
-      }
+      },
+      "commit": "78fd2c53ed7296f3fb252b3b92980278cc887ca2"
     },
     {
       "id": "matte-motion",
       "comment": "https://github.com/xxibcill/still-shift/pull/34#discussion_r4180742889",
-      "status": "pending"
+      "status": "fixed",
+      "verification": {
+        "before": {
+          "failed": 7,
+          "passed": 51
+        },
+        "after": {
+          "failed": 0,
+          "passed": 58
+        },
+        "checks": [
+          "58 focused quality unit tests",
+          "pnpm build",
+          "ESLint for changed TypeScript",
+          "Expanded native browser quality suite"
+        ],
+        "coverage": [
+          "Solid/group/precomp matte motion and Node/Chromium parity",
+          "Rendered matte motion using an explicit one-pixel measurement floor for these small fixtures",
+          "Shared sources counted once",
+          "Disabled-source semantics and active timeline windows",
+          "Forward/reverse fractional matte joins"
+        ],
+        "testSetupCorrections": [
+          "Replaced an invalid zero-length layer lifetime with a valid one-frame lifetime",
+          "Set group fixture anchors to the origin so the tested matte content is actually on canvas"
+        ]
+      }
     },
     {
       "id": "single-frame-pops",
@@ -69,7 +97,6 @@
   ],
   "preservation": "Original checkout and unrelated edits retained; GitHub Actions remain disabled.",
   "pending": [
-    "contributing matte motion",
     "one-frame scale and opacity pulses",
     "clipped viewport coverage",
     "Final local verification and single push",

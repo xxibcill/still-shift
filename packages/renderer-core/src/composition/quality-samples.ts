@@ -17,6 +17,9 @@ export type CompositionQualitySample = {
   id: string;
   path: string;
   ancestors: string[];
+  children: string[];
+  matte?: string;
+  active: boolean;
   state: EvaluatedLayer;
   effects: EvaluatedLayer["effects"];
   matrix: Matrix;
@@ -35,6 +38,7 @@ export type CompositionQualityFrame = {
   signature: string;
   textClock?: number;
   layers: Map<string, CompositionQualitySample>;
+  matteSources: Set<string>;
   diagnostics: EvaluatedLayerTree["diagnostics"];
 };
 const object = (value: unknown): Record<string, unknown> =>
@@ -101,8 +105,18 @@ export function compositionQualityFrame(
     clip: Bounds,
     sourcePath: string,
     scopeAncestors: readonly string[],
+    painting: boolean,
   ) => {
     const byId = new Map(scope.layers.map((s) => [s.id, s]));
+    const matteIds = new Set(
+      scope.layers.flatMap((s) =>
+        s.layer.trackMatte ? [s.layer.trackMatte.layer] : [],
+      ),
+    );
+    const scopeEnd =
+      scope === tree
+        ? comp.frameCount
+        : comp.precomps!.find((p) => p.id === scope.id)!.frameCount;
     scope.layers.forEach((state, index) => {
       const id = route + state.id,
         layer = state.layer;
@@ -125,7 +139,13 @@ export function compositionQualityFrame(
       const clippedBounds = bounds ? intersectBounds(bounds, clipping) : null;
       const opacity = parentOpacity * state.opacity * (state.color?.[3] ?? 1);
       const determinant = matrix[0] * matrix[3] - matrix[1] * matrix[2];
+      const active =
+        scope.time >= 0 &&
+        scope.time < scopeEnd &&
+        scope.time >= (layer.inPoint ?? 0) &&
+        scope.time < (layer.outPoint ?? scopeEnd);
       const visible =
+        painting &&
         state.drawable &&
         opacity > 1e-8 &&
         Math.abs(determinant) > 1e-12 &&
@@ -160,6 +180,9 @@ export function compositionQualityFrame(
         id,
         path: `${sourcePath ? sourcePath + "." : ""}layers.${index}`,
         ancestors,
+        children: [],
+        active,
+        ...(layer.trackMatte ? { matte: route + layer.trackMatte.layer } : {}),
         state,
         effects,
         matrix,
@@ -192,8 +215,10 @@ export function compositionQualityFrame(
         ]),
       };
       layers.set(id, sample);
-      if (state.precomp && onScreen) {
-        backgrounds.push([id, state.precomp.background, matrix, opacity]);
+      if (state.precomp && (onScreen || (active && matteIds.has(layer.id)))) {
+        if (onScreen)
+          backgrounds.push([id, state.precomp.background, matrix, opacity]);
+
         diagnostics.push(...state.precomp.diagnostics);
         const childIndex =
           comp.precomps?.findIndex((p) => p.id === state.precomp!.id) ?? -1;
@@ -205,25 +230,66 @@ export function compositionQualityFrame(
           clippedBounds ?? clipping,
           `precomps.${childIndex}`,
           [id, ...ancestors],
+          onScreen,
         );
       }
     });
   };
-  visit(tree, "", identity(), 1, viewport, "", []);
+  visit(tree, "", identity(), 1, viewport, "", [], true);
   for (const sample of layers.values()) {
-    const matteId = sample.state.layer.trackMatte?.layer;
-    if (matteId) {
-      const route = sample.id.includes("/")
-        ? sample.id.slice(0, sample.id.lastIndexOf("/") + 1)
-        : "";
+    const route = sample.id.slice(0, sample.id.lastIndexOf("/") + 1);
+    const group = sample.ancestors.find(
+      (id) =>
+        layers.get(id)?.state.layer.type === "group" &&
+        id.slice(0, id.lastIndexOf("/") + 1) === route,
+    );
+    const container = group ?? (route ? route.slice(0, -1) : undefined);
+    if (container) layers.get(container)?.children.push(sample.id);
+  }
+  const paintsContent = (sample: CompositionQualitySample) =>
+    sample.state.drawable ||
+    (sample.state.layer.type === "group" && sample.state.visible);
+  const matteSources = new Set<string>();
+  const collectMatte = (id: string) => {
+    const sample = layers.get(id);
+    if (!sample?.active || matteSources.has(id)) return;
+    matteSources.add(id);
+    if (sample.matte) collectMatte(sample.matte);
+    for (const childId of sample.children) {
+      const child = layers.get(childId);
+      if (child && paintsContent(child)) collectMatte(childId);
+    }
+  };
+  for (const sample of layers.values())
+    if (sample.onScreen && sample.matte) collectMatte(sample.matte);
+  const signatures = new Map(
+    [...layers].map(([id, sample]) => [id, sample.signature]),
+  );
+  const matteSignature = (id: string, seen = new Set<string>()): unknown => {
+    const sample = layers.get(id);
+    if (!sample?.active || seen.has(id)) return null;
+    const next = new Set(seen).add(id);
+    return [
+      signatures.get(id),
+      sample.state.precomp?.background,
+      sample.matte ? matteSignature(sample.matte, next) : null,
+      sample.children
+        .filter((id) => {
+          const child = layers.get(id);
+          return child && paintsContent(child);
+        })
+        .map((id) => matteSignature(id, next)),
+    ];
+  };
+  for (const sample of layers.values())
+    if (sample.matte)
       sample.signature = JSON.stringify([
         sample.signature,
-        layers.get(route + matteId)?.signature,
+        matteSignature(sample.matte),
       ]);
-    }
-  }
   return {
     layers,
+    matteSources,
     diagnostics,
     signature: JSON.stringify([
       backgrounds,
@@ -231,11 +297,11 @@ export function compositionQualityFrame(
     ]),
   };
 }
-/** Only ancestors of visible instances contribute inherited motion evidence. */
+/** Visible paint, its ancestors and active matte content supply motion evidence. */
 export function contributingMotionLayers(frame: CompositionQualityFrame) {
   const sources = new Map<string, CompositionQualitySample>();
   for (const sample of frame.layers.values()) {
-    if (!sample.onScreen) continue;
+    if (!sample.onScreen && !frame.matteSources.has(sample.id)) continue;
     sources.set(sample.id, sample);
     for (const id of sample.ancestors) {
       const ancestor = frame.layers.get(id);
@@ -248,8 +314,9 @@ export function contributingMotionLayers(frame: CompositionQualityFrame) {
 export function qualityTrackContributes(
   sample: CompositionQualitySample,
   path: string,
+  matteSource = false,
 ) {
-  if (!sample.onScreen)
+  if (!sample.onScreen && !matteSource)
     return (
       path.startsWith("transform.") &&
       (path !== "transform.opacity" || sample.state.layer.type === "group")

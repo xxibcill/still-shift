@@ -726,3 +726,131 @@ it.each([1.025, -1.025])(
     );
   },
 );
+
+function matteDrivenScene(
+  source: "solid" | "group" | "precomp" = "solid",
+  activation: object = {},
+) {
+  const layers: CompositionLayer[] = [];
+  const move = {
+    position: {
+      keys: [
+        { frame: 0, value: [70, 70] as [number, number] },
+        {
+          frame: 89,
+          value: [100, 70] as [number, number],
+          interpolation: "linear" as const,
+        },
+      ],
+    },
+  };
+  for (let i = 0; i < 4; i++) {
+    const id = `matte-${i}`;
+    layers.push(
+      solid(`paint-${i}`, { trackMatte: { layer: id, mode: "alpha" } }),
+    );
+    if (source === "solid")
+      layers.push(solid(id, { ...activation, transform: move }));
+    else if (source === "group")
+      layers.push(
+        {
+          id,
+          type: "group",
+          size: [640, 360],
+          transform: { anchor: [0, 0], position: [0, 0] },
+          ...activation,
+        },
+        solid(`content-${i}`, { parent: id, transform: move }),
+      );
+    else
+      layers.push({
+        id,
+        type: "precomp",
+        comp: "inner",
+        transform: { anchor: [0, 0] },
+        ...activation,
+      });
+  }
+  return composition(
+    layers,
+    source === "precomp"
+      ? {
+          precomps: [
+            {
+              id: "inner",
+              width: 640,
+              height: 360,
+              frameCount: 90,
+              layers: [solid("content", { transform: move })],
+            },
+          ],
+        }
+      : {},
+  );
+}
+
+it.each(["solid", "group", "precomp"] as const)(
+  "checks timing of contributing %s matte content",
+  (source) => {
+    const report = codes(matteDrivenScene(source));
+    expect(report).toContain("easing-monotony");
+    expect(report).toContain("co-start");
+    expect(report).not.toContain("frozen-run");
+  },
+);
+
+it("respects matte visibility semantics and excludes unused/out-of-window matte motion", () => {
+  expect(codes(matteDrivenScene("solid", { enabled: false }))).toContain(
+    "co-start",
+  );
+  expect(codes(matteDrivenScene("solid", { outPoint: 1 }))).not.toContain(
+    "co-start",
+  );
+  const hidden = matteDrivenScene();
+  for (const layer of hidden.layers)
+    if (layer.id.startsWith("paint")) layer.enabled = false;
+  expect(codes(hidden)).not.toContain("co-start");
+});
+
+it("counts a shared matte property only once", () => {
+  const input = matteDrivenScene();
+  input.layers = input.layers.filter(
+    (layer) => !layer.id.startsWith("matte") || layer.id === "matte-0",
+  );
+  for (const layer of input.layers)
+    if (layer.trackMatte) layer.trackMatte.layer = "matte-0";
+  expect(codes(input)).not.toContain("easing-monotony");
+  expect(codes(input)).not.toContain("co-start");
+});
+
+it.each([1, 1.025, -1.025])(
+  "finds contributing matte velocity joins at stretch %s",
+  (stretch) => {
+    const input = composition(
+      [
+        solid("paint", { trackMatte: { layer: "matte", mode: "alpha" } }),
+        solid("matte", {
+          stretch,
+          ...(stretch < 0 ? { startFrame: 41 } : {}),
+          transform: {
+            position: {
+              keys: [
+                { frame: 0, value: [70, 70] },
+                { frame: 20, value: [80, 70], interpolation: "linear" },
+                { frame: 40, value: [180, 70], interpolation: "linear" },
+              ],
+            },
+          },
+        }),
+      ],
+      { frameCount: 42 },
+    );
+    expect(analyzeCompositionQuality(input).diagnostics).toContainEqual(
+      expect.objectContaining({
+        code: "velocity-discontinuity",
+        nodes: ["matte"],
+        frames: stretch === 1 ? [20, 20] : [20, 21],
+      }),
+    );
+  },
+);

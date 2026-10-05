@@ -14,7 +14,10 @@ import {
 import { analyzeCompositionQuality } from "../../packages/renderer-core/src/story-quality.ts";
 import { lintCompositionFile } from "@still-shift/animation-engine";
 import type * as Renderer from "@still-shift/renderer-core";
-import type { Composition } from "@still-shift/scene-contract";
+import type {
+  Composition,
+  CompositionLayer,
+} from "@still-shift/scene-contract";
 
 const root = resolve(import.meta.dirname, "../..");
 const server = await createServer({
@@ -147,6 +150,105 @@ try {
     }
   } finally {
     await rm(diagnosticDirectory, { recursive: true });
+  }
+  for (const source of ["solid", "group", "precomp"] as const) {
+    const layers: CompositionLayer[] = [];
+    const move = {
+      position: {
+        keys: [
+          { frame: 0, value: [70, 70] as [number, number] },
+          {
+            frame: 89,
+            value: [100, 70] as [number, number],
+            interpolation: "linear" as const,
+          },
+        ],
+      },
+    };
+    for (let i = 0; i < 4; i++) {
+      const id = `matte-${i}`;
+      layers.push(
+        solid(`paint-${i}`, { trackMatte: { layer: id, mode: "alpha" } }),
+      );
+      if (source === "solid") layers.push(solid(id, { transform: move }));
+      else if (source === "group")
+        layers.push(
+          {
+            id,
+            type: "group",
+            size: [640, 360],
+            transform: { anchor: [0, 0], position: [0, 0] },
+          },
+          solid(`content-${i}`, { parent: id, transform: move }),
+        );
+      else
+        layers.push({
+          id,
+          type: "precomp",
+          comp: "inner",
+          transform: { anchor: [0, 0] },
+        });
+    }
+    const comp = composition(
+      layers,
+      source === "precomp"
+        ? {
+            precomps: [
+              {
+                id: "inner",
+                width: 640,
+                height: 360,
+                frameCount: 90,
+                layers: [solid("content", { transform: move })],
+              },
+            ],
+          }
+        : {},
+    );
+    const node = analyzeCompositionQuality(comp);
+    const rendered = await page.evaluate(
+      async ({ json, moduleUrl }) => {
+        const renderer = (await import(moduleUrl)) as typeof Renderer;
+        const comp = JSON.parse(json) as Composition;
+        const preview = renderer.createCompositionPreview(
+          document.createElement("canvas"),
+          comp,
+          await renderer.loadCompositionResources(comp, () => {
+            throw new Error("No assets expected");
+          }),
+        );
+        try {
+          return {
+            state: renderer.analyzeCompositionQuality(comp),
+            pixels: await renderer.analyzeRenderedCompositionQuality(
+              comp,
+              preview,
+              { pixelMinimumChanges: 1 },
+            ),
+          };
+        } finally {
+          preview.dispose();
+        }
+      },
+      {
+        json: JSON.stringify(comp),
+        moduleUrl: `/@fs/${root}/packages/renderer-core/src/index.ts`,
+      },
+    );
+    assert.deepEqual(
+      rendered.state,
+      node,
+      `${source}: matte timing Node/browser parity`,
+    );
+    for (const code of ["easing-monotony", "co-start"])
+      assert.ok(rendered.state.diagnostics.some((d) => d.code === code));
+    assert.equal(
+      rendered.pixels.diagnostics.some(
+        (d) => d.code === "frozen-run" || d.code === "frozen-pixels",
+      ),
+      false,
+      `${source}: moving matte content`,
+    );
   }
   const motion = composition([
     solid("large", {

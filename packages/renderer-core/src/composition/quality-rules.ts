@@ -280,9 +280,13 @@ export function compositionTimingFindings(
         const visible = contributingFrames
           .map((frame, at) => ({ sample: frame.get(sample.id), at }))
           .filter(
-            ({ sample: s }) =>
+            ({ sample: s, at }) =>
               s &&
-              qualityTrackContributes(s, track.path) &&
+              qualityTrackContributes(
+                s,
+                track.path,
+                frames[at]!.matteSources.has(s.id),
+              ) &&
               s.state.time >= Number(a.frame) &&
               s.state.time <= Number(b.frame),
           );
@@ -442,7 +446,14 @@ export function compositionVelocityFindings(
     for (const current of middle.layers.values()) {
       const before = left.layers.get(current.id),
         after = right.layers.get(current.id);
-      if (!current.onScreen || !before?.onScreen || !after?.onScreen) continue;
+      if (
+        !before ||
+        !after ||
+        !(current.onScreen || middle.matteSources.has(current.id)) ||
+        !(before.onScreen || left.matteSources.has(current.id)) ||
+        !(after.onScreen || right.matteSources.has(current.id))
+      )
+        continue;
       const incoming = velocityValues(before),
         value = velocityValues(current),
         outgoing = velocityValues(after);
