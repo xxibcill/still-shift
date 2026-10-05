@@ -413,28 +413,38 @@ def juce_equal(a, b, np):
 def fused_add(acc, source, gain, np):
     """acc += source * gain with one rounding, as JUCE's FMA addWithMultiply does.
 
-    The float64 product of two float32 values is exact; TwoSum recovers the float64
-    sum's rounding error, which decides the one case where rounding the float64 sum
-    to float32 differs from rounding the exact sum: a sum on a float32 midpoint.
+    The float64 product of two float32 values is exact, so rounding the float64 sum
+    to float32 is correct except when that sum lands exactly on a float32 midpoint
+    while the exact sum does not. Only such candidates (29 discarded bits equal to
+    1 then zeros, or results near float32's subnormal range, which keep fewer
+    bits) get the TwoSum rounding error, whose sign decides the tie.
     """
     gain = np.float64(gain)
+    low, half = np.uint64((1 << 29) - 1), np.uint64(1 << 28)
     for at in range(0, acc.shape[1], CHUNK):
         a = acc[:, at : at + CHUNK].astype(np.float64)
         product = source[:, at : at + CHUNK].astype(np.float64) * gain
         total = a + product
-        partial = total - a
-        error = (a - (total - partial)) + (product - partial)
         rounded = total.astype(np.float32)
-        wide = rounded.astype(np.float64)
-        other = np.nextafter(rounded, np.where(total > wide, np.inf, -np.inf).astype(np.float32))
-        other_wide = other.astype(np.float64)
-        tie = (
-            (total != wide) & (np.abs(total - wide) * 2 == np.abs(other_wide - wide)) & (error != 0)
-        )
-        if tie.any():
-            upward = np.maximum(wide, other_wide) == other_wide
-            choose_other = np.where(error > 0, upward, ~upward)
-            rounded = np.where(tie & choose_other, other, rounded)
+        bits = total.view(np.uint64)
+        candidates = np.flatnonzero(((bits & low) == half) | (np.abs(total) < 2.0**-125))
+        if candidates.size:
+            a, product, sums = (
+                a.ravel()[candidates],
+                product.ravel()[candidates],
+                total.ravel()[candidates],
+            )
+            partial = sums - a
+            error = (a - (sums - partial)) + (product - partial)
+            nearest = rounded.ravel()[candidates]
+            wide = nearest.astype(np.float64)
+            other = np.nextafter(nearest, np.where(sums > wide, np.inf, -np.inf).astype(np.float32))
+            other_wide = other.astype(np.float64)
+            tie = (sums != wide) & (np.abs(sums - wide) * 2 == np.abs(other_wide - wide))
+            upward = other_wide > wide
+            fix = tie & (error != 0) & np.where(error > 0, upward, ~upward)
+            flat = rounded.ravel()
+            flat[candidates[fix]] = other[fix]
         acc[:, at : at + CHUNK] = rounded
 
 
@@ -467,8 +477,9 @@ def sum_input(acc, source, gain, np):
 def write_wav(path, audio, begin, end, np):
     """Stream a Float32 WAV byte-identical to scipy.io.wavfile.write(audio[..., begin:end].T).
 
-    Returns the headroom/waveform report computed from the same samples, chunk by
-    chunk; peaks use the same hop, so they equal a whole-array reduction.
+    Returns the waveform/headroom report and the file's sha256, computed from the
+    same bytes as they are written; peaks use the same hop, so they equal a
+    whole-array reduction. Returns None for non-finite samples.
     """
     channels = 1 if audio.ndim == 1 else audio.shape[0]
     frames = end - begin
@@ -482,18 +493,28 @@ def write_wav(path, audio, begin, end, np):
     hop = max(1, int(np.ceil(frames / 1200)))
     step = hop * max(1, CHUNK // hop)
     peaks, peak, overs = [], 0.0, 0
+    digest = hashlib.sha256()
+    interleaved = np.empty((min(step, frames), channels), "<f4")
     with open(path, "wb") as target:
-        target.write(b"RIFF" + struct.pack("<I", len(header) + nbytes) + header)
+        head = b"RIFF" + struct.pack("<I", len(header) + nbytes) + header
+        target.write(head)
+        digest.update(head)
         for at in range(begin, end, step):
             block = audio[..., at : min(end, at + step)]
-            if not np.isfinite(block).all():
-                return None
-            target.write(np.ascontiguousarray(block.T, dtype="<f4").tobytes())
+            size = block.shape[-1]
+            # max(|L|, |R|) is NaN or infinite exactly when a sample is.
             mono = np.abs(block) if block.ndim == 1 else np.max(np.abs(block), axis=0)
-            peaks += np.maximum.reduceat(mono, np.arange(0, mono.size, hop)).tolist()
+            if not np.isfinite(mono).all():
+                return None
+            out = interleaved[:size]
+            out[...] = block.T if block.ndim == 2 else block[:, None]
+            data = memoryview(out).cast("B")
+            target.write(data)
+            digest.update(data)
+            peaks += np.maximum.reduceat(mono, np.arange(0, size, hop)).tolist()
             peak = max(peak, float(mono.max()))
             overs += int(np.count_nonzero(mono > 1))
-    return peaks, peak, overs
+    return peaks, peak, overs, "sha256:" + digest.hexdigest()
 
 
 def shape_clip_into(target, detector, clip, audio, np, offset=0):
@@ -763,10 +784,11 @@ def render(request):
             raise WorkerError(
                 "output-invalid", "Rendered PCM is not finite or aligned", processor=name
             )
-        peaks, peak, overs = report
+        peaks, peak, overs, sha256 = report
         reports[name] = {
             "file": filename,
-            "sha256": checksum(output / filename),
+            # Hashed as written; the caller re-hashes the file independently.
+            "sha256": sha256,
             "samplesPerChannel": end - begin,
             "peaks": peaks,
             # Float WAV keeps overs; integer delivery formats clip them.
