@@ -47,8 +47,8 @@ still hold before relying on them.
   Headroom report and Lab field guard are pushed to PR #33 (`2cddbb2`). Optional
   `clips[].pan` uses a unity-centre constant-power law after the ducking detector
   tap (`soundtrack-dsp-4`); projects without pan are bit-identical. Lab clip form
-  edits pan. `pnpm check:soundtrack` passes on Node 22.23.1. Committed locally;
-  pushing to PR #33 awaits owner approval. Browser suites and listening not run.
+  edits pan. `pnpm check:soundtrack` passes on Node 22.23.1. Pushed to PR #33
+  (`633412f`); owner review/merge remains. Browser suites and listening not run.
   Looping and a master limiter remain out of contract scope.
 
 - **PR #33 follow-up fixes (2026-10-05):** both P2 findings posted inline
@@ -219,8 +219,8 @@ _Last updated 2026-10-05 by Codex for PR #33 follow-up fixes._
   including after bumping only its version string. `pnpm check:soundtrack`:
   1,516 unit, 46 runtime, 39 audio integration, 14 depth; Python lint/format pass.
 - **Not run:** browser workflow suites, baselines and listening.
-- **Open / next:** owner approval to push; looping and a master limiter are not in
-  `soundtrack-project-1`.
+- **Open / next:** pushed to PR #33 as `633412f`; owner review/merge remains.
+  Looping and a master limiter are not in `soundtrack-project-1`.
 
 ### 2026-10-05 — PR #33 mix headroom report and Lab number-field guard
 
