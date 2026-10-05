@@ -135,3 +135,12 @@ Main-checkout verification keeps resetting the guarded retry's quiet window;
 its session `66431` remains live. Select candidates from valid independent brackets
 and complete strict WebGL family audits before marking the PR ready. CE6-P targets
 remain open; no gain is claimed from rejected timings.
+
+The ten-minute pre-start heuristic repeatedly reset without starting a bracket.
+Confirmed the owned launcher had no benchmark child, stopped it intentionally
+(session `66431`, exit 143), and replaced it with session `3547` using two idle
+minutes. This changes scheduling only: the workload, four-session order, source
+fingerprints, GPU policy, overlap rejection and acceptance methods are unchanged.
+The temporary family-audit wrapper now preserves every attempt in a unique
+directory; its collector retains fixture-specific and general export messages.
+It has not run any matrix yet.

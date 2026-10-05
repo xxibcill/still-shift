@@ -740,7 +740,7 @@
     "Required selected-candidate family timing audits",
     "Complete performance validation and select measured candidates before marking draft PR ready"
   ],
-  "workloadCoordination": "Own full gate passed. Four timing attempts rejected; corrected guarded retry session 66431 remains live, with main verification repeatedly resetting its ten-minute quiet window. Draft PR 41 published and attached with correctness/full-gate evidence and explicit performance limitations. No messages sent to main chat.",
+  "workloadCoordination": "Own full gate passed. Four timing attempts rejected. Ten-minute waiting launcher 66431 repeatedly reset without starting any bracket; verified idle with no benchmark child and intentionally stopped (exit 143). Replacement session 3547 uses two idle minutes, with unchanged serial workload/order/source pinning and overlap rejection. Draft PR 41 remains published/attached. No messages sent to main chat.",
   "repositoryActionsVerified": {
     "enabled": false,
     "command": "gh api repos/xxibcill/still-shift/actions/permissions",
@@ -1280,16 +1280,22 @@
     }
   },
   "queuedAb": {
-    "status": "live; ten-minute quiet window before each corrected serial bracket",
-    "session": 66431,
-    "launcher": "/private/tmp/ce6p-ab-after-gate.mjs",
+    "status": "live; two-minute quiet window before each unchanged serial bracket",
+    "session": 3547,
+    "launcher": "/private/tmp/ce6p-ab-shorter-window.mjs",
     "outputs": [
       "benchmarks/results/composition-ce6p/fusion-ref-ab.json",
       "benchmarks/results/composition-ce6p/bounded-ref-ab.json",
       "benchmarks/results/composition-ce6p/hardware-bounded-ref-ab.json"
     ],
     "failureHandling": "Stop at first failed bracket; retain invalid timing uniquely; never overwrite valid prior results",
-    "fullGateRequiredAndPassed": true
+    "fullGateRequiredAndPassed": true,
+    "supersededLauncher": {
+      "session": 66431,
+      "pid": 9949,
+      "status": "verified idle with no benchmark child; stopped intentionally; terminal exit 143",
+      "reason": "Repeated main verification reset the ten-minute heuristic without timing starting; shorten pre-start delay only, retain benchmark workload/order and overlap rejection"
+    }
   },
   "pullRequest": {
     "number": 41,

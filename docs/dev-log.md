@@ -49,7 +49,7 @@ still hold before relying on them.
   sums, subject to exact regressions and independent serial A/B measurements.
   Candidates build and pass 852 exactness cases on each GPU profile. Focused
   regression/export suites and the complete local gate pass. Serial timings
-  are queued after gate success and a ten-minute quiet window.
+  are queued after gate success and a two-minute quiet window.
   [Draft PR #41](https://github.com/xxibcill/still-shift/pull/41) is published and
   attached with performance validation pending. The main checkout/chat is untouched.
   All 117 original failures, 1.25× family and 2× native targets remain open.
@@ -197,8 +197,10 @@ _Last updated 2026-10-06 by Codex for CE6-P; prior work retained._
 - **Done:** pushed and attached [draft PR #41](https://github.com/xxibcill/still-shift/pull/41),
   based on delivered CE7 `817cc9f`; verified Actions remain disabled.
 - **Results:** passed exactness/focused/full-gate checks are reviewable. No valid
-  timing bracket yet; main verification repeatedly resets the quiet window.
-- **Next:** keep the existing live retry session `66431`; valid independent A/B,
+  timing bracket yet; main verification repeatedly reset the ten-minute wait.
+  Verified waiting launcher `66431` idle, stopped it (exit 143), and replaced it
+  with live session `3547` using two idle minutes and unchanged timing/rejection methods.
+- **Next:** keep the existing live retry session `3547`; valid independent A/B,
   strict WebGL family audits and measured candidate selection precede PR readiness.
   All original 117 failures and existing performance targets remain open.
 - **Records:** [plan](./composition-ce6p-plan.md),
