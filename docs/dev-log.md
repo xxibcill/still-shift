@@ -43,6 +43,13 @@ still hold before relying on them.
 
 ## Current state
 
+- **PR #37 follow-up fixes in progress (2026-10-05):** reviewed `9b2247e` on
+  `codex/composition-ce11`. Three additional P2 findings are posted inline.
+  R8 selector focus is fixed and inspector acceptance passes; R9 neighboring
+  smoothing and R10 fixture-export ownership remain. One finding per commit,
+  one final push; no owner decision or blocker. Primary CE5 work is untouched.
+  [Follow-up evidence](./pr-37-followup-fix-results.json).
+
 - **PR #37 review fixes complete (2026-10-05):** on `codex/composition-ce11`,
   reviewed `a0c56df`. Seven inline findings are fixed in seven separate commits;
   delivery is one final push. `check:fast` passes 1,514 unit tests; 18 focused
@@ -167,6 +174,16 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-05 — PR #37 R8: Preserve graph-selector focus
+
+- **Agent / branch:** Codex on `codex/composition-ce11` from `9b2247e`.
+- **Done:** posted all three follow-up inline findings; restored focus after key
+  and resolved-instance selection rebuilds their native graph controls.
+- **Results:** new focus regression fails before the fix; full inspector browser
+  acceptance passes after it, including repeated selections and existing MP4 parity.
+- **Next:** R9 and R10 in separate commits, then final local checks and one push.
+- **Records:** [follow-up evidence](./pr-37-followup-fix-results.json).
 
 ### 2026-10-05 — PR #37 R7: Share curve sampling and speed calculation
 

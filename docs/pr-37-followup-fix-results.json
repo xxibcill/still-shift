@@ -1,0 +1,36 @@
+{
+  "pr": "https://github.com/xxibcill/still-shift/pull/37",
+  "reviewHead": "9b2247e4f1cd9b1f34dddf7b048e893a5649d188",
+  "reviewUrl": "https://github.com/xxibcill/still-shift/pull/37#pullrequestreview-5414463078",
+  "date": "2026-10-05",
+  "policy": "One finding per commit; one push after all three fixes and local checks. GitHub Actions remain disabled.",
+  "toolchain": { "node": "22.23.1", "pnpm": "10.29.3" },
+  "findings": [
+    {
+      "id": "R8",
+      "title": "Preserve focus when changing graph selectors",
+      "commentUrl": "https://github.com/xxibcill/still-shift/pull/37#discussion_r4183956330",
+      "status": "fixed",
+      "change": "Restore focus to the replacement key or resolved-instance selector when its change event rebuilds the graph, without moving focus from another control.",
+      "regressionBefore": "Inspector browser test fails: Changing the selected key must preserve keyboard focus; actual false.",
+      "verification": "pnpm test:browser:composition-inspector passes repeated key and reused-precomp instance changes, existing keyboard handle edits, desktop/phone flows, undo/save/watch and MP4 byte parity.",
+      "testSetupRepair": "Opened the advanced resolved-graph details panel before testing its visible selector; the initial hidden-control timeout was a test setup error."
+    },
+    {
+      "id": "R9",
+      "title": "Preserve neighboring motion when replacing a segment with Bézier",
+      "commentUrl": "https://github.com/xxibcill/still-shift/pull/37#discussion_r4183956335",
+      "status": "pending"
+    },
+    {
+      "id": "R10",
+      "title": "Acquire export ownership before reading fixture assets",
+      "commentUrl": "https://github.com/xxibcill/still-shift/pull/37#discussion_r4183956339",
+      "status": "pending"
+    }
+  ],
+  "delivery": {
+    "branch": "codex/composition-ce11",
+    "push": "pending final commit"
+  }
+}

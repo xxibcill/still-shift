@@ -89,6 +89,16 @@ try {
   const original = await pixels();
   await page.locator('[data-layer="box"] > button').first().click();
   assert.equal(await page.locator("#key-lanes .key-lane").count(), 1);
+  const keySelector = page.getByLabel("Key to edit", { exact: true });
+  await keySelector.focus();
+  for (const value of ["1", "0"]) {
+    await keySelector.selectOption(value);
+    assert.equal(
+      await keySelector.evaluate((select) => document.activeElement === select),
+      true,
+      "Changing the selected key must preserve keyboard focus",
+    );
+  }
   await page.getByLabel("out ease", { exact: true }).fill("0.85");
   await page.getByLabel("out speed", { exact: true }).fill("0,0");
   await page
@@ -477,6 +487,49 @@ try {
   );
   assert.equal(await page.locator("#edited-keys").inputValue(), "");
   assert.equal(await page.locator("#copy-keys").isDisabled(), true);
+  const instanced = structuredClone(source);
+  instanced.name = "Resolved instance focus";
+  instanced.precomps = [
+    {
+      id: "shared",
+      width: 64,
+      height: 64,
+      frameCount: 8,
+      layers: [structuredClone(source.layers[0]!)],
+    },
+  ];
+  instanced.layers = [
+    { id: "first", type: "precomp", comp: "shared" },
+    { id: "second", type: "precomp", comp: "shared", startFrame: 2 },
+  ];
+  await writeFile(builderInput, `export default ${JSON.stringify(instanced)};`);
+  await page.waitForFunction(() =>
+    document
+      .getElementById("status")!
+      .textContent!.includes("Resolved instance focus"),
+  );
+  await page.locator('[data-layer="box"] > button').first().click();
+  const instanceSelector = page.getByLabel("Resolved property instance", {
+    exact: true,
+  });
+  await page
+    .getByText("Resolved motion in root frames", { exact: true })
+    .click();
+  await instanceSelector.focus();
+  for (const value of [
+    "second/box.transform.position",
+    "first/box.transform.position",
+  ]) {
+    await instanceSelector.selectOption(value);
+    assert.equal(await instanceSelector.inputValue(), value);
+    assert.equal(
+      await instanceSelector.evaluate(
+        (select) => document.activeElement === select,
+      ),
+      true,
+      "Changing the resolved instance must preserve keyboard focus",
+    );
+  }
   assert.deepEqual(errors, []);
   console.log(
     JSON.stringify({
@@ -489,6 +542,7 @@ try {
         "visibility retained across curve edits and undo/redo",
         "overlays",
         "keyboard Bezier graph handles",
+        "key and resolved-instance selector focus",
         "lossless source save",
         "backend draft/frame retention",
         "MP4 native byte identity",

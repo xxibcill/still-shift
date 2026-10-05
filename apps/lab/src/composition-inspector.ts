@@ -319,8 +319,11 @@ export function createCompositionInspector(options: {
       );
       instance.value = rootPath!;
       instance.onchange = () => {
+        const focused = document.activeElement === instance;
         rootPath = instance.value;
         graph();
+        if (focused)
+          resolved.querySelector<HTMLSelectElement>("select")?.focus();
       };
       resolved.append(instance);
       try {
@@ -352,7 +355,11 @@ export function createCompositionInspector(options: {
       choose.add(new Option(`Key ${i + 1} · frame ${key.frame}`, String(i))),
     );
     choose.value = String(index);
-    choose.onchange = () => graph(Number(choose.value));
+    choose.onchange = () => {
+      const focused = document.activeElement === choose;
+      graph(Number(choose.value));
+      if (focused) area.querySelector<HTMLSelectElement>("#edit-key")?.focus();
+    };
     area.append(choose);
     const key = current.keys[index]!;
     if (current.kind === "camera")
