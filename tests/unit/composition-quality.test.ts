@@ -8,7 +8,10 @@ import {
   solid,
 } from "../../benchmarks/fixtures/composition/ce12/fixtures.ts";
 
-import { providerReadingComposition } from "../helpers/composition-quality-fixtures.ts";
+import {
+  collapsedMotionComposition,
+  providerReadingComposition,
+} from "../helpers/composition-quality-fixtures.ts";
 
 const codes = (input: Parameters<typeof analyzeCompositionQuality>[0]) =>
   analyzeCompositionQuality(input).diagnostics.map((d) => d.code);
@@ -1090,4 +1093,69 @@ describe("provider text reading time", () => {
       expect.objectContaining({ code: "reading-time", measured: 0 }),
     );
   });
+});
+
+describe("collapsed precomp paint outside the source footprint", () => {
+  it("includes on-screen child motion even when the source rectangle is off canvas", () => {
+    expect(
+      analyzeCompositionQuality(collapsedMotionComposition()).diagnostics,
+    ).toEqual([]);
+  });
+  it("keeps ordinary precomp clipping", () => {
+    expect(codes(collapsedMotionComposition(false))).toContain("frozen-run");
+  });
+  it.each([
+    { enabled: false },
+    { outPoint: 1 },
+    { transform: { anchor: [0, 0], position: [700, 80], opacity: 0 } },
+  ])("excludes a hidden collapsed host: %j", (extra) => {
+    const input = collapsedMotionComposition();
+    Object.assign(input.layers[0]!, extra);
+    expect(codes(input)).toContain("frozen-run");
+  });
+  it("respects ancestor clipping around collapsed children", () => {
+    const input = collapsedMotionComposition();
+    input.layers[0]!.parent = "clip";
+    input.layers.unshift({
+      id: "clip",
+      type: "group",
+      size: [100, 100],
+      clip: true,
+      transform: { anchor: [0, 0], position: [500, 180] },
+    });
+    expect(codes(input)).toContain("frozen-run");
+  });
+});
+
+it("follows nested collapsed children outside both source rectangles", () => {
+  const input = collapsedMotionComposition();
+  const source = input.precomps![0]!;
+  input.precomps!.push({ ...source, id: "nested" });
+  source.layers = [
+    {
+      id: "nested-host",
+      type: "precomp",
+      comp: "nested",
+      collapseTransforms: true,
+      transform: { anchor: [0, 0] },
+    },
+  ];
+  expect(analyzeCompositionQuality(input).diagnostics).toEqual([]);
+});
+
+it("does not count empty collapsed surfaces or their unused background as motion", () => {
+  const input = collapsedMotionComposition();
+  input.precomps![0]!.background = "#ffffff";
+  input.precomps![0]!.layers[0]!.enabled = false;
+  input.layers[0]!.transform = {
+    anchor: [0, 0],
+    position: {
+      keys: [
+        { frame: 0, value: [50, 80] },
+        { frame: 29, value: [150, 80], interpolation: "linear" },
+      ],
+    },
+  };
+  input.layers.push(solid());
+  expect(codes(input)).toContain("frozen-run");
 });

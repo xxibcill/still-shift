@@ -8,7 +8,10 @@ import {
   composition,
   solid,
 } from "../../benchmarks/fixtures/composition/ce12/fixtures.ts";
-import { providerReadingComposition } from "../helpers/composition-quality-fixtures.ts";
+import {
+  collapsedMotionComposition,
+  providerReadingComposition,
+} from "../helpers/composition-quality-fixtures.ts";
 
 const directories: string[] = [];
 afterEach(async () => {
@@ -184,4 +187,11 @@ it("fails CLI lint when provider text is revealed too briefly", async () => {
   expect(JSON.parse(result.stdout).diagnostics).toContainEqual(
     expect.objectContaining({ code: "reading-time", measured: 5 / 30 }),
   );
+});
+
+it("accepts continuous collapsed child motion outside the source rectangle", async () => {
+  const result = await invoke(collapsedMotionComposition());
+  expect(result.exit).toBe(0);
+  expect(result.stderr).toBe("");
+  expect(JSON.parse(result.stdout).diagnostics).toEqual([]);
 });

@@ -31,12 +31,40 @@
           "ESLint for changed TypeScript",
           "pnpm test:browser:composition-quality"
         ]
-      }
+      },
+      "commit": "99605b4"
     },
     {
       "id": "collapsed-precomp-traversal",
       "comment": "https://github.com/xxibcill/still-shift/pull/34#discussion_r4183930158",
-      "status": "pending"
+      "status": "fixed",
+      "change": "Collapsed descendants are sampled using host visibility and ancestor clipping. Their painted footprint drives container framing/visibility; unused collapsed backgrounds are excluded.",
+      "verification": {
+        "before": {
+          "regressionFailures": 2,
+          "setupFailures": 1,
+          "passed": 91
+        },
+        "after": {
+          "qualityTests": 82,
+          "cliTests": 14,
+          "failed": 0,
+          "renderedBrowser": "collapsed motion passes; ordinary precomp clipping retains frozen-pixel/state failures"
+        },
+        "checks": [
+          "96 focused unit/CLI tests",
+          "pnpm build",
+          "ESLint for changed TypeScript",
+          "pnpm test:browser:composition-quality"
+        ],
+        "coverage": [
+          "Child motion outside host bounds",
+          "Nested collapsed precomps",
+          "Disabled and out-of-window hosts",
+          "Inherited zero opacity and ancestor clipping",
+          "Empty collapsed content with an unused opaque background"
+        ]
+      }
     },
     {
       "id": "lint-limit-diagnostic",
@@ -46,11 +74,11 @@
   ],
   "setupFailures": [
     "New fixture initially had a missing closing brace; syntax corrected before regression evidence was collected.",
-    "Prepared provider node type permits undefined optional fields; provider fixture is validated through ProviderLayerSchema to satisfy its JSON params type."
+    "Prepared provider node type permits undefined optional fields; provider fixture is validated through ProviderLayerSchema to satisfy its JSON params type.",
+    "Out-of-window host control initially used invalid outPoint 0; corrected to a valid one-frame window before final verification."
   ],
   "preservation": "Original checkout and unrelated local work retained; GitHub Actions remain disabled.",
   "pending": [
-    "Collapsed precomp traversal",
     "Lint-limit diagnostic",
     "Final local verification and one final push"
   ]

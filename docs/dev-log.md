@@ -44,10 +44,11 @@ still hold before relying on them.
 ## Current state
 
 - **PR #34 follow-up fixes in progress (2026-10-05):** three new inline findings
-  posted on `a41f687`. Provider reading reveal is repaired and its 87 focused tests,
-  rendered browser checks, TypeScript and ESLint pass. Collapsed precomp traversal
-  and structured lint-limit diagnostics remain. One finding per commit; push once
-  after final verification. Owner review/merge remains pending.
+  posted on `a41f687`. Provider reading reveal and collapsed precomp traversal are
+  repaired. All 96 focused tests, rendered browser checks, TypeScript and ESLint
+  pass, including nested/hidden/clipped collapsed content. Structured lint-limit
+  diagnostics remain. One finding per commit; push once after final verification.
+  Owner review/merge remains pending.
   [Follow-up evidence](./pr-34-followup-fix-results.json).
 
 - **PR #34 re-review fixes verified (2026-10-05):** all five inline findings on
@@ -160,6 +161,17 @@ _Last updated 2026-10-05 by Codex for PR #34 review fixes; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-05 — PR #34 collapsed precomp sampling
+
+- **Agent / branch:** Codex on `codex/pr34-followup-fixes`, after `99605b4`.
+- **Done:** traverse collapsed paint outside source bounds; framing follows painted
+  descendants, and unused collapsed backgrounds do not count as motion.
+- **Results:** two regressions failed before repair; all 96 focused quality/CLI
+  tests, rendered browser checks, TypeScript and ESLint pass. Invalid test interval
+  corrected; hidden, clipped, nested and empty content controls pass.
+- **Open / next:** structured lint limits, final verification and one final push.
+- **Records:** [Follow-up evidence](./pr-34-followup-fix-results.json).
 
 ### 2026-10-05 — PR #34 provider reading reveal
 

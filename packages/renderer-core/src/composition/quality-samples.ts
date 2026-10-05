@@ -85,6 +85,21 @@ export function intersectBounds(a: Bounds, b: Bounds): Bounds {
     bottom: Math.min(a.bottom, b.bottom),
   };
 }
+function unionBounds(bounds: readonly (Bounds | null)[]): Bounds | null {
+  let union: Bounds | null = null;
+  for (const bound of bounds) {
+    if (!bound) return null;
+    union = union
+      ? {
+          left: Math.min(union.left, bound.left),
+          top: Math.min(union.top, bound.top),
+          right: Math.max(union.right, bound.right),
+          bottom: Math.max(union.bottom, bound.bottom),
+        }
+      : bound;
+  }
+  return union;
+}
 export const hasArea = (bounds: Bounds) =>
   bounds.right > bounds.left && bounds.bottom > bounds.top;
 
@@ -222,8 +237,14 @@ export function compositionQualityFrame(
         ]),
       };
       layers.set(id, sample);
-      if (state.precomp && (onScreen || (active && matteIds.has(layer.id)))) {
-        if (onScreen)
+      const collapsed =
+        layer.type === "precomp" && layer.collapseTransforms === true;
+      const paintChildren = collapsed ? visible : onScreen;
+      if (
+        state.precomp &&
+        (paintChildren || (active && matteIds.has(layer.id)))
+      ) {
+        if (onScreen && !collapsed)
           backgrounds.push([id, state.precomp.background, matrix, opacity]);
 
         diagnostics.push(...state.precomp.diagnostics);
@@ -239,8 +260,23 @@ export function compositionQualityFrame(
             : (clippedBounds ?? clipping),
           `precomps.${childIndex}`,
           [id, ...ancestors],
-          onScreen,
+          paintChildren,
         );
+        if (collapsed) {
+          const children = [...layers.values()].filter((child) =>
+            child.id.startsWith(id + "/"),
+          );
+          const visibleChildren = children.filter((child) => child.visible);
+          const onScreenChildren = children.filter((child) => child.onScreen);
+          sample.visible = visible && visibleChildren.length > 0;
+          sample.onScreen = visible && onScreenChildren.length > 0;
+          sample.bounds = unionBounds(
+            visibleChildren.map((child) => child.bounds),
+          );
+          sample.clippedBounds = unionBounds(
+            onScreenChildren.map((child) => child.clippedBounds),
+          );
+        }
       }
     });
   };

@@ -57,3 +57,43 @@ export function providerReadingComposition(
     { frameCount: 150 },
   );
 }
+
+export function collapsedMotionComposition(
+  collapseTransforms = true,
+): Composition {
+  return composition(
+    [
+      {
+        id: "host",
+        type: "precomp",
+        comp: "source",
+        collapseTransforms,
+        transform: { anchor: [0, 0], position: [700, 80] },
+      },
+    ],
+    {
+      frameCount: 30,
+      precomps: [
+        {
+          id: "source",
+          width: 100,
+          height: 100,
+          frameCount: 30,
+          layers: [
+            solid("child", {
+              transform: {
+                anchor: [0, 0],
+                position: {
+                  keys: [
+                    { frame: 0, value: [-650, 0] },
+                    { frame: 29, value: [-550, 0], interpolation: "linear" },
+                  ],
+                },
+              },
+            }),
+          ],
+        },
+      ],
+    },
+  );
+}

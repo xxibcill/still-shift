@@ -19,7 +19,10 @@ import type {
   CompositionLayer,
 } from "@still-shift/scene-contract";
 
-import { providerReadingComposition } from "../helpers/composition-quality-fixtures.ts";
+import {
+  collapsedMotionComposition,
+  providerReadingComposition,
+} from "../helpers/composition-quality-fixtures.ts";
 
 const root = resolve(import.meta.dirname, "../..");
 const server = await createServer({
@@ -554,6 +557,34 @@ try {
     }
   } finally {
     await rm(providerDirectory, { recursive: true });
+  }
+
+  const collapsedDirectory = await mkdtemp(
+    join(tmpdir(), "ce12-collapsed-motion-"),
+  );
+  try {
+    for (const collapse of [true, false]) {
+      const input = join(collapsedDirectory, `${collapse}.json`);
+      await writeFile(
+        input,
+        JSON.stringify(collapsedMotionComposition(collapse)),
+      );
+      const report = await lintCompositionFile(
+        input,
+        {},
+        { pixels: true, projectRoot: root },
+      );
+      assert.equal(report.status, collapse ? "passed" : "failed");
+      assert.equal(report.measured.pixels, true);
+      for (const code of ["frozen-run", "frozen-pixels", "off-canvas"])
+        assert.equal(
+          report.diagnostics.some((d) => d.code === code),
+          !collapse,
+          `${code}: collapsed source footprint`,
+        );
+    }
+  } finally {
+    await rm(collapsedDirectory, { recursive: true });
   }
 
   const cliPixels = await lintCompositionFile(
