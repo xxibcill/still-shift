@@ -154,6 +154,60 @@ describe("CE16 offline lifecycle", () => {
     ).toBe(true);
     expect(first.files.master!.samplesPerChannel).toBe(144000);
     expect(first.latencySamples).toBe(0);
+    expect(first.files.master!.samplesAboveFullScale).toBe(0);
+    expect(first.files.master!.peakDbfs).toBeLessThan(0);
+  }, 20000);
+  it("reports headroom from written PCM: overs, peak level and silent stems", async () => {
+    const level = (samples: Float32Array) => {
+      let peak = 0,
+        overs = 0;
+      for (let i = 0; i < samples.length; i += 2) {
+        const frame = Math.max(
+          Math.abs(samples[i]!),
+          Math.abs(samples[i + 1]!),
+        );
+        peak = Math.max(peak, frame);
+        if (frame > 1) overs++;
+      }
+      return { peak, overs };
+    };
+    // +6 dB master pushes only the effect impulse (0.8 over ducked music) over 0 dBFS.
+    const hotPath = join(root, "hot.json");
+    await writeFile(
+      hotPath,
+      JSON.stringify({ ...project, master: { id: "master", gainDb: 6 } }),
+    );
+    const hot = await renderSoundtrackProject(hotPath, join(root, "hot"), {
+      stems: true,
+    });
+    const mix = level(await pcm(audio("hot")));
+    expect(mix.overs).toBe(1);
+    expect(hot.files.master!.samplesAboveFullScale).toBe(mix.overs);
+    expect(hot.files.master!.peakDbfs).toBeCloseTo(
+      20 * Math.log10(mix.peak),
+      5,
+    );
+    expect(hot.files.effect!.samplesAboveFullScale).toBe(0);
+    const mutedPath = join(root, "hot-muted.json");
+    await writeFile(
+      mutedPath,
+      JSON.stringify({
+        ...project,
+        master: { id: "master", gainDb: 6 },
+        tracks: project.tracks.map((t) =>
+          t.id === "effect" ? { ...t, mute: true } : t,
+        ),
+      }),
+    );
+    const muted = await renderSoundtrackProject(
+      mutedPath,
+      join(root, "hot-muted"),
+      { stems: true },
+    );
+    expect(muted.files.effect!.peakDbfs).toBeNull();
+    expect(muted.files.effect!.samplesAboveFullScale).toBe(0);
+    expect(muted.files.master!.samplesAboveFullScale).toBe(0);
+    expect(level(await pcm(audio("hot-muted"))).overs).toBe(0);
   }, 20000);
   it("crops only after full effect/ducking evaluation, including mid-envelope seeks", async () => {
     await renderSoundtrackProject(path, join(root, "range"), {

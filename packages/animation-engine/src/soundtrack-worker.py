@@ -344,15 +344,19 @@ def render(request):
             )
         filename = "mix.wav" if name == "master" else name + ".wav"
         wavfile.write(output / filename, 48000, audio[:, begin:end].T)
-        # A compact waveform view is derived from the same processed PCM.
+        # A compact waveform view and headroom report use the same written PCM.
         hop = max(1, int(np.ceil((end - begin) / 1200)))
         mono = np.max(np.abs(audio[:, begin:end]), axis=0)
         peaks = np.maximum.reduceat(mono, np.arange(0, mono.size, hop)).tolist()
+        peak = float(mono.max())
         files[name] = {
             "file": filename,
             "sha256": checksum(output / filename),
             "samplesPerChannel": end - begin,
             "peaks": peaks,
+            # Float WAV keeps overs; integer delivery formats clip them.
+            "peakDbfs": 20 * math.log10(peak) if peak > 0 else None,
+            "samplesAboveFullScale": int(np.count_nonzero(mono > 1)),
         }
     if duck is not None:
         wavfile.write(output / "duck-envelope.wav", 48000, duck[begin:end])

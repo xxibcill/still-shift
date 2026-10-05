@@ -48,6 +48,8 @@ const manifestSchema = z
         sha256: z.string(),
         samplesPerChannel: z.number().int(),
         peaks: z.array(z.number()),
+        peakDbfs: z.number().nullable(),
+        samplesAboveFullScale: z.number().int().nonnegative(),
       }),
     ),
   })
