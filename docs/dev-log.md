@@ -43,12 +43,15 @@ still hold before relying on them.
 
 ## Current state
 
-- **PR #37 follow-up fixes in progress (2026-10-05):** reviewed `9b2247e` on
+- **PR #37 follow-up fixes complete (2026-10-05):** reviewed `9b2247e` on
   `codex/composition-ce11`. Three additional P2 findings are posted inline.
-  R8 selector focus and R9 neighboring smoothing are fixed; 35 focused unit
-  checks, TypeScript and inspector acceptance pass. R10 fixture-export ownership
-  remains. One finding per commit,
-  one final push; no owner decision or blocker. Primary CE5 work is untouched.
+  R8 selector focus, R9 neighboring smoothing and R10 fixture-export ownership
+  are fixed in three separate finding commits. `check:fast` passes 1,534 unit tests;
+  20 focused integration and 46 runtime tests pass, along with inspector desktop/phone/
+  MP4, shared/legacy session and builder watch/export checks. Independent standards/spec
+  review found no incomplete fixes or new defects. One final normal push delivers all
+  three commits; owner review/merge remain. Full `pnpm check` was not rerun and baselines
+  were not regenerated. Primary CE5 work is untouched; GitHub Actions remain disabled.
   [Follow-up evidence](./pr-37-followup-fix-results.json).
 
 - **PR #37 review fixes complete (2026-10-05):** on `codex/composition-ce11`,
@@ -175,6 +178,18 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-05 — PR #37 R10: Guard fixture export asset reads
+
+- **Agent / branch:** Codex on `codex/composition-ce11`; R8/R9 are `7d9f76c` /
+  `290af0c`.
+- **Done:** acquired export ownership before reading registered fixture assets
+  and released it after staging/rendering failures as well as successful exports.
+- **Results:** the paused-read race fails before the fix; 20 focused integration,
+  1,534 unit and 46 runtime tests pass with static gates and all four selected browser
+  groups. Both review axes found no new defects; the test import lint error is repaired.
+- **Next:** one normal push after this third finding commit; owner review/merge remain.
+- **Records:** [follow-up evidence](./pr-37-followup-fix-results.json).
 
 ### 2026-10-05 — PR #37 R9: Preserve neighboring Bézier motion
 

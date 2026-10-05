@@ -22,6 +22,7 @@
       "title": "Preserve neighboring motion when replacing a segment with Bézier",
       "commentUrl": "https://github.com/xxibcill/still-shift/pull/37#discussion_r4183956335",
       "status": "fixed",
+      "commit": "290af0c",
       "change": "Materialize the native monotone smooth velocity on each endpoint's opposite side before clearing selected-segment smoothing; retain explicit velocities and existing handle ease. Spatial motion uses the native deterministic arc table, and color/vector tracks retain grouped channel velocities.",
       "regressionBefore": "All 20 new cases fail because neighboring evaluated motion changes when the middle segment receives Bézier handles.",
       "verification": "35 focused curve/history tests pass, including 20 scalar/vector/color/spatial/signal cases over both smooth encodings and existing ease-only handles; neighboring subframe values agree within 1e-10, the edited segment changes, and undo/redo restores native source keys. TypeScript and full inspector desktop/phone/MP4 acceptance pass."
@@ -30,11 +31,53 @@
       "id": "R10",
       "title": "Acquire export ownership before reading fixture assets",
       "commentUrl": "https://github.com/xxibcill/still-shift/pull/37#discussion_r4183956339",
-      "status": "pending"
+      "status": "fixed",
+      "change": "Acquire the fixture export's busy guard before any awaited asset reads; wrap source parsing, asset capture and rendering in the same finally release.",
+      "regressionBefore": "With the first registered asset read paused, the second request reaches another asset read instead of returning 409; the new integration test fails with actual second asset read.",
+      "verification": "20 focused integration tests pass. The real-export regression returns 200/409 with exactly one registered asset read; a separate failed-read case restores the asset and exports successfully, proving ownership is released. Existing save conflicts, independent-process locks, CLI, preview/watch and builder-key compilation remain green."
     }
+  ],
+  "finalVerification": [
+    {
+      "command": "pnpm check:fast",
+      "status": "passed",
+      "checks": [
+        "schema",
+        "package boundaries",
+        "formatting",
+        "lint",
+        "TypeScript"
+      ],
+      "unitTests": 1534
+    },
+    {
+      "command": "pnpm exec vitest run tests/integration/composition-export-owner.test.ts tests/integration/composition-save.test.ts tests/integration/composition-inspector-code.test.ts tests/integration/composition-preview.test.ts tests/integration/composition-program-cli.test.ts --maxWorkers=2 --no-file-parallelism",
+      "status": "passed",
+      "tests": 20
+    },
+    { "command": "pnpm test:runtime", "status": "passed", "tests": 46 },
+    {
+      "command": "pnpm test:browser:composition-inspector",
+      "status": "passed"
+    },
+    { "command": "pnpm test:browser:composition-session", "status": "passed" },
+    { "command": "pnpm test:browser:lab-session", "status": "passed" },
+    { "command": "pnpm test:browser:composition-program", "status": "passed" },
+    { "command": "git diff --check", "status": "passed" }
+  ],
+  "initialFinalCheckFailure": "check:fast stopped at consistent-type-imports in the new export test; corrected the import() type annotation to a type-only namespace import.",
+  "reReview": {
+    "standards": "No substantive new findings or incomplete repairs.",
+    "spec": "No substantive incomplete fixes or new spec issues.",
+    "method": "Independent code-review skill sub-agents inspected all three final fixes before the last commit."
+  },
+  "limitations": [
+    "Full pnpm check was not rerun; frozen baselines were not regenerated."
   ],
   "delivery": {
     "branch": "codex/composition-ce11",
-    "push": "pending final commit"
+    "findingCommits": 3,
+    "strategy": "One final normal push after the third finding commit",
+    "ownerReviewAndMerge": "pending"
   }
 }

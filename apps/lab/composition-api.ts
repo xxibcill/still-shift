@@ -135,23 +135,23 @@ export const compositionApi = (): Plugin => {
                 "comp-edit-busy",
                 "A composition export is already running",
               );
-            const base = JSON.parse(text) as Composition,
-              assets = new Map<string, { bytes: Buffer; type: string }>();
-            for (const asset of base.assets) {
-              const path = resolve(dirname(scene), asset.path);
-              if (!inside(root, path) || !types[extname(path)])
-                throw new CompositionSaveError(
-                  422,
-                  "comp-edit-asset",
-                  "Unknown registered fixture asset",
-                );
-              assets.set(asset.id, {
-                bytes: await readFile(path),
-                type: types[extname(path)]!,
-              });
-            }
             exporting = true;
             try {
+              const base = JSON.parse(text) as Composition,
+                assets = new Map<string, { bytes: Buffer; type: string }>();
+              for (const asset of base.assets) {
+                const path = resolve(dirname(scene), asset.path);
+                if (!inside(root, path) || !types[extname(path)])
+                  throw new CompositionSaveError(
+                    422,
+                    "comp-edit-asset",
+                    "Unknown registered fixture asset",
+                  );
+                assets.set(asset.id, {
+                  bytes: await readFile(path),
+                  type: types[extname(path)]!,
+                });
+              }
               await exportCompositionDraft(
                 body.document,
                 base,
