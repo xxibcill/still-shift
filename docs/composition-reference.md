@@ -784,6 +784,9 @@ property's type (`comp-expression-type`); there is no implicit conversion.
   property's **expression-stage value**: keys, motion craft and expressions, without
   constraints or parent transforms, as AE property reads are layer-space values.
   Drivers still read full layer state.
+  An unauthored `constraintReference` inherits the expression-stage anchor on each
+  unwritten axis. Reads resolve those anchor expressions first, and the inherited
+  dependency participates in cycle validation.
 - **Dependencies.** Every path an expression reads is a dependency edge, joined to the
   driver, constraint and parent graph. Cycles are rejected before rendering
   (`comp-expression-cycle`), including self references and reads at earlier times:

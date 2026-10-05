@@ -43,6 +43,13 @@ still hold before relying on them.
 
 ## Current state
 
+- **PR #32 follow-up fixes (2026-10-05):** both P2 findings are posted inline.
+  Implicit anchor/reference reads and cycle validation are fixed locally, with five
+  regressions and all fast checks passing (1,425 tests). Nested echo bake parity
+  remains in progress. One finding per commit; one final push after combined local
+  verification. Owner review/merge remains pending.
+  [Follow-up fix evidence](./pr-32-followup-fix-results.json).
+
 - **PR #32 printer fix (2026-10-04):** re-review of delivered `e81a146` found
   one remaining P2 print/parse length defect and no standards findings.
   Posted the inline finding, added compact canonical output with equivalent
@@ -62,7 +69,7 @@ still hold before relying on them.
   [Fix evidence](./pr-32-fix-results.json).
   [Review evidence](./pr-32-review-results.json).
 
-_Last updated 2026-10-04 by Codex for the PR #32 printer fix._
+_Last updated 2026-10-05 by Codex for the PR #32 follow-up fixes._
 
 - **PR #32 conflict resolution (2026-10-04):** merged `main` at `3413780` into
   PR head `a0708ba` and pushed merge `05033c8`, retaining CE9 expressions and
@@ -120,6 +127,20 @@ _Last updated 2026-10-04 by Codex for the PR #32 printer fix._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-05 — Fix PR #32 implicit anchor/reference dependencies
+
+- **Agent / branch:** Codex on isolated `codex/pr32-review-fixes`, from `dee9e7b`.
+- **Done:** posted both inline findings; resolve inherited reference axes through
+  anchor expressions and reject their self/indirect cycles before evaluation.
+- **Results:** three regressions failed before the fix. Five final cases cover
+  property/tree reads, order/seeks, authored/partial references, motion writers and
+  nested instances; all fast checks pass (1,425 tests). A one-key signal fixture
+  failed the existing schema and was corrected to two keys before rerunning.
+- **Open / next:** nested echo bake parity, then combined browser/runtime/baseline
+  correctness checks and one final push. CE6-P and CE9-F1 remain deferred.
+- **Records:** [follow-up fix evidence](./pr-32-followup-fix-results.json),
+  [inline review](https://github.com/xxibcill/still-shift/pull/32#pullrequestreview-5410494179).
 
 ### 2026-10-04 — Fix the remaining PR #32 printer finding
 

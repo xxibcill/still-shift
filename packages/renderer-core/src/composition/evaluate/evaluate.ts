@@ -1,6 +1,7 @@
 import { sampleEffects, clampEffects, effectBounds } from "./effects.ts";
 import {
   COMPOSITION_LIMITS,
+  implicitAnchorDependencies,
   SIZED_LAYER_TYPES,
   type Composition,
   type CompositionLayer,
@@ -79,7 +80,7 @@ import type {
   PropertyValue,
 } from "./types.ts";
 
-export const COMPOSITION_EVALUATOR_VERSION = "composition-evaluator-23";
+export const COMPOSITION_EVALUATOR_VERSION = "composition-evaluator-24";
 export const AUTO_ORIENT_LOOKAROUND_FRAMES = 64;
 const order = ["action", "response", "current", "carrier"] as const;
 /** Keyed and motion-craft values of one layer, before constraints (CE9 expression stage). */
@@ -759,12 +760,19 @@ class Evaluation {
       yield* this.motion(ctx, fresh);
       return copy(readProperty(fresh, segments));
     }
-    if (!stage.sealed)
+    if (!stage.sealed) {
+      for (const anchor of implicitAnchorDependencies(
+        layer,
+        segments,
+        this.writesReference(ctx, stage.state),
+      ))
+        yield* this.readStage(ctx, layer, anchor);
       for (const binding of this.compiled.expressions.get(
         this.bindings(ctx, layer.id),
       ) ?? [])
         if (!binding.clock && overlaps(binding.segments, segments))
           yield* this.applied(ctx, layer, binding);
+    }
     return copy(readProperty(stage.sealed ?? stage.state, segments));
   }
 

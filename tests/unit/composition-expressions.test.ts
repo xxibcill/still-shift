@@ -321,6 +321,139 @@ describe("expression validation", () => {
 });
 
 describe("expression evaluation", () => {
+  it("reads implicit anchor expressions independently of layer order and seeks", () => {
+    for (const reversed of [false, true]) {
+      const layers = [
+        solid("a", { transform: { anchor: [5, 5] } }),
+        solid("b"),
+      ];
+      if (reversed) layers.reverse();
+      const c = comp({
+        layers,
+        ...expressions({
+          "a.transform.anchor": "[20 + frame, 30 + frame]",
+          "b.transform.position": "ref('a.constraintReference')",
+          "b.transform.rotation": "ref('a.constraintReference.x')",
+        }),
+      });
+      for (const frame of [0, 12, 4]) {
+        expect(value(c, "b.transform.rotation", frame)).toBe(20 + frame);
+        expect(value(c, "b.transform.position", frame)).toEqual([
+          20 + frame,
+          30 + frame,
+        ]);
+        const b = evaluateComp(c, frame).layers.find(
+          (layer) => layer.id === "b",
+        )!;
+        expect(b.transform.rotation).toBe(20 + frame);
+        expect(b.transform.position).toEqual([20 + frame, 30 + frame]);
+      }
+    }
+  });
+
+  it("inherits only unwritten reference axes and preserves authored references", () => {
+    const c = comp({
+      layers: [solid("b"), solid("a")],
+      ...expressions({
+        "a.constraintReference.x": "99",
+        "a.transform.anchor.x": "ref('a.constraintReference.x') + 1",
+        "a.transform.anchor.y": "30 + frame",
+        "b.transform.position": "ref('a.constraintReference')",
+      }),
+    });
+    expect(value(c, "b.transform.position", 4)).toEqual([99, 34]);
+    const authored = comp({
+      layers: [solid("b"), solid("a", { constraintReference: [8, 9] })],
+      ...expressions({
+        "a.transform.anchor": "ref('a.constraintReference') + [1, 1]",
+        "b.transform.position": "ref('a.constraintReference')",
+      }),
+    });
+    expect(value(authored, "b.transform.position", 4)).toEqual([8, 9]);
+  });
+
+  it("rejects cycles through implicit anchor references", () => {
+    for (const map of [
+      { "a.transform.anchor": "ref('a.constraintReference')" },
+      {
+        "a.transform.anchor.x": "ref('b.transform.rotation')",
+        "b.transform.rotation": "ref('a.constraintReference.x')",
+      },
+    ]) {
+      expect(diagnostics(base(expressions(map))).map((d) => d.code)).toContain(
+        "comp-expression-cycle",
+      );
+    }
+    expect(
+      diagnostics(
+        base(
+          expressions({
+            "a.transform.anchor.x": "ref('a.constraintReference.x')",
+          }),
+        ),
+      ),
+    ).toEqual([
+      expect.objectContaining({
+        code: "comp-expression-cycle",
+        path: 'expressions["a.transform.anchor.x"]',
+      }),
+    ]);
+  });
+
+  it("preserves driven reference axes and inherits inactive periodic axes", () => {
+    const c = comp({
+      layers: [solid("b"), solid("a")],
+      signals: [
+        {
+          id: "s",
+          keys: [
+            { frame: 0, value: 99 },
+            { frame: 59, value: 99 },
+          ],
+        },
+      ],
+      drivers: [{ target: "a.constraintReference.x", signal: "s" }],
+      periodic: [
+        {
+          target: "a.constraintReference.y",
+          start: 0,
+          end: 10,
+          oscillate: { period: 10, amplitude: 5 },
+        },
+      ],
+      ...expressions({
+        "a.transform.anchor.x": "ref('a.constraintReference.x') + 1",
+        "a.transform.anchor.y": "30 + frame",
+        "b.transform.position": "ref('a.constraintReference')",
+      }),
+    });
+    expect(value(c, "b.transform.position", 15)).toEqual([99, 45]);
+    const active = value(c, "b.transform.position", 5) as number[];
+    expect(active[0]).toBe(99);
+    expect(active[1]).toBeCloseTo(5, 10);
+  });
+
+  it("resolves inherited anchors in precomp instances", () => {
+    const c = comp({
+      layers: [solid("b"), { id: "p", type: "precomp", comp: "clip" }],
+      precomps: [
+        {
+          id: "clip",
+          width: 100,
+          height: 100,
+          frameCount: 60,
+          layers: [solid("a")],
+        },
+      ],
+      ...expressions({
+        "p/a.transform.anchor": "[20 + frame, 30 + frame]",
+        "b.transform.position": "ref('p/a.constraintReference')",
+      }),
+    });
+    expect(value(c, "b.transform.position", 4)).toEqual([24, 34]);
+    expect(evaluateComp(c, 4).layers[0]!.transform.position).toEqual([24, 34]);
+  });
+
   it("evaluates only the selected if branch, like the ternary operator", () => {
     const c = comp(
       expressions({

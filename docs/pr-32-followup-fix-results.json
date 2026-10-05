@@ -1,0 +1,53 @@
+{
+  "date": "2026-10-05",
+  "pullRequest": "https://github.com/xxibcill/still-shift/pull/32",
+  "startingHead": "dee9e7b4c35256e298d8168b635aacd934a4a4ae",
+  "review": "https://github.com/xxibcill/still-shift/pull/32#pullrequestreview-5410494179",
+  "checkout": "/private/tmp/still-shift-pr32-fixes",
+  "findings": [
+    {
+      "priority": "P2",
+      "title": "Apply implicit anchor dependencies before reading constraintReference",
+      "status": "fixed locally",
+      "implementation": "Resolve inherited reference axes through expression-stage anchor reads; include the same implicit dependencies in cycle validation. Authored references and axes written by expressions, drivers or active periodic motion retain their own values. Evaluator version is composition-evaluator-24.",
+      "regressions": 5,
+      "coverage": [
+        "Property and full-tree reads under both layer orders and shuffled seeks",
+        "Partially written axes and authored references",
+        "Self and indirect cycles with the authored expression diagnostic path",
+        "Driver overrides and active/inactive periodic writers",
+        "Nested precomp instance reads"
+      ],
+      "red": "The first three regressions failed before the fix; 33 existing expression tests passed.",
+      "green": "All 38 expression tests and the full fast checks pass."
+    },
+    {
+      "priority": "P2",
+      "title": "Preserve nested echo clocks or reject incompatible bakes",
+      "status": "pending"
+    }
+  ],
+  "verification": {
+    "node": "22.23.1",
+    "pnpm": "10.29.3",
+    "checks": [
+      {
+        "command": "pnpm check:fast",
+        "exitCode": 0,
+        "unitFiles": 127,
+        "unitTests": 1425,
+        "log": "/private/tmp/pr32-anchor-fast.log"
+      }
+    ],
+    "initialExpandedTestFailure": "The new driver fixture initially had one signal key; the existing schema requires two. Corrected the fixture without changing production validation and reran the full fast checks.",
+    "redLog": "/private/tmp/pr32-anchor-red.log",
+    "policy": "Local verification only; GitHub Actions remain prohibited. No baseline regeneration or performance tuning. CE6-P and CE9-F1 deferrals remain."
+  },
+  "delivery": {
+    "localBranch": "codex/pr32-review-fixes",
+    "targetBranch": "codex/composition-ce9",
+    "strategy": "One commit per finding; one final push after both commits and verification.",
+    "pushCount": 0,
+    "status": "First finding complete; second finding and combined verification pending."
+  }
+}
