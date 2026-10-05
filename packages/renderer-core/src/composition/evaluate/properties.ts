@@ -32,7 +32,10 @@ function container(state: EvaluatedLayer, segments: PropertyPathSegment[]) {
     if (component)
       return {
         object: params[next!.name] as number[],
-        key: colorAxis[component.name as keyof typeof colorAxis],
+        key:
+          component.name in colorAxis
+            ? colorAxis[component.name as keyof typeof colorAxis]
+            : vectorAxis[component.name as keyof typeof vectorAxis],
       };
     return { object: params, key: next!.name };
   }

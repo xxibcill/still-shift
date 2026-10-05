@@ -129,3 +129,8 @@ export {
   validatePassageCompositions,
   type PassageCompositions,
 } from "./passage-compositions.ts";
+
+export {
+  compositionEffectVersions,
+  assertCompositionEffectVersions,
+} from "./composition/render/renderer.ts";

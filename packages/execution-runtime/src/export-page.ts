@@ -1,3 +1,4 @@
+import { assertCompositionEffectVersions } from "@still-shift/renderer-core";
 import {
   createCompositionPreview,
   createWebGLPreview,
@@ -155,6 +156,7 @@ const exportComposition = async (
   scene: CompositionScene,
   transport: FrameTransport,
 ): Promise<BrowserExportResult> => {
+  assertCompositionEffectVersions(scene);
   const resources = await loadCompositionResources(
     scene.composition,
     (id) => `/_export/assets/${id}`,

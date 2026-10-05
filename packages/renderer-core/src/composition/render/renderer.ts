@@ -1,3 +1,5 @@
+import { passageError } from "../../passage-diagnostics.ts";
+import { compositionEffectDefinition } from "@still-shift/scene-contract";
 import {
   createWebgl2Backend,
   COMPOSITION_WEBGL_RENDERER_VERSION,
@@ -55,10 +57,52 @@ export function compositionRendererVersion(backend: CompositionBackend) {
   throw new Error(`comp-backend-unsupported: ${String(backend)}`);
 }
 
+/** The versions of effects actually used by this immutable document, sorted by ID. */
+export function compositionEffectVersions(
+  composition: Composition,
+): Readonly<Record<string, string>> {
+  const ids = new Set(
+    [composition, ...(composition.precomps ?? [])].flatMap((scope) =>
+      scope.layers.flatMap((layer) =>
+        (layer.effects ?? []).map((effect) => effect.effect),
+      ),
+    ),
+  );
+  return Object.fromEntries(
+    [...ids]
+      .sort()
+      .map((id) => [
+        id,
+        compositionEffectDefinition(id)?.version ?? "unavailable",
+      ]),
+  );
+}
+
+/** Check the export snapshot before loading assets or creating frame surfaces. */
+export function assertCompositionEffectVersions(scene: CompositionScene): void {
+  if (scene.effectVersions === undefined) return;
+  const current = compositionEffectVersions(scene.composition);
+  if (
+    Object.keys(current).length !== Object.keys(scene.effectVersions).length ||
+    Object.entries(current).some(
+      ([id, version]) =>
+        !Object.hasOwn(scene.effectVersions!, id) ||
+        scene.effectVersions![id] !== version,
+    )
+  )
+    passageError(
+      "comp-effect-version",
+      "Effect definitions differ from the captured export versions",
+      { path: "effectVersions" },
+    );
+}
+
 /** A validated composition wrapped with the export runtime's canvas and timeline. */
 export type CompositionScene = {
   schemaVersion: "composition-scene-1";
   rendererVersion: CompositionRendererVersion;
+  /** Captured plugin/kernel versions participate in scene/export cache identity. */
+  effectVersions?: Readonly<Record<string, string>>;
   backend?: CompositionBackend;
   composition: Composition;
   canvas: { width: number; height: number };
@@ -74,6 +118,7 @@ export function compositionScene(
   return {
     schemaVersion: "composition-scene-1",
     rendererVersion: compositionRendererVersion(backend),
+    effectVersions: compositionEffectVersions(result.composition),
     ...(backend === "webgl2" ? { backend } : {}),
     composition: result.composition,
     canvas: { width: composition.width, height: composition.height },

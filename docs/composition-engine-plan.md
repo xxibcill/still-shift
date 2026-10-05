@@ -366,7 +366,7 @@ sign and for time remap. It does not change the layer's composition-time visibil
 | CE4c  | Cinematic adapter                               | A      | CE3, CE8             |                        |                                     | `[ ]`  |                                                                                    |
 | CE4d  | Legacy illustrated adapter and old-path removal | A      | CE4a–CE4c            |                        |                                     | `[ ]`  |                                                                                    |
 | CE5   | Shape layers                                    | B      | CE3                  | Codex                  | `codex/composition-ce5`             | `[x]`  | [evidence](./composition-ce5-results.json)                                         |
-| CE6   | WebGL2 backend and effect registry              | B      | CE3                  | xxibcill (Claude Code) | `codex/composition-ce6-performance` | `[~]`  | [CE6 performance slice 1](#ce6-performance-slice-1-exact-effect-work-2026-10-03)   |
+| CE6   | WebGL2 backend and effect registry              | B      | CE3                  | xxibcill (Claude Code) | `codex/composition-ce6-completion` | `[~]`  | [CE6 performance slice 1](#ce6-performance-slice-1-exact-effect-work-2026-10-03)   |
 | CE6-P | WebGL performance acceptance                    | Future | CE6                  |                        |                                     | `[d]`  | [Performance deferral](#ce6-p--deferred-webgl-performance-acceptance)              |
 | CE7   | Motion blur and time controls                   | B      | CE3                  | Codex                  | `codex/composition-ce7`             | `[x]`  | [evidence](./composition-ce7-results.json)                                         |
 | CE8   | 2.5D layers and unified camera                  | B      | CE3, CE6, CE9        |                        |                                     | `[ ]`  |                                                                                    |
@@ -3092,6 +3092,20 @@ do not require future family adapters.
 
 **Verification:** Per-effect pixel tests at several parameter values, bounds expansion
 tests, backend parity suite, repeated-export determinism test.
+
+### CE6 current-version completion checkpoint (2026-10-06)
+
+Work continues on `codex/composition-ce6-completion` from completed CE7 `817cc9f`.
+The first slice supplies descriptor-backed registration, bounded animated 2D
+points throughout evaluation, paths, drivers, the native inspector and builder,
+checked pure expansion and captured effect-version export identity. Registration
+changes invalidate compiled validation and evaluated versions enter graph keys.
+The ten existing kernels retain their definitions and arithmetic. Descriptor
+registration alone does not supply render callbacks; paired runtime registration,
+the remaining catalogue/dependencies, linear-light composition and the complete
+native/hardware/export/cost/full-gate acceptance are still pending. Focused checks
+and failed attempts are recorded in [CE6 evidence](./composition-ce6-completion-results.json).
+CE6-P speed acceptance remains deferred; frozen baselines are unchanged.
 
 ### CE6 performance slice 1: exact effect work (2026-10-03)
 

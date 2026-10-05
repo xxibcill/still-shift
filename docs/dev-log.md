@@ -43,6 +43,15 @@ still hold before relying on them.
 
 ## Current state
 
+- **CE6 in progress (2026-10-06):** `codex/composition-ce6-completion` from
+  CE7 `817cc9f`. First slice adds typed effect definition registration, vec2
+  sampling/paths/inspector/builder defaults, checked bounds and captured export
+  versions. Focused 200 tests, build, schema, boundaries and lint pass; existing
+  effect/WebGL browser regressions are recorded in the evidence. Runtime plugin
+  callbacks, the remaining catalogue/dependencies, linear-light composition and
+  native/hardware/export/cost/full-gate acceptance remain. No owner decision is
+  pending. [Evidence](./composition-ce6-completion-results.json).
+
 - **CE7 complete (2026-10-06):** `codex/composition-ce7`, code `0e48388`.
   Local holds/posterization, source loops, freeze remap, deterministic adaptive
   exposure and controlled cuts are delivered. Full `pnpm check` passes 1,600 unit,
@@ -177,6 +186,19 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-06 — CE6 effect contract checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce6-completion` from `817cc9f`.
+- **Done:** descriptor-backed registration, animated points, default-preserving
+  builder/inspector lanes, checked expansion and effect-version export identity.
+- **Results:** 200 focused tests plus build/schema/boundaries/lint; existing
+  native effect and WebGL browser checks recorded separately. Full gate pending.
+- **Rejected / repaired:** incomplete bounds, object-order version comparison and
+  split-point default loss; regressions now cover all three. Initial failed
+  fixtures/build attempts remain recorded.
+- **Next:** paired GPU/Canvas runtime callbacks and remaining CE6 effect features.
+- **Records:** [CE6 evidence](./composition-ce6-completion-results.json).
 
 ### 2026-10-06 — CE7 milestone verification complete
 

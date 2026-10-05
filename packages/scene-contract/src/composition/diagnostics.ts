@@ -21,6 +21,10 @@ export const COMPOSITION_DIAGNOSTICS = {
     "A value matches none of the allowed forms (for example an unknown layer `type`).",
   "comp-schema": "Any other structural error.",
   "comp-limit": "An array, string or record exceeds its size limit.",
+  "comp-effect-version":
+    "Registered effect versions differ from the captured export snapshot.",
+  "comp-effect-bounds":
+    "An effect bounds callback failed or returned a non-finite/reversed rectangle.",
   // Keys and animated values
   "comp-key-order": "Key frames are not strictly increasing.",
   "comp-sample-time-order": "Baked sample times are not strictly increasing.",

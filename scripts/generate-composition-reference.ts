@@ -170,10 +170,16 @@ async function reference(root: string): Promise<string> {
         code(name),
         code(property),
         descriptor.type,
-        code(descriptor.default),
+        code(
+          descriptor.type === "vec2"
+            ? JSON.stringify(descriptor.default)
+            : descriptor.default,
+        ),
         descriptor.type === "scalar"
           ? `${descriptor.min}–${descriptor.max}${descriptor.integer ? " (integer)" : ""}`
-          : "colour",
+          : descriptor.type === "vec2"
+            ? `${descriptor.min}–${descriptor.max} per axis`
+            : "colour",
       ]),
   );
   return `# \`${COMPOSITION_SCHEMA_VERSION}\` reference

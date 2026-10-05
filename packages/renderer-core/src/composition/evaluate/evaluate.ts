@@ -87,7 +87,7 @@ import type {
   PropertyValue,
 } from "./types.ts";
 
-export const COMPOSITION_EVALUATOR_VERSION = "composition-evaluator-29";
+export const COMPOSITION_EVALUATOR_VERSION = "composition-evaluator-30";
 export const AUTO_ORIENT_LOOKAROUND_FRAMES = 64;
 const order = ["action", "response", "current", "carrier"] as const;
 /** Keyed and motion-craft values of one layer, before constraints (CE9 expression stage). */
@@ -1289,7 +1289,11 @@ class Evaluation {
       this.options,
     );
     state.bounds = local
-      ? effectBounds(projectBounds(local, state.screenMatrix), state.effects)
+      ? effectBounds(projectBounds(local, state.screenMatrix), state.effects, {
+          node: layer.id,
+          path: layerKey(ctx.route, layer.id),
+          frame: this.time,
+        })
       : null;
     state.visible &&= !layer.guide || this.options.includeGuides === true;
     // Group visibility gates descendants; ordinary null parenting only carries transforms.

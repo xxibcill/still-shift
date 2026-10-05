@@ -1,5 +1,6 @@
 import {
   compileExpressions,
+  compositionEffectRegistryRevision,
   segmentKey,
   validateComposition,
   type CompiledExpression,
@@ -34,6 +35,7 @@ export type ExpressionBinding = {
 };
 export type CompiledComposition = {
   comp: Composition;
+  effectRevision: number;
   scopes: Map<string, CompositionScope>;
   layers: Map<CompositionScope, Map<string, CompositionLayer>>;
   signals: Map<string, Signal>;
@@ -71,12 +73,14 @@ export function resolvedPath(
 
 export function compileComposition(comp: Composition): CompiledComposition {
   const cached = compiled.get(comp);
-  if (cached) return cached;
+  const effectRevision = compositionEffectRegistryRevision();
+  if (cached?.effectRevision === effectRevision) return cached;
   const validation = validateComposition(comp);
   if (!validation.ok) throw new PassageError(validation.diagnostics);
   const scopes = [comp, ...(comp.precomps ?? [])];
   const result: CompiledComposition = {
     comp,
+    effectRevision,
     scopes: new Map(scopes.map((s) => [s.id, s])),
     layers: new Map(
       scopes.map((s) => [s, new Map(s.layers.map((l) => [l.id, l]))]),

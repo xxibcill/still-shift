@@ -1,0 +1,56 @@
+{
+  "milestone": "CE6",
+  "status": "in-progress",
+  "branch": "codex/composition-ce6-completion",
+  "base": "817cc9f",
+  "started": "2026-10-06",
+  "slices": [
+    {
+      "name": "Typed effect contracts and version identity",
+      "status": "focused-verification-passed",
+      "features": [
+        "Frozen descriptor-backed schemas and lifecycle-safe custom definition registration",
+        "Bounded joint/separated animated vec2 parameters, component paths/drivers/inspector/builder defaults",
+        "Validated pure bounds expansion with owning-layer/root-frame diagnostics",
+        "Registration revision invalidates compiled validation; sampled versions enter graph cache identity",
+        "Captured export effect versions checked before asset preparation"
+      ],
+      "versions": {
+        "evaluator": 30,
+        "canvas": "composition-canvas2d-1.25.0",
+        "webgl": "composition-webgl2-0.39.0"
+      },
+      "verification": {
+        "focusedUnit": {
+          "files": 13,
+          "tests": 200,
+          "log": "/private/tmp/ce6-contract-focused.log"
+        },
+        "build": "/private/tmp/ce6-contract-build.log",
+        "schema": "/private/tmp/ce6-contract-schema-check.log",
+        "boundaries": "/private/tmp/ce6-contract-boundaries.log",
+        "lint": "/private/tmp/ce6-contract-lint.log",
+        "browserEffects": "/private/tmp/ce6-contract-browser-effects.log",
+        "browserWebgl": "/private/tmp/ce6-contract-browser-webgl.log",
+        "snapshot": "/private/tmp/still-shift-ce6-contract-817cc9f"
+      },
+      "initialFailures": [
+        "First contract tests failed before new registration/point APIs existed",
+        "Test used a one-key signal rejected by the existing two-key signal contract; fixed fixture",
+        "New mandatory evaluated version broke hand-built backend probes; made probe metadata optional while sampling always stamps it",
+        "Inspector assertion incorrectly included layer ID in the local property field; corrected expectation",
+        "New edge regressions caught dropped point defaults, order-sensitive version comparison and incomplete bounds; implementations repaired"
+      ]
+    }
+  ],
+  "pending": [
+    "Paired GPU/Canvas runtime registration; descriptor registration alone is not a render plugin",
+    "Remaining native effect catalogue, curves, layer dependencies and adjustment temporal semantics",
+    "Real optional linear-light compositing",
+    "Native per-effect, drawable, seeking, stored hashes, actual hardware and independent/repeated export acceptance",
+    "Serial pinned 1080p per-effect cost measurements",
+    "Final-code complete pnpm check, milestone completion record and PR creation/attachment"
+  ],
+  "performanceDeferral": "CE6-P remains future-version; existing current assertions and frozen baselines unchanged",
+  "githubActions": "prohibited/disabled"
+}

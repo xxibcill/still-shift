@@ -165,7 +165,15 @@ function resolveSegments(
       )
         return missing(text, "an effect parameter");
       const type = definition.properties[next.name]!.type;
-      return component(type, type === "color" ? COLOR_COMPONENTS : [], rest);
+      return component(
+        type,
+        type === "color"
+          ? COLOR_COMPONENTS
+          : type === "vec2"
+            ? COMPONENTS.vec2
+            : [],
+        rest,
+      );
     }
     case "contents": {
       const property =

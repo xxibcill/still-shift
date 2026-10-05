@@ -162,16 +162,38 @@ export function compositionTracks(document: Composition): KeyTrack[] {
     });
     layer.effects?.forEach((effect, i) => {
       const definition = compositionEffectDefinition(effect.effect);
-      for (const [name, spec] of Object.entries(definition?.properties ?? {}))
-        add(
-          effect.params?.[name],
-          [...path, "effects", i, "params", name],
-          `effects[${effect.id}].${name}`,
-          spec.type,
-          scope,
-          layer.id,
-          fps,
-        );
+      for (const [name, spec] of Object.entries(definition?.properties ?? {})) {
+        const raw = effect.params?.[name],
+          property = `effects[${effect.id}].${name}`,
+          json = [...path, "effects", i, "params", name];
+        if (
+          spec.type === "vec2" &&
+          raw &&
+          typeof raw === "object" &&
+          !Array.isArray(raw) &&
+          !("keys" in raw)
+        ) {
+          for (const axis of ["x", "y"])
+            add(
+              (raw as Record<string, unknown>)[axis],
+              [...json, axis],
+              `${property}.${axis}`,
+              "scalar",
+              scope,
+              layer.id,
+              fps,
+            );
+        } else
+          add(
+            raw,
+            json,
+            property,
+            spec.type === "vec2" ? "vector" : spec.type,
+            scope,
+            layer.id,
+            fps,
+          );
+      }
     });
     if (layer.type === "shape") {
       const fields = (

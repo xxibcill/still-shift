@@ -83,13 +83,15 @@ export function readProperty(object: ObjectValue, path: string): unknown {
       ? fallback[native.component]
       : structuredClone(fallback);
   }
-  const effect = /^effects\[([^\]]+)\]\.([^.]+)$/.exec(path);
+  const effect = /^effects\[([^\]]+)\]\.([^.]+)(?:\.([xy]))?$/.exec(path);
   if (effect) {
     const values = object.effects as ObjectValue[];
     const entry = values.find((value) => value.id === effect[1]);
-    return compositionEffectDefinition(String(entry?.effect))?.properties[
-      effect[2]!
-    ]?.default;
+    const fallback = compositionEffectDefinition(String(entry?.effect))
+      ?.properties[effect[2]!]?.default;
+    return effect[3] && Array.isArray(fallback)
+      ? fallback[effect[3] === "x" ? 0 : 1]
+      : structuredClone(fallback);
   }
   if (/^masks\[[^\]]+\]\.opacity$/.test(path)) return 1;
   if (/^masks\[[^\]]+\]\.(feather|expansion)$/.test(path)) return 0;
@@ -108,6 +110,9 @@ export function writeProperty(
 ): void {
   const names = parts(propertyJsonPath(object, path));
   const native = nativeProperty(object, path);
+  const effectPoint = /^effects\[[^\]]+\]\.[^.]+\.[xy]$/.test(path)
+    ? readProperty(object, path.slice(0, -2))
+    : undefined;
   let parent: ObjectValue = object;
   for (const [index, part] of names.slice(0, -1).entries()) {
     let old = parent[part];
@@ -118,6 +123,12 @@ export function writeProperty(
       Array.isArray(native.descriptor.default)
     )
       old = structuredClone(native.descriptor.default);
+    if (
+      old === undefined &&
+      index === names.length - 2 &&
+      Array.isArray(effectPoint)
+    )
+      old = structuredClone(effectPoint);
     if (
       Array.isArray(old) &&
       ["masks", "effects", "contents", "stops"].includes(part)

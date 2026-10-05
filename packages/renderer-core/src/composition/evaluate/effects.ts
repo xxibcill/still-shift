@@ -2,15 +2,22 @@ import {
   compositionEffectDefinition,
   type CompositionLayer,
 } from "@still-shift/scene-contract";
-import { scalar, color, unit } from "./sample.ts";
+import { scalar, vector, color, unit } from "./sample.ts";
 import type { Bounds, Rgba } from "./types.ts";
+import type { Point } from "../../node-transform.ts";
+import {
+  passageError,
+  type PassageDiagnostic,
+} from "../../passage-diagnostics.ts";
 
 export type EvaluatedEffect = {
   id: string;
   effect: string;
+  /** Evaluated stacks carry versions; standalone backend probes may omit them. */
+  version?: string;
   enabled: boolean;
   space?: string;
-  params: Record<string, number | Rgba>;
+  params: Record<string, number | Rgba | Point>;
 };
 
 export function sampleEffects(
@@ -24,6 +31,7 @@ export function sampleEffects(
     return {
       id: effect.id,
       effect: effect.effect,
+      version: definition.version,
       ...(effect.space ? { space: effect.space } : {}),
       enabled:
         effect.enabled !== false &&
@@ -34,7 +42,11 @@ export function sampleEffects(
           name,
           property.type === "color"
             ? color(effect.params?.[name] ?? property.default, keyTime, fps)
-            : scalar(effect.params?.[name], keyTime, fps, property.default),
+            : property.type === "vec2"
+              ? vector(effect.params?.[name], keyTime, fps, [
+                  ...property.default,
+                ])
+              : scalar(effect.params?.[name], keyTime, fps, property.default),
         ]),
       ),
     };
@@ -49,6 +61,10 @@ export function clampEffects(effects: EvaluatedEffect[]) {
     )) {
       if (property.type === "color")
         effect.params[name] = (effect.params[name] as Rgba).map(unit) as Rgba;
+      else if (property.type === "vec2")
+        effect.params[name] = (effect.params[name] as Point).map((value) =>
+          Math.max(property.min, Math.min(property.max, value)),
+        ) as Point;
       else {
         const value = effect.params[name] as number;
         effect.params[name] = Math.max(
@@ -63,12 +79,49 @@ export function clampEffects(effects: EvaluatedEffect[]) {
 export function effectBounds(
   bounds: Bounds,
   effects: EvaluatedEffect[],
+  location: Pick<PassageDiagnostic, "node" | "path" | "frame"> = {},
 ): Bounds | null {
   let margin = 0;
+  let current = bounds;
   for (const effect of effects)
     if (effect.enabled) {
       if (compositionEffectDefinition(effect.effect)!.generatesContent)
         return null;
+      const definition = compositionEffectDefinition(effect.effect)!;
+      if (definition.expandBounds) {
+        if (margin) {
+          current = expanded(current, margin);
+          margin = 0;
+        }
+        let next: Bounds | null;
+        try {
+          next = definition.expandBounds({ ...current }, effect.params);
+        } catch {
+          passageError("comp-effect-bounds", "Effect bounds callback failed", {
+            ...location,
+            path: `${location.path ?? "layer"}.effects[${effect.id}]`,
+          });
+        }
+        if (next === null) return null;
+        if (
+          !next ||
+          ![next.left, next.top, next.right, next.bottom].every(
+            Number.isFinite,
+          ) ||
+          next.left > next.right ||
+          next.top > next.bottom
+        )
+          passageError(
+            "comp-effect-bounds",
+            "Effect bounds must be finite and ordered",
+            {
+              ...location,
+              path: `${location.path ?? "layer"}.effects[${effect.id}]`,
+            },
+          );
+        current = next;
+        continue;
+      }
       const params = effect.params as Record<string, number>;
       if (
         effect.effect === "blur.gaussian" ||
@@ -81,12 +134,13 @@ export function effectBounds(
       else if (effect.effect === "distort.sine")
         margin += Math.abs(params.amount!) + 1;
     }
-  return margin
-    ? {
-        left: bounds.left - margin,
-        top: bounds.top - margin,
-        right: bounds.right + margin,
-        bottom: bounds.bottom + margin,
-      }
-    : bounds;
+  return margin ? expanded(current, margin) : current;
+}
+function expanded(bounds: Bounds, margin: number): Bounds {
+  return {
+    left: bounds.left - margin,
+    top: bounds.top - margin,
+    right: bounds.right + margin,
+    bottom: bounds.bottom + margin,
+  };
 }
