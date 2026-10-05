@@ -153,7 +153,8 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   576-frame passages pass both backends. Continuous quality's 14 reports are unchanged.
 - **Rejected:** broad integer image blending reduced bitmap precision; retain the
   narrower vector/clip rule. Prior failed/overlaid gate attempts remain in evidence.
-- **Open / next:** milestone PR then CE10 branch; 51 WebGL timing overruns remain
+- **PR:** [#35](https://github.com/xxibcill/still-shift/pull/35), stacked on CE12.
+- **Open / next:** CE10 branch; 51 WebGL timing overruns remain
   CE6-P, broader CE7 stays open. Prior owner documentation changes are retained.
 - **Records:** [CE4a completion](./composition-engine-plan.md#ce4a-completion-record-2026-10-05),
   [verification](./composition-ce4a-completion-results.json).

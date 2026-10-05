@@ -1428,6 +1428,7 @@ comparisons; the full `pnpm check`.
 - **Performance:** the unchanged strict WebGL matrix exits nonzero for 51 timing
   overruns; these remain deferred to CE6-P. No pixel tiers, baselines or assertions
   changed. Canvas worst historical ratio is 1.1908×.
+- **PR:** [#35](https://github.com/xxibcill/still-shift/pull/35), stacked on CE12.
 - **Next:** CE10 begins on its own branch after the milestone PR. Broader CE7 time
   controls remain at their approved sequence position; its prerequisite slice is
   recorded below. Native builder/inspector exposure follows in CE10/CE11.

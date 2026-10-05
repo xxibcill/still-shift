@@ -230,7 +230,7 @@
       "status": "passed"
     }
   ],
-  "pending": ["Publish and attach milestone PR"],
+  "pending": [],
   "githubActionsEnabled": false,
   "familyAcceptance": {
     "command": "pnpm test:browser:composition-story-fixtures --keep-going",
@@ -1572,5 +1572,6 @@
       "CE4b webgl2 component/passage-behaviors/transform export: 192 frames, two byte-identical MP4s; relocated assets and overwrite protection pass",
       "CE4b webgl2 component/passage-timing/visibility export: 192 frames, two byte-identical MP4s; relocated assets and overwrite protection pass"
     ]
-  }
+  },
+  "pullRequest": "https://github.com/xxibcill/still-shift/pull/35"
 }
