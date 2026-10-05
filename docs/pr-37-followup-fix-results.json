@@ -11,6 +11,7 @@
       "title": "Preserve focus when changing graph selectors",
       "commentUrl": "https://github.com/xxibcill/still-shift/pull/37#discussion_r4183956330",
       "status": "fixed",
+      "commit": "7d9f76c",
       "change": "Restore focus to the replacement key or resolved-instance selector when its change event rebuilds the graph, without moving focus from another control.",
       "regressionBefore": "Inspector browser test fails: Changing the selected key must preserve keyboard focus; actual false.",
       "verification": "pnpm test:browser:composition-inspector passes repeated key and reused-precomp instance changes, existing keyboard handle edits, desktop/phone flows, undo/save/watch and MP4 byte parity.",
@@ -20,7 +21,10 @@
       "id": "R9",
       "title": "Preserve neighboring motion when replacing a segment with Bézier",
       "commentUrl": "https://github.com/xxibcill/still-shift/pull/37#discussion_r4183956335",
-      "status": "pending"
+      "status": "fixed",
+      "change": "Materialize the native monotone smooth velocity on each endpoint's opposite side before clearing selected-segment smoothing; retain explicit velocities and existing handle ease. Spatial motion uses the native deterministic arc table, and color/vector tracks retain grouped channel velocities.",
+      "regressionBefore": "All 20 new cases fail because neighboring evaluated motion changes when the middle segment receives Bézier handles.",
+      "verification": "35 focused curve/history tests pass, including 20 scalar/vector/color/spatial/signal cases over both smooth encodings and existing ease-only handles; neighboring subframe values agree within 1e-10, the edited segment changes, and undo/redo restores native source keys. TypeScript and full inspector desktop/phone/MP4 acceptance pass."
     },
     {
       "id": "R10",

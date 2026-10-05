@@ -45,8 +45,9 @@ still hold before relying on them.
 
 - **PR #37 follow-up fixes in progress (2026-10-05):** reviewed `9b2247e` on
   `codex/composition-ce11`. Three additional P2 findings are posted inline.
-  R8 selector focus is fixed and inspector acceptance passes; R9 neighboring
-  smoothing and R10 fixture-export ownership remain. One finding per commit,
+  R8 selector focus and R9 neighboring smoothing are fixed; 35 focused unit
+  checks, TypeScript and inspector acceptance pass. R10 fixture-export ownership
+  remains. One finding per commit,
   one final push; no owner decision or blocker. Primary CE5 work is untouched.
   [Follow-up evidence](./pr-37-followup-fix-results.json).
 
@@ -174,6 +175,16 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-05 — PR #37 R9: Preserve neighboring Bézier motion
+
+- **Agent / branch:** Codex on `codex/composition-ce11`; R8 is `7d9f76c`.
+- **Done:** retained native smooth velocities on untouched neighboring segments
+  when Bézier replaces the selected segment's smoothing; reference updated.
+- **Results:** 20 new scalar/vector/color/spatial/signal regressions fail before
+  the fix; all 35 curve/history tests, TypeScript and inspector acceptance pass.
+- **Next:** R10 in its own commit, then final local checks and one push.
+- **Records:** [follow-up evidence](./pr-37-followup-fix-results.json).
 
 ### 2026-10-05 — PR #37 R8: Preserve graph-selector focus
 

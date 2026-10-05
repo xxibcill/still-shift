@@ -316,6 +316,94 @@ it("discovers separated constraint-reference channels with native paths, samplin
   expect(history.document).toEqual(document);
 });
 
+it.each(
+  ["scalar", "vector", "color", "spatial", "signal"].flatMap((kind) =>
+    ["smooth", "interpolation"].flatMap((mode) =>
+      [false, true].map((handles) => ({ kind, mode, handles })),
+    ),
+  ),
+)(
+  "preserves neighboring $kind motion when Bézier replaces $mode smoothing (handles=$handles)",
+  ({ kind, mode, handles }) => {
+    const document = source();
+    document.frameCount = 31;
+    const layer = document.layers[0]!;
+    if (layer.type !== "solid") throw new Error("Expected a solid test layer");
+    const keys = [0, 10, 20, 30].map((frame, i) => ({
+      frame,
+      value: [0, 10, 40, 50][i]!,
+      ...(i === 1 || i === 2
+        ? mode === "smooth"
+          ? { smooth: true }
+          : { interpolation: "smooth" as const }
+        : {}),
+      ...(handles && i === 1 ? { in: { ease: 0.2 } } : {}),
+      ...(handles && i === 2 ? { out: { ease: 0.6 } } : {}),
+    }));
+    if (kind === "color")
+      layer.color = {
+        keys: keys.map((key, i) => ({
+          ...key,
+          value: ["#000000", "#303050", "#a0b0c0", "#f0ffff"][i]!,
+        })),
+      };
+    else if (kind === "vector" || kind === "spatial")
+      document.layers[0]!.transform = {
+        position: {
+          keys: keys.map((key, i) => ({
+            ...key,
+            value: [key.value, key.value / 2] as [number, number],
+            ...(kind === "spatial"
+              ? {
+                  ...(i < 3 ? { spatialOut: [5, 10] as [number, number] } : {}),
+                  ...(i > 0 ? { spatialIn: [-4, -2] as [number, number] } : {}),
+                }
+              : {}),
+          })),
+        },
+      };
+    else if (kind === "signal") document.signals = [{ id: "slider", keys }];
+    else document.layers[0]!.transform = { rotation: { keys } };
+    const history = new CompositionDocument(document),
+      track = compositionTracks(history.document).find((t) =>
+        kind === "signal"
+          ? t.owner.startsWith("signal ")
+          : t.property ===
+            (kind === "color"
+              ? "color"
+              : kind === "scalar"
+                ? "transform.rotation"
+                : "transform.position"),
+      )!,
+      frames = [0.5, 1, 2.5, 5, 7.5, 9.5, 20.5, 21, 22.5, 25, 27.5, 29.5],
+      before = frames.map((frame) => sampleTrack(track, frame)),
+      changed = sampleTrack(track, 12);
+    history.commit(
+      history.propose("Bézier segment", (draft) =>
+        editSegmentBezier(draft, track, 2, [0.3, 0, 0.7, 1]),
+      )!,
+    );
+    const edited = compositionTracks(history.document).find(
+      (t) => t.id === track.id,
+    )!;
+    expect(sampleTrack(edited, 12)).not.toEqual(changed);
+    for (const [i, frame] of frames.entries())
+      sampleTrack(edited, frame).forEach((value, axis) =>
+        expect(value).toBeCloseTo(before[i]![axis]!, 10),
+      );
+    if (handles) {
+      expect(edited.keys[1]!.in!.ease).toBe(0.2);
+      expect(edited.keys[2]!.out!.ease).toBe(0.6);
+    }
+    history.commit(history.undo()!);
+    expect(history.document).toEqual(document);
+    history.commit(history.redo()!);
+    expect(
+      compositionTracks(history.document).find((t) => t.id === track.id)!.keys,
+    ).toEqual(edited.keys);
+  },
+);
+
 it("keeps authored and resolved graph speeds consistent across boundaries and zero-duration ranges", () => {
   const sampled: number[] = [];
   const points = sampleCurveGraph(

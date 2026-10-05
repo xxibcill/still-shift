@@ -14,6 +14,7 @@ import {
   discrete,
   motionScalar,
   scalar,
+  smoothKeyVelocity,
   vector,
 } from "../../../packages/renderer-core/src/composition/evaluate/sample.ts";
 import { sampleCurveGraph } from "./composition-graph-sample.ts";
@@ -324,6 +325,21 @@ export function editTemporalHandle(
         : { speed }),
   };
 }
+function retainSmoothSide(
+  keys: Key[],
+  kind: "scalar" | "vector" | "color",
+  index: number,
+  side: "in" | "out",
+) {
+  const key = keys[index]!;
+  if (!key.smooth && key.interpolation !== "smooth") return;
+  const handle = key[side];
+  if (handle?.speed !== undefined || handle?.spatialSpeed !== undefined) return;
+  key[side] = {
+    ease: handle?.ease ?? 1 / 3,
+    ...smoothKeyVelocity(keys as Keyed<unknown>["keys"], kind, index, side),
+  };
+}
 /** Explicitly selecting Bézier replaces the higher-priority temporal handles for this segment. */
 export function editSegmentBezier(
   draft: Composition,
@@ -331,12 +347,18 @@ export function editSegmentBezier(
   destination: number,
   bezier: [number, number, number, number],
 ) {
-  if (["discrete", "path", "camera"].includes(track.kind) || destination < 1)
+  const kind = track.kind;
+  if (
+    (kind !== "scalar" && kind !== "vector" && kind !== "color") ||
+    destination < 1
+  )
     throw new Error("Select a numeric segment ending after the first key");
   const keys = keysIn(draft, track),
     a = keys[destination - 1],
     b = keys[destination];
   if (!a || !b) throw new Error("Segment no longer exists");
+  retainSmoothSide(keys, kind, destination - 1, "in");
+  retainSmoothSide(keys, kind, destination, "out");
   delete a.out;
   delete b.in;
   delete a.smooth;

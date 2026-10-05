@@ -182,6 +182,41 @@ function spatialTable(owner: object, a: Key, b: Key, index: number): ArcTable {
   return table;
 }
 
+/** Materialize native smooth tangents when one side must survive an authoring edit. */
+export function smoothKeyVelocity(
+  keys: Key[],
+  kind: "scalar" | "vector" | "color",
+  index: number,
+  side: "in" | "out",
+): Pick<Handle, "speed" | "spatialSpeed"> {
+  const frames = keys.map((key) => key.frame);
+  const tangent = (values: number[]) =>
+    monotoneTangents(frames, values)[index]!;
+  if (
+    kind === "vector" &&
+    keys.some((key) => key.spatialIn || key.spatialOut)
+  ) {
+    const segment = side === "in" ? index - 1 : index;
+    const length = spatialTable(
+      keys,
+      keys[segment]!,
+      keys[segment + 1]!,
+      segment,
+    ).total;
+    return { spatialSpeed: tangent(keys.map((_, i) => i)) * length };
+  }
+  if (kind === "scalar")
+    return { speed: tangent(keys.map((key) => key.value as number)) };
+  const values = keys.map((key) =>
+    kind === "color" ? rgba(key.value as string) : (key.value as number[]),
+  );
+  return {
+    speed: values[0]!.map((_, axis) =>
+      tangent(values.map((value) => value[axis]!)),
+    ),
+  };
+}
+
 export function vector(
   value: unknown,
   time: number,
