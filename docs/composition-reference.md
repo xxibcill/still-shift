@@ -1390,7 +1390,8 @@ its existing execution behavior.
 Soundtracks use a separate opt-in `soundtrack-project-1` authority; they do not
 introduce CE13 composition audio layers early. The
 [contract/worker reference](./soundtrack-project.md#contract-and-audio-semantics)
-explains integer sample intervals, clip-relative linear/hold automation,
+explains integer sample intervals, clip-relative linear/hold automation, clip pan,
+linear/equal-power fades,
 `tracks[].processors`, bus/master routing, stem taps, normalization and tail rules.
 [Duck settings](./soundtrack-project.md#ducking) persist the narration detector,
 BGM targets, threshold/reduction, window, attack/release/hold and lookahead.

@@ -43,6 +43,14 @@ still hold before relying on them.
 
 ## Current state
 
+- **PR #33 authoring/robustness round (2026-10-05):** Claude Code on
+  `claude/ce16-sfx-improvements` from `287cff9`. Routing/track/filter/ducking
+  edit operations (`8d0c428`), verifier DSP-version fix (`a62cef7`), Lab fade
+  shapes and Add cue (`a21fc0f`), `--operations -` (`b19059a`), routing parity
+  guard (`968c589`) and faster hashing/fused adds (`74c5abd`).
+  `pnpm check:soundtrack` passes on Node 22.23.1; real CE16 lifecycle verifier
+  passes on the new worker. Pushed to PR #33; owner review/merge remains.
+
 - **PR #33 bounded-memory render (2026-10-05):** Claude Code on
   `claude/ce16-sfx-improvements` from `7f1f4dd`. `0fc092f` makes 10-minute
   projects fit the 1.5 GB estimate (two nested bus levels with filters and
@@ -219,6 +227,34 @@ _Last updated 2026-10-05 by Codex for PR #33 follow-up fixes._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-05 — PR #33 authoring completeness, parity guard and render speed
+
+- **Agent / branch:** Claude Code on `claude/ce16-sfx-improvements` from `287cff9`.
+- **Done:** `8d0c428` adds `add-track`, `remove-track`, `add-bus`, `remove-bus`,
+  `route`, `processors` and `ducking` edits (contract track/bus/processor/ducking
+  schemas extracted; generated JSON Schema unchanged). `a62cef7`: the lifecycle
+  verifier recorded a hard-coded `soundtrack-dsp-2`; it now records the rendered
+  version. `a21fc0f`: Lab draws fade shapes and adds cues (optionally registering
+  a source) via a unit-tested request builder and an HTTP-level test.
+  `b19059a`: `soundtrack edit --operations -` reads stdin (8 MB bound).
+  `968c589`: checked-in routing parity script vs DawDreamer's AddProcessor
+  (62 cases incl. normal and subnormal double-rounding midpoints) runs in the
+  integration suite; unfused add, missing tie fix and missing subnormal
+  candidates each fail it. `74c5abd`: outputs hashed while written; TwoSum tie
+  work only on possible ties (fused adds 6.0 → 0.9 s on a 10-minute 16-track
+  render; total ~30 → 25 s).
+- **Results:** byte-identical to the original single-graph worker on 400 more
+  randomized projects. Real-media `pnpm soundtrack:verify` into a fresh /tmp
+  results path: reload, unaffected stems, relocation, narration exact (committed
+  CE16 evidence file restored afterwards, not rewritten). `pnpm check:soundtrack`:
+  1,523 unit, 46 runtime, 46 audio integration, 14 depth; Python lint/format.
+- **Not run:** browser suites, baselines, listening; Lab UI is type/lint/model
+  tested only.
+- **Remaining, low value:** the memory estimate counts every accumulator on a
+  bus path (exact DFS simulation would admit depth-3 + filters + ducking at 10
+  minutes); WAV writing of many large stems is bounded by page faults; no Lab
+  forms for tracks/buses/filters/ducking (CLI/API edits cover them).
 
 ### 2026-10-05 — PR #33 bounded-memory soundtrack render
 

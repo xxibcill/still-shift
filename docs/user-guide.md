@@ -645,7 +645,7 @@ CE16's optional [soundtrack guide](./soundtrack-project.md) adds named tracks,
 BGM ducking, filtering, automation and command-only save/render/relocation.
 Run `pnpm soundtrack:setup`, then use `pnpm still-shift soundtrack` commands.
 In the Lab, **Soundtrack layers** opens the shared saved project, numerical clip
-edits and rendered waveforms. Edits write the project file with revision checks.
+edits, fade shapes, cue placement and rendered waveforms. Edits write the project file with revision checks.
 **Render this revision** enables mix preview/download. In the passage workbench,
 **Saved soundtrack (optional)** attaches that checked full mix to picture;
 **Use passage audio** restores linked passage sounds. The CLI exports with
