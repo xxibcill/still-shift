@@ -209,6 +209,71 @@ describe("CE16 offline lifecycle", () => {
     expect(muted.files.master!.samplesAboveFullScale).toBe(0);
     expect(level(await pcm(audio("hot-muted"))).overs).toBe(0);
   }, 20000);
+  it("pans clips with a unity-centre constant-power law, before ducking detection", async () => {
+    const render = async (name: string, pans: Record<string, number>) => {
+      const file = join(root, name + ".json");
+      await writeFile(
+        file,
+        JSON.stringify({
+          ...project,
+          clips: project.clips.map((c) =>
+            c.id in pans ? { ...c, pan: pans[c.id] } : c,
+          ),
+        }),
+      );
+      return renderSoundtrackProject(file, join(root, name), { stems: true });
+    };
+    await render("pan-none", {});
+    const centred = await render("pan-centre", {
+      "voice-clip": 0,
+      "music-clip": 0,
+      "effect-clip": 0,
+    });
+    await render("pan-sides", {
+      "voice-clip": -0.5,
+      "music-clip": 0.5,
+      "effect-clip": -1,
+    });
+    // An explicit centre renders bit-identically to an unpanned project.
+    for (const name of ["voice", "music", "effect", "mix", "duck-envelope"])
+      expect(await pcm(audio("pan-centre", name))).toEqual(
+        await pcm(audio("pan-none", name)),
+      );
+    expect(centred.dspVersion).toBe("soundtrack-dsp-4");
+    // Moving narration in the stereo field leaves the ducking envelope unchanged.
+    expect(await pcm(audio("pan-sides", "duck-envelope"))).toEqual(
+      await pcm(audio("pan-none", "duck-envelope")),
+    );
+    // Hard left: exact silence on the right, +3 dB on the left.
+    const effect = await pcm(audio("pan-sides", "effect"));
+    expect(effect.filter((_, i) => i % 2 === 1).every((v) => v === 0)).toBe(
+      true,
+    );
+    expect(effect[26400 * 2]).toBe(
+      Math.fround(Math.fround(0.8) * Math.fround(Math.SQRT2)),
+    );
+    // Intermediate positions follow sqrt(2)·cos/sin((pan + 1)·π/4) per channel.
+    const law = (pan: number) => {
+      const angle = ((pan + 1) * Math.PI) / 4;
+      return [Math.SQRT2 * Math.cos(angle), Math.SQRT2 * Math.sin(angle)];
+    };
+    for (const [name, pan, frame] of [
+      ["voice", -0.5, 12100],
+      ["music", 0.5, 1000],
+      ["music", 0.5, 30000],
+    ] as const) {
+      const panned = await pcm(audio("pan-sides", name)),
+        plain = await pcm(audio("pan-none", name)),
+        [left, right] = law(pan);
+      expect(plain[frame * 2]).not.toBe(0);
+      expect(panned[frame * 2]! / plain[frame * 2]!).toBeCloseTo(left!, 6);
+      expect(panned[frame * 2 + 1]! / plain[frame * 2 + 1]!).toBeCloseTo(
+        right!,
+        6,
+      );
+      expect(left! ** 2 + right! ** 2).toBeCloseTo(2, 12);
+    }
+  }, 20000);
   it("crops only after full effect/ducking evaluation, including mid-envelope seeks", async () => {
     await renderSoundtrackProject(path, join(root, "range"), {
       stems: true,
@@ -783,9 +848,9 @@ it.each(["silence", "delayed speech"])(
       expect(music[24479 * 2]).toBeCloseTo(0.1 * 10 ** (-12 / 20), 7);
       expect(music.at(-1)).toBeCloseTo(0.1 * 10 ** (-12 / 20), 7);
     }
-    expect(rendered.dspVersion).toBe("soundtrack-dsp-3");
+    expect(rendered.dspVersion).toBe("soundtrack-dsp-4");
     expect((rendered.identityInputs as { dsp: string }).dsp).toBe(
-      "soundtrack-dsp-3",
+      "soundtrack-dsp-4",
     );
   },
   10000,

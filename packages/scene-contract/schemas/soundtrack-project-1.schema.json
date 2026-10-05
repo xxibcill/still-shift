@@ -125,6 +125,7 @@
             "required": ["interpolation", "points"],
             "additionalProperties": false
           },
+          "pan": { "type": "number", "minimum": -1, "maximum": 1 },
           "anchor": {
             "type": "object",
             "properties": {

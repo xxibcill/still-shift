@@ -151,6 +151,20 @@ def clip_envelope(clip, np):
     return (envelope * 10 ** (clip["gainDb"] / 20)).astype(np.float32)
 
 
+def pan_gains(pan, np):
+    """Constant-power sine/cosine law, normalized so centre is unity on both channels.
+
+    Returns None at centre so unpanned clips skip the multiply and stay bit-identical.
+    Hard pan is +3 dB on its side and exact silence on the other.
+    """
+    if not pan:
+        return None
+    angle = (pan + 1) * math.pi / 4
+    left = 0.0 if pan == 1 else math.sqrt(2) * math.cos(angle)
+    right = 0.0 if pan == -1 else math.sqrt(2) * math.sin(angle)
+    return np.array([[left], [right]], dtype=np.float32)
+
+
 def duck_envelope(detector, settings, np):
     """Window peak detector, optional lookahead, sample-exact hold and linear ramps."""
     length, window = detector.shape[1], settings["windowSamples"]
@@ -277,10 +291,13 @@ def render(request):
     for clip, audio in clip_sources(project["clips"], assets, length, np):
         start, end = clip["startSample"], clip["startSample"] + audio.shape[1]
         shaped = audio * clip_envelope(clip, np)[None, :]
-        # Pre-fader sidechain: the detector hears clip gain, fades and automation,
-        # but not track gain, mute/solo or DSP.
+        # Pre-fader, pre-pan sidechain: the detector hears clip gain, fades and
+        # automation, but not pan, track gain, mute/solo or DSP.
         if detector is not None and clip["track"] == project["ducking"]["sourceTrack"]:
             detector[:, start:end] += shaped
+        gains = pan_gains(clip.get("pan", 0), np)
+        if gains is not None:
+            shaped = shaped * gains
         buffers[clip["track"]][:, start:end] += shaped
     duck = duck_envelope(detector, project["ducking"], np) if detector is not None else None
     engine, graph, outputs = daw.RenderEngine(48000, 512), [], {}
@@ -376,12 +393,14 @@ def render(request):
         "blockSize": 512,
         "range": request["range"],
         "files": files,
-        "stemTap": "post clip gain/fades/automation, ducking and track DSP; pre bus/master gain",
+        "stemTap": (
+            "post clip gain/fades/automation/pan, ducking and track DSP; pre bus/master gain"
+        ),
         "normalization": "none",
         "latencySamples": 0,
         "latencyProbes": latency,
         "tailPolicy": project["tailPolicy"],
-        "dspVersion": "soundtrack-dsp-3",
+        "dspVersion": "soundtrack-dsp-4",
         "ducking": project.get("ducking"),
         "wallSeconds": time.perf_counter() - started,
         "peakResidentBytes": resource.getrusage(resource.RUSAGE_SELF).ru_maxrss,

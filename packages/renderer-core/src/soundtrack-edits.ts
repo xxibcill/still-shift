@@ -46,6 +46,9 @@ export const SoundtrackEditSchema = z.discriminatedUnion("type", [
       automation: SoundtrackAutomationSchema,
     })
     .strict(),
+  z
+    .object({ type: z.literal("pan"), clip: identifier, pan: z.number() })
+    .strict(),
   z.object({ type: z.literal("undo") }).strict(),
   z.object({ type: z.literal("redo") }).strict(),
 ]);
@@ -180,6 +183,11 @@ export function editSoundtrackProject(
         break;
       case "automation":
         clip!.automation = operation.automation;
+        break;
+      case "pan":
+        // Centre is the absent field, so recentring restores the unpanned clip.
+        if (operation.pan === 0) delete clip!.pan;
+        else clip!.pan = operation.pan;
         break;
     }
   }

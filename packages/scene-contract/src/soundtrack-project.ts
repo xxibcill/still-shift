@@ -24,6 +24,8 @@ export const SoundtrackClipSchema = z
     fadeInSamples: sample,
     fadeOutSamples: sample,
     automation: SoundtrackAutomationSchema,
+    /** Constant-power stereo position; absent means centre (unity on both channels). */
+    pan: z.number().min(-1).max(1).optional(),
     anchor: z
       .object({
         beat: id,

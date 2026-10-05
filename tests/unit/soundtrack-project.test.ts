@@ -292,6 +292,39 @@ it("timeline projects overlaps, waveforms and absolute automation without a seco
   expect(p.revision).toBe(0);
 });
 
+it("clip pan is bounded, optional and recentres to the absent field", () => {
+  const p = fixture();
+  expect(validateSoundtrackProject(p).clips[0]!.pan).toBeUndefined();
+  for (const pan of [-1, 1]) {
+    p.clips[0]!.pan = pan;
+    expect(validateSoundtrackProject(p).clips[0]!.pan).toBe(pan);
+  }
+  p.clips[0]!.pan = 1.5;
+  expect(() => validateSoundtrackProject(p)).toThrow(/Invalid soundtrack/);
+  delete p.clips[0]!.pan;
+  const panned = editSoundtrackProject(p, [
+    { type: "pan", clip: "speech", pan: -0.25 },
+  ]);
+  expect(panned.clips[0]!.pan).toBe(-0.25);
+  expect(panned.history.undo).toHaveLength(1);
+  const centred = editSoundtrackProject(panned, [
+    { type: "pan", clip: "speech", pan: 0 },
+  ]);
+  expect("pan" in centred.clips[0]!).toBe(false);
+  expect(soundtrackState(centred)).toEqual(soundtrackState(p));
+  // Centring an unpanned clip changes nothing, so it adds no undo step.
+  expect(
+    editSoundtrackProject(p, [{ type: "pan", clip: "speech", pan: 0 }]).history
+      .undo,
+  ).toHaveLength(0);
+  expect(() =>
+    editSoundtrackProject(p, [{ type: "pan", clip: "speech", pan: -2 }]),
+  ).toThrow(/Invalid soundtrack/);
+  expect(() =>
+    editSoundtrackProject(p, [{ type: "pan", clip: "missing", pan: 0.5 }]),
+  ).toThrow(/Unknown edit target/);
+});
+
 it("Lab number fields reject cleared input instead of saving zero", () => {
   expect(soundtrackNumberField("-6.5", "Gain")).toBe(-6.5);
   expect(soundtrackNumberField("0", "Start")).toBe(0);
