@@ -40,11 +40,11 @@ function intervals(
 }
 
 /** Each path trims separately, or all ordered contours share one length interval. */
-export function trimGeometry(
-  paths: GeometryPath[],
+export function trimGeometry<T extends GeometryPath>(
+  paths: T[],
   trim: Trim,
   budget: ShapeGeometryBudget,
-): GeometryPath[] {
+): T[] {
   if (Math.abs(trim.end - trim.start) >= 1 - 1e-12) return paths;
   if (trim.start === trim.end) return [];
   const measured = paths.map((geometry) => {
@@ -60,7 +60,7 @@ export function trimGeometry(
     trim.offset,
     paths.every((item) => item.path.closed),
   );
-  const result: GeometryPath[] = [];
+  const result: T[] = [];
   let before = 0;
   for (const item of measured) {
     if (!item.length) continue;

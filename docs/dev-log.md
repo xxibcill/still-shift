@@ -44,12 +44,12 @@ still hold before relying on them.
 ## Current state
 
 - **CE5 in progress (2026-10-05):** `codex/composition-ce5` from CE11 `a0c56df`.
-  Typed contracts, cubic/primitives/morph math and all nine operator kernels pass
-  build/lint and all 1,544 unit tests. Quantized polygon work and generated geometry
-  have explicit limits/diagnostics. Native paint compilation, frame-wide budget,
-  rendering/authoring and browser/baseline/export acceptance follow. Shape layers
-  remain unavailable until renderer integration. No owner decision is pending.
-  [Evidence](./composition-ce5-results.json).
+  Contracts, cubic/primitives/morph math, all nine operator kernels and typed shape
+  sampling/paint compilation pass build/lint and all 1,556 unit tests. Group paint
+  transforms and repeat/trim binding provenance have analytic regressions. Native
+  evaluator/session budgets, both backends, authoring and browser/baseline/export
+  acceptance follow; shape availability is still gated. No owner decision is
+  pending. [Evidence](./composition-ce5-results.json).
 
 - **CE11 complete (2026-10-05):** `codex/composition-ce11`, runtime `5f36268`.
   Native inspector, graph/handle edits, overlays, lossless history, guarded source
@@ -166,6 +166,18 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-05 — Add CE5 typed sampling and paint compilation
+
+- **Agent / branch:** Codex on `codex/composition-ce5`, after `f09c765`.
+- **Done:** explicit sampled shape state, upstream bindings/reverse paint order,
+  nested paint transforms, repeater paint/geometry copies and conservative bounds.
+  Individual trim keeps repeated source IDs attached to their own paint bindings.
+- **Results:** 12 compiler/sampling checks and all 1,556 unit tests pass; build,
+  lint, boundaries and owned formatting pass. Empty-copy/reference work is bounded.
+- **Next:** native evaluator/session budget, both backends and authoring integration;
+  shape availability remains gated and full browser/export acceptance is pending.
+- **Records:** [CE5 evidence](./composition-ce5-results.json).
 
 ### 2026-10-05 — Add CE5 bounded shape operators
 

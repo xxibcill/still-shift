@@ -97,6 +97,28 @@
         "Open offsets use a signed parallel path, not a stroked outline.",
         "Exclude folds XOR across all operands; no multi-operand AE pixel parity claim."
       ]
+    },
+    {
+      "name": "Typed shape sampling and native paint compiler",
+      "status": "checkpoint",
+      "changes": [
+        "Sample only the native animated-field registry and static shape controls, keeping opaque metadata out of evaluated state. Bound/clamp numeric fields and reject nonfinite inputs. Reserve path sampling work before cloning vertex arrays.",
+        "Capture upstream geometry bindings, apply ordered path operators and paint bottom-to-top. Groups retain independent paint transforms/opacity; outer paints consume transformed geometry with their own stroke width.",
+        "Repeater clones geometry and paint references together, preserving painted-copy gradients versus compound coordinates and above/below order; fractional copy opacity is applied once.",
+        "Individual trim retains binding provenance even when repeater copies share declared IDs. Merge clears consumed sources to avoid double painting.",
+        "Conservative cubic/stroke bounds, collapsed/tiny transform handling and aggregate geometry/reference-copy budgets. Full native evaluator/backend integration follows."
+      ],
+      "verification": {
+        "compilerAndSamplingTests": 12,
+        "fullUnitTests": 1556,
+        "unitFiles": 140,
+        "build": "passed",
+        "changedFileLint": "passed after two type-only import fixes",
+        "boundaries": "passed",
+        "ownedFileFormatting": "passed",
+        "browserAndFullGate": "not run for this compiler checkpoint"
+      },
+      "logs": "benchmarks/results/composition-ce5-verification"
     }
   ],
   "polygonLibrary": {
