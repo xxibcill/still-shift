@@ -43,6 +43,13 @@ still hold before relying on them.
 
 ## Current state
 
+- **CE5 in progress (2026-10-05):** `codex/composition-ce5` from CE11 `a0c56df`.
+  Bounded shape/paint/operator contracts and the shared nested property locator pass
+  build, lint, 40 focused checks and all 1,516 unit tests. Polygon dependency is pinned.
+  Native shape rendering remains unavailable until its engine slice; geometry,
+  rendering, authoring, acceptance and the full gate/PR follow. No owner decision is
+  pending. [Evidence](./composition-ce5-results.json).
+
 - **CE11 complete (2026-10-05):** `codex/composition-ce11`, runtime `5f36268`.
   Native inspector, graph/handle edits, overlays, lossless history, guarded source
   saves and captured-asset exports pass desktop/phone and builder/watch acceptance.
@@ -158,6 +165,18 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-05 — Start CE5 with native shape contracts
+
+- **Agent / branch:** Codex on `codex/composition-ce5`, from CE11 `a0c56df` /
+  [PR #37](https://github.com/xxibcill/still-shift/pull/37).
+- **Done:** typed groups, primitives, paints and operators; bounded 2D animations,
+  nested native property locator and pinned Boost-licensed polygon library.
+- **Results:** build/lint and all 1,516 unit tests pass, including 40 focused checks;
+  generated JSON schema updated. Initial diagnostic expectations/lint repairs retained.
+- **Next:** native geometry and rendering, authoring integration and full acceptance.
+  Runtime shape layers remain unavailable until the native renderer is connected.
+- **Records:** [CE5 evidence](./composition-ce5-results.json).
 
 ### 2026-10-05 — Complete CE11 inspector and full local acceptance
 

@@ -31,6 +31,7 @@ const cases = [
   },
   {
     field: "shape contents",
+    next: "comp-schema-union",
     path: "layers[0].contents",
     offset: 1,
     input: (payload: unknown) => ({

@@ -1,0 +1,51 @@
+{
+  "milestone": "CE5",
+  "status": "in-progress",
+  "date": "2026-10-05",
+  "branch": "codex/composition-ce5",
+  "base": "a0c56df",
+  "slices": [
+    {
+      "name": "Bounded native shape contract and shared property locator",
+      "status": "checkpoint",
+      "changes": [
+        "Typed recursive groups, 2D transforms, four primitive families, four paint kinds and all nine operator kinds.",
+        "Total 256 contents / 16-level tree, 16 gradient stops, stable unique sibling/stop IDs, and explicit animation/default descriptors.",
+        "Nested shape/gradient ID locator serves authored and sampled trees; opaque metadata remains inaccessible.",
+        "Pinned clipper2-ts 2.0.1-18 as renderer dependency for future Boolean/offset geometry. Native shape rendering stays feature-unavailable until its renderer slice.",
+        "Reject inherited/prototype field names in native selectors; shared default descriptors are immutable."
+      ],
+      "verification": {
+        "build": "passed",
+        "changedFileLint": "passed",
+        "focusedTests": 40,
+        "fullUnitTests": 1516,
+        "unitFiles": 137,
+        "schemaGeneration": "passed",
+        "boundaries": "passed",
+        "schemaCheck": "passed",
+        "ownedFormat": "passed"
+      },
+      "initialRepairs": [
+        "Three JSON-boundary assertions expected comp-schema-type; newly strict shape discriminants correctly produce comp-schema-union. Depth/byte/cycle/UTF-8 assertions remain intact.",
+        "Two type-only schema locals failed unused-vars lint; remove the common schema local and export the reusable leaf schema."
+      ],
+      "logs": "benchmarks/results/composition-ce5-verification"
+    }
+  ],
+  "polygonLibrary": {
+    "package": "clipper2-ts",
+    "version": "2.0.1-18",
+    "license": "BSL-1.0 (Boost Software License 1.0)",
+    "source": "https://github.com/countertype/clipper2-ts",
+    "upstream": "https://github.com/AngusJohnson/Clipper2",
+    "integrity": "sha512-WuRO1ZHzyYTVHY78r4wVWVydvQ+1lx9qZ+DeZa/8zhvrxIgCVzElJ6lwSMGtUUKFPefhvfJsHZ5C9RNkgisCOQ=="
+  },
+  "pending": [
+    "Native geometry, morph alignment, trim/repeater/Boolean/operator work budgets",
+    "Evaluator/property/driver/bake/builder/inspector integration",
+    "Canvas/WebGL rendering and ink/brush source-coordinate reuse",
+    "Native reference fixtures, stored new baselines, sequence/export acceptance",
+    "Reference/user guide update, full pnpm check, milestone PR"
+  ]
+}

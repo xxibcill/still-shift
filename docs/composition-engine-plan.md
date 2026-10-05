@@ -365,7 +365,7 @@ sign and for time remap. It does not change the layer's composition-time visibil
 | CE4b  | Commerce and reusable-component adapter         | A      | CE3, CE6 slices      | Codex                  | `codex/composition-ce4b`            | `[x]`  | [CE4b completion record](#ce4b-completion-record-2026-10-03)                       |
 | CE4c  | Cinematic adapter                               | A      | CE3, CE8             |                        |                                     | `[ ]`  |                                                                                    |
 | CE4d  | Legacy illustrated adapter and old-path removal | A      | CE4a–CE4c            |                        |                                     | `[ ]`  |                                                                                    |
-| CE5   | Shape layers                                    | B      | CE3                  |                        |                                     | `[ ]`  |                                                                                    |
+| CE5   | Shape layers                                    | B      | CE3                  | Codex                  | `codex/composition-ce5`             | `[~]`  | [evidence](./composition-ce5-results.json)                                         |
 | CE6   | WebGL2 backend and effect registry              | B      | CE3                  | xxibcill (Claude Code) | `codex/composition-ce6-performance` | `[~]`  | [CE6 performance slice 1](#ce6-performance-slice-1-exact-effect-work-2026-10-03)   |
 | CE6-P | WebGL performance acceptance                    | Future | CE6                  |                        |                                     | `[d]`  | [Performance deferral](#ce6-p--deferred-webgl-performance-acceptance)              |
 | CE7   | Motion blur and time controls                   | B      | CE3                  |                        |                                     | `[ ]`  |                                                                                    |
@@ -2970,6 +2970,14 @@ providers.
 
 **Verification:** Geometry unit tests (trim arithmetic, repeater transforms, boolean
 results on known polygons), pixel tests, animated trim/morph sequences.
+
+**Implementation record (2026-10-05):** Codex on `codex/composition-ce5`, from
+completed CE11 `a0c56df` / [PR #37](https://github.com/xxibcill/still-shift/pull/37).
+Typed shape trees, paint/operator schemas and the shared native property locator
+pass build, lint and 1,516 unit tests. The polygon library is pinned and licensed;
+native geometry/rendering, authoring and milestone acceptance remain in progress.
+No native shape render completion is claimed by this checkpoint.
+[Evidence](./composition-ce5-results.json).
 
 **Completion record:** _to be filled in._
 
