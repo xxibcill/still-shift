@@ -8,6 +8,8 @@ import {
   buildRenderGraph,
   type AdjustOp,
   type DrawOp,
+  type IsolateOp,
+  type RenderOp,
 } from "../../packages/renderer-core/src/composition/render/graph.ts";
 
 const fixture = (): Composition => ({
@@ -165,6 +167,76 @@ describe("adjustment backdrop history", () => {
       null,
     ]);
   });
+  it.each(["group", "precomp", "collapsed"])(
+    "retains history in hidden captured %s sources",
+    (kind) => {
+      const comp = fixture(),
+        children = comp.layers.slice(1);
+      const owner: Composition["layers"][number] = {
+        id: "owner",
+        type: "solid",
+        size: [64, 48],
+        color: "#ffffff",
+        effects: [
+          {
+            id: "map",
+            effect: "distort.displacement-map",
+            inputs: { map: "source" },
+          },
+        ],
+      };
+      if (kind === "group")
+        comp.layers = [
+          owner,
+          ...children.map((layer) => ({ ...layer, parent: "source" })),
+          {
+            id: "source",
+            type: "group",
+            size: [64, 48],
+            enabled: false,
+            transform: { anchor: [0, 0] },
+          },
+        ];
+      else {
+        comp.layers = [
+          owner,
+          {
+            id: "source",
+            type: "precomp",
+            comp: "child",
+            enabled: false,
+            collapseTransforms: kind === "collapsed",
+            transform: { anchor: [0, 0] },
+          },
+        ];
+        comp.precomps = [
+          {
+            id: "child",
+            width: 64,
+            height: 48,
+            frameCount: 24,
+            layers: children,
+          },
+        ];
+      }
+      const root = graph(comp).root.ops[0] as IsolateOp;
+      const inputs = root.effects[0]!.layerInputs!.map!;
+      const find = (ops: RenderOp[]): AdjustOp | undefined => {
+        for (const op of ops) {
+          if (op.kind === "adjust") return op;
+          const nested =
+            op.kind === "isolate"
+              ? find(op.ops)
+              : op.kind === "draw" && op.content.type === "surface"
+                ? find(op.content.surface.ops)
+                : undefined;
+          if (nested) return nested;
+        }
+        return undefined;
+      };
+      expect(find(inputs)?.history).toHaveLength(2);
+    },
+  );
   it("fails explicitly when chained backdrop histories exceed their replay budget", () => {
     const comp = fixture();
     comp.layers = Array.from({ length: 8 }, (_, i) => ({

@@ -44,13 +44,12 @@ still hold before relying on them.
 ## Current state
 
 - **CE6 in progress (2026-10-06):** `codex/composition-ce6-completion` from
-  CE7 `817cc9f`. Checkpoints through `5ba705c` deliver catalogue/maps and
-  adjustment history. Linear-light now passes 1,700 unit tests, build/lint/schema/
-  boundaries, 180 native cases / 2,160 frames / 2,520 seeks (delta 2), 559,215
-  byte-pair/mode cases (delta 1), independent pixels/exposure and cache switches.
-  All 28 affine offscreen blur cases / 336 frames / 392 seeks are exact.
-  Final feature/fallback/source-history audit, hardware/hash/export/cost and the
-  complete full gate/CE6 PR remain. No owner decision is pending.
+  CE7 `817cc9f`. Checkpoints through `c0872d9` deliver the catalogue, maps,
+  adjustment history and linear-light composition. The capture/availability audit
+  passes 119 focused tests, build/lint/schema/boundaries, 24 exact native capture
+  oracles and all previous input/adjustment regressions. GPU high-sigma feather
+  rescaling remains in flight, followed by hardware/hash/export/serial-cost proof,
+  complete full gate and CE6 PR. No owner decision is pending.
   [Evidence](./composition-ce6-completion-results.json).
 
 - **CE7 complete (2026-10-06):** `codex/composition-ce7`, code `0e48388`.
@@ -187,6 +186,19 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-06 — CE6 captured history and path audit checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce6-completion`.
+- **Done:** captured input/matte groups and precomps retain adjustment echo when
+  their caller is absent at earlier frames. Primitive blur aliases bind real
+  declared effects through drivers and expressions; native path errors are current.
+- **Results:** 119 focused tests, build/lint/schema/boundaries; 24 exact independent
+  native captures and previous 17 input / 54 adjustment cases and clock/pixel oracles
+  pass. No threshold or frozen baseline changed; this is not a full `pnpm check`.
+- **Next:** GPU high-sigma/feather repair, final hardware/hash/export/serial-cost
+  proof, complete CE6 gate/PR, then remaining milestones in plan order.
+- **Records:** [CE6 evidence](./composition-ce6-completion-results.json).
 
 ### 2026-10-06 — CE6 optional linear-light checkpoint
 

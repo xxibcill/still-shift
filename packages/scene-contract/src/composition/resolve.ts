@@ -162,7 +162,7 @@ function resolveSegments(
       const effect = layer.effects?.find((e) => e.id === head.index);
       if (!effect) return missing(text, "an effect on this layer");
       const definition = compositionEffectDefinition(effect.effect);
-      if (!definition) return unavailable(text, "CE6");
+      if (!definition) return missing(text, "a registered effect");
       if (!next || !Object.hasOwn(definition.properties, next.name))
         return missing(text, "an effect parameter");
       const descriptor = definition.properties[next.name]!;
@@ -253,7 +253,21 @@ export function resolvePropertyPath(comp: Composition, text: string): Result {
   if (segments.length === 1 && segments[0]!.index === undefined) {
     const name = segments[0]!.name;
     if (Object.hasOwn(LEGACY_UNAVAILABLE_PROPERTIES, name))
-      return unavailable(text, LEGACY_UNAVAILABLE_PROPERTIES[name]!);
+      return missing(
+        text,
+        "an explicit native shape property; use contents[...].<field>",
+      );
+    if (name === "blur") {
+      const paint =
+        layer.effects?.filter((effect) => effect.effect === "blur.primitive") ??
+        [];
+      if (paint.length !== 1)
+        return missing(
+          text,
+          "one declared primitive blur; use effects[id].radius",
+        );
+      segments = [{ name: "effects", index: paint[0]!.id }, { name: "radius" }];
+    }
     const alias = Object.hasOwn(LEGACY_PROPERTY_ALIASES, name)
       ? LEGACY_PROPERTY_ALIASES[name]
       : undefined;

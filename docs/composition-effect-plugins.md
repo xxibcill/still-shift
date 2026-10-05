@@ -103,8 +103,7 @@ all image pixels are transformed in a GPU pass without image readback. Canvas
 uses the piecewise equation directly. Exhaustive byte parity includes tightly
 spaced controls and sixteen-point curves.
 
-The remaining CE6 catalogue/dependency stages, linear-light composition
-and full milestone acceptance are tracked in
+The final CE6 audits and full milestone acceptance are tracked in
 [CE6 results](./composition-ce6-completion-results.json).
 
 ## Native transitions

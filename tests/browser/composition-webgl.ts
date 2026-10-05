@@ -1,3 +1,4 @@
+import type * as CapturedHistoryChecks from "../helpers/composition-captured-history-reference.ts";
 import type * as LinearChecks from "../helpers/composition-linear-reference.ts";
 import type * as AdjustmentChecks from "../helpers/composition-adjustment-history-reference.ts";
 import type * as GradientRankChecks from "../helpers/composition-gradient-rank-reference.ts";
@@ -38,6 +39,16 @@ try {
   const page = await browser.newPage();
   await page.addInitScript("window.__name = (fn) => fn;");
   await page.goto(server.resolvedUrls!.local[0]!);
+  const capturedHistory = await page.evaluate(async () => {
+    const url = "/tests/helpers/composition-captured-history-reference.ts";
+    return (
+      (await import(url)) as typeof CapturedHistoryChecks
+    ).checkCapturedHistoryPixels();
+  });
+  console.log(
+    "WebGL captured backdrop histories:",
+    JSON.stringify(capturedHistory),
+  );
   const linear = await page.evaluate(async () => {
     const url = "/tests/helpers/composition-linear-reference.ts";
     const checks = (await import(url)) as typeof LinearChecks;

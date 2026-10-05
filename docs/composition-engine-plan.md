@@ -3264,6 +3264,17 @@ padding: six cases / 72 frames / 84 seeks now match exactly. Broader affine
 regressions, linear-light and complete milestone acceptance remain.
 [Evidence](./composition-ce6-completion-results.json).
 
+### CE6 captured-source history and path audit (2026-10-06)
+
+Captured groups and precomp inputs/mattes now replay their scoped adjustment
+history even when their caller is absent at earlier frames. Native primitive-blur
+aliases bind one declared effect through drivers/expressions. Shape/effect path
+errors use current explicit native targeting. 119 focused tests and build/lint/
+schema/boundaries pass; 24 independent capture oracles are exact and all previous
+input/adjustment native regressions pass. GPU high-sigma feather rescaling remains
+in flight before hardware/hash/export/cost/full-gate acceptance and CE6 PR.
+[Evidence](./composition-ce6-completion-results.json).
+
 ### CE6 optional linear-light checkpoint (2026-10-06)
 
 Opt-in `linear-srgb` uses real 16-bit premultiplied linear blending for all 17

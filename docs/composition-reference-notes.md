@@ -1115,16 +1115,16 @@ segment  := name | name "[" id "]"
 Drivers and periodic motion target scalars. Legacy `node.property` targets remain valid
 and resolve to their canonical path:
 
-| Legacy                                                                       | Canonical                        |
-| ---------------------------------------------------------------------------- | -------------------------------- |
-| `x`, `y`                                                                     | `transform.position.x`, `.y`     |
-| `scaleX`, `scaleY`                                                           | `transform.scale.x`, `.y`        |
-| `anchorX`, `anchorY`                                                         | `transform.anchor.x`, `.y`       |
-| `rotation`, `opacity`                                                        | `transform.rotation`, `.opacity` |
-| `skewX`, `skewY`                                                             | `transform.skewX`, `.skewY`      |
-| `reveal`                                                                     | `reveal`                         |
-| `gap`, `pulse`, `pinch`, `strokeWidth`, `trimStart`, `trimEnd`, `trimOffset` | CE5 (shape strokes)              |
-| `blur`                                                                       | CE6 (effects)                    |
+| Legacy                                                                       | Canonical                                        |
+| ---------------------------------------------------------------------------- | ------------------------------------------------ |
+| `x`, `y`                                                                     | `transform.position.x`, `.y`                     |
+| `scaleX`, `scaleY`                                                           | `transform.scale.x`, `.y`                        |
+| `anchorX`, `anchorY`                                                         | `transform.anchor.x`, `.y`                       |
+| `rotation`, `opacity`                                                        | `transform.rotation`, `.opacity`                 |
+| `skewX`, `skewY`                                                             | `transform.skewX`, `.skewY`                      |
+| `reveal`                                                                     | `reveal`                                         |
+| `gap`, `pulse`, `pinch`, `strokeWidth`, `trimStart`, `trimEnd`, `trimOffset` | Use explicit native `contents[...]` paths        |
+| `blur`                                                                       | Existing `blur.primitive` → `effects[id].radius` |
 
 Aliases are names only: values follow `composition-1` semantics. For example,
 `position` is where the anchor sits, not a legacy node's top-left corner, so family
@@ -1141,16 +1141,18 @@ diagnostic code.
 
 ## Feature availability
 
+Native shapes/follow-path constraints, the effect catalogue and opt-in
+linear-light compositing are implemented. Unknown or undeclared properties have
+path diagnostics; completed milestones are not promised as future availability.
+
 Features that are in the contract but not yet implemented fail with
 `comp-feature-unavailable`; the message names the milestone.
 
-| Feature                                                       | Milestone               |
-| ------------------------------------------------------------- | ----------------------- |
-| Shape layers, follow-path constraints, stroke properties      | CE5                     |
-| Legacy `blur` property alias (use `effects[id].radius` today) | CE6 compatibility audit |
-| 3D layers, camera layers, 3D rotation, auto-orient to camera  | CE8                     |
-| Video, image-sequence and audio layers and assets             | CE13                    |
-| Light layers                                                  | Q6                      |
+| Feature                                                      | Milestone |
+| ------------------------------------------------------------ | --------- |
+| 3D layers, camera layers, 3D rotation, auto-orient to camera | CE8       |
+| Video, image-sequence and audio layers and assets            | CE13      |
+| Light layers                                                 | Q6        |
 
 ## Limits
 
@@ -1457,8 +1459,12 @@ are known. The existing glyph preparation memory budget still applies.
 `radius` (default 0; 0–1,000 surface pixels). It runs during painting before the
 ordinary pixel effect stack. A positive radius overrides the nearest inherited
 group radius; zero retains that inherited radius. Null parenting does not inherit
-paint effects. One primitive blur may be attached to a drawable layer or group;
-adjustment and null layers reject it.
+paint effects. One primitive blur may be attached to a drawable layer, group or
+adjustment; null layers reject it. On adjustments it becomes Gaussian filtering
+of the captured backdrop at its effect-stack position. A legacy `<layer>.blur`
+alias resolves only when that layer declares exactly one primitive blur, and
+normalizes to `<layer>.effects[id].radius`. Other legacy shape aliases require
+explicit native `contents[...]` property paths.
 
 Group children retain separate overlapping filtered draws. Non-collapsed precomps
 filter their flattened surface; collapsed precomps carry the drawing filter to
