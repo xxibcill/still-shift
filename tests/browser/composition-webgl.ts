@@ -1,3 +1,4 @@
+import type * as RadialChecks from "../helpers/composition-radial-distortion-reference.ts";
 import type * as StylizeChecks from "../helpers/composition-stylize-effect-reference.ts";
 import type * as QuotientChecks from "../helpers/composition-noise-quotient-reference.ts";
 import type * as NoiseChecks from "../helpers/composition-noise-effect-reference.ts";
@@ -86,6 +87,25 @@ try {
     ).checkWarpEffectRendering();
   });
   console.log("WebGL native warps:", JSON.stringify(warps));
+  const radialDistortion = await page.evaluate(async () => {
+    const url = "/tests/helpers/composition-radial-distortion-reference.ts";
+    return (
+      (await import(url)) as typeof RadialChecks
+    ).checkRadialDistortionRendering();
+  });
+  console.log("WebGL radial distortions:", JSON.stringify(radialDistortion));
+  const radialRoots = await page.evaluate(async () => {
+    const url = "/tests/helpers/composition-radial-distortion-reference.ts";
+    return ((await import(url)) as typeof RadialChecks).checkRadialRootCodes();
+  });
+  console.log("WebGL radial roots:", JSON.stringify(radialRoots));
+  const radialSources = await page.evaluate(async () => {
+    const url = "/tests/helpers/composition-radial-distortion-reference.ts";
+    return (
+      (await import(url)) as typeof RadialChecks
+    ).checkRadialSourceCodes();
+  });
+  console.log("WebGL radial sources:", JSON.stringify(radialSources));
   const stylize = await page.evaluate(async () => {
     const url = "/tests/helpers/composition-stylize-effect-reference.ts";
     return (

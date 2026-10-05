@@ -542,11 +542,158 @@
         "Missing dimensions uniform in vignette shader; binding repaired",
         "New controls required generated reference refresh"
       ],
+      "pending": ["Complete milestone gate after remaining CE6 features"],
+      "implementation": "1ce28ab"
+    },
+    {
+      "name": "Native bulge and ripple",
+      "status": "focused-verification-passed",
+      "effects": ["distort.bulge", "distort.ripple"],
+      "versions": {
+        "evaluator": 38,
+        "canvas": "composition-canvas-1.33.0",
+        "webgl": "composition-webgl2-0.47.0"
+      },
+      "verification": {
+        "focusedTests": 43,
+        "focusedFiles": 7,
+        "build": "passed",
+        "lint": "passed",
+        "schema": "passed",
+        "boundaries": "passed",
+        "nativeMatrix": {
+          "cases": 54,
+          "frames": 648,
+          "randomSeeks": 756,
+          "maxDelta": 0,
+          "minPsnr": 999,
+          "raw": "benchmarks/results/composition-ce6-completion/ce6-radial-native-acceptance.json",
+          "snapshot": "/private/tmp/still-shift-ce6-radial-1ce28ab"
+        },
+        "arbitraryPrecisionRootOracle": {
+          "profile": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+          "points": 65536,
+          "rows": [
+            {
+              "backend": "canvas2d",
+              "maxDelta": 0
+            },
+            {
+              "backend": "webgl2",
+              "maxDelta": 0
+            }
+          ]
+        },
+        "maximumFrameSourceCoordinates": {
+          "profile": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+          "coordinatePoints": 131072,
+          "virtualFrame": [8192, 8192],
+          "rows": [
+            {
+              "case": 0,
+              "axis": 0,
+              "backend": "canvas2d",
+              "maxDelta": 0
+            },
+            {
+              "case": 0,
+              "axis": 0,
+              "backend": "webgl2",
+              "maxDelta": 0
+            },
+            {
+              "case": 0,
+              "axis": 1,
+              "backend": "canvas2d",
+              "maxDelta": 0
+            },
+            {
+              "case": 0,
+              "axis": 1,
+              "backend": "webgl2",
+              "maxDelta": 0
+            },
+            {
+              "case": 1,
+              "axis": 0,
+              "backend": "canvas2d",
+              "maxDelta": 0
+            },
+            {
+              "case": 1,
+              "axis": 0,
+              "backend": "webgl2",
+              "maxDelta": 0
+            },
+            {
+              "case": 1,
+              "axis": 1,
+              "backend": "canvas2d",
+              "maxDelta": 0
+            },
+            {
+              "case": 1,
+              "axis": 1,
+              "backend": "webgl2",
+              "maxDelta": 0
+            },
+            {
+              "case": 2,
+              "axis": 0,
+              "backend": "canvas2d",
+              "maxDelta": 0
+            },
+            {
+              "case": 2,
+              "axis": 0,
+              "backend": "webgl2",
+              "maxDelta": 0
+            },
+            {
+              "case": 2,
+              "axis": 1,
+              "backend": "canvas2d",
+              "maxDelta": 0
+            },
+            {
+              "case": 2,
+              "axis": 1,
+              "backend": "webgl2",
+              "maxDelta": 0
+            },
+            {
+              "case": 3,
+              "axis": 0,
+              "backend": "canvas2d",
+              "maxDelta": 0
+            },
+            {
+              "case": 3,
+              "axis": 0,
+              "backend": "webgl2",
+              "maxDelta": 0
+            },
+            {
+              "case": 3,
+              "axis": 1,
+              "backend": "canvas2d",
+              "maxDelta": 0
+            },
+            {
+              "case": 3,
+              "axis": 1,
+              "backend": "webgl2",
+              "maxDelta": 0
+            }
+          ]
+        }
+      },
+      "initialFailures": ["Test-first radial API absent"],
       "pending": ["Complete milestone gate after remaining CE6 features"]
     }
   ],
   "pending": [
-    "Remaining bulge/ripple, displacement map, drop/inner shadows and gradient wipe",
+    "Remaining displacement map, drop/inner shadows and gradient wipe",
     "Scoped layer-input dependency stages and real adjustment primitive-blur/echo history",
     "Real optional linear-light composition",
     "Complete native hardware, stored hashes, independent/repeated exports and serial 1080p per-effect costs",

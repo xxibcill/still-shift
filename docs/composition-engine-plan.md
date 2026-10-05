@@ -3204,6 +3204,18 @@ hardware/hash/export/cost/full-gate acceptance remain. Missing GPU dimensions
 binding was repaired; no threshold or frozen baseline changed.
 [Evidence](./composition-ce6-completion-results.json).
 
+### CE6 bulge and ripple checkpoint (2026-10-06)
+
+Bulge/ripple perform actual GPU radial image warps with Canvas references and
+bounded one-dimensional geometry control tables. Integer source coordinates,
+signed products and two-word squared distances preserve sampling agreement.
+43 focused tests and build/lint/schema/boundaries pass. Native acceptance is
+exact for 54 cases / 648 frames / 756 seeks. Arbitrary-precision root and virtual
+8192×8192 source-coordinate proofs pass at 65,536 and 131,072 points.
+Remaining shadows/scoped inputs/history/linear-light and complete native
+hardware/hash/export/cost/full-gate acceptance remain. Frozen baselines and
+thresholds are unchanged. [Evidence](./composition-ce6-completion-results.json).
+
 ### CE6 performance slice 1: exact effect work (2026-10-03)
 
 - **Scope:** the transferred CE4b timing requirement only, not the broader CE6

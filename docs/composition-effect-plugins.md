@@ -207,3 +207,14 @@ source coverage. Geometry uses Float32 controls in the Canvas reference.
 negative, retaining the original green and coverage. Offsets use the common
 1/16-pixel premultiplied sampling grid with transparent padding. Zero amount,
 and a neutral chromatic offset, preserve the input exactly.
+
+### Bulge and ripple
+
+`distort.bulge` uses an elliptical polynomial falloff; `distort.ripple` uses a
+radial sinusoidal displacement with optional exponential decay. Centers and
+radii use 1/16 pixels; bulge normalized coordinates use 1/256; radial factors
+use 1/4096. A bounded one-dimensional control table contains geometry factors,
+never image pixels. Both adapters select identical control entries, multiply
+signed coordinates in a fixed order, and sample the shared 1/16-pixel grid.
+The GPU computes exact two-word squared distances and corrects its root estimate,
+including full 8192-pixel diagonals. Neutral controls preserve the input exactly.

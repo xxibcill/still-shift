@@ -1,3 +1,4 @@
+import { radialDistortionKernel } from "./radial-distortion.ts";
 import { stylizeEffectKernel } from "./stylize-effects.ts";
 import { noiseEffectKernel } from "./noise-effects.ts";
 import { warpEffectKernel } from "./warp-effects.ts";
@@ -77,7 +78,8 @@ export const compositionEffectPlugin = (id: string) =>
   sampledBlurKernel(id) ??
   warpEffectKernel(id) ??
   noiseEffectKernel(id) ??
-  stylizeEffectKernel(id);
+  stylizeEffectKernel(id) ??
+  radialDistortionKernel(id);
 
 /** A callback owns at most 32 surfaces and 128 MiB (or four full-size frames). */
 class EffectSurfaces<S extends { width: number; height: number }> {

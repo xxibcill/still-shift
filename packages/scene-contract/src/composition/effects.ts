@@ -1,3 +1,4 @@
+import { RADIAL_DISTORTION_DEFINITIONS } from "./radial-distortion.ts";
 import { z } from "zod";
 import {
   defineCompositionEffect,
@@ -45,6 +46,7 @@ export const COMPOSITION_EFFECTS: Readonly<
   ...WARP_EFFECT_DEFINITIONS,
   ...NOISE_EFFECT_DEFINITIONS,
   ...STYLIZE_EFFECT_DEFINITIONS,
+  ...RADIAL_DISTORTION_DEFINITIONS,
   "blur.primitive": defineEffect({ radius: { default: 0, min: 0, max: 1000 } }),
   "time.echo": defineEffect(
     {

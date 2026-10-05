@@ -752,6 +752,14 @@ Identifiers: `time`, `frame`, `value`, `index`, `layerCount`, `fps`. Components:
 | `stylize.vignette`             | `color`          | color  | `#000000`       | colour                                       |
 | `stylize.chromatic-aberration` | `offset`         | vec2   | `[0,0]`         | -1000–1000 per axis                          |
 | `stylize.chromatic-aberration` | `amount`         | scalar | `1`             | 0–1                                          |
+| `distort.bulge`                | `center`         | vec2   | `[0.5,0.5]`     | 0–1 per axis                                 |
+| `distort.bulge`                | `radius`         | vec2   | `[100,100]`     | 0.0625–10000 per axis                        |
+| `distort.bulge`                | `amount`         | scalar | `0`             | -1–1                                         |
+| `distort.ripple`               | `center`         | vec2   | `[0.5,0.5]`     | 0–1 per axis                                 |
+| `distort.ripple`               | `amplitude`      | scalar | `0`             | -1000–1000                                   |
+| `distort.ripple`               | `wavelength`     | scalar | `64`            | 1–100000                                     |
+| `distort.ripple`               | `phase`          | scalar | `0`             | -36000–36000                                 |
+| `distort.ripple`               | `decay`          | scalar | `0`             | 0–1                                          |
 | `blur.primitive`               | `radius`         | scalar | `0`             | 0–1000                                       |
 | `time.echo`                    | `spacing`        | scalar | `1`             | 1–120                                        |
 | `time.echo`                    | `count`          | scalar | `3`             | 1–8 (integer)                                |

@@ -44,12 +44,13 @@ still hold before relying on them.
 ## Current state
 
 - **CE6 in progress (2026-10-06):** `codex/composition-ce6-completion` from
-  CE7 `817cc9f`. Checkpoints through `23a0547` deliver paired plugins, color/
-  curves, transitions, blur, warps and seeded fields. Vignette/chromatic effects
-  now pass 48 focused tests, build/lint/schema/boundaries and 54 native cases /
-  648 frames / 756 seeks with max delta 1; independent pixel oracles are exact.
-  Remaining bulge/ripple/shadows/scoped inputs, adjustment history, linear-light
-  and complete hardware/hash/export/cost/full-gate acceptance remain.
+  CE7 `817cc9f`. Checkpoints through `1ce28ab` deliver paired plugins, color/
+  curves, transitions, blur, warps, seeded fields and stylize kernels. Bulge/
+  ripple now pass 43 focused tests, build/lint/schema/boundaries and 54 native
+  cases / 648 frames / 756 seeks exactly. 65,536 arbitrary-precision root
+  points and 131,072 maximum-frame source coordinates are exact.
+  Remaining shadows/scoped inputs, adjustment history, linear-light and
+  complete hardware/hash/export/cost/full-gate acceptance remain.
   No owner decision is pending. [Evidence](./composition-ce6-completion-results.json).
 
 - **CE7 complete (2026-10-06):** `codex/composition-ce7`, code `0e48388`.
@@ -186,6 +187,18 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-06 — CE6 bulge and ripple checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce6-completion`.
+- **Done:** actual GPU radial image warps, Canvas references, bounded control
+  tables and exact signed sampling coordinates/two-word squared distances.
+- **Results:** 43 focused tests plus build/lint/schema/boundaries; 54 cases /
+  648 frames / 756 seeks are exact. Arbitrary-precision root and full 8192×8192
+  coordinate oracles pass at 65,536 and 131,072 points, respectively.
+- **Next:** shadows, scoped inputs/history and linear-light, then complete
+  hardware/hash/export/cost/full-gate acceptance and CE6 PR.
+- **Records:** [CE6 evidence](./composition-ce6-completion-results.json).
 
 ### 2026-10-06 — CE6 vignette and chromatic checkpoint
 
