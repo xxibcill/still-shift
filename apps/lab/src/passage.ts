@@ -77,6 +77,8 @@ const errors = (error: unknown, failedEdit?: FailedEdit) => {
   for (const diagnostic of passageDiagnostics(error)) {
     const label = [
       diagnostic.beat,
+      diagnostic.sourcePath,
+      diagnostic.path,
       diagnostic.node,
       diagnostic.event,
       diagnostic.message,

@@ -1,0 +1,34 @@
+{
+  "date": "2026-10-05",
+  "pullRequest": "https://github.com/xxibcill/still-shift/pull/35",
+  "reviewHead": "869a7930965447f459e42e7c9a66023dee5a0a5e",
+  "branch": "codex/pr35-review-fixes",
+  "delivery": "One commit per finding; one push after the final commit",
+  "findings": [
+    {
+      "id": "native-schema-diagnostics",
+      "comment": "https://github.com/xxibcill/still-shift/pull/35#discussion_r4183175564",
+      "status": "fixed-locally",
+      "change": "Preserve every schema diagnostic's code, severity, message and JSON field path, with beat and sourcePath context; display those locations in Lab",
+      "regression": "A picture with invalid root and layer IDs retains both original diagnostics through the file loader",
+      "verification": [
+        "12 focused unit/integration tests passed",
+        "pnpm build passed",
+        "Targeted ESLint, Prettier and git diff --check passed"
+      ]
+    },
+    {
+      "id": "evidence-text-states",
+      "comment": "https://github.com/xxibcill/still-shift/pull/35#discussion_r4183175570",
+      "status": "pending"
+    },
+    {
+      "id": "webgl-passage-contexts",
+      "comment": "https://github.com/xxibcill/still-shift/pull/35#discussion_r4183175575",
+      "status": "pending"
+    }
+  ],
+  "finalVerification": "pending",
+  "push": "pending",
+  "githubActions": "No workflow or repository Actions setting changed"
+}

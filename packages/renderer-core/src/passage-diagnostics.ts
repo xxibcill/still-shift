@@ -9,6 +9,8 @@ export type PassageDiagnostic = {
   event?: string;
   frame?: number;
   path?: string;
+  /** Source file containing the field addressed by path. */
+  sourcePath?: string;
 };
 export class PassageError extends Error {
   readonly diagnostics: PassageDiagnostic[];

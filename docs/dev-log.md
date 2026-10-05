@@ -43,6 +43,13 @@ still hold before relying on them.
 
 ## Current state
 
+- **PR #35 review fixes in progress (2026-10-05):** isolated
+  `codex/pr35-review-fixes` from `869a793`. Three findings are posted inline.
+  Native schema diagnostics now retain field/beat/source context; 12 focused
+  checks, build and targeted lint pass. Evidence text states and bounded WebGL
+  passage previews follow. One commit per finding; one final push is pending.
+  [Evidence](./pr-35-fix-results.json).
+
 - **CE4a complete (2026-10-05):** `codex/composition-ce4a-completion`, implementation
   `876814f` from CE12 `0987396`. Adapted/native picture passages, story fractional
   shutter clocks and explicit narrative bindings are delivered. Full local checks,
@@ -140,6 +147,17 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-05 — Fix PR #35 native composition diagnostics
+
+- **Agent / branch:** Codex on isolated `codex/pr35-review-fixes`, from `869a793`.
+- **Done:** posted all three inline findings; loader retains every schema diagnostic
+  and adds beat/source context. Lab displays the source filename and field path.
+- **Results:** two invalid fields retain both original diagnostics; 12 focused
+  unit/integration checks, build, targeted lint and formatting pass.
+- **Open / next:** evidence text-state validation and bounded WebGL previews;
+  commit each finding separately, then push all three together. Owner merge remains.
+- **Records:** [fix evidence](./pr-35-fix-results.json).
 
 ### 2026-10-05 — Complete CE4a story and native passage integration
 

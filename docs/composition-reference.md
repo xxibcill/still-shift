@@ -1472,7 +1472,9 @@ Diagnostics: `comp-passage-reference` (invalid map/file), `comp-passage-limit`
 (over 400 overrides), `comp-passage-beat` (unknown ID), `comp-passage-timing`
 (dimensions/fps/duration mismatch), `comp-passage-handoff` (implicit carry) and
 `comp-passage-renderer` (native pictures require the composition path). Native
-composition schema diagnostics retain their codes and gain the beat ID.
+composition schema diagnostics retain every code and JSON field path, and gain the
+beat ID and a separate `sourcePath` for the picture file. Lab displays both the
+source and field location.
 The API checks map, picture and asset paths against the Lab workspace boundary.
 
 Native pictures declare `metadata.passage` with three explicit maps:

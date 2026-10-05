@@ -7,6 +7,7 @@ import {
 } from "@still-shift/scene-contract";
 import {
   passageError,
+  PassageError,
   validatePassageCompositions,
 } from "@still-shift/renderer-core/passage-compositions";
 export {
@@ -50,10 +51,13 @@ export async function loadPassageCompositions(
     await allowPath?.(file);
     const result = validateComposition(await readReferenceJson(file, id));
     if (!result.ok)
-      passageError("comp-passage-reference", result.diagnostics[0]!.message, {
-        beat: id,
-        path: file,
-      });
+      throw new PassageError(
+        result.diagnostics.map((diagnostic) => ({
+          ...diagnostic,
+          beat: id,
+          sourcePath: file,
+        })),
+      );
     for (const asset of result.composition.assets)
       await allowPath?.(resolve(dirname(file), asset.path));
     const loaded = await readCompositionSource(file).catch((error) =>
