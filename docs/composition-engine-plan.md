@@ -2973,13 +2973,16 @@ results on known polygons), pixel tests, animated trim/morph sequences.
 
 **Implementation record (2026-10-05):** Codex on `codex/composition-ce5`, from
 completed CE11 `a0c56df` / [PR #37](https://github.com/xxibcill/still-shift/pull/37).
-Typed shape trees, all primitives/operators, native painting, bounds/constraints,
-ID-based authoring, expression baking and inspector tracks/outlines are delivered.
-All 1,568 unit tests and static checks pass. Painted-child group operator references
-and optional vector component defaults are repaired. The 22-case / 154-frame browser
-probe passes unchanged near tier with exact connector/nib/reverse checks. Complete
-reference fixtures/baselines, animated trim/morph, MP4/inspector acceptance and the
-full local gate remain in progress. Prior failures are retained.
+Native shapes, all primitives/paints/operators, bounds/constraints, nested
+ID-based authoring/baking and inspector tracks/outlines are delivered. All 1,569
+unit tests/static checks pass. A 31-cell reference sheet and three new CE5 baseline
+fixtures cover every native field family; full forward/reverse hashes match.
+The 32-case / 224-frame probe passes unchanged near tier; 144 legacy connector/nib
+frames are exact after repairing ink winding. Both backends produce byte-identical
+independent preview MP4s and PNG/raw transports. Overflow retains code/node/frame
+and publishes nothing; inspector edits/history/save pass. Initial failures are
+retained. Only full local gate/frozen CE0 verification and milestone closeout/PR
+remain in progress.
 [Evidence](./composition-ce5-results.json).
 
 **Completion record:** _to be filled in._

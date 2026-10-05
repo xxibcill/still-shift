@@ -192,6 +192,112 @@
         "canvas": "composition-canvas-1.23.1",
         "webgl": "composition-webgl2-0.37.1"
       }
+    },
+    {
+      "name": "Complete native reference, animation, legacy connector, inspector and export acceptance",
+      "status": "checkpoint",
+      "changes": [
+        "31-cell reference sheet covers every primitive, four paint types, all nine operators/four Boolean modes, grouping, holes, dashes and degenerate cases. New CE5 baseline stores 384 full-frame hashes across three fixtures and both backends, plus sampled PNGs; CE0 unchanged.",
+        "96-frame aligned cubic morph/animated trim/seeded wiggle verified forward and reverse. 32-case sampled backend matrix contains 224 frames.",
+        "48-frame plain/ink/brush legacy connector comparisons are pixel-exact. Ink now uses legacy nonzero winding, while brush keeps evenodd cuts. Nib samplers cache lengths and preserve legacy arithmetic, charging segment visits to work budget.",
+        "Native inspector selector/outline/temporal handle edits, undo/redo and source save pass.",
+        "Both backends export 96 frames with byte-identical independent preview encoding and PNG/raw transports. Geometry overflow publishes nothing and retains stable code/node/frame through export; runtime worker version bumped.",
+        "Generated native field/limit tables and full operator semantics/licensing/reference documentation."
+      ],
+      "verification": {
+        "fullUnitTests": 1569,
+        "unitFiles": 142,
+        "static": "build/lint/schema/boundaries/owned formatting passed",
+        "sampleMatrix": {
+          "cases": 32,
+          "frames": 224,
+          "maxDelta": 2,
+          "minimumPsnrDb": 57.223400814603835
+        },
+        "nativeAcceptance": {
+          "environment": {
+            "profile": "chromium-software-2",
+            "browserVersion": "151.0.7922.34",
+            "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+            "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+            "platform": "darwin",
+            "arch": "arm64"
+          },
+          "reports": [
+            {
+              "fixture": "reference-sheet",
+              "frames": 48,
+              "reverseFrames": 48,
+              "maxDelta": 2,
+              "minPsnr": 66.66822753610552
+            },
+            {
+              "fixture": "animation",
+              "frames": 96,
+              "reverseFrames": 96,
+              "maxDelta": 1,
+              "minPsnr": 74.95529650432465
+            },
+            {
+              "backend": "canvas2d",
+              "exportedFrames": 96,
+              "independentMp4": "byte-identical",
+              "transport": "byte-identical"
+            },
+            {
+              "backend": "webgl2",
+              "exportedFrames": 96,
+              "independentMp4": "byte-identical",
+              "transport": "byte-identical"
+            },
+            {
+              "fixture": "core",
+              "frames": 48,
+              "reverseFrames": 48,
+              "maxDelta": 0,
+              "minPsnr": 999
+            },
+            {
+              "legacyConnectors": [
+                {
+                  "style": "plain",
+                  "frames": 48,
+                  "maxDelta": 0
+                },
+                {
+                  "style": "ink",
+                  "frames": 48,
+                  "maxDelta": 0
+                },
+                {
+                  "style": "brush",
+                  "frames": 48,
+                  "maxDelta": 0
+                }
+              ]
+            },
+            {
+              "geometryOverflow": "both exports reject with comp-shape-work-limit; no output published"
+            }
+          ],
+          "inspector": "passed",
+          "baseline": "exact"
+        },
+        "fullGate": "pending"
+      },
+      "failuresAndRepairs": [
+        "Initial export page load timed out. Isolated module diagnostic loaded successfully and subsequent independent exports passed without timeout changes; no confirmed cause.",
+        "Initial legacy reference used linear reveal instead of the authored curve; corrected to sampled native reveal.",
+        "Ink/29 differed at six channels (maximum delta16) despite exact geometry. Diagnostic proved native direct draw matches preview; nonzero/ evenodd fill mismatch was the cause. Corrected ink winding; all 144 legacy frames now exact.",
+        "Cached nib sampler now preserves legacy multiplication/division/subtraction order with bounded visits. New sampler overflow test initially matched error code in its message; corrected to message while other checks assert structured code.",
+        "Negative export initially lost custom PassageError fields at Playwright boundary. Explicit diagnostic result now preserves code/node/frame/path before rejecting and cleanup."
+      ],
+      "versions": {
+        "evaluator": "composition-evaluator-27",
+        "canvas": "composition-canvas-1.23.2",
+        "webgl": "composition-webgl2-0.37.2",
+        "export": "chromium-ffmpeg-0.6.1"
+      }
     }
   ],
   "polygonLibrary": {
@@ -203,8 +309,6 @@
     "integrity": "sha512-WuRO1ZHzyYTVHY78r4wVWVydvQ+1lx9qZ+DeZa/8zhvrxIgCVzElJ6lwSMGtUUKFPefhvfJsHZ5C9RNkgisCOQ=="
   },
   "pending": [
-    "Complete native reference sheet and stored new baseline; morph/trim sequences and native connector legacy comparison",
-    "Independent native MP4 export/diagnostic acceptance",
-    "Full pnpm check and frozen CE0 baseline verification, milestone PR"
+    "Full pnpm check and frozen CE0 baseline verification, milestone completion record and PR"
   ]
 }

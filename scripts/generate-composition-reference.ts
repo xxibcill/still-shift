@@ -21,6 +21,8 @@ import {
   EXPRESSION_LIMITS,
   STORY_MOTION_PRESETS,
   TEXT_INTENT_PRESETS,
+  shapeFields,
+  SHAPE_LIMITS,
 } from "@still-shift/scene-contract";
 import { presets } from "@still-shift/motion";
 type Schema = {
@@ -234,6 +236,58 @@ ${table(["Function", "Overloads", "Behavior"], builtins)}
 ${table(["Effect", "Property", "Type", "Default", "Range"], effects)}
 
 Blend modes: ${COMPOSITION_BLEND_MODES.map(code).join(", ")}.
+
+## Generated native shape fields
+
+Native selectors use authored IDs: \`diagram.contents[group].contents[path].path\`,
+\`diagram.contents[group].transform.position.x\` and
+\`diagram.contents[paint].stops[stop].color\`. Vector components are x/y; colour
+components are r/g/b/a. The \`transform\` rows apply to groups and the
+\`repeater-transform\` rows to repeaters. Stop fields apply to gradient stops.
+
+${table(
+  ["Content type", "Property", "Type", "Default", "Range"],
+  [
+    "transform",
+    "repeater-transform",
+    "stop",
+    "rect",
+    "ellipse",
+    "polystar",
+    "path",
+    "fill",
+    "stroke",
+    "gradient-fill",
+    "gradient-stroke",
+    "trim-paths",
+    "repeater",
+    "offset-path",
+    "round-corners",
+    "wiggle-paths",
+    "zig-zag",
+    "pucker-bloat",
+    "twist",
+  ].flatMap((type) =>
+    Object.entries(shapeFields(type)).map(([name, field]) => [
+      code(type),
+      code(name),
+      field.type,
+      field.default === undefined
+        ? "required"
+        : code(JSON.stringify(field.default)),
+      field.type === "scalar" || field.type === "vec2"
+        ? `${field.min}–${field.max}`
+        : "—",
+    ]),
+  ),
+)}
+
+Native geometry limits:
+
+${table(
+  ["Limit", "Value"],
+  Object.entries(SHAPE_LIMITS).map(([name, value]) => [code(name), value]),
+)}
 
 ## Generated intent registry
 

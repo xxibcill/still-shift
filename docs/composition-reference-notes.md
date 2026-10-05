@@ -15,6 +15,68 @@ a structural schema, then semantic rules (references, cycles, limits). The CE1 m
 defines and validates the format. CE2 evaluates it without drawing; the CE3 render
 graph and Canvas 2D backend [render](#rendering-a-composition) the evaluated state.
 
+## Native shape contents (CE5)
+
+A `shape` layer owns an ordered `contents` tree. Primitives are `rect`, `ellipse`,
+`polystar` (`kind: star | polygon`) and open/closed cubic `path`; `group` gives
+children their own 2D transform and opacity. Rectangle/ellipse coordinates are
+centred on their `position`. Paths store vertex coordinates and relative incoming/
+outgoing tangent offsets. Keyed paths require matching vertex counts and closure;
+`firstVertex` aligns closed paths before interpolation. Zero-size primitives produce
+no geometry. Polystar point counts round to the nearest integer, bounded to 2–256.
+
+Paints are `fill`, `stroke`, `gradient-fill` and `gradient-stroke`. Fills support
+`nonzero` or `evenodd`. Strokes support butt/round/square caps, miter/round/bevel
+joins, a miter limit, static nonnegative dash arrays and animated dash offset.
+An odd dash array repeats twice; a zero-total array is solid. Gradient kind is
+`linear` or `radial`; endpoints, opacity, stop offsets and whole colours animate.
+Equal-offset stops retain authored order. Coincident endpoints use the last stop.
+Stroke `style: ink | brush` reuses the established nib profiles and declared path
+ID, retaining the original full path coordinates when trimmed. Plain strokes use
+native cubic traces. Brush cuts reveal the wash and backdrop.
+
+Contents and operators are processed top to bottom; paints draw bottom to top.
+A paint binds upstream geometry, so subsequent operators update the geometry it
+paints. A parent operator also reaches a painted child group. A child paint keeps
+its own coordinate system, transform and opacity; an outer paint consumes child
+geometry in parent coordinates. A repeater after a paint copies the paint and its
+coordinates; a repeater before a paint creates compound geometry for that paint.
+
+| Operator        | Native semantics                                                                                                                                                                                                                                                                       |
+| --------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `trim-paths`    | Normalized start/end are sorted; equal endpoints are empty and a full interval is unchanged. Offset is degrees. Closed paths wrap; open paths clamp. `simultaneous` trims each contour separately; `individual` trims their combined authored-order length.                            |
+| `repeater`      | Copies support fractional final-copy opacity and a signed offset. Transform powers use position, anchor, scale, rotation and skews; invalid fractional negative-scale powers fail. `above` or `below` controls copy order; default is `below`. Start/end opacity varies across copies. |
+| `merge-paths`   | `union`, top operand minus the rest (`subtract`), intersection of every operand, or XOR fold (`exclude`). Empty operands remain meaningful. Clipping preserves hole winding.                                                                                                           |
+| `offset-path`   | Closed contours grow/shrink with miter, round or bevel joins. Open contours shift along their signed left normal, with joined corners; they do not become filled stroke outlines.                                                                                                      |
+| `round-corners` | Circular fillets on flattened corners; open endpoints remain unchanged.                                                                                                                                                                                                                |
+| `wiggle-paths`  | Seeded offsets from the declared path ID, frequency, evolution and local layer seconds. Detail controls uniform arc-length samples; optional smooth handles.                                                                                                                           |
+| `zig-zag`       | Alternating normal offsets along each original cubic, with corner or smooth points; open endpoints remain unchanged.                                                                                                                                                                   |
+| `pucker-bloat`  | Positive amount moves vertices toward their mean and absolute control points outward; negative amount reverses it.                                                                                                                                                                     |
+| `twist`         | Positive clockwise rotation, strongest at the centre and falling linearly to zero at the furthest sampled radius. This is an explicit native falloff.                                                                                                                                  |
+
+Polygon clipping and closed offsetting use pinned `clipper2-ts` 2.0.1-18,
+[Boost Software License 1.0](https://github.com/countertype/clipper2-ts/blob/main/LICENSE),
+a TypeScript port of [Clipper2](https://github.com/AngusJohnson/Clipper2). Input
+coordinates quantize to 1/1,024 units, with at most 1,024 polygon vertices per
+operation. Curves flatten at fixed 0.25-unit tolerance and maximum depth 12;
+geometry work has explicit path/vertex/coordinate caps. Nib segment lookups also
+consume work so complex marks cannot create unbounded sampling. These native
+choices do not claim pixel parity with unpublished AE deformation formulas.
+
+Shape bounds include cubic extrema and conservative stroke/miter coverage. Attach,
+contact and safe-area constraints use them. `follow-path` reads the first compiled
+contour in world arc length; an empty contour reports `comp-shape-follow-empty`.
+Work/coordinate failures report a stable diagnostic with layer and frame; export
+fails without publishing an output.
+
+The [reference sheet](../benchmarks/fixtures/composition/ce5/reference-sheet.json)
+and [animated trim/morph fixture](../benchmarks/fixtures/composition/ce5/animation.json)
+have their own [stored baseline](../tests/visual/composition-shapes/README.md).
+The baseline includes all full-frame hashes on both backends and exact reverse
+seeks; Canvas/WebGL comparisons use the unchanged near tier. Existing CE0 baselines
+remain frozen. See the [native builder example](../examples/composition/09-native-shapes.ts)
+for ID-based animation and `presets.drawOn` on a painted group.
+
 ## Evaluating a frame
 
 ```ts

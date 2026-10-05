@@ -2,10 +2,36 @@ import { inkStrokeOutline } from "../../ink-path.ts";
 import { brushStroke } from "../../brush-path.ts";
 import type { ShapeGeometryBudget } from "./budget.ts";
 import { geometrySource, type GeometryPath } from "./geometry.ts";
-import { arcLengths, pointAtLength } from "./path.ts";
+import { arcLengths } from "./path.ts";
+import type { Point } from "../../node-transform.ts";
 import type { ShapePaint, ShapeNib } from "./types.ts";
 
 type Stroke = Extract<ShapePaint, { type: "stroke" | "gradient-stroke" }>;
+
+/** Cache segment lengths while retaining the legacy nib's subtraction and multiply/divide order. */
+export function nibSampler(points: Point[], budget: ShapeGeometryBudget) {
+  const segments = points
+      .slice(1)
+      .map((point, i) =>
+        Math.hypot(point[0] - points[i]![0], point[1] - points[i]![1]),
+      ),
+    total = segments.reduce((sum, length) => sum + length, 0);
+  return (progress: number): Point => {
+    let distance = total * Math.max(0, Math.min(1, progress));
+    for (const [index, length] of segments.entries()) {
+      budget.vertices(1);
+      const a = points[index]!,
+        b = points[index + 1]!;
+      if (distance <= length && length > 0)
+        return [
+          a[0] + ((b[0] - a[0]) * distance) / length,
+          a[1] + ((b[1] - a[1]) * distance) / length,
+        ];
+      distance -= length;
+    }
+    return points.at(-1)!;
+  };
+}
 function dashSpans(
   span: [number, number],
   length: number,
@@ -61,8 +87,7 @@ export function shapeNibs(
   const spans = paint.dashes?.length
     ? dashSpans(source.span, length, paint.dashes, paint.dashOffset, budget)
     : [source.span];
-  const sample = (progress: number) =>
-    pointAtLength(source.points, lengths, progress * length);
+  const sample = nibSampler(source.points, budget);
   return spans.map(([start, end]) => {
     // Conservative bound includes helper intermediate samples, not just returned outlines.
     budget.vertices(paint.style === "ink" ? 2048 : 16384);

@@ -14,7 +14,9 @@ import type {
   CompositionScene,
   PreviewScene,
   IllustratedScene,
+  PassageDiagnostic,
 } from "@still-shift/renderer-core";
+import { AnimationEngineError } from "@still-shift/scene-contract";
 import {
   defaultBrowserProjectRoot,
   runtimeBrowserUrl,
@@ -36,7 +38,7 @@ export type ExportableScene =
   | IllustratedScene
   | CompositionScene;
 
-const EXPORT_WORKER_VERSION = "chromium-ffmpeg-0.6.0";
+const EXPORT_WORKER_VERSION = "chromium-ffmpeg-0.6.1";
 
 export type ExportRequest = {
   runtime?: BrowserRuntimeOptions;
@@ -586,9 +588,25 @@ export const exportScene = async (
     );
     assertPinnedRenderEnvironment(renderEnvironment);
     encodePathStart = performance.now();
-    const browserResult = await page.evaluate(
-      ({ scene, hasDepth, transport }) =>
-        window.runStillShiftExport!(scene, hasDepth, transport),
+    const outcome = await page.evaluate(
+      async ({ scene, hasDepth, transport }) => {
+        try {
+          return {
+            ok: true as const,
+            value: await window.runStillShiftExport!(
+              scene,
+              hasDepth,
+              transport,
+            ),
+          };
+        } catch (error) {
+          // Playwright otherwise discards custom Error fields at the browser boundary.
+          const diagnostics = (error as { diagnostics?: PassageDiagnostic[] })
+            .diagnostics;
+          if (!diagnostics?.length) throw error;
+          return { ok: false as const, diagnostics };
+        }
+      },
       // The deep composition type exceeds Playwright's serialisable-type check.
       {
         scene: scene as PreviewScene,
@@ -596,6 +614,23 @@ export const exportScene = async (
         transport,
       },
     );
+    if (!outcome.ok) {
+      const diagnostic = outcome.diagnostics[0]!;
+      throw new AnimationEngineError(
+        "RENDER_FAILED",
+        `${diagnostic.code}: ${diagnostic.message}`,
+        {
+          diagnostic: diagnostic.code,
+          ...(diagnostic.node ? { node: diagnostic.node } : {}),
+          ...(diagnostic.path ? { path: diagnostic.path } : {}),
+          ...(diagnostic.frame === undefined
+            ? {}
+            : { frame: diagnostic.frame }),
+          diagnostics: JSON.stringify(outcome.diagnostics),
+        },
+      );
+    }
+    const browserResult = outcome.value;
     if (frameState.error) throw frameState.error;
     if (frameState.nextIndex !== scene.timeline.frameCount)
       throw new Error("Not all frames reached the encoder");

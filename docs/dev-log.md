@@ -44,13 +44,13 @@ still hold before relying on them.
 ## Current state
 
 - **CE5 in progress (2026-10-05):** `codex/composition-ce5` from CE11 `a0c56df`.
-  Native shape geometry, painting, constraints, nested authoring/baking and inspector
-  tracks/outlines are delivered. All 1,568 unit tests, static checks and the 22-case
-  browser probe pass; optional vector defaults and painted-group operators repaired.
-  Complete reference fixtures/baselines, animated trim/morph, MP4/inspector acceptance,
-  full local gate and milestone PR remain. Prior exploratory exact backend failures
-  are retained; unchanged near tier passes. No owner decision is pending.
-  [Evidence](./composition-ce5-results.json).
+  Native shapes, authoring/baking/inspector and complete reference/animation/MP4
+  acceptance pass. All 1,569 unit tests and static checks pass. Native 32-case probe
+  meets unchanged near tier; all 144 legacy connector/nib frames are exact. New CE5
+  baseline hashes/seek checks and independent MP4/transport parity pass. Ink winding
+  and export diagnostic transport repaired; failures retained. Full local gate,
+  frozen CE0 verification and milestone PR remain before CE7. No owner decision
+  is pending. [Evidence](./composition-ce5-results.json).
 
 - **CE11 complete (2026-10-05):** `codex/composition-ce11`, runtime `5f36268`.
   Native inspector, graph/handle edits, overlays, lossless history, guarded source
@@ -167,6 +167,21 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-05 — Verify CE5 native reference, connector and export acceptance
+
+- **Agent / branch:** Codex on `codex/composition-ce5`, after `48ba291`.
+- **Done:** 31-cell reference and new CE5 baselines; 96-frame morph/trim/wiggle,
+  native inspector edits/save and independent both-backend MP4 checks.
+- **Results:** 1,569 unit tests/static checks pass; 32-case / 224-frame probe meets
+  unchanged near tier. All 144 legacy connector/nib frames are exact. Full native
+  forward/reverse hashes match; independent MP4 and both transports are identical.
+- **Repaired:** ink winding mismatch; retained legacy nib arithmetic with bounded
+  sampling; export browser boundary now preserves overflow diagnostic locations.
+- **Rejected:** initial module-load timeout and failed comparison/test inputs are
+  retained. Only new CE5 baselines were written; frozen CE0 baselines unchanged.
+- **Next:** full local `pnpm check`, milestone closeout/PR, then CE7 branch.
+- **Records:** [CE5 evidence](./composition-ce5-results.json).
 
 ### 2026-10-05 — Complete CE5 native authoring checkpoint
 

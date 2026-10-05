@@ -64,7 +64,13 @@ function nibs(ctx: CanvasRenderingContext2D, draw: ShapeDraw) {
       ctx.beginPath();
       contour(ctx, nib.body);
       for (const cut of nib.cuts) contour(ctx, cut);
-      ctx.fill("evenodd");
+      ctx.fill(
+        draw.paint.type === "stroke" || draw.paint.type === "gradient-stroke"
+          ? draw.paint.style === "ink"
+            ? "nonzero"
+            : "evenodd"
+          : "evenodd",
+      );
     }
 }
 

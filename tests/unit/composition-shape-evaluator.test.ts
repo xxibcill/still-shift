@@ -13,7 +13,11 @@ import {
 import { buildRenderGraph } from "../../packages/renderer-core/src/composition/render/graph.ts";
 import { passageDiagnostics } from "../../packages/renderer-core/src/passage-diagnostics.ts";
 import { transformPoint } from "../../packages/renderer-core/src/node-transform.ts";
-import { shapeNibs } from "../../packages/renderer-core/src/composition/shapes/nib.ts";
+import {
+  shapeNibs,
+  nibSampler,
+} from "../../packages/renderer-core/src/composition/shapes/nib.ts";
+import { pointOnPath } from "../../packages/renderer-core/src/prepared-scene.ts";
 import { ShapeGeometryBudget } from "../../packages/renderer-core/src/composition/shapes/budget.ts";
 import { inkStrokeOutline } from "../../packages/renderer-core/src/ink-path.ts";
 import { brushStroke } from "../../packages/renderer-core/src/brush-path.ts";
@@ -297,6 +301,22 @@ describe("native shape evaluation and property integration", () => {
 });
 
 describe("native ink/brush geometry reuse", () => {
+  it("retains legacy nib arithmetic on unequal segments and charges every lookup", () => {
+    const points: [number, number][] = [
+        [20, 40],
+        [80, 20],
+        [80, 20],
+        [141, 43],
+        [155, 47],
+      ],
+      sample = nibSampler(points, new ShapeGeometryBudget());
+    for (let i = -1; i <= 513; i++)
+      expect(sample(i / 512)).toEqual(pointOnPath({ points }, i / 512));
+    const limited = new ShapeGeometryBudget({}, { vertices: 262144, paths: 0 });
+    expect(() => nibSampler(points, limited)(1)).toThrow(
+      /generated-vertex work budget/,
+    );
+  });
   it("uses original source coordinates and IDs for nib reveals, including dashed spans", () => {
     const points: [number, number][] = [
         [0, 0],
@@ -340,13 +360,7 @@ describe("native ink/brush geometry reuse", () => {
       expect(actualPoints.map((points) => points.length)).toEqual(
         expectedPoints.map((points) => points.length),
       );
-      actualPoints.forEach((points, index) =>
-        points.forEach((point, i) =>
-          point.forEach((value, axis) =>
-            expect(value).toBeCloseTo(expectedPoints[index]![i]![axis]!, 12),
-          ),
-        ),
-      );
+      expect(actualPoints).toEqual(expectedPoints);
       const dashed = shapeNibs(
         geometry,
         { ...paint, dashes: [10, 10] },
