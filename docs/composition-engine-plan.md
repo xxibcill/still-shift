@@ -3362,6 +3362,13 @@ light contract, or resume realistic surface shading. See the
 [preparation evidence](./composition-ce8lf-results.json) for explicit alpha assets,
 candidate flags, geometry, bounded budgets, fixtures and integration decisions.
 
+**Preparation delivered (2026-10-06):** [draft PR #39](https://github.com/xxibcill/still-shift/pull/39)
+contains the reviewable specification and isolated CPU/shader/geometry prototypes.
+Nine analytic tests and 96 frozen poses pass; pinned seeking/independent PNG
+repeats and 12 hardware probes are exact. Proposed budgets and visible soft-shadow
+banding remain owner decisions. Production integration and its full acceptance
+remain outstanding; no CE8-L-F milestone completion is claimed.
+
 ---
 
 ## CE9 — Expressions and motion behaviours

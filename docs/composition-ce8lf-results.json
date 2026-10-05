@@ -3,7 +3,7 @@
   "date": "2026-10-06",
   "base": "0e4838852855f6dc8cf91bba763a402dfd716f88",
   "branch": "codex/composition-ce8lf-prototype",
-  "status": "reviewable-preparation-only",
+  "status": "preparation-complete-integration-pending",
   "productionMilestoneComplete": false,
   "checks": {
     "toolchain": "passed: Node 22.23.1, pnpm 10.29.3, Python 3.12.11, uv 0.7.12, Playwright 1.62.1 / Chromium 1234 / 151.0.7922.34, FFmpeg/ffprobe 8.0.1",
@@ -29,7 +29,6 @@
     "Focused lint caught an unused gallery helper import while the screenshot step was incomplete; completed the step and final lint passes."
   ],
   "pending": [
-    "draft PR publication/attachment",
     "CE8 and CE8-L production prerequisites",
     "owner policy and demonstrated 1080p budget selection",
     "eventual native asset/alpha/CE7 clock/precomp/cache/DOF, hardware and repeated real exports plus full local legacy acceptance"
@@ -538,5 +537,21 @@
       "tests/visual/cast-shadow-prototype/reference.json",
       "tests/visual/cast-shadow-prototype/solid-reference.json"
     ]
-  }
+  },
+  "pullRequest": {
+    "number": 39,
+    "url": "https://github.com/xxibcill/still-shift/pull/39",
+    "draft": true,
+    "base": "codex/composition-ce7"
+  },
+  "checkpoints": [
+    {
+      "commit": "20210b8",
+      "slice": "candidate specification and CPU oracle"
+    },
+    {
+      "commit": "f04f593",
+      "slice": "reviewed shader, frozen references and preparation evidence"
+    }
+  ]
 }

@@ -47,7 +47,8 @@ still hold before relying on them.
   `codex/composition-ce8lf-prototype` from CE7 `0e48388`. Candidate flat-alpha
   shadow specification, CPU/geometry oracle and isolated shader pass 9 analytic
   tests, 96 frozen poses, independent repeats and 12 hardware cases exactly.
-  Toolchain/static checks pass; draft PR is next. CE8/CE8-L
+  Toolchain/static checks pass; [draft PR #39](https://github.com/xxibcill/still-shift/pull/39)
+  is open and attached. Preparation is complete; CE8/CE8-L
   and owner policy/budget decisions precede production integration; advanced
   surface shading remains deferred. Primary checkout is untouched.
   [Specification](./composition-ce8lf-cast-shadow-spec.md),
@@ -186,24 +187,21 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
 
 ## Entries
 
-### 2026-10-06 — CE8-L-F candidate specification and CPU oracle
-
-- **Checkpoint update:** shader/reference/maximum-input probes and review complete;
-  96 poses, 288 seek draws, 96 independent PNG repeats and 12 actual hardware
-  comparisons are exact, plus max-input checks. Nine analytic tests and static
-  gates pass. Gallery records 4/16-sample banding; no production quality/timing or
-  full repository acceptance is claimed. Original references were retained.
+### 2026-10-06 — CE8-L-F bounded cast-shadow preparation
 
 - **Agent / branch:** Codex on `codex/composition-ce8lf-prototype`, CE7 `0e48388`.
-- **Scope:** resumed bounded cast-shadow preparation only; no production changes.
-- **Done:** explicit alpha inputs, scopes, sample tables, ray/projection math,
-  opacity/linear boundary and preliminary quality/work/memory budgets.
-- **Results:** 7 analytic tests, build and focused lint pass. Initial one-texel
-  edge expectations repaired to match specified transparent-border filtering.
-- **Next:** small isolated shader/reference fixtures, preparation review and draft
-  PR; production assets/hardware/export/full milestone gates await prerequisites.
-- **Records:** [candidate](./composition-ce8lf-cast-shadow-spec.md),
-  [evidence](./composition-ce8lf-results.json).
+- **Done:** `20210b8` specifies the candidate/CPU oracle; `f04f593` delivers the
+  independent shader, frozen alpha fixtures, reviewed gallery and evidence.
+- **Results:** 9 analytic tests; 96 frozen poses, 288 seek draws, 96 independent
+  PNG repeats and 12 actual hardware comparisons exact, plus maximum-input checks.
+  Toolchain/static gates pass. Full repository/native/real-export acceptance was
+  not run for this isolated preparation. Actions remain disabled.
+- **Limits:** four-sample lobes and 16-sample bands retained; no production
+  quality/performance claim. CE8/CE8-L, owner policy/budgets and integration remain.
+- **Delivery:** [draft PR #39](https://github.com/xxibcill/still-shift/pull/39) is open
+  and attached; primary checkout untouched. No merge performed.
+- **Records:** [specification](./composition-ce8lf-cast-shadow-spec.md),
+  [evidence](./composition-ce8lf-results.json), [gallery](./composition-ce8lf-gallery.png).
 
 ### 2026-10-05 — CE7 native acceptance and serial sample costs
 
