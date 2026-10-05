@@ -1,3 +1,4 @@
+import type * as ColorChecks from "../helpers/composition-color-effect-reference.ts";
 import type * as PluginChecks from "../helpers/composition-effect-plugin-reference.ts";
 import assert from "node:assert/strict";
 import { resolve } from "node:path";
@@ -30,6 +31,20 @@ try {
     ).checkEffectPluginRendering();
   });
   console.log("WebGL effect plugin registry:", plugins);
+  const colors = await page.evaluate(async () => {
+    const url = "/tests/helpers/composition-color-effect-reference.ts";
+    return (
+      (await import(url)) as typeof ColorChecks
+    ).checkColorEffectRendering();
+  });
+  console.log("WebGL native color effects:", JSON.stringify(colors));
+  const colorBytes = await page.evaluate(async () => {
+    const url = "/tests/helpers/composition-color-effect-reference.ts";
+    return (
+      (await import(url)) as typeof ColorChecks
+    ).checkColorEffectByteRounding();
+  });
+  console.log("WebGL color-effect byte rounding:", JSON.stringify(colorBytes));
   const blur = await page.evaluate(async () => {
     const url = "/tests/helpers/composition-webgl-blur.ts";
     return ((await import(url)) as typeof Blur).checkWebglPrimitiveBlur();

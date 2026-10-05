@@ -44,15 +44,15 @@ still hold before relying on them.
 ## Current state
 
 - **CE6 in progress (2026-10-06):** `codex/composition-ce6-completion` from
-  CE7 `817cc9f`. First slice adds typed effect definition registration, vec2
-  sampling/paths/inspector/builder defaults, checked bounds and captured export
-  versions. Focused 200 tests, build, schema, boundaries and lint pass; existing
-  effect/WebGL browser regressions are recorded in the evidence. The remaining
-  catalogue/dependencies, linear-light composition and
-  native/hardware/export/cost/full-gate acceptance remain. No owner decision is
-  pending. Paired GPU/Canvas callbacks now pass 35 focused tests and the WebGL
-  browser gate, including exact 12-frame plugin parity and seven random seeks.
-  [Evidence](./composition-ce6-completion-results.json).
+  CE7 `817cc9f`. Checkpoints `90d8c10` and `38a2856` deliver typed effect
+  contracts and paired GPU/Canvas callbacks with bounded scratch ownership.
+  Nine new color corrections now pass 150 focused tests, build/lint/schema/
+  boundaries and 243 native cases / 2,916 frames across nine layer variants;
+  maximum backend delta 1, minimum PSNR 64.97 dB, 3,402 seeks unchanged. All
+  32,895 valid byte/alpha pairs are exact at six posterize level counts.
+  Remaining curves/catalogue/dependencies, linear-light composition and native
+  hardware/stored-hash/export/cost/full-gate acceptance remain. No owner decision
+  is pending. [Evidence](./composition-ce6-completion-results.json).
 
 - **CE7 complete (2026-10-06):** `codex/composition-ce7`, code `0e48388`.
   Local holds/posterization, source loops, freeze remap, deterministic adaptive
@@ -188,6 +188,23 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-06 — CE6 native color correction checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce6-completion`.
+- **Done:** nine color effects, animated gradients, real GPU kernels and Canvas
+  equations with explicit premultiplied-byte reconstruction/quantization.
+- **Results:** 150 focused tests plus build/lint/schema/boundaries; 243 native
+  cases / 2,916 frames across nine layer variants, max delta 1 and minimum
+  PSNR 64.97 dB; 3,402 seeks pass. All 32,895 byte/alpha pairs are exact at six
+  posterize counts. Full milestone gate and remaining acceptance are pending.
+- **Rejected / repaired:** platform unpremultiplication crossed posterize
+  thresholds (delta 10); explicit common byte semantics repaired it. Reciprocal/
+  round-even hypotheses and shader/test-helper failures remain recorded.
+- **Next:** curves and remaining effects/dependencies, then linear-light and
+  complete native/hardware/export/cost/full-gate acceptance.
+- **Records:** [CE6 evidence](./composition-ce6-completion-results.json),
+  [plugin and color conventions](./composition-effect-plugins.md).
 
 ### 2026-10-06 — CE6 paired render callback checkpoint
 

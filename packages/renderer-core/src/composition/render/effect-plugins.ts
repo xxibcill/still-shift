@@ -1,3 +1,4 @@
+import { colorEffectKernel } from "./color-effects.ts";
 import {
   registerCompositionEffectDefinition,
   type CompositionEffectDefinition,
@@ -62,7 +63,8 @@ export function registerCompositionEffect(
     releaseDefinition();
   };
 }
-export const compositionEffectPlugin = (id: string) => plugins.get(id);
+export const compositionEffectPlugin = (id: string) =>
+  plugins.get(id) ?? colorEffectKernel(id);
 
 /** A callback owns at most 32 surfaces and 128 MiB (or four full-size frames). */
 class EffectSurfaces<S extends { width: number; height: number }> {
@@ -118,7 +120,7 @@ function checkedPlugin(effect: RenderEffect) {
     );
   return plugin;
 }
-const COPY = "void main() {pixel=texture(source,uv);}";
+const COPY = "void main() {pixel=texelFetch(source,ivec2(gl_FragCoord.xy),0);}";
 
 /** Transactional GPU stage: publish only a valid output; always release scratch textures. */
 export function renderGpuEffect(

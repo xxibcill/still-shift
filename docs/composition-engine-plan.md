@@ -3110,6 +3110,23 @@ native/hardware/export/cost/full-gate acceptance are still pending. Focused chec
 and failed attempts are recorded in [CE6 evidence](./composition-ce6-completion-results.json).
 CE6-P speed acceptance remains deferred; frozen baselines are unchanged.
 
+### CE6 native color correction checkpoint (2026-10-06)
+
+Nine color effects (levels, tint, hue/saturation, exposure, brightness/contrast,
+fill, gradient ramp, invert and posterize) have bounded animated descriptors,
+actual GPU shaders and Canvas reference equations. Native acceptance passes
+243 cases / 2,916 frames across nine drawable/group/precomp/adjustment variants
+and three parameter sets per effect, including animation. The maximum backend
+delta is 1, minimum PSNR 64.97 dB and all 3,402 seeks are unchanged. All 32,895
+valid byte/alpha pairs are exact at six posterize level counts. An initial
+antialiased-text posterize failure (delta 10) exposed platform reciprocal rounding;
+both adapters now use explicit premultiplied-byte reconstruction and half-up
+quantization. No threshold or frozen baseline changed. 150 focused tests,
+build/lint/schema/boundaries pass. Curves and the remaining catalogue/dependencies,
+linear-light composition and complete hardware/hash/export/cost/full-gate
+acceptance remain. [Evidence](./composition-ce6-completion-results.json) and
+[conventions](./composition-effect-plugins.md).
+
 ### CE6 performance slice 1: exact effect work (2026-10-03)
 
 - **Scope:** the transferred CE4b timing requirement only, not the broader CE6

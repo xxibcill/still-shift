@@ -77,11 +77,77 @@
       "limitations": [
         "Custom executable callbacks must be installed in each rendering host; documents capture versions but do not serialize functions",
         "Remaining built-in effect catalogue, scoped input dependencies and linear-light compositing are pending"
+      ],
+      "implementation": "38a2856"
+    },
+    {
+      "name": "Nine native color correction effects",
+      "status": "focused-verification-passed",
+      "effects": [
+        "color.levels",
+        "color.tint",
+        "color.hue-saturation",
+        "color.exposure",
+        "color.brightness-contrast",
+        "color.fill",
+        "color.gradient-ramp",
+        "color.invert",
+        "color.posterize"
+      ],
+      "features": [
+        "Bounded animated scalars/colors/gradient endpoints, descriptor-driven schemas and generated reference",
+        "Real GPU correction shaders and independent straight-sRGB Canvas equations",
+        "Explicit premultiplied-byte reconstruction and half-up input/output quantization preserve source coverage",
+        "Default/neutral controls, independent reference values, reversed/coincident gradient and levels conventions",
+        "Every new effect on solid/image/text/native-shape/provider/group/precomp/collapsed-precomp/adjustment layers"
+      ],
+      "versions": {
+        "evaluator": 31,
+        "canvas": "composition-canvas2d-1.26.0",
+        "webgl": "composition-webgl2-0.40.0"
+      },
+      "verification": {
+        "focusedTests": 150,
+        "focusedFiles": 8,
+        "unitLog": "benchmarks/results/composition-ce6-completion/ce6-color-focused-final.log",
+        "build": "benchmarks/results/composition-ce6-completion/ce6-color-build-final.log",
+        "lint": "benchmarks/results/composition-ce6-completion/ce6-color-lint-final.log",
+        "schema": "benchmarks/results/composition-ce6-completion/ce6-color-schema-check-final.log",
+        "boundaries": "benchmarks/results/composition-ce6-completion/ce6-color-boundaries-final.log",
+        "nativeMatrix": {
+          "cases": 243,
+          "frames": 2916,
+          "backends": 2,
+          "parameterVariantsPerEffect": 3,
+          "layerVariants": 9,
+          "maxDelta": 1,
+          "minPsnr": 64.97348052873686,
+          "randomSeeks": 3402,
+          "tier": "unchanged near: max delta <=2 and PSNR >=50 dB",
+          "raw": "benchmarks/results/composition-ce6-completion/ce6-color-native-acceptance.json",
+          "snapshot": "/private/tmp/still-shift-ce6-color-r4-38a2856"
+        },
+        "byteRounding": {
+          "pairs": 32895,
+          "levelCounts": [2, 3, 6, 10, 16, 256],
+          "maxDelta": 0,
+          "raw": "benchmarks/results/composition-ce6-completion/ce6-color-byte-rounding.json"
+        }
+      },
+      "initialFailures": [
+        "Browser helper type errors: solid-returning fixture widened into an explicit CompositionLayer variable and params use native JSON types",
+        "Temporary browser launcher imported the wrong runtime module; corrected to runtime index",
+        "Posterize on antialiased text crossed a quantization boundary: max delta 10; diagnosed identical premultiplied source bytes and platform Canvas half-byte unpremultiplication rounding",
+        "Round-even and reciprocal-floor hypotheses failed exhaustive Canvas diagnostics; replaced both adapter input reconstruction with explicit half-up byte semantics",
+        "First output-quantization shader used a levels-local identifier; renamed the shared output variable to remove the GLSL collision"
+      ],
+      "pending": [
+        "Actual hardware, native stored hashes, independent/repeated exports, serial 1080p costs and final full gate follow the complete catalogue"
       ]
     }
   ],
   "pending": [
-    "Remaining built-in effect catalogue and scoped input dependency stages",
+    "Remaining curves, blur/light/distortion/stylize/transition catalogue and scoped input dependency stages",
     "Remaining native effect catalogue, curves, layer dependencies and adjustment temporal semantics",
     "Real optional linear-light compositing",
     "Native per-effect, drawable, seeking, stored hashes, actual hardware and independent/repeated export acceptance",
