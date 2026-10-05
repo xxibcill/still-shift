@@ -263,7 +263,44 @@
     "freshSource": "import { comp, solid, text, par, at } from \"@still-shift/motion\";\nimport { fontAsset } from \"@still-shift/motion/node\";\n\nconst font = await fontAsset(\n  \"room-heading-font\",\n  \"/Users/jjae/Documents/playground/still-shift/assets/story-motion/fonts/plex-sans-semibold.ttf\",\n  { weight: \"600\" },\n);\n\nexport default comp(\n  {\n    width: 640,\n    height: 360,\n    fps: 24,\n    seconds: 4,\n    background: \"#F6F1E8\",\n    assets: [font],\n  },\n  (c) => {\n    const heading = c.add(\n      text(\"Room to move\", {\n        fontAsset: font.id,\n        fontSize: 42,\n        color: \"#233849\",\n      })\n        .at(320, 88)\n        .anchor(\"center\")\n        .opacity(0)\n        .with({ inPoint: 36, outPoint: 90 }),\n    );\n    const leftGate = c.add(\n      solid(\"left-gate\", { size: [52, 104], color: \"#E67A3D\" })\n        .at(294, 225)\n        .anchor(\"center\")\n        .with({ inPoint: 0, outPoint: 96 }),\n    );\n    const rightGate = c.add(\n      solid(\"right-gate\", { size: [52, 104], color: \"#E67A3D\" })\n        .at(346, 225)\n        .anchor(\"center\")\n        .with({ inPoint: 0, outPoint: 96 }),\n    );\n    c.add(\n      solid(\"blue-square\", { size: [104, 104], color: \"#3975D4\" })\n        .at(320, 225)\n        .anchor(\"center\")\n        .with({ inPoint: 0, outPoint: 96 }),\n    );\n\n    c.marker(\"open\", 12, { label: \"The gates make room\" });\n    c.marker(\"title\", 36, { label: \"Heading arrives\" });\n    c.marker(\"read\", 48, { label: \"Hold completely still to read\" });\n    c.marker(\"fade\", 78, { label: \"Heading fades\" });\n    c.marker(\"quiet\", 90, { label: \"Quiet final image\" });\n\n    c.timeline(\n      at(\n        \"cue:open\",\n        par(\n          leftGate.x.from(294).to(188, { seconds: 0.75 }),\n          rightGate.x.from(346).to(452, { seconds: 0.75 }),\n        ),\n      ),\n      at(\n        \"cue:title\",\n        par(\n          heading.alpha.from(0).to(1, 12),\n          heading.y.from(88).to(76, 12),\n        ),\n      ),\n      at(\"cue:fade\", heading.alpha.from(1).to(0, 12)),\n    );\n  },\n);\n"
   },
   "renderVerification": {
-    "status": "pending",
-    "note": "Run the fresh source after the full browser gates to keep performance checks sequential."
+    "status": "passed",
+    "sourceUnchangedSinceFirstCompletedValidation": true,
+    "sourceSha256": "d9acddf4abe242aaa7c30f3d5b3b629b1b6225e8ed64bdfa0242b2404d9be683",
+    "command": "node --import tsx tools/still-shift-cli/src/cli.ts comp render --input /private/tmp/ce10-fresh-skill-trial/room-to-move.ts --output /private/tmp/ce10-fresh-skill-trial/room-to-move.mp4",
+    "probe": {
+      "programs": [],
+      "stream_groups": [],
+      "streams": [
+        {
+          "width": 640,
+          "height": 360,
+          "r_frame_rate": "24/1",
+          "nb_frames": "96"
+        }
+      ]
+    },
+    "outputSha256": "511e988d7d5cd1c4dc4075c938372bc13480fd24894e8c875f3eff92830719f6",
+    "pinnedSystemFontLayers": [],
+    "visualInspection": [
+      {
+        "frame": 0,
+        "file": "verified-initial.png",
+        "result": "Adjacent orange gate panels completely cover the blue square; title is hidden."
+      },
+      {
+        "frame": 60,
+        "file": "verified-hold.png",
+        "result": "Panels have separated, square is visible, and pinned-font heading is readable during the 1.25-second hold."
+      },
+      {
+        "frame": 94,
+        "file": "verified-end.png",
+        "result": "The heading has faded out; square and open gates remain visible."
+      }
+    ],
+    "limits": [
+      "Three extracted frames were visually inspected; timing/hold checks also use the authored native key and marker data.",
+      "Intentional frozen holds remain reported by the default motion lint policy."
+    ]
   }
 }

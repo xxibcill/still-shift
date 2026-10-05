@@ -50,7 +50,8 @@ still hold before relying on them.
   All story intent presets and generated reference/skill are delivered; 1,498 unit
   tests pass. A fresh isolated skill-only trial has zero schema errors and no source
   repairs. The full check stopped on render CLI exit-code compatibility; the repair
-  passes focused tests. A fresh full run and rendered trial inspection remain.
+  passes focused tests. The unchanged fresh trial renders and its extracted frames
+  pass inspection; the complete repair-checkpoint run remains.
   [Evidence](./composition-ce10-results.json).
 
 - **CE4a complete (2026-10-05):** `codex/composition-ce4a-completion`, implementation
@@ -150,6 +151,18 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-05 — Inspect the unchanged fresh CE10 skill trial
+
+- **Agent / branch:** Codex on `codex/composition-ce10`.
+- **Done:** render the first-valid Room to Move source without repairs; FFprobe
+  verifies 96 frames at 24 fps and 640 × 360. Pinned text uses no system fonts.
+- **Inspection:** frame 0 fully covers the square, frame 60 shows the separated gates
+  and readable heading, and frame 94 confirms the title faded before the end.
+- **Next:** the clean repair checkpoint `c44032b` is running the full local check;
+  publish CE10's PR when it passes, then create the CE11 branch.
+- **Evidence:** [trial record](./composition-ce10-skill-trials.json),
+  [milestone results](./composition-ce10-results.json).
 
 ### 2026-10-05 — Restore CE10 render failure exit codes
 

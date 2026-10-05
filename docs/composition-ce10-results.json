@@ -344,10 +344,14 @@
         "sourceVersions": 1,
         "repairs": 0,
         "exportedJsonValidation": "passed",
-        "guidanceSha256": "4e487173eadfbb443e139bba5063a6ee44a3ce3f919242fdac4c5a0c8e4c839b"
+        "guidanceSha256": "4e487173eadfbb443e139bba5063a6ee44a3ce3f919242fdac4c5a0c8e4c839b",
+        "renderedVerification": "passed",
+        "frames": 96,
+        "fps": 24,
+        "outputSha256": "511e988d7d5cd1c4dc4075c938372bc13480fd24894e8c875f3eff92830719f6"
       },
       "record": "docs/composition-ce10-skill-trials.json",
-      "pending": ["Full browser gates and fresh rendered-frame inspection"],
+      "pending": ["Full local milestone gates"],
       "limits": [
         "Both first CLI launches encountered sandbox tsx IPC EPERM before schema validation; unchanged source was retried with the permitted local command escalation.",
         "Deliberate reading holds trigger the default frozen-run lint policy; these craft findings remain visible and were not suppressed."

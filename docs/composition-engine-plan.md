@@ -3648,8 +3648,9 @@ The generated contract/reference and compact skill pass drift and skill checks.
 The initial isolated trial exposed timing/stacking guidance gaps; after repairing the
 skill, a fresh independent trial passes its first completed schema validation with
 zero errors and no source repairs. The full gate stopped on invalid render backend
-exit-code compatibility; the focused repair passes. Repeat full gates and inspect
-the fresh render before closeout. See [CE10 evidence](./composition-ce10-results.json).
+exit-code compatibility; the focused repair passes. The unchanged fresh trial
+renders 96 frames and passes extracted-frame inspection. The clean repair checkpoint
+is running the complete local gates before closeout. See [CE10 evidence](./composition-ce10-results.json).
 
 **Completion record:** _to be filled in._
 
