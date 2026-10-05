@@ -1,0 +1,48 @@
+{
+  "date": "2026-10-05",
+  "pr": "https://github.com/xxibcill/still-shift/pull/34",
+  "review": "https://github.com/xxibcill/still-shift/pull/34#pullrequestreview-5416414593",
+  "reviewedHead": "8c717b381ecd01fa1b17ff879ee9eba05c5f50eb",
+  "delivery": "One finding per commit; one final push to codex/composition-ce12.",
+  "toolchain": {
+    "node": "22.23.1",
+    "pnpm": "10.29.3"
+  },
+  "findings": [
+    {
+      "id": "held-sample-velocity",
+      "comment": "https://github.com/xxibcill/still-shift/pull/34#discussion_r4185355980",
+      "status": "fixed",
+      "change": "Velocity joins measure each one-sided velocity a step away from the join, so a value step within one step of it (a per-frame held sample) is frame evidence rather than velocity. Reports list held motion as unmeasured; held scale/opacity steps remain subject to pop checks.",
+      "verification": {
+        "before": {
+          "regressionFailures": 3,
+          "heldLinearMotion": "velocity-discontinuity frames 1-58, measured 5000"
+        },
+        "after": {
+          "qualityTests": 88,
+          "cliTests": 15,
+          "failed": 0,
+          "heldLinearMotion": "no velocity findings at stretch 1, 1.025 and -1.025; held-motion limitation reported",
+          "authoredJoins": "existing integer, fractional, inherited, effect and matte joins still detected"
+        },
+        "corpus": {
+          "items": 176,
+          "frames": 36061,
+          "unexpectedFailures": 0,
+          "velocityDiscontinuity": {
+            "before": 1031,
+            "after": 0
+          },
+          "otherCodesAndStatuses": "unchanged from the post-99605b4 corpus run (reading-time 339)"
+        },
+        "checks": [
+          "103 focused unit/CLI tests",
+          "pnpm build",
+          "ESLint for changed TypeScript",
+          "pnpm composition:lint-corpus"
+        ]
+      }
+    }
+  ]
+}

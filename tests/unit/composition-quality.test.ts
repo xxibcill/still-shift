@@ -1200,3 +1200,64 @@ it("rejects a valid composition whose root sampling alone exceeds lint capacity"
   expect(validateComposition(input).ok).toBe(true);
   expect(() => analyzeCompositionQuality(input)).toThrow(PassageError);
 });
+
+describe("frame-sampled velocity joins", () => {
+  const moving = (
+    keys: {
+      frame: number;
+      value: [number, number];
+      interpolation?: "hold" | "linear";
+    }[],
+    stretch = 1,
+  ) =>
+    composition(
+      [
+        solid("subject", {
+          stretch,
+          ...(stretch < 0 ? { startFrame: 61 } : {}),
+          transform: { position: { keys } },
+        }),
+      ],
+      { frameCount: 60 },
+    );
+  const held = Array.from({ length: 60 }, (_, frame) => ({
+    frame,
+    value: [80 + 4 * frame, 180] as [number, number],
+    interpolation: "hold" as const,
+  }));
+
+  it.each([1, 1.025, -1.025])(
+    "does not report per-frame held samples as velocity joins at stretch %s",
+    (stretch) => {
+      expect(codes(moving(held, stretch))).not.toContain(
+        "velocity-discontinuity",
+      );
+    },
+  );
+
+  it("keeps authored speed joins while reporting held samples as unmeasured", () => {
+    const keys = held.map((key) => ({
+      ...key,
+      value: [
+        80 + 4 * Math.min(key.frame, 30) + 12 * Math.max(0, key.frame - 30),
+        180,
+      ] as [number, number],
+    }));
+    const report = analyzeCompositionQuality(moving(keys));
+    expect(report.diagnostics.map((d) => d.code)).not.toContain(
+      "velocity-discontinuity",
+    );
+    expect(report.limitations).toContain(
+      "Held keyframe steps are frame samples; velocity changes inside held motion are not measured.",
+    );
+    expect(
+      codes(
+        moving([
+          { frame: 0, value: [80, 180] },
+          { frame: 30, value: [200, 180], interpolation: "linear" },
+          { frame: 59, value: [548, 180], interpolation: "linear" },
+        ]),
+      ),
+    ).toContain("velocity-discontinuity");
+  });
+});

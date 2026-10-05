@@ -1412,7 +1412,10 @@ text framing is incomplete. Custom content providers require rendered inspection
 The analyser samples visible instances, inherited transforms/opacity, camera,
 matte dependencies, masks, effects and known provider content. It excludes clock
 bookkeeping and invisible unrelated motion. Join checks include fractional
-stretched/reversed key joins and reuse one-sided velocity sampling. A bounded
+stretched/reversed key joins and reuse one-sided velocity sampling. Each side is
+sampled a step away from the join, so per-frame held keys (as baked by adapters) are
+frame samples, not velocity jumps; the report lists held motion as unmeasured, and
+held scale/opacity steps remain subject to pop checks. A bounded
 2,000,000 layer-frame budget prevents unbounded inspection; exceeding it fails
 instead of returning a partial pass. Split unusually large projects into smaller
 compositions before linting.

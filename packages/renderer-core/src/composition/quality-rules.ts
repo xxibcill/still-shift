@@ -456,7 +456,11 @@ function velocityValues(sample: CompositionQualitySample) {
     ...numericValues(sample.state.masks),
   ];
 }
-/** Actual one-sided velocities include camera, nested clocks and fractional stretched key joins. */
+/**
+ * Actual one-sided velocities include camera, nested clocks and fractional
+ * stretched key joins. Each side is measured a step away from the join, so
+ * per-frame held samples are frame evidence rather than velocity steps.
+ */
 export function compositionVelocityFindings(
   comp: Composition,
   frames: readonly CompositionQualityFrame[],
@@ -474,32 +478,57 @@ export function compositionVelocityFindings(
     const middle = Number.isInteger(at)
       ? frames[at]!
       : compositionQualityFrame(comp, at, policy.evaluation);
+    const outer = compositionQualityFrame(
+      comp,
+      at - 2 * step,
+      policy.evaluation,
+    );
     const left = compositionQualityFrame(comp, at - step, policy.evaluation);
     const right = compositionQualityFrame(comp, at + step, policy.evaluation);
+    const outerRight = compositionQualityFrame(
+      comp,
+      at + 2 * step,
+      policy.evaluation,
+    );
     for (const current of middle.layers.values()) {
-      const before = left.layers.get(current.id),
-        after = right.layers.get(current.id);
+      const probes = [
+        [outer, outer.layers.get(current.id)],
+        [left, left.layers.get(current.id)],
+        [right, right.layers.get(current.id)],
+        [outerRight, outerRight.layers.get(current.id)],
+      ] as const;
       if (
-        !before ||
-        !after ||
         !(current.onScreen || middle.matteSources.has(current.id)) ||
-        !(before.onScreen || left.matteSources.has(current.id)) ||
-        !(after.onScreen || right.matteSources.has(current.id))
+        probes.some(
+          ([frame, sample]) =>
+            !sample || !(sample.onScreen || frame.matteSources.has(current.id)),
+        )
       )
         continue;
-      const incoming = velocityValues(before),
-        value = velocityValues(current),
-        outgoing = velocityValues(after);
-      if (incoming.length !== value.length || outgoing.length !== value.length)
+      const [beforeOuter, before, after, afterOuter] = probes.map(
+        ([, sample]) => velocityValues(sample!),
+      ) as [number[], number[], number[], number[]];
+      const value = velocityValues(current);
+      if (
+        [beforeOuter, before, after, afterOuter].some(
+          (values) => values.length !== value.length,
+        )
+      )
         continue;
-      const jump = boundaryVelocityJump(incoming, value, outgoing, step);
+      const jump = boundaryVelocityJump(
+        beforeOuter,
+        before,
+        after,
+        afterOuter,
+        step,
+      );
       const adjacentBefore =
         frames[Math.max(0, Math.floor(at - 1))]!.layers.get(current.id) ??
-        before;
+        probes[1][1]!;
       const adjacentAfter =
         frames[Math.min(frames.length - 1, Math.ceil(at + 1))]!.layers.get(
           current.id,
-        ) ?? after;
+        ) ?? probes[2][1]!;
       const previousValues = velocityValues(adjacentBefore);
       const magnitude = Math.max(
         1,
