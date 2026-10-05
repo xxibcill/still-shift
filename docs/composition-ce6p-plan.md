@@ -125,3 +125,13 @@ The first corrected bracket also detected an overlapping main-chat build and was
 retained as invalid. Its source selection is repaired; contention is its sole
 rejection reason. The next guarded attempt waits ten quiet minutes before each
 serial bracket. No earlier timing record substantiates a gain.
+
+## Draft review delivery (2026-10-06)
+
+[PR #41](https://github.com/xxibcill/still-shift/pull/41) is published and attached,
+stacked on the delivered CE7 branch `817cc9f`. It is a draft with the completed
+correctness/full-gate evidence and explicit pending performance validation.
+Main-checkout verification keeps resetting the guarded retry's quiet window;
+its session `66431` remains live. Select candidates from valid independent brackets
+and complete strict WebGL family audits before marking the PR ready. CE6-P targets
+remain open; no gain is claimed from rejected timings.

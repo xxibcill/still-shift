@@ -738,9 +738,9 @@
   "pending": [
     "Serial bracketed original CE7 1080p render/readback and separate preview budgets",
     "Required selected-candidate family timing audits",
-    "Reviewable published attached PR"
+    "Complete performance validation and select measured candidates before marking draft PR ready"
   ],
-  "workloadCoordination": "Own full gate passed. Four timing attempts rejected; latest has repaired source provenance but overlapped a main build. Build is terminal; guarded retry waits ten minutes of quiet. No messages sent to main chat.",
+  "workloadCoordination": "Own full gate passed. Four timing attempts rejected; corrected guarded retry session 66431 remains live, with main verification repeatedly resetting its ten-minute quiet window. Draft PR 41 published and attached with correctness/full-gate evidence and explicit performance limitations. No messages sent to main chat.",
   "repositoryActionsVerified": {
     "enabled": false,
     "command": "gh api repos/xxibcill/still-shift/actions/permissions",
@@ -1290,5 +1290,14 @@
     ],
     "failureHandling": "Stop at first failed bracket; retain invalid timing uniquely; never overwrite valid prior results",
     "fullGateRequiredAndPassed": true
+  },
+  "pullRequest": {
+    "number": 41,
+    "url": "https://github.com/xxibcill/still-shift/pull/41",
+    "status": "draft; published and attached",
+    "base": "codex/composition-ce7",
+    "baseHead": "817cc9f982f9459cc641af864a8f160bfedc668e",
+    "publishedHead": "905feff",
+    "remaining": "Valid serial A/B measurements and strict WebGL family audits; no performance claims yet"
   }
 }

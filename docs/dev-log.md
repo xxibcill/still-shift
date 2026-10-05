@@ -50,7 +50,8 @@ still hold before relying on them.
   Candidates build and pass 852 exactness cases on each GPU profile. Focused
   regression/export suites and the complete local gate pass. Serial timings
   are queued after gate success and a ten-minute quiet window.
-  The main checkout/chat is untouched.
+  [Draft PR #41](https://github.com/xxibcill/still-shift/pull/41) is published and
+  attached with performance validation pending. The main checkout/chat is untouched.
   All 117 original failures, 1.25× family and 2× native targets remain open.
   [Plan](./composition-ce6p-plan.md).
 
@@ -190,6 +191,19 @@ _Last updated 2026-10-06 by Codex for CE6-P; prior work retained._
 
 ## Entries
 
+### 2026-10-06 — CE6-P draft review delivery
+
+- **Agent / branch:** Codex on `codex/composition-ce6p-compatible`, from `905feff`.
+- **Done:** pushed and attached [draft PR #41](https://github.com/xxibcill/still-shift/pull/41),
+  based on delivered CE7 `817cc9f`; verified Actions remain disabled.
+- **Results:** passed exactness/focused/full-gate checks are reviewable. No valid
+  timing bracket yet; main verification repeatedly resets the quiet window.
+- **Next:** keep the existing live retry session `66431`; valid independent A/B,
+  strict WebGL family audits and measured candidate selection precede PR readiness.
+  All original 117 failures and existing performance targets remain open.
+- **Records:** [plan](./composition-ce6p-plan.md),
+  [evidence](./composition-ce6p-performance-results.json).
+
 ### 2026-10-06 — CE6-P exposure fusion candidate checkpoint
 
 - **Agent / branch:** Codex on `codex/composition-ce6p-compatible`.
@@ -212,7 +226,8 @@ _Last updated 2026-10-06 by Codex for CE6-P; prior work retained._
   loading and added workload fingerprints. Runtime stays fixed during the gate.
   Invalid timings are retained; Actions remain disabled.
 - **Next:** corrected serial A/B is queued after a ten-minute quiet window;
-  strict WebGL family matrices and a reviewable PR follow.
+  strict WebGL family matrices and measured candidate selection follow;
+  draft PR #41 is now published.
 - **Records:** [slice plan](./composition-ce6p-plan.md),
   [retained evidence](./composition-ce6p-performance-results.json).
 
