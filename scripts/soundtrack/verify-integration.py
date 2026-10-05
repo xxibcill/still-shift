@@ -98,6 +98,10 @@ def verify(base):
         audio["initial"]["master"],
     )
     assert reconstruction["differingSamples"] == 0
+    # Record the DSP version the renders report rather than a fixed label.
+    dsp_versions = {report["dspVersion"] for report in reports.values()}
+    assert len(dsp_versions) == 1, dsp_versions
+    (dsp_version,) = dsp_versions
     evidence_path = Path("docs/composition-ce16-verification-results.json")
     evidence = json.loads(evidence_path.read_text())
     evidence["milestone"] = "CE16"
@@ -107,7 +111,7 @@ def verify(base):
     evidence["integration"] = {
         "schemaVersion": "soundtrack-project-1",
         "workerProtocol": "soundtrack-worker-1",
-        "dspVersion": "soundtrack-dsp-2",
+        "dspVersion": dsp_version,
         "results": str(base),
         "commands": json.loads((base / "commands.json").read_text()),
         "runs": {
