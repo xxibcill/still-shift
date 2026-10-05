@@ -668,14 +668,18 @@ def render(request):
     output.mkdir(exist_ok=False)
     begin, end = request["range"]["start"], request["range"]["end"]
     tracks = {t["id"]: t for t in project["tracks"]}
+
+    def upstream_of(node_id):
+        """A routing node's inputs in graph order: tracks, then buses, as authored."""
+        return [n for n in project["tracks"] + project["buses"] if n["output"] == node_id]
+
     # Outputs are reported in graph resolution order; a cycle never resolves.
     order, resolved = list(tracks), set(tracks)
     pending = list(project["buses"]) + [project["master"]]
     while pending:
         progressed = False
         for bus in pending[:]:
-            upstream = [n for n in project["tracks"] + project["buses"] if n["output"] == bus["id"]]
-            if all(n["id"] in resolved for n in upstream):
+            if all(n["id"] in resolved for n in upstream_of(bus["id"])):
                 order.append(bus["id"])
                 resolved.add(bus["id"])
                 pending.remove(bus)
@@ -689,9 +693,6 @@ def render(request):
 
     def clips_on(track_id):
         return [clip for clip in project["clips"] if clip["track"] == track_id]
-
-    def upstream_of(node_id):
-        return [n for n in project["tracks"] + project["buses"] if n["output"] == node_id]
 
     # Tracks are mixed in exactly this order: the ducking detector, filtered tracks
     # (rendered before any routing accumulator exists), then the remaining tracks
@@ -802,7 +803,7 @@ def render(request):
         Only the accumulators on the current routing path are alive, so memory
         follows bus depth rather than the number of tracks and buses.
         """
-        upstream = [n for n in project["tracks"] + project["buses"] if n["output"] == node["id"]]
+        upstream = upstream_of(node["id"])
         if not upstream:
             # An input-less bus plays silence.
             acc = np.zeros((2, length), np.float32)
