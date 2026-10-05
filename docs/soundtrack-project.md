@@ -99,11 +99,19 @@ is recorded separately. Nonzero onset latency and external plugins are rejected;
 no unsupported compensation is implied. Block size is 512. Tails continue inside
 the project and are cut at its declared end.
 
-Sources are probed once per asset. An asset used by several clips decodes its
-covering source span once and is sliced per clip, while all cached spans fit in
-one project-length stereo buffer; otherwise each clip decodes its own span.
-Resampling precedes trimming, so both paths give identical samples, and clips are
-still summed in authored order.
+Sources are probed once per asset. An asset used by several clips decodes in one
+streamed FFmpeg pass that keeps only those clips' samples, so many short cues cut
+from one long library file cost one decode, not one per cue. Clips join a pass in
+authored order while their decoded samples, together with samples already decoded
+for later clips, fit in one project-length stereo buffer; a clip that fits no pass
+decodes alone. Resampling precedes trimming, so every path gives identical samples.
+Probes, decode passes and source hashing run on up to eight threads, decoding at
+most four project-length buffers ahead of the mix. Clips are still summed in
+authored order, and a failure is reported at the first affected clip in authored
+order. Sharing and parallelism change speed only: outputs are byte-identical to
+sequential per-clip decoding. On a 15-core Mac, a 120-second, 128-cue stress
+project cut from long 44.1 kHz WAV/MP3 files rendered in about 2 s instead of
+about 20 s.
 
 `--stems` exports post-track-processing stems and post-bus-gain stems; master gain
 applies to the mix only. Unity master/direct buses reconstruct the mix in graph

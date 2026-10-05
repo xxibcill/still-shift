@@ -43,13 +43,20 @@ still hold before relying on them.
 
 ## Current state
 
-- **PR #33 fade curves (2026-10-05):** Claude Code on
-  `claude/ce16-sfx-improvements` from `c41c58b`. Optional per-fade
-  `fadeInCurve`/`fadeOutCurve` (`linear` default, `equal-power` quarter-sine)
-  as `soundtrack-dsp-5` (`e1d6c49`); Lab clip form chooses curves (`d73d624`).
-  Absent/linear curves are bit-identical. `pnpm check:soundtrack` passes on
-  Node 22.23.1. Pushed to PR #33; owner review/merge remains. Browser suites and
-  listening not run.
+- **PR #33 decode performance (2026-10-05):** Claude Code on
+  `claude/ce16-sfx-improvements` from `e20b6a6`. Shared streamed decode passes
+  plus parallel probes/decodes/hashing (`77a759e`); outputs byte-identical, no
+  DSP version change. `pnpm check:soundtrack` passes on Node 22.23.1. Pushed to
+  PR #33; owner review/merge remains.
+- **Owner decision — soundtrack duration bound:** docs promise 10 minutes of
+  sample address space, but the 1.5 GB working-buffer estimate
+  (`durationSamples × 8 × (nodes × 4 + 8)`) caps every project lower: about
+  244 s with one track, 139 s with four, 89 s with eight. Either document the
+  real ceiling or revisit the estimate; not changed here.
+
+- **PR #33 fade curves (2026-10-05):** optional per-fade `equal-power` curves
+  as `soundtrack-dsp-5` (`e1d6c49`) and Lab curve selects (`d73d624`) are
+  pushed to PR #33 (`e20b6a6`). Absent/linear curves are bit-identical.
 
 - **PR #33 cue/asset/fade edits (2026-10-05):** `add-clip`, `remove-clip`,
   `fade`, `add-asset` and `remove-asset` (`d6fa38b`) plus Lab fade fields and
@@ -215,6 +222,31 @@ _Last updated 2026-10-05 by Codex for PR #33 follow-up fixes._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-05 — PR #33 shared and parallel soundtrack decoding
+
+- **Agent / branch:** Claude Code on `claude/ce16-sfx-improvements` from `e20b6a6`.
+- **Profile first:** the 60 s CE16 fixture renders in 0.6 s (decode 0.09 s), so
+  realistic projects were not decode-bound. A 120 s, 4-track, 128-cue stress
+  project cut from 10-minute 44.1 kHz WAV/MP3 sources spent ~18 of ~20 s
+  decoding: a reused asset whose covering span exceeded the cache fell back to
+  per-clip decodes, each resampling the source from its start.
+- **Done:** `77a759e` streams one FFmpeg pass per reused asset, keeping only its
+  clips' samples (budget now bounds retained samples, not the covering span).
+  A deterministic decode plan runs on up to eight threads, at most four
+  project-length buffers ahead; probes and source hashing are parallel too.
+  Clips are consumed in authored order; errors surface at the first affected
+  clip in authored order.
+- **Results:** byte-identical outputs versus the previous worker on the fixture
+  (7 files) and both stress projects (5 files each). Stress: 19.6 → 2.1 s
+  (16 reused assets) and 24.7 → 4.7 s (100 assets); fixture 0.56 → 0.44 s on a
+  15-core Mac. Peak RSS at most +91 MiB. The reuse test now covers streamed,
+  over-budget and corrupt-source paths; a mutation resolving decode jobs
+  newest-first fails it. `pnpm check:soundtrack`: 1,519 unit, 46 runtime,
+  41 audio integration, 14 depth; Python lint/format pass.
+- **Not run:** browser suites, baselines and listening (PCM unchanged).
+- **Open / next:** the duration-bound owner decision above. Remaining ideas:
+  Lab fade drawing and Lab clip adding.
 
 ### 2026-10-05 — PR #33 equal-power fade curves
 
