@@ -628,7 +628,7 @@ export function analyzeCompositionTypography(
           : 0;
         const readable =
           sample.opacity >= policy.readingOpacity &&
-          (sample.state.reveal ?? 1) >= policy.readingReveal &&
+          sample.reveal >= policy.readingReveal &&
           (sample.state.stateMix ?? 1) >= 0.95 &&
           speed <= policy.readingVelocity &&
           (!before || before.textClock === sample.textClock);

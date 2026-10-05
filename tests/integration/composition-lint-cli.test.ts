@@ -8,6 +8,8 @@ import {
   composition,
   solid,
 } from "../../benchmarks/fixtures/composition/ce12/fixtures.ts";
+import { providerReadingComposition } from "../helpers/composition-quality-fixtures.ts";
+
 const directories: string[] = [];
 afterEach(async () => {
   await Promise.all(
@@ -173,4 +175,13 @@ it("returns nonzero for undeclared one-frame scale and opacity pulses", async ()
     expect(report.diagnostics).toContainEqual(
       expect.objectContaining({ code, severity: "error", frames: [19, 21] }),
     );
+});
+
+it("fails CLI lint when provider text is revealed too briefly", async () => {
+  const result = await invoke(providerReadingComposition());
+  expect(result.exit).toBe(1);
+  expect(result.stderr).toBe("");
+  expect(JSON.parse(result.stdout).diagnostics).toContainEqual(
+    expect.objectContaining({ code: "reading-time", measured: 5 / 30 }),
+  );
 });

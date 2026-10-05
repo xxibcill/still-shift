@@ -3692,6 +3692,16 @@ feature and parity acceptance. No push or PR was requested.
 
 ---
 
+### CE12 PR #34 follow-up repairs (2026-10-05)
+
+Three further findings on `a41f687` are posted inline and repaired one per commit.
+Provider reading time now uses the sampled reveal; brief and partial reveals fail,
+while sufficient consecutive reveal passes in state and rendered lint. Collapsed
+precomp traversal and structured lint-limit errors remain in progress. Focused
+quality/CLI checks, native browser checks, TypeScript and ESLint pass. Delivery
+uses one final push after verification. Renderer output and versions are unchanged.
+[Follow-up evidence](./pr-34-followup-fix-results.json).
+
 ## CE13 — Video, image-sequence and audio layers
 
 **Outcome:** Compositions mix supplied video clips (including AI-generated ones),

@@ -19,6 +19,8 @@ import type {
   CompositionLayer,
 } from "@still-shift/scene-contract";
 
+import { providerReadingComposition } from "../helpers/composition-quality-fixtures.ts";
+
 const root = resolve(import.meta.dirname, "../..");
 const server = await createServer({
   configFile: resolve(root, "apps/lab/vite.config.ts"),
@@ -523,6 +525,36 @@ try {
       inactiveReport.diagnostics.some((d) => d.code === code),
       `Disabled effect must not hide ${code}`,
     );
+
+  const providerDirectory = await mkdtemp(
+    join(tmpdir(), "ce12-provider-reading-"),
+  );
+  try {
+    for (const [revealStart, expected] of [
+      [145, "failed"],
+      [50, "passed"],
+    ] as const) {
+      const input = join(providerDirectory, `${revealStart}.json`);
+      await writeFile(
+        input,
+        JSON.stringify(providerReadingComposition(revealStart)),
+      );
+      const report = await lintCompositionFile(
+        input,
+        {},
+        { pixels: true, projectRoot: root },
+      );
+      assert.equal(report.status, expected);
+      assert.equal(report.measured.pixels, true);
+      const reading = report.diagnostics.filter(
+        (d) => d.code === "reading-time",
+      );
+      assert.equal(reading.length, expected === "failed" ? 1 : 0);
+      if (reading.length) assert.equal(reading[0]!.measured, 5 / 30);
+    }
+  } finally {
+    await rm(providerDirectory, { recursive: true });
+  }
 
   const cliPixels = await lintCompositionFile(
     resolve(root, "benchmarks/fixtures/composition/ce12/stillness-fail.json"),

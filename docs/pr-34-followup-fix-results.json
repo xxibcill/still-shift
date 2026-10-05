@@ -1,0 +1,57 @@
+{
+  "date": "2026-10-05",
+  "pr": "https://github.com/xxibcill/still-shift/pull/34",
+  "reviewedHead": "a41f687e3a2f3a809dc40ceac1f4088345e6d049",
+  "delivery": "One finding per commit; one final push to codex/composition-ce12.",
+  "toolchain": {
+    "node": "22.23.1",
+    "pnpm": "10.29.3"
+  },
+  "findings": [
+    {
+      "id": "provider-reading-reveal",
+      "comment": "https://github.com/xxibcill/still-shift/pull/34#discussion_r4183930147",
+      "status": "fixed",
+      "change": "Reading windows use the effective reveal sampled from known provider content, while native text retains evaluated reveal.",
+      "verification": {
+        "before": {
+          "failed": 3,
+          "passed": 84,
+          "renderedBrowser": "failed with passed instead of failed for briefly revealed text"
+        },
+        "after": {
+          "qualityTests": 74,
+          "cliTests": 13,
+          "failed": 0,
+          "renderedBrowser": "passed for brief and sufficient reveals"
+        },
+        "checks": [
+          "87 focused unit/CLI tests",
+          "pnpm build",
+          "ESLint for changed TypeScript",
+          "pnpm test:browser:composition-quality"
+        ]
+      }
+    },
+    {
+      "id": "collapsed-precomp-traversal",
+      "comment": "https://github.com/xxibcill/still-shift/pull/34#discussion_r4183930158",
+      "status": "pending"
+    },
+    {
+      "id": "lint-limit-diagnostic",
+      "comment": "https://github.com/xxibcill/still-shift/pull/34#discussion_r4183930170",
+      "status": "pending"
+    }
+  ],
+  "setupFailures": [
+    "New fixture initially had a missing closing brace; syntax corrected before regression evidence was collected.",
+    "Prepared provider node type permits undefined optional fields; provider fixture is validated through ProviderLayerSchema to satisfy its JSON params type."
+  ],
+  "preservation": "Original checkout and unrelated local work retained; GitHub Actions remain disabled.",
+  "pending": [
+    "Collapsed precomp traversal",
+    "Lint-limit diagnostic",
+    "Final local verification and one final push"
+  ]
+}

@@ -26,6 +26,7 @@ export type CompositionQualitySample = {
   bounds: Bounds | null;
   clippedBounds: Bounds | null;
   opacity: number;
+  reveal: number;
   visible: boolean;
   onScreen: boolean;
   text?: string;
@@ -73,6 +74,7 @@ function providerText(state: EvaluatedLayer) {
             states?.[Number(sample.state ?? state.state ?? 0)] ?? node.text,
           ),
     role: node.textRole as CompositionQualitySample["role"],
+    reveal: typeof sample.reveal === "number" ? sample.reveal : 1,
   };
 }
 export function intersectBounds(a: Bounds, b: Bounds): Bounds {
@@ -153,7 +155,11 @@ export function compositionQualityFrame(
       const onScreen = visible && (!clippedBounds || hasArea(clippedBounds));
       const text =
         layer.type === "text"
-          ? { text: state.text ?? layer.text, role: layer.textRole }
+          ? {
+              text: state.text ?? layer.text,
+              role: layer.textRole,
+              reveal: state.reveal ?? 1,
+            }
           : providerText(state);
       const content =
         layer.type === "provider"
@@ -189,6 +195,7 @@ export function compositionQualityFrame(
         bounds,
         clippedBounds,
         opacity,
+        reveal: text?.reveal ?? state.reveal ?? 1,
         visible,
         onScreen,
         scale: [

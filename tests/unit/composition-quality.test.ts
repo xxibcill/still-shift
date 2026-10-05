@@ -8,6 +8,8 @@ import {
   solid,
 } from "../../benchmarks/fixtures/composition/ce12/fixtures.ts";
 
+import { providerReadingComposition } from "../helpers/composition-quality-fixtures.ts";
+
 const codes = (input: Parameters<typeof analyzeCompositionQuality>[0]) =>
   analyzeCompositionQuality(input).diagnostics.map((d) => d.code);
 
@@ -1061,4 +1063,31 @@ it("reports the frame range where animated clipping loses coverage", () => {
   ).toContainEqual(
     expect.objectContaining({ code: "coverage", frames: [1, 2] }),
   );
+});
+
+describe("provider text reading time", () => {
+  it("does not count hidden provider frames as readable", () => {
+    const report = analyzeCompositionQuality(providerReadingComposition());
+    expect(report.status).toBe("failed");
+    expect(report.diagnostics).toContainEqual(
+      expect.objectContaining({
+        code: "reading-time",
+        node: "words",
+        measured: 5 / 30,
+      }),
+    );
+  });
+  it("accepts sufficient consecutive provider reveal", () => {
+    expect(
+      analyzeCompositionQuality(providerReadingComposition(50)).status,
+    ).toBe("passed");
+  });
+  it("applies the reveal threshold to partially revealed provider text", () => {
+    const report = analyzeCompositionQuality(
+      providerReadingComposition(0, 0.5),
+    );
+    expect(report.diagnostics).toContainEqual(
+      expect.objectContaining({ code: "reading-time", measured: 0 }),
+    );
+  });
 });
