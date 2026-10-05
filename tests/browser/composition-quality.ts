@@ -1,4 +1,8 @@
 import assert from "node:assert/strict";
+import { mkdtemp, writeFile, rm } from "node:fs/promises";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
+import { runCli } from "../../tools/still-shift-cli/src/cli.ts";
 import { createServer } from "vite";
 import { resolve } from "node:path";
 import { launchRenderBrowser } from "@still-shift/execution-runtime";
@@ -69,6 +73,80 @@ try {
         `${name}/${outcome}: Node/browser parity`,
       );
     }
+  }
+  const diagnosticDirectory = await mkdtemp(
+    join(tmpdir(), "ce12-pixel-diagnostics-"),
+  );
+  try {
+    for (const test of [
+      {
+        name: "provider",
+        comp: composition(
+          [
+            {
+              id: "subject",
+              type: "provider",
+              provider: "missing.provider@1.0.0",
+              params: {},
+              bounds: [0, 0, 32, 32],
+            },
+          ],
+          { width: 32, height: 32, frameCount: 1 },
+        ),
+        policy: {},
+        code: "comp-provider-unavailable",
+        path: "layers[0].provider",
+      },
+      {
+        name: "policy",
+        comp: fixtures.stillness.pass,
+        policy: { intentionalCuts: [90] },
+        code: "comp-lint-cut-range",
+        path: "intentionalCuts.0",
+      },
+    ]) {
+      const input = join(diagnosticDirectory, `${test.name}.json`);
+      const policy = join(diagnosticDirectory, `${test.name}-policy.json`);
+      await writeFile(input, JSON.stringify(test.comp));
+      await writeFile(policy, JSON.stringify(test.policy));
+      let stdout = "",
+        stderr = "";
+      const exit = await runCli(
+        [
+          "comp",
+          "lint",
+          "--input",
+          input,
+          "--policy",
+          policy,
+          "--pixels",
+          "true",
+        ],
+        {
+          stdout: (s) => {
+            stdout += s;
+          },
+          stderr: (s) => {
+            stderr += s;
+          },
+        },
+      );
+      assert.equal(exit, 1);
+      assert.equal(stdout, "");
+      assert.deepEqual(
+        JSON.parse(stderr).diagnostics.map(
+          (d: { code: string; path?: string; severity: string }) => ({
+            code: d.code,
+            path: d.path,
+            severity: d.severity,
+          }),
+        ),
+        [{ code: test.code, path: test.path, severity: "error" }],
+        `${test.name}: browser diagnostic transport`,
+      );
+    }
+  } finally {
+    await rm(diagnosticDirectory, { recursive: true });
   }
   const motion = composition([
     solid("large", {

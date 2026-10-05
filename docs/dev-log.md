@@ -43,6 +43,12 @@ still hold before relying on them.
 
 ## Current state
 
+- **PR #34 re-review fixes in progress (2026-10-05):** 1/5 findings repaired
+  after posting five inline comments on `82453d9`. Separate commits cover
+  pixel-mode diagnostics. Remaining repairs: active effect tracks, contributing matte motion, one-frame scale and opacity pulses, clipped viewport coverage.
+  Final local verification and one final push remain; owner review/merge follows.
+  [Re-review fix evidence](./pr-34-rereview-fix-results.json).
+
 - **PR #34 review fixes verified (2026-10-05):** all three inline findings posted
   on `0987396` and fixed in separate commits: structured policy diagnostics
   (`b91eb24`), inactive-effect motion (`9eba6a2`), and parent-driven timing with
@@ -142,6 +148,16 @@ _Last updated 2026-10-05 by Codex for PR #34 review fixes; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-05 — PR #34 pixel-mode diagnostics
+
+- **Agent / branch:** Codex on `codex/pr34-review-fixes`, reviewing `82453d9`.
+- **Scope / done:** posted the inline finding and repaired pixel-mode diagnostics.
+- **Results:** regression evidence and local checks are recorded below; no renderer
+  output/version or frozen-baseline changes.
+- **Open / next:** 4 finding repairs, final verification and one final push;
+  owner review/merge remains pending.
+- **Records:** [Re-review fix evidence](./pr-34-rereview-fix-results.json).
 
 ### 2026-10-05 — PR #34 parent-driven timing and final verification
 

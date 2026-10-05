@@ -3,6 +3,7 @@ import {
   analyzeCompositionQuality,
   type CompositionQualityPolicy,
 } from "../story-quality.ts";
+import { PassageError } from "../passage-diagnostics.ts";
 import { measureFrameEnergy } from "../story-continuous-quality.ts";
 import type { CompositionPreview } from "./render/index.ts";
 
@@ -19,7 +20,7 @@ export async function analyzeRenderedCompositionQuality(
     options.signal?.throwIfAborted();
     const report = preview.renderFrame(frame);
     if (report.diagnostics.some((d) => d.severity === "error"))
-      throw new Error(JSON.stringify(report.diagnostics));
+      throw new PassageError(report.diagnostics);
     const rgba = preview.readPixels();
     const gray = new Uint8Array(comp.width * comp.height);
     for (let i = 0; i < gray.length; i++)

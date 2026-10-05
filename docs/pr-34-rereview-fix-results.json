@@ -1,0 +1,58 @@
+{
+  "date": "2026-10-05",
+  "pr": "https://github.com/xxibcill/still-shift/pull/34",
+  "reviewedHead": "82453d95b412729b976a671f725eb1f1b081dafc",
+  "delivery": "One finding per commit; one push after the final finding commit.",
+  "toolchain": {
+    "node": "22.23.1",
+    "pnpm": "10.29.3"
+  },
+  "findings": [
+    {
+      "id": "browser-diagnostics",
+      "comment": "https://github.com/xxibcill/still-shift/pull/34#discussion_r4180742879",
+      "status": "fixed",
+      "verification": {
+        "before": "Original-head native browser regression fails with invalid-scene and missing provider path",
+        "after": "Native browser quality suite passes, including provider and policy diagnostic transport",
+        "checks": [
+          "pnpm build",
+          "ESLint for changed TypeScript",
+          "pnpm test:browser:composition-quality"
+        ]
+      }
+    },
+    {
+      "id": "effect-tracks",
+      "comment": "https://github.com/xxibcill/still-shift/pull/34#discussion_r4180742886",
+      "status": "pending"
+    },
+    {
+      "id": "matte-motion",
+      "comment": "https://github.com/xxibcill/still-shift/pull/34#discussion_r4180742889",
+      "status": "pending"
+    },
+    {
+      "id": "single-frame-pops",
+      "comment": "https://github.com/xxibcill/still-shift/pull/34#discussion_r4180742895",
+      "status": "pending"
+    },
+    {
+      "id": "clipped-coverage",
+      "comment": "https://github.com/xxibcill/still-shift/pull/34#discussion_r4180742901",
+      "status": "pending"
+    }
+  ],
+  "setupFailures": [
+    "Pixel tests initially ran under Vitest, whose SSR transform rewrites dynamic imports inside the browser callback. Moved these regressions to the native browser harness; original-head failure then reproduced the actual lost diagnostic code/path."
+  ],
+  "preservation": "Original checkout and unrelated edits retained; GitHub Actions remain disabled.",
+  "pending": [
+    "active effect tracks",
+    "contributing matte motion",
+    "one-frame scale and opacity pulses",
+    "clipped viewport coverage",
+    "Final local verification and single push",
+    "Owner review and merge"
+  ]
+}
