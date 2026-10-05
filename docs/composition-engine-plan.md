@@ -3264,6 +3264,17 @@ padding: six cases / 72 frames / 84 seeks now match exactly. Broader affine
 regressions, linear-light and complete milestone acceptance remain.
 [Evidence](./composition-ce6-completion-results.json).
 
+### CE6 GPU Gaussian/feather completion (2026-10-06)
+
+Gaussian and transformed feather filtering now stay on GPU textures with the
+pinned raster domain's sigma-532 clamp and progressive centered rescaling above
+135. The oversized-feather CPU image-filter fallback is removed. 11 focused tests
+and build/lint/schema/boundaries pass. 84 native renders/seeks across radii
+136–1,000 meet delta 2/PSNR 53; all 18 extreme-scale feathers are exact and the
+68 prior WebGL reference cases pass. Triangular-prefix/clamp-only experiments
+were rejected for raster parity. Final hardware/hash/export/cost/full-gate and
+CE6 PR remain. [Evidence](./composition-ce6-completion-results.json).
+
 ### CE6 captured-source history and path audit (2026-10-06)
 
 Captured groups and precomp inputs/mattes now replay their scoped adjustment

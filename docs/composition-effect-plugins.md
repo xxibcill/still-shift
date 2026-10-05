@@ -279,3 +279,15 @@ position. Drawable-layer primitive blur retains its per-draw semantics. GPU
 precomp filtering captures offscreen input within the finite kernel support
 before clipping output to the viewport. Padded targets must fit the GPU texture
 limit and a bounded surface-memory budget; overflow has an explicit diagnostic.
+
+### Gaussian and feather GPU completion
+
+Gaussian image filters and transformed mask feathers use a mapped-sigma limit
+of 532, matching [Skia's image-filter domain](https://skia.googlesource.com/skia/+/be1c1d62482d/src/effects/imagefilters/SkBlurImageFilter.cpp).
+Above sigma 135, bounded centered downscales precede the existing integer blur
+and a bilinear upscale; the policy follows the raster engine's
+[progressive rescaling](https://skia.googlesource.com/skia/+/a471394b42dc43fe316364a94bc1312b9c82bf2d/src/core/SkImageFilterTypes.cpp).
+Filtering remains on GPU-owned textures. Canvas rasterizes vector mask coverage
+and its prefilter opacity; it never filters or reads back the GPU image. Lower
+sigmas retain the existing image arithmetic. The earlier oversized-feather CPU
+image-filter fallback has been removed.

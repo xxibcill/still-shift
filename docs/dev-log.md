@@ -44,12 +44,12 @@ still hold before relying on them.
 ## Current state
 
 - **CE6 in progress (2026-10-06):** `codex/composition-ce6-completion` from
-  CE7 `817cc9f`. Checkpoints through `c0872d9` deliver the catalogue, maps,
-  adjustment history and linear-light composition. The capture/availability audit
-  passes 119 focused tests, build/lint/schema/boundaries, 24 exact native capture
-  oracles and all previous input/adjustment regressions. GPU high-sigma feather
-  rescaling remains in flight, followed by hardware/hash/export/serial-cost proof,
-  complete full gate and CE6 PR. No owner decision is pending.
+  CE7 `817cc9f`. Checkpoints through `8fbf372` deliver catalogue/maps, linear-light,
+  adjustment/captured histories and native paths. GPU Gaussian rescaling removes
+  the oversized-feather image-filter fallback: 84 high-radius renders meet delta
+  2/PSNR 53, all 18 extreme-feather renders are exact, and the previous 68 WebGL
+  reference cases pass. Hardware/hash/export/serial-cost proof, complete full gate
+  and CE6 PR remain. No owner decision is pending.
   [Evidence](./composition-ce6-completion-results.json).
 
 - **CE7 complete (2026-10-06):** `codex/composition-ce7`, code `0e48388`.
@@ -186,6 +186,21 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-06 — CE6 GPU Gaussian and feather checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce6-completion`.
+- **Done:** mapped-sigma clamp and progressive GPU Gaussian rescaling replace
+  oversized-feather image readback/Canvas filtering; source geometry retains
+  prefilter opacity and lower-sigma image arithmetic stays unchanged.
+- **Results:** 11 focused tests, build/lint/schema/boundaries; 84 native renders/
+  seeks across radii 136–1,000 and even/odd dimensions meet delta 2/PSNR 53.
+  All 18 extreme-scale feathers are exact; 68 prior WebGL cases still pass.
+- **Rejected:** triangular prefix convolution and clamping alone failed modern
+  raster rescale parity; removed. No threshold or frozen baseline changed.
+- **Next:** native hardware/hash/export/serial-cost acceptance, complete CE6 gate/
+  PR, then remaining milestones in plan order. This is not a full `pnpm check`.
+- **Records:** [CE6 evidence](./composition-ce6-completion-results.json).
 
 ### 2026-10-06 — CE6 captured history and path audit checkpoint
 

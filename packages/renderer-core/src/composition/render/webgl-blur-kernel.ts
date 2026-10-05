@@ -4,6 +4,11 @@ export type GaussianKernel = {
   divisor: number;
   lengths: number[];
 };
+/** Canvas image filters clamp mapped sigma to Skia's raster/GPU limit. */
+export const MAX_RASTER_BLUR_SIGMA = 532;
+
+export const rasterBlurSigma = (sigma: number) =>
+  Math.min(sigma, MAX_RASTER_BLUR_SIGMA);
 function boxLengths(sigma: number) {
   const width = gaussianBoxWidth(sigma);
   return width < 255
@@ -48,6 +53,9 @@ export function blurKernel(sigma: number): GaussianKernel {
 export function gaussianBoxWidth(sigma: number) {
   return Math.max(
     1,
-    Math.floor((Math.fround(sigma) * 3 * Math.sqrt(2 * Math.PI)) / 4 + 0.5),
+    Math.floor(
+      (Math.fround(rasterBlurSigma(sigma)) * 3 * Math.sqrt(2 * Math.PI)) / 4 +
+        0.5,
+    ),
   );
 }

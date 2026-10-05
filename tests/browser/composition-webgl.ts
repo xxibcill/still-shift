@@ -1,4 +1,5 @@
 import type * as CapturedHistoryChecks from "../helpers/composition-captured-history-reference.ts";
+import type * as LargeBlurChecks from "../helpers/composition-large-blur-reference.ts";
 import type * as LinearChecks from "../helpers/composition-linear-reference.ts";
 import type * as AdjustmentChecks from "../helpers/composition-adjustment-history-reference.ts";
 import type * as GradientRankChecks from "../helpers/composition-gradient-rank-reference.ts";
@@ -39,6 +40,16 @@ try {
   const page = await browser.newPage();
   await page.addInitScript("window.__name = (fn) => fn;");
   await page.goto(server.resolvedUrls!.local[0]!);
+  const largeBlur = await page.evaluate(async () => {
+    const url = "/tests/helpers/composition-large-blur-reference.ts";
+    return (
+      (await import(url)) as typeof LargeBlurChecks
+    ).checkClampedGaussianRendering();
+  });
+  console.log(
+    "WebGL mapped Gaussian clamp/rescale parity:",
+    JSON.stringify(largeBlur),
+  );
   const capturedHistory = await page.evaluate(async () => {
     const url = "/tests/helpers/composition-captured-history-reference.ts";
     return (

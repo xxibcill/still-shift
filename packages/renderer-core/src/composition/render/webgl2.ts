@@ -31,7 +31,7 @@ import { WebglDevice, type WebglSurface } from "./webgl-device.ts";
 import { blendShader } from "./webgl-blend.ts";
 
 export const COMPOSITION_WEBGL_RENDERER_VERSION =
-  "composition-webgl2-0.53.0" as const;
+  "composition-webgl2-0.54.0" as const;
 const IDENTITY: Matrix = [1, 0, 0, 1, 0, 0];
 const COPY =
   "uniform float opacity; void main() { pixel = floor(floor(texture(source, uv) * 255.0 + 0.5) * (floor(opacity * 255.0 + 0.5) + 1.0) / 256.0) / 255.0; }";
@@ -709,12 +709,13 @@ export function createWebgl2Backend(
     },
     applyMask(dst, masks) {
       if (dst.opaque) bounds.full(dst);
-      const maximum = Math.min(
-        device.gl.getParameter(device.gl.MAX_TEXTURE_SIZE) as number,
-        8192,
-      );
-      if (
-        masks.some((mask) => {
+      const combined = device.surface(dst.width, dst.height);
+      const coverage = device.surface(dst.width, dst.height);
+      const pixels = raster.createSurface(dst.width, dst.height);
+      try {
+        if (masks[0]?.mode === "subtract" || masks[0]?.mode === "intersect")
+          device.clear(combined, [1, 1, 1, 1]);
+        for (const mask of masks) {
           const sigma =
             (mask.feather / 2) *
             Math.sqrt(
@@ -723,51 +724,20 @@ export function createWebgl2Backend(
                   mask.matrix[1] * mask.matrix[2],
               ),
             );
-          return blurKernelLength(sigma) > maximum;
-        })
-      ) {
-        // Filtering and mask opacity round together in Canvas. Preserve that
-        // combined operation when a transformed feather exceeds GPU storage.
-        const pixels = raster.createSurface(dst.width, dst.height, "software");
-        const coverage = device.surface(dst.width, dst.height);
-        try {
-          raster.clear(pixels, [1, 1, 1, 1]);
-          raster.applyMask(pixels, masks);
-          device.upload(coverage, pixels.canvas);
-          replace(
-            dst,
-            "void main() { pixel=bytes(texture(source,uv)*texture(backdrop,uv).a); }",
-            [dst, coverage],
-          );
-        } finally {
-          raster.releaseSurface(pixels);
-          device.release(coverage);
-        }
-        return;
-      }
-      const combined = device.surface(dst.width, dst.height);
-      const coverage = device.surface(dst.width, dst.height);
-      const pixels = raster.createSurface(dst.width, dst.height);
-      try {
-        if (masks[0]?.mode === "subtract" || masks[0]?.mode === "intersect")
-          device.clear(combined, [1, 1, 1, 1]);
-        for (const mask of masks) {
+          // Preserve the raster filter's combined opacity/blur rounding when a
+          // transformed feather enters the rescaled Gaussian domain.
+          const bakedOpacity = sigma > 135;
           raster.clear(pixels, [1, 1, 1, 1]);
           raster.applyMask(pixels, [
-            { ...mask, mode: "intersect", opacity: 1, feather: 0 },
+            {
+              ...mask,
+              mode: "intersect",
+              opacity: bakedOpacity ? mask.opacity : 1,
+              feather: 0,
+            },
           ]);
           device.upload(coverage, pixels.canvas);
-          if (mask.feather > 0)
-            effects.blur(
-              coverage,
-              (mask.feather / 2) *
-                Math.sqrt(
-                  Math.abs(
-                    mask.matrix[0] * mask.matrix[3] -
-                      mask.matrix[1] * mask.matrix[2],
-                  ),
-                ),
-            );
+          if (mask.feather > 0) effects.blur(coverage, sigma);
           const formula =
             mask.mode === "add"
               ? "s+d*(1.0-s.a)"
@@ -780,7 +750,7 @@ export function createWebgl2Backend(
             combined,
             `uniform float opacity; void main() {vec4 s=bytes(texture(source,uv)*opacity),d=texture(backdrop,uv);pixel=bytes(${formula});}`,
             [coverage, combined],
-            { opacity: mask.opacity },
+            { opacity: bakedOpacity ? 1 : mask.opacity },
           );
         }
         replace(

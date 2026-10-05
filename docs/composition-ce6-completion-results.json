@@ -5661,11 +5661,1381 @@
       "pending": [
         "GPU large-feather/high-sigma rescale audit remains in flight",
         "Hardware/stored hashes/repeated and independent exports/serial 1080p costs/full pnpm check/PR"
+      ],
+      "implementation": "8fbf372"
+    },
+    {
+      "name": "GPU Gaussian rescaling and transformed feather completion",
+      "status": "focused-verification-passed",
+      "versions": {
+        "evaluator": 44,
+        "canvas": "composition-canvas-1.39.0",
+        "webgl": "composition-webgl2-0.54.0"
+      },
+      "features": [
+        "Remove GPU image readback/Canvas filtering for oversized transformed feathers",
+        "Mapped sigma clamps at 532 like the pinned raster image filter",
+        "Above sigma 135 use bounded centered progressive texture downscales, integer Gaussian and bilinear upscale",
+        "Vector mask coverage and prefilter opacity remain permitted raster geometry inputs",
+        "Lower-sigma arithmetic remains unchanged; cleanup prevents failed texture passes from being published"
+      ],
+      "verification": {
+        "focusedUnit": {
+          "tests": 11,
+          "files": 4,
+          "status": "passed"
+        },
+        "build": "passed",
+        "lint": "passed",
+        "schema": "passed",
+        "boundaries": "passed",
+        "native": {
+          "profile": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+          "rows": {
+            "clamp": [
+              {
+                "width": 512,
+                "height": 512,
+                "radius": 136,
+                "kind": "solid",
+                "frame": 1,
+                "maxDelta": 2,
+                "psnr": 55.336386985360406
+              },
+              {
+                "width": 512,
+                "height": 512,
+                "radius": 136,
+                "kind": "solid",
+                "frame": 0,
+                "maxDelta": 2,
+                "psnr": 55.336386985360406
+              },
+              {
+                "width": 512,
+                "height": 512,
+                "radius": 136,
+                "kind": "solid",
+                "frame": 1,
+                "maxDelta": 2,
+                "psnr": 55.336386985360406
+              },
+              {
+                "width": 512,
+                "height": 512,
+                "radius": 136,
+                "kind": "stripes",
+                "frame": 1,
+                "maxDelta": 2,
+                "psnr": 55.99824891187949
+              },
+              {
+                "width": 512,
+                "height": 512,
+                "radius": 136,
+                "kind": "stripes",
+                "frame": 0,
+                "maxDelta": 2,
+                "psnr": 55.99824891187949
+              },
+              {
+                "width": 512,
+                "height": 512,
+                "radius": 136,
+                "kind": "stripes",
+                "frame": 1,
+                "maxDelta": 2,
+                "psnr": 55.99824891187949
+              },
+              {
+                "width": 512,
+                "height": 512,
+                "radius": 150,
+                "kind": "solid",
+                "frame": 1,
+                "maxDelta": 2,
+                "psnr": 55.56095506307063
+              },
+              {
+                "width": 512,
+                "height": 512,
+                "radius": 150,
+                "kind": "solid",
+                "frame": 0,
+                "maxDelta": 2,
+                "psnr": 55.56095506307063
+              },
+              {
+                "width": 512,
+                "height": 512,
+                "radius": 150,
+                "kind": "solid",
+                "frame": 1,
+                "maxDelta": 2,
+                "psnr": 55.56095506307063
+              },
+              {
+                "width": 512,
+                "height": 512,
+                "radius": 150,
+                "kind": "stripes",
+                "frame": 1,
+                "maxDelta": 2,
+                "psnr": 56.45629698983677
+              },
+              {
+                "width": 512,
+                "height": 512,
+                "radius": 150,
+                "kind": "stripes",
+                "frame": 0,
+                "maxDelta": 2,
+                "psnr": 56.45629698983677
+              },
+              {
+                "width": 512,
+                "height": 512,
+                "radius": 150,
+                "kind": "stripes",
+                "frame": 1,
+                "maxDelta": 2,
+                "psnr": 56.45629698983677
+              },
+              {
+                "width": 512,
+                "height": 512,
+                "radius": 270,
+                "kind": "solid",
+                "frame": 1,
+                "maxDelta": 1,
+                "psnr": 57.75780986543338
+              },
+              {
+                "width": 512,
+                "height": 512,
+                "radius": 270,
+                "kind": "solid",
+                "frame": 0,
+                "maxDelta": 1,
+                "psnr": 57.75780986543338
+              },
+              {
+                "width": 512,
+                "height": 512,
+                "radius": 270,
+                "kind": "solid",
+                "frame": 1,
+                "maxDelta": 1,
+                "psnr": 57.75780986543338
+              },
+              {
+                "width": 512,
+                "height": 512,
+                "radius": 270,
+                "kind": "stripes",
+                "frame": 1,
+                "maxDelta": 1,
+                "psnr": 58.78063068349441
+              },
+              {
+                "width": 512,
+                "height": 512,
+                "radius": 270,
+                "kind": "stripes",
+                "frame": 0,
+                "maxDelta": 1,
+                "psnr": 58.78063068349441
+              },
+              {
+                "width": 512,
+                "height": 512,
+                "radius": 270,
+                "kind": "stripes",
+                "frame": 1,
+                "maxDelta": 1,
+                "psnr": 58.78063068349441
+              },
+              {
+                "width": 512,
+                "height": 512,
+                "radius": 531,
+                "kind": "solid",
+                "frame": 1,
+                "maxDelta": 1,
+                "psnr": 64.07668114598391
+              },
+              {
+                "width": 512,
+                "height": 512,
+                "radius": 531,
+                "kind": "solid",
+                "frame": 0,
+                "maxDelta": 1,
+                "psnr": 64.07668114598391
+              },
+              {
+                "width": 512,
+                "height": 512,
+                "radius": 531,
+                "kind": "solid",
+                "frame": 1,
+                "maxDelta": 1,
+                "psnr": 64.07668114598391
+              },
+              {
+                "width": 512,
+                "height": 512,
+                "radius": 531,
+                "kind": "stripes",
+                "frame": 1,
+                "maxDelta": 1,
+                "psnr": 65.63016962658567
+              },
+              {
+                "width": 512,
+                "height": 512,
+                "radius": 531,
+                "kind": "stripes",
+                "frame": 0,
+                "maxDelta": 1,
+                "psnr": 65.63016962658567
+              },
+              {
+                "width": 512,
+                "height": 512,
+                "radius": 531,
+                "kind": "stripes",
+                "frame": 1,
+                "maxDelta": 1,
+                "psnr": 65.63016962658567
+              },
+              {
+                "width": 512,
+                "height": 512,
+                "radius": 532,
+                "kind": "solid",
+                "frame": 1,
+                "maxDelta": 1,
+                "psnr": 64.41922082630109
+              },
+              {
+                "width": 512,
+                "height": 512,
+                "radius": 532,
+                "kind": "solid",
+                "frame": 0,
+                "maxDelta": 1,
+                "psnr": 64.41922082630109
+              },
+              {
+                "width": 512,
+                "height": 512,
+                "radius": 532,
+                "kind": "solid",
+                "frame": 1,
+                "maxDelta": 1,
+                "psnr": 64.41922082630109
+              },
+              {
+                "width": 512,
+                "height": 512,
+                "radius": 532,
+                "kind": "stripes",
+                "frame": 1,
+                "maxDelta": 1,
+                "psnr": 65.57157198179337
+              },
+              {
+                "width": 512,
+                "height": 512,
+                "radius": 532,
+                "kind": "stripes",
+                "frame": 0,
+                "maxDelta": 1,
+                "psnr": 65.57157198179337
+              },
+              {
+                "width": 512,
+                "height": 512,
+                "radius": 532,
+                "kind": "stripes",
+                "frame": 1,
+                "maxDelta": 1,
+                "psnr": 65.57157198179337
+              },
+              {
+                "width": 512,
+                "height": 512,
+                "radius": 533,
+                "kind": "solid",
+                "frame": 1,
+                "maxDelta": 1,
+                "psnr": 64.41922082630109
+              },
+              {
+                "width": 512,
+                "height": 512,
+                "radius": 533,
+                "kind": "solid",
+                "frame": 0,
+                "maxDelta": 1,
+                "psnr": 64.41922082630109
+              },
+              {
+                "width": 512,
+                "height": 512,
+                "radius": 533,
+                "kind": "solid",
+                "frame": 1,
+                "maxDelta": 1,
+                "psnr": 64.41922082630109
+              },
+              {
+                "width": 512,
+                "height": 512,
+                "radius": 533,
+                "kind": "stripes",
+                "frame": 1,
+                "maxDelta": 1,
+                "psnr": 65.57157198179337
+              },
+              {
+                "width": 512,
+                "height": 512,
+                "radius": 533,
+                "kind": "stripes",
+                "frame": 0,
+                "maxDelta": 1,
+                "psnr": 65.57157198179337
+              },
+              {
+                "width": 512,
+                "height": 512,
+                "radius": 533,
+                "kind": "stripes",
+                "frame": 1,
+                "maxDelta": 1,
+                "psnr": 65.57157198179337
+              },
+              {
+                "width": 512,
+                "height": 512,
+                "radius": 1000,
+                "kind": "solid",
+                "frame": 1,
+                "maxDelta": 1,
+                "psnr": 64.41922082630109
+              },
+              {
+                "width": 512,
+                "height": 512,
+                "radius": 1000,
+                "kind": "solid",
+                "frame": 0,
+                "maxDelta": 1,
+                "psnr": 64.41922082630109
+              },
+              {
+                "width": 512,
+                "height": 512,
+                "radius": 1000,
+                "kind": "solid",
+                "frame": 1,
+                "maxDelta": 1,
+                "psnr": 64.41922082630109
+              },
+              {
+                "width": 512,
+                "height": 512,
+                "radius": 1000,
+                "kind": "stripes",
+                "frame": 1,
+                "maxDelta": 1,
+                "psnr": 65.57157198179337
+              },
+              {
+                "width": 512,
+                "height": 512,
+                "radius": 1000,
+                "kind": "stripes",
+                "frame": 0,
+                "maxDelta": 1,
+                "psnr": 65.57157198179337
+              },
+              {
+                "width": 512,
+                "height": 512,
+                "radius": 1000,
+                "kind": "stripes",
+                "frame": 1,
+                "maxDelta": 1,
+                "psnr": 65.57157198179337
+              },
+              {
+                "width": 513,
+                "height": 257,
+                "radius": 136,
+                "kind": "solid",
+                "frame": 1,
+                "maxDelta": 1,
+                "psnr": 56.97897081944979
+              },
+              {
+                "width": 513,
+                "height": 257,
+                "radius": 136,
+                "kind": "solid",
+                "frame": 0,
+                "maxDelta": 1,
+                "psnr": 56.97897081944979
+              },
+              {
+                "width": 513,
+                "height": 257,
+                "radius": 136,
+                "kind": "solid",
+                "frame": 1,
+                "maxDelta": 1,
+                "psnr": 56.97897081944979
+              },
+              {
+                "width": 513,
+                "height": 257,
+                "radius": 136,
+                "kind": "stripes",
+                "frame": 1,
+                "maxDelta": 1,
+                "psnr": 58.15285294479409
+              },
+              {
+                "width": 513,
+                "height": 257,
+                "radius": 136,
+                "kind": "stripes",
+                "frame": 0,
+                "maxDelta": 1,
+                "psnr": 58.15285294479409
+              },
+              {
+                "width": 513,
+                "height": 257,
+                "radius": 136,
+                "kind": "stripes",
+                "frame": 1,
+                "maxDelta": 1,
+                "psnr": 58.15285294479409
+              },
+              {
+                "width": 513,
+                "height": 257,
+                "radius": 150,
+                "kind": "solid",
+                "frame": 1,
+                "maxDelta": 2,
+                "psnr": 57.51201553807788
+              },
+              {
+                "width": 513,
+                "height": 257,
+                "radius": 150,
+                "kind": "solid",
+                "frame": 0,
+                "maxDelta": 2,
+                "psnr": 57.51201553807788
+              },
+              {
+                "width": 513,
+                "height": 257,
+                "radius": 150,
+                "kind": "solid",
+                "frame": 1,
+                "maxDelta": 2,
+                "psnr": 57.51201553807788
+              },
+              {
+                "width": 513,
+                "height": 257,
+                "radius": 150,
+                "kind": "stripes",
+                "frame": 1,
+                "maxDelta": 1,
+                "psnr": 58.887348322980664
+              },
+              {
+                "width": 513,
+                "height": 257,
+                "radius": 150,
+                "kind": "stripes",
+                "frame": 0,
+                "maxDelta": 1,
+                "psnr": 58.887348322980664
+              },
+              {
+                "width": 513,
+                "height": 257,
+                "radius": 150,
+                "kind": "stripes",
+                "frame": 1,
+                "maxDelta": 1,
+                "psnr": 58.887348322980664
+              },
+              {
+                "width": 513,
+                "height": 257,
+                "radius": 270,
+                "kind": "solid",
+                "frame": 1,
+                "maxDelta": 1,
+                "psnr": 53.002283551581414
+              },
+              {
+                "width": 513,
+                "height": 257,
+                "radius": 270,
+                "kind": "solid",
+                "frame": 0,
+                "maxDelta": 1,
+                "psnr": 53.002283551581414
+              },
+              {
+                "width": 513,
+                "height": 257,
+                "radius": 270,
+                "kind": "solid",
+                "frame": 1,
+                "maxDelta": 1,
+                "psnr": 53.002283551581414
+              },
+              {
+                "width": 513,
+                "height": 257,
+                "radius": 270,
+                "kind": "stripes",
+                "frame": 1,
+                "maxDelta": 1,
+                "psnr": 54.731305737077804
+              },
+              {
+                "width": 513,
+                "height": 257,
+                "radius": 270,
+                "kind": "stripes",
+                "frame": 0,
+                "maxDelta": 1,
+                "psnr": 54.731305737077804
+              },
+              {
+                "width": 513,
+                "height": 257,
+                "radius": 270,
+                "kind": "stripes",
+                "frame": 1,
+                "maxDelta": 1,
+                "psnr": 54.731305737077804
+              },
+              {
+                "width": 513,
+                "height": 257,
+                "radius": 531,
+                "kind": "solid",
+                "frame": 1,
+                "maxDelta": 1,
+                "psnr": 60.9127103953596
+              },
+              {
+                "width": 513,
+                "height": 257,
+                "radius": 531,
+                "kind": "solid",
+                "frame": 0,
+                "maxDelta": 1,
+                "psnr": 60.9127103953596
+              },
+              {
+                "width": 513,
+                "height": 257,
+                "radius": 531,
+                "kind": "solid",
+                "frame": 1,
+                "maxDelta": 1,
+                "psnr": 60.9127103953596
+              },
+              {
+                "width": 513,
+                "height": 257,
+                "radius": 531,
+                "kind": "stripes",
+                "frame": 1,
+                "maxDelta": 1,
+                "psnr": 61.08224378008909
+              },
+              {
+                "width": 513,
+                "height": 257,
+                "radius": 531,
+                "kind": "stripes",
+                "frame": 0,
+                "maxDelta": 1,
+                "psnr": 61.08224378008909
+              },
+              {
+                "width": 513,
+                "height": 257,
+                "radius": 531,
+                "kind": "stripes",
+                "frame": 1,
+                "maxDelta": 1,
+                "psnr": 61.08224378008909
+              },
+              {
+                "width": 513,
+                "height": 257,
+                "radius": 532,
+                "kind": "solid",
+                "frame": 1,
+                "maxDelta": 1,
+                "psnr": 61.19772290700011
+              },
+              {
+                "width": 513,
+                "height": 257,
+                "radius": 532,
+                "kind": "solid",
+                "frame": 0,
+                "maxDelta": 1,
+                "psnr": 61.19772290700011
+              },
+              {
+                "width": 513,
+                "height": 257,
+                "radius": 532,
+                "kind": "solid",
+                "frame": 1,
+                "maxDelta": 1,
+                "psnr": 61.19772290700011
+              },
+              {
+                "width": 513,
+                "height": 257,
+                "radius": 532,
+                "kind": "stripes",
+                "frame": 1,
+                "maxDelta": 1,
+                "psnr": 62.29466969057245
+              },
+              {
+                "width": 513,
+                "height": 257,
+                "radius": 532,
+                "kind": "stripes",
+                "frame": 0,
+                "maxDelta": 1,
+                "psnr": 62.29466969057245
+              },
+              {
+                "width": 513,
+                "height": 257,
+                "radius": 532,
+                "kind": "stripes",
+                "frame": 1,
+                "maxDelta": 1,
+                "psnr": 62.29466969057245
+              },
+              {
+                "width": 513,
+                "height": 257,
+                "radius": 533,
+                "kind": "solid",
+                "frame": 1,
+                "maxDelta": 1,
+                "psnr": 61.19772290700011
+              },
+              {
+                "width": 513,
+                "height": 257,
+                "radius": 533,
+                "kind": "solid",
+                "frame": 0,
+                "maxDelta": 1,
+                "psnr": 61.19772290700011
+              },
+              {
+                "width": 513,
+                "height": 257,
+                "radius": 533,
+                "kind": "solid",
+                "frame": 1,
+                "maxDelta": 1,
+                "psnr": 61.19772290700011
+              },
+              {
+                "width": 513,
+                "height": 257,
+                "radius": 533,
+                "kind": "stripes",
+                "frame": 1,
+                "maxDelta": 1,
+                "psnr": 62.29466969057245
+              },
+              {
+                "width": 513,
+                "height": 257,
+                "radius": 533,
+                "kind": "stripes",
+                "frame": 0,
+                "maxDelta": 1,
+                "psnr": 62.29466969057245
+              },
+              {
+                "width": 513,
+                "height": 257,
+                "radius": 533,
+                "kind": "stripes",
+                "frame": 1,
+                "maxDelta": 1,
+                "psnr": 62.29466969057245
+              },
+              {
+                "width": 513,
+                "height": 257,
+                "radius": 1000,
+                "kind": "solid",
+                "frame": 1,
+                "maxDelta": 1,
+                "psnr": 61.19772290700011
+              },
+              {
+                "width": 513,
+                "height": 257,
+                "radius": 1000,
+                "kind": "solid",
+                "frame": 0,
+                "maxDelta": 1,
+                "psnr": 61.19772290700011
+              },
+              {
+                "width": 513,
+                "height": 257,
+                "radius": 1000,
+                "kind": "solid",
+                "frame": 1,
+                "maxDelta": 1,
+                "psnr": 61.19772290700011
+              },
+              {
+                "width": 513,
+                "height": 257,
+                "radius": 1000,
+                "kind": "stripes",
+                "frame": 1,
+                "maxDelta": 1,
+                "psnr": 62.29466969057245
+              },
+              {
+                "width": 513,
+                "height": 257,
+                "radius": 1000,
+                "kind": "stripes",
+                "frame": 0,
+                "maxDelta": 1,
+                "psnr": 62.29466969057245
+              },
+              {
+                "width": 513,
+                "height": 257,
+                "radius": 1000,
+                "kind": "stripes",
+                "frame": 1,
+                "maxDelta": 1,
+                "psnr": 62.29466969057245
+              }
+            ],
+            "masks": [
+              {
+                "id": "mask/scale-3/add/1",
+                "maxDelta": 0,
+                "psnr": null,
+                "passes": 1,
+                "actual": [0, 0, 0, 255],
+                "expected": [0, 0, 0, 255]
+              },
+              {
+                "id": "mask/scale-3/add/0",
+                "maxDelta": 0,
+                "psnr": null,
+                "passes": 1,
+                "actual": [0, 0, 0, 255],
+                "expected": [0, 0, 0, 255]
+              },
+              {
+                "id": "mask/scale-3/add/1",
+                "maxDelta": 0,
+                "psnr": null,
+                "passes": 1,
+                "actual": [0, 0, 0, 255],
+                "expected": [0, 0, 0, 255]
+              },
+              {
+                "id": "mask/scale-3/subtract/1",
+                "maxDelta": 0,
+                "psnr": null,
+                "passes": 1,
+                "actual": [0, 0, 0, 255],
+                "expected": [0, 0, 0, 255]
+              },
+              {
+                "id": "mask/scale-3/subtract/0",
+                "maxDelta": 0,
+                "psnr": null,
+                "passes": 1,
+                "actual": [0, 0, 0, 255],
+                "expected": [0, 0, 0, 255]
+              },
+              {
+                "id": "mask/scale-3/subtract/1",
+                "maxDelta": 0,
+                "psnr": null,
+                "passes": 1,
+                "actual": [0, 0, 0, 255],
+                "expected": [0, 0, 0, 255]
+              },
+              {
+                "id": "mask/scale-10/add/1",
+                "maxDelta": 0,
+                "psnr": null,
+                "passes": 1,
+                "actual": [1, 0, 0, 255],
+                "expected": [1, 0, 0, 255]
+              },
+              {
+                "id": "mask/scale-10/add/0",
+                "maxDelta": 0,
+                "psnr": null,
+                "passes": 1,
+                "actual": [1, 0, 0, 255],
+                "expected": [1, 0, 0, 255]
+              },
+              {
+                "id": "mask/scale-10/add/1",
+                "maxDelta": 0,
+                "psnr": null,
+                "passes": 1,
+                "actual": [1, 0, 0, 255],
+                "expected": [1, 0, 0, 255]
+              },
+              {
+                "id": "mask/scale-10/subtract/1",
+                "maxDelta": 0,
+                "psnr": null,
+                "passes": 1,
+                "actual": [222, 87, 59, 255],
+                "expected": [222, 87, 59, 255]
+              },
+              {
+                "id": "mask/scale-10/subtract/0",
+                "maxDelta": 0,
+                "psnr": null,
+                "passes": 1,
+                "actual": [222, 87, 59, 255],
+                "expected": [222, 87, 59, 255]
+              },
+              {
+                "id": "mask/scale-10/subtract/1",
+                "maxDelta": 0,
+                "psnr": null,
+                "passes": 1,
+                "actual": [222, 87, 59, 255],
+                "expected": [222, 87, 59, 255]
+              },
+              {
+                "id": "mask/scale-1000/add/1",
+                "maxDelta": 0,
+                "psnr": null,
+                "passes": 1,
+                "actual": [2, 1, 0, 255],
+                "expected": [2, 1, 0, 255]
+              },
+              {
+                "id": "mask/scale-1000/add/0",
+                "maxDelta": 0,
+                "psnr": null,
+                "passes": 1,
+                "actual": [2, 1, 0, 255],
+                "expected": [2, 1, 0, 255]
+              },
+              {
+                "id": "mask/scale-1000/add/1",
+                "maxDelta": 0,
+                "psnr": null,
+                "passes": 1,
+                "actual": [2, 1, 0, 255],
+                "expected": [2, 1, 0, 255]
+              },
+              {
+                "id": "mask/scale-1000/subtract/1",
+                "maxDelta": 0,
+                "psnr": null,
+                "passes": 1,
+                "actual": [221, 86, 59, 255],
+                "expected": [221, 86, 59, 255]
+              },
+              {
+                "id": "mask/scale-1000/subtract/0",
+                "maxDelta": 0,
+                "psnr": null,
+                "passes": 1,
+                "actual": [221, 86, 59, 255],
+                "expected": [221, 86, 59, 255]
+              },
+              {
+                "id": "mask/scale-1000/subtract/1",
+                "maxDelta": 0,
+                "psnr": null,
+                "passes": 1,
+                "actual": [221, 86, 59, 255],
+                "expected": [221, 86, 59, 255]
+              }
+            ],
+            "old": [
+              {
+                "id": "surface/blur-clipped",
+                "maxDelta": 2,
+                "psnr": 64.67992659521148,
+                "passes": 12
+              },
+              {
+                "id": "blend/normal",
+                "maxDelta": 0,
+                "psnr": 999,
+                "passes": 21
+              },
+              {
+                "id": "blend/multiply",
+                "maxDelta": 1,
+                "psnr": 61.62198874061104,
+                "passes": 30
+              },
+              {
+                "id": "blend/screen",
+                "maxDelta": 1,
+                "psnr": 64.63228869725084,
+                "passes": 39
+              },
+              {
+                "id": "blend/overlay",
+                "maxDelta": 1,
+                "psnr": 58.611688783971225,
+                "passes": 48
+              },
+              {
+                "id": "blend/darken",
+                "maxDelta": 1,
+                "psnr": 59.861076150054224,
+                "passes": 57
+              },
+              {
+                "id": "blend/lighten",
+                "maxDelta": 1,
+                "psnr": 61.62198874061104,
+                "passes": 66
+              },
+              {
+                "id": "blend/color-dodge",
+                "maxDelta": 1,
+                "psnr": 57.64258865389066,
+                "passes": 75
+              },
+              {
+                "id": "blend/color-burn",
+                "maxDelta": 1,
+                "psnr": 64.63228869725084,
+                "passes": 84
+              },
+              {
+                "id": "blend/hard-light",
+                "maxDelta": 2,
+                "psnr": 55.60138882733141,
+                "passes": 93
+              },
+              {
+                "id": "blend/soft-light",
+                "maxDelta": 1,
+                "psnr": 61.62198874061104,
+                "passes": 102
+              },
+              {
+                "id": "blend/difference",
+                "maxDelta": 2,
+                "psnr": 52.327799483468105,
+                "passes": 111
+              },
+              {
+                "id": "blend/exclusion",
+                "maxDelta": 1,
+                "psnr": 54.218361845668596,
+                "passes": 120
+              },
+              {
+                "id": "blend/hue",
+                "maxDelta": 1,
+                "psnr": 56.85077619341441,
+                "passes": 129
+              },
+              {
+                "id": "blend/saturation",
+                "maxDelta": 1,
+                "psnr": 58.611688783971225,
+                "passes": 138
+              },
+              {
+                "id": "blend/color",
+                "maxDelta": 1,
+                "psnr": 59.861076150054224,
+                "passes": 147
+              },
+              {
+                "id": "blend/luminosity",
+                "maxDelta": 1,
+                "psnr": 59.861076150054224,
+                "passes": 156
+              },
+              {
+                "id": "blend/add",
+                "maxDelta": 1,
+                "psnr": 57.64258865389066,
+                "passes": 165
+              },
+              {
+                "id": "layer/overlap",
+                "maxDelta": 0,
+                "psnr": 999,
+                "passes": 177
+              },
+              {
+                "id": "surface/clear/0",
+                "maxDelta": 0,
+                "psnr": 999,
+                "passes": 177
+              },
+              {
+                "id": "surface/clear/0.5",
+                "maxDelta": 1,
+                "psnr": 54.15140352195873,
+                "passes": 177
+              },
+              {
+                "id": "surface/clear/1",
+                "maxDelta": 0,
+                "psnr": 999,
+                "passes": 177
+              },
+              {
+                "id": "surface/exposure-background",
+                "maxDelta": 0,
+                "psnr": 999,
+                "passes": 180
+              },
+              {
+                "id": "layer/image-cache/0/1/1/10",
+                "maxDelta": 1,
+                "psnr": 66.79845092407763,
+                "passes": 181
+              },
+              {
+                "id": "layer/image-cache/0/1/1/10",
+                "maxDelta": 1,
+                "psnr": 66.79845092407763,
+                "passes": 182
+              },
+              {
+                "id": "layer/image-cache/1/0.4/0.5/10",
+                "maxDelta": 1,
+                "psnr": 63.1372983796114,
+                "passes": 183
+              },
+              {
+                "id": "layer/image-cache/1/1/1/18",
+                "maxDelta": 1,
+                "psnr": 70.2461461192616,
+                "passes": 184
+              },
+              {
+                "id": "layer/image-cache/0/1/1/10",
+                "maxDelta": 1,
+                "psnr": 66.79845092407763,
+                "passes": 185
+              },
+              {
+                "id": "layer/image",
+                "maxDelta": 1,
+                "psnr": 62.388606381656984,
+                "passes": 186
+              },
+              {
+                "id": "matte/alpha",
+                "maxDelta": 1,
+                "psnr": 69.248379582665,
+                "passes": 190
+              },
+              {
+                "id": "matte/alpha-inverted",
+                "maxDelta": 1,
+                "psnr": 52.71067062168786,
+                "passes": 194
+              },
+              {
+                "id": "matte/luma",
+                "maxDelta": 1,
+                "psnr": 70.54372446563949,
+                "passes": 198
+              },
+              {
+                "id": "matte/luma-inverted",
+                "maxDelta": 1,
+                "psnr": 52.6843711200316,
+                "passes": 202
+              },
+              {
+                "id": "mask/add/0",
+                "maxDelta": 1,
+                "psnr": 72.54201552574416,
+                "passes": 206
+              },
+              {
+                "id": "mask/add/7",
+                "maxDelta": 2,
+                "psnr": 57.879505793231736,
+                "passes": 218
+              },
+              {
+                "id": "mask/subtract/0",
+                "maxDelta": 1,
+                "psnr": 73.4625906278806,
+                "passes": 222
+              },
+              {
+                "id": "mask/subtract/7",
+                "maxDelta": 1,
+                "psnr": 58.57630017406187,
+                "passes": 234
+              },
+              {
+                "id": "mask/intersect/0",
+                "maxDelta": 1,
+                "psnr": 72.54201552574416,
+                "passes": 238
+              },
+              {
+                "id": "mask/intersect/7",
+                "maxDelta": 2,
+                "psnr": 57.879505793231736,
+                "passes": 250
+              },
+              {
+                "id": "mask/difference/0",
+                "maxDelta": 1,
+                "psnr": 72.59108887069159,
+                "passes": 254
+              },
+              {
+                "id": "mask/difference/7",
+                "maxDelta": 2,
+                "psnr": 57.879505793231736,
+                "passes": 266
+              },
+              {
+                "id": "surface/transform",
+                "maxDelta": 1,
+                "psnr": 73.28530295827628,
+                "passes": 269
+              },
+              {
+                "id": "adjustment/coverage",
+                "maxDelta": 1,
+                "psnr": 75.04621554883309,
+                "passes": 272
+              },
+              {
+                "id": "exposure/2",
+                "maxDelta": 0,
+                "psnr": 999,
+                "passes": 277
+              },
+              {
+                "id": "exposure/8",
+                "maxDelta": 0,
+                "psnr": 999,
+                "passes": 294
+              },
+              {
+                "id": "exposure/32",
+                "maxDelta": 0,
+                "psnr": 999,
+                "passes": 359
+              },
+              {
+                "id": "exposure/64",
+                "maxDelta": 0,
+                "psnr": 999,
+                "passes": 488
+              },
+              {
+                "id": "effect/gaussian/0",
+                "maxDelta": 0,
+                "psnr": 999,
+                "passes": 491
+              },
+              {
+                "id": "effect/gaussian/0.5",
+                "maxDelta": 0,
+                "psnr": 999,
+                "passes": 494
+              },
+              {
+                "id": "effect/gaussian/1",
+                "maxDelta": 0,
+                "psnr": 999,
+                "passes": 499
+              },
+              {
+                "id": "effect/gaussian/1.9",
+                "maxDelta": 0,
+                "psnr": 999,
+                "passes": 510
+              },
+              {
+                "id": "effect/gaussian/2",
+                "maxDelta": 0,
+                "psnr": 999,
+                "passes": 521
+              },
+              {
+                "id": "effect/gaussian/2.5",
+                "maxDelta": 0,
+                "psnr": 999,
+                "passes": 532
+              },
+              {
+                "id": "effect/gaussian/4",
+                "maxDelta": 0,
+                "psnr": 999,
+                "passes": 543
+              },
+              {
+                "id": "effect/gaussian/7",
+                "maxDelta": 0,
+                "psnr": 999,
+                "passes": 560
+              },
+              {
+                "id": "effect/gaussian/12",
+                "maxDelta": 0,
+                "psnr": 999,
+                "passes": 577
+              },
+              {
+                "id": "effect/gaussian/21.2",
+                "maxDelta": 0,
+                "psnr": 999,
+                "passes": 594
+              },
+              {
+                "id": "effect/gaussian/21.7",
+                "maxDelta": 0,
+                "psnr": 999,
+                "passes": 599
+              },
+              {
+                "id": "effect/gaussian/24",
+                "maxDelta": 0,
+                "psnr": 999,
+                "passes": 604
+              },
+              {
+                "id": "effect/blur.directional/{\"length\":12,\"angle\":0,\"samples\":5}",
+                "maxDelta": 0,
+                "psnr": 999,
+                "passes": 607
+              },
+              {
+                "id": "effect/blur.directional/{\"length\":8,\"angle\":37,\"samples\":8}",
+                "maxDelta": 0,
+                "psnr": 999,
+                "passes": 610
+              },
+              {
+                "id": "effect/distort.sine/{\"amount\":5,\"wavelength\":24,\"phase\":0.7}",
+                "maxDelta": 0,
+                "psnr": 999,
+                "passes": 613
+              },
+              {
+                "id": "effect/light.glow/{\"radius\":4,\"intensity\":0.7,\"threshold\":0.3}",
+                "maxDelta": 0,
+                "psnr": 999,
+                "passes": 625
+              },
+              {
+                "id": "effect/light.radial/{\"x\":35,\"y\":23,\"radius\":38,\"strength\":0.65,\"color\":[1,0.7,0.2,1]}",
+                "maxDelta": 0,
+                "psnr": 999,
+                "passes": 628
+              },
+              {
+                "id": "effect/particles.rise/{\"progress\":0.31,\"count\":18,\"radius\":4,\"opacity\":0.7,\"seed\":812,\"color\":[1,0.7,0.2,1]}",
+                "maxDelta": 0,
+                "psnr": 999,
+                "passes": 631
+              },
+              {
+                "id": "effect/stylize.grain/{\"amount\":0.25,\"seed\":938,\"evolution\":4.7}",
+                "maxDelta": 0,
+                "psnr": 999,
+                "passes": 635
+              },
+              {
+                "id": "effect/stylize.grain/{\"amount\":0.7,\"seed\":4294967295,\"evolution\":19.3}",
+                "maxDelta": 0,
+                "psnr": 999,
+                "passes": 639
+              },
+              {
+                "id": "effect/light.sweep/{\"width\":70,\"height\":42,\"left\":0.1,\"top\":0.2,\"regionWidth\":0.7,\"regionHeight\":0.6,\"band\":0.2,\"progress\":0.44,\"strength\":0.65}",
+                "maxDelta": 1,
+                "psnr": 71.20806188902878,
+                "passes": 642
+              }
+            ]
+          }
+        },
+        "summary": {
+          "gaussianCases": 28,
+          "gaussianRendersAndSeeks": 84,
+          "maxDelta": 2,
+          "minPsnr": 53.002283551581414,
+          "extremeFeatherRenders": 18,
+          "extremeFeatherMaxDelta": 0,
+          "oldReferenceCases": 68,
+          "oldMaxDelta": 2,
+          "oldMinPsnr": 52.327799483468105
+        },
+        "raw": "benchmarks/results/composition-ce6-completion/ce6-feather-native-acceptance.json"
+      },
+      "rejectedExperiments": [
+        "Bounded triangular-prefix GPU convolution matched its integer oracle, but failed modern Canvas high-sigma rescaling parity; removed before commit",
+        "Clamping alone retained the obsolete two-box approximation; independent 512-pixel images exposed delta 10/PSNR 33.34",
+        "Post-filter opacity lost the raster combined-opacity rounding at extreme scales; source geometry coverage now includes prefilter opacity"
+      ],
+      "primarySources": [
+        "https://skia.googlesource.com/skia/+/be1c1d62482d/src/effects/imagefilters/SkBlurImageFilter.cpp",
+        "https://skia.googlesource.com/skia/+/a471394b42dc43fe316364a94bc1312b9c82bf2d/src/core/SkImageFilterTypes.cpp"
+      ],
+      "pending": [
+        "Hardware/stored native hashes/repeated and independent exports/serial 1080p effect costs/full pnpm check/CE6 PR"
       ]
     }
   ],
   "pending": [
-    "GPU large-feather/high-sigma rescale audit remains in flight",
     "Complete native hardware, stored hashes, independent/repeated exports and serial 1080p per-effect costs",
     "Final-code complete pnpm check, milestone completion record and PR creation/attachment"
   ],
