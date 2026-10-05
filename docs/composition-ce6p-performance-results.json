@@ -1173,5 +1173,24 @@
       "Stored CE7 hashes unchanged",
       "all native WebGL fixture tiers unchanged"
     ]
+  },
+  "fullGate": {
+    "status": "running",
+    "command": "pnpm check",
+    "codeRef": "7a797a9",
+    "launchRef": "2037122",
+    "log": "/private/tmp/ce6p-full-reviewed.log",
+    "session": 91297,
+    "completedStages": [
+      "toolchain",
+      "schema",
+      "package boundaries",
+      "formatting",
+      "lint",
+      "build",
+      "1600 unit tests",
+      "46 runtime tests"
+    ],
+    "wholeGatePassed": false
   }
 }

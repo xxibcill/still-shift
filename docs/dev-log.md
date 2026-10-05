@@ -205,10 +205,10 @@ _Last updated 2026-10-06 by Codex for CE6-P; prior work retained._
   background can move half-byte ties; restore the integer numerator before division.
 - **Retained attempt:** sandbox offline install lacked a package; normal locked
   install succeeded. No acceptance or baseline was changed.
-- **Review:** no renderer defect found by independent Standards/Spec axes. Fixed
-  launch cleanup, preserved the CE6-P anchor, added cold preview budgets and a
-  conservative package-manager workload guard before timing runs. Overlap polling
-  retains invalid timings and rejects them; GitHub confirms Actions are disabled.
+- **Review:** both axes clean after repair. Rounded clear metadata could differ
+  from GPU bytes; bounded accumulation now requires exact clear channels and has
+  189 fractional-clear regressions. Fixed launch cleanup, old anchor, cold budgets
+  and workload guard. Invalid timings are retained; Actions remain disabled.
 - **Next:** full gate on reviewed code; serial A/B and family matrices after a
   sustained quiet window.
 - **Records:** [slice plan](./composition-ce6p-plan.md),
