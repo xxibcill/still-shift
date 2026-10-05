@@ -126,8 +126,7 @@ export async function runCompositionCommand(
           "Specify exactly one of --input or --scene",
           "input",
         );
-      const requested = resolve(input ?? scene!);
-      const source = await realpath(requested).catch(() => requested);
+      const source = resolve(input ?? scene!);
       let composition;
       if (input) composition = (await loadProgram(source)).composition;
       else {
@@ -145,10 +144,12 @@ export async function runCompositionCommand(
                 StorySceneSchema.parse(value),
                 dirname(source),
               );
-        composition.assets = composition.assets.map((a) => ({
-          ...a,
-          path: resolve(dirname(source), a.path),
-        }));
+        composition.assets = await Promise.all(
+          composition.assets.map(async (asset) => {
+            const path = resolve(dirname(source), asset.path);
+            return { ...asset, path: await realpath(path).catch(() => path) };
+          }),
+        );
       }
       if (booleanOption(values, "normalized"))
         composition = normalizeExpressions(composition);

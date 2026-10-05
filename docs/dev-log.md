@@ -51,7 +51,9 @@ still hold before relying on them.
   tests pass. A fresh isolated skill-only trial has zero schema errors and no source
   repairs. The full check stopped on render CLI exit-code compatibility; the repair
   passes focused tests. The unchanged fresh trial renders and its extracted frames
-  pass inspection; the complete repair-checkpoint run remains.
+  pass inspection. The second full run reached the end of the 127-case commerce
+  matrix, then exposed logical-directory asset resolution. Its repair passes ten
+  CLI/preview regressions; the full repair-checkpoint run remains.
   [Evidence](./composition-ce10-results.json).
 
 - **CE4a complete (2026-10-05):** `codex/composition-ce4a-completion`, implementation
@@ -151,6 +153,20 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-05 — Repair CE10 logical asset directories
+
+- **Agent / branch:** Codex on `codex/composition-ce10`.
+- **Failure:** the second full local check passed 1,499 unit, 46 runtime, 131
+  integration and 14 depth tests, all preceding browser groups and the 127-case
+  commerce matrix. Its final CLI assertion exposed early path canonicalization:
+  `/var`-relative font paths became `/private/private/tmp` and failed with ENOENT.
+- **Done:** resolve JSON/legacy assets against the requested directory before
+  canonicalizing each file; retain that directory in watch preview and portable
+  output. Directory-symlink regressions cover validation, export, watch and bad fonts.
+- **Results:** ten focused CLI/preview tests, build, changed-file lint and package
+  boundaries pass. The full repair-checkpoint check remains; do not mark CE10 done.
+- **Records:** [CE10 evidence](./composition-ce10-results.json).
 
 ### 2026-10-05 — Inspect the unchanged fresh CE10 skill trial
 

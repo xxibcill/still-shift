@@ -1,4 +1,4 @@
-import { mkdtemp, realpath, rm, writeFile } from "node:fs/promises";
+import { mkdtemp, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { dirname, join, relative, resolve } from "node:path";
 import type { Composition } from "@still-shift/scene-contract";
@@ -38,9 +38,8 @@ export async function writeComposition(
 ): Promise<{ text: string; outputPath?: string }> {
   const outputPath = output ? resolve(output) : undefined;
   const target = dirname(outputPath ?? resolve(input));
-  const folder = await realpath(target).catch(() => target);
   const text =
-    JSON.stringify(portableComposition(composition, folder), null, 2) + "\n";
+    JSON.stringify(portableComposition(composition, target), null, 2) + "\n";
   if (outputPath) {
     await writeFile(outputPath, text, { flag: "wx" });
     return { text, outputPath };

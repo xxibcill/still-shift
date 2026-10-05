@@ -1,9 +1,19 @@
-import { mkdtemp, mkdir, readFile, rm, writeFile } from "node:fs/promises";
+import {
+  mkdtemp,
+  mkdir,
+  readFile,
+  realpath,
+  rm,
+  symlink,
+  writeFile,
+} from "node:fs/promises";
 import { tmpdir } from "node:os";
-import { join, resolve } from "node:path";
+import { dirname, join, relative, resolve } from "node:path";
 import { afterEach, expect, it } from "vitest";
 import { runCli } from "../../tools/still-shift-cli/src/cli.ts";
 import { loadProgram } from "../../tools/still-shift-cli/src/composition/program.ts";
+import { comp, image } from "@still-shift/motion";
+import { imageAsset } from "@still-shift/motion/node";
 const directories: string[] = [];
 async function directory() {
   const root = await mkdtemp(join(tmpdir(), "composition-cli-"));
@@ -125,13 +135,15 @@ it("exports portable native JSON and verifies pinned image assets during validat
   );
   const stdout = await run(["export-json", "--input", input]);
   expect(stdout.code).toBe(0);
-  expect(JSON.parse(stdout.stdout).assets[0].path).toBe("art.svg");
+  expect(resolve(root, JSON.parse(stdout.stdout).assets[0].path)).toBe(
+    await realpath(art),
+  );
   const output = join(folder, "comp.json");
   expect(
     (await run(["export-json", "--input", input, "--output", output])).code,
   ).toBe(0);
   const exported = JSON.parse(await readFile(output, "utf8"));
-  expect(resolve(folder, exported.assets[0].path)).toBe(art);
+  expect(resolve(folder, exported.assets[0].path)).toBe(await realpath(art));
   expect((await run(["validate", "--input", output])).code).toBe(0);
   await writeFile(art, '<svg width="9" height="12"/>');
   const invalid = await run(["validate", "--input", output]);
@@ -177,4 +189,66 @@ it("keeps native diagnostics, call sites, adapter compatibility and command erro
   await expect(loadProgram(unpinned)).rejects.toMatchObject({
     diagnostics: [expect.objectContaining({ code: "comp-text-system-font" })],
   });
+});
+
+it("resolves native JSON assets from the requested directory before canonicalizing paths", async () => {
+  const root = await directory(),
+    physical = join(root, "physical", "nested"),
+    alias = join(root, "alias"),
+    art = join(root, "art.svg");
+  await mkdir(physical, { recursive: true });
+  await symlink(physical, alias, "dir");
+  await writeFile(art, '<svg width="8" height="12"/>');
+  const asset = await imageAsset("art", art),
+    composition = comp({ width: 64, height: 64, fps: 24, frames: 24 }, (c) =>
+      c.add(image("drawing", asset)),
+    );
+  composition.assets[0]!.path = relative(alias, await realpath(art));
+  const input = join(alias, "native.json");
+  await writeFile(input, JSON.stringify(composition));
+  const loaded = await loadProgram(input);
+  expect(loaded.composition.assets[0]!.path).toBe(await realpath(art));
+  expect(loaded.dependencies).toEqual([await realpath(input)]);
+  expect((await run(["validate", "--input", input])).code).toBe(0);
+  const output = join(alias, "exported.json");
+  expect(
+    (await run(["export-json", "--input", input, "--output", output])).code,
+  ).toBe(0);
+  expect((await run(["validate", "--input", output])).code).toBe(0);
+  const exported = await run(["export-json", "--input", input]);
+  expect(exported.code).toBe(0);
+  expect(resolve(alias, JSON.parse(exported.stdout).assets[0].path)).toBe(
+    await realpath(art),
+  );
+});
+it("reports the legacy pinned-font checksum through an aliased scene directory", async () => {
+  const root = await directory(),
+    physical = join(root, "physical", "nested"),
+    alias = join(root, "alias"),
+    fixture = resolve("benchmarks/fixtures/ecommerce-motion/atoms/layout.json");
+  await mkdir(physical, { recursive: true });
+  await symlink(physical, alias, "dir");
+  const scene = JSON.parse(await readFile(fixture, "utf8"));
+  for (const asset of [...scene.assets, ...scene.fonts])
+    asset.path = relative(
+      alias,
+      await realpath(resolve(dirname(fixture), asset.path)),
+    );
+  scene.fonts[0].sha256 = `sha256:${"0".repeat(64)}`;
+  const input = join(alias, "legacy.json"),
+    output = join(root, "unused.json");
+  await writeFile(input, JSON.stringify(scene));
+  const result = await run([
+    "export-json",
+    "--scene",
+    input,
+    "--output",
+    output,
+  ]);
+  expect(result.code).toBe(1);
+  expect(JSON.parse(result.stderr).diagnostics[0]).toMatchObject({
+    code: "invalid-scene",
+    message: expect.stringContaining("Font checksum differs"),
+  });
+  await expect(readFile(output)).rejects.toMatchObject({ code: "ENOENT" });
 });

@@ -39,7 +39,8 @@ export async function createProgramPreview(
   inputPath: string,
   options: { watch?: boolean; port?: number } = {},
 ) {
-  const input = await realpath(inputPath).catch(() => resolve(inputPath));
+  const sourceInput = resolve(inputPath),
+    input = await realpath(sourceInput).catch(() => sourceInput);
   const root = resolve(import.meta.dirname, "../../../../");
   const watched = new Set<string>([input]),
     snapshots = new Map<number, SnapshotBytes>();
@@ -60,14 +61,16 @@ export async function createProgramPreview(
     const controller = new AbortController();
     abort = controller;
     try {
-      const program = await loadProgram(input, { signal: controller.signal });
+      const program = await loadProgram(sourceInput, {
+        signal: controller.signal,
+      });
       addDependencies([
         ...program.dependencies,
         ...program.composition.assets.map((asset) => asset.path),
       ]);
       const source = await withProgramFile(
         program,
-        input,
+        sourceInput,
         readCompositionSource,
       );
       const bytes = new Map<string, { bytes: Buffer; type: string }>();
@@ -95,7 +98,7 @@ export async function createProgramPreview(
         revision,
         composition: program.composition,
         source: program.source,
-        input,
+        input: sourceInput,
         diagnostics: source.warnings,
         assets: Object.fromEntries(
           [...bytes.keys()].map((id) => [

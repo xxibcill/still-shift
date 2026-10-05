@@ -1,8 +1,17 @@
-import { mkdtemp, rm, writeFile } from "node:fs/promises";
+import {
+  mkdtemp,
+  mkdir,
+  realpath,
+  rm,
+  symlink,
+  writeFile,
+} from "node:fs/promises";
 import { tmpdir } from "node:os";
-import { join } from "node:path";
+import { join, relative } from "node:path";
 import { afterEach, expect, it } from "vitest";
 import { createProgramPreview } from "../../tools/still-shift-cli/src/composition/preview.ts";
+import { comp, image } from "@still-shift/motion";
+import { imageAsset } from "@still-shift/motion/node";
 const directories: string[] = [],
   sessions: Awaited<ReturnType<typeof createProgramPreview>>[] = [];
 async function directory() {
@@ -114,4 +123,41 @@ it("recovers when an initially missing builder image asset is created", async ()
       timeout: 6000,
     })
     .toBe("art");
+});
+
+it("serves native JSON assets through a logical directory alias while watching canonical paths", async () => {
+  const root = await directory(),
+    physical = join(root, "physical", "nested"),
+    alias = join(root, "alias"),
+    art = join(root, "art.svg");
+  await mkdir(physical, { recursive: true });
+  await symlink(physical, alias, "dir");
+  const original =
+    '<svg width="8" height="12"><rect width="8" height="12" fill="red"/></svg>';
+  await writeFile(art, original);
+  const asset = await imageAsset("art", art),
+    composition = comp({ width: 64, height: 64, fps: 24, frames: 24 }, (c) =>
+      c.add(image("drawing", asset)),
+    );
+  composition.assets[0]!.path = relative(alias, await realpath(art));
+  const input = join(alias, "native.json");
+  await writeFile(input, JSON.stringify(composition));
+  const session = await createProgramPreview(input, { watch: true });
+  sessions.push(session);
+  const first = session.snapshot()!,
+    base = new URL(session.url).origin;
+  expect(first.input).toBe(input);
+  expect(first.composition.assets[0]!.path).toBe(await realpath(art));
+  expect(await (await fetch(base + first.assets.art!)).text()).toBe(original);
+  composition.layers[0]!.transform!.position = [9, 8];
+  await writeFile(input, JSON.stringify(composition));
+  await expect
+    .poll(() => session.snapshot()?.revision, { timeout: 6000 })
+    .toBeGreaterThan(first.revision);
+  expect(
+    session.snapshot()!.composition.layers[0]!.transform!.position,
+  ).toEqual([9, 8]);
+  expect(
+    await (await fetch(base + session.snapshot()!.assets.art!)).text(),
+  ).toBe(original);
 });

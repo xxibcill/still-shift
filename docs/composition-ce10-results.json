@@ -396,6 +396,53 @@
         "Repeat full pnpm check on repair checkpoint",
         "Fresh skill trial render inspection"
       ]
+    },
+    {
+      "name": "Resolve relative assets before following directory aliases",
+      "status": "checkpoint",
+      "changes": [
+        "Native JSON and legacy scene assets resolve against the requested logical directory, then canonicalize individual files.",
+        "Watch preview preserves the requested input directory while watching canonical dependencies.",
+        "Portable exports rebase relative asset paths against their requested output directory."
+      ],
+      "secondFullCheck": {
+        "command": "pnpm check",
+        "runtimeHead": "c44032b",
+        "snapshot": "/private/tmp/still-shift-ce10-check-c44032b",
+        "status": "failed",
+        "log": "/private/tmp/ce10-full-c44032b.log",
+        "passingTests": {
+          "unit": 1499,
+          "runtime": 46,
+          "integration": 131,
+          "depth": 14
+        },
+        "passingBrowserGroups": "All groups through composition-story-fixtures; commerce matrix passed 127 cases / 28200 frames before final CLI diagnostic assertions.",
+        "failedGate": "test:browser:composition-commerce-adapter",
+        "failure": "Premature canonicalization changed /var-relative pinned font paths to /private/private/tmp; ENOENT replaced the expected font-checksum diagnostic."
+      },
+      "verification": [
+        {
+          "command": "pnpm exec vitest run tests/integration/composition-program-cli.test.ts tests/integration/composition-preview.test.ts --maxWorkers=1",
+          "status": "passed",
+          "tests": 10,
+          "log": "/private/tmp/ce10-logical-assets-test.log",
+          "checks": [
+            "Aliased native JSON validation, dependency identities and stdout/file export round-trip",
+            "Aliased legacy bad font produces checksum diagnostic without output",
+            "Aliased JSON watch preview serves pinned bytes and rebuilds canonical source changes"
+          ]
+        },
+        {
+          "command": "pnpm build / changed-file eslint / pnpm check:boundaries",
+          "status": "passed"
+        }
+      ],
+      "retainedTestAdjustments": [
+        "The first focused run exposed portable export using the physical directory; corrected it to the requested directory.",
+        "Existing export assertions now compare resolved file identities instead of a spelling that only works without directory aliases."
+      ],
+      "pending": ["Complete full pnpm check on the path repair checkpoint"]
     }
   ],
   "pending": ["Full local milestone gates and PR"]

@@ -25,7 +25,8 @@ export async function loadProgram(
   path: string,
   limits: ProgramLimits = {},
 ): Promise<LoadedProgram> {
-  const input = await realpath(path).catch(() => resolve(path)),
+  const requested = resolve(path),
+    input = await realpath(requested).catch(() => requested),
     extension = extname(input);
   let value: unknown,
     dependencies = [input];
@@ -196,10 +197,17 @@ export async function loadProgram(
   const fontIssues = authoredFontDiagnostics(composition);
   if (fontIssues.length)
     throw new CompositionProgramError(fontIssues, dependencies);
-  composition.assets = composition.assets.map((asset) => ({
-    ...asset,
-    path: resolve(dirname(input), asset.path),
-  }));
+  // Resolve JSON paths lexically before following directory aliases such as /var.
+  const assetDirectory = dirname(extension === ".json" ? requested : input);
+  composition.assets = await Promise.all(
+    composition.assets.map(async (asset) => {
+      const resolved = resolve(assetDirectory, asset.path);
+      return {
+        ...asset,
+        path: await realpath(resolved).catch(() => resolved),
+      };
+    }),
+  );
   return {
     composition,
     dependencies,

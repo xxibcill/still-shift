@@ -3649,8 +3649,10 @@ The initial isolated trial exposed timing/stacking guidance gaps; after repairin
 skill, a fresh independent trial passes its first completed schema validation with
 zero errors and no source repairs. The full gate stopped on invalid render backend
 exit-code compatibility; the focused repair passes. The unchanged fresh trial
-renders 96 frames and passes extracted-frame inspection. The clean repair checkpoint
-is running the complete local gates before closeout. See [CE10 evidence](./composition-ce10-results.json).
+renders 96 frames and passes extracted-frame inspection. The second full run passed
+the 127-case commerce matrix, then its final CLI assertion exposed logical-directory
+asset resolution. Resolve assets before following directory aliases; ten focused
+CLI/preview regressions pass. Full repair-checkpoint gates remain before closeout. See [CE10 evidence](./composition-ce10-results.json).
 
 **Completion record:** _to be filled in._
 
