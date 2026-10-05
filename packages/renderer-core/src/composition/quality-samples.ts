@@ -449,6 +449,18 @@ export type QualityTrack = {
   keys: Record<string, unknown>[];
   layer: CompositionLayer;
 };
+/** Read the final evaluated property, including expressions and constraints. */
+export function qualityTrackSignature(
+  sample: CompositionQualitySample,
+  path: string,
+) {
+  let value: unknown = sample.state;
+  for (const segment of path.split(".")) {
+    if (!value || typeof value !== "object") return undefined;
+    value = (value as Record<string, unknown>)[segment];
+  }
+  return value === undefined ? undefined : JSON.stringify(value);
+}
 export function layerQualityTracks(layer: CompositionLayer): QualityTrack[] {
   const tracks: QualityTrack[] = [];
   const visit = (value: unknown, path: string) => {

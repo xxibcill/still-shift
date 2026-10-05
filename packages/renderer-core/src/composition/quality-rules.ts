@@ -12,6 +12,7 @@ import {
   contributingMotionLayers,
   hasArea,
   qualityTrackContributes,
+  qualityTrackSignature,
   layerQualityTracks,
   numericValues,
   type CompositionQualityFrame,
@@ -361,9 +362,15 @@ export function compositionTimingFindings(
               s.state.time <= Number(b.frame),
           );
         if (visible.length < 2) continue;
+        const firstValue = qualityTrackSignature(
+          visible[0]!.sample!,
+          track.path,
+        );
         if (
+          firstValue === undefined ||
           visible.every(
-            ({ sample: s }) => s!.signature === visible[0]!.sample!.signature,
+            ({ sample: s }) =>
+              qualityTrackSignature(s!, track.path) === firstValue,
           )
         )
           continue;

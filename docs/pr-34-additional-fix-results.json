@@ -43,12 +43,19 @@
         "before": "2 of 3 easing-weight regressions fail (false 90.9% shares)",
         "after": "124 focused quality/CLI tests, build and changed-file ESLint pass",
         "controls": "redundant linear subdivision, a genuine 75% property majority and mixed easing profiles"
-      }
+      },
+      "commit": "f9d644e"
     },
     {
       "id": "evaluated-track-motion",
       "comment": "https://github.com/xxibcill/still-shift/pull/34#discussion_r4185973384",
-      "status": "pending"
+      "status": "fixed",
+      "change": "Compare each final evaluated track value, including expression/constraint overrides, rather than the whole layer signature.",
+      "verification": {
+        "before": "2 overridden-track regressions fail with false co-start findings despite identical visible state over all 90 frames",
+        "after": "127 focused quality/CLI tests, build and changed-file ESLint pass",
+        "controls": "rotation and active-effect overrides; a genuinely moving vector component still yields timing findings"
+      }
     },
     {
       "id": "missing-nested-coverage",

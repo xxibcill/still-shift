@@ -43,7 +43,7 @@ still hold before relying on them.
 
 ## Current state
 
-- **PR #34 additional fixes in flight (2026-10-05):** five findings on `7525540` are posted inline. Group paint modifiers (`5d3f0d3`), signed scale (`4c3fe31`) and property easing weights are repaired. 124 focused quality/CLI tests, build and ESLint pass; group browser checks pass. Overridden tracks and nested coverage remain; one commit per finding and one final push. [Evidence](./pr-34-additional-fix-results.json).
+- **PR #34 additional fixes in flight (2026-10-05):** five findings on `7525540` are posted inline. Group modifiers (`5d3f0d3`), signed scale (`4c3fe31`), easing weights (`f9d644e`) and evaluated track motion are repaired. 127 focused quality/CLI tests, build and ESLint pass; group browser checks pass. Nested coverage remains, followed by final checks and one push. [Evidence](./pr-34-additional-fix-results.json).
 
 - **PR #34 review fixes verified (2026-10-05):** all four inline findings on
   `8c717b3` are repaired one per commit: held-sample velocity artifacts
@@ -175,6 +175,14 @@ _Last updated 2026-10-05 by Codex for PR #34 review fixes; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-05 — PR #34 evaluated track motion
+
+- **Agent / branch:** Codex on `codex/composition-ce12`, after `f9d644e`.
+- **Done:** timing lint compares each final evaluated property, so overridden rotation/effect keys cannot borrow unrelated motion.
+- **Results:** two regressions failed before repair with identical visible state across 90 frames; 127 focused quality/CLI tests, build and changed-file ESLint pass. A moving vector component remains counted.
+- **Open / next:** nested coverage, final checks and one final push.
+- **Records:** [Additional repair evidence](./pr-34-additional-fix-results.json).
 
 ### 2026-10-05 — PR #34 easing weights
 
