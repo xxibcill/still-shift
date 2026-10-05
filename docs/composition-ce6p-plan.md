@@ -110,3 +110,18 @@ The A/B harness loads renderer, kernel and bounds from pinned refs without chang
 files. Measure slice 1 separately with `--candidate-ref 706be71` against `0e48388`,
 then slice 2 with `--baseline-ref 706be71` against the working tree. Keep each
 four-session bracket and its source fingerprints separately.
+
+## Full local gate (2026-10-06)
+
+The complete `pnpm check` passes 1,600 unit, 46 runtime, 139 integration, 14 depth
+tests, every existing browser group, and 176 frozen baselines / 36,061 frames.
+Current Canvas matrices retain their pixel/timing assertions: story/component
+69 cases / 14,086 frames, commerce 127 / 28,200 and typography 20 / 3,367.
+Renderer/runtime stayed fixed at the reviewed `7a797a9`; the diagnostic provenance
+repair has its separate passing formatting/lint/build checks and both reviews.
+Strict WebGL family audits and valid serial performance brackets remain pending.
+
+The first corrected bracket also detected an overlapping main-chat build and was
+retained as invalid. Its source selection is repaired; contention is its sole
+rejection reason. The next guarded attempt waits ten quiet minutes before each
+serial bracket. No earlier timing record substantiates a gain.

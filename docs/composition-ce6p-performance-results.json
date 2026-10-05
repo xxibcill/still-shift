@@ -698,6 +698,12 @@
       "command": "changed-file formatting/eslint; pnpm build after diagnostic provenance repair",
       "status": "passed",
       "runtimeChanged": false
+    },
+    {
+      "command": "pnpm check",
+      "status": "passed",
+      "record": "fullGate",
+      "baselineRegenerated": false
     }
   ],
   "review": {
@@ -732,10 +738,9 @@
   "pending": [
     "Serial bracketed original CE7 1080p render/readback and separate preview budgets",
     "Required selected-candidate family timing audits",
-    "Final review and full pnpm check",
     "Reviewable published attached PR"
   ],
-  "workloadCoordination": "Main CE6 feature lane active; three timing brackets rejected for competing workloads. Exact/focused/export checks pass. Full local gate next; no messages to main chat.",
+  "workloadCoordination": "Own full gate passed. Four timing attempts rejected; latest has repaired source provenance but overlapped a main build. Build is terminal; guarded retry waits ten minutes of quiet. No messages sent to main chat.",
   "repositoryActionsVerified": {
     "enabled": false,
     "command": "gh api repos/xxibcill/still-shift/actions/permissions",
@@ -746,12 +751,12 @@
       "id": "final-exposure-fusion",
       "renderer": "composition-webgl2-0.39.0",
       "ref": "706be71",
-      "status": "build/review passed; runtime and performance pending"
+      "status": "correctness/review passed; valid performance bracket pending"
     },
     {
       "id": "bounded-exposure-snapshot-sum",
       "renderer": "composition-webgl2-0.40.0",
-      "status": "build/review passed after exact-clear metadata repair; runtime/performance pending"
+      "status": "correctness/review passed; valid performance bracket pending"
     }
   ],
   "rejectedDrafts": [
@@ -879,6 +884,25 @@
       ],
       "conclusion": "Rejected; no performance claim. Raw local result retained under ignored benchmarks/results.",
       "sourceSelectionLimitation": "Shared current bounds implementation; mixed revisions cannot substantiate full ref-to-ref costs. Already rejected for overlap; no gain claim."
+    },
+    {
+      "record": "invalid-1791228320169-fusion-ref-ab.json",
+      "baselineRef": "0e4838852855f6dc8cf91bba763a402dfd716f88",
+      "candidateRef": "706be71",
+      "environment": {
+        "profile": "chromium-software-2",
+        "browserVersion": "151.0.7922.34",
+        "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+        "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+        "platform": "darwin",
+        "arch": "arm64"
+      },
+      "timingValid": false,
+      "overlap": [
+        " 8207 node /Users/jjae/.nvm/versions/node/v24.16.0/bin/pnpm build"
+      ],
+      "sourceSelection": "renderer/kernel/bounds selected per ref; shared helpers captured and hashed",
+      "conclusion": "Rejected solely for overlapping main-chat build; no performance claim"
     }
   ],
   "integrationBase": "817cc9f (CE7 delivered docs-only closeout; runtime still 0e48388)",
@@ -1189,7 +1213,7 @@
     ]
   },
   "fullGate": {
-    "status": "running",
+    "status": "passed",
     "command": "pnpm check",
     "codeRef": "7a797a9",
     "launchRef": "2037122",
@@ -1202,11 +1226,44 @@
       "formatting",
       "lint",
       "build",
-      "1600 unit tests",
-      "46 runtime tests"
+      "unit",
+      "runtime",
+      "integration",
+      "depth",
+      "all browser groups",
+      "frozen CE0 baselines"
     ],
-    "wholeGatePassed": false,
-    "sourceScopeNote": "Renderer/runtime remains reviewed7a797a9. Benchmark diagnostic provenance was repaired after early gate lint/build; separate focused formatting/lint/build validate that script. No runtime change or gate interruption."
+    "wholeGatePassed": true,
+    "sourceScopeNote": "Renderer/runtime remains reviewed7a797a9. Benchmark diagnostic provenance was repaired after early gate lint/build; separate focused formatting/lint/build validate that script. No runtime change or gate interruption.",
+    "exitCode": 0,
+    "logSha256": "8000cc51c6254ad4d1d1aa857ea8a62c2b1ef2ad1dff121298dc96f5f79f0941",
+    "retainedLog": "benchmarks/results/composition-ce6p/full-gate.log",
+    "counts": {
+      "unit": 1600,
+      "runtime": 46,
+      "integration": 139,
+      "depth": 14,
+      "frozenCases": 176,
+      "frozenFrames": 36061
+    },
+    "browserGroups": "all existing pnpm test chain groups passed",
+    "canvasFamilyMatrices": {
+      "storyComponents": {
+        "cases": 69,
+        "frames": 14086,
+        "status": "existing pixel/state/seek/export/timing assertions passed"
+      },
+      "commerce": {
+        "cases": 127,
+        "frames": 28200,
+        "status": "existing pixel/state/seek/export/timing assertions passed"
+      },
+      "typography": {
+        "cases": 20,
+        "frames": 3367,
+        "status": "existing pixel/state/seek/export/timing assertions passed"
+      }
+    }
   },
   "familyAuditMethods": {
     "commerce": {
@@ -1223,8 +1280,8 @@
     }
   },
   "queuedAb": {
-    "status": "live; waiting for full-gate success then three-minute quiet window",
-    "session": 71197,
+    "status": "first corrected bracket stopped for overlap; retry will observe ten-minute quiet window",
+    "session": null,
     "launcher": "/private/tmp/ce6p-ab-after-gate.mjs",
     "outputs": [
       "benchmarks/results/composition-ce6p/fusion-ref-ab.json",

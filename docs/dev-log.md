@@ -48,8 +48,8 @@ still hold before relying on them.
   Candidates: final shutter sum/average fusion and bounded GPU exposure snapshots/
   sums, subject to exact regressions and independent serial A/B measurements.
   Candidates build and pass 852 exactness cases on each GPU profile. Focused
-  regression/export suites pass; full gate runs on reviewed code. Serial timings
-  are queued after gate success and a three-minute quiet window.
+  regression/export suites and the complete local gate pass. Serial timings
+  are queued after gate success and a ten-minute quiet window.
   The main checkout/chat is untouched.
   All 117 original failures, 1.25× family and 2× native targets remain open.
   [Plan](./composition-ce6p-plan.md).
@@ -199,8 +199,8 @@ _Last updated 2026-10-06 by Codex for CE6-P; prior work retained._
 - **Results:** pinned toolchain/import preflight, TypeScript build and changed-file
   lint pass; 852 exactness cases pass on pinned SwiftShader and Apple Metal.
   Focused WebGL/exposure/export suites pass, including 12 hardware comparisons;
-  three timing attempts were rejected
-  by overlap detection and retained without performance conclusions.
+  complete `pnpm check` passes all suites and 176 frozen baselines / 36,061 frames.
+  Four timing attempts were rejected by overlap detection and retained.
 - **Rejected draft:** dividing signed exposure differences before adding the
   background can move half-byte ties; restore the integer numerator before division.
 - **Retained attempt:** sandbox offline install lacked a package; normal locked
@@ -211,8 +211,8 @@ _Last updated 2026-10-06 by Codex for CE6-P; prior work retained._
   and workload guard. Measurement review also repaired mixed-revision bounds
   loading and added workload fingerprints. Runtime stays fixed during the gate.
   Invalid timings are retained; Actions remain disabled.
-- **Next:** full gate on reviewed code; corrected serial A/B is queued after its
-  success and a three-minute quiet window; strict family matrices follow.
+- **Next:** corrected serial A/B is queued after a ten-minute quiet window;
+  strict WebGL family matrices and a reviewable PR follow.
 - **Records:** [slice plan](./composition-ce6p-plan.md),
   [retained evidence](./composition-ce6p-performance-results.json).
 
