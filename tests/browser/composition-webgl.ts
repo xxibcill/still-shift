@@ -1,3 +1,4 @@
+import type * as LinearChecks from "../helpers/composition-linear-reference.ts";
 import type * as AdjustmentChecks from "../helpers/composition-adjustment-history-reference.ts";
 import type * as GradientRankChecks from "../helpers/composition-gradient-rank-reference.ts";
 import type * as MapQuotientChecks from "../helpers/composition-map-quotient-reference.ts";
@@ -37,6 +38,18 @@ try {
   const page = await browser.newPage();
   await page.addInitScript("window.__name = (fn) => fn;");
   await page.goto(server.resolvedUrls!.local[0]!);
+  const linear = await page.evaluate(async () => {
+    const url = "/tests/helpers/composition-linear-reference.ts";
+    const checks = (await import(url)) as typeof LinearChecks;
+    return {
+      owners: await checks.checkLinearOwnerRendering(),
+      blends: await checks.checkLinearBlendRendering(),
+      pixels: await checks.checkLinearPixels(),
+      bytes: checks.checkLinearByteRendering(),
+      cacheSwitch: checks.checkLinearCacheSwitch(),
+    };
+  });
+  console.log("WebGL linear-light composition:", JSON.stringify(linear));
   const adjustment = await page.evaluate(async () => {
     const url = "/tests/helpers/composition-adjustment-history-reference.ts";
     const checks = (await import(url)) as typeof AdjustmentChecks;
@@ -44,6 +57,7 @@ try {
       matrix: await checks.checkAdjustmentEffectRendering(),
       pixels: await checks.checkAdjustmentHistoryPixels(),
       offscreen: await checks.checkOffscreenPrecompBlur(),
+      affine: await checks.checkOffscreenPrecompAffineBlur(),
     };
   });
   console.log("WebGL adjustment blur/history:", JSON.stringify(adjustment));

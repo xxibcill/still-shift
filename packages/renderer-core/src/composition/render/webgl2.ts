@@ -1,3 +1,9 @@
+import {
+  linearBlendShader,
+  linearShaderControls,
+  linearTransferBytes,
+  LINEAR_LERP_SHADER,
+} from "./linear-color.ts";
 import { blurPadding } from "./webgl-blur-padding.ts";
 import { blurKernelLength } from "./webgl-blur-kernel.ts";
 import { WebglPaint } from "./webgl-paint.ts";
@@ -25,7 +31,7 @@ import { WebglDevice, type WebglSurface } from "./webgl-device.ts";
 import { blendShader } from "./webgl-blend.ts";
 
 export const COMPOSITION_WEBGL_RENDERER_VERSION =
-  "composition-webgl2-0.51.0" as const;
+  "composition-webgl2-0.52.0" as const;
 const IDENTITY: Matrix = [1, 0, 0, 1, 0, 0];
 const COPY =
   "uniform float opacity; void main() { pixel = floor(floor(texture(source, uv) * 255.0 + 0.5) * (floor(opacity * 255.0 + 0.5) + 1.0) / 256.0) / 255.0; }";
@@ -69,6 +75,7 @@ export function createWebgl2Backend(
   const device = new WebglDevice(canvas);
   const raster = createCanvas2dBackend({
     ...options,
+    colorSpace: "srgb",
     poolByteLimit: 128 * 1024 * 1024,
   });
   const target = device.surface(canvas.width, canvas.height, false, true, true);
@@ -117,6 +124,22 @@ export function createWebgl2Backend(
     device.release(surface);
   });
 
+  let linear = options.colorSpace === "linear-srgb";
+  let transfer: WebglSurface | undefined;
+  function transferSurface() {
+    if (!transfer) {
+      const table = device.surface(256, 256);
+      try {
+        device.uploadBytes(table, linearTransferBytes());
+        transfer = table;
+      } catch (error) {
+        device.release(table);
+        throw error;
+      }
+    }
+    return transfer;
+  }
+
   function readSurface(surface: WebglSurface) {
     const region = bounds.read(device, surface);
     if (region) return region;
@@ -161,7 +184,11 @@ export function createWebgl2Backend(
     primitive = false,
     painted?: Bounds,
   ) {
-    if (primitive && mode === "normal") {
+    if (linear) {
+      replace(dst, linearBlendShader(mode), [src, dst, transferSurface()], {
+        opacity,
+      });
+    } else if (primitive && mode === "normal") {
       replace(dst, blendShader(mode, true), [src, dst], { opacity });
     } else if (mode === "normal" || mode === "add") {
       gl.enable(gl.BLEND);
@@ -335,6 +362,12 @@ export function createWebgl2Backend(
     version: COMPOSITION_WEBGL_RENDERER_VERSION,
     frameKey: (root) => keys.of(root),
     beginFrame(root) {
+      const next = (root.colorSpace ?? options.colorSpace) === "linear-srgb";
+      if (next !== linear) {
+        isolates.dispose();
+        damage.reset();
+      }
+      linear = next;
       renderingFrame = true;
       device.setFrameClip(exposure ? undefined : damage.next(root));
     },
@@ -344,7 +377,61 @@ export function createWebgl2Backend(
       if (!completed) damage.reset();
     },
     renderIsolate: (op, like, draw) => isolates.render(op, like, draw),
-    drawVectors: (dst, ops) => bounds.include(dst, vectors.draw(dst, ops)),
+    drawVectors: (dst, ops) => {
+      if (!linear) {
+        bounds.include(dst, vectors.draw(dst, ops));
+        return;
+      }
+      for (const op of ops) {
+        const content = op.content;
+        if (content.type === "solid")
+          backend.fillRect(
+            dst,
+            op.matrix,
+            content.width,
+            content.height,
+            content.color,
+            op.opacity,
+            op.blend,
+            op.clips,
+            op.transforms,
+            op.paintBlur,
+          );
+        else if (content.type === "text")
+          backend.drawText(
+            dst,
+            content,
+            op.matrix,
+            op.opacity,
+            op.blend,
+            op.clips,
+            op.transforms,
+            op.paintBlur,
+          );
+        else if (content.type === "shape")
+          backend.drawShape(
+            dst,
+            content,
+            op.matrix,
+            op.opacity,
+            op.blend,
+            op.clips,
+            op.transforms,
+            op.paintBlur,
+          );
+        else
+          backend.drawProvider(
+            dst,
+            content,
+            op.matrix,
+            op.opacity,
+            op.blend,
+            op.clips,
+            op.transforms,
+            op.paintBlur,
+          );
+      }
+    },
     target,
     get allocated() {
       return device.allocated;
@@ -403,6 +490,22 @@ export function createWebgl2Backend(
     // Keep a vector batch together: raster coverage rounds each overlapping fill.
     // Splitting it into separately quantized uploads changes repeated AA edges.
     fillRects(dst, ops) {
+      if (linear) {
+        for (const op of ops)
+          backend.fillRect(
+            dst,
+            op.matrix,
+            op.content.width,
+            op.content.height,
+            op.content.color,
+            op.opacity,
+            op.blend,
+            op.clips,
+            op.transforms,
+            op.paintBlur,
+          );
+        return;
+      }
       for (const op of ops)
         bounds.draw(dst, op.matrix, op.content.width, op.content.height);
       draw(dst, "normal", (pixels) => raster.fillRects!(pixels, ops));
@@ -420,6 +523,7 @@ export function createWebgl2Backend(
       if (paintBlur) bounds.full(dst);
       else bounds.draw(dst, matrix, content.width, content.height);
       if (
+        !linear &&
         !paintBlur &&
         mode === "normal" &&
         (pngImages.draw(dst, content, matrix, opacity, clips, transforms) ||
@@ -706,6 +810,15 @@ export function createWebgl2Backend(
     },
     lerp(dst, src, coverage, opacity) {
       bounds.include(dst, bounds.snapshot(src));
+      if (linear) {
+        replace(
+          dst,
+          LINEAR_LERP_SHADER,
+          [src, dst, coverage, transferSurface()],
+          { opacity },
+        );
+        return;
+      }
       replace(
         dst,
         `uniform float opacity;
@@ -739,16 +852,20 @@ export function createWebgl2Backend(
           bounds.include(dst, painted);
           painted = bounds.snapshot(dst);
           device.pass(
-            "void main() { pixel = texture(backdrop,uv) + floor(texture(source,uv)*255.0+0.5); }",
+            linear
+              ? `${linearShaderControls()} void main(){pixel=texture(backdrop,uv)+vec4(linearWords(stored(texture(source,uv))));}`
+              : "void main() { pixel = texture(backdrop,uv) + floor(texture(source,uv)*255.0+0.5); }",
             next,
-            [dst, sum],
+            linear ? [dst, sum, transferSurface()] : [dst, sum],
           );
           device.swap(sum, next);
         }
         device.pass(
-          "uniform float count; void main() { pixel = floor(texture(source,uv)/count+0.5)/255.0; }",
+          linear
+            ? `${linearShaderControls("backdrop")} uniform float count; void main(){uvec4 sums=uvec4(texture(source,uv)),words=uvec4(0u);for(int c=0;c<4;c++)words[c]=roundedDivide(sums[c],uint(count));pixel=vec4(encodedWords(words))/255.0;}`
+            : "uniform float count; void main() { pixel = floor(texture(source,uv)/count+0.5)/255.0; }",
           dst,
-          [sum],
+          linear ? [sum, transferSurface()] : [sum],
           { count },
         );
       } finally {

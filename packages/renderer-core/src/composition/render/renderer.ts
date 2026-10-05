@@ -266,6 +266,7 @@ export function createCompositionPreview(
     [...BUILTIN_PROVIDERS, ...(options.providers ?? [])],
   );
   const backendOptions = {
+    ...(composition.colorSpace ? { colorSpace: composition.colorSpace } : {}),
     softwareRaster,
     images: {
       images: resources.images,

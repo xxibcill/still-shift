@@ -673,7 +673,7 @@ structure only; use `validateComposition` for the full rules.
 | `frameCount`                     | integer 1–108,000                                  | Required.                                                                                                             |
 | `background`                     | colour or `null`                                   | `null` or absent: transparent.                                                                                        |
 | `format`                         | `landscape` or `vertical`                          | When set, `width` and `height` must match it.                                                                         |
-| `colorSpace`                     | `srgb` or `linear-srgb`                            | `linear-srgb` arrives in CE6.                                                                                         |
+| `colorSpace`                     | `srgb` or `linear-srgb`                            | Defaults to `srgb`; opt in to linear-light composition.                                                               |
 | `motionBlur`                     | `{ enabled, shutterAngle, shutterPhase, samples }` | Optional `inPoint`, `outPoint` and ordered `cuts`; see exposure sampling below.                                       |
 | `assets`                         | [asset](#assets)[]                                 | Required (may be empty).                                                                                              |
 | `layers`                         | [layer](#layers)[]                                 | Required (may be empty).                                                                                              |
@@ -686,6 +686,23 @@ structure only; use `validateComposition` for the full rules.
 | `behaviours`                     | behaviour[] (at most 200)                          | Motion-design intent compiled to expressions; see [behaviours](#behaviours).                                          |
 | `camera2d`                       | see [2D camera](#2d-camera)                        |                                                                                                                       |
 | `metadata`                       | JSON object                                        | Passed through unchanged (registration, claims, review notes); at most 64 KiB and 64 container levels below its root. |
+
+### Linear-light composition
+
+`colorSpace: "linear-srgb"` applies across composition layer boundaries, including
+isolated groups/precomps, all blend modes, adjustment interpolation and exposure
+averaging. Intrinsic source paints, authored gradients, pixel-effect operations
+and luma-matte measurement retain encoded-sRGB semantics. Layer batching that
+would blend overlapping sources in sRGB is disabled for the opt-in path.
+
+Render targets remain encoded-sRGB premultiplied RGBA8. Each composition pass
+recovers canonical straight bytes, decodes through a 16-bit transfer table,
+composites premultiplied linear values with fixed integer normalization, then
+encodes through the inverse table. Alpha stays coverage. Exposure sums 16-bit
+linear premultiplied samples in fixed order; hardware shaders use the same
+transfer controls without image readback. For example, half-covered white over
+black produces 188 rather than the default sRGB value 128. Changing color space
+invalidates retained frame and isolate pixels.
 
 ## Precomps and scopes
 
@@ -1127,13 +1144,13 @@ diagnostic code.
 Features that are in the contract but not yet implemented fail with
 `comp-feature-unavailable`; the message names the milestone.
 
-| Feature                                                      | Milestone |
-| ------------------------------------------------------------ | --------- |
-| Shape layers, follow-path constraints, stroke properties     | CE5       |
-| Effects, `linear-srgb` compositing, `blur`                   | CE6       |
-| 3D layers, camera layers, 3D rotation, auto-orient to camera | CE8       |
-| Video, image-sequence and audio layers and assets            | CE13      |
-| Light layers                                                 | Q6        |
+| Feature                                                       | Milestone               |
+| ------------------------------------------------------------- | ----------------------- |
+| Shape layers, follow-path constraints, stroke properties      | CE5                     |
+| Legacy `blur` property alias (use `effects[id].radius` today) | CE6 compatibility audit |
+| 3D layers, camera layers, 3D rotation, auto-orient to camera  | CE8                     |
+| Video, image-sequence and audio layers and assets             | CE13                    |
+| Light layers                                                  | Q6                      |
 
 ## Limits
 

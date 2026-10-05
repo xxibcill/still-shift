@@ -3264,6 +3264,20 @@ padding: six cases / 72 frames / 84 seeks now match exactly. Broader affine
 regressions, linear-light and complete milestone acceptance remain.
 [Evidence](./composition-ce6-completion-results.json).
 
+### CE6 optional linear-light checkpoint (2026-10-06)
+
+Opt-in `linear-srgb` uses real 16-bit premultiplied linear blending for all 17
+modes, adjustment interpolation and fixed-order exposure averaging. Source paints,
+effects and luma measurement retain encoded-sRGB semantics; ordinary sRGB arithmetic
+is unchanged. Bounded transfer controls run image blending on the GPU without
+readback. Layer batches are disabled in the opt-in path and color-domain switches
+invalidate retained pixels. All 1,700 unit tests and build/lint/schema/boundaries
+pass. 180 cases / 2,160 frames / 2,520 seeks meet delta 2/PSNR 50; 559,215 alpha
+byte-pair/mode cases meet delta 1. Independent pixels/exposure/cache switches pass.
+28 affine offscreen blur cases / 336 frames / 392 seeks are exact. Final feature/
+fallback/source-history audit, hardware/hash/export/cost/full-gate acceptance and
+CE6 PR remain. [Evidence](./composition-ce6-completion-results.json).
+
 ### CE6 performance slice 1: exact effect work (2026-10-03)
 
 - **Scope:** the transferred CE4b timing requirement only, not the broader CE6

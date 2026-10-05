@@ -1124,7 +1124,7 @@ const invalid: Mutation[] = [
   ],
   [
     "effects",
-    (d) => set(house(d), { effects: [{ id: "zoom", effect: "blur.zoom" }] }),
+    (d) => set(house(d), { effects: [{ id: "future", effect: "blur.future" }] }),
     "comp-feature-unavailable",
   ],
   [
@@ -1160,12 +1160,6 @@ const invalid: Mutation[] = [
     (d) => set(d.motionBlur!, { enabled: true, inPoint: 10, outPoint: 5 }),
     "comp-motion-blur-range",
     "motionBlur",
-  ],
-  [
-    "linear compositing",
-    (d) => set(d, { colorSpace: "linear-srgb" }),
-    "comp-feature-unavailable",
-    "colorSpace",
   ],
   [
     "marker past the end",

@@ -1069,12 +1069,6 @@ export function validateCompositionSemantics(
         );
     });
   }
-  if (comp.colorSpace === "linear-srgb")
-    fail(
-      "comp-feature-unavailable",
-      ["colorSpace"],
-      "linear-light compositing is not available until CE6",
-    );
   if (comp.format) {
     const size = formatSize(comp.format);
     if (comp.width !== size.width || comp.height !== size.height)

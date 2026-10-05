@@ -2493,11 +2493,2166 @@
       ],
       "pending": [
         "Real optional linear-light, broader offscreen affine regression and complete milestone acceptance"
+      ],
+      "implementation": "5ba705c"
+    },
+    {
+      "name": "Optional linear-light composition and affine blur regressions",
+      "status": "focused-verification-passed",
+      "versions": {
+        "evaluator": 43,
+        "canvas": "composition-canvas-1.38.0",
+        "webgl": "composition-webgl2-0.52.0"
+      },
+      "features": [
+        "Real opt-in 16-bit linear premultiplied layer blending for all 17 modes",
+        "Linear adjustment interpolation and fixed-order exposure averaging",
+        "Bounded transfer-control texture and actual GPU image blending without readback",
+        "Source paints/effects/luma mattes retain authored encoded-sRGB semantics",
+        "Opt-in disables sRGB layer batches and image fast blends; normal sRGB arithmetic retained",
+        "Color-domain switches invalidate retained frame/isolate pixels",
+        "Canvas pass workspaces avoid per-pixel typed-array allocation"
+      ],
+      "verification": {
+        "focusedTests": 166,
+        "focusedFiles": 4,
+        "wholeUnitSuite": {
+          "tests": 1700,
+          "files": 162,
+          "status": "passed",
+          "isFullPnpmCheck": false
+        },
+        "build": "passed",
+        "lint": "passed",
+        "schema": "passed",
+        "boundaries": "passed",
+        "native": {
+          "profile": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+          "owners": {
+            "cases": 27,
+            "frames": 324,
+            "rows": [
+              {
+                "effect": "color.invert",
+                "kind": "solid",
+                "variant": 0,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "effect": "color.invert",
+                "kind": "solid",
+                "variant": 1,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "effect": "color.invert",
+                "kind": "solid",
+                "variant": 2,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "effect": "color.invert",
+                "kind": "image",
+                "variant": 0,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "effect": "color.invert",
+                "kind": "image",
+                "variant": 1,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "effect": "color.invert",
+                "kind": "image",
+                "variant": 2,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "effect": "color.invert",
+                "kind": "text",
+                "variant": 0,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "effect": "color.invert",
+                "kind": "text",
+                "variant": 1,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "effect": "color.invert",
+                "kind": "text",
+                "variant": 2,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "effect": "color.invert",
+                "kind": "shape",
+                "variant": 0,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "effect": "color.invert",
+                "kind": "shape",
+                "variant": 1,
+                "frames": 12,
+                "maxDelta": 2,
+                "psnr": 54.80592222711999
+              },
+              {
+                "effect": "color.invert",
+                "kind": "shape",
+                "variant": 2,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "effect": "color.invert",
+                "kind": "provider",
+                "variant": 0,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "effect": "color.invert",
+                "kind": "provider",
+                "variant": 1,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "effect": "color.invert",
+                "kind": "provider",
+                "variant": 2,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "effect": "color.invert",
+                "kind": "group",
+                "variant": 0,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "effect": "color.invert",
+                "kind": "group",
+                "variant": 1,
+                "frames": 12,
+                "maxDelta": 2,
+                "psnr": 58.02650832648978
+              },
+              {
+                "effect": "color.invert",
+                "kind": "group",
+                "variant": 2,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "effect": "color.invert",
+                "kind": "precomp",
+                "variant": 0,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "effect": "color.invert",
+                "kind": "precomp",
+                "variant": 1,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "effect": "color.invert",
+                "kind": "precomp",
+                "variant": 2,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "effect": "color.invert",
+                "kind": "collapsed",
+                "variant": 0,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "effect": "color.invert",
+                "kind": "collapsed",
+                "variant": 1,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "effect": "color.invert",
+                "kind": "collapsed",
+                "variant": 2,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "effect": "color.invert",
+                "kind": "adjustment",
+                "variant": 0,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "effect": "color.invert",
+                "kind": "adjustment",
+                "variant": 1,
+                "frames": 12,
+                "maxDelta": 1,
+                "psnr": 62.14141741552637
+              },
+              {
+                "effect": "color.invert",
+                "kind": "adjustment",
+                "variant": 2,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              }
+            ]
+          },
+          "blends": {
+            "cases": 153,
+            "frames": 1836,
+            "rows": [
+              {
+                "mode": "normal",
+                "effect": "color.invert",
+                "kind": "solid",
+                "variant": 0,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "normal",
+                "effect": "color.invert",
+                "kind": "solid",
+                "variant": 1,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "normal",
+                "effect": "color.invert",
+                "kind": "solid",
+                "variant": 2,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "normal",
+                "effect": "color.invert",
+                "kind": "group",
+                "variant": 0,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "normal",
+                "effect": "color.invert",
+                "kind": "group",
+                "variant": 1,
+                "frames": 12,
+                "maxDelta": 2,
+                "psnr": 58.02650832648978
+              },
+              {
+                "mode": "normal",
+                "effect": "color.invert",
+                "kind": "group",
+                "variant": 2,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "normal",
+                "effect": "color.invert",
+                "kind": "adjustment",
+                "variant": 0,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "normal",
+                "effect": "color.invert",
+                "kind": "adjustment",
+                "variant": 1,
+                "frames": 12,
+                "maxDelta": 1,
+                "psnr": 62.14141741552637
+              },
+              {
+                "mode": "normal",
+                "effect": "color.invert",
+                "kind": "adjustment",
+                "variant": 2,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "multiply",
+                "effect": "color.invert",
+                "kind": "solid",
+                "variant": 0,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "multiply",
+                "effect": "color.invert",
+                "kind": "solid",
+                "variant": 1,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "multiply",
+                "effect": "color.invert",
+                "kind": "solid",
+                "variant": 2,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "multiply",
+                "effect": "color.invert",
+                "kind": "group",
+                "variant": 0,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "multiply",
+                "effect": "color.invert",
+                "kind": "group",
+                "variant": 1,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "multiply",
+                "effect": "color.invert",
+                "kind": "group",
+                "variant": 2,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "multiply",
+                "effect": "color.invert",
+                "kind": "adjustment",
+                "variant": 0,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "multiply",
+                "effect": "color.invert",
+                "kind": "adjustment",
+                "variant": 1,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "multiply",
+                "effect": "color.invert",
+                "kind": "adjustment",
+                "variant": 2,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "screen",
+                "effect": "color.invert",
+                "kind": "solid",
+                "variant": 0,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "screen",
+                "effect": "color.invert",
+                "kind": "solid",
+                "variant": 1,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "screen",
+                "effect": "color.invert",
+                "kind": "solid",
+                "variant": 2,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "screen",
+                "effect": "color.invert",
+                "kind": "group",
+                "variant": 0,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "screen",
+                "effect": "color.invert",
+                "kind": "group",
+                "variant": 1,
+                "frames": 12,
+                "maxDelta": 1,
+                "psnr": 64.0471082397694
+              },
+              {
+                "mode": "screen",
+                "effect": "color.invert",
+                "kind": "group",
+                "variant": 2,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "screen",
+                "effect": "color.invert",
+                "kind": "adjustment",
+                "variant": 0,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "screen",
+                "effect": "color.invert",
+                "kind": "adjustment",
+                "variant": 1,
+                "frames": 12,
+                "maxDelta": 1,
+                "psnr": 62.14141741552637
+              },
+              {
+                "mode": "screen",
+                "effect": "color.invert",
+                "kind": "adjustment",
+                "variant": 2,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "overlay",
+                "effect": "color.invert",
+                "kind": "solid",
+                "variant": 0,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "overlay",
+                "effect": "color.invert",
+                "kind": "solid",
+                "variant": 1,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "overlay",
+                "effect": "color.invert",
+                "kind": "solid",
+                "variant": 2,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "overlay",
+                "effect": "color.invert",
+                "kind": "group",
+                "variant": 0,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "overlay",
+                "effect": "color.invert",
+                "kind": "group",
+                "variant": 1,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "overlay",
+                "effect": "color.invert",
+                "kind": "group",
+                "variant": 2,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "overlay",
+                "effect": "color.invert",
+                "kind": "adjustment",
+                "variant": 0,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "overlay",
+                "effect": "color.invert",
+                "kind": "adjustment",
+                "variant": 1,
+                "frames": 12,
+                "maxDelta": 1,
+                "psnr": 62.14141741552637
+              },
+              {
+                "mode": "overlay",
+                "effect": "color.invert",
+                "kind": "adjustment",
+                "variant": 2,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "darken",
+                "effect": "color.invert",
+                "kind": "solid",
+                "variant": 0,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "darken",
+                "effect": "color.invert",
+                "kind": "solid",
+                "variant": 1,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "darken",
+                "effect": "color.invert",
+                "kind": "solid",
+                "variant": 2,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "darken",
+                "effect": "color.invert",
+                "kind": "group",
+                "variant": 0,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "darken",
+                "effect": "color.invert",
+                "kind": "group",
+                "variant": 1,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "darken",
+                "effect": "color.invert",
+                "kind": "group",
+                "variant": 2,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "darken",
+                "effect": "color.invert",
+                "kind": "adjustment",
+                "variant": 0,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "darken",
+                "effect": "color.invert",
+                "kind": "adjustment",
+                "variant": 1,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "darken",
+                "effect": "color.invert",
+                "kind": "adjustment",
+                "variant": 2,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "lighten",
+                "effect": "color.invert",
+                "kind": "solid",
+                "variant": 0,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "lighten",
+                "effect": "color.invert",
+                "kind": "solid",
+                "variant": 1,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "lighten",
+                "effect": "color.invert",
+                "kind": "solid",
+                "variant": 2,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "lighten",
+                "effect": "color.invert",
+                "kind": "group",
+                "variant": 0,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "lighten",
+                "effect": "color.invert",
+                "kind": "group",
+                "variant": 1,
+                "frames": 12,
+                "maxDelta": 2,
+                "psnr": 58.02650832648978
+              },
+              {
+                "mode": "lighten",
+                "effect": "color.invert",
+                "kind": "group",
+                "variant": 2,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "lighten",
+                "effect": "color.invert",
+                "kind": "adjustment",
+                "variant": 0,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "lighten",
+                "effect": "color.invert",
+                "kind": "adjustment",
+                "variant": 1,
+                "frames": 12,
+                "maxDelta": 1,
+                "psnr": 62.14141741552637
+              },
+              {
+                "mode": "lighten",
+                "effect": "color.invert",
+                "kind": "adjustment",
+                "variant": 2,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "color-dodge",
+                "effect": "color.invert",
+                "kind": "solid",
+                "variant": 0,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "color-dodge",
+                "effect": "color.invert",
+                "kind": "solid",
+                "variant": 1,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "color-dodge",
+                "effect": "color.invert",
+                "kind": "solid",
+                "variant": 2,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "color-dodge",
+                "effect": "color.invert",
+                "kind": "group",
+                "variant": 0,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "color-dodge",
+                "effect": "color.invert",
+                "kind": "group",
+                "variant": 1,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "color-dodge",
+                "effect": "color.invert",
+                "kind": "group",
+                "variant": 2,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "color-dodge",
+                "effect": "color.invert",
+                "kind": "adjustment",
+                "variant": 0,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "color-dodge",
+                "effect": "color.invert",
+                "kind": "adjustment",
+                "variant": 1,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "color-dodge",
+                "effect": "color.invert",
+                "kind": "adjustment",
+                "variant": 2,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "color-burn",
+                "effect": "color.invert",
+                "kind": "solid",
+                "variant": 0,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "color-burn",
+                "effect": "color.invert",
+                "kind": "solid",
+                "variant": 1,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "color-burn",
+                "effect": "color.invert",
+                "kind": "solid",
+                "variant": 2,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "color-burn",
+                "effect": "color.invert",
+                "kind": "group",
+                "variant": 0,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "color-burn",
+                "effect": "color.invert",
+                "kind": "group",
+                "variant": 1,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "color-burn",
+                "effect": "color.invert",
+                "kind": "group",
+                "variant": 2,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "color-burn",
+                "effect": "color.invert",
+                "kind": "adjustment",
+                "variant": 0,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "color-burn",
+                "effect": "color.invert",
+                "kind": "adjustment",
+                "variant": 1,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "color-burn",
+                "effect": "color.invert",
+                "kind": "adjustment",
+                "variant": 2,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "hard-light",
+                "effect": "color.invert",
+                "kind": "solid",
+                "variant": 0,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "hard-light",
+                "effect": "color.invert",
+                "kind": "solid",
+                "variant": 1,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "hard-light",
+                "effect": "color.invert",
+                "kind": "solid",
+                "variant": 2,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "hard-light",
+                "effect": "color.invert",
+                "kind": "group",
+                "variant": 0,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "hard-light",
+                "effect": "color.invert",
+                "kind": "group",
+                "variant": 1,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "hard-light",
+                "effect": "color.invert",
+                "kind": "group",
+                "variant": 2,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "hard-light",
+                "effect": "color.invert",
+                "kind": "adjustment",
+                "variant": 0,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "hard-light",
+                "effect": "color.invert",
+                "kind": "adjustment",
+                "variant": 1,
+                "frames": 12,
+                "maxDelta": 1,
+                "psnr": 62.14141741552637
+              },
+              {
+                "mode": "hard-light",
+                "effect": "color.invert",
+                "kind": "adjustment",
+                "variant": 2,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "soft-light",
+                "effect": "color.invert",
+                "kind": "solid",
+                "variant": 0,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "soft-light",
+                "effect": "color.invert",
+                "kind": "solid",
+                "variant": 1,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "soft-light",
+                "effect": "color.invert",
+                "kind": "solid",
+                "variant": 2,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "soft-light",
+                "effect": "color.invert",
+                "kind": "group",
+                "variant": 0,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "soft-light",
+                "effect": "color.invert",
+                "kind": "group",
+                "variant": 1,
+                "frames": 12,
+                "maxDelta": 1,
+                "psnr": 64.0471082397694
+              },
+              {
+                "mode": "soft-light",
+                "effect": "color.invert",
+                "kind": "group",
+                "variant": 2,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "soft-light",
+                "effect": "color.invert",
+                "kind": "adjustment",
+                "variant": 0,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "soft-light",
+                "effect": "color.invert",
+                "kind": "adjustment",
+                "variant": 1,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "soft-light",
+                "effect": "color.invert",
+                "kind": "adjustment",
+                "variant": 2,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "difference",
+                "effect": "color.invert",
+                "kind": "solid",
+                "variant": 0,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "difference",
+                "effect": "color.invert",
+                "kind": "solid",
+                "variant": 1,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "difference",
+                "effect": "color.invert",
+                "kind": "solid",
+                "variant": 2,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "difference",
+                "effect": "color.invert",
+                "kind": "group",
+                "variant": 0,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "difference",
+                "effect": "color.invert",
+                "kind": "group",
+                "variant": 1,
+                "frames": 12,
+                "maxDelta": 2,
+                "psnr": 58.02650832648978
+              },
+              {
+                "mode": "difference",
+                "effect": "color.invert",
+                "kind": "group",
+                "variant": 2,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "difference",
+                "effect": "color.invert",
+                "kind": "adjustment",
+                "variant": 0,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "difference",
+                "effect": "color.invert",
+                "kind": "adjustment",
+                "variant": 1,
+                "frames": 12,
+                "maxDelta": 1,
+                "psnr": 62.14141741552637
+              },
+              {
+                "mode": "difference",
+                "effect": "color.invert",
+                "kind": "adjustment",
+                "variant": 2,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "exclusion",
+                "effect": "color.invert",
+                "kind": "solid",
+                "variant": 0,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "exclusion",
+                "effect": "color.invert",
+                "kind": "solid",
+                "variant": 1,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "exclusion",
+                "effect": "color.invert",
+                "kind": "solid",
+                "variant": 2,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "exclusion",
+                "effect": "color.invert",
+                "kind": "group",
+                "variant": 0,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "exclusion",
+                "effect": "color.invert",
+                "kind": "group",
+                "variant": 1,
+                "frames": 12,
+                "maxDelta": 2,
+                "psnr": 58.02650832648978
+              },
+              {
+                "mode": "exclusion",
+                "effect": "color.invert",
+                "kind": "group",
+                "variant": 2,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "exclusion",
+                "effect": "color.invert",
+                "kind": "adjustment",
+                "variant": 0,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "exclusion",
+                "effect": "color.invert",
+                "kind": "adjustment",
+                "variant": 1,
+                "frames": 12,
+                "maxDelta": 1,
+                "psnr": 62.14141741552637
+              },
+              {
+                "mode": "exclusion",
+                "effect": "color.invert",
+                "kind": "adjustment",
+                "variant": 2,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "hue",
+                "effect": "color.invert",
+                "kind": "solid",
+                "variant": 0,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "hue",
+                "effect": "color.invert",
+                "kind": "solid",
+                "variant": 1,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "hue",
+                "effect": "color.invert",
+                "kind": "solid",
+                "variant": 2,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "hue",
+                "effect": "color.invert",
+                "kind": "group",
+                "variant": 0,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "hue",
+                "effect": "color.invert",
+                "kind": "group",
+                "variant": 1,
+                "frames": 12,
+                "maxDelta": 1,
+                "psnr": 61.036808283129595
+              },
+              {
+                "mode": "hue",
+                "effect": "color.invert",
+                "kind": "group",
+                "variant": 2,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "hue",
+                "effect": "color.invert",
+                "kind": "adjustment",
+                "variant": 0,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "hue",
+                "effect": "color.invert",
+                "kind": "adjustment",
+                "variant": 1,
+                "frames": 12,
+                "maxDelta": 1,
+                "psnr": 62.14141741552637
+              },
+              {
+                "mode": "hue",
+                "effect": "color.invert",
+                "kind": "adjustment",
+                "variant": 2,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "saturation",
+                "effect": "color.invert",
+                "kind": "solid",
+                "variant": 0,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "saturation",
+                "effect": "color.invert",
+                "kind": "solid",
+                "variant": 1,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "saturation",
+                "effect": "color.invert",
+                "kind": "solid",
+                "variant": 2,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "saturation",
+                "effect": "color.invert",
+                "kind": "group",
+                "variant": 0,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "saturation",
+                "effect": "color.invert",
+                "kind": "group",
+                "variant": 1,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "saturation",
+                "effect": "color.invert",
+                "kind": "group",
+                "variant": 2,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "saturation",
+                "effect": "color.invert",
+                "kind": "adjustment",
+                "variant": 0,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "saturation",
+                "effect": "color.invert",
+                "kind": "adjustment",
+                "variant": 1,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "saturation",
+                "effect": "color.invert",
+                "kind": "adjustment",
+                "variant": 2,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "color",
+                "effect": "color.invert",
+                "kind": "solid",
+                "variant": 0,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "color",
+                "effect": "color.invert",
+                "kind": "solid",
+                "variant": 1,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "color",
+                "effect": "color.invert",
+                "kind": "solid",
+                "variant": 2,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "color",
+                "effect": "color.invert",
+                "kind": "group",
+                "variant": 0,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "color",
+                "effect": "color.invert",
+                "kind": "group",
+                "variant": 1,
+                "frames": 12,
+                "maxDelta": 2,
+                "psnr": 57.05740819640922
+              },
+              {
+                "mode": "color",
+                "effect": "color.invert",
+                "kind": "group",
+                "variant": 2,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "color",
+                "effect": "color.invert",
+                "kind": "adjustment",
+                "variant": 0,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "color",
+                "effect": "color.invert",
+                "kind": "adjustment",
+                "variant": 1,
+                "frames": 12,
+                "maxDelta": 1,
+                "psnr": 59.13111745888656
+              },
+              {
+                "mode": "color",
+                "effect": "color.invert",
+                "kind": "adjustment",
+                "variant": 2,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "luminosity",
+                "effect": "color.invert",
+                "kind": "solid",
+                "variant": 0,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "luminosity",
+                "effect": "color.invert",
+                "kind": "solid",
+                "variant": 1,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "luminosity",
+                "effect": "color.invert",
+                "kind": "solid",
+                "variant": 2,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "luminosity",
+                "effect": "color.invert",
+                "kind": "group",
+                "variant": 0,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "luminosity",
+                "effect": "color.invert",
+                "kind": "group",
+                "variant": 1,
+                "frames": 12,
+                "maxDelta": 1,
+                "psnr": 61.036808283129595
+              },
+              {
+                "mode": "luminosity",
+                "effect": "color.invert",
+                "kind": "group",
+                "variant": 2,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "luminosity",
+                "effect": "color.invert",
+                "kind": "adjustment",
+                "variant": 0,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "luminosity",
+                "effect": "color.invert",
+                "kind": "adjustment",
+                "variant": 1,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "luminosity",
+                "effect": "color.invert",
+                "kind": "adjustment",
+                "variant": 2,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "add",
+                "effect": "color.invert",
+                "kind": "solid",
+                "variant": 0,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "add",
+                "effect": "color.invert",
+                "kind": "solid",
+                "variant": 1,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "add",
+                "effect": "color.invert",
+                "kind": "solid",
+                "variant": 2,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "add",
+                "effect": "color.invert",
+                "kind": "group",
+                "variant": 0,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "add",
+                "effect": "color.invert",
+                "kind": "group",
+                "variant": 1,
+                "frames": 12,
+                "maxDelta": 1,
+                "psnr": 64.0471082397694
+              },
+              {
+                "mode": "add",
+                "effect": "color.invert",
+                "kind": "group",
+                "variant": 2,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "add",
+                "effect": "color.invert",
+                "kind": "adjustment",
+                "variant": 0,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "add",
+                "effect": "color.invert",
+                "kind": "adjustment",
+                "variant": 1,
+                "frames": 12,
+                "maxDelta": 1,
+                "psnr": 62.14141741552637
+              },
+              {
+                "mode": "add",
+                "effect": "color.invert",
+                "kind": "adjustment",
+                "variant": 2,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              }
+            ]
+          },
+          "pixels": [
+            {
+              "kind": "white",
+              "backend": "canvas2d",
+              "pixel": [188, 188, 188, 255]
+            },
+            {
+              "kind": "white",
+              "backend": "webgl2",
+              "pixel": [188, 188, 188, 255]
+            },
+            {
+              "kind": "masked",
+              "backend": "canvas2d",
+              "pixel": [137, 137, 137, 255]
+            },
+            {
+              "kind": "masked",
+              "backend": "webgl2",
+              "pixel": [137, 137, 137, 255]
+            },
+            {
+              "kind": "adjustment",
+              "backend": "canvas2d",
+              "pixel": [188, 188, 188, 255]
+            },
+            {
+              "kind": "adjustment",
+              "backend": "webgl2",
+              "pixel": [188, 188, 188, 255]
+            },
+            {
+              "kind": "exposure",
+              "backend": "canvas2d",
+              "count": 2,
+              "pixel": [188, 188, 188, 255]
+            },
+            {
+              "kind": "exposure",
+              "backend": "canvas2d",
+              "count": 3,
+              "pixel": [156, 156, 156, 255]
+            },
+            {
+              "kind": "exposure",
+              "backend": "canvas2d",
+              "count": 4,
+              "pixel": [188, 188, 188, 255]
+            },
+            {
+              "kind": "exposure",
+              "backend": "canvas2d",
+              "count": 8,
+              "pixel": [188, 188, 188, 255]
+            },
+            {
+              "kind": "exposure",
+              "backend": "canvas2d",
+              "count": 16,
+              "pixel": [188, 188, 188, 255]
+            },
+            {
+              "kind": "exposure",
+              "backend": "canvas2d",
+              "count": 32,
+              "pixel": [188, 188, 188, 255]
+            },
+            {
+              "kind": "exposure",
+              "backend": "canvas2d",
+              "count": 64,
+              "pixel": [188, 188, 188, 255]
+            },
+            {
+              "kind": "exposure",
+              "backend": "webgl2",
+              "count": 2,
+              "pixel": [188, 188, 188, 255]
+            },
+            {
+              "kind": "exposure",
+              "backend": "webgl2",
+              "count": 3,
+              "pixel": [156, 156, 156, 255]
+            },
+            {
+              "kind": "exposure",
+              "backend": "webgl2",
+              "count": 4,
+              "pixel": [188, 188, 188, 255]
+            },
+            {
+              "kind": "exposure",
+              "backend": "webgl2",
+              "count": 8,
+              "pixel": [188, 188, 188, 255]
+            },
+            {
+              "kind": "exposure",
+              "backend": "webgl2",
+              "count": 16,
+              "pixel": [188, 188, 188, 255]
+            },
+            {
+              "kind": "exposure",
+              "backend": "webgl2",
+              "count": 32,
+              "pixel": [188, 188, 188, 255]
+            },
+            {
+              "kind": "exposure",
+              "backend": "webgl2",
+              "count": 64,
+              "pixel": [188, 188, 188, 255]
+            }
+          ],
+          "bytes": {
+            "pairs": 32895,
+            "modes": 17,
+            "pairModeCases": 559215,
+            "rows": [
+              {
+                "mode": "normal",
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "multiply",
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "screen",
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "overlay",
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "darken",
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "lighten",
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "color-dodge",
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "color-burn",
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "hard-light",
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "soft-light",
+                "maxDelta": 1,
+                "psnr": 102.31620282819571
+              },
+              {
+                "mode": "difference",
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "exclusion",
+                "maxDelta": 1,
+                "psnr": 102.31620282819571
+              },
+              {
+                "mode": "hue",
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "saturation",
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "color",
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "luminosity",
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "mode": "add",
+                "maxDelta": 0,
+                "psnr": 999
+              }
+            ]
+          }
+        },
+        "cacheSwitch": {
+          "0": {
+            "backend": "canvas2d",
+            "colorSpace": "srgb",
+            "pixel": [128, 128, 128, 255]
+          },
+          "1": {
+            "backend": "canvas2d",
+            "colorSpace": "linear-srgb",
+            "pixel": [188, 188, 188, 255]
+          },
+          "2": {
+            "backend": "canvas2d",
+            "colorSpace": "srgb",
+            "pixel": [128, 128, 128, 255]
+          },
+          "3": {
+            "backend": "webgl2",
+            "colorSpace": "srgb",
+            "pixel": [128, 128, 128, 255]
+          },
+          "4": {
+            "backend": "webgl2",
+            "colorSpace": "linear-srgb",
+            "pixel": [188, 188, 188, 255]
+          },
+          "5": {
+            "backend": "webgl2",
+            "colorSpace": "srgb",
+            "pixel": [128, 128, 128, 255]
+          },
+          "profile": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)"
+        },
+        "affineOffscreenBlur": {
+          "profile": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+          "cases": 28,
+          "frames": 336,
+          "rows": [
+            {
+              "pose": 0,
+              "effect": "blur.primitive",
+              "kind": "precomp",
+              "variant": 0,
+              "frames": 12,
+              "maxDelta": 0,
+              "psnr": 999
+            },
+            {
+              "pose": 0,
+              "effect": "blur.primitive",
+              "kind": "precomp",
+              "variant": 1,
+              "frames": 12,
+              "maxDelta": 0,
+              "psnr": 999
+            },
+            {
+              "pose": 0,
+              "effect": "blur.primitive",
+              "kind": "collapsed",
+              "variant": 0,
+              "frames": 12,
+              "maxDelta": 0,
+              "psnr": 999
+            },
+            {
+              "pose": 0,
+              "effect": "blur.primitive",
+              "kind": "collapsed",
+              "variant": 1,
+              "frames": 12,
+              "maxDelta": 0,
+              "psnr": 999
+            },
+            {
+              "pose": 1,
+              "effect": "blur.primitive",
+              "kind": "precomp",
+              "variant": 0,
+              "frames": 12,
+              "maxDelta": 0,
+              "psnr": 999
+            },
+            {
+              "pose": 1,
+              "effect": "blur.primitive",
+              "kind": "precomp",
+              "variant": 1,
+              "frames": 12,
+              "maxDelta": 0,
+              "psnr": 999
+            },
+            {
+              "pose": 1,
+              "effect": "blur.primitive",
+              "kind": "collapsed",
+              "variant": 0,
+              "frames": 12,
+              "maxDelta": 0,
+              "psnr": 999
+            },
+            {
+              "pose": 1,
+              "effect": "blur.primitive",
+              "kind": "collapsed",
+              "variant": 1,
+              "frames": 12,
+              "maxDelta": 0,
+              "psnr": 999
+            },
+            {
+              "pose": 2,
+              "effect": "blur.primitive",
+              "kind": "precomp",
+              "variant": 0,
+              "frames": 12,
+              "maxDelta": 0,
+              "psnr": 999
+            },
+            {
+              "pose": 2,
+              "effect": "blur.primitive",
+              "kind": "precomp",
+              "variant": 1,
+              "frames": 12,
+              "maxDelta": 0,
+              "psnr": 999
+            },
+            {
+              "pose": 2,
+              "effect": "blur.primitive",
+              "kind": "collapsed",
+              "variant": 0,
+              "frames": 12,
+              "maxDelta": 0,
+              "psnr": 999
+            },
+            {
+              "pose": 2,
+              "effect": "blur.primitive",
+              "kind": "collapsed",
+              "variant": 1,
+              "frames": 12,
+              "maxDelta": 0,
+              "psnr": 999
+            },
+            {
+              "pose": 3,
+              "effect": "blur.primitive",
+              "kind": "precomp",
+              "variant": 0,
+              "frames": 12,
+              "maxDelta": 0,
+              "psnr": 999
+            },
+            {
+              "pose": 3,
+              "effect": "blur.primitive",
+              "kind": "precomp",
+              "variant": 1,
+              "frames": 12,
+              "maxDelta": 0,
+              "psnr": 999
+            },
+            {
+              "pose": 3,
+              "effect": "blur.primitive",
+              "kind": "collapsed",
+              "variant": 0,
+              "frames": 12,
+              "maxDelta": 0,
+              "psnr": 999
+            },
+            {
+              "pose": 3,
+              "effect": "blur.primitive",
+              "kind": "collapsed",
+              "variant": 1,
+              "frames": 12,
+              "maxDelta": 0,
+              "psnr": 999
+            },
+            {
+              "pose": 4,
+              "effect": "blur.primitive",
+              "kind": "precomp",
+              "variant": 0,
+              "frames": 12,
+              "maxDelta": 0,
+              "psnr": 999
+            },
+            {
+              "pose": 4,
+              "effect": "blur.primitive",
+              "kind": "precomp",
+              "variant": 1,
+              "frames": 12,
+              "maxDelta": 0,
+              "psnr": 999
+            },
+            {
+              "pose": 4,
+              "effect": "blur.primitive",
+              "kind": "collapsed",
+              "variant": 0,
+              "frames": 12,
+              "maxDelta": 0,
+              "psnr": 999
+            },
+            {
+              "pose": 4,
+              "effect": "blur.primitive",
+              "kind": "collapsed",
+              "variant": 1,
+              "frames": 12,
+              "maxDelta": 0,
+              "psnr": 999
+            },
+            {
+              "pose": 5,
+              "effect": "blur.primitive",
+              "kind": "precomp",
+              "variant": 0,
+              "frames": 12,
+              "maxDelta": 0,
+              "psnr": 999
+            },
+            {
+              "pose": 5,
+              "effect": "blur.primitive",
+              "kind": "precomp",
+              "variant": 1,
+              "frames": 12,
+              "maxDelta": 0,
+              "psnr": 999
+            },
+            {
+              "pose": 5,
+              "effect": "blur.primitive",
+              "kind": "collapsed",
+              "variant": 0,
+              "frames": 12,
+              "maxDelta": 0,
+              "psnr": 999
+            },
+            {
+              "pose": 5,
+              "effect": "blur.primitive",
+              "kind": "collapsed",
+              "variant": 1,
+              "frames": 12,
+              "maxDelta": 0,
+              "psnr": 999
+            },
+            {
+              "pose": 6,
+              "effect": "blur.primitive",
+              "kind": "precomp",
+              "variant": 0,
+              "frames": 12,
+              "maxDelta": 0,
+              "psnr": 999
+            },
+            {
+              "pose": 6,
+              "effect": "blur.primitive",
+              "kind": "precomp",
+              "variant": 1,
+              "frames": 12,
+              "maxDelta": 0,
+              "psnr": 999
+            },
+            {
+              "pose": 6,
+              "effect": "blur.primitive",
+              "kind": "collapsed",
+              "variant": 0,
+              "frames": 12,
+              "maxDelta": 0,
+              "psnr": 999
+            },
+            {
+              "pose": 6,
+              "effect": "blur.primitive",
+              "kind": "collapsed",
+              "variant": 1,
+              "frames": 12,
+              "maxDelta": 0,
+              "psnr": 999
+            }
+          ]
+        },
+        "snapshot": "/private/tmp/still-shift-ce6-linear-5ba705c",
+        "raw": [
+          "benchmarks/results/composition-ce6-completion/ce6-linear-native-acceptance.json",
+          "benchmarks/results/composition-ce6-completion/ce6-linear-cache-acceptance.json",
+          "benchmarks/results/composition-ce6-completion/ce6-adjust-affine-acceptance.json"
+        ]
+      },
+      "initialFailures": [
+        "Opt-in unit fixture used dimensions below the existing minimum 16; corrected",
+        "Stale contract rejection expected blur.zoom to be unavailable after its earlier CE6 delivery; now tests an unknown effect"
+      ],
+      "pending": [
+        "Legacy feature-availability/GPU fallback and captured-source history audit",
+        "Complete native hardware/stored hashes/independent and repeated exports/serial 1080p per-effect costs/final full pnpm check/PR"
       ]
     }
   ],
   "pending": [
-    "Real optional linear-light composition",
+    "Complete feature-availability/GPU fallback and captured-source history audit",
     "Complete native hardware, stored hashes, independent/repeated exports and serial 1080p per-effect costs",
     "Final-code complete pnpm check, milestone completion record and PR creation/attachment"
   ],

@@ -190,6 +190,7 @@ export type SurfaceNode = {
   id: string;
   width: number;
   height: number;
+  colorSpace?: "srgb" | "linear-srgb";
   background: Rgba | null;
   ops: RenderOp[];
 };
@@ -269,6 +270,7 @@ class GraphBuilder {
   ): SurfaceNode {
     return {
       id: tree.id,
+      ...(this.comp.colorSpace ? { colorSpace: this.comp.colorSpace } : {}),
       width: tree.width,
       height: tree.height,
       background: tree.background,

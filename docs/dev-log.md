@@ -44,13 +44,14 @@ still hold before relying on them.
 ## Current state
 
 - **CE6 in progress (2026-10-06):** `codex/composition-ce6-completion` from
-  CE7 `817cc9f`. Checkpoints through `3bf38dc` deliver the effect catalogue and
-  scoped maps. Adjustment history/primitive blur now pass 54 focused tests plus
-  build/lint/schema/boundaries and 54 cases / 648 frames / 756 seeks (delta 2).
-  Independent echo pixels are exact. GPU input padding repairs offscreen precomp
-  blur: six cases / 72 frames / 84 seeks are exact. Linear-light, broader affine
-  blur regressions and complete hardware/hash/export/cost/full-gate acceptance
-  remain. No owner decision is pending. [Evidence](./composition-ce6-completion-results.json).
+  CE7 `817cc9f`. Checkpoints through `5ba705c` deliver catalogue/maps and
+  adjustment history. Linear-light now passes 1,700 unit tests, build/lint/schema/
+  boundaries, 180 native cases / 2,160 frames / 2,520 seeks (delta 2), 559,215
+  byte-pair/mode cases (delta 1), independent pixels/exposure and cache switches.
+  All 28 affine offscreen blur cases / 336 frames / 392 seeks are exact.
+  Final feature/fallback/source-history audit, hardware/hash/export/cost and the
+  complete full gate/CE6 PR remain. No owner decision is pending.
+  [Evidence](./composition-ce6-completion-results.json).
 
 - **CE7 complete (2026-10-06):** `codex/composition-ce7`, code `0e48388`.
   Local holds/posterization, source loops, freeze remap, deterministic adaptive
@@ -186,6 +187,21 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-06 — CE6 optional linear-light checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce6-completion`.
+- **Done:** all layer blend modes, adjustment/exposure linear interpolation,
+  bounded GPU transfer controls, unbatched layer boundaries and cache invalidation.
+- **Results:** all 1,700 unit tests plus build/lint/schema/boundaries; 180 native
+  cases / 2,160 frames / 2,520 seeks meet delta 2/PSNR 50. All 559,215 byte-pair/
+  mode cases meet delta 1; 20 independent pixels/exposure and six cache switches
+  pass. 28 affine offscreen blur cases / 336 frames / 392 seeks are exact.
+- **Repaired:** undersized unit fixture and stale unavailable-zoom assertion;
+  no threshold or frozen baseline changed. This is not a complete `pnpm check`.
+- **Next:** final feature/fallback/source-history audit, hardware/hash/export/
+  serial costs and complete CE6 full gate/PR, then CE8.
+- **Records:** [CE6 evidence](./composition-ce6-completion-results.json).
 
 ### 2026-10-06 — CE6 adjustment backdrop history checkpoint
 

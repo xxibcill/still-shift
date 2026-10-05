@@ -152,9 +152,13 @@ describe("render graph", () => {
     },
   );
 
-  it.each([true, false])(
-    "preserves paint order and isolation when solid batching is %s",
-    (batching) => {
+  it.each([
+    [true, false],
+    [false, false],
+    [true, true],
+  ])(
+    "preserves paint order with batching=%s and linear=%s",
+    (batching, linear) => {
       const calls: string[] = [];
       const backend: RenderBackend = {
         version: "test",
@@ -223,9 +227,12 @@ describe("render graph", () => {
         solid("b", { size: [2, 10] }),
         solid("a", { size: [1, 10] }),
       ]);
+      if (linear) doc.colorSpace = "linear-srgb";
       executeGraph(backend, graph(doc), { width: 200, height: 100 });
       expect(calls).toEqual([
-        ...(batching ? ["batch:1,2,3"] : ["fill:1", "fill:2", "fill:3"]),
+        ...(batching && !linear
+          ? ["batch:1,2,3"]
+          : ["fill:1", "fill:2", "fill:3"]),
         "fill:4",
         "fill:5",
         "composite",

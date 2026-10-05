@@ -183,3 +183,30 @@ export async function checkAdjustmentHistoryPixels() {
   }
   return rows;
 }
+
+export async function checkOffscreenPrecompAffineBlur() {
+  const poses: NonNullable<Composition["layers"][number]["transform"]>[] = [
+    { position: [-38, 15] },
+    { position: [70, 15] },
+    { position: [18, -26] },
+    { position: [18, 52] },
+    { position: [-16, 12], scale: [1.25, 0.8] },
+    { position: [60, 42], rotation: 17 },
+    { position: [18, 15], scale: [-1, 1] },
+  ];
+  const rows = [];
+  for (const [pose, transform] of poses.entries()) {
+    const result = await checkNativeEffectRendering(
+      { "blur.primitive": [{ radius: 2 }, { radius: 4 }] },
+      ["precomp", "collapsed"],
+      (comp) => {
+        comp.layers.find((layer) => layer.id === "art")!.transform = {
+          anchor: [0, 0],
+          ...transform,
+        };
+      },
+    );
+    rows.push(...result.rows.map((row) => ({ pose, ...row })));
+  }
+  return { cases: rows.length, frames: rows.length * 12, rows };
+}

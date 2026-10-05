@@ -385,7 +385,11 @@ export function executeGraph<S extends Surface>(
   const runOps = (ops: RenderOp[], dst: S) => {
     for (let index = 0; index < ops.length; index++) {
       const op = ops[index]!;
-      if (backend.drawVectors && vector(op)) {
+      if (
+        graph.root.colorSpace !== "linear-srgb" &&
+        backend.drawVectors &&
+        vector(op)
+      ) {
         const batch = [op];
         while (index + 1 < ops.length) {
           const next = ops[index + 1]!;
@@ -394,7 +398,11 @@ export function executeGraph<S extends Surface>(
           index++;
         }
         backend.drawVectors(dst, batch);
-      } else if (backend.fillRects && batchable(op)) {
+      } else if (
+        graph.root.colorSpace !== "linear-srgb" &&
+        backend.fillRects &&
+        batchable(op)
+      ) {
         const batch = [op];
         while (index + 1 < ops.length) {
           const next = ops[index + 1]!;
