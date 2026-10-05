@@ -1384,3 +1384,19 @@ presented framebuffer; moving exposures invalidate that cache. Frame reports cou
 actual executed samples (`0` for reuse). Pixel readback caches one frame only when
 it fits within 64 MiB and returns independent arrays. The Canvas default retains
 its existing execution behavior.
+
+## CE16 soundtrack project
+
+Soundtracks use a separate opt-in `soundtrack-project-1` authority; they do not
+introduce CE13 composition audio layers early. The
+[contract/worker reference](./soundtrack-project.md#contract-and-audio-semantics)
+explains integer sample intervals, clip-relative linear/hold automation, clip pan,
+linear/equal-power fades,
+`tracks[].processors`, bus/master routing, stem taps, normalization and tail rules.
+[Duck settings](./soundtrack-project.md#ducking) persist the narration detector,
+BGM targets, threshold/reduction, window, attack/release/hold and lookahead.
+[Shared operations/diagnostics](./soundtrack-project.md#shared-edits-and-recovery)
+cover atomic revision saves, undo/redo, bounds, routing, asset and runtime failures.
+Cue/event references remain attached to resolved sample positions; explicit retiming
+recomputes them without changing source intervals. No arbitrary plugin/expression
+execution or composition media-schema migration is added.

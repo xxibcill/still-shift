@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import { runSoundtrackCli } from "./soundtrack-cli.ts";
 import { readFile, writeFile } from "node:fs/promises";
 import { dirname, resolve, relative } from "node:path";
 import { CommerceSceneSchema } from "@still-shift/scene-contract";
@@ -64,6 +65,12 @@ const HELP = `Still Shift v${ENGINE_VERSION}
 Usage:
   pnpm --silent still-shift animate --input <path> --output <path> [options]
   pnpm still-shift animate-scene --scene <prepared.json> --output <path> [--format landscape|vertical]
+  pnpm still-shift soundtrack validate|inspect --project <project.json> [--json]
+  pnpm still-shift soundtrack edit --project <project.json> --revision <number> --operations <edits.json|->
+  pnpm still-shift soundtrack render --project <project.json> --output-dir <fresh-dir> [--stems] [--range start:end]
+  pnpm still-shift soundtrack retime --project <project.json> --revision <number> --passage <plan.json>
+  pnpm still-shift soundtrack package --project <project.json> --output-dir <fresh-dir>
+  pnpm still-shift soundtrack from-passage --passage <plan.json> [--narration <audio>] --output <new-project.json>
   pnpm still-shift passage lint --plan <plan.json> --format vertical
   pnpm still-shift passage import-narration --plan <plan.json> --narration <audio.wav|mp3> --timing <words.json|captions.srt> --mode match|add --output <new-plan.json>
   pnpm still-shift sfx generate --provider elevenlabs --id <slug> --prompt <text> --duration <seconds> --output-dir <new-directory> [--prompt-influence 0.3] [--loop true|false]
@@ -262,6 +269,8 @@ export const runCli = async (
   args: string[],
   io: CliIo = DEFAULT_IO,
 ): Promise<number> => {
+  if (args[0] === "soundtrack" && !args.includes("--help"))
+    return runSoundtrackCli(args.slice(1), io);
   if (args.includes("--help") || args.length === 0) {
     io.stdout(HELP);
     return 0;
