@@ -391,9 +391,10 @@
     }
   },
   "delivery": {
-    "pr": "pending creation and attachment",
+    "pr": "https://github.com/xxibcill/still-shift/pull/40",
     "nextMilestone": "CE6 current-version completion on a new branch",
-    "merge": "not performed"
+    "merge": "not performed",
+    "attached": true
   },
   "conditionalHandoffs": {
     "CE13": "Validated hold/linear frame blending and deterministic sourceFramePair kernel are ready; decoded video/sequence rendering follows CE13.",

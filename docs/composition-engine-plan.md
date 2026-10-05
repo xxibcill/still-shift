@@ -3319,8 +3319,8 @@ in the evidence; no thresholds or frozen baselines were changed.
 
 Frame blending is validated with deterministic hold/linear source-frame-pair
 arithmetic; decoded media rendering follows CE13. Root-global procedural clocks
-retain documented semantics alongside layer-local controls. PR creation/attachment
-follows, then CE6 begins on a new branch. [Evidence](./composition-ce7-results.json).
+retain documented semantics alongside layer-local controls. [PR #40](https://github.com/xxibcill/still-shift/pull/40) is open
+and attached, based on CE5; CE6 begins on a new branch. [Evidence](./composition-ce7-results.json).
 
 ---
 

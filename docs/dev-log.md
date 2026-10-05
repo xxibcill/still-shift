@@ -49,8 +49,8 @@ still hold before relying on them.
   46 runtime, 139 integration, 14 depth, all browser groups and 176 frozen baselines
   / 36,061 frames. Native pixels/seeks/stored hashes, 12 hardware comparisons,
   independent/repeated exports and serial seven-count 1080p costs pass/are recorded.
-  CE13 decode integration remains its conditional handoff. PR creation/attachment
-  follows, then CE6 on a new branch. No owner decision is pending.
+  CE13 decode integration remains its conditional handoff. [PR #40](https://github.com/xxibcill/still-shift/pull/40) is open
+  and attached; CE6 starts on a new branch. No owner decision is pending.
   [Evidence](./composition-ce7-results.json).
 
 - **CE5 complete (2026-10-05):** `codex/composition-ce5`, runtime `4908cbe`.
@@ -59,7 +59,7 @@ still hold before relying on them.
   all browser groups and 176 frozen baselines / 36,061 frames. Native stored hashes
   and reverse seeks pass; legacy connectors, actual CE4a brush conversion and all
   18 Apple hardware comparisons are exact. Failed attempts/repairs are retained.
-  [PR #38](https://github.com/xxibcill/still-shift/pull/38) is open and attached; begin CE7 on a new branch.
+  [PR #38](https://github.com/xxibcill/still-shift/pull/38) is open and attached; CE7 is now complete.
   No owner decision is pending. [Evidence](./composition-ce5-results.json).
 
 - **CE11 complete (2026-10-05):** `codex/composition-ce11`, runtime `5f36268`.
@@ -187,7 +187,7 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   139 integration and 14 depth tests, every browser group and all 176 frozen
   baselines / 36,061 frames without regeneration. Current Canvas matrices retain
   their pixel/timing assertions; new native hashes and both-backend exports pass.
-- **Next:** create/attach the milestone PR, then start CE6 on its own branch.
+- **PR / next:** [PR #40](https://github.com/xxibcill/still-shift/pull/40) is open and attached; start CE6 on its own branch.
 - **Records:** [CE7 evidence](./composition-ce7-results.json), including initial
   focused failures, assertion repair, actual hardware and serial cost evidence.
 
