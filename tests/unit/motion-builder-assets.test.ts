@@ -132,3 +132,25 @@ it("infers SVG viewport aspect ratio from a single dimension without reading dat
     expect(await imageAsset(id, file)).toMatchObject({ width, height });
   }
 });
+
+it("rejects SVG intrinsic declarations the pinned renderer cannot measure consistently", async () => {
+  const root = await mkdtemp(join(tmpdir(), "motion-svg-units-"));
+  try {
+    for (const [name, dimensions] of [
+      ["pica", 'width="2pc" height="3pc"'],
+      ["relative", 'width="2em" height="3em" viewBox="0 0 20 30"'],
+      ["commas", 'viewBox="0,0,20,30"'],
+    ]) {
+      const path = join(root, name + ".svg");
+      await writeFile(
+        path,
+        `<svg xmlns="http://www.w3.org/2000/svg" ${dimensions}></svg>`,
+      );
+      await expect(imageAsset(name!, path)).rejects.toThrow(
+        /motion-builder-assets.test.ts:.*comp-builder-image/,
+      );
+    }
+  } finally {
+    await rm(root, { recursive: true, force: true });
+  }
+});

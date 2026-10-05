@@ -3614,7 +3614,7 @@ export default comp({ width: 1920, height: 1080, fps: 30, seconds: 8 }, (c) => {
       `file:line`.
 - [x] CLI: `still-shift comp` subcommands `validate`, `render`, `preview --watch`,
       `lint`, `bake` and `export-json`, accepting `.json` or `.ts` sources.
-- [ ] AI reference: generated `docs/composition-reference.md` (schema, property paths,
+- [x] AI reference: generated `docs/composition-reference.md` (schema, property paths,
       diagnostics, built-ins, expression grammar) plus a compact
       `skills/compose-with-still-shift/SKILL.md` with examples; keep both generated from
       the schema and the built-in registry where possible.
@@ -3644,7 +3644,8 @@ clamps shortened duration, switches backends and proves TypeScript/JSON MP4 iden
 Eight small programs validate. The 197-line Unequal Margins program matches all
 192 CE4a frames exactly on both backends, seeks and exports included. Seven motion
 and eight text presets emit native composition fields; all 1,498 unit tests pass.
-Generated references, isolated trial and full gates remain in progress. See [CE10 evidence](./composition-ce10-results.json).
+The generated contract/reference and compact skill pass drift and skill checks.
+The isolated trial and full gates remain in progress. See [CE10 evidence](./composition-ce10-results.json).
 
 **Completion record:** _to be filled in._
 

@@ -278,11 +278,55 @@
         "drawOn currently targets story.path providers; native shape operators remain CE5.",
         "Text presets require static text content; authored transform keys and staged motion remain supported."
       ]
+    },
+    {
+      "name": "Generated reference and compact authoring skill",
+      "status": "checkpoint",
+      "changes": [
+        "Zod-generated root and layer field tables, aliases, limits and stable diagnostic registry",
+        "Built-in overloads, shared expression grammar, public effect properties and intent registries",
+        "Maintained implementation notes become generator input; existing schema commands check both generated outputs",
+        "Compact skill with a typed timeline example, native constraints, pinned assets, paths and CLI verification workflow",
+        "Located rejection of unsupported SVG intrinsic declarations that disagree with the pinned renderer metadata reader"
+      ],
+      "verification": [
+        {
+          "command": "pnpm schema:generate / pnpm schema:check",
+          "status": "passed"
+        },
+        {
+          "command": "pnpm build / eslint generator and changed contracts",
+          "status": "passed"
+        },
+        {
+          "command": "skill-creator/scripts/quick_validate.py skills/compose-with-still-shift",
+          "status": "passed"
+        },
+        {
+          "command": "pnpm exec vitest run tests/integration/composition-reference-generation.test.ts",
+          "status": "passed",
+          "tests": 1,
+          "checks": [
+            "Fresh generation and repository skill equality",
+            "Stale skill detected without check writes",
+            "Changed maintained prose detected without check writes",
+            "Regeneration restores both artifacts"
+          ]
+        },
+        {
+          "command": "pnpm exec vitest run tests/unit/motion-builder-assets.test.ts tests/integration/composition-reference-generation.test.ts",
+          "status": "passed",
+          "tests": 7
+        }
+      ],
+      "pending": [
+        "Isolated fresh-brief agent trial",
+        "Full local milestone verification"
+      ],
+      "limits": [
+        "SVG assets require px, in, cm, mm or pt dimensions (or viewBox inference); unsupported relative units, CSS picas and comma viewBoxes fail early rather than emitting inconsistent metadata."
+      ]
     }
   ],
-  "pending": [
-    "Generated reference and skill",
-    "Isolated skill trial",
-    "Full local milestone gates and PR"
-  ]
+  "pending": ["Isolated skill trial", "Full local milestone gates and PR"]
 }

@@ -100,6 +100,25 @@ function imageDimensions(bytes: Buffer): [number, number] {
       };
       return match ? Number(match[1]) * units[match[2] ?? "px"]! : undefined;
     };
+    // Keep intrinsic declarations within the renderer's pinned image-size reader.
+    // In particular that reader cannot interpret comma viewBoxes or CSS picas.
+    for (const name of ["width", "height"]) {
+      const value = attribute(name);
+      if (
+        value &&
+        ((length(value) === undefined && !/^\s*[\d.]+%\s*$/.test(value)) ||
+          /pc\s*$/i.test(value))
+      )
+        throw new BuilderError(
+          "comp-builder-image",
+          `Unsupported SVG ${name} declaration ${value}; use px, in, cm, mm or pt with a whitespace viewBox`,
+        );
+    }
+    if (attribute("viewBox")?.includes(","))
+      throw new BuilderError(
+        "comp-builder-image",
+        "Use a whitespace-separated SVG viewBox for deterministic intrinsic dimensions",
+      );
     const view = attribute("viewBox")
       ?.trim()
       .split(/[\s,]+/)
