@@ -9637,6 +9637,19 @@
       "cause": "Earlier blur.future contract-test mutation needed Prettier line wrapping",
       "suitesExecuted": 0,
       "repair": "Formatting only; complete gate will rerun on repaired checkpoint"
+    },
+    {
+      "checkpoint": "86a7143",
+      "command": "pnpm check",
+      "status": "failed-at-stale-contract-assertion",
+      "exitCode": 1,
+      "snapshot": "/private/tmp/still-shift-ce6-check-86a7143",
+      "log": "benchmarks/results/composition-ce6-completion/ce6-full-86a7143.log",
+      "unitTestsPassed": 1711,
+      "unitTestsFailed": 1,
+      "cause": "Contract invalid-variant table still expected unavailable for a missing primitive-blur alias",
+      "repair": "Use the current comp-path-property diagnostic and accurate test description; all 1712 unit tests in 165 files pass after repair",
+      "runtimeOrBrowserSuitesExecuted": 0
     }
   ]
 }

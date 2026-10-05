@@ -49,8 +49,9 @@ still hold before relying on them.
   132 seek checks (software delta 1), repeated PNG/raw and independent MP4 encodes
   on both backends, and 36 actual hardware comparisons under the existing
   perceptual policy. All 78 serial 1080p cold/warm effect costs are recorded.
-  Full gate stopped at test formatting before suites ran; the complete command
-  will rerun after the format repair. CE6 PR follows, then CE8. CE6-P stays deferred.
+  Full gate found one stale blur-alias contract expectation; it is repaired and
+  all 1,712 unit tests pass. Complete gate rerun, CE6 PR and CE8 follow.
+  CE6-P stays deferred.
   No owner decision is pending. [Evidence](./composition-ce6-completion-results.json).
 
 - **CE7 complete (2026-10-06):** `codex/composition-ce7`, code `0e48388`.
@@ -187,6 +188,17 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-06 — CE6 blur-alias contract expectation repair
+
+- **Agent / branch:** Codex on `codex/composition-ce6-completion`.
+- **Result:** full gate at `86a7143` passed formatting/lint/build and 1,711 unit
+  tests, then stopped on the old unavailable-blur expectation. The native alias
+  requires one declared primitive effect and correctly reports a property error.
+- **Repaired / verified:** update that contract assertion; all 1,712 unit tests
+  in 165 files pass. No renderer, threshold or frozen baseline changed.
+- **Next:** the complete full gate on the repaired checkpoint, CE6 PR and CE8.
+- **Records:** [CE6 evidence](./composition-ce6-completion-results.json).
 
 ### 2026-10-06 — CE6 full-gate formatting repair
 

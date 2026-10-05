@@ -1112,9 +1112,9 @@ const invalid: Mutation[] = [
     "comp-path-readonly",
   ],
   [
-    "legacy property without a general form",
+    "legacy blur alias requires one explicitly declared primitive blur",
     (d) => set(d.drivers![1]!, { target: "shadow.blur" }),
-    "comp-feature-unavailable",
+    "comp-path-property",
     "drivers[1].target",
   ],
   [
