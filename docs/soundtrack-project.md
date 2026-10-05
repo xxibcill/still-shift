@@ -439,7 +439,13 @@ The backend is local and opt-in. DawDreamer 0.9.0 is GPLv3 and includes native
 component obligations; NumPy/SciPy carry BSD and bundled native-library notices.
 The pinned wheel/license audit is retained in the [backend proof](./composition-ce16-backend-proof.md)
 and evidence. No backend binaries are bundled into Still Shift or a media package.
-A distribution/packaging license decision remains pending; subprocess separation
-is not asserted to exempt distribution from those obligations.
+Owner decision (2026-10-05): the runtime stays local and opt-in; nothing is
+bundled or distributed. **Revisit before contributing, publishing or distributing
+Still Shift with the soundtrack feature.** Then choose between complying with
+GPLv3 for whatever is shipped, or replacing DawDreamer, which now runs only the
+built-in high/low-pass filters (all routing and mixing are NumPy). Replacing it
+would need a new DSP version and listening, because filter output would change.
+Subprocess separation is not asserted to exempt distribution from those
+obligations.
 Technical PCM/FFprobe acceptance does not establish creative quality: listening,
 audiovisual QA and GUI inspection have not been performed.

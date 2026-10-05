@@ -44,10 +44,17 @@ still hold before relying on them.
 ## Current state
 
 - **PR #33 soundtrack improvement rounds (2026-10-05):** Claude Code on
-  `claude/ce16-sfx-improvements`, pushed to PR #33 through `acb00c0` plus this
-  log. `pnpm check:soundtrack` passes on Node 22.23.1. Owner review/merge remains.
-  Open owner decisions only: master limiter (contract scope), listening/AV QA,
-  browser verification of the new Lab controls, GPL runtime distribution.
+  `claude/ce16-sfx-improvements`, pushed to PR #33. `pnpm check:soundtrack` and
+  the owner-authorized one-time `pnpm test:browser:soundtrack` run pass on Node
+  22.23.1. Owner review/merge remains.
+- **Owner listening pending:** the owner will listen using
+  [the listening checklist](./soundtrack-listening-checklist.md). Variants A–D
+  are pre-rendered in ignored `benchmarks/results/listening/`. Record pass/fail
+  here.
+- **Owner decision — GPL runtime (2026-10-05):** DawDreamer stays local and
+  opt-in; nothing bundled. **Remind the owner before any contribution,
+  publishing or distribution**, then choose GPLv3 compliance or replacing
+  DawDreamer (filters only now). See the soundtrack guide's licensing section.
 
 - **PR #33 bounded-memory render (2026-10-05):** Claude Code on
   `claude/ce16-sfx-improvements` from `7f1f4dd`. `0fc092f` makes 10-minute
@@ -225,6 +232,28 @@ _Last updated 2026-10-05 by Codex for PR #33 follow-up fixes._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-05 — PR #33 master limiter, browser check and owner decisions
+
+- **Agent / branch:** Claude Code on `claude/ce16-sfx-improvements` from `2945649`.
+- **Owner decisions:** 1b opt-in master limiter; 2 owner listens; 3a one
+  automated browser run authorized; 4a runtime stays local-only, remind before
+  contributing/distributing.
+- **Done:** `3b84f31` optional `master.limiter` (ceiling −24…0 dBFS, lookahead
+  ≤ 4,800, release ≤ 480,000 samples) on the mix after master gain; vectorized
+  forward-min attack + running-min release; gain exactly 1 out of reach;
+  `soundtrack-dsp-6`; `limiter` edit. `f5edcea` Lab limiter editor. `def0e1e`
+  browser workflow drives all new authoring controls. Listening checklist and
+  licensing note added.
+- **Results:** limiter integration test: ceiling held, out-of-reach samples and
+  stems bit-identical, linear release rate, report accurate, removal restores
+  the mix. No-limiter projects byte-identical (200 randomized). Fully limited
+  10-minute mix: 0.94 s. Browser run passed (new controls plus exact native
+  PCM, playback/seek/clear, passage full/range mux with the limiter); first
+  attempt failed on a test locator (a select's accessible name includes its
+  option), fixed and rerun within the same authorization. Real episode: hot mix
+  +4.59 dBFS / 6,419 overs → −1.00 dBFS / 0 overs, 5.59 dB max reduction.
+- **Not run:** listening (owner), frozen baselines.
 
 ### 2026-10-05 — PR #33 tiling, Lab mix controls and exact memory estimate
 
