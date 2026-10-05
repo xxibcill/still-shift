@@ -3192,6 +3192,18 @@ Remaining distortion/stylize/shadows/dependencies, adjustment history,
 linear-light and complete hardware/hash/export/cost/full-gate acceptance remain.
 No threshold or frozen baseline changed. [Evidence](./composition-ce6-completion-results.json).
 
+### CE6 vignette and chromatic checkpoint (2026-10-06)
+
+Vignette and chromatic aberration have real GPU kernels and Canvas references,
+animated bounded controls, coverage preservation and exact neutral paths.
+48 focused tests and build/lint/schema/boundaries pass. Native acceptance passes
+54 cases / 648 frames / 756 seeks at max delta 1; independent vignette falloff
+and chromatic channel/padding pixel oracles are exact on both backends.
+Remaining distortion/shadows/scoped inputs/history/linear-light and complete
+hardware/hash/export/cost/full-gate acceptance remain. Missing GPU dimensions
+binding was repaired; no threshold or frozen baseline changed.
+[Evidence](./composition-ce6-completion-results.json).
+
 ### CE6 performance slice 1: exact effect work (2026-10-03)
 
 - **Scope:** the transferred CE4b timing requirement only, not the broader CE6

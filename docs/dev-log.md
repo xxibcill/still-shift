@@ -44,15 +44,13 @@ still hold before relying on them.
 ## Current state
 
 - **CE6 in progress (2026-10-06):** `codex/composition-ce6-completion` from
-  CE7 `817cc9f`. Checkpoints through `095fe09` deliver typed/paired plugins,
-  ten color kernels/curves, transitions, sampled blur and geometric warps.
-  Seeded fractal fill/turbulent displacement now pass 68 focused tests, build/
-  lint/schema/boundaries and 54 cases / 648 frames / 756 seeks exactly.
-  Packed 16-bit fields are exact at 81,920 points; all 65,536 possible values
-  have exact quotients at seven signed/neutral amplitudes.
-  Remaining distortion/stylize/shadows/dependencies, adjustment history,
-  linear-light and complete hardware/hash/export/cost/full-gate acceptance
-  remain. No owner decision is pending. [Evidence](./composition-ce6-completion-results.json).
+  CE7 `817cc9f`. Checkpoints through `23a0547` deliver paired plugins, color/
+  curves, transitions, blur, warps and seeded fields. Vignette/chromatic effects
+  now pass 48 focused tests, build/lint/schema/boundaries and 54 native cases /
+  648 frames / 756 seeks with max delta 1; independent pixel oracles are exact.
+  Remaining bulge/ripple/shadows/scoped inputs, adjustment history, linear-light
+  and complete hardware/hash/export/cost/full-gate acceptance remain.
+  No owner decision is pending. [Evidence](./composition-ce6-completion-results.json).
 
 - **CE7 complete (2026-10-06):** `codex/composition-ce7`, code `0e48388`.
   Local holds/posterization, source loops, freeze remap, deterministic adaptive
@@ -188,6 +186,20 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-06 — CE6 vignette and chromatic checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce6-completion`.
+- **Done:** real GPU vignette/chromatic kernels and Canvas references, bounded
+  animated controls, coverage preservation and exact neutral paths.
+- **Results:** 48 focused tests plus build/lint/schema/boundaries; 54 cases /
+  648 frames / 756 seeks pass at max delta 1. Independent center/shoulder/edge
+  and chromatic channel/padding pixel oracles are exact on both backends.
+- **Repaired:** missing GPU dimensions binding; Float32 unit precision;
+  generated reference refreshed. Pixel tolerances/frozen baselines unchanged.
+- **Next:** remaining distortion/shadows/scoped inputs/history/linear-light,
+  then complete hardware/hash/export/cost/full-gate acceptance and CE6 PR.
+- **Records:** [CE6 evidence](./composition-ce6-completion-results.json).
 
 ### 2026-10-06 — CE6 seeded native fields checkpoint
 

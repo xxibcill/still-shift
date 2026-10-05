@@ -197,3 +197,13 @@ GPU kernels compute the field and sample image textures without image readback;
 Canvas uses the independent integer reference. The permanent regression also
 compares packed 16-bit field values and every possible field value at positive,
 negative and neutral displacement amplitudes.
+
+### Vignette and chromatic aberration
+
+`stylize.vignette` uses a normalized center, elliptical radii in pixels and a
+bounded soft shoulder. Its color/amount changes straight sRGB while retaining
+source coverage. Geometry uses Float32 controls in the Canvas reference.
+`stylize.chromatic-aberration` samples red at the signed offset and blue at its
+negative, retaining the original green and coverage. Offsets use the common
+1/16-pixel premultiplied sampling grid with transparent padding. Zero amount,
+and a neutral chromatic offset, preserve the input exactly.

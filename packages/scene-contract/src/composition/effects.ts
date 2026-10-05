@@ -4,6 +4,7 @@ import {
   type CompositionEffectDefinition,
   type EffectScalar,
 } from "./effect-definition.ts";
+import { STYLIZE_EFFECT_DEFINITIONS } from "./stylize-effects.ts";
 import { NOISE_EFFECT_DEFINITIONS } from "./noise-effects.ts";
 import { WARP_EFFECT_DEFINITIONS } from "./warp-effects.ts";
 import { SAMPLED_BLUR_DEFINITIONS } from "./blur-effects.ts";
@@ -43,6 +44,7 @@ export const COMPOSITION_EFFECTS: Readonly<
   ...SAMPLED_BLUR_DEFINITIONS,
   ...WARP_EFFECT_DEFINITIONS,
   ...NOISE_EFFECT_DEFINITIONS,
+  ...STYLIZE_EFFECT_DEFINITIONS,
   "blur.primitive": defineEffect({ radius: { default: 0, min: 0, max: 1000 } }),
   "time.echo": defineEffect(
     {

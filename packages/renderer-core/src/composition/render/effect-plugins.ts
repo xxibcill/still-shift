@@ -1,3 +1,4 @@
+import { stylizeEffectKernel } from "./stylize-effects.ts";
 import { noiseEffectKernel } from "./noise-effects.ts";
 import { warpEffectKernel } from "./warp-effects.ts";
 import { sampledBlurKernel } from "./sampled-blur.ts";
@@ -75,7 +76,8 @@ export const compositionEffectPlugin = (id: string) =>
   transitionEffectKernel(id) ??
   sampledBlurKernel(id) ??
   warpEffectKernel(id) ??
-  noiseEffectKernel(id);
+  noiseEffectKernel(id) ??
+  stylizeEffectKernel(id);
 
 /** A callback owns at most 32 surfaces and 128 MiB (or four full-size frames). */
 class EffectSurfaces<S extends { width: number; height: number }> {

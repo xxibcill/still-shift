@@ -467,11 +467,86 @@
       ],
       "pending": [
         "Complete hardware/hash/export/cost/full-gate acceptance follows the complete catalogue"
-      ]
+      ],
+      "implementation": "23a0547"
+    },
+    {
+      "name": "Native vignette and chromatic aberration",
+      "status": "focused-verification-passed",
+      "effects": ["stylize.vignette", "stylize.chromatic-aberration"],
+      "versions": {
+        "evaluator": 37,
+        "canvas": "composition-canvas-1.32.0",
+        "webgl": "composition-webgl2-0.46.0"
+      },
+      "verification": {
+        "focusedTests": 48,
+        "focusedFiles": 6,
+        "build": "passed",
+        "lint": "passed",
+        "schema": "passed",
+        "boundaries": "passed",
+        "nativeMatrix": {
+          "cases": 54,
+          "frames": 648,
+          "randomSeeks": 756,
+          "maxDelta": 1,
+          "minPsnr": 87.77622826947047,
+          "raw": "benchmarks/results/composition-ce6-completion/ce6-stylize-native-acceptance.json",
+          "snapshot": "/private/tmp/still-shift-ce6-stylize-23a0547"
+        },
+        "independentPixelOracles": {
+          "profile": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+          "oracles": [
+            {
+              "effect": "stylize.vignette",
+              "backend": "canvas2d",
+              "pixels": [
+                [255, 255, 255, 255],
+                [128, 128, 128, 255],
+                [0, 0, 0, 255]
+              ]
+            },
+            {
+              "effect": "stylize.vignette",
+              "backend": "webgl2",
+              "pixels": [
+                [255, 255, 255, 255],
+                [128, 128, 128, 255],
+                [0, 0, 0, 255]
+              ]
+            },
+            {
+              "effect": "stylize.chromatic-aberration",
+              "backend": "canvas2d",
+              "pixels": [
+                [119, 80, 150, 255],
+                [7, 80, 0, 255],
+                [0, 80, 45, 255]
+              ]
+            },
+            {
+              "effect": "stylize.chromatic-aberration",
+              "backend": "webgl2",
+              "pixels": [
+                [119, 80, 150, 255],
+                [7, 80, 0, 255],
+                [0, 80, 45, 255]
+              ]
+            }
+          ]
+        }
+      },
+      "initialFailures": [
+        "GPU Float32 geometry compared with double-precision unit tolerance; assertion corrected to seven decimal places",
+        "Missing dimensions uniform in vignette shader; binding repaired",
+        "New controls required generated reference refresh"
+      ],
+      "pending": ["Complete milestone gate after remaining CE6 features"]
     }
   ],
   "pending": [
-    "Remaining bulge/ripple, displacement map, drop/inner shadows, vignette/chromatic aberration and gradient wipe",
+    "Remaining bulge/ripple, displacement map, drop/inner shadows and gradient wipe",
     "Scoped layer-input dependency stages and real adjustment primitive-blur/echo history",
     "Real optional linear-light composition",
     "Complete native hardware, stored hashes, independent/repeated exports and serial 1080p per-effect costs",

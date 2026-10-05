@@ -1,3 +1,4 @@
+import type * as StylizeChecks from "../helpers/composition-stylize-effect-reference.ts";
 import type * as QuotientChecks from "../helpers/composition-noise-quotient-reference.ts";
 import type * as NoiseChecks from "../helpers/composition-noise-effect-reference.ts";
 import type * as WarpChecks from "../helpers/composition-warp-effect-reference.ts";
@@ -85,6 +86,23 @@ try {
     ).checkWarpEffectRendering();
   });
   console.log("WebGL native warps:", JSON.stringify(warps));
+  const stylize = await page.evaluate(async () => {
+    const url = "/tests/helpers/composition-stylize-effect-reference.ts";
+    return (
+      (await import(url)) as typeof StylizeChecks
+    ).checkStylizeEffectRendering();
+  });
+  console.log("WebGL native stylize effects:", JSON.stringify(stylize));
+  const stylizeOracles = await page.evaluate(async () => {
+    const url = "/tests/helpers/composition-stylize-effect-reference.ts";
+    return (
+      (await import(url)) as typeof StylizeChecks
+    ).checkStylizePixelOracles();
+  });
+  console.log(
+    "WebGL independent stylize oracles:",
+    JSON.stringify(stylizeOracles),
+  );
   const noise = await page.evaluate(async () => {
     const url = "/tests/helpers/composition-noise-effect-reference.ts";
     return (
