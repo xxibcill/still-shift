@@ -1,8 +1,18 @@
 import { createHash, randomUUID } from "node:crypto";
-import { chmod, readFile, rename, rm, stat, writeFile } from "node:fs/promises";
+import {
+  chmod,
+  readFile,
+  realpath,
+  rename,
+  rm,
+  stat,
+  writeFile,
+} from "node:fs/promises";
 import { basename, dirname, join } from "node:path";
+import { acquireArtifactLock } from "@still-shift/execution-runtime";
 import { authoredFontDiagnostics } from "@still-shift/motion";
 import {
+  AnimationEngineError,
   validateComposition,
   type Composition,
 } from "@still-shift/scene-contract";
@@ -98,37 +108,57 @@ export async function saveCompositionDocument(
   sourceSha256: string;
   unchanged: boolean;
 }> {
-  const document = editableDocument(value, base),
-    current = await readFile(input);
-  if (sourceHash(current) !== expectedHash)
-    throw new CompositionSaveError(
-      409,
-      "comp-edit-conflict",
-      "The source changed on disk; reload before saving",
-    );
-  if (JSON.stringify(document) === JSON.stringify(base))
-    return { document, sourceSha256: expectedHash, unchanged: true };
-  const bytes = Buffer.from(JSON.stringify(document, null, 2) + "\n");
-  const temporary = join(
-    dirname(input),
-    `.${basename(input)}.${randomUUID()}.tmp`,
-  );
+  const document = editableDocument(value, base);
+  input = await realpath(input);
+  let release: () => Promise<void>;
   try {
-    const metadata = await stat(input);
-    await writeFile(temporary, bytes, {
-      flag: "wx",
-      mode: metadata.mode & 0o777,
-    });
-    await chmod(temporary, metadata.mode & 0o777);
-    if (sourceHash(await readFile(input)) !== expectedHash)
+    release = await acquireArtifactLock(
+      join(dirname(input), `.${basename(input)}.composition-save.lock`),
+      dirname(input),
+    );
+  } catch (error) {
+    if (error instanceof AnimationEngineError && error.code === "RENDER_FAILED")
       throw new CompositionSaveError(
         409,
         "comp-edit-conflict",
-        "The source changed while saving; reload before saving",
+        `Source save lock is unavailable: ${error.message}; retry after the other preview finishes`,
       );
-    await rename(temporary, input);
-  } finally {
-    await rm(temporary, { force: true });
+    throw error;
   }
-  return { document, sourceSha256: sourceHash(bytes), unchanged: false };
+  try {
+    const current = await readFile(input);
+    if (sourceHash(current) !== expectedHash)
+      throw new CompositionSaveError(
+        409,
+        "comp-edit-conflict",
+        "The source changed on disk; reload before saving",
+      );
+    if (JSON.stringify(document) === JSON.stringify(base))
+      return { document, sourceSha256: expectedHash, unchanged: true };
+    const bytes = Buffer.from(JSON.stringify(document, null, 2) + "\n");
+    const temporary = join(
+      dirname(input),
+      `.${basename(input)}.${randomUUID()}.tmp`,
+    );
+    try {
+      const metadata = await stat(input);
+      await writeFile(temporary, bytes, {
+        flag: "wx",
+        mode: metadata.mode & 0o777,
+      });
+      await chmod(temporary, metadata.mode & 0o777);
+      if (sourceHash(await readFile(input)) !== expectedHash)
+        throw new CompositionSaveError(
+          409,
+          "comp-edit-conflict",
+          "The source changed while saving; reload before saving",
+        );
+      await rename(temporary, input);
+    } finally {
+      await rm(temporary, { force: true });
+    }
+    return { document, sourceSha256: sourceHash(bytes), unchanged: false };
+  } finally {
+    await release();
+  }
 }

@@ -43,6 +43,12 @@ still hold before relying on them.
 
 ## Current state
 
+- **PR #37 review fixes (2026-10-05):** on `codex/composition-ce11`, reviewed
+  `a0c56df`. Seven inline comments posted; 1/7 findings fixed in separate
+  commits. Pending: R2, R3, R4, R5, R6, R7.
+  Final push is held until all fixes and verification are complete. No Actions.
+  [Fix evidence](./pr-37-fix-results.json).
+
 - **CE11 complete (2026-10-05):** `codex/composition-ce11`, runtime `5f36268`.
   Native inspector, graph/handle edits, overlays, lossless history, guarded source
   saves and captured-asset exports pass desktop/phone and builder/watch acceptance.
@@ -158,6 +164,14 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-05 — PR #37 R1: Serialize saves across preview sessions
+
+- **Agent / branch:** Codex on `codex/composition-ce11`.
+- **Done:** Guard canonical JSON sources with the existing cross-process artifact lock across conflict checks and atomic replacement.
+- **Results:** Red: helper saves both succeeded and independent preview returned 422. Green: all 6 save tests pass, including independent previews, repeated helper races and separate Node processes.
+- **Next:** R2, R3, R4, R5, R6, R7.
+- **Records:** [Fix evidence](./pr-37-fix-results.json), [inline finding](https://github.com/xxibcill/still-shift/pull/37#discussion_r4183168129).
 
 ### 2026-10-05 — Complete CE11 inspector and full local acceptance
 
