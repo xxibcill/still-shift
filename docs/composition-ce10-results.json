@@ -352,6 +352,46 @@
         "Both first CLI launches encountered sandbox tsx IPC EPERM before schema validation; unchanged source was retried with the permitted local command escalation.",
         "Deliberate reading holds trigger the default frozen-run lint policy; these craft findings remain visible and were not suppressed."
       ]
+    },
+    {
+      "name": "Restore render CLI failure exit-code compatibility",
+      "status": "checkpoint",
+      "changes": [
+        "Render usage/invalid-scene diagnostics retain exit 2; unreadable files and loader/runtime failures remain exit 1.",
+        "User guide now covers TypeScript authoring, watch recovery, assets, clocks and CLI exit codes."
+      ],
+      "initialFullCheck": {
+        "command": "pnpm check",
+        "runtimeHead": "4ce68c4",
+        "snapshot": "/private/tmp/still-shift-ce10-check-4ce68c4",
+        "status": "failed",
+        "log": "/private/tmp/ce10-full-4ce68c4.log",
+        "passingTests": {
+          "unit": 1499,
+          "runtime": 46,
+          "integration": 130,
+          "depth": 14
+        },
+        "failedGate": "test:browser:composition-webgl-export",
+        "failure": "Invalid --backend returned 1 rather than the existing required exit 2. Earlier browser groups through composition-webgl passed."
+      },
+      "verification": [
+        {
+          "command": "pnpm exec vitest run tests/integration/composition-program-cli.test.ts --maxWorkers=1",
+          "status": "passed",
+          "tests": 4,
+          "checks": [
+            "Invalid render backend fails before loading nonexistent source",
+            "Invalid JSON and native scene return 2",
+            "Unreadable file and missing TypeScript import return 1"
+          ],
+          "log": "/private/tmp/ce10-render-exit-test.log"
+        }
+      ],
+      "pending": [
+        "Repeat full pnpm check on repair checkpoint",
+        "Fresh skill trial render inspection"
+      ]
     }
   ],
   "pending": ["Full local milestone gates and PR"]

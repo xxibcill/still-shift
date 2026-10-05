@@ -49,7 +49,8 @@ still hold before relying on them.
   across 192 frames on both backends, including seeks and TypeScript/JSON MP4 identity.
   All story intent presets and generated reference/skill are delivered; 1,498 unit
   tests pass. A fresh isolated skill-only trial has zero schema errors and no source
-  repairs; the full milestone gates and final render inspection remain.
+  repairs. The full check stopped on render CLI exit-code compatibility; the repair
+  passes focused tests. A fresh full run and rendered trial inspection remain.
   [Evidence](./composition-ce10-results.json).
 
 - **CE4a complete (2026-10-05):** `codex/composition-ce4a-completion`, implementation
@@ -149,6 +150,19 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-05 — Restore CE10 render failure exit codes
+
+- **Agent / branch:** Codex on `codex/composition-ce10`.
+- **Found:** the full local check passed build/lint and 1,499 unit, 46 runtime,
+  130 integration and 14 depth tests, then stopped in the existing WebGL export
+  gate because an invalid backend returned exit 1 instead of the required exit 2.
+- **Fixed:** preserve render usage/scene exit 2 and file/loader runtime exit 1;
+  four focused CLI tests pass. Update the user guide for TypeScript authoring.
+- **Next:** repeat the complete local check on the repair checkpoint, inspect the
+  fresh skill trial render, then publish the milestone PR before CE11.
+- **Evidence:** [CE10 results](./composition-ce10-results.json). Failed trial sources
+  stay as ignored `.ts.txt` artifacts so the repository compiler excludes them.
 
 ### 2026-10-05 — Verify CE10 skill-only authoring and repair guidance
 

@@ -28,6 +28,13 @@ export type CompositionIo = {
   stderr: (text: string) => void;
 };
 const json = (value: unknown) => JSON.stringify(value) + "\n";
+const programRuntimeFailures = new Set([
+  "comp-program-file",
+  "comp-program-timeout",
+  "comp-program-output",
+  "comp-program-load",
+  "comp-program-aborted",
+]);
 const booleanOption = (values: Map<string, string>, name: string) => {
   const value = values.get(name) ?? "false";
   if (!["true", "false"].includes(value))
@@ -261,7 +268,15 @@ export async function runCompositionCommand(
   } catch (error) {
     if (command === "render" && !(error instanceof CompositionProgramError))
       return renderFailure(error, io);
-    io.stderr(json({ status: "failed", diagnostics: diagnostics(error) }));
-    return 1;
+    const findings = diagnostics(error);
+    io.stderr(json({ status: "failed", diagnostics: findings }));
+    return command === "render" &&
+      findings.every(
+        (finding) =>
+          finding.code.startsWith("comp-") &&
+          !programRuntimeFailures.has(finding.code),
+      )
+      ? 2
+      : 1;
   }
 }

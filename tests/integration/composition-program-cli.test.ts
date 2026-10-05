@@ -31,6 +31,56 @@ async function run(args: string[]) {
   return { code, stdout, stderr };
 }
 const program = `import{comp,solid,expr}from'@still-shift/motion';console.log('author console');export default comp({width:64,height:64,fps:24,frames:24},c=>{const n=c.add(solid('box',{size:[8,8],color:'#223344'}));c.expression(n.path('transform.rotation'),expr\`frame * 2\`);});`;
+it("preserves render usage and scene exit codes while unreadable input remains a runtime failure", async () => {
+  const result = await run([
+    "render",
+    "--input",
+    "unused.json",
+    "--output",
+    "unused.mp4",
+    "--backend",
+    "invalid",
+  ]);
+  expect(result.code).toBe(2);
+  expect(result.stdout).toBe("");
+  expect(JSON.parse(result.stderr)).toMatchObject({
+    status: "failed",
+    diagnostics: [
+      {
+        code: "comp-program-option",
+        path: "backend",
+        message: "Composition backend must be canvas2d or webgl2",
+      },
+    ],
+  });
+  const root = await directory(),
+    input = join(root, "invalid.json"),
+    output = join(root, "unused.mp4");
+  await writeFile(input, "invalid JSON");
+  expect(
+    (await run(["render", "--input", input, "--output", output])).code,
+  ).toBe(2);
+  await writeFile(input, "{}");
+  expect(
+    (await run(["render", "--input", input, "--output", output])).code,
+  ).toBe(2);
+  expect(
+    (
+      await run([
+        "render",
+        "--input",
+        join(root, "missing.json"),
+        "--output",
+        output,
+      ])
+    ).code,
+  ).toBe(1);
+  const script = join(root, "missing-import.ts");
+  await writeFile(script, "import './absent.ts';");
+  expect(
+    (await run(["render", "--input", script, "--output", output])).code,
+  ).toBe(1);
+});
 it("validates, normalizes, bakes and lints a TypeScript program through public CLI commands", async () => {
   const root = await directory(),
     input = join(root, "program.ts");
