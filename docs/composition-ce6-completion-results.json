@@ -10464,7 +10464,7 @@
   "delivery": {
     "branch": "codex/composition-ce6-completion",
     "base": "codex/composition-ce7",
-    "pullRequest": "pending creation after completion commit",
+    "pullRequest": "https://github.com/xxibcill/still-shift/pull/42",
     "next": "CE8 on a new branch, followed by CE8-L, CE4c, CE4d, CE13, CE15 and CE14"
   }
 }

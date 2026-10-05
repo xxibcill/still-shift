@@ -51,10 +51,11 @@ still hold before relying on them.
   36,061 frames; all three full Canvas family matrices pass unchanged policy.
   Native software/hash/seek/independent and repeated exports pass; 36 hardware
   comparisons pass their perceptual policy, and all 78 serial 1080p costs are recorded.
-  CE6 PR publication and CE8 follow. CE6-P targets remain separate; no owner decision is pending.
+  [PR #42](https://github.com/xxibcill/still-shift/pull/42) is open and attached against CE7; CE8 follows on a new branch.
+  CE6-P targets remain separate; no owner decision is pending.
   [Evidence](./composition-ce6-completion-results.json).
 
-- **Verification quiet window (2026-10-06):** after this CE6 gate exits, hold
+- **Verification quiet window (2026-10-06):** the CE6 gate has exited; hold
   builds, formatters, tests, browser matrices and exports for the coordinated
   CE6-P lane until its release message. Light source/prose review and CE6
   publication can continue; neither checkout, policy nor baseline is changed.
@@ -206,7 +207,7 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   36 actual hardware comparisons pass perceptual policy; 78 serial costs recorded.
 - **Retained:** two early full-gate failures and repairs; WebGL speed targets
   remain deferred to CE6-P, with no threshold or frozen-baseline changes.
-- **Next:** publish/attach CE6 PR, then CE8 and the remaining approved sequence.
+- **Next:** [PR #42](https://github.com/xxibcill/still-shift/pull/42) is open and attached; begin CE8 and the remaining approved sequence.
   Further verification waits for the coordinated CE6-P quiet-window release.
 - **Records:** [CE6 evidence](./composition-ce6-completion-results.json).
 

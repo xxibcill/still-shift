@@ -3117,7 +3117,7 @@ independent encodes agree. All 36 actual Apple GPU comparisons pass the unchange
 perceptual policy (maximum delta 47, minimum PSNR 53.39 dB, SSIM 0.99916). The 78
 serial 1080p cold/warm cost rows are recorded. Earlier format/contract failures
 and rejected renderer experiments remain documented; no thresholds changed.
-Create the CE6 PR against CE7, then begin CE8 on a new branch.
+[PR #42](https://github.com/xxibcill/still-shift/pull/42) is open and attached against CE7; begin CE8 on a new branch.
 [Evidence](./composition-ce6-completion-results.json).
 
 ### CE6 current-version completion checkpoint (2026-10-06)
