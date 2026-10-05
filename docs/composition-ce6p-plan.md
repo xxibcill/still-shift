@@ -3,7 +3,7 @@
 - Date: 2026-10-05
 - Branch: `codex/composition-ce6p-compatible`
 - Starting commit: `0e4838852855f6dc8cf91bba763a402dfd716f88` (CE7)
-- Status: performance verification blocked by recurring main-checkout workloads; CE6-P acceptance remains open.
+- Status: coordinated quiet window open; remaining verification in flight; CE6-P acceptance remains open.
 
 The owner resumed CE6-P using the current WebGL renderer in this isolated
 worktree. Do not modify the primary checkout or main feature chat. No CPU/GPU
@@ -186,3 +186,18 @@ window is available or the owner authorizes coordination. Keep all existing
 acceptance requirements and valid fusion data, run only remaining brackets, then
 strict family commands with exports before selecting the final candidates and
 marking the PR ready. CE6-P acceptance is unachieved.
+
+## Coordinated window authorized (2026-10-06)
+
+The owner approved messaging the main chat to reserve a quiet verification window.
+The main chat acknowledged: let its current gate finish normally, then announce
+availability and hold builds, formatters, tests, browser matrices and exports until
+CE6-P releases the machine. No CE6-P workload is queued before that announcement.
+Resume only bounded pinned/hardware comparisons and strict family audits; preserve
+the complete fusion evidence. Release the reserved machine when our workload is
+terminal. No renderer, policy or acceptance change is authorized by coordination.
+
+The main gate finished successfully and explicitly announced the quiet window
+available. It holds further verification until CE6-P releases the machine.
+Run the remaining comparisons and strict matrices serially; the isolated renderer
+is unchanged, so its already-passed full gate is not duplicated.

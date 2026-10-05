@@ -51,9 +51,9 @@ still hold before relying on them.
   regression/export suites and the complete local gate pass. Serial timings
   now include a valid pinned fusion-only bracket: two-sample export 1.112×;
   higher-count and preview gains remain unproven. Bounded/hardware comparisons
-  and strict WebGL family audits are blocked on an uncontended window.
-  Both retry launchers are terminal; no further workload is queued.
-  Owner input: provide a quiet window or authorize main-chat coordination.
+  and strict WebGL family audits are next in the reserved quiet window.
+  Owner-approved coordination succeeded: main gate passed and is terminal;
+  main holds further verification until CE6-P release. Renderer is unchanged.
   [Draft PR #41](https://github.com/xxibcill/still-shift/pull/41) is published and
   attached with performance validation pending. The main checkout/chat is untouched.
   All 117 original failures, 1.25× family and 2× native targets remain open.
@@ -194,6 +194,19 @@ _Last updated 2026-10-06 by Codex for CE6-P; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-06 — CE6-P quiet-window coordination authorized
+
+- **Agent / branch:** Codex on `codex/composition-ce6p-compatible`, from `56adc86`.
+- **Owner authorization:** approved main-chat coordination. Request sent; main
+  acknowledged it will finish its current gate normally, then hold verification.
+  Its full gate now passed and is terminal; the quiet window is available.
+- **State / next:** handoff received; running remaining verification in the reserved window.
+  Preserve valid fusion data and all six invalid attempts; run remaining bounded
+  pinned/hardware brackets and strict family audits serially, then release machine.
+  Existing renderer checks remain passed; PR #41 and CE6-P targets stay open.
+- **Records:** [plan](./composition-ce6p-plan.md),
+  [evidence](./composition-ce6p-performance-results.json).
 
 ### 2026-10-06 — CE6-P remaining performance verification blocked
 

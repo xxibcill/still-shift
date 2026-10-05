@@ -1,6 +1,6 @@
 {
   "milestone": "CE6-P",
-  "status": "blocked on uncontended performance verification; acceptance remains open",
+  "status": "coordinated quiet window open; remaining performance verification in flight; acceptance remains open",
   "startedDate": "2026-10-05",
   "updatedDate": "2026-10-06",
   "branch": "codex/composition-ce6p-compatible",
@@ -740,7 +740,7 @@
     "Required selected-candidate family timing audits",
     "Complete performance validation and select measured candidates before marking draft PR ready"
   ],
-  "workloadCoordination": "Six invalid timing attempts retained; complete fusion bracket valid and committed. Remaining-only session 9449 terminal exit 1 after main radial/warp/stylize/noise unit verification overlapped its candidate session. No retry or family workload is queued. Main chat remains read-only; human authorization is still required before requesting a quiet window there.",
+  "workloadCoordination": "User-authorized coordination succeeded. Main complete gate passed 176 frozen baselines / 36,061 frames and is terminal; main is holding builds, formatters, tests, matrices and exports. Remaining bounded pinned/hardware brackets will run, then strict WebGL family matrices. No runtime change or duplicate full gate.",
   "repositoryActionsVerified": {
     "enabled": false,
     "command": "gh api repos/xxibcill/still-shift/actions/permissions",
@@ -1402,5 +1402,15 @@
     "currentImpasse": "Unaffected toolchain, correctness, focused/full-gate checks, independent reviews, draft publication and valid fusion measurement are complete. Remaining candidate selection, pinned/hardware measurements and strict WebGL family audits require an uncontended window. Current launchers are terminal; no other-chat modification or messaging authorized.",
     "neededChange": "An externally available quiet verification window, or human authorization to coordinate one with the main chat",
     "resume": "Keep valid fusion evidence; run remaining bounded pinned/hardware complete brackets only, then existing strict family commands with exports; never reuse invalid partial timings or relax acceptance"
+  },
+  "coordination": {
+    "date": "2026-10-06",
+    "authorizedByUser": true,
+    "mainThreadId": "01a10861-3560-7b60-842f-c22dc4b77953",
+    "request": "Let existing main gate finish normally, then hold builds/formatters/tests/browser matrices/exports until CE6-P release",
+    "acknowledged": true,
+    "state": "Main announced gate terminal and quiet window available; holding verification until CE6-P release",
+    "release": "Send release message once CE6-P verification workload is terminal",
+    "windowAvailable": true
   }
 }
