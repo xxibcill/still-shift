@@ -3,12 +3,12 @@
   "pullRequest": "https://github.com/xxibcill/still-shift/pull/35",
   "reviewHead": "84d7924b7545062ce305bce87656b5a36f59d1e3",
   "branch": "codex/pr35-followup-fixes",
-  "delivery": "One commit per finding; one push after the final finding commit",
+  "delivery": "One separate commit per finding, a separate CE12 base merge, and one final push after local verification",
   "findings": [
     {
       "id": "lab-native-diagnostics",
       "comment": "https://github.com/xxibcill/still-shift/pull/35#discussion_r4183968004",
-      "status": "fixed locally",
+      "status": "fixed and verified",
       "change": "Recognize the PassageError contract across separately bundled class identities, preserve HTTP diagnostic arrays on plan loads/imports, and show original codes with beat/source/field context in Lab",
       "verification": [
         "19 focused unit/integration tests passed, including the actual bundled Vite API and browser error display",
@@ -24,7 +24,7 @@
     {
       "id": "native-handoff-subjects",
       "comment": "https://github.com/xxibcill/still-shift/pull/35#discussion_r4183968013",
-      "status": "fixed locally",
+      "status": "fixed and verified",
       "change": "Require incoming handoff targets and following handoff sources, and evaluate native enter/exit visibility at passage boundary frames through precomp instance paths and host visibility",
       "verification": [
         "123 focused unit/integration tests passed",
@@ -43,7 +43,7 @@
     {
       "id": "native-inspector-initialization",
       "comment": "https://github.com/xxibcill/still-shift/pull/35#discussion_r4183968018",
-      "status": "fixed locally",
+      "status": "fixed and verified",
       "change": "Initialize the native layer inspector whenever previews are installed, including first/single beats and edit/undo/redo replacement, and retain a still-valid selected layer",
       "verification": [
         "All 17 passage Lab integration tests passed, including Canvas and WebGL first/single native-beat inspection and edit/undo/redo",
@@ -53,9 +53,129 @@
         "First/single native beat lists native layers and displays native state",
         "Editing, undoing and redoing retain the native layer list and selected layer"
       ],
-      "initialFailure": "Both new browser tests reproduced surrogate story layers before the fix; the first fixed run required opening the collapsed Node state panel before selecting a layer"
+      "initialFailure": "Both new browser tests reproduced surrogate story layers before the fix; the first fixed run required opening the collapsed Node state panel before selecting a layer",
+      "commit": "cde2c2c"
     }
   ],
-  "verification": {},
-  "approvalService": "Initial worktree branch/setup attempts were not executed because the automatic approval review model was at capacity; the later authorized retry succeeded."
+  "verification": {
+    "verifiedCodeCommit": "b21e56a437ef3ececd631bfb860b88e6aac81b96",
+    "note": "Final documentation records are added to the base merge; the verified code remains unchanged",
+    "toolchain": {
+      "node": "22.23.1",
+      "pnpm": "10.29.3",
+      "python": "3.12.11",
+      "playwright": "1.62.1",
+      "chromium": 1234,
+      "ffmpeg": "8.0.1"
+    },
+    "checks": [
+      {
+        "command": "pnpm check:fast",
+        "status": "passed",
+        "unitTests": 1536,
+        "testFiles": 131,
+        "includes": [
+          "schema",
+          "package boundaries",
+          "formatting",
+          "ESLint",
+          "TypeScript"
+        ]
+      },
+      {
+        "command": "pnpm check:runtime",
+        "status": "passed",
+        "runtimeTests": 46,
+        "integrationTests": 130,
+        "pythonTests": 14,
+        "includes": [
+          "toolchain",
+          "Lab session smoke",
+          "reusable timing/export smoke"
+        ]
+      },
+      {
+        "command": "pnpm test:browser:composition-native-passage",
+        "status": "passed",
+        "backend": "canvas2d",
+        "passageFrames": 576
+      },
+      {
+        "command": "pnpm test:browser:composition-native-passage:webgl",
+        "status": "passed",
+        "backend": "webgl2",
+        "passageFrames": 576,
+        "contextBudget": {
+          "beats": 20,
+          "edits": 8,
+          "peakActive": 4,
+          "remaining": 0,
+          "contextsCreated": 20
+        }
+      },
+      {
+        "command": "pnpm test:browser:composition-passage",
+        "status": "passed",
+        "frameComparisons": 9,
+        "includes": [
+          "encoded exports",
+          "isolated cache edits",
+          "range export",
+          "cancel/resume",
+          "audio reuse",
+          "browser editing/recovery/playback",
+          "phone layout"
+        ]
+      },
+      {
+        "command": "pnpm test:browser:composition-quality",
+        "status": "passed",
+        "fixtures": 14,
+        "includes": [
+          "timeline seeking",
+          "Node/browser parity",
+          "matte/ancestor timing",
+          "clipped coverage",
+          "Canvas/WebGL pixel motion",
+          "pinned browser lint"
+        ]
+      },
+      {
+        "command": "pnpm test:browser:composition-baselines",
+        "status": "passed",
+        "items": 176,
+        "frames": 36061,
+        "seconds": 280.54,
+        "regenerated": false
+      },
+      {
+        "command": "pnpm lab --port 45135 (normal Vite CLI, no tsx hook)",
+        "status": "passed",
+        "httpStatus": 200,
+        "beats": 3,
+        "nativeBeats": ["reset"],
+        "serverStoppedAfterSmoke": true
+      }
+    ],
+    "sourceChecksums": {
+      "apps/lab/src/passage.ts": "97c43a9fb3f892b1d44f8acf5a3d5370951e4510ee1089ededb656b548eeec29",
+      "packages/renderer-core/src/passage-diagnostics.ts": "83dc3de1e9af450e3bb5688f7dbba0e319992d3f7103cf25f94bc88cd72abd14",
+      "packages/renderer-core/src/passage-compositions.ts": "fd54a5de81386deed24af0a611d7431642081830c7a73409a13b9b2d30aa1531",
+      "packages/renderer-core/src/composition/evaluate/evaluate.ts": "c154cd82bfb653b0934d8c624360377cd8addf5f816cbc959bcc80ab6781952f"
+    },
+    "notRun": [
+      "Full pnpm check browser-suite aggregate; the affected browser suites and all frozen baselines were run",
+      "Strict family performance matrices; CE6-P remains deferred"
+    ],
+    "githubActions": "No workflow or Actions setting changes; verification ran locally",
+    "originalWorkingTree": "Code changes were isolated in the managed worktree; unrelated CE5 work was retained"
+  },
+  "approvalService": "Initial worktree branch/setup attempts were not executed because the automatic approval review model was at capacity; the later authorized retry succeeded.",
+  "baseIntegration": {
+    "baseBranch": "codex/composition-ce12",
+    "baseHead": "8c717b381ecd01fa1b17ff879ee9eba05c5f50eb",
+    "conflict": "docs/dev-log.md only; retain both PR #34 and PR #35 records",
+    "delivery": "Separate merge commit after the three finding commits; no intermediate pushes"
+  },
+  "targetBranch": "codex/composition-ce4a-completion"
 }

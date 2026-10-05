@@ -3769,6 +3769,25 @@ See the CE12 and CE4a completion records above for verification evidence.
 
 ---
 
+### CE12 PR #34 follow-up repairs (2026-10-05)
+
+Three further findings on `a41f687` are posted inline and repaired one per commit.
+Provider reading time uses sampled reveal; brief and partial reveals fail, while
+sufficient consecutive reveal passes in state and rendered lint. Collapsed precomps
+traverse paint outside source bounds and derive framing from descendants; hidden,
+clipped, nested and empty-content cases are covered. Capacity failures use stable
+`comp-lint-limit` diagnostics with the `layers` path. A root-layer lower bound
+rejects oversized timelines before sampling or rendering; nested accounting retains
+the unchanged 2,000,000 layer-frame limit.
+
+Fast checks (1,509 unit tests), 46 runtime tests, 15 CLI tests and the expanded native
+browser suite pass. CE0 lint covers 176 items / 36,061 frames with zero unexpected
+failures. It now detects two additional reading-time errors in one existing fixture;
+all other diagnostics and frozen-pixel findings match the prior report. Baseline
+hashes, renderer output and versions are unchanged. Full render/export checks were
+not rerun. Delivery uses one final push after the third finding commit; owner
+review/merge remains pending. [Follow-up evidence](./pr-34-followup-fix-results.json).
+
 ## CE13 — Video, image-sequence and audio layers
 
 **Outcome:** Compositions mix supplied video clips (including AI-generated ones),
