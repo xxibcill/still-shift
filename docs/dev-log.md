@@ -43,13 +43,11 @@ still hold before relying on them.
 
 ## Current state
 
-- **PR #33 authoring/robustness round (2026-10-05):** Claude Code on
-  `claude/ce16-sfx-improvements` from `287cff9`. Routing/track/filter/ducking
-  edit operations (`8d0c428`), verifier DSP-version fix (`a62cef7`), Lab fade
-  shapes and Add cue (`a21fc0f`), `--operations -` (`b19059a`), routing parity
-  guard (`968c589`) and faster hashing/fused adds (`74c5abd`).
-  `pnpm check:soundtrack` passes on Node 22.23.1; real CE16 lifecycle verifier
-  passes on the new worker. Pushed to PR #33; owner review/merge remains.
+- **PR #33 soundtrack improvement rounds (2026-10-05):** Claude Code on
+  `claude/ce16-sfx-improvements`, pushed to PR #33 through `acb00c0` plus this
+  log. `pnpm check:soundtrack` passes on Node 22.23.1. Owner review/merge remains.
+  Open owner decisions only: master limiter (contract scope), listening/AV QA,
+  browser verification of the new Lab controls, GPL runtime distribution.
 
 - **PR #33 bounded-memory render (2026-10-05):** Claude Code on
   `claude/ce16-sfx-improvements` from `7f1f4dd`. `0fc092f` makes 10-minute
@@ -227,6 +225,32 @@ _Last updated 2026-10-05 by Codex for PR #33 follow-up fixes._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-05 — PR #33 tiling, Lab mix controls and exact memory estimate
+
+- **Agent / branch:** Claude Code on `claude/ce16-sfx-improvements` from `01fbb1b`.
+- **Done:** `5738b0a` `tile` edit: crossfaded copies `<id>-2…` up to `endSample`
+  (equal-power joins, ≤ half-clip crossfade, last copy trimmed); no contract
+  change. `f246429` Lab track output/filters controls, ducking JSON editor,
+  add track/bus (unit-tested request builders); moved Remove clip out of
+  `#clip-edit` because the browser workflow's `#clip-edit button` locator had
+  become ambiguous under Playwright strict mode. `acb00c0` memory estimate now
+  simulates the render's depth-first live buffers instead of charging every
+  accumulator on a path.
+- **Results:** tiled-bed join gains match the equal-power formula in a render
+  test. Exact estimate vs measured macOS `phys_footprint` (default allocator):
+  margins 0.24–0.26 GB on adversarial graphs at the budget edge (stacked five
+  live buffers, filtered first inputs, empty buses, eight-bus chain) and larger
+  on common shapes; 3 nested buses + filters + ducking at 10 minutes now fit
+  (1.13 GB estimate, 0.88 GB measured; previously rejected at 1.60 GB).
+  `pnpm check:soundtrack`: 1,525 unit, 46 runtime, 47 audio integration,
+  14 depth; Python lint/format.
+- **Rejected / do not repeat:** reusing the narration mix for the ducking
+  detector — duplicate pass measured at ~0.04 s shaping + ~0.15 s decode of a
+  2 s 10-minute render, about the cost of a spill/read-back. Making no-op edits
+  skip saving — the existing unit test pins "every accepted request saves once";
+  left as designed (Lab controls send no no-op requests).
+- **Not run:** browser suites, baselines, listening.
 
 ### 2026-10-05 — PR #33 authoring completeness, parity guard and render speed
 
