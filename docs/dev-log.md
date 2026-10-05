@@ -196,7 +196,8 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   install succeeded. No acceptance or baseline was changed.
 - **Review:** no renderer defect found by independent Standards/Spec axes. Fixed
   launch cleanup, preserved the CE6-P anchor, added cold preview budgets and a
-  conservative package-manager workload guard before timing runs.
+  conservative package-manager workload guard before timing runs. Overlap polling
+  retains invalid timings and rejects them; GitHub confirms Actions are disabled.
 - **Next:** queued exactness, then serial A/B after competing workloads end.
 - **Records:** [slice plan](./composition-ce6p-plan.md),
   [retained evidence](./composition-ce6p-performance-results.json).

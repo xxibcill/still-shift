@@ -37,16 +37,11 @@ const digest = (source: string) =>
   createHash("sha256").update(source).digest("hex");
 const runs: unknown[] = [];
 
-for (const variant of [
-  "baseline",
-  "candidate",
-  "candidate",
-  "baseline",
-] as const) {
+const competingWorkloads = () => {
   const processes = execFileSync("ps", ["-axo", "pid,command"], {
     encoding: "utf8",
   });
-  const competing = processes.split("\n").filter((line) => {
+  return processes.split("\n").filter((line) => {
     const match = /^\s*\d+\s+(\S+)\s+(.*)$/.exec(line);
     if (!match) return false;
     const executable = match[1]!.split("/").at(-1);
@@ -59,6 +54,15 @@ for (const variant of [
       args,
     );
   });
+};
+
+for (const variant of [
+  "baseline",
+  "candidate",
+  "candidate",
+  "baseline",
+] as const) {
+  const competing = competingWorkloads();
   if (competing.length)
     throw new Error(
       `Competing test workloads; benchmark not started:\n${competing.join("\n")}`,
@@ -66,6 +70,15 @@ for (const variant of [
   const cache = await mkdtemp(join(tmpdir(), "ce6p-ab-vite-"));
   let server: ViteDevServer | undefined;
   let browser: Browser | undefined;
+  let overlap: string[] = [];
+  const monitor = setInterval(() => {
+    try {
+      const workload = competingWorkloads();
+      if (workload.length) overlap = workload;
+    } catch (error) {
+      overlap = [`Workload inspection failed: ${String(error)}`];
+    }
+  }, 2000);
   try {
     server = await createServer({
       root,
@@ -97,6 +110,8 @@ for (const variant of [
       const url = "/packages/renderer-core/src/composition/render/webgl2.ts";
       return (await import(url)).COMPOSITION_WEBGL_RENDERER_VERSION;
     });
+    if (overlap.length || competingWorkloads().length)
+      throw new Error("Competing verification began during benchmark setup");
     const exportCosts = await page.evaluate(async () => {
       const url = "/tests/helpers/composition-exposure-reference.ts";
       return ((await import(url)) as typeof ExportCost).measureExposureFrames();
@@ -107,12 +122,16 @@ for (const variant of [
         (await import(url)) as typeof PreviewCost
       ).measureExposurePreview();
     });
+    clearInterval(monitor);
+    const contention = overlap.length ? overlap : competingWorkloads();
     runs.push({
       variant,
       rendererVersion,
       environment,
       exportCosts,
       previewCosts,
+      timingValid: contention.length === 0,
+      overlap: contention,
     });
     await mkdir(dirname(output), { recursive: true });
     await writeFile(
@@ -132,17 +151,22 @@ for (const variant of [
             ),
           ),
           method:
-            "Serial baseline/candidate/candidate/baseline sessions, independent Vite optimizer caches; original CE7 export-cost method; separate RAF preview diagnostic",
+            "Serial baseline/candidate/candidate/baseline sessions, independent Vite optimizer caches; original CE7 export-cost method; separate RAF preview diagnostic; startup/end workload checks and 2-second overlap polling (invalid runs retained and rejected)",
           runs,
         },
         null,
         2,
       ) + "\n",
     );
+    if (contention.length)
+      throw new Error(
+        `Competing verification began during timing; retained run ${runs.length} is invalid`,
+      );
     console.log(
       `${variant} ${rendererVersion}: retained run ${runs.length} at ${output}`,
     );
   } finally {
+    clearInterval(monitor);
     try {
       await Promise.all([browser?.close(), server?.close()]);
     } finally {

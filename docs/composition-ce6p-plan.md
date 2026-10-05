@@ -61,3 +61,9 @@ when browser launch fails, preserve the old CE6-P heading anchor, and report col
 preview initialization/first submission/next RAF separately from warmed calls.
 Preview submission and RAF costs do not guarantee GPU completion. Runtime evidence
 is still required.
+
+The timing harness refuses competing workloads at startup and samples processes
+every two seconds until timing ends. Detected overlap or inspection failure is
+retained as invalid timing and rejected. This is best-effort detection: very short
+workloads can start and finish between polls. Do not use a contaminated run as
+performance evidence; rerun the complete serial bracket once the machine is quiet.

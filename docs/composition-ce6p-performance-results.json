@@ -659,7 +659,8 @@
       "findings": [
         "Browser-launch cleanup scope",
         "Preserve CE6-P old anchor",
-        "Conservative workload guard recognizes pnpm run/filter/cjs invocations without shell false positives"
+        "Conservative workload guard recognizes pnpm run/filter/cjs invocations without shell false positives",
+        "Best-effort 2-second overlap detection retains and rejects invalid timing runs; startup/end checks also apply"
       ],
       "resolution": "fixed before runtime verification"
     },
@@ -676,5 +677,10 @@
     "Final review and full pnpm check",
     "Reviewable published attached PR"
   ],
-  "workloadCoordination": "Main CE7 full check active; browser/timing checks not started here. Read-only progress/process inspection only."
+  "workloadCoordination": "Main CE7 full check active; browser/timing checks not started here. Read-only progress/process inspection only.",
+  "repositoryActionsVerified": {
+    "enabled": false,
+    "command": "gh api repos/xxibcill/still-shift/actions/permissions",
+    "date": "2026-10-06"
+  }
 }
