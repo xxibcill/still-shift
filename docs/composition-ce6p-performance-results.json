@@ -622,6 +622,10 @@
     {
       "commit": "cff9b58",
       "purpose": "Buildable prototype and exactness/serial diagnostic harness; runtime unverified at checkpoint"
+    },
+    {
+      "commit": "f86dc15",
+      "purpose": "Review repairs, cold preview budgets and all original failure rows"
     }
   ],
   "verification": [
@@ -652,7 +656,11 @@
   "review": {
     "standards": {
       "documentedBreaches": 0,
-      "findings": ["Browser-launch cleanup scope", "Preserve CE6-P old anchor"],
+      "findings": [
+        "Browser-launch cleanup scope",
+        "Preserve CE6-P old anchor",
+        "Conservative workload guard recognizes pnpm run/filter/cjs invocations without shell false positives"
+      ],
       "resolution": "fixed before runtime verification"
     },
     "spec": {

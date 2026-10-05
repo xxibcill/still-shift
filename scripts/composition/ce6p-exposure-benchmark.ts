@@ -46,13 +46,19 @@ for (const variant of [
   const processes = execFileSync("ps", ["-axo", "pid,command"], {
     encoding: "utf8",
   });
-  const competing = processes
-    .split("\n")
-    .filter((line) =>
-      /(?:pnpm (?:check|test)|vitest|(?:node|tsx).*tests\/browser\/)/.test(
-        line,
-      ),
+  const competing = processes.split("\n").filter((line) => {
+    const match = /^\s*\d+\s+(\S+)\s+(.*)$/.exec(line);
+    if (!match) return false;
+    const executable = match[1]!.split("/").at(-1);
+    const args = match[2]!;
+    // Treat every package-manager invocation as competing: custom scripts,
+    // optional `run` and filters can all launch a verification workload.
+    if (executable === "pnpm" || executable === "vitest") return true;
+    if (executable !== "node" && executable !== "tsx") return false;
+    return /(?:^|[/\s])pnpm(?:\.[cm]?js)?(?:\s|$)|vitest|tests\/(?:browser|integration|runtime)\//.test(
+      args,
     );
+  });
   if (competing.length)
     throw new Error(
       `Competing test workloads; benchmark not started:\n${competing.join("\n")}`,
