@@ -174,7 +174,40 @@ CLI and HTTP edits call the same `saveSoundtrackEdits` API.
 Operations are `gain` (target and gainDb; optional kind `clip|track|bus|master` to
 resolve same-name clip/node ambiguity), `mute`, `solo`, `move`, `trim`,
 `automation`, `pan` (clip and pan; `0` removes the field, so recentring an
-unpanned clip adds no history), `undo` and `redo`. The latter two need only `type`.
+unpanned clip adds no history), `fade` (clip with `fadeInSamples`,
+`fadeOutSamples` or both), `add-clip`, `remove-clip`, `add-asset`, `remove-asset`,
+`undo` and `redo`. The latter two need only `type`.
+
+`add-clip` takes every clip field from the contract table, flattened beside
+`type`; no defaults are filled in. The clip is appended, so existing clips keep
+their summation order and render unchanged. `add-asset` takes `id` and `path`
+(relative to the project JSON, like every asset). File-based saves through the CLI
+or Lab API hash the source and store its `sha256:` identity; a supplied `sha256`
+must match the bytes (`source-checksum`), and a missing or oversized source fails
+before anything is saved. The pure library edit requires `sha256`.
+`remove-asset` fails with `asset-in-use` while clips reference it, so remove
+those clips earlier in the same request. Adding a cue and its source is one
+undo step:
+
+```json
+[
+  { "type": "add-asset", "id": "whoosh", "path": "sfx/whoosh.wav" },
+  {
+    "type": "add-clip",
+    "id": "whoosh-cue",
+    "asset": "whoosh",
+    "track": "sfx-pouch",
+    "sourceStartSample": 0,
+    "sourceEndSample": 24000,
+    "startSample": 480000,
+    "gainDb": -6,
+    "fadeInSamples": 0,
+    "fadeOutSamples": 2400,
+    "automation": { "interpolation": "linear", "points": [] }
+  }
+]
+```
+
 Moving an anchored clip keeps its anchor point, so its `offsetSamples` follows
 the move; omit `offsetSamples`, or pass the matching value. A different value, or
 an offset on an unanchored clip, fails with `anchor-conflict`. Use `retime` to
@@ -237,13 +270,14 @@ Run `pnpm lab`; open `/soundtrack.html` via **Soundtrack layers**. Load a saved
 project inside the checkout. Tracks show overlapping clip bounds, stepped hold or linear automation with
 extended endpoint gains, processed-stem
 waveforms after rendering, and authored automation. Set track mute/solo/gain or
-edit a clip's numeric placement, trim, gain, pan and automation JSON; Save writes the
-same file as the CLI. Undo/redo uses persisted project history. Numeric edits are
+edit a clip's numeric placement, trim, gain, pan, fade lengths and automation JSON,
+or remove the selected clip; Save writes the same file as the CLI. Undo/redo uses persisted project history. Numeric edits are
 supported; an empty or invalid number field is rejected without saving instead of
 being read as zero. After rendering, the status line shows the mix peak and warns
 when samples exceed 0 dBFS.
-Drag handles, fades/DSP/ducking inspectors and an independent browser
-mixing engine are not provided. Author those settings in JSON and validate them.
+Drag handles, adding clips or assets, DSP/ducking inspectors and an independent
+browser mixing engine are not provided. Add cues through a CLI/API edit; author
+DSP and ducking in JSON and validate them.
 
 **Render this revision** generates a fresh checked mix/stems and waveform data.
 Play/seek/download use that saved revision's rendered mix. An edit invalidates

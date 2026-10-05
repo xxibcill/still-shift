@@ -43,6 +43,14 @@ still hold before relying on them.
 
 ## Current state
 
+- **PR #33 cue/asset/fade edits (2026-10-05):** Claude Code on
+  `claude/ce16-sfx-improvements` from `204053f`. The shared edit API gains
+  `add-clip`, `remove-clip`, `fade`, `add-asset` and `remove-asset` (`d6fa38b`);
+  the Lab clip form edits fades and removes clips (`e4194a6`). No PCM or DSP
+  version change. `pnpm check:soundtrack` passes on Node 22.23.1. Committed
+  locally; not yet pushed to PR #33 (awaiting owner go-ahead). Browser suites
+  and listening not run.
+
 - **PR #33 clip pan (2026-10-05):** Claude Code on `claude/ce16-sfx-improvements`.
   Headroom report and Lab field guard are pushed to PR #33 (`2cddbb2`). Optional
   `clips[].pan` uses a unity-centre constant-power law after the ducking detector
@@ -203,6 +211,29 @@ _Last updated 2026-10-05 by Codex for PR #33 follow-up fixes._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-05 — PR #33 cue, asset and fade edit operations
+
+- **Agent / branch:** Claude Code on `claude/ce16-sfx-improvements` from `204053f`.
+- **Done:** `d6fa38b` adds `add-clip` (complete contract clip, appended so
+  existing summation order and PCM are unchanged), `remove-clip`, `fade`,
+  `add-asset` and `remove-asset` (`asset-in-use` while referenced). File-based
+  saves hash added sources relative to the project JSON; a stated mismatched
+  hash, missing or oversized source fails before saving. `e4194a6` adds Lab
+  fade fields and a Remove clip button. Previously these needed hand-edited JSON
+  outside the revision lock.
+- **Results:** two unit tests (one-request undo, append order, 16 error codes;
+  a wrong-code mutation fails) and one integration test (relative hashing,
+  rejected saves leave bytes intact, the added cue renders at −6 dB and its
+  removal restores the effect stem exactly). `pnpm check:soundtrack`: 1,518 unit,
+  46 runtime, 40 audio integration, 14 depth; Python lint/format pass. Runtime
+  borrowed read-only from the Codex CE16 worktree via
+  `STILL_SHIFT_SOUNDTRACK_PYTHON`.
+- **Not run:** browser workflow suites (owner authorization covered only the
+  CE16 completion pass), baselines and listening. Lab form changes are
+  type/lint-checked only.
+- **Open / next:** push to PR #33 when the owner approves. Adding clips from the
+  Lab, equal-power fade curves, looping and a master limiter remain out of scope.
 
 ### 2026-10-05 — PR #33 clip-level pan
 
