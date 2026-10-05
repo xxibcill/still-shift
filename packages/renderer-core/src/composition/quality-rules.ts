@@ -197,13 +197,29 @@ export function compositionFramingFindings(
   });
   return diagnostics;
 }
-const scaleDelta = (a: CompositionQualitySample, b: CompositionQualitySample) =>
-  Math.max(
+const scaleDelta = (
+  a: CompositionQualitySample,
+  b: CompositionQualitySample,
+) => {
+  // Reflections can cancel across rotated parent/child axes. Translation does
+  // not change scale; compare the effective linear transform before its signs.
+  if (
+    a.matrix
+      .slice(0, 4)
+      .every(
+        (value, i) =>
+          Math.abs(value - b.matrix[i]!) <=
+          1e-10 * Math.max(1, Math.abs(value), Math.abs(b.matrix[i]!)),
+      )
+  )
+    return 0;
+  return Math.max(
     ...a.scale.map(
       (value, i) =>
         Math.abs(value - b.scale[i]!) / Math.max(1, Math.abs(b.scale[i]!)),
     ),
   );
+};
 export function compositionPopFindings(
   frames: readonly CompositionQualityFrame[],
   policy: ResolvedCompositionQualityPolicy,

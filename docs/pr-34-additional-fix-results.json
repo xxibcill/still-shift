@@ -19,12 +19,19 @@
         "after": "114 focused quality/CLI tests, TypeScript, changed-file ESLint, and browser quality suite pass. Group effect state agrees across Node/Chromium; rendered motion has neither frozen-state nor frozen-pixel errors.",
         "controls": "disabled effects, hidden/offscreen children, empty and nested groups; existing collapsed-surface regression retained",
         "initialHarnessRepair": "Passing a typed Composition directly to Playwright page.evaluate exceeded TypeScript instantiation depth; use JSON transport as the existing browser checks do."
-      }
+      },
+      "commit": "5d3f0d3"
     },
     {
       "id": "signed-scale-pops",
       "comment": "https://github.com/xxibcill/still-shift/pull/34#discussion_r4185973365",
-      "status": "pending"
+      "status": "fixed",
+      "change": "Preserve evaluated scale-axis signs through ordinary parents and precomp hosts while retaining matrix magnitudes for inherited scaling.",
+      "verification": {
+        "before": "5 of 7 signed-scale regressions fail",
+        "after": "121 focused quality/CLI tests, build and changed-file ESLint pass",
+        "controls": "x/y/both-axis reflections, null/precomp inheritance, intentional cuts, ordinary rotation and canceled parent/child reflections"
+      }
     },
     {
       "id": "property-easing-weight",

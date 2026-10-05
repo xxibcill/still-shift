@@ -43,7 +43,7 @@ still hold before relying on them.
 
 ## Current state
 
-- **PR #34 additional fixes in flight (2026-10-05):** all five findings on `7525540` are posted inline. Group paint modifiers are repaired and focused unit/CLI, build, ESLint and browser checks pass. Signed scale, property easing weights, overridden tracks and nested coverage remain; one commit per finding and one final push. [Evidence](./pr-34-additional-fix-results.json).
+- **PR #34 additional fixes in flight (2026-10-05):** five findings on `7525540` are posted inline. Group paint modifiers (`5d3f0d3`) and signed scale are repaired. 121 focused quality/CLI tests, build and ESLint pass; group browser checks pass. Property easing weights, overridden tracks and nested coverage remain; one commit per finding and one final push. [Evidence](./pr-34-additional-fix-results.json).
 
 - **PR #34 review fixes verified (2026-10-05):** all four inline findings on
   `8c717b3` are repaired one per commit: held-sample velocity artifacts
@@ -175,6 +175,14 @@ _Last updated 2026-10-05 by Codex for PR #34 review fixes; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-05 — PR #34 signed scale pops
+
+- **Agent / branch:** Codex on `codex/composition-ce12`, after `5d3f0d3`.
+- **Done:** signed scale survives null-parent and precomp inheritance, so abrupt reflections produce scale-pop findings.
+- **Results:** five regressions failed before repair; 121 focused quality/CLI tests, build and changed-file ESLint pass. Rotations, declared cuts and canceled reflections stay exempt.
+- **Open / next:** easing weights, overridden tracks, nested coverage and final verification; one final push.
+- **Records:** [Additional repair evidence](./pr-34-additional-fix-results.json).
 
 ### 2026-10-05 — PR #34 group paint modifiers
 

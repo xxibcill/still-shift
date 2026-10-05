@@ -107,6 +107,11 @@ function unionBounds(bounds: readonly (Bounds | null)[]): Bounds | null {
 export const hasArea = (bounds: Bounds) =>
   bounds.right > bounds.left && bounds.bottom > bounds.top;
 
+function inheritScaleSigns(signs: [number, number], scale: readonly number[]) {
+  signs[0] *= Math.sign(scale[0]!);
+  signs[1] *= Math.sign(scale[1]!);
+}
+
 /** Pure samples exclude clock bookkeeping and invisible dependency motion. Pixels remain separate evidence. */
 export function compositionQualityFrame(
   comp: Composition,
@@ -145,9 +150,14 @@ export function compositionQualityFrame(
       const bounds = state.bounds ? projectBounds(state.bounds, base) : null;
       let clipping = clip;
       const ancestors = [...scopeAncestors];
+      const scaleSigns: [number, number] = [1, 1];
+      inheritScaleSigns(scaleSigns, state.transform.scale);
+      const host = layers.get(scopeAncestors[0] ?? "");
+      if (host) inheritScaleSigns(scaleSigns, host.scale);
       let parent = layer.parent ? byId.get(layer.parent) : undefined;
       while (parent) {
         ancestors.push(route + parent.id);
+        inheritScaleSigns(scaleSigns, parent.transform.scale);
         if (parent.layer.type === "group" && parent.layer.clip && parent.bounds)
           clipping = intersectBounds(
             clipping,
@@ -221,8 +231,8 @@ export function compositionQualityFrame(
         onScreen,
         contributesPaint: onScreen,
         scale: [
-          Math.hypot(matrix[0], matrix[1]),
-          Math.hypot(matrix[2], matrix[3]),
+          Math.hypot(matrix[0], matrix[1]) * scaleSigns[0],
+          Math.hypot(matrix[2], matrix[3]) * scaleSigns[1],
         ],
         ...(text?.text ? { text: text.text } : {}),
         ...(text?.role ? { role: text.role } : {}),
