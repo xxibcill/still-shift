@@ -1,6 +1,6 @@
 {
   "milestone": "CE6-P",
-  "status": "in-progress; acceptance remains open",
+  "status": "blocked on uncontended performance verification; acceptance remains open",
   "startedDate": "2026-10-05",
   "updatedDate": "2026-10-06",
   "branch": "codex/composition-ce6p-compatible",
@@ -740,7 +740,7 @@
     "Required selected-candidate family timing audits",
     "Complete performance validation and select measured candidates before marking draft PR ready"
   ],
-  "workloadCoordination": "Valid fusion bracket retained and committed. Failed bounded predecessor 3547 terminal exit 1. Main stylize unit/build workload subsequently confirmed terminal (no competitors). Remaining-only launcher session 9449 live; unchanged four-session methods and contention rejection, two idle minutes before each bracket. Main chat remains read-only; no messages sent.",
+  "workloadCoordination": "Six invalid timing attempts retained; complete fusion bracket valid and committed. Remaining-only session 9449 terminal exit 1 after main radial/warp/stylize/noise unit verification overlapped its candidate session. No retry or family workload is queued. Main chat remains read-only; human authorization is still required before requesting a quiet window there.",
   "repositoryActionsVerified": {
     "enabled": false,
     "command": "gh api repos/xxibcill/still-shift/actions/permissions",
@@ -931,6 +931,46 @@
       ],
       "provenance": "All renderer/kernel/bounds and shared helper source fingerprints repaired and captured",
       "workingTreeRef": "ae6db182d00df5e081e9fd55b3d6a33a0a5a302e"
+    },
+    {
+      "file": "benchmarks/results/composition-ce6p/invalid-1791231055332-bounded-ref-ab.json",
+      "sha256": "cdeb1d7e0014047016d086de3562270f901763210b285f4c02c4348f507cd477",
+      "bracket": "bounded fusion-only versus final candidate",
+      "completedSessions": 2,
+      "sessions": [
+        {
+          "variant": "baseline",
+          "renderer": "composition-webgl2-0.39.0",
+          "timingValid": true
+        },
+        {
+          "variant": "candidate",
+          "renderer": "composition-webgl2-0.40.0",
+          "timingValid": false
+        }
+      ],
+      "timingValid": false,
+      "reason": "Main radial/warp/stylize/noise unit verification overlapped candidate session; complete bracket rejected",
+      "overlap": [
+        "44508 node /Users/jjae/.nvm/versions/node/v24.16.0/bin/pnpm exec vitest run tests/unit/composition-radial-distortion.test.ts tests/unit/composition-warp-effects.test.ts tests/unit/composition-stylize-effects.test.ts tests/unit/composition-noise-effects.test.ts",
+        "44522 node (vitest)      ",
+        "44530 node (vitest 1)     ",
+        "44531 node (vitest 2)     ",
+        "44532 node (vitest 3)     ",
+        "44533 node (vitest 4)     ",
+        "44534 node (vitest 5)     ",
+        "44535 node (vitest 6)     ",
+        "44536 node (vitest 7)     ",
+        "44537 node (vitest 8)     ",
+        "44538 node (vitest 9)     ",
+        "44540 node (vitest 10)     ",
+        "44541 node (vitest 11)     ",
+        "44542 node (vitest 12)     ",
+        "44543 node (vitest 13)     ",
+        "44544 node (vitest 14)     "
+      ],
+      "provenance": "All renderer/kernel/bounds and shared helper source fingerprints repaired and captured",
+      "workingTreeRef": "69a3e2197df4669592413baaf376158b9dfd7b9b"
     }
   ],
   "integrationBase": "817cc9f (CE7 delivered docs-only closeout; runtime still 0e48388)",
@@ -1308,7 +1348,7 @@
     }
   },
   "queuedAb": {
-    "status": "live; remaining bounded pinned/hardware brackets only, after observed competing build terminal and two idle minutes",
+    "status": "terminal exit 1; baseline valid but bounded candidate invalidated by main unit verification; hardware not started; no retry queued",
     "session": 9449,
     "launcher": "/private/tmp/ce6p-ab-remaining.mjs",
     "outputs": [
@@ -1349,5 +1389,18 @@
     },
     "twoSampleExportSpeedup": 1.112280699009894,
     "limitations": "Higher-count changes comparable to session variability; no broad preview or target-completion claim; bounded/hardware and strict family audit pending"
+  },
+  "blockingAudit": {
+    "date": "2026-10-06",
+    "condition": "Recurring independent main-checkout verification invalidates required serial timings and prevents sustained strict family audit window",
+    "consecutiveGoalTurnsAtLeast": 3,
+    "turnEvidence": [
+      "Draft PR delivery: main verification repeatedly resets guarded wait; no valid timing bracket",
+      "Pre-start-delay revision: main verification resets both ten-minute and two-minute waits",
+      "First valid fusion bracket: remaining bounded comparisons twice rejected for main unit verification, latest at candidate session"
+    ],
+    "currentImpasse": "Unaffected toolchain, correctness, focused/full-gate checks, independent reviews, draft publication and valid fusion measurement are complete. Remaining candidate selection, pinned/hardware measurements and strict WebGL family audits require an uncontended window. Current launchers are terminal; no other-chat modification or messaging authorized.",
+    "neededChange": "An externally available quiet verification window, or human authorization to coordinate one with the main chat",
+    "resume": "Keep valid fusion evidence; run remaining bounded pinned/hardware complete brackets only, then existing strict family commands with exports; never reuse invalid partial timings or relax acceptance"
   }
 }

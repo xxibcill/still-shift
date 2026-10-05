@@ -3,7 +3,7 @@
 - Date: 2026-10-05
 - Branch: `codex/composition-ce6p-compatible`
 - Starting commit: `0e4838852855f6dc8cf91bba763a402dfd716f88` (CE7)
-- Status: in progress; CE6-P acceptance remains open.
+- Status: performance verification blocked by recurring main-checkout workloads; CE6-P acceptance remains open.
 
 The owner resumed CE6-P using the current WebGL renderer in this isolated
 worktree. Do not modify the primary checkout or main feature chat. No CPU/GPU
@@ -167,3 +167,22 @@ remaining bounded pinned/hardware brackets in session `9449`. Its two-minute
 pre-start wait and original four-session contention checks stay unchanged; it
 cannot overwrite the already complete fusion evidence. No other local test
 workload or family matrix is launched concurrently.
+
+## Performance verification blocker (2026-10-06)
+
+The remaining-only retry `9449` is terminal (exit 1): its fusion baseline finishes
+without overlap, then main radial/warp/stylize/noise unit verification contaminates
+the bounded candidate session. Both sessions are retained in the sixth invalid
+attempt; the incomplete bracket supports no bounded gain. Hardware did not start.
+No retry or family matrix is currently queued.
+
+The same contention condition persists across at least three consecutive goal
+turns. All unaffected preflight, exactness, focused/full-gate checks, independent
+reviews, draft delivery and the valid fusion-only measurement are complete.
+Finishing the remaining measurements and strict family audits requires an
+uncontended verification window. The original scope permits only read-only main
+chat coordination; no permission to message it has arrived. Resume when a quiet
+window is available or the owner authorizes coordination. Keep all existing
+acceptance requirements and valid fusion data, run only remaining brackets, then
+strict family commands with exports before selecting the final candidates and
+marking the PR ready. CE6-P acceptance is unachieved.

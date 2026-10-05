@@ -1,7 +1,7 @@
 {
   "milestone": "CE6-P",
   "date": "2026-10-06",
-  "status": "fusion complete; bounded and hardware comparisons pending",
+  "status": "fusion complete; remaining bounded/hardware and strict family validation blocked on uncontended window",
   "acceptanceChanged": false,
   "brackets": {
     "fusion": {

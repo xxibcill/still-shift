@@ -51,7 +51,9 @@ still hold before relying on them.
   regression/export suites and the complete local gate pass. Serial timings
   now include a valid pinned fusion-only bracket: two-sample export 1.112×;
   higher-count and preview gains remain unproven. Bounded/hardware comparisons
-  and strict WebGL family audits remain pending.
+  and strict WebGL family audits are blocked on an uncontended window.
+  Both retry launchers are terminal; no further workload is queued.
+  Owner input: provide a quiet window or authorize main-chat coordination.
   [Draft PR #41](https://github.com/xxibcill/still-shift/pull/41) is published and
   attached with performance validation pending. The main checkout/chat is untouched.
   All 117 original failures, 1.25× family and 2× native targets remain open.
@@ -193,6 +195,21 @@ _Last updated 2026-10-06 by Codex for CE6-P; prior work retained._
 
 ## Entries
 
+### 2026-10-06 — CE6-P remaining performance verification blocked
+
+- **Agent / branch:** Codex on `codex/composition-ce6p-compatible`, from `69a3e21`.
+- **Rejected:** sixth invalid attempt: remaining-only retry `9449` completes its
+  baseline, then main radial/warp/stylize/noise unit checks contaminate the candidate.
+  The bracket is rejected and retained; session terminal exit 1, hardware unstarted.
+- **State:** no retry/family workload queued. Recurring contention persists across
+  at least three consecutive goal turns; unaffected checks and draft delivery done.
+- **Owner / next:** provide a quiet verification window or authorize coordination
+  with the main chat (original scope allows read-only checks). Preserve valid fusion
+  data; complete bounded pinned/hardware brackets and strict family audits with exports.
+  PR #41 stays draft; all original 117 failures and targets remain open.
+- **Records:** [plan](./composition-ce6p-plan.md),
+  [evidence and blocker audit](./composition-ce6p-performance-results.json).
+
 ### 2026-10-06 — CE6-P first valid independent timing bracket
 
 - **Agent / branch:** Codex on `codex/composition-ce6p-compatible`, from `ae6db18`.
@@ -202,8 +219,8 @@ _Last updated 2026-10-06 by Codex for CE6-P; prior work retained._
 - **Rejected:** bounded first baseline overlapped main stylize unit tests;
   fifth invalid attempt retained; launcher `3547` terminal exit 1.
 - **Next:** preserve valid fusion data; retry only remaining bounded/hardware
-  comparisons in live session `9449` after confirming main verification terminal,
-  then strict WebGL family audits.
+  comparisons and strict WebGL family audits after a reserved quiet window.
+  Session `9449` is now terminal with a sixth invalid bracket.
   Draft PR #41 stays draft; original 117 failures and targets remain open.
 - **Records:** [raw bracket and analysis](./composition-ce6p-exposure-brackets.json),
   [evidence](./composition-ce6p-performance-results.json), [plan](./composition-ce6p-plan.md).
