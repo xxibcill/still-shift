@@ -10,6 +10,7 @@ import {
   sampleTrack,
   trackGraph,
 } from "../../apps/lab/src/composition-keys.ts";
+import { sampleCurveGraph } from "../../apps/lab/src/composition-graph-sample.ts";
 import { resolvedGraph } from "../../apps/lab/src/composition-graph.ts";
 import { sampleCameraMotion } from "../../packages/renderer-core/src/camera-sampling.ts";
 import type { Composition } from "../../packages/scene-contract/src/index.ts";
@@ -313,4 +314,46 @@ it("discovers separated constraint-reference channels with native paths, samplin
   });
   history.commit(history.undo()!);
   expect(history.document).toEqual(document);
+});
+
+it("keeps authored and resolved graph speeds consistent across boundaries and zero-duration ranges", () => {
+  const sampled: number[] = [];
+  const points = sampleCurveGraph(
+    (frame) => {
+      sampled.push(frame);
+      return [frame * 2 + 5, 30 - frame];
+    },
+    { start: 10, end: 14, count: 3 },
+  );
+  expect(points.map((p) => p.frame)).toEqual([10, 12, 14]);
+  expect(points.map((p) => p.value)).toEqual([
+    [25, 20],
+    [29, 18],
+    [33, 16],
+  ]);
+  for (const point of points) {
+    expect(point.speed[0]).toBeCloseTo(2, 10);
+    expect(point.speed[1]).toBeCloseTo(-1, 10);
+  }
+  expect(sampled.every((frame) => frame >= 10 && frame <= 14)).toBe(true);
+  expect(
+    sampleCurveGraph(() => [4, 5], { start: 7, end: 7, count: 2 }),
+  ).toEqual([
+    { frame: 7, value: [4, 5], speed: [0, 0] },
+    { frame: 7, value: [4, 5], speed: [0, 0] },
+  ]);
+  const document = source();
+  document.layers[0]!.transform!.rotation = {
+    keys: [
+      { frame: 0, value: 0 },
+      { frame: 23, value: 46, interpolation: "linear" },
+    ],
+  };
+  const track = compositionTracks(document).find(
+    (t) => t.property === "transform.rotation",
+  )!;
+  const authored = trackGraph(track, document.frameCount),
+    resolved = resolvedGraph(document, "box.transform.rotation");
+  expect(authored).toEqual(resolved);
+  expect(trackGraph(track, 1000)).toHaveLength(512);
 });

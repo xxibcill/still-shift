@@ -19,7 +19,8 @@
       "commentUrl": "https://github.com/xxibcill/still-shift/pull/37#discussion_r4183168129",
       "status": "fixed",
       "change": "Guard canonical JSON sources with the existing cross-process artifact lock across conflict checks and atomic replacement.",
-      "validation": "Red: helper saves both succeeded and independent preview returned 422. Green: all 6 save tests pass, including independent previews, repeated helper races and separate Node processes."
+      "validation": "Red: helper saves both succeeded and independent preview returned 422. Green: all 6 save tests pass, including independent previews, repeated helper races and separate Node processes.",
+      "commit": "2fb83f4d05224a656084853401686e298a719711"
     },
     {
       "id": "R2",
@@ -31,7 +32,8 @@
       "commentUrl": "https://github.com/xxibcill/still-shift/pull/37#discussion_r4183168138",
       "status": "fixed",
       "change": "Restore the selected SVG handle focus after accepted keyboard edits; pointer edits retain their existing behavior.",
-      "validation": "Red: the repeated-keyboard browser test lost focus after its first adjustment. Green: inspector acceptance passes with consecutive horizontal and Shift vertical edits, undo, save, phone layout and native MP4 parity."
+      "validation": "Red: the repeated-keyboard browser test lost focus after its first adjustment. Green: inspector acceptance passes with consecutive horizontal and Shift vertical edits, undo, save, phone layout and native MP4 parity.",
+      "commit": "dc67ccc112d8858591456288850e0a4950ff3def"
     },
     {
       "id": "R3",
@@ -43,7 +45,8 @@
       "commentUrl": "https://github.com/xxibcill/still-shift/pull/37#discussion_r4183168142",
       "status": "fixed",
       "change": "Retain native validation and font diagnostics through the shared passage-diagnostics error model; save and both export APIs return JSON envelopes, and the Lab displays their property paths.",
-      "validation": "Red: save flattened two native range errors into one generic filename diagnostic. Green: all 7 save/API tests pass; invalid documents return the exact native diagnostics from save and both export endpoints. TypeScript build passes."
+      "validation": "Red: save flattened two native range errors into one generic filename diagnostic. Green: all 7 save/API tests pass; invalid documents return the exact native diagnostics from save and both export endpoints. TypeScript build passes.",
+      "commit": "86c244c3c791b27d564c97b64b28bdb759a05c1b"
     },
     {
       "id": "R4",
@@ -55,7 +58,8 @@
       "commentUrl": "https://github.com/xxibcill/still-shift/pull/37#discussion_r4183168155",
       "status": "fixed",
       "change": "Keep shared smooth settings when replacing one temporal handle so the opposite segment retains its native motion.",
-      "validation": "Red: both smooth encodings changed untouched incoming values (frame 5: 2.5 to 5). Green: 13 curve/history tests pass with exact incoming/outgoing preservation, edited-side changes and undo/redo round trips."
+      "validation": "Red: both smooth encodings changed untouched incoming values (frame 5: 2.5 to 5). Green: 13 curve/history tests pass with exact incoming/outgoing preservation, edited-side changes and undo/redo round trips.",
+      "commit": "136969cb9ea7e1324f9b0763e645488a67bcdb4c"
     },
     {
       "id": "R5",
@@ -67,7 +71,8 @@
       "commentUrl": "https://github.com/xxibcill/still-shift/pull/37#discussion_r4183168163",
       "status": "fixed",
       "change": "Reset copy state on every graph selection, populate native path-key snippets before the numeric-graph early return, and disable copying when the source has no tracks.",
-      "validation": "Red: selecting masks[cutout].path retained transform.position code. Green: inspector acceptance passes path snippet selection and empty-source copy disabling alongside editing, watch, phone and MP4 parity checks."
+      "validation": "Red: selecting masks[cutout].path retained transform.position code. Green: inspector acceptance passes path snippet selection and empty-source copy disabling alongside editing, watch, phone and MP4 parity checks.",
+      "commit": "cbe81db3f8656ca4b42a95b43c5cef4cdb0fb800"
     },
     {
       "id": "R6",
@@ -79,7 +84,8 @@
       "commentUrl": "https://github.com/xxibcill/still-shift/pull/37#discussion_r4183168168",
       "status": "fixed",
       "change": "Discover separated x/y channels through one native vector-track path, including constraintReference, with scalar lanes, resolved graphs, edits and code copies.",
-      "validation": "Red: valid separated constraintReference returned no tracks. Green: all 10 key tests and inspector acceptance pass, including native reference path sampling, handle edits, code copy and history. TypeScript build passes."
+      "validation": "Red: valid separated constraintReference returned no tracks. Green: all 10 key tests and inspector acceptance pass, including native reference path sampling, handle edits, code copy and history. TypeScript build passes.",
+      "commit": "f6a144b2c60726451fc835ab1e6b5edcfb431490"
     },
     {
       "id": "R7",
@@ -89,11 +95,80 @@
       "title": "[P3] Share curve sampling and speed calculation",
       "body": "Possible Duplicated Code (judgement call): this resolved-graph sampler and composition-keys.ts:293-306 both sample a curve uniformly and calculate speeds from clipped plus/minus 0.01 finite differences. A shared sampler accepting the range, sample count and evaluator would keep authored and resolved graphs consistent when derivative behavior changes. This is a maintainability concern rather than a documented-standard violation.",
       "commentUrl": "https://github.com/xxibcill/still-shift/pull/37#discussion_r4183168177",
-      "status": "pending"
+      "status": "fixed",
+      "change": "Share uniform curve sampling and clipped finite-difference speed calculation across authored and resolved graphs while retaining each callers sampling bounds.",
+      "validation": "All 15 focused curve/history tests pass, including exact authored/resolved agreement, linear boundary speeds, zero-duration ranges and the 512 sample cap. Final check:fast passes 1514 unit tests; 18 focused integration and 46 runtime tests pass; all four selected browser groups pass.",
+      "commit": "Final commit containing this record"
     }
   ],
-  "verification": [],
+  "verification": [
+    {
+      "command": "pnpm check:fast",
+      "status": "passed",
+      "checks": [
+        "schema",
+        "package boundaries",
+        "formatting",
+        "lint",
+        "TypeScript"
+      ],
+      "unitTests": 1514
+    },
+    {
+      "command": "pnpm exec vitest run tests/integration/composition-save.test.ts tests/integration/composition-inspector-code.test.ts tests/integration/composition-preview.test.ts tests/integration/composition-program-cli.test.ts --maxWorkers=2 --no-file-parallelism",
+      "status": "passed",
+      "tests": 18
+    },
+    {
+      "command": "pnpm test:runtime",
+      "status": "passed",
+      "tests": 46
+    },
+    {
+      "command": "pnpm test:browser:composition-inspector",
+      "status": "passed",
+      "coverage": [
+        "desktop and 390px phone",
+        "consecutive keyboard focus",
+        "path and empty-source code copy",
+        "separated constraint reference edit",
+        "undo/redo",
+        "visibility",
+        "fixed-source save and conflict",
+        "builder read-only and watch",
+        "pinned MP4 byte identity",
+        "decoded preview agreement"
+      ]
+    },
+    {
+      "command": "pnpm test:browser:composition-session",
+      "status": "passed"
+    },
+    {
+      "command": "pnpm test:browser:lab-session",
+      "status": "passed"
+    },
+    {
+      "command": "pnpm test:browser:composition-program",
+      "status": "passed"
+    },
+    {
+      "command": "git diff --check",
+      "status": "passed"
+    }
+  ],
   "limitations": [
     "Earlier read-only full integration attempt: missing .venv/bin/python; depth fallback timeout. No full-check pass claimed for this repair session."
-  ]
+  ],
+  "reReview": {
+    "standards": "No substantive new findings; all three original standards findings fixed.",
+    "spec": "No substantive new or incomplete repairs; all original spec findings fixed.",
+    "method": "Independent code-review skill sub-agents inspected the final repair diff; tests run by the parent."
+  },
+  "delivery": {
+    "branch": "codex/composition-ce11",
+    "findingCommits": 7,
+    "strategy": "One final normal push after the seventh finding commit",
+    "ownerReviewAndMerge": "pending"
+  }
 }

@@ -43,10 +43,13 @@ still hold before relying on them.
 
 ## Current state
 
-- **PR #37 review fixes (2026-10-05):** on `codex/composition-ce11`, reviewed
-  `a0c56df`. Seven inline comments posted; 6/7 findings fixed in separate
-  commits. Pending: R7.
-  Final push is held until all fixes and verification are complete. No Actions.
+- **PR #37 review fixes complete (2026-10-05):** on `codex/composition-ce11`,
+  reviewed `a0c56df`. Seven inline findings are fixed in seven separate commits;
+  delivery is one final push. `check:fast` passes 1,514 unit tests; 18 focused
+  integration and 46 runtime tests pass, along with inspector desktop/phone/MP4
+  acceptance, native/legacy sessions and program watch/export checks. Independent
+  standards/spec re-review found no new defects. Owner review/merge remain;
+  no full `pnpm check` rerun or baseline regeneration is claimed. No Actions.
   [Fix evidence](./pr-37-fix-results.json).
 
 - **CE11 complete (2026-10-05):** `codex/composition-ce11`, runtime `5f36268`.
@@ -164,6 +167,14 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-05 — PR #37 R7: Share curve sampling and speed calculation
+
+- **Agent / branch:** Codex on `codex/composition-ce11`.
+- **Done:** Share uniform curve sampling and clipped finite-difference speed calculation across authored and resolved graphs while retaining each callers sampling bounds.
+- **Results:** All 15 focused curve/history tests pass, including exact authored/resolved agreement, linear boundary speeds, zero-duration ranges and the 512 sample cap. Final check:fast passes 1514 unit tests; 18 focused integration and 46 runtime tests pass; all four selected browser groups pass.
+- **Next:** One final push; owner review and merge remain.
+- **Records:** [Fix evidence](./pr-37-fix-results.json), [inline finding](https://github.com/xxibcill/still-shift/pull/37#discussion_r4183168177).
 
 ### 2026-10-05 — PR #37 R6: Discover separated constraint-reference channels
 

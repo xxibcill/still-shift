@@ -16,6 +16,7 @@ import {
   scalar,
   vector,
 } from "../../../packages/renderer-core/src/composition/evaluate/sample.ts";
+import { sampleCurveGraph } from "./composition-graph-sample.ts";
 import { readJsonPath, type JsonPath } from "./composition-document.ts";
 
 type Key = {
@@ -292,20 +293,10 @@ export function trackGraph(track: KeyTrack, samples = 160) {
   const start = track.keys[0]!.frame,
     end = track.keys.at(-1)!.frame;
   const count = Math.max(2, Math.min(512, samples));
-  return Array.from({ length: count }, (_, i) => {
-    const frame = start + ((end - start) * i) / (count - 1),
-      delta = 0.01;
-    const value = sampleTrack(track, frame);
-    const left = sampleTrack(track, Math.max(start, frame - delta)),
-      right = sampleTrack(track, Math.min(end, frame + delta));
-    const span = Math.min(end, frame + delta) - Math.max(start, frame - delta);
-    return {
-      frame,
-      value,
-      speed: value.map((_, axis) =>
-        span ? (right[axis]! - left[axis]!) / span : 0,
-      ),
-    };
+  return sampleCurveGraph((frame) => sampleTrack(track, frame), {
+    start,
+    end,
+    count,
   });
 }
 function keysIn(draft: Composition, track: KeyTrack): Key[] {
