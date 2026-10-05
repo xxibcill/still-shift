@@ -1,0 +1,61 @@
+{
+  "date": "2026-10-05",
+  "pullRequest": "https://github.com/xxibcill/still-shift/pull/36",
+  "reviewedHead": "afb4045aeb667144ecbb7f076dff7fa6cd46dfdf",
+  "branch": "codex/composition-ce10",
+  "policy": "One finding per commit; one final push. GitHub Actions remain disabled.",
+  "findings": [
+    {
+      "number": 1,
+      "finding": "attribute text preset failures to the correct source",
+      "comment": "https://github.com/xxibcill/still-shift/pull/36#discussion_r4183180652",
+      "status": "fixed",
+      "verification": {
+        "red": {
+          "status": "failed-as-expected",
+          "newRegressions": 2,
+          "log": "/private/tmp/pr36-fix1-red.log"
+        },
+        "green": {
+          "status": "passed",
+          "tests": 28,
+          "command": "pnpm exec vitest run tests/unit/motion-builder-presets.test.ts tests/unit/typography-events.test.ts --maxWorkers=2",
+          "log": "/private/tmp/pr36-fix1-green.log"
+        },
+        "build": "passed"
+      }
+    },
+    {
+      "number": 2,
+      "finding": "preserve joined animation handles",
+      "comment": "https://github.com/xxibcill/still-shift/pull/36#discussion_r4183180658",
+      "status": "pending"
+    },
+    {
+      "number": 3,
+      "finding": "reject repeated auto-ID layer objects",
+      "comment": "https://github.com/xxibcill/still-shift/pull/36#discussion_r4183180666",
+      "status": "pending"
+    },
+    {
+      "number": 4,
+      "finding": "resolve symbolic precomp anchors",
+      "comment": "https://github.com/xxibcill/still-shift/pull/36#discussion_r4183180668",
+      "status": "pending"
+    },
+    {
+      "number": 5,
+      "finding": "watch missing TypeScript import candidates",
+      "comment": "https://github.com/xxibcill/still-shift/pull/36#discussion_r4183180672",
+      "status": "pending"
+    },
+    {
+      "number": 6,
+      "finding": "trace CommonJS program dependencies",
+      "comment": "https://github.com/xxibcill/still-shift/pull/36#discussion_r4183180673",
+      "status": "pending"
+    }
+  ],
+  "verification": [],
+  "status": "in-progress"
+}

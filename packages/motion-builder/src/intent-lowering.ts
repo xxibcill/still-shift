@@ -1,6 +1,7 @@
 import {
   STORY_MOTION_PRESETS,
   compileTextEvents,
+  TextEventError,
   resolveTextEvents,
   PreparedNodeSchema,
   TextEventSchema,
@@ -205,8 +206,19 @@ function textIntents(
       nodes: comp.layers
         .filter((layer) => targets.has(layer.id))
         .flatMap((layer) => {
-          const node = preparedText(layer);
-          return node ? [node] : [];
+          try {
+            const node = preparedText(layer);
+            return node ? [node] : [];
+          } catch (error) {
+            const index = events.findIndex(
+              (event) => event.node === layer.id || event.target === layer.id,
+            );
+            throw new BuilderError(
+              "comp-builder-preset",
+              error instanceof Error ? error.message : String(error),
+              clips[index]!.value.location,
+            );
+          }
         }),
       fonts: comp.assets.filter((asset) => asset.type === "font"),
       textStyles: comp.textStyles,
@@ -215,10 +227,12 @@ function textIntents(
     };
     compiled = compileTextEvents(scene);
   } catch (error) {
+    if (error instanceof BuilderError) throw error;
+    const index = error instanceof TextEventError ? error.eventIndex : 0;
     throw new BuilderError(
       "comp-builder-preset",
       error instanceof Error ? error.message : String(error),
-      clips[0]!.value.location,
+      clips[index]!.value.location,
     );
   }
   for (const node of compiled.nodes) {

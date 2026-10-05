@@ -1,3 +1,4 @@
+import { execFileSync } from "node:child_process";
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import { StorySceneSchema } from "../../packages/scene-contract/src/story.ts";
@@ -941,5 +942,33 @@ describe("semantic typography and lint", () => {
     expect(evaluateTextPoses(node, layout, [animator], 20, scene)).toEqual(
       poses,
     );
+  });
+});
+
+it("loads text event errors with native Node TypeScript stripping", () => {
+  const source = new URL(
+    "../../packages/scene-contract/src/typography-events.ts",
+    import.meta.url,
+  ).href;
+  const output = execFileSync(
+    process.execPath,
+    [
+      "--input-type=module",
+      "-e",
+      `import { TextEventError } from ${JSON.stringify(source)};
+       const cause = new Error("invalid text event");
+       const error = new TextEventError(cause, 3);
+       console.log(JSON.stringify({
+         message: error.message,
+         eventIndex: error.eventIndex,
+         preservedCause: error.cause === cause,
+       }));`,
+    ],
+    { encoding: "utf8" },
+  );
+  expect(JSON.parse(output)).toEqual({
+    message: "invalid text event",
+    eventIndex: 3,
+    preservedCause: true,
   });
 });
