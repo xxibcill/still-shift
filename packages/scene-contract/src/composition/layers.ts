@@ -79,6 +79,14 @@ export const EffectInstanceSchema = z
     enabled: z.boolean().optional(),
     /** Coordinate layer for effects that use layer space; defaults to the owner. */
     space: compositionId.optional(),
+    /** Declared effect input slots, each bound to a layer in this scope. */
+    inputs: z
+      .record(compositionId, compositionId)
+      .refine(
+        (value) => Object.keys(value).length <= 8,
+        "At most eight effect inputs",
+      )
+      .optional(),
     inPoint: keyFrame.optional(),
     outPoint: keyFrame.optional(),
     params: boundedJson(z.record(compositionId, z.json())).optional(),

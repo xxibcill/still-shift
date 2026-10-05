@@ -115,7 +115,11 @@ export interface RenderBackend<S extends Surface = Surface> {
     paintBlur?: number,
   ): void;
   /** Apply the ordered effect stack in surface pixel space, before masks/mattes. */
-  applyEffects(target: S, effects: RenderEffect[]): void;
+  applyEffects(
+    target: S,
+    effects: RenderEffect[],
+    layers?: ReadonlyMap<string, S>,
+  ): void;
   /** Multiply `target` by the combined coverage of `masks`. */
   applyMask(target: S, masks: MaskOp[]): void;
   /** Multiply `target` by the matte value of `matte`. */
@@ -149,8 +153,29 @@ export function executeGraph<S extends Surface>(
   };
   const isolated = (ops: RenderOp[], like: S) => {
     const tmp = backend.createSurface(like.width, like.height);
-    runOps(ops, tmp);
-    return tmp;
+    try {
+      runOps(ops, tmp);
+      return tmp;
+    } catch (error) {
+      backend.releaseSurface(tmp);
+      throw error;
+    }
+  };
+  const effectStack = (target: S, effects: RenderEffect[]): void => {
+    if (!effects.some((effect) => effect.layerInputs)) {
+      backend.applyEffects(target, effects);
+      return;
+    }
+    for (const effect of effects) {
+      const inputs = new Map<string, S>();
+      try {
+        for (const [slot, ops] of Object.entries(effect.layerInputs ?? {}))
+          inputs.set(slot, isolated(ops, target));
+        backend.applyEffects(target, [effect], inputs);
+      } finally {
+        for (const source of inputs.values()) backend.releaseSurface(source);
+      }
+    }
   };
   const mask = (
     tmp: S,
@@ -252,7 +277,7 @@ export function executeGraph<S extends Surface>(
       case "isolate": {
         const draw = () => {
           const tmp = isolated(op.ops, dst);
-          if (op.effects.length) backend.applyEffects(tmp, op.effects);
+          if (op.effects.length) effectStack(tmp, op.effects);
           mask(tmp, op.masks, op.matte);
           return tmp;
         };
@@ -279,13 +304,13 @@ export function executeGraph<S extends Surface>(
           op.height === dst.height &&
           op.matrix.every((value, i) => value === IDENTITY[i])
         ) {
-          backend.applyEffects(dst, op.effects);
+          effectStack(dst, op.effects);
           return;
         }
         // Process the backdrop before blending it and applying adjustment coverage.
         const src = backend.createSurface(dst.width, dst.height);
         backend.composite(dst, src, "normal", 1, IDENTITY, []);
-        if (op.effects.length) backend.applyEffects(src, op.effects);
+        if (op.effects.length) effectStack(src, op.effects);
         if (op.blend !== "normal") {
           const blended = backend.createSurface(dst.width, dst.height);
           backend.composite(dst, blended, "normal", 1, IDENTITY, []);

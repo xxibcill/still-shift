@@ -292,6 +292,7 @@ export async function checkColorEffectRendering(
 export async function checkNativeEffectRendering(
   variants: Readonly<Record<string, EffectParams[]>>,
   selectedKinds: readonly (typeof kinds)[number][] = kinds,
+  configure?: (comp: Composition) => void,
 ) {
   const tile = document.createElement("canvas");
   tile.width = 48;
@@ -328,6 +329,7 @@ export async function checkNativeEffectRendering(
     for (const kind of selectedKinds)
       for (const [variant, params] of values.entries()) {
         const comp = fixture(kind, effect, params);
+        configure?.(comp);
         const previews = (["canvas2d", "webgl2"] as const).map((backend) =>
           createCompositionPreview(
             document.createElement("canvas"),

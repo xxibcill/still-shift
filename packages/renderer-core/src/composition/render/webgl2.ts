@@ -24,7 +24,7 @@ import { WebglDevice, type WebglSurface } from "./webgl-device.ts";
 import { blendShader } from "./webgl-blend.ts";
 
 export const COMPOSITION_WEBGL_RENDERER_VERSION =
-  "composition-webgl2-0.48.0" as const;
+  "composition-webgl2-0.49.0" as const;
 const IDENTITY: Matrix = [1, 0, 0, 1, 0, 0];
 const COPY =
   "uniform float opacity; void main() { pixel = floor(floor(texture(source, uv) * 255.0 + 0.5) * (floor(opacity * 255.0 + 0.5) + 1.0) / 256.0) / 255.0; }";
@@ -525,8 +525,8 @@ export function createWebgl2Backend(
         }
       }
     },
-    applyEffects: (target, stack) => {
-      effects.apply(target, stack);
+    applyEffects: (target, stack, layers) => {
+      effects.apply(target, stack, layers);
     },
     applyMask(dst, masks) {
       if (dst.opaque) bounds.full(dst);

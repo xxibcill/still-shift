@@ -228,3 +228,19 @@ to 128 pixels. Signed offsets use the common 1/16-pixel sampling grid. Drop
 shadows composite behind the source; inner shadows blur complementary coverage
 with opaque exterior padding and retain source alpha. Color alpha and opacity
 control shadow strength. Zero opacity or color alpha preserves the input.
+
+### Scoped layer inputs
+
+`requiresLayers: ["map"]` declares named input slots. An instance binds them with
+`inputs: {map: "source-layer"}` using static IDs in its composition scope. Both
+plugin contexts expose `layers`, a read-only map of owned source snapshots with
+the target’s dimensions. References retain source transforms, opacity, masks,
+matte and effects at the matching scope/exposure clock. Hidden groups/precomps
+can supply content without changing ordinary composition visibility.
+
+Missing or undeclared slots and cycles through inputs/mattes/groups fail with
+`comp-effect-layer` or `comp-effect-cycle`. Null and adjustment layers are not
+isolated source images. Graph construction permits at most 10,000 source visits
+and 64 dependency levels, with `comp-effect-budget` on overflow. Staged source
+surfaces and callback snapshots are released on success or failure. Scratch
+ownership and size budgets still apply to input copies.

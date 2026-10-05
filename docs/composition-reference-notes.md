@@ -786,23 +786,23 @@ actual time-dependent values stay in range; reduce the deltas or separate their 
 
 ### Fields on every layer
 
-| Field                                 | Notes                                                                                                                          |
-| ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
-| `id`, `type`                          | Required. `type` selects the fields below.                                                                                     |
-| `name`                                | Display name.                                                                                                                  |
-| `inPoint`, `outPoint`                 | Composition frames, `[in, out)`. Default `0` and the scope's `frameCount`.                                                     |
-| `startFrame`, `stretch`               | Layer time 0 and time stretch. Defaults `0` and `1`.                                                                           |
-| `parent`                              | Layer id in the same scope. Position, rotation, scale and skew inherit; opacity does not.                                      |
-| `enabled`, `solo`, `guide`            | Visibility switches; guides never render in export.                                                                            |
-| `transform`                           | See [transform](#transform).                                                                                                   |
-| `constraintReference`                 | Animatable layer-space vector, defaulting to the transform anchor. Constraints can move it without moving artwork.             |
-| `blendMode`                           | See [blend modes](#blend-modes). Default `normal`.                                                                             |
-| `trackMatte`                          | `{ layer, mode }`; see [track mattes](#track-mattes).                                                                          |
-| `masks`                               | See [masks](#masks).                                                                                                           |
-| `effects`                             | `{ id, effect, enabled?, space?, inPoint?, outPoint?, params? }[]`. Ordered registry effects; active intervals use layer time. |
-| `cameraDepth`                         | 0–2, unparented root layers only; see [2D camera](#2d-camera).                                                                 |
-| `threeD`, `motionBlur`                | `threeD` arrives in CE8; `motionBlur` opts into exposure sampling (groups and precomps pass it to descendants).                |
-| `qualification`, `source`, `metadata` | Evidence and provenance carried through from story scenes and adapters.                                                        |
+| Field                                 | Notes                                                                                                                                   |
+| ------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| `id`, `type`                          | Required. `type` selects the fields below.                                                                                              |
+| `name`                                | Display name.                                                                                                                           |
+| `inPoint`, `outPoint`                 | Composition frames, `[in, out)`. Default `0` and the scope's `frameCount`.                                                              |
+| `startFrame`, `stretch`               | Layer time 0 and time stretch. Defaults `0` and `1`.                                                                                    |
+| `parent`                              | Layer id in the same scope. Position, rotation, scale and skew inherit; opacity does not.                                               |
+| `enabled`, `solo`, `guide`            | Visibility switches; guides never render in export.                                                                                     |
+| `transform`                           | See [transform](#transform).                                                                                                            |
+| `constraintReference`                 | Animatable layer-space vector, defaulting to the transform anchor. Constraints can move it without moving artwork.                      |
+| `blendMode`                           | See [blend modes](#blend-modes). Default `normal`.                                                                                      |
+| `trackMatte`                          | `{ layer, mode }`; see [track mattes](#track-mattes).                                                                                   |
+| `masks`                               | See [masks](#masks).                                                                                                                    |
+| `effects`                             | `{ id, effect, enabled?, space?, inputs?, inPoint?, outPoint?, params? }[]`. Ordered registry effects; active intervals use layer time. |
+| `cameraDepth`                         | 0–2, unparented root layers only; see [2D camera](#2d-camera).                                                                          |
+| `threeD`, `motionBlur`                | `threeD` arrives in CE8; `motionBlur` opts into exposure sampling (groups and precomps pass it to descendants).                         |
+| `qualification`, `source`, `metadata` | Evidence and provenance carried through from story scenes and adapters.                                                                 |
 
 ### Layer types
 
@@ -1676,3 +1676,16 @@ with a native difference-blend overlay and preserves its assets and cue mappings
 
 `@still-shift/renderer-core/passage-compositions` is the narrow public entrypoint for
 passage picture validation and diagnostics; it does not import renderer backends.
+
+### Scoped effect inputs
+
+Effect definitions may declare up to eight unique input slot names in
+`requiresLayers`. Bind them on an instance with `inputs: {map: "source-layer"}`.
+Bindings use static layer IDs from the owner’s composition scope. Referenced
+layers retain their transform, opacity, masks, effects and matte at that scope’s
+sampled clock. Their enabled/solo switches do not suppress captured content;
+group descendants retain their own enable and interval rules. Ordinary source
+visibility stays unchanged. Null and adjustment backdrops cannot serve as source
+layers. Missing/undeclared bindings and cycles through inputs, mattes or groups
+are explicit diagnostics. Source visits are bounded to 10,000 per render graph and 64 dependency levels.
+The paired plugin contexts expose owned input snapshots through `layers`.

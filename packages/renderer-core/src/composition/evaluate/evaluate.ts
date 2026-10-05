@@ -92,7 +92,7 @@ import type {
   PropertyValue,
 } from "./types.ts";
 
-export const COMPOSITION_EVALUATOR_VERSION = "composition-evaluator-39";
+export const COMPOSITION_EVALUATOR_VERSION = "composition-evaluator-40";
 export const AUTO_ORIENT_LOOKAROUND_FRAMES = 64;
 const order = ["action", "response", "current", "carrier"] as const;
 /** Keyed and motion-craft values of one layer, before constraints (CE9 expression stage). */
@@ -1328,6 +1328,30 @@ class Evaluation {
     return state;
   }
 
+  private readonly effectSources = new WeakMap<CompositionScope, Set<string>>();
+  private effectSourceLayer(scope: CompositionScope, id: string): boolean {
+    let sources = this.effectSources.get(scope);
+    if (!sources) {
+      sources = new Set(
+        scope.layers.flatMap((layer) =>
+          (layer.effects ?? []).flatMap((effect) =>
+            Object.values(effect.inputs ?? {}),
+          ),
+        ),
+      );
+      this.effectSources.set(scope, sources);
+    }
+    if (!sources.size) return false;
+    for (
+      let layer = scope.layers.find((layer) => layer.id === id);
+      layer;
+      layer = scope.layers.find((parent) => parent.id === layer!.parent)
+    ) {
+      if (sources.has(layer.id)) return true;
+      if (!layer.parent) break;
+    }
+    return false;
+  }
   tree(ctx = this.root): EvaluatedLayerTree {
     const layers = ctx.scope.layers.map((layer) => this.evaluate(ctx, layer));
     const diagnostics: EvaluatedLayerTree["diagnostics"] = [];
@@ -1344,7 +1368,9 @@ class Evaluation {
       // Track mattes ignore `enabled` and solo, so matte precomps need content too.
       if (
         state.layer.type === "precomp" &&
-        (state.visible || ctx.matteLayers.has(state.id))
+        (state.visible ||
+          ctx.matteLayers.has(state.id) ||
+          this.effectSourceLayer(ctx.scope, state.id))
       )
         state.precomp = this.tree(this.run(this.child(ctx, state.layer)));
     }

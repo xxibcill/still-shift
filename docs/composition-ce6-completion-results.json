@@ -765,12 +765,271 @@
         }
       },
       "initialFailures": ["Test-first shadow API absent"],
-      "pending": ["Complete milestone gate after remaining CE6 features"]
+      "pending": ["Complete milestone gate after remaining CE6 features"],
+      "implementation": "41a7433"
+    },
+    {
+      "name": "Scoped layer inputs and bounded render dependencies",
+      "status": "focused-verification-passed",
+      "features": [
+        "Up to eight immutable named source slots bound per instance",
+        "Same-scope/exposure staged sources with their transform/opacity/effects/masks/matte",
+        "Hidden group/precomp capture without changing ordinary visibility",
+        "Combined input/matte/group cycle detection and 10000 visits/64 levels work diagnostics",
+        "Owned source snapshots and failure cleanup on both backends"
+      ],
+      "versions": {
+        "evaluator": 40,
+        "canvas": "composition-canvas-1.35.0",
+        "webgl": "composition-webgl2-0.49.0"
+      },
+      "verification": {
+        "focusedTests": 162,
+        "focusedFiles": 8,
+        "build": "passed",
+        "lint": "passed",
+        "schema": "passed",
+        "boundaries": "passed",
+        "nativeMatrix": {
+          "cases": 17,
+          "frames": 204,
+          "randomSeeks": 238,
+          "maxDelta": 0,
+          "minPsnr": 999,
+          "raw": "benchmarks/results/composition-ce6-completion/ce6-inputs-native-acceptance.json",
+          "snapshot": "/private/tmp/still-shift-ce6-inputs-41a7433",
+          "owners": {
+            "cases": 9,
+            "frames": 108,
+            "rows": [
+              {
+                "effect": "test.layer-input",
+                "kind": "solid",
+                "variant": 0,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "effect": "test.layer-input",
+                "kind": "image",
+                "variant": 0,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "effect": "test.layer-input",
+                "kind": "text",
+                "variant": 0,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "effect": "test.layer-input",
+                "kind": "shape",
+                "variant": 0,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "effect": "test.layer-input",
+                "kind": "provider",
+                "variant": 0,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "effect": "test.layer-input",
+                "kind": "group",
+                "variant": 0,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "effect": "test.layer-input",
+                "kind": "precomp",
+                "variant": 0,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "effect": "test.layer-input",
+                "kind": "collapsed",
+                "variant": 0,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "effect": "test.layer-input",
+                "kind": "adjustment",
+                "variant": 0,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              }
+            ]
+          },
+          "sources": {
+            "cases": 8,
+            "frames": 96,
+            "rows": [
+              {
+                "effect": "test.layer-input",
+                "kind": "solid",
+                "variant": 0,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "effect": "test.layer-input",
+                "kind": "image",
+                "variant": 0,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "effect": "test.layer-input",
+                "kind": "text",
+                "variant": 0,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "effect": "test.layer-input",
+                "kind": "shape",
+                "variant": 0,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "effect": "test.layer-input",
+                "kind": "provider",
+                "variant": 0,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "effect": "test.layer-input",
+                "kind": "group",
+                "variant": 0,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "effect": "test.layer-input",
+                "kind": "precomp",
+                "variant": 0,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              },
+              {
+                "effect": "test.layer-input",
+                "kind": "collapsed",
+                "variant": 0,
+                "frames": 12,
+                "maxDelta": 0,
+                "psnr": 999
+              }
+            ]
+          }
+        },
+        "independentHiddenMaskVisibilityOracles": [
+          {
+            "source": "group",
+            "backend": "canvas2d",
+            "active": [0, 255, 255, 255],
+            "disabled": [0, 0, 0, 255]
+          },
+          {
+            "source": "group",
+            "backend": "webgl2",
+            "active": [0, 255, 255, 255],
+            "disabled": [0, 0, 0, 255]
+          },
+          {
+            "source": "precomp",
+            "backend": "canvas2d",
+            "active": [0, 255, 255, 255],
+            "disabled": [0, 0, 0, 255]
+          },
+          {
+            "source": "precomp",
+            "backend": "webgl2",
+            "active": [0, 255, 255, 255],
+            "disabled": [0, 0, 0, 255]
+          },
+          {
+            "source": "nested-group",
+            "backend": "canvas2d",
+            "active": [0, 255, 255, 255],
+            "disabled": [0, 0, 0, 255]
+          },
+          {
+            "source": "nested-group",
+            "backend": "webgl2",
+            "active": [0, 255, 255, 255],
+            "disabled": [0, 0, 0, 255]
+          }
+        ],
+        "independentScopeClockOracles": [
+          {
+            "backend": "canvas2d",
+            "frame": 0,
+            "pixel": [0, 0, 255, 255]
+          },
+          {
+            "backend": "canvas2d",
+            "frame": 11,
+            "pixel": [0, 0, 255, 255]
+          },
+          {
+            "backend": "canvas2d",
+            "frame": 3,
+            "pixel": [0, 0, 255, 255]
+          },
+          {
+            "backend": "webgl2",
+            "frame": 0,
+            "pixel": [0, 0, 255, 255]
+          },
+          {
+            "backend": "webgl2",
+            "frame": 11,
+            "pixel": [0, 0, 255, 255]
+          },
+          {
+            "backend": "webgl2",
+            "frame": 3,
+            "pixel": [0, 0, 255, 255]
+          }
+        ]
+      },
+      "initialFailures": [
+        "Test fixture used graph/time and diagnostic APIs incorrectly; corrected to evaluated tree/diagnostics and sized group",
+        "Added clock helper was initially not called; lint caught it, final native run includes all six clock oracles"
+      ],
+      "pending": [
+        "Map/wipe native kernels, adjustment history, linear-light and complete milestone acceptance"
+      ]
     }
   ],
   "pending": [
-    "Remaining displacement map and gradient wipe with scoped layer inputs",
-    "Scoped layer-input dependency stages and real adjustment primitive-blur/echo history",
+    "Native displacement map and gradient wipe using delivered scoped inputs",
+    "Real adjustment primitive-blur/echo history",
     "Real optional linear-light composition",
     "Complete native hardware, stored hashes, independent/repeated exports and serial 1080p per-effect costs",
     "Final-code complete pnpm check, milestone completion record and PR creation/attachment"

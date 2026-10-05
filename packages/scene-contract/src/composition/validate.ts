@@ -186,6 +186,28 @@ function checkLayer(
           ? `No coordinate layer "${effect.space}" in this scope`
           : "This effect uses surface coordinates",
       );
+    const slots = definition.requiresLayers ?? [];
+    for (const slot of new Set([
+      ...slots,
+      ...Object.keys(effect.inputs ?? {}),
+    ])) {
+      const id = effect.inputs?.[slot],
+        source = scope.layers.find((candidate) => candidate.id === id);
+      if (
+        !slots.includes(slot) ||
+        !source ||
+        ["null", "adjustment"].includes(source.type)
+      )
+        fail(
+          "comp-effect-layer",
+          [...at, "inputs", slot],
+          !slots.includes(slot)
+            ? `Undeclared effect input slot "${slot}"`
+            : !source
+              ? `No input layer "${id ?? ""}" in this scope`
+              : "Effect inputs need drawable layers or groups",
+        );
+    }
     if ((effect.inPoint ?? -Infinity) >= (effect.outPoint ?? Infinity))
       fail("comp-effect-time", at, "Effect inPoint must precede outPoint");
     const parsed = definition.params.safeParse(effect.params ?? {});
@@ -641,6 +663,39 @@ function checkParents(
       const matte = byId.get(id)?.trackMatte?.layer;
       if (matte) pending.push(matte);
       pending.push(...(children.get(id) ?? []));
+    }
+  });
+  // Effect inputs, mattes and group descendants share one dependency graph.
+  scope.layers.forEach((layer, i) => {
+    if (
+      !layer.effects?.some((effect) => Object.keys(effect.inputs ?? {}).length)
+    )
+      return;
+    const pending = layer.effects.flatMap((effect) =>
+        Object.values(effect.inputs ?? {}),
+      ),
+      seen = new Set<string>();
+    while (pending.length) {
+      const id = pending.pop()!;
+      if (id === layer.id) {
+        fail(
+          "comp-effect-cycle",
+          [...base, "layers", i, "effects"],
+          `Effect inputs of "${layer.id}" form a cycle through a layer, matte or group`,
+        );
+        return;
+      }
+      if (seen.has(id)) continue;
+      seen.add(id);
+      const source = byId.get(id);
+      if (!source) continue;
+      if (source.trackMatte) pending.push(source.trackMatte.layer);
+      pending.push(
+        ...(source.effects ?? []).flatMap((effect) =>
+          Object.values(effect.inputs ?? {}),
+        ),
+        ...(children.get(id) ?? []),
+      );
     }
   });
 }

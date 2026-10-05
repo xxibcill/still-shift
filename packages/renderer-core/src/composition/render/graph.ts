@@ -23,6 +23,8 @@ import { projectBounds } from "../evaluate/geometry.ts";
 
 export type RenderEffect = EvaluatedEffect & {
   placement?: { matrix: Matrix; transforms: Matrix[] };
+  /** Input slots rendered independently at this scope and clock. */
+  layerInputs?: Readonly<Record<string, RenderOp[]>>;
 };
 
 type TextLayer = Extract<CompositionLayer, { type: "text" }>;
@@ -178,6 +180,7 @@ type Frame = {
   /** An ancestor effect may pull offscreen content into view. */
   cull?: boolean;
   paintBlur?: number;
+  sourceGroup?: string;
 };
 type Scope = {
   tree: EvaluatedLayerTree;
@@ -248,7 +251,11 @@ class GraphBuilder {
     return this.scopeLayers(this.scope(tree, def), frame);
   }
 
-  private scope(tree: EvaluatedLayerTree, def: CompositionScope): Scope {
+  private scope(
+    tree: EvaluatedLayerTree,
+    def: CompositionScope,
+    sourceGroup?: string,
+  ): Scope {
     const scope: Scope = {
       tree,
       def,
@@ -266,7 +273,8 @@ class GraphBuilder {
         .filter(
           (layer) =>
             layer.type === "group" &&
-            (scope.matteSources.has(layer.id) ||
+            (layer.id === sourceGroup ||
+              scope.matteSources.has(layer.id) ||
               layer.trackMatte ||
               layer.masks?.length ||
               layer.effects?.length ||
@@ -290,6 +298,88 @@ class GraphBuilder {
     return scope;
   }
 
+  private inputWork = 0;
+  private inputDepth = 0;
+  private sourceVisible(
+    scope: Scope,
+    state: EvaluatedLayer,
+    root: string,
+  ): boolean {
+    const time = scope.tree.time;
+    for (
+      let current: EvaluatedLayer | undefined = state;
+      current;
+      current = current.layer.parent
+        ? scope.byId.get(current.layer.parent)
+        : undefined
+    ) {
+      const layer = current.layer;
+      if (
+        time < (layer.inPoint ?? 0) ||
+        time >= (layer.outPoint ?? scope.def.frameCount)
+      )
+        return false;
+      if (current.id === root) return time >= 0 && time < scope.def.frameCount;
+      if (
+        layer.enabled === false ||
+        (layer.guide && !this.options.includeGuides)
+      )
+        return false;
+    }
+    return false;
+  }
+  private effectInputs(
+    scope: Scope,
+    effect: EvaluatedEffect,
+    frame: Frame,
+    seen: Set<string>,
+  ): RenderEffect {
+    if (!effect.inputs || !Object.keys(effect.inputs).length) return effect;
+    const layerInputs: Record<string, RenderOp[]> = {};
+    for (const [slot, id] of Object.entries(effect.inputs)) {
+      if (++this.inputWork > 10000)
+        throw Error(
+          "comp-effect-budget: layer input graph exceeds 10000 source visits",
+        );
+      if (seen.has(id))
+        throw Error("comp-effect-cycle: recursive scoped layer input");
+      let sourceScope = scope;
+      const source = scope.byId.get(id);
+      if (!source)
+        throw Error(`comp-effect-layer: no input layer "${id}" in this scope`);
+      if (this.inputDepth >= 64)
+        throw Error("comp-effect-budget: input dependency depth exceeds 64");
+      const time = scope.tree.time;
+      if (
+        time < 0 ||
+        time >= scope.def.frameCount ||
+        time < (source.layer.inPoint ?? 0) ||
+        time >= (source.layer.outPoint ?? scope.def.frameCount)
+      ) {
+        layerInputs[slot] = [];
+        continue;
+      }
+      if (source.layer.type === "group")
+        sourceScope = this.scope(scope.tree, scope.def, id);
+      this.inputDepth++;
+      try {
+        layerInputs[slot] = this.layerOps(
+          sourceScope,
+          source,
+          {
+            ...frame,
+            opacity: 1,
+            cull: false,
+            ...(source.layer.type === "group" ? { sourceGroup: id } : {}),
+          },
+          { blend: "normal", cull: false, seen: new Set([...seen, id]) },
+        );
+      } finally {
+        this.inputDepth--;
+      }
+    }
+    return { ...effect, layerInputs };
+  }
   private scopeLayers(scope: Scope, frame: Frame, owner?: string): RenderOp[] {
     const ops: RenderOp[] = [];
     // layers[0] is the top layer, so paint from the end of the list.
@@ -297,8 +387,14 @@ class GraphBuilder {
       const state = scope.tree.layers[i]!;
       if (scope.owners.get(state.id) !== owner) continue;
       if (
-        state.drawable ||
-        (state.visible &&
+        (frame.sourceGroup
+          ? this.sourceVisible(scope, state, frame.sourceGroup) &&
+            !["null", "group"].includes(state.layer.type) &&
+            !scope.matteSources.has(state.id)
+          : state.drawable) ||
+        ((frame.sourceGroup
+          ? this.sourceVisible(scope, state, frame.sourceGroup)
+          : state.visible) &&
           scope.containers.has(state.id) &&
           !scope.matteSources.has(state.id))
       )
@@ -628,13 +724,20 @@ class GraphBuilder {
             (effect) => effect.enabled && effect.effect === "time.echo",
           )
         : undefined;
+    const seen = options.seen ?? new Set([layer.id]);
     const effects: RenderEffect[] = (options.raw ? [] : state.effects)
       .filter(
         (effect) =>
           effect.enabled &&
           !["time.echo", "blur.primitive"].includes(effect.effect),
       )
-      .map((effect) => {
+      .map((original) => {
+        const effect = this.effectInputs(
+          this.exposureScope(scope, state),
+          original,
+          frame,
+          seen,
+        );
         if (!compositionEffectDefinition(effect.effect)!.usesLayerSpace)
           return effect;
         const source = effect.space ? scope.byId.get(effect.space)! : state;
@@ -646,7 +749,6 @@ class GraphBuilder {
           },
         };
       });
-    const seen = options.seen ?? new Set([layer.id]);
     const matte = options.raw ? null : this.matte(scope, state, frame, seen);
     if (echo) {
       return [

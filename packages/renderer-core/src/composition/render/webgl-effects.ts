@@ -309,10 +309,14 @@ export class WebglEffects {
     }
   }
 
-  apply(dst: WebglSurface, effects: RenderEffect[]) {
+  apply(
+    dst: WebglSurface,
+    effects: RenderEffect[],
+    layers?: ReadonlyMap<string, WebglSurface>,
+  ) {
     for (const effect of effects) {
       if (!effect.enabled) continue;
-      if (renderGpuEffect(this.device, dst, effect)) {
+      if (renderGpuEffect(this.device, dst, effect, layers)) {
         this.bounds.full(dst);
         continue;
       }

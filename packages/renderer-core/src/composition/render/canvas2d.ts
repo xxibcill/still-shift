@@ -508,8 +508,8 @@ export function createCanvas2dBackend(
       ctx.drawImage(src.canvas, 0, 0);
       ctx.restore();
     },
-    applyEffects(target, effects) {
-      applyCanvasEffects(backend, target, effects);
+    applyEffects(target, effects, layers) {
+      applyCanvasEffects(backend, target, effects, layers);
     },
     applyMask(target, masks) {
       const combined = backend.createSurface(target.width, target.height);

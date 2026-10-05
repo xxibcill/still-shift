@@ -21,6 +21,12 @@ export const COMPOSITION_DIAGNOSTICS = {
     "A value matches none of the allowed forms (for example an unknown layer `type`).",
   "comp-schema": "Any other structural error.",
   "comp-limit": "An array, string or record exceeds its size limit.",
+  "comp-effect-layer":
+    "An effect input slot is missing, undeclared or outside its scope.",
+  "comp-effect-cycle":
+    "Layer inputs, mattes or group descendants form a render dependency cycle.",
+  "comp-effect-budget":
+    "The scoped effect source graph exceeds its bounded work budget.",
   "comp-effect-registration":
     "Effect registration requires a unique ID, valid definition and GPU callback.",
   "comp-effect-surface":

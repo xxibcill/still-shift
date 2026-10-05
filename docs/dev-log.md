@@ -44,11 +44,11 @@ still hold before relying on them.
 ## Current state
 
 - **CE6 in progress (2026-10-06):** `codex/composition-ce6-completion` from
-  CE7 `817cc9f`. Checkpoints through `73a0009` deliver paired plugins, color/
-  curves, transitions, blur, warps, fields and stylize kernels. Drop/inner
-  shadows now pass 36 focused tests, build/lint/schema/boundaries and 54 native
-  cases / 648 frames / 756 seeks exactly; maximum blur and translucent pixel
-  oracles are exact. Scoped inputs/displacement-map/gradient-wipe, adjustment
+  CE7 `817cc9f`. Checkpoints through `41a7433` deliver paired plugins, color/
+  curves, transitions, blur, warps, fields, stylize and shadows. Scoped inputs
+  now pass 162 focused tests, build/lint/schema/boundaries and 17 cases /
+  204 frames / 238 seeks exactly. Hidden group/precomp mask/visibility and
+  scope-local remapped clock oracles pass. Native map/wipe kernels, adjustment
   history, linear-light and complete hardware/hash/export/cost/full-gate
   acceptance remain. No owner decision is pending.
   [Evidence](./composition-ce6-completion-results.json).
@@ -187,6 +187,20 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-06 — CE6 scoped layer input checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce6-completion`.
+- **Done:** named input slots, paired owned snapshots, matching scoped clocks,
+  mask/effect/matte capture, combined cycles, bounded depth/work and cleanup.
+- **Results:** 162 focused tests plus build/lint/schema/boundaries; nine owner
+  and eight source variants / 204 frames / 238 seeks are exact. Hidden masked
+  sources remain hidden normally; six remapped scope clock oracles pass exactly.
+- **Repaired:** test API assumptions; initially unwired clock helper was caught
+  by lint and included in the final native run. No threshold/baseline changed.
+- **Next:** map/wipe kernels, adjustment history, linear-light, complete
+  hardware/hash/export/cost/full-gate acceptance and CE6 PR.
+- **Records:** [CE6 evidence](./composition-ce6-completion-results.json).
 
 ### 2026-10-06 — CE6 drop and inner shadow checkpoint
 

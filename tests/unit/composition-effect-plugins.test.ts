@@ -254,3 +254,68 @@ it("uploads only correctly sized control data to owned GPU textures", () => {
     }
   }
 });
+it("owns GPU input snapshots and releases them on callback failure", () => {
+  const source = surface(),
+    device = fakeDevice(),
+    release = registerCompositionEffect({
+      id: "test.invert",
+      definition: defineCompositionEffect({
+        version: "1.0.0",
+        properties: {},
+        requiresLayers: ["map"],
+      }),
+      renderGpu(context) {
+        const copy = context.layers.get("map")!;
+        expect(copy).not.toBe(source);
+        context.pass(
+          "void main(){pixel=vec4(0.0);}",
+          context.createSurface(8, 8),
+          [copy],
+        );
+        throw Error("input failure");
+      },
+    });
+  try {
+    expect(() =>
+      renderGpuEffect(
+        device as unknown as WebglDevice,
+        surface(),
+        effect,
+        new Map([["map", source]]),
+      ),
+    ).toThrow(/input failure/);
+    expect(device.release).toHaveBeenCalledTimes(3);
+    expect(device.release.mock.calls.flat()).not.toContain(source);
+  } finally {
+    release();
+  }
+});
+it("rejects missing or incompatible GPU layer inputs without leaks", () => {
+  const device = fakeDevice(),
+    release = registerCompositionEffect({
+      id: "test.invert",
+      definition: defineCompositionEffect({
+        version: "1.0.0",
+        properties: {},
+        requiresLayers: ["map"],
+      }),
+      renderGpu: (_context, input) => input,
+    });
+  try {
+    expect(() =>
+      renderGpuEffect(device as unknown as WebglDevice, surface(), effect),
+    ).toThrow(/comp-effect-layer/);
+    expect(device.release).toHaveBeenCalledTimes(1);
+    expect(() =>
+      renderGpuEffect(
+        device as unknown as WebglDevice,
+        surface(),
+        effect,
+        new Map([["map", { ...surface(), width: 4 }]]),
+      ),
+    ).toThrow(/comp-effect-layer/);
+    expect(device.release).toHaveBeenCalledTimes(2);
+  } finally {
+    release();
+  }
+});

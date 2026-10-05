@@ -18,6 +18,7 @@ export type EvaluatedEffect = {
   version?: string;
   enabled: boolean;
   space?: string;
+  inputs?: Readonly<Record<string, string>>;
   params: Record<string, number | Rgba | Point | Point[]>;
 };
 
@@ -34,6 +35,7 @@ export function sampleEffects(
       effect: effect.effect,
       version: definition.version,
       ...(effect.space ? { space: effect.space } : {}),
+      ...(effect.inputs ? { inputs: { ...effect.inputs } } : {}),
       enabled:
         effect.enabled !== false &&
         time >= (effect.inPoint ?? -Infinity) &&

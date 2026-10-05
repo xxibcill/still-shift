@@ -3227,6 +3227,19 @@ shadow pixel oracles are exact. Scoped inputs/history/linear-light and complete
 hardware/hash/export/cost/full-gate acceptance remain. Thresholds and frozen
 baselines are unchanged. [Evidence](./composition-ce6-completion-results.json).
 
+### CE6 scoped layer input checkpoint (2026-10-06)
+
+Named input slots bind same-scope layer IDs per effect instance and expose owned
+snapshots through both plugin contexts. Sources retain masks, effects, mattes,
+placement and matching scope/exposure clocks; hidden group/precomp capture does
+not change ordinary visibility. Input/matte/group cycles and bounded 10,000
+source visits/64 dependency levels have explicit diagnostics and failure cleanup.
+162 focused tests and build/lint/schema/boundaries pass. Nine drawable owners
+and eight source variants / 204 frames / 238 seeks are exact. Hidden masked
+source visibility and six remapped clock oracles pass exactly. Remaining map/
+wipe kernels, adjustment history/linear-light and complete hardware/hash/export/
+cost/full-gate acceptance remain. [Evidence](./composition-ce6-completion-results.json).
+
 ### CE6 performance slice 1: exact effect work (2026-10-03)
 
 - **Scope:** the transferred CE4b timing requirement only, not the broader CE6

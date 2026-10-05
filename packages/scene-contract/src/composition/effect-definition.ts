@@ -51,6 +51,8 @@ export type CompositionEffectDefinition = {
   generatesContent?: boolean;
   preservesOpaque?: boolean;
   usesLayerSpace?: boolean;
+  /** Named input slots bound to same-scope layer IDs on each effect instance. */
+  requiresLayers?: readonly string[];
 };
 
 function propertySchema(property: EffectProperty): z.ZodType {
@@ -94,6 +96,21 @@ export function defineCompositionEffect(
   )
     throw Error(
       "comp-effect-definition: parameter validation must be callable",
+    );
+  if (
+    definition.requiresLayers &&
+    (definition.requiresLayers.length > 8 ||
+      new Set(definition.requiresLayers).size !==
+        definition.requiresLayers.length ||
+      definition.requiresLayers.some(
+        (name) =>
+          !/^[a-zA-Z][\w-]*$/.test(name) ||
+          name.length > 128 ||
+          Object.hasOwn(Object.prototype, name),
+      ))
+  )
+    throw Error(
+      "comp-effect-definition: input slots must be unique bounded identifiers (at most eight)",
     );
   const properties = Object.fromEntries(
     Object.entries(definition.properties).map(([name, property]) => {
@@ -154,6 +171,9 @@ export function defineCompositionEffect(
   return Object.freeze({
     ...definition,
     properties: Object.freeze(properties),
+    ...(definition.requiresLayers
+      ? { requiresLayers: Object.freeze([...definition.requiresLayers]) }
+      : {}),
     params,
   });
 }

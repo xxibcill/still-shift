@@ -1,3 +1,4 @@
+import type * as InputChecks from "../helpers/composition-effect-input-reference.ts";
 import type * as ShadowChecks from "../helpers/composition-shadow-effect-reference.ts";
 import type * as RadialChecks from "../helpers/composition-radial-distortion-reference.ts";
 import type * as StylizeChecks from "../helpers/composition-stylize-effect-reference.ts";
@@ -88,6 +89,13 @@ try {
     ).checkWarpEffectRendering();
   });
   console.log("WebGL native warps:", JSON.stringify(warps));
+  const effectInputs = await page.evaluate(async () => {
+    const url = "/tests/helpers/composition-effect-input-reference.ts";
+    return await (
+      (await import(url)) as typeof InputChecks
+    ).checkEffectInputRendering();
+  });
+  console.log("WebGL scoped effect inputs:", JSON.stringify(effectInputs));
   const shadows = await page.evaluate(async () => {
     const url = "/tests/helpers/composition-shadow-effect-reference.ts";
     return (

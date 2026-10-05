@@ -17,6 +17,7 @@ import type { WebglDevice, WebglSurface } from "./webgl-device.ts";
 
 type Parameters = RenderEffect["params"];
 export type GpuEffectContext = {
+  readonly layers: ReadonlyMap<string, WebglSurface>;
   createSurface(width: number, height: number): WebglSurface;
   releaseSurface(surface: WebglSurface): void;
   /** Upload deterministic byte control data or premultiplied color bytes to an owned texture. */
@@ -144,6 +145,7 @@ export function renderGpuEffect(
   device: WebglDevice,
   target: WebglSurface,
   effect: RenderEffect,
+  layers?: ReadonlyMap<string, WebglSurface>,
 ): boolean {
   const plugin = checkedPlugin(effect);
   if (!plugin) return false;
@@ -155,7 +157,23 @@ export function renderGpuEffect(
   try {
     const input = surfaces.create(target.width, target.height);
     device.pass(COPY, input, [target]);
+    const inputs = new Map<string, WebglSurface>();
+    for (const slot of plugin.definition.requiresLayers ?? []) {
+      const source = layers?.get(slot);
+      if (
+        !source ||
+        source.width !== target.width ||
+        source.height !== target.height
+      )
+        throw Error(
+          `comp-effect-layer: missing or incompatible input "${slot}"`,
+        );
+      const copy = surfaces.create(source.width, source.height);
+      device.pass(COPY, copy, [source]);
+      inputs.set(slot, copy);
+    }
     const context: GpuEffectContext = {
+      layers: inputs,
       createSurface: surfaces.create,
       releaseSurface: surfaces.remove,
       uploadBytes(surface, bytes) {
@@ -196,6 +214,7 @@ export function renderCanvasEffect(
   context: CanvasEffectContext,
   target: CanvasSurface,
   effect: RenderEffect,
+  layers?: ReadonlyMap<string, CanvasSurface>,
 ): boolean {
   const plugin = checkedPlugin(effect);
   if (!plugin) return false;
@@ -211,8 +230,24 @@ export function renderCanvasEffect(
   try {
     const input = surfaces.create(target.width, target.height);
     input.ctx.drawImage(target.canvas, 0, 0);
+    const inputs = new Map<string, CanvasSurface>();
+    for (const slot of plugin.definition.requiresLayers ?? []) {
+      const source = layers?.get(slot);
+      if (
+        !source ||
+        source.width !== target.width ||
+        source.height !== target.height
+      )
+        throw Error(
+          `comp-effect-layer: missing or incompatible input "${slot}"`,
+        );
+      const copy = surfaces.create(source.width, source.height);
+      copy.ctx.drawImage(source.canvas, 0, 0);
+      inputs.set(slot, copy);
+    }
     const output = plugin.renderCanvas(
       {
+        layers: inputs,
         createSurface: surfaces.create,
         releaseSurface: surfaces.remove,
         clear(surface, background) {
