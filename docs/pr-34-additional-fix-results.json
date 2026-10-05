@@ -31,12 +31,19 @@
         "before": "5 of 7 signed-scale regressions fail",
         "after": "121 focused quality/CLI tests, build and changed-file ESLint pass",
         "controls": "x/y/both-axis reflections, null/precomp inheritance, intentional cuts, ordinary rotation and canceled parent/child reflections"
-      }
+      },
+      "commit": "4c3fe31"
     },
     {
       "id": "property-easing-weight",
       "comment": "https://github.com/xxibcill/still-shift/pull/34#discussion_r4185973376",
-      "status": "pending"
+      "status": "fixed",
+      "change": "Give each moving property one vote, shared across its distinct easing profiles; repeated keys do not increase its influence.",
+      "verification": {
+        "before": "2 of 3 easing-weight regressions fail (false 90.9% shares)",
+        "after": "124 focused quality/CLI tests, build and changed-file ESLint pass",
+        "controls": "redundant linear subdivision, a genuine 75% property majority and mixed easing profiles"
+      }
     },
     {
       "id": "evaluated-track-motion",

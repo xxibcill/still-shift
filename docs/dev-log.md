@@ -43,7 +43,7 @@ still hold before relying on them.
 
 ## Current state
 
-- **PR #34 additional fixes in flight (2026-10-05):** five findings on `7525540` are posted inline. Group paint modifiers (`5d3f0d3`) and signed scale are repaired. 121 focused quality/CLI tests, build and ESLint pass; group browser checks pass. Property easing weights, overridden tracks and nested coverage remain; one commit per finding and one final push. [Evidence](./pr-34-additional-fix-results.json).
+- **PR #34 additional fixes in flight (2026-10-05):** five findings on `7525540` are posted inline. Group paint modifiers (`5d3f0d3`), signed scale (`4c3fe31`) and property easing weights are repaired. 124 focused quality/CLI tests, build and ESLint pass; group browser checks pass. Overridden tracks and nested coverage remain; one commit per finding and one final push. [Evidence](./pr-34-additional-fix-results.json).
 
 - **PR #34 review fixes verified (2026-10-05):** all four inline findings on
   `8c717b3` are repaired one per commit: held-sample velocity artifacts
@@ -175,6 +175,14 @@ _Last updated 2026-10-05 by Codex for PR #34 review fixes; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-05 — PR #34 easing weights
+
+- **Agent / branch:** Codex on `codex/composition-ce12`, after `4c3fe31`.
+- **Done:** each moving property contributes one easing vote, split across its distinct profiles. Redundant keys do not skew the share.
+- **Results:** two regressions failed before repair; 124 focused quality/CLI tests, build and changed-file ESLint pass. Minority key density no longer hides a genuine property majority.
+- **Open / next:** overridden tracks, nested coverage and final verification; one final push.
+- **Records:** [Additional repair evidence](./pr-34-additional-fix-results.json).
 
 ### 2026-10-05 — PR #34 signed scale pops
 

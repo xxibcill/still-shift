@@ -296,6 +296,24 @@ function easingSignature(
         : (b.easing ?? "smoothstep"),
   );
 }
+function propertyEasingShare(
+  segments: readonly { property: string; easing: string }[],
+) {
+  const properties = new Map<string, Set<string>>();
+  for (const segment of segments) {
+    if (!properties.has(segment.property))
+      properties.set(segment.property, new Set());
+    properties.get(segment.property)!.add(segment.easing);
+  }
+  const counts = new Map<string, number>();
+  for (const profiles of properties.values())
+    for (const easing of profiles)
+      counts.set(easing, (counts.get(easing) ?? 0) + 1 / profiles.size);
+  return {
+    propertyCount: properties.size,
+    share: properties.size ? Math.max(...counts.values()) / properties.size : 0,
+  };
+}
 /** Authored moving segments are counted once per property/instance, never once per vector component. */
 export function compositionTimingFindings(
   comp: Composition,
@@ -364,14 +382,8 @@ export function compositionTimingFindings(
     const moving = segments.filter(
       (s) => s.start < shot.end && s.end >= shot.start,
     );
-    const properties = new Set(moving.map((s) => s.property));
-    if (properties.size >= policy.minimumMovingProperties) {
-      const counts = new Map<string, number>();
-      for (const segment of moving) {
-        counts.set(segment.easing, (counts.get(segment.easing) ?? 0) + 1);
-      }
-      const maximum = Math.max(...counts.values());
-      const share = maximum / moving.length;
+    const { propertyCount, share } = propertyEasingShare(moving);
+    if (propertyCount >= policy.minimumMovingProperties) {
       if (share >= policy.easingMonotonyShare)
         diagnostics.push({
           code: "easing-monotony",
