@@ -443,6 +443,42 @@
         "Existing export assertions now compare resolved file identities instead of a spelling that only works without directory aliases."
       ],
       "pending": ["Complete full pnpm check on the path repair checkpoint"]
+    },
+    {
+      "name": "Preserve canonical parent identity for missing JSON assets",
+      "status": "checkpoint",
+      "changes": [
+        "Resolve the requested JSON asset path first; if the file is missing, canonicalize its existing parent directory so watch recovery retains a stable absolute identity."
+      ],
+      "thirdFullCheck": {
+        "command": "pnpm check",
+        "runtimeHead": "acac044",
+        "snapshot": "/private/tmp/still-shift-ce10-check-acac044",
+        "status": "failed",
+        "log": "/private/tmp/ce10-full-acac044.log",
+        "passingTests": {
+          "unit": 1499,
+          "runtime": 46,
+          "integration": 133
+        },
+        "failedGate": "test:integration",
+        "failure": "The existing missing-asset loader assertion expected the canonical existing parent directory. Missing-file fallback retained its /var spelling."
+      },
+      "verification": [
+        {
+          "command": "pnpm test:integration",
+          "status": "passed",
+          "tests": 134,
+          "log": "/private/tmp/ce10-logical-assets-integration.log"
+        },
+        {
+          "command": "pnpm build / changed-file eslint",
+          "status": "passed"
+        }
+      ],
+      "pending": [
+        "Complete full pnpm check on the final path repair checkpoint"
+      ]
     }
   ],
   "pending": ["Full local milestone gates and PR"]

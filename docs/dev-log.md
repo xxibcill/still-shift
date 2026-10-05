@@ -53,7 +53,8 @@ still hold before relying on them.
   passes focused tests. The unchanged fresh trial renders and its extracted frames
   pass inspection. The second full run reached the end of the 127-case commerce
   matrix, then exposed logical-directory asset resolution. Its repair passes ten
-  CLI/preview regressions; the full repair-checkpoint run remains.
+  CLI/preview regressions. The next full run exposed missing-file parent identity;
+  that fallback is repaired and all 134 integration tests pass. Full gates remain.
   [Evidence](./composition-ce10-results.json).
 
 - **CE4a complete (2026-10-05):** `codex/composition-ce4a-completion`, implementation
@@ -153,6 +154,18 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-05 — Preserve CE10 missing-asset watch identity
+
+- **Agent / branch:** Codex on `codex/composition-ce10`, after `acac044`.
+- **Failure:** the full path-repair check passed unit/runtime gates, then found an
+  existing missing-asset assertion requiring its parent directory's canonical identity.
+- **Done:** resolve the logical asset path first; canonicalize its existing parent
+  when the file is absent. This keeps missing-file watch recovery stable without
+  changing the logical-directory repair for existing files.
+- **Results:** all 134 integration tests, build and changed-file lint pass.
+  Complete local verification remains before the milestone PR.
+- **Records:** [CE10 evidence](./composition-ce10-results.json).
 
 ### 2026-10-05 — Repair CE10 logical asset directories
 

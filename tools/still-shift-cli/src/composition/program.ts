@@ -5,7 +5,7 @@ import { stat } from "node:fs/promises";
 import { spawn } from "node:child_process";
 import { mkdtemp, readFile, realpath, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
-import { resolve, dirname, extname, join } from "node:path";
+import { resolve, dirname, extname, join, basename } from "node:path";
 import { fileURLToPath } from "node:url";
 import {
   validateComposition,
@@ -204,7 +204,12 @@ export async function loadProgram(
       const resolved = resolve(assetDirectory, asset.path);
       return {
         ...asset,
-        path: await realpath(resolved).catch(() => resolved),
+        path: await realpath(resolved).catch(async () => {
+          const parent = await realpath(dirname(resolved)).catch(
+            () => undefined,
+          );
+          return parent ? join(parent, basename(resolved)) : resolved;
+        }),
       };
     }),
   );
