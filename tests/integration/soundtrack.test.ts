@@ -1240,3 +1240,12 @@ it("command edits read operations from stdin with --operations -", async () => {
       .gainDb,
   ).toBe(0);
 }, 20000);
+
+it("NumPy routing sums match DawDreamer's add processor byte for byte", async () => {
+  // Random, subnormal and constructed float32-midpoint inputs; see the script.
+  const { stdout } = await runProcess(soundtrackPython(), [
+    "scripts/soundtrack/check-routing-parity.py",
+    "packages/animation-engine/src/soundtrack-worker.py",
+  ]);
+  expect(JSON.parse(stdout)).toEqual({ cases: 62, mismatches: 0 });
+}, 60000);
