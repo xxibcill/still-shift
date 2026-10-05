@@ -626,6 +626,14 @@
     {
       "commit": "f86dc15",
       "purpose": "Review repairs, cold preview budgets and all original failure rows"
+    },
+    {
+      "commit": "706be71",
+      "purpose": "Independent fusion-only baseline; reject overlapping timing workloads"
+    },
+    {
+      "commit": "00951b9",
+      "purpose": "Buildable bounded exposure candidate before fractional-background review repair"
     }
   ],
   "verification": [
@@ -660,13 +668,20 @@
         "Browser-launch cleanup scope",
         "Preserve CE6-P old anchor",
         "Conservative workload guard recognizes pnpm run/filter/cjs invocations without shell false positives",
-        "Best-effort 2-second overlap detection retains and rejects invalid timing runs; startup/end checks also apply"
+        "Best-effort 2-second overlap detection retains and rejects invalid timing runs; startup/end checks also apply",
+        "Rounded clear metadata is not exact framebuffer bytes; restrict bounded path to exact premultiplied integer clear channels and opaque screens"
       ],
       "resolution": "fixed before runtime verification"
     },
     "spec": {
       "findings": ["Cold preview budget missing"],
       "resolution": "fixed; separate initialization, first submission and next RAF interval; no GPU completion claim"
+    },
+    "bounded": {
+      "status": "both axes clean after repair, runtime pending",
+      "regressionCasesPerProfile": 852,
+      "fractionalClearCases": 189,
+      "resolution": "Fractional/unknown first clear falls back to full-frame accumulation; later uncertainty expands full screen; averages compared with actual GPU sample bytes"
     }
   },
   "pending": [
@@ -677,7 +692,7 @@
     "Final review and full pnpm check",
     "Reviewable published attached PR"
   ],
-  "workloadCoordination": "Main CE7 full check active; browser/timing checks not started here. Read-only progress/process inspection only.",
+  "workloadCoordination": "Main full gate has reached frozen-baseline completion; exact runner waits for 30-second quiet window. Read-only coordination; no other-chat messages.",
   "repositoryActionsVerified": {
     "enabled": false,
     "command": "gh api repos/xxibcill/still-shift/actions/permissions",
@@ -693,7 +708,7 @@
     {
       "id": "bounded-exposure-snapshot-sum",
       "renderer": "composition-webgl2-0.40.0",
-      "status": "build passed; review/runtime/performance pending"
+      "status": "build/review passed after exact-clear metadata repair; runtime/performance pending"
     }
   ],
   "rejectedDrafts": [

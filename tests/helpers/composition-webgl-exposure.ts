@@ -4,6 +4,8 @@ import {
   type WebglSurface,
 } from "../../packages/renderer-core/src/composition/render/webgl-device.ts";
 import type { Bounds } from "../../packages/renderer-core/src/composition/evaluate/types.ts";
+import type { Rgba } from "../../packages/renderer-core/src/composition/evaluate/types.ts";
+import { WebglBounds } from "../../packages/renderer-core/src/composition/render/webgl-bounds.ts";
 
 /** Retained pre-fusion algorithm for byte-level A/B, independent of the candidate. */
 function originalExposure(
@@ -148,6 +150,7 @@ export function checkWebglBoundedExposure() {
       "bounded",
       "changing-background",
       "unknown",
+      "unknown-first",
       "full",
       "empty",
       "white",
@@ -259,6 +262,80 @@ export function checkWebglBoundedExposure() {
               );
             cases++;
           }
+        cases++;
+      }
+  } finally {
+    device.dispose();
+  }
+  return cases;
+}
+
+/** Fractional clear colors must use actual GPU bytes through the full-frame path. */
+export function checkWebglFractionalExposure() {
+  const canvas = document.createElement("canvas");
+  canvas.width = 37;
+  canvas.height = 29;
+  const device = new WebglDevice(canvas);
+  const dst = device.surface(37, 29, false, true, true);
+  const source = device.surface(37, 29);
+  const bounds = new WebglBounds(dst);
+  const pixels = new Uint8Array(37 * 29 * 4);
+  for (let i = 0; i < pixels.length; i += 4)
+    pixels.set([i % 256, (i * 13) % 256, (i * 71) % 256, 255], i);
+  device.uploadBytes(source, pixels);
+  let cases = 0;
+  try {
+    for (const color of [
+      [0.5 / 255, 1.5 / 255, 254.5 / 255, 1],
+      [37 / 255, 41 / 255, 47 / 255, 0.5],
+      [1 / 3, 0.125, 0.625, 0.7],
+    ] as Rgba[])
+      for (let count = 2; count <= 64; count++) {
+        const render = (i: number) => {
+          bounds.clear(dst, color);
+          device.clear(dst, color);
+          if (i % 5 !== 0) {
+            const rect = {
+              left: 1 + (i % 7),
+              top: 3 + (i % 9),
+              right: 19 + (i % 7),
+              bottom: 19 + (i % 9),
+            };
+            device.pass(
+              "void main() { pixel=texelFetch(source,ivec2(gl_FragCoord.xy),0); }",
+              dst,
+              [source],
+              {},
+              false,
+              rect,
+            );
+            bounds.include(dst, rect);
+          }
+          if (bounds.exactClearColor(dst) !== undefined)
+            throw new Error("Fractional background incorrectly marked exact");
+          return {
+            background: bounds.exactClearColor(dst),
+            painted: bounds.snapshot(dst),
+          };
+        };
+        const samples = Array.from({ length: count }, (_, i) => {
+          render(i);
+          return device.read(dst);
+        });
+        originalExposure(device, dst, count, render);
+        const expected = device.read(dst);
+        accumulateWebglExposure(device, dst, count, render);
+        const actual = device.read(dst);
+        for (let byte = 0; byte < actual.length; byte++) {
+          const average = Math.floor(
+            samples.reduce((sum, sample) => sum + sample[byte]!, 0) / count +
+              0.5,
+          );
+          if (actual[byte] !== expected[byte] || actual[byte] !== average)
+            throw new Error(
+              `fractional exposure ${color}/${count} byte ${byte}: ${actual[byte]} != original ${expected[byte]} / GPU sample average ${average}`,
+            );
+        }
         cases++;
       }
   } finally {

@@ -661,7 +661,7 @@ export function createWebgl2Backend(
           else if (background !== bounds.clearColor(dst)) bounds.full(dst);
           bounds.include(dst, painted);
           painted = bounds.snapshot(dst);
-          return { background: bounds.clearColor(dst), painted };
+          return { background: bounds.exactClearColor(dst), painted };
         });
       } finally {
         exposure = false;

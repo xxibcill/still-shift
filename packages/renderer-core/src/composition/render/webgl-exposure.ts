@@ -35,7 +35,12 @@ export function accumulateWebglExposure(
       : device.surface(dst.width, dst.height, false, dst.opaque);
     for (let i = 0; i < count; i++) {
       const sample = render(i);
-      if (i === 0 && dst.screen && sample?.background !== undefined) {
+      if (
+        i === 0 &&
+        dst.screen &&
+        dst.opaque &&
+        sample?.background !== undefined
+      ) {
         backgroundKey = sample.background;
         background = [0, 8, 16, 24].map(
           (shift) => (backgroundKey! >>> shift) & 255,

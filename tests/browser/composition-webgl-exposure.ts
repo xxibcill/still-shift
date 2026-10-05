@@ -38,6 +38,7 @@ try {
       return {
         fusion: checks.checkWebglExposureFusion(),
         bounded: checks.checkWebglBoundedExposure(),
+        fractional: checks.checkWebglFractionalExposure(),
       };
     }),
   );

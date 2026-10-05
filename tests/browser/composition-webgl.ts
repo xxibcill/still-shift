@@ -29,6 +29,7 @@ try {
     return {
       fusion: checks.checkWebglExposureFusion(),
       bounded: checks.checkWebglBoundedExposure(),
+      fractional: checks.checkWebglFractionalExposure(),
     };
   });
   console.log("WebGL final exposure sum/resolve exactness:", exposure);

@@ -55,7 +55,7 @@ Resumable verification or runner redesign is separate work.
 ## Candidate review (2026-10-06)
 
 Two independent code-review skill axes inspected the candidate against `0e48388`.
-No renderer correctness or documented-standards defect was identified analytically.
+The first fusion review found no renderer correctness or documented-standards defect.
 Three findings were repaired before runtime verification: protect Vite/cache cleanup
 when browser launch fails, preserve the old CE6-P heading anchor, and report cold
 preview initialization/first submission/next RAF separately from warmed calls.
@@ -87,6 +87,11 @@ restores the original integer numerator, avoiding that change in rounding.
 Regression coverage adds all counts 2–64 for moving/empty/full regions, white
 background ties, changed backgrounds, unknown first/later metadata and exception
 recovery against both the retained original algorithm and an independent average.
+Standards review found that rounded background metadata cannot substitute for GPU
+clear bytes. The bounded path now requires exact integer premultiplied clear
+channels and an opaque screen; fractional clears use the full-frame path. Added
+189 moving-region cases against original accumulation and independent averages
+of actual GPU sample bytes. Both review axes are clean after repair.
 Runtime correctness and performance remain unverified at this checkpoint.
 
 The A/B harness can load both renderer and kernel from pinned refs without changing

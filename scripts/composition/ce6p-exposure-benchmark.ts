@@ -36,16 +36,13 @@ const baseline = execFileSync(
   { cwd: root, encoding: "utf8" },
 );
 const refSource = (ref: string, path: string, optional = false) => {
-  try {
-    return execFileSync("git", ["show", `${ref}:${path}`], {
-      cwd: root,
-      encoding: "utf8",
-      stdio: ["ignore", "pipe", "pipe"],
-    });
-  } catch (error) {
-    if (optional) return undefined;
-    throw error;
-  }
+  const options = { cwd: root, encoding: "utf8" as const };
+  if (
+    optional &&
+    !execFileSync("git", ["ls-tree", "--name-only", ref, path], options).trim()
+  )
+    return undefined;
+  return execFileSync("git", ["show", `${ref}:${path}`], options);
 };
 const baselineKernel = refSource(baselineRef, kernelPath, true);
 const candidate = candidateRef
