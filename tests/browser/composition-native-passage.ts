@@ -104,6 +104,21 @@ try {
   );
   const portableRender = await render("portable", portable);
   assert.ok(portableRender.cache.every((clip) => clip.reused));
+  for (const run of ["first", "portable"]) {
+    const current = JSON.parse(
+      await readFile(
+        join(root, run, "scenes", "reset.composition.json"),
+        "utf8",
+      ),
+    );
+    assert.deepEqual(
+      current.assets.map((asset: { path: string }) => asset.path),
+      (run === "first" ? compositions : portable).reset!.assets.map(
+        (asset) => asset.path,
+      ),
+      "Each run's native composition names that run's asset files, even on cache reuse",
+    );
+  }
   assert.ok(first.cache[2]!.key !== first.planSha256);
   const changed = structuredClone(compositions);
   if (changed.reset!.layers[0]!.type !== "solid")

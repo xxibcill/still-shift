@@ -1451,6 +1451,9 @@ This is CE4a's required CE7 exposure slice, not completion of all CE7 controls.
 Renderer, evaluator, adapter and backend identities separate cached beat clips.
 Changing the renderer or backend requires a fresh render request/output directory.
 The cache retains each compiled `.composition.json` beside its encoded beat.
+Native picture beats also write `scenes/<beat>.composition.json` on every render,
+including cache reuse, so it names that run's asset files after relocation; the
+cache copy records the entry's first render.
 
 ### Native passage picture files (CE4a/Q2)
 
