@@ -88,12 +88,28 @@
             required
         /></label>
         <label
+          >Fade in samples<input
+            id="fade-in"
+            type="number"
+            min="0"
+            step="1"
+            required /></label
+        ><label
+          >Fade out samples<input
+            id="fade-out"
+            type="number"
+            min="0"
+            step="1"
+            required
+        /></label>
+        <label
           >Automation JSON<textarea
             id="automation"
             rows="4"
             required
           ></textarea></label
         ><button>Save clip edits</button>
+        <button type="button" id="remove-clip">Remove clip</button>
       </form>
       <p>
         All positions use 48 kHz integer samples. Source intervals are

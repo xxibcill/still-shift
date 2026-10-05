@@ -72,6 +72,8 @@ function clipFields() {
   el<HTMLInputElement>("pan").value = String(clip.pan ?? 0);
   el<HTMLInputElement>("source-start").value = String(clip.sourceStartSample);
   el<HTMLInputElement>("source-end").value = String(clip.sourceEndSample);
+  el<HTMLInputElement>("fade-in").value = String(clip.fadeInSamples);
+  el<HTMLInputElement>("fade-out").value = String(clip.fadeOutSamples);
   el<HTMLInputElement>("offset").value = String(
     clip.anchor?.offsetSamples ?? 0,
   );
@@ -253,6 +255,12 @@ el<HTMLFormElement>("clip-edit").onsubmit = (e) => {
         sourceEndSample: field("source-end", "Source end sample"),
       },
       {
+        type: "fade",
+        clip: id,
+        fadeInSamples: field("fade-in", "Fade in samples"),
+        fadeOutSamples: field("fade-out", "Fade out samples"),
+      },
+      {
         type: "automation",
         clip: id,
         automation: JSON.parse(el<HTMLTextAreaElement>("automation").value),
@@ -265,6 +273,8 @@ el<HTMLFormElement>("clip-edit").onsubmit = (e) => {
     ]);
   });
 };
+el("remove-clip").onclick = () =>
+  void task(() => edit([{ type: "remove-clip", clip: clipSelect.value }]));
 el("render").onclick = () =>
   void task(async () => {
     const result = await api("render", {
