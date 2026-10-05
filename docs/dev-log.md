@@ -43,17 +43,14 @@ still hold before relying on them.
 
 ## Current state
 
-- **PR #33 decode performance (2026-10-05):** Claude Code on
-  `claude/ce16-sfx-improvements` from `e20b6a6`. Shared streamed decode passes
-  plus parallel probes/decodes/hashing (`77a759e`); outputs byte-identical, no
-  DSP version change. `pnpm check:soundtrack` passes on Node 22.23.1. Pushed to
-  PR #33; owner review/merge remains.
-- **Owner decision — soundtrack duration bound:** docs promise 10 minutes of
-  sample address space, but the 1.5 GB working-buffer estimate
-  (`durationSamples × 8 × (nodes × 4 + 8)`) caps every project lower: about
-  244 s with one track, 139 s with four, 89 s with eight. Either document the
-  real ceiling or revisit the estimate; not changed here.
-
+- **PR #33 bounded-memory render (2026-10-05):** Claude Code on
+  `claude/ce16-sfx-improvements` from `7f1f4dd`. `0fc092f` makes 10-minute
+  projects fit the 1.5 GB estimate (two nested bus levels with filters and
+  ducking); outputs byte-identical. `pnpm check:soundtrack` passes on Node
+  22.23.1. Pushed to PR #33; owner review/merge remains. Resolves the former
+  duration-bound owner decision.
+- **PR #33 decode performance (2026-10-05):** shared streamed decode passes and
+  parallel probes/decodes/hashing (`77a759e`) are pushed (`7f1f4dd`).
 - **PR #33 fade curves (2026-10-05):** optional per-fade `equal-power` curves
   as `soundtrack-dsp-5` (`e1d6c49`) and Lab curve selects (`d73d624`) are
   pushed to PR #33 (`e20b6a6`). Absent/linear curves are bit-identical.
@@ -222,6 +219,42 @@ _Last updated 2026-10-05 by Codex for PR #33 follow-up fixes._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-05 — PR #33 bounded-memory soundtrack render
+
+- **Agent / branch:** Claude Code on `claude/ce16-sfx-improvements` from `7f1f4dd`.
+- **Problem:** the estimate `duration × 8 × (nodes × 4 + 8) ≤ 1.5 GB` capped
+  projects at 89–244 s despite the documented 10 minutes, and real use was
+  worse: 10-minute renders peaked at 2.2 GiB (1 track) to 6.1 GiB (4 filtered
+  tracks, bus, ducking). One DawDreamer graph held an input copy and recording per
+  node; clip envelopes, ducking and WAV writes made full-length temporaries.
+- **Done:** `0fc092f`. DawDreamer renders only filter chains, one track at a time
+  before routing, spilled to the stage and memory-mapped back. NumPy routing
+  reproduces DawDreamer 0.9.0 / JUCE exactly: applyGain then fused
+  `addWithMultiply` (single rounding; emulated via float64 TwoSum with the
+  midpoint case resolved), gains within an ulp of 1 as unity, subnormals kept.
+  Depth-first routing, chunked clip shaping, direct FFmpeg streaming for long
+  clips, interval-based ducking, streaming WAV writer, one cross-track decode
+  plan with a fixed 64 MB budget. New shared estimate (contract + worker):
+  depth + 1 (or 3 for a filter render), +0.5 ducking, + 328 MB. Guide updated
+  in `c662e68`.
+- **Results:** byte-identical outputs vs the previous worker on 800 randomized
+  projects (incl. 200 with a forced 5,000-frame decode budget) and the CE16
+  fixture. An unfused-add mutant differs on 8 of 40 seeds; an out-of-order error
+  mutant fails the decode test. 10-minute macOS `phys_footprint`: 0.25–0.94 GiB,
+  all below the estimate. Stress: 16 reused assets 2.2 → 1.5 s; fixture
+  unchanged. `pnpm check:soundtrack`: 1,520 unit, 46 runtime, 43 audio
+  integration (new: TS/Python estimate parity, a 10-minute ducked/filtered/bussed
+  render), 14 depth; Python lint/format pass.
+- **Rejected / do not repeat:** relying on `MallocLargeCache=0` (undocumented
+  libmalloc knob) to hide macOS large-block retention; a decode budget scaled to
+  a quarter project buffer (starved short projects: stress 2.2 → 7.2 s);
+  per-track decode plans (lost cross-track sharing).
+- **Changed semantics:** tracks render one at a time (ducking detector, filtered
+  tracks, then routing order); errors are first-in-authored-order within a track.
+  Filtered tracks need temporary stage disk (230 MB each at 10 minutes).
+  `STILL_SHIFT_SOUNDTRACK_DECODE_FRAMES` may only lower the decode budget (tests).
+- **Not run:** browser suites, baselines and listening (PCM unchanged).
 
 ### 2026-10-05 — PR #33 shared and parallel soundtrack decoding
 
