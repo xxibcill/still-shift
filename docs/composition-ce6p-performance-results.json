@@ -1280,14 +1280,15 @@
     }
   },
   "queuedAb": {
-    "status": "first corrected bracket stopped for overlap; retry will observe ten-minute quiet window",
-    "session": null,
+    "status": "live; ten-minute quiet window before each corrected serial bracket",
+    "session": 66431,
     "launcher": "/private/tmp/ce6p-ab-after-gate.mjs",
     "outputs": [
       "benchmarks/results/composition-ce6p/fusion-ref-ab.json",
       "benchmarks/results/composition-ce6p/bounded-ref-ab.json",
       "benchmarks/results/composition-ce6p/hardware-bounded-ref-ab.json"
     ],
-    "failureHandling": "Stop at first failed bracket; retain invalid timing uniquely; never overwrite valid prior results"
+    "failureHandling": "Stop at first failed bracket; retain invalid timing uniquely; never overwrite valid prior results",
+    "fullGateRequiredAndPassed": true
   }
 }
