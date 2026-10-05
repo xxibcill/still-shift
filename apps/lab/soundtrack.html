@@ -95,13 +95,24 @@
             step="1"
             required /></label
         ><label
+          >Fade in curve<select id="fade-in-curve">
+            <option value="linear">Linear</option>
+            <option value="equal-power">Equal power (−3 dB midpoint)</option>
+          </select></label
+        >
+        <label
           >Fade out samples<input
             id="fade-out"
             type="number"
             min="0"
             step="1"
-            required
-        /></label>
+            required /></label
+        ><label
+          >Fade out curve<select id="fade-out-curve">
+            <option value="linear">Linear</option>
+            <option value="equal-power">Equal power (−3 dB midpoint)</option>
+          </select></label
+        >
         <label
           >Automation JSON<textarea
             id="automation"

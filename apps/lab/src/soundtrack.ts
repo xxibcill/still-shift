@@ -74,6 +74,8 @@ function clipFields() {
   el<HTMLInputElement>("source-end").value = String(clip.sourceEndSample);
   el<HTMLInputElement>("fade-in").value = String(clip.fadeInSamples);
   el<HTMLInputElement>("fade-out").value = String(clip.fadeOutSamples);
+  el<HTMLSelectElement>("fade-in-curve").value = clip.fadeInCurve ?? "linear";
+  el<HTMLSelectElement>("fade-out-curve").value = clip.fadeOutCurve ?? "linear";
   el<HTMLInputElement>("offset").value = String(
     clip.anchor?.offsetSamples ?? 0,
   );
@@ -235,6 +237,10 @@ el<HTMLFormElement>("clip-edit").onsubmit = (e) => {
     const id = clipSelect.value;
     const field = (name: string, label: string) =>
       soundtrackNumberField(el<HTMLInputElement>(name).value, label);
+    const curve = (name: string) =>
+      el<HTMLSelectElement>(name).value === "equal-power"
+        ? ("equal-power" as const)
+        : ("linear" as const);
     // One request, one undo step; anchored offsets are derived by the edit API.
     await edit([
       {
@@ -259,6 +265,8 @@ el<HTMLFormElement>("clip-edit").onsubmit = (e) => {
         clip: id,
         fadeInSamples: field("fade-in", "Fade in samples"),
         fadeOutSamples: field("fade-out", "Fade out samples"),
+        fadeInCurve: curve("fade-in-curve"),
+        fadeOutCurve: curve("fade-out-curve"),
       },
       {
         type: "automation",
