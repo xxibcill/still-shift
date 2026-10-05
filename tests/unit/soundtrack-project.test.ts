@@ -1,5 +1,8 @@
 import {
   soundtrackAddCueOperations,
+  soundtrackAddNodeOperation,
+  soundtrackDuckingOperation,
+  soundtrackTrackOperations,
   soundtrackHeadroom,
   soundtrackNumberField,
   soundtrackTimelineModel,
@@ -918,4 +921,59 @@ it("tiles a clip into crossfaded copies up to an end sample, as one undoable req
       { type: "tile", clip: "speech", endSample: 9600, crossfadeSamples: 0 },
     ]),
   ).toThrow(expect.objectContaining({ code: "duplicate-id" }));
+});
+
+it("Lab mix controls build only changed routing, filter, ducking and node requests", () => {
+  const p = fixture();
+  const music = p.tracks[1]!;
+  expect(
+    soundtrackTrackOperations(music, { output: "bus", filters: "[]" }),
+  ).toEqual([]);
+  const operations = soundtrackTrackOperations(music, {
+    output: "master",
+    filters: '[{"type":"lowpass","frequencyHz":8000,"q":0.7}]',
+  });
+  expect(operations.map((o) => o.type)).toEqual(["route", "processors"]);
+  const edited = editSoundtrackProject(p, [
+    ...operations,
+    soundtrackAddNodeOperation("bus", { id: " fx ", output: "master" }),
+    soundtrackAddNodeOperation("track", {
+      id: "hits",
+      output: "fx",
+      role: "sfx",
+    }),
+    soundtrackDuckingOperation(
+      JSON.stringify({
+        method: "peak-window-attack-hold-release-1",
+        sourceTrack: "voice",
+        targetTracks: ["music"],
+        thresholdDb: -30,
+        attenuationDb: -12,
+        windowSamples: 480,
+        attackSamples: 480,
+        releaseSamples: 4800,
+        holdSamples: 2400,
+        lookaheadSamples: 0,
+      }),
+    ),
+  ]);
+  expect(edited.tracks.map((t) => [t.id, t.output])).toEqual([
+    ["voice", "master"],
+    ["music", "master"],
+    ["hits", "fx"],
+  ]);
+  expect(edited.tracks[1]!.processors).toHaveLength(1);
+  expect(edited.ducking?.targetTracks).toEqual(["music"]);
+  expect(edited.history.undo).toHaveLength(1);
+  expect(
+    "ducking" in
+      editSoundtrackProject(edited, [soundtrackDuckingOperation("  ")]),
+  ).toBe(false);
+  expect(() =>
+    soundtrackTrackOperations(music, { output: "bus", filters: "[" }),
+  ).toThrow(/nothing was saved/);
+  expect(() => soundtrackDuckingOperation("{")).toThrow(/nothing was saved/);
+  expect(() =>
+    soundtrackAddNodeOperation("track", { id: " ", output: "master" }),
+  ).toThrow(/nothing was saved/);
 });

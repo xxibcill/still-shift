@@ -157,3 +157,62 @@ export function soundtrackAddCueOperations(fields: {
     },
   ];
 }
+
+type SoundtrackTrack = SoundtrackProject["tracks"][number];
+/**
+ * Track routing/filter changes from the Lab controls, skipping unchanged fields
+ * so an untouched control adds no history. Filters are a JSON array of
+ * {type, frequencyHz, q}; the shared API validates them.
+ */
+export function soundtrackTrackOperations(
+  track: SoundtrackTrack,
+  controls: { output: string; filters: string },
+): SoundtrackEdit[] {
+  const operations: SoundtrackEdit[] = [];
+  if (controls.output !== track.output)
+    operations.push({ type: "route", node: track.id, output: controls.output });
+  let filters: unknown;
+  try {
+    filters = JSON.parse(controls.filters);
+  } catch {
+    throw new Error(track.id + " filters need a JSON array; nothing was saved");
+  }
+  if (JSON.stringify(filters) !== JSON.stringify(track.processors))
+    operations.push({
+      type: "processors",
+      track: track.id,
+      processors: filters as SoundtrackTrack["processors"],
+    });
+  return operations;
+}
+/** Ducking JSON from the Lab editor; an empty editor removes ducking. */
+export function soundtrackDuckingOperation(text: string): SoundtrackEdit {
+  if (!text.trim()) return { type: "ducking", ducking: null };
+  try {
+    return { type: "ducking", ducking: JSON.parse(text) };
+  } catch {
+    throw new Error(
+      "Ducking needs a JSON object or an empty field; nothing was saved",
+    );
+  }
+}
+/** A new empty track or bus at unity gain; IDs and routing are validated by the API. */
+export function soundtrackAddNodeOperation(
+  kind: "track" | "bus",
+  fields: { id: string; output: string; role?: SoundtrackTrack["role"] },
+): SoundtrackEdit {
+  const id = fields.id.trim();
+  if (!id) throw new Error("A " + kind + " ID is required; nothing was saved");
+  return kind === "bus"
+    ? { type: "add-bus", id, output: fields.output, gainDb: 0 }
+    : {
+        type: "add-track",
+        id,
+        role: fields.role ?? "sfx",
+        output: fields.output,
+        gainDb: 0,
+        mute: false,
+        solo: false,
+        processors: [],
+      };
+}

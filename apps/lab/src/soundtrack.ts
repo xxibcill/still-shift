@@ -2,6 +2,9 @@ import type { SoundtrackProject } from "../../../packages/scene-contract/src/sou
 import type { SoundtrackEdit } from "../../../packages/renderer-core/src/soundtrack-edits.ts";
 import {
   soundtrackAddCueOperations,
+  soundtrackAddNodeOperation,
+  soundtrackDuckingOperation,
+  soundtrackTrackOperations,
   soundtrackHeadroom,
   soundtrackNumberField,
   soundtrackTimelineModel,
@@ -97,6 +100,15 @@ function clipFields() {
 }
 let waveforms: Record<string, SoundtrackRenderedOutput> = {},
   waveformRevision = -1;
+/** Bus and master options for a routing select, with the current output chosen. */
+function outputOptions(current: string) {
+  return ["master", ...project!.buses.map((bus) => bus.id)].map((id) => {
+    const option = document.createElement("option");
+    option.value = option.textContent = id;
+    option.selected = id === current;
+    return option;
+  });
+}
 function view() {
   if (!project) return;
   const rendered = waveformRevision === project.revision ? waveforms : {};
@@ -151,6 +163,27 @@ function view() {
       );
     label.append("Gain dB", gain);
     controls.append(label);
+    // Routing and filters save together; unchanged fields add no history.
+    const outputLabel = document.createElement("label"),
+      output = document.createElement("select");
+    output.replaceChildren(...outputOptions(track.output));
+    const filtersLabel = document.createElement("label"),
+      filters = document.createElement("input");
+    filters.value = JSON.stringify(track.processors);
+    const saveMix = () =>
+      void task(async () => {
+        const source = project!.tracks.find((t) => t.id === track.id)!;
+        const operations = soundtrackTrackOperations(source, {
+          output: output.value,
+          filters: filters.value,
+        });
+        if (operations.length) await edit(operations);
+      });
+    output.onchange = saveMix;
+    filters.onchange = saveMix;
+    outputLabel.append("Output", output);
+    filtersLabel.append("Filters JSON", filters);
+    controls.append(outputLabel, filtersLabel);
     const lane = document.createElement("div");
     lane.className = "lane";
     const canvas = document.createElement("canvas");
@@ -221,7 +254,19 @@ function view() {
   }
   if (project.clips.some((c) => c.id === selected)) clipSelect.value = selected;
   el("clip-edit").hidden = !project.clips.length;
+  // Outside the form, so the form keeps a single (submit) button.
+  el("remove-clip").hidden = !project.clips.length;
   clipFields();
+  el("mix").hidden = false;
+  const ducking = el<HTMLTextAreaElement>("ducking");
+  if (document.activeElement !== ducking)
+    ducking.value = project.ducking
+      ? JSON.stringify(project.ducking, null, 2)
+      : "";
+  for (const id of ["track-output", "bus-output"]) {
+    const select = el<HTMLSelectElement>(id);
+    select.replaceChildren(...outputOptions(select.value || "master"));
+  }
   // The cue form offers existing sources and tracks; a new path registers a source.
   el("add-cue").hidden = !project.tracks.length;
   el("cue-assets").replaceChildren(
@@ -310,6 +355,41 @@ el<HTMLFormElement>("clip-edit").onsubmit = (e) => {
       },
     ]);
   });
+};
+el<HTMLFormElement>("ducking-edit").onsubmit = (e) => {
+  e.preventDefault();
+  void task(() =>
+    edit([
+      soundtrackDuckingOperation(el<HTMLTextAreaElement>("ducking").value),
+    ]),
+  );
+};
+el<HTMLFormElement>("add-track").onsubmit = (e) => {
+  e.preventDefault();
+  void task(() =>
+    edit([
+      soundtrackAddNodeOperation("track", {
+        id: el<HTMLInputElement>("track-id").value,
+        role: el<HTMLSelectElement>("track-role").value as
+          | "sfx"
+          | "ambience"
+          | "bgm"
+          | "narration",
+        output: el<HTMLSelectElement>("track-output").value,
+      }),
+    ]),
+  );
+};
+el<HTMLFormElement>("add-bus").onsubmit = (e) => {
+  e.preventDefault();
+  void task(() =>
+    edit([
+      soundtrackAddNodeOperation("bus", {
+        id: el<HTMLInputElement>("bus-id").value,
+        output: el<HTMLSelectElement>("bus-output").value,
+      }),
+    ]),
+  );
 };
 el<HTMLFormElement>("add-cue").onsubmit = (e) => {
   e.preventDefault();

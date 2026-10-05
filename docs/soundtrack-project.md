@@ -349,9 +349,12 @@ new clip on a track from an existing source, or registers a new source path
 Save writes the same file as the CLI. Undo/redo uses persisted project history.
 An empty or invalid number field is rejected without saving instead of being read
 as zero. After rendering, the status line shows the mix peak and warns when
-samples exceed 0 dBFS. Drag handles, track/bus/filter/ducking forms and an
-independent browser mixing engine are not provided; edit those through a CLI/API
-edit.
+samples exceed 0 dBFS. Each track row also sets its output and a filters JSON
+array; **Mix graph** edits ducking JSON (empty removes it) and adds empty tracks
+and buses. Unchanged controls add no history, and every control saves through the
+same validated edit. Drag handles, removing tracks or buses, tiling and an
+independent browser mixing engine are not provided; use a CLI/API edit for
+those.
 
 **Render this revision** generates a fresh checked mix/stems and waveform data.
 Play/seek/download use that saved revision's rendered mix. An edit invalidates

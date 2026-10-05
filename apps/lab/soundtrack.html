@@ -120,8 +120,37 @@
             required
           ></textarea></label
         ><button>Save clip edits</button>
-        <button type="button" id="remove-clip">Remove clip</button>
       </form>
+      <button type="button" id="remove-clip" hidden>Remove clip</button>
+      <section id="mix" hidden>
+        <h2>Mix graph</h2>
+        <form id="ducking-edit">
+          <label
+            >Ducking JSON (empty removes ducking)<textarea
+              id="ducking"
+              rows="6"
+            ></textarea></label
+          ><button>Save ducking</button>
+        </form>
+        <form id="add-track">
+          <label>New track ID<input id="track-id" required /></label>
+          <label
+            >Role<select id="track-role">
+              <option value="sfx">SFX</option>
+              <option value="ambience">Ambience</option>
+              <option value="bgm">BGM</option>
+              <option value="narration">Narration</option>
+            </select></label
+          >
+          <label>Output<select id="track-output"></select></label>
+          <button>Add track</button>
+        </form>
+        <form id="add-bus">
+          <label>New bus ID<input id="bus-id" required /></label>
+          <label>Output<select id="bus-output"></select></label>
+          <button>Add bus</button>
+        </form>
+      </section>
       <form id="add-cue" hidden>
         <h2>Add cue</h2>
         <label>Cue ID<input id="cue-id" required /></label>
