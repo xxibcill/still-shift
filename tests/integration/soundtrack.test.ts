@@ -616,3 +616,72 @@ it("rejects oversized serialized edits without changing the saved project", asyn
     ),
   ).toEqual([]);
 });
+
+it.each([1, 511, 512, 513, 48005, 110400])(
+  "renders the exact integer sample duration %i for silent projects",
+  async (durationSamples) => {
+    const silent: SoundtrackProject = {
+      ...structuredClone(project),
+      durationSamples,
+      assets: [],
+      clips: [],
+      tracks: [],
+      buses: [],
+      history: { undo: [], redo: [] },
+    };
+    delete silent.ducking;
+    const file = join(root, `silent-${durationSamples}.json`);
+    await writeFile(file, JSON.stringify(silent));
+    const output = join(root, `silent-${durationSamples}`);
+    const manifest = await renderSoundtrackProject(file, output);
+    expect(manifest.files.master!.samplesPerChannel).toBe(durationSamples);
+    const samples = await pcm(join(output, "audio/mix.wav"));
+    expect(samples.length).toBe(durationSamples * 2);
+    expect(samples.every((sample) => sample === 0)).toBe(true);
+  },
+  10000,
+);
+
+it("preserves narration, stems and range PCM at a rounded 30 fps duration", async () => {
+  const authored = structuredClone(project);
+  authored.durationSamples = 69 * 1600;
+  authored.clips[0]!.sourceEndSample = authored.durationSamples;
+  authored.clips[1]!.sourceEndSample = authored.durationSamples;
+  authored.clips[2]!.startSample = authored.durationSamples - 4800;
+  authored.tracks[2]!.processors = [
+    { type: "lowpass", frequencyHz: 5500, q: Math.SQRT1_2 },
+  ];
+  const file = join(root, "rounded-picture.json");
+  await writeFile(file, JSON.stringify(authored));
+  const full = await renderSoundtrackProject(
+    file,
+    join(root, "rounded-picture"),
+    {
+      stems: true,
+    },
+  );
+  for (const stem of Object.values(full.files))
+    expect(stem.samplesPerChannel).toBe(authored.durationSamples);
+  const narration = await pcm(audio("rounded-picture", "voice"));
+  const source = await pcm(join(root, "voice.wav"));
+  expect(
+    narration.every((value, index) => value === source[Math.floor(index / 2)]),
+  ).toBe(true);
+  const start = authored.durationSamples - 2401;
+  const range = await renderSoundtrackProject(
+    file,
+    join(root, "rounded-picture-range"),
+    {
+      stems: true,
+      range: { start, end: authored.durationSamples },
+    },
+  );
+  for (const [id, stem] of Object.entries(range.files)) {
+    expect(stem.samplesPerChannel).toBe(2401);
+    const fullSamples = await pcm(
+      join(full.output, "audio", full.files[id]!.file),
+    );
+    const rangeSamples = await pcm(join(range.output, "audio", stem.file));
+    expect(rangeSamples).toEqual(fullSamples.slice(start * 2));
+  }
+}, 10000);

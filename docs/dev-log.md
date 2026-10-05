@@ -44,12 +44,13 @@ still hold before relying on them.
 ## Current state
 
 - **PR #33 second review fixes (2026-10-05):** Codex on isolated
-  `codex/pr33-review-fixes` from `b6cc3cd`. Three inline findings posted.
-  Bounded UTF-8 project serialization now preserves the saved file on oversized
-  edits and guards package/render snapshots. Preview publication/pruning and
-  Lab edits now coordinate per project, including independent-server locks.
-  Exact backend sample duration remains in flight. One finding per local commit;
-  push only after all three fixes and local verification.
+  `codex/pr33-review-fixes` from `b6cc3cd`. All three inline findings fixed:
+  bounded UTF-8 project serialization, coordinated preview publication/pruning
+  and exact backend sample duration. `pnpm check:soundtrack` passes on the pinned
+  toolchain: 1,438 unit, 46 runtime, 34 command-only audio integration and 14 depth
+  tests, plus schema/boundaries/format/lint/types and soundtrack Python checks.
+  Three finding commits; owner review/merge pending. Full browser groups and frozen
+  baselines were not rerun for these fixes; earlier CE16 evidence stays historical.
   [Fix results](./pr-33-review-fix-results.json).
 
 - **PR #33 review fixes (2026-10-05):** Claude Code pushed per-request undo,
@@ -156,6 +157,22 @@ _Last updated 2026-10-05 by Codex for isolated CE16 PR publication._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-05 — Preserve PR #33 exact backend sample counts
+
+- **Agent / branch:** Codex on `codex/pr33-review-fixes`, after `f35f1b7`.
+- **Scope:** P2 inline finding: converting 110,400 samples to seconds rendered one short.
+- **Done:** round seconds upward by one representable step at the pinned DawDreamer
+  boundary; retain the exact output-length check and unchanged narration placement.
+- **Results:** three new duration cases fail before the fix; all seven new duration
+  regressions pass, including 1/511/512/513/48,005/110,400 samples, original narration
+  and exact full/range stems with DSP. Final `pnpm check:soundtrack` passes:
+  1,438 unit / 46 runtime / 34 audio integration / 14 depth, plus all static/Python gates.
+- **Delivery:** one commit per finding (`077443e`, `f35f1b7`, this slice), published
+  together after the final checks. No Actions, source-media changes or GUI checks.
+- **Open / limits:** owner review/merge pending; full browser/baseline matrix and
+  creative listening/AV QA not rerun. Earlier completion records remain historical.
+- **Records:** [review/fix evidence](./pr-33-review-fix-results.json).
 
 ### 2026-10-05 — Coordinate PR #33 preview publication
 

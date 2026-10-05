@@ -2,6 +2,7 @@
 
 import hashlib
 import json
+import math
 import platform
 import resource
 import subprocess
@@ -328,7 +329,9 @@ def render(request):
             progressed = True
         if not progressed:
             raise WorkerError("routing-cycle", "Graph cannot be resolved")
-    if not engine.load_graph(graph) or not engine.render(length / 48000):
+    # DawDreamer truncates seconds * sample rate; round upward at this boundary.
+    seconds = math.nextafter(length / 48000, math.inf)
+    if not engine.load_graph(graph) or not engine.render(seconds):
         raise WorkerError("graph-render", "DawDreamer failed to render")
     begin, end = request["range"]["start"], request["range"]["end"]
     files = {}

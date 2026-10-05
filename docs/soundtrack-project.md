@@ -94,6 +94,9 @@ summation order. Nonunity bus/master gains must be included when reconstructing
 from track stems. `mix` and `duck-envelope` are reserved output names. Output files
 are Float32 WAVs; delivery encoding stays with FFmpeg. The full graph renders before
 any range crop, preserving filters, fades and ducking at the range boundary.
+Integer sample counts convert to backend seconds rounded upward by one representable
+step, preventing truncation to one sample short. Full outputs must still match the
+exact authored integer length; narration intervals and placements are unchanged.
 `render.json` records sample count, waveform peaks, hashes, revision, worker/DSP
 versions, runtime, path calibration and a cache identity. Identity includes the
 authored state, source identities, worker bytes, backend, toolchain and render
