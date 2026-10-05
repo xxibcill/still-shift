@@ -1,11 +1,13 @@
 import type { Composition } from "@still-shift/scene-contract";
 import type { SourceLocation } from "./source.ts";
+type KeySourceField = "out" | "spatialOut";
 export type SourceTrack = {
   precomp?: string;
   layer: string;
   property: string;
   first: number;
   last: number;
+  field?: KeySourceField;
   location: SourceLocation;
 };
 export type BuilderSources = {
@@ -13,7 +15,7 @@ export type BuilderSources = {
   files: string[];
   sites: [number, number, number][];
   paths?: string[];
-  tracks?: [number, number, number, number, number, number][];
+  tracks?: [number, number, number, number, number, number, KeySourceField?][];
   nodes: {
     comp: number;
     layers: number[];
@@ -75,7 +77,7 @@ export function encodeSources(
       path = paths.length;
       paths.push(track.property);
     }
-    return [
+    const row: NonNullable<BuilderSources["tracks"]>[number] = [
       scope,
       layers.findIndex((layer) => layer.id === track.layer),
       path,
@@ -83,6 +85,8 @@ export function encodeSources(
       track.last,
       siteIndex(track.location),
     ];
+    if (track.field !== undefined) row[6] = track.field;
+    return row;
   });
   return {
     ...(encoded.length ? { paths, tracks: encoded } : {}),
@@ -189,12 +193,14 @@ export function builderSource(
         nestedNode[2] as "markers"
       ]?.[Number(nestedNode[3])] ?? id;
   const keyed =
-    /^(?:precomps\[(\d+)\]\.)?layers\[(\d+)\]\.(.+)\.keys\[(\d+)\]/.exec(path);
+    /^(?:precomps\[(\d+)\]\.)?layers\[(\d+)\]\.(.+)\.keys\[(\d+)\](.*)$/.exec(
+      path,
+    );
   if (keyed) {
     const scope = keyed[1] === undefined ? -1 : Number(keyed[1]);
     const index = Number(keyed[2]),
       key = Number(keyed[4]);
-    const track = value.tracks?.find(
+    const tracks = value.tracks?.filter(
       (row) =>
         row[0] === scope &&
         row[1] === index &&
@@ -202,6 +208,10 @@ export function builderSource(
         row[3] <= key &&
         row[4] >= key,
     );
+    const field = /^\.(out|spatialOut)(?:\.|\[|$)/.exec(keyed[5]!)?.[1];
+    const track =
+      (field ? tracks?.findLast((row) => row[6] === field) : undefined) ??
+      tracks?.find((row) => row[6] === undefined);
     if (track) id = track[5];
   }
   const site = value.sites[id];
@@ -221,22 +231,25 @@ export function inheritedTracks(
   const value = comp.metadata?.builder as unknown as BuilderSources | undefined;
   if (value?.version !== "motion-builder-1" || !value.tracks || !value.paths)
     return [];
-  return value.tracks.flatMap(([scope, layer, path, first, last, site]) => {
-    const definition = scope < 0 ? comp : comp.precomps?.[scope];
-    const id = definition?.layers[layer]?.id,
-      property = value.paths?.[path],
-      row = value.sites[site];
-    const file = row && value.files[row[0]];
-    if (!definition || !id || !property || !row || !file) return [];
-    return [
-      {
-        precomp: scope < 0 ? precomp : definition.id,
-        layer: id,
-        property,
-        first,
-        last,
-        location: { file, line: row[1], column: row[2] },
-      },
-    ];
-  });
+  return value.tracks.flatMap(
+    ([scope, layer, path, first, last, site, field]) => {
+      const definition = scope < 0 ? comp : comp.precomps?.[scope];
+      const id = definition?.layers[layer]?.id,
+        property = value.paths?.[path],
+        row = value.sites[site];
+      const file = row && value.files[row[0]];
+      if (!definition || !id || !property || !row || !file) return [];
+      return [
+        {
+          precomp: scope < 0 ? precomp : definition.id,
+          layer: id,
+          property,
+          first,
+          last,
+          ...(field === undefined ? {} : { field }),
+          location: { file, line: row[1], column: row[2] },
+        },
+      ];
+    },
+  );
 }

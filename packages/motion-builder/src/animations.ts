@@ -81,6 +81,7 @@ export function applyAnimations(
       );
     placed.push(normalized);
     const target = `${animation.owner.id}.${animation.property}`;
+    const sourceProperty = propertyJsonPath(object, animation.property);
     const keys = tracks.get(target) ?? [];
     const first = keys.length;
     const staticValue = readProperty(object, animation.property);
@@ -103,6 +104,16 @@ export function applyAnimations(
           );
         if (key.out !== undefined) previous.out = key.out;
         if (key.spatialOut !== undefined) previous.spatialOut = key.spatialOut;
+        for (const field of ["out", "spatialOut"] as const)
+          if (key[field] !== undefined)
+            sources.push({
+              layer: animation.owner.id,
+              property: sourceProperty,
+              first: keys.length - 1,
+              last: keys.length - 1,
+              field,
+              location: animation.location,
+            });
         return;
       }
       if (previous && previous.frame > key.frame)
@@ -168,7 +179,7 @@ export function applyAnimations(
     if (keys.length > first)
       sources.push({
         layer: animation.owner.id,
-        property: propertyJsonPath(object, animation.property),
+        property: sourceProperty,
         first,
         last: keys.length - 1,
         location: animation.location,

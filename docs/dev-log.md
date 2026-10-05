@@ -45,9 +45,10 @@ still hold before relying on them.
 
 - **PR #36 re-review fixes in progress (2026-10-05):** isolated
   `codex/pr36-rereview-fixes` from `f68f135`; three findings posted inline.
-  Delayed explicit `from` segments now preserve preceding static state; 41 focused
-  tests and the build pass. Joined-key field attribution and asset-schema watch
-  recovery remain. One finding per commit, one final push; no owner decision is
+  Delayed explicit `from` segments preserve preceding static state; merged outgoing
+  key fields retain their authoring calls through nested reuse. 46 focused tests
+  and build pass. Asset-schema watch recovery remains. One finding per commit,
+  one final push; no owner decision is
   needed for the authorized fixes. [Evidence](./pr-36-rereview-fix-results.json).
 
 - **PR #36 review fixes complete (2026-10-05):** `codex/composition-ce10`
@@ -166,6 +167,18 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-05 — PR #36 re-review fix 2: attribute joined outgoing key fields
+
+- **Agent / branch:** Codex on `codex/pr36-rereview-fixes`; prior fix `9314879`.
+- **Done:** Add optional field attribution to compact source tracks for merged `out`
+  and `spatialOut`; preserve incoming/key-value ownership and nested inheritance.
+- **Results:** Four regressions fail before repair; 46 focused tests and build pass.
+  Existing six-field metadata and bounded root-layer coverage remain valid.
+- **Open / next:** Repair asset-schema watch recovery, then verify and push once.
+  GitHub Actions remain disabled; review and merge remain owner decisions.
+- **Records:** [Evidence](./pr-36-rereview-fix-results.json),
+  [inline finding](https://github.com/xxibcill/still-shift/pull/36#discussion_r4183933400).
 
 ### 2026-10-05 — PR #36 re-review fix 1: retain static state before delayed from
 

@@ -8,6 +8,7 @@ import {
   at,
   seq,
   nullLayer,
+  type AnimationKey,
 } from "@still-shift/motion";
 import { evaluateComp, evaluateProperty } from "@still-shift/renderer-core";
 const options = { width: 64, height: 64, fps: 24 as const, frames: 24 };
@@ -383,4 +384,105 @@ it("preserves each side of a spatial join when keyed clips are sequenced", () =>
     15,
   ) as number[];
   expect(atMidpoint[1]).toBeGreaterThan(8);
+});
+
+it.each([
+  [{ out: { ease: 2 } }, ".out.ease"],
+  [{ out: { ease: 0.5, speed: [Infinity, 0] } }, ".out.speed"],
+  [{ spatialOut: [Infinity, 0] }, ".spatialOut"],
+] satisfies [Partial<AnimationKey<number[]>>, string][])(
+  "locates merged outgoing handle errors at the second keyed clip (%s)",
+  (fields, suffix) => {
+    let call;
+    try {
+      comp(options, (c) => {
+        const n = c.add(box());
+        const first = n.position.keys([
+          { frame: 0, value: [0, 0] },
+          { frame: 10, value: [10, 0] },
+        ]);
+        const second = n.position.keys([
+          { frame: 0, value: [10, 0], ...structuredClone(fields) },
+          { frame: 10, value: [20, 0] },
+        ]);
+        call = second.value.location;
+        c.timeline(seq(first, second));
+      });
+      expect.fail("invalid outgoing metadata must fail");
+    } catch (error) {
+      expect(error).toBeInstanceOf(BuilderError);
+      expect((error as BuilderError).message).toContain(`keys[1]${suffix}`);
+      expect((error as BuilderError).location).toEqual(call);
+    }
+  },
+);
+
+it("keeps incoming, outgoing and key-value call sites distinct through nested reuse", () => {
+  let firstCall, secondCall;
+  const child = comp({ ...options, id: "child" }, (c) => {
+    const n = c.add(box());
+    const first = n.position.keys([
+      { frame: 0, value: [0, 0] },
+      { frame: 10, value: [10, 0], in: { ease: 0.3 }, spatialIn: [-4, 3] },
+    ]);
+    const second = n.position.keys([
+      { frame: 0, value: [10, 0], out: { ease: 0.7 }, spatialOut: [0, 12] },
+      { frame: 10, value: [20, 0] },
+    ]);
+    firstCall = first.value.location;
+    secondCall = second.value.location;
+    c.timeline(seq(first, second));
+  });
+  const middle = comp({ ...options, id: "middle" }, (c) =>
+    c.add(precomp("host", child)),
+  );
+  const outer = comp(options, (c) => {
+    c.add(precomp("left", middle));
+    c.add(precomp("right", middle));
+  });
+  const childIndex = outer.precomps!.findIndex((p) => p.id === "child");
+  for (const [composition, prefix] of [
+    [child, ""],
+    [outer, `precomps[${childIndex}].`],
+  ] as const) {
+    const key = `${prefix}layers[0].transform.position.keys[1]`;
+    for (const suffix of ["", ".value", ".in.ease", ".spatialIn[0]"])
+      expect(builderSource(composition, key + suffix)).toEqual(firstCall);
+    for (const suffix of [".out", ".out.ease", ".spatialOut[0]"])
+      expect(builderSource(composition, key + suffix)).toEqual(secondCall);
+    expect(
+      builderSource(
+        composition,
+        `${prefix}layers[0].transform.position.keys[2].value`,
+      ),
+    ).toEqual(secondCall);
+  }
+});
+
+it("locates invalid incoming metadata at the first clip after a join", () => {
+  let call;
+  try {
+    comp(options, (c) => {
+      const n = c.add(box());
+      const first = n.x.keys([
+        { frame: 0, value: 0 },
+        { frame: 10, value: 10, in: { ease: 2 } },
+      ]);
+      call = first.value.location;
+      c.timeline(
+        seq(
+          first,
+          n.x.keys([
+            { frame: 0, value: 10, out: { ease: 0.7 } },
+            { frame: 10, value: 20 },
+          ]),
+        ),
+      );
+    });
+    expect.fail("invalid incoming metadata must fail");
+  } catch (error) {
+    expect(error).toBeInstanceOf(BuilderError);
+    expect((error as BuilderError).message).toContain("keys[1].in.ease");
+    expect((error as BuilderError).location).toEqual(call);
+  }
 });
