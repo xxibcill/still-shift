@@ -51,7 +51,9 @@ still hold before relying on them.
   save/export acceptance and final builder/instance review pass. Full local
   milestone gates and the CE11 PR remain. The first full gate exposed Vite
   import compatibility; its repair passes build/lint/boundaries and integration
-  rechecks pass all 25 affected tests. Existing Lab design is the default pending optional steering.
+  rechecks pass all 25 affected tests. The second full check reaches typography
+  before a module-fetch failure; its unchanged focused rerun passes. Inspector
+  documentation is complete; repeat the full gate with isolated snapshot Vite caches. Existing Lab design is the default pending optional steering.
   [Evidence](./composition-ce11-results.json).
 
 - **CE10 complete (2026-10-05):** `codex/composition-ce10` from CE4a `869a793`;
@@ -161,6 +163,19 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-05 — CE11 inspector guidance and verification isolation
+
+- **Agent / branch:** Codex on `codex/composition-ce11`, after `46240f5`.
+- **Done:** user guide and maintained/generated reference document inspector edits,
+  graph clocks, source ownership, visibility saves and native draft exports.
+- **Results:** second full check passes 1,510 unit, 46 runtime, 139 integration,
+  14 depth tests, story/commerce matrices, then fails the typography module fetch.
+  The unchanged focused typography rerun passes all 20 cases / 3,367 frames.
+- **Rejected / next:** no successful full-check claim. Snapshot Vite caches were
+  shared with the primary checkout; isolate them for the next full check. Their
+  involvement is unconfirmed. Preserve both failure and recheck evidence.
+- **Records:** [CE11 evidence](./composition-ce11-results.json).
 
 ### 2026-10-05 — Repair native imports in the CE11 Vite configuration
 

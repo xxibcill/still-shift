@@ -120,6 +120,57 @@ parents are valid transforms; constraints that need their inverse report
 `comp-constraint-singular`. Evaluation limits each call to 20,000 layer instances
 and accepts finite root times within ±216,000 frames.
 
+## Lab composition inspector (CE11)
+
+Run `comp preview --input composition.json --watch` for a fixed source, or open
+Lab's `/composition.html` fixture browser. Both use the shared transactional preview
+session with native Canvas 2D/WebGL2 renderer ownership. Successful edits preserve
+the scrub frame; invalid edits/rebuilds retain the accepted picture. Source reloads
+clamp the frame when the new composition is shorter.
+
+Layer rows show in/out bars in the owning composition clock and parent, blend,
+matte and effect badges. Native property key diamonds use authored local time.
+**All root properties** also lists root controls and signals. The authored value
+and speed graph excludes runtime bindings; **Resolved motion in root frames**
+samples `evaluateProperty`, including expressions, drivers, constraints, inherited
+fps and precomp instance clocks. Select an instance for reused definitions.
+Enumeration is bounded to 128 instance routes and 4,096 visited scopes. Unused
+definitions retain authored graphs. Provider parameters and metadata remain opaque.
+
+Temporal speed is property units per frame; grouped vectors/colours accept matching
+speed tuples and spatial position accepts arc-length speed. Numeric spatial
+tangents use the property's native coordinates. Segment Bézier handles support
+numeric input, pointer dragging and keyboard arrows (Shift moves y). Applying
+Bézier clears the segment's outgoing/incoming temporal handles and smoothing,
+as stated beside the control. Discrete, path and native 2D camera tracks do not
+offer incompatible temporal handles. Each accepted edit replaces the immutable
+document only after native validation and a successful staged frame. Undo/redo
+retains at most 64 entries within a 16 MiB serialized-document budget.
+
+Hide/solo controls affect the view until **Apply visibility** writes them into the
+draft. **Reset view** restores accepted draft visibility. Saving applies current
+view visibility; MP4 export renders the current visible draft. Bounds/anchors,
+instance motion paths/tangents and 5% safe-area guides use a separate SVG surface
+and never enter render output. Diagnostic jumps use root composition frames.
+Real camera-frustum and source-backed waveform overlays follow CE8 and CE13.
+
+Fixed JSON previews offer **Save JSON source**, guarded by source revision and
+byte hash. Saves preserve raw native fields, metadata, source asset paths and file
+mode; no-op saves preserve bytes. Asset bindings cannot change through this endpoint.
+External changes retain a dirty draft, reject stale saves and require explicit
+**Reload source**, which discards the draft. Fixture previews download edited JSON;
+place it beside its source for relative assets. Builder source files remain read-only:
+tune a temporary preview and **Copy edited keys** into the owning layer. The emitted
+`c.timeline(layer.property(...).keys(...))` uses local key times and placement zero;
+respect the documented `startFrame`/`stretch` clock when pasting. Tracks without a
+builder property expose native replacement guidance. A source reload replaces the
+temporary builder draft.
+
+**Export MP4** captures the accepted native document and its registered asset bytes
+before rendering with the pinned native renderer. Save/export and staged loads lock
+editing controls until their operation completes. Watch changes and renderer switches
+retain the draft and frame where applicable; export overlays are never rasterized.
+
 ## Rendering a composition
 
 ```ts

@@ -294,13 +294,47 @@
         }
       ],
       "pending": ["Repeat the complete local pnpm check."]
+    },
+    {
+      "name": "Inspector documentation and verification isolation",
+      "status": "checkpoint",
+      "changes": [
+        "Document native inspector, graph clocks, edit precedence, history, save/view semantics, builder handoff and captured-asset export in the user guide and maintained/generated references."
+      ],
+      "verification": [
+        {
+          "command": "Full pnpm check at 46240f5",
+          "status": "failed",
+          "log": "benchmarks/results/composition-ce11-verification/ce11-full-46240f5.log",
+          "passed": {
+            "unit": 1510,
+            "runtime": 46,
+            "integration": 139,
+            "depth": 14,
+            "storyAdapterCases": 69,
+            "storyAdapterFrames": 14086,
+            "commerceAdapterCases": 127,
+            "commerceAdapterFrames": 28200
+          },
+          "failure": "Typography browser first module import failed to fetch renderer-core. No HTTP/module diagnostic was emitted."
+        },
+        {
+          "command": "pnpm test:browser:composition-typography-adapter in the same tracked snapshot, unchanged source and timeouts",
+          "status": "passed",
+          "cases": 20,
+          "frames": 3367,
+          "log": "benchmarks/results/composition-ce11-verification/ce11-typography-recheck.log"
+        }
+      ],
+      "environmentFinding": "Snapshot node_modules/.vite and .vite-temp were symlinks to the primary checkout. The next verification checkout excludes these cache links. Shared-cache involvement is an inference, not a confirmed root cause.",
+      "pending": [
+        "Run complete local pnpm check in a fresh tracked snapshot with isolated Vite caches."
+      ]
     }
   ],
   "conditionalFollowThrough": {
     "CE8": "Real 3D camera-frustum inspector overlay when camera layers are implemented.",
     "CE13": "Real source-backed audio waveform when audio layers are implemented."
   },
-  "pending": [
-    "Complete CE11 features and local milestone acceptance; open and attach PR"
-  ]
+  "pending": ["Complete full local pnpm check and open/attach CE11 PR"]
 }
