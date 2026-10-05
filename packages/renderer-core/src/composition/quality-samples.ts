@@ -11,6 +11,7 @@ import type {
   EvaluatedLayerTree,
   EvaluationOptions,
 } from "./evaluate/types.ts";
+import { passageError } from "../passage-diagnostics.ts";
 import { typographyClock } from "./render/text-clock.ts";
 
 export type CompositionQualitySample = {
@@ -370,19 +371,26 @@ export function qualityTrackContributes(
   return !effect || sample.state.effects[Number(effect[1])]?.enabled === true;
 }
 
+export function assertCompositionQualityCapacity(layerFrames: number) {
+  if (layerFrames > 2_000_000)
+    passageError(
+      "comp-lint-limit",
+      "Motion lint exceeds its 2,000,000 layer-frame budget; split the composition into shots",
+      { path: "layers" },
+    );
+}
+
 export function sampleCompositionQuality(
   comp: Composition,
   options: EvaluationOptions = {},
 ) {
+  assertCompositionQualityCapacity(comp.frameCount * comp.layers.length);
   const frames: CompositionQualityFrame[] = [];
   let samples = 0;
   for (let frame = 0; frame < comp.frameCount; frame++) {
     const sample = compositionQualityFrame(comp, frame, options);
     samples += sample.layers.size;
-    if (samples > 2_000_000)
-      throw new Error(
-        "Motion lint exceeds its 2,000,000 layer-frame budget; split the composition into shots",
-      );
+    assertCompositionQualityCapacity(samples);
     frames.push(sample);
   }
   return frames;

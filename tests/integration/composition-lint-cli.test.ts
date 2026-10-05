@@ -11,6 +11,7 @@ import {
 import {
   collapsedMotionComposition,
   providerReadingComposition,
+  qualityCapacityComposition,
 } from "../helpers/composition-quality-fixtures.ts";
 
 const directories: string[] = [];
@@ -194,4 +195,17 @@ it("accepts continuous collapsed child motion outside the source rectangle", asy
   expect(result.exit).toBe(0);
   expect(result.stderr).toBe("");
   expect(JSON.parse(result.stdout).diagnostics).toEqual([]);
+});
+
+it("returns a structured lint-limit error without allocating an oversized timeline", async () => {
+  const result = await invoke(qualityCapacityComposition());
+  expect(result.exit).toBe(1);
+  expect(result.stdout).toBe("");
+  expect(JSON.parse(result.stderr).diagnostics).toEqual([
+    expect.objectContaining({
+      code: "comp-lint-limit",
+      severity: "error",
+      path: "layers",
+    }),
+  ]);
 });

@@ -64,12 +64,34 @@
           "Inherited zero opacity and ancestor clipping",
           "Empty collapsed content with an unused opaque background"
         ]
-      }
+      },
+      "commit": "498c771"
     },
     {
       "id": "lint-limit-diagnostic",
       "comment": "https://github.com/xxibcill/still-shift/pull/34#discussion_r4183930170",
-      "status": "pending"
+      "status": "fixed",
+      "change": "Capacity failures use PassageError with comp-lint-limit and layers path. Root-layer lower bounds reject oversized timelines before sampling/rendering; incremental accounting still covers nested content.",
+      "verification": {
+        "before": {
+          "failed": 1,
+          "passed": 82,
+          "observedDiagnostic": "invalid-scene with no path"
+        },
+        "after": {
+          "qualityTests": 84,
+          "cliTests": 15,
+          "failed": 0,
+          "pixelMode": "Stable code, severity and path survive browser transport"
+        },
+        "coverage": [
+          "Incremental sample-capacity exhaustion",
+          "Valid 2,000-layer / 1,001-frame composition exceeds the unchanged 2,000,000 limit",
+          "State CLI exits nonzero with structured stderr",
+          "Rendered lint refuses the root-capacity case before rendering"
+        ]
+      },
+      "commitMessage": "fix(composition): preserve structured lint capacity errors"
     }
   ],
   "setupFailures": [
@@ -78,8 +100,124 @@
     "Out-of-window host control initially used invalid outPoint 0; corrected to a valid one-frame window before final verification."
   ],
   "preservation": "Original checkout and unrelated local work retained; GitHub Actions remain disabled.",
-  "pending": [
-    "Lint-limit diagnostic",
-    "Final local verification and one final push"
-  ]
+  "pending": ["Owner review and merge of PR #34"],
+  "finalVerification": {
+    "fastChecks": {
+      "command": "pnpm check:fast",
+      "status": "passed",
+      "unitTests": 1509,
+      "includes": [
+        "schema",
+        "package boundaries",
+        "format",
+        "ESLint",
+        "TypeScript",
+        "all unit tests"
+      ]
+    },
+    "runtime": {
+      "command": "pnpm test:runtime",
+      "status": "passed",
+      "tests": 46
+    },
+    "focusedQualityAndCLI": {
+      "status": "passed",
+      "qualityTests": 84,
+      "cliTests": 15
+    },
+    "browserQuality": {
+      "command": "pnpm test:browser:composition-quality",
+      "status": "passed",
+      "checks": [
+        "14 acceptance fixture Node/browser comparisons",
+        "Lab marker seeking and rendered findings",
+        "Inherited and matte motion timing",
+        "Clipped coverage against painted pixels",
+        "Independent Canvas2D/WebGL2 meaningful pixel motion",
+        "Provider brief and sufficient reveals",
+        "Collapsed versus ordinary precomp source footprints",
+        "Structured rendered lint-limit diagnostic transport"
+      ]
+    },
+    "corpus": {
+      "total": 176,
+      "oldDiagnosticCounts": {
+        "outside-safe-area": 244,
+        "velocity-discontinuity": 1031,
+        "co-start": 1,
+        "reading-time": 337,
+        "frozen-pixels": 165,
+        "off-canvas": 43,
+        "frozen-run": 124,
+        "opacity-pop": 400,
+        "easing-monotony": 1,
+        "comp-text-layout-missing": 3172
+      },
+      "newDiagnosticCounts": {
+        "outside-safe-area": 244,
+        "velocity-discontinuity": 1031,
+        "co-start": 1,
+        "reading-time": 339,
+        "frozen-pixels": 165,
+        "off-canvas": 43,
+        "frozen-run": 124,
+        "opacity-pop": 400,
+        "easing-monotony": 1,
+        "comp-text-layout-missing": 3172
+      },
+      "changedReports": [
+        {
+          "id": "story/continuous-evidence-boundary",
+          "oldReading": 3,
+          "newReading": 5,
+          "otherDiagnosticsSame": true
+        }
+      ],
+      "frozenPixelFindingsUnchanged": true,
+      "sourceChecksum": "25c2465f27c57121ef1623ee48477d9ee52757a06b0e7b20a8458b3e206b4a79",
+      "frames": 36061,
+      "compositionStateAndPixels": 153,
+      "pixelOnly": 23,
+      "unexpectedFailures": 0,
+      "baselineChecksumUnchanged": true,
+      "intentionalChange": "Two additional reading-time errors in story/continuous-evidence-boundary; all other diagnostics and frozen-pixel findings remain identical.",
+      "newReadingFindings": [
+        {
+          "code": "reading-time",
+          "severity": "error",
+          "nodes": ["qualifier"],
+          "node": "qualifier",
+          "path": "layers.18.text",
+          "shot": "story-adapter",
+          "frames": [0, 191],
+          "measured": 1.4583333333333333,
+          "message": "body text (5 words) has 1.46 s of consecutive readable time; needs 1.67 s."
+        },
+        {
+          "code": "reading-time",
+          "severity": "error",
+          "nodes": ["composite-note-end"],
+          "node": "composite-note-end",
+          "path": "layers.19.text",
+          "shot": "story-adapter",
+          "frames": [93, 157],
+          "measured": 0.9583333333333334,
+          "message": "body text (1 words) has 0.96 s of consecutive readable time; needs 1.00 s."
+        }
+      ]
+    },
+    "fullCheckRerun": false,
+    "scope": "Lint analyzer changes: all fast/runtime/focused CLI/native browser gates plus the CE0 lint corpus; full render/export matrix was not rerun.",
+    "rendererOutputAndVersionChanged": false,
+    "baselineRegeneration": false
+  },
+  "verifiedSourceChecksums": {
+    "packages/renderer-core/src/composition/quality-samples.ts": "bc6d84af6e20bffedaa44e00f5c9c63f49f6d93c08f6068a770ee4628f698d26",
+    "packages/renderer-core/src/composition/quality-render.ts": "37cecea03a55f01b5afaa86448b2112e61ec4654150f066975a2c3380e2523db",
+    "packages/renderer-core/src/typography-quality.ts": "f3bb98b84e9855a8f0b311c4dc86d16df8d7fefcf5281abf3f75a1a931153570",
+    "tests/helpers/composition-quality-fixtures.ts": "68e2fdc2fd99c8f9a5be7b41782365df315939253acf5ded44b22dcf6dc15dea",
+    "tests/unit/composition-quality.test.ts": "6a21f3589c9e1bc84e699101ee37c7d67719e1aa711bb17a38ae0f0b21cbeec3",
+    "tests/integration/composition-lint-cli.test.ts": "f9f3851d66eb94a758ee1d7dfa40578d265e3d278999ec8f07ed7a08b979c06a",
+    "tests/browser/composition-quality.ts": "81986dfea5b6b9b3e85bab4ba8a0802228542bf434c95f24a9148453b75d4881"
+  }
 }

@@ -11,6 +11,7 @@ import {
   composition,
   solid,
 } from "../../benchmarks/fixtures/composition/ce12/fixtures.ts";
+import { passageDiagnostics } from "../../packages/renderer-core/src/passage-diagnostics.ts";
 import { analyzeCompositionQuality } from "../../packages/renderer-core/src/story-quality.ts";
 import { lintCompositionFile } from "@still-shift/animation-engine";
 import type * as Renderer from "@still-shift/renderer-core";
@@ -22,6 +23,7 @@ import type {
 import {
   collapsedMotionComposition,
   providerReadingComposition,
+  qualityCapacityComposition,
 } from "../helpers/composition-quality-fixtures.ts";
 
 const root = resolve(import.meta.dirname, "../..");
@@ -585,6 +587,28 @@ try {
     }
   } finally {
     await rm(collapsedDirectory, { recursive: true });
+  }
+
+  const capacityDirectory = await mkdtemp(join(tmpdir(), "ce12-lint-limit-"));
+  try {
+    const input = join(capacityDirectory, "oversized.json");
+    await writeFile(input, JSON.stringify(qualityCapacityComposition()));
+    await assert.rejects(
+      lintCompositionFile(input, {}, { pixels: true, projectRoot: root }),
+      (error: unknown) => {
+        assert.deepEqual(
+          passageDiagnostics(error).map(({ code, severity, path }) => ({
+            code,
+            severity,
+            path,
+          })),
+          [{ code: "comp-lint-limit", severity: "error", path: "layers" }],
+        );
+        return true;
+      },
+    );
+  } finally {
+    await rm(capacityDirectory, { recursive: true });
   }
 
   const cliPixels = await lintCompositionFile(

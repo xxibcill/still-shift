@@ -43,12 +43,14 @@ still hold before relying on them.
 
 ## Current state
 
-- **PR #34 follow-up fixes in progress (2026-10-05):** three new inline findings
-  posted on `a41f687`. Provider reading reveal and collapsed precomp traversal are
-  repaired. All 96 focused tests, rendered browser checks, TypeScript and ESLint
-  pass, including nested/hidden/clipped collapsed content. Structured lint-limit
-  diagnostics remain. One finding per commit; push once after final verification.
-  Owner review/merge remains pending.
+- **PR #34 follow-up fixes verified (2026-10-05):** all three inline findings on
+  `a41f687` are repaired one per commit: provider reveal (`99605b4`), collapsed
+  precomp paint (`498c771`) and structured lint capacity failures. Fast checks pass
+  with 1,509 unit tests; 46 runtime, 15 CLI and native browser checks pass. Corpus
+  lint covers 176 items / 36,061 frames with zero unexpected failures; two additional
+  reading-time errors are now detected in one existing fixture, with all other
+  diagnostics and reference hashes unchanged. One final push delivers the repairs;
+  owner review/merge remains pending. Full render/export checks were not rerun.
   [Follow-up evidence](./pr-34-followup-fix-results.json).
 
 - **PR #34 re-review fixes verified (2026-10-05):** all five inline findings on
@@ -161,6 +163,19 @@ _Last updated 2026-10-05 by Codex for PR #34 review fixes; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-05 — PR #34 structured lint limits and final verification
+
+- **Agent / branch:** Codex on `codex/pr34-followup-fixes`, after `498c771`.
+- **Done:** third finding repaired with stable `comp-lint-limit` / `layers` errors
+  and early rejection of oversized root timelines, including rendered lint.
+- **Results:** original capacity regression failed; all 99 focused quality/CLI
+  tests, fast checks (1,509 unit), 46 runtime tests and native browser checks pass.
+  CE0 lint covers 176 items / 36,061 frames; zero unexpected failures, two newly
+  caught reading-time errors, other diagnostics and reference checksum unchanged.
+- **Open / next:** one final push after this third commit; owner review/merge.
+  Original checkout retained; no renderer/version or baseline changes.
+- **Records:** [Follow-up evidence](./pr-34-followup-fix-results.json).
 
 ### 2026-10-05 — PR #34 collapsed precomp sampling
 

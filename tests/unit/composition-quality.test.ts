@@ -1,6 +1,12 @@
-import type { CompositionLayer } from "@still-shift/scene-contract";
-import { describe, expect, it } from "vitest";
-import { PassageError } from "../../packages/renderer-core/src/passage-diagnostics.ts";
+import {
+  validateComposition,
+  type CompositionLayer,
+} from "@still-shift/scene-contract";
+import { describe, expect, it, vi } from "vitest";
+import {
+  PassageError,
+  passageDiagnostics,
+} from "../../packages/renderer-core/src/passage-diagnostics.ts";
 import { analyzeCompositionQuality } from "../../packages/renderer-core/src/story-quality.ts";
 import {
   composition,
@@ -11,6 +17,7 @@ import {
 import {
   collapsedMotionComposition,
   providerReadingComposition,
+  qualityCapacityComposition,
 } from "../helpers/composition-quality-fixtures.ts";
 
 const codes = (input: Parameters<typeof analyzeCompositionQuality>[0]) =>
@@ -1158,4 +1165,38 @@ it("does not count empty collapsed surfaces or their unused background as motion
   };
   input.layers.push(solid());
   expect(codes(input)).toContain("frozen-run");
+});
+
+it("preserves a stable diagnostic when nested sampling exhausts the layer-frame budget", () => {
+  const readSize = Object.getOwnPropertyDescriptor(Map.prototype, "size")!.get!;
+  // Force the capacity boundary without retaining millions of evaluated samples.
+  const size = vi
+    .spyOn(Map.prototype, "size", "get")
+    .mockImplementation(function (this: Map<string, unknown>) {
+      const sample = this.get("subject") as { signature?: unknown } | undefined;
+      return typeof sample?.signature === "string"
+        ? 2_000_001
+        : readSize.call(this);
+    });
+  let failure: unknown;
+  try {
+    analyzeCompositionQuality(fixtures.stillness.fail);
+  } catch (error) {
+    failure = error;
+  } finally {
+    size.mockRestore();
+  }
+  expect(passageDiagnostics(failure)).toEqual([
+    expect.objectContaining({
+      code: "comp-lint-limit",
+      severity: "error",
+      path: "layers",
+    }),
+  ]);
+});
+
+it("rejects a valid composition whose root sampling alone exceeds lint capacity", () => {
+  const input = qualityCapacityComposition();
+  expect(validateComposition(input).ok).toBe(true);
+  expect(() => analyzeCompositionQuality(input)).toThrow(PassageError);
 });

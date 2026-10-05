@@ -97,3 +97,10 @@ export function collapsedMotionComposition(
     },
   );
 }
+
+export function qualityCapacityComposition(): Composition {
+  return composition(
+    Array.from({ length: 2_000 }, (_, i) => solid(`layer-${i}`)),
+    { frameCount: 1_001 },
+  );
+}

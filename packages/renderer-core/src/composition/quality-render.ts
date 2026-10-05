@@ -5,6 +5,7 @@ import {
 } from "../story-quality.ts";
 import { PassageError } from "../passage-diagnostics.ts";
 import { measureFrameEnergy } from "../story-continuous-quality.ts";
+import { assertCompositionQualityCapacity } from "./quality-samples.ts";
 import type { CompositionPreview } from "./render/index.ts";
 
 /** Full-resolution grayscale changes reuse the continuous-motion 4-level / 200-pixel default gate. */
@@ -14,6 +15,8 @@ export async function analyzeRenderedCompositionQuality(
   policy: CompositionQualityPolicy = {},
   options: { signal?: AbortSignal; onFrame?: (frame: number) => void } = {},
 ) {
+  options.signal?.throwIfAborted();
+  assertCompositionQualityCapacity(comp.frameCount * comp.layers.length);
   const counts: number[] = [];
   let previous: Uint8Array | undefined;
   for (let frame = 0; frame < comp.frameCount; frame++) {
