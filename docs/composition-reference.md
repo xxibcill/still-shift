@@ -760,6 +760,14 @@ Identifiers: `time`, `frame`, `value`, `index`, `layerCount`, `fps`. Components:
 | `distort.ripple`               | `wavelength`     | scalar | `64`            | 1–100000                                     |
 | `distort.ripple`               | `phase`          | scalar | `0`             | -36000–36000                                 |
 | `distort.ripple`               | `decay`          | scalar | `0`             | 0–1                                          |
+| `light.drop-shadow`            | `offset`         | vec2   | `[6,6]`         | -1000–1000 per axis                          |
+| `light.drop-shadow`            | `blur`           | scalar | `8`             | 0–128                                        |
+| `light.drop-shadow`            | `opacity`        | scalar | `1`             | 0–1                                          |
+| `light.drop-shadow`            | `color`          | color  | `#000000`       | colour                                       |
+| `light.inner-shadow`           | `offset`         | vec2   | `[6,6]`         | -1000–1000 per axis                          |
+| `light.inner-shadow`           | `blur`           | scalar | `8`             | 0–128                                        |
+| `light.inner-shadow`           | `opacity`        | scalar | `1`             | 0–1                                          |
+| `light.inner-shadow`           | `color`          | color  | `#000000`       | colour                                       |
 | `blur.primitive`               | `radius`         | scalar | `0`             | 0–1000                                       |
 | `time.echo`                    | `spacing`        | scalar | `1`             | 1–120                                        |
 | `time.echo`                    | `count`          | scalar | `3`             | 1–8 (integer)                                |

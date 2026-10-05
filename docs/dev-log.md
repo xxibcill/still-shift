@@ -44,14 +44,14 @@ still hold before relying on them.
 ## Current state
 
 - **CE6 in progress (2026-10-06):** `codex/composition-ce6-completion` from
-  CE7 `817cc9f`. Checkpoints through `1ce28ab` deliver paired plugins, color/
-  curves, transitions, blur, warps, seeded fields and stylize kernels. Bulge/
-  ripple now pass 43 focused tests, build/lint/schema/boundaries and 54 native
-  cases / 648 frames / 756 seeks exactly. 65,536 arbitrary-precision root
-  points and 131,072 maximum-frame source coordinates are exact.
-  Remaining shadows/scoped inputs, adjustment history, linear-light and
-  complete hardware/hash/export/cost/full-gate acceptance remain.
-  No owner decision is pending. [Evidence](./composition-ce6-completion-results.json).
+  CE7 `817cc9f`. Checkpoints through `73a0009` deliver paired plugins, color/
+  curves, transitions, blur, warps, fields and stylize kernels. Drop/inner
+  shadows now pass 36 focused tests, build/lint/schema/boundaries and 54 native
+  cases / 648 frames / 756 seeks exactly; maximum blur and translucent pixel
+  oracles are exact. Scoped inputs/displacement-map/gradient-wipe, adjustment
+  history, linear-light and complete hardware/hash/export/cost/full-gate
+  acceptance remain. No owner decision is pending.
+  [Evidence](./composition-ce6-completion-results.json).
 
 - **CE7 complete (2026-10-06):** `codex/composition-ce7`, code `0e48388`.
   Local holds/posterization, source loops, freeze remap, deterministic adaptive
@@ -187,6 +187,18 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-06 — CE6 drop and inner shadow checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce6-completion`.
+- **Done:** real separable GPU Gaussian shadows, fixed weighted sums, Canvas
+  references, signed offsets and explicit inner-shadow exterior coverage.
+- **Results:** 36 focused tests plus build/lint/schema/boundaries; 54 native
+  cases / 648 frames / 756 seeks are exact. Maximum blur passes 2 cases /
+  24 frames / 28 seeks; independent translucent-pixel oracles are exact.
+- **Next:** scoped inputs/displacement map/gradient wipe, adjustment history,
+  linear-light, complete hardware/hash/export/cost/full-gate acceptance, CE6 PR.
+- **Records:** [CE6 evidence](./composition-ce6-completion-results.json).
 
 ### 2026-10-06 — CE6 bulge and ripple checkpoint
 

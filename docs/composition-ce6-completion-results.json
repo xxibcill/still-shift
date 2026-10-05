@@ -689,11 +689,87 @@
         }
       },
       "initialFailures": ["Test-first radial API absent"],
+      "pending": ["Complete milestone gate after remaining CE6 features"],
+      "implementation": "73a0009"
+    },
+    {
+      "name": "Native drop and inner shadows",
+      "status": "focused-verification-passed",
+      "effects": ["light.drop-shadow", "light.inner-shadow"],
+      "versions": {
+        "evaluator": 39,
+        "canvas": "composition-canvas-1.34.0",
+        "webgl": "composition-webgl2-0.48.0"
+      },
+      "verification": {
+        "focusedTests": 36,
+        "focusedFiles": 6,
+        "build": "passed",
+        "lint": "passed",
+        "schema": "passed",
+        "boundaries": "passed",
+        "nativeMatrix": {
+          "cases": 54,
+          "frames": 648,
+          "randomSeeks": 756,
+          "maxDelta": 0,
+          "minPsnr": 999,
+          "raw": "benchmarks/results/composition-ce6-completion/ce6-shadow-native-acceptance.json",
+          "snapshot": "/private/tmp/still-shift-ce6-shadow-73a0009"
+        },
+        "maximumBlur": {
+          "cases": 2,
+          "frames": 24,
+          "randomSeeks": 28,
+          "maxDelta": 0,
+          "raw": "benchmarks/results/composition-ce6-completion/ce6-shadow-limits-acceptance.json"
+        },
+        "independentTranslucentPixelOracles": {
+          "profile": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+          "oracles": [
+            {
+              "effect": "light.drop-shadow",
+              "backend": "canvas2d",
+              "pixels": [
+                [128, 128, 128, 255],
+                [128, 0, 0, 255],
+                [0, 0, 0, 255]
+              ]
+            },
+            {
+              "effect": "light.drop-shadow",
+              "backend": "webgl2",
+              "pixels": [
+                [128, 128, 128, 255],
+                [128, 0, 0, 255],
+                [0, 0, 0, 255]
+              ]
+            },
+            {
+              "effect": "light.inner-shadow",
+              "backend": "canvas2d",
+              "pixels": [
+                [0, 0, 0, 255],
+                [64, 64, 64, 255]
+              ]
+            },
+            {
+              "effect": "light.inner-shadow",
+              "backend": "webgl2",
+              "pixels": [
+                [0, 0, 0, 255],
+                [64, 64, 64, 255]
+              ]
+            }
+          ]
+        }
+      },
+      "initialFailures": ["Test-first shadow API absent"],
       "pending": ["Complete milestone gate after remaining CE6 features"]
     }
   ],
   "pending": [
-    "Remaining displacement map, drop/inner shadows and gradient wipe",
+    "Remaining displacement map and gradient wipe with scoped layer inputs",
     "Scoped layer-input dependency stages and real adjustment primitive-blur/echo history",
     "Real optional linear-light composition",
     "Complete native hardware, stored hashes, independent/repeated exports and serial 1080p per-effect costs",

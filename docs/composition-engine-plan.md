@@ -3216,6 +3216,17 @@ Remaining shadows/scoped inputs/history/linear-light and complete native
 hardware/hash/export/cost/full-gate acceptance remain. Frozen baselines and
 thresholds are unchanged. [Evidence](./composition-ce6-completion-results.json).
 
+### CE6 drop and inner shadow checkpoint (2026-10-06)
+
+Drop/inner shadows use actual separable GPU Gaussian filtering and independent
+Canvas references, fixed weighted sums, signed offsets and explicit complementary
+coverage padding. 36 focused tests and build/lint/schema/boundaries pass. Native
+acceptance is exact for 54 cases / 648 frames / 756 seeks; maximum-radius blur
+passes 2 cases / 24 frames / 28 seeks exactly. Independent translucent source/
+shadow pixel oracles are exact. Scoped inputs/history/linear-light and complete
+hardware/hash/export/cost/full-gate acceptance remain. Thresholds and frozen
+baselines are unchanged. [Evidence](./composition-ce6-completion-results.json).
+
 ### CE6 performance slice 1: exact effect work (2026-10-03)
 
 - **Scope:** the transferred CE4b timing requirement only, not the broader CE6

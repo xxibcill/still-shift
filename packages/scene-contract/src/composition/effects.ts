@@ -1,3 +1,4 @@
+import { SHADOW_EFFECT_DEFINITIONS } from "./shadow-effects.ts";
 import { RADIAL_DISTORTION_DEFINITIONS } from "./radial-distortion.ts";
 import { z } from "zod";
 import {
@@ -47,6 +48,7 @@ export const COMPOSITION_EFFECTS: Readonly<
   ...NOISE_EFFECT_DEFINITIONS,
   ...STYLIZE_EFFECT_DEFINITIONS,
   ...RADIAL_DISTORTION_DEFINITIONS,
+  ...SHADOW_EFFECT_DEFINITIONS,
   "blur.primitive": defineEffect({ radius: { default: 0, min: 0, max: 1000 } }),
   "time.echo": defineEffect(
     {

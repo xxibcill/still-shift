@@ -1,3 +1,4 @@
+import type * as ShadowChecks from "../helpers/composition-shadow-effect-reference.ts";
 import type * as RadialChecks from "../helpers/composition-radial-distortion-reference.ts";
 import type * as StylizeChecks from "../helpers/composition-stylize-effect-reference.ts";
 import type * as QuotientChecks from "../helpers/composition-noise-quotient-reference.ts";
@@ -87,6 +88,30 @@ try {
     ).checkWarpEffectRendering();
   });
   console.log("WebGL native warps:", JSON.stringify(warps));
+  const shadows = await page.evaluate(async () => {
+    const url = "/tests/helpers/composition-shadow-effect-reference.ts";
+    return (
+      (await import(url)) as typeof ShadowChecks
+    ).checkShadowEffectRendering();
+  });
+  console.log("WebGL native shadows:", JSON.stringify(shadows));
+  const shadowLimits = await page.evaluate(async () => {
+    const url = "/tests/helpers/composition-shadow-effect-reference.ts";
+    return (
+      (await import(url)) as typeof ShadowChecks
+    ).checkShadowEffectLimits();
+  });
+  console.log("WebGL shadow limits:", JSON.stringify(shadowLimits));
+  const shadowOracles = await page.evaluate(async () => {
+    const url = "/tests/helpers/composition-shadow-effect-reference.ts";
+    return (
+      (await import(url)) as typeof ShadowChecks
+    ).checkShadowPixelOracles();
+  });
+  console.log(
+    "WebGL independent shadow oracles:",
+    JSON.stringify(shadowOracles),
+  );
   const radialDistortion = await page.evaluate(async () => {
     const url = "/tests/helpers/composition-radial-distortion-reference.ts";
     return (

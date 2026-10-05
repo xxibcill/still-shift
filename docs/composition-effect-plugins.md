@@ -218,3 +218,13 @@ never image pixels. Both adapters select identical control entries, multiply
 signed coordinates in a fixed order, and sample the shared 1/16-pixel grid.
 The GPU computes exact two-word squared distances and corrects its root estimate,
 including full 8192-pixel diagonals. Neutral controls preserve the input exactly.
+
+### Drop and inner shadows
+
+`light.drop-shadow` and `light.inner-shadow` share a separable Gaussian with
+three-sigma support, symmetric weights quantized to a mass near 4096, fixed
+ascending sums and exact rounded normalization after each axis. Blur is bounded
+to 128 pixels. Signed offsets use the common 1/16-pixel sampling grid. Drop
+shadows composite behind the source; inner shadows blur complementary coverage
+with opaque exterior padding and retain source alpha. Color alpha and opacity
+control shadow strength. Zero opacity or color alpha preserves the input.
