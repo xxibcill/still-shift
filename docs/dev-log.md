@@ -49,7 +49,8 @@ still hold before relying on them.
   132 seek checks (software delta 1), repeated PNG/raw and independent MP4 encodes
   on both backends, and 36 actual hardware comparisons under the existing
   perceptual policy. All 78 serial 1080p cold/warm effect costs are recorded.
-  Final complete `pnpm check` and CE6 PR remain before CE8. CE6-P stays deferred.
+  Full gate stopped at test formatting before suites ran; the complete command
+  will rerun after the format repair. CE6 PR follows, then CE8. CE6-P stays deferred.
   No owner decision is pending. [Evidence](./composition-ce6-completion-results.json).
 
 - **CE7 complete (2026-10-06):** `codex/composition-ce7`, code `0e48388`.
@@ -186,6 +187,16 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-06 — CE6 full-gate formatting repair
+
+- **Agent / branch:** Codex on `codex/composition-ce6-completion`.
+- **Result:** full `pnpm check` at `46cc000` stopped at formatting before test
+  suites ran. Wrapped the earlier unknown-effect contract assertion with Prettier;
+  renderer semantics, thresholds and frozen baselines are unchanged.
+- **Next:** complete-snapshot format preflight and the full command on the repaired
+  checkpoint, then CE6 PR and CE8. Native/export/hardware/cost proof remains valid.
+- **Records:** [CE6 evidence](./composition-ce6-completion-results.json).
 
 ### 2026-10-06 — CE6 native catalogue acceptance checkpoint
 

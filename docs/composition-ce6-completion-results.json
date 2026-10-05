@@ -9616,7 +9616,8 @@
       "pending": [
         "Complete final local pnpm check on the committed final code checkpoint",
         "CE6 milestone PR and next milestone branch"
-      ]
+      ],
+      "implementation": "e342738"
     }
   ],
   "pending": [
@@ -9624,5 +9625,18 @@
     "CE6 milestone PR and CE8 branch"
   ],
   "performanceDeferral": "CE6-P remains future-version; existing current assertions and frozen baselines unchanged",
-  "githubActions": "prohibited/disabled"
+  "githubActions": "prohibited/disabled",
+  "fullGateAttempts": [
+    {
+      "checkpoint": "46cc000",
+      "command": "pnpm check",
+      "status": "failed-at-format-check",
+      "exitCode": 1,
+      "snapshot": "/private/tmp/still-shift-ce6-check-46cc000",
+      "log": "benchmarks/results/composition-ce6-completion/ce6-full-46cc000.log",
+      "cause": "Earlier blur.future contract-test mutation needed Prettier line wrapping",
+      "suitesExecuted": 0,
+      "repair": "Formatting only; complete gate will rerun on repaired checkpoint"
+    }
+  ]
 }

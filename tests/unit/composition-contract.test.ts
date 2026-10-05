@@ -1124,7 +1124,8 @@ const invalid: Mutation[] = [
   ],
   [
     "effects",
-    (d) => set(house(d), { effects: [{ id: "future", effect: "blur.future" }] }),
+    (d) =>
+      set(house(d), { effects: [{ id: "future", effect: "blur.future" }] }),
     "comp-feature-unavailable",
   ],
   [
