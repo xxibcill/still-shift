@@ -1,0 +1,45 @@
+{
+  "date": "2026-10-05",
+  "pr": "https://github.com/xxibcill/still-shift/pull/34",
+  "review": "https://github.com/xxibcill/still-shift/pull/34#pullrequestreview-5417225031",
+  "reviewedHead": "7525540f05ec6feec86ab1dc846cda66ad0a0e61",
+  "delivery": "One finding per commit; one final push after all five finding commits.",
+  "toolchain": {
+    "node": "22.23.1",
+    "pnpm": "10.29.3"
+  },
+  "findings": [
+    {
+      "id": "group-paint-modifiers",
+      "comment": "https://github.com/xxibcill/still-shift/pull/34#discussion_r4185973357",
+      "status": "fixed",
+      "change": "Track active group paint modifiers separately from content visibility, include contributing groups in state signatures and effect timing/velocity, and retain clipping/hidden-content exclusions.",
+      "verification": {
+        "before": "2 of 6 new unit regressions fail with a false frozen-run",
+        "after": "114 focused quality/CLI tests, TypeScript, changed-file ESLint, and browser quality suite pass. Group effect state agrees across Node/Chromium; rendered motion has neither frozen-state nor frozen-pixel errors.",
+        "controls": "disabled effects, hidden/offscreen children, empty and nested groups; existing collapsed-surface regression retained",
+        "initialHarnessRepair": "Passing a typed Composition directly to Playwright page.evaluate exceeded TypeScript instantiation depth; use JSON transport as the existing browser checks do."
+      }
+    },
+    {
+      "id": "signed-scale-pops",
+      "comment": "https://github.com/xxibcill/still-shift/pull/34#discussion_r4185973365",
+      "status": "pending"
+    },
+    {
+      "id": "property-easing-weight",
+      "comment": "https://github.com/xxibcill/still-shift/pull/34#discussion_r4185973376",
+      "status": "pending"
+    },
+    {
+      "id": "evaluated-track-motion",
+      "comment": "https://github.com/xxibcill/still-shift/pull/34#discussion_r4185973384",
+      "status": "pending"
+    },
+    {
+      "id": "missing-nested-coverage",
+      "comment": "https://github.com/xxibcill/still-shift/pull/34#discussion_r4185973396",
+      "status": "pending"
+    }
+  ]
+}

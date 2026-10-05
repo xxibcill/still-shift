@@ -31,6 +31,8 @@ export type CompositionQualitySample = {
   reveal: number;
   visible: boolean;
   onScreen: boolean;
+  /** Includes group modifiers that affect an on-screen descendant. */
+  contributesPaint: boolean;
   text?: string;
   role?: "heading" | "label" | "qualification" | "body";
   signature: string;
@@ -217,6 +219,7 @@ export function compositionQualityFrame(
         reveal: text?.reveal ?? state.reveal ?? 1,
         visible,
         onScreen,
+        contributesPaint: onScreen,
         scale: [
           Math.hypot(matrix[0], matrix[1]),
           Math.hypot(matrix[2], matrix[3]),
@@ -274,6 +277,7 @@ export function compositionQualityFrame(
           const onScreenChildren = children.filter((child) => child.onScreen);
           sample.visible = visible && visibleChildren.length > 0;
           sample.onScreen = visible && onScreenChildren.length > 0;
+          sample.contributesPaint = sample.onScreen;
           sample.bounds = unionBounds(
             visibleChildren.map((child) => child.bounds),
           );
@@ -302,6 +306,12 @@ export function compositionQualityFrame(
     );
     const container = group ?? (route ? route.slice(0, -1) : undefined);
     if (container) layers.get(container)?.children.push(sample.id);
+    if (sample.onScreen)
+      for (const id of sample.ancestors) {
+        const ancestor = layers.get(id);
+        if (ancestor?.state.layer.type === "group")
+          ancestor.contributesPaint = true;
+      }
   }
   const paintsContent = (sample: CompositionQualitySample) =>
     sample.state.drawable ||
@@ -350,7 +360,9 @@ export function compositionQualityFrame(
     diagnostics,
     signature: JSON.stringify([
       backgrounds,
-      [...layers.values()].filter((s) => s.onScreen).map((s) => s.signature),
+      [...layers.values()]
+        .filter((s) => s.contributesPaint)
+        .map((s) => s.signature),
     ]),
   };
 }
@@ -373,7 +385,7 @@ export function qualityTrackContributes(
   path: string,
   matteSource = false,
 ) {
-  if (!sample.onScreen && !matteSource)
+  if (!sample.contributesPaint && !matteSource)
     return (
       path.startsWith("transform.") &&
       (path !== "transform.opacity" || sample.state.layer.type === "group")

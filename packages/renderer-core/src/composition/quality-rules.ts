@@ -519,10 +519,11 @@ export function compositionVelocityFindings(
         [outerRight, outerRight.layers.get(current.id)],
       ] as const;
       if (
-        !(current.onScreen || middle.matteSources.has(current.id)) ||
+        !(current.contributesPaint || middle.matteSources.has(current.id)) ||
         probes.some(
           ([frame, sample]) =>
-            !sample || !(sample.onScreen || frame.matteSources.has(current.id)),
+            !sample ||
+            !(sample.contributesPaint || frame.matteSources.has(current.id)),
         )
       )
         continue;

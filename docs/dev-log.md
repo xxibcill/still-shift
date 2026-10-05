@@ -43,6 +43,8 @@ still hold before relying on them.
 
 ## Current state
 
+- **PR #34 additional fixes in flight (2026-10-05):** all five findings on `7525540` are posted inline. Group paint modifiers are repaired and focused unit/CLI, build, ESLint and browser checks pass. Signed scale, property easing weights, overridden tracks and nested coverage remain; one commit per finding and one final push. [Evidence](./pr-34-additional-fix-results.json).
+
 - **PR #34 review fixes verified (2026-10-05):** all four inline findings on
   `8c717b3` are repaired one per commit: held-sample velocity artifacts
   (`059f04a`), shared fractional join searches (`c81eafc`), advisory Lab lint
@@ -173,6 +175,14 @@ _Last updated 2026-10-05 by Codex for PR #34 review fixes; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-05 — PR #34 group paint modifiers
+
+- **Agent / branch:** Codex on `codex/composition-ce12`, from `7525540`.
+- **Done:** posted five inline findings; group effects now contribute to state, timing and velocity when their descendants paint.
+- **Results:** two new regressions failed before repair; 114 focused quality/CLI tests, build, changed-file ESLint and browser quality pass. Hidden/offscreen/empty groups and collapsed surfaces remain excluded.
+- **Open / next:** four remaining finding commits, final checks and one push. The existing base-branch documentation conflict remains pending.
+- **Records:** [Additional repair evidence](./pr-34-additional-fix-results.json).
 
 ### 2026-10-05 — PR #34 review fixes: velocity samples, join cost, Lab, framing
 

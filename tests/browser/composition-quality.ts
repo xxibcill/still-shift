@@ -22,6 +22,7 @@ import type {
 
 import {
   collapsedMotionComposition,
+  groupEffectMotionComposition,
   providerReadingComposition,
   qualityCapacityComposition,
 } from "../helpers/composition-quality-fixtures.ts";
@@ -90,6 +91,47 @@ try {
   assert.equal(await page.locator("#lint").isDisabled(), true);
   await page.unrouteAll();
   console.log("Lab previews compositions whose motion lint cannot run.");
+
+  const groupMotion = groupEffectMotionComposition();
+  const groupNodeReport = analyzeCompositionQuality(groupMotion);
+  const groupReports = await page.evaluate(
+    async ({ json, moduleUrl }) => {
+      const renderer = (await import(moduleUrl)) as typeof Renderer;
+      const comp = JSON.parse(json) as Composition;
+      const preview = renderer.createCompositionPreview(
+        document.createElement("canvas"),
+        comp,
+        await renderer.loadCompositionResources(comp, () => {
+          throw new Error("No assets expected");
+        }),
+      );
+      try {
+        return {
+          state: renderer.analyzeCompositionQuality(comp),
+          rendered: await renderer.analyzeRenderedCompositionQuality(
+            comp,
+            preview,
+          ),
+        };
+      } finally {
+        preview.dispose();
+      }
+    },
+    {
+      json: JSON.stringify(groupMotion),
+      moduleUrl: `/@fs/${root}/packages/renderer-core/src/index.ts`,
+    },
+  );
+  assert.deepEqual(groupReports.state, groupNodeReport);
+  for (const report of [groupReports.state, groupReports.rendered]) {
+    assert.ok(!report.diagnostics.some((d) => d.code === "frozen-run"));
+    assert.ok(
+      report.diagnostics.some((d) => d.code === "velocity-discontinuity"),
+    );
+  }
+  assert.ok(
+    !groupReports.rendered.diagnostics.some((d) => d.code === "frozen-pixels"),
+  );
 
   for (const [name, pair] of Object.entries(fixtures)) {
     for (const [outcome, comp] of Object.entries(pair)) {
