@@ -1,6 +1,6 @@
 {
   "milestone": "CE10",
-  "status": "in-progress",
+  "status": "complete",
   "date": "2026-10-05",
   "branch": "codex/composition-ce10",
   "base": "869a793",
@@ -99,7 +99,7 @@
         "Portable export initially treated macOS /var and /private/var aliases as different directories; canonicalized source and destination folders.",
         "The first compiler trial expected the wrong native fps diagnostic code; retained comp-schema-union."
       ],
-      "pending": [
+      "pendingAtCheckpoint": [
         "Watch preview and TypeScript render browser acceptance",
         "Abort/cleanup and asset dependency recovery coverage"
       ]
@@ -319,12 +319,12 @@
           "tests": 7
         }
       ],
-      "pending": [
-        "Isolated fresh-brief agent trial",
-        "Full local milestone verification"
-      ],
       "limits": [
         "SVG assets require px, in, cm, mm or pt dimensions (or viewBox inference); unsupported relative units, CSS picas and comma viewBoxes fail early rather than emitting inconsistent metadata."
+      ],
+      "pendingAtCheckpoint": [
+        "Isolated fresh-brief agent trial",
+        "Full local milestone verification"
       ]
     },
     {
@@ -351,11 +351,11 @@
         "outputSha256": "511e988d7d5cd1c4dc4075c938372bc13480fd24894e8c875f3eff92830719f6"
       },
       "record": "docs/composition-ce10-skill-trials.json",
-      "pending": ["Full local milestone gates"],
       "limits": [
         "Both first CLI launches encountered sandbox tsx IPC EPERM before schema validation; unchanged source was retried with the permitted local command escalation.",
         "Deliberate reading holds trigger the default frozen-run lint policy; these craft findings remain visible and were not suppressed."
-      ]
+      ],
+      "pendingAtCheckpoint": ["Full local milestone gates"]
     },
     {
       "name": "Restore render CLI failure exit-code compatibility",
@@ -392,7 +392,7 @@
           "log": "/private/tmp/ce10-render-exit-test.log"
         }
       ],
-      "pending": [
+      "pendingAtCheckpoint": [
         "Repeat full pnpm check on repair checkpoint",
         "Fresh skill trial render inspection"
       ]
@@ -442,7 +442,9 @@
         "The first focused run exposed portable export using the physical directory; corrected it to the requested directory.",
         "Existing export assertions now compare resolved file identities instead of a spelling that only works without directory aliases."
       ],
-      "pending": ["Complete full pnpm check on the path repair checkpoint"]
+      "pendingAtCheckpoint": [
+        "Complete full pnpm check on the path repair checkpoint"
+      ]
     },
     {
       "name": "Preserve canonical parent identity for missing JSON assets",
@@ -476,10 +478,68 @@
           "status": "passed"
         }
       ],
-      "pending": [
+      "pendingAtCheckpoint": [
         "Complete full pnpm check on the final path repair checkpoint"
       ]
     }
   ],
-  "pending": ["Full local milestone gates and PR"]
+  "pending": ["Create and attach milestone PR, then start CE11"],
+  "runtimeHead": "e501fed",
+  "verification": {
+    "command": "pnpm check",
+    "status": "passed",
+    "runtimeHead": "e501fed",
+    "snapshot": "/private/tmp/still-shift-ce10-check-e501fed",
+    "log": "/private/tmp/ce10-full-e501fed.log",
+    "toolchain": {
+      "node": "22.23.1",
+      "pnpm": "10.29.3"
+    },
+    "tests": {
+      "unit": 1499,
+      "runtime": 46,
+      "integration": 134,
+      "depth": 14
+    },
+    "browserGroups": "Every group in pnpm test passed, including composition-program and composition-builder.",
+    "frozenBaselines": {
+      "items": 176,
+      "frames": 36061,
+      "seconds": 273.56,
+      "regenerated": false
+    },
+    "builderProof": {
+      "status": "passed",
+      "lines": 197,
+      "frames": 192,
+      "numericValues": 42256,
+      "maxNumericDelta": 5.684341886080802e-14,
+      "pixels": [
+        {
+          "backend": "canvas2d",
+          "frames": 192,
+          "maxChannelDelta": 0,
+          "minimumPsnr": "Infinity",
+          "backwardSeeks": 7
+        },
+        {
+          "backend": "webgl2",
+          "frames": 192,
+          "maxChannelDelta": 0,
+          "minimumPsnr": "Infinity",
+          "backwardSeeks": 7
+        }
+      ],
+      "exports": {
+        "typescriptJsonByteIdentical": true,
+        "sha256": "5ebd5dca399ea9f149611e60edea3ad01710aa56d0999abf7a227710b3395b38"
+      }
+    },
+    "retainedFailures": [
+      "The first full run at 4ce68c4 failed on render backend usage exit-code compatibility, repaired at c44032b.",
+      "The second full run at c44032b reached the commerce matrix but failed its final CLI diagnostic after directory canonicalization changed asset paths.",
+      "The third full run at acac044 exposed the missing-file canonical-parent compatibility assertion. All repairs are covered by the passing full run at e501fed."
+    ],
+    "actionsEnabled": false
+  }
 }

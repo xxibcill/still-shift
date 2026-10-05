@@ -371,7 +371,7 @@ sign and for time remap. It does not change the layer's composition-time visibil
 | CE7   | Motion blur and time controls                   | B      | CE3                  |                        |                                     | `[ ]`  |                                                                                    |
 | CE8   | 2.5D layers and unified camera                  | B      | CE3, CE6, CE9        |                        |                                     | `[ ]`  |                                                                                    |
 | CE9   | Expressions and motion behaviours               | C      | CE2                  | xxibcill (Claude Code) | `codex/composition-ce9`             | `[x]`  | [CE9 record](#ce9--expressions-and-motion-behaviours)                              |
-| CE10  | TypeScript builder API and CLI                  | C      | CE3, CE4a, CE9, CE12 | Codex                  | `codex/composition-ce10`            | `[~]`  |                                                                                    |
+| CE10  | TypeScript builder API and CLI                  | C      | CE3, CE4a, CE9, CE12 | Codex                  | `codex/composition-ce10`            | `[x]`  | [evidence](./composition-ce10-results.json)                                        |
 | CE11  | Lab composition inspector and graph editor      | C      | CE3, CE10            |                        |                                     | `[ ]`  |                                                                                    |
 | CE12  | Motion linting                                  | C      | CE2                  | Codex                  | `codex/composition-ce12`            | `[x]`  | [CE12 completion record](#ce12-completion-record-2026-10-05)                       |
 | CE13  | Video, image-sequence and audio layers          | D      | CE3, CE7             |                        |                                     | `[ ]`  |                                                                                    |
@@ -3631,32 +3631,38 @@ new brief without schema errors (record the trial).
 **Verification:** Type tests (`tsd` or `expectTypeOf`), emitted-JSON snapshot tests,
 timeline-algebra unit tests, CLI integration tests.
 
-**Implementation record (2026-10-05):** Codex on `codex/composition-ce10`, from
-CE4a `869a793` / [PR #35](https://github.com/xxibcill/still-shift/pull/35). The first
-checkpoint promotes typed native layer/property construction, timeline algebra,
-expression/instance helpers, compact source metadata and Node asset helpers.
-Native mask/effect/path selectors and nested key call sites now pass 27 focused
-tests. Fresh TypeScript loading and CLI validate/render/lint/bake/normalize/export
-commands pass all 1,491 unit tests and 26 focused CLI regressions. Watch preview
-and complete nested/key source sites are delivered; all 128 integration tests pass.
-Browser verification preserves valid pixels and frames through rebuild errors,
-clamps shortened duration, switches backends and proves TypeScript/JSON MP4 identity.
-Eight small programs validate. The 197-line Unequal Margins program matches all
-192 CE4a frames exactly on both backends, seeks and exports included. Seven motion
-and eight text presets emit native composition fields; all 1,498 unit tests pass.
-The generated contract/reference and compact skill pass drift and skill checks.
-The initial isolated trial exposed timing/stacking guidance gaps; after repairing the
-skill, a fresh independent trial passes its first completed schema validation with
-zero errors and no source repairs. The full gate stopped on invalid render backend
-exit-code compatibility; the focused repair passes. The unchanged fresh trial
-renders 96 frames and passes extracted-frame inspection. The second full run passed
-the 127-case commerce matrix, then its final CLI assertion exposed logical-directory
-asset resolution. Resolve assets before following directory aliases; ten focused
-CLI/preview regressions pass. Its next full run exposed missing-file parent identity;
-canonicalize the existing parent after logical resolution. All 134 integration tests
-pass; full repair-checkpoint gates remain before closeout. See [CE10 evidence](./composition-ce10-results.json).
+### CE10 completion record (2026-10-05)
 
-**Completion record:** _to be filled in._
+- **Owner / branch:** Codex on `codex/composition-ce10`, from CE4a `869a793` /
+  [PR #35](https://github.com/xxibcill/still-shift/pull/35). Frequent checkpoint commits
+  deliver the builder, selectors/source sites, CLI, watch preview, examples, presets,
+  generated authoring guidance and CLI exit-code/asset-path compatibility repairs; runtime checkpoint `e501fed`.
+- **Delivered:** browser/Node typed native composition authoring, timeline algebra,
+  native key/effect/mask selectors, pinned asset helpers, compact call-site metadata,
+  seven motion and eight text recipes. Fresh child-process compilation supports all
+  composition CLI commands and dependency/asset watch recovery without page reloads.
+- **Builder acceptance:** eight examples validate. The 197-line Unequal Margins
+  program agrees with CE4a at 42,256 numeric samples (maximum delta 5.7e-14) and
+  all 192 frames on Canvas/WebGL (zero channel delta), including backward seeks.
+  TypeScript/JSON MP4 exports are byte-identical.
+- **Skill acceptance:** retain the unsuccessful initial skill-only trial and its eleven
+  source versions. Repair timing/clock and stacking guidance, then a fresh isolated
+  agent validates a new brief on its first completed validator execution: zero schema
+  errors and no source repairs. Its unchanged source renders 96 frames at 24 fps,
+  with pinned text and inspected arrival/read/exit frames. Deliberate reading holds
+  retain the default lint findings; this is schema/authoring acceptance, not a claim
+  of production craft acceptance. [Trial record](./composition-ce10-skill-trials.json).
+- **Local verification:** complete `pnpm check` passes on pinned Node 22.23.1 /
+  pnpm 10.29.3 in a clean tracked snapshot at `e501fed`, preserving unrelated owner
+  local edits. It includes 1,499 unit, 46 runtime, 134 integration and 14 depth tests,
+  all browser groups (including watch, source/JSON exports and builder proof), then
+  all 176 CE0 baselines / 36,061 frames without regeneration. Earlier full runs
+  exposed render exit-code, aliased asset-path and missing-parent identity failures; their
+  repairs and the complete passing rerun are recorded in [verification evidence](./composition-ce10-results.json).
+- **Limits:** richer native shapes remain CE5, 3D remains CE8 and media remains CE13.
+  Interim drawOn uses story.path providers. WebGL performance remains deferred to
+  CE6-P; no renderer output changed. GitHub Actions remain disabled.
+- **Next:** create and attach the milestone PR, then begin CE11 on its own branch.
 
 ---
 

@@ -43,18 +43,13 @@ still hold before relying on them.
 
 ## Current state
 
-- **CE10 in progress (2026-10-05):** `codex/composition-ce10` from CE4a `869a793`.
-  Typed authoring and CLI/watch preview are delivered; all 128 integration tests pass.
-  Eight examples validate and the 197-line Unequal Margins program matches CE4a pixels
-  across 192 frames on both backends, including seeks and TypeScript/JSON MP4 identity.
-  All story intent presets and generated reference/skill are delivered; 1,498 unit
-  tests pass. A fresh isolated skill-only trial has zero schema errors and no source
-  repairs. The full check stopped on render CLI exit-code compatibility; the repair
-  passes focused tests. The unchanged fresh trial renders and its extracted frames
-  pass inspection. The second full run reached the end of the 127-case commerce
-  matrix, then exposed logical-directory asset resolution. Its repair passes ten
-  CLI/preview regressions. The next full run exposed missing-file parent identity;
-  that fallback is repaired and all 134 integration tests pass. Full gates remain.
+- **CE10 complete (2026-10-05):** `codex/composition-ce10` from CE4a `869a793`;
+  runtime `e501fed`. Typed authoring, CLI/watch, presets, eight examples and generated
+  guidance pass the full local check: 1,499 unit, 46 runtime, 134 integration and
+  14 depth tests, all browser suites and 176 frozen baselines / 36,061 frames.
+  The 197-line builder has exact 192-frame Canvas/WebGL parity and identical exports;
+  a fresh skill-only source validates without repairs and renders correctly. Initial
+  trial/gate failures are retained. Publish its PR, then start CE11 on a new branch.
   [Evidence](./composition-ce10-results.json).
 
 - **CE4a complete (2026-10-05):** `codex/composition-ce4a-completion`, implementation
@@ -62,7 +57,7 @@ still hold before relying on them.
   shutter clocks and explicit narrative bindings are delivered. Full local checks,
   176 baselines / 36,061 frames, both 69-case family matrices / 14,086 frames and
   mixed 576-frame passages pass correctness. WebGL's 51 strict timing overruns stay
-  deferred to CE6-P. CE10 is next after the milestone PR; broader CE7 stays open.
+  deferred to CE6-P. CE10 is complete; broader CE7 stays open.
   [Evidence](./composition-ce4a-completion-results.json).
 
 - **CE12 motion linting (`[x]`, 2026-10-05):** complete on
@@ -72,7 +67,7 @@ still hold before relying on them.
   acceptance is 79 frozen comparisons in v013 versus zero in the fresh continuous
   prototype. Corpus lint covers 153 state reports and 23 pixel-only items with
   explicit limits and no unexpected failures; existing craft errors remain visible.
-  Prior local work retained; CE6-P and CE9-F1 remain deferred. CE10 still needs CE4a.
+  Prior local work retained; CE6-P and CE9-F1 remain deferred. CE4a and CE10 are complete.
   [Completion record](./composition-engine-plan.md#ce12-completion-record-2026-10-05).
   [PR #34](https://github.com/xxibcill/still-shift/pull/34) is open and mergeable, based on CE9 while PR #32
   awaits merge. Owner review and merge remain pending.
@@ -154,6 +149,25 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-05 — Complete CE10 typed authoring and CLI
+
+- **Agent / branch:** Codex on `codex/composition-ce10`, from CE4a `869a793`.
+- **Done:** typed layers/properties/timelines, pinned assets, native story/text presets,
+  fresh TypeScript CLI/watch preview and generated reference/skill. Frequent implementation
+  and guidance checkpoints preserve the authored source and runtime contracts.
+- **Results:** complete local `pnpm check` passes on the clean runtime checkpoint
+  `e501fed`: 1,499 unit, 46 runtime, 134 integration and 14 depth tests, all browser
+  groups and 176 frozen baselines / 36,061 frames. No baselines regenerated.
+- **Acceptance:** the 197-line builder matches 192 CE4a frames exactly on both
+  backends; source/JSON exports are identical. Fresh skill-only authoring has zero
+  schema errors, no source repairs and a verified 96-frame render.
+- **Retained failures:** full checks exposed render exit-code, aliased asset-path and
+  missing-parent identity regressions; focused repairs and the full rerun pass. Initial skill guidance failures
+  stay recorded. Owner local changes preserved; Actions remain disabled.
+- **Next:** publish and attach the milestone PR, then start CE11 on a new branch.
+- **Evidence:** [CE10 results](./composition-ce10-results.json),
+  [skill trials](./composition-ce10-skill-trials.json).
 
 ### 2026-10-05 — Preserve CE10 missing-asset watch identity
 
