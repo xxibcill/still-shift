@@ -99,6 +99,14 @@ export const SoundtrackEditSchema = z.discriminatedUnion("type", [
       ducking: SoundtrackDuckingSchema.nullable(),
     })
     .strict(),
+  z
+    .object({
+      type: z.literal("tile"),
+      clip: identifier,
+      endSample: z.number().int(),
+      crossfadeSamples: z.number().int().min(0),
+    })
+    .strict(),
   z.object({ type: z.literal("undo") }).strict(),
   z.object({ type: z.literal("redo") }).strict(),
 ]);
@@ -367,6 +375,14 @@ export function editSoundtrackProject(
       case "processors":
         track!.processors = operation.processors;
         break;
+      case "tile":
+        tileClip(
+          project,
+          clip!,
+          operation.endSample,
+          operation.crossfadeSamples,
+        );
+        break;
       case "ducking":
         if (operation.ducking) project.ducking = operation.ducking;
         else delete project.ducking;
@@ -393,6 +409,76 @@ export function editSoundtrackProject(
     ...validateSoundtrackProject(project),
     revision: input.revision + 1,
   };
+}
+/**
+ * Repeats a clip back to back until endSample (exclusive), as ordinary clips.
+ * Joins overlap by crossfadeSamples with equal-power fades; the original keeps
+ * its fade-in, the last copy keeps its fade-out and is trimmed to end exactly at
+ * endSample. Copies are named <id>-2, <id>-3, ..., unanchored and appended.
+ */
+function tileClip(
+  project: SoundtrackProject,
+  clip: SoundtrackProject["clips"][number],
+  endSample: number,
+  crossfade: number,
+) {
+  const length = clip.sourceEndSample - clip.sourceStartSample;
+  const step = length - crossfade;
+  if (2 * crossfade > length)
+    soundtrackFail(
+      "tile-crossfade",
+      "A crossfade can be at most half the clip, so both joins fit",
+      { clip: clip.id },
+    );
+  if (endSample <= clip.startSample + length)
+    soundtrackFail("tile-range", "endSample must be beyond the clip's end", {
+      clip: clip.id,
+    });
+  const { fadeOutSamples, fadeOutCurve } = clip;
+  const joinIn = (target: typeof clip) => {
+    target.fadeInSamples = crossfade;
+    if (crossfade) target.fadeInCurve = "equal-power";
+    else delete target.fadeInCurve;
+  };
+  let previous = clip;
+  for (let index = 2; ; index++) {
+    const start = previous.startSample + step;
+    // A copy needs room beyond its incoming crossfade; the first always has it,
+    // because endSample lies beyond the original clip.
+    if (endSample - start <= crossfade) break;
+    const id = `${clip.id}-${index}`;
+    if (project.clips.some((c) => c.id === id))
+      soundtrackFail("duplicate-id", "A tiled copy's ID is already used", {
+        clip: id,
+      });
+    previous.fadeOutSamples = crossfade;
+    if (crossfade) previous.fadeOutCurve = "equal-power";
+    else delete previous.fadeOutCurve;
+    const kept = Math.min(length, endSample - start);
+    const rest = structuredClone(clip);
+    delete rest.anchor;
+    const copy = {
+      ...rest,
+      id,
+      startSample: start,
+      sourceEndSample: clip.sourceStartSample + kept,
+      automation: {
+        ...rest.automation,
+        points: rest.automation.points.filter((p) => p.sample <= kept),
+      },
+    };
+    joinIn(copy);
+    project.clips.push(copy);
+    previous = copy;
+  }
+  // The last copy ends the bed with the original fade-out, as far as it fits.
+  const last = previous.sourceEndSample - previous.sourceStartSample;
+  previous.fadeOutSamples = Math.min(
+    fadeOutSamples,
+    last - previous.fadeInSamples,
+  );
+  if (fadeOutCurve) previous.fadeOutCurve = fadeOutCurve;
+  else delete previous.fadeOutCurve;
 }
 export type SoundtrackTiming = {
   fps: number;

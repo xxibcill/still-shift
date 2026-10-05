@@ -227,8 +227,8 @@ resolve same-name clip/node ambiguity), `mute`, `solo`, `move`, `trim`,
 unpanned clip adds no history), `fade` (clip with any of `fadeInSamples`,
 `fadeOutSamples`, `fadeInCurve` and `fadeOutCurve`; a `linear` curve removes the
 field), `add-clip`, `remove-clip`, `add-asset`, `remove-asset`, `add-track`,
-`remove-track`, `add-bus`, `remove-bus`, `route`, `processors`, `ducking`, `undo`
-and `redo`. The latter two need only `type`.
+`remove-track`, `add-bus`, `remove-bus`, `route`, `processors`, `ducking`, `tile`,
+`undo` and `redo`. The latter two need only `type`.
 
 Routing and DSP edits use the contract's own shapes. `add-track` and `add-bus` take
 a complete track or bus flattened beside `type` and append it, so existing graph
@@ -239,6 +239,16 @@ unknown outputs, track outputs and cycles. `processors` replaces a track's filte
 list. `ducking` sets the complete ducking object, or removes it with `null`.
 Rerouting into a deeper bus chain can exceed the working-memory estimate; the
 request then fails with `resource-budget` and nothing is saved.
+
+`tile` (clip, `endSample`, `crossfadeSamples`) fills an ambience or music bed
+without looping in the contract: it appends ordinary copies named `<id>-2`,
+`<id>-3`, … back to back until `endSample` (exclusive). Each join overlaps by
+`crossfadeSamples` with equal-power fades, so uncorrelated material keeps constant
+power; at most half the clip may crossfade. The original keeps its fade-in, the
+last copy keeps the original fade-out (shortened if it must fit) and is trimmed
+to end exactly at `endSample`. Copies drop the anchor and automation points past
+their trim. Existing IDs are never overwritten (`duplicate-id`), and the 128-clip
+bound still applies. It is one undoable request.
 
 `add-clip` takes every clip field from the contract table, flattened beside
 `type`; no defaults are filled in. The clip is appended, so existing clips keep

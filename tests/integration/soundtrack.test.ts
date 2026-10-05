@@ -1249,3 +1249,33 @@ it("NumPy routing sums match DawDreamer's add processor byte for byte", async ()
   ]);
   expect(JSON.parse(stdout)).toEqual({ cases: 62, mismatches: 0 });
 }, 60000);
+
+it("tiled beds render their equal-power joins sample for sample", async () => {
+  const p = structuredClone(project);
+  delete p.ducking;
+  p.clips = [{ ...p.clips[1]!, sourceEndSample: 48000 }];
+  const file = join(root, "tile.json");
+  await writeFile(file, JSON.stringify(p));
+  const tiled = await saveSoundtrackEdits(file, 0, [
+    {
+      type: "tile",
+      clip: "music-clip",
+      endSample: 144000,
+      crossfadeSamples: 4800,
+    },
+  ]);
+  expect(tiled.clips.map((c) => c.startSample)).toEqual([
+    0, 43200, 86400, 129600,
+  ]);
+  await renderSoundtrackProject(file, join(root, "tile"), { stems: true });
+  const music = await pcm(audio("tile", "music"));
+  // The constant 0.1 source makes each gain visible: copies add in amplitude.
+  const gain = (j: number) =>
+    0.1 *
+    (Math.sin((Math.PI / 2) * ((4800 - j) / 4800)) +
+      Math.sin((Math.PI / 2) * (j / 4800)));
+  for (const j of [0, 1, 1200, 2400, 4799])
+    expect(music[(43200 + j) * 2]).toBeCloseTo(gain(j), 6);
+  expect(music[20000 * 2]).toBe(Math.fround(0.1));
+  expect(music[143999 * 2 + 1]).toBe(Math.fround(0.1));
+}, 20000);

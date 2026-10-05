@@ -814,3 +814,108 @@ it("Lab cue form builds one add-clip request, registering a new source when give
     /nothing was saved/,
   );
 });
+
+it("tiles a clip into crossfaded copies up to an end sample, as one undoable request", () => {
+  const input = fixture();
+  input.clips[0]!.fadeInSamples = 240;
+  input.clips[0]!.fadeOutSamples = 960;
+  input.clips[0]!.automation = {
+    interpolation: "linear",
+    points: [
+      { sample: 0, gain: 1 },
+      { sample: 4000, gain: 0.5 },
+    ],
+  };
+  const tiled = editSoundtrackProject(input, [
+    { type: "tile", clip: "speech", endSample: 20000, crossfadeSamples: 480 },
+  ]);
+  const clips = tiled.clips;
+  // 4,800-sample clip, 4,320-sample step: starts 0, 4320, 8640, 12960, 17280.
+  expect(clips.map((c) => [c.id, c.startSample])).toEqual([
+    ["speech", 0],
+    ["speech-2", 4320],
+    ["speech-3", 8640],
+    ["speech-4", 12960],
+    ["speech-5", 17280],
+  ]);
+  expect(clips[0]).toMatchObject({
+    fadeInSamples: 240,
+    fadeOutSamples: 480,
+    fadeOutCurve: "equal-power",
+  });
+  expect(clips[2]).toMatchObject({
+    fadeInSamples: 480,
+    fadeInCurve: "equal-power",
+    fadeOutSamples: 480,
+    fadeOutCurve: "equal-power",
+  });
+  // The last copy is trimmed to end at 20,000 and keeps the original fade-out.
+  const last = clips.at(-1)!;
+  expect(last.startSample + last.sourceEndSample - last.sourceStartSample).toBe(
+    20000,
+  );
+  expect(last).toMatchObject({ fadeInSamples: 480, fadeOutSamples: 960 });
+  expect("fadeOutCurve" in last).toBe(false);
+  expect(last.automation.points).toEqual([{ sample: 0, gain: 1 }]);
+  expect(tiled.history.undo).toEqual([soundtrackState(input)]);
+  expect(
+    soundtrackState(editSoundtrackProject(tiled, [{ type: "undo" }])),
+  ).toEqual(soundtrackState(input));
+  // Without a crossfade, copies abut and joins have no fades.
+  const abutting = editSoundtrackProject(fixture(), [
+    { type: "tile", clip: "speech", endSample: 14400, crossfadeSamples: 0 },
+  ]);
+  expect(abutting.clips.map((c) => c.startSample)).toEqual([0, 4800, 9600]);
+  expect(
+    abutting.clips.every((c) => !c.fadeInSamples && !c.fadeOutSamples),
+  ).toBe(true);
+  const anchored = fixture();
+  anchored.clips[0]!.anchor = {
+    beat: "beat",
+    reference: { type: "cue", id: "cue" },
+    offsetSamples: 0,
+  };
+  expect(
+    "anchor" in
+      editSoundtrackProject(anchored, [
+        { type: "tile", clip: "speech", endSample: 9600, crossfadeSamples: 0 },
+      ]).clips[1]!,
+  ).toBe(false);
+  for (const [operation, code] of [
+    [
+      {
+        type: "tile",
+        clip: "speech",
+        endSample: 20000,
+        crossfadeSamples: 2401,
+      },
+      "tile-crossfade",
+    ],
+    [
+      { type: "tile", clip: "speech", endSample: 4800, crossfadeSamples: 0 },
+      "tile-range",
+    ],
+    [
+      { type: "tile", clip: "speech", endSample: 48001, crossfadeSamples: 0 },
+      "clip-range",
+    ],
+    [
+      { type: "tile", clip: "speech", endSample: 9600, crossfadeSamples: -1 },
+      "edit-schema",
+    ],
+  ] as const)
+    expect(() => editSoundtrackProject(fixture(), [operation])).toThrow(
+      expect.objectContaining({ code }),
+    );
+  const taken = fixture();
+  taken.clips.push({
+    ...structuredClone(taken.clips[0]!),
+    id: "speech-2",
+    startSample: 40000,
+  });
+  expect(() =>
+    editSoundtrackProject(taken, [
+      { type: "tile", clip: "speech", endSample: 9600, crossfadeSamples: 0 },
+    ]),
+  ).toThrow(expect.objectContaining({ code: "duplicate-id" }));
+});
