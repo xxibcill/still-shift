@@ -160,12 +160,66 @@
           "status": "passed"
         }
       ]
+    },
+    {
+      "name": "Eight examples and Unequal Margins native builder proof",
+      "status": "checkpoint",
+      "verification": [
+        {
+          "command": "pnpm exec vitest run [examples, evaluator, typography events, motion craft curves]",
+          "status": "passed",
+          "tests": 111
+        },
+        {
+          "command": "pnpm build / eslint changed files / pnpm check:boundaries",
+          "status": "passed"
+        },
+        {
+          "command": "pnpm test:browser:composition-builder",
+          "status": "passed",
+          "report": {
+            "status": "passed",
+            "lines": 197,
+            "frames": 192,
+            "numericValues": 42256,
+            "maxNumericDelta": 5.684341886080802e-14,
+            "pixels": [
+              {
+                "backend": "canvas2d",
+                "frames": 192,
+                "maxChannelDelta": 0,
+                "minimumPsnr": "Infinity",
+                "backwardSeeks": 7
+              },
+              {
+                "backend": "webgl2",
+                "frames": 192,
+                "maxChannelDelta": 0,
+                "minimumPsnr": "Infinity",
+                "backwardSeeks": 7
+              }
+            ],
+            "exports": {
+              "typescriptJsonByteIdentical": true,
+              "sha256": "5ebd5dca399ea9f149611e60edea3ad01710aa56d0999abf7a227710b3395b38"
+            }
+          },
+          "log": "/private/tmp/ce10-builder-proof.log"
+        }
+      ],
+      "repairs": [
+        "Readback initially used Canvas getContext on the WebGL backend; used public preview.readPixels instead.",
+        "Native evaluator camera is projected into transforms rather than exposed as tree.camera; camera descriptors are now compared explicitly."
+      ],
+      "limits": [
+        "The main authored choreography is 197 formatted lines. Shared helpers contain only static geometry, resource registration and the shared public easing sampler; no adapter output is an authoring input."
+      ]
     }
   ],
   "pending": [
     "Story intent presets",
-    "Generated reference, skill and at least eight examples",
-    "Unequal Margins pixel/export proof and isolated skill trial",
+    "Generated reference and skill",
+    "Isolated skill trial",
     "Full local milestone gates and PR"
   ]
 }

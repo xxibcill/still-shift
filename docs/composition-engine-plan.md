@@ -3620,7 +3620,7 @@ export default comp({ width: 1920, height: 1080, fps: 30, seconds: 8 }, (c) => {
       the schema and the built-in registry where possible.
 - [x] Builder helpers for expressions (an `expr` tagged template such as `` expr`wiggle(2, 6, 7)` `` and `ref(path)`) that
       emit the text syntax and validate it at build time with source locations.
-- [ ] Examples directory with at least eight small programs covering the milestones
+- [x] Examples directory with at least eight small programs covering the milestones
       delivered so far.
 
 **Acceptance:** The Unequal Margins continuous prototype is re-authored as a builder
@@ -3641,7 +3641,9 @@ commands pass all 1,491 unit tests and 26 focused CLI regressions. Watch preview
 and complete nested/key source sites are delivered; all 128 integration tests pass.
 Browser verification preserves valid pixels and frames through rebuild errors,
 clamps shortened duration, switches backends and proves TypeScript/JSON MP4 identity.
-Presets, generated references, examples and acceptance remain in progress. See [CE10 evidence](./composition-ce10-results.json).
+Eight small programs validate. The 197-line Unequal Margins program matches all
+192 CE4a frames exactly on both backends, seeks and exports included. Presets,
+generated references, isolated trial and full gates remain in progress. See [CE10 evidence](./composition-ce10-results.json).
 
 **Completion record:** _to be filled in._
 

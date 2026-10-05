@@ -27,6 +27,7 @@ export default tseslint.config(
   },
   {
     files: [
+      "packages/scene-contract/src/easing-sampler.ts",
       "packages/renderer-core/src/composition/evaluate/**/*.ts",
       "packages/renderer-core/src/composition/render/{graph,backend,version}.ts",
       "packages/renderer-core/src/{curve,node-transform,camera-sampling,motion-sampling,passage-diagnostics,motion-easing}.ts",

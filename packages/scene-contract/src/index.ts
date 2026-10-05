@@ -43,3 +43,9 @@ export * from "./character-actions.ts";
 export * from "./typography.ts";
 
 export * from "./composition/index.ts";
+
+export {
+  easeMotion,
+  cubicBezierProgress,
+  springProgress,
+} from "./easing-sampler.ts";

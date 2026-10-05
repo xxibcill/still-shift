@@ -44,10 +44,10 @@ still hold before relying on them.
 ## Current state
 
 - **CE10 in progress (2026-10-05):** `codex/composition-ce10` from CE4a `869a793`.
-  Typed authoring, native mask/effect/path keys and inherited key call sites
-  and fresh TypeScript CLI/watch preview are delivered. All 128 integration tests
-  pass; browser watch preserves valid frames/pixels and TypeScript/JSON MP4 identity.
-  Presets, reference/examples and milestone acceptance remain open.
+  Typed authoring and CLI/watch preview are delivered; all 128 integration tests pass.
+  Eight examples validate and the 197-line Unequal Margins program matches CE4a pixels
+  across 192 frames on both backends, including seeks and TypeScript/JSON MP4 identity.
+  Presets, generated reference/skill, isolated trial and full milestone gates remain.
   [Evidence](./composition-ce10-results.json).
 
 - **CE4a complete (2026-10-05):** `codex/composition-ce4a-completion`, implementation
@@ -147,6 +147,20 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-05 — Prove CE10 builder examples and Unequal Margins parity
+
+- **Agent / branch:** Codex on `codex/composition-ce10`.
+- **Done:** eight typed programs with pinned assets; native 197-line Unequal Margins
+  choreography, static illustration helpers and shared pure easing implementation.
+- **Results:** 111 focused tests, build, lint and boundaries pass. All 192 frames on
+  Canvas and WebGL have zero pixel difference from CE4a; seven backward seeks per
+  backend match; TypeScript and JSON produce byte-identical 192-frame MP4s.
+- **Rejected / repaired:** the first proof read a Canvas context on WebGL; switched
+  to the renderer's public readPixels method. No tier was relaxed.
+- **Open / next:** story presets, generated reference/skill, isolated authoring trial,
+  full local gates and milestone PR.
+- **Records:** [CE10 evidence](./composition-ce10-results.json).
 
 ### 2026-10-05 — Deliver CE10 watch preview checkpoint
 
