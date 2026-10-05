@@ -43,11 +43,14 @@ still hold before relying on them.
 
 ## Current state
 
-- **PR #36 review fixes in progress (2026-10-05):** `codex/composition-ce10`
-  from `afb4045`; all six findings posted inline, 5/6 repaired in separate
-  finding commits. Focused regressions retain failures and passing reruns.
-  Remaining repairs and final local verification precede one final push;
-  no owner decision or implementation blocker. [Evidence](./pr-36-fix-results.json).
+- **PR #36 review fixes complete (2026-10-05):** `codex/composition-ce10`
+  from `afb4045`; all six findings posted inline and repaired in six separate
+  finding commits, prepared for one final push. Fast checks pass: 1,515 unit;
+  46 runtime, 146 integration and 14 depth tests also pass. Affected watch,
+  Canvas/WebGL builder parity, export and typography browser checks pass.
+  The native Node error-class failure was repaired in the first finding commit;
+  full unrelated browser/baseline suites were not rerun. Owner review/merge
+  remains; no implementation blocker. [Evidence](./pr-36-fix-results.json).
 
 - **CE10 complete (2026-10-05):** `codex/composition-ce10` from CE4a `869a793`;
   runtime `e501fed`. Typed authoring, CLI/watch, presets, eight examples and generated
@@ -156,6 +159,22 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-05 — PR #36 fix 6: trace CommonJS program dependencies
+
+- **Agent / branch:** Codex on `codex/composition-ce10`, from `afb4045`.
+- **Done:** Synchronous hooks trace CommonJS helpers, transitive JSON and missing
+  absolute/relative imports. Focused regressions fail before repair and pass afterward.
+- **Results:** Fast checks pass (1,515 unit); 46 runtime, 146 integration and 14 depth
+  tests pass. Watch preserves valid pixels and frame state; the 192-frame builder
+  matches Canvas/WebGL exactly and exports are byte-identical. Typography passes.
+- **Rejected / repaired:** Native Node rejects constructor parameter properties;
+  repaired the first finding commit and added a native-load regression. The temporary
+  watch harness requires `.mts` outside the module package and a free port because
+  another local session uses 5173. Full unrelated browser/baseline suites were not rerun.
+- **Open / next:** Six findings fixed in six commits, followed by one final push.
+  Owner review/merge remains pending; GitHub Actions remain disabled.
+- **Records:** [Fix evidence](./pr-36-fix-results.json), [inline finding](https://github.com/xxibcill/still-shift/pull/36#discussion_r4183180673).
 
 ### 2026-10-05 — PR #36 fix 5: watch missing TypeScript import candidates
 

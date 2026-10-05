@@ -22,9 +22,24 @@
           "command": "pnpm exec vitest run tests/unit/motion-builder-presets.test.ts tests/unit/typography-events.test.ts --maxWorkers=2",
           "log": "/private/tmp/pr36-fix1-green.log"
         },
-        "build": "passed"
+        "build": "passed",
+        "nativeNodeCompatibility": {
+          "red": {
+            "status": "failed-as-expected",
+            "command": "pnpm exec vitest run tests/unit/typography-events.test.ts -t 'native Node'",
+            "log": "/private/tmp/pr36-fix1-native-red.log"
+          },
+          "repair": "Declare the event index field separately; native Node strip-only mode rejects constructor parameter properties. Repair and regression are folded into the first finding commit.",
+          "green": {
+            "status": "passed",
+            "tests": 29,
+            "command": "pnpm exec vitest run tests/unit/typography-events.test.ts tests/unit/motion-builder-presets.test.ts",
+            "log": "/private/tmp/pr36-fix1-native-green.log"
+          },
+          "build": "passed"
+        }
       },
-      "commit": "38accbb6e63b47b2357d3856635a0ac0622ce3c6"
+      "commit": "2bff27a2e0fface5f57a19324a8ad85ed6906e88"
     },
     {
       "number": 2,
@@ -45,7 +60,7 @@
         },
         "build": "passed"
       },
-      "commit": "625b65f5495b252072f61990a314ac4227730ca2"
+      "commit": "3cf4c8572c6704c4b20ae1b1dfa6e67a9430cc10"
     },
     {
       "number": 3,
@@ -65,7 +80,7 @@
         },
         "build": "passed"
       },
-      "commit": "03a240bb00413aafe1aa1e708a2645f3c16df6ed"
+      "commit": "89f39e8604c762d6b049a57b0b0ef083b426b30e"
     },
     {
       "number": 4,
@@ -87,7 +102,7 @@
         "build": "passed",
         "rejectedExperiment": "Full Layer[] storage exposes invariant generic fluent methods; retain the structural node record and pending-anchor field."
       },
-      "commit": "700e64f6aaa17dd9dd85135b112e52f96cfedf39"
+      "commit": "036a6fdf92d9949bc1c3cb884a72082f1e972c80"
     },
     {
       "number": 5,
@@ -103,20 +118,181 @@
         "green": {
           "status": "passed",
           "tests": 4,
-          "command": "pnpm exec vitest run tests/integration/composition-preview.test.ts -t recovers_TypeScript_resolution_candidates --maxWorkers=1",
+          "command": "pnpm exec vitest run tests/integration/composition-preview.test.ts -t 'recovers TypeScript resolution candidates' --maxWorkers=1",
           "log": "/private/tmp/pr36-fix5-green.log"
         },
         "build": "passed",
         "rejectedExperiment": "nextResolve may return synchronously; use try/await/catch rather than Promise.catch on its union return."
-      }
+      },
+      "commit": "e773e4699a3f401618b159bd29431412f6d55b1c"
     },
     {
       "number": 6,
       "finding": "trace CommonJS program dependencies",
       "comment": "https://github.com/xxibcill/still-shift/pull/36#discussion_r4183180673",
-      "status": "pending"
+      "status": "fixed",
+      "verification": {
+        "red": {
+          "status": "failed-as-expected",
+          "newRegressions": 5,
+          "compatibilityCasesPassed": 1,
+          "log": "/private/tmp/pr36-fix6-red.log"
+        },
+        "absolutePathRed": {
+          "status": "failed-as-expected",
+          "newRegressions": 1,
+          "log": "/private/tmp/pr36-fix6-absolute-red.log"
+        },
+        "green": {
+          "status": "passed",
+          "command": "pnpm exec vitest run tests/integration/composition-program.test.ts tests/integration/composition-preview.test.ts --maxWorkers=1",
+          "log": "/private/tmp/pr36-fix6-green.log",
+          "tests": 22
+        },
+        "build": "passed",
+        "designSource": "https://nodejs.org/download/release/v22.23.1/docs/api/module.html#customization-hooks",
+        "behavior": "Synchronous hook covers imports, require and createRequire; preserve require formats, collect transitive JSON helpers, track absolute and failed TypeScript candidates. Preview regressions allocate free ports."
+      },
+      "commitSubject": "fix(cli): trace CommonJS program dependencies"
     }
   ],
-  "verification": [],
-  "status": "in-progress"
+  "verification": [
+    {
+      "command": "pnpm toolchain:check",
+      "status": "passed",
+      "log": "/private/tmp/pr36-final-toolchain.log"
+    },
+    {
+      "command": "pnpm check:fast",
+      "status": "passed",
+      "unitTests": 1515,
+      "testFiles": 134,
+      "covers": [
+        "schema",
+        "package boundaries",
+        "TypeScript formatting",
+        "TypeScript lint",
+        "TypeScript build",
+        "unit tests"
+      ],
+      "log": "/private/tmp/pr36-final-fast-rerun.log"
+    },
+    {
+      "command": "pnpm test:runtime",
+      "status": "passed",
+      "tests": 46,
+      "testFiles": 9,
+      "log": "/private/tmp/pr36-final-runtime.log"
+    },
+    {
+      "command": "pnpm test:integration",
+      "status": "passed",
+      "tests": 146,
+      "testFiles": 37,
+      "log": "/private/tmp/pr36-final-integration-rerun.log"
+    },
+    {
+      "command": "pnpm test:depth",
+      "status": "passed",
+      "tests": 14,
+      "log": "/private/tmp/pr36-final-depth.log"
+    },
+    {
+      "command": "pnpm exec tsx /private/tmp/pr36-final-watch-browser.mts",
+      "status": "passed",
+      "scope": "Original composition-program browser assertions; only absolute local imports and free-port allocation adapted outside the checkout. Another local session occupies port 5173.",
+      "result": {
+        "status": "passed",
+        "watch": {
+          "helperReload": true,
+          "invalidKeepsPixels": true,
+          "frameRetained": 17,
+          "shorterClamped": 7,
+          "backendSwitch": true,
+          "fullReload": false,
+          "readonlyBuilder": true
+        },
+        "render": {
+          "sources": ["typescript", "json"],
+          "frames": 8,
+          "fps": 24,
+          "byteIdentical": true
+        }
+      },
+      "log": "/private/tmp/pr36-final-browser-watch-rerun.log"
+    },
+    {
+      "command": "pnpm test:browser:composition-builder",
+      "status": "passed",
+      "result": {
+        "status": "passed",
+        "lines": 197,
+        "frames": 192,
+        "numericValues": 42256,
+        "maxNumericDelta": 5.684341886080802e-14,
+        "pixels": [
+          {
+            "backend": "canvas2d",
+            "frames": 192,
+            "maxChannelDelta": 0,
+            "minimumPsnr": "Infinity",
+            "backwardSeeks": 7
+          },
+          {
+            "backend": "webgl2",
+            "frames": 192,
+            "maxChannelDelta": 0,
+            "minimumPsnr": "Infinity",
+            "backwardSeeks": 7
+          }
+        ],
+        "exports": {
+          "typescriptJsonByteIdentical": true,
+          "sha256": "5ebd5dca399ea9f149611e60edea3ad01710aa56d0999abf7a227710b3395b38"
+        }
+      },
+      "log": "/private/tmp/pr36-final-browser-builder.log"
+    },
+    {
+      "command": "TYPOGRAPHY_OUTPUT=/private/tmp/pr36-typography pnpm test:browser:typography",
+      "status": "passed",
+      "result": {
+        "centroidDrift": 0.24687077885808315,
+        "backward": true,
+        "handoff": true,
+        "fontVariations": true,
+        "output": "/private/tmp/pr36-typography"
+      },
+      "log": "/private/tmp/pr36-final-browser-typography.log"
+    }
+  ],
+  "status": "all-six-findings-fixed-and-locally-verified",
+  "failedAttempts": [
+    {
+      "command": "pnpm test:integration",
+      "status": "failed",
+      "passedTests": 121,
+      "skippedTests": 25,
+      "failedSuites": 5,
+      "reason": "TextEventError used a TypeScript constructor parameter property unsupported by native Node strip-only loading. Corrected in the first finding commit; the native import regression and all 146 integration tests now pass.",
+      "log": "/private/tmp/pr36-final-integration.log"
+    },
+    {
+      "command": "pnpm exec tsx /private/tmp/pr36-final-watch-browser.ts",
+      "status": "failed",
+      "reason": "The external /tmp harness lacked package type=module, so tsx selected CommonJS and rejected top-level await. Renaming the temporary harness to .mts preserved the assertions and passed.",
+      "log": "/private/tmp/pr36-final-browser-watch.log"
+    }
+  ],
+  "notRun": [
+    "Full pnpm check aggregate and unrelated browser/frozen-baseline suites were not rerun for these fixes. Affected browser checks and all unit, runtime, integration and depth tests passed locally."
+  ],
+  "delivery": {
+    "reviewComments": 6,
+    "findingCommits": 6,
+    "pushStrategy": "One push after the sixth finding commit",
+    "actionsEnabled": false,
+    "remoteHeadBeforePush": "afb4045aeb667144ecbb7f076dff7fa6cd46dfdf",
+    "pendingOwnerDecision": "PR review and merge"
+  }
 }
