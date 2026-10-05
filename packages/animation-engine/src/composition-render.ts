@@ -5,13 +5,13 @@ import {
   AnimationEngineError,
   type CompositionDiagnostic,
 } from "@still-shift/scene-contract";
+import { COMPOSITION_EVALUATOR_VERSION } from "../../renderer-core/src/composition/evaluate/evaluate.ts";
 import {
-  COMPOSITION_EVALUATOR_VERSION,
   compositionScene,
   type CompositionBackend,
   type CompositionRendererVersion,
   type CompositionScene,
-} from "@still-shift/renderer-core";
+} from "../../renderer-core/src/composition/render/renderer.ts";
 import {
   exportScene,
   type ExportMetrics,

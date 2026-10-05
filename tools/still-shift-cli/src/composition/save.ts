@@ -9,12 +9,12 @@ import {
 import type { IncomingMessage } from "node:http";
 
 export class CompositionSaveError extends Error {
-  constructor(
-    readonly status: number,
-    readonly code: string,
-    message: string,
-  ) {
+  readonly status: number;
+  readonly code: string;
+  constructor(status: number, code: string, message: string) {
     super(message);
+    this.status = status;
+    this.code = code;
   }
 }
 export function sourceHash(bytes: Buffer) {

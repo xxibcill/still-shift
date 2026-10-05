@@ -49,7 +49,9 @@ still hold before relying on them.
   browser checks. Lossless history, native curve edits and fixed-source saves pass
   focused model/API gates. Inspector integration, overlays and desktop/phone native
   save/export acceptance and final builder/instance review pass. Full local
-  milestone gates and the CE11 PR remain. Existing Lab design is the default pending optional steering.
+  milestone gates and the CE11 PR remain. The first full gate exposed Vite
+  import compatibility; its repair passes build/lint/boundaries and integration
+  rechecks pass all 25 affected tests. Existing Lab design is the default pending optional steering.
   [Evidence](./composition-ce11-results.json).
 
 - **CE10 complete (2026-10-05):** `codex/composition-ce10` from CE4a `869a793`;
@@ -159,6 +161,19 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-05 — Repair native imports in the CE11 Vite configuration
+
+- **Agent / branch:** Codex on `codex/composition-ce11`, after `4714cce`.
+- **Done:** narrow relative native composition imports preserve Vite bundling; save
+  errors use explicit fields compatible with Node strip-only loading.
+- **Results:** build, lint and dependency boundaries pass. The first full check
+  passed 1,510 unit and 46 runtime tests, then failed integration loading. Retain
+  that run and its repaired-suite attempt. Three depth timeouts pass on isolated
+  recheck; a sound transition timeout passes its isolated trace. Timeouts unchanged.
+- **Next:** all 25 affected integration tests pass; repeat the full local gate before
+  the CE11 PR. The primary Python environment and owner changes are preserved.
+- **Records:** [CE11 evidence](./composition-ce11-results.json).
 
 ### 2026-10-05 — Verify copied builder keys and resolved inspector motion
 

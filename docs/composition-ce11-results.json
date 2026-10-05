@@ -246,6 +246,54 @@
         "Native waveform and 3D camera frustum remain tracked under CE13/CE8."
       ],
       "pending": ["Complete full local pnpm check and publish CE11 PR"]
+    },
+    {
+      "name": "Vite configuration import compatibility",
+      "status": "checkpoint",
+      "changes": [
+        "Use explicit error fields compatible with Node strip-only loading.",
+        "Keep the draft-export import chain on narrow relative native composition modules so the Vite configuration bundles renderer TypeScript rather than externalizing broad package indexes."
+      ],
+      "verification": [
+        {
+          "command": "pnpm check at 4714cce in a clean tracked snapshot",
+          "status": "failed",
+          "log": "benchmarks/results/composition-ce11-verification/ce11-full-4714cce.log",
+          "passed": {
+            "unit": 1510,
+            "runtime": 46
+          },
+          "failures": [
+            "Five Lab integration suites failed loading the configuration due to Node strip-only TypeScript parameter properties.",
+            "Three depth-worker integration timeouts in the cloned Python environment."
+          ]
+        },
+        {
+          "command": "depth-worker integration in the same isolated Python environment",
+          "status": "passed",
+          "tests": 5,
+          "log": "benchmarks/results/composition-ce11-verification/ce11-cloned-depth-recheck.log"
+        },
+        {
+          "command": "five Lab suites after narrow import repair",
+          "status": "failed",
+          "passedTests": 24,
+          "failedTests": 1,
+          "log": "benchmarks/results/composition-ce11-verification/ce11-vite-boundary-repair.log",
+          "failure": "The stubbed in-flight sound test timed out; isolated diagnostic trace then passed without implementation or timeout changes."
+        },
+        {
+          "command": "pnpm build / changed-file eslint / pnpm check:boundaries",
+          "status": "passed"
+        },
+        {
+          "command": "all five affected Lab integration suites with original tests/timeouts",
+          "status": "passed",
+          "tests": 25,
+          "log": "benchmarks/results/composition-ce11-verification/ce11-vite-boundary-recheck.log"
+        }
+      ],
+      "pending": ["Repeat the complete local pnpm check."]
     }
   ],
   "conditionalFollowThrough": {

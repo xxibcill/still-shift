@@ -5,7 +5,7 @@ import { tmpdir } from "node:os";
 import { extname, join } from "node:path";
 import { pipeline } from "node:stream/promises";
 import type { ServerResponse } from "node:http";
-import { renderComposition } from "@still-shift/animation-engine";
+import { renderComposition } from "../../../../packages/animation-engine/src/composition-render.ts";
 import type { Composition } from "@still-shift/scene-contract";
 import { CompositionSaveError, editableDocument } from "./save.ts";
 export type DraftAsset = { bytes: Buffer; type: string };
