@@ -1,0 +1,60 @@
+{
+  "milestone": "CE7",
+  "status": "in-progress",
+  "branch": "codex/composition-ce7",
+  "base": "edb958a",
+  "slices": [
+    {
+      "name": "Layer-local clocks and precomp loops",
+      "status": "checkpoint",
+      "changes": [
+        "Static bounded posterizeFps/holdFrame control local keyed/content clocks before sample-table lookup; visibility and documented root-bound inputs retain their clocks.",
+        "Signed cycle/pingpong and finite counts wrap final source remaps before clamping; reused instances remain independent; excessive modulo clocks retain root-frame/route diagnostics.",
+        "Existing single hold remap key freezes keyed source content; visual frameBlending declaration and sourceFramePair kernel are reserved for CE13 decode/render integration."
+      ],
+      "verification": {
+        "focusedUnitTests": 250,
+        "build": "passed",
+        "changedFileLint": "passed",
+        "generatedSchema": "passed",
+        "log": "benchmarks/results/composition-ce7-verification/ce7-clock-focused.log"
+      },
+      "limitations": [
+        "Root-global expressions/drivers/periodic motion and scope constraints retain documented clocks; no complete AE procedural posterization parity claimed.",
+        "Exposure-cut integration, adaptive blur, full native acceptance, serial costs and full pnpm check remain pending.",
+        "Video/sequence rendering remains unavailable until CE13."
+      ]
+    }
+  ],
+  "pending": [
+    "Exposure-cut mapping for held/stepped clocks and cycle wraps",
+    "Optional deterministic adaptive samples",
+    "Commerce alias/native regressions",
+    "Native fixture pixels, seeking, hardware and repeated exports",
+    "Serial 1080p cost per sample count/backend",
+    "Full local pnpm check and frozen CE0 baselines",
+    "PR creation and attachment"
+  ],
+  "verificationAttempts": [
+    {
+      "command": "focused unit selection",
+      "status": "failed",
+      "tests": 165,
+      "failures": 3,
+      "reasons": [
+        "New test expected zero anchor instead of the existing sized-layer center default. Explicit zero anchor now isolates parent/content timing.",
+        "New test confused baked key index with the public authored sample time; assertion now checks index2, source time4 and sampled keyed value2.",
+        "Every-field fixture coverage needed the newly added CE7 fields; actual time-controls fixture now participates instead of exempting fields."
+      ],
+      "selectionRepair": "Final selection uses existing composition-evaluate.test.ts and includes its85 tests.",
+      "log": "benchmarks/results/composition-ce7-verification/ce7-clock-focused-initial-failed.log"
+    },
+    {
+      "command": "focused unit selection",
+      "status": "passed",
+      "tests": 250,
+      "files": 5,
+      "log": "benchmarks/results/composition-ce7-verification/ce7-clock-focused.log"
+    }
+  ]
+}

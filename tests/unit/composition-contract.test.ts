@@ -630,6 +630,14 @@ describe("composition-1 fixtures", () => {
     ) as Composition;
     expect(validateComposition(shapes).ok).toBe(true);
     allLayers.push(...shapes.layers);
+    const timeControls = JSON.parse(
+      readFileSync(
+        resolve(root, "benchmarks/fixtures/composition/ce7/time-controls.json"),
+        "utf8",
+      ),
+    ) as Composition;
+    expect(validateComposition(timeControls).ok).toBe(true);
+    allLayers.push(...timeControls.layers);
     for (const option of layers.CompositionLayerSchema.options) {
       const type = option.shape.type.value;
       if (UNAVAILABLE_LAYER_TYPES[type]) continue;

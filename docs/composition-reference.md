@@ -75,6 +75,8 @@ See [the generated JSON Schema](../packages/scene-contract/schemas/composition-1
 | `outPoint`            | no       | integer                                                                                                                                                                                               |
 | `startFrame`          | no       | integer                                                                                                                                                                                               |
 | `stretch`             | no       | number                                                                                                                                                                                                |
+| `posterizeFps`        | no       | number                                                                                                                                                                                                |
+| `holdFrame`           | no       | number                                                                                                                                                                                                |
 | `sampleTimes`         | no       | array                                                                                                                                                                                                 |
 | `parent`              | no       | string                                                                                                                                                                                                |
 | `enabled`             | no       | boolean                                                                                                                                                                                               |
@@ -106,6 +108,8 @@ See [the generated JSON Schema](../packages/scene-contract/schemas/composition-1
 | `outPoint`            | no       | integer                                                                                                                                                                                               |
 | `startFrame`          | no       | integer                                                                                                                                                                                               |
 | `stretch`             | no       | number                                                                                                                                                                                                |
+| `posterizeFps`        | no       | number                                                                                                                                                                                                |
+| `holdFrame`           | no       | number                                                                                                                                                                                                |
 | `sampleTimes`         | no       | array                                                                                                                                                                                                 |
 | `parent`              | no       | string                                                                                                                                                                                                |
 | `enabled`             | no       | boolean                                                                                                                                                                                               |
@@ -142,6 +146,8 @@ See [the generated JSON Schema](../packages/scene-contract/schemas/composition-1
 | `outPoint`            | no       | integer                                                                                                                                                                                               |
 | `startFrame`          | no       | integer                                                                                                                                                                                               |
 | `stretch`             | no       | number                                                                                                                                                                                                |
+| `posterizeFps`        | no       | number                                                                                                                                                                                                |
+| `holdFrame`           | no       | number                                                                                                                                                                                                |
 | `sampleTimes`         | no       | array                                                                                                                                                                                                 |
 | `parent`              | no       | string                                                                                                                                                                                                |
 | `enabled`             | no       | boolean                                                                                                                                                                                               |
@@ -202,6 +208,8 @@ See [the generated JSON Schema](../packages/scene-contract/schemas/composition-1
 | `outPoint`            | no       | integer                                                                                                                                                                                               |
 | `startFrame`          | no       | integer                                                                                                                                                                                               |
 | `stretch`             | no       | number                                                                                                                                                                                                |
+| `posterizeFps`        | no       | number                                                                                                                                                                                                |
+| `holdFrame`           | no       | number                                                                                                                                                                                                |
 | `sampleTimes`         | no       | array                                                                                                                                                                                                 |
 | `parent`              | no       | string                                                                                                                                                                                                |
 | `enabled`             | no       | boolean                                                                                                                                                                                               |
@@ -231,6 +239,8 @@ See [the generated JSON Schema](../packages/scene-contract/schemas/composition-1
 | `outPoint`            | no       | integer                                                                                                                                                                                               |
 | `startFrame`          | no       | integer                                                                                                                                                                                               |
 | `stretch`             | no       | number                                                                                                                                                                                                |
+| `posterizeFps`        | no       | number                                                                                                                                                                                                |
+| `holdFrame`           | no       | number                                                                                                                                                                                                |
 | `sampleTimes`         | no       | array                                                                                                                                                                                                 |
 | `parent`              | no       | string                                                                                                                                                                                                |
 | `enabled`             | no       | boolean                                                                                                                                                                                               |
@@ -268,6 +278,8 @@ See [the generated JSON Schema](../packages/scene-contract/schemas/composition-1
 | `outPoint`            | no       | integer                                                                                                                                                                                               |
 | `startFrame`          | no       | integer                                                                                                                                                                                               |
 | `stretch`             | no       | number                                                                                                                                                                                                |
+| `posterizeFps`        | no       | number                                                                                                                                                                                                |
+| `holdFrame`           | no       | number                                                                                                                                                                                                |
 | `sampleTimes`         | no       | array                                                                                                                                                                                                 |
 | `parent`              | no       | string                                                                                                                                                                                                |
 | `enabled`             | no       | boolean                                                                                                                                                                                               |
@@ -299,6 +311,8 @@ See [the generated JSON Schema](../packages/scene-contract/schemas/composition-1
 | `outPoint`            | no       | integer                                                                                                                                                                                               |
 | `startFrame`          | no       | integer                                                                                                                                                                                               |
 | `stretch`             | no       | number                                                                                                                                                                                                |
+| `posterizeFps`        | no       | number                                                                                                                                                                                                |
+| `holdFrame`           | no       | number                                                                                                                                                                                                |
 | `sampleTimes`         | no       | array                                                                                                                                                                                                 |
 | `parent`              | no       | string                                                                                                                                                                                                |
 | `enabled`             | no       | boolean                                                                                                                                                                                               |
@@ -320,6 +334,8 @@ See [the generated JSON Schema](../packages/scene-contract/schemas/composition-1
 | `comp`                | yes      | string                                                                                                                                                                                                |
 | `collapseTransforms`  | no       | boolean                                                                                                                                                                                               |
 | `timeRemap`           | no       | number or object                                                                                                                                                                                      |
+| `loop`                | no       | `cycle`, `pingpong`                                                                                                                                                                                   |
+| `loopCount`           | no       | integer                                                                                                                                                                                               |
 
 ### `adjustment` contract
 
@@ -331,6 +347,8 @@ See [the generated JSON Schema](../packages/scene-contract/schemas/composition-1
 | `outPoint`            | no       | integer                                                                                                                                                                                               |
 | `startFrame`          | no       | integer                                                                                                                                                                                               |
 | `stretch`             | no       | number                                                                                                                                                                                                |
+| `posterizeFps`        | no       | number                                                                                                                                                                                                |
+| `holdFrame`           | no       | number                                                                                                                                                                                                |
 | `sampleTimes`         | no       | array                                                                                                                                                                                                 |
 | `parent`              | no       | string                                                                                                                                                                                                |
 | `enabled`             | no       | boolean                                                                                                                                                                                               |
@@ -361,6 +379,8 @@ See [the generated JSON Schema](../packages/scene-contract/schemas/composition-1
 | `outPoint`            | no       | integer                                                                                                                                                                                               |
 | `startFrame`          | no       | integer                                                                                                                                                                                               |
 | `stretch`             | no       | number                                                                                                                                                                                                |
+| `posterizeFps`        | no       | number                                                                                                                                                                                                |
+| `holdFrame`           | no       | number                                                                                                                                                                                                |
 | `sampleTimes`         | no       | array                                                                                                                                                                                                 |
 | `parent`              | no       | string                                                                                                                                                                                                |
 | `enabled`             | no       | boolean                                                                                                                                                                                               |
@@ -391,6 +411,8 @@ See [the generated JSON Schema](../packages/scene-contract/schemas/composition-1
 | `outPoint`            | no       | integer                                                                                                                                                                                               |
 | `startFrame`          | no       | integer                                                                                                                                                                                               |
 | `stretch`             | no       | number                                                                                                                                                                                                |
+| `posterizeFps`        | no       | number                                                                                                                                                                                                |
+| `holdFrame`           | no       | number                                                                                                                                                                                                |
 | `sampleTimes`         | no       | array                                                                                                                                                                                                 |
 | `parent`              | no       | string                                                                                                                                                                                                |
 | `enabled`             | no       | boolean                                                                                                                                                                                               |
@@ -420,6 +442,8 @@ See [the generated JSON Schema](../packages/scene-contract/schemas/composition-1
 | `outPoint`            | no       | integer                                                                                                                                                                                               |
 | `startFrame`          | no       | integer                                                                                                                                                                                               |
 | `stretch`             | no       | number                                                                                                                                                                                                |
+| `posterizeFps`        | no       | number                                                                                                                                                                                                |
+| `holdFrame`           | no       | number                                                                                                                                                                                                |
 | `sampleTimes`         | no       | array                                                                                                                                                                                                 |
 | `parent`              | no       | string                                                                                                                                                                                                |
 | `enabled`             | no       | boolean                                                                                                                                                                                               |
@@ -449,6 +473,8 @@ See [the generated JSON Schema](../packages/scene-contract/schemas/composition-1
 | `outPoint`            | no       | integer                                                                                                                                                                                               |
 | `startFrame`          | no       | integer                                                                                                                                                                                               |
 | `stretch`             | no       | number                                                                                                                                                                                                |
+| `posterizeFps`        | no       | number                                                                                                                                                                                                |
+| `holdFrame`           | no       | number                                                                                                                                                                                                |
 | `sampleTimes`         | no       | array                                                                                                                                                                                                 |
 | `parent`              | no       | string                                                                                                                                                                                                |
 | `enabled`             | no       | boolean                                                                                                                                                                                               |
@@ -469,6 +495,7 @@ See [the generated JSON Schema](../packages/scene-contract/schemas/composition-1
 | `type`                | yes      | `video`                                                                                                                                                                                               |
 | `asset`               | yes      | string                                                                                                                                                                                                |
 | `timeRemap`           | no       | number or object                                                                                                                                                                                      |
+| `frameBlending`       | no       | `hold`, `linear`                                                                                                                                                                                      |
 
 ### `sequence` contract
 
@@ -480,6 +507,8 @@ See [the generated JSON Schema](../packages/scene-contract/schemas/composition-1
 | `outPoint`            | no       | integer                                                                                                                                                                                               |
 | `startFrame`          | no       | integer                                                                                                                                                                                               |
 | `stretch`             | no       | number                                                                                                                                                                                                |
+| `posterizeFps`        | no       | number                                                                                                                                                                                                |
+| `holdFrame`           | no       | number                                                                                                                                                                                                |
 | `sampleTimes`         | no       | array                                                                                                                                                                                                 |
 | `parent`              | no       | string                                                                                                                                                                                                |
 | `enabled`             | no       | boolean                                                                                                                                                                                               |
@@ -500,6 +529,7 @@ See [the generated JSON Schema](../packages/scene-contract/schemas/composition-1
 | `type`                | yes      | `sequence`                                                                                                                                                                                            |
 | `asset`               | yes      | string                                                                                                                                                                                                |
 | `timeRemap`           | no       | number or object                                                                                                                                                                                      |
+| `frameBlending`       | no       | `hold`, `linear`                                                                                                                                                                                      |
 
 ### `audio` contract
 
@@ -511,6 +541,8 @@ See [the generated JSON Schema](../packages/scene-contract/schemas/composition-1
 | `outPoint`            | no       | integer                                                                                                                                                                                               |
 | `startFrame`          | no       | integer                                                                                                                                                                                               |
 | `stretch`             | no       | number                                                                                                                                                                                                |
+| `posterizeFps`        | no       | number                                                                                                                                                                                                |
+| `holdFrame`           | no       | number                                                                                                                                                                                                |
 | `sampleTimes`         | no       | array                                                                                                                                                                                                 |
 | `parent`              | no       | string                                                                                                                                                                                                |
 | `enabled`             | no       | boolean                                                                                                                                                                                               |
@@ -855,6 +887,9 @@ Schema validation yields stable codes with JSON paths; builder input also yields
 | `comp-duplicate-id`                | An id is used twice in its namespace.                                                                 |
 | `comp-reserved-id`                 | A layer or precomp uses the reserved id `comp`.                                                       |
 | `comp-layer-time`                  | `inPoint` is not before `outPoint`.                                                                   |
+| `comp-time-control`                | A finite precomp loop count requires a loop mode.                                                     |
+| `comp-media-time`                  | Media sampling needs finite source time and a positive safe integer frame count.                      |
+| `comp-media-frame-blending`        | Frame blending must be hold or linear.                                                                |
 | `comp-layer-limit`                 | More than 2,000 layers across the composition and its precomps.                                       |
 | `comp-parent-missing`              | `parent` names no layer in the same composition.                                                      |
 | `comp-parent-cycle`                | A parent chain loops.                                                                                 |
@@ -1037,7 +1072,7 @@ These pure functions run in Node and browsers. They validate once per compositio
 object, compile curves into identity-keyed weak caches and memoise dependencies within
 each evaluation. Treat the composition and its nested objects as immutable: replace
 the composition object after an edit. Returned states are fresh on every call.
-`COMPOSITION_EVALUATOR_VERSION` is `composition-evaluator-27`.
+`COMPOSITION_EVALUATOR_VERSION` is `composition-evaluator-28`.
 
 `evaluateComp` returns an `EvaluatedLayerTree`: scope id, time, dimensions, fps,
 floating-point RGBA background, ordered `layers` and structured `diagnostics`.
@@ -1085,6 +1120,42 @@ drivers and periodic motion use these finite defaults even when the optional fie
 are absent from the input. Authored `stateFrom` and `stateMix` still take precedence.
 Provider state paths become available only after `state` or `stateFrom` is declared;
 existing providers can continue to control their content through their own parameters.
+
+### Local time controls
+
+Use static `posterizeFps` (0.001–240) or `holdFrame` (fractional source frames within
+±216,000) on any layer, including a precomp host. Builder `.with(...)` sets these
+configuration fields; they are not animatable tracks. After start/stretch,
+`holdFrame` wins; otherwise posterization samples
+`floor(local * posterizeFps / scopeFps) * scopeFps / posterizeFps`, including negative
+clocks. This happens before indexed `sampleTimes` lookup and controls keyed
+transforms/content, masks, effect parameters, provider indices and shape evolution.
+Visibility gates and dependency clocks keep their existing scope clocks.
+
+CE9 root `time`/`frame`/`fps`, signals/drivers/periodic inputs, root-relative
+expression reads and scope constraints remain bound to their documented clocks.
+An expression's `value` observes the stepped or held keyed input, while `frame`
+still observes the live root frame. A held source does not implicitly bake global
+procedural motion. This preserves existing expression semantics and does not
+claim complete After Effects procedural posterization parity.
+
+Precomp `loop: "cycle" | "pingpong"` wraps the final remap after source-FPS
+conversion and before source clamps. Cycle period is source frame count; pingpong
+period is twice the last frame index; a singleton source is constant zero.
+Unlimited loops extend through negative source time using positive modulo.
+Optional integer `loopCount` (1–10,000) requires a mode, holds zero before source
+frame zero, and holds the last source frame (cycle) or zero (pingpong) after all
+periods. Modulo clocks stay within ±2^40 frames for useful subframe precision;
+singleton and finite terminal holds need no modulo. Host `timeRemap` retains the
+raw value; child tree `time` reports the wrapped/clamped sample. A single native
+hold remap key, for example `{ keys: [{ frame: 0, value: 12, interpolation: "hold" }] }`,
+freezes the keyed source without a duplicate freeze field.
+
+Video/sequence reserve `frameBlending: "hold" | "linear"` (default hold); audio
+rejects this visual field. Media decoding/rendering remains unavailable until
+CE13. `sourceFramePair` returns clamped floor/next source indices and a fractional
+mix, or the held floor index. It requires finite source time and a positive safe
+integer frame count. CE13 must wire decoding and mixing to this policy.
 
 Each instance of a reused precomp gets its own clock and memoised state. Property
 paths traverse named precomp layer instances, following each host's `comp` source

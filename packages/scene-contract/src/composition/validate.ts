@@ -121,6 +121,13 @@ function checkLayer(
       `"${COMPOSITION_PATH_ROOT}" is reserved for composition properties`,
     );
 
+  if (layer.type === "precomp" && layer.loopCount !== undefined && !layer.loop)
+    fail(
+      "comp-time-control",
+      [...path, "loopCount"],
+      "loopCount requires a precomp loop mode",
+    );
+
   const unavailable = (field: Path, feature: string, milestone: string) =>
     fail(
       "comp-feature-unavailable",

@@ -128,6 +128,10 @@ const layerBase = {
       params: { diagnosticCode: "comp-schema-range" },
     })
     .optional(),
+  /** Quantize the local keyed/content clock in frames per source second. */
+  posterizeFps: finite.min(0.001).max(240).optional(),
+  /** Hold the local keyed/content clock at this fractional source frame. */
+  holdFrame: finite.min(-L.maxKeyFrame).max(L.maxKeyFrame).optional(),
   /** Baked samples: map layer-local time to an integer key/provider sample index. */
   sampleTimes: z
     .array(finite.min(-L.maxKeyFrame).max(L.maxKeyFrame))
@@ -320,6 +324,8 @@ export const PrecompLayerSchema = z
     collapseTransforms: z.boolean().optional(),
     /** Precomp frame shown at each layer frame; overrides start and stretch. */
     timeRemap: timeRemap.optional(),
+    loop: z.enum(["cycle", "pingpong"]).optional(),
+    loopCount: finite.int().min(1).max(10_000).optional(),
   })
   .strict();
 
@@ -358,8 +364,13 @@ const mediaLayer = <T extends string>(type: T) =>
       timeRemap: timeRemap.optional(),
     })
     .strict();
-export const VideoLayerSchema = mediaLayer("video");
-export const SequenceLayerSchema = mediaLayer("sequence");
+const visualFrameBlending = z.enum(["hold", "linear"]).optional();
+export const VideoLayerSchema = mediaLayer("video").extend({
+  frameBlending: visualFrameBlending,
+});
+export const SequenceLayerSchema = mediaLayer("sequence").extend({
+  frameBlending: visualFrameBlending,
+});
 export const AudioLayerSchema = mediaLayer("audio");
 
 export const CompositionLayerSchema = z.discriminatedUnion("type", [

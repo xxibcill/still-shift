@@ -368,7 +368,7 @@ sign and for time remap. It does not change the layer's composition-time visibil
 | CE5   | Shape layers                                    | B      | CE3                  | Codex                  | `codex/composition-ce5`             | `[x]`  | [evidence](./composition-ce5-results.json)                                         |
 | CE6   | WebGL2 backend and effect registry              | B      | CE3                  | xxibcill (Claude Code) | `codex/composition-ce6-performance` | `[~]`  | [CE6 performance slice 1](#ce6-performance-slice-1-exact-effect-work-2026-10-03)   |
 | CE6-P | WebGL performance acceptance                    | Future | CE6                  |                        |                                     | `[d]`  | [Performance deferral](#ce6-p--deferred-webgl-performance-acceptance)              |
-| CE7   | Motion blur and time controls                   | B      | CE3                  |                        |                                     | `[ ]`  |                                                                                    |
+| CE7   | Motion blur and time controls                   | B      | CE3                  | Codex                  | `codex/composition-ce7`             | `[~]`  | [evidence](./composition-ce7-results.json)                                         |
 | CE8   | 2.5D layers and unified camera                  | B      | CE3, CE6, CE9        |                        |                                     | `[ ]`  |                                                                                    |
 | CE9   | Expressions and motion behaviours               | C      | CE2                  | xxibcill (Claude Code) | `codex/composition-ce9`             | `[x]`  | [CE9 record](#ce9--expressions-and-motion-behaviours)                              |
 | CE10  | TypeScript builder API and CLI                  | C      | CE3, CE4a, CE9, CE12 | Codex                  | `codex/composition-ce10`            | `[x]`  | [evidence](./composition-ce10-results.json)                                        |
@@ -3300,7 +3300,14 @@ This delivers the CE4a prerequisite only. Adaptive samples and the remaining tim
 controls above stay open until the CE7 milestone branch.
 [Evidence](./composition-ce4a-completion-results.json).
 
-**Completion record:** _to be filled in._
+**Implementation record (2026-10-05):** first checkpoint delivers static
+bounded `posterizeFps`/`holdFrame`, signed precomp `cycle`/`pingpong` with finite
+counts, precision diagnostics, existing single-hold-key freeze and the reserved
+CE13 media frame-pair contract. 250 focused unit tests/build/lint/schema pass.
+Root-global procedural semantics remain explicit; no full AE clock parity is
+claimed. Exposure-cut integration, adaptive sampling, native acceptance/costs,
+full local gate and milestone PR remain pending.
+[Evidence](./composition-ce7-results.json).
 
 ---
 

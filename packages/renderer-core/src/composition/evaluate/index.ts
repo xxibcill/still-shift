@@ -20,3 +20,5 @@ export type {
   EvaluatedMask,
   EvaluationOptions,
 } from "./types.ts";
+
+export { sourceFramePair, type SourceFramePair } from "./time-controls.ts";

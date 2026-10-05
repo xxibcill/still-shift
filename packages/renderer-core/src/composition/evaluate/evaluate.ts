@@ -56,6 +56,7 @@ import {
 import { applyConstraints } from "./constraints.ts";
 import { cameraMatrix, sampleCamera } from "./camera.ts";
 import { compositionSampleIndex } from "./sample-clock.ts";
+import { layerContentTime, loopedPrecompTime } from "./time-controls.ts";
 import {
   identity,
   layerSize,
@@ -82,7 +83,7 @@ import type {
   PropertyValue,
 } from "./types.ts";
 
-export const COMPOSITION_EVALUATOR_VERSION = "composition-evaluator-27";
+export const COMPOSITION_EVALUATOR_VERSION = "composition-evaluator-28";
 export const AUTO_ORIENT_LOOKAROUND_FRAMES = 64;
 const order = ["action", "response", "current", "carrier"] as const;
 /** Keyed and motion-craft values of one layer, before constraints (CE9 expression stage). */
@@ -222,23 +223,13 @@ function context(
   };
 }
 
-function localTime(layer: CompositionLayer, time: number) {
-  const local = (time - (layer.startFrame ?? 0)) / (layer.stretch ?? 1);
-  if (!Number.isFinite(local))
-    passageError("comp-evaluation-time", "Layer time must be finite", {
-      path: `${layer.id}.stretch`,
-      frame: time,
-    });
-  return local;
-}
-
 function baseState(
   comp: Composition,
   ctx: Context,
   layer: CompositionLayer,
   budget: ShapeGeometryBudget,
 ): EvaluatedLayer {
-  const sourceTime = localTime(layer, ctx.time),
+  const sourceTime = layerContentTime(layer, ctx.time, ctx.fps),
     sampleIndex = layer.sampleTimes
       ? compositionSampleIndex(layer.sampleTimes, sourceTime)
       : undefined,
@@ -465,7 +456,12 @@ class Evaluation {
         path: host.id,
       });
     const scope = this.compiled.scopes.get(host.comp)!;
-    const sourceTime = yield* this.clock(ctx, host);
+    const remappedTime = yield* this.clock(ctx, host);
+    const sourceTime = loopedPrecompTime(remappedTime, scope.frameCount, host, {
+      node: host.id,
+      path: `${this.bindings(ctx, host.id)}.loop`,
+      frame: this.time,
+    });
     const route = [...ctx.route, host.id];
     const next = context(
       this.compiled,

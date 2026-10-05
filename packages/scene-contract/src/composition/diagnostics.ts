@@ -40,6 +40,10 @@ export const COMPOSITION_DIAGNOSTICS = {
   "comp-duplicate-id": "An id is used twice in its namespace.",
   "comp-reserved-id": "A layer or precomp uses the reserved id `comp`.",
   "comp-layer-time": "`inPoint` is not before `outPoint`.",
+  "comp-time-control": "A finite precomp loop count requires a loop mode.",
+  "comp-media-time":
+    "Media sampling needs finite source time and a positive safe integer frame count.",
+  "comp-media-frame-blending": "Frame blending must be hold or linear.",
   "comp-layer-limit":
     "More than 2,000 layers across the composition and its precomps.",
   "comp-parent-missing": "`parent` names no layer in the same composition.",

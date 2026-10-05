@@ -43,6 +43,13 @@ still hold before relying on them.
 
 ## Current state
 
+- **CE7 in progress (2026-10-05):** `codex/composition-ce7` from completed CE5
+  `edb958a`. Local posterization/holds, precomp loops and CE13 frame-pair contract
+  pass 250 focused tests/build/lint/schema. Root procedural clocks retain their
+  documented semantics. Exposure cuts/adaptive blur, native acceptance, cost
+  measurements and the complete local gate/PR remain. No owner decision pending.
+  [Evidence](./composition-ce7-results.json).
+
 - **CE5 complete (2026-10-05):** `codex/composition-ce5`, runtime `4908cbe`.
   Native shapes, authoring/baking/inspector, reference/animation/MP4 acceptance and
   complete `pnpm check` pass: 1,569 unit, 46 runtime, 139 integration, 14 depth,
@@ -167,6 +174,18 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-05 — CE7 local clocks and precomp loops
+
+- **Agent / branch:** Codex on `codex/composition-ce7`, from CE5 `edb958a`.
+- **Done:** bounded local posterization/holds, signed precomp cycle/pingpong,
+  finite loop counts, root-located precision diagnostics and CE13 frame-pair handoff.
+  Existing single hold remap keys freeze keyed source; root bindings remain live.
+- **Results:** 250 focused unit tests, build, changed-file lint and generated
+  schema checks pass. No full gate or CE7 completion is claimed.
+- **Next:** integrate exposure cuts/adaptive sampling, then native acceptance,
+  serial cost measurements, complete local gate and stacked PR.
+- **Records:** [CE7 evidence](./composition-ce7-results.json).
 
 ### 2026-10-05 — Complete CE5 native shapes and full local acceptance
 
