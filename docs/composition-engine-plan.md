@@ -2974,11 +2974,12 @@ results on known polygons), pixel tests, animated trim/morph sequences.
 **Implementation record (2026-10-05):** Codex on `codex/composition-ce5`, from
 completed CE11 `a0c56df` / [PR #37](https://github.com/xxibcill/still-shift/pull/37).
 Typed shape trees, paint/operator schemas and the shared native property locator
-pass build, lint and 1,527 unit tests. The polygon library is pinned and licensed.
-Native cubic math, exact bounds, fixed-tolerance flattening, primitives and rich
-morph alignment pass analytic regressions; native renderer versions are updated.
-Operators, native frame-budget/render integration, authoring and milestone
-acceptance remain in progress. No native shape render completion is claimed here.
+pass build, lint and 1,544 unit tests. The polygon library is pinned and licensed.
+Cubic math/primitives/morph alignment and all nine operator kernels pass analytic
+regressions, including holes, empty operands, trim/repeater semantics and seeded
+reverse seeks. Polygon quantization/complexity and generated-work limits are
+explicit. Native paint compilation, frame-budget/render integration, authoring
+and milestone acceptance remain in progress; shape rendering is not complete.
 [Evidence](./composition-ce5-results.json).
 
 **Completion record:** _to be filled in._

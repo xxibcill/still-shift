@@ -44,12 +44,12 @@ still hold before relying on them.
 ## Current state
 
 - **CE5 in progress (2026-10-05):** `codex/composition-ce5` from CE11 `a0c56df`.
-  Shape contracts/property locator, cubic bounds/flattening, primitives and rich
-  morph alignment pass build, lint and all 1,527 unit tests. Polygon dependency is
-  pinned; geometry work limits have explicit diagnostics. Operators, native frame
-  budget/rendering, authoring and browser/baseline/export acceptance follow.
-  Native shape layers remain unavailable until the renderer slice. No owner
-  decision is pending. [Evidence](./composition-ce5-results.json).
+  Typed contracts, cubic/primitives/morph math and all nine operator kernels pass
+  build/lint and all 1,544 unit tests. Quantized polygon work and generated geometry
+  have explicit limits/diagnostics. Native paint compilation, frame-wide budget,
+  rendering/authoring and browser/baseline/export acceptance follow. Shape layers
+  remain unavailable until renderer integration. No owner decision is pending.
+  [Evidence](./composition-ce5-results.json).
 
 - **CE11 complete (2026-10-05):** `codex/composition-ce11`, runtime `5f36268`.
   Native inspector, graph/handle edits, overlays, lossless history, guarded source
@@ -166,6 +166,19 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-05 — Add CE5 bounded shape operators
+
+- **Agent / branch:** Codex on `codex/composition-ce5`, after `d1d7106`.
+- **Done:** trim/source spans, repeater transforms/order/opacity, quantized Boolean
+  geometry and offsets, corner rounding and four deterministic deformations.
+- **Results:** 17 analytic operator tests and all 1,544 unit tests pass; build,
+  boundaries, schema, owned formatting and lint pass after type-import repairs.
+- **Choices:** native linear twist falloff, signed open parallel offsets and
+  multi-operand XOR are explicit native semantics; AE pixel parity is not claimed.
+- **Next:** paint compiler, evaluator/global work budget and native rendering;
+  browser/export and full milestone gate have not run for this checkpoint.
+- **Records:** [CE5 evidence](./composition-ce5-results.json).
 
 ### 2026-10-05 — Add CE5 cubic geometry and morph correspondence
 

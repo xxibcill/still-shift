@@ -63,6 +63,40 @@
         "Operators, paint compiler and global native frame-budget integration",
         "Native shape render/authoring/browser/baseline/export acceptance"
       ]
+    },
+    {
+      "name": "Bounded trim, repeat, Boolean, offset and seeded deformation kernels",
+      "status": "checkpoint",
+      "changes": [
+        "Arc-length trim with closed wrap/open clamp, accumulated versus simultaneous contours and retained nib source spans remapped under anisotropic transforms.",
+        "Repeater anchor/scale powers, signed offsets, fractional copies, opacity ramps and above/below order; undefined scale powers fail with diagnostic locations.",
+        "Clipper2 Boolean modes retain holes and empty operands, topmost subtraction, all-operand intersection and native XOR parity. Quantization is 1/1024 unit with 1024 total input vertices per polygon operation.",
+        "Signed open parallel offsets retain topology; closed offsets expand/contract with miter/round/bevel joins and bounded round work.",
+        "Round-corner fillets, vertex/control pucker-bloat, center-to-edge linear twist falloff with interior samples, pure seeded/time-based wiggle and per-original-cubic arc-length zigzag.",
+        "Zero operators retain geometry; invalid complexity/generated work fails explicitly. Native frame-wide budget/compiler wiring remains pending."
+      ],
+      "verification": {
+        "operatorTests": 17,
+        "fullUnitTests": 1544,
+        "unitFiles": 139,
+        "build": "passed",
+        "changedFileLint": "passed after five type-only import fixes",
+        "boundaries": "passed",
+        "schemaCheck": "passed",
+        "ownedFileFormatting": "passed",
+        "browserAndFullGate": "not run for this kernel checkpoint"
+      },
+      "logs": "benchmarks/results/composition-ce5-verification",
+      "sources": [
+        "https://helpx.adobe.com/after-effects/desktop/drawing-painting-and-paths/shapes-and-shape-attributes/shape-attributes-paint-operations-path.html",
+        "https://helpx.adobe.com/after-effects/desktop/drawing-painting-and-paths/shapes-and-shape-attributes/use-offset-paths.html",
+        "https://raw.githubusercontent.com/airbnb/lottie-web/master/player/js/utils/shapes/PuckerAndBloatModifier.js"
+      ],
+      "nativeChoices": [
+        "Twist angle*(1-distance/maxRadius); unpublished AE falloff parity is not claimed.",
+        "Open offsets use a signed parallel path, not a stroked outline.",
+        "Exclude folds XOR across all operands; no multi-operand AE pixel parity claim."
+      ]
     }
   ],
   "polygonLibrary": {
@@ -74,8 +108,8 @@
     "integrity": "sha512-WuRO1ZHzyYTVHY78r4wVWVydvQ+1lx9qZ+DeZa/8zhvrxIgCVzElJ6lwSMGtUUKFPefhvfJsHZ5C9RNkgisCOQ=="
   },
   "pending": [
-    "Native geometry, morph alignment, trim/repeater/Boolean/operator work budgets",
-    "Evaluator/property/driver/bake/builder/inspector integration",
+    "Frame-wide geometry budget, paint compiler and evaluator/property/driver integration",
+    "Follow-path constraints and bake/builder/inspector integration",
     "Canvas/WebGL rendering and ink/brush source-coordinate reuse",
     "Native reference fixtures, stored new baselines, sequence/export acceptance",
     "Reference/user guide update, full pnpm check, milestone PR"
