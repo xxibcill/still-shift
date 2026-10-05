@@ -43,13 +43,13 @@ still hold before relying on them.
 
 ## Current state
 
-- **PR #33 headroom report and Lab field guard (2026-10-05):** Claude Code on
-  `claude/ce16-sfx-improvements` from PR head `3317633`. Every rendered output now
-  reports `peakDbfs` and `samplesAboveFullScale` from its written PCM; the Lab
-  status line shows the mix peak and warns about overs. Empty or invalid Lab
-  number fields are rejected instead of saved as 0. No PCM or DSP-version change.
-  `pnpm check:soundtrack` passes on Node 22.23.1. Committed locally; pushing to
-  PR #33 awaits owner approval. Browser workflow suites were not run.
+- **PR #33 clip pan (2026-10-05):** Claude Code on `claude/ce16-sfx-improvements`.
+  Headroom report and Lab field guard are pushed to PR #33 (`2cddbb2`). Optional
+  `clips[].pan` uses a unity-centre constant-power law after the ducking detector
+  tap (`soundtrack-dsp-4`); projects without pan are bit-identical. Lab clip form
+  edits pan. `pnpm check:soundtrack` passes on Node 22.23.1. Committed locally;
+  pushing to PR #33 awaits owner approval. Browser suites and listening not run.
+  Looping and a master limiter remain out of contract scope.
 
 - **PR #33 follow-up fixes (2026-10-05):** both P2 findings posted inline
   and fixed on isolated `codex/pr33-followup-fixes` from `0dc2782`. `579553a`
@@ -203,6 +203,24 @@ _Last updated 2026-10-05 by Codex for PR #33 follow-up fixes._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-05 — PR #33 clip-level pan
+
+- **Agent / branch:** Claude Code on `claude/ce16-sfx-improvements` from `2cddbb2`.
+- **Done:** optional `clips[].pan` in [-1, 1]. The left/right gains are
+  `√2·cos/sin((pan + 1)·π/4)`: unity at centre, +3 dB on the panned side and exact
+  silence on the other at hard pan. The ducking detector taps before pan. Adds a
+  `pan` edit operation (`0` removes the field), a Lab pan field and clip label,
+  regenerated JSON Schema and the `soundtrack-dsp-4` version.
+- **Results:** a new integration test checks that explicit centre is bit-identical
+  to absent pan (all stems, mix, duck envelope), that panning narration leaves the
+  duck envelope unchanged, that hard left gives exact right silence and √2 on the
+  left, and that intermediate gains follow the law. It fails on the previous worker,
+  including after bumping only its version string. `pnpm check:soundtrack`:
+  1,516 unit, 46 runtime, 39 audio integration, 14 depth; Python lint/format pass.
+- **Not run:** browser workflow suites, baselines and listening.
+- **Open / next:** owner approval to push; looping and a master limiter are not in
+  `soundtrack-project-1`.
 
 ### 2026-10-05 — PR #33 mix headroom report and Lab number-field guard
 
