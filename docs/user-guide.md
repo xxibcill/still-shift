@@ -678,7 +678,8 @@ context per beat; replaced previews release their contexts.
 
 Create a companion JSON map, for example `{ "reset": "native-beat.json" }`, then
 add `--composition-beats <map.json>` to `story:passage --renderer composition`.
-Paths are relative to the map. The picture file must match the resolved beat's size,
+Paths are relative to the map. The map and its pictures are validated before any
+output is written, including with `--prepare-only`. The picture file must match the resolved beat's size,
 frame rate and final source duration. Write native camera/subject continuity into
 that file; implicit story carry at a native boundary is rejected. The story template
 continues to hold narrative and cue metadata, while the native file owns its visuals.
