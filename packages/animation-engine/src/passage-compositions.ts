@@ -20,7 +20,8 @@ import type { PreparedPassage } from "./story-passage-io.ts";
 /** A companion map assigns native composition files without extending frozen family schemas. */
 export async function loadPassageCompositions(
   path: string,
-  passage: Pick<PreparedPassage, "beats">,
+  passage: Pick<PreparedPassage, "beats"> &
+    Partial<Pick<PreparedPassage, "audio">>,
   allowPath?: (path: string) => Promise<unknown>,
 ) {
   const sourcePath = resolve(path);

@@ -9,6 +9,7 @@ import { parsePassageTemplate } from "../../packages/renderer-core/src/story-tem
 import { validatePassageCompositions } from "../../packages/animation-engine/src/passage-compositions.ts";
 import { passageCompositionKey } from "../../packages/animation-engine/src/passage-cache.ts";
 import type { PreparedPassage } from "../../packages/animation-engine/src/story-passage-io.ts";
+import type { CompiledPassageAudio } from "../../packages/renderer-core/src/passage-audio.ts";
 
 const composition = (): Composition => ({
   schemaVersion: "composition-1",
@@ -476,4 +477,62 @@ describe("native composition passage beats", () => {
       );
     },
   );
+});
+
+describe("native composition passage sounds", () => {
+  const anchoredStory = () => {
+    const story = passage();
+    Object.assign(story.beats[0]!, {
+      events: [{ id: "more-room", start: 86, end: 106 }],
+    });
+    const audio: CompiledPassageAudio = {
+      schemaVersion: "passage-audio-1",
+      masterGainDb: 0,
+      narrationGainDb: 0,
+      assets: [],
+      sounds: [
+        {
+          id: "room-hit",
+          beat: "beat",
+          asset: "hit",
+          anchor: { type: "event", id: "more-room", edge: "start" },
+          offset: 0,
+          sourceStartFrame: 0,
+          durationFrames: 6,
+          gainDb: 0,
+          fadeInFrames: 0,
+          fadeOutFrames: 0,
+          start: 86,
+          end: 92,
+        },
+      ],
+    };
+    return Object.assign(story, { audio });
+  };
+
+  it("requires a mapped native marker for every event-anchored sound", () => {
+    const story = anchoredStory();
+    const picture = composition();
+    expect(() => validatePassageCompositions(story, { beat: picture })).toThrow(
+      /Sound room-hit requires a mapped native marker matching event more-room/,
+    );
+    picture.markers = [{ id: "room", frame: 86, duration: 12 }];
+    picture.metadata = { passage: { eventMarkers: { "more-room": "room" } } };
+    expect(() => validatePassageCompositions(story, { beat: picture })).toThrow(
+      /Sound room-hit requires a mapped native marker matching event more-room/,
+    );
+    picture.markers = [{ id: "room", frame: 86, duration: 20 }];
+    expect(validatePassageCompositions(story, { beat: picture }).beat).toEqual(
+      picture,
+    );
+  });
+
+  it("leaves sounds on other beats and template beats ungoverned by native markers", () => {
+    const story = anchoredStory();
+    expect(validatePassageCompositions(story)).toEqual({});
+    story.audio!.sounds[0]!.beat = "other";
+    expect(
+      validatePassageCompositions(story, { beat: composition() }).beat,
+    ).toBeDefined();
+  });
 });

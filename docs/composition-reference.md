@@ -1479,8 +1479,8 @@ The API checks map, picture and asset paths against the Lab workspace boundary.
 
 Native pictures declare `metadata.passage` with three explicit maps:
 `cueMarkers` maps each narrative cue ID to a root marker at its cue frame;
-`eventMarkers` maps each narration-linked event ID to a root marker with its exact
-start and duration; `subjectLayers` maps focal subjects and any evidence node to a
+`eventMarkers` maps each narration-linked event ID, and every event anchoring a
+passage sound on that beat, to a root marker with its exact start and duration; `subjectLayers` maps focal subjects and any evidence node to a
 native layer ID or precomp instance path (for example `story-content/house-a`).
 Missing targets, unknown narrative IDs and mismatched timing return
 `comp-passage-binding`. A mapped evidence qualification must be native text matching

@@ -4,7 +4,10 @@ import { join } from "node:path";
 import { expect, it } from "vitest";
 import { validateComposition } from "@still-shift/scene-contract";
 import { loadPassageCompositions } from "../../packages/animation-engine/src/passage-compositions.ts";
-import type { PreparedPassage } from "../../packages/animation-engine/src/story-passage-io.ts";
+import {
+  readStoryPassage,
+  type PreparedPassage,
+} from "../../packages/animation-engine/src/story-passage-io.ts";
 
 it("retains every native schema diagnostic with field, beat and source context", async () => {
   const directory = await mkdtemp(
@@ -47,4 +50,55 @@ it("retains every native schema diagnostic with field, beat and source context",
   } finally {
     await rm(directory, { recursive: true, force: true });
   }
+});
+
+it("rejects a native picture that leaves an event-anchored sound on template timing", async () => {
+  const passage = await readStoryPassage(
+    "benchmarks/fixtures/story-authoring/linked-comparison.json",
+  );
+  const map = "benchmarks/fixtures/composition/ce4a/native-beats.json";
+  const withSound = (anchor: string) => ({
+    ...passage,
+    audio: {
+      schemaVersion: "passage-audio-1" as const,
+      masterGainDb: 0,
+      narrationGainDb: 0,
+      assets: [],
+      sounds: [
+        {
+          id: "room-hit",
+          beat: "reset",
+          asset: "hit",
+          anchor: {
+            type: "event" as const,
+            id: anchor,
+            edge: "start" as const,
+          },
+          offset: 0,
+          sourceStartFrame: 0,
+          durationFrames: 6,
+          gainDb: 0,
+          fadeInFrames: 0,
+          fadeOutFrames: 0,
+          start: 0,
+          end: 6,
+        },
+      ],
+    },
+  });
+  await expect(
+    loadPassageCompositions(map, withSound("more-room")),
+  ).rejects.toMatchObject({
+    name: "PassageError",
+    diagnostics: [
+      expect.objectContaining({
+        code: "comp-passage-binding",
+        beat: "reset",
+        event: "more-room",
+      }),
+    ],
+  });
+  await expect(
+    loadPassageCompositions(map, withSound("shared-strain")),
+  ).resolves.toHaveProperty("reset");
 });

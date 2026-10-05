@@ -708,7 +708,9 @@ Map narrative authority explicitly in the native picture:
 }
 ```
 
-Root markers must match the narration cue frames and linked event windows. Layer
+Root markers must match the narration cue frames and linked event windows. A sound
+anchored to a beat event also needs that event in `eventMarkers`; native pictures
+never inherit template event timing for sound effects. Layer
 paths may point into an adapted story precomp; share its assets with the containing
 composition. The native beat fixture demonstrates this with a new blend overlay.
 Map focal and evidence nodes, every incoming handoff target and every outgoing

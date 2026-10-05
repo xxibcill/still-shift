@@ -15,7 +15,8 @@ export type PassageCompositions = Readonly<Record<string, Composition>>;
 
 /** Picture overrides use the same final frame interval as their resolved story beat. */
 export function validatePassageCompositions(
-  passage: Pick<CompiledStoryPassage, "beats">,
+  passage: Pick<CompiledStoryPassage, "beats"> &
+    Partial<Pick<CompiledStoryPassage, "audio">>,
   compositions: PassageCompositions = {},
 ): Record<string, Composition> {
   if (Object.keys(compositions).length > 400)
@@ -61,7 +62,12 @@ export function validatePassageCompositions(
           "Native beat boundaries require authored transforms; camera/subject carry is unavailable",
           { path: `compositions.${id}`, beat: id },
         );
-    validateNarrativeBindings(beat, composition, passage.beats[index + 1]);
+    validateNarrativeBindings(
+      beat,
+      composition,
+      passage.beats[index + 1],
+      passage.audio?.sounds.filter((sound) => sound.beat === id) ?? [],
+    );
     resolved[id] = composition;
   }
   return resolved;
@@ -70,7 +76,8 @@ export function validatePassageCompositions(
 function validateNarrativeBindings(
   beat: CompiledStoryPassage["beats"][number],
   composition: Composition,
-  nextBeat?: CompiledStoryPassage["beats"][number],
+  nextBeat: CompiledStoryPassage["beats"][number] | undefined,
+  sounds: NonNullable<CompiledStoryPassage["audio"]>["sounds"],
 ) {
   const fail = (message: string) =>
     passageError("comp-passage-binding", message, {
@@ -108,6 +115,30 @@ function validateNarrativeBindings(
           `Event ${event.cue} requires a mapped marker matching its narration-linked window`,
         );
     }
+  }
+  // Template event timing never reaches a native picture implicitly; sounds need its own markers.
+  const soundEvents = new Set<string>();
+  for (const sound of sounds) {
+    if (sound.anchor.type !== "event") continue;
+    const id = sound.anchor.id;
+    soundEvents.add(id);
+    const event = beat.events?.find((candidate) => candidate.id === id);
+    const marker = markers.get(bindings.eventMarkers[id]!);
+    if (
+      !event ||
+      !marker ||
+      marker.frame !== event.start ||
+      (marker.duration ?? 0) !== event.end - event.start
+    )
+      passageError(
+        "comp-passage-binding",
+        `Sound ${sound.id} requires a mapped native marker matching event ${id}`,
+        {
+          beat: beat.id,
+          event: id,
+          path: `compositions.${beat.id}.metadata.passage.eventMarkers`,
+        },
+      );
   }
   const incoming = "handoff" in beat ? beat.handoff.subjects : [];
   const outgoing =
@@ -147,11 +178,14 @@ function validateNarrativeBindings(
   for (const key of Object.keys(bindings.cueMarkers))
     if (!beat.cues?.some((cue) => cue.id === key))
       fail(`Unknown narrative cue ${key}`);
-  const events = new Set(
-    beat.cues?.flatMap((cue) => cue.windows.map((event) => event.cue)),
-  );
+  const events = new Set([
+    ...(beat.cues?.flatMap((cue) => cue.windows.map((event) => event.cue)) ??
+      []),
+    ...soundEvents,
+  ]);
   for (const key of Object.keys(bindings.eventMarkers))
-    if (!events.has(key)) fail(`Unknown narration-linked event ${key}`);
+    if (!events.has(key))
+      fail(`Unknown narration-linked or sound-anchored event ${key}`);
   for (const key of Object.keys(bindings.subjectLayers))
     if (!subjects.has(key)) fail(`Unknown narrative subject ${key}`);
   validateNativeBoundaries(
