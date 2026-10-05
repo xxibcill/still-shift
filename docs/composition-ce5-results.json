@@ -31,6 +31,38 @@
         "Two type-only schema locals failed unused-vars lint; remove the common schema local and export the reusable leaf schema."
       ],
       "logs": "benchmarks/results/composition-ce5-verification"
+    },
+    {
+      "name": "Native cubic math, primitives and rich morph correspondence",
+      "status": "checkpoint",
+      "changes": [
+        "Exact cubic extrema; fixed 0.25-unit flattening with depth 12 and explicit path/vertex/coordinate diagnostics.",
+        "Shared geometry budget API supports 262144 generated-point work / 4096 path work / \u00b11000000000 generated coordinates; native evaluator wiring follows the engine slice.",
+        "Cubic ellipse and rounded rect construction, polygon/star variants and clamped circular corner fillets. Polystar counts round to nearest integer at sampling.",
+        "Closed-path firstVertex rotates vertices and both tangent arrays before native sampling; open paths use 0.",
+        "Extend legacy PathMorphSchema to 1024 matched points, optional closed/tangent/alignment fields and actual rich rendering through native sampler/flattening; point-only arithmetic stays unchanged.",
+        "Evaluator and native renderer versions bumped; user/reference guidance documents alignment and corrects stale grouped-speed wording."
+      ],
+      "verification": {
+        "build": "passed",
+        "changedFileLint": "passed",
+        "geometryTests": 11,
+        "fullUnitTests": 1527,
+        "unitFiles": 138,
+        "boundaries": "passed",
+        "schemaGeneration": "passed",
+        "schemaCheck": "passed"
+      },
+      "versions": {
+        "evaluator": "composition-evaluator-24",
+        "canvas": "composition-canvas-1.22.8",
+        "webgl": "composition-webgl2-0.36.4"
+      },
+      "logs": "benchmarks/results/composition-ce5-verification",
+      "pending": [
+        "Operators, paint compiler and global native frame-budget integration",
+        "Native shape render/authoring/browser/baseline/export acceptance"
+      ]
     }
   ],
   "polygonLibrary": {

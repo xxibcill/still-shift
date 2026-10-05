@@ -44,6 +44,11 @@ and browsers through `evaluateComp` and `evaluateProperty` from
 colours, masks, constraints and precomp timing before rendering. Fractional frame
 times and seeking backwards produce deterministic state.
 
+For a closed Bézier morph, set `firstVertex` on each keyed value to align matching
+vertices and their incoming/outgoing tangents. All keys need equal vertex counts;
+open paths use 0 or omit the field. Existing scene `pathMorphs` keep `points` and
+can also provide `closed`, `inTangents`, `outTangents` and `firstVertex` on each key.
+
 To render a composition to MP4:
 
 ```bash

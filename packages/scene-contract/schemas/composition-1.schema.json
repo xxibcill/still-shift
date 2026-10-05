@@ -2897,6 +2897,7 @@
       "type": "object",
       "properties": {
         "closed": { "type": "boolean" },
+        "firstVertex": { "type": "integer", "minimum": 0, "maximum": 1023 },
         "vertices": {
           "minItems": 2,
           "maxItems": 1024,

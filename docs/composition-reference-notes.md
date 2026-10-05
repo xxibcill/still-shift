@@ -92,9 +92,16 @@ over a deterministic 128-subdivision cubic arc-length table, matching the existi
 spatial-path semantics. Nonspatial grouped vectors interpolate per component.
 Scalar temporal speeds are property units per frame, including pixels, degrees,
 scale factors and normalized colour channels when driven by scalar signals.
-Grouped vector/colour `speed` remains rejected. A future explicit velocity tuple must
-match the property's dimensions and units; spatial speed needs a distinct scalar
-in arc-length pixels per frame. These authoring extensions are deferred to CE9.
+Grouped vector/colour `speed` is a tuple matching the property's dimensions and
+units. Spatial keys instead use scalar `spatialSpeed` in arc-length pixels per frame.
+
+Closed Bézier values may set `firstVertex` to align their morph correspondence.
+Sampling rotates vertices and both tangent arrays together before interpolation;
+every key still needs the same vertex count. Open paths use `firstVertex: 0` or omit
+it. Legacy `pathMorphs` retain their `points` keys and additionally accept `closed`,
+`inTangents`, `outTangents` and `firstVertex` per key, with up to 1,024 matched points.
+Rich legacy curves use the native Bézier sampler and fixed 0.25-unit flattening;
+unchanged point-only keys retain their original interpolation arithmetic.
 
 Bounds are geometric axis-aligned screen bounds before masks, expanded conservatively for supported effects; solids and
 image placement boxes are exact. Supply measured text bounds without invoking font

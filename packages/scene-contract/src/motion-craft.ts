@@ -373,7 +373,11 @@ export const PathMorphSchema = z
         z
           .object({
             frame,
-            points: z.array(xy).min(2).max(256),
+            points: z.array(xy).min(2).max(1024),
+            closed: z.boolean().optional(),
+            firstVertex: finite.int().min(0).max(1023).optional(),
+            inTangents: z.array(xy).max(1024).optional(),
+            outTangents: z.array(xy).max(1024).optional(),
             easing: CurveEasingSchema.optional(),
           })
           .strict(),
@@ -384,6 +388,23 @@ export const PathMorphSchema = z
   .strict()
   .superRefine((m, ctx) => {
     m.keys.forEach((key, i) => {
+      if (
+        (key.firstVertex ?? 0) >= key.points.length ||
+        (!key.closed && (key.firstVertex ?? 0) !== 0)
+      )
+        ctx.addIssue({
+          code: "custom",
+          path: ["keys", i, "firstVertex"],
+          message:
+            "motion-morph-first-vertex: firstVertex must name a closed-path vertex; open paths use 0",
+        });
+      for (const side of ["inTangents", "outTangents"] as const)
+        if (key[side] && key[side].length !== key.points.length)
+          ctx.addIssue({
+            code: "custom",
+            path: ["keys", i, side],
+            message: "motion-morph-tangents: tangent counts must match points",
+          });
       if (key.points.length !== m.keys[0]!.points.length)
         ctx.addIssue({
           code: "custom",

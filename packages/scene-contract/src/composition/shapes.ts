@@ -26,6 +26,7 @@ export const SHAPE_LIMITS = {
   flattenTolerance: 0.25,
   flattenDepth: 12,
   polygonScale: 1024,
+  maxGeneratedCoordinate: 1_000_000_000,
 } as const;
 
 /** Shape coordinates are always 2D, including separated animation channels. */

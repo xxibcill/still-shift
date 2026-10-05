@@ -44,11 +44,12 @@ still hold before relying on them.
 ## Current state
 
 - **CE5 in progress (2026-10-05):** `codex/composition-ce5` from CE11 `a0c56df`.
-  Bounded shape/paint/operator contracts and the shared nested property locator pass
-  build, lint, 40 focused checks and all 1,516 unit tests. Polygon dependency is pinned.
-  Native shape rendering remains unavailable until its engine slice; geometry,
-  rendering, authoring, acceptance and the full gate/PR follow. No owner decision is
-  pending. [Evidence](./composition-ce5-results.json).
+  Shape contracts/property locator, cubic bounds/flattening, primitives and rich
+  morph alignment pass build, lint and all 1,527 unit tests. Polygon dependency is
+  pinned; geometry work limits have explicit diagnostics. Operators, native frame
+  budget/rendering, authoring and browser/baseline/export acceptance follow.
+  Native shape layers remain unavailable until the renderer slice. No owner
+  decision is pending. [Evidence](./composition-ce5-results.json).
 
 - **CE11 complete (2026-10-05):** `codex/composition-ce11`, runtime `5f36268`.
   Native inspector, graph/handle edits, overlays, lossless history, guarded source
@@ -165,6 +166,18 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-05 — Add CE5 cubic geometry and morph correspondence
+
+- **Agent / branch:** Codex on `codex/composition-ce5`, after `13669d4`.
+- **Done:** exact cubic bounds, bounded flattening, native primitives/corner fillets,
+  shared budget API and closed-path vertex/tangent alignment. Rich legacy morphs
+  render through native geometry; existing point-only arithmetic is preserved.
+- **Results:** build/lint, schema/boundaries and all 1,527 unit tests pass, including
+  11 analytic geometry/morph checks. Native evaluator/renderer versions updated.
+- **Next:** operators, paint compilation and native frame-budget/render integration,
+  then authoring and milestone browser/baseline/export acceptance.
+- **Records:** [CE5 evidence](./composition-ce5-results.json).
 
 ### 2026-10-05 — Start CE5 with native shape contracts
 
