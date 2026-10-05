@@ -47,8 +47,8 @@ still hold before relying on them.
   Shared-session renderer registration, frame callbacks and valid-preview recovery
   and composition-page adoption pass lifecycle, watch, quality and native renderer
   browser checks. Lossless history, native curve edits and fixed-source saves pass
-  focused model/API gates. Inspector integration, overlays and save/export browser
-  acceptance remain. Existing Lab design is the default pending optional steering.
+  focused model/API gates. Inspector integration, overlays and desktop/phone native
+  save/export acceptance pass; final review and full local milestone gates remain. Existing Lab design is the default pending optional steering.
   [Evidence](./composition-ce11-results.json).
 
 - **CE10 complete (2026-10-05):** `codex/composition-ce10` from CE4a `869a793`;
@@ -158,6 +158,22 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-05 — Connect native inspector edits, overlays and MP4 export
+
+- **Agent / branch:** Codex on `codex/composition-ce11`, after `3f217d3`.
+- **Done:** layer timing/badges and view-only visibility, property/marker lanes,
+  native value/speed graphs and temporal/spatial/Bezier controls, SVG overlays,
+  history/save integration and captured-asset native MP4 draft export.
+- **Results:** desktop/390px-phone acceptance passes with relative image assets:
+  edit/undo/redo, rejection rollback, graphical Bezier keys, transient visibility,
+  overlays, lossless save, backend retention and external conflicts. Downloaded MP4
+  exactly matches an independent CLI render; decoded preview mean difference is <3.
+  Builder watch regressions, build/lint and boundaries pass. Staged asset loads now
+  lock inspector edits; codec-threshold and loading-race repairs are retained.
+- **Next:** final inspector/builder-copy review, full local gates, then the milestone
+  PR before CE5. Camera frusta/audio remain tracked with native CE8/CE13 integration.
+- **Records:** [CE11 evidence](./composition-ce11-results.json).
 
 ### 2026-10-05 — Add lossless native edit history and fixed-source saves
 

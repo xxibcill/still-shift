@@ -2,9 +2,11 @@ import {
   compositionEffectDefinition,
   isKeyed,
   type Composition,
+  type Camera2d,
   type CompositionLayer,
   type Keyed,
 } from "../../../packages/scene-contract/src/index.ts";
+import { sampleCameraMotion } from "../../../packages/renderer-core/src/camera-sampling.ts";
 import {
   color,
   discrete,
@@ -32,7 +34,7 @@ export type KeyTrack = {
   owner: string;
   path: JsonPath;
   property?: string;
-  kind: "scalar" | "vector" | "color" | "discrete" | "path";
+  kind: "scalar" | "vector" | "color" | "discrete" | "path" | "camera";
   keys: Key[];
   raw: unknown;
   fps: number;
@@ -252,10 +254,24 @@ export function compositionTracks(document: Composition): KeyTrack[] {
       true,
     ),
   );
+  if (document.camera2d)
+    add(
+      document.camera2d,
+      ["camera2d"],
+      undefined,
+      "camera",
+      "root",
+      "Camera 2D (source controls)",
+      document.fps,
+    );
   return tracks;
 }
 export function sampleTrack(track: KeyTrack, frame: number): number[] {
   if (track.kind === "path") return [];
+  if (track.kind === "camera") {
+    const state = sampleCameraMotion(track.raw as Camera2d, frame);
+    return [state.x, state.y, state.zoom];
+  }
   if (track.array) return [motionScalar(track.keys, frame, track.fps)];
   switch (track.kind) {
     case "vector":
@@ -300,7 +316,7 @@ export function editTemporalHandle(
   ease: number,
   speed?: number | number[],
 ) {
-  if (["discrete", "path"].includes(track.kind))
+  if (["discrete", "path", "camera"].includes(track.kind))
     throw new Error("This track has no numeric temporal handle editor");
   const key = keysIn(draft, track)[index];
   if (!key) throw new Error("Key no longer exists");
@@ -322,7 +338,7 @@ export function editSegmentBezier(
   destination: number,
   bezier: [number, number, number, number],
 ) {
-  if (["discrete", "path"].includes(track.kind) || destination < 1)
+  if (["discrete", "path", "camera"].includes(track.kind) || destination < 1)
     throw new Error("Select a numeric segment ending after the first key");
   const keys = keysIn(draft, track),
     a = keys[destination - 1],

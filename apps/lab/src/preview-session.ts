@@ -25,6 +25,7 @@ type SessionOptions<T> = {
   ready: (snapshot: T) => void;
   canUpdate?: () => boolean;
   disableWhileExporting?: boolean;
+  disableEditsWhileLoading?: boolean;
   restartOnFirstPlay?: boolean;
   retainValidOnFailure?: boolean;
   frameChanged?: (frame: number, snapshot: T) => void;
@@ -109,7 +110,9 @@ export function createPreviewSession<T extends PreviewSnapshot>(
     const available =
       !dirty && Boolean(active) && (options.canUpdate?.() ?? true);
     const locked = Boolean(options.disableWhileExporting && exporting);
-    for (const control of controls.edit ?? []) control.disabled = exporting;
+    for (const control of controls.edit ?? [])
+      control.disabled =
+        exporting || Boolean(options.disableEditsWhileLoading && dirty);
     for (const control of [
       controls.play,
       controls.restart,

@@ -9,6 +9,7 @@ import type {
 } from "@still-shift/scene-contract";
 import { CompositionProgramError, programError } from "./errors.ts";
 import { loadProgram } from "./program.ts";
+import { exportCompositionDraft } from "./draft-export.ts";
 import { withProgramFile } from "./files.ts";
 import {
   CompositionSaveError,
@@ -59,6 +60,7 @@ export async function createProgramPreview(
   let failure: CompositionDiagnostic[] = [],
     active: Promise<void> | undefined,
     abort: AbortController | undefined;
+  let exporting = false;
   let saving: Promise<void> = Promise.resolve();
   let savingHash: string | undefined;
   let timer: ReturnType<typeof setTimeout> | undefined;
@@ -210,10 +212,66 @@ export async function createProgramPreview(
             "/composition/program",
             "/composition/program-asset",
             "/composition/program-save",
+            "/composition/program-export",
           ].includes(url.pathname)
         )
           return next();
         response.setHeader("Cache-Control", "no-store");
+        if (url.pathname === "/composition/program-export") {
+          void (async () => {
+            try {
+              const body = (await readEditRequest(request)) as {
+                revision?: number;
+                document?: unknown;
+                backend?: unknown;
+              };
+              if (
+                !body ||
+                Object.keys(body).some(
+                  (key) => !["revision", "document", "backend"].includes(key),
+                )
+              )
+                throw new CompositionSaveError(
+                  400,
+                  "comp-edit-request",
+                  "Use revision, document and backend",
+                );
+              const captured = snapshots.get(body.revision ?? -1);
+              if (!captured)
+                throw new CompositionSaveError(
+                  409,
+                  "comp-edit-revision",
+                  "Source asset revision expired; reload before exporting",
+                );
+              if (exporting)
+                throw new CompositionSaveError(
+                  409,
+                  "comp-edit-busy",
+                  "A composition export is already running",
+                );
+              exporting = true;
+              try {
+                await exportCompositionDraft(
+                  body.document,
+                  captured.snapshot.document ?? captured.snapshot.composition,
+                  captured.bytes,
+                  body.backend,
+                  response,
+                );
+              } finally {
+                exporting = false;
+              }
+            } catch (error) {
+              if (response.headersSent || response.destroyed) return;
+              response.statusCode =
+                error instanceof CompositionSaveError ? error.status : 500;
+              response.end(
+                error instanceof Error ? error.message : String(error),
+              );
+            }
+          })();
+          return;
+        }
         if (url.pathname === "/composition/program-save") {
           const task = saving.then(async () => {
             try {
