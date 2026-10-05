@@ -46,8 +46,9 @@ still hold before relying on them.
 - **CE11 in progress (2026-10-05):** `codex/composition-ce11` from CE10 `afb4045`.
   Shared-session renderer registration, frame callbacks and valid-preview recovery
   and composition-page adoption pass lifecycle, watch, quality and native renderer
-  browser checks. Native editing/history, layers, graphs, overlays and lossless
-  save/export acceptance remain. Existing Lab design is the default pending optional steering.
+  browser checks. Lossless history, native curve edits and fixed-source saves pass
+  focused model/API gates. Inspector integration, overlays and save/export browser
+  acceptance remain. Existing Lab design is the default pending optional steering.
   [Evidence](./composition-ce11-results.json).
 
 - **CE10 complete (2026-10-05):** `codex/composition-ce10` from CE4a `869a793`;
@@ -157,6 +158,19 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-05 — Add lossless native edit history and fixed-source saves
+
+- **Agent / branch:** Codex on `codex/composition-ce11`, after `0dae1ac`.
+- **Done:** immutable document proposals and bounded undo/redo; native key discovery,
+  value/speed sampling and temporal/spatial/Bezier edits; raw source documents/hashes
+  and local fixed-input JSON saves with conflict guards and atomic replacement.
+- **Results:** eight model tests and three save integration tests pass, plus build,
+  changed-file lint and package boundaries. Builder source writes are rejected;
+  no-op bytes, untouched fields, permissions and competing-save conflicts are checked.
+- **Next:** connect the inspector and accepted edit lifecycle; native draft export
+  and desktop/phone preview/save/export acceptance remain.
+- **Records:** [CE11 evidence](./composition-ce11-results.json).
 
 ### 2026-10-05 — Move composition preview into the shared session
 

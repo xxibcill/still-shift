@@ -109,6 +109,36 @@
         "Inspector layer stack/graph/overlays",
         "Lossless save/export acceptance"
       ]
+    },
+    {
+      "name": "Lossless document history, native curve model and fixed-input JSON saves",
+      "status": "checkpoint",
+      "changes": [
+        "Immutable accepted document history with transactional proposals, bounded retained serialized bytes, undo/redo and saved fingerprints.",
+        "Explicit native curve discovery across layers, precomps, signals, selectors and registered effect properties; native value/speed sampling, grouped temporal handles, spatial tangents and explicit Bezier precedence.",
+        "Raw JSON documents and source-byte hashes preserved separately from normalized render compositions.",
+        "Serialized local save endpoint owns only the fixed JSON source, checks revision/hash and unchanged asset bindings, preserves no-op bytes and file modes, and atomically replaces edited source; builder writes rejected."
+      ],
+      "verification": [
+        {
+          "command": "pnpm build / changed-file eslint / pnpm check:boundaries",
+          "status": "passed"
+        },
+        {
+          "command": "focused document and curve unit tests",
+          "status": "passed",
+          "tests": 8
+        },
+        {
+          "command": "fixed-input save integration tests",
+          "status": "passed",
+          "tests": 3
+        }
+      ],
+      "pending": [
+        "Wire accepted edits, layers, graphs, overlays and save controls into Lab",
+        "Immutable-asset MP4 draft export and preview/export acceptance"
+      ]
     }
   ],
   "conditionalFollowThrough": {

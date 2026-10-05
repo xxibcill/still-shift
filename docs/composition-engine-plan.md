@@ -3703,7 +3703,9 @@ fieldset export locks. New lifecycle browser checks and existing workbench sessi
 regressions pass. The composition page now uses that session, preserving native
 Canvas/WebGL contexts and watch/seek/lint behavior; focused program, quality and
 renderer browser gates pass. Native document editing and the remaining inspector
-features are in flight. Audio waveforms and 3D frusta are conditional on CE13/CE8; their real
+features are in flight. Lossless history, native curve sampling/handle edits and
+fixed-input JSON saves pass focused model/API gates; inspector wiring and native
+draft export remain. Audio waveforms and 3D frusta are conditional on CE13/CE8; their real
 inspector integration is tracked under those milestones. No unavailable data is
 claimed as verified. [Evidence](./composition-ce11-results.json).
 
