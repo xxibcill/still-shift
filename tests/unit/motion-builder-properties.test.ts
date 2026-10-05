@@ -20,6 +20,58 @@ const path = {
     [10, 10],
   ] as [number, number][],
 };
+it("preserves static scalar state before a delayed explicit from segment", () => {
+  const result = comp({ ...options, frames: 48 }, (c) => {
+    const n = c.add(box().at(5, 0));
+    c.timeline(at(12, n.x.from(40).to(50, 10)));
+  });
+  for (const [frame, value] of [
+    [0, 5],
+    [11, 5],
+    [12, 40],
+    [17, 45],
+    [22, 50],
+    [0, 5],
+  ])
+    expect(evaluateProperty(result, "box.transform.position.x", frame!)).toBe(
+      value,
+    );
+});
+it("preserves static vector and by values before delayed from segments", () => {
+  const result = comp({ ...options, frames: 48 }, (c) => {
+    const n = c.add(box().at(5, 7).rotate(3));
+    c.timeline(
+      at(12, n.position.from([40, 60]).to([50, 80], 10)),
+      at(12, n.rotation.from(20).by(10, 10)),
+    );
+  });
+  expect(evaluateProperty(result, "box.transform.position", 11)).toEqual([
+    5, 7,
+  ]);
+  expect(evaluateProperty(result, "box.transform.position", 12)).toEqual([
+    40, 60,
+  ]);
+  expect(evaluateProperty(result, "box.transform.position", 17)).toEqual([
+    45, 70,
+  ]);
+  expect(evaluateProperty(result, "box.transform.rotation", 11)).toBe(3);
+  expect(evaluateProperty(result, "box.transform.rotation", 12)).toBe(20);
+  expect(evaluateProperty(result, "box.transform.rotation", 22)).toBe(30);
+});
+it.each([0, 1])(
+  "retains authored opacity %s before a delayed fade-in",
+  (opacity) => {
+    const result = comp({ ...options, frames: 48 }, (c) => {
+      const n = c.add(box().opacity(opacity));
+      c.timeline(at(12, n.fadeIn(12)));
+    });
+    expect(evaluateProperty(result, "box.transform.opacity", 0)).toBe(opacity);
+    expect(evaluateProperty(result, "box.transform.opacity", 11)).toBe(opacity);
+    expect(evaluateProperty(result, "box.transform.opacity", 12)).toBe(0);
+    expect(evaluateProperty(result, "box.transform.opacity", 18)).toBe(0.5);
+    expect(evaluateProperty(result, "box.transform.opacity", 24)).toBe(1);
+  },
+);
 it("maps emitted keys to animation calls and retains them through nested reuse", () => {
   let call;
   const child = comp({ ...options, id: "child" }, (c) => {

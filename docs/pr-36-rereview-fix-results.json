@@ -1,0 +1,58 @@
+{
+  "date": "2026-10-05",
+  "pullRequest": "https://github.com/xxibcill/still-shift/pull/36",
+  "reviewedHead": "f68f135bfdc0325378862e4c7c77d37f153ec35a",
+  "branch": "codex/pr36-rereview-fixes",
+  "policy": "One finding per commit; one push after the final fix commit. GitHub Actions remain disabled.",
+  "status": "fixes-in-progress",
+  "findings": [
+    {
+      "number": 1,
+      "finding": "preserve static values before delayed from animations",
+      "comment": "https://github.com/xxibcill/still-shift/pull/36#discussion_r4183933394",
+      "status": "fixed",
+      "verification": {
+        "red": {
+          "status": "failed-as-expected",
+          "failedRegressions": 3,
+          "compatibilityCasesPassed": 1,
+          "log": "/private/tmp/pr36-rereview-fix1-red.log"
+        },
+        "green": {
+          "status": "passed",
+          "tests": 41,
+          "command": "pnpm exec vitest run tests/unit/motion-builder-properties.test.ts tests/unit/motion-builder.test.ts --maxWorkers=2",
+          "log": "/private/tmp/pr36-rereview-fix1-green.log"
+        },
+        "build": "passed",
+        "coverage": [
+          "scalar and vector static state before delayed explicit from segments",
+          "delayed by segment endpoints",
+          "visible and hidden authored opacity before fade-in",
+          "segment start, midpoint, end and backward evaluation"
+        ],
+        "rejectedExperiment": "Unconditionally adding a frame-zero key changed equivalent delayed tracks. Add the static hold only when the segment's from value differs."
+      }
+    },
+    {
+      "number": 2,
+      "finding": "attribute merged outgoing-handle errors to their authoring call",
+      "comment": "https://github.com/xxibcill/still-shift/pull/36#discussion_r4183933400",
+      "status": "pending"
+    },
+    {
+      "number": 3,
+      "finding": "retain the image path on asset schema failures",
+      "comment": "https://github.com/xxibcill/still-shift/pull/36#discussion_r4183933402",
+      "status": "pending"
+    }
+  ],
+  "verification": [],
+  "delivery": {
+    "reviewComments": 3,
+    "targetBranch": "codex/composition-ce10",
+    "pushes": 0,
+    "actionsEnabled": false,
+    "pendingOwnerDecision": "PR review and merge"
+  }
+}

@@ -43,9 +43,16 @@ still hold before relying on them.
 
 ## Current state
 
+- **PR #36 re-review fixes in progress (2026-10-05):** isolated
+  `codex/pr36-rereview-fixes` from `f68f135`; three findings posted inline.
+  Delayed explicit `from` segments now preserve preceding static state; 41 focused
+  tests and the build pass. Joined-key field attribution and asset-schema watch
+  recovery remain. One finding per commit, one final push; no owner decision is
+  needed for the authorized fixes. [Evidence](./pr-36-rereview-fix-results.json).
+
 - **PR #36 review fixes complete (2026-10-05):** `codex/composition-ce10`
   from `afb4045`; all six findings posted inline and repaired in six separate
-  finding commits, prepared for one final push. Fast checks pass: 1,515 unit;
+  finding commits, delivered at `f68f135`. Fast checks pass: 1,515 unit;
   46 runtime, 146 integration and 14 depth tests also pass. Affected watch,
   Canvas/WebGL builder parity, export and typography browser checks pass.
   The native Node error-class failure was repaired in the first finding commit;
@@ -159,6 +166,19 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-05 — PR #36 re-review fix 1: retain static state before delayed from
+
+- **Agent / branch:** Codex on `codex/pr36-rereview-fixes`, from `f68f135`.
+- **Done:** Preserve the static value until the first delayed segment changes to its
+  explicit `from` value. Scalar/vector, `by`, fade-in and backward sampling covered.
+- **Results:** Three regressions fail before repair; 41 focused tests and build pass.
+- **Rejected:** Unconditional frame-zero keys changed equivalent emitted tracks;
+  retain a hold only when the authored static value differs from the segment start.
+- **Open / next:** Fix joined-key field attribution and invalid-asset watch recovery
+  in separate commits, then run final checks and push once. Actions remain disabled.
+- **Records:** [Evidence](./pr-36-rereview-fix-results.json),
+  [inline finding](https://github.com/xxibcill/still-shift/pull/36#discussion_r4183933394).
 
 ### 2026-10-05 — PR #36 fix 6: trace CommonJS program dependencies
 
