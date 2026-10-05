@@ -20,12 +20,33 @@
           "ESLint for changed TypeScript",
           "pnpm test:browser:composition-quality"
         ]
-      }
+      },
+      "commit": "b7bb78fe338e8f9b0205bdfb0a6df9dc7f3f5fe2"
     },
     {
       "id": "effect-tracks",
       "comment": "https://github.com/xxibcill/still-shift/pull/34#discussion_r4180742886",
-      "status": "pending"
+      "status": "fixed",
+      "verification": {
+        "before": {
+          "failed": 3,
+          "passed": 47
+        },
+        "after": {
+          "failed": 0,
+          "passed": 50
+        },
+        "checks": [
+          "50 focused quality unit tests",
+          "pnpm build",
+          "ESLint for changed TypeScript"
+        ],
+        "coverage": [
+          "Active versus disabled/out-of-window effects",
+          "Staggered varied effect easing",
+          "Forward/reverse fractional effect joins"
+        ]
+      }
     },
     {
       "id": "matte-motion",
@@ -48,7 +69,6 @@
   ],
   "preservation": "Original checkout and unrelated edits retained; GitHub Actions remain disabled.",
   "pending": [
-    "active effect tracks",
     "contributing matte motion",
     "one-frame scale and opacity pulses",
     "clipped viewport coverage",

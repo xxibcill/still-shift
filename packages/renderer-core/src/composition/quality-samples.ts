@@ -309,7 +309,12 @@ export function layerQualityTracks(layer: CompositionLayer): QualityTrack[] {
       return;
     }
     for (const [key, child] of Object.entries(value)) {
-      if (["params", "metadata", "source"].includes(key)) continue;
+      if (
+        key === "metadata" ||
+        key === "source" ||
+        (key === "params" && !path && layer.type === "provider")
+      )
+        continue;
       visit(child, path ? `${path}.${key}` : key);
     }
   };

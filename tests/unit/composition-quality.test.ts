@@ -628,3 +628,101 @@ it("recognizes staggered varied easing on parents", () => {
   expect(codes(input)).not.toContain("easing-monotony");
   expect(codes(input)).not.toContain("co-start");
 });
+
+it.each([{}, { enabled: false }, { inPoint: 90 }, { outPoint: 0 }])(
+  "checks timing only for active effect tracks: %j",
+  (activation) => {
+    const input = composition(
+      Array.from({ length: 4 }, (_, i) =>
+        solid(`effect-${i}`, {
+          transform: { position: [120, 100] },
+          effects: [
+            {
+              id: "blur",
+              effect: "blur.gaussian",
+              ...activation,
+              params: {
+                radius: {
+                  keys: [
+                    { frame: 0, value: 0 },
+                    { frame: 89, value: 10, interpolation: "linear" },
+                  ],
+                },
+              },
+            },
+          ],
+        }),
+      ),
+    );
+    const report = codes(input);
+    for (const code of ["easing-monotony", "co-start"])
+      if (Object.keys(activation).length) expect(report).not.toContain(code);
+      else expect(report).toContain(code);
+  },
+);
+
+it("recognizes staggered varied easing in effect tracks", () => {
+  const input = composition(
+    Array.from({ length: 4 }, (_, i) =>
+      solid(`effect-${i}`, {
+        effects: [
+          {
+            id: "blur",
+            effect: "blur.gaussian",
+            params: {
+              radius: {
+                keys: [
+                  { frame: i * 5, value: 0 },
+                  {
+                    frame: 89,
+                    value: 10,
+                    easing: i % 2 ? "linear" : "smoothstep",
+                  },
+                ],
+              },
+            },
+          },
+        ],
+      }),
+    ),
+  );
+  expect(codes(input)).not.toContain("easing-monotony");
+  expect(codes(input)).not.toContain("co-start");
+});
+
+it.each([1.025, -1.025])(
+  "finds fractional active effect joins at stretch %s",
+  (stretch) => {
+    const input = composition(
+      [
+        solid("effect", {
+          stretch,
+          ...(stretch < 0 ? { startFrame: 41 } : {}),
+          effects: [
+            {
+              id: "blur",
+              effect: "blur.gaussian",
+              params: {
+                radius: {
+                  keys: [
+                    { frame: 0, value: 0 },
+                    { frame: 20, value: 1, interpolation: "linear" },
+                    { frame: 40, value: 21, interpolation: "linear" },
+                  ],
+                },
+              },
+            },
+          ],
+        }),
+      ],
+      { frameCount: 42 },
+    );
+    expect(analyzeCompositionQuality(input).diagnostics).toContainEqual(
+      expect.objectContaining({
+        code: "velocity-discontinuity",
+        nodes: ["effect"],
+        frames: [20, 21],
+      }),
+    );
+  },
+);
