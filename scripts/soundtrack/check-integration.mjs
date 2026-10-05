@@ -6,6 +6,7 @@ import { spawnSync } from "node:child_process";
 const files = [
   "tests/integration/soundtrack.test.ts",
   "tests/integration/soundtrack-api.test.ts",
+  "tests/integration/soundtrack-api-concurrency.test.ts",
   "tests/integration/passage-audio.test.ts",
 ];
 const result = spawnSync(

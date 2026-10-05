@@ -1,7 +1,15 @@
-import { lstat, readFile, readdir, realpath, rm } from "node:fs/promises";
-import { resolve, relative, join, extname } from "node:path";
+import {
+  lstat,
+  mkdir,
+  readFile,
+  readdir,
+  realpath,
+  rm,
+} from "node:fs/promises";
+import { resolve, relative, join, extname, dirname } from "node:path";
 import { createHash, randomUUID } from "node:crypto";
 import type { Plugin } from "vite";
+import { acquireArtifactLock } from "@still-shift/execution-runtime/locks";
 import { z } from "zod";
 import { SoundtrackError } from "../../packages/scene-contract/src/soundtrack-project.ts";
 import {
@@ -40,6 +48,34 @@ export const soundtrackApi = (
       rendersRoot,
       createHash("sha256").update(project).digest("hex").slice(0, 16),
     );
+  const previewChanges = new Map<string, Promise<unknown>>();
+  /** Publication, pruning and Lab edits form one ordered operation per project. */
+  const withPreview = async <T>(project: string, change: () => Promise<T>) => {
+    const previous = previewChanges.get(project) ?? Promise.resolve();
+    const pending = previous
+      .catch(() => {})
+      .then(async () => {
+        const directory = rendersFor(project);
+        await mkdir(dirname(directory), { recursive: true });
+        // Also protect the shared preview directory from another Lab process.
+        const release = await acquireArtifactLock(
+          directory + ".lock",
+          directory,
+        );
+        try {
+          return await change();
+        } finally {
+          await release();
+        }
+      });
+    previewChanges.set(project, pending);
+    try {
+      return await pending;
+    } finally {
+      if (previewChanges.get(project) === pending)
+        previewChanges.delete(project);
+    }
+  };
   /**
    * The preview endpoint serves only the current saved revision, so renders of
    * earlier revisions are dead weight. Only published renders are removed;
@@ -164,12 +200,15 @@ export const soundtrackApi = (
           if (url.pathname.endsWith("/edit")) {
             if (body.operations === undefined)
               throw new Error("Missing operations");
-            const saved = await saveSoundtrackEdits(
-              path,
-              body.revision,
-              body.operations,
-            );
-            await pruneRenders(path);
+            const saved = await withPreview(path, async () => {
+              const saved = await saveSoundtrackEdits(
+                path,
+                body.revision,
+                body.operations,
+              );
+              await pruneRenders(path);
+              return saved;
+            });
             response.end(JSON.stringify({ project: saved }));
             return;
           }
@@ -196,17 +235,18 @@ export const soundtrackApi = (
             if (!response.writableFinished)
               controller.abort(new Error("Preview request disconnected"));
           });
-          const id = randomUUID(),
-            output = join(rendersFor(path), id);
-          const manifest = await renderSoundtrackProject(path, output, {
-            stems: true,
-            expectedRevision: body.revision,
-            signal: controller.signal,
+          const rendered = await withPreview(path, async () => {
+            const id = randomUUID(),
+              output = join(rendersFor(path), id);
+            const manifest = await renderSoundtrackProject(path, output, {
+              stems: true,
+              expectedRevision: body.revision,
+              signal: controller.signal,
+            });
+            await pruneRenders(path, id);
+            return { manifest, output: relative(workspace, output) };
           });
-          await pruneRenders(path, id);
-          response.end(
-            JSON.stringify({ manifest, output: relative(workspace, output) }),
-          );
+          response.end(JSON.stringify(rendered));
         } catch (error) {
           const e =
             error instanceof SoundtrackError

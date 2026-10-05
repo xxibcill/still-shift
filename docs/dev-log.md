@@ -46,8 +46,9 @@ still hold before relying on them.
 - **PR #33 second review fixes (2026-10-05):** Codex on isolated
   `codex/pr33-review-fixes` from `b6cc3cd`. Three inline findings posted.
   Bounded UTF-8 project serialization now preserves the saved file on oversized
-  edits and guards package/render snapshots. Preview pruning concurrency and
-  exact backend sample duration remain in flight. One finding per local commit;
+  edits and guards package/render snapshots. Preview publication/pruning and
+  Lab edits now coordinate per project, including independent-server locks.
+  Exact backend sample duration remains in flight. One finding per local commit;
   push only after all three fixes and local verification.
   [Fix results](./pr-33-review-fix-results.json).
 
@@ -155,6 +156,21 @@ _Last updated 2026-10-05 by Codex for isolated CE16 PR publication._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-05 — Coordinate PR #33 preview publication
+
+- **Agent / branch:** Codex on `codex/pr33-review-fixes`, after `077443e`.
+- **Scope:** P2 inline finding: concurrent renders could prune each other's outputs.
+- **Done:** queue render publication/pruning and Lab edits per real project path;
+  use the existing artifact lock across independent Lab instances. Register the
+  new command-only concurrency suite in the local soundtrack verification tiers.
+- **Results:** both race regressions fail before the fix; all eight mocked-worker
+  concurrency and real-worker HTTP API tests pass, including edit invalidation,
+  failure recovery, independent-server exclusion and stale preview rejection.
+  TypeScript build and focused lint pass.
+- **Open / next:** repair backend duration rounding, run final local checks and
+  push the three finding commits together. No browser checks or Actions.
+- **Records:** [review/fix evidence](./pr-33-review-fix-results.json).
 
 ### 2026-10-05 — Bound PR #33 saved project bytes
 

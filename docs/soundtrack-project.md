@@ -221,7 +221,10 @@ preview until re-rendered; stale or different-project preview requests fail.
 Lab renders live in `benchmarks/results/soundtrack-api/<project-key>/`, keyed by
 the project's real path. A successful render keeps only that project's newest
 render, and a successful Lab edit removes all of them, because previews of earlier
-revisions can never be served again. A pruned preview answers `revision-conflict`.
+revisions can never be served again. Lab renders and edits for one project are queued
+through publication and pruning, so concurrent renders retain the last preview and
+an edit invalidates a preceding render only after it finishes. A shared artifact lock
+protects that directory from a second Lab process. A pruned preview answers `revision-conflict`.
 Unpublished render stages and locks are left to their render. CLI and library
 render outputs are never pruned.
 In `/passage.html`, **Saved soundtrack (optional)** attaches a rendered full mix to
@@ -250,7 +253,7 @@ Sources: [engine package](https://www.npmjs.com/package/@waveform-playlist/engin
 
 `pnpm test:soundtrack` runs the shared model, offline PCM, persistence/HTTP and old
 passage-audio regressions without GUI interaction. `pnpm check:soundtrack` runs
-fast checks, runtime tests, three audited audio-only integration suites, depth tests and soundtrack Python
+fast checks, runtime tests, four audited audio-only integration suites, depth tests and soundtrack Python
 checks. These tests are also discovered by the existing unit/integration tiers.
 `pnpm soundtrack:verify` creates fresh 60-second CLI lifecycle artifacts and updates
 [evidence](./composition-ce16-verification-results.json); it refuses existing results.
