@@ -243,7 +243,7 @@ TypeScript program.
 
 Import typed layers, properties and timelines from `@still-shift/motion`, and export
 the composition as the program's default export. The CLI accepts `.ts`, `.mts`,
-`.cts` and native `.json` inputs. Start with the eight small programs in
+`.cts` and native `.json` inputs. Start with the nine small programs in
 [`examples/composition`](../examples/composition), or the
 [197-line Unequal Margins program](../examples/composition/unequal-margins/program.ts).
 

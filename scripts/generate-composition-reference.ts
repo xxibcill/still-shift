@@ -137,7 +137,7 @@ ${commands}
 
 Validate after authoring and fix located diagnostics before rendering. CLI accepts \`.json\`, \`.ts\`, \`.mts\` and \`.cts\`; JSON export rebases pinned asset paths to its output folder. Output writes refuse to overwrite existing files. Watch preview retains the last valid pixels/frame on an invalid rebuild. Lint reports motion craft separately from schema validity; use its findings to improve the clip. Verification runs locally using pnpm.
 
-Read [the generated composition reference](../../docs/composition-reference.md) for contract details and advanced operations. See [eight small programs](../../examples/composition/) and [the 197-line Unequal Margins program](../../examples/composition/unequal-margins/program.ts) for concrete authoring patterns.
+Read [the generated composition reference](../../docs/composition-reference.md) for contract details and advanced operations. See [nine small programs](../../examples/composition/) and [the 197-line Unequal Margins program](../../examples/composition/unequal-margins/program.ts) for concrete authoring patterns.
 `;
 }
 async function reference(root: string): Promise<string> {

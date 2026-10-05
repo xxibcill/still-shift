@@ -49,7 +49,9 @@ still hold before relying on them.
   meets unchanged near tier; all 144 legacy connector/nib frames are exact. New CE5
   baseline hashes/seek checks and independent MP4/transport parity pass. Ink winding
   and export diagnostic transport repaired; failures retained. Full local gate,
-  frozen CE0 verification and milestone PR remain before CE7. No owner decision
+  frozen CE0 verification and milestone PR remain before CE7. Initial full gate
+  failed only a stale eight-example count; repaired to nine and restart required.
+  No owner decision
   is pending. [Evidence](./composition-ce5-results.json).
 
 - **CE11 complete (2026-10-05):** `codex/composition-ce11`, runtime `5f36268`.
@@ -167,6 +169,16 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-05 — Repair CE5 full-gate example inventory
+
+- **Agent / branch:** Codex on `codex/composition-ce5`, after `df3374a`.
+- **Repaired:** CE5 adds the ninth native example; the integration inventory and
+  generated/user guidance still said eight. Updated all three to nine.
+- **Results:** initial full gate passes static checks, 1,569 unit, 46 runtime and
+  138 integration tests; the inventory assertion is its sole failure. Targeted
+  example validation passes. Full gate must restart from this checkpoint.
+- **Records:** [CE5 evidence](./composition-ce5-results.json); initial log retained.
 
 ### 2026-10-05 — Verify CE5 native reference, connector and export acceptance
 

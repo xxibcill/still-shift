@@ -310,5 +310,24 @@
   },
   "pending": [
     "Full pnpm check and frozen CE0 baseline verification, milestone completion record and PR"
+  ],
+  "verificationAttempts": [
+    {
+      "command": "pnpm check",
+      "snapshot": "/private/tmp/still-shift-ce5-check-df3374a",
+      "commit": "df3374a",
+      "status": "failed",
+      "passed": [
+        "pinned toolchain",
+        "schema",
+        "boundaries",
+        "whole-snapshot format/lint/build",
+        "1569 unit tests",
+        "46 runtime tests",
+        "138 integration tests"
+      ],
+      "failure": "Composition example inventory still asserted eight after CE5 introduced ninth native example. Updated test and generated/user guidance to nine; full gate restart required.",
+      "log": "benchmarks/results/composition-ce5-verification/ce5-full-df3374a-initial-failed.log"
+    }
   ]
 }

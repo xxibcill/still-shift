@@ -2982,7 +2982,8 @@ frames are exact after repairing ink winding. Both backends produce byte-identic
 independent preview MP4s and PNG/raw transports. Overflow retains code/node/frame
 and publishes nothing; inspector edits/history/save pass. Initial failures are
 retained. Only full local gate/frozen CE0 verification and milestone closeout/PR
-remain in progress.
+remain in progress. Initial full gate failed only a stale eight-example inventory;
+updated to nine and full verification restart required.
 [Evidence](./composition-ce5-results.json).
 
 **Completion record:** _to be filled in._
