@@ -7,6 +7,7 @@ import {
   type ResolvedCompositionQualityPolicy,
 } from "./quality-policy.ts";
 import {
+  assertCompositionQualityCapacity,
   compositionQualityFrame,
   contributingMotionLayers,
   qualityTrackContributes,
@@ -401,8 +402,30 @@ function joinFrames(
     Array.from({ length: Math.max(0, frames.length - 2) }, (_, i) => i + 1),
   );
   const keyTimes = new Map<string, number[]>();
+  // Searches charge the shared lint budget. Within each frame interval, one
+  // evaluation records every layer's clock, so layers sharing a clock reuse
+  // the same bisection steps instead of repeating them per layer.
+  let inspected = frames.reduce((total, f) => total + f.layers.size, 0);
   let previous = contributingMotionLayers(frames[0]!);
   for (let frame = 1; frame < frames.length; frame++) {
+    const clocks = new Map<number, Map<string, number>>();
+    const clockAt = (time: number) => {
+      let sampled = clocks.get(time);
+      if (!sampled) {
+        const evaluated = compositionQualityFrame(
+          comp,
+          time,
+          policy.evaluation,
+        );
+        inspected += evaluated.layers.size;
+        assertCompositionQualityCapacity(inspected);
+        sampled = new Map(
+          [...evaluated.layers].map(([id, s]) => [id, s.state.time]),
+        );
+        clocks.set(time, sampled);
+      }
+      return sampled;
+    };
     const contributing = contributingMotionLayers(frames[frame]!);
     for (const current of contributing.values()) {
       const before = previous.get(current.id);
@@ -428,11 +451,7 @@ function joinFrames(
           hi = frame;
         for (let pass = 0; pass < 24; pass++) {
           const mid = (lo + hi) / 2;
-          const time = compositionQualityFrame(
-            comp,
-            mid,
-            policy.evaluation,
-          ).layers.get(current.id)?.state.time;
+          const time = clockAt(mid).get(current.id);
           if (time === undefined) break;
           if (time < key === current.state.time > before.state.time) lo = mid;
           else hi = mid;

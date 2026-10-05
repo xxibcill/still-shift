@@ -1415,8 +1415,10 @@ bookkeeping and invisible unrelated motion. Join checks include fractional
 stretched/reversed key joins and reuse one-sided velocity sampling. Each side is
 sampled a step away from the join, so per-frame held keys (as baked by adapters) are
 frame samples, not velocity jumps; the report lists held motion as unmeasured, and
-held scale/opacity steps remain subject to pop checks. A bounded
-2,000,000 layer-frame budget prevents unbounded inspection; exceeding it fails
+held scale/opacity steps remain subject to pop checks. Fractional join searches
+share each clock's evaluations across the layers that use it. A bounded
+2,000,000 layer-frame budget, which includes those searches, prevents unbounded
+inspection; exceeding it fails
 instead of returning a partial pass. Split unusually large projects into smaller
 compositions before linting.
 

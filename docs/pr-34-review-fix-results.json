@@ -42,6 +42,47 @@
           "ESLint for changed TypeScript",
           "pnpm composition:lint-corpus"
         ]
+      },
+      "commit": "059f04a"
+    },
+    {
+      "id": "shared-clock-join-search",
+      "comment": "https://github.com/xxibcill/still-shift/pull/34#discussion_r4185356000",
+      "status": "fixed",
+      "change": "Fractional key-join bisection records every layer's clock per sub-frame evaluation and reuses it within the frame interval, so layers sharing a clock share one search. Search evaluations count toward the 2,000,000 layer-frame lint budget.",
+      "verification": {
+        "before": {
+          "evaluateCompCalls": {
+            "2 siblings": 1626,
+            "16 siblings": 11034
+          },
+          "cliSeconds": {
+            "40 stretched siblings": 8.7,
+            "80 stretched siblings": 31.4
+          }
+        },
+        "after": {
+          "evaluateCompCalls": "identical for 2 and 16 siblings",
+          "cliSeconds": {
+            "40 stretched siblings": 1.44,
+            "80 stretched siblings": 3.01
+          },
+          "qualityTests": 89,
+          "cliTests": 15,
+          "failed": 0
+        },
+        "corpus": {
+          "items": 176,
+          "frames": 36061,
+          "unexpectedFailures": 0,
+          "reports": "identical to the finding-1 corpus run"
+        },
+        "checks": [
+          "104 focused unit/CLI tests",
+          "pnpm build",
+          "ESLint for changed TypeScript",
+          "pnpm composition:lint-corpus"
+        ]
       }
     }
   ]
