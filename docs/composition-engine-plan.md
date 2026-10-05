@@ -3645,7 +3645,10 @@ Eight small programs validate. The 197-line Unequal Margins program matches all
 192 CE4a frames exactly on both backends, seeks and exports included. Seven motion
 and eight text presets emit native composition fields; all 1,498 unit tests pass.
 The generated contract/reference and compact skill pass drift and skill checks.
-The isolated trial and full gates remain in progress. See [CE10 evidence](./composition-ce10-results.json).
+The initial isolated trial exposed timing/stacking guidance gaps; after repairing the
+skill, a fresh independent trial passes its first completed schema validation with
+zero errors and no source repairs. Full gates and final fresh render inspection
+remain in progress. See [CE10 evidence](./composition-ce10-results.json).
 
 **Completion record:** _to be filled in._
 

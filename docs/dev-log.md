@@ -48,7 +48,8 @@ still hold before relying on them.
   Eight examples validate and the 197-line Unequal Margins program matches CE4a pixels
   across 192 frames on both backends, including seeks and TypeScript/JSON MP4 identity.
   All story intent presets and generated reference/skill are delivered; 1,498 unit
-  tests pass. The isolated trial and full milestone gates remain.
+  tests pass. A fresh isolated skill-only trial has zero schema errors and no source
+  repairs; the full milestone gates and final render inspection remain.
   [Evidence](./composition-ce10-results.json).
 
 - **CE4a complete (2026-10-05):** `codex/composition-ce4a-completion`, implementation
@@ -148,6 +149,21 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-05 — Verify CE10 skill-only authoring and repair guidance
+
+- **Agent / branch:** Codex on `codex/composition-ce10`.
+- **Done:** two isolated agents followed only the compact skill for a new Room to Move
+  brief. The initial trial exposed missing timing/clock and stacking guidance; retain
+  its eleven source versions and failed first validation. Update those instructions.
+- **Results:** a fresh independent trial passes its first completed validation with
+  zero schema errors and no source repairs; its JSON export also validates. Both
+  initial CLI launches hit sandbox IPC before reaching validation, then ran unchanged.
+- **Limits:** deliberate reading holds retain the default frozen-run lint findings.
+  Full local checks run on the clean tracked runtime checkpoint; final guidance changes
+  are verified separately. Fresh render inspection follows the browser gates.
+- **Records:** [trial evidence](./composition-ce10-skill-trials.json),
+  [CE10 evidence](./composition-ce10-results.json).
 
 ### 2026-10-05 — Generate CE10 authoring reference and skill
 

@@ -326,7 +326,33 @@
       "limits": [
         "SVG assets require px, in, cm, mm or pt dimensions (or viewBox inference); unsupported relative units, CSS picas and comma viewBoxes fail early rather than emitting inconsistent metadata."
       ]
+    },
+    {
+      "name": "Independent skill-only authoring trial and guidance repair",
+      "status": "checkpoint",
+      "initialTrial": {
+        "accepted": false,
+        "firstCompletedValidation": "schema-errors",
+        "sourceVersions": 11,
+        "eventualRender": "passed",
+        "note": "Retained the failed initial trial and all repairs; it is not claimed as a first-validation pass."
+      },
+      "freshTrial": {
+        "accepted": true,
+        "firstCompletedValidation": "passed",
+        "schemaErrors": 0,
+        "sourceVersions": 1,
+        "repairs": 0,
+        "exportedJsonValidation": "passed",
+        "guidanceSha256": "4e487173eadfbb443e139bba5063a6ee44a3ce3f919242fdac4c5a0c8e4c839b"
+      },
+      "record": "docs/composition-ce10-skill-trials.json",
+      "pending": ["Full browser gates and fresh rendered-frame inspection"],
+      "limits": [
+        "Both first CLI launches encountered sandbox tsx IPC EPERM before schema validation; unchanged source was retried with the permitted local command escalation.",
+        "Deliberate reading holds trigger the default frozen-run lint policy; these craft findings remain visible and were not suppressed."
+      ]
     }
   ],
-  "pending": ["Isolated skill trial", "Full local milestone gates and PR"]
+  "pending": ["Full local milestone gates and PR"]
 }

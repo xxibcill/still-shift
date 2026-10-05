@@ -1,0 +1,269 @@
+{
+  "milestone": "CE10",
+  "date": "2026-10-05",
+  "status": "accepted-after-guidance-repair",
+  "brief": "Create a 4-second, 640\u00d7360, 24fps motion metaphor called Room to Move. On a pale background, two orange gate panels initially cover a blue square; they slide apart from a named open cue, revealing the square. A pinned-font heading 'Room to move' then arrives, remains readable for at least a second, and fades before the end. Use native timed layers and at least one seconds duration and named marker. Use the repository's pinned font file through the skill's asset API, not a fabricated hash. Keep deliberate stillness for the reading interval.",
+  "scope": "Two independent agents with no conversation fork, reading only the skill as authoring guidance; no tracked implementation edits.",
+  "guidanceSha256": "4e487173eadfbb443e139bba5063a6ee44a3ce3f919242fdac4c5a0c8e4c839b",
+  "initial": {
+    "time": {
+      "started_utc": "2026-10-05 01:38:51 UTC",
+      "initial_authoring_completed_utc": "2026-10-05 01:39:29 UTC",
+      "initial_authoring_seconds": 38,
+      "completed_utc": "2026-10-05 01:46:58 UTC",
+      "total_elapsed_seconds": 487
+    },
+    "first_validation_acceptance": "failed; the first validator execution reported comp-schema-unknown-key for inFrame/outFrame",
+    "repairs": [
+      {
+        "attempt": 1,
+        "file": "room-to-move.ts",
+        "change": "Initial authoring guessed inFrame/outFrame; unknown native timed field names."
+      },
+      {
+        "attempt": 2,
+        "file": "room-to-move-attempt-2.ts",
+        "change": "Guessed in/out; schema rejected."
+      },
+      {
+        "attempt": 3,
+        "file": "room-to-move-attempt-3.ts",
+        "change": "Guessed timing object; schema rejected."
+      },
+      {
+        "attempt": 4,
+        "file": "room-to-move-attempt-4.ts",
+        "change": "Removed timing to get valid baseline and inspect own exported JSON."
+      },
+      {
+        "attempt": 5,
+        "file": "room-to-move-attempt-5.ts",
+        "change": "Explicit center anchors; startFrame/endFrame. Diagnostics recognize startFrame, reject endFrame."
+      },
+      {
+        "attempt": 6,
+        "file": "room-to-move-attempt-6.ts",
+        "change": "Guessed frameCount; schema rejected."
+      },
+      {
+        "attempt": 7,
+        "file": "room-to-move-attempt-7.ts",
+        "change": "Guessed durationFrames; schema rejected."
+      },
+      {
+        "attempt": 8,
+        "file": "room-to-move-attempt-8.ts",
+        "change": "Guessed duration; schema rejected."
+      },
+      {
+        "attempt": 9,
+        "file": "room-to-move-attempt-9.ts",
+        "change": "Use only native startFrame; valid. Lint exposes startFrame local-time offset and 0.75s reading failure."
+      },
+      {
+        "attempt": 10,
+        "file": "room-to-move-final.ts",
+        "change": "Adjust heading motions for local-time offset; reading-time error resolved. Rendered-frame inspection reveals background covers every foreground layer."
+      },
+      {
+        "attempt": 11,
+        "file": "room-to-move-verified.ts",
+        "change": "Move square and background after foreground layer additions; visual verification succeeds."
+      }
+    ],
+    "final_timing": {
+      "gate_open_global_frame": 12,
+      "gate_open_complete_global_frame": 30,
+      "heading_native_startFrame": 30,
+      "heading_enter_local_frames": [12, 18],
+      "heading_enter_global_frames": [42, 48],
+      "heading_full_readable_global_frames": [48, 78],
+      "full_opacity_still_seconds": 1.25,
+      "heading_fade_global_frames": [78, 90],
+      "final_frame": 95
+    },
+    "font": {
+      "api": "fontAsset from @still-shift/motion/node",
+      "real_path": "/Users/jjae/Documents/playground/still-shift/assets/story-motion/fonts/plex-sans-semibold.ttf",
+      "weight": "600",
+      "sha256_generated_from_real_bytes": "sha256:a20caf8286023a6a7a85e40b1d2a4ae9fc3e3b1f9eda8f4c542dd4986af67bb1",
+      "system_font_layers": []
+    },
+    "visual_checks": [
+      {
+        "frame": 0,
+        "path": "/private/tmp/ce10-isolated-skill-trial/verified-initial.png",
+        "result": "Orange gate panels cover the blue square."
+      },
+      {
+        "frame": 60,
+        "path": "/private/tmp/ce10-isolated-skill-trial/verified-hold.png",
+        "result": "Orange panels separated; blue square and complete heading visible."
+      },
+      {
+        "frame": 94,
+        "path": "/private/tmp/ce10-isolated-skill-trial/verified-end.png",
+        "result": "Blue square remains revealed; heading has faded away."
+      }
+    ],
+    "guidance_gaps_observed": [
+      "Native timed layer field name startFrame is not documented in the skill.",
+      "startFrame offsets all animated tracks into local layer time; named marker placement into native timed layers is not explained.",
+      "First added layers appear in front; the skill does not describe stacking order.",
+      "Default anchor [0,0] is not stated; explicit anchor center is needed for intended solid centering.",
+      "Default lint frozen-run threshold conflicts with brief-requested deliberate stillness."
+    ]
+  },
+  "guideRepairs": [
+    "Name native layer timing fields inPoint/outPoint/startFrame/stretch and explain their clocks.",
+    "Explain first-added layers paint in front; use composition background or add backdrops last.",
+    "Explain delayed fade-in initial visibility versus placed segment from values."
+  ],
+  "fresh": {
+    "guidanceRead": [
+      {
+        "path": "/Users/jjae/Documents/playground/still-shift/skills/compose-with-still-shift/SKILL.md",
+        "sha256": "4e487173eadfbb443e139bba5063a6ee44a3ce3f919242fdac4c5a0c8e4c839b",
+        "exclusiveAuthoringGuidance": true
+      }
+    ],
+    "prohibitedGuidanceRead": false,
+    "firstValidation": {
+      "launchAttempt": 1,
+      "status": "infrastructure-blocked",
+      "exitCode": 1,
+      "schemaValidationReached": false,
+      "schemaErrors": null,
+      "reason": "tsx local IPC pipe listen EPERM under sandbox; source unchanged",
+      "diagnosticPath": "/private/tmp/ce10-fresh-skill-trial/validation-01.txt"
+    },
+    "firstCompletedValidation": {
+      "launchAttempt": 2,
+      "sourceAttempt": 1,
+      "status": "valid",
+      "exitCode": 0,
+      "schemaErrors": [],
+      "diagnostics": [],
+      "diagnosticPath": "/private/tmp/ce10-fresh-skill-trial/validation-02.txt"
+    },
+    "attempts": [
+      {
+        "sourceAttempt": 1,
+        "path": "/private/tmp/ce10-fresh-skill-trial/attempt-01.ts",
+        "repairs": [],
+        "validationLaunches": [1, 2],
+        "outcome": "passed unchanged"
+      }
+    ],
+    "timing": {
+      "frames": 96,
+      "openCue": 12,
+      "gateMotionEnd": 30,
+      "titleCue": 36,
+      "arrivalEnd": 48,
+      "readHoldFrames": [48, 78],
+      "readHoldSeconds": 1.25,
+      "fadeFrames": [78, 90],
+      "headingOutPoint": 90,
+      "deliberateStillnessRetained": true
+    },
+    "assets": {
+      "font": "room-heading-font",
+      "assetAPI": "fontAsset",
+      "weight": "600",
+      "path": "/Users/jjae/Documents/playground/still-shift/assets/story-motion/fonts/plex-sans-semibold.ttf",
+      "sha256": "a20caf8286023a6a7a85e40b1d2a4ae9fc3e3b1f9eda8f4c542dd4986af67bb1"
+    },
+    "ownExportInspection": {
+      "schemaVersion": "composition-1",
+      "nativeTimedLayerCount": 4,
+      "namedMarkerCount": 5,
+      "secondsDurations": true,
+      "frontLayerOrder": ["text", "left-gate", "right-gate", "blue-square"],
+      "headingInitiallyHidden": true,
+      "gateCoverage": "Two 52x104 rectangles exactly cover 104x104 blue square initially."
+    },
+    "lint": {
+      "status": "failed",
+      "schemaDiagnostics": [],
+      "blockingCraftCodes": ["frozen-run"],
+      "warningCodes": ["easing-monotony", "comp-text-layout-missing"],
+      "decision": "Preserve requested intentional stillness; do not add movement solely to satisfy frozen-run lint.",
+      "diagnosticPath": "/private/tmp/ce10-fresh-skill-trial/lint.txt"
+    },
+    "exportValidation": {
+      "status": "valid",
+      "diagnostics": [],
+      "diagnosticPath": "/private/tmp/ce10-fresh-skill-trial/export-validate.txt"
+    },
+    "limits": [
+      "No render or visual inspection performed; awaiting explicit render release after milestone browser gates.",
+      "Lint uses evaluated state, not measured pixels; text bounds/framing remain unmeasured.",
+      "Lint flags the deliberate initial hold and reading interval as frozen-run errors.",
+      "A sandbox IPC failure preceded schema validation; the first schema validation itself passed with zero errors.",
+      "Skill-only guidance was insufficient to know a measured-text-bounds authoring API; no additional guidance read."
+    ],
+    "commands": [
+      {
+        "command": "PATH=/Users/jjae/.nvm/versions/node/v22.23.1/bin:$PATH pnpm still-shift comp validate --input /private/tmp/ce10-fresh-skill-trial/room-to-move.ts",
+        "chunk_id": "fc8aa7",
+        "wall_time_seconds": 0,
+        "exit_code": 1,
+        "original_token_count": 306,
+        "output": "\n> still-shift@0.1.0 still-shift /Users/jjae/Documents/playground/still-shift\n> tsx tools/still-shift-cli/src/cli.ts comp validate --input /private/tmp/ce10-fresh-skill-trial/room-to-move.ts\n\nnode:net:1919\n      const error = new UVExceptionWithHostPort(rval, 'listen', address, port);\n                    ^\n\nError: listen EPERM: operation not permitted /var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/tsx-501/66731.pipe\n    at Server.setupListenHandle [as _listen2] (node:net:1919:21)\n    at listenInCluster (node:net:1998:12)\n    at Server.listen (node:net:2120:5)\n    at file:///Users/jjae/Documents/playground/still-shift/node_modules/.pnpm/tsx@4.20.5/node_modules/tsx/dist/cli.mjs:53:31537\n    at new Promise (<anonymous>)\n    at createIpcServer (file:///Users/jjae/Documents/playground/still-shift/node_modules/.pnpm/tsx@4.20.5/node_modules/tsx/dist/cli.mjs:53:31515)\n    at async file:///Users/jjae/Documents/playground/still-shift/node_modules/.pnpm/tsx@4.20.5/node_modules/tsx/dist/cli.mjs:55:459 {\n  code: 'EPERM',\n  errno: -1,\n  syscall: 'listen',\n  address: '/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/tsx-501/66731.pipe',\n  port: -1\n}\n\nNode.js v22.23.1\n\u2009ELIFECYCLE\u2009 Command failed with exit code 1.\n"
+      },
+      {
+        "command": "PATH=/Users/jjae/.nvm/versions/node/v22.23.1/bin:$PATH pnpm still-shift comp validate --input /private/tmp/ce10-fresh-skill-trial/room-to-move.ts",
+        "permission": "require_escalated",
+        "chunk_id": "2d9221",
+        "wall_time_seconds": 1.3619304589999999,
+        "exit_code": 0,
+        "original_token_count": 67,
+        "output": "\n> still-shift@0.1.0 still-shift /Users/jjae/Documents/playground/still-shift\n> tsx tools/still-shift-cli/src/cli.ts comp validate --input /private/tmp/ce10-fresh-skill-trial/room-to-move.ts\n\n{\"status\":\"valid\",\"source\":\"builder\",\"id\":\"composition\",\"diagnostics\":[]}\n"
+      },
+      {
+        "command": "PATH=/Users/jjae/.nvm/versions/node/v22.23.1/bin:$PATH pnpm still-shift comp export-json --input /private/tmp/ce10-fresh-skill-trial/room-to-move.ts --output /private/tmp/ce10-fresh-skill-trial/room-to-move.json",
+        "chunk_id": "0632c1",
+        "wall_time_seconds": 1.22443575,
+        "exit_code": 0,
+        "original_token_count": 88,
+        "output": "\n> still-shift@0.1.0 still-shift /Users/jjae/Documents/playground/still-shift\n> tsx tools/still-shift-cli/src/cli.ts comp export-json --input /private/tmp/ce10-fresh-skill-trial/room-to-move.ts --output /private/tmp/ce10-fresh-skill-trial/room-to-move.json\n\n{\"status\":\"compiled\",\"outputPath\":\"/private/tmp/ce10-fresh-skill-trial/room-to-move.json\"}\n"
+      },
+      {
+        "name": "lint",
+        "command": "PATH=/Users/jjae/.nvm/versions/node/v22.23.1/bin:$PATH pnpm still-shift comp lint --input /private/tmp/ce10-fresh-skill-trial/room-to-move.ts",
+        "chunk_id": "2d7667",
+        "wall_time_seconds": 1.328578,
+        "exit_code": 1,
+        "original_token_count": 3307,
+        "output": "\n> still-shift@0.1.0 still-shift /Users/jjae/Documents/playground/still-shift\n> tsx tools/still-shift-cli/src/cli.ts comp lint --input /private/tmp/ce10-fresh-skill-trial/room-to-move.ts\n\n{\"version\":\"composition-motion-lint-1\",\"composition\":\"composition\",\"frameCount\":96,\"fps\":24,\"status\":\"failed\",\"measured\":{\"evaluatedState\":true,\"pixels\":false,\"pixelMethod\":\"unmeasured\",\"textBounds\":false},\"diagnostics\":[{\"code\":\"easing-monotony\",\"severity\":\"warning\",\"nodes\":[\"left-gate\",\"right-gate\",\"text\"],\"path\":\"layers.1.transform.position.x\",\"frames\":[0,95],\"measured\":1,\"shot\":\"composition\",\"message\":\"100.0% of moving properties share an easing; vary timing to support the story.\"},{\"frames\":[1,12],\"measured\":12,\"code\":\"frozen-run\",\"severity\":\"error\",\"nodes\":[],\"shot\":\"composition\",\"path\":\"layers\",\"message\":\"12 unchanged evaluated-state comparisons exceed the 6-frame limit.\"},{\"code\":\"comp-text-layout-missing\",\"severity\":\"warning\",\"message\":\"Supply measured text bounds for culling and diagnostics\",\"node\":\"text\",\"path\":\"text.bounds\",\"frame\":36,\"frames\":[36,36],\"nodes\":[\"text\"],\"measured\":1},{\"code\":\"comp-text-layout-missing\",\"severity\":\"warning\",\"message\":\"Supply measured text bounds for culling and diagnostics\",\"node\":\"text\",\"path\":\"text.bounds\",\"frame\":37,\"frames\":[37,37],\"nodes\":[\"text\"],\"measured\":1},{\"code\":\"comp-text-layout-missing\",\"severity\":\"warning\",\"message\":\"Supply measured text bounds for culling and diagnostics\",\"node\":\"text\",\"path\":\"text.bounds\",\"frame\":38,\"frames\":[38,38],\"nodes\":[\"text\"],\"measured\":1},{\"code\":\"comp-text-layout-missing\",\"severity\":\"warning\",\"message\":\"Supply measured text bounds for culling and diagnostics\",\"node\":\"text\",\"path\":\"text.bounds\",\"frame\":39,\"frames\":[39,39],\"nodes\":[\"text\"],\"measured\":1},{\"code\":\"comp-text-layout-missing\",\"severity\":\"warning\",\"message\":\"Supply measured text bounds for culling and diagnostics\",\"node\":\"text\",\"path\":\"text.bounds\",\"frame\":40,\"frames\":[40,40],\"nodes\":[\"text\"],\"measured\":1},{\"code\":\"comp-text-layout-missing\",\"severity\":\"warning\",\"message\":\"Supply measured text bounds for culling and diagnostics\",\"node\":\"text\",\"path\":\"text.bounds\",\"frame\":41,\"frames\":[41,41],\"nodes\":[\"text\"],\"measured\":1},{\"code\":\"comp-text-layout-missing\",\"severity\":\"warning\",\"message\":\"Supply measured text bounds for culling and diagnostics\",\"node\":\"text\",\"path\":\"text.bounds\",\"frame\":42,\"frames\":[42,42],\"nodes\":[\"text\"],\"measured\":1},{\"code\":\"comp-text-layout-missing\",\"severity\":\"warning\",\"message\":\"Supply measured text bounds for culling and diagnostics\",\"node\":\"text\",\"path\":\"text.bounds\",\"frame\":43,\"frames\":[43,43],\"nodes\":[\"text\"],\"measured\":1},{\"code\":\"comp-text-layout-missing\",\"severity\":\"warning\",\"message\":\"Supply measured text bounds for culling and diagnostics\",\"node\":\"text\",\"path\":\"text.bounds\",\"frame\":44,\"frames\":[44,44],\"nodes\":[\"text\"],\"measured\":1},{\"code\":\"comp-text-layout-missing\",\"severity\":\"warning\",\"message\":\"Supply measured text bounds for culling and diagnostics\",\"node\":\"text\",\"path\":\"text.bounds\",\"frame\":45,\"frames\":[45,45],\"nodes\":[\"text\"],\"measured\":1},{\"code\":\"comp-text-layout-missing\",\"severity\":\"warning\",\"message\":\"Supply measured text bounds for culling and diagnostics\",\"node\":\"text\",\"path\":\"text.bounds\",\"frame\":46,\"frames\":[46,46],\"nodes\":[\"text\"],\"measured\":1},{\"code\":\"comp-text-layout-missing\",\"severity\":\"warning\",\"message\":\"Supply measured text bounds for culling and diagnostics\",\"node\":\"text\",\"path\":\"text.bounds\",\"frame\":47,\"frames\":[47,47],\"nodes\":[\"text\"],\"measured\":1},{\"code\":\"comp-text-layout-missing\",\"severity\":\"warning\",\"message\":\"Supply measured text bounds for culling and diagnostics\",\"node\":\"text\",\"path\":\"text.bounds\",\"frame\":48,\"frames\":[48,48],\"nodes\":[\"text\"],\"measured\":1},{\"code\":\"comp-text-layout-missing\",\"severity\":\"warning\",\"message\":\"Supply measured text bounds for culling and diagnostics\",\"node\":\"text\",\"path\":\"text.bounds\",\"frame\":49,\"frames\":[49,49],\"nodes\":[\"text\"],\"measured\":1},{\"frames\":[49,78],\"measured\":30,\"code\":\"frozen-run\",\"severity\":\"error\",\"nodes\":[],\"shot\":\"composition\",\"path\":\"layers\",\"message\":\"30 unchanged evaluated-state comparisons exceed the 6-frame limit.\"},{\"code\":\"comp-text-layout-missing\",\"severity\":\"warning\",\"message\":\"Supply measured text bounds for culling and diagnostics\",\"node\":\"text\",\"path\":\"text.bounds\",\"frame\":50,\"frames\":[50,50],\"nodes\":[\"text\"],\"measured\":1},{\"code\":\"comp-text-layout-missing\",\"severity\":\"warning\",\"message\":\"Supply measured text bounds for culling and diagnostics\",\"node\":\"text\",\"path\":\"text.bounds\",\"frame\":51,\"frames\":[51,51],\"nodes\":[\"text\"],\"measured\":1},{\"code\":\"comp-text-layout-missing\",\"severity\":\"warning\",\"message\":\"Supply measured text bounds for culling and diagnostics\",\"node\":\"text\",\"path\":\"text.bounds\",\"frame\":52,\"frames\":[52,52],\"nodes\":[\"text\"],\"measured\":1},{\"code\":\"comp-text-layout-missing\",\"severity\":\"warning\",\"message\":\"Supply measured text bounds for culling and diagnostics\",\"node\":\"text\",\"path\":\"text.bounds\",\"frame\":53,\"frames\":[53,53],\"nodes\":[\"text\"],\"measured\":1},{\"code\":\"comp-text-layout-missing\",\"severity\":\"warning\",\"message\":\"Supply measured text bounds for culling and diagnostics\",\"node\":\"text\",\"path\":\"text.bounds\",\"frame\":54,\"frames\":[54,54],\"nodes\":[\"text\"],\"measured\":1},{\"code\":\"comp-text-layout-missing\",\"severity\":\"warning\",\"message\":\"Supply measured text bounds for culling and diagnostics\",\"node\":\"text\",\"path\":\"text.bounds\",\"frame\":55,\"frames\":[55,55],\"nodes\":[\"text\"],\"measured\":1},{\"code\":\"comp-text-layout-missing\",\"severity\":\"warning\",\"message\":\"Supply measured text bounds for culling and diagnostics\",\"node\":\"text\",\"path\":\"text.bounds\",\"frame\":56,\"frames\":[56,56],\"nodes\":[\"text\"],\"measured\":1},{\"code\":\"comp-text-layout-missing\",\"severity\":\"warning\",\"message\":\"Supply measured text bounds for culling and diagnostics\",\"node\":\"text\",\"path\":\"text.bounds\",\"frame\":57,\"frames\":[57,57],\"nodes\":[\"text\"],\"measured\":1},{\"code\":\"comp-text-layout-missing\",\"severity\":\"warning\",\"message\":\"Supply measured text bounds for culling and diagnostics\",\"node\":\"text\",\"path\":\"text.bounds\",\"frame\":58,\"frames\":[58,58],\"nodes\":[\"text\"],\"measured\":1},{\"code\":\"comp-text-layout-missing\",\"severity\":\"warning\",\"message\":\"Supply measured text bounds for culling and diagnostics\",\"node\":\"text\",\"path\":\"text.bounds\",\"frame\":59,\"frames\":[59,59],\"nodes\":[\"text\"],\"measured\":1},{\"code\":\"comp-text-layout-missing\",\"severity\":\"warning\",\"message\":\"Supply measured text bounds for culling and diagnostics\",\"node\":\"text\",\"path\":\"text.bounds\",\"frame\":60,\"frames\":[60,60],\"nodes\":[\"text\"],\"measured\":1},{\"code\":\"comp-text-layout-missing\",\"severity\":\"warning\",\"message\":\"Supply measured text bounds for culling and diagnostics\",\"node\":\"text\",\"path\":\"text.bounds\",\"frame\":61,\"frames\":[61,61],\"nodes\":[\"text\"],\"measured\":1},{\"code\":\"comp-text-layout-missing\",\"severity\":\"warning\",\"message\":\"Supply measured text bounds for culling and diagnostics\",\"node\":\"text\",\"path\":\"text.bounds\",\"frame\":62,\"frames\":[62,62],\"nodes\":[\"text\"],\"measured\":1},{\"code\":\"comp-text-layout-missing\",\"severity\":\"warning\",\"message\":\"Supply measured text bounds for culling and diagnostics\",\"node\":\"text\",\"path\":\"text.bounds\",\"frame\":63,\"frames\":[63,63],\"nodes\":[\"text\"],\"measured\":1},{\"code\":\"comp-text-layout-missing\",\"severity\":\"warning\",\"message\":\"Supply measured text bounds for culling and diagnostics\",\"node\":\"text\",\"path\":\"text.bounds\",\"frame\":64,\"frames\":[64,64],\"nodes\":[\"text\"],\"measured\":1},{\"code\":\"comp-text-layout-missing\",\"severity\":\"warning\",\"message\":\"Supply measured text bounds for culling and diagnostics\",\"node\":\"text\",\"path\":\"text.bounds\",\"frame\":65,\"frames\":[65,65],\"nodes\":[\"text\"],\"measured\":1},{\"code\":\"comp-text-layout-missing\",\"severity\":\"warning\",\"message\":\"Supply measured text bounds for culling and diagnostics\",\"node\":\"text\",\"path\":\"text.bounds\",\"frame\":66,\"frames\":[66,66],\"nodes\":[\"text\"],\"measured\":1},{\"code\":\"comp-text-layout-missing\",\"severity\":\"warning\",\"message\":\"Supply measured text bounds for culling and diagnostics\",\"node\":\"text\",\"path\":\"text.bounds\",\"frame\":67,\"frames\":[67,67],\"nodes\":[\"text\"],\"measured\":1},{\"code\":\"comp-text-layout-missing\",\"severity\":\"warning\",\"message\":\"Supply measured text bounds for culling and diagnostics\",\"node\":\"text\",\"path\":\"text.bounds\",\"frame\":68,\"frames\":[68,68],\"nodes\":[\"text\"],\"measured\":1},{\"code\":\"comp-text-layout-missing\",\"severity\":\"warning\",\"message\":\"Supply measured text bounds for culling and diagnostics\",\"node\":\"text\",\"path\":\"text.bounds\",\"frame\":69,\"frames\":[69,69],\"nodes\":[\"text\"],\"measured\":1},{\"code\":\"comp-text-layout-missing\",\"severity\":\"warning\",\"message\":\"Supply measured text bounds for culling and diagnostics\",\"node\":\"text\",\"path\":\"text.bounds\",\"frame\":70,\"frames\":[70,70],\"nodes\":[\"text\"],\"measured\":1},{\"code\":\"comp-text-layout-missing\",\"severity\":\"warning\",\"message\":\"Supply measured text bounds for culling and diagnostics\",\"node\":\"text\",\"path\":\"text.bounds\",\"frame\":71,\"frames\":[71,71],\"nodes\":[\"text\"],\"measured\":1},{\"code\":\"comp-text-layout-missing\",\"severity\":\"warning\",\"message\":\"Supply measured text bounds for culling and diagnostics\",\"node\":\"text\",\"path\":\"text.bounds\",\"frame\":72,\"frames\":[72,72],\"nodes\":[\"text\"],\"measured\":1},{\"code\":\"comp-text-layout-missing\",\"severity\":\"warning\",\"message\":\"Supply measured text bounds for culling and diagnostics\",\"node\":\"text\",\"path\":\"text.bounds\",\"frame\":73,\"frames\":[73,73],\"nodes\":[\"text\"],\"measured\":1},{\"code\":\"comp-text-layout-missing\",\"severity\":\"warning\",\"message\":\"Supply measured text bounds for culling and diagnostics\",\"node\":\"text\",\"path\":\"text.bounds\",\"frame\":74,\"frames\":[74,74],\"nodes\":[\"text\"],\"measured\":1},{\"code\":\"comp-text-layout-missing\",\"severity\":\"warning\",\"message\":\"Supply measured text bounds for culling and diagnostics\",\"node\":\"text\",\"path\":\"text.bounds\",\"frame\":75,\"frames\":[75,75],\"nodes\":[\"text\"],\"measured\":1},{\"code\":\"comp-text-layout-missing\",\"severity\":\"warning\",\"message\":\"Supply measured text bounds for culling and diagnostics\",\"node\":\"text\",\"path\":\"text.bounds\",\"frame\":76,\"frames\":[76,76],\"nodes\":[\"text\"],\"measured\":1},{\"code\":\"comp-text-layout-missing\",\"severity\":\"warning\",\"message\":\"Supply measured text bounds for culling and diagnostics\",\"node\":\"text\",\"path\":\"text.bounds\",\"frame\":77,\"frames\":[77,77],\"nodes\":[\"text\"],\"measured\":1},{\"code\":\"comp-text-layout-missing\",\"severity\":\"warning\",\"message\":\"Supply measured text bounds for culling and diagnostics\",\"node\":\"text\",\"path\":\"text.bounds\",\"frame\":78,\"frames\":[78,78],\"nodes\":[\"text\"],\"measured\":1},{\"code\":\"comp-text-layout-missing\",\"severity\":\"warning\",\"message\":\"Supply measured text bounds for culling and diagnostics\",\"node\":\"text\",\"path\":\"text.bounds\",\"frame\":79,\"frames\":[79,79],\"nodes\":[\"text\"],\"measured\":1},{\"code\":\"comp-text-layout-missing\",\"severity\":\"warning\",\"message\":\"Supply measured text bounds for culling and diagnostics\",\"node\":\"text\",\"path\":\"text.bounds\",\"frame\":80,\"frames\":[80,80],\"nodes\":[\"text\"],\"measured\":1},{\"code\":\"comp-text-layout-missing\",\"severity\":\"warning\",\"message\":\"Supply measured text bounds for culling and diagnostics\",\"node\":\"text\",\"path\":\"text.bounds\",\"frame\":81,\"frames\":[81,81],\"nodes\":[\"text\"],\"measured\":1},{\"code\":\"comp-text-layout-missing\",\"severity\":\"warning\",\"message\":\"Supply measured text bounds for culling and diagnostics\",\"node\":\"text\",\"path\":\"text.bounds\",\"frame\":82,\"frames\":[82,82],\"nodes\":[\"text\"],\"measured\":1},{\"code\":\"comp-text-layout-missing\",\"severity\":\"warning\",\"message\":\"Supply measured text bounds for culling and diagnostics\",\"node\":\"text\",\"path\":\"text.bounds\",\"frame\":83,\"frames\":[83,83],\"nodes\":[\"text\"],\"measured\":1},{\"code\":\"comp-text-layout-missing\",\"severity\":\"warning\",\"message\":\"Supply measured text bounds for culling and diagnostics\",\"node\":\"text\",\"path\":\"text.bounds\",\"frame\":84,\"frames\":[84,84],\"nodes\":[\"text\"],\"measured\":1},{\"code\":\"comp-text-layout-missing\",\"severity\":\"warning\",\"message\":\"Supply measured text bounds for culling and diagnostics\",\"node\":\"text\",\"path\":\"text.bounds\",\"frame\":85,\"frames\":[85,85],\"nodes\":[\"text\"],\"measured\":1},{\"code\":\"comp-text-layout-missing\",\"severity\":\"warning\",\"message\":\"Supply measured text bounds for culling and diagnostics\",\"node\":\"text\",\"path\":\"text.bounds\",\"frame\":86,\"frames\":[86,86],\"nodes\":[\"text\"],\"measured\":1},{\"code\":\"comp-text-layout-missing\",\"severity\":\"warning\",\"message\":\"Supply measured text bounds for culling and diagnostics\",\"node\":\"text\",\"path\":\"text.bounds\",\"frame\":87,\"frames\":[87,87],\"nodes\":[\"text\"],\"measured\":1},{\"code\":\"comp-text-layout-missing\",\"severity\":\"warning\",\"message\":\"Supply measured text bounds for culling and diagnostics\",\"node\":\"text\",\"path\":\"text.bounds\",\"frame\":88,\"frames\":[88,88],\"nodes\":[\"text\"],\"measured\":1},{\"code\":\"comp-text-layout-missing\",\"severity\":\"warning\",\"message\":\"Supply measured text bounds for culling and diagnostics\",\"node\":\"text\",\"path\":\"text.bounds\",\"frame\":89,\"frames\":[89,89],\"nodes\":[\"text\"],\"measured\":1}],\"limitations\":[\"Pixels were not measured; state motion does not prove visible pixel motion.\",\"Text bounds were not measured for text; framing is incomplete for those layers.\",\"Coverage lint measures geometry; image alpha and arbitrary mask coverage require the renderer's asset coverage validation.\"],\"validationDiagnostics\":[]}\n\u2009ELIFECYCLE\u2009 Command failed with exit code 1.\n"
+      },
+      {
+        "name": "export-validate",
+        "command": "PATH=/Users/jjae/.nvm/versions/node/v22.23.1/bin:$PATH pnpm still-shift comp validate --input /private/tmp/ce10-fresh-skill-trial/room-to-move.json",
+        "chunk_id": "957f1e",
+        "wall_time_seconds": 0.99543925,
+        "exit_code": 0,
+        "original_token_count": 67,
+        "output": "\n> still-shift@0.1.0 still-shift /Users/jjae/Documents/playground/still-shift\n> tsx tools/still-shift-cli/src/cli.ts comp validate --input /private/tmp/ce10-fresh-skill-trial/room-to-move.json\n\n{\"status\":\"valid\",\"source\":\"json\",\"id\":\"composition\",\"diagnostics\":[]}\n"
+      },
+      {
+        "command": "shasum -a 256 /private/tmp/ce10-fresh-skill-trial/room-to-move.ts /private/tmp/ce10-fresh-skill-trial/room-to-move.json",
+        "chunk_id": "92b5af",
+        "wall_time_seconds": 5.208e-6,
+        "exit_code": 0,
+        "original_token_count": 60,
+        "output": "d9acddf4abe242aaa7c30f3d5b3b629b1b6225e8ed64bdfa0242b2404d9be683  /private/tmp/ce10-fresh-skill-trial/room-to-move.ts\n8c52dc2f94cd8bfc486ab01b71bd061e12f6749e9749d9de30bef9ea27b72882  /private/tmp/ce10-fresh-skill-trial/room-to-move.json\n"
+      }
+    ]
+  },
+  "artifacts": {
+    "localIgnoredDirectory": "benchmarks/results/composition-ce10-skill-trials",
+    "initialSource": "import { comp, solid, text, par, seq, at } from \"@still-shift/motion\";\nimport { fontAsset } from \"@still-shift/motion/node\";\n\nconst font = await fontAsset(\n  \"plex-semibold\",\n  \"/Users/jjae/Documents/playground/still-shift/assets/story-motion/fonts/plex-sans-semibold.ttf\",\n  { weight: \"600\" },\n);\n\nexport default comp(\n  { width: 640, height: 360, fps: 24, seconds: 4, assets: [font] },\n  (c) => {\n    const left = c.add(\n      solid(\"left-gate\", { size: [62, 126], color: \"#E77D37\" })\n        .at(289, 195).anchor(\"center\")\n        .with({ startFrame: 0 }),\n    );\n    const right = c.add(\n      solid(\"right-gate\", { size: [62, 126], color: \"#E77D37\" })\n        .at(351, 195).anchor(\"center\")\n        .with({ startFrame: 0 }),\n    );\n    const heading = c.add(\n      text(\"Room to move\", {\n        fontAsset: font.id,\n        fontSize: 36,\n        color: \"#1C3556\",\n      })\n        .at(320, 76).anchor(\"center\")\n        .opacity(0)\n        .with({ startFrame: 30 }),\n    );\n    c.add(solid(\"blue-square\", { size: [108, 108], color: \"#2464B4\" }).at(320, 195).anchor(\"center\"));\n    c.add(solid(\"background\", { size: [640, 360], color: \"#F4F1E8\" }).at(320, 180).anchor(\"center\"));\n    c.marker(\"open\", 12, { label: \"Make room\" });\n    c.marker(\"read\", 48, { label: \"Stillness for reading\" });\n    c.marker(\"farewell\", 78, { label: \"Heading fades\" });\n    // startFrame offsets the heading animation: local 12/18/48/60 => global 42/48/78/90.\n    c.marker(\"heading-fade-local\", 48, { label: \"Local heading fade cue\" });\n    c.timeline(\n      at(\"cue:open\", par(\n        left.x.from(289).to(212, { seconds: 0.75 }),\n        right.x.from(351).to(428, { seconds: 0.75 }),\n      )),\n      at(\"cue:open\", par(\n        heading.alpha.from(0).to(1, { seconds: 0.25 }),\n        heading.y.from(86).to(76, { seconds: 0.25 }),\n      )),\n      at(\"cue:heading-fade-local\", heading.alpha.from(1).to(0, { seconds: 0.5 })),\n    );\n  },\n);\n",
+    "freshSource": "import { comp, solid, text, par, at } from \"@still-shift/motion\";\nimport { fontAsset } from \"@still-shift/motion/node\";\n\nconst font = await fontAsset(\n  \"room-heading-font\",\n  \"/Users/jjae/Documents/playground/still-shift/assets/story-motion/fonts/plex-sans-semibold.ttf\",\n  { weight: \"600\" },\n);\n\nexport default comp(\n  {\n    width: 640,\n    height: 360,\n    fps: 24,\n    seconds: 4,\n    background: \"#F6F1E8\",\n    assets: [font],\n  },\n  (c) => {\n    const heading = c.add(\n      text(\"Room to move\", {\n        fontAsset: font.id,\n        fontSize: 42,\n        color: \"#233849\",\n      })\n        .at(320, 88)\n        .anchor(\"center\")\n        .opacity(0)\n        .with({ inPoint: 36, outPoint: 90 }),\n    );\n    const leftGate = c.add(\n      solid(\"left-gate\", { size: [52, 104], color: \"#E67A3D\" })\n        .at(294, 225)\n        .anchor(\"center\")\n        .with({ inPoint: 0, outPoint: 96 }),\n    );\n    const rightGate = c.add(\n      solid(\"right-gate\", { size: [52, 104], color: \"#E67A3D\" })\n        .at(346, 225)\n        .anchor(\"center\")\n        .with({ inPoint: 0, outPoint: 96 }),\n    );\n    c.add(\n      solid(\"blue-square\", { size: [104, 104], color: \"#3975D4\" })\n        .at(320, 225)\n        .anchor(\"center\")\n        .with({ inPoint: 0, outPoint: 96 }),\n    );\n\n    c.marker(\"open\", 12, { label: \"The gates make room\" });\n    c.marker(\"title\", 36, { label: \"Heading arrives\" });\n    c.marker(\"read\", 48, { label: \"Hold completely still to read\" });\n    c.marker(\"fade\", 78, { label: \"Heading fades\" });\n    c.marker(\"quiet\", 90, { label: \"Quiet final image\" });\n\n    c.timeline(\n      at(\n        \"cue:open\",\n        par(\n          leftGate.x.from(294).to(188, { seconds: 0.75 }),\n          rightGate.x.from(346).to(452, { seconds: 0.75 }),\n        ),\n      ),\n      at(\n        \"cue:title\",\n        par(\n          heading.alpha.from(0).to(1, 12),\n          heading.y.from(88).to(76, 12),\n        ),\n      ),\n      at(\"cue:fade\", heading.alpha.from(1).to(0, 12)),\n    );\n  },\n);\n"
+  },
+  "renderVerification": {
+    "status": "pending",
+    "note": "Run the fresh source after the full browser gates to keep performance checks sequential."
+  }
+}
