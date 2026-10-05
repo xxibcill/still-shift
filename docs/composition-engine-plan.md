@@ -367,7 +367,7 @@ sign and for time remap. It does not change the layer's composition-time visibil
 | CE4d  | Legacy illustrated adapter and old-path removal | A      | CE4a–CE4c            |                        |                                     | `[ ]`  |                                                                                    |
 | CE5   | Shape layers                                    | B      | CE3                  | Codex                  | `codex/composition-ce5`             | `[x]`  | [evidence](./composition-ce5-results.json)                                         |
 | CE6   | WebGL2 backend and effect registry              | B      | CE3                  | xxibcill (Claude Code) | `codex/composition-ce6-performance` | `[~]`  | [CE6 performance slice 1](#ce6-performance-slice-1-exact-effect-work-2026-10-03)   |
-| CE6-P | WebGL performance acceptance                    | Future | CE6                  |                        |                                     | `[d]`  | [Performance deferral](#ce6-p--deferred-webgl-performance-acceptance)              |
+| CE6-P | WebGL performance acceptance                    | Future | CE6                  | Codex                  | `codex/composition-ce6p-compatible` | `[~]`  | [Performance deferral](#ce6-p--deferred-webgl-performance-acceptance)              |
 | CE7   | Motion blur and time controls                   | B      | CE3                  | Codex                  | `codex/composition-ce7`             | `[~]`  | [evidence](./composition-ce7-results.json)                                         |
 | CE8   | 2.5D layers and unified camera                  | B      | CE3, CE6, CE9        |                        |                                     | `[ ]`  |                                                                                    |
 | CE9   | Expressions and motion behaviours               | C      | CE2                  | xxibcill (Claude Code) | `codex/composition-ce9`             | `[x]`  | [CE9 record](#ce9--expressions-and-motion-behaviours)                              |
@@ -3230,9 +3230,12 @@ tests, backend parity suite, repeated-export determinism test.
   compatible mechanism on the pinned profile. The owner decision in slice 1
   stands; the requirement remains **open**.
 
-### CE6-P — Deferred WebGL performance acceptance
+### CE6-P — Resumed WebGL performance acceptance
 
-- **Status:** `[d]`, user approved 2026-10-03. This supersedes the earlier
+- **Status:** `[~]`, owner resumed 2026-10-05 on the current WebGL approach in
+  isolated branch `codex/composition-ce6p-compatible`, starting at `0e48388`.
+  The main feature lane remains independent. [Slice plan](./composition-ce6p-plan.md).
+- **Prior deferral:** user approved 2026-10-03. This superseded the earlier
   CE4b-to-CE6 timing ownership decision and the performance slices' requests for
   an immediate rendering-path decision. Optimization and architecture experiments
   are deferred so other feature milestones can proceed.
@@ -3262,8 +3265,8 @@ tests, backend parity suite, repeated-export determinism test.
   approach or explicitly revises acceptance. No CPU/GPU hybrid, default backend
   switch, GPU policy change or baseline regeneration is authorized by this deferral.
 
-**Completion record:** CE6 feature work remains incomplete; performance acceptance
-is deferred to CE6-P rather than completed.
+**Completion record:** CE6 feature work remains independent; CE6-P performance
+acceptance is resumed and remains incomplete. Preserve every original target.
 
 ---
 

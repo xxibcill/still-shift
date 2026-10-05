@@ -43,6 +43,13 @@ still hold before relying on them.
 
 ## Current state
 
+- **CE6-P resumed (2026-10-05):** owner authorized a parallel compatibility-preserving
+  WebGL optimization lane on `codex/composition-ce6p-compatible` from `0e48388`.
+  Current candidate: fuse the final shutter sample sum with averaging, subject to
+  exact regressions and serial A/B measurement. The main checkout/chat is untouched.
+  All 117 original failures, 1.25× family and 2× native targets remain open.
+  [Plan](./composition-ce6p-plan.md).
+
 - **CE7 in progress (2026-10-05):** `codex/composition-ce7` from CE5 `edb958a`.
   Clock controls/loops/adaptive sampling pass 266 focused tests; native 96-frame
   acceptance passes both backends, reverse/random seeks, independent/repeated
@@ -142,7 +149,8 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   `codex/composition-ce6-performance`. [PR #31](https://github.com/xxibcill/still-shift/pull/31)
   targets `main`; separate conflict-resolution merge `c2b5e39` has been pushed.
   Local audit record `205f413` remains outside PR #31 and this CE9 branch.
-- **CE6-P performance (`[d]`, owner approved 2026-10-03):** WebGL's **1.25×**
+- **Historical CE6-P deferral (`[d]`, owner approved 2026-10-03; lifted for this
+  isolated lane on 2026-10-05):** WebGL's **1.25×**
   render/readback gate and CE6's **2×** speed target are deferred to an
   unscheduled future version. No further tuning or rendering architecture
   experiments until an explicit owner request resumes this work. The 0.35
@@ -175,6 +183,17 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-05 — CE6-P parallel optimization lane resumed
+
+- **Agent / branch:** Codex on `codex/composition-ce6p-compatible` from `0e48388`.
+- **Scope:** measured compatible WebGL optimizations; independent of CE6 catalogue work.
+- **Done:** active goal set, retained profiles/rejected experiments reviewed, dedicated
+  branch and local locked dependency/Python environments prepared.
+- **Results:** no candidate or performance target is claimed verified yet.
+- **Next:** byte-level exposure fusion regression, then serial A/B without competing
+  workloads; focused family acceptance and final full local gate before PR.
+- **Records:** [slice plan](./composition-ce6p-plan.md).
 
 ### 2026-10-05 — CE7 native acceptance and serial sample costs
 
