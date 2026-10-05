@@ -24,12 +24,37 @@
         "Exposure-cut integration, adaptive blur, full native acceptance, serial costs and full pnpm check remain pending.",
         "Video/sequence rendering remains unavailable until CE13."
       ]
+    },
+    {
+      "name": "Adaptive exposure and controlled clock cuts",
+      "status": "checkpoint",
+      "changes": [
+        "Optional deterministic velocity-based reduction for provable static 2D translations; fixed sampling retains operation order. Complex inputs and key/source edges use the configured cap.",
+        "Renderer plans one sample array for both graph passes and accumulation. Static pixels sample the phased shutter center.",
+        "Held/stepped/reversed state and effect cuts map into owning scope time; cycle raw clocks stay on the base cycle before child cuts, finite terminal holds remain fixed.",
+        "Explicit scope-clock lookup ignores inherited object properties; constructor/toString instance regressions pass."
+      ],
+      "verification": {
+        "focusedUnitTests": 266,
+        "files": 7,
+        "build": "passed",
+        "changedFileLint": "passed",
+        "generatedSchema": "passed",
+        "log": "benchmarks/results/composition-ce7-verification/ce7-exposure-focused.log"
+      },
+      "initialFindings": [
+        "Draft short-motion test used unsupported fractional keyframes; equivalent integer keys with stretch now exercise a short segment.",
+        "Unused destructuring variables removed; metadata stays opaque during eligibility inspection."
+      ],
+      "remaining": [
+        "Native browser oracle/baselines and seeking",
+        "Actual hardware preview and repeated exports",
+        "Serial 1080p sample-cost measurement",
+        "Complete local pnpm check/frozen CE0 and PR"
+      ]
     }
   ],
   "pending": [
-    "Exposure-cut mapping for held/stepped clocks and cycle wraps",
-    "Optional deterministic adaptive samples",
-    "Commerce alias/native regressions",
     "Native fixture pixels, seeking, hardware and repeated exports",
     "Serial 1080p cost per sample count/backend",
     "Full local pnpm check and frozen CE0 baselines",
@@ -56,5 +81,10 @@
       "files": 5,
       "log": "benchmarks/results/composition-ce7-verification/ce7-clock-focused.log"
     }
-  ]
+  ],
+  "versions": {
+    "evaluator": "composition-evaluator-29",
+    "canvas": "composition-canvas-1.24.1",
+    "webgl": "composition-webgl2-0.38.1"
+  }
 }

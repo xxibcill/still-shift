@@ -85,6 +85,12 @@ at 0.25 local unit tolerance and depth 12. Excess work or invalid coordinates re
 a diagnostic and fails export. Follow-path constraints use the source shape's first
 compiled contour, measured in world arc length; empty sources report a diagnostic.
 
+Set `motionBlur.adaptive: true` to reduce shutter samples for simple moving native
+artwork. `samples` remains the upper cap. Selection uses screen motion, including
+nested host transforms, and remains repeatable when seeking backwards. Complex
+content retains the configured count; static content has zero blur. The default
+fixed sampling stays unchanged.
+
 To step keyed content, set `posterizeFps: 12` on a layer or precomp host. The rate
 uses local seconds at the owning scope's FPS, after start/stretch. To hold keyed
 content at a fractional local frame, set `holdFrame: 7.5`; this takes precedence.

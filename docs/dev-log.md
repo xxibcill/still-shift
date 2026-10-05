@@ -44,10 +44,11 @@ still hold before relying on them.
 ## Current state
 
 - **CE7 in progress (2026-10-05):** `codex/composition-ce7` from completed CE5
-  `edb958a`. Local posterization/holds, precomp loops and CE13 frame-pair contract
-  pass 250 focused tests/build/lint/schema. Root procedural clocks retain their
-  documented semantics. Exposure cuts/adaptive blur, native acceptance, cost
-  measurements and the complete local gate/PR remain. No owner decision pending.
+  `edb958a` / [PR #38](https://github.com/xxibcill/still-shift/pull/38).
+  Clock controls/loops and deterministic adaptive sampling/controlled cuts pass
+  266 focused tests/build/lint/schema. Root procedural semantics stay explicit;
+  scope overrides ignore inherited names. Native browser/hardware/export acceptance,
+  serial costs and complete local gate/PR remain. No owner decision is pending.
   [Evidence](./composition-ce7-results.json).
 
 - **CE5 complete (2026-10-05):** `codex/composition-ce5`, runtime `4908cbe`.
@@ -174,6 +175,18 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-05 — CE7 adaptive sampling and controlled exposure cuts
+
+- **Agent / branch:** Codex on `codex/composition-ce7`.
+- **Done:** deterministic adaptive shutter cap/reduction, shared sample planning,
+  held/stepped/reversed content cuts, cycle boundaries and finite terminal holds.
+  Explicit scope overrides ignore inherited object properties.
+- **Results:** 266 focused tests, build, lint and generated schema pass. Analytic
+  blur extents, phase, nesting, seek order, opt-outs and named instances pass.
+- **Next:** native browser/hardware/export acceptance, serial sample costs, then
+  complete local gate and milestone PR. No full CE7 completion is claimed.
+- **Records:** [CE7 evidence](./composition-ce7-results.json).
 
 ### 2026-10-05 — CE7 local clocks and precomp loops
 

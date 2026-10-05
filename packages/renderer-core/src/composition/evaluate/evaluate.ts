@@ -56,7 +56,11 @@ import {
 import { applyConstraints } from "./constraints.ts";
 import { cameraMatrix, sampleCamera } from "./camera.ts";
 import { compositionSampleIndex } from "./sample-clock.ts";
-import { layerContentTime, loopedPrecompTime } from "./time-controls.ts";
+import {
+  layerContentTime,
+  loopedPrecompTime,
+  scopeTimeOverride,
+} from "./time-controls.ts";
 import {
   identity,
   layerSize,
@@ -83,7 +87,7 @@ import type {
   PropertyValue,
 } from "./types.ts";
 
-export const COMPOSITION_EVALUATOR_VERSION = "composition-evaluator-28";
+export const COMPOSITION_EVALUATOR_VERSION = "composition-evaluator-29";
 export const AUTO_ORIENT_LOOKAROUND_FRAMES = 64;
 const order = ["action", "response", "current", "carrier"] as const;
 /** Keyed and motion-craft values of one layer, before constraints (CE9 expression stage). */
@@ -470,7 +474,8 @@ class Evaluation {
         0,
         Math.min(
           scope.frameCount - 1,
-          this.options.scopeTimes?.[route.join("/")] ?? sourceTime,
+          scopeTimeOverride(this.options.scopeTimes, route.join("/")) ??
+            sourceTime,
         ),
       ),
       scope.fps ?? this.compiled.comp.fps,

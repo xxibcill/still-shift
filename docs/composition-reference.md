@@ -1072,7 +1072,7 @@ These pure functions run in Node and browsers. They validate once per compositio
 object, compile curves into identity-keyed weak caches and memoise dependencies within
 each evaluation. Treat the composition and its nested objects as immutable: replace
 the composition object after an edit. Returned states are fresh on every call.
-`COMPOSITION_EVALUATOR_VERSION` is `composition-evaluator-28`.
+`COMPOSITION_EVALUATOR_VERSION` is `composition-evaluator-29`.
 
 `evaluateComp` returns an `EvaluatedLayerTree`: scope id, time, dimensions, fps,
 floating-point RGBA background, ordered `layers` and structured `diagnostics`.
@@ -1120,6 +1120,32 @@ drivers and periodic motion use these finite defaults even when the optional fie
 are absent from the input. Authored `stateFrom` and `stateMix` still take precedence.
 Provider state paths become available only after `state` or `stateFrom` is declared;
 existing providers can continue to control their content through their own parameters.
+
+### Adaptive shutter sampling and clock cuts
+
+Set optional `motionBlur.adaptive: true` to reduce deterministic midpoint samples;
+`samples` remains the 2–64 upper cap. The default fixed array keeps its original
+arithmetic and ordering. Nine fixed probes span the actual phased shutter window,
+using selected exposure poses and nested host projection. Static pixels use one
+sample at the shutter centre, including phase. For nonzero screen translation,
+count is `min(cap, max(2, ceil(velocity * shutterAngle / 360 - 1e-7) + 1))`;
+the fixed 1e-7-pixel ceiling tolerance avoids an extra sample from floating-point
+noise at an integer extent. No previous-frame history or timing affects selection.
+
+Reduction applies to static 2D solid/image/shape pixels with static affine parts
+and at most two linear position keys per channel. Complex or opaque appearances,
+text/providers/media, masks/mattes/effects, camera/3D motion, procedural bindings,
+constraints, indexed/posterized clocks, looped remaps and nonlinear curves retain
+the configured cap. Crossing a key segment or source clamp also retains the cap.
+This conservative policy avoids missing short motion between probes. Renderer
+accumulation and both graph passes consume the same planned sample array.
+
+Posterized state/effect cuts map to the first reachable local grid frame before
+start/stretch, including reversed inclusive-before switches. Holds omit unreachable
+local cuts while visibility remains live. Cycle shutter samples stay on the base
+cycle before child cuts; finite terminal holds stay fixed, and pingpong turns remain
+continuous. Explicit instance clock overrides take precedence; inherited object
+properties never become override values.
 
 ### Local time controls
 

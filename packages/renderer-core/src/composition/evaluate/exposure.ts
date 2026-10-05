@@ -7,6 +7,8 @@ import {
   type CompositionScope,
 } from "@still-shift/scene-contract";
 import { evaluateComp } from "./evaluate.ts";
+import { loopedPrecompTime, scopeTimeOverride } from "./time-controls.ts";
+import { adaptiveExposureSamples } from "./adaptive.ts";
 import { scalar } from "./sample.ts";
 import type { EvaluatedLayerTree, EvaluationOptions } from "./types.ts";
 
@@ -55,9 +57,17 @@ function cutsFor(
   for (const layer of scope.layers) {
     forward.add(layer.inPoint ?? 0);
     forward.add(layer.outPoint ?? scope.frameCount);
+    if (layer.holdFrame !== undefined) continue;
     const layerCuts = (layer.stretch ?? 1) < 0 ? reversed : forward;
-    const global = (time: number) =>
-      time * (layer.stretch ?? 1) + (layer.startFrame ?? 0);
+    const global = (time: number) => {
+      const source =
+        layer.posterizeFps === undefined
+          ? time
+          : (Math.ceil((time * layer.posterizeFps) / (scope.fps ?? comp.fps)) *
+              (scope.fps ?? comp.fps)) /
+            layer.posterizeFps;
+      return source * (layer.stretch ?? 1) + (layer.startFrame ?? 0);
+    };
     if ("state" in layer || "stateFrom" in layer)
       for (const channel of ["state", "stateFrom"] as const) {
         const state = layer[channel];
@@ -118,6 +128,7 @@ function withinCut(time: number, frame: number, cuts: readonly ExposureCut[]) {
 export function compositionExposureFrames(
   comp: Composition,
   frame: number,
+  options: EvaluationOptions = {},
 ): number[] {
   const blur = comp.motionBlur;
   if (
@@ -138,19 +149,36 @@ export function compositionExposureFrames(
       blur.outPoint ?? comp.frameCount,
     ].map((time) => ({ time, inclusive: "after" as const })),
   ];
-  return Array.from({ length: blur.samples }, (_, index) =>
-    withinCut(
-      Math.max(
-        0,
-        Math.min(
-          comp.frameCount - 1,
-          frame +
-            (((index + 0.5) / blur.samples - 0.5) * blur.shutterAngle) / 360 +
-            blur.shutterPhase / 360,
-        ),
+  const clamp = (time: number) =>
+    withinCut(Math.max(0, Math.min(comp.frameCount - 1, time)), frame, cuts);
+  let count = blur.samples;
+  if (blur.adaptive) {
+    const base = evaluateComp(comp, frame, options);
+    const times = Array.from({ length: 9 }, (_, index) =>
+      clamp(
+        frame +
+          ((index / 8 - 0.5) * blur.shutterAngle) / 360 +
+          blur.shutterPhase / 360,
       ),
-      frame,
-      cuts,
+    );
+    count = adaptiveExposureSamples(comp, times, (time) =>
+      time === frame
+        ? base
+        : mixExposure(
+            base,
+            sampleWithScopeCuts(comp, base, time, options),
+            frame,
+            time,
+            false,
+          ),
+    );
+  }
+  // Keep the original fixed-path operation order for indexed family clocks.
+  return Array.from({ length: count }, (_, index) =>
+    clamp(
+      frame +
+        (((index + 0.5) / count - 0.5) * blur.shutterAngle) / 360 +
+        blur.shutterPhase / 360,
     ),
   );
 }
@@ -179,8 +207,39 @@ function sampleWithScopeCuts(
         const scope = comp.precomps!.find(
           (scope) => scope.id === a.precomp!.id,
         )!;
+        let source = b.precomp.time;
+        if (
+          a.layer.type === "precomp" &&
+          a.layer.loop === "cycle" &&
+          scope.frameCount > 1 &&
+          scopeTimeOverride(options.scopeTimes, key) === undefined
+        ) {
+          const rawBase = a.timeRemap!,
+            rawSample = b.timeRemap!;
+          const limit =
+            a.layer.loopCount === undefined
+              ? Infinity
+              : scope.frameCount * a.layer.loopCount;
+          if (rawBase < 0 && a.layer.loopCount !== undefined) source = 0;
+          else if (rawBase >= limit) source = scope.frameCount - 1;
+          else {
+            const start =
+              Math.floor(rawBase / scope.frameCount) * scope.frameCount;
+            const end = start + scope.frameCount;
+            const epsilon = Math.max(1e-7, Math.abs(end) * Number.EPSILON * 2);
+            const settled = Math.max(start, Math.min(end - epsilon, rawSample));
+            source = Math.min(
+              scope.frameCount - 1,
+              loopedPrecompTime(settled, scope.frameCount, a.layer, {
+                node: a.id,
+                path: key + ".loop",
+                frame: base.time,
+              }),
+            );
+          }
+        }
         const clamped = withinCut(
-          b.precomp.time,
+          source,
           a.precomp.time,
           cutsFor(comp, scope, key + "/"),
         );
@@ -266,9 +325,11 @@ export function* evaluateCompositionExposure(
   comp: Composition,
   frame: number,
   options: EvaluationOptions = {},
+  plannedFrames?: readonly number[],
 ): Generator<EvaluatedLayerTree> {
   const base = evaluateComp(comp, frame, options);
-  for (const time of compositionExposureFrames(comp, frame)) {
+  for (const time of plannedFrames ??
+    compositionExposureFrames(comp, frame, options)) {
     if (time === frame) yield base;
     else
       yield mixExposure(

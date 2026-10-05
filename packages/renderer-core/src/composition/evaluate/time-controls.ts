@@ -105,3 +105,11 @@ export function sourceFramePair(
         mix: clamped - first,
       };
 }
+
+/** Only explicitly supplied instance overrides are clocks; inherited names are not. */
+export function scopeTimeOverride(
+  times: Readonly<Record<string, number>> | undefined,
+  route: string,
+): number | undefined {
+  return times && Object.hasOwn(times, route) ? times[route] : undefined;
+}

@@ -1,0 +1,150 @@
+import { describe, expect, it } from "vitest";
+import type {
+  Composition,
+  CompositionLayer,
+} from "@still-shift/scene-contract";
+import { evaluateCompositionExposure } from "../../packages/renderer-core/src/composition/evaluate/exposure.ts";
+
+const text = (): Extract<CompositionLayer, { type: "text" }> => ({
+  id: "switch",
+  type: "text",
+  text: "A",
+  states: ["A", "B"],
+  fontSize: 20,
+  color: "#ffffff",
+  motionBlur: true,
+  state: {
+    keys: [
+      { frame: 0, value: 0 },
+      { frame: 11, value: 1 },
+    ],
+  },
+});
+const fixture = (): Composition => ({
+  schemaVersion: "composition-1",
+  id: "cuts",
+  width: 100,
+  height: 60,
+  fps: 30,
+  frameCount: 30,
+  assets: [],
+  motionBlur: { enabled: true, shutterAngle: 360, shutterPhase: 0, samples: 4 },
+  layers: [text()],
+});
+const states = (doc: Composition, frame: number) =>
+  [...evaluateCompositionExposure(doc, frame)].map(
+    (tree) => (tree.layers[0]!.precomp?.layers[0] ?? tree.layers[0]!).state,
+  );
+const nested = (): Composition => {
+  const doc = fixture();
+  doc.precomps = [
+    {
+      id: "source",
+      width: 100,
+      height: 60,
+      frameCount: 12,
+      layers: doc.layers,
+    },
+  ];
+  doc.layers = [
+    {
+      id: "host",
+      type: "precomp",
+      comp: "source",
+      loop: "cycle",
+      motionBlur: true,
+    },
+  ];
+  return doc;
+};
+
+describe("time-control exposure cuts", () => {
+  it("cuts a posterized state at the first reachable local grid frame", () => {
+    const doc = fixture();
+    doc.layers[0]!.posterizeFps = 12;
+    expect(states(doc, 12.4)).toEqual([0, 0, 0, 0]);
+    expect(states(doc, 12.5)).toEqual([1, 1, 1, 1]);
+    expect(states(doc, 12.6)).toEqual([1, 1, 1, 1]);
+  });
+  it("preserves inclusive-before behavior for a reversed posterized clock", () => {
+    const doc = fixture();
+    Object.assign(doc.layers[0]!, {
+      posterizeFps: 12,
+      startFrame: 25,
+      stretch: -1,
+    });
+    expect(states(doc, 12.5)).toEqual([1, 1, 1, 1]);
+    expect(states(doc, 12.6)).toEqual([0, 0, 0, 0]);
+  });
+  it("ignores unreachable held state cuts but retains live visibility gates", () => {
+    const doc = fixture();
+    doc.layers[0]!.holdFrame = 12;
+    doc.layers[0]!.inPoint = 11;
+    const before = [...evaluateCompositionExposure(doc, 10.9)];
+    expect(before.every((tree) => !tree.layers[0]!.visible)).toBe(true);
+    expect(states(doc, 11)).toEqual([1, 1, 1, 1]);
+    expect(
+      [...evaluateCompositionExposure(doc, 11)].every(
+        (tree) => tree.layers[0]!.visible,
+      ),
+    ).toBe(true);
+  });
+  it("keeps cycle-wrap exposures on the base cycle before applying child state cuts", () => {
+    const doc = nested();
+    expect(states(doc, 11.9)).toEqual([1, 1, 1, 1]);
+    expect(states(doc, 12)).toEqual([0, 0, 0, 0]);
+    expect(states(doc, 12.1)).toEqual([0, 0, 0, 0]);
+    expect(states(doc, 11.9)).toEqual(states(structuredClone(doc), 11.9));
+  });
+  it("holds the finite terminal frame through the last cycle boundary", () => {
+    const doc = nested();
+    (
+      doc.layers[0] as Extract<CompositionLayer, { type: "precomp" }>
+    ).loopCount = 2;
+    expect(states(doc, 23.9)).toEqual([1, 1, 1, 1]);
+    expect(states(doc, 24)).toEqual([1, 1, 1, 1]);
+    expect(states(doc, 24.1)).toEqual([1, 1, 1, 1]);
+  });
+  it("retains explicit caller source-clock overrides across a wrap", () => {
+    const doc = nested(),
+      options = { scopeTimes: { host: 11 } };
+    expect(
+      [...evaluateCompositionExposure(doc, 12, options)].map(
+        (tree) => tree.layers[0]!.precomp!.layers[0]!.state,
+      ),
+    ).toEqual([1, 1, 1, 1]);
+  });
+  it("ignores inherited override names while preserving explicit reused-instance clocks", () => {
+    const doc = nested();
+    const first = doc.layers[0] as Extract<
+      CompositionLayer,
+      { type: "precomp" }
+    >;
+    first.id = "constructor";
+    doc.layers.push({
+      ...structuredClone(first),
+      id: "toString",
+      loop: undefined,
+    });
+    const trees = [
+      ...evaluateCompositionExposure(doc, 12, {
+        scopeTimes: { constructor: 11 },
+      }),
+    ];
+    for (const tree of trees) {
+      expect(tree.layers[0]!.precomp!.layers[0]!.state).toBe(1);
+      expect(tree.layers[1]!.precomp!.layers[0]!.state).toBe(1);
+      expect(
+        Number.isFinite(
+          tree.layers[1]!.precomp!.layers[0]!.transform.position[0],
+        ),
+      ).toBe(true);
+    }
+    const defaultTrees = [
+      ...evaluateCompositionExposure(structuredClone(doc), 12),
+    ];
+    expect(
+      defaultTrees.map((tree) => tree.layers[0]!.precomp!.layers[0]!.state),
+    ).toEqual([0, 0, 0, 0]);
+  });
+});

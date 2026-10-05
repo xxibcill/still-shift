@@ -1,0 +1,97 @@
+{
+  "schemaVersion": "composition-1",
+  "id": "ce7-adaptive",
+  "width": 320,
+  "height": 180,
+  "fps": 24,
+  "frameCount": 48,
+  "background": "#17232e",
+  "assets": [],
+  "motionBlur": {
+    "enabled": true,
+    "shutterAngle": 180,
+    "shutterPhase": 90,
+    "samples": 16,
+    "adaptive": true
+  },
+  "layers": [
+    {
+      "id": "moving",
+      "type": "solid",
+      "size": [18, 18],
+      "color": "#dd8e67",
+      "motionBlur": true,
+      "transform": {
+        "anchor": [0, 0],
+        "position": {
+          "x": {
+            "keys": [
+              {
+                "frame": 0,
+                "value": 10
+              },
+              {
+                "frame": 47,
+                "value": 151,
+                "interpolation": "linear"
+              }
+            ]
+          },
+          "y": 25
+        }
+      }
+    },
+    {
+      "id": "stationary",
+      "type": "solid",
+      "size": [18, 18],
+      "color": "#dd8e67",
+      "motionBlur": true,
+      "transform": {
+        "anchor": [0, 0],
+        "position": {
+          "x": {
+            "keys": [
+              {
+                "frame": 0,
+                "value": 10
+              },
+              {
+                "frame": 47,
+                "value": 10,
+                "interpolation": "linear"
+              }
+            ]
+          },
+          "y": 80
+        }
+      }
+    },
+    {
+      "id": "opted-out",
+      "type": "solid",
+      "size": [18, 18],
+      "color": "#dd8e67",
+      "motionBlur": false,
+      "transform": {
+        "anchor": [0, 0],
+        "position": {
+          "x": {
+            "keys": [
+              {
+                "frame": 0,
+                "value": 10
+              },
+              {
+                "frame": 47,
+                "value": 104,
+                "interpolation": "linear"
+              }
+            ]
+          },
+          "y": 130
+        }
+      }
+    }
+  ]
+}

@@ -3300,14 +3300,14 @@ This delivers the CE4a prerequisite only. Adaptive samples and the remaining tim
 controls above stay open until the CE7 milestone branch.
 [Evidence](./composition-ce4a-completion-results.json).
 
-**Implementation record (2026-10-05):** first checkpoint delivers static
-bounded `posterizeFps`/`holdFrame`, signed precomp `cycle`/`pingpong` with finite
-counts, precision diagnostics, existing single-hold-key freeze and the reserved
-CE13 media frame-pair contract. 250 focused unit tests/build/lint/schema pass.
-Root-global procedural semantics remain explicit; no full AE clock parity is
-claimed. Exposure-cut integration, adaptive sampling, native acceptance/costs,
-full local gate and milestone PR remain pending.
-[Evidence](./composition-ce7-results.json).
+**Implementation record (2026-10-05):** checkpoint slices deliver local
+posterization/holds, precomp loops/counts, single-key freeze, CE13 frame-pair handoff,
+optional deterministic adaptive sampling and controlled exposure cuts. One planned
+sample array drives accumulation and both graph passes. Key/source edges and complex
+content retain the configured cap; default fixed arithmetic remains unchanged.
+266 focused tests/build/lint/schema pass, including root clock semantics and safe
+instance overrides. Native browser/hardware/export acceptance, serial costs, full
+local gate and milestone PR remain pending. [Evidence](./composition-ce7-results.json).
 
 ---
 
