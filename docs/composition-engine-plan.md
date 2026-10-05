@@ -3729,7 +3729,7 @@ preview/export parity.
   scopes; unused definitions retain authored-only graphs. CE9-F1 was revisited:
   resolved inspection already reads the native evaluator, so runtime lowering remains
   its numerical-parity-gated follow-up without changing legacy sampling.
-- **PR / next:** publish the stacked CE11 PR, then start CE5 on a new branch.
+- **PR / next:** [PR #37](https://github.com/xxibcill/still-shift/pull/37) is open and attached, based on CE10. Start CE5 on a new branch.
 
 ---
 

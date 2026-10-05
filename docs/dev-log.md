@@ -48,7 +48,7 @@ still hold before relying on them.
   saves and captured-asset exports pass desktop/phone and builder/watch acceptance.
   Full `pnpm check` passes: 1,510 unit, 46 runtime, 139 integration and 14 depth
   tests, all browser suites and 176 frozen baselines / 36,061 frames. Initial failures
-  and repairs are retained. Publish its stacked PR, then begin CE5; native camera
+  and repairs are retained. [PR #37](https://github.com/xxibcill/still-shift/pull/37) is open and attached; begin CE5 on a new branch. Native camera
   frusta and audio waveforms follow CE8/CE13. [Evidence](./composition-ce11-results.json).
 
 - **CE10 complete (2026-10-05):** `codex/composition-ce10` from CE4a `869a793`;
@@ -58,7 +58,7 @@ still hold before relying on them.
   The 197-line builder has exact 192-frame Canvas/WebGL parity and identical exports;
   a fresh skill-only source validates without repairs and renders correctly. Initial
   trial/gate failures are retained. [PR #36](https://github.com/xxibcill/still-shift/pull/36)
-  is open and attached; owner review/merge remain. CE11 is now in progress.
+  is open and attached; owner review/merge remain. CE11 is complete; CE5 follows.
   [Evidence](./composition-ce10-results.json).
 
 - **CE4a complete (2026-10-05):** `codex/composition-ce4a-completion`, implementation
@@ -169,7 +169,7 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   139 integration and 14 depth tests, all browser groups and 176 frozen baselines /
   36,061 frames. Desktop/phone acceptance and byte-identical saved-source/MP4
   exports pass. Initial failures and repairs remain recorded; no baseline regeneration.
-- **Next:** publish CE11's stacked PR, then create CE5's branch. Camera frusta and
+- **PR / next:** [PR #37](https://github.com/xxibcill/still-shift/pull/37) is open and attached; create CE5's branch. Camera frusta and
   waveforms follow native CE8/CE13; runtime motion lowering remains parity-gated.
 - **Records:** [CE11 evidence](./composition-ce11-results.json).
 

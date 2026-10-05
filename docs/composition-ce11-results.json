@@ -444,5 +444,6 @@
     "CE8": "Add real camera-frustum overlay when native cameras exist.",
     "CE13": "Add real waveform lane when native audio layers exist.",
     "CE9-F1": "Inspector uses evaluateProperty for resolved native bindings without runtime lowering; preserve legacy numerical parity and keep lowering as its tracked follow-up."
-  }
+  },
+  "pullRequest": "https://github.com/xxibcill/still-shift/pull/37"
 }
