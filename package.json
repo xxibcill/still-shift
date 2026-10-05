@@ -133,6 +133,7 @@
     "vite": "7.3.6",
     "vitest": "3.2.4",
     "zod": "4.1.5",
-    "@still-shift/execution-runtime": "workspace:*"
+    "@still-shift/execution-runtime": "workspace:*",
+    "@still-shift/motion": "workspace:*"
   }
 }

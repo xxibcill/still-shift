@@ -13,6 +13,9 @@ importers:
       "@still-shift/execution-runtime":
         specifier: workspace:*
         version: link:packages/execution-runtime
+      "@still-shift/motion":
+        specifier: workspace:*
+        version: link:packages/motion-builder
       "@types/node":
         specifier: 22.20.1
         version: 22.20.1
@@ -83,6 +86,12 @@ importers:
         specifier: 7.3.6
         version: 7.3.6(@types/node@22.20.1)(tsx@4.20.5)
 
+  packages/motion-builder:
+    dependencies:
+      "@still-shift/scene-contract":
+        specifier: workspace:*
+        version: link:../scene-contract
+
   packages/renderer-core:
     dependencies:
       "@still-shift/scene-contract":
@@ -110,12 +119,12 @@ importers:
       "@still-shift/animation-engine":
         specifier: workspace:*
         version: link:../../packages/animation-engine
-      "@still-shift/renderer-core":
-        specifier: workspace:*
-        version: link:../../packages/renderer-core
       "@still-shift/execution-runtime":
         specifier: workspace:*
         version: link:../../packages/execution-runtime
+      "@still-shift/renderer-core":
+        specifier: workspace:*
+        version: link:../../packages/renderer-core
       "@still-shift/scene-contract":
         specifier: workspace:*
         version: link:../../packages/scene-contract

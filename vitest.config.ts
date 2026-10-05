@@ -3,6 +3,14 @@ import { defineConfig } from "vitest/config";
 export default defineConfig({
   resolve: {
     alias: {
+      "@still-shift/motion/node": new URL(
+        "./packages/motion-builder/src/node.ts",
+        import.meta.url,
+      ).pathname,
+      "@still-shift/motion": new URL(
+        "./packages/motion-builder/src/index.ts",
+        import.meta.url,
+      ).pathname,
       "@still-shift/renderer-core/passage-compositions": new URL(
         "./packages/renderer-core/src/passage-compositions.ts",
         import.meta.url,

@@ -1,0 +1,44 @@
+{
+  "milestone": "CE10",
+  "status": "in-progress",
+  "date": "2026-10-05",
+  "branch": "codex/composition-ce10",
+  "base": "869a793",
+  "slices": [
+    {
+      "name": "Typed builder core and asset registration",
+      "status": "checkpoint",
+      "verification": [
+        {
+          "command": "pnpm build",
+          "status": "passed"
+        },
+        {
+          "command": "pnpm exec vitest run tests/unit/motion-builder.test.ts tests/unit/motion-builder-assets.test.ts --maxWorkers=2",
+          "status": "passed",
+          "tests": 18
+        },
+        {
+          "command": "pnpm exec eslint packages/motion-builder tests/unit/motion-builder*.test.ts",
+          "status": "passed"
+        },
+        {
+          "command": "pnpm check:boundaries",
+          "status": "passed"
+        }
+      ],
+      "repairs": [
+        "Promoted tests initially widened fps to number and supplied an invalid camera descriptor; corrected test types and descriptor without relaxing the contract.",
+        "Timeline cycle regression initially called the fluent static opacity setter as an animation property; corrected to the alpha property."
+      ]
+    }
+  ],
+  "pending": [
+    "Property/key call sites and native selectors",
+    "Story intent presets",
+    "JSON/TypeScript CLI and watch preview",
+    "Generated reference, skill and eight examples",
+    "Unequal Margins parity and isolated skill trial",
+    "Full local milestone gates and PR"
+  ]
+}

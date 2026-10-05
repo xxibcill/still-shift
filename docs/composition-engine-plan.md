@@ -371,7 +371,7 @@ sign and for time remap. It does not change the layer's composition-time visibil
 | CE7   | Motion blur and time controls                   | B      | CE3                  |                        |                                     | `[ ]`  |                                                                                    |
 | CE8   | 2.5D layers and unified camera                  | B      | CE3, CE6, CE9        |                        |                                     | `[ ]`  |                                                                                    |
 | CE9   | Expressions and motion behaviours               | C      | CE2                  | xxibcill (Claude Code) | `codex/composition-ce9`             | `[x]`  | [CE9 record](#ce9--expressions-and-motion-behaviours)                              |
-| CE10  | TypeScript builder API and CLI                  | C      | CE3, CE4a, CE9, CE12 |                        |                                     | `[ ]`  |                                                                                    |
+| CE10  | TypeScript builder API and CLI                  | C      | CE3, CE4a, CE9, CE12 | Codex                  | `codex/composition-ce10`            | `[~]`  |                                                                                    |
 | CE11  | Lab composition inspector and graph editor      | C      | CE3, CE10            |                        |                                     | `[ ]`  |                                                                                    |
 | CE12  | Motion linting                                  | C      | CE2                  | Codex                  | `codex/composition-ce12`            | `[x]`  | [CE12 completion record](#ce12-completion-record-2026-10-05)                       |
 | CE13  | Video, image-sequence and audio layers          | D      | CE3, CE7             |                        |                                     | `[ ]`  |                                                                                    |
@@ -3630,6 +3630,13 @@ new brief without schema errors (record the trial).
 
 **Verification:** Type tests (`tsd` or `expectTypeOf`), emitted-JSON snapshot tests,
 timeline-algebra unit tests, CLI integration tests.
+
+**Implementation record (2026-10-05):** Codex on `codex/composition-ce10`, from
+CE4a `869a793` / [PR #35](https://github.com/xxibcill/still-shift/pull/35). The first
+checkpoint promotes typed native layer/property construction, timeline algebra,
+expression/instance helpers, compact source metadata and Node asset helpers.
+Source-key mapping, property selectors, presets, CLI/watch, generated references,
+examples and acceptance remain in progress. See [CE10 evidence](./composition-ce10-results.json).
 
 **Completion record:** _to be filled in._
 

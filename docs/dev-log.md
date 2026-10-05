@@ -43,6 +43,11 @@ still hold before relying on them.
 
 ## Current state
 
+- **CE10 in progress (2026-10-05):** `codex/composition-ce10` from CE4a `869a793`.
+  Typed authoring and Node asset helpers are the first checkpoint. CLI/watch,
+  key source maps, presets, reference/examples and acceptance remain open.
+  [Evidence](./composition-ce10-results.json).
+
 - **CE4a complete (2026-10-05):** `codex/composition-ce4a-completion`, implementation
   `876814f` from CE12 `0987396`. Adapted/native picture passages, story fractional
   shutter clocks and explicit narrative bindings are delivered. Full local checks,
@@ -140,6 +145,17 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-05 — Start CE10 typed authoring API
+
+- **Agent / branch:** Codex on `codex/composition-ce10`, from CE4a `869a793` and PR #35.
+- **Done:** promote the native JSON builder, typed layers/properties, timeline algebra,
+  expression/instance helpers, bounded source metadata and Node asset registration.
+- **Results:** focused builder tests, TypeScript build, lint and package boundaries
+  are recorded in [CE10 evidence](./composition-ce10-results.json).
+- **Open / next:** property/key source locations, native property selectors, presets,
+  CLI source loading/watch, generated reference/examples and milestone acceptance.
+- **Records:** [CE10](./composition-engine-plan.md#ce10--typescript-builder-api-and-cli).
 
 ### 2026-10-05 — Complete CE4a story and native passage integration
 
