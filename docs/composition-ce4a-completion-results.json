@@ -1,6 +1,6 @@
 {
   "milestone": "CE4a",
-  "status": "in-progress",
+  "status": "complete",
   "date": "2026-10-05",
   "branch": "codex/composition-ce4a-completion",
   "base": "0987396",
@@ -230,10 +230,7 @@
       "status": "passed"
     }
   ],
-  "pending": [
-    "Full WebGL story correctness record (timing deferred)",
-    "CE4a tracker/checklist reconciliation and milestone PR"
-  ],
+  "pending": ["Publish and attach milestone PR"],
   "githubActionsEnabled": false,
   "familyAcceptance": {
     "command": "pnpm test:browser:composition-story-fixtures --keep-going",
@@ -302,6 +299,26 @@
         "status": "passed"
       },
       "log": "/private/tmp/ce4a-check-8153549.log"
+    },
+    {
+      "command": "pnpm check (immutable tracked snapshot876814f)",
+      "status": "passed",
+      "commit": "876814f",
+      "unit": 1464,
+      "runtime": 46,
+      "integration": 116,
+      "depth": 14,
+      "frozenBaselines": {
+        "items": 176,
+        "frames": 36061,
+        "status": "passed"
+      },
+      "includes": [
+        "Updated WebGL story image regression suite",
+        "576-frame mixed native-passage Canvas and WebGL suites",
+        "69-case Canvas story matrix and all legacy frozen baselines"
+      ],
+      "log": "/private/tmp/ce4a-full-876814f.log"
     }
   ],
   "continuousQuality": {
@@ -633,7 +650,7 @@
     ]
   },
   "webglImageRoundingRepair": {
-    "status": "focused-passed-matrix-pending",
+    "status": "passed",
     "rendererVersion": "composition-webgl2-0.36.3",
     "problem": "Bounded image uploads used fixed-function WebGL source-over rather than the Canvas-compatible integer blend path. Overlapping SVG antialiased edges accumulated a three-byte difference.",
     "change": "Reuse WebglPaint integer compositing for direct vector drawing and clipped image coverage. Keep the existing bitmap blend path for un-clipped natural-size images; share the paint instance with vector rendering.",
@@ -956,7 +973,7 @@
       {
         "command": "New checkWebglStoryImageRounding browser helper",
         "status": "passed",
-        "frames": 12,
+        "frames": 16,
         "maxChannelDelta": 2,
         "includesBackwardSeeks": true
       },
@@ -965,10 +982,595 @@
         "status": "passed"
       }
     ],
-    "pending": [
-      "Full story/component WebGL matrix, all frames and repeat exports",
-      "Updated WebGL aggregate browser suite and mixed native passage acceptance"
-    ],
+    "pending": [],
     "rejectedExperiment": "Applying integer rounding to every image reduced natural-size image precision. Stopped the partial matrix after three cases; narrowed the rule, preserving exact frame 0 and a one-byte maximum at frame 112 in continuous Unequal Margins."
+  },
+  "implementationCommit": "876814f",
+  "webglFamilyAcceptance": {
+    "command": "pnpm test:browser:composition-story-fixtures --webgl --keep-going",
+    "commit": "876814f",
+    "status": "correctness-passed-timing-deferred",
+    "strictExitCode": 1,
+    "cases": 69,
+    "frames": 14086,
+    "pixelFailures": 0,
+    "stateFailures": 0,
+    "seekFailures": 0,
+    "repeatExportCases": 14,
+    "repeatExports": "byte-identical",
+    "timingFailures": 51,
+    "maxRatio": 18.070810396580267,
+    "timingPolicy": "Existing strict1.25 assertions stay unchanged; these timing failures are deferred to CE6-P under the approved current-version policy.",
+    "log": "benchmarks/results/ce4a-story-webgl-final-matrix.log",
+    "casesMeasured": [
+      {
+        "id": "story/continuous-unequal-margins",
+        "frames": 192,
+        "maxDelta": 2,
+        "minPsnr": 91.69176036957683,
+        "failures": [],
+        "ratio": 3.037540896552499
+      },
+      {
+        "id": "story/continuous-access-constraint",
+        "frames": 192,
+        "maxDelta": 1,
+        "minPsnr": 69.30800229018695,
+        "failures": [],
+        "ratio": 2.9494865044337795
+      },
+      {
+        "id": "story/continuous-access-constraint/motion-blur",
+        "frames": 192,
+        "maxDelta": 1,
+        "minPsnr": 69.31184908973826,
+        "failures": [],
+        "ratio": 1.3363949483125408
+      },
+      {
+        "id": "story/continuous-relationship-build",
+        "frames": 192,
+        "maxDelta": 1,
+        "minPsnr": 104.60798564099834,
+        "failures": [],
+        "ratio": 1.8360951414252908
+      },
+      {
+        "id": "story/continuous-evidence-boundary",
+        "frames": 192,
+        "maxDelta": 2,
+        "minPsnr": 61.40907645776441,
+        "failures": [],
+        "ratio": 4.709600002468236
+      },
+      {
+        "id": "story/continuous-dated-system-break",
+        "frames": 192,
+        "maxDelta": 2,
+        "minPsnr": 80.96381589571459,
+        "failures": [],
+        "ratio": 4.186621159986425
+      },
+      {
+        "id": "story/continuous-category-swap",
+        "frames": 192,
+        "maxDelta": 1,
+        "minPsnr": 107.61828559763815,
+        "failures": [],
+        "ratio": 2.264620688149022
+      },
+      {
+        "id": "story/continuous-motif-resolve",
+        "frames": 192,
+        "maxDelta": 1,
+        "minPsnr": 98.36074588135928,
+        "failures": [],
+        "ratio": 1.9614258651396654
+      },
+      {
+        "id": "story/v013-unequal-margins",
+        "frames": 192,
+        "maxDelta": 2,
+        "minPsnr": 70.48986522224735,
+        "failures": [],
+        "ratio": 0.5542791494625673
+      },
+      {
+        "id": "story/v013-access-constraint",
+        "frames": 192,
+        "maxDelta": 2,
+        "minPsnr": 66.3190860214519,
+        "failures": [],
+        "ratio": 0.4085799922003083
+      },
+      {
+        "id": "story/buffer-press-unequal-margins",
+        "frames": 192,
+        "maxDelta": 2,
+        "minPsnr": 100.75447682735816,
+        "failures": [],
+        "ratio": 3.871981973049707
+      },
+      {
+        "id": "story/v2-unequal-margins",
+        "frames": 192,
+        "maxDelta": 2,
+        "minPsnr": 91.69176036957683,
+        "failures": [],
+        "ratio": 2.97847174796626
+      },
+      {
+        "id": "story/calibration-pan",
+        "frames": 192,
+        "maxDelta": 1,
+        "minPsnr": 82.7247284862714,
+        "failures": [],
+        "ratio": 18.070810396580267
+      },
+      {
+        "id": "story/template-resource-network",
+        "frames": 648,
+        "maxDelta": 2,
+        "minPsnr": 62.357959079560885,
+        "failures": [],
+        "ratio": 0.18769190671539637
+      },
+      {
+        "id": "story/template-unequal-access",
+        "frames": 312,
+        "maxDelta": 2,
+        "minPsnr": 68.6786083202101,
+        "failures": [],
+        "ratio": 0.2850751277239056
+      },
+      {
+        "id": "passage/comparison-access/unequal-margins",
+        "frames": 334,
+        "maxDelta": 2,
+        "minPsnr": 70.4951565108245,
+        "failures": [],
+        "ratio": 0.6629964034833851
+      },
+      {
+        "id": "passage/comparison-access/unequal-access",
+        "frames": 312,
+        "maxDelta": 2,
+        "minPsnr": 68.6786083202101,
+        "failures": [],
+        "ratio": 0.2809227143410909
+      },
+      {
+        "id": "passage/linked-comparison/compare",
+        "frames": 192,
+        "maxDelta": 2,
+        "minPsnr": 70.50443180665363,
+        "failures": [],
+        "ratio": 0.6131404169995313
+      },
+      {
+        "id": "passage/linked-comparison/continue",
+        "frames": 192,
+        "maxDelta": 2,
+        "minPsnr": 70.50358777889487,
+        "failures": [],
+        "ratio": 0.5553941908420703
+      },
+      {
+        "id": "passage/linked-comparison/reset",
+        "frames": 192,
+        "maxDelta": 2,
+        "minPsnr": 70.49467521810843,
+        "failures": [],
+        "ratio": 0.5568718710804468
+      },
+      {
+        "id": "passage/linked-network-vertical/network",
+        "frames": 192,
+        "maxDelta": 1,
+        "minPsnr": 103.51654094674765,
+        "failures": [],
+        "ratio": 0.4166998013305312
+      },
+      {
+        "id": "component/story-bracket",
+        "frames": 192,
+        "maxDelta": 1,
+        "minPsnr": 105.65533914619847,
+        "failures": [],
+        "ratio": 3.0884237580153733
+      },
+      {
+        "id": "component/story-detail-sequence",
+        "frames": 192,
+        "maxDelta": 2,
+        "minPsnr": 90.80587322388227,
+        "failures": [],
+        "ratio": 2.919599390305655
+      },
+      {
+        "id": "component/story-instances",
+        "frames": 192,
+        "maxDelta": 0,
+        "minPsnr": null,
+        "failures": [],
+        "ratio": 5.1679454307943224
+      },
+      {
+        "id": "component/story-layout",
+        "frames": 192,
+        "maxDelta": 0,
+        "minPsnr": null,
+        "failures": [],
+        "ratio": 5.092654429569221
+      },
+      {
+        "id": "component/story-leader",
+        "frames": 192,
+        "maxDelta": 1,
+        "minPsnr": 106.52684090338747,
+        "failures": [],
+        "ratio": 2.572716578000174
+      },
+      {
+        "id": "component/story-leader/flow",
+        "frames": 192,
+        "maxDelta": 1,
+        "minPsnr": 110.0486660845011,
+        "failures": [],
+        "ratio": 3.3200325674633677
+      },
+      {
+        "id": "component/story-leader/flow-target-matte",
+        "frames": 192,
+        "maxDelta": 0,
+        "minPsnr": null,
+        "failures": [],
+        "ratio": 2.7268194234600074
+      },
+      {
+        "id": "component/story-leader/flow-target-inverted",
+        "frames": 192,
+        "maxDelta": 0,
+        "minPsnr": null,
+        "failures": [],
+        "ratio": 3.374484994172609
+      },
+      {
+        "id": "component/story-leader/spatial",
+        "frames": 192,
+        "maxDelta": 2,
+        "minPsnr": 87.23833241202382,
+        "failures": [],
+        "ratio": 4.824738908535517
+      },
+      {
+        "id": "component/story-leader/morph",
+        "frames": 192,
+        "maxDelta": 2,
+        "minPsnr": 88.62633616655395,
+        "failures": [],
+        "ratio": 4.144678633192624
+      },
+      {
+        "id": "component/story-leader/spatial-morph",
+        "frames": 192,
+        "maxDelta": 1,
+        "minPsnr": 93.61413931963922,
+        "failures": [],
+        "ratio": 3.233035099298559
+      },
+      {
+        "id": "component/story-leader/appearance-uniform",
+        "frames": 192,
+        "maxDelta": 1,
+        "minPsnr": 100.0486660845011,
+        "failures": [],
+        "ratio": 3.2320248709755246
+      },
+      {
+        "id": "component/story-leader/effects-flow",
+        "frames": 192,
+        "maxDelta": 2,
+        "minPsnr": 97.43603739657615,
+        "failures": [],
+        "ratio": 0.21945804242393874
+      },
+      {
+        "id": "component/story-leader/effects-flow-target-matte",
+        "frames": 192,
+        "maxDelta": 2,
+        "minPsnr": 98.43498606215135,
+        "failures": [],
+        "ratio": 0.30209699675027823
+      },
+      {
+        "id": "component/story-leader/effects-flow-target-inverted",
+        "frames": 192,
+        "maxDelta": 1,
+        "minPsnr": 103.76477678399797,
+        "failures": [],
+        "ratio": 0.30529496505104525
+      },
+      {
+        "id": "component/story-mask",
+        "frames": 192,
+        "maxDelta": 2,
+        "minPsnr": 90.55476601805196,
+        "failures": [],
+        "ratio": 2.4795403921775945
+      },
+      {
+        "id": "component/story-outline",
+        "frames": 192,
+        "maxDelta": 1,
+        "minPsnr": 103.51654094674765,
+        "failures": [],
+        "ratio": 3.178956453602339
+      },
+      {
+        "id": "component/story-pin",
+        "frames": 192,
+        "maxDelta": 2,
+        "minPsnr": 90.27143003161262,
+        "failures": [],
+        "ratio": 3.8665650023667553
+      },
+      {
+        "id": "component/story-sequence",
+        "frames": 192,
+        "maxDelta": 1,
+        "minPsnr": 98.43498606215135,
+        "failures": [],
+        "ratio": 3.5794776175574454
+      },
+      {
+        "id": "component/story-stagger",
+        "frames": 192,
+        "maxDelta": 0,
+        "minPsnr": null,
+        "failures": [],
+        "ratio": 5.600662789969877
+      },
+      {
+        "id": "component/story-state",
+        "frames": 192,
+        "maxDelta": 2,
+        "minPsnr": 89.55648585779927,
+        "failures": [],
+        "ratio": 4.214608429756135
+      },
+      {
+        "id": "component/story-state/blended-container",
+        "frames": 192,
+        "maxDelta": 2,
+        "minPsnr": 66.00045715675462,
+        "failures": [],
+        "ratio": 4.645478370911036
+      },
+      {
+        "id": "component/story-state/appearance-uniform",
+        "frames": 192,
+        "maxDelta": 2,
+        "minPsnr": 89.35753757062989,
+        "failures": [],
+        "ratio": 4.118213056674485
+      },
+      {
+        "id": "component/story-state/effects-group-grain",
+        "frames": 192,
+        "maxDelta": 2,
+        "minPsnr": 89.71442852963159,
+        "failures": [],
+        "ratio": 1.3879825116936726
+      },
+      {
+        "id": "component/story-state/effects-image-sweep",
+        "frames": 192,
+        "maxDelta": 2,
+        "minPsnr": 84.75307935428945,
+        "failures": [],
+        "ratio": 0.36847380643167016
+      },
+      {
+        "id": "component/story-state/effects-text-sweep",
+        "frames": 192,
+        "maxDelta": 2,
+        "minPsnr": 80.69233405410682,
+        "failures": [],
+        "ratio": 0.7390958855424729
+      },
+      {
+        "id": "component/story-state/primitive-blur",
+        "frames": 192,
+        "maxDelta": 2,
+        "minPsnr": 83.09822949628816,
+        "failures": [],
+        "ratio": 0.8422819167444182
+      },
+      {
+        "id": "component/story-state/primitive-blur-matte",
+        "frames": 192,
+        "maxDelta": 2,
+        "minPsnr": 81.86145980229506,
+        "failures": [],
+        "ratio": 0.9718836757522898
+      },
+      {
+        "id": "component/story-state/primitive-blur-stack",
+        "frames": 192,
+        "maxDelta": 2,
+        "minPsnr": 82.2042763422742,
+        "failures": [],
+        "ratio": 1.1497599261935771
+      },
+      {
+        "id": "component/story-supply-sequence",
+        "frames": 192,
+        "maxDelta": 2,
+        "minPsnr": 90.80587322388227,
+        "failures": [],
+        "ratio": 2.9443055532367577
+      },
+      {
+        "id": "component/story-supply",
+        "frames": 192,
+        "maxDelta": 2,
+        "minPsnr": 83.57483638335489,
+        "failures": [],
+        "ratio": 4.355122562244652
+      },
+      {
+        "id": "component/story-text-fit",
+        "frames": 192,
+        "maxDelta": 2,
+        "minPsnr": 90.14749842382204,
+        "failures": [],
+        "ratio": 3.755805767823983
+      },
+      {
+        "id": "component/story-tour",
+        "frames": 192,
+        "maxDelta": 2,
+        "minPsnr": 83.57483638335489,
+        "failures": [],
+        "ratio": 4.385426076993751
+      },
+      {
+        "id": "component/story-transform",
+        "frames": 192,
+        "maxDelta": 2,
+        "minPsnr": 91.4753411201884,
+        "failures": [],
+        "ratio": 4.002637650955285
+      },
+      {
+        "id": "component/story-travel",
+        "frames": 192,
+        "maxDelta": 2,
+        "minPsnr": 96.77507674063779,
+        "failures": [],
+        "ratio": 4.324192342161192
+      },
+      {
+        "id": "component/story-underline",
+        "frames": 192,
+        "maxDelta": 1,
+        "minPsnr": 104.60798564099834,
+        "failures": [],
+        "ratio": 2.725320123979572
+      },
+      {
+        "id": "component/story-value",
+        "frames": 192,
+        "maxDelta": 0,
+        "minPsnr": null,
+        "failures": [],
+        "ratio": 3.8964374426829367
+      },
+      {
+        "id": "component/story-visibility",
+        "frames": 192,
+        "maxDelta": 1,
+        "minPsnr": 98.90923256143273,
+        "failures": [],
+        "ratio": 3.0386343209425157
+      },
+      {
+        "id": "component/passage-components/instances",
+        "frames": 192,
+        "maxDelta": 0,
+        "minPsnr": null,
+        "failures": [],
+        "ratio": 5.184100412302203
+      },
+      {
+        "id": "component/passage-components/leader",
+        "frames": 192,
+        "maxDelta": 1,
+        "minPsnr": 106.52684090338747,
+        "failures": [],
+        "ratio": 2.7481884030051877
+      },
+      {
+        "id": "component/passage-components/value",
+        "frames": 192,
+        "maxDelta": 0,
+        "minPsnr": null,
+        "failures": [],
+        "ratio": 3.731793971105356
+      },
+      {
+        "id": "component/passage-behaviors/transform",
+        "frames": 192,
+        "maxDelta": 2,
+        "minPsnr": 91.4753411201884,
+        "failures": [],
+        "ratio": 4.161535536217849
+      },
+      {
+        "id": "component/passage-behaviors/state",
+        "frames": 192,
+        "maxDelta": 2,
+        "minPsnr": 89.55648585779927,
+        "failures": [],
+        "ratio": 4.310867749865043
+      },
+      {
+        "id": "component/passage-behaviors/travel",
+        "frames": 192,
+        "maxDelta": 2,
+        "minPsnr": 96.77507674063779,
+        "failures": [],
+        "ratio": 4.440425527267944
+      },
+      {
+        "id": "component/passage-behaviors/supply",
+        "frames": 192,
+        "maxDelta": 2,
+        "minPsnr": 83.57483638335489,
+        "failures": [],
+        "ratio": 4.468739083162349
+      },
+      {
+        "id": "component/passage-timing/visibility",
+        "frames": 192,
+        "maxDelta": 1,
+        "minPsnr": 98.90923256143273,
+        "failures": [],
+        "ratio": 3.070994866385572
+      },
+      {
+        "id": "component/passage-timing/text-fit",
+        "frames": 192,
+        "maxDelta": 2,
+        "minPsnr": 90.14749842382204,
+        "failures": [],
+        "ratio": 3.874898459359817
+      },
+      {
+        "id": "component/passage-timing/supply-sequence",
+        "frames": 192,
+        "maxDelta": 2,
+        "minPsnr": 90.80587322388227,
+        "failures": [],
+        "ratio": 2.8962432919750523
+      }
+    ],
+    "exports": [
+      "CE4b webgl2 story/continuous-access-constraint/motion-blur export: 192 frames, two byte-identical MP4s; relocated assets and overwrite protection pass",
+      "CE4b webgl2 component/story-leader/flow-target-inverted export: 192 frames, two byte-identical MP4s; relocated assets and overwrite protection pass",
+      "CE4b webgl2 component/story-leader/spatial-morph export: 192 frames, two byte-identical MP4s; relocated assets and overwrite protection pass",
+      "CE4b webgl2 component/story-leader/effects-flow-target-inverted export: 192 frames, two byte-identical MP4s; relocated assets and overwrite protection pass",
+      "CE4b webgl2 component/story-mask export: 192 frames, two byte-identical MP4s; relocated assets and overwrite protection pass",
+      "CE4b webgl2 component/story-state/blended-container export: 192 frames, two byte-identical MP4s; relocated assets and overwrite protection pass",
+      "CE4b webgl2 component/story-state/appearance-uniform export: 192 frames, two byte-identical MP4s; relocated assets and overwrite protection pass",
+      "CE4b webgl2 component/story-state/effects-text-sweep export: 192 frames, two byte-identical MP4s; relocated assets and overwrite protection pass",
+      "CE4b webgl2 component/story-state/primitive-blur-stack export: 192 frames, two byte-identical MP4s; relocated assets and overwrite protection pass",
+      "CE4b webgl2 component/story-text-fit export: 192 frames, two byte-identical MP4s; relocated assets and overwrite protection pass",
+      "CE4b webgl2 component/story-value export: 192 frames, two byte-identical MP4s; relocated assets and overwrite protection pass",
+      "CE4b webgl2 component/passage-components/instances export: 192 frames, two byte-identical MP4s; relocated assets and overwrite protection pass",
+      "CE4b webgl2 component/passage-behaviors/transform export: 192 frames, two byte-identical MP4s; relocated assets and overwrite protection pass",
+      "CE4b webgl2 component/passage-timing/visibility export: 192 frames, two byte-identical MP4s; relocated assets and overwrite protection pass"
+    ]
   }
 }

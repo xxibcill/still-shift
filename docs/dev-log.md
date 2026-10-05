@@ -43,18 +43,12 @@ still hold before relying on them.
 
 ## Current state
 
-- **CE4a continuation (`[~]`, 2026-10-05):** active on
-  `codex/composition-ce4a-completion` from CE12 `0987396`. Story shutter exposure
-  prerequisite and optional passage composition export/Lab path implemented; focused
-  unit/runtime and 576-frame passage browser checks pass. Native companion-map
-  pictures pass standalone encoded-beat/Lab parity; full Canvas family matrix passes
-  (69 cases / 14,086 frames). Explicit native cue/event/subject mappings and a
-  576-frame mixed passage with an adapted story precomp, native overlay, narration,
-  cache edits, relocation and input diagnostics pass. Full `pnpm check` at `8153549`
-  passes, including 176 frozen items / 36,061 frames. Native mixed-passage WebGL
-  verification passes. The full story WebGL matrix exposed nine pixel failures;
-  an image rounding repair passes focused frames and existing WebGL checks. Full
-  repaired-matrix acceptance remains before PR/CE10.
+- **CE4a complete (2026-10-05):** `codex/composition-ce4a-completion`, implementation
+  `876814f` from CE12 `0987396`. Adapted/native picture passages, story fractional
+  shutter clocks and explicit narrative bindings are delivered. Full local checks,
+  176 baselines / 36,061 frames, both 69-case family matrices / 14,086 frames and
+  mixed 576-frame passages pass correctness. WebGL's 51 strict timing overruns stay
+  deferred to CE6-P. CE10 is next after the milestone PR; broader CE7 stays open.
   [Evidence](./composition-ce4a-completion-results.json).
 
 - **CE12 motion linting (`[x]`, 2026-10-05):** complete on
@@ -147,38 +141,22 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
 
 ## Entries
 
-### 2026-10-05 — Resume CE4a in the approved milestone sequence
+### 2026-10-05 — Complete CE4a story and native passage integration
 
 - **Agent / branch:** Codex on `codex/composition-ce4a-completion`, from CE12 `0987396`.
-- **Done:** audited delivered adapters; shared CE7 exposure compilation now bakes story
-  shutter samples, appearances and connector endpoints while preserving flow source time.
-- **Results:** build, 71 adapter/exposure tests and 18 cache/publication tests pass.
-  Canvas shutter frames are exact with repeat MP4 identity. The 576-frame composition
-  passage suite passes nine Lab/export comparisons, cache, edit, range, cancellation,
-  narration and relocation checks. Native picture maps pass exact cached-beat and
-  Lab parity; all 69 Canvas family cases / 14,086 frames pass. WebGL shutter pixels,
-  seeks and repeat MP4s pass; 1.33–1.39× timing is deferred. Full verification next.
-- **Done:** native narrative bindings and mixed story-precomp acceptance now pass.
-  Split source loading from rendering after the full gate exposed a Node strip-only
-  Lab import failure; all five affected suites / 25 tests pass after repair. The narrow
-  public validation export also passes Lab and binding checks (25 tests). Unknown
-  `__proto__` map keys now fail before parsing; the targeted regression passes.
-  The first destination-only fix failed because parsing discarded the key; corrected
-  its prematurely recorded result in the evidence file.
-- **Done:** immutable `8153549` passes full `pnpm check`: 1,464 unit, 46 runtime,
-  116 integration and 14 depth tests, browser gates and 176 frozen items / 36,061
-  frames. The prior overlaid snapshot imported the old loader and failed; only the
-  fresh immutable result is accepted. Native mixed-passage WebGL coverage is added
-  to the aggregate gate; its acceptance run is pending, static checks pass.
-- **Done:** mixed native-passage WebGL acceptance passes all 576 frames. The
-  complete WebGL matrix exposed nine pixel failures at SVG edges; reuse of the
-  integer image blend path repairs all inspected frames (12 forward/backward checks).
-  Existing WebGL browser checks, build and targeted lint pass. The all-image
-  integer experiment reduced bitmap precision; narrowed it to vector/clip coverage
-  (`0.36.3`), preserving ordinary image precision. Focused repaired frames pass.
-- **Open / next:** repaired WebGL matrix, final acceptance and milestone PR;
-  CE7 remains incomplete, CE6-P remains deferred. Pre-existing local documentation retained.
-- **Records:** [CE4a continuation evidence](./composition-ce4a-completion-results.json).
+- **Done:** checkpoint commits deliver fractional story shutter clocks, optional
+  composition passages, native picture maps, explicit narrative bindings and loader
+  isolation. `876814f` repairs SVG/clip image rounding on WebGL `0.36.3`.
+- **Results:** full `pnpm check` passes 1,464 unit, 46 runtime, 116 integration,
+  14 depth tests and 176 frozen items / 36,061 frames. Both 69-case matrices /
+  14,086 frames pass correctness; 14 WebGL cases have repeat MP4 identity. Mixed
+  576-frame passages pass both backends. Continuous quality's 14 reports are unchanged.
+- **Rejected:** broad integer image blending reduced bitmap precision; retain the
+  narrower vector/clip rule. Prior failed/overlaid gate attempts remain in evidence.
+- **Open / next:** milestone PR then CE10 branch; 51 WebGL timing overruns remain
+  CE6-P, broader CE7 stays open. Prior owner documentation changes are retained.
+- **Records:** [CE4a completion](./composition-engine-plan.md#ce4a-completion-record-2026-10-05),
+  [verification](./composition-ce4a-completion-results.json).
 
 ### 2026-10-05 — Complete CE12 motion linting
 
