@@ -54,7 +54,8 @@ still hold before relying on them.
   rechecks pass all 25 affected tests. The second full check reaches typography
   before a module-fetch failure; its unchanged focused rerun passes. Inspector
   documentation is complete; source-mode preservation is repaired after a failing
-  regression. Repeat the full gate at the repair with isolated snapshot Vite caches. Existing Lab design is the default pending optional steering.
+  regression. Transient hide/solo now survives curve edits and undo/redo after a reproduced
+  browser regression. Repeat the full gate with isolated snapshot Vite caches. Existing Lab design is the default pending optional steering.
   [Evidence](./composition-ce11-results.json).
 
 - **CE10 complete (2026-10-05):** `codex/composition-ce10` from CE4a `869a793`;
@@ -164,6 +165,19 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-05 — Retain inspector view visibility across motion edits
+
+- **Agent / branch:** Codex on `codex/composition-ce11`, after `57a7e92`.
+- **Done:** apply transient hide/solo to staged edit/history previews while keeping
+  those flags outside the raw proposal until Apply visibility or Save.
+- **Results:** browser regression confirms the original mismatch (hidden layer
+  reappeared after curve edits). Complete desktop/phone acceptance passes with
+  hide → edit → undo/redo coverage, native MP4 parity, saves, builder copy and watch.
+  Build/lint pass. The prior full gate is stopped (143) at the superseded source.
+- **Next:** checkpoint this repair and rerun the full isolated local gate before
+  publishing CE11. Existing source-ownership and explicit reset/save rules remain.
+- **Records:** [CE11 evidence](./composition-ce11-results.json).
 
 ### 2026-10-05 — Preserve JSON source permissions on native save
 

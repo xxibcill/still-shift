@@ -83,8 +83,8 @@ export function createCompositionInspector(options: {
       return false;
     }
   }
-  function viewDocument() {
-    const draft = structuredClone(history!.document);
+  function viewDocument(document = history!.document) {
+    const draft = structuredClone(document);
     for (const [path, state] of visibility)
       Object.assign(
         readJsonPath(draft, JSON.parse(path)) as CompositionLayer,

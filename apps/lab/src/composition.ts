@@ -144,7 +144,7 @@ const inspector = createCompositionInspector({
   async propose(proposal) {
     if (!documentHistory?.accepts(proposal)) return false;
     return load(select.value, {
-      document: proposal.document,
+      document: inspector.viewDocument(proposal.document),
       proposal,
       preserveHistory: true,
     });

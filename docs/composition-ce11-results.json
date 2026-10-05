@@ -361,6 +361,53 @@
         }
       ],
       "pending": ["Run the full local check at the repaired checkpoint."]
+    },
+    {
+      "name": "Retain transient visibility across edits and history",
+      "status": "checkpoint",
+      "changes": [
+        "Overlay transient visibility on proposed native preview documents while committing only the unmodified proposal to lossless history.",
+        "Keep hide/solo view state consistent across curve edits and undo/redo; reset and save retain their explicit source semantics."
+      ],
+      "verification": [
+        {
+          "command": "Native inspector browser before fix",
+          "status": "failed",
+          "log": "benchmarks/results/composition-ce11-verification/ce11-view-edit-regression.log",
+          "failure": "Curve edit after Hide restored the layer pixels while the button still showed Show."
+        },
+        {
+          "command": "Complete native inspector browser acceptance after fix",
+          "status": "passed",
+          "log": "benchmarks/results/composition-ce11-verification/ce11-view-edit-fixed.log",
+          "checks": [
+            "Hide retained across curve edit and undo/redo",
+            "Reset restores edited pixels",
+            "Desktop/phone save/watch/source conflicts",
+            "Lossless relative assets and metadata",
+            "Native downloaded MP4 byte identity and decoded preview parity",
+            "Builder read-only tuning/copy/watch"
+          ]
+        },
+        {
+          "command": "Build / changed-file eslint / owned formatting",
+          "status": "passed"
+        },
+        {
+          "command": "Full pnpm check at 57a7e92",
+          "status": "stopped",
+          "exitCode": 143,
+          "log": "benchmarks/results/composition-ce11-verification/ce11-full-57a7e92.log",
+          "passed": {
+            "unit": 1510,
+            "runtime": 46,
+            "integration": 139,
+            "depth": 14
+          },
+          "reason": "Stopped agent-owned check after the inspector regression confirmed lost visibility; preceding golden/export/cinematic gates passed. No full-check success claimed."
+        }
+      ],
+      "pending": ["Complete the full local gate at this repair checkpoint."]
     }
   ],
   "conditionalFollowThrough": {

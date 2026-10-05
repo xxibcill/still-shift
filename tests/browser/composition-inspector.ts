@@ -134,6 +134,32 @@ try {
     document.getElementById("edit-message")!.textContent!.includes("view-only"),
   );
   assert.notDeepEqual(await pixels(), edited);
+  const hidden = await pixels();
+  await page.getByLabel("out ease", { exact: true }).fill("0.6");
+  await page
+    .getByRole("button", { name: "Apply out handle", exact: true })
+    .click();
+  await page.waitForFunction(() =>
+    document
+      .getElementById("edit-message")!
+      .textContent!.includes("box out handle"),
+  );
+  assert.deepEqual(await pixels(), hidden);
+  for (const direction of ["undo", "redo", "undo"]) {
+    await page.locator(`#${direction}`).click();
+    await page.waitForFunction(
+      () =>
+        !document.getElementById("inspector-edit")!.hasAttribute("disabled"),
+    );
+    assert.deepEqual(await pixels(), hidden);
+    assert.equal(
+      await page
+        .locator('[data-layer="box"]')
+        .getByRole("button", { name: "Show", exact: true })
+        .count(),
+      1,
+    );
+  }
   await page.locator("#reset-visibility").click();
   await page.waitForFunction(
     () => !document.getElementById("inspector-edit")!.hasAttribute("disabled"),
@@ -334,6 +360,7 @@ try {
         "undo/redo",
         "invalid-edit rollback",
         "transient visibility",
+        "visibility retained across curve edits and undo/redo",
         "overlays",
         "keyboard Bezier graph handles",
         "lossless source save",
