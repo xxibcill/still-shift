@@ -41,6 +41,45 @@ export const SoundtrackClipSchema = z
       .optional(),
   })
   .strict();
+export const SoundtrackProcessorsSchema = z
+  .array(
+    z
+      .object({
+        type: z.enum(["highpass", "lowpass"]),
+        frequencyHz: z.number().min(20).max(20000),
+        q: z.number().min(0.1).max(10),
+      })
+      .strict(),
+  )
+  .max(4);
+export const SoundtrackTrackSchema = z
+  .object({
+    id,
+    role: z.enum(["narration", "bgm", "sfx", "ambience"]),
+    output: id,
+    gainDb: gain,
+    mute: z.boolean(),
+    solo: z.boolean(),
+    processors: SoundtrackProcessorsSchema,
+  })
+  .strict();
+export const SoundtrackBusSchema = z
+  .object({ id, output: id, gainDb: gain })
+  .strict();
+export const SoundtrackDuckingSchema = z
+  .object({
+    method: z.literal("peak-window-attack-hold-release-1"),
+    sourceTrack: id,
+    targetTracks: z.array(id).min(1).max(16),
+    thresholdDb: z.number().min(-90).max(0),
+    attenuationDb: z.number().min(-60).max(0),
+    windowSamples: sample.min(1).max(4800),
+    attackSamples: sample.max(480000),
+    releaseSamples: sample.max(480000),
+    holdSamples: sample.max(480000),
+    lookaheadSamples: sample.max(48000),
+  })
+  .strict();
 export const SoundtrackStateSchema = z
   .object({
     sampleRate: z.literal(48000),
@@ -61,48 +100,10 @@ export const SoundtrackStateSchema = z
       )
       .max(100),
     clips: z.array(SoundtrackClipSchema).max(128),
-    tracks: z
-      .array(
-        z
-          .object({
-            id,
-            role: z.enum(["narration", "bgm", "sfx", "ambience"]),
-            output: id,
-            gainDb: gain,
-            mute: z.boolean(),
-            solo: z.boolean(),
-            processors: z
-              .array(
-                z
-                  .object({
-                    type: z.enum(["highpass", "lowpass"]),
-                    frequencyHz: z.number().min(20).max(20000),
-                    q: z.number().min(0.1).max(10),
-                  })
-                  .strict(),
-              )
-              .max(4),
-          })
-          .strict(),
-      )
-      .max(16),
-    buses: z.array(z.object({ id, output: id, gainDb: gain }).strict()).max(8),
+    tracks: z.array(SoundtrackTrackSchema).max(16),
+    buses: z.array(SoundtrackBusSchema).max(8),
     master: z.object({ id: z.literal("master"), gainDb: gain }).strict(),
-    ducking: z
-      .object({
-        method: z.literal("peak-window-attack-hold-release-1"),
-        sourceTrack: id,
-        targetTracks: z.array(id).min(1).max(16),
-        thresholdDb: z.number().min(-90).max(0),
-        attenuationDb: z.number().min(-60).max(0),
-        windowSamples: sample.min(1).max(4800),
-        attackSamples: sample.max(480000),
-        releaseSamples: sample.max(480000),
-        holdSamples: sample.max(480000),
-        lookaheadSamples: sample.max(48000),
-      })
-      .strict()
-      .optional(),
+    ducking: SoundtrackDuckingSchema.optional(),
   })
   .strict();
 export const SoundtrackProjectSchema = SoundtrackStateSchema.extend({

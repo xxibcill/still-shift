@@ -636,3 +636,120 @@ it("fade curves are optional per fade and linear restores the absent field", () 
     ]),
   ).toThrow(expect.objectContaining({ code: "edit-schema" }));
 });
+
+it("edits routing, tracks, filters and ducking as undoable requests", () => {
+  const input = fixture();
+  const ducking = {
+    method: "peak-window-attack-hold-release-1" as const,
+    sourceTrack: "voice",
+    targetTracks: ["music"],
+    thresholdDb: -30,
+    attenuationDb: -12,
+    windowSamples: 480,
+    attackSamples: 480,
+    releaseSamples: 4800,
+    holdSamples: 2400,
+    lookaheadSamples: 0,
+  };
+  const edited = editSoundtrackProject(input, [
+    { type: "add-bus", id: "fx", output: "master", gainDb: -3 },
+    {
+      type: "add-track",
+      id: "hits",
+      role: "sfx",
+      output: "fx",
+      gainDb: -6,
+      mute: false,
+      solo: false,
+      processors: [],
+    },
+    { type: "route", node: "music", output: "fx" },
+    {
+      type: "processors",
+      track: "music",
+      processors: [{ type: "highpass", frequencyHz: 80, q: 0.7 }],
+    },
+    { type: "ducking", ducking },
+  ]);
+  expect(input).toEqual(fixture());
+  expect(edited.tracks.map((t) => [t.id, t.output])).toEqual([
+    ["voice", "master"],
+    ["music", "fx"],
+    ["hits", "fx"],
+  ]);
+  expect(edited.buses.map((b) => b.id)).toEqual(["bus", "fx"]);
+  expect(edited.tracks[1]!.processors).toHaveLength(1);
+  expect(edited.ducking).toEqual(ducking);
+  expect(edited.history.undo).toEqual([soundtrackState(input)]);
+  // Clearing ducking, emptying a bus and removing it, then the empty track.
+  const cleared = editSoundtrackProject(edited, [
+    { type: "ducking", ducking: null },
+    { type: "route", node: "music", output: "bus" },
+    { type: "route", node: "hits", output: "bus" },
+    { type: "remove-bus", bus: "fx" },
+    { type: "remove-track", track: "hits" },
+    { type: "processors", track: "music", processors: [] },
+  ]);
+  expect("ducking" in cleared).toBe(false);
+  expect(soundtrackState(cleared)).toEqual(soundtrackState(input));
+  for (const [operations, code] of [
+    [[{ type: "route", node: "music", output: "voice" }], "routing-track"],
+    [[{ type: "route", node: "bus", output: "bus" }], "routing-cycle"],
+    [
+      [{ type: "route", node: "music", output: "nowhere" }],
+      "routing-reference",
+    ],
+    [[{ type: "route", node: "missing", output: "master" }], "edit-reference"],
+    [[{ type: "remove-bus", bus: "bus" }], "bus-in-use"],
+    [[{ type: "remove-bus", bus: "missing" }], "edit-reference"],
+    [[{ type: "remove-track", track: "voice" }], "track-in-use"],
+    [
+      [{ type: "add-bus", id: "voice", output: "master", gainDb: 0 }],
+      "duplicate-id",
+    ],
+    [
+      [{ type: "add-bus", id: "MIX", output: "master", gainDb: 0 }],
+      "reserved-id",
+    ],
+    [
+      [
+        {
+          type: "add-track",
+          id: "master",
+          role: "sfx",
+          output: "master",
+          gainDb: 0,
+          mute: false,
+          solo: false,
+          processors: [],
+        },
+      ],
+      "duplicate-id",
+    ],
+    [
+      [
+        {
+          type: "processors",
+          track: "music",
+          processors: [{ type: "notch", frequencyHz: 80, q: 1 }],
+        },
+      ],
+      "edit-schema",
+    ],
+    [
+      [{ type: "ducking", ducking: { ...ducking, targetTracks: ["voice"] } }],
+      "ducking-target",
+    ],
+  ] as const)
+    expect(() => editSoundtrackProject(input, operations)).toThrow(
+      expect.objectContaining({ code }),
+    );
+  // Tracks with clips or ducking references stay until those are removed.
+  const ducked = editSoundtrackProject(input, [{ type: "ducking", ducking }]);
+  expect(() =>
+    editSoundtrackProject(ducked, [
+      { type: "remove-clip", clip: "speech" },
+      { type: "remove-track", track: "voice" },
+    ]),
+  ).toThrow(expect.objectContaining({ code: "track-in-use" }));
+});

@@ -1,7 +1,11 @@
 import { z } from "zod";
 import {
   SoundtrackAutomationSchema,
+  SoundtrackBusSchema,
   SoundtrackClipSchema,
+  SoundtrackDuckingSchema,
+  SoundtrackProcessorsSchema,
+  SoundtrackTrackSchema,
   SoundtrackFadeCurveSchema,
   SoundtrackStateSchema,
   validateSoundtrackProject,
@@ -74,6 +78,27 @@ export const SoundtrackEditSchema = z.discriminatedUnion("type", [
     })
     .strict(),
   z.object({ type: z.literal("remove-asset"), asset: identifier }).strict(),
+  // A complete track or bus, appended so existing graph order is unchanged.
+  SoundtrackTrackSchema.extend({ type: z.literal("add-track") }),
+  z.object({ type: z.literal("remove-track"), track: identifier }).strict(),
+  SoundtrackBusSchema.extend({ type: z.literal("add-bus") }),
+  z.object({ type: z.literal("remove-bus"), bus: identifier }).strict(),
+  z
+    .object({ type: z.literal("route"), node: identifier, output: identifier })
+    .strict(),
+  z
+    .object({
+      type: z.literal("processors"),
+      track: identifier,
+      processors: SoundtrackProcessorsSchema,
+    })
+    .strict(),
+  z
+    .object({
+      type: z.literal("ducking"),
+      ducking: SoundtrackDuckingSchema.nullable(),
+    })
+    .strict(),
   z.object({ type: z.literal("undo") }).strict(),
   z.object({ type: z.literal("redo") }).strict(),
 ]);
@@ -271,6 +296,81 @@ export function editSoundtrackProject(
         });
         break;
       }
+      case "add-track":
+      case "add-bus": {
+        const added = (
+          operation.type === "add-track"
+            ? SoundtrackTrackSchema
+            : SoundtrackBusSchema
+        ).parse(
+          Object.fromEntries(
+            Object.entries(operation).filter(([key]) => key !== "type"),
+          ),
+        );
+        if (
+          [...project.tracks, ...project.buses, project.master].some(
+            (node) => node.id === added.id,
+          )
+        )
+          soundtrackFail(
+            "duplicate-id",
+            "A track or bus with this ID already exists",
+            { node: added.id },
+          );
+        if (operation.type === "add-track")
+          project.tracks.push(added as SoundtrackState["tracks"][number]);
+        else project.buses.push(added as SoundtrackState["buses"][number]);
+        break;
+      }
+      case "remove-track": {
+        const users = project.clips.filter((c) => c.track === operation.track);
+        const ducked =
+          project.ducking?.sourceTrack === operation.track ||
+          project.ducking?.targetTracks.includes(operation.track);
+        if (users.length || ducked)
+          soundtrackFail(
+            "track-in-use",
+            "Remove its clips and ducking references first",
+            { track: operation.track, clips: users.map((c) => c.id) },
+          );
+        project.tracks = project.tracks.filter((t) => t !== track);
+        break;
+      }
+      case "remove-bus": {
+        if (!project.buses.some((b) => b.id === operation.bus))
+          soundtrackFail("edit-reference", "Unknown edit target", {
+            operation,
+          });
+        const inputs = [...project.tracks, ...project.buses].filter(
+          (node) => node.output === operation.bus,
+        );
+        if (inputs.length)
+          soundtrackFail("bus-in-use", "Route the bus inputs elsewhere first", {
+            bus: operation.bus,
+            inputs: inputs.map((node) => node.id),
+          });
+        project.buses = project.buses.filter((b) => b.id !== operation.bus);
+        break;
+      }
+      case "route": {
+        const node = [...project.tracks, ...project.buses].find(
+          (n) => n.id === operation.node,
+        );
+        if (!node)
+          soundtrackFail("edit-reference", "Unknown edit target", {
+            operation,
+          });
+        // Validation rejects unknown outputs, track outputs and cycles.
+        node.output = operation.output;
+        break;
+      }
+      case "processors":
+        track!.processors = operation.processors;
+        break;
+      case "ducking":
+        if (operation.ducking) project.ducking = operation.ducking;
+        else delete project.ducking;
+        break;
       case "remove-asset": {
         const users = project.clips.filter((c) => c.asset === operation.asset);
         if (!project.assets.some((a) => a.id === operation.asset))

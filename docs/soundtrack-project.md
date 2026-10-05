@@ -225,8 +225,19 @@ resolve same-name clip/node ambiguity), `mute`, `solo`, `move`, `trim`,
 `automation`, `pan` (clip and pan; `0` removes the field, so recentring an
 unpanned clip adds no history), `fade` (clip with any of `fadeInSamples`,
 `fadeOutSamples`, `fadeInCurve` and `fadeOutCurve`; a `linear` curve removes the
-field), `add-clip`, `remove-clip`, `add-asset`, `remove-asset`,
-`undo` and `redo`. The latter two need only `type`.
+field), `add-clip`, `remove-clip`, `add-asset`, `remove-asset`, `add-track`,
+`remove-track`, `add-bus`, `remove-bus`, `route`, `processors`, `ducking`, `undo`
+and `redo`. The latter two need only `type`.
+
+Routing and DSP edits use the contract's own shapes. `add-track` and `add-bus` take
+a complete track or bus flattened beside `type` and append it, so existing graph
+order and PCM are unchanged. `remove-track` fails with `track-in-use` while clips
+or ducking reference the track; `remove-bus` fails with `bus-in-use` while any
+node outputs to it. `route` sets a track's or bus's `output`; validation rejects
+unknown outputs, track outputs and cycles. `processors` replaces a track's filter
+list. `ducking` sets the complete ducking object, or removes it with `null`.
+Rerouting into a deeper bus chain can exceed the working-memory estimate; the
+request then fails with `resource-budget` and nothing is saved.
 
 `add-clip` takes every clip field from the contract table, flattened beside
 `type`; no defaults are filled in. The clip is appended, so existing clips keep
@@ -327,8 +338,8 @@ supported; an empty or invalid number field is rejected without saving instead o
 being read as zero. After rendering, the status line shows the mix peak and warns
 when samples exceed 0 dBFS.
 Drag handles, adding clips or assets, DSP/ducking inspectors and an independent
-browser mixing engine are not provided. Add cues through a CLI/API edit; author
-DSP and ducking in JSON and validate them.
+browser mixing engine are not provided. Add cues, tracks, buses, filters and
+ducking through a CLI/API edit.
 
 **Render this revision** generates a fresh checked mix/stems and waveform data.
 Play/seek/download use that saved revision's rendered mix. An edit invalidates
