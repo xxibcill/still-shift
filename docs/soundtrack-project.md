@@ -207,7 +207,8 @@ mix recommendations.
 
 ## Shared edits and recovery
 
-`edit --revision N --operations edits.json` applies a validated batch under the
+`edit --revision N --operations edits.json` (or `--operations -` to read the JSON
+from standard input, up to 8 MB) applies a validated batch under the
 shared artifact lock, checks the current revision and atomically renames the new
 JSON. An invalid operation or a serialized next revision exceeding the 8 MB UTF-8 limit
 leaves the original file and revision unchanged. Project packaging and render snapshots

@@ -66,7 +66,7 @@ Usage:
   pnpm --silent still-shift animate --input <path> --output <path> [options]
   pnpm still-shift animate-scene --scene <prepared.json> --output <path> [--format landscape|vertical]
   pnpm still-shift soundtrack validate|inspect --project <project.json> [--json]
-  pnpm still-shift soundtrack edit --project <project.json> --revision <number> --operations <edits.json>
+  pnpm still-shift soundtrack edit --project <project.json> --revision <number> --operations <edits.json|->
   pnpm still-shift soundtrack render --project <project.json> --output-dir <fresh-dir> [--stems] [--range start:end]
   pnpm still-shift soundtrack retime --project <project.json> --revision <number> --passage <plan.json>
   pnpm still-shift soundtrack package --project <project.json> --output-dir <fresh-dir>

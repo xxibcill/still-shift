@@ -11,9 +11,26 @@ import {
   soundtrackFromPassage,
   readStoryPassage,
 } from "@still-shift/animation-engine";
+/** Operations from stdin share the 8 MB bound of every soundtrack JSON input. */
+async function readStdin() {
+  const chunks: Buffer[] = [];
+  let size = 0;
+  for await (const chunk of process.stdin) {
+    size += (chunk as Buffer).length;
+    if (size > 8_000_000)
+      throw new SoundtrackError("request-size", "Operations exceed 8 MB");
+    chunks.push(chunk as Buffer);
+  }
+  return Buffer.concat(chunks).toString("utf8");
+}
 export async function runSoundtrackCli(
   args: string[],
-  io: { stdout: (value: string) => void; stderr: (value: string) => void },
+  io: {
+    stdout: (value: string) => void;
+    stderr: (value: string) => void;
+    /** `--operations -` reads edits here; defaults to process stdin. */
+    stdin?: () => Promise<string>;
+  },
 ) {
   const [command, ...rest] = args;
   const flags = new Map<string, string>();
@@ -98,13 +115,19 @@ export async function runSoundtrackCli(
         case "inspect":
           result = await readSoundtrackProject(path);
           break;
-        case "edit":
+        case "edit": {
+          const source = required("operations");
           result = await saveSoundtrackEdits(
             path,
             revision(),
-            JSON.parse(await readFile(required("operations"), "utf8")),
+            JSON.parse(
+              source === "-"
+                ? await (io.stdin ?? readStdin)()
+                : await readFile(source, "utf8"),
+            ),
           );
           break;
+        }
         case "retime": {
           const p = await readStoryPassage(required("passage"));
           result = await retimeSoundtrackProject(path, revision(), {

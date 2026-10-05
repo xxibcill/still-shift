@@ -31,6 +31,7 @@ import {
   packageSoundtrackProject,
 } from "@still-shift/animation-engine";
 import { runCli } from "../../tools/still-shift-cli/src/cli.ts";
+import { runSoundtrackCli } from "../../tools/still-shift-cli/src/soundtrack-cli.ts";
 let root: string, project: SoundtrackProject, path: string;
 const pcm = async (file: string) => {
   const raw = file + ".raw";
@@ -1203,3 +1204,39 @@ it("renders a ten-minute ducked, filtered and bussed project within its estimate
   if (process.platform === "darwin")
     expect(rendered.peakResidentBytes).toBeLessThan(1_500_000_000);
 }, 120000);
+
+it("command edits read operations from stdin with --operations -", async () => {
+  const file = join(root, "stdin-project.json");
+  await writeFile(file, JSON.stringify({ ...project, revision: 0 }));
+  const output: string[] = [];
+  const io = {
+    stdout: (v: string) => output.push(v),
+    stderr: (v: string) => output.push(v),
+    stdin: async () =>
+      JSON.stringify([
+        { type: "gain", target: "effect", kind: "track", gainDb: -3 },
+      ]),
+  };
+  expect(
+    await runSoundtrackCli(
+      ["edit", "--project", file, "--revision", "0", "--operations", "-"],
+      io,
+    ),
+  ).toBe(0);
+  const saved = JSON.parse(output[0]!).result as SoundtrackProject;
+  expect(saved.revision).toBe(1);
+  expect(saved.tracks.find((t) => t.id === "effect")!.gainDb).toBe(-3);
+  // A real child process reads the same JSON from its standard input.
+  const child = await runProcess("sh", [
+    "-c",
+    'printf %s "$0" | "$1" --import tsx tools/still-shift-cli/src/cli.ts soundtrack edit --project "$2" --revision 1 --operations -',
+    JSON.stringify([{ type: "undo" }]),
+    process.execPath,
+    file,
+  ]);
+  expect(JSON.parse(child.stdout).result.revision).toBe(2);
+  expect(
+    (await readSoundtrackProject(file)).tracks.find((t) => t.id === "effect")!
+      .gainDb,
+  ).toBe(0);
+}, 20000);
