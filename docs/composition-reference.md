@@ -28,7 +28,7 @@ These pure functions run in Node and browsers. They validate once per compositio
 object, compile curves into identity-keyed weak caches and memoise dependencies within
 each evaluation. Treat the composition and its nested objects as immutable: replace
 the composition object after an edit. Returned states are fresh on every call.
-`COMPOSITION_EVALUATOR_VERSION` is `composition-evaluator-8`.
+`COMPOSITION_EVALUATOR_VERSION` is `composition-evaluator-20`.
 
 `evaluateComp` returns an `EvaluatedLayerTree`: scope id, time, dimensions, fps,
 floating-point RGBA background, ordered `layers` and structured `diagnostics`.
@@ -419,9 +419,9 @@ controls and versioned component providers. Legacy commerce parents must be grou
 as required by its source schema.
 
 CE4b is complete under the approved milestone split, including evaluated-state,
-assigned pixel-tier, seeking and portable export parity. CE6 owns the unchanged
-1.25× render/readback timing target and the recorded GPU timing failures; it must
-retime the current backend. Existing commerce commands retain their family renderer.
+assigned pixel-tier, seeking and portable export parity. CE6-P retains the unchanged
+1.25× render/readback timing target and the recorded GPU timing failures, deferred
+to a future version under the approved performance split. Existing commerce commands retain their family renderer.
 Use `comp export-json` followed by `comp render --backend canvas2d` or
 `comp render --backend webgl2` for explicit composition rendering.
 
@@ -495,7 +495,8 @@ structure only; use `validateComposition` for the full rules.
 | `textStyles`                     | id → text style                                    | Same fields as story `textStyles`.                                                                                    |
 | `signals`, `drivers`, `periodic` | see [motion craft](#motion-craft)                  | Composition-wide.                                                                                                     |
 | `constraints`, `textAnimators`   | see [motion craft](#motion-craft)                  | Per scope (root or precomp).                                                                                          |
-| `expressions`                    | property path → `{ source, ast? }`                 | Arrives in CE9; an empty object is allowed.                                                                           |
+| `expressions`                    | property path → `{ source, ast? }`                 | See [expressions](#expressions-ce9).                                                                                  |
+| `behaviours`                     | behaviour[] (at most 200)                          | Motion-design intent compiled to expressions; see [behaviours](#behaviours).                                          |
 | `camera2d`                       | see [2D camera](#2d-camera)                        |                                                                                                                       |
 | `metadata`                       | JSON object                                        | Passed through unchanged (registration, claims, review notes); at most 64 KiB and 64 container levels below its root. |
 
@@ -550,12 +551,23 @@ existing motion-craft ones (`curve.ts`):
 | `interpolation` | Segment ending here: `hold`, `linear`, `ease`, `bezier` (needs `bezier`) or `smooth`.                          |
 | `bezier`        | `[x1, y1, x2, y2]` handles for that segment.                                                                   |
 | `smooth`        | Monotone cubic through neighbouring keys; not allowed on the first or last key.                                |
-| `out`, `in`     | Temporal handles `{ ease, speed? }` on the segment leaving / arriving at this key. `speed` is scalar-only.     |
+| `out`, `in`     | Temporal handles `{ ease, speed?, spatialSpeed? }` on the segment leaving / arriving at this key.              |
 
-Explicit temporal `speed` is scalar-only in CE1. Use separately keyed vector
-components for independent speeds; joint vector and colour keys accept temporal
-`ease` handles. Grouped vector/colour speed semantics are a recorded CE2 follow-up in
-the [engine plan](./composition-engine-plan.md#ce2--pure-composition-evaluator).
+Temporal `speed` is the value's rate of change in units per frame:
+
+- **Scalars** (and separately keyed vector components) take one number.
+- **Vectors and colours** keyed as one value take a **tuple** with one entry per
+  dimension (CE9): pixels or scale factors per frame for `[x, y]` (or `[x, y, z]`),
+  normalised channels (0–1) per frame for `[r, g, b, a]`. A tuple of the wrong length
+  fails with `comp-key-speed-dimension`; a single number on a vector or colour fails
+  with `comp-key-speed-vector`, because one slope has no meaning across dimensions.
+  Each component then samples exactly like a separately keyed dimension with that
+  scalar speed.
+- **Spatial keys** (position keys with `spatialIn` / `spatialOut`) move along their
+  bezier path, so component tuples do not apply (`comp-key-speed-spatial`). Use
+  `spatialSpeed`: the speed along the path in arc-length pixels per frame, converted
+  to path progress using each segment's arc length. `spatialSpeed` on keys without
+  spatial tangents also fails with `comp-key-speed-spatial`.
 
 Value forms:
 
@@ -636,9 +648,14 @@ Layers of an unavailable type validate structurally and then fail with
 | `skewX`, `skewY`                        | animatable scalar, −85–85 degrees    | `0`                                                                                    |
 | `opacity`                               | animatable scalar, 0–1               | `1`                                                                                    |
 | `rotationX`, `rotationY`, `orientation` | 3D only                              | CE8                                                                                    |
-| `autoOrient`                            | `off`, `path` (CE9), `camera` (CE8)  | `off`                                                                                  |
+| `autoOrient`                            | `off`, `path`, `camera` (CE8)        | `off`                                                                                  |
 
 Three-component vectors require `threeD`.
+
+`autoOrient: "path"` (CE9) adds the clockwise direction of travel of the layer's
+position (see `heading()` in [expressions](#expressions-ce9)) to its rotation after
+expressions run, as AE does. Rotation reads (`ref`, drivers) do not include it, and
+it holds the last direction of travel while the layer is at rest.
 
 ### Blend modes
 
@@ -693,6 +710,195 @@ time is independent of that driver.
 | `periodic`      | Composition | `target` (path) **or** legacy `node` + `property`; `start`, `end`, `cue`; one of `oscillate`, `noise`; layer, blend, weight.             |
 | `constraints`   | Scope       | As in story scenes; ids name layers in the same scope. `follow-path` needs shape paths (CE5).                                            |
 | `textAnimators` | Scope       | As in story scenes; `node` is a text layer in the same scope.                                                                            |
+
+## Expressions (CE9)
+
+Expressions describe relationships and procedural motion that depend on other
+animated values during playback. They are a short text syntax that parses into a
+serialisable AST; no JavaScript is evaluated. Authoring-time logic (loops, data,
+seeded generators) belongs in builder code that emits plain composition data.
+
+```json
+{
+  "expressions": {
+    "shadow.transform.position": {
+      "source": "ref('hero.transform.position') + [12, 18]"
+    },
+    "flag.transform.rotation": { "source": "wiggle(2, 6, 7)" },
+    "bar.transform.scale.y": {
+      "source": "linear(ref('slider.transform.position.x'), 0, 100, 0, 1)"
+    }
+  }
+}
+```
+
+Keys are property paths of numbers, vectors or colours (not discrete states or
+bezier paths). One property may have one expression: a property and one of its
+components cannot both have one (`comp-expression-overlap`). Composition properties
+(`comp.camera.*`) are read-only.
+
+`ast` is optional on input. When present it must equal the AST parsed from `source`
+(`comp-expression-mismatch`). Serialized ASTs retain a 64 KiB byte bound and allow
+up to 998 JSON container levels, derived from the 500-node expression bound;
+operator argument arrays count as containers. Generic opaque payloads and metadata
+retain their separate 64-level depth bounds. `pnpm still-shift comp normalize` and
+`comp export-json --normalized true` write the canonical AST next to the source,
+for example `wiggle(2, 6, 7)` →
+`{ "call": "wiggle", "args": [{ "num": 2 }, { "num": 6 }, { "num": 7 }] }`. Other AST
+nodes are `{ bool }`, `{ str }`, `{ color: "#RRGGBBAA" }` (uppercase), `{ vec: [...] }`,
+`{ id }`, `{ op, args }` (`neg`, `!`, `?:` and the binary operators) and
+`{ member, of }`. Number literals are never negative: `-2` is `neg` of `2`.
+`printExpression(ast)` prints canonical text, and parsing it returns the same AST.
+
+### Grammar
+
+- Literals: numbers (`2`, `0.5`, `.5`, `1e-3`), vectors `[a, b]` / `[a, b, c]`,
+  colours `#RRGGBB` / `#RRGGBBAA`, `true`, `false`, single-quoted strings (only as
+  property paths, signal ids and loop modes; `\'` and `\\` escapes).
+- Operators, lowest precedence first: `a ? b : c`; `||`; `&&`; `==` `!=`;
+  `<` `<=` `>` `>=`; `+` `-`; `*` `/` `%`; unary `-` `!`; component access. Arithmetic
+  is component-wise on vectors and colours, with scalars broadcast.
+- Identifiers: `time` (seconds), `frame`, `fps`, `value`, `index` (1-based layer index
+  in its scope) and `layerCount`.
+- Component access `.x .y .z` on vectors and `.r .g .b .a` on colours only.
+- Calls to registered built-ins only. There is no assignment, declaration, loop, user
+  function, `this`, global or other member access.
+- Limits: 2,000 characters, 500 AST nodes and 64 nesting levels. Source diagnostics
+  carry the JSON path of `source` and a 1-based `column`.
+
+The canonical printer keeps readable spacing when the result fits the source limit.
+For longer output, it uses compact spacing and shorter equivalent number literals
+so accepted expressions still parse back to the same AST within 2,000 characters.
+
+Types are scalar, vec2, vec3, colour and boolean. The result must have the
+property's type (`comp-expression-type`); there is no implicit conversion.
+
+### Time and evaluation
+
+- **Root clock.** `time`, `frame` and `fps` belong to the root composition, which
+  owns `expressions`. Paths are root-relative, so `intro/hero.transform.opacity`
+  reads the instance `intro`, with its start, stretch, remap and frame rate applied.
+  Repeated instances of one source keep separate values. Time arguments are seconds
+  on the root clock; seconds are converted to frames, snapping floating-point noise to
+  integer frames.
+- **Stage.** Evaluation order per layer: keys → signals, periodic motion and drivers →
+  expressions → constraints → parenting. `value` is the property's value before its
+  expression (keys plus motion craft). Reads (`ref`, `valueAtTime`, …) return a
+  property's **expression-stage value**: keys, motion craft and expressions, without
+  constraints or parent transforms, as AE property reads are layer-space values.
+  Drivers still read full layer state.
+  An unauthored `constraintReference` inherits the expression-stage anchor on each
+  unwritten axis. Reads resolve those anchor expressions first, and the inherited
+  dependency participates in cycle validation.
+- **Dependencies.** Every path an expression reads is a dependency edge, joined to the
+  driver, constraint and parent graph. Cycles are rejected before rendering
+  (`comp-expression-cycle`), including self references and reads at earlier times:
+  changing time never removes an edge. Earlier-time reads are allowed across an
+  acyclic graph; one-argument `valueAtTime(t)` and own-key built-ins read the
+  property's pre-expression value and are not cycles.
+- **Determinism.** Evaluation is pure: random seeks equal forward play. Noise and
+  random values are seeded integer hashes. Results are clamped like motion craft
+  (opacity and colour to 0–1, effect parameters to their range); a non-finite result
+  fails with `comp-expression-value`. Node and Chromium agree within 1e-9 on
+  expression values (measured ≤ 6e-14); exports are exact on the pinned renderer.
+
+### Built-ins
+
+| Built-in                                                                                                                                                          | Result                                                                                                                                                                                                                                             |
+| ----------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `ref(path)`                                                                                                                                                       | The property's expression-stage value now.                                                                                                                                                                                                         |
+| `valueAtTime(path, t)` / `valueAtTime(t)`                                                                                                                         | At root time `t` seconds; one argument reads this property's pre-expression value.                                                                                                                                                                 |
+| `velocityAtTime(path, t)` / `velocityAtTime(t)`                                                                                                                   | Per second, from values one frame either side of `t`.                                                                                                                                                                                              |
+| `clamp(x, lo, hi)`, `mix(a, b, t)`, `min`, `max`, `pow`, `abs`, `floor`, `ceil`, `round`, `sign`, `sqrt`, `exp`, `log`, `sin`, `cos`, `tan`, `degrees`, `radians` | Component-wise maths; `lo`, `hi` and the second `min`/`max` argument may be scalars.                                                                                                                                                               |
+| `atan2(y, x)`, `step(edge, x)`, `if(c, a, b)`, `length(v)` / `length(a, b)`, `normalize(v)`, `rgba(r, g, b, a)`                                                   | Scalar and vector helpers.                                                                                                                                                                                                                         |
+| `linear`, `ease`, `easeIn`, `easeOut` `(t, tMin, tMax, v1, v2)` or `(t, v1, v2)`                                                                                  | Clamped mapping with linear, smoothstep, quadratic-in or quadratic-out progress.                                                                                                                                                                   |
+| `wiggle(freq, amp, seed = 0, octaves = 1)`                                                                                                                        | `value` plus smooth seeded noise per component; each octave doubles frequency and halves amplitude (octaves 1–8).                                                                                                                                  |
+| `noise(seed, t)`                                                                                                                                                  | Smooth seeded noise in [−1, 1].                                                                                                                                                                                                                    |
+| `random(seed, index)`                                                                                                                                             | Seeded hash in [0, 1).                                                                                                                                                                                                                             |
+| `loopIn(mode, keys = 0)`, `loopOut(mode, keys = 0)`                                                                                                               | Repeat this property's keys before the first / after the last key; modes `cycle` (default), `pingpong`, `offset`, `continue`. Motion-craft offsets at the current time are kept.                                                                   |
+| `smooth(width = 0.2, samples = 5)`                                                                                                                                | Mean of this property's pre-expression value over `width` seconds (1–64 literal samples).                                                                                                                                                          |
+| `lookAt(from, to)`                                                                                                                                                | Clockwise angle in degrees from `from` to `to` (2D).                                                                                                                                                                                               |
+| `signal(id)`                                                                                                                                                      | A composition signal at the root time.                                                                                                                                                                                                             |
+| `spring(path, frequency, damping, delay = 0)`                                                                                                                     | A damped spring following the property, `delay` seconds behind it. It starts at rest at frame 0 and integrates exactly over piecewise-linear frame intervals, so its cost grows with the frame number. Frequency (0, 30] Hz, damping ratio (0, 4]. |
+| `inertia(amplitude, frequency, decay)`                                                                                                                            | Overshoot after the latest passed key: `v · amplitude · sin(2πfτ) / e^(decay·τ)`, with the arriving velocity `v` per second and `τ` seconds since the key.                                                                                         |
+| `anticipate(amount, duration)`                                                                                                                                    | Pull-back of `amount · sin(π·phase)` against the next move during the `duration` seconds before a key that starts from rest.                                                                                                                       |
+| `rove()`                                                                                                                                                          | This property's 2D keyed path at constant speed between its first and last keys (roving keys).                                                                                                                                                     |
+| `heading(path)`                                                                                                                                                   | Clockwise direction of travel of a 2D property: the ±1 frame chord, else the last direction within 64 frames, else the first within the next 64.                                                                                                   |
+| `squash(velocity, amount, limit, aligned = false)`                                                                                                                | Area-preserving scale `[sx, sy]`: stretch `s = 1 + min(limit − 1, amount·speed)` along the travel direction and `1/s` across it (axis-weighted unless `aligned`).                                                                                  |
+
+`rove()` and `constant-speed` support joint position keys and separated `x`/`y`
+keys. Separate dimensions follow their independently eased trajectory over the
+union of axis key times; a fixed dimension stays fixed. Spring trajectories use
+sampling density based on their frequency and scope frame rate. Resolving a
+separated path is limited to 512,001 points; a path needing more fails with
+`comp-expression-value` instead of returning an undersampled trajectory.
+
+Own-key built-ins (`loopIn`, `loopOut`, `inertia`, `anticipate`, `rove`) read the
+property's authored keys in layer time and never re-enter its expression.
+`EXPRESSION_BUILTINS` exports each signature and summary.
+
+### Behaviours
+
+`behaviours` lists motion-design intent; each compiles to expressions (shown by
+`behaviourExpressions`) and is validated and baked like them. Diagnostics point at
+`behaviours[i]`.
+
+| `type`            | Fields (defaults)                                                                                                                                      | Compiles to                                                                                                                                                                                                                               |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `follow-through`  | `leader` path, `followers` (layer instances, 1–32), `property` (the leader's), `delayFrames` (3), `frequency` (2.5), `damping` (0.45), `restFrame` (0) | Follower _i_: `value + spring(leader, f, d, i·delay) − valueAtTime(leader, restFrame)`. Authored follower values are their rest pose. Each follower lags the leader directly with cumulative delay, so cost stays linear in chain length. |
+| `inertial-bounce` | `target`, `amplitude` (0.05), `frequency` (2.5), `decay` (6)                                                                                           | `value + inertia(a, f, d)`                                                                                                                                                                                                                |
+| `squash-stretch`  | `layer`, `source` (its position), `amount` (0.0004 per px/s), `limit` (1.35), `aligned`                                                                | `layer.transform.scale = value * squash(velocityAtTime(source, time), amount, limit)`                                                                                                                                                     |
+| `anticipation`    | `target`, `amount`, `durationFrames`                                                                                                                   | `value + anticipate(amount, duration)`                                                                                                                                                                                                    |
+| `auto-orient`     | `layer`, `source` (its position), `offset` (0)                                                                                                         | `layer.transform.rotation = value + heading(source) + offset`; unlike `transform.autoOrient`, rotation reads see it.                                                                                                                      |
+| `constant-speed`  | `target` (2D keyed position)                                                                                                                           | `rove()`                                                                                                                                                                                                                                  |
+| `camera-shake`    | `target`, `startFrame`, `amplitude`, `frequency` (8), `decay` per second (3), `seed` (0)                                                               | From `startFrame`: `wiggle(f, amplitude · e^(−decay·t), seed, 2)`                                                                                                                                                                         |
+| `stagger`         | `layers` (2–200), `properties` (1–8), `offsetFrames`, `order` (`forward`, `reverse`, `center-out`, `seeded`), `seed`                                   | Rank _r_ plays its own animation `r · offsetFrames` later: `valueAtTime((frame − r·offset) / fps)`.                                                                                                                                       |
+
+Behaviours and expressions together compile to at most 2,000 expressions.
+
+### Baking
+
+`pnpm --silent still-shift comp bake --input <comp.json> [--output <baked.json>]`
+replaces every expression and behaviour with keys, for inspection and for consumers
+that cannot evaluate expressions. For each targeted property (whole vectors and
+colours), it samples the expression-stage value at every integer composition frame
+and writes linear keys in layer time, dropping the middle of runs of equal values.
+Drivers and periodic motion targeting a baked property are removed because their
+contribution is in the keys. A precomp source shared by several instances is cloned
+(`<id>-baked-<n>`) before one instance is keyed. The result evaluates identically at
+every integer frame; `bakeExpressions` is the library form, and
+`evaluateStageProperty(comp, path, time)` returns the expression-stage value and
+layer time that bake and expression reads use.
+
+Bake also samples the historical clocks used by `time.echo`, including nested
+scope clocks that retain the current root time. Compatible samples become keys;
+if one layer frame needs different values, or an echo sample needs a fractional
+layer frame, bake refuses the result with `comp-bake-time`.
+Historical samples cover the echoed content and its property dependencies,
+including primitive blur inherited from groups, selected by each effect’s active
+window at the historical layer clock, and `sourceRevision` when
+`skipUnchanged` is active. Unrelated siblings and current-clock echo parameters
+do not need historical keys. Active periodic writers of `constraintReference`
+replace inherited anchor dependencies only on the axes read at that root clock.
+Delayed, lagged and temporal expression reads retain those anchor dependencies,
+because their sampled root times can leave the writer’s active window.
+
+| Code                    | Severity | Meaning                                                                                                                                                 |
+| ----------------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `comp-bake-time`        | error    | A property's layer time is not an integer (stretch other than ±1, fractional remap or echo sample), or a held/repeated layer time has different values. |
+| `comp-bake-limit`       | error    | A property would need more than 2,000 keys.                                                                                                             |
+| `comp-bake-quantized`   | warning  | Colour keys were rounded to 8-bit channels.                                                                                                             |
+| `comp-bake-history`     | warning  | A remaining delayed or lagged driver reads a baked property; values before frame 0 hold the first key.                                                  |
+| `comp-bake-auto-orient` | error    | Retained path auto-orientation differs after baking because its position history cannot be preserved.                                                   |
+
+Auto-orient (`transform.autoOrient`) is a transform switch, not an expression, and
+remains in baked output. Position expressions on these layers also sample the 64
+root frames before and after the composition, preserving the heading reader's
+boundary chord and direction search during rests. These samples obey the same
+integer and repeated-layer-time requirements. Bake verifies retained auto-orient
+rotations at every output frame, including nested instances, and refuses a result
+that changes them (`comp-bake-auto-orient`), including indirect driver reads whose
+history was not preserved.
 
 ## Property paths
 
@@ -765,38 +971,41 @@ Features that are in the contract but not yet implemented fail with
 | Shape layers, follow-path constraints, stroke properties     | CE5       |
 | Effects, `linear-srgb` compositing, `blur`                   | CE6       |
 | 3D layers, camera layers, 3D rotation, auto-orient to camera | CE8       |
-| Expressions, auto-orient along a path                        | CE9       |
 | Video, image-sequence and audio layers and assets            | CE13      |
 | Light layers                                                 | Q6        |
 
 ## Limits
 
-| Limit                                                     | Value                              |
-| --------------------------------------------------------- | ---------------------------------- |
-| Width, height                                             | 16–8,192                           |
-| `frameCount`                                              | 1–108,000                          |
-| Key frames                                                | ±216,000 (layer time)              |
-| Motion windows, periods, delays and imported curve frames | 0–216,000                          |
-| Noise and text-selector seeds                             | 0–2,147,483,647                    |
-| Keys per property                                         | 2,000                              |
-| Layers (root and all precomps)                            | 2,000                              |
-| Precomps / nesting depth                                  | 200 / 8                            |
-| Parent chain depth                                        | 32                                 |
-| Assets, markers                                           | 500 each                           |
-| Masks, effects per layer                                  | 32 each                            |
-| Path vertices                                             | 1,024                              |
-| Image sources, text states                                | 32, 12                             |
-| Text length                                               | 4,000 characters                   |
-| Signals, drivers, constraints, periodic, text animators   | 200, 500, 200, 200, 200            |
-| Expressions / expression length                           | 2,000 / 2,000 characters           |
-| Property path length                                      | 512 characters                     |
-| Metadata                                                  | 64 KiB per object                  |
-| Metadata nesting depth                                    | 64 container levels below its root |
-| Expression AST, effect parameters or shape contents       | 64 KiB per payload                 |
-| Opaque JSON nesting depth                                 | 64 container levels below its root |
-| Other numbers                                             | ±1,000,000                         |
+| Limit                                                     | Value                               |
+| --------------------------------------------------------- | ----------------------------------- |
+| Width, height                                             | 16–8,192                            |
+| `frameCount`                                              | 1–108,000                           |
+| Key frames                                                | ±216,000 (layer time)               |
+| Motion windows, periods, delays and imported curve frames | 0–216,000                           |
+| Noise and text-selector seeds                             | 0–2,147,483,647                     |
+| Keys per property                                         | 2,000                               |
+| Layers (root and all precomps)                            | 2,000                               |
+| Precomps / nesting depth                                  | 200 / 8                             |
+| Parent chain depth                                        | 32                                  |
+| Assets, markers                                           | 500 each                            |
+| Masks, effects per layer                                  | 32 each                             |
+| Path vertices                                             | 1,024                               |
+| Image sources, text states                                | 32, 12                              |
+| Text length                                               | 4,000 characters                    |
+| Signals, drivers, constraints, periodic, text animators   | 200, 500, 200, 200, 200             |
+| Expressions (authored plus compiled behaviours) / length  | 2,000 / 2,000 characters            |
+| Expression AST nodes / nesting levels                     | 500 / 64                            |
+| Behaviours                                                | 200                                 |
+| Property path length                                      | 512 characters                      |
+| Metadata                                                  | 64 KiB per object                   |
+| Metadata nesting depth                                    | 64 container levels below its root  |
+| Expression AST, effect parameters or shape contents       | 64 KiB per payload                  |
+| Expression AST JSON depth                                 | 998 container levels below its root |
+| Effect/shape opaque JSON nesting depth                    | 64 container levels below its root  |
+| Other numbers                                             | ±1,000,000                          |
 
-The same values are exported as `COMPOSITION_LIMITS`.
+The same values are exported as `COMPOSITION_LIMITS`; expression AST node, syntax
+nesting and JSON-depth bounds are exported as `EXPRESSION_LIMITS`.
 
 Composition-specific bounds also cover reused motion and typography fields: signal
 values, generator amplitudes, driver maps, temporal speeds, bezier handles, constraint
@@ -804,7 +1013,8 @@ offsets, text animation and font axes, and camera coordinates, zoom, tangents an
 These use the general numeric limit unless their field has a tighter range. Imported
 curves retain their existing 2–100 key limit and nonnegative frame convention. Metadata
 remains free-form JSON subject to its byte and nesting-depth limits. Expression ASTs,
-effect parameter objects and shape contents have the same byte and depth limits,
+effect parameter objects and shape contents share a byte limit; ASTs use their
+expression-specific JSON-depth bound and effects/shapes retain depth 64. Bounds are
 checked before recursive parsing even while those features are unavailable. Cyclic values
 are rejected as invalid JSON. Legacy story and commerce contracts
 retain their original bounds.
@@ -813,86 +1023,95 @@ retain their original bounds.
 
 ### Errors
 
-| Code                           | Meaning                                                                                                                                                    |
-| ------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `comp-schema-version`          | `schemaVersion` is not `composition-1`.                                                                                                                    |
-| `comp-schema-type`             | A value has the wrong JSON type.                                                                                                                           |
-| `comp-schema-unknown-key`      | An object has a field the contract does not define.                                                                                                        |
-| `comp-schema-value`            | A value is not one of the allowed literals or enum members.                                                                                                |
-| `comp-schema-format`           | A string does not match its format (id, colour, hash).                                                                                                     |
-| `comp-schema-range`            | A number is outside its range (including `stretch: 0`).                                                                                                    |
-| `comp-schema-union`            | A value matches none of the allowed forms, for example an unknown layer `type`.                                                                            |
-| `comp-schema`                  | Any other structural error.                                                                                                                                |
-| `comp-limit`                   | An array, string or record exceeds its size limit.                                                                                                         |
-| `comp-key-order`               | Key frames are not strictly increasing (keys and `camera2d.keys`).                                                                                         |
-| `comp-key-smooth`              | A smooth key is the first or last key.                                                                                                                     |
-| `comp-key-bezier`              | `interpolation: "bezier"` without `bezier` handles.                                                                                                        |
-| `comp-key-speed-vector`        | A temporal handle `speed` on a vector or colour property.                                                                                                  |
-| `comp-path-tangents`           | A path's tangent count differs from its vertex count.                                                                                                      |
-| `comp-path-vertex-count`       | Keys of one path property have different vertex counts.                                                                                                    |
-| `comp-vector-dimension`        | A three-component vector on a layer without `threeD`.                                                                                                      |
-| `comp-duplicate-id`            | An id is used twice in its namespace (layers and markers per scope; assets, precomps, signals, masks and effects per layer; pose names per image).         |
-| `comp-reserved-id`             | A layer or precomp uses the reserved id `comp`.                                                                                                            |
-| `comp-layer-time`              | `inPoint` is not before `outPoint`.                                                                                                                        |
-| `comp-layer-limit`             | More than 2,000 layers across the composition and its precomps.                                                                                            |
-| `comp-parent-missing`          | `parent` names no layer in the same scope.                                                                                                                 |
-| `comp-parent-cycle`            | A parent chain loops.                                                                                                                                      |
-| `comp-parent-depth`            | A parent chain is deeper than 32.                                                                                                                          |
-| `comp-matte-missing`           | `trackMatte.layer` names no layer in the same scope.                                                                                                       |
-| `comp-matte-self`              | A layer is its own track matte.                                                                                                                            |
-| `comp-matte-cycle`             | Track mattes reference each other in a loop.                                                                                                               |
-| `comp-mask-open`               | A mask path is not closed.                                                                                                                                 |
-| `comp-precomp-missing`         | A precomp layer references an unknown precomp.                                                                                                             |
-| `comp-precomp-cycle`           | A precomp contains itself directly or indirectly.                                                                                                          |
-| `comp-precomp-depth`           | Precomps nest deeper than 8.                                                                                                                               |
-| `comp-asset-missing`           | A layer or text style references an unknown asset.                                                                                                         |
-| `comp-asset-type`              | A layer or text style references an asset of the wrong type.                                                                                               |
-| `comp-crop-bounds`             | An image crop extends beyond its asset.                                                                                                                    |
-| `comp-image-registration`      | Pose registration on an image whose `fit` is not `contain`.                                                                                                |
-| `comp-state-range`             | A `state` or `stateFrom` value has no matching source or text state.                                                                                       |
-| `comp-state-mix`               | Only one of `stateFrom` and `stateMix` is set.                                                                                                             |
-| `comp-text-style-missing`      | A text layer uses an unknown text style.                                                                                                                   |
-| `comp-text-font`               | A text size above 180 without a pinned font (`fontAsset` or `style`).                                                                                      |
-| `comp-text-pinned-font`        | Spans, decorations, transitions, a text animator or `textBox` on a text layer without a pinned base font; the typography renderer shapes with its metrics. |
-| `comp-text-box-size`           | A `textBox` text layer without `size`.                                                                                                                     |
-| `comp-text-span-range`         | A span ends after the text or one of its states, or overlaps another span.                                                                                 |
-| `comp-text-span-missing`       | A decoration or text animator names a span the text layer does not have.                                                                                   |
-| `comp-text-font-axis`          | A variable-font axis value (style, span or blended animator) is outside the pinned font's range, or the font is not variable.                              |
-| `comp-text-locale`             | A text layer's locale is not recognised.                                                                                                                   |
-| `comp-text-transition`         | `transition` and `transitions` together, overlapping windows, a missing from/to state, or a count without numeric states and tabular figures.              |
-| `comp-marker-frame`            | A marker lies at or after `frameCount`.                                                                                                                    |
-| `comp-marker-duration`         | A marker's `duration` runs past `frameCount`.                                                                                                              |
-| `comp-marker-missing`          | A `cue` names no marker in the same scope.                                                                                                                 |
-| `comp-signal-missing`          | A driver, constraint, text animator or text selector names an unknown signal.                                                                              |
-| `comp-constraint-target`       | A constraint names no layer in the same scope.                                                                                                             |
-| `comp-text-animator-target`    | A text animator's `node` is not a text layer in the same scope.                                                                                            |
-| `comp-camera-depth`            | `cameraDepth` on a parented layer or inside a precomp.                                                                                                     |
-| `comp-camera-jolt`             | A camera jolt starts at or after `frameCount`.                                                                                                             |
-| `comp-camera-key-range`        | A `camera2d` key lies at or after `frameCount`.                                                                                                            |
-| `comp-format-size`             | `format` disagrees with `width` and `height`.                                                                                                              |
-| `comp-metadata-size`           | Metadata serialises to more than 64 KiB.                                                                                                                   |
-| `comp-json-size`               | An expression AST, effect parameter object or shape contents payload serialises to more than 64 KiB.                                                       |
-| `comp-json-depth`              | An opaque JSON payload nests more than 64 container levels below its root; checked before recursive JSON parsing.                                          |
-| `comp-metadata-depth`          | Metadata nests more than 64 container levels below its root; checked before recursive JSON parsing.                                                        |
-| `comp-driver-source`           | A driver has none or several of `signal`, `source` and `sum`.                                                                                              |
-| `comp-motion-cycle`            | Driver, constraint or parent dependencies form a cycle, including precomp-scoped dependencies.                                                             |
-| `comp-periodic`                | Invalid periodic window or generator, or both / neither of `target` and `node` + `property`.                                                               |
-| `comp-path-syntax`             | A property path does not match the grammar.                                                                                                                |
-| `comp-path-scope`              | A path prefix does not name a precomp layer instance at that level.                                                                                        |
-| `comp-path-layer`              | A path names no layer in its scope.                                                                                                                        |
-| `comp-path-property`           | A path names no property of its layer (including unknown mask and effect ids).                                                                             |
-| `comp-path-type`               | A driver or periodic motion targets a non-scalar property.                                                                                                 |
-| `comp-path-readonly`           | A read-only path (`comp.camera.*`) is used as a target.                                                                                                    |
-| `comp-feature-unavailable`     | A contract feature whose milestone has not landed; see [availability](#feature-availability).                                                              |
-| `comp-provider-bounds`         | Provider bounds have non-positive width or height.                                                                                                         |
-| `comp-provider-unavailable`    | Provider preparation cannot find the exact versioned id.                                                                                                   |
-| `comp-provider-duplicate`      | The renderer registry contains the same versioned id twice.                                                                                                |
-| `comp-provider-params`         | A built-in provider payload is invalid; reported during preparation.                                                                                       |
-| `comp-provider-asset`          | A provider uses an undeclared, missing or incompatible asset.                                                                                              |
-| `comp-camera-coverage`         | A persisted story image cover leaves the viewport uncovered or samples transparent pixels.                                                                 |
-| `comp-adapter-unsupported`     | A story feature is outside the current adapter slice; the path identifies it.                                                                              |
-| `comp-adapter-limit`           | Baking the story would exceed the 2,000-key limit.                                                                                                         |
-| `comp-adapter-layout-required` | A fitted backing panel requires a pinned-font measurement context; browser preparation and CLI JSON export supply it.                                      |
+| Code                               | Meaning                                                                                                                                                    |
+| ---------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `comp-schema-version`              | `schemaVersion` is not `composition-1`.                                                                                                                    |
+| `comp-schema-type`                 | A value has the wrong JSON type.                                                                                                                           |
+| `comp-schema-unknown-key`          | An object has a field the contract does not define.                                                                                                        |
+| `comp-schema-value`                | A value is not one of the allowed literals or enum members.                                                                                                |
+| `comp-schema-format`               | A string does not match its format (id, colour, hash).                                                                                                     |
+| `comp-schema-range`                | A number is outside its range (including `stretch: 0`).                                                                                                    |
+| `comp-schema-union`                | A value matches none of the allowed forms, for example an unknown layer `type`.                                                                            |
+| `comp-schema`                      | Any other structural error.                                                                                                                                |
+| `comp-limit`                       | An array, string or record exceeds its size limit.                                                                                                         |
+| `comp-key-order`                   | Key frames are not strictly increasing (keys and `camera2d.keys`).                                                                                         |
+| `comp-key-smooth`                  | A smooth key is the first or last key.                                                                                                                     |
+| `comp-key-bezier`                  | `interpolation: "bezier"` without `bezier` handles.                                                                                                        |
+| `comp-key-speed-vector`            | A temporal handle `speed` on a vector or colour property.                                                                                                  |
+| `comp-path-tangents`               | A path's tangent count differs from its vertex count.                                                                                                      |
+| `comp-path-vertex-count`           | Keys of one path property have different vertex counts.                                                                                                    |
+| `comp-vector-dimension`            | A three-component vector on a layer without `threeD`.                                                                                                      |
+| `comp-duplicate-id`                | An id is used twice in its namespace (layers and markers per scope; assets, precomps, signals, masks and effects per layer; pose names per image).         |
+| `comp-reserved-id`                 | A layer or precomp uses the reserved id `comp`.                                                                                                            |
+| `comp-layer-time`                  | `inPoint` is not before `outPoint`.                                                                                                                        |
+| `comp-layer-limit`                 | More than 2,000 layers across the composition and its precomps.                                                                                            |
+| `comp-parent-missing`              | `parent` names no layer in the same scope.                                                                                                                 |
+| `comp-parent-cycle`                | A parent chain loops.                                                                                                                                      |
+| `comp-parent-depth`                | A parent chain is deeper than 32.                                                                                                                          |
+| `comp-matte-missing`               | `trackMatte.layer` names no layer in the same scope.                                                                                                       |
+| `comp-matte-self`                  | A layer is its own track matte.                                                                                                                            |
+| `comp-matte-cycle`                 | Track mattes reference each other in a loop.                                                                                                               |
+| `comp-mask-open`                   | A mask path is not closed.                                                                                                                                 |
+| `comp-precomp-missing`             | A precomp layer references an unknown precomp.                                                                                                             |
+| `comp-precomp-cycle`               | A precomp contains itself directly or indirectly.                                                                                                          |
+| `comp-precomp-depth`               | Precomps nest deeper than 8.                                                                                                                               |
+| `comp-asset-missing`               | A layer or text style references an unknown asset.                                                                                                         |
+| `comp-asset-type`                  | A layer or text style references an asset of the wrong type.                                                                                               |
+| `comp-crop-bounds`                 | An image crop extends beyond its asset.                                                                                                                    |
+| `comp-image-registration`          | Pose registration on an image whose `fit` is not `contain`.                                                                                                |
+| `comp-state-range`                 | A `state` or `stateFrom` value has no matching source or text state.                                                                                       |
+| `comp-state-mix`                   | Only one of `stateFrom` and `stateMix` is set.                                                                                                             |
+| `comp-text-style-missing`          | A text layer uses an unknown text style.                                                                                                                   |
+| `comp-text-font`                   | A text size above 180 without a pinned font (`fontAsset` or `style`).                                                                                      |
+| `comp-text-pinned-font`            | Spans, decorations, transitions, a text animator or `textBox` on a text layer without a pinned base font; the typography renderer shapes with its metrics. |
+| `comp-text-box-size`               | A `textBox` text layer without `size`.                                                                                                                     |
+| `comp-text-span-range`             | A span ends after the text or one of its states, or overlaps another span.                                                                                 |
+| `comp-text-span-missing`           | A decoration or text animator names a span the text layer does not have.                                                                                   |
+| `comp-text-font-axis`              | A variable-font axis value (style, span or blended animator) is outside the pinned font's range, or the font is not variable.                              |
+| `comp-text-locale`                 | A text layer's locale is not recognised.                                                                                                                   |
+| `comp-text-transition`             | `transition` and `transitions` together, overlapping windows, a missing from/to state, or a count without numeric states and tabular figures.              |
+| `comp-marker-frame`                | A marker lies at or after `frameCount`.                                                                                                                    |
+| `comp-marker-duration`             | A marker's `duration` runs past `frameCount`.                                                                                                              |
+| `comp-marker-missing`              | A `cue` names no marker in the same scope.                                                                                                                 |
+| `comp-signal-missing`              | A driver, constraint, text animator or text selector names an unknown signal.                                                                              |
+| `comp-constraint-target`           | A constraint names no layer in the same scope.                                                                                                             |
+| `comp-text-animator-target`        | A text animator's `node` is not a text layer in the same scope.                                                                                            |
+| `comp-camera-depth`                | `cameraDepth` on a parented layer or inside a precomp.                                                                                                     |
+| `comp-camera-jolt`                 | A camera jolt starts at or after `frameCount`.                                                                                                             |
+| `comp-camera-key-range`            | A `camera2d` key lies at or after `frameCount`.                                                                                                            |
+| `comp-format-size`                 | `format` disagrees with `width` and `height`.                                                                                                              |
+| `comp-metadata-size`               | Metadata serialises to more than 64 KiB.                                                                                                                   |
+| `comp-json-size`                   | An expression AST, effect parameter object or shape contents payload serialises to more than 64 KiB.                                                       |
+| `comp-json-depth`                  | An opaque JSON payload nests more than 64 container levels below its root; checked before recursive JSON parsing.                                          |
+| `comp-metadata-depth`              | Metadata nests more than 64 container levels below its root; checked before recursive JSON parsing.                                                        |
+| `comp-driver-source`               | A driver has none or several of `signal`, `source` and `sum`.                                                                                              |
+| `comp-motion-cycle`                | Driver, constraint or parent dependencies form a cycle, including precomp-scoped dependencies.                                                             |
+| `comp-periodic`                    | Invalid periodic window or generator, or both / neither of `target` and `node` + `property`.                                                               |
+| `comp-expression-syntax`           | Expression text does not match the grammar, including unknown identifiers. Carries a 1-based `column`.                                                     |
+| `comp-expression-unknown-function` | An expression calls a name that is not a registered built-in. Carries `column`.                                                                            |
+| `comp-expression-type`             | Operand, argument or result types do not fit (or the target is discrete or a path). Carries `column` for source errors.                                    |
+| `comp-expression-limit`            | More than 2,000 characters, 500 AST nodes or 64 nesting levels, or a literal argument outside its bound. Carries `column`.                                 |
+| `comp-expression-mismatch`         | A supplied `ast` differs from the AST parsed from `source`; the message gives the canonical form.                                                          |
+| `comp-expression-cycle`            | Expression reads form a cycle, alone or with drivers, constraints, parents or auto-orient; reads at other times do not break a cycle.                      |
+| `comp-expression-overlap`          | Two expressions or behaviours target one property, or a property and one of its components.                                                                |
+| `comp-key-speed-dimension`         | A vector or colour speed tuple's length differs from the value's dimensions, or a path key has a tuple.                                                    |
+| `comp-key-speed-spatial`           | A component speed tuple on spatial keys, or `spatialSpeed` on keys without spatial tangents.                                                               |
+| `comp-path-syntax`                 | A property path does not match the grammar.                                                                                                                |
+| `comp-path-scope`                  | A path prefix does not name a precomp layer instance at that level.                                                                                        |
+| `comp-path-layer`                  | A path names no layer in its scope.                                                                                                                        |
+| `comp-path-property`               | A path names no property of its layer (including unknown mask and effect ids).                                                                             |
+| `comp-path-type`                   | A driver or periodic motion targets a non-scalar property.                                                                                                 |
+| `comp-path-readonly`               | A read-only path (`comp.camera.*`) is used as a target.                                                                                                    |
+| `comp-feature-unavailable`         | A contract feature whose milestone has not landed; see [availability](#feature-availability).                                                              |
+| `comp-provider-bounds`             | Provider bounds have non-positive width or height.                                                                                                         |
+| `comp-provider-unavailable`        | Provider preparation cannot find the exact versioned id.                                                                                                   |
+| `comp-provider-duplicate`          | The renderer registry contains the same versioned id twice.                                                                                                |
+| `comp-provider-params`             | A built-in provider payload is invalid; reported during preparation.                                                                                       |
+| `comp-provider-asset`              | A provider uses an undeclared, missing or incompatible asset.                                                                                              |
+| `comp-camera-coverage`             | A persisted story image cover leaves the viewport uncovered or samples transparent pixels.                                                                 |
+| `comp-adapter-unsupported`         | A story feature is outside the current adapter slice; the path identifies it.                                                                              |
+| `comp-adapter-limit`               | Baking the story would exceed the 2,000-key limit.                                                                                                         |
+| `comp-adapter-layout-required`     | A fitted backing panel requires a pinned-font measurement context; browser preparation and CLI JSON export supply it.                                      |
 
 ### Warnings
 
@@ -909,12 +1128,14 @@ retain their original bounds.
 Evaluation uses `PassageError` and `passageDiagnostics`, with the same code, severity,
 message and path shape as contract validation.
 
-| Code                       | Meaning                                                                                                           |
-| -------------------------- | ----------------------------------------------------------------------------------------------------------------- |
-| `comp-evaluation-time`     | Root time is nonfinite or outside ±216,000 frames, or stretch/remap produces nonfinite local time.                |
-| `comp-evaluation-limit`    | A call exceeds 20,000 evaluated layer instances.                                                                  |
-| `comp-constraint-singular` | A constraint needs the inverse of a collapsed parent or a noncollapsed contact edge.                              |
-| `comp-text-layout-missing` | Text bounds were not supplied: a warning for inspection, an error when required by a bounds-dependent constraint. |
+| Code                       | Meaning                                                                                                            |
+| -------------------------- | ------------------------------------------------------------------------------------------------------------------ |
+| `comp-evaluation-time`     | Root time is nonfinite or outside ±216,000 frames, or stretch/remap produces nonfinite local time.                 |
+| `comp-evaluation-limit`    | A call exceeds 20,000 evaluated layer instances, or 4,000,000 dependency steps across time-shifted reads.          |
+| `comp-expression-value`    | An expression produced a non-finite value, or a built-in received an out-of-range argument (for example `spring`). |
+| `comp-expression-cycle`    | A runtime guard for expression cycles; validation reports cycles first.                                            |
+| `comp-constraint-singular` | A constraint needs the inverse of a collapsed parent or a noncollapsed contact edge.                               |
+| `comp-text-layout-missing` | Text bounds were not supplied: a warning for inspection, an error when required by a bounds-dependent constraint.  |
 
 ### Gaussian effect stack (CE6 dependency slice)
 

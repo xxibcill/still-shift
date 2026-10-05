@@ -1,7 +1,9 @@
 import { z } from "zod";
+import { TemporalHandleSchema } from "../motion-craft.ts";
 import { compositionCurveFields } from "./curves.ts";
 import {
   COMPOSITION_LIMITS,
+  bounded,
   compositionColor,
   finite,
   keyFrame,
@@ -10,23 +12,42 @@ import {
   vec3,
 } from "./primitives.ts";
 
+type Handle =
+  | {
+      speed?: number | number[] | undefined;
+      spatialSpeed?: number | undefined;
+    }
+  | undefined;
 type KeyLike = {
   frame: number;
   smooth?: boolean | undefined;
   interpolation?: string | undefined;
   bezier?: unknown;
-  in?: { speed?: number | undefined } | undefined;
-  out?: { speed?: number | undefined } | undefined;
+  spatialIn?: unknown;
+  spatialOut?: unknown;
+  in?: Handle;
+  out?: Handle;
 };
+
+/**
+ * Temporal handles on vector and colour keys (CE9). `speed` is a tuple with one
+ * component per dimension (pixels, scale factors or normalised channels per frame);
+ * `spatialSpeed` is the speed along a spatial path in arc-length pixels per frame.
+ */
+export const GroupedTemporalHandleSchema = TemporalHandleSchema.extend({
+  speed: z.union([bounded, z.array(bounded).min(2).max(4)]).optional(),
+  spatialSpeed: bounded.optional(),
+});
 
 /**
  * Key rules shared by every keyed property. A key's `interpolation`, `easing` and
  * `bezier` describe the segment that ends at that key; `out` shapes the segment that
  * leaves it and `in` the segment that arrives, as in `curve.ts`.
  */
-function checkKeys(scalar: boolean) {
+function checkKeys(scalar: boolean, dimensions?: number) {
   return (keys: KeyLike[], ctx: z.RefinementCtx) => {
     const fail = reporter(ctx);
+    const spatial = keys.some((key) => key.spatialIn || key.spatialOut);
     keys.forEach((key, i) => {
       if (i && key.frame <= keys[i - 1]!.frame)
         fail("comp-key-order", [i, "frame"], "key frames must increase");
@@ -46,27 +67,59 @@ function checkKeys(scalar: boolean) {
           "bezier interpolation requires bezier handles",
         );
       if (!scalar)
-        for (const side of ["in", "out"] as const)
-          if (key[side]?.speed !== undefined)
+        for (const side of ["in", "out"] as const) {
+          const speed = key[side]?.speed;
+          if (typeof speed === "number")
             fail(
               "comp-key-speed-vector",
               [i, side, "speed"],
-              "temporal handle speed applies to scalar properties only; animate components separately",
+              "a vector or colour speed is a tuple with one value per dimension",
             );
+          else if (Array.isArray(speed) && spatial)
+            fail(
+              "comp-key-speed-spatial",
+              [i, side, "speed"],
+              "keys with spatial tangents move along their path; use spatialSpeed",
+            );
+          else if (Array.isArray(speed) && speed.length !== dimensions)
+            fail(
+              "comp-key-speed-dimension",
+              [i, side, "speed"],
+              dimensions
+                ? `speed needs ${dimensions} components to match the value`
+                : "this property does not accept grouped speed",
+            );
+          if (key[side]?.spatialSpeed !== undefined && !spatial)
+            fail(
+              "comp-key-speed-spatial",
+              [i, side, "spatialSpeed"],
+              "spatialSpeed applies to keys with spatial tangents",
+            );
+        }
     });
   };
 }
 
-function keyed<T extends z.ZodType>(
-  value: T,
-  options: { scalar?: boolean; spatial?: z.ZodType } = {},
-) {
+type KeyedOptions = {
+  scalar?: boolean;
+  spatial?: z.ZodType;
+  /** Components of a vector or colour value, for grouped speed tuples. */
+  dimensions?: number;
+};
+
+function keyed<T extends z.ZodType>(value: T, options: KeyedOptions = {}) {
   const spatial = options.spatial
     ? {
         spatialIn: options.spatial.optional(),
         spatialOut: options.spatial.optional(),
       }
     : {};
+  const handles = options.scalar
+    ? {}
+    : {
+        in: GroupedTemporalHandleSchema.optional(),
+        out: GroupedTemporalHandleSchema.optional(),
+      };
   return z
     .object({
       keys: z
@@ -76,13 +129,14 @@ function keyed<T extends z.ZodType>(
               frame: keyFrame,
               value,
               ...compositionCurveFields,
+              ...handles,
               ...spatial,
             })
             .strict(),
         )
         .min(1)
         .max(COMPOSITION_LIMITS.maxKeys)
-        .superRefine(checkKeys(options.scalar ?? false)),
+        .superRefine(checkKeys(options.scalar ?? false, options.dimensions)),
     })
     .strict();
 }
@@ -90,12 +144,14 @@ function keyed<T extends z.ZodType>(
 /** A fixed value or `{ keys: [...] }`. */
 export const animatable = <T extends z.ZodType>(
   value: T,
-  options: { scalar?: boolean; spatial?: z.ZodType } = {},
+  options: KeyedOptions = {},
 ) => z.union([value, keyed(value, options)]);
 
 export const animatableScalar = (value: z.ZodNumber = finite) =>
   animatable(value, { scalar: true });
-export const AnimatableColorSchema = animatable(compositionColor);
+export const AnimatableColorSchema = animatable(compositionColor, {
+  dimensions: 4,
+});
 
 /**
  * A vector as one value (`[x, y]`, keyed together) or as separate dimensions
@@ -118,8 +174,14 @@ export const animatableVector = (
   return z.union([
     two,
     three,
-    keyed(two, options.spatial ? { spatial: vec2 } : {}),
-    keyed(three, options.spatial ? { spatial: vec3 } : {}),
+    keyed(two, {
+      dimensions: 2,
+      ...(options.spatial ? { spatial: vec2 } : {}),
+    }),
+    keyed(three, {
+      dimensions: 3,
+      ...(options.spatial ? { spatial: vec3 } : {}),
+    }),
     separated(component),
   ]);
 };

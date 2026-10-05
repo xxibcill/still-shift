@@ -15,7 +15,13 @@ type Evaluator = {
 
 const root = resolve(import.meta.dirname, "../..");
 const fixtures = await Promise.all(
-  ["ce1/first-slice", "ce1/every-field", "ce2/timing"].map(async (name) => ({
+  [
+    "ce1/first-slice",
+    "ce1/every-field",
+    "ce2/timing",
+    "ce9/overlap-demo",
+    "ce9/built-ins",
+  ].map(async (name) => ({
     name,
     comp: JSON.parse(
       await readFile(

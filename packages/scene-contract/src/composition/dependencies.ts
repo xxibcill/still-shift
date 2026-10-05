@@ -1,5 +1,18 @@
 import type { Composition, CompositionScope } from "./composition.ts";
+import {
+  implicitAnchorDependencies,
+  layerNodeOf,
+  segmentKey,
+  segmentsOverlap,
+  type CompiledExpression,
+} from "./expressions.ts";
+import type { CompositionLayer } from "./layers.ts";
 import type { IssueReporter } from "./primitives.ts";
+import {
+  parsePropertyPath,
+  type PropertyPath,
+  type PropertyPathSegment,
+} from "./property-path.ts";
 import {
   isResolvedProperty,
   precompsById,
@@ -7,13 +20,21 @@ import {
 } from "./resolve.ts";
 
 type Path = (string | number)[];
-type Dependency = { source: string; path: Path };
+/** `expression` marks edges from expression reads, behaviours and auto-orient. */
+type Dependency = { source: string; path: Path; expression?: boolean };
 type Graph = Map<string, Dependency[]>;
 type InstanceGraph = {
   graph: Graph;
   comp: Composition;
   clocks: Set<string>;
   expanded: Set<string>;
+  /** Called once for every precomp-instance layer node that joins the graph. */
+  onLayer?: (
+    node: string,
+    route: string[],
+    layer: CompositionLayer,
+    path: Path,
+  ) => void;
 };
 
 function addDependency(
@@ -21,9 +42,12 @@ function addDependency(
   target: string,
   source: string,
   path: Path,
+  expression = false,
 ) {
   const dependencies = graph.get(target) ?? [];
-  dependencies.push({ source, path });
+  dependencies.push(
+    expression ? { source, path, expression } : { source, path },
+  );
   graph.set(target, dependencies);
 }
 
@@ -108,6 +132,7 @@ function addInstanceDependencies(
     if (!layer) continue;
     const path = [...base, "layers", scope.layers.indexOf(layer)];
     addDependency(graph, node, `${prefix}comp.time`, path);
+    context.onLayer?.(node, route, layer, [...path, "transform", "autoOrient"]);
     if (layer.type === "precomp")
       addDependency(graph, `${node}.timeRemap`, `${prefix}comp.time`, path);
     for (const dependency of graph.get(`${templatePrefix}${id}`) ?? []) {
@@ -131,6 +156,7 @@ function driverProperty(comp: Composition, path: string) {
     node,
     scope: resolved.scope,
     layerId: resolved.layer.id,
+    segments: (parsePropertyPath(resolved.path) as PropertyPath).segments,
     timeNode:
       resolved.layer.type === "precomp" && resolved.path.endsWith(".timeRemap")
         ? `${node}.timeRemap`
@@ -138,13 +164,8 @@ function driverProperty(comp: Composition, path: string) {
   };
 }
 
-function addDriverDependencies(graph: Graph, comp: Composition) {
-  const context: InstanceGraph = {
-    graph,
-    comp,
-    clocks: new Set(),
-    expanded: new Set(),
-  };
+function addDriverDependencies(context: InstanceGraph) {
+  const { graph, comp } = context;
   const property = (path: string) => {
     const resolved = driverProperty(comp, path);
     if (resolved)
@@ -158,6 +179,8 @@ function addDriverDependencies(graph: Graph, comp: Composition) {
       const resolved = property(source);
       if (!resolved) return;
       addDependency(graph, target.node, resolved.node, path);
+      // Expression reads see a layer's keyed and motion-craft stage, without constraints.
+      addDependency(graph, `${target.node}@stage`, resolved.node, path);
       if (target.timeNode)
         addDependency(graph, target.timeNode, resolved.node, path);
     };
@@ -184,13 +207,17 @@ function reportCycles(graph: Graph, fail: IssueReporter) {
           ...activeDependencies.slice(cycleStart),
           dependency,
         ];
+        const expression = cycleDependencies.findLast(
+          (edge) => edge.expression,
+        );
         const reportedDependency =
+          expression ??
           cycleDependencies.findLast((edge) => edge.path[0] === "drivers") ??
           dependency;
         fail(
-          "comp-motion-cycle",
+          expression ? "comp-expression-cycle" : "comp-motion-cycle",
           reportedDependency.path,
-          `motion dependencies form a cycle: ${[...active.slice(cycleStart), dependency.source].join(" → ")}`,
+          `${expression ? "expression" : "motion"} dependencies form a cycle: ${[...active.slice(cycleStart), dependency.source].join(" → ")}`,
         );
       } else {
         activeDependencies.push(dependency);
@@ -205,16 +232,136 @@ function reportCycles(graph: Graph, fail: IssueReporter) {
   for (const layer of graph.keys()) visit(layer);
 }
 
+const POSITION: PropertyPathSegment[] = [
+  { name: "transform" },
+  { name: "position" },
+];
+
+/**
+ * Expression edges work per property. `L#segments` is the expression-stage value of a
+ * property, `L@stage` the layer's keyed and motion-craft values before expressions,
+ * and `L` the full layer state (constraints, parents) that drivers and constraints
+ * read. A read depends on the stage and on every expression overlapping it. Time is
+ * ignored: reading another time keeps the edge.
+ */
+function addExpressionDependencies(
+  context: InstanceGraph,
+  expressions: CompiledExpression[],
+) {
+  const { graph, comp } = context;
+  const targets = new Map<
+    string,
+    { segments: PropertyPathSegment[]; origin: Path }[]
+  >();
+  for (const expression of expressions) {
+    const node = layerNodeOf(expression.target.path);
+    const list = targets.get(node) ?? [];
+    list.push({
+      segments: expression.target.path.segments,
+      origin: expression.entry.origin,
+    });
+    targets.set(node, list);
+  }
+  const readNodes = new Set<string>();
+  const referenceWrites = new Map<string, boolean[]>();
+  const markReference = (node: string, segments: PropertyPathSegment[]) => {
+    if (segments[0]!.name !== "constraintReference") return;
+    const axes = referenceWrites.get(node) ?? [false, false];
+    const axis = segments[1]?.name;
+    if (axis !== "y") axes[0] = true;
+    if (axis !== "x") axes[1] = true;
+    referenceWrites.set(node, axes);
+  };
+  for (const expression of expressions)
+    markReference(
+      layerNodeOf(expression.target.path),
+      expression.target.path.segments,
+    );
+  for (const driver of comp.drivers ?? []) {
+    const property = driverProperty(comp, driver.target);
+    if (property) markReference(property.node, property.segments);
+  }
+  // Periodic writers can be inactive at a read time, so they do not remove the edge.
+  const readNode = (path: PropertyPath, layer: CompositionLayer) => {
+    const node = layerNodeOf(path);
+    if (layer.type === "precomp" && path.segments[0]!.name === "timeRemap")
+      return `${node}.timeRemap`;
+    const name = `${node}#${segmentKey(path.segments)}`;
+    if (readNodes.has(name)) return name;
+    readNodes.add(name);
+    const prefix = path.scope.length ? `${path.scope.join("/")}/` : "";
+    addDependency(graph, name, `${node}@stage`, []);
+    if (prefix) addDependency(graph, `${node}@stage`, `${prefix}comp.time`, []);
+    for (const segments of implicitAnchorDependencies(
+      layer,
+      path.segments,
+      referenceWrites.get(node) ?? [],
+    ))
+      addDependency(graph, name, readNode({ ...path, segments }, layer), []);
+    for (const target of targets.get(node) ?? []) {
+      const source = `${node}#${segmentKey(target.segments)}`;
+      if (source !== name && segmentsOverlap(target.segments, path.segments))
+        addDependency(graph, name, source, target.origin, true);
+    }
+    return name;
+  };
+  const autoOrient = (
+    node: string,
+    route: string[],
+    layer: CompositionLayer,
+    path: Path,
+  ) => {
+    if (layer.transform?.autoOrient !== "path") return;
+    const position = readNode(
+      { scope: route, layer: layer.id, segments: POSITION },
+      layer,
+    );
+    addDependency(graph, node, position, path, true);
+  };
+  context.onLayer = autoOrient;
+  comp.layers.forEach((layer, i) =>
+    autoOrient(layer.id, [], layer, ["layers", i, "transform", "autoOrient"]),
+  );
+
+  for (const expression of expressions) {
+    const { path, resolved } = expression.target;
+    const origin = expression.entry.origin;
+    addInstanceDependencies(context, path.scope, path.layer);
+    const node = layerNodeOf(path);
+    const target = readNode(path, resolved.layer!);
+    addDependency(graph, node, target, origin, true);
+    for (const read of expression.reads) {
+      if (!read.resolved.layer) continue; // composition camera: no dependencies
+      addInstanceDependencies(context, read.path.scope, read.path.layer);
+      addDependency(
+        graph,
+        target,
+        readNode(read.path, read.resolved.layer),
+        origin,
+        true,
+      );
+    }
+  }
+}
+
 /** Sources read evaluated layer state, as in the existing motion-craft model. */
 export function checkMotionDependencies(
   comp: Composition,
   fail: IssueReporter,
+  expressions: CompiledExpression[] = [],
 ) {
   const graph: Graph = new Map();
   addScopeDependencies(graph, comp, "", []);
   comp.precomps?.forEach((scope, i) =>
     addScopeDependencies(graph, scope, `@${scope.id}/`, ["precomps", i]),
   );
-  addDriverDependencies(graph, comp);
+  const context: InstanceGraph = {
+    graph,
+    comp,
+    clocks: new Set(),
+    expanded: new Set(),
+  };
+  addExpressionDependencies(context, expressions);
+  addDriverDependencies(context);
   reportCycles(graph, fail);
 }

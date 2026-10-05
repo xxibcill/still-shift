@@ -1,0 +1,127 @@
+{
+  "version": "pr-conflict-resolution-1",
+  "date": "2026-10-04",
+  "pullRequest": "https://github.com/xxibcill/still-shift/pull/32",
+  "branch": "codex/composition-ce9",
+  "parents": {
+    "prHead": "a0708ba8f7b432793f006005a0c90fbb427a2308",
+    "main": "34137807140dab0b1ce673abf8a0b8553b2d7c5e"
+  },
+  "strategy": "Merge main into the PR branch without rewriting history.",
+  "conflicts": [
+    {
+      "file": "package.json",
+      "resolution": "Retain both composition-expressions and composition-provider-typography in pnpm test."
+    },
+    {
+      "file": "packages/renderer-core/src/composition/evaluate/evaluate.ts",
+      "resolution": "Use composition-evaluator-22 for the combined CE9 expression evaluator and main exposure correctness fixes."
+    },
+    {
+      "file": "packages/renderer-core/src/composition/render/webgl2.ts",
+      "resolution": "Use composition-webgl2-0.36.1 for the combined CE6 optimizations and main renderer correctness fixes."
+    }
+  ],
+  "autoMergedChanges": "Reviewed the exposure, provider-raster, appearance, mask-blur, flow-color, adapter, documentation and regression-test changes inherited from main.",
+  "documentation": "Keep imported adapter support documentation and align it with the existing CE6-P performance deferral.",
+  "environment": {
+    "platform": "darwin-arm64",
+    "node": "22.23.1",
+    "pnpm": "10.29.3",
+    "python": "3.12.11",
+    "playwright": "1.62.1",
+    "chromiumRevision": "1234",
+    "ffmpeg": "8.0.1",
+    "softwareProfile": "chromium-software-2",
+    "hardwareRenderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M5 Pro, Unspecified Version)"
+  },
+  "verification": [
+    {
+      "command": "pnpm check:fast",
+      "status": "passed",
+      "exitCode": 0
+    },
+    {
+      "command": "pnpm toolchain:check",
+      "status": "passed",
+      "exitCode": 0
+    },
+    {
+      "command": "pnpm test:browser:composition-evaluator",
+      "status": "passed",
+      "exitCode": 0
+    },
+    {
+      "command": "pnpm test:browser:composition-expressions",
+      "status": "passed",
+      "exitCode": 0
+    },
+    {
+      "command": "pnpm test:browser:composition-webgl",
+      "status": "passed",
+      "exitCode": 0
+    },
+    {
+      "command": "pnpm test:browser:composition-exposure",
+      "status": "passed",
+      "exitCode": 0
+    },
+    {
+      "command": "pnpm test:browser:composition-provider-typography",
+      "status": "passed",
+      "exitCode": 0
+    },
+    {
+      "command": "pnpm test:browser:composition-provider-typography --hardware",
+      "status": "passed",
+      "exitCode": 0
+    },
+    {
+      "command": "pnpm test:browser:composition-webgl-export",
+      "status": "passed",
+      "exitCode": 0
+    },
+    {
+      "command": "pnpm test:browser:composition-baselines",
+      "status": "passed",
+      "exitCode": 0
+    }
+  ],
+  "results": {
+    "unitTests": 1404,
+    "unitFiles": 127,
+    "maximumNodeBrowserEvaluatorError": 5.684341886080802e-14,
+    "expressionBaking": "90 overlap-demo and 60 built-ins frames match baked frames and random seeks on each backend.",
+    "expressionExports": "Repeated and baked MP4s are byte-identical on Canvas and WebGL.",
+    "exposureExports": "Native exposure and indexed exposure each export 60 frames to two byte-identical MP4s.",
+    "providerTypography": "Numeric and rich typography each pass 5 frames for layer/group/precomp on both backends in pinned software and hardware runs.",
+    "webglExports": "echo, generators and exposure each pass 60 frames; providers passes 24. CLI, repeated MP4, raw/PNG, encoded preview, Lab backend switching and overwrite checks pass.",
+    "frozenBaselines": {
+      "items": 176,
+      "frames": 36061,
+      "seconds": 270.78,
+      "status": "all frame hashes match committed darwin-arm64 baseline"
+    }
+  },
+  "limits": {
+    "notRerun": [
+      "full pnpm check/check:all",
+      "runtime/integration/Python suites",
+      "strict WebGL family performance matrices",
+      "full family hardware audits"
+    ],
+    "baselinesRegenerated": false,
+    "performance": "CE6-P remains deferred; no performance tuning or acceptance claim.",
+    "ce6AuditRecord": "205f413 remains separate and undelivered."
+  },
+  "githubActionsEnabled": false,
+  "primaryCheckout": "Existing dirty files and untracked research/review material preserved; resolution performed in an isolated managed worktree.",
+  "delivery": {
+    "mergeCommit": "05033c88004298378a71a953201c416a16706549",
+    "status": "pushed",
+    "mergeable": "MERGEABLE",
+    "mergeStateStatus": "CLEAN",
+    "isDraft": false,
+    "note": "GitHub state verified after pushing the merge commit; this documentation-only commit records that confirmation."
+  }
+}

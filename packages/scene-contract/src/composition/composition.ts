@@ -31,6 +31,8 @@ import {
   size2,
 } from "./primitives.ts";
 import { validateCompositionSemantics } from "./validate.ts";
+import { CompositionBehaviourSchema } from "./behaviours.ts";
+import { EXPRESSION_LIMITS } from "./expression-ast.ts";
 
 const L = COMPOSITION_LIMITS;
 const frame = compFrame;
@@ -159,7 +161,13 @@ export { Camera2dSchema } from "./motion.ts";
 export const ExpressionSchema = z
   .object({
     source: z.string().min(1).max(L.maxExpressionLength),
-    ast: boundedJson(z.json()).optional(),
+    ast: boundedJson(z.json(), {
+      bytes: L.maxJsonBytes,
+      depth: EXPRESSION_LIMITS.maxJsonDepth,
+      sizeCode: "comp-json-size",
+      depthCode: "comp-json-depth",
+      label: "expression AST",
+    }).optional(),
   })
   .strict();
 
@@ -218,6 +226,11 @@ const compositionShape = z
         message: `at most ${L.maxExpressions} expressions`,
         params: { diagnosticCode: "comp-limit" },
       })
+      .optional(),
+    /** CE9 motion behaviours; each compiles to expressions. */
+    behaviours: z
+      .array(CompositionBehaviourSchema)
+      .max(L.maxBehaviours)
       .optional(),
     camera2d: Camera2dSchema.optional(),
     metadata: metadata.optional(),

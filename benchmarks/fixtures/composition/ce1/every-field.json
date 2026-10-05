@@ -182,6 +182,7 @@
     }
   ],
   "expressions": {},
+  "behaviours": [],
   "camera2d": {
     "keys": [
       {
