@@ -132,6 +132,15 @@
             ></textarea></label
           ><button>Save ducking</button>
         </form>
+        <form id="limiter-edit">
+          <label
+            >Master limiter JSON (empty removes it; mix only)<textarea
+              id="limiter"
+              rows="4"
+              placeholder='{"ceilingDb": -1, "lookaheadSamples": 480, "releaseSamples": 4800}'
+            ></textarea></label
+          ><button>Save limiter</button>
+        </form>
         <form id="add-track">
           <label>New track ID<input id="track-id" required /></label>
           <label

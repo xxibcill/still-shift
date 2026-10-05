@@ -216,3 +216,15 @@ export function soundtrackAddNodeOperation(
         processors: [],
       };
 }
+
+/** Limiter JSON from the Lab editor; an empty editor removes the limiter. */
+export function soundtrackLimiterOperation(text: string): SoundtrackEdit {
+  if (!text.trim()) return { type: "limiter", limiter: null };
+  try {
+    return { type: "limiter", limiter: JSON.parse(text) };
+  } catch {
+    throw new Error(
+      "Limiter needs a JSON object or an empty field; nothing was saved",
+    );
+  }
+}

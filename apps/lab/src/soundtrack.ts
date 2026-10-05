@@ -4,6 +4,7 @@ import {
   soundtrackAddCueOperations,
   soundtrackAddNodeOperation,
   soundtrackDuckingOperation,
+  soundtrackLimiterOperation,
   soundtrackTrackOperations,
   soundtrackHeadroom,
   soundtrackNumberField,
@@ -263,6 +264,11 @@ function view() {
     ducking.value = project.ducking
       ? JSON.stringify(project.ducking, null, 2)
       : "";
+  const limiter = el<HTMLTextAreaElement>("limiter");
+  if (document.activeElement !== limiter)
+    limiter.value = project.master.limiter
+      ? JSON.stringify(project.master.limiter)
+      : "";
   for (const id of ["track-output", "bus-output"]) {
     const select = el<HTMLSelectElement>(id);
     select.replaceChildren(...outputOptions(select.value || "master"));
@@ -361,6 +367,14 @@ el<HTMLFormElement>("ducking-edit").onsubmit = (e) => {
   void task(() =>
     edit([
       soundtrackDuckingOperation(el<HTMLTextAreaElement>("ducking").value),
+    ]),
+  );
+};
+el<HTMLFormElement>("limiter-edit").onsubmit = (e) => {
+  e.preventDefault();
+  void task(() =>
+    edit([
+      soundtrackLimiterOperation(el<HTMLTextAreaElement>("limiter").value),
     ]),
   );
 };
