@@ -49,7 +49,9 @@ still hold before relying on them.
   sums, subject to exact regressions and independent serial A/B measurements.
   Candidates build and pass 852 exactness cases on each GPU profile. Focused
   regression/export suites and the complete local gate pass. Serial timings
-  are queued after gate success and a two-minute quiet window.
+  now include a valid pinned fusion-only bracket: two-sample export 1.112×;
+  higher-count and preview gains remain unproven. Bounded/hardware comparisons
+  and strict WebGL family audits remain pending.
   [Draft PR #41](https://github.com/xxibcill/still-shift/pull/41) is published and
   attached with performance validation pending. The main checkout/chat is untouched.
   All 117 original failures, 1.25× family and 2× native targets remain open.
@@ -191,6 +193,20 @@ _Last updated 2026-10-06 by Codex for CE6-P; prior work retained._
 
 ## Entries
 
+### 2026-10-06 — CE6-P first valid independent timing bracket
+
+- **Agent / branch:** Codex on `codex/composition-ce6p-compatible`, from `ae6db18`.
+- **Results:** fusion-only pinned baseline/candidate/candidate/baseline complete
+  with no detected contention. Two-sample export improves 15.85 → 14.25 ms
+  (1.112×); higher-count gains overlap timing variability. No broad preview claim.
+- **Rejected:** bounded first baseline overlapped main stylize unit tests;
+  fifth invalid attempt retained; launcher `3547` terminal exit 1.
+- **Next:** preserve valid fusion data; retry only remaining bounded/hardware
+  comparisons after competing tests end, then strict WebGL family audits.
+  Draft PR #41 stays draft; original 117 failures and targets remain open.
+- **Records:** [raw bracket and analysis](./composition-ce6p-exposure-brackets.json),
+  [evidence](./composition-ce6p-performance-results.json), [plan](./composition-ce6p-plan.md).
+
 ### 2026-10-06 — CE6-P draft review delivery
 
 - **Agent / branch:** Codex on `codex/composition-ce6p-compatible`, from `905feff`.
@@ -199,8 +215,9 @@ _Last updated 2026-10-06 by Codex for CE6-P; prior work retained._
 - **Results:** passed exactness/focused/full-gate checks are reviewable. No valid
   timing bracket yet; main verification repeatedly reset the ten-minute wait.
   Verified waiting launcher `66431` idle, stopped it (exit 143), and replaced it
-  with live session `3547` using two idle minutes and unchanged timing/rejection methods.
-- **Next:** keep the existing live retry session `3547`; valid independent A/B,
+  with session `3547` using two idle minutes and unchanged timing/rejection methods.
+  That session is now terminal after a valid fusion bracket and rejected bounded run.
+- **Next:** complete the remaining independent A/B,
   strict WebGL family audits and measured candidate selection precede PR readiness.
   All original 117 failures and existing performance targets remain open.
 - **Records:** [plan](./composition-ce6p-plan.md),

@@ -736,11 +736,11 @@
     }
   },
   "pending": [
-    "Serial bracketed original CE7 1080p render/readback and separate preview budgets",
+    "Valid bounded versus fusion-only pinned and hardware brackets; fusion-only pinned bracket complete",
     "Required selected-candidate family timing audits",
     "Complete performance validation and select measured candidates before marking draft PR ready"
   ],
-  "workloadCoordination": "Own full gate passed. Four timing attempts rejected. Ten-minute waiting launcher 66431 repeatedly reset without starting any bracket; verified idle with no benchmark child and intentionally stopped (exit 143). Replacement session 3547 uses two idle minutes, with unchanged serial workload/order/source pinning and overlap rejection. Draft PR 41 remains published/attached. No messages sent to main chat.",
+  "workloadCoordination": "Fusion-only four-session bracket complete with no detected overlap. Remaining bounded bracket rejected for overlapping main stylize unit tests; launcher session 3547 terminal exit 1, failed output retained uniquely. No messages sent to main chat. Retry only remaining comparisons after competing workload is terminal.",
   "repositoryActionsVerified": {
     "enabled": false,
     "command": "gh api repos/xxibcill/still-shift/actions/permissions",
@@ -751,7 +751,7 @@
       "id": "final-exposure-fusion",
       "renderer": "composition-webgl2-0.39.0",
       "ref": "706be71",
-      "status": "correctness/review passed; valid performance bracket pending"
+      "status": "valid pinned fusion-only bracket complete; two-sample export improvement measured, higher-count/preview gains unproven"
     },
     {
       "id": "bounded-exposure-snapshot-sum",
@@ -903,6 +903,34 @@
       ],
       "sourceSelection": "renderer/kernel/bounds selected per ref; shared helpers captured and hashed",
       "conclusion": "Rejected solely for overlapping main-chat build; no performance claim"
+    },
+    {
+      "file": "benchmarks/results/composition-ce6p/invalid-1791230639211-bounded-ref-ab.json",
+      "sha256": "255b894650f4d9b76edc36a5a8a1f07ddf416285d271289b13d48d0906fee59e",
+      "bracket": "bounded fusion-only versus final candidate",
+      "completedSessions": 1,
+      "timingValid": false,
+      "reason": "Main stylize unit verification overlapped first baseline; no bounded gain can be inferred",
+      "overlap": [
+        "38692 node /Users/jjae/.nvm/versions/node/v24.16.0/bin/pnpm exec vitest run tests/unit/composition-stylize-effects.test.ts",
+        "38694 node (vitest)   ",
+        "38702 node (vitest 1)     ",
+        "38703 node (vitest 2)     ",
+        "38704 node (vitest 3)     ",
+        "38705 node (vitest 4)     ",
+        "38706 node (vitest 5)     ",
+        "38707 node (vitest 6)     ",
+        "38708 node (vitest 7)     ",
+        "38709 node (vitest 8)     ",
+        "38710 node (vitest 9)     ",
+        "38711 node (vitest 10)     ",
+        "38712 node (vitest 11)     ",
+        "38713 node (vitest 12)     ",
+        "38714 node (vitest 13)     ",
+        "38715 node (vitest 14)     "
+      ],
+      "provenance": "All renderer/kernel/bounds and shared helper source fingerprints repaired and captured",
+      "workingTreeRef": "ae6db182d00df5e081e9fd55b3d6a33a0a5a302e"
     }
   ],
   "integrationBase": "817cc9f (CE7 delivered docs-only closeout; runtime still 0e48388)",
@@ -1280,7 +1308,7 @@
     }
   },
   "queuedAb": {
-    "status": "live; two-minute quiet window before each unchanged serial bracket",
+    "status": "terminal exit 1; fusion complete valid, first bounded baseline invalid; hardware not started",
     "session": 3547,
     "launcher": "/private/tmp/ce6p-ab-shorter-window.mjs",
     "outputs": [
@@ -1305,5 +1333,17 @@
     "baseHead": "817cc9f982f9459cc641af864a8f160bfedc668e",
     "publishedHead": "905feff",
     "remaining": "Valid serial A/B measurements and strict WebGL family audits; no performance claims yet"
+  },
+  "validTimingEvidence": {
+    "file": "docs/composition-ce6p-exposure-brackets.json",
+    "brackets": ["fusion"],
+    "order": ["baseline", "candidate", "candidate", "baseline"],
+    "allSessionsValid": true,
+    "twoSampleExportMeanOfMediansMs": {
+      "baseline": 15.849999994039536,
+      "candidate": 14.250000029802322
+    },
+    "twoSampleExportSpeedup": 1.112280699009894,
+    "limitations": "Higher-count changes comparable to session variability; no broad preview or target-completion claim; bounded/hardware and strict family audit pending"
   }
 }

@@ -1,0 +1,2871 @@
+{
+  "milestone": "CE6-P",
+  "date": "2026-10-06",
+  "status": "fusion complete; bounded and hardware comparisons pending",
+  "acceptanceChanged": false,
+  "brackets": {
+    "fusion": {
+      "baselineRef": "0e4838852855f6dc8cf91bba763a402dfd716f88",
+      "candidateRef": "706be71",
+      "workingTreeRef": "ae6db182d00df5e081e9fd55b3d6a33a0a5a302e",
+      "workingTreeChanges": "",
+      "sharedHelperSha256": {
+        "tests/helpers/composition-exposure-reference.ts": "63b2fc9b3d4931038e4b93d9ca4ccbe3be37fb7034d947da68b8a1d00c2fb8c0",
+        "tests/helpers/composition-ce6p-preview-cost.ts": "8bb68b893d0432b477db518526f983571c85908f678fd2d6a496d47ea71e2836"
+      },
+      "baselineBoundsSha256": "af2abaa81df362caa424fb8f468869146fa3d8fb5c34bf00b13c5f7ddd9cd5e8",
+      "candidateBoundsSha256": "af2abaa81df362caa424fb8f468869146fa3d8fb5c34bf00b13c5f7ddd9cd5e8",
+      "baselineKernelSha256": null,
+      "baselineSourceSha256": "9d072f5024afb19142f9e47aa8f3ea908d1bb0d78b4c7beb02b62194bfe3349e",
+      "candidateSourceSha256": "7006417c4dcfe7ea268a159a04272137d80e617ea78ef4d0a5af397980576be1",
+      "candidateKernelSha256": "0a018b91e25efb157c3e4a0fc67598135e4c776978018ad7b4f3ac87cf6f3866",
+      "method": "Serial baseline/candidate/candidate/baseline sessions, independent Vite optimizer caches; renderer/kernel/bounds selected consistently from refs; snapshotted shared workload helpers; original CE7 export-cost method; separate RAF preview diagnostic; startup/end workload checks and 2-second overlap polling (invalid runs retained and rejected)",
+      "runs": [
+        {
+          "variant": "baseline",
+          "rendererVersion": "composition-webgl2-0.38.1",
+          "environment": {
+            "profile": "chromium-software-2",
+            "browserVersion": "151.0.7922.34",
+            "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+            "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+            "platform": "darwin",
+            "arch": "arm64"
+          },
+          "exportCosts": [
+            {
+              "backend": "canvas2d",
+              "samples": 1,
+              "width": 1920,
+              "height": 1080,
+              "fps": 30,
+              "coldMs": 5.700000047683716,
+              "warmFrames": 3,
+              "measuredFrames": 5,
+              "timingsMs": [
+                0.8999999761581421, 2.900000035762787, 12, 1.800000011920929, 1
+              ],
+              "medianMs": 1.800000011920929,
+              "method": "serial render plus complete RGBA readback"
+            },
+            {
+              "backend": "canvas2d",
+              "samples": 2,
+              "width": 1920,
+              "height": 1080,
+              "fps": 30,
+              "coldMs": 38.30000001192093,
+              "warmFrames": 3,
+              "measuredFrames": 5,
+              "timingsMs": [
+                30.599999964237213, 29.400000035762787, 27.69999998807907,
+                27.30000001192093, 33.39999997615814
+              ],
+              "medianMs": 29.400000035762787,
+              "method": "serial render plus complete RGBA readback"
+            },
+            {
+              "backend": "canvas2d",
+              "samples": 4,
+              "width": 1920,
+              "height": 1080,
+              "fps": 30,
+              "coldMs": 49.09999996423721,
+              "warmFrames": 3,
+              "measuredFrames": 5,
+              "timingsMs": [
+                46.200000047683716, 46, 47.09999996423721, 45.80000001192093, 46
+              ],
+              "medianMs": 46,
+              "method": "serial render plus complete RGBA readback"
+            },
+            {
+              "backend": "canvas2d",
+              "samples": 8,
+              "width": 1920,
+              "height": 1080,
+              "fps": 30,
+              "coldMs": 87.10000002384186,
+              "warmFrames": 3,
+              "measuredFrames": 5,
+              "timingsMs": [
+                84.5, 84.69999998807907, 85.10000002384186, 84.69999998807907,
+                84.19999998807907
+              ],
+              "medianMs": 84.69999998807907,
+              "method": "serial render plus complete RGBA readback"
+            },
+            {
+              "backend": "canvas2d",
+              "samples": 16,
+              "width": 1920,
+              "height": 1080,
+              "fps": 30,
+              "coldMs": 165.89999997615814,
+              "warmFrames": 3,
+              "measuredFrames": 5,
+              "timingsMs": [
+                158.5, 158.79999995231628, 159.5, 159, 166.10000002384186
+              ],
+              "medianMs": 159,
+              "method": "serial render plus complete RGBA readback"
+            },
+            {
+              "backend": "canvas2d",
+              "samples": 32,
+              "width": 1920,
+              "height": 1080,
+              "fps": 30,
+              "coldMs": 326.0999999642372,
+              "warmFrames": 3,
+              "measuredFrames": 5,
+              "timingsMs": [
+                310.4000000357628, 308.19999998807907, 313.5,
+                316.30000001192093, 339
+              ],
+              "medianMs": 313.5,
+              "method": "serial render plus complete RGBA readback"
+            },
+            {
+              "backend": "canvas2d",
+              "samples": 64,
+              "width": 1920,
+              "height": 1080,
+              "fps": 30,
+              "coldMs": 640.6000000238419,
+              "warmFrames": 3,
+              "measuredFrames": 5,
+              "timingsMs": [
+                610.4000000357628, 613.0999999642372, 639.8000000119209,
+                612.1000000238419, 613.8000000119209
+              ],
+              "medianMs": 613.0999999642372,
+              "method": "serial render plus complete RGBA readback"
+            },
+            {
+              "backend": "webgl2",
+              "samples": 1,
+              "width": 1920,
+              "height": 1080,
+              "fps": 30,
+              "coldMs": 43.299999952316284,
+              "warmFrames": 3,
+              "measuredFrames": 5,
+              "timingsMs": [
+                1.5999999642372131, 1.600000023841858, 1.699999988079071, 1.5,
+                1.399999976158142
+              ],
+              "medianMs": 1.5999999642372131,
+              "method": "serial render plus complete RGBA readback"
+            },
+            {
+              "backend": "webgl2",
+              "samples": 2,
+              "width": 1920,
+              "height": 1080,
+              "fps": 30,
+              "coldMs": 94.89999997615814,
+              "warmFrames": 3,
+              "measuredFrames": 5,
+              "timingsMs": [
+                16, 16.5, 15.400000035762787, 14.899999976158142,
+                14.900000035762787
+              ],
+              "medianMs": 15.400000035762787,
+              "method": "serial render plus complete RGBA readback"
+            },
+            {
+              "backend": "webgl2",
+              "samples": 4,
+              "width": 1920,
+              "height": 1080,
+              "fps": 30,
+              "coldMs": 82.19999998807907,
+              "warmFrames": 3,
+              "measuredFrames": 5,
+              "timingsMs": [
+                25.599999964237213, 26.19999998807907, 27, 26.30000001192093,
+                26.19999998807907
+              ],
+              "medianMs": 26.19999998807907,
+              "method": "serial render plus complete RGBA readback"
+            },
+            {
+              "backend": "webgl2",
+              "samples": 8,
+              "width": 1920,
+              "height": 1080,
+              "fps": 30,
+              "coldMs": 103.79999995231628,
+              "warmFrames": 3,
+              "measuredFrames": 5,
+              "timingsMs": [
+                46.60000002384186, 46, 46.19999998807907, 48.39999997615814,
+                47.30000001192093
+              ],
+              "medianMs": 46.60000002384186,
+              "method": "serial render plus complete RGBA readback"
+            },
+            {
+              "backend": "webgl2",
+              "samples": 16,
+              "width": 1920,
+              "height": 1080,
+              "fps": 30,
+              "coldMs": 146.89999997615814,
+              "warmFrames": 3,
+              "measuredFrames": 5,
+              "timingsMs": [
+                90.19999998807907, 90.39999997615814, 90.90000003576279, 89,
+                89.69999998807907
+              ],
+              "medianMs": 90.19999998807907,
+              "method": "serial render plus complete RGBA readback"
+            },
+            {
+              "backend": "webgl2",
+              "samples": 32,
+              "width": 1920,
+              "height": 1080,
+              "fps": 30,
+              "coldMs": 230.80000001192093,
+              "warmFrames": 3,
+              "measuredFrames": 5,
+              "timingsMs": [
+                173.19999998807907, 174.69999998807907, 175.4000000357628, 174,
+                175.29999995231628
+              ],
+              "medianMs": 174.69999998807907,
+              "method": "serial render plus complete RGBA readback"
+            },
+            {
+              "backend": "webgl2",
+              "samples": 64,
+              "width": 1920,
+              "height": 1080,
+              "fps": 30,
+              "coldMs": 397.4000000357628,
+              "warmFrames": 3,
+              "measuredFrames": 5,
+              "timingsMs": [
+                343.89999997615814, 343, 340.7000000476837, 341.0999999642372,
+                342.19999998807907
+              ],
+              "medianMs": 342.19999998807907,
+              "method": "serial render plus complete RGBA readback"
+            }
+          ],
+          "previewCosts": [
+            {
+              "backend": "canvas2d",
+              "samples": 1,
+              "width": 1920,
+              "height": 1080,
+              "coldInitializationMs": 0.19999998807907104,
+              "coldCallMs": 0.699999988079071,
+              "coldNextRafIntervalMs": 10.400000035762787,
+              "warmFrames": 4,
+              "measuredFrames": 11,
+              "callMs": [
+                0.10000002384185791, 0, 0, 0, 0, 0, 0, 0, 0.10000002384185791,
+                0, 0
+              ],
+              "rafIntervalMs": [
+                8.199999988079071, 8.399999976158142, 8.400000035762787,
+                8.300000011920929, 8.699999988079071, 8.199999988079071,
+                10.399999976158142, 6, 8.300000011920929, 8.400000035762787,
+                8.299999952316284
+              ],
+              "medianCallMs": 0,
+              "medianRafIntervalMs": 8.300000011920929,
+              "finalDrainReadMs": 1.5,
+              "elapsedMs": 120.79999995231628,
+              "method": "RAF-paced preview without per-frame readback; no GPU-completion guarantee"
+            },
+            {
+              "backend": "canvas2d",
+              "samples": 2,
+              "width": 1920,
+              "height": 1080,
+              "coldInitializationMs": 0.30000001192092896,
+              "coldCallMs": 43,
+              "coldNextRafIntervalMs": 44.80000001192093,
+              "warmFrames": 4,
+              "measuredFrames": 11,
+              "callMs": [
+                25.69999998807907, 26.399999976158142, 26.69999998807907,
+                26.19999998807907, 27.299999952316284, 26.19999998807907,
+                26.80000001192093, 26.600000023841858, 26.100000023841858, 25.5,
+                25.900000035762787
+              ],
+              "rafIntervalMs": [
+                29.100000023841858, 25.80000001192093, 29.30000001192093,
+                26.69999998807907, 26.30000001192093, 27.399999976158142,
+                26.19999998807907, 27, 26.69999998807907, 26.100000023841858,
+                25.69999998807907
+              ],
+              "medianCallMs": 26.19999998807907,
+              "medianRafIntervalMs": 26.69999998807907,
+              "finalDrainReadMs": 0.699999988079071,
+              "elapsedMs": 431.60000002384186,
+              "method": "RAF-paced preview without per-frame readback; no GPU-completion guarantee"
+            },
+            {
+              "backend": "canvas2d",
+              "samples": 4,
+              "width": 1920,
+              "height": 1080,
+              "coldInitializationMs": 0.30000001192092896,
+              "coldCallMs": 49.30000001192093,
+              "coldNextRafIntervalMs": 49.39999997615814,
+              "warmFrames": 4,
+              "measuredFrames": 11,
+              "callMs": [
+                43.799999952316284, 43.90000003576279, 44.30000001192093, 44,
+                45.39999997615814, 44.40000003576279, 44.30000001192093, 43.5,
+                43.59999996423721, 44.299999952316284, 44.69999998807907
+              ],
+              "rafIntervalMs": [
+                44.200000047683716, 45.799999952316284, 44, 44.40000003576279,
+                44, 45.59999996423721, 44.5, 44.40000003576279, 47,
+                43.80000001192093, 44.39999997615814
+              ],
+              "medianCallMs": 44.299999952316284,
+              "medianRafIntervalMs": 44.40000003576279,
+              "finalDrainReadMs": 0.5,
+              "elapsedMs": 679.8000000119209,
+              "method": "RAF-paced preview without per-frame readback; no GPU-completion guarantee"
+            },
+            {
+              "backend": "canvas2d",
+              "samples": 8,
+              "width": 1920,
+              "height": 1080,
+              "coldInitializationMs": 0.19999998807907104,
+              "coldCallMs": 84.80000001192093,
+              "coldNextRafIntervalMs": 85.10000002384186,
+              "warmFrames": 4,
+              "measuredFrames": 11,
+              "callMs": [
+                80.80000001192093, 80.09999996423721, 80.59999996423721, 83.5,
+                81.60000002384186, 80.79999995231628, 80.39999997615814,
+                79.79999995231628, 80.10000002384186, 80.80000001192093,
+                80.09999996423721
+              ],
+              "rafIntervalMs": [
+                80.29999995231628, 80.90000003576279, 80.30000001192093,
+                80.79999995231628, 83.5, 81.70000004768372, 86.5, 80.5,
+                79.89999997615814, 80.30000001192093, 80.80000001192093
+              ],
+              "medianCallMs": 80.59999996423721,
+              "medianRafIntervalMs": 80.79999995231628,
+              "finalDrainReadMs": 0.6000000238418579,
+              "elapsedMs": 1231.1000000238419,
+              "method": "RAF-paced preview without per-frame readback; no GPU-completion guarantee"
+            },
+            {
+              "backend": "canvas2d",
+              "samples": 16,
+              "width": 1920,
+              "height": 1080,
+              "coldInitializationMs": 0.19999998807907104,
+              "coldCallMs": 158.4000000357628,
+              "coldNextRafIntervalMs": 158.5,
+              "warmFrames": 4,
+              "measuredFrames": 11,
+              "callMs": [
+                153.29999995231628, 153.30000001192093, 153.30000001192093,
+                153.5, 155.60000002384186, 155.19999998807907,
+                154.30000001192093, 153.39999997615814, 154.60000002384186,
+                152.80000001192093, 158
+              ],
+              "rafIntervalMs": [
+                153, 153.39999997615814, 153.39999997615814, 154.10000002384186,
+                165.5, 155.60000002384186, 155.29999995231628,
+                154.4000000357628, 153.39999997615814, 154.69999998807907,
+                152.9000000357628
+              ],
+              "medianCallMs": 153.5,
+              "medianRafIntervalMs": 154.10000002384186,
+              "finalDrainReadMs": 0.5999999642372131,
+              "elapsedMs": 2338.7999999523163,
+              "method": "RAF-paced preview without per-frame readback; no GPU-completion guarantee"
+            },
+            {
+              "backend": "canvas2d",
+              "samples": 32,
+              "width": 1920,
+              "height": 1080,
+              "coldInitializationMs": 0.19999998807907104,
+              "coldCallMs": 320.39999997615814,
+              "coldNextRafIntervalMs": 322,
+              "warmFrames": 4,
+              "measuredFrames": 11,
+              "callMs": [
+                300.69999998807907, 301.39999997615814, 300.30000001192093,
+                298.60000002384186, 299.30000001192093, 299.30000001192093,
+                301.80000001192093, 302.80000001192093, 308, 300.60000002384186,
+                300.10000002384186
+              ],
+              "rafIntervalMs": [
+                304.60000002384186, 310.89999997615814, 301.5,
+                300.39999997615814, 310.5, 299.5, 299.4000000357628, 302, 303,
+                327.89999997615814, 300.69999998807907
+              ],
+              "medianCallMs": 300.60000002384186,
+              "medianRafIntervalMs": 302,
+              "finalDrainReadMs": 0.6000000238418579,
+              "elapsedMs": 4587.900000035763,
+              "method": "RAF-paced preview without per-frame readback; no GPU-completion guarantee"
+            },
+            {
+              "backend": "canvas2d",
+              "samples": 64,
+              "width": 1920,
+              "height": 1080,
+              "coldInitializationMs": 0.30000001192092896,
+              "coldCallMs": 613.9000000357628,
+              "coldNextRafIntervalMs": 625.4000000357628,
+              "warmFrames": 4,
+              "measuredFrames": 11,
+              "callMs": [
+                621.5999999642372, 615.6999999880791, 604, 605.2999999523163,
+                601.6999999880791, 591, 604.1999999880791, 608.5999999642372,
+                602, 588, 602.8999999761581
+              ],
+              "rafIntervalMs": [
+                659.3000000119209, 621.8000000119209, 615.7999999523163,
+                604.2000000476837, 605.6999999880791, 612.0999999642372,
+                591.1000000238419, 604.3000000119209, 634.5999999642372,
+                602.1000000238419, 588.1000000238419
+              ],
+              "medianCallMs": 604,
+              "medianRafIntervalMs": 605.6999999880791,
+              "finalDrainReadMs": 0.699999988079071,
+              "elapsedMs": 9160.199999988079,
+              "method": "RAF-paced preview without per-frame readback; no GPU-completion guarantee"
+            },
+            {
+              "backend": "webgl2",
+              "samples": 1,
+              "width": 1920,
+              "height": 1080,
+              "coldInitializationMs": 2.699999988079071,
+              "coldCallMs": 1.5999999642372131,
+              "coldNextRafIntervalMs": 5.599999964237213,
+              "warmFrames": 4,
+              "measuredFrames": 11,
+              "callMs": [
+                0.19999998807907104, 0.19999998807907104, 0.19999998807907104,
+                0.30000001192092896, 0.5, 0.2999999523162842,
+                0.19999998807907104, 0.30000001192092896, 0.19999998807907104,
+                0.5, 0.19999998807907104
+              ],
+              "rafIntervalMs": [
+                8.399999976158142, 10.300000011920929, 6.699999988079071,
+                8.800000011920929, 7.5, 8.300000011920929, 8.399999976158142,
+                8.300000011920929, 8.300000011920929, 8.399999976158142,
+                8.300000011920929
+              ],
+              "medianCallMs": 0.19999998807907104,
+              "medianRafIntervalMs": 8.300000011920929,
+              "finalDrainReadMs": 39.19999998807907,
+              "elapsedMs": 156.19999998807907,
+              "method": "RAF-paced preview without per-frame readback; no GPU-completion guarantee"
+            },
+            {
+              "backend": "webgl2",
+              "samples": 2,
+              "width": 1920,
+              "height": 1080,
+              "coldInitializationMs": 1.800000011920929,
+              "coldCallMs": 5.399999976158142,
+              "coldNextRafIntervalMs": 8,
+              "warmFrames": 4,
+              "measuredFrames": 11,
+              "callMs": [
+                0.30000001192092896, 0.3999999761581421, 0.30000001192092896,
+                0.30000001192092896, 0.2999999523162842, 0.5,
+                0.3999999761581421, 0.19999998807907104, 0.30000001192092896,
+                0.699999988079071, 0.2999999523162842
+              ],
+              "rafIntervalMs": [
+                8.300000011920929, 8.300000011920929, 8.399999976158142,
+                8.300000011920929, 8.300000011920929, 8.399999976158142,
+                8.300000011920929, 8.399999976158142, 8.300000011920929,
+                8.300000011920929, 8.300000011920929
+              ],
+              "medianCallMs": 0.30000001192092896,
+              "medianRafIntervalMs": 8.300000011920929,
+              "finalDrainReadMs": 242.9000000357628,
+              "elapsedMs": 361.4000000357628,
+              "method": "RAF-paced preview without per-frame readback; no GPU-completion guarantee"
+            },
+            {
+              "backend": "webgl2",
+              "samples": 4,
+              "width": 1920,
+              "height": 1080,
+              "coldInitializationMs": 1.800000011920929,
+              "coldCallMs": 5.899999976158142,
+              "coldNextRafIntervalMs": 5.899999976158142,
+              "warmFrames": 4,
+              "measuredFrames": 11,
+              "callMs": [
+                0.5, 0.7000000476837158, 0.5, 0.5999999642372131, 0.5, 0.5, 0.5,
+                0.6000000238418579, 0.5999999642372131, 1.199999988079071,
+                0.699999988079071
+              ],
+              "rafIntervalMs": [
+                8.399999976158142, 10.199999988079071, 6.5, 10.400000035762787,
+                6.199999988079071, 8.300000011920929, 8.300000011920929,
+                8.299999952316284, 8.400000035762787, 8.300000011920929,
+                8.399999976158142
+              ],
+              "medianCallMs": 0.5999999642372131,
+              "medianRafIntervalMs": 8.300000011920929,
+              "finalDrainReadMs": 366,
+              "elapsedMs": 480,
+              "method": "RAF-paced preview without per-frame readback; no GPU-completion guarantee"
+            },
+            {
+              "backend": "webgl2",
+              "samples": 8,
+              "width": 1920,
+              "height": 1080,
+              "coldInitializationMs": 1.800000011920929,
+              "coldCallMs": 6.300000011920929,
+              "coldNextRafIntervalMs": 6.400000035762787,
+              "warmFrames": 4,
+              "measuredFrames": 11,
+              "callMs": [
+                1, 1, 1.0999999642372131, 1, 1.300000011920929,
+                1.100000023841858, 1.0999999642372131, 1.0999999642372131,
+                1.199999988079071, 1.699999988079071, 1.300000011920929
+              ],
+              "rafIntervalMs": [
+                8.299999952316284, 8.400000035762787, 8.300000011920929,
+                8.399999976158142, 8.300000011920929, 9.899999976158142,
+                7.100000023841858, 10, 6.399999976158142, 8.800000011920929,
+                7.899999976158142
+              ],
+              "medianCallMs": 1.0999999642372131,
+              "medianRafIntervalMs": 8.300000011920929,
+              "finalDrainReadMs": 635.6000000238419,
+              "elapsedMs": 751.4000000357628,
+              "method": "RAF-paced preview without per-frame readback; no GPU-completion guarantee"
+            },
+            {
+              "backend": "webgl2",
+              "samples": 16,
+              "width": 1920,
+              "height": 1080,
+              "coldInitializationMs": 1.9000000357627869,
+              "coldCallMs": 7.400000035762787,
+              "coldNextRafIntervalMs": 7.5,
+              "warmFrames": 4,
+              "measuredFrames": 11,
+              "callMs": [
+                2.100000023841858, 2.099999964237213, 2.299999952316284, 2,
+                2.199999988079071, 2, 2.100000023841858, 2.300000011920929,
+                2.900000035762787, 184.5, 223.30000001192093
+              ],
+              "rafIntervalMs": [
+                8.399999976158142, 8.300000011920929, 8.300000011920929,
+                8.399999976158142, 10.300000011920929, 6.399999976158142,
+                10.300000011920929, 6.399999976158142, 8.300000011920929,
+                10.199999988079071, 184.60000002384186
+              ],
+              "medianCallMs": 2.199999988079071,
+              "medianRafIntervalMs": 8.399999976158142,
+              "finalDrainReadMs": 839.8000000119209,
+              "elapsedMs": 1351.9000000357628,
+              "method": "RAF-paced preview without per-frame readback; no GPU-completion guarantee"
+            },
+            {
+              "backend": "webgl2",
+              "samples": 32,
+              "width": 1920,
+              "height": 1080,
+              "coldInitializationMs": 1.9000000357627869,
+              "coldCallMs": 9.100000023841858,
+              "coldNextRafIntervalMs": 9.100000023841858,
+              "warmFrames": 4,
+              "measuredFrames": 11,
+              "callMs": [
+                4, 4.400000035762787, 242.39999997615814, 219.89999997615814,
+                221.30000001192093, 3.900000035762787, 219.79999995231628,
+                224.60000002384186, 222.30000001192093, 4.300000011920929, 217.5
+              ],
+              "rafIntervalMs": [
+                8.300000011920929, 8.399999976158142, 10.300000011920929, 242.5,
+                219.89999997615814, 221.5, 6.700000047683716,
+                219.89999997615814, 224.69999998807907, 222.5, 7
+              ],
+              "medianCallMs": 219.79999995231628,
+              "medianRafIntervalMs": 219.89999997615814,
+              "finalDrainReadMs": 960.6000000238419,
+              "elapsedMs": 2592.100000023842,
+              "method": "RAF-paced preview without per-frame readback; no GPU-completion guarantee"
+            },
+            {
+              "backend": "webgl2",
+              "samples": 64,
+              "width": 1920,
+              "height": 1080,
+              "coldInitializationMs": 1.899999976158142,
+              "coldCallMs": 12.400000035762787,
+              "coldNextRafIntervalMs": 12.400000035762787,
+              "warmFrames": 4,
+              "measuredFrames": 11,
+              "callMs": [
+                228.60000002384186, 444.80000001192093, 221.69999998807907,
+                455.80000001192093, 228.30000001192093, 441.9000000357628,
+                227.80000001192093, 452.5, 221.5, 444.39999997615814, 227
+              ],
+              "rafIntervalMs": [
+                478.39999997615814, 228.69999998807907, 444.9000000357628,
+                221.89999997615814, 455.89999997615814, 228.5,
+                442.10000002384186, 227.89999997615814, 452.5,
+                221.60000002384186, 444.5
+              ],
+              "medianCallMs": 228.60000002384186,
+              "medianRafIntervalMs": 442.10000002384186,
+              "finalDrainReadMs": 1022.6999999880791,
+              "elapsedMs": 5127.399999976158,
+              "method": "RAF-paced preview without per-frame readback; no GPU-completion guarantee"
+            }
+          ],
+          "timingValid": true,
+          "overlap": []
+        },
+        {
+          "variant": "candidate",
+          "rendererVersion": "composition-webgl2-0.39.0",
+          "environment": {
+            "profile": "chromium-software-2",
+            "browserVersion": "151.0.7922.34",
+            "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+            "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+            "platform": "darwin",
+            "arch": "arm64"
+          },
+          "exportCosts": [
+            {
+              "backend": "canvas2d",
+              "samples": 1,
+              "width": 1920,
+              "height": 1080,
+              "fps": 30,
+              "coldMs": 5.200000047683716,
+              "warmFrames": 3,
+              "measuredFrames": 5,
+              "timingsMs": [
+                0.9000000357627869, 0.7999999523162842, 2.800000011920929, 1,
+                0.800000011920929
+              ],
+              "medianMs": 0.9000000357627869,
+              "method": "serial render plus complete RGBA readback"
+            },
+            {
+              "backend": "canvas2d",
+              "samples": 2,
+              "width": 1920,
+              "height": 1080,
+              "fps": 30,
+              "coldMs": 33.30000001192093,
+              "warmFrames": 3,
+              "measuredFrames": 5,
+              "timingsMs": [
+                29.899999976158142, 28.900000035762787, 27.599999964237213,
+                28.400000035762787, 31.599999964237213
+              ],
+              "medianMs": 28.900000035762787,
+              "method": "serial render plus complete RGBA readback"
+            },
+            {
+              "backend": "canvas2d",
+              "samples": 4,
+              "width": 1920,
+              "height": 1080,
+              "fps": 30,
+              "coldMs": 48.69999998807907,
+              "warmFrames": 3,
+              "measuredFrames": 5,
+              "timingsMs": [
+                45.90000003576279, 46.39999997615814, 46.40000003576279,
+                46.89999997615814, 46.19999998807907
+              ],
+              "medianMs": 46.39999997615814,
+              "method": "serial render plus complete RGBA readback"
+            },
+            {
+              "backend": "canvas2d",
+              "samples": 8,
+              "width": 1920,
+              "height": 1080,
+              "fps": 30,
+              "coldMs": 88.30000001192093,
+              "warmFrames": 3,
+              "measuredFrames": 5,
+              "timingsMs": [
+                85.5, 84.80000001192093, 85.30000001192093, 88,
+                91.09999996423721
+              ],
+              "medianMs": 85.5,
+              "method": "serial render plus complete RGBA readback"
+            },
+            {
+              "backend": "canvas2d",
+              "samples": 16,
+              "width": 1920,
+              "height": 1080,
+              "fps": 30,
+              "coldMs": 181,
+              "warmFrames": 3,
+              "measuredFrames": 5,
+              "timingsMs": [
+                162.5999999642372, 156, 155.89999997615814, 161.30000001192093,
+                160.60000002384186
+              ],
+              "medianMs": 160.60000002384186,
+              "method": "serial render plus complete RGBA readback"
+            },
+            {
+              "backend": "canvas2d",
+              "samples": 32,
+              "width": 1920,
+              "height": 1080,
+              "fps": 30,
+              "coldMs": 348.89999997615814,
+              "warmFrames": 3,
+              "measuredFrames": 5,
+              "timingsMs": [
+                318.80000001192093, 334.5999999642372, 345.30000001192093,
+                350.2999999523163, 350.2000000476837
+              ],
+              "medianMs": 345.30000001192093,
+              "method": "serial render plus complete RGBA readback"
+            },
+            {
+              "backend": "canvas2d",
+              "samples": 64,
+              "width": 1920,
+              "height": 1080,
+              "fps": 30,
+              "coldMs": 661.7000000476837,
+              "warmFrames": 3,
+              "measuredFrames": 5,
+              "timingsMs": [
+                670.0999999642372, 683.3000000119209, 672.8999999761581,
+                620.4000000357628, 632.3999999761581
+              ],
+              "medianMs": 670.0999999642372,
+              "method": "serial render plus complete RGBA readback"
+            },
+            {
+              "backend": "webgl2",
+              "samples": 1,
+              "width": 1920,
+              "height": 1080,
+              "fps": 30,
+              "coldMs": 40.799999952316284,
+              "warmFrames": 3,
+              "measuredFrames": 5,
+              "timingsMs": [
+                1.600000023841858, 1.5999999642372131, 1.5, 1.5999999642372131,
+                1.4000000357627869
+              ],
+              "medianMs": 1.5999999642372131,
+              "method": "serial render plus complete RGBA readback"
+            },
+            {
+              "backend": "webgl2",
+              "samples": 2,
+              "width": 1920,
+              "height": 1080,
+              "fps": 30,
+              "coldMs": 92,
+              "warmFrames": 3,
+              "measuredFrames": 5,
+              "timingsMs": [
+                15.199999988079071, 13.900000035762787, 16.099999964237213,
+                13.5, 13.600000023841858
+              ],
+              "medianMs": 13.900000035762787,
+              "method": "serial render plus complete RGBA readback"
+            },
+            {
+              "backend": "webgl2",
+              "samples": 4,
+              "width": 1920,
+              "height": 1080,
+              "fps": 30,
+              "coldMs": 82.69999998807907,
+              "warmFrames": 3,
+              "measuredFrames": 5,
+              "timingsMs": [
+                25.299999952316284, 25.100000023841858, 25.100000023841858,
+                25.899999976158142, 25
+              ],
+              "medianMs": 25.100000023841858,
+              "method": "serial render plus complete RGBA readback"
+            },
+            {
+              "backend": "webgl2",
+              "samples": 8,
+              "width": 1920,
+              "height": 1080,
+              "fps": 30,
+              "coldMs": 102.40000003576279,
+              "warmFrames": 3,
+              "measuredFrames": 5,
+              "timingsMs": [
+                47.90000003576279, 46.89999997615814, 47.19999998807907,
+                46.200000047683716, 46.299999952316284
+              ],
+              "medianMs": 46.89999997615814,
+              "method": "serial render plus complete RGBA readback"
+            },
+            {
+              "backend": "webgl2",
+              "samples": 16,
+              "width": 1920,
+              "height": 1080,
+              "fps": 30,
+              "coldMs": 145.39999997615814,
+              "warmFrames": 3,
+              "measuredFrames": 5,
+              "timingsMs": [
+                87.60000002384186, 88.5, 89.40000003576279, 89.59999996423721,
+                90.10000002384186
+              ],
+              "medianMs": 89.40000003576279,
+              "method": "serial render plus complete RGBA readback"
+            },
+            {
+              "backend": "webgl2",
+              "samples": 32,
+              "width": 1920,
+              "height": 1080,
+              "fps": 30,
+              "coldMs": 230.69999998807907,
+              "warmFrames": 3,
+              "measuredFrames": 5,
+              "timingsMs": [
+                174.4000000357628, 174.5999999642372, 173.10000002384186,
+                173.30000001192093, 174.5
+              ],
+              "medianMs": 174.4000000357628,
+              "method": "serial render plus complete RGBA readback"
+            },
+            {
+              "backend": "webgl2",
+              "samples": 64,
+              "width": 1920,
+              "height": 1080,
+              "fps": 30,
+              "coldMs": 401.39999997615814,
+              "warmFrames": 3,
+              "measuredFrames": 5,
+              "timingsMs": [
+                345.69999998807907, 345.10000002384186, 349.80000001192093,
+                352.0999999642372, 344.60000002384186
+              ],
+              "medianMs": 345.69999998807907,
+              "method": "serial render plus complete RGBA readback"
+            }
+          ],
+          "previewCosts": [
+            {
+              "backend": "canvas2d",
+              "samples": 1,
+              "width": 1920,
+              "height": 1080,
+              "coldInitializationMs": 0.19999998807907104,
+              "coldCallMs": 0.800000011920929,
+              "coldNextRafIntervalMs": 7.200000047683716,
+              "warmFrames": 4,
+              "measuredFrames": 11,
+              "callMs": [
+                0, 0, 0, 0.10000002384185791, 0, 0, 0, 0, 0.10000002384185791,
+                0, 0
+              ],
+              "rafIntervalMs": [
+                6.300000011920929, 8.399999976158142, 8.300000011920929,
+                8.399999976158142, 10.400000035762787, 6.199999988079071,
+                8.399999976158142, 8.300000011920929, 8.300000011920929,
+                8.300000011920929, 10.099999964237213
+              ],
+              "medianCallMs": 0,
+              "medianRafIntervalMs": 8.300000011920929,
+              "finalDrainReadMs": 1,
+              "elapsedMs": 118.79999995231628,
+              "method": "RAF-paced preview without per-frame readback; no GPU-completion guarantee"
+            },
+            {
+              "backend": "canvas2d",
+              "samples": 2,
+              "width": 1920,
+              "height": 1080,
+              "coldInitializationMs": 0.19999998807907104,
+              "coldCallMs": 32,
+              "coldNextRafIntervalMs": 32.09999996423721,
+              "warmFrames": 4,
+              "measuredFrames": 11,
+              "callMs": [
+                26.900000035762787, 25.399999976158142, 25.899999976158142,
+                25.900000035762787, 25.600000023841858, 25.5, 25.30000001192093,
+                28.899999976158142, 27.80000001192093, 26, 26.700000047683716
+              ],
+              "rafIntervalMs": [
+                30, 27.100000023841858, 25.5, 25.899999976158142, 26,
+                25.900000035762787, 25.599999964237213, 25.400000035762787, 29,
+                28, 26.099999964237213
+              ],
+              "medianCallMs": 25.900000035762787,
+              "medianRafIntervalMs": 26,
+              "finalDrainReadMs": 0.699999988079071,
+              "elapsedMs": 422.19999998807907,
+              "method": "RAF-paced preview without per-frame readback; no GPU-completion guarantee"
+            },
+            {
+              "backend": "canvas2d",
+              "samples": 4,
+              "width": 1920,
+              "height": 1080,
+              "coldInitializationMs": 0.19999998807907104,
+              "coldCallMs": 51.69999998807907,
+              "coldNextRafIntervalMs": 51.89999997615814,
+              "warmFrames": 4,
+              "measuredFrames": 11,
+              "callMs": [
+                48.80000001192093, 48, 47.30000001192093, 46.89999997615814,
+                48.40000003576279, 48.89999997615814, 48, 48,
+                48.700000047683716, 49.40000003576279, 48.799999952316284
+              ],
+              "rafIntervalMs": [
+                45, 49.69999998807907, 48.10000002384186, 47.30000001192093,
+                47.09999996423721, 48.40000003576279, 48.89999997615814,
+                51.19999998807907, 48.19999998807907, 48.80000001192093,
+                49.40000003576279
+              ],
+              "medianCallMs": 48.40000003576279,
+              "medianRafIntervalMs": 48.40000003576279,
+              "finalDrainReadMs": 0.7000000476837158,
+              "elapsedMs": 732.4000000357628,
+              "method": "RAF-paced preview without per-frame readback; no GPU-completion guarantee"
+            },
+            {
+              "backend": "canvas2d",
+              "samples": 8,
+              "width": 1920,
+              "height": 1080,
+              "coldInitializationMs": 0.9000000357627869,
+              "coldCallMs": 94.09999996423721,
+              "coldNextRafIntervalMs": 94.19999998807907,
+              "warmFrames": 4,
+              "measuredFrames": 11,
+              "callMs": [
+                93.10000002384186, 92.19999998807907, 92.30000001192093,
+                91.19999998807907, 92.10000002384186, 90, 87.90000003576279, 89,
+                87.09999996423721, 85.69999998807907, 80.80000001192093
+              ],
+              "rafIntervalMs": [
+                91.39999997615814, 93.30000001192093, 92.19999998807907,
+                92.40000003576279, 91.29999995231628, 97.70000004768372,
+                90.09999996423721, 88, 89.10000002384186, 87.19999998807907,
+                85.89999997615814
+              ],
+              "medianCallMs": 90,
+              "medianRafIntervalMs": 91.29999995231628,
+              "finalDrainReadMs": 0.6000000238418579,
+              "elapsedMs": 1362.4000000357628,
+              "method": "RAF-paced preview without per-frame readback; no GPU-completion guarantee"
+            },
+            {
+              "backend": "canvas2d",
+              "samples": 16,
+              "width": 1920,
+              "height": 1080,
+              "coldInitializationMs": 0.30000001192092896,
+              "coldCallMs": 172.60000002384186,
+              "coldNextRafIntervalMs": 173.70000004768372,
+              "warmFrames": 4,
+              "measuredFrames": 11,
+              "callMs": [
+                171.5, 175.9000000357628, 175.5999999642372, 174.89999997615814,
+                174.80000001192093, 169.9000000357628, 168.5,
+                165.89999997615814, 163.69999998807907, 166.39999997615814,
+                176.19999998807907
+              ],
+              "rafIntervalMs": [
+                167.0999999642372, 177, 176.10000002384186, 175.69999998807907,
+                175, 174.89999997615814, 181.10000002384186, 168.60000002384186,
+                166.0999999642372, 163.80000001192093, 166.60000002384186
+              ],
+              "medianCallMs": 171.5,
+              "medianRafIntervalMs": 174.89999997615814,
+              "finalDrainReadMs": 0.699999988079071,
+              "elapsedMs": 2581,
+              "method": "RAF-paced preview without per-frame readback; no GPU-completion guarantee"
+            },
+            {
+              "backend": "canvas2d",
+              "samples": 32,
+              "width": 1920,
+              "height": 1080,
+              "coldInitializationMs": 0.19999998807907104,
+              "coldCallMs": 336,
+              "coldNextRafIntervalMs": 336.10000002384186,
+              "warmFrames": 4,
+              "measuredFrames": 11,
+              "callMs": [
+                320.19999998807907, 317.19999998807907, 312.69999998807907, 312,
+                320.7999999523163, 333.80000001192093, 331.30000001192093,
+                339.9000000357628, 349.10000002384186, 340, 339.2000000476837
+              ],
+              "rafIntervalMs": [
+                319.60000002384186, 320.30000001192093, 327, 312.7999999523163,
+                312.2000000476837, 320.89999997615814, 348.19999998807907,
+                331.5, 340, 368.5, 340.19999998807907
+              ],
+              "medianCallMs": 331.30000001192093,
+              "medianRafIntervalMs": 327,
+              "finalDrainReadMs": 0.699999988079071,
+              "elapsedMs": 4977.600000023842,
+              "method": "RAF-paced preview without per-frame readback; no GPU-completion guarantee"
+            },
+            {
+              "backend": "canvas2d",
+              "samples": 64,
+              "width": 1920,
+              "height": 1080,
+              "coldInitializationMs": 0.30000001192092896,
+              "coldCallMs": 670.1999999880791,
+              "coldNextRafIntervalMs": 675.7999999523163,
+              "warmFrames": 4,
+              "measuredFrames": 11,
+              "callMs": [
+                622.1999999880791, 666, 658.5, 673.6000000238419,
+                672.1000000238419, 661.3000000119209, 665.5, 639.6999999880791,
+                655.5, 671.1000000238419, 664.3000000119209
+              ],
+              "rafIntervalMs": [
+                636.3000000119209, 622.3999999761581, 690.7000000476837,
+                658.5999999642372, 673.6999999880791, 672.5, 681.8000000119209,
+                665.6000000238419, 639.8000000119209, 691.7999999523163,
+                671.3000000119209
+              ],
+              "medianCallMs": 664.3000000119209,
+              "medianRafIntervalMs": 671.3000000119209,
+              "finalDrainReadMs": 0.6000000238418579,
+              "elapsedMs": 9947.900000035763,
+              "method": "RAF-paced preview without per-frame readback; no GPU-completion guarantee"
+            },
+            {
+              "backend": "webgl2",
+              "samples": 1,
+              "width": 1920,
+              "height": 1080,
+              "coldInitializationMs": 2,
+              "coldCallMs": 1.4000000357627869,
+              "coldNextRafIntervalMs": 3,
+              "warmFrames": 4,
+              "measuredFrames": 11,
+              "callMs": [
+                0.20000004768371582, 0.30000001192092896, 0.30000001192092896,
+                0.5, 0.19999998807907104, 0.10000002384185791,
+                0.19999998807907104, 0.2999999523162842, 0.10000002384185791,
+                0.5, 0.10000002384185791
+              ],
+              "rafIntervalMs": [
+                8.299999952316284, 8.400000035762787, 8.199999988079071, 30,
+                0.6000000238418579, 2.899999976158142, 10.300000011920929,
+                6.800000011920929, 6.899999976158142, 9.5, 8.899999976158142
+              ],
+              "medianCallMs": 0.20000004768371582,
+              "medianRafIntervalMs": 8.299999952316284,
+              "finalDrainReadMs": 38.19999998807907,
+              "elapsedMs": 160.89999997615814,
+              "method": "RAF-paced preview without per-frame readback; no GPU-completion guarantee"
+            },
+            {
+              "backend": "webgl2",
+              "samples": 2,
+              "width": 1920,
+              "height": 1080,
+              "coldInitializationMs": 1.899999976158142,
+              "coldCallMs": 5.200000047683716,
+              "coldNextRafIntervalMs": 10.200000047683716,
+              "warmFrames": 4,
+              "measuredFrames": 11,
+              "callMs": [
+                0.2999999523162842, 0.30000001192092896, 0.30000001192092896,
+                0.40000003576278687, 0.30000001192092896, 0.2999999523162842,
+                0.30000001192092896, 0.19999998807907104, 0.30000001192092896,
+                0.6000000238418579, 0.3999999761581421
+              ],
+              "rafIntervalMs": [
+                5.800000011920929, 10.399999976158142, 6.399999976158142,
+                10.300000011920929, 7, 8.400000035762787, 7.899999976158142,
+                8.5, 8.300000011920929, 8.699999988079071, 7.800000011920929
+              ],
+              "medianCallMs": 0.30000001192092896,
+              "medianRafIntervalMs": 8.300000011920929,
+              "finalDrainReadMs": 221.80000001192093,
+              "elapsedMs": 340.69999998807907,
+              "method": "RAF-paced preview without per-frame readback; no GPU-completion guarantee"
+            },
+            {
+              "backend": "webgl2",
+              "samples": 4,
+              "width": 1920,
+              "height": 1080,
+              "coldInitializationMs": 1.899999976158142,
+              "coldCallMs": 5.699999988079071,
+              "coldNextRafIntervalMs": 9.399999976158142,
+              "warmFrames": 4,
+              "measuredFrames": 11,
+              "callMs": [
+                0.5, 0.5999999642372131, 0.5, 0.5, 0.5999999642372131, 0.5,
+                0.9000000357627869, 0.699999988079071, 0.699999988079071, 1,
+                0.7999999523162842
+              ],
+              "rafIntervalMs": [
+                6.800000011920929, 8.300000011920929, 8.399999976158142,
+                8.300000011920929, 8.300000011920929, 8.399999976158142,
+                8.199999988079071, 8.400000035762787, 8.399999976158142,
+                8.300000011920929, 8.300000011920929
+              ],
+              "medianCallMs": 0.5999999642372131,
+              "medianRafIntervalMs": 8.300000011920929,
+              "finalDrainReadMs": 357.80000001192093,
+              "elapsedMs": 476.39999997615814,
+              "method": "RAF-paced preview without per-frame readback; no GPU-completion guarantee"
+            },
+            {
+              "backend": "webgl2",
+              "samples": 8,
+              "width": 1920,
+              "height": 1080,
+              "coldInitializationMs": 1.800000011920929,
+              "coldCallMs": 6.300000011920929,
+              "coldNextRafIntervalMs": 6.399999976158142,
+              "warmFrames": 4,
+              "measuredFrames": 11,
+              "callMs": [
+                1.0999999642372131, 1.0999999642372131, 1.2000000476837158,
+                1.399999976158142, 1.300000011920929, 1.300000011920929,
+                1.2000000476837158, 1.300000011920929, 1.100000023841858,
+                1.5999999642372131, 1.399999976158142
+              ],
+              "rafIntervalMs": [
+                8.300000011920929, 8.300000011920929, 8.299999952316284,
+                8.400000035762787, 10.399999976158142, 5.800000011920929,
+                8.899999976158142, 8.400000035762787, 8.199999988079071,
+                10.300000011920929, 6.199999988079071
+              ],
+              "medianCallMs": 1.300000011920929,
+              "medianRafIntervalMs": 8.300000011920929,
+              "finalDrainReadMs": 623.2000000476837,
+              "elapsedMs": 738.9000000357628,
+              "method": "RAF-paced preview without per-frame readback; no GPU-completion guarantee"
+            },
+            {
+              "backend": "webgl2",
+              "samples": 16,
+              "width": 1920,
+              "height": 1080,
+              "coldInitializationMs": 1.800000011920929,
+              "coldCallMs": 7.5,
+              "coldNextRafIntervalMs": 7.600000023841858,
+              "warmFrames": 4,
+              "measuredFrames": 11,
+              "callMs": [
+                2.100000023841858, 2.099999964237213, 2.199999988079071,
+                2.100000023841858, 2.199999988079071, 2.099999964237213,
+                2.100000023841858, 2.399999976158142, 3, 187.9000000357628,
+                2.700000047683716
+              ],
+              "rafIntervalMs": [
+                6.100000023841858, 8.300000011920929, 8.300000011920929,
+                8.299999952316284, 8.400000035762787, 8.300000011920929,
+                8.399999976158142, 8.300000011920929, 8.399999976158142,
+                10.199999988079071, 188
+              ],
+              "medianCallMs": 2.199999988079071,
+              "medianRafIntervalMs": 8.300000011920929,
+              "finalDrainReadMs": 1041.2999999523163,
+              "elapsedMs": 1340.3999999761581,
+              "method": "RAF-paced preview without per-frame readback; no GPU-completion guarantee"
+            },
+            {
+              "backend": "webgl2",
+              "samples": 32,
+              "width": 1920,
+              "height": 1080,
+              "coldInitializationMs": 1.9000000357627869,
+              "coldCallMs": 9.399999976158142,
+              "coldNextRafIntervalMs": 9.5,
+              "warmFrames": 4,
+              "measuredFrames": 11,
+              "callMs": [
+                4, 4.300000011920929, 240.30000001192093, 225.80000001192093,
+                218.89999997615814, 4.099999964237213, 223.4000000357628,
+                223.4000000357628, 219.4000000357628, 4.5, 224.30000001192093
+              ],
+              "rafIntervalMs": [
+                8.300000011920929, 8.399999976158142, 8.300000011920929,
+                240.39999997615814, 225.9000000357628, 219, 6.299999952316284,
+                223.5, 223.5, 219.5, 4.600000023841858
+              ],
+              "medianCallMs": 219.4000000357628,
+              "medianRafIntervalMs": 219,
+              "finalDrainReadMs": 952.8000000119209,
+              "elapsedMs": 2586.2000000476837,
+              "method": "RAF-paced preview without per-frame readback; no GPU-completion guarantee"
+            },
+            {
+              "backend": "webgl2",
+              "samples": 64,
+              "width": 1920,
+              "height": 1080,
+              "coldInitializationMs": 1.9000000357627869,
+              "coldCallMs": 12.600000023841858,
+              "coldNextRafIntervalMs": 12.700000047683716,
+              "warmFrames": 4,
+              "measuredFrames": 11,
+              "callMs": [
+                221.10000002384186, 451, 223, 450.39999997615814,
+                222.19999998807907, 449.5, 221.80000001192093,
+                452.39999997615814, 217.30000001192093, 453.0999999642372,
+                227.60000002384186
+              ],
+              "rafIntervalMs": [
+                482.30000001192093, 221.10000002384186, 451, 223, 450.5,
+                222.29999995231628, 449.60000002384186, 221.80000001192093,
+                452.5, 217.5, 453.19999998807907
+              ],
+              "medianCallMs": 227.60000002384186,
+              "medianRafIntervalMs": 449.60000002384186,
+              "finalDrainReadMs": 1023,
+              "elapsedMs": 5127.700000047684,
+              "method": "RAF-paced preview without per-frame readback; no GPU-completion guarantee"
+            }
+          ],
+          "timingValid": true,
+          "overlap": []
+        },
+        {
+          "variant": "candidate",
+          "rendererVersion": "composition-webgl2-0.39.0",
+          "environment": {
+            "profile": "chromium-software-2",
+            "browserVersion": "151.0.7922.34",
+            "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+            "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+            "platform": "darwin",
+            "arch": "arm64"
+          },
+          "exportCosts": [
+            {
+              "backend": "canvas2d",
+              "samples": 1,
+              "width": 1920,
+              "height": 1080,
+              "fps": 30,
+              "coldMs": 4.900000035762787,
+              "warmFrames": 3,
+              "measuredFrames": 5,
+              "timingsMs": [
+                0.7999999523162842, 0.800000011920929, 2.800000011920929,
+                1.100000023841858, 0.7999999523162842
+              ],
+              "medianMs": 0.800000011920929,
+              "method": "serial render plus complete RGBA readback"
+            },
+            {
+              "backend": "canvas2d",
+              "samples": 2,
+              "width": 1920,
+              "height": 1080,
+              "fps": 30,
+              "coldMs": 33.90000003576279,
+              "warmFrames": 3,
+              "measuredFrames": 5,
+              "timingsMs": [
+                31.099999964237213, 30, 27.100000023841858, 27.19999998807907,
+                31.5
+              ],
+              "medianMs": 30,
+              "method": "serial render plus complete RGBA readback"
+            },
+            {
+              "backend": "canvas2d",
+              "samples": 4,
+              "width": 1920,
+              "height": 1080,
+              "fps": 30,
+              "coldMs": 53.09999996423721,
+              "warmFrames": 3,
+              "measuredFrames": 5,
+              "timingsMs": [
+                47.5, 47.80000001192093, 48.80000001192093, 49.09999996423721,
+                48.90000003576279
+              ],
+              "medianMs": 48.80000001192093,
+              "method": "serial render plus complete RGBA readback"
+            },
+            {
+              "backend": "canvas2d",
+              "samples": 8,
+              "width": 1920,
+              "height": 1080,
+              "fps": 30,
+              "coldMs": 93.5,
+              "warmFrames": 3,
+              "measuredFrames": 5,
+              "timingsMs": [
+                89.09999996423721, 90.5, 89.39999997615814, 91.20000004768372,
+                91.39999997615814
+              ],
+              "medianMs": 90.5,
+              "method": "serial render plus complete RGBA readback"
+            },
+            {
+              "backend": "canvas2d",
+              "samples": 16,
+              "width": 1920,
+              "height": 1080,
+              "fps": 30,
+              "coldMs": 182,
+              "warmFrames": 3,
+              "measuredFrames": 5,
+              "timingsMs": [
+                175.4000000357628, 176.0999999642372, 175.4000000357628,
+                178.69999998807907, 175.80000001192093
+              ],
+              "medianMs": 175.80000001192093,
+              "method": "serial render plus complete RGBA readback"
+            },
+            {
+              "backend": "canvas2d",
+              "samples": 32,
+              "width": 1920,
+              "height": 1080,
+              "fps": 30,
+              "coldMs": 350.4000000357628,
+              "warmFrames": 3,
+              "measuredFrames": 5,
+              "timingsMs": [
+                342.9000000357628, 354, 352.89999997615814, 345.30000001192093,
+                343.80000001192093
+              ],
+              "medianMs": 345.30000001192093,
+              "method": "serial render plus complete RGBA readback"
+            },
+            {
+              "backend": "canvas2d",
+              "samples": 64,
+              "width": 1920,
+              "height": 1080,
+              "fps": 30,
+              "coldMs": 712,
+              "warmFrames": 3,
+              "measuredFrames": 5,
+              "timingsMs": [
+                684.3999999761581, 686.4000000357628, 693.2999999523163,
+                683.2000000476837, 690.8999999761581
+              ],
+              "medianMs": 686.4000000357628,
+              "method": "serial render plus complete RGBA readback"
+            },
+            {
+              "backend": "webgl2",
+              "samples": 1,
+              "width": 1920,
+              "height": 1080,
+              "fps": 30,
+              "coldMs": 65.30000001192093,
+              "warmFrames": 3,
+              "measuredFrames": 5,
+              "timingsMs": [1.5999999642372131, 1.5, 1.600000023841858, 3, 2],
+              "medianMs": 1.600000023841858,
+              "method": "serial render plus complete RGBA readback"
+            },
+            {
+              "backend": "webgl2",
+              "samples": 2,
+              "width": 1920,
+              "height": 1080,
+              "fps": 30,
+              "coldMs": 88.5,
+              "warmFrames": 3,
+              "measuredFrames": 5,
+              "timingsMs": [
+                18.400000035762787, 14.899999976158142, 13.399999976158142,
+                13.5, 14.600000023841858
+              ],
+              "medianMs": 14.600000023841858,
+              "method": "serial render plus complete RGBA readback"
+            },
+            {
+              "backend": "webgl2",
+              "samples": 4,
+              "width": 1920,
+              "height": 1080,
+              "fps": 30,
+              "coldMs": 81.60000002384186,
+              "warmFrames": 3,
+              "measuredFrames": 5,
+              "timingsMs": [
+                30.900000035762787, 25.299999952316284, 26.200000047683716,
+                26.19999998807907, 25
+              ],
+              "medianMs": 26.19999998807907,
+              "method": "serial render plus complete RGBA readback"
+            },
+            {
+              "backend": "webgl2",
+              "samples": 8,
+              "width": 1920,
+              "height": 1080,
+              "fps": 30,
+              "coldMs": 101.5,
+              "warmFrames": 3,
+              "measuredFrames": 5,
+              "timingsMs": [
+                46.200000047683716, 46.299999952316284, 46.5,
+                46.700000047683716, 47.09999996423721
+              ],
+              "medianMs": 46.5,
+              "method": "serial render plus complete RGBA readback"
+            },
+            {
+              "backend": "webgl2",
+              "samples": 16,
+              "width": 1920,
+              "height": 1080,
+              "fps": 30,
+              "coldMs": 149,
+              "warmFrames": 3,
+              "measuredFrames": 5,
+              "timingsMs": [
+                91.39999997615814, 88.19999998807907, 88.30000001192093,
+                88.89999997615814, 89.40000003576279
+              ],
+              "medianMs": 88.89999997615814,
+              "method": "serial render plus complete RGBA readback"
+            },
+            {
+              "backend": "webgl2",
+              "samples": 32,
+              "width": 1920,
+              "height": 1080,
+              "fps": 30,
+              "coldMs": 233.4000000357628,
+              "warmFrames": 3,
+              "measuredFrames": 5,
+              "timingsMs": [
+                174.39999997615814, 174.80000001192093, 177.19999998807907, 176,
+                174.60000002384186
+              ],
+              "medianMs": 174.80000001192093,
+              "method": "serial render plus complete RGBA readback"
+            },
+            {
+              "backend": "webgl2",
+              "samples": 64,
+              "width": 1920,
+              "height": 1080,
+              "fps": 30,
+              "coldMs": 400.89999997615814,
+              "warmFrames": 3,
+              "measuredFrames": 5,
+              "timingsMs": [
+                350.30000001192093, 351.7999999523163, 346.9000000357628,
+                348.5999999642372, 351
+              ],
+              "medianMs": 350.30000001192093,
+              "method": "serial render plus complete RGBA readback"
+            }
+          ],
+          "previewCosts": [
+            {
+              "backend": "canvas2d",
+              "samples": 1,
+              "width": 1920,
+              "height": 1080,
+              "coldInitializationMs": 0.19999998807907104,
+              "coldCallMs": 0.7000000476837158,
+              "coldNextRafIntervalMs": 11.100000023841858,
+              "warmFrames": 4,
+              "measuredFrames": 11,
+              "callMs": [
+                0, 0, 0, 0.09999996423721313, 0, 0, 0, 0, 0,
+                0.10000002384185791, 0
+              ],
+              "rafIntervalMs": [
+                8.300000011920929, 10.300000011920929, 6.699999988079071,
+                10.300000011920929, 6, 10.300000011920929, 6.699999988079071,
+                8.599999964237213, 7.700000047683716, 10.299999952316284,
+                6.400000035762787
+              ],
+              "medianCallMs": 0,
+              "medianRafIntervalMs": 8.300000011920929,
+              "finalDrainReadMs": 0.8999999761581421,
+              "elapsedMs": 120.69999998807907,
+              "method": "RAF-paced preview without per-frame readback; no GPU-completion guarantee"
+            },
+            {
+              "backend": "canvas2d",
+              "samples": 2,
+              "width": 1920,
+              "height": 1080,
+              "coldInitializationMs": 0.20000004768371582,
+              "coldCallMs": 32.5,
+              "coldNextRafIntervalMs": 32.59999996423721,
+              "warmFrames": 4,
+              "measuredFrames": 11,
+              "callMs": [
+                26.100000023841858, 26.69999998807907, 25.399999976158142,
+                26.100000023841858, 25.700000047683716, 26, 25.30000001192093,
+                26.599999964237213, 28, 27.100000023841858, 25.5
+              ],
+              "rafIntervalMs": [
+                29.5, 26.30000001192093, 26.80000001192093, 28.099999964237213,
+                26.19999998807907, 25.80000001192093, 26.100000023841858, 25.5,
+                26.599999964237213, 28, 27.200000047683716
+              ],
+              "medianCallMs": 26.100000023841858,
+              "medianRafIntervalMs": 26.599999964237213,
+              "finalDrainReadMs": 0.5999999642372131,
+              "elapsedMs": 421.80000001192093,
+              "method": "RAF-paced preview without per-frame readback; no GPU-completion guarantee"
+            },
+            {
+              "backend": "canvas2d",
+              "samples": 4,
+              "width": 1920,
+              "height": 1080,
+              "coldInitializationMs": 0.19999998807907104,
+              "coldCallMs": 46.39999997615814,
+              "coldNextRafIntervalMs": 46.39999997615814,
+              "warmFrames": 4,
+              "measuredFrames": 11,
+              "callMs": [
+                46.69999998807907, 43.69999998807907, 44.30000001192093,
+                48.40000003576279, 46.10000002384186, 44, 44.10000002384186,
+                43.799999952316284, 45.39999997615814, 46.60000002384186,
+                44.60000002384186
+              ],
+              "rafIntervalMs": [
+                44.30000001192093, 46.69999998807907, 43.80000001192093,
+                44.39999997615814, 51.80000001192093, 46.19999998807907, 44,
+                44.200000047683716, 44, 45.39999997615814, 46.69999998807907
+              ],
+              "medianCallMs": 44.60000002384186,
+              "medianRafIntervalMs": 44.39999997615814,
+              "finalDrainReadMs": 0.5999999642372131,
+              "elapsedMs": 685.2999999523163,
+              "method": "RAF-paced preview without per-frame readback; no GPU-completion guarantee"
+            },
+            {
+              "backend": "canvas2d",
+              "samples": 8,
+              "width": 1920,
+              "height": 1080,
+              "coldInitializationMs": 1,
+              "coldCallMs": 83.69999998807907,
+              "coldNextRafIntervalMs": 83.90000003576279,
+              "warmFrames": 4,
+              "measuredFrames": 11,
+              "callMs": [
+                79, 80.70000004768372, 86.69999998807907, 81.10000002384186,
+                80.19999998807907, 81.30000001192093, 82, 80.60000002384186,
+                80.19999998807907, 82.39999997615814, 84.89999997615814
+              ],
+              "rafIntervalMs": [
+                80.40000003576279, 79.09999996423721, 80.80000001192093,
+                86.80000001192093, 81.19999998807907, 85.69999998807907,
+                81.40000003576279, 82.19999998807907, 80.69999998807907,
+                80.40000003576279, 82.5
+              ],
+              "medianCallMs": 81.10000002384186,
+              "medianRafIntervalMs": 81.19999998807907,
+              "finalDrainReadMs": 0.6000000238418579,
+              "elapsedMs": 1240.9000000357628,
+              "method": "RAF-paced preview without per-frame readback; no GPU-completion guarantee"
+            },
+            {
+              "backend": "canvas2d",
+              "samples": 16,
+              "width": 1920,
+              "height": 1080,
+              "coldInitializationMs": 1.300000011920929,
+              "coldCallMs": 156.9000000357628,
+              "coldNextRafIntervalMs": 157.10000002384186,
+              "warmFrames": 4,
+              "measuredFrames": 11,
+              "callMs": [
+                154.70000004768372, 154.9000000357628, 154.60000002384186,
+                156.60000002384186, 153.30000001192093, 154, 157.30000001192093,
+                153.19999998807907, 159.79999995231628, 155, 153.80000001192093
+              ],
+              "rafIntervalMs": [
+                153.19999998807907, 154.80000001192093, 155, 154.69999998807907,
+                167.80000001192093, 153.5, 154.19999998807907,
+                157.4000000357628, 153.30000001192093, 159.79999995231628, 155
+              ],
+              "medianCallMs": 154.70000004768372,
+              "medianRafIntervalMs": 154.80000001192093,
+              "finalDrainReadMs": 0.6000000238418579,
+              "elapsedMs": 2346.400000035763,
+              "method": "RAF-paced preview without per-frame readback; no GPU-completion guarantee"
+            },
+            {
+              "backend": "canvas2d",
+              "samples": 32,
+              "width": 1920,
+              "height": 1080,
+              "coldInitializationMs": 0.19999998807907104,
+              "coldCallMs": 307.39999997615814,
+              "coldNextRafIntervalMs": 307.5,
+              "warmFrames": 4,
+              "measuredFrames": 11,
+              "callMs": [
+                301.39999997615814, 301.60000002384186, 301.80000001192093,
+                303.0999999642372, 303.39999997615814, 309.69999998807907,
+                311.69999998807907, 313.39999997615814, 310.19999998807907,
+                310.69999998807907, 313.4000000357628
+              ],
+              "rafIntervalMs": [
+                314.9000000357628, 301.5999999642372, 301.69999998807907,
+                301.9000000357628, 315.30000001192093, 303.5999999642372,
+                309.9000000357628, 311.89999997615814, 326, 310.30000001192093,
+                310.89999997615814
+              ],
+              "medianCallMs": 309.69999998807907,
+              "medianRafIntervalMs": 310.30000001192093,
+              "finalDrainReadMs": 0.5999999642372131,
+              "elapsedMs": 4650.399999976158,
+              "method": "RAF-paced preview without per-frame readback; no GPU-completion guarantee"
+            },
+            {
+              "backend": "canvas2d",
+              "samples": 64,
+              "width": 1920,
+              "height": 1080,
+              "coldInitializationMs": 0.30000001192092896,
+              "coldCallMs": 625.0999999642372,
+              "coldNextRafIntervalMs": 641.0999999642372,
+              "warmFrames": 4,
+              "measuredFrames": 11,
+              "callMs": [
+                593, 599.1000000238419, 639.1000000238419, 618.6999999880791,
+                595.4000000357628, 594.4000000357628, 604.5, 610.3999999761581,
+                592.8000000119209, 593, 596.6999999880791
+              ],
+              "rafIntervalMs": [
+                653.4000000357628, 593.1999999880791, 599.1999999880791,
+                639.3000000119209, 639.3999999761581, 595.8000000119209, 594.5,
+                605.4000000357628, 636.0999999642372, 593, 593.1000000238419
+              ],
+              "medianCallMs": 596.6999999880791,
+              "medianRafIntervalMs": 599.1999999880791,
+              "finalDrainReadMs": 0.699999988079071,
+              "elapsedMs": 9257.300000011921,
+              "method": "RAF-paced preview without per-frame readback; no GPU-completion guarantee"
+            },
+            {
+              "backend": "webgl2",
+              "samples": 1,
+              "width": 1920,
+              "height": 1080,
+              "coldInitializationMs": 2.099999964237213,
+              "coldCallMs": 1.600000023841858,
+              "coldNextRafIntervalMs": 1.600000023841858,
+              "warmFrames": 4,
+              "measuredFrames": 11,
+              "callMs": [
+                0.40000003576278687, 0.3999999761581421, 0.19999998807907104,
+                0.19999998807907104, 0.30000001192092896, 0.20000004768371582,
+                0.19999998807907104, 0.30000001192092896, 0.30000001192092896,
+                0.800000011920929, 0.19999998807907104
+              ],
+              "rafIntervalMs": [
+                8.399999976158142, 8.100000023841858, 8.5, 8.300000011920929,
+                8.299999952316284, 8.5, 8.200000047683716, 8.299999952316284,
+                8.400000035762787, 8.199999988079071, 8.5
+              ],
+              "medianCallMs": 0.30000001192092896,
+              "medianRafIntervalMs": 8.300000011920929,
+              "finalDrainReadMs": 48.40000003576279,
+              "elapsedMs": 159.80000001192093,
+              "method": "RAF-paced preview without per-frame readback; no GPU-completion guarantee"
+            },
+            {
+              "backend": "webgl2",
+              "samples": 2,
+              "width": 1920,
+              "height": 1080,
+              "coldInitializationMs": 2.199999988079071,
+              "coldCallMs": 5.699999988079071,
+              "coldNextRafIntervalMs": 6.599999964237213,
+              "warmFrames": 4,
+              "measuredFrames": 11,
+              "callMs": [
+                0.6000000238418579, 0.3999999761581421, 0.30000001192092896,
+                0.30000001192092896, 0.30000001192092896, 0.40000003576278687,
+                0.30000001192092896, 0.3999999761581421, 0.3999999761581421,
+                0.6000000238418579, 0.3999999761581421
+              ],
+              "rafIntervalMs": [
+                8.300000011920929, 8.400000035762787, 8.299999952316284,
+                8.400000035762787, 8.199999988079071, 8.399999976158142,
+                8.300000011920929, 8.300000011920929, 8.300000011920929,
+                8.399999976158142, 8.300000011920929
+              ],
+              "medianCallMs": 0.3999999761581421,
+              "medianRafIntervalMs": 8.300000011920929,
+              "finalDrainReadMs": 220.60000002384186,
+              "elapsedMs": 338.30000001192093,
+              "method": "RAF-paced preview without per-frame readback; no GPU-completion guarantee"
+            },
+            {
+              "backend": "webgl2",
+              "samples": 4,
+              "width": 1920,
+              "height": 1080,
+              "coldInitializationMs": 1.899999976158142,
+              "coldCallMs": 5.899999976158142,
+              "coldNextRafIntervalMs": 6,
+              "warmFrames": 4,
+              "measuredFrames": 11,
+              "callMs": [
+                0.5, 0.6000000238418579, 0.6000000238418579, 0.5,
+                0.6000000238418579, 0.5, 0.5, 0.6000000238418579,
+                0.9000000357627869, 1.0999999642372131, 0.9000000357627869
+              ],
+              "rafIntervalMs": [
+                8.400000035762787, 8.299999952316284, 8.300000011920929,
+                8.400000035762787, 8.299999952316284, 8.400000035762787,
+                8.300000011920929, 8.299999952316284, 8.300000011920929,
+                8.400000035762787, 8.299999952316284
+              ],
+              "medianCallMs": 0.6000000238418579,
+              "medianRafIntervalMs": 8.300000011920929,
+              "finalDrainReadMs": 358.89999997615814,
+              "elapsedMs": 470.69999998807907,
+              "method": "RAF-paced preview without per-frame readback; no GPU-completion guarantee"
+            },
+            {
+              "backend": "webgl2",
+              "samples": 8,
+              "width": 1920,
+              "height": 1080,
+              "coldInitializationMs": 1.7999999523162842,
+              "coldCallMs": 6.300000011920929,
+              "coldNextRafIntervalMs": 6.300000011920929,
+              "warmFrames": 4,
+              "measuredFrames": 11,
+              "callMs": [
+                1.0999999642372131, 1.100000023841858, 1.199999988079071,
+                1.399999976158142, 1.300000011920929, 1.5, 1.300000011920929,
+                1.199999988079071, 1.199999988079071, 1.5999999642372131, 1.5
+              ],
+              "rafIntervalMs": [
+                8.400000035762787, 8.399999976158142, 8.199999988079071,
+                8.400000035762787, 8.299999952316284, 8.400000035762787,
+                8.199999988079071, 8.5, 8.300000011920929, 8.300000011920929,
+                8.299999952316284
+              ],
+              "medianCallMs": 1.300000011920929,
+              "medianRafIntervalMs": 8.300000011920929,
+              "finalDrainReadMs": 622.9000000357628,
+              "elapsedMs": 737.6999999880791,
+              "method": "RAF-paced preview without per-frame readback; no GPU-completion guarantee"
+            },
+            {
+              "backend": "webgl2",
+              "samples": 16,
+              "width": 1920,
+              "height": 1080,
+              "coldInitializationMs": 1.800000011920929,
+              "coldCallMs": 7.099999964237213,
+              "coldNextRafIntervalMs": 7.199999988079071,
+              "warmFrames": 4,
+              "measuredFrames": 11,
+              "callMs": [
+                2.199999988079071, 2.299999952316284, 2.200000047683716, 2,
+                2.299999952316284, 2.300000011920929, 2.199999988079071,
+                2.300000011920929, 3, 186.69999998807907, 2.5
+              ],
+              "rafIntervalMs": [
+                8.300000011920929, 8.400000035762787, 8.299999952316284,
+                8.400000035762787, 8.300000011920929, 10.199999988079071,
+                6.800000011920929, 10.399999976158142, 5.899999976158142,
+                8.400000035762787, 186.80000001192093
+              ],
+              "medianCallMs": 2.299999952316284,
+              "medianRafIntervalMs": 8.400000035762787,
+              "finalDrainReadMs": 1044.5999999642372,
+              "elapsedMs": 1340.800000011921,
+              "method": "RAF-paced preview without per-frame readback; no GPU-completion guarantee"
+            },
+            {
+              "backend": "webgl2",
+              "samples": 32,
+              "width": 1920,
+              "height": 1080,
+              "coldInitializationMs": 2,
+              "coldCallMs": 9.400000035762787,
+              "coldNextRafIntervalMs": 9.400000035762787,
+              "warmFrames": 4,
+              "measuredFrames": 11,
+              "callMs": [
+                4.100000023841858, 4.400000035762787, 242.89999997615814,
+                228.30000001192093, 226.19999998807907, 4.100000023841858,
+                238.39999997615814, 230.79999995231628, 221.79999995231628, 4.5,
+                226.80000001192093
+              ],
+              "rafIntervalMs": [
+                6, 8.300000011920929, 8.400000035762787, 243.0999999642372,
+                228.4000000357628, 226.29999995231628, 4.200000047683716, 238.5,
+                231, 221.89999997615814, 6.5
+              ],
+              "medianCallMs": 226.19999998807907,
+              "medianRafIntervalMs": 221.89999997615814,
+              "finalDrainReadMs": 966.8000000119209,
+              "elapsedMs": 2640.400000035763,
+              "method": "RAF-paced preview without per-frame readback; no GPU-completion guarantee"
+            },
+            {
+              "backend": "webgl2",
+              "samples": 64,
+              "width": 1920,
+              "height": 1080,
+              "coldInitializationMs": 1.699999988079071,
+              "coldCallMs": 12.800000011920929,
+              "coldNextRafIntervalMs": 12.900000035762787,
+              "warmFrames": 4,
+              "measuredFrames": 11,
+              "callMs": [
+                226.89999997615814, 456.2999999523163, 225.60000002384186,
+                464.10000002384186, 231, 466, 226.5, 468.80000001192093,
+                233.69999998807907, 461.7999999523163, 229.89999997615814
+              ],
+              "rafIntervalMs": [
+                485.7000000476837, 227, 456.39999997615814, 225.69999998807907,
+                464.30000001192093, 231.10000002384186, 466.0999999642372,
+                226.69999998807907, 468.9000000357628, 233.80000001192093,
+                461.89999997615814
+              ],
+              "medianCallMs": 233.69999998807907,
+              "medianRafIntervalMs": 456.39999997615814,
+              "finalDrainReadMs": 1045,
+              "elapsedMs": 5254.299999952316,
+              "method": "RAF-paced preview without per-frame readback; no GPU-completion guarantee"
+            }
+          ],
+          "timingValid": true,
+          "overlap": []
+        },
+        {
+          "variant": "baseline",
+          "rendererVersion": "composition-webgl2-0.38.1",
+          "environment": {
+            "profile": "chromium-software-2",
+            "browserVersion": "151.0.7922.34",
+            "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+            "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+            "platform": "darwin",
+            "arch": "arm64"
+          },
+          "exportCosts": [
+            {
+              "backend": "canvas2d",
+              "samples": 1,
+              "width": 1920,
+              "height": 1080,
+              "fps": 30,
+              "coldMs": 5.100000023841858,
+              "warmFrames": 3,
+              "measuredFrames": 5,
+              "timingsMs": [
+                0.800000011920929, 0.7999999523162842, 2.800000011920929,
+                1.800000011920929, 0.8999999761581421
+              ],
+              "medianMs": 0.8999999761581421,
+              "method": "serial render plus complete RGBA readback"
+            },
+            {
+              "backend": "canvas2d",
+              "samples": 2,
+              "width": 1920,
+              "height": 1080,
+              "fps": 30,
+              "coldMs": 34.80000001192093,
+              "warmFrames": 3,
+              "measuredFrames": 5,
+              "timingsMs": [
+                32.30000001192093, 29.69999998807907, 28.80000001192093,
+                27.599999964237213, 28.30000001192093
+              ],
+              "medianMs": 28.80000001192093,
+              "method": "serial render plus complete RGBA readback"
+            },
+            {
+              "backend": "canvas2d",
+              "samples": 4,
+              "width": 1920,
+              "height": 1080,
+              "fps": 30,
+              "coldMs": 54,
+              "warmFrames": 3,
+              "measuredFrames": 5,
+              "timingsMs": [
+                49.19999998807907, 45.5, 45.59999996423721, 46.90000003576279,
+                47.5
+              ],
+              "medianMs": 46.90000003576279,
+              "method": "serial render plus complete RGBA readback"
+            },
+            {
+              "backend": "canvas2d",
+              "samples": 8,
+              "width": 1920,
+              "height": 1080,
+              "fps": 30,
+              "coldMs": 94.09999996423721,
+              "warmFrames": 3,
+              "measuredFrames": 5,
+              "timingsMs": [
+                87.69999998807907, 88.89999997615814, 91.19999998807907,
+                91.80000001192093, 89.5
+              ],
+              "medianMs": 89.5,
+              "method": "serial render plus complete RGBA readback"
+            },
+            {
+              "backend": "canvas2d",
+              "samples": 16,
+              "width": 1920,
+              "height": 1080,
+              "fps": 30,
+              "coldMs": 180.10000002384186,
+              "warmFrames": 3,
+              "measuredFrames": 5,
+              "timingsMs": [
+                157.10000002384186, 159.80000001192093, 160, 160.39999997615814,
+                158.69999998807907
+              ],
+              "medianMs": 159.80000001192093,
+              "method": "serial render plus complete RGBA readback"
+            },
+            {
+              "backend": "canvas2d",
+              "samples": 32,
+              "width": 1920,
+              "height": 1080,
+              "fps": 30,
+              "coldMs": 326.5999999642372,
+              "warmFrames": 3,
+              "measuredFrames": 5,
+              "timingsMs": [
+                311, 307.30000001192093, 312, 318.80000001192093,
+                334.89999997615814
+              ],
+              "medianMs": 312,
+              "method": "serial render plus complete RGBA readback"
+            },
+            {
+              "backend": "canvas2d",
+              "samples": 64,
+              "width": 1920,
+              "height": 1080,
+              "fps": 30,
+              "coldMs": 631.6999999880791,
+              "warmFrames": 3,
+              "measuredFrames": 5,
+              "timingsMs": [
+                610.4000000357628, 604.7999999523163, 612.3000000119209, 596.5,
+                593.3000000119209
+              ],
+              "medianMs": 604.7999999523163,
+              "method": "serial render plus complete RGBA readback"
+            },
+            {
+              "backend": "webgl2",
+              "samples": 1,
+              "width": 1920,
+              "height": 1080,
+              "fps": 30,
+              "coldMs": 64.70000004768372,
+              "warmFrames": 3,
+              "measuredFrames": 5,
+              "timingsMs": [
+                1.7000000476837158, 1.5, 1.5999999642372131, 5.600000023841858,
+                2
+              ],
+              "medianMs": 1.7000000476837158,
+              "method": "serial render plus complete RGBA readback"
+            },
+            {
+              "backend": "webgl2",
+              "samples": 2,
+              "width": 1920,
+              "height": 1080,
+              "fps": 30,
+              "coldMs": 88.40000003576279,
+              "warmFrames": 3,
+              "measuredFrames": 5,
+              "timingsMs": [
+                18.600000023841858, 16.30000001192093, 15, 14.800000011920929,
+                16.299999952316284
+              ],
+              "medianMs": 16.299999952316284,
+              "method": "serial render plus complete RGBA readback"
+            },
+            {
+              "backend": "webgl2",
+              "samples": 4,
+              "width": 1920,
+              "height": 1080,
+              "fps": 30,
+              "coldMs": 81.5,
+              "warmFrames": 3,
+              "measuredFrames": 5,
+              "timingsMs": [
+                28, 27, 25.600000023841858, 26.399999976158142,
+                28.200000047683716
+              ],
+              "medianMs": 27,
+              "method": "serial render plus complete RGBA readback"
+            },
+            {
+              "backend": "webgl2",
+              "samples": 8,
+              "width": 1920,
+              "height": 1080,
+              "fps": 30,
+              "coldMs": 102.10000002384186,
+              "warmFrames": 3,
+              "measuredFrames": 5,
+              "timingsMs": [
+                49.30000001192093, 47, 47.90000003576279, 48.19999998807907,
+                50.5
+              ],
+              "medianMs": 48.19999998807907,
+              "method": "serial render plus complete RGBA readback"
+            },
+            {
+              "backend": "webgl2",
+              "samples": 16,
+              "width": 1920,
+              "height": 1080,
+              "fps": 30,
+              "coldMs": 145.30000001192093,
+              "warmFrames": 3,
+              "measuredFrames": 5,
+              "timingsMs": [
+                94.89999997615814, 90.70000004768372, 89.89999997615814,
+                91.30000001192093, 92.5
+              ],
+              "medianMs": 91.30000001192093,
+              "method": "serial render plus complete RGBA readback"
+            },
+            {
+              "backend": "webgl2",
+              "samples": 32,
+              "width": 1920,
+              "height": 1080,
+              "fps": 30,
+              "coldMs": 233.39999997615814,
+              "warmFrames": 3,
+              "measuredFrames": 5,
+              "timingsMs": [
+                178.79999995231628, 182.60000002384186, 184.5, 183, 182.5
+              ],
+              "medianMs": 182.60000002384186,
+              "method": "serial render plus complete RGBA readback"
+            },
+            {
+              "backend": "webgl2",
+              "samples": 64,
+              "width": 1920,
+              "height": 1080,
+              "fps": 30,
+              "coldMs": 398.2000000476837,
+              "warmFrames": 3,
+              "measuredFrames": 5,
+              "timingsMs": [
+                359.5, 356.5, 358.89999997615814, 360.30000001192093,
+                356.19999998807907
+              ],
+              "medianMs": 358.89999997615814,
+              "method": "serial render plus complete RGBA readback"
+            }
+          ],
+          "previewCosts": [
+            {
+              "backend": "canvas2d",
+              "samples": 1,
+              "width": 1920,
+              "height": 1080,
+              "coldInitializationMs": 0.10000002384185791,
+              "coldCallMs": 0.800000011920929,
+              "coldNextRafIntervalMs": 12.099999964237213,
+              "warmFrames": 4,
+              "measuredFrames": 11,
+              "callMs": [0, 0, 0, 0.09999996423721313, 0, 0, 0, 0, 0, 0, 0],
+              "rafIntervalMs": [
+                8.300000011920929, 8.299999952316284, 8.400000035762787,
+                8.300000011920929, 8.399999976158142, 8.300000011920929,
+                8.300000011920929, 8.299999952316284, 8.300000011920929,
+                8.400000035762787, 8.299999952316284
+              ],
+              "medianCallMs": 0,
+              "medianRafIntervalMs": 8.300000011920929,
+              "finalDrainReadMs": 0.9000000357627869,
+              "elapsedMs": 121.30000001192093,
+              "method": "RAF-paced preview without per-frame readback; no GPU-completion guarantee"
+            },
+            {
+              "backend": "canvas2d",
+              "samples": 2,
+              "width": 1920,
+              "height": 1080,
+              "coldInitializationMs": 0.19999998807907104,
+              "coldCallMs": 32.80000001192093,
+              "coldNextRafIntervalMs": 32.80000001192093,
+              "warmFrames": 4,
+              "measuredFrames": 11,
+              "callMs": [
+                26, 25.600000023841858, 25.80000001192093, 26.399999976158142,
+                25.899999976158142, 25.900000035762787, 25.600000023841858,
+                25.600000023841858, 29.099999964237213, 28.599999964237213,
+                26.69999998807907
+              ],
+              "rafIntervalMs": [
+                29.099999964237213, 26.100000023841858, 25.69999998807907,
+                28.600000023841858, 26.5, 25.899999976158142, 26,
+                25.69999998807907, 25.700000047683716, 29.19999998807907,
+                28.80000001192093
+              ],
+              "medianCallMs": 25.900000035762787,
+              "medianRafIntervalMs": 26.100000023841858,
+              "finalDrainReadMs": 0.5999999642372131,
+              "elapsedMs": 424.89999997615814,
+              "method": "RAF-paced preview without per-frame readback; no GPU-completion guarantee"
+            },
+            {
+              "backend": "canvas2d",
+              "samples": 4,
+              "width": 1920,
+              "height": 1080,
+              "coldInitializationMs": 0.10000002384185791,
+              "coldCallMs": 50.60000002384186,
+              "coldNextRafIntervalMs": 50.700000047683716,
+              "warmFrames": 4,
+              "measuredFrames": 11,
+              "callMs": [
+                49.10000002384186, 49.30000001192093, 47.89999997615814, 48.5,
+                48.69999998807907, 48, 49, 48.80000001192093, 48.19999998807907,
+                48.5, 51.89999997615814
+              ],
+              "rafIntervalMs": [
+                48.69999998807907, 49.19999998807907, 49.30000001192093,
+                48.10000002384186, 51.69999998807907, 48.80000001192093, 48,
+                49.09999996423721, 48.80000001192093, 48.19999998807907,
+                48.60000002384186
+              ],
+              "medianCallMs": 48.69999998807907,
+              "medianRafIntervalMs": 48.80000001192093,
+              "finalDrainReadMs": 0.6000000238418579,
+              "elapsedMs": 742.1000000238419,
+              "method": "RAF-paced preview without per-frame readback; no GPU-completion guarantee"
+            },
+            {
+              "backend": "canvas2d",
+              "samples": 8,
+              "width": 1920,
+              "height": 1080,
+              "coldInitializationMs": 0.19999998807907104,
+              "coldCallMs": 92.5,
+              "coldNextRafIntervalMs": 92.5,
+              "warmFrames": 4,
+              "measuredFrames": 11,
+              "callMs": [
+                89.5, 91.60000002384186, 90.19999998807907, 87.90000003576279,
+                90.89999997615814, 90.40000003576279, 90.19999998807907, 88.5,
+                86.80000001192093, 89, 90.19999998807907
+              ],
+              "rafIntervalMs": [
+                90.59999996423721, 89.69999998807907, 91.70000004768372,
+                90.29999995231628, 93.40000003576279, 90.89999997615814,
+                90.60000002384186, 90.30000001192093, 88.59999996423721, 87,
+                89.10000002384186
+              ],
+              "medianCallMs": 90.19999998807907,
+              "medianRafIntervalMs": 90.30000001192093,
+              "finalDrainReadMs": 0.699999988079071,
+              "elapsedMs": 1360.5999999642372,
+              "method": "RAF-paced preview without per-frame readback; no GPU-completion guarantee"
+            },
+            {
+              "backend": "canvas2d",
+              "samples": 16,
+              "width": 1920,
+              "height": 1080,
+              "coldInitializationMs": 0.20000004768371582,
+              "coldCallMs": 191.9000000357628,
+              "coldNextRafIntervalMs": 192.10000002384186,
+              "warmFrames": 4,
+              "measuredFrames": 11,
+              "callMs": [
+                176.10000002384186, 172.9000000357628, 174.20000004768372,
+                175.39999997615814, 177.60000002384186, 175, 175.80000001192093,
+                174.5, 174.19999998807907, 176.20000004768372,
+                166.39999997615814
+              ],
+              "rafIntervalMs": [
+                174.69999998807907, 182.19999998807907, 173, 174.4000000357628,
+                175.5999999642372, 184, 175.10000002384186, 175.89999997615814,
+                174.60000002384186, 174.39999997615814, 176.4000000357628
+              ],
+              "medianCallMs": 175,
+              "medianRafIntervalMs": 175.10000002384186,
+              "finalDrainReadMs": 0.6000000238418579,
+              "elapsedMs": 2652.900000035763,
+              "method": "RAF-paced preview without per-frame readback; no GPU-completion guarantee"
+            },
+            {
+              "backend": "canvas2d",
+              "samples": 32,
+              "width": 1920,
+              "height": 1080,
+              "coldInitializationMs": 0.19999998807907104,
+              "coldCallMs": 323.0999999642372,
+              "coldNextRafIntervalMs": 326.69999998807907,
+              "warmFrames": 4,
+              "measuredFrames": 11,
+              "callMs": [
+                345.80000001192093, 334.10000002384186, 322.80000001192093,
+                335.30000001192093, 339.30000001192093, 334, 337.30000001192093,
+                336.30000001192093, 342.4000000357628, 334.30000001192093,
+                334.80000001192093
+              ],
+              "rafIntervalMs": [
+                345, 345.89999997615814, 341.60000002384186, 322.89999997615814,
+                335.5, 348.5, 334.10000002384186, 337.39999997615814, 336.5,
+                350.80000001192093, 336.19999998807907
+              ],
+              "medianCallMs": 335.30000001192093,
+              "medianRafIntervalMs": 337.39999997615814,
+              "finalDrainReadMs": 0.699999988079071,
+              "elapsedMs": 5069.799999952316,
+              "method": "RAF-paced preview without per-frame readback; no GPU-completion guarantee"
+            },
+            {
+              "backend": "canvas2d",
+              "samples": 64,
+              "width": 1920,
+              "height": 1080,
+              "coldInitializationMs": 0.19999998807907104,
+              "coldCallMs": 680.4000000357628,
+              "coldNextRafIntervalMs": 688.1000000238419,
+              "warmFrames": 4,
+              "measuredFrames": 11,
+              "callMs": [
+                662.5, 671.8000000119209, 675.5, 666.5, 677.6999999880791,
+                680.6000000238419, 673, 671.8999999761581, 682.8000000119209,
+                667.8000000119209, 657.2999999523163
+              ],
+              "rafIntervalMs": [
+                614.6999999880791, 662.5999999642372, 691, 675.7000000476837,
+                666.5999999642372, 679, 704.5, 673.1000000238419, 672,
+                682.8999999761581, 696.9000000357628
+              ],
+              "medianCallMs": 671.8999999761581,
+              "medianRafIntervalMs": 675.7000000476837,
+              "finalDrainReadMs": 0.5,
+              "elapsedMs": 10119.399999976158,
+              "method": "RAF-paced preview without per-frame readback; no GPU-completion guarantee"
+            },
+            {
+              "backend": "webgl2",
+              "samples": 1,
+              "width": 1920,
+              "height": 1080,
+              "coldInitializationMs": 2.099999964237213,
+              "coldCallMs": 1.5,
+              "coldNextRafIntervalMs": 1.5,
+              "warmFrames": 4,
+              "measuredFrames": 11,
+              "callMs": [
+                0.30000001192092896, 0.19999998807907104, 0.19999998807907104,
+                0.20000004768371582, 0.2999999523162842, 0.30000001192092896,
+                0.19999998807907104, 0.10000002384185791, 0.10000002384185791,
+                0.5, 0.19999998807907104
+              ],
+              "rafIntervalMs": [
+                5.199999988079071, 6.399999976158142, 8.300000011920929,
+                8.399999976158142, 8.200000047683716, 8.399999976158142,
+                8.300000011920929, 10.399999976158142, 5.800000011920929,
+                10.399999976158142, 7.100000023841858
+              ],
+              "medianCallMs": 0.19999998807907104,
+              "medianRafIntervalMs": 8.300000011920929,
+              "finalDrainReadMs": 38.19999998807907,
+              "elapsedMs": 149.79999995231628,
+              "method": "RAF-paced preview without per-frame readback; no GPU-completion guarantee"
+            },
+            {
+              "backend": "webgl2",
+              "samples": 2,
+              "width": 1920,
+              "height": 1080,
+              "coldInitializationMs": 1.899999976158142,
+              "coldCallMs": 5.200000047683716,
+              "coldNextRafIntervalMs": 10,
+              "warmFrames": 4,
+              "measuredFrames": 11,
+              "callMs": [
+                0.30000001192092896, 0.5999999642372131, 0.30000001192092896,
+                0.19999998807907104, 0.30000001192092896, 0.2999999523162842,
+                0.30000001192092896, 0.3999999761581421, 0.30000001192092896,
+                0.699999988079071, 0.30000001192092896
+              ],
+              "rafIntervalMs": [
+                9.899999976158142, 5.100000023841858, 10, 9.199999988079071,
+                7.300000011920929, 10.300000011920929, 6.899999976158142,
+                10.300000011920929, 6.099999964237213, 8.200000047683716,
+                10.399999976158142
+              ],
+              "medianCallMs": 0.30000001192092896,
+              "medianRafIntervalMs": 9.199999988079071,
+              "finalDrainReadMs": 242.5999999642372,
+              "elapsedMs": 363.7999999523163,
+              "method": "RAF-paced preview without per-frame readback; no GPU-completion guarantee"
+            },
+            {
+              "backend": "webgl2",
+              "samples": 4,
+              "width": 1920,
+              "height": 1080,
+              "coldInitializationMs": 1.7999999523162842,
+              "coldCallMs": 5.899999976158142,
+              "coldNextRafIntervalMs": 6,
+              "warmFrames": 4,
+              "measuredFrames": 11,
+              "callMs": [
+                0.5, 0.699999988079071, 0.5999999642372131, 0.6000000238418579,
+                0.5, 0.5999999642372131, 0.5, 0.5999999642372131,
+                0.6000000238418579, 1, 0.5
+              ],
+              "rafIntervalMs": [
+                7.100000023841858, 8.300000011920929, 8.300000011920929,
+                8.399999976158142, 8.399999976158142, 8.200000047683716,
+                8.399999976158142, 8.300000011920929, 8.399999976158142,
+                8.400000035762787, 8.299999952316284
+              ],
+              "medianCallMs": 0.5999999642372131,
+              "medianRafIntervalMs": 8.300000011920929,
+              "finalDrainReadMs": 363.80000001192093,
+              "elapsedMs": 476.0999999642372,
+              "method": "RAF-paced preview without per-frame readback; no GPU-completion guarantee"
+            },
+            {
+              "backend": "webgl2",
+              "samples": 8,
+              "width": 1920,
+              "height": 1080,
+              "coldInitializationMs": 1.800000011920929,
+              "coldCallMs": 6.299999952316284,
+              "coldNextRafIntervalMs": 7.199999988079071,
+              "warmFrames": 4,
+              "measuredFrames": 11,
+              "callMs": [
+                1.300000011920929, 1.2999999523162842, 1.0999999642372131,
+                1.100000023841858, 1.199999988079071, 1.300000011920929,
+                1.199999988079071, 1.199999988079071, 1.199999988079071,
+                1.600000023841858, 1.4000000357627869
+              ],
+              "rafIntervalMs": [
+                6.199999988079071, 10.200000047683716, 6.699999988079071,
+                8.899999976158142, 7.400000035762787, 8.399999976158142,
+                10.300000011920929, 5.899999976158142, 8.800000011920929,
+                8.399999976158142, 10.300000011920929
+              ],
+              "medianCallMs": 1.199999988079071,
+              "medianRafIntervalMs": 8.399999976158142,
+              "finalDrainReadMs": 640.1999999880791,
+              "elapsedMs": 760.6000000238419,
+              "method": "RAF-paced preview without per-frame readback; no GPU-completion guarantee"
+            },
+            {
+              "backend": "webgl2",
+              "samples": 16,
+              "width": 1920,
+              "height": 1080,
+              "coldInitializationMs": 1.800000011920929,
+              "coldCallMs": 7.200000047683716,
+              "coldNextRafIntervalMs": 7.300000011920929,
+              "warmFrames": 4,
+              "measuredFrames": 11,
+              "callMs": [
+                2.100000023841858, 2.199999988079071, 2, 2.100000023841858,
+                2.199999988079071, 2.100000023841858, 2.100000023841858, 2.5, 3,
+                187.19999998807907, 224.0999999642372
+              ],
+              "rafIntervalMs": [
+                8.399999976158142, 8.300000011920929, 8.300000011920929,
+                8.399999976158142, 8.300000011920929, 10.399999976158142,
+                6.300000011920929, 8.300000011920929, 8.300000011920929,
+                8.300000011920929, 187.19999998807907
+              ],
+              "medianCallMs": 2.199999988079071,
+              "medianRafIntervalMs": 8.300000011920929,
+              "finalDrainReadMs": 886,
+              "elapsedMs": 1401.3999999761581,
+              "method": "RAF-paced preview without per-frame readback; no GPU-completion guarantee"
+            },
+            {
+              "backend": "webgl2",
+              "samples": 32,
+              "width": 1920,
+              "height": 1080,
+              "coldInitializationMs": 2,
+              "coldCallMs": 9.199999988079071,
+              "coldNextRafIntervalMs": 9.399999976158142,
+              "warmFrames": 4,
+              "measuredFrames": 11,
+              "callMs": [
+                4, 4.5, 243.89999997615814, 228, 232.5999999642372,
+                3.899999976158142, 229.39999997615814, 228.80000001192093,
+                230.10000002384186, 4.5, 223.80000001192093
+              ],
+              "rafIntervalMs": [
+                8.300000011920929, 8.300000011920929, 8.300000011920929, 244,
+                228, 232.69999998807907, 6, 231, 228.89999997615814,
+                230.19999998807907, 7.600000023841858
+              ],
+              "medianCallMs": 228,
+              "medianRafIntervalMs": 228,
+              "finalDrainReadMs": 1005.5,
+              "elapsedMs": 2686.100000023842,
+              "method": "RAF-paced preview without per-frame readback; no GPU-completion guarantee"
+            },
+            {
+              "backend": "webgl2",
+              "samples": 64,
+              "width": 1920,
+              "height": 1080,
+              "coldInitializationMs": 1.9000000357627869,
+              "coldCallMs": 12.800000011920929,
+              "coldNextRafIntervalMs": 12.900000035762787,
+              "warmFrames": 4,
+              "measuredFrames": 11,
+              "callMs": [
+                238.4000000357628, 467.19999998807907, 230.60000002384186,
+                478.5, 240.89999997615814, 465, 237.5999999642372,
+                467.30000001192093, 232.5, 470.5, 240.60000002384186
+              ],
+              "rafIntervalMs": [
+                494.5999999642372, 238.4000000357628, 467.19999998807907,
+                230.69999998807907, 478.60000002384186, 241, 465,
+                237.69999998807907, 467.5, 232.60000002384186, 470.5999999642372
+              ],
+              "medianCallMs": 240.89999997615814,
+              "medianRafIntervalMs": 465,
+              "finalDrainReadMs": 1073.5999999642372,
+              "elapsedMs": 5370.699999988079,
+              "method": "RAF-paced preview without per-frame readback; no GPU-completion guarantee"
+            }
+          ],
+          "timingValid": true,
+          "overlap": []
+        }
+      ]
+    }
+  },
+  "analysis": {
+    "fusion": {
+      "file": "benchmarks/results/composition-ce6p/fusion-ref-ab.json",
+      "baselineRef": "0e4838852855f6dc8cf91bba763a402dfd716f88",
+      "candidateRef": "706be71",
+      "workingTreeRef": "ae6db182d00df5e081e9fd55b3d6a33a0a5a302e",
+      "versions": [
+        "composition-webgl2-0.38.1",
+        "composition-webgl2-0.39.0",
+        "composition-webgl2-0.39.0",
+        "composition-webgl2-0.38.1"
+      ],
+      "rows": [
+        {
+          "samples": 1,
+          "exportCosts:medianMs": {
+            "rawWebglMedians": [
+              1.5999999642372131, 1.5999999642372131, 1.600000023841858,
+              1.7000000476837158
+            ],
+            "rawCanvasMedians": [
+              1.800000011920929, 0.9000000357627869, 0.800000011920929,
+              0.8999999761581421
+            ],
+            "baselineMeanMedianMs": 1.6500000059604645,
+            "candidateMeanMedianMs": 1.5999999940395355,
+            "baselineOverCandidate": 1.031250007566996,
+            "baselineBookendLastOverFirst": 1.0625000535510492,
+            "candidateRepeatSecondOverFirst": 1.0000000372529039,
+            "canvasCandidateOverBaseline": 0.62962965007018,
+            "candidateCanvasOverWebgl": 0.5312500168802218
+          },
+          "previewCosts:medianCallMs": {
+            "rawWebglMedians": [
+              0.19999998807907104, 0.20000004768371582, 0.30000001192092896,
+              0.19999998807907104
+            ],
+            "rawCanvasMedians": [0, 0, 0, 0],
+            "baselineMeanMedianMs": 0.19999998807907104,
+            "candidateMeanMedianMs": 0.2500000298023224,
+            "baselineOverCandidate": 0.7999998569488695,
+            "baselineBookendLastOverFirst": 1.0,
+            "candidateRepeatSecondOverFirst": 1.4999997019768472,
+            "canvasCandidateOverBaseline": null,
+            "candidateCanvasOverWebgl": 0.0
+          },
+          "previewCosts:medianRafIntervalMs": {
+            "rawWebglMedians": [
+              8.300000011920929, 8.299999952316284, 8.300000011920929,
+              8.300000011920929
+            ],
+            "rawCanvasMedians": [
+              8.300000011920929, 8.300000011920929, 8.300000011920929,
+              8.300000011920929
+            ],
+            "baselineMeanMedianMs": 8.300000011920929,
+            "candidateMeanMedianMs": 8.299999982118607,
+            "baselineOverCandidate": 1.0000000035906413,
+            "baselineBookendLastOverFirst": 1.0,
+            "candidateRepeatSecondOverFirst": 1.0000000071812825,
+            "canvasCandidateOverBaseline": 1.0,
+            "candidateCanvasOverWebgl": 1.0000000035906413
+          }
+        },
+        {
+          "samples": 2,
+          "exportCosts:medianMs": {
+            "rawWebglMedians": [
+              15.400000035762787, 13.900000035762787, 14.600000023841858,
+              16.299999952316284
+            ],
+            "rawCanvasMedians": [
+              29.400000035762787, 28.900000035762787, 30, 28.80000001192093
+            ],
+            "baselineMeanMedianMs": 15.849999994039536,
+            "candidateMeanMedianMs": 14.250000029802322,
+            "baselineOverCandidate": 1.112280699009894,
+            "baselineBookendLastOverFirst": 1.058441552887238,
+            "candidateRepeatSecondOverFirst": 1.0503597112430265,
+            "canvasCandidateOverBaseline": 1.0120274911942535,
+            "candidateCanvasOverWebgl": 2.066666663599293
+          },
+          "previewCosts:medianCallMs": {
+            "rawWebglMedians": [
+              0.30000001192092896, 0.30000001192092896, 0.3999999761581421,
+              0.30000001192092896
+            ],
+            "rawCanvasMedians": [
+              26.19999998807907, 25.900000035762787, 26.100000023841858,
+              25.900000035762787
+            ],
+            "baselineMeanMedianMs": 0.30000001192092896,
+            "candidateMeanMedianMs": 0.3499999940395355,
+            "baselineOverCandidate": 0.8571429057997109,
+            "baselineBookendLastOverFirst": 1.0,
+            "candidateRepeatSecondOverFirst": 1.3333332008785723,
+            "canvasCandidateOverBaseline": 0.998080614890759,
+            "candidateCanvasOverWebgl": 74.28571563594197
+          },
+          "previewCosts:medianRafIntervalMs": {
+            "rawWebglMedians": [
+              8.300000011920929, 8.300000011920929, 8.300000011920929,
+              9.199999988079071
+            ],
+            "rawCanvasMedians": [
+              26.69999998807907, 26, 26.599999964237213, 26.100000023841858
+            ],
+            "baselineMeanMedianMs": 8.75,
+            "candidateMeanMedianMs": 8.300000011920929,
+            "baselineOverCandidate": 1.0542168659557536,
+            "baselineBookendLastOverFirst": 1.1084337319115074,
+            "candidateRepeatSecondOverFirst": 1.0,
+            "canvasCandidateOverBaseline": 0.9962121203098757,
+            "candidateCanvasOverWebgl": 3.168674692089766
+          }
+        },
+        {
+          "samples": 4,
+          "exportCosts:medianMs": {
+            "rawWebglMedians": [
+              26.19999998807907, 25.100000023841858, 26.19999998807907, 27
+            ],
+            "rawCanvasMedians": [
+              46, 46.39999997615814, 48.80000001192093, 46.90000003576279
+            ],
+            "baselineMeanMedianMs": 26.599999994039536,
+            "candidateMeanMedianMs": 25.650000005960464,
+            "baselineOverCandidate": 1.037037036563677,
+            "baselineBookendLastOverFirst": 1.0305343516139285,
+            "candidateRepeatSecondOverFirst": 1.043824699728779,
+            "canvasCandidateOverBaseline": 1.024757803567609,
+            "candidateCanvasOverWebgl": 1.8557504866658245
+          },
+          "previewCosts:medianCallMs": {
+            "rawWebglMedians": [
+              0.5999999642372131, 0.5999999642372131, 0.6000000238418579,
+              0.5999999642372131
+            ],
+            "rawCanvasMedians": [
+              44.299999952316284, 48.40000003576279, 44.60000002384186,
+              48.69999998807907
+            ],
+            "baselineMeanMedianMs": 0.5999999642372131,
+            "candidateMeanMedianMs": 0.5999999940395355,
+            "baselineOverCandidate": 0.9999999503294622,
+            "baselineBookendLastOverFirst": 1.0,
+            "candidateRepeatSecondOverFirst": 1.0000000993410805,
+            "canvasCandidateOverBaseline": 1.0000000012818204,
+            "candidateCanvasOverWebgl": 77.50000081956388
+          },
+          "previewCosts:medianRafIntervalMs": {
+            "rawWebglMedians": [
+              8.300000011920929, 8.300000011920929, 8.300000011920929,
+              8.300000011920929
+            ],
+            "rawCanvasMedians": [
+              44.40000003576279, 48.40000003576279, 44.39999997615814,
+              48.80000001192093
+            ],
+            "baselineMeanMedianMs": 8.300000011920929,
+            "candidateMeanMedianMs": 8.300000011920929,
+            "baselineOverCandidate": 1.0,
+            "baselineBookendLastOverFirst": 1.0,
+            "candidateRepeatSecondOverFirst": 1.0,
+            "canvasCandidateOverBaseline": 0.9957081541249128,
+            "candidateCanvasOverWebgl": 5.590361438472068
+          }
+        },
+        {
+          "samples": 8,
+          "exportCosts:medianMs": {
+            "rawWebglMedians": [
+              46.60000002384186, 46.89999997615814, 46.5, 48.19999998807907
+            ],
+            "rawCanvasMedians": [84.69999998807907, 85.5, 90.5, 89.5],
+            "baselineMeanMedianMs": 47.400000005960464,
+            "candidateMeanMedianMs": 46.69999998807907,
+            "baselineOverCandidate": 1.0149892937486098,
+            "baselineBookendLastOverFirst": 1.0343347631634894,
+            "candidateRepeatSecondOverFirst": 0.9914712158558319,
+            "canvasCandidateOverBaseline": 1.0103329507005976,
+            "candidateCanvasOverWebgl": 1.8843683088321932
+          },
+          "previewCosts:medianCallMs": {
+            "rawWebglMedians": [
+              1.0999999642372131, 1.300000011920929, 1.300000011920929,
+              1.199999988079071
+            ],
+            "rawCanvasMedians": [
+              80.59999996423721, 90, 81.10000002384186, 90.19999998807907
+            ],
+            "baselineMeanMedianMs": 1.149999976158142,
+            "candidateMeanMedianMs": 1.300000011920929,
+            "baselineOverCandidate": 0.8846153581636195,
+            "baselineBookendLastOverFirst": 1.0909091155391102,
+            "candidateRepeatSecondOverFirst": 1.0,
+            "canvasCandidateOverBaseline": 1.0017564407002888,
+            "candidateCanvasOverWebgl": 65.80769171340931
+          },
+          "previewCosts:medianRafIntervalMs": {
+            "rawWebglMedians": [
+              8.300000011920929, 8.300000011920929, 8.300000011920929,
+              8.399999976158142
+            ],
+            "rawCanvasMedians": [
+              80.79999995231628, 91.29999995231628, 81.19999998807907,
+              90.30000001192093
+            ],
+            "baselineMeanMedianMs": 8.349999994039536,
+            "candidateMeanMedianMs": 8.300000011920929,
+            "baselineOverCandidate": 1.0060240942225054,
+            "baselineBookendLastOverFirst": 1.0120481884450105,
+            "candidateRepeatSecondOverFirst": 1.0,
+            "canvasCandidateOverBaseline": 1.0081823493655802,
+            "candidateCanvasOverWebgl": 10.391566246544645
+          }
+        },
+        {
+          "samples": 16,
+          "exportCosts:medianMs": {
+            "rawWebglMedians": [
+              90.19999998807907, 89.40000003576279, 88.89999997615814,
+              91.30000001192093
+            ],
+            "rawCanvasMedians": [
+              159, 160.60000002384186, 175.80000001192093, 159.80000001192093
+            ],
+            "baselineMeanMedianMs": 90.75,
+            "candidateMeanMedianMs": 89.15000000596046,
+            "baselineOverCandidate": 1.0179472797973366,
+            "baselineBookendLastOverFirst": 1.0121951222171535,
+            "candidateRepeatSecondOverFirst": 0.9944071581722077,
+            "canvasCandidateOverBaseline": 1.0552070264215299,
+            "candidateCanvasOverWebgl": 1.886707795924125
+          },
+          "previewCosts:medianCallMs": {
+            "rawWebglMedians": [
+              2.199999988079071, 2.199999988079071, 2.299999952316284,
+              2.199999988079071
+            ],
+            "rawCanvasMedians": [153.5, 171.5, 154.70000004768372, 175],
+            "baselineMeanMedianMs": 2.199999988079071,
+            "candidateMeanMedianMs": 2.2499999701976776,
+            "baselineOverCandidate": 0.9777777854307199,
+            "baselineBookendLastOverFirst": 1.0,
+            "candidateRepeatSecondOverFirst": 1.0454545294450333,
+            "canvasCandidateOverBaseline": 0.9929984780751406,
+            "candidateCanvasOverWebgl": 72.48888985963517
+          },
+          "previewCosts:medianRafIntervalMs": {
+            "rawWebglMedians": [
+              8.399999976158142, 8.300000011920929, 8.400000035762787,
+              8.300000011920929
+            ],
+            "rawCanvasMedians": [
+              154.10000002384186, 174.89999997615814, 154.80000001192093,
+              175.10000002384186
+            ],
+            "baselineMeanMedianMs": 8.349999994039536,
+            "candidateMeanMedianMs": 8.350000023841858,
+            "baselineOverCandidate": 0.9999999964308596,
+            "baselineBookendLastOverFirst": 0.9880952423189232,
+            "candidateRepeatSecondOverFirst": 1.012048195626293,
+            "canvasCandidateOverBaseline": 1.0015188333545655,
+            "candidateCanvasOverWebgl": 19.742514912975007
+          }
+        },
+        {
+          "samples": 32,
+          "exportCosts:medianMs": {
+            "rawWebglMedians": [
+              174.69999998807907, 174.4000000357628, 174.80000001192093,
+              182.60000002384186
+            ],
+            "rawCanvasMedians": [
+              313.5, 345.30000001192093, 345.30000001192093, 312
+            ],
+            "baselineMeanMedianMs": 178.65000000596046,
+            "candidateMeanMedianMs": 174.60000002384186,
+            "baselineOverCandidate": 1.0231958761830788,
+            "baselineBookendLastOverFirst": 1.0452203779982934,
+            "candidateRepeatSecondOverFirst": 1.0022935778444733,
+            "canvasCandidateOverBaseline": 1.1040767386472292,
+            "candidateCanvasOverWebgl": 1.977663230038773
+          },
+          "previewCosts:medianCallMs": {
+            "rawWebglMedians": [
+              219.79999995231628, 219.4000000357628, 226.19999998807907, 228
+            ],
+            "rawCanvasMedians": [
+              300.60000002384186, 331.30000001192093, 309.69999998807907,
+              335.30000001192093
+            ],
+            "baselineMeanMedianMs": 223.89999997615814,
+            "candidateMeanMedianMs": 222.80000001192093,
+            "baselineOverCandidate": 1.004937163214445,
+            "baselineBookendLastOverFirst": 1.0373066426272186,
+            "candidateRepeatSecondOverFirst": 1.0309936187384132,
+            "canvasCandidateOverBaseline": 1.0080201288944022,
+            "candidateCanvasOverWebgl": 1.4385098742497828
+          },
+          "previewCosts:medianRafIntervalMs": {
+            "rawWebglMedians": [
+              219.89999997615814, 219, 221.89999997615814, 228
+            ],
+            "rawCanvasMedians": [
+              302, 327, 310.30000001192093, 337.39999997615814
+            ],
+            "baselineMeanMedianMs": 223.94999998807907,
+            "candidateMeanMedianMs": 220.44999998807907,
+            "baselineOverCandidate": 1.0158766160135597,
+            "baselineBookendLastOverFirst": 1.0368349250783087,
+            "candidateRepeatSecondOverFirst": 1.0132420090235532,
+            "canvasCandidateOverBaseline": 0.996715670997317,
+            "candidateCanvasOverWebgl": 1.4454524836615632
+          }
+        },
+        {
+          "samples": 64,
+          "exportCosts:medianMs": {
+            "rawWebglMedians": [
+              342.19999998807907, 345.69999998807907, 350.30000001192093,
+              358.89999997615814
+            ],
+            "rawCanvasMedians": [
+              613.0999999642372, 670.0999999642372, 686.4000000357628,
+              604.7999999523163
+            ],
+            "baselineMeanMedianMs": 350.5499999821186,
+            "candidateMeanMedianMs": 348.0,
+            "baselineOverCandidate": 1.0073275861555133,
+            "baselineBookendLastOverFirst": 1.048801870218179,
+            "candidateRepeatSecondOverFirst": 1.0133063350419453,
+            "canvasCandidateOverBaseline": 1.1138024469110295,
+            "candidateCanvasOverWebgl": 1.9489942528735633
+          },
+          "previewCosts:medianCallMs": {
+            "rawWebglMedians": [
+              228.60000002384186, 227.60000002384186, 233.69999998807907,
+              240.89999997615814
+            ],
+            "rawCanvasMedians": [
+              604, 664.3000000119209, 596.6999999880791, 671.8999999761581
+            ],
+            "baselineMeanMedianMs": 234.75,
+            "candidateMeanMedianMs": 230.65000000596046,
+            "baselineOverCandidate": 1.0177758508299743,
+            "baselineBookendLastOverFirst": 1.0538057740640134,
+            "candidateRepeatSecondOverFirst": 1.026801405815458,
+            "canvasCandidateOverBaseline": 0.9883219688248008,
+            "candidateCanvasOverWebgl": 2.7335790157542017
+          },
+          "previewCosts:medianRafIntervalMs": {
+            "rawWebglMedians": [
+              442.10000002384186, 449.60000002384186, 456.39999997615814, 465
+            ],
+            "rawCanvasMedians": [
+              605.6999999880791, 671.3000000119209, 599.1999999880791,
+              675.7000000476837
+            ],
+            "baselineMeanMedianMs": 453.55000001192093,
+            "candidateMeanMedianMs": 453.0,
+            "baselineOverCandidate": 1.0012141280616356,
+            "baselineBookendLastOverFirst": 1.05179823563656,
+            "candidateRepeatSecondOverFirst": 1.0151245550532821,
+            "canvasCandidateOverBaseline": 0.991493678761153,
+            "candidateCanvasOverWebgl": 1.4023178807947019
+          }
+        }
+      ],
+      "note": "Descriptive paired-session summaries; RAF submission/interval diagnostics do not guarantee GPU completion. No new acceptance or noise threshold."
+    }
+  },
+  "interpretation": {
+    "fusion": "Two-sample export means of session medians improve 15.85 ms to 14.25 ms (1.112x), both candidates below both baselines; baseline bookend drift is 1.058x and Canvas control 1.012x. Higher-count improvements of 1.007x-1.037x overlap session variability. No general preview/frame-presentation gain is established. Count-one path is unchanged and provides a noisy control.",
+    "remaining": "Bounded candidate is not yet performance-selected. Original 117 failures and 1.25x/2x targets remain open; strict WebGL family audits pending."
+  }
+}

@@ -144,3 +144,20 @@ fingerprints, GPU policy, overlap rejection and acceptance methods are unchanged
 The temporary family-audit wrapper now preserves every attempt in a unique
 directory; its collector retains fixture-specific and general export messages.
 It has not run any matrix yet.
+
+## First valid bracket (2026-10-06)
+
+The independent pinned fusion-only bracket completes all four sessions without
+observed contention; source refs/hashes and raw cold/warm preview/export samples
+are committed in [exposure evidence](./composition-ce6p-exposure-brackets.json).
+At two shutter samples, mean export session medians improve from 15.85 ms to
+14.25 ms (1.112×); both candidate medians are below both baseline medians.
+Baseline bookend drift is 1.058× and Canvas control changes by 1.012×. Higher-count
+improvements of 1.007–1.037× are comparable to variability. No broad preview or
+presentation speedup is established. Native 2× and family 1.25× targets remain open.
+
+The following bounded bracket detects main stylize unit tests during its first
+baseline and is retained as the fifth invalid timing attempt. Session `3547` is
+terminal (exit 1); hardware comparison did not start. Retain the complete valid
+fusion bracket and retry only the remaining bounded/hardware comparisons after
+competing tests are terminal. Strict family audits remain pending.
