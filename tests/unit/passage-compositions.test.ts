@@ -1,5 +1,11 @@
+import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
-import type { Composition } from "@still-shift/scene-contract";
+import {
+  StoryAuthoringPlanSchema,
+  type Composition,
+} from "@still-shift/scene-contract";
+import { compileStoryPassage } from "../../packages/renderer-core/src/story-passage.ts";
+import { parsePassageTemplate } from "../../packages/renderer-core/src/story-template.ts";
 import { validatePassageCompositions } from "../../packages/animation-engine/src/passage-compositions.ts";
 import { passageCompositionKey } from "../../packages/animation-engine/src/passage-cache.ts";
 import type { PreparedPassage } from "../../packages/animation-engine/src/story-passage-io.ts";
@@ -65,6 +71,201 @@ function evidencePicture() {
 }
 
 describe("native composition passage beats", () => {
+  it.each(["reset", "enter", "exit"] as const)(
+    "requires handoff-only subjects and validates native %s boundaries",
+    (mode) => {
+      const fixture = (name: string) =>
+        JSON.parse(
+          readFileSync(
+            new URL(
+              `../../benchmarks/fixtures/story-authoring/${name}.json`,
+              import.meta.url,
+            ),
+            "utf8",
+          ),
+        );
+      const plan = StoryAuthoringPlanSchema.parse(fixture("linked-comparison"));
+      const template = parsePassageTemplate(fixture("comparison-template"));
+      if (template.schemaVersion !== "story-template-1")
+        throw new Error("template required");
+      if (mode !== "reset")
+        template.scene.nodes.find((node) => node.id === "pressure-b")!.opacity =
+          0;
+      if (mode === "exit")
+        plan.beats[1]!.handoff = {
+          mode: "reset",
+          camera: "reset",
+          subjects: [],
+        };
+      plan.beats[2]!.handoff.subjects = [
+        {
+          id: "pressure",
+          from: "pressure-b",
+          mode,
+          properties: ["opacity"],
+          ...(mode !== "exit" ? { to: "pressure-b" } : {}),
+        },
+      ];
+      const story = compileStoryPassage(
+        plan,
+        new Map([["comparison-template.json", template]]),
+      );
+      const beat = story.beats[mode === "exit" ? 1 : 2]!;
+      for (const nested of [false, true]) {
+        const pressure: Composition["layers"][number] = {
+          id: "pressure",
+          type: "solid",
+          size: [100, 100],
+          color: "#123456",
+        };
+        const picture: Composition = {
+          ...composition(),
+          frameCount: beat.scene.frameCount,
+          markers: [
+            { id: "strain", frame: 48 },
+            { id: "shared-strain", frame: 48, duration: 56 },
+          ],
+          layers: ["house-a", "house-b"].map((id) => ({
+            id,
+            type: "solid",
+            size: [100, 100],
+            color: "#123456",
+          })),
+        };
+        if (nested) {
+          picture.precomps = [
+            {
+              id: "picture",
+              width: picture.width,
+              height: picture.height,
+              fps: picture.fps,
+              frameCount: picture.frameCount,
+              layers: picture.layers,
+            },
+          ];
+          picture.layers = [
+            { id: "instance", type: "precomp", comp: "picture" },
+          ];
+        }
+        const prefix = nested ? "instance/" : "";
+        const subjectLayers: Record<string, string> = {
+          "house-a": prefix + "house-a",
+          "house-b": prefix + "house-b",
+        };
+        picture.metadata = {
+          passage: {
+            cueMarkers: { strain: "strain" },
+            eventMarkers: { "shared-strain": "shared-strain" },
+            subjectLayers,
+          },
+        };
+        const validate = () =>
+          validatePassageCompositions(story, { [beat.id]: picture });
+        expect(validate).toThrow(/Subject pressure-b/);
+        (nested ? picture.precomps![0]!.layers : picture.layers).push(pressure);
+        subjectLayers["pressure-b"] = prefix + "pressure";
+        if (mode !== "reset") {
+          expect(validate).toThrow(
+            /native subject must (begin|finish) invisible/,
+          );
+          pressure.transform = { opacity: 0 };
+        }
+        expect(validate()).toHaveProperty(beat.id);
+      }
+    },
+  );
+
+  it("samples exit at the passage boundary before a transition's source tail", () => {
+    const story = passage();
+    Object.assign(story.beats[0]!, { frameCount: 180 });
+    story.beats.push({
+      ...story.beats[0]!,
+      id: "next",
+      handoff: {
+        mode: "crossfade",
+        frames: 12,
+        camera: "reset",
+        subjects: [
+          {
+            id: "subject",
+            from: "actor",
+            mode: "exit",
+            properties: ["opacity"],
+          },
+        ],
+      },
+    });
+    const picture = composition();
+    picture.metadata = { passage: { subjectLayers: { actor: "panel" } } };
+    picture.layers[0]!.transform = {
+      opacity: {
+        keys: [
+          { frame: 0, value: 1 },
+          { frame: 179, value: 0 },
+          { frame: 191, value: 1 },
+        ],
+      },
+    };
+    expect(
+      validatePassageCompositions(story, { beat: picture }).beat,
+    ).toBeDefined();
+    picture.layers[0]!.transform = { opacity: 1 };
+    expect(() => validatePassageCompositions(story, { beat: picture })).toThrow(
+      /finish invisible/,
+    );
+  });
+
+  it("includes precomp host visibility when validating an entering subject", () => {
+    const story = passage();
+    Object.assign(story.beats[0]!, {
+      handoff: {
+        mode: "reset",
+        camera: "reset",
+        subjects: [
+          {
+            id: "subject",
+            to: "actor",
+            mode: "enter",
+            properties: ["opacity"],
+          },
+        ],
+      },
+    });
+    const picture = composition();
+    picture.precomps = [
+      {
+        id: "picture",
+        width: picture.width,
+        height: picture.height,
+        fps: picture.fps,
+        frameCount: picture.frameCount,
+        layers: picture.layers,
+      },
+    ];
+    picture.layers = [
+      {
+        id: "instance",
+        type: "precomp",
+        comp: "picture",
+        transform: { opacity: 0 },
+      },
+    ];
+    picture.metadata = {
+      passage: { subjectLayers: { actor: "instance/panel" } },
+    };
+    expect(
+      validatePassageCompositions(story, { beat: picture }).beat,
+    ).toBeDefined();
+    picture.layers[0]!.transform = { opacity: 1 };
+    expect(() => validatePassageCompositions(story, { beat: picture })).toThrow(
+      /begin invisible/,
+    );
+    picture.layers[0]!.inPoint = 1;
+    expect(
+      validatePassageCompositions(story, { beat: picture }).beat,
+    ).toBeDefined();
+  });
+
   it("validates native pictures without mutating their authority or surrogate story", () => {
     const input = composition(),
       story = passage();

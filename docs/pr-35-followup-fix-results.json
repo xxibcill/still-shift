@@ -18,12 +18,26 @@
         "Foreign PassageError constructor retains diagnostic code and context",
         "Two invalid native IDs survive default Vite API transport and appear separately in Lab"
       ],
-      "initialFailure": "The foreign-constructor regression reproduced invalid-scene fallback before the fix"
+      "initialFailure": "The foreign-constructor regression reproduced invalid-scene fallback before the fix",
+      "commit": "ea62b7b"
     },
     {
       "id": "native-handoff-subjects",
       "comment": "https://github.com/xxibcill/still-shift/pull/35#discussion_r4183968013",
-      "status": "pending"
+      "status": "fixed locally",
+      "change": "Require incoming handoff targets and following handoff sources, and evaluate native enter/exit visibility at passage boundary frames through precomp instance paths and host visibility",
+      "verification": [
+        "123 focused unit/integration tests passed",
+        "576-frame Canvas mixed passage passed",
+        "Node strip-only native validation import, TypeScript and targeted ESLint passed"
+      ],
+      "regressions": [
+        "Real compiled linked-comparison reset/enter/exit subjects at root and nested precomp paths",
+        "Exit checks the last passage frame before outgoing transition tails",
+        "Precomp host opacity and lifetime participate in entering-subject visibility"
+      ],
+      "compatibility": "The evaluator constructor now uses erasable field declarations and assignments so native handoff validation remains importable by Node strip-only loading",
+      "initialFailure": "All five new tests failed before the fix: missing subjects passed or valid mappings were rejected"
     },
     {
       "id": "native-inspector-initialization",

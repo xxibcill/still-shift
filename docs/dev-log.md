@@ -45,11 +45,12 @@ still hold before relying on them.
 
 - **PR #35 follow-up fixes in progress (2026-10-05):** isolated
   `codex/pr35-followup-fixes` from reviewed `84d7924`. All three findings are
-  posted inline. Lab native diagnostics now retain codes and field/beat/source
-  context across Vite and HTTP; 19 focused tests, type and lint checks pass.
-  Handoff-only subjects and initial native inspection remain. Commit each finding
-  separately, then push once after final verification. Existing CE12-base conflicts
-  remain; no owner decision is pending. [Evidence](./pr-35-followup-fix-results.json).
+  posted inline. `ea62b7b` preserves Lab diagnostics; native handoffs now require
+  both sides' subject mappings and validate authored enter/exit visibility through
+  precomp instances. Focused checks and the 576-frame Canvas passage pass, including
+  Node strip-only loading. Initial native inspection remains; commit it separately
+  and push once after final verification. Existing CE12-base conflicts remain.
+  No owner decision is pending. [Evidence](./pr-35-followup-fix-results.json).
 
 - **PR #35 review fixes (2026-10-05):** isolated
   `codex/pr35-review-fixes` from `869a793`. Three findings are posted inline.
@@ -159,6 +160,21 @@ _Last updated 2026-10-05 by Codex for PR #35 fixes; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-05 — Validate PR #35 native handoff subjects and boundary visibility
+
+- **Agent / branch:** Codex on `codex/pr35-followup-fixes` after `ea62b7b`.
+- **Scope:** second follow-up finding, one separate implementation commit.
+- **Done:** require incoming targets/outgoing sources beyond focus/evidence; check
+  native enter/exit visibility through root/precomp paths and instance clocks.
+  Retain the passage boundary before transition tails and Node strip-only loading.
+- **Results:** 123 focused unit/integration tests, 576-frame Canvas mixed passage,
+  Node import compatibility, TypeScript and targeted ESLint pass.
+- **Rejected:** all five new tests failed against the prior missing-subject or
+  unknown-mapping behavior before implementation.
+- **Open / next:** repair initial/reinstalled native inspection, then final gates/push.
+- **Records:** [fix evidence](./pr-35-followup-fix-results.json),
+  [inline finding](https://github.com/xxibcill/still-shift/pull/35#discussion_r4183968013).
 
 ### 2026-10-05 — Preserve PR #35 Lab native diagnostics end to end
 

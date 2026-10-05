@@ -711,4 +711,8 @@ Map narrative authority explicitly in the native picture:
 Root markers must match the narration cue frames and linked event windows. Layer
 paths may point into an adapted story precomp; share its assets with the containing
 composition. The native beat fixture demonstrates this with a new blend overlay.
+Map focal and evidence nodes, every incoming handoff target and every outgoing
+handoff source. Native entering subjects must be invisible at frame zero; exiting
+subjects must be invisible at the outgoing beat's last passage frame, before its
+transition tail. These checks include precomp instance clocks and host visibility.
 Missing mappings and unsupported legacy acting tracks return a diagnostic.
