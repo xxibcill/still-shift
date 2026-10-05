@@ -105,6 +105,8 @@ export function applyAnimations(
             `${target} assigns different values at frame ${key.frame}`,
             animation.location,
           );
+        if (key.out !== undefined) previous.out = key.out;
+        if (key.spatialOut !== undefined) previous.spatialOut = key.spatialOut;
         return;
       }
       if (previous && previous.frame > key.frame)

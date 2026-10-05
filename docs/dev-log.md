@@ -44,7 +44,7 @@ still hold before relying on them.
 ## Current state
 
 - **PR #36 review fixes in progress (2026-10-05):** `codex/composition-ce10`
-  from `afb4045`; all six findings posted inline, 1/6 repaired in separate
+  from `afb4045`; all six findings posted inline, 2/6 repaired in separate
   finding commits. Focused regressions retain failures and passing reruns.
   Remaining repairs and final local verification precede one final push;
   no owner decision or implementation blocker. [Evidence](./pr-36-fix-results.json).
@@ -156,6 +156,13 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-05 — PR #36 fix 2: preserve joined animation handles
+
+- **Agent / branch:** Codex on `codex/composition-ce10`, from `afb4045`.
+- **Done:** Preserve joined animation handles; focused regressions fail before repair and pass afterward.
+- **Open / next:** 2/6 findings fixed; remaining repairs and final checks precede one final push. Owner review/merge remains pending.
+- **Records:** [Fix evidence](./pr-36-fix-results.json), [inline finding](https://github.com/xxibcill/still-shift/pull/36#discussion_r4183180658).
 
 ### 2026-10-05 — PR #36 fix 1: attribute text preset failures to the correct source
 

@@ -6,6 +6,7 @@ import {
   builderSource,
   BuilderError,
   at,
+  seq,
   nullLayer,
 } from "@still-shift/motion";
 import { evaluateComp, evaluateProperty } from "@still-shift/renderer-core";
@@ -265,4 +266,69 @@ it("locates invalid timeline clip duration at the property animation call", () =
   } catch (error) {
     expect(error).toMatchObject({ code: "comp-builder-time", location });
   }
+});
+
+it("preserves the outgoing temporal handle at a shared clip boundary", () => {
+  const incoming = { ease: 0.2, speed: 0 };
+  const outgoing = { ease: 0.7, speed: 0 };
+  const result = comp(options, (c) => {
+    const n = c.add(box());
+    c.timeline(
+      seq(
+        n.x.keys([
+          { frame: 0, value: 0 },
+          { frame: 10, value: 10, in: incoming },
+        ]),
+        n.x.keys([
+          { frame: 0, value: 10, out: outgoing },
+          { frame: 10, value: 20, in: incoming },
+        ]),
+      ),
+    );
+  });
+  const position = result.layers[0]!.transform!.position;
+  expect(position).toMatchObject({
+    x: {
+      keys: [
+        { frame: 0, value: 0 },
+        { frame: 10, value: 10, in: incoming, out: outgoing },
+        { frame: 20, value: 20, in: incoming },
+      ],
+    },
+  });
+  expect(evaluateProperty(result, "box.x", 12)).toBeCloseTo(
+    10.30288335775443,
+    10,
+  );
+});
+
+it("preserves each side of a spatial join when keyed clips are sequenced", () => {
+  const result = comp(options, (c) => {
+    const n = c.add(box());
+    c.timeline(
+      seq(
+        n.position.keys([
+          { frame: 0, value: [0, 0] },
+          { frame: 10, value: [10, 0], spatialIn: [-4, 3] },
+        ]),
+        n.position.keys([
+          { frame: 0, value: [10, 0], spatialOut: [0, 12] },
+          { frame: 10, value: [20, 0], spatialIn: [0, 12] },
+        ]),
+      ),
+    );
+  });
+  expect(result.layers[0]!.transform!.position).toMatchObject({
+    keys: [
+      { frame: 0, value: [0, 0] },
+      { frame: 10, value: [10, 0], spatialIn: [-4, 3], spatialOut: [0, 12] },
+      { frame: 20, value: [20, 0], spatialIn: [0, 12] },
+    ],
+  });
+  const atMidpoint = evaluateProperty(
+    result,
+    "box.transform.position",
+    15,
+  ) as number[];
+  expect(atMidpoint[1]).toBeGreaterThan(8);
 });

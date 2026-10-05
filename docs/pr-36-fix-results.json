@@ -23,13 +23,28 @@
           "log": "/private/tmp/pr36-fix1-green.log"
         },
         "build": "passed"
-      }
+      },
+      "commit": "38accbb6e63b47b2357d3856635a0ac0622ce3c6"
     },
     {
       "number": 2,
       "finding": "preserve joined animation handles",
       "comment": "https://github.com/xxibcill/still-shift/pull/36#discussion_r4183180658",
-      "status": "pending"
+      "status": "fixed",
+      "verification": {
+        "red": {
+          "status": "failed-as-expected",
+          "newRegressions": 2,
+          "log": "/private/tmp/pr36-fix2-red.log"
+        },
+        "green": {
+          "status": "passed",
+          "tests": 26,
+          "command": "pnpm exec vitest run tests/unit/motion-builder-properties.test.ts tests/unit/motion-builder.test.ts --maxWorkers=2",
+          "log": "/private/tmp/pr36-fix2-green.log"
+        },
+        "build": "passed"
+      }
     },
     {
       "number": 3,
