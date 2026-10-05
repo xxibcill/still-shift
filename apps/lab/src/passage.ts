@@ -120,9 +120,9 @@ function installPreviews(ready: ReadyBeat[]) {
     formatSelect.value = first.height > first.width ? "vertical" : "landscape";
   slider.max = String(editor!.passage.frameCount - 1);
   frame = Math.min(frame, editor!.passage.frameCount - 1);
+  const selectedNode = nodeSelect.value;
   renderControls();
-  renderVerticalOverrideEditor();
-  renderMotionInspector();
+  renderInspector(selectedNode);
   show(frame);
   el("status").textContent =
     `${editor!.passage.plan.title} · ${editor!.passage.beats.length} beats · ${editor!.passage.frameCount} frames · ${editor!.passage.plan.fps} fps`;
@@ -403,7 +403,7 @@ function renderControls() {
   refreshVerticalDiagnostics();
   controls.renderControls(editor!, templates, verticalDiagnostics);
 }
-function renderInspector() {
+function renderInspector(selectedNode = nodeSelect.value) {
   controls.renderInspector(editor!, templates);
   const native = previews[Number(beatSelect.value)]?.nativeComposition;
   if (native)
@@ -415,6 +415,8 @@ function renderInspector() {
         return option;
       }),
     );
+  if ([...nodeSelect.options].some((option) => option.value === selectedNode))
+    nodeSelect.value = selectedNode;
   renderVerticalOverrideEditor();
   renderMotionInspector();
 }

@@ -43,13 +43,13 @@ still hold before relying on them.
 
 ## Current state
 
-- **PR #35 follow-up fixes in progress (2026-10-05):** isolated
+- **PR #35 follow-up fixes awaiting final verification (2026-10-05):** isolated
   `codex/pr35-followup-fixes` from reviewed `84d7924`. All three findings are
-  posted inline. `ea62b7b` preserves Lab diagnostics; native handoffs now require
-  both sides' subject mappings and validate authored enter/exit visibility through
-  precomp instances. Focused checks and the 576-frame Canvas passage pass, including
-  Node strip-only loading. Initial native inspection remains; commit it separately
-  and push once after final verification. Existing CE12-base conflicts remain.
+  posted inline. `ea62b7b` preserves Lab diagnostics; `bff1305` validates native
+  handoff subjects and authored enter/exit visibility. Native inspection now
+  initializes on both renderers and retains selection through edit/undo/redo.
+  Focused regressions pass. Each finding has a separate implementation commit;
+  resolve the existing CE12-base log conflict, run final gates and push once.
   No owner decision is pending. [Evidence](./pr-35-followup-fix-results.json).
 
 - **PR #35 review fixes (2026-10-05):** isolated
@@ -102,7 +102,7 @@ still hold before relying on them.
   [Fix evidence](./pr-32-fix-results.json).
   [Review evidence](./pr-32-review-results.json).
 
-_Last updated 2026-10-05 by Codex for PR #35 fixes; prior work retained._
+_Last updated 2026-10-05 by Codex for PR #35 follow-up fixes; prior work retained._
 
 - **PR #32 conflict resolution (2026-10-04):** merged `main` at `3413780` into
   PR head `a0708ba` and pushed merge `05033c8`, retaining CE9 expressions and
@@ -160,6 +160,20 @@ _Last updated 2026-10-05 by Codex for PR #35 fixes; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-05 — Initialize PR #35 native inspection after preview installation
+
+- **Agent / branch:** Codex on `codex/pr35-followup-fixes` after `bff1305`.
+- **Scope:** third follow-up finding, one separate implementation commit.
+- **Done:** initialize native layer options/state for first and single beats and
+  retain a valid selection through edit, undo and redo preview replacement.
+- **Results:** all 17 passage Lab integration cases, TypeScript and targeted ESLint
+  pass, including both renderers. Final gates/base integration remain before push.
+- **Rejected:** both new cases first reproduced surrogate layer options; browser
+  interaction was corrected to open the collapsed inspector before selecting.
+- **Open / next:** integrate the CE12 base log, run final checks and push all fixes.
+- **Records:** [fix evidence](./pr-35-followup-fix-results.json),
+  [inline finding](https://github.com/xxibcill/still-shift/pull/35#discussion_r4183968018).
 
 ### 2026-10-05 — Validate PR #35 native handoff subjects and boundary visibility
 

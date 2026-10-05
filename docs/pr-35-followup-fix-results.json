@@ -37,12 +37,23 @@
         "Precomp host opacity and lifetime participate in entering-subject visibility"
       ],
       "compatibility": "The evaluator constructor now uses erasable field declarations and assignments so native handoff validation remains importable by Node strip-only loading",
-      "initialFailure": "All five new tests failed before the fix: missing subjects passed or valid mappings were rejected"
+      "initialFailure": "All five new tests failed before the fix: missing subjects passed or valid mappings were rejected",
+      "commit": "bff1305"
     },
     {
       "id": "native-inspector-initialization",
       "comment": "https://github.com/xxibcill/still-shift/pull/35#discussion_r4183968018",
-      "status": "pending"
+      "status": "fixed locally",
+      "change": "Initialize the native layer inspector whenever previews are installed, including first/single beats and edit/undo/redo replacement, and retain a still-valid selected layer",
+      "verification": [
+        "All 17 passage Lab integration tests passed, including Canvas and WebGL first/single native-beat inspection and edit/undo/redo",
+        "TypeScript and targeted ESLint passed"
+      ],
+      "regressions": [
+        "First/single native beat lists native layers and displays native state",
+        "Editing, undoing and redoing retain the native layer list and selected layer"
+      ],
+      "initialFailure": "Both new browser tests reproduced surrogate story layers before the fix; the first fixed run required opening the collapsed Node state panel before selecting a layer"
     }
   ],
   "verification": {},

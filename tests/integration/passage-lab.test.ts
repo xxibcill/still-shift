@@ -124,6 +124,91 @@ describe("passage Lab file actions", () => {
     assert.equal(result.plan.title, plan.title);
   });
 
+  test.each(["canvas2d", "webgl2"])(
+    "native inspector initializes and survives edit/undo/redo on %s",
+    async (backend) => {
+      const page = await browser.newPage();
+      try {
+        await page.route("**/passage-api/load?**", async (route) => {
+          const response = await route.fetch();
+          const packet = await response.json();
+          packet.plan.beats = [packet.plan.beats[2]];
+          await route.fulfill({ response, json: packet });
+        });
+        await page.goto(
+          base +
+            "passage.html?" +
+            new URLSearchParams({
+              renderer: "composition",
+              backend,
+              "composition-beats":
+                "benchmarks/fixtures/composition/ce4a/native-beats.json",
+            }),
+        );
+        await page.waitForFunction(() =>
+          document.querySelector("#status")?.textContent?.includes("1 beats"),
+        );
+        const layers = () =>
+          page
+            .locator("#node")
+            .evaluate((select) =>
+              [...(select as HTMLSelectElement).options].map(
+                (option) => option.value,
+              ),
+            );
+        assert.deepEqual(await layers(), [
+          "difference-panel",
+          "moving-panel",
+          "story-content",
+        ]);
+        assert.equal(
+          JSON.parse((await page.locator("#node-state").textContent())!).id,
+          "difference-panel",
+        );
+        await page.getByText("Node state", { exact: true }).click();
+        await page.locator("#node").selectOption("moving-panel");
+        const original = await page
+          .getByRole("textbox", { name: "title", exact: true })
+          .inputValue();
+        const title = page.getByRole("textbox", { name: "title", exact: true });
+        await title.fill("Native inspector edit");
+        await title.press("Tab");
+        for (const [action, expected] of [
+          ["edit", "Native inspector edit"],
+          ["undo", original],
+          ["redo", "Native inspector edit"],
+        ]) {
+          if (action !== "edit") await page.locator("#" + action).click();
+          await page.waitForFunction(
+            (expected) =>
+              (
+                window.passageLab!.snapshot() as {
+                  plan: { beats: { parameters: { title: string } }[] };
+                }
+              ).plan.beats[0]?.parameters.title === expected,
+            expected,
+          );
+          await page.waitForFunction(() => {
+            const state = document.querySelector("#node-state")?.textContent;
+            return !!state && JSON.parse(state).id === "moving-panel";
+          });
+          assert.deepEqual(await layers(), [
+            "difference-panel",
+            "moving-panel",
+            "story-content",
+          ]);
+          assert.equal(
+            await page.locator("#node").inputValue(),
+            "moving-panel",
+          );
+        }
+      } finally {
+        await page.close();
+      }
+    },
+    60_000,
+  );
+
   test("vertical selector keeps workbench edits and proposal is saved explicitly", async () => {
     const page = await browser.newPage({ acceptDownloads: true });
     try {
