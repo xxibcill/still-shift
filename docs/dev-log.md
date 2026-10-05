@@ -43,10 +43,15 @@ still hold before relying on them.
 
 ## Current state
 
-- **PR #34 re-review fixes in progress (2026-10-05):** 4/5 findings repaired
-  after posting five inline comments on `82453d9`. Separate commits cover
-  pixel-mode diagnostics, active effect tracks, contributing matte motion, one-frame scale and opacity pulses. Remaining repairs: clipped viewport coverage.
-  Final local verification and one final push remain; owner review/merge follows.
+- **PR #34 re-review fixes verified (2026-10-05):** all five inline findings on
+  `82453d9` are repaired in separate commits: browser diagnostics, effect timing,
+  matte dependencies, isolated scale/opacity pulses and clipped coverage. Fast
+  checks pass with 1,496 unit tests; 46 runtime tests, 12 CLI tests and the expanded
+  native browser suite pass. Corpus lint covers all 176 items / 36,061 frames
+  with zero unexpected failures and unchanged reports/reference checksum.
+  Delivery uses one final push to `codex/composition-ce12`; owner review/merge
+  remains pending. Full render/export checks were not rerun; renderer output,
+  versions and frozen baselines are unchanged. Original local work retained.
   [Re-review fix evidence](./pr-34-rereview-fix-results.json).
 
 - **PR #34 review fixes verified (2026-10-05):** all three inline findings posted
@@ -148,6 +153,16 @@ _Last updated 2026-10-05 by Codex for PR #34 review fixes; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-05 — PR #34 clipped viewport coverage
+
+- **Agent / branch:** Codex on `codex/pr34-review-fixes`, reviewing `82453d9`.
+- **Scope / done:** posted the inline finding and repaired clipped viewport coverage.
+- **Results:** regression evidence and local checks are recorded below; no renderer
+  output/version or frozen-baseline changes.
+- **Open / next:** all five repairs and final local verification complete;
+  delivery uses one final push, followed by owner review/merge.
+- **Records:** [Re-review fix evidence](./pr-34-rereview-fix-results.json).
 
 ### 2026-10-05 — PR #34 one-frame scale and opacity pulses
 

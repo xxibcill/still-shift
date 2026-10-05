@@ -945,3 +945,120 @@ it.each([1, 10])(
     expect(codes(input)).not.toContain("opacity-pop");
   },
 );
+
+function groupCoverageScene(
+  size: [number, number],
+  clip = true,
+  transform: object = {},
+) {
+  return composition(
+    [
+      {
+        id: "clip",
+        type: "group",
+        size,
+        clip,
+        transform: { anchor: [0, 0], position: [0, 0], ...transform },
+      },
+      solid("cover", {
+        parent: "clip",
+        size: [640, 360],
+        transform: { anchor: [0, 0], position: [0, 0] },
+      }),
+    ],
+    { frameCount: 3 },
+  );
+}
+
+it.each([true, false])(
+  "checks group coverage clipping only when enabled: %s",
+  (clip) => {
+    const report = analyzeCompositionQuality(
+      groupCoverageScene([100, 100], clip),
+      { coverageLayers: ["cover"] },
+    );
+    expect(report.diagnostics.some((d) => d.code === "coverage")).toBe(clip);
+  },
+);
+
+it("accepts a clipping group that covers the viewport", () => {
+  expect(
+    analyzeCompositionQuality(groupCoverageScene([640, 360]), {
+      coverageLayers: ["cover"],
+    }).diagnostics,
+  ).toEqual([]);
+});
+
+it("rejects rotated clips even when their bounding boxes cover the viewport", () => {
+  const input = groupCoverageScene([640, 360], true, {
+    anchor: [320, 180],
+    position: [320, 180],
+    rotation: 45,
+  });
+  input.layers[1] = solid("cover", {
+    parent: "clip",
+    size: [2000, 2000],
+    transform: { anchor: [1000, 1000], position: [320, 180] },
+  });
+  expect(
+    analyzeCompositionQuality(input, { coverageLayers: ["cover"] }).diagnostics,
+  ).toContainEqual(
+    expect.objectContaining({ code: "coverage", frames: [0, 2] }),
+  );
+});
+
+it.each([false, true])(
+  "respects precomp clipping versus collapsed transforms: %s",
+  (collapseTransforms) => {
+    const input = composition(
+      [
+        {
+          id: "host",
+          type: "precomp",
+          comp: "small",
+          collapseTransforms,
+          transform: { anchor: [0, 0], position: [0, 0] },
+        },
+      ],
+      {
+        frameCount: 3,
+        precomps: [
+          {
+            id: "small",
+            width: 100,
+            height: 100,
+            frameCount: 3,
+            layers: [
+              solid("cover", {
+                size: [640, 360],
+                transform: { anchor: [0, 0], position: [0, 0] },
+              }),
+            ],
+          },
+        ],
+      },
+    );
+    const report = analyzeCompositionQuality(input, {
+      coverageLayers: ["host/cover"],
+    });
+    expect(report.diagnostics.some((d) => d.code === "coverage")).toBe(
+      !collapseTransforms,
+    );
+  },
+);
+
+it("reports the frame range where animated clipping loses coverage", () => {
+  const input = groupCoverageScene([640, 360], true, {
+    scale: {
+      keys: [
+        { frame: 0, value: [1, 1] },
+        { frame: 2, value: [0.5, 0.5], interpolation: "linear" },
+      ],
+    },
+  });
+  expect(
+    analyzeCompositionQuality(input, { coverageLayers: ["cover"] }).diagnostics,
+  ).toContainEqual(
+    expect.objectContaining({ code: "coverage", frames: [1, 2] }),
+  );
+});

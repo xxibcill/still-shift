@@ -250,6 +250,108 @@ try {
       `${source}: moving matte content`,
     );
   }
+  for (const kind of [
+    "group-clip",
+    "group-open",
+    "rotated-clip",
+    "precomp-clip",
+    "precomp-collapse",
+  ] as const) {
+    const precomp = kind.startsWith("precomp");
+    const rotated = kind === "rotated-clip";
+    const comp = precomp
+      ? composition(
+          [
+            {
+              id: "host",
+              type: "precomp",
+              comp: "small",
+              collapseTransforms: kind === "precomp-collapse",
+              transform: { anchor: [0, 0], position: [0, 0] },
+            },
+          ],
+          {
+            frameCount: 1,
+            precomps: [
+              {
+                id: "small",
+                width: 100,
+                height: 100,
+                frameCount: 1,
+                layers: [
+                  solid("cover", {
+                    size: [640, 360],
+                    transform: { anchor: [0, 0], position: [0, 0] },
+                  }),
+                ],
+              },
+            ],
+          },
+        )
+      : composition(
+          [
+            {
+              id: "clip",
+              type: "group",
+              size: rotated ? [640, 360] : [100, 100],
+              clip: kind !== "group-open",
+              transform: rotated
+                ? { anchor: [320, 180], position: [320, 180], rotation: 45 }
+                : { anchor: [0, 0], position: [0, 0] },
+            },
+            solid("cover", {
+              parent: "clip",
+              size: rotated ? [2000, 2000] : [640, 360],
+              transform: rotated
+                ? { anchor: [1000, 1000], position: [320, 180] }
+                : { anchor: [0, 0], position: [0, 0] },
+            }),
+          ],
+          { frameCount: 1 },
+        );
+    const missing = kind !== "group-open" && kind !== "precomp-collapse";
+    const result = await page.evaluate(
+      async ({ json, moduleUrl, coverageId, point }) => {
+        const renderer = (await import(moduleUrl)) as typeof Renderer;
+        const comp = JSON.parse(json) as Composition;
+        const preview = renderer.createCompositionPreview(
+          document.createElement("canvas"),
+          comp,
+          await renderer.loadCompositionResources(comp, () => {
+            throw new Error("No assets expected");
+          }),
+        );
+        try {
+          preview.renderFrame(0);
+          const pixels = preview.readPixels();
+          return {
+            coverage: renderer
+              .analyzeCompositionQuality(comp, { coverageLayers: [coverageId] })
+              .diagnostics.some((d) => d.code === "coverage"),
+            red: pixels[(point[1]! * comp.width + point[0]!) * 4],
+          };
+        } finally {
+          preview.dispose();
+        }
+      },
+      {
+        json: JSON.stringify(comp),
+        moduleUrl: `/@fs/${root}/packages/renderer-core/src/index.ts`,
+        coverageId: precomp ? "host/cover" : "cover",
+        point: rotated ? [1, 1] : [200, 200],
+      },
+    );
+    assert.equal(
+      result.coverage,
+      missing,
+      `${kind}: clipped coverage diagnostic`,
+    );
+    assert.equal(
+      result.red,
+      missing ? 0 : 239,
+      `${kind}: actual painted coverage`,
+    );
+  }
   const motion = composition([
     solid("large", {
       size: [400, 280],
@@ -430,7 +532,7 @@ try {
   assert.equal(cliPixels.measured.pixels, true);
   assert.ok(cliPixels.diagnostics.some((d) => d.code === "frozen-pixels"));
   console.log(
-    "14 fixtures and inherited timing have Node/browser parity; independent meaningful pixel motion checks pass on Canvas2D and WebGL2; file lint uses pinned browser.",
+    "14 fixtures, inherited timing and matte content have Node/browser parity; clipped coverage matches rendered pixels; independent meaningful pixel motion checks pass on Canvas2D and WebGL2; file lint uses pinned browser.",
   );
 } finally {
   await browser.close();

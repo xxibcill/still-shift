@@ -69,9 +69,11 @@ function coversViewport(
   sample: CompositionQualitySample,
   width: number,
   height: number,
+  size?: readonly [number, number],
 ) {
   const layer = sample.state.layer;
-  if (!("size" in layer) || !layer.size) return false;
+  const extent = size ?? ("size" in layer ? layer.size : undefined);
+  if (!extent) return false;
   const [a, b, c, d, e, f] = sample.matrix;
   const determinant = a * d - b * c;
   if (Math.abs(determinant) < 1e-12) return false;
@@ -86,8 +88,8 @@ function coversViewport(
     return (
       localX >= -1e-6 &&
       localY >= -1e-6 &&
-      localX <= layer.size![0] + 1e-6 &&
-      localY <= layer.size![1] + 1e-6
+      localX <= extent[0] + 1e-6 &&
+      localY <= extent[1] + 1e-6
     );
   });
 }
@@ -152,7 +154,22 @@ export function compositionFramingFindings(
           });
         continue;
       }
-      const b = sample.bounds;
+      const b = sample.clippedBounds;
+      const ancestorClips = sample.ancestors.some((id) => {
+        const ancestor = frame.layers.get(id);
+        if (!ancestor) return false;
+        const layer = ancestor.state.layer;
+        if (layer.type === "group" && layer.clip)
+          return !coversViewport(ancestor, comp.width, comp.height);
+        if (layer.type === "precomp" && !layer.collapseTransforms) {
+          const source = comp.precomps!.find((p) => p.id === layer.comp)!;
+          return !coversViewport(ancestor, comp.width, comp.height, [
+            source.width,
+            source.height,
+          ]);
+        }
+        return false;
+      });
       if (
         !sample.visible ||
         sample.opacity < 0.999 ||
@@ -162,6 +179,7 @@ export function compositionFramingFindings(
         b.right < comp.width ||
         b.bottom < comp.height ||
         !coversViewport(sample, comp.width, comp.height) ||
+        ancestorClips ||
         sample.state.masks.some((mask) => mask.mode !== "none") ||
         !!sample.state.layer.trackMatte
       )

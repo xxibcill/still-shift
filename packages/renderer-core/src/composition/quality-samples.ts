@@ -227,7 +227,9 @@ export function compositionQualityFrame(
           id + "/",
           matrix,
           opacity,
-          clippedBounds ?? clipping,
+          layer.type === "precomp" && layer.collapseTransforms
+            ? clipping
+            : (clippedBounds ?? clipping),
           `precomps.${childIndex}`,
           [id, ...ancestors],
           onScreen,
