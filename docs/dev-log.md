@@ -44,10 +44,12 @@ still hold before relying on them.
 ## Current state
 
 - **PR #32 follow-up fixes (2026-10-05):** both P2 findings are posted inline.
-  Implicit anchor/reference reads and cycle validation are fixed locally, with five
-  regressions and all fast checks passing (1,425 tests). Nested echo bake parity
-  remains in progress. One finding per commit; one final push after combined local
-  verification. Owner review/merge remains pending.
+  Implicit anchor/reference reads, cycle validation and nested echo bake parity
+  are fixed. Five anchor and 17 bake regressions pass with all fast checks
+  (1,442 tests); runtime/integration, both expression browser backends, evaluator
+  parity and all 176 frozen items / 36,061 frames pass without regeneration.
+  Delivery uses two finding commits and one final push to PR #32. Owner
+  review/merge remains pending; CE6-P and CE9-F1 remain deferred.
   [Follow-up fix evidence](./pr-32-followup-fix-results.json).
 
 - **PR #32 printer fix (2026-10-04):** re-review of delivered `e81a146` found
@@ -127,6 +129,23 @@ _Last updated 2026-10-05 by Codex for the PR #32 follow-up fixes._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-05 — Fix PR #32 nested echo bake clocks
+
+- **Agent / branch:** Codex on isolated `codex/pr32-review-fixes`, after `5aeb64e`.
+- **Done:** sample render echo clocks and contributing property dependencies;
+  preserve compatible keys and refuse conflicting/fractional history with
+  `comp-bake-time`. Cover primitive blur and active unchanged-source revisions.
+- **Results:** 17 new bake cases; fast checks pass (1,442 tests), runtime 46 and
+  integration 111 tests pass. Both browser backends pass pixels/seeks/repeated and
+  baked MP4 parity; all 176 frozen items / 36,061 frames pass without regeneration.
+- **Rejected / do not repeat:** sampling all sibling properties over-rejected
+  compatible bakes; raw effect exclusion missed primitive blur/revision reads;
+  collecting overridden group blur also over-rejected. Regressions cover each.
+- **Delivery / next:** two finding commits, one final push to PR #32, then owner
+  review/merge. Full test pipeline and strict hardware matrices were not run.
+- **Records:** [follow-up fix evidence](./pr-32-followup-fix-results.json),
+  [inline finding](https://github.com/xxibcill/still-shift/pull/32#discussion_r4181138611).
 
 ### 2026-10-05 — Fix PR #32 implicit anchor/reference dependencies
 

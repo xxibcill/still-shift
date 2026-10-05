@@ -9,6 +9,7 @@ import {
   COMPOSITION_LIMITS,
   compileExpressions,
   formatJsonPath,
+  implicitAnchorDependencies,
   isResolvedProperty,
   layerNodeOf,
   parsePropertyPath,
@@ -20,6 +21,7 @@ import {
   type CompositionDiagnostic,
   type CompositionLayer,
   type CompositionScope,
+  type CompiledExpression,
   type PropertyPath,
   type PropertyPathSegment,
 } from "@still-shift/scene-contract";
@@ -27,7 +29,9 @@ import { AUTO_ORIENT_LOOKAROUND_FRAMES } from "./evaluate/evaluate.ts";
 import {
   evaluateComp,
   evaluateStageProperties,
+  type EvaluationOptions,
   type EvaluatedLayerTree,
+  type StageSample,
 } from "./evaluate/index.ts";
 
 export type BakedProperty = { path: string; keys: number };
@@ -82,6 +86,284 @@ const equal = (a: number | number[], b: number | number[]) =>
   Array.isArray(a)
     ? Array.isArray(b) && a.every((x, i) => x === b[i])
     : a === b;
+
+/** Match the root/scope clocks used by the render graph's temporal echo samples. */
+function echoClocks(source: Composition, frame: number) {
+  const clocks = new Map<
+    string,
+    {
+      frame: number;
+      options: EvaluationOptions;
+      layers: { node: string; revision?: string }[];
+    }
+  >();
+  const visit = (tree: EvaluatedLayerTree, route: string[]) => {
+    const mattes = new Set(
+      tree.layers.flatMap((layer) =>
+        layer.layer.trackMatte ? [layer.layer.trackMatte.layer] : [],
+      ),
+    );
+    for (const layer of tree.layers) {
+      if (
+        !layer.drawable &&
+        !(layer.visible && layer.layer.type === "group") &&
+        !mattes.has(layer.id)
+      )
+        continue;
+      const echo = layer.effects.find(
+        (effect) => effect.enabled && effect.effect === "time.echo",
+      );
+      if (echo) {
+        const { count, spacing, decay, skipUnchanged } = echo.params as Record<
+          string,
+          number
+        >;
+        if (decay)
+          for (let i = count!; i >= 1; i--) {
+            const time = Math.max(0, tree.time - i * spacing!);
+            const scope = route.join("/");
+            const key = `${scope}:${time}`;
+            const layers = clocks.get(key)?.layers ?? [];
+            layers.push({
+              node: [...route, layer.id].join("/"),
+              ...(skipUnchanged ? { revision: echo.id } : {}),
+            });
+            clocks.set(key, {
+              frame: route.length ? frame : time,
+              options: route.length ? { scopeTimes: { [scope]: time } } : {},
+              layers,
+            });
+          }
+      }
+      if (layer.precomp) visit(layer.precomp, [...route, layer.id]);
+    }
+  };
+  visit(evaluateComp(source, frame), []);
+  return [...clocks.values()];
+}
+
+/** Baked properties contributing to one echo, including property and clock reads. */
+function echoProperties(
+  source: Composition,
+  expressions: CompiledExpression[],
+  groups: Group[],
+  node: string,
+  revision?: string,
+) {
+  const scopes = new Map(source.precomps?.map((scope) => [scope.id, scope]));
+  const needed = new Map<string, PropertyPath>();
+  const keyOf = (path: PropertyPath) =>
+    `${layerNodeOf(path)}#${segmentKey(propertyRoot(path.segments))}`;
+  const resolve = (text: string) => {
+    const property = resolvePropertyPath(source, text);
+    return isResolvedProperty(property)
+      ? (parsePropertyPath(property.path) as PropertyPath)
+      : undefined;
+  };
+  const scopeAt = (route: string[]) => {
+    let scope: CompositionScope = source;
+    for (const id of route) {
+      const host = scope.layers.find((layer) => layer.id === id)!;
+      scope = scopes.get(
+        (host as Extract<CompositionLayer, { type: "precomp" }>).comp,
+      )!;
+    }
+    return scope;
+  };
+  const add = (text: string) => {
+    const path = resolve(text);
+    if (!path || path.layer === "comp") return;
+    needed.set(keyOf(path), path);
+    path.scope.forEach((_, i) => {
+      const clock = resolve(
+        `${path.scope.slice(0, i + 1).join("/")}.timeRemap`,
+      )!;
+      needed.set(keyOf(clock), clock);
+    });
+  };
+  const transforms = new Set<string>();
+  const motionTargets = new Set(
+    [
+      ...(source.drivers ?? []).map((writer) => writer.target),
+      ...(source.periodic ?? []).map(
+        (writer) => writer.target ?? `${writer.node}.${writer.property}`,
+      ),
+    ].map((text) => keyOf(resolve(text)!)),
+  );
+  const transform = (
+    route: string[],
+    layer: CompositionLayer,
+    opacity: boolean,
+  ) => {
+    const node = [...route, layer.id].join("/");
+    if (opacity) add(`${node}.transform.opacity`);
+    if (transforms.has(node)) return;
+    transforms.add(node);
+    for (const field of [
+      "anchor",
+      "position",
+      "scale",
+      "rotation",
+      "skewX",
+      "skewY",
+    ])
+      add(`${node}.transform.${field}`);
+    const scope = scopeAt(route);
+    if (layer.parent) {
+      const parent = scope.layers.find(
+        (candidate) => candidate.id === layer.parent,
+      )!;
+      transform(route, parent, parent.type === "group");
+    }
+    for (const constraint of scope.constraints ?? []) {
+      if (constraint.target !== layer.id) continue;
+      add(`${node}.constraintReference`);
+      const reference =
+        "anchor" in constraint
+          ? constraint.anchor
+          : "surface" in constraint
+            ? constraint.surface
+            : "toward" in constraint
+              ? constraint.toward
+              : "path" in constraint
+                ? constraint.path
+                : undefined;
+      if (reference)
+        transform(
+          route,
+          scope.layers.find((candidate) => candidate.id === reference)!,
+          true,
+        );
+    }
+  };
+  const painted = new Set<string>();
+  const paint = (route: string[], layer: CompositionLayer, raw = false) => {
+    const node = [...route, layer.id].join("/");
+    if (painted.has(node)) return;
+    painted.add(node);
+    transform(route, layer, true);
+    for (const field of ["color", "reveal", "stateMix"])
+      add(`${node}.${field}`);
+    // Raw ghosts retain their own primitive blur and inherited group blur.
+    const scope = scopeAt(route);
+    for (
+      let current: CompositionLayer | undefined = layer;
+      current;
+      current = current.parent
+        ? scope.layers.find((candidate) => candidate.id === current!.parent)
+        : undefined
+    ) {
+      if (current !== layer && current.type !== "group") continue;
+      const blur = current.effects?.find(
+        (effect) =>
+          effect.enabled !== false && effect.effect === "blur.primitive",
+      );
+      if (blur) {
+        const text = `${[...route, current.id].join("/")}.effects[${blur.id}].radius`;
+        add(text);
+        const key = keyOf(resolve(text)!);
+        if (
+          typeof blur.params?.radius === "number" &&
+          blur.params.radius > 0 &&
+          !groups.some((group) => keyOf(group.path) === key) &&
+          !motionTargets.has(key)
+        )
+          break;
+      }
+    }
+    if (!raw) {
+      for (const group of groups)
+        if (
+          layerNodeOf(group.path) === node &&
+          (group.segments[0]!.name === "masks" ||
+            (group.segments[0]!.name === "effects" &&
+              layer.effects?.find(
+                (effect) => effect.id === group.segments[0]!.index,
+              )?.effect !== "time.echo"))
+        )
+          add(group.text);
+      if (layer.trackMatte)
+        paint(
+          route,
+          scope.layers.find(
+            (candidate) => candidate.id === layer.trackMatte!.layer,
+          )!,
+        );
+      for (const effect of layer.effects ?? [])
+        if (effect.space)
+          transform(
+            route,
+            scope.layers.find((candidate) => candidate.id === effect.space)!,
+            true,
+          );
+    }
+    if (layer.type === "precomp") {
+      add(`${node}.timeRemap`);
+      for (const child of scopes.get(layer.comp)!.layers)
+        paint([...route, layer.id], child);
+    } else if (layer.type === "group") {
+      for (const child of scopeAt(route).layers)
+        if (child.parent === layer.id) paint(route, child);
+    }
+  };
+  const route = node.split("/");
+  const id = route.pop()!;
+  paint(route, scopeAt(route).layers.find((layer) => layer.id === id)!, true);
+  if (revision) add(`${node}.effects[${revision}].sourceRevision`);
+  const drivers = (source.drivers ?? []).map((driver) => ({
+    driver,
+    path: resolve(driver.target)!,
+  }));
+  const visited = new Set<string>();
+  for (const [key, path] of needed) {
+    if (visited.has(key)) continue;
+    visited.add(key);
+    for (const expression of expressions)
+      if (keyOf(expression.target.path) === key)
+        for (const read of expression.reads) add(read.resolved.path);
+    for (const { driver, path: target } of drivers) {
+      if (keyOf(target) !== key) continue;
+      for (const text of [driver.source, ...(driver.sum ?? [])]) {
+        if (!text?.includes(".")) continue;
+        add(text);
+        const read = resolve(text)!;
+        if (read.segments[0]!.name === "transform")
+          transform(
+            read.scope,
+            scopeAt(read.scope).layers.find(
+              (layer) => layer.id === read.layer,
+            )!,
+            true,
+          );
+      }
+    }
+    const layer = scopeAt(path.scope).layers.find(
+      (layer) => layer.id === path.layer,
+    )!;
+    const writers = [
+      ...expressions.map((expression) => expression.target.path),
+      ...drivers.map(({ path }) => path),
+    ].filter(
+      (writer) =>
+        layerNodeOf(writer) === layerNodeOf(path) &&
+        writer.segments[0]!.name === "constraintReference",
+    );
+    const written = ["x", "y"].map((axis) =>
+      writers.some(
+        (writer) => !writer.segments[1] || writer.segments[1].name === axis,
+      ),
+    );
+    for (const segments of implicitAnchorDependencies(
+      layer,
+      path.segments,
+      written,
+    ))
+      add(`${layerNodeOf(path)}.${segmentKey(segments)}`);
+  }
+  return groups.flatMap((group, i) =>
+    needed.has(keyOf(group.path)) ? [i] : [],
+  );
+}
 
 function autoOrientMismatch(
   source: EvaluatedLayerTree,
@@ -199,44 +481,74 @@ export function bakeExpressions(input: unknown): BakeResult {
   const margin = list.some((group) => group.lookaround)
     ? AUTO_ORIENT_LOOKAROUND_FRAMES
     : 0;
-  for (let frame = -margin; frame < source.frameCount + margin; frame++) {
-    const indices = list.flatMap((group, i) =>
-      group.lookaround || (frame >= 0 && frame < source.frameCount) ? [i] : [],
-    );
-    const values = evaluateStageProperties(
-      source,
-      indices.map((i) => list[i]!.text),
-      frame,
-    );
+  const recordSamples = (
+    indices: number[],
+    values: StageSample[],
+    frame: number,
+  ): CompositionDiagnostic | undefined => {
     for (const [at, sample] of values.entries()) {
       const i = indices[at]!;
       const keyTime = sample.keyTime;
       const rounded = Math.round(keyTime);
       if (Math.abs(keyTime - rounded) > 1e-9)
-        return {
-          ok: false,
-          diagnostics: [
-            error(
-              "comp-bake-time",
-              list[i]!.origin,
-              `"${list[i]!.text}" samples layer time ${keyTime} at frame ${frame}; keys need integer layer frames (stretch ±1, no fractional remap)`,
-            ),
-          ],
-        };
+        return error(
+          "comp-bake-time",
+          list[i]!.origin,
+          `"${list[i]!.text}" samples layer time ${keyTime} at frame ${frame}; keys need integer layer frames (stretch ±1, no fractional remap)`,
+        );
       const previous = samples[i]!.get(rounded);
       if (previous !== undefined && !equal(previous, sample.value))
-        return {
-          ok: false,
-          diagnostics: [
-            error(
-              "comp-bake-time",
-              list[i]!.origin,
-              `"${list[i]!.text}" has different values at layer frame ${rounded} (a held or repeated layer time); it cannot be keyed`,
-            ),
-          ],
-        };
+        return error(
+          "comp-bake-time",
+          list[i]!.origin,
+          `"${list[i]!.text}" has different values at layer frame ${rounded} (a held or repeated layer time); it cannot be keyed`,
+        );
       samples[i]!.set(rounded, sample.value);
     }
+  };
+  const sampleAt = (
+    indices: number[],
+    frame: number,
+    options: EvaluationOptions = {},
+  ) =>
+    recordSamples(
+      indices,
+      evaluateStageProperties(
+        source,
+        indices.map((i) => list[i]!.text),
+        frame,
+        options,
+      ),
+      frame,
+    );
+  const hasEcho = [source, ...(source.precomps ?? [])].some((scope) =>
+    scope.layers.some((layer) =>
+      layer.effects?.some((effect) => effect.effect === "time.echo"),
+    ),
+  );
+  const echoTargets = new Map<string, number[]>();
+  for (let frame = -margin; frame < source.frameCount + margin; frame++) {
+    const indices = list.flatMap((group, i) =>
+      group.lookaround || (frame >= 0 && frame < source.frameCount) ? [i] : [],
+    );
+    const diagnostic = sampleAt(indices, frame);
+    if (diagnostic) return { ok: false, diagnostics: [diagnostic] };
+    if (hasEcho && frame >= 0 && frame < source.frameCount)
+      for (const clock of echoClocks(source, frame)) {
+        const indices = new Set<number>();
+        for (const { node, revision } of clock.layers) {
+          const key = `${node}#${revision ?? ""}`;
+          let targets = echoTargets.get(key);
+          if (!targets) {
+            targets = echoProperties(source, expressions, list, node, revision);
+            echoTargets.set(key, targets);
+          }
+          targets.forEach((i) => indices.add(i));
+        }
+        if (!indices.size) continue;
+        const diagnostic = sampleAt([...indices], clock.frame, clock.options);
+        if (diagnostic) return { ok: false, diagnostics: [diagnostic] };
+      }
   }
 
   const output = structuredClone(source);

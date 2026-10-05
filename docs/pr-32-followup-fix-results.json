@@ -8,7 +8,7 @@
     {
       "priority": "P2",
       "title": "Apply implicit anchor dependencies before reading constraintReference",
-      "status": "fixed locally",
+      "status": "fixed",
       "implementation": "Resolve inherited reference axes through expression-stage anchor reads; include the same implicit dependencies in cycle validation. Authored references and axes written by expressions, drivers or active periodic motion retain their own values. Evaluator version is composition-evaluator-24.",
       "regressions": 5,
       "coverage": [
@@ -19,12 +19,33 @@
         "Nested precomp instance reads"
       ],
       "red": "The first three regressions failed before the fix; 33 existing expression tests passed.",
-      "green": "All 38 expression tests and the full fast checks pass."
+      "green": "All 38 expression tests and the full fast checks pass.",
+      "commit": "5aeb64e82e1721d28f7d43596b92b12f8a5503fe",
+      "comment": "https://github.com/xxibcill/still-shift/pull/32#discussion_r4181138604"
     },
     {
       "priority": "P2",
       "title": "Preserve nested echo clocks or reject incompatible bakes",
-      "status": "pending"
+      "status": "fixed",
+      "comment": "https://github.com/xxibcill/still-shift/pull/32#discussion_r4181138611",
+      "implementation": "Evaluate historical render-echo clocks with nested scopeTimes while retaining the current root frame. Sample only echoed content, descendants, parent transforms, constraints, expression/driver reads, clock dependencies, primitive blur and active skipUnchanged sourceRevision reads. Compatible samples become keys; conflicting or fractional layer times return comp-bake-time. A fixed positive primitive blur stops unused ancestor blur dependencies.",
+      "regressions": 17,
+      "coverage": [
+        "Original nested root-clock mismatch is refused with the expression diagnostic path",
+        "Compatible forward and reversed nested echoes preserve every render graph frame",
+        "Ancestor precomp echo includes descendant property history",
+        "Zero-decay echoes do not add historical requirements",
+        "Fractional echo keys are refused",
+        "Unrelated root and nested siblings still bake exactly",
+        "External expression and driver reads include source history",
+        "Historical parent transforms contribute to the echo",
+        "Ordinary echo parameters remain on the current clock",
+        "Own and inherited primitive blur include historical samples",
+        "sourceRevision uses historical samples only while skipUnchanged is active",
+        "Fixed positive own blur excludes overridden ancestor blur; legacy node/property periodic writers remain supported"
+      ],
+      "red": "The original nested-clock regression failed before the fix. Subsequent acceptance regressions exposed over-broad sibling sampling, missing raw blur/revision dependencies and unused overridden ancestor blur sampling.",
+      "green": "All 30 bake-file tests pass, including 17 new regressions; final fast checks pass 1,442 tests."
     }
   ],
   "verification": {
@@ -32,22 +53,91 @@
     "pnpm": "10.29.3",
     "checks": [
       {
+        "command": "pnpm toolchain:check",
+        "exitCode": 0,
+        "log": "/private/tmp/pr32-followup-toolchain.log"
+      },
+      {
         "command": "pnpm check:fast",
         "exitCode": 0,
         "unitFiles": 127,
-        "unitTests": 1425,
-        "log": "/private/tmp/pr32-anchor-fast.log"
+        "unitTests": 1442,
+        "log": "/private/tmp/pr32-followup-final-fast.log"
+      },
+      {
+        "command": "pnpm test:browser:composition-expressions",
+        "exitCode": 0,
+        "fixtures": 4,
+        "framesPerBackend": 230,
+        "backends": ["canvas2d", "webgl2"],
+        "result": "Expression and baked pixels, shuffled seeks, repeated MP4s and baked MP4s match exactly",
+        "log": "/private/tmp/pr32-followup-final-browser.log"
+      },
+      {
+        "command": "pnpm test:browser:composition-evaluator",
+        "exitCode": 0,
+        "fixtures": 5,
+        "framesPerFixture": 9,
+        "maximumNumericError": 5.684341886080802e-14,
+        "result": "Timing, visibility and reverse seeks match exactly",
+        "log": "/private/tmp/pr32-followup-final-evaluator.log"
+      },
+      {
+        "command": "pnpm test:runtime",
+        "exitCode": 0,
+        "files": 9,
+        "tests": 46,
+        "log": "/private/tmp/pr32-followup-runtime.log"
+      },
+      {
+        "command": "pnpm test:integration",
+        "exitCode": 0,
+        "files": 31,
+        "tests": 111,
+        "log": "/private/tmp/pr32-followup-integration.log"
+      },
+      {
+        "command": "pnpm test:browser:composition-baselines",
+        "exitCode": 0,
+        "items": 176,
+        "frames": 36061,
+        "durationSeconds": 278.85,
+        "regenerated": false,
+        "log": "/private/tmp/pr32-followup-baselines.log"
       }
     ],
     "initialExpandedTestFailure": "The new driver fixture initially had one signal key; the existing schema requires two. Corrected the fixture without changing production validation and reran the full fast checks.",
     "redLog": "/private/tmp/pr32-anchor-red.log",
-    "policy": "Local verification only; GitHub Actions remain prohibited. No baseline regeneration or performance tuning. CE6-P and CE9-F1 deferrals remain."
+    "policy": "Local verification only; GitHub Actions remain prohibited. No baseline regeneration or performance tuning. CE6-P and CE9-F1 deferrals remain.",
+    "runScope": "Runtime, integration and frozen baselines ran after the anchor fix and initial echo fix, before the bake-only dependency refinement. Renderer/evaluator production code was unchanged during that refinement. Final fast and focused expression/evaluator browser checks ran after the completed bake implementation.",
+    "rejectedExperiments": [
+      "Sampling all expression targets for every echo falsely refused unrelated sibling expressions; replaced with content and property dependency closure.",
+      "Excluding all raw effects missed primitive blur and historical sourceRevision; focused regressions reproduced both and the collector now follows those render reads.",
+      "Collecting all ancestor primitive blur parameters over-rejected an overridden blur; stop at a fixed positive nearer blur without expression or motion writers."
+    ],
+    "fixtureAndTypeRepairs": [
+      "Initial inherited-blur test omitted the required group size; validation failed before bake. Added size:[200,200] without changing production validation.",
+      "Type checking caught optional legacy periodic.target in the blur override collector. Normalize target or node/property as in the existing evaluator and include that form in the override regression."
+    ],
+    "echoRedLogs": [
+      "/private/tmp/pr32-echo-red.log",
+      "/private/tmp/pr32-echo-scope-red.log",
+      "/private/tmp/pr32-echo-history-red.log",
+      "/private/tmp/pr32-echo-overridden-blur-red.log"
+    ],
+    "independentReview": "Standards and spec reviewers independently confirmed final own/inherited blur and revision refusal, inactive skip acceptance, unrelated sibling acceptance and overridden ancestor blur parity. No remaining findings from the bounded final checks.",
+    "notRun": [
+      "Full pnpm check/test pipeline",
+      "Strict WebGL family hardware matrices",
+      "Hardware performance audits"
+    ]
   },
   "delivery": {
     "localBranch": "codex/pr32-review-fixes",
     "targetBranch": "codex/composition-ce9",
     "strategy": "One commit per finding; one final push after both commits and verification.",
-    "pushCount": 0,
-    "status": "First finding complete; second finding and combined verification pending."
+    "status": "Both findings complete and verified. Delivery uses two finding commits and one final push to the PR branch. Remote head matches startingHead before delivery; post-push remote verification is reported in the chat.",
+    "findingCommits": 2,
+    "plannedPushes": 1
   }
 }

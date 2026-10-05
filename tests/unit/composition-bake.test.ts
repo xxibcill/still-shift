@@ -12,6 +12,7 @@ import {
   evaluateProperty,
 } from "../../packages/renderer-core/src/composition/evaluate/index.ts";
 import { runCli } from "../../tools/still-shift-cli/src/cli.ts";
+import { buildRenderGraph } from "../../packages/renderer-core/src/composition/render/graph.ts";
 
 const root = resolve(import.meta.dirname, "../..");
 const fixture = async (name: string) =>
@@ -77,6 +78,413 @@ function expectSameFrames(a: Composition, b: Composition) {
 }
 
 describe("comp bake", () => {
+  it("refuses root-clock expressions that conflict with nested echo history", () => {
+    const doc = valid(
+      base({
+        layers: [{ id: "p", type: "precomp", comp: "clip" }],
+        precomps: [
+          {
+            id: "clip",
+            width: 200,
+            height: 200,
+            frameCount: 40,
+            layers: [
+              solid("hero", {
+                effects: [
+                  {
+                    id: "echo",
+                    effect: "time.echo",
+                    params: { count: 1, spacing: 1, decay: 0.5 },
+                  },
+                ],
+              }),
+            ],
+          },
+        ],
+        expressions: {
+          "p/hero.transform.position.x": { source: "frame * 10" },
+        },
+      }),
+    );
+    expect(bakeExpressions(doc)).toMatchObject({
+      ok: false,
+      diagnostics: [
+        expect.objectContaining({
+          code: "comp-bake-time",
+          path: 'expressions["p/hero.transform.position.x"]',
+          message: expect.stringContaining("held or repeated layer time"),
+        }),
+      ],
+    });
+  });
+
+  it.each([false, true])(
+    "preserves compatible nested echo render graphs (reverse=%s)",
+    async (reversed) => {
+      const doc = valid(await fixture("nested-echo"));
+      if (reversed) {
+        doc.layers[0]!.startFrame = 39;
+        doc.layers[0]!.stretch = -1;
+      }
+      const baked = bakeExpressions(doc);
+      expect(baked.ok).toBe(true);
+      if (!baked.ok) return;
+      expect(baked.diagnostics).toEqual([]);
+      for (let frame = 0; frame < doc.frameCount; frame++)
+        expect(
+          buildRenderGraph(
+            baked.composition,
+            evaluateComp(baked.composition, frame),
+          ),
+        ).toEqual(buildRenderGraph(doc, evaluateComp(doc, frame)));
+    },
+  );
+
+  it("checks descendant keys when an ancestor precomp has an echo", () => {
+    const doc = valid(
+      base({
+        layers: [{ id: "p", type: "precomp", comp: "outer" }],
+        precomps: [
+          {
+            id: "outer",
+            width: 200,
+            height: 200,
+            frameCount: 40,
+            layers: [
+              {
+                id: "inner",
+                type: "precomp",
+                comp: "clip",
+                effects: [
+                  {
+                    id: "echo",
+                    effect: "time.echo",
+                    params: { count: 1, spacing: 1, decay: 0.5 },
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            id: "clip",
+            width: 200,
+            height: 200,
+            frameCount: 40,
+            layers: [solid("hero")],
+          },
+        ],
+        expressions: {
+          "p/inner/hero.transform.position.x": { source: "frame * 10" },
+        },
+      }),
+    );
+    expect(bakeExpressions(doc)).toMatchObject({
+      ok: false,
+      diagnostics: [expect.objectContaining({ code: "comp-bake-time" })],
+    });
+  });
+
+  it("allows a zero-decay echo without historical samples", async () => {
+    const doc = valid(await fixture("nested-echo"));
+    doc.precomps![0]!.layers[0]!.effects![0]!.params!.decay = 0;
+    doc.expressions!["p/hero.transform.position"] = {
+      source: "[frame * 2 + 20, 100]",
+    };
+    const baked = bakeExpressions(doc);
+    expect(baked.ok).toBe(true);
+    if (!baked.ok) return;
+    expect(baked.diagnostics).toEqual([]);
+    expectSameFrames(doc, baked.composition);
+  });
+
+  it("refuses fractional echo times that require non-integer keys", () => {
+    const doc = valid(
+      base({
+        layers: [
+          solid("a", {
+            effects: [
+              {
+                id: "echo",
+                effect: "time.echo",
+                params: { count: 1, spacing: 1.5, decay: 0.5 },
+              },
+            ],
+          }),
+        ],
+        expressions: { "a.transform.position.x": { source: "frame * frame" } },
+      }),
+    );
+    expect(bakeExpressions(doc)).toMatchObject({
+      ok: false,
+      diagnostics: [expect.objectContaining({ code: "comp-bake-time" })],
+    });
+  });
+
+  it.each([false, true])(
+    "does not sample unrelated echo siblings (nested=%s)",
+    (nested) => {
+      const layers = [
+        solid("echoer", {
+          transform: { position: [100, 100] },
+          effects: [
+            {
+              id: "echo",
+              effect: "time.echo",
+              params: { count: 1, spacing: nested ? 1 : 1.5, decay: 0.5 },
+            },
+          ],
+        }),
+        solid("hero", { transform: { position: [20, 100] } }),
+      ];
+      const doc = valid(
+        base({
+          layers: nested
+            ? [{ id: "p", type: "precomp", comp: "clip" }]
+            : layers,
+          ...(nested
+            ? {
+                precomps: [
+                  {
+                    id: "clip",
+                    width: 200,
+                    height: 200,
+                    frameCount: 40,
+                    layers,
+                  },
+                ],
+              }
+            : {}),
+          expressions: {
+            [`${nested ? "p/" : ""}hero.transform.position.x`]: {
+              source: "frame * frame",
+            },
+          },
+        }),
+      );
+      const baked = bakeExpressions(doc);
+      expect(baked.ok).toBe(true);
+      if (!baked.ok) return;
+      expect(baked.diagnostics).toEqual([]);
+      for (let frame = 0; frame < doc.frameCount; frame++)
+        expect(
+          buildRenderGraph(
+            baked.composition,
+            evaluateComp(baked.composition, frame),
+          ),
+        ).toEqual(buildRenderGraph(doc, evaluateComp(doc, frame)));
+    },
+  );
+
+  it.each([false, true])(
+    "includes external expression and driver reads in echo history (driver=%s)",
+    (driver) => {
+      const doc = valid(
+        base({
+          layers: [{ id: "p", type: "precomp", comp: "clip" }],
+          precomps: [
+            {
+              id: "clip",
+              width: 200,
+              height: 200,
+              frameCount: 40,
+              layers: [
+                solid("leader"),
+                solid("hero", {
+                  effects: [
+                    {
+                      id: "echo",
+                      effect: "time.echo",
+                      params: { count: 1, spacing: 1, decay: 0.5 },
+                    },
+                  ],
+                }),
+              ],
+            },
+          ],
+          expressions: {
+            "p/leader.transform.position.x": { source: "frame * 10" },
+            ...(driver
+              ? {}
+              : {
+                  "p/hero.transform.position.x": {
+                    source: "ref('p/leader.transform.position.x')",
+                  },
+                }),
+          },
+          ...(driver
+            ? {
+                drivers: [
+                  {
+                    target: "p/hero.transform.position.x",
+                    source: "p/leader.transform.position.x",
+                  },
+                ],
+              }
+            : {}),
+        }),
+      );
+      expect(bakeExpressions(doc)).toMatchObject({
+        ok: false,
+        diagnostics: [expect.objectContaining({ code: "comp-bake-time" })],
+      });
+    },
+  );
+
+  it("includes a historical parent's transform in an echo", () => {
+    const doc = valid(
+      base({
+        layers: [{ id: "p", type: "precomp", comp: "clip" }],
+        precomps: [
+          {
+            id: "clip",
+            width: 200,
+            height: 200,
+            frameCount: 40,
+            layers: [
+              { id: "carrier", type: "null" },
+              solid("hero", {
+                parent: "carrier",
+                effects: [
+                  {
+                    id: "echo",
+                    effect: "time.echo",
+                    params: { count: 1, spacing: 1, decay: 0.5 },
+                  },
+                ],
+              }),
+            ],
+          },
+        ],
+        expressions: {
+          "p/carrier.transform.position.x": { source: "frame * 10" },
+        },
+      }),
+    );
+    expect(bakeExpressions(doc)).toMatchObject({
+      ok: false,
+      diagnostics: [expect.objectContaining({ code: "comp-bake-time" })],
+    });
+  });
+
+  it("keeps echo parameters on the current clock", async () => {
+    const doc = valid(await fixture("nested-echo"));
+    delete doc.expressions!["p/hero.transform.position"];
+    doc.expressions!["p/hero.effects[echo].decay"] = { source: "frame / 40" };
+    const baked = bakeExpressions(doc);
+    expect(baked.ok).toBe(true);
+    if (!baked.ok) return;
+    for (let frame = 0; frame < doc.frameCount; frame++)
+      expect(
+        buildRenderGraph(
+          baked.composition,
+          evaluateComp(baked.composition, frame),
+        ),
+      ).toEqual(buildRenderGraph(doc, evaluateComp(doc, frame)));
+  });
+
+  it.each([false, true])(
+    "includes historical primitive blur (inherited=%s)",
+    async (inherited) => {
+      const doc = await fixture("nested-echo");
+      const clip = doc.precomps![0]!;
+      const hero = clip.layers[0]!;
+      const blur = {
+        id: "blur",
+        effect: "blur.primitive" as const,
+        params: { radius: 0 },
+      };
+      if (inherited) {
+        clip.layers.unshift({
+          id: "carrier",
+          type: "group",
+          size: [200, 200],
+          effects: [blur],
+        });
+        hero.parent = "carrier";
+      } else hero.effects!.push(blur);
+      doc.expressions![
+        `p/${inherited ? "carrier" : "hero"}.effects[blur].radius`
+      ] = {
+        source: "frame",
+      };
+      expect(bakeExpressions(valid(doc))).toMatchObject({
+        ok: false,
+        diagnostics: [expect.objectContaining({ code: "comp-bake-time" })],
+      });
+    },
+  );
+
+  it.each([0, 1])(
+    "checks historical source revisions only when skipping unchanged inputs (skip=%s)",
+    async (skipUnchanged) => {
+      const doc = await fixture("nested-echo");
+      doc.precomps![0]!.layers[0]!.effects![0]!.params!.skipUnchanged =
+        skipUnchanged;
+      doc.expressions!["p/hero.effects[echo].sourceRevision"] = {
+        source: "frame",
+      };
+      const baked = bakeExpressions(valid(doc));
+      if (skipUnchanged) {
+        expect(baked).toMatchObject({
+          ok: false,
+          diagnostics: [expect.objectContaining({ code: "comp-bake-time" })],
+        });
+      } else {
+        expect(baked.ok).toBe(true);
+        if (!baked.ok) return;
+        for (let frame = 0; frame < doc.frameCount; frame++)
+          expect(
+            buildRenderGraph(
+              baked.composition,
+              evaluateComp(baked.composition, frame),
+            ),
+          ).toEqual(buildRenderGraph(doc, evaluateComp(doc, frame)));
+      }
+    },
+  );
+
+  it("does not sample inherited blur overridden by a fixed positive primitive blur", async () => {
+    const doc = await fixture("nested-echo");
+    const clip = doc.precomps![0]!;
+    const hero = clip.layers[0]!;
+    hero.parent = "carrier";
+    hero.effects!.push({
+      id: "ownBlur",
+      effect: "blur.primitive",
+      params: { radius: 5 },
+    });
+    clip.layers.unshift({
+      id: "carrier",
+      type: "group",
+      size: [200, 200],
+      effects: [
+        { id: "blur", effect: "blur.primitive", params: { radius: 1 } },
+      ],
+    });
+    doc.expressions!["p/carrier.effects[blur].radius"] = {
+      source: "frame * 2",
+    };
+    doc.periodic = [
+      {
+        node: "p",
+        property: "rotation",
+        start: 0,
+        end: 39,
+        oscillate: { period: 10, amplitude: 1 },
+      },
+    ];
+    const baked = bakeExpressions(valid(doc));
+    expect(baked.ok).toBe(true);
+    if (!baked.ok) return;
+    for (let frame = 0; frame < doc.frameCount; frame++)
+      expect(
+        buildRenderGraph(
+          baked.composition,
+          evaluateComp(baked.composition, frame),
+        ),
+      ).toEqual(buildRenderGraph(doc, evaluateComp(doc, frame)));
+  });
+
   it("bakes the CE9 acceptance demo exactly and matches the committed file", async () => {
     const demo = await fixture("overlap-demo");
     const followers = demo.layers.slice(1);
