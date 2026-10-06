@@ -102,7 +102,8 @@ function resolveSegments(
         return component(type, COMPONENTS[type], rest);
       }
       if (["rotationX", "rotationY", "orientation"].includes(next.name)) {
-        if (!layer.threeD && layer.type !== "camera") return unavailable(text, "CE8");
+        if (!layer.threeD && layer.type !== "camera")
+          return unavailable(text, "CE8");
         return next.name === "orientation"
           ? component("vec3", COMPONENTS.vec3, rest)
           : component("scalar", [], rest);

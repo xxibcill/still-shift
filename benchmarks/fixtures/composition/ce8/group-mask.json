@@ -15,23 +15,12 @@
     {
       "id": "group",
       "type": "group",
-      "size": [
-        64,
-        48
-      ],
+      "size": [64, 48],
       "clip": true,
       "threeD": true,
       "transform": {
-        "anchor": [
-          0,
-          0,
-          0
-        ],
-        "position": [
-          30,
-          24,
-          0
-        ],
+        "anchor": [0, 0, 0],
+        "position": [30, 24, 0],
         "rotationY": {
           "keys": [
             {
@@ -56,22 +45,10 @@
           "path": {
             "closed": true,
             "vertices": [
-              [
-                0,
-                0
-              ],
-              [
-                54,
-                0
-              ],
-              [
-                54,
-                42
-              ],
-              [
-                0,
-                42
-              ]
+              [0, 0],
+              [54, 0],
+              [54, 42],
+              [0, 42]
             ]
           }
         }
@@ -80,23 +57,12 @@
     {
       "id": "inside",
       "type": "solid",
-      "size": [
-        80,
-        65
-      ],
+      "size": [80, 65],
       "color": "#eb8d55",
       "threeD": true,
       "transform": {
-        "anchor": [
-          0,
-          0,
-          0
-        ],
-        "position": [
-          0,
-          0,
-          0
-        ]
+        "anchor": [0, 0, 0],
+        "position": [0, 0, 0]
       },
       "parent": "group"
     }

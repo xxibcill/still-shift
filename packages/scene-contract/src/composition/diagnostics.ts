@@ -100,15 +100,24 @@ export const COMPOSITION_DIAGNOSTICS = {
   "comp-text-transition":
     "Conflicting, overlapping or impossible text transitions.",
   "comp-camera-key-range": "A `camera2d` key lies at or after `frameCount`.",
-  "comp-camera-settings": "Native camera optical controls, model or clip planes are invalid after sampling.",
-  "comp-3d-constraint": "The constraint uses 2D geometry and cannot reference a spatial layer or parent chain.",
-  "comp-3d-transform": "Spatial transform sampling or parent composition produces non-finite world geometry.",
-  "comp-camera-cycle": "An active camera cannot depend on a camera-facing parent transform.",
-  "comp-3d-surface-budget": "A projected local artwork surface exceeds the bounded allocation budget.",
-  "comp-3d-collapse": "Perspective precomps render as flat surfaces and cannot collapse transforms.",
-  "comp-3d-effect": "A projected layer requires a scope-space adjustment or precomp for time echo.",
-  "comp-3d-effect-space": "Cross-plane effect coordinates require an affine relation between planes.",
-  "comp-camera-geometry": "Camera world basis or point of interest is degenerate after parent evaluation.",
+  "comp-camera-settings":
+    "Native camera optical controls, model or clip planes are invalid after sampling.",
+  "comp-3d-constraint":
+    "The constraint uses 2D geometry and cannot reference a spatial layer or parent chain.",
+  "comp-3d-transform":
+    "Spatial transform sampling or parent composition produces non-finite world geometry.",
+  "comp-camera-cycle":
+    "An active camera cannot depend on a camera-facing parent transform.",
+  "comp-3d-surface-budget":
+    "A projected local artwork surface exceeds the bounded allocation budget.",
+  "comp-3d-collapse":
+    "Perspective precomps render as flat surfaces and cannot collapse transforms.",
+  "comp-3d-effect":
+    "A projected layer requires a scope-space adjustment or precomp for time echo.",
+  "comp-3d-effect-space":
+    "Cross-plane effect coordinates require an affine relation between planes.",
+  "comp-camera-geometry":
+    "Camera world basis or point of interest is degenerate after parent evaluation.",
   "comp-marker-missing": "A `cue` names no marker in the same composition.",
   "comp-signal-missing": "A reference names no signal.",
   "comp-constraint-target":

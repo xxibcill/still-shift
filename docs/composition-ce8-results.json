@@ -334,16 +334,92 @@
         "at": "2026-10-06 01:24 UTC",
         "authority": "Explicit CE6-P release after all reserved timing/audit/export/provenance workloads terminal"
       },
-      "pending": "Pinned isolated schema/type/lint/unit/native acceptance and full gate"
+      "pending": "Pinned isolated schema/type/lint/unit/native acceptance and full gate",
+      "implementation": "a73841f"
+    },
+    {
+      "name": "Focused verification and raster/precision repairs",
+      "status": "focused-pass-full-acceptance-pending",
+      "repairs": [
+        "Format CE8 source and generate schema/reference/authoring skill",
+        "Repair type errors and malformed failure runner",
+        "Correct camera-facing matrix column indexing",
+        "Preserve implicit camera defaults and valid expression/fixture grammar in regressions",
+        "Include native camera fields and XYZ transforms in every-field inventory",
+        "Use local bitmap coverage for native affine GPU placement while preserving legacy placement",
+        "Declare 1e-4 quantizer-unit tie bias in native projective bilinear sampling to bound float32 boundary drift"
+      ],
+      "verification": {
+        "environment": "Pinned Node 22.23.1 / pnpm 10.29.3 / Python 3.12.11 / Chromium 1234; isolated /private/tmp/still-shift-ce8-check-a73841f",
+        "passed": [
+          "toolchain",
+          "schema generation/check",
+          "format",
+          "type build",
+          "TypeScript lint",
+          "package boundaries",
+          "139 affected inventory/integration unit tests",
+          "native camera focused browser"
+        ],
+        "browser": {
+          "scenes": 10,
+          "backendCases": 12,
+          "forwardFrames": 384,
+          "independentOracleMaximumDelta": 0,
+          "oracleScenes": [
+            "affine Canvas/WebGL",
+            "perspective",
+            "checker-perspective",
+            "clipping"
+          ],
+          "expectedFailures": 8,
+          "inspector": [
+            "xyz",
+            "POI tangents",
+            "world frustum",
+            "scope camera",
+            "undo/redo",
+            "lossless source save"
+          ]
+        },
+        "failuresRetained": [
+          {
+            "run": "initial build",
+            "result": "syntax then type errors; repaired"
+          },
+          {
+            "run": "initial focused unit",
+            "result": "9 failures then one floating point assertion; repaired without pixel policy changes"
+          },
+          {
+            "run": "all-unit initial",
+            "result": "1839 pass / 1 missing new-field inventory; repaired"
+          },
+          {
+            "run": "affine initial reference",
+            "result": "Canvas delta 53; reference now models declared local raster placement"
+          },
+          {
+            "run": "affine WebGL",
+            "result": "delta 52; native bitmap coverage repair yields exact pixels"
+          },
+          {
+            "run": "checker frame 16",
+            "result": "delta 3 at a weight boundary; declared quantizer tie handling yields exact pixels"
+          }
+        ],
+        "pending": [
+          "all-unit repaired run",
+          "native stored hashes/exports/hardware",
+          "serial 1080p cost",
+          "full final-code local gate"
+        ]
+      }
     }
   ],
   "pending": [
-    "Focused verification and formatting after CE6-P release",
-    "XYZ keyed/separated/spatial sampling, expression/property/bake integration",
-    "Scope camera evaluation, stable 3D-run order and shared projective graph",
-    "GPU perspective composition, affine Canvas reference and transactional capability rejection",
-    "Depth of field, shake, coverage/source-alpha checks and actual camera inspection",
-    "Native stored hashes, hardware, independent/repeated exports, serial cost evidence and full local gate",
+    "Native stored hashes, hardware, independent/repeated exports and serial cost evidence",
+    "Complete final-code local gate",
     "CE8 milestone PR then CE8-L on a new branch"
   ],
   "githubActions": "prohibited/disabled"

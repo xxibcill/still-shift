@@ -100,7 +100,13 @@ export function compileComposition(comp: Composition): CompiledComposition {
         ),
     ),
     paths: new Map(),
-    spatialScopes: new Set(scopes.filter(scope=>scope.layers.some(layer=>layer.threeD===true||layer.type==="camera"))),
+    spatialScopes: new Set(
+      scopes.filter((scope) =>
+        scope.layers.some(
+          (layer) => layer.threeD === true || layer.type === "camera",
+        ),
+      ),
+    ),
     solo: new Map(),
     mattes: new Map(),
   };

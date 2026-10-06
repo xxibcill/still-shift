@@ -805,24 +805,24 @@ actual time-dependent values stay in range; reduce the deltas or separate their 
 
 ### Fields on every layer
 
-| Field                                 | Notes                                                                                                                                   |
-| ------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
-| `id`, `type`                          | Required. `type` selects the fields below.                                                                                              |
-| `name`                                | Display name.                                                                                                                           |
-| `inPoint`, `outPoint`                 | Composition frames, `[in, out)`. Default `0` and the scope's `frameCount`.                                                              |
-| `startFrame`, `stretch`               | Layer time 0 and time stretch. Defaults `0` and `1`.                                                                                    |
-| `parent`                              | Layer id in the same scope. Position, rotation, scale and skew inherit; opacity does not.                                               |
-| `enabled`, `solo`, `guide`            | Visibility switches; guides never render in export.                                                                                     |
-| `transform`                           | See [transform](#transform).                                                                                                            |
-| `constraintReference`                 | Animatable layer-space vector, defaulting to the transform anchor. Constraints can move it without moving artwork.                      |
-| `blendMode`                           | See [blend modes](#blend-modes). Default `normal`.                                                                                      |
-| `trackMatte`                          | `{ layer, mode }`; see [track mattes](#track-mattes).                                                                                   |
-| `masks`                               | See [masks](#masks).                                                                                                                    |
-| `effects`                             | `{ id, effect, enabled?, space?, inputs?, inPoint?, outPoint?, params? }[]`. Ordered registry effects; active intervals use layer time. |
-| `cameraDepth`                         | 0–2, unparented root layers only; see [2D camera](#2d-camera).                                                                          |
-| `coverage` | `required` validates opaque viewport coverage on all frames/shutter samples; `optional` is the default. |
-| `threeD`, `motionBlur`                | `threeD` enables native xyz planes and camera projection; `motionBlur` opts into exposure sampling (groups and precomps pass it to descendants).                         |
-| `qualification`, `source`, `metadata` | Evidence and provenance carried through from story scenes and adapters.                                                                 |
+| Field                                 | Notes                                                                                                                                            |
+| ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `id`, `type`                          | Required. `type` selects the fields below.                                                                                                       |
+| `name`                                | Display name.                                                                                                                                    |
+| `inPoint`, `outPoint`                 | Composition frames, `[in, out)`. Default `0` and the scope's `frameCount`.                                                                       |
+| `startFrame`, `stretch`               | Layer time 0 and time stretch. Defaults `0` and `1`.                                                                                             |
+| `parent`                              | Layer id in the same scope. Position, rotation, scale and skew inherit; opacity does not.                                                        |
+| `enabled`, `solo`, `guide`            | Visibility switches; guides never render in export.                                                                                              |
+| `transform`                           | See [transform](#transform).                                                                                                                     |
+| `constraintReference`                 | Animatable layer-space vector, defaulting to the transform anchor. Constraints can move it without moving artwork.                               |
+| `blendMode`                           | See [blend modes](#blend-modes). Default `normal`.                                                                                               |
+| `trackMatte`                          | `{ layer, mode }`; see [track mattes](#track-mattes).                                                                                            |
+| `masks`                               | See [masks](#masks).                                                                                                                             |
+| `effects`                             | `{ id, effect, enabled?, space?, inputs?, inPoint?, outPoint?, params? }[]`. Ordered registry effects; active intervals use layer time.          |
+| `cameraDepth`                         | 0–2, unparented root layers only; see [2D camera](#2d-camera).                                                                                   |
+| `coverage`                            | `required` validates opaque viewport coverage on all frames/shutter samples; `optional` is the default.                                          |
+| `threeD`, `motionBlur`                | `threeD` enables native xyz planes and camera projection; `motionBlur` opts into exposure sampling (groups and precomps pass it to descendants). |
+| `qualification`, `source`, `metadata` | Evidence and provenance carried through from story scenes and adapters.                                                                          |
 
 ### Layer types
 
@@ -837,7 +837,7 @@ actual time-dependent values stay in range; reduce the deltas or separate their 
 | `precomp`                    | `comp` (precomp id); `collapseTransforms`; `timeRemap` (animatable precomp frame).                                                                                                                                                                                                                                                                                                                                         | CE1       |
 | `adjustment`                 | `size` (default: composition size). Applies its effects to the layers below.                                                                                                                                                                                                                                                                                                                                               | CE1       |
 | `shape`                      | `contents`.                                                                                                                                                                                                                                                                                                                                                                                                                | CE5       |
-| `camera`                     | `model`, `pointOfInterest`, `zoom` or `focalLength`, `filmSize`, clips and focus controls; see native camera below.                                                                                                                                                                                                                                                                                                                                                                                                                          | CE8       |
+| `camera`                     | `model`, `pointOfInterest`, `zoom` or `focalLength`, `filmSize`, clips and focus controls; see native camera below.                                                                                                                                                                                                                                                                                                        | CE8       |
 | `light`                      | —                                                                                                                                                                                                                                                                                                                                                                                                                          | CE8-L     |
 | `video`, `sequence`, `audio` | `asset`; `timeRemap`.                                                                                                                                                                                                                                                                                                                                                                                                      | CE13      |
 
@@ -1211,10 +1211,10 @@ path diagnostics; completed milestones are not promised as future availability.
 Features that are in the contract but not yet implemented fail with
 `comp-feature-unavailable`; the message names the milestone.
 
-| Feature                                                      | Milestone |
-| ------------------------------------------------------------ | --------- |
-| Video, image-sequence and audio layers and assets            | CE13      |
-| Light layers                                                 | CE8-L     |
+| Feature                                           | Milestone |
+| ------------------------------------------------- | --------- |
+| Video, image-sequence and audio layers and assets | CE13      |
+| Light layers                                      | CE8-L     |
 
 ## Limits
 

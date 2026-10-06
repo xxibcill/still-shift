@@ -3678,6 +3678,14 @@ Final camera-basis source review rejects singular transforms before POI fallback
 and adds normalized scale/roll cases. CE6-P explicitly released its quiet window
 at 01:24 UTC; isolated focused checks begin with no CE8 acceptance claimed yet.
 
+Focused pinned verification now passes toolchain/schema/type/lint/boundaries,
+139 affected units and 384 camera browser frames. Independent affine, perspective,
+checker and clipping references are exact. Eight expected source-alpha/backend
+failures and the real POI/xyz/frustum/undo/save inspector flow pass. Initial
+syntax/type/unit/inventory, affine edge and checker quantizer failures are retained
+in CE8 evidence with their repairs. Native hardware/exports/stored hashes, serial
+cost evidence and the complete final-code local gate remain pending.
+
 **Completion record:** _to be filled in._
 
 ---

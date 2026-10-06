@@ -17,23 +17,12 @@
     {
       "id": "plane",
       "type": "solid",
-      "size": [
-        48,
-        40
-      ],
+      "size": [48, 40],
       "color": "#ffffff",
       "threeD": true,
       "transform": {
-        "anchor": [
-          0,
-          0,
-          0
-        ],
-        "position": [
-          46,
-          24,
-          -105
-        ],
+        "anchor": [0, 0, 0],
+        "position": [46, 24, -105],
         "rotationY": 55
       }
     }

@@ -24,17 +24,10 @@
     {
       "id": "plane",
       "type": "image",
-      "size": [
-        48,
-        40
-      ],
+      "size": [48, 40],
       "threeD": true,
       "transform": {
-        "anchor": [
-          0,
-          0,
-          0
-        ],
+        "anchor": [0, 0, 0],
         "position": {
           "x": {
             "keys": [

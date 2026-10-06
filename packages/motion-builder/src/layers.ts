@@ -50,14 +50,17 @@ export class Layer<K extends Kind = Kind> {
       );
     this.draft = draft;
     this.location = location;
-    this.draft.transform = draft.type === "camera" ? {...draft.transform} : {
-      anchor: [0, 0],
-      position: [0, 0],
-      scale: [1, 1],
-      rotation: 0,
-      opacity: 1,
-      ...draft.transform,
-    };
+    this.draft.transform =
+      draft.type === "camera"
+        ? { ...draft.transform }
+        : {
+            anchor: [0, 0],
+            position: [0, 0],
+            scale: [1, 1],
+            rotation: 0,
+            opacity: 1,
+            ...draft.transform,
+          };
   }
   get id(): string {
     return this.draft.id;

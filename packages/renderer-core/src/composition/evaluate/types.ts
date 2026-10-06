@@ -7,7 +7,12 @@ import type {
 } from "@still-shift/scene-contract";
 import type { Matrix, Point } from "../../node-transform.ts";
 import type { PassageDiagnostic } from "../../passage-diagnostics.ts";
-import type { Point3, Matrix4, ProjectedPlane, CameraGeometry } from "./spatial-geometry.ts";
+import type {
+  Point3,
+  Matrix4,
+  ProjectedPlane,
+  CameraGeometry,
+} from "./spatial-geometry.ts";
 import type { SampledCameraControls } from "./spatial-state.ts";
 
 export type Rgba = [number, number, number, number];
@@ -17,7 +22,13 @@ export type Bounds = {
   right: number;
   bottom: number;
 };
-export type PropertyValue = number | Point | Point3 | Rgba | BezierPath | Point[];
+export type PropertyValue =
+  | number
+  | Point
+  | Point3
+  | Rgba
+  | BezierPath
+  | Point[];
 export type EvaluatedTransform = {
   anchor: Point | Point3;
   position: Point | Point3;
@@ -87,7 +98,10 @@ export type EvaluatedLayerTree = {
   /** All layer states in painter order, including invisible dependency layers. */
   layers: EvaluatedLayer[];
   diagnostics: PassageDiagnostic[];
-  camera?: CameraGeometry & { id: string | null; source: "native" | "default" | "legacy2d" };
+  camera?: CameraGeometry & {
+    id: string | null;
+    source: "native" | "default" | "legacy2d";
+  };
 };
 
 export type EvaluationOptions = {

@@ -31,67 +31,34 @@
     {
       "id": "near",
       "type": "solid",
-      "size": [
-        48,
-        40
-      ],
+      "size": [48, 40],
       "color": "#eb8d55",
       "threeD": true,
       "transform": {
-        "anchor": [
-          0,
-          0,
-          0
-        ],
-        "position": [
-          -16,
-          10,
-          -20
-        ]
+        "anchor": [0, 0, 0],
+        "position": [-16, 10, -20]
       }
     },
     {
       "id": "far",
       "type": "solid",
-      "size": [
-        48,
-        40
-      ],
+      "size": [48, 40],
       "color": "#347fac",
       "threeD": true,
       "transform": {
-        "anchor": [
-          0,
-          0,
-          0
-        ],
-        "position": [
-          65,
-          25,
-          120
-        ]
+        "anchor": [0, 0, 0],
+        "position": [65, 25, 120]
       }
     },
     {
       "id": "background",
       "type": "solid",
-      "size": [
-        1000,
-        800
-      ],
+      "size": [1000, 800],
       "color": "#17232e",
       "threeD": true,
       "transform": {
-        "anchor": [
-          0,
-          0,
-          0
-        ],
-        "position": [
-          -400,
-          -300,
-          200
-        ]
+        "anchor": [0, 0, 0],
+        "position": [-400, -300, 200]
       },
       "coverage": "required"
     }

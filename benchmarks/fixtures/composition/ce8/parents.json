@@ -17,28 +17,16 @@
           "keys": [
             {
               "frame": 0,
-              "value": [
-                0,
-                0,
-                0
-              ]
+              "value": [0, 0, 0]
             },
             {
               "frame": 31,
-              "value": [
-                9,
-                3,
-                20
-              ],
+              "value": [9, 3, 20],
               "interpolation": "linear"
             }
           ]
         },
-        "orientation": [
-          3,
-          8,
-          0
-        ]
+        "orientation": [3, 8, 0]
       }
     },
     {
@@ -50,19 +38,11 @@
         "keys": [
           {
             "frame": 0,
-            "value": [
-              64,
-              48,
-              0
-            ]
+            "value": [64, 48, 0]
           },
           {
             "frame": 31,
-            "value": [
-              78,
-              44,
-              15
-            ],
+            "value": [78, 44, 15],
             "interpolation": "linear"
           }
         ]
@@ -76,11 +56,7 @@
       "focalLength": 36,
       "filmSize": 36,
       "transform": {
-        "position": [
-          64,
-          48,
-          -128
-        ],
+        "position": [64, 48, -128],
         "rotationY": -8
       },
       "inPoint": 16
@@ -90,57 +66,31 @@
       "type": "null",
       "threeD": true,
       "transform": {
-        "position": [
-          82,
-          45,
-          12
-        ],
-        "scale": [
-          -1,
-          1,
-          1
-        ],
+        "position": [82, 45, 12],
+        "scale": [-1, 1, 1],
         "autoOrient": "camera"
       }
     },
     {
       "id": "child",
       "type": "solid",
-      "size": [
-        48,
-        40
-      ],
+      "size": [48, 40],
       "color": "#eb8d55",
       "threeD": true,
       "transform": {
-        "anchor": [
-          0,
-          0,
-          0
-        ],
-        "position": [
-          0,
-          0,
-          0
-        ]
+        "anchor": [0, 0, 0],
+        "position": [0, 0, 0]
       },
       "parent": "mirror"
     },
     {
       "id": "aimed",
       "type": "solid",
-      "size": [
-        48,
-        40
-      ],
+      "size": [48, 40],
       "color": "#ffffff",
       "threeD": true,
       "transform": {
-        "position": [
-          30,
-          60,
-          20
-        ],
+        "position": [30, 60, 20],
         "autoOrient": "camera",
         "rotation": 15
       }

@@ -1,42 +1,213 @@
-import { expect,it,vi } from "vitest";
+import { expect, it, vi } from "vitest";
 import { requireSpatialCapabilities } from "../../packages/renderer-core/src/composition/render/spatial-capabilities.ts";
-import { executeGraph,type RenderBackend } from "../../packages/renderer-core/src/composition/render/backend.ts";
-import type { ProjectOp,SurfaceNode } from "../../packages/renderer-core/src/composition/render/graph.ts";
-const local:SurfaceNode={id:"local",width:10,height:10,background:null,ops:[]};
-const project:ProjectOp={kind:"project",layer:"plane",surface:local,placement:{homography:[1,0,0,0,1,0,.01,0,1],inverse:[1,0,0,0,1,0,-.01,0,1],affineMatrix:null,bounds:null},effects:[],matte:null,clips:[],opacity:1,blend:"normal"};
-const root:SurfaceNode={id:"root",width:100,height:100,background:null,ops:[project]};
-it("rejects perspective before lifecycle hooks or retained-target mutation",()=>{
-  const clear=vi.fn(),beginFrame=vi.fn(),createSurface=vi.fn(),endFrame=vi.fn();
-  const backend={clear,beginFrame,createSurface,endFrame} as unknown as RenderBackend;
-  expect(()=>executeGraph(backend,{root,culled:[],spatial:true},{width:100,height:100})).toThrow("True perspective");
-  expect(clear).not.toHaveBeenCalled();expect(beginFrame).not.toHaveBeenCalled();expect(createSurface).not.toHaveBeenCalled();expect(endFrame).not.toHaveBeenCalled();
+import {
+  executeGraph,
+  type RenderBackend,
+} from "../../packages/renderer-core/src/composition/render/backend.ts";
+import type {
+  ProjectOp,
+  SurfaceNode,
+} from "../../packages/renderer-core/src/composition/render/graph.ts";
+const local: SurfaceNode = {
+  id: "local",
+  width: 10,
+  height: 10,
+  background: null,
+  ops: [],
+};
+const project: ProjectOp = {
+  kind: "project",
+  layer: "plane",
+  surface: local,
+  placement: {
+    homography: [1, 0, 0, 0, 1, 0, 0.01, 0, 1],
+    inverse: [1, 0, 0, 0, 1, 0, -0.01, 0, 1],
+    affineMatrix: null,
+    bounds: null,
+  },
+  effects: [],
+  matte: null,
+  clips: [],
+  opacity: 1,
+  blend: "normal",
+};
+const root: SurfaceNode = {
+  id: "root",
+  width: 100,
+  height: 100,
+  background: null,
+  ops: [project],
+};
+it("rejects perspective before lifecycle hooks or retained-target mutation", () => {
+  const clear = vi.fn(),
+    beginFrame = vi.fn(),
+    createSurface = vi.fn(),
+    endFrame = vi.fn();
+  const backend = {
+    clear,
+    beginFrame,
+    createSurface,
+    endFrame,
+  } as unknown as RenderBackend;
+  expect(() =>
+    executeGraph(
+      backend,
+      { root, culled: [], spatial: true },
+      { width: 100, height: 100 },
+    ),
+  ).toThrow("True perspective");
+  expect(clear).not.toHaveBeenCalled();
+  expect(beginFrame).not.toHaveBeenCalled();
+  expect(createSurface).not.toHaveBeenCalled();
+  expect(endFrame).not.toHaveBeenCalled();
 });
-it("traverses nested local artwork, named inputs and mattes before publishing a frame",()=>{
-  const affine={...project,placement:{...project.placement,affineMatrix:[1,0,0,1,0,0] as [number,number,number,number,number,number]}};
-  const captures=[{...affine,surface:{...local,ops:[project]}},{...affine,matte:{mode:"alpha" as const,layer:"matte",ops:[project]}},{...affine,effects:[{id:"input",effect:"transition.gradient-wipe",enabled:true,params:{},layerInputs:{map:[project]}}]}];
-  for(const capture of captures) expect(()=>requireSpatialCapabilities({...root,ops:[capture]},{projective:false})).toThrow("True perspective");
+it("traverses nested local artwork, named inputs and mattes before publishing a frame", () => {
+  const affine = {
+    ...project,
+    placement: {
+      ...project.placement,
+      affineMatrix: [1, 0, 0, 1, 0, 0] as [
+        number,
+        number,
+        number,
+        number,
+        number,
+        number,
+      ],
+    },
+  };
+  const captures = [
+    { ...affine, surface: { ...local, ops: [project] } },
+    {
+      ...affine,
+      matte: { mode: "alpha" as const, layer: "matte", ops: [project] },
+    },
+    {
+      ...affine,
+      effects: [
+        {
+          id: "input",
+          effect: "transition.gradient-wipe",
+          enabled: true,
+          params: {},
+          layerInputs: { map: [project] },
+        },
+      ],
+    },
+  ];
+  for (const capture of captures)
+    expect(() =>
+      requireSpatialCapabilities(
+        { ...root, ops: [capture] },
+        { projective: false },
+      ),
+    ).toThrow("True perspective");
 });
-it("accepts affine camera projection on Canvas and validates device allocations on WebGL",()=>{
-  const affine={...project,placement:{...project.placement,affineMatrix:[1,0,0,1,0,0] as [number,number,number,number,number,number]}};
-  expect(()=>requireSpatialCapabilities({...root,ops:[affine]},{projective:false})).not.toThrow();
-  const validateSurface=vi.fn();requireSpatialCapabilities(root,{projective:true,validateSurface});
-  expect(validateSurface).toHaveBeenCalledWith(10,10,"plane");
-  expect(validateSurface).toHaveBeenCalledWith(100,100,"plane");
+it("accepts affine camera projection on Canvas and validates device allocations on WebGL", () => {
+  const affine = {
+    ...project,
+    placement: {
+      ...project.placement,
+      affineMatrix: [1, 0, 0, 1, 0, 0] as [
+        number,
+        number,
+        number,
+        number,
+        number,
+        number,
+      ],
+    },
+  };
+  expect(() =>
+    requireSpatialCapabilities(
+      { ...root, ops: [affine] },
+      { projective: false },
+    ),
+  ).not.toThrow();
+  const validateSurface = vi.fn();
+  requireSpatialCapabilities(root, { projective: true, validateSurface });
+  expect(validateSurface).toHaveBeenCalledWith(10, 10, "plane");
+  expect(validateSurface).toHaveBeenCalledWith(100, 100, "plane");
 });
-it("rejects projection coefficients outside finite GPU precision",()=>{
-  const huge={...project,placement:{...project.placement,inverse:[1e100,0,0,0,1,0,0,0,1] as [number,number,number,number,number,number,number,number,number]}};
-  expect(()=>requireSpatialCapabilities({...root,ops:[huge]},{projective:true})).toThrow("precision");
+it("rejects projection coefficients outside finite GPU precision", () => {
+  const huge = {
+    ...project,
+    placement: {
+      ...project.placement,
+      inverse: [1e100, 0, 0, 0, 1, 0, 0, 0, 1] as [
+        number,
+        number,
+        number,
+        number,
+        number,
+        number,
+        number,
+        number,
+        number,
+      ],
+    },
+  };
+  expect(() =>
+    requireSpatialCapabilities({ ...root, ops: [huge] }, { projective: true }),
+  ).toThrow("precision");
 });
 
-it("checks padded focus surfaces before any backend allocation",()=>{
-  const validateSurface=vi.fn();
-  requireSpatialCapabilities({...root,ops:[{...project,focusPadding:27}]},{projective:true,validateSurface});
-  expect(validateSurface).toHaveBeenCalledWith(154,154,"plane");
-  expect(()=>requireSpatialCapabilities({...root,width:8192,ops:[{...project,focusPadding:27}]},{projective:true})).toThrow("surface exceeds");
+it("checks padded focus surfaces before any backend allocation", () => {
+  const validateSurface = vi.fn();
+  requireSpatialCapabilities(
+    { ...root, ops: [{ ...project, focusPadding: 27 }] },
+    { projective: true, validateSurface },
+  );
+  expect(validateSurface).toHaveBeenCalledWith(154, 154, "plane");
+  expect(() =>
+    requireSpatialCapabilities(
+      { ...root, width: 8192, ops: [{ ...project, focusPadding: 27 }] },
+      { projective: true },
+    ),
+  ).toThrow("surface exceeds");
 });
 
-it("checks genuine group masks before beginning a Canvas frame",()=>{
-  const projectedMask={id:"mask",path:{closed:true,vertices:[[0,0],[10,0],[10,10]] as [number,number][]},mode:"add" as const,inverted:false,feather:0,expansion:0,opacity:1,matrix:[1,0,0,1,0,0] as [number,number,number,number,number,number],projected:{width:10,height:10,placement:project.placement}};
-  const isolated={kind:"isolate" as const,layer:"group",ops:[],effects:[],masks:[projectedMask],matte:null,opacity:1,blend:"normal" as const,clips:[]};
-  expect(()=>requireSpatialCapabilities({...root,ops:[isolated]},{projective:false})).toThrow("Projective group masks");
+it("checks genuine group masks before beginning a Canvas frame", () => {
+  const projectedMask = {
+    id: "mask",
+    path: {
+      closed: true,
+      vertices: [
+        [0, 0],
+        [10, 0],
+        [10, 10],
+      ] as [number, number][],
+    },
+    mode: "add" as const,
+    inverted: false,
+    feather: 0,
+    expansion: 0,
+    opacity: 1,
+    matrix: [1, 0, 0, 1, 0, 0] as [
+      number,
+      number,
+      number,
+      number,
+      number,
+      number,
+    ],
+    projected: { width: 10, height: 10, placement: project.placement },
+  };
+  const isolated = {
+    kind: "isolate" as const,
+    layer: "group",
+    ops: [],
+    effects: [],
+    masks: [projectedMask],
+    matte: null,
+    opacity: 1,
+    blend: "normal" as const,
+    clips: [],
+  };
+  expect(() =>
+    requireSpatialCapabilities(
+      { ...root, ops: [isolated] },
+      { projective: false },
+    ),
+  ).toThrow("Projective group masks");
 });

@@ -318,9 +318,18 @@ export function createCompositionPreview(
     // The GPU backend retains bounded readback bytes; graph reuse skips identical draws.
     const cache: CompositionFrameCache | undefined =
       kind === "webgl2" ? {} : undefined;
-    let coverageDiagnostics:PassageDiagnostic[];
-    try {coverageDiagnostics=validateRequiredCompositionCoverage(composition,backend,{textBounds:text.bounds},options.coverageSeverity??"error");}
-    catch(error) {backend.dispose();throw error;}
+    let coverageDiagnostics: PassageDiagnostic[];
+    try {
+      coverageDiagnostics = validateRequiredCompositionCoverage(
+        composition,
+        backend,
+        { textBounds: text.bounds },
+        options.coverageSeverity ?? "error",
+      );
+    } catch (error) {
+      backend.dispose();
+      throw error;
+    }
     return {
       backend: kind,
       rendererVersion: backend.version,
@@ -344,7 +353,12 @@ export function createCompositionPreview(
           cache,
         );
         if (report.samples > 0) present();
-        return coverageDiagnostics.length ? {...report,diagnostics:[...report.diagnostics,...coverageDiagnostics]} : report;
+        return coverageDiagnostics.length
+          ? {
+              ...report,
+              diagnostics: [...report.diagnostics, ...coverageDiagnostics],
+            }
+          : report;
       },
       dispose() {
         if (cache) {

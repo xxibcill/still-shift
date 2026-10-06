@@ -31,10 +31,7 @@
     {
       "id": "image",
       "type": "image",
-      "size": [
-        48,
-        40
-      ],
+      "size": [48, 40],
       "sources": [
         {
           "asset": "checker"
@@ -42,16 +39,8 @@
       ],
       "threeD": true,
       "transform": {
-        "anchor": [
-          0,
-          0,
-          0
-        ],
-        "position": [
-          14,
-          15,
-          0
-        ],
+        "anchor": [0, 0, 0],
+        "position": [14, 15, 0],
         "rotationY": {
           "keys": [
             {
@@ -76,16 +65,8 @@
       "color": "#ffffff",
       "threeD": true,
       "transform": {
-        "anchor": [
-          0,
-          0,
-          0
-        ],
-        "position": [
-          66,
-          20,
-          0
-        ],
+        "anchor": [0, 0, 0],
+        "position": [66, 20, 0],
         "rotationX": {
           "keys": [
             {
@@ -111,46 +92,19 @@
           "path": {
             "closed": false,
             "vertices": [
-              [
-                0,
-                0
-              ],
-              [
-                100,
-                0
-              ],
-              [
-                200,
-                20
-              ]
+              [0, 0],
+              [100, 0],
+              [200, 20]
             ],
             "outTangents": [
-              [
-                20,
-                -30
-              ],
-              [
-                20,
-                30
-              ],
-              [
-                0,
-                0
-              ]
+              [20, -30],
+              [20, 30],
+              [0, 0]
             ],
             "inTangents": [
-              [
-                0,
-                0
-              ],
-              [
-                -20,
-                -30
-              ],
-              [
-                -20,
-                0
-              ]
+              [0, 0],
+              [-20, -30],
+              [-20, 0]
             ]
           }
         },
@@ -181,21 +135,9 @@
       ],
       "threeD": true,
       "transform": {
-        "anchor": [
-          0,
-          0,
-          0
-        ],
-        "position": [
-          42,
-          64,
-          50
-        ],
-        "scale": [
-          0.15,
-          0.15,
-          1
-        ],
+        "anchor": [0, 0, 0],
+        "position": [42, 64, 50],
+        "scale": [0.15, 0.15, 1],
         "rotationY": 25
       }
     }

@@ -372,7 +372,9 @@ export const CameraLayerSchema = z
     nearClip: finite.min(0.001).max(1_000_000).optional(),
     farClip: finite.min(0.002).max(10_000_000).optional(),
     depthOfField: z.boolean().optional(),
-    focusDistance: animatableScalar(finite.min(0.001).max(10_000_000)).optional(),
+    focusDistance: animatableScalar(
+      finite.min(0.001).max(10_000_000),
+    ).optional(),
     /** Aperture diameter in millimetres; zero is an exact focus-blur identity. */
     aperture: animatableScalar(finite.min(0).max(1000)).optional(),
     blurLevel: animatableScalar(finite.min(0).max(100)).optional(),

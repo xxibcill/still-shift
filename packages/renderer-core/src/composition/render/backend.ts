@@ -1,6 +1,9 @@
 import { compositionEffectDefinition } from "@still-shift/scene-contract";
 import { requireSpatialCapabilities } from "./spatial-capabilities.ts";
-import { offsetPlacement,type ProjectivePlacement } from "./projective-placement.ts";
+import {
+  offsetPlacement,
+  type ProjectivePlacement,
+} from "./projective-placement.ts";
 import type { RenderEffect } from "./graph.ts";
 import type {
   CompositionBlendMode,
@@ -117,9 +120,9 @@ export interface RenderBackend<S extends Surface = Surface> {
     paintBlur?: number,
   ): void;
   /** Genuine source-texture homography, with camera near/far clipping. */
-  project?(src:S,dst:S,placement:ProjectivePlacement):void;
-  applyProjectiveClips?(target:S,clips:ClipRect[]):void;
-  validateSpatialSurface?(width:number,height:number,node:string):void;
+  project?(src: S, dst: S, placement: ProjectivePlacement): void;
+  applyProjectiveClips?(target: S, clips: ClipRect[]): void;
+  validateSpatialSurface?(width: number, height: number, node: string): void;
   /** Apply the ordered effect stack in surface pixel space, before masks/mattes. */
   applyEffects(
     target: S,
@@ -154,8 +157,13 @@ export function executeGraph<S extends Surface>(
   const surface = (node: SurfaceNode, into?: S): S => {
     const dst = into ?? backend.createSurface(node.width, node.height);
     backend.clear(dst, node.background);
-    try {runOps(node.ops,dst);return dst;}
-    catch(error) {if(!into) backend.releaseSurface(dst);throw error;}
+    try {
+      runOps(node.ops, dst);
+      return dst;
+    } catch (error) {
+      if (!into) backend.releaseSurface(dst);
+      throw error;
+    }
   };
   const isolated = (ops: RenderOp[], like: S) => {
     const tmp = backend.createSurface(like.width, like.height);
@@ -196,13 +204,28 @@ export function executeGraph<S extends Surface>(
     }
   };
   const run = (op: RenderOp, dst: S): void => {
-    if(op.kind==="draw"&&op.clips.some(clip=>clip.projection&&!clip.projection.affineMatrix)) {
-      const tmp=backend.createSurface(dst.width,dst.height);
+    if (
+      op.kind === "draw" &&
+      op.clips.some((clip) => clip.projection && !clip.projection.affineMatrix)
+    ) {
+      const tmp = backend.createSurface(dst.width, dst.height);
       try {
-        run({...op,clips:op.clips.filter(clip=>!clip.projection||clip.projection.affineMatrix),blend:"normal",opacity:1},tmp);
-        backend.applyProjectiveClips!(tmp,op.clips);
-        backend.composite(tmp,dst,op.blend,op.opacity,IDENTITY,[]);
-      } finally {backend.releaseSurface(tmp);}
+        run(
+          {
+            ...op,
+            clips: op.clips.filter(
+              (clip) => !clip.projection || clip.projection.affineMatrix,
+            ),
+            blend: "normal",
+            opacity: 1,
+          },
+          tmp,
+        );
+        backend.applyProjectiveClips!(tmp, op.clips);
+        backend.composite(tmp, dst, op.blend, op.opacity, IDENTITY, []);
+      } finally {
+        backend.releaseSurface(tmp);
+      }
       return;
     }
     switch (op.kind) {
@@ -290,22 +313,59 @@ export function executeGraph<S extends Surface>(
         return;
       }
       case "project": {
-        const local=surface(op.surface),padding=op.focusPadding??0;
+        const local = surface(op.surface),
+          padding = op.focusPadding ?? 0;
         try {
-          const projected=backend.createSurface(dst.width+padding*2,dst.height+padding*2);
+          const projected = backend.createSurface(
+            dst.width + padding * 2,
+            dst.height + padding * 2,
+          );
           try {
-            const placement=padding ? offsetPlacement(op.placement,padding,padding) : op.placement;
-            if(backend.project) backend.project(local,projected,placement);
-            else backend.composite(local,projected,"normal",1,placement.affineMatrix!,[]);
-            if(op.effects.length) effectStack(projected,op.effects);
-            const cropped=padding ? backend.createSurface(dst.width,dst.height) : projected;
+            const placement = padding
+              ? offsetPlacement(op.placement, padding, padding)
+              : op.placement;
+            if (backend.project) backend.project(local, projected, placement);
+            else
+              backend.composite(
+                local,
+                projected,
+                "normal",
+                1,
+                placement.affineMatrix!,
+                [],
+              );
+            if (op.effects.length) effectStack(projected, op.effects);
+            const cropped = padding
+              ? backend.createSurface(dst.width, dst.height)
+              : projected;
             try {
-              if(padding) backend.composite(projected,cropped,"normal",1,[1,0,0,1,-padding,-padding],[]);
-              mask(cropped,[],op.matte);
-              backend.composite(cropped,dst,op.blend,op.opacity,IDENTITY,op.clips);
-            } finally {if(padding) backend.releaseSurface(cropped);}
-          } finally {backend.releaseSurface(projected);}
-        } finally {backend.releaseSurface(local);}
+              if (padding)
+                backend.composite(
+                  projected,
+                  cropped,
+                  "normal",
+                  1,
+                  [1, 0, 0, 1, -padding, -padding],
+                  [],
+                );
+              mask(cropped, [], op.matte);
+              backend.composite(
+                cropped,
+                dst,
+                op.blend,
+                op.opacity,
+                IDENTITY,
+                op.clips,
+              );
+            } finally {
+              if (padding) backend.releaseSurface(cropped);
+            }
+          } finally {
+            backend.releaseSurface(projected);
+          }
+        } finally {
+          backend.releaseSurface(local);
+        }
         return;
       }
       case "isolate": {
@@ -415,7 +475,8 @@ export function executeGraph<S extends Surface>(
     op.kind === "draw" &&
     op.content.type !== "image" &&
     op.content.type !== "surface" &&
-    op.blend === "normal" && !op.clips.some(clip=>clip.projection);
+    op.blend === "normal" &&
+    !op.clips.some((clip) => clip.projection);
   const runOps = (ops: RenderOp[], dst: S) => {
     for (let index = 0; index < ops.length; index++) {
       const op = ops[index]!;
@@ -449,7 +510,11 @@ export function executeGraph<S extends Surface>(
       } else run(op, dst);
     }
   };
-  if(graph.spatial) requireSpatialCapabilities(graph.root,{projective:!!backend.project&&!!backend.applyProjectiveClips,validateSurface:backend.validateSpatialSurface});
+  if (graph.spatial)
+    requireSpatialCapabilities(graph.root, {
+      projective: !!backend.project && !!backend.applyProjectiveClips,
+      validateSurface: backend.validateSpatialSurface,
+    });
   let completed = false;
   try {
     backend.beginFrame?.(graph.root);

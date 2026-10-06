@@ -34,18 +34,11 @@
     {
       "id": "red",
       "type": "solid",
-      "size": [
-        48,
-        40
-      ],
+      "size": [48, 40],
       "color": "#eb8d55",
       "threeD": true,
       "transform": {
-        "anchor": [
-          0,
-          0,
-          0
-        ],
+        "anchor": [0, 0, 0],
         "position": {
           "x": 35,
           "y": 18,
@@ -68,18 +61,11 @@
     {
       "id": "blue",
       "type": "solid",
-      "size": [
-        48,
-        40
-      ],
+      "size": [48, 40],
       "color": "#347fac",
       "threeD": true,
       "transform": {
-        "anchor": [
-          0,
-          0,
-          0
-        ],
+        "anchor": [0, 0, 0],
         "position": {
           "x": 52,
           "y": 30,
@@ -102,42 +88,22 @@
     {
       "id": "overlay",
       "type": "solid",
-      "size": [
-        128,
-        6
-      ],
+      "size": [128, 6],
       "color": "#ffffff",
       "transform": {
-        "anchor": [
-          0,
-          0
-        ],
-        "position": [
-          0,
-          88
-        ]
+        "anchor": [0, 0],
+        "position": [0, 88]
       }
     },
     {
       "id": "rear",
       "type": "solid",
-      "size": [
-        90,
-        66
-      ],
+      "size": [90, 66],
       "color": "#9a78b4",
       "threeD": true,
       "transform": {
-        "anchor": [
-          0,
-          0,
-          0
-        ],
-        "position": [
-          25,
-          14,
-          90
-        ]
+        "anchor": [0, 0, 0],
+        "position": [25, 14, 90]
       }
     }
   ]

@@ -49,7 +49,10 @@ export function multiplyMatrix(a: Matrix, b: Matrix): Matrix {
   ];
 }
 /** Affine XY map; spatial projection uses the explicit homogeneous camera map. */
-export function transformPoint(matrix: Matrix, [x, y]: readonly [number, number, number?]): Point {
+export function transformPoint(
+  matrix: Matrix,
+  [x, y]: readonly [number, number, number?],
+): Point {
   return [
     matrix[0] * x + matrix[2] * y + matrix[4],
     matrix[1] * x + matrix[3] * y + matrix[5],

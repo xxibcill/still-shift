@@ -15,18 +15,11 @@
     {
       "id": "plane",
       "type": "solid",
-      "size": [
-        48,
-        40
-      ],
+      "size": [48, 40],
       "color": "#ffffff",
       "threeD": true,
       "transform": {
-        "anchor": [
-          0,
-          0,
-          0
-        ],
+        "anchor": [0, 0, 0],
         "position": {
           "x": {
             "keys": [

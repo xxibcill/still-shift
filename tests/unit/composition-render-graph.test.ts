@@ -60,7 +60,9 @@ const summary = (ops: RenderOp[]): unknown[] =>
         }
       : op.kind === "adjust"
         ? { adjust: op.layer, blend: op.blend }
-        : op.kind==="project" ? {project:op.layer,ops:summary(op.surface.ops)} : { draw: op.layer, content: op.content.type },
+        : op.kind === "project"
+          ? { project: op.layer, ops: summary(op.surface.ops) }
+          : { draw: op.layer, content: op.content.type },
   );
 
 describe("render graph", () => {

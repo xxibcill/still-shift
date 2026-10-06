@@ -19,16 +19,8 @@
       "threeD": true,
       "loop": "pingpong",
       "transform": {
-        "anchor": [
-          0,
-          0,
-          0
-        ],
-        "position": [
-          18,
-          16,
-          0
-        ],
+        "anchor": [0, 0, 0],
+        "position": [18, 16, 0],
         "rotationY": {
           "keys": [
             {
@@ -61,23 +53,12 @@
         {
           "id": "local",
           "type": "solid",
-          "size": [
-            48,
-            32
-          ],
+          "size": [48, 32],
           "color": "#347fac",
           "threeD": true,
           "transform": {
-            "anchor": [
-              0,
-              0,
-              0
-            ],
-            "position": [
-              20,
-              15,
-              10
-            ],
+            "anchor": [0, 0, 0],
+            "position": [20, 15, 10],
             "rotationX": {
               "keys": [
                 {

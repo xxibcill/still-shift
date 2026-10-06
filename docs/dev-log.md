@@ -50,18 +50,21 @@ still hold before relying on them.
   required alpha coverage and projected inspector/quality geometry are authored.
   Projected group masks now retain local expansion/feather support and combine
   coverage after projection; POI tangent editing is authored.
-  All CE8 code remains unverified. CE6-P explicitly released its quiet window
-  at 01:24 UTC; pinned isolated focused verification can now resume. Previous Git auto packing was
+  CE6-P released its quiet window at 01:24 UTC. Pinned isolated toolchain,
+  schema, build, lint, boundaries and focused native verification now pass. Previous Git auto packing was
   reported; no process remained at 00:57 UTC, and further Git calls use gc.auto=0.
   Ten native scenes and independent ray/affine references, hardware/export/alpha
   acceptance and serial cost code are authored; no new baseline is generated.
   Camera builder defaults/xyz setters, a native camera example, reference source
   guidance and the real inspector edit/frustum/save flow are now authored.
-  Schema/reference/skill generation remains pending during the quiet window.
+  Schema/reference/skill generation is complete.
   Derived optics now include primary-control/film expression dependencies and
-  implicit cycle validation; author-order/driver regressions remain unexecuted.
-  No owner decision is pending. Next: focused repair, native acceptance and the
-  complete gate after release. [Evidence](./composition-ce8-results.json).
+  implicit cycle validation; author-order/driver regressions pass.
+  Native focused verification passes 384 frames, exact independent oracle
+  pixels, eight expected failures and real inspector edit/save checks.
+  Initial all-unit inventory failure is repaired; complete gate, native exports,
+  hardware and serial costs remain pending. No owner decision is pending.
+  [Evidence](./composition-ce8-results.json).
 
 - **CE6 complete (2026-10-06):** `codex/composition-ce6-completion` from
   CE7 `817cc9f`; runtime `4cd8a8d`, final code/test checkpoint `f11a7b7`.
@@ -214,6 +217,21 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-06 — CE8 focused verification checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce8`, after `a73841f`.
+- **Done:** format/generated schema/reference/skill and type/test repairs;
+  corrected camera-facing columns, native affine bitmap coverage and projective
+  quantizer boundary handling, preserving legacy placement and pixel tolerances.
+- **Results:** pinned toolchain, schema, build, lint and boundaries pass;
+  139 affected units and 384 native browser frames pass. Independent affine,
+  perspective/checker/clipping pixels are exact; eight expected failures and
+  real inspector tangent/frustum/undo/save checks pass.
+- **Rejected:** initial build/unit/inventory and raster/precision failures retained
+  in evidence. Initial all-unit run: 1,839 pass / one inventory failure, repaired.
+- **Next:** repaired all-unit run; native hardware/exports/cost; full final gate and PR.
+- **Records:** [CE8 evidence](./composition-ce8-results.json).
 
 ### 2026-10-06 — CE8 camera basis checkpoint and verification release
 

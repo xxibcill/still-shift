@@ -65,9 +65,23 @@ function container(state: EvaluatedLayer, segments: PropertyPathSegment[]) {
       object: state.color!,
       key: colorAxis[next.name as keyof typeof colorAxis],
     };
-  if (state.camera && ["pointOfInterest", "zoom", "focalLength", "filmSize", "focusDistance", "aperture", "blurLevel"].includes(head!.name))
+  if (
+    state.camera &&
+    [
+      "pointOfInterest",
+      "zoom",
+      "focalLength",
+      "filmSize",
+      "focusDistance",
+      "aperture",
+      "blurLevel",
+    ].includes(head!.name)
+  )
     return head!.name === "pointOfInterest" && next
-      ? { object: state.camera.pointOfInterest, key: vectorAxis[next.name as keyof typeof vectorAxis] }
+      ? {
+          object: state.camera.pointOfInterest,
+          key: vectorAxis[next.name as keyof typeof vectorAxis],
+        }
       : { object: state.camera, key: head!.name };
   return { object: state, key: head!.name };
 }
@@ -87,7 +101,8 @@ export function writeProperty(
 ) {
   const { object, key } = container(state, segments);
   if (state.camera && ["zoom", "focalLength"].includes(segments[0]!.name))
-    state.camera.opticalMode = segments[0]!.name === "zoom" ? "zoom" : "focal-length";
+    state.camera.opticalMode =
+      segments[0]!.name === "zoom" ? "zoom" : "focal-length";
   (object as unknown as Record<string | number, number>)[key] = value;
 }
 
@@ -99,7 +114,8 @@ export function writeValue(
 ) {
   const { object, key } = container(state, segments);
   if (state.camera && ["zoom", "focalLength"].includes(segments[0]!.name))
-    state.camera.opticalMode = segments[0]!.name === "zoom" ? "zoom" : "focal-length";
+    state.camera.opticalMode =
+      segments[0]!.name === "zoom" ? "zoom" : "focal-length";
   (object as unknown as Record<string | number, number | number[]>)[key] =
     typeof value === "number" ? value : [...value];
 }

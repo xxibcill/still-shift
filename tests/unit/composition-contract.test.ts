@@ -638,6 +638,30 @@ describe("composition-1 fixtures", () => {
     ) as Composition;
     expect(validateComposition(timeControls).ok).toBe(true);
     allLayers.push(...timeControls.layers);
+    for (const name of [
+      "affine",
+      "perspective",
+      "checker-perspective",
+      "clipping",
+      "content",
+      "parents",
+      "focus",
+      "group-mask",
+      "scopes",
+      "exposure",
+    ]) {
+      const spatial = JSON.parse(
+        readFileSync(
+          resolve(root, `benchmarks/fixtures/composition/ce8/${name}.json`),
+          "utf8",
+        ),
+      ) as Composition;
+      expect(validateComposition(spatial).ok, name).toBe(true);
+      allLayers.push(
+        ...spatial.layers,
+        ...(spatial.precomps ?? []).flatMap((scope) => scope.layers),
+      );
+    }
     for (const option of layers.CompositionLayerSchema.options) {
       const type = option.shape.type.value;
       if (UNAVAILABLE_LAYER_TYPES[type]) continue;
@@ -659,7 +683,7 @@ describe("composition-1 fixtures", () => {
       missing(
         TransformSchema,
         allLayers.map((l) => l.transform ?? {}),
-        ["rotationX", "rotationY", "orientation"],
+        [],
       ),
     ).toEqual([]);
     expect(

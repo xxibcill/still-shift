@@ -152,11 +152,18 @@ export function ownCurve(
     };
   const fallback: Point3 = [0, 0, fallbackZ];
   const sample = component(
-    (time) => spatial ? vector3(raw, time, fps, fallback) : vector(raw, time, fps, [0, 0]),
+    (time) =>
+      spatial
+        ? vector3(raw, time, fps, fallback)
+        : vector(raw, time, fps, [0, 0]),
     axis === undefined ? undefined : VECTOR_AXIS[axis],
   );
   if (spatial && isKeyed(raw) && axis === undefined)
-    return { frames, sample, joint3: { value: raw as Keyed<Point3>, fallback } };
+    return {
+      frames,
+      sample,
+      joint3: { value: raw as Keyed<Point3>, fallback },
+    };
   return isKeyed(raw) && axis === undefined
     ? { frames, sample, joint: raw as Keyed<Point> }
     : { frames, sample };
@@ -327,28 +334,50 @@ function roveTable(keys: Keyed<Point>["keys"]) {
   return { points, lengths };
 }
 const roveTables = new WeakMap<object, ReturnType<typeof roveTable>>();
-const roveTables3 = new WeakMap<object, Map<number, { points: Point3[]; lengths: number[] }>>();
+const roveTables3 = new WeakMap<
+  object,
+  Map<number, { points: Point3[]; lengths: number[] }>
+>();
 function roveTable3(joint: NonNullable<OwnCurve["joint3"]>) {
   let tables = roveTables3.get(joint.value);
   if (!tables) roveTables3.set(joint.value, (tables = new Map()));
   const cached = tables.get(joint.fallback[2]);
   if (cached) return cached;
-  const points: Point3[] = [], lengths: number[] = [];
-  joint.value.keys.slice(0,-1).forEach((key,index)=>{
-    const end=joint.value.keys[index+1]!;
-    const out=(key.spatialOut as number[]|undefined) ?? [0,0,0];
-    const incoming=(end.spatialIn as number[]|undefined) ?? [0,0,0];
-    for(let i=index?1:0;i<=128;i++) {
-      const t=i/128;
-      points.push([0,1,2].map(axis=>{
-        const a=key.value[axis] ?? joint.fallback[axis]!;
-        const b=end.value[axis] ?? joint.fallback[axis]!;
-        return (1-t)**3*a+3*(1-t)**2*t*(a+(out[axis]??0))+3*(1-t)*t**2*(b+(incoming[axis]??0))+t**3*b;
-      }) as Point3);
+  const points: Point3[] = [],
+    lengths: number[] = [];
+  joint.value.keys.slice(0, -1).forEach((key, index) => {
+    const end = joint.value.keys[index + 1]!;
+    const out = (key.spatialOut as number[] | undefined) ?? [0, 0, 0];
+    const incoming = (end.spatialIn as number[] | undefined) ?? [0, 0, 0];
+    for (let i = index ? 1 : 0; i <= 128; i++) {
+      const t = i / 128;
+      points.push(
+        [0, 1, 2].map((axis) => {
+          const a = key.value[axis] ?? joint.fallback[axis]!;
+          const b = end.value[axis] ?? joint.fallback[axis]!;
+          return (
+            (1 - t) ** 3 * a +
+            3 * (1 - t) ** 2 * t * (a + (out[axis] ?? 0)) +
+            3 * (1 - t) * t ** 2 * (b + (incoming[axis] ?? 0)) +
+            t ** 3 * b
+          );
+        }) as Point3,
+      );
     }
   });
-  points.forEach((point,index)=>lengths.push(index ? lengths[index-1]!+Math.hypot(...point.map((value,axis)=>value-points[index-1]![axis]!)) : 0));
-  const table={points,lengths};tables.set(joint.fallback[2],table);return table;
+  points.forEach((point, index) =>
+    lengths.push(
+      index
+        ? lengths[index - 1]! +
+            Math.hypot(
+              ...point.map((value, axis) => value - points[index - 1]![axis]!),
+            )
+        : 0,
+    ),
+  );
+  const table = { points, lengths };
+  tables.set(joint.fallback[2], table);
+  return table;
 }
 
 /** Constant-speed traversal of the whole keyed path between its first and last keys. */
@@ -359,10 +388,13 @@ export function rove(
 ): ExpressionValue {
   const joint = curve?.joint ?? curve?.joint3?.value;
   if (!curve || !joint || joint.keys.length < 2) return value;
-  let table: { points: number[][]; lengths: number[] } | undefined = curve.joint3
-    ? roveTable3(curve.joint3)
-    : roveTables.get(joint);
-  if (!table) roveTables.set(joint, (table = roveTable(joint.keys as Keyed<Point>["keys"])));
+  let table: { points: number[][]; lengths: number[] } | undefined =
+    curve.joint3 ? roveTable3(curve.joint3) : roveTables.get(joint);
+  if (!table)
+    roveTables.set(
+      joint,
+      (table = roveTable(joint.keys as Keyed<Point>["keys"])),
+    );
   const first = joint.keys[0]!.frame,
     last = joint.keys.at(-1)!.frame;
   const progress = Math.max(0, Math.min(1, (time - first) / (last - first)));
