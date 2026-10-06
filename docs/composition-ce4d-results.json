@@ -18866,7 +18866,7 @@
     {
       "name": "transactional async depth Lab refresh and pending seeks",
       "date": "2026-10-07",
-      "status": "implemented; focused browser acceptance pending",
+      "status": "complete focused depth and Lab session regressions pass; full gate rerun pending",
       "scope": [
         "Mark loading/updating previews aria-busy and publish ready only after native renderer commit",
         "Preserve the latest user seek while same-source async preparation is pending",
@@ -18876,12 +18876,44 @@
         "Browser regression delays a real image decode and seeks during preparation; original motion/crop/fallback/edge/race assertions and thresholds remain"
       ],
       "checks": {
-        "scopedFormatLintBuild": "pass"
+        "scopedFormatLintBuild": "pass",
+        "depthMotion": {
+          "status": "pass",
+          "checkpoint": "e8a70d9",
+          "farTravelPixels": 10.5,
+          "nearTravelPixels": 17.5,
+          "scope": [
+            "native renderer version",
+            "real delayed-decode seek survives commit",
+            "vertical crop/focus",
+            "original far/near/horizontal motion limits",
+            "flat fallback,comparison,panel reveal,locked hold",
+            "source-only/invalid depth diagnostics",
+            "edge damping",
+            "stale selection/gallery/intensity/seed",
+            "preparation failure fallback"
+          ],
+          "log": {
+            "path": "/private/tmp/ce4d-lab-depth-motion-e8a70d9.log",
+            "sha256": "sha256:db1fcff9a0dc7a0d0ea95497c0d8d0d761465782684f410d43187261273be1ca"
+          }
+        },
+        "labSessions": {
+          "status": "pass",
+          "checkpoint": "e8a70d9",
+          "logs": [
+            {
+              "path": "/private/tmp/ce4d-lab-sessions-e8a70d9.log",
+              "sha256": "sha256:f965e6aa56c3ae8a02d36efea944602cdc086189076763cf43a8ed330821ee40"
+            },
+            {
+              "path": "/private/tmp/ce4d-lab-composition-session-e8a70d9.log",
+              "sha256": "sha256:d84f4eb702c1e3978c9bdd3f9f689e1051bc7c41e3d74a9951dc2351b39707ea"
+            }
+          ]
+        }
       },
-      "pending": [
-        "focused real depth Lab regression and Lab sessions",
-        "complete rerun of local pnpm check"
-      ],
+      "pending": ["complete local milestone pnpm check rerun"],
       "focusedAttempt": {
         "checkpoint": "69469a8",
         "status": "failed; original comparison visibility assertion read pending preset refresh",
@@ -18893,8 +18925,7 @@
     }
   ],
   "pending": [
-    "Verify async depth Lab refresh/pending seek repair",
-    "Complete full local pnpm check from final repaired checkpoint",
+    "Complete final full local pnpm check from repaired checkpoint",
     "CE4d PR delivery"
   ],
   "fullGates": [

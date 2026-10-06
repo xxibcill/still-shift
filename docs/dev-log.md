@@ -43,26 +43,25 @@ still hold before relying on them.
 
 ## Current state
 
-- **CE4d final gate pending (2026-10-07):** `codex/composition-ce4d` from CE4c
-  `17666eb`; final runtime repair is pushed `75c0828`. Shared production defaults
-  replace duplicate family/Three painters. Canvas 1.44, WebGL2 0.65, image-plane
-  shader 0.4, depth adapter 0.1 and pipeline 0.13 are current. All 176 public family
-  defaults pass 36,061 forward/reverse frames, assigned tiers, text probes and every
-  unchanged CE0 hash. Explicit public-depth defaults pass all 23 timelines / 2,070
-  forward/reverse frames exactly. Strict CLI cache relocation/checksum/repeat,
-  actual vertical export, Lab sessions, export worker, focused units/integration
-  and fresh unchanged 690-frame zipper QA pass. All 141 preexisting visual files
-  remain exact. Complete serial migration delivery passes legacy/native independent
-  and repeat/raw exports, hardware, inspector/resources/alpha and native cost checks;
-  unchanged Canvas timing passes, while CE6-P retains WebGL speed work. Static
-  preflight passes. The first full `pnpm check` failed after unit/runtime/integration/
-  Python suites at a pending Depth Lab refresh measurement (217.48 seconds). Committed-
-  parameter waits retain original motion limits and pass. Readiness/latest-seek/staged
-  commit repair is implemented; focused Lab tests and a complete gate rerun remain,
-  then CE4d PR and CE13 → CE15 → CE14 with CE16 audit/reuse. CE5-X/Q9 remains pending;
-  no owner decision blocks this approved order. Failed/rejected diagnostics and
-  measured proof are in [results](./composition-ce4d-results.json); continuation
-  rules are in the [handoff](./composition-continuation-handoff-2026-10-07.md).
+- **CE4d final gate rerun pending (2026-10-07):** `codex/composition-ce4d` from
+  CE4c `17666eb`. Runtime `69469a8` stages native Depth Lab refreshes, preserves
+  pending seeks and publishes truthful readiness/version; harness `e8a70d9` passes
+  the complete affected depth and Lab session suites. CLI cache repair `75c0828`
+  preserves scene identity across cache relocation. Canvas 1.44, WebGL2 0.65,
+  image-plane shader 0.4, depth adapter 0.1 and pipeline 0.13 are current. All 176
+  public family defaults pass 36,061 forward/reverse frames and every unchanged CE0
+  hash; all 23 public-depth defaults pass 2,070 frames exactly. Native/legacy serial
+  delivery, independent/repeat/raw exports, hardware, inspector/resource/alpha,
+  unchanged Canvas timing, strict CLI/vertical exports and fresh 690-frame zipper
+  QA pass. All 141 prior visual files remain exact. First full `pnpm check` failed
+  after 2,005 unit / 46 runtime / 143 integration / 14 Python tests at a pending
+  refresh pixel read (217.48 seconds); original assertions now await commit and
+  delayed-decode seek regression passes. A complete full gate rerun remains, then
+  CE4d PR and CE13 → CE15 → CE14 with CE16 audit/reuse. CE5-X/Q9 remains pending;
+  CE6-P retains WebGL speed work. No owner decision blocks the approved order.
+  Failed/rejected diagnostics and measured proof are in
+  [results](./composition-ce4d-results.json); continuation rules are in the
+  [handoff](./composition-continuation-handoff-2026-10-07.md).
 
 - **CE4c complete (2026-10-06):** `codex/composition-ce4c` from
   CE8-L `e1bd4bc`; final runtime `37cc07a`, verified snapshot `e1fb3e3`.
@@ -259,6 +258,17 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-07 — CE4d repaired Depth Lab acceptance passes
+
+- **Agent / branch:** Codex on `codex/composition-ce4d`, runtime `69469a8`, harness `e8a70d9`.
+- **Results:** complete depth-motion suite passes original far/near/drift, comparison/hold,
+  crop/fallback/edge and stale-selection/gallery assertions. A real delayed decode confirms
+  a seek during preparation survives the staged native refresh. Both affected Lab session
+  suites pass. No motion, pixel or timing threshold changed.
+- **Next:** complete `pnpm check` from the start on a fresh private checkpoint; the first
+  failed gate remains recorded. Then CE4d PR/attachment and all remaining approved milestones.
+- **Records:** [results](./composition-ce4d-results.json).
 
 ### 2026-10-07 — CE4d full gate finds asynchronous Depth Lab handoff
 
