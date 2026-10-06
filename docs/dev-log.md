@@ -50,7 +50,8 @@ still hold before relying on them.
   frozen references are unchanged. Toolchain, build, scoped ESLint and 20 unit tests pass. Legacy delivery,
   default consolidation and the final full gate remain pending. Legacy delivery found
   a separate PNG rounding defect (delta3 at frames30–34); the repair is implemented
-  with focused/full proof pending.
+  with 39 unit tests, both-profile alpha and all7 WebGL smoke fixtures /40 forward
+  and40 reverse frames passing. Complete serial delivery proof is running.
   [Evidence](./composition-ce4d-results.json).
 
 - **CE4d in progress (2026-10-07):** `codex/composition-ce4d` from CE4c
@@ -298,8 +299,10 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
 - **Scope:** complete legacy delivery exposed WebGL Comparison Build failures on frames30–34.
 - **Done:** verified PNG images use bitmap source-over rounding; vector primitive rounding is preserved.
   WebGL2 is 0.64.0. Focused smoke includes the actual failing frames.
-- **Results:** build/scoped ESLint pass. Diagnostic frame32 improves from delta3 /396 pixels above2
-  to delta1 /zero above2. The unchanged near tier remains delta2.
+- **Results:** checkpoint `fe5b8a6` passes toolchain/build/scoped ESLint,39 unit tests and alpha
+  on both GPU profiles. All7 WebGL smoke fixtures /40 forward+40 reverse frames pass, including
+  the five failing frames. Diagnostic frame32 improves from delta3 /396 pixels above2 to delta1.
+  Complete serial delivery is running; the unchanged near tier remains delta2.
 - **Failed / do not repeat:** the complete 4b99cad legacy gate failed; later depth delivery did not run.
   All23 prepared depth timelines had passed exact forward/reverse parity before that failure.
 - **Open / next:** focused/full legacy parity, native delivery, defaults and final full gate; then PR/CE13.

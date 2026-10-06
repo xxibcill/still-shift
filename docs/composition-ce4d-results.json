@@ -11351,7 +11351,7 @@
     {
       "name": "verified PNG bitmap source-over parity repair",
       "date": "2026-10-07",
-      "status": "implemented; focused/full parity pending",
+      "status": "focused acceptance passes; complete serial delivery running",
       "rendererVersion": "composition-webgl2-0.64.0",
       "failure": {
         "snapshot": "4b99cad",
@@ -11690,14 +11690,168 @@
       ],
       "checks": {
         "build": "pass",
-        "scopedEslint": "pass"
+        "scopedEslint": "pass",
+        "toolchain": "pass",
+        "unit": {
+          "tests": 39,
+          "files": 6,
+          "status": "pass",
+          "log": "/private/tmp/ce4d-focused-fe5b8a6.log"
+        },
+        "alphaEdge": {
+          "status": "pass",
+          "proof": [
+            {
+              "profile": "pinned",
+              "environment": {
+                "profile": "chromium-software-2",
+                "browserVersion": "151.0.7922.34",
+                "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+                "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+                "platform": "darwin",
+                "arch": "arm64"
+              },
+              "intermediatePixels": 128,
+              "maxConservationError": 0,
+              "row": [
+                [255, 0, 0, 255],
+                [255, 0, 0, 255],
+                [255, 0, 0, 255],
+                [255, 0, 0, 255],
+                [239, 16, 0, 255],
+                [207, 48, 0, 255],
+                [175, 80, 0, 255],
+                [143, 112, 0, 255],
+                [112, 143, 0, 255],
+                [80, 175, 0, 255],
+                [48, 207, 0, 255],
+                [16, 239, 0, 255],
+                [0, 255, 0, 255],
+                [0, 255, 0, 255],
+                [0, 255, 0, 255],
+                [0, 255, 0, 255]
+              ]
+            },
+            {
+              "profile": "hardware",
+              "environment": {
+                "profile": "hardware",
+                "browserVersion": "151.0.7922.34",
+                "webglRenderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M5 Pro, Unspecified Version)",
+                "rasterFingerprint": "sha256:1635aedc2b987dcd5c74dce4b4098aff37754174c33461d6f626c9dcad69e4a9",
+                "platform": "darwin",
+                "arch": "arm64"
+              },
+              "intermediatePixels": 128,
+              "maxConservationError": 0,
+              "row": [
+                [255, 0, 0, 255],
+                [255, 0, 0, 255],
+                [255, 0, 0, 255],
+                [255, 0, 0, 255],
+                [239, 16, 0, 255],
+                [207, 48, 0, 255],
+                [175, 80, 0, 255],
+                [143, 112, 0, 255],
+                [112, 143, 0, 255],
+                [80, 175, 0, 255],
+                [48, 207, 0, 255],
+                [16, 239, 0, 255],
+                [0, 255, 0, 255],
+                [0, 255, 0, 255],
+                [0, 255, 0, 255],
+                [0, 255, 0, 255]
+              ]
+            }
+          ]
+        },
+        "legacyFocused": {
+          "status": "pass",
+          "fixtures": 7,
+          "forwardFrames": 40,
+          "reverseFrames": 40,
+          "criticalFrames": [30, 31, 32, 33, 34],
+          "reports": [
+            {
+              "backend": "webgl2",
+              "fixture": "legacy/chronicle-reveal",
+              "frames": 5,
+              "reverseFrames": 5,
+              "maxDelta": 1,
+              "minPsnr": 109.07956595442053,
+              "failures": [],
+              "errors": []
+            },
+            {
+              "backend": "webgl2",
+              "fixture": "legacy/resource-flow",
+              "frames": 5,
+              "reverseFrames": 5,
+              "maxDelta": 0,
+              "minPsnr": null,
+              "failures": [],
+              "errors": []
+            },
+            {
+              "backend": "webgl2",
+              "fixture": "legacy/access-pressure",
+              "frames": 5,
+              "reverseFrames": 5,
+              "maxDelta": 1,
+              "minPsnr": 86.68907502301862,
+              "failures": [],
+              "errors": []
+            },
+            {
+              "backend": "webgl2",
+              "fixture": "legacy/comparison-build",
+              "frames": 10,
+              "reverseFrames": 10,
+              "maxDelta": 2,
+              "minPsnr": 82.7752872041703,
+              "failures": [],
+              "errors": []
+            },
+            {
+              "backend": "webgl2",
+              "fixture": "legacy/pose-prop-change",
+              "frames": 5,
+              "reverseFrames": 5,
+              "maxDelta": 0,
+              "minPsnr": null,
+              "failures": [],
+              "errors": []
+            },
+            {
+              "backend": "webgl2",
+              "fixture": "legacy/crisis-fracture",
+              "frames": 5,
+              "reverseFrames": 5,
+              "maxDelta": 2,
+              "minPsnr": 85.2378245663502,
+              "failures": [],
+              "errors": []
+            },
+            {
+              "backend": "webgl2",
+              "fixture": "legacy/vertical-chronicle-reveal",
+              "frames": 5,
+              "reverseFrames": 5,
+              "maxDelta": 1,
+              "minPsnr": 94.1380200142361,
+              "failures": [],
+              "errors": []
+            }
+          ],
+          "log": "/private/tmp/ce4d-legacy-focused-fe5b8a6.log"
+        }
       },
       "pending": [
-        "focused actual failing frames",
-        "complete legacy delivery/timing",
+        "complete legacy delivery/timing/hardware",
         "refreshed native depth delivery",
         "default migration and final full gate"
-      ]
+      ],
+      "checkpoint": "fe5b8a6"
     }
   ],
   "pending": [
