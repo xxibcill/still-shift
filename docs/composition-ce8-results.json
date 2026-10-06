@@ -359,7 +359,8 @@
           "TypeScript lint",
           "package boundaries",
           "139 affected inventory/integration unit tests",
-          "native camera focused browser"
+          "native camera focused browser",
+          "all 1840 units / 187 files after inventory repair"
         ],
         "browser": {
           "scenes": 10,
@@ -413,6 +414,416 @@
           "native stored hashes/exports/hardware",
           "serial 1080p cost",
           "full final-code local gate"
+        ]
+      },
+      "implementation": "f9385cc"
+    },
+    {
+      "name": "Hardware raster-domain repair",
+      "status": "hardware-pass-native-repeat-and-full-gate-pending",
+      "features": [
+        "Native 3D Canvas documents select pinned CPU raster preparation; ordinary 2D selection is unchanged",
+        "Native WebGL affine bitmap coverage uses CPU Canvas preparation while composition/true perspective remain GPU operations",
+        "Document the sampling tie bias and raster domains; finish formatting repaired code"
+      ],
+      "verification": {
+        "nativeFirstAttempt": {
+          "commit": "f9385cc",
+          "passed": "All ten scenes / twelve backend cases: 384 forward and 384 reverse frames, 108 random seeks, 36 production/repeat/raw exports and 12 independent preview MP4 comparisons",
+          "failed": "First hardware affine Canvas case: delta 50, PSNR 39.84310988320909, SSIM 0.999002094713508; unchanged perceptual policy rejects PSNR below 40",
+          "cost": "Not run because hardware assertion failed"
+        },
+        "hardwareRepair": {
+          "source": "f9385cc plus native raster-domain changes in canvas2d.ts and webgl2.ts",
+          "command": "node --import tsx tests/browser/ce8-hardware.mts (private focused helper)",
+          "result": {
+            "environments": [
+              {
+                "profile": "chromium-software-2",
+                "browserVersion": "151.0.7922.34",
+                "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+                "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+                "platform": "darwin",
+                "arch": "arm64"
+              },
+              {
+                "profile": "hardware",
+                "browserVersion": "151.0.7922.34",
+                "webglRenderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M5 Pro, Unspecified Version)",
+                "rasterFingerprint": "sha256:1635aedc2b987dcd5c74dce4b4098aff37754174c33461d6f626c9dcad69e4a9",
+                "platform": "darwin",
+                "arch": "arm64"
+              }
+            ],
+            "policy": "unchanged perceptual hardware policy",
+            "reports": [
+              {
+                "fixture": "affine",
+                "backend": "canvas2d",
+                "frame": 0,
+                "tier": "exact",
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": 999,
+                "ssim": 1
+              },
+              {
+                "fixture": "affine",
+                "backend": "canvas2d",
+                "frame": 16,
+                "tier": "exact",
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": 999,
+                "ssim": 1
+              },
+              {
+                "fixture": "affine",
+                "backend": "canvas2d",
+                "frame": 31,
+                "tier": "exact",
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": 999,
+                "ssim": 1
+              },
+              {
+                "fixture": "affine",
+                "backend": "webgl2",
+                "frame": 0,
+                "tier": "exact",
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": 999,
+                "ssim": 1
+              },
+              {
+                "fixture": "affine",
+                "backend": "webgl2",
+                "frame": 16,
+                "tier": "exact",
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": 999,
+                "ssim": 1
+              },
+              {
+                "fixture": "affine",
+                "backend": "webgl2",
+                "frame": 31,
+                "tier": "exact",
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": 999,
+                "ssim": 1
+              },
+              {
+                "fixture": "perspective",
+                "backend": "webgl2",
+                "frame": 0,
+                "tier": "exact",
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": 999,
+                "ssim": 1
+              },
+              {
+                "fixture": "perspective",
+                "backend": "webgl2",
+                "frame": 16,
+                "tier": "exact",
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": 999,
+                "ssim": 1
+              },
+              {
+                "fixture": "perspective",
+                "backend": "webgl2",
+                "frame": 31,
+                "tier": "exact",
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": 999,
+                "ssim": 1
+              },
+              {
+                "fixture": "checker-perspective",
+                "backend": "webgl2",
+                "frame": 0,
+                "tier": "exact",
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": 999,
+                "ssim": 1
+              },
+              {
+                "fixture": "checker-perspective",
+                "backend": "webgl2",
+                "frame": 16,
+                "tier": "exact",
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": 999,
+                "ssim": 1
+              },
+              {
+                "fixture": "checker-perspective",
+                "backend": "webgl2",
+                "frame": 31,
+                "tier": "exact",
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": 999,
+                "ssim": 1
+              },
+              {
+                "fixture": "clipping",
+                "backend": "webgl2",
+                "frame": 0,
+                "tier": "exact",
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": 999,
+                "ssim": 1
+              },
+              {
+                "fixture": "clipping",
+                "backend": "webgl2",
+                "frame": 16,
+                "tier": "exact",
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": 999,
+                "ssim": 1
+              },
+              {
+                "fixture": "clipping",
+                "backend": "webgl2",
+                "frame": 31,
+                "tier": "exact",
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": 999,
+                "ssim": 1
+              },
+              {
+                "fixture": "content",
+                "backend": "webgl2",
+                "frame": 0,
+                "tier": "exact",
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": 999,
+                "ssim": 1
+              },
+              {
+                "fixture": "content",
+                "backend": "webgl2",
+                "frame": 16,
+                "tier": "exact",
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": 999,
+                "ssim": 1
+              },
+              {
+                "fixture": "content",
+                "backend": "webgl2",
+                "frame": 31,
+                "tier": "exact",
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": 999,
+                "ssim": 1
+              },
+              {
+                "fixture": "parents",
+                "backend": "webgl2",
+                "frame": 0,
+                "tier": "exact",
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": 999,
+                "ssim": 1
+              },
+              {
+                "fixture": "parents",
+                "backend": "webgl2",
+                "frame": 16,
+                "tier": "exact",
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": 999,
+                "ssim": 1
+              },
+              {
+                "fixture": "parents",
+                "backend": "webgl2",
+                "frame": 31,
+                "tier": "exact",
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": 999,
+                "ssim": 1
+              },
+              {
+                "fixture": "focus",
+                "backend": "canvas2d",
+                "frame": 0,
+                "tier": "exact",
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": 999,
+                "ssim": 1
+              },
+              {
+                "fixture": "focus",
+                "backend": "canvas2d",
+                "frame": 16,
+                "tier": "exact",
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": 999,
+                "ssim": 1
+              },
+              {
+                "fixture": "focus",
+                "backend": "canvas2d",
+                "frame": 31,
+                "tier": "exact",
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": 999,
+                "ssim": 1
+              },
+              {
+                "fixture": "focus",
+                "backend": "webgl2",
+                "frame": 0,
+                "tier": "exact",
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": 999,
+                "ssim": 1
+              },
+              {
+                "fixture": "focus",
+                "backend": "webgl2",
+                "frame": 16,
+                "tier": "exact",
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": 999,
+                "ssim": 1
+              },
+              {
+                "fixture": "focus",
+                "backend": "webgl2",
+                "frame": 31,
+                "tier": "exact",
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": 999,
+                "ssim": 1
+              },
+              {
+                "fixture": "group-mask",
+                "backend": "webgl2",
+                "frame": 0,
+                "tier": "near",
+                "maxChannelDelta": 1,
+                "differingChannels": 18,
+                "psnr": 81.24410313171703,
+                "ssim": 0.9999992848435189
+              },
+              {
+                "fixture": "group-mask",
+                "backend": "webgl2",
+                "frame": 16,
+                "tier": "near",
+                "maxChannelDelta": 1,
+                "differingChannels": 19,
+                "psnr": 81.00929217322181,
+                "ssim": 0.9999998660699676
+              },
+              {
+                "fixture": "group-mask",
+                "backend": "webgl2",
+                "frame": 31,
+                "tier": "near",
+                "maxChannelDelta": 1,
+                "differingChannels": 16,
+                "psnr": 81.75562835619084,
+                "ssim": 0.9999997817435156
+              },
+              {
+                "fixture": "scopes",
+                "backend": "webgl2",
+                "frame": 0,
+                "tier": "exact",
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": 999,
+                "ssim": 1
+              },
+              {
+                "fixture": "scopes",
+                "backend": "webgl2",
+                "frame": 16,
+                "tier": "exact",
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": 999,
+                "ssim": 1
+              },
+              {
+                "fixture": "scopes",
+                "backend": "webgl2",
+                "frame": 31,
+                "tier": "exact",
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": 999,
+                "ssim": 1
+              },
+              {
+                "fixture": "exposure",
+                "backend": "webgl2",
+                "frame": 0,
+                "tier": "exact",
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": 999,
+                "ssim": 1
+              },
+              {
+                "fixture": "exposure",
+                "backend": "webgl2",
+                "frame": 16,
+                "tier": "exact",
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": 999,
+                "ssim": 1
+              },
+              {
+                "fixture": "exposure",
+                "backend": "webgl2",
+                "frame": 31,
+                "tier": "exact",
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": 999,
+                "ssim": 1
+              }
+            ]
+          }
+        },
+        "pending": [
+          "Repeat complete native acceptance at committed repaired source",
+          "Serial 1080p costs",
+          "Complete final-code local gate"
         ]
       }
     }

@@ -76,7 +76,15 @@ it("resolves secondary zoom when a motion driver selects focal length and an exp
       "reader.transform.position.x": { source: "ref('camera.zoom')" },
       "camera.filmSize": { source: "value * 1.5" },
     }),
-    signals: [{ id: "focal", keys: [{ frame: 0, value: 72 },{ frame: 31, value: 72 }] }],
+    signals: [
+      {
+        id: "focal",
+        keys: [
+          { frame: 0, value: 72 },
+          { frame: 31, value: 72 },
+        ],
+      },
+    ],
     drivers: [
       { target: "camera.focalLength", signal: "focal", blend: "replace" },
     ],

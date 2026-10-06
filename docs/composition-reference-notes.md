@@ -880,7 +880,10 @@ and projective placement, with screen overscan, then matte/opacity/blending.
 
 WebGL2 uses actual plane homographies and near/far clipping. True perspective
 uses four quarter-pixel coverage samples and RGBA8 premultiplied bilinear weights
-quantized to 1/16. Canvas supports affine planes and fails true perspective with
+quantized to 1/16, with a 1e-4 quantizer-unit tie bias to bound float32 boundary
+drift. Native 3D documents use pinned CPU Canvas raster preparation for the affine
+reference and local bitmap coverage; WebGL perspective placement remains on the GPU.
+Canvas supports affine planes and fails true perspective with
 `comp-feature-backend` before changing the previous complete frame. A projected
 precomp is a flat surface with its own camera; perspective `collapseTransforms`
 fails. Group masks/clips project local coverage; perspective group layer-space

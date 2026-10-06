@@ -14,7 +14,7 @@ export async function cameraPreview(
 ) {
   return page.evaluate(
     async ({ json, assetUrls, backend, frames, oracleName }) => {
-      const doc=JSON.parse(json) as Composition;
+      const doc = JSON.parse(json) as Composition;
       const renderUrl = "/packages/renderer-core/src/index.ts",
         referenceUrl = "/tests/helpers/composition-camera-reference.ts",
         m = (await import(renderUrl)) as typeof Render,
@@ -94,6 +94,6 @@ export async function cameraPreview(
       }
       return { hashes, pngs, pixels, oracleMaxDelta };
     },
-    { json:JSON.stringify(doc), assetUrls, backend, frames, oracleName },
+    { json: JSON.stringify(doc), assetUrls, backend, frames, oracleName },
   );
 }

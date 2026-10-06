@@ -62,8 +62,10 @@ still hold before relying on them.
   implicit cycle validation; author-order/driver regressions pass.
   Native focused verification passes 384 frames, exact independent oracle
   pixels, eight expected failures and real inspector edit/save checks.
-  Initial all-unit inventory failure is repaired; complete gate, native exports,
-  hardware and serial costs remain pending. No owner decision is pending.
+  All 1,840 units pass. First native all-frame/seek/export checks passed, then
+  hardware Canvas affine PSNR failed. Pinned native raster preparation repairs
+  all 36 hardware comparisons to delta at most one. Committed-source native
+  repeat, serial cost and the full gate remain pending. No owner decision is pending.
   [Evidence](./composition-ce8-results.json).
 
 - **CE6 complete (2026-10-06):** `codex/composition-ce6-completion` from
@@ -217,6 +219,19 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-06 — CE8 hardware raster checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce8`, after `f9385cc`.
+- **Done:** native Canvas 3D references and GPU affine bitmap coverage use pinned
+  CPU raster preparation. Ordinary 2D selection is unchanged; true perspective
+  and GPU composition remain GPU operations. Sampling/raster domains documented.
+- **Results:** all 1,840 units pass. First native run passed all frames/seeks and
+  36 production/repeat/raw plus 12 independent exports, then failed hardware
+  Canvas affine PSNR 39.84 against unchanged 40. Repaired hardware: all 36
+  comparisons pass, maximum channel delta one.
+- **Next:** committed-source native repeat/cost, full gate, CE8 PR then CE8-L.
+- **Records:** [CE8 evidence](./composition-ce8-results.json).
 
 ### 2026-10-06 — CE8 focused verification checkpoint
 

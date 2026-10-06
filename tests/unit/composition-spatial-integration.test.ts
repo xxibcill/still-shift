@@ -188,9 +188,9 @@ it("a camera-facing parent updates descendant geometry before projection", () =>
   expect(child.worldMatrix3d!.slice(0, 12)).toEqual(
     parent.worldMatrix3d!.slice(0, 12),
   );
-  const point=projectLocalPoint(child.projection!, [5, 5])!;
-  expect(point[0]).toBeCloseTo(75,12);
-  expect(point[1]).toBeCloseTo(50,12);
+  const point = projectLocalPoint(child.projection!, [5, 5])!;
+  expect(point[0]).toBeCloseTo(75, 12);
+  expect(point[1]).toBeCloseTo(50, 12);
 });
 
 it("projects parent group masks using bounded local coverage instead of an XY approximation", () => {

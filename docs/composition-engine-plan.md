@@ -3686,6 +3686,14 @@ syntax/type/unit/inventory, affine edge and checker quantizer failures are retai
 in CE8 evidence with their repairs. Native hardware/exports/stored hashes, serial
 cost evidence and the complete final-code local gate remain pending.
 
+All 1,840 unit tests pass. The first native run passed 384 forward, 384 reverse
+frames, 108 seeks, 36 production/repeat/raw exports and 12 independent preview
+exports, then rejected Canvas hardware affine PSNR 39.84 under the unchanged 40
+threshold. Native CPU raster reference/bitmap coverage repairs now pass all 36
+hardware comparisons at maximum channel delta one. The committed repaired source
+still needs complete native repeat/cost and the final local gate; no frozen
+legacy baseline or acceptance threshold changed.
+
 **Completion record:** _to be filled in._
 
 ---

@@ -243,14 +243,18 @@ export function createWebgl2Backend(
     localRasterCoverage = false,
   ) {
     const coverage = device.surface(dst.width, dst.height);
-    const pixels = raster.createSurface(dst.width, dst.height);
+    const pixels = raster.createSurface(
+      dst.width,
+      dst.height,
+      localRasterCoverage ? "software" : undefined,
+    );
     const output = device.surface(dst.width, dst.height);
     try {
       const affineClips = clips.filter(
         (clip) => !clip.projection || clip.projection.affineMatrix,
       );
       if (localRasterCoverage) {
-        const local = raster.createSurface(src.width, src.height);
+        const local = raster.createSurface(src.width, src.height, "software");
         try {
           raster.clear(local, [1, 1, 1, 1]);
           raster.composite(
