@@ -45,9 +45,9 @@ still hold before relying on them.
 
 - **PR #37 inspector repairs in progress (2026-10-06):** isolated
   `codex/pr37-inspector-fixes` from reviewed `12bfc1d`; all three findings are
-  posted inline. R13 numeric Apply focus is fixed; its browser regression,
-  build and affected lint pass. R14 asynchronous handle focus and R15 scope
-  identity remain, followed by affected final verification and one normal push.
+  posted inline. R13 numeric Apply focus (`6f992bc`) and R14 asynchronous handle
+  focus are fixed; browser regressions, build and affected lint pass. R15 scope
+  identity remains, followed by affected final verification and one normal push.
   No blocker or owner decision is needed for these authorized repairs; owner
   review/merge remain separate. Actions stay disabled.
   [Evidence](./pr-37-inspector-fix-results.json).
@@ -484,6 +484,17 @@ _Last updated 2026-10-06 by Codex for PR #35 main integration; both histories re
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-06 — PR #37 R14: Respect focus moved during Bezier edits
+
+- **Agent / branch:** Codex on isolated `codex/pr37-inspector-fixes`, after R13 `6f992bc`.
+- **Done:** guard asynchronous SVG handle focus with original control and history
+  ownership; preserve repeated arrow edits while respecting focus moved elsewhere.
+- **Results:** paused-asset checkbox-focus assertion fails before repair and passes
+  afterward; R13 focus checks remain passing. Build and affected lint pass.
+- **Next:** R15 scope identity in its own commit, affected final checks, one push.
+  Full gate/depth/baselines were not rerun. Owner checkout untouched; no Actions.
+- **Records:** [Repair evidence](./pr-37-inspector-fix-results.json).
 
 ### 2026-10-06 — PR #37 R13: Preserve numeric Apply keyboard focus
 

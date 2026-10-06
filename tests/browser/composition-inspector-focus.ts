@@ -156,6 +156,53 @@ export async function verifyCompositionInspectorFocus() {
       "Numeric acceptance must respect moved focus",
     );
     await page.unroute("**/composition/program-asset?*");
+    const handle = page.getByRole("button", {
+      name: "Bézier start handle; arrow keys move x, Shift arrow keys move y",
+      exact: true,
+    });
+    await handle.focus();
+    for (const x of ["0.34", "0.35"]) {
+      await handle.press("ArrowRight");
+      await ready();
+      assert.equal(
+        await handle.evaluate((node) => document.activeElement === node),
+        true,
+        "Repeated Bezier keyboard edits must preserve focus",
+      );
+      assert.equal(
+        (
+          await page
+            .getByLabel("Segment Bézier x1,y1,x2,y2", { exact: true })
+            .inputValue()
+        ).split(",")[0],
+        x,
+      );
+    }
+    let resumeBezier!: () => void;
+    const pausedBezier = new Promise<void>((resolve) => {
+      resumeBezier = resolve;
+    });
+    await page.route("**/composition/program-asset?*", async (route) => {
+      await pausedBezier;
+      await route.continue();
+    });
+    await handle.press("ArrowRight");
+    await page.waitForFunction(
+      () =>
+        document.querySelector<HTMLFieldSetElement>("#inspector-edit")!
+          .disabled,
+    );
+    await page.locator("#overlay-safe").focus();
+    resumeBezier();
+    await ready();
+    assert.equal(
+      await page
+        .locator("#overlay-safe")
+        .evaluate((node) => document.activeElement === node),
+      true,
+      "Bezier acceptance must respect moved focus",
+    );
+    await page.unroute("**/composition/program-asset?*");
     assert.deepEqual(errors, []);
   } finally {
     await browser.close();

@@ -539,15 +539,20 @@ export function createCompositionInspector(options: {
             .join(",");
         }
         async function apply(focusedHandle?: number) {
+          const restoreFocus =
+            focusedHandle === undefined
+              ? () => {}
+              : restoreControlFocus(
+                  handles[focusedHandle]!,
+                  () =>
+                    area.querySelector<SVGElement>(
+                      `[data-bezier-handle="${focusedHandle}"]`,
+                    ) ?? undefined,
+                );
           const accepted = await submit("Drag segment Bézier handle", (d) =>
             editSegmentBezier(d, current, index, values),
           );
-          if (accepted && focusedHandle !== undefined)
-            area
-              .querySelector<SVGElement>(
-                `[data-bezier-handle="${focusedHandle}"]`,
-              )
-              ?.focus();
+          if (accepted) restoreFocus();
         }
         handles.forEach((handle, i) => {
           let dragging = false;

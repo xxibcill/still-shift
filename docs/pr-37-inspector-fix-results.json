@@ -18,6 +18,7 @@
   "findings": [
     {
       "id": "R13",
+      "commit": "6f992bc",
       "title": "Preserve focus after applying numeric edits",
       "commentUrl": "https://github.com/xxibcill/still-shift/pull/37#discussion_r4192626418",
       "status": "fixed",
@@ -38,7 +39,19 @@
       "id": "R14",
       "title": "Respect focus moved during a Bezier edit",
       "commentUrl": "https://github.com/xxibcill/still-shift/pull/37#discussion_r4192626422",
-      "status": "pending"
+      "status": "fixed",
+      "change": "Reuse the captured control/history focus guard for asynchronous SVG handle acceptance. Preserve repeated keyboard adjustment while respecting focus moved outside the graph.",
+      "regressionBefore": "New pinned browser assertion fails after a paused asset load: Bezier acceptance must respect moved focus; actual false.",
+      "verification": [
+        "Focused browser regression passes repeated Bezier arrow adjustments and retains the safe-area checkbox focus when loading completes. R13 numeric, rejection and focus-movement checks remain passing.",
+        "TypeScript build and affected ESLint pass."
+      ],
+      "logs": [
+        "/private/tmp/pr37-r14-red.log",
+        "/private/tmp/pr37-r14-green.log",
+        "/private/tmp/pr37-r14-build.log",
+        "/private/tmp/pr37-r14-lint.log"
+      ]
     },
     {
       "id": "R15",
@@ -53,6 +66,6 @@
   "delivery": {
     "branch": "codex/pr37-inspector-fixes",
     "target": "codex/composition-ce11",
-    "status": "R13 complete; R14 and R15 pending; no push yet."
+    "status": "R13 and R14 complete; R15 pending; no push yet."
   }
 }
