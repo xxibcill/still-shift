@@ -133,6 +133,27 @@ it("reports missing exports and program exceptions as structured diagnostics", a
     diagnostics: [expect.objectContaining({ message: "authored failure" })],
   });
 });
+it.each([".ts", ".cts"])(
+  "retains successful asset reads when a later %s build fails",
+  async (extension) => {
+    const root = await directory(),
+      input = join(root, `entry${extension}`),
+      art = join(root, "art.svg"),
+      font = join(root, "font.ttf");
+    await writeFile(art, '<svg width="8" height="12"/>');
+    await writeFile(font, "font bytes");
+    await writeFile(
+      input,
+      `import{imageAsset,fontAsset}from'@still-shift/motion/node';export default(async()=>{await imageAsset('art',${JSON.stringify(art)});await fontAsset('font',${JSON.stringify(font)});throw new Error('failure after reading assets');})();`,
+    );
+    await expect(loadProgram(input)).rejects.toMatchObject({
+      dependencies: expect.arrayContaining([art, font]),
+      diagnostics: [
+        expect.objectContaining({ message: "failure after reading assets" }),
+      ],
+    });
+  },
+);
 it("bounds console output and runtime and retains dependencies on failed reloads", async () => {
   const root = await directory(),
     input = join(root, "entry.ts"),

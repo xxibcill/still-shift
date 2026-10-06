@@ -69,3 +69,4 @@ export {
   type TextEventScene,
   type ResolvedTextEvent,
 } from "./typography-events.ts";
+export * from "./soundtrack-project.ts";

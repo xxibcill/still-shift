@@ -27,6 +27,7 @@ import {
   releaseProgramSnapshot,
   type OwnedProgramSnapshot,
 } from "./composition-program-assets.ts";
+import { passageDiagnostics } from "../../../packages/renderer-core/src/passage-diagnostics.ts";
 import type { ProgramSnapshot } from "../../../tools/still-shift-cli/src/composition/preview.ts";
 
 const programMode = new URLSearchParams(location.search).has("program");
@@ -77,6 +78,7 @@ function describeRenderer(backend: CompositionBackend) {
 const lintButton = el<HTMLButtonElement>("lint");
 let lintFindings: MotionLintDiagnostic[] = [];
 let lintAbort: AbortController | undefined;
+let lintAvailable = false;
 function showLint(report: ReturnType<typeof analyzeCompositionQuality>) {
   lintFindings = report.diagnostics;
   const errors = lintFindings.filter((d) => d.severity === "error").length;
@@ -220,11 +222,26 @@ const session = createPreviewSession<CompositionSnapshot>({
     );
     el("command").textContent =
       `pnpm --silent still-shift comp render --input ${program ? JSON.stringify(program.input) : `benchmarks/fixtures/composition/${snapshot.path}`} --output ${comp.id}.mp4 --backend ${snapshot.backend}`;
-    showLint(
-      analyzeCompositionQuality(comp, {
-        evaluation: { textBounds: preview.textBounds },
-      }),
-    );
+    // Lint is advisory: a lint failure must not stop the composition previewing.
+    lintAvailable = false;
+    try {
+      showLint(
+        analyzeCompositionQuality(comp, {
+          evaluation: { textBounds: preview.textBounds },
+        }),
+      );
+      lintAvailable = true;
+    } catch (cause) {
+      lintFindings = [];
+      el("lint-timeline").replaceChildren();
+      el("lint-findings").replaceChildren();
+      const diagnostics = passageDiagnostics(cause);
+      el("lint-summary").textContent = `Motion checks unavailable: ${
+        diagnostics.length
+          ? diagnostics.map((d) => `${d.code}: ${d.message}`).join("; ")
+          : String(cause instanceof Error ? cause.message : cause)
+      }`;
+    }
     status.textContent = `Ready: ${comp.name ?? comp.id} · ${comp.width} × ${comp.height} · ${comp.fps} fps${program?.source === "builder" ? " · edit the source to change motion" : ""}`;
     status.dataset.ready = snapshot.path;
     status.dataset.backend = snapshot.backend;
@@ -401,10 +418,12 @@ async function load(
   select.disabled = programMode;
   saveButton.disabled =
     currentProgram?.source === "builder" || !documentHistory;
+  lintButton.disabled ||= !lintAvailable;
   return accepted;
 }
 
 lintButton.onclick = async () => {
+  if (!lintAvailable) return;
   const run = generation,
     at = session.frame;
   await session.export(async (snapshot) => {
@@ -517,6 +536,7 @@ saveButton.onclick = async () => {
     })
     .finally(() => {
       saveButton.disabled = currentProgram?.source === "builder";
+      lintButton.disabled ||= !lintAvailable;
     });
 };
 exportButton.onclick = () => {
@@ -553,6 +573,7 @@ exportButton.onclick = () => {
     })
     .finally(() => {
       saveButton.disabled = currentProgram?.source === "builder";
+      lintButton.disabled ||= !lintAvailable;
     });
 };
 
@@ -601,6 +622,7 @@ if (programMode) {
         })
         .finally(() => {
           select.disabled = programMode;
+          lintButton.disabled ||= !lintAvailable;
         });
     },
   );

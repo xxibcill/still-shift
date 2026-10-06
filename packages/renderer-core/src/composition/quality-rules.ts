@@ -7,7 +7,12 @@ import {
   type ResolvedCompositionQualityPolicy,
 } from "./quality-policy.ts";
 import {
+  assertCompositionQualityCapacity,
   compositionQualityFrame,
+  contributingMotionLayers,
+  hasArea,
+  qualityTrackContributes,
+  qualityTrackSignature,
   layerQualityTracks,
   numericValues,
   type CompositionQualityFrame,
@@ -16,7 +21,7 @@ import {
 
 type Finding = (
   code: MotionLintCode,
-  sample: CompositionQualitySample,
+  sample: Pick<CompositionQualitySample, "id" | "path">,
   frames: [number, number],
   measured: number,
   message: string,
@@ -67,9 +72,11 @@ function coversViewport(
   sample: CompositionQualitySample,
   width: number,
   height: number,
+  size?: readonly [number, number],
 ) {
   const layer = sample.state.layer;
-  if (!("size" in layer) || !layer.size) return false;
+  const extent = size ?? ("size" in layer ? layer.size : undefined);
+  if (!extent) return false;
   const [a, b, c, d, e, f] = sample.matrix;
   const determinant = a * d - b * c;
   if (Math.abs(determinant) < 1e-12) return false;
@@ -84,10 +91,26 @@ function coversViewport(
     return (
       localX >= -1e-6 &&
       localY >= -1e-6 &&
-      localX <= layer.size![0] + 1e-6 &&
-      localY <= layer.size![1] + 1e-6
+      localX <= extent[0] + 1e-6 &&
+      localY <= extent[1] + 1e-6
     );
   });
+}
+function coverageLayerReference(comp: Composition, id: string) {
+  let layers = comp.layers;
+  let prefix = "";
+  const route = id.split("/");
+  for (let i = 0; i < route.length; i++) {
+    const index = layers.findIndex((layer) => layer.id === route[i]);
+    if (index < 0) return undefined;
+    if (i === route.length - 1) return { id, path: `${prefix}layers.${index}` };
+    const layer = layers[index]!;
+    if (layer.type !== "precomp") return undefined;
+    const sourceIndex = comp.precomps!.findIndex((p) => p.id === layer.comp);
+    layers = comp.precomps![sourceIndex]!.layers;
+    prefix = `precomps.${sourceIndex}.`;
+  }
+  return undefined;
 }
 export function compositionFramingFindings(
   comp: Composition,
@@ -101,11 +124,15 @@ export function compositionFramingFindings(
         ? (comp.metadata.storyCameraCover as string[])
         : []),
   );
+  const declarations = new Map(
+    [...coverage].map((id) => [id, coverageLayerReference(comp, id)]),
+  );
   const inset = policy.safeAreaFraction;
   frames.forEach((frame, at) => {
     for (const sample of frame.layers.values()) {
-      const b = sample.bounds;
-      if (sample.visible && b && !coverage.has(sample.id)) {
+      // Framing measures the painted region after group and precomp clipping.
+      const b = sample.clippedBounds;
+      if (sample.visible && b && hasArea(b) && !coverage.has(sample.id)) {
         if (
           b.right <= 0 ||
           b.bottom <= 0 ||
@@ -137,7 +164,16 @@ export function compositionFramingFindings(
     for (const id of coverage) {
       const sample = frame.layers.get(id);
       if (!sample) {
-        if (at === 0)
+        const declaration = declarations.get(id);
+        if (declaration)
+          add(
+            "coverage",
+            declaration,
+            [at, at],
+            1,
+            "Declared coverage layer is unavailable on this frame.",
+          );
+        else if (at === 0)
           diagnostics.push({
             code: "coverage",
             severity: lintSeverity("coverage", policy),
@@ -150,7 +186,22 @@ export function compositionFramingFindings(
           });
         continue;
       }
-      const b = sample.bounds;
+      const b = sample.clippedBounds;
+      const ancestorClips = sample.ancestors.some((id) => {
+        const ancestor = frame.layers.get(id);
+        if (!ancestor) return false;
+        const layer = ancestor.state.layer;
+        if (layer.type === "group" && layer.clip)
+          return !coversViewport(ancestor, comp.width, comp.height);
+        if (layer.type === "precomp" && !layer.collapseTransforms) {
+          const source = comp.precomps!.find((p) => p.id === layer.comp)!;
+          return !coversViewport(ancestor, comp.width, comp.height, [
+            source.width,
+            source.height,
+          ]);
+        }
+        return false;
+      });
       if (
         !sample.visible ||
         sample.opacity < 0.999 ||
@@ -160,6 +211,7 @@ export function compositionFramingFindings(
         b.right < comp.width ||
         b.bottom < comp.height ||
         !coversViewport(sample, comp.width, comp.height) ||
+        ancestorClips ||
         sample.state.masks.some((mask) => mask.mode !== "none") ||
         !!sample.state.layer.trackMatte
       )
@@ -174,13 +226,29 @@ export function compositionFramingFindings(
   });
   return diagnostics;
 }
-const scaleDelta = (a: CompositionQualitySample, b: CompositionQualitySample) =>
-  Math.max(
+const scaleDelta = (
+  a: CompositionQualitySample,
+  b: CompositionQualitySample,
+) => {
+  // Reflections can cancel across rotated parent/child axes. Translation does
+  // not change scale; compare the effective linear transform before its signs.
+  if (
+    a.matrix
+      .slice(0, 4)
+      .every(
+        (value, i) =>
+          Math.abs(value - b.matrix[i]!) <=
+          1e-10 * Math.max(1, Math.abs(value), Math.abs(b.matrix[i]!)),
+      )
+  )
+    return 0;
+  return Math.max(
     ...a.scale.map(
       (value, i) =>
         Math.abs(value - b.scale[i]!) / Math.max(1, Math.abs(b.scale[i]!)),
     ),
   );
+};
 export function compositionPopFindings(
   frames: readonly CompositionQualityFrame[],
   policy: ResolvedCompositionQualityPolicy,
@@ -192,7 +260,8 @@ export function compositionPopFindings(
       const before = frames[at - 1]!.layers.get(id);
       if (!before || !(before.visible || current.visible)) continue;
       const prior = frames[at - 2]?.layers.get(id),
-        next = frames[at + 1]?.layers.get(id);
+        next = frames[at + 1]?.layers.get(id),
+        after = frames[at + 2]?.layers.get(id);
       for (const [code, threshold, delta] of [
         [
           "opacity-pop",
@@ -203,15 +272,29 @@ export function compositionPopFindings(
         ["scale-pop", policy.scalePop, scaleDelta],
       ] as const) {
         const jump = delta(current, before);
-        const neighbours = Math.max(
-          prior ? delta(before, prior) : 0,
-          next ? delta(next, current) : 0,
-        );
-        if (jump > threshold && neighbours <= jump * policy.popNeighbourRatio)
+        const priorJump =
+          prior && !policy.cuts.has(at - 1) ? delta(before, prior) : 0;
+        const nextJump =
+          next && !policy.cuts.has(at + 1) ? delta(next, current) : 0;
+        const neighbours = Math.max(priorJump, nextJump);
+        const excursion =
+          next &&
+          !policy.cuts.has(at + 1) &&
+          nextJump > threshold &&
+          delta(next, before) <=
+            Math.min(jump, nextJump) * policy.popNeighbourRatio &&
+          priorJump <= jump * policy.popNeighbourRatio &&
+          (!after ||
+            policy.cuts.has(at + 2) ||
+            delta(after, next) <= nextJump * policy.popNeighbourRatio);
+        if (
+          jump > threshold &&
+          (neighbours <= jump * policy.popNeighbourRatio || excursion)
+        )
           add(
             code,
             current,
-            [at - 1, at],
+            [at - 1, excursion ? at + 1 : at],
             jump,
             "Abrupt single-frame change next to settled frames; smooth it or mark an intentional cut.",
             `${current.path}.transform.${code === "scale-pop" ? "scale" : "opacity"}`,
@@ -242,6 +325,24 @@ function easingSignature(
         : (b.easing ?? "smoothstep"),
   );
 }
+function propertyEasingShare(
+  segments: readonly { property: string; easing: string }[],
+) {
+  const properties = new Map<string, Set<string>>();
+  for (const segment of segments) {
+    if (!properties.has(segment.property))
+      properties.set(segment.property, new Set());
+    properties.get(segment.property)!.add(segment.easing);
+  }
+  const counts = new Map<string, number>();
+  for (const profiles of properties.values())
+    for (const easing of profiles)
+      counts.set(easing, (counts.get(easing) ?? 0) + 1 / profiles.size);
+  return {
+    propertyCount: properties.size,
+    share: properties.size ? Math.max(...counts.values()) / properties.size : 0,
+  };
+}
 /** Authored moving segments are counted once per property/instance, never once per vector component. */
 export function compositionTimingFindings(
   comp: Composition,
@@ -255,11 +356,13 @@ export function compositionTimingFindings(
     end: number;
     easing: string;
     path: string;
+    property: string;
   }[] = [];
+  const contributingFrames = frames.map(contributingMotionLayers);
   const instances = new Map<string, CompositionQualitySample>();
-  for (const frame of frames)
-    for (const sample of frame.layers.values())
-      if (sample.onScreen && !instances.has(sample.id))
+  for (const frame of contributingFrames)
+    for (const sample of frame.values())
+      if (!instances.has(sample.id) || sample.onScreen)
         instances.set(sample.id, sample);
   for (const sample of instances.values()) {
     for (const track of layerQualityTracks(sample.state.layer)) {
@@ -273,27 +376,42 @@ export function compositionTimingFindings(
           b.interpolation === "hold"
         )
           continue;
-        const visible = frames
-          .map((frame, at) => ({ sample: frame.layers.get(sample.id), at }))
+        const visible = contributingFrames
+          .map((frame, at) => ({ sample: frame.get(sample.id), at }))
           .filter(
-            ({ sample: s }) =>
-              s?.onScreen &&
+            ({ sample: s, at }) =>
+              s &&
+              qualityTrackContributes(
+                s,
+                track.path,
+                frames[at]!.matteSources.has(s.id),
+              ) &&
               s.state.time >= Number(a.frame) &&
               s.state.time <= Number(b.frame),
           );
         if (visible.length < 2) continue;
-        if (
-          visible.every(
-            ({ sample: s }) => s!.signature === visible[0]!.sample!.signature,
-          )
-        )
-          continue;
+        const firstValue = qualityTrackSignature(
+          visible[0]!.sample!,
+          track.path,
+        );
+        if (firstValue === undefined) continue;
+        const firstMovement = visible.findIndex(
+          ({ sample: s }) =>
+            qualityTrackSignature(s!, track.path) !== firstValue,
+        );
+        if (firstMovement < 1) continue;
+        const before = visible[firstMovement - 1]!,
+          current = visible[firstMovement]!;
         segments.push({
           id: sample.id,
-          start: visible[0]!.at,
+          start:
+            before.at + 1 === current.at && !policy.cuts.has(current.at)
+              ? before.at
+              : current.at,
           end: visible.at(-1)!.at,
           easing: easingSignature(a, b),
           path: `${sample.path}.${track.path}`,
+          property: `${sample.id}:${track.path.replace(/\.[xy]$/, "")}`,
         });
       }
     }
@@ -302,14 +420,8 @@ export function compositionTimingFindings(
     const moving = segments.filter(
       (s) => s.start < shot.end && s.end >= shot.start,
     );
-    const properties = new Set(moving.map((s) => s.path));
-    if (properties.size >= policy.minimumMovingProperties) {
-      const counts = new Map<string, number>();
-      for (const segment of moving) {
-        counts.set(segment.easing, (counts.get(segment.easing) ?? 0) + 1);
-      }
-      const maximum = Math.max(...counts.values());
-      const share = maximum / moving.length;
+    const { propertyCount, share } = propertyEasingShare(moving);
+    if (propertyCount >= policy.minimumMovingProperties) {
       if (share >= policy.easingMonotonyShare)
         diagnostics.push({
           code: "easing-monotony",
@@ -350,30 +462,40 @@ export function compositionTimingFindings(
 }
 
 function joinFrames(
-  comp: Composition,
   frames: readonly CompositionQualityFrame[],
-  policy: ResolvedCompositionQualityPolicy,
+  sampleFrame: (frame: number) => CompositionQualityFrame,
 ) {
   const joins = new Set<number>(
     Array.from({ length: Math.max(0, frames.length - 2) }, (_, i) => i + 1),
   );
   const keyTimes = new Map<string, number[]>();
+  // Within each frame interval, one
+  // evaluation records every layer's clock, so layers sharing a clock reuse
+  // the same bisection steps instead of repeating them per layer.
+  let previous = contributingMotionLayers(frames[0]!);
   for (let frame = 1; frame < frames.length; frame++) {
-    for (const current of frames[frame]!.layers.values()) {
-      const before = frames[frame - 1]!.layers.get(current.id);
-      if (
-        !before ||
-        !current.onScreen ||
-        !before.onScreen ||
-        before.state.time === current.state.time
-      )
-        continue;
+    const clocks = new Map<number, Map<string, number>>();
+    const clockAt = (time: number) => {
+      let sampled = clocks.get(time);
+      if (!sampled) {
+        const evaluated = sampleFrame(time);
+        sampled = new Map(
+          [...evaluated.layers].map(([id, s]) => [id, s.state.time]),
+        );
+        clocks.set(time, sampled);
+      }
+      return sampled;
+    };
+    const contributing = contributingMotionLayers(frames[frame]!);
+    for (const current of contributing.values()) {
+      const before = previous.get(current.id);
+      if (!before || before.state.time === current.state.time) continue;
       let keys = keyTimes.get(current.id);
       if (!keys) {
         keys = [
           ...new Set(
-            layerQualityTracks(current.state.layer).flatMap((t) =>
-              t.keys.map((key) => Number(key.frame)),
+            layerQualityTracks(current.state.layer).flatMap((track) =>
+              track.keys.map((key) => Number(key.frame)),
             ),
           ),
         ];
@@ -389,11 +511,7 @@ function joinFrames(
           hi = frame;
         for (let pass = 0; pass < 24; pass++) {
           const mid = (lo + hi) / 2;
-          const time = compositionQualityFrame(
-            comp,
-            mid,
-            policy.evaluation,
-          ).layers.get(current.id)?.state.time;
+          const time = clockAt(mid).get(current.id);
           if (time === undefined) break;
           if (time < key === current.state.time > before.state.time) lo = mid;
           else hi = mid;
@@ -401,6 +519,7 @@ function joinFrames(
         joins.add((lo + hi) / 2);
       }
     }
+    previous = contributing;
   }
   return [...joins].sort((a, b) => a - b);
 }
@@ -412,11 +531,15 @@ function velocityValues(sample: CompositionQualitySample) {
     sample.opacity * 100,
     (sample.state.reveal ?? 1) * 100,
     ...(sample.state.color ?? []).map((n) => n * 100),
-    ...numericValues(sample.state.effects),
+    ...numericValues(sample.effects),
     ...numericValues(sample.state.masks),
   ];
 }
-/** Actual one-sided velocities include camera, nested clocks and fractional stretched key joins. */
+/**
+ * Actual one-sided velocities include camera, nested clocks and fractional
+ * stretched key joins. Each side is measured a step away from the join, so
+ * per-frame held samples are frame evidence rather than velocity steps.
+ */
 export function compositionVelocityFindings(
   comp: Composition,
   frames: readonly CompositionQualityFrame[],
@@ -424,35 +547,66 @@ export function compositionVelocityFindings(
 ) {
   const { diagnostics, add } = findingsCollector(policy);
   const step = 0.0001;
-  for (const at of joinFrames(comp, frames, policy)) {
+  let inspected = frames.reduce((total, frame) => total + frame.layers.size, 0);
+  assertCompositionQualityCapacity(inspected);
+  const sampleFrame = (at: number) => {
+    const sample = compositionQualityFrame(comp, at, policy.evaluation);
+    inspected += sample.layers.size;
+    assertCompositionQualityCapacity(inspected);
+    return sample;
+  };
+  for (const at of joinFrames(frames, sampleFrame)) {
     const nearest = Math.round(at);
     if (
       (policy.cuts.has(nearest) && Math.abs(nearest - at) < step) ||
       policy.cuts.has(Math.ceil(at + step))
     )
       continue;
-    const middle = Number.isInteger(at)
-      ? frames[at]!
-      : compositionQualityFrame(comp, at, policy.evaluation);
-    const left = compositionQualityFrame(comp, at - step, policy.evaluation);
-    const right = compositionQualityFrame(comp, at + step, policy.evaluation);
+    const middle = Number.isInteger(at) ? frames[at]! : sampleFrame(at);
+    const outer = sampleFrame(at - 2 * step);
+    const left = sampleFrame(at - step);
+    const right = sampleFrame(at + step);
+    const outerRight = sampleFrame(at + 2 * step);
     for (const current of middle.layers.values()) {
-      const before = left.layers.get(current.id),
-        after = right.layers.get(current.id);
-      if (!current.onScreen || !before?.onScreen || !after?.onScreen) continue;
-      const incoming = velocityValues(before),
-        value = velocityValues(current),
-        outgoing = velocityValues(after);
-      if (incoming.length !== value.length || outgoing.length !== value.length)
+      const probes = [
+        [outer, outer.layers.get(current.id)],
+        [left, left.layers.get(current.id)],
+        [right, right.layers.get(current.id)],
+        [outerRight, outerRight.layers.get(current.id)],
+      ] as const;
+      if (
+        !(current.contributesPaint || middle.matteSources.has(current.id)) ||
+        probes.some(
+          ([frame, sample]) =>
+            !sample ||
+            !(sample.contributesPaint || frame.matteSources.has(current.id)),
+        )
+      )
         continue;
-      const jump = boundaryVelocityJump(incoming, value, outgoing, step);
+      const [beforeOuter, before, after, afterOuter] = probes.map(
+        ([, sample]) => velocityValues(sample!),
+      ) as [number[], number[], number[], number[]];
+      const value = velocityValues(current);
+      if (
+        [beforeOuter, before, after, afterOuter].some(
+          (values) => values.length !== value.length,
+        )
+      )
+        continue;
+      const jump = boundaryVelocityJump(
+        beforeOuter,
+        before,
+        after,
+        afterOuter,
+        step,
+      );
       const adjacentBefore =
         frames[Math.max(0, Math.floor(at - 1))]!.layers.get(current.id) ??
-        before;
+        probes[1][1]!;
       const adjacentAfter =
         frames[Math.min(frames.length - 1, Math.ceil(at + 1))]!.layers.get(
           current.id,
-        ) ?? after;
+        ) ?? probes[2][1]!;
       const previousValues = velocityValues(adjacentBefore);
       const magnitude = Math.max(
         1,

@@ -1,0 +1,159 @@
+{
+  "date": "2026-10-05",
+  "pullRequest": "https://github.com/xxibcill/still-shift/pull/32",
+  "startingHead": "c4f7c8d316e81ee418902e61e8217f6cf480a401",
+  "review": "https://github.com/xxibcill/still-shift/pull/32#pullrequestreview-5411412767",
+  "findings": [
+    {
+      "id": "timed-primitive-blur",
+      "priority": "P2",
+      "comment": "https://github.com/xxibcill/still-shift/pull/32#discussion_r4181734002",
+      "status": "fixed and verified",
+      "implementation": "Select primitive blur at the historical scope/layer clock, respect inPoint/outPoint, and cache timed dependency closures per clock. Collect inherited blur when a nearer override is inactive.",
+      "regressions": 4,
+      "red": "Two timed-blur cases failed before production changes; two covering-window cases guard against unnecessary rejection.",
+      "green": "All 34 bake tests pass.",
+      "log": "/private/tmp/pr32-round2-green-blur.log",
+      "commit": "6876407babaabbedd78d14daea6383de3b28c290"
+    },
+    {
+      "id": "normalized-ast-bounds",
+      "priority": "P2",
+      "comment": "https://github.com/xxibcill/still-shift/pull/32#discussion_r4181734013",
+      "status": "fixed and verified",
+      "red": "Four normalization cases fail before production changes; five safety cases pass.",
+      "log": "/private/tmp/pr32-round2-green-normalize-rove.log",
+      "implementation": "Bound serialized AST depth by twice the maximum AST-node path (998 container levels for 500 nodes), while retaining the 64 KiB byte bound, source/AST matching and generic JSON/metadata depth 64.",
+      "regressions": 9,
+      "green": "Normalization, JSON bounds, syntax and expression files pass: 174 tests across four files. CLI normalized output for 40/250 terms validates and evaluates correctly.",
+      "commit": "4f7d8bef0dbedb26bdc88c4c727e98b05296c4eb"
+    },
+    {
+      "id": "periodic-reference-writers",
+      "priority": "P2",
+      "comment": "https://github.com/xxibcill/still-shift/pull/32#discussion_r4181734023",
+      "status": "fixed and verified",
+      "implementation": "Use the echo root clock for active periodic reference writers; traverse exact component reads, retain anchor dependencies through shifted temporal readers, and merge only required historical vector components without overwriting ordinary samples.",
+      "regressions": 19,
+      "red": "Three periodic-window cases failed before the fix; two component-history acceptance cases failed before component masking. Temporal and required-axis conflict controls pass.",
+      "green": "All 53 tests pass across the main bake and component-history files, including root-window boundaries, repeated/reversed nested scopes, delayed/lagged drivers, temporal readers and independent vector components.",
+      "log": "/private/tmp/pr32-periodic-reference-final-green.log",
+      "redLogs": [
+        "/private/tmp/pr32-periodic-reference-red.log",
+        "/private/tmp/pr32-round2-red-component-history-final.log"
+      ],
+      "commit": "32e31acea95735fb4deebef02df66a065a82fc71"
+    },
+    {
+      "id": "separated-constant-speed",
+      "priority": "P2",
+      "comment": "https://github.com/xxibcill/still-shift/pull/32#discussion_r4181734029",
+      "status": "fixed and verified",
+      "red": "Six new roving cases fail before production changes; original cases pass.",
+      "log": "/private/tmp/pr32-rove-spring-green.log",
+      "regressions": 13,
+      "green": "All 51 expression tests pass; spring trajectory matches an independent dense reference within 0.05 px at fps 30/60/24, including repeated fps cache reads.",
+      "redLogs": [
+        "/private/tmp/pr32-round2-red-blur-rove.log",
+        "/private/tmp/pr32-rove-spring-red.log"
+      ],
+      "rejected": "Fixed 128 samples per key interval alias spring oscillations. Sampling at 128/256 points per natural period missed the 0.05 px reference tolerance; 512 points per period passes. Work above 512,001 points reports comp-expression-value.",
+      "implementation": "Construct separated paths from the union of x/y key times and independently eased samples, preserving fixed axes and current motion offsets. Cache by source object and fps. Scale spring resolution to 512 samples per natural period, preflight a 512,001-point cap, and retain native joint-path arithmetic.",
+      "browserFixture": "benchmarks/fixtures/composition/ce9/separated-roving.json",
+      "evaluatorVersion": "composition-evaluator-25",
+      "commitSubject": "fix(composition): rove independently keyed position axes"
+    }
+  ],
+  "verification": {
+    "node": "22.23.1",
+    "pnpm": "10.29.3",
+    "checks": [
+      {
+        "command": "pnpm toolchain:check",
+        "exitCode": 0,
+        "log": "/private/tmp/pr32-round2-toolchain.log"
+      },
+      {
+        "command": "pnpm exec vitest run tests/unit/composition-expression-normalization.test.ts tests/unit/composition-json-bounds.test.ts tests/unit/composition-expression-syntax.test.ts tests/unit/composition-expressions.test.ts --maxWorkers=1",
+        "exitCode": 0,
+        "tests": 174,
+        "log": "/private/tmp/pr32-round2-green-normalize-rove.log"
+      },
+      {
+        "command": "pnpm exec vitest run tests/unit/composition-bake.test.ts tests/unit/composition-bake-component-history.test.ts --maxWorkers=1",
+        "exitCode": 0,
+        "tests": 53,
+        "log": "/private/tmp/pr32-periodic-reference-final-green.log"
+      },
+      {
+        "command": "pnpm check:fast",
+        "exitCode": 0,
+        "unitTests": 1487,
+        "unitFiles": 129,
+        "log": "/private/tmp/pr32-round2-check-fast.log"
+      },
+      {
+        "command": "pnpm test:runtime",
+        "exitCode": 0,
+        "tests": 46,
+        "log": "/private/tmp/pr32-round2-runtime.log"
+      },
+      {
+        "command": "gh api repos/xxibcill/still-shift/actions/permissions",
+        "exitCode": 0,
+        "result": {
+          "enabled": false
+        }
+      },
+      {
+        "command": "pnpm test:integration",
+        "exitCode": 0,
+        "tests": 111,
+        "files": 31,
+        "log": "/private/tmp/pr32-round2-integration.log"
+      },
+      {
+        "command": "pnpm test:browser:composition-expressions",
+        "exitCode": 0,
+        "fixtures": 5,
+        "framesPerBackend": 270,
+        "backends": ["canvas2d", "webgl2"],
+        "result": "Expression/baked pixels and random seeks match; repeated and baked MP4 exports are byte-identical on both backends.",
+        "log": "/private/tmp/pr32-round2-browser-expressions.log"
+      },
+      {
+        "command": "pnpm test:browser:composition-evaluator",
+        "exitCode": 0,
+        "fixtures": 5,
+        "framesPerFixture": 9,
+        "maximumNumericError": 5.684341886080802e-14,
+        "result": "Timing, visibility and reverse seeks match exactly.",
+        "log": "/private/tmp/pr32-round2-browser-evaluator.log"
+      },
+      {
+        "command": "pnpm test:browser:composition-baselines",
+        "exitCode": 0,
+        "items": 176,
+        "frames": 36061,
+        "durationSeconds": 283.91,
+        "regenerated": false,
+        "log": "/private/tmp/pr32-round2-browser-baselines.log"
+      }
+    ],
+    "notRun": [
+      "Full pnpm check/test pipeline",
+      "Strict hardware performance matrices"
+    ],
+    "policy": "All checks run locally. GitHub Actions remain prohibited. Baselines must not be regenerated; CE6-P and CE9-F1 remain deferred.",
+    "independentReview": "No remaining blocker in timed blur, periodic component masks or spring sampling. Dense spring reference error approximately 0.025 px; repeated fps cache probes match. Original unused-axis fixture bakes with 40 exact render graphs."
+  },
+  "delivery": {
+    "localBranch": "codex/pr32-review-fixes",
+    "targetBranch": "codex/composition-ce9",
+    "strategy": "One commit per finding, then one final push after all four fixes and verification.",
+    "status": "All four fixes are verified. Commit the final finding slice and push all four commits together once to the existing PR branch.",
+    "checkpoint": "After local verification, before the final finding commit and single push.",
+    "pushCommand": "git push origin HEAD:refs/heads/codex/composition-ce9",
+    "ownerDecision": "PR review and merge remain pending; do not merge automatically."
+  }
+}

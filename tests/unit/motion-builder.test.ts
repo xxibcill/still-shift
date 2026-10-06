@@ -23,7 +23,10 @@ import {
   type Layer,
   type Property,
 } from "@still-shift/motion";
-import { validateComposition } from "@still-shift/scene-contract";
+import {
+  validateComposition,
+  type CompositionTransform,
+} from "@still-shift/scene-contract";
 const options = { width: 64, height: 64, fps: 24 as const, frames: 120 };
 const box = (id = "box") => solid(id, { size: [10, 10], color: "#223344" });
 const font = {
@@ -362,4 +365,55 @@ describe("symbolic precomp anchors", () => {
     });
     expect(result.layers[0]!.transform!.anchor).toEqual([7, 9]);
   });
+  for (const method of ["transform", "with"] as const) {
+    for (const anchor of [
+      [7, 9],
+      {
+        keys: [
+          { frame: 0, value: [7, 9] },
+          { frame: 12, value: [11, 13] },
+        ],
+      },
+    ] satisfies CompositionTransform["anchor"][]) {
+      it(`lets ${method} replace symbolic anchors with ${Array.isArray(anchor) ? "static" : "animated"} values`, () => {
+        const asset = {
+          id: "art",
+          type: "image" as const,
+          path: "art.svg",
+          sha256: `sha256:${"0".repeat(64)}`,
+          width: 64,
+          height: 48,
+        };
+        const result = comp({ ...options, assets: [asset] }, (c) => {
+          const named = precomp("named", "child"),
+            inline = precomp("inline", child),
+            drawing = image("drawing", "art");
+          for (const node of [named, inline, drawing]) {
+            node.anchor("center");
+            if (method === "transform") node.transform({ anchor });
+            else node.with({ transform: { anchor } });
+          }
+          c.add(named);
+          c.add(inline);
+          c.add(drawing);
+          c.define(child);
+        });
+        for (const node of result.layers)
+          expect(node.transform!.anchor).toEqual(anchor);
+      });
+    }
+    it(`preserves a pending symbolic anchor when ${method} changes another field`, () => {
+      const result = comp(options, (c) => {
+        const node = precomp("host", "child").anchor("center");
+        if (method === "transform") node.transform({ position: [12, 13] });
+        else node.with({ transform: { position: [12, 13] } });
+        c.add(node);
+        c.define(child);
+      });
+      expect(result.layers[0]!.transform).toMatchObject({
+        anchor: [32, 24],
+        position: [12, 13],
+      });
+    });
+  }
 });

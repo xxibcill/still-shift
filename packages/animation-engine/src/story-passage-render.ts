@@ -1,3 +1,11 @@
+import { soundtrackFail } from "@still-shift/scene-contract";
+import { renderPassageSoundtrack } from "./soundtrack-passage.ts";
+import {
+  readSoundtrackProject,
+  verifySoundtrackSources,
+  soundtrackChecksum,
+} from "./soundtrack-project-io.ts";
+import { soundtrackPython } from "./soundtrack-render.ts";
 import {
   renderPassageAudio,
   verifyPassageAudioAssets,
@@ -23,7 +31,7 @@ import {
 import type { RenderEnvironment } from "@still-shift/execution-runtime/render-browser";
 import { acquirePassageJob } from "./passage-job.ts";
 import assert from "node:assert/strict";
-import { readFile, mkdir, rm } from "node:fs/promises";
+import { readFile, mkdir, rename, rm, writeFile } from "node:fs/promises";
 import { join, resolve } from "node:path";
 import { performance } from "node:perf_hooks";
 import { runProcess } from "@still-shift/execution-runtime/subprocess";
@@ -120,6 +128,7 @@ async function assembleStoryPassage(
   narration: string | undefined,
   options: PassageRenderOptions & {
     cacheDirectory: string;
+    soundtrackRevision?: number;
     runtime: string;
     renderEnvironment: RenderEnvironment;
     sceneDirectory: string;
@@ -203,6 +212,13 @@ async function assembleStoryPassage(
           options.signal,
         ),
     });
+    const native = options.compositions?.[beat.id];
+    // The cache copy records its first render; this copy names this run's asset files.
+    if (native)
+      await replacePassageJson(
+        join(options.sceneDirectory, beat.id + ".composition.json"),
+        native,
+      );
     clips.push(clip);
     await options.job.beat(beat.id);
     options.onProgress?.({
@@ -272,16 +288,24 @@ async function assembleStoryPassage(
     ":end_frame=" +
     (renderStart + frameCount) +
     ",setpts=PTS-STARTPTS[v]";
-  const mixedAudio = await renderPassageAudio(
-    join(output, "mix.wav"),
-    passage,
-    narration,
-    {
-      range,
-      soundEffects: options.soundEffects,
-      signal: options.signal,
-    },
-  );
+  const mixedAudio = options.soundtrackProject
+    ? await renderPassageSoundtrack(
+        join(output, "mix.wav"),
+        passage,
+        options.soundtrackProject,
+        {
+          range,
+          signal: options.signal,
+          ...(options.soundtrackRevision !== undefined
+            ? { expectedRevision: options.soundtrackRevision }
+            : {}),
+        },
+      )
+    : await renderPassageAudio(join(output, "mix.wav"), passage, narration, {
+        range,
+        soundEffects: options.soundEffects,
+        signal: options.signal,
+      });
   const hasAudio = Boolean(mixedAudio);
   const audio = mixedAudio ? `;[${assemblyInputs.length}:a:0]anull[a]` : "";
   await run("ffmpeg", [
@@ -463,10 +487,24 @@ async function assembleStoryPassage(
   return report;
 }
 
+async function replacePassageJson(path: string, value: unknown) {
+  const temporary = `${path}.write-${randomUUID()}`;
+  try {
+    await writeFile(temporary, JSON.stringify(value, null, 2) + "\n", {
+      flag: "wx",
+    });
+    await rename(temporary, path);
+  } finally {
+    await rm(temporary, { force: true });
+  }
+}
+
 export type PassageRenderOptions = {
   compositions?: PassageCompositions;
   renderer?: "legacy" | "composition";
   backend?: CompositionBackend;
+
+  soundtrackProject?: string;
   soundEffects?: boolean;
   cacheDirectory?: string;
   resume?: boolean;
@@ -487,9 +525,21 @@ export async function renderStoryPassage(
   options: PassageRenderOptions = {},
 ) {
   options.signal?.throwIfAborted();
+  if (
+    options.soundtrackProject &&
+    (narration || options.soundEffects === false)
+  )
+    soundtrackFail(
+      "soundtrack-mode",
+      "Choose a saved soundtrack or legacy narration/effect controls",
+    );
+  const soundtrack = options.soundtrackProject
+    ? await readSoundtrackProject(options.soundtrackProject)
+    : undefined;
   const compositions = validatePassageCompositions(
     passage,
     options.compositions,
+    soundtrack,
   );
   if (Object.keys(compositions).length && options.renderer !== "composition")
     passageError(
@@ -498,6 +548,7 @@ export async function renderStoryPassage(
       { path: "renderer" },
     );
   options = { ...options, compositions };
+
   const first = passage.beats[0]?.scene;
   if (!first)
     passageError("empty-passage", "A passage needs at least one beat");
@@ -537,6 +588,27 @@ export async function renderStoryPassage(
     options.signal,
   );
   const jobRuntime = await passageJobRuntimeIdentity(runtime, options.signal);
+  if (soundtrack)
+    await verifySoundtrackSources(soundtrack, options.soundtrackProject!);
+  const soundtrackIdentity = soundtrack
+    ? {
+        project: soundtrack,
+        worker: await soundtrackChecksum(
+          new URL("./soundtrack-worker.py", import.meta.url).pathname,
+        ),
+        python: soundtrackPython(),
+        packages: (
+          await runProcess(
+            soundtrackPython(),
+            [
+              "-c",
+              "import json,platform; from importlib.metadata import version; print(json.dumps([platform.python_version(),*[version(x) for x in ['dawdreamer','numpy','scipy']]]))",
+            ],
+            { signal: options.signal },
+          )
+        ).stdout.trim(),
+      }
+    : undefined;
   const job = await acquirePassageJob(
     output,
     {
@@ -553,6 +625,8 @@ export async function renderStoryPassage(
       ...(options.renderer === "composition"
         ? { backend: options.backend ?? "canvas2d" }
         : {}),
+
+      ...(soundtrackIdentity ? { soundtrack: soundtrackIdentity } : {}),
       range,
       runtime: jobRuntime,
     },
@@ -564,6 +638,7 @@ export async function renderStoryPassage(
     await mkdir(join(assembly, "delivery"));
     const report = await assembleStoryPassage(assembly, passage, narration, {
       ...options,
+      ...(soundtrack ? { soundtrackRevision: soundtrack.revision } : {}),
       range,
       cacheDirectory: resolve(
         options.cacheDirectory ?? "benchmarks/results/passage-cache",

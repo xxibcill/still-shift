@@ -1,0 +1,233 @@
+{
+  "date": "2026-10-05",
+  "pr": "https://github.com/xxibcill/still-shift/pull/34",
+  "reviewedHead": "82453d95b412729b976a671f725eb1f1b081dafc",
+  "delivery": "One finding per commit; one push after the final finding commit.",
+  "toolchain": {
+    "node": "22.23.1",
+    "pnpm": "10.29.3"
+  },
+  "findings": [
+    {
+      "id": "browser-diagnostics",
+      "comment": "https://github.com/xxibcill/still-shift/pull/34#discussion_r4180742879",
+      "status": "fixed",
+      "verification": {
+        "before": "Original-head native browser regression fails with invalid-scene and missing provider path",
+        "after": "Native browser quality suite passes, including provider and policy diagnostic transport",
+        "checks": [
+          "pnpm build",
+          "ESLint for changed TypeScript",
+          "pnpm test:browser:composition-quality"
+        ]
+      },
+      "commit": "b7bb78fe338e8f9b0205bdfb0a6df9dc7f3f5fe2"
+    },
+    {
+      "id": "effect-tracks",
+      "comment": "https://github.com/xxibcill/still-shift/pull/34#discussion_r4180742886",
+      "status": "fixed",
+      "verification": {
+        "before": {
+          "failed": 3,
+          "passed": 47
+        },
+        "after": {
+          "failed": 0,
+          "passed": 50
+        },
+        "checks": [
+          "50 focused quality unit tests",
+          "pnpm build",
+          "ESLint for changed TypeScript"
+        ],
+        "coverage": [
+          "Active versus disabled/out-of-window effects",
+          "Staggered varied effect easing",
+          "Forward/reverse fractional effect joins"
+        ]
+      },
+      "commit": "78fd2c53ed7296f3fb252b3b92980278cc887ca2"
+    },
+    {
+      "id": "matte-motion",
+      "comment": "https://github.com/xxibcill/still-shift/pull/34#discussion_r4180742889",
+      "status": "fixed",
+      "verification": {
+        "before": {
+          "failed": 7,
+          "passed": 51
+        },
+        "after": {
+          "failed": 0,
+          "passed": 58
+        },
+        "checks": [
+          "58 focused quality unit tests",
+          "pnpm build",
+          "ESLint for changed TypeScript",
+          "Expanded native browser quality suite"
+        ],
+        "coverage": [
+          "Solid/group/precomp matte motion and Node/Chromium parity",
+          "Rendered matte motion using an explicit one-pixel measurement floor for these small fixtures",
+          "Shared sources counted once",
+          "Disabled-source semantics and active timeline windows",
+          "Forward/reverse fractional matte joins"
+        ],
+        "testSetupCorrections": [
+          "Replaced an invalid zero-length layer lifetime with a valid one-frame lifetime",
+          "Set group fixture anchors to the origin so the tested matte content is actually on canvas"
+        ]
+      },
+      "commit": "b4f695f55e2c40705e9b5e3e04b91a16d2903c16"
+    },
+    {
+      "id": "single-frame-pops",
+      "comment": "https://github.com/xxibcill/still-shift/pull/34#discussion_r4180742895",
+      "status": "fixed",
+      "verification": {
+        "before": {
+          "failed": 4,
+          "passed": 59
+        },
+        "after": {
+          "qualityTests": 64,
+          "cliTests": 12,
+          "failed": 0
+        },
+        "checks": [
+          "76 focused quality/CLI tests",
+          "pnpm build",
+          "ESLint for changed TypeScript"
+        ],
+        "coverage": [
+          "Early/interior/final one-frame excursions",
+          "Both transitions declared as cuts",
+          "Only one transition declared as a cut",
+          "Fast and slow multi-frame peaks remain exempt",
+          "CLI nonzero exit for undeclared pulses"
+        ]
+      },
+      "commit": "f87149e2820e97835f7e99e2e24b0df7098d4c1c"
+    },
+    {
+      "id": "clipped-coverage",
+      "comment": "https://github.com/xxibcill/still-shift/pull/34#discussion_r4180742901",
+      "status": "fixed",
+      "verification": {
+        "before": {
+          "failed": 3,
+          "passed": 68
+        },
+        "after": {
+          "qualityTests": 71,
+          "cliTests": 12,
+          "failed": 0
+        },
+        "checks": [
+          "83 focused quality/CLI tests",
+          "Expanded native browser quality suite",
+          "pnpm check:fast",
+          "pnpm test:runtime",
+          "CE0 corpus lint"
+        ],
+        "coverage": [
+          "Enabled versus disabled group clipping",
+          "Full viewport clipping",
+          "Rotated clip footprints rather than bounding boxes",
+          "Precomp clipping versus collapseTransforms",
+          "Animated violation frame ranges",
+          "Five browser clipping cases matched actual painted pixels"
+        ]
+      },
+      "commitMessage": "fix(composition): honor clipping in viewport coverage lint"
+    }
+  ],
+  "setupFailures": [
+    "Pixel tests initially ran under Vitest, whose SSR transform rewrites dynamic imports inside the browser callback. Moved these regressions to the native browser harness; original-head failure then reproduced the actual lost diagnostic code/path."
+  ],
+  "preservation": "Original checkout and unrelated edits retained; GitHub Actions remain disabled.",
+  "pending": ["Owner review and merge of PR #34"],
+  "finalVerification": {
+    "toolchain": {
+      "node": "22.23.1",
+      "pnpm": "10.29.3"
+    },
+    "fastChecks": {
+      "command": "pnpm check:fast",
+      "status": "passed",
+      "unitTests": 1496,
+      "includes": [
+        "schema",
+        "package boundaries",
+        "format",
+        "ESLint",
+        "TypeScript build",
+        "all unit tests"
+      ]
+    },
+    "runtime": {
+      "command": "pnpm test:runtime",
+      "status": "passed",
+      "tests": 46
+    },
+    "cli": {
+      "status": "passed",
+      "tests": 12
+    },
+    "browserQuality": {
+      "command": "pnpm test:browser:composition-quality",
+      "status": "passed",
+      "checks": [
+        "14 acceptance fixture Node/Chromium comparisons",
+        "Inherited parent timing",
+        "Provider/policy pixel-mode CLI diagnostics",
+        "Solid/group/precomp matte timing and rendered motion",
+        "Five clipping cases checked against actual painted pixels",
+        "Independent Canvas2D/WebGL2 pixel motion",
+        "Lab timeline marker seeking and rendered findings",
+        "Pinned browser file lint"
+      ]
+    },
+    "corpus": {
+      "total": 176,
+      "frames": 36061,
+      "compositionStateAndPixels": 153,
+      "pixelOnly": 23,
+      "unexpectedFailures": 0,
+      "sourceChecksum": "25c2465f27c57121ef1623ee48477d9ee52757a06b0e7b20a8458b3e206b4a79",
+      "baselineChecksumUnchanged": true,
+      "frozenPixelFindingsUnchanged": true,
+      "oldDiagnosticCounts": {
+        "co-start": 1,
+        "comp-text-layout-missing": 3172,
+        "easing-monotony": 1,
+        "frozen-pixels": 165,
+        "frozen-run": 124,
+        "off-canvas": 43,
+        "opacity-pop": 400,
+        "outside-safe-area": 244,
+        "reading-time": 337,
+        "velocity-discontinuity": 1031
+      },
+      "newDiagnosticCounts": {
+        "co-start": 1,
+        "comp-text-layout-missing": 3172,
+        "easing-monotony": 1,
+        "frozen-pixels": 165,
+        "frozen-run": 124,
+        "off-canvas": 43,
+        "opacity-pop": 400,
+        "outside-safe-area": 244,
+        "reading-time": 337,
+        "velocity-discontinuity": 1031
+      },
+      "changedReports": []
+    },
+    "rendererOutputAndVersionChanged": false,
+    "baselineRegeneration": false,
+    "fullCheckRerun": false,
+    "scope": "Lint analyzer and pixel-mode error handling; all fast/runtime/focused CLI/browser gates and CE0 lint were run. The full render/export matrix was not rerun."
+  }
+}
